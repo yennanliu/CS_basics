@@ -4,7 +4,7 @@
 - Algorithm 
 - Data Structure
 - Network
-- Linix basics 
+- Linux basics 
 - Database 
 
 ## Tech
@@ -15,4 +15,4 @@
 - SQL
 
 ## Ref
--dev 
+- https://github.com/yennanliu/data_science_repo
