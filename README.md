@@ -1,3 +1,18 @@
-# Python_basics
+# CS_basics
 
-Collections of python basics
+Collections code of Computer Science basics
+	- Algorithm 
+	- Data Structure
+	- Network
+	- Linix basics 
+	- Database 
+
+Tech
+	- Python 
+	- Shell
+	- Java
+	- Javascript
+	- SQL
+
+Ref
+	-dev 
