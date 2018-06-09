@@ -15,8 +15,12 @@
 - SQL
 
 ## Ref
-- https://github.com/yennanliu/data_science_repo
+### leetcode 
 - https://github.com/kamyu104/LeetCode
 - https://github.com/xuelangZF/LeetCode
 - https://algorithm.yuanbin.me/zh-tw/
 - https://github.com/shichao-an/leetcode-python
+- https://github.com/yennanliu/data_science_repo
+
+### mysql
+- https://stackoverflow.com/questions/11754781/how-to-declare-a-variable-in-mysql 
