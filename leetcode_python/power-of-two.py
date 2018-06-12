@@ -52,17 +52,16 @@ class Solution:
 
 # V3 
 # with Time Limit Exceeded error 
-class Solution(object):
-	def isPowerOfTwo(self, n):
-		if n%2 != 0:
-			return False
-		else:
-			n=n/2
-			isPowerOfTwo(self,n)
-			
-		return True
-
-
+class Solution:
+    def isPowerOfTwo(self,n):
+        for k in range(n):
+            if n == 2**k:
+                return True
+            else:
+                pass
+            k=k+1
+        return False
+        
 
 
 
