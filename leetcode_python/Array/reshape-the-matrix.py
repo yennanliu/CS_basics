@@ -39,14 +39,20 @@ The given r and c are all positive.
 
 
 # V1 : dev 
-"""
+    
 class Solution(object):
-	def matrixReshape(self, nums, r, c): 
-		mymatrix_pad = [  i for x in mymatrix for i in x  ]
-		for i in range(0,int(len(mymatrix_pad))-1, c):
-			print (mymatrix_pad[i:i+c])
-"""
-
+    def matrixReshape(self, nums, r, c): 
+        output = []
+        nums_pad = [  i for x in nums for i in x  ]
+        if r*c != len(nums_pad):
+            return nums 
+        else:
+            for i in range(0,int(len(nums_pad)), c):
+                output.append(nums_pad[i:i+c])
+                print (nums_pad[i:i+c])
+            return output
+            
+        
 
 
 # V2 
