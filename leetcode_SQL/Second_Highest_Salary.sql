@@ -25,6 +25,15 @@ For example, given the above Employee table, the query should return 200 as the 
 */
 
 
+# V1 
+
+
+select ifnull(max(Salary),0) AS SecondHighestSalary from Employee a 
+where a.Salary < (select max(Salary) from Employee b )
+
+
+# V2 
+
 SELECT ifnull(a.salary, 0) AS SecondHighestSalary
 FROM Employee a
 WHERE a.salary <
