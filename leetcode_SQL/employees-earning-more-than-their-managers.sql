@@ -26,10 +26,22 @@ Given the Employee table, write a SQL query that finds out employees who earn mo
 
 
 
-*/ 
+/* V1 */
+
+select 
+a.Name as Employee  
+from 
+Employee a, 
+Employee b 
+where 
+b.Id = a.ManagerId 
+and 
+a.Salary > b.Salary 
 
 
-/* V1  */
+
+
+/* V2  */
 
 
 SELECT a.Name as Employee
