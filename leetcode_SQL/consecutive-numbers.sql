@@ -32,7 +32,16 @@ For example, given the above Logs table, 1 is the only number that appears conse
 
 
 
-/ * V1 */
+/* V1 */
+
+SELECT DISTINCT b.Num AS ConsecutiveNums
+FROM Logs a
+INNER JOIN Logs b ON a.Id +1 = b.Id
+INNER JOIN Logs c ON b.Id +1 = c.Id
+WHERE a.Num = b.Num
+  AND c.Num = b.Num
+
+/* V2 */
 
 # join 3 same table to grab 2nd element 
 # (if there are at least consecutively 3 elements)
@@ -50,7 +59,7 @@ WHERE a.Num = b.Num
 
 
 
-/* V2 */
+/* V3  */
 
 
 
