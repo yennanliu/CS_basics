@@ -38,7 +38,7 @@ The given r and c are all positive.
 """
 
 
-# V1 : dev 
+# V1 :  
     
 class Solution(object):
     def matrixReshape(self, nums, r, c): 
