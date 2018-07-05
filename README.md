@@ -15,6 +15,10 @@
 - SQL
 
 ## Ref
+
+### questions
+- https://www.careercup.com/page?pid=spotify-interview-questions
+
 ### leetcode 
 - https://github.com/kamyu104/LeetCode
 - https://github.com/xuelangZF/LeetCode
