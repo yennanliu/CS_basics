@@ -16,7 +16,15 @@
 
 
 # V1  : dev 
-
+# Extracting only characters from a string in Python 
+# https://stackoverflow.com/questions/8199398/extracting-only-characters-from-a-string-in-python
+class Solution:
+    import re 
+    def isAnagram(self, s):
+        if ''.join(re.findall('[a-zA-Z]+',s)).lower() == ''.join(re.findall('[a-zA-Z]+',s[::-1])).lower():
+            return True
+        else:
+            return False 
 
 
 # V2 
