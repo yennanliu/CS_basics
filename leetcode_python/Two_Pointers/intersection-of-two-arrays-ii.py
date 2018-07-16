@@ -45,6 +45,15 @@ class Solution(object):
 
 
 
+# V1'  : (dev) 
+# https://www.geeksforgeeks.org/python-intersection-two-lists/
+class Solution(object):
+    def intersect(self, nums1, nums2):
+        return [ i for i in nums1 if i in nums2 ]
+
+
+
+
 # V2 
 # Time:  O(m + n)
 # Space: O(min(m, n))
