@@ -63,7 +63,46 @@ class Solution:
                 pass
             
  """
-         
+    
+ 
+# V1' : dev 
+"""
+class Solution(object):
+    def compress(self, chars):
+        output=[]
+        temp=[]
+        count=0
+        for i in range(0,len(chars)-1):
+            print (chars[i])
+            if chars[i] == chars[i+1]:
+                count = count + 1 
+                temp.append(chars[i])
+                temp.append(count) 
+            else:
+                output.append(temp)
+                temp=[]
+                pass 
+        return output
+"""
+
+# https://leetcode.com/articles/string-compression/
+class Solution(object):
+    def compress(self, chars):
+        anchor = write = 0
+        for read, c in enumerate(chars):
+            if read + 1 == len(chars) or chars[read + 1] != c:
+                chars[write] = chars[anchor]
+                write += 1
+                if read > anchor:
+                    for digit in str(read - anchor + 1):
+                        chars[write] = digit
+                        write += 1
+                anchor = read + 1
+        return write
+
+
+
+#--------------
         
 # V2 
 class Solution(object):
