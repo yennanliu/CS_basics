@@ -18,6 +18,34 @@
  
 # V1  : dev 
 
+"""
+  
+class Solution(object):
+    def validPalindrome(self, s):
+        left =  s[0:int((len(s)-1) /2)]
+        right = s[ - int((len(s)-1)/2 ) ]
+        print (left, right)  
+"""
+
+"""
+
+        
+class Solution(object):
+    def validPalindrome(self, s):
+        s_ = [ i for i in s]
+        for i in s_:
+        # https://docs.python.org/2/tutorial/datastructures.html
+            #del s[i]
+            pass 
+        
+        left =  s[0:int((len(s)-1) /2)]
+        right = s[ - int((len(s)-1)/2 ) ]
+        print (left, right)  
+        
+
+
+"""
+
 
 # V2 
 class Solution(object):
@@ -39,3 +67,6 @@ class Solution(object):
                 return validPalindrome(s, left, right-1) or validPalindrome(s, left+1, right)
             left, right = left+1, right-1
         return True
+
+
+        
