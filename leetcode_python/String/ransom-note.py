@@ -16,18 +16,30 @@
 # canConstruct("aa", "aab") -> true
 
 
-# V1  : dev 
+# V1  
 
-"""
-
-class Solution:
+import collections
+class Solution(object):
     def canConstruct(self, ransomNote, magazine):
-        if ransomNote in magazine:
-            return True
-        else:
-            return False
+        if collections.Counter(ransomNote) - collections.Counter(magazine):
+        """
+        means some elements only in ransomNote but not in magazine
+        e.g. 
+        t = 'effjfggbffjdgbjjhhdegh'
+        s = 'fffbfg'
+        collections.Counter(t) = Counter({'b': 2, 'd': 2, 'e': 2, 'f': 5, 'g': 4, 'h': 3, 'j': 4})
 
-"""
+        collections.Counter(s) = Counter({'b': 1, 'f': 4, 'g': 1})
+        
+        => collections.Counter(t) - collections.Counter(s) = Counter({'b': 1, 'd': 2, 'e': 2, 'f': 1, 'g': 3, 'h': 3, 'j': 4})
+        i.e. j, d ... only in ransomNote ; but not in magazine
+        
+        """
+        
+            return False 
+        else:
+            return True 
+
 
 # V2 
 class Solution(object):
