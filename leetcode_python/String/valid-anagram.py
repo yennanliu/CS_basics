@@ -14,7 +14,12 @@
 
 
 
-# V1  : dev 
+# V1  : 
+
+class Solution:
+    def isAnagram(self, s, t):
+        return sorted(s) == sorted(t)
+
 
 
 # V2 
