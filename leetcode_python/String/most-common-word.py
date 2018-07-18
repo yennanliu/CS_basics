@@ -54,6 +54,15 @@ class Solution:
         return max_key
 """    
 
+# V1'  : dev 
+class Solution(object):
+    def mostCommonWord(self, paragraph, banned):
+        paragraph_ =[ x for x in paragraph.replace('.','').replace(',','').lower().split(' ') if x != banned ]
+        max_value = max(collections.Counter(paragraph_).values())
+        return [ x for x in collections.Counter(paragraph_).keys() if collections.Counter(paragraph_)[x]  == max_value ]
+
+
+
 
 
 # V2 
