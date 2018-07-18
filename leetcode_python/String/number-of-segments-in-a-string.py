@@ -31,6 +31,18 @@ class Solution:
 """
 
 
+# V1' 
+# Python booleans - if x:, vs if x == True, vs if x is True
+# https://stackoverflow.com/questions/20420934/python-booleans-if-x-vs-if-x-true-vs-if-x-is-true
+# V2 
+class Solution(object):
+    def countSegments(self, s):
+        return len([i for i in s.strip().split(' ') if i])
+
+
+
+
+
 # V2 
 class Solution(object):
     def countSegments(self, s):
