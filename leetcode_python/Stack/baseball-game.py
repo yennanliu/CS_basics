@@ -94,30 +94,24 @@ Every integer represented in the list will be between -30000 and 30000.
 
 
 
-# V1 :
-"""
+# V1 : dev 
 
-                
-  
-class Solution2(object):
+# V1'
+
+class Solution(object):
     def calPoints(self, ops):
         history = []
         for op in ops:
-            print (history)
-            print (op)
             if op == '+':
-                history.append(int(history[-1]) + int(history[-2]))
+                history.append(history[-1] + history[-2])
             elif op == 'D':
-                history.append(2*int(history[-1]))
-            elif op == 'C':                
-                history  = history.pop()
+                history.append(history[-1] * 2)
+            elif op == 'C':
+                history.pop()
             else:
-                history.append(int(op))       
+                history.append(int(op))
+            print (history)
         return sum(history)
-        
-"""
-                 
-
 
 
 
