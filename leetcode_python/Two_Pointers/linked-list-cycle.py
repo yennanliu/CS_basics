@@ -7,9 +7,33 @@
 # Can you solve it without using extra space?
 #
 
-
 # V1 : dev 
 
+
+
+
+
+# V1' : dev 
+# http://bookshadow.com/weblog/2015/06/26/leetcode-linked-list-cycle/
+
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+        
+        
+class Solution:
+    # @param head, a ListNode
+    # @return a boolean
+    def hasCycle(self, head):
+        nodeSet = set()
+        p = head
+        while p:
+            if p in nodeSet:
+                return True
+            nodeSet.add(p)
+            p = p.next
+        return False
 
 
 
