@@ -31,7 +31,25 @@
 # - S and T only contain lowercase letters and '#' characters.
 
 
-# V1  : dev 
+# V1  :
+# http://bookshadow.com/weblog/2018/06/03/leetcode-backspace-string-compare/
+class Solution(object):
+    def backspaceCompare(self, S, T):
+        def toString(S):
+            ans = []
+            #print ('S = ', S)
+            for c in S:
+                #print ('c = ', c )
+                #print ('ans = ', ans )
+                
+                if c == '#': 
+                    ans and ans.pop()
+                else: 
+                    ans.append(c)
+                #print ('ans = ', ans )
+            return ''.join(ans)
+        ## re-run the runc compare m treated S, T 
+        return toString(S) == toString(T)
 
 
 
