@@ -18,25 +18,34 @@ Output: "10101"
 """
 
 
-# V1 : dev 
-    
-"""
+# V1 :  
 class Solution:
     def addBinary(self, a, b):
-        output = []
-        str_a = str(a) 
-        str_b = str(b) 
-        len_ = max(len(str_a), len(str_b))
-        str_a_ = '0'*(len_ - len(str_a))  + str(a)
-        str_b_ = '0'*(len_ - len(str_b))  + str(b)
-        for i in range(len(str_a_)):
-            if int(str_a_[i]) + int(str_a_[i]) <=1:
-                str_a_[i] = str(int(str_a_[i]) + int(str_a_[i]))
+        len_ =  max(len(a),len(b))
+        a_ = [int(x) for x in a ]
+        b_ = [int(x) for x in b ]
+        a_ = [0]*(len_ - len(a)) + a_ 
+        b_ = [0]*(len_ - len(b)) + b_ 
+        sum_  = 0
+        extra = 0
+        output=[]
+        for i in reversed(range(len(a_))):
+            sum_ = a_[i]+b_[i]+extra
+            if sum_ >= 2:
+                sum_ = sum_ -2 
+                #output.append(sum_)
+                output=[sum_] + output
+                extra=1 
             else:
-                 str_a_[i], str_a_[i-1] = str(0),  str(int(str_a_[i-1]) +1 )
-        return str_a_, str_b_
+                #output.append(sum_)
+                output=[sum_] + output
+                extra=0
+        if extra==1:
+            output=[1] + output
+        #print (output)
+        return ''.join( str(i) for i in output )
 
-"""
+
 
 
 
@@ -65,4 +74,11 @@ class Solution:
         if carry:
             result += str(carry)
         return result[::-1]
+
+
+
+
+
+
+        
 
