@@ -33,23 +33,21 @@ class Solution:
             sum_ = a_[i]+b_[i]+extra
             if sum_ >= 2:
                 sum_ = sum_ -2 
-                #output.append(sum_)
                 output=[sum_] + output
                 extra=1 
             else:
-                #output.append(sum_)
                 output=[sum_] + output
                 extra=0
         if extra==1:
+        # in case : a = 100, b = 100 
             output=[1] + output
-        #print (output)
         return ''.join( str(i) for i in output )
 
 
 
+# V2  
 
-
-# V2 
+# V3 
 
 try:
     xrange          # Python 2
@@ -80,5 +78,5 @@ class Solution:
 
 
 
-        
+
 
