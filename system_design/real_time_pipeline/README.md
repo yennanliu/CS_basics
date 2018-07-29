@@ -71,8 +71,20 @@ Router	----> Elasticsearch/ Datadog
 
 ```
 
-timestamp          uid         sid         event platform country 
-20170101 07:00:00 u000000001  s000000001  click_timeline ios UK 
+
+```
+
+# Prod data  
+
+```sql 
+# transaction table 
+
+timestamp          uid         uuid         amount platform country 
+20170101 07:00:00 u000000001  7d529dd4-548b-4258-aa8e-23e34dc8d43d  100 ios UK 
+20170101 07:10:00 u000000002  9829c54-4dcw-0987-ei98-435e34d345d54  50 android US 
+20170101 07:30:00 u000000001  d32cdsx-zwe3-0987-ced4-76254cwsdv534  230 android UK 
+20170101 08:10:00 u000000002  0cew34x-jn42-0987-sc46-vrv54y4564523  170 ios US 
+20170101 09:00:00 u000000003  093cwev-0p3d-0987-435y-njy334dce232d  80 ios UK 
 ...
 
 
