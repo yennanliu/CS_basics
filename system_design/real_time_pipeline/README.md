@@ -7,19 +7,37 @@
 - Describe the DB/data structure/end points ..
 
 # pipeline infra 
-```markdown
+```
 
 
 
-Ios 	---->                                                           ----> S3 ----> EMR ----> BI Tool 
+ios 	---->                                                           ----> S3 ----> EMR ----> BI Tool 
                Event log/ prod MySQL ----> Fronting Kafka  -> Router	----> Elastic Search/ Data Dog 	 
-Android ---->                                                           ----> Consumer Kafka/ Stream Consumer(Spark/APP ...)
+android ---->                                                           ----> Consumer Kafka/ Stream Consumer(Spark/APP ...)
 
 
 
 ```
 
 # Description 
+```
+* 1) 
+          
+ios 	---->                                                         
+               Event log/ prod MySQL ----> Fronting Kafka	 
+android ----> 
+
+
+* Clinets send event log (streaming) to Kafka 
+* Clinets database (MySQL) send operation data (batch) to Kafka
+* The reason choose MySQL here is MySQL a easy to use/scalable DB, quick to start, good for storing simple data ; if for complex/detailed data, should use PosgreSQL instead.
+
+
+
+
+
+
+```
 
 
 # event data  
