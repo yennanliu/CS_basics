@@ -72,13 +72,13 @@ Router	----> Elasticsearch/ Datadog
 ```javascript
 // client side event
 {
-  "dt": "2017-01-01T07:23:12.236543Z",               // Consistent ISO8601 dates with nanosecond precision
-  "level": "info",                                   // The level of the log
-  "message": "POST /checkout for 192.321.22.21",     // Human readable message
-  "context": { ... },                                // Context data shared across log line
-  "event": "Click_Timeline"                          // Structured representation of this log event
-  "uid"  : "u000000001"                              // user id 
-  "uuid"  : "43fefe-3452-4322-sc46-vrv54y456452f     // event id 
+  "dt": "2017-01-01T07:23:12.236543Z",                // Consistent ISO8601 dates with nanosecond precision
+  "level": "info",                                    // The level of the log
+  "message": "POST /checkout for 192.321.22.21",      // Human readable message
+  "context": { ... },                                 // Context data shared across log line
+  "event": "Click_Timeline"                           // Structured representation of this log event
+  "uid"  : "u000000001"                               // user id 
+  "uuid"  : "43fefe-3452-4322-sc46-vrv54y456452f"     // event id 
 }
 
 ```
