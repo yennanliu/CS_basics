@@ -9,9 +9,12 @@
 # pipeline infra 
 ```
 
+
+
 Ios 	---->													----> S3 ----> EMR ----> BI Tool 
-			 event log/MySQL ----> Fronting Kafka  -> Router  	----> Elastic Search/ Data Dog 	 
+			 event log/MySQL ----> Fronting Kafka  -> Router	----> Elastic Search/ Data Dog 	 
 Android ---->													----> Consumer Kafka/ Stream Consumer(Spark / APP ...)
+
 
 
 ```
