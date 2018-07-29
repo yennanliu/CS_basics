@@ -6,6 +6,7 @@
 - Network
 - Linux basics 
 - Database 
+- System design 
 
 ## Tech
 - Python 
