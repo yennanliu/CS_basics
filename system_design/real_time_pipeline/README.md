@@ -7,17 +7,19 @@
 - Describe the DB/data structure/end points ..
 
 # pipeline infra 
+```markdown
+
+
+
+Ios 	---->                                                           ----> S3 ----> EMR ----> BI Tool 
+               Event log/ prod MySQL ----> Fronting Kafka  -> Router	----> Elastic Search/ Data Dog 	 
+Android ---->                                                           ----> Consumer Kafka/ Stream Consumer(Spark/APP ...)
+
+
+
 ```
 
-
-
-Ios 	---->                                                   ----> S3 ----> EMR ----> BI Tool 
-               event log/MySQL ----> Fronting Kafka  -> Router	----> Elastic Search/ Data Dog 	 
-Android ---->                                                   ----> Consumer Kafka/ Stream Consumer(Spark / APP ...)
-
-
-
-```
+# Description 
 
 
 # event data  
@@ -31,5 +33,5 @@ timestamp          uid         sid         event platform country
 
 ```
 
-# Description 
+
 
