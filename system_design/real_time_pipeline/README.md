@@ -7,10 +7,11 @@
 - Describe the DB/data structure/end points ..
 
 # Pipeline infra 
+
 ```
 
 
-
+                                                                        ----> Scenario Generator 
 ios 	---->                                                           ----> S3 ----> EMR ----> BI Tool 
                Event log/ prod MySQL ----> Fronting Kafka  -> Router	----> Elasticsearch/ Datadog 	 
 android ---->                                                           ----> Consumer Kafka/ Stream Consumer(Spark/APP ...)
@@ -41,20 +42,21 @@ android ---->
 Fronting Kafka  -> Router
 
 ```
-
-
+* Kafka is an open source, distributed messaging system that enables build real-time applications using streaming data. 
+* Kafka buffers all data and serves them up to all following subscribers (Router in this pipeline)
 
 
 
 ```
-* 3) 
+* 3)    
+        ----> Scenario Generator 
         ----> S3 ----> EMR ----> BI Tool
 Router	----> Elasticsearch/ Datadog 	 
         ----> Consumer Kafka/ Stream Consumer(Spark/APP ...)
 
 ```
 
-* Router manage which data came from Kafka should forward to S3 or Elastic Search or Consumer Kafka
+* Router manage data came from Kafka and forward to S3 or Elastic Search or Consumer Kafka
 * S3 as datalake, storing all data from client side, including relative and non-relative data (schema-on-read)
 * EMR (Amazon Elastic MapReduce) runs scale computation on S3 data for reporting/analytics tasks
 * Elasticsearch for quick streaming data (event log for example) query. 
