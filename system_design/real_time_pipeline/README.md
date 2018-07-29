@@ -20,6 +20,7 @@ android ---->                                                           ----> Co
 ```
 
 # Description 
+
 ```
 * 1) 
           
@@ -28,16 +29,32 @@ ios 	---->
 android ----> 
 
 
+```
 * Clinets send event log (streaming) to Kafka 
 * Clinets database (MySQL) send operation data (batch) to Kafka
 * The reason choose MySQL here is MySQL a easy to use/scalable DB, quick to start, good for storing simple data ; if for complex/detailed data, should use PosgreSQL instead.
 
 
+```
+* 2) 
+          
+Fronting Kafka  -> Router
 
+```
 
 
 
 ```
+* 3) 
+        ----> S3 ----> EMR ----> BI Tool
+Router	----> Elastic Search/ Data Dog 	 
+        ----> Consumer Kafka/ Stream Consumer(Spark/APP ...)
+
+```
+
+
+
+
 
 
 # event data  
@@ -50,6 +67,11 @@ timestamp          uid         sid         event platform country
 
 
 ```
+
+
+
+
+
 
 
 
