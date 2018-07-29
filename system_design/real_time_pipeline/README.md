@@ -9,9 +9,9 @@
 # pipeline infra 
 ```
 
-Ios     ---------↘
-				  Fronting Kafka			 
-Android ---------↗
+Ios 	---->
+			Fronting Kafka			 
+Android ---->
 
 
 ```
