@@ -1,4 +1,4 @@
-# Real-time pipeline for auto QA test 
+# Real-time pipeline for automative APP QA test 
 
 - Client side event : Click Timeline/transaction/category/ Change category / Back
 - Design a system collect as many as real-time scenarios 
@@ -6,13 +6,13 @@
 - Ways to guarantee the squential integrity of data 
 - Describe the DB/data structure/end points ..
 
-# pipeline infra 
+# Pipeline infra 
 ```
 
 
 
 ios 	---->                                                           ----> S3 ----> EMR ----> BI Tool 
-               Event log/ prod MySQL ----> Fronting Kafka  -> Router	----> Elastic Search/ Data Dog 	 
+               Event log/ prod MySQL ----> Fronting Kafka  -> Router	----> Elasticsearch/ Datadog 	 
 android ---->                                                           ----> Consumer Kafka/ Stream Consumer(Spark/APP ...)
 
 
@@ -44,20 +44,28 @@ Fronting Kafka  -> Router
 
 
 
+
+
 ```
 * 3) 
         ----> S3 ----> EMR ----> BI Tool
-Router	----> Elastic Search/ Data Dog 	 
+Router	----> Elasticsearch/ Datadog 	 
         ----> Consumer Kafka/ Stream Consumer(Spark/APP ...)
 
 ```
 
+* Router manage which data came from Kafka should forward to S3 or Elastic Search or Consumer Kafka
+* S3 as datalake, storing all data from client side, including relative and non-relative data (schema-on-read)
+* EMR (Amazon Elastic MapReduce) runs scale computation on S3 data for reporting/analytics tasks
+* Elasticsearch for quick streaming data (event log for example) query. 
+* Datadog is for streaming data monitoring.
+* Consumer Kafka/ Stream Consumer : stream dataflow to other spark jobs and Stream app Consumer  
 
 
 
 
 
-# event data  
+# Event data  
 
 ```
 
