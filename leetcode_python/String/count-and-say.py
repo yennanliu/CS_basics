@@ -13,6 +13,22 @@
 #
 
 
+"""
+
+i.e. 
+
+n = 1  ->  1   
+n = 2  ->  11       ( there is 1 "1" when n=1 )
+n = 3  ->  21       ( there is 2 "1" when n=2 )
+n = 4  ->  1211     ( there is 1 "2" and 1 "1"  when n= 3 )
+n = 5  ->  111221   ( there is 1 "1" and 1 "2" and  2 "1"  when n=4 )
+n = 6  ->  312211   ( there is 3 "1" and 2 "2" and 1 "1" when n = 5  )
+.
+.
+.
+
+"""
+
 
 # V1  : dev 
 
@@ -37,3 +53,6 @@ class Solution:
             next_seq += str(cnt) + seq[i]
             i += 1
         return next_seq
+
+
+
