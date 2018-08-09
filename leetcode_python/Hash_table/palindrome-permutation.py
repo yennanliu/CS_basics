@@ -19,8 +19,23 @@ http://leetcode.com/problems/palindrome-permutation/
 
 
 # V1  : dev 
+"""
 
+s='code' -> false 
+s='careerac' -> true 
+s='ffkkix' -> false 
+s='ffkki' -> false 
 
+"""
+import collections
+class Solution(object):
+	def canPermutePalindrome(self, s):
+		# if is palindrome-permutation, can only can 1 or 0  non-pair number 
+		# have > 1 non-pair number  -> non palindrome-permutation
+		if sum(v % 2 for v in collections.Counter(s).values()) < 2:
+			return True 
+		else:
+			return False
 
 
 
