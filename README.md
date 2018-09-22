@@ -29,3 +29,10 @@
 
 ### mysql
 - https://stackoverflow.com/questions/11754781/how-to-declare-a-variable-in-mysql 
+
+### Java
+- https://www.geeksforgeeks.org/java/
+
+
+
+
