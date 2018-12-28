@@ -1,7 +1,7 @@
 
 import java.util.*;
 
-public class java_dict { 
+public class dict { 
     public static void main(String[] args)
     {
  

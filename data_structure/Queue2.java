@@ -1,9 +1,18 @@
 // Java orogram to demonstrate working of Queue
 // interface in Java
+
+/*
+
+credit 
+https://www.geeksforgeeks.org/queue-interface-java/
+
+*/
+
+
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class QueueExample2
+public class Queue2
 {
 public static void main(String[] args)
 {

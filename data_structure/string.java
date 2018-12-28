@@ -8,7 +8,7 @@ https://www.geeksforgeeks.org/string-class-in-java/
  
 import java.io.*;
 import java.util.*;
-class java_string
+class string
 {
     public static void main (String[] args)
     {
