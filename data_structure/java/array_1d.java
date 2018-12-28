@@ -14,7 +14,7 @@ class Student
 }
 
 // Elements of array are objects of a class Student.
-public class java_1_d_array
+public class Array_1d
 {
 	public static void main (String[] args)
 	{
