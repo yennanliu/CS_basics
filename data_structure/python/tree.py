@@ -3,8 +3,26 @@
 #################################################################
 # DATA STRUCTURE DEMO : Tree 
 #################################################################
-
+# build a tree 
 # https://github.com/OmkarPathak/Data-Structures-using-Python/blob/master/Trees/Tree.py
+
+
+#################################################################
+# OP on tree 
+# Hint   
+# https://algorithm.yuanbin.me/zh-tw/basics_data_structure/binary_tree.html
+#
+#
+# 1) Pre-order :  root -> left -> right 
+# 2) In-order :   left -> root -> right 
+# 3) Post-order :  left -> right -> root 
+# 4) Breadth first (BFS) :  layer 0 -> layer 1 -> ....layer N 
+#
+#
+#
+#
+#################################################################
+
 
 
 # --------------------------------------------------------------
