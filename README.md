@@ -17,6 +17,9 @@
 
 ## Ref
 
+## General CS
+- https://github.com/CyC2018/CS-Notes
+
 ## Leetcode Python 
 
 ### questions
@@ -28,14 +31,15 @@
 - https://github.com/interviewcoder/leetcode
 - https://github.com/shichao-an/leetcode-python
 - https://github.com/kamyu104/LeetCode
-
-
+- https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/Leetcode%20%E9%A2%98%E8%A7%A3.md
+- https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/Leetcode%20%E9%A2%98%E8%A7%A3.md
 
 #### ref 
 - https://github.com/xuelangZF/LeetCode/blob/master/List.md
 - https://algorithm.yuanbin.me/zh-tw/
 - https://github.com/shichao-an/leetcode-python
 - https://www.geeksforgeeks.org/java/
+- https://github.com/cpacm/LeetCode
 
 
 #### concept 
