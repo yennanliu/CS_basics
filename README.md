@@ -31,12 +31,18 @@
 |141|[Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/#/description) | | _O(n)_ | _O(1)_ ||
 |160|[Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists) |  | _O(n)_| _O(1)_  ||
 |203|[Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/#/description) |  | _O(n)_| _O(1)_  ||
-|206|[Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/#/description) |  | _O(n)_| _O(1)_  || Tutorial](https://www.youtube.com/watch?v=sYcOK51hl-A&t=681s) |
+|206|[Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/#/description) |  | _O(n)_| _O(1)_  |||
 |234|[Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) | | _O(n)_| _O(1)_  ||
 |83|[Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/#/description)| | _O(n)_| _O(1)_  ||
 
 
-
+## Stacks Easy
+|  #  | Title | Solution | Time | Space | Video|
+| --- | ----- | -------- | ---- | ----- | ---- |
+|155|[Min Stack](https://leetcode.com/problems/min-stack/#/description)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/min-stack.py) | _O(1)_| _O(n)_|
+|225|[Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/#/description)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/implement-queue-using-stacks.py) | push/pop: _O(1)_ top:_O(n)_ | _O(n)_|
+|20|[Valid Parentheses](https://leetcode.com/problems/valid-parentheses/#/description)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/valid-parentheses.py) | _O(n)_| _O(n)_|
+|346|[Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/#/description)|| _O(1)_| _O(n)_|
 
 
 # Ref
