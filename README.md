@@ -1,19 +1,11 @@
 # CS_basics
 
-## Collections code of Computer Science basics
 - Algorithm 
 - Data Structure
 - Network
 - Linux basics 
 - Database 
 - System design 
-
-## Tech
-- Python 
-- Shell
-- Java
-- Javascript
-- SQL
 
 
 <br><br><br>
@@ -27,7 +19,7 @@
 
 
 
-## Ref
+# Ref
 
 ## General CS
 - https://github.com/CyC2018/CS-Notes
