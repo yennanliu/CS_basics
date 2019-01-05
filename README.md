@@ -56,6 +56,10 @@
 |53|[Maximum Subarray](https://leetcode.com/problems/maximum-subarray/#/description)| | _O(N)_| _O(N)_  | ||
 |198|[House Robber](https://leetcode.com/problems/house-robber/#/description)| | _O(N)_| _O(N)_  | ||
 
+## BitMap Easy
+|  #  | Title | Solution | Time | Space | Status|
+| --- | ----- | -------- | ---- | ----- | ---- |
+|136|[Single Number](https://leetcode.com/problems/single-number/description/)| [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number.py) | _O(N)_| _O(1)_  | |
 
 
 
