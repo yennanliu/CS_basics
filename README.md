@@ -24,7 +24,7 @@
 |242| [Valid Anagram](https://leetcode.com/problems/valid-anagram/description/) | | _O(n)_| _O(n)_ ||
 
 ## Linked List Easy
-|  #  | Title | Solution | Time | Space | Video|
+|  #  | Title | Solution | Time | Space | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
 |21|[Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists) |  | _O(n)_| _O(n)_ ||
 |89|[Partition List](https://leetcode.com/problems/partition-list/) | | _O(n)_ | _O(n)_ ||
@@ -35,14 +35,28 @@
 |234|[Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) | | _O(n)_| _O(1)_  ||
 |83|[Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/#/description)| | _O(n)_| _O(1)_  ||
 
-
 ## Stacks Easy
-|  #  | Title | Solution | Time | Space | Video|
+|  #  | Title | Solution | Time | Space | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
 |155|[Min Stack](https://leetcode.com/problems/min-stack/#/description)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/min-stack.py) | _O(1)_| _O(n)_|
 |225|[Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/#/description)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/implement-queue-using-stacks.py) | push/pop: _O(1)_ top:_O(n)_ | _O(n)_|
 |20|[Valid Parentheses](https://leetcode.com/problems/valid-parentheses/#/description)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/valid-parentheses.py) | _O(n)_| _O(n)_|
 |346|[Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/#/description)|| _O(1)_| _O(n)_|
+
+## Tree Easy
+|  #  | Title | Solution | Time | Space | Status|
+| --- | ----- | -------- | ---- | ----- | ---- |
+|110|[Balanced Binary Tree](https://leetcode.com/problems/balanced-binary-tree/#/description)| | _O(N)_| _O(h)_  |
+|107|[Binary Tree Level Order Traversal II](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)| | _O(N)_| _O(h)_  |
+
+## Dynamic Programming Easy
+|  #  | Title | Solution | Time | Space | Status|
+| --- | ----- | -------- | ---- | ----- | ---- |
+|70|[Climbing Stairs](https://leetcode.com/problems/climbing-stairs/#/solutions)| [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/climbing-stairs.py) | _O(N)_| _O(1)_  | | |
+|53|[Maximum Subarray](https://leetcode.com/problems/maximum-subarray/#/description)| | _O(N)_| _O(N)_  | ||
+|198|[House Robber](https://leetcode.com/problems/house-robber/#/description)| | _O(N)_| _O(N)_  | ||
+
+
 
 
 # Ref
