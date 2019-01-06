@@ -67,7 +67,9 @@
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Queue| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/queue2.py) | | | OK|
 ||Stack| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/stack.py) | | | OK|
-
+||LinkedList| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/linkedList.py) | | | TODO|
+||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | |
+||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | |
 
 # Ref
 
