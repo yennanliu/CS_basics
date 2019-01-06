@@ -62,6 +62,11 @@
 |136|[Single Number](https://leetcode.com/problems/single-number/description/)| [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number.py) | _O(N)_| _O(1)_  | |
 
 
+## Data Structure 
+|  #  | Title | Solution | Time | Space | Status|
+| --- | ----- | -------- | ---- | ----- | ---- |
+||[Queue]| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/queue2.py) | | | | OK|
+
 
 # Ref
 
