@@ -65,7 +65,8 @@
 ## Data Structure 
 |  #  | Title | Solution | Time | Space | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
-||[Queue]| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/queue2.py) | | | OK|
+||Queue| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/queue2.py) | | | OK|
+||Stack| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/stack.py) | | | OK|
 
 
 # Ref
