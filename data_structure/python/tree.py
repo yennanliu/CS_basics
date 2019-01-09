@@ -7,7 +7,7 @@
 # https://github.com/OmkarPathak/Data-Structures-using-Python/blob/master/Trees/Tree.py
 
 
-#################################################################
+##################################################################################################################################
 # OP on tree 
 # Hint   
 # https://algorithm.yuanbin.me/zh-tw/basics_data_structure/binary_tree.html
@@ -19,9 +19,7 @@
 # 4) Breadth first (BFS) :  layer 0 -> layer 1 -> ....layer N 
 #
 #
-#
-#
-#################################################################
+##################################################################################################################################
 
 
 
@@ -112,9 +110,9 @@ if __name__ == '__main__':
     # OUTPUT:
     # Inorder  Traversal:   root.getLeft().getLeft().getData() -> root.getLeft().getData() -> root.getData() -> root.getRight().getData()
     # 4 2 1 3
-    # Preorder Traversal:
+    # Preorder Traversal:   root.getData() -> root.getLeft().getData() -> root.getLeft().getLeft().getData() -> root.getRight().getData()
     # 1 2 4 3
-    # Postorder Traversal:
+    # Postorder Traversal: root.getLeft().getLeft().getData() -> root.getLeft().getData() -> root.getRight().getData() -> root.getData()
     # 4 2 3 1
 
 
