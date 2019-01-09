@@ -87,7 +87,7 @@ def postorder(Tree):
 
 if __name__ == '__main__':
 
-	# PART 1) : CREATE A TREE 
+    # PART 1) : CREATE A TREE 
     root = Node(1)
     root.setLeft(Node(2))
     root.setRight(Node(3))
@@ -99,8 +99,9 @@ if __name__ == '__main__':
             2            3
         /
     4
-	'''
-	# PART 2) OP ON TREE :   Inorder/Preorder/Postorder
+    '''
+
+    # PART 2) OP ON TREE :   Inorder/Preorder/Postorder
     print('Inorder  Traversal:')
     inorder(root)
     print('\nPreorder Traversal:')
@@ -109,7 +110,7 @@ if __name__ == '__main__':
     postorder(root)
 
     # OUTPUT:
-    # Inorder  Traversal:
+    # Inorder  Traversal:   root.getLeft().getLeft().getData() -> root.getLeft().getData() -> root.getData() -> root.getRight().getData()
     # 4 2 1 3
     # Preorder Traversal:
     # 1 2 4 3
