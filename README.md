@@ -188,7 +188,7 @@
 ||Stack| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/stack.py) | | | OK|
 ||LinkedList| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/linkedList.py) | | | AGAIN|
 ||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | OK|
-||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | TODO|
+||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | AGAIN|
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | TODO|
 ||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py) | | | TODO|
 
