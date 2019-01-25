@@ -120,17 +120,29 @@
 |1| [Two Sum](https://leetcode.com/problems/two-sum/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/two-sum.py) | _O(n)_| _O(n)_ ||
 |242| [Valid Anagram](https://leetcode.com/problems/valid-anagram/description/) | | _O(n)_| _O(n)_ ||
 
-## Linked List Easy
-|  #  | Title | Solution | Time | Space | Status|
-| --- | ----- | -------- | ---- | ----- | ---- |
-|21|[Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists) |  | _O(n)_| _O(n)_ ||
-|89|[Partition List](https://leetcode.com/problems/partition-list/) | | _O(n)_ | _O(n)_ ||
-|141|[Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/#/description) | | _O(n)_ | _O(1)_ ||
-|160|[Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists) |  | _O(n)_| _O(1)_  ||
-|203|[Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/#/description) |  | _O(n)_| _O(1)_  ||
-|206|[Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/#/description) |  | _O(n)_| _O(1)_  |||
-|234|[Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) | | _O(n)_| _O(1)_  ||
-|83|[Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/#/description)| | _O(n)_| _O(1)_  ||
+
+
+## Linked List Easy and Medium 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
+002| [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) | [C++](./C++/add-two-numbers.cpp) [Python](./Python/add-two-numbers.py) | _O(n)_   | _O(1)_          | Medium         ||
+021| [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)| [C++](./C++/merge-two-sorted-lists.cpp) [Python](./Python/merge-two-sorted-lists.py) | _O(n)_ | _O(1)_ | Easy         ||
+024| [Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)| [C++](./C++/swap-nodes-in-pairs.cpp) [Python](./Python/swap-nodes-in-pairs.py)   | _O(n)_          | _O(1)_          | Easy         ||
+061| [Rotate List](https://leetcode.com/problems/rotate-list/)| [C++](./C++/rotate-list.cpp) [Python](./Python/rotate-list.py)   | _O(n)_          | _O(1)_          | Medium         ||  
+082| [Remove Duplicates from Sorted List II](https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/)| [C++](./C++/remove-duplicates-from-sorted-list-ii.cpp) [Python](./Python/remove-duplicates-from-sorted-list-ii.py) | _O(n)_       | _O(1)_         | Medium         ||
+083| [Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)| [C++](./C++/remove-duplicates-from-sorted-list.cpp) [Python](./Python/remove-duplicates-from-sorted-list.py) | _O(n)_       | _O(1)_         | Easy           ||
+092| [Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)| [C++](./C++/reverse-linked-list-ii.cpp) [Python](./Python/reverse-linked-list-ii.py) | _O(n)_       | _O(1)_         | Medium         || 
+138| [Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) | [C++](./C++/copy-list-with-random-pointer.cpp) [Python](./Python/copy-list-with-random-pointer.py) | _O(n)_   | _O(1)_          | Medium         ||
+160| [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)| [C++](./C++/intersection-of-two-linked-lists.cpp)  [Python](./Python/intersection-of-two-linked-lists.py) | _O(m + n)_ | _O(1)_         | Easy           ||
+203| [Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)| [C++](./C++/remove-linked-list-elements.cpp) [Python](./Python/remove-linked-list-elements.py) | _O(n)_       | _O(1)_         | Easy         || 
+206| [Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)| [C++](./C++/reverse-linked-list.cpp) [Python](./Python/reverse-linked-list.py) | _O(n)_       | _O(1)_         | Easy         || 
+234| [Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)| [C++](./C++/palindrome-linked-list.cpp) [Python](./Python/palindrome-linked-list.py) | _O(n)_       | _O(1)_         | Easy         ||
+237| [Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)| [C++](./C++/delete-node-in-a-linked-list.cpp) [Python](./Python/delete-node-in-a-linked-list.py) | _O(1)_       | _O(1)_         | Easy         | LintCode |
+328| [Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)| [C++](./C++/odd-even-linked-list.cpp) [Python](./Python/odd-even-linked-list.py) | _O(n)_       | _O(1)_         | Medium         | |
+369| [Plus One Linked List](https://leetcode.com/problems/plus-one-linked-list/)| [C++](./C++/plus-one-linked-list.cpp) [Python](./Python/plus-one-linked-list.py) | _O(n)_       | _O(1)_         | Medium         | 🔒 | Two Pointers |
+445| [Add Two Numbers II](https://leetcode.com/problems/add-two-numbers-ii/)| [C++](./C++/add-two-numbers-ii.cpp) [Python](./Python/add-two-numbers-ii.py) | _O(m + n)_       | _O(m + n)_         | Medium         |||
+725 | [Split Linked List in Parts](https://leetcode.com/problems/split-linked-list-in-parts/) | [C++](./C++/split-linked-list-in-parts.cpp) [Python](./Python/split-linked-list-in-parts.py) | _O(n + k)_ | _O(1)_ | Medium ||
+817 | [Linked List Components](https://leetcode.com/problems/linked-list-components/) | [C++](./C++/linked-list-components.cpp) [Python](./Python/linked-list-components.py) | _O(m + n)_ | _O(m)_ | Medium ||
 
 ## Stacks Easy
 |  #  | Title | Solution | Time | Space | Status|
@@ -140,11 +152,13 @@
 |20|[Valid Parentheses](https://leetcode.com/problems/valid-parentheses/#/description)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/valid-parentheses.py) | _O(n)_| _O(n)_|
 |346|[Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/#/description)|| _O(1)_| _O(n)_|
 
+
 ## Tree Easy
 |  #  | Title | Solution | Time | Space | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
 |110|[Balanced Binary Tree](https://leetcode.com/problems/balanced-binary-tree/#/description)| | _O(N)_| _O(h)_  | AGAIN| 
 |107|[Binary Tree Level Order Traversal II](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)| | _O(N)_| _O(h)_  |
+
 
 ## Dynamic Programming Easy
 |  #  | Title | Solution | Time | Space | Status|
