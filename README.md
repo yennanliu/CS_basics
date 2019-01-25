@@ -604,10 +604,10 @@ Union Find
 
 
 ## Breadth-First Search Easy and Medium 
-|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 102| [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)| [C++](./C++/binary-tree-level-order-traversal.cpp) [Python](./Python/binary-tree-level-order-traversal.py)| _O(n)_| _O(n)_| Easy  || 
-107| [Binary Tree Level Order Traversal II](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)| [Python](./Python/binary-tree-level-order-traversal-ii.py) | _O(n)_| _O(n)_| Easy  ||
+107| [Binary Tree Level Order Traversal II](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/binary-tree-level-order-traversal-ii.py) | _O(n)_| _O(n)_| Easy  || AGAIN 
 103| [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)| [Python](./Python/binary-tree-zigzag-level-order-traversal.py) | _O(n)_| _O(n)_| Medium  ||  
 127| [Word Ladder](https://leetcode.com/problems/word-ladder/)|[Python](./Python/word-ladder.py) | _O(n * d)_      | _O(d)_          | Medium         ||
 130| [Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)|[C++](./C++/surrounded-regions.cpp) [Python](./Python/surrounded-regions.py)| _O(m * n)_ | _O(m + n)_ | Medium         ||
