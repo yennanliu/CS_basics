@@ -173,11 +173,50 @@
 901| [Online Stock Span](https://leetcode.com/problems/online-stock-span/) | [C++](./C++/online-stock-span.cpp) [Python](./Python/online-stock-span.py) | _O(n)_  | _O(n)_         | Medium           ||
 946| [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/) | [C++](./C++/validate-stack-sequences.cpp) [Python](./Python/validate-stack-sequences.py) | _O(n)_  | _O(n)_         | Medium           ||
 
-## Tree Easy
-|  #  | Title | Solution | Time | Space | Status|
-| --- | ----- | -------- | ---- | ----- | ---- |
-|110|[Balanced Binary Tree](https://leetcode.com/problems/balanced-binary-tree/#/description)| | _O(N)_| _O(h)_  | AGAIN| 
-|107|[Binary Tree Level Order Traversal II](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)| | _O(N)_| _O(h)_  |
+
+## Tree Easy and Medium 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
+094 | [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)  | [C++](./C++/binary-tree-inorder-traversal.cpp) [Python](./Python/binary-tree-inorder-traversal.py) | _O(n)_| _O(1)_| Medium           || `Morris Traversal` | 
+144 | [Binary Tree Preorder Traversal](https://leetcode.com/problems/binary-tree-preorder-traversal/) | [C++](./C++/binary-tree-preorder-traversal.cpp) [Python](./Python/binary-tree-preorder-traversal.py) | _O(n)_| _O(1)_| Medium || `Morris Traversal` 
+208 | [Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/) | [C++](./C++/implement-trie-prefix-tree.cpp) [Python](./Python/implement-trie-prefix-tree.py) | _O(n)_ | _O(1)_ | Medium || Trie
+211 | [Add and Search Word - Data structure design](https://leetcode.com/problems/add-and-search-word-data-structure-design/) | [C++](./C++/add-and-search-word-data-structure-design.cpp) [Python](./Python/add-and-search-word-data-structure-design.py) | _O(min(n, h))_ | _O(min(n, h))_ | Medium || Trie, DFS
+226| [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/) | [C++](./C++/invert-binary-tree.cpp) [Python](./Python/invert-binary-tree.py) | _O(n)_ | _O(h)_, _O(w)_ | Easy ||
+307 | [Range Sum Query - Mutable](https://leetcode.com/problems/range-sum-query-mutable/) | [C++](./C++/range-sum-query-mutable.cpp) [Python](./Python/range-sum-query-mutable.py) | ctor: _O(n)_, update: _O(logn)_, query:  _O(logn)_ | _O(n)_ | Medium | LintCode | DFS, Segment Tree, BIT
+525| [Contiguous Array](https://leetcode.com/problems/contiguous-array/) |[C++](./C++/contiguous-array.cpp)  [Python](./Python/contiguous-array.py) | _O(n)_ | _O(n)_ | Medium         | |
+529 | [Minesweeper](https://leetcode.com/problems/minesweeper/) | [C++](./C++/minesweeper.cpp) [Python](./Python/minesweeper.py) | _O(m * n)_ | _O(m + n)_ | Medium    || 
+536 | [Construct Binary Tree from String](https://leetcode.com/problems/construct-binary-tree-from-string/) | [C++](./C++/construct-binary-tree-from-string.cpp) [Python](./Python/construct-binary-tree-from-string.py) | _O(n)_ | _O(h)_ | Medium    | 🔒 |
+538 | [Convert BST to Greater Tree](https://leetcode.com/problems/convert-bst-to-greater-tree/) | [C++](./C++/convert-bst-to-greater-tree.cpp) [Python](./Python/convert-bst-to-greater-tree.py) | _O(n)_ | _O(h)_ | Easy    || 
+543 | [Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/) | [C++](./C++/diameter-of-binary-tree.cpp) [Python](./Python/diameter-of-binary-tree.py) | _O(n)_ | _O(h)_ | Easy    || 
+545 | [Boundary of Binary Tree](https://leetcode.com/problems/boundary-of-binary-tree/) | [C++](./C++/boundary-of-binary-tree.cpp) [Python](./Python/boundary-of-binary-tree.py) | _O(n)_ | _O(h)_ | Medium    |🔒|
+548 | [Split Array with Equal Sum](https://leetcode.com/problems/split-array-with-equal-sum/) | [C++](./C++/split-array-with-equal-sum.cpp) [Python](./Python/split-array-with-equal-sum.py) | _O(n^2)_ | _O(n)_ | Medium    |🔒|
+563 |[Binary Tree Tilt](https://leetcode.com/problems/binary-tree-tilt/)| [C++](./C++/binary-tree-tilt.cpp) [Python](./Python/binary-tree-tilt.py)| _O(n)_ | _O(n)_ | Easy | | |
+572 |[Subtree of Another Tree](https://leetcode.com/problems/construct-string-from-binary-tree/)| [C++](./C++/subtree-of-another-tree.cpp) [Python](./Python/subtree-of-another-tree.py)| _O(m * n)_ | _O(h)_ | Easy | | |
+606 |[Construct String from Binary Tree](https://leetcode.com/problems/construct-string-from-binary-tree/)| [C++](./C++/construct-string-from-binary-tree.cpp) [Python](./Python/construct-string-from-binary-tree.py)| _O(n)_ | _O(h)_ | Easy | | |
+617 |[Merge Two Binary Trees](https://leetcode.com/problems/merge-two-binary-trees/)| [C++](./C++/merge-two-binary-trees.cpp) [Python](./Python/merge-two-binary-trees.py)| _O(n)_ | _O(h)_ | Easy | | |
+623 |[Add One Row to Tree](https://leetcode.com/problems/add-one-row-to-tree/)| [C++](./C++/add-one-row-to-tree.cpp) [Python](./Python/add-one-row-to-tree.py)| _O(n)_ | _O(h)_ | Medium | | |
+637 |[Average of Levels in Binary Tree](https://leetcode.com/problems/average-of-levels-in-binary-tree/)| [C++](./C++/average-of-levels-in-binary-tree.cpp) [Python](./Python/average-of-levels-in-binary-tree.py)| _O(n)_ | _O(h)_ | Easy | | |
+652 |[Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees/)| [C++](./C++/find-duplicate-subtrees.cpp) [Python](./Python/find-duplicate-subtrees.py)| _O(n)_ | _O(n)_ | Medium | | DFS, Hash |
+653 |[Two Sum IV - Input is a BST](https://leetcode.com/problems/two-sum-iv-input-is-a-bst/)| [C++](./C++/two-sum-iv-input-is-a-bst.cpp) [Python](./Python/two-sum-iv-input-is-a-bst.py)| _O(n)_ | _O(h)_ | Easy | | Two Pointers |
+654 |[Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)| [C++](./C++/maximum-binary-tree.cpp) [Python](./Python/maximum-binary-tree.py)| _O(n)_ | _O(n)_ | Medium | LintCode | Descending Stack |
+655 | [Print Binary Tree](https://leetcode.com/problems/print-binary-tree/) | [C++](./C++/print-binary-tree.cpp) [Python](./Python/print-binary-tree.py) | _O(n)_ | _O(h)_ | Medium | |
+662 | [Maximum Width of Binary Tree](https://leetcode.com/problems/maximum-width-of-binary-tree/) | [C++](./C++/maximum-width-of-binary-tree.cpp) [Python](./Python/maximum-width-of-binary-tree.py) | _O(n)_ | _O(h)_ | Medium | | DFS
+663 | [Equal Tree Partition](https://leetcode.com/problems/strange-printer/) | [C++](./C++/equal-tree-partition.cpp) [Python](./Python/equal-tree-partition.py) | _O(n)_ | _O(n)_ | Medium | 🔒 | Hash
+677 | [Map Sum Pairs](https://leetcode.com/problems/map-sum-pairs/) | [C++](./C++/map-sum-pairs.cpp) [Python](./Python/map-sum-pairs.py) | _O(n)_ | _O(t)_ | Medium || Trie
+684 | [Redundant Connection](https://leetcode.com/problems/redundant-connection/) | [C++](./C++/redundant-connection.cpp) [Python](./Python/redundant-connection.py) | _O(n)_ | _O(n)_ | Medium || Union Find
+687 | [Longest Univalue Path](https://leetcode.com/problems/longest-univalue-path/) | [C++](./C++/longest-univalue-path.cpp) [Python](./Python/longest-univalue-path.py) | _O(n)_ | _O(h)_ | Easy ||
+814 | [Binary Tree Pruning](https://leetcode.com/problems/binary-tree-pruning/) | [C++](./C++/binary-tree-pruning.cpp) [Python](./Python/binary-tree-pruning.py) | _O(n)_ | _O(h)_ | Medium || DFS |
+863 | [All Nodes Distance K in Binary Tree](https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/) | [C++](./C++/all-nodes-distance-k-in-binary-tree.cpp) [Python](./Python/all-nodes-distance-k-in-binary-tree.py) | _O(n)_ | _O(n)_ | Medium || DFS + BFS |
+866 | [Smallest Subtree with all the Deepest Nodes](https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/) | [C++](./C++/smallest-subtree-with-all-the-deepest-nodes.cpp) [Python](./Python/smallest-subtree-with-all-the-deepest-nodes.py) | _O(n)_ | _O(h)_ | Medium || DFS |
+889 | [Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/) | [C++](./C++/construct-binary-tree-from-preorder-and-postorder-traversal.cpp) [Python](./Python/construct-binary-tree-from-preorder-and-postorder-traversal.py) | _O(n)_ | _O(h)_ | Medium || DFS, stack |
+897| [Increasing Order Search Tree](https://leetcode.com/problems/increasing-order-search-tree/) | [C++](./C++/increasing-order-search-tree.cpp) [Python](./Python/increasing-order-search-tree.py) | _O(n)_          | _O(h)_          | Easy           || DFS |
+919| [Complete Binary Tree Inserter](https://leetcode.com/problems/complete-binary-tree-inserter/) | [C++](./C++/complete-binary-tree-inserter.cpp) [Python](./Python/complete-binary-tree-inserter.py) | ctor: _O(n)_ <br> insert: _O(1)_ <br> get_root: _O(1)_      | _O(n)_          | Medium           |||
+938| [Range Sum of BST](https://leetcode.com/problems/range-sum-of-bst/) | [C++](./C++/range-sum-of-bst.cpp) [Python](./Python/range-sum-of-bst.py) | _O(n)_          | _O(h)_          | Medium           || DFS |
+951| [Flip Equivalent Binary Trees](https://leetcode.com/problems/flip-equivalent-binary-trees/) | [C++](./C++/flip-equivalent-binary-trees.cpp) [Python](./Python/flip-equivalent-binary-trees.py) | _O(n)_          | _O(h)_          | Medium           || DFS |
+958| [Check Completeness of a Binary Tree](https://leetcode.com/problems/check-completeness-of-a-binary-tree/) | [C++](./C++/check-completeness-of-a-binary-tree.cpp) [Python](./Python/check-completeness-of-a-binary-tree.py) | _O(n)_          | _O(w)_          | Medium           || BFS |
+965| [Univalued Binary Tree](https://leetcode.com/problems/univalued-binary-tree/) | [C++](./C++/univalued-binary-tree.cpp) [Python](./Python/univalued-binary-tree.py) | _O(n)_          | _O(h)_          | Easy           || DFS |
+971| [Flip Binary Tree To Match Preorder Traversal](https://leetcode.com/problems/flip-binary-tree-to-match-preorder-traversal/) | [C++](./C++/flip-binary-tree-to-match-preorder-traversal.cpp) [Python](./Python/flip-binary-tree-to-match-preorder-traversal.py) | _O(n)_          | _O(h)_          | Medium           || DFS |
+979| [Distribute Coins in Binary Tree](https://leetcode.com/problems/distribute-coins-in-binary-tree/) | [C++](./C++/distribute-coins-in-binary-tree.cpp) [Python](./Python/distribute-coins-in-binary-tree.py) | _O(n)_          | _O(h)_          | Medium           || DFS |
 
 ## Heap Easy and Medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
