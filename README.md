@@ -144,14 +144,6 @@
 725 | [Split Linked List in Parts](https://leetcode.com/problems/split-linked-list-in-parts/) | [C++](./C++/split-linked-list-in-parts.cpp) [Python](./Python/split-linked-list-in-parts.py) | _O(n + k)_ | _O(1)_ | Medium ||
 817 | [Linked List Components](https://leetcode.com/problems/linked-list-components/) | [C++](./C++/linked-list-components.cpp) [Python](./Python/linked-list-components.py) | _O(m + n)_ | _O(m)_ | Medium ||
 
-## Stacks Easy
-|  #  | Title | Solution | Time | Space | Status|
-| --- | ----- | -------- | ---- | ----- | ---- |
-|155|[Min Stack](https://leetcode.com/problems/min-stack/#/description)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/min-stack.py) | _O(1)_| _O(n)_|
-|225|[Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/#/description)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/implement-queue-using-stacks.py) | push/pop: _O(1)_ top:_O(n)_ | _O(n)_|
-|20|[Valid Parentheses](https://leetcode.com/problems/valid-parentheses/#/description)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/valid-parentheses.py) | _O(n)_| _O(n)_|
-|346|[Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/#/description)|| _O(1)_| _O(n)_|
-
 
 ## Stack Easy and Medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
