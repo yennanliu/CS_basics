@@ -114,12 +114,64 @@
 954 | [Array of Doubled Pairs](https://leetcode.com/problems/array-of-doubled-pairs/) | [C++](./C++/array-of-doubled-pairs.cpp) [Python](./Python/array-of-doubled-pairs.py) | _O(n + klogk)_ | _O(k)_      | Medium         ||
 961 | [N-Repeated Element in Size 2N Array](https://leetcode.com/problems/n-repeated-element-in-size-2n-array/) | [C++](./C++/n-repeated-element-in-size-2n-array.cpp) [Python](./Python/n-repeated-element-in-size-2n-array.py) | _O(n)_ | _O(1)_      | Easy         ||
 
-## Hash Table Easy
-|  #  | Title | Solution | Time | Space | Status|
-| --- | ----- | -------- | ---- | ----- | ---- |
-|1| [Two Sum](https://leetcode.com/problems/two-sum/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/two-sum.py) | _O(n)_| _O(n)_ ||
-|242| [Valid Anagram](https://leetcode.com/problems/valid-anagram/description/) | | _O(n)_| _O(n)_ ||
 
+## Hash Table Easy and Medium 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
+001| [Two Sum](https://leetcode.com/problems/two-sum/)      | [C++](./C++/two-sum.cpp) [Python](./Python/two-sum.py)      | _O(n)_         | _O(n)_          | Easy         ||
+003| [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | [C++](./C++/longest-substring-without-repeating-characters.cpp) [Python](./Python/longest-substring-without-repeating-characters.py) | _O(n)_ | _O(1)_ | Medium ||
+036| [Valid Sudoku](https://leetcode.com/problems/valid-sudoku/) | [C++](./C++/valid-sudoku.cpp) [Python](./Python/valid-sudoku.py) | _O(9^2)_         | _O(9)_          | Easy           ||
+049| [Group Anagrams](https://leetcode.com/problems/group-anagrams/)     | [C++](./C++/group-anagrams.cpp) [Python](./Python/group-anagrams.py)   | _O(n * glogg)_          | _O(n)_          | Medium         ||
+170| [Two Sum III - Data structure design](https://leetcode.com/problems/two-sum-iii-data-structure-design/) | [C++](./C++/two-sum-iii-data-structure-design.cpp) [Python](./Python/two-sum-iii-data-structure-design.py) | _O(n)_ | _O(n)_ | Easy | 🔒 |
+187| [Repeated DNA Sequences](https://leetcode.com/problems/repeated-dna-sequences/) | [Python](./Python/repeated-dna-sequences.py) | _O(n)_       | _O(n)_          | Medium         ||
+202| [Happy Number](https://leetcode.com/problems/happy-number/)      | [C++](./C++/happy-number.cpp) [Python](./Python/happy-number.py)   | _O(k)_  | _O(k)_          | Easy          ||
+204| [Count Primes](https://leetcode.com/problems/count-primes/)  | [C++](./C++/count-primes.cpp) [Python](./Python/count-primes.py) | _O(n)_        | _O(n)_          | Easy           ||
+205| [Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/) | [C++](./C++/isomorphic-strings.cpp) [Python](./Python/isomorphic-strings.py) | _O(n)_ | _O(1)_       | Easy           || 
+217| [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)  | [C++](./C++/contains-duplicate.cpp) [Python](./Python/contains-duplicate.py) | _O(n)_        | _O(n)_          | Easy           ||
+219| [Contains Duplicate II](https://leetcode.com/problems/contains-duplicate-ii/)  | [C++](./C++/contains-duplicate-ii.cpp) [Python](./Python/contains-duplicate-ii.py) | _O(n)_        | _O(n)_          | Easy           ||
+244| [Shortest Word Distance II](https://leetcode.com/problems/shortest-word-distance-ii/)     | [C++](./C++/shortest-word-distance-ii.cpp) [Python](./Python/shortest-word-distance-ii.py)  | ctor: _O(n)_, lookup: _O(a + b)_ |  _O(n)_ | Medium         |🔒||
+246| [Strobogrammatic Number](https://leetcode.com/problems/strobogrammatic-number/) | [C++](./C++/strobogrammatic-number.cpp)  [Python](./Python/strobogrammatic-number.py)  | _O(n)_ | _O(1)_ | Easy         |🔒||
+249| [Group Shifted Strings](https://leetcode.com/problems/group-shifted-strings/) | [C++](./C++/group-shifted-strings.cpp)  [Python](./Python/group-shifted-strings.py)  | _O(nlogn)_ | _O(n)_ | Easy         |🔒||
+266| [Palindrome Permutation](https://leetcode.com/problems/palindrome-permutation/) | [C++](./C++/palindrome-permutation.cpp) [Python](./Python/palindrome-permutation.py)  | _O(n)_ |  _O(1)_ | Easy         |🔒||
+288| [Unique Word Abbreviation](https://leetcode.com/problems/unique-word-abbreviation/) | [C++](./C++/unique-word-abbreviation.cpp) [Python](./Python/unique-word-abbreviation.py)  | ctor: _O(n)_, lookup: _O(1)_ | _O(k)_ | Easy         |🔒||
+290| [Word Pattern](https://leetcode.com/problems/word-pattern/) | [C++](./C++/word-pattern.cpp) [Python](./Python/word-pattern.py)  | _O(n)_ | _O(c)_ | Easy         | variant of [Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/) ||
+299| [Bulls and Cows](https://leetcode.com/problems/bulls-and-cows/) | [C++](./C++/bulls-and-cows.cpp) [Python](./Python/bulls-and-cows.py)  | _O(n)_ | _O(1)_ | Easy         |||
+314| [Binary Tree Vertical Order Traversal](https://leetcode.com/problems/binary-tree-vertical-order-traversal/) | [C++](./C++/binary-tree-vertical-order-traversal.cpp) [Python](./Python/binary-tree-vertical-order-traversal.py) | _O(n)_ | _O(n)_| Medium         | 🔒 | BFS
+323| [Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/) | [C++](./C++/number-of-connected-components-in-an-undirected-graph.cpp) [Python](./Python/number-of-connected-components-in-an-undirected-graph.py) | _O(n)_ | _O(n)_| Medium         | 🔒 | Union Find
+325| [Maximum Size Subarray Sum Equals k](https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/) | [C++](./C++/maximum-size-subarray-sum-equals-k.cpp) [Python](./Python/maximum-size-subarray-sum-equals-k.py) | _O(n)_ | _O(n)_|  Medium         | 🔒 |
+356| [Line Reflection](https://leetcode.com/problems/line-reflection/) | [C++](./C++/line-reflection.cpp) [Python](./Python/line-reflection.py) | _O(n)_| _O(n)_| Medium |🔒| Hash, Two Pointers |
+387| [First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/) | [C++](./C++/first-unique-character-in-a-string.cpp) [Python](./Python/first-unique-character-in-a-string.py) | _O(n)_| _O(n)_| Easy |||
+388| [Longest Absolute File Path](https://leetcode.com/problems/longest-absolute-file-path/) | [C++](./C++/longest-absolute-file-path.cpp) [Python](./Python/longest-absolute-file-path.py) | _O(n)_| _O(d)_| Medium || Stack |
+409| [Longest Palindrome](https://leetcode.com/problems/longest-palindrome/) | [C++](./C++/longest-palindrome.cpp) [Python](./Python/longest-palindrome.py) | _O(n)_| _O(1)_| Easy |||
+424| [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/) | [C++](./C++/longest-repeating-character-replacement.cpp) [Python](./Python/longest-repeating-character-replacement.py) | _O(n)_| _O(1)_| Medium |||
+438| [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) | [C++](./C++/find-all-anagrams-in-a-string.cpp) [Python](./Python/find-all-anagrams-in-a-string.py) | _O(n)_          | _O(1)_          | Easy           ||
+447| [Number of Boomerangs](https://leetcode.com/problems/number-of-boomerangs/) | [C++](./C++/number-of-boomerangs.cpp) [Python](./Python/number-of-boomerangs.py) | _O(n^2)_          | _O(n)_          | Easy           ||
+454| [4Sum II](https://leetcode.com/problems/4sum-ii/) | [C++](./C++/4sum-ii.cpp) [Python](./Python/4sum-ii.py) | _O(n^2)_          | _O(n^2)_          | Medium           ||
+470| [Implement Rand10() Using Rand7()](https://leetcode.com/problems/implement-rand10-using-rand7/) | [C++](./C++/implement-rand10-using-rand7.cpp) [Python](./Python/implement-rand10-using-rand7.py) | _O(1)_          | _O(1)_          | Medium           ||
+473| [Matchsticks to Square](https://leetcode.com/problems/matchsticks-to-square/) | [C++](./C++/matchsticks-to-square.cpp) [Python](./Python/matchsticks-to-square.py) | _O(n * s * 2^n)_          | _O(n * (2^n + s))_          | Medium           ||
+523| [Continuous Subarray Sum](https://leetcode.com/problems/continuous-subarray-sum/) | [C++](./C++/continuous-subarray-sum.cpp) [Python](./Python/continuous-subarray-sum.py) | _O(n)_          | _O(k)_          | Medium           ||
+532| [K-diff Pairs in an Array](https://leetcode.com/problems/k-diff-pairs-in-an-array/) |[C++](./C++/k-diff-pairs-in-an-array.cpp) [Python](./Python/k-diff-pairs-in-an-array.py) | _O(n)_ | _O(n)_ | Easy         | |
+554| [Brick Wall](https://leetcode.com/problems/brick-wall/) |[C++](./C++/brick-wall.cpp)  [Python](./Python/brick-wall.py) | _O(n)_ | _O(m)_ | Medium         | |
+560| [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) |[C++](./C++/subarray-sum-equals-k.cpp)  [Python](./Python/subarray-sum-equals-k.py) | _O(n)_ | _O(n)_ | Medium         | |
+561| [Array Partition I](https://leetcode.com/problems/array-partition-i/) |[C++](./C++/array-partition-i.cpp)  [Python](./Python/array-partition-i.py) | _O(r)_ | _O(r)_ | Easy         | |
+575| [Distribute Candies](https://leetcode.com/problems/distribute-candies/) |[C++](./C++/distribute-candies.cpp)  [Python](./Python/distribute-candies.py) | _O(n)_ | _O(n)_ | Easy         | |
+594| [Longest Harmonious Subsequence](https://leetcode.com/problems/longest-harmonious-subsequence/) |[C++](./C++/longest-harmonious-subsequence.cpp)  [Python](./Python/longest-harmonious-subsequence.py) | _O(n)_ | _O(n)_ | Easy         | |
+599| [Minimum Index Sum of Two Lists](https://leetcode.com/problems/minimum-index-sum-of-two-lists/) |[C++](./C++/minimum-index-sum-of-two-lists.cpp)  [Python](./Python/minimum-index-sum-of-two-lists.py) | _O((m + n) * l)_ | _O(m * l)_ | Easy         | |
+609| [Find Duplicate File in System](https://leetcode.com/problems/find-duplicate-file-in-system/) |[C++](./C++/find-duplicate-file-in-system.cpp)  [Python](./Python/find-duplicate-file-in-system.py) | _O(n * l)_ | _O(n * l)_ | Medium         | |
+721| [Accounts Merge](https://leetcode.com/problems/accounts-merge/) | [C++](./C++/accounts-merge.cpp) [Python](./Python/accounts-merge.py) | _O(nlogn)_ | _O(n)_| Medium         || Union Find
+734| [Sentence Similarity](https://leetcode.com/problems/sentence-similarity/) | [C++](./C++/sentence-similarity.cpp) [Python](./Python/sentence-similarity.py) | _O(n + p)_ | _O(p)_| Easy         ||
+737| [Sentence Similarity II](https://leetcode.com/problems/sentence-similarity-ii/) | [C++](./C++/sentence-similarity-ii.cpp) [Python](./Python/sentence-similarity-ii.py) | _O(n + p)_ | _O(p)_| Medium         || Union Find
+748 | [Shortest Completing Word](https://leetcode.com/problems/shortest-completing-word/) | [C++](./C++/shortest-completing-word.cpp) [Python](./Python/shortest-completing-word.py) | _O(n)_ | _O(1)_ | Easy ||
+760 | [Find Anagram Mappings](https://leetcode.com/problems/find-anagram-mappings/) | [C++](./C++/find-anagram-mappings.cpp) [Python](./Python/find-anagram-mappings.py) | _O(n)_ | _O(n)_ | Easy ||
+771 | [Jewels and Stones](https://leetcode.com/problems/jewels-and-stones/) | [C++](./C++/jewels-and-stones.cpp) [Python](./Python/jewels-and-stones.py) | _O(m + n)_ | _O(n)_ | Easy ||
+811 | [Subdomain Visit Count](https://leetcode.com/problems/subdomain-visit-count/) | [C++](./C++/subdomain-visit-count.cpp) [Python](./Python/subdomain-visit-count.py) | _O(n)_ | _O(n)_ | Easy ||
+822 | [Card Flipping Game](https://leetcode.com/problems/card-flipping-game/) | [C++](./C++/card-flipping-game.cpp) [Python](./Python/card-flipping-game.py) | _O(n)_ | _O(n)_ | Medium ||
+825 | [Friends Of Appropriate Ages](https://leetcode.com/problems/friends-of-appropriate-ages/) | [C++](./C++/friends-of-appropriate-ages.cpp) [Python](./Python/friends-of-appropriate-ages.py) | _O(a^2 + n)_ | _O(a)_ | Medium ||
+869 | [Reordered Power of 2](https://leetcode.com/problems/reordered-power-of-2/) | [C++](./C++/reordered-power-of-2.cpp) [Python](./Python/reordered-power-of-2.py) | _O(1)_ | _O(1)_ | Medium ||
+873 | [Length of Longest Fibonacci Subsequence](https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/) | [C++](./C++/length-of-longest-fibonacci-subsequence.cpp) [Python](./Python/length-of-longest-fibonacci-subsequence.py) | _O(n^2)_ | _O(n)_ | Medium ||
+957 | [Prison Cells After N Days](https://leetcode.com/problems/prison-cells-after-n-days/) | [C++](./C++/prison-cells-after-n-days.cpp) [Python](./Python/prison-cells-after-n-days.py) | _O(1)_ | _O(1)_ | Medium ||
+966 | [Vowel Spellchecker](https://leetcode.com/problems/vowel-spellchecker/) | [C++](./C++/vowel-spellchecker.cpp) [Python](./Python/vowel-spellchecker.py) | _O(n)_ | _O(w)_ | Medium ||
+974| [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/) |[C++](./C++/subarray-sums-divisible-by-k.cpp)  [Python](./Python/subarray-sums-divisible-by-k.py) | _O(n)_ | _O(k)_ | Medium         | variant of [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) |
 
 
 ## Linked List Easy and Medium 
