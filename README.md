@@ -532,7 +532,7 @@ Union Find
 
 
 ## Recursion Easy and Medium 
-|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 095| [Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/) | [C++](./C++/unique-binary-search-trees-ii.cpp) [Python](./Python/unique-binary-search-trees-ii.py) | _O(4^n / n^(3/2)_      | _O(4^n / n^(3/2)_         | Medium         ||
 098| [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)|[C++](./C++/validate-binary-search-tree.cpp) [Python](./Python/validate-binary-search-tree.py)| _O(n)_ | _O(1)_ | Medium ||
@@ -542,7 +542,7 @@ Union Find
 106| [Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/) | [C++](./C++/construct-binary-tree-from-inorder-and-postorder-traversal.cpp) [Python](./Python/construct-binary-tree-from-inorder-and-postorder-traversal.py) | _O(n)_        | _O(n)_          | Medium         ||
 108| [Convert Sorted Array to Binary Search Tree](https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/) | [C++](./C++/convert-sorted-array-to-binary-search-tree.cpp) [Python](./Python/convert-sorted-array-to-binary-search-tree.py) | _O(n)_        | _O(logn)_          | Medium         ||
 109| [Convert Sorted List to Binary Search Tree](https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/) | [C++](./C++/convert-sorted-list-to-binary-search-tree.cpp) [Python](./Python/convert-sorted-list-to-binary-search-tree.py) | _O(n)_        | _O(logn)_          | Medium         ||
-110| [Balanced Binary Tree](https://leetcode.com/problems/balanced-binary-tree/) | [Python](./Python/balanced-binary-tree.py) | _O(n)_| _O(h)_   | Easy           ||
+110| [Balanced Binary Tree](https://leetcode.com/problems/balanced-binary-tree/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/tree/balanced-binary-tree.py) | _O(n)_| _O(h)_   | Easy           || AGAIN 
 111| [Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)|[Python](./Python/minimum-depth-of-binary-tree.py)| _O(n)_ | _O(h)_ | Easy ||
 114| [Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/)|[Python](./Python/flatten-binary-tree-to-linked-list.py)| _O(n)_        | _O(h)_          | Medium         ||
 116| [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)|[Python](./Python/populating-next-right-pointers-in-each-node.py)| _O(n)_ | _O(1)_ | Medium || 
