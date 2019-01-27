@@ -606,9 +606,9 @@ Union Find
 ## Breadth-First Search Easy and Medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-102| [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/binary-tree-level-order-traversal.py)| _O(n)_| _O(n)_| Easy  ||  AGAIN 
-107| [Binary Tree Level Order Traversal II](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/binary-tree-level-order-traversal-ii.py) | _O(n)_| _O(n)_| Easy  || AGAIN 
-103| [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)| [Python](./Python/binary-tree-zigzag-level-order-traversal.py) | _O(n)_| _O(n)_| Medium  ||  
+102| [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal.py)| _O(n)_| _O(n)_| Easy  ||  AGAIN 
+107| [Binary Tree Level Order Traversal II](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal-ii.py) | _O(n)_| _O(n)_| Easy  || AGAIN 
+103| [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/binary-tree-zigzag-level-order-traversal.py) | _O(n)_| _O(n)_| Medium  || AGAIN 
 127| [Word Ladder](https://leetcode.com/problems/word-ladder/)|[Python](./Python/word-ladder.py) | _O(n * d)_      | _O(d)_          | Medium         ||
 130| [Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)|[C++](./C++/surrounded-regions.cpp) [Python](./Python/surrounded-regions.py)| _O(m * n)_ | _O(m + n)_ | Medium         ||
 133| [Clone Graph](https://leetcode.com/problems/clone-graph/)| [Python](./Python/clone-graph.py)   | _O(n)_          | _O(n)_          | Medium         ||
