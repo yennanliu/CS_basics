@@ -609,7 +609,7 @@ Union Find
 102| [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal.py)| _O(n)_| _O(n)_| Easy  ||  AGAIN 
 107| [Binary Tree Level Order Traversal II](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal-ii.py) | _O(n)_| _O(n)_| Easy  || AGAIN 
 103| [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/binary-tree-zigzag-level-order-traversal.py) | _O(n)_| _O(n)_| Medium  || AGAIN 
-127| [Word Ladder](https://leetcode.com/problems/word-ladder/)|| _O(n * d)_      | _O(d)_          | Medium         || AGAIN (not start)
+127| [Word Ladder](https://leetcode.com/problems/word-ladder/)| _O(n * d)_   | _O(d)_          | Medium         || AGAIN (not start)
 130| [Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)|| _O(m + n)_ | Medium     || AGAIN (not start)
 133| [Clone Graph](https://leetcode.com/problems/clone-graph/)| [Python](./Python/clone-graph.py)   | _O(n)_          | _O(n)_          | Medium         ||
 207| [Course Schedule](https://leetcode.com/problems/course-schedule/)| [Python](./Python/course-schedule.py)   | _O(\|V\| + \|E\|)_          | _O(\|E\|)_          | Medium         || Topological Sort |
