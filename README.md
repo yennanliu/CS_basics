@@ -175,7 +175,7 @@
 
 
 ## Linked List Easy and Medium 
-|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 002| [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/add-two-numbers.py) | _O(n)_   | _O(1)_          | Medium         || AGAIN 
 021| [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/merge-two-sorted-lists.py) | _O(n)_ | _O(1)_ | Easy         || OK 
