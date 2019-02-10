@@ -193,7 +193,7 @@
 328| [Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/odd-even-linked-list.py) | _O(n)_       | _O(1)_         | Medium         | | OK*
 369| [Plus One Linked List](https://leetcode.com/problems/plus-one-linked-list/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/plus-one-linked-list.py) | _O(n)_       | _O(1)_      | Medium        | 🔒 | OK*
 445| [Add Two Numbers II](https://leetcode.com/problems/add-two-numbers-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/add-two-numbers-ii.py) | _O(m + n)_       | _O(m + n)_         | Medium     || AGAIN (not start)
-725 | [Split Linked List in Parts](https://leetcode.com/problems/split-linked-list-in-parts/) | [C++](./C++/split-linked-list-in-parts.cpp) [Python](./Python/split-linked-list-in-parts.py) | _O(n + k)_ | _O(1)_ | Medium ||
+725 | [Split Linked List in Parts](https://leetcode.com/problems/split-linked-list-in-parts/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/split-linked-list-in-parts.py)  | _O(n + k)_ | _O(1)_ | Medium || AGAIN 
 817 | [Linked List Components](https://leetcode.com/problems/linked-list-components/) | [C++](./C++/linked-list-components.cpp) [Python](./Python/linked-list-components.py) | _O(m + n)_ | _O(m)_ | Medium ||
 
 
