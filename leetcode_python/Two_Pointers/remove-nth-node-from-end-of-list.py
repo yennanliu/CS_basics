@@ -34,14 +34,7 @@ Could you do this in one pass?
 #
 
 
-# V1  : dev  : check Line 4: AttributeError: 'ListNode' object has no attribute 'split' error 
-"""      
-class Solution(object):
-    def removeNthFromEnd(self, head, n):
-        head_list = head.split('->')
-        head_list.pop(-n)
-        return '->'.join(head_list)
-""" 
+# V1  
 class ListNode:
     def __init__(self, x):
         self.val = x
@@ -66,6 +59,25 @@ class Solution:
 
 
 # V2 
+# https://www.cnblogs.com/zuoyuan/p/3701971.html
+# -- idea: 
+# make a dummy node, make 2 pointers : p1 p2, 
+# then move p1 only for n steps 
+# then move p1 and p2 on the same time 
+# when p1.next == None  --->  p2.next is the to-delete node 
+
+class Solution:
+    # @return a ListNode
+    def removeNthFromEnd(self, head, n):
+        dummy=ListNode(0); dummy.next=head
+        p1=p2=dummy
+        for i in range(n): p1=p1.next
+        while p1.next:
+            p1=p1.next; p2=p2.next
+        p2.next=p2.next.next
+        return dummy.next
+
+# V3  
 # Definition for singly-linked list. 
 class ListNode:
     def __init__(self, x):
