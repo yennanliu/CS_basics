@@ -42,7 +42,27 @@ class Solution(object):
         head_list.pop(-n)
         return '->'.join(head_list)
 """ 
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 
+    def __repr__(self):
+        if self is None:
+            return "Nil"
+        else:
+            return "{} -> {}".format(self.val, repr(self.next))
+
+class Solution:
+    # @return a ListNode
+    def removeNthFromEnd(self, head, n):
+        my_list = []
+        cur = head 
+        while cur:
+            my_list.append(cur.val)
+            cur = cur.next 
+        my_list.pop(-n)
+        return my_list
 
 
 # V2 
