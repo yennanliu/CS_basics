@@ -34,15 +34,40 @@
 
 # V1  : (dev) 
 
-import collections
-class Solution(object):
-    def intersect(self, nums1, nums2):
-        c = collections.Counter(nums1) & collections.Counter(nums2)
-        intersect = []
-        for i in c:
-            intersect.extend([i] * c[i])
-        return intersect
+# import collections
+# class Solution(object):
+#     def intersect(self, nums1, nums2):
+#         c = collections.Counter(nums1) & collections.Counter(nums2)
+#         intersect = []
+#         for i in c:
+#             intersect.extend([i] * c[i])
+#         return intersect
 
+# V1' :DEV 
+
+
+# class Solution3(object):
+#     def intersect(self, nums1, nums2):
+#         """
+#         :type nums1: List[int]
+#         :type nums2: List[int]
+#         :rtype: List[int]
+#         """
+#         output = []
+#         #nums1= sorted(nums1)
+#         #nums2= sorted(nums2)
+#         for i in range(len(nums1)-1):
+#             for j in range(len(nums2)-1):
+#                 print ('nums1[i] :', nums1[i])
+#                 print ('nums2[j] :', nums2[j])
+#                 if nums1[i] == nums2[j]:
+#                     output.append(nums1[i])
+#                 else:
+#                     pass 
+#         return output
+                
+
+                
 
 # V1'  : (dev) 
 """
