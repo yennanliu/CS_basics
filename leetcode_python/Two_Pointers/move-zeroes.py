@@ -26,14 +26,13 @@ class Solution(object):
 # V2 
 class Solution(object):
     def moveZeroes(self, nums):
-        zero_list = []
+        non_zero_list = []
         length = len(nums)
-        for i in range(length - 1):
-            if nums[i] == 0:
-                nums.pop(i)
-                zero_list.append(0)
-                length  = length -1 
-        return nums + zero_list
+        for i in range(length ):
+            print (i)
+            if nums[i] != 0:
+                non_zero_list.append(nums[i])
+        return non_zero_list + [0]*( length - len(non_zero_list))
 
 
 # V3 
