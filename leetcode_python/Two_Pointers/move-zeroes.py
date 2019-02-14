@@ -13,18 +13,30 @@
 # Minimize the total number of operations.
 
 
-# V1  : dev , check  "Do not return anything, modify nums in-place instead." error 
-"""        
+# V1 
 class Solution(object):
     def moveZeroes(self, nums):
-        zero_count = nums.count(0)
-        nums_ = sorted(nums)
-        output = [x for x in nums_  if x > 0] + [0]*zero_count
-        return output
+        return sorted(nums)[::-1] 
 
-"""        
+# V1' 
+class Solution(object):
+    def moveZeroes(self, nums):
+        return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ] 
 
-# V1'
+# V2 
+class Solution(object):
+    def moveZeroes(self, nums):
+        zero_list = []
+        length = len(nums)
+        for i in range(length - 1):
+            if nums[i] == 0:
+                nums.pop(i)
+                zero_list.append(0)
+                length  = length -1 
+        return nums + zero_list
+
+
+# V3 
 # http://bookshadow.com/weblog/2015/09/19/leetcode-move-zeroes/
 class Solution(object):
     def moveZeroes(self, nums):
@@ -35,8 +47,7 @@ class Solution(object):
                 y += 1
 
 
-
-# V2 
+# V4 
 class Solution(object):
     def moveZeroes(self, nums):
         """
@@ -57,7 +68,7 @@ class Solution(object):
         nums.sort(cmp=lambda a, b: 0 if b else -1)
 
 
-# V3 
+# V5 
 class Solution2(object):
     def moveZeroes(self, nums):
         """
@@ -74,11 +85,7 @@ class Solution2(object):
             nums[i] = 0
 
 
-if __name__ == '__main__':
-    s = Solution()
-    r = s.moveZeroes([0, 1, 0, 3, 12])
-    print r
-
-
-
-
+# if __name__ == '__main__':
+#     s = Solution()
+#     r = s.moveZeroes([0, 1, 0, 3, 12])
+#     print r
