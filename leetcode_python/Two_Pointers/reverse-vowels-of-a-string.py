@@ -10,20 +10,18 @@
 # Example 2:
 # Given s = "leetcode", return "leotcede".
 
-
-# V1  : dev 
-"""        
+# V1  :  
 class Solution(object):
     def reverseVowels(self, s):
-        vowels=['a','e','i','o','u']
-        vowels_list = [x for x in s if x in vowels ]
-        s_ = [x for x in s if x not in vowels ]
-        output = s_ + vowels_list[::-1]
-        return output
-"""     
-
-
-
+        index = []
+        vowels = ['a','e','i','o','u', 'A','E','I','O','U'] 
+        for k, v  in enumerate(list(s)):
+            if v in vowels:
+                index.append(k)     
+        s_list = list(s)
+        for i in range(int(len(index)/2)):
+            s_list[index[i]],  s_list[index[::-1][i]]  =  s_list[index[::-1][i]], s_list[index[i]]
+        return ''.join(x for x in s_list)
 
 # V2 
 class Solution(object):
