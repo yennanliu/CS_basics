@@ -18,7 +18,7 @@ class Solution(object):
         """
         result = 0
         nums.sort()
-        for i in xrange(len(nums)-2):
+        for i in range(len(nums)-2):
             if nums[i] == 0:
                 continue
             k = i+2
