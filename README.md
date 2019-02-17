@@ -520,7 +520,8 @@ Union Find
 350| [Intersection of Two Arrays II](https://leetcode.com/problems/intersection-of-two-arrays-ii/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/intersection-of-two-arrays-ii.py) | _O(m + n)_ | _O(1)_ | Easy         | EPI, Hash, Binary Search | AGAIN 
 360| [Sort Transformed Array](https://leetcode.com/problems/sort-transformed-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/sort-transformed-array.py) | _O(n)_ | _O(1)_ | Medium         |🔒|  AGAIN (not start)
 457| [Circular Array Loop](https://leetcode.com/problems/circular-array-loop/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/circular-array-loop.py) | _O(n)_ | _O(1)_ | Medium   || AGAIN (not start)
-567| [Permutation in String](https://leetcode.com/problems/permutation-in-string/) | [C++](./C++/permutation-in-string.cpp)  [Python](./Python/permutation-in-string.py) | _O(n)_ | _O(1)_ | Medium         ||
+567| [Permutation in String](https://leetcode.com/problems/permutation-in-string/) |
+[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/permutation-in-string.py) | _O(n)_ | _O(1)_ | Medium  || AGAIN (not start)
 611| [Valid Triangle Number](https://leetcode.com/problems/valid-triangle-number/) | [C++](./C++/valid-triangle-number.cpp)  [Python](./Python/valid-triangle-number.py) | _O(n^2)_ | _O(1)_ | Medium         ||
 777| [Swap Adjacent in LR String](https://leetcode.com/problems/swap-adjacent-in-lr-string/) | [C++](./C++/swap-adjacent-in-lr-string.cpp)  [Python](./Python/swap-adjacent-in-lr-string.py) | _O(n)_ | _O(1)_ | Medium         ||
 826| [Most Profit Assigning Work](https://leetcode.com/problems/most-profit-assigning-work/) | [C++](./C++/most-profit-assigning-work.cpp)  [Python](./Python/most-profit-assigning-work.py) | _O(mlogm + nlogn)_ | _O(n)_ | Medium         ||
