@@ -527,7 +527,7 @@ Union Find
 844 | [Backspace String Compare](https://leetcode.com/problems/backspace-string-compare/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/backspace-string-compare.py) | _O(m + n)_ | _O(1)_ | Easy || AGAIN 
 876 | [Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/middle-of-the-linked-list.py) | _O(n)_ | _O(1)_ | Easy || AGAIN 
 904 | [Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/fruit-into-baskets.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
-930 | [Binary Subarrays With Sum](https://leetcode.com/problems/binary-subarrays-with-sum/) | [C++](./C++/binary-subarrays-with-sum.cpp) [Python](./Python/binary-subarrays-with-sum.py) | _O(n)_ | _O(1)_ | Medium ||
+930 | [Binary Subarrays With Sum](https://leetcode.com/problems/binary-subarrays-with-sum/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/binary-subarrays-with-sum.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 977 | [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/) | [C++](./C++/squares-of-a-sorted-array.cpp) [Python](./Python/squares-of-a-sorted-array.py) | _O(n)_ | _O(1)_ | Easy ||
 
 
