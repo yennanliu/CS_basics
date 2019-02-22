@@ -10,17 +10,19 @@
 
  
 # V1  : dev (double check why ouput looks same but with error)
-
-    
-class Solution:
-    def merge(self, nums1, m, nums2, n):
-        nums1_ = nums1[:m]
-        nums2_ = nums2[:n]
-        #print (sorted(nums1_ + nums2_))
-        return sorted(nums1_ + nums2_)
+# class Solution(object):
+#     # @param A  a list of integers
+#     # @param m  an integer, length of A
+#     # @param B  a list of integers
+#     # @param n  an integer, length of B
+#     # @return nothing
+#     def merge(self, A, m, B, n):
+#         output = A[:m] + B[:n]
+#         output.sort()
+#         return output
         
         
-
+        
 # V2 
 class Solution:
     # @param A  a list of integers
@@ -61,6 +63,11 @@ if __name__ == "__main__":
 # so you need to judge if n is still large than 0
 class Solution2:
     def merge(self, nums1, m, nums2, n):
+        # Space: O(n),
+        # Reference:
+        # - https://stackoverflow.com/questions/4948293/python-slice-assignment-memory-usage
+        # - https://stackoverflow.com/questions/10623302/how-assignment-works-with-python-list-slice
+
         """
         :type nums1: List[int]
         :type m: int
@@ -76,7 +83,4 @@ class Solution2:
                 nums1[m+n-1] = nums2[n-1]
                 n -= 1
         if n > 0:
-            nums1[:n] = nums2[:n]  # Space: O(n),
-                                   # Reference:
-                                   # - https://stackoverflow.com/questions/4948293/python-slice-assignment-memory-usage
-                                   # - https://stackoverflow.com/questions/10623302/how-assignment-works-with-python-list-slice
+            nums1[:n] = nums2[:n]  
