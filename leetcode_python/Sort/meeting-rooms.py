@@ -17,21 +17,17 @@ return false.
 #     def __init__(self, s=0, e=0):
 #         self.start = s
 #         self.end = e
-
-
-# V1 : dev 
-"""
+ 
+# V1 
 class Solution:
+    # @param {Interval[]} intervals
+    # @return {boolean}
     def canAttendMeetings(self, intervals):
-        max_endtime = max(max(intervals_))
-        min_starttime = min(min(intervals_))
-        for interval in intervals:
-            print (interval)
-            if ( interval[0] >= min_starttime  and  interval[1] <= max_endtime):
+        intervals.sort(key=lambda x: x[0])
+        for i in range(len(intervals)-1):
+            if intervals[i][1] > intervals[i+1][0]:
                 return False
-        return True 
-"""
-
+        return True
 
 # V2 
 class Solution:
