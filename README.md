@@ -488,7 +488,7 @@ Union Find
 147| [Insertion Sort List](https://leetcode.com/problems/insertion-sort-list/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/insertion-sort-list.py) | _O(n^2)_ | _O(1)_    | Medium         || AGAIN (not start)
 148| [Sort List](https://leetcode.com/problems/sort-list/)     | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/sort-list.py) | _O(nlogn)_      | _O(logn)_       | Medium         || AGAIN (not start)
 179| [Largest Number](https://leetcode.com/problems/largest-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/largest-number.py) | _O(nlogn)_   | _O(1)_        | Medium         || AGAIN 
-252| [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | [C++](./C++/meeting-rooms.cpp) [Python](./Python/meeting-rooms.py) | _O(nlogn)_   | _O(n)_        | Easy         |🔒| |
+252| [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms.py) | _O(nlogn)_   | _O(n)_        | Easy         |🔒| | OK 
 253| [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) | [C++](./C++/meeting-rooms-ii.cpp) [Python](./Python/meeting-rooms-ii.py) | _O(nlogn)_   | _O(n)_        | Medium         |🔒| |
 274| [H-Index](https://leetcode.com/problems/h-index/) | [C++](./C++/h-index.cpp)  [Python](./Python/h-index.py)  | _O(n)_ | _O(n)_ | Medium         |Counting Sort|  
 280| [Wiggle Sort](https://leetcode.com/problems/wiggle-sort/) | [C++](./C++/wiggle-sort.cpp) [Python](./Python/wiggle-sort.py) | _O(n)_   | _O(1)_        | Medium         |🔒| |
