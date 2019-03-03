@@ -17,8 +17,9 @@ m.next(5) = (10 + 3 + 5) / 3
 
 
 
-# V1 : dev 
-
+# V1 : dev
+ 
+from collections import deque
 class MovingAverage(object):
 
     def __init__(self, size):
