@@ -500,7 +500,7 @@ Union Find
 937| [Reorder Log Files](https://leetcode.com/problems/reorder-log-files/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/reorder-log-files.py) | _O(nlogn * l)_ | _O(l)_   | Easy   |  | AGAIN (not start)
 969| [Pancake Sorting](https://leetcode.com/problems/pancake-sorting/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/pancake-sorting.py) | _O(n^2)_ | _O(l)_  | Medium    || AGAIN (not start)
 973| [K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/k-closest-points-to-origin.py)  | _O(n)_ on average | _O(1)_     | Easy   | Quick Select, Heap| OK 
-976| [Largest Perimeter Triangle](https://leetcode.com/problems/largest-perimeter-triangle/) | [C++](./C++/largest-perimeter-triangle.cpp) [Python](./Python/largest-perimeter-triangle.py) | _O(nlogn)_ | _O(1)_        | Easy   | | |
+976| [Largest Perimeter Triangle](https://leetcode.com/problems/largest-perimeter-triangle/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/largest-perimeter-triangle.py) | _O(nlogn)_ | _O(1)_  | Easy | | OK*
 
 
 ## Two Pointers Easy and Medium 
