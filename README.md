@@ -401,7 +401,7 @@ Union Find
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 281| [Zigzag Iterator](https://leetcode.com/problems/zigzag-iterator/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/Queue/zigzag-iterator.py) | _O(n)_        | _O(k)_          | Medium           |🔒| OK
-346| [Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)| [C++](./C++/moving-average-from-data-stream.cpp) [Python](./Python/moving-average-from-data-stream.py) | _O(1)_        | _O(w)_          | Easy           |🔒||
+346| [Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/moving-average-from-data-stream.py)  | _O(1)_        | _O(w)_          | Easy           |🔒|| AGAIN 
 933| [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)| [C++](./C++/number-of-recent-calls.cpp) [Python](./Python/number-of-recent-calls.py) | _O(1)_ on average       | _O(w)_          | Easy           |||
 
 
