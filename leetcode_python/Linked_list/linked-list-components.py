@@ -1,8 +1,20 @@
 
 
 # V1 : DEV 
-
-
+# class Solution:
+#     def numComponents(self, head, G):
+#         G = G.sort()
+#         head_list = []
+#         cur = head 
+#         if G == None:
+#             return 0 
+#         while cur.val:
+#             head_list.append(c.val)
+#             cur = head.next
+#         print ('G :', G)
+#         print ('head_list :', head_list)
+#         over_lap = list(set(G) & set(head_list))
+#         return len(over_lap) + 1 
 
 
 # V2 
