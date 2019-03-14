@@ -3,16 +3,17 @@
 # V1 
 class Solution(object):
 	def divide(self, dividend, divisor):
-		if  dividend*divisor > 0:
-			"""
-			Assume we are dealing with an environment 
-			which could only store integers within the 32-bit
-			signed integer range: [-2**31,  2**31 − 1]. 
-			For the purpose of this problem, assume that your 
-			function returns 2**31 − 1 when the division result overflows.
+		"""
+		Assume we are dealing with an environment 
+		which could only store integers within the 32-bit
+		signed integer range: [-2**31,  2**31 − 1]. 
+		For the purpose of this problem, assume that your 
+		function returns 2**31 − 1 when the division result overflows.
 
-			--> so the return value should always < 2**31 -1 which is 2147483647
-			"""
+		--> so the return value should   2**31 < always < 2**31 -1 
+		(2**31 -1  = 2147483647,  2**31 = 2147483648)
+		"""
+		if  dividend*divisor > 0:
 			return min(2147483647, dividend//divisor)
 		else:
 			return max(-2147483648, -(abs(dividend)//abs(divisor)))
