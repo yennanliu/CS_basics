@@ -413,7 +413,7 @@ Union Find
 012| [Integer to Roman](https://leetcode.com/problems/integer-to-roman/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/integer-to-roman.py) | _O(n)_ | _O(1)_          | Medium         || AGAIN (not start)
 013| [Roman to Integer](https://leetcode.com/problems/roman-to-integer/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/roman-to-integer.py) | _O(n)_ | _O(1)_          | Easy           || AGAIN (not start)
 029| [Divide Two Integers](https://leetcode.com/problems/divide-two-integers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/divide-two-integers.py) | _O(1)_       | _O(1)_         | Medium         || OK* 
-050| [Pow(x, n)](https://leetcode.com/problems/powx-n/)     | [C++](./C++/powx-n.cpp) [Python](./Python/powx-n.py)     | _O(1)_       | _O(1)_       | Medium         ||
+050| [Pow(x, n)](https://leetcode.com/problems/powx-n/)     | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/powx-n.py)     | _O(1)_       | _O(1)_   | Medium    || OK*
 060| [Permutation Sequence](https://leetcode.com/problems/permutation-sequence/) | [C++](./C++/permutation-sequence.cpp) [Python](./Python/permutation-sequence.py) | _O(n^2)_ | _O(n)_  | Medium         || `Cantor Ordering`
 089| [Gray Code](https://leetcode.com/problems/gray-code/)     | [C++](./C++/gray-code.cpp) [Python](./Python/gray-code.py)  | _O(2^n)_        | _O(1)_          | Medium         ||
 166| [Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/) | [C++](./C++/fraction-to-recurring-decimal.cpp) [Python](./Python/fraction-to-recurring-decimal.py)  | _O(logn)_ | _O(1)_ | Medium         ||
