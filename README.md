@@ -419,7 +419,7 @@ Union Find
 166| [Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/fraction-to-recurring-decimal.py)| _O(logn)_ | _O(1)_ | Medium    || AGAIN (not start)
 168| [Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/excel-sheet-column-title.py) | _O(logn)_ | _O(1)_ | Easy || AGAIN (not start)
 171| [Excel Sheet Column Number](https://leetcode.com/problems/excel-sheet-column-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/excel-sheet-column-number.py) | _O(n)_ | _O(1)_ | Easy  || AGAIN (not start)
-172| [Factorial Trailing Zeroes](https://leetcode.com/problems/factorial-trailing-zeroes/) | [C++](./C++/factorial-trailing-zeroes.cpp) [Python](./Python/factorial-trailing-zeroes.py)  | _O(1)_ | _O(1)_ | Easy         ||
+172| [Factorial Trailing Zeroes](https://leetcode.com/problems/factorial-trailing-zeroes/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/factorial-trailing-zeroes.py)  | _O(1)_ | _O(1)_ | Easy    || AGAIN 
 223| [Rectangle Area](https://leetcode.com/problems/rectangle-area/) | [C++](./C++/rectangle-area.cpp)  [Python](./Python/rectangle-area.py)  | _O(1)_ | _O(1)_ | Easy         ||
 258| [Add Digits](https://leetcode.com/problems/add-digits/) | [C++](./C++/add-digits.cpp)  [Python](./Python/add-digits.py)  | _O(1)_ | _O(1)_ | Easy         |||
 263| [Ugly Number](https://leetcode.com/problems/ugly-number/) | [C++](./C++/ugly-number.cpp)  [Python](./Python/ugly-number.py)  | _O(1)_ | _O(1)_ | Easy         |||
