@@ -421,7 +421,7 @@ Union Find
 171| [Excel Sheet Column Number](https://leetcode.com/problems/excel-sheet-column-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/excel-sheet-column-number.py) | _O(n)_ | _O(1)_ | Easy  || AGAIN (not start)
 172| [Factorial Trailing Zeroes](https://leetcode.com/problems/factorial-trailing-zeroes/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/factorial-trailing-zeroes.py)  | _O(1)_ | _O(1)_ | Easy    || AGAIN 
 223| [Rectangle Area](https://leetcode.com/problems/rectangle-area/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/rectangle-area.py)  | _O(1)_ | _O(1)_ | Easy   || AGAIN 
-258| [Add Digits](https://leetcode.com/problems/add-digits/) | [C++](./C++/add-digits.cpp)  [Python](./Python/add-digits.py)  | _O(1)_ | _O(1)_ | Easy         |||
+258| [Add Digits](https://leetcode.com/problems/add-digits/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/add-digits.py) | _O(1)_ | _O(1)_ | Easy         || AGAIN 
 263| [Ugly Number](https://leetcode.com/problems/ugly-number/) | [C++](./C++/ugly-number.cpp)  [Python](./Python/ugly-number.py)  | _O(1)_ | _O(1)_ | Easy         |||
 292| [Nim Game](https://leetcode.com/problems/nim-game/) | [C++](./C++/nim-game.cpp)  [Python](./Python/nim-game.py)  | _O(1)_ | _O(1)_ | Easy         | LintCode ||
 319 | [Bulb Switcher](https://leetcode.com/problems/bulb-switcher/) | [C++](./C++/bulb-switcher.cpp) [Python](./Python/bulb-switcher.py) | _O(1)_ | _O(1)_ | Medium |||
