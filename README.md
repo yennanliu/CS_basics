@@ -423,7 +423,7 @@ Union Find
 223| [Rectangle Area](https://leetcode.com/problems/rectangle-area/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/rectangle-area.py)  | _O(1)_ | _O(1)_ | Easy   || AGAIN 
 258| [Add Digits](https://leetcode.com/problems/add-digits/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/add-digits.py) | _O(1)_ | _O(1)_ | Easy         || AGAIN 
 263| [Ugly Number](https://leetcode.com/problems/ugly-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/ugly-number.py) | _O(1)_ | _O(1)_ | Easy         || OK*
-292| [Nim Game](https://leetcode.com/problems/nim-game/) | [C++](./C++/nim-game.cpp)  [Python](./Python/nim-game.py)  | _O(1)_ | _O(1)_ | Easy         | LintCode ||
+292| [Nim Game](https://leetcode.com/problems/nim-game/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/nim-game.py)  | _O(1)_ | _O(1)_ | Easy         | LintCode || OK* 
 319 | [Bulb Switcher](https://leetcode.com/problems/bulb-switcher/) | [C++](./C++/bulb-switcher.cpp) [Python](./Python/bulb-switcher.py) | _O(1)_ | _O(1)_ | Medium |||
 326 | [Power of Three](https://leetcode.com/problems/power-of-three/) | [C++](./C++/power-of-three.cpp) [Python](./Python/power-of-three.py) | _O(1)_ | _O(1)_ | Easy |||
 338 | [Counting Bits](https://leetcode.com/problems/counting-bits/) | [C++](./C++/counting-bits.cpp) [Python](./Python/counting-bits.py) | _O(n)_ | _O(n)_ | Medium |||
