@@ -426,7 +426,7 @@ Union Find
 292| [Nim Game](https://leetcode.com/problems/nim-game/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/nim-game.py)  | _O(1)_ | _O(1)_ | Easy      | LintCode | OK* 
 319 | [Bulb Switcher](https://leetcode.com/problems/bulb-switcher/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/bulb-switcher.py) | _O(1)_ | _O(1)_ | Medium || AGAIN 
 326 | [Power of Three](https://leetcode.com/problems/power-of-three/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/power-of-three.py) | _O(1)_ | _O(1)_ | Easy || OK 
-338 | [Counting Bits](https://leetcode.com/problems/counting-bits/) | [C++](./C++/counting-bits.cpp) [Python](./Python/counting-bits.py) | _O(n)_ | _O(n)_ | Medium |||
+338 | [Counting Bits](https://leetcode.com/problems/counting-bits/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/counting-bits.py) | _O(n)_ | _O(n)_ | Medium || OK* 
 343 | [Integer Break](https://leetcode.com/problems/integer-break/) | [C++](./C++/integer-break.cpp) [Python](./Python/integer-break.py) | _O(logn)_ | _O(1)_ | Medium || Tricky, DP |
 365 | [Water and Jug Problem](https://leetcode.com/problems/water-and-jug-problem/) | [C++](./C++/water-and-jug-problem.cpp) [Python](./Python/water-and-jug-problem.py) | _O(logn)_ | _O(1)_ | Medium || `Bézout's identity` |
 372 | [Super Pow](https://leetcode.com/problems/super-pow/) | [C++](./C++/super-pow.cpp) [Python](./Python/super-pow.py) | _O(n)_ | _O(1)_ | Medium |||
