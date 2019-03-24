@@ -1,27 +1,24 @@
 
+  # V1' 
+class ListNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 
-#V1 : DEV 
-# class ListNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None     
-          
-# class Solution:
-#     def numComponents(self, head, G):
-#         set(G)
-#         print ('G :', G)
-#         head_list = []
-#         if G == None:
-#             return 0 
-#         while head and (not head.next) :
-#             head_list.append(head.val)
-#             head = head.next
-#         print ('G :', G)
-#         print ('head_list :', head_list)
-#         over_lap = list(set(G) ^ set(head_list))
-#         return len(over_lap) + 1 
-
-
+class Solution(object):
+    def numComponents(self, head, G):
+        count = 0 
+        G = set(G)
+        dummy  = ListNode(-1)
+        dummy.next = head 
+        cur = dummy 
+        while cur and cur.next:
+            if cur.val not in G and cur.next.val in G:
+                count = count + 1 
+            cur = cur.next 
+        return count
+                
+  
 # V2 
 class Solution:
     def numComponents(self, head, G):
