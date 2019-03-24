@@ -431,7 +431,7 @@ Union Find
 365 | [Water and Jug Problem](https://leetcode.com/problems/water-and-jug-problem/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/water-and-jug-problem.py)  | _O(logn)_ | _O(1)_ | Medium | `Bézout's identity` | AGAIN (not start)
 372 | [Super Pow](https://leetcode.com/problems/super-pow/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/super-pow.py)  | _O(n)_ | _O(1)_ |  Medium || AGAIN 
 382 | [Linked List Random Node](https://leetcode.com/problems/linked-list-random-node/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/linked-list-random-node.py) | _O(n)_ | _O(1)_ | Medium |`Reservoir Sampling` | AGAIN (not start)
-386 | [Lexicographical Numbers](https://leetcode.com/problems/lexicographical-numbers/) | [C++](./C++/lexicographical-numbers.cpp) [Python](./Python/lexicographical-numbers.py) | _O(n)_ | _O(1)_ | Medium |||
+386 | [Lexicographical Numbers](https://leetcode.com/problems/lexicographical-numbers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/lexicographical-numbers.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 390 | [Elimination Game](https://leetcode.com/problems/elimination-game/) | [C++](./C++/elimination-game.cpp) [Python](./Python/elimination-game.py) | _O(logn)_ | _O(1)_ | Medium ||
 398 | [Random Pick Index](https://leetcode.com/problems/random-pick-index/) | [C++](./C++/random-pick-index.cpp) [Python](./Python/random-pick-index.py) | _O(n)_ | _O(1)_ | Medium | `Reservoir Sampling` |
 400 | [Nth Digit](https://leetcode.com/problems/nth-digit/) | [C++](./C++/nth-digit.cpp) [Python](./Python/nth-digit.py) | _O(logn)_ | _O(1)_ | Easy |||
