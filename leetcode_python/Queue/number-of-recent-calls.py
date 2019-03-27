@@ -1,14 +1,10 @@
-
-
 # V1 : DEV 
-
-
 
 # V2 
 # binary search 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83714891
-
-# ** 1) Binary search via bisect
+# 
+# ******  1) Binary search via bisect ******
 # 
 # http://kuanghy.github.io/2016/06/14/python-bisect
 # def grade(score,breakpoints=[60, 70, 80, 90], grades='FDCBA'):
@@ -26,15 +22,14 @@
 #
 # print [grade(score) for score in [33, 99, 77, 70, 89, 90, 100]]
 # ['F', 'A', 'C', 'C', 'B', 'A', 'A'] # output 
-
-# ** 2) binary search with bisect
+#
+# ****** 2) binary search with bisect ******
 # def binary_search_bisect(lst, x):
 #     from bisect import bisect_left
 #     i = bisect_left(lst, x)
 #     if i != len(lst) and lst[i] == x:
 #         return i
 #     return None
-
 
 class RecentCounter:
 
@@ -56,10 +51,9 @@ class RecentCounter:
 # obj = RecentCounter()
 # param_1 = obj.ping(t)
 
-
-
 # V3 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83714891
+import collections
 class RecentCounter:
 
     def __init__(self):
@@ -75,14 +69,10 @@ class RecentCounter:
         self.que.append(t)
         return len(self.que)
 
-
 # V4
 # Time:  O(1) on average
 # Space: O(w), w means the size of the last milliseconds.
-
 import collections
-
-
 class RecentCounter(object):
 
     def __init__(self):
