@@ -1,7 +1,5 @@
 
 # V1 : DEV 
-
-
 # class Solution(object):
 #     def pancakeSort(self, A):
 #         # Slide spatula under pancake at index and flip to top                                              
@@ -19,6 +17,22 @@
 #             flip(A, n)
 #             result.append(n)
 #         return result
+
+# V1'
+# class Solution(object):
+#     def pancakeSort(self, A):
+#         """
+#         :type A: List[int]
+#         :rtype: List[int]
+#         """
+#         N = len(A)
+#         stack = []
+#         for i in A:
+#             stack = stack[:i][::-1] + stack[i:]
+#         return stack 
+
+
+
 
 
 # V2 
@@ -75,7 +89,6 @@ class Solution(object):
             res.extend([i + 1, x])
             A = A[:i:-1] + A[:i]
         return res
-
 
 # V4
 # Time:  O(n^2)
