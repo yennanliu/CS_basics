@@ -1,5 +1,6 @@
 #  http://kuanghy.github.io/2016/06/14/python-bisect
 
+# Binary search via recursion 
 def binary_search_recursion(lst, value, low, high):
     if high < low:
         return None
@@ -11,6 +12,7 @@ def binary_search_recursion(lst, value, low, high):
     else:
         return mid
 
+# Binary search via for loop 
 def binary_search_loop(lst,value):
     low, high = 0, len(lst)-1
     while low <= high:
@@ -22,3 +24,12 @@ def binary_search_loop(lst,value):
         else:
             return mid
     return None
+
+
+# Binary search via module "bisect" 
+def binary_search_bisect(lst, x):
+from bisect import bisect_left
+	i = bisect_left(lst, x)
+	if i != len(lst) and lst[i] == x:
+		return i
+	return None
