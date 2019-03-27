@@ -2,8 +2,40 @@
 
 # V1 : DEV 
 
+
+
 # V2 
+# binary search 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83714891
+
+# ** 1) Binary search via bisect
+# 
+# http://kuanghy.github.io/2016/06/14/python-bisect
+# def grade(score,breakpoints=[60, 70, 80, 90], grades='FDCBA'):
+#     """
+#     set up breakpoints associated with grades
+# 
+#     i.e. 
+#       60  70  80  90 
+#     F    D   C   B   A
+#
+#     so we can know which grades the score (func input) is belong with 
+#     """
+#     i = bisect.bisect(breakpoints, score)
+#     return grades[i]
+#
+# print [grade(score) for score in [33, 99, 77, 70, 89, 90, 100]]
+# ['F', 'A', 'C', 'C', 'B', 'A', 'A'] # output 
+
+# ** 2) binary search with bisect
+# def binary_search_bisect(lst, x):
+#     from bisect import bisect_left
+#     i = bisect_left(lst, x)
+#     if i != len(lst) and lst[i] == x:
+#         return i
+#     return None
+
+
 class RecentCounter:
 
     def __init__(self):
@@ -14,6 +46,7 @@ class RecentCounter:
         :type t: int
         :rtype: int
         """
+        from bisect import bisect
         self.nums.append(t)
         cur_pos = len(self.nums)
         prev_pos = bisect.bisect_left(self.nums, t - 3000)
