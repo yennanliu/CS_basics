@@ -457,7 +457,7 @@ Union Find
 633| [Sum of Square Numbers](https://leetcode.com/problems/sum-of-square-numbers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/sum-of-square-numbers.py)  | _O(sqrt(c) * logc)_ | _O(1)_ | Easy || OK* 
 634| [Find the Derangement of An Array](https://leetcode.com/problems/find-the-derangement-of-an-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/find-the-derangement-of-an-array.py)  | _O(n)_ | _O(1)_ | Medium |🔒| AGAIN (not start)
 640| [Solve the Equation](https://leetcode.com/problems/solve-the-equation/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/solve-the-equation.py) | _O(n)_ | _O(n)_ | Medium ||  AGAIN 
-651 | [4 Keys Keyboard](https://leetcode.com/problems/4-keys-keyboard/) | [C++](./C++/4-keys-keyboard.cpp) [Python](./Python/4-keys-keyboard.py) | _O(1)_ | _O(1)_ | Medium |🔒, Math, DP |
+651 | [4 Keys Keyboard](https://leetcode.com/problems/4-keys-keyboard/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/4-keys-keyboard.py)  | _O(1)_ | _O(1)_ | Medium |🔒, Math, DP | AGAIN (not start)
 672 | [Bulb Switcher II](https://leetcode.com/problems/bulb-switcher-ii/) | [C++](./C++/bulb-switcher-ii.cpp) [Python](./Python/bulb-switcher-ii.py) | _O(1)_ | _O(1)_ | Medium |||
 728 | [Self Dividing Numbers](https://leetcode.com/problems/self-dividing-numbers/) | [C++](./C++/self-dividing-numbers.cpp) [Python](./Python/self-dividing-numbers.py) | _O(n)_ | _O(1)_ | Medium |||
 754 | [Reach a Number](https://leetcode.com/problems/reach-a-number/) | [C++](./C++/reach-a-number.cpp) [Python](./Python/reach-a-number.py) | _O(logn)_ | _O(1)_ | Medium |||
