@@ -460,7 +460,7 @@ Union Find
 651 | [4 Keys Keyboard](https://leetcode.com/problems/4-keys-keyboard/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/4-keys-keyboard.py)  | _O(1)_ | _O(1)_ | Medium |🔒, Math, DP | AGAIN (not start)
 672 | [Bulb Switcher II](https://leetcode.com/problems/bulb-switcher-ii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/bulb-switcher-ii.py)  | _O(1)_ | _O(1)_ | Medium || AGAIN (not start)
 728 | [Self Dividing Numbers](https://leetcode.com/problems/self-dividing-numbers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/self-dividing-numbers.py) | _O(n)_ | _O(1)_ | Medium || AGAIN 
-754 | [Reach a Number](https://leetcode.com/problems/reach-a-number/) | [C++](./C++/reach-a-number.cpp) [Python](./Python/reach-a-number.py) | _O(logn)_ | _O(1)_ | Medium ||| 
+754 | [Reach a Number](https://leetcode.com/problems/reach-a-number/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/reach-a-number.py) | _O(logn)_ | _O(1)_ | Medium || OK*  
 775 | [Global and Local Inversions](https://leetcode.com/problems/global-and-local-inversions/) | [C++](./C++/global-and-local-inversions.cpp) [Python](./Python/global-and-local-inversions.py) | _O(n)_ | _O(1)_ | Medium |||
 779 | [K-th Symbol in Grammar](https://leetcode.com/problems/k-th-symbol-in-grammar/) | [C++](./C++/k-th-symbol-in-grammar.cpp) [Python](./Python/k-th-symbol-in-grammar.py) | _O(1)_ | _O(1)_ | Medium ||
 781 | [Rabbits in Forest](https://leetcode.com/problems/rabbits-in-forest/) | [C++](./C++/rabbits-in-forest.cpp) [Python](./Python/rabbits-in-forest.py) | _O(n)_ | _O(n)_ | Medium ||
