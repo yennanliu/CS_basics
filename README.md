@@ -463,7 +463,7 @@ Union Find
 754 | [Reach a Number](https://leetcode.com/problems/reach-a-number/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/reach-a-number.py) | _O(logn)_ | _O(1)_ | Medium || OK*  
 775 | [Global and Local Inversions](https://leetcode.com/problems/global-and-local-inversions/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/global-and-local-inversions.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 779 | [K-th Symbol in Grammar](https://leetcode.com/problems/k-th-symbol-in-grammar/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/k-th-symbol-in-grammar.py) | _O(1)_ | _O(1)_ | Medium || AGAIN (not start)
-781 | [Rabbits in Forest](https://leetcode.com/problems/rabbits-in-forest/) | [C++](./C++/rabbits-in-forest.cpp) [Python](./Python/rabbits-in-forest.py) | _O(n)_ | _O(n)_ | Medium ||
+781 | [Rabbits in Forest](https://leetcode.com/problems/rabbits-in-forest/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/rabbits-in-forest.py) | _O(n)_ | _O(n)_ | Medium || AGAIN (not start)
 789 | [Escape The Ghosts](https://leetcode.com/problems/escape-the-ghosts/) | [C++](./C++/escape-the-ghosts.cpp) [Python](./Python/escape-the-ghosts.py) | _O(n)_ | _O(1)_ | Medium ||
 800 | [Similar RGB Color](https://leetcode.com/problems/similar-rgb-color/) | [C++](./C++/similar-rgb-color.cpp) [Python](./Python/similar-rgb-color.py) | _O(1)_ | _O(1)_ | Easy |🔒||
 812 | [Largest Triangle Area](https://leetcode.com/problems/largest-triangle-area/) | [C++](./C++/largest-triangle-area.cpp) [Python](./Python/largest-triangle-area.py) | _O(n^3)_ | _O(1)_ | Easy |||
