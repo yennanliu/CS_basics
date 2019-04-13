@@ -466,7 +466,7 @@ Union Find
 781 | [Rabbits in Forest](https://leetcode.com/problems/rabbits-in-forest/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/rabbits-in-forest.py) | _O(n)_ | _O(n)_ | Medium || AGAIN (not start)
 789 | [Escape The Ghosts](https://leetcode.com/problems/escape-the-ghosts/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/escape-the-ghosts.py) | _O(n)_ | _O(1)_ | Medium || AGAIN 
 800 | [Similar RGB Color](https://leetcode.com/problems/similar-rgb-color/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/similar-rgb-color.py) | _O(1)_ | _O(1)_ | Easy |🔒| AGAIN (not start)
-812 | [Largest Triangle Area](https://leetcode.com/problems/largest-triangle-area/) | [C++](./C++/largest-triangle-area.cpp) [Python](./Python/largest-triangle-area.py) | _O(n^3)_ | _O(1)_ | Easy |||
+812 | [Largest Triangle Area](https://leetcode.com/problems/largest-triangle-area/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/largest-triangle-area.py)| _O(n^3)_ | _O(1)_ | Easy || AGAIN (not start)
 829 | [Consecutive Numbers Sum](https://leetcode.com/problems/consecutive-numbers-sum/) | [C++](./C++/consecutive-numbers-sum.cpp) [Python](./Python/consecutive-numbers-sum.py) | _O(sqrt(n))_ | _O(1)_ | Medium |||
 836 | [Rectangle Overlap](https://leetcode.com/problems/rectangle-overlap/) | [C++](./C++/rectangle-overlap.cpp) [Python](./Python/rectangle-overlap.py) | _O(1)_ | _O(1)_ | Easy |||
 858 | [Mirror Reflection](https://leetcode.com/problems/mirror-reflection/) | [C++](./C++/mirror-reflection.cpp) [Python](./Python/mirror-reflection.py) | _O(1)_ | _O(1)_ | Medium |||
