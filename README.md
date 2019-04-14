@@ -31,8 +31,8 @@
 ||Binary search|  | | | | 
 ||Hash map|  | | | | 
 ||Catching|  | | | | 
-||Breadth-first search (BFS)| | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bfs.py)| | AGAIN***| 
-||Depth-first search (DFS) |  | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/dfs.py)| | AGAIN***| 
+||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bfs.py)|| | AGAIN***| 
+||Depth-first search (DFS) |   [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/dfs.py)| | | AGAIN***| 
 ||Binary search Tree|  | | | | 
 ||Sort|  | | | | 
 ||Quick sort|  | | | | 
