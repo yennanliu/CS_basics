@@ -499,7 +499,7 @@ Union Find
 908 | [Smallest Range I](https://leetcode.com/problems/smallest-range-i/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/smallest-range-i.py) | _O(n)_ | _O(1)_   | Easy   || AGAIN 
 910 | [Smallest Range II](https://leetcode.com/problems/smallest-range-ii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/smallest-range-ii.py) | _O(nlogn)_ | _O(1)_      | Medium  || AGAIN (not start)
 914 | [X of a Kind in a Deck of Cards](https://leetcode.com/problems/x-of-a-kind-in-a-deck-of-cards/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/x-of-a-kind-in-a-deck-of-cards.py) | _O(n * (logn)^2)_ | _O(n)_  | Easy   || AGAIN (not start)
-963 | [Minimum Area Rectangle II](https://leetcode.com/problems/minimum-area-rectangle-ii/) | [C++](./C++/minimum-area-rectangle-ii.cpp) [Python](./Python/minimum-area-rectangle-ii.py) | _O(n^2)_ ~ _O(n^3)_ | _O(n^2)_      | Medium         ||
+963 | [Minimum Area Rectangle II](https://leetcode.com/problems/minimum-area-rectangle-ii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/minimum-area-rectangle-ii.py) | _O(n^2)_ ~ _O(n^3)_ | _O(n^2)_      | Medium  || AGAIN (not start)
 970 | [Powerful Integers](https://leetcode.com/problems/powerful-integers/) | [C++](./C++/powerful-integers.cpp) [Python](./Python/powerful-integers.py) | _O((logn)^2)_ | _O(r)_      | Easy         ||
 
 
