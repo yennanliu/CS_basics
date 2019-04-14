@@ -12,6 +12,32 @@
 
 # Progress 
 
+## Data Structure 
+|  #  | Title | Solution | Time | Space | Status|
+| --- | ----- | -------- | ---- | ----- | ---- |
+||Queue| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/queue2.py) | | | OK|
+||Stack| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/stack.py) | | | OK|
+||LinkedList| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/linkedList.py) | | | AGAIN|
+||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | OK|
+||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | AGAIN|
+||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN|
+||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py) | | | AGAIN|
+
+## Algorithm 
+|  #  | Title | Solution | Time | Space | Status|
+| --- | ----- | -------- | ---- | ----- | ---- |
+||Single pointer|  | | | | 
+||Double pointer|  | | | | 
+||Binary search|  | | | | 
+||Hash map|  | | | | 
+||Catching|  | | | | 
+||Breadth-first search (BFS)| | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bfs.py)| | AGAIN***| 
+||Depth-first search (DFS) |  | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/dfs.py)| | AGAIN***| 
+||Binary search Tree|  | | | | 
+||Sort|  | | | | 
+||Quick sort|  | | | | 
+||Rotate|  | | | | 
+
 ## Array Eesy and medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
@@ -799,34 +825,6 @@ Union Find
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 874 | [Walking Robot Simulation](https://leetcode.com/problems/walking-robot-simulation/)  | [C++](./C++/walking-robot-simulation.cpp) [Python](./Python/walking-robot-simulation.py) | _O(n + k)_| _O(k)_| Easy           ||| 
-
-
-
-## Data Structure 
-|  #  | Title | Solution | Time | Space | Status|
-| --- | ----- | -------- | ---- | ----- | ---- |
-||Queue| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/queue2.py) | | | OK|
-||Stack| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/stack.py) | | | OK|
-||LinkedList| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/linkedList.py) | | | AGAIN|
-||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | OK|
-||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | AGAIN|
-||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN|
-||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py) | | | AGAIN|
-
-## Algorithm 
-|  #  | Title | Solution | Time | Space | Status|
-| --- | ----- | -------- | ---- | ----- | ---- |
-||Single pointer|  | | | | 
-||Double pointer|  | | | | 
-||Binary search|  | | | | 
-||Hash map|  | | | | 
-||Catching|  | | | | 
-||Breadth-first search (BFS)| | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bfs.py)| | AGAIN***| 
-||Depth-first search (DFS) |  | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/dfs.py)| | AGAIN***| 
-||Binary search Tree|  | | | | 
-||Sort|  | | | | 
-||Quick sort|  | | | | 
-||Rotate|  | | | | 
 
 
 # Ref
