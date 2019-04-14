@@ -813,6 +813,21 @@ Union Find
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN|
 ||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py) | | | AGAIN|
 
+## Algorithm 
+|  #  | Title | Solution | Time | Space | Status|
+| --- | ----- | -------- | ---- | ----- | ---- |
+||Single pointer|  | | | | 
+||Double pointer|  | | | | 
+||Binary search|  | | | | 
+||Hash map|  | | | | 
+||Catching|  | | | | 
+||Breadth-first search (BFS)| | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bfs.py)| | AGAIN***| 
+||Depth-first search (DFS) |  | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/dfs.py)| | AGAIN***| 
+||Binary search Tree|  | | | | 
+||Sort|  | | | | 
+||Quick sort|  | | | | 
+||Rotate|  | | | | 
+
 
 # Ref
 
