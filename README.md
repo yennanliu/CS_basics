@@ -1,5 +1,4 @@
 # CS_basics
-
 - Algorithm 
 - Data Structure
 - Network
@@ -7,11 +6,9 @@
 - Database 
 - System design 
 
-
-<br><br><br>
+<br>
 
 # Progress 
-
 ## Data Structure 
 |  #  | Title | Solution | Time | Space | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
