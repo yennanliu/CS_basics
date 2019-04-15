@@ -3,9 +3,11 @@
 # ALGORITHM DEMO : DFS (Depth-First Search) 
 #################################################################
 
-# https://www.jianshu.com/p/66508acedd79
+# V0 : DEV 
 
+# V1 
 # DFS in recursion version 
+# https://www.jianshu.com/p/66508acedd79
 def dfs_recursion(G,s,S=None,res=None):
     if S is None:
         # save visited nodes  

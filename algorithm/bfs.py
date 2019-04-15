@@ -3,13 +3,13 @@
 # ALGORITHM DEMO : BFS (Breadth-First Search) 
 #################################################################
 
+# V0 : DEV 
 
+# BFS V1 
 # https://super9.space/archives/1562
 # http://www.csie.ntnu.edu.tw/~u91029/Graph.html
 # https://changyuheng.github.io/2014/implementations-of-dfs-and-bfs-in-python.html
 # https://eddmann.com/posts/depth-first-search-and-breadth-first-search-in-python/
-
-# BFS V1 
 class BFS:
     """
     For BFS, use queue; For DFS, use stack or recursion

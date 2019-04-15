@@ -2,6 +2,8 @@
 # ALGORITHM DEMO : BINARY SEARCH 
 #################################################################
 
+# V0 : DEV 
+
 # V1 
 # http://kuanghy.github.io/2016/06/14/python-bisect
 # Binary search via recursion 
