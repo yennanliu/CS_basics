@@ -25,7 +25,7 @@
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Single pointer|  | | | | 
 ||Double pointer|  | | | | 
-||Binary search|  | | | | 
+||Binary search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/binary_search.py) | | | AGAIN| 
 ||Hash map|  | | | | 
 ||Catching|  | | | | 
 ||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bfs.py)|| | AGAIN***| 
