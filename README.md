@@ -34,7 +34,9 @@
 ||Sort|  | | | | 
 ||Bubble sort|  | | | | 
 ||Bucket sort|  | | | | 
-||Quick sort|  | | | | 
+||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/quick_sort.py)| | | AGAIN***| 
+||Heap sort|  | | | | 
+||Merge sort|  | | | | 
 ||Rotate|  | | | | 
 
 ## Array Eesy and medium 
