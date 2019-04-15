@@ -19,6 +19,7 @@
 ||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | AGAIN|
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN|
 ||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py) | | | AGAIN|
+||Binary search Tree (BST)| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/binary_search_tree.py) | | | AGAIN| 
 
 ## Algorithm 
 |  #  | Title | Solution | Time | Space | Status|
@@ -30,7 +31,6 @@
 ||Catching|  | | | | 
 ||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bfs.py)|| | AGAIN***| 
 ||Depth-first search (DFS) |   [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/dfs.py)| | | AGAIN***| 
-||Binary search Tree|  | | | | 
 ||Sort|  | | | | 
 ||Bubble sort|  | | | | 
 ||Bucket sort|  | | | | 
