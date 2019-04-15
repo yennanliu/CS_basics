@@ -32,7 +32,7 @@
 ||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/quick_sort.py)| | | AGAIN***| 
 ||Heap sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/heap_sort.py)| | | AGAIN**| 
-||Merge sort|  | | | | 
+||Merge sort|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/merge_sort.py)  | | | AGAIN**| 
 ||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/pancake_sort.py) | | | AGAIN| 
 ||Rotate|  | | | | 
 
