@@ -1,4 +1,5 @@
 # https://github.com/keon/algorithms/blob/master/.travis.yml
+group: travis_latest
 language: python
 cache:
   directories:
