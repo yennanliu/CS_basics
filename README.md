@@ -32,6 +32,8 @@
 ||Depth-first search (DFS) |   [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/dfs.py)| | | AGAIN***| 
 ||Binary search Tree|  | | | | 
 ||Sort|  | | | | 
+||Bubble sort|  | | | | 
+||Bucket sort|  | | | | 
 ||Quick sort|  | | | | 
 ||Rotate|  | | | | 
 
