@@ -20,14 +20,12 @@
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN|
 ||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py) | | | AGAIN|
 ||Binary search Tree (BST)| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/binary_search_tree.py) | | | AGAIN| 
+||Hash map| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/hash_map.py) | | | AGAIN| 
 
 ## Algorithm 
 |  #  | Title | Solution | Time | Space | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
-||Single pointer|  | | | | 
-||Double pointer|  | | | | 
 ||Binary search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/binary_search.py) | | | AGAIN| 
-||Hash map|  | | | | 
 ||Catching|  | | | | 
 ||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bfs.py)|| | AGAIN***| 
 ||Depth-first search (DFS) |   [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/dfs.py)| | | AGAIN***| 
