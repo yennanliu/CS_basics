@@ -31,7 +31,7 @@
 ||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bubble_sort.py) | | | AGAIN|  
 ||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/quick_sort.py)| | | AGAIN***| 
-||Heap sort|  | | | | 
+||Heap sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/heap_sort.py)| | | AGAIN**| 
 ||Merge sort|  | | | | 
 ||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/pancake_sort.py) | | | AGAIN| 
 ||Rotate|  | | | | 
