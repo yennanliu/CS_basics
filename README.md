@@ -28,11 +28,12 @@
 ||Binary search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/binary_search.py) | | | AGAIN| 
 ||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bfs.py)|| | AGAIN***| 
 ||Depth-first search (DFS) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/dfs.py)| | | AGAIN***| 
-||Bubble sort|  [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bubble_sort.py) | | | AGAIN|  
-||Bucket sort|  | | | | 
+||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bubble_sort.py) | | | AGAIN|  
+||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/quick_sort.py)| | | AGAIN***| 
 ||Heap sort|  | | | | 
 ||Merge sort|  | | | | 
+||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/pancake_sort.py) | | | AGAIN| 
 ||Rotate|  | | | | 
 
 ## Array Eesy and medium 
