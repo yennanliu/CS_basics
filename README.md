@@ -26,6 +26,7 @@
 |  #  | Title | Solution | Time | Space | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Binary search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/binary_search.py) | | | AGAIN| 
+||Linear search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/linear_search.py) | | | AGAIN| 
 ||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bfs.py)|| | AGAIN***| 
 ||Depth-first search (DFS) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/dfs.py)| | | AGAIN***| 
 ||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bubble_sort.py) | | | AGAIN|  
