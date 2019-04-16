@@ -15,28 +15,26 @@
 # canConstruct("aa", "ab") -> false
 # canConstruct("aa", "aab") -> true
 
-
 # V1  
 
 import collections
 class Solution(object):
     def canConstruct(self, ransomNote, magazine):
         if collections.Counter(ransomNote) - collections.Counter(magazine):
-        """
-        means some elements only in ransomNote but not in magazine
-        e.g. 
-        t = 'effjfggbffjdgbjjhhdegh'
-        s = 'fffbfg'
-        collections.Counter(t) = Counter({'b': 2, 'd': 2, 'e': 2, 'f': 5, 'g': 4, 'h': 3, 'j': 4})
+    """
+    means some elements only in ransomNote but not in magazine
+    e.g. 
+    t = 'effjfggbffjdgbjjhhdegh'
+    s = 'fffbfg'
+    collections.Counter(t) = Counter({'b': 2, 'd': 2, 'e': 2, 'f': 5, 'g': 4, 'h': 3, 'j': 4})
 
-        collections.Counter(s) = Counter({'b': 1, 'f': 4, 'g': 1})
-        
-        => collections.Counter(t) - collections.Counter(s) = Counter({'b': 1, 'd': 2, 'e': 2, 'f': 1, 'g': 3, 'h': 3, 'j': 4})
-        i.e. j, d ... only in ransomNote ; but not in magazine
-        
-        """
-        
-            return False 
+    collections.Counter(s) = Counter({'b': 1, 'f': 4, 'g': 1})
+
+    => collections.Counter(t) - collections.Counter(s) = Counter({'b': 1, 'd': 2, 'e': 2, 'f': 1, 'g': 3, 'h': 3, 'j': 4})
+    i.e. j, d ... only in ransomNote ; but not in magazine
+
+    """      
+        return False 
         else:
             return True 
 
@@ -80,9 +78,3 @@ class Solution2(object):
         :rtype: bool
         """
         return not collections.Counter(ransomNote) - collections.Counter(magazine)
-
-
-
-
-
-

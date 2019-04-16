@@ -42,7 +42,7 @@ class Solution(object):
         :rtype: bool
         """
         count_A = 0
-        for i in xrange(len(s)):
+        for i in range(len(s)):
             if s[i] == 'A':
                 count_A += 1
                 if count_A == 2:

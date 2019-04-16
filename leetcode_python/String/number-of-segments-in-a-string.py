@@ -51,7 +51,7 @@ class Solution(object):
         :rtype: int
         """
         result = int(len(s) and s[-1] != ' ')
-        for i in xrange(1, len(s)):
+        for i in range(1, len(s)):
             if s[i] == ' ' and s[i-1] != ' ':
                 result += 1
         return result
