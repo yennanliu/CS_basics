@@ -48,7 +48,7 @@ class Solution(object):
         cur.next = head
 
         cur, tail = head, cur
-        for _ in xrange(n - k % n):
+        for _ in range(n - k % n):
             tail = cur
             cur = cur.next
         tail.next = None

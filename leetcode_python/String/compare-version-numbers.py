@@ -64,6 +64,9 @@ class Solution(object):
 # Time:  O(n)
 # Space: O(n)
 # V3 
+def cmp(a, b):
+    return (a > b) - (a < b) 
+    
 class Solution2(object):
     def compareVersion(self, version1, version2):
         """

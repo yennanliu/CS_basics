@@ -25,18 +25,17 @@
 ## Algorithm 
 |  #  | Title | Solution | Time | Space | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
-||Binary search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/binary_search.py) | | | AGAIN| 
-||Linear search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/linear_search.py) | | | AGAIN| 
-||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bfs.py)|| | AGAIN***| 
-||Depth-first search (DFS) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/dfs.py)| | | AGAIN***| 
-||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bubble_sort.py) | | | AGAIN|  
-||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/bucket_sort.py)  | | |AGAIN| 
-||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/quick_sort.py)| | | AGAIN***| 
-||Heap sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/heap_sort.py)| | | AGAIN**| 
-||Merge sort|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/merge_sort.py)  | | | AGAIN**| 
-||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/pancake_sort.py) | | | AGAIN| 
-||Rotate|  | | | | 
-||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/md5.py) | | | AGAIN| 
+||Binary search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/binary_search.py) | | | AGAIN| 
+||Linear search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/linear_search.py) | | | AGAIN| 
+||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bfs.py)|| | AGAIN***| 
+||Depth-first search (DFS) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dfs.py)| | | AGAIN***| 
+||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py) | | | AGAIN|  
+||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bucket_sort.py)  | | |AGAIN| 
+||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)| | | AGAIN***| 
+||Heap sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/heap_sort.py)| | | AGAIN**| 
+||Merge sort|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py)  | | | AGAIN**| 
+||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py) | | | AGAIN| 
+||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
 
 ## Array Eesy and medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
