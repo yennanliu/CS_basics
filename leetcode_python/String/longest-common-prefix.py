@@ -16,14 +16,10 @@ Note:
 
 All given inputs are in lowercase letters a-z.
 
-
-
 """
 
-Input: ["flower","flow","flight"]
-Output: "fl"
-
-
+#Input: ["flower","flow","flight"]
+#Output: "fl"
 
 # V1 : dev 
 """
@@ -35,10 +31,6 @@ class Solution(object):
                 if  
 """
 
-
-
-
-
 # V2 
 class Solution(object):
     def longestCommonPrefix(self, strs):
@@ -49,13 +41,8 @@ class Solution(object):
         if not strs:
             return ""
 
-        for i in xrange(len(strs[0])):
+        for i in range(len(strs[0])):
             for string in strs[1:]:
                 if i >= len(string) or string[i] != strs[0][i]:
                     return strs[0][:i]
         return strs[0]
-
-
-
-
-

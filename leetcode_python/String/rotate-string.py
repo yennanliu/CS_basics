@@ -62,7 +62,7 @@ class Solution(object):
             power = (power*p) % M
 
         a_hash, power = 0, 1
-        for i in xrange(len(B)):
+        for i in range(len(B)):
             a_hash += power * ord(A[i%len(A)])
             a_hash %= M
             power = (power*p) % M
@@ -70,7 +70,7 @@ class Solution(object):
         if a_hash == b_hash and check(0): return True
 
         power = (power*p_inv) % M
-        for i in xrange(len(B), 2*len(A)):
+        for i in range(len(B), 2*len(A)):
             a_hash = (a_hash-ord(A[(i-len(B))%len(A)])) * p_inv
             a_hash += power * ord(A[i%len(A)])
             a_hash %= M
@@ -94,7 +94,7 @@ class Solution2(object):
             def KMP(text, pattern):
                 prefix = getPrefix(pattern)
                 j = -1
-                for i in xrange(len(text)):
+                for i in range(len(text)):
                     while j > -1 and pattern[j + 1] != text[i]:
                         j = prefix[j]
                     if pattern[j + 1] == text[i]:
@@ -106,7 +106,7 @@ class Solution2(object):
             def getPrefix(pattern):
                 prefix = [-1] * len(pattern)
                 j = -1
-                for i in xrange(1, len(pattern)):
+                for i in range(1, len(pattern)):
                     while j > -1 and pattern[j + 1] != pattern[i]:
                         j = prefix[j]
                     if pattern[j + 1] == pattern[i]:

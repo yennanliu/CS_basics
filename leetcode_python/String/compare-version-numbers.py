@@ -18,10 +18,7 @@
 # 0.1 < 1.1 < 1.2 < 13.37
 #
 
-
-
 # V1 
-
 class Solution(object):
     def compareVersion(self, version1, version2):
         version1_ = list(version1.split('.'))
@@ -37,10 +34,9 @@ class Solution(object):
             else:
                 pass
         return 0 
+
 # V2 
 import itertools
-
-
 class Solution(object):
     def compareVersion(self, version1, version2):
         """
@@ -67,8 +63,6 @@ class Solution(object):
 
 # Time:  O(n)
 # Space: O(n)
-
-
 # V3 
 class Solution2(object):
     def compareVersion(self, version1, version2):
@@ -80,9 +74,9 @@ class Solution2(object):
         v1, v2 = version1.split("."), version2.split(".")
 
         if len(v1) > len(v2):
-            v2 += ['0' for _ in xrange(len(v1) - len(v2))]
+            v2 += ['0' for _ in range(len(v1) - len(v2))]
         elif len(v1) < len(v2):
-            v1 += ['0' for _ in xrange(len(v2) - len(v1))]
+            v1 += ['0' for _ in range(len(v2) - len(v1))]
 
         i = 0
         while i < len(v1):

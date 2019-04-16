@@ -33,8 +33,7 @@
 
 # V2 
 import collections
-
-
+from functools import reduce
 class Solution(object):
     def longestWord(self, words):
         """
@@ -57,7 +56,3 @@ class Solution(object):
                     result = word
                 stack += [curr[letter] for letter in curr if letter != "_end"]
         return result
-
-
-
-

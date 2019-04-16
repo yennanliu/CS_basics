@@ -25,9 +25,7 @@
 # s.length will be between 1 and 50,000.
 # s will only consist of "0" or "1" characters.
 
-
 # V1  : dev 
-
 
 # V2 
 class Solution(object):
@@ -37,7 +35,7 @@ class Solution(object):
         :rtype: int
         """
         result, prev, curr = 0, 0, 1
-        for i in xrange(1, len(s)):
+        for i in range(1, len(s)):
             if s[i-1] != s[i]:
                 result += min(prev, curr)
                 prev, curr = curr, 1
@@ -45,6 +43,3 @@ class Solution(object):
                 curr += 1
         result += min(prev, curr)
         return result
-
-
-

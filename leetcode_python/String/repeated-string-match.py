@@ -12,6 +12,7 @@
 # Note:
 # The length of A and B will be between 1 and 10000.
 
+
 # V1 
 # http://bookshadow.com/weblog/2017/10/01/leetcode-repeated-string-match/
 class Solution(object):
@@ -29,7 +30,6 @@ class Solution(object):
             x += 1
         return -1
     
-
 # V2 
 # Rabin-Karp Algorithm (rolling hash)
 class Solution(object):
@@ -54,7 +54,7 @@ class Solution(object):
             power = (power*p) % M
 
         a_hash, power = 0, 1
-        for i in xrange(len(B)):
+        for i in range(len(B)):
             a_hash += power * ord(A[i%len(A)])
             a_hash %= M
             power = (power*p) % M
@@ -62,7 +62,7 @@ class Solution(object):
         if a_hash == b_hash and check(0): return q
 
         power = (power*p_inv) % M
-        for i in xrange(len(B), (q+1)*len(A)):
+        for i in range(len(B), (q+1)*len(A)):
             a_hash = (a_hash-ord(A[(i-len(B))%len(A)])) * p_inv
             a_hash += power * ord(A[i%len(A)])
             a_hash %= M

@@ -16,7 +16,6 @@
 
 
 # V1 
-
 class Solution:
     def reverseStr(self, s, k):
         list_s = list(s)
@@ -24,9 +23,6 @@ class Solution:
             list_s[i:i+k] = reversed(list_s[i:i+k])
         return ''.join( str(j) for  j in list_s)
     
-    
-
-
 # V2 
 class Solution(object):
     def reverseStr(self, s, k):
@@ -36,9 +32,6 @@ class Solution(object):
         :rtype: str
         """
         s = list(s)
-        for i in xrange(0, len(s), 2*k):
+        for i in range(0, len(s), 2*k):
             s[i:i+k] = reversed(s[i:i+k])
         return "".join(s)
-
-
-
