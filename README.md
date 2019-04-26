@@ -557,7 +557,7 @@ Union Find
 
 
 ## Recursion Easy and Medium 
-|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
+|  #  | Title     |  Solution     |  Time           | Space           | Difficulty    | Note | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 095| [Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/unique-binary-search-trees-ii.py) | _O(4^n / n^(3/2)_   | _O(4^n / n^(3/2)_  | Medium   || AGAIN (not start)
 098| [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)|[C++](./C++/validate-binary-search-tree.cpp) [Python](./Python/validate-binary-search-tree.py)| _O(n)_ | _O(1)_ | Medium ||
