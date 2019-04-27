@@ -583,7 +583,7 @@ Union Find
 544| [Output Contest Matches](https://leetcode.com/problems/output-contest-matches/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/output-contest-matches.py)  | _O(n)_          | _O(n)_          | Medium           || AGAIN 
 549 | [Binary Tree Longest Consecutive Sequence II](https://leetcode.com/problems/binary-tree-longest-consecutive-sequence-ii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/binary-tree-longest-consecutive-sequence-ii.py)  | _O(n)_ | _O(h)_ | Medium    |🔒| AGAIN (not start)
 669| [Trim a Binary Search Tree](https://leetcode.com/problems/trim-a-binary-search-tree/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/trim-a-binary-search-tree.py) | _O(n)_          | _O(h)_          | Easy       || AGAIN (not start)
-671| [Second Minimum Node In a Binary Tree](https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/) | [C++](./C++/second-minimum-node-in-a-binary-tree.cpp) [Python](./Python/second-minimum-node-in-a-binary-tree.py) | _O(n)_          | _O(h)_          | Easy           ||
+671| [Second Minimum Node In a Binary Tree](https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/second-minimum-node-in-a-binary-tree.py) | _O(n)_          | _O(h)_          | Easy           || AGAIN (not start)
 
 
 ## Binary Search Easy and Medium 
