@@ -305,15 +305,6 @@
 846 | [Hand of Straights](https://leetcode.com/problems/hand-of-straights/) | [C++](./C++/hand-of-straights.cpp) [Python](./Python/hand-of-straights.py) | _O(nlogn)_ | _O(n)_ | Medium |||
 855 | [Exam Room](https://leetcode.com/problems/exam-room/) | [C++](./C++/exam-room.cpp) [Python](./Python/exam-room.py) | seat: _O(logn)_ <br> leave: _O(logn)_ | _O(n)_ | Medium || BST, Hash |
 
-
-## Dynamic Programming Easy
-|  #  | Title | Solution | Time | Space | Status|
-| --- | ----- | -------- | ---- | ----- | ---- |
-|70|[Climbing Stairs](https://leetcode.com/problems/climbing-stairs/#/solutions)| [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/climbing-stairs.py) | _O(N)_| _O(1)_  | | |
-|53|[Maximum Subarray](https://leetcode.com/problems/maximum-subarray/#/description)| | _O(N)_| _O(N)_  | ||
-|198|[House Robber](https://leetcode.com/problems/house-robber/#/description)| | _O(N)_| _O(N)_  | ||
-
-
 ## BitMap Easy & Medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
@@ -718,7 +709,7 @@ Union Find
 784| [Letter Case Permutation](https://leetcode.com/problems/letter-case-permutation/)    | [C++](./C++/letter-case-permutation.cpp) [Python](./Python/letter-case-permutation.py) | _O(n * 2^n)_    | _O(1)_          | Easy         ||
 
 ## Dynamic Programming Easy and Medium 
-|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 053| [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)|[Python](./Python/maximum-subarray.py)| _O(n)_     | _O(1)_         | Medium         ||
 062| [Unique Paths](https://leetcode.com/problems/unique-paths/)    | [Python](./Python/unique-paths.py)| _O(m * n)_      | _O(m + n)_   | Medium         ||
