@@ -1,3 +1,9 @@
+# 2019-04-28
+
+- TODO  : Dynamic Programming   
+- DONE  : Recursion (1st round)
+- REDO  : Linked list, Math
+
 # 2019-04-15
 
 - TODO  : Recursion  
