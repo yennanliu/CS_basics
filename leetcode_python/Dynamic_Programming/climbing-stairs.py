@@ -7,10 +7,12 @@
 # In how many distinct ways can you climb to the top?
 
 
+# V0 : DEV 
 
 
 # V1 
 # n = 1,2,3,4,5,6,7,8,9... -> output : 1,2,3,5,8,13,21,34....
+# -> output(n) = output(n-2) + output(n-1)
 # https://blog.csdn.net/coder_orz/article/details/51506414
 class Solution:
     def climbStairs(self, n):
@@ -18,8 +20,6 @@ class Solution:
         for i in range(n):
             prev, current =  current, prev+current
         return current
-
-
 
 # V2 
 class Solution:
@@ -29,7 +29,7 @@ class Solution:
     """
     def climbStairs(self, n):
         prev, current = 0, 1
-        for i in xrange(n):
+        for i in range(n):
             prev, current = current, prev + current,
         return current
 
@@ -49,5 +49,45 @@ if __name__ == "__main__":
     print result
 """
 
+# V3 
+# Time:  O(logn)
+# Space: O(1)
+import itertools
+class Solution(object):
+    def climbStairs(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        def matrix_expo(A, K):
+            result = [[int(i==j) for j in range(len(A))] \
+                      for i in range(len(A))]
+            while K:
+                if K % 2:
+                    result = matrix_mult(result, A)
+                A = matrix_mult(A, A)
+                K /= 2
+            return result
+
+        def matrix_mult(A, B):
+            ZB = zip(*B)
+            return [[sum(a*b for a, b in itertools.izip(row, col)) \
+                     for col in ZB] for row in A]
+
+        T = [[1, 1],
+             [1, 0]]
+        return matrix_expo(T, n)[0][0]
 
 
+# Time:  O(n)
+# Space: O(1)
+class Solution2(object):
+    """
+    :type n: int
+    :rtype: int
+    """
+    def climbStairs(self, n):
+        prev, current = 0, 1
+        for i in range(n):
+            prev, current = current, prev + current,
+        return current
