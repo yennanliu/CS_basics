@@ -10,18 +10,32 @@
 # determine the maximum amount of money you can rob tonight without alerting the police.
 #
 
+# V0 : DEV ( double check time out error )
+# class Solution(object):
+#     def rob(self, nums):
+#         if len(nums) == 0:
+#             return 0
+#         if len(nums) == 1:
+#             return nums[0]
+#         rob_sum = [ sum(nums[1::n]) for n in range(2,len(nums))   ] + [ sum(nums[0::n])  for n in range(2,len(nums))   ]
+#         return max(rob_sum)
 
-# V1 : dev ( double check time out error )
 
+# V1 
+# Time:  O(n)
+# Space: O(1)
 class Solution(object):
+    # @param num, a list of integer
+    # @return an integer
     def rob(self, nums):
-        if len(nums) == 0:
-            return 0
-        if len(nums) == 1:
-            return nums[0]
-        rob_sum = [ sum(nums[1::n]) for n in range(2,len(nums))   ] + [ sum(nums[0::n])  for n in range(2,len(nums))   ]
-        return max(rob_sum)
-    
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        last, now = 0, 0
+        for i in nums:
+            last, now = now, max(last + i, now)
+        return now
 
 # V2 
 class Solution:
@@ -56,11 +70,6 @@ class Solution:
             last, now = now, max(last + i, now)
         return now
 
-
-
-"""
-if __name__ == '__main__':
-        print Solution().rob([8,4,8,5,9,6,5,4,4,10])
-"""
-
+# if __name__ == '__main__':
+#         print Solution().rob([8,4,8,5,9,6,5,4,4,10])
 
