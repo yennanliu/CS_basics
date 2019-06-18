@@ -723,7 +723,7 @@ Union Find
 152| [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/maximum-product-subarray.py)| _O(n)_ | _O(1)_ | Medium     || AGAIN (not start)
 198| [House Robber](https://leetcode.com/problems/house-robber/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/house-robber.py) | _O(n)_          | _O(1)_       | Easy       || AGAIN*
 213| [House Robber II](https://leetcode.com/problems/house-robber-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/house-robber-iii.py) | _O(n)_          | _O(1)_          | Medium        || AGAIN (not start)
-221| [Maximal Square](https://leetcode.com/problems/maximal-square/)| [C++](./C++/maximal-square.cpp) [Python](./Python/maximal-square.py) | _O(n^2)_         | _O(n)_          | Medium           | EPI |
+221| [Maximal Square](https://leetcode.com/problems/maximal-square/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/maximal-square.py) | _O(n^2)_         | _O(n)_          | Medium           | EPI | AGAIN 
 256| [Paint House](https://leetcode.com/problems/paint-house/) | [C++](./C++/paint-house.cpp) [Python](./Python/paint-house.py) | _O(n)_| _O(1)_| Medium |🔒||
 276| [Paint Fence](https://leetcode.com/problems/paint-fence/) | [C++](./C++/paint-fence.cpp) [Python](./Python/paint-fence.py) | _O(n)_| _O(1)_| Easy |🔒||
 279| [Perfect Squares](https://leetcode.com/problems/perfect-squares/)| [C++](./C++/perfect-squares.cpp) [Python](./Python/perfect-squares.py) | _O(n * sqrt(n))_         | _O(n)_          | Medium           ||  Hash |
