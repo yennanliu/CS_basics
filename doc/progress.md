@@ -1,3 +1,8 @@
+# 2019-06-18
+
+- TODO  : Dynamic Programming, BFS/DFS revisit      
+- REDO  : Linked list, Math, Recursion 
+
 # 2019-04-28
 
 - TODO  : Dynamic Programming   
