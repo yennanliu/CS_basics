@@ -23,7 +23,7 @@ script:
     # Check python install package
     #- pip3 install -e .
     #- tox -e $TOX_ENV
-    - tox -e $(echo py$TOX_ENV | tr -d .)
+    #- tox -e $(echo py$TOX_ENV | tr -d .)
     # Check python uninstall package
     #- pip3 uninstall -y algorithms
 notifications:
