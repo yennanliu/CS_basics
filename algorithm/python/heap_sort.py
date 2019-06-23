@@ -3,7 +3,7 @@
 
 
 # V1 
-from __future__ import print_function
+
 def heapify(unsorted, index, heap_size):
     largest = index
     left_index = 2 * index + 1

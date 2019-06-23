@@ -3,7 +3,7 @@
 
 # V1 
 # https://github.com/yennanliu/Python/blob/master/hashes/md5.py
-from __future__ import print_function
+
 import math
 def rearrange(bitString32):
 	"""[summary]

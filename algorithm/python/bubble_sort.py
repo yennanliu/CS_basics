@@ -15,7 +15,7 @@ def bubble_sort(arr, simulation=False):
     
     iteration = 0
     if simulation:
-        print("iteration",iteration,":",*arr)
+        print(("iteration",iteration,":",*arr))
     x = -1
     while swapped:
         swapped = False
@@ -26,13 +26,13 @@ def bubble_sort(arr, simulation=False):
                 swapped = True
                 if simulation:
                     iteration = iteration + 1
-                    print("iteration",iteration,":",*arr)
+                    print(("iteration",iteration,":",*arr))
                     
     return arr
 
 # V2 
 # https://github.com/TheAlgorithms/Python/blob/master/sorts/bubble_sort.py
-from __future__ import print_function
+
 def bubble_sort(collection):
     """Pure implementation of bubble sort algorithm in Python
     :param collection: some mutable ordered collection with heterogeneous

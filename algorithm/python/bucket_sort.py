@@ -4,7 +4,7 @@
 # V1 
 #  Time Complexity of Solution:
 #  Best Case O(n); Average Case O(n); Worst Case O(n)
-from __future__ import print_function
+
 from insertion_sort import insertion_sort
 import math
 DEFAULT_BUCKET_SIZE = 5

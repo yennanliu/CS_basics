@@ -12,7 +12,7 @@ python3 -m doctest -v merge_sort.py
 For manual testing run:
 python merge_sort.py
 """
-from __future__ import print_function
+
 def merge_sort(collection):
     """Pure implementation of the merge sort algorithm in Python
     :param collection: some mutable ordered collection with heterogeneous

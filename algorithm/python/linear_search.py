@@ -12,7 +12,7 @@ python3 -m doctest -v linear_search.py
 For manual testing run:
 python linear_search.py
 """
-from __future__ import print_function
+
 
 try:
     raw_input          # Python 2
