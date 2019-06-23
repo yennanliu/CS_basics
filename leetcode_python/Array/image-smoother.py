@@ -23,14 +23,10 @@
 # The value in the given matrix is in the range of [0, 255].
 # The length and width of the given matrix are in the range of [1, 150].
 
-
-
 # V1  : dev 
 
-
-
 # V2 
-
+import math 
 class Solution:
     def imageSmoother(self, M):
         """
@@ -54,7 +50,6 @@ class Solution:
                 result[i][j] = math.floor(current / count)
         return result
 
-
 # V2 
 class Solution(object):
     def imageSmoother(self, M):
@@ -77,7 +72,3 @@ class Solution(object):
             for j in range(len(M[0])):
                 result[i][j] = getGray(M, i, j);
         return result
-
-
-
-

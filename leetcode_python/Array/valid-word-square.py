@@ -107,11 +107,6 @@ class Solution(object):
 """
 
 
-
-
-
-
-
 # V2 
 # Time:  O(m * n)
 # Space: O(1)
@@ -124,15 +119,12 @@ class Solution(object):
         """
         for i in range(len(words)):
             for j in range(len(words[i])):
-            	"""
-            	A sequence of words forms a valid word square if the kth row and column read the exact same string, 
-            	where 0 ≤ k < max(numRows, numColumns).
-				"""
-                if j >= len(words) or i >= len(words[j]) or \
+        """
+        A sequence of words forms a valid word square if the kth row and column read the exact same string, 
+        where 0 ≤ k < max(numRows, numColumns).
+        """
+              if j >= len(words) or i >= len(words[j]) or \
                    words[j][i] != words[i][j]:
                    return False
         return True
-
-
-
 

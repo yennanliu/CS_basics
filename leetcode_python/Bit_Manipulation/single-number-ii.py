@@ -16,6 +16,7 @@
 # Input: [0,1,0,1,0,1,99]
 # Output: 99
 
+import collections
 # V1 
 class Solution:
     def singleNumber(self, nums):
@@ -29,7 +30,6 @@ class Solution:
  
  # V2 
 class Solution3(object):
-    import collections
     def singleNumber(self, nums):
         """
         :type nums: List[int]

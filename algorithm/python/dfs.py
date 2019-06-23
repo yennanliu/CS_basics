@@ -23,7 +23,7 @@ def dfs_recursion(G,s,S=None,res=None):
         if u in S:
             continue
         S.add(u)
-        dfs(G,u,S,res)
+        dfs_recursion(G,u,S,res)
     return res
 
 # G={

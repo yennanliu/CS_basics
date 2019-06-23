@@ -51,7 +51,7 @@ class Solution(object):
         extra = 0 
         count = 0 
         output = []
-        for i in list_[::-1]:
+        for i in my_list[::-1]:
             if count==0:
                 i = i + 1 + extra         
             i = i + extra
