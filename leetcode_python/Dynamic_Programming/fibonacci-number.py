@@ -1,5 +1,5 @@
 # V1 
-class solution(n):
+class solution(object):
 	def fib(n):
 		return solution.fib(n-2) + solution.fib(n-1)
 	if n <= 2:
@@ -7,7 +7,7 @@ class solution(n):
 	return solution.fib(n-2) + solution.fib(n-1)
 
 # V1' 
-class solution(n):
+class solution(object):
 	def fib(n):
 		if n <= 2:
 			return 1 

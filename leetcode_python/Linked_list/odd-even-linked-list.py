@@ -17,6 +17,24 @@ class Solution(object):
 
 # V2 : DEV 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79569396
+class ListNode:  
+    def __init__(self, data):
+        "constructor to initiate this object"
+
+        # store data
+        self.data = data
+
+        # store reference (next item)
+        self.next = None
+        return
+
+    def has_value(self, value):
+        "method to compare the value with the node data"
+        if self.data == value:
+            return True
+        else:
+            return False
+            
 class Solution(object):
     def oddEvenList(self, head):
         """
@@ -43,7 +61,6 @@ class Solution(object):
 # V3  
 # Time:  O(n)
 # Space: O(1)
-
 class Solution(object):
     def oddEvenList(self, head):
         """
@@ -60,5 +77,3 @@ class Solution(object):
                 odd_tail.next = even_head
                 cur = cur.__next__
         return head
-
-

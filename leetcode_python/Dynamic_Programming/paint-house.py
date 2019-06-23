@@ -18,26 +18,26 @@
 # V1 :  
 # https://blog.csdn.net/danspace1/article/details/87854823
 # DP state equation : dp[i][j] = dp[i][j] + min(dp[i - 1][(j + 1) % 3], dp[i - 1][(j + 2) % 3])
-class Solution:
-    def minCost(self, costs: 'List[List[int]]') -> 'int':
-        red, blue, green = 0, 0, 0
-        for r, b, g in costs:
-            red, blue, green = min(blue, green) + r, min(red, green) + b, min(red, blue) + g            
+# class Solution:
+#     def minCost(self, costs: 'List[List[int]]') -> 'int':
+#         red, blue, green = 0, 0, 0
+#         for r, b, g in costs:
+#             red, blue, green = min(blue, green) + r, min(red, green) + b, min(red, blue) + g            
   
-# V1' 
-class Solution:
-    def minCost(self, costs: 'List[List[int]]') -> 'int':
-        # base case
-        if not costs: return 0
+# # V1' 
+# class Solution:
+#     def minCost(self, costs: 'List[List[int]]') -> 'int':
+#         # base case
+#         if not costs: return 0
         
-        dp = costs[0][:]
-        for i in range(1, len(costs)):
-            # get the previous minimum cost
-            pre = dp[:]
-            for j in range(len(costs[0])):
-                dp[j] = costs[i][j] + min(pre[:j] + pre[j+1:])
+#         dp = costs[0][:]
+#         for i in range(1, len(costs)):
+#             # get the previous minimum cost
+#             pre = dp[:]
+#             for j in range(len(costs[0])):
+#                 dp[j] = costs[i][j] + min(pre[:j] + pre[j+1:])
                 
-        return min(dp)
+#         return min(dp)
 
 # V2 
 # Time:  O(n)

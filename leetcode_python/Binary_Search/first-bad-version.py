@@ -42,15 +42,7 @@ https://blog.csdn.net/coder_orz/article/details/52048093
 
 
 
-
-
-
-
-
 # V3 
-
-
-
 class Solution(object):
     def firstBadVersion(self, n):
         """
@@ -60,22 +52,14 @@ class Solution(object):
         left, right = 1, n
         while True:
             mid = (left + right) / 2
-            if isBadVersion(mid):
-                if mid == 1 or not isBadVersion(mid - 1):
+            if Solution.isBadVersion(mid):
+                if mid == 1 or not Solution.isBadVersion(mid - 1):
                     return mid
                 right = mid - 1
             else:
                 left = mid + 1
 
-
-
-
-
-
-
-
 # V3 
-
 class Solution(object):
     def firstBadVersion(self, n):
         """
@@ -85,18 +69,8 @@ class Solution(object):
         left, right = 1, n
         while left < right:
             mid = (left + right) / 2
-            if isBadVersion(mid):
+            if Solution.isBadVersion(mid):
                 right = mid
             else:
                 left = mid + 1
         return left
-
-
-
-
-
-
-
-
-
-

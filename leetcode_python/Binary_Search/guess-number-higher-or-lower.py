@@ -1,6 +1,3 @@
-
-
-
 # Time:  O(logn)
 # Space: O(1)
 
@@ -19,7 +16,6 @@
 # @return -1 if my number is lower, 1 if my number is higher, otherwise return 0
 # def guess(num):
 
-
 # V1 
 class Solution(object):
     def guessNumber(self, n):
@@ -30,17 +26,13 @@ class Solution(object):
         left, right = 1, n
         while left <= right:
             mid = left + (right - left) / 2
-            if guess(mid) == 0:
+            if Solution.guessNumber(mid) == 0:
                 return  mid 
-            elif guess(mid) < 0: # noqa
+            elif Solution.guessNumber(mid) < 0: # noqa
                 right = mid - 1
             else:
                 left = mid + 1
         return left
-
-
-
-
 
 # V2 
 class Solution(object):
@@ -52,10 +44,8 @@ class Solution(object):
         left, right = 1, n
         while left <= right:
             mid = left + (right - left) / 2
-            if guess(mid) <= 0: # noqa
+            if Solution.guessNumber(mid) <= 0: # noqa
                 right = mid - 1
             else:
                 left = mid + 1
         return left
-
-

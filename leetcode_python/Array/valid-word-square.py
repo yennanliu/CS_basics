@@ -81,12 +81,12 @@ Therefore, it is NOT a valid word square.
 
 
 
-[
-  "abcd",
-  "bnrt",
-  "crm",
-  "dt"
-]
+# [
+#   "abcd",
+#   "bnrt",
+#   "crm",
+#   "dt"
+# ]
 
 
 # V1  : dev 
@@ -106,11 +106,9 @@ class Solution(object):
 			return False 
 """
 
-
 # V2 
 # Time:  O(m * n)
 # Space: O(1)
-
 class Solution(object):
     def validWordSquare(self, words):
         """
@@ -127,4 +125,3 @@ class Solution(object):
                    words[j][i] != words[i][j]:
                    return False
         return True
-
