@@ -1,4 +1,5 @@
 # V0 
+import collections
 
 # V1 
 # http://bookshadow.com/weblog/2015/09/09/leetcode-perfect-squares/

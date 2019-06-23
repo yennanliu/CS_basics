@@ -1,6 +1,5 @@
-
-
-# V1 
+# V1
+import math  
 class Solution(object):
     # @return a boolean
     def isPalindrome(self, x):
@@ -19,7 +18,6 @@ class Solution(object):
 # V2 
 # Time:  O(1)
 # Space: O(1)
-
 class Solution(object):
     # @return a boolean
     def isPalindrome(self, x):

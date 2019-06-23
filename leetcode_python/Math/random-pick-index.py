@@ -1,5 +1,6 @@
 # V1 
 from random import randint
+import random 
 class Solution(object):
 
 	def __init__(self, nums):

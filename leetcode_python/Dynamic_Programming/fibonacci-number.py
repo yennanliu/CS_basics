@@ -1,21 +1,20 @@
 # V1 
 class solution(n):
 	def fib(n):
-		return fib(n-2) + fib(n-1)
+		return solution.fib(n-2) + solution.fib(n-1)
 	if n <= 2:
 		return 1 
-	return fib(n-2) + fib(n-1)
+	return solution.fib(n-2) + solution.fib(n-1)
 
 # V1' 
 class solution(n):
 	def fib(n):
 		if n <= 2:
 			return 1 
-		return fib(n-2) + fib(n-1)
-	return fib(n)
+		return solution.fib(n-2) + solution.fib(n-1)
+	return solution.fib(n)
 
 # V1''
-
 
 
 # V2 
