@@ -1,68 +1,66 @@
 # V0 : DEV 
 
-
-
-# V1
-# https://blog.csdn.net/yangjingjing9/article/details/77096057
-#Definition for a binary tree node.
-classTreeNode(object):
-     def __init__(self, x):
-         self.val = x
-         self.left = None
-         self.right = None
+# # V1
+# # https://blog.csdn.net/yangjingjing9/article/details/77096057
+# #Definition for a binary tree node.
+# classTreeNode(object):
+#      def __init__(self, x):
+#          self.val = x
+#          self.left = None
+#          self.right = None
  
-classSolution(object):
-    def isValidBST(self, root):
-        """
-        :type root: TreeNode
-        :rtype: bool
-        """
-        return self.valid(root, None, None)
+# classSolution(object):
+#     def isValidBST(self, root):
+#         """
+#         :type root: TreeNode
+#         :rtype: bool
+#         """
+#         return self.valid(root, None, None)
                
-    def valid(self, root, min, max):
-        if root == None or root.val == None:
-            return True
+#     def valid(self, root, min, max):
+#         if root == None or root.val == None:
+#             return True
        
-        if (min is not None and root.val <=min) or (max is not None and root.val >= max):
-            print(1)
-            return False
+#         if (min is not None and root.val <=min) or (max is not None and root.val >= max):
+#             print(1)
+#             return False
        
-        return self.valid(root.left, min,root.val) and self.valid(root.right, root.val, max)
+#         return self.valid(root.left, min,root.val) and self.valid(root.right, root.val, max)
          
-# if__name__ == '__main__':
-#     S = Solution()
-#     l1 = TreeNode(9)
-#     l2 = TreeNode(5)
-#     l3 = TreeNode(11)
-#     l4 = TreeNode(2)
-#     l5 = TreeNode(7)
-#     l6 = TreeNode(10)
-#     l7 = TreeNode(14)
-#     l8 = TreeNode(1)
-#     l9 = TreeNode(3)
-#     l10 = TreeNode(6)
-#     l11 = TreeNode(8)
-#     l12 = TreeNode(12)
-#     l13 = TreeNode(15)
+# # if__name__ == '__main__':
+# #     S = Solution()
+# #     l1 = TreeNode(9)
+# #     l2 = TreeNode(5)
+# #     l3 = TreeNode(11)
+# #     l4 = TreeNode(2)
+# #     l5 = TreeNode(7)
+# #     l6 = TreeNode(10)
+# #     l7 = TreeNode(14)
+# #     l8 = TreeNode(1)
+# #     l9 = TreeNode(3)
+# #     l10 = TreeNode(6)
+# #     l11 = TreeNode(8)
+# #     l12 = TreeNode(12)
+# #     l13 = TreeNode(15)
    
-#     root = l1
+# #     root = l1
    
-#     l1.left = l2
-#     l1.right = l3
+# #     l1.left = l2
+# #     l1.right = l3
    
-#     l2.left = l4
-#     l2.right = l5
-#     l3.left = l6
-#     l3.right = l7
+# #     l2.left = l4
+# #     l2.right = l5
+# #     l3.left = l6
+# #     l3.right = l7
    
-#     l4.left = l8
-#     l4.right = l9
-#     l5.left = l10
-#     l5.right = l11
-#     l7.left = l12
-#     l7.right = l13
+# #     l4.left = l8
+# #     l4.right = l9
+# #     l5.left = l10
+# #     l5.right = l11
+# #     l7.left = l12
+# #     l7.right = l13
    
-#     S.isValidBST(root) 
+# #     S.isValidBST(root) 
 
 # V2 
 # Time:  O(n)
