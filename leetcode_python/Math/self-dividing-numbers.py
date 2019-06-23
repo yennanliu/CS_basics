@@ -42,7 +42,7 @@ class Solution:
 class Solution(object):
     def selfDividingNumbers(self, left, right):
         is_self_dividing = lambda num: '0' not in str(num) and all([num % int(digit) == 0 for digit in str(num)])
-        return filter(is_self_dividing, range(left, right + 1))
+        return list(filter(is_self_dividing, list(range(left, right + 1))))
 
 # V3 
 # Time:  O(nlogr) = O(n)
@@ -63,7 +63,7 @@ class Solution(object):
             return True
 
         result = []
-        for num in xrange(left, right+1):
+        for num in range(left, right+1):
             if isDividingNumber(num):
                 result.append(num)
         return result

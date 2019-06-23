@@ -11,7 +11,7 @@ class Solution(object):
 		if head:
 			while head:
 				output_list.append(head.val)
-				head = head.next 
+				head = head.__next__ 
 		return [ v  for k,v in enumerate(output_list)  if k%2 ==0 ] +  [ v  for k,v in enumerate(output_list)  if k%2 ==1 ] 
 
 
@@ -30,15 +30,15 @@ class Solution(object):
         while head:
             if index & 1 == 0:
                 odd.next = head
-                odd = odd.next
+                odd = odd.__next__
             else:
                 even.next = head
-                even = even.next
-            head = head.next
+                even = even.__next__
+            head = head.__next__
             index += 1
         even.next = None
-        odd.next = evenHead.next
-        return oddHead.next
+        odd.next = evenHead.__next__
+        return oddHead.__next__
 
 # V3  
 # Time:  O(n)
@@ -51,14 +51,14 @@ class Solution(object):
         :rtype: ListNode
         """
         if head:
-            odd_tail, cur = head, head.next
-            while cur and cur.next:
-                even_head = odd_tail.next
-                odd_tail.next = cur.next
-                odd_tail = odd_tail.next
-                cur.next = odd_tail.next
+            odd_tail, cur = head, head.__next__
+            while cur and cur.__next__:
+                even_head = odd_tail.__next__
+                odd_tail.next = cur.__next__
+                odd_tail = odd_tail.__next__
+                cur.next = odd_tail.__next__
                 odd_tail.next = even_head
-                cur = cur.next
+                cur = cur.__next__
         return head
 
 

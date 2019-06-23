@@ -29,6 +29,7 @@ class Solution(object):
 # V2 
 
 import operator
+from functools import reduce
 class Solution(object):
     def missingNumber(self, nums):
         """
@@ -36,7 +37,7 @@ class Solution(object):
         :rtype: int
         """
         return reduce(operator.xor, nums, \
-                      reduce(operator.xor, xrange(len(nums) + 1)))
+                      reduce(operator.xor, range(len(nums) + 1)))
 
 
 

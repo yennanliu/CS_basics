@@ -42,7 +42,7 @@ import operator
 
 # One pass solution.
 from collections import defaultdict, Counter
-from itertools import izip, imap
+
 
 
 class Solution(object):
@@ -54,7 +54,7 @@ class Solution(object):
         """
         A, B = 0, 0
         s_lookup, g_lookup = defaultdict(int), defaultdict(int)
-        for s, g in izip(secret, guess):
+        for s, g in zip(secret, guess):
             if s == g:
                 A += 1
             else:
@@ -81,7 +81,7 @@ class Solution2(object):
         :type guess: str
         :rtype: str
         """
-        A = sum(imap(operator.eq, secret, guess))
+        A = sum(map(operator.eq, secret, guess))
         B = sum((Counter(secret) & Counter(guess)).values()) - A
         return "%dA%dB" % (A, B)
 

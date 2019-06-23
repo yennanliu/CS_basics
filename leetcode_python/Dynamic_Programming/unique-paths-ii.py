@@ -40,10 +40,10 @@ class Solution(object):
 
         ways = [0]*n
         ways[0] = 1
-        for i in xrange(m):
+        for i in range(m):
             if obstacleGrid[i][0] == 1:
                 ways[0] = 0
-            for j in xrange(n):
+            for j in range(n):
                 if obstacleGrid[i][j] == 1:
                     ways[j] = 0
                 elif j>0:

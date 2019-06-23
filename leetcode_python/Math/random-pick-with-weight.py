@@ -50,7 +50,7 @@ class Solution(object):
         :type w: List[int]
         """
         self.__prefix_sum = list(w)
-        for i in xrange(1, len(w)):
+        for i in range(1, len(w)):
             self.__prefix_sum[i] += self.__prefix_sum[i-1]
 
     def pickIndex(self):

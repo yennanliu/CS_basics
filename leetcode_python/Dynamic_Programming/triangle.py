@@ -15,7 +15,7 @@ class Solution(object):
         for i in range(n - 2, -1, -1):
             for j in range(i + 1):  # start from the second last digit 
                 dp[j] = triangle[i][j] + min(dp[j], dp[j + 1])
-        print dp
+        print(dp)
         return dp[0]
 
 # V2 

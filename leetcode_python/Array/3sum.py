@@ -68,8 +68,8 @@ def threeSum2(self, nums):
     :rtype: List[List[int]]
     """
     d = collections.Counter(nums)
-    nums_2 = [x[0] for x in d.items() if x[1] > 1]
-    nums_new = sorted([x[0] for x in d.items()])
+    nums_2 = [x[0] for x in list(d.items()) if x[1] > 1]
+    nums_new = sorted([x[0] for x in list(d.items())])
     rtn = [[0, 0, 0]] if d[0] >= 3 else []
     for i, j in enumerate(nums_new):
         if j <= 0:

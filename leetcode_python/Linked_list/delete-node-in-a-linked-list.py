@@ -32,7 +32,7 @@ class Solution:
     	### step 1) get the value of next node 
     	### step 2) point to next node 
         node.val = node.next.val
-        node.next = node.next.next
+        node.next = node.next.__next__
 
 
 # V3 
@@ -40,8 +40,8 @@ class Solution(object):
     # @param {ListNode} node
     # @return {void} Do not return anything, modify node in-place instead.
     def deleteNode(self, node):
-        if node and node.next:
-            node_to_delete = node.next
+        if node and node.__next__:
+            node_to_delete = node.__next__
             node.val = node_to_delete.val
-            node.next = node_to_delete.next
+            node.next = node_to_delete.__next__
             del node_to_delete

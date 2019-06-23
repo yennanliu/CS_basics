@@ -8,7 +8,7 @@ class ListNode(object):
 
     def __repr__(self):
         if self:
-            return "{} -> {}".format(self.val, repr(self.next))
+            return "{} -> {}".format(self.val, repr(self.__next__))
 
 class Solution(object):
     # @param head, a ListNode
@@ -24,7 +24,7 @@ class Solution(object):
             else:
                 right.append(cur.val)
 
-            cur = cur.next 
+            cur = cur.__next__ 
         return left + right 
 
 # V2 
@@ -38,7 +38,7 @@ class ListNode(object):
 
     def __repr__(self):
         if self:
-            return "{} -> {}".format(self.val, repr(self.next))
+            return "{} -> {}".format(self.val, repr(self.__next__))
 
 class Solution(object):
     # @param head, a ListNode
@@ -51,16 +51,16 @@ class Solution(object):
         while head:
             if head.val < x:
                 smaller.next = head
-                smaller = smaller.next
+                smaller = smaller.__next__
             else:
                 greater.next = head
-                greater = greater.next
-            head = head.next
+                greater = greater.__next__
+            head = head.__next__
 
-        smaller.next = dummyGreater.next
+        smaller.next = dummyGreater.__next__
         greater.next = None
 
-        return dummySmaller.next
+        return dummySmaller.__next__
 
 
 

@@ -47,13 +47,13 @@ class Solution(object):
         :type N: int
         :rtype: int
         """
-        A = map(int, str(N))
+        A = list(map(int, str(N)))
         invalid, diff = set([3, 4, 7]), set([2, 5, 6, 9])
         def dp(A, i, is_prefix_equal, is_good, lookup):
             if i == len(A): return int(is_good)
             if (i, is_prefix_equal, is_good) not in lookup:
                 result = 0
-                for d in xrange(A[i]+1 if is_prefix_equal else 10):
+                for d in range(A[i]+1 if is_prefix_equal else 10):
                     if d in invalid: continue
                     result += dp(A, i+1,
                                  is_prefix_equal and d == A[i],
@@ -79,7 +79,7 @@ class Solution2(object):
         same, diff = [0, 1, 8], [2, 5, 6, 9]
         dp = [0] * (N+1)
         dp[0] = SAME
-        for i in xrange(N//10+1):
+        for i in range(N//10+1):
             if dp[i] != INVALID:
                 for j in same:
                     if i*10+j <= N:
@@ -101,7 +101,7 @@ class Solution3(object):
         """
         invalid, diff = set(['3', '4', '7']), set(['2', '5', '6', '9'])
         result = 0
-        for i in xrange(N+1):
+        for i in range(N+1):
             lookup = set(list(str(i)))
             if invalid & lookup:
                 continue

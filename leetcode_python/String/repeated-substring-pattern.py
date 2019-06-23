@@ -62,7 +62,7 @@ class Solution(object):
         def getPrefix(pattern):
             prefix = [-1] * len(pattern)
             j = -1
-            for i in xrange(1, len(pattern)):
+            for i in range(1, len(pattern)):
                 while j > -1 and pattern[j + 1] != pattern[i]:
                     j = prefix[j]
                 if pattern[j + 1] == pattern[i]:
@@ -83,7 +83,7 @@ class Solution(object):
             return False
 
         ss = (str + str)[1:-1]
-        print ss
+        print(ss)
         return ss.find(str) != -1
 
 

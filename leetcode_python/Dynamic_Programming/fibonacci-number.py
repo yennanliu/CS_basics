@@ -32,8 +32,8 @@ class Solution(object):
         :rtype: int
         """
         def matrix_expo(A, K):
-            result = [[int(i==j) for j in xrange(len(A))] \
-                      for i in xrange(len(A))]
+            result = [[int(i==j) for j in range(len(A))] \
+                      for i in range(len(A))]
             while K:
                 if K % 2:
                     result = matrix_mult(result, A)
@@ -42,8 +42,8 @@ class Solution(object):
             return result
 
         def matrix_mult(A, B):
-            ZB = zip(*B)
-            return [[sum(a*b for a, b in itertools.izip(row, col)) \
+            ZB = list(zip(*B))
+            return [[sum(a*b for a, b in zip(row, col)) \
                      for col in ZB] for row in A]
 
         T = [[1, 1],
@@ -61,6 +61,6 @@ class Solution2(object):
         :rtype: int
         """
         prev, current = 0, 1
-        for i in xrange(N):
+        for i in range(N):
             prev, current = current, prev + current,
         return prev

@@ -30,7 +30,7 @@ class Solution(object):
         expression = expression.replace('-', '+-')
         son_moms = []
         for fractions in expression.split('+'):
-            son_moms.append(map(int, fractions.split('/')))
+            son_moms.append(list(map(int, fractions.split('/'))))
         ans = [0, 1]
         for son_mom in son_moms:
             ans[0] = ans[0] * son_mom[1] + son_mom[0] * ans[1]
@@ -59,9 +59,9 @@ class Solution(object):
                 a, b = b, a%b
             return a
 
-        ints = map(int, re.findall('[+-]?\d+', expression))
+        ints = list(map(int, re.findall('[+-]?\d+', expression)))
         A, B = 0, 1
-        for i in xrange(0, len(ints), 2):
+        for i in range(0, len(ints), 2):
             a, b = ints[i], ints[i+1]
             A = A * b + a * B
             B *= b

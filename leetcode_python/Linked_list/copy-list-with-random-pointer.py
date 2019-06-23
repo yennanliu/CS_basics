@@ -19,25 +19,25 @@ class Solution(object):
         current = head
         while current:
             copied = RandomListNode(current.label)
-            copied.next = current.next
+            copied.next = current.__next__
             current.next = copied
-            current = copied.next
+            current = copied.__next__
 
         # update random node in copied list
         current = head
         while current:
             if current.random:
-                current.next.random = current.random.next
-            current = current.next.next
+                current.next.random = current.random.__next__
+            current = current.next.__next__
 
         # split copied list from combined one
         dummy = RandomListNode(0)
         copied_current, current = dummy, head
         while current:
-            copied_current.next = current.next
-            current.next = current.next.next
-            copied_current, current = copied_current.next, current.next
-        return dummy.next
+            copied_current.next = current.__next__
+            current.next = current.next.__next__
+            copied_current, current = copied_current.__next__, current.__next__
+        return dummy.__next__
 
 # V3 
 # Time:  O(n)
@@ -53,15 +53,15 @@ class Solution2(object):
             copied = RandomListNode(current.label)
             copies[current] = copied
             prev.next = copied
-            prev, current = prev.next, current.next
+            prev, current = prev.__next__, current.__next__
 
         current = head
         while current:
             if current.random:
                 copies[current].random = copies[current.random]
-            current = current.next
+            current = current.__next__
 
-        return dummy.next
+        return dummy.__next__
 
 # V4
 # time: O(n)
@@ -79,8 +79,8 @@ class Solution3(object):
 
         while cur:
             clone[cur].label = cur.label
-            clone[cur].next = clone[cur.next]
+            clone[cur].next = clone[cur.__next__]
             clone[cur].random = clone[cur.random]
-            cur = cur.next
+            cur = cur.__next__
 
         return clone[head]

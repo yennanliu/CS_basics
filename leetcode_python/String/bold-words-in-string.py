@@ -49,20 +49,20 @@ class Solution(object):
             functools.reduce(dict.__getitem__, word, trie).setdefault("_end")
 
         lookup = [False] * len(S)
-        for i in xrange(len(S)):
+        for i in range(len(S)):
             curr = trie
             k = -1
-            for j in xrange(i, len(S)):
+            for j in range(i, len(S)):
                 if S[j] not in curr:
                     break
                 curr = curr[S[j]]
                 if "_end" in curr:
                     k = j
-            for j in xrange(i, k+1):
+            for j in range(i, k+1):
                 lookup[j] = True
 
         result = []
-        for i in xrange(len(S)):
+        for i in range(len(S)):
             if lookup[i] and (i == 0 or not lookup[i-1]):
                 result.append("<b>")
             result.append(S[i])
@@ -89,7 +89,7 @@ class Solution2(object):
                 pos = S.find(d, pos+1)
 
         result = []
-        for i in xrange(len(S)):
+        for i in range(len(S)):
             if lookup[i] and (i == 0 or not lookup[i-1]):
                 result.append("<b>")
             result.append(S[i])

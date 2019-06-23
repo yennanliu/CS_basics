@@ -53,7 +53,7 @@ class Solution(object):
         :type n: int
         :rtype: str
         """
-        return self.solve(map(str, range(1, n + 1)))
+        return self.solve(list(map(str, list(range(1, n + 1)))))
 
 # V2 
 # Time:  O(n)
@@ -64,7 +64,7 @@ class Solution(object):
         :type n: int
         :rtype: str
         """
-        matches = map(str, range(1, n+1))
+        matches = list(map(str, list(range(1, n+1))))
         while len(matches)/2:
             matches = ["({},{})".format(matches[i], matches[-i-1]) for i in range(len(matches)/2)]
         return matches[0]

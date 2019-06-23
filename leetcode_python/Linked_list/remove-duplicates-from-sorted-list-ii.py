@@ -45,7 +45,7 @@ class ListNode(object):
         if self is None:
             return "Nil"
         else:
-            return "{} -> {}".format(self.val, repr(self.next))
+            return "{} -> {}".format(self.val, repr(self.__next__))
 
 class Solution(object):
     def deleteDuplicates(self, head):
@@ -56,15 +56,15 @@ class Solution(object):
         dummy = ListNode(0)
         pre, cur = dummy, head
         while cur:
-            if cur.next and cur.next.val == cur.val:
+            if cur.__next__ and cur.next.val == cur.val:
                 val = cur.val
                 while cur and cur.val == val:
-                    cur = cur.next
+                    cur = cur.__next__
                 pre.next = cur
             else:
                 pre.next = cur
                 pre = cur
-                cur = cur.next
-        return dummy.next
+                cur = cur.__next__
+        return dummy.__next__
 
 

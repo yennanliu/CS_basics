@@ -36,8 +36,8 @@ class TreeNode(object):
 
 class Solution(object):
     def findSecondMinimumValue(self, root):
-        self.min = sys.maxint
-        self.second_min = sys.maxint
+        self.min = sys.maxsize
+        self.second_min = sys.maxsize
         def traverse(node):
             if node:
                 if node.val < self.min:
@@ -50,7 +50,7 @@ class Solution(object):
                 traverse(node.right)
 
         traverse(root)
-        if self.second_min != sys.maxint:
+        if self.second_min != sys.maxsize:
             return self.second_min
         return -1
 

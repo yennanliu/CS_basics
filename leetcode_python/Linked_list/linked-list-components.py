@@ -12,10 +12,10 @@ class Solution(object):
         dummy  = ListNode(-1)
         dummy.next = head 
         cur = dummy 
-        while cur and cur.next:
+        while cur and cur.__next__:
             if cur.val not in G and cur.next.val in G:
                 count = count + 1 
-            cur = cur.next 
+            cur = cur.__next__ 
         return count
                 
   
@@ -30,9 +30,9 @@ class Solution:
         groups = 0
         subset = set(G)
         while head:
-            if head.val in subset and (not head.next or head.next.val not in subset):
+            if head.val in subset and (not head.__next__ or head.next.val not in subset):
                 groups += 1
-            head = head.next
+            head = head.__next__
         return groups
 
 
@@ -57,8 +57,8 @@ class Solution(object):
         dummy.next = head
         curr = dummy
         result = 0
-        while curr and curr.next:
+        while curr and curr.__next__:
             if curr.val not in lookup and curr.next.val in lookup:
                 result += 1
-            curr = curr.next
+            curr = curr.__next__
         return result

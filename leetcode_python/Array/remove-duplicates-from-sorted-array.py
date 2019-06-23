@@ -36,7 +36,7 @@ class Solution(object):
             return 0
 
         last = 0
-        for i in xrange(len(A)):
+        for i in range(len(A)):
             if A[last] != A[i]:
                 last += 1
                 A[last] = A[i]

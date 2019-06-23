@@ -72,7 +72,7 @@ class Solution(object):
         ways = [0] * 3
         ways[0] = k
         ways[1] = (k - 1) * ways[0] + k
-        for i in xrange(2, n):
+        for i in range(2, n):
             ways[i % 3] = (k - 1) * (ways[(i - 1) % 3] + ways[(i - 2) % 3])
         return ways[(n - 1) % 3]
 
@@ -94,6 +94,6 @@ class Solution2(object):
         ways = [0] * n
         ways[0] = k
         ways[1] = (k - 1) * ways[0] + k
-        for i in xrange(2, n):
+        for i in range(2, n):
             ways[i] = (k - 1) * (ways[i - 1] + ways[i - 2])
         return ways[n - 1]

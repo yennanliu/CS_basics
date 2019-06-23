@@ -23,9 +23,9 @@ class Solution(object):
         """
         cur = head
         while cur:
-            runner = cur.next
+            runner = cur.__next__
             while runner and runner.val == cur.val:
-                runner = runner.next
+                runner = runner.__next__
             cur.next = runner
             cur = runner
         return head
@@ -36,9 +36,9 @@ class Solution(object):
         :rtype: ListNode
         """
         if not head: return head
-        if head.next:
+        if head.__next__:
             if head.val == head.next.val:
-                head = self.deleteDuplicates2(head.next)
+                head = self.deleteDuplicates2(head.__next__)
             else:
                 head.next = self.deleteDuplicates2(head.next)
         return head

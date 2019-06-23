@@ -57,7 +57,7 @@ class ZigzagIterator(object):
         """
         self.q = collections.deque([(len(v), iter(v)) for v in (v1, v2) if v])
 
-    def next(self):
+    def __next__(self):
         """
         :rtype: int
         """

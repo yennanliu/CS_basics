@@ -66,7 +66,7 @@ class Solution(object):
         if a < 2:
             return a
         result, mul = 0, 1
-        for i in reversed(xrange(2, 10)):
+        for i in reversed(range(2, 10)):
             while a % i == 0:
                 a /= i
                 result = mul*i + result

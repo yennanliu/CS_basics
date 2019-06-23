@@ -29,7 +29,7 @@ class ListNode(object):
 
     def __repr__(self):
         if self:
-            return "{} -> {}".format(self.val, repr(self.next))
+            return "{} -> {}".format(self.val, repr(self.__next__))
 
 class Solution(object):
     def rotateRight(self, head, k):
@@ -38,19 +38,19 @@ class Solution(object):
         :type k: int
         :rtype: ListNode
         """
-        if not head or not head.next:
+        if not head or not head.__next__:
             return head
 
         n, cur = 1, head
-        while cur.next:
-            cur = cur.next
+        while cur.__next__:
+            cur = cur.__next__
             n += 1
         cur.next = head
 
         cur, tail = head, cur
         for _ in range(n - k % n):
             tail = cur
-            cur = cur.next
+            cur = cur.__next__
         tail.next = None
 
         return cur

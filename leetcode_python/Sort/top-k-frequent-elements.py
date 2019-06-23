@@ -8,7 +8,7 @@ class Solution(object):
         freq_dict = dict(collections.Counter(nums))
         # python sort a dict by value 
         # https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
-        return [ x[0] for  x in sorted(freq_dict.items(), key=lambda x: x[1],reverse=True)[:k]]
+        return [ x[0] for  x in sorted(list(freq_dict.items()), key=lambda x: x[1],reverse=True)[:k]]
 
 # V2 
 # Time:  O(n)
@@ -22,13 +22,13 @@ class Solution(object):
         :rtype: List[int]
         """
         counts = collections.Counter(nums)
-        buckets = [[] for _ in xrange(len(nums)+1)]
-        for i, count in counts.iteritems():
+        buckets = [[] for _ in range(len(nums)+1)]
+        for i, count in counts.items():
             buckets[count].append(i)
 
         result = []
-        for i in reversed(xrange(len(buckets))):
-            for j in xrange(len(buckets[i])):
+        for i in reversed(range(len(buckets))):
+            for j in range(len(buckets[i])):
                 result.append(buckets[i][j])
                 if len(result) == k:
                     return result
@@ -50,12 +50,12 @@ class Solution2(object):
         """
         counts = collections.Counter(nums)
         p = []
-        for key, val in counts.iteritems():
+        for key, val in counts.items():
             p.append((-val, key))
         self.kthElement(p, k)
 
         result = []
-        for i in xrange(k):
+        for i in range(k):
             result.append(p[i][1])
         return result
 
@@ -64,7 +64,7 @@ class Solution2(object):
             pivot_value = nums[pivot_idx]
             new_pivot_idx = left
             nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
-            for i in xrange(left, right):
+            for i in range(left, right):
                 if nums[i] < pivot_value:
                     nums[i], nums[new_pivot_idx] = nums[new_pivot_idx], nums[i]
                     new_pivot_idx += 1

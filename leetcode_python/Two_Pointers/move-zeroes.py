@@ -54,7 +54,7 @@ class Solution(object):
         :rtype: void Do not return anything, modify nums in-place instead.
         """
         pos = 0
-        for i in xrange(len(nums)):
+        for i in range(len(nums)):
             if nums[i]:
                 nums[i], nums[pos] = nums[pos], nums[i]
                 pos += 1
@@ -75,12 +75,12 @@ class Solution2(object):
         :rtype: void Do not return anything, modify nums in-place instead.
         """
         pos = 0
-        for i in xrange(len(nums)):
+        for i in range(len(nums)):
             if nums[i]:
                 nums[pos] = nums[i]
                 pos += 1
 
-        for i in xrange(pos, len(nums)):
+        for i in range(pos, len(nums)):
             nums[i] = 0
 
 

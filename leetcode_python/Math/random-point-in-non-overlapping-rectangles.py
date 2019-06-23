@@ -59,8 +59,8 @@ class Solution(object):
         :type rects: List[List[int]]
         """
         self.__rects = list(rects)
-        self.__prefix_sum = map(lambda x : (x[2]-x[0]+1)*(x[3]-x[1]+1), rects)
-        for i in xrange(1, len(self.__prefix_sum)):
+        self.__prefix_sum = [(x[2]-x[0]+1)*(x[3]-x[1]+1) for x in rects]
+        for i in range(1, len(self.__prefix_sum)):
             self.__prefix_sum[i] += self.__prefix_sum[i-1]
 
     def pick(self):

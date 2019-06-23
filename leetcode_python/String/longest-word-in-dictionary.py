@@ -46,7 +46,7 @@ class Solution(object):
             reduce(dict.__getitem__, word, trie)["_end"] = i
 
         # DFS
-        stack = trie.values()
+        stack = list(trie.values())
         result = ""
         while stack:
             curr = stack.pop()

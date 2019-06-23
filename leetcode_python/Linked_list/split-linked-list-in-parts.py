@@ -17,7 +17,7 @@ class Solution(object):
         ans = 0
         while root:
             ans += 1
-            root = root.next
+            root = root.__next__
         return ans
 
     def splitListToParts(self, root, k):
@@ -34,9 +34,9 @@ class Solution(object):
                 continue
             node = root
             for x in range(p - 1):
-                node = node.next
+                node = node.__next__
             ans.append(root)
-            root = node.next
+            root = node.__next__
             node.next = None
         return ans
 
@@ -55,17 +55,17 @@ class Solution(object):
         n = 0
         curr = root
         while curr:
-            curr = curr.next
+            curr = curr.__next__
             n += 1
         width, remainder = divmod(n, k)
 
         result = []
         curr = root
-        for i in xrange(k):
+        for i in range(k):
             head = curr
-            for j in xrange(width-1+int(i < remainder)):
+            for j in range(width-1+int(i < remainder)):
                 if curr:
-                    curr = curr.next
+                    curr = curr.__next__
             if curr:
                 curr.next, curr = None, curr.next
             result.append(head)

@@ -70,8 +70,8 @@ class Solution(object):
             return result
 
         def matrix_mult(A, B):
-            ZB = zip(*B)
-            return [[sum(a*b for a, b in itertools.izip(row, col)) \
+            ZB = list(zip(*B))
+            return [[sum(a*b for a, b in zip(row, col)) \
                      for col in ZB] for row in A]
 
         T = [[1, 1],

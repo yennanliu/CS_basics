@@ -30,7 +30,7 @@ class Solution:
             if p in nodeSet:
                 return True
             nodeSet.add(p)
-            p = p.next
+            p = p.__next__
         return False
 
 
@@ -48,8 +48,8 @@ class Solution(object):
     # @return a boolean
     def hasCycle(self, head):
         fast, slow = head, head
-        while fast and fast.next:
-            fast, slow = fast.next.next, slow.next
+        while fast and fast.__next__:
+            fast, slow = fast.next.__next__, slow.__next__
             if fast == slow:
                 return True
         return False
@@ -67,8 +67,8 @@ class Solution:
     # @return a boolean
     def hasCycle(self, head):
         fast, slow = head, head
-        while fast and fast.next:
-            fast, slow = fast.next.next, slow.next
+        while fast and fast.__next__:
+            fast, slow = fast.next.__next__, slow.__next__
             if fast is slow:
                 return True
         return False

@@ -71,7 +71,7 @@ class Solution(object):
         def contains(counter1, w2):
             c2 = collections.Counter(w2.lower())
             c2.subtract(counter1)
-            return all(map(lambda x: x >= 0, c2.values()))
+            return all([x >= 0 for x in list(c2.values())])
 
         result = None
         counter = collections.Counter(c.lower() for c in licensePlate if c.isalpha())

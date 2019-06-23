@@ -35,4 +35,4 @@ class Solution3(object):
         :type nums: List[int]
         :rtype: int
         """
-        return (collections.Counter(list(set(nums)) * 3) - collections.Counter(nums)).keys()[0]
+        return list((collections.Counter(list(set(nums)) * 3) - collections.Counter(nums)).keys())[0]

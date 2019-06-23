@@ -47,7 +47,7 @@ class Solution(object):
         :type worker: List[int]
         :rtype: int
         """
-        jobs = zip(difficulty, profit)
+        jobs = list(zip(difficulty, profit))
         jobs.sort()
         worker.sort()
         result, i, max_profit = 0, 0, 0

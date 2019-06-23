@@ -29,13 +29,13 @@ class Solution(object):
         """
         counts = collections.Counter(words)
         p = []
-        for key, val in counts.iteritems():
+        for key, val in counts.items():
             p.append((-val, key))
         self.kthElement(p, k)
 
         result = []
         sorted_p = sorted(p[:k])
-        for i in xrange(k):
+        for i in range(k):
             result.append(sorted_p[i][1])
         return result
 
@@ -44,7 +44,7 @@ class Solution(object):
             pivot_value = nums[pivot_idx]
             new_pivot_idx = left
             nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
-            for i in xrange(left, right):
+            for i in range(left, right):
                 if nums[i] < pivot_value:
                     nums[i], nums[new_pivot_idx] = nums[new_pivot_idx], nums[i]
                     new_pivot_idx += 1
@@ -87,7 +87,7 @@ class Solution2(object):
 
         counts = collections.Counter(words)
         min_heap = []
-        for word, count in counts.iteritems():
+        for word, count in counts.items():
             heapq.heappush(min_heap, MinHeapObj((count, word)))
             if len(min_heap) == k+1:
                 heapq.heappop(min_heap)
@@ -111,11 +111,11 @@ class Solution3(object):
         :rtype: List[str]
         """
         counts = collections.Counter(words)
-        buckets = [[] for _ in xrange(len(words)+1)]
-        for word, count in counts.iteritems():
+        buckets = [[] for _ in range(len(words)+1)]
+        for word, count in counts.items():
             buckets[count].append(word)
         pairs = []
-        for i in reversed(xrange(len(words))):
+        for i in reversed(range(len(words))):
             for word in buckets[i]:
                 pairs.append((-i, word))
             if len(pairs) >= k:
@@ -137,6 +137,6 @@ class Solution4(object):
         :rtype: List[str]
         """
         counter = Counter(words)
-        candidates = counter.keys()
+        candidates = list(counter.keys())
         candidates.sort(key=lambda w: (-counter[w], w))
         return candidates[:k]

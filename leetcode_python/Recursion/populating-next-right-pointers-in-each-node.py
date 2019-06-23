@@ -14,7 +14,7 @@ class TreeNode(object):
         if self is None:
             return "Nil"
         else:
-            return "{} -> {}".format(self.val, repr(self.next))
+            return "{} -> {}".format(self.val, repr(self.__next__))
 
 class Solution(object):
     # @param root, a tree node
@@ -25,9 +25,9 @@ class Solution(object):
             cur = head
             while cur and cur.left:
                 cur.left.next = cur.right
-                if cur.next:
+                if cur.__next__:
                     cur.right.next = cur.next.left
-                cur = cur.next
+                cur = cur.__next__
             head = head.left
 
 # Time:  O(n)
@@ -41,7 +41,7 @@ class Solution2(object):
             return
         if root.left:
             root.left.next = root.right
-        if root.right and root.next:
+        if root.right and root.__next__:
             root.right.next = root.next.left
         self.connect(root.left)
         self.connect(root.right)

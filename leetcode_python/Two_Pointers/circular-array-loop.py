@@ -71,7 +71,7 @@ class Solution(object):
         def next_index(nums, i):
             return (i + nums[i]) % len(nums)
 
-        for i in xrange(len(nums)):
+        for i in range(len(nums)):
             if nums[i] == 0:
                 continue
 

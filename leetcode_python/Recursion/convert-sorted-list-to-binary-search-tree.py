@@ -23,7 +23,7 @@ class Solution(object):
     def sortedListToBST(self, head):
         current, length = head, 0
         while current is not None:
-            current, length = current.next, length + 1
+            current, length = current.__next__, length + 1
         self.head = head
         return self.sortedListToBSTRecu(0, length)
 
@@ -34,6 +34,6 @@ class Solution(object):
         left = self.sortedListToBSTRecu(start, mid)
         current = TreeNode(self.head.val)
         current.left = left
-        self.head = self.head.next
+        self.head = self.head.__next__
         current.right = self.sortedListToBSTRecu(mid + 1, end)
         return current

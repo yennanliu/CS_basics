@@ -33,6 +33,6 @@ class Solution(object):
         :rtype: ListNode
         """
         slow, fast = head, head
-        while fast and fast.next:
-            slow, fast = slow.next, fast.next.next
+        while fast and fast.__next__:
+            slow, fast = slow.__next__, fast.next.__next__
         return slow

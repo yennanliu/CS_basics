@@ -16,7 +16,7 @@ class Solution(object):
         if not people:
             return []
         queue = []
-        for h, k in sorted(people, key=lambda (h, k): (-h, k)):
+        for h, k in sorted(people, key=lambda h_k2: (-h_k2[0], h_k2[1])):
             queue.insert(k, [h , k])
         return queue
 

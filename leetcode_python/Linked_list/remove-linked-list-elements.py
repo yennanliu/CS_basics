@@ -21,14 +21,14 @@ class Solution(object):
     def removeElements(self, head, val):
         dummy = ListNode(float("-inf"))
         dummy.next = head
-        prev, curr = dummy, dummy.next
+        prev, curr = dummy, dummy.__next__
 
         while curr:
             if curr.val == val:
-                prev.next = curr.next
+                prev.next = curr.__next__
             else:
                 prev = curr
 
-            curr = curr.next
+            curr = curr.__next__
 
-        return dummy.next
+        return dummy.__next__

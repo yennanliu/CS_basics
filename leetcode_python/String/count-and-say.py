@@ -39,7 +39,7 @@ class Solution:
     # @return a string
     def countAndSay(self, n):
         seq = "1"
-        for i in xrange(n - 1):
+        for i in range(n - 1):
             seq = self.getNext(seq)
         return seq
 

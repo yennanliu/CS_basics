@@ -8,7 +8,7 @@ class Solution(object):
         :type points: List[List[int]]
         :rtype: int
         """
-        points = map(tuple, points)
+        points = list(map(tuple, points))
         points.sort()
         pset = set(points)
         N = len(points)
@@ -32,7 +32,7 @@ class Solution(object):
         :type points: List[List[int]]
         :rtype: int
         """
-        points = map(tuple, points)
+        points = list(map(tuple, points))
         points.sort()
         xdict, ydict = collections.defaultdict(list), collections.defaultdict(list)
         pset = set()
@@ -41,7 +41,7 @@ class Solution(object):
             xdict[point[0]].append(point)
             ydict[point[1]].append(point)
             pset.add(point)
-        for x1 in xdict.keys():
+        for x1 in list(xdict.keys()):
             if len(xdict[x1]) == 1:
                 continue
             for i in range(len(xdict[x1]) - 1):
@@ -72,7 +72,7 @@ class Solution(object):
             lookup[P-Q].append((P+Q) / 2)
 
         result = float("inf")
-        for A, candidates in lookup.iteritems():
+        for A, candidates in lookup.items():
             for P, Q in itertools.combinations(candidates, 2):
                 if A.real * (P-Q).real + A.imag * (P-Q).imag == 0.0:
                     result = min(result, abs(A) * abs(P-Q))

@@ -65,7 +65,7 @@ class Solution(object):
         """
         reservoir = -1
         n = 0
-        for i in xrange(len(self.__nums)):
+        for i in range(len(self.__nums)):
             if self.__nums[i] != target:
                 continue
             reservoir = i if randint(1, n+1) == 1 else reservoir

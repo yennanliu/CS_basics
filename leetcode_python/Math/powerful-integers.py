@@ -39,9 +39,9 @@ class Solution(object):
         log_x = int(math.floor(math.log(bound) / math.log(x)))+1 if x != 1 else 1
         log_y = int(math.floor(math.log(bound) / math.log(y)))+1 if y != 1 else 1
         pow_x = 1
-        for i in xrange(log_x):
+        for i in range(log_x):
             pow_y = 1
-            for j in xrange(log_y):
+            for j in range(log_y):
                 val = pow_x + pow_y
                 if val <= bound:
                     result.add(val)

@@ -28,7 +28,7 @@ class Solution(object):
         """
         def longestSubstringHelper(s, k, start, end):
             count = [0] * 26
-            for i in xrange(start, end):
+            for i in range(start, end):
                 count[ord(s[i]) - ord('a')] += 1
             max_len = 0
             i = start

@@ -47,7 +47,7 @@ class Solution(object):
         my_list = []
         while head:
             my_list.append(head.val)
-            head = head.next 
+            head = head.__next__ 
         extra = 0 
         count = 0 
         output = []
@@ -79,7 +79,7 @@ class Solution(object):
 
         while cur:
             lst.append(cur)
-            cur = cur.next
+            cur = cur.__next__
 
         carry = 1
         for i in range(len(lst)-1,-1,-1):
@@ -120,21 +120,21 @@ class Solution(object):
         dummy.next = head
 
         left, right = dummy, head
-        while right.next:
+        while right.__next__:
             if right.val != 9:
                 left = right
-            right = right.next
+            right = right.__next__
 
         if right.val != 9:
             right.val += 1
         else:
             left.val += 1
-            right = left.next
+            right = left.__next__
             while right:
                 right.val = 0
-                right = right.next
+                right = right.__next__
 
-        return dummy if dummy.val else dummy.next
+        return dummy if dummy.val else dummy.__next__
 
 
 # V4 
@@ -151,7 +151,7 @@ class Solution2(object):
             curr = head
             while curr:
                 dummy.next, curr.next, curr = curr, dummy.next, curr.next
-            return dummy.next
+            return dummy.__next__
 
         rev_head = reverseList(head)
         curr, carry = rev_head, 1
@@ -159,8 +159,8 @@ class Solution2(object):
             curr.val += carry
             carry = curr.val / 10
             curr.val %= 10
-            if carry and curr.next is None:
+            if carry and curr.__next__ is None:
                 curr.next = ListNode(0)
-            curr = curr.next
+            curr = curr.__next__
 
         return reverseList(rev_head)

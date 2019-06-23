@@ -32,7 +32,7 @@ class Solution(object):
 	def canPermutePalindrome(self, s):
 		# if is palindrome-permutation, can only can 1 or 0  non-pair number 
 		# have > 1 non-pair number  -> non palindrome-permutation
-		if sum(v % 2 for v in collections.Counter(s).values()) < 2:
+		if sum(v % 2 for v in list(collections.Counter(s).values())) < 2:
 			return True 
 		else:
 			return False
@@ -49,7 +49,7 @@ class Solution(object):
         :type s: str
         :rtype: bool
         """
-        return sum(v % 2 for v in collections.Counter(s).values()) < 2
+        return sum(v % 2 for v in list(collections.Counter(s).values())) < 2
 
 
 

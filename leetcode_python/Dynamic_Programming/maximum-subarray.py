@@ -7,7 +7,7 @@ def Solution_brutef(arr):
     for i in range(len(arr)):
         for j in range(i,len(arr)):
             if maxval<sum(arr[i:j]):
-                print (i,j)
+                print((i,j))
                 maxval=max(maxval,sum(arr[i:j]))
                 result=arr[i:j]
                 

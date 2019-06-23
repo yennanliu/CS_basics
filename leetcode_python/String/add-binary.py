@@ -29,7 +29,7 @@ class Solution:
         sum_  = 0
         extra = 0
         output=[]
-        for i in reversed(range(len(a_))):
+        for i in reversed(list(range(len(a_)))):
             sum_ = a_[i]+b_[i]+extra
             if sum_ >= 2:
                 sum_ = sum_ -2 
@@ -61,7 +61,7 @@ class Solution:
     # @return a string
     def addBinary(self, a, b):
         result, carry, val = "", 0, 0
-        for i in xrange(max(len(a), len(b))):
+        for i in range(max(len(a), len(b))):
             val = carry
             if i < len(a):
                 val += int(a[-(i + 1)])

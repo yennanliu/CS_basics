@@ -47,7 +47,7 @@ class Solution:
             groups[self.hashStr(s)].append(s)
 
         result = []
-        for key, val in groups.iteritems():
+        for key, val in groups.items():
             result.append(sorted(val))
 
         return result
@@ -55,11 +55,11 @@ class Solution:
     def hashStr(self, s):
         base = ord(s[0])
         hashcode = ""
-        for i in xrange(len(s)):
+        for i in range(len(s)):
             if ord(s[i]) - base >= 0:
-                hashcode += unichr(ord('a') + ord(s[i]) - base)
+                hashcode += chr(ord('a') + ord(s[i]) - base)
             else:
-                hashcode += unichr(ord('a') + ord(s[i]) - base + 26)
+                hashcode += chr(ord('a') + ord(s[i]) - base + 26)
         return hashcode
 
 

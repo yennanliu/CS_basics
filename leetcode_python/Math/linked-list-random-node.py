@@ -23,7 +23,7 @@ class Solution(object):
         while head:
             if random.randint(0, cnt) == 0:
                 ans = head.val
-            head = head.next
+            head = head.__next__
             cnt += 1
         return ans
 
@@ -53,5 +53,5 @@ class Solution(object):
         curr, n = self.__head, 0
         while curr:
             reservoir = curr.val if randint(1, n+1) == 1 else reservoir
-            curr, n = curr.next, n+1
+            curr, n = curr.__next__, n+1
         return reservoir

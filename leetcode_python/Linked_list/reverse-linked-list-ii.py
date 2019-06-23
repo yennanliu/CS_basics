@@ -13,7 +13,7 @@ class ListNode(object):
 
     def __repr__(self):
         if self:
-            return "{} -> {}".format(self.val, repr(self.next))
+            return "{} -> {}".format(self.val, repr(self.__next__))
 class Solution(object):
     # @param head, a ListNode
     # @param m, an integer
@@ -25,7 +25,7 @@ class Solution(object):
 
         last_unswapped = dummy
         while cur and m > 1:
-            cur, last_unswapped, m = cur.next, cur, m - 1
+            cur, last_unswapped, m = cur.__next__, cur, m - 1
 
         prev, first_swapped = last_unswapped,  cur
         while cur and diff > 0:
@@ -33,4 +33,4 @@ class Solution(object):
 
         last_unswapped.next, first_swapped.next = prev, cur
 
-        return dummy.next
+        return dummy.__next__

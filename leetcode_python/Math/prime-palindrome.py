@@ -49,7 +49,7 @@ class Solution:
             ret.append([] + palindromes)
             return
 
-        for i in xrange(pos + 1, len(s) + 1):
+        for i in range(pos + 1, len(s) + 1):
             if not self.isPalindrome(s[pos:i]):
                 continue
 
@@ -77,11 +77,11 @@ class Solution(object):
                 return n == 2
             # all() func in python 
             # https://www.jianshu.com/p/65b6b4a62071
-            return all(n % d for d in xrange(3, int(n**.5) + 1, 2))
+            return all(n % d for d in range(3, int(n**.5) + 1, 2))
 
         if 8 <= N <= 11:
             return 11
-        for i in xrange(10**(len(str(N))//2), 10**5):
+        for i in range(10**(len(str(N))//2), 10**5):
             j = int(str(i) + str(i)[-2::-1])
             if j >= N and is_prime(j):
                 return j

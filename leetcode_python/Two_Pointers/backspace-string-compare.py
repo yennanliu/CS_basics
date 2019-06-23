@@ -92,7 +92,7 @@ class Solution(object):
         """
         def findNextChar(S):
             skip = 0
-            for i in reversed(xrange(len(S))):
+            for i in reversed(range(len(S))):
                 if S[i] == '#':
                     skip += 1
                 elif skip:
@@ -101,5 +101,5 @@ class Solution(object):
                     yield S[i]
 
         return all(x == y for x, y in
-                   itertools.izip_longest(findNextChar(S), findNextChar(T)))
+                   itertools.zip_longest(findNextChar(S), findNextChar(T)))
 

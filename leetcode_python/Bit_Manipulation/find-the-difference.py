@@ -29,6 +29,7 @@
 
 import operator
 import collections
+from functools import reduce
 
 class Solution(object):
     def findTheDifference(self, s, t):
@@ -37,7 +38,7 @@ class Solution(object):
         :type t: str
         :rtype: str
         """
-        return chr(reduce(operator.xor, map(ord, s), 0) ^ reduce(operator.xor, map(ord, t), 0))
+        return chr(reduce(operator.xor, list(map(ord, s)), 0) ^ reduce(operator.xor, list(map(ord, t)), 0))
 
     def findTheDifference2(self, s, t):
         """
@@ -52,7 +53,7 @@ class Solution(object):
         return t[0]
 
     def findTheDifference3(self, s, t):
-        return chr(reduce(operator.xor, map(ord, s + t)))
+        return chr(reduce(operator.xor, list(map(ord, s + t))))
 
     def findTheDifference4(self, s, t):
         return list((collections.Counter(t) - collections.Counter(s)))[0]

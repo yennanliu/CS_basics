@@ -44,7 +44,7 @@ class ListNode:
         if self is None:
             return "Nil"
         else:
-            return "{} -> {}".format(self.val, repr(self.next))
+            return "{} -> {}".format(self.val, repr(self.__next__))
 
 class Solution:
     # @return a ListNode
@@ -53,7 +53,7 @@ class Solution:
         cur = head 
         while cur:
             my_list.append(cur.val)
-            cur = cur.next 
+            cur = cur.__next__ 
         my_list.pop(-n)
         return my_list
 
@@ -71,11 +71,11 @@ class Solution:
     def removeNthFromEnd(self, head, n):
         dummy=ListNode(0); dummy.next=head
         p1=p2=dummy
-        for i in range(n): p1=p1.next
-        while p1.next:
-            p1=p1.next; p2=p2.next
-        p2.next=p2.next.next
-        return dummy.next
+        for i in range(n): p1=p1.__next__
+        while p1.__next__:
+            p1=p1.__next__; p2=p2.__next__
+        p2.next=p2.next.__next__
+        return dummy.__next__
 
 # V3  
 # Definition for singly-linked list. 
@@ -88,7 +88,7 @@ class ListNode:
         if self is None:
             return "Nil"
         else:
-            return "{} -> {}".format(self.val, repr(self.next))
+            return "{} -> {}".format(self.val, repr(self.__next__))
 
 class Solution:
     # @return a ListNode
@@ -97,15 +97,15 @@ class Solution:
         dummy.next = head
         slow, fast = dummy, dummy
 
-        for i in xrange(n):
-            fast = fast.next
+        for i in range(n):
+            fast = fast.__next__
 
-        while fast.next:
-            slow, fast = slow.next, fast.next
+        while fast.__next__:
+            slow, fast = slow.__next__, fast.__next__
 
-        slow.next = slow.next.next
+        slow.next = slow.next.__next__
 
-        return dummy.next
+        return dummy.__next__
 
 """
 if __name__ == "__main__":

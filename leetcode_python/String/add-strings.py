@@ -24,7 +24,7 @@ class Solution:
         num2 = '0'*(lenth_ - len(num2)) + num2
         print (num1)
         print (num2)
-        for i in reversed(range(len(num1))):
+        for i in reversed(list(range(len(num1)))):
             sum_ = int(num1[i])+ int(num2[i]) + int(carry_fix)
             if (sum_ >= 10 and i != 0 ):
                 sum_ = sum_ - 10 

@@ -28,6 +28,7 @@ class Solution(object):
 # Time:  O(n * (logn)^2)
 # Space: O(n)
 import collections
+from functools import reduce
 class Solution(object):
     def hasGroupsSizeX(self, deck):
         """
@@ -39,5 +40,5 @@ class Solution(object):
                 a, b = b, a % b
             return a
 
-        vals = collections.Counter(deck).values()
+        vals = list(collections.Counter(deck).values())
         return reduce(gcd, vals) >= 2

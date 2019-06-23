@@ -49,7 +49,7 @@ class Solution(object):
         else:
             for i in range(0,int(len(nums_pad)), c):
                 output.append(nums_pad[i:i+c])
-                print (nums_pad[i:i+c])
+                print((nums_pad[i:i+c]))
             return output
             
         
@@ -69,10 +69,10 @@ class Solution(object):
            r*c != len(nums) * len(nums[0]):
             return nums
 
-        result = [[0 for _ in xrange(c)] for _ in xrange(r)]
+        result = [[0 for _ in range(c)] for _ in range(r)]
         count = 0
-        for i in xrange(len(nums)):
-            for j in xrange(len(nums[0])):
+        for i in range(len(nums)):
+            for j in range(len(nums[0])):
                 result[count/c][count%c] = nums[i][j]
                 count += 1
         return result

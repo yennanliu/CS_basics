@@ -20,21 +20,21 @@ class Solution(object):
         :type head: ListNode
         :rtype: ListNode
         """
-        if not head or not head.next: return head
+        if not head or not head.__next__: return head
         root = TreeNode(0)
         root.next = head
-        while head.next:
+        while head.__next__:
             if head.val <= head.next.val:
-                head = head.next
+                head = head.__next__
             else:
-                temp = head.next
+                temp = head.__next__
                 q = root
-                head.next = head.next.next
-                while q.next and q.next.val < temp.val:
-                    q = q.next
-                temp.next = q.next
+                head.next = head.next.__next__
+                while q.__next__ and q.next.val < temp.val:
+                    q = q.__next__
+                temp.next = q.__next__
                 q.next = temp
-        return root.next
+        return root.__next__
 
 # V3 
 # Time:  O(n ^ 2)
@@ -47,7 +47,7 @@ class ListNode(object):
 
     def __repr__(self):
         if self:
-            return "{} -> {}".format(self.val, repr(self.next))
+            return "{} -> {}".format(self.val, repr(self.__next__))
         else:
             return "Nil"
 
@@ -60,22 +60,22 @@ class Solution(object):
 
         dummy = ListNode(-2147483648)
         dummy.next = head
-        cur, sorted_tail = head.next, head
+        cur, sorted_tail = head.__next__, head
         while cur:
             prev = dummy
             while prev.next.val < cur.val:
-                prev = prev.next
+                prev = prev.__next__
             if prev == sorted_tail:
-                cur, sorted_tail = cur.next, cur
+                cur, sorted_tail = cur.__next__, cur
             else:
                 cur.next, prev.next, sorted_tail.next = prev.next, cur, cur.next
-                cur = sorted_tail.next
+                cur = sorted_tail.__next__
 
-        return dummy.next
+        return dummy.__next__
 
     def isSorted(self, head):
-        while head and head.next:
+        while head and head.__next__:
             if head.val > head.next.val:
                 return False
-            head = head.next
+            head = head.__next__
         return True

@@ -51,7 +51,7 @@ class Solution(object):
         :type digits: List[int]
         :rtype: List[int]
         """
-        for i in reversed(range(len(digits))):
+        for i in reversed(list(range(len(digits)))):
             if digits[i] == 9:
                 digits[i] = 0
             else:
@@ -75,7 +75,7 @@ class Solution2(object):
         """
         result = digits[::-1]
         carry = 1
-        for i in xrange(len(result)):
+        for i in range(len(result)):
             result[i] += carry
             carry, result[i] = divmod(result[i], 10)
         if carry:

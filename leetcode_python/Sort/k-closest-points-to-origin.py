@@ -31,7 +31,7 @@ class Solution(object):
             def PartitionAroundPivot(left, right, pivot_idx, nums, compare):
                 new_pivot_idx = left
                 nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
-                for i in xrange(left, right):
+                for i in range(left, right):
                     if compare(nums[i], nums[right]):
                         nums[i], nums[new_pivot_idx] = nums[new_pivot_idx], nums[i]
                         new_pivot_idx += 1
@@ -75,4 +75,4 @@ class Solution2(object):
             heapq.heappush(max_heap, (-dist(point), point))
             if len(max_heap) > K:
                 heapq.heappop(max_heap)
-        return [heapq.heappop(max_heap)[1] for _ in xrange(len(max_heap))]
+        return [heapq.heappop(max_heap)[1] for _ in range(len(max_heap))]

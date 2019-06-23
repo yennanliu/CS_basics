@@ -55,7 +55,7 @@ class Solution(object):
         :rtype: int
         """
         odds = 0
-        for k, v in collections.Counter(s).iteritems():
+        for k, v in collections.Counter(s).items():
             odds += v & 1
         return len(s) - odds + int(odds > 0)
 
@@ -64,7 +64,7 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
-        odd = sum(map(lambda x: x & 1, collections.Counter(s).values()))
+        odd = sum([x & 1 for x in list(collections.Counter(s).values())])
         return len(s) - odd + int(odd > 0)
 
 

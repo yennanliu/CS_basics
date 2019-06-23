@@ -98,11 +98,11 @@ try:
 except AttributeError:
     # Python 3
     def iteritems(d):
-        return iter(d.items())
+        return iter(list(d.items()))
 else:
     # Python 2
     def iteritems(d):
-        return d.iteritems()
+        return iter(d.items())
 
 
 class Solution:
@@ -117,7 +117,7 @@ class Solution:
             count = int(count)
             frags = domain.split('.')
             curr = []
-            for i in reversed(xrange(len(frags))):
+            for i in reversed(range(len(frags))):
                 curr.append(frags[i])
                 result[".".join(reversed(curr))] += count
 

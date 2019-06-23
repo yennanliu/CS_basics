@@ -169,4 +169,4 @@ class MinStack2:
 if __name__ == "__main__":
     stack = MinStack()
     stack.push(-1)
-    print [stack.top(), stack.getMin()]
+    print([stack.top(), stack.getMin()])

@@ -50,16 +50,16 @@ class Solution(object):
                 begin = curA
                 break
 
-            if curA.next:
-                curA = curA.next
+            if curA.__next__:
+                curA = curA.__next__
             elif tailA is None:
                 tailA = curA
                 curA = headB
             else:
                 break
 
-            if curB.next:
-                curB = curB.next
+            if curB.__next__:
+                curB = curB.__next__
             elif tailB is None:
                 tailB = curB
                 curB = headA

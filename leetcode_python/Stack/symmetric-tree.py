@@ -83,7 +83,7 @@ if __name__ == "__main__":
     root.left, root.right = TreeNode(2), TreeNode(2)
     root.left.left, root.right.right = TreeNode(3), TreeNode(3)
     root.left.right, root.right.left = TreeNode(4), TreeNode(4)
-    print Solution().isSymmetric(root)
+    print(Solution().isSymmetric(root))
 
 
 

@@ -19,17 +19,17 @@ class Solution(object):
         num2 = ''
         while l1:
             num1 += str(l1.val)
-            l1 = l1.next
+            l1 = l1.__next__
         while l2:
             num2 += str(l2.val)
-            l2 = l2.next
+            l2 = l2.__next__
         add = str(int(num1) + int(num2))
         head = ListNode(add[0])
         answer = head
         for i in range(1, len(add)):
             node = ListNode(add[i])
             head.next = node
-            head = head.next
+            head = head.__next__
         return answer
 
 
@@ -53,10 +53,10 @@ class Solution(object):
         stk1, stk2 = [], []
         while l1:
             stk1.append(l1.val)
-            l1 = l1.next
+            l1 = l1.__next__
         while l2:
             stk2.append(l2.val)
-            l2 = l2.next
+            l2 = l2.__next__
 
         prev, head = None, None
         sum = 0

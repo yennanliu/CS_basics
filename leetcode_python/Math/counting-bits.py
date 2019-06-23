@@ -38,7 +38,7 @@ class Solution(object):
         :rtype: List[int]
         """
         res = [0]
-        for i in xrange(1, num + 1):
+        for i in range(1, num + 1):
             # Number of 1's in i = (i & 1) + number of 1's in (i / 2).
             res.append((i & 1) + res[i >> 1])
         return res
@@ -50,5 +50,5 @@ class Solution(object):
         """
         s = [0]
         while len(s) <= num:
-            s.extend(map(lambda x: x + 1, s))
+            s.extend([x + 1 for x in s])
         return s[:num + 1]

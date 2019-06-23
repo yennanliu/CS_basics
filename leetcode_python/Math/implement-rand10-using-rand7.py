@@ -62,7 +62,7 @@ class Solution(object):
         """
         def generate(cache):
             n = 32
-            curr = sum((rand7()-1) * (7**i) for i in xrange(n))
+            curr = sum((rand7()-1) * (7**i) for i in range(n))
             rang = 7**n
             while curr < rang//10*10:
                 cache.append(curr%10+1)

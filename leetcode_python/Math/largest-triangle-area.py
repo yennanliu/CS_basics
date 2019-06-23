@@ -33,9 +33,9 @@ class Solution(object):
         :rtype: float
         """
         result = 0
-        for i in xrange(len(points)-2):
-            for j in xrange(i+1, len(points)-1):
-                for k in xrange(j+1, len(points)):
+        for i in range(len(points)-2):
+            for j in range(i+1, len(points)-1):
+                for k in range(j+1, len(points)):
                     result = max(result,
                                  0.5 * abs(points[i][0] * points[j][1] +
                                            points[j][0] * points[k][1] +

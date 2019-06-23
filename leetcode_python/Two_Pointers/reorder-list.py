@@ -25,23 +25,23 @@ class Solution:
             return
         # split {1,2,3,4,5} to {1,2,3}{4,5}
         fast = slow = head 
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next
+        while fast and fast.__next__:
+            slow = slow.__next__
+            fast = fast.next.__next__
         head1 = head
-        head2 = slow.next
+        head2 = slow.__next__
         slow.next = None
         # reverse the second {4,5} to {5,4}
         cur, pre = head2, None
         while cur:
-            nex = cur.next
+            nex = cur.__next__
             cur.next = pre
             pre = cur
             cur = nex
         # merge
         cur1, cur2 = head1, pre
         while cur2:
-            nex1, nex2 = cur1.next, cur2.next
+            nex1, nex2 = cur1.__next__, cur2.__next__
             cur1.next = cur2
             cur2.next = nex1
             cur1, cur2 = nex1, nex2

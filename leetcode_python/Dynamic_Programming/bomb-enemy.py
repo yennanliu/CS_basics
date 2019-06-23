@@ -133,10 +133,10 @@ class Solution(object):
         if not grid or not grid[0]:
             return result
 
-        down = [[0 for _ in xrange(len(grid[0]))] for _ in xrange(len(grid))]
-        right = [[0 for _ in xrange(len(grid[0]))] for _ in xrange(len(grid))]
-        for i in reversed(xrange(len(grid))):
-            for j in reversed(xrange(len(grid[0]))):
+        down = [[0 for _ in range(len(grid[0]))] for _ in range(len(grid))]
+        right = [[0 for _ in range(len(grid[0]))] for _ in range(len(grid))]
+        for i in reversed(range(len(grid))):
+            for j in reversed(range(len(grid[0]))):
                 if grid[i][j] != 'W':
                     if i + 1 < len(grid):
                         down[i][j] = down[i + 1][j]
@@ -146,10 +146,10 @@ class Solution(object):
                         down[i][j] += 1
                         right[i][j] += 1
 
-        up = [0 for _ in xrange(len(grid[0]))]
-        for i in xrange(len(grid)):
+        up = [0 for _ in range(len(grid[0]))]
+        for i in range(len(grid)):
             left = 0
-            for j in xrange(len(grid[0])):
+            for j in range(len(grid[0])):
                 if grid[i][j] == 'W':
                     up[j], left = 0, 0
                 elif grid[i][j] == 'E':

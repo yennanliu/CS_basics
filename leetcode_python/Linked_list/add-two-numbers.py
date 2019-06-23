@@ -29,15 +29,15 @@ class Solution(object):
             val = carry
             if l1:
                 val += l1.val
-                l1 = l1.next
+                l1 = l1.__next__
             if l2:
                 val += l2.val
-                l2 = l2.next
+                l2 = l2.__next__
             carry, val = divmod(val, 10)
             current.next = ListNode(val)
-            current = current.next
+            current = current.__next__
 
         if carry == 1:
             current.next = ListNode(1)
 
-        return dummy.next
+        return dummy.__next__

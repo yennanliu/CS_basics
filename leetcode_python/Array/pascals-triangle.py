@@ -43,9 +43,9 @@ class Solution:
     # @return a list of lists of integers
     def generate(self, numRows):
         result = []
-        for i in xrange(numRows):
+        for i in range(numRows):
             result.append([])
-            for j in xrange(i + 1):
+            for j in range(i + 1):
                 if j in (0, i):
                     result[i].append(1)
                 else:
@@ -56,7 +56,7 @@ class Solution:
         if not numRows: return []
         res = [[1]]
         for i in range(1, numRows):
-            res += [map(lambda x, y: x + y, res[-1] + [0], [0] + res[-1])]
+            res += [list(map(lambda x, y: x + y, res[-1] + [0], [0] + res[-1]))]
         return res[:numRows]
 
     def generate3(self, numRows):

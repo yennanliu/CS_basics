@@ -38,7 +38,7 @@ class Solution(object):
                 count[x] += 1
 
         h = 0
-        for i in reversed(xrange(0, n + 1)):
+        for i in reversed(range(0, n + 1)):
             h += count[i]
             if h >= i:
                 return i

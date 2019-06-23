@@ -42,11 +42,11 @@
 def sortPancakes(stack):
  
     sorted_index = 10
-    for i in reversed(range(len(stack))):
+    for i in reversed(list(range(len(stack)))):
         stack = flip(stack, findLargestPancake(stack, i))
-        print("Flip Up", stack)
+        print(("Flip Up", stack))
         stack = flip(stack, i)
-        print("Flip Down", stack)
+        print(("Flip Down", stack))
     return stack
  
 # All of the pancakes are sorted after index                                                        
@@ -61,8 +61,8 @@ def findLargestPancake(stack, index):
             largest_pancake = stack[i]
             largest_index = i
  
-    print ""
-    print("Insert Spatula in index", largest_index, "Size", largest_pancake)
+    print("")
+    print(("Insert Spatula in index", largest_index, "Size", largest_pancake))
     return largest_index
  
 # Slide spatula under pancake at index and flip to top                                              
@@ -105,7 +105,7 @@ class Solution(object):
                 l[begin+i], l[end-1-i] = l[end-1-i], l[begin+i]
 
         result = []
-        for n in reversed(range(1, len(A)+1)):
+        for n in reversed(list(range(1, len(A)+1))):
             i = A.index(n)
             reverse(A, 0, i+1)
             result.append(i+1)

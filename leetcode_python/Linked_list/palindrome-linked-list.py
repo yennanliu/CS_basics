@@ -15,13 +15,13 @@ class Solution(object):
         :type head: ListNode
         :rtype: bool
         """
-        if not head or not head.next:
+        if not head or not head.__next__:
             return True
 
         tmp_list = []
         while head:
             tmp_list.append(head.val)
-            head = head.next
+            head = head.__next__
 
         length = len(tmp_list)
         if length%2 ==1 and tmp_list[: ((length+1)/2)] == tmp_list[((length-1)/2) :][::-1]:
@@ -46,13 +46,13 @@ class Solution(object):
         :type head: ListNode
         :rtype: bool
         """
-        if not head or not head.next:
+        if not head or not head.__next__:
             return True
 
         tmp_list = []
         while head:
             tmp_list.append(head.val)
-            head = head.next
+            head = head.__next__
 
         length = len(tmp_list)
         for i in range(0, length/2):
@@ -71,13 +71,13 @@ class Solution(object):
     def isPalindrome(self, head):
         reverse, fast = None, head
         # Reverse the first half part of the list.
-        while fast and fast.next:
-            fast = fast.next.next
+        while fast and fast.__next__:
+            fast = fast.next.__next__
             head.next, reverse, head = reverse, head, head.next
 
         # If the number of the nodes is odd,
         # set the head of the tail list to the next of the median node.
-        tail = head.next if fast else head
+        tail = head.__next__ if fast else head
 
         # Compare the reversed first half list with the second half list.
         # And restore the reversed first half list.
@@ -85,7 +85,7 @@ class Solution(object):
         while reverse:
             is_palindrome = is_palindrome and reverse.val == tail.val
             reverse.next, head, reverse = head, reverse, reverse.next
-            tail = tail.next
+            tail = tail.__next__
 
         return is_palindrome
 

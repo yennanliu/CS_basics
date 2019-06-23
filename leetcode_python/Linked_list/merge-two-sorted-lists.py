@@ -8,7 +8,7 @@ class ListNode(object):
 
     def __repr__(self):
         if self:
-            return "{} -> {}".format(self.val, self.next)
+            return "{} -> {}".format(self.val, self.__next__)
 
 
 class Solution(object):
@@ -23,10 +23,10 @@ class Solution(object):
         while l1 or l2:
             try:
                 output.append(l1.val)
-                l1 = l1.next
+                l1 = l1.__next__
             except:
                 output.append(l2.val)
-                l2 = l2.next
+                l2 = l2.__next__
         return sorted(output)
 
 
@@ -40,7 +40,7 @@ class ListNode(object):
 
     def __repr__(self):
         if self:
-            return "{} -> {}".format(self.val, self.next)
+            return "{} -> {}".format(self.val, self.__next__)
 
 
 class Solution(object):
@@ -54,10 +54,10 @@ class Solution(object):
         while l1 and l2:
             if l1.val < l2.val:
                 curr.next = l1
-                l1 = l1.next
+                l1 = l1.__next__
             else:
                 curr.next = l2
-                l2 = l2.next
-            curr = curr.next
+                l2 = l2.__next__
+            curr = curr.__next__
         curr.next = l1 or l2
-        return dummy.next
+        return dummy.__next__

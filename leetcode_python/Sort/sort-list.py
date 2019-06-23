@@ -19,13 +19,13 @@ class Solution(object):
         :type head: ListNode
         :rtype: ListNode
         """
-        if not head or not head.next: 
+        if not head or not head.__next__: 
             return head
         pre, slow, fast = head, head, head
-        while fast and fast.next:
+        while fast and fast.__next__:
             pre = slow
-            slow = slow.next
-            fast = fast.next.next
+            slow = slow.__next__
+            fast = fast.next.__next__
         pre.next = None
         l1 = self.sortList(head)
         l2 = self.sortList(slow)
@@ -41,13 +41,13 @@ class Solution(object):
         while l1 and l2:
             if l1.val < l2.val:
                 move.next = l1
-                l1 = l1.next
+                l1 = l1.__next__
             else:
                 move.next = l2
-                l2 = l2.next
-            move = move.next
+                l2 = l2.__next__
+            move = move.__next__
         move.next = l1 if l1 else l2
-        return head.next
+        return head.__next__
 
 # V3 
 # Time:  O(nlogn)
@@ -60,18 +60,18 @@ class ListNode(object):
 
     def __repr__(self):
         if self:
-            return "{} -> {}".format(self.val, repr(self.next))
+            return "{} -> {}".format(self.val, repr(self.__next__))
 
 class Solution(object):
     # @param head, a ListNode
     # @return a ListNode
     def sortList(self, head):
-        if head == None or head.next == None:
+        if head == None or head.__next__ == None:
             return head
 
         fast, slow, prev = head, head, None
-        while fast != None and fast.next != None:
-            prev, fast, slow = slow, fast.next.next, slow.next
+        while fast != None and fast.__next__ != None:
+            prev, fast, slow = slow, fast.next.__next__, slow.__next__
         prev.next = None
 
         sorted_l1 = self.sortList(head)
@@ -85,13 +85,13 @@ class Solution(object):
         cur = dummy
         while l1 != None and l2 != None:
             if l1.val <= l2.val:
-                cur.next, cur, l1 = l1, l1, l1.next
+                cur.next, cur, l1 = l1, l1, l1.__next__
             else:
-                cur.next, cur, l2 = l2, l2, l2.next
+                cur.next, cur, l2 = l2, l2, l2.__next__
 
         if l1 != None:
             cur.next = l1
         if l2 != None:
             cur.next = l2
 
-        return dummy.next
+        return dummy.__next__

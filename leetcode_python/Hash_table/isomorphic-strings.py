@@ -25,7 +25,7 @@
 
 
 # V2 
-from itertools import izip  # Generator version of zip.
+  # Generator version of zip.
 
 class Solution(object):
     def isIsomorphic(self, s, t):
@@ -38,7 +38,7 @@ class Solution(object):
             return False
 
         s2t, t2s = {}, {}
-        for p, w in izip(s, t):
+        for p, w in zip(s, t):
             if w not in s2t and p not in t2s:
                 s2t[w] = p
                 t2s[p] = w
@@ -59,7 +59,7 @@ class Solution2(object):
 
     def halfIsom(self, s, t):
         lookup = {}
-        for i in xrange(len(s)):
+        for i in range(len(s)):
             if s[i] not in lookup:
                 lookup[s[i]] = t[i]
             elif lookup[s[i]] != t[i]:

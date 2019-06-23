@@ -17,19 +17,19 @@ class Solution:
     # @param head, a ListNode
     # @return a list node
     def detectCycle(self, head):
-        if head == None or head.next == None:
+        if head == None or head.__next__ == None:
             return None
         slow = fast = head
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next
+        while fast and fast.__next__:
+            slow = slow.__next__
+            fast = fast.next.__next__
             if fast == slow:
                 break
         if slow == fast:
             slow = head
             while slow != fast:
-                slow = slow.next
-                fast = fast.next
+                slow = slow.__next__
+                fast = fast.__next__
             return slow
         return None
 
@@ -54,11 +54,11 @@ class Solution(object):
     # @return a list node
     def detectCycle(self, head):
         fast, slow = head, head
-        while fast and fast.next:
-            fast, slow = fast.next.next, slow.next
+        while fast and fast.__next__:
+            fast, slow = fast.next.__next__, slow.__next__
             if fast is slow:
                 fast = head
                 while fast is not slow:
-                    fast, slow = fast.next, slow.next
+                    fast, slow = fast.__next__, slow.__next__
                 return fast
         return None

@@ -18,6 +18,6 @@ class Solution(object):
         :type b: str
         :rtype: str
         """
-        ra, ia = map(int, a[:-1].split('+'))
-        rb, ib = map(int, b[:-1].split('+'))
+        ra, ia = list(map(int, a[:-1].split('+')))
+        rb, ib = list(map(int, b[:-1].split('+')))
         return '%d+%di' % (ra * rb - ia * ib, ra * ib + ia * rb)

@@ -122,8 +122,8 @@ class Solution(object):
         :type words: List[str]
         :rtype: bool
         """
-        for i in xrange(len(words)):
-            for j in xrange(len(words[i])):
+        for i in range(len(words)):
+            for j in range(len(words[i])):
             	"""
             	A sequence of words forms a valid word square if the kth row and column read the exact same string, 
             	where 0 ≤ k < max(numRows, numColumns).

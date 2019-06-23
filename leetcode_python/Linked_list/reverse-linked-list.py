@@ -16,7 +16,7 @@ class ListNode(object):
 
     def __repr__(self):
         if self:
-            return "{} -> {}".format(self.val, repr(self.next))
+            return "{} -> {}".format(self.val, repr(self.__next__))
 
 # Iterative solution.
 class Solution(object):
@@ -26,7 +26,7 @@ class Solution(object):
         dummy = ListNode(float("-inf"))
         while head:
             dummy.next, head.next, head = head, dummy.next, head.next
-        return dummy.next
+        return dummy.__next__
 
 # Time:  O(n)
 # Space: O(n)
@@ -42,7 +42,7 @@ class Solution2(object):
         if not head:
             return [None, None]
 
-        [begin, end] = self.reverseListRecu(head.next)
+        [begin, end] = self.reverseListRecu(head.__next__)
 
         if end:
             end.next = head
