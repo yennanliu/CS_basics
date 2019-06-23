@@ -21,10 +21,11 @@ before_script:
     - flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 script:
     # Check python install package
-    - pip3 install -e .
+    #- pip3 install -e .
+    - pip install tox 
     - tox -e $TOX_ENV
     # Check python uninstall package
-    - pip3 uninstall -y algorithms
+    #- pip3 uninstall -y algorithms
 notifications:
     on_success: change
     on_failure: change  # `always` will be the setting once code changes slow down
