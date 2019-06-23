@@ -35,8 +35,8 @@ class LinkedList:
             return
         cur = self.head
         yield cur.data
-        while cur.next:
-            cur = cur.next
+        while cur.__next__:
+            cur = cur.__next__
             yield cur.data
   
     def insert(self, idx, value):
@@ -45,14 +45,14 @@ class LinkedList:
         if cur is None:             # check is it's null LinkedList
             raise Exception('The list is an empty list')
         while cur_idx < idx-1:   # go through LinkedList 
-            cur = cur.next
+            cur = cur.__next__
             if cur is None:   # check if it's the last element 
                 raise Exception('list length less than index')
             cur_idx += 1
         node = Node(value)
-        node.next = cur.next
+        node.next = cur.__next__
         cur.next = node
-        if node.next is None:
+        if node.__next__ is None:
             self.tail = node
   
     def remove(self, idx):
@@ -61,20 +61,20 @@ class LinkedList:
         if self.head is None:  # if it's null LinkedList
             raise Exception('The list is an empty list')
         while cur_idx < idx-1:
-            cur = cur.next
+            cur = cur.__next__
             if cur is None:
                 raise Exception('list length less than index')
             cur_idx += 1
         if idx == 0:   # when delete the first node 
-            self.head = cur.next
-            cur = cur.next
+            self.head = cur.__next__
+            cur = cur.__next__
             return
         if self.head is self.tail:   # when there is only 1 node in the LinkedList
             self.head = None
             self.tail = None
             return
-        cur.next = cur.next.next
-        if cur.next is None:  # when delete the last node in the LinkedList
+        cur.next = cur.next.__next__
+        if cur.__next__ is None:  # when delete the last node in the LinkedList
             self.tail = cur
   
     def size(self):
@@ -84,7 +84,7 @@ class LinkedList:
             return 'The list is an empty list'
         while current is not None:
             count += 1
-            current = current.next
+            current = current.__next__
         return count
   
     def search(self, item):
@@ -94,7 +94,7 @@ class LinkedList:
             if current.data == item:
                 found = True
             else:
-                current = current.next
+                current = current.__next__
         return found
   
 if __name__ == '__main__':
@@ -107,6 +107,6 @@ if __name__ == '__main__':
 #    link_list.remove(0)
   
     for node in link_list.iter():
-        print('node is {0}'.format(node))
-    print(link_list.size())
+        print(('node is {0}'.format(node)))
+    print((link_list.size()))
 #    print(link_list.search(20))

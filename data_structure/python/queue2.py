@@ -56,7 +56,7 @@ if __name__ == '__main__':
     for i in range(10):
         myQueue.enqueue(i)
     print(myQueue)
-    print('Queue Size:',myQueue.getSize())
+    print(('Queue Size:',myQueue.getSize()))
     myQueue.dequeue()
     print(myQueue)
-    print('Queue Size:',myQueue.getSize())
+    print(('Queue Size:',myQueue.getSize()))

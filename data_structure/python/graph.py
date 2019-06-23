@@ -11,14 +11,14 @@ class AdjacencyList(object):
 
     def addEdge(self, fromVertex, toVertex):
         # check if vertex is already present
-        if fromVertex in self.List.keys():
+        if fromVertex in list(self.List.keys()):
             self.List[fromVertex].append(toVertex)
         else:
             self.List[fromVertex] = [toVertex]
 
     def printList(self):
         for i  in self.List:
-            print(i,'->',' -> '.join([str(j) for j in self.List[i]]))
+            print((i,'->',' -> '.join([str(j) for j in self.List[i]])))
 
 if __name__ == '__main__':
     al = AdjacencyList()

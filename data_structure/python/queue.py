@@ -31,7 +31,7 @@ class Queue:
         if self.head is None:
             raise Exception('This is a empty queue')
         cur = self.head
-        self.head = cur.next
+        self.head = cur.__next__
         return cur.value
  
     def is_empty(self):
@@ -42,9 +42,9 @@ class Queue:
         count = 0
         if cur is None:
             return count
-        while cur.next is not None:
+        while cur.__next__ is not None:
             count += 1
-            cur = cur.next
+            cur = cur.__next__
         return count + 1
  
  
@@ -53,6 +53,6 @@ if __name__ == '__main__':
     for i in range(5):
         q.enqueue(i)
     for _ in range(5):
-        print(q.dequeue())
-    print(q.is_empty())
-    print(q.size())
+        print((q.dequeue()))
+    print((q.is_empty()))
+    print((q.size()))

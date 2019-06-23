@@ -71,9 +71,9 @@ class BinaryHeap(object):
 bh = BinaryHeap()
 bh.buildHeap([9,5,6,2,3])
 
-print('Deleted:', bh.delete())
-print('Deleted:', bh.delete())
-print('Deleted:', bh.delete())
+print(('Deleted:', bh.delete()))
+print(('Deleted:', bh.delete()))
+print(('Deleted:', bh.delete()))
 bh.insert(3)
-print('Deleted:', bh.delete())
+print(('Deleted:', bh.delete()))
 print(bh)

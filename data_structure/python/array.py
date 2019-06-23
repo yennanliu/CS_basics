@@ -14,7 +14,7 @@ class Array(object):
        arrayItems: values at each position of array
     '''
     def __init__(self, sizeOfArray, arrayType = int):
-        self.sizeOfArray = len(list(map(arrayType, range(sizeOfArray))))
+        self.sizeOfArray = len(list(map(arrayType, list(range(sizeOfArray)))))
         self.arrayItems =[arrayType(0)] * sizeOfArray    # initialize array with zeroes
         self.arrayType = arrayType
 
@@ -46,7 +46,7 @@ class Array(object):
                 self.arrayItems[i + 1] = self.arrayItems[i]
             self.arrayItems[position] = keyToInsert
         else:
-            print('Array size is:', self.sizeOfArray)
+            print(('Array size is:', self.sizeOfArray))
 
     # function to delete an element
     def delete(self, keyToDelete, position):
@@ -55,11 +55,11 @@ class Array(object):
                 self.arrayItems[i] = self.arrayItems[i + 1]
             self.arrayItems[i + 1] = self.arrayType(0)
         else:
-            print('Array size is:', self.sizeOfArray)
+            print(('Array size is:', self.sizeOfArray))
 
 if __name__ == '__main__':
     a = Array(10, int)
     a.insert(2, 2)
     a.insert(3, 1)
     a.insert(4,7)
-    print(len(a))
+    print((len(a)))
