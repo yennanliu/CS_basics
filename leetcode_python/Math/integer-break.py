@@ -1,4 +1,5 @@
 from functools import reduce
+import operator
 # V1 : DEV 
 
 # V2 

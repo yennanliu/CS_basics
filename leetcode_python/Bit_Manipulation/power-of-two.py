@@ -23,18 +23,14 @@ Output: false
 
 """
 
-
 # V1 
-
-class Solution(object):
-	import numpy as np 
-	def isPowerOfTwo(self, n):
-		if np.log2(n).is_integer():
-			return True
-		else:
-			return False 
-
-
+# class Solution(object):
+#     import numpy as np 
+#     def isPowerOfTwo(self, n):
+#         if np.log2(n).is_integer():
+#             return True
+#         else:
+#              return False 
 
 # V2 
 # https://www.programiz.com/python-programming/operators
@@ -46,9 +42,6 @@ class Solution:
     # @return {boolean}
     def isPowerOfTwo(self, n):
         return n > 0 and (n & (n - 1)) == 0
-
-
-
 
 # V3 
 # with Time Limit Exceeded error 
@@ -62,14 +55,3 @@ class Solution:
             k=k+1
         return False
         
-
-
-
-
-
-
-
-
-
-
-

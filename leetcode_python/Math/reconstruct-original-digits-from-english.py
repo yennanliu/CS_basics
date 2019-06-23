@@ -4,6 +4,7 @@
 
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79542812
+import collections
 class Solution(object):
     def originalDigits(self, s):
         """

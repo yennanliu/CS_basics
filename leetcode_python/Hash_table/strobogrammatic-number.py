@@ -12,12 +12,10 @@ For example, the numbers "69", "88", and "818" are all strobogrammatic.
 # Time:  O(n)
 # Space: O(1)
 
-
-
 # V1  :  need to double check 
 class Solution:
-    lookup = {'0':'0', '1':'1', '6':'9', '8':'8', '9':'6'}
     def isStrobogrammatic(self, nums):
+        lookup = {'0':'0', '1':'1', '6':'9', '8':'8', '9':'6'}
         for i, num in enumerate(list(nums)):
             #print (num)
             if str(num) in lookup:
@@ -26,15 +24,12 @@ class Solution:
                 return False
         return True 
 
-
-
 # V2 
 class Solution:
-    lookup = {'0':'0', '1':'1', '6':'9', '8':'8', '9':'6'}
-
     # @param {string} num
     # @return {boolean}
     def isStrobogrammatic(self, num):
+        lookup = {'0':'0', '1':'1', '6':'9', '8':'8', '9':'6'}
         n = len(num)
         for i in range((n+1) / 2):
             if num[n-1-i] not in self.lookup or \

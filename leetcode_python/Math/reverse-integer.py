@@ -1,5 +1,3 @@
-
-
 # V1 
 class Solution(object):
 	# x = 20010000
@@ -13,11 +11,9 @@ class Solution(object):
 		x = 0 if abs(x) > 0x7FFFFFFF else x
 		return x
 
-
 # V2 
 # Time:  O(logn) = O(1)
 # Space: O(1)
-
 class Solution(object):
     def reverse(self, x):
         """
@@ -50,6 +46,8 @@ class Solution(object):
         :type x: int
         :rtype: int
         """
+        def cmp(a, b):
+            return (a > b) - (a < b)
         s = cmp(x, 0)
         r = int(repr(s * x)[::-1])
         return s * r * (r < 2 ** 31)

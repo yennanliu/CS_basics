@@ -1,9 +1,4 @@
-
-
-
 # V1 
-
-
 
 
 # V2 
@@ -13,6 +8,11 @@
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+class TreeNode:
+    def __init__(self, data):
+        self.data = data
+        self.lLink = None
+        self.rLink = None
 
 class Solution(object):
     def insertionSortList(self, head):
