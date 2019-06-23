@@ -1,10 +1,10 @@
 # V1 
-class solution(object):
-	def fib(n):
-		return solution.fib(n-2) + solution.fib(n-1)
-	if n <= 2:
-		return 1 
-	return solution.fib(n-2) + solution.fib(n-1)
+# class solution(object):
+# 	def fib(n):
+# 		return solution.fib(n-2) + solution.fib(n-1)
+# 	if n <= 2:
+# 		return 1 
+# 	return solution.fib(n-2) + solution.fib(n-1)
 
 # V1' 
 class solution(object):
