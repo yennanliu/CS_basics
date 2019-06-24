@@ -1,3 +1,8 @@
+# 2019-06-24
+
+- TODO  : Stack     
+- REDO  : Dynamic Programming (pending, not finished, todo), Linked list, Math, Recursion, BFS/DFS revisit 
+
 # 2019-06-18
 
 - TODO  : Dynamic Programming, BFS/DFS revisit      
