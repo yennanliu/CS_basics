@@ -27,13 +27,71 @@
 # getMin() -- Retrieve the minimum element in the stack.
 #
 
-
 ### Stack : 「Last-In-First-Out」
 ### http://alrightchiu.github.io/SecondRound/stack-introjian-jie.html
 
 # V0 : DEV 
 
 # V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/51345762
+class MyQueue(object):
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.stack1 = []
+        self.stack2 = []
+
+    def push(self, x):
+        """
+        Push element x to the back of queue.
+        :type x: int
+        :rtype: void
+        """
+        
+        self.stack1.append(x)
+
+    def pop(self):
+        """
+        Removes the element from in front of queue and returns that element.
+        :rtype: int
+        """
+        if self.stack2:
+            return self.stack2.pop()
+        else:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+            return self.stack2.pop()
+
+    def peek(self):
+        """
+        Get the front element.
+        :rtype: int
+        """
+        if self.stack2:
+            return self.stack2[-1]
+        else:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+            return self.stack2[-1]
+
+    def empty(self):
+        """
+        Returns whether the queue is empty.
+        :rtype: bool
+        """
+        return not self.stack1 and not self.stack2
+
+
+# Your MyQueue object will be instantiated and called as such:
+# obj = MyQueue()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.peek()
+# param_4 = obj.empty()
+
+# V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79253237
 class MinStack(object):
 
@@ -75,7 +133,7 @@ class MinStack(object):
         """
         return self.stack[-1][1]
 
-# V1'
+# V2'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79253237
 class MinStack(object):
 
@@ -117,11 +175,10 @@ class MinStack(object):
         """
         return self.min[-1]
 
-# V2 
+# V3
 # https://www.cnblogs.com/zuoyuan/p/4091870.html
 # stack1 : regular stack
 # stack2 : stack for return minimum in-stack element 
-
 class MinStack:
     # @param x, an integer
     def __init__(self):
@@ -148,7 +205,7 @@ class MinStack:
     def getMin(self):
         return self.stack2[-1]
 
-# V3 
+# V4
 class MinStack:
     def __init__(self):
         self.min = None
@@ -183,6 +240,7 @@ class MinStack:
     def getMin(self):
         return self.min
 
+# V5 
 # Time:  O(n)
 # Space: O(n)
 class MinStack2:
@@ -221,7 +279,7 @@ class MinStack2:
 #     stack.push(-1)
 #     print([stack.top(), stack.getMin()])
 
-# V4
+# V6
 # Time:  O(n)
 # Space: O(1)
 class MinStack(object):
@@ -258,7 +316,7 @@ class MinStack(object):
     def getMin(self):
         return self.min
 
-# V4' 
+# V7' 
 # Time:  O(n)
 # Space: O(n)
 class MinStack2(object):
@@ -315,3 +373,32 @@ class MinStack3(object):
 
     def getMin(self):
         return self.stack[-1][0]
+
+# V8 
+# Time:  O(1), amortized
+# Space: O(n)
+class Queue(object):
+    # initialize your data structure here.
+    def __init__(self):
+        self.A, self.B = [], []
+
+    # @param x, an integer
+    # @return nothing
+    def push(self, x):
+        self.A.append(x)
+
+    # @return an integer
+    def pop(self):
+        self.peek()
+        return self.B.pop()
+
+    # @return an integer
+    def peek(self):
+        if not self.B:
+            while self.A:
+                self.B.append(self.A.pop())
+        return self.B[-1]
+
+    # @return an boolean
+    def empty(self):
+        return not self.A and not self.B
