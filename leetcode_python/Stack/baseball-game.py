@@ -92,12 +92,29 @@ Every integer represented in the list will be between -30000 and 30000.
 # The size of the input list will be between 1 and 1000.
 # Every integer represented in the list will be between -30000 and 30000.
 
+# V0 : dev 
 
-
-# V1 : dev 
-
-# V1'
-
+# V1 
+# http://bookshadow.com/weblog/2017/09/24/leetcode-baseball-game/
+class Solution(object):
+    def calPoints(self, ops):
+        """
+        :type ops: List[str]
+        :rtype: int
+        """
+        stack = []
+        for op in ops:
+            if op == 'C':
+                stack.pop()
+            elif op == 'D':
+                stack.append(stack[-1] * 2)
+            elif op == '+':
+                stack.append(stack[-1] + stack[-2])
+            else:
+                stack.append(int(op))
+        return sum(stack)
+        
+# V2
 class Solution(object):
     def calPoints(self, ops):
         history = []
@@ -115,7 +132,7 @@ class Solution(object):
 
 
 
-# V2 
+# V3
 class Solution(object):
     def calPoints(self, ops):
         """
@@ -134,6 +151,25 @@ class Solution(object):
                 history.append(int(op))
         return sum(history)
 
-
+# V4 
+# Time:  O(n)
+# Space: O(n)
+class Solution(object):
+    def calPoints(self, ops):
+        """
+        :type ops: List[str]
+        :rtype: int
+        """
+        history = []
+        for op in ops:
+            if op == '+':
+                history.append(history[-1] + history[-2])
+            elif op == 'D':
+                history.append(history[-1] * 2)
+            elif op == 'C':
+                history.pop()
+            else:
+                history.append(int(op))
+        return sum(history)
 
 
