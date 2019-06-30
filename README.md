@@ -242,7 +242,7 @@
 456| [132 Pattern](https://leetcode.com/problems/132-pattern/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/132-pattern.py) | _O(n)_       | _O(n)_          | Medium       || AGAIN (not start)
 636| [Exclusive Time of Functions](https://leetcode.com/problems/exclusive-time-of-functions/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/exclusive-time-of-functions.py)   | _O(n)_  | _O(n)_         | Medium        || AGAIN  
 682| [Baseball Game](https://leetcode.com/problems/baseball-game/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/baseball-game.py)  | _O(n)_  | _O(n)_         | Easy        || OK*
-735| [Asteroid Collision](https://leetcode.com/problems/asteroid-collision/) | [C++](./C++/asteroid-collision.cpp) [Python](./Python/asteroid-collision.py) | _O(n)_  | _O(n)_         | Medium           ||
+735| [Asteroid Collision](https://leetcode.com/problems/asteroid-collision/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/asteroid-collision.py)  | _O(n)_  | _O(n)_      | Medium      || AGAIN 
 739| [Daily Temperatures](https://leetcode.com/problems/daily-temperatures/) | [C++](./C++/daily-temperatures.cpp) [Python](./Python/daily-temperatures.py) | _O(n)_  | _O(n)_         | Medium           ||
 853| [Car Fleet](https://leetcode.com/problems/car-fleet/) | [C++](./C++/car-fleet.cpp) [Python](./Python/car-fleet.py) | _O(nlogn)_  | _O(n)_         | Medium           ||
 856| [Score of Parentheses](https://leetcode.com/problems/score-of-parentheses/) | [C++](./C++/score-of-parentheses.cpp) [Python](./Python/score-of-parentheses.py) | _O(n)_  | _O(1)_         | Medium           ||
