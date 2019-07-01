@@ -6,7 +6,7 @@
 
 - TODO  : Tree      
 - REDO  : Dynamic Programming (pending, not finished, todo), Linked list, Math, Recursion, BFS/DFS, Stack revisit
-- 1st visit OK : Stack 
+- DONE  : stack 
 
 # 2019-06-24
 
