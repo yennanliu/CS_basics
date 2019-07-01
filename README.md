@@ -248,7 +248,7 @@
 856| [Score of Parentheses](https://leetcode.com/problems/score-of-parentheses/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/score-of-parentheses.py) | _O(n)_  | _O(1)_   | Medium   || AGAIN (not start)
 872| [Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/leaf-similar-trees.py) | _O(n)_  | _O(h)_         | Easy      || AGAIN* 
 901| [Online Stock Span](https://leetcode.com/problems/online-stock-span/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/online-stock-span.py) | _O(n)_  | _O(n)_      | Medium        || AGAIN (not start)
-946| [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/) | [C++](./C++/validate-stack-sequences.cpp) [Python](./Python/validate-stack-sequences.py) | _O(n)_  | _O(n)_         | Medium           ||
+946| [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/validate-stack-sequences.py)  | _O(n)_  | _O(n)_         | Medium           || AGAIN 
 
 
 ## Tree Easy and Medium 
