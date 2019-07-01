@@ -1,3 +1,13 @@
+# Progress
+ 
+- 1st visit OK : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List ,  list(to check), Array(to check), Hash table(to check) 
+
+# 2019-07-01
+
+- TODO  : Tree      
+- REDO  : Dynamic Programming (pending, not finished, todo), Linked list, Math, Recursion, BFS/DFS, Stack revisit
+- 1st visit OK : Stack 
+
 # 2019-06-24
 
 - TODO  : Stack     
