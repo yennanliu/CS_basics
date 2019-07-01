@@ -1,6 +1,8 @@
 # Progress
  
-- 1st visit OK : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List ,  list(to check), Array(to check), Hash table(to check) 
+- `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check) 
+- `TODO` : Heap, BitMap, Binary Search, Binary Search Tree, Depth-First Search,
+Backtracking, Greedy, Dynamic Programming (to finished), Graph, Geometry, Simulation, SQL, Shell script 
 
 # 2019-07-01
 

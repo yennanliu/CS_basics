@@ -1,4 +1,5 @@
 # CS_basics
+
 - Algorithm 
 - Data Structure
 - Network
@@ -37,7 +38,7 @@
 ||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py) | | | AGAIN| 
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
 
-## Array Eesy and medium 
+## Array Easy and medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 015 | [3 Sum](https://leetcode.com/problems/3sum/) |[Python](./Python/3sum.py)       | _O(n^2)_        | _O(1)_          | Medium         || Two Pointers
@@ -259,7 +260,7 @@
 208 | [Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py) | _O(n)_ | _O(1)_ | Medium |Trie tree| AGAIN (not start)
 211 | [Add and Search Word - Data structure design](https://leetcode.com/problems/add-and-search-word-data-structure-design/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/add-and-search-word-data-structure-design.py) | _O(min(n, h))_ | _O(min(n, h))_ | Medium |Trie tree, DFS, do `# 208 first`| AGAIN (not start)
 226| [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/invert-binary-tree.py) | _O(n)_ | _O(h)_, _O(w)_ | Easy || AGAIN* 
-307 | [Range Sum Query - Mutable](https://leetcode.com/problems/range-sum-query-mutable/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/range-sum-query-mutable.py) | ctor: _O(n)_, update: _O(logn)_, query:  _O(logn)_ | _O(n)_ | Medium | LintCode, DFS, Segment Tree, BIT | AGAIN 
+307 | [Range Sum Query - Mutable](https://leetcode.com/problems/range-sum-query-mutable/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/range-sum-query-mutableA.py) | ctor: _O(n)_, update: _O(logn)_, query:  _O(logn)_ | _O(n)_ | Medium | LintCode, DFS, Segment Tree, BIT | AGAIN 
 525| [Contiguous Array](https://leetcode.com/problems/contiguous-array/) |[C++](./C++/contiguous-array.cpp)  [Python](./Python/contiguous-array.py) | _O(n)_ | _O(n)_ | Medium         | |
 529 | [Minesweeper](https://leetcode.com/problems/minesweeper/) | [C++](./C++/minesweeper.cpp) [Python](./Python/minesweeper.py) | _O(m * n)_ | _O(m + n)_ | Medium    || 
 536 | [Construct Binary Tree from String](https://leetcode.com/problems/construct-binary-tree-from-string/) | [C++](./C++/construct-binary-tree-from-string.cpp) [Python](./Python/construct-binary-tree-from-string.py) | _O(n)_ | _O(h)_ | Medium    | 🔒 |
