@@ -280,7 +280,7 @@
 655 | [Print Binary Tree](https://leetcode.com/problems/print-binary-tree/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/print-binary-tree.py) | _O(n)_ | _O(h)_ | Medium | | AGAIN (not start)
 662 | [Maximum Width of Binary Tree](https://leetcode.com/problems/maximum-width-of-binary-tree/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/maximum-width-of-binary-tree.py) | _O(n)_ | _O(h)_ | Medium | DFS | AGAIN (not start)
 663 | [Equal Tree Partition](https://leetcode.com/problems/strange-printer/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/equal-tree-partition.py) | _O(n)_ | _O(n)_ | Medium | 🔒 , Hash | AGAIN (not start)
-677 | [Map Sum Pairs](https://leetcode.com/problems/map-sum-pairs/) | [C++](./C++/map-sum-pairs.cpp) [Python](./Python/map-sum-pairs.py) | _O(n)_ | _O(t)_ | Medium || Trie
+677 | [Map Sum Pairs](https://leetcode.com/problems/map-sum-pairs/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/map-sum-pairs.py) | _O(n)_ | _O(t)_ | Medium |Trie | AGAIN (not start)
 684 | [Redundant Connection](https://leetcode.com/problems/redundant-connection/) | [C++](./C++/redundant-connection.cpp) [Python](./Python/redundant-connection.py) | _O(n)_ | _O(n)_ | Medium || Union Find
 687 | [Longest Univalue Path](https://leetcode.com/problems/longest-univalue-path/) | [C++](./C++/longest-univalue-path.cpp) [Python](./Python/longest-univalue-path.py) | _O(n)_ | _O(h)_ | Easy ||
 814 | [Binary Tree Pruning](https://leetcode.com/problems/binary-tree-pruning/) | [C++](./C++/binary-tree-pruning.cpp) [Python](./Python/binary-tree-pruning.py) | _O(n)_ | _O(h)_ | Medium || DFS |
