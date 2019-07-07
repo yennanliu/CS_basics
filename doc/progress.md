@@ -3,14 +3,14 @@
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check) 
 - `TODO` : Heap, BitMap, Binary Search, Binary Search Tree, Depth-First Search,
 Backtracking, Greedy, Dynamic Programming (to finished), Graph, Geometry, Simulation, SQL, Shell script 
+- `TODO2`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 
-# 2019-07-01
 
-- TODO   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
+# 2019-07-07
+
 - DOING  : Tree      
 - REDO   : Dynamic Programming (pending, not finished, todo), Linked list, Math, Recursion, BFS/DFS, Stack revisit
 - DONE   : stack 
-
 
 # 2019-07-01
 
