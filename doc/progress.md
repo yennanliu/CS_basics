@@ -6,6 +6,14 @@ Backtracking, Greedy, Dynamic Programming (to finished), Graph, Geometry, Simula
 
 # 2019-07-01
 
+- TODO   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
+- DOING  : Tree      
+- REDO   : Dynamic Programming (pending, not finished, todo), Linked list, Math, Recursion, BFS/DFS, Stack revisit
+- DONE   : stack 
+
+
+# 2019-07-01
+
 - TODO  : Tree      
 - REDO  : Dynamic Programming (pending, not finished, todo), Linked list, Math, Recursion, BFS/DFS, Stack revisit
 - DONE  : stack 
