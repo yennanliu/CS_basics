@@ -295,7 +295,7 @@
 958| [Check Completeness of a Binary Tree](https://leetcode.com/problems/check-completeness-of-a-binary-tree/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/check-completeness-of-a-binary-tree.py) | _O(n)_          | _O(w)_          | Medium       |  BFS | AGAIN*
 965| [Univalued Binary Tree](https://leetcode.com/problems/univalued-binary-tree/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/univalued-binary-tree.py)  | _O(n)_          | _O(h)_          | Easy     | DFS | AGAIN 
 971| [Flip Binary Tree To Match Preorder Traversal](https://leetcode.com/problems/flip-binary-tree-to-match-preorder-traversal/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/flip-binary-tree-to-match-preorder-traversal.py)  | _O(n)_  | _O(h)_   | Medium    | DFS | AGAIN (not start)
-979| [Distribute Coins in Binary Tree](https://leetcode.com/problems/distribute-coins-in-binary-tree/) | [C++](./C++/distribute-coins-in-binary-tree.cpp) [Python](./Python/distribute-coins-in-binary-tree.py) | _O(n)_          | _O(h)_          | Medium           || DFS |
+979| [Distribute Coins in Binary Tree](https://leetcode.com/problems/distribute-coins-in-binary-tree/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/distribute-coins-in-binary-tree.py)  | _O(n)_          | _O(h)_          | Medium   | DFS | AGAIN (not start)
 
 ## Heap Easy and Medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
