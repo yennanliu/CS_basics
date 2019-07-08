@@ -609,7 +609,7 @@ Union Find
 ## Binary Search Tree Easy and Medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag,Note        | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-220| [Contains Duplicate III](https://leetcode.com/problems/contains-duplicate-iii/)  | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/contains-duplicate-iii.py.py)   | _O(nlogk)_      | _O(k)_      | Medium  || AGAIN (not start)
+220| [Contains Duplicate III](https://leetcode.com/problems/contains-duplicate-iii/)  | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/contains-duplicate-iii.py)   | _O(nlogk)_      | _O(k)_      | Medium  || AGAIN (not start)
 230 | [Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/) | [C++](./C++/kth-smallest-element-in-a-bst.cpp) [Python](./Python/kth-smallest-element-in-a-bst.py) | _O(max(h, k))_ | _O(min(h, k))_ | Medium ||
 235 | [Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/) | [C++](./C++/lowest-common-ancestor-of-a-binary-search-tree.cpp) [Python](./Python/lowest-common-ancestor-of-a-binary-search-tree.py) | _O(h)_ | _O(1)_ | Easy | EPI |
 270| [Closest Binary Search Tree Value](https://leetcode.com/problems/closest-binary-search-tree-value/)| [C++](./C++/closest-binary-search-tree-value.cpp) [Python](./Python/closest-binary-search-tree-value.py)   | _O(h)_          | _O(1)_          | Easy         | 🔒 |
