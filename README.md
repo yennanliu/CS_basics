@@ -617,7 +617,7 @@ Union Find
 449|[Serialize and Deserialize BST](https://leetcode.com/problems/serialize-and-deserialize-bst/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/serialize-and-deserialize-bst.py)  | _O(n)_ | _O(h)_ | Medium | | AGAIN (not start)
 450|[Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/delete-node-in-a-bst.py) | _O(h)_ | _O(h)_ | Medium | | AGAIN (not start)
 530|[Minimum Absolute Difference in BST](https://leetcode.com/problems/minimum-absolute-difference-in-bst/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/minimum-absolute-difference-in-bst.py)  | _O(n)_ | _O(h)_ | Easy | | AGAIN*
-776|[Split BST](https://leetcode.com/problems/split-bst/)| [C++](./C++/split-bst.cpp) [Python](./Python/split-bst.py)| _O(n)_ | _O(h)_ | Medium | 🔒 | |
+776|[Split BST](https://leetcode.com/problems/split-bst/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/split-bst.py) | _O(n)_ | _O(h)_ | Medium | 🔒 | AGAIN (not start*)
 783|[Minimum Distance Between BST Nodes](https://leetcode.com/problems/minimum-distance-between-bst-nodes/)| [C++](./C++/minimum-distance-between-bst-nodes.cpp) [Python](./Python/minimum-distance-between-bst-nodes.py)| _O(n)_ | _O(h)_ | Easy | | |
 
 
