@@ -5,6 +5,12 @@
 Backtracking, Greedy, Dynamic Programming (to finished), Graph, Geometry, Simulation, SQL, Shell script 
 - `TODO2`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 
+# 2019-07-10
+
+- DOING  : Breadth-First Search
+- REDO   : Dynamic Programming (pending, not finished, todo), Linked list, Math, Recursion, DFS, Stack revisit
+- DONE   : stack, Tree, Binary Search Tree 
+
 # 2019-07-08
 
 - TODO  : Binary Search Tree      
