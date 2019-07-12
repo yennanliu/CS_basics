@@ -651,7 +651,7 @@ Union Find
 
 
 ## Depth-First Search Easy and Medium 
-|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note         | Status| 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag     | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 112| [Path Sum](https://leetcode.com/problems/path-sum/)      |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum.py)  | _O(n)_ | _O(h)_  | Easy  | `good concept`| OK*
 113| [Path Sum II](https://leetcode.com/problems/path-sum-ii/)   | [Python](./Python/path-sum-ii.py) | _O(n)_         | _O(h)_          | Medium         ||
