@@ -22,7 +22,7 @@
 ||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py) | | | AGAIN|
 ||Binary search Tree (BST)| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/binary_search_tree.py) | | | AGAIN| 
 ||Hash map| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/hash_map.py) | | | AGAIN| 
-<br>
+
 ## Algorithm 
 |  #  | Title | Solution | Time | Space | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
@@ -38,7 +38,7 @@
 ||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py) | | | AGAIN| 
 ||Selection sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py) | | | AGAIN| 
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
-<br>
+
 ## Array Easy and medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
