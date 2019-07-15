@@ -4,15 +4,46 @@
 	- BFS = Queue + go through 
 
 - Algorithm 
-```bash
+
+```python
+import collections 
+
 # DFS
 
 # BFS  
+def bfs(root):	
+    queue = collections.deque() # the data structure save input node 
+    res = []  # the demand output 
+    queue.append(root)
+    while queue:
+        # do something 
+        node =  queue.popleft()
+        # do something 
+        queue.append(node.left)
+        queue.append(node.right)
+        res.append(node.val)
+    return res 
 
 ```
 - Example 
 
-```bash
+```python
+
+# DFS (Iteration)
+
+# DFS (Recursion)
+
+
+# BFS (Iteration)
+
+# BFS (Recursion)
+
+
+
+
+```
+
+```python
 # Tree - DFS
 
 # Tree- BFS  
