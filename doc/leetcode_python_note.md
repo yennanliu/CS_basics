@@ -3,8 +3,8 @@
 ## 1) BFS & DFS 
 
 - Tricks 
-	- DFS = Stack + go through
-	- BFS = Queue + go through 
+    - DFS = Stack + go through
+    - BFS = Queue + go through 
 
 - Algorithm 
 
@@ -12,7 +12,7 @@
 import collections 
 
 # DFS (Stack)
-def dfs(root):	
+def dfs(root):    
     queue = collections.deque() # the data structure save input node 
     res = []  # the demand output 
     queue.append(root)
@@ -26,7 +26,7 @@ def dfs(root):
     return res 
 
 # BFS (Queue)
-def bfs(root):	
+def bfs(root):    
     queue = collections.deque() # the data structure save input node 
     res = []  # the demand output 
     queue.append(root)
@@ -49,10 +49,10 @@ def bfs(root):
 # DFS (Recursion) : Leetcode #515 Find Largest Value in Each Tree Row
 class Solution(object):
 
-	def largestValues(self, root):
-		levels = []
-		self.dfs(root, levels, 0)
-		return [ max(l) for l in levels ]
+    def largestValues(self, root):
+        levels = []
+        self.dfs(root, levels, 0)
+        return [ max(l) for l in levels ]
 
     def dfs(self, root, levels, level):
         if not root: 
@@ -81,7 +81,7 @@ class Solution(object):
 ```
 
 - Ref
-	- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/walls-and-gates.py
-	- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum.py
+    - https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/walls-and-gates.py
+    - https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum.py
 
 ### 2) Binary Search Tree 
