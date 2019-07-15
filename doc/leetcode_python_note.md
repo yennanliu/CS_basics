@@ -18,27 +18,21 @@ def dfs(root):
     queue.append(root)
     while queue:
         # do something 
-        """
-        Stack : first in, last out 
-        """
-        node =  queue.pop() 
+        node =  queue.pop()  ### Stack : first in, last out
         # do something 
         queue.append(node.left)
         queue.append(node.right)
         res.append(node.val)
     return res 
 
-# BFS  (Queue)
+# BFS (Queue)
 def bfs(root):	
     queue = collections.deque() # the data structure save input node 
     res = []  # the demand output 
     queue.append(root)
     while queue:
         # do something 
-        """
-        queue : first in, first out 
-        """
-        node =  queue.popleft()
+        node =  queue.popleft() ### queue : first in, first out 
         # do something 
         queue.append(node.left)
         queue.append(node.right)
@@ -52,7 +46,22 @@ def bfs(root):
 
 # DFS (Iteration)
 
-# DFS (Recursion)
+# DFS (Recursion) : Leetcode #515 Find Largest Value in Each Tree Row
+class Solution(object):
+
+	def largestValues(self, root):
+		levels = []
+		self.dfs(root, levels, 0)
+		return [ max(l) for l in levels ]
+
+    def dfs(self, root, levels, level):
+        if not root: 
+            return
+        if level == len(levels):
+            levels.append([])
+        levels[level].append(root.val)
+        self.dfs(root.left, levels, level + 1)
+        self.dfs(root.right, levels, level + 1)
 
 # BFS (Iteration)
 
