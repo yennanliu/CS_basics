@@ -1,4 +1,7 @@
-### BFS & DFS 
+# Note for Leetcode Python 
+
+## 1) BFS & DFS 
+
 - Tricks 
 	- DFS = Stack + go through
 	- BFS = Queue + go through 
@@ -8,15 +11,33 @@
 ```python
 import collections 
 
-# DFS
+# DFS (Stack)
+def dfs(root):	
+    queue = collections.deque() # the data structure save input node 
+    res = []  # the demand output 
+    queue.append(root)
+    while queue:
+        # do something 
+        """
+        Stack : first in, last out 
+        """
+        node =  queue.pop() 
+        # do something 
+        queue.append(node.left)
+        queue.append(node.right)
+        res.append(node.val)
+    return res 
 
-# BFS  
+# BFS  (Queue)
 def bfs(root):	
     queue = collections.deque() # the data structure save input node 
     res = []  # the demand output 
     queue.append(root)
     while queue:
         # do something 
+        """
+        queue : first in, first out 
+        """
         node =  queue.popleft()
         # do something 
         queue.append(node.left)
@@ -33,13 +54,9 @@ def bfs(root):
 
 # DFS (Recursion)
 
-
 # BFS (Iteration)
 
 # BFS (Recursion)
-
-
-
 
 ```
 
@@ -58,4 +75,4 @@ def bfs(root):
 	- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/walls-and-gates.py
 	- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum.py
 
-### Binary Search Tree 
+### 2) Binary Search Tree 
