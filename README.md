@@ -580,9 +580,9 @@ Union Find
 
 
 ## Binary Search Easy and Medium 
-|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note        | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-034| [Search for a Range](https://leetcode.com/problems/search-for-a-range/) | [C++](./C++/search-for-a-range.cpp) [Python](./Python/search-for-a-range.py) | _O(logn)_ | _O(1)_   | Medium         ||
+034| [Search for a Range](https://leetcode.com/problems/search-for-a-range/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/search-for-a-range.py) | _O(logn)_ | _O(1)_   | Medium  || AGAIN* 
 035| [Search Insert Position](https://leetcode.com/problems/search-insert-position/) | [C++](./C++/search-insert-position.cpp) [Python](./Python/search-insert-position.py) | _O(logn)_ | _O(1)_   | Medium         ||
 069| [Sqrt(x)](https://leetcode.com/problems/sqrtx/)       | [C++](./C++/sqrtx.cpp) [Python](./Python/sqrtx.py)      | _O(logn)_        | _O(1)_         | Medium         ||
 074| [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/) | [C++](./C++/search-a-2d-matrix.cpp) [Python](./Python/search-a-2d-matrix.py) | _O(logm + logn)_ | _O(1)_ | Medium   ||
