@@ -1,7 +1,7 @@
 # Progress
  
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check) 
-- `TODO` : Heap, Binary Search, BitMap, Backtracking, Greedy, Dynamic Programming (to finished), Graph, Geometry, Simulation, SQL, Shell script 
+- `TODO` : Heap, BitMap, Backtracking, Greedy, Dynamic Programming (to finished), Graph, Geometry, Simulation, SQL, Shell script 
 - `TODO2`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 
 
