@@ -27,8 +27,6 @@
 # isBadVersion(n2) == False # if n2 version is the OK version 
 
 
-
-
 """
 
 credit 
@@ -37,12 +35,10 @@ https://blog.csdn.net/coder_orz/article/details/52048093
 
 """
 
-
-# V1 : dev 
-
+# V0 : dev 
 
 
-# V3 
+# V1 
 class Solution(object):
     def firstBadVersion(self, n):
         """
@@ -59,7 +55,7 @@ class Solution(object):
             else:
                 left = mid + 1
 
-# V3 
+# V2  
 class Solution(object):
     def firstBadVersion(self, n):
         """
@@ -71,6 +67,22 @@ class Solution(object):
             mid = (left + right) / 2
             if Solution.isBadVersion(mid):
                 right = mid
+            else:
+                left = mid + 1
+        return left
+
+# V3  
+class Solution(object):
+    def firstBadVersion(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        left, right = 1, n
+        while left <= right:
+            mid = left + (right - left) / 2
+            if isBadVersion(mid): # noqa
+                right = mid - 1
             else:
                 left = mid + 1
         return left
