@@ -314,7 +314,7 @@
 ## BitMap Easy and Medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-136 | [Single Number](https://leetcode.com/problems/single-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number.py) | _O(n)_       | _O(1)_          | Easy         |||
+136 | [Single Number](https://leetcode.com/problems/single-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number.py) | _O(n)_       | _O(1)_          | Easy         || 
 137 | [Single Number II](https://leetcode.com/problems/single-number-ii/) | [Python](./Python/single-number-ii.py) | _O(n)_ | _O(1)_          | Medium         |||
 190 | [Reverse Bits](https://leetcode.com/problems/reverse-bits/)  | [Python](./Python/reverse-bits.py) | _O(1)_        | _O(1)_          | Easy           |||
 191  |[Number of 1 Bits](https://leetcode.com/problems/number-of-1-bits/) | [Python](./Python/number-of-1-bits.py) | _O(1)_ | _O(1)_          | Easy           |||
@@ -689,9 +689,9 @@ Union Find
 
 
 ## Backtracking Easy and Medium 
-|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note       | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-017| [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)| [Python](./Python/letter-combinations-of-a-phone-number.py) | _O(n * 4^n)_ | _O(n)_ | Medium ||
+017| [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/letter-combinations-of-a-phone-number.py)  | _O(n * 4^n)_ | _O(n)_ | Medium || OK* 
 022| [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)| [Python](./Python/generate-parentheses.py)| _O(4^n / n^(3/2))_ | _O(n)_   | Medium         ||
 039| [Combination Sum](https://leetcode.com/problems/combination-sum/)| [Python](./Python/combination-sum.py) | _O(k * n^k)_    | _O(k)_          | Medium         ||
 040| [Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)| [Python](./Python/combination-sum-ii.py)| _O(k * C(n, k))_| _O(k)_         | Medium         ||
