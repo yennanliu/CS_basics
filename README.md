@@ -607,8 +607,8 @@ Union Find
 852 | [Peak Index in a Mountain Array](https://leetcode.com/problems/peak-index-in-a-mountain-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/peak-index-in-a-mountain-array.py) | _O(logn)_ | _O(1)_ | Easy | | OK* 
 875 | [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/koko-eating-bananas.py)  | _O(nlogr)_ | _O(1)_ | Medium | | OK*
 894| [All Possible Full Binary Trees](https://leetcode.com/problems/all-possible-full-binary-trees/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/all-possible-full-binary-trees.py) | _O(n * 4^n / n^(3/2))_ | _O(n * 4^n / n^(3/2))_ | Medium ||  AGAIN (not start)
-911| [Online Election](https://leetcode.com/problems/online-election/) | [C++](./C++/online-election.cpp) [Python](./Python/online-election.py) | ctor: _O(n)_<br> query : _O(logn)_ | _O(n)_ | Medium    || 
-
+911| [Online Election](https://leetcode.com/problems/online-election/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/online-election.py)| ctor: _O(n)_<br> query : _O(logn)_ | _O(n)_ | Medium    ||  AGAIN (not start)
+ 
 
 ## Binary Search Tree Easy and Medium 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag,Note        | Status| 
