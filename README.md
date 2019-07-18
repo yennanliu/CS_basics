@@ -692,7 +692,7 @@ Union Find
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note       | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 017| [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/letter-combinations-of-a-phone-number.py)  | _O(n * 4^n)_ | _O(n)_ | Medium || OK* 
-022| [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)| [Python](./Python/generate-parentheses.py)| _O(4^n / n^(3/2))_ | _O(n)_   | Medium         ||
+022| [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/generate-parentheses.py) | _O(4^n / n^(3/2))_ | _O(n)_   | Medium   || AGAIN (not start)
 039| [Combination Sum](https://leetcode.com/problems/combination-sum/)| [Python](./Python/combination-sum.py) | _O(k * n^k)_    | _O(k)_          | Medium         ||
 040| [Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)| [Python](./Python/combination-sum-ii.py)| _O(k * C(n, k))_| _O(k)_         | Medium         ||
 046| [Permutations](https://leetcode.com/problems/permutations/)| [Python](./Python/permutations.py) | _O(n * n!)_         | _O(n)_          | Medium         ||
