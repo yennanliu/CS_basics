@@ -695,7 +695,7 @@ Union Find
 022| [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/generate-parentheses.py) | _O(4^n / n^(3/2))_ | _O(n)_   | Medium   || AGAIN (not start)
 039| [Combination Sum](https://leetcode.com/problems/combination-sum/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/combination-sum.py) | _O(k * n^k)_    | _O(k)_          | Medium         || AGAIN (not start)
 040| [Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/combination-sum-ii.py) | _O(k * C(n, k))_| _O(k)_     | Medium   | similar as `#39  Combination Sum`| AGAIN (not start)
-046| [Permutations](https://leetcode.com/problems/permutations/)| [Python](./Python/permutations.py) | _O(n * n!)_         | _O(n)_          | Medium         ||
+046| [Permutations](https://leetcode.com/problems/permutations/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/permutations.py) | _O(n * n!)_  | _O(n)_ | Medium  |`good concept`| AGAIN*
 047| [Permutations II](https://leetcode.com/problems/permutations-ii/)| [Python](./Python/permutations-ii.py) | _O(n * n!)_   | _O(n)_          | Medium           ||
 077| [Combinations](https://leetcode.com/problems/combinations/)  | [Python](./Python/combinations.py) | _O(O(k * C(n, k)))_ | _O(k)_           | Medium         ||
 079| [Word Search](https://leetcode.com/problems/word-search/) | [Python](./Python/word-search.py) | _O(m * n * l)_ | _O(l)_ | Medium         ||
