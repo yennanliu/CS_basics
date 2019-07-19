@@ -84,4 +84,29 @@ class Solution(object):
     - https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/walls-and-gates.py
     - https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum.py
 
-### 2) Binary Search Tree 
+### 2) Binary Search Tree (BST)
+
+- Tricks
+
+- Algorithm 
+
+- Example 
+
+```python 
+#108 Convert Sorted Array to Binary Search Tree
+
+class Solution(object):
+    def sortedArrayToBST(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: TreeNode
+        """
+        if not nums: return None
+        _len = len(nums)
+        mid = _len // 2
+        root = TreeNode(nums[mid])
+        root.left = self.sortedArrayToBST(nums[:mid])
+        root.right = self.sortedArrayToBST(nums[mid+1:])
+        return root
+```
+
