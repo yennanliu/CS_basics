@@ -697,7 +697,7 @@ Union Find
 040| [Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/combination-sum-ii.py) | _O(k * C(n, k))_| _O(k)_     | Medium   | similar as `#39  Combination Sum`| AGAIN (not start)
 046| [Permutations](https://leetcode.com/problems/permutations/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/permutations.py) | _O(n * n!)_  | _O(n)_ | Medium  |`good concept`| AGAIN*
 047| [Permutations II](https://leetcode.com/problems/permutations-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/permutations-ii.py)| _O(n * n!)_   | _O(n)_    | Medium   | similar as `#46 Permutations`| AGAIN (not start)
-077| [Combinations](https://leetcode.com/problems/combinations/)  | [Python](./Python/combinations.py) | _O(O(k * C(n, k)))_ | _O(k)_           | Medium         ||
+077| [Combinations](https://leetcode.com/problems/combinations/)  | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/combinations.py) | _O(O(k * C(n, k)))_ | _O(k)_    | Medium     || AGAIN (not start)
 079| [Word Search](https://leetcode.com/problems/word-search/) | [Python](./Python/word-search.py) | _O(m * n * l)_ | _O(l)_ | Medium         ||
 093| [Restore IP Addresses](https://leetcode.com/problems/restore-ip-addresses/) | [Python](./Python/restore-ip-addresses.py) | _O(1)_ | _O(1)_ | Medium         ||
 078| [Subsets](https://leetcode.com/problems/subsets/)       | [C++](./C++/subsets.cpp)  [Python](./Python/subsets.py)    | _O(n * 2^n)_    | _O(1)_          | Medium         ||
