@@ -700,7 +700,7 @@ Union Find
 077| [Combinations](https://leetcode.com/problems/combinations/)  | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/combinations.py) | _O(O(k * C(n, k)))_ | _O(k)_    | Medium     || AGAIN (not start)
 079| [Word Search](https://leetcode.com/problems/word-search/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/word-search.py)  | _O(m * n * l)_ | _O(l)_ | Medium    |`good concept`| AGAIN** 
 093| [Restore IP Addresses](https://leetcode.com/problems/restore-ip-addresses/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/restore-ip-addresses.py)  | _O(1)_ | _O(1)_ | Medium    ||  AGAIN (not start)
-078| [Subsets](https://leetcode.com/problems/subsets/)       | [C++](./C++/subsets.cpp)  [Python](./Python/subsets.py)    | _O(n * 2^n)_    | _O(1)_          | Medium         ||
+078| [Subsets](https://leetcode.com/problems/subsets/)       | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/subsets.py)    | _O(n * 2^n)_   | _O(1)_      | Medium    |`good concept` , similar as `#90 Subsets II `| AGAIN*
 090| [Subsets II](https://leetcode.com/problems/subsets-ii/)    | [C++](./C++/subsets-ii.cpp) [Python](./Python/subsets-ii.py) | _O(n * 2^n)_    | _O(1)_          | Medium         ||
 131| [Palindrome Partitioning](https://leetcode.com/problems/palindrome-partitioning/) | [Python](./Python/palindrome-partitioning.py) | _O(n^2)_ ~ _O(2^n)_ | _O(n^2)_ | Medium ||
 216| [Combination Sum III](https://leetcode.com/problems/combination-sum-iii/)| [C++](./C++/combination-sum-iii.cpp) [Python](./Python/combination-sum-iii.py) | _O(k * C(n, k))_    | _O(k)_          | Medium         ||
