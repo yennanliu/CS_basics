@@ -1,8 +1,8 @@
-# FAQ for python 
+# Python FAQ
 
-## String 
+### String 
 
-### 1) Write a func return all indexes for a substring exist in a string. i.e. `x = '99023430990999', y = '99'. The func should return [0, 8, 11, 12]`
+#### 1) Write a func return all indexes for a substring exist in a string. i.e. `x = '99023430990999', y = '99'. The func should return [0, 8, 11, 12]`
 
 ```python 
 
