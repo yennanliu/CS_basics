@@ -803,7 +803,7 @@ Union Find
 767 | [Reorganize String](https://leetcode.com/problems/reorganize-string/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/reorganize-string.py) | _O(n)_ | _O(1)_ | Medium | | AGAIN (not start*)
 861 | [Score After Flipping Matrix](https://leetcode.com/problems/score-after-flipping-matrix/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/score-after-flipping-matrix.py)  | _O(r * c)_ | _O(1)_ | Medium || AGAIN (not start*)
 870 | [Advantage Shuffle](https://leetcode.com/problems/advantage-shuffle/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/advantage-shuffle.py) | _O(nlogn)_ | _O(n)_ | Medium || OK*
-881 | [Boats to Save People](https://leetcode.com/problems/boats-to-save-people/) | [C++](./C++/boats-to-save-people.cpp) [Python](./Python/boats-to-save-people.py) | _O(nlogn)_ | _O(n)_ | Medium ||
+881 | [Boats to Save People](https://leetcode.com/problems/boats-to-save-people/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/boats-to-save-people.py) | _O(nlogn)_ | _O(n)_ | Medium |`good trick`| OK*
 948 | [Bag of Tokens](https://leetcode.com/problems/bag-of-tokens/) | [C++](./C++/bag-of-tokens.cpp) [Python](./Python/bag-of-tokens.py) | _O(nlogn)_ | _O(1)_ | Medium || Two Pointers
 962 | [Maximum Width Ramp](https://leetcode.com/problems/maximum-width-ramp/) | [C++](./C++/maximum-width-ramp.cpp) [Python](./Python/maximum-width-ramp.py) | _O(n)_ | _O(n)_ | Medium || Descending Stack
 
