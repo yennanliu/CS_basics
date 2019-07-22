@@ -346,7 +346,7 @@
 006| [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/zigzag-conversion.py) | _O(n)_ | _O(1)_      | Easy       || AGAIN (not start)
 008| [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/string-to-integer-atoi.py)  | _O(n)_ | _O(1)_ | Easy      || AGAIN 
 014| [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-common-prefix.py)  | _O(n * k)_   | _O(1)_  | Easy   |`good basic`| OK* 
-028| [Implement strStr()](https://leetcode.com/problems/implement-strstr/) | [Python](./Python/implement-strstr.py) | _O(n + k)_   | _O(k)_  | Easy           || `KMP Algorithm`
+028| [Implement strStr()](https://leetcode.com/problems/implement-strstr/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/implement-strstr.py)  | _O(n + k)_   | _O(k)_  | Easy  | `KMP Algorithm` | OK 
 038| [Count and Say](https://leetcode.com/problems/count-and-say/) | [Python](./Python/count-and-say.py)| _O(n * 2^n)_  | _O(2^n)_        | Easy           ||
 043| [Multiply Strings](https://leetcode.com/problems/multiply-strings/) | [Python](./Python/multiply-strings.py) | _O(m * n)_ | _O(m + n)_  | Medium         ||
 058| [Length of Last Word](https://leetcode.com/problems/length-of-last-word/) | [Python](./Python/length-of-last-word.py) | _O(n)_   | _O(1)_  | Easy           ||

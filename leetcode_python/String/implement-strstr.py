@@ -7,9 +7,7 @@
 #  or null if needle is not part of haystack.
 #
 
-# V1 
-
-
+# V0 
 class Solution(object):
     def strStr(self, haystack, needle):
         if needle in haystack:
@@ -17,6 +15,30 @@ class Solution(object):
         else:
             return -1 
 
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79254558
+class Solution(object):
+    def strStr(self, haystack, needle):
+        """
+        :type haystack: str
+        :type needle: str
+        :rtype: int
+        """
+        return haystack.find(needle)
+
+# V1' 
+class Solution:
+    def strStr(self, haystack, needle):
+        """
+        :type haystack: str
+        :type needle: str
+        :rtype: int
+        """
+        M, N = len(haystack), len(needle)
+        for i in range(M - N + 1):
+            if haystack[i : i + N] == needle:
+                return i
+        return -1
 
 # V2 
 # Wiki of KMP algorithm:
@@ -55,7 +77,6 @@ class Solution(object):
                 j += 1
             prefix[i] = j
         return prefix
-
 
 # V3 
 # Time:  O(n * k)
