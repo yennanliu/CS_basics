@@ -340,7 +340,7 @@
 
 
 ## String Easy and Medium
-|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
+|  #  | Title           |  Solution       |  Time           | Space        | Difficulty    | Status, Note       | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 005| [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py)  | _O(n)_ | _O(n)_ |  Medium | `Manacher's Algorithm`, `DP` | AGAIN (not start*)
 006| [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/) |[Python](./Python/zigzag-conversion.py) | _O(n)_ | _O(1)_        | Easy           ||
