@@ -829,8 +829,8 @@ Union Find
 ## SQL Easy and Medium
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-0175| [Combine Two Tables](https://leetcode.com/problems/combine-two-tables/) | [MySQL](./MySQL/combine-two-tables.sql) | _O(m + n)_   | _O(m + n)_ | Easy     ||
-0176| [Second Highest Salary](https://leetcode.com/problems/second-highest-salary/) | [MySQL](./MySQL/second-highest-salary.sql) | _O(n)_ | _O(1)_ | Easy         ||
+0175| [Combine Two Tables](https://leetcode.com/problems/combine-two-tables/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/combine-two-tables.sql) | _O(m + n)_   | _O(m + n)_ | Easy     || OK 
+0176| [Second Highest Salary](https://leetcode.com/problems/second-highest-salary/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/Second_Highest_Salary.sql)  | _O(n)_ | _O(1)_ | Easy       || OK 
 0177| [Nth Highest Salary](https://leetcode.com/problems/nth-highest-salary/) | [MySQL](./MySQL/nth-highest-salary.sql) | _O(n^2)_   | _O(n)_ | Medium         ||
 0178| [Rank Scores](https://leetcode.com/problems/rank-scores/) | [MySQL](./MySQL/rank-scores.sql) | _O(n^2)_        | _O(n)_          | Medium         ||
 0180| [Consecutive Numbers](https://leetcode.com/problems/consecutive-numbers/) | [MySQL](./MySQL/consecutive-numbers.sql) | _O(n)_   | _O(n)_ | Medium         ||
