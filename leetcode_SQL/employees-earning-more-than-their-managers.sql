@@ -1,5 +1,3 @@
-
-
 /*
 
 https://leetcode.com/problems/employees-earning-more-than-their-managers/description/
@@ -24,10 +22,9 @@ Given the Employee table, write a SQL query that finds out employees who earn mo
 | Joe      |
 +----------+
 
+*/ 
 
-
-/* V1 */
-
+/* V0 */
 select 
 a.Name as Employee  
 from 
@@ -38,38 +35,16 @@ b.Id = a.ManagerId
 and 
 a.Salary > b.Salary 
 
-
-
-
-/* V2  */
-
-
+/* V1  */
 SELECT a.Name as Employee
 FROM Employee a
 LEFT JOIN Employee b ON a.ManagerId = b.Id
 WHERE a.Salary > b.Salary
 
-
-
-
-
 /* V2 */
-
-
 SELECT Name AS Employee 
     FROM Employee e 
     WHERE e.ManagerId IS NOT NULL AND e.Salary > (SELECT Salary 
                           FROM Employee 
                           WHERE e.ManagerId = Id)
-
-
-
-
-
-                          
-
-
-
-
-
-
+                       
