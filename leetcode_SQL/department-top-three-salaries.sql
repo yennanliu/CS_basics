@@ -1,6 +1,3 @@
-
-
-
 # Time:  O(n^2)
 # Space: O(n)
 # 
@@ -36,24 +33,13 @@
 # | Sales      | Sam      | 60000  |
 # +------------+----------+--------+
 
-
+# V0 : DEV 
+# TODO : use mysql procedure, i.e. similiar as # 0177 Nth Highest Salary
 
 # V1 
-
-
-
-# V2 
 # Write your MySQL query statement below
 SELECT D.Name AS Department, E.Name AS Employee, E.Salary AS Salary 
 FROM Employee E INNER JOIN Department D ON E.DepartmentId = D.Id 
 WHERE (SELECT COUNT(DISTINCT(Salary)) FROM Employee 
        WHERE DepartmentId = E.DepartmentId AND Salary > E.Salary) < 3
 ORDER by E.DepartmentId, E.Salary DESC;
-
-
-
-
-
-
-
-

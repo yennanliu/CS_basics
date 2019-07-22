@@ -20,23 +20,9 @@ For example, after running your query, the above Person table should have the fo
 | 1  | john@example.com |
 | 2  | bob@example.com  |
 +----+------------------+
-
-
 */
 
-
+# V0 
 DELETE p1
 FROM Person p1, Person p2
 WHERE p1.Email = p2.Email AND p1.Id > p2.Id
-
-
-
-
-
-
-
-
-
-
-
-

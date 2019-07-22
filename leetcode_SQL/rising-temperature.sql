@@ -22,17 +22,11 @@
 # +----+
 #
 
-
-
-# Write your MySQL query statement below
-
-
 /* V1 */
 select b.Id from Weather a 
 inner join Weather b
 on TO_DAYS(a.RecordDate) = TO_DAYS(b.RecordDate) -1 
 where (b.Temperature)  > (a.Temperature)
-
 
 /* V2 */
 select b.Id from Weather a 
@@ -40,17 +34,8 @@ inner join Weather b
 where TO_DAYS(a.RecordDate) = TO_DAYS(b.RecordDate) -1 
 and (b.Temperature)  > (a.Temperature)
 
-
-
 /* V3 */
 SELECT wt1.Id 
 FROM Weather wt1, Weather wt2
 WHERE wt1.Temperature > wt2.Temperature AND 
       TO_DAYS(wt1.DATE)-TO_DAYS(wt2.DATE)=1;
-
-
-
-      
-
-
-
