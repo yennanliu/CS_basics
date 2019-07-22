@@ -1,11 +1,6 @@
-
-
 /* 
 
-
 https://leetcode.com/problems/duplicate-emails/description/
-
-
 
 Write a SQL query to find all duplicate emails in a table named Person.
 
@@ -24,13 +19,9 @@ For example, your query should return the following for the above table:
 | a@b.com |
 +---------+
 
-
-
-
 */ 
 
 /* V1 */
-
 SELECT Email
 FROM
   (SELECT Email,
@@ -39,14 +30,5 @@ FROM
    GROUP BY Email
    HAVING count(*) > 1) sub
 
-
-
 /* V2 */ 
-
-
-
 SELECT Email FROM Person GROUP BY Email HAVING COUNT(*) > 1
-
-
-
-

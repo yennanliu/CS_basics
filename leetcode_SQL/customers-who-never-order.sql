@@ -1,8 +1,6 @@
-
 /*
 
 https://leetcode.com/problems/customers-who-never-order/description/
-
 
 # Time:  O(n^2)
 # Space: O(1)
@@ -36,28 +34,13 @@ https://leetcode.com/problems/customers-who-never-order/description/
 # | Max       |
 # +-----------+
 #
-
-
-
-
 */
 
-
-
 /* V1 */
-
 SELECT Name AS Customers
 FROM Customers
 LEFT JOIN Orders ON Customers.Id = Orders.CustomerId
 WHERE Orders.CustomerId IS NULL
 
-
-
 /* V2 */
-
 SELECT Name AS Customers FROM Customers WHERE Id NOT IN (SELECT CustomerId FROM Orders)
-
-
-
-
-
