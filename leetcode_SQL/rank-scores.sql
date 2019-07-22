@@ -30,38 +30,22 @@ For example, given the above Scores table, your query should generate the follow
 | 3.50  | 4    |
 +-------+------+
 
-
-
 */
-
-
 
 # https://github.com/kamyu104/LeetCode/blob/master/MySQL/rank-scores.sql
 
-# V1
+# V0 
 # Time:  O(n^3)
 # Space: O(n)
-
 # count how many IDs bigger than current ID's score 
 # then using that as new-defined-rank 
-
- SELECT Score,  (SELECT COUNT(DISTINCT(Score)) FROM  Scores b WHERE b.Score > a.Score) + 1 AS Rank
+SELECT Score,  (SELECT COUNT(DISTINCT(Score)) FROM  Scores b WHERE b.Score > a.Score) + 1 AS Rank
        FROM Scores a
        ORDER by Score DESC
 
-
-
-
-
-
-
-# V2 
-
+# V1
 # Ranks table : re-order score by desc -> rank = rank + 1 
 # left join Ranks table (new-defined-rank) to Scores table  
-
-
-
 SELECT Ranks.Score, Ranks.Rank FROM Scores LEFT JOIN 
        ( SELECT r.Score, @curRow := @curRow + 1  Rank 
             FROM (SELECT DISTINCT(Score), (SELECT @curRow := 0) 
@@ -69,11 +53,3 @@ SELECT Ranks.Score, Ranks.Rank FROM Scores LEFT JOIN
        ) Ranks 
        ON Scores.Score = Ranks.Score
        ORDER by Score DESC
-
-
-
-
-
-
-
-
