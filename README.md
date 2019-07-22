@@ -827,7 +827,7 @@ Union Find
 
 
 ## SQL Easy and Medium
-|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note      | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 0175| [Combine Two Tables](https://leetcode.com/problems/combine-two-tables/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/combine-two-tables.sql) | _O(m + n)_   | _O(m + n)_ | Easy     || OK 
 0176| [Second Highest Salary](https://leetcode.com/problems/second-highest-salary/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/Second_Highest_Salary.sql)  | _O(n)_ | _O(1)_ | Easy       || OK 

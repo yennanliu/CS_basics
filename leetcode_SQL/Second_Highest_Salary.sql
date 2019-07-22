@@ -1,7 +1,5 @@
-
-
-# Second Highest Salary
-# https://leetcode.com/problems/second-highest-salary/
+-- Second Highest Salary
+-- https://leetcode.com/problems/second-highest-salary/
 
 /*
 
@@ -24,16 +22,11 @@ For example, given the above Employee table, the query should return 200 as the 
 
 */
 
-
 # V1 
-
-
 select ifnull(max(Salary),0) AS SecondHighestSalary from Employee a 
 where a.Salary < (select max(Salary) from Employee b )
 
-
 # V2 
-
 SELECT ifnull(a.salary, 0) AS SecondHighestSalary
 FROM Employee a
 WHERE a.salary <
@@ -42,16 +35,9 @@ WHERE a.salary <
 ORDER BY 1 DESC
 LIMIT 1
 
-
 # V3
 # Time:  O(n)
 # Space: O(1)
 SELECT (SELECT MAX(Salary) FROM Employee WHERE Salary NOT IN (SELECT MAX(Salary) FROM Employee)) SecondHighestSalary;
 # or
 SELECT (SELECT Salary FROM Employee GROUP BY Salary ORDER BY Salary DESC LIMIT 1,1) SecondHighestSalary;
-
-
-
-
-
-
