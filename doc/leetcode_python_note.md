@@ -1,6 +1,6 @@
 # Note for Leetcode Python 
 
-## 1) BFS & DFS 
+## 1) BFS & DFS (Breadth-first search & Depth-first search)
 
 - Tricks 
     - DFS = Stack + go through
