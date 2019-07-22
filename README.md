@@ -833,7 +833,7 @@ Union Find
 0176| [Second Highest Salary](https://leetcode.com/problems/second-highest-salary/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/Second_Highest_Salary.sql)  | _O(n)_ | _O(1)_ | Easy       || OK 
 0177| [Nth Highest Salary](https://leetcode.com/problems/nth-highest-salary/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/Nth_Highest_Salary.sql) | _O(n^2)_   | _O(n)_ | Medium         |`MySQL PROCEDURE`, `SQL FAQ`| OK*
 0178| [Rank Scores](https://leetcode.com/problems/rank-scores/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/rank-scores.sql) | _O(n^2)_        | _O(n)_          | Medium        |`tricky`, `SQL var`| AGAIN 
-0180| [Consecutive Numbers](https://leetcode.com/problems/consecutive-numbers/) | [MySQL](./MySQL/consecutive-numbers.sql) | _O(n)_   | _O(n)_ | Medium         ||
+0180| [Consecutive Numbers](https://leetcode.com/problems/consecutive-numbers/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/consecutive-numbers.sql)  | _O(n)_   | _O(n)_ | Medium   |`SQL var`| OK* 
 0181| [Employees Earning More Than Their Managers](https://leetcode.com/problems/employees-earning-more-than-their-managers/) | [MySQL](./MySQL/employees-earning-more-than-their-managers.sql) | _O(n^2)_   | _O(1)_ | Easy     ||
 0182| [Duplicate Emails](https://leetcode.com/problems/duplicate-emails/) | [MySQL](./MySQL/duplicate-emails.sql) | _O(n^2)_ | _O(n)_       | Easy           ||
 0183| [Customers Who Never Order](https://leetcode.com/problems/customers-who-never-order/) | [MySQL](./MySQL/customers-who-never-order.sql) | _O(n^2)_ | _O(1)_       | Easy           ||

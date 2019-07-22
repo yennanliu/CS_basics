@@ -1,7 +1,4 @@
-
-
 /*
-
 
 Write a SQL query to find all numbers that appear at least three times consecutively.
 
@@ -24,16 +21,10 @@ For example, given the above Logs table, 1 is the only number that appears conse
 | 1               |
 +-----------------+
 
-
-
 # https://leetcode.com/problems/consecutive-numbers/description/
 # https://github.com/kamyu104/LeetCode/blob/master/MySQL/consecutive-numbers.sql
 
-
-
-
 /* V1 */
-
 SELECT DISTINCT b.Num AS ConsecutiveNums
 FROM Logs a
 INNER JOIN Logs b ON a.Id +1 = b.Id
@@ -42,11 +33,8 @@ WHERE a.Num = b.Num
   AND c.Num = b.Num
 
 /* V2 */
-
 # join 3 same table to grab 2nd element 
 # (if there are at least consecutively 3 elements)
-
-
 SELECT DISTINCT a.Num AS ConsecutiveNums 
 FROM Logs a,
      Logs b,
@@ -56,13 +44,7 @@ WHERE a.Num = b.Num
   AND c.Num = a.Num
   AND c.Id = a.Id +1
 
-
-
-
 /* V3  */
-
-
-
 SELECT DISTINCT(Num) AS ConsecutiveNums
 FROM (
     SELECT
@@ -72,10 +54,3 @@ FROM (
     FROM Logs y, (SELECT @counter:=1, @prev:=NULL) vars
 ) sq
 WHERE how_many_cnt_in_a_row >= 3
-
-
-
-
-
-
-
