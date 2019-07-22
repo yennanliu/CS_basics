@@ -23,17 +23,34 @@ P     I    N
 A   L S  I G
 Y A   H R
 P     I
-
 """
 
+# V0 
 
-# V1 : dev 
 
-
+# V1 
+# https://blog.csdn.net/coder_orz/article/details/52039689
+# https://blog.csdn.net/fuxuemingzhu/article/details/80830509
+class Solution(object):
+    def convert(self, s, numRows):
+        """
+        :type s: str
+        :type numRows: int
+        :rtype: str
+        """
+        if numRows <= 1 or numRows >= len(s):
+            return s
+        arr = [''] * numRows
+        line, step = 0, -1
+        for c in s:
+            arr[line] += c
+            if line % (numRows-1) == 0:
+                step = - step
+            line += step
+        return ''.join(arr)
 
 
 # V2 
-
 class Solution(object):
     def convert(self, s, numRows):
         """
@@ -50,10 +67,3 @@ class Solution(object):
                 if 0 < i < numRows - 1 and j + step - 2 * i < len(s):
                     zigzag += s[j + step - 2 * i]
         return zigzag
-
-
-
-
-
-
-
