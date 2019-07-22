@@ -1,9 +1,16 @@
 # Progress
- 
-- `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check) 
-- `TODO`    : Dynamic Programming, Graph, Geometry, Simulation, Shell script 
+
+- `TODO`    : Dynamic Programming, Graph, Geometry, BitMap,  Simulation, Shell script 
 - `TODO2`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 - `TODO3`   : Update leetcode questions set (sync with latest leetcode)
+- `TODO4`   : re-check : String, Array, Hash Table 
+- `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check) 
+
+# 2019-07-22 
+
+- DOING  : SQL, String 
+- REDO   : Dynamic Programming (pending, not finished, todo), Linked list, Math, Recursion, DFS, Stack revisit, Breadth-First Search, Depth-First Search, Binary Search, Heap, Backtracking, Greedy
+- DONE   : stack, Tree, Binary Search Tree
 
 # 2019-07-21 
 
