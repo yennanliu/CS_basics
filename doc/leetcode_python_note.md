@@ -46,7 +46,7 @@ def bfs(root):
 
 # DFS (Iteration)
 
-# DFS (Recursion) : Leetcode #515 Find Largest Value in Each Tree Row
+# DFS (Recursion) : leetcode # 515 Find Largest Value in Each Tree Row
 class Solution(object):
 
     def largestValues(self, root):
@@ -93,8 +93,7 @@ class Solution(object):
 - Example 
 
 ```python 
-#108 Convert Sorted Array to Binary Search Tree
-
+# Convert Sorted Array -> Binary  leetcode #108 
 class Solution(object):
     def sortedArrayToBST(self, nums):
         """
@@ -108,5 +107,37 @@ class Solution(object):
         root.left = self.sortedArrayToBST(nums[:mid])
         root.right = self.sortedArrayToBST(nums[mid+1:])
         return root
+```
+
+```python 
+# linked list -> Binary Search Tree (BST)
+class tree:
+    def __init__(self):
+        self.data = 0
+        self.left = None
+        self.right = None
+
+class Solution(object):
+    def linkedListToBST(self, root, val):
+        newnode = tree()
+        newnode.data = val
+        newnode.left = None
+        newnode.right = None 
+        if root == None:
+            root = newnode
+            return root 
+        else:
+            current = root 
+            while current != None:
+                backup = current
+                if current.data > val:
+                    current = current.left
+                else:
+                    current = current.right 
+                if backup.data > val:
+                    backup.left = newnode
+                else:
+                    backup.right = newnode
+        return root 
 ```
 
