@@ -348,7 +348,7 @@
 014| [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-common-prefix.py)  | _O(n * k)_   | _O(1)_  | Easy   |`good basic`| OK* 
 028| [Implement strStr()](https://leetcode.com/problems/implement-strstr/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/implement-strstr.py)  | _O(n + k)_   | _O(k)_  | Easy  | `KMP Algorithm` | OK 
 038| [Count and Say](https://leetcode.com/problems/count-and-say/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/count-and-say.py) | _O(n * 2^n)_  | _O(2^n)_        | Easy       | `good recursion/iteration basic`| AGAIN 
-043| [Multiply Strings](https://leetcode.com/problems/multiply-strings/) | [Python](./Python/multiply-strings.py) | _O(m * n)_ | _O(m + n)_  | Medium         ||
+043| [Multiply Strings](https://leetcode.com/problems/multiply-strings/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/multiply-strings.py) | _O(m * n)_ | _O(m + n)_  | Medium     || AGAIN* 
 058| [Length of Last Word](https://leetcode.com/problems/length-of-last-word/) | [Python](./Python/length-of-last-word.py) | _O(n)_   | _O(1)_  | Easy           ||
 067| [Add Binary](https://leetcode.com/problems/add-binary/)    | [Python](./Python/add-binary.py) | _O(n)_          | _O(1)_          | Easy           ||
 125| [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/) | [Python](./Python/valid-palindrome.py) | _O(n)_  | _O(1)_         | Easy           ||
