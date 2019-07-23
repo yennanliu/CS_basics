@@ -1,7 +1,4 @@
-"""
-
-
-Given two binary strings, return their sum (also a binary string).
+"""Given two binary strings, return their sum (also a binary string).
 
 The input strings are both non-empty and contains only characters 1 or 0.
 
@@ -12,13 +9,91 @@ Output: "100"
 Example 2:
 
 Input: a = "1010", b = "1011"
-Output: "10101"
-
-
+Output: "10101" 
 """
 
+# V0 
+class Solution(object):
+    # @param a, a string
+    # @param b, a string
+    # @return a string
+    def addBinary(self, a, b):
+        result, carry, val = "", 0, 0
+        for i in range(max(len(a), len(b))):
+            val = carry
+            if i < len(a):
+                val += int(a[-(i + 1)])
+            if i < len(b):
+                val += int(b[-(i + 1)])
+            carry, val = divmod(val, 2)
+            result += str(val)
+        if carry:
+            result += str(carry)
+        return result[::-1]
+        
+# V1 
+# https://blog.csdn.net/coder_orz/article/details/51706532
+# IDEA : syntax of int() func
+# int(x=0, base=10), 
+# base : Base of the number in x. Can be 0 (code literal) or 2-36.
+# https://www.programiz.com/python-programming/methods/built-in/int
+# DEMO 
+# In [16]: a='11'
 
-# V1 :  
+# In [17]: b='1'
+
+# In [18]: bin(int(a, 2) + int(b, 2))[2:]
+# Out[18]: '100'
+
+# In [19]: bin(int(a, 2) + int(b, 2))
+# Out[19]: '0b100'
+class Solution(object):
+    def addBinary(self, a, b):
+        """
+        :type a: str
+        :type b: str
+        :rtype: str
+        """
+        return bin(int(a, 2) + int(b, 2))[2:]
+
+# V1' 
+# https://blog.csdn.net/coder_orz/article/details/51706532
+class Solution(object):
+    def addBinary(self, a, b):
+        """
+        :type a: str
+        :type b: str
+        :rtype: str
+        """
+        res = ''
+        i, j, plus = len(a)-1, len(b)-1, 0
+        while i>=0 or j>=0 or plus==1:
+            plus += int(a[i]) if i>= 0 else 0
+            plus += int(b[j]) if j>= 0 else 0
+            res = str(plus % 2) + res
+            i, j, plus = i-1, j-1, plus/2
+        return res
+
+# V1'' 
+# https://blog.csdn.net/coder_orz/article/details/51706532
+# IDEA : RECURSION 
+class Solution(object):
+    def addBinary(self, a, b):
+        """
+        :type a: str
+        :type b: str
+        :rtype: str
+        """
+        if not a or not b:
+            return a if a else b
+        if a[-1] == '1' and b[-1] == '1':
+            return self.addBinary(self.addBinary(a[:-1], b[:-1]), '1') + '0'
+        elif a[-1] == '0' and b[-1] == '0':
+            return self.addBinary(a[:-1], b[:-1]) + '0'
+        else:
+            return self.addBinary(a[:-1], b[:-1]) + '1'
+
+# V2 
 class Solution:
     def addBinary(self, a, b):
         len_ =  max(len(a),len(b))
@@ -43,18 +118,49 @@ class Solution:
             output=[1] + output
         return ''.join( str(i) for i in output )
 
+# V3  
+# Time:  O(n)
+# Space: O(1)
+class Solution(object):
+    # @param a, a string
+    # @param b, a string
+    # @return a string
+    def addBinary(self, a, b):
+        result, carry, val = "", 0, 0
+        for i in range(max(len(a), len(b))):
+            val = carry
+            if i < len(a):
+                val += int(a[-(i + 1)])
+            if i < len(b):
+                val += int(b[-(i + 1)])
+            carry, val = divmod(val, 2)
+            result += str(val)
+        if carry:
+            result += str(carry)
+        return result[::-1]
 
+# Time:  O(n)
+# Space: O(1)
+from itertools import izip_longest
+class Solution2(object):
+    def addBinary(self, a, b):
+        """
+        :type a: str
+        :type b: str
+        :rtype: str
+        """
+        result = ""
+        carry = 0
+        for x, y in izip_longest(reversed(a), reversed(b), fillvalue="0"):
+            carry, remainder = divmod(int(x)+int(y)+carry, 2)
+            result += str(remainder)
+        
+        if carry:
+            result += str(carry)
+        
+        return result[::-1]
 
-# V2  
-
-# V3 
-
-try:
-    xrange          # Python 2
-except NameError:
-    xrange = range  # Python 3
-
-
+# V4 
 class Solution:
     # @param a, a string
     # @param b, a string
@@ -72,11 +178,3 @@ class Solution:
         if carry:
             result += str(carry)
         return result[::-1]
-
-
-
-
-
-
-
-
