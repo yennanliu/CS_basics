@@ -1,6 +1,5 @@
 # Time:  O(n)
 # Soace: O(1)
-
 # Given a non-empty string s, you may delete at most one character.
 # Judge whether you can make it a palindrome.
 #
@@ -14,38 +13,47 @@
 # Note:
 # The string will only contain lowercase characters a-z. The maximum length of the string is 50000.
 
+# V0 
 
- 
-# V1  : dev 
-
-"""
-  
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79252936
+# The isalnum() returns:
+# True if all characters in the string are alphanumeric
+# False if at least one character is not alphanumeric
+# https://www.programiz.com/python-programming/methods/string/isalnum
 class Solution(object):
-    def validPalindrome(self, s):
-        left =  s[0:int((len(s)-1) /2)]
-        right = s[ - int((len(s)-1)/2 ) ]
-        print (left, right)  
-"""
+    def isPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        isValid = lambda x : x == x[::-1]
+        string = ''.join([x for x in s.lower() if x.isalnum()])
+        return isValid(string)
 
-"""
-
-        
+# V1' 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79252936
+# IDEA : REGULAR EXPRESSION 
 class Solution(object):
-    def validPalindrome(self, s):
-        s_ = [ i for i in s]
-        for i in s_:
-        # https://docs.python.org/2/tutorial/datastructures.html
-            #del s[i]
-            pass 
-        
-        left =  s[0:int((len(s)-1) /2)]
-        right = s[ - int((len(s)-1)/2 ) ]
-        print (left, right)  
-        
+    def isPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        s = s.lower()
+        s = re.sub("\W", "", s)
+        N = len(s)
+        left, right = 0, N - 1
+        while left <= right:
+            if s[left] != s[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
 
-
-"""
-
+# V1'' 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79252936
+# IDEA : TWO POINTERS (DEV)
 
 # V2 
 class Solution(object):
@@ -68,5 +76,21 @@ class Solution(object):
             left, right = left+1, right-1
         return True
 
-
+# V3 
+# Time:  O(n)
+# Space: O(1)
+class Solution(object):
+    # @param s, a string
+    # @return a boolean
+    def isPalindrome(self, s):
+        i, j = 0, len(s) - 1
+        while i < j:
+            while i < j and not s[i].isalnum():
+                i += 1
+            while i < j and not s[j].isalnum():
+                j -= 1
+            if s[i].lower() != s[j].lower():
+                return False
+            i, j = i + 1, j - 1
+        return True
         

@@ -255,3 +255,12 @@ def deleteNode(root, key):
     return root
 
 ```
+
+## 2) B Tree 
+
+- Tricks
+
+- Algorithm 
+
+- Example 
+
