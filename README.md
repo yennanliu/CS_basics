@@ -841,7 +841,7 @@ Union Find
 0185| [Department Top Three Salaries](https://leetcode.com/problems/department-top-three-salaries/) |  [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/department-highest-salary.sql) | _O(n^2)_  | _O(n)_ | Hard | similiar as `# 0177 Nth Highest Salary`| AGAIN* 
 0196| [Delete Duplicate Emails](https://leetcode.com/problems/delete-duplicate-emails/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/delete-duplicate-emails.sql)  | _O(n^2)_ | _O(n)_       | Easy           || AGAIN 
 0197| [Rising Temperature](https://leetcode.com/problems/rising-temperature/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/rising-temperature.sql)  | _O(n^2)_ | _O(n)_    | Easy     || OK 
-0262| [Trips and Users](https://leetcode.com/problems/trips-and-users/) | [MySQL](./MySQL/trips-and-users.sql) | _O((t * u) + tlogt)_ | _O(t)_       | Hard           ||
+0262| [Trips and Users](https://leetcode.com/problems/trips-and-users/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/trips-and-users.sql) | _O((t * u) + tlogt)_ | _O(t)_       | Hard    || OK* 
 0511| [Game Play Analysis I](https://leetcode.com/problems/game-play-analysis-i/) | [MySQL](./MySQL/game-play-analysis-i.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| |
 0512| [Game Play Analysis II](https://leetcode.com/problems/game-play-analysis-ii/) | [MySQL](./MySQL/game-play-analysis-ii.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| |
 0534| [Game Play Analysis III](https://leetcode.com/problems/game-play-analysis-iii/) | [MySQL](./MySQL/game-play-analysis-iii.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒| |
