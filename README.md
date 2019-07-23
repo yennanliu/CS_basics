@@ -356,7 +356,7 @@
 161| [One Edit Distance](https://leetcode.com/problems/one-edit-distance/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/one-edit-distance.py)  | _O(m + n)_ | _O(1)_    | Medium         |🔒 | AGAIN* 
 165| [Compare Version Numbers](https://leetcode.com/problems/compare-version-numbers/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/compare-version-numbers.py) | _O(n)_ | _O(1)_ | Easy    || AGAIN 
 186| [Reverse Words in a String II](https://leetcode.com/problems/reverse-words-in-a-string-ii/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/reverse-words-in-a-string-ii.py) | _O(n)_ | _O(1)_ | Medium   | 🔒 | AGAIN* 
-242| [Valid Anagram](https://leetcode.com/problems/valid-anagram/)| [C++](./C++/valid-anagram.cpp) [Python](./Python/valid-anagram.py) | _O(n)_       | _O(1)_         | Easy         | LintCode |
+242| [Valid Anagram](https://leetcode.com/problems/valid-anagram/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/valid-anagram.py) | _O(n)_       | _O(1)_     | Easy       | LintCode | OK 
 271| [Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings/) | [C++](./C++/encode-and-decode-strings.cpp) [Python](./Python/encode-and-decode-strings.py) | _O(n)_ | _O(1)_ | Medium         | 🔒 |
 306| [Addictive Number](https://leetcode.com/problems/additive-number/) | [C++](./C++/additive-number.cpp)  [Python](./Python/additive-number.py) | _O(n^3)_ | _O(n)_ | Medium         | |
 383| [Ransom Note](https://leetcode.com/problems/ransom-note/) | [C++](./C++/ransom-note.cpp)  [Python](./Python/ransom-note.py) | _O(n)_ | _O(1)_ | Easy         | EPI |

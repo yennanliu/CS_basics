@@ -12,51 +12,44 @@
 # You may assume the string contains only lowercase alphabets.
 #
 
+# V0 
 
-
-# V1  : 
-
-class Solution:
-    def isAnagram(self, s, t):
-        return sorted(s) == sorted(t)
-
-
-
-# V2 
-import collections
-import string
-
-
+# V1 
+# https://blog.csdn.net/liuchonge/article/details/51913298
+# http://bookshadow.com/weblog/2015/08/01/leetcode-valid-anagram/
 class Solution:
     # @param {string} s
     # @param {string} t
     # @return {boolean}
     def isAnagram(self, s, t):
-        if len(s) != len(t):
-            return False
+        return sorted(s) == sorted(t)
 
-        count = {}
+# V1' 
+# https://blog.csdn.net/liuchonge/article/details/51913298
+# http://bookshadow.com/weblog/2015/08/01/leetcode-valid-anagram/
+class Solution:
+    # @param {string} s
+    # @param {string} t
+    # @return {boolean}
+    def isAnagram(self, s, t):
+        from collections import Counter
+        return Counter(s).items() == Counter(t).items()
 
-        for c in s:
-            if c.lower() in count:
-                count[c.lower()] += 1
-            else:
-                count[c.lower()] = 1
+# V2
+class Solution:
+    def isAnagram(self, s, t):
+        return sorted(s) == sorted(t)
 
-        for c in t:
-            if c.lower() in count:
-                count[c.lower()] -= 1
-            else:
-                count[c.lower()] = -1
-            if count[c.lower()] < 0:
-                return False
-
-        return True
-
-    def isAnagram2(self, s, t):
-        return all([s.count(c)==t.count(c) for c in string.ascii_lowercase])
-
-    def isAnagram3(self, s, t):
+# V3 
+# Time:  O(n)
+# Space: O(1)
+import collections
+import string
+class Solution(object):
+    # @param {string} s
+    # @param {string} t
+    # @return {boolean}
+    def isAnagram(self, s, t):
         if len(s) != len(t):
             return False
         count = collections.defaultdict(int)
@@ -68,17 +61,20 @@ class Solution:
                 return False
         return True
 
-# V3 
 # Time:  O(nlogn)
 # Space: O(n)
-class Solution2:
+class Solution2(object):
     # @param {string} s
     # @param {string} t
     # @return {boolean}
     def isAnagram(self, s, t):
         return sorted(s) == sorted(t)
 
-
-
-
-
+# Time:  O(n)
+# Space: O(n)
+class Solution3(object):
+    # @param {string} s
+    # @param {string} t
+    # @return {boolean}
+    def isAnagram(self, s, t):
+        return collections.Counter(s) == collections.Counter(t)
