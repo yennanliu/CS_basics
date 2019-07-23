@@ -195,3 +195,23 @@ def linkedListToBST(root, val):
     return root 
 
 ```
+
+```python
+# Binary search tree (BST) "search" demo 
+# class tree: # same above 
+# ....
+def search(prt, val):
+    i = 1 
+    while True:
+        if prt == None: # if can't find in BST, return None 
+            return None 
+        if ptr == val:
+            print ('totally search {} times'.format(i))
+            return ptr 
+        elif ptr.dara > val:
+            ptr = ptr.left 
+        else:
+            ptr = ptr.right 
+
+        i += 1 
+```
