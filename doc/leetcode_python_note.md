@@ -214,3 +214,44 @@ def search(prt, val):
             ptr = ptr.right 
         i += 1 
 ```
+
+```python
+# Binary search tree (BST) : add node & delete node 
+# 1) Add node 
+# class tree: # same as above 
+def addNode():
+    arr, ptr  = [7,1,3,4,10,9,5,6], None 
+    for i in range(arr):
+        ptr = linkedListToBST(ptr, arr[i])
+    data = int(input('please enter to-insert value'))
+    if search(ptr, data) != None:
+        print ('the node already existed')
+    else:
+        ptr = linkedListToBST(ptr, data)
+        inorder(ptr)
+
+# 2) Delete node 
+# leetcode #450 Delete Node in a BST
+def deleteNode(root, key):
+    """
+    :type root: TreeNode
+    :type key: int
+    :rtype: TreeNode
+    """
+    if not root: return None
+    if root.val == key:         
+        if not root.right: 
+            # return left subtree if there is no right subtree
+            left = root.left
+            return left
+        else:
+            # return right subtree if there is no left subtree
+            right = root.right
+            while right.left:
+                right = right.left
+            root.val, right.val = right.val, root.val
+    root.left = self.deleteNode(root.left, key)
+    root.right = self.deleteNode(root.right, key)
+    return root
+
+```
