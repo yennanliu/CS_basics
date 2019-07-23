@@ -842,8 +842,8 @@ Union Find
 0196| [Delete Duplicate Emails](https://leetcode.com/problems/delete-duplicate-emails/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/delete-duplicate-emails.sql)  | _O(n^2)_ | _O(n)_       | Easy           || AGAIN 
 0197| [Rising Temperature](https://leetcode.com/problems/rising-temperature/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/rising-temperature.sql)  | _O(n^2)_ | _O(n)_    | Easy     || OK 
 0262| [Trips and Users](https://leetcode.com/problems/trips-and-users/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/trips-and-users.sql) | _O((t * u) + tlogt)_ | _O(t)_       | Hard    || OK* 
-0511| [Game Play Analysis I](https://leetcode.com/problems/game-play-analysis-i/) | [MySQL](./MySQL/game-play-analysis-i.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| |
-0512| [Game Play Analysis II](https://leetcode.com/problems/game-play-analysis-ii/) | [MySQL](./MySQL/game-play-analysis-ii.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| |
+0511| [Game Play Analysis I](https://leetcode.com/problems/game-play-analysis-i/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/game-play-analysis-i.sql) | _O(n)_ | _O(n)_    | Easy    |🔒|  OK 
+0512| [Game Play Analysis II](https://leetcode.com/problems/game-play-analysis-ii/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/game-play-analysis-ii.sql)| _O(n)_ | _O(n)_ | Easy  |🔒, `2 col where` `good trick` | AGAIN**
 0534| [Game Play Analysis III](https://leetcode.com/problems/game-play-analysis-iii/) | [MySQL](./MySQL/game-play-analysis-iii.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒| |
 0550| [Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv/) | [MySQL](./MySQL/game-play-analysis-iv.sql) | _O(n)_ | _O(n)_       | Medium           |🔒| |
 1045| [Customers Who Bought All Products](https://leetcode.com/problems/customers-who-bought-all-products/) | [MySQL](./MySQL/customers-who-bought-all-products.sql) | _O(n + k)_ | _O(n + k)_       | Medium           |🔒| |
