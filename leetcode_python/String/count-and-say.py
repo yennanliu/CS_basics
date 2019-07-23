@@ -12,7 +12,6 @@
 # Note: The sequence of integers will be represented as a string.
 #
 
-
 """
 
 i.e. 
@@ -29,10 +28,42 @@ n = 6  ->  312211   ( there is 3 "1" and 2 "2" and 1 "1" when n = 5  )
 
 """
 
+# V0 
 
-# V1  : dev 
 
+# V1 
+# https://blog.csdn.net/XX_123_1_RJ/article/details/80957046
+# IDEA : RECURSION  
+class Solution(object):
+    def countAndSay(self, n):  # recursion 
+        if n == 1: return '1'  # end loop of recursion 
+        s = self.countAndSay(n-1)
+        res, count = '', 0
+        for i in range(len(s)):
+            count += 1
+            if i == len(s) - 1 or s[i] != s[i+1]:  # end before meet the last string element 
+                res += str(count)
+                res += s[i]
+                count = 0
+        return res
 
+# V1' 
+# https://blog.csdn.net/XX_123_1_RJ/article/details/80957046
+# IDEA : ITERATION 
+class Solution(object):
+    def countAndSay1(self, n):  # iteration 
+        if n == 1: return '1'
+        res = '1'
+        while n > 1:
+            s, res, count = res, '', 0
+            for i in range(len(s)):
+                count += 1
+                if i == len(s) - 1 or s[i] != s[i + 1]:  # end before meet the last string element 
+                    res += str(count)
+                    res += s[i]
+                    count = 0
+            n -= 1
+        return res
 
 # V2 
 class Solution:
@@ -53,6 +84,3 @@ class Solution:
             next_seq += str(cnt) + seq[i]
             i += 1
         return next_seq
-
-
-
