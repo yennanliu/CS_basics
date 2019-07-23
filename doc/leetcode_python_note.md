@@ -198,7 +198,7 @@ def linkedListToBST(root, val):
 
 ```python
 # Binary search tree (BST) "search" demo 
-# class tree: # same above 
+# class tree: # same as above 
 # ....
 def search(prt, val):
     i = 1 
@@ -212,6 +212,5 @@ def search(prt, val):
             ptr = ptr.left 
         else:
             ptr = ptr.right 
-
         i += 1 
 ```
