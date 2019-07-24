@@ -851,9 +851,9 @@ Union Find
 1068| [Product Sales Analysis I](https://leetcode.com/problems/product-sales-analysis-i/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/product-sales-analysis-i.sql) | _O(m + n)_ | _O(m + n)_      | Easy   |🔒|  OK 
 1069| [Product Sales Analysis II](https://leetcode.com/problems/product-sales-analysis-ii/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/product-sales-analysis-ii.sql) | _O(n)_ | _O(n)_       | Easy       |🔒|  OK 
 1070| [Product Sales Analysis III](https://leetcode.com/problems/product-sales-analysis-iii/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/product-sales-analysis-iii.sql) | _O(n)_ | _O(n)_       | Medium       |🔒| OK 
-1075| [Project Employees I](https://leetcode.com/problems/project-employees-i/) | [MySQL](./MySQL/project-employees-i.sql) | _O(m + n)_ | _O(m + n)_       | Easy           |🔒| |
-1076| [Project Employees II](https://leetcode.com/problems/project-employees-ii/) | [MySQL](./MySQL/project-employees-ii.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| |
-1077| [Project Employees III](https://leetcode.com/problems/project-employees-iii/) | [MySQL](./MySQL/project-employees-iii.sql) | _O((m + n)^2)_ | _O(m + n)_       | Medium           |🔒| |
+1075| [Project Employees I](https://leetcode.com/problems/project-employees-i/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/project-employees-i.sql) | _O(m + n)_ | _O(m + n)_       | Easy        |🔒 | OK 
+1076| [Project Employees II](https://leetcode.com/problems/project-employees-ii/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/project-employees-ii.sql)  | _O(n)_ | _O(n)_       | Easy           |🔒| | AGAIN 
+1077| [Project Employees III](https://leetcode.com/problems/project-employees-iii/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/project-employees-iii.sql)  | _O((m + n)^2)_ | _O(m + n)_   | Medium   |🔒, `tricky where`| AGAIN 
 1082| [Sales Analysis I](https://leetcode.com/problems/sales-analysis-i/) | [MySQL](./MySQL/sales-analysis-i.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| |
 1083| [Sales Analysis II](https://leetcode.com/problems/sales-analysis-ii/) | [MySQL](./MySQL/sales-analysis-ii.sql) | _O(m + n)_ | _O(m + n)_       | Easy           |🔒| |
 1084| [Sales Analysis III](https://leetcode.com/problems/sales-analysis-iii/) | [MySQL](./MySQL/sales-analysis-iii.sql) | _O(m + n)_ | _O(m + n)_       | Easy           |🔒| |
