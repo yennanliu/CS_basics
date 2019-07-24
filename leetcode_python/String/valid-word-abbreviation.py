@@ -25,37 +25,36 @@ Return false.
 
 """
 
-# V1  : dev 
-"""
+
+# V0 
+
+# V1 
+# http://bookshadow.com/weblog/2016/10/02/leetcode-valid-word-abbreviation/
 class Solution(object):
     def validWordAbbreviation(self, word, abbr):
-        if abbr == word:
-            return True
-        for i in range(len(word)):
-            word_ = word[i:]
-            for k in range(len(word_)):
-                word_list = list(word_)
-                word_list[k] = i+1
-                word_ = ''.join(str(x) for x in word_list)
-                print (word_)
-                #word_[k] = i+1
-                if abbr == word_:
-                    return True 
-                else:
-                    pass
-                word_ = word[i:]
-        return False 
-
-
-"""
-
-
-
+        """
+        :type word: str
+        :type abbr: str
+        :rtype: bool
+        """
+        size = len(word)
+        cnt = loc = 0
+        for w in abbr:
+            if w.isdigit():
+                if w == '0' and cnt == 0:
+                    return False
+                cnt = cnt * 10 + int(w)
+            else:
+                loc += cnt
+                cnt = 0
+                if loc >= size or word[loc] != w:
+                    return False
+                loc += 1
+        return loc + cnt == size
 
 # V2 
 # Time:  O(n)
 # Space: O(1)
-
 class Solution(object):
     def validWordAbbreviation(self, word, abbr):
         """
@@ -81,6 +80,3 @@ class Solution(object):
             i += digit
 
         return i == len(word)
-
-
-
