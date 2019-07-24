@@ -300,8 +300,44 @@ class listToQueue(object):
         else:
             front += 1 
             self.queue[front] = 0 
-
 ```
 
+```python
+# Build a queue via linked-list 
+# dev, to double check 
+class linkedlistToQueue(object):
+    def __init__(self):
+        self.name = ' '*20
+        self.score = 0 
+        self.next = None 
+        self.front = None
+        self.rear = None
 
+    def enqueue(self, name, score):
+        new_data = linkedlistToQueue() ### to check if it works 
+        new_data.name = name 
+        new_data.score = score 
+        if self.rear == None:
+            self.front = new_data
+        else:
+            self.rear.next = new_data
+        self.rear = new_data
+        new_data.next = None 
 
+    def dequeue(self):
+        if self.front == None:
+            print ('queue is blank')
+        else:
+            print ('name : {}, score : {}'.format(self.front.name, front.front.score))
+            self.front =  self.front.next 
+
+    def show(self):
+        ptr = self.front
+        if prt == None:
+            print ('quque is blank')
+        else:
+            while ptr != None:
+                print ('name : {}, score : {}'.format(self.front.name, front.front.score))
+            ptr = ptr.next 
+
+```
