@@ -359,7 +359,7 @@
 242| [Valid Anagram](https://leetcode.com/problems/valid-anagram/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/valid-anagram.py) | _O(n)_       | _O(1)_     | Easy       | LintCode | OK 
 271| [Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/encode-and-decode-strings.py)  | _O(n)_ | _O(1)_ | Medium    | 🔒 | AGAIN (not start) 
 306| [Addictive Number](https://leetcode.com/problems/additive-number/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/additive-number.py)  | _O(n^3)_ | _O(n)_ | Medium    | | AGAIN (not start*)
-383| [Ransom Note](https://leetcode.com/problems/ransom-note/) | [C++](./C++/ransom-note.cpp)  [Python](./Python/ransom-note.py) | _O(n)_ | _O(1)_ | Easy         | EPI |
+383| [Ransom Note](https://leetcode.com/problems/ransom-note/) |[python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/ransom-note.py) | _O(n)_ | _O(1)_ | Easy   | EPI | OK*
 405| [Convert a Number to Hexadecimal](https://leetcode.com/problems/convert-a-number-to-hexadecimal/) | [C++](./C++/convert-a-number-to-hexadecimal.cpp)  [Python](./Python/convert-a-number-to-hexadecimal.py) | _O(n)_ | _O(1)_ | Easy         | |
 408| [Valid Word Abbreviation](https://leetcode.com/problems/valid-word-abbreviation/) | [C++](./C++/valid-word-abbreviation.cpp)  [Python](./Python/valid-word-abbreviation.py) | _O(n)_ | _O(1)_ | Easy         | 🔒 |
 415| [Add Strings](https://leetcode.com/problems/add-strings/) | [C++](./C++/add-strings.cpp)  [Python](./Python/add-strings.py) | _O(n)_ | _O(1)_ | Easy         | |
