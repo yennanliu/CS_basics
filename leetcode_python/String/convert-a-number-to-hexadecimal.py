@@ -34,14 +34,34 @@
 # Output:
 # "ffffffff"
 
+# V0 
 
-# V1  : dev 
+# V1 
+# IDEA : Decimal -> Hexadecimal
+# Decimal : {0,1,2,3,4,5,6,7,8,9} 
+# Hexadecimal : {0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f}
+# https://www.cnblogs.com/grandyang/p/5926674.html
+# e.g.   
+# 50 -> 32 ( 50%16 = 3 + 2)
+# 26 -> 1a ( 26%16 = 1 + 10 = 1 + a)
+# https://www.jianshu.com/p/2d57cec55393
+# divmod(17, 16) = (1,1)
+# divmod(3, 1) = (3,0)
+def toHex(num):
+    ret = ''
+    map = ('0', '1','2','3','4','5','6','7','8','9','a','b','c','d','e','f')
+    if num == 0:
+        return '0'
+    if num < 0:
+        num += 2**32 # if num < 0, use num = num + 2**32 to deal with it 
+    while num > 0 :
+        num, val = divmod(num, 16)
+        ret += map[val]
+    return ret[::-1]
 
-
-
-
-
-# V2 
+# V2
+# Time:  O(logn)
+# Space: O(1)
 class Solution(object):
     def toHex(self, num):
         """
@@ -62,6 +82,3 @@ class Solution(object):
         result.reverse()
 
         return "".join(result)
-
-
-
