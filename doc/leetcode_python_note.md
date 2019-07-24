@@ -368,3 +368,30 @@ class Solution(object):
         return ''.join(result[::-1])
 
 ```
+
+```python 
+# leetcode # 405 Convert a Number to Hexadecimal
+def toHex(num):
+    ret = ''
+    map = ('0', '1','2','3','4','5','6','7','8','9','a','b','c','d','e','f')
+    if num == 0:
+        return '0'
+    if num < 0:
+        num += 2**32 # if num < 0, use num = num + 2**32 to deal with it 
+    while num > 0 :
+        num, val = divmod(num, 16)
+        ret += map[val]
+    return ret[::-1]
+```
+```python
+# leetcode # 067 Add Binary  
+class Solution(object):
+    def addBinary(self, a, b):
+        i, j, plus = len(a)-1, len(b)-1, 0 
+        while i >= 0 or j >= 0 or plus==1:
+            plus += int(a[i]) if i >= 0 else 0 
+            plus += int(b[i]) if j >= 0 else 0 
+            res = str(plus % 2) + res 
+            i, j, plus = i-1, j-1, plus/2
+        return res 
+```
