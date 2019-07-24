@@ -1,0 +1,12 @@
+# V0 
+
+# V1
+
+# V2 
+# Time:  O(n)
+# Space: O(n)
+SELECT actor_id, director_id
+FROM ActorDirector
+GROUP BY actor_id, director_id
+HAVING COUNT(1) >= 3
+ORDER BY NULL
