@@ -264,3 +264,44 @@ def deleteNode(root, key):
 
 - Example 
 
+
+## 3) Queue 
+
+- Tricks
+    - First in, first out (FIFO)
+    - 2 basic operations : enqueue and dequeue (add and delete)
+
+- Algorithm 
+
+- Example 
+```python
+# Build a queue via list 
+class listToQueue(object):
+
+    def __init__(self, size=10):
+        self.queue = []
+        self.front = -1
+        self.rear = -1
+        self.size = size
+
+    def __str__(self):
+        return ''.join([ str(i) for i in self.queue ])
+
+    def enqueue(self, item):
+        if rear == self.size -1:
+            print ('quque is full')
+        else:
+            rear += 1 
+            self.queue[rear] = item
+
+    def dequue(self, item):
+        if rear == front:
+            print ('queue is blank')
+        else:
+            front += 1 
+            self.queue[front] = 0 
+
+```
+
+
+
