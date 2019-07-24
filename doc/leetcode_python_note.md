@@ -341,3 +341,30 @@ class linkedlistToQueue(object):
             ptr = ptr.next 
 
 ```
+
+## 4) Math 
+
+- Tricks
+
+- Algorithm 
+
+- Example 
+```python
+# leetcode #415 Add Strings
+class Solution(object):
+    def addString(self, num1, num2):
+        result = []
+        idx1, idx2, carry = len(num1), len(num2), 0 
+        while idx1 or idx2 or carry: # while there is still non-add digit in num1, and num2; or there is non-zero carry 
+            digit = carry:
+            if idx1:
+                idx1 -= 1 # add from rightest digit (inverse from num1 )
+                digit += int(num1[idx1])
+            if idx2:
+                idx2 -= 1 # add from rightest digit (inverse from num1 )
+                digit += int(num2[idx2])
+            carry =  True if digit > 9 else False  # true if digit (e.g. 10,11...), so carry == True and will do addition to next digit. vice versa.
+            result.append(str(digit % 10))
+        return ''.join(result[::-1])
+
+```

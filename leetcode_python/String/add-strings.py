@@ -28,10 +28,10 @@ class Solution(object):
         while idx1 or idx2 or carry:  # while there is still non-add digit in num1, and num2; or there is non-zero carry 
             digit = carry
             if idx1:
-                idx1 -= 1
+                idx1 -= 1 # add from rightest digit (inverse from num1 )
                 digit += int(num1[idx1])
             if idx2:
-                idx2 -= 1
+                idx2 -= 1 # add from rightest digit (inverse from num1 )
                 digit += int(num2[idx2])
             carry = digit > 9 # true if digit (e.g. 10,11...), so carry == True and will do addition to next digit. vice versa.
             result.append(str(digit % 10))
