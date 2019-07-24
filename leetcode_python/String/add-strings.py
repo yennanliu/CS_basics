@@ -1,6 +1,5 @@
 # Time:  O(n)
 # Space: O(1)
-
 # Given two non-negative numbers num1 and num2 represented as string,
 # return the sum of num1 and num2.
 #
@@ -12,9 +11,33 @@
 # You must not use any built-in BigInteger library or
 # convert the inputs to integer directly.
 
-
+# V0
 
 # V1 
+# http://bookshadow.com/weblog/2016/10/09/leetcode-add-strings/
+class Solution(object):
+    def addStrings(self, num1, num2):
+        """
+        :type num1: str
+        :type num2: str
+        :rtype: str
+        """
+        result = []
+        carry = 0
+        idx1, idx2 = len(num1), len(num2)
+        while idx1 or idx2 or carry:  # while there is still non-add digit in num1, and num2; or there is non-zero carry 
+            digit = carry
+            if idx1:
+                idx1 -= 1
+                digit += int(num1[idx1])
+            if idx2:
+                idx2 -= 1
+                digit += int(num2[idx2])
+            carry = digit > 9 # true if digit (e.g. 10,11...), so carry == True and will do addition to next digit. vice versa.
+            result.append(str(digit % 10))
+        return ''.join(result[::-1]) 
+
+# V2 
 class Solution:
     def addStrings(self, num1, num2):
         output = []
@@ -37,11 +60,7 @@ class Solution:
                 carry_fix = 0 
         return ''.join(list(reversed(output)))
             
-             
-        
-           
-
-# V2 
+# V3 
 class Solution(object):
     def addStrings(self, num1, num2):
         """
@@ -85,6 +104,3 @@ class Solution(object):
         if plus:
             res += '1'
         return res[::-1]
-
-
-
