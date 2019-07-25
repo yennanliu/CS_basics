@@ -41,70 +41,69 @@
 # All characters have an ASCII value in [35, 126].
 # 1 <= len(chars) <= 1000.
 
-
-# V1  : dev 
-"""
-class Solution:
-    def compress(self, chars):
-        output=[]
-        count=1 
-        for i,j in enumerate(chars):
-            if chars[i] != chars[i+1]:
-                output.append(chars[i])
-                count=1
-            elif (i==0 and chars[i] == chars[i+1]):
-                output.append(chars[i])
-                count=1 
-            elif (chars[i] == chars[i+1] and chars[i] != chars[i-1]):
-                output.append(chars[i])
-                count=1
-            else:
-                count = count+1 
-                pass
-            
- """
-    
- 
-# V1' : dev 
-"""
+# V0
+import collections 
 class Solution(object):
     def compress(self, chars):
-        output=[]
-        temp=[]
-        count=0
-        for i in range(0,len(chars)-1):
-            print (chars[i])
-            if chars[i] == chars[i+1]:
-                count = count + 1 
-                temp.append(chars[i])
-                temp.append(count) 
-            else:
-                output.append(temp)
-                temp=[]
-                pass 
-        return output
-"""
+        count = collections.Counter(chars)
+        key_count = len(count.keys())
+        val_count = len([ x for x in list(count.values()) if x > 1 ])
+        return key_count + val_count
 
-# https://leetcode.com/articles/string-compression/
+# V1 
+# http://bookshadow.com/weblog/2017/10/29/leetcode-string-compression/
+# IDEA : QUEUE 
 class Solution(object):
     def compress(self, chars):
-        anchor = write = 0
-        for read, c in enumerate(chars):
-            if read + 1 == len(chars) or chars[read + 1] != c:
-                chars[write] = chars[anchor]
-                write += 1
-                if read > anchor:
-                    for digit in str(read - anchor + 1):
-                        chars[write] = digit
-                        write += 1
-                anchor = read + 1
-        return write
+        """
+        :type chars: List[str]
+        :rtype: int
+        """
+        last, n, y = chars[0], 1, 0
+        for x in range(1, len(chars)):
+            c = chars[x]
+            if c == last: n += 1
+            else:
+                for ch in last + str(n > 1 and n or ''):
+                    chars[y] = ch
+                    y += 1
+                last, n = c, 1
+        for ch in last + str(n > 1 and n or ''):
+            chars[y] = ch
+            y += 1
+        while len(chars) > y: chars.pop()
+        return y
 
+# V1'
+# https://blog.csdn.net/androidchanhao/article/details/81408345
+# IDEA : 2 POINTERS 
+class Solution(object):
+    def compress(self, chars):
+        """
+        :type chars: List[str]
+        :rtype: int
+        """
+        n = len(chars) 
+        cur = 0 # index of current element, for compress the list 
+        i = 0
+        while i < n:
+            j = i
+            while j < n - 1 and chars[j] == chars[j+1]:# find the count of sequential exist of an elment 
+                j += 1
+            chars[cur] = chars[i] # record current element 
+            cur += 1
+            if i != j:
+                times = str(j-i+1) # write the count into original list 
+                tLen = len(times)
+                for k in range(tLen):
+                    chars[cur+k] = times[k]
+                cur += tLen
+            i = j + 1 # move to next element 
+        return cur
 
-
-#--------------
-        
 # V2 
+# Time:  O(n)
+# Space: O(1)
 class Solution(object):
     def compress(self, chars):
         """
@@ -129,5 +128,3 @@ class Solution(object):
                         right -= 1
                 anchor = read+1
         return write
-
-
