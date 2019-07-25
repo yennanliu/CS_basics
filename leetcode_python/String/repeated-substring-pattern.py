@@ -24,35 +24,31 @@
 
 # KMP solution.
 
+# V0 
 
-# V1  : dev 
-
-""" 
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/54564801
+# IDEA : 
+# go through the sting, if can find any sub-string 
+# that is part of the origin string, return Ture.
+# if not, return False. 
 class Solution:
     def repeatedSubstringPattern(self, s):
-        if len(s) <= 1:
-            return False
-        if len(s) == 2:
-            if s[0] == s[1]:
-                return True
-            else:
-                return False
-        for i,j in enumerate(s):
-            # at least a substring with "2 elements"
-            # i.e.  'ab' in 'abababa' ; instead of 'a'
-            sub_str = s[:i+2]
-            #print ('sub_str :', sub_str)
-            #print ('s_remain : ' ,s[i+2:][-(i+2):])
-            #print ('---------')
-            if sub_str == s[i+2:][-(i+2):]:
-                return True
-        else:
-            return False
-
-"""
-
+        """
+        :type s: str
+        :rtype: bool
+        """
+        len_s = len(s)
+        for i in range(1, len_s // 2 + 1): # (sub-string)* k = string. k = 2, 3, 4, ....n. so k start from 2 
+            if len_s % i == 0:             # when len(sub-string)*k = len(string)
+                sub_s = s[:i]              # get sub-string 
+                if sub_s * (len_s // i) == s:
+                    return True
+        return False
 
 # V2 
+# Time:  O(n)
+# Space: O(n)
 class Solution(object):
     def repeatedSubstringPattern(self, str):
         """
@@ -83,7 +79,4 @@ class Solution(object):
             return False
 
         ss = (str + str)[1:-1]
-        print(ss)
         return ss.find(str) != -1
-
-
