@@ -384,6 +384,41 @@ class listToStack(object):
 
 ```
 
+```python
+# Build a stack via list 
+class linkedistToStack(object):
+
+    def __init__(self):
+        self.data = 0 
+        self.top = None 
+        self.next = None 
+
+    def isEmpty(self):
+        if self.top == None:
+            return True
+        else:
+            return False
+
+    def push(self, data):
+        top = self.top
+        new_add_node = linkedistToStack() ### to check if this works
+        new_add_node.data = data          # node's data as input data
+        new_add_node.next = top           # point new node to the top 
+        top = new_add_node                # new node as the top (stack)
+
+    def pop(self):
+        top = self.top
+        is self.isEmpty():
+            print ('stack is blank')
+            return -1 
+        else:
+            ptr = top        # point to the top of stack  
+            top = top.next   # move to the next of top stack 
+            tmp = top.data  # get the stack data 
+            return tmp       # teturn the data 
+
+```
+
 
 ## 5) Math 
 
