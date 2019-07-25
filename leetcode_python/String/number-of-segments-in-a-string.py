@@ -13,37 +13,32 @@
 # Input: "Hello, my name is John"
 # Output: 5
 
+# V0 
 
-# V1  : dev, need to oouble check 
-"""
-class Solution:
+# V1 
+# http://bookshadow.com/weblog/2016/12/04/leetcode-number-of-words-in-a-string/
+# e.g. 
+# In [6]: x="there are 2 pigs "
+# In [7]: x.split()
+# Out[7]: ['there', 'are', '2', 'pigs']
+# In [8]: x.split(" ")
+# Out[8]: ['there', 'are', '2', 'pigs', '']
+class Solution(object):
     def countSegments(self, s):
-        if len(s.replace(' ','')) <= 1 :
-            return len(s.replace(' ',''))
-        else:
-            count=0
-            for i in s.replace(',','').strip().split(' '):
-                if i == '':
-                    pass
-                else:
-                    count=count+1
-            return count
-"""
+        """
+        :type s: str
+        :rtype: int
+        """
+        return len(s.split())
 
-
-# V1' 
-# Python booleans - if x:, vs if x == True, vs if x is True
-# https://stackoverflow.com/questions/20420934/python-booleans-if-x-vs-if-x-true-vs-if-x-is-true
 # V2 
 class Solution(object):
     def countSegments(self, s):
         return len([i for i in s.strip().split(' ') if i])
 
-
-
-
-
-# V2 
+# V3 
+# Time:  O(n)
+# Space: O(1)
 class Solution(object):
     def countSegments(self, s):
         """
@@ -51,7 +46,7 @@ class Solution(object):
         :rtype: int
         """
         result = int(len(s) and s[-1] != ' ')
-        for i in range(1, len(s)):
+        for i in xrange(1, len(s)):
             if s[i] == ' ' and s[i-1] != ' ':
                 result += 1
         return result
@@ -62,7 +57,3 @@ class Solution(object):
         :rtype: int
         """
         return len([i for i in s.strip().split(' ') if i])
-
-
-
-
