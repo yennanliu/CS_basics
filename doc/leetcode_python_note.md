@@ -342,7 +342,50 @@ class linkedlistToQueue(object):
 
 ```
 
-## 4) Math 
+## 4) Stack 
+
+- Tricks
+    - Last in, first out (LIFO)
+    - 5 basic operations : create, push(put), pop(delete), isEmpty, full
+
+- Algorithm 
+
+- Example 
+```python
+# Build a stack via list 
+class listToStack(object):
+
+    def __init__(self):
+        self.top = -1 
+        self.MAXSTACK = 100 # define max stack length 
+        self.stack = [None]* self.MAXSTACK
+
+    def isEmpty(self):
+        if top == -1:
+            return True
+        else:
+            return False
+
+    def push(self, data):
+        top = self.top
+        MAXSTACK = self.MAXSTACK
+        if top > MAXSTACK - 1:
+            print ('stack full, can not add nore')
+        else:
+            top += 1 
+            stack[top] = data 
+
+    def pop(self):
+        if self.isEmpty():
+            print ('no data to pop, stack is blank')
+        else:
+             print ('pop element : {}'.format(stack[top]))
+             top -= 1 
+
+```
+
+
+## 5) Math 
 
 - Tricks
 
