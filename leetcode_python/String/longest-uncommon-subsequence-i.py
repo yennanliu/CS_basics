@@ -1,7 +1,5 @@
-
 # Time:  O(min(a, b))
 # Space: O(1)
-
 # Given a group of two strings, you need to find the longest uncommon subsequence of this group of two strings.
 # The longest uncommon subsequence is defined as the longest subsequence of one of these strings
 # and this subsequence should not be any subsequence of the other strings.
@@ -24,14 +22,22 @@
 # Both strings' lengths will not exceed 100.
 # Only letters from a ~ z will appear in input strings.
 
+# V0 
 
-# V1 : dev 
-
-
-
-
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79398536
+class Solution(object):
+    def findLUSlength(self, a, b):
+        """
+        :type a: str
+        :type b: str
+        :rtype: int
+        """
+        return max(len(a), len(b)) if a != b else -1
 
 # V2 
+# Time:  O(min(a, b))
+# Space: O(1)
 class Solution(object):
     def findLUSlength(self, a, b):
         """
@@ -42,5 +48,3 @@ class Solution(object):
         if a == b:
             return -1
         return max(len(a), len(b))
-
-

@@ -15,9 +15,17 @@
 # Output: False
 # Note: The input will be a non-empty word consisting of uppercase and lowercase latin letters.
 
+# V0 
+#  http://bookshadow.com/weblog/2017/02/19/leetcode-detect-capital/
+class Solution(object):
+    def detectCapitalUse(self, word):
+        """
+        :type word: str
+        :rtype: bool
+        """
+        return word[1:].islower() or word.islower() or word.isupper()
 
 # V1 
-
 class Solution(object):
     def detectCapitalUse(self, word):
         capital_len = len([x for x in word if x.isupper()])
@@ -29,19 +37,13 @@ class Solution(object):
         else:
             return False
         
-        
-
 # V2 
+# Time:  O(l)
+# Space: O(1)
 class Solution(object):
     def detectCapitalUse(self, word):
         """
         :type word: str
         :rtype: bool
         """
-        # https://www.tutorialspoint.com/python/string_istitle.htm
-        # The method istitle() checks whether all the case-based characters 
-        # in the string following non-casebased letters are uppercase and all other case-based characters are lowercase.
         return word.isupper() or word.islower() or word.istitle()
-
-
-
