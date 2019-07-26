@@ -14,8 +14,26 @@
 # The string consists of lower English letters only.
 # Length of the given string and k will in the range [1, 10000]
 
+# V0
+
 
 # V1 
+# http://bookshadow.com/weblog/2017/03/12/leetcode-reverse-string-ii/
+class Solution(object):
+    def reverseStr(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: str
+        """
+        ans = ''
+        round = int(math.ceil(len(s) / (2.0 * k)))
+        for x in range(round):
+            ans += s[x * 2 * k : (x * 2 + 1) * k][::-1] 
+            ans += s[(x * 2 + 1) * k : (x * 2 + 2) * k]
+        return ans
+
+# V2
 class Solution:
     def reverseStr(self, s, k):
         list_s = list(s)
@@ -23,7 +41,7 @@ class Solution:
             list_s[i:i+k] = reversed(list_s[i:i+k])
         return ''.join( str(j) for  j in list_s)
     
-# V2 
+# V2' 
 class Solution(object):
     def reverseStr(self, s, k):
         """
