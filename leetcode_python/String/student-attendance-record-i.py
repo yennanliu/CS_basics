@@ -20,8 +20,9 @@
 # Output: False
 
 
-# V1
+# V0 
 
+# V0' 
 #  if p -> q  then  ~q -> ~p 
 #  => s with more then 1  "A" or more than 2 CONTINUOUS "LL" then false
 #  => if else, true
@@ -32,8 +33,17 @@ class Solution:
         else:
             return True
 
-
-
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/70337973
+# IDEA : REGULAR EXPRESSION 
+class Solution:
+    def checkRecord(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        return not re.match(".*A.*A.*", s) and not re.match(".*LLL.*", s)
+        
 # V2 
 class Solution(object):
     def checkRecord(self, s):
@@ -50,8 +60,3 @@ class Solution(object):
             if i < len(s) - 2 and s[i] == s[i+1] == s[i+2] == 'L':
                 return False
         return True
-
-
-
-
-
