@@ -25,7 +25,25 @@
 # s.length will be between 1 and 50,000.
 # s will only consist of "0" or "1" characters.
 
-# V1  : dev 
+# V0 
+
+
+# V1   
+# https://blog.csdn.net/wenqiwenqi123/article/details/78462141
+# https://blog.csdn.net/fuxuemingzhu/article/details/79183556
+class Solution(object):
+    def countBinarySubstrings(self, s):
+        groups = [1]
+        for i in range(1, len(s)):
+            if s[i-1] != s[i]:
+                groups.append(1)
+            else:
+                groups[-1] += 1
+ 
+        ans = 0
+        for i in range(1, len(groups)):
+            ans += min(groups[i-1], groups[i])
+        return ans
 
 # V2 
 class Solution(object):
