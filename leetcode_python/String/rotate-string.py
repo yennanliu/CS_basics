@@ -1,6 +1,5 @@
 # Time:  O(n)
 # Space: O(1)
-
 # We are given two strings, A and B.
 #
 # A shift on A consists of taking string A and moving the leftmost character to the rightmost position.
@@ -18,8 +17,23 @@
 # Note:
 # - A and B will have length at most 100.
 
+# V0 
 
 # V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79521194
+class Solution(object):
+    def rotateString(self, A, B):
+        """
+        :type A: str
+        :type B: str
+        :rtype: bool
+        """
+        for i in range(len(A)):
+            if A[i:] + A[:i] == B:
+                return True
+        return False
+        
+# V1' 
 class Solution:
     def rotateString(self, A, B):
         if (A == '' and B == '' ):
@@ -32,9 +46,6 @@ class Solution:
             if A == B:
                 return True
         return False
-
-
-
 
 # V2 
 # Rabin-Karp Algorithm (rolling hash)
@@ -79,7 +90,6 @@ class Solution(object):
 
         return False
 
-
 # Time:  O(n)
 # Space: O(n)
 # KMP algorithm
@@ -121,7 +131,6 @@ class Solution2(object):
         if len(A) != len(B):
             return False
         return strStr(A*2, B) != -1
-
 
 # Time:  O(n^2)
 # Space: O(n)
