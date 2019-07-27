@@ -26,11 +26,52 @@
 # - The length of words will be in the range [1, 1000].
 # - The length of words[i] will be in the range [1, 30].
 
+# V0 
 
 
-# V1  : dev 
+# V1  
+# https://blog.csdn.net/fuxuemingzhu/article/details/79123277
+# IDEA : GREEDY 
+class Solution(object):
+    def longestWord(self, words):
+        """
+        :type words: List[str]
+        :rtype: str
+        """
+        wset = set(words)
+        res = ""
+        for w in words:
+            isIn = True
+            for i in range(1, len(w)):
+                if w[:i] not in wset:
+                    isIn = False
+                    break
+            if isIn:
+                if not res or len(w) > len(res):
+                    res = w
+                elif len(w) == len(res) and res > w:
+                    res = w
+        return res
 
-
+# V1'  
+# https://blog.csdn.net/fuxuemingzhu/article/details/79123277       
+# IDEA : SORT 
+class Solution(object):
+    def longestWord(self, words):
+        """
+        :type words: List[str]
+        :rtype: str
+        """
+        words.sort()
+        res = set([''])
+        longestWord = ''
+        for word in words:
+            if word[:-1] in res:
+                res.add(word)
+                if len(word) > len(longestWord):
+                    longestWord = word
+        return longestWord
+        
 # V2 
 import collections
 from functools import reduce
