@@ -14,17 +14,53 @@
 # For the purpose of this problem, we define empty string as valid palindrome.
 #
 
-# V1  : dev 
-# Extracting only characters from a string in Python 
-# https://stackoverflow.com/questions/8199398/extracting-only-characters-from-a-string-in-python
-import re
-class Solution:
-    def isAnagram(self, s):
+# V0 
 
-        if ''.join(re.findall('[a-zA-Z]+',s)).lower() == ''.join(re.findall('[a-zA-Z]+',s[::-1])).lower():
-            return True
-        else:
+
+# V1
+# 
+# IDEA : STACK
+def isValid(s):
+    matchDict={'(':')','[':']','{':'}'}
+    strLen=len(s)
+    stackList=[]
+    for i in range(strLen):
+        if s[i] not in matchDict.keys() and len(stackList)==0:
             return False 
+        elif s[i] in matchDict.keys():
+            stackList.append(s[i])
+        elif s[i]==matchDict[stackList[-1]]:
+            stackList.pop()
+        else: return False
+    if len(stackList)==0:
+        return True
+    else: return False
+
+# V1' 
+# http://bookshadow.com/weblog/2017/09/17/leetcode-valid-parenthesis-string/
+# https://blog.csdn.net/fuxuemingzhu/article/details/80680990
+class Solution(object):
+    def checkValidString(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        vset = set([0])
+        for c in s:
+            nset = set()
+            if c == '*':
+                for v in vset:
+                    nset.add(v + 1)
+                    nset.add(v)
+                    if v >= 1: nset.add(v - 1)
+            elif c == '(':
+                for v in vset:
+                    nset.add(v + 1)
+            elif c == ')':
+                for v in vset:
+                    if v >= 1: nset.add(v - 1)
+            vset = nset
+        return 0 in vset
 
 # V2 
 class Solution:
@@ -41,3 +77,21 @@ class Solution:
                 return False
             i, j = i + 1, j - 1
         return True
+
+# V3 
+# Time:  O(n)
+# Space: O(1)
+class Solution(object):
+    def checkValidString(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        lower, upper = 0, 0  # keep lower bound and upper bound of '(' counts
+        for c in s:
+            lower += 1 if c == '(' else -1
+            upper -= 1 if c == ')' else -1
+            if upper < 0: break
+            lower = max(lower, 0)
+        return lower == 0  # range of '(' count is valid
+
