@@ -38,11 +38,48 @@
 # - widths is an array of length 26.
 # - widths[i] will be in the range of [2, 10].
 
+# V0 
 
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79810381
+# IDEA : ASIIC
+class Solution(object):
+    def numberOfLines(self, widths, S):
+        """
+        :type widths: List[int]
+        :type S: str
+        :rtype: List[int]
+        """
+        lines = 1
+        last = 0
+        for s in S:
+            width = widths[ord(s) - ord('a')]
+            last += width
+            if last > 100:
+                lines += 1
+                last = width
+        return [lines, last]
 
-# V1  : dev 
-
-
+# V1' 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79810381
+class Solution(object):
+    def numberOfLines(self, widths, S):
+        """
+        :type widths: List[int]
+        :type S: str
+        :rtype: List[int]
+        """
+        lines, row = 1, 0
+        lendict = {c : widths[i] for i, c in enumerate("abcdefghijklmnopqrstuvwxyz")}
+        N = len(S)
+        for s in S:
+            if row + lendict[s] > 100:
+                row = lendict[s]
+                lines += 1
+            else:
+                row += lendict[s]
+        return lines, row
+        
 # V2 
 class Solution(object):
     def numberOfLines(self, widths, S):
@@ -59,5 +96,3 @@ class Solution(object):
                 result[0] += 1
                 result[1] = w
         return result
-
-
