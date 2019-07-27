@@ -1,4 +1,3 @@
-
 # Time:  O(n)
 # Space: O(1)
 #
@@ -18,7 +17,7 @@
 
 
 # V1
-# 
+# https://blog.csdn.net/xiaolewennofollow/article/details/45148577
 # IDEA : STACK
 def isValid(s):
     matchDict={'(':')','[':']','{':'}'}
