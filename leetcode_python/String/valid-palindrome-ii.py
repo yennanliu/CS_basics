@@ -55,6 +55,25 @@ class Solution(object):
 # https://blog.csdn.net/fuxuemingzhu/article/details/79252936
 # IDEA : TWO POINTERS (DEV)
 
+# V1'''
+# http://bookshadow.com/weblog/2017/09/17/leetcode-valid-palindrome-ii/
+class Solution(object):
+    def validPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        isPalindrome = lambda s: s == s[::-1]
+        strPart = lambda s, x: s[:x] + s[x + 1:]
+        size = len(s)
+        lo, hi = 0, size - 1
+        while lo < hi:
+            if s[lo] != s[hi]:
+                return validPalindrome(strPart(s, lo)) or validPalindrome(strPart(s, hi))
+            lo += 1
+            hi -= 1
+        return True
+        
 # V2 
 class Solution(object):
     def validPalindrome(self, s):
@@ -92,5 +111,28 @@ class Solution(object):
             if s[i].lower() != s[j].lower():
                 return False
             i, j = i + 1, j - 1
+        return True
+
+# V4 
+# Time:  O(n)
+# Space: O(1)
+class Solution(object):
+    def validPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        def validPalindrome(s, left, right):
+            while left < right:
+                if s[left] != s[right]:
+                    return False
+                left, right = left+1, right-1
+            return True
+
+        left, right = 0, len(s)-1
+        while left < right:
+            if s[left] != s[right]:
+                return validPalindrome(s, left, right-1) or validPalindrome(s, left+1, right)
+            left, right = left+1, right-1
         return True
         

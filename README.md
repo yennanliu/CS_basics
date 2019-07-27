@@ -382,7 +382,7 @@
 648| [Replace Words](https://leetcode.com/problems/replace-words/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/replace-words.py) | _O(n)_ | _O(t)_ | Medium  | Trie, `good basic`| OK* 
 657| [Judge Route Circle](https://leetcode.com/problems/judge-route-circle/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/judge-route-circle.py)  | _O(n)_ | _O(1)_ | Easy    | | OK 
 678| [Valid Parenthesis String](https://leetcode.com/problems/valid-parenthesis-string/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/valid-palindrome.py)   | _O(n)_ | _O(1)_ | Medium    | | AGAIN** 
-680| [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/) | [C++](./C++/valid-palindrome-ii.cpp) [Python](./Python/valid-palindrome-ii.py) | _O(n)_  | _O(1)_         | Easy           ||
+680| [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/valid-palindrome-ii.py)  | _O(n)_  | _O(1)_    | Easy     |`good basic`| AGAIN** 
 681| [Next Closest Time](https://leetcode.com/problems/next-closest-time/) | [C++](./C++/next-closest-time.cpp) [Python](./Python/next-closest-time.py) | _O(1)_  | _O(1)_         | Medium           ||
 686 | [Repeated String Match](https://leetcode.com/problems/repeated-string-match/) | [C++](./C++/repeated-string-match.cpp) [Python](./Python/repeated-string-match.py) | _O(n + m)_ | _O(1)_ | Easy || `Rabin-Karp Algorithm` |
 696| [Count Binary Substrings](https://leetcode.com/problems/count-binary-substrings/) | [C++](./C++/count-binary-substrings.cpp) [Python](./Python/count-binary-substrings.py) | _O(n)_ | _O(1)_ | Easy||
