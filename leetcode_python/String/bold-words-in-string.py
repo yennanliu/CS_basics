@@ -1,4 +1,3 @@
-
 """
 
 Given a set of keywords words and a string S, make all appearances of all keywords in S bold. Any letters between <b> and </b> tags become bold.
@@ -20,22 +19,16 @@ All characters in words[i] and S are lowercase letters.
 # Time:  O(n * l), n is the length of S, l is the average length of words
 # Space: O(t)    , t is the size of trie
 
-
-
+# V0 
 
 # V1 
-
+# DEV 
 
 # V2 
+# Time:  O(n * l), n is the length of S, l is the average length of words
+# Space: O(t)    , t is the size of trie
 import collections
 import functools
-
-try:
-    xrange          # Python 2
-except NameError:
-    xrange = range  # Python 3
-
-
 class Solution(object):
     def boldWords(self, words, S):
         """
@@ -70,8 +63,6 @@ class Solution(object):
                 result.append("</b>")
         return "".join(result)
 
-
-# V3 
 # Time:  O(n * d * l), l is the average length of words
 # Space: O(n)
 class Solution2(object):
@@ -96,7 +87,4 @@ class Solution2(object):
             if lookup[i] and (i == len(S)-1 or not lookup[i+1]):
                 result.append("</b>")
         return "".join(result)
-
-
-
         
