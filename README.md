@@ -395,7 +395,7 @@
 804| [Unique Morse Code Words](https://leetcode.com/problems/unique-morse-code-words/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/unique-morse-code-words.py)  | _O(n)_ | _O(n)_ | Easy    || OK* 
 806| [Number of Lines To Write String](https://leetcode.com/problems/number-of-lines-to-write-string/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/number-of-lines-to-write-string.py) | _O(n)_ | _O(1)_ | Easy  || OK*
 809| [Expressive Words](https://leetcode.com/problems/expressive-words/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/expressive-words.py) | _O(n + s)_ | _O(l + s)_ | Medium  || AGAIN (not start)
-816| [Ambiguous Coordinates](https://leetcode.com/problems/ambiguous-coordinates/) | [C++](./C++/ambiguous-coordinates.cpp)  [Python](./Python/ambiguous-coordinates.py) | _O(n^4)_ | _O(n)_ | Medium         |||
+816| [Ambiguous Coordinates](https://leetcode.com/problems/ambiguous-coordinates/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/ambiguous-coordinates.py) | _O(n^4)_ | _O(n)_ | Medium   || AGAIN (not start*)
 819| [Most Common Word](https://leetcode.com/problems/most-common-word/) | [C++](./C++/most-common-word.cpp)  [Python](./Python/most-common-word.py) | _O(m + n)_ | _O(m + n)_ | Easy         |||
 820| [Short Encoding of Words](https://leetcode.com/problems/short-encoding-of-words/) | [C++](./C++/short-encoding-of-wordss.cpp)  [Python](./Python/short-encoding-of-words.py) | _O(n)_ | _O(t)_ | Medium   | Trie |
 824| [Goat Latin](https://leetcode.com/problems/goat-latin/) | [C++](./C++/goat-latin.cpp)  [Python](./Python/goat-latin.py) | _O(n + w^2)_ | _O(l)_ | Easy         |||
