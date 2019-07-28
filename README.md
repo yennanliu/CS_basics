@@ -36,11 +36,11 @@
 
 ## Database
 
-* [SQL](https://github.com/yennanliu/CS_basic#sql)
+* [SQL](https://github.com/yennanliu/CS_basics#sql)
 
 ## Shell
 
-* [Shell Script](https://github.com/yennanliu/CS_basic#shell-script)
+* [Shell Script](https://github.com/yennanliu/CS_basics#shell-script)
 
 <br>
 
