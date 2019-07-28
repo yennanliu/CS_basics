@@ -1,6 +1,5 @@
 # Time:  O(m + n), m is the size of banned, n is the size of paragraph
 # Space: O(m + n)
-
 # Given a paragraph and a list of banned words,
 # return the most frequent word that is not in the list of banned words.
 # It is guaranteed there is at least one word that isn't banned, and that the answer is unique.
@@ -39,36 +38,42 @@
 #   other punctuation symbols.
 
 
-# V1  : dev 
+# V0 
 
-"""
-from collections import Counter
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/80472079
+# http://bookshadow.com/weblog/2018/04/15/leetcode-most-common-word/
+import collections
 class Solution:
     def mostCommonWord(self, paragraph, banned):
-        paragraph = paragraph.replace(',','').replace('.','').lower().split(' ')
-        banned = banned[0].lower()
-        paragraph_ = [x for x in paragraph if x != banned ]
-        #paragraph_set = list(set(paragraph_))
-        paragraph_dict = dict(Counter(paragraph_))
-        max_key = max(paragraph_dict, key=lambda k: paragraph_dict[k])
-        return max_key
-"""    
+        """
+        :type paragraph: str
+        :type banned: List[str]
+        :rtype: str
+        """
+        p = re.compile(r"[!?',;.]")
+        sub_para = p.sub('', paragraph.lower())
+        words = sub_para.split(' ')
+        words = [word for word in words if word not in banned]
+        count = collections.Counter(words)
+        return count.most_common(1)[0][0]
 
-# V1'  : dev 
+# V1' 
+# https://blog.csdn.net/fuxuemingzhu/article/details/80472079
+# http://bookshadow.com/weblog/2018/04/15/leetcode-most-common-word/
 class Solution(object):
     def mostCommonWord(self, paragraph, banned):
-        paragraph_ =[ x for x in paragraph.replace('.','').replace(',','').lower().split(' ') if x != banned ]
-        max_value = max(collections.Counter(paragraph_).values())
-        return [ x for x in list(collections.Counter(paragraph_).keys()) if collections.Counter(paragraph_)[x]  == max_value ]
-
-
-
-
+        """
+        :type paragraph: str
+        :type banned: List[str]
+        :rtype: str
+        """
+        paragraph = re.findall(r"\w+", paragraph.lower())
+        count = collections.Counter(x for x in paragraph if x not in banned)
+        return count.most_common(1)[0][0]
 
 # V2 
 import collections
-
-
 class Solution(object):
     def mostCommonWord(self, paragraph, banned):
         """
@@ -86,5 +91,3 @@ class Solution(object):
                word not in lookup:
                 result = word
         return result
-
-
