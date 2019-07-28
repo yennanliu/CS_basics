@@ -22,7 +22,9 @@
 -- +------ ------+---------+
 -- This table has no primary key, it can have repeated rows.
 -- product_id is a foreign key to Product table.
--- Write an SQL query that reports the best seller by total sales price, If there is a tie, report them all.
+ 
+
+-- Write an SQL query that reports the products that were only sold in spring 2019. That is, between 2019-01-01 and 2019-03-31 inclusive.
 
 -- The query result format is in the following example:
 
@@ -46,37 +48,26 @@
 -- +-----------+------------+----------+------------+----------+-------+
 
 -- Result table:
--- +-------------+
--- | seller_id   |
--- +-------------+
--- | 1           |
--- | 3           |
--- +-------------+
--- Both sellers with id 1 and 3 sold products with the most total price of 2800.
+-- +-------------+--------------+
+-- | product_id  | product_name |
+-- +-------------+--------------+
+-- | 1           | S8           |
+-- +-------------+--------------+
+-- The product with id 1 was only sold in spring 2019 while the other two were sold after.
 
 # V0 
 
 # V1 
-# https://code.dennyzhang.com/sales-analysis-i
-select seller_id
-from Sales
-group by seller_id
-having sum(price) = (
-    select sum(price)
-    from Sales
-    group by seller_id
-    order by sum(price) desc
-    limit 1)
+
 
 # V2 
-# Time:  O(n)
-# Space: O(n)
-SELECT seller_id 
-FROM   sales 
-GROUP  BY seller_id 
-HAVING Sum(price) = (SELECT Sum(price) 
-                     FROM   sales 
-                     GROUP  BY seller_id 
-                     ORDER  BY Sum(price) DESC 
-                     LIMIT  1) 
-ORDER  BY NULL
+# Time:  O(m + n)
+# Space: O(m + n)
+
+SELECT product_id, 
+       product_name 
+FROM   product 
+WHERE  product_id NOT IN (SELECT product_id 
+                          FROM   sales 
+                          WHERE  sale_date NOT BETWEEN 
+                                 '2019-01-01' AND '2019-03-31'); 
