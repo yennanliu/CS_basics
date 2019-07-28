@@ -347,6 +347,7 @@ class linkedlistToQueue(object):
 - Tricks
     - Last in, first out (LIFO)
     - 5 basic operations : create, push(put), pop(delete), isEmpty, full
+    - Scenario : 1) inverse traversal 
 
 - Algorithm 
 
