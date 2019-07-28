@@ -6,6 +6,12 @@
 - `TODO4`   : re-check : String, Array, Hash Table 
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check) 
 
+# 2019-07-28
+
+- DOING  : String 
+- REDO   : Dynamic Programming (pending, not finished, todo), Linked list, Math, Recursion, DFS, Stack revisit, Breadth-First Search, Depth-First Search, Binary Search, Heap, Backtracking, Greedy, SQL 
+- DONE   : stack, Tree, Binary Search Tree
+
 # 2019-07-22 
 
 - DOING  : SQL, String 
