@@ -7,10 +7,38 @@
 - Database 
 - System design 
 
+
+## Algorithms content
+
+* [Bit Manipulation](https://github.com/yennanliu/CS_basics#bit-manipulation)
+* [Array](https://github.com/yennanliu/CS_basics#array)
+* [String](https://github.com/yennanliu/CS_basics#string)
+* [Linked List](https://github.com/yennanliu/CS_basics#linked-list)
+* [Stack](https://github.com/yennanliu/CS_basics#stack)
+* [Queue](https://github.com/yennanliu/CS_basics#queue)
+* [Heap](https://github.com/yennanliu/CS_basics#heap)
+* [Tree](https://github.com/yennanliu/CS_basics#tree)
+* [Hash Table](https://github.com/yennanliu/CS_basics#hash-table)
+* [Math](https://github.com/yennanliu/CS_basics#math)
+* [Two Pointers](https://github.com/yennanliu/CS_basics#two-pointers)
+* [Sort](https://github.com/yennanliu/CS_basics#sort)
+* [Recursion](https://github.com/yennanliu/CS_basics#recursion)
+* [Binary Search](https://github.com/yennanliu/CS_basics#binary-search)
+* [Binary Search Tree](https://github.com/yennanliu/CS_basics#binary-search-tree)
+* [Breadth-First Search](https://github.com/yennanliu/CS_basics#breadth-first-search)
+* [Depth-First Search](https://github.com/yennanliu/CS_basics#depth-first-search)
+* [Backtracking](https://github.com/yennanliu/CS_basics#backtracking)
+* [Dynamic Programming](https://github.com/yennanliu/CS_basics#dynamic-programming)
+* [Greedy](https://github.com/yennanliu/CS_basics#greedy)
+* [Graph](https://github.com/yennanliu/CS_basics#graph)
+* [Geometry](https://github.com/yennanliu/CS_basics#geometry)
+* [Simulation](https://github.com/yennanliu/CS_basics#simulation)
+* [Design](https://github.com/yennanliu/CS_basics#design)
+
 <br>
 
 # Progress 
-## Data Structure 
+## Data Structure basic
 |  #  | Title | Solution | Time | Space | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Queue| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/queue2.py) | | | OK|
@@ -24,7 +52,7 @@
 ||Hash map| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/hash_map.py) | | | AGAIN| 
 
 
-## Algorithm 
+## Algorithm basic
 |  #  | Title | Solution | Time | Space | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Binary search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/binary_search.py) | | | AGAIN| 
@@ -41,7 +69,7 @@
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
 
 
-## Array Easy and Medium 
+## Array 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 015 | [3 Sum](https://leetcode.com/problems/3sum/) |[Python](./Python/3sum.py)       | _O(n^2)_        | _O(1)_          | Medium         || Two Pointers
@@ -144,7 +172,7 @@
 961 | [N-Repeated Element in Size 2N Array](https://leetcode.com/problems/n-repeated-element-in-size-2n-array/) | [C++](./C++/n-repeated-element-in-size-2n-array.cpp) [Python](./Python/n-repeated-element-in-size-2n-array.py) | _O(n)_ | _O(1)_      | Easy         ||
 
 
-## Hash Table Easy and Medium 
+## Hash Table 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 001| [Two Sum](https://leetcode.com/problems/two-sum/)      | [C++](./C++/two-sum.cpp) [Python](./Python/two-sum.py)      | _O(n)_         | _O(n)_          | Easy         ||
@@ -203,7 +231,7 @@
 974| [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/) |[C++](./C++/subarray-sums-divisible-by-k.cpp)  [Python](./Python/subarray-sums-divisible-by-k.py) | _O(n)_ | _O(k)_ | Medium         | variant of [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) |
 
 
-## Linked List Easy and Medium 
+## Linked list 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 002| [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/add-two-numbers.py) | _O(n)_   | _O(1)_          | Medium         || AGAIN 
@@ -226,7 +254,7 @@
 817 | [Linked List Components](https://leetcode.com/problems/linked-list-components/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/linked-list-components.py)  | _O(m + n)_ | _O(m)_ | Medium || OK* 
 
 
-## Stack Easy and Medium 
+## Stack 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note | Status | 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/valid-parentheses.py) | _O(n)_        | _O(n)_    | Easy     || AGAIN 
@@ -255,7 +283,7 @@
 946| [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/validate-stack-sequences.py)  | _O(n)_  | _O(n)_         | Medium           || AGAIN 
 
 
-## Tree Easy and Medium 
+## Tree 
 |  #  | Title           |  Solution   |  Time   | Space  | Difficulty    | Note | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 094 | [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)  | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/binary-tree-inorder-traversal.py) | _O(n)_| _O(1)_| Medium   | `Morris Traversal` | AGAIN (not start*)
@@ -300,7 +328,7 @@
 979| [Distribute Coins in Binary Tree](https://leetcode.com/problems/distribute-coins-in-binary-tree/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/distribute-coins-in-binary-tree.py)  | _O(n)_          | _O(h)_          | Medium   | DFS | AGAIN (not start)
 
 
-## Heap Easy and Medium 
+## Heap 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note  | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 264| [Ugly Number II](https://leetcode.com/problems/ugly-number-ii/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Heap/ugly-number-ii.py)   | _O(n)_ | _O(1)_ | Medium   | CTCI, LintCode , BST, Heap | OK*
@@ -311,7 +339,7 @@
 855 | [Exam Room](https://leetcode.com/problems/exam-room/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Heap/exam-room.py)  | seat: _O(logn)_ <br> leave: _O(logn)_ | _O(n)_ | Medium | BST, Hash | AGAIN (not start)
 
 
-## BitMap Easy and Medium 
+## Bit Manipulation 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 136 | [Single Number](https://leetcode.com/problems/single-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number.py) | _O(n)_       | _O(1)_          | Easy         || 
@@ -339,7 +367,7 @@
 898 | [Bitwise ORs of Subarrays](https://leetcode.com/problems/bitwise-ors-of-subarrays/) | [Python](./Python/bitwise-ors-of-subarrays.py) | _O(n)_ | _O(1)_ | Medium ||
 
 
-## String Easy and Medium
+## String
 |  #  | Title           |  Solution       |  Time           | Space        | Difficulty    | Status, Note       | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 005| [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py)  | _O(n)_ | _O(n)_ |  Medium | `Manacher's Algorithm`, `DP` | AGAIN (not start*)
@@ -418,7 +446,7 @@
 955 | [Delete Columns to Make Sorted II](https://leetcode.com/problems/delete-columns-to-make-sorted-ii/) | [C++](./C++/delete-columns-to-make-sorted-ii.cpp) [Python](./Python/delete-columns-to-make-sorted-ii.py) | _O(n * l)_ | _O(n)_      | Medium         ||
 
 
-## Queue Easy and Medium
+## Queue
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 281| [Zigzag Iterator](https://leetcode.com/problems/zigzag-iterator/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/zigzag-iterator.py) | _O(n)_        | _O(k)_          | Medium           |🔒| OK
@@ -426,7 +454,7 @@
 933| [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/number-of-recent-calls.py)  | _O(1)_ on average       | _O(w)_          | Easy           || AGAIN**
 
 
-## Math Easy and Medium 
+## Math 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 007| [Reverse Integer](https://leetcode.com/problems/reverse-integer/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/reverse-integer.py) | _O(1)_ | _O(1)_         | Easy           || OK* 
@@ -501,7 +529,7 @@
 970 | [Powerful Integers](https://leetcode.com/problems/powerful-integers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/powerful-integers.py)  | _O((logn)^2)_ | _O(r)_      | Easy || AGAIN*
 
 
-## Sort Easy and Medium 
+## Sort 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note| Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 075| [Sort Colors](https://leetcode.com/problems/sort-colors/)   | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/sort-colors.py) | _O(n)_         | _O(1)_          | Medium         |Tri Partition|  AGAIN 
@@ -524,7 +552,7 @@
 976| [Largest Perimeter Triangle](https://leetcode.com/problems/largest-perimeter-triangle/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/largest-perimeter-triangle.py) | _O(nlogn)_ | _O(1)_  | Easy | | OK*
 
 
-## Two Pointers Easy and Medium 
+## Two Pointers 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 019| [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/remove-nth-node-from-end-of-list.py) | _O(n)_       | _O(1)_         | Medium         || OK*
@@ -552,7 +580,7 @@
 977 | [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/squares-of-a-sorted-array.py) | _O(n)_ | _O(1)_ | Easy || OK 
 
 
-## Recursion Easy and Medium 
+## Recursion 
 |  #  | Title     |  Solution     |  Time           | Space           | Difficulty    | Note | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 095| [Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/unique-binary-search-trees-ii.py) | _O(4^n / n^(3/2)_   | _O(4^n / n^(3/2)_  | Medium   || AGAIN (not start)
@@ -582,7 +610,7 @@
 671| [Second Minimum Node In a Binary Tree](https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/second-minimum-node-in-a-binary-tree.py) | _O(n)_          | _O(h)_          | Easy           || AGAIN (not start)
 
 
-## Binary Search Easy and Medium 
+## Binary Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note        | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 034| [Search for a Range](https://leetcode.com/problems/search-for-a-range/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/search-for-a-range.py) | _O(logn)_ | _O(1)_   | Medium  || AGAIN* 
@@ -609,7 +637,7 @@
 911| [Online Election](https://leetcode.com/problems/online-election/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/online-election.py)| ctor: _O(n)_<br> query : _O(logn)_ | _O(n)_ | Medium    ||  AGAIN (not start)
  
 
-## Binary Search Tree Easy and Medium 
+## Binary Search Tree 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag,Note        | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 220| [Contains Duplicate III](https://leetcode.com/problems/contains-duplicate-iii/)  | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/contains-duplicate-iii.py)   | _O(nlogk)_      | _O(k)_      | Medium  || AGAIN (not start)
@@ -624,7 +652,7 @@
 783|[Minimum Distance Between BST Nodes](https://leetcode.com/problems/minimum-distance-between-bst-nodes/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/minimum-distance-between-bst-nodes.py) | _O(n)_ | _O(h)_ | Easy | | OK* 
 
 
-## Breadth-First Search Easy and Medium 
+## Breadth-First Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 102| [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal.py)| _O(n)_| _O(n)_| Easy  ||  AGAIN 
@@ -653,7 +681,7 @@
 967|[Numbers With Same Consecutive Differences](https://leetcode.com/problems/numbers-with-same-consecutive-differences/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/numbers-with-same-consecutive-differences.py) | _O(2^n)_ | _O(2^n)_ | Medium | | AGAIN* 
 
 
-## Depth-First Search Easy and Medium 
+## Depth-First Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag     | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 112| [Path Sum](https://leetcode.com/problems/path-sum/)      |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum.py)  | _O(n)_ | _O(h)_  | Easy  | `good concept`| OK*
@@ -687,7 +715,7 @@
 851| [Loud and Rich](https://leetcode.com/problems/loud-and-rich/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/loud-and-rich.py)  | _O(q + r)_    | _O(q + r)_   | Medium    || AGAIN (not start*)
 
 
-## Backtracking Easy and Medium 
+## Backtracking 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note       | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 017| [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/letter-combinations-of-a-phone-number.py)  | _O(n * 4^n)_ | _O(n)_ | Medium || OK* 
@@ -714,7 +742,7 @@
 784| [Letter Case Permutation](https://leetcode.com/problems/letter-case-permutation/)    | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/letter-case-permutation.py)  | _O(n * 2^n)_    | _O(1)_ | Easy || AGAIN* 
 
 
-## Dynamic Programming Easy and Medium 
+## Dynamic Programming 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 053| [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/maximum-subarray.py)  | _O(n)_     | _O(1)_         | Medium  || AGAIN  
@@ -779,7 +807,7 @@
 935| [Knight Dialer](https://leetcode.com/problems/knight-dialer/) | [C++](./C++/knight-dialer.cpp) [Python](./Python/knight-dialer.py) | _O(logn)_ | _O(1)_ | Medium || Matrix Exponentiation |
 
 
-## Greedy Easy and Medium 
+## Greedy 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note   | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 011| [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/container-with-most-water.py)  | _O(n)_ | _O(1)_ | Medium ||  OK*
@@ -807,25 +835,25 @@
 962 | [Maximum Width Ramp](https://leetcode.com/problems/maximum-width-ramp/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/maximum-width-ramp.py)  | _O(n)_ | _O(n)_ | Medium | Descending Stack |  AGAIN (not start)
 
 
-## Graph Easy and Medium 
+## Graph 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 959 | [Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/)  | [C++](./C++/regions-cut-by-slashes.cpp) [Python](./Python/regions-cut-by-slashes.py) | _O(n^2)_| _O(n^2)_| Medium           || Union Find | 
 
 
-## Geometry Easy and Medium 
+## Geometry 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 892 | [Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/)  | [C++](./C++/surface-area-of-3d-shapes.cpp) [Python](./Python/surface-area-of-3d-shapes.py) | _O(n^2)_| _O(1)_| Easy           ||| 
 
 
-## Simulation Easy and Medium 
+## Simulation 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 874 | [Walking Robot Simulation](https://leetcode.com/problems/walking-robot-simulation/)  | [C++](./C++/walking-robot-simulation.cpp) [Python](./Python/walking-robot-simulation.py) | _O(n + k)_| _O(k)_| Easy           ||| 
 
 
-## SQL Easy and Medium
+## SQL
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note      | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 0175| [Combine Two Tables](https://leetcode.com/problems/combine-two-tables/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/combine-two-tables.sql) | _O(m + n)_   | _O(m + n)_ | Easy     || OK 
@@ -866,7 +894,7 @@
 1132| [Reported Posts II](https://leetcode.com/problems/reported-posts-ii/) | [MySQL](./MySQL/reported-posts-ii.sql) | _O(m + n)_ | _O(n)_       | Medium           |🔒| 
 
 
-## Shell Script Easy and Medium
+## Shell Script
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 0192 | [Word Frequency](https://leetcode.com/problems/word-frequency/) | [Shell](./Shell/word-frequency.sh) | _O(n)_     | _O(k)_          | Medium         ||
