@@ -474,3 +474,27 @@ class Solution(object):
             i, j, plus = i-1, j-1, plus/2
         return res 
 ```
+
+## 5) Recursion  
+
+- Tricks
+    - Given a function has logics/sub-function call itself 
+    - Using cases : 1) repeated same process 2) has the terminated condition
+    - Can refactor the code in an elegant/simple way
+
+- Algorithm 
+
+- Example 
+```python 
+# tower of Hanoi 
+# IDEA
+# STEP 1) move 1,2 ... n-1 from 1 -> 2 
+# STEP 2) move n from 1 -> 3 
+# STEP 3) move n-1, n-2, ....2, 1 from 2 -> 3 
+def hanoi(n, p1, p2, p3):
+    if n == 1:
+        print ('move plate from {} to {}'.format(p1, p3))
+    else:
+        hanoi(n-1, p1, p3, p2)
+        hanoi(n-1, p2, p1, p3)
+```
