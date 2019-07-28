@@ -33,7 +33,14 @@
 * [Graph](https://github.com/yennanliu/CS_basics#graph)
 * [Geometry](https://github.com/yennanliu/CS_basics#geometry)
 * [Simulation](https://github.com/yennanliu/CS_basics#simulation)
-* [Design](https://github.com/yennanliu/CS_basics#design)
+
+## Database
+
+* [SQL](https://github.com/yennanliu/CS_basic#sql)
+
+## Shell
+
+* [Shell Script](https://github.com/yennanliu/CS_basic#shell-script)
 
 <br>
 
