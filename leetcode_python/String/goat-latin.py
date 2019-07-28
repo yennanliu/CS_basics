@@ -3,7 +3,6 @@
 #                    w is the number of word,
 #                    l is the average length of word
 # Space: O(n)
-
 # A sentence S is given, composed of words separated by spaces.
 # Each word consists of lowercase and uppercase letters only.
 #
@@ -42,9 +41,44 @@
 #   each word.
 # - 1 <= S.length <= 100.
 
+# V0 
 
-# V1  : dev 
-
+# V1 
+# # https://blog.csdn.net/fuxuemingzhu/article/details/80471925
+class Solution:
+    def toGoatLatin(self, S):
+        """
+        :type S: str
+        :rtype: str
+        """
+        vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
+        words = S.split(' ')
+        new_words = []
+        for i, word in enumerate(words):
+            if word[0] in vowels:
+                word += 'ma'
+            else:
+                word = word[1:] + word[0] + 'ma'
+            word += 'a' * (i + 1)
+            new_words.append(word)
+        return ' '.join(new_words)
+        
+# V1' 
+# http://bookshadow.com/weblog/2018/04/29/leetcode-goat-latin/
+class Solution(object):
+    def toGoatLatin(self, S):
+        """
+        :type S: str
+        :rtype: str
+        """
+        ans = []
+        for idx, word in enumerate(S.split()):
+            latin = word
+            if word[0].lower() not in 'aeiou':
+                latin = word[1:] + word[0]
+            latin += 'ma' + 'a' * (idx + 1)
+            ans.append(latin)
+        return ' '.join(ans)
 
 # V2 
 class Solution(object):
@@ -60,9 +94,3 @@ class Solution(object):
                     word = word[1:] + word[:1]
                 yield word + 'ma' + 'a'*i
         return " ".join(convert(S))
-
-
-
-
-
-
