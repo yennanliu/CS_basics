@@ -448,7 +448,7 @@
 929 | [Unique Email Addresses](https://leetcode.com/problems/unique-email-addresses/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/unique-email-addresses.py) | _O(n * l)_ | _O(n * l)_ | Easy || OK 
 939 | [Minimum Area Rectangle](https://leetcode.com/problems/minimum-area-rectangle/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/minimum-area-rectangle.py) | _O(n^1.5)_ on average | _O(n)_ | Medium || OK* 
 942 | [DI String Match](https://leetcode.com/problems/di-string-match/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/di-string-match.py) | _O(n)_ | _O(1)_      | Easy   || AGAIN (not start)
-944 | [Delete Columns to Make Sorted](https://leetcode.com/problems/delete-columns-to-make-sorted/) | [C++](./C++/delete-columns-to-make-sorted.cpp) [Python](./Python/delete-columns-to-make-sorted.py) | _O(n * l)_ | _O(1)_      | Medium         ||
+944 | [Delete Columns to Make Sorted](https://leetcode.com/problems/delete-columns-to-make-sorted/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/delete-columns-to-make-sorted.py) | _O(n * l)_ | _O(1)_      | Medium     || AGAIN (not start)
 953 | [Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/) | [C++](./C++/verifying-an-alien-dictionary.cpp) [Python](./Python/verifying-an-alien-dictionary.py) | _O(n * l)_ | _O(1)_      | Easy         ||
 955 | [Delete Columns to Make Sorted II](https://leetcode.com/problems/delete-columns-to-make-sorted-ii/) | [C++](./C++/delete-columns-to-make-sorted-ii.cpp) [Python](./Python/delete-columns-to-make-sorted-ii.py) | _O(n * l)_ | _O(n)_      | Medium         ||
 
