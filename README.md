@@ -347,9 +347,9 @@
 
 
 ## Bit Manipulation 
-|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-136 | [Single Number](https://leetcode.com/problems/single-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number.py) | _O(n)_       | _O(1)_          | Easy         || 
+136 | [Single Number](https://leetcode.com/problems/single-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number.py) | _O(n)_       | _O(1)_          | Easy         || OK 
 137 | [Single Number II](https://leetcode.com/problems/single-number-ii/) | [Python](./Python/single-number-ii.py) | _O(n)_ | _O(1)_          | Medium         |||
 190 | [Reverse Bits](https://leetcode.com/problems/reverse-bits/)  | [Python](./Python/reverse-bits.py) | _O(1)_        | _O(1)_          | Easy           |||
 191  |[Number of 1 Bits](https://leetcode.com/problems/number-of-1-bits/) | [Python](./Python/number-of-1-bits.py) | _O(1)_ | _O(1)_          | Easy           |||

@@ -1,5 +1,4 @@
 """
-
 # python 3 
 # https://leetcode.com/problems/single-number/description/
 
@@ -20,13 +19,16 @@ Example 2:
 
 Input: [4,1,2,1,2]
 Output: 4
-
-
 """
 
-
+# V0 
+import collections 
+class Solution(object):
+    def singleNumber(self, nums):
+        num_count = collections.Counter(nums)
+        return [x for x in num_count if num_count[x] == 1] 
+        
 # V1 
-
 class Solution:
 	def singleNumber(self, nums):
 		no_repeat_array=[]
@@ -37,14 +39,9 @@ class Solution:
 				no_repeat_array.append(item)
 		return no_repeat_array.pop()
 
-
-
-
 # V2 
-
 # to know the non-repeat element 
 # 2∗(a+b+c)−(a+a+b+b+c)=c
-
 class Solution(object):
     def singleNumber(self, nums):
         """
@@ -53,16 +50,11 @@ class Solution(object):
         """
         return 2 * sum(set(nums)) - sum(nums)
 
-
-
 # V3 
-
 # XOR logic 
 # https://www.programiz.com/python-programming/operators
 # x ^ 0 = x 
 # x ^ x = 0
-
-
 class Solution(object):
     def singleNumber(self, nums):
         """
@@ -73,10 +65,3 @@ class Solution(object):
         for i in nums:
             a ^= i
         return a
-
-
-
-
-
-
-
