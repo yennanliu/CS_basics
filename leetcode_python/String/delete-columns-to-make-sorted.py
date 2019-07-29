@@ -1,7 +1,21 @@
 # V0 
 
 # V1 
-
+# https://blog.csdn.net/fuxuemingzhu/article/details/84206638
+class Solution:
+    def minDeletionSize(self, A):
+        """
+        :type A: List[str]
+        :rtype: int
+        """
+        res = 0
+        N = len(A[0])
+        for i in range(N):
+            col = [a[i] for a in A]
+            if col != sorted(col):
+                res += 1
+        return res
+        
 # V2 
 # Time:  O(n * l)
 # Space: O(1)
