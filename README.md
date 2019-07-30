@@ -356,7 +356,7 @@
 201 | [Bitwise AND of Numbers Range](https://leetcode.com/problems/bitwise-and-of-numbers-range/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/bitwise-and-of-numbers-range.py) | _O(1)_ | _O(1)_ | Medium || AGAIN (not start)
 231 | [Power of Two](https://leetcode.com/problems/power-of-two/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/power-of-two.py)  | _O(1)_ | _O(1)_ | Easy | | OK*
 260 | [Single Number III](https://leetcode.com/problems/single-number-iii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number-iii.py) | _O(n)_ | _O(1)_ | Medium  |`xor`, `^=`, `^`| AGAIN*
-268| [Missing Number](https://leetcode.com/problems/missing-number/) | [Python](./Python/missing-number.py)  | _O(n)_ |  _O(1)_ | Medium         | ||
+268| [Missing Number](https://leetcode.com/problems/missing-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/missing-number.py) | _O(n)_ |  _O(1)_ | Medium         | `xor`| OK* 
 318| [Maximum Product of Word Lengths](https://leetcode.com/problems/maximum-product-of-word-lengths/) | [Python](./Python/maximum-product-of-word-lengths.py)  | _O(n)_ ~ _O(n^2)_ |  _O(n)_ | Medium         || Bit Manipulation, Counting Sort, Pruning|
 342 | [Power of Four](https://leetcode.com/problems/power-of-four/) | [Python](./Python/power-of-four.py) | _O(1)_ | _O(1)_ | Easy | |
 371 | [Sum of Two Integers](https://leetcode.com/problems/sum-of-two-integers/) | [Python](./Python/sum-of-two-integers.py) | _O(1)_ | _O(1)_ | Easy | |
