@@ -1,5 +1,3 @@
-
-
 # python 3 
 # https://leetcode.com/problems/single-number-iii/description/
 # Time:  O(n)
@@ -20,13 +18,16 @@
 # Could you implement it using only constant space complexity?
 
 
-import operator
-import collections
-from functools import reduce
-
-
+# V0
+import collections 
+class Solution(object):
+    def singleNumber(self, nums):
+        num_count = collections.Counter(nums)
+        return [ i for i in num_count if num_count[i] == 1 ]
 
 # V1 
+
+# V2 
 class Solution:
 	def singleNumber(self, nums):
 		no_repeat_array=[]
@@ -37,10 +38,7 @@ class Solution:
 				no_repeat_array.append(item)
 		return no_repeat_array
 
-
-
-
-# V2 
+# V3 
 class Solution(object):
     def singleNumber(self, nums):
         """
@@ -49,8 +47,7 @@ class Solution(object):
         """
         return [x[0] for x in sorted(list(collections.Counter(nums).items()), key=lambda i: i[1], reverse=False)[:2]]
 
-
-# V3
+# V4 
 class Solution:
     def singleNumber(self, nums):
         x_xor_y = reduce(operator.xor, nums)
@@ -60,7 +57,7 @@ class Solution:
             result[bool(i & bit)] ^= i
         return result
 
-# V4
+# V5
 class Solution2:
     # @param {integer[]} nums
     # @return {integer[]}
@@ -78,6 +75,46 @@ class Solution2:
 
         return [x, x ^ x_xor_y]
 
+# V6 
+# Time:  O(n)
+# Space: O(1)
+import operator
+import collections
+class Solution(object):
+    # @param {integer[]} nums
+    # @return {integer[]}
+    def singleNumber(self, nums):
+        x_xor_y = reduce(operator.xor, nums)
+        bit =  x_xor_y & -x_xor_y
+        result = [0, 0]
+        for i in nums:
+            result[bool(i & bit)] ^= i
+        return result
 
 
+class Solution2(object):
+    # @param {integer[]} nums
+    # @return {integer[]}
+    def singleNumber(self, nums):
+        x_xor_y = 0
+        for i in nums:
+            x_xor_y ^= i
+
+        bit = x_xor_y & ~(x_xor_y - 1)
+
+        x = 0
+        for i in nums:
+            if i & bit:
+                x ^= i
+
+        return [x, x ^ x_xor_y]
+
+
+class Solution3(object):
+    def singleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        return [x[0] for x in sorted(collections.Counter(nums).items(), key=lambda i: i[1], reverse=False)[:2]]
 
