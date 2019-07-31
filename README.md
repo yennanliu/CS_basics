@@ -365,7 +365,7 @@
 401 | [Binary Watch](https://leetcode.com/problems/binary-watch/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/binary-watch.py)  | _O(1)_ | _O(1)_ | Easy | | OK*
 421 | [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/maximum-xor-of-two-numbers-in-an-array.py) | _O(n)_ | _O(n)_ | Medium || AGAIN (not start)
 461 | [Hamming Distance](https://leetcode.com/problems/hamming-distance/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/hamming-distance.py) | _O(1)_ | _O(1)_ | Easy || OK* 
-462 | [Minimum Moves to Equal Array Elements II](https://leetcode.com/problems/minimum-moves-to-equal-array-elements-ii/) |[Python](./Python/minimum-moves-to-equal-array-elements-ii.py) | _O(n)_  on average | _O(1)_ | Medium ||
+462 | [Minimum Moves to Equal Array Elements II](https://leetcode.com/problems/minimum-moves-to-equal-array-elements-ii/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/minimum-moves-to-equal-array-elements-ii.py) | _O(n)_  on average | _O(1)_ | Medium || AGAIN* 
 477 | [Total Hamming Distance](https://leetcode.com/problems/total-hamming-distance/) | [Python](./Python/total-hamming-distance.py) | _O(n)_ | _O(1)_ | Medium ||
 645 | [Set Mismatch](https://leetcode.com/problems/set-mismatch/) | [Python](./Python/set-mismatch.py) | _O(n)_ | _O(1)_ | Easy ||
 693 | [Binary Number with Alternating Bits](https://leetcode.com/problems/binary-number-with-alternating-bits/) | [Python](./Python/binary-number-with-alternating-bits.py) | _O(1)_ | _O(1)_ | Easy ||
