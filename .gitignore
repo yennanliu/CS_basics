@@ -5,6 +5,7 @@
 !*.c
 !*.cpp
 !makefile
+!*.py
 
 # neglect .DS_Store
 .DS_Store
