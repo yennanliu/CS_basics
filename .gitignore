@@ -1,8 +1,10 @@
-*.class
-*.pyc 
-*.DS_Store
-*.ipynb_checkpoints
-*__pycache__
-Leetcode_python_dev.ipynb
-Untitled.ipynb
+# ignore all
+*
+
+# un-ignore file with extension c 
+!*.c
+!*.cpp
+!makefile
+
+# neglect .DS_Store
 .DS_Store
