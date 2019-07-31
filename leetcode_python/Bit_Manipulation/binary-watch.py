@@ -3,7 +3,12 @@
 # V1 
 # https://www.jianshu.com/p/7723d729da3b
 # IDEA : GREEDY 
-
+class Solution(object):
+    def readBinaryWatch(self, num):
+        return ['%d:%02d' % (h, m)
+                for h in range(12) for m in range(60)
+                if (bin(h) + bin(m)).count('1') == num]
+                
 # V1'
 # https://www.jianshu.com/p/7723d729da3b
 # IDEA : HASH MAP + GREEDY 
