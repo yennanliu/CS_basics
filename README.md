@@ -360,7 +360,7 @@
 318| [Maximum Product of Word Lengths](https://leetcode.com/problems/maximum-product-of-word-lengths/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/maximum-product-of-word-lengths.py) | _O(n)_ ~ _O(n^2)_ |  _O(n)_ | Medium   |Bit Manipulation, Counting Sort, Pruning| AGAIN (not start)
 342 | [Power of Four](https://leetcode.com/problems/power-of-four/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/power-of-four.py) | _O(1)_ | _O(1)_ |Easy |`power of num`| OK* 
 371 | [Sum of Two Integers](https://leetcode.com/problems/sum-of-two-integers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/sum-of-two-integers.py)  | _O(1)_ | _O(1)_ | Easy | `basic`| AGAIN (not start**)
-389 | [Find the Difference](https://leetcode.com/problems/find-the-difference/) | [Python](./Python/find-the-difference.py) | _O(n)_ | _O(1)_ | Easy | |
+389 | [Find the Difference](https://leetcode.com/problems/find-the-difference/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/find-the-difference.py)  | _O(n)_ | _O(1)_ | Easy | | OK 
 393 | [UTF-8 Validation](https://leetcode.com/problems/utf-8-validation/) | [Python](./Python/utf-8-validation.py) | _O(n)_ | _O(1)_ | Medium | |
 401 | [Binary Watch](https://leetcode.com/problems/binary-watch/) | [Python](./Python/binary-watch.py) | _O(1)_ | _O(1)_ | Easy | |
 421 | [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | [Python](./Python/maximum-xor-of-two-numbers-in-an-array.py) | _O(n)_ | _O(n)_ | Medium ||
