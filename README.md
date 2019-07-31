@@ -362,7 +362,7 @@
 371 | [Sum of Two Integers](https://leetcode.com/problems/sum-of-two-integers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/sum-of-two-integers.py)  | _O(1)_ | _O(1)_ | Easy | `basic`| AGAIN (not start**)
 389 | [Find the Difference](https://leetcode.com/problems/find-the-difference/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/find-the-difference.py)  | _O(n)_ | _O(1)_ | Easy | | OK 
 393 | [UTF-8 Validation](https://leetcode.com/problems/utf-8-validation/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/utf-8-validation.py)  | _O(n)_ | _O(1)_ | Medium | `utf-8 encoding`| AGAIN (not start*)
-401 | [Binary Watch](https://leetcode.com/problems/binary-watch/) | [Python](./Python/binary-watch.py) | _O(1)_ | _O(1)_ | Easy | |
+401 | [Binary Watch](https://leetcode.com/problems/binary-watch/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/binary-watch.py)  | _O(1)_ | _O(1)_ | Easy | | OK*
 421 | [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | [Python](./Python/maximum-xor-of-two-numbers-in-an-array.py) | _O(n)_ | _O(n)_ | Medium ||
 461 | [Hamming Distance](https://leetcode.com/problems/hamming-distance/) | [Python](./Python/hamming-distance.py) | _O(1)_ | _O(1)_ | Easy ||
 462 | [Minimum Moves to Equal Array Elements II](https://leetcode.com/problems/minimum-moves-to-equal-array-elements-ii/) |[Python](./Python/minimum-moves-to-equal-array-elements-ii.py) | _O(n)_  on average | _O(1)_ | Medium ||
