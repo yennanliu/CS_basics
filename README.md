@@ -183,7 +183,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 001| [Two Sum](https://leetcode.com/problems/two-sum/)      | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/two-sum.py)     | _O(n)_         | _O(n)_          | Easy         |`basic`, `hash table`| AGAIN*
-003| [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | [C++](./C++/longest-substring-without-repeating-characters.cpp) [Python](./Python/longest-substring-without-repeating-characters.py) | _O(n)_ | _O(1)_ | Medium ||
+003| [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/longest-substring-without-repeating-characters.py)  | _O(n)_ | _O(1)_ | Medium |`trick`, `hash table`| AGAIN**
 036| [Valid Sudoku](https://leetcode.com/problems/valid-sudoku/) | [C++](./C++/valid-sudoku.cpp) [Python](./Python/valid-sudoku.py) | _O(9^2)_         | _O(9)_          | Easy           ||
 049| [Group Anagrams](https://leetcode.com/problems/group-anagrams/)     | [C++](./C++/group-anagrams.cpp) [Python](./Python/group-anagrams.py)   | _O(n * glogg)_          | _O(n)_          | Medium         ||
 170| [Two Sum III - Data structure design](https://leetcode.com/problems/two-sum-iii-data-structure-design/) | [C++](./C++/two-sum-iii-data-structure-design.cpp) [Python](./Python/two-sum-iii-data-structure-design.py) | _O(n)_ | _O(n)_ | Easy | 🔒 |
