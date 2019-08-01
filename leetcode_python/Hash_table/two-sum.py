@@ -1,6 +1,5 @@
 # Time:  O(n)
 # Space: O(n)
-
 # Given an array of integers, return indices of the two numbers
 # such that they add up to a specific target.
 #
@@ -12,12 +11,65 @@
 # Because nums[0] + nums[1] = 2 + 7 = 9,
 # return [0, 1].
 
+# V0 
+# IDEA : HASH TABLE 
+# DEMO :
+# In [2]: class Solution(object):
+#    ...:     def twoSum(self, nums, target):
+#    ...:         """
+#    ...:         :type nums: List[int]
+#    ...:         :type target: int
+#    ...:         :rtype: List[int]
+#    ...:         """
+#    ...:         lookup = {}
+#    ...:         for i, num in enumerate(nums):
+#    ...:             if target - num in lookup:
+#    ...:                 return [lookup[target - num], i]
+#    ...:             lookup[num] = i
+#    ...:             print (lookup)
+#    ...: 
+#    ...: nums = [2, 0, 100, 3,2, 9 ,7, 11, 15]
+#    ...: target = 9
+#    ...: Solution().twoSum(nums, target)
+#    ...: 
+# {2: 0}
+# {2: 0, 0: 1}
+# {2: 0, 0: 1, 100: 2}
+# {2: 0, 0: 1, 100: 2, 3: 3}
+# {2: 4, 0: 1, 100: 2, 3: 3}
+# Out[2]: [1, 5]
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        lookup = {}
+        for i, num in enumerate(nums):
+            if target - num in lookup:
+                return [lookup[target - num], i]
+            lookup[num] = i
 
 # V1 
+# https://blog.csdn.net/coder_orz/article/details/52039233
+# IDEA : LINEAR SCAN
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        for i in range(len(nums) - 1):
+            for j in range(i+1, len(nums)):
+                if nums[i] + nums[j] == target:
+                    return [i, j]
+
+# V2 
 # example :
 # nums = [3,3] , target = 6 -> return [0, 1]
 # nums = [0,3,3] , target = 6 -> return [1, 2]
-
 class Solution(object):
     def twoSum(self, nums, target):
         for i,num in enumerate(nums):
@@ -26,10 +78,7 @@ class Solution(object):
             else:
                 pass
 
-
-
-
-# V2 
+# V3 
 class Solution(object):
     def twoSum(self, nums, target):
         """
@@ -55,7 +104,3 @@ class Solution(object):
             tmp_nums = nums[tmp_nums_start_index:]
             if j in tmp_nums:
                 return [nums.index(i), tmp_nums_start_index + tmp_nums.index(j)]
-
-
-
-
