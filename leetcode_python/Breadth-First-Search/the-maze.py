@@ -2,6 +2,7 @@
 
 # V1 
 # https://blog.csdn.net/danspace1/article/details/88773383
+# IDEA : DFS 
 class Solution(object):
     def hasPath(self, maze, start, destination):
         """
@@ -30,6 +31,9 @@ class Solution(object):
         row, col = len(maze), len(maze[0])
         visited = set()
         return dfs(start[0], start[1])
+
+# V1' 
+# IDEA : BFS  
 
 # V2 
 # Time:  O(max(r, c) * w)
