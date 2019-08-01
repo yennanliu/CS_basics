@@ -38,14 +38,14 @@ def bfs(root):
         queue.append(node.right)
         res.append(node.val)
     return res 
-
 ```
 - Example 
 
 ```python
 
 # DFS (Iteration)
-
+```
+```python
 # DFS (Recursion) 
 # leetcode # 515 Find Largest Value in Each Tree Row
 class Solution(object):
@@ -64,9 +64,44 @@ class Solution(object):
         self.dfs(root.left, levels, level + 1)
         self.dfs(root.right, levels, level + 1)
 
-# BFS (Iteration)
+# leetcode # 490 the maze 
+class Solution(object):
+    def hasPath(self, maze, start, destination):
 
+        def dfs(x, y):
+            if [x, y] == destination:
+                return True
+
+            if (x, y) in visited:
+                return False    
+
+            visited.add((x, y))
+
+            for dx, dy in [(-1,0),(1,0),(0,-1),(0,1)]:
+                new_x, new_y = x, y
+
+                while  ( 0 <= new_x + x < row and 0 <= new_y + y < col and maze[new_x + x ][new_y + y] == 0):
+                    new_x += dx
+                    new_y += dy 
+
+                    if dfs(new_x, new_y):
+                        return True
+            return False
+
+        row, col  = len(maze), len(maze[0])
+        visited = set()
+        return dfs(start[0], start[1])
+```
+```python
+# BFS (Iteration)
+```
+```python
 # BFS (Recursion)
+# leetcode # 490 the maze 
+
+```
+
+
 
 ```
 
