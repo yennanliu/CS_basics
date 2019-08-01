@@ -1,6 +1,4 @@
 """
-
-
 Design and implement a TwoSum class. It should support the following operations: add and find.
 
 add - Add the number to an internal data structure.
@@ -27,14 +25,31 @@ find(7) -> false
 # find(4) -> true
 # find(7) -> false
 
+# V0
 
-# V1  : dev 
+# V1 
+# http://www.voidcn.com/article/p-qhmcmxvf-qp.html
+class TwoSum(object):
 
+    def __init__(self):
+        self.dic = {}
 
+    def add(self, number):
+        if number not in self.dic:
+            self.dic[number] = 1
+        else:
+            self.dic[number] += 1
+
+    def find(self, value):
+        dic = self.dic
+        for num in dic:
+            # Find if there exists any pair of numbers (in the dict) which sum is equal to the value.
+            if value - num in dic and (value - num != num or dic[num] > 1): # 2 sum, so the sum can only be came from 2 number in the dict
+                return True
+        return False
 
 # V2 
 from collections import defaultdict
-
 class TwoSum(object):
 
     def __init__(self):
@@ -65,27 +80,36 @@ class TwoSum(object):
                 return True
         return False
 
-
 # V3 
-
+# Time:  O(n)
+# Space: O(n)
+from collections import defaultdict
 class TwoSum(object):
 
     def __init__(self):
-        self.dic = {}
+        """
+        initialize your data structure here
+        """
+        self.lookup = defaultdict(int)
+
+
 
     def add(self, number):
-        if number not in self.dic:
-            self.dic[number] = 1
-        else:
-            self.dic[number] += 1
+        """
+        Add the number to an internal data structure.
+        :rtype: nothing
+        """
+        self.lookup[number] += 1
+
 
     def find(self, value):
-        dic = self.dic
-        for num in dic:
-            if value - num in dic and (value - num != num or dic[num] > 1):
+        """
+        Find if there exists any pair of numbers which sum is equal to the value.
+        :type value: int
+        :rtype: bool
+        """
+        for key in self.lookup:
+            num = value - key
+            if num in self.lookup and (num != key or self.lookup[key] > 1):
                 return True
         return False
-
-
-
-
