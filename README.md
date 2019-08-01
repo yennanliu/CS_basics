@@ -189,7 +189,6 @@
 170| [Two Sum III - Data structure design](https://leetcode.com/problems/two-sum-iii-data-structure-design/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/two-sum-iii-data-structure-design.py)  | _O(n)_ | _O(n)_ | Easy | 🔒, `trick`| AGAIN* 
 187| [Repeated DNA Sequences](https://leetcode.com/problems/repeated-dna-sequences/) |  [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/repeated-dna-sequences.py)  | _O(n)_ | _O(n)_| Medium   |`basic`,`trick`,`set`| AGAIN**
 
-202| [Happy Number](https://leetcode.com/problems/happy-number/) |  [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/happy-number.py)  | _O(n)_ | _O(n)_ | Medium   | `basic` | AGAIN (not start*)
 204| [Count Primes](https://leetcode.com/problems/count-primes/)  | [C++](./C++/count-primes.cpp) [Python](./Python/count-primes.py) | _O(n)_        | _O(n)_          | Easy           ||
 205| [Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/) | [C++](./C++/isomorphic-strings.cpp) [Python](./Python/isomorphic-strings.py) | _O(n)_ | _O(1)_       | Easy           || 
 217| [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)  | [C++](./C++/contains-duplicate.cpp) [Python](./Python/contains-duplicate.py) | _O(n)_        | _O(n)_          | Easy           ||
