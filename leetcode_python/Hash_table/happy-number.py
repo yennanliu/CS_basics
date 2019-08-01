@@ -18,10 +18,11 @@
 # 1^2 + 0^2 + 0^2 = 1
 #
 
+# V0
 
-# V1 : dev 
-
-
+# V1 
+# http://bookshadow.com/weblog/2015/04/22/leetcode-happy-number/
+# IDEA : SET 
 
 # V2 
 class Solution:
@@ -39,6 +40,3 @@ class Solution:
         for char in str(n):
             new += int(char)**2
         return new
-
-
-
