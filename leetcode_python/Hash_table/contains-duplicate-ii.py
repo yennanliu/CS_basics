@@ -1,4 +1,3 @@
-
 """
 
 Given an array of integers and an integer k, find out whether there are two distinct indices i and j in the array such that nums[i] = nums[j] and the absolute difference between i and j is at most k.
@@ -27,10 +26,56 @@ Output: false
 # such that nums[i] = nums[j] and the difference between i and j is at most k.
 #
 
+# V0 
 
+# V1 
+# https://blog.csdn.net/coder_orz/article/details/51674266
+# IDEA : HASH TABLE 
+class Solution(object):
+    def containsNearbyDuplicate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: bool
+        """
+        num_map = {}
+        for i in range(len(nums)):
+            if nums[i] in num_map and i - num_map[nums[i]] <= k:
+                return True
+            else:
+                num_map[nums[i]] = i
+        return False
 
-# V1 : dev 
-
+# V1' 
+# https://blog.csdn.net/coder_orz/article/details/51674266
+# IDEA : SET 
+# IDEA : SET OPERATION
+# In [12]: window = set([1,3,4,])
+#     ...: 
+# In [13]: window
+# Out[13]: {1, 3, 4}
+# In [14]: window.discard(1)
+# In [15]: window
+# Out[15]: {3, 4}
+# In [16]: window.discard(3)
+# In [17]: window
+# Out[17]: {4}
+class Solution(object):
+    def containsNearbyDuplicate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: bool
+        """
+        window = set([])
+        for i in range(len(nums)):
+            if i > k:
+                window.discard(nums[i-k-1])
+            if nums[i] in window:
+                return True
+            else:
+                window.add(nums[i])
+        return False
 
 # V2 
 class Solution:
@@ -49,6 +94,3 @@ class Solution:
                 # Update the index of the value.
                 lookup[num] = i
         return False
-
-
-
