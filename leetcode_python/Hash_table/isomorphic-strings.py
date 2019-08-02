@@ -19,14 +19,52 @@
 # Note:
 # You may assume both s and t have the same length.
 
+# V0 
 
-# V1  : dev 
+# V1 
+# https://blog.csdn.net/liuxiao214/article/details/77587070
+# IDEA : HASH TABLE 
+class Solution(object):
+    def isIsomorphic(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+        def sub(s,t):
+            m={}
+            for i in range(len(s)):
+                if s[i] not in m.keys():
+                    m[s[i]]=t[i]
+                else:
+                    if m[s[i]]!=t[i]:
+                        return False
+            return True
+        return sub(s, t) and sub(t,s)
 
-
+# V1' 
+# https://blog.csdn.net/liuxiao214/article/details/77587070
+# IDEA : MAPPING + ORD 
+class Solution1(object):
+    def isIsomorphic(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+        a1=[-1]*256
+        a2=[-1]*256
+        for i in range(len(s)):
+            if a1[ord(s[i])] != a2[ord(t[i])]:
+                return False
+            a1[ord(s[i])]=i
+            a2[ord(t[i])]=i
+        return True
 
 # V2 
-  # Generator version of zip.
-
+# Time:  O(n)
+# Space: O(1)
+from itertools import izip  # Generator version of zip.
 class Solution(object):
     def isIsomorphic(self, s, t):
         """
@@ -38,7 +76,7 @@ class Solution(object):
             return False
 
         s2t, t2s = {}, {}
-        for p, w in zip(s, t):
+        for p, w in izip(s, t):
             if w not in s2t and p not in t2s:
                 s2t[w] = p
                 t2s[p] = w
@@ -46,7 +84,6 @@ class Solution(object):
                 # Contradict mapping.
                 return False
         return True
-
 
 # Time:  O(n)
 # Space: O(1)
@@ -65,6 +102,3 @@ class Solution2(object):
             elif lookup[s[i]] != t[i]:
                 return False
         return True
-
-
-
