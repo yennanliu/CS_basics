@@ -92,28 +92,31 @@ class Solution(object):
         visited = set()
         return dfs(start[0], start[1])
 ```
+
 ```python
 # BFS (Iteration)
 ```
+
 ```python
 # BFS (Recursion)
 # leetcode # 490 the maze 
 
 ```
 
-
-
+```python
+# Tree - DFS
 ```
 
 ```python
-# Tree - DFS
+# Tree- BFS 
+``` 
 
-# Tree- BFS  
-
+```python
 # Graph- DFS
+```
 
+```python
 # Graph -BFS  
-
 ```
 
 - Ref
