@@ -1,8 +1,4 @@
-
-
 """
-
-
 Given a string, we can "shift" each of its letter to its successive letter, for example: "abc" -> "bcd". We can keep "shifting" which forms the sequence:
 
 "abc" -> "bcd" -> ... -> "xyz"
@@ -18,27 +14,21 @@ Return:
   ["a","z"]
 ]
  
-
 Note: For the return value, each inner list's elements must follow the lexicographic order.
 
 """
 
+# V0 
 
-# V1 : dev 
+# V1 
+# DEV 
 
 
-
-
-
-# V2 
-
+# V2
 # Time:  O(nlogn)
 # Space: O(n)
-
 import collections
-
-
-class Solution:
+class Solution(object):
     # @param {string[]} strings
     # @return {string[][]}
     def groupStrings(self, strings):
@@ -47,7 +37,7 @@ class Solution:
             groups[self.hashStr(s)].append(s)
 
         result = []
-        for key, val in groups.items():
+        for key, val in groups.iteritems():
             result.append(sorted(val))
 
         return result
@@ -57,9 +47,7 @@ class Solution:
         hashcode = ""
         for i in range(len(s)):
             if ord(s[i]) - base >= 0:
-                hashcode += chr(ord('a') + ord(s[i]) - base)
+                hashcode += unichr(ord('a') + ord(s[i]) - base)
             else:
-                hashcode += chr(ord('a') + ord(s[i]) - base + 26)
+                hashcode += unichr(ord('a') + ord(s[i]) - base + 26)
         return hashcode
-
-
