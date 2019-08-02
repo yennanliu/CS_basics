@@ -1,7 +1,5 @@
-
 # Time:  O(n)
 # Space: O(n)
-
 # Description:
 #
 # Count the number of prime numbers less than a non-negative number, n
@@ -9,34 +7,48 @@
 # Hint: The number n could be in the order of 100,000 to 5,000,000.
 
 
-# V1  : dev 
+# V0 
 
-"""
-
-class Solution(object):
-    def countPrimes(self, n):
-        prime_nums=[]
-        for i in range(1,n+1):
-            print ('---')
-            print ('i = ', i)
-            
-            for j in range(2,i+1):
-                print ('j = ' , j)
-                if i%j !=0:
-                    prime_nums.append(i)
-                else:
-                    break
-        return prime_nums
-                    
-        
-
-"""
-
-
-
-
-#  V2
+# V1 
+# https://www.codetd.com/article/1947747
+# http://bookshadow.com/weblog/2015/04/27/leetcode-count-primes/
+# https://blog.csdn.net/github_39261590/article/details/73864039
+# IDEA : MATH THEORY : Sieve of Eratosthenes
+# https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 class Solution:
+# @param {integer} n
+# @return {integer}
+    def countPrimes(self, n):
+        if n < 3:
+            return 0
+        primes = [True] * n
+        primes[0] = primes[1] = False
+        for i in range(2, int(n ** 0.5) + 1):
+            if primes[i]:
+                primes[i * i: n: i] = [False] * len(primes[i * i: n: i])
+        return sum(primes)
+        
+# V1' 
+# https://blog.csdn.net/github_39261590/article/details/73864039
+# IDEA : GREEDY (TLE, time limit exceeded possibly)
+import math
+def countPrimes(n):
+    count=0
+
+    def judge_prime(w):
+        sqrt_w=int(math.sqrt(w))
+        for i in range(2,sqrt_w+1):
+            if x%i==0: return 0
+        return 1
+
+    for x in range(2,n):
+        count=count+judge_prime(x)
+    return count
+
+# V2 
+# Time:  O(n)
+# Space: O(n)
+class Solution(object):
     # @param {integer} n
     # @return {integer}
     def countPrimes(self, n):
@@ -74,6 +86,3 @@ class Solution:
             if primes[i]:
                 primes[i * i: n: i] = [False] * len(primes[i * i: n: i])
         return sum(primes)
-
-
-
