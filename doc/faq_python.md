@@ -1,9 +1,9 @@
 # Python FAQ
 
-### String 
+## String 
 
 #### 1) Write a func return all indexes for a substring exist in a string. 
-    - i.e. `x = '99023430990999', y = '99'. The func should return [0, 8, 11, 12]`
+- i.e. `x = '99023430990999', y = '99'. The func should return [0, 8, 11, 12]`
 
 ```python 
 
@@ -20,7 +20,7 @@ def findall(x, y):
     while i != -1:
         yield i
         i = x.find(y, i+1)
-        
+
 
 def findall_2(x, y):
     res = []
