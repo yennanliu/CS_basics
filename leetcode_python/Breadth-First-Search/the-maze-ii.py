@@ -2,6 +2,7 @@
 
 # V1 
 # http://bookshadow.com/weblog/2017/01/29/leetcode-the-maze-ii/
+# IDEA : BFS 
 class Solution(object):
     def findShortestWay(self, maze, ball, hole):
         """
@@ -41,6 +42,7 @@ class Solution(object):
 
 # V1' 
 # http://bookshadow.com/weblog/2017/01/29/leetcode-the-maze-ii/
+# IDEA : Dijkstra ALGORITHM
 class Solution(object):
     def findShortestWay(self, maze, ball, hole):
         """
