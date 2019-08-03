@@ -1,5 +1,4 @@
 """
-
 An abbreviation of a word follows the form <first letter><number><last letter>. Below are some examples of word abbreviations:
 
 a) it                      --> it    (no abbreviation)
@@ -26,22 +25,19 @@ isUnique("cane") -> false
 isUnique("make") -> true
 
 http://leetcode.com/problems/unique-word-abbreviation/
-
 """
 
+# V0 
+
+# V1 
+# http://www.voidcn.com/article/p-cfjjycdw-qp.html
+# DEV 
+
+# V2
 # Time:  ctor:   O(n), n is number of words in the dictionary.
 #        lookup: O(1)
 # Space: O(k), k is number of unique words.
-
-
-# V1  : dev 
-
-
-
-# V2 
 import collections
-
-
 class ValidWordAbbr(object):
     def __init__(self, dictionary):
         """
@@ -68,9 +64,3 @@ class ValidWordAbbr(object):
         if len(word) <= 2:
             return word
         return word[0] + str(len(word)-2) + word[-1]
-
-
-# Your ValidWordAbbr object will be instantiated and called as such:
-# vwa = ValidWordAbbr(dictionary)
-# vwa.isUnique("word")
-# vwa.isUnique("anotherWord")
