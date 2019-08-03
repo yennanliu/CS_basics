@@ -1,7 +1,5 @@
-
 # Time:  O(n)
 # Space: O(10) = O(1)
-
 # You are playing the following Bulls and Cows game with your friend:
 # You write a 4-digit secret number and ask your friend to guess it,
 # each time your friend guesses a number, you give a hint, the hint
@@ -30,21 +28,44 @@
 # digits, and their lengths are always equal.
 #
 
+# V0
 
-# V1 : dev 
+# V1 
+# http://bookshadow.com/weblog/2015/10/31/leetcode-bulls-and-cows/
+# IDEA :  OPERATOR.eq()
+# https://docs.python.org/3.0/library/operator.html
+# In [19]: operator.eq(1,1)
+# Out[19]: True
+# In [20]: operator.eq(1,2)
+# Out[20]: False
+import collections, operator
+class Solution(object):
+    def getHint(self, secret, guess):
+        """
+        :type secret: str
+        :type guess: str
+        :rtype: str
+        """
+        bull = sum(map(operator.eq, secret, guess))
+        sa = collections.Counter(secret)
+        sb = collections.Counter(guess)
+        cow = sum((sa & sb).values()) - bull
+        return str(bull) + 'A' + str(cow) + 'B'
 
-
-
+# V1' 
+# http://bookshadow.com/weblog/2015/10/31/leetcode-bulls-and-cows/
+def getHint(self, secret, guess):
+    bulls = sum(map(operator.eq, secret, guess))
+    both = sum(min(secret.count(x), guess.count(x)) for x in '0123456789')
+    return '%dA%dB' % (bulls, both - bulls)
 
 # V2 
+# Time:  O(n)
+# Space: O(10) = O(1)
 import operator
-
-
 # One pass solution.
 from collections import defaultdict, Counter
-
-
-
+from itertools import izip, imap
 class Solution(object):
     def getHint(self, secret, guess):
         """
@@ -54,7 +75,7 @@ class Solution(object):
         """
         A, B = 0, 0
         s_lookup, g_lookup = defaultdict(int), defaultdict(int)
-        for s, g in zip(secret, guess):
+        for s, g in izip(secret, guess):
             if s == g:
                 A += 1
             else:
@@ -71,8 +92,6 @@ class Solution(object):
 
         return "%dA%dB" % (A, B)
 
-
-# V3 
 # Two pass solution.
 class Solution2(object):
     def getHint(self, secret, guess):
@@ -81,9 +100,6 @@ class Solution2(object):
         :type guess: str
         :rtype: str
         """
-        A = sum(map(operator.eq, secret, guess))
+        A = sum(imap(operator.eq, secret, guess))
         B = sum((Counter(secret) & Counter(guess)).values()) - A
         return "%dA%dB" % (A, B)
-
-
-
