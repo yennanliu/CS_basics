@@ -15,32 +15,44 @@
 #   3. Each word in str is separated by a single space.
 #   4. Each letter in pattern must map to a word with length that is at least 1.
 
+# V0 
 
-# V1 : dev 
-
-"""
-class Solution2(object):
+# V1 
+# http://bookshadow.com/weblog/2015/10/05/leetcode-word-pattern/
+# IDEA : HASH TABLE 
+# DEMO
+# In [12]: pattern = "abba"
+# In [13]: str = "dog cat cat dog"
+# In [14]: Solution().wordPattern(pattern, str)
+# {} {}
+# {'a': 'dog'} {'dog': 'a'}
+# {'a': 'dog', 'b': 'cat'} {'dog': 'a', 'cat': 'b'}
+# {'a': 'dog', 'b': 'cat'} {'dog': 'a', 'cat': 'b'}
+# Out[14]: True
+class Solution(object):
     def wordPattern(self, pattern, str):
-        words = str.split()  # Space: O(n)
+        """
+        :type pattern: str
+        :type str: str
+        :rtype: bool
+        """
+        words = str.split()
         if len(pattern) != len(words):
             return False
-
-        w2p, p2w = {}, {}
-        for p, w in izip(pattern, words):
-            if w not in w2p and p not in p2w:
-                # Build mapping. Space: O(c)
-                w2p[w] = p
-                p2w[p] = w
-            elif w not in w2p or w2p[w] != p:
-                # Contradict mapping.
+        ptnDict, wordDict = {}, {}
+        for ptn, word in zip(pattern, words):
+            if ptn not in ptnDict:
+                ptnDict[ptn] = word
+            if word not in wordDict:
+                wordDict[word] = ptn
+            if wordDict[word] != ptn or ptnDict[ptn] != word:
                 return False
         return True
-"""
-
 
 # V2 
-  # Generator version of zip.
-
+# Time:  O(n)
+# Space: O(c), c is unique count of pattern
+from itertools import izip  # Generator version of zip.
 class Solution(object):
     def wordPattern(self, pattern, str):
         """
@@ -52,7 +64,7 @@ class Solution(object):
             return False
 
         w2p, p2w = {}, {}
-        for p, w in zip(pattern, self.wordGenerator(str)):
+        for p, w in izip(pattern, self.wordGenerator(str)):
             if w not in w2p and p not in p2w:
                 # Build mapping. Space: O(c)
                 w2p[w] = p
@@ -80,8 +92,6 @@ class Solution(object):
                 w += c
         yield w
 
-
-# V3 
 # Time:  O(n)
 # Space: O(n)
 class Solution2(object):
@@ -96,7 +106,7 @@ class Solution2(object):
             return False
 
         w2p, p2w = {}, {}
-        for p, w in zip(pattern, words):
+        for p, w in izip(pattern, words):
             if w not in w2p and p not in p2w:
                 # Build mapping. Space: O(c)
                 w2p[w] = p
@@ -105,6 +115,3 @@ class Solution2(object):
                 # Contradict mapping.
                 return False
         return True
-
-
-
