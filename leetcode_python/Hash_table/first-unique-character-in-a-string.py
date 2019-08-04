@@ -1,21 +1,39 @@
 # Time:  O(n)
 # Space: O(n)
-
 # Given a string, find the first non-repeating character in it and
 # return it's index. If it doesn't exist, return -1.
 #
 # Examples:
 #
 # s = "leetcode"
-# return 0.
+# return 0.  --> since "l" only exists once in the string and is the first one, so return 0 
 #
 # s = "loveleetcode",
-# return 2.
+# return 2.  --> since "v" only exists once in the string and is the first one, so return 2 
+#
 # Note: You may assume the string contain only lowercase letters.
 
 
-# V1 
 
+# V0 
+
+# V1 
+# http://bookshadow.com/weblog/2016/08/21/leetcode-first-unique-character-in-a-string/
+class Solution(object):
+    def firstUniqChar(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        d = collections.Counter(s)
+        ans = -1
+        for x, c in enumerate(s):
+            if d[c] == 1:
+                ans = x
+                break
+        return ans
+
+# V2 
 class Solution(object):
     def firstUniqChar(self, s):
         s_ = ''.join(set(s))
@@ -24,13 +42,11 @@ class Solution(object):
             if j in non_uniq_list:
                 pass
             else:
-                return i 
-            
+                return i            
         return -1 
 
-
-# V2 
-# hash table 
+# V3 
+# IDEA : hash table 
 class Solution(object):
     def firstUniqChar(self, s):
         counts = {}
@@ -45,10 +61,8 @@ class Solution(object):
                 return i
         return -1 
 
-
-# V3 
+# V4 
 from collections import defaultdict
-
 class Solution(object):
     def firstUniqChar(self, s):
         """
@@ -63,8 +77,4 @@ class Solution(object):
             else:
                 lookup[c] = i+1
                 candidtates.add(i+1)
-
         return min(candidtates)-1 if candidtates else -1
-
-
-
