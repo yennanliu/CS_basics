@@ -66,73 +66,37 @@ The substring with start index = 2 is "ab", which is an anagram of "ab".
 # The substring with start index = 2 is "ab", which is an anagram of "ab".
 
 
-# V1  : dev 
+# V0 
 
-"""
-class Solution(object):
-    def permutation(lst):
- 
-    # If lst is empty then there are no permutations
-    if len(lst) == 0:
-        return []
- 
-    # If there is only one element in lst then, only
-    # one permuatation is possible
-    if len(lst) == 1:
-        return [lst]
- 
-    # Find the permutations for lst if there are
-    # more than 1 characters
- 
-    l = [] # empty list that will store current permutation
- 
-    # Iterate the input(lst) and calculate the permutation
-    for i in range(len(lst)):
-       m = lst[i]
- 
-       # Extract lst[i] or m from the list.  remLst is
-       # remaining list
-       remLst = lst[:i] + lst[i+1:]
- 
-       # Generating all permutations where m is first
-       # element
-       for p in permutation(remLst):
-           l.append([m] + p)
-    return l
- 
-    def findAnagrams(self, s, p):
-        output = []
-        #p_list = [ p[i:] + p [: -(len(p) - i)] for i in range(len(p)) ] 
-        for p_ in permutation(p):
-            p_list.append(''.join(p))
-        for p_ in p_list:
-            if p_ in s:
-                output.append(s.find(p_))
-            else:
-                pass
-        return output 
-
-"""
-"""
+# V1 
+# http://bookshadow.com/weblog/2016/10/23/leetcode-find-all-anagrams-in-a-string/
+# https://blog.csdn.net/fuxuemingzhu/article/details/79184109
+# IDEA : collections.Counter 
 class Solution(object):
     def findAnagrams(self, s, p):
-        output = []
-        p_list = [ p[i:] + p [: -(len(p) - i)] for i in range(len(p)) ] 
-        print (p_list)
-        for p_ in p_list:
-            if p_ in s:
-                output.append(s.find(p_))
-            else:
-                pass
-        return output 
-
-
-"""
-
-
+        """
+        :type s: str
+        :type p: str
+        :rtype: List[int]
+        """
+        ls, lp = len(s), len(p)
+        cp = collections.Counter(p)
+        cs = collections.Counter()
+        ans = []
+        for i in range(ls):
+            cs[s[i]] += 1
+            if i >= lp:
+                cs[s[i - lp]] -= 1
+                if cs[s[i - lp]] == 0:
+                    del cs[s[i - lp]]
+            if cs == cp:
+                ans.append(i - lp + 1)
+        return ans
 
 
 # V2 
+# Time:  O(n)
+# Space: O(1)
 class Solution(object):
     def findAnagrams(self, s, p):
         """
@@ -157,5 +121,3 @@ class Solution(object):
             right += 1
 
         return result
-
-
