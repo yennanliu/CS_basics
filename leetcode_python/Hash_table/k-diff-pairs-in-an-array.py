@@ -1,6 +1,5 @@
 # Time:  O(n)
 # Space: O(n)
-
 # Total Accepted: 5671
 # Total Submissions: 20941
 # Difficulty: Easy
@@ -28,24 +27,59 @@
 # The length of the array won't exceed 10,000.
 # All the integers in the given input belong to the range: [-1e7, 1e7].
 
-# V1  : dev 
-"""
+# V0 
+
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79255633
+# IDEA : collections.Counter
+# IDEA : FIND # OF PAIR THAT SUM-PAIR = K  (i.e. for pair(a,b), -> a + b = k)
+# -> a+ b = k 
+# -> a = k - b 
+import collections
 class Solution(object):
     def findPairs(self, nums, k):
-        pairs = {}
-        for i in range(len(nums)-1):
-            for j in range(len(nums[i+1:])):
-                print (nums[i] , nums[i:][j+1])
-                if abs(nums[i] - nums[i:][j+1]) == k and (nums[i], nums[i:][j+1]) not in pairs:
-                    #pairs.append({nums[i], nums[i:][j+1]})
-                    pairs[(nums[i], nums[i:][j+1])]  = (nums[i], nums[i:][j+1])
-                else:
-                    pass
-        return len(pairs) 
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        answer = 0
+        counter = collections.Counter(nums)
+        for num in set(nums):
+            if k > 0 and num + k in counter: # for cases a = k - b 
+                answer += 1
+            if k == 0 and counter[num] > 1:  # for cases k = 0 ->  pair like (1,1) will work. (i.e. 1 + (-1))
+                answer += 1
+        return answer
 
-"""
+# V1' 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79255633
+# IDEA : collections.Counter 
+class Solution(object):
+    def findPairs(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        res = 0
+        if k < 0: return 0
+        elif k == 0:
+            count = collections.Counter(nums)
+            for n, v in count.items():
+                if v >= 2:
+                    res += 1
+            return res
+        else:
+            nums = set(nums)
+            for num in nums:
+                if num + k in nums:
+                    res += 1
+            return res
 
 # V2 
+# Time:  O(n)
+# Space: O(n)
 class Solution(object):
     def findPairs(self, nums, k):
         """
@@ -62,5 +96,3 @@ class Solution(object):
                 result.add(num)
             lookup.add(num)
         return len(result)
-
-
