@@ -2,6 +2,17 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80826333
+# DEMO : 
+# In [51]: num = 0
+#     ...: s = '100'
+#     ...: for i, each in enumerate(s):
+#     ...:             if each.isdigit():
+#     ...:                 num = 10 * num + int(each)
+#     ...:                 print (num)
+#     ...: 
+# 1
+# 10
+# 100
 class Solution:
     def calculate(self, s):
         """
@@ -13,7 +24,7 @@ class Solution:
         num = 0
         for i, each in enumerate(s):
             if each.isdigit():
-                num = 10 * num + int(each)
+                num = 10 * num + int(each)  # the way to deal with number like "100", "10"... 
             if i == len(s) - 1 or each in '+-*/':
                 if pre_op == '+':
                     stack.append(num)
