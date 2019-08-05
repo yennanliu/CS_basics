@@ -1,5 +1,4 @@
 """
-
 Implement the following operations of a queue using stacks.
 
 push(x) -- Push element x to the back of queue.
@@ -20,10 +19,7 @@ Notes:
 You must use only standard operations of a stack -- which means only push to top, peek/pop from top, size, and is empty operations are valid.
 Depending on your language, stack may not be supported natively. You may simulate a stack by using a list or deque (double-ended queue), as long as you use only standard operations of a stack.
 You may assume that all operations are valid (for example, no pop or peek operations will be called on an empty queue).
-
-
 """
-
 # Time:  O(1), amortized
 # Space: O(n)
 #
@@ -45,40 +41,14 @@ You may assume that all operations are valid (for example, no pop or peek operat
 #
 
 
-# V1 : dev 
+# V0 
 
-"""
-class MyQueue(object):
-
-    def __init__(self):
-        self.A = []
-        self.B = []
-
-    def push(self, x):
-        self.A.append(x)
-        
-
-    def pop(self):
-        return self.A.pop()
-        
-
-    def peek(self):
-        return self.A[-1]
-        
-
-    def empty(self):
-        if len(self.A) ==0:
-            return True
-        else:
-            return False 
-"""
-
+# V1 
 
 # V2 
 # https://blog.csdn.net/coder_orz/article/details/51586814
 # inStack  : for push operation 
 # outStack : for pop/peek  operation
-
 class Queue(object):
     def __init__(self):
         """
@@ -115,7 +85,6 @@ class Queue(object):
         """
         return not self.inStack and not self.outStack
 
-
 # V3 
 class Queue:
     # initialize your data structure here.
@@ -142,6 +111,3 @@ class Queue:
     # @return an boolean
     def empty(self):
         return not self.A and not self.B
-
-
-
