@@ -1,6 +1,5 @@
 # Time:  O(n + p)
 # Space: O(p)
-
 # Given two sentences words1, words2 (each represented as an array of strings),
 # and a list of similar word pairs pairs, determine if two sentences are similar.
 #
@@ -27,7 +26,29 @@
 # - The length of each pairs[i] will be 2.
 # - The length of each words[i] and pairs[i][j] will be in the range [1, 20].
 
-# V1  : dev 
+# V0
+
+# V1 
+# http://bookshadow.com/weblog/2017/11/26/leetcode-sentence-similarity/
+# https://blog.csdn.net/danspace1/article/details/88942077
+import collections
+class Solution(object):
+    def areSentencesSimilar(self, words1, words2, pairs):
+        """
+        :type words1: List[str]
+        :type words2: List[str]
+        :type pairs: List[List[str]]
+        :rtype: bool
+        """
+        if len(words1) != len(words2): return False
+        similars = collections.defaultdict(set)
+        for w1, w2 in pairs:
+            similars[w1].add(w2)
+            similars[w2].add(w1)
+        for w1, w2 in zip(words1, words2):
+            if w1 != w2 and w2 not in similars[w1]:
+                return False
+        return True
 
 # V2 
 import collections
