@@ -1,6 +1,5 @@
 # Time:  O((m + n) * l), m is the size of list1, n is the size of list2
 # Space: O(m * l), l is the average length of string
-
 # Suppose Andy and Doris want to choose a restaurant for dinner,
 # and they both have a list of favorite restaurants represented by strings.
 #
@@ -26,22 +25,80 @@
 # The index is starting from 0 to the list length minus 1.
 # No duplicates in both lists.
 
+# V0 
 
-# V1      
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79138621
 class Solution(object):
     def findRestaurant(self, list1, list2):
-        lookup={}
-        for res1 in list1:
-            print (res1)
-            if res1 in list1 and res1 in list2:
-                #lookup[  list1.index(res1) + list2.index(res1)  ] = res1
-                lookup[ res1 ] = list1.index(res1) + list2.index(res1)
-            else:
-                pass
-        return [ x for x in lookup if lookup[x] == min(lookup.values()) ]
+        """
+        :type list1: List[str]
+        :type list2: List[str]
+        :rtype: List[str]
+        """
+        commons = [word for word in list1 if word in list2]
+        answer = []
+        smallest = 1000000
+        for common in commons:
+            index1 = list1.index(common)
+            index2 = list2.index(common)
+            index = index1 + index2
+            if smallest > index:
+                smallest = index
+                answer = [common]
+            elif smallest == index:
+                answer.append(common)
+        return answer
 
+# V1'
+# https://blog.csdn.net/fuxuemingzhu/article/details/79138621
+class Solution(object):
+    def findRestaurant(self, list1, list2):
+        """
+        :type list1: List[str]
+        :type list2: List[str]
+        :rtype: List[str]
+        """
+        dic1 = {word:ind for ind,word in enumerate(list1)}
+        dic2 = {word:ind for ind,word in enumerate(list2)}
+        answer = []
+        smallest = 1000000
+        for word in dic1:
+            if word in dic2:
+                _sum = dic1[word] + dic2[word]
+                if smallest > _sum:
+                    smallest = _sum
+                    answer = [word]
+                elif smallest == _sum:
+                    answer.append(word)
+        return answer
+
+# V1''
+# http://bookshadow.com/weblog/2017/05/28/leetcode-minimum-index-sum-of-two-lists/
+class Solution(object):
+    def findRestaurant(self, list1, list2):
+        """
+        :type list1: List[str]
+        :type list2: List[str]
+        :rtype: List[str]
+        """
+        dict1 = {v : i for i, v in enumerate(list1)}
+        minSum = len(list1) + len(list2)
+        ans = []
+        for i, r in enumerate(list2):
+            if r not in dict1:
+                continue
+            currSum = i + dict1[r]
+            if currSum < minSum:
+                ans = [r]
+                minSum = currSum
+            elif currSum == minSum:
+                ans.append(r)
+        return ans
 
 # V2 
+# Time:  O((m + n) * l), m is the size of list1, n is the size of list2
+# Space: O(m * l), l is the average length of string
 class Solution(object):
     def findRestaurant(self, list1, list2):
         """
@@ -64,11 +121,4 @@ class Solution(object):
                     min_sum = j + lookup[s]
                 elif j + lookup[s] == min_sum:
                     result.append(s)
-
-
-
-
-
-
-
         return result
