@@ -1,6 +1,5 @@
 # Time:  O(n)
 # Space: O(n)
-
 # Given an integer array with even length, where different numbers
 # in this array represent different kinds of candies.
 # Each number means one candy of the corresponding kind.
@@ -25,18 +24,18 @@
 # The length of the given array is in range [2, 10,000], and will be even.
 # The number in given array is in range [-100,000, 100,000].
 
-# V1  : dev 
-# https://www.polarxiong.com/archives/LeetCode-575-distribute-candies.html
-class Solution:
+# V0
+
+# V1 
+# http://bookshadow.com/weblog/2017/05/07/leetcode-distribute-candies/
+# IDEA : RETURN min( (# of candies/2 ), (# of candies types))  
+class Solution(object):
     def distributeCandies(self, candies):
         """
         :type candies: List[int]
         :rtype: int
         """
-        nums = set(candies)
-        num_nums = len(nums)
-        target_num = len(candies) // 2
-        return target_num if num_nums >= target_num else num_nums
+        return min(len(candies) / 2, len(set(candies)))
 
 # V2 
 class Solution(object):
@@ -48,6 +47,3 @@ class Solution(object):
         """
         lookup = set(candies)
         return min(len(lookup), len(candies)/2)
-
-
-
