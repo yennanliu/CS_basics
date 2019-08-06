@@ -1,6 +1,5 @@
 # Time:  O(n)
 # Space: O(n)
-
 # We define a harmonious array is an array where the difference
 # between its maximum value and its minimum value is exactly 1.
 #
@@ -13,32 +12,62 @@
 # Explanation: The longest harmonious subsequence is [3,2,2,2,3].
 # Note: The length of the input array will not exceed 20,000.
 
+# V0 
 
-# V1  : dev 
-
-# V2 
-# https://www.jianshu.com/p/a155ea910fb5
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79233752
+from collections 
 class Solution(object):
     def findLHS(self, nums):
         """
         :type nums: List[int]
         :rtype: int
         """
-        nums_count = {}
-        for num in nums:
-            nums_count[num] = nums_count.get(num, 0) + 1
+        counter = collections.Counter(nums)
+        nums_set = set(nums)
+        longest = 0
+        for num in nums_set:
+            if num + 1 in counter:
+                longest = max(longest, counter[num] + counter[num + 1])
+        return longest
 
-        result = 0
-        for num in nums_count:
-            count = nums_count[num]
-            if nums_count.get(num+1):
-                result = max(result, count + nums_count[num+1])
-        return result
+# V1' 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79233752
+from collections 
+class Solution(object):
+    def findLHS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        count = collections.Counter(nums)
+        res = 0
+        for num in count.keys():
+            if num + 1 in count:
+                res = max(res, count[num] + count[num + 1])
+        return res
+# V1''
+# http://bookshadow.com/weblog/2017/05/21/leetcode-longest-harmonious-subsequence/
+from collections 
+class Solution(object):
+    def findLHS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        cnt = collections.Counter(nums)
+        ans = 0
+        lastKey = lastVal = None
+        for key, val in sorted(cnt.items()):
+            if lastKey is not None and lastKey + 1 == key:
+                ans = max(ans, val + lastVal)
+            lastKey, lastVal = key, val
+        return ans
 
-# V3 
+# V2 
+# Time:  O(n)
+# Space: O(n)
 import collections
-
-
 class Solution(object):
     def findLHS(self, nums):
         """
@@ -53,6 +82,3 @@ class Solution(object):
                 if (num + diff) in lookup:
                     result = max(result, lookup[num] + lookup[num + diff])
         return result
-
-
-
