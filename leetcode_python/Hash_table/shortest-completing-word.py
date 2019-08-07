@@ -33,15 +33,12 @@
 # - Every words[i] will consist of lowercase letters, and have length in range [1, 15].
 
 
-# V1  : dev 
+# V0 
 
-
-
-# V2 
+# V1 
 # http://bookshadow.com/weblog/2017/12/17/leetcode-shortest-completing-word/
 import collections
 import re 
-
 class Solution(object):
     def shortestCompletingWord(self, licensePlate, words):
         """
@@ -57,10 +54,8 @@ class Solution(object):
                 ans = word
         return ans
 
-# V3 
+# V2 
 import collections
-
-
 class Solution(object):
     def shortestCompletingWord(self, licensePlate, words):
         """
@@ -72,7 +67,6 @@ class Solution(object):
             c2 = collections.Counter(w2.lower())
             c2.subtract(counter1)
             return all([x >= 0 for x in list(c2.values())])
-
         result = None
         counter = collections.Counter(c.lower() for c in licensePlate if c.isalpha())
         for word in words:
@@ -80,6 +74,3 @@ class Solution(object):
                contains(counter, word):
                 result = word
         return result
-
-
-
