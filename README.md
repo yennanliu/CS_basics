@@ -264,7 +264,7 @@
 ## Stack 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note | Status | 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/valid-parentheses.py) | _O(n)_        | _O(n)_    | Easy     || AGAIN 
+020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/valid-parentheses.py) | _O(n)_        | _O(n)_    | Easy     || OK*  
 071| [Simplify Path](https://leetcode.com/problems/simplify-path/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/simplify-path.py) | _O(n)_        | _O(n)_          | Medium         || AGAIN 
 101| [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/symmetric-tree.py) | _O(n)_      | _O(h)_          | Easy           || AGAIN 
 150| [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/evaluate-reverse-polish-notation.py) | _O(n)_| _O(n)_| Medium          || AGAIN (not start)

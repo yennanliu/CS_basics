@@ -1,7 +1,4 @@
-"""
-
-
-Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+"""Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
 
 An input string is valid if:
 
@@ -28,9 +25,7 @@ Output: false
 Example 5:
 
 Input: "{[]}"
-Output: true
-
-"""
+Output: true"""
 
 # Time:  O(n)
 # Space: O(n)
@@ -42,18 +37,17 @@ Output: true
 # are all valid but "(]" and "([)]" are not.
 #
 
-# # V0 : dev 
-# class Solution(object):
-#     def isValid(self, s):
-#         lookup =  {"(": ")", "{": "}", "[": "]"}
-#         # case 1 
-#         for i  in range(0,len(s),2):
-#             if s[i:i+2] in "()[]{}":
-#                 pass
-#             else:
-#                 pass
-#         pass
-    
+# V0 
+class Solution:
+    # @return a boolean
+    def isValid(self, s):
+        stack, lookup = [], {"(": ")", "{": "}", "[": "]"}
+        for parenthese in s:
+            if parenthese in lookup:
+                stack.append(parenthese)
+            elif len(stack) == 0 or lookup[stack.pop()] != parenthese:
+                return False
+        return len(stack) == 0
 
 # V1 
 class Solution:
