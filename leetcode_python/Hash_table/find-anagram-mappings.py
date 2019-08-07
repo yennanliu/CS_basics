@@ -22,7 +22,6 @@ A, B have equal lengths in range [1, 100].
 A[i], B[i] are integers in range [0, 10^5].
 
 """
-
 # Time:  O(n)
 # Space: O(n)
 
@@ -47,28 +46,8 @@ A[i], B[i] are integers in range [0, 10^5].
 # - A, B have equal lengths in range [1, 100].
 # - A[i], B[i] are integers in range [0, 10^5].
 
-
-
-# V1 
-from collections import OrderedDict
-
-class Solution(object):
-    def anagramMappings(self, A, B):
-        lookup=OrderedDict()
-        for i in A:
-            #print (i)
-            if i in B:
-                #lookup[B.index(i)] = i 
-                lookup[i] = B.index(i)
-            else:
-                pass
-        #print (lookup)
-        return list(lookup.values())
-            
-
-
-# V2 
-# http://bookshadow.com/weblog/2018/01/07/leetcode-find-anagram-mappings/
+# V0 
+import collections
 class Solution(object):
     def anagramMappings(self, A, B):
         """
@@ -81,12 +60,38 @@ class Solution(object):
             dmap[x].append(i)
         return [dmap[x].pop() for x in A]
 
+# V1 
+from collections import OrderedDict
+class Solution(object):
+    def anagramMappings(self, A, B):
+        lookup=OrderedDict()
+        for i in A:
+            #print (i)
+            if i in B:
+                #lookup[B.index(i)] = i 
+                lookup[i] = B.index(i)
+            else:
+                pass
+        #print (lookup)
+        return list(lookup.values())
 
+# V2 
+# http://bookshadow.com/weblog/2018/01/07/leetcode-find-anagram-mappings/
+import collections
+class Solution(object):
+    def anagramMappings(self, A, B):
+        """
+        :type A: List[int]
+        :type B: List[int]
+        :rtype: List[int]
+        """
+        dmap = collections.defaultdict(list)
+        for i, x in enumerate(B):
+            dmap[x].append(i)
+        return [dmap[x].pop() for x in A]
 
 # V3 
 import collections
-
-
 class Solution(object):
     def anagramMappings(self, A, B):
         """
@@ -101,6 +106,3 @@ class Solution(object):
         for n in A:
             result.append(lookup[n].popleft())
         return result
-
-
-
