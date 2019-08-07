@@ -30,8 +30,6 @@ The input count in any count-paired domain will not exceed 10000.
 The answer output can be returned in any order.
 
 """
-
-
 # Time:  O(n), is the length of cpdomains (assuming the length of cpdomains[i] is fixed)
 # Space: O(n)
 
@@ -78,40 +76,36 @@ The answer output can be returned in any order.
 # - Each address will have either 1 or 2 "." characters.
 # - The input count in any count-paired domain will not exceed 10000.
 
+# V0 
 
-# V1 : dev 
-
-
-
-# V2 
-from collections import defaultdict
-
-
-try:
-    xrange          # Python 2
-except NameError:
-    xrange = range  # Python 3
-
-
-try:
-    defaultdict.iteritems
-except AttributeError:
-    # Python 3
-    def iteritems(d):
-        return iter(list(d.items()))
-else:
-    # Python 2
-    def iteritems(d):
-        return iter(d.items())
-
-
-class Solution:
+# V1 
+# http://bookshadow.com/weblog/2018/04/02/leetcode-subdomain-visit-count/
+import collections
+class Solution(object):
     def subdomainVisits(self, cpdomains):
         """
         :type cpdomains: List[str]
         :rtype: List[str]
         """
-        result = defaultdict(int)
+        cnt = collections.defaultdict(int)
+        for cpdomain in cpdomains:
+            count, domain = cpdomain.split()
+            parts = domain.split('.')[::-1]
+            for x in range(1, len(parts) + 1):
+                cnt['.'.join(parts[:x][::-1])] += int(count)
+        return ['{} {}'.format(v, k) for k, v in cnt.items()]
+
+# V2 
+# Time:  O(n), is the length of cpdomains (assuming the length of cpdomains[i] is fixed)
+# Space: O(n)
+import collections
+class Solution(object):
+    def subdomainVisits(self, cpdomains):
+        """
+        :type cpdomains: List[str]
+        :rtype: List[str]
+        """
+        result = collections.defaultdict(int)
         for domain in cpdomains:
             count, domain = domain.split()
             count = int(count)
@@ -121,15 +115,5 @@ class Solution:
                 curr.append(frags[i])
                 result[".".join(reversed(curr))] += count
 
-        return ["{} {}".format(count, domain) for domain, count in iteritems(result)]
-
-
-
-
-
-
-
-
-
-
-
+        return ["{} {}".format(count, domain) \
+                for domain, count in result.iteritems()]
