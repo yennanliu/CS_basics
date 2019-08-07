@@ -1,6 +1,5 @@
 # Time:  O(m + n)
 # Space: O(n)
-
 # You're given strings J representing the types of stones that are jewels,
 # and S representing the stones you have.
 # Each character in S is a type of stone you have.
@@ -21,11 +20,21 @@
 # - S and J will consist of letters and have length at most 50.
 # - The characters in J are distinct.
 
+# V0 
 
 # V1 
-
-
+# http://bookshadow.com/weblog/2018/01/28/leetcode-jewels-and-stones/
+# IDEA : GREEDY 
+class Solution(object):
+    def numJewelsInStones(self, J, S):
+        """
+        :type J: str
+        :type S: str
+        :rtype: int
+        """
+        return sum(s in J for s in S)
         
+# V1'   
 class Solution(object):
     def numJewelsInStones(self, J, S):
         output = []
@@ -37,7 +46,6 @@ class Solution(object):
                 pass
         return len(output)
 
-
 # V2 
 class Solution(object):
     def numJewelsInStones(self, J, S):
@@ -48,5 +56,3 @@ class Solution(object):
         """
         lookup = set(J)
         return sum(s in lookup for s in S)
-
-
