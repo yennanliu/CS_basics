@@ -216,7 +216,7 @@
 523| [Continuous Subarray Sum](https://leetcode.com/problems/continuous-subarray-sum/) |   [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/continuous-subarray-sum.py)  | _O(n)_  | _O(k)_ | Medium  || AGAIN (not start)
 532| [K-diff Pairs in an Array](https://leetcode.com/problems/k-diff-pairs-in-an-array/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/k-diff-pairs-in-an-array.py)  | _O(n)_ | _O(n)_ | Easy |`basic`, `collections` | AGAIN*
 554| [Brick Wall](https://leetcode.com/problems/brick-wall/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/brick-wall.py) | _O(n)_ | _O(m)_ | Medium  |`trick` | AGAIN (not start)
-560| [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/subarray-sum-equals-k.py) | _O(n)_ | _O(n)_ | Medium | `basic`, `trick` | AGAIN (not start*)
+560| [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/subarray-sum-equals-k.py) | _O(n)_ | _O(n)_ | Medium | `basic`, `trick` | AGAIN (not start(**)
 561| [Array Partition I](https://leetcode.com/problems/array-partition-i/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/array-partition-i.py) | _O(r)_ | _O(r)_ | Easy  | | OK 
 575| [Distribute Candies](https://leetcode.com/problems/distribute-candies/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/distribute-candies.py)  | _O(n)_ | _O(n)_ | Easy  | | OK 
 594| [Longest Harmonious Subsequence](https://leetcode.com/problems/longest-harmonious-subsequence/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/longest-harmonious-subsequence.py) | _O(n)_ | _O(n)_ | Easy | `basic`, `good trick`| AGAIN*
@@ -235,8 +235,8 @@
 873 | [Length of Longest Fibonacci Subsequence](https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/length-of-longest-fibonacci-subsequence.py)  | _O(n^2)_ | _O(n)_ | Medium |`trick`, `DP`, `Fibonacci`, `set`| AGAIN**
 957 | [Prison Cells After N Days](https://leetcode.com/problems/prison-cells-after-n-days/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/prison-cells-after-n-days.py) | _O(1)_ | _O(1)_ | Medium |`trick`, `DP`, `mod`| AGAIN (not start)
 966 | [Vowel Spellchecker](https://leetcode.com/problems/vowel-spellchecker/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/vowel-spellchecker.py) | _O(n)_ | _O(w)_ | Medium |`trick`, `dict`, `set`| AGAIN (not start)
-974| [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/) |[C++](./C++/subarray-sums-divisible-by-k.cpp)  [Python](./Python/subarray-sums-divisible-by-k.py) | _O(n)_ | _O(k)_ | Medium         | variant of [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) |
-
+974| [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/)|[Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/subarray-sums-divisible-by-k.py)  | _O(n)_ | _O(k)_ | Medium  | variant of `# 560 Subarray Sum Equals K` , `trick`, `basic`|  AGAIN** (not start)
+ 
 
 ## Linked list 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
