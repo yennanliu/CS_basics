@@ -1,10 +1,15 @@
 # Progress
 
-- `TODO`    : Array, Dynamic Programming, Graph, Geometry, BitMap,  Simulation, Shell script 
+- `TODO`    : Dynamic Programming, Graph, Geometry,Simulation, Shell  
 - `TODO2`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 - `TODO3`   : Update leetcode questions set (sync with latest leetcode)
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
-- `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check) 
+- `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
+
+# 2019-08-08
+
+- DOING  : Array
+- REDO   : Dynamic Programming, Linked list, Math, Recursion, DFS, Stack revisit, Breadth-First Search, Depth-First Search, Binary Search, Heap, Backtracking, Greedy, SQL, String, stack, Tree, Binary Search Tree, Bit Manipulation, Hash Table
 
 # 2019-08-01
 

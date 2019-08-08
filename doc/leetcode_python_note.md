@@ -132,7 +132,7 @@ class Solution(object):
 - Example 
 
 ```python 
-# Convert Sorted Array -> Binary  
+# Convert Sorted Array -> Binary Search Tree (BST)  
 # leetcode #108 
 class Solution(object):
     def sortedArrayToBST(self, nums):
