@@ -85,7 +85,7 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/3sum.py)  | _O(n^2)_ | _O(1)_  | Medium    | check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `basic`| AGAIN**
 016 | [3 Sum Closest](https://leetcode.com/problems/3sum-closest/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/3sum-closest.py) | _O(n^2)_   | _O(1)_  | Medium |`Two Pointers`, `basic`, `trick`| AGAIN**
-018| [4 Sum](https://leetcode.com/problems/4sum/)         | [Python](./Python/4sum.py)   | _O(n^3)_  | _O(1)_    | Medium  | Two Pointers | 
+018| [4 Sum](https://leetcode.com/problems/4sum/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/4sum.py)   | _O(n^3)_  | _O(1)_    | Medium  | `k sum`, `Two Pointers`, `trick`, `hard` | AGAIN (not start)
 026 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)| [Python](./Python/remove-duplicates-from-sorted-array.py) | _O(n)_       | _O(1)_         | Easy   | Two Pointers | 
 027 | [Remove Element](https://leetcode.com/problems/remove-element/) | [Python](./Python/remove-element.py) | _O(n)_      | _O(1)_         | Easy           ||
 031 | [Next Permutation](https://leetcode.com/problems/next-permutation/)| [Python](./Python/next-permutation.py) | _O(n)_  | _O(1)_          | Medium   | Tricky | 

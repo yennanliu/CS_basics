@@ -1,6 +1,5 @@
 # Time:  O(n^3)
 # Space: O(1)
-
 # Given an array S of n integers,
 # are there elements a, b, c, and d in S such that a + b + c + d = target?
 # Find all unique quadruplets in the array which gives the sum of target.
@@ -17,20 +16,110 @@
 #    (-2,  0, 0, 2)
 #
 
-import collections
+# V0 
 
-try:
-    xrange          # Python 2
-except NameError:
-    xrange = range  # Python 3
+# V1 
+# https://blog.csdn.net/qqxx6661/article/details/77104868
+# IDEA : DOUBLE POINTER 
+class Solution(object):
+    def fourSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        resultList = []
+        nums.sort()
+        for num1 in range(0, len(nums)-3):
+            for num2 in range(num1 + 1, len(nums)-2):
+                num3 = num2 + 1
+                num4 = len(nums) -1
+                while num3 != num4:
+                    summer = nums[num1] + nums[num2] + nums[num3] + nums[num4]
+                    if summer == target:
+                        list_temp = [nums[num1],nums[num2],nums[num3],nums[num4]]
+                        if list_temp not in resultList:
+                            resultList.append(list_temp)
+                        num3 += 1
+                    elif summer > target:
+                        num4 -= 1
+                    else:
+                        num3 += 1
+        return resultList
 
+# V1' 
+# https://blog.csdn.net/qqxx6661/article/details/77104868
+# IDEA : DOUBLE POINTER  + HASH TABLE 
+class Solution(object):
+    def fourSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        numLen, res, num_dict = len(nums), set(), {}
+        if numLen < 4: 
+            return []
+        nums.sort()
+        for p in range(numLen):  # save to hash table 
+            for q in range(p+1, numLen): 
+                if nums[p]+nums[q] not in num_dict:
+                    num_dict[nums[p]+nums[q]] = [(p,q)]
+                else:
+                    num_dict[nums[p]+nums[q]].append((p,q))
+        for i in range(numLen):
+            for j in range(i+1, numLen-2):
+                T = target-nums[i]-nums[j]
+                if T in num_dict:
+                    for k in num_dict[T]:
+                        if k[0] > j: res.add((nums[i],nums[j],nums[k[0]],nums[k[1]]))
+        return [list(i) for i in res]
 
-# V1 : dev 
-
-
-
+# V1''
+# https://blog.csdn.net/fuxuemingzhu/article/details/83543296
+# IDEA : K SUM
+class Solution(object):
+    def fourSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        N = len(nums)
+        nums.sort()
+        res = []
+        i = 0
+        while i < N - 3:
+            j = i + 1
+            while j < N - 2:
+                k = j + 1
+                l = N - 1
+                remain = target - nums[i] - nums[j]
+                while k < l:
+                    if nums[k] + nums[l] > remain:
+                        l -= 1
+                    elif nums[k] + nums[l] < remain:
+                        k += 1
+                    else:
+                        res.append([nums[i], nums[j], nums[k], nums[l]])
+                        while k < l and nums[k] == nums[k + 1]:
+                            k += 1
+                        while k < l and nums[l] == nums[l - 1]:
+                            l -= 1
+                        k += 1
+                        l -= 1
+                while j < N - 2 and nums[j] == nums[j + 1]:
+                    j += 1
+                j += 1 # check this
+            while i < N - 3 and nums[i] == nums[i + 1]:
+                i += 1
+            i += 1 # check this 
+        return res
 
 # V2 
+# Time:  O(n^3)
+# Space: O(1)
+import collections
 # Two pointer solution. (1356ms)
 class Solution(object):
     def fourSum(self, nums, target):
@@ -64,12 +153,10 @@ class Solution(object):
                         left += 1
         return res
 
-
-
-# V3 
 # Time:  O(n^2 * p)
 # Space: O(n^2 * p)
 # Hash solution. (224ms)
+import collections
 class Solution2(object):
     def fourSum(self, nums, target):
         """
@@ -100,10 +187,9 @@ class Solution2(object):
                                 result.append(quad)
         return result
 
-
-# V4 
 # Time:  O(n^2 * p) ~ O(n^4)
 # Space: O(n^2)
+import collections
 class Solution3(object):
     def fourSum(self, nums, target):
         """
@@ -116,7 +202,7 @@ class Solution3(object):
             for j in range(i + 1, len(nums)):
                 lookup[nums[i] + nums[j]].append([i, j])
 
-        for i in list(lookup.keys()):
+        for i in lookup.keys():
             if target - i in lookup:
                 for x in lookup[i]:
                     for y in lookup[target - i]:
@@ -126,8 +212,4 @@ class Solution3(object):
                             quad = sorted([nums[a], nums[b], nums[c], nums[d]])
                             if quad not in result:
                                 result.append(quad)
-        return sorted(result)
-
-
-
-        
+        return sorted(result)      
