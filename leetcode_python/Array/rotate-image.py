@@ -7,27 +7,46 @@
 #
 # Follow up:
 # Could you do this in-place?
-#
 
+# V0
 
 # V1 
-# if mymatrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-# -> list(zip(*mymatrix)) = [(1, 4, 7), (2, 5, 8), (3, 6, 9)]
-# -> list(reversed(x)) for x in zip(*matrix) = [(7,4,1), (8,5,2), (9,6,3)]
-
-# if array = [1, 2, 3]
-# -> list(reversed(array)) = [3,2,1]
-
+# https://www.cnblogs.com/zuoyuan/p/3772978.html
+# IDEA : TRANSPOSE -> REVERSE 
 class Solution:
-	def rotate(self, matrix):
-		return [ list(reversed(x)) for x in  zip(*matrix)]
+    # @param matrix, a list of lists of integers
+    # @return a list of lists of integers
+    def rotate(self, matrix):
+        n = len(matrix)
+        for i in range(n):
+            for j in range(i+1, n):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+        for i in range(n):
+            matrix[i].reverse()
+        return matrix
 
-
-
+# V1'
+# https://blog.csdn.net/fuxuemingzhu/article/details/79451733
+class Solution(object):
+    def rotate(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: void Do not return anything, modify matrix in-place instead.
+        """
+        if matrix:
+            rows = len(matrix)
+            cols = len(matrix[0])
+            for i in range(rows / 2):
+                for j in range(cols):
+                    matrix[i][j], matrix[rows - i - 1][j] = matrix[rows - i - 1][j], matrix[i][j]
+            for i in range(rows):
+                for j in range(i):
+                    matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
 # V2 
-
-class Solution:
+# Time:  O(n^2)
+# Space: O(1)
+class Solution(object):
     # @param matrix, a list of lists of integers
     # @return a list of lists of integers
     def rotate(self, matrix):
@@ -45,11 +64,10 @@ class Solution:
 
         return matrix
 
-
-        
-
-
-
-
-
-
+# Time:  O(n^2)
+# Space: O(n^2)
+class Solution2(object):
+    # @param matrix, a list of lists of integers
+    # @return a list of lists of integers
+    def rotate(self, matrix):
+        return [list(reversed(x)) for x in zip(*matrix)]

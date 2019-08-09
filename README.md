@@ -89,7 +89,7 @@
 026 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-duplicates-from-sorted-array.py) | _O(n)_   | _O(1)_  | Easy   | `Two Pointers`, `basic`, `trick` |  AGAIN*
 027 | [Remove Element](https://leetcode.com/problems/remove-element/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-element.py) | _O(n)_  | _O(1)_ | Easy  |`basic`| AGAIN* 
 031 | [Next Permutation](https://leetcode.com/problems/next-permutation/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/next-permutation.py) | _O(n)_ | _O(1)_ | Medium | `trick`, `hard` | AGAIN (not start*)
-048 | [Rotate Image](https://leetcode.com/problems/rotate-image/)   | [Python](./Python/rotate-image.py) | _O(n^2)_      | _O(1)_         | Medium         ||
+048 | [Rotate Image](https://leetcode.com/problems/rotate-image/)   | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/rotate-image.py) | _O(n^2)_ | _O(1)_| Medium  |`trick`, `basic`, `matrix`| OK*
 054 | [Spiral Matrix](https://leetcode.com/problems/spiral-matrix/) | [Python](./Python/spiral-matrix.py) | _O(m * n)_    | _O(1)_         | Medium         ||
 059 | [Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/) |  [Python](./Python/spiral-matrix-ii.py) | _O(n^2)_ | _O(1)_      | Medium         ||
 066 | [Plus One](https://leetcode.com/problems/plus-one/)      | [Python](./Python/plus-one.py)   | _O(n)_           | _O(1)_         | Easy           || 
