@@ -79,7 +79,7 @@
 ## Array 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-015 | [3 Sum](https://leetcode.com/problems/3sum/) |[Python](./Python/3sum.py)       | _O(n^2)_        | _O(1)_          | Medium         || Two Pointers
+015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/3sum.py)  | _O(n^2)_ | _O(1)_  | Medium    | check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `basic`| AGAIN**
 016 | [3 Sum Closest](https://leetcode.com/problems/3sum-closest/) | [Python](./Python/3sum-closest.py) | _O(n^2)_       | _O(1)_          | Medium         || Two Pointers
 018| [4 Sum](https://leetcode.com/problems/4sum/)         | [Python](./Python/4sum.py)        | _O(n^3)_    | _O(1)_    | Medium         || Two Pointers
 026 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)| [Python](./Python/remove-duplicates-from-sorted-array.py) | _O(n)_       | _O(1)_         | Easy           || Two Pointers
