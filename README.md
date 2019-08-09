@@ -2,7 +2,7 @@
 
 ![Language](https://img.shields.io/badge/language-Python%20%2F%20C%20%2F%20JAVA%2017-orange.svg) 
 ![Update](https://img.shields.io/badge/update-weekly-purple.svg)
-![Build Status](https://travis-ci.org/yennanliu/CS_basics/builds/569617717?utm_source=github_status&utm_medium=notification)
+[![Build Status](https://travis-ci.org/yennanliu/CS_basics.svg?branch=master)](https://travis-ci.org/yennanliu/CS_basics)
 [![PRs](https://img.shields.io/badge/PRs-welcome-6574cd.svg)](https://github.com/yennanliu/CS_basics/pulls)
 
 - Algorithm 
