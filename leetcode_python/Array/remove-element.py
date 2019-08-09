@@ -6,29 +6,70 @@
 # The order of elements can be changed. It doesn't matter what you leave beyond the new length.
 #
 
+# V0 
 
-# V1 : dev (?)
-
-
-class Solution:
-    def removeElement(self, nums, val):
-        return [ k for k in nums if k != val]
-    
-
-# V2 
-
+# V1 
+# https://blog.csdn.net/coder_orz/article/details/51578854
+# IDEA : DOUBLE POINTER 
 class Solution(object):
     def removeElement(self, nums, val):
-        for x in nums[:]:
-            if x == val:
-                nums.remove(x)      
-        return len(nums)
-     
+        """
+        :type nums: List[int]
+        :type val: int
+        :rtype: int
+        """
+        length = 0
+        for i in range(len(nums)):
+            if nums[i] != val:
+                nums[length] = nums[i]
+                length += 1
+        return length
+        
+# V1' 
+# https://blog.csdn.net/coder_orz/article/details/51578854
+class Solution(object):
+    def removeElement(self, nums, val):
+        """
+        :type nums: List[int]
+        :type val: int
+        :rtype: int
+        """
+        rm_index = []
+        for i in range(len(nums)):
+            if nums[i] == val:
+                rm_index.append(i)
+        last = len(nums) - 1
+        for i in rm_index:
+            while last >= 0 and nums[last] == val:
+                last -= 1
+            if last < 0:
+                break
+            nums[i] = nums[last]
+            last -= 1
+        return len(nums) - len(rm_index)
 
+# V1'' 
+# https://blog.csdn.net/coder_orz/article/details/51578854
+class Solution(object):
+    def removeElement(self, nums, val):
+        """
+        :type nums: List[int]
+        :type val: int
+        :rtype: int
+        """
+        length, i = len(nums), 0 
+        while i < length:
+            if nums[i] == val:
+                nums[i] = nums[length - 1]
+                length -= 1
+            else:
+                i += 1
+        return length
 
-
-# V3    
-class Solution:
+# V2 
+# Time:  O(n)
+# Space: O(1)
+class Solution(object):
     # @param    A       a list of integers
     # @param    elem    an integer, value need to be removed
     # @return an integer
@@ -41,7 +82,3 @@ class Solution:
             else:
                 i += 1
         return last + 1
-
-
-
-
