@@ -1,4 +1,3 @@
-
 # Time:  O(n)
 # Space: O(1)
 #
@@ -12,22 +11,65 @@
 # Your function should return length = 2, and A is now [1,2].
 #
 
+# V0
 
-# V1  : dev (?)   
+# V1 
+# https://www.cnblogs.com/zuoyuan/p/3779816.html
+# IDEA : TWO POINTER 
+# IDEA : use an index j, when i go through the array,
+# if A[i] != A[j], then swap A[i] and A[j+1] and do j=j+1 (A[i], A[j+1] = A[j+1], A[i])
+# then i keep going through the array 
 class Solution:
+    # @param a list of integers
+    # @return an integer
     def removeDuplicates(self, A):
-    	output = []
-    	for k in list(A):
-    		if k in output:
-    			pass
-    		else:
-    			output.append(k)
-    	return list(output)
+        if len(A) == 0:
+            return 0
+        j = 0
+        for i in range(0, len(A)):
+            if A[i] != A[j]:
+                A[i], A[j+1] = A[j+1], A[i]
+                j = j + 1
+        return j+1
 
+# V1' 
+# https://blog.csdn.net/coder_orz/article/details/51589013
+# IDEA : TWO POINTER 
+class Solution(object):
+    def removeDuplicates(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if len(nums)==0:
+            return 0
+        cur = 0
+        for i in range(1, len(nums)):
+            if nums[i] != nums[cur]:
+                cur += 1
+                nums[cur] = nums[i]
+        return cur+1
 
-
+# V1'' 
+# https://blog.csdn.net/coder_orz/article/details/51589013
+# IDEA : COUNTER     
+class Solution(object):
+    def removeDuplicates(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        count = 0
+        for i in range(1, len(nums)):
+            if nums[i] == nums[i-1]:
+                count += 1
+            else:
+                nums[i-count] = nums[i]
+        return len(nums) - count
 
 # V2 
+# Time:  O(n)
+# Space: O(1)
 class Solution(object):
     # @param a list of integers
     # @return an integer
@@ -41,11 +83,3 @@ class Solution(object):
                 last += 1
                 A[last] = A[i]
         return last + 1
-
-
-
-
-
-
-
-
