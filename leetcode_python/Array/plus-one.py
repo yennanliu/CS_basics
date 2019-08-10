@@ -1,5 +1,3 @@
-
-
 """
 # https://github.com/kamyu104/LeetCode/blob/master/Python/plus-one.py
 
@@ -20,53 +18,68 @@ Input: [4,3,2,1]
 Output: [4,3,2,2]
 Explanation: The array represents the integer 4321.
 
-"""
+""" 
 
+# V0 
 
-
-# V1  : dev 
-"""
-class Solution:
-	def plusOne(self, digits):
-		if len(digits) == 1:
-			return digits+1
-		else:
-			for k in list(reversed(range(len(digits)))):
-				digits[k] = digits[k]+1
-				if digits[k] < 9:
-					pass
-				else:
-					digits[k] == 0
-					Solution().plusOne(digits[-1])
-				return  digits
-
-"""
-
-
-# V2 
-
+# V1 
+# https://blog.csdn.net/coder_orz/article/details/51583916
 class Solution(object):
     def plusOne(self, digits):
         """
         :type digits: List[int]
         :rtype: List[int]
         """
-        for i in reversed(list(range(len(digits)))):
+        plus = 1
+        for i in range(len(digits)-1, -1, -1):
+            if digits[i] + plus > 9:
+                digits[i] = 0
+                plus = 1
+            else:
+                digits[i] = digits[i] + plus
+                plus = 0
+        if plus == 1:
+            digits.insert(0, 1)
+        return digits
+
+# V1' 
+# https://blog.csdn.net/coder_orz/article/details/51583916
+class Solution(object):
+    def plusOne(self, digits):
+        """
+        :type digits: List[int]
+        :rtype: List[int]
+        """
+        for i in range(len(digits)-1, -1, -1):
+            if digits[i] < 9:
+                digits[i] = digits[i] + 1
+                return digits
+            else:
+                digits[i] = 0
+        digits.insert(0, 1)
+        return digits
+
+# V2 
+# Time:  O(n)
+# Space: O(1)
+class Solution(object):
+    def plusOne(self, digits):
+        """
+        :type digits: List[int]
+        :rtype: List[int]
+        """
+        for i in reversed(range(len(digits))):
             if digits[i] == 9:
                 digits[i] = 0
             else:
                 digits[i] += 1
                 return digits
-        # for [9], [9,9], amd [9,9,9] cases...
         digits[0] = 1
         digits.append(0)
         return digits
 
-
-
-
-# V3 
-
+# Time:  O(n)
+# Space: O(n)
 class Solution2(object):
     def plusOne(self, digits):
         """
@@ -81,15 +94,3 @@ class Solution2(object):
         if carry:
             result.append(carry)
         return result[::-1]
-
-
-
-
-        
-
-
-
-
-
-
-
