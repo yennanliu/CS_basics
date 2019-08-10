@@ -15,31 +15,79 @@
 # ]
 #
 
+# V0 
 
 
-# V1 : dev 
-"""
-class Solution2:
+# V1' 
+# https://blog.csdn.net/coder_orz/article/details/51589254
+# IDEA : CONSIDER EACH ROW OF PASCALS TRIANGLE (n > 1)
+# ARE ALWAYS STARTING AND AND END WITH 1, i.e. [1,a,b,c,...,1]
+# [
+#      [1],
+#     [1,1],
+#    [1,2,1],
+#   [1,3,3,1],
+#  [1,4,6,4,1]
+# ]
+# GIVEN res[i][j] = res[i-1][j-1] + res[i-1][j]
+# -> res[2] = [1,2,1]
+# -> res[3] =[1,3,3,1]  = [1,res[2][0]+res[2][1],res[2][1]+res[2][2],1]
+class Solution(object):
     def generate(self, numRows):
-        zero_layer = [1]
-        output=[]
-        for epoch in range(numRows-1):
-            myrow = zero_layer
-            new_layer=[]
-            for index in range(len(myrow)-1):
-                print (myrow[index],myrow[index+1] )
-                new_layer.append(list(myrow[index]+myrow[index+1]))
-            new_layer = [1] + new_layer + [1]
-            zero_layer.append(new_layer)
-            myrow = new_layer
-        return zero_layer
+        """
+        :type numRows: int
+        :rtype: List[List[int]]
+        """
+        res = []
+        for i in range(0, numRows):
+            res.append([1]*(i+1))
+            for j in range(1, i):
+                res[i][j] = res[i-1][j-1] + res[i-1][j]
+        return res
 
-"""
+# V1' 
+# https://blog.csdn.net/coder_orz/article/details/51589254
+# IDEA : PASCALS RULE 
+class Solution(object):
+    def generate(self, numRows):
+        """
+        :type numRows: int
+        :rtype: List[List[int]]
+        """
+        if numRows == 0:
+            return []
+        res = [[1]]
+        for i in range(1, numRows):
+            res.append([])
+            for j in range(i+1):
+                res[i].append((res[i-1][j-1] if j>0 else 0) + (res[i-1][j] if j<i else 0))
+        return res
 
+# V1'' 
+# https://blog.csdn.net/coder_orz/article/details/51589254
+# IDEA : MAP 
+# IDEA : FOR PASCALS TRIANGLE P(n) 
+# -> p(n) = P(n-1) + shift(P(n-1))
+# i.e.   
+#     1 3 3 1 0 
+#  +  0 1 3 3 1
+# ------------------
+#  =  1 4 6 4 1
+class Solution(object):
+    def generate(self, numRows):
+        """
+        :type numRows: int
+        :rtype: List[List[int]]
+        """
+        res = [[1]]
+        for i in range(1, numRows):
+            res += [map(lambda x, y: x+y, res[-1] + [0], [0] + res[-1])]
+        return res[:numRows]
 
 # V2 
-# https://github.com/kamyu104/LeetCode/blob/master/Python/pascals-triangle.py
-class Solution:
+# Time:  O(n^2)
+# Space: O(1) 
+class Solution(object):
     # @return a list of lists of integers
     def generate(self, numRows):
         result = []
@@ -56,7 +104,7 @@ class Solution:
         if not numRows: return []
         res = [[1]]
         for i in range(1, numRows):
-            res += [list(map(lambda x, y: x + y, res[-1] + [0], [0] + res[-1]))]
+            res += [map(lambda x, y: x + y, res[-1] + [0], [0] + res[-1])]
         return res[:numRows]
 
     def generate3(self, numRows):
@@ -79,6 +127,3 @@ class Solution:
         while len(res) < numRows:
             res.extend([add(res[-1])])
         return res
-
-
-
