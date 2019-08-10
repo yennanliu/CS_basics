@@ -1,6 +1,5 @@
 # Time:  O(n^2)
 # Space: O(1)
-
 # Given an index k, return the kth row of the Pascal's triangle.
 #
 # For example, given k = 3,
@@ -64,7 +63,7 @@ class Solution(object):
                 res[j] += res[j - 1]
         return res
 
-# V1 
+# V1'''
 # https://blog.csdn.net/coder_orz/article/details/51591374
 # IDEA : PASCALS TRIANGLE PROPERTY C(n, m)
 # IDEA  - > C(n, m) = n!/(m! * (n-m)!)
