@@ -98,7 +98,7 @@
 118 | [Pascal's Triangle](https://leetcode.com/problems/pascals-triangle/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/pascals-triangle.py)  | _O(n^2)_ | _O(1)_  | Easy  |`trick`, `basic`| AGAIN* 
 119 | [Pascal's Triangle II](https://leetcode.com/problems/pascals-triangle-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/pascals-triangle-ii.py) | _O(n^2)_ | _O(1)_  | Easy  |check with `# 118 Pascal's Triangle`| AGAIN**
 121 | [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/best-time-to-buy-and-sell-stock.py) | _O(n)_ | _O(1)_ | Easy |`basic`| OK*
-157 | [Read N Characters Given Read4](https://leetcode.com/problems/read-n-characters-given-read4/) |  [Python](./Python/read-n-characters-given-read4.py) | _O(n)_ | _O(1)_ | Easy           |🔒|
+157 | [Read N Characters Given Read4](https://leetcode.com/problems/read-n-characters-given-read4/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/read-n-characters-given-read4.py) | _O(n)_ | _O(1)_ | Easy |🔒| AGAIN (not start)
 163 | [Missing Ranges](https://leetcode.com/problems/missing-ranges/)| [Python](./Python/missing-ranges.py) | _O(n)_      | _O(1)_          | Medium         | 🔒 |
 169 | [Majority Element](https://leetcode.com/problems/majority-element/) |[Python](./Python/majority-element.py) | _O(n)_ | _O(1)_          | Easy           |
 189 | [Rotate Array](https://leetcode.com/problems/rotate-array/)   | [Python](./Python/rotate-array.py) | _O(n)_        | _O(1)_         | Easy           ||
