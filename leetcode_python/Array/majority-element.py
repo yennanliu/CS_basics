@@ -13,24 +13,58 @@ Input: [2,2,1,1,1,2,2]
 Output: 2
 """
 
+# V0 
 
 # V1 
+# https://blog.csdn.net/NXHYD/article/details/71713772
+class Solution(object):
+    def majorityElement(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        return sorted(nums)[(len(nums))/2]
+
+# V1' 
+# https://blog.csdn.net/NXHYD/article/details/71713772
+class Solution(object):
+    def majorityElement(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        b = {}
+        for eachnum in nums:
+            if eachnum not in b:
+                b[eachnum] = 1
+            else:
+                b[eachnum] += 1
+        for eachnum in b:
+            if b[eachnum] == max(b.values()):
+                return eachnum
+        return 0
+
+# V1''
+# http://bookshadow.com/weblog/2014/12/22/leetcode-majority-element/
 class Solution:
-	def majorityElement(self, nums):
-		len_nums = len(nums)
-		for num in list(set(nums)):
-			if nums.count(num) > len_nums/2:
-				return num
-			else:
-				pass 
-
-
+    # @param num, a list of integers
+    # @return an integer
+    def majorityElement(self, num):
+        candidate, count = None, 0
+        for e in num:
+            if count == 0:
+                candidate, count = e, 1
+            elif e == candidate:
+                count += 1
+            else:
+                count -= 1
+        return candidate
+        
 # V2 
-
+# Time:  O(n)
+# Space: O(1)
 import collections
-
-
-class Solution:
+class Solution(object):
     def majorityElement(self, nums):
         """
         :type nums: List[int]
@@ -54,16 +88,11 @@ class Solution:
         :type nums: List[int]
         :rtype: int
         """
-        return sorted(list(collections.Counter(nums).items()), key=lambda a: a[1], reverse=True)[0][0]
+        return sorted(collections.Counter(nums).items(), key=lambda a: a[1], reverse=True)[0][0]
 
-
-        
-
-
-
-
-
-
-
-
-
+    def majorityElement3(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        return collections.Counter(nums).most_common(1)[0][0]
