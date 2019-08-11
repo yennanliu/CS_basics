@@ -1,5 +1,4 @@
 """
-
 Given an array, rotate the array to the right by k steps, where k is non-negative.
 
 Example 1:
@@ -35,8 +34,70 @@ Could you do it in-place with O(1) extra space?
 # Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.
 #
 
+# V0
 
 # V1 
+# https://blog.csdn.net/coder_orz/article/details/52052767
+# IDEA : SLICE 
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        k = k % len(nums) # since the rotate operation is cyclic. i.e. if len(nums)=7, k=17 -> rotate(17) = rotate(17%7) = rotate(3)
+        nums[:k], nums[k:] = nums[len(nums)-k:], nums[:len(nums)-k]
+
+# V1'
+# https://blog.csdn.net/coder_orz/article/details/52052767
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        old_nums = nums[:]
+        for i in range(len(nums)):
+            nums[(i + k) % len(nums)] = old_nums[i]
+
+# V1''
+# https://blog.csdn.net/coder_orz/article/details/52052767
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        k = k % len(nums)
+        self.reversePart(nums, 0, len(nums)-k-1)
+        self.reversePart(nums, len(nums)-k, len(nums)-1)
+        self.reversePart(nums, 0, len(nums)-1)
+
+    def reversePart(self, nums, start, end):
+        while start < end:
+            nums[start], nums[end] = nums[end], nums[start]
+            start, end = start+1, end-1
+
+# V1'''
+# https://blog.csdn.net/coder_orz/article/details/52052767
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        k, start, n = k % len(nums), 0, len(nums)
+        while k % n != 0 and n > 0:
+            for i in range(k):
+                nums[start + i], nums[len(nums) - k + i] = nums[len(nums) - k + i], nums[start + i]
+            start, n = start + k, n - k
+            k = k % n
+
+# V2 
 class Solution:
     def rotate(self, nums, k):
         for epoch in range(k):
@@ -44,11 +105,10 @@ class Solution:
             nums = nums[:-1]
         return nums 
 
-
-# V2 
-
-
-class Solution:
+# V3 
+# Time:  O(n)
+# Space: O(1)
+class Solution(object):
     """
     :type nums: List[int]
     :type k: int
@@ -67,19 +127,10 @@ class Solution:
             start += 1
             end -= 1
 
-    def rotate2(self, nums, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: void Do not return anything, modify nums in-place instead.
-        """
-        nums[:] = nums[len(nums) - k:] + nums[:len(nums) - k]
-
-
+# Time:  O(n)
+# Space: O(1)
 from fractions import gcd
-
-
-class Solution2:
+class Solution2(object):
     """
     :type nums: List[int]
     :type k: int
@@ -87,20 +138,22 @@ class Solution2:
     """
 
     def rotate(self, nums, k):
+        def apply_cycle_permutation(k, offset, cycle_len, nums):
+            tmp = nums[offset]
+            for i in range(1, cycle_len):
+                nums[(offset + i * k) % len(nums)], tmp = tmp, nums[(offset + i * k) % len(nums)]
+            nums[offset] = tmp
+
         k %= len(nums)
         num_cycles = gcd(len(nums), k)
         cycle_len = len(nums) / num_cycles
         for i in range(num_cycles):
-            self.apply_cycle_permutation(k, i, cycle_len, nums)
-
-    def apply_cycle_permutation(self, k, offset, cycle_len, nums):
-        tmp = nums[offset]
-        for i in range(1, cycle_len):
-            nums[(offset + i * k) % len(nums)], tmp = tmp, nums[(offset + i * k) % len(nums)]
-        nums[offset] = tmp
+            apply_cycle_permutation(k, i, cycle_len, nums)
 
 
-class Solution3:
+# Time:  O(n)
+# Space: O(1)
+class Solution3(object):
     """
     :type nums: List[int]
     :type k: int
@@ -123,14 +176,32 @@ class Solution3:
             start += 1
 
 
+# Time:  O(n)
+# Space: O(n)
+class Solution4(object):
+    """
+    :type nums: List[int]
+    :type k: int
+    :rtype: void Do not return anything, modify nums in-place instead.
+    """
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        nums[:] = nums[len(nums) - k:] + nums[:len(nums) - k]
+        
 
-            
-
-
-
-
-
-
-
-
-
+# Time:  O(k * n)
+# Space: O(1)
+class Solution5(object):
+    """
+    :type nums: List[int]
+    :type k: int
+    :rtype: void Do not return anything, modify nums in-place instead.
+    """
+    def rotate(self, nums, k):
+        while k > 0:
+            nums.insert(0, nums.pop())
+            k -= 1

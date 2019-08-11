@@ -101,7 +101,7 @@
 157 | [Read N Characters Given Read4](https://leetcode.com/problems/read-n-characters-given-read4/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/read-n-characters-given-read4.py) | _O(n)_ | _O(1)_ | Easy |🔒| AGAIN (not start)
 163 | [Missing Ranges](https://leetcode.com/problems/missing-ranges/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/missing-ranges.py) | _O(n)_  | _O(1)_ | Medium    | 🔒, `google phone interview` | AGAIN** 
 169 | [Majority Element](https://leetcode.com/problems/majority-element/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/majority-element.py) | _O(n)_ | _O(1)_ | Easy || OK*
-189 | [Rotate Array](https://leetcode.com/problems/rotate-array/)   | [Python](./Python/rotate-array.py) | _O(n)_        | _O(1)_         | Easy           ||
+189 | [Rotate Array](https://leetcode.com/problems/rotate-array/)   | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/rotate-array.py) | _O(n)_ | _O(1)_  | Easy   || OK* 
 209 | [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/) | [Python](./Python/minimum-size-subarray-sum.py) | _O(n)_ | _O(1)_ |  Medium | Binary Search | 
 215 | [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) |  [Python](./Python/kth-largest-element-in-an-array.py)| _O(n)_ ~ _O(n^2)_ | _O(1)_ |  Medium | EPI|
 228 | [Summary Ranges](https://leetcode.com/problems/summary-ranges/) | [Python](./Python/summary-ranges.py)| _O(n)_ | _O(1)_ | Medium | |
