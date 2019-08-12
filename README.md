@@ -103,7 +103,7 @@
 169 | [Majority Element](https://leetcode.com/problems/majority-element/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/majority-element.py) | _O(n)_ | _O(1)_ | Easy || OK*
 189 | [Rotate Array](https://leetcode.com/problems/rotate-array/)   | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/rotate-array.py) | _O(n)_ | _O(1)_  | Easy   || OK* 
 209 | [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/minimum-size-subarray-sum.py) | _O(n)_ | _O(1)_ | Medium | `Binary Search`, `basic`, `trick` | AGAIN (not start) 
-215 | [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) |  [Python](./Python/kth-largest-element-in-an-array.py)| _O(n)_ ~ _O(n^2)_ | _O(1)_ |  Medium | EPI|
+215 | [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/kth-largest-element-in-an-array.py) | _O(n)_ ~ _O(n^2)_ | _O(1)_ |  Medium | EPI, `quick sort`| OK 
 228 | [Summary Ranges](https://leetcode.com/problems/summary-ranges/) | [Python](./Python/summary-ranges.py)| _O(n)_ | _O(1)_ | Medium | |
 229 | [Majority Element II](https://leetcode.com/problems/majority-element-ii/) |  [Python](./Python/majority-element-ii.py) | _O(n)_ | _O(1)_          | Medium           | |
 238 | [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/) |   [Python](./Python/product-of-array-except-self.py) | _O(n)_ | _O(1)_          | Medium           | LintCode |
