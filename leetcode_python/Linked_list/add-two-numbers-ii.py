@@ -1,13 +1,13 @@
+# V0
 
-
-
-# V1 : DEV 
-
-
-
-
-# V2 
+# V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79380457
+# IDEA : STRING 
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
         """
@@ -19,29 +19,121 @@ class Solution(object):
         num2 = ''
         while l1:
             num1 += str(l1.val)
-            l1 = l1.__next__
+            l1 = l1.next
         while l2:
             num2 += str(l2.val)
-            l2 = l2.__next__
+            l2 = l2.next
         add = str(int(num1) + int(num2))
         head = ListNode(add[0])
         answer = head
         for i in range(1, len(add)):
             node = ListNode(add[i])
             head.next = node
-            head = head.__next__
+            head = head.next
         return answer
 
+# V1' 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79380457
+# IDEA : STACK 
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        stack1 = []
+        stack2 = []
+        while l1:
+            stack1.append(l1.val)
+            l1 = l1.next
+        while l2:
+            stack2.append(l2.val)
+            l2 = l2.next
+        answer = None
+        carry = 0
+        while stack1 and stack2:
+            add = stack1.pop() + stack2.pop() + carry
+            carry = 1 if add >= 10 else 0
+            temp = answer
+            answer = ListNode(add % 10)
+            answer.next = temp
+        l = stack1 if stack1 else stack2
+        while l:
+            add = l.pop() + carry
+            carry = 1 if add >= 10 else 0
+            temp = answer
+            answer = ListNode(add % 10)
+            answer.next = temp
+        if carry:
+            temp = answer
+            answer = ListNode(1)
+            answer.next = temp
+        return answer
 
-# V3 
+# V1'' 
+# http://bookshadow.com/weblog/2016/10/29/leetcode-add-two-numbers-ii/
+# IDEA : TWO POINTER 
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        s1 = self.getSize(l1)
+        s2 = self.getSize(l2)
+        s = max(s1, s2)
+
+        p = h = ListNode(0)
+        while s:
+            p.next = ListNode(0)
+            p = p.next
+            if s <= s1:
+                p.val += l1.val
+                l1 = l1.next
+            if s <= s2:
+                p.val += l2.val
+                l2 = l2.next
+            s -= 1
+
+        p = h
+        while p:
+            q = p.next
+            while q and q.val == 9:
+                q = q.next
+            if q and q.val > 9:
+                while p != q:
+                    p.val += 1
+                    p = p.next
+                    p.val -= 10
+            else: p = q
+        return h if h.val else h.next
+    
+    def getSize(self, h):
+        c = 0
+        while h:
+            c += 1
+            h = h.next
+        return c
+
+# V2 
 # Time:  O(m + n)
 # Space: O(m + n)
-
 class ListNode(object):
     def __init__(self, x):
         self.val = x
         self.next = None
-
 
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
@@ -53,10 +145,10 @@ class Solution(object):
         stk1, stk2 = [], []
         while l1:
             stk1.append(l1.val)
-            l1 = l1.__next__
+            l1 = l1.next
         while l2:
             stk2.append(l2.val)
-            l2 = l2.__next__
+            l2 = l2.next
 
         prev, head = None, None
         sum = 0
@@ -76,5 +168,3 @@ class Solution(object):
             head.next = prev
 
         return head
-
-
