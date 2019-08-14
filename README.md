@@ -117,7 +117,7 @@
 311| [Sparse Matrix Multiplication](https://leetcode.com/problems/sparse-matrix-multiplication/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/sparse-matrix-multiplication.py)   | _O(m * n * l)_ |  _O(m * l)_ | Medium |🔒, `basic`| AGAIN**
 334| [Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/increasing-triplet-subsequence.py) | _O(n)_ |  _O(1)_ | Medium |check `# 300 Longest Increasing Subsequence`, `trick`|AGAIN*
 370| [Range Addition](https://leetcode.com/problems/range-addition/) | [C++](./C++/range-addition.cpp) [Python](./Python/range-addition.py)  | _O(k + n)_ |  _O(1)_ | Medium         |🔒||
-384| [Shuffle an Array](https://leetcode.com/problems/shuffle-an-array/) | [C++](./C++/shuffle-an-array.cpp) [Python](./Python/shuffle-an-array.py)  | _O(n)_ |  _O(n)_ | Medium         | EPI ||
+384| [Shuffle an Array](https://leetcode.com/problems/shuffle-an-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/shuffle-an-array.py)  | _O(n)_ |  _O(n)_ | Medium   | EPI, `trick` | OK*
 396| [Rotate Function](https://leetcode.com/problems/rotate-function/) | [C++](./C++/rotate-function.cpp) [Python](./Python/rotate-function.py)  | _O(n)_ |  _O(1)_ | Easy         |||
 412| [Fizz Buzz](https://leetcode.com/problems/fizz-buzz/) | [C++](./C++/fizz-buzz.cpp) [Python](./Python/fizz-buzz.py)  | _O(n)_ |  _O(1)_ | Easy         |||
 414| [Third Maximum Number](https://leetcode.com/problems/third-maximum-number/) | [C++](./C++/third-maximum-number.cpp) [Python](./Python/third-maximum-number.py)  | _O(n)_ |  _O(1)_ | Easy         |||
