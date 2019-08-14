@@ -32,30 +32,41 @@ Return:
 ]
 """
 
-
+# V0
 
 # V1 
+# http://bookshadow.com/weblog/2016/10/09/leetcode-fizz-buzz/
 class Solution(object):
-	def fizzBuzz(self, n):
-		output = []
-		if n==1:
-			output.append("1")
-			return output
-		for k in range(1,n+1):
-			if (k%15 == 0):
-				output.append("FizzBuzz")
-			elif (k%3 == 0):
-				output.append("Fizz")
-			elif (k%5 == 0):
-				output.append("Buzz")
-			else:
-				output.append(str(k))
-		return output
+    def fizzBuzz(self, n):
+        """
+        :type n: int
+        :rtype: List[str]
+        """
+        return ['Fizz' * (not x % 3) + 'Buzz' * (not x % 5) or str(x) for x in range(1, n + 1)]
 
-
-
-
+# V1' 
+# http://bookshadow.com/weblog/2016/10/09/leetcode-fizz-buzz/
+class Solution(object):
+    def fizzBuzz(self, n):
+        """
+        :type n: int
+        :rtype: List[str]
+        """
+        ans = []
+        for x in range(1, n + 1):
+            n = str(x)
+            if x % 15 == 0:
+                n = "FizzBuzz"
+            elif x % 3 == 0:
+                n = "Fizz"
+            elif x % 5 == 0:
+                n = "Buzz"
+            ans.append(n)
+        return ans
+        
 # V2 
+# Time:  O(n)
+# Space: O(1)
 class Solution(object):
     def fizzBuzz(self, n):
         """
@@ -64,7 +75,7 @@ class Solution(object):
         """
         result = []
 
-        for i in range(1, n+1):
+        for i in xrange(1, n+1):
             if i % 15 == 0:
                 result.append("FizzBuzz")
             elif i % 5 == 0:
@@ -82,8 +93,8 @@ class Solution(object):
         :rtype: List[str]
         """
         l = [str(x) for x in range(n + 1)]
-        l3 = list(range(0, n + 1, 3))
-        l5 = list(range(0, n + 1, 5))
+        l3 = range(0, n + 1, 3)
+        l5 = range(0, n + 1, 5)
         for i in l3:
             l[i] = 'Fizz'
         for i in l5:
@@ -98,10 +109,3 @@ class Solution(object):
 
     def fizzBuzz4(self, n):
         return ['FizzBuzz'[i % -3 & -4:i % -5 & 8 ^ 12] or repr(i) for i in range(1, n + 1)]
-
-
-
-
-
-
-
