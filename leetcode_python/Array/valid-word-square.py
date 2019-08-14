@@ -1,4 +1,3 @@
-
 """
 LeetCode 422. Valid Word Square
 
@@ -12,12 +11,9 @@ The number of words given is at least 1 and does not exceed 500.
 Word length will be at least 1 and does not exceed 500.
 Each word contains only lowercase English alphabet a-z.
 
-
 Given a sequence of words, check whether it forms a valid word square.
 
 A sequence of words forms a valid word square if the kth row and column read the exact same string, where 0 ≤ k < max(numRows, numColumns).
-
-
 
 Example 1:
 
@@ -79,49 +75,64 @@ Therefore, it is NOT a valid word square.
 
 """
 
+# V0
 
-
-# [
-#   "abcd",
-#   "bnrt",
-#   "crm",
-#   "dt"
-# ]
-
-
-# V1  : dev 
-"""
+# V1
+# http://us.jiuzhang.com/solution/valid-word-square/#tag-highlight-lang-python
+class Solution:
+    """
+    @param words: a list of string
+    @return: return a boolean
+    """
+    def validWordSquare(self, words):
+        # write your code here
+        n, m = len(words), len(words[0])
+        if(n != m):
+            return False
+        for i in range(n):
+        	for j in range(m):
+        		if(j >= n or i >= m or not(words[i][j] == words[j][i])):
+        			return False
+        return True
+        
+# V1' 
+# http://bookshadow.com/weblog/2016/10/16/leetcode-valid-word-square/
 class Solution(object):
-	def validWordSquare(self, words):
-		equal_or_not=[]
-		for col, row in zip(x,y):
-			for k,j in zip(col, row):
-				if k==j:
-					equal_or_not.append(1)
-				else:
-					equal_or_not.append(0)
-		if sum(equal_or_not) == max(col,row):
-			return True 
-		else:
-			return False 
-"""
+    def validWordSquare(self, words):
+        """
+        :type words: List[str]
+        :rtype: bool
+        """
+        m = len(words)
+        n = len(words[0]) if m else 0
+        if m != n:
+            return False
+        for x in range(m):
+            n = len(words[x])
+            c = 0
+            for y in range(m):
+                if len(words[y]) < x + 1:
+                    break
+                c += 1
+            if c != n:
+                return False
+            for y in range(n):
+                if words[x][y] != words[y][x]:
+                    return False
+        return True
 
 # V2 
 # Time:  O(m * n)
 # Space: O(1)
-# class Solution(object):
-#     def validWordSquare(self, words):
-#         """
-#         :type words: List[str]
-#         :rtype: bool
-#         """
-#         for i in range(len(words)):
-#             for j in range(len(words[i])):
-#         """
-#         A sequence of words forms a valid word square if the kth row and column read the exact same string, 
-#         where 0 ≤ k < max(numRows, numColumns).
-#         """
-#               if j >= len(words) or i >= len(words[j]) or \
-#                    words[j][i] != words[i][j]:
-#                    return False
-#         return True
+class Solution(object):
+    def validWordSquare(self, words):
+        """
+        :type words: List[str]
+        :rtype: bool
+        """
+        for i in range(len(words)):
+            for j in range(len(words[i])):
+                if j >= len(words) or i >= len(words[j]) or \
+                   words[j][i] != words[i][j]:
+                   return False
+        return True
