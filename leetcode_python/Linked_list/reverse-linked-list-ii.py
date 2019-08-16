@@ -1,7 +1,40 @@
+# V0
 
-# V1 : DEV 
+# V1 
+# http://bookshadow.com/weblog/2015/01/29/leetcode-reverse-linked-list-ii/
+# IDEA : dummyNode
+# Definition for singly-linked list.
+# class ListNode:
+#    def __init__(self, x):
+#        self.val = x
+#        self.next = None
+class Solution:
+    # @param head, a ListNode
+    # @param m, an integer
+    # @param n, an integer
+    # @return a ListNode
+    def reverseBetween(self, head, m, n):
+        dummyNode = ListNode(0)
+        p = dummyNode
+        q = head
 
+        for x in range(m - 1):
+            p.next = q
+            q = q.next
+            p = p.next
 
+        start = None
+        end = q
+        next = None
+        for x in range(m, n + 1):
+            next = q.next
+            q.next = start
+            start = q
+            q = next
+
+        p.next = start
+        end.next = next
+        return dummyNode.next
 
 # V2 
 # Time:  O(n)
