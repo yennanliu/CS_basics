@@ -18,18 +18,61 @@
 # The input array may contain duplicates, so ascending order here means <=.
 
 
-# V1 : dev 
-"""
-class Solution2(object):
+# V0 
+
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79254454
+# IDEA : COLLECT THE SUB-ARRAY WHICH IS NOT IN ASCENDING ORDER
+# AND GET THE LENGTH OF SUCH SUB-ARRAY
+# IDEA : DMEO 
+# In [9]: nums = [2, 6, 4, 8, 10, 9, 15]
+# In [10]: _len, _nums = len(nums), sorted(nums)
+# In [11]: _nums
+# Out[11]: [2, 4, 6, 8, 9, 10, 15]
+# In [12]: l = min([i for i in range(_len) if nums[i] != _nums[i]])
+# In [13]: r = max([i for i in range(_len) if nums[i] != _nums[i]])
+# In [14]: l
+# Out[14]: 1
+# In [15]: r
+# Out[15]: 5
+# In [16]: nums 
+# Out[16]: [2, 6, 4, 8, 10, 9, 15]
+# In [17]: _nums
+# Out[17]: [2, 4, 6, 8, 9, 10, 15]
+# In [18]: [i for i in range(_len) if nums[i] != _nums[i]]
+# Out[18]: [1, 2, 4, 5]
+class Solution(object):
     def findUnsortedSubarray(self, nums):
-        pass 
-"""
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        _len, _nums = len(nums), sorted(nums)
+        if nums == _nums:
+            return 0
+        l = min([i for i in range(_len) if nums[i] != _nums[i]])
+        r = max([i for i in range(_len) if nums[i] != _nums[i]])
+        return r - l + 1
 
-
-
-
+# V1'
+# http://bookshadow.com/weblog/2017/05/15/leetcode-shortest-unsorted-continuous-subarray/
+class Solution(object):
+    def findUnsortedSubarray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        snums = sorted(nums)
+        s = e = -1
+        for i in range(len(nums)):
+            if nums[i] != snums[i]:
+                if s == -1: s = i
+                e = i
+        return e - s + 1 if e != s else 0
 
 # V2 
+# Time:  O(n)
+# Space: O(1)
 class Solution(object):
     def findUnsortedSubarray(self, nums):
         """
@@ -46,7 +89,6 @@ class Solution(object):
             if nums[n-1-i] > min_from_right: left = n-1-i
 
 
-# V3 
 # Time:  O(nlogn)
 # Space: O(n)
 class Solution2(object):
