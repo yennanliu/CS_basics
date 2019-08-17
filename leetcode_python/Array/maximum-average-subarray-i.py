@@ -20,28 +20,48 @@
 # Output: 12.75
 # Explanation: Maximum average is (12-5-6+50)/4 = 51/4 = 12.75
 
+# V0 
 
-
-
-# V1  : dev  (timeout error )
-"""
+# V1
+# http://bookshadow.com/weblog/2017/07/16/leetcode-maximum-average-subarray-i/
+# IDEA : SLIDING WINDOW 
 class Solution(object):
     def findMaxAverage(self, nums, k):
-        output=[]
-        for i in range(len(nums)):
-            len_ = k 
-            if i+len_ > len(nums):
-                pass
-            else:
-                sub_nums = nums[i:i+len_]
-            avg_ = float(sum(sub_nums)/len(sub_nums))
-            output.append(avg_)
-        return max(output)
-"""
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: float
+        """
+        ans = None
+        sums = 0
+        for x in range(len(nums)):
+            sums += nums[x]
+            if x >= k: sums -= nums[x - k]
+            if x >= k - 1: ans = max(ans, 1.0 * sums / k)
+        return ans 
 
-
+# V1'
+# https://www.jiuzhang.com/solution/maximum-average-subarray/#tag-highlight-lang-python
+class Solution:
+    """
+    @param nums: an array
+    @param k: an integer
+    @return: the maximum average value
+    """
+    def findMaxAverage(self, nums, k):
+        # Write your code here
+        n = len(nums)
+        sum = [0 for i in range(n + 1)]
+        for i in range(1, n + 1):
+            sum[i] = sum[i - 1] + nums[i - 1]
+        ans = sum[k]
+        for i in range(k + 1, n + 1):
+            ans = max(ans, sum[i] - sum[i - k])
+        return ans * 1.0 / k
 
 # V2 
+# Time:  O(n)
+# Space: O(1)
 class Solution(object):
     def findMaxAverage(self, nums, k):
         """
@@ -54,5 +74,3 @@ class Solution(object):
             total += nums[i] - nums[i-k]
             result = max(result, total)
         return float(result) / k
-
-
