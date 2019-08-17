@@ -23,34 +23,58 @@
 # The value in the given matrix is in the range of [0, 255].
 # The length and width of the given matrix are in the range of [1, 150].
 
-# V1  : dev 
+# V0 
 
-# V2 
-import math 
-class Solution:
+# V1 
+# http://bookshadow.com/weblog/2017/08/21/leetcode-image-smoother/
+class Solution(object):
     def imageSmoother(self, M):
         """
         :type M: List[List[int]]
         :rtype: List[List[int]]
         """
-        m = len(M)
-        n = len(M[0])
-        result = [[0] * n for _ in range(m)]
-        for i in range(m):
-            for j in range(n):
-                current = 0
-                count = 0
-                for a in [-1, 0, 1]:
-                    for b in [-1, 0, 1]:
-                        row = i + a
-                        col = j + b
-                        if 0 <= row < m and 0 <= col < n:
-                            current += M[row][col]
+        dx, dy = [-1, 0, 1], [-1, 0, 1]
+        w, h = len(M), len(M[0])
+        N = []
+        for x in range(w):
+            row = []
+            for y in range(h):
+                nbs = [M[x + i][y + j] for i in dx for j in dy \
+                       if 0 <= x + i < w and 0 <= y + j < h]
+                row.append(sum(nbs) / len(nbs))
+            N.append(row)
+        return N
+
+# V1'
+# https://blog.csdn.net/fuxuemingzhu/article/details/79156499
+from copy import deepcopy as copy
+class Solution(object):
+    def imageSmoother(self, M):
+        """
+        :type M: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        if not M or not M[0]:
+            return M
+        rows = len(M)
+        cols = len(M[0])
+        isValid = lambda i,j: i >=0 and i < rows and j >= 0 and j < cols
+        row, col = 0, 0
+        answer = copy(M)
+        for row in range(rows):
+            for col in range(cols):
+                _sum, count = 0, 0
+                for i in range(-1, 2):
+                    for j in range(-1, 2):
+                        if isValid(row + i, col + j):
+                            _sum += M[row + i][col + j]
                             count += 1
-                result[i][j] = math.floor(current / count)
-        return result
+                answer[row][col] = _sum / count
+        return answer
 
 # V2 
+# Time:  O(m * n)
+# Space: O(1)
 class Solution(object):
     def imageSmoother(self, M):
         """
@@ -70,5 +94,5 @@ class Solution(object):
         result = [[0 for _ in range(len(M[0]))] for _ in range(len(M))]
         for i in range(len(M)):
             for j in range(len(M[0])):
-                result[i][j] = getGray(M, i, j);
+                result[i][j] = getGray(M, i, j)
         return result
