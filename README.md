@@ -141,7 +141,7 @@
 697| [Degree of an Array](https://leetcode.com/problems/degree-of-an-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/degree-of-an-array.py) | _O(n)_ | _O(n)_ | Easy || AGAIN (not start)
 713 | [Subarray Product Less Than K](https://leetcode.com/problems/subarray-product-less-than-k/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/subarray-product-less-than-k.py) | _O(n)_ | _O(1)_ | Medium |`basic`, `sliding window`| AGAIN*
 717 | [1-bit and 2-bit Characters](https://leetcode.com/problems/1-bit-and-2-bit-characters/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/1-bit-and-2-bit-characters.py) | _O(n)_ | _O(1)_ | Easy | Greedy |  AGAIN (not start)
-723 | [Candy Crush](https://leetcode.com/problems/candy-crush/) | [C++](./C++/candy-crush.cpp) [Python](./Python/candy-crush.py) | _O((R * C)^2)_ | _O(1)_ | Medium ||
+723 | [Candy Crush](https://leetcode.com/problems/candy-crush/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/candy-crush.py) | _O((R * C)^2)_ | _O(1)_ | Medium |`complex`| AGAIN (not start)
 724 | [Find Pivot Index](https://leetcode.com/problems/find-pivot-index/) | [C++](./C++/find-pivot-index.cpp) [Python](./Python/find-pivot-index.py) | _O(n)_ | _O(1)_ | Easy ||
 729 | [My Calendar I](https://leetcode.com/problems/my-calendar-i/) | [C++](./C++/my-calendar-i.cpp) [Python](./Python/my-calendar-i.py) | _O(nlogn)_ | _O(n)_ | Medium ||
 731 | [My Calendar II](https://leetcode.com/problems/my-calendar-ii/) | [C++](./C++/my-calendar-ii.cpp) [Python](./Python/my-calendar-ii.py) | _O(n^2)_ | _O(n)_ | Medium ||
