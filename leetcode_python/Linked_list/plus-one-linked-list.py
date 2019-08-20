@@ -1,8 +1,6 @@
-
 ##########################################
 # LeetCode – Plus One Linked List (Java)
 ##########################################
-
 
 # Given a non-negative number represented as a singly linked list of digits, plus one to the number.
 
@@ -16,28 +14,50 @@
 # 1->2->4
 
 
+# V0
 
-# V1 : dev 
-# def add_one_list(list_):
-#     extra = 0 
-#     count = 0 
-#     output = []
-#     for i in list_[::-1]:
-#         print ('i : ', i)
-#         if count==0:
-#             i = i + 1 + extra         
-#         i = i + extra
-#         if i >= 10:
-#             i = i%10 
-#             extra = 1  
-#         else:
-#             extra = 0 
-#         output.append(i)
-#         count = count + 1
-#     if extra==1:
-#         output.append(1)
-#     return  output[::-1]
+# V1 
+# https://www.jiuzhang.com/solution/plus-one-linked-list/#tag-highlight-lang-python
 
+"""
+Definition of ListNode
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+    """
+    @param head: the first Node
+    @return: the answer after plus one
+    """
+    def plusOne(self, head):
+        # Write your code here
+        dummy = ListNode(0)
+        dummy.next = head
+        l = dummy
+        r = dummy
+        while r.next != None:
+            r = r.next
+            if r.val != 9:
+                l = r
+        
+        if r.val != 9:
+            r.val += 1;
+        else:
+            l.val += 1
+            l = l.next
+            while l != None:
+                l.val = 0
+                l = l.next
+        
+        if  dummy.val == 0:
+            return dummy.next
+        
+        return dummy;
+
+# V1'
 class Solution(object):
     def plusOne(self, head):
         """
