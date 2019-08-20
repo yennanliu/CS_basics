@@ -1,19 +1,67 @@
+"""
+Given a singly linked list, group all odd nodes together followed by the even nodes. Please note here we are talking about the node number and not the value in the nodes.
 
- 
-# V1 
+You should try to do it in place. The program should run in O(1) space complexity and O(nodes) time complexity.
+
+Example:
+Given 1->2->3->4->5->NULL,
+return 1->3->5->2->4->NULL.
+1
+2
+3
+Note:
+
+The relative order inside both the even and odd groups should remain as it was in the input.
+The first node is considered odd, the second node even and so on …
+"""
+# V0 
 class Solution(object):
-	def oddEvenList(self, head):
-		"""
-		:type head: ListNode
-		:rtype: ListNode
-		"""
-		output_list = []
-		if head:
-			while head:
-				output_list.append(head.val)
-				head = head.__next__ 
-		return [ v  for k,v in enumerate(output_list)  if k%2 ==0 ] +  [ v  for k,v in enumerate(output_list)  if k%2 ==1 ] 
+    def oddEvenList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        odd = ListNode(0)
+        even = ListNode(0)
+        oddHead, evenHead = odd, even
+        index = 0
+        while head:
+            if index & 1 == 0:
+                odd.next = head
+                odd = odd.next
+            else:
+                even.next = head
+                even = even.next
+            head = head.next
+            index += 1
+        even.next = None
+        odd.next = evenHead.next
+        return oddHead.next
 
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79569396
+class Solution(object):
+    def oddEvenList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        odd = ListNode(0)
+        even = ListNode(0)
+        oddHead, evenHead = odd, even
+        index = 0
+        while head:
+            if index & 1 == 0:
+                odd.next = head
+                odd = odd.next
+            else:
+                even.next = head
+                even = even.next
+            head = head.next
+            index += 1
+        even.next = None
+        odd.next = evenHead.next
+        return oddHead.next
 
 # V2 : DEV 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79569396
