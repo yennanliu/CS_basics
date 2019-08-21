@@ -1,9 +1,68 @@
+# V0
 
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79530638
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+class Solution(object):
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        slow, fast = head, head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                break
+        if not fast or not fast.next:
+            return None
+        slow = head
+        while slow != fast:
+            slow = slow.next
+            fast = fast.next
+        return fast
 
+# V1'
+# https://blog.csdn.net/fuxuemingzhu/article/details/79530638
+# IDEA : SET 
+class Solution(object):
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if not head: return None
+        visited = set()
+        while head:
+            if head in visited:
+                return head
+            visited.add(head)
+            head = head.next
+        return None
 
-# V1  : dev 
-
-
+# V1''
+# http://bookshadow.com/weblog/2015/07/10/leetcode-linked-list-cycle-ii/
+class Solution:
+    # @param head, a ListNode
+    # @return a list node
+    def detectCycle(self, head):
+        if head is None or head.next is None:
+            return None
+        slow, fast = head.next, head.next.next
+        while fast and fast.next and slow != fast:
+            fast = fast.next.next
+            slow = slow.next
+        if fast is None or fast.next is None:
+            return None
+        slow = head
+        while slow != fast:
+            slow, fast = slow.next, fast.next
+        return slow
 
 # V2 
 # https://www.cnblogs.com/zuoyuan/p/3701877.html
@@ -12,7 +71,6 @@
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
-
 class Solution:
     # @param head, a ListNode
     # @return a list node
@@ -33,11 +91,9 @@ class Solution:
             return slow
         return None
 
-
 # V3 
 # Time:  O(n)
 # Space: O(1)
-
 class ListNode(object):
     def __init__(self, x):
         self.val = x
