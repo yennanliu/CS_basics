@@ -1,40 +1,68 @@
-# Time:  O(n)
-# Space: O(1)
-#
-# Given a linked list, determine if it has a cycle in it.
-#
-# Follow up:
-# Can you solve it without using extra space?
-#
+# V0 
 
-# V1 : dev 
-
-
-
-# V2 : dev 
-# http://bookshadow.com/weblog/2015/06/26/leetcode-linked-list-cycle/
-
-class ListNode:
-    def __init__(self, x):
-        self.val = x
-        self.next = None
-        
-        
-class Solution:
-    # @param head, a ListNode
-    # @return a boolean
+# V1 
+# https://blog.csdn.net/coder_orz/article/details/51516558
+# IDEA : MAP 
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+class Solution(object):
     def hasCycle(self, head):
-        nodeSet = set()
-        p = head
-        while p:
-            if p in nodeSet:
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        map = {}
+        while head:
+            if id(head) in map:
                 return True
-            nodeSet.add(p)
-            p = p.__next__
+            else:
+                map[id(head)] = True
+            head = head.next
         return False
 
+# V1'  
+# https://blog.csdn.net/coder_orz/article/details/51516558
+# IDEA  : TWO POINTER
+class Solution(object):
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
 
-# V3 
+# V1'' 
+# https://blog.csdn.net/coder_orz/article/details/51516558
+
+class Solution(object):
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        if head and head.next and head == self.reverseList(head):
+            return True
+        return False
+
+    def reverseList(self, head):
+        before = after = None
+        while head:
+            after = head.next
+            head.next = before
+            before = head
+            head = after
+        return before
+
+# V2 
 # Time:  O(n)
 # Space: O(1)
 
@@ -78,6 +106,4 @@ class Solution:
 #     head.next = ListNode(2)
 #     head.next.next = ListNode(3)
 #     head.next.next.next = head.next
-#     print Solution().hasCycle(head)
-
-    
+#     print Solution().hasCycle(head)  
