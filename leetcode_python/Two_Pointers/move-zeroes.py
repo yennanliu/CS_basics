@@ -1,6 +1,5 @@
 # Time:  O(n)
 # Space: O(1)
-
 # Given an array nums, write a function to move all 0's
 # to the end of it while maintaining the relative order
 # of the non-zero elements.
@@ -12,6 +11,10 @@
 # You must do this in-place without making a copy of the array.
 # Minimize the total number of operations.
 
+# V0 
+class Solution(object):
+    def moveZeroes(self, nums):
+        return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ] 
 
 # V1 
 class Solution(object):
@@ -34,7 +37,6 @@ class Solution(object):
                 non_zero_list.append(nums[i])
         return non_zero_list + [0]*( length - len(non_zero_list))
 
-
 # V3 
 # http://bookshadow.com/weblog/2015/09/19/leetcode-move-zeroes/
 class Solution(object):
@@ -44,8 +46,7 @@ class Solution(object):
             if nums[x]:
                 nums[x], nums[y] = nums[y], nums[x]
                 y += 1
-
-
+                
 # V4 
 class Solution(object):
     def moveZeroes(self, nums):
@@ -66,7 +67,6 @@ class Solution(object):
         """
         nums.sort(cmp=lambda a, b: 0 if b else -1)
 
-
 # V5 
 class Solution2(object):
     def moveZeroes(self, nums):
@@ -82,8 +82,6 @@ class Solution2(object):
 
         for i in range(pos, len(nums)):
             nums[i] = 0
-
-
 # if __name__ == '__main__':
 #     s = Solution()
 #     r = s.moveZeroes([0, 1, 0, 3, 12])
