@@ -1,4 +1,3 @@
-
 # Time:  O(m + n)
 # Space: O(min(m, n))
 
@@ -12,21 +11,52 @@
 # The result can be in any order.
 
 
-# V1 
+# V0 
+class Solution(object):
+    def intersection(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        return list(set(nums1) & set(nums2))
 
-
+# V0' 
 class Solution(object):
     def intersection(self, nums1, nums2):
         nums1_ = set(list(nums1))
         nums2_ = set(list(nums2))
         return [ x for x in nums1_ if x in nums2_ ]
 
+# V1
+# https://blog.csdn.net/coder_orz/article/details/51452615
+class Solution(object):
+    def intersection(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        return list(set(nums1) & set(nums2))
 
+# V1' 
+# https://blog.csdn.net/coder_orz/article/details/51452615
+class Solution(object):
+    def intersection(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        res = []
+        for i in nums1:
+            if i not in res and i in nums2:
+                res.append(i)
 
+        return res
 
 # V2 
 # Hash solution.
-
 class Solution(object):
     def intersection(self, nums1, nums2):
         """
@@ -56,7 +86,6 @@ class Solution(object):
         :rtype: List[int]
         """
         return list(set(nums1) & set(nums2))
-
 
 # V3 
 # Time:  O(max(m, n) * log(max(m, n)))
@@ -92,8 +121,6 @@ class Solution2(object):
                 left = binary_search(lambda x, y: x > y, nums2, left, len(nums2), i)
 
         return res
-
-
 
 # V4 
 # Time:  O(max(m, n) * log(max(m, n)))
