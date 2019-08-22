@@ -26,68 +26,82 @@
 # - What if nums1's size is small compared to num2's size? Which algorithm is better?
 # - What if elements of nums2 are stored on disk, and the memory is limited such that
 #   you cannot load all elements into the memory at once?
-
-
 # If the given array is not sorted and the memory is unlimited.
 
-
-
-# V1  : (dev) 
-
-# import collections
-# class Solution(object):
-#     def intersect(self, nums1, nums2):
-#         c = collections.Counter(nums1) & collections.Counter(nums2)
-#         intersect = []
-#         for i in c:
-#             intersect.extend([i] * c[i])
-#         return intersect
-
-# V1' :DEV 
-
-
-# class Solution3(object):
-#     def intersect(self, nums1, nums2):
-#         """
-#         :type nums1: List[int]
-#         :type nums2: List[int]
-#         :rtype: List[int]
-#         """
-#         output = []
-#         #nums1= sorted(nums1)
-#         #nums2= sorted(nums2)
-#         for i in range(len(nums1)-1):
-#             for j in range(len(nums2)-1):
-#                 print ('nums1[i] :', nums1[i])
-#                 print ('nums2[j] :', nums2[j])
-#                 if nums1[i] == nums2[j]:
-#                     output.append(nums1[i])
-#                 else:
-#                     pass 
-#         return output
-                
-
-                
-
-# V1'  : (dev) 
-"""
-# https://www.geeksforgeeks.org/python-intersection-two-lists/
+# V0 
 class Solution(object):
     def intersect(self, nums1, nums2):
-        return [ i for i in nums1 if i in nums2 ]
-"""
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        return list((collections.Counter(nums1) & collections.Counter(nums2)).elements())
 
+# V1 
+# https://blog.csdn.net/coder_orz/article/details/51496278
+# IDEA : COUNTER
+class Solution(object):
+    def intersect(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        return list((collections.Counter(nums1) & collections.Counter(nums2)).elements())
 
+# V1' 
+# https://blog.csdn.net/coder_orz/article/details/51496278
+# IDEA : TWO POINTER 
+class Solution(object):
+    def intersect(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        res = []
+        nums1.sort()
+        nums2.sort()
+        i = j = 0
+        while i < len(nums1) and j < len(nums2):
+            if nums1[i] == nums2[j]:
+                res.append(nums1[i])
+                i += 1
+                j += 1
+            elif nums1[i] < nums2[j]:
+                i += 1
+            elif nums1[i] > nums2[j]:
+                j += 1
 
+        return res
+
+# V1'' 
+# https://blog.csdn.net/coder_orz/article/details/51496278
+# IDEA : DICT 
+class Solution(object):
+    def intersect(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        res = []
+        map = {}
+        for i in nums1:
+            map[i] = map[i]+1 if i in map else 1
+        for j in nums2:
+            if j in map and map[j] > 0:
+                res.append(j)
+                map[j] -= 1
+
+        return res
 
 # V2 
 # Time:  O(m + n)
 # Space: O(min(m, n))
 # Hash solution.
-
 import collections
-
-
 class Solution(object):
     def intersect(self, nums1, nums2):
         """
@@ -121,7 +135,6 @@ class Solution(object):
         for i in c:
             intersect.extend([i] * c[i])
         return intersect
-
 
 # V3 
 # If the given array is already sorted, and the memory is limited, and (m << n or m >> n).
@@ -188,7 +201,6 @@ class Solution(object):
 
         return res
 
-
 # V5 
 # If the given array is not sorted, and the memory is limited.
 # Time:  O(max(m, n) * log(max(m, n)))
@@ -215,5 +227,4 @@ class Solution(object):
                 res += nums1[it1],
                 it1 += 1
                 it2 += 1
-
         return res
