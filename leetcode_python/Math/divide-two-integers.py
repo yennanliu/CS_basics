@@ -1,4 +1,57 @@
+# V0 
 
+# V1
+# https://www.cnblogs.com/zuoyuan/p/3779359.html
+# IDEA : BINARY SEARCH 
+class Solution:
+    # @return an integer
+    def divide(self, dividend, divisor):
+        if (dividend < 0 and divisor > 0) or (dividend > 0 and divisor < 0):
+            if abs(dividend) < abs(divisor):
+                return 0
+        sum = 0; count = 0; res = 0
+        a = abs(dividend); b = abs(divisor)
+        while a >= b:
+            sum = b
+            count = 1
+            while sum + sum <= a:
+                sum += sum
+                count += count
+            a -= sum
+            res += count
+        if (dividend < 0 and divisor > 0) or (dividend > 0 and divisor < 0):
+            res = 0 - res
+        return res
+
+# V1'
+# https://blog.csdn.net/NXHYD/article/details/72539880
+class Solution(object):
+    def divide(self, dividend, divisor):
+        """
+        :type dividend: int
+        :type divisor: int
+        :rtype: int
+        """
+        neg = (dividend >= 0) ^ (divisor >= 0)
+        dividend, divisor = abs(dividend), abs(divisor)
+
+        pos, base = 1, divisor 
+        while base <= dividend:
+            pos <<= 1
+            base <<= 1
+
+        base >>= 1
+        pos >>= 1
+
+        res = 0
+        while pos > 0:
+            if base <= dividend:
+                res += pos
+                dividend -= base
+            base >>= 1
+            pos >>= 1
+        val = -res if neg else res
+        return 2 ** 31 -1 if val > 2 ** 31 -1 else val
 
 # V1 
 class Solution(object):
@@ -21,7 +74,6 @@ class Solution(object):
 # V2 
 # Time:  O(logn) = O(1)
 # Space: O(1)
-
 class Solution(object):
     def divide(self, dividend, divisor):
         """
