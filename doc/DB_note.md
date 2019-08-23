@@ -77,4 +77,5 @@
 ## 6) Case study 
 
 ## 7) Ref 
+- https://deliveroo.engineering/2017/11/23/engineering-interviews.html
 - https://www.2ndquadrant.com/en/postgresql/postgresql-vs-mysql/
