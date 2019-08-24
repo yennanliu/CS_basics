@@ -6,6 +6,13 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
+# 2019-08-24
+
+- DOING     : Array
+- Reviewing : Sort 
+- REDO      : Dynamic Programming, Linked list, Math, Recursion, DFS, Stack revisit, Breadth-First Search, Depth-First Search, Binary Search, Heap, Backtracking, Greedy, SQL, String, stack, Tree, Binary Search Tree, Bit Manipulation, Hash Table
+- Reviewed : Two Pointers
+
 # 2019-08-22
 
 - DOING     : Array
