@@ -1,9 +1,36 @@
+# V0
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n <= 3: return n - 1
+        dp = [0] * (n + 1)
+        dp[2], dp[3] = 2, 3
+        for x in range(4, n + 1):
+            dp[x] = max(3 * dp[x - 3], 2 * dp[x - 2])
+        return dp[n]
+
+# V1
+# http://bookshadow.com/weblog/2016/04/19/leetcode-integer-break/
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n <= 3: return n - 1
+        dp = [0] * (n + 1)
+        dp[2], dp[3] = 2, 3
+        for x in range(4, n + 1):
+            dp[x] = max(3 * dp[x - 3], 2 * dp[x - 2])
+        return dp[n]
+
+# V1'
+# http://bookshadow.com/weblog/2016/04/19/leetcode-integer-break/
 from functools import reduce
 import operator
-# V1 : DEV 
-
-# V2 
-# http://bookshadow.com/weblog/2016/04/19/leetcode-integer-break/
 class Solution(object):
     def integerBreak(self, n):
         """
@@ -114,8 +141,7 @@ class Solution(object):
         else:                     #  n = 3Q + 4, the max is 3^Q * 2^2
             res = 3 ** (n // 3 - 1) * 4
         return res
-
-
+        
 # V4 
 # Time:  O(n)
 # Space: O(1)
