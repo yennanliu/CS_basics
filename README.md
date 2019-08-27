@@ -163,7 +163,7 @@
 849 | [Maximize Distance to Closest Person](https://leetcode.com/problems/maximize-distance-to-closest-person/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/maximize-distance-to-closest-person.py) | _O(n)_ | _O(1)_ | Easy |`basic`, `trick`| AGAIN (not start*)
 860 | [Lemonade Change](https://leetcode.com/problems/lemonade-change/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/lemonade-change.py) | _O(n)_ | _O(1)_ | Easy || OK* 
 0868 | [Transpose Matrix](https://leetcode.com/problems/transpose-matrix/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/transpose-matrix.py) | _O(r * c)_ | _O(1)_ | Easy |`basic`| OK*
-885 | [Spiral Matrix III](https://leetcode.com/problems/spiral-matrix-iii/) | [C++](./C++/spiral-matrix-iii.cpp) [Python](./Python/spiral-matrix-iii.py) | _O(max(m, n)^2)_ | _O(1)_      | Medium         ||
+885 | [Spiral Matrix III](https://leetcode.com/problems/spiral-matrix-iii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/spiral-matrix-iii.py) | _O(max(m, n)^2)_ | _O(1)_ | Medium  |`basic`| AGAIN* (not start)
 888 | [Fair Candy Swap](https://leetcode.com/problems/fair-candy-swap/) | [C++](./C++/fair-candy-swap.cpp) [Python](./Python/fair-candy-swap.py) | _O(m + n)_ | _O(m + n)_      | Easy         ||
 896 | [Monotonic Array](https://leetcode.com/problems/monotonic-array/) | [C++](./C++/monotonic-array.cpp) [Python](./Python/monotonic-array.py) | _O(n)_ | _O(1)_      | Easy         ||
 905 | [Sort Array By Parity](https://leetcode.com/problems/sort-array-by-parity/) | [C++](./C++/sort-array-by-parity.cpp) [Python](./Python/sort-array-by-parity.py) | _O(n)_ | _O(1)_      | Easy         ||
