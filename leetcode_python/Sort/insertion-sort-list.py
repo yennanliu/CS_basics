@@ -1,7 +1,38 @@
+# V0 
+
+
 # V1 
+# https://www.jiuzhang.com/solution/insertion-sort-list/#tag-highlight-lang-python
+"""
+Definition of ListNode
+class ListNode(object):
 
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+class Solution:
+    """
+    @param head: The first node of linked list.
+    @return: The head of linked list.
+    """ 
+    def insertionSortList(self, head):
+        # write your code here
+        dummy = ListNode(0)
 
-# V2 
+        while head:
+            temp = dummy
+            next = head.next
+            while temp.next and temp.next.val < head.val:
+                temp = temp.next
+
+            head.next = temp.next
+            temp.next = head
+            head = next
+        
+        return dummy.next
+
+# V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80785630
 # Definition for singly-linked list.
 # class ListNode(object):
@@ -36,10 +67,41 @@ class Solution(object):
                 q.next = temp
         return root.__next__
 
-# V3 
+# V1''
+# https://blog.csdn.net/aliceyangxi1987/article/details/50752090
+class Solution(object):
+    def insertionSortList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        
+        if head is None or head.next is None:
+            return head
+        
+        dummy=ListNode(0)
+        dummy.next=head
+        cur=head
+        
+        while cur.next:
+            
+            if cur.val>cur.next.val:
+            
+                pre=dummy
+                while pre.next.val<cur.next.val:
+                    pre=pre.next
+                m=cur.next
+                cur.next=m.next
+                m.next=pre.next
+                pre.next=m
+            else:
+                cur=cur.next
+        
+        return dummy.next
+            
+# V2 
 # Time:  O(n ^ 2)
 # Space: O(1)
-
 class ListNode(object):
     def __init__(self, x):
         self.val = x

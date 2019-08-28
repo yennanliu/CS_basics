@@ -545,7 +545,7 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 075| [Sort Colors](https://leetcode.com/problems/sort-colors/)   | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/sort-colors.py) | _O(n)_         | _O(1)_   | Medium   |Tri Partition|  AGAIN* (2) 
 088| [Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/merge-sorted-array.py)  | _O(n)_ | _O(1)_ | Easy   |`basic`| AGAIN* (2)
-147| [Insertion Sort List](https://leetcode.com/problems/insertion-sort-list/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/insertion-sort-list.py) | _O(n^2)_ | _O(1)_    | Medium         || AGAIN (not start)
+147| [Insertion Sort List](https://leetcode.com/problems/insertion-sort-list/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/insertion-sort-list.py) | _O(n^2)_ | _O(1)_ | Medium |`trick`| AGAIN* (2)
 148| [Sort List](https://leetcode.com/problems/sort-list/)     | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/sort-list.py) | _O(nlogn)_      | _O(logn)_       | Medium         || AGAIN (not start)
 179| [Largest Number](https://leetcode.com/problems/largest-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/largest-number.py) | _O(nlogn)_   | _O(1)_        | Medium         || AGAIN 
 252| [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms.py) | _O(nlogn)_   | _O(n)_        | Easy         |🔒| OK 
