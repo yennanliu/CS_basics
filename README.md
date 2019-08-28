@@ -74,7 +74,7 @@
 ||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)| | | AGAIN***| 
 ||Heap sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/heap_sort.py)| | | AGAIN**| 
-||Merge sort|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py)  | | | AGAIN**| 
+||Merge sort|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py)  | | | OK* (2)| 
 ||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py) | | | AGAIN| 
 ||Selection sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py) | | | AGAIN| 
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 

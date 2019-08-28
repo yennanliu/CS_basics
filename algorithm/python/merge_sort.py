@@ -1,5 +1,41 @@
-# V0 : DEV 
-
+# V0 
+# https://www.geeksforgeeks.org/merge-sort/
+# IDEA : MERGE SORT 
+# STEPS : 
+# 1) SPLIT THE ARRAY INTO 2 EQUAL SUB ARRAYS
+# 2) SORT THEM
+# 3) LOOP ABOVE 2 SUB ARRAYS, AND APPEND THE ELEMENTS FROM SMALLEST TO BIGGEST INTO A NEW ARRAY WHICH IS SORTED
+def mergeSort(arr): 
+    if len(arr) >1: 
+        mid = len(arr)//2 #Finding the mid of the array 
+        L = arr[:mid] # Dividing the array elements  
+        R = arr[mid:] # into 2 halves 
+  
+        mergeSort(L) # Sorting the first half 
+        mergeSort(R) # Sorting the second half 
+  
+        i = j = k = 0
+          
+        # Copy data to temp arrays L[] and R[] 
+        while i < len(L) and j < len(R): 
+            if L[i] < R[j]: 
+                arr[k] = L[i] 
+                i+=1
+            else: 
+                arr[k] = R[j] 
+                j+=1
+            k+=1
+          
+        # Checking if any element was left 
+        while i < len(L): 
+            arr[k] = L[i] 
+            i+=1
+            k+=1
+          
+        while j < len(R): 
+            arr[k] = R[j] 
+            j+=1
+            k+=1
 
 # V1 
 # https://github.com/TheAlgorithms/Python/blob/master/sorts/merge_sort.py
@@ -12,7 +48,6 @@ python3 -m doctest -v merge_sort.py
 For manual testing run:
 python merge_sort.py
 """
-
 def merge_sort(collection):
     """Pure implementation of the merge sort algorithm in Python
     :param collection: some mutable ordered collection with heterogeneous
@@ -63,7 +98,6 @@ def merge_sort(collection):
 #         raw_input          # Python 2
 #     except NameError:
 #         raw_input = input  # Python 3
-
 #     user_input = raw_input('Enter numbers separated by a comma:\n').strip()
 #     unsorted = [int(item) for item in user_input.split(',')]
 #     print(merge_sort(unsorted))
