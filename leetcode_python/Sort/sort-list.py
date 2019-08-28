@@ -1,18 +1,29 @@
+# V0 
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/reverse-linked-list.py
+# TO VALIDATE 
+class Solution(object):
+    def sortList(self, head):
+        head_list = []
+        while head:
+            head_list.append(head.value)
+            head = head.next
 
+        head_list = sorted(head_list)
+        p = head 
+        for i in head_list:
+            p.value = i 
+            p = p.next 
+        return head 
 
-# V1 : DEV 
-
-
-# V2 
+# V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79630742
-
-
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/merge-two-sorted-lists.py
+# IDEA : MERGE SORT 
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
-
 class Solution(object):
     def sortList(self, head):
         """
@@ -52,7 +63,6 @@ class Solution(object):
 # V3 
 # Time:  O(nlogn)
 # Space: O(logn) for stack call
-
 class ListNode(object):
     def __init__(self, x):
         self.val = x
