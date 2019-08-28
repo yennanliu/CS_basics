@@ -9,20 +9,89 @@
 #
 
  
-# V1  : dev (double check why ouput looks same but with error)
-# class Solution(object):
-#     # @param A  a list of integers
-#     # @param m  an integer, length of A
-#     # @param B  a list of integers
-#     # @param n  an integer, length of B
-#     # @return nothing
-#     def merge(self, A, m, B, n):
-#         output = A[:m] + B[:n]
-#         output.sort()
-#         return output
-        
-        
-        
+# V0 
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        return sorted(nums1 + nums2)
+
+# V1 
+# https://blog.csdn.net/coder_orz/article/details/51681144
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        """
+        :type nums1: List[int]
+        :type m: int
+        :type nums2: List[int]
+        :type n: int
+        :rtype: void Do not return anything, modify nums1 in-place instead.
+        """
+        p, q = m-1, n-1
+        while p >= 0 and q >= 0:
+            if nums1[p] > nums2[q]:
+                nums1[p+q+1] = nums1[p]
+                p = p-1
+            else:
+                nums1[p+q+1] = nums2[q]
+                q = q-1
+        nums1[:q+1] = nums2[:q+1]
+
+# V1'
+# https://www.jiuzhang.com/solution/merge-sorted-array/#tag-highlight-lang-python
+class Solution:
+    """
+    @param: A: sorted integer array A which has m elements, but size of A is m+n
+    @param: m: An integer
+    @param: B: sorted integer array B which has n elements
+    @param: n: An integer
+    @return: nothing
+    """
+    def mergeSortedArray(self, A, m, B, n):
+        # write your code here
+        pos = m + n - 1 
+        i = m - 1  
+        j = n - 1
+        while  i >= 0 and j >= 0 :
+            if A[i]>B[j] :
+                A[pos]=A[i]
+                pos-=1
+                i-=1
+            else :
+                A[pos]=B[j]
+                pos-=1
+                j-=1
+                
+        while i >= 0 :
+            A[pos] = A[i]
+            pos-=1
+            i-=1
+        while j >= 0:
+            A[pos] = B[j]
+            pos-=1
+            j-=1
+
+# V1''
+# https://blog.csdn.net/liuxiao214/article/details/77856326
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        """
+        :type nums1: List[int]
+        :type m: int
+        :type nums2: List[int]
+        :type n: int
+        :rtype: void Do not return anything, modify nums1 in-place instead.
+        """
+        i=m-1
+        j=n-1
+        k=m+n-1
+        while k>=0:
+            if (j<0 or nums1[i]>nums2[j]) and i>=0:
+                nums1[k]=nums1[i]
+                i-=1
+            else:
+                nums1[k]=nums2[j]
+                j-=1
+            k-=1
+            
 # V2 
 class Solution:
     # @param A  a list of integers
