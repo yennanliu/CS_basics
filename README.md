@@ -70,7 +70,7 @@
 ||Linear search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/linear_search.py) | | | AGAIN| 
 ||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bfs.py)|| | AGAIN***| 
 ||Depth-first search (DFS) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dfs.py)| | | AGAIN***| 
-||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py) | | | AGAIN|  
+||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py) | | | OK* (2)|  
 ||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)| | | AGAIN***| 
 ||Heap sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/heap_sort.py)| | | AGAIN**| 

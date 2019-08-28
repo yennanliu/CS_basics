@@ -2,7 +2,17 @@
 # ALGORITHM DEMO : BUBBLE SORT 
 #################################################################
 
-# V0 : DEV 
+# V0  
+def bubble_sort(collection):
+    length = len(collection)
+    for i in range(length-1):
+        swapped = False      # if swapped == True, break the loop (means the array's already sorted)
+        for j in range(length-1-i):
+            if collection[j] > collection[j+1]:
+                swapped = True
+                collection[j], collection[j+1] = collection[j+1], collection[j]
+        if not swapped: break  # Stop iteration if the collection is sorted.
+    return collection
 
 # V1 
 # https://github.com/keon/algorithms/blob/master/algorithms/sort/bubble_sort.py
@@ -32,7 +42,6 @@ def bubble_sort(arr, simulation=False):
 
 # V2 
 # https://github.com/TheAlgorithms/Python/blob/master/sorts/bubble_sort.py
-
 def bubble_sort(collection):
     """Pure implementation of bubble sort algorithm in Python
     :param collection: some mutable ordered collection with heterogeneous
