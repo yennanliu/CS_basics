@@ -1,25 +1,62 @@
+# V0 
+import collections
+class Solution(object):
+    def topKFrequent(self, words, k):
+        """
+        :type words: List[str]
+        :type k: int
+        :rtype: List[str]
+        """
+        count = collections.Counter(words)
+        candidates = count.keys()
+        candidates = sorted(dict(count), key=lambda x : dict(count)[x]) # fix for python 3 
+        return candidates[::-1][k]
 
+# V1
+# https://blog.csdn.net/fuxuemingzhu/article/details/79559691
+import collections
+class Solution(object):
+    def topKFrequent(self, words, k):
+        """
+        :type words: List[str]
+        :type k: int
+        :rtype: List[str]
+        """
+        count = collections.Counter(words)
+        def compare(x, y):
+            if x[1] == y[1]:
+                return cmp(x[0], y[0])
+            else:
+                return -cmp(x[1], y[1])
+        return [x[0] for x in sorted(count.items(), cmp = compare)[:k]]
 
-
-# V1 
-# from collections import Counter
-# class Solution(object):
-# 	def topKFrequent(self, words, k):
-# 		freq_dict = collections.Counter(words).most_common()
-# 		output = []
-# 		for i in range(k):
-# 			output.append(freq_dict[i][0])
-# 		return output
+# V1' 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79559691
+# IDEA : HEAP 
+# TOP K PROBLEMS IN PYTHON -> HEAP 
+# IDEA : heapq data module in python  :  array -> stack 
+# heapq.heapify(heap) : transform array to stack into linear time 
+# heapq.heappop(heap) : perform stack pop operation (pop top element)
+# heappush(heap,5)    : perform stack push operation (add new element at top )
+import heapq
+class Solution(object):
+    def topKFrequent(self, words, k):
+        """
+        :type words: List[str]
+        :type k: int
+        :rtype: List[str]
+        """
+        count = collections.Counter(words)
+        heap = [(-freq, word) for word, freq in count.items()]
+        heapq.heapify(heap)
+        return [heapq.heappop(heap)[1] for _ in range(k)]
 
 # V2 
 # Time:  O(n + klogk) on average
 # Space: O(n)
-
 import collections
 import heapq
 from random import randint
-
-
 class Solution(object):
     def topKFrequent(self, words, k):
         """
@@ -96,9 +133,6 @@ class Solution2(object):
             result.append(heapq.heappop(min_heap).val[1])
         return result[::-1]
 
-
-
-
 # V4 
 # Time:  O(n + klogk) ~ O(n + nlogn)
 # Space: O(n)
@@ -123,11 +157,9 @@ class Solution3(object):
         pairs.sort()
         return [pair[1] for pair in pairs[:k]]
 
-
 # V5 
 # time: O(nlogn)
 # space: O(n)
-
 from collections import Counter
 class Solution4(object):
     def topKFrequent(self, words, k):
