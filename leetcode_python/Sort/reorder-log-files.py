@@ -1,14 +1,32 @@
+# V0 
 
-
-# V1  : dev 
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/83961188
+# IDEA :
+# THE NEEDED RETURN FORM :
+# sorted alphabet-log + sorted nums-log 
+class Solution(object):
+    def reorderLogFiles(self, logs):
+        """
+        :type logs: List[str]
+        :rtype: List[str]
+        """
+        letters = []
+        nums = []
+        for log in logs:
+            logsplit = log.split(" ")
+            if logsplit[1].isalpha():
+                letters.append((" ".join(logsplit[1:]), logsplit[0]))
+            else:
+                nums.append(log)
+        letters.sort()
+        return [letter[1] + " " + letter[0] for letter in letters] + nums
 
 # V2
 # https://www.programiz.com/python-programming/methods/string/isalpha
 # isalpha()
 # The isalpha() method returns True if all characters in the string are alphabets. If not, it returns False.
-
 # https://blog.csdn.net/GQxxxxxl/article/details/83961863
-
 class Solution:
     def reorderLogFiles(self, logs):
         """
