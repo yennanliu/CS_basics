@@ -1,9 +1,36 @@
+# V0 
 
-
-
-
-# V1  : dev 
-
+# V1
+# https://blog.csdn.net/fuxuemingzhu/article/details/68486884
+# IDEA : MAKE THE ARRAY IN DESCENDING ORDER, THEN INSERT SMALL ONE BACK 
+# IDEA : PROCESS :
+# STEP 1) ORDER THE ARRAY IN DESCENDING ORDER 
+# STEP 2) LOOP THE ARRAY AND DO THE INSERT OPERATION (BASED ON 1st VALUE)
+# IDEA : insert module in python
+# http://www.runoob.com/python/att-list-insert.html
+# list.insert(index, obj)
+# index : the index for inseeting 
+# obj   : the object to insert 
+# DEMO:
+# In [25]: p= [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+# In [26]: p.sort(key = lambda x : (-x[0], x[1]))
+# In [27]: p
+# Out[27]: [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+# In [28]: p.insert(1, [6,1])
+# In [29]: p
+# Out[29]: [[7, 0], [6, 1], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+# In [30]: 
+class Solution(object):
+    def reconstructQueue(self, people):
+        """
+        :type people: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        people.sort(key = lambda x : (-x[0], x[1]))
+        res = []
+        for p in people:
+            res.insert(p[1], p)
+        return res
 
 # V2 
 # https://leoeatle.github.io/techBlog/2017/01/11/LeetCode-406-Queue-Reconstruction-by-Height/
