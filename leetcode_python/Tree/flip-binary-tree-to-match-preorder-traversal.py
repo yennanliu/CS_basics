@@ -1,6 +1,28 @@
 # V0 
 
-# V1 
+# V1
+# https://buptwc.com/2019/01/09/Leetcode-971-Flip-Binary-Tree-to-Match-Preorder-Traversal/
+class Solution(object):
+    def flipMatchVoyage(self, root, voyage):
+        self.index = 0
+        res = []
+        def dfs(root):
+            if not root: return True
+            if root.val != voyage[self.index]: return False
+            self.index += 1
+            # if there is left sub tree, and left sub tree value != current index value 
+            if root.left and root.left.val != voyage[self.index]:
+                if not root.right: return False
+                res.append(root.val)
+                # from right to left 
+                return dfs(root.right) and dfs(root.left)
+            return dfs(root.left) and dfs(root.right)
+
+        if dfs(root):
+            return res
+        return [-1]
+
+# V1'  
 # https://zxi.mytechroad.com/blog/tree/leetcode-971-flip-binary-tree-to-match-preorder-traversal/
 # https://zhanghuimeng.github.io/post/leetcode-971-flip-binary-tree-to-match-preorder-traversal/
 class Solution:
