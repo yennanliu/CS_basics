@@ -8,7 +8,6 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
 class Solution(object):
     def flipEquiv(self, root1, root2):
         """
@@ -24,7 +23,7 @@ class Solution(object):
                 self.flipEquiv(root1.right, root2.left)) or \
                 (self.flipEquiv(root1.left, root2.left) and 
                  self.flipEquiv(root1.right, root2.right))
-
+                
 # V2 
 # Time:  O(n)
 # Space: O(h)
