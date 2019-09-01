@@ -29,9 +29,46 @@ class Solution(object):
         return True
 
 # V1' 
-# https://blog.csdn.net/fuxuemingzhu/article/details/85385974
-# IDEA : DFS 
-# DEV 
+# https://www.jianshu.com/p/fcedb4635798
+class Solution:
+    def isUnivalTree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        values = []
+        
+        def getValues(node):
+            if node:
+                values.append(node.val)
+                getValues(node.left)
+                getValues(node.right)
+        
+        getValues(root)
+        return len(set(values)) == 1
+
+# V1'' 
+# https://www.jianshu.com/p/fcedb4635798
+class Solution:
+    def isUnivalTree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        root_val = root.val
+        
+        def hasUniValue(node):
+            if node:
+                return node.val == root_val and hasUniValue(node.left) and hasUniValue(node.right)
+            else:
+                return True
+        
+        return hasUniValue(root) 
+
+# V1''' 
+# https://www.jianshu.com/p/fcedb4635798
+def hasUniValue(node):
+    return not node or (node.val == root_val and hasUniValue(node.left) and hasUniValue(node.right))
 
 # V2 
 # Time:  O(n)
@@ -61,7 +98,6 @@ class Solution(object):
             s.append(node.right)
         return True
     
-
 # Time:  O(n)
 # Space: O(h)
 class Solution2(object):
