@@ -1,15 +1,38 @@
 # V0 
+from collections import deque
+class Solution:
+    def isCompleteTree(self, root):
+        if not root:
+            return True
+        q= deque([root])
+        no_sub_node = False
+        while q:
+            node = q.popleft()
+            if not node:
+                no_sub_node = True
+            else:
+                if no_sub_node:
+                    return False
+                q.append(node.left)
+                q.append(node.right)
+        return True
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/85032299
 # IDEA : BFS 
+# IDEA : USE BFS GO THROUGH TREE,
+# IF THERE IS ANY "NONE" AT A NODE THAT HAS SUB TREE -> RETURN FALSE (NOT a completeness binary tree)
+# ELSE : STILL  a completeness binary tree 
+# DEFINITION : completeness binary tree
+# Definition of a complete binary tree from Wikipedia:
+# In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
+import  collections
 class Solution(object):
     def isCompleteTree(self, root):
         """
@@ -25,16 +48,37 @@ class Solution(object):
             size = len(que)
             for i in range(size):
                 node = que.popleft()
-                if not node:
+                if not node:          # if there is NO sub tree, then hasNone = True is acceptable (as a completeness binary tree)
                     hasNone = True
                     continue
-                if hasNone:
+                if hasNone:           # if there is NO sub tree, then hasNone = True is NON acceptable (NOT a completeness binary tree)
                     return False
                 que.append(node.left)
                 que.append(node.right)
         return True
 
-# V1' 
+# V1'
+# https://www.jiuzhang.com/solution/check-completeness-of-a-binary-tree/#tag-other-lang-python
+# IDEA : BFS 
+from collections import deque
+class Solution:
+    def isCompleteTree(self, root: TreeNode) -> bool:
+        if not root:
+            return True
+        queue = deque([root])
+        is_miss = False
+        while queue:
+            node = queue.popleft()
+            if not node:
+                is_miss = True
+            else:
+                if is_miss:
+                    return False
+                queue.append(node.left)
+                queue.append(node.right)
+        return True
+
+# V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/85032299
 # IDEA : DFS 
 # Definition for a binary tree node.
@@ -43,7 +87,6 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
 class Solution(object):
     def isCompleteTree(self, root):
         """
@@ -111,7 +154,6 @@ class Solution(object):
                 next_level.append(node.right)
             current = next_level
         return  True
-
 
 # Time:  O(n)
 # Space: O(w)
