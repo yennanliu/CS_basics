@@ -66,9 +66,26 @@
 
 ## 3) DB design 
 
-- Concept 
-- Process 
-- Example 
+	- Process 
+
+
+	- Concept 
+
+		- STAR SCHEMA 
+			- With star shape, `FACT table` as the star center, while others are `dimension table` which give describe the attribution of FACT table.  
+			- `Dimension tables` are independent with each other 
+
+		- SNOWFLAKE SCHEMA
+			- Is an extension of STAR SHEMA actually
+			- `FACT table` at center, `dimension table` at the rest, the difference is that : `dimension table` is extenable. i.e. 
+			can track multiples `dimension table` together 
+			- Pro : Can split the data count at each dimension table -> fast operation like `join`
+			- Con : Have to maintain extra tables 
+
+
+		- CONSTELLATION SCHEMA OR GALAXY SCHEMA
+
+	- Example 
 
 ## 4) DB tuning 
 
@@ -79,3 +96,6 @@
 ## 7) Ref 
 - https://deliveroo.engineering/2017/11/23/engineering-interviews.html
 - https://www.2ndquadrant.com/en/postgresql/postgresql-vs-mysql/
+- https://blog.xuite.net/jack101257/twblog/138494904-%E4%BC%81%E6%A5%AD%E8%B3%87%E6%96%99%E5%80%89%E5%84%B2DWH%E7%B0%A1%E4%BB%8B
+
+
