@@ -78,7 +78,7 @@
 	- `Dimension tables` are independent with each other 
 
 - SNOWFLAKE SCHEMA
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/snowflake_schema.png" width="500" height="300">
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/snowflake_schema.jpg" width="500" height="300">
 
 	- Is an extension of STAR SHEMA actually
 	- `FACT table` at center, `dimension table` at the rest, the difference is that : `dimension table` is extenable. i.e. 
