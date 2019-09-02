@@ -72,22 +72,23 @@
 - Concept 
 
 - STAR SCHEMA 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/star_schema.png" width="500" height="300">
-
-- With star shape, `FACT table` as the star center, while others are `dimension table` which give describe the attribution of FACT table.  
-- `Dimension tables` are independent with each other 
+	- With star shape, `FACT table` as the star center, while others are `dimension table` which give describe the attribution of FACT table.  
+	- `Dimension tables` are independent with each other 
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/star_schema.png" width="500" height="300">
 
 - SNOWFLAKE SCHEMA
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/snowflake_schema.jpg" width="500" height="300">
+	- Is an extension of STAR SHEMA actually
+	- `FACT table` at center, `dimension table` at the rest, the difference is that : `dimension table` is extenable. i.e. 
+	can track multiples `dimension table` together 
+	- Pro : Can split the data count at each dimension table -> fast operation like `join`
+	- Con : Have to maintain extra tables 
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/snowflake_schema.jpg" width="500" height="300">
 
-- Is an extension of STAR SHEMA actually
-- `FACT table` at center, `dimension table` at the rest, the difference is that : `dimension table` is extenable. i.e. 
-can track multiples `dimension table` together 
-- Pro : Can split the data count at each dimension table -> fast operation like `join`
-- Con : Have to maintain extra tables 
 
+- GALAXY SCHEMA
+	- Galaxy schema contains many fact tables with some common dimensions (conformed dimensions). This schema is a combination of many data marts.
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/galaxy_schema.jpg" width="500" height="300">
 
-- CONSTELLATION SCHEMA OR GALAXY SCHEMA
 
 - Example 
 
