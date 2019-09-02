@@ -66,26 +66,31 @@
 
 ## 3) DB design 
 
-	- Process 
+- Process 
 
 
-	- Concept 
+- Concept 
 
-		- STAR SCHEMA 
-			- With star shape, `FACT table` as the star center, while others are `dimension table` which give describe the attribution of FACT table.  
-			- `Dimension tables` are independent with each other 
+	- STAR SCHEMA 
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/star_schema.png" width="300" height="300">
 
-		- SNOWFLAKE SCHEMA
-			- Is an extension of STAR SHEMA actually
-			- `FACT table` at center, `dimension table` at the rest, the difference is that : `dimension table` is extenable. i.e. 
-			can track multiples `dimension table` together 
-			- Pro : Can split the data count at each dimension table -> fast operation like `join`
-			- Con : Have to maintain extra tables 
+		- With star shape, `FACT table` as the star center, while others are `dimension table` which give describe the attribution of FACT table.  
+		- `Dimension tables` are independent with each other 
 
 
-		- CONSTELLATION SCHEMA OR GALAXY SCHEMA
 
-	- Example 
+
+	- SNOWFLAKE SCHEMA
+		- Is an extension of STAR SHEMA actually
+		- `FACT table` at center, `dimension table` at the rest, the difference is that : `dimension table` is extenable. i.e. 
+		can track multiples `dimension table` together 
+		- Pro : Can split the data count at each dimension table -> fast operation like `join`
+		- Con : Have to maintain extra tables 
+
+
+	- CONSTELLATION SCHEMA OR GALAXY SCHEMA
+
+- Example 
 
 ## 4) DB tuning 
 
