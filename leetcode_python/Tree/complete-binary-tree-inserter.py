@@ -59,7 +59,6 @@ class CBTInserter(object):
 #        insert:   O(1)
 #        get_root: O(1)
 # Space: O(n)
-
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
