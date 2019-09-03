@@ -8,7 +8,6 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
 class CBTInserter(object):
 
     def __init__(self, root):
