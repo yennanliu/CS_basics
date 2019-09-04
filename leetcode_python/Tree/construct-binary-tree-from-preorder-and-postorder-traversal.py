@@ -2,6 +2,13 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82391321
+# https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/solution/jian-dan-yi-dong-ban-by-a380922457-3/
+# IDEA :
+# FROM GIVEN POST AND PRE, WE CAN KNOW FOR THE BST :
+# pre[0] = root 
+# post[-1] = root 
+# -> post[-2] is the index of root at "RIGHT SUB TREE"
+# so after finding post[-2] as idx, we can split the tree into left tree, right tree  based on idx
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
