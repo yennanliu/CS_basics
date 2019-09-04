@@ -2,6 +2,10 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82432130
+# https://www.cnblogs.com/grandyang/p/10703653.html
+# IDEA :
+# CASE 1) : depth(left) == depth(right) -> return root 
+# CASE 2) : depth(left) >  depth(right) -> return left , depth(left) <  depth(right) -> return right  
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
