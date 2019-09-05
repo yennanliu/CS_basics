@@ -47,8 +47,68 @@ class MapSum(object):
         for letter in prefix:
             node = node.children.get(letter)
             if node is None: return 0
-        return node.sum
+        return node.sum       
+# Your MapSum object will be instantiated and called as such:
+# obj = MapSum()
+# obj.insert(key,val)
+# param_2 = obj.sum(prefix)
+
+# V1'
+# https://www.jiuzhang.com/solution/map-sum-pairs/#tag-highlight-lang-python
+class TrieNode:
+    def __init__(self):
+        self.son = {}
+        self.val = 0
+
+class Trie:
+    root = TrieNode()
+    
+    def insert(self, s, val):
+        cur = self.root
+        for i in range(0, len(s)):
+            if s[i] not in cur.son:
+                cur.son[s[i]] = TrieNode()
+            cur = cur.son[s[i]]
+            cur.val += val
+            
+    def find(self, s):
+        cur = self.root
+        for i in range(0, len(s)):
+            if s[i] not in cur.son:
+                return 0
+            cur = cur.son[s[i]]
+        return cur.val
+    
+    
+class MapSum:
+    
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.d = {}
+        self.trie = Trie()
         
+
+    def insert(self, key, val):
+        """
+        :type key: str
+        :type val: int
+        :rtype: void
+        """
+        if key in self.d:
+            self.trie.insert(key, val - self.d[key])
+        else:
+            self.trie.insert(key, val)
+        self.d[key] = val
+        
+
+    def sum(self, prefix):
+        """
+        :type prefix: str
+        :rtype: int
+        """
+        return self.trie.find(prefix)
 # Your MapSum object will be instantiated and called as such:
 # obj = MapSum()
 # obj.insert(key,val)
