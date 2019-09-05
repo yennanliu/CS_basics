@@ -34,7 +34,6 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
 class Solution(object):
     def longestUnivaluePath(self, root):
         """
@@ -55,6 +54,40 @@ class Solution(object):
         if root.right and root.right.val == root.val: pr = 1 + right
         self.res = max(self.res, pl + pr)
         return max(pl, pr)
+
+# V1''
+# https://www.jiuzhang.com/solution/longest-univalue-path/#tag-highlight-lang-python
+class Solution(object):
+    # dfs go through all left and right sub trees 
+    def do_dfs(self, root, answer):
+        
+        if not root:
+            return 0
+        
+        p1 = self.do_dfs(root.left, answer)
+        p2 = self.do_dfs(root.right, answer)
+
+        l,r = 0,0
+        if root.left and root.left.val == root.val:
+            l = p1+1
+        
+        if root.right and root.right.val == root.val:
+            r = p2+1
+        
+        answer[0] = max(answer[0] , l+r)
+        return max(l,r)
+                
+    def longestUnivaluePath(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root:
+            return 0
+        
+        answer = [-1]
+        self.do_dfs(root, answer)
+        return answer[0]
 
 # V2 
 # Time:  O(n)
