@@ -15,11 +15,28 @@
 class Solution(object):
     def moveZeroes(self, nums):
         return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ] 
-
-# V1 
+# V0'
+# DEMO 
+# In [59]:  array  = [9,0,0,1,5, 11, 7, 0 ]
+# In [60]: sol = Solution().moveZeroes(array)
+# [9, 0, 0, 1, 5, 11, 7, 0]
+# [9, 0, 0, 1, 5, 11, 7, 0]
+# [9, 0, 0, 1, 5, 11, 7, 0]
+# [9, 0, 0, 1, 5, 11, 7, 0]
+# [9, 1, 0, 0, 5, 11, 7, 0]
+# [9, 1, 5, 0, 0, 11, 7, 0]
+# [9, 1, 5, 11, 0, 0, 7, 0]
+# [9, 1, 5, 11, 7, 0, 0, 0]
+# In [61]: sol
+# Out[61]: [9, 1, 5, 11, 7, 0, 0, 0]
 class Solution(object):
     def moveZeroes(self, nums):
-        return sorted(nums)[::-1] 
+        y = 0
+        for x in range(len(nums)):
+            if nums[x] != 0:
+                nums[x], nums[y] = nums[y], nums[x]
+                y += 1
+        return nums 
 
 # V1' 
 class Solution(object):
@@ -43,10 +60,11 @@ class Solution(object):
     def moveZeroes(self, nums):
         y = 0
         for x in range(len(nums)):
-            if nums[x]:
+            if nums[x] != 0:
                 nums[x], nums[y] = nums[y], nums[x]
                 y += 1
-                
+        return nums 
+
 # V4 
 class Solution(object):
     def moveZeroes(self, nums):
