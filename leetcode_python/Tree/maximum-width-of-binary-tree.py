@@ -1,6 +1,46 @@
 # V0
 
-# V1 
+# V1
+# https://www.jiuzhang.com/solution/maximum-width-of-binary-tree/#tag-highlight-lang-python
+# IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
+#        -> SO GO THROUGH ALL LAYERS IN THE TREE, CALCULATE THEIR WIDTH, AND RETRUN THE MAX WIDTH WHICH IS THE NEEDED RESPONSE
+# DEMO :
+# given TREE : 
+#          1
+#        /   \
+#       3     2
+#      / \     \  
+#     5   3     9 
+#
+# -> its index 
+#
+#          0
+#        /   \
+#       0     1
+#      / \   / \  
+#     0   1 2   3  
+#
+# -> remove the null ones 
+#          0
+#        /   \
+#       0     1
+#      / \     \  
+#     0   1     3 
+class Solution(object):
+    def widthOfBinaryTree(self, root):
+        queue = [(root, 0, 0)]
+        cur_depth = left = ans = 0
+        for node, depth, pos in queue:
+            if node:
+                queue.append((node.left, depth+1, pos*2))
+                queue.append((node.right, depth+1, pos*2 + 1))
+                if cur_depth != depth:
+                    cur_depth = depth
+                    left = pos
+                ans = max(pos - left + 1, ans)
+        return ans
+
+# V1'
 # http://bookshadow.com/weblog/2017/08/21/leetcode-maximum-width-of-binary-tree/
 # Definition for a binary tree node.
 # class TreeNode(object):
