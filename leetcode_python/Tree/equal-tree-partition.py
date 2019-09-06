@@ -1,7 +1,31 @@
 # V0 
+# IDEA : GET THE SUM LIST (self.mp = {}), 
+#        -> THEN CHECK IF THERE EXIST ANY i, j IN  self.mp 
+#        -> SUCH THAT i = j/2 
+class Solution:
+    def checkEqualTree(self, root):
+        self.mp = {}
+        sum = self.dfs(root)
+        if(sum == 0):
+            return self.mp[0] > 1
+        return sum % 2 == 0 and not self.mp.get(sum / 2) == None
+
+    def dfs(self, root):
+        if(root == None):
+            return 0
+        sum = root.val + self.dfs(root.left) + self.dfs(root.right)
+        if(self.mp.get(sum) == None):
+            self.mp[sum] = 1
+        else:
+            self.mp[sum] += 1
+        return sum
 
 # V1 
 # http://bookshadow.com/weblog/2017/08/21/leetcode-equal-tree-partition/
+# IDEA : GET THE SUM OF ALL TREE, CHECK IF THERE IS SUB TREE SUM == 2* SUM 
+# PROCESS : 
+# STEP 1) GET THE SUM OF TREE
+# STEP 2) GO THROGH EACH ELEMENT, CHECK IF THE SUM OF ALL THEIR SUB TREE = 2* (SUM OF TOTAL TREE) 
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -23,6 +47,37 @@ class Solution(object):
         total = self.dmap[1]
         del self.dmap[1]
         return any(v * 2 == total for k, v in self.dmap.iteritems())
+
+# V1'
+# https://www.jiuzhang.com/solution/equal-tree-partition/#tag-highlight-lang-python
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+class Solution:
+    """
+    @param root: a TreeNode
+    @return: return a boolean
+    """
+    def checkEqualTree(self, root):
+        self.mp = {}
+        sum = self.dfs(root)
+        if(sum == 0):
+            return self.mp[0] > 1
+        return sum % 2 == 0 and not self.mp.get(sum / 2) == None
+
+    def dfs(self, root):
+        if(root == None):
+            return 0
+        sum = root.val + self.dfs(root.left) + self.dfs(root.right)
+        if(self.mp.get(sum) == None):
+            self.mp[sum] = 1
+        else:
+            self.mp[sum] += 1
+        return sum
 
 # V2 
 # Time:  O(n)
