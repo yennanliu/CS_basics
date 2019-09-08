@@ -2,6 +2,13 @@
 
 # V1 
 # http://bookshadow.com/weblog/2017/08/06/leetcode-maximum-binary-tree/
+# IDEA :
+# -> STEP 1) FIND THE INDEX OF MAX ELEMENT IN THE ARRAY 
+# -> STEP 2) SET THE MAX ELEMENT AS ROOT 
+# -> STEP 3) SPLIT THE ARRAY INTO LEFT AND RIGHT ON THE INDEX (OF MAX ELEMENT )
+# -> STEP 4) SET MAX ELEMENT IN LEFT ARRAY AS LEFT SUB TEREE 
+# -> STEP 5) SET MAX ELEMENT IN RIGHT ARRAY AS RIGHT SUB TEREE 
+# -> REPEAT STEP  3) - 5)
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
