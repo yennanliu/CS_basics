@@ -183,7 +183,7 @@
 949 | [Largest Time for Given Digits](https://leetcode.com/problems/largest-time-for-given-digits/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/largest-time-for-given-digits.py) | _O(1)_ | _O(1)_  | Easy || OK* 
 950 | [Reveal Cards In Increasing Order](https://leetcode.com/problems/reveal-cards-in-increasing-order/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/reveal-cards-in-increasing-order.py) | _O(n)_ | _O(n)_  | Medium  || AGAIN (not start)
 954 | [Array of Doubled Pairs](https://leetcode.com/problems/array-of-doubled-pairs/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/array-of-doubled-pairs.py) | _O(n + klogk)_ | _O(k)_  | Medium |`counter`, `dict`, `trick`| AGAIN** 
-961 | [N-Repeated Element in Size 2N Array](https://leetcode.com/problems/n-repeated-element-in-size-2n-array/) | [C++](./C++/n-repeated-element-in-size-2n-array.cpp) [Python](./Python/n-repeated-element-in-size-2n-array.py) | _O(n)_ | _O(1)_      | Easy         ||
+961 | [N-Repeated Element in Size 2N Array](https://leetcode.com/problems/n-repeated-element-in-size-2n-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/n-repeated-element-in-size-2n-array.py)  | _O(n)_ | _O(1)_  | Easy  || OK 
 
 
 ## Hash Table 
