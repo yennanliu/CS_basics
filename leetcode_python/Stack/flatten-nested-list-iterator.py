@@ -24,16 +24,34 @@
 #        """
 
 # V0
-# def NestedIterator(nestedList): 
-#     def flatten_n_list(n_list):
-#         output, tmp = [], []
-#         for i in n_list:
-#             if type(i) == list:
-#                 flatten_n_list(i)
-#             else:
-#                 tmp.append(x)
-#             yield tmp
-#     return [ x for x in flatten_n_list(nestedList)]
+import collections
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+        """
+        Initialize your data structure here.
+        :type nestedList: List[NestedInteger]
+        """
+        self.queue = collections.deque()
+        def getAll(nests):
+            for nest in nests:
+                if nest.isInteger():
+                    self.queue.append(nest.getInteger())
+                else:
+                    getAll(nest.getList())
+        getAll(nestedList)
+
+    def next(self):
+        """
+        :rtype: int
+        """
+        return self.queue.popleft()
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return len(self.queue)
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79529982
@@ -65,6 +83,37 @@ class NestedIterator(object):
         :rtype: bool
         """
         return len(self.queue)
+
+# V1'
+# https://www.jiuzhang.com/solution/flatten-nested-list-iterator/#tag-highlight-lang-python
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+        self.next_elem = None
+        self.stack = []
+        for elem in reversed(nestedList):
+            self.stack.append(elem)
+            
+    # @return {int} the next element in the iteration
+    def next(self):
+        if self.next_elem is None:
+            self.hasNext()
+        temp, self.next_elem = self.next_elem, None
+        return temp
+        
+    # @return {boolean} true if the iteration has more element or false
+    def hasNext(self):
+        if self.next_elem:
+            return True
+            
+        while self.stack:
+            top = self.stack.pop()
+            if top.isInteger():
+                self.next_elem = top.getInteger()
+                return True
+            for elem in reversed(top.getList()):
+                self.stack.append(elem)
+        return False
 
 # V2 
 # Time:  O(n), n is the number of the integers.
