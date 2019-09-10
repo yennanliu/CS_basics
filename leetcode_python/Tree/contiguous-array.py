@@ -10,10 +10,26 @@ Input: [0,1,0]
 Output: 2
 Explanation: [0, 1] (or [1, 0]) is a longest CONTIGUOUS  subarray with equal number of 0 and 1.
 Note: The length of the given binary array will not exceed 50,000.
+
 """
 
-
 # V0 
+class Solution(object):
+    def findMaxLength(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        result, count = 0, 0
+        lookup = {0: -1}
+        for i, num in enumerate(nums):
+            count += 1 if num == 1 else -1
+            if count in lookup:
+                result = max(result, i - lookup[count])
+            else:
+                lookup[count] = i
+
+        return result
 
 # V1
 # https://www.jiuzhang.com/solution/contiguous-array/#tag-highlight-lang-python
