@@ -1,17 +1,45 @@
 # V0
 
 # V1
-# https://blog.csdn.net/coder_orz/article/details/51720978
+# https://www.hrwhisper.me/leetcode-range-sum-query-mutable/
 class NumArray(object):
     def __init__(self, nums):
         """
         initialize your data structure here.
         :type nums: List[int]
         """
-        self.sums = [0] * (len(nums)+1)
+        self.sum_array = [0] * (len(nums) + 1)
+        self.nums = nums
+        self.n = len(nums)
         for i in range(len(nums)):
-            self.sums[i+1] = self.sums[i] + nums[i]
-
+            self.add(i + 1,nums[i])
+ 
+ 
+    def add(self,x,val):
+        while x <= self.n:
+            self.sum_array[x] += val
+            x += self.lowbit(x)
+ 
+ 
+    def lowbit(self,x):
+        return x & -x
+ 
+    def sum(self,x):
+        res = 0
+        while x >0:
+            res += self.sum_array[x]
+            x -= self.lowbit(x)
+        return res
+ 
+    def update(self, i, val):
+        """
+        :type i: int
+        :type val: int
+        :rtype: int
+        """
+        self.add(i + 1, val - self.nums[i])
+        self.nums[i] = val
+ 
     def sumRange(self, i, j):
         """
         sum of elements nums[i..j], inclusive.
@@ -19,7 +47,8 @@ class NumArray(object):
         :type j: int
         :rtype: int
         """
-        return self.sums[j+1] - self.sums[i]
+        if not self.nums: return  0
+        return self.sum(j+1) - self.sum(i)
 
 # V2 
 # Time:  ctor:   O(n),
