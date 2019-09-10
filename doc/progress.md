@@ -6,6 +6,19 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
+# 2019-09-10   
+
+- DOING  : Union find, Graph, Geometry, Simulation 
+	- `shop*** review`
+		- spark 
+		- hadoop 
+	-  `smart*** review`
+		- sql group count on window func
+		- array = [a1, a2..an], find sub array [a1', a2' ..] that `a1' -a2' == k*M` for any  2 elements in  sub array
+- Reviewing : Breadth-First Search
+- REDO      : Dynamic Programming, Linked list, Math, Recursion, DFS, Stack revisit, Depth-First Search, Binary Search, Heap, Backtracking, Greedy, SQL, String, stack, Tree, Binary Search Tree, Bit Manipulation, Hash Table, Array
+- Reviewed : Two Pointers, Sort, Tree
+
 # 2019-09-09  
 
 - DOING  : Union find, Graph, Geometry, Simulation 
