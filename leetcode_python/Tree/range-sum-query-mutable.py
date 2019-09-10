@@ -9,7 +9,7 @@ class NumArray(object):
         :type nums: List[int]
         """
         self.sums = [0] * (len(nums)+1)
-        for i in xrange(len(nums)):
+        for i in range(len(nums)):
             self.sums[i+1] = self.sums[i] + nums[i]
 
     def sumRange(self, i, j):
@@ -36,10 +36,10 @@ class NumArray(object):
             return
         self.__nums = nums
         self.__bit = [0] * (len(self.__nums) + 1)
-        for i in xrange(1, len(self.__bit)):
+        for i in range(1, len(self.__bit)):
             self.__bit[i] = nums[i-1] + self.__bit[i-1]
 
-        for i in reversed(xrange(1, len(self.__bit))):
+        for i in reversed(range(1, len(self.__bit))):
             last_i = i - (i & -i)
             self.__bit[i] -= self.__bit[last_i]
 
