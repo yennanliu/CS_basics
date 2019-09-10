@@ -22,7 +22,68 @@
 
 # V0 
 
-# V1 
+# V1
+# https://www.jiuzhang.com/solution/flatten-2d-vector/#tag-highlight-lang-python
+class Vector2D(object):
+
+    # @param vec2d {List[List[int]]}
+    def __init__(self, vec2d):
+        # Initialize your data structure here
+        self.row, self.col, self.vec2d = 0, 0, vec2d
+        
+
+    # @return {int} a next element
+    def next(self):
+        # Write your code here
+        self.col += 1
+        return self.vec2d[self.row][self.col - 1]
+        
+
+    # @return {boolean} true if it has next element
+    # or false
+    def hasNext(self):
+        # Write your code here
+        while self.row < len(self.vec2d) and \
+            self.col >= len(self.vec2d[self.row]):
+            self.row, self.col = self.row + 1, 0
+        return self.row < len(self.vec2d)
+
+# V1'
+# https://www.jiuzhang.com/solution/flatten-2d-vector/#tag-highlight-lang-python
+class Vector2D(object):
+
+    # @param vec2d {List[List[int]]}
+    def __init__(self, vec2d):
+        self.vec2d = vec2d
+        self.row, self.col = 0, -1
+        self.next_elem = None
+
+    # @return {int} a next element
+    def next(self):
+        if self.next_elem is None:
+            self.hasNext()
+            
+        temp, self.next_elem = self.next_elem, None
+        return temp
+
+    # @return {boolean} true if it has next element
+    # or false
+    def hasNext(self):
+        if self.next_elem:
+            return True
+        
+        self.col += 1
+        while self.row < len(self.vec2d) and self.col >= len(self.vec2d[self.row]):
+            self.row += 1
+            self.col = 0
+            
+        if self.row < len(self.vec2d) and self.col < len(self.vec2d[self.row]):
+            self.next_elem = self.vec2d[self.row][self.col]
+            return True
+            
+        return False
+        
+# V1'' 
 # http://www.voidcn.com/article/p-qxkyrjri-zo.html
 class Vector2D(object):
 
