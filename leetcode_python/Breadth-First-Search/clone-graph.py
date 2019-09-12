@@ -60,7 +60,76 @@ class Solution(object):
                     que.append(n)
                 hashd[t].neighbors.append(hashd[n])
         return node_copy
+
+# V1''
+# https://www.jiuzhang.com/solution/clone-graph/#tag-highlight-lang-python
+# IDEA : DFS 
+"""
+Definition for a undirected graph node
+class UndirectedGraphNode:
+    def __init__(self, x):
+        self.label = x
+        self.neighbors = []
+"""
+class Solution:
+
+    def __init__(self):
+        self.dict = {}
         
+    """
+    @param: node: A undirected graph node
+    @return: A undirected graph node
+    """
+    def cloneGraph(self, node):
+        if node is None:
+            return None
+            
+        if node.label in self.dict:
+            return self.dict[node.label]
+            
+        root = UndirectedGraphNode(node.label)
+        self.dict[node.label] = root
+        for item in node.neighbors:
+            root.neighbors.append(self.cloneGraph(item))
+        return root
+
+# V1''' 
+# https://www.jiuzhang.com/solution/clone-graph/#tag-highlight-lang-python
+# IDEA : BFS 
+class Solution:
+    def cloneGraph(self, node):
+        root = node
+        if node is None:
+            return node
+            
+        # use bfs algorithm to traverse the graph and get all nodes.
+        nodes = self.getNodes(node)
+        
+        # copy nodes, store the old->new mapping information in a hash map
+        mapping = {}
+        for node in nodes:
+            mapping[node] = UndirectedGraphNode(node.label)
+        
+        # copy neighbors(edges)
+        for node in nodes:
+            new_node = mapping[node]
+            for neighbor in node.neighbors:
+                new_neighbor = mapping[neighbor]
+                new_node.neighbors.append(new_neighbor)
+        
+        return mapping[root]
+        
+    def getNodes(self, node):
+        q = collections.deque([node])
+        result = set([node])
+        while q:
+            head = q.popleft()
+            for neighbor in head.neighbors:
+                if neighbor not in result:
+                    result.add(neighbor)
+                    q.append(neighbor)
+        return result
+
 # V2 
 # Time:  O(n)
 # Space: O(n)
