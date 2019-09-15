@@ -28,7 +28,69 @@ class Solution:
                 ans.append(x)
                 courses.remove(x)
         return [[], ans][len(courses) == 0]
-        
+
+# V1'
+# https://blog.csdn.net/fuxuemingzhu/article/details/83302328
+# IDEA : DFS 
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+        graph = collections.defaultdict(list)
+        for u, v in prerequisites:
+            graph[u].append(v)
+        # 0 = Unknown, 1 = visiting, 2 = visited
+        visited = [0] * numCourses
+        path = []
+        for i in range(numCourses):
+            if not self.dfs(graph, visited, i, path):
+                return []
+        return path
+    
+    def dfs(self, graph, visited, i, path):
+        if visited[i] == 1: return False
+        if visited[i] == 2: return True
+        visited[i] = 1
+        for j in graph[i]:
+            if not self.dfs(graph, visited, j, path):
+                return False
+        visited[i] = 2
+        path.append(i)
+        return True
+
+# V1''
+# https://blog.csdn.net/fuxuemingzhu/article/details/83302328
+# IDEA : BFS 
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+        graph = collections.defaultdict(list)
+        indegrees = collections.defaultdict(int)
+        for u, v in prerequisites:
+            graph[v].append(u)
+            indegrees[u] += 1
+        path = []
+        for i in range(numCourses):
+            zeroDegree = False
+            for j in range(numCourses):
+                if indegrees[j] == 0:
+                    zeroDegree = True
+                    break
+            if not zeroDegree:
+                return []
+            indegrees[j] -= 1
+            path.append(j)
+            for node in graph[j]:
+                indegrees[node] -= 1
+        return path
+
 # V2 
 from collections import defaultdict, deque
 class Solution(object):
@@ -58,10 +120,7 @@ class Solution(object):
                     in_degree[course].discard(prerequisite)
                     if not in_degree[course]:
                         zero_in_degree_queue.append(course)
-
                 del out_degree[prerequisite]
-
         if out_degree:
             return []
-
         return res
