@@ -2,6 +2,7 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82903720
+import collections
 class Solution(object):
     def minMutation(self, start, end, bank):
         """
@@ -23,6 +24,35 @@ class Solution(object):
                     if newGene in bank and newGene != gene:
                         bfs.append((newGene, step + 1))
                         bank.remove(newGene)
+        return -1
+
+# V1'
+# https://www.jiuzhang.com/solution/minimum-genetic-mutation/#tag-highlight-lang-python
+from collections import deque
+class Solution:
+    """
+    @param start: 
+    @param end: 
+    @param bank: 
+    @return: the minimum number of mutations needed to mutate from "start" to "end"
+    """
+    def minMutation(self, start, end, bank):
+        # Write your code here
+        if not bank:
+            return -1
+        bank = set(bank)
+        h = deque()
+        h.append((start, 0))
+        while h:
+            seq, step = h.popleft()
+            if seq == end:
+                return step
+            for c in "ACGT":
+                for i in range(len(seq)):
+                    new_seq = seq[:i] + c + seq[i + 1:]
+                    if new_seq in bank:
+                        h.append((new_seq, step + 1))
+                        bank.remove(new_seq)
         return -1
 
 # V2 
@@ -56,5 +86,4 @@ class Solution(object):
                     if next_str in lookup and lookup[next_str] == False:
                         q.append((next_str, level+1))
                         lookup[next_str] = True
-
         return -1
