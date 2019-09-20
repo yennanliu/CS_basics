@@ -2,6 +2,7 @@
 
 # V1 
 # http://bookshadow.com/weblog/2017/03/19/leetcode-01-matrix/
+# IDEA : QUEUE 
 class Solution(object):
     def updateMatrix(self, matrix):
         """
@@ -17,7 +18,8 @@ class Solution(object):
             nqueue, mqueue = [], []
             for x, y in queue:
                 zero = 0
-                for dx, dy in zip((1, 0, -1, 0), (0, 1, 0, -1)):
+                #for dx, dy in zip((1, 0, -1, 0), (0, 1, 0, -1)):
+                for dx, dy in [[1,0], [0,1], [-1,0], [0,-1]]:
                     nx, ny = x + dx, y + dy
                     if 0 <= nx < h and 0 <= ny < w and matrix[nx][ny] == 0:
                         zero += 1
@@ -30,7 +32,35 @@ class Solution(object):
                 matrix[x][y] = 0
             queue = nqueue
         return ans
-        
+
+# V1'
+# https://www.jiuzhang.com/solution/01-matrix/#tag-highlight-lang-python
+class Solution:
+    """
+    @param matrix: a 0-1 matrix
+    @return: return a matrix
+    """
+    def updateMatrix(self, matrix):
+        # write your code here
+        n, m = len(matrix), len(matrix[0])
+        dp = [[100000 for j in range(m)] for i in range(n)]
+        for i in range(n):
+            for j in range(m):
+                if (matrix[i][j] == 0):
+                    dp[i][j] = 0
+                if (i > 0):
+                    dp[i][j] = min(dp[i][j], dp[i - 1][j] + 1)
+                if (j > 0):
+                    dp[i][j] = min(dp[i][j], dp[i][j - 1] + 1)
+        for i in range(n - 1, -1, -1):
+            for j in range(m - 1, -1, -1):
+                if (dp[i][j] > 0):
+                    if (i < n - 1):
+                        dp[i][j] = min(dp[i][j], dp[i + 1][j] + 1)
+                    if (j < m - 1):
+                        dp[i][j] = min(dp[i][j], dp[i][j + 1] + 1)
+        return dp
+
 # V2 
 # Time:  O(m * n)
 # Space: O(m * n)
