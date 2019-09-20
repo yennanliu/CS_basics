@@ -3,6 +3,7 @@
 # V1 
 # http://bookshadow.com/weblog/2017/01/29/leetcode-the-maze-ii/
 # IDEA : BFS 
+import collections
 class Solution(object):
     def findShortestWay(self, maze, ball, hole):
         """
@@ -43,6 +44,7 @@ class Solution(object):
 # V1' 
 # http://bookshadow.com/weblog/2017/01/29/leetcode-the-maze-ii/
 # IDEA : Dijkstra ALGORITHM
+import collections
 class Solution(object):
     def findShortestWay(self, maze, ball, hole):
         """
@@ -82,6 +84,44 @@ class Solution(object):
                     bmap[np] = (ndist, npath, np)
         return 'impossible'
         
+# V1''
+# https://www.jiuzhang.com/solution/the-maze-ii/#tag-other-lang-python
+# IDEA : BFS 
+import collections
+def shortestDistance(self, maze, start, destination):
+        # write your code here
+        D=[[-1,0],[1,0],[0,1],[0,-1]]
+        n,m=len(maze),len(maze[0])
+        q=collections.deque([[start[0],start[1],0]])     
+        result=float('inf')
+        while q:
+            x,y,l=q.popleft()
+            maze[x][y]=2
+            if x==destination[0] and y==destination[1]:
+                result=min(l,result)
+
+            tmp=l
+            for i,j in D:
+                row=x+i
+                col=y+j
+                l+=1
+                while 0<=row<n and 0<=col<m and maze[row][col]!=1:
+                    row+=i
+                    col+=j
+                    l+=1
+                
+                row-=i
+                col-=j
+                l-=1
+                if maze[row][col]==0:
+                    q.append([row,col,l])
+                
+                l=tmp
+
+        if result==float('inf'):
+            return -1
+        return result
+
 # V2 
 # Time:  O(max(r, c) * wlogw)
 # Space: O(w)
