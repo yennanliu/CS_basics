@@ -77,6 +77,7 @@
 ||Merge sort|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py)  | | | OK* (2)| 
 ||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py) | | | AGAIN| 
 ||Selection sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py) | | | AGAIN| 
+||Topological sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py) | | | AGAIN| 
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
 ||Union Find | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py) | | | AGAIN| 
 
