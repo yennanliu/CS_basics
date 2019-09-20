@@ -44,6 +44,65 @@ class Solution(object):
                 dist = ndist
                 ans = leaf
         return ans.val
+        
+# V1'
+# https://www.jiuzhang.com/solution/closest-leaf-in-a-binary-tree/#tag-highlight-lang-python
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+class Solution:
+    """
+    @param root: the root
+    @param k: an integer
+    @return: the value of the nearest leaf node to target k in the tree
+    """
+    def findClosestLeaf(self, root, k):
+        parents = {}
+        pValK = self._dfs(root, k, parents)
+        
+        q = [pValK]
+        vis = [pValK]
+        
+        while len(q) != 0:
+            if q[0].left == None and q[0].right == None:
+                return q[0].val
+            
+            if q[0].left != None and (not q[0].left in vis):
+                q.append(q[0].left)
+                vis.append(q[0].left)
+                
+            if q[0].right != None and (not q[0].right in vis):
+                q.append(q[0].right)
+                vis.append(q[0].right)
+             
+            if q[0] in parents and (not parents[q[0]] in vis): 
+                q.append(parents[q[0]])
+                vis.append(parents[q[0]])
+            
+            q.pop(0)
+        
+        return 0
+            
+    def _dfs(self, rt, k, parents):
+        res = rt
+        tmp = None
+        
+        if rt.left != None:
+            parents[rt.left] = rt
+            tmp = self._dfs(rt.left, k, parents)
+            if tmp.val == k:
+                res = tmp
+            
+        if rt.right != None:
+            parents[rt.right] = rt
+            tmp = self._dfs(rt.right, k, parents)
+            if tmp.val == k:
+                res = tmp      
+        return res
 
 # V2 
 # Time:  O(n)
