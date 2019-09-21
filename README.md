@@ -693,7 +693,7 @@
 787|[Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/cheapest-flights-within-k-stops.py) | _O(\|E\| * log\|V\|)_ | _O(\|E\|)_ | Medium | `Dijkstra's algorithm`   | AGAIN (not start)
 886|[Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/possible-bipartition.py) | _O(\|V\| + \|E\|)_ | _O(\|V\| + \|E\|)_ | Medium | | AGAIN (not start)
 934|[Shortest Bridge](https://leetcode.com/problems/shortest-bridge/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/shortest-bridge.py) | _O(n^2)_ | _O(n^2)_ | Medium |  BFS, DFS | AGAIN (not start)
-967|[Numbers With Same Consecutive Differences](https://leetcode.com/problems/numbers-with-same-consecutive-differences/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/numbers-with-same-consecutive-differences.py) | _O(2^n)_ | _O(2^n)_ | Medium | | AGAIN* 
+967|[Numbers With Same Consecutive Differences](https://leetcode.com/problems/numbers-with-same-consecutive-differences/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/numbers-with-same-consecutive-differences.py) | _O(2^n)_ | _O(2^n)_ | Medium |`good trick` | AGAIN** (3)
 
 
 ## Depth-First Search 

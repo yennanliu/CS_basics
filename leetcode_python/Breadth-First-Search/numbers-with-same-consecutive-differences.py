@@ -2,6 +2,7 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/85387183
+# https://zxi.mytechroad.com/blog/searching/967-numbers-with-same-consecutive-differences/
 class Solution(object):
     def numsSameConsecDiff(self, N, K):
         """
