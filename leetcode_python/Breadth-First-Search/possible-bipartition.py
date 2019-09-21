@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82827177
+# https://www.youtube.com/watch?v=VlZiMD7Iby4
+# IDEA : BFS 
 class Solution(object):
     def possibleBipartition(self, N, dislikes):
         """
@@ -29,7 +31,10 @@ class Solution(object):
                         color[e] = -color[cur]
                         bfs.append(e)
         return True
-        
+ 
+# V1'
+# IDEA : DFS 
+       
 # V2 
 # Time:  O(|V| + |E|)
 # Space: O(|V| + |E|)

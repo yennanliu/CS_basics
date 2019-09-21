@@ -52,7 +52,7 @@ class Solution:
                 x, y = i + d[0], j + d[1]
                 if 0 <= x < M and 0 <= y < N:
                     self.dfs(A, x, y, visited, que)
-                    
+
 # V2 
 # Time:  O(n^2)
 # Space: O(n^2)
