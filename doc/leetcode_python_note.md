@@ -42,8 +42,43 @@ def bfs(root):
 - Example 
 
 ```python
+# leetcode #841 Keys and Rooms
+# DFS
+class Solution:
+    def canVisitAllRooms(self, rooms):
+        """
+        :type rooms: List[List[int]]
+        :rtype: bool
+        """
+        visited = [0] * len(rooms)
+        self.dfs(rooms, 0, visited)
+        return sum(visited) == len(rooms)
+        
+    def dfs(self, rooms, index, visited):
+        visited[index] = 1
+        for key in rooms[index]:
+            if not visited[key]:
+                self.dfs(rooms, key, visited) 
+                
+# BFS 
+import collections
+class Solution:
+    """
+    @param rooms: a list of keys rooms[i]
+    @return: can you enter every room
+    """
+    def canVisitAllRooms(self, rooms):
+        # Write your code here
+        q, seen = collections.deque([0]), {0}        
+        while q:
+            if len(seen) == len(rooms): return True
+            k = q.popleft()            
+            for v in rooms[k]:
+                if v not in seen:
+                    seen.add(v)
+                    q.append(v)                  
+        return len(seen) == len(rooms)
 
-# DFS (Iteration)
 ```
 ```python
 # DFS (Recursion) 
