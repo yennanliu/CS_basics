@@ -26,7 +26,37 @@ class Solution:
         for i in range(len(quiet)):
             dfs(i)
         return res
+
+# V1'
+# https://www.jiuzhang.com/solution/loud-and-rich/#tag-highlight-lang-python
+class Solution:
+    """
+    @param richer: the richer array
+    @param quiet: the quiet array
+    @return: the answer
+    """
+    def loudAndRich(self, richer, quiet):
+        # Write your code here
+        from collections import defaultdict
+        graph = defaultdict(list)
+        for x, y in richer:
+            graph[y].append(x)
+        n = len(quiet)
+        res = [-1]*n
         
+        def dfs(person):
+            if res[person] >= 0:
+                return res[person]
+            res[person] = person
+            for i in graph[person]:
+                if quiet[res[person]] > quiet[dfs(i)]:
+                    res[person] = res[i]
+            return res[person]
+        
+        for person in range(n):
+            dfs(person)
+        return res
+
 # V2 
 # Time:  O(q + r)
 # Space: O(q + r)
