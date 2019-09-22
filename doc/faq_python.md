@@ -40,9 +40,10 @@ def findall_2(x, y):
 # [i for i in findall(x, y)]
 
 ```
+## Defaultdict 
 
-#### 2) Given an array : richer = [[1,0],[2,1],[3,1],[3,7],[4,3],[5,3],[6,3]] with the form :
-[ppl, richer ppl](i.e.:`0>1`,`1>2`,`1>3`...). Find the list 
+#### 1) Given an array : richer = [[1,0],[2,1],[3,1],[3,7],[4,3],[5,3],[6,3]] with the form :[ppl, richer ppl]
+`(i.e.:`0>1`,`1>2`,`1>3`...) `Find the list 
 of ppl with ppl that richer than them?
 
 ```python 
@@ -54,6 +55,8 @@ for i, j in richer:
     ppl_richer[i].append(j)
 
 print (ppl_richer)
+#>>> defaultdict(<class 'list'>, {1: [0], 2: [1], 3: [1, 7], 4: [3], 5: [3], 6: [3]})
+
 
 ```
 
