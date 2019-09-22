@@ -39,6 +39,26 @@ class Solution(object):
         for node in graph[start]:
             self.dfs(graph, node, end, res, path + [node])
 
+# V1''
+# https://www.jiuzhang.com/solution/all-paths-from-source-to-target/#tag-highlight-lang-python
+# IDEA : DFS 
+class Solution:
+    """
+    @param graph: a 2D array
+    @return: all possible paths from node 0 to node N-1
+    """
+    def allPathsSourceTarget(self, graph):
+        N = len(graph)
+        res = []
+        def dfs(N, graph, start, res, path):
+            if start == N-1:
+                res.append(path)
+            else:
+                for node in graph[start]:
+                    dfs(N, graph, node, res, path + [node])
+        dfs(N, graph, 0, res, [0])
+        return (res)
+
 # V2 
 # Time:  O(p + r * n), p is the count of all the possible paths in graph, r is the count of the result.
 # Space: O(n)
