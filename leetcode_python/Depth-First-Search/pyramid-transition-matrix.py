@@ -2,6 +2,7 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82469175
+# IDEA : BACKTRACKING 
 class Solution(object):
     def pyramidTransition(self, bottom, allowed):
         """
@@ -26,10 +27,45 @@ class Solution(object):
                 if self.helper(curr, above + ch, m):
                     return True
         return False
-        
+  
+# V1'
+# https://www.jiuzhang.com/solution/pyramid-transition-matrix/#tag-highlight-lang-python
+# IDEA : DFS 
+class Solution:
+    """
+    @param bottom: a string
+    @param allowed: a list of strings
+    @return: return a boolean
+    """
+    def dfs(self, curr, bottoms, nextlevel):
+        if len(curr) == 1:
+            if not nextlevel:
+                return True
+            else:
+                return self.dfs(nextlevel, bottoms, '')
+
+        for i in range(len(curr)-1):
+            key = curr[i:i+2]
+            if key not in bottoms:
+                return False
+            else:
+                for top in bottoms[key]:
+                    if self.dfs(curr[1:], bottoms, nextlevel + top):
+                        return True
+        return False
+    
+    def pyramidTransition(self, bottom, allowed):
+        mydict = {}
+        for ele in allowed:
+            if ele[:-1] not in mydict:
+                mydict[ele[:-1]] = [ele[-1]]
+            else:
+                mydict[ele[:-1]].append(ele[-1])
+        return self.dfs(bottom, mydict, '')
+
 # V2 
 # Time:  O((a^(b+1)-a)/(a-1)) = O(a^b) , a is the size of allowed,
-#                                        b is the length of bottom
+# b is the length of bottom
 # Space: O((a^(b+1)-a)/(a-1)) = O(a^b)
 class Solution(object):
     def pyramidTransition(self, bottom, allowed):
