@@ -185,6 +185,7 @@
 950 | [Reveal Cards In Increasing Order](https://leetcode.com/problems/reveal-cards-in-increasing-order/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/reveal-cards-in-increasing-order.py) | _O(n)_ | _O(n)_  | Medium  || AGAIN (not start)
 954 | [Array of Doubled Pairs](https://leetcode.com/problems/array-of-doubled-pairs/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/array-of-doubled-pairs.py) | _O(n + klogk)_ | _O(k)_  | Medium |`counter`, `dict`, `trick`| AGAIN** 
 961 | [N-Repeated Element in Size 2N Array](https://leetcode.com/problems/n-repeated-element-in-size-2n-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/n-repeated-element-in-size-2n-array.py)  | _O(n)_ | _O(1)_  | Easy  || OK 
+004 | [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) | | _O(n)_ | _O(1)_  | Medium |`fb`|  
 
 
 ## Hash Table 
@@ -718,7 +719,7 @@
 547| [Friend Circles](https://leetcode.com/problems/friend-circles/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/friend-circles.py)  | _O(n^2)_  | _O(n)_ | Medium | Union Find, `FB`| AGAIN*** (2) (not start)
 582| [Kill Process](https://leetcode.com/problems/kill-process/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/kill-process.py)  | _O(n)_          | _O(n)_          | Medium     |🔒,  DFS, BFS | AGAIN* 
 638| [Shopping Offers](https://leetcode.com/problems/shopping-offers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/shopping-offers.py)  | _O(n * 2^n)_          | _O(n)_          | Medium      || AGAIN (not start*)
-690| [Employee Importance](https://leetcode.com/problems/employee-importance/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/employee-importance.py) | _O(n)_          | _O(h)_          | Easy | DFS, BFS,`good basic` ,`UBER`| OK**
+690| [Employee Importance](https://leetcode.com/problems/employee-importance/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/employee-importance.py) | _O(n)_   | _O(h)_  | Easy | DFS, BFS,`good basic` ,`UBER`| OK** (3)
 694| [Number of Distinct Islands](https://leetcode.com/problems/number-of-distinct-islands/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/number-of-distinct-islands.py)  | _O(m * n)_   | _O(m * n)_     | Medium     |🔒,  compare with `# 200 Number of Islands`, `amazon`| AGAIN (not start)
 695| [Max Area of Island](https://leetcode.com/problems/max-area-of-island/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/max-area-of-island.py)  | _O(m * n)_  | _O(m * n)_ | Easy |`amazon`, `microsoft`, `linkedin`, `basic`| AGAIN* (3)
 733| [Flood Fill](https://leetcode.com/problems/flood-fill/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/flood-fill.py) | _O(m * n)_  | _O(m * n)_  | Easy |`fb`, `amazon`, `good basic`|  OK*** (3)
