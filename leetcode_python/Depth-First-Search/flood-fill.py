@@ -1,6 +1,21 @@
 # V0 
 
-# V1 
+# V1'
+# https://www.jiuzhang.com/solution/flood-fill/#tag-highlight-lang-python
+# IDEA : DFS 
+class Solution(object):
+    def floodFill(self, image, sr, sc, newColor):
+        rows, cols, orig_color = len(image), len(image[0]), image[sr][sc]
+        def traverse(row, col):
+            if (not (0 <= row < rows and 0 <= col < cols)) or image[row][col] != orig_color:
+                return
+            image[row][col] = newColor
+            [traverse(row + x, col + y) for (x, y) in ((0, 1), (1, 0), (0, -1), (-1, 0))]
+        if orig_color != newColor:
+            traverse(sr, sc)
+        return image 
+
+# V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79401716
 # IDEA : DFS 
 class Solution(object):
@@ -25,7 +40,7 @@ class Solution(object):
         dfs(sr, sc)
         return image
 
-# V1' 
+# V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79401716
 # IDEA : BFS 
 class Solution:
@@ -51,7 +66,7 @@ class Solution:
                 if 0 <= newx < M and 0 <= newy < N and image[newx][newy] == start:
                     que.append((newx, newy))
         return image
-        
+
 # V2 
 # Time:  O(m * n)
 # Space: O(m * n)
