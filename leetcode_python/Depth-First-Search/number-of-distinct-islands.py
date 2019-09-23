@@ -27,10 +27,48 @@ class Solution:
                     # get the shape of island
                     pos = []
                     dfs(x, y, pos, (0, 0))
-                    shapes.add(tuple(pos))
-                    
+                    shapes.add(tuple(pos))            
         return len(shapes)
+
+# V1'
+# https://www.jiuzhang.com/solution/number-of-distinct-islands/#tag-highlight-lang-python
+# IDEA : DFS / BFS 
+class Solution:
+    """
+    @param grid: a list of lists of integers
+    @return: return an integer, denote the number of distinct islands
+    """
+    def numberofDistinctIslands(self, grid):
+        self.n = len(grid)
+        self.m = len(grid[0])
         
+        islands = set()
+        
+        for i in range(self.n):
+            for j in range(self.m):
+                if grid[i][j] == 1:
+                    aIsland = set()
+                    self.dfs(i, j, grid, aIsland, i, j)
+                    islands.add(tuple(aIsland))
+        
+        return len(islands)
+                
+    def dfs(self, x, y, grid, aIsland, bx, by):
+        grid[x][y] = 0
+        aIsland.add((x - bx, y - by))
+        for i in range(4):
+            nx = x + self.dx[i]
+            ny = y + self.dy[i]
+            if nx < 0 or nx >= self.n or ny < 0 or ny >= self.m or grid[nx][ny] != 1:
+                continue
+            self.dfs(nx, ny, grid, aIsland, bx, by)
+        
+    def __init__(self):
+        self.n = 0
+        self.m = 0
+        self.dx = [0, 0, 1, -1]
+        self.dy = [1, -1, 0, 0]
+
 # V2 
 # Time:  O(m * n)
 # Space: O(m * n)
