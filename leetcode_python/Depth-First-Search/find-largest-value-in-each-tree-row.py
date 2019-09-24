@@ -1,4 +1,21 @@
 # V0 
+# IDEA : DFS 
+class Solution(object):
+    def largestValues(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        levels = []
+        self.dfs(root, levels, 0)
+        return [max(l) for l in levels]
+    
+    def dfs(self, root, levels, level):
+        if not root: return
+        if level == len(levels): levels.append([])
+        levels[level].append(root.val)
+        self.dfs(root.left, levels, level + 1)
+        self.dfs(root.right, levels, level + 1)
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/70183314
@@ -55,6 +72,23 @@ class Solution(object):
         levels[level].append(root.val)
         self.dfs(root.left, levels, level + 1)
         self.dfs(root.right, levels, level + 1)
+
+# V1''
+# https://www.jiuzhang.com/solution/find-largest-value-in-each-tree-row/#tag-highlight-lang-python
+# IDEA : BFS 
+class Solution:
+    """
+    @param root: a root of integer
+    @return: return a list of integer
+    """
+    def largestValues(self, root):
+        # write your code here
+        maxes = []
+        row = [root]
+        while any(row):
+            maxes.append(max(node.val for node in row))
+            row = [kid for node in row for kid in (node.left, node.right) if kid]
+        return maxes
 
 # V2 
 # Time:  O(n)
