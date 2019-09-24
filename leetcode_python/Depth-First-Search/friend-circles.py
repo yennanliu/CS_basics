@@ -71,6 +71,35 @@ lass Solution(object):
                 bfs(x)
         return cnt
 
+# V1'''
+# https://www.jiuzhang.com/solution/friend-circles/#tag-highlight-lang-python
+# IDEA : UNION FIND 
+class Solution:
+    """
+    @param M: a matrix
+    @return: the total number of friend circles among all the students
+    """
+    def BFS(self, student, M):
+        queue = []
+        queue.append(student)
+        while len(queue) :
+            size = len(queue)
+            for i in range(0, size) :    # MAKE SURE THE DISTANCE BETWEEN START, END POINT ARE THE SAME DURING EVERY SRARCH 
+                j = queue[0]
+                del queue[0]
+                M[j][j] = 2
+                for k in range(0, len(M[0])):   # GO THROUGH ALL FRIENDSHIPS 
+                    if M[j][k] == 1 and M[k][k] == 1:   # IF M[k][k]==1 -> k is not searched yet, KEEP SEARCHING  
+                        queue.append(k)
+    def findCircleNum(self, M):
+        # Write your code here
+        count = 0
+        for i in range(0, len(M)):
+            if M[i][i] == 1 :   # IF CURRENT diagonal =1 -> THIS PERSON IS IN THE NEW CIRCLE 
+                count += 1  # COUNT + 1 
+                self.BFS(i, M) # START SEARCH 
+        return count
+
 # V2 
 # Time:  O(n^2)
 # Space: O(n)
