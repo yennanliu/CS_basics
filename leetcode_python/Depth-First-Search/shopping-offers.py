@@ -48,6 +48,27 @@ class Solution(object):
                 val = min(val, d.get(tuple(needs), spec[-1] + self.dfs(price, special, remains, d)))
         d[tuple(needs)] = val
         return val
+# V1''
+# https://www.jiuzhang.com/solution/shopping-offers/#tag-highlight-lang-python
+# IDEA : DP
+class Solution:
+    def shoppingOffers(self, price,special,needs):
+        res = 0
+        n = len(price)
+        for i in range(n):
+            res += price[i] * needs[i]
+        
+        for offer in special:
+            isValid = True
+            for j in range(n):
+                if needs[j] - offer[j] < 0:
+                    isValid = False
+                needs[j] = needs[j] - offer[j]
+            if isValid:
+                res = min(res, self.shoppingOffers(price, special, needs) + offer[len(offer) - 1])
+            for j in range(n):
+                needs[j] += offer[j]
+        return res;
         
 # V2 
 # Time:  O(n * 2^n)
