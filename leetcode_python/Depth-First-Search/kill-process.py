@@ -2,7 +2,7 @@
 
 # V1 
 # http://bookshadow.com/weblog/2017/05/15/leetcode-kill-process/
-# IDEA : DFS (stack)
+# IDEA : BFS 
 class Solution(object):
     def killProcess(self, pid, ppid, kill):
         """
@@ -22,6 +22,62 @@ class Solution(object):
             for child in dic[first]:
                 queue.append(child)
         return victims
+
+# V1'
+# https://www.jiuzhang.com/solution/582-kill-process/#tag-highlight-lang-python
+# IDEA : DFS 
+class Solution:
+    """
+    @param pid: the process id
+    @param ppid: the parent process id
+    @param kill: a PID you want to kill
+    @return: a list of PIDs of processes that will be killed in the end
+    """
+
+    def killProcess(self, pid, ppid, kill):
+        n = len(pid)
+        child = {}
+        for i in range(n):
+            if ppid[i] not in child:
+                child[ppid[i]] = []
+            child[ppid[i]].append(pid[i])
+
+        ans = []
+        self.dfs(kill, ans, child)
+        return ans
+
+    def dfs(self, now, ans, child):
+        ans.append(now)
+        if now in child:
+            for nxt in child[now]:
+                self.dfs(nxt, ans, child)
+
+# V1''
+# https://www.jiuzhang.com/solution/582-kill-process/#tag-highlight-lang-python
+# IDEA : BFS 
+class Solution:
+    """
+    @param pid: the process id
+    @param ppid: the parent process id
+    @param kill: a PID you want to kill
+    @return: a list of PIDs of processes that will be killed in the end
+    """
+
+    def killProcess(self, pid, ppid, kill):
+        m = {}
+        for i, parent in enumerate(ppid):
+            if parent not in m:
+                m[parent] = []
+            m[parent].append(pid[i])
+
+        queue = [kill]
+        answer = []
+        while queue:
+            curr = queue.pop(0)
+            answer.append(curr)
+            if curr in m:
+                queue += m[curr]
+        return answer
 
 # V2 
 # Time:  O(n)
