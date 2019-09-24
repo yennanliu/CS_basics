@@ -31,6 +31,38 @@ class Solution(object):
         if (1 + maxChoosableInteger) * maxChoosableInteger < 2 * desiredTotal: return False
         return search(0, 0)
 
+# V1
+# https://www.jiuzhang.com/solution/can-i-win/#tag-highlight-lang-python
+# IDEA : DP
+class Solution:
+    """
+    @param maxChoosableInteger: a Integer
+    @param desiredTotal: a Integer
+    @return: if the first player to move can force a win
+    """
+
+    def canIWin(self, maxChoosableInteger, desiredTotal):
+        if (1 + maxChoosableInteger) * maxChoosableInteger / 2 < desiredTotal:
+            return False
+        self.memo = {}
+        return self.helper(range(1, maxChoosableInteger + 1), desiredTotal)
+
+    def helper(self, nums, desiredTotal):
+
+        hash = str(nums)
+        if hash in self.memo:
+            return self.memo[hash]
+
+        if nums[-1] >= desiredTotal:
+            return True
+
+        for i in range(len(nums)):
+            if not self.helper(nums[:i] + nums[i+1:], desiredTotal - nums[i]):
+                self.memo[hash] = True
+                return True
+        self.memo[hash] = False
+        return False
+        
 # V2 
 # Time:  O(n!)
 # Space: O(n)
