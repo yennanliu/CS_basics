@@ -22,6 +22,23 @@ class Solution(object):
             v = graph[source].pop()
             self.dfs(graph, v, res)
         res.append(source)
+
+# V1'
+# https://www.jiuzhang.com/solution/reconstruct-itinerary/#tag-highlight-lang-python
+class Solution:
+    def findItinerary(self, tickets):
+        targets = collections.defaultdict(list)
+        for a, b in sorted(tickets)[::-1]:
+            targets[a] += b,
+        route = []
+        
+        def dfs(airport):
+            while targets[airport]:
+                dfs(targets[airport].pop())
+            route.append(airport)
+            
+        dfs('JFK')
+        return route[::-1]
         
 # V2 
 # Time:  O(t! / (n1! * n2! * ... nk!)), t is the total number of tickets,
