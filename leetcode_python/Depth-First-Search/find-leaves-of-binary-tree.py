@@ -8,7 +8,6 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
 class Solution:
     def findLeaves(self, root: 'TreeNode') -> 'List[List[int]]':
         def getLevel(root, d):
@@ -35,7 +34,6 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
 class Solution(object):
     def findLeaves(self, root):
         """
@@ -59,6 +57,31 @@ class Solution(object):
         for i in range(1, len(d)+1):
             ans.append(d[i])
         return ans
+
+# V1''
+# https://www.jiuzhang.com/solution/find-leaves-of-binary-tree/#tag-highlight-lang-python
+class Solution:
+    """
+    @param: root: the root of binary tree
+    @return: collect and remove all leaves
+    """
+    def __init__(self):
+        self.leaves = []
+    def findLeaves(self, root):
+        # write your code here
+        self.tree_height(root)
+        return self.leaves
+    
+    def tree_height(self, root):
+        if root == None:
+            return -1
+        left_height = self.tree_height(root.left)
+        right_height = self.tree_height(root.right)
+        height = 1 + max(left_height, right_height)
+        if height >= len(self.leaves):
+            self.leaves.append([])
+        self.leaves[height].append(root.val)
+        return height
 
 # V2 
 # Time:  O(n)
