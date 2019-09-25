@@ -1,10 +1,64 @@
 # V0 
+class Solution:
+    """
+    @param n: the length of strobogrammatic number
+    @return: All strobogrammatic numbers
+    """
+    def findStrobogrammatic(self, n):
+        evenMidCandidate = ["11","69","88","96", "00"]
+        oddMidCandidate = ["0", "1", "8"]
+        if n == 0:
+            return [""]
+        if n == 1:
+            return oddMidCandidate
+        if n == 2:
+            return evenMidCandidate[:-1]
+        #if n % 2:
+        if n % 2 == 1:
+            pre, midCandidate = self.findStrobogrammatic(n-1), oddMidCandidate
+        else: 
+            pre, midCandidate = self.findStrobogrammatic(n-2), evenMidCandidate
+        premid = ( n - 1 ) / 2
+        return [p[:premid] + c + p[premid:] for c in midCandidate for p in pre]
 
-# V1 
+# V1
+# https://www.jiuzhang.com/solution/strobogrammatic-number-ii/#tag-highlight-lang-python
+# IDEA : RECURSION  
+# EXAMPLE 
+# n = 1 -> ans =   0, 1, 8 
+# n = 2 -> ans =   11, 69, 88, 96, 00
+# n = 3 -> ans =   1?1, 6?9, 8?8, 9?6, 0?0, for ? in [0,1,8]
+# n = 4 -> ans =   11??11, 11??69, 11??88 .... for ?? in [11, 69, 88, 96, 00]
+# .
+# .
+class Solution:
+    """
+    @param n: the length of strobogrammatic number
+    @return: All strobogrammatic numbers
+    """
+    def findStrobogrammatic(self, n):
+        evenMidCandidate = ["11","69","88","96", "00"]
+        oddMidCandidate = ["0", "1", "8"]
+        if n == 0:
+            return [""]
+        if n == 1:
+            return oddMidCandidate
+        if n == 2:
+            return evenMidCandidate[:-1]
+        #if n % 2:
+        if n % 2 == 1:
+            # n is odd 
+            pre, midCandidate = self.findStrobogrammatic(n-1), oddMidCandidate
+        else: 
+            # n is even 
+            pre, midCandidate = self.findStrobogrammatic(n-2), evenMidCandidate
+        premid = ( n - 1 ) / 2
+        return [p[:premid] + c + p[premid:] for c in midCandidate for p in pre]
+
+# V1' 
 # https://www.cnblogs.com/grandyang/p/5200919.html
 # http://www.voidcn.com/article/p-rltfcrmu-zo.html
 from copy import copy
-
 class Solution(object):
     def findStrobogrammatic(self, n):
         """
@@ -38,7 +92,7 @@ class Solution(object):
             ret1 = copy(ret2)
                     
         return ret1
-        
+
 # V2 
 # Time:  O(n^2 * 5^(n/2))
 # Space: O(n)
