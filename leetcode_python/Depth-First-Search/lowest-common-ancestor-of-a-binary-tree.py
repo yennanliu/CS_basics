@@ -1,5 +1,20 @@
 # V0 
-
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+        if not root or p == root or q == root:
+            return root
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        if left and right:
+            return root
+        return left if left else right
+        
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80778001
 # Definition for a binary tree node.
@@ -23,6 +38,44 @@ class Solution(object):
         if left and right:
             return root
         return left if left else right
+
+# V1'
+# https://www.jiuzhang.com/solution/lowest-common-ancestor-of-a-binary-tree/#tag-highlight-lang-python
+class Solution:
+    """
+    @param: root: The root of the binary search tree.
+    @param: A: A TreeNode in a Binary.
+    @param: B: A TreeNode in a Binary.
+    @return: Return the lowest common ancestor(LCA) of the two nodes.
+    """
+    def lowestCommonAncestor(self, root, A, B):
+        # A & : if there is B below => A 
+        # B & : if there is A below => B 
+        # A & : if there is nothing below => A 
+        # B & : if there is everything below => B 
+        if root is None:
+            return None
+        
+        if root == A or root == B:
+            return root
+        
+        left_result = self.lowestCommonAncestor(root.left, A, B)
+        right_result = self.lowestCommonAncestor(root.right, A, B)
+        
+        # split to A and B 
+        if left_result and right_result: 
+            return root
+        
+        # if there is one point or LCA at sub left tree 
+        if left_result:
+            return left_result
+        
+        # if there is one point or LCA at sub right tree 
+        if right_result:
+            return right_result
+        
+        # if there is nothing at left, right sub tree 
+        return None
 
 # V2 
 # Time:  O(n)
