@@ -52,7 +52,6 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
 class Solution(object):
     def hasPathSum(self, root, sum):
         """
@@ -69,6 +68,23 @@ class Solution(object):
                 queue.insert(0, (node.right, tmp_sum-node.val))
                 queue.insert(0, (node.left, tmp_sum-node.val))
         return False
+
+# V1'''
+# https://www.jiuzhang.com/solution/path-sum/#tag-highlight-lang-python
+class Solution:
+    """
+    @param root: the tree
+    @param sum: the sum
+    @return:  if the tree has a root-to-leaf path 
+    """
+    def pathSum(self, root, sum):
+        # Write your code here.
+        if root == None:
+            return False;
+        elif (root.val == sum and root.left == None and root.right == None):
+            return True;
+        else:
+            return self.pathSum(root.left, sum - root.val) or self.pathSum(root.right, sum - root.val)
 
 # V2 
 # Time:  O(n)
@@ -91,4 +107,3 @@ class Solution(object):
             return True
 
         return self.hasPathSum(root.left, sum - root.val) or self.hasPathSum(root.right, sum - root.val)
-

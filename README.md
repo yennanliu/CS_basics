@@ -701,7 +701,7 @@
 ## Depth-First Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag     | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-112| [Path Sum](https://leetcode.com/problems/path-sum/)      |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum.py)  | _O(n)_ | _O(h)_  | Easy  | `good concept`| OK*
+112| [Path Sum](https://leetcode.com/problems/path-sum/)      |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum.py)  | _O(n)_ | _O(h)_  | Easy  | `good concept`, `amazon`| OK*
 113| [Path Sum II](https://leetcode.com/problems/path-sum-ii/)   | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum-ii.py) | _O(n)_  | _O(h)_ | Medium  | similar as `112 Path Sum`,`good basic`, `amazon`, `fb`| AGAIN**** (3)
 199| [Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/binary-tree-right-side-view.py) | _O(n)_     | _O(h)_ | Medium  |`good basic`, `dfs`, `bfs`,`apple`,`amazon`, `fb`| AGAIN*** (3) 
 200| [Number of Islands](https://leetcode.com/problems/number-of-islands/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/number-of-islands.py) | _O(m * n)_ | _O(m * n)_| Medium |`bfs`, `dfs`,`good basic`,`apple`, `Goldman Sachs`, `fb`| AGAIN**** (3)
