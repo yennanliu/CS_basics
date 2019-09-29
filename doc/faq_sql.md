@@ -1,13 +1,13 @@
 # SQL FAQ
 
 
-1. Given 2 table a (3k rows), b (4k rows), what's the 
+#### 1. Given 2 table a (3k rows), b (4k rows), what's the 
    result count of `cross join a and b` ?
-   
+
 - 3k * 4k = 12000k  
 - https://www.essentialsql.com/cross-join-introduction/
 
-2. Difference between full outer Join And Union in SQL ? 
+#### 2. Difference between full outer Join And Union in SQL ? 
 - Full outer Join: Joins two table, and gives the 1) Matched record + 2) Unmatched Record from Right table + 3) Unmatched Record from left table
 	- i.e. table A (a,b,c), table B (c,d).
 	- -> `select A*, B.* from A full outer join B on A.c = B.c`
