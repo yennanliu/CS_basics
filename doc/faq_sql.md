@@ -22,14 +22,16 @@
 
 	- Union join : Consolidate the result of two queries and returns as single result set.
 		- i.e. table A (a,b,c), table B (c,d).
-		  -> select A.a, A.b from A union select B.c, B.d from B 
-		  -> output :   
-		  	 `col1 | col2
+		  - -> `select A.a, A.b from A union select B.c, B.d from B `
+```sql 
+		# output :   
+		  	  col1 | col2
 		  	   a1     b1
 		  	   a2     b2
 		  	   c1     d2
 		  	   c2     d2
-		  	   ..........`
+		  	   ..........
+```
 
 	- https://www.quora.com/What-is-the-difference-between-full-outer-join-and-union-in-SQL
 	- https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL 
