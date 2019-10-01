@@ -37,6 +37,19 @@ class Solution:
             if b not in s:
                 res = min(res, b)
         return 0 if res == float('inf') else res
+        
+# V1'
+# https://www.jiuzhang.com/solution/card-flipping-game/#tag-highlight-lang-python
+class Solution:
+    """
+    @param fronts: 
+    @param backs: 
+    @return: nothing
+    find the min value on two sides of the same card across different times
+    """
+    def flipgame(self, f, b):
+        same = {x for x, y in zip(f, b) if x == y}
+        return min([i for i in f + b if i not in same] or [0])
 
 # V2 
 # Time:  O(n)
