@@ -34,7 +34,23 @@
 
 
 # V0 
-
+import collections
+import re 
+class Solution(object):
+    def shortestCompletingWord(self, licensePlate, words):
+        """
+        :type licensePlate: str
+        :type words: List[str]
+        :rtype: str
+        """
+        clicense = collections.Counter(re.sub('[^a-z]','',licensePlate.lower()))
+        ans = '#' * 1111
+        for word in words:
+            cword = collections.Counter(word)
+            if all(clicense[k] <= cword[k] for k in clicense) and len(word) < len(ans):
+                ans = word
+        return ans
+        
 # V1 
 # http://bookshadow.com/weblog/2017/12/17/leetcode-shortest-completing-word/
 import collections
@@ -52,6 +68,33 @@ class Solution(object):
             cword = collections.Counter(word)
             if all(clicense[k] <= cword[k] for k in clicense) and len(word) < len(ans):
                 ans = word
+        return ans
+
+# V1'
+# https://www.jiuzhang.com/solution/shortest-completing-word/#tag-highlight-lang-python
+import collections
+class Solution:
+    """
+    @param licensePlate: a string
+    @param words: List[str]
+    @return: return a string
+    """
+    def shortestCompletingWord(self, licensePlate, words):
+        # write your code here
+        ans = ""
+        d = collections.defaultdict(int)
+        for c in licensePlate:
+            if c.isalpha():
+                d[c.lower()] += 1
+        for w in words:
+            for k, v in d.items():
+                if w.count(k) < v:
+                    break
+            else:
+                if not ans:
+                    ans = w
+                elif len(w) < len(ans):
+                    ans = w
         return ans
 
 # V2 
