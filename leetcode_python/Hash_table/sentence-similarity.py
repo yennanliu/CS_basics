@@ -27,10 +27,6 @@
 # - The length of each words[i] and pairs[i][j] will be in the range [1, 20].
 
 # V0
-
-# V1 
-# http://bookshadow.com/weblog/2017/11/26/leetcode-sentence-similarity/
-# https://blog.csdn.net/danspace1/article/details/88942077
 import collections
 class Solution(object):
     def areSentencesSimilar(self, words1, words2, pairs):
@@ -47,6 +43,76 @@ class Solution(object):
             similars[w2].add(w1)
         for w1, w2 in zip(words1, words2):
             if w1 != w2 and w2 not in similars[w1]:
+                return False
+        return True
+
+# V1 
+# http://bookshadow.com/weblog/2017/11/26/leetcode-sentence-similarity/
+# https://blog.csdn.net/danspace1/article/details/88942077
+# IDEA : ollections.defaultdict(set) --> set IS "ADDABLE"
+# IDEA : 
+# IF len(words1) != len(words2) -> return False
+# HAVE A MAPPING RELATIONSHIP (similars) ON PAIRS :
+# e.g. 
+# if pairs = [["great", "fine"], ["acting","drama"], ["skills","talent"]]
+# -> 
+# similars = collections.defaultdict(set)
+# for w1, w2 in pairs:
+#     similars[w1].add(w2)
+#     similars[w2].add(w1)
+# -> similars = 
+# defaultdict(set,
+#             {'acting': {'drama'},
+#              'drama': {'acting'},
+#              'fine': {'great'},
+#              'great': {'fine'},
+#              'skills': {'talent'},
+#              'talent': {'skills'}})
+# THEN COMPARE THROUGH words1, words2 WITH similars PATTERN
+# RETURN FALSE IF ANY ELEMENT IN words1 !=  words2 AND ELEMENT NOT IN similars RELATIONSHIP
+import collections
+class Solution(object):
+    def areSentencesSimilar(self, words1, words2, pairs):
+        """
+        :type words1: List[str]
+        :type words2: List[str]
+        :type pairs: List[List[str]]
+        :rtype: bool
+        """
+        if len(words1) != len(words2): return False
+        similars = collections.defaultdict(set)
+        for w1, w2 in pairs:
+            similars[w1].add(w2)
+            similars[w2].add(w1)
+        for w1, w2 in zip(words1, words2):
+            if w1 != w2 and w2 not in similars[w1]:
+                return False
+        return True
+
+# V1'
+# https://www.jiuzhang.com/solution/sentence-similarity/#tag-highlight-lang-python
+class Solution:
+    """
+    @param words1: a list of string
+    @param words2: a list of string
+    @param pairs: a list of string pairs
+    @return: return a boolean, denote whether two sentences are similar or not
+    """
+    def isSentenceSimilarity(self, words1, words2, pairs):
+        # write your code here
+        if(not (len(words1) == len(words2))):
+            return False
+        mp = {}
+        for i in range(len(pairs)):
+            S = set()
+            if(not (mp.get(pairs[i][0]) == None)):
+                S = mp[pairs[i][0]]
+            S.add(pairs[i][1])
+            mp[pairs[i][0]] = S
+        for i in range(len(words1)):
+            if(words1[i] == words2[i]):
+                continue
+            if((mp.get(words1[i]) == None or words2[i] not in mp[words1[i]]) and (mp.get(words2[i]) == None or words1[i] not in mp[words2[i]])):
                 return False
         return True
 
