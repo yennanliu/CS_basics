@@ -95,6 +95,22 @@ class Solution(object):
                 cnt['.'.join(parts[:x][::-1])] += int(count)
         return ['{} {}'.format(v, k) for k, v in cnt.items()]
 
+# V1'
+# https://www.jiuzhang.com/solution/subdomain-visit-count/#tag-highlight-lang-python
+class Solution:
+    def subdomainVisits(self, cpdomains):
+        count = {}
+        for domain in cpdomains:
+            visits = int(domain.split()[0])
+            domain_segments = domain.split()[1].split('.')
+            top_level_domain = domain_segments[-1]
+            sec_level_domain = domain_segments[-2] + '.' + domain_segments[-1]
+            count[top_level_domain] = count[top_level_domain] + visits if top_level_domain in count.keys() else visits
+            count[sec_level_domain] = count[sec_level_domain] + visits if sec_level_domain in count.keys() else visits
+            if domain.count('.') == 2:
+                count[domain.split()[1]] = count[domain.split()[1]] + visits if domain.split()[1] in count.keys() else visits
+        return [str(v) + ' ' + k for k,v in count.items()]
+
 # V2 
 # Time:  O(n), is the length of cpdomains (assuming the length of cpdomains[i] is fixed)
 # Space: O(n)
