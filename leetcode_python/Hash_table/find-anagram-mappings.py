@@ -60,6 +60,14 @@ class Solution(object):
             dmap[x].append(i)
         return [dmap[x].pop() for x in A]
 
+# V0'
+class Solution(object):
+    def anagramMappings(self, A, B):
+        res = []
+        for i in A:
+            res.append(B.index(i))
+        return res 
+        
 # V1 
 from collections import OrderedDict
 class Solution(object):
