@@ -26,6 +26,28 @@
 # No duplicates in both lists.
 
 # V0 
+class Solution:
+    """
+    @param list1: a list of strings
+    @param list2: a list of strings
+    @return: the common interest with the least list index sum
+    """
+
+    def findRestaurant(self, list1, list2):
+        # Write your code here
+        ans = len(list1) + len(list2)
+        s = []
+        for andy in list1:
+            if andy in list2:
+                idx1 = list1.index(andy)
+                idx2 = list2.index(andy)
+                if idx1 + idx2 < ans:
+                    ans = idx1 + idx2
+                    s = []
+                    s.append(andy)
+                elif idx1 + idx2 == ans:
+                    s.append(andy)
+        return s
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79138621
@@ -95,6 +117,31 @@ class Solution(object):
             elif currSum == minSum:
                 ans.append(r)
         return ans
+
+# V1'''
+# https://www.jiuzhang.com/solution/minimum-index-sum-of-two-lists/#tag-highlight-lang-python
+class Solution:
+    """
+    @param list1: a list of strings
+    @param list2: a list of strings
+    @return: the common interest with the least list index sum
+    """
+
+    def findRestaurant(self, list1, list2):
+        # Write your code here
+        ans = len(list1) + len(list2)
+        s = []
+        for andy in list1:
+            if andy in list2:
+                idx1 = list1.index(andy)
+                idx2 = list2.index(andy)
+                if idx1 + idx2 < ans:
+                    ans = idx1 + idx2
+                    s = []
+                    s.append(andy)
+                elif idx1 + idx2 == ans:
+                    s.append(andy)
+        return s
 
 # V2 
 # Time:  O((m + n) * l), m is the size of list1, n is the size of list2
