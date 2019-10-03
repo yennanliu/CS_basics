@@ -28,7 +28,23 @@
 # All the integers in the given input belong to the range: [-1e7, 1e7].
 
 # V0 
-
+import collections
+class Solution(object):
+    def findPairs(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        answer = 0
+        counter = collections.Counter(nums)
+        for num in set(nums):
+            if k > 0 and num + k in counter: # | a - b | = k -> a - b = +k or -k, but here don't have to deal with "a - b = -k" case, since this sutuation will be covered when go through whole nums  
+                answer += 1
+            if k == 0 and counter[num] > 1:  # for cases k = 0 ->  pair like (1,1) will work. (i.e. 1 + (-1))
+                answer += 1
+        return answer
+        
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79255633
 # IDEA : collections.Counter
@@ -46,7 +62,7 @@ class Solution(object):
         answer = 0
         counter = collections.Counter(nums)
         for num in set(nums):
-            if k > 0 and num + k in counter: # for cases a = k - b 
+            if k > 0 and num + k in counter: # | a - b | = k -> a - b = +k or -k, but here don't have to deal with "a - b = -k" case, since this sutuation will be covered when go through whole nums  
                 answer += 1
             if k == 0 and counter[num] > 1:  # for cases k = 0 ->  pair like (1,1) will work. (i.e. 1 + (-1))
                 answer += 1
@@ -76,6 +92,34 @@ class Solution(object):
                 if num + k in nums:
                     res += 1
             return res
+
+# V1''
+# https://www.jiuzhang.com/solution/k-diff-pairs-in-an-array/#tag-highlight-lang-python
+class Solution:
+    """
+    @param nums: an array of integers
+    @param k: an integer
+    @return: the number of unique k-diff pairs
+    """
+
+    def findPairs(self, nums, k):
+        # Write your code here
+        nums.sort()
+        n, j, ans = len(nums), 0, 0
+        for i in range(n):
+            if i == j:
+                j += 1
+            while i + 1 < n and nums[i] == nums[i + 1]:
+                i += 1
+            while j + 1 < n and nums[j] == nums[j + 1]:
+                j += 1
+            while j < n and abs(nums[i] - nums[j]) < k:
+                j += 1
+            if j >= n:
+                break
+            if abs(nums[i] - nums[j]) == k:
+                ans, j = ans + 1, j + 1
+        return ans
 
 # V2 
 # Time:  O(n)
