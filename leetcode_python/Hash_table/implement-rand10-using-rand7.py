@@ -1,5 +1,27 @@
 # V0 
-
+class Solution:
+    def rand10(self):
+        """
+        :rtype: int
+        random integer in 1 ~ 18
+        """
+        return self.rand40() % 10 + 1
+        
+    def rand49(self):
+        """
+        random integer in 0 ~ 48
+        """
+        return 7 * (rand7() - 1) + rand7() - 1
+        
+    def rand40(self):
+        """
+        random integer in 0 ~ 40
+        """
+        num = self.rand49()
+        while num >= 40:
+            num = self.rand49()
+        return num
+            
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/81809478
 # The rand7() API is already defined for you.
@@ -12,6 +34,7 @@ class Solution:
     def rand10(self):
         """
         :rtype: int
+        random integer in 1 ~ 18
         """
         return self.rand40() % 10 + 1
         
