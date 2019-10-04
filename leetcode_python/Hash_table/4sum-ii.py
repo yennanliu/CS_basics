@@ -22,6 +22,34 @@ class Solution(object):
                 ans += cnt[-(c + d)]
         return ans
 
+# V1'
+# https://www.jiuzhang.com/solution/4sum-ii/#tag-highlight-lang-python
+class Solution:
+    """
+    @param A: a list
+    @param B: a list
+    @param C: a list
+    @param D: a list
+    @return: how many tuples (i, j, k, l) there are such that A[i] + B[j] + C[k] + D[l] is zero
+    """
+    def fourSumCount(self, A, B, C, D):
+        # Write your code here
+        map = {}
+        ans = 0
+        for i in range(len(A)):
+            for j in range(len(B)):
+                sum = A[i] + B[j]
+                if sum in map:
+                    map[sum] += 1
+                else:
+                    map[sum] = 1
+        for i in range(len(C)):
+            for j in range(len(D)):
+                sum = -(C[i] + D[j])
+                if sum in map:
+                    ans += map[sum]
+        return ans
+        
 # V2 
 # Time:  O(n^2)
 # Space: O(n^2)
