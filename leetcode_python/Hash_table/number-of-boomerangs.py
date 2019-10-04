@@ -32,6 +32,21 @@
 
 
 # V0 
+import collections
+class Solution(object):
+    def numberOfBoomerangs(self, points):
+        """
+        :type points: List[List[int]]
+        :rtype: int
+        """
+        ans = 0
+        for x1, y1 in points:
+            dmap = collections.defaultdict(int)
+            for x2, y2 in points:
+                dmap[(x1 - x2) ** 2 + (y1 - y2) ** 2] += 1
+            for d in dmap:
+                ans += dmap[d] * (dmap[d] - 1)
+        return ans
 
 # V1 
 # IDEA : collections.defaultdict
@@ -54,6 +69,34 @@ class Solution(object):
         return ans
 
 # V1'
+# https://www.jiuzhang.com/solution/number-of-boomerangs/#tag-highlight-lang-python
+class Solution(object):
+    def getDistance(self, a, b):
+        dx = a[0] - b[0]
+        dy = a[1] - b[1]
+        return dx * dx + dy * dy
+
+    def numberOfBoomerangs(self, points):
+        """
+        :type points: List[List[int]]
+        :rtype: int
+        """
+        if points == None:
+            return 0
+        ans = 0
+        for i in xrange(len(points)):
+            disCount = {}
+            for j in xrange(len(points)):
+                if i == j:
+                    continue
+                distance = self.getDistance(points[i], points[j])
+                count = disCount.get(distance, 0)
+                disCount[distance] = count + 1
+            for distance in disCount:
+                ans += disCount[distance] * (disCount[distance] - 1)
+        return ans
+
+# V1''
 # IDEA : TWO POINTERS
 # DEV 
 
