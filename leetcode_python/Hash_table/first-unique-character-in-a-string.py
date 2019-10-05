@@ -14,6 +14,7 @@
 # Note: You may assume the string contain only lowercase letters.
 
 # V0 
+import collections
 class Solution(object):
     def firstUniqChar(self, s):
         """
@@ -30,6 +31,7 @@ class Solution(object):
 
 # V1 
 # http://bookshadow.com/weblog/2016/08/21/leetcode-first-unique-character-in-a-string/
+import collections
 class Solution(object):
     def firstUniqChar(self, s):
         """
