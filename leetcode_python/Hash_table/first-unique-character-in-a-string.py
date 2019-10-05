@@ -13,9 +13,20 @@
 #
 # Note: You may assume the string contain only lowercase letters.
 
-
-
 # V0 
+class Solution(object):
+    def firstUniqChar(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        d = collections.Counter(s)
+        ans = -1
+        for x, c in enumerate(s):
+            if d[c] == 1:
+                ans = x
+                break
+        return ans
 
 # V1 
 # http://bookshadow.com/weblog/2016/08/21/leetcode-first-unique-character-in-a-string/
@@ -32,6 +43,23 @@ class Solution(object):
                 ans = x
                 break
         return ans
+
+# V1'
+# https://www.jiuzhang.com/solution/first-unique-character-in-a-string/#tag-highlight-lang-python
+class Solution:
+    """
+    @param str: str: the given string
+    @return: char: the first unique character in a given string
+    """
+    def firstUniqChar(self, str):
+        counter = {}
+
+        for c in str:
+            counter[c] = counter.get(c, 0) + 1
+
+        for c in str:
+            if counter[c] == 1:
+                return c
 
 # V2 
 class Solution(object):
