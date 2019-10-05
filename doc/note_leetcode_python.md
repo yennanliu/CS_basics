@@ -571,3 +571,30 @@ def hanoi(n, p1, p2, p3):
         hanoi(n-1, p1, p3, p2)
         hanoi(n-1, p2, p1, p3)
 ```
+
+## 6) Hash Table 
+
+- Tricks
+
+- Algorithm 
+
+- Example 
+```python
+# 325  Maximum Size Subarray Sum Equals k
+class Solution(object):
+    def maxSubArrayLen(self, nums, k):
+
+        result, acc = 0, 0
+        dic = {0: -1}
+
+        for i in range(len(nums)):
+            acc += nums[i]
+            if acc not in dic:
+                dic[acc] = i
+            if acc - k in dic:
+                result = max(result, i - dic[acc-k])
+        return result
+
+```
+
+
