@@ -8,9 +8,11 @@
 - https://www.essentialsql.com/cross-join-introduction/
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/cross_join.png" width="500" height="300">
 
-#### 2. Difference between full outer Join And Union in SQL ? 
+#### 2. Difference between `full outer Join` And `Union` in SQL ? 
 - Full outer Join: Joins two table, and gives the 1) Matched record + 2) Unmatched Record from Right table + 3) Unmatched Record from left table
 	- i.e. table A (a,b,c), table B (c,d).
+
+- Full outer join : return all columns in table A, table B (no depulicate)
 	- -> `select A*, B.* from A full outer join B on A.c = B.c`
 ```sql     
  		# output : 
@@ -20,8 +22,9 @@
 			 a3  b3  c13  c23   d3
 			 .......             
 ```
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/full_outer_join.gif" width="500" height="300">
 
-- Union join : Consolidate the result of two queries and returns as single result set.
+- Union : Consolidate the result of two queries and returns as single result set.
 	- i.e. table A (a,b,c), table B (c,d).
 	- -> `select A.a, A.b from A union select B.c, B.d from B `
 ```sql 
@@ -34,5 +37,10 @@
 		  	   ..........
 ```
 
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/union_sql.png" width="500" height="300">
+
+- In short :   
+	- Full outer join: Join all `columns` (No matter if table A, B has same  columns )
+	- Union          : Join  all `rows`    (if table A, B has same columns)
 - https://www.quora.com/What-is-the-difference-between-full-outer-join-and-union-in-SQL
 - https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL 
