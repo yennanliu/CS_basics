@@ -1,6 +1,63 @@
 # V0 
+from collections import defaultdict
+class Solution:
+    """
+    @param s: a string
+    @param k: a integer
+    @return: return a integer
+    """
+    def characterReplacement(self, s, k):
+        # write your code here
+        n = len(s)
+        char2count = defaultdict(int)
+        
+        maxLen = 0
+        start = 0
+        for end in range(n):
+            char2count[s[end]] += 1
+            
+            while end - start + 1 - char2count[s[start]] > k:
+                char2count[s[start]] -= 1
+                start += 1
 
-# V1 
+            maxLen = max(maxLen, end - start + 1)     
+            
+        return maxLen
+
+# V1
+# https://www.jiuzhang.com/solution/longest-repeating-character-replacement/#tag-highlight-lang-python
+# IDEA  : collections.defaultdict, SLDING WINDOW  + TWO POINTERS 
+# STEPS : 
+# -> USE char2count TO RECORD COUNT OF ELEMENTS  
+# -> EACH TIME WHEN RIGHT POINT MOVE (RIGHT), IF THE CURRENT WINDOW CAN BE ALL REPLACED BY THE LEGT POINT ELEMENT
+# -> THEN WE UPDATE THE MAX LENGTH,
+# -> IF NOT, MOVE LEFT POINT (RIGHT) AND UPDATE char2count
+from collections import defaultdict
+class Solution:
+    """
+    @param s: a string
+    @param k: a integer
+    @return: return a integer
+    """
+    def characterReplacement(self, s, k):
+        # write your code here
+        n = len(s)
+        char2count = defaultdict(int)
+        
+        maxLen = 0
+        start = 0
+        for end in range(n):
+            char2count[s[end]] += 1
+            
+            while end - start + 1 - char2count[s[start]] > k:
+                char2count[s[start]] -= 1
+                start += 1
+
+            maxLen = max(maxLen, end - start + 1)     
+
+        return maxLen
+
+# V1' 
 # http://bookshadow.com/weblog/2016/10/16/leetcode-longest-repeating-character-replacement/
 # IDEA : SLIDING WINDOW 
 class Solution(object):
@@ -22,7 +79,7 @@ class Solution(object):
             res = max(res, p2 - p1)
         return res
 
-# V1'
+# V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79527303
 # IDEA : SLIDING WINDOW 
 class Solution(object):
@@ -44,7 +101,7 @@ class Solution(object):
             res = max(res, i - start + 1)
         return res
 
-# V1''
+# V1''' 
 # http://bookshadow.com/weblog/2016/10/16/leetcode-longest-repeating-character-replacement/
 class Solution(object):
     def characterReplacement(self, s, k):
