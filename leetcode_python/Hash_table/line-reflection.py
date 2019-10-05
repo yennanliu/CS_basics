@@ -1,7 +1,46 @@
 # V0 
 
 # V1 
-# DEV 
+# https://www.jiuzhang.com/solution/line-reflection/#tag-highlight-lang-python
+class Solution:
+    """
+    @param points: n points on a 2D plane
+    @return: if there is such a line parallel to y-axis that reflect the given points
+    """
+    def isReflected(self, points):
+        # Write your code here
+        if not points:
+            return True
+        s = max(points, key = lambda x:x[0])[0] + min(points, key = lambda x:x[0])[0]
+        m = s / 2.0
+        right = set()
+        reflected = set()
+        for x,y in points:
+            if x > m:
+                right.add((x, y))
+            elif x < m:
+                reflected.add((s - x, y))
+        return right == reflected
+
+# V1'
+# https://blog.csdn.net/qq508618087/article/details/51756981
+# JAVA 
+# class Solution {
+# public:
+#     bool isReflected(vector<pair<int, int>>& points) {
+#         set<pair<int, int>> st;
+#         int Min = INT_MAX, Max = INT_MIN;
+#         for(auto val: points)
+#         {
+#             Min = min(Min, val.first), Max = max(Max, val.first);
+#             st.insert(val);
+#         }
+#         int sum = Min + Max;
+#         for(auto val: points)
+#             if(st.count(make_pair(sum-val.first, val.second))==0) return false;
+#         return true;
+#     }
+# }; 
 
 # V2 
 # Time:  O(n)
