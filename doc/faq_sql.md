@@ -6,6 +6,7 @@
 
 - 3k * 4k = 12000k  
 - https://www.essentialsql.com/cross-join-introduction/
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/cross_join.png" width="500" height="300">
 
 #### 2. Difference between full outer Join And Union in SQL ? 
 - Full outer Join: Joins two table, and gives the 1) Matched record + 2) Unmatched Record from Right table + 3) Unmatched Record from left table
