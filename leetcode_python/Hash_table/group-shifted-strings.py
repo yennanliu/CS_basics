@@ -21,9 +21,62 @@ Note: For the return value, each inner list's elements must follow the lexicogra
 # V0 
 
 # V1 
-# DEV 
+# https://www.jiuzhang.com/solution/group-shifted-strings/#tag-highlight-lang-python
+class Solution:
+    """
+    @param strings: a string array
+    @return: return a list of string array
+    """
+    def groupStrings(self, strings):
+        # write your code here
+        ans, mp = [], {}
+        for str in strings:
+            x = ord(str[0]) - ord('a')
+            tmp = ""
+            for c in str:
+                c = chr(ord(c) - x)
+                if(c < 'a'):
+                    c = chr(ord(c) + 26)
+                tmp += c
+            if(mp.get(tmp) == None):
+                mp[tmp] = []
+            mp[tmp].append(str)
+        for x in mp:
+            ans.append(mp[x])
+        return ans
 
+# V1'
+# http://www.voidcn.com/article/p-znzuctot-qp.html
+class Solution(object):
+    def groupStrings(self, strings):
+        """
+        :type strings: List[str]
+        :rtype: List[List[str]]
+        """
+        dic = {}
+        for s in strings:
+            hash = self.shiftHash(s)
 
+            if hash not in dic:
+                dic[hash] = [s]
+            else:
+                self.insertStr(dic[hash], s)
+
+        return dic.values()
+
+    def shiftHash(self, astring):
+        hashlist = [(ord(i) - ord(astring[0])) % 26 for i in astring]
+        return tuple(hashlist)
+
+    def insertStr(self, alist, astring):
+        i = 0
+        while i < len(alist) and ord(astring[0]) > ord(alist[i][0]):
+            i += 1
+        if i == len(alist):
+            alist.append(astring)
+        else:
+            alist[:] = alist[0:i] + [astring] + alist[i:]
+                       
 # V2
 # Time:  O(nlogn)
 # Space: O(n)
