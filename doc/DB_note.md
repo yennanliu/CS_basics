@@ -94,7 +94,7 @@
 
 ## 4) Index
 
-- What's database index 
+- What's database index ? 
 
 - A database index is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure. Indexes are used to quickly locate data without having to search every row in a database table every time a database table is accessed. Indexes can be created using one or more columns of a database table, providing the basis for both rapid random lookups and efficient access of ordered records.
 
@@ -102,22 +102,30 @@
 
 - https://en.wikipedia.org/wiki/Database_index
 
-- Type of index 
+- Type of index  ? 
 	- Culstered index 
 		- Only one per table
 		- Saved in the `DB hard disk`
 		- Use "B-Tree" as data structure with components : Root/intermediate/leaf node  
-		- ***AVOID*** set `frequent updated`column as culstered index, since the system has to spend time on data reordering 
+		- ***AVOID*** set `frequent updated`column as culstered index, since the system has to spend time on data reordering when every time data updated 
 		- ***AVOID*** set `unique data` column as culstered index, since this index is not an `effieicnt filter` for `where` sql syntax
+		- ***AVOID*** set `too long/much` column as culstered index, since it will give system heavy loading where reordering 
 	- Non-Culstered index 
+		- Can be many per table  (but < 5 ideally)
+		- point to data with culstered index in DB hard disk
+		- Use "B-Tree" data structure for ordering 
+		- Supplement of culstered index 
 	- Cover Index
+		- One index on `multiple` columns 
+		- `Hight densidy` column is a good choice 
+		- Not include more than 3 columns ideally 
+	- Index with include
+		- Index include column
 	- Indexed View
+		- `View` is a `logical` definition in the DB, not a real table, Indexed View can be used as `intermedia view` that let query can just start from that, but not always go to the original table with complex syntax. 
 	- Filtered Index 
 
-
-
 - https://en.wikipedia.org/wiki/Database_index
-
 
 - Trade off between using index and not
 
