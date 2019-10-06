@@ -2,10 +2,13 @@
 
 
 #### 1. Given 2 table a (3k rows), b (4k rows), what's the 
-   result count of `cross join a and b` ?
+   result count of `select a.Color, b.Size from a cross join b` ?
 
-- 3k * 4k = 12000k  
+- 3k * 4k = 12k  
 - https://www.essentialsql.com/cross-join-introduction/
+- http://www.sqlservertutorial.net/sql-server-basics/sql-server-cross-join/
+- (cross join pic)
+
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/cross_join.png" width="500" height="300">
 
 #### 2. Difference between `full outer Join` And `Union` in SQL ? 
@@ -42,5 +45,6 @@
 - In short :   
 	- Full outer join: Join all `columns` (No matter if table A, B has same  columns )
 	- Union          : Join  all `rows`    (if table A, B has same columns)
+	- Cross join :  All column combinationS within columns in table A and B 
 - https://www.quora.com/What-is-the-difference-between-full-outer-join-and-union-in-SQL
 - https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL 
