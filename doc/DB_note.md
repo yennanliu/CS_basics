@@ -103,7 +103,7 @@
 - https://en.wikipedia.org/wiki/Database_index
 
 - Why index ?
-	- Full table scan -> index scan (balanced tree) -> index seek 
+	- ***FULL TABLE SCAN -> INDEX SCAN (balanced tree) -> INDEX SEEK***
 
 	-  Full table scan : 
 		- This is known as a Full Table Scan or simply a Table Scan. A Table Scan is the costliest among the data search methods.
