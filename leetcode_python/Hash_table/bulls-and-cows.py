@@ -46,10 +46,10 @@ class Solution(object):
         :type guess: str
         :rtype: str
         """
-        bull = sum(map(operator.eq, secret, guess))
+        bull = sum(map(operator.eq, secret, guess))  # find the number of digits with the same index in secret, and guess
         sa = collections.Counter(secret)
         sb = collections.Counter(guess)
-        cow = sum((sa & sb).values()) - bull
+        cow = sum((sa & sb).values()) - bull         # (find the number of digits that exist in both secret, and guess) - bull 
         return str(bull) + 'A' + str(cow) + 'B'
 
 # V1' 
@@ -58,6 +58,24 @@ def getHint(self, secret, guess):
     bulls = sum(map(operator.eq, secret, guess))
     both = sum(min(secret.count(x), guess.count(x)) for x in '0123456789')
     return '%dA%dB' % (bulls, both - bulls)
+
+# V1''
+# https://www.jiuzhang.com/solution/bulls-and-cows/#tag-highlight-lang-python
+class Solution:
+    def getHint(self, secret, guess):
+        a , b , n = 0 , 0 , len(secret)
+        ds = [0 for i in range(10)]
+        dg = [0 for i in range(10)]
+        for i in range (n) :
+            x = ord(secret[i]) - ord('0')
+            y = ord(guess[i]) - ord('0')
+            if x== y:
+                a += 1
+            ds[x] += 1
+            dg[y] += 1
+        for i in range (10) :
+            b += min(ds[i],dg[i])
+        return str(a) + 'A' + str(b - a) + 'B'
 
 # V2 
 # Time:  O(n)
