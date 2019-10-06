@@ -106,7 +106,9 @@
 	- Culstered index 
 		- Only one per table
 		- Saved in the `DB hard disk`
-		- Use "B-Tree" as data structure with components : Root/intermediate/leaf node  
+		- Use "B-Tree" (Balanced Tree) as data structure with components : Root/intermediate/leaf node  
+		- Heap (when no index, data is non-ordering) ->  B-tree (when index, data is ordering)
+		- If `primary key` already set, DB will set primary key as culstered index by default 
 		- ***AVOID*** set `frequent updated`column as culstered index, since the system has to spend time on data reordering when every time data updated 
 		- ***AVOID*** set `unique data` column as culstered index, since this index is not an `effieicnt filter` for `where` sql syntax
 		- ***AVOID*** set `too long/much` column as culstered index, since it will give system heavy loading where reordering 
@@ -115,8 +117,9 @@
 		- point to data with culstered index in DB hard disk
 		- Use "B-Tree" data structure for ordering 
 		- Supplement of culstered index 
-	- Cover Index
+	- Covering Index
 		- One index on `multiple` columns 
+		- Leverage the `existing` non-Culstered index, copy the column (with covering Index) to the leaf node, so index scan/seek can be processed via balanced tree as well 
 		- `Hight densidy` column is a good choice 
 		- Not include more than 3 columns ideally 
 	- Index with include
@@ -125,9 +128,15 @@
 		- `View` is a `logical` definition in the DB, not a real table, Indexed View can be used as `intermedia view` that let query can just start from that, but not always go to the original table with complex syntax. 
 	- Filtered Index 
 
-- https://en.wikipedia.org/wiki/Database_index
+	- https://en.wikipedia.org/wiki/Database_index
+
+	- (culstered index pic) 
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/cluster_index.png" width="500" height="300">
 
 - Trade off between using index and not
+	- Main concern : The ***COST of INDEX MAINTENANCE*** when data get updated
+
+	- https://www.qa-knowhow.com/?p=377
 
 - What happen at low level DB server when implement a new index ?  
 
