@@ -29,6 +29,34 @@ http://leetcode.com/problems/unique-word-abbreviation/
 
 # V0 
 
+# V1
+# https://www.jiuzhang.com/solution/unique-word-abbreviation/#tag-highlight-lang-python
+class ValidWordAbbr:
+    
+    def __init__(self, dictionary):
+        # do intialization if necessary
+        self.map = {}
+        for word in dictionary:
+            abbr = self.word_to_abbr(word)
+            if abbr not in self.map:
+                self.map[abbr] = set() 
+            self.map[abbr].add(word)
+
+    def word_to_abbr(self, word):
+        if len(word) <= 1:
+            return word
+        return word[0] + str(len(word[1:-1])) + word[-1]
+        
+    def isUnique(self, word):
+        # write your code here
+        abbr = self.word_to_abbr(word)
+        if abbr not in self.map:
+            return True
+        for word_in_dict in self.map[abbr]:
+            if word != word_in_dict:
+                return False
+        return True
+
 # V1 
 # http://www.voidcn.com/article/p-cfjjycdw-qp.html
 # DEV 
