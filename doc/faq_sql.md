@@ -43,8 +43,8 @@
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/union_sql.png" width="500" height="300">
 
 - In short :   
-	- Full outer join: Join all `columns` (No matter if table A, B has same  columns )
-	- Union          : Join  all `rows`    (if table A, B has same columns)
-	- Cross join :  All column combinationS within columns in table A and B 
+	- Full outer join : Join all `columns` (No matter if table A, B has same  columns )
+	- Union           : Join  all `rows`    (if table A, B has same columns)
+	- Cross join      : ` Combinations` of all columns within table A and B 
 - https://www.quora.com/What-is-the-difference-between-full-outer-join-and-union-in-SQL
 - https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL 
