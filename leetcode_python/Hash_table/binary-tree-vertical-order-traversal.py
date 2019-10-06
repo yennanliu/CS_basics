@@ -36,11 +36,30 @@
 # ]
 
 # V0 
+# DFS + collections.defaultdict(list)
+#####  NEED TO VALIDATE #####
+import collections
+class Solution(object):
+    def verticalOrder(self, root):
+        idx = 0
+        cols = collections.defaultdict(list)
+        self.dfs(root, idx, cols)
+        return [cols[c] for c in sorted(cols.keys())]
+
+    def dfs(self, root, idx, cols):
+        if not root: return []
+        if not root.left and not root.right:
+            return 
+        cols[idx].append(root.value)
+        if root.left:
+            self.dfs(roots, idx - 1, cols)
+        if root.right:
+            self.dfs(roots, idx + 1, cols)
 
 # V1 
 # https://blog.csdn.net/qq508618087/article/details/50760661
 # https://blog.csdn.net/danspace1/article/details/86654851
-# IDEA : BFS + DICT 
+# IDEA : BFS + collections.defaultdict(list) 
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -70,6 +89,34 @@ class Solution(object):
             q = new_q
             
         return [cols[c] for c in sorted(cols.keys())]
+
+# V1'
+# https://www.jiuzhang.com/solution/binary-tree-vertical-order-traversal/#tag-highlight-lang-python
+# IDEA : BFS + collections.defaultdict(list)
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+class Solution:
+    # @param {TreeNode} root the root of binary tree
+    # @return {int[][]} the vertical order traversal
+    def verticalOrder(self, root):
+        # Write your code here
+        results = collections.defaultdict(list)
+        import Queue
+        queue = Queue.Queue()
+        queue.put((root, 0))
+        while not queue.empty():
+            node, x = queue.get()
+            if node:
+                results[x].append(node.val)
+                queue.put((node.left, x - 1))
+                queue.put((node.right, x + 1))
+                
+        return [results[i] for i in sorted(results)]
 
 # V2 
 # Time:  O(n)
