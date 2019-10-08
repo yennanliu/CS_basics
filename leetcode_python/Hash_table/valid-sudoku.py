@@ -71,7 +71,34 @@ class Solution(object):
                 if c != '.':
                     seen += [(c,j),(i,c),(i/3,j/3,c)]
         return len(seen) == len(set(seen))
-        
+
+# V1''
+# https://www.jiuzhang.com/solution/valid-sudoku/#tag-highlight-lang-python
+class Solution:
+    # @param board, a 9x9 2D array
+    # @return a boolean
+    def isValidSudoku(self, board):
+        row = [set([]) for i in range(9)]
+        col = [set([]) for i in range(9)]
+        grid = [set([]) for i in range(9)]
+
+        for r in range(9):
+            for c in range(9):
+                if board[r][c] == '.':
+                    continue
+                if board[r][c] in row[r]:
+                    return False
+                if board[r][c] in col[c]:
+                    return False
+
+                g = r / 3 * 3 + c / 3
+                if board[r][c] in grid[g]:
+                    return False
+                grid[g].add(board[r][c])
+                row[r].add(board[r][c])
+                col[c].add(board[r][c])
+        return True
+
 # V2 
 class Solution(object):
     def isValidSudoku(self, board):
