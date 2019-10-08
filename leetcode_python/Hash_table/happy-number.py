@@ -19,10 +19,53 @@
 #
 
 # V0
-
+class Solution:
+    # @param {integer} n
+    # @return {boolean}
+    def isHappy(self, n):
+        numSet = set()
+        while n != 1 and n not in numSet:
+            numSet.add(n)
+            sum = 0
+            while n:
+                digit = n % 10
+                sum += digit * digit
+                n /= 10
+            n = sum
+        return n == 1
+            
 # V1 
 # http://bookshadow.com/weblog/2015/04/22/leetcode-happy-number/
 # IDEA : SET 
+class Solution:
+    # @param {integer} n
+    # @return {boolean}
+    def isHappy(self, n):
+        numSet = set()
+        while n != 1 and n not in numSet:
+            numSet.add(n)
+            sum = 0
+            while n:
+                digit = n % 10
+                sum += digit * digit
+                n /= 10
+            n = sum
+        return n == 1
+
+# V1'
+# https://www.jiuzhang.com/solution/happy-number/#tag-highlight-lang-python
+class Solution:
+    # @param {int} n an integer
+    # @return {boolean} true if this is a happy number or false
+    def isHappy(self, n):
+        # Write your code here
+        d = {}
+        while True:
+            d[n] = 1
+            n = sum([int(x) * int(x) for x in list(str(n))])
+            if n == 1 or n in d:
+                break
+        return n == 1
 
 # V2 
 class Solution:
