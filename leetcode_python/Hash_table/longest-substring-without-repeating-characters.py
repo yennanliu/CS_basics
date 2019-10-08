@@ -1,5 +1,20 @@
 # V0
-
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        left, right = 0, 0
+        res = 0
+        chars = dict()
+        for right in range(len(s)):
+            if s[right] in chars:
+                left = max(left, chars[s[right]] + 1)
+            chars[s[right]] = right
+            res = max(res, right - left + 1)
+        return res
+        
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82022530
 # IDEA : GREEDY 
@@ -39,6 +54,26 @@ class Solution:
                 start += 1
             ans = max(ans, end - start)
         return ans 
+
+# V1''
+# https://www.jiuzhang.com/solution/longest-substring-without-repeating-characters/#tag-highlight-lang-python
+class Solution:
+    """
+    @param s: a string
+    @return: an integer
+    """
+    def lengthOfLongestSubstring(self, s):
+        unique_chars = set([])
+        j = 0
+        n = len(s)
+        longest = 0
+        for i in range(n):
+            while j < n and s[j] not in unique_chars:
+                unique_chars.add(s[j])
+                j += 1
+            longest = max(longest, j - i)
+            unique_chars.remove(s[i])    
+        return longest 
 
 # V2 
 # Time:  O(n)
