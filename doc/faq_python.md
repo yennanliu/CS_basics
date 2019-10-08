@@ -60,3 +60,26 @@ print (ppl_richer)
 
 ```
 
+## Subarray 
+#### 1) Find the sub-array as list by multiple?
+
+```python
+
+array = [ i for i in range(31) ]
+multiple_2 = array[2::2]
+multiple_3 = array[3::3]
+multiple_5 = array[5::5]
+
+# In [42]: multiple_2
+# Out[42]: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+
+# In [43]: multiple_3
+# Out[43]: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+
+# In [44]: multiple_5
+# Out[44]: [5, 10, 15, 20, 25, 30]
+
+```
+
+
+

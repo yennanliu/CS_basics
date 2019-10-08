@@ -65,7 +65,7 @@ class Solution:
         primes[0] = primes[1] = False
         for i in range(2, int(n ** 0.5) + 1):
             if primes[i]:
-                primes[i * i:: i] = [False] * len(primes[i * i: n: i])
+                primes[i * i:: i] = [False] * len(primes[i * i:: i])
         return sum(primes)
         
 # V1' 
