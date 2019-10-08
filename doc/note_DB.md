@@ -94,7 +94,7 @@
 
 ## 4) Index
 
-- What's database index 
+- What's database index ? 
 
 - A database index is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure. Indexes are used to quickly locate data without having to search every row in a database table every time a database table is accessed. Indexes can be created using one or more columns of a database table, providing the basis for both rapid random lookups and efficient access of ordered records.
 
@@ -102,30 +102,71 @@
 
 - https://en.wikipedia.org/wiki/Database_index
 
-- Type of index 
-	- Bitmap index
-	- Dense index
-	- Sparse index
-	- Reverse index
-	- Primary index
-	- Secondary index
+- Why index ?
+	- ***FULL TABLE SCAN -> INDEX SCAN (balanced tree) -> INDEX SEEK***
 
-- https://en.wikipedia.org/wiki/Database_index
+	-  Full table scan : 
+		- This is known as a Full Table Scan or simply a Table Scan. A Table Scan is the costliest among the data search methods.
 
+	- Index scan :
+		- Index Scan is nothing but scanning on the data pages from the first page to the last page. If there is an index on a table, and if the query is touching a larger amount of data, which means the query is retrieving more than 50 percent or 90 percent of the data, and then the optimizer would just scan all the data pages to retrieve the data rows. If there is no index, then you might see a Table Scan (Index Scan) in the execution plan.
+
+	- Index seek : 
+		- Index seeks are generally preferred for the highly selective queries. What that means is that the query is just requesting a fewer number of rows or just retrieving the other 10 (some documents says 15 percent) of the rows of the table.
+
+	- In general query optimizer tries to use an Index Seek which means that the optimizer has found a useful index to retrieve recordset. But if it is not able to do so either because there is no index or no useful indexes on the table, then SQL Server has to scan all the records that satisfy the query condition.
+
+	- https://www.got-it.ai/solutions/sqlquerychat/sql-help/general-sql/sql-table-scan-index-scan-vs-index-seek/
+
+	- https://blog.sqlauthority.com/2007/03/30/sql-server-index-seek-vs-index-scan-table-scan/
+
+- Type of index  ? 
+	- Culstered index 
+		- Only one per table
+		- Saved in the `DB hard disk`
+		- Use "B-Tree" (Balanced Tree) as data structure with components : Root/intermediate/leaf node  
+		- Heap (when no index, data is non-ordering) ->  B-tree (when index, data is ordering)
+		- If `primary key` already set, DB will set primary key as culstered index by default 
+		- ***AVOID*** set `frequent updated`column as culstered index, since the system has to spend time on data reordering when every time data updated 
+		- ***AVOID*** set `unique data` column as culstered index, since this index is not an `effieicnt filter` for `where` sql syntax
+		- ***AVOID*** set `too long/much` column as culstered index, since it will give system heavy loading where reordering 
+	- Non-Culstered index 
+		- Can be many per table  (but < 5 ideally)
+		- point to data with culstered index in DB hard disk
+		- Use "B-Tree" data structure for ordering 
+		- Supplement of culstered index 
+	- Covering Index
+		- One index on `multiple` columns 
+		- Leverage the `existing` non-Culstered index, copy the column (with covering Index) to the leaf node, so index scan/seek can be processed via balanced tree as well 
+		- `Hight densidy` column is a good choice 
+		- Not include more than 3 columns ideally 
+	- Index with include
+		- Index include column
+	- Indexed View
+		- `View` is a `logical` definition in the DB, not a real table, Indexed View can be used as `intermedia view` that let query can just start from that, but not always go to the original table with complex syntax. 
+	- Filtered Index 
+
+	- https://en.wikipedia.org/wiki/Database_index
+
+	- (culstered index pic) 
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/cluster_index.png" width="700" height="200">
 
 - Trade off between using index and not
+	- Main concern : The ***COST of INDEX MAINTENANCE*** when data get updated
+
+	- https://www.qa-knowhow.com/?p=377
 
 - What happen at low level DB server when implement a new index ?  
 
 
 
-## 4) DB tuning 
+## 5) DB tuning 
 
-## 5) DB managment 
+## 6) DB managment 
 
-## 6) Case study 
+## 7) Case study 
 
-## 7) Ref 
+## 8) Ref 
 - https://deliveroo.engineering/2017/11/23/engineering-interviews.html
 - https://www.2ndquadrant.com/en/postgresql/postgresql-vs-mysql/
 - https://blog.xuite.net/jack101257/twblog/138494904-%E4%BC%81%E6%A5%AD%E8%B3%87%E6%96%99%E5%80%89%E5%84%B2DWH%E7%B0%A1%E4%BB%8B

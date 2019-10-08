@@ -48,3 +48,5 @@
 	- Cross join      : ` Combinations` of all columns within table A and B 
 - https://www.quora.com/What-is-the-difference-between-full-outer-join-and-union-in-SQL
 - https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL 
+
+#### 3. Find the orders in Quater ? (no hard-code)
