@@ -32,7 +32,24 @@ class Solution(object):
         if len(set(nums)) != len(nums):
             return True 
         else:
-            return False  
+            return False 
+
+# V1'
+# https://www.jiuzhang.com/solution/contains-duplicate/#tag-highlight-lang-python
+class Solution:
+    """
+    @param nums: the given array
+    @return: if any value appears at least twice in the array
+    """
+    def containsDuplicate(self, nums):
+        # Write your code here
+        hashset = {}
+        for num in nums:
+            if num in hashset:
+                return True
+            hashset[num] = True
+        return False
+        
 # V2 
 class Solution:
     # @param {integer[]} nums

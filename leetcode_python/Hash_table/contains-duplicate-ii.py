@@ -77,6 +77,24 @@ class Solution(object):
                 window.add(nums[i])
         return False
 
+# V1'
+# https://www.jiuzhang.com/solution/contains-duplicate-ii/#tag-highlight-lang-python
+class Solution:
+    """
+    @param nums: the given array
+    @param k: the given number
+    @return:  whether there are two distinct indices i and j in the array such that nums[i] = nums[j] and the absolute difference between i and j is at most k
+    """
+    def containsNearbyDuplicate(self, nums, k):
+        # Write your code here
+
+        dic = {}
+        for index, value in enumerate(nums):
+            if value in dic and index - dic[value] <= k:
+                return True
+            dic[value] = index
+        return False
+
 # V2 
 class Solution:
     # @param {integer[]} nums
