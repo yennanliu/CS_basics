@@ -20,6 +20,21 @@ class Solution(object):
                 seen.add(cur)
         return list(repeated)
 
+# V1'
+# https://www.jiuzhang.com/solution/repeated-dna-sequences/#tag-highlight-lang-python
+class Solution:
+    """
+    @param s: a string
+    @return: return List[str]
+    """
+    def findRepeatedDnaSequences(self, s):
+        # write your code here
+        dic, str = {}, "x" + s[:9]
+        for i in range(9, len(s)):
+            str = str[1:] + s[i]
+            dic[str] = 1 if str not in dic else dic[str] + 1
+        return [k for k, v in dic.items() if v > 1]
+        
 # V2 
 # Time:  O(n)
 # Space: O(n)
