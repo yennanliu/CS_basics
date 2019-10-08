@@ -50,6 +50,7 @@ class Solution(object):
             if target - num in lookup:
                 return [lookup[target - num], i]
             lookup[num] = i
+        return [-1, -1]
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/52039233
@@ -65,6 +66,19 @@ class Solution(object):
             for j in range(i+1, len(nums)):
                 if nums[i] + nums[j] == target:
                     return [i, j]
+# V1'
+# https://www.jiuzhang.com/solution/two-sum/#tag-highlight-lang-python
+class Solution(object):
+    def twoSum(self, nums, target):
+        # hash for index-value mapping 
+        hash = {}
+        # loop over nums, and sync it with hash 
+        for i in range(len(nums)):
+            if target - nums[i] in hash:
+                return [hash[target - nums[i]], i]
+            hash[nums[i]] = i
+        # in case if there is no solution (two sum)
+        return [-1, -1]
 
 # V2 
 # example :

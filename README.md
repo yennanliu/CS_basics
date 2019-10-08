@@ -192,7 +192,7 @@
 ## Hash Table 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-001| [Two Sum](https://leetcode.com/problems/two-sum/)      | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/two-sum.py)     | _O(n)_         | _O(n)_          | Easy         |`basic`, `hash table`| AGAIN*
+001| [Two Sum](https://leetcode.com/problems/two-sum/)      | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/two-sum.py)     | _O(n)_| _O(n)_ | Easy |`good basic`, `hash table`, `apple`, `amazon`, `UBER`, `grab`, `fb`| OK* (but again)
 003| [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/longest-substring-without-repeating-characters.py)  | _O(n)_ | _O(1)_ | Medium |`good trick`, `hash table`,`apple`,`amazon`,`fb`| AGAIN***** (3)
 036| [Valid Sudoku](https://leetcode.com/problems/valid-sudoku/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/valid-sudoku.py) | _O(9^2)_ | _O(9)_ | Easy  |`UBER`, `apple`, `amazon`| OK* 
 049| [Group Anagrams](https://leetcode.com/problems/group-anagrams/)     | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/group-anagrams.py)    | _O(n * glogg)_          | _O(n)_   | Medium |`good basic`, `trick`,`dict + sort`, `UBER`, `amazon`, `fb`| AGAIN*** (3)
