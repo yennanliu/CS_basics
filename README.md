@@ -387,7 +387,7 @@
 ## String
 |  #  | Title           |  Solution       |  Time           | Space        | Difficulty    | Status, Note       | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-005| [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py)  | _O(n)_ | _O(n)_ |  Medium | `Manacher's Algorithm`, `DP` | AGAIN (not start*)
+005| [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py)  | _O(n)_ | _O(n)_ |  Medium | `Manacher's Algorithm`, `DP`, `UBER`, `amazon`, `fb` | AGAIN**** (3)
 006| [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/zigzag-conversion.py) | _O(n)_ | _O(1)_      | Easy       || AGAIN (not start)
 008| [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/string-to-integer-atoi.py)  | _O(n)_ | _O(1)_ | Easy      || AGAIN 
 014| [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-common-prefix.py)  | _O(n * k)_   | _O(1)_  | Easy   |`good basic`| OK* 

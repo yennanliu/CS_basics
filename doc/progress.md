@@ -12,7 +12,7 @@
 	-  `smart*** review`
 		- sql group count on window func
 		- array = [a1, a2..an], find sub array [a1', a2' ..] that `a1' -a2' == k*M` for any  2 elements in  sub array
-- Reviewing : `fb` : 002 
+- Reviewing : `fb` : 005  
 - REDO      : Dynamic Programming, Linked list, Math, Recursion, Stack revisit,  Binary Search, Heap, Backtracking, Greedy, SQL, String, stack, Tree, Binary Search Tree, Bit Manipulation, Hash Table, Array
 - Reviewed : Two Pointers, Sort, Tree, Breadth-First Search, Depth-First Search, Hash table
 
