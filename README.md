@@ -251,7 +251,7 @@
 ## Linked list 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-002| [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/add-two-numbers.py) | _O(n)_   | _O(1)_  | Medium | check `# 445 Add Two Numbers II`, `basic`, `linked list`| AGAIN*  
+002| [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/add-two-numbers.py) | _O(n)_   | _O(1)_  | Medium | check `# 445 Add Two Numbers II`, `basic`, `linked list`, `airbnb`, `amazon`, `fb`| OK* (but again)  
 021| [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/merge-two-sorted-lists.py) | _O(n)_ | _O(1)_ | Easy         || OK 
 024| [Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/swap-nodes-in-pairs.py)  | _O(n)_ | _O(1)_ | Easy  |`basic`| AGAIN* (2)
 061| [Rotate List](https://leetcode.com/problems/rotate-list/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/rotate-list.py)  | _O(n)_          | _O(1)_  | Medium   |`basic`|  AGAIN (2)
