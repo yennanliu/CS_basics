@@ -43,7 +43,22 @@ Explanation: The number "-91283472332" is out of the range of a 32-bit signed in
 """
 
 # V0 
-
+class Solution(object):
+    def myAtoi(self, str):
+        """
+        :type str: str
+        :rtype: int
+        """
+        str = str.strip()
+        try:
+            res = re.search('(^[\+\-]?\d+)', str).group()
+            # res = re.search(r"\d+", s).group()
+            res = int(res)
+            res = res if res <= 2147483647 else 2147483647    # 2**31 == 2147483648
+            res = res if res >= -2147483648 else -2147483648  # -(1)*(2**31) == - 2147483648
+        except:
+            res = 0
+        return res
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/52053932
@@ -71,6 +86,57 @@ class Solution(object):
         number = number if number <= 2147483647 else 2147483647
         number = number if number >= -2147483648 else -2147483648
         return number
+
+# V1'
+# https://blog.csdn.net/coder_orz/article/details/52053932
+# IDEA : REGULAR EXPRESSION 
+class Solution(object):
+    def myAtoi(self, str):
+        """
+        :type str: str
+        :rtype: int
+        """
+        str = str.strip()
+        try:
+            res = re.search('(^[\+\-]?\d+)', str).group()
+            res = int(res)
+            res = res if res <= 2147483647 else 2147483647
+            res = res if res >= -2147483648 else -2147483648
+        except:
+            res = 0
+        return res
+
+# V1''
+# https://www.jiuzhang.com/solution/string-to-integer-atoi/#tag-highlight-lang-python
+class Solution(object):
+    # string -> int, remove prefix and +, -. Please note the max, min interval of int when transform
+    def atoi(self, str):
+        str = str.strip()
+        if str == "" :
+            return 0
+        i = 0
+        sign = 1
+        ret = 0
+        length = len(str)
+        MaxInt = (1 << 31) - 1
+        if str[i] == '+':
+            i += 1
+        elif str[i] == '-' :
+            i += 1
+            sign = -1
+        
+        for i in range(i, length) :
+            if str[i] < '0' or str[i] > '9' :
+                break
+            ret = ret * 10 + int(str[i])
+            if ret > sys.maxint:
+                break
+        ret *= sign
+        if ret >= MaxInt:
+            return MaxInt
+        if ret < MaxInt * -1 :
+            return MaxInt * - 1 - 1 
+        return ret
 
 # V2 
 class Solution(object):
