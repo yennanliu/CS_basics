@@ -476,8 +476,8 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 007| [Reverse Integer](https://leetcode.com/problems/reverse-integer/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/reverse-integer.py) | _O(1)_ | _O(1)_         | Easy           || OK* 
-009| [Palindrome Number](https://leetcode.com/problems/palindrome-number/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/palindrome-number.py)  | _O(1)_ | _O(1)_        | Easy           || OK 
-012| [Integer to Roman](https://leetcode.com/problems/integer-to-roman/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/integer-to-roman.py) | _O(n)_ | _O(1)_          | Medium         || AGAIN (not start)
+009| [Palindrome Number](https://leetcode.com/problems/palindrome-number/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/palindrome-number.py)  | _O(1)_ | _O(1)_ | Easy   || OK 
+012| [Integer to Roman](https://leetcode.com/problems/integer-to-roman/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/integer-to-roman.py) | _O(n)_ | _O(1)_ | Medium  |`math basic`,`twitter`, `fb`| AGAIN*** (3)
 013| [Roman to Integer](https://leetcode.com/problems/roman-to-integer/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/roman-to-integer.py) | _O(n)_ | _O(1)_          | Easy           || AGAIN (not start)
 029| [Divide Two Integers](https://leetcode.com/problems/divide-two-integers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/divide-two-integers.py) | _O(1)_       | _O(1)_  | Medium  || AGAIN*  (2)
 050| [Pow(x, n)](https://leetcode.com/problems/powx-n/)     | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/powx-n.py)     | _O(1)_       | _O(1)_   | Medium    || OK*
