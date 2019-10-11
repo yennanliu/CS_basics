@@ -828,7 +828,7 @@
 ## Greedy 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note   | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-011| [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/container-with-most-water.py)  | _O(n)_ | _O(1)_ | Medium ||  OK*
+011| [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/container-with-most-water.py)  | _O(n)_ | _O(1)_ | Medium |`two pointers`,`fb`|  OK*
 055| [Jump Game](https://leetcode.com/problems/jump-game/)     |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/jump-game.py)  | _O(n)_    | _O(1)_    | Medium         || AGAIN (not start)
 122| [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/best-time-to-buy-and-sell-stock-ii.py) | _O(n)_ | _O(1)_ | Easy |compare with `#309 Best Time to Buy and Sell Stock with Cooldown `, `#714 Best Time to Buy and Sell Stock with Transaction Fee`| OK*
 134| [Gas Station](https://leetcode.com/problems/gas-station/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/gas-station.py)   | _O(n)_    | _O(1)_ | Medium    || AGAIN (not start*)
