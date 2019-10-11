@@ -469,6 +469,7 @@
 281| [Zigzag Iterator](https://leetcode.com/problems/zigzag-iterator/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/zigzag-iterator.py) | _O(n)_        | _O(k)_          | Medium           |🔒| OK
 346| [Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/moving-average-from-data-stream.py)  | _O(1)_        | _O(w)_          | Easy           |🔒| AGAIN**
 933| [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/number-of-recent-calls.py)  | _O(1)_ on average       | _O(w)_          | Easy           || AGAIN**
+622| [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/)| |        | | Medium || 
 
 
 ## Math 
