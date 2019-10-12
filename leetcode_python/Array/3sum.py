@@ -14,7 +14,31 @@
 #    (-1, -1, 2)
 
 # V0 
-
+class Solution:
+    """
+    @param numbersbers : Give an array numbersbers of n integer
+    @return : Find all unique triplets in the array which gives the sum of zero.
+    """
+    def threeSum(self, numbers):
+        triplets = []
+        length = len(numbers)
+        if length < 3:
+            return triplets
+        numbers.sort()
+        for i in range(length):
+            target = 0 - numbers[i]
+            # 2 Sum
+            hashmap = {}
+            for j in range(i + 1, length):
+                item_j = numbers[j]
+                if (target - item_j) in hashmap:
+                    triplet = [numbers[i], target - item_j, item_j]
+                    if triplet not in triplets:
+                        triplets.append(triplet)
+                else:
+                    hashmap[item_j] = j
+        return triplets
+        
 # V1 
 # https://algorithm.yuanbin.me/zh-tw/integer_array/3_sum.html?q=
 # IDEA :  SORT + HASH TABLE + 2 SUM
@@ -79,6 +103,7 @@ class Solution(object):
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83115850
 # IDEA : collections.Counter + DOUBLE POINTER 
+import collections
 class Solution(object):
     def threeSum(self, nums):
         """
@@ -107,6 +132,38 @@ class Solution(object):
                             res.append(curlist)
                             visited.add(finger)
         return res
+
+# V1'''
+# https://www.jiuzhang.com/solution/3sum/#tag-highlight-lang-python
+class Solution:
+    """
+    @param numbers: Give an array numbers of n integer
+    @return: Find all unique triplets in the array which gives the sum of zero.
+    """
+    def threeSum(self, nums):
+        nums.sort()
+        results = []
+        length = len(nums)
+        for i in range(0, length - 2):
+            if i and nums[i] == nums[i - 1]:
+                continue
+            self.find_two_sum(nums, i + 1, length - 1, -nums[i], results)
+        return results
+
+    def find_two_sum(self, nums, left, right, target, results):
+        while left < right:
+            if nums[left] + nums[right] == target:
+                results.append([-target, nums[left], nums[right]])
+                right -= 1
+                left += 1
+                while left < right and nums[left] == nums[left - 1]:
+                    left += 1
+                while left < right and nums[right] == nums[right + 1]:
+                    right -= 1
+            elif nums[left] + nums[right] > target:
+                right -= 1
+            else:
+                left += 1
 
 # V2 
 # Time:  O(n^2)
