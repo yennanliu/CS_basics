@@ -17,7 +17,27 @@
 #
 
 # V0 
-
+class Solution(object):
+    def fourSum(self, nums, target):
+        resultList = []
+        nums.sort()
+        for num1 in range(0, len(nums)-3):
+            for num2 in range(num1 + 1, len(nums)-2):
+                num3 = num2 + 1
+                num4 = len(nums) -1
+                while num3 != num4:
+                    summer = nums[num1] + nums[num2] + nums[num3] + nums[num4]
+                    if summer == target:
+                        list_temp = [nums[num1],nums[num2],nums[num3],nums[num4]]
+                        if list_temp not in resultList:
+                            resultList.append(list_temp)
+                        num3 += 1
+                    elif summer > target:
+                        num4 -= 1
+                    else:
+                        num3 += 1
+        return resultList
+        
 # V1 
 # https://blog.csdn.net/qqxx6661/article/details/77104868
 # IDEA : DOUBLE POINTER 
@@ -114,6 +134,36 @@ class Solution(object):
             while i < N - 3 and nums[i] == nums[i + 1]:
                 i += 1
             i += 1 # check this 
+        return res
+
+# V1''''
+# https://www.jiuzhang.com/solution/4sum/#tag-highlight-lang-python
+class Solution(object):
+    def fourSum(self, nums, target):
+        nums.sort()
+        res = []
+        length = len(nums)
+        for i in range(0, length - 3):
+            if i and nums[i] == nums[i - 1]:
+                continue
+            for j in range(i + 1, length - 2):
+                if j != i + 1 and nums[j] == nums[j - 1]:
+                    continue
+                sum = target - nums[i] - nums[j]
+                left, right = j + 1, length - 1
+                while left < right:
+                    if nums[left] + nums[right] == sum:
+                        res.append([nums[i], nums[j], nums[left], nums[right]])
+                        right -= 1
+                        left += 1
+                        while left < right and nums[left] == nums[left - 1]:
+                            left += 1
+                        while left < right and nums[right] == nums[right + 1]:
+                            right -= 1
+                    elif nums[left] + nums[right] > sum:
+                        right -= 1
+                    else:
+                        left += 1
         return res
 
 # V2 
