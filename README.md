@@ -573,7 +573,7 @@
 ## Two Pointers 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-019| [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/remove-nth-node-from-end-of-list.py) | _O(n)_       | _O(1)_         | Medium         || OK*
+019| [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/remove-nth-node-from-end-of-list.py) | _O(n)_   | _O(1)_ | Medium |`linked list`,`two pointers`,`fb`| AGAIN**** (3)
 086| [Partition List](https://leetcode.com/problems/partition-list/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/partition-list.py) | _O(n)_       | _O(1)_         | Medium         || OK* 
 141| [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/linked-list-cycle.py) | _O(n)_ | _O(1)_ | Easy |`basic`|  AGAIN* (2)
 142| [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/linked-list-cycle-ii.py) | _O(n)_ | _O(1)_   | Medium   || AGAIN* (2) (not start)
