@@ -23,13 +23,13 @@
 ## 4) Availability vs consistency
 
 ## 5) Lambda VS Kappa
-	- Lambda 
-		- Stream layer + Batch layer + Service layer
-		- Query = λ (Complete data) = λ (live streaming data) * λ (Stored data)
-		- Event Sourcing : save whole events 
-	
-	- Kappa 
-		- Query = K (New Data) = K (Live streaming data)
-	- https://towardsdatascience.com/a-brief-introduction-to-two-data-processing-architectures-lambda-and-kappa-for-big-data-4f35c28005bb
-	- https://blog.csdn.net/brucesea/article/details/45937875
+- Lambda 
+	- Stream layer + Batch layer + Service layer
+	- Query = λ (Complete data) = λ (live streaming data) * λ (Stored data)
+	- Event Sourcing : save whole events 
+
+- Kappa 
+	- Query = K (New Data) = K (Live streaming data)
+- https://towardsdatascience.com/a-brief-introduction-to-two-data-processing-architectures-lambda-and-kappa-for-big-data-4f35c28005bb
+- https://blog.csdn.net/brucesea/article/details/45937875
 
