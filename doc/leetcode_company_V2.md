@@ -685,7 +685,7 @@
 | 17 | [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/) | Medium | 38.2% | 0.251 | AGAIN*****
 | 18 | [4Sum](https://leetcode.com/problems/4sum/) | Medium | 28.3% | 0.056 | AGAIN****
 | 19 | [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/) | Medium | 33.6% | 0.015 | AGAIN*****
-| 20 | [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/) | Easy | 34.6% | 0.202 | 
+| 20 | [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/) | Easy | 34.6% | 0.202 | OK**
 | 21 | [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/) | Easy | 43.2% | 0.043 |
 | 23 | [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) | Hard | 30.3% | 0.202 |
 | 24 | [Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/) | Medium | 40.9% | 0.011 |

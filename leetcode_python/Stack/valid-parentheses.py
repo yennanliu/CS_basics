@@ -49,7 +49,44 @@ class Solution:
                 return False
         return len(stack) == 0
 
-# V1 
+# V1
+# https://blog.csdn.net/coder_orz/article/details/51697963
+# IDEA : STACK
+class Solution(object):
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        pars = [None]
+        parmap = {')': '(', '}': '{', ']': '['}
+        for c in s:
+            if c in parmap and parmap[c] == pars[len(pars)-1]:
+                pars.pop()
+            else:
+                pars.append(c)
+        return len(pars) == 1
+
+# V1' 
+# https://blog.csdn.net/coder_orz/article/details/51697963
+# IDEA : STACK 
+class Solution(object):
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        pars = [None]
+        parmap = {')': '(', '}': '{', ']': '['}
+        for c in s:
+            if c in parmap:
+                if parmap[c] != pars.pop():
+                    return False
+            else:
+                pars.append(c)
+        return len(pars) == 1
+
+# V1'' 
 class Solution:
     # @return a boolean
     def isValid(self, s):
@@ -60,7 +97,6 @@ class Solution:
             elif len(stack) == 0 or lookup[stack.pop()] != parenthese:
                 return False
         return len(stack) == 0
-
 # if __name__ == "__main__":
 #     print(Solution().isValid("()[]{}"))
 #     print(Solution().isValid("()[{]}"))
