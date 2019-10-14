@@ -165,11 +165,12 @@
 ## 6) DB managment 
 
 ## 7) Case study 
+- NeoDDL on gcloud 
+	- https://medium.com/traveloka-engineering/data-modelling-and-processing-in-travel-super-app-8011a6ecafe6
 
 ## 8) Ref 
 - https://deliveroo.engineering/2017/11/23/engineering-interviews.html
 - https://www.2ndquadrant.com/en/postgresql/postgresql-vs-mysql/
 - https://blog.xuite.net/jack101257/twblog/138494904-%E4%BC%81%E6%A5%AD%E8%B3%87%E6%96%99%E5%80%89%E5%84%B2DWH%E7%B0%A1%E4%BB%8B
 - http://relyky.blogspot.com/2011/04/data-warehousedimensional-data-model.html
-
 
