@@ -12,6 +12,18 @@
 #
 
 # V0
+class Solution:
+    # @param a list of integers
+    # @return an integer
+    def removeDuplicates(self, A):
+        if len(A) == 0:
+            return 0
+        j = 0
+        for i in range(0, len(A)):
+            if A[i] != A[j]:
+                A[i], A[j+1] = A[j+1], A[i]
+                j = j + 1
+        return j+1
 
 # V1 
 # https://www.cnblogs.com/zuoyuan/p/3779816.html
@@ -19,6 +31,15 @@
 # IDEA : use an index j, when i go through the array,
 # if A[i] != A[j], then swap A[i] and A[j+1] and do j=j+1 (A[i], A[j+1] = A[j+1], A[i])
 # then i keep going through the array 
+# DEMO
+# A = [1,1,1,2,3]
+# s = Solution()
+# s.removeDuplicates(A)
+# [1, 1, 1, 2, 3]
+# [1, 1, 1, 2, 3]
+# [1, 1, 1, 2, 3]
+# [1, 2, 1, 1, 3]
+# [1, 2, 3, 1, 1]
 class Solution:
     # @param a list of integers
     # @return an integer
@@ -66,6 +87,24 @@ class Solution(object):
             else:
                 nums[i-count] = nums[i]
         return len(nums) - count
+
+# V1'''
+# https://www.jiuzhang.com/solution/remove-duplicates-from-sorted-array/#tag-highlight-lang-python
+class Solution:
+    """
+    @param A: a list of integers
+    @return an integer
+    """
+    def removeDuplicates(self, A):
+        # write your code here
+        if A == []:
+            return 0
+        index = 0
+        for i in range(1, len(A)):
+            if A[index] != A[i]:
+                index += 1
+                A[index] = A[i]
+        return index + 1
 
 # V2 
 # Time:  O(n)
