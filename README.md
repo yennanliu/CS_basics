@@ -654,7 +654,7 @@
 894| [All Possible Full Binary Trees](https://leetcode.com/problems/all-possible-full-binary-trees/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/all-possible-full-binary-trees.py) | _O(n * 4^n / n^(3/2))_ | _O(n * 4^n / n^(3/2))_ | Medium ||  AGAIN (not start)
 911| [Online Election](https://leetcode.com/problems/online-election/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/online-election.py)| ctor: _O(n)_<br> query : _O(logn)_ | _O(n)_ | Medium    ||  AGAIN (not start)
 33| [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/search-in-rotated-sorted-array.py)||| Medium |`UBER`, `fb`| AGAIN*** (not start)
-034| [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) |||| Medium |`fb`| AGAIN**** (1)
+034| [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/find-first-and-last-position-of-element-in-sorted-array.py)||| Medium |`fb`| AGAIN**** (1)
 
 
 
