@@ -696,7 +696,7 @@
 | 32 | [Longest Valid Parentheses](https://leetcode.com/problems/longest-valid-parentheses/) | Hard | 23.8% | 0.156 |
 | 33 | [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | Medium | 32.1% | 0.079 | AGAIN*** (not start) 
 | 34 | [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) | Medium | 32.0% | 0.06 | AGAIN***** (1)
-| 38 | [Count and Say](https://leetcode.com/problems/count-and-say/) | Easy | 37.9% | 0.011 |
+| 38 | [Count and Say](https://leetcode.com/problems/count-and-say/) | Easy | 37.9% | 0.011 | AGAIN*** (not start)
 | 39 | [Combination Sum](https://leetcode.com/problems/combination-sum/) | Medium | 43.7% | 0.01 |
 | 42 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) | Hard | 39.2% | 0.236 |
 | 43 | [Multiply Strings](https://leetcode.com/problems/multiply-strings/) | Medium | 28.7% | 0.219 |
