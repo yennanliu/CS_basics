@@ -79,14 +79,14 @@ class Solution(object):
             if nums[mid]==target:
                 return mid
                 
-            if nums[mid]>=nums[start]:                              #当nums[mid]属于左边升序序列时
+            if nums[mid]>=nums[start]:                              # when nums[mid] belongs left ascending array 
         
                 if target>=nums[start] and target<nums[mid]:
                     end=mid-1
                 else:
                     start=mid+1
             
-            if nums[mid]<nums[end]:                                 #当nums[mid]属于右边升序序列时
+            if nums[mid]<nums[end]:                                 # when nums[mid] belongs left ascending array 
         
                 if target>nums[mid] and target<=nums[end]:
                     start=mid+1
