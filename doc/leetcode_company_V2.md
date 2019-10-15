@@ -692,7 +692,7 @@
 | 26 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/) | Easy | 37.8% | 0.018 | AGAIN*****
 | 29 | [Divide Two Integers](https://leetcode.com/problems/divide-two-integers/) | Medium | 15.7% | 0.883 | AGAIN*****
 | 30 | [Substring with Concatenation of All Words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/) | Hard | 22.4% | 0.068 |
-| 31 | [Next Permutation](https://leetcode.com/problems/next-permutation/) | Medium | 29.3% | 1.059 |
+| 31 | [Next Permutation](https://leetcode.com/problems/next-permutation/) | Medium | 29.3% | 1.059 | AGAIN**** (3) (not start*)
 | 32 | [Longest Valid Parentheses](https://leetcode.com/problems/longest-valid-parentheses/) | Hard | 23.8% | 0.156 |
 | 33 | [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | Medium | 32.1% | 0.079 |
 | 34 | [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) | Medium | 32.0% | 0.06 |
