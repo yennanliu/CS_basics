@@ -702,8 +702,8 @@
 | 43 | [Multiply Strings](https://leetcode.com/problems/multiply-strings/) | Medium | 28.7% | 0.219 | AGAIN***
 | 44 | [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/) | Hard | 21.6% | 0.043 |
 | 46 | [Permutations](https://leetcode.com/problems/permutations/) | Medium | 50.1% | 0.017 | AGAIN** (3)
-| 49 | [Group Anagrams](https://leetcode.com/problems/group-anagrams/) | Medium | 41.3% | 0.008 |
-| 50 | [Pow(x, n)](https://leetcode.com/problems/powx-n/) | Medium | 26.6% | 0.169 |
+| 49 | [Group Anagrams](https://leetcode.com/problems/group-anagrams/) | Medium | 41.3% | 0.008 | AGAIN*** (3)
+| 50 | [Pow(x, n)](https://leetcode.com/problems/powx-n/) | Medium | 26.6% | 0.169 | AGAIN*** (3)
 | 51 | [N-Queens](https://leetcode.com/problems/n-queens/) | Hard | 35.3% | 0.149 |
 | 52 | [N-Queens II](https://leetcode.com/problems/n-queens-ii/) | Hard | 48.7% | 0.036 |
 | 53 | [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/) | Easy | 41.3% | 0.031 |

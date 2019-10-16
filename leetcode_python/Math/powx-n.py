@@ -1,14 +1,65 @@
+# V0
+class Solution(object):
+    def myPow(self, x, n):
+        """
+        :type x: float
+        :type n: int
+        :rtype: float
+        """
+        if n == 0:
+            return 1
+        if n < 0:
+            x = 1 / x
+            n = -n
+        if n % 2:
+            return x * self.myPow(x, n - 1)
+        return self.myPow(x * x, n / 2)
 
 # V1 
-
+# https://blog.csdn.net/fuxuemingzhu/article/details/82960833
 class Solution(object):
-	def myPow(self, x, n):
-		return (x**n)
+    def myPow(self, x, n):
+        """
+        :type x: float
+        :type n: int
+        :rtype: float
+        """
+        if n == 0:
+            return 1
+        if n < 0:
+            x = 1 / x
+            n = -n
+        if n % 2:
+            return x * self.myPow(x, n - 1)
+        return self.myPow(x * x, n / 2)
+
+# V1' 
+# https://blog.csdn.net/fuxuemingzhu/article/details/82960833
+# IDEA : ITERATION 
+class Solution(object):
+    def myPow(self, x, n):
+        """
+        :type x: float
+        :type n: int
+        :rtype: float
+        """
+        if n == 0:
+            return 1
+        if n < 0:
+            x = 1 / x
+            n = -n
+        ans = 1
+        res = 1
+        while n:
+            if n % 2:
+                ans *= x
+            n >>= 1
+            x *= x
+        return ans
 
 # V2 
 # Time:  O(logn) = O(1)
 # Space: O(1)
-
 class Solution(object):
     def myPow(self, x, n):
         """
@@ -23,10 +74,8 @@ class Solution(object):
                 result *= x
             abs_n >>= 1
             x *= x
-
         return 1 / result if n < 0 else result
-
-
+        
 # V3 
 # Time:  O(logn)
 # Space: O(logn)
