@@ -54,7 +54,22 @@ RDDs support two types of operations:
 - persist 
     - you may also persist an RDD in memory using the persist (or cache) method, in which case Spark will keep the elements around on the cluster for much faster access the next time you query it. There is also support for persisting RDDs on disk, or replicated across multiple nodes.
 
-## 4) 
+## 4) Passing Functions to Spark
 
+```scala
+//scala
+// define object MyFunctions and then pass MyFunctions.func1, as follows:
+
+object MyFunctions {
+  def func1(s: String): String = { ... }
+}
+
+myRdd.map(MyFunctions.func1)
+```
+
+- Spark’s API relies heavily on passing functions in the driver program to run on the cluster. There are two recommended ways to do this:
+
+    - `Anonymous function` : which can be used for short pieces of code.
+    - `Static methods in a global singleton object`
 
 
