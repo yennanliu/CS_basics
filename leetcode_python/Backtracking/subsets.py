@@ -1,54 +1,81 @@
 # V0 
+# IDEA : DFS
+class Solution:
+    """
+    @param nums: A set of numbers
+    @return: A list of lists
+    """
+    def subsets(self, nums):
+        nums = sorted(nums)
+        combinations = []
+        self.dfs(nums, 0, [], combinations)
+        return combinations
+        
+    def dfs(self, nums, index, combination, combinations):
+        combinations.append(list(combination))
+        
+        for i in range(index, len(nums)):
+            combination.append(nums[i])
+            self.dfs(nums, i + 1, combination, combinations)
+            combination.pop()
+
 
 # V1
-# https://blog.csdn.net/fuxuemingzhu/article/details/79785548
-# IDEA : BACKTRACKING  + DFS 
-# DEMO :
-# In [12]: nums = [1,2,3]
-# In [13]: Solution().subsets(nums)
-# i =  0
-# path :  [] , [nums[i]] [1]
-# path + [nums[i]] : [1]
-
-# i =  1
-# path :  [1] , [nums[i]] [2]
-# path + [nums[i]] : [1, 2]
-
-# i =  2
-# path :  [1, 2] , [nums[i]] [3]
-# path + [nums[i]] : [1, 2, 3]
-
-# i =  2
-# path :  [1] , [nums[i]] [3]
-# path + [nums[i]] : [1, 3]
-
-# i =  1
-# path :  [] , [nums[i]] [2]
-# path + [nums[i]] : [2]
-
-# i =  2
-# path :  [2] , [nums[i]] [3]
-# path + [nums[i]] : [2, 3]
-
-# i =  2
-# path :  [] , [nums[i]] [3]
-# path + [nums[i]] : [3]
-
-# Out[13]: [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
-class Solution(object):
+# https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python
+class Solution:
+    """
+    @param nums: A set of numbers
+    @return: A list of lists
+    """
     def subsets(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[List[int]]
-        """
-        res = []
-        self.dfs(nums, 0, res, [])
-        return res
-    
-    def dfs(self, nums, index, res, path):
-        res.append(path)
+        nums = sorted(nums)
+        combinations = []
+        self.dfs(nums, 0, [], combinations)
+        return combinations
+        
+    def dfs(self, nums, index, combination, combinations):
+        combinations.append(list(combination))
+        
         for i in range(index, len(nums)):
-            self.dfs(nums, i + 1, res, path + [nums[i]]) # [] + [1] = [1], [] + [1] + [2] = [1,2]
+            combination.append(nums[i])
+            self.dfs(nums, i + 1, combination, combinations)
+            combination.pop()
+
+# V1''
+# https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python
+class Solution:
+    
+    def search(self, nums, S, index):
+        if index == len(nums):
+            self.results.append(list(S))
+            return
+        
+        S.append(nums[index])
+        self.search(nums, S, index + 1)
+        S.pop()
+        self.search(nums, S, index + 1)
+        
+    def subsets(self, nums):
+        self.results = []
+        self.search(sorted(nums), [], 0)
+        return self.results
+
+# V1'''
+# https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python
+class Solution:
+    
+    def search(self, nums, S, index):
+        if index == len(nums):
+            self.results.append(S)
+            return
+        
+        self.search(nums, S + [nums[index]], index + 1)
+        self.search(nums, S, index + 1)
+        
+    def subsets(self, nums):
+        self.results = []
+        self.search(sorted(nums), [], 0)
+        return self.results
 
 # V2 
 # Time:  O(n * 2^n)
@@ -67,7 +94,6 @@ class Solution(object):
                 result.append(list(result[j]))
                 result[-1].append(nums[i])
         return result
-
 
 # Time:  O(n * 2^n)
 # Space: O(1)
@@ -90,7 +116,6 @@ class Solution2(object):
             i += 1
 
         return result
-
 
 # Time:  O(n * 2^n)
 # Space: O(1)
