@@ -12,7 +12,24 @@ Input: a = "1010", b = "1011"
 Output: "10101" 
 """
 
-# V0 
+# V0
+class Solution(object):
+    def addBinary(self, a, b):
+        """
+        :type a: str
+        :type b: str
+        :rtype: str
+        """
+        res = ''
+        i, j, plus = len(a)-1, len(b)-1, 0
+        while i>=0 or j>=0 or plus==1:
+            plus += int(a[i]) if i>= 0 else 0
+            plus += int(b[j]) if j>= 0 else 0
+            res = str(plus % 2) + res
+            i, j, plus = i-1, j-1, plus//2  # since max of "plus" is 3 in bimary case, so "plus//2" works here
+        return res
+
+# V0'
 class Solution(object):
     # @param a, a string
     # @param b, a string
@@ -71,7 +88,7 @@ class Solution(object):
             plus += int(a[i]) if i>= 0 else 0
             plus += int(b[j]) if j>= 0 else 0
             res = str(plus % 2) + res
-            i, j, plus = i-1, j-1, plus/2
+            i, j, plus = i-1, j-1, plus//2
         return res
 
 # V1'' 
@@ -92,6 +109,30 @@ class Solution(object):
             return self.addBinary(a[:-1], b[:-1]) + '0'
         else:
             return self.addBinary(a[:-1], b[:-1]) + '1'
+
+# V1'''
+# https://www.jiuzhang.com/solution/add-binary/#tag-highlight-lang-python
+class Solution:
+    # @param {string} a a number
+    # @param {string} b a number
+    # @return {string} the result
+    def addBinary(self, a, b):
+        indexa = len(a) - 1
+        indexb = len(b) - 1
+        carry = 0
+        sum = ""
+        while indexa >= 0 or indexb >= 0:
+            x = int(a[indexa]) if indexa >= 0 else 0
+            y = int(b[indexb]) if indexb >= 0 else 0
+            if (x + y + carry) % 2 == 0:
+                sum = '0' + sum
+            else:
+                sum = '1' + sum
+            carry = (x + y + carry) / 2
+            indexa, indexb = indexa - 1, indexb - 1
+        if carry == 1:
+            sum = '1' + sum
+        return sum
 
 # V2 
 class Solution:
