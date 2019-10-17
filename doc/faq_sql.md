@@ -50,3 +50,32 @@
 - https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL 
 
 #### 3. Find the orders in Quater ? (no hard-code)
+
+```sql
+-- postgre
+
+SELECT extract(QUARTER
+               FROM order_timestamp) AS QUARTER,
+       count(*)
+FROM orders 
+GROUP BY 1;
+
+```
+
+
+```sql
+-- mysql
+
+SELECT QUARTER(order_timestamp) AS QUARTER,
+       count(*)
+FROM orders 
+GROUP BY 1;
+
+```
+
+
+
+
+
+
+
