@@ -711,7 +711,7 @@
 | 57 | [Insert Interval](https://leetcode.com/problems/insert-interval/) | Hard | 29.7% | 0.079 |
 | 65 | [Valid Number](https://leetcode.com/problems/valid-number/) | Hard | 13.1% | 0.79 |
 | 67 | [Add Binary](https://leetcode.com/problems/add-binary/) | Easy | 35.8% | 0.978 |  OK* (3) (but again)
-| 75 | [Sort Colors](https://leetcode.com/problems/sort-colors/) | Medium | 40.0% | 0.024 |
+| 75 | [Sort Colors](https://leetcode.com/problems/sort-colors/) | Medium | 40.0% | 0.024 | OK** (3) (but again)
 | 76 | [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/) | Hard | 28.2% | 0.699 |
 | 78 | [Subsets](https://leetcode.com/problems/subsets/) | Medium | 47.8% | 0.019 |
 | 79 | [Word Search](https://leetcode.com/problems/word-search/) | Medium | 29.0% | 0.011 |

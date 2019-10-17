@@ -1,5 +1,24 @@
 # V0 
+class Solution:
+    """
+    @param nums: A list of integer which is 0, 1 or 2 
+    @return: nothing
+    """
+    def sortColors(self, A):
+        left, index, right = 0, 0, len(A) - 1
 
+        # be careful, index < right is not correct
+        while index <= right:
+            if A[index] == 0:
+                A[left], A[index] = A[index], A[left]
+                left += 1
+                index += 1
+            elif A[index] == 2:
+                A[right], A[index] = A[index], A[right]
+                right -=  1 
+            else:
+                index += 1
+        return A 
 
 # V1
 # https://blog.csdn.net/maymay_/article/details/80093460
@@ -43,7 +62,6 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/sort-colors/#tag-highlight-lang-python
-
 class Solution:
     """
     @param nums: A list of integer which is 0, 1 or 2 
@@ -106,5 +124,4 @@ class Solution(object):
                     n -= 1
                 else:
                     j += 1
-
         triPartition(nums, 1)
