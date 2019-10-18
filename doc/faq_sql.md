@@ -73,9 +73,47 @@ GROUP BY 1;
 
 ```
 
+#### 4. Select value, and max value with conditions in one query?
+
+```sql
+-- postgre
+
+SELECT commit_timestamp,
+       max(commit_timestamp) max_commit_time,
+
+  (SELECT max(commit_timestamp)
+   FROM git_commit
+   WHERE commit_timestamp >= '2019-01-01'
+     AND commit_timestamp <= '2019-12-31' ) AS max_commit_time_in_timeslot
+FROM git_commit
+GROUP BY 1
+LIMIT 10 ;
 
 
+```
 
+#### 5. Select data with value larger than average value?
 
+```sql
+-- postgre
+-- V1
 
+WITH user_commit_count AS
+  (SELECT user_id,
+          count(*) AS commit_count
+   FROM git_commit
+   GROUP BY 1),
+     avg_commit AS
+  (SELECT avg(commit_count)::int AS avg_commit_count
+   FROM user_commit_count)
+SELECT user_id,
+       commit_count,
+  (SELECT *
+   FROM avg_commit)
+FROM user_commit_count
+WHERE commit_count >
+    (SELECT avg_commit_count
+     FROM avg_commit)
+LIMIT 30;
 
+```
