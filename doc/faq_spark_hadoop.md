@@ -2,7 +2,9 @@
 
 1. Difference between Spark VS Hadoop?
 
-- ***Hadoop*** is a big data infrastructure that enable a collections of nodes (machines) to save large scale dataset via split the  dataset into eash node
+- ***Hadoop*** is a big data infrastructure that make large scale dataset storage possible via split the dataset (`HDFS`) into `data block` and save in each node (data node)
+	- Data node : the components save split data block
+	- Name node : the components manage data storage places
 
 - ***Spark*** is a big data framework that access large scale dataset like above, and doing processing like : ETL, stream, machine learning and so on...
 
