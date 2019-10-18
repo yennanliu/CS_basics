@@ -9,7 +9,7 @@ class Solution(object):
         if not nums: return -1
         left, right = 0, len(nums) - 1
         while left <= right:
-            mid = (left + right) / 2
+            mid = (left + right) // 2
             if nums[mid] == target:
                 return mid
             if nums[mid] < nums[right]:
@@ -38,7 +38,7 @@ class Solution(object):
         if not nums: return -1
         left, right = 0, len(nums) - 1
         while left <= right:
-            mid = (left + right) / 2
+            mid = (left + right) // 2
             if nums[mid] == target:
                 return mid
             if nums[mid] < nums[right]:

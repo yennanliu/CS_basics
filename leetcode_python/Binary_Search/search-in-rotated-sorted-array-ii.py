@@ -14,7 +14,7 @@ class Solution(object):
         while l <= r:
             while l < r and nums[l] == nums[r]:
                 l += 1
-            mid = l + (r - l) / 2
+            mid = l + (r - l) // 2
             if nums[mid] == target:
                 return True
             if nums[mid] >= nums[l]:
@@ -30,6 +30,30 @@ class Solution(object):
         return False
 
 # V1'
+# https://blog.csdn.net/happyaaaaaaaaaaa/article/details/51602234
+class Solution(object):
+    def search(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: bool
+        """
+        left, right = 0, len(nums) - 1
+        while left <= right :
+            mid = (left+right) // 2
+            if nums[mid] == target : return True
+            if nums[mid] == nums[left] : left += 1
+            elif nums[mid] > nums[left] :
+                if nums[mid] > target and nums[left] <= target :
+                    right = mid - 1
+                else : left = mid + 1
+            else :
+                if nums[mid] < target and nums[right] >= target :
+                    left = mid + 1
+                else : right = mid - 1
+        return False
+
+# V1''
 # https://www.jiuzhang.com/solution/search-in-rotated-sorted-array-ii/#tag-highlight-lang-python
 class Solution(object):
     def search(self, A, target):
@@ -38,7 +62,7 @@ class Solution(object):
             if num == target:
                 return True
         return False
-        
+
 # V2 
 # Time:  O(logn)
 # Space: O(1)
@@ -52,7 +76,7 @@ class Solution(object):
         left, right = 0, len(nums) - 1
 
         while left <= right:
-            mid = left + (right - left) / 2
+            mid = left + (right - left) // 2
 
             if nums[mid] == target:
                 return True
