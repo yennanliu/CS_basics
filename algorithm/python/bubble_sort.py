@@ -3,6 +3,20 @@
 #################################################################
 
 # V0  
+# DEMO
+# c = [9,1,2,3,0]
+# output = bubble_sort(c)
+# print (output)
+# collection : [1, 9, 2, 3, 0]
+# collection : [1, 2, 9, 3, 0]
+# collection : [1, 2, 3, 9, 0]
+# collection : [1, 2, 3, 0, 9]
+# collection : [1, 2, 3, 0, 9]
+# collection : [1, 2, 3, 0, 9]
+# collection : [1, 2, 0, 3, 9]
+# collection : [1, 2, 0, 3, 9]
+# collection : [1, 0, 2, 3, 9]
+# collection : [0, 1, 2, 3, 9]
 def bubble_sort(collection):
     length = len(collection)
     for i in range(length-1):
