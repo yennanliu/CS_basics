@@ -8,14 +8,57 @@
 # The number of elements initialized in A and B are m and n respectively.
 #
 
- 
 # V0 
+# IDEA 
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        """
+        :type nums1: List[int]
+        :type m: int
+        :type nums2: List[int]
+        :type n: int
+        :rtype: void Do not return anything, modify nums1 in-place instead.
+        """
+        p, q = m-1, n-1
+        while p >= 0 and q >= 0:
+            if nums1[p] > nums2[q]:
+                nums1[p+q+1] = nums1[p]
+                p = p-1
+            else:
+                nums1[p+q+1] = nums2[q]
+                q = q-1
+        nums1[:q+1] = nums2[:q+1]
+
+# V0'
 class Solution(object):
     def merge(self, nums1, m, nums2, n):
         return sorted(nums1 + nums2)
 
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/51681144
+# IDEA : 3 POINTERS
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        """
+        :type nums1: List[int]
+        :type m: int
+        :type nums2: List[int]
+        :type n: int
+        :rtype: void Do not return anything, modify nums1 in-place instead.
+        """
+        p, q, k = m-1, n-1, m+n-1
+        while p >= 0 and q >= 0:
+            if nums1[p] > nums2[q]:
+                nums1[k] = nums1[p]
+                p, k = p-1, k-1
+            else:
+                nums1[k] = nums2[q]
+                q, k = q-1, k-1
+        nums1[:q+1] = nums2[:q+1]
+
+# V1'
+# https://blog.csdn.net/coder_orz/article/details/51681144
+# IDEA : 2 POINTERS
 class Solution(object):
     def merge(self, nums1, m, nums2, n):
         """
@@ -91,7 +134,7 @@ class Solution(object):
                 nums1[k]=nums2[j]
                 j-=1
             k-=1
-            
+
 # V2 
 class Solution:
     # @param A  a list of integers
@@ -114,12 +157,11 @@ class Solution:
                 A[last] = B[j]
                 last, j = last - 1, j - 1
 
-if __name__ == "__main__":
-    A = [1, 3, 5, 0, 0, 0, 0]
-    B = [2, 4, 6, 7]
-    Solution().merge(A, 3, B, 4)
-    print(A)
-
+# if __name__ == "__main__":
+#     A = [1, 3, 5, 0, 0, 0, 0]
+#     B = [2, 4, 6, 7]
+#     Solution().merge(A, 3, B, 4)
+#     print(A)
 
 # V3 
 # Time:  O(n)
