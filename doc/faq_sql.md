@@ -117,3 +117,17 @@ WHERE commit_count >
 LIMIT 30;
 
 ```
+
+### 4. select list of integer from 1 -> 100 (recursive CTE)?
+```sql
+-- postgre
+
+WITH RECURSIVE my_num AS
+  (SELECT 1 AS seqnum
+   UNION ALL SELECT seqnum + 1
+   FROM my_num
+   WHERE seqnum < 100 )
+SELECT seqnum
+FROM my_num;
+
+```
