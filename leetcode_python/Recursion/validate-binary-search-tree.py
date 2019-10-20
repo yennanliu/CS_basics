@@ -1,66 +1,107 @@
 # V0 : DEV 
 
-# # V1
-# # https://blog.csdn.net/yangjingjing9/article/details/77096057
-# #Definition for a binary tree node.
-# classTreeNode(object):
-#      def __init__(self, x):
-#          self.val = x
-#          self.left = None
-#          self.right = None
- 
-# classSolution(object):
-#     def isValidBST(self, root):
-#         """
-#         :type root: TreeNode
-#         :rtype: bool
-#         """
-#         return self.valid(root, None, None)
-               
-#     def valid(self, root, min, max):
-#         if root == None or root.val == None:
-#             return True
-       
-#         if (min is not None and root.val <=min) or (max is not None and root.val >= max):
-#             print(1)
-#             return False
-       
-#         return self.valid(root.left, min,root.val) and self.valid(root.right, root.val, max)
-         
-# # if__name__ == '__main__':
-# #     S = Solution()
-# #     l1 = TreeNode(9)
-# #     l2 = TreeNode(5)
-# #     l3 = TreeNode(11)
-# #     l4 = TreeNode(2)
-# #     l5 = TreeNode(7)
-# #     l6 = TreeNode(10)
-# #     l7 = TreeNode(14)
-# #     l8 = TreeNode(1)
-# #     l9 = TreeNode(3)
-# #     l10 = TreeNode(6)
-# #     l11 = TreeNode(8)
-# #     l12 = TreeNode(12)
-# #     l13 = TreeNode(15)
-   
-# #     root = l1
-   
-# #     l1.left = l2
-# #     l1.right = l3
-   
-# #     l2.left = l4
-# #     l2.right = l5
-# #     l3.left = l6
-# #     l3.right = l7
-   
-# #     l4.left = l8
-# #     l4.right = l9
-# #     l5.left = l10
-# #     l5.right = l11
-# #     l7.left = l12
-# #     l7.right = l13
-   
-# #     S.isValidBST(root) 
+# V1
+# https://blog.csdn.net/fuxuemingzhu/article/details/70209865
+class Solution(object):
+    def isValidBST(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        return self.valid(root, float('-inf'), float('inf'))
+        
+    def valid(self, root, min, max):
+        if not root: return True
+        if root.val >= max or root.val <= min:
+            return False
+        return self.valid(root.left, min, root.val) and self.valid(root.right, root.val, max)
+
+# V1'
+# https://www.jiuzhang.com/solution/validate-binary-search-tree/#tag-highlight-lang-python
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if the binary tree is BST, or false
+    """
+    def isValidBST(self, root):
+        if root is None:
+            return True
+            
+        stack = []
+        while root:
+            stack.append(root)
+            root = root.left
+            
+        last_node = stack[-1]
+        while stack:
+            node = stack.pop()
+            if node.right:
+                node = node.right
+                while node:
+                    stack.append(node)
+                    node = node.left
+
+            # the only difference compare to an inorder traversal iteration
+            # this problem disallowed equal values so it's <= not <
+            if stack:
+                if stack[-1].val <= last_node.val:
+                    return False
+                last_node = stack[-1]
+        return True
+
+# V1''
+# https://www.jiuzhang.com/solution/validate-binary-search-tree/#tag-highlight-lang-python
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if the binary tree is BST, or false
+    """
+    def isValidBST(self, root):
+        self.lastVal = None
+        self.isBST = True
+        self.validate(root)
+        return self.isBST
+
+    def validate(self, root):
+        if root is None:
+            return
+        self.validate(root.left)
+        if self.lastVal is not None and self.lastVal >= root.val:
+            self.isBST = False
+            return
+        self.lastVal = root.val
+        self.validate(root.right)
+
+# V1'''
+# https://www.jiuzhang.com/solution/validate-binary-search-tree/#tag-highlight-lang-python
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if the binary tree is BST, or false
+    """  
+    def isValidBST(self, root):
+        # write your code here
+        isBST, minNode, maxNode = self.divideConquer(root)
+        return isBST
+        
+    def divideConquer(self, root):
+        if root is None:
+            return True, None, None
+        
+        leftIsBST, leftMin, leftMax = self.divideConquer(root.left)
+        rightIsBST, rightMin, rightMax = self.divideConquer(root.right)
+        if not leftIsBST or not rightIsBST:
+            return False, None, None
+        if leftMax is not None and leftMax >= root.val:
+            return False, None, None
+        if rightMin is not None and rightMin <= root.val:
+            return False, None, None
+        
+        # is BST
+        minNode = leftMin if leftMin is not None else root.val
+        maxNode = rightMax if rightMax is not None else root.val
+        
+        return True, minNode, maxNode
 
 # V2 
 # Time:  O(n)
@@ -115,4 +156,3 @@ class Solution2(object):
         return low < root.val and root.val < high \
             and self.isValidBSTRecu(root.left, low, root.val) \
             and self.isValidBSTRecu(root.right, root.val, high)
-
