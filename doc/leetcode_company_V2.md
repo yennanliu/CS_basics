@@ -722,7 +722,7 @@
 | 94 | [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/) | Medium | 52.3% | 0.006 |  AGAIN**** (3)
 | 98 | [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/) | Medium | 24.4% | 0.445 | AGAIN**** (not start)
 | 99 | [Recover Binary Search Tree](https://leetcode.com/problems/recover-binary-search-tree/) | Hard | 32.3% | 0.183 |
-| 101 | [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/) | Easy | 41.4% | 0.017 |
+| 101 | [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/) | Easy | 41.4% | 0.017 | AGAIN** (3) 
 | 102 | [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/) | Medium | 44.7% | 0.017 |
 | 103 | [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/) | Medium | 38.5% | 0.068 |
 | 105 | [Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/) | Medium | 36.7% | 0.012 |
