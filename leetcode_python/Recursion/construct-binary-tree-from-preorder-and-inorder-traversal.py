@@ -1,6 +1,56 @@
-# V0 : DEV 
+# V0 
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        if len(preorder) == 0:
+            return None
+        if len(preorder) == 1:
+            return TreeNode(preorder[0])
+        root = TreeNode(preorder[0])
+        index = inorder.index(root.val)  # the index of root at inorder, and we can also get the length of left-sub-tree, right-sub-tree ( preorder[1:index+1]) for following using
+        root.left = self.buildTree(preorder[1 : index + 1], inorder[0 : index]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the left-sub-tree of Preorder as well
+        root.right = self.buildTree(preorder[index + 1 : len(preorder)], inorder[index + 1 : len(inorder)]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the right-sub-tree of Preorder as well
+        return root
 
-# V1 
+# V1
+# https://blog.csdn.net/qqxx6661/article/details/75905524
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        if len(preorder) == 0:
+            return None
+        if len(preorder) == 1:
+            return TreeNode(preorder[0])
+        root = TreeNode(preorder[0])
+        index = inorder.index(root.val)  # the index of root at inorder, and we can also get the length of left-sub-tree, right-sub-tree ( preorder[1:index+1]) for following using
+        root.left = self.buildTree(preorder[1 : index + 1], inorder[0 : index]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the left-sub-tree of Preorder as well
+        root.right = self.buildTree(preorder[index + 1 : len(preorder)], inorder[index + 1 : len(inorder)]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the right-sub-tree of Preorder as well
+        return root
+
+# V1'
+# https://www.jiuzhang.com/solution/construct-binary-tree-from-preorder-and-inorder-traversal/#tag-highlight-lang-python
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        this.val = val
+        this.left, this.right = None, None
+"""
+from lintcode import TreeNode
+class Solution:
+    """
+    @param preorder : A list of integers that preorder traversal of a tree
+    @param inorder : A list of integers that inorder traversal of a tree
+    @return : Root of a tree
+    """
+    def buildTree(self, preorder, inorder):
+        # write your code here
+        if not inorder: return None # inorder is empty
+        root = TreeNode(preorder[0])
+        rootPos = inorder.index(preorder[0])
+        root.left = self.buildTree(preorder[1 : 1 + rootPos], inorder[ : rootPos])
+        root.right = self.buildTree(preorder[rootPos + 1 : ], inorder[rootPos + 1 : ])
+        return root
+
+# V2
 # Time:  O(n)
 # Space: O(n)
 class TreeNode(object):
@@ -42,13 +92,11 @@ class Solution2(object):
         
         def helper(start, end):
             if start > end:
-                return None
-            
+                return None         
             root_val = next(preorder_iterator)
             root = TreeNode(root_val)
             idx = inorder_lookup[root_val]
             root.left = helper(start, idx-1)
             root.right = helper(idx+1, end)
             return root
-
         return helper(0, len(inorder)-1)

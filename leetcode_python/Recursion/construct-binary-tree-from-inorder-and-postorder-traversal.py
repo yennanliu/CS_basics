@@ -1,5 +1,16 @@
 # V0 
-
+class Solution(object):
+    def buildTree(self, inorder, postorder):
+        if len(inorder) == 0:
+            return None
+        if len(inorder) == 1:
+            return TreeNode(inorder[0])
+        root = TreeNode(postorder[len(postorder) - 1]) # get the value of "root" via postorder
+        index = inorder.index(postorder[len(postorder) - 1]) # get the index of "root" in inorder 
+        root.left = self.buildTree(inorder[ 0 : index ], postorder[ 0 : index ])
+        root.right = self.buildTree(inorder[ index + 1 : len(inorder) ], postorder[ index : len(postorder) - 1 ])
+        return root
+        
 # V1 
 # https://blog.csdn.net/qqxx6661/article/details/75905524
 # https://www.cnblogs.com/zuoyuan/p/3720138.html
@@ -38,31 +49,6 @@ class Solution(object):
         index = inorder.index(root.val) # the root place for mid-order. it's left is left-sub-tree ; right is right-sub-tree
         root.left = self.buildTree(preorder[1 : index + 1], inorder[0 : index])
         root.right = self.buildTree(preorder[index + 1 : len(preorder)], inorder[index + 1 : len(inorder)])
-        return root
-
-# V1'''
-# https://www.jiuzhang.com/solution/construct-binary-tree-from-preorder-and-inorder-traversal/#tag-highlight-lang-python
-"""
-Definition of TreeNode:
-class TreeNode:
-    def __init__(self, val):
-        this.val = val
-        this.left, this.right = None, None
-"""
-from lintcode import TreeNode
-class Solution:
-    """
-    @param preorder : A list of integers that preorder traversal of a tree
-    @param inorder : A list of integers that inorder traversal of a tree
-    @return : Root of a tree
-    """
-    def buildTree(self, preorder, inorder):
-        # write your code here
-        if not inorder: return None # inorder is empty
-        root = TreeNode(preorder[0])
-        rootPos = inorder.index(preorder[0])
-        root.left = self.buildTree(preorder[1 : 1 + rootPos], inorder[ : rootPos])
-        root.right = self.buildTree(preorder[rootPos + 1 : ], inorder[rootPos + 1 : ])
         return root
 
 # V2 
