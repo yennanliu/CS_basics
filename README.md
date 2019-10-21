@@ -304,7 +304,7 @@
 ## Tree 
 |  #  | Title           |  Solution   |  Time   | Space  | Difficulty    | Note | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-094 | [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)  | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/binary-tree-inorder-traversal.py) | _O(n)_| _O(1)_| Medium   | `Morris Traversal` | AGAIN (not start*)
+094 | [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)  | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/binary-tree-inorder-traversal.py) | _O(n)_| _O(1)_| Medium   |`good basic`,`Morris Traversal`, `M$`, `fb` | AGAIN**** (3)
 144 | [Binary Tree Preorder Traversal](https://leetcode.com/problems/binary-tree-preorder-traversal/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/binary-tree-preorder-traversal.py)  | _O(n)_| _O(1)_| Medium |`Morris Traversal`| AGAIN 
 208 | [Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py) | _O(n)_ | _O(1)_ | Medium |Trie tree| AGAIN (not start)
 211 | [Add and Search Word - Data structure design](https://leetcode.com/problems/add-and-search-word-data-structure-design/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/add-and-search-word-data-structure-design.py) | _O(min(n, h))_ | _O(min(n, h))_ | Medium |Trie tree, DFS, do `# 208 first`| AGAIN (not start)
