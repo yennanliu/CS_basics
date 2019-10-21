@@ -1,7 +1,21 @@
-# V0 : DEV 
+# V0
+class Solution(object):
+    def sortedArrayToBST(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: TreeNode
+        """
+        if not nums: return None
+        _len = len(nums)
+        mid = _len // 2
+        root = TreeNode(nums[mid])
+        root.left = self.sortedArrayToBST(nums[:mid])
+        root.right = self.sortedArrayToBST(nums[mid+1:])
+        return root
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/70665213
+# IDEA : BST 
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -21,7 +35,40 @@ class Solution(object):
         root.left = self.sortedArrayToBST(nums[:mid])
         root.right = self.sortedArrayToBST(nums[mid+1:])
         return root
+
+# V1'
+# https://www.jiuzhang.com/solution/convert-sorted-list-to-binary-search-tree/#tag-highlight-lang-python
+class Solution:
+    """
+    @param head: The first node of linked list.
+    @return: a tree node
+    """
+    def sortedListToBST(self, head):
+        # write your code here
+        res = self.dfs(head)
+        return res       
+    def dfs(self, head):
         
+        if head == None:
+            return None
+        
+        if head.next == None:
+            return TreeNode(head.val)      
+        dummy = ListNode(0)
+        dummy.next = head
+        fast = head
+        slow = dummy       
+        while fast != None and fast.next != None:
+            fast = fast.next.next
+            slow = slow.next
+        
+        temp = slow.next
+        slow.next = None
+        parent = TreeNode(temp.val)       
+        parent.left = self.dfs(head)
+        parent.right = self.dfs(temp.next)      
+        return parent
+
 # V2 
 # Time:  O(n)
 # Space: O(logn)
@@ -30,7 +77,6 @@ class TreeNode(object):
         self.val = x
         self.left = None
         self.right = None
-
 
 class Solution(object):
     def sortedArrayToBST(self, nums):
