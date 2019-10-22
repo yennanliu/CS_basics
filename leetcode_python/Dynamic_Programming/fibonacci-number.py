@@ -1,26 +1,17 @@
-# V1 
-# class solution(object):
-# 	def fib(n):
-# 		return solution.fib(n-2) + solution.fib(n-1)
-# 	if n <= 2:
-# 		return 1 
-# 	return solution.fib(n-2) + solution.fib(n-1)
+# V0
 
-# V1' 
-class solution(object):
-	def fib(n):
-		if n <= 2:
-			return 1 
-		return solution.fib(n-2) + solution.fib(n-1)
-	return solution.fib(n)
+# V1
+# https://blog.csdn.net/zhangpeterx/article/details/100056015
+class Solution:
+    def fib(self, N: int) -> int:
+        if N == 0 or N == 1:
+            return N
+        a, b = 0, 1
+        for i in range(1, N):
+            a, b = b, a+b
+        return b
 
-# V1''
-
-
-# V2 
-
-
-# V3 
+# V2
 # Time:  O(logn)
 # Space: O(1)
 import itertools
@@ -41,16 +32,14 @@ class Solution(object):
             return result
 
         def matrix_mult(A, B):
-            ZB = list(zip(*B))
-            return [[sum(a*b for a, b in zip(row, col)) \
+            ZB = zip(*B)
+            return [[sum(a*b for a, b in itertools.izip(row, col)) \
                      for col in ZB] for row in A]
 
         T = [[1, 1],
              [1, 0]]
         return matrix_expo(T, N)[1][0]
 
-
-# V3' 
 # Time:  O(n)
 # Space: O(1)
 class Solution2(object):
