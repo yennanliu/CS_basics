@@ -45,9 +45,29 @@
 
 	- Distribution Styles
 		- KEY distribution
+			- The rows are distributed according to the values in one column. The leader node will attempt to place matching values on the same node slice. If you distribute a pair of tables on the joining keys, the leader node collocates the rows on the slices according to the values in the joining columns so that matching values from the common columns are physically stored together.
+
 		- ALL distribution
+			- A copy of the entire table is distributed to every node. Where EVEN distribution or KEY distribution place only a portion of a table's rows on each node, ALL distribution ensures that every row is collocated for every join that the table participates in.
+
 		- EVEN distribution
+			- The rows are distributed across the slices in a round-robin fashion, regardless of the values in any particular column. EVEN distribution is appropriate when a table does not participate in joins or when there is not a clear choice between KEY distribution and ALL distribution. EVEN distribution is the default distribution style.
 
 	- https://docs.aws.amazon.com/en_us/redshift/latest/dg/tutorial-tuning-tables-distribution.html
 
+- 5) Review Compression Encodings
+	- Compression is a column-level operation that reduces the size of data when it is stored. Compression conserves storage space and reduces the size of data that is read from storage, which reduces the amount of disk I/O and therefore improves query performance.
 
+	- By default, Amazon Redshift stores data in its raw, uncompressed format. When you create tables in an Amazon Redshift database, you can define a compression type, or encoding, for the columns. For more information, see Compression Encodings.
+
+	- You can apply compression encodings to columns in tables manually when you create the tables, or you can use the COPY command to analyze the load data and apply compression encodings automatically.
+
+	- Type of compresison encodings
+		- Raw
+		- Bytedict
+		- LZO
+		- Runlength
+		- Text255
+		- Text32K
+	- Example 	
+		- https://docs.aws.amazon.com/en_us/redshift/latest/dg/Examples__compression_encodings_in_CREATE_TABLE_statements.html
