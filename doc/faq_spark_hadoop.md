@@ -86,7 +86,7 @@
 
 12. What errors may happen when `spark streaming` ? how to fix them ? 
 
-13. How to prevent spark out of memeory ?
+13. How to prevent spark `out of memeory` `(OOM)` problem ?
 
 14. How does saprk split `stage` ?
 
@@ -150,6 +150,24 @@
 	- MEMORY_AND_DISK_SER: Similar to MEMORY_ONLY_SER, but spill partitions that don’t fit in memory to disk instead of recomputing them on the fly each time they’re needed.
 
 	- DISK_ONLY: Store the RDD partitions only on disk. OFF_HEAP: Similar to MEMORY_ONLY_SER, but store the data in off-heap memory.
+
+30. Explain `mapPartitions`, what's the difference between mapPartitions and map ?
+
+31. Explain `broadcast join`, what's the difference between `broadcast join`and join ?
+
+32. How to optimize spark with `partitioner` ?
+
+33. Explain `combineByKey` VS. `groupByKey` ?
+
+i.e. 
+```scala
+// reduceByKey
+rdd.reduceByKey(_.sum)
+
+// groupByKey
+rdd.groupByKey().mapValue(_.sum)
+
+```
 
 ## Ref 
 - https://www.edureka.co/blog/interview-questions/top-apache-spark-interview-questions-2016/
