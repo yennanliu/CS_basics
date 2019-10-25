@@ -1,5 +1,8 @@
 ## SPARK / HADOOP ECOSYSTEM  FAQ 
 
+0. Spark Tutorial 
+- https://data-flair.training/blogs/spark-tutorial/
+
 1. Difference between Spark VS Hadoop?
 
 - ***Hadoop*** is a big data infrastructure that make large scale dataset storage possible via split the dataset (`HDFS`) into `data block` and save in each node (data node)
