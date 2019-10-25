@@ -46,16 +46,18 @@
 
 4. Explain spark  `master node`,`worker node` ,`executor`, `receiver`,`driver`...?
 
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/spark_driver_workder_executor.png" width="500" height="300">
+
 	- Driver 
-		- The program that runs on the master node of the machine and declares transformations and actions on data RDDs. In simple terms, a driver in Spark creates SparkContext, connected to a given Spark Master. The driver also delivers the RDD graphs to Master, where the standalone cluster manager runs.
+		- The program that runs on the master node of the machine and declares transformations and actions on data RDDs. In simple terms, a driver in Spark creates `SparkContext`, connected to a given Spark Master. The driver also delivers the RDD graphs to Master, where the standalone cluster manager runs.
 
 	- Master
 		- Master node is responsible for task scheduling and resource dispensation.
 
 	- Worker  
-		- Worker node refers to any node that can run the application code in a cluster. The driver program must listen for and accept incoming connections from its executors and must be network addressable from the worker nodes. 
+		- `Worker node refers to any node that can run the application code in a cluster`. The driver program must listen for and accept incoming connections from its executors and must be network addressable from the worker nodes. 
 
-		- Worker node is basically the slave node. Master node assigns work and worker node actually performs the assigned tasks. Worker nodes process the data stored on the node and report the resources to the master. Based on the resource availability, the master schedule tasks.
+		- Worker node is basically the `slave node`. Master node assigns work and worker node actually performs the assigned tasks. `Worker nodes process the data stored on the node and report the resources to the master`. Based on the resource availability, the master schedule tasks.
 
 	- Executor 
 		- When SparkContext connects to a cluster manager, it acquires an Executor on nodes in the cluster. Executors are Spark processes that run computations and store the data on the worker node. The final tasks by SparkContext are transferred to executors for their execution.
