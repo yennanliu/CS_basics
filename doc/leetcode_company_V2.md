@@ -720,7 +720,7 @@
 | 88 | [Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/) | Easy | 33.3% | 0.349 | AGAIN*****  (3)
 | 91 | [Decode Ways](https://leetcode.com/problems/decode-ways/) | Medium | 21.0% | 1.161 |  AGAIN*********** (3)
 | 94 | [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/) | Medium | 52.3% | 0.006 |  AGAIN**** (3)
-| 98 | [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/) | Medium | 24.4% | 0.445 | AGAIN**** (not start)
+| 98 | [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/) | Medium | 24.4% | 0.445 | AGAIN***** (4)
 | 99 | [Recover Binary Search Tree](https://leetcode.com/problems/recover-binary-search-tree/) | Hard | 32.3% | 0.183 |
 | 101 | [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/) | Easy | 41.4% | 0.017 | AGAIN** (3) 
 | 102 | [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/) | Medium | 44.7% | 0.017 | AGAIN**** (3)

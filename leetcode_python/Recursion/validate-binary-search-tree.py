@@ -10,11 +10,11 @@ class Solution(object):
         """
         return self.valid(root, float('-inf'), float('inf'))
         
-    def valid(self, root, min, max):
+    def valid(self, root, min_, max_):
         if not root: return True
-        if root.val >= max or root.val <= min:
+        if root.val >= max_ or root.val <= min_:
             return False
-        return self.valid(root.left, min, root.val) and self.valid(root.right, root.val, max)
+        return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
 
 # V1'
 # https://www.jiuzhang.com/solution/validate-binary-search-tree/#tag-highlight-lang-python
