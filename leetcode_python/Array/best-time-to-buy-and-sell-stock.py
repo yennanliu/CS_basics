@@ -19,7 +19,23 @@ Explanation: In this case, no transaction is done, i.e. max profit = 0.
 """
 
 # V0 
-
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        if len(prices) == 0:
+            return 0
+        minPrice = prices[0]
+        maxProfit = 0
+        for p in prices:
+            if p < minPrice:
+                minPrice = p
+            elif p - minPrice > maxProfit:
+                maxProfit = p - minPrice
+        return maxProfit
+        
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51520971
 # TO NOTE : CAN ONLY DO ONE TRANSACTION IN THE PROBLEM  
