@@ -734,9 +734,9 @@
 | 121 | [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/) | Easy | 44.4% | 0.911 | OK*** (4)
 | 123 | [Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/) | Hard | 31.5% | 0.088 |
 | 124 | [Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/) | Hard | 28.0% | 0.544 |
-| 125 | [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/) | Easy | 28.5% | 0.375 |
+| 125 | [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/) | Easy | 28.5% | 0.375 | OK
 | 126 | [Word Ladder II](https://leetcode.com/problems/word-ladder-ii/) | Hard | 15.7% | 0.026 |
-| 127 | [Word Ladder](https://leetcode.com/problems/word-ladder/) | Medium | 21.1% | 0.073 |
+| 127 | [Word Ladder](https://leetcode.com/problems/word-ladder/) | Medium | 21.1% | 0.073 | AGAIN**** (4)
 | 128 | [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/) | Hard | 39.4% | 0.058 |
 | 129 | [Sum Root to Leaf Numbers](https://leetcode.com/problems/sum-root-to-leaf-numbers/) | Medium | 39.5% | 0.02 |
 | 133 | [Clone Graph](https://leetcode.com/problems/clone-graph/) | Medium | 25.1% | 0.389 |
