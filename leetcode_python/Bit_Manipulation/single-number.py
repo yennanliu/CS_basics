@@ -27,7 +27,31 @@ class Solution(object):
     def singleNumber(self, nums):
         num_count = collections.Counter(nums)
         return [x for x in num_count if num_count[x] == 1] 
+
+# V1
+# https://blog.csdn.net/qq_20141867/article/details/82314035
+class Solution(object):
+    def singleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        return 2 * sum(set(nums)) - sum(nums)
         
+# V1'
+# https://www.jiuzhang.com/solution/single-number/#tag-highlight-lang-python
+class Solution:
+    """
+   @param A : an integer array
+   @return : a integer
+   """
+    def singleNumber(self, A):
+        # write your code here
+        ans = 0;
+        for x in A:
+            ans = ans ^ x
+        return ans
+
 # V1 
 class Solution:
 	def singleNumber(self, nums):
