@@ -361,7 +361,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 136 | [Single Number](https://leetcode.com/problems/single-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number.py) | _O(n)_ | _O(1)_ | Easy|`airbnb`, `fb`| OK 
-137 | [Single Number II](https://leetcode.com/problems/single-number-ii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number-ii.py)| _O(n)_ | _O(1)_  | Medium   || AGAIN (not start)
+137 | [Single Number II](https://leetcode.com/problems/single-number-ii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number-ii.py)| _O(n)_ | _O(1)_  | Medium   || OK
 190 | [Reverse Bits](https://leetcode.com/problems/reverse-bits/)  |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/reverse-bits.py) | _O(1)_        | _O(1)_          | Easy       || AGAIN (not stary)
 191  |[Number of 1 Bits](https://leetcode.com/problems/number-of-1-bits/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/number-of-1-bits.py) | _O(1)_ | _O(1)_          | Easy       || OK* 
 201 | [Bitwise AND of Numbers Range](https://leetcode.com/problems/bitwise-and-of-numbers-range/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/bitwise-and-of-numbers-range.py) | _O(1)_ | _O(1)_ | Medium || AGAIN (not start)

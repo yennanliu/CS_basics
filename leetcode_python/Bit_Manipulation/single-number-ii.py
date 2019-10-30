@@ -12,6 +12,15 @@
 
 
 # V0 
+class Solution:
+    def singleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # for [a,a,b,a] array
+        # 3*(a+b) - (a+a+b+a) = 2b
+        return int((3*(sum(set(nums))) - sum(nums))//2)
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79554959
