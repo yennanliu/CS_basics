@@ -1,7 +1,10 @@
 ## SPARK / HADOOP ECOSYSTEM  FAQ 
 
-0. Spark Tutorial 
-- https://data-flair.training/blogs/spark-tutorial/
+0. - Spark Tutorial 
+	- https://data-flair.training/blogs/spark-tutorial/
+
+   - Hadoop VS hive VS hbase VS pig VS RDBMS (in EMR system)
+   	- https://aws.amazon.com/tw/emr/faqs/
 
 1. Difference between Spark VS Hadoop?
 
