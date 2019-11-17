@@ -20,34 +20,49 @@
 # - N  will be in range [1, 10000].
 
 
-# V1  : dev 
-"""
-class Solution(object):
-    def rotatedDigits(self, N):
-        N_ = range(N[0], N[1])
-        digits_ = []
-        #lookup = {0,1,2,5,6,8,9}
-        lookup = {2,5,6,9}
-        for i in N_:
-            if i in lookup:
-                digits_.append(i)
-            else:
-                pass
-        return len(digits_)
+# V0
 
-"""
-
-
-
-# V2 
-# memoization (top-down dp)
+# V1
+# https://blog.csdn.net/fuxuemingzhu/article/details/79378135
 class Solution(object):
     def rotatedDigits(self, N):
         """
         :type N: int
         :rtype: int
         """
-        A = list(map(int, str(N)))
+        dmap = {"0" : "0", "1" : "1", "8" : "8", "2" : "5", "5" : "2", "6" : "9", "9" : "6"}
+        res = 0
+        for num in range(1, N + 1):
+            if any(x in str(num) for x in ["3", "4", "7"]):
+                continue
+            if any(x in str(num) for x in ["2", "5", "6", "9"]):
+                res += 1
+        return res
+
+# V1'
+# http://bookshadow.com/weblog/2018/02/25/leetcode-rotated-digits/
+class Solution(object):
+    def rotatedDigits(self, N):
+        """
+        :type N: int
+        :rtype: int
+        """
+        ans = 0
+        for n in range(1, N + 1):
+            nset = set(map(int, str(n)))
+            if any(x in nset for x in (2, 5, 6, 9)):
+                if not any(x in nset for x in (3, 4, 7)):
+                    ans += 1
+        return ans
+             
+# V2
+class Solution(object):
+    def rotatedDigits(self, N):
+        """
+        :type N: int
+        :rtype: int
+        """
+        A = map(int, str(N))
         invalid, diff = set([3, 4, 7]), set([2, 5, 6, 9])
         def dp(A, i, is_prefix_equal, is_good, lookup):
             if i == len(A): return int(is_good)
@@ -66,7 +81,6 @@ class Solution(object):
         return dp(A, 0, True, False, lookup)
 
 
-# V3 
 # Time:  O(n)
 # Space: O(n)
 class Solution2(object):
@@ -90,7 +104,6 @@ class Solution2(object):
         return dp.count(DIFF)
 
 
-# V4
 # Time:  O(nlogn) = O(n), because O(logn) = O(32) by this input
 # Space: O(logn) = O(1)
 class Solution3(object):
@@ -108,6 +121,3 @@ class Solution3(object):
             if diff & lookup:
                 result += 1
         return result
-
-
-
