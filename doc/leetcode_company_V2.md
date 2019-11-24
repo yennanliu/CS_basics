@@ -743,9 +743,9 @@
 | 136 | [Single Number](https://leetcode.com/problems/single-number/) | Easy | 57.0% | 0.006 | OK
 | 137 | [Single Number II](https://leetcode.com/problems/single-number-ii/) | Medium | 43.8% | 0.032 | OK
 | 138 | [Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) | Medium | 25.6% | 0.064 | AGAIN** (4) (not start)
-| 139 | [Word Break](https://leetcode.com/problems/word-break/) | Medium | 32.6% | 0.192 |
+| 139 | [Word Break](https://leetcode.com/problems/word-break/) | Medium | 32.6% | 0.192 |  AGAIN** (3)
 | 140 | [Word Break II](https://leetcode.com/problems/word-break-ii/) | Hard | 25.4% | 0.02 |
-| 141 | [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/) | Easy | 34.6% | 0.007 |
+| 141 | [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/) | Easy | 34.6% | 0.007 | OK
 | 143 | [Reorder List](https://leetcode.com/problems/reorder-list/) | Medium | 28.1% | 0.661 |
 | 146 | [LRU Cache](https://leetcode.com/problems/lru-cache/) | Hard | 21.4% | 0.415 |
 | 151 | [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/) | Medium | 15.7% | 0.025 |
