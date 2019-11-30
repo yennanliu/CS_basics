@@ -1,4 +1,10 @@
 # V0 
+# IDEA : REVERSE WHOLE STRING -> REVERSE EACH WORD 
+class Solution(object):
+    def reverseWords(self, s):
+        s_ =  s[::-1]
+        s_list = s_.split(" ")
+        return " ".join([ i[::-1] for  i in s_list])
 
 # V1 
 # http://www.voidcn.com/article/p-eggrnnob-zo.html
