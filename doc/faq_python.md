@@ -14,6 +14,66 @@
 
 #### 2) Decorator in python ?
 
+- Decorator : it takes a function as an argument and defines and returns a new function that uses the one it was passed. That pattern is common to almost all decorators. The @decorator notation is simply a special syntax to call an existing function, passing the new function as an argument, and use the return value to replace the new function.
+
+- In short, Decorator is the way pass 1 function as an argument into another function then to another brand new function. (below example)
+
+```python
+
+def decorator(fn):
+    def inner(n):
+        return fn(n) + 1
+    return inner
+
+# Decorator style 1)
+# this is what decorator readlly does 
+def f(n):
+    return n + 1
+f = decorator(f) # pass f as arg into decorator as brand new function
+
+# Decorator style 2)
+# or we can write it formally
+@decorator
+def f(n):
+    return n + 1
+
+```
+
+```python
+# more detailed example
+def wrap_with_prints(fn):
+    # This will only happen when a function decorated
+    # with @wrap_with_prints is defined
+    print('wrap_with_prints runs only once')
+ 
+    def wrapped():
+        # This will happen each time just before
+        # the decorated function is called
+        print('About to run %s' % fn.__name__)
+        # Here is where the wrapper calls the decorated function
+        fn()
+        # This will happen each time just after
+        # the decorated function is called
+        print('Done running %s' % fn.__name__)
+ 
+    return wrapped
+ 
+@wrap_with_prints
+def func_to_decorate():
+    print('Running the function that was decorated.')
+ 
+func_to_decorate()
+
+# output 
+# wrap_with_prints runs only once
+# About to run func_to_decorate
+# Running the function that was decorated.
+# Done running func_to_decorate
+
+```
+
+- https://www.pythoncentral.io/python-decorators-overview/
+
 #### 3) Generators (yield method) in python ?
 
 - The idea of generators is to calculate a series of results one-by-one on demand (on the fly). In the simplest case, a generator can be used as a list, where each element is calculated lazily. Lets compare a list and a generator that do the same thing - return powers of two:
@@ -174,6 +234,3 @@ multiple_5 = array[5::5]
 # Out[44]: [5, 10, 15, 20, 25, 30]
 
 ```
-
-
-
