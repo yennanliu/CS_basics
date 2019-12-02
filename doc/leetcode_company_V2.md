@@ -749,7 +749,7 @@
 | 143 | [Reorder List](https://leetcode.com/problems/reorder-list/) | Medium | 28.1% | 0.661 | AGAIN*** (3) (not start) 
 | 146 | [LRU Cache](https://leetcode.com/problems/lru-cache/) | Hard | 21.4% | 0.415 |
 | 151 | [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/) | Medium | 15.7% | 0.025 | AGAIN*
-| 157 | [Read N Characters Given Read4](https://leetcode.com/problems/read-n-characters-given-read4/) | Easy | 28.2% | 0.036 |
+| 157 | [Read N Characters Given Read4](https://leetcode.com/problems/read-n-characters-given-read4/) | Easy | 28.2% | 0.036 |  AGAIN**** (2)
 | 158 | [Read N Characters Given Read4 II - Call multiple times](https://leetcode.com/problems/read-n-characters-given-read4-ii-call-multiple-times/) | Hard | 24.3% | 0.966 |
 | 160 | [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/) | Easy | 30.7% | 0.009 |
 | 161 | [One Edit Distance](https://leetcode.com/problems/one-edit-distance/) | Medium | 31.3% | 0.086 |

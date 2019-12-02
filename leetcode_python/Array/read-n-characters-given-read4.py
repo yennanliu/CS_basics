@@ -10,7 +10,6 @@
 # Note:
 # The read function will only be called once for each test case.
 #
-
 # The read4 API is already defined for you.
 # @param buf, a list of characters
 # @return an integer
@@ -41,6 +40,26 @@ class Solution(object):
             if current!=4:
                 return index 
                 
+# V1'
+# https://www.jiuzhang.com/solution/read-n-characters-given-read4-ii-call-multiple-times/#tag-highlight-lang-python
+class Solution:
+    def __init__(self):
+        self.buf4, self.i4, self.n4 = [None] * 4, 0, 0
+
+    # @param {char[]} buf destination buffer
+    # @param {int} n maximum number of characters to read
+    # @return {int} the number of characters read
+    def read(self, buf, n):
+        # Write your code here
+        i = 0
+        while i < n:
+            if self.i4 == self.n4:
+                self.i4, self.n4 = 0, Reader.read4(self.buf4)
+                if not self.n4:
+                    break
+            buf[i], i, self.i4 = self.buf4[self.i4], i + 1, self.i4 + 1
+        return i
+
 # V2
 # Time:  O(n)
 # Space: O(1)
