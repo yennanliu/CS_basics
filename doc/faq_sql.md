@@ -118,7 +118,7 @@ LIMIT 30;
 
 ```
 
-### 4. select list of integer from 1 -> 100 (recursive CTE)?
+### 6. select list of integer from 1 -> 100 (recursive CTE)?
 ```sql
 -- postgre
 
@@ -131,3 +131,5 @@ SELECT seqnum
 FROM my_num;
 
 ```
+
+#### 7. Given tables: movie, actor (multi to multi relations), please design a data model and query that can report number of actor with given movie-id/movie-name ?
