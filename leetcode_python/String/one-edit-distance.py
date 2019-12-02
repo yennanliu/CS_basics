@@ -1,4 +1,22 @@
 # V0 
+class Solution:
+    # @param {string} s a string
+    # @param {string} t a string
+    # @return {boolean} true if they are both one edit distance apart or false
+    def isOneEditDistance(self, s, t):
+        # Write your code here
+        m = len(s)
+        n = len(t)
+        if abs(m - n) > 1:
+            return False
+        if m > n:
+            return self.isOneEditDistance(t, s)
+        for i in range(m):
+            if s[i] != t[i]:
+                if m == n:
+                    return s[i + 1:] == t[i + 1:]
+                return s[i:] == t[i + 1:]
+        return m != n # double check this condition
 
 # V1 
 # https://blog.csdn.net/zhangpeterx/article/details/90577678
@@ -36,6 +54,27 @@ class Solution:
                         return False
             return True
 
+# V1'
+# https://www.jiuzhang.com/solution/one-edit-distance/#tag-highlight-lang-python
+class Solution:
+    # @param {string} s a string
+    # @param {string} t a string
+    # @return {boolean} true if they are both one edit distance apart or false
+    def isOneEditDistance(self, s, t):
+        # Write your code here
+        m = len(s)
+        n = len(t)
+        if abs(m - n) > 1:
+            return False
+        if m > n:
+            return self.isOneEditDistance(t, s)
+        for i in range(m):
+            if s[i] != t[i]:
+                if m == n:
+                    return s[i + 1:] == t[i + 1:]
+                return s[i:] == t[i + 1:]
+        return m != n
+
 # V2 
 # Time:  O(m + n)
 # Space: O(1)
@@ -59,5 +98,4 @@ class Solution(object):
             i += 1
         while i < m and s[i] == t[i + shift]:
             i += 1
-
         return i == m
