@@ -1,4 +1,31 @@
 # V0 
+class Solution:
+    """
+    @param nums: an array of integers
+    @param s: An integer
+    @return: an integer representing the minimum size of subarray
+    """
+    def minimumSize(self, nums, s):
+        if nums is None or len(nums) == 0:
+            return -1
+
+        n = len(nums)
+        minLength = n + 1
+        sum = 0
+        j = 0
+        for i in range(n):
+            while j < n and sum < s:
+                sum += nums[j]
+                j += 1
+            if sum >= s:
+                minLength = min(minLength, j - i)
+
+            sum -= nums[i]
+            
+        if minLength == n + 1:
+            return -1
+            
+        return minLength
 
 # V1 
 # http://bookshadow.com/weblog/2015/05/12/leetcode-minimum-size-subarray-sum/
@@ -54,6 +81,35 @@ class Solution:
             if sums >= s:
                 return True
         return False
+
+# V1''
+# https://www.jiuzhang.com/solution/minimum-size-subarray-sum/#tag-highlight-lang-python
+class Solution:
+    """
+    @param nums: an array of integers
+    @param s: An integer
+    @return: an integer representing the minimum size of subarray
+    """
+    def minimumSize(self, nums, s):
+        if nums is None or len(nums) == 0:
+            return -1
+
+        n = len(nums)
+        minLength = n + 1
+        sum = 0
+        j = 0
+        for i in range(n):
+            while j < n and sum < s:
+                sum += nums[j]
+                j += 1
+            if sum >= s:
+                minLength = min(minLength, j - i)
+
+            sum -= nums[i]
+            
+        if minLength == n + 1:
+            return -1          
+        return minLength
 
 # V2 
 # Time:  O(n)
