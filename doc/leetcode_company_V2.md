@@ -766,8 +766,8 @@
 | 210 | [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/) | Medium | 31.7% | 0.043 | AGAIN** (3) (not start)
 | 211 | [Add and Search Word - Data structure design](https://leetcode.com/problems/add-and-search-word-data-structure-design/) | Medium | 27.0% | 0.454 | AGAIN (not start) (3)
 | 212 | [Word Search II](https://leetcode.com/problems/word-search-ii/) | Hard | 25.9% | 0.024 |
-| 215 | [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | Medium | 42.9% | 0.687 |
-| 227 | [Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/) | Medium | 31.1% | 0.365 |
+| 215 | [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | Medium | 42.9% | 0.687 |  OK* 
+| 227 | [Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/) | Medium | 31.1% | 0.365 | AGAIN****** (3)
 | 236 | [Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/) | Medium | 32.0% | 0.417 |
 | 238 | [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/) | Medium | 51.7% | 0.419 |
 | 239 | [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) | Hard | 35.4% | 0.039 |

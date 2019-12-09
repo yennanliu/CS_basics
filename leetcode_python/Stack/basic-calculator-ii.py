@@ -42,6 +42,38 @@ class Solution:
                 num = 0
         return sum(stack)
 
+# V1'
+# https://www.jiuzhang.com/solution/basic-calculator-ii/#tag-highlight-lang-python
+class Solution:
+    """
+    @param s: the given expression
+    @return: the result of expression
+    """
+    def calculate(self, s):
+        # Write your code here
+        if not s:
+            return "0"
+        stack, num, sign = [], 0, "+"
+        for i in range(len(s)):
+            if s[i].isdigit():
+                num = num*10+ord(s[i])-ord("0")
+            if (not s[i].isdigit() and not s[i].isspace()) or i == len(s)-1:
+                if sign == "-":
+                    stack.append(-num)
+                elif sign == "+":
+                    stack.append(num)
+                elif sign == "*":
+                    stack.append(stack.pop()*num)
+                else:
+                    tmp = stack.pop()
+                    if tmp//num < 0 and tmp%num != 0:
+                        stack.append(tmp//num+1)
+                    else:
+                        stack.append(tmp//num)
+                sign = s[i]
+                num = 0
+        return sum(stack)
+
 # V2 
 # Time:  O(n)
 # Space: O(n)
@@ -51,7 +83,7 @@ class Solution(object):
     def calculate(self, s):
         operands, operators = [], []
         operand = ""
-        for i in reversed(xrange(len(s))):
+        for i in reversed(range(len(s))):
             if s[i].isdigit():
                 operand += s[i]
                 if i == 0 or not s[i-1].isdigit():
