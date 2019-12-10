@@ -1,5 +1,20 @@
 # V0 
-
+class Solution:
+    # @param {integer[]} nums
+    # @return {integer[]}
+    def productExceptSelf(self, nums):
+        size = len(nums)
+        output = [1] * size
+        left = 1
+        for x in range(size - 1):
+            left *= nums[x]
+            output[x + 1] *= left
+        right = 1
+        for x in range(size - 1, 0, -1):
+            right *= nums[x]
+            output[x - 1] *= right
+        return output
+        
 # V1 
 # http://bookshadow.com/weblog/2015/07/16/leetcode-product-array-except-self/
 # https://blog.csdn.net/fuxuemingzhu/article/details/79325534
@@ -30,6 +45,25 @@ class Solution:
             right *= nums[x]
             output[x - 1] *= right
         return output
+
+# V1'
+# https://www.jiuzhang.com/solution/product-of-array-except-self/#tag-highlight-lang-python
+class Solution(object):
+    def productExceptSelf(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        result = [1 for i in nums]
+        nf = 1
+        nb = 1
+        length = len(nums)
+        for i in range(length):
+            result[i] *= nf
+            nf *= nums[i]
+            result[length-i-1] *= nb
+            nb *= nums[length-i-1]
+        return result
 
 # V2 
 # Time:  O(n)
