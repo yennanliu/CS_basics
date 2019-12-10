@@ -133,3 +133,8 @@ FROM my_num;
 ```
 
 #### 7. Given tables: movie, actor (multi to multi relations), please design a data model and query that can report number of actor with given movie-id/movie-name ?
+
+
+### 8. Solve the "many-to-many" DB design problem?
+- > 
+https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab
