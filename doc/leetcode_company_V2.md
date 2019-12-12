@@ -771,8 +771,8 @@
 | 236 | [Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/) | Medium | 32.0% | 0.417 | AGAIN******* (4)
 | 238 | [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/) | Medium | 51.7% | 0.419 | AGAIN***** (3)
 | 239 | [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) | Hard | 35.4% | 0.039 |
-| 242 | [Valid Anagram](https://leetcode.com/problems/valid-anagram/) | Easy | 48.9% | 0.01 |
-| 246 | [Strobogrammatic Number](https://leetcode.com/problems/strobogrammatic-number/) | Easy | 40.8% | 0.268 |
+| 242 | [Valid Anagram](https://leetcode.com/problems/valid-anagram/) | Easy | 48.9% | 0.01 | OK
+| 246 | [Strobogrammatic Number](https://leetcode.com/problems/strobogrammatic-number/) | Easy | 40.8% | 0.268 |  OK* (3)
 | 247 | [Strobogrammatic Number II](https://leetcode.com/problems/strobogrammatic-number-ii/) | Medium | 41.9% | 0.287 |
 | 252 | [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | Easy | 49.8% | 0.101 |
 | 253 | [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) | Medium | 40.1% | 1.074 |
