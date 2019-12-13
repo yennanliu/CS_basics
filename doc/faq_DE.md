@@ -1,5 +1,9 @@
 # DE FAQ
 
+
+### 0. Data Engineer Interview Questions With Python
+- https://realpython.com/data-engineer-interview-questions-python/?fbclid=IwAR3gV5Ot3LQDu_cx1ROSrxYh7TJY1W7hNkEGlsWcpbEhbvWVv7U2C5BjgO8
+
 #### 1. Difference between `file format` and `storage system` ? 
 
 - `Fileformat` is different ways describing how the information recorded in files should be stored and read. There is for example different image file formats gif,jpeg and png and they each store images but the information inside the file differs between the different file formats.
