@@ -22,6 +22,13 @@ class Solution:
         
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51706119
+# DEMO
+# In [14]: x
+# Out[14]: [1, 2, 3]
+# In [15]: res = []
+# In [16]: res.append('->'.join("123"))
+# In [17]: res
+# Out[17]: ['1->2->3']
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, x):

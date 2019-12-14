@@ -776,7 +776,7 @@
 | 247 | [Strobogrammatic Number II](https://leetcode.com/problems/strobogrammatic-number-ii/) | Medium | 41.9% | 0.287 | AGAIN********  (4)
 | 252 | [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | Easy | 49.8% | 0.101 | OK
 | 253 | [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) | Medium | 40.1% | 1.074 |  AGAIN******* (3)
-| 257 | [Binary Tree Paths](https://leetcode.com/problems/binary-tree-paths/) | Easy | 43.1% | 0.354 |
+| 257 | [Binary Tree Paths](https://leetcode.com/problems/binary-tree-paths/) | Easy | 43.1% | 0.354 | OK******* (4)
 | 259 | [3Sum Smaller](https://leetcode.com/problems/3sum-smaller/) | Medium | 43.1% | 0.054 |
 | 260 | [Single Number III](https://leetcode.com/problems/single-number-iii/) | Medium | 54.5% | 0.039 |
 | 261 | [Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/) | Medium | 38.8% | 0.038 |
