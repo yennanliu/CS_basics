@@ -24,11 +24,27 @@
 # Explanation: There is no celebrity.
  
 # Note:
-
 # The directed graph is represented as an adjacency matrix, which is an n x n matrix where a[i][j] = 1 means person i knows person j while a[i][j] = 0 means the contrary.
 # Remember that you won't have direct access to the adjacency matrix.
 
 # V0 
+class Solution:
+    # @param {int} n a party with n people
+    # @return {int} the celebrity's label or -1
+    def findCelebrity(self, n):
+        celeb = 0
+        
+        for i in range(1, n):
+            if Celebrity.knows(celeb, i): # if celeb knows i, then the given celeb must not a celebrity, so we move to the next possible celeb
+                celeb = i                 # move from celeb to i 
+        
+        # Check if the final candicate is the celebrity
+        for i in range(n):
+            if celeb != i and Celebrity.knows(celeb, i):    # to check if the Celebrity really knows no one 
+                return -1
+            if celeb != i and not Celebrity.knows(i, celeb): # to check if everyone (except Celebrity) really knows the Celebrity
+                return -1
+        return celeb
 
 # V1 
 # https://www.jiuzhang.com/solution/find-the-celebrity/#tag-highlight-lang-python
@@ -61,7 +77,6 @@ class Solution:
                 return -1
             if celeb != i and not Celebrity.knows(i, celeb): # to check if everyone (except Celebrity) really knows the Celebrity
                 return -1
-
         return celeb
 
 # V2 
