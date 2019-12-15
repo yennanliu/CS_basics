@@ -16,13 +16,16 @@
 - https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/Leetcode%20%E9%A2%98%E8%A7%A3.md
 - https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/Leetcode%20%E9%A2%98%E8%A7%A3.md
 
+### Leetcode pattern
+
+- DFS : https://www.1point3acres.com/bbs/thread-535101-1-1.html
+
 #### ref 
 - https://github.com/xuelangZF/LeetCode/blob/master/List.md
 - https://algorithm.yuanbin.me/zh-tw/
 - https://github.com/shichao-an/leetcode-python
 - https://www.geeksforgeeks.org/java/
 - https://github.com/cpacm/LeetCode
-
 
 #### concept 
 - https://selfboot.cn/2016/07/24/leetcode_guide_why/
