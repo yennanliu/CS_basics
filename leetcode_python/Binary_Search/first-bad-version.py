@@ -16,29 +16,31 @@
 # the first bad version. You should minimize the number of
 # calls to the API.
 #
-
 # The isBadVersion API is already defined for you.
 # @param version, an integer
 # @return a bool
 # def isBadVersion(version):
-
 # e.g. 
 # isBadVersion(n1) == True # if n1 version is the bad version 
 # isBadVersion(n2) == False # if n2 version is the OK version 
 
-
-"""
-
-credit 
-
-https://blog.csdn.net/coder_orz/article/details/52048093
-
-"""
-
-# V0 : dev 
-
+# V0 
+class Solution(object):
+    def firstBadVersion(self, n):
+        left = 1 
+        right = n
+        while right > left + 1:
+            mid = (left + right)//2
+            if SVNRepo.isBadVersion(mid):
+                end = mid 
+            else:
+                left = mid 
+        if SVNRepo.isBadVersion(left):
+            return left
+        return right 
 
 # V1 
+# https://blog.csdn.net/coder_orz/article/details/52048093
 class Solution(object):
     def firstBadVersion(self, n):
         """
@@ -54,6 +56,42 @@ class Solution(object):
                 right = mid - 1
             else:
                 left = mid + 1
+
+# V1'
+# https://blog.csdn.net/coder_orz/article/details/52048093
+class Solution(object):
+    def firstBadVersion(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        left, right = 1, n
+        while left < right:
+            mid = (left + right) / 2
+            if isBadVersion(mid):
+                right = mid
+            else:
+                left = mid + 1
+        return left
+
+# V1''
+# https://www.jiuzhang.com/solution/first-bad-version/#tag-highlight-lang-python
+class Solution:
+    """
+    @param n: An integers.
+    @return: An integer which is the first bad version.
+    """
+    def findFirstBadVersion(self, n):
+        start, end = 1, n
+        while start + 1 < end:
+            mid = (start + end) // 2
+            if SVNRepo.isBadVersion(mid):
+                end = mid
+            else:
+                start = mid
+        if SVNRepo.isBadVersion(start):
+            return start
+        return end
 
 # V2  
 class Solution(object):
