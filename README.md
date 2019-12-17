@@ -467,7 +467,7 @@
 ## Queue
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-281| [Zigzag Iterator](https://leetcode.com/problems/zigzag-iterator/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/zigzag-iterator.py) | _O(n)_        | _O(k)_          | Medium           |🔒| OK
+281| [Zigzag Iterator](https://leetcode.com/problems/zigzag-iterator/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/zigzag-iterator.py) | _O(n)_ | _O(k)_ | Medium  |`good basic`,🔒, `google`,`fb`| OK*** (3)
 346| [Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/moving-average-from-data-stream.py)  | _O(1)_        | _O(w)_          | Easy           |🔒| AGAIN**
 933| [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/number-of-recent-calls.py)  | _O(1)_ on average       | _O(w)_          | Easy           || AGAIN**
 622| [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/)| |        | | Medium || 
@@ -559,7 +559,7 @@
 252| [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms.py) | _O(nlogn)_ | _O(n)_ | Easy |🔒,`UBER`,`amazon`, `fb`| OK 
 253| [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms-ii.py)| _O(nlogn)_   | _O(n)_   | Medium   |🔒, `trick`,`booking.com`,`good`,`UBER`, `amazon`,`google`,`fb`| AGAIN*** (2)
 274| [H-Index](https://leetcode.com/problems/h-index/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/h-index.py)  | _O(n)_ | _O(n)_ | Medium         |Counting Sort|  AGAIN  
-280| [Wiggle Sort](https://leetcode.com/problems/wiggle-sort/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/wiggle-sort.py)  | _O(n)_ | _O(1)_| Medium  |🔒,`google`,`fb`|  OK 
+280| [Wiggle Sort](https://leetcode.com/problems/wiggle-sort/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/wiggle-sort.py)  | _O(n)_ | _O(1)_| Medium  |🔒,`google`,`fb`|  OK*** (3) 
 324| [Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/wiggle-sort-ii.py)  | _O(n)_  on average | _O(1)_   | Medium  | variant of [Sort Colors](https://leetcode.com/problems/sort-colors/) , Tri Partition, `google`| AGAIN**  (2)
 347| [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/top-k-frequent-elements.py)  | _O(n)_ | _O(n)_        | Medium  |  Quick Select, Heap, Bucket Sort |  OK 
 406| [Queue Reconstruction by Height](https://leetcode.com/problems/queue-reconstruction-by-height/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/queue-reconstruction-by-height.py) | _O(n * sqrt(n))_ | _O(n)_ | Medium  | `basic`,`trick`, `sort by key`, `insert` | AGAIN** (2)
