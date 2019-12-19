@@ -1,4 +1,13 @@
 # V0 
+# IDEA :
+# -> have a var acc keep sum of all item in nums,
+# -> and use dic collect acc and its index
+# -> since we want to find nums[i:j] = k  -> so it's a 2 sum problem now
+# -> i.e. if acc - k in dic => there must be a solution (i,j) of  nums[i:j] = k  
+# -> return the max result 
+# -> ### acc DEMO : given array a = [1,2,3,4,5] ###
+# -> acc_list = [1,3,6,10,15]
+# -> so sum(a[1:3]) = 9 = acc_list[3] - acc_list[1-1] = 10 - 1 = 9 
 class Solution(object):
     def maxSubArrayLen(self, nums, k):
 
