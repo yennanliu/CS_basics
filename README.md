@@ -909,7 +909,7 @@
 1097| [Game Play Analysis V](https://leetcode.com/problems/game-play-analysis-v/) | [MySQL](./MySQL/game-play-analysis-v.sql) | _O(n^2)_ | _O(n)_  | Hard  |🔒|
 1098| [Unpopular Books](https://leetcode.com/problems/unpopular-books/) | [MySQL](./MySQL/unpopular-books.sql) | _O(m + n)_ | _O(n)_       | Medium  |🔒|
 1107| [New Users Daily Count](https://leetcode.com/problems/new-users-daily-count/) | [MySQL](./MySQL/new-users-daily-count.sql) | _O(n)_ | _O(n)_ | Medium  |🔒| 
-1112| [Highest Grade For Each Student](https://leetcode.com/problems/highest-grade-for-each-student/) | [MySQL](./MySQL/highest-grade-for-each-student.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒| 
+1112| [Highest Grade For Each Student](https://leetcode.com/problems/highest-grade-for-each-student/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/highest-grade-for-each-student.sql) | _O(nlogn)_ | _O(n)_ | Medium  |🔒|  AGAIN*
 1113| [Reported Posts](https://leetcode.com/problems/reported-posts/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/reported-posts.sql) | _O(n)_ | _O(n)_ | Easy |🔒| OK 
 1126| [Active Businesses](https://leetcode.com/problems/active-businesses/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/active-businesses.sql) | _O(n)_ | _O(n)_  | Medium |🔒, `good basic`|  AGAIN**
 1127| [User Purchase Platform](https://leetcode.com/problems//user-purchase-platform/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/user-purchase-platform.sql)  | _O(n)_ | _O(n)_  | Hard  |🔒, `complex`|  AGAIN*
