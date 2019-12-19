@@ -56,6 +56,29 @@ class Solution(object):
         if root.right:
             self.dfs(roots, idx + 1, cols)
 
+# V0'
+# IDEA : BFS + collections.defaultdict(list)
+#####  NEED TO VALIDATE #####
+import collections
+class Solution(object):
+    def verticalOrder(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+        # base case
+        if not root: return []
+        r = collections.defaultdict(list)
+        q = [(root,0)]
+        while q:
+            tmp = q.pop()
+            r[tmp[1]].append(root.value)
+            if tmp[0].left:
+                q.append((tmp[0].left, tmp[0] -1))
+            if tmp[0].right:
+                q.append((tmp[0].right, tmp[0] +1))
+        return r
+
 # V1 
 # https://blog.csdn.net/qq508618087/article/details/50760661
 # https://blog.csdn.net/danspace1/article/details/86654851
