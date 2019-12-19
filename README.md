@@ -911,7 +911,7 @@
 1107| [New Users Daily Count](https://leetcode.com/problems/new-users-daily-count/) | [MySQL](./MySQL/new-users-daily-count.sql) | _O(n)_ | _O(n)_ | Medium  |🔒| 
 1112| [Highest Grade For Each Student](https://leetcode.com/problems/highest-grade-for-each-student/) | [MySQL](./MySQL/highest-grade-for-each-student.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒| 
 1113| [Reported Posts](https://leetcode.com/problems/reported-posts/) | [MySQL](./MySQL/reported-posts.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| 
-1126| [Active Businesses](https://leetcode.com/problems/active-businesses/) | [MySQL](./MySQL/active-businesses.sql) | _O(n)_ | _O(n)_       | Medium           |🔒| 
+1126| [Active Businesses](https://leetcode.com/problems/active-businesses/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/active-businesses.sql) | _O(n)_ | _O(n)_  | Medium |🔒, `good basic`|  AGAIN**
 1127| [User Purchase Platform](https://leetcode.com/problems//user-purchase-platform/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/user-purchase-platform.sql)  | _O(n)_ | _O(n)_  | Hard  |🔒, `complex`|  AGAIN*
 1132| [Reported Posts II](https://leetcode.com/problems/reported-posts-ii/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/reported-posts-ii.sql)  | _O(m + n)_ | _O(n)_ | Medium   |🔒| OK**
 
