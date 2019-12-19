@@ -913,7 +913,7 @@
 1113| [Reported Posts](https://leetcode.com/problems/reported-posts/) | [MySQL](./MySQL/reported-posts.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| 
 1126| [Active Businesses](https://leetcode.com/problems/active-businesses/) | [MySQL](./MySQL/active-businesses.sql) | _O(n)_ | _O(n)_       | Medium           |🔒| 
 1127| [User Purchase Platform](https://leetcode.com/problems//user-purchase-platform/) | [MySQL](./MySQL//user-purchase-platform.sql) | _O(n)_ | _O(n)_       | Hard           |🔒| 
-1132| [Reported Posts II](https://leetcode.com/problems/reported-posts-ii/) | [MySQL](./MySQL/reported-posts-ii.sql) | _O(m + n)_ | _O(n)_       | Medium           |🔒| 
+1132| [Reported Posts II](https://leetcode.com/problems/reported-posts-ii/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/reported-posts-ii.sql)  | _O(m + n)_ | _O(n)_ | Medium   |🔒| OK**
 
 
 ## Shell Script
