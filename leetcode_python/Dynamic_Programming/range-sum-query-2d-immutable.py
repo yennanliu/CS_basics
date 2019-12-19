@@ -1,8 +1,26 @@
-# V0  : DEV 
+# V0 
+class NumMatrix(object):
+    # @param {int[][]} matrix a 2D matrix
+    def __init__(self, matrix):
+
+        if len(matrix) == 0 or len(matrix[0]) == 0:
+            return        
+        n = len(matrix)
+        m = len(matrix[0])
+        
+        self.dp  = [[0] * (m + 1) for _ in range(n + 1)]
+        for r in range(n):
+            for c in range(m):
+                self.dp[r + 1][c + 1] = self.dp[r + 1][c] + self.dp[r][c + 1] + \
+                    matrix[r][c] - self.dp[r][c]     
+    def sumRegion(self, row1, col1, row2, col2):
+
+        return self.dp[row2 + 1][col2 + 1] - self.dp[row1][col2 + 1] - \
+            self.dp[row2 + 1][col1] + self.dp[row1][col1]
 
 # V1 
 # http://bookshadow.com/weblog/2015/11/12/leetcode-range-sum-query-2d-immutable/
-# idea : 
+# IDEA : 
 # sumRange(row1, col1, row2, col2) = sums[row2][col2] + sums[row1 - 1][col1 - 1] - sums[row1 - 1][col2] - sums[row2][col1 - 1]
 class NumMatrix(object):
     def __init__(self, matrix):
@@ -32,19 +50,48 @@ class NumMatrix(object):
         """
         return self.sums[row2 + 1][col2 + 1] + self.sums[row1][col1] \
                  - self.sums[row1][col2 + 1] - self.sums[row2 + 1][col1]
-
-
 # Your NumMatrix object will be instantiated and called as such:
 # numMatrix = NumMatrix(matrix)
 # numMatrix.sumRegion(0, 1, 2, 3)
 # numMatrix.sumRegion(1, 2, 3, 4)
 
+# V1'
+# https://www.jiuzhang.com/solution/range-sum-query-2d-immutable/#tag-highlight-lang-python
+# IDEA : DP 
+# DP equation : dp[i][j]=dp[i][j−1]+dp[i][j−1]−dp[i][j]+a[i][j]
+class NumMatrix(object):
+    # @param {int[][]} matrix a 2D matrix
+    def __init__(self, matrix):
+        # Write your code here
+
+        if len(matrix) == 0 or len(matrix[0]) == 0:
+            return 
+        
+        n = len(matrix)
+        m = len(matrix[0])
+        
+        self.dp  = [[0] * (m + 1) for _ in range(n + 1)]
+        for r in range(n):
+            for c in range(m):
+                self.dp[r + 1][c + 1] = self.dp[r + 1][c] + self.dp[r][c + 1] + \
+                    matrix[r][c] - self.dp[r][c]     
+    # @param {int} row1 an integer
+    # @param {int} col1 an integer
+    # @param {int} row2 an integer
+    # @param {int} row2 an integer
+    # @return {int} the sum of region
+    def sumRegion(self, row1, col1, row2, col2):
+        # Write your code here
+        return self.dp[row2 + 1][col2 + 1] - self.dp[row1][col2 + 1] - \
+            self.dp[row2 + 1][col1] + self.dp[row1][col1]
+# Your NumMatrix object will be instantiated and called as such:
+# obj = NumMatrix(matrix)
+# param_1 = obj.sumRegion(row1,col1,row2,col2)
 
 # V2 
 # Time:  ctor:   O(m * n),
 #        lookup: O(1)
 # Space: O(m * n)
-
 class NumMatrix(object):
     def __init__(self, matrix):
         """
