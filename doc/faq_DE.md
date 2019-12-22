@@ -1,7 +1,6 @@
 # DE FAQ
 
-
-### 0. Data Engineer Interview Questions With Python
+#### 0. Data Engineer Interview Questions With Python
 - https://realpython.com/data-engineer-interview-questions-python/?fbclid=IwAR3gV5Ot3LQDu_cx1ROSrxYh7TJY1W7hNkEGlsWcpbEhbvWVv7U2C5BjgO8
 
 #### 1. Difference between `file format` and `storage system` ? 
@@ -14,3 +13,15 @@
 - https://www.quora.com/What-is-the-difference-between-filesystem-and-file-format
 
 - https://www.quora.com/What-is-the-difference-between-a-file-system-and-a-file-format
+
+#### 2.  Differene between `Cluster` and `Node`?
+
+- In Hadoop distributed system, Node is a single system which is responsible to store and process data. Whereas Cluster is a collection of multiple nodes which communicates with each other to perform set of operation.
+
+- Multiple nodes are configured to perform a set of operations we call it Cluster. A Hadoop cluster includes a single Master node and multiple Slave nodes. Master node that is Namenode which contains the metadata of the actual data and Slave nodes that is the Datanode whicih contains actual data.
+
+- In short, a Cluster is a set of Nodes
+
+- https://www.edureka.co/community/43355/difference-between-cluster-and-nodes
+
+- https://www.quora.com/What-is-the-difference-between-cluster-and-node
