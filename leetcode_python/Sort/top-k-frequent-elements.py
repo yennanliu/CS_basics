@@ -1,5 +1,11 @@
-
-
+# V0
+import collections
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        freq_dict = dict(collections.Counter(nums))
+        # python sort a dict by value 
+        # https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
+        return [ x[0] for  x in sorted(list(freq_dict.items()), key=lambda x: x[1],reverse=True) ][:k]
 
 # V1 
 import collections
@@ -8,7 +14,23 @@ class Solution(object):
         freq_dict = dict(collections.Counter(nums))
         # python sort a dict by value 
         # https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
-        return [ x[0] for  x in sorted(list(freq_dict.items()), key=lambda x: x[1],reverse=True)[:k]]
+        return [ x[0] for  x in sorted(list(freq_dict.items()), key=lambda x: x[1],reverse=True) ][:k]
+
+# V1'
+# https://www.jiuzhang.com/solution/top-k-frequent-elements/#tag-highlight-lang-python
+class Solution:
+    def topKFrequent(self, nums, k):
+        # 统计元素的频率
+        freq_dict = dict()
+        for num in nums:
+            freq_dict[num] = freq_dict.get(num, 0) + 1
+            
+        freq_dict_sorted = sorted(freq_dict.items(), key=lambda x: x[1], reverse=True)
+        
+        ret = list()
+        for i in range(k):
+            ret.append(freq_dict_sorted[i][0])
+        return ret
 
 # V2 
 # Time:  O(n)
@@ -33,8 +55,6 @@ class Solution(object):
                 if len(result) == k:
                     return result
         return result
-
-
 
 # V3 
 # Time:  O(n) ~ O(n^2), O(n) on average.
