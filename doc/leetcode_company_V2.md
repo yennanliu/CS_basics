@@ -800,7 +800,7 @@
 | 317 | [Shortest Distance from All Buildings](https://leetcode.com/problems/shortest-distance-from-all-buildings/) | Hard | 35.3% | 0.255 |
 | 325 | [Maximum Size Subarray Sum Equals k](https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/) | Medium | 43.5% | 0.432 | AGAIN******* (4)
 | 336 | [Palindrome Pairs](https://leetcode.com/problems/palindrome-pairs/) | Hard | 28.1% | 0.186 |
-| 339 | [Nested List Weight Sum](https://leetcode.com/problems/nested-list-weight-sum/) | Easy | 64.9% | 0.036 |
+| 339 | [Nested List Weight Sum](https://leetcode.com/problems/nested-list-weight-sum/) | Easy | 64.9% | 0.036 |  AGAIN*** (3)
 | 340 | [Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/) | Hard | 38.4% | 0.032 |
 | 341 | [Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/) | Medium | 44.4% | 0.043 |
 | 346 | [Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/) | Easy | 62.2% | 0.089 |
