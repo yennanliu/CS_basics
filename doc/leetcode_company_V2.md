@@ -802,7 +802,7 @@
 | 336 | [Palindrome Pairs](https://leetcode.com/problems/palindrome-pairs/) | Hard | 28.1% | 0.186 |
 | 339 | [Nested List Weight Sum](https://leetcode.com/problems/nested-list-weight-sum/) | Easy | 64.9% | 0.036 |  AGAIN*** (3)
 | 340 | [Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/) | Hard | 38.4% | 0.032 |
-| 341 | [Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/) | Medium | 44.4% | 0.043 |
+| 341 | [Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/) | Medium | 44.4% | 0.043 |  AGAIN** (4)
 | 346 | [Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/) | Easy | 62.2% | 0.089 |
 | 347 | [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) | Medium | 51.0% | 0.024 |
 | 348 | [Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/) | Medium | 46.9% | 0.168 |
