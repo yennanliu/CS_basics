@@ -37,6 +37,8 @@
 * [Graph](https://github.com/yennanliu/CS_basics#graph)
 * [Geometry](https://github.com/yennanliu/CS_basics#geometry)
 * [Simulation](https://github.com/yennanliu/CS_basics#simulation)
+* [Design](https://github.com/yennanliu/CS_basics#Design)
+* [Concurrency](https://github.com/yennanliu/CS_basics#Concurrency)
 
 ## Database
 
@@ -866,14 +868,63 @@
 ## Geometry 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-892 | [Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/)  | [C++](./C++/surface-area-of-3d-shapes.cpp) [Python](./Python/surface-area-of-3d-shapes.py) | _O(n^2)_| _O(1)_| Easy           ||| 
+892 | [Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/)  | [C++](./C++/surface-area-of-3d-shapes.cpp) [Python](./Python/surface-area-of-3d-shapes.py) | _O(n^2)_| _O(1)_| Easy  || 
+0587 | [Erect the Fence](https://leetcode.com/problems/erect-the-fence/)  | [C++](./C++/erect-the-fence.cpp) [Python](./Python/erect-the-fence.py) | _O(nlogn)_| _O(n)_| Hard           || Convex Hull, `Monotone Chain` | 
+0892 | [Surface Area of 3D Shapes](https://leetcode.com/problems/)||
 
+
+## Design
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
+0146| [LRU Cache](https://leetcode.com/problems/lru-cache/)     | [C++](./C++/lru-cache.cpp) [Python](./Python/lru-cache.py)  | _O(1)_ | _O(k)_ | Hard ||
+0225| [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/)     | [C++](./C++/implement-stack-using-queues.cpp) [Python](./Python/implement-stack-using-queues.py)  | push: _O(n)_, pop: _O(1)_, top: _O(1)_ | _O(n)_ | Easy ||
+0284| [Peeking Iterator](https://leetcode.com/problems/peeking-iterator/)| [C++](./C++/peeking-iterator.cpp) [Python](./Python/peeking-iterator.py) | _O(1)_ | _O(1)_ | Medium ||
+0348| [Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/) | [C++](./C++/design-tic-tac-toe.cpp) [Python](./Python/design-tic-tac-toe.py) | _O(1)_ | _O(n^2)_ | Medium |🔒||
+0353| [Design Snake Game](https://leetcode.com/problems/design-snake-game/) | [C++](./C++/design-snake-game.cpp) [Python](./Python/design-snake-game.py) | _O(1)_ | _O(s)_ | Medium |🔒| Deque |
+0355| [Design Twitter](https://leetcode.com/problems/design-twitter/) | [C++](./C++/design-twitter.cpp) [Python](./Python/design-twitter.py) | _O(klogu)_ | _O(t + f)_ | Medium | LintCode | Heap |
+0359| [Logger Rate Limiter](https://leetcode.com/problems/logger-rate-limiter/) | [C++](./C++/logger-rate-limiter.cpp) [Python](./Python/logger-rate-limiter.py) | _O(1), amortized_ | _O(k)_ | Easy |🔒| Deque |
+0362| [Design Hit Counter](https://leetcode.com/problems/design-hit-counter/) | [C++](./C++/design-hit-counter.cpp) [Python](./Python/design-hit-counter.py) | _O(1), amortized_ | _O(k)_ | Medium |🔒| Deque |
+0379| [Design Phone Directory](https://leetcode.com/problems/design-phone-directory/) | [C++](./C++/design-phone-directory.cpp) [Python](./Python/design-phone-directory.py) | _O(1)_ | _O(n)_ | Medium |🔒| |
+0380| [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/) | [C++](./C++/insert-delete-getrandom-o1.cpp) [Python](./Python/insert-delete-getrandom-o1.py) | _O(1)_ | _O(n)_| Hard || |
+0381| [Insert Delete GetRandom O(1) - Duplicates allowed](https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/) | [C++](./C++/insert-delete-getrandom-o1-duplicates-allowed.cpp) [Python](./Python/insert-delete-getrandom-o1-duplicates-allowed.py) | _O(1)_ | _O(n)_ | Hard || |
+0432| [All O\`one Data Structure](https://leetcode.com/problems/all-oone-data-structure/) | [C++](./C++/all-oone-data-structure.cpp) [Python](./Python/all-oone-data-structure.py) | _O(1)_ | _O(n)_| Hard || |
+0460| [LFU Cache](https://leetcode.com/problems/lfu-cache/) | [C++](./C++/lfu-cache.cpp) [Python](./Python/lfu-cache.py) | _O(1)_ | _O(k)_ | Hard || |
+0535| [Encode and Decode TinyURL](https://leetcode.com/problems/encode-and-decode-tinyurl/) | [C++](./C++/encode-and-decode-tinyurl.cpp) [Python](./Python/encode-and-decode-tinyurl.py) | _O(1)_ | _O(n)_ | Medium || |
+0588| [Design In-Memory File System](https://leetcode.com/problems/design-in-memory-file-system/) | [C++](./C++/design-in-memory-file-system.cpp) [Python](./Python/design-in-memory-file-system.py) | ls: _O(l + klogk)_<br> mkdir: _O(l)_<br> addContentToFile: _O(l + c)_<br> readContentFromFile: _O(l + c)_ | _O(n + s)_ | Hard |🔒| |
+0604| [Design Compressed String Iterator](https://leetcode.com/problems/design-compressed-string-iterator/) | [C++](./C++/design-compressed-string-iterator.cpp) [Python](./Python/design-compressed-string-iterator.py) | _O(1)_ | _O(1)_ | Easy |🔒| |
+0631| [Design Excel Sum Formula](https://leetcode.com/problems/design-excel-sum-formula/) | [C++](./C++/design-excel-sum-formula.cpp) [Python](./Python/design-excel-sum-formula.py) | set: _O((r * c)^2)_<br>get: _O(1)_<br>sum: _O((r * c)^2)_ | _O(r * c)_ | Hard |🔒| |
+0635| [Design Log Storage System](https://leetcode.com/problems/design-log-storage-system/) | [C++](./C++/design-log-storage-system.cpp) [Python](./Python/design-log-storage-system.py) | put: _O(1)_<br> retrieve: _O(n + dlogd)_ | _O(n)_ | Medium |🔒| |
+0642| [Design Search Autocomplete System](https://leetcode.com/problems/design-search-autocomplete-system/) | [C++](./C++/design-search-autocomplete-system.cpp) [Python](./Python/design-search-autocomplete-system.py) | _O(p^2)_ | _O(p * t + s)_ | Hard |🔒| |
+0715| [Range Module](https://leetcode.com/problems/range-module/) | [C++](./C++/range-module.cpp) [Python](./Python/range-module.py) | add: _O(n)_<br> remove: _O(n)_<br> query: _O(logn)_ | _O(n)_ | Hard || |
+0716| [Max Stack](https://leetcode.com/problems/max-stack/) | [C++](./C++/max-stack.cpp) [Python](./Python/max-stack.py) | push: _O(logn)_<br> pop: _O(logn)_<br> popMax: _O(logn)_<br> top: _O(1)_<br> peekMax: _O(1)_ | _O(n)_ | Easy || |
+0745| [Prefix and Suffix Search](https://leetcode.com/problems/prefix-and-suffix-search/) | [C++](./C++/prefix-and-suffix-search.cpp) [Python](./Python/prefix-and-suffix-search.py) | ctor: _O(w * l^2)_<br> search : _O(p + s)_ | _O(t)_ | Hard || Trie |
+0900| [RLE Iterator](https://leetcode.com/problems/rle-iterator/) | [C++](./C++/rle-iterator.cpp) [Python](./Python/rle-iterator.py) | _O(n)_ | _O(1)_ | Medium |||
+1146| [Snapshot Array](https://leetcode.com/problems/snapshot-array/) | [C++](./C++/snapshot-array.cpp) [Python](./Python/snapshot-array.py) | set: _O(1)_<br> get: _O(logn)_ | _O(n)_ | Medium |||
+1166| [Design File System](https://leetcode.com/problems/design-file-system/) | [C++](./C++/design-file-system.cpp) [Python](./Python/design-file-system.py) | create: _O(n)_<br>get: _O(n)_ | _O(n)_ | Medium |🔒| |
+1172| [Dinner Plate Stacks](https://leetcode.com/problems/dinner-plate-stacks/) | [C++](./C++/dinner-plate-stacks.cpp) [Python](./Python/dinner-plate-stacks.py) | push: _O(logn)_<br>pop: _O(1)_, amortized<br>popAtStack: _(logn)_ | _O(n * c)_ | Hard | | |
+1206| [Design Skiplist](https://leetcode.com/problems/design-skiplist/) | [C++](./C++/design-skiplist.cpp) [Python](./Python/design-skiplist.py) | _O(logn)_, on average | _O(n)_ | Hard | | |
+1236| [Web Crawler](https://leetcode.com/problems/web-crawler/) | [C++](./C++/web-crawler.cpp) [Python](./Python/web-crawler.py) | _O(\|V\| + \|E\|)_ | _O(\|V\|)_ | Medium |🔒| BFS, DFS |
+1244| [Design A Leaderboard](https://leetcode.com/problems/design-a-leaderboard/) | [C++](./C++/design-a-leaderboard.cpp) [Python](./Python/design-a-leaderboard.py) | ctor: _O(1)_<br> add: _O(1)_<br> top: _O(n)_<br> reset: _O(1)_ | _O(n)_ | Medium | | |
+1268| [Search Suggestions System](https://leetcode.com/problems/search-suggestions-system/) | [C++](./C++/search-suggestions-system.cpp) [Python](./Python/search-suggestions-system.py) | ctor: _O(n * l)_<br> suggest: _O(l^2)_ | _O(t)_ | Medium ||  Trie |
+1286| [Iterator for Combination](https://leetcode.com/problems/iterator-for-combination/) | [C++](./C++/iterator-for-combination.cpp) [Python](./Python/iterator-for-combination.py) | _O(k)_ | _O(k)_ | Medium ||  Stack |
 
 ## Simulation 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 874 | [Walking Robot Simulation](https://leetcode.com/problems/walking-robot-simulation/)  | [C++](./C++/walking-robot-simulation.cpp) [Python](./Python/walking-robot-simulation.py) | _O(n + k)_| _O(k)_| Easy           ||| 
 
+## Concurrency
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
+1114| [Print in Order](https://leetcode.com/problems/print-in-order/)     | [C++](./C++/print-in-order.cpp) [Python](./Python/print-in-order.py)  | _O(n)_ | _O(1)_ | Easy ||
+1115| [Print FooBar Alternately](https://leetcode.com/problems/print-foobar-alternately/)     | [C++](./C++/print-foobar-alternately.cpp) [Python](./Python/print-foobar-alternately.py)  | _O(n)_ | _O(1)_ | Medium ||
+1116| [Print Zero Even Odd](https://leetcode.com/problems/print-zero-even-odd/)| [C++](./C++/print-zero-even-odd.cpp) [Python](./Python/print-zero-even-odd.py) | _O(n)_ | _O(1)_ | Medium ||
+1117| [Building H2O](https://leetcode.com/problems/building-h2o/) | [C++](./C++/building-h2o.cpp) [Python](./Python/building-h2o.py) | _O(n)_ | _O(1)_| Hard |||
+1188| [Design Bounded Blocking Queue](https://leetcode.com/problems/design-bounded-blocking-queue/) | [C++](./C++/design-bounded-blocking-queue.cpp) [Python](./Python/design-bounded-blocking-queue.py) | _O(n)_ | _O(1)_| Medium | 🔒 ||
+1195| [Fizz Buzz Multithreaded](https://leetcode.com/problems/fizz-buzz-multithreaded/)| [C++](./C++/fizz-buzz-multithreaded.cpp) [Python](./Python/fizz-buzz-multithreaded.py) | _O(n)_ | _O(1)_ | Medium ||
+1226| [The Dining Philosophers](https://leetcode.com/problems/the-dining-philosophers/)| [C++](./C++/the-dining-philosophers.cpp) [Python](./Python/the-dining-philosophers.py) | _O(n)_ | _O(1)_ | Medium ||
+1242| [Web Crawler Multithreaded](https://leetcode.com/problems/web-crawler-multithreaded/)| [C++](./C++/web-crawler-multithreaded.cpp) [Python](./Python/web-crawler-multithreaded.py) |  _O(\|V\| + \|E\|)_ | _O(\|V\|)_ | Medium |🔒| | BFS, DFS |
+1279| [Traffic Light Controlled Intersection](https://leetcode.com/problems/traffic-light-controlled-intersection/)| [C++](./C++/traffic-light-controlled-intersection.cpp) [Python](./Python/traffic-light-controlled-intersection.py) |  _O(n)_ | _O(1)_ | Easy |🔒| | |
 
 ## SQL
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note      | Status| 
