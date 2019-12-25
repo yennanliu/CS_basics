@@ -811,8 +811,8 @@
 | 360 | [Sort Transformed Array](https://leetcode.com/problems/sort-transformed-array/) | Medium | 45.5% | 0.067 |  AGAIN*** (3)
 | 371 | [Sum of Two Integers](https://leetcode.com/problems/sum-of-two-integers/) | Easy | 50.9% | 0.02 |  AGAIN********* (3)
 | 381 | [Insert Delete GetRandom O(1) - Duplicates allowed](https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/) | Hard | 30.1% | 0.219 |
-| 387 | [First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/) | Easy | 47.6% | 0.09 |
-| 393 | [UTF-8 Validation](https://leetcode.com/problems/utf-8-validation/) | Medium | 34.9% | 0.054 |
+| 387 | [First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/) | Easy | 47.6% | 0.09 | OK
+| 393 | [UTF-8 Validation](https://leetcode.com/problems/utf-8-validation/) | Medium | 34.9% | 0.054 | AGAIN*** (not start*) (3)
 | 395 | [Longest Substring with At Least K Repeating Characters](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/) | Medium | 36.3% | 0.088 |
 | 398 | [Random Pick Index](https://leetcode.com/problems/random-pick-index/) | Medium | 46.3% | 0.101 |
 | 399 | [Evaluate Division](https://leetcode.com/problems/evaluate-division/) | Medium | 43.4% | 0.128 |
