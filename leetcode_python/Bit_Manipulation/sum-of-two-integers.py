@@ -1,14 +1,63 @@
 # https://leetcode.com/problems/sum-of-two-integers/description/
 # Time:  O(1)
 # Space: O(1)
-
 # Calculate the sum of two integers a and b,
 # but you are not allowed to use the operator + and -.
 #
 # Example:
 # Given a = 1 and b = 2, return 3.
 
-# V0 
+# V0
+# https://blog.csdn.net/fuxuemingzhu/article/details/79379939
+#########
+# XOR op:
+#########
+# https://stackoverflow.com/questions/14526584/what-does-the-xor-operator-do
+# XOR is a binary operation, it stands for "exclusive or", that is to say the resulting bit evaluates to one if only exactly one of the bits is set.
+# -> XOR : RETURN 1 if only one "1", return 0 else 
+# a | b | a ^ b
+# --|---|------
+# 0 | 0 | 0
+# 0 | 1 | 1
+# 1 | 0 | 1
+# 1 | 1 | 0
+# This operation is performed between every two corresponding bits of a number.
+# Example: 7 ^ 10
+# In binary: 0111 ^ 1010
+#   0111
+# ^ 1010
+# ======
+#   1101 = 13
+class Solution(object):
+    def getSum(self, a, b):
+        """
+        :type a: int
+        :type b: int
+        :rtype: int
+        """
+        # 32 bits integer max
+        MAX = 2**31-1  #0x7FFFFFFF
+        # 32 bits interger min
+        MIN = 2**31    #0x80000000
+        # mask to get last 32 bits
+        mask = 2**32-1 #0xFFFFFFFF
+        while b != 0:
+            # ^ get different bits and & gets double 1s, << moves carry
+            a, b = (a ^ b) & mask, ((a & b) << 1) & mask
+        # if a is negative, get a's 32 bits complement positive first
+        # then get 32-bit positive's Python complement negative
+        return a if a <= MAX else ~(a ^ mask)
+
+# V0'
+# https://blog.csdn.net/fuxuemingzhu/article/details/79379939
+class Solution():
+    def getSum(self, a, b):
+        MAX = 2**31-1  #0x7fffffff
+        MIN = 2**31    #0x80000000
+        mask = 2**32-1 #0xFFFFFFFF
+        while b != 0:
+            a, b = (a ^ b) & mask, ((a & b) << 1)
+        return a if a <= MAX else ~(a ^ mask)
 
 # V1 
 # http://bookshadow.com/weblog/2016/06/30/leetcode-sum-of-two-integers/
@@ -31,7 +80,18 @@ class Solution(object):
             a = (a >> 1) % MASK
             b = (b >> 1) % MASK
         return r if r <= MAX_INT else ~((r & MAX_INT) ^ MAX_INT)
-        
+
+# V1'
+# https://www.jiuzhang.com/solution/371-sum-of-two-integers/#tag-highlight-lang-python
+class Solution():
+    def getSum(self, a, b):
+        MAX = 0x7fffffff
+        MIN = 0x80000000
+        mask = 0xFFFFFFFF
+        while b != 0:
+            a, b = (a ^ b) & mask, ((a & b) << 1)
+        return a if a <= MAX else ~(a ^ mask)
+
 # V2 
 # Time:  O(1)
 # Space: O(1)
