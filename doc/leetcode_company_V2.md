@@ -814,11 +814,11 @@
 | 387 | [First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/) | Easy | 47.6% | 0.09 | OK
 | 393 | [UTF-8 Validation](https://leetcode.com/problems/utf-8-validation/) | Medium | 34.9% | 0.054 | AGAIN*** (not start*) (3)
 | 395 | [Longest Substring with At Least K Repeating Characters](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/) | Medium | 36.3% | 0.088 | AGAIN***** (3)
-| 398 | [Random Pick Index](https://leetcode.com/problems/random-pick-index/) | Medium | 46.3% | 0.101 |
+| 398 | [Random Pick Index](https://leetcode.com/problems/random-pick-index/) | Medium | 46.3% | 0.101 | OK* (3)
 | 399 | [Evaluate Division](https://leetcode.com/problems/evaluate-division/) | Medium | 43.4% | 0.128 |
 | 403 | [Frog Jump](https://leetcode.com/problems/frog-jump/) | Hard | 33.6% | 0.071 |
 | 415 | [Add Strings](https://leetcode.com/problems/add-strings/) | Easy | 42.1% | 0.257 |
-| 432 | [All O`one Data Structure](https://leetcode.com/problems/all-oone-data-structure/) | Hard | 28.2% | 0.205 |
+| 432 | [All Oone Data Structure](https://leetcode.com/problems/all-oone-data-structure/) | Hard | 28.2% | 0.205 |
 | 437 | [Path Sum III](https://leetcode.com/problems/path-sum-iii/) | Easy | 40.5% | 0.046 |
 | 438 | [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) | Easy | 34.4% | 0.993 |
 | 449 | [Serialize and Deserialize BST](https://leetcode.com/problems/serialize-and-deserialize-bst/) | Medium | 43.4% | 0.081 |
