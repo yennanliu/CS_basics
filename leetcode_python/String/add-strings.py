@@ -12,6 +12,26 @@
 # convert the inputs to integer directly.
 
 # V0
+class Solution(object):
+    def addStrings(self, num1, num2):
+        """
+        :type num1: str
+        :type num2: str
+        :rtype: str
+        """
+        result = []
+        carry = 0
+        while num1 or num2 or carry:  # while there is still non-add digit in num1, and num2; or there is non-zero carry 
+            digit = carry
+            if num1:
+                digit += int(num1[-1])
+                num1 = num1[:-1]
+            if num2:
+                digit += int(num2[-1])
+                num2 = num2[:-1]
+            carry = digit > 9 # true if digit (e.g. 10,11...), so carry == True and will do addition to next digit. vice versa.
+            result.append(str(digit % 10))
+        return ''.join(result[::-1]) 
 
 # V1 
 # http://bookshadow.com/weblog/2016/10/09/leetcode-add-strings/
@@ -36,6 +56,31 @@ class Solution(object):
             carry = digit > 9 # true if digit (e.g. 10,11...), so carry == True and will do addition to next digit. vice versa.
             result.append(str(digit % 10))
         return ''.join(result[::-1]) 
+
+# V1'
+# https://www.jiuzhang.com/solution/add-strings/#tag-highlight-lang-python
+class Solution(object):
+    def addStrings(self, num1, num2):
+        """
+        :type num1: str
+        :type num2: str
+        :rtype: str
+        """
+        res = ""
+        m = len(num1)
+        n = len(num2)
+        i = m - 1
+        j = n - 1
+        flag = 0
+        while i >=0 or j >= 0:
+            a = int(num1[i]) if i >=0 else 0
+            i = i - 1
+            b = int(num2[j]) if j >=0 else 0
+            j = j - 1
+            sum = a + b + flag
+            res = str(sum % 10 ) + res;
+            flag = sum / 10
+        return res if flag == 0 else (str(flag)+ res)
 
 # V2 
 class Solution:
