@@ -1,9 +1,41 @@
-# V0 : DEV 
+# V0 
+# IDEA : BFS + DFS 
+# => USE BFS FIND EVERY NODE IN THE TREE, AND USE DFS GET THR PATH SUM ON EVERY NODE (FOUND BY BFS)
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+class Solution(object):
+    def pathSum(self, root, sum):
+        """
+        :type root: TreeNode
+        :type sum: int
+        :rtype: int
+        """
+        res = [0]
+        que = collections.deque()
+        que.append(root)
+        while que:
+            node = que.popleft()
+            if not node:
+                continue
+            self.dfs(node, res, 0, sum)
+            que.append(node.left)
+            que.append(node.right)
+        return res[0]
+    
+    def dfs(self, root, res, path, target):
+        if not root: return
+        path += root.val
+        if path == target:
+            res[0] += 1
+        self.dfs(root.left, res, path, target)
+        self.dfs(root.right, res, path, target)
 
 # V1 
 # https://blog.csdn.net/xiaoxiaoley/article/details/79093996
-
- 
 class Solution(object):    
     def pathSum(self, root, sum):
         """
@@ -21,6 +53,30 @@ class Solution(object):
         if root==None:
             return 0
         return dfs(root,sum)+self.pathSum(root.left,sum)+self.pathSum(root.right,sum)
+
+# V1'
+# https://www.jiuzhang.com/solution/path-sum-iii/#tag-highlight-lang-python
+class Solution:
+    """
+    @param root: 
+    @param sum: 
+    @return: nothing
+    """
+    def DFS(self, root, su, tmp):
+        if None==root:
+            return 0
+        else:
+            flag=0
+            if su==tmp+root.val:
+                flag=1
+            return flag+self.DFS(root.left, su, tmp+root.val)+self.DFS(root.right, su, tmp+root.val)
+    
+    def pathSum(self, root, su):
+        #write your code here
+        if None==root:
+            return 0
+        else:
+            return self.DFS(root, su, 0)+self.pathSum(root.left, su)+self.pathSum(root.right, su)
 
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/71097135
@@ -99,7 +155,6 @@ class Solution(object):
         lookup = collections.defaultdict(int)
         lookup[0] = 1
         return pathSumHelper(root, 0, sum, lookup)
-
 
 # Time:  O(n^2)
 # Space: O(h)
