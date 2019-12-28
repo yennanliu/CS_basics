@@ -826,7 +826,7 @@
 837 | [New 21 Game](https://leetcode.com/problems/new-21-game/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python//Dynamic_Programming/new-21-game.py) | _O(n)_ | _O(n)_ | Medium |`dp`, `google`| AGAIN (not start)
 838 | [Push Dominoes](https://leetcode.com/problems/push-dominoes/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/push-dominoes.py)  | _O(n)_ | _O(n)_ | Medium |`dp`,`two pointers`,`google`| AGAIN (not start)
 877 | [Stone Game](https://leetcode.com/problems/stone-game/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/stone-game.py) | _O(n^2)_ | _O(n)_ | Medium | variant of [Predict the Winner](https://leetcode.com/problems/predict-the-winner/) |  AGAIN (not start)
-926| [Flip String to Monotone Increasing](https://leetcode.com/problems/flip-string-to-monotone-increasing/) | [C++](./C++/flip-string-to-monotone-increasing.cpp) [Python](./Python/flip-string-to-monotone-increasing.py) | _O(n)_ | _O(1)_ | Medium ||
+926| [Flip String to Monotone Increasing](https://leetcode.com/problems/flip-string-to-monotone-increasing/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/flip-string-to-monotone-increasing.py) | _O(n)_ | _O(1)_ | Medium |`google`| AGAIN (not start)
 931| [Minimum Falling Path Sum](https://leetcode.com/problems/minimum-falling-path-sum/) | [C++](./C++/minimum-falling-path-sum.cpp) [Python](./Python/minimum-falling-path-sum.py) | _O(n^2)_ | _O(1)_ | Medium ||
 935| [Knight Dialer](https://leetcode.com/problems/knight-dialer/) | [C++](./C++/knight-dialer.cpp) [Python](./Python/knight-dialer.py) | _O(logn)_ | _O(1)_ | Medium || Matrix Exponentiation |
 
