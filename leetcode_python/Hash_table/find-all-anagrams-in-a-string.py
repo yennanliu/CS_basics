@@ -65,30 +65,7 @@ The substring with start index = 2 is "ab", which is an anagram of "ab".
 # The substring with start index = 1 is "ba", which is an anagram of "ab".
 # The substring with start index = 2 is "ab", which is an anagram of "ab".
 
-
-# V0 
-# DEV 
-# import collections
-# class Solution(object):
-#     def findAnagrams(self, s, p):
-#         """
-#         :type s: str
-#         :type p: str
-#         :rtype: List[int]
-#         """
-#         ls, lp = len(s), len(p)
-#         cp = collections.Counter(p)
-#         cs = collections.Counter()
-#         ans = []
-#         if lp > ls:
-#             return ans 
-#         for i in range(ls):
-#             if len(s[i:]) >= lp and   collections.Counter(s[i:i+lp]) == collections.Counter(p):
-#                 ans.append(i)
-#         return ans 
-
-# V0'
-from collections import Counter
+# V0
 class Solution(object):
     def findAnagrams(self, s, p):
         """
@@ -96,6 +73,40 @@ class Solution(object):
         :type p: str
         :rtype: List[int]
         """
+        ls, lp = len(s), len(p)
+        cp = collections.Counter(p)
+        cs = collections.Counter()
+        ans = []
+        for i in range(ls):
+            cs[s[i]] += 1
+            if i >= lp:
+                cs[s[i - lp]] -= 1
+                if cs[s[i - lp]] == 0:
+                    del cs[s[i - lp]]
+            if cs == cp:
+                ans.append(i - lp + 1)
+        return ans
+      
+# V0' : DEV : LTE (LIMITED TIME OUT ERROR)
+# from collections import Counter
+# class Solution(object):
+#     def findAnagrams(self, s, p):
+#         answer = []
+#         m, n = len(s), len(p)
+#         if m < n:
+#             return answer
+#         pCounter = Counter(p)
+#         sCounter = Counter(s[:n-1])
+#         for i in range(0, len(s) - len(p)+1):
+#             tmp = s[i : i+len(p)]
+#             if Counter(tmp) == pCounter:
+#                 answer.append(i)
+#         return answer
+
+# V0''
+from collections import Counter
+class Solution(object):
+    def findAnagrams(self, s, p):
         answer = []
         m, n = len(s), len(p)
         if m < n:
@@ -106,10 +117,10 @@ class Solution(object):
         for index in range(n - 1, m):
                 sCounter[s[index]] += 1
                 if sCounter == pCounter:
-                    answer.append(index - n + 1)
-                sCounter[s[index - n + 1]] -= 1
-                if sCounter[s[index - n + 1]] == 0:   # NOTE : HAVE TO REMOVE "COUNT = 0" CASE IN COUNTER 
-                    del sCounter[s[index - n + 1]]
+                    answer.append(index - (n -1))
+                sCounter[s[index - (n - 1)]] -= 1
+                if sCounter[s[index - (n - 1)]] == 0:   # NOTE : HAVE TO REMOVE "COUNT = 0" CASE IN COUNTER 
+                    del sCounter[s[index - (n - 1)]]
         return answer
 
 # V1 
