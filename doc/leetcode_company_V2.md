@@ -823,7 +823,7 @@
 | 438 | [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) | Easy | 34.4% | 0.993 |  AGAIN****** (4)
 | 449 | [Serialize and Deserialize BST](https://leetcode.com/problems/serialize-and-deserialize-bst/) | Medium | 43.4% | 0.081 |  AGAIN****** (4)
 | 463 | [Island Perimeter](https://leetcode.com/problems/island-perimeter/) | Easy | 58.6% | 0.071 | OK** (1)
-| 468 | [Validate IP Address](https://leetcode.com/problems/validate-ip-address/) | Medium | 20.5% | 0.055 |
+| 468 | [Validate IP Address](https://leetcode.com/problems/validate-ip-address/) | Medium | 20.5% | 0.055 | AGAIN**** (4)
 | 490 | [The Maze](https://leetcode.com/problems/the-maze/) | Medium | 44.3% | 0.044 |
 | 491 | [Increasing Subsequences](https://leetcode.com/problems/increasing-subsequences/) | Medium | 39.7% | 0.113 |
 | 493 | [Reverse Pairs](https://leetcode.com/problems/reverse-pairs/) | Hard | 21.1% | 0.121 |
