@@ -8,14 +8,21 @@
 
 1. Difference between Spark VS Hadoop?
 
-- ***Hadoop*** is a big data infrastructure that make large scale dataset storage possible via split the dataset (`HDFS`) into `data block` and save in each node (data node)
+- ***Hadoop*** is a big data framework that make large scale dataset operation via `Map-Reduce`, do storage via split the dataset (`HDFS`) into `data block` and save in each node (data node)
 	- Data node : the components save split data block
 	- Name node : the components manage data storage places
+	- `Doesn't save data in memory` when do data op
 
 - ***Spark*** is a big data framework that access large scale dataset like above, and doing processing like : ETL, stream, machine learning and so on...
 
-- In short, Hadoop and Spark are different. `Hadoop :  data storage`,
-`spark : data process`
+	- `Does save data in memory` as `RDD` when do data op, so that's why spark is faster than hadoop (since it saves data in memory when do op) (only work when data is not really in `large` scale)
+
+- In short, `Spark` can do more flexible data task via RDD and `DAG`( 
+  Map-Reduce-Map-Reduce ...) ops and faster speed (data in memory), but `Spark` job also `heavy memory costing`. So if the data is really in a `large` scale, then Spark may not be a good choice, but would use `Hadoop` since it only do Map-Reduce, all the momory cost is only for key-value pairs saving theoretically. 
+
+  - http://web.stanford.edu/class/cs246/slides/01-intro.pdf
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/spark_vs_hadoop.png" width="500" height="300">
 
 2. Things happen after `spark-submit`?
 
