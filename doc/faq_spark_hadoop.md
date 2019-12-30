@@ -1,10 +1,10 @@
 ## SPARK / HADOOP ECOSYSTEM  FAQ 
 
 0. - Spark Tutorial 
-	-https://data-flair.training/blogs/spark-tutorial/
+	- https://data-flair.training/blogs/spark-tutorial/
 
    - Hadoop VS hive VS hbase VS pig VS RDBMS (in EMR system)
-   	-https://aws.amazon.com/tw/emr/faqs/
+   	- https://aws.amazon.com/tw/emr/faqs/
 
 1. Difference between Spark VS Hadoop?
 
@@ -23,6 +23,32 @@
   - http://web.stanford.edu/class/cs246/slides/01-intro.pdf
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/spark_vs_hadoop.png" width="500" height="300">
+
+1'. What's `Map-Reduce` programming model?
+
+- It's a `Map -> Group by -> Reduce` process model for scalable data transformation
+- Developers only have to think about writing the code for `Map` and `Reduce`
+ part, the execution machines will take care for the `Group by` step
+- Map : map input values into `key-value` pair
+- Group by : dispense key-value to cluster workers
+- Reduce : Get the computaion result of the key-value based on redue function logic 
+
+- Pros : 1) Easy model  
+		 2) not heavy memory cost 
+		 3) can be scalable
+		 
+- Cons : 1) Hadoop code long 
+		 2) take time to write, doesn't offer flexible high level APIs. 
+		 3) have to keep grab-release data when do `sequence` map-reduce tasks 
+		 4) doesn't offer RDD features : lazy execution, call back ...
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/map_reduce_overview.png" width="500" height="300">  
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/map_reduce_diagram.png" width="500" height="300">  
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/map_reduce_parallel.png" width="500" height="300">  
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/map_reduce_pattern.png" width="500" height="300">  
 
 2. Things happen after `spark-submit`?
 
