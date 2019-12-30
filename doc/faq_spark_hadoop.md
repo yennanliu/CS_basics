@@ -33,14 +33,16 @@
 - Group by : dispense key-value to cluster workers
 - Reduce : Get the computaion result of the key-value based on redue function logic 
 
-- Pros : 1) Easy model  
-		 2) not heavy memory cost 
-		 3) can be scalable
-		 
-- Cons : 1) Hadoop code long 
-		 2) take time to write, doesn't offer flexible high level APIs. 
-		 3) have to keep grab-release data when do `sequence` map-reduce tasks 
-		 4) doesn't offer RDD features : lazy execution, call back ...
+- Pros : 
+	- Easy model 
+	- Not heavy memory cost  
+	- Can be scalable
+
+- Cons :
+	- Hadoop code long 
+	- take time to write, doesn't offer flexible high level APIs. 
+	- have to keep grab-release data when do `sequence` map-reduce tasks 
+	- doesn't offer RDD features : lazy execution, call back ...
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/map_reduce_overview.png" width="500" height="300">  
 
