@@ -189,7 +189,9 @@
 961 | [N-Repeated Element in Size 2N Array](https://leetcode.com/problems/n-repeated-element-in-size-2n-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/n-repeated-element-in-size-2n-array.py)  | _O(n)_ | _O(1)_  | Easy  || OK 
 004 | [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) | | _O(n)_ | _O(1)_  | Hard |`fb`|  
 010 | [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) | | _O(n)_ | _O(1)_  | Hard |`fb`|  
-056 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) | | _O(n)_ | _O(1)_  | Medium |`good trick`,`twitter`,`M$`,`UBER`,`google`,`fb`| AGAIN******* (3) 
+056 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/merge-intervals.py)  | _O(n)_ | _O(1)_  | Medium |`good trick`,`twitter`,`M$`,`UBER`,`google`,`fb`| AGAIN******* (3) 
+498 | [Diagonal Traverse](https://leetcode.com/problems/diagonal-traverse/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/diagonal_traverse.py) | _O(n)_ | _O(1)_  | Medium |`matrix`,`google`,`fb`| AGAIN*** (not start)
+
 
 
 ## Hash Table 
