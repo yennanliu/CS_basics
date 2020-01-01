@@ -81,7 +81,7 @@
 ||Selection sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py) | | | AGAIN| 
 ||Topological sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py) | | | AGAIN| 
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
-||Union Find | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py) | | | AGAIN| 
+||Union Find | [Python union find](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py), [Python union find check cyclic](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find_if_cyclic.py) | | | AGAIN| 
 
 
 
