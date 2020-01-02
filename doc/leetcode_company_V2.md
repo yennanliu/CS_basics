@@ -834,7 +834,7 @@
 | 543 | [Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/) | Easy | 45.2% | 0.644 | AGAIN**** (2)
 | 560 | [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) | Medium | 40.1% | 0.529 |  AGAIN********* (4)
 | 567 | [Permutation in String](https://leetcode.com/problems/permutation-in-string/) | Medium | 36.6% | 0.072 | AGAIN********* (4)
-| 597 | [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/problems/friend-requests-i-overall-acceptance-rate/) | Easy | 37.8% | 0.135 |
+| 597 | [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/problems/friend-requests-i-overall-acceptance-rate/) | Easy | 37.8% | 0.135 | OK*
 | 621 | [Task Scheduler](https://leetcode.com/problems/task-scheduler/) | Medium | 42.8% | 1.229 |
 | 636 | [Exclusive Time of Functions](https://leetcode.com/problems/exclusive-time-of-functions/) | Medium | 45.4% | 0.184 |
 | 642 | [Design Search Autocomplete System](https://leetcode.com/problems/design-search-autocomplete-system/) | Hard | 31.8% | 0.065 |

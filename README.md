@@ -970,6 +970,7 @@
 1126| [Active Businesses](https://leetcode.com/problems/active-businesses/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/active-businesses.sql) | _O(n)_ | _O(n)_  | Medium |🔒, `good basic`|  AGAIN**
 1127| [User Purchase Platform](https://leetcode.com/problems//user-purchase-platform/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/user-purchase-platform.sql)  | _O(n)_ | _O(n)_  | Hard  |🔒, `complex`|  AGAIN*
 1132| [Reported Posts II](https://leetcode.com/problems/reported-posts-ii/) | [MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/reported-posts-ii.sql)  | _O(m + n)_ | _O(n)_ | Medium   |🔒| OK**
+597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK* 
 
 
 ## Shell Script
