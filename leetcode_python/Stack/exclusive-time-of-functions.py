@@ -25,6 +25,26 @@ class Solution(object):
                 if stack: stack[-1][1] = tmp + 1
         return ans
 
+# V1'
+# https://www.jiuzhang.com/solution/exclusive-time-of-functions/#tag-highlight-lang-python
+class Solution:
+    def exclusiveTime(self, n, logs):
+        stack = []
+        result = [0 for i in range(n)]
+        last_timestamp = 0
+        for str in logs:
+            log = str.split(':')
+            id, status, timestamp = int(log[0]), log[1], int(log[2])
+            if status == 'start':
+                if stack:
+                    result[stack[-1]] += timestamp - last_timestamp
+                stack.append(id)
+            else:
+                timestamp += 1
+                result[stack.pop()] += timestamp - last_timestamp
+            last_timestamp = timestamp 
+        return result
+        
 # V2
 # Time:  O(n)
 # Space: O(n)
