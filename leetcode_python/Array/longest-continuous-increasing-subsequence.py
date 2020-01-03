@@ -1,4 +1,40 @@
 # V0 
+# IDEA : GREEDY 
+class Solution(object):
+    def findLengthOfLCIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        ans = cnt = 0
+        last = None
+        for n in nums:
+            if n > last:
+                cnt += 1
+            else:
+                ans = max(ans, cnt)
+                cnt = 1
+            last = n
+        return max(ans, cnt)
+
+# V0'
+# IDEA : GREEDY 
+class Solution(object):
+    def findLengthOfLCIS(self, nums):
+        if not nums: return 0
+        count = 1
+        for i in range(len(nums)-1):
+            tmp_count = 1 
+            j = i
+            while j < len(nums) - 1:
+                #print ("i :", i, "j :", j, "nums[j] :", nums[j], "nums[j+1] :", nums[j+1], "count :", count, "tmp_count :", tmp_count)
+                if nums[j+1] > nums[j]:
+                    j += 1 
+                    tmp_count += 1 
+                else:
+                    break
+            count = max(count, tmp_count)
+        return count 
 
 # V1
 # http://bookshadow.com/weblog/2017/09/10/leetcode-longest-continuous-increasing-subsequence/
