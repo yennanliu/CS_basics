@@ -17,7 +17,22 @@ class Solution(object):
                 ntime = time[:x] + y + (stime[0] * (3 - x))
                 if isValid(ntime): return ntime[:2] + ':' + ntime[2:]
         return stime[0] * 2 + ':' + stime[0] * 2
-        
+
+# V1'
+# https://www.jiuzhang.com/solution/next-closest-time/#tag-highlight-lang-python
+from datetime import *
+class Solution:
+    """
+    @param time: the given time
+    @return: the next closest time
+    """
+    def nextClosestTime(self, time):
+        digits = set(time)
+        while True:
+            time = (datetime.strptime(time, '%H:%M') + timedelta(minutes=1)).strftime('%H:%M')
+            if set(time) <= digits:
+                return time
+                
 # V2 
 # Time:  O(1)
 # Space: O(1)
