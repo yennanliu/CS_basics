@@ -1,4 +1,16 @@
 # V0 
+class Solution(object):
+    def countSubstrings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        count = 0
+        for i in range(len(s)):
+            for j in range(i, len(s)):
+                if s[i:j + 1] == s[i:j + 1][::-1]:
+                    count += 1
+        return count
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79433960
@@ -42,7 +54,6 @@ class Solution(object):
                 left -= 1
                 right += 1
         return count
-
 
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79433960
