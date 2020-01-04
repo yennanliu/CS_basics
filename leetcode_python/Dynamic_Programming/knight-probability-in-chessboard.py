@@ -26,6 +26,36 @@ class Solution(object):
             dp = new_dp
         return sum(map(sum, dp)) / float(8 ** K)
         
+# V1'
+# https://www.jiuzhang.com/solution/knight-probability-in-chessboard/#tag-highlight-lang-python
+class Solution:
+    """
+    @param N: int
+    @param K: int
+    @param r: int
+    @param c: int
+    @return: the probability
+    """
+    def knightProbability(self, N, K, r, c):
+        # Write your code here.
+        next = [[-1, -2], [1, -2], [2, -1], [2, 1], [1, 2], [-1, 2], [-2, 1], [-2, -1]]
+        dp = [[0 for i in range(N)] for j in range(N)]
+        dp[r][c] = 1
+        for step in range(1, K + 1):
+            dpTemp = [[0 for i in range(N)] for j in range(N)]
+            for i in range(N):
+                for j in range(N):
+                    for direction in next:
+                        lastR, lastC = i - direction[0], j - direction[1]
+                        if all([lastC >= 0, lastR >= 0, lastC < N, lastR < N]):
+                            dpTemp[i][j] += dp[lastR][lastC] * 0.125
+            dp = dpTemp
+        res = 0.0
+        for i in range(N):
+            for j in range(N):
+                res += dp[i][j]
+        return res
+
 # V2
 # Time:  O(k * n^2)
 # Space: O(n^2)
