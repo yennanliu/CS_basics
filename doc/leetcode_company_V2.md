@@ -845,7 +845,7 @@
 | 681 | [Next Closest Time](https://leetcode.com/problems/next-closest-time/) | Medium | 41.3% | 0.021 | AGAIN** (not start) (3)
 | 688 | [Knight Probability in Chessboard](https://leetcode.com/problems/knight-probability-in-chessboard/) | Medium | 40.8% | 0.06 | AGAIN* (not start) (2)
 | 689 | [Maximum Sum of 3 Non-Overlapping Subarrays](https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/) | Hard | 41.9% | 0.755 |
-| 692 | [Top K Frequent Words](https://leetcode.com/problems/top-k-frequent-words/) | Medium | 42.4% | 0.092 |
+| 692 | [Top K Frequent Words](https://leetcode.com/problems/top-k-frequent-words/) | Medium | 42.4% | 0.092 | OK**** (4)
 | 721 | [Accounts Merge](https://leetcode.com/problems/accounts-merge/) | Medium | 35.6% | 0.412 |
 | 733 | [Flood Fill](https://leetcode.com/problems/flood-fill/) | Easy | 48.0% | 0.027 |
 | 426 | [Convert Binary Search Tree to Sorted Doubly Linked List](https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/) | Medium | 37.2% | 0.748 |

@@ -1,5 +1,5 @@
-# V0 
-import collections
+# V0
+from collections import Counter
 class Solution(object):
     def topKFrequent(self, words, k):
         """
@@ -7,28 +7,35 @@ class Solution(object):
         :type k: int
         :rtype: List[str]
         """
-        count = collections.Counter(words)
-        candidates = count.keys()
-        candidates = sorted(dict(count), key=lambda x : dict(count)[x]) # fix for python 3 
-        return candidates[::-1][k]
+        counter = Counter(words)
+        candidates = list(counter.keys())
+        candidates.sort(key=lambda w: (-counter[w], w))
+        return candidates[:k]
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559691
-import collections
-class Solution(object):
-    def topKFrequent(self, words, k):
-        """
-        :type words: List[str]
-        :type k: int
-        :rtype: List[str]
-        """
-        count = collections.Counter(words)
-        def compare(x, y):
-            if x[1] == y[1]:
-                return cmp(x[0], y[0])
-            else:
-                return -cmp(x[1], y[1])
-        return [x[0] for x in sorted(count.items(), cmp = compare)[:k]]
+# import collections
+# class Solution(object):
+#     def topKFrequent(self, words, k):
+#         """
+#         :type words: List[str]
+#         :type k: int
+#         :rtype: List[str]
+#         """
+#         count = collections.Counter(words)
+#         def compare(x, y):
+#             def cmp(x,y):
+#                 if x < y:
+#                     return -1 
+#                 elif x == y:
+#                     return 0 
+#                 elif x > y:
+#                     return 1 
+#             if x[1] == y[1]:
+#                 return cmp(x[0], y[0])
+#             else:
+#                 return -cmp(x[1], y[1])
+#         return [x[0] for x in sorted(count.items(), cmp = compare)[:k]]
 
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559691
