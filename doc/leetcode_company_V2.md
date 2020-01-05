@@ -852,7 +852,7 @@
 | 430 | [Flatten a Multilevel Doubly Linked List](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/) | Medium | 33.5% | 0.048 | AGAIN* (not start)
 | 767 | [Reorganize String](https://leetcode.com/problems/reorganize-string/) | Medium | 38.8% | 0.031 | AGAIN***** (3)
 | 772 | [Basic Calculator III](https://leetcode.com/problems/basic-calculator-iii/) | Hard | 41.6% | 0.17 |
-| 785 | [Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/) | Medium | 39.9% | 0.352 |
+| 785 | [Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/) | Medium | 39.9% | 0.352 | AGAIN*** (4) (not start)
 | 791 | [Custom Sort String](https://leetcode.com/problems/custom-sort-string/) | Medium | 59.4% | 0.258 |
 | 708 | [Insert into a Cyclic Sorted List](https://leetcode.com/problems/insert-into-a-cyclic-sorted-list/) | Medium | 22.7% | 0.058 |
 | 824 | [Goat Latin](https://leetcode.com/problems/goat-latin/) | Easy | 54.8% | 0.075 |
