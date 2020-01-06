@@ -42,9 +42,26 @@
 # - 1 <= S.length <= 100.
 
 # V0 
+class Solution:
+    def toGoatLatin(self, S):
+        """
+        :type S: str
+        :rtype: str
+        """
+        vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
+        words = S.split(' ')
+        new_words = []
+        for i, word in enumerate(words):
+            if word[0] in vowels:
+                word += 'ma'
+            else:
+                word = word[1:] + word[0] + 'ma'
+            word += 'a' * (i + 1)
+            new_words.append(word)
+        return ' '.join(new_words)
 
 # V1 
-# # https://blog.csdn.net/fuxuemingzhu/article/details/80471925
+# https://blog.csdn.net/fuxuemingzhu/article/details/80471925
 class Solution:
     def toGoatLatin(self, S):
         """
@@ -79,6 +96,37 @@ class Solution(object):
             latin += 'ma' + 'a' * (idx + 1)
             ans.append(latin)
         return ' '.join(ans)
+
+# V1''
+# https://www.jiuzhang.com/solution/1394-goat-latin/#tag-other-lang-python
+class Solution:
+    """
+    @param S: 
+    @return: nothing
+    """
+    def  toGoatLatin(self, S):
+        if not S:
+            return ''
+        
+        start, end = 0, 0
+        word_count = 0
+        answer = ''   
+        vowels = ['a','e','i','o','u', 'A', 'E', 'I', 'O', 'U']   
+        while start < len(S):
+            while end < len(S) and S[end] != ' ':
+                end += 1            
+            word_count += 1
+            word = S[start:end]           
+            if word[0] in vowels:
+                word += 'ma'
+            else:
+                word = word[1:] + word[0] + 'ma'             
+            postfix = ''
+            for i in range(word_count):
+                postfix += 'a'
+            answer+= word + postfix + ' '         
+            start, end = end + 1, end + 2      
+        return answer[:-1]
 
 # V2 
 class Solution(object):
