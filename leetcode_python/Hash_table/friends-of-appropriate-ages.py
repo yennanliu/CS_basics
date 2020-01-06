@@ -11,6 +11,17 @@ class Solution:
         c = collections.Counter(ages)
         return sum(request(a, b) * c[a] * (c[b] - (a == b)) for a in c for b in c)
 
+# V0'
+from collections import Counter
+class Solution:
+    def numFriendRequests(self, ages):
+        def request(x,y):
+            return not ( y <= 0.5*x + 7  or 
+                         y > x  or  
+                        (y > 100 and x < 100)) 
+        c = collections.Counter(ages)
+        return sum(request(a, b) * c[a] * (c[b] - (a == b)) for a in c for b in c)
+
 # V1 
 # http://bookshadow.com/weblog/2018/04/29/leetcode-friends-of-appropriate-ages/
 import collections
