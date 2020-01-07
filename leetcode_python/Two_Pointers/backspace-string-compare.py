@@ -30,11 +30,23 @@
 # - 1 <= T.length <= 200
 # - S and T only contain lowercase letters and '#' characters.
 
+# V0
+class Solution(object):
+    def backspaceCompare(self, S, T):
 
-# V1 : dev 
+        def check(x):
+            ans = []
+            for i in x:
+                if i != "#":
+                    ans.append(i)
+                if ans:
+                    if ans[-1] != "#" and i == "#":
+                        ans.pop()
+            return ans 
+            
+        return check(S) == check(T)
 
-
-# V2 
+# V1
 # http://bookshadow.com/weblog/2018/06/03/leetcode-backspace-string-compare/
 class Solution(object):
     def backspaceCompare(self, S, T):
@@ -53,7 +65,7 @@ class Solution(object):
 
 
 
-# V3
+# V1'
 # http://bookshadow.com/weblog/2018/06/03/leetcode-backspace-string-compare/
 class Solution(object):
     def backspaceCompare(self, S, T):
@@ -73,16 +85,22 @@ class Solution(object):
         ## re-run the runc compare m treated S, T 
         return toString(S) == toString(T)
 
+# V1''
+# https://www.jiuzhang.com/solution/backspace-string-compare/#tag-highlight-lang-python
+class Solution(object):
+    def backspaceCompare(self, S, T):
+        def build(S):
+            ans = []
+            for c in S:
+                if c != '#':
+                    ans.append(c)
+                elif ans:
+                    ans.pop()
+            return "".join(ans)
+        return build(S) == build(T)
 
-
-# V4 
+# V2
 import itertools
-
-try:
-    xrange          # Python 2
-except NameError:
-    xrange = range  # Python 3
-
 class Solution(object):
     def backspaceCompare(self, S, T):
         """
@@ -99,7 +117,4 @@ class Solution(object):
                     skip -= 1
                 else:
                     yield S[i]
-
-        return all(x == y for x, y in
-                   itertools.zip_longest(findNextChar(S), findNextChar(T)))
-
+        return all(x == y for x, y in itertools.zip_longest(findNextChar(S), findNextChar(T)))

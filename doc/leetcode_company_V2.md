@@ -859,7 +859,7 @@
 | 825 | [Friends Of Appropriate Ages](https://leetcode.com/problems/friends-of-appropriate-ages/) | Medium | 32.1% | 0.222 | AGAIN*** (4)
 | 622 | [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/) | Medium | 36.4% | 0.03 | AGAIN***** (1)
 | 489 | [Robot Room Cleaner](https://leetcode.com/problems/robot-room-cleaner/) | Hard | 50.1% | 0.093 |
-| 844 | [Backspace String Compare](https://leetcode.com/problems/backspace-string-compare/) | Easy | 43.8% | 0.042 |
+| 844 | [Backspace String Compare](https://leetcode.com/problems/backspace-string-compare/) | Easy | 43.8% | 0.042 | OK* (but again)(3)
 | 862 | [Shortest Subarray with Sum at Least K](https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/) | Hard | 18.8% | 0.101 |
 | 886 | [Possible Bipartition](https://leetcode.com/problems/possible-bipartition/) | Medium | 38.6% | 0.045 |
 | 896 | [Monotonic Array](https://leetcode.com/problems/monotonic-array/) | Easy | 54.7% | 0.005 |
