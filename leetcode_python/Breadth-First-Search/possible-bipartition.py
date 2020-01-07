@@ -1,9 +1,43 @@
 # V0 
 
-# V1 
+# V1
+# https://www.jiuzhang.com/solution/possible-bipartition/#tag-highlight-lang-python
+# IDEA : DFS
+class Solution:
+    """
+    @param N:  sum of the set
+    @param dislikes: dislikes peoples
+    @return:  if it is possible to split everyone into two groups in this way
+    """
+    def possibleBipartition(self, N, dislikes):
+        # Write your code here.
+        visited = [0 for i in range(N)];
+        adj = [[] for i in range(N)];
+        for dis in dislikes:
+            adj[dis[0]-1].append(dis[1]-1);
+            adj[dis[1]-1].append(dis[0]-1);
+        
+        for i in range(0,N):
+            if visited[i] == 0:
+                visited[i] = 1;
+                if not self.DFS(i, visited, adj):
+                    return False;
+        return True;
+    def DFS(self,cur,visited,adj):
+        for j in adj[cur]:
+            if visited[j] == 0:
+                visited[j] = -visited[cur];
+                if not self.DFS(j, visited, adj):
+                    return False;
+            elif visited[j] == visited[cur]:
+                return False;
+        return True;
+        
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82827177
 # https://www.youtube.com/watch?v=VlZiMD7Iby4
 # IDEA : BFS 
+import collections
 class Solution(object):
     def possibleBipartition(self, N, dislikes):
         """
@@ -31,10 +65,7 @@ class Solution(object):
                         color[e] = -color[cur]
                         bfs.append(e)
         return True
- 
-# V1'
-# IDEA : DFS 
-       
+
 # V2 
 # Time:  O(|V| + |E|)
 # Space: O(|V| + |E|)
