@@ -74,7 +74,7 @@
 ||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | OK|
 ||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | AGAIN|
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN|
-||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/graph.js) | | | AGAIN|
+||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/graph.js) | | | OK***|
 ||Binary search Tree (BST)| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/binary_search_tree.py),  [Scala](https://github.com/yennanliu/CS_basics/blob/master/data_structure/scala/binarySearch.scala) | | | AGAIN| 
 ||Hash map| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/hash_map.py) | | | AGAIN| 
 

@@ -55,7 +55,7 @@ class Graph(object):
 
 # V1
 # https://github.com/OmkarPathak/Data-Structures-using-Python/blob/master/Graph/Graph.py
-class AdjacencyList(object):
+class Graph(object):
     def __init__(self):
         self.List = {}
 
@@ -70,7 +70,7 @@ class AdjacencyList(object):
         for i  in self.List:
             print((i,'->',' -> '.join([str(j) for j in self.List[i]])))
 
-# al = AdjacencyList()
+# al = Graph()
 # al.addEdge(0, 1)
 # al.addEdge(0, 4)
 # al.addEdge(4, 1)
