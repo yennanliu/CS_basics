@@ -20,6 +20,12 @@
 - Database 
 - System design 
 
+
+## Resource
+
+* [ref.md](https://github.com/yennanliu/CS_basics/blob/master/ref.md)
+* [repl.it](https://repl.it/) - coding online!
+
 ## Algorithms content
 
 * [Bit Manipulation](https://github.com/yennanliu/CS_basics#bit-manipulation)
@@ -68,7 +74,7 @@
 ||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | OK|
 ||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | AGAIN|
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN|
-||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py) | | | AGAIN|
+||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/graph.js) | | | AGAIN|
 ||Binary search Tree (BST)| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/binary_search_tree.py),  [Scala](https://github.com/yennanliu/CS_basics/blob/master/data_structure/scala/binarySearch.scala) | | | AGAIN| 
 ||Hash map| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/hash_map.py) | | | AGAIN| 
 
@@ -992,12 +998,3 @@
 0193 | [Valid Phone Numbers](https://leetcode.com/problems/valid-phone-numbers/) | [Shell](https://github.com/yennanliu/CS_basics/blob/master/leetcode_shell/valid-phone-numbers.sh) | _O(n)_ | _O(1)_ | Easy ||
 0194 | [Transpose File](https://leetcode.com/problems/transpose-file/) | [Shell](https://github.com/yennanliu/CS_basics/blob/master/leetcode_shell/transpose-file.sh) | _O(n^2)_   | _O(n^2)_ | Medium ||
 0195 | [Tenth Line](https://leetcode.com/problems/tenth-line/) | [Shell](https://github.com/yennanliu/CS_basics/blob/master/leetcode_shell/tenth-line.sh)   | _O(n)_ | _O(1)_  | Easy   ||
-
-# Ref
-
-* Reference: [ref.md](https://github.com/yennanliu/CS_basics/blob/master/ref.md)
-
-
-
-
-
