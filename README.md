@@ -24,6 +24,7 @@
 ## Resource
 
 * [ref.md](https://github.com/yennanliu/CS_basics/blob/master/ref.md)
+* [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/mind_map_code_interview.png)
 * [repl.it](https://repl.it/) - coding online!
 
 ## Algorithms content
