@@ -85,7 +85,7 @@
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Binary search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/binary_search.py) | | | AGAIN| 
 ||Linear search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/linear_search.py) | | | AGAIN| 
-||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bfs.py)|| | AGAIN***| 
+||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/bfs.js)|| | AGAIN***| 
 ||Depth-first search (DFS) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dfs.py)| | | AGAIN***| 
 ||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py), [C](https://github.com/yennanliu/CS_basics/blob/master/algorithm/c/bubble_sort.c)| | | OK* (3)|  
 ||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bucket_sort.py)  | | |AGAIN| 
