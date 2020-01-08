@@ -1,11 +1,13 @@
 
-<h1 align="center"><a href="https://leetcode.com/problemset/algorithms/">NYC CS_basics</a></h1>
+<h1 align="center"><a href="https://leetcode.com/problemset/algorithms/">CS_basics</a></h1>
+
+<h5 align="center"><a href="https://www.bigocheatsheet.com/">pic_source</a></h5>
 
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bigO_complexity_chart.png"></p>
 
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/common_ds_op_cost.png" ></p>
 
-![Pic_source](https://www.bigocheatsheet.com/) 
+
 ![Language](https://img.shields.io/badge/language-Python%20%2F%20C%20%2F%20JAVA%2017-orange.svg) 
 ![Update](https://img.shields.io/badge/update-weekly-purple.svg)
 [![Build Status](https://travis-ci.org/yennanliu/CS_basics.svg?branch=master)](https://travis-ci.org/yennanliu/CS_basics)
