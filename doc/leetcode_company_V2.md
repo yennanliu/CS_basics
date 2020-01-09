@@ -862,7 +862,7 @@
 | 844 | [Backspace String Compare](https://leetcode.com/problems/backspace-string-compare/) | Easy | 43.8% | 0.042 | OK* (but again)(3)
 | 862 | [Shortest Subarray with Sum at Least K](https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/) | Hard | 18.8% | 0.101 |
 | 886 | [Possible Bipartition](https://leetcode.com/problems/possible-bipartition/) | Medium | 38.6% | 0.045 | AGAIN***** (4) (not start)
-| 896 | [Monotonic Array](https://leetcode.com/problems/monotonic-array/) | Easy | 54.7% | 0.005 |
+| 896 | [Monotonic Array](https://leetcode.com/problems/monotonic-array/) | Easy | 54.7% | 0.005 | OK
 
 ## Fallible
 
