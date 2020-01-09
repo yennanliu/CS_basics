@@ -24,8 +24,9 @@
 ## Resource
 
 * [ref.md](https://github.com/yennanliu/CS_basics/blob/master/ref.md)
-* [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/mind_map_code_interview.png)
+* [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/mind_map_code_interview.png) - mind map for coding interview 
 * [repl.it](https://repl.it/) - coding online!
+* [https://visualgo.net/en/dfsbfs](https://visualgo.net/en/dfsbfs?slide=1)- DFS, BFS visualization
 
 ## Algorithms content
 
@@ -86,7 +87,7 @@
 ||Binary search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/binary_search.py) | | | AGAIN| 
 ||Linear search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/linear_search.py) | | | AGAIN| 
 ||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/bfs.js)|| | AGAIN***| 
-||Depth-first search (DFS) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dfs.py), [js](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dfs.js)| | `inorder`, `postorder`, `postorder (can recreate a tree)`| AGAIN***| 
+||Depth-first search (DFS) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dfs.js)| | `inorder`, `postorder`, `postorder (can recreate a tree)`| AGAIN***| 
 ||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py), [C](https://github.com/yennanliu/CS_basics/blob/master/algorithm/c/bubble_sort.c)| | | OK* (3)|  
 ||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)| | | AGAIN***| 
