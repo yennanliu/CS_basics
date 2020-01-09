@@ -24,6 +24,49 @@ Visually, the graph looks like the following:
 """
 
 # V0
+# IDEA : DFS
+class Solution(object):
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+        node_copy = self.dfs(node, dict())
+        return node_copy
+    
+    def dfs(self, node, hashd):
+        if not node: return None
+        if node in hashd: return hashd[node]
+        node_copy = Node(node.val, [])
+        hashd[node] = node_copy
+        for n in node.neighbors:
+            n_copy = self.dfs(n, hashd)
+            if n_copy:
+                node_copy.neighbors.append(n_copy)
+        return node_copy
+
+# V0'
+class Solution:
+
+    def __init__(self):
+        self.dict = {}
+        
+    """
+    @param: node: A undirected graph node
+    @return: A undirected graph node
+    """
+    def cloneGraph(self, node):
+        if node is None:
+            return None
+            
+        if node.val in self.dict:
+            return self.dict[node.val]
+            
+        root = Node(node.val, [])
+        self.dict[node.val] = root
+        for item in node.neighbors:
+            root.neighbors.append(self.cloneGraph(item))
+        return root
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/88363919

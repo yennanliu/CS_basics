@@ -68,7 +68,7 @@
 
 # Progress 
 ## Data Structure basic
-|  #  | Title | Solution | Time | Space | Status|
+|  #  | Title | Solution | Use case | Comment | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Queue| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/queue2.py) | | | OK|
 ||Stack| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/stack.py) | | | OK|
@@ -82,12 +82,12 @@
 
 
 ## Algorithm basic
-|  #  | Title | Solution | Time | Space | Status|
+|  #  | Title | Solution | Use case | Comment | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Binary search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/binary_search.py) | | | AGAIN| 
 ||Linear search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/linear_search.py) | | | AGAIN| 
-||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/bfs.js)|| | AGAIN***| 
-||Depth-first search (DFS) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dfs.js)| | `inorder`, `postorder`, `postorder (can recreate a tree)`| AGAIN***| 
+||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/bfs.js)|`FIND SHORTEST PATH`|| AGAIN***| 
+||Depth-first search (DFS) |[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dfs.js)| `TO CHECK IF SOMETHING EXIST`| `inorder`, `postorder`, `postorder (can recreate a tree)`| AGAIN***| 
 ||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py), [C](https://github.com/yennanliu/CS_basics/blob/master/algorithm/c/bubble_sort.c)| | | OK* (3)|  
 ||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)| | | AGAIN***| 
@@ -707,7 +707,7 @@
 103| [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/binary-tree-zigzag-level-order-traversal.py) | _O(n)_| _O(n)_| Medium  |`fb`| OK 
 127| [Word Ladder](https://leetcode.com/problems/word-ladder/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/word-ladder.py) | _O(n * d)_   | _O(d)_ | Medium |`bfs`,`trick`,  `UBER`, `amazon`, `M$`, `fb`| AGAIN**** (4)
 130| [Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/surrounded-regions.py) | _O(m + n)_ | | Medium |`bfs`, `dfs`| AGAIN** (3) (not start)
-133| [Clone Graph](https://leetcode.com/problems/clone-graph/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/clone-graph.py) | _O(n)_ | _O(n)_  | Medium  |`graph`,`dfs`,`bfs`, `UBER`, `google`,`fb`|  AGAIN** (4) (not start*)
+133| [Clone Graph](https://leetcode.com/problems/clone-graph/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/clone-graph.py) | _O(n)_ | _O(n)_  | Medium  |`check #138 Copy List with Random Pointer `,`graph`,`dfs`,`bfs`, `UBER`, `google`,`fb`|  AGAIN****** (5)
 207| [Course Schedule](https://leetcode.com/problems/course-schedule/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule.py)  | _O(\|V\| + \|E\|)_   |  _O(\|E\|)_  |  Medium  |Topological Sort, `dfs`, `bfs` , `fb`| AGAIN*** (4) (not start)
 210| [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule-ii.py)    | _O(\|V\| + \|E\|)_   | _O(\|E\|)_  | Medium  |Topological Sort, `dfs`, `bfs` , `fb` | AGAIN** (3) (not start)
 261| [Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/graph-valid-tree.py)    | _O(\|V\| + \|E\|)_    | _O(\|V\| + \|E\|)_   | Medium  | 🔒, `google`,`fb`| AGAIN** (4) (not start)
