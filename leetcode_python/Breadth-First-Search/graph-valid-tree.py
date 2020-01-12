@@ -1,8 +1,38 @@
 # V0 
+class Solution(object):
+    def validTree(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: bool
+        """
+        root = [i for i in range(n)]
+        for i in edges:
+            root1 = self.find(root, i[0])
+            root2 = self.find(root, i[1])
+            if root1 == root2:
+                return False
+            else:
+                root[root1] = root2
+        return len(edges) == n - 1
+        
+    def find(self, root, e):
+        if root[e] == e:
+            return e
+        else:
+            return self.find(root, root[e])
+
+# V0'
+# IDEA : DFS 
+
+# V0''
+# IDEA : BFS
 
 # V1 
 # http://www.voidcn.com/article/p-hjukomuq-zo.html
 # https://www.jianshu.com/p/1b954f99a497
+# https://medium.com/@gxyou45/algorithm%E6%99%AE%E6%9E%97%E6%96%AF%E9%A0%93%E8%AA%B2%E7%A8%8B%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%981-union-find-5af7911ca5ef
+# IDEA : Quick-Union
 class Solution(object):
     def validTree(self, n, edges):
         """

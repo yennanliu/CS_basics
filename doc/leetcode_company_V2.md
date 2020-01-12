@@ -779,7 +779,7 @@
 | 257 | [Binary Tree Paths](https://leetcode.com/problems/binary-tree-paths/) | Easy | 43.1% | 0.354 | OK******* (4)
 | 259 | [3Sum Smaller](https://leetcode.com/problems/3sum-smaller/) | Medium | 43.1% | 0.054 | AGAIN****** (3)
 | 260 | [Single Number III](https://leetcode.com/problems/single-number-iii/) | Medium | 54.5% | 0.039 |
-| 261 | [Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/) | Medium | 38.8% | 0.038 | AGAIN** (4) (not start)
+| 261 | [Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/) | Medium | 38.8% | 0.038 | AGAIN******** (5)
 | 269 | [Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) | Hard | 27.6% | 0.337 |
 | 270 | [Closest Binary Search Tree Value](https://leetcode.com/problems/closest-binary-search-tree-value/) | Easy | 41.7% | 0.062 |  AGAIN***** (3)
 | 273 | [Integer to English Words](https://leetcode.com/problems/integer-to-english-words/) | Hard | 23.1% | 2.527 |

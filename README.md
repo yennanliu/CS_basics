@@ -98,7 +98,7 @@
 ||Topological sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py) | | | AGAIN| 
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
 ||Union Find | [Python union find](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py), [Python union find check cyclic](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find_if_cyclic.py) | | | AGAIN| 
-
+||Quick Union | | | || 
 
 
 
@@ -710,7 +710,7 @@
 133| [Clone Graph](https://leetcode.com/problems/clone-graph/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/clone-graph.py) | _O(n)_ | _O(n)_  | Medium  |`check #138 Copy List with Random Pointer `,`graph`,`dfs`,`bfs`, `UBER`, `google`,`fb`|  AGAIN****** (5)
 207| [Course Schedule](https://leetcode.com/problems/course-schedule/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule.py)  | _O(\|V\| + \|E\|)_   |  _O(\|E\|)_  |  Medium  |Topological Sort, `dfs`, `bfs` , `fb`| AGAIN*** (4) (not start)
 210| [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule-ii.py)    | _O(\|V\| + \|E\|)_   | _O(\|E\|)_  | Medium  |Topological Sort, `dfs`, `bfs` , `fb` | AGAIN** (3) (not start)
-261| [Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/graph-valid-tree.py)    | _O(\|V\| + \|E\|)_    | _O(\|V\| + \|E\|)_   | Medium  | 🔒, `google`,`fb`| AGAIN** (4) (not start)
+261| [Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/graph-valid-tree.py)    | _O(\|V\| + \|E\|)_    | _O(\|V\| + \|E\|)_   | Medium  | 🔒, `graph`,`quick union`,`union find` ,`google`,`fb`| AGAIN******** (5)
 286| [Walls and Gates](https://leetcode.com/problems/walls-and-gates/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/walls-and-gates.py)     | _O(m * n)_          | _O(g)_  | Medium  | 🔒, `FB`, `google`, `dfs`, `bfs` , `good basic`| AGAIN****** (4)
 310| [Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/minimum-height-trees.py)  | _O(n)_          | _O(n)_  | Medium |`complex`| AGAIN (3) (not start)
 433| [Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/minimum-genetic-mutation.py)  | _O(n * b)_ | _O(b)_ | Medium |check `# 127 Word Ladder`, `good basic`| AGAIN*** (3)
