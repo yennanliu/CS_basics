@@ -1,4 +1,43 @@
 # V0 
+# IDEA : DFS
+# CONTINUE
+# In [5]: for i in range(10):
+#    ...:     if i%2 ==0:
+#    ...:         continue
+#    ...:         #pass
+#    ...:     print (i)
+#    ...:     
+# 1
+# 3
+# 5
+# 7
+# 9
+import collections
+class Solution(object):
+    def isBipartite(self, graph):
+        def dfs(v, color):
+            ocolor = 1 - color
+            for p in edges[v]:
+                if p not in colors:
+                    colors[p] = ocolor
+                    if not dfs(p, ocolor):
+                        return False
+                elif colors[p] != ocolor:
+                    return False
+            return True
+        """
+        :type graph: List[List[int]]
+        :rtype: bool
+        """
+        edges = collections.defaultdict(set)
+        for idx, points in enumerate(graph):
+            for p in points: edges[idx].add(p)
+        colors = {}
+        for k in edges:
+            if k in colors: continue
+            colors[k] = 0
+            if not dfs(k, 0): return False
+        return True
 
 # V1
 # https://www.jiuzhang.com/solution/is-graph-bipartite/#tag-highlight-lang-python
