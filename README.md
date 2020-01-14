@@ -23,12 +23,13 @@
 
 ## Resource
 
-* [ref.md](https://github.com/yennanliu/CS_basics/blob/master/ref.md) - leetcode ref
-* [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/mind_map_code_interview.png) - mind map for coding interview 
-* [repl.it](https://repl.it/) - coding online!
+* [ref.md](https://github.com/yennanliu/CS_basics/blob/master/ref.md) - Leetcode ref
+* [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/mind_map_code_interview.png) - Mind map for coding interview 
+* [code_interview_cheatsheet](https://github.com/yennanliu/CS_basics/blob/master/doc/code_interview_cheatsheet.pdf) 
+- Coding interview cheetsheet
+* [repl.it](https://repl.it/) - Coding online!
 * [https://visualgo.net/en/dfsbfs](https://visualgo.net/en/dfsbfs?slide=1)- DFS, BFS visualization
 * [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
-* [Coding intewview cheetsheet](https://github.com/yennanliu/CS_basics/blob/master/doc/code_interview_cheatsheet.pdf) 
 
 
 ## Algorithms content
