@@ -25,10 +25,9 @@
 
 * [ref.md](https://github.com/yennanliu/CS_basics/blob/master/ref.md) - Leetcode ref
 * [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/mind_map_code_interview.png) - Mind map for coding interview 
-* [code_interview_cheatsheet](https://github.com/yennanliu/CS_basics/blob/master/doc/code_interview_cheatsheet.pdf) 
-- Coding interview cheetsheet
+* [CodeInterviewCheatsheet](https://github.com/yennanliu/CS_basics/blob/master/doc/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
 * [repl.it](https://repl.it/) - Coding online!
-* [https://visualgo.net/en/dfsbfs](https://visualgo.net/en/dfsbfs?slide=1)- DFS, BFS visualization
+* [https://visualgo.net/en/dfsbfs](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
 * [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
 
 
@@ -335,7 +334,7 @@
 094 | [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)  | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/binary-tree-inorder-traversal.py) | _O(n)_| _O(1)_| Medium   |`good basic`,`Morris Traversal`, `M$`, `fb` | AGAIN**** (3)
 144 | [Binary Tree Preorder Traversal](https://leetcode.com/problems/binary-tree-preorder-traversal/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/binary-tree-preorder-traversal.py)  | _O(n)_| _O(1)_| Medium |`Morris Traversal`| AGAIN 
 208 | [Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py) | _O(n)_ | _O(1)_ | Medium |dict tree, `fb`| AGAIN***** (3)
-211 | [Add and Search Word - Data structure design](https://leetcode.com/problems/add-and-search-word-data-structure-design/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/add-and-search-word-data-structure-design.py) | _O(min(n, h))_ | _O(min(n, h))_ | Medium |Trie tree, DFS, do `# 208 first`, `fb`| AGAIN (not start) (3)
+211 | [Add and Search Word - Data structure design](https://leetcode.com/problems/add-and-search-word-data-structure-design/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/add-and-search-word-data-structure-design.py) | _O(min(n, h))_ | _O(min(n, h))_ | Medium |`Trie`, `DFS`, do `# 208 first`, `fb`| AGAIN*** (not start) (4)
 226| [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/invert-binary-tree.py) | _O(n)_ | _O(h)_, _O(w)_ | Easy || AGAIN* 
 307 | [Range Sum Query - Mutable](https://leetcode.com/problems/range-sum-query-mutable/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/range-sum-query-mutable.py) | ctor: _O(n)_, update: _O(logn)_, query:  _O(logn)_ | _O(n)_ | Medium | LintCode, DFS, Segment Tree, BIT, check `#303 Range Sum Query - Immutable` | AGAIN* (2)(not start)
 525| [Contiguous Array](https://leetcode.com/problems/contiguous-array/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/contiguous-array.py)  | _O(n)_ | _O(n)_ | Medium     | `good basic`, `array`, `hashmap`, `cache`| AGAIN** (2)
