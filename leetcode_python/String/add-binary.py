@@ -47,7 +47,29 @@ class Solution(object):
         if carry:
             result += str(carry)
         return result[::-1]
-        
+
+# V0'
+# class Solution(object):
+#     # @param a, a string
+#     # @param b, a string
+#     # @return a string
+#     def addBinary(self, a, b):
+#         res = ''
+#         i, j, plus = len(a)-1, len(b)-1, 0
+#         while i or j:
+#             val = plus
+#             if i:
+#                 val += int(a[i])
+#                 i -= 1 
+#             if j:
+#                 val += int(b[j])
+#                 j -= 1 
+#             plus, val = divmod(val, 2)
+#             res = str(val) + res
+#         if plus:
+#             res += str(plus)
+#         return res[::-1]
+
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51706532
 # IDEA : syntax of int() func
