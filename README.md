@@ -1,5 +1,5 @@
 
-<h1 align="center"><a href="https://leetcode.com/problemset/algorithms/">CS_basics</a></h1>
+<h1 align="center"><a href="https://leetcode.com/problemset/algorithms/">CS_BASICS</a></h1>
 
 <h5 align="center"><a href="https://www.bigocheatsheet.com/">pic_source</a></h5>
 
@@ -81,7 +81,7 @@
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN|
 ||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/graph.js) | | | OK***|
 ||Binary search Tree (BST)| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/binary_search_tree.py),  [Scala](https://github.com/yennanliu/CS_basics/blob/master/data_structure/scala/binarySearch.scala) | | | AGAIN| 
-||Hash map| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/hash_map.py) | | | AGAIN| 
+||Hash table| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/hash_table.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/hash_table.js) | | | AGAIN| 
 
 
 ## Algorithm basic
