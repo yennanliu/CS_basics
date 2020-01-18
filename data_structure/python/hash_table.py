@@ -1,6 +1,6 @@
-# #################################################################
-# # DATA STRUCTURE DEMO : Hash table 
-# #################################################################
+##################################################################
+# DATA STRUCTURE DEMO : Hash table 
+##################################################################
 
 # V0 
 class Node:
@@ -15,15 +15,15 @@ class HashTable:
         self.hash = hash
  
     def put(self, key, value):
-    	"""
-    	* variable
-    	: key :  put/remove key-value's key 
-    	: value : put/remove key-value's value
-    	: address : the hashed "key" in hashmap
+        """
+        * variable
+        : key :  put/remove key-value's key 
+        : value : put/remove key-value's value
+        : address : the hashed "key" in hashmap
 
-		* transfromation
-    	: hash transfromation : hash(value)/self.size
-    	"""
+        * transfromation
+        : hash transfromation : hash(value)/self.size
+        """
         node = Node(key, value)
         # get hashmap index (address) via hash func
         address = self.hash(node.key) % self.__size
@@ -43,7 +43,7 @@ class HashTable:
         for idx, node in enumerate(self.__slot[address].copy()):
             if node.key == key:
                 self.__slot[address].pop(idx)    
-                         
+
 # map = HashTable(5)
 # print (map)
 # print ('*** put into hashmap')
@@ -93,7 +93,6 @@ class HashTable:
         for idx, node in enumerate(self.__slot[address].copy()):
             if node.key == key:
                 self.__slot[address].pop(idx)
- 
 
 # map = HashTable(16)
 # for i in range(5):
@@ -101,7 +100,6 @@ class HashTable:
 # map.remove(3)
 # for i in range(5):
 #     print(map.get(i, 'not set'))
-
 
 # # V2 
 # # https://github.com/joeyajames/Python/blob/master/HashMap.py
