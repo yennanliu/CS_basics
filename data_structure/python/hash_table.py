@@ -2,7 +2,7 @@
 # # DATA STRUCTURE DEMO : Hash table 
 # #################################################################
 
-# # V0 
+# V0 
 class Node:
     def __init__(self, key, value):
         self.key = key
@@ -15,15 +15,23 @@ class HashTable:
         self.hash = hash
  
     def put(self, key, value):
+    	"""
+    	* variable
+    	: key :  put/remove key-value's key 
+    	: value : put/remove key-value's value
+    	: address : the hashed "key" in hashmap
+
+		* transfromation
+    	: hash transfromation : hash(value)/self.size
+    	"""
         node = Node(key, value)
         # get hashmap index (address) via hash func
         address = self.hash(node.key) % self.__size
         self.__slot[address].append(node)
  
     def get(self, key):
-    	# get key via hash func
-        _key = self.hash(key)
-        address = _key % self.__size
+        # get the address in hashmap from "hashed" key
+        address = self.hash(key) % self.__size
         for node in self.__slot[address]:
             if node.key == key:
                 return node.value
@@ -34,7 +42,8 @@ class HashTable:
         address = self.hash(key) % self.__size
         for idx, node in enumerate(self.__slot[address].copy()):
             if node.key == key:
-                self.__slot[address].pop(idx)             
+                self.__slot[address].pop(idx)    
+                         
 # map = HashTable(5)
 # print (map)
 # print ('*** put into hashmap')
