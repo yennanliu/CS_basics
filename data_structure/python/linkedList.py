@@ -55,6 +55,35 @@ class LinkedList:
     else:
         self.head = newNode
 
+  def insert(self, idx, data):
+    """
+    # append method that append a new item within the linkedlist 
+    i.e. 
+         before :  1 -> 2 -> 3
+         after  :  1 -> 2 -> 2.5 -> 3
+
+    """
+    newNode = Node(data)
+    current = self.head
+    ll_length = 0 
+    while current:
+        current = current.next 
+        ll_length += 1 
+    self.tail = current
+
+    if idx == 0:
+        self.prepend(data)
+    elif idx == ll_length:
+        self.append(data)
+    else :
+        current = self.head
+        cur_idx = 0 
+        while cur_idx != idx-1:
+            cur_idx += 1 
+            current = current.next
+        current.next = newNode
+        newNode.next = current.next
+
   def printLL(self):
     """
     # print method for the linked list
@@ -63,13 +92,16 @@ class LinkedList:
        after  : 1 2 3 
     """
     current = self.head
-    while(current):
-      print(current.data)
+    while current:
+      print (current.data)
       current = current.next
 # LL = LinkedList()
 # LL.append(3)
 # LL.append(4)
 # LL.append(5)
+# LL.prepend(2)
+# LL.append(6)
+# LL.prepend(1)
 # print ("print LinkedList : ")
 # LL.printLL()
 
