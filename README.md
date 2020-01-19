@@ -27,7 +27,9 @@
 * [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/mind_map_code_interview.png) - Mind map for coding interview 
 * [CodeInterviewCheatsheet](https://github.com/yennanliu/CS_basics/blob/master/doc/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
 * [repl.it](https://repl.it/) - Coding online!
-* [https://visualgo.net/en/dfsbfs](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
+* Visualization
+	- [visualgo - DFS / BFS](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
+	- [visualgo - linklist](https://visualgo.net/en/list) - Linklist visualization
 * [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
 
 
