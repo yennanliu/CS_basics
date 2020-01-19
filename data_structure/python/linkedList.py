@@ -63,26 +63,36 @@ class LinkedList:
          after  :  1 -> 2 -> 2.5 -> 3
 
     """
-    newNode = Node(data)
     current = self.head
     ll_length = 0 
-    while current:
-        current = current.next 
-        ll_length += 1 
-    self.tail = current
+    # while current:
+    #     current = current.next 
+    #     ll_length += 1 
+    # self.tail = current
 
+    if idx < 0:
+      print ("idx out of linkedlist range, idx : {}".format(idx))
+      return
     if idx == 0:
         self.prepend(data)
     elif idx == ll_length:
         self.append(data)
-    else :
+    else:
+        newNode = Node(data)
         current = self.head
         cur_idx = 0 
-        while cur_idx != idx-1:
-            cur_idx += 1 
+        #print (cur_idx)
+        c_ = 0 
+        while cur_idx <= idx-1:
+          c_ += 1 
+          if current.next:
             current = current.next
-        current.next = newNode
+          else:
+            print ("idx out of linkedlist range, idx : {}".format(idx))
+            return
+          cur_idx += 1 
         newNode.next = current.next
+        current.next = newNode
 
   def printLL(self):
     """
@@ -102,6 +112,9 @@ class LinkedList:
 # LL.prepend(2)
 # LL.append(6)
 # LL.prepend(1)
+# print ("print LinkedList : ")
+# LL.printLL()
+# LL.insert(2, 1.5)
 # print ("print LinkedList : ")
 # LL.printLL()
 
