@@ -29,7 +29,7 @@
 * [repl.it](https://repl.it/) - Coding online!
 * Visualization
 	- [visualgo - DFS / BFS](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
-	- [visualgo - linklist](https://visualgo.net/en/list) - Linklist visualization
+	- [visualgo - linkedlist](https://visualgo.net/en/list) - Linkedlist visualization
 * [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
 
 
