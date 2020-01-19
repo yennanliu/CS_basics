@@ -1,13 +1,49 @@
-
-
-
 #################################################################
 # DATA STRUCTURE DEMO : LinkedList
 #################################################################
 
+# V0
 
+# V1
+# https://www.educative.io/edpresso/how-to-create-a-linked-list-in-python?https://www.educative.io/courses/grokking-the-object-oriented-design-interview?aid=5082902844932096&utm_source=google&utm_medium=cpc&utm_campaign=blog-dynamic&gclid=EAIaIQobChMI2dnYi52P5wIVCLaWCh36WgqWEAAYASAAEgIMmvD_BwE
+# A single node of a singly linked list
+class Node:
+  # constructor
+  def __init__(self, data = None, next=None): 
+    self.data = data
+    self.next = next
+
+# A Linked List class with a single head node
+class LinkedList:
+  def __init__(self):  
+    self.head = None
+  
+  # insertion method for the linked list
+  def append(self, data):
+    newNode = Node(data)
+    if(self.head):
+      current = self.head
+      while(current.next):
+        current = current.next
+      current.next = newNode
+    else:
+      self.head = newNode
+  
+  # print method for the linked list
+  def printLL(self):
+    current = self.head
+    while(current):
+      print(current.data)
+      current = current.next
+# LL = LinkedList()
+# LL.append(3)
+# LL.append(4)
+# LL.append(5)
+# print ("print LinkedList : ")
+# LL.printLL()
+
+# V1'
 # http://zhaochj.github.io/2016/05/12/2016-05-12-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8/
-
 class Node:
     def __init__(self, data):
         self.data = data
@@ -96,17 +132,16 @@ class LinkedList:
             else:
                 current = current.__next__
         return found
-  
-if __name__ == '__main__':
-    link_list = LinkedList()
-    for i in range(150):
-        link_list.append(i)
+
+link_list = LinkedList()
+for i in range(150):
+    link_list.append(i)
 #    print(link_list.is_empty())
 #    link_list.insert(10, 30)
-  
 #    link_list.remove(0)
-  
-    for node in link_list.iter():
-        print(('node is {0}'.format(node)))
-    print((link_list.size()))
-#    print(link_list.search(20))
+for node in link_list.iter():
+    print(('node is {0}'.format(node)))
+print((link_list.size()))
+#   print(link_list.search(20))
+
+# V2
