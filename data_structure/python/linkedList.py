@@ -21,7 +21,15 @@ class LinkedList:
   """
   def __init__(self):  
     self.head = None
-  
+
+  def get_LL_length(self):
+    current = self.head
+    length = 0 
+    while current:
+        current = current.next
+        length += 1 
+    return length
+
   def append(self, data):
     """
     # append method that append a new item at the end of the linkedlist 
@@ -64,16 +72,12 @@ class LinkedList:
 
     """
     current = self.head
-    ll_length = 0 
-    # while current:
-    #     current = current.next 
-    #     ll_length += 1 
-    # self.tail = current
+    ll_length = self.get_LL_length()
 
     if idx < 0:
       print ("idx out of linkedlist range, idx : {}".format(idx))
       return
-    if idx == 0:
+    elif idx == 0:
         self.prepend(data)
     elif idx == ll_length:
         self.append(data)
@@ -91,6 +95,15 @@ class LinkedList:
         newNode.next = current.next
         current.next = newNode
 
+  def remove(self, idx):
+    # if idx < 0:
+    #     print ("idx out of linkedlist range, idx : {}".format(idx))
+    #     return 
+    # elif idx == 0:
+    pass
+
+
+
   def printLL(self):
     """
     # print method for the linked list
@@ -102,6 +115,7 @@ class LinkedList:
     while current:
       print (current.data)
       current = current.next
+
 # LL = LinkedList()
 # LL.append(3)
 # LL.append(4)
@@ -112,6 +126,9 @@ class LinkedList:
 # print ("print LinkedList : ")
 # LL.printLL()
 # LL.insert(2, 1.5)
+# print ("print LinkedList : ")
+# LL.printLL()
+# LL.insert(7, 100)
 # print ("print LinkedList : ")
 # LL.printLL()
 
