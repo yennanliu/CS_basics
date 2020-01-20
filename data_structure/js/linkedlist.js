@@ -2,6 +2,8 @@
 
 // add a method remove() to the linked list that deletes a node to the specified index.
 
+// add a method remove() to the linked list that deletes a node to the specified index.
+
 class LinkedList {
   constructor(value) {
     this.head = {
@@ -68,6 +70,14 @@ class LinkedList {
     }
     return currentNode;
   }
+  remove(index) {
+    // Check Parameters      
+    const leader = this.traverseToIndex(index-1);
+    const unwantedNode = leader.next;
+    leader.next = unwantedNode.next;
+    this.length--;
+    return this.printList();
+  }
 }
 
 let myLinkedList = new LinkedList(10);
@@ -75,3 +85,4 @@ myLinkedList.append(5);
 myLinkedList.append(16);myLinkedList.prepend(1);
 myLinkedList.insert(2, 99);
 myLinkedList.insert(20, 88);
+myLinkedList.remove(2);

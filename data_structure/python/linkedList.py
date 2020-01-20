@@ -81,10 +81,7 @@ class LinkedList:
         newNode = Node(data)
         current = self.head
         cur_idx = 0 
-        #print (cur_idx)
-        c_ = 0 
-        while cur_idx <= idx-1:
-          c_ += 1 
+        while cur_idx < idx-1:
           if current.next:
             current = current.next
           else:
