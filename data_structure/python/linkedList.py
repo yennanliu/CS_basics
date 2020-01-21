@@ -23,12 +23,30 @@ class LinkedList:
     self.head = None
 
   def get_LL_length(self):
+    """
+    # get list length method for the linked list
+    i.e. 
+       before : 1 -> 2 -> 3
+       after  : 3
+    """
     current = self.head
     length = 0 
     while current:
         current = current.next
         length += 1 
     return length
+
+  def printLL(self):
+    """
+    # print method for the linked list
+    i.e. 
+       before : 1 -> 2 -> 3
+       after  : 1 2 3 
+    """
+    current = self.head
+    while current:
+      print (current.data)
+      current = current.next
 
   def append(self, data):
     """
@@ -68,7 +86,16 @@ class LinkedList:
     # append method that append a new item within the linkedlist 
     i.e. 
          before :  1 -> 2 -> 3
+         insert(1, 2.5)
          after  :  1 -> 2 -> 2.5 -> 3
+
+         before :  1 -> 2 -> 3
+         insert(0, 0)
+         after  :  0 -> 1 -> 2 -> 3
+
+         before :  1 -> 2 -> 3
+         insert(2, 4)
+         after  :  1 -> 2 -> 3 -> 4
 
     """
     current = self.head
@@ -92,13 +119,27 @@ class LinkedList:
         current.next = newNode
 
   def remove(self, idx):
+    """
+    # remove method for the linked list
+    i.e. 
+       before : 1 -> 2 -> 3
+       remove(1) 
+       after  : 1 -> 3
+
+       before : 1 -> 2 -> 3
+       remove(2) 
+       after  : 1 -> 2
+
+       before : 1 -> 2 -> 3
+       remove(0) 
+       after  : 2 -> 3
+    """
     if idx < 0 or idx > self.get_LL_length():
         print ("idx out of linkedlist range, idx : {}".format(idx))
         return 
     elif idx == 0:
         current = self.head
         self.head = current.next
-        current = current.next
     elif idx == self.get_LL_length():
         current = self.head
         cur_idx = 0
@@ -116,18 +157,6 @@ class LinkedList:
         current.next = next_
         current = next_ 
 
-  def printLL(self):
-    """
-    # print method for the linked list
-    i.e. 
-       before : 1 -> 2 -> 3
-       after  : 1 2 3 
-    """
-    current = self.head
-    while current:
-      print (current.data)
-      current = current.next
-      
 # LL = LinkedList()
 # LL.append(3)
 # LL.append(4)
