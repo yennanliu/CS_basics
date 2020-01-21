@@ -78,7 +78,7 @@
 ||Queue| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/queue2.py) | | | OK|
 ||Stack| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/stack.py) | | | OK|
 ||LinkedList| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/linkedList.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/linkedlist.js) | | | OK**|
-||Doubly LinkedList| [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/doublylinkedList.js) | | | AGAIN|
+||Doubly LinkedList| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/doublylinkedlist.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/doublylinkedList.js) | | | AGAIN|
 ||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | OK|
 ||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | AGAIN|
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN|
