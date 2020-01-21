@@ -105,6 +105,7 @@
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
 ||Union Find | [Python union find](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py), [Python union find check cyclic](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find_if_cyclic.py) | | | AGAIN| 
 ||Quick Union | | | || 
+||Dynamic programming|[JS demo 1](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dp_demo_1.js) | | | AGAIN|
 
 
 
