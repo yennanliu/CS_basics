@@ -11,7 +11,7 @@ class Node:
   # constructor
   # A single node of a singly linked list
   """
-  def __init__(self, data = None, next=None): 
+  def __init__(self, data=None, next=None): 
     self.data = data
     self.next = next
 
@@ -74,7 +74,7 @@ class LinkedList:
     current = self.head
     ll_length = self.get_LL_length()
 
-    if idx < 0:
+    if idx < 0 or idx > self.get_LL_length():
       print ("idx out of linkedlist range, idx : {}".format(idx))
       return
     elif idx == 0:
@@ -86,23 +86,35 @@ class LinkedList:
         current = self.head
         cur_idx = 0 
         while cur_idx < idx-1:
-          if current.next:
             current = current.next
-          else:
-            print ("idx out of linkedlist range, idx : {}".format(idx))
-            return
-          cur_idx += 1 
+            cur_idx += 1 
         newNode.next = current.next
         current.next = newNode
 
   def remove(self, idx):
-    # if idx < 0:
-    #     print ("idx out of linkedlist range, idx : {}".format(idx))
-    #     return 
-    # elif idx == 0:
-    pass
-
-
+    if idx < 0 or idx > self.get_LL_length():
+        print ("idx out of linkedlist range, idx : {}".format(idx))
+        return 
+    elif idx == 0:
+        current = self.head
+        self.head = current.next
+        current = current.next
+    elif idx == self.get_LL_length():
+        current = self.head
+        cur_idx = 0
+        while cur_idx < idx -1:
+            current = current.next
+            cur_idx += 1
+        current.next = None
+    else:
+        current = self.head
+        cur_idx = 0 
+        while cur_idx < idx - 1:
+            current = current.next
+            cur_idx += 1 
+        next_ = current.next.next
+        current.next = next_
+        current = next_ 
 
   def printLL(self):
     """
@@ -115,7 +127,7 @@ class LinkedList:
     while current:
       print (current.data)
       current = current.next
-
+      
 # LL = LinkedList()
 # LL.append(3)
 # LL.append(4)
@@ -129,6 +141,12 @@ class LinkedList:
 # print ("print LinkedList : ")
 # LL.printLL()
 # LL.insert(7, 100)
+# print ("print LinkedList : ")
+# LL.printLL()
+# LL.remove(0)
+# print ("print LinkedList : ")
+# LL.printLL()
+# LL.remove(0)
 # print ("print LinkedList : ")
 # LL.printLL()
 
