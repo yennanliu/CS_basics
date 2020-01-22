@@ -1,4 +1,17 @@
 # V0 
+# https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/linkedList.py
+# IDEA : ITERATION
+class Solution:
+    def reverseList(self, head: ListNode):
+        prev = None
+        current = head 
+        while(current is not None): 
+            next_ = current.next
+            current.next = prev 
+            prev = current 
+            current = next_
+        head = prev 
+        return head
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51306170
