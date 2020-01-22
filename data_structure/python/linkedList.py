@@ -5,7 +5,6 @@
 # V0
 
 # V1
-# https://www.educative.io/edpresso/how-to-create-a-linked-list-in-python?https://www.educative.io/courses/grokking-the-object-oriented-design-interview?aid=5082902844932096&utm_source=google&utm_medium=cpc&utm_campaign=blog-dynamic&gclid=EAIaIQobChMI2dnYi52P5wIVCLaWCh36WgqWEAAYASAAEgIMmvD_BwE
 class Node:
   """
   # constructor
@@ -36,6 +35,18 @@ class LinkedList:
         length += 1 
     return length
 
+  def get_LL_tail(self):
+    """
+    # get list tail method for the linked list
+    i.e. 
+       before : a -> b -> c
+       after  : c
+    """
+    current = self.head
+    while current:
+        current = current.next
+    return current
+
   def printLL(self):
     """
     # print method for the linked list
@@ -56,7 +67,7 @@ class LinkedList:
          after  :  1 -> 2 -> 3 -> 4
     """
     newNode = Node(data)
-    if self.head :
+    if self.head:
       current = self.head
       while current.next:
         current = current.next
@@ -157,6 +168,23 @@ class LinkedList:
         current.next = next_
         current = next_ 
 
+  def reverse(self): 
+    """
+    # reverse method for the linked list
+    # https://www.geeksforgeeks.org/python-program-for-reverse-a-linked-list/
+    i.e. 
+     before : 1 -> 2 -> 3
+     after  : 3 -> 2 -> 1 
+    """
+    prev = None
+    current = self.head 
+    while(current is not None): 
+        next_ = current.next
+        current.next = prev 
+        prev = current 
+        current = next_
+    self.head = prev 
+
 # LL = LinkedList()
 # LL.append(3)
 # LL.append(4)
@@ -176,6 +204,9 @@ class LinkedList:
 # print ("print LinkedList : ")
 # LL.printLL()
 # LL.remove(0)
+# print ("print LinkedList : ")
+# LL.printLL()
+# LL.reverse()
 # print ("print LinkedList : ")
 # LL.printLL()
 
