@@ -76,7 +76,7 @@
 |  #  | Title | Solution | Use case | Comment | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Queue| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/queue2.py) | | | OK|
-||Stack| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/stack.py) | | | OK|
+||Stack| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/stack.py), [JS stack (via linkedlist)](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/stack_linkedlist.js), [JS - stack (via array)](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/stack_array.js) | | | OK|
 ||LinkedList| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/linkedList.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/linkedlist.js) | | | OK**|
 ||Doubly LinkedList| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/doublylinkedlist.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/doublylinkedList.js) | | | AGAIN|
 ||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | OK|
