@@ -30,6 +30,7 @@
 * Visualization
 	- [visualgo - DFS / BFS](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
 	- [visualgo - linkedlist](https://visualgo.net/en/list) - Linkedlist visualization
+	- [visualgo - BST](https://visualgo.net/bn/bst) - binary search tree visualization
 * [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
 
 
