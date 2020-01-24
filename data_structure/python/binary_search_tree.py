@@ -1,4 +1,49 @@
-# # V0 : DEV 
+# V0 
+
+# V1
+# class Node:
+#     def __init__(self, data):
+#         self.left = None
+#         self.right = None
+#         self.value = data
+
+# class BinarySearchTree:
+
+#     def __init__(self):
+#         #self.node = Node()
+#         pass
+
+#     def insert(self, data):
+#         if self.value:
+#             if data < self.value:
+#                 if self.left is None:
+#                     self.left = Node(data)
+#                 else:
+#                     self.left.insert(data)
+#             elif data > self.value:
+#                 if self.right is None:
+#                     self.right = Node(data)
+#                 else:
+#                     self.right.insert(data)
+#         else:
+#             self.data = data
+
+#     def lookup(self, data):
+#         if self.value == data:
+#             return ">>> find the value : {}".format(data)
+#         elif data < self.data:
+#             self.lookup(self.value.left)
+#         elif data > self.data:
+#             self.lookup(self.value.right)
+#         else:
+#             return ">>> Can't find the value {}".format(data)
+
+# root = Node(12)
+# root.insert(6)
+# root.insert(14)
+# root.insert(3)
+# print(root.lookup(7))
+# print(root.lookup(14))
 
 # # V2
 # # https://www.tutorialspoint.com/python/python_binary_search_tree.htm
@@ -237,6 +282,3 @@
 # #     tree.delete(10)
 # #     tree.inorder()
 # #     tree.preorder()
-
-
-
