@@ -81,6 +81,7 @@
 ||LinkedList| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/linkedList.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/linkedlist.js) | | | OK**|
 ||Doubly LinkedList| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/doublylinkedlist.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/doublylinkedList.js) | | | AGAIN|
 ||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | OK|
+||Trie| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/trie.py) | | | AGAIN|
 ||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | AGAIN|
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN|
 ||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/graph.js) | | | OK***|
