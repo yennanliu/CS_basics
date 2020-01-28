@@ -1,4 +1,16 @@
-# V0 : DEV 
+# V0 
+# IDEA : DP 
+class Solution(object):
+    def maxSubArray(self, nums):
+        cumsum = nums[0]
+        max_ = cumsum
+        if not nums: return 0 
+        for i in range(1, len(nums)):
+            if cumsum < 0:
+                cumsum = 0
+            cumsum += nums[i]
+            max_ = max(max_, cumsum)
+        return max_ 
 
 # V1 
 # https://blog.csdn.net/hyperbolechi/article/details/43038749
@@ -11,17 +23,30 @@ def Solution_brutef(arr):
                 print((i,j))
                 maxval=max(maxval,sum(arr[i:j]))
                 result=arr[i:j]
+    return result
 
-# V1' 
-# https://blog.csdn.net/hyperbolechi/article/details/43038749
-def Solution_findmax(arr):
-    cursum=0
-    maxval=arr[0]
-    for index in range(len(arr)):
-        if cursum<0:
-            cursum=0
-        cursum+=arr[index]
-        maxval=max(maxval,cursum)
+# V1''
+# https://blog.csdn.net/qqxx6661/article/details/78167981
+# IDEA : DP
+# DP EQUATION :
+# -> dp[i+1] = dp[i] + s[i+1] (if dp[i] >= 0 )
+# -> dp[i+1] = s[i]           (if dp[i] < 0 )
+class Solution(object):
+    def maxSubArray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        current = nums[0]
+        m = current
+        for i in range(1, len(nums)):
+            if current < 0:
+                current = 0
+            current += nums[i]
+            m = max(current, m)
+        return m
 
 # V1''
 # https://blog.csdn.net/qqxx6661/article/details/78167981
@@ -47,25 +72,6 @@ class Solution(object):
             if max_result < dp[i]:
                 max_result = dp[i]
         return max_result
-
-# V1''' 
-# https://blog.csdn.net/qqxx6661/article/details/78167981
-class Solution(object):
-    def maxSubArray(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
-        if not nums:
-            return 0
-        current = nums[0]
-        m = current
-        for i in range(1, len(nums)):
-            if current < 0:
-                current = 0
-            current += nums[i]
-            m = max(current, m)
-        return m
 
 # V2 
 # Time:  O(n)
