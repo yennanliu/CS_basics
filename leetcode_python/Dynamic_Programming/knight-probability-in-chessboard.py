@@ -1,7 +1,26 @@
 # V0
+# IDEA : DP
+class Solution(object):
+    def knightProbability(self, N, K, r, c):
+        dp = [[0 for i in range(N)] for j in range(N)]
+        dp[r][c] = 1
+        directions = [(1, 2), (1, -2), (2, 1), (2, -1), (-2, 1), (-2, -1), (-1, 2), (-1, -2)]
+        for k in range(K):
+            new_dp = [[0 for i in range(N)] for j in range(N)]
+            for i in range(N):
+                for j in range(N):
+                    for d in directions:
+                        x, y = i + d[0], j + d[1]
+                        if x < 0 or x >= N or y < 0 or y >= N:
+                            continue
+                        new_dp[i][j] += dp[x][y]
+            dp = new_dp
+        return sum(map(sum, dp)) / float(8 ** K)
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82747623
+# IDEA : DP
+# DP (dp[i][j]) hear means "how many times the horse can get to this place (i,j) in this round"
 class Solution(object):
     def knightProbability(self, N, K, r, c):
         """
