@@ -31,7 +31,9 @@
 	- [visualgo - DFS / BFS](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
 	- [visualgo - linkedlist](https://visualgo.net/en/list) - Linkedlist visualization
 	- [visualgo - BST](https://visualgo.net/bn/bst) - binary search tree visualization
-* [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
+	- [toptal-sorting-algorithms](https://www.toptal.com/developers/sorting-algorithms)- sorting algorithms online 
+* [How to: Work at Google](https://www.youtube.com/
+watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
 
 
 ## Algorithms content
@@ -96,7 +98,7 @@
 ||Linear search|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/linear_search.py) | | | AGAIN| 
 ||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/bfs.js)|`FIND SHORTEST PATH`|| AGAIN***| 
 ||Depth-first search (DFS) |[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dfs.js)| `TO CHECK IF SOMETHING EXIST`| `inorder`, `postorder`, `postorder (can recreate a tree)`| AGAIN***| 
-||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py), [C](https://github.com/yennanliu/CS_basics/blob/master/algorithm/c/bubble_sort.c)| | | OK* (3)|  
+||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/bubble_sort.js) , [C](https://github.com/yennanliu/CS_basics/blob/master/algorithm/c/bubble_sort.c)| | | OK* (3)|  
 ||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)| | | AGAIN***| 
 ||Heap sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/heap_sort.py)| | | AGAIN**| 
