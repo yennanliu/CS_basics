@@ -854,7 +854,7 @@
 | 772 | [Basic Calculator III](https://leetcode.com/problems/basic-calculator-iii/) | Hard | 41.6% | 0.17 |
 | 785 | [Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/) | Medium | 39.9% | 0.352 | AGAIN******** (5)
 | 791 | [Custom Sort String](https://leetcode.com/problems/custom-sort-string/) | Medium | 59.4% | 0.258 | AGAIN***** (3) 
-| 708 | [Insert into a Cyclic Sorted List](https://leetcode.com/problems/insert-into-a-cyclic-sorted-list/) | Medium | 22.7% | 0.058 | AGAIN (not start)
+| 708 | [Insert into a Cyclic Sorted List](https://leetcode.com/problems/insert-into-a-cyclic-sorted-list/) | Medium | 22.7% | 0.058 |  AGAIN**** (3)
 | 824 | [Goat Latin](https://leetcode.com/problems/goat-latin/) | Easy | 54.8% | 0.075 | OK
 | 825 | [Friends Of Appropriate Ages](https://leetcode.com/problems/friends-of-appropriate-ages/) | Medium | 32.1% | 0.222 | AGAIN*** (4)
 | 622 | [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/) | Medium | 36.4% | 0.03 | AGAIN***** (1)
