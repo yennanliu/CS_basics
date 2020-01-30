@@ -104,7 +104,7 @@ watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
 ||Heap sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/heap_sort.py)| | | AGAIN**| 
 ||Merge sort|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py)  | | | OK* (2)| 
 ||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py) | | | AGAIN| 
-||Selection sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py) | | | AGAIN| 
+||Selection sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py), [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/selection_sort.js) | | | AGAIN| 
 ||Topological sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py) | | | AGAIN| 
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
 ||Union Find | [Python union find](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py), [Python union find check cyclic](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find_if_cyclic.py) | | | AGAIN| 
