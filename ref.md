@@ -27,6 +27,9 @@
 - https://www.geeksforgeeks.org/java/
 - https://github.com/cpacm/LeetCode
 
+### what is stability in sorting algorithms and why is it important
+- https://stackoverflow.com/questions/1517793/what-is-stability-in-sorting-algorithms-and-why-is-it-important
+
 #### concept 
 - https://selfboot.cn/2016/07/24/leetcode_guide_why/
 
