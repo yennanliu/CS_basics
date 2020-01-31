@@ -98,13 +98,13 @@
 ||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/bfs.js)|`FIND SHORTEST PATH`|| AGAIN***| 
 ||Depth-first search (DFS) |[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dfs.js)| `TO CHECK IF SOMETHING EXIST`| `inorder`, `postorder`, `postorder (can recreate a tree)`| AGAIN***| 
 ||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/bubble_sort.js) , [C](https://github.com/yennanliu/CS_basics/blob/master/algorithm/c/bubble_sort.c)| | | OK* (3)|  
-||Insertion sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/insertion_sort.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/insertion_sort.js)  | | |AGAIN| 
+||Insertion sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/insertion_sort.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/insertion_sort.js) || work very fast for `nearly sorted` array|AGAIN| 
 ||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)| | | AGAIN***| 
 ||Heap sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/heap_sort.py)| | | AGAIN**| 
-||Merge sort|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py)  | | | OK* (2)| 
+||Merge sort|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/merge_sort.js)  | | | OK* (2)| 
 ||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py) | | | AGAIN| 
-||Selection sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py), [js](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/selection_sort.js) | | | AGAIN| 
+||Selection sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/selection_sort.js) | | | AGAIN| 
 ||Topological sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py) | | | AGAIN| 
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
 ||Union Find | [Python union find](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py), [Python union find check cyclic](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find_if_cyclic.py) | | | AGAIN| 
