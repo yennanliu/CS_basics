@@ -1,4 +1,20 @@
 # V0 
+# IDEA : HASH TABLE + COUNTER UPDATE
+class Solution(object):
+    def leastBricks(self, wall):
+        """
+        :type wall: List[List[int]]
+        :rtype: int
+        """
+        left_counter = collections.Counter()
+        count = 0
+        for row in wall:
+            left = 0
+            for i in range(len(row) - 1):
+                left += row[i]
+                left_counter.update([left])
+                count = max(count, left_counter[left])
+        return len(wall) - count
 
 # V1 
 # http://bookshadow.com/weblog/2017/04/09/leetcode-brick-wall/
