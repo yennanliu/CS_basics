@@ -15,5 +15,14 @@
 - What did you learn at [job x / project y]?
 - What would you have done better at [job x / project y]?
 
+
+## Questions to ask
+
+- What's the biggest mistake you made when joined in first 3 months
+- what do you see the company to go in 3 - 5 - 10 years?
+- Why did you join the company?
+- Do you see ur skills are growing in these years?
+- What's the 1st week at the company like?
+
 ## Ref 
 - https://github.com/jwasham/coding-interview-university
