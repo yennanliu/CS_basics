@@ -1,7 +1,23 @@
 # V0 
+class Solution(object):
+    def change(self, amount, coins):
+        """
+        :type amount: int
+        :type coins: List[int]
+        :rtype: int
+        """
+        dp = [0] * (amount + 1)
+        dp[0] = 1
+        for coin in coins:
+            for i in range(1, amount + 1):
+                if coin <= i:
+                    dp[i] += dp[i - coin]
+        return dp[amount]
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82845212
+# IDEA : DP
+# DP EQUATION : dp[i] += dp[i - coin], when coin <= i 
 class Solution(object):
     def change(self, amount, coins):
         """
