@@ -597,4 +597,46 @@ class Solution(object):
 
 ```
 
+## 6) String
 
+- Tricks
+
+- Algorithm 
+
+- Example 
+
+```python 
+
+# Hackerrank : Find all palindrome substring
+# example : 
+# given string = "aba"
+# return : ['a', 'b', 'aba']
+
+# https://stackoverflow.com/questions/32488872/find-all-combinations-of-palindromic-substrings
+def palindromic_substrings(s):
+    if not s:
+        return [[]]
+    results = []
+    for i in range(len(s), 0, -1):
+        sub = s[:i]
+        if sub == sub[::-1]:
+            for rest in palindromic_substrings(s[i:]):
+                results.append([sub] + rest)
+    return results
+```
+
+```python
+
+# Hackerrank : substring calculator
+# example :
+# data= 'abc'
+# output : 'a', 'b', 'c', 'ab', 'ac', 'bc', 'abc'
+
+# https://stackoverflow.com/questions/43413277/calculating-the-substrings-of-a-string-in-python
+def substring_calculator1(data):
+    from itertools  import combinations
+    for num in range(1,len(data)+1):
+        for i in combinations(data,num):
+            print (''.join(i))
+
+```
