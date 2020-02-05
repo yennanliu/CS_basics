@@ -805,7 +805,7 @@
 | 341 | [Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/) | Medium | 44.4% | 0.043 |  AGAIN** (4)
 | 346 | [Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/) | Easy | 62.2% | 0.089 | AGAIN* (3)
 | 347 | [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) | Medium | 51.0% | 0.024 | OK*
-| 348 | [Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/) | Medium | 46.9% | 0.168 | AGAIN* (not start)
+| 348 | [Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/) | Medium | 46.9% | 0.168 | AGAIN** (3)
 | 349 | [Intersection of Two Arrays](https://leetcode.com/problems/intersection-of-two-arrays/) | Easy | 49.8% | 0.558 | OK
 | 350 | [Intersection of Two Arrays II](https://leetcode.com/problems/intersection-of-two-arrays-ii/) | Easy | 44.8% | 0.231 | OK** (3)
 | 360 | [Sort Transformed Array](https://leetcode.com/problems/sort-transformed-array/) | Medium | 45.5% | 0.067 |  AGAIN*** (3)

@@ -915,7 +915,7 @@
 0146| [LRU Cache](https://leetcode.com/problems/lru-cache/)     | [C++](./C++/lru-cache.cpp) [Python](./Python/lru-cache.py)  | _O(1)_ | _O(k)_ | Hard ||
 0225| [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/)     | [C++](./C++/implement-stack-using-queues.cpp) [Python](./Python/implement-stack-using-queues.py)  | push: _O(n)_, pop: _O(1)_, top: _O(1)_ | _O(n)_ | Easy ||
 0284| [Peeking Iterator](https://leetcode.com/problems/peeking-iterator/)| [C++](./C++/peeking-iterator.cpp) [Python](./Python/peeking-iterator.py) | _O(1)_ | _O(1)_ | Medium ||
-0348| [Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Design/design-tic-tac-toe.py) | _O(1)_ | _O(n^2)_ | Medium |🔒, `fb`| AGAIN* (not start)
+0348| [Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Design/design-tic-tac-toe.py) | _O(1)_ | _O(n^2)_ | Medium |🔒, `fb`|  AGAIN** (3)
 0353| [Design Snake Game](https://leetcode.com/problems/design-snake-game/) | [C++](./C++/design-snake-game.cpp) [Python](./Python/design-snake-game.py) | _O(1)_ | _O(s)_ | Medium |🔒| Deque |
 0355| [Design Twitter](https://leetcode.com/problems/design-twitter/) | [C++](./C++/design-twitter.cpp) [Python](./Python/design-twitter.py) | _O(klogu)_ | _O(t + f)_ | Medium | LintCode | Heap |
 0359| [Logger Rate Limiter](https://leetcode.com/problems/logger-rate-limiter/) | [C++](./C++/logger-rate-limiter.cpp) [Python](./Python/logger-rate-limiter.py) | _O(1), amortized_ | _O(k)_ | Easy |🔒| Deque |
