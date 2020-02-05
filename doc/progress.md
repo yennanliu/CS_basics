@@ -6,6 +6,11 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
+# 2020-02-05
+
+- DOING : `leetcode_company_V2.md` `Not start` go through : 
+	- `# 393 UTF-8 Validation`
+
 # 2019-10-11  
 
 - DOING  : Union find, Graph, Geometry, Simulation 
