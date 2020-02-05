@@ -763,7 +763,7 @@
 | 207 | [Course Schedule](https://leetcode.com/problems/course-schedule/) | Medium | 34.9% | 0.013 | AGAIN****** (5) 
 | 208 | [Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/) | Medium | 33.6% | 0.034 | AGAIN***** (3)
 | 209 | [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/) | Medium | 33.2% | 0.065 | AGAIN****** (3)
-| 210 | [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/) | Medium | 31.7% | 0.043 | AGAIN** (3) (not start)
+| 210 | [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/) | Medium | 31.7% | 0.043 | AGAIN******* (5)
 | 211 | [Add and Search Word - Data structure design](https://leetcode.com/problems/add-and-search-word-data-structure-design/) | Medium | 27.0% | 0.454 | AGAIN*** (not start) (4)
 | 212 | [Word Search II](https://leetcode.com/problems/word-search-ii/) | Hard | 25.9% | 0.024 |
 | 215 | [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | Medium | 42.9% | 0.687 |  OK* 
@@ -1290,7 +1290,7 @@
 | 15 | [3Sum](https://leetcode.com/problems/3sum/) | Medium | 22.1% | 0.04 |
 | 105 | [Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/) | Medium | 36.7% | 0.012 |
 | 49 | [Group Anagrams](https://leetcode.com/problems/group-anagrams/) | Medium | 41.3% | 0.071 |
-| 210 | [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/) | Medium | 31.7% | 0.019 |
+| 210 | [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/) | Medium | 31.7% | 0.019 | 
 | 4 | [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) | Hard | 23.9% | 0.056 |
 | 3 | [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | Medium | 25.0% | 0.019 |
 | 252 | [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | Easy | 49.8% | 0.026 |
