@@ -1,4 +1,22 @@
 # V0 
+class Solution(object):
+    # @param {integer[]} nums
+    # @return {void} Do not return anything, modify nums in-place instead.
+    def nextPermutation(self, num):
+        k, l = -1, 0
+        for i in range(len(num) - 1):
+            if num[i] < num[i + 1]:
+                k = i
+
+        if k == -1:
+            num.reverse()
+            return
+
+        for i in range(k + 1, len(num)):
+            if num[i] > num[k]:
+                l = i
+        num[k], num[l] = num[l], num[k]
+        num[k + 1:] = num[:k:-1] ### dounle check here ###
 
 # V1 
 # https://zxi.mytechroad.com/blog/algorithms/array/leetcode-31-next-permutation/
@@ -40,6 +58,12 @@ class Solution(object):
 
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82113409
+# DMEO
+# STEP 1) given 12431
+# STEP 2) 12 431 (431 is the decreasing substring) (start from the right hand side of orignal list)
+# STEP 3) 12 134 (reverse 431 -> 134)
+# STEP 4) 13 124 (find the 1st elment in 134 that bigger than 2)
+# STEP 5) answer = 13124
 class Solution(object):
     def nextPermutation(self, nums):
         """
@@ -60,6 +84,11 @@ class Solution(object):
     def reverse(self, nums, i, j):
         """
         contains i and j.
+        demo :
+            nums = [1,2,3,4,5,6]
+            i, j = 1,3 
+            r = reverse(nums, i, j)
+            -> r = [1, 4, 3, 2, 5, 6]
         """
         for k in range(i, (i + j) / 2 + 1):
             self.swap(nums, k, i + j - k)
