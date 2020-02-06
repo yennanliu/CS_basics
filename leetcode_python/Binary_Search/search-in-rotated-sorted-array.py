@@ -12,11 +12,13 @@ class Solution(object):
             mid = (left + right) // 2
             if nums[mid] == target:
                 return mid
+            # case 1 :  descending  mid  ascending
             if nums[mid] < nums[right]:
                 if target > nums[mid] and target <= nums[right]: # check the relationship with target, which is different from the default binary search
                     left = mid + 1
                 else:
                     right = mid - 1
+            # case 2 :  ascending  mid  descending  
             else:
                 if target < nums[mid] and target >= nums[left]:  # check the relationship with target, which is different from the default binary search
                     right = mid - 1
