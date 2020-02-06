@@ -1,4 +1,10 @@
 # V0 
+# IDEA : LINKED LIST
+# NOTE : 
+#   1) define 2 node via : n1, n2 = head.next, head.next.next
+#   2) START THE PROCESS FROM "RIGHT HAND SIDE",
+#      i.e. : n1.next = n2.next ( connect n1 to next node) -> connect n2 to n1 (n2.next = n1) -> connect dummy to n2 (head.next = n2)
+#   3) THEN MOVE HEAD FORWARD (head = n1)
 class Solution:
   def swapPairs(self, head):
     if not head or not head.next: return head
