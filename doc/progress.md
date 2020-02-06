@@ -8,8 +8,11 @@
 
 # 2020-02-06
 
-- DOING : `leetcode_company_V2.md` `Not start` go through : 
-	- `# 031 Next Permutation	`
+- OK : leetcode_company_V2.md` `AGAIN *** >= 3` go again`
+
+- DONE : 
+	- `leetcode_company_V2.md` `Not start` go through 
+	- `# 031 Next Permutation`, leetcode_company_V2.md` `Not start` go through`
 
 # 2020-02-05
 
