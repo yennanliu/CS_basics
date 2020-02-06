@@ -14,12 +14,16 @@ class Solution(object):
                 return mid
             # case 1 :  descending  mid  ascending
             if nums[mid] < nums[right]:
+                # mind NOT use (" nums[mid] < target <= nums[right]")
+                # mind the "<="
                 if target > nums[mid] and target <= nums[right]: # check the relationship with target, which is different from the default binary search
                     left = mid + 1
                 else:
                     right = mid - 1
             # case 2 :  ascending  mid  descending  
             else:
+                # # mind NOT use (" nums[left] <= target < nums[mid]")
+                # mind the "<="
                 if target < nums[mid] and target >= nums[left]:  # check the relationship with target, which is different from the default binary search
                     right = mid - 1
                 else:
