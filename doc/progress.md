@@ -9,11 +9,13 @@
 # 2020-02-06
 
 - OK : leetcode_company_V2.md` `AGAIN *** >= 3` go again`
+- DOING :
 
 - DONE : 
 	- `leetcode_company_V2.md` `Not start` go through 
 	- `# 031 Next Permutation`, leetcode_company_V2.md` `Not start` go through`
-
+	- `# 33 Search in Rotated Sorted Array`
+	
 # 2020-02-05
 
 - DOING : `leetcode_company_V2.md` `Not start` go through : 
