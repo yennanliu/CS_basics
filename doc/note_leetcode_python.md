@@ -627,7 +627,7 @@ def palindromic_substrings(s):
 
 ```python
 
-# Hackerrank : substring Calculator
+# Hackerrank : Substring Calculator
 # example :
 # data= 'abc'
 # output : 'a', 'b', 'c', 'ab', 'ac', 'bc', 'abc'
