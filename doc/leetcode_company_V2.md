@@ -751,7 +751,7 @@
 | 151 | [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/) | Medium | 15.7% | 0.025 | AGAIN*
 | 157 | [Read N Characters Given Read4](https://leetcode.com/problems/read-n-characters-given-read4/) | Easy | 28.2% | 0.036 |  AGAIN**** (2)
 | 158 | [Read N Characters Given Read4 II - Call multiple times](https://leetcode.com/problems/read-n-characters-given-read4-ii-call-multiple-times/) | Hard | 24.3% | 0.966 |
-| 160 | [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/) | Easy | 30.7% | 0.009 |  AGAIN*** (3)
+| 160 | [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/) | Easy | 30.7% | 0.009 |  OK*** (4)
 | 161 | [One Edit Distance](https://leetcode.com/problems/one-edit-distance/) | Medium | 31.3% | 0.086 | AGAIN**** (3)
 | 162 | [Find Peak Element](https://leetcode.com/problems/find-peak-element/) | Medium | 39.7% | 0.047 |  AGAIN***  (3)
 | 170 | [Two Sum III - Data structure design](https://leetcode.com/problems/two-sum-iii-data-structure-design/) | Easy | 27.8% | 0.043 | OK*** (4) 
@@ -768,7 +768,7 @@
 | 212 | [Word Search II](https://leetcode.com/problems/word-search-ii/) | Hard | 25.9% | 0.024 |
 | 215 | [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | Medium | 42.9% | 0.687 |  OK* 
 | 227 | [Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/) | Medium | 31.1% | 0.365 | AGAIN****** (3)
-| 236 | [Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/) | Medium | 32.0% | 0.417 | AGAIN******* (4)
+| 236 | [Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/) | Medium | 32.0% | 0.417 | AGAIN********* (5)
 | 238 | [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/) | Medium | 51.7% | 0.419 | AGAIN***** (3)
 | 239 | [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) | Hard | 35.4% | 0.039 |
 | 242 | [Valid Anagram](https://leetcode.com/problems/valid-anagram/) | Easy | 48.9% | 0.01 | OK
