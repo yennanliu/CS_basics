@@ -1,5 +1,32 @@
 # V0 
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+        pointer = root
+        while pointer:
+            if p.val > pointer.val and q.val > pointer.val:
+                pointer = pointer.right
+            elif p.val < pointer.val and q.val < pointer.val:
+                pointer = pointer.left
+            else:
+                return pointer
 
+# V0'
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        if not root or root == q or root == p:
+            return root
+        if p.val < root.val and q.val < root.val:
+            return  self.lowestCommonAncestor(root.left, p, q)
+        elif p.val > root.val and q.val > root.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        return root 
+        
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51498796
 # Definition for a binary tree node.
@@ -24,7 +51,7 @@ class Solution(object):
                 pointer = pointer.left
             else:
                 return pointer
-
+                
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/51498796
 class Solution(object):
