@@ -13,6 +13,7 @@
 - DONE : 
 	- `leetcode_company_V2.md` `Not start` go through
 	- `# 259 3Sum Smaller`
+	- `# 015 3Sum`
 
 # 2020-02-11
 
