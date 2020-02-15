@@ -13,6 +13,8 @@
 - DONE : 
 	- `leetcode_company_V2.md` `Not start` go through
 	- `# 270 Closest Binary Search Tree Value`
+	- `# 277 Find the Celebrity`
+	- `# 286 Walls and Gates`
 
 # 2020-02-14
 

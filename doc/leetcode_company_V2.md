@@ -783,13 +783,13 @@
 | 269 | [Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) | Hard | 27.6% | 0.337 |
 | 270 | [Closest Binary Search Tree Value](https://leetcode.com/problems/closest-binary-search-tree-value/) | Easy | 41.7% | 0.062 |  OK***** (4)
 | 273 | [Integer to English Words](https://leetcode.com/problems/integer-to-english-words/) | Hard | 23.1% | 2.527 |
-| 277 | [Find the Celebrity](https://leetcode.com/problems/find-the-celebrity/) | Medium | 35.2% | 0.529 | AGAIN****** (3)
+| 277 | [Find the Celebrity](https://leetcode.com/problems/find-the-celebrity/) | Medium | 35.2% | 0.529 | OK****** (4)
 | 278 | [First Bad Version](https://leetcode.com/problems/first-bad-version/) | Easy | 27.1% | 0.541 | OK**** (3)
 | 280 | [Wiggle Sort](https://leetcode.com/problems/wiggle-sort/) | Medium | 59.4% | 0.032 |  OK*** (3) 
 | 281 | [Zigzag Iterator](https://leetcode.com/problems/zigzag-iterator/) | Medium | 54.0% | 0.052 | OK*** (3)
 | 282 | [Expression Add Operators](https://leetcode.com/problems/expression-add-operators/) | Hard | 31.1% | 0.264 |
 | 283 | [Move Zeroes](https://leetcode.com/problems/move-zeroes/) | Easy | 52.4% | 0.422 | AGAIN* (3)
-| 286 | [Walls and Gates](https://leetcode.com/problems/walls-and-gates/) | Medium | 46.5% | 0.091 | AGAIN****** (4)
+| 286 | [Walls and Gates](https://leetcode.com/problems/walls-and-gates/) | Medium | 46.5% | 0.091 | AGAIN****** (5)
 | 295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | Hard | 31.7% | 0.023 |
 | 297 | [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | Hard | 36.7% | 0.778 |
 | 300 | [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) | Medium | 39.3% | 0.066 | AGAIN****** (3)
