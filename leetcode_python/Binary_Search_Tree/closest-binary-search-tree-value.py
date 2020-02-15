@@ -8,6 +8,27 @@ class Solution(object):
         b = self.closestValue(kid, target)
         return min((b, a), key=lambda x: abs(target - x))
 
+# V0'
+# IDEA : BST property + tree traversal
+class Solution(object):
+    def closestValue(self, root, target):
+        gap = abs(root.val - target)
+        ans = root
+        while root is not None:
+            if root.val == target:
+                return root.val
+            elif target < root.val:
+                if abs(root.val - target) < gap:
+                    ans = root
+                    gap = abs(root.val - target)
+                root = root.left
+            else:
+                if abs(root.val - target) < gap:
+                    ans = root
+                    gap = abs(root.val - target)
+                root = root.right
+        return ans.val
+
 # V1 
 # http://www.voidcn.com/article/p-phbluudb-qp.html
 # Definition for a binary tree node.

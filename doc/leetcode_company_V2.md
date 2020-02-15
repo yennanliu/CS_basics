@@ -781,7 +781,7 @@
 | 260 | [Single Number III](https://leetcode.com/problems/single-number-iii/) | Medium | 54.5% | 0.039 |
 | 261 | [Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/) | Medium | 38.8% | 0.038 | AGAIN********* (6)
 | 269 | [Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) | Hard | 27.6% | 0.337 |
-| 270 | [Closest Binary Search Tree Value](https://leetcode.com/problems/closest-binary-search-tree-value/) | Easy | 41.7% | 0.062 |  AGAIN***** (3)
+| 270 | [Closest Binary Search Tree Value](https://leetcode.com/problems/closest-binary-search-tree-value/) | Easy | 41.7% | 0.062 |  OK***** (4)
 | 273 | [Integer to English Words](https://leetcode.com/problems/integer-to-english-words/) | Hard | 23.1% | 2.527 |
 | 277 | [Find the Celebrity](https://leetcode.com/problems/find-the-celebrity/) | Medium | 35.2% | 0.529 | AGAIN****** (3)
 | 278 | [First Bad Version](https://leetcode.com/problems/first-bad-version/) | Easy | 27.1% | 0.541 | OK**** (3)
