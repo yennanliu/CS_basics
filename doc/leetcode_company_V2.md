@@ -794,7 +794,7 @@
 | 297 | [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | Hard | 36.7% | 0.778 |
 | 300 | [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) | Medium | 39.3% | 0.066 | AGAIN****** (4)
 | 301 | [Remove Invalid Parentheses](https://leetcode.com/problems/remove-invalid-parentheses/) | Hard | 36.5% | 2.373 |
-| 304 | [Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable/) | Medium | 28.9% | 0.257 |  AGAIN***** (4)
+| 304 | [Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable/) | Medium | 28.9% | 0.257 |  AGAIN******* (5)
 | 305 | [Number of Islands II](https://leetcode.com/problems/number-of-islands-ii/) | Hard | 40.2% | 0.101 |
 | 314 | [Binary Tree Vertical Order Traversal](https://leetcode.com/problems/binary-tree-vertical-order-traversal/) | Medium | 38.7% | 0.197 | AGAIN**** (4)
 | 317 | [Shortest Distance from All Buildings](https://leetcode.com/problems/shortest-distance-from-all-buildings/) | Hard | 35.3% | 0.255 |

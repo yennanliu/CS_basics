@@ -1,4 +1,7 @@
 # V0 
+# IDEA : DP 
+# DP equation : dp[i][j]=dp[i][j−1]+dp[i][j−1]−dp[i][j]+a[i][j]
+# dp[i][j]  :  sum of sub-matrix (0,0)(0,0) to (i,j)(i,j)
 class NumMatrix(object):
     # @param {int[][]} matrix a 2D matrix
     def __init__(self, matrix):
@@ -7,14 +10,14 @@ class NumMatrix(object):
             return        
         n = len(matrix)
         m = len(matrix[0])
-        
         self.dp  = [[0] * (m + 1) for _ in range(n + 1)]
         for r in range(n):
             for c in range(m):
-                self.dp[r + 1][c + 1] = self.dp[r + 1][c] + self.dp[r][c + 1] + \
-                    matrix[r][c] - self.dp[r][c]     
+                ### trick : pay attention 
+                self.dp[r + 1][c + 1] = self.dp[r + 1][c] + self.dp[r][c + 1] + matrix[r][c] - self.dp[r][c]     
+    
     def sumRegion(self, row1, col1, row2, col2):
-
+        
         return self.dp[row2 + 1][col2 + 1] - self.dp[row1][col2 + 1] - \
             self.dp[row2 + 1][col1] + self.dp[row1][col1]
 
@@ -59,6 +62,7 @@ class NumMatrix(object):
 # https://www.jiuzhang.com/solution/range-sum-query-2d-immutable/#tag-highlight-lang-python
 # IDEA : DP 
 # DP equation : dp[i][j]=dp[i][j−1]+dp[i][j−1]−dp[i][j]+a[i][j]
+# dp[i][j]  :  sum of sub-matrix (0,0)(0,0)  to (i,j)(i,j)
 class NumMatrix(object):
     # @param {int[][]} matrix a 2D matrix
     def __init__(self, matrix):
