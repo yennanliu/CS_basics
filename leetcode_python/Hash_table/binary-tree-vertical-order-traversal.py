@@ -79,6 +79,26 @@ class Solution(object):
                 q.append((tmp[0].right, tmp[0] +1))
         return r
 
+# V0''
+# IDEA : BFS + collections.defaultdict(list)
+import collections
+class Solution(object):
+    def verticalOrder(self, root):
+        if not root: return []
+        cols = collections.defaultdict(list)
+        q = [(root, 0)]
+        while q:
+            for node, col in q:
+                cols[col].append(node.val)
+            new_q = []
+            for node, col in q:
+                if node.left:
+                    new_q.append((node.left, col-1))
+                if node.right:
+                    new_q.append((node.right, col+1))
+            q = new_q          
+        return [cols[c] for c in sorted(cols.keys())]
+
 # V1 
 # https://blog.csdn.net/qq508618087/article/details/50760661
 # https://blog.csdn.net/danspace1/article/details/86654851

@@ -14,6 +14,7 @@
 	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
 	- `# 300 Longest Increasing Subsequence`
 	- `# 304 Range Sum Query 2D - Immutable`
+	- `# 314 Binary Tree Vertical Order Traversal`
 
 # 2020-02-15
 
