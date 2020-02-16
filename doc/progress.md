@@ -6,12 +6,20 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
+# 2020-02-16
+
+- DOING :
+
+- DONE : 
+	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
+	- `# 300 Longest Increasing Subsequence`
+
 # 2020-02-15
 
 - DOING :
 
 - DONE : 
-	- `leetcode_company_V2.md` `Not start` go through
+	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
 	- `# 270 Closest Binary Search Tree Value`
 	- `# 277 Find the Celebrity`
 	- `# 286 Walls and Gates`

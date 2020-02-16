@@ -792,7 +792,7 @@
 | 286 | [Walls and Gates](https://leetcode.com/problems/walls-and-gates/) | Medium | 46.5% | 0.091 | AGAIN****** (5)
 | 295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | Hard | 31.7% | 0.023 |
 | 297 | [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | Hard | 36.7% | 0.778 |
-| 300 | [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) | Medium | 39.3% | 0.066 | AGAIN****** (3)
+| 300 | [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) | Medium | 39.3% | 0.066 | AGAIN****** (4)
 | 301 | [Remove Invalid Parentheses](https://leetcode.com/problems/remove-invalid-parentheses/) | Hard | 36.5% | 2.373 |
 | 304 | [Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable/) | Medium | 28.9% | 0.257 |  AGAIN***** (4)
 | 305 | [Number of Islands II](https://leetcode.com/problems/number-of-islands-ii/) | Hard | 40.2% | 0.101 |

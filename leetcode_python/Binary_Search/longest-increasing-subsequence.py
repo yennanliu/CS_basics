@@ -1,4 +1,21 @@
 # V0
+# IDEA : DP 
+# time complexity : O(n^2), space complexity : O(n)
+class Solution:
+    def lengthOfLIS(self, nums):
+        # write your code here
+        if nums is None or not nums:
+            return 0
+        dp = [1] * len(nums)
+        for i in range(len(nums)):
+            for j in range(i):
+                if nums[i] > nums[j]:
+                    dp[i] = max(dp[i], dp[j]+1)
+        return max(dp)
+
+# V0'
+# IDEA : DP 
+# time complexity : O(n^2), space complexity : O(n)
 class Solution(object):
     def lengthOfLIS(self, nums):
         """
@@ -57,7 +74,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/longest-increasing-subsequence/#tag-highlight-lang-python
-# IDEA : DP
+# IDEA : DP + binary search
+# time complexity : O(nlogn), space complexity : O(n)
 class Solution:
     """
     @param nums: The integer array
