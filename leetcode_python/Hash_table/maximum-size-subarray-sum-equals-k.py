@@ -1,5 +1,6 @@
 # V0 
-# IDEA :
+# time complexity : O(N) | space complexity : O(N)
+# IDEA : HASH TBALE
 # -> have a var acc keep sum of all item in nums,
 # -> and use dic collect acc and its index
 # -> since we want to find nums[i:j] = k  -> so it's a 2 sum problem now
@@ -18,9 +19,23 @@ class Solution(object):
             acc += nums[i]
             if acc not in dic:
                 dic[acc] = i
+            ### acc - x = k -> so x = acc - k, that's why we check if acc - x in the dic or not
             if acc - k in dic:
                 result = max(result, i - dic[acc-k])
         return result
+
+# V0'
+# IDEA : BRUTE FORCE 
+# time complexity : O(N^2) | space complexity : O(N)
+class Solution(object):
+    def maxSubArrayLen(self, nums, k):
+        # O(n^2)
+        tmp = []
+        for i in range(len(nums)):
+            for j in range(i, len(nums)):
+                if sum(nums[i:j]) == k:
+                    tmp.append(j-i)
+        return 0 if len(tmp) == 0 else max(tmp)
 
 # V1 
 # http://www.voidcn.com/article/p-pbvzylrp-qp.html
@@ -70,7 +85,7 @@ class Solution:
             if sum[i] + k not in m:
                 m[sum[i] + k] = i
         return ans
-
+        
 # V2 
 # Time:  O(n)
 # Space: O(n)
