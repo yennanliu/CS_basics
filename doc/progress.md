@@ -9,6 +9,8 @@
 # 2020-02-17
 
 - DOING :
+	- `Bit Manipulation`
+	- `# 371 Sum of Two Integers`
 
 - DONE : 
 	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
