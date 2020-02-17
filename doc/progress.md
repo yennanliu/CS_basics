@@ -6,6 +6,14 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
+# 2020-02-17
+
+- DOING :
+
+- DONE : 
+	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
+	- `# 325 Maximum Size Subarray Sum Equals k`
+
 # 2020-02-16
 
 - DOING :
