@@ -1,6 +1,6 @@
 ## Bit Manipulation 
 
-| Operator | Use| Explanation | Example | Status|
+| Operator | Use Case | Explanation | Example | Status|
 | --- | ----- | -------- | ---- | ----- |
 |*AND*| `a & b`| if a == b == 1, then a & b = 1, otherwise = 0| `1 & 1 = 1`, `1 & 0 = 0`,`0 & 1 = 0`, `0 & 0 = 0 `| OK | 
 

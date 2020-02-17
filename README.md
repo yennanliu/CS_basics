@@ -33,7 +33,7 @@
 	- [visualgo - BST](https://visualgo.net/bn/bst) - binary search tree visualization
 	- [toptal-sorting-algorithms](https://www.toptal.com/developers/sorting-algorithms)- sorting algorithms online 
 * [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
-* [bit_manipulation.md](https://github.com/yennanliu/CS_basics/blob/master/bit_manipulation.md) - Bit Manipulation Cheet Sheet
+* [bit_manipulation.md](https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md) - Bit Manipulation Cheet Sheet
 
 
 ## Algorithms content
