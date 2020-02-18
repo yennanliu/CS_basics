@@ -18,9 +18,13 @@
 - `15 ^ 9 = 6`  (1111 ^ 1001 = 0110) (bin(15) = 1111, bin(9) = 1001)
 - `9 << 2 = 36` ( bin(9) = 1001, left shift 2 times -> 100100 ->  int('100100', 2) = 36)
 - `9 >> 2 = 2` ( bin(9) = 1001, right shift 2 times -> 10 ->  int('10', 2) = 2)
-- `-9 >> 2 = -3` 
+- `-9 >> 2 = -3`  
 - `19 >>> 2 = 4` ( bin(19) = 10001, right shift 2 times -> 100 -> add `0` make the length same as origin -> 00100 -> bin('100',2 )= 4)
+- Minus : `0 -> 1`, `0 -> 1` then `add 1`
+- `- (9)` : - (1001) -> (0110) + 1  -> `0111`
+- `- (38)`  : - (00100110) -> (11011001) + 1 -> `11011010`
 
 
 ## Ref 
 - https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Obsolete_Pages/Obsolete_Pages/Obsolete_Pages/%E9%81%8B%E7%AE%97%E5%AD%90/%E4%BD%8D%E5%85%83%E9%81%8B%E7%AE%97%E5%AD%90
+- http://140.129.118.16/~richwang/99-2-Courses/About_C_BitOperation.pdf
