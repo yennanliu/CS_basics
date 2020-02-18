@@ -3,7 +3,7 @@
 | Operator | Use Case | Explanation | Example | Status|
 | --- | ----- | -------- | ---- | ----- |
 |*AND*| `a & b`| if a == b == 1, then a & b = 1, otherwise = 0| `1 & 1 = 1`, `1 & 0 = 0`,`0 & 1 = 0`, `0 & 0 = 0 `| OK | 
-|*OR*| <code>`a | b`</code>| if a == 1 or b == 1, then `a | b = 1`, otherwise = 0| `1 | 1 = 1`, `1 | 0 = 1`,`0 & 1 = 1`, `0 & 0 = 0 `| OK | 
+|*OR*| `a \| b`| if a == 1 or b == 1, then `a | b = 1`, otherwise = 0| `1 | 1 = 1`, `1 | 0 = 1`,`0 & 1 = 1`, `0 & 0 = 0 `| OK | 
 |*XOR*| `a ^ b`| if a == 1 or b == 1, then a ^ b = 0, otherwise = 0| `1 ^ 1 = 0`, `1 ^ 0 = 1`,`0 ^ 1 = 1`, `0 ^ 0 = 0`| OK | 
 |*NOT*| `- a`| inverse || AGAIN | 
 |*LEFT MOVE*| `a << b`| `left shift` a ( in binary) b times |`9 << 2 = 36`| OK |
