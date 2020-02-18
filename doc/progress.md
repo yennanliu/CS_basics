@@ -16,7 +16,7 @@
 - DONE : 
 	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
 	- `# 395 Longest Substring with At Least K Repeating Characters`
-
+	- `# 399 Evaluate Division`
 # 2020-02-17
 
 - DOING :
