@@ -66,6 +66,7 @@ The substring with start index = 2 is "ab", which is an anagram of "ab".
 # The substring with start index = 2 is "ab", which is an anagram of "ab".
 
 # V0
+# IDEA : SLIDING WINDOW + collections.Counter()
 class Solution(object):
     def findAnagrams(self, s, p):
         """
@@ -81,6 +82,7 @@ class Solution(object):
             cs[s[i]] += 1
             if i >= lp:
                 cs[s[i - lp]] -= 1
+                ### BE AWARE OF IT
                 if cs[s[i - lp]] == 0:
                     del cs[s[i - lp]]
             if cs == cp:
