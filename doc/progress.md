@@ -6,6 +6,16 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
+# 2020-02-19
+
+- DOING :
+	- `Bit Manipulation`
+	- `Recursion`
+	-  tricks deal with `string` : `dp`, `two pointers`, `recursion` (?)
+
+- DONE : 
+	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
+	- `# 438 Find All Anagrams in a String`
 
 # 2020-02-18
 
@@ -17,6 +27,7 @@
 	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
 	- `# 395 Longest Substring with At Least K Repeating Characters`
 	- `# 399 Evaluate Division`
+
 # 2020-02-17
 
 - DOING :
