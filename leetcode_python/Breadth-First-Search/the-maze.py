@@ -1,4 +1,31 @@
-# V0 
+# V0
+# IDEA : DFS 
+class Solution(object):
+    def hasPath(self, maze, start, destination):
+
+        def dfs(x, y):
+            # return if the ball can stop at destination if starting at (x, y)
+            if [x,y] == destination:
+                return True
+            ### beware of this 
+            if (x, y) in visited:
+                return False
+            visited.add((x, y))
+            ### beware of this  : for -> while
+            for dx, dy in [(-1,0),(1,0),(0,-1),(0,1)]:
+                new_x, new_y = x, y
+                # the ball rolls until hitting a wall
+                while 0 <= new_x+dx < row and 0 <= new_y+dy < col and maze[new_x+dx][new_y+dy] == 0:  ### beware of this 
+                    new_x += dx
+                    new_y += dy
+                if dfs(new_x, new_y):
+                    ### beware of this 
+                    return True
+            return False
+        
+        row, col = len(maze), len(maze[0])
+        visited = set()
+        return dfs(start[0], start[1])
 
 # V1 
 # https://blog.csdn.net/danspace1/article/details/88773383
