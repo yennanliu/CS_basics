@@ -76,6 +76,39 @@ class Solution(object):
         return bmap[hole][1] if hole in bmap else 'impossible'
 
 # V1''
+# https://leetcode.com/articles/the-maze-ii/?page=4
+# IDEA : DFS
+# JAVA 
+# public class Solution {
+#     public int shortestDistance(int[][] maze, int[] start, int[] dest) {
+#         int[][] distance = new int[maze.length][maze[0].length];
+#         for (int[] row: distance)
+#             Arrays.fill(row, Integer.MAX_VALUE);
+#         distance[start[0]][start[1]] = 0;
+#         dfs(maze, start, distance);
+#         return distance[dest[0]][dest[1]] == Integer.MAX_VALUE ? -1 : distance[dest[0]][dest[1]];
+#     }
+#
+#     public void dfs(int[][] maze, int[] start, int[][] distance) {
+#         int[][] dirs={{0,1}, {0,-1}, {-1,0}, {1,0}};
+#         for (int[] dir: dirs) {
+#             int x = start[0] + dir[0];
+#             int y = start[1] + dir[1];
+#             int count = 0;
+#             while (x >= 0 && y >= 0 && x < maze.length && y < maze[0].length && maze[x][y] == 0) {
+#                 x += dir[0];
+#                 y += dir[1];
+#                 count++;
+#             }
+#             if (distance[start[0]][start[1]] + count < distance[x - dir[0]][y - dir[1]]) {
+#                 distance[x - dir[0]][y - dir[1]] = distance[start[0]][start[1]] + count;
+#                 dfs(maze, new int[]{x - dir[0],y - dir[1]}, distance);
+#             }
+#         }
+#     }
+# }
+
+# V1'''
 # http://bookshadow.com/weblog/2017/01/29/leetcode-the-maze-ii/
 # IDEA : Dijkstra ALGORITHM
 import collections
@@ -118,7 +151,7 @@ class Solution(object):
                     bmap[np] = (ndist, npath, np)
         return 'impossible'
         
-# V1'''
+# V1''''
 # https://www.jiuzhang.com/solution/the-maze-ii/#tag-other-lang-python
 # IDEA : BFS 
 import collections
@@ -155,6 +188,41 @@ def shortestDistance(self, maze, start, destination):
         if result==float('inf'):
             return -1
         return result
+
+# V1'''''
+# IDEA : DFS
+# JAVA
+# class Solution {
+# public:
+#     vector<vector<int>> dirs{{0,-1},{-1,0},{0,1},{1,0}};
+#     int shortestDistance(vector<vector<int>>& maze, vector<int>& start, vector<int>& destination) {
+#         int m = maze.size(), n = maze[0].size();
+#         vector<vector<int>> dists(m, vector<int>(n, INT_MAX));
+#         dists[start[0]][start[1]] = 0;
+#         helper(maze, start[0], start[1], destination, dists);
+#         int res = dists[destination[0]][destination[1]];
+#         return (res == INT_MAX) ? -1 : res;
+#     }
+#     void helper(vector<vector<int>>& maze, int i, int j, vector<int>& destination, vector<vector<int>>& dists) {
+#         if (i == destination[0] && j == destination[1]) return;
+#         int m = maze.size(), n = maze[0].size();
+#         for (auto d : dirs) {
+#             int x = i, y = j, dist = dists[x][y];
+#             while (x >= 0 && x < m && y >= 0 && y < n && maze[x][y] == 0) {
+#                 x += d[0];
+#                 y += d[1];
+#                 ++dist;
+#             }
+#             x -= d[0];
+#             y -= d[1];
+#             --dist;
+#             if (dists[x][y] > dist) {
+#                 dists[x][y] = dist;
+#                 helper(maze, x, y, destination, dists);
+#             }
+#         }
+#     }
+# };
 
 # V2 
 # Time:  O(max(r, c) * wlogw)
