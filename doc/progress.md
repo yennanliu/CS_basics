@@ -17,6 +17,7 @@
 	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
 	- `# 490 The Maze`
 	- `# 491 Increasing Subsequences`
+	- `# 505 The Maze II`
 
 # 2020-02-19
 
