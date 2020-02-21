@@ -1,4 +1,6 @@
 # V0 
+# IDEA : DP
+# DP EQUATION : dp[i] += dp[i - coin]
 class Solution(object):
     def change(self, amount, coins):
         """
@@ -6,11 +8,14 @@ class Solution(object):
         :type coins: List[int]
         :rtype: int
         """
+        # beware of it : e.g.  dp[3] needs to have [0,1,2,3], so length needs to be (amount + 1) 
         dp = [0] * (amount + 1)
         dp[0] = 1
         for coin in coins:
             for i in range(1, amount + 1):
+                # beware of it 
                 if coin <= i:
+                    # beware of it 
                     dp[i] += dp[i - coin]
         return dp[amount]
 
