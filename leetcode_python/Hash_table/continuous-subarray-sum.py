@@ -1,4 +1,16 @@
 # V0 
+# IDEA : HASH TABLE
+# DEMO
+#    ...: nums = [23,2,4,6,7]
+#    ...: k = 6 
+#    ...: s = Solution()
+#    ...: r = s.checkSubarraySum(nums,k)
+#    ...: print (r)
+#    ...: 
+# num  =  23 lookup : {0: -1}
+# num  =  2 lookup : {0: -1, 5: 0}
+# num  =  4 lookup : {0: -1, 5: 0, 1: 1}
+# True
 class Solution(object):
     def checkSubarraySum(self, nums, k):
         """
@@ -11,8 +23,15 @@ class Solution(object):
         for i, num in enumerate(nums):
             count += num                   # keep adding num up  (as count)
             if k:
+                # beware of it
                 count %= k                 # get mode of count by k, since it's as same as num when check if it's k's multiplier
+            """
+            ###  beware of it 
+            via the "count in lookup" trick, we can compare with the 
+            "whole sub-array sum with different start point" in the array 
+            """
             if count in lookup:
+                # beware of it
                 if i - lookup[count] > 1:  # if there is any element in the nums that can sum up as k's multiplier and the length of this sub array is at least 2 (>1)
                     return True
             else:
@@ -83,5 +102,4 @@ class Solution(object):
                     return True
             else:
                 lookup[count] = i
-
         return False
