@@ -210,9 +210,32 @@ rdd.groupByKey().mapValue(_.sum)
 
 ```
 
+34. Explain `job`, `stage` , `task`? 
+
+- `task -> stage -> job`
+
+- Job 
+	- A Job is a `sequence of Stages`, triggered by an `Action` such as .count(), foreachRdd(), collect(), read() or write().
+
+- Stage 
+	- A Stage is a sequence of `Tasks` that can all be run together, `without a shuffle`.
+	- e.g. : using .read to read a file from disk, then runnning .map and .filter can all be done `without a shuffle`, so it can fit in a `single` stage.
+
+- Task 
+	- A Task is a single operation `(.map or .filter)` happening on a specific RDD partition.
+	- Each Task is executed as a single thread in an Executor
+	- If your dataset has 2 Partitions, an operation such as a filter() will trigger 2 Tasks, one for each Partition.
+
+- http://queirozf.com/entries/spark-concepts-overview-clusters-jobs-stages-tasks-etc#stage-vs-task
+
+35. Explain `shuffle`?
+
+- A Shuffle refers to an operation where data is `re-partitioned` across a Cluster.
+- `join` and `any operation that ends with ByKey` will trigger a Shuffle.
+- It is a `costly` operation because a lot of data can be sent via the network.
+
+
 ## Ref 
 - https://www.edureka.co/blog/interview-questions/top-apache-spark-interview-questions-2016/
 - https://data-flair.training/blogs/spark-rdd-operations-transformations-actions/
 - https://zhuanlan.zhihu.com/p/47499258
-
-
