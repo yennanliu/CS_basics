@@ -56,6 +56,11 @@
 
 3. What's RDD, HDFS ?
 
+- RDD 
+	- Resilient -- if data is lost, data can be recreated
+	- Distributed -- stored in nodes among the cluster
+	- Dataset -- initial data comes from some distributed storage
+
 - Resilient Distributed Datasets (RDD) is a simple and immutable distributed collection of objects. Each RDD is split into multiple partitions which may be computed on different nodes of the cluster. In Spark, every function is performed on RDDs only.
 
 - Spark revolves around the concept of a resilient distributed dataset (RDD), which is a fault-tolerant collection of elements that can be operated on in parallel.
@@ -91,17 +96,22 @@
 
 	- Driver 
 		- The program that runs on the master node of the machine and declares transformations and actions on data RDDs. In simple terms, a driver in Spark creates `SparkContext`, connected to a given Spark Master. The driver also delivers the RDD graphs to Master, where the standalone cluster manager runs.
+		- The Driver is one of the nodes in the Cluster.
+		- The driver does not run computations (filter,map, reduce, etc).
+		- It plays the role of a master node in the Spark cluster.
+		- When you call collect() on an RDD or Dataset, the` whole data` is sent to the `Driver`. This is why you should be careful when calling collect().
 
 	- Master
 		- Master node is responsible for task scheduling and resource dispensation.
 
 	- Worker  
 		- `Worker node refers to any node that can run the application code in a cluster`. The driver program must listen for and accept incoming connections from its executors and must be network addressable from the worker nodes. 
-
 		- Worker node is basically the `slave node`. Master node assigns work and worker node actually performs the assigned tasks. `Worker nodes process the data stored on the node and report the resources to the master`. Based on the resource availability, the master schedule tasks.
 
 	- Executor 
 		- When SparkContext connects to a cluster manager, it acquires an Executor on nodes in the cluster. Executors are Spark processes that run computations and store the data on the worker node. The final tasks by SparkContext are transferred to executors for their execution.
+		- Executors are JVMs that run on Worker nodes. 
+		- These are the JVMs that actually run Tasks on data Partitions.
 
 	- Cluster 
 		- A Cluster is a group of JVMs (nodes) connected by the network, each of which runs Spark, either in Driver or Worker roles.
@@ -144,12 +154,15 @@
 
 - Polyglot 
 - Lazy Evaluation
+	- Each RDD have access to it's parent RDD
+	- NULL is the value of parent for first RDD
+	- Before computing it's value, it always computes it's parent
 	- Spark will not execute the task untill there is a `Actions` operation 
 	- there 2 types of RDD operation in spark : 
 		- Transformations
-			- map, filter, flatmap...
+			- map, groupby, union, filter, flatmap...
 		- Actions
-			- count, collect, show, save...
+			- reduce, count, collect, show, saveAsTextFile...
 
 18'. types of Transformations?
 - Narrow transformation 
@@ -253,6 +266,20 @@ rdd.groupByKey().mapValue(_.sum)
 - A Shuffle refers to an operation where data is `re-partitioned` across a Cluster.
 - `join` and `any operation that ends with ByKey` will trigger a Shuffle.
 - It is a `costly` operation because a lot of data can be sent via the network.
+
+36. Explain `partition`, and its relation to RDD?
+- `partition -> RDD`
+- A Partition is a logical chunk of your RDD/Dataset
+- Data is split into Partitions so that each Executor can operate on a single part, enabling parallelization.
+- It can be processed by a single Executor core.
+- e.g.: If you have 4 data partitions and you have 4 executor cores, you can process everything in parallel, in a single pass.
+
+37. Explain spark `cache`?
+- cache internally uses persist API
+- persist sets a specific storage level for a given RDD
+- Spark context tracks persistent RDD
+- When first evaluates, partition will be put into memory by block manager
+
 
 
 ## Ref 
