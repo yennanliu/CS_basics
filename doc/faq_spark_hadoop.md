@@ -103,6 +103,9 @@
 	- Executor 
 		- When SparkContext connects to a cluster manager, it acquires an Executor on nodes in the cluster. Executors are Spark processes that run computations and store the data on the worker node. The final tasks by SparkContext are transferred to executors for their execution.
 
+	- Cluster 
+		- A Cluster is a group of JVMs (nodes) connected by the network, each of which runs Spark, either in Driver or Worker roles.
+
 5. Explain how to deal with `Spark data skew` problems ? ***
 
 6. How do if one of the spark node failed because of overloading ?
@@ -138,6 +141,23 @@
 17. How does `spark-submit` import external `jars`  
 
 18. Explain spark Polyglot, Lazy Evaluation ?
+
+- Polyglot 
+- Lazy Evaluation
+	- Spark will not execute the task untill there is a `Actions` operation 
+	- there 2 types of RDD operation in spark : 
+		- Transformations
+			- map, filter, flatmap...
+		- Actions
+			- count, collect, show, save...
+
+18'. types of Transformations?
+- Narrow transformation 
+	- all the elements that are required to compute the records in `single partition` live in the single partition of parent RDD
+	- `map`, `filter`
+- Wide transformation 
+	- In wide transformation, all the elements that are required to compute the records in the single partition may live in `many partitions` of parent RDD
+	- `groupbyKey`, `reducebykey`
 
 19. Is there any benefit of learning MapReduce if Spark is better than MapReduce?
 
@@ -215,7 +235,7 @@ rdd.groupByKey().mapValue(_.sum)
 - `task -> stage -> job`
 
 - Job 
-	- A Job is a `sequence of Stages`, triggered by an `Action` such as .count(), foreachRdd(), collect(), read() or write().
+	- A Job is a sequence of `Stages`, triggered by an `Action` such as .count(), foreachRdd(), collect(), read() or write().
 
 - Stage 
 	- A Stage is a sequence of `Tasks` that can all be run together, `without a shuffle`.
