@@ -201,7 +201,7 @@
 
 		- Using Accumulators – Accumulators help update the values of variables in parallel while executing.
 
-	The most common way is to avoid operations ByKey, repartition or any other operations which trigger shuffles.
+	The most common way is to `avoid` operations `ByKey, repartition` or `any other operations` which trigger `shuffles`.
 
 26. What are broadcast variables and accumulators?
 
@@ -261,6 +261,8 @@ rdd.groupByKey().mapValue(_.sum)
 
 - http://queirozf.com/entries/spark-concepts-overview-clusters-jobs-stages-tasks-etc#stage-vs-task
 
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/spark_stage_task.png" width="500" height="300"> 
+
 35. Explain `shuffle`?
 
 - A Shuffle refers to an operation where data is `re-partitioned` across a Cluster.
@@ -274,12 +276,22 @@ rdd.groupByKey().mapValue(_.sum)
 - It can be processed by a single Executor core.
 - e.g.: If you have 4 data partitions and you have 4 executor cores, you can process everything in parallel, in a single pass.
 
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/rdd_partiiton.png" width="500" height="300"> 
+
+
 37. Explain spark `cache`?
 - cache internally uses persist API
 - persist sets a specific storage level for a given RDD
 - Spark context tracks persistent RDD
 - When first evaluates, partition will be put into memory by block manager
 
+
+38. Explain repartition?
+	- repartition
+		- Reshuffle the data in the RDD `randomly` to create either `more or fewer` partitions and balance it across them. This always `shuffles ALL DATA over the network`.
+	- repartitionAndSortWithinPartitions
+		- Repartition the RDD according to the `given partitioner` and, within each resulting partition, sort records by their keys. This is `more efficient` than calling `repartition` and then sorting within each partition because it can push the sorting down into the shuffle machinery.
+	- https://spark.apache.org/docs/latest/rdd-programming-guide.html
 
 
 ## Ref 
