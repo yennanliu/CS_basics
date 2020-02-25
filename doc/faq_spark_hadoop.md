@@ -259,9 +259,17 @@ rdd.groupByKey().mapValue(_.sum)
 	- Each Task is executed as a single thread in an Executor
 	- If your dataset has 2 Partitions, an operation such as a filter() will trigger 2 Tasks, one for each Partition.
 
+- Each `stage` contains as many `tasks` as `partitions` of the `RDD`
+	- i.e. partition  (part of RDD) -> task (part of stage)
+
 - http://queirozf.com/entries/spark-concepts-overview-clusters-jobs-stages-tasks-etc#stage-vs-task
 
+- https://medium.com/@thejasbabu/spark-under-the-hood-partition-d386aaaa26b7
+
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/spark_stage_task.png" width="500" height="300"> 
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/spark_stage_task2.png" width="500" height="300"> 
+
 
 35. Explain `shuffle`?
 
@@ -287,6 +295,9 @@ rdd.groupByKey().mapValue(_.sum)
 
 
 38. Explain repartition?
+	- repartition():
+		- shuffles the data between the executors and divides the data into number of partitions. But this might be an `expensive` operation since it `shuffles` the data between executors and involves `network traffic`. `Ideal place to partition` is at the `data source`, while fetching the data. Things can speed up greatly when data is partitioned the right way but can dramatically slow down when done wrong, especially due the Shuffle operation.
+
 	- repartition
 		- Reshuffle the data in the RDD `randomly` to create either `more or fewer` partitions and balance it across them. This always `shuffles ALL DATA over the network`.
 	- repartitionAndSortWithinPartitions
