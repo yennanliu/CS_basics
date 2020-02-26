@@ -28,7 +28,7 @@ class Solution(object):
         most = count.most_common()[0][1]
         num_most = len([i for i, v in count.items() if v == most])
         time = (most - 1) * (n + 1) + num_most
-        return max(time, len(tasks))
+        return max(time, len(tasks)) # be aware of it 
 
 # V1'
 # https://www.jiuzhang.com/solution/task-scheduler/#tag-highlight-lang-python
