@@ -17,6 +17,7 @@
 - DONE : 
 	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
 	- `# 636 Exclusive Time of Functions`
+	- `# 674 Longest Continuous Increasing Subsequence`
 
 # 2020-02-26
 
