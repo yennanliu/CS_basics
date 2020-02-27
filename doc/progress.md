@@ -19,6 +19,7 @@
 	- `# 636 Exclusive Time of Functions`
 	- `# 674 Longest Continuous Increasing Subsequence`
 	- `# 681 Next Closest Time`
+	- `# 688 Knight Probability in Chessboard`
 
 # 2020-02-26
 
