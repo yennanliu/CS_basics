@@ -1,4 +1,4 @@
-# Note Leetcode pattern
+# Leetcode pattern Note
 
 1. Two pointers 
 
