@@ -842,7 +842,7 @@
 | 658 | [Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | Medium | 34.8% | 0.029 | OK**** (3)
 | 674 | [Longest Continuous Increasing Subsequence](https://leetcode.com/problems/longest-continuous-increasing-subsequence/) | Easy | 42.9% | 0.055 |  OK**** (4)
 | 680 | [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/) | Easy | 32.6% | 0.898 | OK
-| 681 | [Next Closest Time](https://leetcode.com/problems/next-closest-time/) | Medium | 41.3% | 0.021 | AGAIN*** (4)
+| 681 | [Next Closest Time](https://leetcode.com/problems/next-closest-time/) | Medium | 41.3% | 0.021 | OK*** (5)
 | 688 | [Knight Probability in Chessboard](https://leetcode.com/problems/knight-probability-in-chessboard/) | Medium | 40.8% | 0.06 |AGAIN******* (4)
 | 689 | [Maximum Sum of 3 Non-Overlapping Subarrays](https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/) | Hard | 41.9% | 0.755 |
 | 692 | [Top K Frequent Words](https://leetcode.com/problems/top-k-frequent-words/) | Medium | 42.4% | 0.092 | OK**** (4)
