@@ -836,7 +836,7 @@
 | 567 | [Permutation in String](https://leetcode.com/problems/permutation-in-string/) | Medium | 36.6% | 0.072 | OK********* (5)
 | 597 | [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/problems/friend-requests-i-overall-acceptance-rate/) | Easy | 37.8% | 0.135 | OK*
 | 621 | [Task Scheduler](https://leetcode.com/problems/task-scheduler/) | Medium | 42.8% | 1.229 |  OK****** (5)
-| 636 | [Exclusive Time of Functions](https://leetcode.com/problems/exclusive-time-of-functions/) | Medium | 45.4% | 0.184 |  AGAIN****** (3)
+| 636 | [Exclusive Time of Functions](https://leetcode.com/problems/exclusive-time-of-functions/) | Medium | 45.4% | 0.184 |  AGAIN********** (4)
 | 642 | [Design Search Autocomplete System](https://leetcode.com/problems/design-search-autocomplete-system/) | Hard | 31.8% | 0.065 |
 | 647 | [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) | Medium | 54.5% | 0.038 | OK** (3)
 | 658 | [Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | Medium | 34.8% | 0.029 | OK**** (3)
