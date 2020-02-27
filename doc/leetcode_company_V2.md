@@ -843,7 +843,7 @@
 | 674 | [Longest Continuous Increasing Subsequence](https://leetcode.com/problems/longest-continuous-increasing-subsequence/) | Easy | 42.9% | 0.055 |  OK**** (4)
 | 680 | [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/) | Easy | 32.6% | 0.898 | OK
 | 681 | [Next Closest Time](https://leetcode.com/problems/next-closest-time/) | Medium | 41.3% | 0.021 | OK*** (5)
-| 688 | [Knight Probability in Chessboard](https://leetcode.com/problems/knight-probability-in-chessboard/) | Medium | 40.8% | 0.06 |AGAIN******* (4)
+| 688 | [Knight Probability in Chessboard](https://leetcode.com/problems/knight-probability-in-chessboard/) | Medium | 40.8% | 0.06 |AGAIN********* (5)
 | 689 | [Maximum Sum of 3 Non-Overlapping Subarrays](https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/) | Hard | 41.9% | 0.755 |
 | 692 | [Top K Frequent Words](https://leetcode.com/problems/top-k-frequent-words/) | Medium | 42.4% | 0.092 | OK**** (4)
 | 721 | [Accounts Merge](https://leetcode.com/problems/accounts-merge/) | Medium | 35.6% | 0.412 | AGAIN** (4) (not start)
