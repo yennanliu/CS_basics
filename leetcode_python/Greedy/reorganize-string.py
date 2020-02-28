@@ -7,6 +7,7 @@ class Solution(object):
         :rtype: str
         """
         cnt = collections.Counter(S)
+        # Be aware of it : ans = "#" -> not to have error in ans[-1] when first loop
         ans = '#'
         while cnt:
             stop = True
@@ -17,6 +18,7 @@ class Solution(object):
                     cnt[v] -= 1
                     if not cnt[v]: del cnt[v]
                     break
+            # Be aware of it : if there is no valid "v", then the while loop will break automatically at this condition (stop = True)
             if stop: break
         return ans[1:] if len(ans[1:]) == len(S) else ''
 

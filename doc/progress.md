@@ -17,6 +17,7 @@
 	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
 	- `# 426 Convert Binary Search Tree to Sorted Doubly Linked List`
 	- `# 430 Flatten a Multilevel Doubly Linked List`
+	- `# 767 Reorganize String`
 
 # 2020-02-27
 
