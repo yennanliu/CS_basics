@@ -1,4 +1,28 @@
-# V0 
+# V0
+# IDEA : GRAPH + DFS
+class Solution:
+    
+    def isBipartite(self, graph):
+        n = len(graph)
+        self.color = [0] * n
+        for i in range(n):
+            # if grpah i's color = 0, and check if it's "Bipartite" via self.colored(i, graph, 1)
+            if self.color[i] == 0 and not self.colored(i, graph, 1):
+                return False
+        return True        
+    
+    def colored(self, now, graph, c):
+        self.color[now] = c
+        for nxt in graph[now]:
+            # case 1) now color = c, next color = 0, but next's neighbor  color != -c  => this case is not going to be "Bipartite"  
+            if self.color[nxt] == 0 and not self.colored(nxt, graph, -c):
+                return False
+            # case 2) now color == next color (next already colored) 
+            elif self.color[nxt] == self.color[now]:
+                return False
+        return True
+
+# V0' 
 # IDEA : DFS
 # CONTINUE
 # In [5]: for i in range(10):
