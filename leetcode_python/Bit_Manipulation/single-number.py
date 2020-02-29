@@ -28,6 +28,22 @@ class Solution(object):
         num_count = collections.Counter(nums)
         return [x for x in num_count if num_count[x] == 1] 
 
+# V0'
+# IDEA : BIT XOR 
+# IDEA 
+# Solution with XOR #
+# Recall the following two properties of XOR:
+# It returns zero if we take XOR of two same numbers.
+# It returns the same number if we XOR with zero.
+# So we can XOR all the numbers in the input; 
+# -> duplicate numbers will zero out each other and we will be left with the single number.
+class Solution(object):
+    def singleNumber(self, nums):
+        a = 0
+        for i in nums:
+            a ^= i
+        return a
+
 # V1
 # https://blog.csdn.net/qq_20141867/article/details/82314035
 class Solution(object):
