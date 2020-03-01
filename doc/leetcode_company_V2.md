@@ -856,7 +856,7 @@
 | 791 | [Custom Sort String](https://leetcode.com/problems/custom-sort-string/) | Medium | 59.4% | 0.258 |OK****** (4) 
 | 708 | [Insert into a Cyclic Sorted List](https://leetcode.com/problems/insert-into-a-cyclic-sorted-list/) | Medium | 22.7% | 0.058 | AGAIN******** (4)
 | 824 | [Goat Latin](https://leetcode.com/problems/goat-latin/) | Easy | 54.8% | 0.075 | OK
-| 825 | [Friends Of Appropriate Ages](https://leetcode.com/problems/friends-of-appropriate-ages/) | Medium | 32.1% | 0.222 | AGAIN*** (4)
+| 825 | [Friends Of Appropriate Ages](https://leetcode.com/problems/friends-of-appropriate-ages/) | Medium | 32.1% | 0.222 | AGAIN***** (5)
 | 622 | [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/) | Medium | 36.4% | 0.03 | AGAIN***** (1)
 | 489 | [Robot Room Cleaner](https://leetcode.com/problems/robot-room-cleaner/) | Hard | 50.1% | 0.093 |
 | 844 | [Backspace String Compare](https://leetcode.com/problems/backspace-string-compare/) | Easy | 43.8% | 0.042 | OK* (but again)(3)
