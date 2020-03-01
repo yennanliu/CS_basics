@@ -7,6 +7,17 @@
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
 
+# 2020-03-01
+
+- DOING :
+	- `Bit Manipulation`
+	- `Recursion`
+	-  tricks deal with `string` : `dp`, `two pointers`, `recursion` (?), `union find`, `route compression`
+
+- DONE : 
+	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
+	- `# 825 Friends Of Appropriate Ages`
+
 # 2020-02-29
 
 - DOING :
