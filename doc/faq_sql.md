@@ -138,3 +138,8 @@ FROM my_num;
 ### 8. Solve the "many-to-many" DB design problem?
 - > 
 https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab
+
+
+### 9. Which op is faster `union` or `union all`?
+->
+`union all` is faster, since it can avoid possible duplicates.
