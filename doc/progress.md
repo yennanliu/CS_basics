@@ -17,6 +17,7 @@
 - DONE : 
 	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
 	- `# 622 Design Circular Queue`
+	- `# 844 Backspace String Compare`
 
 # 2020-03-01
 
