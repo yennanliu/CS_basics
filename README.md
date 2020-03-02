@@ -34,9 +34,8 @@
 	- [toptal-sorting-algorithms](https://www.toptal.com/developers/sorting-algorithms)- sorting algorithms online 
 * [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
 * [bit_manipulation.md](https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md) - Bit Manipulation Cheet Sheet
-* [Python TimeComplexity](https://wiki.python.org/moin/TimeComplexity) - Python TimeComplexity doc
-* [Python data model](https://docs.python.org/3/reference/datamodel.html)
-- Python data model doc 
+* [Py TimeComplexity](https://wiki.python.org/moin/TimeComplexity) - Python TimeComplexity doc
+* [Py data model](https://docs.python.org/3/reference/datamodel.html) - Python data model doc 
 
 ## Algorithms content
 
