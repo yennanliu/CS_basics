@@ -15,7 +15,7 @@
 	-  tricks deal with `string` : `dp`, `two pointers`, `recursion` (?), `union find`, `route compression`
 
 - DONE : 
-	- `leetcode_company_V2.md` `AGAIN *** >= 3` go again
+	-  DONE :`leetcode_company_V2.md` `AGAIN *** >= 3` go again
 	- `# 886 Possible Bipartition`
 
 # 2020-03-02
