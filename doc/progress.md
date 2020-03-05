@@ -41,6 +41,15 @@ TODO :
  	- `## 274 H-Index`
  	- `# 234 Palindrome Linked List`
  	- `# 404 Sum of Left Leaves`
+ 	- `# 268 Missing Number`
+ 	- `## 080 Remove Duplicates from Sorted Array II`
+ 	- `## 168 Excel Sheet Column Title`
+ 	- `## 535 Encode and Decode TinyURL`
+ 	- `## 653 Two Sum IV - Input is a BST`
+ 	- `## 673 Number of Longest Increasing Subsequence`
+ 	- `## 525 Contiguous Array`
+ 	- `# 637 Average of Levels in Binary Tree`
+ 	- `# 578 Get Highest Answer Rate Question`
  	- Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
 
 - DONE : 
