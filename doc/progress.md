@@ -26,6 +26,8 @@ TODO :
  	- `## 494 Target Sum`
  	- `# 477 Total Hamming Distance`
  	- `# 554 Brick Wall`
+ 	- `# 071 Simplify Path`
+ 	- `## 380 Insert Delete GetRandom O(1)`
  	- Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
 
 - DONE : 
