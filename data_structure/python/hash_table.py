@@ -32,6 +32,7 @@ class HashTable:
     def get(self, key):
         # get the address in hashmap from "hashed" key
         address = self.hash(key) % self.__size
+        # go through every node in the self.__slot[address]
         for node in self.__slot[address]:
             if node.key == key:
                 return node.value
@@ -40,6 +41,7 @@ class HashTable:
     def remove(self, key):
         # get hashmap index (address) via hash func
         address = self.hash(key) % self.__size
+        # go through every node in the self.__slot[address]
         for idx, node in enumerate(self.__slot[address].copy()):
             if node.key == key:
                 self.__slot[address].pop(idx)    
