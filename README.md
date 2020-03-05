@@ -588,7 +588,7 @@
 ## Sort 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note| Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-075| [Sort Colors](https://leetcode.com/problems/sort-colors/)   | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/sort-colors.py) | _O(n)_         | _O(1)_   | Medium |Tri Partition,`two pointers`, `M$`, `fb`| OK** (3) (but again) 
+075| [Sort Colors](https://leetcode.com/problems/sort-colors/)   | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/sort-colors.py) | _O(n)_ | _O(1)_ | Medium |Tri Partition,`two pointers`, `M$`, `fb`| OK** (3) (but again) 
 088| [Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/merge-sorted-array.py)  | _O(n)_ | _O(1)_ | Easy |`good basic`, `two pointers`, `M$`, `fb`| AGAIN*****  (3)
 147| [Insertion Sort List](https://leetcode.com/problems/insertion-sort-list/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/insertion-sort-list.py) | _O(n^2)_ | _O(1)_ | Medium |`trick`| AGAIN* (2)
 148| [Sort List](https://leetcode.com/problems/sort-list/)     | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/sort-list.py) | _O(nlogn)_      | _O(logn)_  | Medium |`basic`, check `# 21 Merge Two Sorted Lists`| AGAIN** (2)
@@ -867,6 +867,7 @@
 931| [Minimum Falling Path Sum](https://leetcode.com/problems/minimum-falling-path-sum/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/minimum-falling-path-sum.py) | _O(n^2)_ | _O(1)_ | Medium |`google`, `goldman sachs`| AGAIN (not start)
 935| [Knight Dialer](https://leetcode.com/problems/knight-dialer/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/knight-dialer.py) | _O(logn)_ | _O(1)_ | Medium | Matrix Exponentiation, `google`, `M$`, `fb`| AGAIN (not start)
 518| [Coin Change 2](https://leetcode.com/problems/coin-change-2/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py) | _O(logn)_ | _O(1)_ | Medium | `dp basic`,`good trick`,check `# 322 Coin Change`,`dp`, `google`, `fb`| AGAIN******** (4)
+494| [Target Sum](https://leetcode.com/problems/target-sum/) | | _O(logn)_ | _O(1)_ | Medium |`dp`, `fb`| 
  
 
 ## Greedy 
