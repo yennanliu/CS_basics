@@ -24,7 +24,7 @@ TODO :
 
 - DONE : 
 	- go through `SQL` quesitons (AGAIN, OK)
-	- data_structure : `array`
+	- data_structure : `array`, `queue`
 
 
 # 2020-03-04

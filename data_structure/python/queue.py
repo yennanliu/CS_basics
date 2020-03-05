@@ -1,18 +1,16 @@
-
-
 #################################################################
 # DATA STRUCTURE DEMO : Queue (METHOD 1 )
 #################################################################
 
+# V0
+
+# V1
 # http://zhaochj.github.io/2016/05/15/2016-05-15-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8D%95%E7%AB%AF%E9%98%9F%E5%88%97/
-
-
 class Node:
     def __init__(self, value):
         self.value = value
         self.next = None
- 
- 
+
 class Queue:
     def __init__(self):
         self.head = None
@@ -47,12 +45,11 @@ class Queue:
             cur = cur.__next__
         return count + 1
  
- 
-if __name__ == '__main__':
-    q = Queue()
-    for i in range(5):
-        q.enqueue(i)
-    for _ in range(5):
-        print((q.dequeue()))
-    print((q.is_empty()))
-    print((q.size()))
+# if __name__ == '__main__':
+#     q = Queue()
+#     for i in range(5):
+#         q.enqueue(i)
+#     for _ in range(5):
+#         print((q.dequeue()))
+#     print((q.is_empty()))
+#     print((q.size()))
