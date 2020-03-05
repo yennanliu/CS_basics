@@ -884,6 +884,16 @@
 | 274 | [H-Index](https://leetcode.com/problems/h-index/) | Medium |||
 | 234 | [Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) | Medium |||
 | 404 | [Sum of Left Leaves](https://leetcode.com/problems/sum-of-left-leaves/) | Medium |||
+| 268 |  [Missing Number](https://leetcode.com/problems/missing-number/)  | Medium |||
+| 080 | [Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-duplicates-from-sorted-array-ii.py) | Medium |||
+| 168 | [Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/)  | Medium |||
+| 535 | [Encode and Decode TinyURL](https://leetcode.com/problems/encode-and-decode-tinyurl/) | Medium |||
+| 653 | [Two Sum IV - Input is a BST](https://leetcode.com/problems/two-sum-iv-input-is-a-bst/) | Medium |||
+| 673 | [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) | Medium |||
+| 525 | [Contiguous Array](https://leetcode.com/problems/contiguous-array/) | Medium |||
+| 637 | [Average of Levels in Binary Tree](https://leetcode.com/problems/average-of-levels-in-binary-tree/) | Medium |||
+| 578 | [Get Highest Answer Rate Question](https://leetcode.com/articles/get-highest-answer-rate-question/) | Medium |||
+
 
 ## Fallible
 
