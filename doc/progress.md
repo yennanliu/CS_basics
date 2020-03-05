@@ -20,9 +20,11 @@ TODO :
  	- `# 285 Inorder Successor in BST`
  	- `# 602 Friend request II`
  	- `# 670 Maximum Swap`
+ 	- Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
 
 - DONE : 
 	- go through `SQL` quesitons (AGAIN, OK)
+	- data_structure : `array`
 
 
 # 2020-03-04
