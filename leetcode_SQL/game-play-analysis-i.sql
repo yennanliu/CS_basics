@@ -35,15 +35,13 @@
 -- | 3         | 2016-03-02  |
 -- +-----------+-------------+
 
-# V0 
+-- V0 
 
-# V1 
+-- V1 
 
-# V2 
-
-# Time:  O(n)
-# Space: O(n)
-
+-- V2 
+-- Time:  O(n)
+-- Space: O(n)
 SELECT player_id, 
        Min(event_date) first_login 
 FROM   activity 

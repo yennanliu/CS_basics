@@ -34,7 +34,8 @@
 -- | 2         | 3         |
 -- | 3         | 1         |
 -- +-----------+-----------+
-# V0 
+
+-- V0 
 SELECT a.player_id, 
        a.device_id 
 FROM   activity a 
@@ -46,11 +47,11 @@ FROM
 activity
 GROUP BY 1 )
 
-# V1 
+-- V1 
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+-- V2 
+-- Time:  O(n)
+-- Space: O(n)
 SELECT player_id, 
        device_id 
 FROM   activity 

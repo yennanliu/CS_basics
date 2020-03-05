@@ -149,14 +149,12 @@ https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab
 ```sql
 # mysql
 SELECT 
-@x as x,
-@y as y,
-@x + 1 as x_Plus_1,
-@x := @x + 1 as updated_x
-FROM ( 
-select 
-@x := 0,
-@y := 1 ) INIT;
+@x AS x, 
+@y AS y, 
+@x + 1 AS x_Plus_1, 
+@x := @x + 1 AS updated_x
+FROM
+  (SELECT @x := 0, @y := 1) INIT;
 
 ```
 
