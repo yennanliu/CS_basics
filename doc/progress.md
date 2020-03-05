@@ -28,6 +28,10 @@ TODO :
  	- `# 554 Brick Wall`
  	- `# 071 Simplify Path`
  	- `## 380 Insert Delete GetRandom O(1)`
+ 	- `## 90 Subsets II`
+ 	- `# 28 Implement strStr()`
+ 	- `## 377 Combination Sum IV`
+ 	- `# 344 Increasing Triplet Subsequence`
  	- Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
 
 - DONE : 
