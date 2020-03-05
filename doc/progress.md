@@ -23,6 +23,7 @@ TODO :
  	- `# 311 Sparse Matrix Multiplication`
  	- `# 285 Inorder Successor in BST`
  	- `## 602 Friend Requests II: Who Has Most Friend? `
+ 	- `## 494 Target Sum`
  	- Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
 
 - DONE : 

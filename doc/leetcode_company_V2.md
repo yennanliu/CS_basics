@@ -866,6 +866,7 @@
 | 311 | [Sparse Matrix Multiplication](https://leetcode.com/problems/sparse-matrix-multiplication/) | Medium | | | 
 | 285 | [Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/) | Medium | 33.9% | 0.024 |
 | 602 | [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) | Medium |||
+| 494 | [Target Sum](https://leetcode.com/problems/target-sum/) | Medium |||
 
 ## Fallible
 
