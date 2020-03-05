@@ -893,6 +893,12 @@
 | 525 | [Contiguous Array](https://leetcode.com/problems/contiguous-array/) | Medium |||
 | 637 | [Average of Levels in Binary Tree](https://leetcode.com/problems/average-of-levels-in-binary-tree/) | Medium |||
 | 578 | [Get Highest Answer Rate Question](https://leetcode.com/articles/get-highest-answer-rate-question/) | Medium |||
+| 572 | [Subtree of Another Tree](https://leetcode.com/problems/construct-string-from-binary-tree/) | Easy |||
+| 750 | [Number Of Corner Rectangles](https://leetcode.com/problems/number-of-corner-rectangles/) | Medium |||
+| 275 | [H-Index II](https://leetcode.com/problems/h-index-ii/) | Medium |||
+| 764 | [Largest Plus Sign](https://leetcode.com/problems/largest-plus-sign/) | Medium |||
+| 784 | [Letter Case Permutation](https://leetcode.com/problems/letter-case-permutation/) | Medium |||
+| 801 | [Minimum Swaps To Make Sequences Increasing](https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/) | Medium |||
 
 
 ## Fallible
