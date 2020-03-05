@@ -143,3 +143,20 @@ https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab
 ### 9. Which op is faster `union` or `union all`?
 ->
 `union all` is faster, since it can avoid possible duplicates.
+
+### 10. Example of use variable in SQL ?
+->
+```sql
+# mysql
+SELECT 
+@x as x,
+@y as y,
+@x + 1 as x_Plus_1,
+@x := @x + 1 as updated_x
+FROM ( 
+select 
+@x := 0,
+@y := 1 ) INIT;
+
+```
+
