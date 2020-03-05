@@ -313,7 +313,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note | Status | 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/valid-parentheses.py) | _O(n)_ | _O(n)_ | Easy |`good basic`,`fb`| OK** (3) 
-071| [Simplify Path](https://leetcode.com/problems/simplify-path/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/simplify-path.py) | _O(n)_   | _O(n)_ | Medium |`basic`, `stack`| OK* 
+071| [Simplify Path](https://leetcode.com/problems/simplify-path/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/simplify-path.py) | _O(n)_ | _O(n)_ | Medium |`basic`, `stack`, `fb`| OK* 
 101| [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/symmetric-tree.py) | _O(n)_ | _O(h)_ | Easy |`good basic`,`bfs`, `dfs`, `linkedin`, `M$`, `fb`| AGAIN** (3) 
 150| [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/evaluate-reverse-polish-notation.py) | _O(n)_| _O(n)_| Medium          || AGAIN (not start)
 155| [Min Stack](https://leetcode.com/problems/min-stack/)     | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/min-stack.py)  | _O(n)_          | _O(1)_          | Easy           || AGAIN 
@@ -924,7 +924,7 @@
 0359| [Logger Rate Limiter](https://leetcode.com/problems/logger-rate-limiter/) | [C++](./C++/logger-rate-limiter.cpp) [Python](./Python/logger-rate-limiter.py) | _O(1), amortized_ | _O(k)_ | Easy |🔒| Deque |
 0362| [Design Hit Counter](https://leetcode.com/problems/design-hit-counter/) | [C++](./C++/design-hit-counter.cpp) [Python](./Python/design-hit-counter.py) | _O(1), amortized_ | _O(k)_ | Medium |🔒| Deque |
 0379| [Design Phone Directory](https://leetcode.com/problems/design-phone-directory/) | [C++](./C++/design-phone-directory.cpp) [Python](./Python/design-phone-directory.py) | _O(1)_ | _O(n)_ | Medium |🔒| |
-0380| [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/) | [C++](./C++/insert-delete-getrandom-o1.cpp) [Python](./Python/insert-delete-getrandom-o1.py) | _O(1)_ | _O(n)_| Hard || |
+0380| [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/) | [Python](./Python/insert-delete-getrandom-o1.py) | _O(1)_ | _O(n)_| Hard |`fb`| |
 0381| [Insert Delete GetRandom O(1) - Duplicates allowed](https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/) | [C++](./C++/insert-delete-getrandom-o1-duplicates-allowed.cpp) [Python](./Python/insert-delete-getrandom-o1-duplicates-allowed.py) | _O(1)_ | _O(n)_ | Hard || |
 0432| [All O\`one Data Structure](https://leetcode.com/problems/all-oone-data-structure/) | [C++](./C++/all-oone-data-structure.cpp) [Python](./Python/all-oone-data-structure.py) | _O(1)_ | _O(n)_| Hard || |
 0460| [LFU Cache](https://leetcode.com/problems/lfu-cache/) | [C++](./C++/lfu-cache.cpp) [Python](./Python/lfu-cache.py) | _O(1)_ | _O(k)_ | Hard || |
