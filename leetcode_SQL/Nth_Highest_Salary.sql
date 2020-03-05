@@ -1,5 +1,5 @@
-# Nth Highest Salary
-# https://leetcode.com/problems/nth-highest-salary/description/
+-- Nth Highest Salary
+-- https://leetcode.com/problems/nth-highest-salary/description/
 
 /*
 
@@ -22,8 +22,8 @@ For example, given the above Employee table, the nth highest salary where n = 2 
 
 */
 
-# V0 
-# IDEA : MYSQL PROCEDURE
+-- V0 
+-- IDEA : MYSQL PROCEDURE
 -- DEMO 
 -- mysql> delimiter //
 -- mysql> CREATE PROCEDURE getNthHighestSalary( N INT) 
@@ -80,7 +80,7 @@ delimiter //
 CREATE PROCEDURE getNthHighestSalary( N INT) 
 BEGIN
 
-     # Write your MySQL query statement below.
+     -- Write your MySQL query statement below.
      SELECT MAX(Salary) /*This is the outer query part */
             FROM Employee Emp1
             WHERE (N-1) = ( /* Subquery starts here */
@@ -90,15 +90,15 @@ BEGIN
 END//
 
 
-# V1 
-# https://github.com/kamyu104/LeetCode/blob/master/MySQL/nth-highest-salary.sql
-# Time:  O(n^2)
-# Space: O(n)
+-- V1 
+-- https://github.com/kamyu104/LeetCode/blob/master/MySQL/nth-highest-salary.sql
+-- Time:  O(n^2)
+-- Space: O(n)
 delimiter //
 CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
 BEGIN
   RETURN (
-     # Write your MySQL query statement below.
+     -- Write your MySQL query statement below.
      SELECT MAX(Salary) /*This is the outer query part */
             FROM Employee Emp1
             WHERE (N-1) = ( /* Subquery starts here */
