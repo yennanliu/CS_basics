@@ -63,10 +63,16 @@ GROUP BY t1.player_id,
 # Time:  O(nlogn)
 # Space: O(n)
 SELECT player_id, 
-       event_date, 
+       event_date,
+       /* 
+       @prev = ( @prev := player_id ) => 1 if @prev  == play_er_id, 0 else
+       */
        @accum := games_played + ( @prev = ( @prev := player_id ) ) * @accum 
        games_played_so_far 
 FROM   activity, 
+       /*
+       init the var in SQL
+       */
        (SELECT @accum := 0, 
                @prev := -1) init 
 ORDER  BY player_id, 
