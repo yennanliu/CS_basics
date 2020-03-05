@@ -37,6 +37,10 @@ TODO :
  	- `# 116 Populating Next Right Pointers in Each Node`
  	- `# 69 Sqrt(x)`
  	- `# 461 Hamming Distance`
+ 	- `## 221 Maximal Square`
+ 	- `## 274 H-Index`
+ 	- `# 234 Palindrome Linked List`
+ 	- `# 404 Sum of Left Leaves`
  	- Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
 
 - DONE : 
