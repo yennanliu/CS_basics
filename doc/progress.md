@@ -13,7 +13,7 @@
 	- `Recursion`
 	-  tricks deal with `string` : `dp`, `two pointers`, `recursion` (?), `union find`, `route compression`
 
-TODO :
+- TODO :
 	-  go through `leetcode_company_V1`
  	-  `# 078 Subsets`
  	-  `# 285 Inorder Successor in BST`
@@ -69,7 +69,7 @@ TODO :
 	- `Recursion`
 	-  tricks deal with `string` : `dp`, `two pointers`, `recursion` (?), `union find`, `route compression`
 
-TODO :
+- TODO :
 	- go through `leetcode_company_V1`
  	- `# 078 Subsets`
  	- `# 285 Inorder Successor in BST`
@@ -125,7 +125,7 @@ TODO :
 	- `Recursion`
 	-  tricks deal with `string` : `dp`, `two pointers`, `recursion` (?), `union find`, `route compression`
 
-TODO :
+- TODO :
 	- go through `leetcode_company_V1`
  	- `# 078 Subsets`
  	- `# 285 Inorder Successor in BST`
