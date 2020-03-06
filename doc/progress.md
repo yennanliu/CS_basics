@@ -6,6 +6,61 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
+# 2020-03-06
+
+- DOING :
+	- `Bit Manipulation`
+	- `Recursion`
+	-  tricks deal with `string` : `dp`, `two pointers`, `recursion` (?), `union find`, `route compression`
+
+TODO :
+	-  go through `leetcode_company_V1`
+ 	-  `# 078 Subsets`
+ 	-  `# 285 Inorder Successor in BST`
+ 	-  `# 602 Friend request II`
+ 	-  `# 670 Maximum Swap`
+ 	-  `# 311 Sparse Matrix Multiplication`
+ 	-  `# 285 Inorder Successor in BST`
+ 	-  `## 602 Friend Requests II: Who Has Most Friend? `
+ 	-  `## 494 Target Sum`
+ 	-  `# 477 Total Hamming Distance`
+ 	-  `# 554 Brick Wall`
+ 	-  `# 071 Simplify Path`
+ 	-  `## 380 Insert Delete GetRandom O(1)`
+ 	-  `## 90 Subsets II`
+ 	-  `# 28 Implement strStr()`
+ 	-  `## 377 Combination Sum IV`
+ 	-  `# 344 Increasing Triplet Subsequence`
+ 	-  `# 235 Lowest Common Ancestor of a Binary Search Tree`
+ 	-  `# 714 Best Time to Buy and Sell Stock with Transaction Fee`
+ 	-  `# 116 Populating Next Right Pointers in Each Node`
+ 	-  `# 69 Sqrt(x)`
+ 	-  `# 461 Hamming Distance`
+ 	-  `## 221 Maximal Square`
+ 	-  `## 274 H-Index`
+ 	-  `# 234 Palindrome Linked List`
+ 	-  `# 404 Sum of Left Leaves`
+ 	-  `# 268 Missing Number`
+ 	-  `## 080 Remove Duplicates from Sorted Array II`
+ 	-  `## 168 Excel Sheet Column Title`
+ 	-  `## 535 Encode and Decode TinyURL`
+ 	-  `## 653 Two Sum IV - Input is a BST`
+ 	-  `## 673 Number of Longest Increasing Subsequence`
+ 	-  `## 525 Contiguous Array`
+ 	-  `# 637 Average of Levels in Binary Tree`
+ 	-  `# 578 Get Highest Answer Rate Question`
+ 	-  `# 572 Subtree of Another Tree`
+ 	-  `# 750 Number Of Corner Rectangle`
+ 	-  `# 275 H-Index II`
+ 	-  `# 764 Largest Plus Sign`
+ 	-  `# 784 Letter Case Permutation`
+ 	-  `# 801 Minimum Swaps To Make Sequences Increasing`
+ 	-  Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
+
+- DONE : 
+	- go through `SQL` quesitons (AGAIN, OK)
+	- data_structure : 
+
 
 # 2020-03-05
 
