@@ -51,7 +51,6 @@
  	-  `# 578 Get Highest Answer Rate Question`
  	-  `# 572 Subtree of Another Tree`
  	-  `# 750 Number Of Corner Rectangle`
- 	-  `# 275 H-Index II`
  	- `# 764 Largest Plus Sign`
  	-  Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
 
@@ -61,6 +60,7 @@
 	- `# 801 Minimum Swaps To Make Sequences Increasing`  AGAIN
 	- `# 784 Letter Case Permutation` AGAIN
 	- `# 274 H-Index`
+	- `# 275 H-Index II`
 
 # 2020-03-05
 

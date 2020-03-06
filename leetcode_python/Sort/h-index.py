@@ -12,11 +12,14 @@ class Solution(object):
         :type citations: List[int]
         :rtype: int
         """
+        # reverse ordeing the citations first, so the first validated case is the max h-index 
         # i : how many digit in the list that are >= c 
         # c : the value of "possible" h-index
         for i, c in enumerate(sorted(citations, reverse = True)):
             if i >= c:
                 return i
+        # BE AWARE OF IT
+        # for the [] or [1] ... cases
         return len(citations)
 
 # V1
