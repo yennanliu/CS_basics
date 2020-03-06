@@ -54,14 +54,13 @@
  	-  `# 275 H-Index II`
  	-  `# 764 Largest Plus Sign`
  	-  `# 784 Letter Case Permutation`
- 	-  `# 801 Minimum Swaps To Make Sequences Increasing`
  	-  Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
 
 - DONE : 
 	- go through `SQL` quesitons (AGAIN, OK)
-	- data_structure : 
-
-
+	- data_structure :
+	- `# 801 Minimum Swaps To Make Sequences Increasing`  AGAIN
+	
 # 2020-03-05
 
 - DOING :
