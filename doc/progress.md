@@ -48,8 +48,7 @@
  	-  `## 673 Number of Longest Increasing Subsequence`
  	-  `## 525 Contiguous Array`
  	-  `# 637 Average of Levels in Binary Tree`
- 	-  `# 578 Get Highest Answer Rate Question`
-
+ 
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
  	-  Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
@@ -62,6 +61,7 @@
 	- `# 274 H-Index`
 	- `# 275 H-Index II`
 	- `# 572 Subtree of Another Tree`
+	- `# 578 Get Highest Answer Rate Question`
 
 # 2020-03-05
 
