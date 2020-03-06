@@ -37,7 +37,6 @@
  	-  `# 69 Sqrt(x)`
  	-  `# 461 Hamming Distance`
  	-  `## 221 Maximal Square`
- 	-  `## 274 H-Index`
  	-  `# 234 Palindrome Linked List`
  	-  `# 404 Sum of Left Leaves`
  	-  `# 268 Missing Number`
