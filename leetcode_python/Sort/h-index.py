@@ -12,6 +12,8 @@ class Solution(object):
         :type citations: List[int]
         :rtype: int
         """
+        # i : how many digit in the list that are >= c 
+        # c : the value of "possible" h-index
         for i, c in enumerate(sorted(citations, reverse = True)):
             if i >= c:
                 return i
