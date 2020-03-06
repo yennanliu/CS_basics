@@ -1,27 +1,90 @@
+# V0
+# IDEA 
+# h-index = 1 : AT LEAST 0 essay with power 1 
+# h-index = 2 : AT LEAST 0 essay with power 2  
+# h-index = 3 : AT LEAST 0 essay with power 3  
+# h-index = 4 : AT LEAST 0 essay with power 4  
+#.
+#.
+class Solution(object):
+    def hIndex(self, citations):
+        """
+        :type citations: List[int]
+        :rtype: int
+        """
+        for i, c in enumerate(sorted(citations, reverse = True)):
+            if i >= c:
+                return i
+        return len(citations)
 
+# V1
+# http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
+class Solution(object):
+    def hIndex(self, citations):
+        """
+        :type citations: List[int]
+        :rtype: int
+        """
+        N = len(citations)
+        cnts = [0] * (N + 1)
+        for c in citations:
+            cnts[[c, N][c > N]] += 1
+        sums = 0
+        for h in range(N, 0, -1):
+            if sums + cnts[h] >= h:
+                return h
+            sums += cnts[h]
+        return 0
 
+# V1''
+# http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
+class Solution(object):
+    def hIndex(self, citations):
+        """
+        :type citations: List[int]
+        :rtype: int
+        """
+        for i, c in enumerate(sorted(citations, reverse = True)):
+            if i >= c:
+                return i
+        return len(citations)
 
+# V1'''
+# http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
+class Solution(object):
+    def hIndex(self, citations):
+        """
+        :type citations: List[int]
+        :rtype: int
+        """
+        return sum(i < c for i, c in enumerate(sorted(citations, reverse = True)))
 
-# V1 : dev 
-# class Solution(object):
-# 	def hIndex(self, citations):
-# 		"""
-# 		:type citations: List[int]
-# 		:rtype: int
-# 		"""
-# 		if len(citations) <=1:
-# 			return 0
-# 		citations.sort(reverse=True)
-# 		for i in range(len(citations)):
-# 			if (i+1) > (len(citations) - (i+1)):
-# 				return i+1
-# 			else:
-# 				pass  
+# V1''''
+# http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
+class Solution(object):
+    def hIndex(self, citations):
+        """
+        :type citations: List[int]
+        :rtype: int
+        """
+        N = len(citations)
+        for i, c in enumerate(sorted(citations)):
+            if N - i <= c:
+                return N - i
+        return 0
 
-# V3 
-# Time:  O(n)
-# Space: O(n)
+# V1'''''
+# http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
+class Solution(object):
+    def hIndex(self, citations):
+        """
+        :type citations: List[int]
+        :rtype: int
+        """
+        return max(min(c, len(citations) - i) 
+                for i, c in enumerate(sorted(citations) + [0]))
 
+# V2
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -43,7 +106,6 @@ class Solution(object):
             if h >= i:
                 return i
         return h
-
 
 # V4 
 # Time:  O(nlogn)
@@ -73,7 +135,3 @@ class Solution3(object):
         :rtype: int
         """
         return sum(x >= i + 1 for i, x in enumerate(sorted(citations, reverse=True)))
-
-
-
-
