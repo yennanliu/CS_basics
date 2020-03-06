@@ -897,8 +897,8 @@
 | 750 | [Number Of Corner Rectangles](https://leetcode.com/problems/number-of-corner-rectangles/) | Medium |||
 | 275 | [H-Index II](https://leetcode.com/problems/h-index-ii/) | Medium |||
 | 764 | [Largest Plus Sign](https://leetcode.com/problems/largest-plus-sign/) | Medium |||
-| 784 | [Letter Case Permutation](https://leetcode.com/problems/letter-case-permutation/) | Medium |||
-| 801 | [Minimum Swaps To Make Sequences Increasing](https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/) | Medium |||
+| 784 | [Letter Case Permutation](https://leetcode.com/problems/letter-case-permutation/) | Medium ||| AGAIN****** (2)
+| 801 | [Minimum Swaps To Make Sequences Increasing](https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/) | Medium |||  AGAIN***** (not start) (2)
 
 
 ## Fallible
