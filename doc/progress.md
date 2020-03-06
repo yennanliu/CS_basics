@@ -54,7 +54,7 @@
 
 - DONE : 
 	- go through `SQL` quesitons (AGAIN, OK)
-	- data_structure :
+	- data_structure : array, queue, stack, hash-table, tree
 	- `# 801 Minimum Swaps To Make Sequences Increasing`  AGAIN
 	- `# 784 Letter Case Permutation` AGAIN
 	- `# 274 H-Index`

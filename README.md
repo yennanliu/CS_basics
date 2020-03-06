@@ -83,7 +83,7 @@
 ||Stack| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/stack.py), [JS stack (via linkedlist)](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/stack_linkedlist.js), [JS - stack (via array)](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/stack_array.js) | | | OK|
 ||LinkedList| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/linkedList.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/linkedlist.js) | | | OK**|
 ||Doubly LinkedList| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/doublylinkedlist.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/doublylinkedList.js) | | | AGAIN|
-||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | OK|
+||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | AGAIN**|
 ||Trie| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/trie.py) | | | AGAIN|
 ||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | AGAIN|
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN*|
