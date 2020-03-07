@@ -13,7 +13,29 @@ Note: The length of the given binary array will not exceed 50,000.
 
 """
 
-# V0 
+# V0
+# IDEA : SET UP A DICT, cur_sum, ans 
+# -> TO SAVE THE LENGTH OF SUB ARRAY WHEN COUNT OF 0 = COUNT OF 1, AND UPDATE cur_sum, ans  BY CASES 
+# -> RETURN THE MAX OF THE ans 
+class Solution:
+    def findMaxLength(self, nums):
+        index_sum = {}
+        cur_sum = 0
+        ans = 0
+        for i in range(len(nums)):
+            if nums[i] == 0: 
+                cur_sum -= 1
+            else: 
+                cur_sum += 1
+            if cur_sum == 0: 
+                ans = i+1
+            elif cur_sum in index_sum: 
+                ans = max(ans, i-index_sum[cur_sum])
+            if cur_sum not in index_sum: 
+                index_sum[cur_sum] = i
+        return ans
+
+# V0' 
 class Solution(object):
     def findMaxLength(self, nums):
         """
@@ -56,7 +78,6 @@ class Solution:
                 ans = max(ans, i-index_sum[cur_sum])
             if cur_sum not in index_sum: 
                 index_sum[cur_sum] = i
-
         return ans
 
 # V1' 

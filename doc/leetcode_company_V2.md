@@ -890,7 +890,7 @@
 | 535 | [Encode and Decode TinyURL](https://leetcode.com/problems/encode-and-decode-tinyurl/) | Medium |||
 | 653 | [Two Sum IV - Input is a BST](https://leetcode.com/problems/two-sum-iv-input-is-a-bst/) | Medium |||
 | 673 | [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) | Medium |||
-| 525 | [Contiguous Array](https://leetcode.com/problems/contiguous-array/) | Medium |||
+| 525 | [Contiguous Array](https://leetcode.com/problems/contiguous-array/) | Medium |||  AGAIN****** (3)
 | 637 | [Average of Levels in Binary Tree](https://leetcode.com/problems/average-of-levels-in-binary-tree/) | Easy ||| OK* (2)
 | 578 | [Get Highest Answer Rate Question](https://leetcode.com/articles/get-highest-answer-rate-question/) | Medium ||| AGAIN*
 | 572 | [Subtree of Another Tree](https://leetcode.com/problems/construct-string-from-binary-tree/) | Easy ||| AGAIN**** (2)
