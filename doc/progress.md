@@ -45,8 +45,7 @@
  	-  `## 535 Encode and Decode TinyURL`
  	-  `## 653 Two Sum IV - Input is a BST`
  	-  `## 673 Number of Longest Increasing Subsequence`
- 	-  `## 525 Contiguous Array`
- 
+ 	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
  	-  Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
@@ -61,6 +60,7 @@
 	- `# 572 Subtree of Another Tree`
 	- `# 578 Get Highest Answer Rate Question`
 	- `# 637 Average of Levels in Binary Tree`
+	-  `## 525 Contiguous Array`
 
 # 2020-03-05
 
