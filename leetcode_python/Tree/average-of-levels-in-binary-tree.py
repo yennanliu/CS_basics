@@ -6,17 +6,17 @@ class Solution(object):
         :rtype: List[float]
         """
         res = []
-        self.getLevel(root, 0, res)
+        self.dfs(root, 0, res)
         return [sum(line) / float(len(line)) for line in res]
     
-    def getLevel(self, root, level, res):
+    def dfs(self, root, level, res):
         if not root:
             return
         if level >= len(res):
             res.append([])
         res[level].append(root.val)
-        self.getLevel(root.left, level + 1, res)
-        self.getLevel(root.right, level + 1, res)
+        self.dfs(root.left, level + 1, res)
+        self.dfs(root.right, level + 1, res)
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79088554
