@@ -46,7 +46,6 @@
  	-  `## 653 Two Sum IV - Input is a BST`
  	-  `## 673 Number of Longest Increasing Subsequence`
  	-  `## 525 Contiguous Array`
- 	-  `# 637 Average of Levels in Binary Tree`
  
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -61,6 +60,7 @@
 	- `# 275 H-Index II`
 	- `# 572 Subtree of Another Tree`
 	- `# 578 Get Highest Answer Rate Question`
+	- `# 637 Average of Levels in Binary Tree`
 
 # 2020-03-05
 
