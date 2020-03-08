@@ -1,15 +1,17 @@
+# V0
+class Solution(object):
+    def convertToTitle(self, n):
+        tar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        result = ""
+        while n > 0:
+            m = (n-1) % 26
+            result += tar[m]
+            if m == 0:
+                n = n + 1
+            n = (n-1) // 26
+        return result[::-1]
 
-
-# V1  : dev 
-
-# class Solution(object):
-# 	def convertToTitle(self, n):
-# 		inverse_alphabet_dict = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H', 9: 'I', 10: 'J', 11: 'K', 12: 'L', 13: 'M', 14: 'N', 15: 'O', 16: 'P', 17: 'Q', 18: 'R', 19: 'S', 20: 'T', 21: 'U', 22: 'V', 23: 'W', 24: 'X', 25: 'Y', 26: 'Z'}
-# 		r = int(n%26) 
-# 		q = int((n - (n%26 ))/26)
-# 		return inverse_alphabet_dict[q] + inverse_alphabet_dict[r] 
-
-# V2 
+# V1
 # https://www.jianshu.com/p/591d3a2ab45d
 class Solution(object):
     def convertToTitle(self, n):
@@ -20,23 +22,50 @@ class Solution(object):
             result += tar[m]
             if m == 0:
                 n = n + 1
-            n = (n-1) / 26
+            n = (n-1) // 26
         return result[::-1]
 
-# V3 
-# Time:  O(logn)
-# Space: O(1)
-
+# V1
+# https://www.cnblogs.com/loadofleaf/p/5093574.html
+# python 2
 class Solution(object):
     def convertToTitle(self, n):
         """
         :type n: int
         :rtype: str
         """
-        result, dvd = "", n
+        res = ""
+        while n:
+            h = (n - 1) % 26
+            res = chr(ord('A') + h) + res
+            n = (n - 1) / 26
+        return res
+        
+# V1''
+# https://blog.csdn.net/coder_orz/article/details/51406455
+class Solution(object):
+    # transform   26 Carry ->  10 Carry (Decimal)  
+    def titleToNumber(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        sum = 0
+        for c in s:
+            sum = sum*26 + ord(c) - 64 # 64 = ord('A') - 1
+        return sum
 
-        while dvd:
-            result += chr((dvd - 1) % 26 + ord('A'))
-            dvd = (dvd - 1) / 26
-
-        return result[::-1]
+# V2 
+# Time:  O(n)
+# Space: O(1)
+class Solution(object):
+    def titleToNumber(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        result = 0
+        for i in range(len(s)):
+            result *= 26
+            result += ord(s[i]) - ord('A') + 1
+        return result
