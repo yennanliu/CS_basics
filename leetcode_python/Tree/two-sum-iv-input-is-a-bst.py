@@ -1,4 +1,22 @@
 # V0
+# IDEA : DFS
+class Solution(object):
+    def findTarget(self, root, k):
+        """
+        :type root: TreeNode
+        :type k: int
+        :rtype: bool
+        """
+        def dfs(root):
+            if not root:
+                return False
+            if k - root.val in res:
+                return True
+            res.add(root.val)
+            return dfs(root.left) or dfs(root.right)
+        # use Set() here
+        res = set()
+        return dfs(root)
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79120732
@@ -36,7 +54,6 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
 class Solution(object):
     def findTarget(self, root, k):
         """
@@ -101,7 +118,6 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
 class Solution(object):
     def findTarget(self, root, k):
         """

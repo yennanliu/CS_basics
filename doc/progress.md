@@ -43,7 +43,6 @@
  	-  `## 080 Remove Duplicates from Sorted Array II`
  	-  `## 168 Excel Sheet Column Title`
  	-  `## 535 Encode and Decode TinyURL`
- 	-  `## 653 Two Sum IV - Input is a BST`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -61,6 +60,7 @@
 	- `# 637 Average of Levels in Binary Tree`
 	-  `## 525 Contiguous Array`
  	-  `## 673 Number of Longest Increasing Subsequence`
+  	-  `## 653 Two Sum IV - Input is a BST`
 
 # 2020-03-06
 
