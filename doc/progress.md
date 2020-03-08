@@ -42,11 +42,11 @@
  	-  `# 268 Missing Number`
  	-  `## 080 Remove Duplicates from Sorted Array II`
  	-  `## 168 Excel Sheet Column Title`
- 	-  `## 535 Encode and Decode TinyURL`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
  	-  Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
+ 	- `bfs.py`
 
 - DONE : 
 	- go through `SQL` quesitons (AGAIN, OK)
@@ -61,6 +61,7 @@
 	-  `## 525 Contiguous Array`
  	-  `## 673 Number of Longest Increasing Subsequence`
   	-  `## 653 Two Sum IV - Input is a BST`
+  	-  `## 535 Encode and Decode TinyURL`
 
 # 2020-03-06
 
