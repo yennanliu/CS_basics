@@ -880,7 +880,7 @@
 | 116 | [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)| Medium |||
 | 69 | [Sqrt(x)](https://leetcode.com/problems/sqrtx/) | Medium |||
 | 461 | [Hamming Distance](https://leetcode.com/problems/hamming-distance/) | Medium |||
-| 221 | [Maximal Square](https://leetcode.com/problems/maximal-square/) | Medium |||
+| 221 | [Maximal Square](https://leetcode.com/problems/maximal-square/) | Medium |||  AGAIN** (3) (not start)
 | 274 | [H-Index](https://leetcode.com/problems/h-index/) | Medium |||
 | 234 | [Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) | Medium ||| OK* (2)
 | 404 | [Sum of Left Leaves](https://leetcode.com/problems/sum-of-left-leaves/) | Medium |||  AGAIN*** (2) 
