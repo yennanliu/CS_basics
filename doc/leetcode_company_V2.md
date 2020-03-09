@@ -882,7 +882,7 @@
 | 461 | [Hamming Distance](https://leetcode.com/problems/hamming-distance/) | Medium |||
 | 221 | [Maximal Square](https://leetcode.com/problems/maximal-square/) | Medium |||
 | 274 | [H-Index](https://leetcode.com/problems/h-index/) | Medium |||
-| 234 | [Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) | Medium |||
+| 234 | [Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) | Medium ||| OK* (2)
 | 404 | [Sum of Left Leaves](https://leetcode.com/problems/sum-of-left-leaves/) | Medium |||  AGAIN*** (2) 
 | 268 |  [Missing Number](https://leetcode.com/problems/missing-number/)  | Medium ||| OK* (2)
 | 080 | [Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-duplicates-from-sorted-array-ii.py) | Medium ||| AGAIN******* (3)
