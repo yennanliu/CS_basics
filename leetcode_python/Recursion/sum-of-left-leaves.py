@@ -1,4 +1,41 @@
-# V0 : DEV 
+"""
+LeetCode 404. Sum of Left Leaves
+
+Find the sum of all left leaves in a given binary tree.
+
+Example:
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+
+There are two left leaves in the binary tree, with values 9 and 15 respectively. Return 24.
+
+"""
+# V0 
+class Solution:
+    def sumOfLeftLeaves(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root: return 0
+        self.sum = 0
+        self.inOrder(root)
+        return self.sum
+
+    def inOrder(self, root):
+        if not root: return 
+        if root.left:
+            self.inOrder(root.left)
+            ### BE AWARE OF BELOW CONDITION :
+            # -> ONLY CONSIDER THE LEFT SUB-TREE (AT THE END) 
+            if not root.left.left and not root.left.right:
+                self.sum += root.left.val
+        if root.right:
+            self.inOrder(root.right)
 
 # V1
 # http://bookshadow.com/weblog/2016/09/25/leetcode-sum-of-left-leaves/ 
@@ -15,6 +52,51 @@ class Solution(object):
                 ans += l.val
             ans += self.sumOfLeftLeaves(l) + self.sumOfLeftLeaves(r)
         return ans
+
+# V1'
+# https://blog.csdn.net/fuxuemingzhu/article/details/54178595
+class Solution:
+    def sumOfLeftLeaves(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root: return 0
+        self.sum = 0
+        self.inOrder(root)
+        return self.sum
+
+    def inOrder(self, root):
+        if not root: return 
+        if root.left:
+            self.inOrder(root.left)
+            if not root.left.left and not root.left.right:
+                self.sum += root.left.val
+        if root.right:
+            self.inOrder(root.right)
+
+# V1''
+# https://blog.csdn.net/fuxuemingzhu/article/details/54178595
+class Solution:
+    def sumOfLeftLeaves(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root: return 0
+        stack = []
+        stack.append(root)
+        leftsum = 0
+        while stack:
+            node = stack.pop()
+            if not node: continue
+            if node.left:
+                if not node.left.left and not node.left.right:
+                    leftsum += node.left.val
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+        return leftsum
 
 # V2 
 # Time:  O(n)
@@ -35,7 +117,7 @@ class Solution(object):
 
         return sumOfLeftLeavesHelper(root, False)
 
-# V1' 
+# V2' 
 class Solution(object):
     def sumOfLeftLeavesHelper(self, root, is_left):
         if not root:

@@ -38,7 +38,6 @@
  	-  `# 461 Hamming Distance`
  	-  `## 221 Maximal Square`
  	-  `# 234 Palindrome Linked List`
- 	-  `# 404 Sum of Left Leaves`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -63,6 +62,7 @@
   	-  `## 380 Insert Delete GetRandom O(1)`
    	-  `## 080 Remove Duplicates from Sorted Array II`
   	-  `# 268 Missing Number`
+  	-  `# 404 Sum of Left Leaves`
 
 # 2020-03-08
 
