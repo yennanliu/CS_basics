@@ -39,7 +39,6 @@
  	-  `## 221 Maximal Square`
  	-  `# 234 Palindrome Linked List`
  	-  `# 404 Sum of Left Leaves`
- 	-  `# 268 Missing Number`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -63,7 +62,7 @@
   	-  `## 168 Excel Sheet Column Title`
   	-  `## 380 Insert Delete GetRandom O(1)`
    	-  `## 080 Remove Duplicates from Sorted Array II`
-
+  	-  `# 268 Missing Number`
 
 # 2020-03-08
 
