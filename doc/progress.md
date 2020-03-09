@@ -33,7 +33,6 @@
  	-  `# 344 Increasing Triplet Subsequence`
  	-  `# 235 Lowest Common Ancestor of a Binary Search Tree`
  	-  `# 714 Best Time to Buy and Sell Stock with Transaction Fee`
- 	-  `# 116 Populating Next Right Pointers in Each Node`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -63,6 +62,7 @@
   	-  `## 221 Maximal Square`
    	-  `# 461 Hamming Distance`
   	-  `# 69 Sqrt(x)`
+  	-  `# 116 Populating Next Right Pointers in Each Node`
 
 # 2020-03-08
 
