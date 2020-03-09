@@ -876,7 +876,7 @@
 | 377 | [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/) | Medium |||
 | 344 | [Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/) | Medium |||
 | 235 | [Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)  | Easy |||
-| 714 | [Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)   | Easy |||
+| 714 | [Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)| Medium ||| AGAIN******** (3)
 | 116 | [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)| Medium ||| AGAIN**** (3)
 | 69 | [Sqrt(x)](https://leetcode.com/problems/sqrtx/) | Medium ||| OK* (2)
 | 461 | [Hamming Distance](https://leetcode.com/problems/hamming-distance/) | Medium ||| OK* (2)
