@@ -1,7 +1,22 @@
 # V0
+# IDEA : DP 
+# IDEA : DEFINE 2 VARIABLE : cash, hold
+# -> cash : the max revenue when HOLD NO STOCK
+#            => cases : 1) not buy stock today 2) sales stock today
+# -> hold : the max revenue when HOLD THE STOCK
+#            => cases : 1) buy stock today 2) not sales stock today
+class Solution:
+    def maxProfit(self, prices, fee):
+        cash = 0
+        hold = -prices[0]
+        for i in range(1, len(prices)):
+            cash = max(cash, hold + prices[i] - fee)
+            hold = max(hold, cash - prices[i])
+        return cash
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79888528
+# IDEA : DP 
 class Solution:
     def maxProfit(self, prices, fee):
         """
