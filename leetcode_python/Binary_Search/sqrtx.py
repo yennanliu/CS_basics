@@ -1,4 +1,19 @@
 # V0 
+# IDEA : binary search 
+class Solution(object):
+    def mySqrt(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+        low, high, mid = 0, x, (x+0)//2
+        while low <= high:
+            if mid * mid > x:
+                high = mid - 1
+            else:
+                low = mid + 1
+            mid = (low+high)//2
+        return mid
 
 # V1 
 # http://bookshadow.com/weblog/2015/08/29/leetcode-sqrtx/
@@ -53,5 +68,4 @@ class Solution(object):
                 right = mid - 1
             else:
                 left = mid + 1
-
         return left - 1
