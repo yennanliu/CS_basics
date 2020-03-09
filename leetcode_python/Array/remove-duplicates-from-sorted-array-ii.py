@@ -11,6 +11,26 @@
 #
 
 # V0 
+# IDEA : TWO POINTER
+# TO NOTE : have to the list IN PLACE
+# DEMO
+# nums = [1,1,1,2,2,3]
+# [1, 1, 1, 2, 2, 3]
+# [1, 1, 1, 2, 2, 3]
+# [1, 1, 1, 2, 2, 3]
+# [1, 1, 1, 2, 2, 3]
+# [1, 1, 2, 2, 2, 3]
+# [1, 1, 2, 2, 2, 3]
+# 5
+class Solution(object):
+    def removeDuplicates(self, nums):
+        i = 0
+        for n in nums:
+            if i < 2 or n != nums[i - 2]: # i < 2 : for dealing with i < 2 cases (i.e. i=0, i=1, i=2)
+                # modify the list IN PLACE
+                nums[i] = n
+                i += 1
+        return i
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82829709
@@ -29,22 +49,23 @@ class Solution(object):
 
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82829709
-class Solution(object):
-    def removeDuplicates(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
-        N = len(nums)
-        if N <= 1: return N
-        left, right = 0, 1
-        while right < N:
-            while right < N and nums[right] == nums[left]:
-                right += 1
-            left += 1
-            if right < N:
-                nums[left] = nums[right]
-        return left
+# NEET TO DOUBLE CHECK / FIX 
+# class Solution(object):
+#     def removeDuplicates(self, nums):
+#         """
+#         :type nums: List[int]
+#         :rtype: int
+#         """
+#         N = len(nums)
+#         if N <= 1: return N
+#         left, right = 0, 1
+#         while right < N:
+#             while right < N and nums[right] == nums[left]:
+#                 right += 1
+#             left += 1
+#             if right < N:
+#                 nums[left] = nums[right]
+#         return left
 
 # V2 
 # Time:  O(n)
