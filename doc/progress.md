@@ -35,7 +35,6 @@
  	-  `# 714 Best Time to Buy and Sell Stock with Transaction Fee`
  	-  `# 116 Populating Next Right Pointers in Each Node`
  	-  `# 69 Sqrt(x)`
- 	-  `# 461 Hamming Distance`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -63,6 +62,7 @@
   	-  `# 404 Sum of Left Leaves`
   	-  `# 234 Palindrome Linked List`
   	-  `## 221 Maximal Square`
+   	-  `# 461 Hamming Distance`
 
 # 2020-03-08
 
