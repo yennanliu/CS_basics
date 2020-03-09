@@ -40,7 +40,6 @@
  	-  `# 234 Palindrome Linked List`
  	-  `# 404 Sum of Left Leaves`
  	-  `# 268 Missing Number`
- 	-  `## 080 Remove Duplicates from Sorted Array II`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -63,6 +62,8 @@
   	-  `## 535 Encode and Decode TinyURL`
   	-  `## 168 Excel Sheet Column Title`
   	-  `## 380 Insert Delete GetRandom O(1)`
+   	-  `## 080 Remove Duplicates from Sorted Array II`
+
 
 # 2020-03-08
 
