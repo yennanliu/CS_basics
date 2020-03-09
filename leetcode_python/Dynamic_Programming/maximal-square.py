@@ -1,6 +1,6 @@
-# V0 : DEV 
+# V0  
 
-# V1 :
+# V1 
 # http://bookshadow.com/weblog/2015/06/03/leetcode-maximal-square/
 # dynamic programming state equation :
 # dp[x][y] = min(dp[x - 1][y - 1], dp[x][y - 1], dp[x - 1][y]) + 1
@@ -21,10 +21,31 @@ class Solution:
                 ans = max(ans, dp[x][y])
         return ans * ans
 
+# V1'
+# https://blog.csdn.net/fuxuemingzhu/article/details/82992233
+class Solution(object):
+    def maximalSquare(self, matrix):
+        """
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+        if not matrix: return 0
+        M = len(matrix)
+        N = len(matrix[0])
+        dp = [[0] * N for _ in range(M)]
+        for i in range(M):
+            dp[i][0] = int(matrix[i][0])
+        for j in range(N):
+            dp[0][j] = int(matrix[0][j])
+        for i in range(1, M):
+            for j in range(1, N):
+                if int(matrix[i][j]) == 1:
+                    dp[i][j] = min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]) + 1
+        return max(map(max, dp)) ** 2
+
 # V2 
 # Time:  O(n^2)
 # Space: O(n)
-
 class Solution(object):
     # @param {character[][]} matrix
     # @return {integer}
@@ -56,7 +77,6 @@ class Solution(object):
                     size[i % 2][j] = 0
 
         return max_size * max_size
-
 
 # Time:  O(n^2)
 # Space: O(n^2)
@@ -93,10 +113,7 @@ class Solution2(object):
 
         return max_size * max_size
 
-
-# Time:  O(n^2)
-# Space: O(n^2)
-# DP.
+# V2
 class Solution3(object):
     # @param {character[][]} matrix
     # @return {integer}
