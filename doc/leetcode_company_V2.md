@@ -872,7 +872,7 @@
 | 554 | [Brick Wall](https://leetcode.com/problems/brick-wall/) | Medium |||
 | 071 | [Simplify Path](https://leetcode.com/problems/simplify-path/) | Medium |||
 | 090 | [Subsets II](https://leetcode.com/problems/subsets-ii/) | Medium |||
-| 028 | [Implement strStr()](https://leetcode.com/problems/implement-strstr/) | Medium |||
+| 028 | [Implement strStr()](https://leetcode.com/problems/implement-strstr/) | Medium ||| OK* (2)
 | 377 | [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/) | Medium ||| AGAIN******** (3)
 | 334 | [Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/) | Medium ||| AGAIN**** (3)
 | 235 | [Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)  | Easy ||| OK*** (3) 
