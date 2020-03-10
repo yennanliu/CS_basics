@@ -25,7 +25,6 @@
  	-  `## 494 Target Sum`
  	-  `# 477 Total Hamming Distance`
  	-  `# 554 Brick Wall`
- 	-  `# 071 Simplify Path`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -64,6 +63,7 @@
  	-  `# 28 Implement strStr()`
  	-  `## 90 Subsets II`
  	-  `# 078 Subsets`
+ 	-  `# 071 Simplify Path`
 
 # 2020-03-09
 
