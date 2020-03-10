@@ -1,4 +1,36 @@
-# V0 
+# V0
+# IDEA : GO THROUGH ALL BST (no need to use BFS, or DFS, can just use BST property)
+# THIS METHOD IS MORE GENERAL
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+        pathp = self.findPath(root, p)
+        pathq = self.findPath(root, q)
+        res = root
+        for i in range(1, min(len(pathp), len(pathq))):
+            if pathp[i] == pathq[i]:
+                res = pathp[i]
+        return res
+
+
+    def findPath(self, root, p):
+        path = []
+        while root.val != p.val:
+            path.append(root)
+            if p.val > root.val:
+                root = root.right
+            elif p.val < root.val:
+                root = root.left
+        path.append(p)
+        return path
+
+# V0'
+# IDEA : BST PROPERTY
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         """
@@ -16,7 +48,8 @@ class Solution(object):
             else:
                 return pointer
 
-# V0'
+# V0''
+# IDEA : BST PROPERTY
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         if not root or root == q or root == p:
@@ -25,8 +58,8 @@ class Solution(object):
             return  self.lowestCommonAncestor(root.left, p, q)
         elif p.val > root.val and q.val > root.val:
             return self.lowestCommonAncestor(root.right, p, q)
-        return root 
-        
+        return root
+
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51498796
 # Definition for a binary tree node.
