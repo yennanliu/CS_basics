@@ -162,11 +162,11 @@ FROM
 - https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/delete-duplicate-emails.sql
 ->
 ```sql
-
-DELETE a 
-FROM 
-table a, table b
-WHERE a.id = b.id AND a.timestamp > b.timestamp
+DELETE a
+FROM TABLE a,
+           TABLE b
+WHERE a.id = b.id
+  AND a.timestamp > b.timestamp
 ```
 - Follow up : if in the "whole column duplicate" case?
 ->
@@ -197,8 +197,8 @@ WHERE id IN
         FROM test) sub
      WHERE order_ > 2 )
 
+-- delete duplicated
 -- V2
-
 DELETE FROM test
 WHERE id IN (
   SELECT calc_id FROM (
