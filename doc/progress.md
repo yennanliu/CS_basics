@@ -28,7 +28,6 @@
  	-  `# 554 Brick Wall`
  	-  `# 071 Simplify Path`
  	-  `## 90 Subsets II`
- 	-  `# 28 Implement strStr()`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -64,7 +63,7 @@
  	-  `# 334 Increasing Triplet Subsequence`
  	-  DELETE duplicated (whole columns duplicated) records from table 
  	-  `## 377 Combination Sum IV`
-
+ 	-  `# 28 Implement strStr()`
 
 # 2020-03-09
 
