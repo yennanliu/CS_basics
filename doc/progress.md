@@ -29,13 +29,11 @@
  	-  `# 071 Simplify Path`
  	-  `## 90 Subsets II`
  	-  `# 28 Implement strStr()`
- 	-  `## 377 Combination Sum IV`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
  	-  Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
  	- `bfs.py`
- 	-  DELETE duplicated (whole columns duplicated) records from table 
 
 - DONE : 
 	- go through `SQL` quesitons (AGAIN, OK)
@@ -64,6 +62,9 @@
   	-  `# 714 Best Time to Buy and Sell Stock with Transaction Fee`
  	-  `# 235 Lowest Common Ancestor of a Binary Search Tree`
  	-  `# 334 Increasing Triplet Subsequence`
+ 	-  DELETE duplicated (whole columns duplicated) records from table 
+ 	-  `## 377 Combination Sum IV`
+
 
 # 2020-03-09
 
