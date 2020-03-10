@@ -1,4 +1,26 @@
-# V0 
+# V0
+# IDEA : DFS 
+# SAME AS # 90 subset-ii 
+class Solution(object):
+    def subsets(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        def dfs(depth, start, valueList):
+            if valueList not in res:
+                res.append(valueList)
+            if depth == len(nums):
+                return
+            for i in range(start, len(nums)):
+                dfs(depth + 1, i + 1, valueList+[nums[i]])
+        
+        nums.sort()
+        res = []
+        dfs(0, 0, [])
+        return res
+
+# V0' 
 # IDEA : DFS
 class Solution:
     """
@@ -18,7 +40,6 @@ class Solution:
             combination.append(nums[i])
             self.dfs(nums, i + 1, combination, combinations)
             combination.pop()
-
 
 # V1
 # https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python

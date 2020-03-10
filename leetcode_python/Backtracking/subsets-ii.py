@@ -22,6 +22,7 @@ class Solution(object):
 # V1
 # IDEA : DFS 
 # https://www.cnblogs.com/loadofleaf/p/5395066.html
+#  SAME AS # 78 subset
 class Solution(object):
     def subsetsWithDup(self, nums):
         """
