@@ -35,6 +35,7 @@
  	- ` # 764 Largest Plus Sign`
  	-  Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
  	- `bfs.py`
+ 	-  DELETE duplicated (whole columns duplicated) records from table 
 
 - DONE : 
 	- go through `SQL` quesitons (AGAIN, OK)
