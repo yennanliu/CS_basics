@@ -24,7 +24,6 @@
  	-  `## 602 Friend Requests II: Who Has Most Friend? `
  	-  `## 494 Target Sum`
  	-  `# 477 Total Hamming Distance`
- 	-  `# 554 Brick Wall`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -64,6 +63,7 @@
  	-  `## 90 Subsets II`
  	-  `# 078 Subsets`
  	-  `# 071 Simplify Path`
+ 	-  `# 554 Brick Wall`
 
 # 2020-03-09
 
