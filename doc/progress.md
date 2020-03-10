@@ -16,7 +16,6 @@
 
 - TODO :
 	-  go through `leetcode_company_V1`
- 	-  `# 078 Subsets`
  	-  `# 285 Inorder Successor in BST`
  	-  `# 602 Friend request II`
  	-  `# 670 Maximum Swap`
@@ -27,7 +26,6 @@
  	-  `# 477 Total Hamming Distance`
  	-  `# 554 Brick Wall`
  	-  `# 071 Simplify Path`
- 	-  `## 90 Subsets II`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -64,6 +62,8 @@
  	-  DELETE duplicated (whole columns duplicated) records from table 
  	-  `## 377 Combination Sum IV`
  	-  `# 28 Implement strStr()`
+ 	-  `## 90 Subsets II`
+ 	-  `# 078 Subsets`
 
 # 2020-03-09
 

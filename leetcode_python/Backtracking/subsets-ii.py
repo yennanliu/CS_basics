@@ -1,6 +1,47 @@
 # V0 
+# IDEA : DFS
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        def dfs(depth, start, valueList):
+            if valueList not in res:
+                res.append(valueList)
+            if depth == len(nums):
+                return
+            for i in range(start, len(nums)):
+                dfs(depth + 1, i + 1, valueList+[nums[i]])
+        
+        nums.sort()
+        res = []
+        dfs(0, 0, [])
+        return res
 
 # V1
+# IDEA : DFS 
+# https://www.cnblogs.com/loadofleaf/p/5395066.html
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        def dfs(depth, start, valueList):
+            if valueList not in res:
+                res.append(valueList)
+            if depth == len(nums):
+                return
+            for i in range(start, len(nums)):
+                dfs(depth + 1, i + 1, valueList+[nums[i]])
+        
+        nums.sort()
+        res = []
+        dfs(0, 0, [])
+        return res
+
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79785548
 # IDEA : BACKTRACKING  + DFS 
 # DEMO :
@@ -49,7 +90,34 @@ class Solution(object):
         res.append(path)
         for i in range(index, len(nums)):
             self.dfs(nums, i + 1, res, path + [nums[i]]) # [] + [1] = [1], [] + [1] + [2] = [1,2]
-            
+
+# V1''
+# https://www.jianshu.com/p/b6c831622498
+from itertools import combinations
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        res = []
+        nums.sort()
+        for i in range(len(nums) + 1):
+            temp = combinations(nums, i)
+            guo = [list(i) for i in set(temp)]
+            res.extend(guo)
+        return res
+
+# V1'''
+# https://www.jianshu.com/p/b6c831622498
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        res = [[]]
+        nums.sort()
+        temp = 0
+        for i in range(len(nums) + 1):
+            start = temp if i >= 1 and nums[i] == nums[i -1] else 0
+            temp = len(res)
+            for j in range(start, temp):
+                res.append(res[j] + [nums[i]])
+        return res
+
 # V2 
 # Time:  O(n * 2^n)
 # Space: O(1)
@@ -72,7 +140,6 @@ class Solution(object):
             previous_size = size
         return result
 
-
 # Time:  O(n * 2^n) ~ O((n * 2^n)^2)
 # Space: O(1)
 class Solution2(object):
@@ -93,9 +160,7 @@ class Solution2(object):
             if cur not in result:
                 result.append(cur)
             i += 1
-
         return result
-
 
 # Time:  O(n * 2^n) ~ O((n * 2^n)^2)
 # Space: O(1)
