@@ -874,7 +874,7 @@
 | 090 | [Subsets II](https://leetcode.com/problems/subsets-ii/) | Medium |||
 | 028 | [Implement strStr()](https://leetcode.com/problems/implement-strstr/) | Medium |||
 | 377 | [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/) | Medium |||
-| 344 | [Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/) | Medium |||
+| 334 | [Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/) | Medium ||| AGAIN**** (3)
 | 235 | [Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)  | Easy ||| OK*** (3) 
 | 714 | [Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)| Medium ||| AGAIN******** (3)
 | 116 | [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)| Medium ||| AGAIN**** (3)

@@ -1,4 +1,22 @@
 # V0 
+# IDEA : MAINTAIN var a, b 
+#        AND GO THROUGH nums to check if there exists x (on the right hand side of a, b )
+#        such that x > a > b 
+class Solution(object):
+    def increasingTriplet(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        a = b = None
+        for n in nums:
+            if a is None or a >= n:    # min element (1st element) : a 
+                a = n
+            elif b is None or b >= n:  # 2nd min element (2nd element) : b
+                b = n
+            else:                      # 3rd min element (3nd element) : return Ture if this case exists
+                return True
+        return False
 
 # V1 
 # http://bookshadow.com/weblog/2016/02/16/leetcode-increasing-triplet-subsequence/

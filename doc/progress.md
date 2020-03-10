@@ -30,7 +30,6 @@
  	-  `## 90 Subsets II`
  	-  `# 28 Implement strStr()`
  	-  `## 377 Combination Sum IV`
- 	-  `# 344 Increasing Triplet Subsequence`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -63,6 +62,7 @@
   	-  `# 116 Populating Next Right Pointers in Each Node`
   	-  `# 714 Best Time to Buy and Sell Stock with Transaction Fee`
  	-  `# 235 Lowest Common Ancestor of a Binary Search Tree`
+ 	-  `# 334 Increasing Triplet Subsequence`
 
 # 2020-03-09
 
