@@ -158,3 +158,55 @@ FROM
 
 ```
 
+### 11. Delete duplicate record from table ?
+- https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/delete-duplicate-emails.sql
+->
+```sql
+
+DELETE a 
+FROM 
+table a, table b
+WHERE a.id = b.id AND a.timestamp > b.timestamp
+```
+- Follow up : if in the "whole column duplicate" case?
+->
+```sql
+
+-- build the table 
+CREATE TABLE IF NOT EXIST test( id int, age int);
+TRUNCATE TABLE test; 
+INSERT INTO test VALUES (1,1);
+INSERT INTO test VALUES (2,2);
+INSERT INTO test VALUES (3,3);
+INSERT INTO test VALUES (3,3);
+INSERT INTO test VALUES (3,3);
+INSERT INTO test VALUES (3,3);
+SELECT * FROM test;
+
+-- delete duplicated
+-- V1 
+DELETE
+FROM test
+WHERE id IN
+    (SELECT id
+     FROM
+       (SELECT 
+        id,
+        age,
+        ROW_NUMBER() OVER (PARTITION BY id ORDER BY id) AS order_
+        FROM test) sub
+     WHERE order_ > 2 )
+
+-- V2
+
+DELETE FROM test
+WHERE id IN (
+  SELECT calc_id FROM (
+    SELECT MAX(id) AS calc_id
+    FROM test
+    GROUP BY id, age
+    HAVING COUNT(id) > 1
+  ) temp
+); 
+
+``` 
