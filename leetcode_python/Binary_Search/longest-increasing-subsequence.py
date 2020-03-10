@@ -1,5 +1,13 @@
 # V0
 # IDEA : DP 
+# DP equation : 
+#               -> dp[i] = max(1, dp[j] + 1), while i > j and nums[i] > nums[i]
+#               -> dp[0] = 1 
+# dp[idx] : the longest lengh of the sub-array at index = idx
+# PROCESS : 
+# Start from dp[0], then go through all nums
+# and update dp on the same time
+# then return max(dp) which is the longest lengh of the sub-array  
 # time complexity : O(n^2), space complexity : O(n)
 class Solution:
     def lengthOfLIS(self, nums):
