@@ -869,7 +869,7 @@
 | 602 | [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) | Medium |||
 | 494 | [Target Sum](https://leetcode.com/problems/target-sum/) | Medium |||
 | 477 | [Total Hamming Distance](https://leetcode.com/problems/total-hamming-distance/) | Medium |||
-| 554 | [Brick Wall](https://leetcode.com/problems/brick-wall/) | Medium |||
+| 554 | [Brick Wall](https://leetcode.com/problems/brick-wall/) | Medium |||  OK** (4)
 | 071 | [Simplify Path](https://leetcode.com/problems/simplify-path/) | Medium ||| OK* (3)
 | 090 | [Subsets II](https://leetcode.com/problems/subsets-ii/) | Medium ||| AGAIN*** (3)
 | 028 | [Implement strStr()](https://leetcode.com/problems/implement-strstr/) | Medium ||| OK* (2)
