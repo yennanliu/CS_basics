@@ -62,6 +62,7 @@
   	-  `# 311 Sparse Matrix Multiplication`
   	-  `# 670 Maximum Swap`
 	-  go through `leetcode_company_V1`
+	- SQL deal with NULL value
 
 # 2020-03-10
 
