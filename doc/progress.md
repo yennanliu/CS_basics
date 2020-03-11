@@ -15,8 +15,6 @@
 	-  tricks deal with `string` : `dp`, `two pointers`, `recursion` (?), `union find`, `route compression`
 
 - TODO :
-	-  go through `leetcode_company_V1`
- 	-  `# 670 Maximum Swap`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -62,6 +60,8 @@
   	-  `## 602 Friend Requests II: Who Has Most Friend? `
  	-  `# 285 Inorder Successor in BST`
   	-  `# 311 Sparse Matrix Multiplication`
+  	-  `# 670 Maximum Swap`
+	-  go through `leetcode_company_V1`
 
 # 2020-03-10
 
