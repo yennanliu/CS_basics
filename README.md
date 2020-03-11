@@ -37,6 +37,7 @@
 * [Py TimeComplexity](https://wiki.python.org/moin/TimeComplexity) - Python TimeComplexity doc
 * [Py data model](https://docs.python.org/3/reference/datamodel.html) - Python data model doc 
 * [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
+* [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial 
 
 ## Algorithms content
 
