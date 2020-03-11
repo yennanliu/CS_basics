@@ -387,6 +387,25 @@ SELECT COUNT(id), COUNT(*) ,COUNT(1) FROM user;
 - https://kknews.cc/tech/mro8689.html
 
 ### 17. `Where` VS `Having` in SQL ?
+->
+- The `having` clause works on aggregated data
+- Apart from SELECT queries, you can use WHERE clause with UPDATE and DELETE clause but HAVING clause can only be used with SELECT query.
+- `WHERE` clause is used for filtering rows and it applies on each and every `ow`, while `HAVING` clause is used to filter `groups` in SQL.
+- One syntax level difference between WHERE and HAVING clause is that, former is used before GROUP BY clause, while later is used after GROUP BY clause.
+- When WHERE and HAVING clause are used together in a SELECT query with aggregate function,  WHERE clause is applied first on individual rows and only rows which pass the condition is included for creating groups. Once group is created, HAVING clause is used to filter groups based upon condition specified.
+
+- Example
+```sql
+-- example 1 
+SELECT d.DEPT_NAME, count(e.EMP_NAME) as NUM_EMPLOYEE, avg(e.EMP_SALARY) as AVG_SALARY FROM Employee e,
+Department d WHERE e.DEPT_ID=d.DEPT_ID AND EMP_SALARY > 5000 GROUP BY d.DEPT_NAME HAVING AVG_SALARY > 7000;
+
+-- example 2 
+update DEPARTMENT set DEPT_NAME="NewSales" WHERE DEPT_ID=1 ; 
+
+```
+- https://www.geeksforgeeks.org/having-vs-where-clause-in-sql/
+- https://javarevisited.blogspot.com/2013/08/difference-between-where-vs-having-clause-SQL-databse-group-by-comparision.html
 
 ### 18. `case when.. then.. else end` CASE Expression in SQL ?
 ->
