@@ -900,6 +900,7 @@
 | 764 | [Largest Plus Sign](https://leetcode.com/problems/largest-plus-sign/) | Medium |||
 | 784 | [Letter Case Permutation](https://leetcode.com/problems/letter-case-permutation/) | Medium ||| AGAIN****** (2)
 | 801 | [Minimum Swaps To Make Sequences Increasing](https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/) | Medium |||  AGAIN***** (not start) (2)
+| 670| [Maximum Swap](https://leetcode.com/problems/maximum-swap/) | Medium |||  AGAIN** (2)
 | Bonus | [Determine the 10 most frequent words given a terabyte of strings](https://stackoverflow.com/questions/12525455/most-frequent-words-in-a-terabyte-of-data) | Medium |||
 
 

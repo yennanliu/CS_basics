@@ -1,4 +1,35 @@
 # V0 
+# IDEA :
+# SET UP 2 INDEX : LEFT, RIGHT. FOR COMPARING WITH CURRENT INDEX AND SAVE MAX INDEX 
+# SINCE WE ARE ONLY ALLOWED TO SWAP ONCE TO GET THE MAX VALUE
+# SO WE KEEP UPDATING THE LEFT AND RIGHT INDEX AND GO THOROUGH ALL GIVEN NUM  
+# DEMO :
+# string -> list (python):
+# In [34]: x = "1234"
+# In [35]: x
+# Out[35]: '1234'
+# In [36]: list(x)
+# Out[36]: ['1', '2', '3', '4']
+class Solution(object):
+    def maximumSwap(self, num):
+        """
+        :type num: int
+        :rtype: int
+        """
+        # BE AWARE OF IT 
+        digits = list(str(num))
+        left, right = 0, 0
+        max_idx = len(digits)-1
+        for i in reversed(range(len(digits))):
+            # BE AWARE OF IT 
+            if digits[i] > digits[max_idx]:
+                max_idx = i
+            # BE AWARE OF IT  
+            # if current digit > current max digit -> swap them 
+            elif digits[max_idx] > digits[i]:
+                left, right = i, max_id        # if current max digit > current digit -> save current max digit to right idnex, and save current index to left
+        digits[left], digits[right] = digits[right], digits[left] # swap left and right when loop finished 
+        return int("".join(digits))
 
 # V1 
 # https://www.cnblogs.com/lightwindy/p/9576624.html
@@ -6,6 +37,13 @@
 # SET UP 2 INDEX : LEFT, RIGHT. FOR COMPARING WITH CURRENT INDEX AND SAVE MAX INDEX 
 # SINCE WE ARE ONLY ALLOWED TO SWAP ONCE TO GET THE MAX VALUE
 # SO WE KEEP UPDATING THE LEFT AND RIGHT INDEX AND GO THOROUGH ALL GIVEN NUM  
+# DEMO :
+# string -> list (python):
+# In [34]: x = "1234"
+# In [35]: x
+# Out[35]: '1234'
+# In [36]: list(x)
+# Out[36]: ['1', '2', '3', '4']
 class Solution(object):
     def maximumSwap(self, num):
         """
