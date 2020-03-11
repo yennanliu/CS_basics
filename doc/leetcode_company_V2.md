@@ -868,7 +868,7 @@
 | 285 | [Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/) | Medium | 33.9% | 0.024 |
 | 602 | [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) | Medium |||
 | 494 | [Target Sum](https://leetcode.com/problems/target-sum/) | Medium |||
-| 477 | [Total Hamming Distance](https://leetcode.com/problems/total-hamming-distance/) | Medium |||
+| 477 | [Total Hamming Distance](https://leetcode.com/problems/total-hamming-distance/) | Medium ||| AGAIN*** (not start*) (3)
 | 554 | [Brick Wall](https://leetcode.com/problems/brick-wall/) | Medium |||  OK** (4)
 | 071 | [Simplify Path](https://leetcode.com/problems/simplify-path/) | Medium ||| OK* (3)
 | 090 | [Subsets II](https://leetcode.com/problems/subsets-ii/) | Medium ||| AGAIN*** (3)
