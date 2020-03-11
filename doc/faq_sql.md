@@ -210,3 +210,81 @@ WHERE id IN (
 ); 
 
 ``` 
+
+### 12. SQL deal with NULL value ?
+
+- `IS NULL` VS ` = NULL`
+->
+```sql
+-- select data where SALARY is not null
+ SELECT  ID, NAME, AGE, ADDRESS, SALARY
+   FROM CUSTOMERS
+   WHERE SALARY IS NOT NULL; 
+
+-- select data where SALARY is  null
+ SELECT  ID, NAME, AGE, ADDRESS, SALARY
+   FROM CUSTOMERS
+   WHERE SALARY IS NULL; 
+
+```
+
+- COALESCE
+
+```sql
+
+-- COALESCE
+SELECT StudentId, StudentName, Department, 
+Semester_I, Semester_II, Semester_III,
+COALESCE(Semester_I, Semester_II, Semester_III, 0) AS COALESCE_Result
+FROM StudentDetails
+
+-- above SQL is as same as below 
+-- i.e. COALESCE(a, b, c, 0)
+--  -> is a is not null then a 
+--      -> is b is not null then b
+--          -> is c is not null then c 
+--                -> else 0 
+SELECT StudentId, StudentName, Department, 
+Semester_I, Semester_II, Semester_III,
+COALESCE(Semester_I, Semester_II, Semester_III, 0) AS COALESCE_Result,
+CASE
+  WHEN Semester_I IS NOT NULL THEN Semester_I
+  WHEN Semester_II IS NOT NULL THEN Semester_II
+  WHEN Semester_III IS NOT NULL THEN Semester_III
+  ELSE 0
+END CASE_Result
+FROM StudentDetails
+
+```
+
+- Addition value with Null
+
+```sql
+
+-- Method 1  : IFNULL
+SELECT IFNULL(NULL, 0) + value; 
+
+-- Method 2  : COALESCE
+SELECT COALESCE(NULL, value); 
+
+```
+
+- Any Value + NULL = Any Value?
+
+```sql
+SELECT NULL + 100;
+-- NULL 
+```
+
+- Output of NULL != NULL, NULL = NULL ?
+
+```sql
+SELECT NULL != NULL;
+-- NULL 
+
+SELECT NULL = NULL;
+-- NULL 
+
+```
+- https://www.codeproject.com/Articles/1017058/Handle-NULL-in-SQL-Server
+- https://www.tutorialspoint.com/sql/sql-null-values.htm
