@@ -388,3 +388,38 @@ SELECT COUNT(id), COUNT(*) ,COUNT(1) FROM user;
 
 ### 17. `Where` VS `Having` in SQL ?
 
+### 18. `case when.. then.. else end` CASE Expression in SQL ?
+->
+- Pattern
+```sql
+
+CASE expression   
+    WHEN expression_1 THEN result_1
+    WHEN expression_2 THEN result_2
+    ...
+    WHEN expression_n THEN result_n
+    [ ELSE else_result ]   
+END  
+```
+- Example 
+```sql
+
+SELECT 
+    title, 
+    rating,
+    CASE 
+        WHEN (rating >= 1 AND rating < 2) THEN 'Not so good' 
+        WHEN (rating >= 2 AND rating < 3) THEN 'Limited useful information'
+        WHEN (rating >= 3 AND rating < 4) THEN 'Good book, but nothing special'
+        WHEN (rating >= 4 AND rating < 5) THEN 'Incredbly special'
+        WHEN rating = 5 THEN 'Life changing. Must Read.'
+        ELSE
+            'No rating yet'
+    END AS comment
+FROM 
+    books
+ORDER BY 
+    title;
+```
+- https://www.db2tutorial.com/db2-basics/db2-case-expression/
+- https://chartio.com/resources/tutorials/how-to-use-if-then-logic-in-sql-server/
