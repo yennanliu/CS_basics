@@ -16,11 +16,9 @@
 
 - TODO :
 	-  go through `leetcode_company_V1`
- 	-  `# 285 Inorder Successor in BST`
  	-  `# 602 Friend request II`
  	-  `# 670 Maximum Swap`
  	-  `# 311 Sparse Matrix Multiplication`
- 	-  `# 285 Inorder Successor in BST`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -64,6 +62,7 @@
  	-  `# 554 Brick Wall`
  	-  `## 494 Target Sum`
   	-  `## 602 Friend Requests II: Who Has Most Friend? `
+ 	-  `# 285 Inorder Successor in BST`
 
 # 2020-03-10
 
