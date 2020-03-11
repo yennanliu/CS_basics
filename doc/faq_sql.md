@@ -212,9 +212,10 @@ WHERE id IN (
 ``` 
 
 ### 12. SQL deal with NULL value ?
+->
 
 - `IS NULL` VS ` = NULL`
-->
+
 ```sql
 -- select data where SALARY is not null
  SELECT  ID, NAME, AGE, ADDRESS, SALARY
@@ -240,9 +241,9 @@ FROM StudentDetails
 
 -- above SQL is as same as below 
 -- i.e. COALESCE(a, b, c, 0)
---  -> is a is not null then a 
---      -> is b is not null then b
---          -> is c is not null then c 
+--  -> if a is not null then a 
+--      -> if b is not null then b
+--          -> if c is not null then c 
 --                -> else 0 
 SELECT StudentId, StudentName, Department, 
 Semester_I, Semester_II, Semester_III,
@@ -288,3 +289,38 @@ SELECT NULL = NULL;
 ```
 - https://www.codeproject.com/Articles/1017058/Handle-NULL-in-SQL-Server
 - https://www.tutorialspoint.com/sql/sql-null-values.htm
+
+### 13. When/how sub query ?
+
+- When
+  - A subquery is used to return data that will be used in the main query as a condition to further restrict the data to be retrieved.
+  - A subquery may occur in :
+    - A SELECT clause
+    - A FROM clause
+    - A WHERE clause
+  - The inner query executes first before its parent query so that the results of an inner query can be passed to the outer query.
+
+- How 
+
+```sql
+-- sub-query pattern
+SELECT column_name [, column_name ]
+FROM   table1 [, table2 ]
+WHERE  column_name OPERATOR
+   (SELECT column_name [, column_name ]
+   FROM table1 [, table2 ]
+   [WHERE])
+
+```
+
+- https://www.tutorialspoint.com/sql/sql-sub-queries.htm
+- https://www.w3resource.com/sql/subqueries/understanding-sql-subqueries.php
+- https://www.sqlservertutorial.net/sql-server-basics/sql-server-subquery/
+
+### 14. SQL join VS Sub-query ?
+
+-> By cases. (performance VS readable)
+
+- https://www.quora.com/Which-is-faster-joins-or-subqueries
+- https://stackoverflow.com/questions/2577174/join-vs-sub-query
+- https://stackoverflow.com/questions/3856164/sql-joins-vs-sql-subqueries-performance
