@@ -326,7 +326,132 @@ WHERE  column_name OPERATOR
 - https://stackoverflow.com/questions/3856164/sql-joins-vs-sql-subqueries-performance
 
 ### 15. Explain/demo on `window function` in SQL ?
+->
+- A window function performs a calculation across a set of table rows that are somehow related to the current row
+- Pattern
+- Example
+```sql
+-- example 1 
+SELECT duration_seconds,
+       SUM(duration_seconds) OVER (ORDER BY start_time) AS running_total
+  FROM tutorial.dc_bikeshare_q1_2012
 
+-- example 2 
+SELECT start_terminal,
+       duration_seconds,
+       SUM(duration_seconds) OVER
+         (PARTITION BY start_terminal ORDER BY start_time)
+         AS running_total
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+
+-- example 3 
+SELECT start_terminal,
+       duration_seconds,
+       SUM(duration_seconds) OVER
+         (PARTITION BY start_terminal) AS running_total,
+       COUNT(duration_seconds) OVER
+         (PARTITION BY start_terminal) AS running_count,
+       AVG(duration_seconds) OVER
+         (PARTITION BY start_terminal) AS running_avg
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+
+```
+- ROW_NUMBER()
+  - ROW_NUMBER() does just what it sounds like—displays the number of a given row. It starts are 1 and numbers the rows according to the ORDER BY part of the window statement.
+- Example
+```sql
+SELECT start_terminal,
+       start_time,
+       duration_seconds,
+       ROW_NUMBER() OVER (PARTITION BY start_terminal
+                          ORDER BY start_time)
+                    AS row_number
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+```
+
+- RANK() and DENSE_RANK()
+  - RANK() : is slightly different from ROW_NUMBER(). If you order by start_time, for example, it might be the case that some terminals have rides with two identical start times. In this case, they are given the same rank, whereas ROW_NUMBER() gives them different numbers. In the following query, you notice the 4th and 5th observations for start_terminal 31000—they are both given a rank of 4, and the following result receives a rank of 6:
+  - RANK() would give the identical rows a rank of 2, then skip ranks 3 and 4, so the next result would be 5
+  - DENSE_RANK() would still give all the identical rows a rank of 2, but the following row would be 3—no ranks would be skipped.
+- Example
+```sql
+SELECT start_terminal,
+       duration_seconds,
+       RANK() OVER (PARTITION BY start_terminal
+                    ORDER BY start_time)
+              AS rank
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+
+```
+
+- LAG and LEAD()
+  -  You can use LAG or LEAD to create columns that pull values from other rows—all you need to do is enter which column to pull from and how many rows away you'd like to do the pull. LAG pulls from previous rows and LEAD pulls from following rows
+- Example
+```sql
+-- example 1 
+SELECT start_terminal,
+       duration_seconds,
+       LAG(duration_seconds, 1) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds) AS lag,
+       LEAD(duration_seconds, 1) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds) AS lead
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+ ORDER BY start_terminal, duration_seconds
+
+-- example 2 
+SELECT start_terminal,
+       duration_seconds,
+       duration_seconds -LAG(duration_seconds, 1) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+         AS difference
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+ ORDER BY start_terminal, duration_seconds
+
+```
+
+- NTILE()
+  - You can use window functions to identify what percentile (or quartile, or any other subdivision) a given row falls into. The syntax is NTILE(*# of buckets*). In this case, ORDER BY determines which column to use to determine the quartiles (or whatever number of 'tiles you specify)
+- Example
+```sql
+SELECT start_terminal,
+       duration_seconds,
+       NTILE(4) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+          AS quartile,
+       NTILE(5) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+         AS quintile,
+       NTILE(100) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+         AS percentile
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+ ORDER BY start_terminal, duration_seconds
+
+```
+
+- Can also define window function as alias (Defining a window alias)
+- Example
+```sql
+SELECT start_terminal,
+       duration_seconds,
+       NTILE(4) OVER ntile_window AS quartile,
+       NTILE(5) OVER ntile_window AS quintile,
+       NTILE(100) OVER ntile_window AS percentile
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+WINDOW ntile_window AS
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+ ORDER BY start_terminal, duration_seconds
+```
+- https://mode.com/sql-tutorial/sql-window-functions/
+- https://www.postgresql.org/docs/8.4/functions-window.html
 
 ### 16. Count(`*`) VS Count(1) in SQL ?
 
@@ -476,3 +601,5 @@ SELECT Avg(salary)  --  Sum(salary) / count(salary) = 310/5
 SELECT Avg(Distinct salary) -- = sum(Distinct salary) / Count(Distinct Salary) 
 
 ```
+
+### 21. Explain/demo on `hierarchy select` in SQL ?
