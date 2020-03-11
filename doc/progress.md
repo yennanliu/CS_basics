@@ -7,6 +7,64 @@
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
 
+# 2020-03-11
+
+- DOING :
+	- `Bit Manipulation`
+	- `Recursion`
+	-  tricks deal with `string` : `dp`, `two pointers`, `recursion` (?), `union find`, `route compression`
+
+- TODO :
+	-  go through `leetcode_company_V1`
+ 	-  `# 285 Inorder Successor in BST`
+ 	-  `# 602 Friend request II`
+ 	-  `# 670 Maximum Swap`
+ 	-  `# 311 Sparse Matrix Multiplication`
+ 	-  `# 285 Inorder Successor in BST`
+ 	-  `## 602 Friend Requests II: Who Has Most Friend? `
+ 	-  `## 494 Target Sum`
+ 	-   ==================
+ 	-  `# 750 Number Of Corner Rectangle`
+ 	- ` # 764 Largest Plus Sign`
+ 	-  `# 477 Total Hamming Distance`
+ 	-  Sync `leetcode_company_V1` and `leetcode_company_V2` (fb)
+ 	- `bfs.py`
+
+- DONE : 
+	- go through `SQL` quesitons (AGAIN, OK)
+	- data_structure : array, queue, stack, hash-table, tree
+	- `# 801 Minimum Swaps To Make Sequences Increasing`  AGAIN
+	- `# 784 Letter Case Permutation` AGAIN
+	- `# 274 H-Index`
+	- `# 275 H-Index II`
+	- `# 572 Subtree of Another Tree`
+	- `# 578 Get Highest Answer Rate Question`
+	- `# 637 Average of Levels in Binary Tree`
+	-  `## 525 Contiguous Array`
+ 	-  `## 673 Number of Longest Increasing Subsequence`
+  	-  `## 653 Two Sum IV - Input is a BST`
+  	-  `## 535 Encode and Decode TinyURL`
+  	-  `## 168 Excel Sheet Column Title`
+  	-  `## 380 Insert Delete GetRandom O(1)`
+   	-  `## 080 Remove Duplicates from Sorted Array II`
+  	-  `# 268 Missing Number`
+  	-  `# 404 Sum of Left Leaves`
+  	-  `# 234 Palindrome Linked List`
+  	-  `## 221 Maximal Square`
+   	-  `# 461 Hamming Distance`
+  	-  `# 69 Sqrt(x)`
+  	-  `# 116 Populating Next Right Pointers in Each Node`
+  	-  `# 714 Best Time to Buy and Sell Stock with Transaction Fee`
+ 	-  `# 235 Lowest Common Ancestor of a Binary Search Tree`
+ 	-  `# 334 Increasing Triplet Subsequence`
+ 	-  DELETE duplicated (whole columns duplicated) records from table 
+ 	-  `## 377 Combination Sum IV`
+ 	-  `# 28 Implement strStr()`
+ 	-  `## 90 Subsets II`
+ 	-  `# 078 Subsets`
+ 	-  `# 071 Simplify Path`
+ 	-  `# 554 Brick Wall`
+
 # 2020-03-10
 
 - DOING :
