@@ -324,3 +324,67 @@ WHERE  column_name OPERATOR
 - https://www.quora.com/Which-is-faster-joins-or-subqueries
 - https://stackoverflow.com/questions/2577174/join-vs-sub-query
 - https://stackoverflow.com/questions/3856164/sql-joins-vs-sql-subqueries-performance
+
+### 15. Explain/demo on `window function` in SQL ?
+
+
+### 16. Count(`*`) VS Count(1) in SQL ?
+
+- Difference
+  - Count(col) will only count the `Non-Null` value in the col, neglect NULL. (# of value exist in col) 
+  - Count(1) will count all value (include NULL) in the col anyway. NOT neglect NULL. (# of all record, include Null)
+  - Count(`*`) is `SAME` as Count(1) (consider all columns in table). NOT neglect NULL
+
+- Performance
+  - If col is the primary key, count(col) faster than count(1)
+  - If col is NOT primary key, count(1) faster than count(col)
+  - If there is NO primary key, count(1) faster than count(col)
+  - If there is a primary key, count(col) is the fastest
+
+- example
+```sql
+-- build table 
+CREATE table if not exists user(id int, age int); 
+truncate table user; 
+INSERT INTO user values (1, 10);
+INSERT INTO user values (1, 10);
+INSERT INTO user values (1, 10);
+INSERT INTO user values (1, 10);
+INSERT INTO user values (1, 10);
+INSERT INTO user values (NULL, 10);
+INSERT INTO user values (1, NULL);
+
+-- select 
+SELECT * FROM user;
+
+-- mysql> SELECT * FROM user;
+-- +------+------+
+-- | id   | age  |
+-- +------+------+
+-- |    1 |   10 |
+-- |    1 |   10 |
+-- |    1 |   10 |
+-- |    1 |   10 |
+-- |    1 |   10 |
+-- | NULL |   10 |
+-- |    1 | NULL |
+-- +------+------+
+-- 7 rows in set (0.00 sec)
+
+-- select 
+SELECT COUNT(id), COUNT(*) ,COUNT(1) FROM user;
+
+-- mysql> SELECT COUNT(id), COUNT(*) ,COUNT(1) FROM user;
+-- +-----------+----------+----------+
+-- | COUNT(id) | COUNT(*) | COUNT(1) |
+-- +-----------+----------+----------+
+-- |         6 |        7 |        7 |
+-- +-----------+----------+----------+
+-- 1 row in set (0.00 sec)
+
+```
+
+- https://kknews.cc/tech/mro8689.html
+
+### 17. `Where` VS `Having` in SQL ?
+
