@@ -21,7 +21,6 @@
  	-  `# 670 Maximum Swap`
  	-  `# 311 Sparse Matrix Multiplication`
  	-  `# 285 Inorder Successor in BST`
- 	-  `## 602 Friend Requests II: Who Has Most Friend? `
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -64,6 +63,7 @@
  	-  `# 071 Simplify Path`
  	-  `# 554 Brick Wall`
  	-  `## 494 Target Sum`
+  	-  `## 602 Friend Requests II: Who Has Most Friend? `
 
 # 2020-03-10
 

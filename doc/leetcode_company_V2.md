@@ -866,7 +866,7 @@
 | 896 | [Monotonic Array](https://leetcode.com/problems/monotonic-array/) | Easy | 54.7% | 0.005 | OK
 | 311 | [Sparse Matrix Multiplication](https://leetcode.com/problems/sparse-matrix-multiplication/) | Medium | | | 
 | 285 | [Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/) | Medium | 33.9% | 0.024 |
-| 602 | [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) | Medium |||
+| 602 | [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) | Medium ||| OK* (1)
 | 494 | [Target Sum](https://leetcode.com/problems/target-sum/) | Medium |||  AGAIN***** (1)
 | 477 | [Total Hamming Distance](https://leetcode.com/problems/total-hamming-distance/) | Medium ||| AGAIN*** (not start*) (3)
 | 554 | [Brick Wall](https://leetcode.com/problems/brick-wall/) | Medium |||  OK** (4)
