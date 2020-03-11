@@ -864,7 +864,7 @@
 | 862 | [Shortest Subarray with Sum at Least K](https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/) | Hard | 18.8% | 0.101 |
 | 886 | [Possible Bipartition](https://leetcode.com/problems/possible-bipartition/) | Medium | 38.6% | 0.045 | AGAIN********** (6)
 | 896 | [Monotonic Array](https://leetcode.com/problems/monotonic-array/) | Easy | 54.7% | 0.005 | OK
-| 311 | [Sparse Matrix Multiplication](https://leetcode.com/problems/sparse-matrix-multiplication/) | Medium | | | 
+| 311 | [Sparse Matrix Multiplication](https://leetcode.com/problems/sparse-matrix-multiplication/) | Medium | | | OK** (2)
 | 285 | [Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/) | Medium | 33.9% | 0.024 | OK* (2)
 | 602 | [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) | Medium ||| OK* (1)
 | 494 | [Target Sum](https://leetcode.com/problems/target-sum/) | Medium |||  AGAIN***** (1)

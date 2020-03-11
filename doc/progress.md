@@ -16,9 +16,7 @@
 
 - TODO :
 	-  go through `leetcode_company_V1`
- 	-  `# 602 Friend request II`
  	-  `# 670 Maximum Swap`
- 	-  `# 311 Sparse Matrix Multiplication`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -63,6 +61,7 @@
  	-  `## 494 Target Sum`
   	-  `## 602 Friend Requests II: Who Has Most Friend? `
  	-  `# 285 Inorder Successor in BST`
+  	-  `# 311 Sparse Matrix Multiplication`
 
 # 2020-03-10
 
