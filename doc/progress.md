@@ -22,7 +22,6 @@
  	-  `# 311 Sparse Matrix Multiplication`
  	-  `# 285 Inorder Successor in BST`
  	-  `## 602 Friend Requests II: Who Has Most Friend? `
- 	-  `## 494 Target Sum`
  	-   ==================
  	-  `# 750 Number Of Corner Rectangle`
  	- ` # 764 Largest Plus Sign`
@@ -64,6 +63,7 @@
  	-  `# 078 Subsets`
  	-  `# 071 Simplify Path`
  	-  `# 554 Brick Wall`
+ 	-  `## 494 Target Sum`
 
 # 2020-03-10
 
