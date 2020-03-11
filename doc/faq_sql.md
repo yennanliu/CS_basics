@@ -423,3 +423,37 @@ ORDER BY
 ```
 - https://www.db2tutorial.com/db2-basics/db2-case-expression/
 - https://chartio.com/resources/tutorials/how-to-use-if-then-logic-in-sql-server/
+
+### 20. When to use `right`, `left`, `inner`, `full outer` join?
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/sql_join.jpg" width="500" height="300">
+
+- OUTER join : extends that functionality and also include unmatched rows in the final result
+- LEFT outer : join includes unmatched rows from table written on the left of join predicate. On the other hand, RIGHT OUTER join
+  - LEFT outer join = INNER JOIN + unmatched rows from LEFT table 
+- RIGHT outer : join includes unmatched rows from table written on the left of join predicate. On the other hand, RIGHT OUTER join
+  - RIGHT OUTER join = INNER JOIN + unmatched rows from the right-hand side table.
+
+- https://sqlhints.com/2016/10/15/difference-between-left-outer-join-and-right-outer-join-in-sql-server/
+- https://javarevisited.blogspot.com/2013/05/difference-between-left-and-right-outer-join-sql-mysql.html
+
+### 21. Aggregate function in SQL 
+->
+- https://www.geeksforgeeks.org/aggregate-functions-in-sql/
+
+- Example 
+```
+1) Count()
+2) Sum()
+3) Avg()
+4) Min()
+5) Max()
+```
+```sql
+
+SELECT COUNT()
+SELECT Count(Distinct Salary)
+SELECT Avg(salary)  --  Sum(salary) / count(salary) = 310/5
+SELECT Avg(Distinct salary) -- = sum(Distinct salary) / Count(Distinct Salary) 
+
+```
