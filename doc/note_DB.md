@@ -36,6 +36,25 @@
 		  JSON data for faster access.
 		- Supports materialized views and temporary tables.
 
+	- MySQL VS PostgreSQL
+		- Architecutre
+			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/doc/pic/mysql_architecutre.png" width="500" height="300">
+			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/postgre_architecutre.png" width="500" height="300">
+
+		- License
+		- Development style
+			- MySQL : 
+				- Multi-threading
+				- customized storage engine make saving data more flexible 
+				- Can use `INSERT` command save data to memcached
+				- Can update data from slave server (cluster)
+			- PostgreSQL : 
+				- Multi-processing
+				- data need to be saved at RDBMS (follow strong rules)
+				- Can't update data from slave server (cluster)
+		- Ref
+			- https://medium.com/pgsql-tw/%E8%AD%AF-%E5%85%A8%E9%9D%A2%E6%84%9F%E5%8F%97%E5%AD%B8%E7%BF%92%E8%B3%87%E6%96%99%E5%BA%AB%E7%B3%BB%E7%B5%B1%E7%9A%84%E9%AD%85%E5%8A%9B-anti-pattern-rdb-%E5%92%8C%E7%90%86%E6%83%B3%E7%9A%84%E8%B3%87%E6%96%99%E5%BA%AB%E8%A8%AD%E8%A8%88%E6%98%AF%E4%BB%80%E9%BA%BC%E5%91%A2-d21146896bea
+
 	- MSSQL/DB2/Oracle/SQLITE...
 - No SQL
 	- MongoDB
