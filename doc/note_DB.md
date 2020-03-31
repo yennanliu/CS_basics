@@ -38,9 +38,8 @@
 
 	- MySQL VS PostgreSQL
 		- Architecutre
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/mysql_architecutre.png" width="500" height="300">
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/postgre_architecutre.png" width="500" height="300">
-
+		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/mysql_architecutre.png" width="500" height="300">
+		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/postgre_architecutre.png" width="500" height="300">
 		- License
 		- Development style
 			- MySQL : 
