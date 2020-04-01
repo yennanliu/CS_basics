@@ -18,7 +18,7 @@
 # V0 
 
 
-# V1' 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/51589254
 # IDEA : CONSIDER EACH ROW OF PASCALS TRIANGLE (n > 1)
 # ARE ALWAYS STARTING AND AND END WITH 1, i.e. [1,a,b,c,...,1]
@@ -32,6 +32,15 @@
 # GIVEN res[i][j] = res[i-1][j-1] + res[i-1][j]
 # -> res[2] = [1,2,1]
 # -> res[3] =[1,3,3,1]  = [1,res[2][0]+res[2][1],res[2][1]+res[2][2],1]
+# DEMO
+# In [21]: numRows = 5 
+#     ...: res = []
+#     ...: for i in range(0, numRows):
+#     ...:     res.append([1]*(i+1))
+#     ...: 
+#     ...: print (res)
+#     ...: 
+# [[1], [1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1, 1]]
 class Solution(object):
     def generate(self, numRows):
         """
@@ -41,6 +50,7 @@ class Solution(object):
         res = []
         for i in range(0, numRows):
             res.append([1]*(i+1))
+            # for j in range(1, i) -> make sure j start only when i >= 2 
             for j in range(1, i):
                 res[i][j] = res[i-1][j-1] + res[i-1][j]
         return res
@@ -83,6 +93,23 @@ class Solution(object):
         for i in range(1, numRows):
             res += [map(lambda x, y: x+y, res[-1] + [0], [0] + res[-1])]
         return res[:numRows]
+
+# V1'''
+# IDEA : RECURSION
+# https://stackoverflow.com/questions/30036082/creating-pascals-triangle-using-python-recursion
+class Solution(object):
+    def pascals_triangle(self, rows):
+
+        def combination(n, k):
+            if k == 0 or k == n:
+                return 1
+            return combination(n - 1, k - 1) + combination(n - 1, k)
+        
+        for row in range(rows):
+            answer = ""
+            for column in range( row + 1):
+                answer = answer + str(combination(row, column)) + "\t"
+            print(answer)
 
 # V2 
 # Time:  O(n^2)
