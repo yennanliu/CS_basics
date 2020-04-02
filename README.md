@@ -222,6 +222,7 @@
 010 | [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) | | _O(n)_ | _O(1)_  | Hard |`fb`|  
 056 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/merge-intervals.py)  | _O(n)_ | _O(1)_  | Medium |`good trick`,`twitter`,`M$`,`UBER`,`google`,`fb`| AGAIN******* (3) 
 498 | [Diagonal Traverse](https://leetcode.com/problems/diagonal-traverse/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/diagonal_traverse.py) | _O(n)_ | _O(1)_  | Medium |`matrix`,`google`,`fb`| AGAIN*** (3) (not start)
+1014 | [Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/best_sightseeing_pair.py) | | | Medium |dp, array, good basic, Spotify| AGAIN (not start)
 
 
 
