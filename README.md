@@ -898,7 +898,7 @@
 881 | [Boats to Save People](https://leetcode.com/problems/boats-to-save-people/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/boats-to-save-people.py) | _O(nlogn)_ | _O(n)_ | Medium |`good trick`| OK*
 948 | [Bag of Tokens](https://leetcode.com/problems/bag-of-tokens/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/bag-of-tokens.py)  | _O(nlogn)_ | _O(1)_ | Medium |Two Pointers | AGAIN (not start)
 962 | [Maximum Width Ramp](https://leetcode.com/problems/maximum-width-ramp/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/maximum-width-ramp.py)  | _O(n)_ | _O(n)_ | Medium | Descending Stack |  AGAIN (not start)
-1024 | [Video Stitching](https://leetcode.com/problems/video-stitching/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/video_stitching.py.py) | | | Medium | Spotify | AGAIN (not start)
+1024 | [Video Stitching](https://leetcode.com/problems/video-stitching/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/video_stitching.py) | | | Medium | Spotify | AGAIN (not start)
 
 
 ## Graph 
