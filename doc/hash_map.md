@@ -1,7 +1,15 @@
 # Hash Map ref
+
+## Hash Map Defintion 
+- dev 
+
+## Hash Map Property 
+- dev 
+
+## Hash Map Collision probability
 - extension of "birthday question"
 
-## Birthday question
+### Birthday question
 - https://zh.wikipedia.org/wiki/%E7%94%9F%E6%97%A5%E5%95%8F%E9%A1%8C
 ```
 # Birthday question
@@ -25,13 +33,15 @@ So, the probability of K people in the room BUT ALL WITH UNIQUE  birthday
 # given n people, every person select a value randomly from N differnt values (N is any larger than 0 interger). 
 # p(n) means any 2 persons select THE SAME value, what's p(n)
 
--> p(n) ~= 1 - 1*(exp(n^2/2*N))^(-1)
+-> p(n) ~= 1 - 1*(exp(n^2/2*N))^(-1) # which is as below
 ```
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/collision_probability.png">
 
-## Hash Collision Probabilities
+### Hash Collision Probabilities
 - https://preshing.com/20110504/hash-collision-probabilities/
 - https://cs.stackexchange.com/questions/86065/probability-of-hash-collision-in-the-case-of-two-parallel-hashes
 - https://stackoverflow.com/questions/43715934/probability-of-collisions-in-hash-table
+
 
 ## TODO
 - write it as a blog post
