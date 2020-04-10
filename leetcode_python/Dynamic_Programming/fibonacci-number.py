@@ -1,4 +1,25 @@
 # V0
+# https://github.com/labuladong/fucking-algorithm/blob/master/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%B3%BB%E5%88%97/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E8%AF%A6%E8%A7%A3%E8%BF%9B%E9%98%B6.md
+# TIME COMPLEXITY : 2^N
+# SPACE COMPLEXITY : 1 
+class Solution:
+    def fib(self, N):
+        if N <= 2:
+            return 1
+        return (self.fib(N-1) + self.fib(N-2))
+
+# V0'
+# IDEA : optimized DP
+# TIME COMPLEXITY : N
+# SPACE COMPLEXITY : 1 
+class Solution:
+    def fib(self, N: int) -> int:
+        if N == 0 or N == 1:
+            return N
+        a, b = 0, 1
+        for i in range(1, N):
+            a, b = b, a+b
+        return b
 
 # V1
 # https://blog.csdn.net/zhangpeterx/article/details/100056015
