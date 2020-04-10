@@ -603,3 +603,8 @@ SELECT Avg(Distinct salary) -- = sum(Distinct salary) / Count(Distinct Salary)
 ```
 
 ### 21. Explain/demo on `hierarchy select` in SQL ?
+
+### 22. DB model questions?
+- https://www.toptal.com/data-modeling/interview-questions
+- https://mindmajix.com/data-modeling-interview-questions
+- https://www.indeed.com/career-advice/interviewing/data-modeling-interview-questions
