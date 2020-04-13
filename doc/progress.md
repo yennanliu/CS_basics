@@ -6,6 +6,16 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
+# 2020-04-13
+- DOING : 
+	- AMZ leetcode questions go through
+	- recent intervie recap
+- TODO :
+	- start write "test" when do leetcode questions
+	- time & space complexity analysis
+	- follow up questions
+	- refine preparation method/strategy
+
 # 2020-04-12
 - DOING : 
 	- recent intervie recap
