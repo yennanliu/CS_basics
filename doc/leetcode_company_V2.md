@@ -143,7 +143,7 @@
 | 3 | [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | Medium | 25.0% | 0.106 |
 | 4 | [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) | Hard | 23.9% | 0.039 |
 | 5 | [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | Medium | 25.6% | 0.133 |
-| 7 | [Reverse Integer](https://leetcode.com/problems/reverse-integer/) | Easy | 24.4% | 0.003 |
+| 7 | [Reverse Integer](https://leetcode.com/problems/reverse-integer/) | Easy | 24.4% | 0.003 | OK* (2)
 | 8 | [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/) | Medium | 14.1% | 0.028 |
 | 9 | [Palindrome Number](https://leetcode.com/problems/palindrome-number/) | Easy | 38.5% | 0.011 |
 | 11 | [Container With Most Water](https://leetcode.com/problems/container-with-most-water/) | Medium | 38.9% | 0.006 |
