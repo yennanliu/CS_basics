@@ -121,7 +121,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note           | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/3sum.py)  | _O(n^2)_ | _O(1)_  | Medium    | check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `good basic`, `fb`| OK*** (4)
-016 | [3 Sum Closest](https://leetcode.com/problems/3sum-closest/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/3sum-closest.py) | _O(n^2)_   | _O(1)_  | Medium |`Two Pointers`, `basic`, `trick`| AGAIN**
+016 | [3 Sum Closest](https://leetcode.com/problems/3sum-closest/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/3sum-closest.py) | _O(n^2)_   | _O(1)_  | Medium |`Two Pointers`, `basic`, `good trick`,`3 sum`,amazon| AGAIN**** (2)
 018| [4 Sum](https://leetcode.com/problems/4sum/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/4sum.py)   | _O(n^3)_  | _O(1)_    | Medium  | `k sum`, `Two Pointers`, check `#016 3 sum`, `good trick`, `fb` | AGAIN***** (3)
 026 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-duplicates-from-sorted-array.py) | _O(n)_ | _O(1)_| Easy | `Two Pointers`, `basic`, `trick`,`M$` ,`fb` |  AGAIN****** (3)
 027 | [Remove Element](https://leetcode.com/problems/remove-element/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-element.py) | _O(n)_  | _O(1)_ | Easy  |`basic`| AGAIN* 
@@ -518,7 +518,7 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 007| [Reverse Integer](https://leetcode.com/problems/reverse-integer/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/reverse-integer.py) | _O(1)_ | _O(1)_ | Easy |`0x7FFFFFFF`, amazon| OK* (2) 
 009| [Palindrome Number](https://leetcode.com/problems/palindrome-number/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/palindrome-number.py)  | _O(1)_ | _O(1)_ | Easy |amazon| OK 
-012| [Integer to Roman](https://leetcode.com/problems/integer-to-roman/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/integer-to-roman.py) | _O(n)_ | _O(1)_ | Medium  |`math basic`,`twitter`, `fb`| AGAIN*** (3)
+012| [Integer to Roman](https://leetcode.com/problems/integer-to-roman/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/integer-to-roman.py) | _O(n)_ | _O(1)_ | Medium  |`math basic`,`twitter`, `fb`, amazon| AGAIN*** (3)
 013| [Roman to Integer](https://leetcode.com/problems/roman-to-integer/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/roman-to-integer.py) | _O(n)_ | _O(1)_ | Easy |`UBER`,`amazon`, `fb`| AGAIN*** (3)
 029| [Divide Two Integers](https://leetcode.com/problems/divide-two-integers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/divide-two-integers.py) | _O(1)_ | _O(1)_ | Medium  |`binary search`,`trick`,`fb`| AGAIN*****  (3)
 050| [Pow(x, n)](https://leetcode.com/problems/powx-n/)     | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/powx-n.py) | _O(1)_| _O(1)_| Medium |`good trick`,`fb`| AGAIN****** (3) 
@@ -876,7 +876,7 @@
 ## Greedy 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note   | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-011| [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/container-with-most-water.py)  | _O(n)_ | _O(1)_ | Medium |`two pointers`,`fb`|  OK*
+011| [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/container-with-most-water.py)  | _O(n)_ | _O(1)_ | Medium |`two pointers`,`fb`, amazon|  OK*
 055| [Jump Game](https://leetcode.com/problems/jump-game/)     |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/jump-game.py)  | _O(n)_    | _O(1)_    | Medium         || AGAIN (not start)
 122| [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/best-time-to-buy-and-sell-stock-ii.py) | _O(n)_ | _O(1)_ | Easy |compare with `#309 Best Time to Buy and Sell Stock with Cooldown `, `#714 Best Time to Buy and Sell Stock with Transaction Fee`| OK*
 134| [Gas Station](https://leetcode.com/problems/gas-station/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/gas-station.py)   | _O(n)_    | _O(1)_ | Medium    || AGAIN (not start*)
