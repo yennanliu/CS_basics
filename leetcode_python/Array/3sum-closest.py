@@ -12,6 +12,43 @@
 # The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
 
 # V0 
+# IDEA : SORT + DOUBLE POINTER
+class Solution(object):
+    def threeSumClosest(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        N = len(nums)
+        nums.sort()
+        ### beware of it 
+        res = float('inf') # sum of 3 number
+        ### beware of it 
+        ### go through all elements in nums
+        for t in range(N):
+            i, j = t + 1, N - 1
+            ### beware of it 
+            while i < j:
+                _sum = nums[t] + nums[i] + nums[j]
+                if abs(_sum - target) < abs(res - target):
+                    res = _sum
+                if _sum > target:
+                    j -= 1
+                elif _sum < target:
+                    i += 1
+                else:
+                    return target
+        return res
+
+### test case
+s = Solution()
+assert s.threeSumClosest([], 1) == float('inf')
+assert s.threeSumClosest([-1, 2, 1, -4], 1) == 2 
+assert s.threeSumClosest([-3, 0, 1, 2] , 1) == 0
+assert s.threeSumClosest([2, 0, 1, -3] , 1) == 0
+assert s.threeSumClosest([ 1 for _ in range(100)] , 1) == 3
+assert s.threeSumClosest([ 1 for _ in range(1000)] , 0) == 3
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83116781
