@@ -10,6 +10,7 @@
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent intervie recap
+	- Reverse Integer
 - TODO :
 	- start write "test" when do leetcode questions
 	- time & space complexity analysis

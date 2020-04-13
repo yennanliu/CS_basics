@@ -13,10 +13,13 @@ s = Solution()
 assert s.reverse(0) == 0
 assert s.reverse(10) == 1 
 assert s.reverse(1000) == 1 
-assert s.reverse(0x7FFFFFFF) == 0
 assert s.reverse(-1) == -1
 assert s.reverse(-10) == -1
 assert s.reverse(-1) == -1
+assert s.reverse(0x7FFFFFFF) == 0
+assert s.reverse(-0x7FFFFFFF) == 0
+# to check 
+#assert s.reverse(0x7FFFFFFF - 1) == 0 
 
 # V1 
 class Solution(object):
