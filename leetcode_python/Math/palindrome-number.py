@@ -1,3 +1,25 @@
+# V0
+class Solution(object):
+    # @return a boolean
+    def isPalindrome(self, x):
+        length = len(str(x))
+        if length==1 or length==0:
+            return True
+        if x < 0:
+            return False
+        mid = length//2 
+        return str(x)[:mid] == str(x)[-mid:][::-1]
+
+### test case
+s = Solution()
+assert s.isPalindrome(100) == False
+assert s.isPalindrome(3456) == False
+assert s.isPalindrome(1001) == True
+assert s.isPalindrome(1) == True
+#assert s.isPalindrome(None) == True
+assert s.isPalindrome(10**32 + 1) == True
+assert s.isPalindrome(10**32 + 3) == False
+
 # V1
 import math  
 class Solution(object):
