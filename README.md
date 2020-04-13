@@ -517,7 +517,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 007| [Reverse Integer](https://leetcode.com/problems/reverse-integer/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/reverse-integer.py) | _O(1)_ | _O(1)_ | Easy |`0x7FFFFFFF`, amazon| OK* (2) 
-009| [Palindrome Number](https://leetcode.com/problems/palindrome-number/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/palindrome-number.py)  | _O(1)_ | _O(1)_ | Easy   || OK 
+009| [Palindrome Number](https://leetcode.com/problems/palindrome-number/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/palindrome-number.py)  | _O(1)_ | _O(1)_ | Easy |amazon| OK 
 012| [Integer to Roman](https://leetcode.com/problems/integer-to-roman/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/integer-to-roman.py) | _O(n)_ | _O(1)_ | Medium  |`math basic`,`twitter`, `fb`| AGAIN*** (3)
 013| [Roman to Integer](https://leetcode.com/problems/roman-to-integer/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/roman-to-integer.py) | _O(n)_ | _O(1)_ | Easy |`UBER`,`amazon`, `fb`| AGAIN*** (3)
 029| [Divide Two Integers](https://leetcode.com/problems/divide-two-integers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/divide-two-integers.py) | _O(1)_ | _O(1)_ | Medium  |`binary search`,`trick`,`fb`| AGAIN*****  (3)

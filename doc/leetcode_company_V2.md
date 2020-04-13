@@ -145,7 +145,7 @@
 | 5 | [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | Medium | 25.6% | 0.133 |
 | 7 | [Reverse Integer](https://leetcode.com/problems/reverse-integer/) | Easy | 24.4% | 0.003 | OK* (2)
 | 8 | [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/) | Medium | 14.1% | 0.028 |
-| 9 | [Palindrome Number](https://leetcode.com/problems/palindrome-number/) | Easy | 38.5% | 0.011 |
+| 9 | [Palindrome Number](https://leetcode.com/problems/palindrome-number/) | Easy | 38.5% | 0.011 | OK
 | 11 | [Container With Most Water](https://leetcode.com/problems/container-with-most-water/) | Medium | 38.9% | 0.006 |
 | 12 | [Integer to Roman](https://leetcode.com/problems/integer-to-roman/) | Medium | 47.7% | 0.049 |
 | 13 | [Roman to Integer](https://leetcode.com/problems/roman-to-integer/) | Easy | 49.5% | 0.054 |
