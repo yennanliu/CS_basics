@@ -2,7 +2,7 @@
 # ALGORITHM DEMO : BINARY SEARCH 
 #################################################################
 
-# V0 : DEV 
+# V0  
 
 # V1 
 # http://kuanghy.github.io/2016/06/14/python-bisect
@@ -10,7 +10,9 @@
 def binary_search_recursion(lst, value, low, high):
     if high < low:
         return None
-    mid = (low + high) / 2
+    # better to use mid = low + (high - low) / 2 then mid = (low + high) / 2
+    # since "low + high" may cause "stack overflow" issue when low, high are some big number
+    mid = low + (high - low) / 2
     if lst[mid] > value:
         return binary_search_recursion(lst, value, low, mid-1)
     elif lst[mid] < value:
