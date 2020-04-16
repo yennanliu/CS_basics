@@ -157,7 +157,7 @@
 | 23 | [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) | Hard | 30.3% | 0.638 |
 | 24 | [Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/) | Medium | 40.9% | 0.026 |
 | 25 | [Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/) | Hard | 33.3% | 0.017 |
-| 27 | [Remove Element](https://leetcode.com/problems/remove-element/) | Easy | 42.0% | 0.008 |
+| 27 | [Remove Element](https://leetcode.com/problems/remove-element/) | Easy | 42.0% | 0.008 |  OK* (2) 
 | 31 | [Next Permutation](https://leetcode.com/problems/next-permutation/) | Medium | 29.3% | 0.067 |
 | 32 | [Longest Valid Parentheses](https://leetcode.com/problems/longest-valid-parentheses/) | Hard | 23.8% | 0.03 |
 | 33 | [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | Medium | 32.1% | 0.015 |
