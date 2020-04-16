@@ -7,24 +7,33 @@
 #
 
 # V0 
+# class Solution(object):
+#     def removeElement(self, nums, val):
+#         import collection
+#         num_count = collection.Counter(nums)
+#         return len(nums) - num_count[val]
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51578854
 # IDEA : DOUBLE POINTER 
 class Solution(object):
     def removeElement(self, nums, val):
-        """
-        :type nums: List[int]
-        :type val: int
-        :rtype: int
-        """
         length = 0
         for i in range(len(nums)):
             if nums[i] != val:
                 nums[length] = nums[i]
                 length += 1
         return length
-        
+
+# test case
+s = Solution()
+assert s.removeElement([3,2,2,3], 2) == 2
+assert s.removeElement([3,2,2,3], 3) == 2
+assert s.removeElement([], 3) == 0
+assert s.removeElement([1], 3) == 1
+assert s.removeElement([3], 3) == 0
+assert s.removeElement([_ for _ in range(100)], 3) == 99
+
 # V1' 
 # https://blog.csdn.net/coder_orz/article/details/51578854
 class Solution(object):
