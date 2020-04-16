@@ -153,7 +153,7 @@
 | 17 | [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/) | Medium | 38.2% | 0.059 |
 | 20 | [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/) | Easy | 34.6% | 0.035 |
 | 21 | [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/) | Easy | 43.2% | 0.093 |
-| 22 | [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) | Medium | 50.2% | 0.049 |
+| 22 | [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) | Medium | 50.2% | 0.049 |  AGAIN**** (2)
 | 23 | [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) | Hard | 30.3% | 0.638 |
 | 24 | [Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/) | Medium | 40.9% | 0.026 |
 | 25 | [Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/) | Hard | 33.3% | 0.017 |

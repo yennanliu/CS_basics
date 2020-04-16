@@ -315,7 +315,7 @@
 ## Stack 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note | Status | 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/valid-parentheses.py) | _O(n)_ | _O(n)_ | Easy |`good basic`,`fb`| OK** (3) 
+020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/valid-parentheses.py) | _O(n)_ | _O(n)_ | Easy |`good basic`,`fb`, `amazon`| OK** (3) 
 071| [Simplify Path](https://leetcode.com/problems/simplify-path/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/simplify-path.py) | _O(n)_ | _O(n)_ | Medium |`basic`, `stack`, `fb`| OK* (3)
 101| [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/symmetric-tree.py) | _O(n)_ | _O(h)_ | Easy |`good basic`,`bfs`, `dfs`, `linkedin`, `M$`, `fb`| AGAIN** (3) 
 150| [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/evaluate-reverse-polish-notation.py) | _O(n)_| _O(n)_| Medium          || AGAIN (not start)
@@ -783,7 +783,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note       | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 017| [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/letter-combinations-of-a-phone-number.py)  | _O(n * 4^n)_ | _O(n)_ | Medium |`good trick`,`UBER`, `amazon`, `google`, `fb`| AGAIN***** (3)
-022| [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/generate-parentheses.py) | _O(4^n / n^(3/2))_ | _O(n)_   | Medium   || AGAIN (not start)
+022| [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/generate-parentheses.py) | _O(4^n / n^(3/2))_ | _O(n)_   | Medium  |good basic, DFS, backtracking,`amazon`| AGAIN**** (2)
 039| [Combination Sum](https://leetcode.com/problems/combination-sum/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/combination-sum.py) | _O(k * n^k)_ | _O(k)_ | Medium |`dfs`,`good basic`,`UBER`, `airbnb`, `fb`| OK** (3) (but again)
 040| [Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/combination-sum-ii.py) | _O(k * C(n, k))_| _O(k)_     | Medium   | similar as `#39  Combination Sum`| AGAIN (not start)
 046| [Permutations](https://leetcode.com/problems/permutations/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/permutations.py) | _O(n * n!)_  | _O(n)_ | Medium |`good concept`, `M$`, `linkedin`, `fb`| AGAIN** (3)
