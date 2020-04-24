@@ -8,7 +8,8 @@
 
 # 2020-04-14
 - DONE :
-	- Rotate Image
+	- 048 Rotate Image
+	- 054 Spiral Matrix
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent intervie recap
