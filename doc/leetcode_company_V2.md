@@ -168,7 +168,7 @@
 | 42 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) | Hard | 39.2% | 0.316 |
 | 45 | [Jump Game II](https://leetcode.com/problems/jump-game-ii/) | Hard | 26.4% | 0.019 |
 | 46 | [Permutations](https://leetcode.com/problems/permutations/) | Medium | 50.1% | 0.008 |
-| 48 | [Rotate Image](https://leetcode.com/problems/rotate-image/) | Medium | 44.1% | 0.011 |
+| 48 | [Rotate Image](https://leetcode.com/problems/rotate-image/) | Medium | 44.1% | 0.011 |  OK** (2)
 | 49 | [Group Anagrams](https://leetcode.com/problems/group-anagrams/) | Medium | 41.3% | 0.018 |
 | 50 | [Pow(x, n)](https://leetcode.com/problems/powx-n/) | Medium | 26.6% | 0.055 |
 | 51 | [N-Queens](https://leetcode.com/problems/n-queens/) | Hard | 35.3% | 0.025 |
