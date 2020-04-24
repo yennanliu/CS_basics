@@ -6,10 +6,11 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
-# 2020-04-14
+# 2020-04-24
 - DONE :
 	- 048 Rotate Image
 	- 054 Spiral Matrix
+	- 055 Jump Game
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent intervie recap

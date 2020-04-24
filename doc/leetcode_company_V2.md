@@ -166,7 +166,7 @@
 | 39 | [Combination Sum](https://leetcode.com/problems/combination-sum/) | Medium | 43.7% | 0.064 |
 | 41 | [First Missing Positive](https://leetcode.com/problems/first-missing-positive/) | Hard | 26.8% | 0.03 |
 | 42 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) | Hard | 39.2% | 0.316 |
-| 45 | [Jump Game II](https://leetcode.com/problems/jump-game-ii/) | Hard | 26.4% | 0.019 |
+| 45 | [Jump Game II](https://leetcode.com/problems/jump-game-ii/) | Hard | 26.4% | 0.019 | AGAIN** (2)
 | 46 | [Permutations](https://leetcode.com/problems/permutations/) | Medium | 50.1% | 0.008 |
 | 48 | [Rotate Image](https://leetcode.com/problems/rotate-image/) | Medium | 44.1% | 0.011 |  OK** (2)
 | 49 | [Group Anagrams](https://leetcode.com/problems/group-anagrams/) | Medium | 41.3% | 0.018 |
