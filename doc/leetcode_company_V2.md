@@ -177,7 +177,7 @@
 | 55 | [Jump Game](https://leetcode.com/problems/jump-game/) | Medium | 30.2% | 0.011 |
 | 56 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) | Medium | 33.1% | 0.062 |
 | 59 | [Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/) | Medium | 43.1% | 0.023 | AGAIN** (2)
-| 60 | [Permutation Sequence](https://leetcode.com/problems/permutation-sequence/) | Medium | 30.7% | 0.025 |
+| 60 | [Permutation Sequence](https://leetcode.com/problems/permutation-sequence/) | Medium | 30.7% | 0.025 | AGAIN*** (2)
 | 63 | [Unique Paths II](https://leetcode.com/problems/unique-paths-ii/) | Medium | 32.6% | 0.014 |
 | 64 | [Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/) | Medium | 43.0% | 0.012 |
 | 67 | [Add Binary](https://leetcode.com/problems/add-binary/) | Easy | 35.8% | 0.01 |
