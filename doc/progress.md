@@ -9,7 +9,7 @@
 # 2020-04-25
 - DONE :
 	- 059 Spiral Matrix II
-
+	- 066 Permutation Sequence
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent intervie recap
