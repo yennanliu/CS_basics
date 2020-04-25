@@ -24,8 +24,8 @@
 ## Resource
 
 * [ref.md](https://github.com/yennanliu/CS_basics/blob/master/ref.md) - Leetcode ref
-* [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/mind_map_code_interview.png) - Mind map for coding interview 
-* [CodeInterviewCheatsheet](https://github.com/yennanliu/CS_basics/blob/master/doc/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
+* [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
+* [CodeInterviewCheatsheet](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
 * [repl.it](https://repl.it/) - Coding online!
 * Visualization
 	- [visualgo - DFS / BFS](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
@@ -37,7 +37,10 @@
 * [Py TimeComplexity](https://wiki.python.org/moin/TimeComplexity) - Python TimeComplexity doc
 * [Py data model](https://docs.python.org/3/reference/datamodel.html) - Python data model doc 
 * [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
-* [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial 
+* [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
+* [Books](https://github.com/yennanliu/data_science_repo/tree/master/book)
+* [Cheatsheet](https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet)
+
 
 ## Algorithms content
 
