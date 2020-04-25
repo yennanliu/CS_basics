@@ -136,8 +136,8 @@
 
 ## Amazon
 
-|  #  |      Title     | Difficulty  |  Acceptance  | Frequency |
-|-----|----------------|-------------|--------------|-----------|
+|  #  | Title | Difficulty | Acceptance | Frequency |Status |
+|-----|----------|---------|---------|-----------|----------|
 | 1 | [Two Sum](https://leetcode.com/problems/two-sum/) | Easy | 38.9% | 0.521 |
 | 2 | [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) | Medium | 29.2% | 0.035 |
 | 3 | [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | Medium | 25.0% | 0.106 |
