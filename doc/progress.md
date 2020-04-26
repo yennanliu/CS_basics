@@ -9,6 +9,7 @@
 # 2020-04-26
 - DONE :
 	- 073 Set Matrix Zeroes	
+	- 074 Search a 2D Matrix
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
