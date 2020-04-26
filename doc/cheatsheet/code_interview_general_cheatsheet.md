@@ -1,6 +1,6 @@
-# Coding Interview General Cheatsheet
+# Coding Interview Cheatsheet In General
 
-## Ansering Steps 
+## Answering Steps 
 - 1) Understand the questions (requirement, IO, accepted form)
 - 2) Ask the 
 	- scope 
@@ -22,7 +22,7 @@
 - 5) Run the code 
 	- solve bugs
 	- Explain time & space complexity
-	- valudate the test cases
+	- validate the test cases
 - 6) Following up session 
 	- optimize time & space complexity
 	- if input is scalable

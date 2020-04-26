@@ -186,7 +186,7 @@
 | 71 | [Simplify Path](https://leetcode.com/problems/simplify-path/) | Medium | 27.1% | 0.028 |
 | 72 | [Edit Distance](https://leetcode.com/problems/edit-distance/) | Hard | 34.2% | 0.037 |
 | 73 | [Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes/) | Medium | 37.6% | 0.056 |  OK* (2)
-| 74 | [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/) | Medium | 34.4% | 0.092 |
+| 74 | [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/) | Medium | 34.4% | 0.092 | OK* (2)
 | 75 | [Sort Colors](https://leetcode.com/problems/sort-colors/) | Medium | 40.0% | 0.011 |
 | 76 | [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/) | Hard | 28.2% | 0.075 |
 | 78 | [Subsets](https://leetcode.com/problems/subsets/) | Medium | 47.8% | 0.019 |
