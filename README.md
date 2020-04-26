@@ -23,6 +23,7 @@
 
 ## Resource
 
+* [Resource.md](https://github.com/yennanliu/CS_basics/blob/master/resource.md) - `Resource` for coding interview (**keep updating**)
 * [ref.md](https://github.com/yennanliu/CS_basics/blob/master/ref.md) - Leetcode ref
 * [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
 * [CodeInterviewCheatsheet](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
@@ -38,6 +39,7 @@
 * [Py data model](https://docs.python.org/3/reference/datamodel.html) - Python data model doc 
 * [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
 * [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
+* [SQL zoo](https://sqlzoo.net/) - SQL test
 * [Books](https://github.com/yennanliu/data_science_repo/tree/master/book)
 * [Cheatsheet](https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet)
 
