@@ -23,7 +23,7 @@
 
 ## Resource
 
-* [Resource.md](https://raw.githubusercontent.com/yennanliu/CS_basics/master/doc/Resource.md) - `Resource` for coding interview (**keep updating**)
+* [Resource.md](https://github.com/yennanliu/CS_basics/blob/master/doc/Resource.md) - `Resource` for coding interview (**keep updating**)
 * [ref.md](https://github.com/yennanliu/CS_basics/blob/master/ref.md) - Leetcode ref
 * [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
 * [CodeInterviewCheatsheet](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
