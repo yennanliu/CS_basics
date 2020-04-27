@@ -202,7 +202,7 @@
 | 101 | [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/) | Easy | 41.4% | 0.046 |
 | 102 | [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/) | Medium | 44.7% | 0.046 |
 | 103 | [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/) | Medium | 38.5% | 0.13 |
-| 104 | [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/) | Easy | 56.9% | 0.006 |
+| 104 | [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/) | Easy | 56.9% | 0.006 |  AGAIN**** (2)
 | 110 | [Balanced Binary Tree](https://leetcode.com/problems/balanced-binary-tree/) | Easy | 39.2% | 0.011 |
 | 111 | [Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/) | Easy | 34.1% | 0.011 |
 | 112 | [Path Sum](https://leetcode.com/problems/path-sum/) | Easy | 35.9% | 0.023 |
