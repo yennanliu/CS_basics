@@ -9,6 +9,7 @@
 # 2020-04-27
 - DONE :
 	- 100 Same Tree
+	- 104 Maximum Depth of Binary Tree]
 
 - DOING : 
 	- AMZ leetcode questions go through
