@@ -1,8 +1,29 @@
 # V0 
+# IDEA : GREEDY
+class Solution:
+    def maxProfit(self, prices):
+        profit = 0
+        for i in range(0,len(prices)-1):
+            if prices[i+1] > prices[i]:
+                # have to sale last stock, then buy a now one
+                # and sum up the price difference into profit
+                profit += prices[i+1] - prices[i]
+        return profit
 
 # V1 
 # https://blog.csdn.net/monkeyduck/article/details/38079623
+# IDEA : GREEDY
 # TO CHECK :  LOCAL MAX VS GLOBAL MAX ( DP VS GREEDY)
+# DEMO1
+# prices = [1,2,3]
+# -> when price = 1, => r=0+(2)-1=1
+# -> when price = 2, => r=1+(3)-2=2
+# -> so profit=2
+# DEMO2
+# prices = [7,4,3]
+# -> when price = 7, => r=0
+# -> when price = 4, => r=0+0
+# -> so profit=0
 class Solution:
     # @param prices, a list of integer
     # @return an integer
@@ -11,8 +32,25 @@ class Solution:
         length = len(prices)
         for i in range(0,length-1):
             if prices[i+1] > prices[i]:
+                # have to sale last stock, then buy a now one
+                # and sum up the price difference into profit
                 profit += prices[i+1] - prices[i]
         return profit
+
+### Test case
+s=Solution()
+assert s.maxProfit([1,2,3])==2
+assert s.maxProfit([7,4,3])==0
+assert s.maxProfit([0,1,0])==1
+assert s.maxProfit([])==0
+assert s.maxProfit([0])==0
+assert s.maxProfit([1])==0
+assert s.maxProfit([99])==0
+assert s.maxProfit([1,2])==1
+assert s.maxProfit([-1])==0
+s.maxProfit([-1,-1])==0
+s.maxProfit([-1,-1,-1])==0
+assert s.maxProfit([_ for _ in range(99)])==98
 
 # V2
 # https://blog.csdn.net/coder_orz/article/details/52072136
