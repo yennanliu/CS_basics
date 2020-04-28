@@ -8,6 +8,8 @@
 
 # 2020-04-28
 - DONE :
+	- 122 Best Time to Buy and Sell Stock II
+	- 130 Surrounded Regions
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap

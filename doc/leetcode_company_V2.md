@@ -210,7 +210,7 @@
 | 117 | [Populating Next Right Pointers in Each Node II](https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/) | Medium | 33.5% | 0.019 | AGAIN*** (2)
 | 120 | [Triangle](https://leetcode.com/problems/triangle/) | Medium | 36.5% | 0.019 |
 | 121 | [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/) | Easy | 44.4% | 0.061 |
-| 122 | [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/) | Easy | 49.2% | 0.018 |
+| 122 | [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/) | Easy | 49.2% | 0.018 | OK* (2)
 | 124 | [Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/) | Hard | 28.0% | 0.033 |
 | 125 | [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/) | Easy | 28.5% | 0.008 |
 | 126 | [Word Ladder II](https://leetcode.com/problems/word-ladder-ii/) | Hard | 15.7% | 0.058 |
