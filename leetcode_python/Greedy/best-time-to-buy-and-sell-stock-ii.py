@@ -5,7 +5,7 @@ class Solution:
         profit = 0
         for i in range(0,len(prices)-1):
             if prices[i+1] > prices[i]:
-                # have to sale last stock, then buy a now one
+                # have to sale last stock, then buy a new one
                 # and sum up the price difference into profit
                 profit += prices[i+1] - prices[i]
         return profit
@@ -32,7 +32,7 @@ class Solution:
         length = len(prices)
         for i in range(0,length-1):
             if prices[i+1] > prices[i]:
-                # have to sale last stock, then buy a now one
+                # have to sale last stock, then buy a new one
                 # and sum up the price difference into profit
                 profit += prices[i+1] - prices[i]
         return profit
