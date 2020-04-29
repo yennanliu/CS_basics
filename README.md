@@ -405,7 +405,7 @@
 ## Bit Manipulation 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-136 | [Single Number](https://leetcode.com/problems/single-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number.py) | _O(n)_ | _O(1)_ | Easy|`airbnb`, `fb`| OK 
+136 | [Single Number](https://leetcode.com/problems/single-number/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number.py) | _O(n)_ | _O(1)_ | Easy|`airbnb`,`amazon`,`fb`| OK 
 137 | [Single Number II](https://leetcode.com/problems/single-number-ii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/single-number-ii.py)| _O(n)_ | _O(1)_  | Medium   || OK
 190 | [Reverse Bits](https://leetcode.com/problems/reverse-bits/)  |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/reverse-bits.py) | _O(1)_        | _O(1)_          | Easy       || AGAIN (not stary)
 191  |[Number of 1 Bits](https://leetcode.com/problems/number-of-1-bits/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Bit_Manipulation/number-of-1-bits.py) | _O(1)_ | _O(1)_          | Easy       || OK* 
@@ -621,7 +621,7 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 019| [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/remove-nth-node-from-end-of-list.py) | _O(n)_   | _O(1)_ | Medium |`linked list`,`two pointers`,`fb`| AGAIN**** (3)
 086| [Partition List](https://leetcode.com/problems/partition-list/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/partition-list.py) | _O(n)_       | _O(1)_         | Medium         || OK* 
-141| [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/linked-list-cycle.py) | _O(n)_ | _O(1)_ | Easy |`basic`, `fb`|  OK* (3)
+141| [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/linked-list-cycle.py) | _O(n)_ | _O(1)_ | Easy |`basic`,`amazon`, `fb`|  OK* (3)
 142| [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/linked-list-cycle-ii.py) | _O(n)_ | _O(1)_   | Medium   || AGAIN* (2) (not start)
 143| [Reorder List](https://leetcode.com/problems/reorder-list/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/reorder-list.py)| _O(n)_ |  _O(1)_   | Medium  |`good trick`,`inverse linkedlist`, `merge linkedlist` ,`fb`|  AGAIN**** (4)
 167| [Two Sum II - Input array is sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/two-sum-ii-input-array-is-sorted.py) | _O(n)_   | _O(1)_ | Medium   | `good basic`| OK*  (2)
@@ -925,7 +925,7 @@
 ## Design
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-0146| [LRU Cache](https://leetcode.com/problems/lru-cache/)     | [C++](./C++/lru-cache.cpp) [Python](./Python/lru-cache.py)  | _O(1)_ | _O(k)_ | Hard ||
+0146| [LRU Cache](https://leetcode.com/problems/lru-cache/submissions/)|[Python]((https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Design/lru-cache.py))| _O(1)_ | _O(k)_ | Hard |LRU,Least Recently Used, LinkedHashMap, LinkedList|`amazon`| AGAIN** (not start)
 0225| [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/)     | [C++](./C++/implement-stack-using-queues.cpp) [Python](./Python/implement-stack-using-queues.py)  | push: _O(n)_, pop: _O(1)_, top: _O(1)_ | _O(n)_ | Easy ||
 0284| [Peeking Iterator](https://leetcode.com/problems/peeking-iterator/)| [C++](./C++/peeking-iterator.cpp) [Python](./Python/peeking-iterator.py) | _O(1)_ | _O(1)_ | Medium ||
 0348| [Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Design/design-tic-tac-toe.py) | _O(1)_ | _O(n^2)_ | Medium |🔒, `fb`|  AGAIN** (3)

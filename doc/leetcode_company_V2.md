@@ -225,7 +225,7 @@
 | 139 | [Word Break](https://leetcode.com/problems/word-break/) | Medium | 32.6% | 0.127 |
 | 140 | [Word Break II](https://leetcode.com/problems/word-break-ii/) | Hard | 25.4% | 0.285 |
 | 141 | [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/) | Easy | 34.6% | 0.027 |
-| 146 | [LRU Cache](https://leetcode.com/problems/lru-cache/) | Hard | 21.4% | 1.376 |
+| 146 | [LRU Cache](https://leetcode.com/problems/lru-cache/) | Hard | 21.4% | 1.376 |  AGAIN** (not start)
 | 149 | [Max Points on a Line](https://leetcode.com/problems/max-points-on-a-line/) | Hard | 15.3% | 0.028 |
 | 150 | [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/) | Medium | 29.8% | 0.043 |
 | 151 | [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/) | Medium | 15.7% | 0.011 |
