@@ -9,6 +9,7 @@
 # 2020-04-29
 - DONE :
 	- 131 Palindrome Partitioning
+	- 134 Gas Station
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
