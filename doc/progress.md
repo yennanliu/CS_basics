@@ -10,6 +10,7 @@
 - DONE :
 	- 131 Palindrome Partitioning
 	- 134 Gas Station
+	- 150 Evaluate Reverse Polish Notation
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
