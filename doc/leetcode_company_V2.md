@@ -229,7 +229,7 @@
 | 149 | [Max Points on a Line](https://leetcode.com/problems/max-points-on-a-line/) | Hard | 15.3% | 0.028 |
 | 150 | [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/) | Medium | 29.8% | 0.043 | AGAIN**** (2)
 | 151 | [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/) | Medium | 15.7% | 0.011 |
-| 153 | [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/) | Medium | 41.6% | 0.011 |
+| 153 | [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/) | Medium | 41.6% | 0.011 | AGAIN****** (2)
 | 155 | [Min Stack](https://leetcode.com/problems/min-stack/) | Easy | 33.2% | 0.081 |
 | 160 | [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/) | Easy | 30.7% | 0.036 |
 | 165 | [Compare Version Numbers](https://leetcode.com/problems/compare-version-numbers/) | Medium | 21.6% | 0.187 |
