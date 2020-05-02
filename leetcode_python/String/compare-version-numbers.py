@@ -19,9 +19,28 @@
 #
 
 # V0 
+# IDEA : STRING
+class Solution(object):
+    def compareVersion(self, version1, version2):
+        v1_split = version1.split('.')
+        v2_split = version2.split('.')
+        v1_len, v2_len = len(v1_split), len(v2_split)
+        maxLen = max(v1_len, v2_len)
+        for i in range(maxLen):
+            temp1, temp2 = 0, 0
+            if i < v1_len:
+                temp1 = int(v1_split[i])
+            if i < v2_len:
+                temp2 = int(v2_split[i])
+            if temp1 < temp2:
+                return -1
+            elif temp1 > temp2:
+                return 1
+        return 0
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80821268
+# IDEA : STRING
 class Solution(object):
     def compareVersion(self, version1, version2):
         """
@@ -44,7 +63,19 @@ class Solution(object):
             elif temp1 > temp2:
                 return 1
         return 0
-        
+      
+### Test case
+s=Solution()
+assert s.compareVersion("1.10", "1.9") == 1 
+assert s.compareVersion("1.10", "1.10.10") == -1 
+assert s.compareVersion("1.10.1.2", "1.10.1.3") == -1
+assert s.compareVersion("1.10", "1.10") == 0
+assert s.compareVersion("1.10.1", "1.10.1.1") == -1 
+assert s.compareVersion("0", "0") == 0 
+assert s.compareVersion("7.1", "7.12") == -1
+assert s.compareVersion("0.0.1", "0") == 1
+assert s.compareVersion("0.1", "0.2") == -1
+
 # V2 
 class Solution(object):
     def compareVersion(self, version1, version2):
