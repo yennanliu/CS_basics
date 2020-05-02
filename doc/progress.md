@@ -9,6 +9,7 @@
 # 2020-05-02
 - DONE :
 	- 155 Min Stack
+	- 165 Compare Version Numbers
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
