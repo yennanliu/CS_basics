@@ -10,6 +10,7 @@
 - DONE :
 	- 155 Min Stack
 	- 165 Compare Version Numbers
+	- 167 Two Sum II - Input array is sorted
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
