@@ -1,6 +1,5 @@
-
 # Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
-
+#
 # push(x) -- Push element x onto stack.
 # pop() -- Removes the element on top of the stack.
 # top() -- Get the top element.
@@ -14,8 +13,8 @@
 # minStack.pop();
 # minStack.top();      --> Returns 0.
 # minStack.getMin();   --> Returns -2.
-
-
+#
+#
 # Time:  O(n)
 # Space: O(1)
 #
@@ -26,73 +25,71 @@
 # top() -- Get the top element.
 # getMin() -- Retrieve the minimum element in the stack.
 #
-
+#
 ### Stack : 「Last-In-First-Out」
 ### http://alrightchiu.github.io/SecondRound/stack-introjian-jie.html
 
-# V0 : DEV 
-
-# V1 
-# https://blog.csdn.net/fuxuemingzhu/article/details/51345762
-class MyQueue(object):
+# V0
+# IDEA : STACK
+# IDEA : 
+# -> USE A STACK TO STORAGE MIN VALUE IN THE STACK WHEN EVERY PUSH
+# -> SO WE CAN RETURN getMin IN CONSTANT TIEM VIA STACK ABOVE
+class MinStack(object):
 
     def __init__(self):
         """
-        Initialize your data structure here.
+        initialize your data structure here.
         """
-        self.stack1 = []
-        self.stack2 = []
+        self.stack = []
+        
+    def push(self, x):
+        if not self.stack:
+            self.stack.append((x, x))
+        ### NOTICE HERE 
+        # stack[i][1] save to min value when every push
+        # so the latest min in stack is at stack[-1][1]
+        else:
+            self.stack.append((x, min(x, self.stack[-1][1])))
+        
+    def pop(self):
+        self.stack.pop()
+        
+    def top(self):
+        return self.stack[-1][0]
+        
+    def getMin(self):
+        # the latest min in stack is at stack[-1][1]
+        return self.stack[-1][1]
+
+# V0'
+# IDEA : STACK
+class MinStack(object):
+
+    def __init__(self):
+        self.stack = []
+        self.min = []
+        
 
     def push(self, x):
-        """
-        Push element x to the back of queue.
-        :type x: int
-        :rtype: void
-        """
-        
-        self.stack1.append(x)
+        self.stack.append(x)
+        if not self.min:
+            self.min.append(x)
+        else:
+            self.min.append(min(self.min[-1], x))
 
     def pop(self):
-        """
-        Removes the element from in front of queue and returns that element.
-        :rtype: int
-        """
-        if self.stack2:
-            return self.stack2.pop()
-        else:
-            while self.stack1:
-                self.stack2.append(self.stack1.pop())
-            return self.stack2.pop()
+        self.stack.pop()
+        self.min.pop()
 
-    def peek(self):
-        """
-        Get the front element.
-        :rtype: int
-        """
-        if self.stack2:
-            return self.stack2[-1]
-        else:
-            while self.stack1:
-                self.stack2.append(self.stack1.pop())
-            return self.stack2[-1]
+    def top(self):
+        return self.stack[-1]
 
-    def empty(self):
-        """
-        Returns whether the queue is empty.
-        :rtype: bool
-        """
-        return not self.stack1 and not self.stack2
+    def getMin(self):
+        return self.min[-1]
 
-
-# Your MyQueue object will be instantiated and called as such:
-# obj = MyQueue()
-# obj.push(x)
-# param_2 = obj.pop()
-# param_3 = obj.peek()
-# param_4 = obj.empty()
-
-# V2 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79253237
+# IDEA : STACK
 class MinStack(object):
 
     def __init__(self):
@@ -117,7 +114,7 @@ class MinStack(object):
         """
         :rtype: void
         """
-        self.stack.pop()
+        return self.stack.pop()[0]
         
 
     def top(self):
@@ -133,7 +130,27 @@ class MinStack(object):
         """
         return self.stack[-1][1]
 
-# V2'
+    def print_stack(self):
+        print (self.stack)
+
+### Test case
+s=MinStack()
+assert s.__init__() == None
+assert s.push(-2) == None
+assert s.push(0) == None
+assert s.push(-3) == None
+assert s.getMin() == -3
+assert s.pop() == -3
+assert s.top() ==0
+
+s=MinStack()
+assert s.__init__() == None
+assert s.push(100) == None
+assert s.push(99) == None
+assert s.pop() == 99
+assert s.top() ==100
+
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79253237
 class MinStack(object):
 
@@ -175,7 +192,7 @@ class MinStack(object):
         """
         return self.min[-1]
 
-# V3
+# V1''''
 # https://www.cnblogs.com/zuoyuan/p/4091870.html
 # stack1 : regular stack
 # stack2 : stack for return minimum in-stack element 
@@ -205,7 +222,7 @@ class MinStack:
     def getMin(self):
         return self.stack2[-1]
 
-# V4
+# V1'''''
 class MinStack:
     def __init__(self):
         self.min = None
@@ -240,7 +257,7 @@ class MinStack:
     def getMin(self):
         return self.min
 
-# V5 
+# V1'''''''
 # Time:  O(n)
 # Space: O(n)
 class MinStack2:
@@ -279,7 +296,7 @@ class MinStack2:
 #     stack.push(-1)
 #     print([stack.top(), stack.getMin()])
 
-# V6
+# V1'''''''''
 # Time:  O(n)
 # Space: O(1)
 class MinStack(object):
@@ -316,7 +333,7 @@ class MinStack(object):
     def getMin(self):
         return self.min
 
-# V7' 
+# V2 
 # Time:  O(n)
 # Space: O(n)
 class MinStack2(object):
@@ -350,7 +367,7 @@ class MinStack2(object):
     def getMin(self):
         return self.minStack[-1][0]
 
-# V4''
+# V3
 # time: O(1)
 # space: O(n)
 class MinStack3(object):
