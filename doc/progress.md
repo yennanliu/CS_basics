@@ -9,13 +9,19 @@
 # 2020-05-03
 - DONE :
 	- 198 House Robber
+	- 203 Remove Linked List Elements
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
 - TODO :
+	- ***fibonacci sequence*** -> 1,2,3,5,8,13...
+		- folloing this sequence and re-take the problems after 1,2,3,5... days when first learned it 
+		- ref : [How I learned Mandarin in 18 months](https://www.youtube.com/watch?v=rELeG45fi-w)
+		- Have a script to generate a list for above objects
 	- start write "test" when do leetcode questions
 	- time & space complexity analysis
 	- "algorithm" `abstract form` 
+	- how to write test for - `linked list`
 - REDO:
 	- 063 Unique Paths II
 	- 064 Minimum Path Sum
