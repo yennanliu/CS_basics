@@ -10,18 +10,103 @@
 # determine the maximum amount of money you can rob tonight without alerting the police.
 #
 
-# V0 : DEV ( double check time out error )
-# class Solution(object):
-#     def rob(self, nums):
-#         if len(nums) == 0:
-#             return 0
-#         if len(nums) == 1:
-#             return nums[0]
-#         rob_sum = [ sum(nums[1::n]) for n in range(2,len(nums))   ] + [ sum(nums[0::n])  for n in range(2,len(nums))   ]
-#         return max(rob_sum)
+# V0
+class Solution:
+    # @param num, a list of integer
+    # @return an integer
+    def rob(self, num):
+        size = len(num)
+        dp = [0] * (size + 1)
+        if size:
+            dp[1] = num[0]
+        for i in range(2, size + 1):
+            dp[i] = max(dp[i - 1], dp[i - 2] + num[i - 1])
+        return dp[size]
 
+# V1
+# http://bookshadow.com/weblog/2015/04/01/leetcode-house-robber/
+# IDEA : DP
+class Solution:
+    # @param num, a list of integer
+    # @return an integer
+    def rob(self, num):
+        size = len(num)
+        dp = [0] * (size + 1)
+        if size:
+            dp[1] = num[0]
+        for i in range(2, size + 1):
+            dp[i] = max(dp[i - 1], dp[i - 2] + num[i - 1])
+        return dp[size]
 
-# V1 
+### Test case
+s=Solution()
+assert s.rob([1,2,3]) == 4
+assert s.rob([1,2,3,4]) == 6
+assert s.rob([]) == 0
+assert s.rob([0]) == 0
+assert s.rob([0,0,0,0]) == 0
+assert s.rob([0,1]) == 1
+assert s.rob([0,1,2]) == 2
+assert s.rob([0,1,1,1]) == 2
+assert s.rob([2,7,9,3,1]) == 12
+assert s.rob([1,2,3,1]) == 4
+assert s.rob([ _ for _ in range(99)]) == 2450
+assert s.rob([99,100,3,7,4]) == 107
+
+# V1'
+# http://bookshadow.com/weblog/2015/04/01/leetcode-house-robber/
+# IDEA : DP
+class Solution:
+    # @param num, a list of integer
+    # @return an integer
+    def rob(self, num):
+        size = len(num)
+        odd, even = 0, 0
+        for i in range(size):
+            if i % 2:
+                odd = max(odd + num[i], even)
+            else:
+                even = max(even + num[i], odd)
+        return max(odd, even)
+
+# V1''
+# https://leetcode.com/problems/house-robber/discuss/299056/Python-O(n)-time-O(1)-space-4-lines
+# IDEA : DP
+# time complexity = O(n)
+# space complexity = O(1)
+#
+# Option 1: If rob, then rob = not_rob + nums[i]
+# (max money if rob the current house = max money if not rob the last house + amount of the current house)
+# Option 2: If not rob, then not_rob = max(rob, not_rob)
+# (max money if not rob the current house = max money at the last house, either rob or not rob)
+#
+# Varibles: rob = max money if rob the current house
+# not_rob = max money if not rob the current house.
+# Both variables are initially set to 0
+class Solution(object):
+    def rob(self, nums):
+        rob, not_rob = 0, 0
+        for num in nums:
+            rob, not_rob = not_rob + num, max(rob, not_rob)
+        return max(rob, not_rob)
+
+# V1'''
+# https://leetcode.com/problems/house-robber/discuss/341554/Python-Dynamic-Progranming
+# IDEA : DP
+class Solution(object):
+    def rob(self, nums: List[int]):
+            if not nums:
+                return 0
+            if len(nums) < 2:
+                return nums[0]
+            nums[1] = max(nums[0], nums[1])
+            for i in range(2, len(nums)):
+                # nums[i-2]+nums[i] : rob nums[i]
+                #  nums[i-1] : not rob nums[i]
+                nums[i] = max((nums[i-2]+nums[i]), nums[i-1])
+            return nums[-1]
+
+# V1''''
 # Time:  O(n)
 # Space: O(1)
 class Solution(object):
@@ -69,7 +154,3 @@ class Solution:
         for i in nums:
             last, now = now, max(last + i, now)
         return now
-
-# if __name__ == '__main__':
-#         print Solution().rob([8,4,8,5,9,6,5,4,4,10])
-
