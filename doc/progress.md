@@ -10,6 +10,7 @@
 - DONE :
 	- 198 House Robber
 	- 203 Remove Linked List Elements
+	- 230 Kth Smallest Element in a BST
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
@@ -21,7 +22,7 @@
 	- start write "test" when do leetcode questions
 	- time & space complexity analysis
 	- "algorithm" `abstract form` 
-	- how to write test for - `linked list`
+	- how to write test for - `linked list`, `tree`, `BST`
 - REDO:
 	- 063 Unique Paths II
 	- 064 Minimum Path Sum
