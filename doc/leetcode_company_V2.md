@@ -238,7 +238,7 @@
 | 176 | [Second Highest Salary](https://leetcode.com/problems/second-highest-salary/) | Easy | 24.4% | 0.015 |
 | 179 | [Largest Number](https://leetcode.com/problems/largest-number/) | Medium | 24.3% | 0.023 | AGAIN** (2)
 | 186 | [Reverse Words in a String II](https://leetcode.com/problems/reverse-words-in-a-string-ii/) | Medium | 33.5% | 0.035 |
-| 198 | [House Robber](https://leetcode.com/problems/house-robber/) | Easy | 40.4% | 0.008 |
+| 198 | [House Robber](https://leetcode.com/problems/house-robber/) | Easy | 40.4% | 0.008 | AGAIN*** (2)
 | 199 | [Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view/) | Medium | 44.3% | 0.099 |
 | 200 | [Number of Islands](https://leetcode.com/problems/number-of-islands/) | Medium | 38.0% | 1.263 |
 | 203 | [Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/) | Easy | 34.2% | 0.014 |
