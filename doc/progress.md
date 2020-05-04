@@ -8,7 +8,8 @@
 
 # 2020-05-04
 - DONE :
-	- 230 Power of Two
+	- 231 Power of Two
+	- 232 Implement Queue using Stacks
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
