@@ -253,7 +253,7 @@
 | 221 | [Maximal Square](https://leetcode.com/problems/maximal-square/) | Medium | 31.2% | 0.141 |
 | 224 | [Basic Calculator](https://leetcode.com/problems/basic-calculator/) | Hard | 29.9% | 0.1 |
 | 230 | [Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/) | Medium | 47.5% | 0.079 | AGAIN******* (2) 
-| 231 | [Power of Two](https://leetcode.com/problems/power-of-two/) | Easy | 41.1% | 0.039 |
+| 231 | [Power of Two](https://leetcode.com/problems/power-of-two/) | Easy | 41.1% | 0.039 | OK* (2)
 | 232 | [Implement Queue using Stacks](https://leetcode.com/problems/implement-queue-using-stacks/) | Easy | 39.7% | 0.024 |
 | 235 | [Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/) | Easy | 41.3% | 0.051 |
 | 236 | [Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/) | Medium | 32.0% | 0.107 |
