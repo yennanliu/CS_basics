@@ -10,6 +10,7 @@
 - DONE :
 	- 231 Power of Two
 	- 232 Implement Queue using Stacks
+	- 240 Search a 2D Matrix II
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
