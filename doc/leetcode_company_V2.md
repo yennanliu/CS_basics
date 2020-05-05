@@ -271,7 +271,7 @@
 | 273 | [Integer to English Words](https://leetcode.com/problems/integer-to-english-words/) | Hard | 23.1% | 0.113 |
 | 285 | [Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/) | Medium | 33.9% | 0.024 |
 | 286 | [Walls and Gates](https://leetcode.com/problems/walls-and-gates/) | Medium | 46.5% | 0.041 |
-| 287 | [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | Medium | 46.0% | 0.027 |
+| 287 | [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | Medium | 46.0% | 0.027 | AGAIN**** (not start)
 | 289 | [Game of Life](https://leetcode.com/problems/game-of-life/) | Medium | 39.6% | 0.022 |
 | 295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | Hard | 31.7% | 0.458 |
 | 297 | [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | Hard | 36.7% | 0.164 |
