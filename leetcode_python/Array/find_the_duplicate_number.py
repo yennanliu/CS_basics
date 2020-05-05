@@ -47,7 +47,7 @@ class Solution:
 # https://leetcode.com/articles/find-the-duplicate-number/
 # IDEA : Floyd's Tortoise and Hare (Cycle Detection)
 # IDEA : 
-# 	-> TRANSFORM THE PROBLEM INTO "142 Linked List Cycle II"
+#   -> TRANSFORM THE PROBLEM INTO "142 Linked List Cycle II"
 #   -> SO NOW the problem is to find the entrance of the cycle (cycle linked list)
 class Solution:
     def findDuplicate(self, nums):

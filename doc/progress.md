@@ -9,7 +9,7 @@
 # 2020-05-05
 - DONE :
 	- 251 Flatten 2D Vector
-	- 287 Find the Duplicate Number
+	- 287 Find the Duplicate Number (AGAIN)
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
