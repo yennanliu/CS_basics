@@ -1,17 +1,17 @@
 # Implement an iterator to flatten a 2d vector.
-
+#
 # For example,
 # Given 2d vector =
-
+#
 # [
 #   [1,2],
 #   [3],
 #   [4,5,6]
 # ]
 # By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,2,3,4,5,6].
-
+#
 # Hint:
-
+#
 # How many variables do you need to keep track?
 # Two variables is all you need. Try with x and y.
 # Beware of empty rows. It could be the first few rows.
@@ -21,6 +21,38 @@
 # Common logic in two different places should be refactored into a common method.
 
 # V0 
+class Vector2D(object):
+
+    def __init__(self, vec2d):
+        self.row, self.col, self.vec2d = 0, 0, vec2d
+        
+    def next(self):
+        """
+        move to next at same layer 
+        e.g. [1,2,3] from 1->2
+        """
+        self.col += 1
+        return self.vec2d[self.row][self.col - 1] # fix the idx (start from 0)
+        
+    def hasNext(self):
+        """
+        check if there is "next layer"
+        e.g.
+        [ 
+        [1,2],
+        [3,4,5]
+        ]
+        -> yes
+        """
+        # while 
+        # -> 1) still has next layer (self.row < len(self.vec2d))
+        # -> 2) still col > current layer length 
+        #   if yes, so move to next layer (self.row, self.col = self.row + 1, 0)
+        #   if no, check if  self.row < len(self.vec2d)
+        while self.row < len(self.vec2d) and \
+            self.col >= len(self.vec2d[self.row]):
+            self.row, self.col = self.row + 1, 0
+        return self.row < len(self.vec2d)
 
 # V1
 # https://www.jiuzhang.com/solution/flatten-2d-vector/#tag-highlight-lang-python
@@ -31,14 +63,12 @@ class Vector2D(object):
         # Initialize your data structure here
         self.row, self.col, self.vec2d = 0, 0, vec2d
         
-
     # @return {int} a next element
     def next(self):
         # Write your code here
         self.col += 1
         return self.vec2d[self.row][self.col - 1]
         
-
     # @return {boolean} true if it has next element
     # or false
     def hasNext(self):
@@ -47,6 +77,79 @@ class Vector2D(object):
             self.col >= len(self.vec2d[self.row]):
             self.row, self.col = self.row + 1, 0
         return self.row < len(self.vec2d)
+
+### Test case
+# 1 
+vec2d=[
+    [1,2],
+    [3],
+    [4,5,6]
+] 
+v=Vector2D(vec2d)
+r=[]
+while v.hasNext():
+    #print (v.next())
+    r.append(v.next())
+assert r==[1,2,3,4,5,6]
+# 2
+vec2d=[
+    [],
+    []
+] 
+v=Vector2D(vec2d)
+r=[]
+while v.hasNext():
+    #print (v.next())
+    r.append(v.next())
+assert r==[]
+# 3
+vec2d=[
+    []
+] 
+v=Vector2D(vec2d)
+r=[]
+while v.hasNext():
+    #print (v.next())
+    r.append(v.next())
+assert r==[]
+# 4
+vec2d=[
+    [],
+    [1,2],
+    [],
+    [99,100]
+] 
+v=Vector2D(vec2d)
+r=[]
+while v.hasNext():
+    #print (v.next())
+    r.append(v.next())
+assert r==[1,2,99,100]
+# 5
+vec2d=[
+    [],
+    [1,2],
+    [99,100],
+    []
+] 
+v=Vector2D(vec2d)
+r=[]
+while v.hasNext():
+    #print (v.next())
+    r.append(v.next())
+assert r==[1,2,99,100]
+# 6
+vec2d=[
+    [99,100],
+    [99,100],
+    [99,100]
+] 
+v=Vector2D(vec2d)
+r=[]
+while v.hasNext():
+    #print (v.next())
+    r.append(v.next())
+assert r==[99,100,99,100,99,100]
 
 # V1'
 # https://www.jiuzhang.com/solution/flatten-2d-vector/#tag-highlight-lang-python
@@ -82,8 +185,46 @@ class Vector2D(object):
             return True
             
         return False
-        
-# V1'' 
+
+# V1''
+# https://github.com/criszhou/LeetCode-Python/blob/master/251.%20Flatten%202D%20Vector.py
+class Vector2D(object):
+    def __init__(self, vec2d):
+        """
+        Initialize your data structure here.
+        :type vec2d: List[List[int]]
+        """
+        self.vec2d = vec2d
+        self.i1 = 0 # outer level index
+        self.i2 = 0 # inner level index
+
+        self._moveToValid()
+
+    def _moveToValid(self):
+        """
+        move i1 and i2 to a valid position, so that self.vec2d[self.i1][self.i2] is valid
+        """
+        while self.i1 < len(self.vec2d) and self.i2 >= len(self.vec2d[self.i1]):
+            self.i1 += 1
+            self.i2 = 0
+
+    def next(self):
+        """
+        :rtype: int
+        """
+        ret = self.vec2d[self.i1][self.i2]
+        self.i2 += 1
+        self._moveToValid()
+
+        return ret
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return self.i1 < len(self.vec2d)
+
+# V1'''
 # http://www.voidcn.com/article/p-qxkyrjri-zo.html
 class Vector2D(object):
 
