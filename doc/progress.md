@@ -9,6 +9,7 @@
 # 2020-05-06
 - DONE :
 	- 289 Game of Life
+	- 295 Find Median from Data Stream (AGAIN)
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
