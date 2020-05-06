@@ -401,6 +401,7 @@
 378 | [Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Heap/kth-smallest-element-in-a-sorted-matrix.py)  | _O(k * log(min(n, m, k)))_ | _O(min(n, m, k))_ | Medium | LintCode | AGAIN (not start)
 846 | [Hand of Straights](https://leetcode.com/problems/hand-of-straights/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Heap/hand-of-straights.py) | _O(nlogn)_ | _O(n)_ | Medium || OK*
 855 | [Exam Room](https://leetcode.com/problems/exam-room/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Heap/exam-room.py)  | seat: _O(logn)_ <br> leave: _O(logn)_ | _O(n)_ | Medium | BST, Hash, `trick` | AGAIN* (2) (not start)
+295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Heap/find_median_from_data_stream.py)  | | | Hard |heap, stream, `amazon`|  AGAIN*** (3)(not start)
 
 
 ## Bit Manipulation 
