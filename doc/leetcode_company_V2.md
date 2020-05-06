@@ -272,7 +272,7 @@
 | 285 | [Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/) | Medium | 33.9% | 0.024 |
 | 286 | [Walls and Gates](https://leetcode.com/problems/walls-and-gates/) | Medium | 46.5% | 0.041 |
 | 287 | [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | Medium | 46.0% | 0.027 | AGAIN**** (not start)
-| 289 | [Game of Life](https://leetcode.com/problems/game-of-life/) | Medium | 39.6% | 0.022 |
+| 289 | [Game of Life](https://leetcode.com/problems/game-of-life/) | Medium | 39.6% | 0.022 |  AGAIN*** 
 | 295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | Hard | 31.7% | 0.458 |
 | 297 | [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | Hard | 36.7% | 0.164 |
 | 300 | [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) | Medium | 39.3% | 0.024 |
