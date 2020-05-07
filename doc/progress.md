@@ -10,6 +10,7 @@
 - DONE : 
 	- 322 Coin Change (AGAIN)
 	- 380 Insert Delete GetRandom O(1)
+	- 394 Decode String
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
