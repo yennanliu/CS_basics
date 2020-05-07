@@ -273,6 +273,7 @@
 | 286 | [Walls and Gates](https://leetcode.com/problems/walls-and-gates/) | Medium | 46.5% | 0.041 |
 | 287 | [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | Medium | 46.0% | 0.027 | AGAIN**** (not start)
 | 289 | [Game of Life](https://leetcode.com/problems/game-of-life/) | Medium | 39.6% | 0.022 |  AGAIN*** 
+
 | 295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | Hard | 31.7% | 0.458 | AGAIN*** (3)(not start)
 | 297 | [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | Hard | 36.7% | 0.164 |
 | 300 | [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) | Medium | 39.3% | 0.024 |
@@ -280,7 +281,7 @@
 | 314 | [Binary Tree Vertical Order Traversal](https://leetcode.com/problems/binary-tree-vertical-order-traversal/) | Medium | 38.7% | 0.13 |
 | 315 | [Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/) | Hard | 35.6% | 0.072 |
 | 317 | [Shortest Distance from All Buildings](https://leetcode.com/problems/shortest-distance-from-all-buildings/) | Hard | 35.3% | 0.07 |
-| 322 | [Coin Change](https://leetcode.com/problems/coin-change/) | Medium | 27.3% | 0.138 |
+| 322 | [Coin Change](https://leetcode.com/problems/coin-change/) | Medium | 27.3% | 0.138 | AGAIN** (not start)
 | 329 | [Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) | Hard | 37.8% | 0.03 |
 | 341 | [Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/) | Medium | 44.4% | 0.02 |
 | 347 | [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) | Medium | 51.0% | 0.064 |
