@@ -9,6 +9,7 @@
 # 2020-05-07
 - DONE : 
 	- 322 Coin Change (AGAIN)
+	- 380 Insert Delete GetRandom O(1)
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap

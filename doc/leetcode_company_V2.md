@@ -284,7 +284,7 @@
 | 329 | [Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) | Hard | 37.8% | 0.03 |
 | 341 | [Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/) | Medium | 44.4% | 0.02 |
 | 347 | [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) | Medium | 51.0% | 0.064 |
-| 380 | [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/) | Medium | 40.6% | 0.214 |
+| 380 | [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/) | Medium | 40.6% | 0.214 |  OK* (2)
 | 387 | [First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/) | Easy | 47.6% | 0.116 |
 | 394 | [Decode String](https://leetcode.com/problems/decode-string/) | Medium | 42.2% | 0.02 |
 | 445 | [Add Two Numbers II](https://leetcode.com/problems/add-two-numbers-ii/) | Medium | 47.4% | 0.024 |
