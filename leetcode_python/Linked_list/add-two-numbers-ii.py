@@ -1,8 +1,31 @@
 # V0
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        if not l1 and not l2:
+            return None
+
+        l1_num = 0
+        while l1:
+            l1_num = l1_num * 10 + l1.val
+            l1 = l1.next
+
+        l2_num = 0
+        while l2:
+            l2_num = l2_num * 10 + l2.val
+            l2 = l2.next
+
+        lsum = l1_num + l2_num
+
+        head = ListNode(None)
+        cur = head
+        for istr in str(lsum):
+            cur.next = ListNode(int(istr))
+            cur = cur.next
+        return head.next
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79380457
-# IDEA : STRING 
+# IDEA : STRING  + LINKED LIST
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -32,7 +55,56 @@ class Solution(object):
             head = head.next
         return answer
 
-# V1' 
+### Test case : dev
+
+# V1'
+# https://leetcode.com/problems/add-two-numbers-ii/discuss/241079/Fast-Python3-Solution
+# IDEA : LINKED LIST
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        if not l1 and not l2:
+            return None
+
+        l1_num = 0
+        while l1:
+            l1_num = l1_num * 10 + l1.val
+            l1 = l1.next
+
+        l2_num = 0
+        while l2:
+            l2_num = l2_num * 10 + l2.val
+            l2 = l2.next
+
+        lsum = l1_num + l2_num
+
+        head = ListNode(None)
+        cur = head
+        for istr in str(lsum):
+            cur.next = ListNode(int(istr))
+            cur = cur.next
+
+        return head.next
+
+# V1''
+# https://leetcode.com/problems/add-two-numbers-ii/discuss/92682/Naive-Python-Solution
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        c1, c2 = '', ''
+        while l1:
+            c1 += str(l1.val)
+            l1 = l1.next
+        while l2:
+            c2 += str(l2.val)
+            l2 = l2.next
+        num = str(int(c1) + int(c2))
+        dummy = ListNode(0)
+        c = dummy
+        for i in range(len(num)):
+            c.next = ListNode(num[i])
+            c = c.next
+        return dummy.next
+
+# V1''' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79380457
 # IDEA : STACK 
 # Definition for singly-linked list.
@@ -76,7 +148,7 @@ class Solution(object):
             answer.next = temp
         return answer
 
-# V1'' 
+# V1'''''
 # http://bookshadow.com/weblog/2016/10/29/leetcode-add-two-numbers-ii/
 # IDEA : TWO POINTER 
 # Definition for singly-linked list.
@@ -166,5 +238,4 @@ class Solution(object):
         if sum >= 10:
             head = ListNode(sum / 10)
             head.next = prev
-
         return head
