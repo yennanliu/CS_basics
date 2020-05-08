@@ -26,3 +26,23 @@ class Solution(object):
                 return 1
         return 0
 ```
+
+#### 2-2) String -> Int
+```python
+# 445 Add Two Numbers II
+# 394 Decode String
+def str_2_int(x):
+    r=0
+    for i in x:
+        r = int(r)*10 + int(i)
+        print (i, r)
+    return r
+
+x="131"
+r=str_2_int(x)
+print (r)
+# 1 1
+# 3 13
+# 1 131
+# 131
+```
