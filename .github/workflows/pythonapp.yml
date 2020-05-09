@@ -28,4 +28,4 @@ jobs:
       run: |
         pip install pytest
         #pytest
-        bash list_leetcode_solutions_by_type.sh
+        bash script/list_leetcode_solutions_by_type.sh
