@@ -12,4 +12,8 @@
 - [OAuth 2.0](https://www.youtube.com/watch?v=996OiexHze0) - OAuth 2.0 and OpenID Connect
 - [API Throwdown](https://www.youtube.com/watch?v=IvsANO0qZEg&t=237s) API Throwdown: RPC vs REST vs GraphQL
 - [How We've Scaled Dropbox](https://www.youtube.com/watch?v=PE4gwstWhmc&list=PLAWUTcG0XGSY_l16FeeAkGA-SAgwpfRij&index=10&fbclid=IwAR3ReRMbkS09UVLJDt1VMsbgTtd3N3NSQe4RlgHpnGlNaOvpbCrTTAXDNI4) 
-- [system design](https://www.youtube.com/watch?v=U0xTu6E2CT8&list=PLAWUTcG0XGSY_l16FeeAkGA-SAgwpfRij&index=11&fbclid=IwAR1u7tKax0sBU0w-aHZT-rcs1gYwy6ga7Qc2Jmk284Vx6jzxFZR5p_27C3A) - Dropbox system design | Google drive system design | System design file share and upload 
+- System design 
+	- [Dropbox system design](https://youtu.be/U0xTu6E2CT8)
+	- [Netflix system design](https://youtu.be/xrYTjaK5QVM)
+	- [Whatsapp system design](https://youtu.be/L7LtmfFYjc4)
+	- [Twitter system design](https://youtu.be/wYk0xPP_P_8)
