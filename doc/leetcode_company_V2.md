@@ -298,7 +298,7 @@
 | 545 | [Boundary of Binary Tree](https://leetcode.com/problems/boundary-of-binary-tree/) | Medium | 33.0% | 0.082 |
 | 572 | [Subtree of Another Tree](https://leetcode.com/problems/subtree-of-another-tree/) | Easy | 40.3% | 0.04 |
 | 617 | [Merge Two Binary Trees](https://leetcode.com/problems/merge-two-binary-trees/) | Easy | 68.4% | 0.064 |
-| 628 | [Maximum Product of Three Numbers](https://leetcode.com/problems/maximum-product-of-three-numbers/) | Easy | 44.8% | 0.03 |
+| 628 | [Maximum Product of Three Numbers](https://leetcode.com/problems/maximum-product-of-three-numbers/) | Easy | 44.8% | 0.03 | OK (2)
 | 642 | [Design Search Autocomplete System](https://leetcode.com/problems/design-search-autocomplete-system/) | Hard | 31.8% | 0.237 |
 | 647 | [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) | Medium | 54.5% | 0.038 |
 | 652 | [Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees/) | Medium | 40.2% | 0.134 |
