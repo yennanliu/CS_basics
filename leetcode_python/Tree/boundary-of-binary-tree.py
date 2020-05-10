@@ -1,6 +1,91 @@
 # V0
+class Solution(object):
+    def boundaryOfBinaryTree(self, root):
+        def leftBoundary(root, nodes):
+            if not root or (not root.left and not root.right):
+                return
+            nodes.append(root.val)
+            if not root.left:
+                leftBoundary(root.right, nodes)
+            else:
+                leftBoundary(root.left, nodes)
+ 
+        def rightBoundary(root, nodes):
+            if not root or (not root.left and not root.right):
+                return
+            if not root.right:
+                rightBoundary(root.left, nodes)
+            else:
+                rightBoundary(root.right, nodes)
+            nodes.append(root.val)
+ 
+        def leaves(root, nodes):
+            if not root:
+                return
+            if not root.left and not root.right:
+                nodes.append(root.val)
+                return
+            leaves(root.left, nodes)
+            leaves(root.right, nodes)
+ 
+        if not root:
+            return []
+ 
+        nodes = [root.val]
+        leftBoundary(root.left, nodes)
+        leaves(root.left, nodes)
+        leaves(root.right, nodes)
+        rightBoundary(root.right, nodes)
+        return nodes
 
 # V1
+# https://www.cnblogs.com/lightwindy/p/9583723.html
+class Solution(object):
+    def boundaryOfBinaryTree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        def leftBoundary(root, nodes):
+            if not root or (not root.left and not root.right):
+                return
+            nodes.append(root.val)
+            if not root.left:
+                leftBoundary(root.right, nodes)
+            else:
+                leftBoundary(root.left, nodes)
+ 
+        def rightBoundary(root, nodes):
+            if not root or (not root.left and not root.right):
+                return
+            if not root.right:
+                rightBoundary(root.left, nodes)
+            else:
+                rightBoundary(root.right, nodes)
+            nodes.append(root.val)
+ 
+        def leaves(root, nodes):
+            if not root:
+                return
+            if not root.left and not root.right:
+                nodes.append(root.val)
+                return
+            leaves(root.left, nodes)
+            leaves(root.right, nodes)
+ 
+        if not root:
+            return []
+ 
+        nodes = [root.val]
+        leftBoundary(root.left, nodes)
+        leaves(root.left, nodes)
+        leaves(root.right, nodes)
+        rightBoundary(root.right, nodes)
+        return nodes
+
+### Test case : dev
+
+# V1'
 # https://www.jiuzhang.com/solution/boundary-of-binary-tree/#tag-highlight-lang-python
 class Solution:
     """
@@ -46,7 +131,7 @@ class Solution:
             self.dfsRight(rt.left)
         self.ans.append(rt.val)
 
-# V1' 
+# V1''
 # https://www.jiuzhang.com/solution/boundary-of-binary-tree/#tag-highlight-lang-python
 class Solution:
     """
@@ -76,7 +161,7 @@ class Solution:
         if(rgt):
             self.ans.append(root.val)
             
-# V1''  
+# V1'''
 # http://bookshadow.com/weblog/2017/03/26/leetcode-boundary-of-binary-tree/
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -120,6 +205,49 @@ class Solution(object):
         left = left[1:] if root.left else []
         right = right[1:] if root.right else []
         return [node.val for node in [root] + left + leaves + right[::-1]]
+
+# V1''''
+# https://blog.csdn.net/danspace1/article/details/86659807
+class Solution:
+    def boundaryOfBinaryTree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        def leftBoundary(node):
+            if not node or (node.left is None and node.right is None):
+                return 
+            b.append(node.val)
+            if node.left:
+                leftBoundary(node.left)
+            else:
+                leftBoundary(node.right)
+            
+        def leaves(node):
+            if not node:
+                return
+            leaves(node.left)
+            if node != root and node.left is None and node.right is None:
+                b.append(node.val)
+            
+            leaves(node.right)
+            
+        def rightBoundary(node):
+            if not node or (node.left is None and node.right is None):
+                return            
+            if node.right:
+                rightBoundary(node.right)
+            else:
+                rightBoundary(node.left)
+            b.append(node.val)
+                 
+        # base case
+        if not root: return []
+        b = [root.val]
+        leftBoundary(root.left)
+        leaves(root)
+        rightBoundary(root.right)
+        return b
 
 # V2 
 # Time:  O(n)
