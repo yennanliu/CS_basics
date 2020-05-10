@@ -1,6 +1,68 @@
-# V0 : DEV 
+# V0 
+# IDEA : DFS
+class Solution:
+    def findSecondMinimumValue(self, root):
+        result=[]
+        self.dfs(root, result)
+        result_=sorted(set(result))
+        return result_[1] if len(result_) > 1 else -1 
+
+    def dfs(self,root, result):
+        if not root:
+            return 
+        self.dfs(root.left, result)
+        result.append(root.val)
+        self.dfs(root.right, result)
+
+# V0'
+class Solution:
+    def findSecondMinimumValue(self, root: TreeNode) -> int:
+        values = []
+        def getValues(root):
+            if not root:
+                return
+            values.append(root.val)
+            if root.left:
+                getValues(root.left)
+            if root.right:
+                getValues(root.right)
+        getValues(root)
+        values = sorted(set(values))
+        if len(values) > 1:
+            return values[1]
+        return -1
 
 # V1
+# https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/discuss/455080/Python3-simple-solution-using-set()-function
+# IDEA : DFS
+class TreeNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    def findSecondMinimumValue(self, root: TreeNode) -> int:
+        values = []
+        def getValues(root):
+            if not root:
+                return
+            values.append(root.val)
+            if root.left:
+                getValues(root.left)
+            if root.right:
+                getValues(root.right)
+        getValues(root)
+        values = sorted(set(values))
+        if len(values) > 1:
+            return values[1]
+        return -1
+
+### Test case : dev
+#s=Solution()
+#s.findSecondMinimumValue([2,2,5,None,None,5,7])
+
+# V1'
 # http://bookshadow.com/weblog/2017/09/03/leetcode-second-minimum-node-in-a-binary-tree/
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -8,7 +70,6 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
 class Solution(object):
     def findSecondMinimumValue(self, root):
         """
@@ -25,7 +86,47 @@ class Solution(object):
             traverse(root.right)
         traverse(root)
         return self.ans if self.ans != 0x80000000 else -1
-# V2 
+
+# V1''
+# https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/solution/
+# IDEA : BRUTE FORCE
+class Solution(object):
+    def findSecondMinimumValue(self, root):
+        def dfs(node):
+            if node:
+                uniques.add(node.val)
+                dfs(node.left)
+                dfs(node.right)
+
+        uniques = set()
+        dfs(root)
+
+        min1, ans = root.val, float('inf')
+        for v in uniques:
+            if min1 < v < ans:
+                ans = v
+
+        return ans if ans < float('inf') else -1
+
+# V1'''
+# IDEA : AD-HOC
+# https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/solution/
+def findSecondMinimumValue(self, root):
+    self.ans = float('inf')
+    min1 = root.val
+
+    def dfs(node):
+        if node:
+            if min1 < node.val < self.ans:
+                self.ans = node.val
+            elif node.val == min1:
+                dfs(node.left)
+                dfs(node.right)
+
+    dfs(root)
+    return self.ans if self.ans < float('inf') else -1
+
+# V1''''
 # https://www.jianshu.com/p/5b1de2697e1b
 import sys
 class TreeNode(object):
@@ -61,7 +162,7 @@ class Solution(object):
 # root.right.right = TreeNode(7)
 # assert Solution().findSecondMinimumValue(root) == 5
 
-# V3 
+# V2
 # Time:  O(n)
 # Space: O(h)
 import heapq
