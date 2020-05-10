@@ -9,7 +9,8 @@
 # 2020-05-10
 - DONE : 
 	- 545 Boundary of Binary Tree
-	- 671 Merge Two Binary Trees
+	- 617 Merge Two Binary Trees
+	- 671 Second Minimum Node In a Binary Tree
 	- 628 Maximum Product of Three Numbers
 - DOING : 
 	- AMZ leetcode questions go through
