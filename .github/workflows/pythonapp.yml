@@ -29,3 +29,4 @@ jobs:
         pip install pytest
         #pytest
         bash script/list_leetcode_solutions_by_type.sh
+        python script/get_review_list.py
