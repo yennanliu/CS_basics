@@ -44,7 +44,7 @@ class GetReviewList:
         result=[]
         for i in range(10):
             result.append(self.fib(i))
-        return list(result)
+        return list(result)[1:]
 
     def get_leetcode_fib_sequence(self):
         """
