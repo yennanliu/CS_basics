@@ -33,3 +33,5 @@ def bfs(root):
     return q
 
 ```
+
+### 2-1)
