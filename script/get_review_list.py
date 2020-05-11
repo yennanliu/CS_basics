@@ -9,6 +9,7 @@ import collections
 class GetReviewList:
 
     def __init__(self):
+        self.lc_fib_sequence=collections.defaultdict(list)
         self.review_list=collections.defaultdict(list)
         self.current_date=datetime.now()
 
@@ -52,8 +53,7 @@ class GetReviewList:
         progress="data/progress.txt"
         tmp="data/tmp.txt"
         fib_seq=self.get_fib_10()
-        with open(progress, 'r') as f,\
-             open(tmp, 'w') as f_tmp:
+        with open(progress, 'r') as f:
             for line in f:
                 if line:
                     date, lc_ids= line.split(":")[0], str(line.split(":")[1].strip())
@@ -61,19 +61,28 @@ class GetReviewList:
                     sequence_date= [(date_fix + timedelta(days=day)).strftime('%Y-%m-%d') for day in fib_seq]
                     data="{} : {}\n".format(lc_ids, sequence_date)
                     print (data)
-                    f_tmp.writelines(data)
-                    self.review_list[lc_ids]=sequence_date
+                    self.lc_fib_sequence[lc_ids]=sequence_date
 
     def get_reivew_list(self):
         """
         generate the to-review list based on fibonacci sequence and progress.txt
         """
         self.get_leetcode_fib_sequence()
-        print ("*"*30)
-        print (self.review_list)
-        print (self.review_list.keys())
-        print ("*"*30)
+        for key in self.lc_fib_sequence.keys():
+            for date in self.lc_fib_sequence[key]:
+                self.review_list[date].append(key)
 
+        print ("*"*30)
+        #print (self.review_list)
+        review_date = sorted(self.review_list.keys())
+        print ("*"*30)
+        # save to txt
+        to_review="data/to_review.txt"
+        with open(to_review, 'w') as f_r:
+            for date in review_date:
+                data="{} -> {}\n".format(date, str(self.review_list[date]))
+                print (data)
+                f_r.writelines(data)
 
 if __name__ == '__main__':
     g=GetReviewList()
