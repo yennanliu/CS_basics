@@ -1,6 +1,5 @@
 """
-py script generate Leetcode review list
-by mnemonic learning with fibonacci sequence
+py script generate Leetcode review list by mnemonic learning with fibonacci sequence
 """
 
 from datetime import datetime, timedelta, date
@@ -73,8 +72,8 @@ class GetReviewList:
                 self.review_list[date].append(key)
 
         print ("*"*30)
-        #print (self.review_list)
         review_date = sorted(self.review_list.keys())
+        print (review_date)
         print ("*"*30)
         # save to txt
         to_review="data/to_review.txt"
