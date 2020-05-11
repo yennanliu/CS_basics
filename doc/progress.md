@@ -6,6 +6,33 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
+# 2020-05-11
+- DONE :
+	- 642 Design Search Autocomplete System 
+	- 652 Find Duplicate Subtrees
+	- 657 Robot Return to Origin
+- DOING : 
+	- AMZ leetcode questions go through
+	- recent interview recap
+- TODO :
+	- ***fibonacci sequence*** -> 1,2,3,5,8,13...
+		- folloing this sequence and re-take the problems after 1,2,3,5... days when first learned it 
+		- ref : [How I learned Mandarin in 18 months](https://www.youtube.com/watch?v=rELeG45fi-w)
+		- Have a script to generate a list for above objects
+	- start write "test" when do leetcode questions
+	- time & space complexity analysis
+	- "algorithm" `abstract form` 
+	- how to write test for - `linked list`, `tree`, `BST`
+- REDO:
+	- 063 Unique Paths II
+	- 064 Minimum Path Sum
+	- 120 Triangle
+	- 0146 LRU Cache
+	- binary search and `find left, right boundary`
+		- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E8%AF%A6%E8%A7%A3.md
+	- sliding window with questions
+		- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%8A%80%E5%B7%A7.md
+
 # 2020-05-10
 - DONE : 
 	- 545 Boundary of Binary Tree (AGAIN)

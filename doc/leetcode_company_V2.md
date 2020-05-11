@@ -303,7 +303,7 @@
 | 647 | [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) | Medium | 54.5% | 0.038 |
 | 652 | [Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees/) | Medium | 40.2% | 0.134 |
 | 653 | [Two Sum IV - Input is a BST](https://leetcode.com/problems/two-sum-iv-input-is-a-bst/) | Easy | 50.6% | 0.171 |
-| 657 | [Robot Return to Origin](https://leetcode.com/problems/robot-return-to-origin/) | Easy | 69.1% | 0.011 |
+| 657 | [Robot Return to Origin](https://leetcode.com/problems/robot-return-to-origin/) | Easy | 69.1% | 0.011 | OK
 | 658 | [Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | Medium | 34.8% | 0.029 |
 | 669 | [Trim a Binary Search Tree](https://leetcode.com/problems/trim-a-binary-search-tree/) | Easy | 58.5% | 0.023 |
 | 675 | [Cut Off Trees for Golf Event](https://leetcode.com/problems/cut-off-trees-for-golf-event/) | Hard | 27.5% | 0.229 |
