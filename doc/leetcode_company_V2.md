@@ -307,7 +307,7 @@
 | 658 | [Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | Medium | 34.8% | 0.029 |
 | 669 | [Trim a Binary Search Tree](https://leetcode.com/problems/trim-a-binary-search-tree/) | Easy | 58.5% | 0.023 |
 | 675 | [Cut Off Trees for Golf Event](https://leetcode.com/problems/cut-off-trees-for-golf-event/) | Hard | 27.5% | 0.229 |
-| 682 | [Baseball Game](https://leetcode.com/problems/baseball-game/) | Easy | 58.6% | 0.035 |
+| 682 | [Baseball Game](https://leetcode.com/problems/baseball-game/) | Easy | 58.6% | 0.035 | OK* (2)
 | 692 | [Top K Frequent Words](https://leetcode.com/problems/top-k-frequent-words/) | Medium | 42.4% | 0.259 |
 | 694 | [Number of Distinct Islands](https://leetcode.com/problems/number-of-distinct-islands/) | Medium | 46.3% | 0.154 |
 | 695 | [Max Area of Island](https://leetcode.com/problems/max-area-of-island/) | Easy | 53.1% | 0.129 |

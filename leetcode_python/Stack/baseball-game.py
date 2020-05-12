@@ -1,6 +1,4 @@
-
 """
-
 You're now a baseball game point recorder.
 
 Given a list of strings, each string can be one of the 4 following types:
@@ -92,7 +90,21 @@ Every integer represented in the list will be between -30000 and 30000.
 # The size of the input list will be between 1 and 1000.
 # Every integer represented in the list will be between -30000 and 30000.
 
-# V0 : dev 
+# V0 
+# IDEA : STACK
+class Solution(object):
+    def calPoints(self, ops):
+        stack=[]
+        for op in ops:
+            if op=='C':
+                stack.pop()
+            elif op=='D':
+                stack.append(stack[-1]*2)
+            elif op=='+':
+                stack.append(stack[-2] + stack[-1]) 
+            else:
+                stack.append(int(op))
+        return sum(stack)
 
 # V1 
 # http://bookshadow.com/weblog/2017/09/24/leetcode-baseball-game/
@@ -113,7 +125,17 @@ class Solution(object):
             else:
                 stack.append(int(op))
         return sum(stack)
-        
+
+### Test case
+s=Solution()
+assert s.calPoints(["5","2","C","D","+"]) == 30
+assert s.calPoints(["5","-2","4","C","D","9","+","+"]) == 27
+assert s.calPoints([]) == 0
+assert s.calPoints(["10","10","10"]) == 30
+assert s.calPoints(["10","10","+"]) == 40
+assert s.calPoints(["10","10","C"]) == 10
+assert s.calPoints(["10","10","D"]) == 40
+
 # V2
 class Solution(object):
     def calPoints(self, ops):
@@ -129,8 +151,6 @@ class Solution(object):
                 history.append(int(op))
             print (history)
         return sum(history)
-
-
 
 # V3
 class Solution(object):
@@ -171,5 +191,3 @@ class Solution(object):
             else:
                 history.append(int(op))
         return sum(history)
-
-
