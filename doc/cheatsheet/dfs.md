@@ -26,3 +26,20 @@ class Solution(object):
         m[path] += 1
         return path
 ```
+
+### 2-3) Trim a BST
+```python
+# 669 Trim a Binary Search Tree
+class Solution:
+    def trimBST(self, root, L, R):
+        if not root:
+            return None
+        if root.val > R:
+            return self.trimBST(root.left, L, R)
+        elif root.val < L:
+            return self.trimBST(root.right, L, R)
+        else:
+            root.left = self.trimBST(root.left, L, R)
+            root.right = self.trimBST(root.right, L, R)
+            return root
+```
