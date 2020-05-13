@@ -37,12 +37,20 @@
 # - Words only consist of letters, never apostrophes or
 #   other punctuation symbols.
 
-
 # V0 
+# IDEA : REGULAR EXPRESSION + COLLECTION
+import collections
+class Solution:
+    def mostCommonWord(self, paragraph, banned):
+        p = re.compile(r"[!?',;.]")
+        sub_para = p.sub('', paragraph.lower())
+        words = sub_para.split(' ')
+        words = [word for word in words if word not in banned]
+        count = collections.Counter(words)
+        return count.most_common(1)[0][0]
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80472079
-# http://bookshadow.com/weblog/2018/04/15/leetcode-most-common-word/
 import collections
 class Solution:
     def mostCommonWord(self, paragraph, banned):
@@ -58,6 +66,21 @@ class Solution:
         count = collections.Counter(words)
         return count.most_common(1)[0][0]
 
+### Test case
+s=Solution()
+paragraph = "Bob hit a ball, the hit BALL flew far after it was hit."
+banned = ["hit"]
+assert s.mostCommonWord(paragraph, banned) == "ball"
+paragraph = "123"
+banned = [""]
+assert s.mostCommonWord(paragraph, banned) == "123"
+paragraph = "aaa"
+banned = ["a"]
+assert s.mostCommonWord(paragraph, banned) == "aaa"
+paragraph = "Words in the list of banned words are given in the lowercase, and free o"
+banned = ["words"]
+assert s.mostCommonWord(paragraph, banned) == "in"
+
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80472079
 # http://bookshadow.com/weblog/2018/04/15/leetcode-most-common-word/
@@ -72,6 +95,22 @@ class Solution(object):
         count = collections.Counter(x for x in paragraph if x not in banned)
         return count.most_common(1)[0][0]
 
+# V1'
+# http://bookshadow.com/weblog/2018/04/15/leetcode-most-common-word/
+class Solution(object):
+    def mostCommonWord(self, paragraph, banned):
+        """
+        :type paragraph: str
+        :type banned: List[str]
+        :rtype: str
+        """
+        tokens = re.sub('[\!\?\'\,;\.]', '', paragraph.lower()).split()
+        cnt = collections.Counter(tokens)
+        for ban in banned:
+            if ban in cnt:
+                del cnt[ban]
+        return cnt.most_common(1)[0][0]
+            
 # V2 
 import collections
 class Solution(object):
@@ -82,9 +121,10 @@ class Solution(object):
         :rtype: str
         """
         lookup = set(banned)
-        counts = collections.Counter(word.strip("!?',;.")
-                                     for word in paragraph.lower().split())
-
+        counts = collections.Counter(
+                    word.strip("!?',;.")
+                    for word in paragraph.lower().split()
+                    )
         result = ''
         for word in counts:
             if (not result or counts[word] > counts[result]) and \
