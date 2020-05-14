@@ -2,6 +2,17 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83307822
+# IDEA :DFS
+# DEMO : collections.defaultdict
+# In [41]: flights
+# Out[41]: [[0, 1, 100], [1, 2, 100], [0, 2, 500]]
+#
+# In [42]:  for u, v, e in flights:
+#     ...:     graph[u][v]=e
+#     ...:    
+#
+# In [43]: graph
+# Out[43]: defaultdict(dict, {0: {1: 100, 2: 500}, 1: {2: 100}})
 class Solution(object):
     def findCheapestPrice(self, n, flights, src, dst, K):
         """
@@ -33,8 +44,11 @@ class Solution(object):
             self.dfs(graph, v, dst, k - 1, cost + e, visited, ans)
             visited[v] = 0
 
+### Test case : dev
+
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83307822
+# IDEA : BFS
 class Solution(object):
     def findCheapestPrice(self, n, flights, src, dst, K):
         """
@@ -65,6 +79,83 @@ class Solution(object):
             if step > K: break
             step += 1
         return -1 if ans == float('inf') else ans
+
+# V1''
+# https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/267200/Python-Dijkstra
+# IDEA : Dijkstra algorithm
+class Solution(object):
+    def findCheapestPrice(self,n, flights, src, dst, K):
+        pq, g = [(0,src,K+1)], collections.defaultdict(dict)
+        for s,d,c in flights: g[s][d] = c
+        while pq:
+            cost, s, k = heapq.heappop(pq)
+            if s == dst: return cost
+            if k:
+                for d in g[s]:
+                    heapq.heappush(pq, (cost+g[s][d], d, k-1))
+        return -1
+
+# V1'''
+# https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/317262/2-Clean-Python-Solution-(BFS-Dijkstra-Explained)
+# IDEA : Dijkstra algorithm
+class Solution(object):
+    def findCheapestPrice(self, n, flights, src, dst, K):
+        graph = collections.defaultdict(list)
+        pq = []
+
+        for u, v, w in flights: graph[u].append((w, v))
+
+        heapq.heappush(pq, (0, K+1, src))
+        while pq:
+            price, stops, city = heapq.heappop(pq)
+
+            if city is dst: return price
+            if stops>0:
+                for price_to_nei, nei in graph[city]:
+                    heapq.heappush(pq, (price+price_to_nei, stops-1, nei))
+        return -1
+
+# V1''''
+# https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/317262/2-Clean-Python-Solution-(BFS-Dijkstra-Explained)
+# IDEA : BFS
+class Solution(object):
+    def findCheapestPrice(self, n, flights, src, dst, K):
+        graph = collections.defaultdict(list)
+        q = collections.deque()
+        min_price = float('inf')
+
+        for u, v, w in flights: 
+            graph[u].append((w, v))
+        q.append((src, 0, 0))
+        while q:
+            city, stops, price = q.popleft()
+            if city==dst:
+                min_price = min(min_price, price)
+                continue
+
+            if stops<=K and price<=min_price:
+                for price_to_nei, nei in graph[city]:
+                    q.append((nei, stops+1, price+price_to_nei))
+
+        return min_price if min_price!=float('inf') else -1
+
+# V1'''''
+# https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/115541/JavaPython-Priority-Queue-Solution
+# IDEA : Priority Queue 
+class Solution(object):
+    def findCheapestPrice(self, n, flights, src, dst, k):
+        f = collections.defaultdict(dict)
+        for a, b, p in flights:
+            f[a][b] = p
+        heap = [(0, src, k + 1)]
+        while heap:
+            p, i, k = heapq.heappop(heap)
+            if i == dst:
+                return p
+            if k > 0:
+                for j in f[i]:
+                    heapq.heappush(heap, (p + f[i][j], j, k - 1))
+        return -1
 
 # V2 
 # Time:  O((|E| + |V|) * log|V|) = O(|E| * log|V|),
