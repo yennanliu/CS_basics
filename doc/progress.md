@@ -34,9 +34,9 @@
 
 # 2020-05-13
 - DONE :
-	- 703 Kth Largest Element in a Stream
-	- 787 Cheapest Flights Within K Stops
-	- 819 Most Common Word
+	- 703 Kth Largest Element in a Stream 
+	- 787 Cheapest Flights Within K Stops (AGAIN)
+	- 819 Most Common Word 
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
