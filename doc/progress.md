@@ -7,8 +7,9 @@
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
 
-# 2020-05-14
+# 2020-05-15
 - DONE :
+	- Review `data/to_review.txt`
 - DOING : 
 	- AMZ leetcode questions go through
 	- recent interview recap
