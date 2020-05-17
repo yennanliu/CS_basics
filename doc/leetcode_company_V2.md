@@ -322,7 +322,7 @@
 | 819 | [Most Common Word](https://leetcode.com/problems/most-common-word/) | Easy | 43.9% | 3.167 | OK** (2)
 | 622 | [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/) | Medium | 36.4% | 0.03 |
 | 836 | [Rectangle Overlap](https://leetcode.com/problems/rectangle-overlap/) | Easy | 43.7% | 0.069 |  AGAIN (2)
-| 860 | [Lemonade Change](https://leetcode.com/problems/lemonade-change/) | Easy | 49.4% | 0.031 |
+| 860 | [Lemonade Change](https://leetcode.com/problems/lemonade-change/) | Easy | 49.4% | 0.031 |  OK* (2)
 | 863 | [All Nodes Distance K in Binary Tree](https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/) | Medium | 41.7% | 0.108 |
 
 ## Appdynamics
