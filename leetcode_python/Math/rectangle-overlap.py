@@ -1,6 +1,18 @@
-# V1  : dev 
+# V0
+class Solution(object):
+    def isRectangleOverlap(self, rec1, rec2):
+        [A, B, C, D], [E, F, G, H] = rec1, rec2
+        x, y = (min(C, G) - max(A, E)), (min(D, H) - max(B, F))
+        return x > 0 and y > 0
 
-# V2
+# V0'
+class Solution:
+    def isRectangleOverlap(self, rec1, rec2):
+        rec1_x1, rec1_y1, rec1_x2, rec1_y2 = rec1
+        rec2_x1, rec2_y1, rec2_x2, rec2_y2 = rec2
+        return not (rec1_x1 >= rec2_x2 or rec1_x2 <= rec2_x1 or rec1_y1 >= rec2_y2 or rec1_y2 <= rec2_y1)
+
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80472764
 # A rectangle is represented as a list [x1, y1, x2, y2], 
 # where (x1, y1) are the coordinates of its bottom-left corner, 
@@ -19,7 +31,14 @@ class Solution(object):
         x, y = (min(C, G) - max(A, E)), (min(D, H) - max(B, F))
         return x > 0 and y > 0
 
-# V2' 
+### Test case
+s=Solution()
+assert s.isRectangleOverlap([0,0,2,2],[1,1,3,3])==True
+assert s.isRectangleOverlap([0,0,1,1],[1,0,2,1])==False
+assert s.isRectangleOverlap([0,0,0,0],[0,0,0,0])==False
+assert s.isRectangleOverlap([1,1,1,1],[1,1,1,1])==False
+
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80472764
 class Solution:
     def isRectangleOverlap(self, rec1, rec2):
@@ -32,12 +51,9 @@ class Solution:
         rec2_x1, rec2_y1, rec2_x2, rec2_y2 = rec2
         return not (rec1_x1 >= rec2_x2 or rec1_x2 <= rec2_x1 or rec1_y1 >= rec2_y2 or rec1_y2 <= rec2_y1)
 
-
-
-# V3 
+# V2
 # Time:  O(1)
 # Space: O(1)
-
 class Solution(object):
     def isRectangleOverlap(self, rec1, rec2):
         """
