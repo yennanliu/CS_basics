@@ -11,6 +11,7 @@
 	- 675 Cut Off Trees for Golf Event
 	- 297 Serialize and Deserialize Binary Tree
 	- 138 Copy List with Random Pointer
+	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf)
 	- Review `data/to_review.txt`
 - DOING : 
 	- AMZ leetcode questions go through
@@ -35,7 +36,7 @@
 - DONE :
 	- 836 Rectangle Overlap
 	- 860 Lemonade Change
-	- 863 All Nodes Distance K in Binary Tree
+	- 863 All Nodes Distance K in Binary Tree (AGAIN)
 	- Review `data/to_review.txt`
 - DOING : 
 	- AMZ leetcode questions go through
