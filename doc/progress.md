@@ -6,6 +6,31 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
+# 2020-05-18
+- DONE :
+	- 675 Cut Off Trees for Golf Event
+	- 297 Serialize and Deserialize Binary Tree
+	- 138 Copy List with Random Pointer
+	- Review `data/to_review.txt`
+- DOING : 
+	- AMZ leetcode questions go through
+	- recent interview recap
+- TODO :
+	- time & space complexity analysis
+	- "algorithm" `abstract form` 
+	- how to write test for - `linked list`, `tree`, `BST`
+	- `heap` op review
+- REDO:
+	- 063 Unique Paths II
+	- 064 Minimum Path Sum
+	- 120 Triangle
+	- 0146 LRU Cache
+	- binary search and `find left, right boundary`
+		- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E8%AF%A6%E8%A7%A3.md
+	- sliding window with questions
+		- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%8A%80%E5%B7%A7.md
+
+
 # 2020-05-16
 - DONE :
 	- 836 Rectangle Overlap
