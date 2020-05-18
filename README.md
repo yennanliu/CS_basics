@@ -393,6 +393,8 @@
 971| [Flip Binary Tree To Match Preorder Traversal](https://leetcode.com/problems/flip-binary-tree-to-match-preorder-traversal/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/flip-binary-tree-to-match-preorder-traversal.py)  | _O(n)_  | _O(h)_   | Medium    | DFS, `trick`| AGAIN** (2) (not start)
 979| [Distribute Coins in Binary Tree](https://leetcode.com/problems/distribute-coins-in-binary-tree/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/distribute-coins-in-binary-tree.py)  | _O(n)_          | _O(h)_          | Medium   | DFS, `trick` | AGAIN*** (2)
 508| [ Most Frequent Subtree Sum](https://leetcode.com/problems/most-frequent-subtree-sum/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/most_frequent_subtree_sum.py)  ||| Medium   |tree, good basic,`amazon`| AGAIN*** (1)
+297| [ Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/serialize-and-deserialize-binary-tree.py) ||| Hard |tree, BFS, DFS, dequeue, check `#449 Serialize and Deserialize BST` ,`amazon`|  AGAIN**** (1)
+
 
 ## Heap 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note  | Status| 
