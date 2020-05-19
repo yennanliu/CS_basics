@@ -523,7 +523,7 @@
 346| [Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/moving-average-from-data-stream.py)  | _O(1)_ | _O(w)_  | Easy |🔒, `fb`| AGAIN* (3)
 933| [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/number-of-recent-calls.py)  | _O(1)_ on average  | _O(w)_ | Easy|| AGAIN**
 622| [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/design_circular_queue.py) | | | Medium |`good basic`,`circular queue`,`amazon`,`fb`| AGAIN****** (2)
-
+239| [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)|[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Queue/sliding-window-maximum.py) | | | Hard |deque, queue,`amazon`| AGAIN* (not start)
 
 ## Math 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
