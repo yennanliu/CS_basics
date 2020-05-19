@@ -3,26 +3,26 @@
 # The Linked List is represented in the input/output as a list of n nodes. Each node is represented as a pair of [val, random_index] where:
 # val: an integer representing Node.val
 # random_index: the index of the node (range from 0 to n-1) where random pointer points to, or null if it does not point to any node.
- 
+#
 # Example 1:
-
+#
 # Input: head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
 # Output: [[7,null],[13,0],[11,4],[10,2],[1,0]]
 # Example 2:
-
-
+#
+#
 # Input: head = [[1,1],[2,1]]
 # Output: [[1,1],[2,1]]
 # Example 3:
-
+#
 # Input: head = [[3,null],[3,0],[3,null]]
 # Output: [[3,null],[3,0],[3,null]]
 # Example 4:
-
+#
 # Input: head = []
 # Output: []
 # Explanation: Given linked list is empty (null pointer), so return null.
- 
+#
 # Constraints:
 # -10000 <= Node.val <= 10000
 # Node.random is null or pointing to a node in the linked list.
@@ -30,6 +30,24 @@
 
 
 # V0
+class Node(object):
+    def __init__(self, val, next, random):
+        self.val = val
+        self.next = next
+        self.random = random
+
+class Solution:
+    def copyRandomList(self, head):
+        dic = dict()
+        m = n = head
+        while m:
+            dic[m] = Node(m.val)
+            m = m.next
+        while n:
+            dic[n].next = dic.get(n.next)
+            dic[n].random = dic.get(n.random)
+            n = n.next
+        return dic.get(head)
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80787528
@@ -63,6 +81,8 @@ class Solution(object):
             pointer = pointer.next
         return dummy.next
 
+### Test case : dev 
+
 # V1'
 # http://bookshadow.com/weblog/2015/07/31/leetcode-copy-list-random-pointer/
 class Solution:
@@ -84,6 +104,48 @@ class Solution:
         return dummy.next
 
 # V1''
+# https://leetcode.com/problems/copy-list-with-random-pointer/discuss/43485/Clear-and-short-python-O(2n)-and-O(n)-solution
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, next, random):
+        self.val = val
+        self.next = next
+        self.random = random
+
+class Solution:
+    def copyRandomList(self, head):
+        dic = dict()
+        m = n = head
+        while m:
+            dic[m] = Node(m.val)
+            m = m.next
+        while n:
+            dic[n].next = dic.get(n.next)
+            dic[n].random = dic.get(n.random)
+            n = n.next
+        return dic.get(head)
+
+# V1'''
+# https://leetcode.com/problems/copy-list-with-random-pointer/discuss/43485/Clear-and-short-python-O(2n)-and-O(n)-solution
+class Node(object):
+    def __init__(self, val, next, random):
+        self.val = val
+        self.next = next
+        self.random = random
+        
+class Solution:
+    def copyRandomList(self, head):
+        dic = collections.defaultdict(lambda: Node(0))
+        dic[None] = None
+        n = head
+        while n:
+            dic[n].val = n.val
+            dic[n].next = dic[n.next]
+            dic[n].random = dic[n.random]
+            n = n.next
+        return dic[head]
+
+# V1'''''
 # https://www.jiuzhang.com/solution/copy-list-with-random-pointer/#tag-highlight-lang-python
 class Solution:
     # @param head: A RandomListNode
