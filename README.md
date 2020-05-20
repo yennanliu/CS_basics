@@ -649,6 +649,7 @@
 904 | [Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/fruit-into-baskets.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 930 | [Binary Subarrays With Sum](https://leetcode.com/problems/binary-subarrays-with-sum/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/binary-subarrays-with-sum.py) | _O(n)_ | _O(1)_ | Medium |`trick`| AGAIN* (2) (not start)
 977 | [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/squares-of-a-sorted-array.py) | _O(n)_ | _O(1)_ | Easy || OK 
+042 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/trapping-rain-water.py) || | Hard |two pointer, `amazon`|  AGAIN (not start) 
 
 
 ## Recursion 
