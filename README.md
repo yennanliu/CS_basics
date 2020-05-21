@@ -757,6 +757,7 @@
 934|[Shortest Bridge](https://leetcode.com/problems/shortest-bridge/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/shortest-bridge.py) | _O(n^2)_ | _O(n^2)_ | Medium |  BFS, DFS, `complex`| AGAIN (not start)
 967|[Numbers With Same Consecutive Differences](https://leetcode.com/problems/numbers-with-same-consecutive-differences/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/numbers-with-same-consecutive-differences.py) | _O(2^n)_ | _O(2^n)_ | Medium |`good trick` | AGAIN** (3)
 675|[Cut Off Trees for Golf Event](https://leetcode.com/problems/cut-off-trees-for-golf-event/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/cut-off-trees-for-golf-event.py), [Java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/Breadth-First-Search/cut-off-trees-for-golf-event.java) ||| Medium |tree, BFS, complex, `amazon` | AGAIN (not start)
+126|[Word Ladder II](https://leetcode.com/problems/word-ladder-ii/)| [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/word-ladder-ii.py) ||| Hard |bfs, check `# 127 Word Ladder`,`amazon` | AGAIN (not start)
 
 ## Depth-First Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag     | Status| 
