@@ -8,8 +8,11 @@
 
 # 2020-05-21
 - DONE :
+	- 517 Super Washing Machines
+	- 0535 Encode and Decode TinyURL
+	- 529 Minesweeper
 - Review:
-	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf)
+	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 10/13
 	- Review `data/to_review.txt`
 - DOING : 
 	- AMZ leetcode questions go through

@@ -126,7 +126,7 @@
 ## Array 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note           | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/3sum.py)  | _O(n^2)_ | _O(1)_  | Medium    | check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `good basic`, `fb`| OK*** (4)
+015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/3sum.py)  | _O(n^2)_ | _O(1)_  | Medium    | check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `good basic`,`amazon`,`fb`| OK*** (4)
 016 | [3 Sum Closest](https://leetcode.com/problems/3sum-closest/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/3sum-closest.py) | _O(n^2)_   | _O(1)_  | Medium |`Two Pointers`, `basic`, `good trick`,`3 sum`,amazon| AGAIN**** (2)
 018| [4 Sum](https://leetcode.com/problems/4sum/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/4sum.py)   | _O(n^3)_  | _O(1)_    | Medium  | `k sum`, `Two Pointers`, check `#016 3 sum`, `good trick`, `fb` | AGAIN***** (3)
 026 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)|  [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-duplicates-from-sorted-array.py) | _O(n)_ | _O(1)_| Easy | `Two Pointers`, `basic`, `trick`,`M$` ,`fb` |  AGAIN****** (3)
@@ -598,7 +598,7 @@
 914 | [X of a Kind in a Deck of Cards](https://leetcode.com/problems/x-of-a-kind-in-a-deck-of-cards/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/x-of-a-kind-in-a-deck-of-cards.py) | _O(n * (logn)^2)_ | _O(n)_  | Easy   || AGAIN (not start)
 963 | [Minimum Area Rectangle II](https://leetcode.com/problems/minimum-area-rectangle-ii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/minimum-area-rectangle-ii.py) | _O(n^2)_ ~ _O(n^3)_ | _O(n^2)_      | Medium  || AGAIN (not start)
 970 | [Powerful Integers](https://leetcode.com/problems/powerful-integers/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/powerful-integers.py)  | _O((logn)^2)_ | _O(r)_      | Easy |`basic`| AGAIN* (2)
-
+517 |[Super Washing Machines](https://leetcode.com/problems/super-washing-machines/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/super-washing-machines.py) ||| Hard |`amazon`|  AGAIN (not start)
 
 ## Sort 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note| Status| 
