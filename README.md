@@ -793,7 +793,7 @@
 851| [Loud and Rich](https://leetcode.com/problems/loud-and-rich/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/loud-and-rich.py)  | _O(q + r)_    | _O(q + r)_   | Medium |`amazon`,`defaultdict`, `good basic`| AGAIN*** (3)
 491| [Increasing Subsequences](https://leetcode.com/problems/increasing-subsequences/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/increasing_subsequences.py)  | | | Medium |`trick`,`dfs`,`dfs good trick`, `dp`,`yahoo` ,`fb`|  AGAIN***** (2)
 711| [Number of Distinct Islands II](https://leetcode.com/problems/number-of-distinct-islands-ii/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/number-of-distinct-islands-ii.py), [Java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/Depth-First-Search/number-of-distinct-islands-ii.java) | | | Hard |complex, dfs, check `# 694 Number of Distinct Islands	`,`amazon`| AGAIN (not start) 
-
+529| [Minesweeper](https://leetcode.com/problems/minesweeper/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/minesweeper.py) | | | Medium | good basic, dfs, bfs,`amazon`| AGAIN**** (1)
 
 ## Backtracking 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note       | Status| 
