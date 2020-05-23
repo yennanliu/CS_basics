@@ -47,6 +47,7 @@
 	- how to write test for - `linked list`, `tree`, `BST`
 	- `heap` op review
 - REDO:
+	- 089 Gray Code
 	- 725 Split Linked List in Parts
 	- 063 Unique Paths II
 	- 064 Minimum Path Sum
