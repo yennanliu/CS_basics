@@ -6,8 +6,11 @@
 - `TODO4`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 - `1st VISIT OK` : Stack, Queue, Math, Sort, Two Pointers, Recursion, Linked List , Breadth-First Search, list(to check), Array(to check), Hash table(to check)
 
-# 2020-05-23
+# 2020-05-24
 - DONE :
+	- 451 Sort Characters By Frequency
+	- 414 Third Maximum Number
+	- 189 Rotate Array
 - Review:
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 10/13
 	- Review `data/to_review.txt`
@@ -61,7 +64,7 @@
 # 2020-05-21
 - DONE :
 	- 517 Super Washing Machines
-	- 0535 Encode and Decode TinyURL
+	- 535 Encode and Decode TinyURL
 	- 529 Minesweeper
 - Review:
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 10/13
