@@ -35,6 +35,11 @@ Could you do it in-place with O(1) extra space?
 #
 
 # V0
+# IDEA : SLICE
+class Solution(object):
+    def rotate(self, nums, k):
+        k = k % len(nums) # since the rotate operation is cyclic. i.e. if len(nums)=7, k=17 -> rotate(17) = rotate(17%7) = rotate(3)
+        nums[:k], nums[k:] = nums[len(nums)-k:], nums[:len(nums)-k]
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/52052767
@@ -48,6 +53,17 @@ class Solution(object):
         """
         k = k % len(nums) # since the rotate operation is cyclic. i.e. if len(nums)=7, k=17 -> rotate(17) = rotate(17%7) = rotate(3)
         nums[:k], nums[k:] = nums[len(nums)-k:], nums[:len(nums)-k]
+        # for test cases
+        return nums
+
+### Test case
+s=Solution()
+assert s.rotate([1,2,3,4,5,6,7], 3) == [5, 6, 7, 1, 2, 3, 4]
+assert s.rotate([1,2,3,4,5,6,7], 4) == [4, 5, 6, 7, 1, 2, 3]
+assert s.rotate([1,2,3,4,5,6,7], 5) == [3, 4, 5, 6, 7, 1, 2]
+assert s.rotate([1], 0) == [1]
+assert s.rotate([1], 1) == [1]
+assert s.rotate([1], 2) == [1]
 
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/52052767
