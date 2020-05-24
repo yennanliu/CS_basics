@@ -12,7 +12,7 @@
 	- 414 Third Maximum Number
 	- 189 Rotate Array
 - Review:
-	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 10/13
+	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 11/13
 	- Review `data/to_review.txt`
 - DOING : 
 	- AMZ leetcode questions go through
