@@ -23,8 +23,33 @@ Both numbers with value 2 are both considered as second maximum.
 """
 
 # V0 
+# IDEA : COLLECTIONS 
+# TIME COMPLEXITY : O(N)
+# SPACE COMPLEXITY : O(N)
+# collections.Counter time complexity 
+# https://stackoverflow.com/questions/42461840/what-is-the-time-complexity-of-collections-counter-in-python
+class Solution(object):
+    def thirdMax(self, nums):
+        import collections 
+        count_ = collections.Counter(nums)
+        if len(count_) < 3:
+            return max(count_.keys())
+        return sorted(count_.keys())[-3]
+
+# V0'
+# IDEA : SET 
+class Solution(object):
+    def thirdMax(self, nums):
+        nums_set = set(nums)
+        if len(nums_set) < 3:
+            return max(nums_set)
+        nums_set.remove(max(nums_set))
+        nums_set.remove(max(nums_set))
+        _max = max(nums_set)
+        return _max
 
 # V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79255652
 # http://bookshadow.com/weblog/2016/10/09/leetcode-third-maximum-number/
 # IDEA : 3 VARIABLES 
 class Solution(object):
@@ -33,15 +58,27 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
-        a = b = c = None
-        for n in nums:
-            if n > a:
-                a, b, c = n, a, b
-            elif a > n > b:
-                b, c = n, b
-            elif b > n > c:
-                c = n
-        return c if c is not None else a
+        # s1 > s2 > s3
+        s1, s2, s3 = float('-inf'), float('-inf'), float('-inf')
+        for num in nums:
+            if num > s1:
+                s1, s2, s3 = num, s1, s2
+            elif num < s1 and num > s2:
+                s2, s3 = num, s2
+            elif num < s2 and num > s3:
+                s3 = num
+        return s3 if s3 != float('-inf') else s1
+
+### Test case :
+s=Solution()
+assert s.thirdMax([1,2,3]) == 1
+assert s.thirdMax([2,3]) == 3
+assert s.thirdMax([2]) == 2
+assert s.thirdMax([]) == float('-inf')
+assert s.thirdMax([1,1,1,2,3]) == 1
+assert s.thirdMax([1,1,1,2,2,2,3]) == 1
+assert s.thirdMax([1,1,1,2,2,2,3,3,3]) == 1
+assert s.thirdMax([1,1,1,1,1]) == 1
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79255652
