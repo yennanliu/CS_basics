@@ -23,5 +23,27 @@ for item, freq in count:
 #b 1
 ```
 
-### 2) collection.defaultdict
-- dev 
+### 2) collection.defaultdict (int, list...)
+```python
+import collections
+s = ['a','b','c','c']
+count = collections.defaultdict(int)
+for i in s:
+    count[i] += 1 
+
+print (count)
+print (dict(count))
+```
+
+```python
+import collections
+s=[('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
+count = collections.defaultdict(list)
+for k, v in s:
+    count[k].append(v)
+
+print (count)
+print (count.keys())
+print (count.values())
+print(count.items())
+```  
