@@ -23,6 +23,7 @@
 	- how to write test for - `linked list`, `tree`, `BST`
 	- `heap` op review
 - REDO:
+	- 536 Construct Binary Tree from String
 	- 355 Design Twitter
 	- 725 Split Linked List in Parts
 	- 063 Unique Paths II

@@ -1,4 +1,35 @@
-# V0 
+# V0
+class TreeNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution(object):
+    def str2tree(self, s):
+        """
+        :type s: str
+        :rtype: TreeNode
+        """
+        def str2treeHelper(s, i):
+            start = i
+            if s[i] == '-': i += 1
+            while i < len(s) and s[i].isdigit(): 
+                i += 1
+            node = TreeNode(int(s[start:i]))
+            if i < len(s) and s[i] == '(':
+                i += 1
+                node.left, i = str2treeHelper(s, i)
+                i += 1
+            if i < len(s) and s[i] == '(':
+                i += 1
+                node.right, i = str2treeHelper(s, i)
+                i += 1
+            return node, i
+
+        return str2treeHelper(s, 0)[0] if s else None
+
+# V0' 
 class Solution(object):
     def str2tree(self, s):
         """
@@ -64,6 +95,9 @@ class Solution(object):
             s = s[1:]
             if deg == 0: break
         return part, s
+
+### Test case : dev
+
 # V1'
 # https://www.jiuzhang.com/solution/construct-binary-tree-from-string/#tag-highlight-lang-python
 # IDEA : RECURSION 
@@ -107,7 +141,79 @@ class Solution:
             return root
         return root
 
+# V1''
+# https://www.geeksforgeeks.org/construct-binary-tree-string-bracket-representation/
+# Python3 program to conStruct a 
+# binary tree from the given String 
+
+# Helper class that allocates a new node 
+class newNode: 
+    def __init__(self, data): 
+        self.data = data 
+        self.left = self.right = None
+
+# This funtcion is here just to test 
+def preOrder(node): 
+    if (node == None): 
+        return
+    print(node.data, end = " ") 
+    preOrder(node.left) 
+    preOrder(node.right) 
+
+# function to return the index of 
+# close parenthesis 
+def findIndex(Str, si, ei): 
+    if (si > ei): 
+        return -1
+
+    # Inbuilt stack 
+    s = [] 
+    for i in range(si, ei + 1): 
+
+        # if open parenthesis, push it 
+        if (Str[i] == '('): 
+            s.append(Str[i]) 
+
+        # if close parenthesis 
+        elif (Str[i] == ')'): 
+            if (s[-1] == '('): 
+                s.pop(-1) 
+
+                # if stack is empty, this is 
+                # the required index 
+                if len(s) == 0: 
+                    return i 
+    # if not found return -1 
+    return -1
+
+# function to conStruct tree from String 
+def treeFromString(Str, si, ei): 
+    
+    # Base case 
+    if (si > ei): 
+        return None
+
+    # new root 
+    root = newNode(ord(Str[si]) - ord('0')) 
+    index = -1
+
+    # if next char is '(' find the 
+    # index of its complement ')' 
+    if (si + 1 <= ei and Str[si + 1] == '('): 
+        index = findIndex(Str, si + 1, ei) 
+
+    # if index found 
+    if (index != -1): 
+
+        # call for left subtree 
+        root.left = treeFromString(Str, si + 2, index - 1) 
+
+        # call for right subtree 
+        root.right = treeFromString(Str, index + 2, ei - 1) 
+    return root 
+
 # V2 
+# https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/construct-binary-tree-from-string.py
 # Time:  O(n)
 # Space: O(h)
 class TreeNode(object):
