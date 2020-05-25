@@ -7,9 +7,39 @@
 #
 # Note:
 # Could you optimize your algorithm to use only O(k) extra space?
-#
 
 # V0 
+class Solution(object):
+    def getRow(self, rowIndex):
+        res = [[1 for j in range(i + 1)] for i in range(rowIndex + 1)]
+        for i in range(2, rowIndex + 1):
+            for j in range(1, i):
+                res[i][j] = res[i - 1][j - 1] + res[i - 1][j]
+        return res[-1]
+
+# V0'
+# a bit different in index init
+class Solution(object):
+    def getRow(self, rowIndex):
+        res = [[1 for j in range(i + 1)] for i in range(rowIndex + 1)]
+        for i in range(2, rowIndex + 1):
+            for j in range(i-1):
+                res[i][j+1] = res[i - 1][j] + res[i - 1][j+1]
+        return res[-1]
+
+# V0''
+class Solution(object):
+    def getRow(self, rowIndex):
+        """
+        :type rowIndex: int
+        :rtype: List[int]
+        """
+        res = [1] + [0] * rowIndex
+        for i in range(rowIndex):
+            res[0] = 1
+            for j in range(i+1, 0, -1):
+                res[j] = res[j] + res[j-1]
+        return res
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51591374
@@ -32,6 +62,14 @@ class Solution(object):
             for j in range(i+1, 0, -1):
                 res[j] = res[j] + res[j-1]
         return res
+
+### Test case :
+s=Solution()
+assert s.getRow(0) == [1]
+assert s.getRow(1) == [1,1]
+assert s.getRow(2) == [1,2,1]
+assert s.getRow(3) == [1,3,3,1]
+assert s.getRow(4) == [1,4,6,4,1]
 
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/51348629
