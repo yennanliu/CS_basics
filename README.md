@@ -24,7 +24,7 @@
 ## Resource
 
 * [Resource.md](https://github.com/yennanliu/CS_basics/blob/master/doc/Resource.md) - `Resource` for coding interview (**keep updating**)
-* [ref.md](https://github.com/yennanliu/CS_basics/blob/master/ref.md) - Leetcode ref
+* [ref.md](https://github.com/yennanliu/CS_basics/blob/master/doc/ref.md) - Leetcode ref
 * [MindMapCodeInterview](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
 * [CodeInterviewCheatsheet](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
 * [repl.it](https://repl.it/) - Coding online!
@@ -939,7 +939,7 @@
 0284| [Peeking Iterator](https://leetcode.com/problems/peeking-iterator/)| [C++](./C++/peeking-iterator.cpp) [Python](./Python/peeking-iterator.py) | _O(1)_ | _O(1)_ | Medium ||
 0348| [Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Design/design-tic-tac-toe.py) | _O(1)_ | _O(n^2)_ | Medium |🔒, `fb`|  AGAIN** (3)
 0353| [Design Snake Game](https://leetcode.com/problems/design-snake-game/) | [C++](./C++/design-snake-game.cpp) [Python](./Python/design-snake-game.py) | _O(1)_ | _O(s)_ | Medium |🔒| Deque |
-0355| [Design Twitter](https://leetcode.com/problems/design-twitter/) | [C++](./C++/design-twitter.cpp) [Python](./Python/design-twitter.py) | _O(klogu)_ | _O(t + f)_ | Medium | LintCode, Heap, `amazon` |
+355| [Design Twitter](https://leetcode.com/problems/design-twitter/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Design/design-twitter.py)  | _O(klogu)_ | _O(t + f)_ | Medium | good trick, data structure, heapq, Heap, `amazon` | AGAIN***** (2) (not start)
 0359| [Logger Rate Limiter](https://leetcode.com/problems/logger-rate-limiter/) | [C++](./C++/logger-rate-limiter.cpp) [Python](./Python/logger-rate-limiter.py) | _O(1), amortized_ | _O(k)_ | Easy |🔒| Deque |
 0362| [Design Hit Counter](https://leetcode.com/problems/design-hit-counter/) | [C++](./C++/design-hit-counter.cpp) [Python](./Python/design-hit-counter.py) | _O(1), amortized_ | _O(k)_ | Medium |🔒| Deque |
 0379| [Design Phone Directory](https://leetcode.com/problems/design-phone-directory/) | [C++](./C++/design-phone-directory.cpp) [Python](./Python/design-phone-directory.py) | _O(1)_ | _O(n)_ | Medium |🔒| |
