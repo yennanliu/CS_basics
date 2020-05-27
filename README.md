@@ -1026,7 +1026,7 @@
 597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK* 
 602| [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) |[MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/friend-requests-ii-who-has-most-friend.sql)||| Medium |union all, `fb`| OK* (1)
 578| [Get Highest Answer Rate Question](https://leetcode.com/articles/get-highest-answer-rate-question/)|[MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/get_highest_answer_rate_question.sql)||| Medium |`fb`|  AGAIN*
-579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |`amazon`|
+579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |window function, `amazon`| OK*
 
 ## Shell Script
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
