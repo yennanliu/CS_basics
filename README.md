@@ -565,8 +565,8 @@
 497 | [Random Point in Non-overlapping Rectangles](https://leetcode.com/problems/random-point-in-non-overlapping-rectangles/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/random-point-in-non-overlapping-rectangles.py) | ctor: _O(n)_ <br> pick: _O(logn)_ | _O(n)_ | Medium || AGAIN (not start)
 519 | [Random Flip Matrix](https://leetcode.com/problems/random-flip-matrix/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/random-flip-matrix.py) | ctor: _O(1)_ <br> pick: _O(1)_ reset: _O(n)_ | _O(n)_ | Medium || AGAIN (not start)
 528 | [Random Pick with Weight](https://leetcode.com/problems/random-pick-with-weight/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/random-pick-with-weight.py) | ctor: _O(n)_ <br> pick: _O(logn)_ | _O(n)_ | Medium || AGAIN (not start)
-537 | [Complex Number Multiplication](https://leetcode.com/problems/complex-number-multiplication/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/complex-number-multiplication.py) | _O(1)_ | _O(1)_ | Medium || OK 
-553 | [Optimal Division](https://leetcode.com/problems/optimal-division/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/optimal-division.py)| _O(n)_ | _O(1)_ | Medium || AGAIN 
+537 | [Complex Number Multiplication](https://leetcode.com/problems/complex-number-multiplication/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/complex-number-multiplication.py) | _O(1)_ | _O(1)_ | Medium |`amazon`| OK 
+553 | [Optimal Division](https://leetcode.com/problems/optimal-division/) |[Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/optimal-division.py)| _O(n)_ | _O(1)_ | Medium |`amazon`| AGAIN 
 573 | [Squirrel Simulation](https://leetcode.com/problems/squirrel-simulation/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/squirrel-simulation.py) | _O(n)_ | _O(1)_ | Medium |🔒| AGAIN (not start)
 592 | [Fraction Addition and Subtraction](https://leetcode.com/problems/fraction-addition-and-subtraction/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/fraction-addition-and-subtraction.py)| _O(nlogx)_ | _O(n)_ | Medium || AGAIN 
 593 | [Valid Square](https://leetcode.com/problems/valid-square/) | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/valid-square.py)| _O(1)_ | _O(1)_ | Medium || AGAIN 
@@ -1026,6 +1026,7 @@
 597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK* 
 602| [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) |[MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/friend-requests-ii-who-has-most-friend.sql)||| Medium |union all, `fb`| OK* (1)
 578| [Get Highest Answer Rate Question](https://leetcode.com/articles/get-highest-answer-rate-question/)|[MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/get_highest_answer_rate_question.sql)||| Medium |`fb`|  AGAIN*
+579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |`amazon`|
 
 ## Shell Script
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
