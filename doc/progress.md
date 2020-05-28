@@ -7,6 +7,7 @@
 - DONE :
 	- 606 Construct String from Binary Tree
 - Review:
+	- 355 Design Twitter
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 12/13
 	- Review `data/to_review.txt`
 - DOING : 
