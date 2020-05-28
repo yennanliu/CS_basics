@@ -6,6 +6,7 @@
 # 2020-05-28
 - DONE :
 	- 606 Construct String from Binary Tree
+	- 269 alien-dictionary (fb)
 - Review:
 	- 355 Design Twitter
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 12/13
