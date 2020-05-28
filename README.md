@@ -42,6 +42,7 @@
 * [SQL zoo](https://sqlzoo.net/) - SQL test
 * [Books](https://github.com/yennanliu/data_science_repo/tree/master/book)
 * [freecodecamp - data-structures](https://www.freecodecamp.org/news/tag/data-structures/)
+* [LC interview-experience](https://leetcode.com/discuss/interview-experience?currentPage=1&orderBy=hot&query=)
 * [Cheatsheet](https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet)
 
 
@@ -511,7 +512,7 @@
 939 | [Minimum Area Rectangle](https://leetcode.com/problems/minimum-area-rectangle/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/minimum-area-rectangle.py) | _O(n^1.5)_ on average | _O(n)_ | Medium || OK* 
 942 | [DI String Match](https://leetcode.com/problems/di-string-match/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/di-string-match.py) | _O(n)_ | _O(1)_      | Easy   || AGAIN (not start)
 944 | [Delete Columns to Make Sorted](https://leetcode.com/problems/delete-columns-to-make-sorted/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/delete-columns-to-make-sorted.py) | _O(n * l)_ | _O(1)_      | Medium     || AGAIN (not start)
-953 | [Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/verifying-an-alien-dictionary.py) | _O(n * l)_ | _O(1)_ | Easy    || AGAIN (not start)
+953 | [Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/verifying-an-alien-dictionary.py) | _O(n * l)_ | _O(1)_ | Easy || AGAIN (not start)
 955 | [Delete Columns to Make Sorted II](https://leetcode.com/problems/delete-columns-to-make-sorted-ii/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/delete-columns-to-make-sorted-ii.py) | _O(n * l)_ | _O(n)_  | Medium   || AGAIN (not start)
 
 
@@ -921,7 +922,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 959 | [Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/)  | [C++](./C++/regions-cut-by-slashes.cpp) [Python](./Python/regions-cut-by-slashes.py) | _O(n^2)_| _O(n^2)_| Medium           || Union Find | 
-
+269 |[alien-dictionary](https://leetcode.com/problems/alien-dictionary/)  | [Python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/alien-dictionary.py) | | | Hard|| topology sort, 'fb' | 
 
 ## Geometry 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
