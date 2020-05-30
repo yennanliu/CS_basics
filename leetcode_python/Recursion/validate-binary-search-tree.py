@@ -1,5 +1,18 @@
-# V0 : DEV 
-
+# V0 
+class Solution(object):
+    def isValidBST(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        return self.valid(root, float('-inf'), float('inf'))
+        
+    def valid(self, root, min_, max_):
+        if not root: return True
+        if root.val >= max_ or root.val <= min_:
+            return False
+        return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
+ 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/70209865
 class Solution(object):
