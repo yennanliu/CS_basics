@@ -1,17 +1,21 @@
 # DFS cheatsheet 
 
+## 0) Framework 
+- dev 
+
 ## 1) General form
 ```python
 def dfs(root):
-    # when root, do sth
-    # when root, if no thing to do
+    # if root, do sth
+    # if root, if no thing to do
+    # else, do sth
     dfs(root.left)
     dfs(root.right)
 ```
 
 ### 1-1) Basic OP
 ```python
-###  Example) Add 1 to all node.value in Binary tree?
+# Example) Add 1 to all node.value in Binary tree?
 def dfs(root):
     if not root:
         return 
@@ -19,7 +23,7 @@ def dfs(root):
     dfs(root.left)
     dfs(root.right)
 
-### Example) check if 2 Binary tree are the same ? 
+# Example) check if 2 Binary tree are the same ? 
 def dfs(root1, root2):
     if root1 == root2 == None:
         return True 
@@ -36,6 +40,21 @@ def dfs(root1, root2):
 ```
 
 ## 2) LC Example
+
+### 2-1) Validate Binary Search Tree
+```python
+# 098 Validate Binary Search Tree
+class Solution(object):
+    def isValidBST(self, root):
+        return self.valid(root, float('-inf'), float('inf'))
+        
+    def valid(self, root, min_, max_):
+        if not root: return True
+        if root.val >= max_ or root.val <= min_:
+            return False
+        return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
+
+```
 
 ### 2-1) Find Duplicate Subtrees
 ```python
