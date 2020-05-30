@@ -7,6 +7,8 @@
 - DONE :
 	- 606 Construct String from Binary Tree
 	- 459 Repeated Substring Pattern
+	- 701 Insert into a Binary Search Tree
+	- 450 Delete Node in a BST
 - Review:
 	- 098 Validate Binary Search Tree
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 12/13
