@@ -1,12 +1,43 @@
 # DFS cheatsheet 
 
-### 1) General form
-- dev
+## 1) General form
+```python
+def dfs(root):
+    # when root, do sth
+    # when root, if no thing to do
+    dfs(root.left)
+    dfs(root.right)
+```
 
-### 2-1)
-- dev
+### 1-1) Basic OP
+```python
+###  Example) Add 1 to all node.value in Binary tree?
+def dfs(root):
+    if not root:
+        return 
+    root.val += 1 
+    dfs(root.left)
+    dfs(root.right)
 
-### 2-2) Find Duplicate Subtrees
+### Example) check if 2 Binary tree are the same ? 
+def dfs(root1, root2):
+    if root1 == root2 == None:
+        return True 
+    if root1 is not None and root2 is None:
+        return False 
+    if root1 is None and root2 is not None:
+        return False 
+    else:
+        if root1.val != root2.value:
+            return False 
+    return dfs(root1.left, root2.left) \
+           and dfs(root1.right, root2.right)
+
+```
+
+## 2) LC Example
+
+### 2-1) Find Duplicate Subtrees
 ```python
 # 652 Find Duplicate Subtrees
 import collections
@@ -27,7 +58,7 @@ class Solution(object):
         return path
 ```
 
-### 2-3) Trim a BST
+### 2-2) Trim a BST
 ```python
 # 669 Trim a Binary Search Tree
 class Solution:
