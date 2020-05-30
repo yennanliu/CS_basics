@@ -394,7 +394,7 @@
 979| [Distribute Coins in Binary Tree](https://leetcode.com/problems/distribute-coins-in-binary-tree/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/distribute-coins-in-binary-tree.py)  | _O(n)_          | _O(h)_          | Medium   | DFS, `trick` | AGAIN*** (2)
 508| [ Most Frequent Subtree Sum](https://leetcode.com/problems/most-frequent-subtree-sum/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/most_frequent_subtree_sum.py)  ||| Medium   |tree, good basic,`amazon`| AGAIN*** (1)
 297| [ Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/serialize-and-deserialize-binary-tree.py) ||| Hard |tree, BFS, DFS, dequeue, check `#449 Serialize and Deserialize BST` ,`amazon`|  AGAIN**** (1)
-
+701| [Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/insert-into-a-binary-search-tree.py) ||| Medium |tree, BFS, DFS|
 
 ## Heap 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note  | Status| 
@@ -722,7 +722,7 @@
 270| [Closest Binary Search Tree Value](https://leetcode.com/problems/closest-binary-search-tree-value/)|   [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/closest-binary-search-tree-value.py)  | _O(h)_   | _O(1)_ | Easy  | `good basic` ,🔒, `M$`, `google`,`fb`| OK***** (4)
 285| [Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/inorder-successor-in-bst.py)  | _O(h)_ | _O(1)_ | Medium | BST, dfs, basic, 🔒,`amazon`,`fb` | OK* (2)
 449|[Serialize and Deserialize BST](https://leetcode.com/problems/serialize-and-deserialize-bst/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/serialize-and-deserialize-bst.py) | _O(n)_ | _O(h)_ | Medium |`trick`,`serizlize deserizlize`,`tree`, `amazon`, `fb`| AGAIN****** (5)
-450|[Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/delete-node-in-a-bst.py) | _O(h)_ | _O(h)_ | Medium | | AGAIN (not start)
+450|[Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/delete-node-in-a-bst.py) | _O(h)_ | _O(h)_ | Medium | good trick, tree, dfs | AGAIN (not start)
 530|[Minimum Absolute Difference in BST](https://leetcode.com/problems/minimum-absolute-difference-in-bst/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/minimum-absolute-difference-in-bst.py)  | _O(n)_ | _O(h)_ | Easy | | AGAIN*
 776|[Split BST](https://leetcode.com/problems/split-bst/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/split-bst.py) | _O(n)_ | _O(h)_ | Medium | 🔒 | AGAIN (not start*)
 783|[Minimum Distance Between BST Nodes](https://leetcode.com/problems/minimum-distance-between-bst-nodes/)| [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/minimum-distance-between-bst-nodes.py) | _O(n)_ | _O(h)_ | Easy | | OK* 
