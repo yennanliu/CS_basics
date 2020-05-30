@@ -3,7 +3,7 @@
 - `TODO`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 - `TODO2`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 
-# 2020-05-29
+# 2020-05-30
 - DONE :
 	- 606 Construct String from Binary Tree
 	- 459 Repeated Substring Pattern
