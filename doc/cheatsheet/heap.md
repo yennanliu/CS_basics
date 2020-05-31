@@ -1,15 +1,18 @@
 # Heap cheatsheet 
 
-### 1) General form
-- dev
+## 0) Concept  
 
-### 2) Heap VS Stack VS Queue
-- dev 
+### 0-1) Framework
 
-### 3) Basic OP
-- dev
+### 0-2) Pattern
 
-### 4-1) Heap sort
+## 1) General form
+
+### 1-1) Basic OP
+
+### 1-2) Heap VS Stack VS Queue
+
+### 1-3) Heap sort
 ```python
 # https://docs.python.org/zh-tw/3/library/heapq.html
 def heapsort(iterable):
@@ -24,10 +27,11 @@ def heapsort(iterable):
 
 ``` 
 
-### 4-2) Priority Queue
-- dev
+### 1-4) Priority Queue
 
-### 4-3) Kth Largest Element in a Stream
+## 2) LC Example
+
+### 2-1) Kth Largest Element in a Stream
 ```python
 # 703 Kth Largest Element in a Stream
 class KthLargest(object):

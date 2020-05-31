@@ -1,10 +1,18 @@
 # Queue cheatsheet 
 
-### 1) General form
+## 0) Concept  
 
-### 2-1) Queue
+### 0-1) Framework
 
-### 2-2) Double-ended Queue
+### 0-2) Pattern
+
+## 1) General form
+
+### 1-1) Basic OP
+
+### 1-2) Queue
+
+### 1-3) Double-ended Queue
 ```python
 # https://pymotw.com/2/collections/deque.html
 import collections
@@ -19,5 +27,4 @@ print ('pop_left:' , d.popleft())
 print (d)
 
 ```
-
-### 2-3) Stack simulate Queue
+### 1-4) Stack simulate Queue

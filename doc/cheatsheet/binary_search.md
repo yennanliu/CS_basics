@@ -1,6 +1,12 @@
 # Binary Search Cheatsheet
 
-### 1) General form 
+## 0) Concept  
+
+### 0-1) Framework
+
+### 0-2) Pattern
+
+## 1) General form
 ```python
 def binary_search(nums, target):
 	l, r = 0, len(nums)-1
@@ -15,6 +21,8 @@ def binary_search(nums, target):
 	return -1
 
 ```
+## 2) LC Example
+
 
 ### 2-1) For loop + binary search
 ```python
