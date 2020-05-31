@@ -1,19 +1,31 @@
-# V1  : to do : solve again with regular expression 
+# V0
+# IDEA : REGULAR EXPRESSION
+import re
+class Solution(object):
+    def solveEquation(self, equation):
+        a, b, side = 0, 0, 1
+        for eq, sign, num, isx in re.findall('(=)|([-+]?)(\d*)(x?)', equation):
+            #print ("eq : {}, sign : {}, num : {}, isx : {}".format(eq, sign, num, isx))
+            
+            # case : "="
+            if eq:
+                side = -1
+            # case : "x"
+            elif isx:
+                a += side * int(sign + '1') * int(num or 1)
+            # case : number
+            elif num:
+                b -= side * int(sign + num)
+        return 'x=%d' % (b / a) if a else 'No solution' if b else 'Infinite solutions'
 
-# class Solution(object):
-# 	def solveEquation(self, equation):
-# 		eq = equation.split("=")
-# 		left_eq, right_eq = eq[0], eq[1]
-# 		sum_constant = sum([ int(i) for i in eq[1] if i.isdigit()]) - [ int(i) for i in eq[0] if i.isdigit()]
-# 		sum_var = len([ i for i in eq[0] if i.isalpha()]) - len([ i for i in eq[1] if i.isalpha()])
-# 		if sum_var ==0 and sum_constant == 0:
-# 			return "Infinite solutions"
-# 		elif sum_var ==0 and sum_constant != 0:
-# 			return "No solution"
-# 		else:
-# 			return "x={}".format(int(sum_constant/sum_var))
+# V0'
+class Solution(object):
+    def solveEquation(self, equation):
+        z = eval(equation.replace('x', 'j').replace('=', '-(') + ')', {'j': 1j})
+        a, x = z.real, -z.imag
+        return 'x=%d' % (a / x) if x else 'No solution' if a else 'Infinite solutions'
 
-# V2 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80656224
 class Solution(object):
     def solveEquation(self, equation):
@@ -60,7 +72,18 @@ class Solution(object):
         elif left_x == 0 and right_val != 0:
             return "No solution"
 
-# V3 
+### Test case : dev
+
+# V1'
+# https://leetcode.com/problems/solve-the-equation/discuss/105362/Simple-2-liner-(and-more)
+# IDEA : eval
+class Solution(object):
+    def solveEquation(self, equation):
+        z = eval(equation.replace('x', 'j').replace('=', '-(') + ')', {'j': 1j})
+        a, x = z.real, -z.imag
+        return 'x=%d' % (a / x) if x else 'No solution' if a else 'Infinite solutions'
+
+# V2
 # Time:  O(n)
 # Space: O(n)
 import re
@@ -79,4 +102,3 @@ class Solution(object):
             elif num:
                 b -= side * int(sign + num)
         return 'x=%d' % (b / a) if a else 'No solution' if b else 'Infinite solutions'
-
