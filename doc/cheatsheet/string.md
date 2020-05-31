@@ -1,11 +1,16 @@
 # String cheatsheet 
 
-### 1) General form
-- dev 
+## 0) Concept  
 
-### 2) Example
+### 0-1) Framework
 
-#### 2-1) go through 2 string, keep comparing digits in eash string
+### 0-2) Pattern
+
+## 1) General form
+
+## 2) LC Example
+
+### 2-1) go through 2 string, keep comparing digits in eash string
 ```python
 # 165 Compare Version Number
 class Solution(object):
@@ -27,7 +32,7 @@ class Solution(object):
         return 0
 ```
 
-#### 2-2) String -> Int
+### 2-2) String -> Int
 ```python
 # 445 Add Two Numbers II
 # 394 Decode String

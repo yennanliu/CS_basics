@@ -1,6 +1,12 @@
 # BFS cheatsheet 
 
-### 1) General form
+## 0) Concept  
+
+### 0-1) Framework
+
+### 0-2) Pattern
+
+## 1) General form
 ```python
 # V1 : via collections.deque
 import collections
@@ -33,6 +39,10 @@ def bfs(root):
     return q
 
 ```
+
+### 1-1) Basic OP
+
+## 2) LC Example
 
 ### 2-1) Word Ladder
 ```python

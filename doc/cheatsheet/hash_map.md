@@ -1,7 +1,12 @@
 # Hash Map Cheatsheet
 
-### 1) General form 
+## 0) Concept  
 
+### 0-1) Framework
+
+### 0-2) Pattern
+
+## 1) General form
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/hash_table_2.png" ></p>
 
 - Definition 
@@ -21,3 +26,5 @@
 - Ref 
 	- https://blog.techbridge.cc/2017/01/21/simple-hash-table-intro/
 	- https://www.freecodecamp.org/news/hash-tables/
+
+## 2) LC Example

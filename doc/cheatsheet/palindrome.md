@@ -1,14 +1,22 @@
 # Palindrome cheatsheet 
 
-### 1) General form
+## 0) Concept  
+
+### 0-1) Framework
+
+### 0-2) Pattern
+
+## 1) General form
 ```python
 def check_palindrome(x):
 	return x == x[::-1]
 ```
 
-### 2) Example
+### 1-1) Basic OP
 
-#### 2-1)
+## 2) LC Example
+
+#### 2-1) Palindrome Partitioning
 ```python
 # 131 Palindrome Partitioning
 class Solution(object):
