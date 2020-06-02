@@ -1,5 +1,8 @@
 # V0 
-# IDEA :RECURSION
+# IDEA :RECURSION, BST
+# IDEA : USE BST'S PROPERTY : 
+# -> FOR EVERY NODE : right > node > left 
+# -> USE ABOVE PROPERTY FOR BST TRIMMING
 class Solution:
     def trimBST(self, root, L, R):
         if not root:
