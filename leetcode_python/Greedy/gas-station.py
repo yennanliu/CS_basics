@@ -1,4 +1,15 @@
-# V0 
+# V0
+# IDEA : GREEDY
+class Solution:
+    def canCompleteCircuit(self, gas, cost):
+        start, sum_ = 0, 0 
+        for i in range(len(gas)):
+            sum_ += gas[i] - cost[i]
+            if sum_ < 0:
+                start, sum_ = i+1, 0 
+        return start if sum(gas) - sum(cost) >= 0 else -1 
+
+# V0' 
 class Solution(object):
     def canCompleteCircuit(self, gas, cost):
         start = remain = total = 0

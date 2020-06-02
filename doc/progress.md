@@ -7,8 +7,9 @@
 - DONE :
 	- 661 Image Smoother
 	- Review `to_review.txt`
-- Review:
+- Reviewed:
 	- 131 Palindrome Partitioning
+	- 134 Gas Station
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 12/13
 	- Review `data/to_review.txt`
 - DOING : 
@@ -37,7 +38,7 @@
 - DONE :
 	- 701 Insert into a Binary Search Tree
 	- 450 Delete Node in a BST
-- Review:
+- Reviewed:
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 12/13
 	- Review `data/to_review.txt`
 - DOING : 
@@ -66,7 +67,7 @@
 - DONE :
 	- 640 Solve the Equation
 	- 645 Set Mismatch
-- Review:
+- Reviewed:
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 12/13
 	- Review `data/to_review.txt`
 - DOING : 
@@ -95,7 +96,7 @@
 - DONE :
 	- 606 Construct String from Binary Tree
 	- 459 Repeated Substring Pattern
-- Review:
+- Reviewed:
 	- `cheatsheet/dfs.md`
 	- 098 Validate Binary Search Tree
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 12/13
@@ -124,7 +125,7 @@
 # 2020-05-28
 - DONE :
 	- 269 alien-dictionary (fb)
-- Review:
+- Reviewed:
 	- 355 Design Twitter
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 12/13
 	- Review `data/to_review.txt`
@@ -154,7 +155,7 @@
 	- 537 Complex Number Multiplication
 	- 553 Optimal Division
 	- 579 Find Cumulative Salary of an Employee
-- Review:
+- Reviewed:
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 12/13
 	- Review `data/to_review.txt`
 - DOING : 
@@ -183,7 +184,7 @@
 	- 355 Design Twitter
 	- 119 Pascal's Triangle II
 	- 536 Construct Binary Tree from String
-- Review:
+- Reviewed:
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 11/13
 	- Review `data/to_review.txt`
 - DOING : 
@@ -212,7 +213,7 @@
 	- 451 Sort Characters By Frequency
 	- 414 Third Maximum Number
 	- 189 Rotate Array
-- Review:
+- Reviewed:
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 11/13
 	- Review `data/to_review.txt`
 - DOING : 
@@ -239,7 +240,7 @@
 	- 725 Split Linked List in Parts
 	- 538 Convert BST to Greater Tree
 	- 089 Gray Code
-- Review:
+- Reviewed:
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 10/13
 	- Review `data/to_review.txt`
 - DOING : 
@@ -267,7 +268,7 @@
 	- 517 Super Washing Machines
 	- 535 Encode and Decode TinyURL
 	- 529 Minesweeper
-- Review:
+- Reviewed:
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 10/13
 	- Review `data/to_review.txt`
 - DOING : 
@@ -294,7 +295,7 @@
 	- 046 LFU Cache
 	- 126 Word Ladder II (AGAIN)
 	- 127 Word Ladder
-- Review:
+- Reviewed:
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf)
 	- Review `data/to_review.txt`
 - DOING : 
@@ -320,7 +321,7 @@
 	- 042 Trapping Rain Water
 	- 239 Sliding Window Maximum
 	- 023 Merge k sorted lists
-- Review:
+- Reviewed:
  	- 295 Find Median from Data Stream
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf)
 	- Review `data/to_review.txt`
