@@ -12,6 +12,14 @@ class Solution(object):
         # beware of the start and the end index
         for i in range(1, len(s) + 1): 
             if self.isPalindrome(s[:i]):
+                """
+                ### backtrcking 
+                if s[:i] is palindrome, then check if there is palindrome in s[i:] as well
+                e.g.  
+                    a a b b a 
+                  => 
+                    if 'aa' (<-) is palindrome, then check a b b a (->)
+                """
                 self.helper(s[i:], res, path + [s[:i]])
 
     def isPalindrome(self, x):
