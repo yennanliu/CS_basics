@@ -7,6 +7,31 @@
 #   ["4", "13", "5", "/", "+"] -> (4 + (13 / 5)) -> 6
 
 # V0
+# IDEA : STACK 
+# DEMO : call lambda via dict
+# In [13]: ops = {
+#     ...:     '+' : lambda y, x: x+y,
+#     ...:     '-' : lambda y, x: x-y,
+#     ...:     '*' : lambda y, x: x*y,
+#     ...:     '/' : lambda y, x: int(x/y)
+#     ...: }
+#     ...: 
+#     ...: a = 3 
+#     ...: b = 4 
+#     ...: 
+#     ...: 
+#     ...: for key in ops.keys():
+#     ...:     print (ops[key])
+#     ...:     print (ops[key](a,b))
+#     ...:     
+# <function <lambda> at 0x7f8c068c4730>
+# 7
+# <function <lambda> at 0x7f8c068c4048>
+# 1
+# <function <lambda> at 0x7f8c068c4a60>
+# 12
+# <function <lambda> at 0x7f8c068c48c8>
+# 1
 class Solution:
     def evalRPN(self, tokens):
         """
@@ -28,7 +53,7 @@ class Solution:
             else:
                 result.append(int(token))
         return result[0]
-
+   
 # V1
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/discuss/143004/Python-solution-O(n)-descriptive-solution
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/discuss/168183/Python-simple-functional-solution-(no-stack)
