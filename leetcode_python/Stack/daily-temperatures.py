@@ -1,5 +1,38 @@
 # V0
 # IDEA : STACK
+# DEMO 
+#     ...: T=[73, 74, 75, 71, 69, 72, 76, 73]
+#     ...: s=Solution()
+#     ...: r= s.dailyTemperatures(T)
+#     ...: print(r)
+#     ...: 
+# i : 1, stack : [(73, 0)], res : [0, 0, 0, 0, 0, 0, 0, 0]
+# i : 2, stack : [(74, 1)], res : [1, 0, 0, 0, 0, 0, 0, 0]
+# i : 5, stack : [(75, 2), (71, 3), (69, 4)], res : [1, 1, 0, 0, 0, 0, 0, 0]
+# i : 5, stack : [(75, 2), (71, 3)], res : [1, 1, 0, 0, 1, 0, 0, 0]
+# i : 6, stack : [(75, 2), (72, 5)], res : [1, 1, 0, 2, 1, 0, 0, 0]
+# i : 6, stack : [(75, 2)], res : [1, 1, 0, 2, 1, 1, 0, 0]
+# [1, 1, 4, 2, 1, 1, 0, 0]
+class Solution(object):
+    def dailyTemperatures(self, T):
+        N = len(T)
+        stack = []
+        res = [0] * N
+        for i, t in enumerate(T):
+            # if stack is not bland and last temp < current tmpe
+            # -> pop the stack (get its temp)
+            # -> and calculate the difference 
+            ### BEWARE "while" op 
+            while stack and stack[-1][0] < t:
+                oi = stack.pop()[1]
+                res[oi] = i - oi
+            # no matter any case, we have to insert current temp into stack anyway
+            # since the result (next higher temp) is decided by the coming temp, rather than current temp 
+            stack.append((t, i))
+        return res
+
+# V0'
+# IDEA : STACK
 class Solution:
     def dailyTemperatures(self, T):
         res = [0 for _ in range(len(T))]
@@ -11,7 +44,7 @@ class Solution:
             stack.append(i)
         return res
 
-# V0'
+# V0''
 # IDEA : BRUTE FORCE : TIME OUT ERROR
 class Solution:
     def dailyTemperatures(self,T):
