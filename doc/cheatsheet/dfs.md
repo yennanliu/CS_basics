@@ -167,5 +167,24 @@ class Solution:
             return root
 ```
 
+### 2-6) Maximum Width of Binary Tree
+```python
+# 662 Maximum Width of Binary Tree
+
+class Solution(object):
+    def widthOfBinaryTree(self, root):
+        self.ans = 0
+        left = {}
+        def dfs(node, depth = 0, pos = 0):
+            if node:
+                left.setdefault(depth, pos)
+                self.ans = max(self.ans, pos - left[depth] + 1)
+                dfs(node.left, depth + 1, pos * 2)
+                dfs(node.right, depth + 1, pos * 2 + 1)
+
+        dfs(root)
+        return self.ans
+```
+
 ### Ref
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E6%93%8D%E4%BD%9C%E9%9B%86%E9%94%A6.md

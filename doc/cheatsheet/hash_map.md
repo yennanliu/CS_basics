@@ -27,4 +27,27 @@
 	- https://blog.techbridge.cc/2017/01/21/simple-hash-table-intro/
 	- https://www.freecodecamp.org/news/hash-tables/
 
+### 1-1) Basic OP
+
+- `setdefault()`
+	- https://www.w3schools.com/python/ref_dictionary_setdefault.asp
+```python
+# 662 Maximum Width of Binary Tree
+car = {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+
+# get key "brand" value
+print (car.setdefault("brand"))
+# insert key "my_key"
+print (car.setdefault("my_key"))
+print (car)
+# add new key "color" and its value white
+print (car.setdefault("color", "white"))
+print (car)
+
+```
+
 ## 2) LC Example
