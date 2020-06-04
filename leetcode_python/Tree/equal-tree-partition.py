@@ -1,4 +1,53 @@
+# LeetCode 663. Equal Tree Partition
+#
+# Given a binary tree with n nodes, your task is to check if it's possible to partition the tree to two trees which have the equal sum of values after removing exactly one edge on the original tree.
+#
+# Example 1:
+#
+# Input:     
+#     5
+#    / \
+#   10 10
+#     /  \
+#    2   3
+#
+# Output: True
+# Explanation: 
+#     5
+#    / 
+#   10
+#    
+# Sum: 15
+#
+#    10
+#   /  \
+#  2    3
+#
+# Sum: 15
+# Example 2:
+#
+# Input:     
+#     1
+#    / \
+#   2  10
+#     /  \
+#    2   20
+#
+# Output: False
+# Explanation: You can't split the tree into two trees with equal sum after removing exactly one edge on the tree.
+# Note:
+#
+# The range of tree node value is in the range of [-100000, 100000].
+# 1 <= n <= 10000
+
 # V0 
+### NOTE : 
+### THE PROBLEM IS TO CHECK 
+### "IF THERE IS A WAY TO USE A LINE SPLIT WHOLE TREE INTO 2 SUB TREE WITH SAME SUM"
+### (rather to only split part of the origin tree)
+### SO -> ALWAYS CHECK IF SUM(tree) = 2*(sub_tree_1) = 2*(sub_tree_2)
+### tree = sub_tree_1 + sub_tree_2
+# IDEA : DFS
 # IDEA : GET THE SUM LIST (self.mp = {}), 
 #        -> THEN CHECK IF THERE EXIST ANY i, j IN  self.mp 
 #        -> SUCH THAT i = j/2 
@@ -19,6 +68,20 @@ class Solution:
         else:
             self.mp[sum] += 1
         return sum
+
+# V0'
+class Solution(object):
+    def checkEqualTree(self, root):
+        seen = []
+
+        def sum_(node):
+            if not node: return 0
+            seen.append(sum_(node.left) + sum_(node.right) + node.val)
+            return seen[-1]
+
+        total = sum_(root)
+        seen.pop()
+        return total / 2.0 in seen
 
 # V1 
 # http://bookshadow.com/weblog/2017/08/21/leetcode-equal-tree-partition/
@@ -47,6 +110,8 @@ class Solution(object):
         total = self.dmap[1]
         del self.dmap[1]
         return any(v * 2 == total for k, v in self.dmap.iteritems())
+
+### Test case : dev
 
 # V1'
 # https://www.jiuzhang.com/solution/equal-tree-partition/#tag-highlight-lang-python
@@ -78,6 +143,21 @@ class Solution:
         else:
             self.mp[sum] += 1
         return sum
+
+# V1''
+# https://leetcode.com/articles/equal-tree-partition/
+class Solution(object):
+    def checkEqualTree(self, root):
+        seen = []
+
+        def sum_(node):
+            if not node: return 0
+            seen.append(sum_(node.left) + sum_(node.right) + node.val)
+            return seen[-1]
+
+        total = sum_(root)
+        seen.pop()
+        return total / 2.0 in seen
 
 # V2 
 # Time:  O(n)
