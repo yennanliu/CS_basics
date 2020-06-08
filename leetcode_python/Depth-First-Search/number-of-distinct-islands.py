@@ -33,6 +33,8 @@ class Solution:
     def numDistinctIslands(self, grid):
         def dfs(x, y, pos, rel_pos):
             if grid[x][y] != 1:
+                ### NOTICE HERE : not need to return pos, since pos already updated in place (when meet the condition),
+                ### so here just need a "return" to stop the while loop
                 return
             grid[x][y] = -1
             directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
