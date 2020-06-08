@@ -23,7 +23,19 @@
 # The value in the given matrix is in the range of [0, 255].
 # The length and width of the given matrix are in the range of [1, 150].
 
-# V0 
+# V0
+class Solution:
+    def imageSmoother(self, M):
+        row, col = len(M), len(M[0])
+        res = [[0]*col for i in range(row)]
+        dirs = [[0,0],[0,1],[0,-1],[1,0],[-1,0],[1,1],[-1,-1],[-1,1],[1,-1]]
+        for i in range(row):
+            for j in range(col):
+                temp = [M[i+m][j+n] for m,n in dirs if 0<=i+m<row and 0<=j+n<col]
+                res[i][j] = sum(temp)//len(temp)
+        return res
+
+# V0'
 class Solution(object):
     def imageSmoother(self, M):
         dx, dy = [-1, 0, 1], [-1, 0, 1]
@@ -37,18 +49,6 @@ class Solution(object):
                 row.append(floor(sum(nbs) / len(nbs)))
             N.append(row)
         return N
-
-# V0'
-class Solution:
-    def imageSmoother(self, M):
-        row, col = len(M), len(M[0])
-        res = [[0]*col for i in range(row)]
-        dirs = [[0,0],[0,1],[0,-1],[1,0],[-1,0],[1,1],[-1,-1],[-1,1],[1,-1]]
-        for i in range(row):
-            for j in range(col):
-                temp = [M[i+m][j+n] for m,n in dirs if 0<=i+m<row and 0<=j+n<col]
-                res[i][j] = sum(temp)//len(temp)
-        return res
 
 # V1 
 # http://bookshadow.com/weblog/2017/08/21/leetcode-image-smoother/
