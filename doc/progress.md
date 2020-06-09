@@ -20,6 +20,7 @@
 	- `heap` op review
 - REDO:
 	- regular expression (640 Solve the Equation)
+	- 738 Monotone Increasing Digits
 	- 536 Construct Binary Tree from String
 	- 355 Design Twitter
 	- 725 Split Linked List in Parts
