@@ -1,4 +1,47 @@
-# V0 
+# V0
+# IDEA : GRAPH + BFS  
+# https://www.youtube.com/watch?v=x1wXkRrpavw
+# https://blog.csdn.net/qq_17550379/article/details/87778889
+import collections
+class Solution:
+    # search via DFS
+    def findClosestLeaf(self, root, k):
+        self.start = None
+        self.buildGraph(root, None, k)
+        q, visited = [root], set()
+        #q, visited = [self.start], set() # need to validate this
+        self.graph = collections.defaultdict(list)
+        while q:
+            for i in range(len(q)):
+                cur = q.pop(0)
+                # add cur to visited, NOT to visit this node again
+                visited.add(cur)
+                ### NOTICE HERE 
+                # if not cur.left and not cur.right: means this is the leaf (HAS NO ANY left/right node) of the tree
+                # so the first value of this is what we want, just return cur.val as answer directly
+                if not cur.left and not cur.right:
+                    # return the answer
+                    return cur.val
+                # if not find the leaf, then go through all neighbors of current node, and search again
+                for node in self.graph:
+                    if node not in visited: # need to check if "if node not in visited" or "if node in visited"
+                        q.append(node)
+
+    # build graph via DFS
+    # node : current node
+    # parent : parent of current node
+    def buildGraph(self, node, parent, k):
+        if not node:
+            return
+        # if node.val == k, THEN GET THE start point FROM current "node",
+        # then build graph based on above
+        if node.val == k:
+            self.start = node
+        if parent:
+            self.graph[node].append(parent)
+            self.graph[parent].append(node)
+        self.buildGraph(node.left, node, k)
+        self.buildGraph(node.right, node, k)
 
 # V1 
 # http://bookshadow.com/weblog/2017/12/10/leetcode-closest-leaf-in-a-binary-tree/
@@ -44,7 +87,9 @@ class Solution(object):
                 dist = ndist
                 ans = leaf
         return ans.val
-        
+
+### Test case : dev 
+
 # V1'
 # https://www.jiuzhang.com/solution/closest-leaf-in-a-binary-tree/#tag-highlight-lang-python
 """
@@ -103,6 +148,82 @@ class Solution:
             if tmp.val == k:
                 res = tmp      
         return res
+
+# V1''
+# https://blog.csdn.net/qq_17550379/article/details/87778889
+# https://coordinate.wang/index.php/archives/2057/
+# IDEA : BFS + GRAPH 
+import collections
+class Solution:
+    def findClosestLeaf(self, root: 'List[TreeNode]', k: 'int') -> 'int':
+        self.start = None
+        self.buildGraph(root, None, k)
+        q, visited = [root], set()
+        self.graph = collections.defaultdict(list)
+        while q:
+            for i in range(len(q)):
+                cur = q.pop(0)
+                visited.add(cur)
+                if not cur.left and not cur.right:
+                    return cur.val
+                for node in self.graph:
+                    if node in visited:
+                        q.append(node)
+
+    def buildGraph(self, node, parent, k):
+        if not node:
+            return
+
+        if node.val == k:
+            self.start = node
+        if parent:
+            self.graph[node].append(parent)
+            self.graph[parent].append(node)
+        self.buildGraph(node.left, node, k)
+        self.buildGraph(node.right, node, k)
+
+# V1'''
+# http://zxi.mytechroad.com/blog/tree/742-closest-leaf-in-a-binary-tree/
+# C++
+# // Author: Huahua
+# // Runtime: 16 ms
+# class Solution {
+# public:
+#     int findClosestLeaf(TreeNode* root, int k) {
+#         graph_.clear();
+#         start_ = nullptr;
+#         buildGraph(root, nullptr, k);
+#         queue<TreeNode*> q;
+#         q.push(start_);
+#         unordered_set<TreeNode*> seen;
+#         while (!q.empty()) {
+#             int size = q.size();
+#             while (size-->0) {
+#                 TreeNode* curr = q.front();
+#                 q.pop();                
+#                 seen.insert(curr);                
+#                 if (!curr->left && !curr->right) return curr->val;
+#                 for (TreeNode* node : graph_[curr])
+#                     if (!seen.count(node)) q.push(node);
+#             }
+#         }
+#         return 0;
+#     }
+# private:
+#     void buildGraph(TreeNode* node, TreeNode* parent, int k) {
+#         if (!node) return;
+#         if (node->val == k) start_ = node;
+#         if (parent) {
+#             graph_[node].push_back(parent);
+#             graph_[parent].push_back(node);
+#         }
+#         buildGraph(node->left, node, k);
+#         buildGraph(node->right, node, k);
+#     }
+    
+#     unordered_map<TreeNode*, vector<TreeNode*>> graph_;
+#     TreeNode* start_;
+# };
 
 # V2 
 # Time:  O(n)
