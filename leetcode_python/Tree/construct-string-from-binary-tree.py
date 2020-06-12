@@ -5,10 +5,13 @@ class Solution:
             return ''
         if not t.left and not t.right:
             return str(t.val)
+        ### NOTICE HERE
         if not t.left:
             return str(t.val) + '()' + '(' + self.tree2str(t.right) + ')'
+        ### NOTICE HERE
         if not t.right:
             return str(t.val) + '(' + self.tree2str(t.left) + ')'
+        ### NOTICE HERE
         return str(t.val) + '(' + self.tree2str(t.left) + ')' + '(' + self.tree2str(t.right) + ')'
 
 # V0'
@@ -33,6 +36,7 @@ class Solution(object):
         if right:
             res += "(%s)" % right
         return str(t.val) + res
+        
 # V1 
 # http://bookshadow.com/weblog/2017/06/04/leetcode-construct-string-from-binary-tree/
 # Definition for a binary tree node.
