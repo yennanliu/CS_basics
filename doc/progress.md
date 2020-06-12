@@ -10,6 +10,7 @@
 - Reviewed:
 	- 742 Closest Leaf in a Binary Tree
 	- 738 Monotone Increasing Digits
+	- 663 Equal Tree Partition
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 13/13
 	- Review `data/to_review.txt`
 - DOING : 
