@@ -38,6 +38,30 @@ class Solution(object):
                 return True
         return False
 
+# V0'
+class Solution(object):
+    def repeatedSubstringPattern(self, str):
+        size = len(str)
+        # only have to go through till half of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
+        for x in range(1, size // 2 + 1):
+            # if len(s) is  len(s[:x]) 's  multiple, check if SubstringPattern 
+            if str[:x] * (size // x) == str:
+                return True
+        return False
+
+# V0''
+class Solution(object):
+    def repeatedSubstringPattern(self, str):
+        size = len(str)
+        cur_size = 0
+        for i in range(1, size//2+1):
+            cur_size += 1 
+            sample = str[:i]
+            if size % cur_size == 0 \
+               and sample * (size//cur_size) == str:
+                return True
+        return False
+
 # V1
 # http://bookshadow.com/weblog/2016/11/13/leetcode-repeated-substring-pattern/
 class Solution(object):
