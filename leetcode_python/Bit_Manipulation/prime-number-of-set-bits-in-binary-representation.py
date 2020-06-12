@@ -1,4 +1,12 @@
 # V0 
+class Solution(object):
+    def countPrimeSetBits(self, L, R):
+        primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]
+        res = 0
+        for num in range(L, R + 1):
+            if bin(num).count("1") in primes:
+                res += 1
+        return res
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79089092
@@ -20,6 +28,17 @@ class Solution(object):
             if bin(num).count("1") in primes:
                 res += 1
         return res
+
+### Test case:
+s=Solution()
+assert s.countPrimeSetBits(6,10) == 4 
+assert s.countPrimeSetBits(0,0) == 0
+assert s.countPrimeSetBits(0,1) == 0
+assert s.countPrimeSetBits(1,1) == 0
+assert s.countPrimeSetBits(2,2) == 0 
+assert s.countPrimeSetBits(10,10) == 1
+assert s.countPrimeSetBits(10,2) == 0 
+assert s.countPrimeSetBits(2,200) == 121 
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79089092
@@ -48,7 +67,16 @@ class Solution(object):
     def countPrimeSetBits(self, L, R):
         isPrime = lambda num : 0 if ((num == 1) or (num % 2 == 0 and num > 2)) else int(all(num % i for i in xrange(3, int(num ** 0.5) + 1, 2)))
         return sum(isPrime(bin(num)[2:].count('1')) for num in xrange(L, R+1))
-        
+
+# V1'''
+# https://leetcode.com/problems/prime-number-of-set-bits-in-binary-representation/solution/
+# IDEA : DIRECT
+class Solution(object):
+    def countPrimeSetBits(self, L, R):
+        primes = {2, 3, 5, 7, 11, 13, 17, 19}
+        return sum(bin(x).count('1') in primes
+                   for x in range(L, R+1))
+
 # V2
 # Time:  O(log(R - L)) = O(1)
 # Space: O(1)
