@@ -2,8 +2,10 @@
 class Solution:
     def monotoneIncreasingDigits(self, N):
         s = list(str(N));
+        ### NOTICE HERE 
         for i in range(len(s) - 2,-1,-1):
             if int(s[i]) > int(s[i+1]):
+                ### NOTICE HERE 
                 for j in range(i+1,len(s)):
                     s[j] = '9'
                 s[i] = str(int(s[i]) - 1)
@@ -59,7 +61,7 @@ class Solution(object):
         y = len(sn) - x - 1
         return (N // (10 ** y)) * (10 ** y) - 1
 
-# V1'
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82721627
 class Solution:
     def monotoneIncreasingDigits(self, N):
@@ -79,7 +81,7 @@ class Solution:
         res = '9' * ind + str(num[ind] - 1) + "".join(map(str, num[ind + 1:]))
         return int(res[::-1])
 
-# V1''
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82721627
 class Solution:
     def monotoneIncreasingDigits(self, N):
@@ -101,7 +103,7 @@ class Solution:
             num[i] = 9
         return int("".join(map(str, num)))
 
-# V1'''
+# V1''''
 # https://leetcode.com/problems/monotone-increasing-digits/solution/
 # IDEA : GREEDY 
 # Time Complexity: O(D^2)
@@ -110,8 +112,8 @@ class Solution(object):
     def monotoneIncreasingDigits(self, N):
         digits = []
         A = map(int, str(N))
-        for i in xrange(len(A)):
-            for d in xrange(1, 10):
+        for i in range(len(A)):
+            for d in range(1, 10):
                 if digits + [d] * (len(A)-i) > A:
                     digits.append(d-1)
                     break
@@ -120,7 +122,7 @@ class Solution(object):
 
         return int("".join(map(str, digits)))
 
-# V1''''
+# V1'''''
 # https://leetcode.com/problems/monotone-increasing-digits/solution/
 # IDEA : Truncate After Cliff
 class Solution(object):
@@ -135,7 +137,7 @@ class Solution(object):
         S[i+1:] = '9' * (len(S) - i-1)
         return int("".join(S))
 
-# V1'''''
+# V1''''''
 # https://leetcode.com/problems/monotone-increasing-digits/discuss/181945/Fast-and-simple-40ms-Python-solution-using-recursion
 class Solution:
     def monotoneIncreasingDigits(self, N):
