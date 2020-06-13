@@ -1,4 +1,5 @@
 # V0
+# https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E8%AE%BE%E8%AE%A1Twitter.md
 from collections import defaultdict
 from heapq import merge
 class Twitter(object):
@@ -57,6 +58,7 @@ class Twitter(object):
 
 # V1
 # https://leetcode.com/problems/design-twitter/discuss/82943/Use-python-heapq.merge
+# https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E8%AE%BE%E8%AE%A1Twitter.md
 # IDEA : heapq.merge
 from collections import defaultdict
 from heapq import merge
