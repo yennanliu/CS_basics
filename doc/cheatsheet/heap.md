@@ -28,6 +28,57 @@ def heapsort(iterable):
 ``` 
 
 ### 1-4) Priority Queue
+```java
+PriorityQueue pq
+// random insert
+for i in {2,4,1,9,6}:
+    pq.add(i)
+while pq not empty:
+    // every time get the one minimum element
+    print(pq.pop())
+
+// the output should be in order (small -> big)
+// 1,2,4,6,9
+
+```
+```python
+# 355 Design Twitter
+
+from collections import defaultdict
+from heapq import merge
+class Twitter(object):
+    
+    def __init__(self):
+        self.follower_followees_map = defaultdict(set)
+        self.user_tweets_map = defaultdict(list)
+        self.time_stamp = 0
+
+    def postTweet(self, userId, tweetId):
+        self.user_tweets_map[userId].append((self.time_stamp, tweetId))
+        self.time_stamp -= 1
+
+    def getNewsFeed(self, userId):
+        followees = self.follower_followees_map[userId]
+        followees.add(userId)
+        
+        # reversed(.) returns a listreverseiterator, so the complexity is O(1) not O(n)
+        candidate_tweets = [reversed(self.user_tweets_map[u]) for u in followees]
+
+        tweets = []
+        # complexity is 10lg(n), n is twitter's user number in worst case
+        for t in merge(*candidate_tweets):
+            tweets.append(t[1])
+            if len(tweets) == 10:
+                break
+        return tweets
+
+    def follow(self, followerId, followeeId):
+        self.follower_followees_map[followerId].add(followeeId)
+
+    def unfollow(self, followerId, followeeId):
+        self.follower_followees_map[followerId].discard(followeeId)
+
+```
 
 ## 2) LC Example
 
