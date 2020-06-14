@@ -39,6 +39,9 @@ class Solution(object):
     def dfs(self, root, m, res):
         if not root:
             return '#'
+        ### Notice here 
+        # every "self.dfs" means a "new start", so it will re-consider the duplicated sub-tree from current node
+        # i.e. : self.dfs(root.left, m, res) will re-consider the duplicated sub-tree left node
         path = str(root.val) + '-' + self.dfs(root.left, m, res) + '-' + self.dfs(root.right, m, res)
         ### Notice here
         # if m[path] == 1 means if there is already one element in the m 
@@ -50,6 +53,24 @@ class Solution(object):
         return path
 
 # V0'
+import collections
+class Solution(object):
+    def findDuplicateSubtrees(self, root):
+        self.res = []
+        self.m = collections.defaultdict(int)
+        self.dfs(root)
+        return self.res
+
+    def dfs(self, root):
+        if not root:
+            return ''
+        path = str(root.val) + '-' + self.dfs(root.left) + '-' + self.dfs(root.right)
+        if self.m[path] == 1:
+            self.res.append(root) 
+        self.m[path] += 1
+        return path
+
+# V0''
 # IDEA : DFS 
 class Solution(object):
     def findDuplicateSubtrees(self, root):

@@ -20,7 +20,11 @@
 	- how to write test for - `linked list`, `tree`, `BST`
 	- `heap` op review
 - REDO:
+	- BFS
+	- Trie
 	- regular expression (640 Solve the Equation)
+	- 775 Global and Local Inversions
+	- 642 Design Search Autocomplete System
 	- 738 Monotone Increasing Digits
 	- 536 Construct Binary Tree from String
 	- 355 Design Twitter
