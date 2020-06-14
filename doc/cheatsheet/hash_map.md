@@ -50,4 +50,32 @@ print (car)
 
 ```
 
+- `sort` on ***hashmap (dict)***
+```python
+# https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
+
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+sorted_x = sorted(x.items(), key=lambda kv: kv[1])
+print (sorted_x)
+# [(0, 0), (2, 1), (1, 2), (4, 3), (3, 4)]
+
+
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+sorted_x = sorted(x.items(), key=lambda kv: kv[0])
+print (sorted_x)
+# [(0, 0), (1, 2), (2, 1), (3, 4), (4, 3)]
+
+# 451  Sort Characters By Frequency
+import collections
+class Solution(object):
+    def frequencySort(self, s):
+        count = collections.Counter(s)
+        count_dict = dict(count)
+        count_tuple_sorted = sorted(count_dict.items(), key=lambda kv : -kv[1])
+        res = ''
+        for item in count_tuple_sorted:
+            res += item[0] * item[1]
+        return res
+```
+
 ## 2) LC Example
