@@ -1,4 +1,16 @@
 # V0
+import collections
+class Solution(object):
+    def frequencySort(self, s):
+        count = collections.Counter(s)
+        count_dict = dict(count)
+        count_tuple_sorted = sorted(count_dict.items(), key=lambda kv : -kv[1])
+        res = ''
+        for item in count_tuple_sorted:
+            res += item[0] * item[1]
+        return res
+
+# V0'
 # IDEA : collections.Counter(s).most_common
 class Solution(object):
     def frequencySort(self, s):
