@@ -9,6 +9,9 @@
 	- 775 Global and Local Inversions
 	- Review `to_review.txt`
 - Reviewed:
+	- 657 Robot Return to Origin
+	- 652 Find Duplicate Subtrees
+	- 642 Design Search Autocomplete System
 	- [AMZ V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf) - 13/13
 	- Review `data/to_review.txt`
 - DOING : 

@@ -292,7 +292,7 @@
 966 | [Vowel Spellchecker](https://leetcode.com/problems/vowel-spellchecker/) | [Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/vowel-spellchecker.py) | _O(n)_ | _O(w)_ | Medium |`trick`, `dict`, `set`| AGAIN (not start)
 974| [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/)|[Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/subarray-sums-divisible-by-k.py)  | _O(n)_ | _O(k)_ | Medium  | variant of `# 560 Subarray Sum Equals K` , `trick`, `basic`|  AGAIN** (3) (not start)
 463| [Island Perimeter](https://leetcode.com/problems/island-perimeter/)|[Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/island_perimeter.py)  | _O(n)_ | _O(k)_ | Medium |`basic`,`hash table`, `google`, `fb`| OK** (1)
-657| [Robot Return to Origin](https://leetcode.com/problems/robot-return-to-origin/)|[Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/rebot_return_to_origin.py)  ||| Easy |`amazon`| OK
+657| [Robot Return to Origin](https://leetcode.com/problems/robot-return-to-origin/)|[Python ](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/rebot_return_to_origin.py)  ||| Easy |`amazon`| OK (2)
 
 
 ## Linked list 
@@ -478,7 +478,7 @@
 616| [Add Bold Tag in String](https://leetcode.com/problems/add-bold-tag-in-string/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/add-bold-tag-in-string.py) | _O(n * d * l)_ | _O(n)_ |  Medium | 🔒 | AGAIN (not start)
 647| [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/palindromic-substrings.py) |_O(n)_ | _O(n)_ | Medium | `good basic`,`Manacher's Algorithm`, `Linkedin`,`amazon`,`fb` | OK** (3)
 648| [Replace Words](https://leetcode.com/problems/replace-words/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/replace-words.py) | _O(n)_ | _O(t)_ | Medium  | Trie, `good basic`| OK* 
-657| [Judge Route Circle](https://leetcode.com/problems/judge-route-circle/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/judge-route-circle.py)  | _O(n)_ | _O(1)_ | Easy    | | OK 
+657| [Judge Route Circle](https://leetcode.com/articles/judge-route-circle/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/judge-route-circle.py)  | _O(n)_ | _O(1)_ | Easy    | | OK 
 678| [Valid Parenthesis String](https://leetcode.com/problems/valid-parenthesis-string/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/valid-palindrome.py)   | _O(n)_ | _O(1)_ | Medium    | | AGAIN** 
 680| [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/) |  [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/valid-palindrome-ii.py)  | _O(n)_  | _O(1)_    | Easy |`good basic`, `string`, `fb`| OK
 681| [Next Closest Time](https://leetcode.com/problems/next-closest-time/) | [python](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/next-closest-time.py)  | _O(1)_  | _O(1)_  | Medium |`subset of set`, `<=`,`strptime`,  `google`,`fb`| OK*** (4)
