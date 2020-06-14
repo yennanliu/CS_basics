@@ -9,6 +9,7 @@
 	- 775 Global and Local Inversions
 	- Review `to_review.txt`
 - Reviewed:
+	- 189 Rotate Array
 	- 414 Third Maximum Number
 	- 451 Sort Characters By Frequency
 	- 657 Robot Return to Origin
