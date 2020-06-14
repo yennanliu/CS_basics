@@ -20,7 +20,16 @@
 # - S and J will consist of letters and have length at most 50.
 # - The characters in J are distinct.
 
-# V0 
+# V0
+class Solution(object):
+    def numJewelsInStones(self, J, S):
+        return len([ i for i in S if i in J])
+
+# V0'
+class Solution(object):
+    def numJewelsInStones(self, J, S):
+        lookup = set(J)
+        return sum(s in lookup for s in S)
 
 # V1 
 # http://bookshadow.com/weblog/2018/01/28/leetcode-jewels-and-stones/
