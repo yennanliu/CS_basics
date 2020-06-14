@@ -34,7 +34,14 @@ Could you do it in-place with O(1) extra space?
 # Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.
 #
 
-# V0
+# V0 
+# IDEA : SLICE (in place)
+class Solution(object):
+    def rotate(self, nums, k):
+        k = k % len(nums)
+        nums[:k], nums[k:] = nums[-k:], nums[:len(nums)-k]
+
+# V0'
 # IDEA : SLICE
 class Solution(object):
     def rotate(self, nums, k):
