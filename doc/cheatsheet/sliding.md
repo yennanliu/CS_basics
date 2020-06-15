@@ -1,4 +1,4 @@
-# Sliding window template 
+# Sliding window cheatsheet 
 
 ## 0) Concept  
 1. two pointers
