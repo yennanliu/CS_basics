@@ -203,5 +203,20 @@ class Solution(object):
         return total / 2.0 in seen
 ```
 
+### 2-8) Split BST
+```python
+# 776 Split BST
+class Solution(object):
+    def splitBST(self, root, V):
+        if not root: return [None, None]
+        if root.val > V:
+            left, right = self.splitBST(root.left, V)
+            root.left = right
+            return [left, root]
+        left, right = self.splitBST(root.right, V)
+        root.right = left
+        return [root, right]
+```
+
 ### Ref
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E6%93%8D%E4%BD%9C%E9%9B%86%E9%94%A6.md

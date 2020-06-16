@@ -23,6 +23,7 @@
 	- BFS
 	- Trie
 	- regular expression (640 Solve the Equation)
+	- 776 Split BST
 	- 775 Global and Local Inversions
 	- 642 Design Search Autocomplete System
 	- 738 Monotone Increasing Digits
