@@ -10,6 +10,7 @@
 	- Review `data/to_review.txt`
 		- BFS cheatsheet
 		- 482 License Key Formatting
+		- 127 Word Ladder
 		- [GOOG V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf) - 1/29
 - DOING : 
 	- AMZ leetcode questions go through

@@ -1,10 +1,26 @@
-# BFS cheatsheet 
+# BFS cheatsheet
+- Shortest path searching
+- Breadth first, then deep
+- Usually choice data structure such as *queue*, *array*
 
 ## 0) Concept  
 
 ### 0-1) Framework
 
 ### 0-2) Pattern
+```python
+import colllections 
+queue = colllections.deque()
+queue.append(root)
+while len(queue) > 0:
+    for i in range(len(queue)):
+        node = queue.popleft()
+        # op
+        if node.left:
+            queue.append(node.left)
+        if node.right:
+            queue.append(node.right) 
+```
 
 ## 1) General form
 ```python
