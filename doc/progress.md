@@ -20,7 +20,7 @@
 	- how to write test for - `linked list`, `tree`, `BST`
 	- `heap` op review
 - REDO:
-	- BFS
+	- Backtrack
 	- Trie
 	- regular expression (640 Solve the Equation)
 	- 776 Split BST
