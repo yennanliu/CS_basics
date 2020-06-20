@@ -16,6 +16,27 @@ class Solution(object):
         if root.left: self.level(root.left, level + 1, res)
         if root.right: self.level(root.right, level + 1, res)
 
+# V0'
+# IDEA : BFS 
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal.py
+class Solution(object):
+    def levelOrderBottom(self, root):
+        res = []
+        if not root: return res
+        queue = collections.deque()
+        queue.append(root)
+        while queue:
+            level = []
+            for i in range(len(queue)):  # NOTE THAT HERE WE HAVE TO GO THROUGH EVERY ELEMENT IN THE SAME LAYER OF BST 
+                node = queue.popleft()
+                level.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            res.append(level)
+        return res[::-1]
+
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/49108449
 # IDEA : DFS 
