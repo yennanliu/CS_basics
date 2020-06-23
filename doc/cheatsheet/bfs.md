@@ -64,6 +64,7 @@ def bfs(root):
 ```python
 # 102 Binary Tree Level Order Traversal
 # 107 Binary Tree Level Order Traversal II
+# 103 Binary Tree Zigzag Level Order Traversal
 # note : there is also a dfs solution
 class Solution(object):
     def levelOrder(self, root):
@@ -84,7 +85,7 @@ class Solution(object):
         return res
 ```
 
-### 2-1) Word Ladder
+### 2-2) Word Ladder
 ```python
 # 127 Word Ladder
 class Solution(object):
@@ -106,7 +107,7 @@ class Solution(object):
         return 0
 
 ```
-### 2-2) Closest Leaf in a Binary Tree
+### 2-3) Closest Leaf in a Binary Tree
 ```python
 # 742 Closest Leaf in a Binary Tree
 import collections
@@ -149,4 +150,40 @@ class Solution:
             self.graph[parent].append(node)
         self.buildGraph(node.left, node, k)
         self.buildGraph(node.right, node, k)
+```
+
+### 2-4) Surrounded Regions
+```python
+# 130 Surrounded Regions
+# note : there is also a dfs solution
+# IDEA : BFS
+class Solution(object):
+    def solve(self, board):
+        import collections 
+        if not board: return 
+        l, w = len(board), len(board[0])
+        q=collections.deque()
+
+        # get the index of all O on the boarder
+        for i in range(l):
+            for j in range(w):
+                if i in [0, l-1] or j in [0, w-1] and board[i][j] == "O":
+                    q.append((i,j))
+
+        # bfs, make the adjacent O into D
+        while q:
+            x,y = q.popleft()
+            if  0 <= x < l and 0 <= y < w and board[x][y] == "O":
+                board[x][y] = 'D' 
+                for dx, dy in [(0,1), (0,-1),(1,0),(-1,0)]:
+                    q.append((x+dx,y+dy))
+
+        # make the rest of O into X and make the D into 0
+        for i in range(l):
+            for j in range(w):
+                if board[i][j] == "O":
+                    board[i][j] = "X"
+                elif board[i][j] == "D":
+                    board[i][j] = "O"
+        return board
 ```
