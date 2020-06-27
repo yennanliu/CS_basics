@@ -1,7 +1,37 @@
 # V0 
+# https://zxi.mytechroad.com/blog/hashtable/leetcode-737-sentence-similarity-ii/
+# IDEA : DFS
+# STEPS : 
+# -> 1) MAKE A GRAPH
+# -> 2) PUT ALL word belong to "the same" "group" into the same cluster
+# -> 3) GO THROUGH EVERY WORD IN words1, words2 AND CHECK IF THEY ARE IN THE SAME CLUSTER (use DFS TO this)
+import collections
+class Solution(object):
+    def areSentencesSimilarTwo(self, words1, words2, pairs):
+        if len(words1) != len(words2): return False
+        similars = collections.defaultdict(set)
+        for w1, w2 in pairs:
+            similars[w1].add(w2)
+            similars[w2].add(w1)
+        ### NOTICE HERE : use DFS to check if 2 words is in the SAME "word cluster"
+        def dfs(words1, words2, visits):
+            for similar in similars[words2]:
+                if words1 == similar:
+                    return True
+                elif similar not in visits:
+                    visits.add(similar)
+                    if dfs(words1, similar, visits):
+                        return True
+            return False
+
+        for w1, w2 in zip(words1, words2):
+            if w1 != w2 and not dfs(w1, w2, set([w2])):
+                return False
+        return True
 
 # V1 
 # http://bookshadow.com/weblog/2017/11/26/leetcode-sentence-similarity-ii/
+# https://zxi.mytechroad.com/blog/hashtable/leetcode-737-sentence-similarity-ii/
 # IDEA : DICT + HASH TABLE + BFS/DFS 
 import collections
 class Solution(object):
@@ -33,8 +63,11 @@ class Solution(object):
                 return False
         return True
 
+### Test case : dev 
+
 # V1'
 # https://www.jiuzhang.com/solution/sentence-similarity-ii/#tag-highlight-lang-python
+# IDEA : UNION FIND
 class Solution():
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         if len(words1) != len(words2): 
@@ -60,6 +93,7 @@ class Solution():
 # V2 
 # Time:  O(n + p)
 # Space: O(p)
+# IDEA : UnionFind
 import itertools
 class UnionFind(object):
     def __init__(self, n):

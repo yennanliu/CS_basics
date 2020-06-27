@@ -101,6 +101,26 @@ class Solution(object):
         return True
 
 # V1'
+# https://zxi.mytechroad.com/blog/hashtable/leetcode-734-sentence-similarity/
+class Solution:
+    def areSentencesSimilar(self, words1, words2, pairs):
+        if len(words1) != len(words2): return False
+        
+        similar_words = {}
+        
+        for w1, w2 in pairs:
+            if not w1 in similar_words: similar_words[w1] = set()
+            if not w2 in similar_words: similar_words[w2] = set()
+            similar_words[w1].add(w2)
+            similar_words[w2].add(w1)
+        
+        for w1, w2 in zip(words1, words2):
+            if w1 == w2: continue
+            if w1 not in similar_words: return False
+            if w2 not in similar_words[w1]: return False      
+        return True
+
+# V1''
 # https://www.jiuzhang.com/solution/sentence-similarity/#tag-highlight-lang-python
 class Solution:
     """
