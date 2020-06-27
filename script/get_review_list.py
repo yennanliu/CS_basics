@@ -11,6 +11,8 @@ class GetReviewList:
         self.lc_fib_sequence=collections.defaultdict(list)
         self.review_list=collections.defaultdict(list)
         self.current_date=datetime.now()
+        self.progress="data/progress.txt"
+        self.to_review="data/to_review.txt"
 
     def process_datetime(self, datestring):
         """
@@ -49,10 +51,8 @@ class GetReviewList:
         """
         get "leetcode id - date dict based on fibonacci sequence
         """
-        progress="data/progress.txt"
-        tmp="data/tmp.txt"
         fib_seq=self.get_fib_10()
-        with open(progress, 'r') as f:
+        with open(self.progress, 'r') as f:
             for line in f:
                 if line:
                     date, lc_ids= line.split(":")[0], str(line.split(":")[1].strip())
@@ -76,8 +76,7 @@ class GetReviewList:
         print (review_date)
         print ("*"*30)
         # save to txt
-        to_review="data/to_review.txt"
-        with open(to_review, 'w') as f_r:
+        with open(self.to_review, 'w') as f_r:
             for date in review_date:
                 data="{} -> {}\n".format(date, str(self.review_list[date]))
                 print (data)
