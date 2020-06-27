@@ -1,10 +1,13 @@
 # V0 
 # https://zxi.mytechroad.com/blog/hashtable/leetcode-737-sentence-similarity-ii/
 # IDEA : DFS
-# STEPS : 
+# CONCEPT : 
 # -> 1) MAKE A GRAPH
-# -> 2) PUT ALL word belong to "the same" "group" into the same cluster
-# -> 3) GO THROUGH EVERY WORD IN words1, words2 AND CHECK IF THEY ARE IN THE SAME CLUSTER (use DFS TO this)
+# -> 2) PUT ALL word belong to "the same" "group" into the same connected components
+# -> 3) GO THROUGH EVERY WORD IN words1, words2 AND CHECK IF THEY ARE IN THE SAME connected components (use DFS TO this)
+# STEPS :
+# -> 1) MAKE A GRAPH (w1 -> w2, w2 -> w1)
+# -> 2) DFS GO THROUGH EVERY WORD IN words1, words2 AND CHECK IF THEY ARE IN THE SAME connected components
 import collections
 class Solution(object):
     def areSentencesSimilarTwo(self, words1, words2, pairs):
