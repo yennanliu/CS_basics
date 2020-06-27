@@ -8,6 +8,7 @@
 	- Review `to_review.txt`
 - Reviewed:
 	- Review `data/to_review.txt`
+		- 734 Sentence Similarity
 		- 737 Sentence Similarity II
 		- [GOOG V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf) - 2/29
 - DOING : 

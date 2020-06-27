@@ -27,15 +27,10 @@
 # - The length of each words[i] and pairs[i][j] will be in the range [1, 20].
 
 # V0
+# https://zxi.mytechroad.com/blog/hashtable/leetcode-734-sentence-similarity/
 import collections
 class Solution(object):
     def areSentencesSimilar(self, words1, words2, pairs):
-        """
-        :type words1: List[str]
-        :type words2: List[str]
-        :type pairs: List[List[str]]
-        :rtype: bool
-        """
         if len(words1) != len(words2): return False
         similars = collections.defaultdict(set)
         for w1, w2 in pairs:
@@ -43,6 +38,22 @@ class Solution(object):
             similars[w2].add(w1)
         for w1, w2 in zip(words1, words2):
             if w1 != w2 and w2 not in similars[w1]:
+                return False
+        return True
+
+# V0'
+import collections
+class Solution(object):
+    def areSentencesSimilar(self, words1, words2, pairs):
+        if len(words1) != len(words2):
+            return False
+        map_ = collections.defaultdict(set)
+        # build the grpah
+        for i, j in pairs:
+            map_[i].add(j)
+            map_[j].add(i)
+        for w1, w2 in zip(words1, words2):
+            if w1 != w2 and w1 not in map_[w2]:
                 return False
         return True
 
