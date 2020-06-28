@@ -9,6 +9,7 @@
 - Reviewed:
 	- Review `data/to_review.txt`
 		- 361 Bomb Enemy
+		- 393 UTF-8 Validation
 		- [GOOG V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf) - 2/29
 - DOING : 
 	- AMZ leetcode questions go through
@@ -22,6 +23,7 @@
 	- Backtrack
 	- Trie
 	- regular expression (640 Solve the Equation)
+	- 393 UTF-8 Validation
 	- 776 Split BST
 	- 775 Global and Local Inversions
 	- 642 Design Search Autocomplete System
