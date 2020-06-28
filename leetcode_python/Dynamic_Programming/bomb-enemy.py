@@ -1,19 +1,66 @@
 # Given a 2D grid, each cell is either a wall 'Y', an enemy 'X' or empty '0' (the number zero), return the maximum enemies you can kill using one bomb.
 # The bomb kills all the enemies in the same row and column from the planted point until it hits the wall since the wall is too strong to be destroyed.
 # Note that you can only put the bomb at an empty cell.
-
+#
 # Example:
-
+#
 # For the given grid
-
+#
 # 0 X 0 0
 # X 0 Y X
 # 0 X 0 0
-
+#
 # return 3. (Placing a bomb at (1,1) kills 3 enemies)
 
+# V0 
+### NOTE : IT'S LIKE "BOMBERMAN", SO THE BOMB CAN ONLY EXPLODE "STRAIGHT" LINE,
+# -> BFS IN THIS PROBLEM MAY NOT WORKS
+class Solution(object):
+    def maxKilledEnemies(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: int
+        """
+        def count(x, y):
+            left, right, up, down = 0, 0, 0, 0
+            # left (<-)
+            for i in range(x-1, -1, -1):
+                if grid[i][y] == 'W':
+                    break
+                if grid[i][y] == 'E':
+                    left += 1
+            # right (->)    
+            for i in range(x+1, row):
+                if grid[i][y] == 'W':
+                    break
+                if grid[i][y] == 'E':
+                    right += 1
+            # up (↑)    
+            for j in range(y+1, col):
+                if grid[x][j] == 'W':
+                    break
+                if grid[x][j] == 'E':
+                    up += 1
+            # down (↓)
+            for j in range(y-1, -1, -1):
+                if grid[x][j] == 'W':
+                    break
+                if grid[x][j] == 'E':
+                    down += 1
+            return left+right+up+down
+        # base case
+        if not grid: return 0
+        row, col = len(grid), len(grid[0])
+        ans = 0
+        for i in range(row):
+            for j in range(col):
+                if grid[i][j] == '0':
+                    # count the num of enemies 
+                    ans = max(ans, count(i, j))                 
+        return ans
 
-# V0  : DEV 
+# V0'
+# TODO : OPTIMIZATION : NOT TO SEARCH "visited" grid REPEATEDLY
 
 # V1 
 # https://www.twblogs.net/a/5c9baf03bd9eee73ef4b0e0d
@@ -60,6 +107,8 @@ class Solution(object):
                     ans = max(ans, count(i, j))
                     
         return ans
+
+### Test case : dev
 
 # V1'
 # https://www.twblogs.net/a/5c9baf03bd9eee73ef4b0e0d
