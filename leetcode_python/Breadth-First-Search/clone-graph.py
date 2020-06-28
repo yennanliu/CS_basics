@@ -68,6 +68,30 @@ class Solution:
             root.neighbors.append(self.cloneGraph(item))
         return root
 
+# V0''
+# IDEA : BFS
+class Solution(object):
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+        if not node: return
+        que = collections.deque()
+        hashd = dict()
+        que.append(node)
+        node_copy = Node(node.val, [])
+        hashd[node] = node_copy
+        while que:
+            t = que.popleft()
+            if not t: continue
+            for n in t.neighbors:
+                if n not in hashd:
+                    hashd[n] = Node(n.val, [])
+                    que.append(n)
+                hashd[t].neighbors.append(hashd[n])
+        return node_copy
+
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/88363919
 # IDEA : DFS 
@@ -98,6 +122,8 @@ class Solution(object):
                 node_copy.neighbors.append(n_copy)
         return node_copy
 
+### Test case : dev
+
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/88363919
 # IDEA : BFS 
@@ -114,6 +140,7 @@ class Solution(object):
         :type node: Node
         :rtype: Node
         """
+        if not node: return
         que = collections.deque()
         hashd = dict()
         que.append(node)
