@@ -11,6 +11,7 @@
 		- 361 Bomb Enemy
 		- 393 UTF-8 Validation
 		- 133 Clone Graph
+		- 207 Course Schedule
 		- [GOOG V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf) - 2/29
 - DOING : 
 	- AMZ leetcode questions go through
