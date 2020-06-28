@@ -187,3 +187,31 @@ class Solution(object):
                     board[i][j] = "O"
         return board
 ```
+
+### 2-5) Clone graph
+```python
+# 133 Clone graph
+# note : there is also a dfs solution
+# IDEA : BFS
+class Solution(object):
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+        if not node: return
+        que = collections.deque()
+        hashd = dict()
+        que.append(node)
+        node_copy = Node(node.val, [])
+        hashd[node] = node_copy
+        while que:
+            t = que.popleft()
+            if not t: continue
+            for n in t.neighbors:
+                if n not in hashd:
+                    hashd[n] = Node(n.val, [])
+                    que.append(n)
+                hashd[t].neighbors.append(hashd[n])
+        return node_copy
+```
