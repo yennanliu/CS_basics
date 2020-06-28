@@ -215,3 +215,7 @@ class Solution(object):
                 hashd[t].neighbors.append(hashd[n])
         return node_copy
 ```
+### 2-6) Course Schedule
+```python
+# 207 Couese Schedule
+```
