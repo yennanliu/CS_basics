@@ -218,4 +218,57 @@ class Solution(object):
 ### 2-6) Course Schedule
 ```python
 # 207 Couese Schedule
+# 210 Course Schedule II
+
+# note : there is also a dfs solution
+# IDEA : BFS
+class Solution(object):
+    def canFinish(self, N, prerequisites):
+        graph = collections.defaultdict(list)
+        indegrees = collections.defaultdict(int)
+        for u, v in prerequisites:
+            graph[v].append(u)
+            indegrees[u] += 1
+        for i in range(N):
+            zeroDegree = False
+            for j in range(N):
+                if indegrees[j] == 0:
+                    zeroDegree = True
+                    break
+            if not zeroDegree: return False
+            indegrees[j] = -1
+            for node in graph[j]:
+                indegrees[node] -= 1
+        return True           
+```
+
+### 2-7) Graph Valid Tree
+```python
+# 261 Graph Valid Tree
+
+# note : there is also a dfs solution
+# IDEA : BFS
+class Solution:
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:        
+        if len(edges) != n - 1:  # Check number of edges.
+            return False
+ 
+        # init node's neighbors in dict
+        neighbors = collections.defaultdict(list)
+        for u, v in edges:
+            neighbors[u].append(v)
+            neighbors[v].append(u)
+ 
+        # BFS to check whether the graph is valid tree.
+        visited = {}
+        q = collections.deque([0])
+        while q:
+            curr = q.popleft()
+            visited[curr] = True
+            for node in neighbors[curr]:
+                if node not in visited:
+                    visited[node] = True
+                    q.append(node)
+ 
+        return len(visited)==n
 ```

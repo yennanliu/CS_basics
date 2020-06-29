@@ -9,6 +9,8 @@
 - Reviewed:
 	- Review `data/to_review.txt`
 		- 163 Missing Ranges
+		- 210 Course Schedule II
+		- 261 Graph Valid Tree
 		- [GOOG V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf) - 2/29
 - DOING : 
 	- AMZ leetcode questions go through
@@ -22,6 +24,7 @@
 	- Backtrack
 	- Trie
 	- regular expression (640 Solve the Equation)
+	- 261 Graph Valid Tree
 	- 393 UTF-8 Validation
 	- 776 Split BST
 	- 775 Global and Local Inversions

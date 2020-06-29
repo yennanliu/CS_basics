@@ -1,4 +1,5 @@
 # V0 
+# IDEA : DFS
 class Solution(object):
     def validTree(self, n, edges):
         """
@@ -23,10 +24,30 @@ class Solution(object):
             return self.find(root, root[e])
 
 # V0'
-# IDEA : DFS 
-
-# V0''
 # IDEA : BFS
+class Solution:
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:        
+        if len(edges) != n - 1:  # Check number of edges.
+            return False
+ 
+        # init node's neighbors in dict
+        neighbors = collections.defaultdict(list)
+        for u, v in edges:
+            neighbors[u].append(v)
+            neighbors[v].append(u)
+ 
+        # BFS to check whether the graph is valid tree.
+        visited = {}
+        q = collections.deque([0])
+        while q:
+            curr = q.popleft()
+            visited[curr] = True
+            for node in neighbors[curr]:
+                if node not in visited:
+                    visited[node] = True
+                    q.append(node)
+ 
+        return len(visited)==n
 
 # V1 
 # http://www.voidcn.com/article/p-hjukomuq-zo.html
@@ -55,7 +76,9 @@ class Solution(object):
             return e
         else:
             return self.find(root, root[e])
-            
+
+### Test case : dev
+
 # V1'  
 # http://www.voidcn.com/article/p-hjukomuq-zo.html
 # https://www.jianshu.com/p/1b954f99a497
@@ -107,6 +130,64 @@ class Solution(object):
             if e in l[i]:
                 return i
         return -1
+
+# V1''
+# https://blog.csdn.net/qq_37821701/article/details/104168177
+# IDEA :DFS 
+class Solution:
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:        
+        if len(edges) != n-1:
+            return False
+        memo = collections.defaultdict(list)
+        for edge in edges:
+            memo[edge[0]].append(edge[1])
+            memo[edge[1]].append(edge[0])
+        visited = [False]*n
+        def helper(curr,parent):
+            if visited[curr]:
+                return False
+            visited[curr] = True
+            for val in memo[curr]:
+                if val!= parent and not helper(val,curr):
+                    return False
+            return True
+        if not helper(0,-1):
+            return False
+        for v in visited:
+            if not v:
+                return False
+        return True
+
+# V1'''
+# https://blog.csdn.net/qq_37821701/article/details/104168177
+# IDEA : BFS
+class Solution:
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:        
+        if len(edges) != n - 1:  # Check number of edges.
+            return False
+ 
+        # init node's neighbors in dict
+        neighbors = collections.defaultdict(list)
+        for u, v in edges:
+            neighbors[u].append(v)
+            neighbors[v].append(u)
+ 
+        # BFS to check whether the graph is valid tree.
+        visited = {}
+        q = collections.deque([0])
+        while q:
+            curr = q.popleft()
+            visited[curr] = True
+            for node in neighbors[curr]:
+                if node not in visited:
+                    visited[node] = True
+                    q.append(node)
+ 
+        return len(visited)==n
+
+# V1''''
+# https://blog.csdn.net/qq_37821701/article/details/104168177
+# IDEA : UNION FIND : dev
 
 # V2 
 # Time:  O(|V| + |E|)
