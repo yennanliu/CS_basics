@@ -119,9 +119,10 @@
 ||Topological sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py) | | | AGAIN| 
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
 ||Union Find | [Python union find](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py), [Python union find check cyclic](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find_if_cyclic.py) | | | AGAIN| 
-||Quick Union | | | || 
 ||Dynamic programming|[JS demo 1](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dp_demo_1.js), [fibonacci_dp JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/fibonacci_dp.js) | | | AGAIN|
 ||Dijkstra algorithm|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dijkstra.py)| | | AGAIN|
+||Quick Union | | | || 
+||Quick Find |[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_find.py) | | |AGAIN| 
 
 
 ## Array 
