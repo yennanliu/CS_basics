@@ -122,7 +122,7 @@
 ||Dynamic programming|[JS demo 1](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dp_demo_1.js), [fibonacci_dp JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/fibonacci_dp.js) | | | AGAIN|
 ||Dijkstra algorithm|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dijkstra.py)| | | AGAIN|
 ||Quick Union | | | || 
-||Quick Find |[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_find.py) | | |AGAIN| 
+||Quick Find |[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_find.py), [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/QuickFindUF.java) | | |AGAIN| 
 
 
 ## Array 
