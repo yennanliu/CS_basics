@@ -9,6 +9,7 @@
 
 ### 0-2) Pattern
 ```python
+# python
 import colllections 
 queue = colllections.deque()
 queue.append(root)

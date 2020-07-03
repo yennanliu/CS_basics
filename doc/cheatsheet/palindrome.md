@@ -8,6 +8,7 @@
 
 ## 1) General form
 ```python
+# python
 def check_palindrome(x):
 	return x == x[::-1]
 ```

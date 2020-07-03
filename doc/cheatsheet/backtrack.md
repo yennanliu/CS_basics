@@ -10,6 +10,7 @@
 
 ### 0-2) Pattern
 ```python
+# python
 result = []
 def backtrack(route, choice_list):
     if end_condition:
