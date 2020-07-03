@@ -10,6 +10,7 @@
 	- Review `data/to_review.txt`
 		- 163 Missing Ranges
 		- 286 Walls and Gates
+		- 490 The Maze
 		- [GOOG V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf) - 2/29
 - DOING : 
 	- AMZ leetcode questions go through

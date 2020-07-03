@@ -27,6 +27,34 @@ class Solution(object):
         visited = set()
         return dfs(start[0], start[1])
 
+# V0'
+# IDEA : BFS
+class Solution:
+    def hasPath(self, maze, start, destination):
+        # write your code here
+        Q = [start]
+        n = len(maze)
+        m = len(maze[0])
+        dirs = ((0, 1), (0, -1), (1, 0), (-1, 0))
+        while Q:
+            i, j = Q.pop(0)
+            maze[i][j] = 2
+            if i == destination[0] and j == destination[1]:
+                return True
+            for x, y in dirs:
+                row = i + x
+                col = j + y
+                ### NOTICE : THE OPTIMIZATION HERE
+                while 0 <= row < n and 0 <= col < m and maze[row][col] != 1:
+                    row += x
+                    col += y
+                row -= x
+                col -= y
+                if maze[row][col] == 0:
+                    Q.append([row, col])
+                    
+        return False
+
 # V1 
 # https://blog.csdn.net/danspace1/article/details/88773383
 # IDEA : DFS 
@@ -59,6 +87,8 @@ class Solution(object):
         visited = set()
         return dfs(start[0], start[1])
 
+### TEST CASE : dev
+
 # V1'
 # https://www.jiuzhang.com/solution/the-maze/#tag-highlight-lang-python
 # IDEA : BFS 
@@ -83,6 +113,7 @@ class Solution:
             for x, y in dirs:
                 row = i + x
                 col = j + y
+                ### NOTICE : THE OPTIMIZATION HERE
                 while 0 <= row < n and 0 <= col < m and maze[row][col] != 1:
                     row += x
                     col += y
@@ -90,7 +121,7 @@ class Solution:
                 col -= y
                 if maze[row][col] == 0:
                     Q.append([row, col])
-        
+
         return False
         
 # V2 
