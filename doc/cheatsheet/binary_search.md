@@ -8,6 +8,7 @@
 
 ## 1) General form
 ```python
+# python
 def binary_search(nums, target):
 	l, r = 0, len(nums)-1
 	while r >= l:

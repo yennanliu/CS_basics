@@ -8,6 +8,7 @@
 
 ## 1) General form
 ```python
+# python
 # tree -> grpah 
 # 742 Closest Leaf in a Binary Tree
 def buildGraph(node, parent, k):

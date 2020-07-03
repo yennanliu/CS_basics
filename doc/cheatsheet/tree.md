@@ -6,6 +6,7 @@
 
 ### 0-2) Pattern
 ```python
+# python
 def traverse(TreeNode):
     for child in root.childern:
         # op in pre-traverse
