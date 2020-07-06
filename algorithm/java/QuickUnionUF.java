@@ -1,3 +1,5 @@
+// https://www.coursera.org/learn/algorithms-part1/lecture/ZgecU/quick-union
+
 public class QuickUnionUF {
 
     private int[] id;
@@ -9,8 +11,16 @@ public class QuickUnionUF {
             id[i] = i;
     }
 
+    // key part of the QuickUnion algorithm
     private int root(int i)
-    {
+    { 
+      // chase parent pointers until reach (depth of i array accesses)
+      // example 
+      // -> id = [1,2,3,4,5,6]
+      // union (1,3)       (ini i = 1, ini j = 3 -> id[1] = 3)
+      //  -> id = [3,2,3,4,5,6]
+      // union (1,4)       (i =1 -> root(int i) -> i =3 => int i = 3, int j = 4 -> int[3] = 4)
+      //  -> id = [3,2,4,4,5,6]
       while (i != id[i]) i = id[i];
       return i;
     }
