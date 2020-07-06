@@ -121,8 +121,8 @@
 ||Union Find | [Python union find](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py), [Python union find check cyclic](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find_if_cyclic.py) | | | AGAIN| 
 ||Dynamic programming|[JS demo 1](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dp_demo_1.js), [fibonacci_dp JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/fibonacci_dp.js) | | | AGAIN|
 ||Dijkstra algorithm|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dijkstra.py)| | | AGAIN|
-||Quick Union | | | || 
 ||Quick Find |[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_find.py), [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/QuickFindUF.java) | | |AGAIN| 
+||Quick Union | [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/QuickFindUF.java) |lazy approach, route compression, optimized Quick Find | |AGAIN| 
 
 
 ## Array 
