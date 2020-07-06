@@ -123,6 +123,7 @@
 ||Dijkstra algorithm|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dijkstra.py)| | | AGAIN|
 ||Quick Find |[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_find.py), [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/QuickFindUF.java) | init : O(N), union : O(N), find : O(1)|simple, but slow |AGAIN| 
 ||Quick Union | [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/QuickUnionUF.java) | init : O(N), union : O(N), find : O(N)| lazy approach, route compression, optimized Quick Find|AGAIN| 
+||Quick Union (Improvements) || lazy approach, path compression|AGAIN| 
 
 
 ## Array 
