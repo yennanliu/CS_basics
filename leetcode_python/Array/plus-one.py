@@ -20,7 +20,40 @@ Explanation: The array represents the integer 4321.
 
 """ 
 
-# V0 
+# V0
+# NOTE : Notice the index of inverse loop  : range(len(a)-1, -1, -1)
+# a = ['a', 'b', 'c']
+# for i in range(len(a)-1, -1, -1):
+#     print (a[i])
+# c
+# b
+# a
+class Solution(object):
+    def plusOne(self, digits):
+        """
+        :type digits: List[int]
+        :rtype: List[int]
+        """
+        plus = 1
+        for i in range(len(digits)-1, -1, -1):
+            if digits[i] + plus > 9:
+                digits[i] = 0
+                plus = 1
+            else:
+                digits[i] = digits[i] + plus
+                plus = 0
+        if plus == 1:
+            digits.insert(0, 1)
+        return digits
+
+# V0'
+# IDEA : array -> string -> int -> string 
+class Solution:
+    def plusOne(self, digits):
+        digits_ = [str(i) for i in digits]
+        d = int(''.join(digits_))
+        d += 1 
+        return list(str(d))
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51583916
@@ -41,6 +74,8 @@ class Solution(object):
         if plus == 1:
             digits.insert(0, 1)
         return digits
+
+### Test case : dev
 
 # V1' 
 # https://blog.csdn.net/coder_orz/article/details/51583916
