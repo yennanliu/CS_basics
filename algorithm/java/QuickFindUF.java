@@ -1,3 +1,5 @@
+// https://www.coursera.org/learn/algorithms-part1/lecture/OLXM8/union-find-applications
+
 public class QuickFindUF {
 
     private int[] id;
