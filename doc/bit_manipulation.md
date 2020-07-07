@@ -146,3 +146,4 @@ main()
 ## Ref 
 - https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Obsolete_Pages/Obsolete_Pages/Obsolete_Pages/%E9%81%8B%E7%AE%97%E5%AD%90/%E4%BD%8D%E5%85%83%E9%81%8B%E7%AE%97%E5%AD%90
 - http://140.129.118.16/~richwang/99-2-Courses/About_C_BitOperation.pdf
+- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%B8%B8%E7%94%A8%E7%9A%84%E4%BD%8D%E6%93%8D%E4%BD%9C.md

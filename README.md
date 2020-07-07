@@ -109,7 +109,7 @@
 ||Breadth-first search (BFS)| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/bfs.js)|`FIND SHORTEST PATH`|| AGAIN***| 
 ||Depth-first search (DFS) |[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dfs.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dfs.js)| `TO CHECK IF SOMETHING EXIST`| `inorder`, `postorder`, `postorder (can recreate a tree)`| AGAIN***| 
 ||Bubble sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/bubble_sort.js) , [C](https://github.com/yennanliu/CS_basics/blob/master/algorithm/c/bubble_sort.c)| | | OK* (3)|  
-||Insertion sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/insertion_sort.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/insertion_sort.js) || work very fast for `nearly sorted` array|AGAIN| 
+||Insertion sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/insertion_sort.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/insertion_sort.js) |`stable` sort| work very fast for `nearly sorted` array|AGAIN| 
 ||Bucket sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)| | | AGAIN***| 
 ||Heap sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/heap_sort.py)| | | AGAIN**| 
