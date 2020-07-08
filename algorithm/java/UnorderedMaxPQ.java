@@ -1,3 +1,6 @@
+// Priority Queue (unsorted array)
+// https://www.coursera.org/learn/algorithms-part1/lecture/A3kA3/apis-and-elementary-implementations
+
 public Class UnorderedMaxPQ<Key extends Comparable<Key>>
 {
     private Key[] pq; 
@@ -20,7 +23,5 @@ public Class UnorderedMaxPQ<Key extends Comparable<Key>>
         exch(max, N-1);
         return pq[--N];
     }
-    
-
 
 }
