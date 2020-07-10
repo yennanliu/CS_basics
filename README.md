@@ -94,7 +94,7 @@
 ||Doubly LinkedList| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/doublylinkedlist.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/doublylinkedList.js) | | | AGAIN|
 ||Tree| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/tree.py) | | | AGAIN**|
 ||Trie| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/trie.py) | | | AGAIN|
-||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py) | | | AGAIN|
+||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py), [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/BinaryHeap.java) | | | AGAIN|
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN*|
 ||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/graph.js) | | | OK***|
 ||Binary search Tree (BST)| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/binary_search_tree.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/binary_search_tree.js), [Scala](https://github.com/yennanliu/CS_basics/blob/master/data_structure/scala/binarySearch.scala) | | | AGAIN| 
