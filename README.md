@@ -96,7 +96,7 @@
 ||Trie| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/trie.py) | | | AGAIN|
 ||Heap| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/heap.py), [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/BinaryHeap.java) | | | AGAIN|
 ||Array| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/array.py) | | | AGAIN*|
-||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/graph.js) | | | OK***|
+||Graph| [Python ](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/graph.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/graph.js). [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/Graph.java) | | | OK***|
 ||Binary search Tree (BST)| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/binary_search_tree.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/binary_search_tree.js), [Scala](https://github.com/yennanliu/CS_basics/blob/master/data_structure/scala/binarySearch.scala) | | | AGAIN| 
 ||Hash table| [Python](https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/hash_table.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/data_structure/js/hash_table.js) | usually for improving `time complexity B(O)` via extra space complexity (time-space tradeoff)|`good basic`| AGAIN****| 
 
