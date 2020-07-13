@@ -57,9 +57,29 @@ class ValidWordAbbr:
                 return False
         return True
 
+### Test case : dev
+
 # V1 
 # http://www.voidcn.com/article/p-cfjjycdw-qp.html
-# DEV 
+class ValidWordAbbr(object):
+    def __init__(self, dictionary):
+        """
+        initialize your data structure here.
+        :type dictionary: List[str]
+        """
+        self.dic = {} # 空字典
+        for word in dictionary:
+            abb = word if len(word) <= 2 else word[0] + str(len(word) - 2) + word[-1]
+            self.dic[abb] = word if abb not in self.dic else "" if self.dic[abb] != word else self.dic[abb]
+
+    def isUnique(self, word):
+        """
+        check if a word is unique.
+        :type word: str
+        :rtype: bool
+        """
+        abb = word if len(word) <= 2 else word[0] + str(len(word) - 2) + word[-1]
+        return abb not in self.dic or self.dic[abb] == word
 
 # V2
 # Time:  ctor:   O(n), n is number of words in the dictionary.
@@ -77,7 +97,6 @@ class ValidWordAbbr(object):
             abbr = self.abbreviation(word)
             self.lookup_[abbr].add(word)
 
-
     def isUnique(self, word):
         """
         check if a word is unique.
@@ -86,7 +105,6 @@ class ValidWordAbbr(object):
         """
         abbr = self.abbreviation(word)
         return self.lookup_[abbr] <= {word}
-
 
     def abbreviation(self, word):
         if len(word) <= 2:
