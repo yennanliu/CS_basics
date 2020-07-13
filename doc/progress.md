@@ -3,7 +3,7 @@
 - `TODO`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 - `TODO2`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 
-# 2020-07-10
+# 2020-07-13
 - DONE :
 	- Review `to_review.txt`
 - Reviewed:
