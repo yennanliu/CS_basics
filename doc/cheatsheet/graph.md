@@ -2,6 +2,9 @@
 
 ## 0) Concept  
 
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_processing_problem.png"></p>
+
 ### 0-1) Framework
 
 ### 0-2) Pattern
