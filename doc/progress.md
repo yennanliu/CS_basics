@@ -3,6 +3,44 @@
 - `TODO`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 - `TODO2`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 
+# 2020-07-14
+- DONE :
+	- Review `to_review.txt`
+- Reviewed:
+	- Review `data/to_review.txt`
+		- 616 Add Bold Tag in String
+		- 687 Longest Univalue Path
+		- [GOOG V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf) - 4/29
+- DOING : 
+	- AMZ leetcode questions go through
+	- recent interview recap
+- TODO :
+	- time & space complexity analysis
+	- "algorithm" `abstract form` 
+	- how to write test for - `linked list`, `tree`, `BST`
+	- `heap` op review
+- REDO:
+	- Backtrack
+	- Trie
+	- regular expression (640 Solve the Equation)
+	- 261 Graph Valid Tree
+	- 393 UTF-8 Validation
+	- 776 Split BST
+	- 775 Global and Local Inversions
+	- 642 Design Search Autocomplete System
+	- 738 Monotone Increasing Digits
+	- 536 Construct Binary Tree from String
+	- 355 Design Twitter
+	- 725 Split Linked List in Parts
+	- 063 Unique Paths II
+	- 064 Minimum Path Sum
+	- 120 Triangle
+	- 0146 LRU Cache
+	- binary search and `find left, right boundary`
+		- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E8%AF%A6%E8%A7%A3.md
+	- sliding window with questions
+		- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%8A%80%E5%B7%A7.md
+
 # 2020-07-13
 - DONE :
 	- Review `to_review.txt`
