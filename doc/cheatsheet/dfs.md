@@ -221,6 +221,40 @@ class Solution(object):
         root.right = left
         return [root, right]
 ```
+### 2-9) Evaluate Division
+```python
+# 399 Evaluate Division
+# there is also an "union find" solution
+class Solution:
+    def calcEquation(self, equations, values, queries):
+        from collections import defaultdict
+        # build graph
+        graph = defaultdict(dict)
+        for (x, y), v in zip(equations, values):
+            graph[x][y] = v
+            graph[y][x] = 1.0/v
+        ans = [self.dfs(x, y, graph, set()) for (x, y) in queries]
+        return ans
+
+    def dfs(self, x, y, graph, visited):
+        if not graph:
+            return
+        if x not in graph or y not in graph:
+            return -1
+        if x == y:
+            return 1
+        visited.add(x)
+        for n in graph[x]:
+            if n in visited:
+                continue
+            visited.add(n)
+            d = self.dfs(n, y, graph, visited)
+            if d > 0:
+                return d * graph[x][n]
+        return -1.0
+
+```
+
 
 ### Ref
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E6%93%8D%E4%BD%9C%E9%9B%86%E9%94%A6.md

@@ -27,6 +27,36 @@ class Solution:
                 return d * table[x][n]
         return -1.0
 
+# V0'
+# IDEA : DFS + collections.defaultdict(dict)
+class Solution:
+    def calcEquation(self, equations, values, queries):
+        from collections import defaultdict
+        # build graph
+        graph = defaultdict(dict)
+        for (x, y), v in zip(equations, values):
+            graph[x][y] = v
+            graph[y][x] = 1.0/v
+        ans = [self.dfs(x, y, graph, set()) for (x, y) in queries]
+        return ans
+
+    def dfs(self, x, y, graph, visited):
+        if not graph:
+            return
+        if x not in graph or y not in graph:
+            return -1
+        if x == y:
+            return 1
+        visited.add(x)
+        for n in graph[x]:
+            if n in visited:
+                continue
+            visited.add(n)
+            d = self.dfs(n, y, graph, visited)
+            if d > 0:
+                return d * graph[x][n]
+        return -1.0
+
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82591165
 # IDEA : DFS 
@@ -76,6 +106,8 @@ class Solution:
             if d > 0:
                 return d * table[x][n]
         return -1.0
+
+### Test case : dev
 
 # V1'
 # https://zxi.mytechroad.com/blog/graph/leetcode-399-evaluate-division/
