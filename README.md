@@ -116,7 +116,7 @@
 ||Merge sort|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/merge_sort.js), [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/MergeSort.java)  | | | OK* (2)| 
 ||Pancake sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py) | | | AGAIN| 
 ||Selection sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py), [JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/selection_sort.js) | | | AGAIN| 
-||Topological sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py) | | | AGAIN| 
+||Topological sort| [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py) | | `Redraw` `DAG` so all edges point upwards (DAG : directed acyclic graph) | AGAIN| 
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
 ||Union Find | [Python union find](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py), [Python union find check cyclic](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find_if_cyclic.py) | | | AGAIN| 
 ||Dynamic programming|[JS demo 1](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dp_demo_1.js), [fibonacci_dp JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/fibonacci_dp.js) | | | AGAIN|
