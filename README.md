@@ -120,7 +120,7 @@
 ||md5 | [Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/md5.py) | | | AGAIN| 
 ||Union Find | [Python union find](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py), [Python union find check cyclic](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find_if_cyclic.py) | | | AGAIN| 
 ||Dynamic programming|[JS demo 1](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/dp_demo_1.js), [fibonacci_dp JS](https://github.com/yennanliu/CS_basics/blob/master/algorithm/js/fibonacci_dp.js) | | | AGAIN|
-||Dijkstra algorithm|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dijkstra.py)|, [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/DijkstraSP.java)|| | AGAIN***|
+||Dijkstra algorithm|[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/dijkstra.py),[Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/DijkstraSP.java)||| AGAIN***|
 ||Quick Find |[Python](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_find.py), [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/QuickFindUF.java) | init : O(N), union : O(N), find : O(1)|simple, but slow |AGAIN| 
 ||Quick Union | [Java](https://github.com/yennanliu/CS_basics/blob/master/algorithm/java/QuickUnionUF.java) | init : O(N), union : O(N), find : O(N)| lazy approach, route compression, optimized Quick Find|AGAIN| 
 ||Quick Union (Improvements) || lazy approach, path compression|AGAIN| 
