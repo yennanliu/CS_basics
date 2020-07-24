@@ -19,6 +19,7 @@
 	- "algorithm" `abstract form` 
 	- how to write test for - `linked list`, `tree`, `BST`
 	- `heap` op review
+	- `Backtracking` review
 - REDO:
 	- Backtrack
 	- Trie

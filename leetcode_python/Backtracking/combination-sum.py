@@ -1,4 +1,5 @@
-# V0 
+# V0
+# IDEA : DFS
 class Solution(object):
     def combinationSum(self, candidates, target):
         """
@@ -48,8 +49,28 @@ class Solution(object):
                 return
             self.dfs(nums, target - nums[i], i, res, path + [nums[i]])
 
+### Test case : dev
+
 # V1'
-# IDEA : BACKTRACKING (DEV) 
+# https://leetcode.com/problems/combination-sum/discuss/16554/Share-My-Python-Solution-beating-98.17
+# IDEA : BACKTRACKING
+class Solution(object):
+    def combinationSum(self, candidates, target):
+        result = []
+        candidates = sorted(candidates)
+        def dfs(remain, stack):
+            if remain == 0:
+                result.append(stack)
+                return 
+
+            for item in candidates:
+                if item > remain: break
+                if stack and item < stack[-1]: continue
+                else:
+                    dfs(remain - item, stack + [item])
+
+        dfs(target, [])
+        return result
 
 # V1''
 # https://www.jiuzhang.com/solution/combination-sum/#tag-highlight-lang-python
