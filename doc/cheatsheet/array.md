@@ -9,10 +9,14 @@
 ## 1) General form
 
 ### 1-1) Basic OP
+#### 1-1-1) Insert into Array
+#### 1-1-2) Delete from Array
+#### 1-1-3) check if element in Array
+#### 1-1-4) append to array (head, tail)
 
 ## 2) LC Example
 
-## 2-1) 
+## 2-1) Merge Intervals
 ```python
 # 056 Merge Intervals
 # V0
@@ -46,4 +50,23 @@ def merge(intervals):
         else:
             res.append(curr)
     return res
+```
+
+## 2-2) Non-overlapping-intervals
+```python
+# V0 
+class Solution(object):
+    def eraseOverlapIntervals(self, intervals):
+        if not intervals: return 0
+        intervals.sort(key = lambda x : x[0])
+        last = 0
+        res = 0
+        for i in range(1, len(intervals)):
+            if intervals[last][1] > intervals[i][0]:
+                if intervals[i][1] < intervals[last][1]:
+                    last = i
+                res += 1
+            else:
+                last = i
+        return res 
 ```
