@@ -6,6 +6,9 @@
 ## 0) Concept  
 
 ### 0-1) Framework
+
+### 0-2) Pattern
+
 ```python
 # python
 def dfs(root, target):
@@ -17,8 +20,6 @@ def dfs(root, target):
     if root.val > target:
        dfs(root.right, target)
 ```
-
-### 0-2) Pattern
 
 ## 1) General form
 ```python
