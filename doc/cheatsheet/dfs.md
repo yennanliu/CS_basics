@@ -1,4 +1,4 @@
-# DFS cheatsheet 
+# DFS 
 - To check is some value exists
 - Inorder, postorder, postorder (can recreate a tree)
 - Deep first, then breadth

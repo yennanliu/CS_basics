@@ -1,4 +1,4 @@
-# DP (Dynamic programming)  
+# Sort
 
 ## 0) Concept  
 

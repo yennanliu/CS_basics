@@ -1,4 +1,4 @@
-# Hash Map Cheatsheet
+# Hash Map
 
 ## 0) Concept  
 

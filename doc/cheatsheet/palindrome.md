@@ -1,4 +1,4 @@
-# Palindrome cheatsheet 
+# Palindrome 
 
 ## 0) Concept  
 

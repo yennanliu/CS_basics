@@ -1,4 +1,4 @@
-# BFS cheatsheet
+# BFS
 - Shortest path searching
 - Breadth first, then deep
 - Usually choice data structure such as *queue*, *array*
