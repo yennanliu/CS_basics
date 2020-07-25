@@ -3,6 +3,9 @@
 ## 0) Concept  
 
 ### 0-1) Framework
+- Linked list
+- Cycle linked list
+- Bi-direction linked list
 
 ### 0-2) Pattern
 

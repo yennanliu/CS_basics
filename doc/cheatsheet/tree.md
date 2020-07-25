@@ -3,6 +3,10 @@
 ## 0) Concept  
 
 ### 0-1) Framework
+- Tree
+- BST (binary search tree)
+- Heap
+- Trie (dictionary tree)
 
 ### 0-2) Pattern
 ```python
