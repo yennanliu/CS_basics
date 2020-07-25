@@ -1,4 +1,4 @@
-# DP (Dynamic programming)  
+# Stack
 
 ## 0) Concept  
 

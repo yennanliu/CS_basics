@@ -1,4 +1,4 @@
-# Array template 
+# Array 
 
 ## 0) Concept  
 

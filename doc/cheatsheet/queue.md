@@ -1,4 +1,4 @@
-# Queue cheatsheet 
+# Queue 
 
 ## 0) Concept  
 

@@ -1,4 +1,4 @@
-# Collection cheatsheet 
+# Collection 
 
 ## 0) Concept  
 

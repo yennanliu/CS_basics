@@ -1,4 +1,4 @@
-# Greedy cheatsheet 
+# Greedy 
 
 ## 0) Concept  
 

@@ -1,4 +1,4 @@
-# String cheatsheet 
+# String 
 
 ## 0) Concept  
 

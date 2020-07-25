@@ -1,4 +1,4 @@
-# Linklist cheatsheet 
+# Linklist 
 
 ## 0) Concept  
 

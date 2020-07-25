@@ -1,4 +1,4 @@
-# grpah cheatsheet 
+# grpah 
 
 ## 0) Concept  
 

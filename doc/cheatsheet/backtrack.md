@@ -1,4 +1,4 @@
-# bracktrack cheatsheet 
+# bracktrack 
 
 > A decision tree proceed process
 

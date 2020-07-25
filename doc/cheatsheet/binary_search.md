@@ -1,4 +1,4 @@
-# Binary Search Cheatsheet
+# Binary Search
 
 ## 0) Concept  
 

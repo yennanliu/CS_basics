@@ -1,5 +1,5 @@
-# Heap cheatsheet 
-
+# Heap
+ 
 ## 0) Concept  
 
 ### 0-1) Framework
