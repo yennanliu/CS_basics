@@ -2,32 +2,52 @@
 
 ## 0) Concept  
 
-
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_processing_problem.png"></p>
 
 ### 0-1) Framework
+- Quick union
+- Union Find
+- Topology sorting
+- Graph Bipartite
+- Dijkstra algorithm
+- DirectedEdge
 
 ### 0-2) Pattern
 
-## 1) General form
 ```python
-# python
-# tree -> grpah 
-# 742 Closest Leaf in a Binary Tree
-def buildGraph(node, parent, k):
-    if not node:
-        return
+class Graph(object):
 
-    if node.val == k:
-        start = node
-    if parent:
-        graph[node].append(parent)
-        graph[parent].append(node)
-    buildGraph(node.left, node, k)
-    buildGraph(node.right, node, k)
+    def __init__(self):
+        self.numberOfNodes = 0
+        self.adjacentList = {}
+
+    def addVertex(self, node):
+        self.adjacentList[node] = []
+        self.numberOfNodes += 1 
+
+    def addEdge(self, node1, node2):
+        self.adjacentList[node1].append(node2)
+        self.adjacentList[node2].append(node1)
+
+    def showConnections(self):
+        allNodes = self.adjacentList.keys()
+        for node in allNodes:
+            nodeConnections = self.adjacentList[node]
+            connections = ""
+            for vertex in nodeConnections:
+                connections += vertex + " "
+            print (node + "-->" + connections)         
 ```
 
+## 1) General form
+
 ### 1-1) Basic OP
+- Graph API (client)
+    - connect
+    - check_if_connected
+    - shortest_path
+    - longest_path
+    - is_cycle
 
 ## 2) LC Example
 
