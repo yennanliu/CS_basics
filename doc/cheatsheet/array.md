@@ -10,6 +10,12 @@
 
 ### 1-1) Basic OP
 #### 1-1-1) Insert into Array
+```python
+# Out[27]: [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+# In [28]: p.insert(1, [6,1])
+# In [29]: p
+# Out[29]: [[7, 0], [6, 1], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+```
 #### 1-1-2) Delete from Array
 #### 1-1-3) check if element in Array
 #### 1-1-4) append to array (head, tail)
@@ -78,4 +84,16 @@ class Solution(object):
             else:
                 last = i
         return res 
+```
+
+## 2-3) Queue Reconstruction by Height
+```python
+# 406 Queue Reconstruction by Height
+class Solution(object):
+    def reconstructQueue(self, people):
+        people.sort(key = lambda x : (-x[0], x[1]))
+        res = []
+        for p in people:
+            res.insert(p[1], p)
+        return res
 ```
