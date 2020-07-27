@@ -1,4 +1,11 @@
 # V0 
+class Solution(object):
+    def reconstructQueue(self, people):
+        people.sort(key = lambda x : (-x[0], x[1]))
+        res = []
+        for p in people:
+            res.insert(p[1], p)
+        return res
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/68486884
@@ -31,6 +38,8 @@ class Solution(object):
         for p in people:
             res.insert(p[1], p)
         return res
+
+### Test case : dev
 
 # V2 
 # https://leoeatle.github.io/techBlog/2017/01/11/LeetCode-406-Queue-Reconstruction-by-Height/
