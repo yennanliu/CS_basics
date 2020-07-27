@@ -13,6 +13,15 @@
 #### 1-1-2) Delete from Array
 #### 1-1-3) check if element in Array
 #### 1-1-4) append to array (head, tail)
+#### 1-1-5) Sort Array
+```python
+y = [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+print (y)
+y.sort(key = lambda x : (-x[0], x[1]))
+print (y)
+# [[7, 0], [4, 4], [7, 1], [5, 0], [6, 1], [5, 2]]
+# [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+```
 
 ## 2) LC Example
 
