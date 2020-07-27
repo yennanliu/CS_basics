@@ -10,7 +10,7 @@
 	- 246 Strobogrammatic Number
 - Reviewed:
 	- Review `data/to_review.txt`
-		- [GOOG V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf) - 5/29
+		- [GOOG V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf) - 6/29
 - DOING : 
 	- recent interview recap
 - TODO :
