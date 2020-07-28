@@ -1,5 +1,7 @@
 # String 
 
+> algorithm/LC relative to string/text/array -> string
+
 ## 0) Concept  
 
 ### 0-1) Framework
@@ -7,6 +9,11 @@
 ### 0-2) Pattern
 
 ## 1) General form
+
+### 1-1) Basic OP
+- String plus
+- String bit op
+- String Multiplication
 
 ## 2) LC Example
 
