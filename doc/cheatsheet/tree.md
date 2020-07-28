@@ -1,4 +1,4 @@
-# tree
+# Tree
 
 > Tree data structure and algorithm/LC relative to it
 
@@ -44,7 +44,6 @@ def post_order_traverse(TreeNode):
         post_order_traverse(root.left)
     if root.right:
         post_order_traverse(root.right)
-
     r.append(root.value)
 ```
 
