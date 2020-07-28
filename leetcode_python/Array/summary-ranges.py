@@ -1,4 +1,34 @@
-# V0 
+# V0
+class Solution:
+    def summaryRanges(self, nums):
+        if not nums:
+            return []
+        # deal with edge case
+        nums = nums + [nums[-1]+2]
+        res = []
+        # set head = nums[0]
+        head = nums[0]
+        # start from index = 1 
+        for i in range(1,len(nums)):
+            if nums[i] - nums[i-1] > 1:
+                if head == nums[i-1]:
+                    res.append(str(head))
+                else:
+                    res.append(str(head) + "->" + str(nums[i-1]))
+                head = nums[i]
+        return res
+
+# V0'
+class Solution:
+    def summaryRanges(self, nums):
+        start, end, res = -2**31, -2**31, []
+        for i in nums+[2**31-1]:
+            if i - end == 1:
+                end = i
+            else:
+                res += [str(start)] if start == end else [str(start) + "->" + str(end)]
+                start = end = i
+        return res[1:]
 
 # V1 
 # http://bookshadow.com/weblog/2015/06/26/leetcode-summary-ranges/
@@ -17,6 +47,40 @@ class Solution:
             ans.append(r)
             x += 1
         return ans
+
+### Test case : dev
+
+# V1'
+# https://leetcode.com/problems/summary-ranges/discuss/63335/Simple-Python-solution
+class Solution:
+    def summaryRanges(self, nums):
+        if not nums:
+            return []
+        
+        nums = nums + [nums[-1]+2]
+        res = []
+        head = nums[0]
+        for i in range(1,len(nums)):
+            if nums[i] - nums[i-1] > 1:
+                if head == nums[i-1]:
+                    res.append(str(head))
+                else:
+                    res.append(str(head) + "->" + str(nums[i-1]))
+                head = nums[i]
+        return res
+
+# V1''
+# https://leetcode.com/problems/summary-ranges/discuss/63335/Simple-Python-solution
+class Solution:
+    def summaryRanges(self, nums):
+        start, end, res = -2**31, -2**31, []
+        for i in nums+[2**31-1]:
+            if i - end == 1:
+                end = i
+            else:
+                res += [str(start)] if start == end else [str(start) + "->" + str(end)]
+                start = end = i
+        return res[1:]
 
 # V1' 
 # http://bookshadow.com/weblog/2015/06/26/leetcode-summary-ranges/
