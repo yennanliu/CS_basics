@@ -23,7 +23,7 @@ def intervalsPattern(points):
         if some_condition:
             # do sth
         else:
-        	# do sth
+            # do sth
     return ans
 ```
 
@@ -69,4 +69,3 @@ class Solution(object):
             ans += 1
         return ans
 ```
-

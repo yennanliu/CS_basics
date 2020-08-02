@@ -1,5 +1,9 @@
 # Heap
- 
+- a heap is a specialized tree-based data structure which is essentially an almost complete tree that satisfies the heap property:
+    - in a max heap, for any given node C, if P is a parent node of C, then the key (the value) of P is greater than or equal to the key of C. In a min heap, the key of P is less than or equal to the key of C.[2] The node at the "top" of the heap (with no parents) is called the root node.
+
+<p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/Max-Heap.png" ></p>
+
 ## 0) Concept  
 
 ### 0-1) Framework
@@ -9,6 +13,11 @@
 ## 1) General form
 
 ### 1-1) Basic OP
+- find_max
+- insert
+- extract_max
+- delete_max
+- replace
 
 ### 1-2) Heap VS Stack VS Queue
 
@@ -103,4 +112,51 @@ class KthLargest(object):
         elif val > self.pool[0]:
             heapq.heapreplace(self.pool, val)
         return self.pool[0]
+```
+
+### 2-2) Ugly Number II
+```python
+# 264 Ugly Number II
+import heapq
+class Solution(object):
+    def nthUglyNumber(self, n):
+        ugly_number = 0
+
+        heap = []
+        heapq.heappush(heap, 1)
+        for _ in range(n):
+            ugly_number = heapq.heappop(heap)
+            if ugly_number % 2 == 0:
+                heapq.heappush(heap, ugly_number * 2)
+            elif ugly_number % 3 == 0:
+                heapq.heappush(heap, ugly_number * 2)
+                heapq.heappush(heap, ugly_number * 3)
+            else:
+                heapq.heappush(heap, ugly_number * 2)
+                heapq.heappush(heap, ugly_number * 3)
+                heapq.heappush(heap, ugly_number * 5)
+
+        return ugly_number
+```
+
+### 2-3) Find Median from Data Stream
+```python
+# 295 Find Median from Data Stream
+from heapq import *
+class MedianFinder:
+    def __init__(self):
+        self.small = []  # the smaller half of the list, max heap (invert min-heap)
+        self.large = []  # the larger half of the list, min heap
+
+    def addNum(self, num):
+        if len(self.small) == len(self.large):
+            heappush(self.large, -heappushpop(self.small, -num))
+        else:
+            heappush(self.small, -heappushpop(self.large, num))
+
+    def findMedian(self):
+        if len(self.small) == len(self.large):
+            return float(self.large[0] - self.small[0]) / 2.0
+        else:
+            return float(self.large[0])
 ```
