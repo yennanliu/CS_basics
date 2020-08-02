@@ -1,4 +1,4 @@
-# grpah 
+# Grpah 
 
 ## 0) Concept  
 
@@ -11,8 +11,35 @@
 - Graph Bipartite
 - Dijkstra algorithm
 - DirectedEdge
+- Directed acyclic graph (DAG)
+- Route relaxation
 
 ### 0-2) Pattern
+```python
+def GraphPattern(node1, node2, n):
+    def dfs(node):
+        # dfs logic
+    def bfs(node):
+        # bfs logic
+    def union_find(node):
+    # union_find logic
+    import collections.defaultdict
+    # build the graph
+    graph = defaultdict(set)
+    for n1, n2 in zip(node1, node2):
+        graph[n1].append(n2)
+        graph[n2].append(n1)
+
+    # go through the graph with one of the algorithms above
+    visited = []
+    for i in range(n):
+        if conditions:
+            # do sth
+            visited.append(node)
+        else:
+            # do sth
+
+```
 
 ```python
 class Graph(object):
@@ -95,4 +122,61 @@ class Solution:
         self.buildGraph(node.left, node, k)
         self.buildGraph(node.right, node, k)
 
+```
+
+### 2-2) alien-dictionary
+```python
+# 269 alien-dictionary
+class Solution(object):
+    def alienOrder(self, words):
+        """
+        :type words: List[str]
+        :rtype: str
+        """
+        result, zero_in_degree_queue, in_degree, out_degree = [], collections.deque(), {}, {}
+        nodes = sets.Set()
+        for word in words:
+            for c in word:
+                nodes.add(c)
+         
+        for i in range(1, len(words)):
+            if len(words[i-1]) > len(words[i]) and \
+                words[i-1][:len(words[i])] == words[i]:
+                    return ""
+            self.findEdges(words[i - 1], words[i], in_degree, out_degree)
+         
+        for node in nodes:
+            if node not in in_degree:
+                zero_in_degree_queue.append(node)
+         
+        while zero_in_degree_queue:
+            precedence = zero_in_degree_queue.popleft()
+            result.append(precedence)
+             
+            if precedence in out_degree:
+                for c in out_degree[precedence]:
+                    in_degree[c].discard(precedence)
+                    if not in_degree[c]:
+                        zero_in_degree_queue.append(c)
+             
+                del out_degree[precedence]
+         
+        if out_degree:
+            return ""
+ 
+        return "".join(result)
+ 
+ 
+    # Construct the graph.
+    def findEdges(self, word1, word2, in_degree, out_degree):
+        str_len = min(len(word1), len(word2))
+        for i in range(str_len):
+            if word1[i] != word2[i]:
+                if word2[i] not in in_degree:
+                    in_degree[word2[i]] = sets.Set()
+                if word1[i] not in out_degree:
+                    out_degree[word1[i]] = sets.Set()
+                in_degree[word2[i]].add(word1[i])
+                out_degree[word1[i]].add(word2[i])
+                break　　
 ```
