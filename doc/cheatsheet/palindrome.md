@@ -5,13 +5,13 @@
 ### 0-1) Framework
 
 ### 0-2) Pattern
-
-## 1) General form
 ```python
 # python
 def check_palindrome(x):
-	return x == x[::-1]
+    return x == x[::-1]
 ```
+
+## 1) General form
 
 ### 1-1) Basic OP
 

@@ -4,7 +4,7 @@
 ## 0) Concept  
 1. two pointers
 2. while loop
-3. somd conditions for start and end
+3. some conditions for start and end
 
 ### 0-1) Framework
 
