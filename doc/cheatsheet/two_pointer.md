@@ -29,3 +29,15 @@ int binarySearch(int[] nums, int target) {
 ### 1-1) Basic OP
 
 ## 2) LC Example
+
+### 2-1) Remove Element
+```python
+class Solution(object):
+    def removeElement(self, nums, val):
+        length = 0
+        for i in range(len(nums)):
+            if nums[i] != val:
+                nums[length] = nums[i]
+                length += 1
+        return length
+```
