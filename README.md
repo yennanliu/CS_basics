@@ -49,6 +49,11 @@
 	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
 	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU)
 	- [grokking-the-coding-interview](https://www.educative.io/courses/grokking-the-coding-interview)
+* LC problems
+	- [leetcode_company_V1](https://github.com/yennanliu/CS_basics/tree/master/doc/leetcode_company_V1)
+	- [leetcode_company_V1](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V2.md)
+	- [leetcode_classics_collection](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_classics_collection.md)
+	- [leetcode_classics_collection_extra](https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_classics_collection_extra.md)
 
 ## Algorithms content
 
