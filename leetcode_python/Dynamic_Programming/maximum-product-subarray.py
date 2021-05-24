@@ -1,4 +1,44 @@
-# V0 : DEV 
+"""
+Given an integer array nums, 
+find a contiguous non-empty subarray within the array that has the largest product, and return the product.
+It is guaranteed that the answer will fit in a 32-bit integer.
+A subarray is a contiguous subsequence of the array.
+
+Example 1:
+
+Input: nums = [2,3,-2,4]
+Output: 6
+Explanation: [2,3] has the largest product 6.
+
+Example 2:
+
+Input: nums = [-2,0,-1]
+Output: 0
+Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+ 
+
+Constraints:
+
+1 <= nums.length <= 2 * 104
+-10 <= nums[i] <= 10
+The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+
+"""
+
+# V0
+class Solution(object):
+    # @param A, a list of integers
+    # @return an integer
+    def maxProduct(self, A):
+        global_max, local_max, local_min = float("-inf"), 1, 1
+        for x in A:
+            local_max = max(1, local_max)
+            if x > 0:
+                local_max, local_min = local_max * x, local_min * x
+            else:
+                local_max, local_min = local_min * x, local_max * x
+            global_max = max(global_max, local_max)
+        return global_max
 
 # V1 
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81321978
@@ -9,8 +49,6 @@
 # dpmax  = max(nums[i], dpmax * nums[i], dpmin * nums[i])
 # dpmin  = min(nums[i], dpmax * nums[i], dpmin * nums[i])
 # maxout = max(maxout, dpmax)
-
-
 class Solution:
     def maxstrtest(self, nums):
         n = len(nums)
@@ -81,4 +119,3 @@ class Solution2(object):
                 local_max, local_min = local_min * x, local_max * x
             global_max = max(global_max, local_max)
         return global_max
-
