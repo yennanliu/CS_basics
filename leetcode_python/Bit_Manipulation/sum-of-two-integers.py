@@ -1,13 +1,33 @@
-# https://leetcode.com/problems/sum-of-two-integers/description/
-# Time:  O(1)
-# Space: O(1)
-# Calculate the sum of two integers a and b,
-# but you are not allowed to use the operator + and -.
-#
-# Example:
-# Given a = 1 and b = 2, return 3.
+"""
+Given two integers a and b, return the sum of the two integers without using the operators + and -.
+
+
+Example 1:
+
+Input: a = 1, b = 2
+Output: 3
+
+Example 2:
+
+Input: a = 2, b = 3
+Output: 5
+ 
+
+Constraints:
+
+-1000 <= a, b <= 1000
+
+"""
 
 # V0
+# https://leetcode.com/problems/sum-of-two-integers/discuss/1214257/Python-1-line%3A-91-faster
+class Solution:
+	def getSum(self, a, b):
+		tmp = math.exp(a) * math.exp(b)
+		r = int(math.log(tmp))
+		return r
+
+# V0'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79379939
 #########
 # XOR op:
@@ -15,6 +35,7 @@
 # https://stackoverflow.com/questions/14526584/what-does-the-xor-operator-do
 # XOR is a binary operation, it stands for "exclusive or", that is to say the resulting bit evaluates to one if only exactly one of the bits is set.
 # -> XOR : RETURN 1 if only one "1", return 0 else 
+# -> XOR extra : Exclusive or or exclusive disjunction is a logical operation that is true if and only if its arguments differ. It is symbolized by the prefix operator J and by the infix operators XOR, EOR, EXOR, ⊻, ⩒, ⩛, ⊕, ↮, and ≢. Wikipedia
 # a | b | a ^ b
 # --|---|------
 # 0 | 0 | 0
