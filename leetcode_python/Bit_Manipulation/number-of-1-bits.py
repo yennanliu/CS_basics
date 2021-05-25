@@ -8,7 +8,15 @@
 # so the function should return 3.
 
 
-# V0 
+# V0
+# The bin() method returns the binary string equivalent to the given integer.
+class Solution(object):
+    def hammingWeight(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        return bin(n).count('1')
 
 # V1 
 # http://bookshadow.com/weblog/2015/03/10/leetcode-number-1-bits/
