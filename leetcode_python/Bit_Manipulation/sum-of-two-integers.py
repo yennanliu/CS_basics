@@ -21,12 +21,11 @@ Constraints:
 
 # V0
 # https://leetcode.com/problems/sum-of-two-integers/discuss/1214257/Python-1-line%3A-91-faster
-class Solution:
-	def getSum(self, a, b):
-		tmp = math.exp(a) * math.exp(b)
-		r = int(math.log(tmp))
-		return r
-
+class Souluton:
+    def getSum(self, a, b):
+        tmp = math.exp(a) * math.exp(b)
+        r = int(math.log(tmp))
+        return r
 # V0'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79379939
 #########
