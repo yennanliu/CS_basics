@@ -43,10 +43,10 @@ class Solution:
     def countBits(self,string_num):
         result = []
         for i in range(string_num + 1):
-            result.append(self.get_one_from_binar(i))
+            result.append(self.get_one_from_binary(i))
         return result
 
-    def get_one_from_binar(self, x):
+    def get_one_from_binary(self, x):
         tmp = bin(x)
         return tmp.count('1') 
 
