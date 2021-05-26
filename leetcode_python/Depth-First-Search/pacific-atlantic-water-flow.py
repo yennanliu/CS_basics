@@ -1,3 +1,31 @@
+"""
+
+You are given an m x n integer matrix heights representing the height of each unit cell in a continent. 
+The Pacific ocean touches the continent's left and top edges, 
+and the Atlantic ocean touches the continent's right and bottom edges.
+Water can only flow in four directions: up, down, left, and right. 
+Water flows from a cell to an adjacent one with an equal or lower height.
+Return a list of grid coordinates where water can flow to both the Pacific and Atlantic oceans.
+
+Example 1:
+
+Input: heights = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]
+Output: [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]
+
+Example 2:
+
+Input: heights = [[2,1],[1,2]]
+Output: [[0,0],[0,1],[1,0],[1,1]]
+ 
+
+Constraints:
+
+m == heights.length
+n == heights[i].length
+1 <= m, n <= 200
+1 <= heights[i][j] <= 105
+
+"""
 # V0 
 # IDEA : DFS + SET
 class Solution:
@@ -6,10 +34,14 @@ class Solution:
         pacific,atlantic = set(),set()
         m,n = len(matrix),len(matrix[0])
         for i in range(n):
+            # note : the reason why we need to iterate from both side : maybe the water flow gets stocked in one direction, but maybe it cas flow on the other side
+            # e.g. from 0 and from m - 1
             self.dfs(0, i, matrix, pacific, 0)
             self.dfs(m - 1, i, matrix, atlantic, 0)
         for i in range(m):
-            self.dfs(i, 0, matrix, pacific, -1)
+            # note : the reason why we need to iterate from both side : maybe the water flow gets stocked in one direction, but maybe it cas flow on the other side
+            # e.g. from 0 and from n - 1
+            self.dfs(i, 0, matrix, pacific, 0) # self.dfs(i, 0, matrix, pacific, -1 # (seems 0 is OK as well)
             self.dfs(i, n - 1, matrix, atlantic, 0)
         return list(pacific&atlantic)
         
