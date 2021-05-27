@@ -54,7 +54,7 @@ There may be multiple valid order of letters, return any one of them is fine.
 
 # V1
 # https://blog.csdn.net/qq_37821701/article/details/108807236
-# IDEA : Topological sorting (offical solution)
+# IDEA : Topological sorting (official solution)
 class Solution:
     def alienOrder(self, words: List[str]) -> str:
         # create adject matrx of the graph
@@ -76,11 +76,15 @@ class Solution:
                         adj_list[c].add(d)
                         indegrees[d]+=1
                     break
-            # this 'else' will still match with the 'if' inside the for loop, it means if after any zip pairs c and d is not equal, codes in 'else' won't be runned. only when all pairs are equal, then codes in 'else' will be runned. In other words, the 'else' match to the final 'if' of the for loop
-            else:
-                # check if the second word is a prefix of the first word
-                if len(second_word)<len(first_word):
-                    return ''
+            # this 'else' will still match with the 'if' inside the for loop, 
+            # it means if after any zip pairs c and d is not equal, 
+            # codes in 'else' won't be runned. only when all pairs are equal, 
+            # then codes in 'else' will be runned. 
+            # In other words, the 'else' match to the final 'if' of the for loop
+                else:
+                    # check if the second word is a prefix of the first word
+                    if len(second_word)<len(first_word):
+                        return ''
         
         # pick all nodes with zero indegree and put it into queue
         q = collections.deque()
