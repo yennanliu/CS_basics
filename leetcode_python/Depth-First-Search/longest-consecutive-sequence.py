@@ -46,6 +46,26 @@ class Solution:
 
         return max(longest_streak, current_streak)
 
+# V0'
+# IDEA : HASHSET
+class Solution:
+    def longestConsecutive(self, nums):
+        longest_streak = 0
+        num_set = set(nums)
+
+        for num in num_set:
+            if num - 1 not in num_set:
+                current_num = num
+                current_streak = 1
+
+                while current_num + 1 in num_set:
+                    current_num += 1
+                    current_streak += 1
+
+                longest_streak = max(longest_streak, current_streak)
+
+        return longest_streak
+
 # V1
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/longest-consecutive-sequence/solution/
@@ -89,7 +109,7 @@ class Solution:
         return max(longest_streak, current_streak)
 
 
-# V2
+# V3
 # IDEA : HashSet and Intelligent Sequence Building
 # https://leetcode.com/problems/longest-consecutive-sequence/solution/
 class Solution:
@@ -111,7 +131,7 @@ class Solution:
         return longest_streak
 
 
-# V3
+# V4
 # https://leetcode.com/problems/longest-consecutive-sequence/discuss/1231015/Concise-Python-Solution-8-lines
 # https://www.youtube.com/watch?v=rc2QdQ7U78I
 class Solution:
