@@ -41,6 +41,7 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS
+#       -> check if visited count is as same as "n"
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:        
         if len(edges) != n - 1:  # Check number of edges.
