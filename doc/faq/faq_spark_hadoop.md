@@ -245,7 +245,7 @@ rdd.groupByKey().mapValue(_.sum)
 
 34. Explain `application`, `job`, `stage` , `task`? 
 
-- `task -> stage -> job` -> `Application`
+- `Application` -> `job` -> `stage` -> `task`
 
 - Application
 	- Initialize a SparkConext will generate an Application
@@ -262,6 +262,7 @@ rdd.groupByKey().mapValue(_.sum)
 	- A Task is a single operation `(.map or .filter)` happening on a specific RDD partition.
 	- Each Task is executed as a single thread in an Executor
 	- If your dataset has 2 Partitions, an operation such as a filter() will trigger 2 Tasks, one for each Partition.
+	- Stage is a TaskSet, split the stage result to different Executors is a task
 
 - Each `stage` contains as many `tasks` as `partitions` of the `RDD`
 	- i.e. partition  (part of RDD) -> task (part of stage)
