@@ -243,12 +243,16 @@ rdd.groupByKey().mapValue(_.sum)
 
 ```
 
-34. Explain `job`, `stage` , `task`? 
+34. Explain `application`, `job`, `stage` , `task`? 
 
-- `task -> stage -> job`
+- `task -> stage -> job` -> `Application`
+
+- Application
+	- Initialize a SparkConext will generate an Application
 
 - Job 
 	- A Job is a sequence of `Stages`, triggered by an `Action` such as .count(), foreachRdd(), collect(), read() or write().
+	- An `Action` operaor will generate a job
 
 - Stage 
 	- A Stage is a sequence of `Tasks` that can all be run together, `without a shuffle`.
@@ -265,6 +269,8 @@ rdd.groupByKey().mapValue(_.sum)
 - http://queirozf.com/entries/spark-concepts-overview-clusters-jobs-stages-tasks-etc#stage-vs-task
 
 - https://medium.com/@thejasbabu/spark-under-the-hood-partition-d386aaaa26b7
+
+- https://www.youtube.com/watch?v=pEWrWdt60nY&list=PLmOn9nNkQxJF-qlCCDx9WsdAe6x5hhH77&index=56
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/spark_stage_task.png" width="500" height="300"> 
 
