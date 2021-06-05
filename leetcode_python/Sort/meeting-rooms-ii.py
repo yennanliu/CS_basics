@@ -1,11 +1,19 @@
-# Given an array of meeting time intervals consisting 
-# of start and end times [[s1,e1],[s2,e2],...] (si < ei),
-# find the minimum number of conference rooms required.
-# For example,
-# Given [[0, 30],[5, 10],[15, 20]],
-# return 2.
+"""
 
-# V0 
+Given an array of meeting time intervals consisting of start and end times 
+[[s1,e1], [s2,e2],…] (si < ei), find the minimum number of conference rooms required.
+
+For example,
+Given [[0, 30],[5, 10],[15, 20]],
+return 2.
+
+"""
+
+# V0
+# IDEA : SCANNING LINE
+# Step 1 : split intervals to points, and label start, end point
+# Step 2 : reorder the points
+# Step 3 : go through every point, if start : result + 1, if end : result -1, and record the maximum result in every iteration
 # https://www.1point3acres.com/bbs/thread-295648-1-1.html
 class Solution:
     """
@@ -35,6 +43,38 @@ class Solution:
                 needed_room -= 1
         return res
 
+# V0'
+# IDEA : SCANNING LINE
+# Step 1 : split intervals to points, and label start, end point
+# Step 2 : reorder the points
+# Step 3 : go through every point, if start : result + 1, if end : result -1, and record the maximum result in every iteration
+ class Solution:
+    def minMeetingRooms(self, intervals):
+        if intervals is None or len(intervals) == 0:
+            return 0
+
+        tmp = []
+
+        # set up start and end points 
+        for inter in intervals:
+            tmp.append((inter.start, True))
+            tmp.append((inter.end, False))
+
+        # sort 
+        tmp = sorted(tmp, key=lambda v: (v[0], v[1]))
+
+        n = 0
+        max_num = 0
+        for arr in tmp:
+            # start point +1 
+            if arr[1]:
+                n += 1
+            # end point -1 
+            else:
+                n -= 1 # release the meeting room
+            max_num = max(n, max_num)
+        return max_num
+    
 # V1 
 # https://www.jiuzhang.com/solution/meeting-rooms-ii/#tag-highlight-lang-python
 # IDEA  : TO HAVE A ARRAY OF ALL "ROOM OPEN" AND "ROOM CLOSE" EVENTS
