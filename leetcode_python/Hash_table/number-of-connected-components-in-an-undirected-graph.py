@@ -13,13 +13,7 @@ Input: n = 5 and edges = [[0, 1], [1, 2], [3, 4]]
      1 --- 2    4 
 
 Output: 2
-1
-2
-3
-4
-5
-6
-7
+
 
 Example 2:
 
@@ -30,13 +24,7 @@ Input: n = 5 and edges = [[0, 1], [1, 2], [2, 3], [3, 4]]
      1 --- 2 --- 3
 
 Output:  1
-1
-2
-3
-4
-5
-6
-7
+
 Note:
 
 You can assume that no duplicate edges will appear in edges. Since all edges are undirected, 
