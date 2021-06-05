@@ -1,6 +1,53 @@
+"""
+
+Given n nodes labeled from 0 to n - 1 and a list of undirected edges 
+(each edge is a pair of nodes), 
+write a function to find the number of connected components in an undirected graph.
+
+Example 1:
+
+Input: n = 5 and edges = [[0, 1], [1, 2], [3, 4]]
+
+     0          3
+     |          |
+     1 --- 2    4 
+
+Output: 2
+1
+2
+3
+4
+5
+6
+7
+
+Example 2:
+
+Input: n = 5 and edges = [[0, 1], [1, 2], [2, 3], [3, 4]]
+
+     0           4
+     |           |
+     1 --- 2 --- 3
+
+Output:  1
+1
+2
+3
+4
+5
+6
+7
+Note:
+
+You can assume that no duplicate edges will appear in edges. Since all edges are undirected, 
+[0, 1] is the same as [1, 0] and thus will not appear together in edges.
+
+"""
+
 # V0 
 
-# V1 
+# V1
+# IDEA : BFS
 # https://www.jiuzhang.com/solution/number-of-connected-components-in-an-undirected-graph/#tag-other-lang-python
 import collections
 class Solution:
@@ -31,6 +78,7 @@ class Solution:
         
         visited = []
         count = 0
+        # note : Given n nodes labeled from 0 to n - 1
         for i in range(n):
             node = find_root(visited)
             if node != -1:
@@ -39,7 +87,40 @@ class Solution:
                 visited = bfs(node, visited)
             else:
                 return count
-                
+
+# V1'
+# IDEA : UNION FIND
+# https://www.cnblogs.com/lightwindy/p/8487160.html
+# Time:  O(nlog*n) ~= O(n), n is the length of the positions
+# Space: O(n)
+class UnionFind(object):
+    def __init__(self, n):
+        self.set = range(n)
+        self.count = n
+ 
+    def find_set(self, x):
+       if self.set[x] != x:
+           self.set[x] = self.find_set(self.set[x])  # path compression.
+       return self.set[x]
+ 
+    def union_set(self, x, y):
+        x_root, y_root = map(self.find_set, (x, y))
+        if x_root != y_root:
+            self.set[min(x_root, y_root)] = max(x_root, y_root)
+            self.count -= 1
+            
+class Solution(object):
+    def countComponents(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: int
+        """
+        union_find = UnionFind(n)
+        for i, j in edges:
+            union_find.union_set(i, j)
+        return union_find.count
+
 # V2 
 # Time:  O(nlog*n) ~= O(n), n is the length of the positions
 # Space: O(n)
