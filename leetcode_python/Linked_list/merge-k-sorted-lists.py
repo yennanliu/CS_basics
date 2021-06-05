@@ -1,10 +1,10 @@
 """
-You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
 
+You are given an array of k linked-lists lists, 
+each linked-list is sorted in ascending order.
 Merge all the linked-lists into one sorted linked-list and return it.
 
  
-
 Example 1:
 
 Input: lists = [[1,4,5],[1,3,4],[2,6]]
@@ -63,6 +63,8 @@ class Solution(object):
 # V2
 # IDEA : Optimize Approach 2 by Priority Queue
 # https://leetcode.com/problems/merge-k-sorted-lists/solution/
+# Priority Queue
+# https://www.gushiciku.cn/pl/pJaa/zh-tw
 from Queue import PriorityQueue
 
 class Solution(object):
