@@ -935,7 +935,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 959 | [Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/)  | [C++](./C++/regions-cut-by-slashes.cpp) [Python](./Python/regions-cut-by-slashes.py) | _O(n^2)_| _O(n^2)_| Medium | Union Find | 
-269 |[alien-dictionary](https://leetcode.com/problems/alien-dictionary/)  | [Python](./leetcode_python/Graph/alien-dictionary.py) | | | Hard| dfs, bfs, topology sorting, `fb` |  AGAIN* (not start)
+269 |[Alien Dictionary](https://leetcode.com/problems/alien-dictionary/)  | [Python](./leetcode_python/Graph/alien-dictionary.py) | | | Hard| dfs, bfs, topology sorting, `fb` |  AGAIN* (not start)
 
 ## Geometry 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
