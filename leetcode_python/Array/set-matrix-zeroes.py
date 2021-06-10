@@ -1,35 +1,36 @@
-# Given a m x n matrix, if an element is 0, set its entire row and column to 0. Do it in-place.
-# Example 1:
-# Input: 
-# [
-#   [1,1,1],
-#   [1,0,1],
-#   [1,1,1]
-# ]
-# Output: 
-# [
-#   [1,0,1],
-#   [0,0,0],
-#   [1,0,1]
-#
-# Example 2:
-# Input: 
-# [
-#   [0,1,2,0],
-#   [3,4,5,2],
-#   [1,3,1,5]
-# ]
-# Output: 
-# [
-#   [0,0,0,0],
-#   [0,4,5,0],
-#   [0,3,1,0]
-# ]
-# Follow up:
-# A straight forward solution using O(mn) space is probably a bad idea.
-# A simple improvement uses O(m + n) space, but still not the best solution.
-# Could you devise a constant space solution?
+"""
 
+Given an m x n matrix. If an element is 0, set its entire row and column to 0. Do it in-place.
+
+Follow up:
+
+A straight forward solution using O(mn) space is probably a bad idea.
+A simple improvement uses O(m + n) space, but still not the best solution.
+Could you devise a constant space solution?
+ 
+
+Example 1:
+
+
+Input: matrix = [[1,1,1],[1,0,1],[1,1,1]]
+Output: [[1,0,1],[0,0,0],[1,0,1]]
+
+
+Example 2:
+
+
+Input: matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
+Output: [[0,0,0,0],[0,4,5,0],[0,3,1,0]]
+ 
+
+Constraints:
+
+m == matrix.length
+n == matrix[0].length
+1 <= m, n <= 200
+-231 <= matrix[i][j] <= 231 - 1
+
+"""
 
 # V0 
 class Solution:
@@ -90,7 +91,7 @@ assert s.setZeroes([[1,2,3], [4,0,6], [7,8,9]]) == [[1,0,3], [0,0,0], [7,0,9]]
 assert s.setZeroes([[1,2,3,999], [4,0,6,0], [0,7,8,9]]) == [[0, 0, 3, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
 assert s.setZeroes([[0,0,0], [0,0,0], [0,0,0]]) == [[0,0,0], [0,0,0], [0,0,0]]
 
-# V1'
+# V1''
 # https://leetcode.com/problems/set-matrix-zeroes/solution/
 # IDEA : BRUTE FORCE + DOUBLE LOOP
 # TIME COMPLEXITY : O(N*M)
@@ -117,34 +118,7 @@ class Solution(object):
             for j in range(C):
                 if i in rows or j in cols:
                     matrix[i][j] = 0
-
-# V1''
-# https://leetcode.com/problems/set-matrix-zeroes/solution/
-# TIME COMPLEXITY : O((N*M)*(N+M))
-# SPACE COMPLEXITY : O(1)
-class Solution(object):
-    def setZeroes(self, matrix):
-        """
-        :type matrix: List[List[int]]
-        :rtype: void Do not return anything, modify matrix in-place instead.
-        """
-        MODIFIED = -1000000
-        R = len(matrix)
-        C = len(matrix[0])
-        for r in range(R):
-            for c in range(C):
-                if matrix[r][c] == 0:
-                    # We modify the elements in place. Note, we only change the non zeros to MODIFIED
-                    for k in range(C):
-                        matrix[r][k] = MODIFIED if matrix[r][k] != 0 else 0
-                    for k in range(R):
-                        matrix[k][c] = MODIFIED if matrix[k][c] != 0 else 0
-        for r in range(R):
-            for c in range(C):
-                # Make a second pass and change all MODIFIED elements to 0 """
-                if matrix[r][c] == MODIFIED:
-                    matrix[r][c] = 0
-
+                    
 # V1'''
 # https://leetcode.com/problems/set-matrix-zeroes/solution/
 # TIME COMPLEXITY : O((N*M))
@@ -186,6 +160,33 @@ class Solution(object):
         if is_col:
             for i in range(R):
                 matrix[i][0] = 0
+     
+# V1'''
+# https://leetcode.com/problems/set-matrix-zeroes/solution/
+# TIME COMPLEXITY : O((N*M)*(N+M))
+# SPACE COMPLEXITY : O(1)
+class Solution(object):
+    def setZeroes(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: void Do not return anything, modify matrix in-place instead.
+        """
+        MODIFIED = -1000000
+        R = len(matrix)
+        C = len(matrix[0])
+        for r in range(R):
+            for c in range(C):
+                if matrix[r][c] == 0:
+                    # We modify the elements in place. Note, we only change the non zeros to MODIFIED
+                    for k in range(C):
+                        matrix[r][k] = MODIFIED if matrix[r][k] != 0 else 0
+                    for k in range(R):
+                        matrix[k][c] = MODIFIED if matrix[k][c] != 0 else 0
+        for r in range(R):
+            for c in range(C):
+                # Make a second pass and change all MODIFIED elements to 0 """
+                if matrix[r][c] == MODIFIED:
+                    matrix[r][c] = 0
 
 # V1''''
 # https://blog.csdn.net/qqxx6661/article/details/78279728
