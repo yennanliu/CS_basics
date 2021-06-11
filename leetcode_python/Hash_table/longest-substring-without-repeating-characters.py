@@ -35,6 +35,7 @@ s consists of English letters, digits, symbols and spaces.
 """
 
 # V0
+# IDEA : SLIDING WINDOW + DICT
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
         """
