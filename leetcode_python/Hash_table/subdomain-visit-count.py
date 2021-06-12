@@ -76,8 +76,20 @@ The answer output can be returned in any order.
 # - Each address will have either 1 or 2 "." characters.
 # - The input count in any count-paired domain will not exceed 10000.
 
-# V0 
-
+# V0
+class Solution(object):
+    def func(self, counts):
+        r = dict()
+        for item in counts:
+            _count, domain = int(item.split(",")[0]), item.split(",")[1]
+            domain_ = domain.split(".")
+            for i in range(len(domain_)):
+                sub = str(".".join(domain_[i:]))
+                if sub not in r:
+                    r[sub] = 0
+                print (sub)
+        return r
+            
 # V1 
 # http://bookshadow.com/weblog/2018/04/02/leetcode-subdomain-visit-count/
 import collections
