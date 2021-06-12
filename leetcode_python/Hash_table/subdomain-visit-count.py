@@ -47,13 +47,30 @@ class Solution(object):
             domain_ = domain.split(".")
             for i in range(len(domain_)):
                 sub = str(".".join(domain_[i:]))
+                # note below if use dict
                 if sub not in r:
                     r[sub] = 0
                 r[sub] += int(_count)
                 print (sub)
         #return r
         return [str(v) + ' ' + k for k,v in r.items()]
-            
+ 
+# V0'
+# IDEA : DEFAULT DICT
+import collections
+class Solution(object):
+    def subdomainVisits(self, counts):
+        r = collections.defaultdict(int)
+        for item in counts:
+            _count, domain = item.split(" ")[0], item.split(" ")[1]
+            domain_ = domain.split(".")
+            for i in range(len(domain_)):
+                sub = str(".".join(domain_[i:]))
+                # we can do below directly via DEFAULT DICT
+                r[sub] += int(_count)
+                print (sub)
+        return [str(v) + ' ' + k for k,v in r.items()]
+    
 # V1 
 # http://bookshadow.com/weblog/2018/04/02/leetcode-subdomain-visit-count/
 import collections
