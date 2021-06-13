@@ -1,20 +1,38 @@
-# Time:  O(n)
-# Space: O(1)
-#
-# Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
-#
-# For example,
-# "A man, a plan, a canal: Panama" is a palindrome.
-# "race a car" is not a palindrome.
-#
-# Note:
-# Have you consider that the string might be empty? This is a good question to ask during an interview.
-#
-# For the purpose of this problem, we define empty string as valid palindrome.
-#
+"""
+
+Given a string s, determine if it is a palindrome, 
+considering only alphanumeric characters and ignoring cases.
+
+
+Example 1:
+
+Input: s = "A man, a plan, a canal: Panama"
+Output: true
+Explanation: "amanaplanacanalpanama" is a palindrome.
+
+Example 2:
+
+Input: s = "race a car"
+Output: false
+Explanation: "raceacar" is not a palindrome.
+ 
+
+Constraints:
+
+1 <= s.length <= 2 * 105
+s consists only of printable ASCII characters.
+
+"""
 
 # V0 
-
+# IDEA : string + isalpha + isalnum
+class Solution(object):
+    def isPalindrome(self, s):
+        s_ = ""
+        for i in s:
+            if i.isalpha() or i.isalnum():
+                s_ += i.lower()
+        return s_ == s_[::-1]
 
 # V1
 # https://blog.csdn.net/xiaolewennofollow/article/details/45148577
@@ -93,4 +111,3 @@ class Solution(object):
             if upper < 0: break
             lower = max(lower, 0)
         return lower == 0  # range of '(' count is valid
-
