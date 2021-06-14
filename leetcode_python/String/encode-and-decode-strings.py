@@ -1,4 +1,5 @@
 """
+
 Design an algorithm to encode a list of strings to a string.
 The encoded string is then sent over the network and is decoded back to the original list of strings.
 
@@ -37,6 +38,18 @@ You should implement your own encode/decode algorithm.
 """
 
 # V0 
+# encode : len(element) + "$#"
+# decode : find the "#" and get the len(element) -> get original element
+# NOTE : find() in python
+# https://www.runoob.com/python/att-string-find.html
+# >>>info = 'abca'
+# >>> print info.find('a')    # from index=0, find the 1st element in string. return 0
+# 0
+# >>> print info.find('a',1)  # from index=1, find the 1st element in string. return 3
+# 3
+# >>> print info.find('3')    # if can't find, return -1
+# -1
+# >>>
 class Codec:
     def encode(self, strs):
         s = ""
@@ -47,6 +60,7 @@ class Codec:
     def decode(self, s):
         i, str = 0, []
         while i < len(s):
+            # note here
             sharp = s.find("#", i)
             l = int(s[i:sharp])
             str.append(s[sharp + 1:sharp + l + 1])
