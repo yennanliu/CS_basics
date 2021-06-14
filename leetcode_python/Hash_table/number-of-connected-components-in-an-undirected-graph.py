@@ -32,7 +32,53 @@ You can assume that no duplicate edges will appear in edges. Since all edges are
 
 """
 
-# V0 
+# V0
+# IDEA : DFS
+class Solution:
+    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+        def helper(u):
+            if u in pair:
+                for v in pair[u]:
+                    if v not in visited:
+                        visited.add(v)
+                        helper(v)
+            
+        pair = collections.defaultdict(set)
+        for u,v in edges:
+            pair[u].add(v)
+            pair[v].add(u)
+        count = 0
+        visited = set()
+        for i in range(n):
+            if i not in visited:
+                helper(i)
+                count+=1
+        return count
+
+
+# V1
+# IDEA : DFS
+# https://blog.csdn.net/qq_37821701/article/details/104371911
+class Solution:
+    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+        def helper(u):
+            if u in pair:
+                for v in pair[u]:
+                    if v not in visited:
+                        visited.add(v)
+                        helper(v)
+            
+        pair = collections.defaultdict(set)
+        for u,v in edges:
+            pair[u].add(v)
+            pair[v].add(u)
+        count = 0
+        visited = set()
+        for i in range(n):
+            if i not in visited:
+                helper(i)
+                count+=1
+        return count
 
 # V1
 # IDEA : BFS
@@ -108,6 +154,35 @@ class Solution(object):
         for i, j in edges:
             union_find.union_set(i, j)
         return union_find.count
+
+# V1''
+# IDEA : UNION FIND
+# https://blog.csdn.net/qq_37821701/article/details/104371911
+class Solution:
+    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+        def unionfind(p1,p2):
+            nonlocal count
+            # find root of p1
+            while root[p1]!=p1:
+                p1 = root[p1]
+            # find root of p2
+            while root[p2]!=p2:
+                p2 = root[p2]
+            #if roots of p1 and p2 are identicle, meaning they have already been merged
+            if root[p1]==root[p2]:
+                return
+            # merge them if not merged 
+            else:
+                root[p1] = p2
+                count -= 1
+        # initially, we have n connected path
+        count = n 
+        # store original roots
+        root = [i for i in range(n)] 
+        # go through each node pair
+        for edge in edges:
+            unionfind(edge[0],edge[1])
+        return count
 
 # V2 
 # Time:  O(nlog*n) ~= O(n), n is the length of the positions
