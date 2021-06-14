@@ -35,7 +35,7 @@ You can assume that no duplicate edges will appear in edges. Since all edges are
 # V0
 # IDEA : DFS
 class Solution:
-    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+    def countComponents(self, n, edges):
         def helper(u):
             if u in pair:
                 for v in pair[u]:
@@ -55,12 +55,11 @@ class Solution:
                 count+=1
         return count
 
-
 # V1
 # IDEA : DFS
 # https://blog.csdn.net/qq_37821701/article/details/104371911
 class Solution:
-    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+    def countComponents(self, n, edges):
         def helper(u):
             if u in pair:
                 for v in pair[u]:
@@ -85,7 +84,7 @@ class Solution:
 # https://www.jiuzhang.com/solution/number-of-connected-components-in-an-undirected-graph/#tag-other-lang-python
 import collections
 class Solution:
-    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+    def countComponents(self, n, edges):
         
         if not edges:
             return n
@@ -159,7 +158,7 @@ class Solution(object):
 # IDEA : UNION FIND
 # https://blog.csdn.net/qq_37821701/article/details/104371911
 class Solution:
-    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+    def countComponents(self, n, edges):
         def unionfind(p1,p2):
             nonlocal count
             # find root of p1
