@@ -1,4 +1,39 @@
-# V0 
+"""
+
+Given a string s, return the longest palindromic substring in s.
+
+
+Example 1:
+
+Input: s = "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+
+Example 2:
+
+Input: s = "cbbd"
+Output: "bb"
+
+Example 3:
+
+Input: s = "a"
+Output: "a"
+
+Example 4:
+
+Input: s = "ac"
+Output: "a"
+ 
+
+Constraints:
+
+1 <= s.length <= 1000
+s consist of only digits and English letters (lower-case and/or upper-case),
+
+"""
+
+# V0
+# IDEA : BRUTE FORCE
 class Solution(object):
     def countSubstrings(self, s):
         """
@@ -12,6 +47,28 @@ class Solution(object):
                     count += 1
         return count
 
+# V0'
+# IDEA : TWO POINTERS
+# https://leetcode.com/problems/palindromic-substrings/discuss/1041760/Python-Easy-Solution-Beats-85
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py
+class Solution:
+    def countSubstrings(self, s):
+        ans = 0    
+        for i in range(len(s)):
+            # odd
+            ans += self.helper(s, i, i)
+            # even
+            ans += self.helper(s, i, i + 1)  
+        return ans
+        
+    def helper(self, s, l, r):     
+        ans = 0    
+        while l >= 0 and r < len(s) and s[l] == s[r]:
+            l -= 1
+            r += 1
+            ans += 1          
+        return ans
+    
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79433960
 # IDEA : GREEDY 
