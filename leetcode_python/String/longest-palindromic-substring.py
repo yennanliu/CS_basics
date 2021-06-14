@@ -1,4 +1,89 @@
-# V0 
+"""
+
+Given a string s, return the longest palindromic substring in s.
+
+ 
+Example 1:
+
+Input: s = "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+
+Example 2:
+
+Input: s = "cbbd"
+Output: "bb"
+
+Example 3:
+
+Input: s = "a"
+Output: "a"
+
+Example 4:
+
+Input: s = "ac"
+Output: "a"
+ 
+
+Constraints:
+
+1 <= s.length <= 1000
+s consist of only digits and English letters (lower-case and/or upper-case),
+
+"""
+
+# V0
+# IDEA : TWO POINTER + RECURSION
+# https://leetcode.com/problems/longest-palindromic-substring/discuss/1057629/Python.-Super-simple-and-easy-understanding-solution.-O(n2).
+class Solution:
+	def longestPalindrome(self, s):
+		res = ""
+		length = len(s)
+		def helper(left, right):
+			while left >= 0 and right < length and s[left] == s[right]:
+				left -= 1
+				right += 1		
+			return s[left + 1 : right]
+        
+		for index in range(len(s)):
+			res = max(helper(index, index), helper(index, index + 1), res, key = len)			
+		return res
+
+# V0'
+# IDEA : TWO POINTERS
+# https://leetcode.com/problems/longest-palindromic-substring/discuss/1025496/Python-Clean-and-Simple
+class Solution:
+    def longestPalindrome(self, s):
+        left = 0
+        size = 1
+        for i in range(len(s)):
+            odd = s[i-size-1:i+1]
+            even = s[i-size:i+1]
+            if 0 <= i-size-1 and odd == odd[::-1]:
+                left = i-size-1
+                size += 2
+            elif 0 <= i-size and even == even[::-1]:
+                left = i-size
+                size += 1
+        return s[left:left+size]
+
+# V0''
+# IDEA : DP
+# https://leetcode.com/problems/longest-palindromic-substring/discuss/1194142/Super-Clean-DP-Python-Solution
+class Solution:
+    def longestPalindrome(self, s):
+            dp = [[0]*len(s) for _ in range(len(s))]   
+
+            longest = ""
+            for i in range(len(s)):
+                for j in range(len(s) - i):
+                    if (i == 0) or (i == 1 and s[j] == s[j+i]) or (s[j] == s[j+i] and dp[i-2][j+1]):
+                        dp[i][j] = 1
+                        longest = s[j:j+i+1]
+
+            return longest
+
+# V1
 # IDEA : LOOPING ON "MIDDLE"
 class Solution:
     """
@@ -32,9 +117,7 @@ class Solution:
 # IDEA : DP 
 # STATUS EQUATION :
 # dp[i, j] = 1                                        if i == j
-
 #          = s[i] == s[j]                             if j = i + 1
-
 #          = s[i] == s[j] && dp[i + 1][j - 1]         if j > i + 1      
 class Solution(object):
     def longestPalindrome(self, s):
