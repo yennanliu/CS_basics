@@ -1,20 +1,61 @@
-# Invert a binary tree.
+"""
 
-#      4
-#    /   \
-#   2     7
-#  / \   / \
-# 1   3 6   9
-#
-# to
-#      4
-#    /   \
-#   7     2
-#  / \   / \
-# 9   6 3   1
+Given the root of a binary tree, invert the tree, and return its root.
 
+Example 1:
+
+
+Input: root = [4,2,7,1,3,6,9]
+Output: [4,7,2,9,6,3,1]
+
+Example 2:
+
+
+Input: root = [2,1,3]
+Output: [2,3,1]
+
+Example 3:
+
+Input: root = []
+Output: []
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 100].
+-100 <= Node.val <= 100
+
+
+Invert a binary tree.
+
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+
+to
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+
+
+"""
 
 # V0
+# IDEA : DFS
+class Solution(object):
+    def invertTree(self, root):
+        if root is None:
+            return root
+        if root is not None:
+            # NOTE : have to do root.left, root.right ON THE SAME TIME
+            root.left, root.right = self.invertTree(root.right), \
+                                    self.invertTree(root.left)
+
+        return root
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51383933
