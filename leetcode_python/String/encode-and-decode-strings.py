@@ -1,3 +1,41 @@
+"""
+Design an algorithm to encode a list of strings to a string.
+The encoded string is then sent over the network and is decoded back to the original list of strings.
+
+Machine 1 (sender) has the function:
+
+string encode(vector<string> strs) {
+  // ... your code
+  return encoded_string;
+}
+
+Machine 2 (receiver) has the function:
+vector<string> decode(string s) {
+  //... your code
+  return strs;
+}
+
+So Machine 1 does:
+
+string encoded_string = encode(strs);
+
+and Machine 2 does:
+
+vector<string> strs2 = decode(encoded_string);
+strs2 in Machine 2 should be the same as strs in Machine 1.
+
+Implement the encode and decode methods.
+
+Note:
+The string may contain any possible characters out of 256 valid ascii characters. 
+Your algorithm should be generalized enough to work on any possible characters.
+Do not use class member/global/static variables to store states. 
+Your encode and decode algorithms should be stateless.
+Do not rely on any library method such as eval or serialize methods. 
+You should implement your own encode/decode algorithm.
+
+"""
+
 # V0 
 class Codec:
     def encode(self, strs):
@@ -46,7 +84,37 @@ class Codec:
 # codec = Codec()
 # codec.decode(codec.encode(strs))
 
-### Test case : dev 
+### Test case : dev
+
+# V1
+# https://blog.csdn.net/qq508618087/article/details/50912562
+# IDEA : 
+# encode : len(element) + "$"
+# decode : find the "$" and get the len(element)
+# JAVA
+# class Codec {
+# public:
+#
+#     // Encodes a list of strings to a single string.
+#     string encode(vector<string>& strs) {
+#         string result;
+#         for(auto str: strs) result += to_string((int)str.size())+"$"+str;   
+#         return result;
+#     }
+# 
+#     // Decodes a single string to a list of strings.
+#     vector<string> decode(string s) {
+#         vector<string> result;
+#         int len = s.size(), pos = 0;
+#         while(pos < len)
+#         {
+#             int k = s.find('$', pos), num = stoi(s.substr(pos, k-pos));
+#             result.push_back(s.substr(k+1, num));
+#             pos = k+num+1;
+#         }
+#         return result;
+#     }
+# };
 
 # V1'
 # https://medium.com/leetcode-%E6%BC%94%E7%AE%97%E6%B3%95%E6%95%99%E5%AD%B8/024-leetcode-271-%E6%BC%94%E7%AE%97%E6%B3%95-encode-and-decode-strings-%E5%AD%97%E4%B8%B2%E5%8A%A0%E8%A7%A3%E5%AF%86-722cafd6238
