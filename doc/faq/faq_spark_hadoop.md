@@ -316,12 +316,24 @@ rdd.groupByKey().mapValue(_.sum)
 		- When each partition at the parent RDD is used by at most one partition of the child RDD, then we have a narrow dependency. Computations of transformations with this kind of dependency are rather fast as they do not require any data shuffling over the cluster network. 
 	- Wide dependencies
 		- When each partition of the parent RDD may be depended on by multiple child partitions (wide dependency), then the computation speed might be significantly affected as we might need to shuffle data around different nodes when creating new partitions.
-
-	- [ref1](https://medium.com/@dvcanton/wide-and-narrow-dependencies-in-apache-spark-21acf2faf031)
-	- [ref2](https://www.coursera.org/lecture/scala-spark-big-data/wide-vs-narrow-dependencies-shGAX)
-	- [ref3](https://youtu.be/ha6vTXJ9BMQ?t=707)
+	- Reference
+		- [ref1](https://medium.com/@dvcanton/wide-and-narrow-dependencies-in-apache-spark-21acf2faf031)
+		- [ref2](https://www.coursera.org/lecture/scala-spark-big-data/wide-vs-narrow-dependencies-shGAX)
+		- [ref3](https://youtu.be/ha6vTXJ9BMQ?t=707)
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/package_nego.png" width="500" height="300"> 
+
+32. Cache/Persist VS Checkpoint ?
+	- Cache/Persist
+		- Persisting or caching with StorageLevel.DISK_ONLY (in `RAM`) cause the generation of RDD to be computed and stored in a location such that subsequent use of that RDD will not go beyond that points in recomputing the linage.
+		- After persist is called, Spark still remembers the lineage of the RDD even though it doesn't call it.
+		- After the application terminates, the cache is cleared or file destroyed
+	- Checkpoint
+		- Checkpointing stores the rdd `physically to hdfs` (in `Disk`) and destroys the lineage that created it.
+		- The checkpoint file won't be deleted even after the Spark application terminated.
+		- Checkpoint files can be used in subsequent job run or driver program
+		- Checkpointing an RDD causes double computation because the operation will first call a cache before doing the actual job of computing and writing to the checkpoint directory.
+	- [ref](https://stackoverflow.com/questions/35127720/what-is-the-difference-between-spark-checkpoint-and-persist-to-a-disk)
 
 ## Ref 
 - https://www.edureka.co/blog/interview-questions/top-apache-spark-interview-questions-2016/
