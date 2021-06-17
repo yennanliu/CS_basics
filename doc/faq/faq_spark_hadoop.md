@@ -311,6 +311,17 @@ rdd.groupByKey().mapValue(_.sum)
 		- Repartition the RDD according to the `given partitioner` and, within each resulting partition, sort records by their keys. This is `more efficient` than calling `repartition` and then sorting within each partition because it can push the sorting down into the shuffle machinery.
 	- https://spark.apache.org/docs/latest/rdd-programming-guide.html
 
+31. RDD Wide/narrow dependency ?
+	- Narrow dependencies
+		- When each partition at the parent RDD is used by at most one partition of the child RDD, then we have a narrow dependency. Computations of transformations with this kind of dependency are rather fast as they do not require any data shuffling over the cluster network. 
+	- Wide dependencies
+		- When each partition of the parent RDD may be depended on by multiple child partitions (wide dependency), then the computation speed might be significantly affected as we might need to shuffle data around different nodes when creating new partitions.
+
+	- [ref1](https://medium.com/@dvcanton/wide-and-narrow-dependencies-in-apache-spark-21acf2faf031)
+	- [ref2](https://www.coursera.org/lecture/scala-spark-big-data/wide-vs-narrow-dependencies-shGAX)
+	- [ref3](https://youtu.be/ha6vTXJ9BMQ?t=707)
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/package_nego.png" width="500" height="300"> 
 
 ## Ref 
 - https://www.edureka.co/blog/interview-questions/top-apache-spark-interview-questions-2016/
