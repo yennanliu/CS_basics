@@ -1,0 +1,48 @@
+[submodule "php"]
+	path = php
+	url = https://github.com/careercup/CtCI-6th-Edition-php.git
+[submodule "cpp"]
+	path = cpp
+	url = https://github.com/careercup/CtCI-6th-Edition-cpp.git
+[submodule "Clojure"]
+	path = Clojure
+	url = https://github.com/careercup/CtCI-6th-Edition-Clojure.git
+[submodule "Groovy"]
+	path = Groovy
+	url = https://github.com/careercup/CtCI-6th-Edition-Groovy.git
+[submodule "Python"]
+	path = Python
+	url = https://github.com/careercup/CtCI-6th-Edition-Python.git
+[submodule "Swift"]
+	path = Swift
+	url = https://github.com/careercup/CtCI-6th-Edition-Swift.git
+[submodule "Haskell"]
+	path = Haskell
+	url = https://github.com/careercup/CtCI-6th-Edition-Haskell.git
+[submodule "JavaScript"]
+	path = JavaScript
+	url = https://github.com/careercup/CtCI-6th-Edition-JavaScript.git
+[submodule "JavaScript-ES2015"]
+	path = JavaScript-ES2015
+	url = https://github.com/careercup/CtCI-6th-Edition-JavaScript-ES2015.git
+[submodule "Go"]
+	path = Go
+	url = https://github.com/careercup/CtCI-6th-Edition-Go.git
+[submodule "CtCI-6th-Edition-CSharp"]
+	path = CSharp
+	url = https://github.com/careercup/CtCI-6th-Edition-CSharp.git
+[submodule "c"]
+	path = c
+	url = https://github.com/careercup/CtCI-6th-Edition-C.git
+[submodule "Objective-C"]
+	path = Objective-C
+	url = https://github.com/careercup/CtCI-6th-Edition-Objective-C.git
+[submodule "Julia"]
+	path = Julia
+	url = https://github.com/careercup/CtCI-6th-Edition-Julia.git
+[submodule "Ruby"]
+	path = Ruby
+	url = https://github.com/careercup/CtCI-6th-Edition-Ruby.git
+[submodule "Kotlin"]
+	path = Kotlin
+	url = https://github.com/careercup/CtCI-6th-Edition-Kotlin.git
