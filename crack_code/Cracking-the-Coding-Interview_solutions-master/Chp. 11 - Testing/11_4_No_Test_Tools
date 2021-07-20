@@ -1,0 +1,6 @@
+github.com/RodneyShag
+
+To do load testing, we can create thousands of virtual users to test
+    - response time
+    - resource utilization
+    - max load system can bear
