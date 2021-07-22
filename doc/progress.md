@@ -3,7 +3,13 @@
 - `TODO`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 - `TODO2`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 
-
+# 2021-07-22
+- DOING:
+	- Crack code 6 edition
+		- p.114 (p.126 in pdf)
+	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
+		- Tree
+		- String
 # 2021-07-20
 - DOING:
 	- Crack code 6 edition
@@ -11,7 +17,6 @@
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
 		- Tree
 		- String
-		- 
 # 2021-07-19
 - DOING:
 	- Crack code 6 edition
