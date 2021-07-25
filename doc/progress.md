@@ -6,7 +6,8 @@
 # 2021-07-25
 - DOING:
 	- Crack code 6 edition
-		- p.174 (p.186 in pdf)
+		- ============ 1st read OK ============
+		- p.181 (p.193 in pdf) (moderate -> remaining are all "problems")
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
 		- Tree
 		- String
