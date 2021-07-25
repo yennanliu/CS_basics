@@ -6,7 +6,7 @@
 # 2021-07-25
 - DOING:
 	- Crack code 6 edition
-		- p.152 (p.164 in pdf)
+		- p.169 (p.181 in pdf)
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
 		- Tree
 		- String
