@@ -1,3 +1,38 @@
+"""
+
+Given a string s, we can transform every letter individually to be lowercase 
+or uppercase to create another string.
+Return a list of all possible strings we could create. You can return the output in any order.
+
+ 
+Example 1:
+
+Input: s = "a1b2"
+Output: ["a1b2","a1B2","A1b2","A1B2"]
+
+Example 2:
+
+Input: s = "3z4"
+Output: ["3z4","3Z4"]
+
+Example 3:
+
+Input: s = "12345"
+Output: ["12345"]
+
+Example 4:
+
+Input: s = "0"
+Output: ["0"]
+ 
+
+Constraints:
+
+s will be a string with length between 1 and 12.
+s will consist only of letters or digits.
+
+"""
+
 # V0 
 # IDEA : DFS 
 class Solution(object):
@@ -15,6 +50,24 @@ class Solution(object):
             self.dfs(S[1:], res, word + S[0].lower())
         else:
             self.dfs(S[1:], res, word + S[0])
+            
+# V0'
+# IDEA : DFS
+class Solution(object):
+    def letterCasePermutation(self, S):
+        r = []
+        self.dfs(S, r, "")
+        return r
+    
+    def dfs(self, S, r, tmp):
+        if len(S) == 0:
+            r.append(tmp)
+            return
+        if not S[0].isalpha():
+            self.dfs(S[1:], r, tmp + S[0])    
+        elif S[0].isalpha():
+            self.dfs(S[1:], r, tmp + S[0].lower())
+            self.dfs(S[1:], r, tmp + S[0].upper())
             
 # V1 
 # http://bookshadow.com/weblog/2018/02/18/leetcode-letter-case-permutation/
