@@ -1,4 +1,6 @@
-"""Given two binary strings, return their sum (also a binary string).
+"""
+
+Given two binary strings, return their sum (also a binary string).
 
 The input strings are both non-empty and contains only characters 1 or 0.
 
@@ -10,7 +12,38 @@ Example 2:
 
 Input: a = "1010", b = "1011"
 Output: "10101" 
+
 """
+
+# V0
+# IDEA : STRING + BINARY
+class Solution(object):
+    def addBinary(self, a, b):
+
+        _len = max(len(a), len(b))
+        if len(a) < _len:
+            a = (_len - len(a)) * '0' + a
+        if len(b) < _len:
+            b = (_len - len(b)) * '0' + b
+
+        plus = 0
+        result = ""
+
+        # INVERSE LOOPING THE a, b
+        for i in range(len(a))[::-1]:
+            tmp = int(a[i]) + int(b[i]) + plus
+            if tmp > 1:
+                tmp -= 2
+                plus = 1
+            else:
+                plus = 0
+
+            result += str(tmp)
+
+        if plus == 1:
+            return '1' + result[::-1]  ### NOTE WE NEED TO REVERSE IT!
+        else: 
+            return result[::-1] ### NOTE WE NEED TO REVERSE IT!
 
 # V0
 class Solution(object):
