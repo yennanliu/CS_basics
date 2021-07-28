@@ -1042,8 +1042,8 @@
 1126| [Active Businesses](https://leetcode.com/problems/active-businesses/) | [MySQL](./leetcode_SQL/active-businesses.sql) | _O(n)_ | _O(n)_  | Medium |🔒, `good basic`|  AGAIN**
 1127| [User Purchase Platform](https://leetcode.com/problems//user-purchase-platform/) | [MySQL](./leetcode_SQL/user-purchase-platform.sql)  | _O(n)_ | _O(n)_  | Hard  |🔒, `complex`|  AGAIN*
 1132| [Reported Posts II](https://leetcode.com/problems/reported-posts-ii/) | [MySQL](./leetcode_SQL/reported-posts-ii.sql)  | _O(m + n)_ | _O(n)_ | Medium   |🔒| OK**
-1141| [User Activity for the Past 30 Days I](https://leetcode.com/problems/user-activity-for-the-past-30-days-i/) | [MySQL](./leetcode_SQL/user-activity-for-the-past-30-days-i.sql) | _O(n)_ | _O(n)_       | Easy         |🔒|  | AGAIN* (1)
-1142| [User Activity for the Past 30 Days II](https://leetcode.com/problems/user-activity-for-the-past-30-days-ii/) | [MySQL](./leetcode_SQL/user-activity-for-the-past-30-days-ii.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|  ||
+1141| [User Activity for the Past 30 Days I](https://leetcode.com/problems/user-activity-for-the-past-30-days-i/) | [MySQL](./leetcode_SQL/user-activity-for-the-past-30-days-i.sql) | _O(n)_ | _O(n)_       | Easy      |🔒| AGAIN* (1)
+1142| [User Activity for the Past 30 Days II](https://leetcode.com/problems/user-activity-for-the-past-30-days-ii/) | [MySQL](./leetcode_SQL/user-activity-for-the-past-30-days-ii.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| n/a
 1148| [Article Views I](https://leetcode.com/problems/article-views-i/) | [MySQL](./leetcode_SQL/article-views-i.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|  ||
 1149| [Article Views II](https://leetcode.com/problems/article-views-ii/) | [MySQL](./leetcode_SQL/article-views-ii.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|  ||
 1158| [Market Analysis I](https://leetcode.com/problems/market-analysis-i/) | [MySQL](./leetcode_SQL/market-analysis-i.sql) | _O(m + n)_ | _O(m + n)_       | Medium           |🔒|  ||
