@@ -1,8 +1,7 @@
 /*
 
-https://circlecoder.com/user-activity-for-the-past-30-days-II/
-
-Table: Activity
+https://leetcode.jp/problemdetail.php?id=1141
+https://circlecoder.com/user-activity-for-the-past-30-days-I/
 
 +---------------+---------+
 | Column Name   | Type    |
@@ -12,14 +11,13 @@ Table: Activity
 | activity_date | date    |
 | activity_type | enum    |
 +---------------+---------+
-
 There is no primary key for this table, it may have duplicate rows.
 The activity_type column is an ENUM of type ('open_session', 'end_session', 'scroll_down', 'send_message').
-The table shows the user activities for a social media website.
+The table shows the user activities for a social media website. 
 Note that each session belongs to exactly one user.
 
 
-Write an SQL query to find the average number of sessions per user for a period of 30 days ending 2019-07-27 inclusively, rounded to 2 decimal places. The sessions we want to count for a user are those with at least one activity in that time period.
+Write an SQL query to find the daily active user count for a period of 30 days ending 2019-07-27 inclusively. A user was active on some day if he/she made at least one activity on that day.
 
 The query result format is in the following example:
 
@@ -36,36 +34,40 @@ Activity table:
 | 3       | 2          | 2019-07-21    | open_session  |
 | 3       | 2          | 2019-07-21    | send_message  |
 | 3       | 2          | 2019-07-21    | end_session   |
-| 3       | 5          | 2019-07-21    | open_session  |
-| 3       | 5          | 2019-07-21    | scroll_down   |
-| 3       | 5          | 2019-07-21    | end_session   |
 | 4       | 3          | 2019-06-25    | open_session  |
 | 4       | 3          | 2019-06-25    | end_session   |
 +---------+------------+---------------+---------------+
 
 Result table:
-+---------------------------+ 
-| average_sessions_per_user |
-+---------------------------+ 
-| 1.33                      |
-+---------------------------+ 
-User 1 and 2 each had 1 session in the past 30 days while user 3 had 2 sessions so the average is (1 + 1 + 2) / 3 = 1.33.
-
++------------+--------------+ 
+| day        | active_users |
++------------+--------------+ 
+| 2019-07-20 | 2            |
+| 2019-07-21 | 2            |
++------------+--------------+ 
+Note that we do not care about days with zero active users.
 
 */
 
-
 # V0
-# NOTE : datediff, ifnull, round func
-select round(ifnull(count(distinct session_id)/count(distinct user_id), 0),2) as average_sessions_per_user
-from Activity 
-where datediff('2019-07-27', activity_date) < 30
+SELECT
+activity_date AS day,
+COUNT(DISTINCT user_id) AS active_users
+FROM
+activity
+GROUP BY activity_date
+HAVING
+daydiff("2019-07-27",activity_date) < 30;
+ORDER BY day
+
 
 # V1
-# https://circlecoder.com/user-activity-for-the-past-30-days-II/
-select round(ifnull(count(distinct session_id)/count(distinct user_id), 0),2) as average_sessions_per_user
-from Activity 
-where datediff('2019-07-27', activity_date) <= 29
+# https://circlecoder.com/user-activity-for-the-past-30-days-I/
+select activity_date as day, count(distinct user_id) as active_users 
+from Activity
+where activity_date between date_add('2019-07-27', interval -29 day) and '2019-07-27'
+group by  activity_date
+
 
 # V2
 # Time:  O(n)
@@ -75,4 +77,4 @@ SELECT activity_date           AS day,
 FROM   activity 
 GROUP  BY activity_date 
 HAVING Datediff("2019-07-27", activity_date) < 30 
-ORDER  BY NULL
+ORDER  BY NULL 
