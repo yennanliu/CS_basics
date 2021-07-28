@@ -1,21 +1,22 @@
-# Time:  O(n)
-# Space: O(1)
-# Given an array nums, write a function to move all 0's
-# to the end of it while maintaining the relative order
-# of the non-zero elements.
-#
-# For example, given nums = [0, 1, 0, 3, 12], after
-# calling your function, nums should be [1, 3, 12, 0, 0].
-#
-# Note:
-# You must do this in-place without making a copy of the array.
-# Minimize the total number of operations.
+"""
+Time:  O(n)
+Space: O(1)
+Given an array nums, write a function to move all 0's
+to the end of it while maintaining the relative order
+of the non-zero elements.
 
-# V0 
-class Solution(object):
-    def moveZeroes(self, nums):
-        return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ] 
-# V0'
+For example, given nums = [0, 1, 0, 3, 12], after
+calling your function, nums should be [1, 3, 12, 0, 0].
+
+Note:
+You must do this in-place without making a copy of the array.
+Minimize the total number of operations.
+
+"""
+
+# V0
+# IDEA : 2 POINTERS
+# NOTE : BOTH POINTERS START FROM index = 0
 # DEMO 
 # In [59]:  array  = [9,0,0,1,5, 11, 7, 0 ]
 # In [60]: sol = Solution().moveZeroes(array)
@@ -37,6 +38,11 @@ class Solution(object):
                 nums[x], nums[y] = nums[y], nums[x]
                 y += 1
         return nums 
+
+# V0'
+class Solution(object):
+    def moveZeroes(self, nums):
+        return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ] 
 
 # V1' 
 class Solution(object):
