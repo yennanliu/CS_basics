@@ -95,6 +95,26 @@ The answer for the user with id 4 is no because the brand of their second sold i
 */
 
 # V0
+WITH cte1 AS
+  (SELECT seller_id,
+          item_id,
+          rank() over(PARTITION BY seller_id
+                      ORDER BY order_date) AS second_item
+   FROM Orders),
+     cte2 AS
+  (SELECT c1.seller_id,
+          i.item_brand
+   FROM Items i
+   JOIN cte1 c1 ON i.item_id=c1.item_id
+   WHERE c1.second_item=2 )
+SELECT u.user_id AS seller_id,
+       CASE
+           WHEN u.favorite_brand = c2.item_brand THEN 'yes'
+           ELSE 'no'
+       END AS '2nd_item_fav_brand'
+FROM Users u
+LEFT JOIN cte2 c2 ON u.user_id=c2.seller_id
+ORDER BY c2.seller_id
 
 # V1
 # https://blog.csdn.net/chelseajcole/article/details/104726746
