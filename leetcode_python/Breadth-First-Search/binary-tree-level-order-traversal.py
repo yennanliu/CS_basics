@@ -46,7 +46,29 @@ return its level order traversal as:
 
 """
 
-# V0 
+# V0
+# IDEA : BFS 
+# Definition for a binary tree node.
+class Solution(object):
+    def levelOrder(self, root):
+        res = []
+        if not root:return res
+        queue = collections.deque()
+        queue.append(root)
+        while queue:
+            level = []
+            for i in range(len(queue)):  # NOTE THAT HERE WE HAVE TO GO THROUGH EVERY ELEMENT IN THE SAME LAYER OF BST 
+                node = queue.popleft()
+                level.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            ### NOTE : we use ref collect result from every layer
+            res.append(level)
+        return res
+
+# V0'
 # IDEA : DFS 
 # DEMO
 # In [29]: x=[]
@@ -144,6 +166,7 @@ class Solution(object):
                     queue.append(node.left)
                 if node.right:
                     queue.append(node.right)
+            ### NOTE : we use ref collect result from every layer
             res.append(level)
         return res
 
