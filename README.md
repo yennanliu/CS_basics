@@ -1049,7 +1049,7 @@
 1158| [Market Analysis I](https://leetcode.com/problems/market-analysis-i/) | [MySQL](./leetcode_SQL/market-analysis-i.sql) | _O(m + n)_ | _O(m + n)_ | Medium   |🔒| AGAIN*
 1159| [Market Analysis II](https://leetcode.com/problems/market-analysis-ii/) | [MySQL](./leetcode_SQL/market-analysis-ii.sql) | _O(m + n)_ | _O(m + n)_   | Hard  |🔒| AGAIN* (1)
 1164| [Product Price at a Given Date](https://leetcode.com/problems/product-price-at-a-given-date/) | [MySQL](./leetcode_SQL/product-price-at-a-given-date.sql) | _O(mlogn)_ | _O(m)_  | Medium   |🔒| AGAIN** (1)
-1173| [Immediate Food Delivery I](https://leetcode.com/problems/immediate-food-delivery-i/) | [MySQL](./leetcode_SQL/immediate-food-delivery-i.sql) | _O(n)_ | _O(1)_       | Easy           |🔒|
+1173| [Immediate Food Delivery I](https://leetcode.com/problems/immediate-food-delivery-i/) | [MySQL](./leetcode_SQL/immediate-food-delivery-i.sql) | _O(n)_ | _O(1)_ | Easy  |🔒| OK
 1174| [Immediate Food Delivery II](https://leetcode.com/problems/immediate-food-delivery-ii/) | [MySQL](./leetcode_SQL/immediate-food-delivery-ii.sql) | _O(n)_ | _O(m)_       | Medium           |🔒| 
 1179| [Reformat Department Table](https://leetcode.com/problems/reformat-department-table/) | [MySQL](./leetcode_SQL/reformat-department-table.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
 1193| [Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i/) | [MySQL](./leetcode_SQL/monthly-transactions-i.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
