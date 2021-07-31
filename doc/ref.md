@@ -21,14 +21,14 @@
 ### 1-3) Leetcode pattern
 - DFS : https://www.1point3acres.com/bbs/thread-535101-1-1.html
 
-#### 1-4) Ref 
+### 1-4) Ref 
 - https://github.com/xuelangZF/LeetCode/blob/master/List.md
 - https://algorithm.yuanbin.me/zh-tw/
 - https://github.com/shichao-an/leetcode-python
 - https://www.geeksforgeeks.org/java/
 - https://github.com/cpacm/LeetCode
 
-#### 1-5) Concept
+### 1-5) Concept
 - What is stability in sorting algorithms and why is it important
 	- https://stackoverflow.com/questions/1517793/what-is-stability-in-sorting-algorithms-and-why-is-it-important
 - https://selfboot.cn/2016/07/24/leetcode_guide_why/
