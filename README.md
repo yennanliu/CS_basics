@@ -1054,7 +1054,7 @@
 1179| [Reformat Department Table](https://leetcode.com/problems/reformat-department-table/) | [MySQL](./leetcode_SQL/reformat-department-table.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| OK
 1193| [Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i/) | [MySQL](./leetcode_SQL/monthly-transactions-i.sql) | _O(n)_ | _O(n)_       | Medium           |🔒| OK
 1194| [Tournament Winners](https://leetcode.com/problems/tournament-winners/) | [MySQL](./leetcode_SQL/tournament-winners.sql) | _O(m + n + nlogn)_ | _O(m + n)_| Hard|🔒| AGAIN*
-1204| [Last Person to Fit in the Elevator](https://leetcode.com/problems/last-person-to-fit-in-the-elevator/) | [MySQL](./leetcode_SQL/last-person-to-fit-in-the-elevator.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
+1204| [Last Person to Fit in the Elevator](https://leetcode.com/problems/last-person-to-fit-in-the-elevator/) | [MySQL](./leetcode_SQL/last-person-to-fit-in-the-elevator.sql) | _O(nlogn)_ | _O(n)_ Medium|🔒| OK*
 1205| [Monthly Transactions II](https://leetcode.com/problems/monthly-transactions-ii/) | [MySQL](./leetcode_SQL/monthly-transactions-ii.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
 1211| [Queries Quality and Percentage](https://leetcode.com/problems/queries-quality-and-percentage/) | [MySQL](./leetcode_SQL/queries-quality-and-percentage.sql) | _O(n)_ | _O(n)_       | Easy           |
 1212| [Team Scores in Football Tournament](https://leetcode.com/problems/team-scores-in-football-tournament/) | [MySQL](./leetcode_SQL/team-scores-in-football-tournament.sql) | _O(nlogn)_ | _O(n)_       | Medium           |
