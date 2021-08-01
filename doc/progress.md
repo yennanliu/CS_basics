@@ -9,6 +9,7 @@
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Facebook%20-%20LeetCode.pdf (inverse order)
 		- programming
 			- (pdf : p.19)
+			- 572
 		- SQL
 			- window func (sum over ..)
 				- https://stackoverflow.com/questions/10039431/how-can-i-use-sum-over
