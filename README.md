@@ -1052,7 +1052,7 @@
 1173| [Immediate Food Delivery I](https://leetcode.com/problems/immediate-food-delivery-i/) | [MySQL](./leetcode_SQL/immediate-food-delivery-i.sql) | _O(n)_ | _O(1)_ | Easy  |🔒| OK
 1174| [Immediate Food Delivery II](https://leetcode.com/problems/immediate-food-delivery-ii/) | [MySQL](./leetcode_SQL/immediate-food-delivery-ii.sql) | _O(n)_ | _O(m)_  | Medium  |🔒| OK*
 1179| [Reformat Department Table](https://leetcode.com/problems/reformat-department-table/) | [MySQL](./leetcode_SQL/reformat-department-table.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| OK
-1193| [Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i/) | [MySQL](./leetcode_SQL/monthly-transactions-i.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
+1193| [Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i/) | [MySQL](./leetcode_SQL/monthly-transactions-i.sql) | _O(n)_ | _O(n)_       | Medium           |🔒| OK
 1194| [Tournament Winners](https://leetcode.com/problems/tournament-winners/) | [MySQL](./leetcode_SQL/tournament-winners.sql) | _O(m + n + nlogn)_ | _O(m + n)_       | Hard           |🔒|
 1204| [Last Person to Fit in the Elevator](https://leetcode.com/problems/last-person-to-fit-in-the-elevator/) | [MySQL](./leetcode_SQL/last-person-to-fit-in-the-elevator.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
 1205| [Monthly Transactions II](https://leetcode.com/problems/monthly-transactions-ii/) | [MySQL](./leetcode_SQL/monthly-transactions-ii.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
