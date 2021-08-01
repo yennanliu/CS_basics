@@ -11,9 +11,12 @@
 			- (pdf : p.19)
 		- SQL
 			- window func (sum over ..)
+				- https://stackoverflow.com/questions/10039431/how-can-i-use-sum-over
+				- pattern : `SUM(Quantity) OVER (PARTITION BY AccountID ORDER BY ID)`
 			- 1179
 			- 1193
 			- 1194
+			- 1204
 		- AGAIN:
 			- union find
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
