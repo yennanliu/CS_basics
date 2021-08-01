@@ -50,6 +50,30 @@ SELECT question_id AS survey_log FROM
 ORDER BY answer_count / show_count DESC
 LIMIT 1
 
+# V0'
+# IDEA : CTE + CASE
+WITH _show AS (question_id,
+               SUM(CASE
+                       WHEN action = "show" THEN 1
+                       ELSE 0
+                   END) AS SHOW,
+               survey_log
+               GROUP BY question_id),
+     _answer AS (question_id,
+                 SUM(CASE
+                         WHEN action = "answer" THEN 1
+                         ELSE 0
+                     END) AS answer,
+                 survey_log
+                 GROUP BY question_id),
+     _count AS (COUNT(question_id) AS _count,
+                survey_log)
+SELECT _answer.answer / _show.show
+FROM _show
+INNER JOIN _answer ON _show.question_id = _answer.question_id
+ORDER BY 1 DESC
+LIMIT 1;
+
 -- V1 
 -- http://bookshadow.com/weblog/2017/05/09/leetcode-get-highest-answer-rate-question/
 -- Write your MySQL query statement below
@@ -71,6 +95,5 @@ SELECT question_id AS survey_log FROM
     USING (question_id)
 ORDER BY answer_count / show_count DESC
 LIMIT 1
-
 
 # V2
