@@ -550,7 +550,7 @@
 060| [Permutation Sequence](https://leetcode.com/problems/permutation-sequence/) | [Python](./leetcode_python/Math/permutation-sequence.py) | _O(n^2)_ | _O(n)_  | Medium         |`Cantor Ordering`,trick ,`amazon`| AGAIN*** (2)
 089| [Gray Code](https://leetcode.com/problems/gray-code/)     | [Python](./leetcode_python/Math/gray-code.py) | _O(2^n)_ | _O(1)_  | Medium |bit op, math, `amazon`| AGAIN (2) (not start)
 166| [Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/) | [Python](./leetcode_python/Math/fraction-to-recurring-decimal.py)| _O(logn)_ | _O(1)_ | Medium    || AGAIN (not start)
-168| [Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/) |[Python](./leetcode_python/Math/excel-sheet-column-title.py) | _O(logn)_ | _O(1)_ | Easy |AGAIN,`fb`| AGAIN**** (3)
+168| [Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/) |[Python](./leetcode_python/Math/excel-sheet-column-title.py) | _O(logn)_ | _O(1)_ | Easy |math, AGAIN,`fb`| AGAIN**** (4)
 171| [Excel Sheet Column Number](https://leetcode.com/problems/excel-sheet-column-number/) | [Python](./leetcode_python/Math/excel-sheet-column-number.py) | _O(n)_ | _O(1)_ | Easy  || AGAIN (not start)
 172| [Factorial Trailing Zeroes](https://leetcode.com/problems/factorial-trailing-zeroes/) | [Python](./leetcode_python/Math/factorial-trailing-zeroes.py)  | _O(1)_ | _O(1)_ | Easy |`basic`, `iteration`, `recursion`| AGAIN* (2)
 223| [Rectangle Area](https://leetcode.com/problems/rectangle-area/) |  [Python](./leetcode_python/Math/rectangle-area.py)  | _O(1)_ | _O(1)_ | Easy   || AGAIN 
@@ -1116,7 +1116,7 @@
 1661| [Average Time of Process per Machine](https://leetcode.com/problems/average-time-of-process-per-machine/) | [MySQL](./leetcode_SQL/average-time-of-process-per-machine.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
 1667| [Fix Names in a Table](https://leetcode.com/problems/fix-names-in-a-table/) | [MySQL](./leetcode_SQL/fix-names-in-a-table.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|
 1677| [Product's Worth Over Invoices](https://leetcode.com/problems/products-worth-over-invoices/) | [MySQL](./leetcode_SQL/products-worth-over-invoices.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|
-1683| [Invalid Tweets](https://leetcode.com/problems/invalid-tweets/) | [MySQL](./leetcode_SQL/invalid-tweets.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
+1683| [Invalid Tweets](https://leetcode.com/problems/invalid-tweets/) | [MySQL](./leetcode_SQL/invalid-tweets.sql) | _O(n)_ | _O(n)_| Easy|🔒|
 1693| [Daily Leads and Partners](https://leetcode.com/problems/daily-leads-and-partners/) | [MySQL](./leetcode_SQL/daily-leads-and-partners.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
 1699| [Number of Calls Between Two Persons](https://leetcode.com/problems/number-of-calls-between-two-persons/) | [MySQL](./leetcode_SQL/number-of-calls-between-two-persons.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
 1709| [Biggest Window Between Visits](https://leetcode.com/problems/biggest-window-between-visits/) | [MySQL](./leetcode_SQL/biggest-window-between-visits.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
