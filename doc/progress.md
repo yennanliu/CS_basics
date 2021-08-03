@@ -3,6 +3,76 @@
 - `TODO`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 - `TODO2`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 
+# 2021-08-03
+- DOING:
+	- LC (f_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Facebook%20-%20LeetCode.pdf (inverse order)
+		- programming
+			- (pdf : p.18)
+			- 525
+		- SQL
+		- AGAIN:
+			- union find
+	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
+		- Tree
+		- String
+
+# 2021-08-02
+- DOING:
+	- LC (f_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Facebook%20-%20LeetCode.pdf (inverse order)
+		- programming
+			- (pdf : p.18)
+			- 637
+		- SQL
+		- AGAIN:
+			- union find
+	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
+		- Tree
+		- String
+
+# 2021-08-01
+- DOING:
+	- LC (f_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Facebook%20-%20LeetCode.pdf (inverse order)
+		- programming
+			- (pdf : p.19)
+			- 572
+		- SQL
+			- window func (sum over ..)
+				- https://stackoverflow.com/questions/10039431/how-can-i-use-sum-over
+				- pattern : `SUM(Quantity) OVER (PARTITION BY AccountID ORDER BY ID)`
+			- 1179
+			- 1193
+			- 1194
+			- 1204
+			- 1205
+			- 1211
+			- 578
+		- AGAIN:
+			- union find
+	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
+		- Tree
+		- String
+
+# 2021-07-31
+- DOING:
+	- LC (f_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Facebook%20-%20LeetCode.pdf (inverse order)
+		- programming
+			- (pdf : p.19)
+			- 261
+			- 274
+			- 275
+			- 745
+		- SQL
+			- window func (sum over ..)
+		- AGAIN:
+			- union find
+	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
+		- Tree
+		- String
+
 # 2021-07-30
 - DOING:
 	- LC (f_)
