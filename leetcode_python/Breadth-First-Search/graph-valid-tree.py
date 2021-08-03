@@ -14,7 +14,28 @@ Output: false
 
 """
 
-# V0 
+# V0
+# IDEA : DFS (NEED TO VALIDATE***)
+# class Solution(object):
+#     def validTree(self, n, edges):
+#         ### NOTE : can use dict as well, but need to deal with "no such key" case
+#         _edges = collections.defaultdict(list)
+#         for i in range(len(edges)):
+#             _edges[ edges[i][0] ].append( _edges[ edges[i][1]] )
+#             _edges[ edges[i][1] ].append( _edges[ edges[i][0]] )
+#         return self.dfs(n, edges, edges[0][0], [])
+#
+#     def dfs(self, n, _edges, key, visited):
+#         if not _edges:
+#             return
+#         if not _edges && len(visited) == n:
+#             return True
+#         if key in visited:
+#             return False
+#         for key in _edges[key]:
+#             self.dfs(_edges, key, visited.append(key))
+
+# V0'
 # IDEA : Quick Find
 class Solution(object):
     def validTree(self, n, edges):
@@ -59,6 +80,7 @@ class Solution:
         while q:
             curr = q.popleft()
             visited[curr] = True
+            ### NOTE : bfs, but looping neighbors[curr], but NOT elements in queue
             for node in neighbors[curr]:
                 if node not in visited:
                     visited[node] = True

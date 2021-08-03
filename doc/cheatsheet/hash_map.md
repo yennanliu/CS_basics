@@ -79,3 +79,25 @@ class Solution(object):
 ```
 
 ## 2) LC Example
+```python
+# 525 Contiguous Array
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/contiguous-array.py
+# HASH MAP FIND EQUAL 0, 1
+class Solution(object):
+    def findMaxLength(self, nums):
+        r = 0
+        cur = 0
+        ### NOTE : WE NEED INIT DICT LIKE BELOW
+        # https://blog.csdn.net/fuxuemingzhu/article/details/82667054
+        _dict = {0:-1}
+        for k, v in enumerate(nums):
+            if v == 1:
+                cur += 1
+            else:
+                cur -= 1
+            if cur in _dict:
+                r = max(r, k - _dict[cur])
+            else:
+                _dict[cur] = k
+        return r
+```

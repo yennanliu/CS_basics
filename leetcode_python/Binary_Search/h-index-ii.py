@@ -1,4 +1,38 @@
-# V0 
+"""
+
+Follow up for H-Index:  (274)
+
+What if the citations array is sorted 
+in ascending order? Could you optimize your algorithm?
+
+Hint:
+
+Expected runtime complexity is in O(log n) and the input is sorted.
+
+
+ref :
+https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/h-index.py
+
+"""
+
+# V0
+# IDEA : BINARY SEARCH
+class Solution:
+    def hIndex(self, c):
+        # NOTE : right = len(c) -1 
+        left, right = 0, len(c)-1
+        res = 0
+        while left <= right:
+            mid = left + (right-left)//2
+            rem = len(c) - mid # NOTE this
+            if c[mid] >= rem:
+                res = rem 
+                right = mid - 1 # NOTE this, we want mid become smaller
+            else:
+                left = mid + 1 # NOTE this, we want mid become bigger
+        return res
+
+# V0'
 # IDEA : SAME AS #274 H-Index
 class Solution(object):
     def hIndex(self, citations):
@@ -16,7 +50,24 @@ class Solution(object):
         # for the [] or [1] ... cases
         return len(citations)
 
-# V1 
+# V1
+# https://leetcode.com/problems/h-index-ii/discuss/709447/Python-O(logN)-Binary-Search
+# IDEA : BINARY SEARCH
+class Solution:
+    def hIndex(self, c: List[int]) -> int:
+        left, right = 0, len(c)-1
+        res = 0
+        while left <= right:
+            mid = left + (right-left)//2
+            rem = len(c) - mid
+            if c[mid] >= rem:
+                res = rem
+                right = mid - 1
+            else:
+                left = mid + 1
+        return res
+
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82949743
 # IDEA : when a scientist has index  = h, then there are at least h citations of all his 
 # papers. 
