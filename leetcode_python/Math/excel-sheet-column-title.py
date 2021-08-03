@@ -1,4 +1,80 @@
+"""
+
+Given an integer columnNumber, return its corresponding column title as it appears in an Excel sheet.
+
+For example:
+
+A -> 1
+B -> 2
+C -> 3
+...
+Z -> 26
+AA -> 27
+AB -> 28 
+...
+ 
+
+Example 1:
+
+Input: columnNumber = 1
+Output: "A"
+Example 2:
+
+Input: columnNumber = 28
+Output: "AB"
+Example 3:
+
+Input: columnNumber = 701
+Output: "ZY"
+Example 4:
+
+Input: columnNumber = 2147483647
+Output: "FXSHRXW"
+ 
+
+Constraints:
+
+1 <= columnNumber <= 231 - 1
+
+"""
+
 # V0
+class Solution(object):
+    def titleToNumber(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        sum = 0
+        for c in s:
+            print ("sum = " + str(sum))
+            sum = sum*26 + ord(c) - 64 # 64 = ord('A') - 1
+        return sum
+
+# V0''
+# https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation
+class Solution:
+    def convertToTitle(self, n):
+        """
+        :type n: int
+        :rtype: str
+        """
+        d='0ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        res=''
+        if n<=26:
+            return d[n]
+        else:
+            while n > 0:
+                n,r=divmod(n,26)
+                # This is the catcha on this problem where when r==0 as a result of n%26. eg, n=52//26=2, r=52%26=0. 
+                #To get 'AZ' as known for 52, n-=1 and r+=26. Same goes to 702.
+                if r == 0:
+                    n-=1
+                    r+=26
+                res = d[r] + res
+        return res
+
+# V0'''
 class Solution(object):
     def convertToTitle(self, n):
         tar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -25,7 +101,30 @@ class Solution(object):
             n = (n-1) // 26
         return result[::-1]
 
-# V1
+# V1'
+# https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation
+class Solution:
+    def convertToTitle(self, n):
+        """
+        :type n: int
+        :rtype: str
+        """
+        d='0ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        res=''
+        if n<=26:
+            return d[n]
+        else:
+            while n > 0:
+                n,r=divmod(n,26)
+                # This is the catcha on this problem where when r==0 as a result of n%26. eg, n=52//26=2, r=52%26=0. 
+                #To get 'AZ' as known for 52, n-=1 and r+=26. Same goes to 702.
+                if r == 0:
+                    n-=1
+                    r+=26
+                res = d[r] + res
+        return res
+
+# V1''
 # https://www.cnblogs.com/loadofleaf/p/5093574.html
 # python 2
 class Solution(object):
@@ -41,7 +140,7 @@ class Solution(object):
             n = (n - 1) / 26
         return res
         
-# V1''
+# V1'''
 # https://blog.csdn.net/coder_orz/article/details/51406455
 class Solution(object):
     # transform   26 Carry ->  10 Carry (Decimal)  
