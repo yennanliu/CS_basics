@@ -11,6 +11,7 @@
 			- (pdf : p.18)
 		- SQL
 			- 1212
+			- 1225
 		- AGAIN:
 			- union find
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU

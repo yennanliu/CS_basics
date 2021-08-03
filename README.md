@@ -1058,7 +1058,7 @@
 1205| [Monthly Transactions II](https://leetcode.com/problems/monthly-transactions-ii/) | [MySQL](./leetcode_SQL/monthly-transactions-ii.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK* (1)
 1211| [Queries Quality and Percentage](https://leetcode.com/problems/queries-quality-and-percentage/) | [MySQL](./leetcode_SQL/queries-quality-and-percentage.sql) | _O(n)_ | _O(n)_| Easy|| OK
 1212| [Team Scores in Football Tournament](https://leetcode.com/problems/team-scores-in-football-tournament/) | [MySQL](./leetcode_SQL/team-scores-in-football-tournament.sql) | _O(nlogn)_ | _O(n)_| Medium| | OK* (1)
-1225| [Report Contiguous Dates](https://leetcode.com/problems/report-contiguous-dates/) | [MySQL](./leetcode_SQL/report-contiguous-dates.sql) | _O(nlogn)_ | _O(n)_       | Hard           |🔒|
+1225| [Report Contiguous Dates](https://leetcode.com/problems/report-contiguous-dates/) | [MySQL](./leetcode_SQL/report-contiguous-dates.sql) | _O(nlogn)_ | _O(n)_ | Hard  |🔒| AGAIN* (1)
 1241| [Number of Comments per Post](https://leetcode.com/problems/number-of-comments-per-post/) | [MySQL](./leetcode_SQL/number-of-comments-per-post.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
 1251| [Average Selling Price](https://leetcode.com/problems/average-selling-price/) | [MySQL](./leetcode_SQL/average-selling-price.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
 1264| [Page Recommendations](https://leetcode.com/problems/page-recommendations/) | [MySQL](./leetcode_SQL/page-recommendations.sql) | _O(m + n)_ | _O(m)_       | Medium           |🔒|
