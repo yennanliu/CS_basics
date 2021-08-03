@@ -1,22 +1,102 @@
+"""
+
+Given the root of a Binary Search Tree and a target number k, 
+return true if there exist two elements in the BST such that their 
+sum is equal to the given target.
+
+
+Example 1:
+
+
+Input: root = [5,3,6,2,4,null,7], k = 9
+Output: true
+
+Example 2:
+
+
+Input: root = [5,3,6,2,4,null,7], k = 28
+Output: false
+
+Example 3:
+
+Input: root = [2,1,3], k = 4
+Output: true
+
+Example 4:
+
+Input: root = [2,1,3], k = 1
+Output: false
+
+Example 5:
+
+Input: root = [2,1,3], k = 3
+Output: true
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [1, 104].
+-104 <= Node.val <= 104
+root is guaranteed to be a valid binary search tree.
+-105 <= k <= 105
+
+
+"""
+
 # V0
+# IDEA : DFS
+# In [1]: True or False
+# Out[1]: True
+class Solution(object):
+    def findTarget(self, root, k):
+        s = set()
+        return self.dfs(root, s, k)
+
+    def dfs(self, root, s, k):
+        if not root:
+            return False ### NOTE this
+        if k - root.val in s:
+            return True
+        s.add(root.val)
+        ### NOTE this
+        return self.dfs(root.left, s, k) or self.dfs(root.right, s, k)
+
+# V0'
 # IDEA : DFS
 class Solution(object):
     def findTarget(self, root, k):
-        """
-        :type root: TreeNode
-        :type k: int
-        :rtype: bool
-        """
         def dfs(root):
             if not root:
                 return False
             if k - root.val in res:
                 return True
             res.add(root.val)
+            ### NOTE this
             return dfs(root.left) or dfs(root.right)
         # use Set() here
         res = set()
         return dfs(root)
+
+# V0'
+# IDEA : BFS
+import collections
+class Solution(object):
+    def findTarget(self, root, k):
+        q = collections.deque()
+        q.append(root)
+        s = set()
+        while q:
+            for i in range(len(q)):
+                tmp = q.popleft()
+                if k - tmp.val in s:
+                    return True
+                # NOTE here ! (we do this after if condition)    
+                s.add(tmp.val)
+                if tmp.left:
+                    q.append(tmp.left)
+                if tmp.right:
+                    q.append(tmp.right)
+        return False
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79120732
