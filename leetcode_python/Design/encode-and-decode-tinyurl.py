@@ -43,10 +43,7 @@ class Codec:
         return self.urls[int(shortUrl.split('/')[-1])]
 
 # V0'
-# IDEA : DICT
-
-# V1' 
-# IDEA : DICT  
+# IDEA : DICT 
 class Codec:
     def __init__(self):
         self.count = 0
@@ -193,5 +190,3 @@ class Codec:
             return self.tiny_full[idx]
         else:
             return None 
-
-# V2
