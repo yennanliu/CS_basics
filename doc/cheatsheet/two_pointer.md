@@ -41,3 +41,24 @@ class Solution(object):
                 length += 1
         return length
 ```
+
+```python
+# LC 26 : Remove Duplicates from Sorted Array
+# IDEA : 2 POINTERS
+# HAVE A POINTER j STARTS FROM 0 AND THE OTHER POINTER i GO THROUGH nums
+#  -> IF A[i] != A[j]
+#     -> THEN SWITCH A[i] AND A[j+1]
+#     -> and j += 1
+# *** NOTE : it's swith A[j+1] (j+1) with A[i]
+class Solution:
+    def removeDuplicates(self, A):
+        if len(A) == 0:
+            return 0
+        j = 0
+        for i in range(0, len(A)):
+            if A[i] != A[j]:
+                A[i], A[j+1] = A[j+1], A[i]
+                j = j + 1
+        return j+1
+
+```
