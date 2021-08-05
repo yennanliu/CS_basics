@@ -44,6 +44,7 @@ class Solution(object):
 
 ```python
 # LC 26 : Remove Duplicates from Sorted Array
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-duplicates-from-sorted-array.py
 # IDEA : 2 POINTERS
 # HAVE A POINTER j STARTS FROM 0 AND THE OTHER POINTER i GO THROUGH nums
 #  -> IF A[i] != A[j]
@@ -60,5 +61,27 @@ class Solution:
                 A[i], A[j+1] = A[j+1], A[i]
                 j = j + 1
         return j+1
+
+```
+
+```python
+# LC 80 : Remove Duplicates from Sorted Array II
+# V0
+# IDEA : 2 POINTERS
+#### NOTE : THE nums already ordering
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        if len(nums) < 3:
+            return len(nums)
+
+        ### NOTE : slow starts from 1
+        slow = 1
+        ### NOTE : fast starts from 2
+        for fast in range(2, len(nums)):
+            ### NOTE : BELOW CONDITION
+            if nums[slow] != nums[fast] or nums[slow] != nums[slow-1]:
+                nums[slow+1] = nums[fast]
+                slow += 1
+        return slow+1
 
 ```
