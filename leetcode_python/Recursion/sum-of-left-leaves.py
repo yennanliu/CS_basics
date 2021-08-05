@@ -14,7 +14,49 @@ Example:
 There are two left leaves in the binary tree, with values 9 and 15 respectively. Return 24.
 
 """
-# V0 
+
+# V0
+# IDEA : DFS
+class Solution:
+    def sumOfLeftLeaves(self, root):
+        tmp = []
+        last = ""
+        self.dfs(root, tmp, last)
+        return sum(tmp)
+    
+    # NOTE : here we use "last" to storage which "subtree" current tree is    
+    def dfs(self, root, tmp, last):
+        if not root:
+            return r
+        # if left subtree and it has NO left, right subtree    
+        if last == "l" and (not root.left) and (not root.right):
+            tmp.append(root.val)
+        if root.left:
+            last = "l"
+            self.dfs(root.left, tmp, last)
+        if root.right:
+            last = "r"
+            self.dfs(root.right, tmp, last)
+
+# V0'
+# IDEA : BFS
+class Solution(object):
+    def sumOfLeftLeaves(self, root):
+        if not root:
+            return 0
+        stack = [root]
+        res = 0
+        while stack:
+            u = stack.pop()
+            if u.left:
+                stack.append(u.left)
+                if not u.left.left and not u.left.right:
+                    res += u.left.val
+            if u.right:
+                stack.append(u.right)
+        return res    
+        
+# V0''
 class Solution:
     def sumOfLeftLeaves(self, root):
         """
@@ -38,6 +80,44 @@ class Solution:
             self.inOrder(root.right)
 
 # V1
+# IDEA : DFS
+# https://leetcode.com/problems/sum-of-left-leaves/discuss/808949/Naive-Python-3-DFS
+class Solution:
+    summ = 0 
+    def sumOfLeftLeaves(self, root: TreeNode) -> int:
+        return self.sumOfLeftLeavesHelper(root, 0, "root") 
+    
+    def sumOfLeftLeavesHelper(self, root, summ, previous_position):
+        if(root == None):
+            return summ
+        if(root.right != None):
+            self.sumOfLeftLeavesHelper(root.right, summ, "right")
+        if(root.left != None):
+            self.sumOfLeftLeavesHelper(root.left, summ, "left")
+        if(previous_position == "left" and root.left == None and root.right == None):
+            self.summ += root.val 
+        return self.summ 
+
+# V1'
+# IDEA : BFS
+# https://leetcode.com/problems/sum-of-left-leaves/discuss/175329/Python-solution
+class Solution(object):
+    def sumOfLeftLeaves(self, root):
+        if not root:
+            return 0
+        stack = [root]
+        res = 0
+        while stack:
+            u = stack.pop()
+            if u.left:
+                stack.append(u.left)
+                if not u.left.left and not u.left.right:
+                    res += u.left.val
+            if u.right:
+                stack.append(u.right)
+        return res        
+
+# V1''
 # http://bookshadow.com/weblog/2016/09/25/leetcode-sum-of-left-leaves/ 
 class Solution(object):
     def sumOfLeftLeaves(self, root):

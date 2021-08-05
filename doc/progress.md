@@ -11,6 +11,9 @@
 			- (pdf : p.18)
 			- 26
 			- 80
+			- 268
+			- (pdf : p.17)
+			- 404
 		- SQL
 		- AGAIN:
 			- union find
