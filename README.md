@@ -1060,7 +1060,7 @@
 1212| [Team Scores in Football Tournament](https://leetcode.com/problems/team-scores-in-football-tournament/) | [MySQL](./leetcode_SQL/team-scores-in-football-tournament.sql) | _O(nlogn)_ | _O(n)_| Medium| | OK* (1)
 1225| [Report Contiguous Dates](https://leetcode.com/problems/report-contiguous-dates/) | [MySQL](./leetcode_SQL/report-contiguous-dates.sql) | _O(nlogn)_ | _O(n)_ | Hard  |🔒| AGAIN* (1)
 1241| [Number of Comments per Post](https://leetcode.com/problems/number-of-comments-per-post/) | [MySQL](./leetcode_SQL/number-of-comments-per-post.sql) | _O(n)_ | _O(n)_| Easy |🔒, good basic| OK** (2)
-1251| [Average Selling Price](https://leetcode.com/problems/average-selling-price/) | [MySQL](./leetcode_SQL/average-selling-price.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
+1251| [Average Selling Price](https://leetcode.com/problems/average-selling-price/) | [MySQL](./leetcode_SQL/average-selling-price.sql) | _O(n)_ | _O(n)_| Easy|🔒, good basic| OK* (but again) (1)
 1264| [Page Recommendations](https://leetcode.com/problems/page-recommendations/) | [MySQL](./leetcode_SQL/page-recommendations.sql) | _O(m + n)_ | _O(m)_       | Medium           |🔒|
 1270| [All People Report to the Given Manager](https://leetcode.com/problems/all-people-report-to-the-given-manager/) | [MySQL](./leetcode_SQL/all-people-report-to-the-given-manager.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
 1280| [Students and Examinations](https://leetcode.com/problems/students-and-examinations/) | [MySQL](./leetcode_SQL/students-and-examinations.sql) | _O((m * n) * log(m * n))_ | _O(m * n)_       | Easy           |🔒|
