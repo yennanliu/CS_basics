@@ -623,7 +623,7 @@
 179| [Largest Number](https://leetcode.com/problems/largest-number/) | [Python](./leetcode_python/Sort/largest-number.py) | _O(nlogn)_   | _O(1)_  | Medium|sort, sort with lambda,`amazon`| AGAIN** (2)
 252| [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | [Python](./leetcode_python/Sort/meeting-rooms.py) | _O(nlogn)_ | _O(n)_ | Easy |🔒,`UBER`,`amazon`, `fb`| OK 
 253| [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) | [Python](./leetcode_python/Sort/meeting-rooms-ii.py)| _O(nlogn)_   | _O(n)_   | Medium   |🔒,`scanning line`, `trick`,`booking.com`,`good`,`UBER`, `amazon`,`google`,`fb`| AGAIN******* (3)
-274| [H-Index](https://leetcode.com/problems/h-index/) |  [Python](./leetcode_python/Sort/h-index.py)  | _O(n)_ | _O(n)_ | Medium  |Counting Sort,`good trick`, `fb`|  AGAIN**** (2)  
+274| [H-Index](https://leetcode.com/problems/h-index/) |  [Python](./leetcode_python/Sort/h-index.py)  | _O(n)_ | _O(n)_ | Medium  |Counting Sort,`good trick`, `fb`|  AGAIN***** (3)  
 280| [Wiggle Sort](https://leetcode.com/problems/wiggle-sort/) | [Python](./leetcode_python/Sort/wiggle-sort.py)  | _O(n)_ | _O(1)_| Medium  |🔒,`google`,`fb`|  OK*** (3) 
 324| [Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/) | [Python](./leetcode_python/Sort/wiggle-sort-ii.py)  | _O(n)_  on average | _O(1)_   | Medium  | variant of [Sort Colors](https://leetcode.com/problems/sort-colors/) , Tri Partition, `google`| AGAIN**  (2)
 347| [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) | [Python](./leetcode_python/Sort/top-k-frequent-elements.py)  | _O(n)_ | _O(n)_| Medium  |  Quick Select, Heap, Bucket Sort,`Yelp`,`amazon`,`fb`|  OK*
