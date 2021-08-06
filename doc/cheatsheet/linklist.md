@@ -204,6 +204,28 @@ class LinkedList:
 ### 1-1) Basic OP
 
 ## 2) LC Example
+```python
+# LC 234 : palindrome-linked-list
+# V0
+# IDEA : LINKED LIST -> LIST
+# EXAMPLE INPUT :
+# [1,2,2,1]
+# WHILE GO THROUGH :
+# head = ListNode{val: 2, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}
+# head = ListNode{val: 2, next: ListNode{val: 1, next: None}}
+# head = ListNode{val: 1, next: None}
+class Solution(object):
+    def isPalindrome(self, head):
+        ### NOTE : THE CONDITION
+        if not head or not head.next:
+            return True
+        r = []
+        ### NOTE : THE CONDITION
+        while head:
+            r.append(head.val)
+            head = head.next
+        return r == r[::-1]
+```
 
 ### 2-1) Reverse linklist
 ```python
