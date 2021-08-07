@@ -16,6 +16,7 @@
 			- (pdf : p.16)
 			- 050
 			- 461
+			- 069
 		- SQL
 		- AGAIN:
 			- union find
