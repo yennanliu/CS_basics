@@ -60,6 +60,7 @@ class Solution:
             return 0
         j = 0
         for i in range(0, len(A)):
+            ###  NOTE : below condition
             if A[i] != A[j]:
                 A[i], A[j+1] = A[j+1], A[i]
                 j = j + 1

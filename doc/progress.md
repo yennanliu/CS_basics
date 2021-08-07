@@ -12,6 +12,7 @@
 			- (pdf : p.17)
 			- 210
 			- 207
+			- 26
 		- SQL
 		- AGAIN:
 			- union find
