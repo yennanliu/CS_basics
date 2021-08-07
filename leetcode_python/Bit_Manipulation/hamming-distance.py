@@ -1,6 +1,52 @@
-# V0 
+"""
+The Hamming distance between two integers is the number of positions at which the corresponding bits are different.
+
+Given two integers x and y, return the Hamming distance between them.
+
+ 
+
+Example 1:
+
+Input: x = 1, y = 4
+Output: 2
+Explanation:
+1   (0 0 0 1)
+4   (0 1 0 0)
+       ↑   ↑
+The above arrows point to positions where the corresponding bits are different.
+
+Example 2:
+
+Input: x = 3, y = 1
+Output: 1
+ 
+
+Constraints:
+
+0 <= x, y <= 231 - 1
+
+"""
+
+# V0
+# IDEA : STR -> BIN -> COMPARE
+class Solution:
+    def hammingDistance(self, x: int, y: int):
+        _x, _y = str(bin(x)[2:]), str(bin(y)[2:])
+        _len = max(len(_x), len(_y))
+        if _len > len(_y):
+            _y = "0" * (_len - len(_y)) + _y
+        else:
+            _x = "0" * (_len - len(_x)) + _x
+        r = 0
+        for i in range(len(_x)):
+            if _x[i] != _y[i]:
+                r += 1
+        return r
+
+# V0'
 # IDEA  : BITWISE OPERATOR 
 # https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md
+# XOR : if (a,b) = (1,0) or (0,1), then a ^ b = 1, otherwise = 0
 class Solution(object):
     def hammingDistance(self, x, y):
         return bin(x ^ y).count('1')
