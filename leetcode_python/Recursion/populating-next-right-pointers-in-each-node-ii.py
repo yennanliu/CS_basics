@@ -32,8 +32,6 @@
 # https://blog.csdn.net/fuxuemingzhu/article/details/79560379
 # IDEA : BFS
 class Solution:
-    # @param root, a tree link node
-    # @return nothing
     def connect(self, root):
         if not root: return
         queue = collections.deque()
@@ -42,6 +40,7 @@ class Solution:
             _len = len(queue)
             for i in range(_len):
                 node = queue.popleft()
+                ### IF NOT LAST NODE, POINT NEXT TO FIRST NODE IN THE QUEUE
                 if i < _len - 1:
                     node.next = queue[0]
                 if node.left:
