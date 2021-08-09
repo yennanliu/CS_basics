@@ -37,6 +37,28 @@ After calling your function, the tree should look like:
 
 # V0
 # IDEA : BFS
+# REF : LC # 117 : populating-next-right-pointers-in-each-node-ii/
+class Solution:
+    def connect(self, root):
+        if not root: 
+            return None
+        queue = collections.deque()
+        queue.append(root)
+        while queue:
+            _len = len(queue)
+            for i in range(_len):
+                node = queue.popleft()
+                ### IF NOT LAST NODE, POINT NEXT TO FIRST NODE IN THE QUEUE
+                if i < _len - 1:
+                    node.next = queue[0]
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return root
+
+# V0
+# IDEA : BFS
 ### NOTE : in this problem, we need to populate the result as LINKED LIST form
 from collections import deque
 class Solution(object):
@@ -46,7 +68,7 @@ class Solution(object):
         root.next = None
         queue = deque([root])
         while queue:
-            temp,size=[],len(queue)
+            temp, size=[], len(queue)
             for i in range(size):
                 node = queue.popleft()
                 if node:
@@ -55,18 +77,20 @@ class Solution(object):
                     queue.append(node.left)
                 if node.right:
                     queue.append(node.right)
-                # >>> a
-                # [1, 2, 3]
-                # >>> a[:-1]
-                # [1, 2]
-                # -> enumerate(temp[:-1]) will looping from last n-1 elements
+            ### NOTE : this op is OUTSIDE OF FOR LOOP
+            ###    -> DO ONCE WHEN EVERY BFS LAYER
+            # >>> a
+            # [1, 2, 3]
+            # >>> a[:-1]
+            # [1, 2]
+            # -> enumerate(temp[:-1]) will looping from last n-1 elements
             for index, node in enumerate(temp[:-1]):
                 node.next = temp[index+1]
             # point last element to None (linked list)
-            temp[-1].next = None
+            temp[-1].next = None ###  NOTE : temp[-1].next, is pointing tmp's next to None
         return root
 
-# V0'
+# V0''
 # IDEA : BFS
 ### NOTE : in this problem, we need to populate the result as LINKED LIST form
 from collections import deque
