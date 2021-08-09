@@ -67,7 +67,7 @@ Fifth day is 2020-01-07, Bajrang scored 7 points and the total score for the
 WITH _f AS
   (SELECT gender,
           DAY,
-          SUM(score_points) OVER (gender
+          SUM(score_points) OVER (PARTITION BY gender
                                   ORDER BY DAY) AS total
    FROM Scores
    WHERE gender = 'F'
@@ -76,7 +76,7 @@ WITH _f AS
      _m AS
   (SELECT gender,
           DAY,
-          SUM(score_points) OVER (gender
+          SUM(score_points) OVER (PARTITION BY gender
                                   ORDER BY DAY) AS total
    FROM Scores
    WHERE gender = 'M'
