@@ -1063,7 +1063,7 @@
 1251| [Average Selling Price](https://leetcode.com/problems/average-selling-price/) | [MySQL](./leetcode_SQL/average-selling-price.sql) | _O(n)_ | _O(n)_| Easy|🔒, good basic| OK* (but again) (1)
 1264| [Page Recommendations](https://leetcode.com/problems/page-recommendations/) | [MySQL](./leetcode_SQL/page-recommendations.sql) | _O(m + n)_ | _O(m)_| Medium|🔒| OK* (1)
 1270| [All People Report to the Given Manager](https://leetcode.com/problems/all-people-report-to-the-given-manager/) | [MySQL](./leetcode_SQL/all-people-report-to-the-given-manager.sql) | _O(n)_ | _O(n)_| Medium|🔒, good basic| OK* (1)
-1280| [Students and Examinations](https://leetcode.com/problems/students-and-examinations/) | [MySQL](./leetcode_SQL/students-and-examinations.sql) | _O((m * n) * log(m * n))_ | _O(m * n)_       | Easy           |🔒|
+1280| [Students and Examinations](https://leetcode.com/problems/students-and-examinations/) | [MySQL](./leetcode_SQL/students-and-examinations.sql) | _O((m * n) * log(m * n))_ | _O(m * n)_| Easy|🔒| OK (1)
 1285| [Find the Start and End Number of Continuous Ranges](https://leetcode.com/problems/find-the-start-and-end-number-of-continuous-ranges/) | [MySQL](./leetcode_SQL/find-the-start-and-end-number-of-continuous-ranges.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
 1294| [Weather Type in Each Country](https://leetcode.com/problems/weather-type-in-each-country/) | [MySQL](./leetcode_SQL/weather-type-in-each-country.sql) | _O(m + n)_ | _O(n)_       | Easy           |🔒|
 1303| [Find the Team Size](https://leetcode.com/problems/find-the-team-size/) | [MySQL](./leetcode_SQL/find-the-team-size.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
