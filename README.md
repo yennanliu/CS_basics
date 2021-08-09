@@ -1068,7 +1068,7 @@
 1294| [Weather Type in Each Country](https://leetcode.com/problems/weather-type-in-each-country/) | [MySQL](./leetcode_SQL/weather-type-in-each-country.sql) | _O(m + n)_ | _O(n)_| Easy|🔒| OK (1)
 1303| [Find the Team Size](https://leetcode.com/problems/find-the-team-size/) | [MySQL](./leetcode_SQL/find-the-team-size.sql) | _O(n)_ | _O(n)_       | Easy|🔒| ok (1)
 1308| [Running Total for Different Genders](https://leetcode.com/problems/running-total-for-different-genders/) | [MySQL](./leetcode_SQL/running-total-for-different-genders.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, window func| OK* (1)
-1321| [Restaurant Growth](https://leetcode.com/problems/restaurant-growth/) | [MySQL](./leetcode_SQL/restaurant-growth.sql) | _O(n^2)_ | _O(n)_       | Medium           |🔒|
+1321| [Restaurant Growth](https://leetcode.com/problems/restaurant-growth/) | [MySQL](./leetcode_SQL/restaurant-growth.sql) | _O(n^2)_ | _O(n)_| Medium|🔒, good basic| AGAIN** (1)
 1322| [Ads Performance](https://leetcode.com/problems/ads-performance/) | [MySQL](./leetcode_SQL/ads-performance.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|  ||
 1327| [List the Products Ordered in a Period](https://leetcode.com/problems/list-the-products-ordered-in-a-period/) | [MySQL](./leetcode_SQL/list-the-products-ordered-in-a-period.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
 1336| [Number of Transactions per Visit](https://leetcode.com/problems/number-of-transactions-per-visit/) | [MySQL](./leetcode_SQL/number-of-transactions-per-visit.sql) | _O(m + n)_ | _O(m + n)_       | Medium           |🔒|
