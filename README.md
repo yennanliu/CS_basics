@@ -679,7 +679,7 @@
 110| [Balanced Binary Tree](https://leetcode.com/problems/balanced-binary-tree/) | [Python](./leetcode_python/Recursion/balanced-binary-tree.py) | _O(n)_| _O(h)_ | Easy |`good trick`,`dfs`, `bloomberg`,`amazon` ,`fb`|   AGAIN******** (3)
 111| [Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)|[Python](./leetcode_python/Recursion/minimum-depth-of-binary-tree.py)| _O(n)_ | _O(h)_ | Easy |`good basic`,`dfs`,`BST`,`amazon`,`fb`|  AGAIN***** (3)
 114| [Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/)| [Python](./leetcode_python/Recursion/flatten-binary-tree-to-linked-list.py)| _O(n)_        | _O(h)_          | Medium |`BST`, `dfs`, `M$`, `fb`|  AGAIN**** (4)
-116| [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)| [Python](./leetcode_python/Recursion/populating-next-right-pointers-in-each-node.py) | _O(n)_ | _O(1)_ | Medium |bfs, dfs, tree, AGAIN,`fb`| AGAIN**** (3)
+116| [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)| [Python](./leetcode_python/Recursion/populating-next-right-pointers-in-each-node.py) | _O(n)_ | _O(1)_ | Medium |bfs, dfs, tree, recursion ,AGAIN,`fb`| AGAIN****** (4)
 129| [Sum Root to Leaf Numbers](https://leetcode.com/problems/sum-root-to-leaf-numbers/) |[Python](./leetcode_python/Recursion/sum-root-to-leaf-numbers.py) | _O(n)_ | _O(h)_ | Medium |`trick`,`BST`, `dfs`, `fb`| AGAIN*** (4)
 156| [Binary Tree Upside Down](https://leetcode.com/problems/binary-tree-upside-down/) | [Python](./leetcode_python/Recursion/binary-tree-upside-down.py) | _O(n)_ | _O(1)_ | Medium  |🔒|  AGAIN (not start) 
 241| [Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/) | [Python](./leetcode_python/Recursion/different-ways-to-add-parentheses.py)  | _O(n * 4^n / n^(3/2))_ | _O(n * 4^n / n^(3/2))_ | Medium   ||  AGAIN (not start)
@@ -693,7 +693,7 @@
 549 | [Binary Tree Longest Consecutive Sequence II](https://leetcode.com/problems/binary-tree-longest-consecutive-sequence-ii/) | [Python](./leetcode_python/Recursion/binary-tree-longest-consecutive-sequence-ii.py)  | _O(n)_ | _O(h)_ | Medium    |🔒| AGAIN (not start)
 669| [Trim a Binary Search Tree](https://leetcode.com/problems/trim-a-binary-search-tree/) | [Python](./leetcode_python/Recursion/trim-a-binary-search-tree.py) | _O(n)_ | _O(h)_ | Easy|good basic, BST, dfs, recursion,`amazon`| AGAIN** (3)
 671| [Second Minimum Node In a Binary Tree](https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/) |[Python](./leetcode_python/Recursion/second-minimum-node-in-a-binary-tree.py) | _O(n)_          | _O(h)_ | Easy|dfs,tree| OK* (2)
-117| [Populating Next Right Pointers in Each Node II](https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/) |[Python](./leetcode_python/Recursion/populating-next-right-pointers-in-each-node-ii.py) | _O(n)_ | _O(h)_ | Medium |bfs,linked list, `amazon`| AGAIN**** (2) 
+117| [Populating Next Right Pointers in Each Node II](https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/) |[Python](./leetcode_python/Recursion/populating-next-right-pointers-in-each-node-ii.py) | _O(n)_ | _O(h)_ | Medium | `Populating Next Right Pointers in Each Node I`, bfs,linked list, `amazon`, `fb`| AGAIN**** (2) 
 
 
 ## Binary Search 
