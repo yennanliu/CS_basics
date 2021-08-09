@@ -71,6 +71,57 @@ class Solution:
         self.connect(root.left)
         self.connect(root.right)
 
+# V1
+# IDEA : BFS
+# https://leetcode.com/problems/populating-next-right-pointers-in-each-node/discuss/291622/Python-recursive-solution
+from collections import deque
+class Solution(object):
+    def connect(self, root):
+        """
+        :type root: Node
+        :rtype: Node
+        """
+        if not root:
+            return None
+        root.next = None
+        queue = deque([root])
+        while queue:
+            temp,size=[],len(queue)
+            for i in range(size):
+                node = queue.popleft()
+                if node:
+                    temp.append(node)
+                if node.left and node.right:
+                    queue.append(node.left)
+                    queue.append(node.right)
+            for index,node in enumerate(temp[:-1]):
+                node.next = temp[index+1]
+            temp[-1].next = None
+        return root
+
+# V1''
+# IDEA : LINKED LIST
+# https://leetcode.com/problems/populating-next-right-pointers-in-each-node/discuss/291622/Python-recursive-solution
+class Solution(object):
+    def connect(self, root):
+        """
+        :type root: Node
+        :rtype: Node
+        """
+        if not root:
+            return None
+        cur = root
+        nex = cur.left
+        while cur.left:
+            cur.left.next = cur.right
+            if cur.next:
+                cur.right.next = cur.next.left
+                cur = cur.next
+            else:
+                cur = nex
+                nex = cur.left
+        return root
+
 # V1'
 # https://www.cnblogs.com/loadofleaf/p/5523911.html
 class Solution(object):

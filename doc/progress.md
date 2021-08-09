@@ -9,6 +9,8 @@
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Facebook%20-%20LeetCode.pdf (inverse order)
 		- programming
 			- (pdf : p.16)
+			- 116
+			- 117
 		- SQL
 			- 1280
 			- 1285
