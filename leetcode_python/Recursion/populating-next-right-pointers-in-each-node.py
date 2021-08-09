@@ -34,7 +34,68 @@ After calling your function, the tree should look like:
     4->5->6->7 -> NULL
 
 """
+
 # V0
+# IDEA : BFS
+### NOTE : in this problem, we need to populate the result as LINKED LIST form
+from collections import deque
+class Solution(object):
+    def connect(self, root):
+        if not root:
+            return None
+        root.next = None
+        queue = deque([root])
+        while queue:
+            temp,size=[],len(queue)
+            for i in range(size):
+                node = queue.popleft()
+                if node:
+                    temp.append(node)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+                # >>> a
+                # [1, 2, 3]
+                # >>> a[:-1]
+                # [1, 2]
+                # -> enumerate(temp[:-1]) will looping from last n-1 elements
+            for index, node in enumerate(temp[:-1]):
+                node.next = temp[index+1]
+            # point last element to None (linked list)
+            temp[-1].next = None
+        return root
+
+# V0'
+# IDEA : BFS
+### NOTE : in this problem, we need to populate the result as LINKED LIST form
+from collections import deque
+class Solution(object):
+    def connect(self, root):
+        """
+        :type root: Node
+        :rtype: Node
+        """
+        if not root:
+            return None
+        root.next = None
+        queue = deque([root])
+        while queue:
+            temp,size=[],len(queue)
+            for i in range(size):
+                node = queue.popleft()
+                if node:
+                    temp.append(node)
+                if node.left and node.right:
+                    queue.append(node.left)
+                    queue.append(node.right)
+            for index,node in enumerate(temp[:-1]):
+                node.next = temp[index+1]
+            temp[-1].next = None
+        return root
+
+# V0'
+### NOTE : in this problem, we need to populate the result as LINKED LIST form
 # IDEA : DFS 
 # DEMO
 #      1 -> NULL
@@ -71,7 +132,7 @@ class Solution:
         self.connect(root.left)
         self.connect(root.right)
 
-# V1
+# V1'
 # IDEA : BFS
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/discuss/291622/Python-recursive-solution
 from collections import deque
@@ -122,7 +183,7 @@ class Solution(object):
                 nex = cur.left
         return root
 
-# V1'
+# V1'''
 # https://www.cnblogs.com/loadofleaf/p/5523911.html
 class Solution(object):
     def connect(self, root):
