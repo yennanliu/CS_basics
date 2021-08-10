@@ -1,23 +1,93 @@
+"""
+
+Given an integer array nums that may contain duplicates, return all possible subsets (the power set).
+
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,2]
+Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
+Example 2:
+
+Input: nums = [0]
+Output: [[],[0]]
+ 
+
+Constraints:
+
+1 <= nums.length <= 10
+-10 <= nums[i] <= 10
+
+"""
+
+# V0
+# IDEA : BRUTE FORCE
+class Solution:
+    def subsetsWithDup(self, nums):
+        # small trick (init with a null array)
+        ans=[[]]
+        for i in nums:
+            for l in list(ans):
+                # sorted here, since we want to the "non-duplicated" power set
+                temp=sorted(l+[i])
+                # avoid duplicated
+                if temp not in ans:
+                    ans.append(temp) 
+        return ans
+
 # V0 
 # IDEA : DFS
+### NOTE :
+# in py, we can pass the var into the "sub func" directly, but no need to put it in the func variable
+# demo : 
+# def test():
+#     def func(x):
+#         print ("x = " + str(x) + " y = " + str(y))
+#         for i in range(3):
+#             z.append(i)
+#
+#     x = 0
+#     y = 100
+#     z = []
+#     func(x)
+# test()
+# print (z)
 class Solution(object):
     def subsetsWithDup(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[List[int]]
-        """
+        ### NOTE the param
         def dfs(depth, start, valueList):
+            # if valueList not in res, then add
             if valueList not in res:
                 res.append(valueList)
+            ### NOTE : this condition
             if depth == len(nums):
                 return
             for i in range(start, len(nums)):
+                ### NOTE how it update param
                 dfs(depth + 1, i + 1, valueList+[nums[i]])
         
+        # need sort first, so make sure what we get is power set
         nums.sort()
         res = []
         dfs(0, 0, [])
         return res
+
+# V1
+# IDEA : BRUTE FORCE
+# https://leetcode.com/problems/subsets-ii/discuss/221114/Python-iterative-solution
+class Solution:
+    def subsetsWithDup(self, nums):
+        ans=[[]]
+        for i in nums:
+            for l in list(ans):
+                # sorted here, since we want to the "non-duplicated" power set
+                temp=sorted(l+[i])
+                if temp not in ans:
+                    ans.append(temp) 
+        return ans
 
 # V1
 # IDEA : DFS 
@@ -91,6 +161,25 @@ class Solution(object):
         res.append(path)
         for i in range(index, len(nums)):
             self.dfs(nums, i + 1, res, path + [nums[i]]) # [] + [1] = [1], [] + [1] + [2] = [1,2]
+
+# V1''
+# IDEA : BACKTRACKING
+# https://leetcode.com/problems/subsets-ii/discuss/690114/Python-Backtracking-Solution
+class Solution:
+    def subsetsWithDup(self, nums):
+        nums.sort()
+        self.res = []
+        self.backtrack(nums, [], 0)
+        return self.res
+    
+    def backtrack(self, nums, current, start):
+        self.res.append(current)
+        if start > len(nums):
+            return
+        for i in range(start, len(nums)):
+            if i > start and nums[i-1] == nums[i]:
+                continue
+            self.backtrack(nums, current + [nums[i]], i + 1)
 
 # V1''
 # https://www.jianshu.com/p/b6c831622498
