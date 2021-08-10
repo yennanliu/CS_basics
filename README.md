@@ -1077,7 +1077,7 @@
 1341| [Movie Rating](https://leetcode.com/problems/movie-rating/) | [MySQL](./leetcode_SQL/movie-rating.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒| AGAIN (not start)
 1350| [Students With Invalid Departments](https://leetcode.com/problems/students-with-invalid-departments/) | [MySQL](./leetcode_SQL/students-with-invalid-departments.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1355| [Activity Participants](https://leetcode.com/problems/activity-participants/) | [MySQL](./leetcode_SQL/activity-participants.sql) | _O(n)_ | _O(n)_       | Medium|🔒| OK
-1364| [Number of Trusted Contacts of a Customer](https://leetcode.com/problems/number-of-trusted-contacts-of-a-customer/) | [MySQL](./leetcode_SQL/number-of-trusted-contacts-of-a-customer.sql) | _O(n + m + l + nlogn)_ | _O(n + m + l)_       | Medium           |🔒|
+1364| [Number of Trusted Contacts of a Customer](https://leetcode.com/problems/number-of-trusted-contacts-of-a-customer/) | [MySQL](./leetcode_SQL/number-of-trusted-contacts-of-a-customer.sql) | _O(n + m + l + nlogn)_ | _O(n + m + l)_| Medium|🔒| OK
 1369| [Get the Second Most Recent Activity](https://leetcode.com/problems/get-the-second-most-recent-activity/) | [MySQL](./leetcode_SQL/get-the-second-most-recent-activity.sql) | _O(nlogn)_ | _O(n)_       | Hard           |🔒|
 1378| [Replace Employee ID With The Unique Identifier](https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/) | [MySQL](./leetcode_SQL/replace-employee-id-with-the-unique-identifier.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
 1384| [Total Sales Amount by Year](https://leetcode.com/problems/total-sales-amount-by-year/) | [MySQL](./leetcode_SQL/total-sales-amount-by-year.sql) | _O(nlogn)_ | _O(n)_       | Hard           |🔒|
