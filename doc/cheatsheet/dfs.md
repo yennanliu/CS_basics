@@ -3,7 +3,7 @@
 - Inorder, postorder, postorder (can recreate a tree)
 - Deep first, then breadth
 
-## 0) Concept  
+## 0) Concept
 
 ### 0-1) Framework
 
@@ -19,6 +19,25 @@ def dfs(root, target):
 
     if root.val > target:
        dfs(root.right, target)
+```
+
+### 0-3) Tricks
+```python
+# we don't need to declare y,z in func, but we can use them there directly
+# and can get the returned value as well, this trick is being used a lot in the dfs
+def test():
+    def func(x):
+        print ("x = " + str(x) + " y = " + str(y))
+        for i in range(3):
+            z.append(i)
+
+    x = 0
+    y = 100
+    z = []
+    func(x)
+test()
+print (z)
+
 ```
 
 ## 1) General form
