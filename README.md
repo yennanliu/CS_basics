@@ -45,9 +45,11 @@
 * [LC interview-experience](https://leetcode.com/discuss/interview-experience?currentPage=1&orderBy=hot&query=)
 * [Cheatsheet](https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet)
 * LC Pattern
+	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
+	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
+	- [LC Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
 	- [leetcode-patterns](https://github.com/SeanPrashad/leetcode-patterns)
 	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
-	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU)
 	- [grokking-the-coding-interview](https://www.educative.io/courses/grokking-the-coding-interview)
 * LC problems
 	- [leetcode_company_V1](https://github.com/yennanliu/CS_basics/tree/master/doc/leetcode_company_V1)
