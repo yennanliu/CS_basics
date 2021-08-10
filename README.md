@@ -1073,7 +1073,7 @@
 1321| [Restaurant Growth](https://leetcode.com/problems/restaurant-growth/) | [MySQL](./leetcode_SQL/restaurant-growth.sql) | _O(n^2)_ | _O(n)_| Medium|🔒, good basic| AGAIN** (1)
 1322| [Ads Performance](https://leetcode.com/problems/ads-performance/) | [MySQL](./leetcode_SQL/ads-performance.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒, good basic| AGAIN* (1)
 1327| [List the Products Ordered in a Period](https://leetcode.com/problems/list-the-products-ordered-in-a-period/) | [MySQL](./leetcode_SQL/list-the-products-ordered-in-a-period.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
-1336| [Number of Transactions per Visit](https://leetcode.com/problems/number-of-transactions-per-visit/) | [MySQL](./leetcode_SQL/number-of-transactions-per-visit.sql) | _O(m + n)_ | _O(m + n)_       | Medium           |🔒|
+1336| [Number of Transactions per Visit](https://leetcode.com/problems/number-of-transactions-per-visit/) | [MySQL](./leetcode_SQL/number-of-transactions-per-visit.sql) | _O(m + n)_ | _O(m + n)_| Medium|🔒, complex, variable| AGAIN (not start)
 1341| [Movie Rating](https://leetcode.com/problems/movie-rating/) | [MySQL](./leetcode_SQL/movie-rating.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
 1350| [Students With Invalid Departments](https://leetcode.com/problems/students-with-invalid-departments/) | [MySQL](./leetcode_SQL/students-with-invalid-departments.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
 1355| [Activity Participants](https://leetcode.com/problems/activity-participants/) | [MySQL](./leetcode_SQL/activity-participants.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
