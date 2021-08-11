@@ -1013,7 +1013,7 @@
 0182| [Duplicate Emails](https://leetcode.com/problems/duplicate-emails/) | [MySQL](./leetcode_SQL/duplicate-emails.sql) | _O(n^2)_ | _O(n)_  | Easy  || OK 
 0183| [Customers Who Never Order](https://leetcode.com/problems/customers-who-never-order/) | [MySQL](./leetcode_SQL/customers-who-never-order.sql) | _O(n^2)_ | _O(1)_    | Easy       || OK 
 0184| [Department Highest Salary](https://leetcode.com/problems/department-highest-salary/) | [MySQL](./leetcode_SQL/department-highest-salary.sql) | _O(n^2)_   | _O(n)_ | Medium   |`trick`, where, good basic| AGAIN*** (3) 
-0185| [Department Top Three Salaries](https://leetcode.com/problems/department-top-three-salaries/) | [MySQL](./leetcode_SQL/department-top-three-salaries.sql) | _O(n^2)_  | _O(n)_ | Hard | similiar as `# 0177 Nth Highest Salary`, good trick| AGAIN** (2) 
+0185| [Department Top Three Salaries](https://leetcode.com/problems/department-top-three-salaries/) | [MySQL](./leetcode_SQL/department-top-three-salaries.sql) | _O(n^2)_  | _O(n)_ | Hard | similiar as `# 0177 Nth Highest Salary`, good trick| AGAIN**** (3) 
 0196| [Delete Duplicate Emails](https://leetcode.com/problems/delete-duplicate-emails/) | [MySQL](./leetcode_SQL/delete-duplicate-emails.sql)  | _O(n^2)_ | _O(n)_ | Easy, delete command|| AGAIN (2) 
 0197| [Rising Temperature](https://leetcode.com/problems/rising-temperature/) | [MySQL](./leetcode_SQL/rising-temperature.sql)  | _O(n^2)_ | _O(n)_    | Easy     || OK 
 0262| [Trips and Users](https://leetcode.com/problems/trips-and-users/) | [MySQL](./leetcode_SQL/trips-and-users.sql) | _O((t * u) + tlogt)_ | _O(t)_       | Hard    || OK* 
