@@ -13,6 +13,8 @@
 			- 380
 			- 674
 			- 127
+			- (pdf : p.13)
+			- 71
 		- SQL
 		- AGAIN:
 			- union find

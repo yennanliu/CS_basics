@@ -1,15 +1,47 @@
-# Given an absolute path for a file (Unix-style), simplify it.
-# For example,
-# path = "/home/", => "/home"
-# path = "/a/./b/../../c/", => "/c"
-# 1
-# 2
-# Corner Cases:
-# Did you consider the case where path = “/../”? 
-# In this case, you should return “/”.
-# Another corner case is the path might contain multiple slashes ‘/’ together, such as “/home//foo/”. 
-# In this case, you should ignore redundant slashes and return “/home/foo”.
+"""
 
+Given a string path, which is an absolute path (starting with a slash '/') to a file or directory in a Unix-style file system, convert it to the simplified canonical path.
+
+In a Unix-style file system, a period '.' refers to the current directory, a double period '..' refers to the directory up a level, and any multiple consecutive slashes (i.e. '//') are treated as a single slash '/'. For this problem, any other format of periods such as '...' are treated as file/directory names.
+
+The canonical path should have the following format:
+
+The path starts with a single slash '/'.
+Any two directories are separated by a single slash '/'.
+The path does not end with a trailing '/'.
+The path only contains the directories on the path from the root directory to the target file or directory (i.e., no period '.' or double period '..')
+Return the simplified canonical path.
+
+ 
+
+Example 1:
+
+Input: path = "/home/"
+Output: "/home"
+Explanation: Note that there is no trailing slash after the last directory name.
+Example 2:
+
+Input: path = "/../"
+Output: "/"
+Explanation: Going one level up from the root directory is a no-op, as the root level is the highest level you can go.
+Example 3:
+
+Input: path = "/home//foo/"
+Output: "/home/foo"
+Explanation: In the canonical path, multiple consecutive slashes are replaced by a single one.
+Example 4:
+
+Input: path = "/a/./b/../../c/"
+Output: "/c"
+ 
+
+Constraints:
+
+1 <= path.length <= 3000
+path consists of English letters, digits, period '.', slash '/' or '_'.
+path is a valid absolute Unix path.
+
+"""
 
 # e.g. :
 # path  = "/../a/b/c/./.. "
@@ -33,7 +65,7 @@
 
 # STEP 7. ".." : back to the upper directory, stay at "/a/b" finally 
 
-# V0 
+# V0
 class Solution(object):
     def simplifyPath(self, path):
         stack = []
@@ -47,6 +79,26 @@ class Solution(object):
             else:                
                 stack.append(dir)
         return '/' + '/'.join(stack)
+
+# V0'
+class Solution(object):
+    def simplifyPath(self, path):
+        s_final = []
+        # note this trick
+        _path = path.split("/")
+        for p in _path:
+            if p == "." or p == "":
+                ## NOTE : use continue here
+                # the continue will SKIP REST OF THE CODE IN THE LOOP
+                # https://www.programiz.com/python-programming/break-continue
+                continue
+            elif p == "..":
+                if s_final:
+                    # attay has this method
+                    s_final.pop()
+            else:
+                s_final.append(p)
+        return "/" + "/".join(s_final)
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80812350

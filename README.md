@@ -339,7 +339,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note | Status | 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](./leetcode_python/Stack/valid-parentheses.py) | _O(n)_ | _O(n)_ | Easy |`good basic`,`fb`, `amazon`| OK** (3) 
-071| [Simplify Path](https://leetcode.com/problems/simplify-path/)|  [Python](./leetcode_python/Stack/simplify-path.py) | _O(n)_ | _O(n)_ | Medium |`basic`, `stack`, `amazon`,`fb`| OK* (3)
+071| [Simplify Path](https://leetcode.com/problems/simplify-path/)|  [Python](./leetcode_python/Stack/simplify-path.py) | _O(n)_ | _O(n)_ | Medium |`basic`, `stack`, `amazon`,`fb`| OK* (4)
 101| [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)| [Python](./leetcode_python/Stack/symmetric-tree.py) | _O(n)_ | _O(h)_ | Easy |`good basic`,`bfs`, `dfs`, `linkedin`, `M$`,`amazon`, `fb`| AGAIN** (3) 
 150| [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)|  [Python](./leetcode_python/Stack/evaluate-reverse-polish-notation.py) | _O(n)_| _O(n)_| Medium |stack, good trick,`amazon`| OK**** (3)
 155| [Min Stack](https://leetcode.com/problems/min-stack/)     | [Python](./leetcode_python/Stack/min-stack.py)  | _O(n)_ | _O(1)_  | Easy |basic, `amazon`| AGAIN* (2)
