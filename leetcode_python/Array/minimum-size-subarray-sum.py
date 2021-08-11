@@ -1,31 +1,83 @@
-# V0 
+"""
+
+Given an array of positive integers nums and a positive integer target, return the minimal length of a contiguous subarray [numsl, numsl+1, ..., numsr-1, numsr] of which the sum is greater than or equal to target. If there is no such subarray, return 0 instead.
+
+
+Example 1:
+
+Input: target = 7, nums = [2,3,1,2,4,3]
+Output: 2
+Explanation: The subarray [4,3] has the minimal length under the problem constraint.
+Example 2:
+
+Input: target = 4, nums = [1,4,4]
+Output: 1
+Example 3:
+
+Input: target = 11, nums = [1,1,1,1,1,1,1,1]
+Output: 0
+ 
+
+Constraints:
+
+1 <= target <= 109
+1 <= nums.length <= 105
+1 <= nums[i] <= 105
+ 
+
+Follow up: If you have figured out the O(n) solution, try coding another solution of which the time complexity is O(n log(n)).
+
+"""
+
+# V0
+# IDEA : SLIDING WINDOW : start, end
 class Solution:
-    """
-    @param nums: an array of integers
-    @param s: An integer
-    @return: an integer representing the minimum size of subarray
-    """
-    def minimumSize(self, nums, s):
-        if nums is None or len(nums) == 0:
-            return -1
+    def minSubArrayLen(self, s, nums):
+        size = len(nums)
+        start, end, _sum = 0, 0, 0
+        _ans = size + 1
+        while True:
+            if _sum < s:
+                if end >= size:
+                    break
+                _sum += nums[end]
+                end += 1
+            else:
+                # NOTE here
+                if start > end:
+                    break
+                _ans = min(end - start, _ans)
+                _sum -= nums[start]
+                start += 1
+        ### NOTE : if ans <= size, then return ans
+        #          else return 0
+        if _ans <= size:
+            return _ans
+        return 0
 
-        n = len(nums)
-        minLength = n + 1
-        sum = 0
-        j = 0
-        for i in range(n):
-            while j < n and sum < s:
-                sum += nums[j]
-                j += 1
-            if sum >= s:
-                minLength = min(minLength, j - i)
-
-            sum -= nums[i]
-            
-        if minLength == n + 1:
-            return -1
-            
-        return minLength
+# V0' : NEED TO FIX
+# class Solution:
+#     def minSubArrayLen(self, nums, s):
+#         if nums is None or len(nums) == 0:
+#             return -1
+#
+#         n = len(nums)
+#         minLength = n + 1
+#         sum = 0
+#         j = 0
+#         for i in range(n):
+#             while j < n and sum < s:
+#                 sum += nums[j]
+#                 j += 1
+#             if sum >= s:
+#                 minLength = min(minLength, j - i)
+#
+#             sum -= nums[i]
+#            
+#         if minLength == n + 1:
+#             return -1
+#           
+#         return minLength
 
 # V1 
 # http://bookshadow.com/weblog/2015/05/12/leetcode-minimum-size-subarray-sum/
@@ -50,7 +102,11 @@ class Solution:
                 bestAns = min(end - start, bestAns)
                 sum -= nums[start]
                 start += 1
-        return [0, bestAns][bestAns <= size]
+        ### NOTE : [0, bestAns][bestAns <= size] is equal to below code
+        #return [0, bestAns][bestAns <= size]
+        if bestAns <= size:
+            return bestAns
+        return 0
 
 # V1' 
 # http://bookshadow.com/weblog/2015/05/12/leetcode-minimum-size-subarray-sum/
