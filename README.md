@@ -568,7 +568,7 @@
 382 | [Linked List Random Node](https://leetcode.com/problems/linked-list-random-node/) | [Python](./leetcode_python/Math/linked-list-random-node.py) | _O(n)_ | _O(1)_ | Medium |`Reservoir Sampling` | AGAIN (not start)
 386 | [Lexicographical Numbers](https://leetcode.com/problems/lexicographical-numbers/) | [Python](./leetcode_python/Math/lexicographical-numbers.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 390 | [Elimination Game](https://leetcode.com/problems/elimination-game/) |  [Python](./leetcode_python/Math/elimination-game.py) | _O(logn)_ | _O(1)_ | Medium || AGAIN (not start)
-398 | [Random Pick Index](https://leetcode.com/problems/random-pick-index/) |  [Python](./leetcode_python/Math/random-pick-index.py) | _O(n)_ | _O(1)_ | Medium | `Reservoir Sampling` , `fb`| OK* (3)
+398 | [Random Pick Index](https://leetcode.com/problems/random-pick-index/) |  [Python](./leetcode_python/Math/random-pick-index.py) | _O(n)_ | _O(1)_ | Medium | `Reservoir Sampling` , `fb`| OK* (4)
 400 | [Nth Digit](https://leetcode.com/problems/nth-digit/) |  [Python](./leetcode_python/Math/nth-digit.py) | _O(logn)_ | _O(1)_ | Easy || AGAIN 
 413 | [Arithmetic Slices](https://leetcode.com/problems/arithmetic-slices/) | [Python](./leetcode_python/Math/arithmetic-slices.py)| _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 423 | [Reconstruct Original Digits from English](https://leetcode.com/problems/reconstruct-original-digits-from-english/) | [Python](./leetcode_python/Math/reconstruct-original-digits-from-english.py) | _O(n)_ | _O(1)_ | Medium | [GCJ2016 - Round 1B](https://code.google.com/codejam/contest/11254486/dashboard#s=p0)| AGAIN (not start)
