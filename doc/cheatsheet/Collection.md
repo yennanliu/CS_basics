@@ -55,3 +55,28 @@ print (count.keys())
 print (count.values())
 print(count.items())
 ```  
+
+### 1-3) collection.update()
+```python
+# LC # 554 rick Wall
+import collections
+In [87]: _counter = collections.Counter()
+
+In [88]: _counter
+Out[88]: Counter()
+
+In [89]: _counter.update([1])
+
+In [90]: _counter
+Out[90]: Counter({1: 1})
+
+In [91]: _counter.update([1])
+
+In [92]: _counter
+Out[92]: Counter({1: 2})
+
+In [93]: _counter.update([2])
+
+In [94]: _counter
+Out[94]: Counter({1: 2, 2: 1})
+```
