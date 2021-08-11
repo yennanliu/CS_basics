@@ -38,7 +38,16 @@
 -- For the player with id 3, 0 + 5 = 5 games played by 2018-07-03.
 -- Note that for each player we only care about the days when the player logged in.
 
-# V0 
+# V0
+# IDEA : WINDOW FUNC
+select 
+player_id, 
+event_date,
+sum(games_played) over(partition by player_id order by event_date) as games_played_so_far
+from Activity
+order by 1,2
+
+# V0'
 SELECT a1.player_id,
        a2.event_date,
        sum(a1.games_played) AS games_played_so_far
@@ -58,6 +67,15 @@ INNER JOIN Activity AS t2 ON t1.player_id = t2.player_id
 WHERE t1.event_date >= t2.event_date
 GROUP BY t1.player_id,
          t1.event_date
+
+# V1'
+# https://masteranalytics.org/2019/09/02/leetcode-sql-511-512-534-550/
+select 
+player_id, 
+event_date,
+sum(games_played) over(partition by player_id order by event_date) as games_played_so_far
+from Activity
+order by 1,2
 
 # V2 
 # Time:  O(nlogn)
