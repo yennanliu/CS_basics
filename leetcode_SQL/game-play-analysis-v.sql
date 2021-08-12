@@ -43,9 +43,57 @@
 -- Player 1 and 3 installed the game on 2016-03-01 but only player 1 logged back in on 2016-03-02 so the day 1 retention of 2016-03-01 is 1 / 2 = 0.50
 -- Player 2 installed the game on 2017-06-25 but didn't log back in on 2017-06-26 so the day 1 retention of 2017-06-25 is 0 / 1 = 0.00
 
-# V0 
+# V0
+select t1.install_date as install_dt, count(t1.install_date) as installs,
+    round(count(t2.event_date) / count(*), 2) as Day1_retention
+from (
+    select player_id, min(event_date) as install_date
+    from Activity
+    group by 1
+) t1
+left join Activity t2 
+on date_add(t1.install_date, interval 1 day) = t2.event_date
+    and t1.player_id = t2.player_id
+group by 1
 
-# V1 
+# V1
+# https://circlecoder.com/game-play-analysis-V/
+select t1.install_date as install_dt, count(t1.install_date) as installs,
+    round(count(t2.event_date) / count(*), 2) as Day1_retention
+from (
+    select player_id, min(event_date) as install_date
+    from Activity
+    group by 1
+) t1
+left join Activity t2 
+on date_add(t1.install_date, interval 1 day) = t2.event_date
+    and t1.player_id = t2.player_id
+group by 1
+order by 1
+
+# V1'
+# https://blog.csdn.net/weixin_43329319/article/details/97616108
+select install_dt,installs,round(ifnull(jude,0)/installs,2) as Day1_retention
+from (
+    
+select event_date as install_dt,count(player_id) as installs  
+from
+(select  player_id,event_date
+from Activity
+group by player_id
+order by player_id,event_date)a 
+group by event_date)c
+
+left join
+
+ (select a1.event_date,count(a1.player_id) as jude
+from Activity a1,Activity a2
+where a1.player_id=a2.player_id and datediff(a2.event_date,a1.event_date)=1
+group by a1.event_date)b
+
+on c.install_dt=b.event_date
+group by install_dt
+order by install_dt
 
 # V2
 # Time:  O(n^2)
