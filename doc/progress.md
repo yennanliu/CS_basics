@@ -8,10 +8,15 @@
 	- LC (f_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Facebook%20-%20LeetCode.pdf (inverse order)
 		- programming
-			- (pdf : p.13)
-			- (new)
+			- (pdf : p.1)
+			- (normal order)
+			- 253
+			- 252
+			- (pdf : p.2)
+			- 325
 			- =======
-			- (review)
+			- (inverse order)
+			- (pdf : p.13)
 		- SQL
 			- (new)
 			- =======
