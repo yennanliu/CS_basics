@@ -45,6 +45,71 @@
 # V0
 
 # V1
+# https://zhuanlan.zhihu.com/p/260379510
+### NOTE tmp CTE will get the count and its platform (mobile, destop, both)
+WITH
+tmp AS (
+SELECT spend_date, user_id, SUM(amount) AS total_amount,
+CASE WHEN COUNT(DISTINCT platform) = 2 THEN 'both'
+ELSE platform END as platform
+FROM Spending
+GROUP BY spend_date, user_id
+),
+
+tmp1 AS (
+SELECT  DISTINCT spend_date,'mobile' as platform
+FROM Spending
+UNION ALL
+SELECT  DISTINCT spend_date,'both'
+FROM Spending 
+UNION ALL
+SELECT  DISTINCT spend_date,'desktop'
+FROM Spending
+)
+
+SELECT a.spend_date, a.platform, 
+COALESCE(SUM(b.total_amount),0) AS total_amount, 
+COALESCE(COUNT(DISTINCT b.user_id),0) AS total_users 
+FROM tmp1 AS a
+LEFT JOIN tmp AS b
+ON a.spend_date = b.spend_date
+AND a.platform = b.platform
+GROUP BY spend_date, platform;
+
+# V1'
+# https://ladychili.top/leetcode/sql/1127.UserPurchasePlatform.html
+SELECT aa.spend_date, 
+       aa.platform, 
+       COALESCE(bb.total_amount, 0) total_amount, 
+       COALESCE(bb.total_users,0) total_users
+FROM 
+    (SELECT DISTINCT(spend_date), a.platform   -- table aa
+    FROM Spending JOIN
+        (SELECT 'desktop' AS platform UNION
+        SELECT 'mobile' AS platform UNION
+        SELECT 'both' AS platform
+        ) a 
+    ) aa
+    LEFT JOIN 
+    (SELECT spend_date,                      -- table bb
+            platform, 
+            SUM(amount) total_amount, 
+            COUNT(user_id) total_users
+    FROM
+        (SELECT spend_date, 
+                user_id, 
+                (CASE COUNT(DISTINCT platform)
+                    WHEN 1 THEN platform
+                    WHEN 2 THEN 'both'
+                    END) platform,
+                SUM(amount) amount
+        FROM Spending
+        GROUP BY spend_date, user_id
+        ) b
+    GROUP BY spend_date, platform
+    ) bb
+    ON aa.platform = bb.platform AND 
+    aa.spend_date = bb.spend_date
 
 # V2
 # Time:  O(n)
