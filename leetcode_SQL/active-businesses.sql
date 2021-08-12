@@ -42,8 +42,34 @@
 
 
 # V0
+### NOTE THE CONDITION IN t1, t2
+select t1.business_id
+from (
+    select business_id, event_type, avg(occurences) as avgo
+    from Events
+    group by business_id, event_type) as t1 inner join 
+    (select event_type, avg(occurences) as avgo
+    from Events
+    group by event_type) as t2
+on t1.event_type = t2.event_type
+where t1.avgo > t2.avgo
+group by business_id
+having count(1) > 1
 
 # V1
+# https://code.dennyzhang.com/active-businesses
+select t1.business_id
+from (
+    select business_id, event_type, avg(occurences) as avgo
+    from Events
+    group by business_id, event_type) as t1 inner join 
+    (select event_type, avg(occurences) as avgo
+    from Events
+    group by event_type) as t2
+on t1.event_type = t2.event_type
+where t1.avgo>t2.avgo
+group by business_id
+having count(1)>1
 
 # V2
 # Time:  O(n)
