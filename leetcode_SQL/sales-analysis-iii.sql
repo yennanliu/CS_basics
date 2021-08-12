@@ -56,14 +56,26 @@
 -- The product with id 1 was only sold in spring 2019 while the other two were sold after.
 
 # V0 
+SELECT product_id, 
+       product_name 
+FROM   product 
+WHERE  product_id NOT IN (SELECT product_id 
+                          FROM   sales 
+                          WHERE  sale_date NOT BETWEEN 
+                                 '2019-01-01' AND '2019-03-31'); 
 
-# V1 
-
+# V1
+# https://circlecoder.com/sales-analysis-III/
+select p.product_id, p.product_name
+from Product p
+left join Sales s
+on p.product_id = s.product_id
+group by p.product_id
+having sum(s.sale_date between '2019-01-01' and '2019-03-31') = count(s.sale_date)
 
 # V2 
 # Time:  O(m + n)
 # Space: O(m + n)
-
 SELECT product_id, 
        product_name 
 FROM   product 

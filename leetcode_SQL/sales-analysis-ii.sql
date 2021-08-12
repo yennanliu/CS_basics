@@ -53,9 +53,20 @@
 -- +-------------+
 -- The buyer with id 1 bought an S8 but didn't buy an iPhone. The buyer with id 3 bought both.
 
-# V0 
+# V0
+# NOTE : how we deal with `NOT IN` here
+select distinct buyer_id
+from Sales inner join Product
+where Sales.product_id = Product.product_id
+    and product_name = 'S8'
+    and buyer_id not in
+    (select distinct buyer_id
+    from Sales inner join Product
+    where Sales.product_id = Product.product_id
+        and product_name = 'iPhone')
 
-# V1 
+# V1
+# https://code.dennyzhang.com/sales-analysis-ii
 select distinct buyer_id
 from Sales inner join Product
 where Sales.product_id = Product.product_id

@@ -55,6 +55,15 @@
 -- Both sellers with id 1 and 3 sold products with the most total price of 2800.
 
 # V0 
+select seller_id
+from Sales
+group by seller_id
+having sum(price) = (
+    select sum(price)
+    from Sales
+    group by seller_id
+    order by sum(price) desc
+    limit 1)
 
 # V1 
 # https://code.dennyzhang.com/sales-analysis-i
