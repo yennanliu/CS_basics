@@ -2,7 +2,7 @@
 
 - Ref
 	- https://www.163.com/dy/article/G0F041FP0538QE50.html
-	- https://blog.csdn.net/LTAO427/article/details/108596780
+	- https://www.itread01.com/content/1546958947.html
 
 
 ### 1) array_to_string : array to str
@@ -51,4 +51,36 @@ select array_agg(name order by name asc) from student
 ### 7) array : transform result to array
 ```sql
 SELECT array(SELECT "name" FROM student);
+```
+
+### 8) ceil(num) : get int, (bigger one)
+```sql
+SELECT ceil(35.7)
+#36
+```
+
+### 9) floor(num) : get int, (smaller one)
+```sql
+SELECT floor(35.7)
+#35
+```
+
+### 10) round(numeric,int)
+
+### 11) age(timestamp1,timestamp2)
+
+### 12) date_trunc(text,timestamp)
+```sql
+select date_trunc('day',current_timestamp),date_trunc('hour',current_timestamp);
+--       date_trunc      |      date_trunc      
+-- ------------------------+------------------------
+-- 2018-09-16 00:00:00+08 | 2018-09-16 11:00:00+08
+```
+
+### 13) date_part(text,timestamp)
+```sql
+select date_part('hour',now()),date_part('minute',now()),date_part('month',now());
+date_part | date_part | date_part 
+-- -----------+-----------+-----------
+--         11 |        10 |        9
 ```
