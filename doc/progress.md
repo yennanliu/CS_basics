@@ -37,6 +37,10 @@
 			- 1126
 			- 1127
 			- 1132
+			- 1141
+			- 1142
+			- 1148
+			- 1149
 		- AGAIN:
 			- union find
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
