@@ -68,8 +68,31 @@
 -- Note that the output is only one number and that we do not care about the remove dates.
 
 # V0
+select round(avg(daily_count), 2) as average_daily_percent
+from (
+  select
+  a.action_date, 
+  count(distinct b.post_id)/count(distinct a.post_id)*100 as daily_count
+    from actions a
+    left join removals b
+    on a.post_id = b.post_id
+    where extra = 'spam'
+    group by  a.action_date
+    ) b
 
 # V1
+# https://circlecoder.com/reported-posts-II/
+select round(avg(daily_count), 2) as average_daily_percent
+from (
+  select
+  a.action_date, 
+  count(distinct b.post_id)/count(distinct a.post_id)*100 as daily_count
+    from actions a
+    left join removals b
+    on a.post_id = b.post_id
+    where extra = 'spam'
+    group by  a.action_date
+    ) b
 
 # V2
 # Time:  O(m + n)
