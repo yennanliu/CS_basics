@@ -51,9 +51,21 @@
 -- +-------------+
 -- The first project has 3 employees while the second one has 2.
 
-# V0 
+# V0
+WITH prod_count AS (
+SELECT
+project_id,
+COUNT(1) AS count_
+FROM
+Project
+GROUP BY project_id
+ORDER BY count_ DESC
+LIMIT 1
+)
+SELECT project_id FROM prod_count
 
 # V1
+# https://code.dennyzhang.com/project-employees-ii
 select project_id
 from Project
 group by project_id
