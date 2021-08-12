@@ -3,6 +3,7 @@
 - Ref
 	- https://www.163.com/dy/article/G0F041FP0538QE50.html
 	- https://www.itread01.com/content/1546958947.html
+	- https://www.runoob.com/postgresql/postgresql-syntax.html
 
 
 ### 1) array_to_string : array to str
