@@ -20,6 +20,50 @@
 #### 1-1-3) check if element in Array
 #### 1-1-4) append to array (head, tail)
 #### 1-1-5) Sort Array
+#### 1-1-6) Flatten Array
+```python
+# V1
+r = []
+def flatten_array(_array):
+    for i in _array:
+        if type(i) == int:
+            print (i)
+            r.append(i)
+        else:
+            flatten_array(i)
+
+_input = [1,0, [1,2,[4,[5,[6,[7]]]]]]#[1,[4,[6]]] #[[1,1],2,[1,1]]
+
+flatten_array(_input)
+print ("r = " + str(r))
+
+# V2
+# https://stackoverflow.com/questions/2158395/flatten-an-irregular-list-of-lists
+def flatten(L):
+    for item in L:
+        try:
+            yield from flatten(item)
+        except TypeError:
+            yield item
+
+r2 = flatten(_input)
+for i in r2:
+    print (i)
+
+# V3
+def flatten2(L):
+    for item in L:
+        try:
+            yield from flatten2(item)
+        except:
+            yield item
+
+r3 = flatten2(_input)
+for i in r3:
+    print (i)
+```
+
+
 ```python
 y = [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
 print (y)
