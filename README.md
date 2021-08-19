@@ -1081,8 +1081,8 @@
 1369| [Get the Second Most Recent Activity](https://leetcode.com/problems/get-the-second-most-recent-activity/) | [MySQL](./leetcode_SQL/get-the-second-most-recent-activity.sql) | _O(nlogn)_ | _O(n)_| Hard|🔒| AGAIN (not start)
 1378| [Replace Employee ID With The Unique Identifier](https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/) | [MySQL](./leetcode_SQL/replace-employee-id-with-the-unique-identifier.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1384| [Total Sales Amount by Year](https://leetcode.com/problems/total-sales-amount-by-year/) | [MySQL](./leetcode_SQL/total-sales-amount-by-year.sql) | _O(nlogn)_ | _O(n)_| Hard|🔒, complex| OK*
-1393| [Capital Gain/Loss](https://leetcode.com/problems/capital-gainloss/) | [MySQL](./leetcode_SQL/capital-gainloss.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
-1398| [Customers Who Bought Products A and B but Not C](https://leetcode.com/problems/customers-who-bought-products-a-and-b-but-not-c/) | [MySQL](./leetcode_SQL/customers-who-bought-products-a-and-b-but-not-c.sql) | _O(m + n)_ | _O(m + n)_       | Medium           |🔒|
+1393| [Capital Gain/Loss](https://leetcode.com/problems/capital-gainloss/) | [MySQL](./leetcode_SQL/capital-gainloss.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK
+1398| [Customers Who Bought Products A and B but Not C](https://leetcode.com/problems/customers-who-bought-products-a-and-b-but-not-c/) | [MySQL](./leetcode_SQL/customers-who-bought-products-a-and-b-but-not-c.sql) | _O(m + n)_ | _O(m + n)_| Medium|🔒| OK
 1407| [Top Travellers](https://leetcode.com/problems/top-travellers/) | [MySQL](./leetcode_SQL/top-travellers.sql) | _O(m + nlogn)_ | _O(m + n)_       | Easy           |🔒|
 1412| [Find the Quiet Students in All Exams](https://leetcode.com/problems/find-the-quiet-students-in-all-exams/) | [MySQL](./leetcode_SQL/find-the-quiet-students-in-all-exams.sql) | _O(m + nlogn)_ | _O(m + n)_       | Hard           |🔒|
 1421| [NPV Queries](https://leetcode.com/problems/npv-queries/) | [MySQL](./leetcode_SQL/npv-queries.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
