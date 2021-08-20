@@ -19,7 +19,21 @@ All given inputs are in lowercase letters a-z.
 """
 
 # V0 
-
+class Solution:
+    def longestCommonPrefix(self, strs):
+        if not strs:
+            return ""
+        r = ""
+        # NOTE : in 1st loop, we loop element in 1st str
+        for i in range(len(strs[0])):
+            # NOTE : in 2nd loop, we loop sub-str in strs
+            for j in range(1, len(strs)):
+                # NOTE : i >= len(strs[j]), meaning if index in 1st sub-str already bigger than the next sub-str, so there is no possible `longest prefix` anymore, then we return current result
+                if i >= len(strs[j]) or strs[0][i] != strs[j][i]:
+                    return r
+            r += strs[0][i]
+        return r
+    
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51706442
 class Solution(object):
