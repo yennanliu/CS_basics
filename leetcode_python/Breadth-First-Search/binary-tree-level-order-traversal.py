@@ -53,9 +53,11 @@ class Solution(object):
     def levelOrder(self, root):
         res = []
         if not root:return res
+        ### NOTE : WE USE  collections.deque() in most of the BFS problems
         queue = collections.deque()
         queue.append(root)
         while queue:
+            ### NOTE : we have this level help list here
             level = []
             for i in range(len(queue)):  # NOTE THAT HERE WE HAVE TO GO THROUGH EVERY ELEMENT IN THE SAME LAYER OF BST 
                 node = queue.popleft()
