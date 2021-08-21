@@ -144,6 +144,15 @@ https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab
 ->
 `union all` is faster, since it can avoid possible duplicates.
 
+
+### 9'. Difference between `union` and `union all`?
+->
+- `Union` will remove the duplicated records (only show same record once)
+- `Union all` will return everything, includes the duplicated data (merge directly)
+- https://dataschool.com/learn-sql/what-is-the-difference-between-union-and-union-all/
+- http://sqlqna.blogspot.com/2013/08/union-union-all.html
+
+
 ### 10. Example of use variable in SQL ?
 ->
 ```sql

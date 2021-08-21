@@ -1087,7 +1087,7 @@
 1412| [Find the Quiet Students in All Exams](https://leetcode.com/problems/find-the-quiet-students-in-all-exams/) | [MySQL](./leetcode_SQL/find-the-quiet-students-in-all-exams.sql) | _O(m + nlogn)_ | _O(m + n)_| Hard|🔒, good trick| AGAIN* (1)
 1421| [NPV Queries](https://leetcode.com/problems/npv-queries/) | [MySQL](./leetcode_SQL/npv-queries.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK
 1435| [Create a Session Bar Chart](https://leetcode.com/problems/create-a-session-bar-chart/) | [MySQL](./leetcode_SQL/create-a-session-bar-chart.sql) | _O(n)_ | _O(1)_| Easy|🔒| OK
-1440| [Evaluate Boolean Expression](https://leetcode.com/problems/evaluate-boolean-expression/) | [MySQL](./leetcode_SQL/evaluate-boolean-expression.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
+1440| [Evaluate Boolean Expression](https://leetcode.com/problems/evaluate-boolean-expression/) | [MySQL](./leetcode_SQL/evaluate-boolean-expression.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK
 1445| [Apples & Oranges](https://leetcode.com/problems/apples-oranges/) | [MySQL](./leetcode_SQL/apples-oranges.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
 1454| [Active Users](https://leetcode.com/problems/active-users/) | [MySQL](./leetcode_SQL/active-users.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
 1459| [Rectangles Area](https://leetcode.com/problems/rectangles-area/) | [MySQL](./leetcode_SQL/rectangles-area.sql) | _O(n^2)_ | _O(n^2)_       | Medium           |🔒|
