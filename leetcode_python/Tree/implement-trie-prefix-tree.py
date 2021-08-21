@@ -1,4 +1,114 @@
+"""
+
+208. Implement Trie (Prefix Tree)
+Medium
+
+5115
+
+77
+
+Add to List
+
+Share
+A trie (pronounced as "try") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. There are various applications of this data structure, such as autocomplete and spellchecker.
+
+Implement the Trie class:
+
+Trie() Initializes the trie object.
+void insert(String word) Inserts the string word into the trie.
+boolean search(String word) Returns true if the string word is in the trie (i.e., was inserted before), and false otherwise.
+boolean startsWith(String prefix) Returns true if there is a previously inserted string word that has the prefix prefix, and false otherwise.
+ 
+
+Example 1:
+
+Input
+["Trie", "insert", "search", "search", "startsWith", "insert", "search"]
+[[], ["apple"], ["apple"], ["app"], ["app"], ["app"], ["app"]]
+Output
+[null, null, true, false, true, null, true]
+
+Explanation
+Trie trie = new Trie();
+trie.insert("apple");
+trie.search("apple");   // return True
+trie.search("app");     // return False
+trie.startsWith("app"); // return True
+trie.insert("app");
+trie.search("app");     // return True
+ 
+
+Constraints:
+
+1 <= word.length, prefix.length <= 2000
+word and prefix consist only of lowercase English letters.
+At most 3 * 104 calls in total will be made to insert, search, and startsWith.
+
+"""
+
 # V0
+# IDEA : USE dict AS data structure (# TrieNode: is dict, or hashmap)
+class Trie(object):            
+    def __init__(self):
+        self.root = {} # TrieNode: is dict, or hashmap       
+ 
+    def insert(self, word):
+        p = self.root
+        for c in word:            
+            if c not in p: 
+                p[c] = {}
+            ### NOTE THIS
+            p = p[c]
+        ### NOTE HERE
+        p['#'] = True  # ‘#’ is a key indicating word bounday
+ 
+    def search(self, word):
+        node = self.find(word)
+        return node is not None and '#' in node   # NOTE     
+ 
+    def startsWith(self, prefix):
+        return self.find(prefix) is not None  # NOTE 
+    
+    ### NOTE : remember to implement this help fuunc
+    def find(self, prefix):
+        p = self.root
+        for c in prefix:            
+            if c not in p: 
+                return None
+            # for validating if "search to the end" (check '#' in the node or not)    
+            p = p[c]
+        return p
+
+# V1
+# IDEA : USE dict AS data structure (# TrieNode: is dict, or hashmap)
+# https://leetcode.com/problems/implement-trie-prefix-tree/discuss/633007/25-lines-python-use-50-less-code-than-c%2B%2B-should-I-change-to-python
+class Trie(object):            
+    def __init__(self):
+        self.root = {} # TrieNode: is dict, or hashmap       
+ 
+    def insert(self, word):
+        p = self.root
+        for c in word:            
+            if c not in p: 
+                p[c] = {}
+            p = p[c]
+        ### NOTE HERE
+        p['#'] = True  # ‘#’ is a key indicating word bounday
+ 
+    def search(self, word):
+        node = self.find(word)
+        return node is not None and '#' in node   # NOTE     
+ 
+    def startsWith(self, prefix):
+        return self.find(prefix) is not None  # NOTE 
+    
+    def find(self, prefix):
+        p = self.root
+        for c in prefix:            
+            if c not in p: 
+                return None
+            p = p[c]
+        return p
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79388432
