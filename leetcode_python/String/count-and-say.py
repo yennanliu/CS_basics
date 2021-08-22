@@ -27,6 +27,27 @@ n = 6  ->  312211   ( there is 3 "1" and 2 "2" and 1 "1" when n = 6 )
 .
 """
 
+# V0
+# IDEA : ITERATION
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        
+        val = ""
+        res = "1"
+        
+        for _ in range(n-1):
+            cnt = 1
+            for j in range(len(res)-1):
+                if res[j]==res[j+1]:
+                    cnt+=1
+                else:
+                    val += str(cnt) + res[j]
+                    cnt = 1
+            val += str(cnt)+res[-1]
+            res = val
+            val = ""
+        return res
+
 # V0 
 # IDEA : RECURSION
 # for example : 
@@ -68,8 +89,29 @@ class Solution(object):
                 count = 0
         return res
 
+# V1
+# IDEA : ITERATION
+# https://leetcode.com/problems/count-and-say/discuss/962795/My-Python-Solution-40ms
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        
+        val = ""
+        res = "1"
+        
+        for _ in range(n-1):
+            cnt = 1
+            for j in range(len(res)-1):
+                if res[j]==res[j+1]:
+                    cnt+=1
+                else:
+                    val += str(cnt) + res[j]
+                    cnt = 1
+            val += str(cnt)+res[-1]
+            res = val
+            val = ""
+        return res
 
-# V1 
+# V1'
 # https://blog.csdn.net/XX_123_1_RJ/article/details/80957046
 # IDEA : RECURSION  
 class Solution(object):
