@@ -1090,9 +1090,9 @@
 1440| [Evaluate Boolean Expression](https://leetcode.com/problems/evaluate-boolean-expression/) | [MySQL](./leetcode_SQL/evaluate-boolean-expression.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK
 1445| [Apples & Oranges](https://leetcode.com/problems/apples-oranges/) | [MySQL](./leetcode_SQL/apples-oranges.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK
 1454| [Active Users](https://leetcode.com/problems/active-users/) | [MySQL](./leetcode_SQL/active-users.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, good basic, window func| AGAIN*** (1)
-1459| [Rectangles Area](https://leetcode.com/problems/rectangles-area/) | [MySQL](./leetcode_SQL/rectangles-area.sql) | _O(n^2)_ | _O(n^2)_       | Medium           |🔒|
-1468| [Calculate Salaries](https://leetcode.com/problems/calculate-salaries/) | [MySQL](./leetcode_SQL/calculate-salaries.sql) | _O(m + n)_ | _O(m + n)_       | Easy           |🔒|
-1479| [Sales by Day of the Week](https://leetcode.com/problems/sales-by-day-of-the-week/) | [MySQL](./leetcode_SQL/sales-by-day-of-the-week.sql) | _O(m + n)_ | _O(n)_       | Hard           |🔒|
+1459| [Rectangles Area](https://leetcode.com/problems/rectangles-area/) | [MySQL](./leetcode_SQL/rectangles-area.sql) | _O(n^2)_ | _O(n^2)_| Medium|🔒| OK*
+1468| [Calculate Salaries](https://leetcode.com/problems/calculate-salaries/) | [MySQL](./leetcode_SQL/calculate-salaries.sql) | _O(m + n)_ | _O(m + n)_       | Easy|🔒| OK*
+1479| [Sales by Day of the Week](https://leetcode.com/problems/sales-by-day-of-the-week/) | [MySQL](./leetcode_SQL/sales-by-day-of-the-week.sql) | _O(m + n)_ | _O(n)_| Hard|🔒, case, DAYOFWEEK| OK
 1484| [Group Sold Products By The Date](https://leetcode.com/problems/group-sold-products-by-the-date/) | [MySQL](./leetcode_SQL/group-sold-products-by-the-date.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|
 1495| [Friendly Movies Streamed Last Month](https://leetcode.com/problems/friendly-movies-streamed-last-month/) | [MySQL](./leetcode_SQL/friendly-movies-streamed-last-month.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
 1501| [Countries You Can Safely Invest In](https://leetcode.com/problems/countries-you-can-safely-invest-in/) | [MySQL](./leetcode_SQL/countries-you-can-safely-invest-in.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
