@@ -14,6 +14,7 @@
 			- (inverse order)
 			- (pdf : p.12)
 			- 038
+			- 286
 			- =======
 			- (not yet)
 			- 785
