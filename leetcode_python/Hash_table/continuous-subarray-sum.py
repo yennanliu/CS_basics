@@ -36,6 +36,9 @@ Constraints:
 # V0
 class Solution(object):
     def checkSubarraySum(self, nums, k):
+        # _dict = {0:-1} : for edge case (need to find a continuous subarray of size AT LEAST two )
+        # 0: -1 is for edge case that current sum mod k == 0
+        # https://leetcode.com/problems/continuous-subarray-sum/discuss/236976/Python-solution
         _dict = {0:-1}
         tmp = 0
         for i in range(len(nums)):
