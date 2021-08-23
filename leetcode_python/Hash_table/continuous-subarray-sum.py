@@ -1,4 +1,55 @@
-# V0 
+"""
+
+Given an integer array nums and an integer k, return true if nums has a continuous subarray of size at least two whose elements sum up to a multiple of k, or false otherwise.
+
+An integer x is a multiple of k if there exists an integer n such that x = n * k. 0 is always a multiple of k.
+
+ 
+
+Example 1:
+
+Input: nums = [23,2,4,6,7], k = 6
+Output: true
+Explanation: [2, 4] is a continuous subarray of size 2 whose elements sum up to 6.
+Example 2:
+
+Input: nums = [23,2,6,4,7], k = 6
+Output: true
+Explanation: [23, 2, 6, 4, 7] is an continuous subarray of size 5 whose elements sum up to 42.
+42 is a multiple of 6 because 42 = 7 * 6 and 7 is an integer.
+Example 3:
+
+Input: nums = [23,2,6,4,7], k = 13
+Output: false
+ 
+
+Constraints:
+
+1 <= nums.length <= 105
+0 <= nums[i] <= 109
+0 <= sum(nums[i]) <= 231 - 1
+1 <= k <= 231 - 1
+
+
+"""
+
+# V0
+class Solution(object):
+    def checkSubarraySum(self, nums, k):
+        _dict = {0:-1}
+        tmp = 0
+        for i in range(len(nums)):
+            tmp += nums[i]
+            if k != 0:
+                tmp = tmp % k
+            if tmp in _dict:
+                if i - _dict[tmp] > 1:
+                    return True
+            else:
+                _dict[tmp] = i
+        return False
+
+# V0'
 # IDEA : HASH TABLE
 # DEMO
 #    ...: nums = [23,2,4,6,7]
@@ -13,16 +64,11 @@
 # True
 class Solution(object):
     def checkSubarraySum(self, nums, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: bool
-        """
         count = 0
         lookup = {0: -1}                   # init the lookup hash table 
         for i, num in enumerate(nums):
             count += num                   # keep adding num up  (as count)
-            if k:
+            if k != 0:
                 # beware of it
                 count %= k                 # get mode of count by k, since it's as same as num when check if it's k's multiplier
             """
@@ -58,6 +104,24 @@ class Solution(object):
         return False
 
 # V1'
+# https://leetcode.com/problems/continuous-subarray-sum/discuss/236976/Python-solution
+class Solution():
+    def checkSubarraySum(self, nums, k):
+        dic = {0:-1}
+        summ = 0
+        for i, n in enumerate(nums):
+            if k != 0:
+                summ = (summ + n) % k
+            else:
+                summ += n
+            if summ not in dic:
+                dic[summ] = i
+            else:
+                if i - dic[summ] >= 2:
+                    return True
+        return False
+
+# V1''
 # https://www.jiuzhang.com/solution/continuous-subarray-sum/#tag-highlight-lang-python
 class Solution:
     # @param {int[]} A an integer array
@@ -86,11 +150,6 @@ class Solution:
 # Space: O(k)
 class Solution(object):
     def checkSubarraySum(self, nums, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: bool
-        """
         count = 0
         lookup = {0: -1}
         for i, num in enumerate(nums):
