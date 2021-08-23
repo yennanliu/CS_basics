@@ -1096,9 +1096,9 @@
 1484| [Group Sold Products By The Date](https://leetcode.com/problems/group-sold-products-by-the-date/) | [MySQL](./leetcode_SQL/group-sold-products-by-the-date.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒, `GROUP_CONCAT`| OK*
 1495| [Friendly Movies Streamed Last Month](https://leetcode.com/problems/friendly-movies-streamed-last-month/) | [MySQL](./leetcode_SQL/friendly-movies-streamed-last-month.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1501| [Countries You Can Safely Invest In](https://leetcode.com/problems/countries-you-can-safely-invest-in/) | [MySQL](./leetcode_SQL/countries-you-can-safely-invest-in.sql) | _O(n)_ | _O(n)_| Medium|🔒, `inner join on or`| OK* (1)
-1511| [Customer Order Frequency](https://leetcode.com/problems/customer-order-frequency/) | [MySQL](./leetcode_SQL/customer-order-frequency.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
-1517| [Find Users With Valid E-Mails](https://leetcode.com/problems/find-users-with-valid-e-mails/) | [MySQL](./leetcode_SQL/find-users-with-valid-e-mails.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| 
-1527| [Patients With a Condition](https://leetcode.com/problems/patients-with-a-condition/) | [MySQL](./leetcode_SQL/patients-with-a-condition.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
+1511| [Customer Order Frequency](https://leetcode.com/problems/customer-order-frequency/) | [MySQL](./leetcode_SQL/customer-order-frequency.sql) | _O(n)_ | _O(n)_| Easy|🔒, having, like| OK* (1)
+1517| [Find Users With Valid E-Mails](https://leetcode.com/problems/find-users-with-valid-e-mails/) | [MySQL](./leetcode_SQL/find-users-with-valid-e-mails.sql) | _O(n)_ | _O(n)_| Easy|🔒, regular expression|  AGAIN
+1527| [Patients With a Condition](https://leetcode.com/problems/patients-with-a-condition/) | [MySQL](./leetcode_SQL/patients-with-a-condition.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1532| [The Most Recent Three Orders](https://leetcode.com/problems/the-most-recent-three-orders/) | [MySQL](./leetcode_SQL/the-most-recent-three-orders.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒 |
 1543| [Fix Product Name Format](https://leetcode.com/problems/fix-product-name-format/) | [MySQL](./leetcode_SQL/fix-product-name-format.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|
 1549| [The Most Recent Orders for Each Product](https://leetcode.com/problems/the-most-recent-orders-for-each-product/) | [MySQL](./leetcode_SQL/the-most-recent-orders-for-each-product.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
