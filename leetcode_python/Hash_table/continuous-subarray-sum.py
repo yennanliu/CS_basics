@@ -85,6 +85,29 @@ class Solution(object):
 
         return False
 
+# V0''
+# IDEA : BRUTE FROCE (TIME OUT ERROR)
+class Solution(object):
+    def checkSubarraySum(self, nums, k):
+        _dict = {}
+        tmp = 0
+        cache = []
+        j = 1
+        for i in range(len(nums)):
+            tmp = sum(nums[:i])
+            cache.append(tmp)
+            if tmp not in _dict:
+                _dict[tmp] = 1
+            else:
+                _dict[tmp] += 1
+            if tmp % k == 0
+                return True
+            elif i > 1:
+                for j in range(0, i):
+                    if cache[j] - cache[j-1] % j == 0:
+                        return True
+        return False
+      
 # V1 
 # http://bookshadow.com/weblog/2017/02/26/leetcode-continuous-subarray-sum/
 class Solution(object):
