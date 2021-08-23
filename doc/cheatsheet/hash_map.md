@@ -101,3 +101,21 @@ class Solution(object):
                 _dict[cur] = k
         return r
 ```
+
+```python
+# 523 Continuous Subarray Sum
+class Solution(object):
+    def checkSubarraySum(self, nums, k):
+        _dict = {0:-1}
+        tmp = 0
+        for i in range(len(nums)):
+            tmp += nums[i]
+            if k != 0:
+                tmp = tmp % k
+            if tmp in _dict:
+                if i - _dict[tmp] > 1:
+                    return True
+            else:
+                _dict[tmp] = i
+        return False
+```
