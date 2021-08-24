@@ -52,19 +52,17 @@ class Solution:
 # V0'
 # IDEA : STACK + DICT
 class Solution:
-    # @return a boolean
     def isValid(self, s):
-        loopup = {"(":")", "[":"]", "{":"}"}
+        lookup = {"(":")", "[":"]", "{":"}"}
         q = []
         for i in s:
-            #print (i)
-            if i not in loopup and len(q) == 0:
+            if i not in lookup and len(q) == 0:
                 return False
-            elif i in loopup:
+            elif i in lookup:
                 q.append(i)
             else:
                 tmp = q.pop()
-                if loopup[tmp] != i:
+                if lookup[tmp] != i:
                     return False
         return True if len(q) == 0 else False
 
