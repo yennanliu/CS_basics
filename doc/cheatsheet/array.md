@@ -19,7 +19,14 @@
 #### 1-1-2) Delete from Array
 #### 1-1-3) check if element in Array
 #### 1-1-4) append to array (head, tail)
-#### 1-1-5) Sort Array
+#### 1-1-5) Sort Array*****
+```python
+# 049  Group Anagrams
+strs = ["eat","tea","tan","ate","nat","bat"]
+strs.sort(key = lambda x : ''.join(sorted(x)) )
+print (strs)
+# ['bat', 'eat', 'tea', 'ate', 'tan', 'nat']
+```
 #### 1-1-6) Flatten Array
 ```python
 # V1
