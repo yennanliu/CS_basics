@@ -1,4 +1,35 @@
+"""
+
+Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+ 
+
+Example 1:
+
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+Example 2:
+
+Input: strs = [""]
+Output: [[""]]
+Example 3:
+
+Input: strs = ["a"]
+Output: [["a"]]
+ 
+
+Constraints:
+
+1 <= strs.length <= 104
+0 <= strs[i].length <= 100
+strs[i] consists of lowercase English letters.
+
+"""
+
 # V0
+# IDEA : HASH TABLE
 class Solution:
     def groupAnagrams(self, strs):
         res = {}
@@ -8,7 +39,25 @@ class Solution:
                 res[k] = []
             res[k].append(item)  # if same, put all the same string into dict k 
         return [res[x] for x in res]  # output the result 
-        
+
+# V0'
+# IDEA : SORT LIST strs.sort(key = lambda x : ''.join(sorted(x)) )
+class Solution:
+    def groupAnagrams(self, strs):
+        r = []
+        cache = set()
+        strs.sort(key = lambda x : ''.join(sorted(x)) )
+        j = 0
+        for i in range(len(strs)):
+            tmp = ''.join(sorted(strs[i]))
+            if j >= len(r):
+                r.append([])
+            if tmp not in cache:
+                cache.add(tmp)
+                j += 1
+            r[j-1].append(strs[i])
+        return [x for x in r if len(x) > 0]
+      
 # V1 
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81145095
 # IDEA : SORT + DICT 
