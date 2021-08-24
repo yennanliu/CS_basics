@@ -1099,9 +1099,9 @@
 1511| [Customer Order Frequency](https://leetcode.com/problems/customer-order-frequency/) | [MySQL](./leetcode_SQL/customer-order-frequency.sql) | _O(n)_ | _O(n)_| Easy|🔒, having, like| OK* (1)
 1517| [Find Users With Valid E-Mails](https://leetcode.com/problems/find-users-with-valid-e-mails/) | [MySQL](./leetcode_SQL/find-users-with-valid-e-mails.sql) | _O(n)_ | _O(n)_| Easy|🔒, regular expression|  AGAIN
 1527| [Patients With a Condition](https://leetcode.com/problems/patients-with-a-condition/) | [MySQL](./leetcode_SQL/patients-with-a-condition.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
-1532| [The Most Recent Three Orders](https://leetcode.com/problems/the-most-recent-three-orders/) | [MySQL](./leetcode_SQL/the-most-recent-three-orders.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒 |
-1543| [Fix Product Name Format](https://leetcode.com/problems/fix-product-name-format/) | [MySQL](./leetcode_SQL/fix-product-name-format.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|
-1549| [The Most Recent Orders for Each Product](https://leetcode.com/problems/the-most-recent-orders-for-each-product/) | [MySQL](./leetcode_SQL/the-most-recent-orders-for-each-product.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
+1532| [The Most Recent Three Orders](https://leetcode.com/problems/the-most-recent-three-orders/) | [MySQL](./leetcode_SQL/the-most-recent-three-orders.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, window func, good basic | OK* (but again)
+1543| [Fix Product Name Format](https://leetcode.com/problems/fix-product-name-format/) | [MySQL](./leetcode_SQL/fix-product-name-format.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒, trim| OK
+1549| [The Most Recent Orders for Each Product](https://leetcode.com/problems/the-most-recent-orders-for-each-product/) | [MySQL](./leetcode_SQL/the-most-recent-orders-for-each-product.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, max day per id, good basic| OK* (again)
 1555| [Bank Account Summary](https://leetcode.com/problems/bank-account-summary/) | [MySQL](./leetcode_SQL/bank-account-summary.sql) | _O(m + n)_ | _O(m + n)_       | Medium           |🔒|
 1565| [Unique Orders and Customers Per Month](https://leetcode.com/problems/unique-orders-and-customers-per-month/) | [MySQL](./leetcode_SQL/unique-orders-and-customers-per-month.sql) | _O(n)_ | _O(n)_       | Easy           |🔒 |
 1571| [Warehouse Manager](https://leetcode.com/problems/warehouse-manager/) | [MySQL](./leetcode_SQL/warehouse-manager.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
