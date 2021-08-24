@@ -49,6 +49,25 @@ class Solution:
                 return False
         return len(stack) == 0
 
+# V0'
+# IDEA : STACK + DICT
+class Solution:
+    # @return a boolean
+    def isValid(self, s):
+        loopup = {"(":")", "[":"]", "{":"}"}
+        q = []
+        for i in s:
+            #print (i)
+            if i not in loopup and len(q) == 0:
+                return False
+            elif i in loopup:
+                q.append(i)
+            else:
+                tmp = q.pop()
+                if loopup[tmp] != i:
+                    return False
+        return True if len(q) == 0 else False
+
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51697963
 # IDEA : STACK
