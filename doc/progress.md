@@ -18,6 +18,10 @@
 			- (not yet)
 			- 785
 			- 477
+			- =======
+			- back track
+			- hash table
+			- bit manipulation
 		- SQL
 			- (new)
 			- 1532
