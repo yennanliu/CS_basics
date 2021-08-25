@@ -14,6 +14,21 @@
 - String plus
 - String bit op
 - String Multiplication
+- loop over string
+- inverse loop over string
+```python
+x = "abcd"
+for i in range(len(x)-1, -1, -1):
+    print (i)
+# 3
+# 2
+# 1
+# 0
+for i in range(len(x)-1, -1, -2):
+    print (i)
+# 3
+# 1
+```
 
 ### 1-2) Tricks
 ```python
@@ -23,7 +38,6 @@ x = '1234'
 for i in range(len(x)):
     if  i == len(x)-1 or x[i] != x[i+1]:
         print (x[i])
-
 ```
 
 ## 2) LC Example
