@@ -15,11 +15,8 @@
 
 - Algorithm 
 - Data Structure
-- Network
-- Linux basics 
-- Database 
 - System design 
-
+- Case Study
 
 ## Resource
 
