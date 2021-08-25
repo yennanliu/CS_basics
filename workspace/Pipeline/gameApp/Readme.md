@@ -1,4 +1,4 @@
-# GameApp (An online FPS game)
+# GameApp (Online FPS game)
 
 
 ## Part 1) Data Model Design
@@ -50,11 +50,65 @@ CREATE TABLE IF NOT EXISTS transaction (
     in_game BOOLEAN
 )
 
+# activity
+CREATE TABLE IF NOT EXISTS activity (
+    activity_id serial PRIMARY KEY,
+    user_id VARCHAR(30),
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
+    activity_type VARCHAR(10)
+)
+
 ```
 
 ## Part 2) ETL
+- Batch
+- Stream
 
 ## Part 3) SQL
+```sql
+# get DAU (day acitve user)
+SELECT date(start_time) AS date,
+       COUNT(DISTINCT user_id) AS dau
+FROM activity
+WHERE activity_type = 'login'
+GROUP BY date
+ORDER BY date
+
+# get MAU (month acitve user)
+SELECT month(start_time) AS MONTH,
+       COUNT(DISTINCT user_id) AS mau
+FROM activity
+WHERE activity_type = 'login'
+GROUP BY MONTH
+ORDER BY MONTH
+
+# get ARPU （Average Revenue Per User)
+WITH dau AS
+  (SELECT date(start_time) AS date,
+          COUNT(DISTINCT user_id) AS dau
+   FROM activity
+   WHERE activity_type = 'login'
+   GROUP BY date),
+     day_pay AS
+  (SELECT date(start_time) AS date,
+          NULLIF(SUM(amount), 0) AS amount
+   FROM TRANSACTION
+   GROUP BY date)
+SELECT d.date,
+       ROUND(CASE
+                 WHEN d.dau = 0 THEN 0
+                 ELSE p.amount / d.dau
+             END) AS arpu
+FROM dau d
+LEFT JOIN day_pay p ON d.date = p.date
+ORDER BY d.date
+
+# get ARPPU (Average Revenue Per Paid User)
+
+# get cohort user
+
+```
 
 ## Part 4) Prod Sense & DashBoard
 
