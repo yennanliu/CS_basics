@@ -105,9 +105,49 @@ LEFT JOIN day_pay p ON d.date = p.date
 ORDER BY d.date
 
 # get ARPPU (Average Revenue Per Paid User)
+WITH day_pay_dau AS
+  (SELECT date(a.start_time) AS date,
+          COUNT(DISTINCT a.user_id) AS dau
+   FROM activity a
+   INNER JOIN transactions t
+   ON a.user_id = t.user_id
+   AND date(a.start_time) = date(t.created_on)
+   WHERE a.activity_type = 'login'
+   GROUP BY a.date),
+     day_pay AS
+  (SELECT date(start_time) AS date,
+          NULLIF(SUM(amount), 0) AS amount
+   FROM TRANSACTION
+   GROUP BY date)
+SELECT d.date,
+       ROUND(CASE
+                 WHEN d.dau = 0 THEN 0
+                 ELSE p.amount / d.dau
+             END) AS arpu
+FROM day_pay_dau d
+LEFT JOIN day_pay p ON d.date = p.date
+ORDER BY d.date
 
-# get cohort user
+# get retention rate
+# https://chartio.com/learn/saas-metrics/how-to-perform-a-cohort-analysis-to-track-customer-retention-rate/
+WITH "USER_FIRST_EVENT" as (
+SELECT "Activity"."user_id" AS "User_Id",
+DATE_TRUNC('day', MIN("Activity"."created_date"))::DATE AS "First_Event_Date"
+FROM "public"."activity" AS "Activity"
+GROUP BY "Activity"."user_id"),
 
+"EVENT" as (SELECT "Activity"."user_id" AS "User_Id",
+DATE_TRUNC('day', "Activity"."created_date")::DATE AS "User_Event_Date"
+FROM "public"."activity" AS "Activity")
+
+select "USER_FIRST_EVENT"."User_Id",
+"USER_FIRST_EVENT"."First_Event_Date",
+"EVENT"."User_Event_Date",
+"EVENT"."User_Event_Date"- "USER_FIRST_EVENT"."First_Event_Date" as "Days_Since_Signup",
+("EVENT"."User_Event_Date"- "USER_FIRST_EVENT"."First_Event_Date")/7 as "Weeks_Since_Signup"
+
+FROM "USER_FIRST_EVENT"
+JOIN "EVENT" on "USER_FIRST_EVENT"."User_Id" = "EVENT"."User_Id"
 ```
 
 ## Part 4) Prod Sense & DashBoard
