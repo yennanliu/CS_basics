@@ -38,7 +38,7 @@ board and word consists of only lowercase and uppercase English letters.
 """
 
 # V0
-# IDEA : DFS
+# IDEA : DFS + backtracking
 class Solution(object):
  
     def exist(self, board, word):
@@ -52,17 +52,22 @@ class Solution(object):
         return False
 
     def existRecu(self, board, word, cur, i, j, visited):
+        # if "not false" till cur == len(word), means we already found the wprd in board
         if cur == len(word):
             return True
 
+        # note this condition
         if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]) or visited[i][j] or board[i][j] != word[cur]:
             return False
 
+        # mark as visited
         visited[i][j] = True
+        ### NOTE THIS TRICK (run the existRecu on 4 directions on the same time)
         result = self.existRecu(board, word, cur + 1, i + 1, j, visited) or\
                  self.existRecu(board, word, cur + 1, i - 1, j, visited) or\
                  self.existRecu(board, word, cur + 1, i, j + 1, visited) or\
                  self.existRecu(board, word, cur + 1, i, j - 1, visited)
+        # mark as non-visited
         visited[i][j] = False
 
         return result
