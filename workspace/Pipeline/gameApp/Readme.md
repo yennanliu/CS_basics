@@ -1,5 +1,13 @@
-# GameApp (Online FPS game)
+# GameApp
+- Online FPS game
+- Raw event (json) from stream source
+- Raw event sample as below:
+```json
+{"timetamp":1629857927,"user_id":"u0001","event_type":"login","platform":"mobile","os":"ios","version":"ios-11"}
+{"timetamp":1629857927,"user_id":"u0001","transaction_id":"t001","event_type":"payment","platform":"mobile","os":"ios","version":"ios-11"}
+...
 
+```
 
 ## Part 1) Data Model Design
 ```sql
