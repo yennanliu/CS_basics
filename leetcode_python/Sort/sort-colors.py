@@ -1,9 +1,54 @@
-# V0 
+"""
+75. Sort Colors
+Medium
+
+6543
+
+338
+
+Add to List
+
+Share
+Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+
+We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+
+You must solve this problem without using the library's sort function.
+
+ 
+
+Example 1:
+
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+Example 2:
+
+Input: nums = [2,0,1]
+Output: [0,1,2]
+Example 3:
+
+Input: nums = [0]
+Output: [0]
+Example 4:
+
+Input: nums = [1]
+Output: [1]
+ 
+
+Constraints:
+
+n == nums.length
+1 <= n <= 300
+nums[i] is 0, 1, or 2.
+ 
+
+Follow up: Could you come up with a one-pass algorithm using only constant extra space?
+
+"""
+
+# V0
+# NOTE : JUST IMPLEMENT WHATEVER SORTING ALGORITHM IN THIS PROBLEM
 class Solution:
-    """
-    @param nums: A list of integer which is 0, 1 or 2 
-    @return: nothing
-    """
     def sortColors(self, A):
         left, index, right = 0, 0, len(A) - 1
 
@@ -19,6 +64,23 @@ class Solution:
             else:
                 index += 1
         return A 
+
+# V0'
+# IDEA : BUBBLE SORT
+class Solution:
+    def sortColors(self, A):
+        if not A or len(A) == 1:
+            return A
+        for i in range(len(A)):
+            for j in range(i+1, len(A)):
+                if A[i] > A[j]:
+                    A[i], A[j] = A[j], A[i]
+        return A
+
+# V0'' (may not validated)
+class Solution:
+    def sortColors(self, A):
+        return A.sort()
 
 # V1
 # https://blog.csdn.net/maymay_/article/details/80093460
