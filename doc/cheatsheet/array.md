@@ -21,12 +21,22 @@
 #### 1-1-4) append to array (head, tail)
 #### 1-1-5) Sort Array*****
 ```python
+# Pattern :
+# V1
+_array.sort(key = lambda x : <your_sorting_func>)
+# V2
+sorted(_array, key = lambda x : <your_sorting_func>)
+
 # 049  Group Anagrams
 strs = ["eat","tea","tan","ate","nat","bat"]
 strs.sort(key = lambda x : ''.join(sorted(x)) )
 print (strs)
 # ['bat', 'eat', 'tea', 'ate', 'tan', 'nat']
+
+### NOTE can use this as well
+sorted(strs, key = lambda x : ''.join(sorted(x)))
 ```
+
 #### 1-1-6) Flatten Array
 ```python
 # V1
