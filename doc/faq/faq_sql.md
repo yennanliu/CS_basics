@@ -617,3 +617,27 @@ SELECT Avg(Distinct salary) -- = sum(Distinct salary) / Count(Distinct Salary)
 - https://www.toptal.com/data-modeling/interview-questions
 - https://mindmajix.com/data-modeling-interview-questions
 - https://www.indeed.com/career-advice/interviewing/data-modeling-interview-questions
+
+### 23. SQL recursive CTE
+- https://www.sqlservertutorial.net/sql-server-basics/sql-server-recursive-cte/
+```sql
+WITH recursive cte(columns_name) 
+AS (
+
+  initial_query
+  UNION ALL
+  recursive_query
+
+)
+SELECT * 
+FROM cte
+```
+
+### 24. explain `<>` meaning ?
+```sql
+# https://docs.microsoft.com/en-us/sql/t-sql/language-elements/not-equal-to-transact-sql-traditional?view=sql-server-ver15
+# Not Equal To (Transact SQL)
+# Compares two expressions (a comparison operator). When you compare nonnull expressions, the result is TRUE if the left operand is not equal to the right operand; otherwise, the result is FALSE. If either or both operands are NULL, see the topic SET ANSI_NULLS (Transact-SQL).
+expression <> expression  
+
+```
