@@ -617,7 +617,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note| Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 075| [Sort Colors](https://leetcode.com/problems/sort-colors/)   | [Python](./leetcode_python/Sort/sort-colors.py) | _O(n)_ | _O(1)_ | Medium |sorting, Tri Partition,`two pointers`, `M$`, `fb`| OK** (4)
-088| [Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)| [Python](./leetcode_python/Sort/merge-sorted-array.py)  | _O(n)_ | _O(1)_ | Easy |`good basic`, `two pointers`, `M$`, `amazon`,`fb`| AGAIN***********  (4)
+088| [Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)| [Python](./leetcode_python/Sort/merge-sorted-array.py)  | _O(n)_ | _O(1)_ | Easy |`good basic`, `two pointers`, `M$`, `amazon`,`fb`| AGAIN*************  (5)
 147| [Insertion Sort List](https://leetcode.com/problems/insertion-sort-list/)|[Python](./leetcode_python/Sort/insertion-sort-list.py) | _O(n^2)_ | _O(1)_ | Medium |`trick`| AGAIN* (2)
 148| [Sort List](https://leetcode.com/problems/sort-list/)     | [Python](./leetcode_python/Sort/sort-list.py) | _O(nlogn)_      | _O(logn)_  | Medium |`basic`, check `# 21 Merge Two Sorted Lists`| AGAIN** (2)
 179| [Largest Number](https://leetcode.com/problems/largest-number/) | [Python](./leetcode_python/Sort/largest-number.py) | _O(nlogn)_   | _O(1)_  | Medium|sort, sort with lambda,`amazon`| AGAIN** (2)
