@@ -27,7 +27,32 @@ The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit int
 Follow up: Can you solve the problem in O(1) extra space complexity? (The output array does not count as extra space for space complexity analysis.)
 
 """
-# V0 
+
+# V0
+class Solution:
+    def productExceptSelf(self, nums):
+        # CASE 1: has `more that one 0` -> the `Product of Array Except Self` should always equal 0
+        if nums.count(0) > 1:
+            return [0] * len(nums)
+        # CASE 2: has `only one 0` -> we get the `Product of Array Except Self` for non 0 and 0 separately
+        if nums.count(0) == 1:
+            _prod_except_z = 1
+            for n in nums:
+                if n != 0:
+                    _prod_except_z = n * _prod_except_z
+        # for non 0 element, we still get the Product of Array for op later
+        _prod = 1
+        for n in nums:
+            _prod = n * _prod
+        r = []
+        for i in nums:
+            if i != 0:
+                r.append(int(_prod / i))
+            else:
+                r.append(int(_prod_except_z))
+        return r
+
+# V0'
 class Solution:
     # @param {integer[]} nums
     # @return {integer[]}

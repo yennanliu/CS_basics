@@ -158,3 +158,33 @@ class Solution(object):
             res.insert(p[1], p)
         return res
 ```
+
+## 2-4) Product of Array Except Self
+```python
+# 238 Product of Array Except Self
+# IDEA : 
+# SINCE output[i] = (x0 * x1 * ... * xi-1) * (xi+1 * .... * xn-1)
+# -> SO DO A 2 LOOP
+# -> 1ST LOOP : GO THROGH THE ARRAY (->) : (x0 * x1 * ... * xi-1)
+# -> 2ND LOOP : GO THROGH THE ARRAY (<-) : (xi+1 * .... * xn-1)
+# e.g.
+# given [1,2,3,4], return [24,12,8,6].
+# -> output = [2*3*4, 1,1,1]  <-- 2*3*4    (right of 1: 2,3,4)
+# -> output = [2*3*4, 1*3*4,1,1] <-- 1*3*4 (left of 2 :1, right of 2: 3,4)
+# -> output = [2*3*4, 1*3*4,1*2*4,1] <-- 1*2*4 (left of 3: 1,2 right of 3 : 4)
+# -> output = [2*3*4, 1*3*4,1*2*4,1*2*3] <-- 1*2*3 (left of 4 : 1,2,3)
+# -> final output  = [2*3*4, 1*3*4,1*2*4,1*2*3] = [24,12,8,6]
+class Solution:
+    def productExceptSelf(self, nums):
+        size = len(nums)
+        output = [1] * size
+        left = 1
+        for x in range(size - 1):
+            left *= nums[x]
+            output[x + 1] *= left
+        right = 1
+        for x in range(size - 1, 0, -1):
+            right *= nums[x]
+            output[x - 1] *= right
+        return output
+```
