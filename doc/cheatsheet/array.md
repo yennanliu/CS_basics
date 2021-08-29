@@ -188,3 +188,28 @@ class Solution:
             output[x - 1] *= right
         return output
 ```
+
+## 2-4) Maximum Swap
+```python
+# 670 Maximum Swap
+class Solution(object):
+    def maximumSwap(self, num):
+        """
+        :type num: int
+        :rtype: int
+        """
+        # BE AWARE OF IT 
+        digits = list(str(num))
+        left, right = 0, 0
+        max_idx = len(digits)-1
+        for i in range(len(digits))[::-1]:
+            # BE AWARE OF IT 
+            if digits[i] > digits[max_idx]:
+                max_idx = i
+            # BE AWARE OF IT  
+            # if current digit > current max digit -> swap them 
+            elif digits[max_idx] > digits[i]:
+                left, right = i, max_idx        # if current max digit > current digit -> save current max digit to right idnex, and save current index to left
+        digits[left], digits[right] = digits[right], digits[left] # swap left and right when loop finished 
+        return int("".join(digits))
+```
