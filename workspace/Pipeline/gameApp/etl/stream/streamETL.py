@@ -24,10 +24,16 @@ class StreamETL:
                     #return line
                     self.save_stream(line)
 
-    def save_stream(data_event):
+    def save_stream(steam):
         with open(self.stream_file) as f:
             try:
-                for line in f:
+                for line in steam:
                     f.write(line + "\n")
             except Exception as e:
                 print ("save_stream failed")
+
+    def normalize_stream(steam):
+        pass
+
+    def verify_stream(stream):
+        pass
