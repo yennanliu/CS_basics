@@ -1,5 +1,8 @@
 import json
 
+"""
+class for extract from raw data
+"""
 class Extract:
 
     def __init__(self, cfg):

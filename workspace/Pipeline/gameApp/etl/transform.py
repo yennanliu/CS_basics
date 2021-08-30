@@ -1,3 +1,6 @@
+"""
+class for transform/clean raw data
+"""
 class Transform:
 
     def __init__(self, cfg)
