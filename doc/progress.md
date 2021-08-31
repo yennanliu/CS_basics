@@ -16,6 +16,7 @@
 			- 597
 			- 602
 			- 215
+			- 285
 			- =======
 			- (not yet)
 			- 785
@@ -26,6 +27,7 @@
 			- hash table
 			- bit manipulation
 			- union find
+			- quick sort
 		- SQL
 			- (new)
 			- =======
