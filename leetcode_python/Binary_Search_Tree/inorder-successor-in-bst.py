@@ -1,11 +1,60 @@
 """
-Given a binary search tree and a node in it, find the in-order successor of that node in the BST.
 
-Note: If the given node has no in-order successor in the tree, return null.
+Leetcode 285: Inorder Successor in BST
+
+Question
+
+Given a binary search tree and a node in it, 
+
+find the in-order successor of that node in the BST.
+
+Note: If the given node has no in-order successor in the tree, return null.
+
+Example 1:
+
+Input: root = [2,1,3], p = 1
+
+  2
+ / \
+1   3
+
+Output: 2
+
+Example 2:
+
+Input: root = [5,3,6,2,4,null,null,1], p = 6
+
+      5
+     / \
+    3   6
+   / \
+  2   4
+ /   
+1
+
+Output: null
 
 """
 
-# V0 
+# V0
+# IDEA : DFS
+class Solution(object):
+    def inorderSuccessor(self, root, p):
+        r = []
+        self.dfs(root)
+        for i in range(len(r)):
+            if  r[i] == p and i+1 < len(r):
+                return r[i+1]
+        return None
+
+    def dfs(self, root):
+        if not root:
+            return
+        self.dfs(root.left)
+        r.append(root)
+        self.dfs(root.right)
+        
+# V0'
 # IDEA : DFS
 class Solution(object):
     def inorderSuccessor(self, root, p):         
