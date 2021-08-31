@@ -66,6 +66,28 @@ round(
     0)
 , 2) as accept_rate;　　
 
+# V0'
+# IDEA : CTE
+WITH request_cnt AS
+  (SELECT COUNT(1) AS cnt
+   FROM
+     (SELECT sender_id,
+             send_to_id,
+             COUNT(1)
+      FROM friend_request
+      GROUP BY sender_id,
+               send_to_id)),
+     accept_cnt AS
+  (SELECT COUNT(1) AS cnt
+   FROM
+     (SELECT requester_id,
+             accepter_id,
+             COUNT(1)
+      FROM request_accepted
+      GROUP BY requester_id,
+               accepter_id))
+SELECT CASE(WHEN request_cnt.cnt = 0 THEN 0 ELSE ROUND(accept_cnt.cnt/request_cnt.cnt, 2) END) AS accept_rate
+
 # V1
 # https://www.cnblogs.com/lightwindy/p/9698958.html
 select
