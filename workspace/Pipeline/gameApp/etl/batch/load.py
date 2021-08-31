@@ -22,7 +22,7 @@ class Load:
             for row in data:
                 self.db_client.insert(row)
         except Exception as e:
-            print ("isert failed! " + str(e))
+            print ("insert failed! " + str(e))
         if insert_status:
             self.db_client.commit()
             print ("isert OK")
@@ -42,4 +42,4 @@ class Load:
             print ("batch isert failed! " + str(e))
         if insert_status:
             print ("batch isert OK")   
-        self.db_client.close()   
+        self.db_client.close()
