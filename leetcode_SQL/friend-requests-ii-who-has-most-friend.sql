@@ -25,6 +25,41 @@ In the real world, multiple people could have the same most number of friends, c
 */
 
 # V0
+# NOTE : The friend request could only been accepted once, which mean there is no multiple records with the same requester_id and accepter_id value.
+WITH 
+cte1 AS
+  (SELECT ids,
+          COUNT(*) AS cnt
+   FROM
+     (SELECT requester_id AS ids
+      FROM request_accepted
+      UNION ALL 
+      SELECT accepter_id AS ids
+      FROM request_accepted)
+   GROUP BY ids)
+
+SELECT ids AS id,
+       cnt AS num
+FROM cte1
+ORDER BY num DESC
+LIMIT 1
+
+# V0'
+# NOTE : The friend request could only been accepted once, which mean there is no multiple records with the same requester_id and accepter_id value.
+select ids as id, cnt as num
+from
+(
+select ids, count(*) as cnt
+   from
+   (
+        select requester_id as ids from request_accepted
+        union all
+        select accepter_id from request_accepted
+    ) as tbl1
+   group by ids
+   ) as tbl2
+order by cnt desc
+limit 1
 
 # V1
 # https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/
