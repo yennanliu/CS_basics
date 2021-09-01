@@ -669,7 +669,7 @@
 |  #  | Title     |  Solution     |  Time           | Space           | Difficulty    | Note | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 095| [Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/) |[Python](./leetcode_python/Recursion/unique-binary-search-trees-ii.py) | _O(4^n / n^(3/2)_   | _O(4^n / n^(3/2)_  | Medium   || AGAIN (not start)
-098| [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)|[Python](./leetcode_python/Recursion/validate-binary-search-tree.py)| _O(n)_ | _O(1)_ | Medium |dfs,`BST`,`M$`,`amazon`, `fb`| AGAIN****** (5) 
+098| [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)|[Python](./leetcode_python/Recursion/validate-binary-search-tree.py)| _O(n)_ | _O(1)_ | Medium |recursion, bfs, dfs,`BST`,`M$`,`amazon`, `fb`| AGAIN******** (6) 
 100| [Same Tree](https://leetcode.com/problems/same-tree/)  |[Python](./leetcode_python/Recursion/same-tree.py) | _O(n)_ | _O(h)_| Easy|recursion, dfs, bfs, `good basic`,`amazon`| AGAIN****** (2)
 104| [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)| [Python](./leetcode_python/Recursion/maximum-depth-of-binary-tree.py) | _O(n)_ | _O(h)_ | Easy |DFS, BFS, good basic,`amazon`| AGAIN**** (2)
 105| [Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/) | [Python](./leetcode_python/Recursion/construct-binary-tree-from-preorder-and-inorder-traversal.py) | _O(n)_ | _O(n)_ | Medium  |`trick`,`BST`,`M$`, `fb`| AGAIN*** (3)
