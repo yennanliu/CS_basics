@@ -25,6 +25,9 @@ Visually, the graph looks like the following:
 
 # V0
 # IDEA : DFS
+# NOTE :
+#  -> 1) we init node via : node_copy = Node(node.val, [])
+#  -> 2) we copy graph via dict
 class Solution(object):
     def cloneGraph(self, node):
         """
