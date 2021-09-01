@@ -1115,9 +1115,9 @@
 1651| [Hopper Company Queries III](https://leetcode.com/problems/hopper-company-queries-iii/) | [MySQL](./leetcode_SQL/hopper-company-queries-iii.sql) | _O(d + r + tlogt)_ | _O(d + r + t)_| Hard|🔒, complex| AGAIN (not start)
 1661| [Average Time of Process per Machine](https://leetcode.com/problems/average-time-of-process-per-machine/) | [MySQL](./leetcode_SQL/average-time-of-process-per-machine.sql) | _O(n)_ | _O(n)_| Easy|🔒, good basic| OK* (1)
 1667| [Fix Names in a Table](https://leetcode.com/problems/fix-names-in-a-table/) | [MySQL](./leetcode_SQL/fix-names-in-a-table.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒, concat, sub-string| OK (1)
-1677| [Product's Worth Over Invoices](https://leetcode.com/problems/products-worth-over-invoices/) | [MySQL](./leetcode_SQL/products-worth-over-invoices.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|
-1683| [Invalid Tweets](https://leetcode.com/problems/invalid-tweets/) | [MySQL](./leetcode_SQL/invalid-tweets.sql) | _O(n)_ | _O(n)_| Easy|🔒|
-1693| [Daily Leads and Partners](https://leetcode.com/problems/daily-leads-and-partners/) | [MySQL](./leetcode_SQL/daily-leads-and-partners.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
+1677| [Product's Worth Over Invoices](https://leetcode.com/problems/products-worth-over-invoices/) | [MySQL](./leetcode_SQL/products-worth-over-invoices.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒| OK
+1683| [Invalid Tweets](https://leetcode.com/problems/invalid-tweets/) | [MySQL](./leetcode_SQL/invalid-tweets.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
+1693| [Daily Leads and Partners](https://leetcode.com/problems/daily-leads-and-partners/) | [MySQL](./leetcode_SQL/daily-leads-and-partners.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1699| [Number of Calls Between Two Persons](https://leetcode.com/problems/number-of-calls-between-two-persons/) | [MySQL](./leetcode_SQL/number-of-calls-between-two-persons.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
 1709| [Biggest Window Between Visits](https://leetcode.com/problems/biggest-window-between-visits/) | [MySQL](./leetcode_SQL/biggest-window-between-visits.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
 1715| [Count Apples and Oranges](https://leetcode.com/problems/count-apples-and-oranges/) | [MySQL](./leetcode_SQL/count-apples-and-oranges.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
