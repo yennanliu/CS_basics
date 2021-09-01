@@ -17,4 +17,5 @@ class Producer:
         with open(txt_file) as f:
             lines = f.readlines()
             for line in lines:
+                # produce
                 producer.send(topic, line)
