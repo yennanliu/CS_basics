@@ -641,3 +641,11 @@ FROM cte
 expression <> expression  
 
 ```
+
+### 25. `char` VS `varchar` ?
+- https://stackoverflow.com/questions/1885630/whats-the-difference-between-varchar-and-char#:~:text=CHAR%20is%20fixed%20length%20and,to%20store%20the%20actual%20text.&text=The%20char%20is%20a%20fixed,variable%2Dlength%20character%20data%20type.
+- CHAR is fixed length and VARCHAR is variable length. CHAR always uses the same amount of storage space per entry, while VARCHAR only uses the amount necessary to store the actual text.
+- VARCHAR : 
+  - stores variable-length character strings and is the most common string data type. It can require less storage space than fixed-length types, because it uses only as much space as it needs (i.e., less space is used to store shorter values). The exception is a MyISAM table created with ROW_FORMAT=FIXED, which uses a fixed amount of space on disk for each row and can thus waste space. VARCHAR helps performance because it saves space.
+- CHAR :
+  - is fixed-length: MySQL always allocates enough space for the specified number of characters. When storing a CHAR value, MySQL removes any trailing spaces. (This was also true of VARCHAR in MySQL 4.1 and older versions—CHAR and VAR CHAR were logically identical and differed only in storage format.) Values are padded with spaces as needed for comparisons.

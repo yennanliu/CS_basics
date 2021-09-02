@@ -5,6 +5,11 @@
 ```json
 // some json
 ```
+- Feature
+    - Timeline
+    - follower-following
+    - re-tweet
+    - hashtag
 
 ## Part 1) Data Model Design
 ```sql
@@ -74,6 +79,10 @@ CREATE TABLE ReTweet IF NOT EXISTS ReTweet(
 ## Part 4) Prod Sense & DashBoard
 
 ## Ref
+- DB schema
+    - http://140dev.com/free-twitter-api-source-code-library/twitter-database-server/mysql-database-schema/
 - https://www.researchgate.net/figure/Twitter-data-model-and-flow_fig3_266369090
 - https://www.linkedin.com/pulse/system-design-twitter-avinash-anantharamu/
 - https://medium.com/@narengowda/system-design-for-twitter-e737284afc95
+- https://aaronice.gitbook.io/system-design/system-design-problems/design-twitter
+- https://www.8bitmen.com/what-database-does-twitter-use-a-deep-dive/
