@@ -45,13 +45,21 @@ CREATE TABLE tweet IF NOT EXISTS tweet (
 # content
 CREATE TABLE content IF NOT EXISTS content (
     tweet_id VARCHAR(30),
-    content VARCHAR(100)
+    retweet_id VARCHAR(30),
+    content VARCHAR(100),
+    retweet BOOLEAN
 )
 
 # ReTweet
 CREATE TABLE ReTweet IF NOT EXISTS ReTweet(
     retweet_id VARCHAR(30),
-    tweet_id VARCHAR(30)
+    tweet_id VARCHAR(30),
+    user_id VARCHAR(30),
+    retweet_on TIMESTAMP
+
+# HashTag
+
+# Geolocation
 )
 ```
 
@@ -66,5 +74,6 @@ CREATE TABLE ReTweet IF NOT EXISTS ReTweet(
 ## Part 4) Prod Sense & DashBoard
 
 ## Ref
+- https://www.researchgate.net/figure/Twitter-data-model-and-flow_fig3_266369090
 - https://www.linkedin.com/pulse/system-design-twitter-avinash-anantharamu/
 - https://medium.com/@narengowda/system-design-for-twitter-e737284afc95
