@@ -1,10 +1,81 @@
-# V0 
+"""
+
+Given two strings s and t, determine if they are both one edit distance apart.
+
+Note: 
+There are 3 possiblities to satisify one edit distance apart:
+
+Insert a character into s to get t
+Delete a character from s to get t
+Replace a character of s to get t
+Example 1:
+
+Input: s = "ab", t = "acb"
+Output: true
+Explanation: We can insert 'c' into s to get t.
+Example 2:
+
+Input: s = "cab", t = "ad"
+Output: false
+Explanation: We cannot get t from s by only one step.
+Example 3:
+
+Input: s = "1203", t = "1213"
+Output: true
+Explanation: We can replace '0' with '1' to get t.
+
+"""
+
+# V0
+# IDEA : DEAL WITH ALL CASES (Exhaustive method)
 class Solution:
-    # @param {string} s a string
-    # @param {string} t a string
-    # @return {boolean} true if they are both one edit distance apart or false
     def isOneEditDistance(self, s, t):
-        # Write your code here
+        lenS=len(s)
+        lenT=len(t)
+        # NOTE : the trick we deal 2 array may have different length
+        if lenS>lenT:
+            s,t=t,s
+            lenS,lenT=lenT,lenS
+        
+        # case 1) : lenT == lenS
+        if lenS==lenT:
+            count=0
+            for i in range(0,lenS):
+                if s[i]!=t[i]:
+                    count+=1
+                    if count>=2:
+                        break
+            if count==1:
+                return True
+            else:
+                return False
+
+        # case 2) : lenT - lenS >= 2
+        elif lenT-lenS >= 2:
+            return False
+        
+        # case 3) lenT - lenS == 1
+        else:
+            flag=0
+            for i in range(0,lenT):
+                # if already meet "the end" of t array
+                if i==lenT-1 and flag==0:
+                    return True
+                ### NOTE : trick here, 
+                #    -> since we allow s "can change once" to see if it can qeual t
+                #    -> when s[i-flag]!=t[i] happens first time, flag = 1
+                #    -> when s[i-flag]!=t[i] happens AGAIN, since now flat should == 1 already, then in this case, we will return False directly
+                elif s[i-flag]!=t[i]:
+                    if flag==0:
+                        flag=1
+                    else:
+                        return False
+            return True
+
+# V0'
+# IDER : RECURSION
+class Solution:
+    def isOneEditDistance(self, s, t):
         m = len(s)
         n = len(t)
         if abs(m - n) > 1:

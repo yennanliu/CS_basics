@@ -464,7 +464,7 @@
 076| [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)    | [python](./leetcode_python/String/minimum_window_substring.py)  |  |   | Hard   |`blind LC pattern` |  
 125| [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/) | [python](./leetcode_python/String/valid-palindrome.py) | _O(n)_  | _O(1)_ | Easy|`amazon`,`fb`| OK 
 151| [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/) | [python](./leetcode_python/String/reverse-words-in-a-string.py)  | _O(n)_ | _O(1)_ | Medium |`amazon`,`fb`| OK 
-161| [One Edit Distance](https://leetcode.com/problems/one-edit-distance/) |  [python](./leetcode_python/String/one-edit-distance.py)  | _O(m + n)_ | _O(1)_  | Medium  |🔒, `fb` | AGAIN**** (3)
+161| [One Edit Distance](https://leetcode.com/problems/one-edit-distance/) |  [python](./leetcode_python/String/one-edit-distance.py)  | _O(m + n)_ | _O(1)_  | Medium  |🔒, recursion, string,  , `fb`| AGAIN****** (4)(AGAIN)
 165| [Compare Version Numbers](https://leetcode.com/problems/compare-version-numbers/) |  [python](./leetcode_python/String/compare-version-numbers.py) | _O(n)_ | _O(1)_ |Easy|good basic, string,`amazon`| AGAIN* (2) 
 186| [Reverse Words in a String II](https://leetcode.com/problems/reverse-words-in-a-string-ii/) | [python](./leetcode_python/String/reverse-words-in-a-string-ii.py) | _O(n)_ | _O(1)_ | Medium   | 🔒, `M$`,`UBER`, `amazon` | AGAIN*  (2)
 242| [Valid Anagram](https://leetcode.com/problems/valid-anagram/)| [python](./leetcode_python/String/valid-anagram.py) | _O(n)_ | _O(1)_  | Easy | LintCode,`amazon`,`fb`|OK 
