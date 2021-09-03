@@ -72,6 +72,22 @@ SELECT *
 FROM cte2
 ORDER BY user_id
 
+# V0'
+WITH cte1 AS
+  (SELECT user_id,
+          IFNULL(lead(visit_date) OVER (PARTITION BY user_id
+                                          ORDER BY visit_date), '2021-01-01') AS lead_visit_date,
+          visit_date
+   FROM UserVisits),
+     cte2 AS
+  (SELECT user_id,
+          max(datediff(lead_visit_date, visit_date)) AS max_diff
+   FROM cte1
+   GROUP BY user_id)
+SELECT *
+FROM cte2
+ORDER BY user_id
+
 # V1
 # https://circlecoder.com/biggest-window-between-visits/
 select user_id, max(diff) as biggest_window
