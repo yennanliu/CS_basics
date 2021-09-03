@@ -84,8 +84,10 @@ class Solution:
             return self.isOneEditDistance(t, s)
         for i in range(m):
             if s[i] != t[i]:
+                # case 1
                 if m == n:
                     return s[i + 1:] == t[i + 1:]
+                # case 2
                 return s[i:] == t[i + 1:]
         return m != n # double check this condition
 

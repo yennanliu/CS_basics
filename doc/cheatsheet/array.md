@@ -90,6 +90,19 @@ print (y)
 # [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
 ```
 
+#### 1-1-6) go through 2 arrays (length could be different)
+```python
+# 2 array : s,t
+# len(s) = 10, len(t) = 7
+# or
+# len(s) = 10, len(t) = 11
+if len(s) > len(t):
+    s,t  = t,s
+
+for i in range(len(s)):
+    print (s[i], t[i])
+```
+
 ## 2) LC Example
 
 ## 2-1) Merge Intervals
