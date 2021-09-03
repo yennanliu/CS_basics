@@ -649,3 +649,25 @@ expression <> expression
   - stores variable-length character strings and is the most common string data type. It can require less storage space than fixed-length types, because it uses only as much space as it needs (i.e., less space is used to store shorter values). The exception is a MyISAM table created with ROW_FORMAT=FIXED, which uses a fixed amount of space on disk for each row and can thus waste space. VARCHAR helps performance because it saves space.
 - CHAR :
   - is fixed-length: MySQL always allocates enough space for the specified number of characters. When storing a CHAR value, MySQL removes any trailing spaces. (This was also true of VARCHAR in MySQL 4.1 and older versions—CHAR and VAR CHAR were logically identical and differed only in storage format.) Values are padded with spaces as needed for comparisons.
+
+### 26. `lead` VS `load`?
+- https://riptutorial.com/sql/example/27455/lag-and-lead
+- The LEAD function provides data on rows after the current row in the row set. For example, in a SELECT statement, you can compare values in the current row with values in the following row.
+- example :
+```sql
+# LC 1790 : Biggest Window Between Visits
+WITH cte1 AS
+  (SELECT user_id,
+          coalesce(lead(visit_date) OVER (PARTITION BY user_id
+                                          ORDER BY visit_date), '2021-01-01') AS lead_visit_date,
+          visit_date
+   FROM UserVisits),
+     cte2 AS
+  (SELECT user_id,
+          max(datediff(lead_visit_date, visit_date)) AS max_diff
+   FROM cte1
+   GROUP BY user_id)
+SELECT *
+FROM cte2
+ORDER BY user_id
+```

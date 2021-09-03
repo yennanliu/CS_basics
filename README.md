@@ -1118,8 +1118,8 @@
 1677| [Product's Worth Over Invoices](https://leetcode.com/problems/products-worth-over-invoices/) | [MySQL](./leetcode_SQL/products-worth-over-invoices.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒| OK
 1683| [Invalid Tweets](https://leetcode.com/problems/invalid-tweets/) | [MySQL](./leetcode_SQL/invalid-tweets.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1693| [Daily Leads and Partners](https://leetcode.com/problems/daily-leads-and-partners/) | [MySQL](./leetcode_SQL/daily-leads-and-partners.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
-1699| [Number of Calls Between Two Persons](https://leetcode.com/problems/number-of-calls-between-two-persons/) | [MySQL](./leetcode_SQL/number-of-calls-between-two-persons.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
-1709| [Biggest Window Between Visits](https://leetcode.com/problems/biggest-window-between-visits/) | [MySQL](./leetcode_SQL/biggest-window-between-visits.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
+1699| [Number of Calls Between Two Persons](https://leetcode.com/problems/number-of-calls-between-two-persons/) | [MySQL](./leetcode_SQL/number-of-calls-between-two-persons.sql) | _O(n)_ | _O(n)_| Medium|🔒, cte, union all| OK* (1)(but again)
+1709| [Biggest Window Between Visits](https://leetcode.com/problems/biggest-window-between-visits/) | [MySQL](./leetcode_SQL/biggest-window-between-visits.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, window func, datediff, coalesce, good trick| AGAIN***** (1)
 1715| [Count Apples and Oranges](https://leetcode.com/problems/count-apples-and-oranges/) | [MySQL](./leetcode_SQL/count-apples-and-oranges.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
 1729| [Find Followers Count](https://leetcode.com/problems/find-followers-count/) | [MySQL](./leetcode_SQL/find-followers-count.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|
 1731| [The Number of Employees Which Report to Each Employee](https://leetcode.com/problems/the-number-of-employees-which-report-to-each-employee/) | [MySQL](./leetcode_SQL/the-number-of-employees-which-report-to-each-employee.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|
