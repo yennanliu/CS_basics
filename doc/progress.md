@@ -26,10 +26,13 @@
 			- quick sort
 		- SQL
 			- (new)
+			- 1729
+			- 1731
+			- 1741
 			- =======
 			- (review)
 		- Data model
-			- ch 9 : 160 - 166
+			- ch 9 : 160 - 172
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
 		- Tree
 		- String
