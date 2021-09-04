@@ -16,7 +16,7 @@
 
 # user
 CREATE TABLE user IF NOT EXISTS user (
-    user_id VARCHAR(30),
+    user_id VARCHAR(30) PRIMARY KEY,
     user_name VARCHAR(20),
     created_on TIMESTAMP,
     status int,
@@ -27,21 +27,21 @@ CREATE TABLE user IF NOT EXISTS user (
 
 # follower
 CREATE TABLE follower IF NOT EXISTS follower (
-    user_follower_id VARCHAR(30),
+    user_follower_id VARCHAR(30) PRIMARY KEY,
     user_id VARCHAR(30),
     follower_id VARCHAR(30)
 )
 
 # following
 CREATE TABLE following IF NOT EXISTS following (
-    user_following_id VARCHAR(30),
+    user_following_id VARCHAR(30)  PRIMARY KEY,
     user_id VARCHAR(30),
     following_id VARCHAR(30)
 )
 
 # tweet
 CREATE TABLE tweet IF NOT EXISTS tweet (
-    tweet_id VARCHAR(30),
+    tweet_id VARCHAR(30)  PRIMARY KEY,
     author_id VARCHAR(30),
     created_on TIMESTAMP,
     last_modified TIMESTAMP
@@ -49,6 +49,7 @@ CREATE TABLE tweet IF NOT EXISTS tweet (
 
 # content
 CREATE TABLE content IF NOT EXISTS content (
+    content_id PRIMARY KEY,
     tweet_id VARCHAR(30),
     retweet_id VARCHAR(30),
     content VARCHAR(100),
@@ -57,7 +58,7 @@ CREATE TABLE content IF NOT EXISTS content (
 
 # ReTweet
 CREATE TABLE ReTweet IF NOT EXISTS ReTweet(
-    retweet_id VARCHAR(30),
+    retweet_id VARCHAR(30) PRIMARY KEY,
     tweet_id VARCHAR(30),
     user_id VARCHAR(30),
     retweet_on TIMESTAMP
