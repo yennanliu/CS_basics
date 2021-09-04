@@ -1,4 +1,6 @@
-
+"""
+class produce stream data
+"""
 class Producer:
 
     def __init__(self, cfg):
