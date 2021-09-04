@@ -54,6 +54,10 @@
 	- [leetcode_company_V2](./doc/leetcode_company_V2.md)
 	- [leetcode_classics_collection](./doc/leetcode_classics_collection.md)
 	- [leetcode_classics_collection_extra](./doc/leetcode_classics_collection_extra.md)
+* Tools
+	- https://coderpad.io/
+	- https://codeshare.io/
+	- http://sqlfiddle.com/
 
 ## Algorithms content
 
