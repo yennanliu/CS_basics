@@ -32,7 +32,12 @@
 			- =======
 			- (review)
 		- Data model
-			- ch 9 : 160 - 172
+			- ch 9 : 160 - 175
+			- TO READ:
+				- ch 6 : normalization
+				- ch 7 : performance tuning
+			- Contents
+				- https://www.sciencedirect.com/book/9780128043998/relational-database-design-and-implementation
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
 		- Tree
 		- String
