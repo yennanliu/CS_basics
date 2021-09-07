@@ -93,3 +93,5 @@ CREATE TABLE ReTweet IF NOT EXISTS ReTweet(
 - Postgre ddl examples
     - https://blog.csdn.net/Rong_Toa/article/details/80644443
     - https://qastack.cn/dba/149904/how-to-model-an-entity-type-that-can-have-different-sets-of-attributes
+- Rolling growth metrics
+    - https://medium.com/@chuongdo/rolling-growth-metrics-in-sql-d1c48e1b82c5
