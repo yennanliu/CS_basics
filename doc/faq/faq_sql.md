@@ -680,5 +680,5 @@ ORDER BY user_id
 - The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.
 - The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.
 - Any CRUD op will be constrainted by the fk constraint
-  -> Prevent invalid op that break data Consistency within tables (with fk)
-  -> i.e. we need to do the op on `ALL the tables with same fk constraint` at once
+  - -> Prevent invalid op that break data Consistency within tables (with fk)
+  - -> i.e. we need to do the op on `ALL the tables with same fk constraint` at once
