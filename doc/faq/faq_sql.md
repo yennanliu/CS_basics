@@ -671,3 +671,14 @@ SELECT *
 FROM cte2
 ORDER BY user_id
 ```
+
+### 27. Explain `foreign key` (fk) ?
+- https://www.w3schools.com/sql/sql_foreignkey.asp
+- https://www.cockroachlabs.com/docs/stable/foreign-key.html
+- https://b-l-u-e-b-e-r-r-y.github.io/post/ForeignKey/
+- aka `FOREIGN KEY Constraint`
+- The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.
+- The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.
+- Any CRUD op will be constrainted by the fk constraint
+  -> Prevent invalid op that break data Consistency within tables (with fk)
+  -> i.e. we need to do the op on `ALL the tables with same fk constraint` at once

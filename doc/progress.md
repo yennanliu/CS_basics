@@ -30,7 +30,8 @@
 			- (review)
 		- Data model
 			- ch 9 : 175 - 180
-			- ch 11 : 214 - 
+			- ch 11 : 214 - 229
+			- ch 12 : 230
 			- TO READ:
 				- ch 6 : normalization
 				- ch 7 : performance tuning
