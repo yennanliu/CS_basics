@@ -32,14 +32,17 @@
 			- =======
 			- (review)
 		- Data model
-			- ch 9 : 175 - 180
-			- ch 11 : 214 - 229
-			- ch 12 : 230 - 270
-			- TO READ:
-				- ch 6 : normalization
-				- ch 7 : performance tuning
-			- Contents
-				- https://www.sciencedirect.com/book/9780128043998/relational-database-design-and-implementation
+			- relational_db_design_implementation
+				- ch 9 : 175 - 180
+				- ch 11 : 214 - 229
+				- ch 12 : 230 - 270
+				- TO READ:
+					- ch 6 : normalization
+					- ch 7 : performance tuning
+				- Contents
+					- https://www.sciencedirect.com/book/9780128043998/relational-database-design-and-implementation
+			- Kimball-Data-Warehouse-Toolkit
+				- ch1 : 11
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
 		- Tree
 		- String
