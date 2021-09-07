@@ -26,6 +26,9 @@
 			- quick sort
 		- SQL
 			- (new)
+			- 1747
+			- 1757
+			- 1767
 			- =======
 			- (review)
 		- Data model
