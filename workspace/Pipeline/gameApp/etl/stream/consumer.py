@@ -27,7 +27,3 @@ class Consumer:
             cache.append(open(file, 'r'))
         for line in zip(item.readlines() for item in cache)
             print (line)
-
-
-
-
