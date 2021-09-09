@@ -10,6 +10,31 @@
 ```
 
 ## Part 1) Data Model Design
+- For analytics purpose (DW/OLTP)
+- Start model
+    - Fact table as center
+    - Dimension tables as attr
+- Design
+    - Fact table 
+        - should only contain "fact", meaning if null we keep `null`, and should be a sparse table by natural
+    - Dimension table
+        - what, when, who, where, how. 
+        - We keep as much informartion as possible there, will do "denormalization" if needed, since hard disk is cheap, computing power is fast. However, nested joins are expensive.
+        - each dimension table will use FK (foreign key) connect to fact table
+
+- Table Design
+```
+
+                       user 
+                        ↑
+                        ↑
+ event_time_attr ← ← fact_activity → → activity_attr
+                        ↓     
+                        ↓
+                    platform
+```
+
+- SQL
 ```sql
 
 # account 
