@@ -684,7 +684,7 @@ ORDER BY user_id
   - -> i.e. we need to do the op on `ALL the tables with same fk constraint` at once
 
 ### 28. Explain difference between Data mart, data warehouse ?
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dm_dw2.png" width="700" height="500">
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dm_dw2.png" width="700" height="300">
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dm_dw.png" width="700" height="500">
 
 - https://aws.amazon.com/data-warehouse/?nc1=h_ls
