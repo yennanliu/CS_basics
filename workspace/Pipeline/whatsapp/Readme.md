@@ -1,7 +1,7 @@
 # Whatsapp
 
 ## Part 0) Biz Requirement
-Case 1:
+- Case 1:
 	- Define product success metrics (whatsapp)
 	- Case Study:
 		- If MAU is donw in someday, what may be the reasons ?
@@ -12,7 +12,7 @@ Case 1:
 		- how to update this table per daily data partition (distribution) ?
 	- Python (ETL)
 		- implement above SQL questions via python
-Case 2:
+- Case 2:
 	- Case Study:
 		- Define product success metrics (consider a photo-upload app)
 		- how to evaluate if product is successful ?
