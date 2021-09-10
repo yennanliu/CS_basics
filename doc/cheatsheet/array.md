@@ -40,15 +40,19 @@ sorted(strs, key = lambda x : ''.join(sorted(x)))
 #### 1-1-6) Flatten Array
 ```python
 # V1
-r = []
 def flatten_array(_array):
-    for i in _array:
-        if type(i) == int:
-            print (i)
-            r.append(i)
-        else:
-            flatten_array(i)
+    r = []
+    def helper(_array):
+        for i in _array:
+            if type(i) == int:
+                print (i)
+                r.append(i)
+            else:
+                helper(i)
 
+    helper(_array)
+    return r
+    
 _input = [1,0, [1,2,[4,[5,[6,[7]]]]]]#[1,[4,[6]]] #[[1,1],2,[1,1]]
 
 flatten_array(_input)
