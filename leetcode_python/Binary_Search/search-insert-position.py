@@ -46,7 +46,7 @@ class Solution(object):
         l = 0
         r = len(nums) -1
         mid = 0
-        ### NOTE : in normal BINARY SEARCH,  we set while condition as r >= l
+        ### NOTE : in normal BINARY SEARCH,  we can set r > l or r >= l,  while following condtions will be different as well
         while r >= l:
             mid = l + (r-l) // 2
             if nums[mid] == target:
