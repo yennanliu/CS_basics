@@ -8,6 +8,7 @@
 ...
 
 ```
+- Biz Requirement
 
 ## Part 1) Data Model Design
 - For analytics purpose (DW/OLTP)
