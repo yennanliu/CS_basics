@@ -43,7 +43,7 @@
 					- https://www.sciencedirect.com/book/9780128043998/relational-database-design-and-implementation
 			- Kimball-Data-Warehouse-Toolkit
 				- ch1 : OK
-				- ch2 : p.37 - 55
+				- ch2 : p.37 - 67
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
 		- Tree
 		- String
