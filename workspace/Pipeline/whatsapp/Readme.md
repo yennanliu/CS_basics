@@ -18,3 +18,12 @@
 		- how to evaluate if product is successful ?
 	- Python (ETL)
 		- write a stream etl process the data for above metric calculation
+- Case 3:
+	- Data modeling
+		- fact table
+			- what's the grain of fact table ?
+			- what's the fact we are looking at ?
+			- what's the process measuring ?
+		- dimension table
+			- who, what, where, when, why, how
+			- how do biz ppl describe the data resulting from the biz process measurement events ?
