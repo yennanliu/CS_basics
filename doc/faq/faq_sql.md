@@ -142,7 +142,7 @@ https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab
 
 ### 9. Which op is faster `union` or `union all`?
 ->
-`union all` is faster, since it can avoid possible duplicates.
+`union all` is faster, since it **WILL NOT** avoid possible duplicates.
 
 
 ### 9'. Difference between `union` and `union all`?
