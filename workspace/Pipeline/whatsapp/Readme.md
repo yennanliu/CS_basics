@@ -24,6 +24,9 @@
 			- what's the grain of fact table ?
 			- what's the fact we are looking at ?
 			- what's the process measuring ?
+			- better to select `atomic data` as the fact table data
+				- [atomic-data-types](https://docs.oracle.com/en/database/other-databases/nosql-database/21.1/sqlreferencefornosql/atomic-data-types.html)
+			- `AS LOW LEVEL ATOMIC DATA` as possible -> biz questions can be in various forms
 		- dimension table
 			- who, what, where, when, why, how
 			- how do biz ppl describe the data resulting from the biz process measurement events ?
