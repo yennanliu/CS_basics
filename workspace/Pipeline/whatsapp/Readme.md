@@ -12,6 +12,8 @@
 		- how to update this table per daily data partition (distribution) ?
 	- Python (ETL)
 		- implement above SQL questions via python
+		- [An ETL Flow for Dimensional Data Warehouses](https://www.linkedin.com/pulse/narrow-road-star-schema-basic-etl-flow-dimensional-data-vince-donovan/)
+		- [setting-up-etl-using-python-simplified](https://hevodata.com/learn/setting-up-etl-using-python-simplified/)
 - Case 2:
 	- Case Study:
 		- Define product success metrics (consider a photo-upload app)
