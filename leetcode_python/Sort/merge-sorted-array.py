@@ -52,54 +52,9 @@ Follow up: Can you come up with an algorithm that runs in O(m + n) time?
 
 """
 
-# V0 
-# IDEA : 2 pointers
-### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
-# -> SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
-# -> Then paste the remain elements
-class Solution(object):
-    def merge(self, nums1, m, nums2, n):
-        ### NOTE : we define 2 pointers (p, q) here
-        p, q = m-1, n-1
-        ### NOTE : the while loop conditions
-        while p >= 0 and q >= 0:
-            if nums1[p] > nums2[q]:
-                #***** NOTE : WE START FROM p+q+1 index, since that's the count of non-zero elements in nums1, and nums2
-                nums1[p+q+1] = nums1[p]
-                p = p-1
-            else:
-                ### NOTE WE START FROM p+q+1 index, reason same as above
-                nums1[p+q+1] = nums2[q]
-                q = q-1
-        # if there're still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])
-        nums1[:q+1] = nums2[:q+1]
-
-# V0'
-# IDEA : 2 pointers
-class Solution:
-    def merge(self, nums1, m, nums2, n):
-        # below piece of code for edge case handling is not necessary 
-        if m == 0:
-            nums1[:n] = nums2
-
-        i = m-1
-        j = n-1
-        # idx is also not nessary, we can replace it with i+j+1
-        idx = i + j + 1
-        while idx > 0 and j >= 0 and i >= 0:
-            if nums1[i] < nums2[j]:
-                nums1[idx] = nums2[j]
-                j-=1
-            else:
-                nums1[idx] = nums1[i]
-                i-=1
-            idx -= 1
-        # if j >= 0 condition is not necessary as well
-        if j >= 0:
-            nums1[:j+1] = nums2[:j+1] 
-
-# V0''
-# IDEA : 2 pointers
+# V0
+# IDEA : 2 pointers + merge sort
+# https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py
 # TRICK : START FROM BIGGEST -> SMALLEST
 ### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
 # -> SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
@@ -127,8 +82,55 @@ class Solution:
             A[pos] = B[j]
             pos-=1
             j-=1
-
+            
 # V0'
+# IDEA : 2 pointers
+### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
+# -> SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
+# -> Then paste the remain elements
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        ### NOTE : we define 2 pointers (p, q) here
+        p, q = m-1, n-1
+        ### NOTE : the while loop conditions
+        while p >= 0 and q >= 0:
+            if nums1[p] > nums2[q]:
+                #***** NOTE : WE START FROM p+q+1 index, since that's the count of non-zero elements in nums1, and nums2
+                nums1[p+q+1] = nums1[p]
+                p = p-1
+            else:
+                ### NOTE WE START FROM p+q+1 index, reason same as above
+                nums1[p+q+1] = nums2[q]
+                q = q-1
+        # if there're still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])
+        nums1[:q+1] = nums2[:q+1]
+
+# V0''
+# IDEA : 2 pointers
+class Solution:
+    def merge(self, nums1, m, nums2, n):
+        # below piece of code for edge case handling is not necessary 
+        if m == 0:
+            nums1[:n] = nums2
+
+        i = m-1
+        j = n-1
+        # idx is also not nessary, we can replace it with i+j+1
+        idx = i + j + 1
+        while idx > 0 and j >= 0 and i >= 0:
+            if nums1[i] < nums2[j]:
+                nums1[idx] = nums2[j]
+                j-=1
+            else:
+                nums1[idx] = nums1[i]
+                i-=1
+            idx -= 1
+        # if j >= 0 condition is not necessary as well
+        if j >= 0:
+            nums1[:j+1] = nums2[:j+1] 
+
+# V0'''
+# IDEA : via sorted func (may not be accepted)
 class Solution(object):
     def merge(self, nums1, m, nums2, n):
         return sorted(nums1 + nums2)
