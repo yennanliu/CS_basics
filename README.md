@@ -1139,7 +1139,7 @@
 1811| [Find Interview Candidates](https://leetcode.com/problems/find-interview-candidates/) | [MySQL](./leetcode_SQL/find-interview-candidates.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, union all, cte, where, `good basic`| AGAIN* (1)
 1821| [Find Customers With Positive Revenue this Year](https://leetcode.com/problems/find-customers-with-positive-revenue-this-year/) | [MySQL](./leetcode_SQL/find-customers-with-positive-revenue-this-year.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1831| [Maximum Transaction Each Day](https://leetcode.com/problems/maximum-transaction-each-day/) | [MySQL](./leetcode_SQL/maximum-transaction-each-day.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, rank(), where on 2 attr, good basic| AGAIN**** (1)
-1841| [League Statistics](https://leetcode.com/problems/league-statistics/) | [MySQL](./leetcode_SQL/league-statistics.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
+1841| [League Statistics](https://leetcode.com/problems/league-statistics/) | [MySQL](./leetcode_SQL/league-statistics.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, case| AGAIN (1)
 1843| [Suspicious Bank Accounts](https://leetcode.com/problems/suspicious-bank-accounts/) | [MySQL](./leetcode_SQL/suspicious-bank-accounts.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
 1853| [Convert Date Format](https://leetcode.com/problems/convert-date-format/) | [MySQL](./leetcode_SQL/convert-date-format.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
 1867| [Orders With Maximum Quantity Above Average](https://leetcode.com/problems/orders-with-maximum-quantity-above-average/) | [MySQL](./leetcode_SQL/orders-with-maximum-quantity-above-average.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
