@@ -34,7 +34,16 @@ For example, given the above Scores table, your query should generate the follow
 
 # https://github.com/kamyu104/LeetCode/blob/master/MySQL/rank-scores.sql
 
-# V0 
+# V0
+SELECT
+s1.Score AS Score,
+( SELECT count(DISTINCT s2.Score)
+       FROM Scores AS s2 
+       WHERE s1.Score < s2.Score)  +1 AS "rank"
+FROM Scores AS s1
+ORDER BY s1.Score DESC
+
+# V0'
 # Time:  O(n^3)
 # Space: O(n)
 # count how many IDs bigger than current ID's score 
@@ -44,6 +53,15 @@ SELECT Score,  (SELECT COUNT(DISTINCT(Score)) FROM  Scores b WHERE b.Score > a.S
        ORDER by Score DESC
 
 # V1
+# https://medium.com/data-science-for-kindergarten/leetcode-mysql-178-rank-scores-b59d89f3f551
+# Write your MySQL query statement below
+SELECT tb1.Score AS Score, (SELECT count(distinct tb2.Score)
+                            FROM Scores AS tb2
+                            WHERE tb2.Score > tb1.Score) +1 AS     "Rank"
+FROM Scores as tb1
+ORDER BY tb1.Score DESC;
+
+# V1'
 # Ranks table : re-order score by desc -> rank = rank + 1 
 # left join Ranks table (new-defined-rank) to Scores table  
 SELECT Ranks.Score, Ranks.Rank FROM Scores LEFT JOIN 
