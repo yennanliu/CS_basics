@@ -338,6 +338,15 @@ WHERE  column_name OPERATOR
 ->
 - A window function performs a calculation across a set of table rows that are somehow related to the current row
 - Pattern
+```sql
+SELECT
+aggre_func() OVER (PARTITION BY ... ORDER BY ...),
+ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...),
+RANK() OVER (PARTITION BY ... ORDER BY ...),
+LAG(timestamp, 1) OVER (PARTITION BY ... ORDER BY ...) AS prev_record,
+RANK() OVER (PARTITION BY timestamp, ORDER BY count(product_id)) AS rank # NOTE : rank can order by count
+...
+```
 - Example
 ```sql
 -- example 1 
