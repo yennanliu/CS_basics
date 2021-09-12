@@ -1137,8 +1137,8 @@
 1795| [Rearrange Products Table](https://leetcode.com/problems/rearrange-products-table/) | [MySQL](./leetcode_SQL/rearrange-products-table.sql) | _O(n)_ | _O(n)_| Easy|🔒, union all| OK* (1)
 1809| [Ad-Free Sessions](https://leetcode.com/problems/ad-free-sessions/) | [MySQL](./leetcode_SQL/ad-free-sessions.sql) | _O(n)_ | _O(n)_| Easy|🔒, left join| OK**** (1)(but again)
 1811| [Find Interview Candidates](https://leetcode.com/problems/find-interview-candidates/) | [MySQL](./leetcode_SQL/find-interview-candidates.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, union all, cte, where, `good basic`| AGAIN* (1)
-1821| [Find Customers With Positive Revenue this Year](https://leetcode.com/problems/find-customers-with-positive-revenue-this-year/) | [MySQL](./leetcode_SQL/find-customers-with-positive-revenue-this-year.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|
-1831| [Maximum Transaction Each Day](https://leetcode.com/problems/maximum-transaction-each-day/) | [MySQL](./leetcode_SQL/maximum-transaction-each-day.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
+1821| [Find Customers With Positive Revenue this Year](https://leetcode.com/problems/find-customers-with-positive-revenue-this-year/) | [MySQL](./leetcode_SQL/find-customers-with-positive-revenue-this-year.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
+1831| [Maximum Transaction Each Day](https://leetcode.com/problems/maximum-transaction-each-day/) | [MySQL](./leetcode_SQL/maximum-transaction-each-day.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, rank(), where on 2 attr, good basic| AGAIN**** (1)
 1841| [League Statistics](https://leetcode.com/problems/league-statistics/) | [MySQL](./leetcode_SQL/league-statistics.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
 1843| [Suspicious Bank Accounts](https://leetcode.com/problems/suspicious-bank-accounts/) | [MySQL](./leetcode_SQL/suspicious-bank-accounts.sql) | _O(nlogn)_ | _O(n)_       | Medium           |🔒|
 1853| [Convert Date Format](https://leetcode.com/problems/convert-date-format/) | [MySQL](./leetcode_SQL/convert-date-format.sql) | _O(n)_ | _O(n)_       | Easy           |🔒|

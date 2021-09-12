@@ -688,3 +688,17 @@ ORDER BY user_id
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dm_dw.png" width="700" height="500">
 
 - https://aws.amazon.com/data-warehouse/?nc1=h_ls
+
+### 29. Rank() example ?
+```sql
+# LC 1831
+WITH cte AS
+  (SELECT transaction_id,
+          RANK() OVER (PARTITION BY DATE(DAY)
+                       ORDER BY amount DESC) AS rank
+   FROM transactions)
+SELECT transaction_id
+FROM cte
+WHERE rank = 1
+ORDER BY transaction_id
+```
