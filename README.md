@@ -54,6 +54,8 @@
 	- [leetcode_company_V2](./doc/leetcode_company_V2.md)
 	- [leetcode_classics_collection](./doc/leetcode_classics_collection.md)
 	- [leetcode_classics_collection_extra](./doc/leetcode_classics_collection_extra.md)
+	- LC sql high frequent
+		-[LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
 * Tools
 	- https://coderpad.io/
 	- https://codeshare.io/
@@ -1009,7 +1011,7 @@
 0175| [Combine Two Tables](https://leetcode.com/problems/combine-two-tables/) | [MySQL](./leetcode_SQL/combine-two-tables.sql) | _O(m + n)_   | _O(m + n)_ | Easy     || OK 
 0176| [Second Highest Salary](https://leetcode.com/problems/second-highest-salary/) | [MySQL](./leetcode_SQL/Second_Highest_Salary.sql)  | _O(n)_ | _O(1)_ | Easy |`amazon`,`fb`| OK 
 0177| [Nth Highest Salary](https://leetcode.com/problems/nth-highest-salary/) | [MySQL](./leetcode_SQL/Nth_Highest_Salary.sql) | _O(n^2)_   | _O(n)_ | Medium|`MySQL PROCEDURE`, `SQL FAQ`| AGAIN*** (2)
-0178| [Rank Scores](https://leetcode.com/problems/rank-scores/) | [MySQL](./leetcode_SQL/rank-scores.sql) | _O(n^2)_        | _O(n)_          | Medium |`trick`, `SQL var`,  ank, select same table| AGAIN** (3)
+0178| [Rank Scores](https://leetcode.com/problems/rank-scores/) | [MySQL](./leetcode_SQL/rank-scores.sql) | _O(n^2)_| _O(n)_| Medium |`trick`, `SQL var`,  ank, select same table| AGAIN*** (4)
 0180| [Consecutive Numbers](https://leetcode.com/problems/consecutive-numbers/) | [MySQL](./leetcode_SQL/consecutive-numbers.sql)  | _O(n)_   | _O(n)_ | Medium   |`SQL var`| OK* 
 0181| [Employees Earning More Than Their Managers](https://leetcode.com/problems/employees-earning-more-than-their-managers/) | [MySQL](./leetcode_SQL/employees-earning-more-than-their-managers.sql) | _O(n^2)_   | _O(1)_ | Easy     || OK 
 0182| [Duplicate Emails](https://leetcode.com/problems/duplicate-emails/) | [MySQL](./leetcode_SQL/duplicate-emails.sql) | _O(n^2)_ | _O(n)_  | Easy  || OK 
