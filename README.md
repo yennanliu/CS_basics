@@ -128,7 +128,7 @@
 ||Bucket sort| [Python](./algorithm/python/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](./algorithm/python/quick_sort.py)| | | AGAIN***| 
 ||Heap sort| [Python](./algorithm/python/heap_sort.py)| | | AGAIN**| 
-||Merge sort|[Python](./algorithm/python/merge_sort.py), [JS](./algorithm/js/merge_sort.js), [Java](./algorithm/java/MergeSort.java)  | | | OK* (2)| 
+||Merge sort|[Python](./algorithm/python/merge_sort.py), [JS](./algorithm/js/merge_sort.js), [Java](./algorithm/java/MergeSort.java), [SQL](./algorithm/sql/Mergesort.sql) | | | OK* (2)| 
 ||Pancake sort| [Python](./algorithm/python/pancake_sort.py) | | | AGAIN| 
 ||Selection sort| [Python](./algorithm/python/selection_sort.py), [JS](./algorithm/js/selection_sort.js) | | | AGAIN| 
 ||Topological sort| [Python](./algorithm/python/topological_sort.py) | | `Redraw` `DAG` so all edges point upwards (DAG : directed acyclic graph) | AGAIN| 
