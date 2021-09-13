@@ -46,6 +46,7 @@
 				- ch2 : p.37 - 105
 				- ch3 : p.98 - 110
 				- ch4 : p.111 - 119
+				- ch19 : p.443
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
 		- Tree
 		- String

@@ -32,3 +32,27 @@
 		- dimension table
 			- who, what, where, when, why, how
 			- how do biz ppl describe the data resulting from the biz process measurement events ?
+
+
+## Part 1) Case 1
+## Part 2) Case 2
+## Part 3) Case 3
+- Data Modeling
+	- Target : Tracking user metrics (DAU, MAU, user activity)
+```
+# why, who, when, where, how
+   
+                    user   platform
+                      ↑     ↑
+                      ↑     ↑
+       time ← ←  fact_activity → → location
+                      ↓     ↓
+                      ↓     ↓
+         activity_detail   promotion
+
+```
+- ddl
+```sql
+
+```
+
