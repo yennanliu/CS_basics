@@ -47,7 +47,8 @@
 			- Kimball-Data-Warehouse-Toolkit
 				- ch1 : OK
 				- ch2 : p.37 - 105
-				- ch3 : p.98 - 101
+				- ch3 : p.98 - 110
+				- ch4 : p.111
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
 		- Tree
 		- String
