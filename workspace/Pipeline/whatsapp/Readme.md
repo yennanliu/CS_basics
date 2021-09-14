@@ -45,7 +45,7 @@
                     user   platform
                       ↑     ↑
                       ↑     ↑
-       time ← ←  fact_activity → → location
+       time_dim ← ← fact_activity → → location
                       ↓     ↓
                       ↓     ↓
          activity_detail   promotion
@@ -54,5 +54,74 @@
 - ddl
 ```sql
 
-```
+# fact_activity
+CREATE TABLE fact_activity IF NOT EXISTS fact_activity(
+	activity_id VARCHAR(30),
+	user_id VARCHAR(30),
+	created_on TIMESTAMP,
+	activity VARCHAR(10),
+	platform_id VARCHAR(30),
+	location_id VARCHAR(10),
+	promotion_id VARCHAR(30),
+	CONSTRAINT created_on FOREIGN KEY (created_on) REFERENCES time_dim (created_on)
+)
 
+# time_dim
+CREATE TABLE time_dim IF NOT EXISTS time_dim(
+	created_on TIMESTAMP,
+	year Int,
+	month Int,
+	day Int,
+	created_on_unix_time Int,
+	CONSTRAINT created_on FOREIGN KEY (created_on) REFERENCES fact_activity (created_on)
+)
+
+# user
+CREATE TABLE user IF NOT EXISTS user(
+	user_id VARCHAR(30),
+	last_name VARCHAR(10),
+	first_name VARCHAR(10),
+	address VARCHAR(50),
+	gender CHAR(1),
+	register_on TIMESTAMP,
+	created_on TIMESTAMP,
+	last_login TIMESTAMP,
+	validated BOOLEAN,
+	CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES fact_activity (user_id)
+)
+
+# platform
+CREATE TABLE platform IF NOT EXISTS platform(
+	platform_id VARCHAR(30),
+	platform_name VARCHAR(10),
+	model VARCHAR(10),
+	os VARCHAR(10),
+	CONSTRAINT platform_id FOREIGN KEY platform_id REFERENCES fact_activity (platform_id)
+)
+
+# location
+CREATE TABLE location IF NOT EXISTS location(
+	location_id VARCHAR(30),
+	city VARCHAR(30),
+	country VARCHAR(10),
+	CONSTRAINT location_id FOREIGN KEY location_id REFERENCES fact_activity (location_id)
+)
+
+# promotion
+CREATE TABLE promotion IF NOT EXISTS promotion(
+	promotion_id VARCHAR(30),
+	promotion_name VARCHAR(30),
+	start_time TIMESTAMP,
+	end_time TIMESTAMP,
+	CONSTRAINT promotion_id FOREIGN KEY promotion_id REFERENCES fact_activity (promotion_id)
+)
+
+# activity_detail
+CREATE TABLE activity_detail IF NOT EXISTS activity_detail(
+	activity_id VARCHAR(30),
+	activity_contents VARCHAR(30),
+	activity_extra VARCHAR(50),
+	created_on TIMESTAMP,
+	CONSTRAINT activity_id FOREIGN KEY activity_id REFERENCES fact_activity (activity_id)
+)
+```
