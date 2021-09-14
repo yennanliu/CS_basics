@@ -1,4 +1,4 @@
-# Whatsapp
+# WhatsApp
 
 ## Part 0) Biz Requirement
 - Case 1:
