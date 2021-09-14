@@ -39,7 +39,7 @@
 ```sql
 
 # account 
-CREATE TABLE account IF NOT EXISTS account (
+CREATE TABLE IF NOT EXISTS account (
     account_id serial PRIMARY KEY,
     user_id VARCHAR(30),
     balance numeric,

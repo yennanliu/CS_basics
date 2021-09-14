@@ -55,7 +55,7 @@
 ```sql
 
 # fact_activity
-CREATE TABLE fact_activity IF NOT EXISTS fact_activity(
+CREATE TABLE IF NOT EXISTS fact_activity(
 	activity_id VARCHAR(30),
 	user_id VARCHAR(30),
 	created_on TIMESTAMP,
@@ -67,7 +67,7 @@ CREATE TABLE fact_activity IF NOT EXISTS fact_activity(
 )
 
 # time_dim
-CREATE TABLE time_dim IF NOT EXISTS time_dim(
+CREATE TABLE IF NOT EXISTS time_dim(
 	created_on TIMESTAMP,
 	year Int,
 	month Int,
@@ -77,7 +77,7 @@ CREATE TABLE time_dim IF NOT EXISTS time_dim(
 )
 
 # user
-CREATE TABLE user IF NOT EXISTS user(
+CREATE TABLE IF NOT EXISTS user(
 	user_id VARCHAR(30),
 	last_name VARCHAR(10),
 	first_name VARCHAR(10),
@@ -91,7 +91,7 @@ CREATE TABLE user IF NOT EXISTS user(
 )
 
 # platform
-CREATE TABLE platform IF NOT EXISTS platform(
+CREATE TABLE IF NOT EXISTS platform(
 	platform_id VARCHAR(30),
 	platform_name VARCHAR(10),
 	model VARCHAR(10),
@@ -100,7 +100,7 @@ CREATE TABLE platform IF NOT EXISTS platform(
 )
 
 # location
-CREATE TABLE location IF NOT EXISTS location(
+CREATE TABLE IF NOT EXISTS location(
 	location_id VARCHAR(30),
 	city VARCHAR(30),
 	country VARCHAR(10),
@@ -108,7 +108,7 @@ CREATE TABLE location IF NOT EXISTS location(
 )
 
 # promotion
-CREATE TABLE promotion IF NOT EXISTS promotion(
+CREATE TABLE IF NOT EXISTS promotion(
 	promotion_id VARCHAR(30),
 	promotion_name VARCHAR(30),
 	start_time TIMESTAMP,
@@ -117,7 +117,7 @@ CREATE TABLE promotion IF NOT EXISTS promotion(
 )
 
 # activity_detail
-CREATE TABLE activity_detail IF NOT EXISTS activity_detail(
+CREATE TABLE IF NOT EXISTS activity_detail(
 	activity_id VARCHAR(30),
 	activity_contents VARCHAR(30),
 	activity_extra VARCHAR(50),
