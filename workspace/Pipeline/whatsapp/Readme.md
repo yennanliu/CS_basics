@@ -4,8 +4,24 @@
 - Case 1:
 	- Define product success metrics (whatsapp)
 	- Case Study:
-		- If MAU is donw in someday, what may be the reasons ?
+		- If MAU is down in someday, what may be the reasons ?
+			- new app version
+			- something in/outside app is wrong
+			- check raw data to verify if MAU is readlly down
+			- compare with DAU, if DAU is down as well -> user retention dow
+			- check competitors
 		- How to define new users, churned users, returned users ?
+			- new users
+				- new register user
+				- new install user
+			- churn users:
+				- A churned user is a user who has stopped using an app. There are two kinds of actions a user takes related to churn: 
+					- either lapsing in use (which means no more sessions being recorded)
+					- uninstalling the app from the device itself. 
+				But essentially, churn rate is the number of users that leave your app in a given period of time.
+				- https://www.adjust.com/glossary/churn-definition/
+			- returned users
+
 			- how to define a table, for above calculation ? (pct is needed as well)
 	- SQL:
 		- how to get thses value ? `UID, first_active_date, last_active_date, previous_active_date`
@@ -14,6 +30,9 @@
 		- implement above SQL questions via python
 		- [An ETL Flow for Dimensional Data Warehouses](https://www.linkedin.com/pulse/narrow-road-star-schema-basic-etl-flow-dimensional-data-vince-donovan/)
 		- [setting-up-etl-using-python-simplified](https://hevodata.com/learn/setting-up-etl-using-python-simplified/)
+		- https://qimia.io/en/blog/Data-Warehousing-Guide-The-ETL-Processing
+		- https://github.com/patelatharva/Data_Warehouse_with_Amazon_Redshift
+		- https://docs.aws.amazon.com/redshift/latest/dg/t_updating-inserting-using-staging-tables-.html
 - Case 2:
 	- Case Study:
 		- Define product success metrics (consider a photo-upload app)
