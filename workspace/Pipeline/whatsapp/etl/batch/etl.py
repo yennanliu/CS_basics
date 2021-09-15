@@ -4,7 +4,9 @@ https://github.com/yennanliu/utility_Python/blob/master/postgre/PostgreIO.py
 
 import logging
 
-class ETL:
+from etl_factory import ETLFactory
+
+class ETL(ETLFactory):
 
     def __init__(self):
 
@@ -12,6 +14,7 @@ class ETL:
         self.conn = conn
 
         self.insert_sql = """INSERT INTO {table_name}"""
+
         self.join_base_sql = """SELECT a.*, b.prod_id FROM base_table a INNER JOIN {table_b} b ON a.prod_id = b.prod_id"""
         self.transform_base_sql = """SELECT *, upper(customer_code) AS customer_code_ FROM {stg_table}"""
         self.union_base_sql = """SELECT table_a.* FROM {table_a} UNION ALL SELECT table_b.* FROM {table_b}"""
