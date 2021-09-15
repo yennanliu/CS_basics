@@ -1148,9 +1148,9 @@
 1873| [Calculate Special Bonus](https://leetcode.com/problems/calculate-special-bonus/) | [MySQL](./leetcode_SQL/calculate-special-bonus.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1875| [Group Employees of the Same Salary](https://leetcode.com/problems/group-employees-of-the-same-salary/) | [MySQL](./leetcode_SQL/group-employees-of-the-same-salary.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, complex, good basic| AGAIN* (1)
 1890| [The Latest Login in 2020](https://leetcode.com/problems/the-latest-login-in-2020/) | [MySQL](./leetcode_SQL/the-latest-login-in-2020.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
-1892| [Page Recommendations II](https://leetcode.com/problems/page-recommendations-ii/) | [MySQL](./leetcode_SQL/page-recommendations-ii.sql) | _O(n * m)_ | _O(n * m)_       | Hard           |🔒|
-1907| [Count Salary Categories](https://leetcode.com/problems/count-salary-categories/) | [MySQL](./leetcode_SQL/count-salary-categories.sql) | _O(n)_ | _O(n)_       | Medium           |🔒|
-1917| [Leetcodify Friends Recommendations](https://leetcode.com/problems/leetcodify-friends-recommendations/) | [MySQL](./leetcode_SQL/leetcodify-friends-recommendations.sql) | _O(n^2)_ | _O(n^2)_       | Hard           |🔒|
+1892| [Page Recommendations II](https://leetcode.com/problems/page-recommendations-ii/) | [MySQL](./leetcode_SQL/page-recommendations-ii.sql) | _O(n * m)_ | _O(n * m)_ Hard|🔒| AGAIN*** (1) (not start)
+1907| [Count Salary Categories](https://leetcode.com/problems/count-salary-categories/) | [MySQL](./leetcode_SQL/count-salary-categories.sql) | _O(n)_ | _O(n)_| Medium|🔒, union all| OK* (1)
+1917| [Leetcodify Friends Recommendations](https://leetcode.com/problems/leetcodify-friends-recommendations/) | [MySQL](./leetcode_SQL/leetcodify-friends-recommendations.sql) | _O(n^2)_ | _O(n^2)_| Hard|🔒, `NOT EXISTS`| AGAIN*** (1)
 1919| [Leetcodify Similar Friends](https://leetcode.com/problems/leetcodify-similar-friends/) | [MySQL](./leetcode_SQL/leetcodify-similar-friends.sql) | _O(n * l)_ | _O(n * l)_       | Hard           |🔒|
 1934| [Confirmation Rate](https://leetcode.com/problems/confirmation-rate/) | [MySQL](./leetcode_SQL/confirmation-rate.sql) | _O(n + m)_ | _O(n + m)_       | Medium           |🔒|
 1939| [Users That Actively Request Confirmation Messages](https://leetcode.com/problems/users-that-actively-request-confirmation-messages/) | [MySQL](./leetcode_SQL/users-that-actively-request-confirmation-messages.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|
