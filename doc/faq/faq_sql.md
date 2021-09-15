@@ -711,3 +711,19 @@ FROM cte
 WHERE rank = 1
 ORDER BY transaction_id
 ```
+
+### 30. `EXISTS` example ?
+- https://www.fooish.com/sql/exists.html
+```sql
+# V1
+SELECT * FROM table_a
+WHERE EXISTS
+(SELECT * FROM table_b WHERE table_b.id=table_a.id);
+
+# is equal to below
+
+# V2
+SELECT * FROM table_a
+WHERE id
+in (SELECT id FROM table_b);
+```
