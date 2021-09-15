@@ -27,6 +27,9 @@
 		- how to get thses value ? `UID, first_active_date, last_active_date, previous_active_date`
 		- how to update this table per daily data partition (distribution) ?
 	- Python (ETL)
+		```
+		join -> transform -> union -> lookup -> insert
+		```
 		- implement above SQL questions via python
 		- [An ETL Flow for Dimensional Data Warehouses](https://www.linkedin.com/pulse/narrow-road-star-schema-basic-etl-flow-dimensional-data-vince-donovan/)
 		- [setting-up-etl-using-python-simplified](https://hevodata.com/learn/setting-up-etl-using-python-simplified/)
