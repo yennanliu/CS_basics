@@ -36,6 +36,11 @@
 		- https://qimia.io/en/blog/Data-Warehousing-Guide-The-ETL-Processing
 		- https://github.com/patelatharva/Data_Warehouse_with_Amazon_Redshift
 		- https://docs.aws.amazon.com/redshift/latest/dg/t_updating-inserting-using-staging-tables-.html
+		- optimization idea
+			- 1) Change Target Table to Un-logged Mode
+				- The UNLOGGED mode ensures PostgreSQL is not sending table write operations to the Write Ahead Log (WAL). This can make the load process significantly fast. However, since the operations are not logged, data cannot be recovered if there is a crash or unclean server shutdown during the load. PostgreSQL will automatically truncate any unlogged table once it restarts.
+				- https://www.2ndquadrant.com/en/blog/7-best-practice-tips-for-postgresql-bulk-data-loading/
+			- 2) Drop and Recreate Indexes
 - Case 2:
 	- Case Study:
 		- Define product success metrics (consider a photo-upload app)
@@ -43,6 +48,9 @@
 	- Python (ETL)
 		- write a stream etl process the data for above metric calculation
 - Case 3:
+	- Prod sense
+		- DAU, MAU ...
+		- engagement
 	- Data modeling
 		- fact table
 			- what's the grain of fact table ?
