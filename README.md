@@ -1151,9 +1151,9 @@
 1892| [Page Recommendations II](https://leetcode.com/problems/page-recommendations-ii/) | [MySQL](./leetcode_SQL/page-recommendations-ii.sql) | _O(n * m)_ | _O(n * m)_ Hard|🔒| AGAIN*** (1) (not start)
 1907| [Count Salary Categories](https://leetcode.com/problems/count-salary-categories/) | [MySQL](./leetcode_SQL/count-salary-categories.sql) | _O(n)_ | _O(n)_| Medium|🔒, union all| OK* (1)
 1917| [Leetcodify Friends Recommendations](https://leetcode.com/problems/leetcodify-friends-recommendations/) | [MySQL](./leetcode_SQL/leetcodify-friends-recommendations.sql) | _O(n^2)_ | _O(n^2)_| Hard|🔒, `NOT EXISTS`| AGAIN*** (1)
-1919| [Leetcodify Similar Friends](https://leetcode.com/problems/leetcodify-similar-friends/) | [MySQL](./leetcode_SQL/leetcodify-similar-friends.sql) | _O(n * l)_ | _O(n * l)_       | Hard           |🔒|
-1934| [Confirmation Rate](https://leetcode.com/problems/confirmation-rate/) | [MySQL](./leetcode_SQL/confirmation-rate.sql) | _O(n + m)_ | _O(n + m)_       | Medium           |🔒|
-1939| [Users That Actively Request Confirmation Messages](https://leetcode.com/problems/users-that-actively-request-confirmation-messages/) | [MySQL](./leetcode_SQL/users-that-actively-request-confirmation-messages.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒|
+1919| [Leetcodify Similar Friends](https://leetcode.com/problems/leetcodify-similar-friends/) | [MySQL](./leetcode_SQL/leetcodify-similar-friends.sql) | _O(n * l)_ | _O(n * l)_| Hard|🔒| AGAIN* (not start)
+1934| [Confirmation Rate](https://leetcode.com/problems/confirmation-rate/) | [MySQL](./leetcode_SQL/confirmation-rate.sql) | _O(n + m)_ | _O(n + m)_| Medium|🔒, good basic| OK* (1) (but again)
+1939| [Users That Actively Request Confirmation Messages](https://leetcode.com/problems/users-that-actively-request-confirmation-messages/) | [MySQL](./leetcode_SQL/users-that-actively-request-confirmation-messages.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒, TIMESTAMPDIFF, good basic| OK* (1) (but again)
 
 
 ## Shell Script
