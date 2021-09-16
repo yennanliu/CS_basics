@@ -30,6 +30,12 @@
 		```
 		join -> transform -> union -> lookup -> insert
 		```
+		```
+		# ETL update steps (if we select FK as constraints, it protects the data Integrity, but lost parallelism)
+		# https://qimia.io/en/blog/Data-Warehousing-Guide-The-ETL-Processing
+
+		date dimension -> all other dimensions -> atomic fact tables -> aggregated facts
+		```
 		- implement above SQL questions via python
 		- [An ETL Flow for Dimensional Data Warehouses](https://www.linkedin.com/pulse/narrow-road-star-schema-basic-etl-flow-dimensional-data-vince-donovan/)
 		- [setting-up-etl-using-python-simplified](https://hevodata.com/learn/setting-up-etl-using-python-simplified/)
