@@ -1154,6 +1154,14 @@
 1919| [Leetcodify Similar Friends](https://leetcode.com/problems/leetcodify-similar-friends/) | [MySQL](./leetcode_SQL/leetcodify-similar-friends.sql) | _O(n * l)_ | _O(n * l)_| Hard|🔒| AGAIN* (not start)
 1934| [Confirmation Rate](https://leetcode.com/problems/confirmation-rate/) | [MySQL](./leetcode_SQL/confirmation-rate.sql) | _O(n + m)_ | _O(n + m)_| Medium|🔒, good basic| OK* (1) (but again)
 1939| [Users That Actively Request Confirmation Messages](https://leetcode.com/problems/users-that-actively-request-confirmation-messages/) | [MySQL](./leetcode_SQL/users-that-actively-request-confirmation-messages.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒, TIMESTAMPDIFF, good basic| OK* (1) (but again)
+1949 | [Strong Friendship](https://leetcode.com/problems/strong-friendship/) | [MySQL](./MySQL/strong-friendship.sql) | _O(n^3)_ | _O(n^2)_| Medium|🔒||
+1951 | [All the Pairs With the Maximum Number of Common Followers](https://leetcode.com/problems/all-the-pairs-with-the-maximum-number-of-common-followers/) | [MySQL](./MySQL/all-the-pairs-with-the-maximum-number-of-common-followers.sql) | _O(n^3)_ | _O(n^2)_       | Medium           |🔒||
+1965 | [Employees With Missing Information](https://leetcode.com/problems/employees-with-missing-information/) | [MySQL](./MySQL/employees-with-missing-information.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒||
+1972 | [First and Last Call On the Same Day](https://leetcode.com/problems/first-and-last-call-on-the-same-day/) | [MySQL](./MySQL/first-and-last-call-on-the-same-day.sql) | _O(n)_ | _O(n)_       | Hard           |🔒||
+1978 | [Employees Whose Manager Left the Company](https://leetcode.com/problems/employees-whose-manager-left-the-company/) | [MySQL](./MySQL/employees-whose-manager-left-the-company.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒||
+1988 | [Find Cutoff Score for Each School](https://leetcode.com/problems/find-cutoff-score-for-each-schooly/) | [MySQL](./MySQL/find-cutoff-score-for-each-school.sql) | _O(n * m)_ | _O(n * m)_| Medium           |🔒||
+1990 | [Count the Number of Experiments](https://leetcode.com/problems/count-the-number-of-experiments/) | [MySQL](./MySQL/count-the-number-of-experiments.sql) | _O(n)_ | _O(n)_| Easy|🔒||
+
 
 
 ## Shell Script
