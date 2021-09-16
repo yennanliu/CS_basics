@@ -26,6 +26,9 @@
 			- quick sort
 		- SQL
 			- (new)
+			- 1919
+			- 1934
+			- 1939
 			- =======
 			- (review)
 			- TO REVIEW:
