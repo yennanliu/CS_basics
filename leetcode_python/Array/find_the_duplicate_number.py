@@ -21,7 +21,27 @@
 # The first two approaches mentioned do not satisfy the constraints given in the prompt, but they are solutions that you might be likely to come up with during a technical interview. As an interviewer, I personally would not expect someone to come up with the cycle detection solution unless they have heard it before.
 
 # V0
+# IDEA : DICT
+class Solution:
+    def findDuplicate(self, nums):
+        seen = dict()
+        for num in nums:
+            if num in seen:
+                return num
+            else:
+                if num not in seen:
+                    seen[num] = 1
 
+# V0' 
+# IDEA : SET
+class Solution:
+    def findDuplicate(self, nums):
+        seen = set()
+        for num in nums:
+            if num in seen:
+                return num
+            seen.add(num)
+            
 # V1
 # https://leetcode.com/articles/find-the-duplicate-number/
 # IDEA : Sorting
