@@ -23,31 +23,22 @@ def load_all_data(json_path):
         print ("*** json_file = " + str(json_file))
         tmp = load_data(json_file)
         result.append(tmp)
-    return result
-
+    resultx = []
+    # TODO : flatten array via better way
+    for array in result:
+        for item in array:
+            resultx.append(item)
+    return resultx
 
 def save_data(input_data, dest_file):
-    # with open(dest_file, 'w') as file:
-    #     for line in input_data:
-    #         #file.write(str(line))
-    #         json.dump(line, file)
-    #     file.close()
-    #     print ('save OK!')
 
-    with open(dest_file, "wb") as f:
-        json.dump(input_data, f)
+    with open(dest_file, "w", newline='\n') as f:
+        for idx in range(100):
+            f.write(json.dumps(input_data[idx]) + '\n')
 
 if __name__ == '__main__':
     json_path = "data/log_data/2018/11/*"
-    dest_file = "output/output.txt"
+    dest_file = "output/output.json"
     json_file = "data/log_data/2018/11/2018-11-09-events.json"
-    #merged_data = load_all_data(json_path)
-    #save_data(merged_data, dest_file)
-
-    x = load_data(json_file)
-    print (x[:3])
-    print (len(x))
-    print (x[0])
-
-    #print ("merged data sile = " + str(len(merged_data)))
-    #print (merged_data)
+    merged_data = load_all_data(json_path)
+    save_data(merged_data, dest_file)
