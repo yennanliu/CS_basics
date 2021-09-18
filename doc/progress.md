@@ -26,6 +26,9 @@
 			- quick sort
 		- SQL
 			- (new)
+			- 1972
+			- 1978
+			- 1988
 			- =======
 			- (review)
 			- TO REVIEW:
