@@ -47,6 +47,7 @@
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
 	- [LC Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
 	- [fucking-algorithm](https://github.com/labuladong/fucking-algorithm)
+	- [cheatsheet-leetcode-a4](https://cheatsheet.dennyzhang.com/cheatsheet-leetcode-a4)
 	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
 	- [grokking-the-coding-interview](https://www.educative.io/courses/grokking-the-coding-interview)
 * LC problems
@@ -55,7 +56,8 @@
 	- [leetcode_classics_collection](./doc/leetcode_classics_collection.md)
 	- [leetcode_classics_collection_extra](./doc/leetcode_classics_collection_extra.md)
 	- LC sql high frequent
-		-[LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
+		- [LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
+		- [cheatsheet-mysql-a4](https://cheatsheet.dennyzhang.com/cheatsheet-mysql-a4)
 * Tools
 	- https://coderpad.io/
 	- https://codeshare.io/
@@ -1157,9 +1159,9 @@
 1949 | [Strong Friendship](https://leetcode.com/problems/strong-friendship/) | [MySQL](./leetcode_SQL/strong-friendship.sql) | _O(n^3)_ | _O(n^2)_| Medium|🔒|good basic, where in 2 cols| OK* (1) (but again)
 1951 | [All the Pairs With the Maximum Number of Common Followers](https://leetcode.com/problems/all-the-pairs-with-the-maximum-number-of-common-followers/) | [MySQL](./leetcode_SQL/all-the-pairs-with-the-maximum-number-of-common-followers.sql) | _O(n^3)_ | _O(n^2)_| Medium|🔒, good trick| AGAIN* (1)
 1965 | [Employees With Missing Information](https://leetcode.com/problems/employees-with-missing-information/) | [MySQL](./leetcode_SQL/employees-with-missing-information.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒, good basic| OK* (1) (but again)
-1972 | [First and Last Call On the Same Day](https://leetcode.com/problems/first-and-last-call-on-the-same-day/) | [MySQL](./leetcode_SQL/first-and-last-call-on-the-same-day.sql) | _O(n)_ | _O(n)_       | Hard           |🔒||
-1978 | [Employees Whose Manager Left the Company](https://leetcode.com/problems/employees-whose-manager-left-the-company/) | [MySQL](./leetcode_SQL/employees-whose-manager-left-the-company.sql) | _O(nlogn)_ | _O(n)_       | Easy           |🔒||
-1988 | [Find Cutoff Score for Each School](https://leetcode.com/problems/find-cutoff-score-for-each-schooly/) | [MySQL](./leetcode_SQL/find-cutoff-score-for-each-school.sql) | _O(n * m)_ | _O(n * m)_| Medium           |🔒||
+1972 | [First and Last Call On the Same Day](https://leetcode.com/problems/first-and-last-call-on-the-same-day/) | [MySQL](./leetcode_SQL/first-and-last-call-on-the-same-day.sql) | _O(n)_ | _O(n)_| Hard|🔒, rank, union all| AGAIN* (1)
+1978 | [Employees Whose Manager Left the Company](https://leetcode.com/problems/employees-whose-manager-left-the-company/) | [MySQL](./leetcode_SQL/employees-whose-manager-left-the-company.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒| OK (1)
+1988 | [Find Cutoff Score for Each School](https://leetcode.com/problems/find-cutoff-score-for-each-schooly/) | [MySQL](./leetcode_SQL/find-cutoff-score-for-each-school.sql) | _O(n * m)_ | _O(n * m)_| Medium           |🔒, no ref| AGAIN (not start)
 1990 | [Count the Number of Experiments](https://leetcode.com/problems/count-the-number-of-experiments/) | [MySQL](./leetcode_SQL/count-the-number-of-experiments.sql) | _O(n)_ | _O(n)_| Easy|🔒||
 
 
