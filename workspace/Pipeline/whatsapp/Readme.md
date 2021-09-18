@@ -21,7 +21,6 @@
 				But essentially, churn rate is the number of users that leave your app in a given period of time.
 				- https://www.adjust.com/glossary/churn-definition/
 			- returned users
-
 			- how to define a table, for above calculation ? (pct is needed as well)
 	- SQL:
 		- how to get thses value ? `UID, first_active_date, last_active_date, previous_active_date`
@@ -71,7 +70,55 @@
 
 
 ## Part 1) Case 1
+- SQL
+```sql
+# Write SQL get new users, churned users, returned users 
+
+# new users
+SELECT DATE(created_on) AS created_date,
+       COUNT(DISTINCT user_id) AS new_user
+FROM USER
+GROUP BY created_date
+ORDER BY created_date
+
+# churned, returned users
+# http://blog.forcerank.it/sql-for-calculating-churn-retention-reengagement
+WITH month_usage AS
+  (SELECT user_id,
+          datediff(MONTH, '1970-01-01', created_on) AS time_period min(created_on) AS first_day,
+          max(created_on) AS last_day
+   FROM activity_detail
+   WHERE activity_type = 'login'
+   GROUP BY user_id,
+            time_period),
+     lag_lead AS
+  (SELECT user_id,
+          time_period,
+          first_day,
+          last_day,
+          lag(time_period, 1) OVER (PARTITION BY user_id
+                                    ORDER BY user_id,
+                                             time_period) AS lag_time_period,
+                                   lead(time_period, 1) OVER (PARTITION BY user_id
+                                                              ORDER BY user_id,
+                                                                       time_period) AS lead_time_period
+   FROM month_usage),
+     calculated AS
+  (SELECT CASE
+              WHEN lag_time_period IS NULL THEN 'NEW'
+              WHEN lead_time_period - last_day = 1 THEN 'ACTIVE'
+              WHEN time_period - lag_time_period > 2 THEN 'Return'
+          END AS this_month_value,
+          CASE
+              WHEN lead_time_period - last_day > 1
+                   OR lead_time_period - last_day IS NULL THEN 'CHURN'
+          END AS next_month_churn)
+SELECT *
+FROM calculated
+```
+
 ## Part 2) Case 2
+
 ## Part 3) Case 3
 - Data Modeling
 	- Target : Tracking user metrics (DAU, MAU, user activity)
@@ -154,9 +201,11 @@ CREATE TABLE IF NOT EXISTS promotion(
 
 # activity_detail
 CREATE TABLE IF NOT EXISTS activity_detail(
+	user_id VARCHAR(30),
 	activity_id VARCHAR(30),
 	activity_contents VARCHAR(30),
 	activity_extra VARCHAR(50),
+	activity_type VARCHAR(10),
 	created_on TIMESTAMP,
 	CONSTRAINT activity_id FOREIGN KEY activity_id REFERENCES fact_activity (activity_id)
 )
