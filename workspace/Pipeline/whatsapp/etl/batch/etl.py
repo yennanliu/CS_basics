@@ -18,7 +18,7 @@ class ETL(ETLFactory):
         self.join_base_sql = """SELECT a.*, b.prod_id FROM base_table a INNER JOIN {table_b} b ON a.prod_id = b.prod_id"""
         self.transform_base_sql = """SELECT *, upper(customer_code) AS customer_code_ FROM {stg_table}"""
         self.union_base_sql = """SELECT table_a.* FROM {table_a} UNION ALL SELECT table_b.* FROM {table_b}"""
-        self.lookup_base_sql = None
+        self.lookup_base_sql = """SELECT a.*, b.* FROM {union_table_a} a INNER JOIN {union_table_b} b ON a.user_id = b.user_id """
         self.insert_base_sql = """INSERT INTO {dest_table} FROM SELECT * FROM {lookup_table} WHERE {where_condition}"""
 
     def join(self, to_join_table, dest_table):
@@ -48,9 +48,9 @@ class ETL(ETLFactory):
         except Exception as e:
             logging.info("union failed " + str(e))
 
-    def lookup(self, dest_table, dest_table):
+    def lookup(self, src_table1, src_table2, dest_table):
 
-        lookup_base_sql =  self.insert_sql.format(dest_table) + self.lookup_base_sql
+        lookup_base_sql =  self.insert_sql.format(dest_table) + self.lookup_base_sql.format(src_table1, src_table2)
 
         try:
             self.cursor.execute(lookup_base_sql)
@@ -72,5 +72,5 @@ class ETL(ETLFactory):
         join(to_join_table, dest_table_1)
         transform(stg_table, dest_table_2)
         union(table_a, table_b, dest_table_3)
-        lookup(dest_table_4)
+        lookup(src_table1, src_table2, dest_table)
         insert(dest_table_5, look_table, where_condition)
