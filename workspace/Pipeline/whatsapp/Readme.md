@@ -85,7 +85,8 @@ ORDER BY created_date
 # http://blog.forcerank.it/sql-for-calculating-churn-retention-reengagement
 WITH month_usage AS
   (SELECT user_id,
-          datediff(MONTH, '1970-01-01', created_on) AS time_period min(created_on) AS first_day,
+          datediff(MONTH, '1970-01-01', created_on) AS time_period, 
+          min(created_on) AS first_day,
           max(created_on) AS last_day
    FROM activity_detail
    WHERE activity_type = 'login'
@@ -99,10 +100,10 @@ WITH month_usage AS
           lag(time_period, 1) OVER (PARTITION BY user_id
                                     ORDER BY user_id,
                                              time_period) AS lag_time_period,
-                                   lead(time_period, 1) OVER (PARTITION BY user_id
-                                                              ORDER BY user_id,
-                                                                       time_period) AS lead_time_period
-   FROM month_usage),
+          lead(time_period, 1) OVER (PARTITION BY user_id
+                                    ORDER BY user_id,
+                                             time_period) AS lead_time_period
+          FROM month_usage),
      calculated AS
   (SELECT CASE
               WHEN lag_time_period IS NULL THEN 'NEW'
@@ -113,8 +114,8 @@ WITH month_usage AS
               WHEN lead_time_period - last_day > 1
                    OR lead_time_period - last_day IS NULL THEN 'CHURN'
           END AS next_month_churn)
-SELECT *
-FROM calculated
+  
+SELECT * FROM calculated
 ```
 
 ## Part 2) Case 2
