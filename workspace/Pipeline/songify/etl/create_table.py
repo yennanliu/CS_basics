@@ -1,20 +1,19 @@
 import psycopg2
 from sql_queries import create_table_queries, drop_table_queries
 
-
-host = '127.0.0.1'
-dbname = 'test_db'
-user = 'postgres'
-password = 'postgres'
-creds = "host={host} dbname={dbname} user={user} password={password}"
-
-def create_table():
+def create_db():
     """
     drop songfify DB if exists, create songfify DB again,
     return cur, conn
     """
 
-    creds = creds.format(host, dbname, user, password)
+    host = '127.0.0.1'
+    dbname = 'test_db'
+    user = 'postgres'
+    password = 'postgres'
+    creds = "host={host} dbname={dbname} user={user} password={password}"
+
+    creds = creds.format(host=host, dbname=dbname, user=user, password=password)
     print (creds)
     conn = psycopg2.connect(creds)
     conn.set_session(autocommit=True)
@@ -45,10 +44,9 @@ def create_table(cur, conn):
         cur.execute(query)
         conn.commit()
 
-
 def main():
 
-    cur, conn = create_table()
+    cur, conn = create_db()
 
     drop_tables(cur, conn)
     print ("drop table OK!")
