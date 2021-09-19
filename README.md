@@ -1010,15 +1010,15 @@
 ## SQL
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note      | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-0175| [Combine Two Tables](https://leetcode.com/problems/combine-two-tables/) | [MySQL](./leetcode_SQL/combine-two-tables.sql) | _O(m + n)_   | _O(m + n)_ | Easy     || OK 
-0176| [Second Highest Salary](https://leetcode.com/problems/second-highest-salary/) | [MySQL](./leetcode_SQL/Second_Highest_Salary.sql)  | _O(n)_ | _O(1)_ | Easy |`amazon`,`fb`| OK 
+0175| [Combine Two Tables](https://leetcode.com/problems/combine-two-tables/) | [MySQL](./leetcode_SQL/combine-two-tables.sql) | _O(m + n)_   | _O(m + n)_ | Easy     || OK (4)
+0176| [Second Highest Salary](https://leetcode.com/problems/second-highest-salary/) | [MySQL](./leetcode_SQL/Second_Highest_Salary.sql)  | _O(n)_ | _O(1)_ | Easy |`amazon`,`fb`| OK  (4)
 0177| [Nth Highest Salary](https://leetcode.com/problems/nth-highest-salary/) | [MySQL](./leetcode_SQL/Nth_Highest_Salary.sql) | _O(n^2)_   | _O(n)_ | Medium|`MySQL PROCEDURE`, `SQL FAQ`| AGAIN*** (2)
 0178| [Rank Scores](https://leetcode.com/problems/rank-scores/) | [MySQL](./leetcode_SQL/rank-scores.sql) | _O(n^2)_| _O(n)_| Medium |`trick`, `SQL var`,  ank, select same table| AGAIN*** (4)
 0180| [Consecutive Numbers](https://leetcode.com/problems/consecutive-numbers/) | [MySQL](./leetcode_SQL/consecutive-numbers.sql)  | _O(n)_   | _O(n)_ | Medium   |`SQL var`| OK* 
 0181| [Employees Earning More Than Their Managers](https://leetcode.com/problems/employees-earning-more-than-their-managers/) | [MySQL](./leetcode_SQL/employees-earning-more-than-their-managers.sql) | _O(n^2)_   | _O(1)_ | Easy     || OK 
 0182| [Duplicate Emails](https://leetcode.com/problems/duplicate-emails/) | [MySQL](./leetcode_SQL/duplicate-emails.sql) | _O(n^2)_ | _O(n)_  | Easy  || OK 
 0183| [Customers Who Never Order](https://leetcode.com/problems/customers-who-never-order/) | [MySQL](./leetcode_SQL/customers-who-never-order.sql) | _O(n^2)_ | _O(1)_    | Easy       || OK 
-0184| [Department Highest Salary](https://leetcode.com/problems/department-highest-salary/) | [MySQL](./leetcode_SQL/department-highest-salary.sql) | _O(n^2)_   | _O(n)_ | Medium   |`trick`, where, good basic| AGAIN*** (3) 
+0184| [Department Highest Salary](https://leetcode.com/problems/department-highest-salary/) | [MySQL](./leetcode_SQL/department-highest-salary.sql) | _O(n^2)_   | _O(n)_ | Medium   |`trick`, where, good basic| OK*** (but again) (4) 
 0185| [Department Top Three Salaries](https://leetcode.com/problems/department-top-three-salaries/) | [MySQL](./leetcode_SQL/department-top-three-salaries.sql) | _O(n^2)_  | _O(n)_ | Hard | similiar as `# 0177 Nth Highest Salary`, good trick| AGAIN**** (3) 
 0196| [Delete Duplicate Emails](https://leetcode.com/problems/delete-duplicate-emails/) | [MySQL](./leetcode_SQL/delete-duplicate-emails.sql)  | _O(n^2)_ | _O(n)_ | Easy, delete command|| AGAIN (2) 
 0197| [Rising Temperature](https://leetcode.com/problems/rising-temperature/) | [MySQL](./leetcode_SQL/rising-temperature.sql)  | _O(n^2)_ | _O(n)_    | Easy     || OK 
