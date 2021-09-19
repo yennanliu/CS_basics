@@ -11,13 +11,13 @@
 ### 0-2) Pattern
 ```java
 // java
-
 int left = 0, right = 0;
 
 while (right < s.size()) {
     window.add(s[right]);
     right++;
-    
+    // NOTE : must of the trick is dealing with "valid" conditions
+    //        and how to cache some conditions for verfication
     while (valid) {
         window.remove(s[left]);
         left++;
