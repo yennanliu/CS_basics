@@ -727,3 +727,23 @@ SELECT * FROM table_a
 WHERE id
 in (SELECT id FROM table_b);
 ```
+
+### 31. explain `cross join` ?
+- https://www.fooish.com/sql/cross-join.html
+- Cross join will return `ALL POSSIBLE COMBINATION OF ROWS IN GIVEN columns and tables`
+- NOTE : below sql are eaual to each other
+```sql
+# sql 1
+SELECT table_column1, table_column2...
+FROM table_name1
+CROSS JOIN table_name2;
+
+# sql 2
+SELECT table_column1, table_column2...
+FROM table_name1, table_name2;
+
+# sql 3
+SELECT table_column1, table_column2...
+FROM table_name1
+JOIN table_name2;
+```
