@@ -52,6 +52,13 @@ SELECT Score,  (SELECT COUNT(DISTINCT(Score)) FROM  Scores b WHERE b.Score > a.S
        FROM Scores a
        ORDER by Score DESC
 
+# V0''
+# IDEA : DENSE_RANK (ORACLE)
+# https://leetcode.com/problems/rank-scores/discuss/218193/DENSE_RANK-SQL-SERVER-604-ms
+SELECT s.Score as Score,
+DENSE_RANK() OVER (ORDER BY s.Score DESC) as Rank
+FROM Scores s
+
 # V1
 # https://medium.com/data-science-for-kindergarten/leetcode-mysql-178-rank-scores-b59d89f3f551
 # Write your MySQL query statement below

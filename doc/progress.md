@@ -36,7 +36,9 @@
 			- 0184
 			- 0177 (again)
 			- 0180
-			- 0185 (ok, but again*)
+			- 0185 (ok, but *again*)
+			- 1777
+			- 0178
 			- =======
 			- (review)
 			- TO REVIEW:
