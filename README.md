@@ -1013,7 +1013,7 @@
 0175| [Combine Two Tables](https://leetcode.com/problems/combine-two-tables/) | [MySQL](./leetcode_SQL/combine-two-tables.sql) | _O(m + n)_   | _O(m + n)_ | Easy     || OK (4)
 0176| [Second Highest Salary](https://leetcode.com/problems/second-highest-salary/) | [MySQL](./leetcode_SQL/Second_Highest_Salary.sql)  | _O(n)_ | _O(1)_ | Easy |`amazon`,`fb`| OK  (4)
 0177| [Nth Highest Salary](https://leetcode.com/problems/nth-highest-salary/) | [MySQL](./leetcode_SQL/Nth_Highest_Salary.sql) | _O(n^2)_   | _O(n)_ | Medium|`MySQL PROCEDURE`, `SQL FAQ`| AGAIN*** (3)
-0178| [Rank Scores](https://leetcode.com/problems/rank-scores/) | [MySQL](./leetcode_SQL/rank-scores.sql) | _O(n^2)_| _O(n)_| Medium |`trick`, `SQL var`,  ank, select same table| AGAIN*** (4)
+0178| [Rank Scores](https://leetcode.com/problems/rank-scores/) | [MySQL](./leetcode_SQL/rank-scores.sql) | _O(n^2)_| _O(n)_| Medium |`trick`, `SQL var`,  ank, select same table, rank| AGAIN****** (5)
 0180| [Consecutive Numbers](https://leetcode.com/problems/consecutive-numbers/) | [MySQL](./leetcode_SQL/consecutive-numbers.sql)  | _O(n)_   | _O(n)_ | Medium   |`SQL var`, join same table multi times| OK* (3) 
 0181| [Employees Earning More Than Their Managers](https://leetcode.com/problems/employees-earning-more-than-their-managers/) | [MySQL](./leetcode_SQL/employees-earning-more-than-their-managers.sql) | _O(n^2)_   | _O(1)_ | Easy     || OK 
 0182| [Duplicate Emails](https://leetcode.com/problems/duplicate-emails/) | [MySQL](./leetcode_SQL/duplicate-emails.sql) | _O(n^2)_ | _O(n)_  | Easy  || OK 
@@ -1135,7 +1135,7 @@
 1747| [Leetflex Banned Accounts](https://leetcode.com/problems/leetflex-banned-accounts/) | [MySQL](./leetcode_SQL/leetflex-banned-accounts.sql) | _O(n^2)_ | _O(n)_| Medium|🔒| OK (1) (but again)
 1757| [Recyclable and Low Fat Products](https://leetcode.com/problems/recyclable-and-low-fat-products/) | [MySQL](./leetcode_SQL/recyclable-and-low-fat-products.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1767| [Find the Subtasks That Did Not Execute](https://leetcode.com/problems/find-the-subtasks-that-did-not-execute/) | [MySQL](./leetcode_SQL/find-the-subtasks-that-did-not-execute.sql) | _O(n * c)_ | _O(n * c)_| Hard|🔒, `RECURSIVE CTE`| AGAIN (not start)
-1777| [Product's Price for Each Store](https://leetcode.com/problems/products-price-for-each-store/) | [MySQL](./leetcode_SQL/products-price-for-each-store.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
+1777| [Product's Price for Each Store](https://leetcode.com/problems/products-price-for-each-store/) | [MySQL](./leetcode_SQL/products-price-for-each-store.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK (2)
 1783| [Grand Slam Titles](https://leetcode.com/problems/grand-slam-titles/) | [MySQL](./leetcode_SQL/grand-slam-titles.sql) | _O(n)_ | _O(n)_| Medium|🔒, union all, good basic| OK* (1) (but again)
 1789| [Primary Department for Each Employee](https://leetcode.com/problems/primary-department-for-each-employee/) | [MySQL](./leetcode_SQL/primary-department-for-each-employee.sql) | _O(n)_ | _O(n)_| Easy|🔒, where id in| OK (1) (but again)
 1795| [Rearrange Products Table](https://leetcode.com/problems/rearrange-products-table/) | [MySQL](./leetcode_SQL/rearrange-products-table.sql) | _O(n)_ | _O(n)_| Easy|🔒, union all| OK* (1)
