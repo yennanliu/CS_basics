@@ -11,12 +11,13 @@ def mergeSort(arr):
         L = arr[:mid] # Dividing the array elements  
         R = arr[mid:] # into 2 halves 
   
+        ### NOTE THIS (recursive)  
         mergeSort(L) # Sorting the first half 
         mergeSort(R) # Sorting the second half 
   
         i = j = k = 0
           
-        # Copy data to temp arrays L[] and R[] 
+        # copy data to temp arrays L[] and R[] 
         while i < len(L) and j < len(R): 
             if L[i] < R[j]: 
                 arr[k] = L[i] 
@@ -24,14 +25,15 @@ def mergeSort(arr):
             else: 
                 arr[k] = R[j] 
                 j+=1
+            ### NOTE THIS
             k+=1
           
-        # Checking if any element was left 
+        # check if any remaining element
         while i < len(L): 
             arr[k] = L[i] 
             i+=1
             k+=1
-          
+            
         while j < len(R): 
             arr[k] = R[j] 
             j+=1
@@ -49,7 +51,8 @@ For manual testing run:
 python merge_sort.py
 """
 def merge_sort(collection):
-    """Pure implementation of the merge sort algorithm in Python
+    """
+    Pure implementation of the merge sort algorithm in Python
     :param collection: some mutable ordered collection with heterogeneous
     comparable items inside
     :return: the same collection ordered by ascending
@@ -91,7 +94,6 @@ def merge_sort(collection):
             k += 1
 
     return collection
-
 
 # if __name__ == '__main__':
 #     try:
