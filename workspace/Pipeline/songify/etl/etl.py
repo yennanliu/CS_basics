@@ -5,7 +5,8 @@ import psycopg2
 from sql_queries import *
 from helper import *
 
-def process_song_data(cur, file_path):
+
+def process_song_file(cur, file_path):
 
     #song_data = []
 
@@ -38,7 +39,7 @@ def process_song_data(cur, file_path):
     print ("song data inserted OK!")
 
 
-def process_log_data(cur, file_path):
+def process_log_file(cur, file_path):
 
     log_data = load_data(file_path)
 
@@ -91,10 +92,49 @@ def process_log_data(cur, file_path):
             songplay_data
             )
 
+
 def process_data(cur, conn, filepath, func):
 
-    pass
+    all_files = []
+
+    # get all files matching extension from directory
+    for root, dirs, files in os.walk(filepath):
+        files = glob.glob(os.path.join(root, '*.json'))
+
+        for f in files:
+            all_files.append(os.abspath(f))
+
+    # get total number of files
+    num_files = len(all_files)
+    print("{num_files} files found in {filepath}".format(num_files=num_files, filepath=filepath))
+
+    # implement func on the files via iteration
+    for i, datafile in enumerate(all_files, 1): # idx starts from 1
+        func(cur, datafile)
+        conn.commit()
+        print ("{}/{} files processed".format(i, num_files))
+
 
 def main():
 
-    pass
+    host = '127.0.0.1'
+    dbname = 'test_db'
+    user = 'postgres'
+    password = 'postgres'
+    creds = "host={host} dbname={dbname} user={user} password={password}"
+
+    creds = creds.format(host=host, dbname=dbname, user=user, password=password)
+    print (creds)
+
+    conn = psycopg2.connect(creds)
+    cur = conn.cursor()
+
+    # process song_data, log_data
+    process_data(cur, conn, filepath='data/song_data', func=process_song_file)
+    process_data(cur, conn, filepath='data/log_data', func=process_log_file)
+
+    conn.close()
+
+if __name__ == '__main__':
+    main()
+    print ("main process finished!")
