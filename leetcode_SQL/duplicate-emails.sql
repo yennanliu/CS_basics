@@ -21,6 +21,14 @@ For example, your query should return the following for the above table:
 
 */ 
 
+/* V0 */
+select
+Email
+from
+Person
+group by Email
+having count(Email) > 1
+
 /* V1 */
 SELECT Email
 FROM
