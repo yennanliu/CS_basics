@@ -1163,7 +1163,7 @@
 1978 | [Employees Whose Manager Left the Company](https://leetcode.com/problems/employees-whose-manager-left-the-company/) | [MySQL](./leetcode_SQL/employees-whose-manager-left-the-company.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒| OK (1)
 1988 | [Find Cutoff Score for Each School](https://leetcode.com/problems/find-cutoff-score-for-each-schooly/) | [MySQL](./leetcode_SQL/find-cutoff-score-for-each-school.sql) | _O(n * m)_ | _O(n * m)_| Medium|🔒, no ref| AGAIN (not start)
 1990 | [Count the Number of Experiments](https://leetcode.com/problems/count-the-number-of-experiments/) | [MySQL](./leetcode_SQL/count-the-number-of-experiments.sql) | _O(n)_ | _O(n)_| Easy|🔒, cross join|AGAIN* (1)
-2004 | [The Number of Seniors and Juniors to Join the Company](https://leetcode.com/problems/the-number-of-seniors-and-juniors-to-join-the-company/) | [MySQL](./leetcode_SQL/the-number-of-seniors-and-juniors-to-join-the-company.sql) | _O(nlogn)_ | _O(n)_ Hard|🔒, not ref| AGAIN (not start)
+2004 | [The Number of Seniors and Juniors to Join the Company](https://leetcode.com/problems/the-number-of-seniors-and-juniors-to-join-the-company/) | [MySQL](./leetcode_SQL/the-number-of-seniors-and-juniors-to-join-the-company.sql) | _O(nlogn)_ | _O(n)_| Hard|🔒, not ref| AGAIN (not start)
 
 
 ## Shell Script
