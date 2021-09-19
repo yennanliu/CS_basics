@@ -1,4 +1,4 @@
-# Recursion and Dynamic Programming
+# Dynamic Programming
 
 ## 0) Concept  
 
