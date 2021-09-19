@@ -2,8 +2,8 @@ import os
 import glob
 import psycopg2
 
-from sql_queries import *
-from helper import *
+from etl.sql_queries import *
+from etl.helper import *
 
 
 def process_song_file(cur, file_path):
@@ -135,6 +135,6 @@ def main():
 
     conn.close()
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
     print ("main process finished!")
