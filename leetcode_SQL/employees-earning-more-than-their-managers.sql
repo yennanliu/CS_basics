@@ -35,6 +35,14 @@ b.Id = a.ManagerId
 and 
 a.Salary > b.Salary 
 
+/* V0' */
+SELECT e.Name AS Employee
+FROM Employee e
+WHERE e.Salary >
+    (SELECT e2.Salary
+     FROM Employee e2
+     WHERE e.ManagerId = e2.Id )
+     
 /* V1  */
 SELECT a.Name as Employee
 FROM Employee a
