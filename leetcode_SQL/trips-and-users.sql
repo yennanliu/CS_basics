@@ -42,7 +42,19 @@
 
 # V0 
 
-# V1 
+# V1
+# https://leetcode.com/problems/trips-and-users/discuss/69151/Sharing-my-solution
+select 
+t.Request_at Day, 
+round(sum(case when t.Status like 'cancelled_%' then 1 else 0 end)/count(*),2) Rate
+from Trips t 
+inner join Users u 
+on t.Client_Id = u.Users_Id and u.Banned='No'
+where t.Request_at between '2013-10-01' and '2013-10-03'
+group by t.Request_at
+
+# V1'
+# https://www.cnblogs.com/grandyang/p/5373841.html
 
 # V2 
 # Time:  O((t * u) + tlogt)
