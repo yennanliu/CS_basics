@@ -1,5 +1,5 @@
 import psycopg2
-from sql_queries import create_table_queries, drop_table_queries
+from etl.sql_queries import create_table_queries, drop_table_queries
 
 def create_db():
     """
@@ -56,5 +56,5 @@ def main():
 
     conn.close()
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
