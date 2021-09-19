@@ -24,6 +24,14 @@ For example, given the above Logs table, 1 is the only number that appears conse
 # https://leetcode.com/problems/consecutive-numbers/description/
 # https://github.com/kamyu104/LeetCode/blob/master/MySQL/consecutive-numbers.sql
 
+/* VO */
+SELECT DISTINCT a.Num AS ConsecutiveNums
+FROM Logs a
+INNER JOIN Logs b ON a.Id - 1 = b.Id
+AND a.Num = b.Num
+INNER JOIN Logs c ON a.Id + 1 = c.Id
+AND a.Num = c.Num
+
 /* V1 */
 SELECT DISTINCT b.Num AS ConsecutiveNums
 FROM Logs a
