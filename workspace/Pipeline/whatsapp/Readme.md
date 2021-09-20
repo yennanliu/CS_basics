@@ -25,6 +25,12 @@
 	- SQL:
 		- how to get thses value ? `UID, first_active_date, last_active_date, previous_active_date`
 		- how to update this table per daily data partition (distribution) ?
+			- https://cloud.google.com/bigquery/docs/using-dml-with-partitioned-tables
+			- https://blog.heroku.com/handling-very-large-tables-in-postgres-using-partitioning
+			- https://www.enterprisedb.com/postgres-tutorials/how-use-table-partitioning-scale-postgresql
+			- https://severalnines.com/database-blog/guide-partitioning-data-postgresql
+			- https://docs.microsoft.com/en-us/archive/msdn-magazine/2014/october/sql-server-implement-large-fast-updatable-tables-for-responsive-real-time-reporting
+
 	- Python (ETL)
 		```
 		join -> transform -> union -> lookup -> insert
@@ -58,6 +64,7 @@
 				- [ref2](https://gist.github.com/iyvinjose/e6c1cb2821abd5f01fd1b9065cbc759d)
 				- [Processing large files using python](https://www.blopig.com/blog/2016/08/processing-large-files-using-python/)
 				- [Python Read Big File Example](https://www.code-learner.com/python-read-big-file-example/)
+				- [file io sample code](https://github.com/yennanliu/utility_Python/tree/master/file_io)
 
 - Case 3:
 	- Prod sense

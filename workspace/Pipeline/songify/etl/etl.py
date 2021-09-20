@@ -135,6 +135,6 @@ def main():
 
     conn.close()
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
     print ("main process finished!")
