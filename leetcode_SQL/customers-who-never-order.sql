@@ -36,6 +36,20 @@ https://leetcode.com/problems/customers-who-never-order/description/
 #
 */
 
+/* V0 */
+### NOTE : 
+#       -> SHOULD BE o.CustomerId is NULL
+#       -> RATHER THAN o.CustomerId = NULL
+SELECT
+c.Name AS Customers
+FROM
+Customers c
+left join
+Orders o
+on c.Id = o.CustomerId
+WHERE
+o.CustomerId is NULL
+
 /* V1 */
 SELECT Name AS Customers
 FROM Customers
