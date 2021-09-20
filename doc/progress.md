@@ -3,6 +3,62 @@
 - `TODO`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 - `TODO2`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 
+# 2021-09-20
+- DOING:
+	- LC (f_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Facebook%20-%20LeetCode.pdf (inverse order)
+		- programming
+			- (normal order)
+			- (pdf : p.2)
+			- =======
+			- (inverse order)
+			- (pdf : p.7)
+			- =======
+			- (not yet)
+			- 785
+			- 477
+			- 721
+			- =======
+			- back track
+			- hash table
+			- bit manipulation
+			- union find
+			- quick sort
+		- SQL
+			- (new)
+			- 1990
+			- 2004
+			- =======
+			- (high freq 50)
+			- https://blog.csdn.net/qq_44186838/article/details/118713154
+			- 0626
+			- =======
+			- (review)
+			- TO REVIEW:
+				- window func
+					- rank()
+		- Data model
+			- relational_db_design_implementation
+				- ch 9 : 175 - 180
+				- ch 11 : 214 - 229
+				- ch 12 : 230 - 270
+				- TO READ:
+					- ch 6 : normalization
+					- ch 7 : performance tuning
+				- Contents
+					- https://www.sciencedirect.com/book/9780128043998/relational-database-design-and-implementation
+			- Kimball-Data-Warehouse-Toolkit
+				- ch1 : OK
+				- ch2 : p.37 - 105
+				- ch3 : p.98 - 110
+				- ch4 : p.119 - 140
+				- ch5 : p.160 - 166
+				- ch6 : p.167 - 
+				- ch19 : p.475 - 479
+	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
+		- Tree
+		- String
+
 # 2021-09-19
 - DOING:
 	- LC (f_)
