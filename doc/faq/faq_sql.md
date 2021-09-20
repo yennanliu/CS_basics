@@ -747,3 +747,21 @@ SELECT table_column1, table_column2...
 FROM table_name1
 JOIN table_name2;
 ```
+
+### 33. Left join example ?
+- Note : Should use `IS NULL` (rather than "= null")
+```sql
+# LC 0183
+### NOTE : 
+#       -> SHOULD BE o.CustomerId is NULL
+#       -> RATHER THAN o.CustomerId = NULL
+SELECT
+c.Name AS Customers
+FROM
+Customers c
+left join
+Orders o
+on c.Id = o.CustomerId
+WHERE
+o.CustomerId is NULL
+```
