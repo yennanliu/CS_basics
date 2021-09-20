@@ -1027,6 +1027,7 @@
 0512| [Game Play Analysis II](https://leetcode.com/problems/game-play-analysis-ii/) | [MySQL](./leetcode_SQL/game-play-analysis-ii.sql)| _O(n)_ | _O(n)_ | Easy  |🔒, `2 col where` `good trick` | AGAIN**(4)
 0534| [Game Play Analysis III](https://leetcode.com/problems/game-play-analysis-iii/) | [MySQL](./leetcode_SQL/game-play-analysis-iii.sql) | _O(nlogn)_ | _O(n)_  | Medium |🔒, `SQL var`, `tricky`, window func| AGAIN**** (4)
 0550| [Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv/) | [MySQL](./leetcode_SQL/game-play-analysis-iv.sql) | _O(n)_ | _O(n)_| Medium|`tricky`, good basic, where min condition | OK*** (3) (but again)
+569| [Median Employee Salary](https://leetcode.com/problems/median-employee-salary/description/) | [MySQL](./leetcode_SQL/median_employee_salary.sql) | _O(n)_ | _O(n)_| Medium| medium number| AGAIN* (not start)
 578| [Get Highest Answer Rate Question](https://leetcode.com/problems/get-highest-answer-rate-question/description/)|[MySQL](./leetcode_SQL/get_highest_answer_rate_question.sql)||| Medium |`fb`, case condition|  OK* (3)
 579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](./leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |window function, `amazon`| OK*** (3)(but again)
 595| [Big Countries](https://leetcode.com/problems/big-countries/)|[MySQL](./leetcode_SQL/big_countries.sql)||| Easy || OK
@@ -1047,7 +1048,7 @@
 1082| [Sales Analysis I](https://leetcode.com/problems/sales-analysis-i/) |  [MySQL](./leetcode_SQL/sales-analysis-i.sql)  | _O(n)_ | _O(n)_ | Easy   |🔒, group by only 1 col | OK*** (3)
 1083| [Sales Analysis II](https://leetcode.com/problems/sales-analysis-ii/) | [MySQL](./leetcode_SQL/sales-analysis-ii.sql) | _O(m + n)_ | _O(m + n)_   | Easy   |🔒| OK*
 1084| [Sales Analysis III](https://leetcode.com/problems/sales-analysis-iii/) | [MySQL](./leetcode_SQL/sales-analysis-iii.sql) | _O(m + n)_ | _O(m + n)_| Easy |🔒 | OK** (2)
-1097| [Game Play Analysis V](https://leetcode.com/problems/game-play-analysis-v/) | [MySQL](./leetcode_SQL/game-play-analysis-v.sql) | _O(n^2)_ | _O(n)_  | Hard  |🔒, `good basic`,`retention`, case condition, retention| AGAIN***** (4)
+1097| [Game Play Analysis V](https://leetcode.com/problems/game-play-analysis-v/) | [MySQL](./leetcode_SQL/game-play-analysis-v.sql) | _O(n^2)_ | _O(n)_  | Hard  |🔒, `good basic`,`retention`, case condition, retention, data_add, left join| AGAIN***** (5)
 1098| [Unpopular Books](https://leetcode.com/problems/unpopular-books/) | [MySQL](./leetcode_SQL/unpopular-books.sql) | _O(m + n)_ | _O(n)_ | Medium  |🔒| OK* (2)
 1107| [New Users Daily Count](https://leetcode.com/problems/new-users-daily-count/) |[MySQL](./leetcode_SQL/new-users-daily-count.sql) | _O(n)_ | _O(n)_ | Medium  |🔒|  OK*
 1112| [Highest Grade For Each Student](https://leetcode.com/problems/highest-grade-for-each-student/) | [MySQL](./leetcode_SQL/highest-grade-for-each-student.sql) | _O(nlogn)_ | _O(n)_ | Medium  |🔒|  OK** (3)
@@ -1148,11 +1149,11 @@
 1811| [Find Interview Candidates](https://leetcode.com/problems/find-interview-candidates/) | [MySQL](./leetcode_SQL/find-interview-candidates.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, union all, cte, where, `good basic`| AGAIN* (1)
 1821| [Find Customers With Positive Revenue this Year](https://leetcode.com/problems/find-customers-with-positive-revenue-this-year/) | [MySQL](./leetcode_SQL/find-customers-with-positive-revenue-this-year.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1831| [Maximum Transaction Each Day](https://leetcode.com/problems/maximum-transaction-each-day/) | [MySQL](./leetcode_SQL/maximum-transaction-each-day.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, rank(), where on 2 attr, good basic| AGAIN**** (1)
-1841| [League Statistics](https://leetcode.com/problems/league-statistics/) | [MySQL](./leetcode_SQL/league-statistics.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, case| AGAIN (1)
+1841| [League Statistics](https://leetcode.com/problems/league-statistics/) | [MySQL](./leetcode_SQL/league-statistics.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, case, complex| AGAIN* (2)
 1843| [Suspicious Bank Accounts](https://leetcode.com/problems/suspicious-bank-accounts/) | [MySQL](./leetcode_SQL/suspicious-bank-accounts.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, good trick, window func| AGAIN* (1)
 1853| [Convert Date Format](https://leetcode.com/problems/convert-date-format/) | [MySQL](./leetcode_SQL/convert-date-format.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1867| [Orders With Maximum Quantity Above Average](https://leetcode.com/problems/orders-with-maximum-quantity-above-average/) | [MySQL](./leetcode_SQL/orders-with-maximum-quantity-above-average.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK (1)
-1873| [Calculate Special Bonus](https://leetcode.com/problems/calculate-special-bonus/) | [MySQL](./leetcode_SQL/calculate-special-bonus.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
+1873| [Calculate Special Bonus](https://leetcode.com/problems/calculate-special-bonus/) | [MySQL](./leetcode_SQL/calculate-special-bonus.sql) | _O(n)_ | _O(n)_| Easy|🔒, left, odd num| OK (2)
 1875| [Group Employees of the Same Salary](https://leetcode.com/problems/group-employees-of-the-same-salary/) | [MySQL](./leetcode_SQL/group-employees-of-the-same-salary.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, complex, good basic| AGAIN* (1)
 1890| [The Latest Login in 2020](https://leetcode.com/problems/the-latest-login-in-2020/) | [MySQL](./leetcode_SQL/the-latest-login-in-2020.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1892| [Page Recommendations II](https://leetcode.com/problems/page-recommendations-ii/) | [MySQL](./leetcode_SQL/page-recommendations-ii.sql) | _O(n * m)_ | _O(n * m)_ Hard|🔒| AGAIN*** (1) (not start)
