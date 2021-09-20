@@ -1048,7 +1048,7 @@
 1076| [Project Employees II](https://leetcode.com/problems/project-employees-ii/) | [MySQL](./leetcode_SQL/project-employees-ii.sql)  | _O(n)_ | _O(n)_=| Easy=|🔒|  OK (2) 
 1077| [Project Employees III](https://leetcode.com/problems/project-employees-iii/) | [MySQL](./leetcode_SQL/project-employees-iii.sql)  | _O((m + n)^2)_ | _O(m + n)_   | Medium   |🔒, `tricky where`| AGAIN 
 1082| [Sales Analysis I](https://leetcode.com/problems/sales-analysis-i/) |  [MySQL](./leetcode_SQL/sales-analysis-i.sql)  | _O(n)_ | _O(n)_ | Easy   |🔒, group by only 1 col | OK*** (3)
-1083| [Sales Analysis II](https://leetcode.com/problems/sales-analysis-ii/) | [MySQL](./leetcode_SQL/sales-analysis-ii.sql) | _O(m + n)_ | _O(m + n)_   | Easy   |🔒| OK*
+1083| [Sales Analysis II](https://leetcode.com/problems/sales-analysis-ii/) | [MySQL](./leetcode_SQL/sales-analysis-ii.sql) | _O(m + n)_ | _O(m + n)_| Easy|🔒| OK* (2)
 1084| [Sales Analysis III](https://leetcode.com/problems/sales-analysis-iii/) | [MySQL](./leetcode_SQL/sales-analysis-iii.sql) | _O(m + n)_ | _O(m + n)_| Easy |🔒 | OK** (2)
 1097| [Game Play Analysis V](https://leetcode.com/problems/game-play-analysis-v/) | [MySQL](./leetcode_SQL/game-play-analysis-v.sql) | _O(n^2)_ | _O(n)_  | Hard  |🔒, `good basic`,`retention`, case condition, retention, data_add, left join| AGAIN***** (5)
 1098| [Unpopular Books](https://leetcode.com/problems/unpopular-books/) | [MySQL](./leetcode_SQL/unpopular-books.sql) | _O(m + n)_ | _O(n)_ | Medium  |🔒| OK* (2)
@@ -1071,7 +1071,7 @@
 1193| [Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i/) | [MySQL](./leetcode_SQL/monthly-transactions-i.sql) | _O(n)_ | _O(n)_       | Medium           |🔒| OK
 1194| [Tournament Winners](https://leetcode.com/problems/tournament-winners/) | [MySQL](./leetcode_SQL/tournament-winners.sql) | _O(m + n + nlogn)_ | _O(m + n)_| Hard|🔒| AGAIN*
 1204| [Last Person to Fit in the Elevator](https://leetcode.com/problems/last-person-to-fit-in-the-elevator/) | [MySQL](./leetcode_SQL/last-person-to-fit-in-the-elevator.sql) | _O(nlogn)_ | _O(n)_ | Medium|🔒| OK*
-1205| [Monthly Transactions II](https://leetcode.com/problems/monthly-transactions-ii/) | [MySQL](./leetcode_SQL/monthly-transactions-ii.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK* (1)
+1205| [Monthly Transactions II](https://leetcode.com/problems/monthly-transactions-ii/) | [MySQL](./leetcode_SQL/monthly-transactions-ii.sql) | _O(n)_ | _O(n)_| Medium|🔒, union all, case conditions| OK*** (2) (but again)
 1211| [Queries Quality and Percentage](https://leetcode.com/problems/queries-quality-and-percentage/) | [MySQL](./leetcode_SQL/queries-quality-and-percentage.sql) | _O(n)_ | _O(n)_| Easy|| OK
 1212| [Team Scores in Football Tournament](https://leetcode.com/problems/team-scores-in-football-tournament/) | [MySQL](./leetcode_SQL/team-scores-in-football-tournament.sql) | _O(nlogn)_ | _O(n)_| Medium| | OK* (1)
 1225| [Report Contiguous Dates](https://leetcode.com/problems/report-contiguous-dates/) | [MySQL](./leetcode_SQL/report-contiguous-dates.sql) | _O(nlogn)_ | _O(n)_ | Hard  |🔒| AGAIN* (1)
@@ -1109,7 +1109,7 @@
 1479| [Sales by Day of the Week](https://leetcode.com/problems/sales-by-day-of-the-week/) | [MySQL](./leetcode_SQL/sales-by-day-of-the-week.sql) | _O(m + n)_ | _O(n)_| Hard|🔒, case, DAYOFWEEK| OK
 1484| [Group Sold Products By The Date](https://leetcode.com/problems/group-sold-products-by-the-date/) | [MySQL](./leetcode_SQL/group-sold-products-by-the-date.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒, `GROUP_CONCAT`| OK*
 1495| [Friendly Movies Streamed Last Month](https://leetcode.com/problems/friendly-movies-streamed-last-month/) | [MySQL](./leetcode_SQL/friendly-movies-streamed-last-month.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
-1501| [Countries You Can Safely Invest In](https://leetcode.com/problems/countries-you-can-safely-invest-in/) | [MySQL](./leetcode_SQL/countries-you-can-safely-invest-in.sql) | _O(n)_ | _O(n)_| Medium|🔒, `inner join on or`| OK* (1)
+1501| [Countries You Can Safely Invest In](https://leetcode.com/problems/countries-you-can-safely-invest-in/) | [MySQL](./leetcode_SQL/countries-you-can-safely-invest-in.sql) | _O(n)_ | _O(n)_| Medium|🔒,good trick, group avg, global avg, SUBSTRING, inner join on `or conditions`| OK****** (3)
 1511| [Customer Order Frequency](https://leetcode.com/problems/customer-order-frequency/) | [MySQL](./leetcode_SQL/customer-order-frequency.sql) | _O(n)_ | _O(n)_| Easy|🔒, having, like| OK* (1)
 1517| [Find Users With Valid E-Mails](https://leetcode.com/problems/find-users-with-valid-e-mails/) | [MySQL](./leetcode_SQL/find-users-with-valid-e-mails.sql) | _O(n)_ | _O(n)_| Easy|🔒, regular expression|  AGAIN
 1527| [Patients With a Condition](https://leetcode.com/problems/patients-with-a-condition/) | [MySQL](./leetcode_SQL/patients-with-a-condition.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
