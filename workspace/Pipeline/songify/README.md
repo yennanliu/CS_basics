@@ -44,6 +44,8 @@
 		- registration fee
 		- 
 	- Breakdown
+		- https://new.qq.com/omn/20210110/20210110A05KY300.html
+		- 
 		- Step 1)
 			- Active Users
 				- DAU, WAU, MAU
@@ -57,3 +59,11 @@
 				- avg spend amount
 				- activity
 				- use coupon, promotion, extra features...
+
+		- Step 2)
+			- Users
+				- check retention, cohort, churn rate
+				- to understand current "prod health". If retention is low -> check the trend -> come up some hypothesis
+				- compare retention from time to time as well as cohort -> to know if something happened before/now
+				- also we can get sense from our cohort -> do we ever do well since now ? who're our good cohort ?
+				- check churn rate, to see if it grows recently, past, and why ?
