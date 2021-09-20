@@ -1032,6 +1032,7 @@
 597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](./leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK* (3) 
 602| [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) |[MySQL](./leetcode_SQL/friend-requests-ii-who-has-most-friend.sql)||| Medium |union all, `fb`| OK*** (3)
 601| [Human Traffic of Stadium](https://leetcode.com/problems/human-traffic-of-stadium/) |[MySQL](./leetcode_SQL/human-traffic-of-stadium.sql)||| Hard |consecutive nums| OK* (1)
+626| [Exchange Seats](https://leetcode.com/problems/exchange-seats/) |[MySQL](./leetcode_SQL/exchange_seats.sql)||| Medium || AGAIN (not start)
 1045| [Customers Who Bought All Products](https://leetcode.com/problems/customers-who-bought-all-products/) | [MySQL](./leetcode_SQL/customers-who-bought-all-products.sql) | _O(n + k)_ | _O(n + k)_       | Medium     |🔒 | OK* (2) 
 1050| [Actors and Directors Who Cooperated At Least Three Times](https://leetcode.com/problems/actors-and-directors-who-cooperated-at-least-three-times/) | [MySQL](./leetcode_SQL/actors-and-directors-who-cooperated-at-least-three-times.sql) | _O(n)_ | _O(n)_| Easy|🔒|  OK 
 1068| [Product Sales Analysis I](https://leetcode.com/problems/product-sales-analysis-i/) | [MySQL](./leetcode_SQL/product-sales-analysis-i.sql) | _O(m + n)_ | _O(m + n)_      | Easy   |🔒|  OK 
