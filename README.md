@@ -1028,12 +1028,14 @@
 0534| [Game Play Analysis III](https://leetcode.com/problems/game-play-analysis-iii/) | [MySQL](./leetcode_SQL/game-play-analysis-iii.sql) | _O(nlogn)_ | _O(n)_  | Medium |🔒, `SQL var`, `tricky`, window func| AGAIN**** (4)
 0550| [Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv/) | [MySQL](./leetcode_SQL/game-play-analysis-iv.sql) | _O(n)_ | _O(n)_| Medium|`tricky`, good basic, where min condition | OK*** (3) (but again)
 569| [Median Employee Salary](https://leetcode.com/problems/median-employee-salary/description/) | [MySQL](./leetcode_SQL/median_employee_salary.sql) | _O(n)_ | _O(n)_| Medium| medium number| AGAIN* (not start)
+571| [Find Median Given Frequency of Numbers](https://leetcode.com/problems/find-median-given-frequency-of-numbers//) | [MySQL](./leetcode_SQL/find_median_given_frequency_of_numbers.sql) | _O(n)_ | _O(n)_| Medium| medium number| AGAIN* (not start)
 578| [Get Highest Answer Rate Question](https://leetcode.com/problems/get-highest-answer-rate-question/description/)|[MySQL](./leetcode_SQL/get_highest_answer_rate_question.sql)||| Medium |`fb`, case condition|  OK* (3)
 579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](./leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |window function, `amazon`| OK*** (3)(but again)
 595| [Big Countries](https://leetcode.com/problems/big-countries/)|[MySQL](./leetcode_SQL/big_countries.sql)||| Easy || OK
 597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](./leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK* (3) 
 602| [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) |[MySQL](./leetcode_SQL/friend-requests-ii-who-has-most-friend.sql)||| Medium |union all, `fb`| OK*** (3)
 601| [Human Traffic of Stadium](https://leetcode.com/problems/human-traffic-of-stadium/) |[MySQL](./leetcode_SQL/human-traffic-of-stadium.sql)||| Hard |consecutive nums| OK* (1)
+618| [Students Report By Geography](https://leetcode.com/problems/students-report-by-geography/) |[MySQL](./leetcode_SQL/students_report_by_geography.sql)||| Hard |sql var| AGAIN (not start)
 620| [Not Boring Movies](https://leetcode.com/problems/not-boring-movies/) |[MySQL](./leetcode_SQL/not_boring_movies.sql)||| Easy || OK
 626| [Exchange Seats](https://leetcode.com/problems/exchange-seats/) |[MySQL](./leetcode_SQL/exchange_seats.sql)||| Medium || AGAIN (not start)
 627| [Swap Salary](https://leetcode.com/problems/swap-salary/) |[MySQL](./leetcode_SQL/swap_salary.sql)||| Easy |UPDATE with CASE, good basic| OK* (1) (but again)
