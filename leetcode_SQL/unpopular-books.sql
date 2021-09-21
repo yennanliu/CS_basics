@@ -59,6 +59,7 @@
 
 # V0
 ### NOTE : the datetime condition (in where)
+###        the `book_id not in` logic
 select book_id, name
 from Books
 where book_id not in (

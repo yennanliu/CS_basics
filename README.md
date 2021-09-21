@@ -1032,7 +1032,7 @@
 578| [Get Highest Answer Rate Question](https://leetcode.com/problems/get-highest-answer-rate-question/description/)|[MySQL](./leetcode_SQL/get_highest_answer_rate_question.sql)||| Medium |`fb`, case condition|  OK* (3)
 579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](./leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |window function, `amazon`| OK*** (3)(but again)
 595| [Big Countries](https://leetcode.com/problems/big-countries/)|[MySQL](./leetcode_SQL/big_countries.sql)||| Easy || OK
-597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](./leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK* (3) 
+597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](./leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK* (4) 
 602| [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) |[MySQL](./leetcode_SQL/friend-requests-ii-who-has-most-friend.sql)||| Medium |union all, `fb`| OK*** (3)
 601| [Human Traffic of Stadium](https://leetcode.com/problems/human-traffic-of-stadium/) |[MySQL](./leetcode_SQL/human-traffic-of-stadium.sql)||| Hard |consecutive nums| OK* (1)
 618| [Students Report By Geography](https://leetcode.com/problems/students-report-by-geography/) |[MySQL](./leetcode_SQL/students_report_by_geography.sql)||| Hard |sql var| AGAIN (not start)
@@ -1047,7 +1047,7 @@
 1075| [Project Employees I](https://leetcode.com/problems/project-employees-i/) | [MySQL](./leetcode_SQL/project-employees-i.sql) | _O(m + n)_ | _O(m + n)_       | Easy        |🔒 | OK 
 1076| [Project Employees II](https://leetcode.com/problems/project-employees-ii/) | [MySQL](./leetcode_SQL/project-employees-ii.sql)  | _O(n)_ | _O(n)_=| Easy=|🔒|  OK (2) 
 1077| [Project Employees III](https://leetcode.com/problems/project-employees-iii/) | [MySQL](./leetcode_SQL/project-employees-iii.sql)  | _O((m + n)^2)_ | _O(m + n)_   | Medium   |🔒, `tricky where`| AGAIN 
-1082| [Sales Analysis I](https://leetcode.com/problems/sales-analysis-i/) |  [MySQL](./leetcode_SQL/sales-analysis-i.sql)  | _O(n)_ | _O(n)_ | Easy   |🔒, group by only 1 col | OK*** (3)
+1082| [Sales Analysis I](https://leetcode.com/problems/sales-analysis-i/) |  [MySQL](./leetcode_SQL/sales-analysis-i.sql)  | _O(n)_ | _O(n)_ | Easy   |🔒, group by only 1 col, good basic | OK*** (3)
 1083| [Sales Analysis II](https://leetcode.com/problems/sales-analysis-ii/) | [MySQL](./leetcode_SQL/sales-analysis-ii.sql) | _O(m + n)_ | _O(m + n)_| Easy|🔒| OK* (2)
 1084| [Sales Analysis III](https://leetcode.com/problems/sales-analysis-iii/) | [MySQL](./leetcode_SQL/sales-analysis-iii.sql) | _O(m + n)_ | _O(m + n)_| Easy |🔒 | OK** (2)
 1097| [Game Play Analysis V](https://leetcode.com/problems/game-play-analysis-v/) | [MySQL](./leetcode_SQL/game-play-analysis-v.sql) | _O(n^2)_ | _O(n)_  | Hard  |🔒, `good basic`,`retention`, case condition, retention, data_add, left join| AGAIN***** (5)
@@ -1078,7 +1078,7 @@
 1241| [Number of Comments per Post](https://leetcode.com/problems/number-of-comments-per-post/) | [MySQL](./leetcode_SQL/number-of-comments-per-post.sql) | _O(n)_ | _O(n)_| Easy |🔒, good basic| OK** (2)
 1251| [Average Selling Price](https://leetcode.com/problems/average-selling-price/) | [MySQL](./leetcode_SQL/average-selling-price.sql) | _O(n)_ | _O(n)_| Easy|🔒, good basic| OK* (but again) (1)
 1264| [Page Recommendations](https://leetcode.com/problems/page-recommendations/) | [MySQL](./leetcode_SQL/page-recommendations.sql) | _O(m + n)_ | _O(m)_| Medium|🔒| OK* (1)
-1270| [All People Report to the Given Manager](https://leetcode.com/problems/all-people-report-to-the-given-manager/) | [MySQL](./leetcode_SQL/all-people-report-to-the-given-manager.sql) | _O(n)_ | _O(n)_| Medium|🔒, good basic| OK* (1)
+1270| [All People Report to the Given Manager](https://leetcode.com/problems/all-people-report-to-the-given-manager/) | [MySQL](./leetcode_SQL/all-people-report-to-the-given-manager.sql) | _O(n)_ | _O(n)_| Medium|🔒, good basic| OK* (2)
 1280| [Students and Examinations](https://leetcode.com/problems/students-and-examinations/) | [MySQL](./leetcode_SQL/students-and-examinations.sql) | _O((m * n) * log(m * n))_ | _O(m * n)_| Easy|🔒| OK (1)
 1285| [Find the Start and End Number of Continuous Ranges](https://leetcode.com/problems/find-the-start-and-end-number-of-continuous-ranges/) | [MySQL](./leetcode_SQL/find-the-start-and-end-number-of-continuous-ranges.sql) | _O(n)_ | _O(n)_| Medium|🔒, variable| AGAIN (not start) (1)
 1294| [Weather Type in Each Country](https://leetcode.com/problems/weather-type-in-each-country/) | [MySQL](./leetcode_SQL/weather-type-in-each-country.sql) | _O(m + n)_ | _O(n)_| Easy|🔒| OK (1)

@@ -53,6 +53,8 @@ The employees with employee_id 3, 8 and 9 don't report their work to head
 */
 
 # V0
+### NOTE : the LEFT JOIN
+#          ther where condition `WHERE e3.manager_id = 1 AND e1.employee_id != 1`
 SELECT e1.employee_id 
 FROM   employees e1 
        LEFT JOIN employees e2 
@@ -121,6 +123,9 @@ select employee_id
     from Employees
     where manager_id = 1) as t
 where employee_id != 1
+
+# V1''
+# https://blog.csdn.net/qq_44186838/article/details/118713154#NO35__1270_CEO_637
 
 # V2
 # Time:  O(n)

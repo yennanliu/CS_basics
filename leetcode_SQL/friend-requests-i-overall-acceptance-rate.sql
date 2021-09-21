@@ -88,6 +88,9 @@ WITH request_cnt AS
                accepter_id))
 SELECT CASE(WHEN request_cnt.cnt = 0 THEN 0 ELSE ROUND(accept_cnt.cnt/request_cnt.cnt, 2) END) AS accept_rate
 
+### Follow up ans ref
+# https://zhuanlan.zhihu.com/p/258790804
+
 # V1
 # https://www.cnblogs.com/lightwindy/p/9698958.html
 select
