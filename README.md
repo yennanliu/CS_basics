@@ -37,6 +37,7 @@
 * [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
 * [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
 * [SQL zoo](https://sqlzoo.net/) - SQL test
+* [pgexercises](https://pgexercises.com/questions/aggregates/) - Postgre exercises
 * [sqlservertutorial](https://www.sqlservertutorial.net/)
 * [Books](https://github.com/yennanliu/data_science_repo/tree/master/book)
 * [freecodecamp - data-structures](https://www.freecodecamp.org/news/tag/data-structures/)
