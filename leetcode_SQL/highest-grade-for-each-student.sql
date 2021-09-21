@@ -43,7 +43,7 @@ where (student_id, grade) in
     (select student_id, max(grade)
     from Enrollments
     group by student_id)
-group by student_id
+group by student_id, grade
 order by student_id asc
 
 # V1
