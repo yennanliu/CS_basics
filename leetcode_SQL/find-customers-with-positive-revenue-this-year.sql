@@ -1,8 +1,5 @@
 /*
 
-
-Share
-
 Find Customers With Positive Revenue this Year Problem
 
 Description
@@ -56,6 +53,9 @@ Thus only customers 1 and 4 have postive revenue in year 2021.
 */
 
 # V0
+SELECT customer_id
+FROM customers
+WHERE YEAR = 2021 AND revenue > 0;
 
 # V1
 # https://circlecoder.com/find-customers-with-positive-revenue-this-year/
