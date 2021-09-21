@@ -31,6 +31,9 @@
 			- =======
 			- (high freq 50)
 			- https://blog.csdn.net/qq_44186838/article/details/118713154
+			- 1821
+			- 1204 (OK, *but again*)
+			- 1082
 			- =======
 			- (review)
 			- TO REVIEW:

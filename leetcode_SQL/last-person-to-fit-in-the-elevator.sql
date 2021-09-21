@@ -59,6 +59,16 @@ Queue
 WHERE SUM(weight) OVER (PARTITION BY person_name ORDER BY turn) >= 1000
 ) sub
 
+# V0' : sub query and select same table twice
+### NOTE : the where condition : where a.turn >= turn
+select person_name 
+from queue a
+where (select sum(weight) 
+       from queue 
+       where a.turn >= turn) <= 1000
+order by turn desc 
+limit 1
+
 # V1
 # https://circlecoder.com/last-person-to-fit-in-the-elevator/
 select person_name 
