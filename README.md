@@ -1028,7 +1028,8 @@
 0534| [Game Play Analysis III](https://leetcode.com/problems/game-play-analysis-iii/) | [MySQL](./leetcode_SQL/game-play-analysis-iii.sql) | _O(nlogn)_ | _O(n)_  | Medium |🔒, `SQL var`, `tricky`, window func| AGAIN**** (4)
 0550| [Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv/) | [MySQL](./leetcode_SQL/game-play-analysis-iv.sql) | _O(n)_ | _O(n)_| Medium|`tricky`, good basic, where min condition | OK*** (3) (but again)
 569| [Median Employee Salary](https://leetcode.com/problems/median-employee-salary/description/) | [MySQL](./leetcode_SQL/median_employee_salary.sql) | _O(n)_ | _O(n)_| Medium| medium number| AGAIN* (not start)
-571| [Find Median Given Frequency of Numbers](https://leetcode.com/problems/find-median-given-frequency-of-numbers//) | [MySQL](./leetcode_SQL/find_median_given_frequency_of_numbers.sql) | _O(n)_ | _O(n)_| Medium| medium number| AGAIN* (not start)
+571| [Find Median Given Frequency of Numbers](https://leetcode.com/problems/find-median-given-frequency-of-numbers/) | [MySQL](./leetcode_SQL/find_median_given_frequency_of_numbers.sql) | _O(n)_ | _O(n)_| Medium| medium number| AGAIN* (not start)
+577| [Employee Bonus](https://leetcode.com/problems/employee-bonus/) | [MySQL](./leetcode_SQL/employee_bonus.sql) | _O(n)_ | _O(n)_| Easy|| OK
 578| [Get Highest Answer Rate Question](https://leetcode.com/problems/get-highest-answer-rate-question/description/)|[MySQL](./leetcode_SQL/get_highest_answer_rate_question.sql)||| Medium |`fb`, case condition|  OK* (3)
 579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](./leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |window function, `amazon`| OK*** (3)(but again)
 595| [Big Countries](https://leetcode.com/problems/big-countries/)|[MySQL](./leetcode_SQL/big_countries.sql)||| Easy || OK
@@ -1068,7 +1069,7 @@
 1173| [Immediate Food Delivery I](https://leetcode.com/problems/immediate-food-delivery-i/) | [MySQL](./leetcode_SQL/immediate-food-delivery-i.sql) | _O(n)_ | _O(1)_ | Easy  |🔒| OK
 1174| [Immediate Food Delivery II](https://leetcode.com/problems/immediate-food-delivery-ii/) | [MySQL](./leetcode_SQL/immediate-food-delivery-ii.sql) | _O(n)_ | _O(m)_  | Medium  |🔒| OK*
 1179| [Reformat Department Table](https://leetcode.com/problems/reformat-department-table/) | [MySQL](./leetcode_SQL/reformat-department-table.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| OK
-1193| [Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i/) | [MySQL](./leetcode_SQL/monthly-transactions-i.sql) | _O(n)_ | _O(n)_       | Medium           |🔒| OK
+1193| [Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i/) | [MySQL](./leetcode_SQL/monthly-transactions-i.sql) | _O(n)_ | _O(n)_       | Medium|🔒| OK (2)
 1194| [Tournament Winners](https://leetcode.com/problems/tournament-winners/) | [MySQL](./leetcode_SQL/tournament-winners.sql) | _O(m + n + nlogn)_ | _O(m + n)_| Hard|🔒| AGAIN*
 1204| [Last Person to Fit in the Elevator](https://leetcode.com/problems/last-person-to-fit-in-the-elevator/) | [MySQL](./leetcode_SQL/last-person-to-fit-in-the-elevator.sql) | _O(nlogn)_ | _O(n)_ | Medium|🔒, cumsum, window func, good basic| OK*** (2)
 1205| [Monthly Transactions II](https://leetcode.com/problems/monthly-transactions-ii/) | [MySQL](./leetcode_SQL/monthly-transactions-ii.sql) | _O(n)_ | _O(n)_| Medium|🔒, union all, case conditions| OK*** (2) (but again)
@@ -1136,7 +1137,7 @@
 1693| [Daily Leads and Partners](https://leetcode.com/problems/daily-leads-and-partners/) | [MySQL](./leetcode_SQL/daily-leads-and-partners.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1699| [Number of Calls Between Two Persons](https://leetcode.com/problems/number-of-calls-between-two-persons/) | [MySQL](./leetcode_SQL/number-of-calls-between-two-persons.sql) | _O(n)_ | _O(n)_| Medium|🔒, cte, union all| OK* (1)(but again)
 1709| [Biggest Window Between Visits](https://leetcode.com/problems/biggest-window-between-visits/) | [MySQL](./leetcode_SQL/biggest-window-between-visits.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, window func, datediff, coalesce, good trick| AGAIN***** (1)
-1715| [Count Apples and Oranges](https://leetcode.com/problems/count-apples-and-oranges/) | [MySQL](./leetcode_SQL/count-apples-and-oranges.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK (1)
+1715| [Count Apples and Oranges](https://leetcode.com/problems/count-apples-and-oranges/) | [MySQL](./leetcode_SQL/count-apples-and-oranges.sql) | _O(n)_ | _O(n)_| Medium|🔒, ifnull| OK (2)
 1729| [Find Followers Count](https://leetcode.com/problems/find-followers-count/) | [MySQL](./leetcode_SQL/find-followers-count.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒| OK
 1731| [The Number of Employees Which Report to Each Employee](https://leetcode.com/problems/the-number-of-employees-which-report-to-each-employee/) | [MySQL](./leetcode_SQL/the-number-of-employees-which-report-to-each-employee.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒| OK
 1741| [Find Total Time Spent by Each Employee](https://leetcode.com/problems/find-total-time-spent-by-each-employee/) | [MySQL](./leetcode_SQL/find-total-time-spent-by-each-employee.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒| OK
@@ -1147,7 +1148,7 @@
 1783| [Grand Slam Titles](https://leetcode.com/problems/grand-slam-titles/) | [MySQL](./leetcode_SQL/grand-slam-titles.sql) | _O(n)_ | _O(n)_| Medium|🔒, union all, good basic| OK* (1) (but again)
 1789| [Primary Department for Each Employee](https://leetcode.com/problems/primary-department-for-each-employee/) | [MySQL](./leetcode_SQL/primary-department-for-each-employee.sql) | _O(n)_ | _O(n)_| Easy|🔒, where id in| OK (1) (but again)
 1795| [Rearrange Products Table](https://leetcode.com/problems/rearrange-products-table/) | [MySQL](./leetcode_SQL/rearrange-products-table.sql) | _O(n)_ | _O(n)_| Easy|🔒, union all| OK* (1)
-1809| [Ad-Free Sessions](https://leetcode.com/problems/ad-free-sessions/) | [MySQL](./leetcode_SQL/ad-free-sessions.sql) | _O(n)_ | _O(n)_| Easy|🔒, left join| OK**** (1)(but again)
+1809| [Ad-Free Sessions](https://leetcode.com/problems/ad-free-sessions/) | [MySQL](./leetcode_SQL/ad-free-sessions.sql) | _O(n)_ | _O(n)_| Easy|🔒, left join where col is null| OK**** (2)(but again)
 1811| [Find Interview Candidates](https://leetcode.com/problems/find-interview-candidates/) | [MySQL](./leetcode_SQL/find-interview-candidates.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, union all, cte, where, `good basic`| AGAIN* (1)
 1821| [Find Customers With Positive Revenue this Year](https://leetcode.com/problems/find-customers-with-positive-revenue-this-year/) | [MySQL](./leetcode_SQL/find-customers-with-positive-revenue-this-year.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1831| [Maximum Transaction Each Day](https://leetcode.com/problems/maximum-transaction-each-day/) | [MySQL](./leetcode_SQL/maximum-transaction-each-day.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, rank(), where on 2 attr, good basic| AGAIN**** (1)

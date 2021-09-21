@@ -95,6 +95,8 @@ John attended Math exam 1 time, Physics exam 1 time and Programming exam 1 time.
 */
 
 # V0
+### NOTE :  left join
+#           and NULLIF(COUNT(e.subject_name), 0)
 SELECT
 s1.student_id,
 s1.student_name,
