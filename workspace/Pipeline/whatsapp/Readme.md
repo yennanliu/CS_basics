@@ -71,6 +71,7 @@
 		- DAU, MAU ...
 		- engagement
 	- Data modeling
+		- [dwgeek dw ref](https://dwgeek.com/tag/data-warehouse/)
 		- fact table
 			- what's the grain of fact table ?
 			- what's the fact we are looking at ?
@@ -81,6 +82,12 @@
 		- dimension table
 			- who, what, where, when, why, how
 			- how do biz ppl describe the data resulting from the biz process measurement events ?
+		- SCD, RCD in DW
+			- [Slowly Changing Dimensions (SCD) in Data Warehouse](https://dwgeek.com/slowly-changing-dimensions-scd.html/)
+			- [Rapidly Changing Dimension (RCD) in Data Warehouse](https://dwgeek.com/rapidly-changing-dimension-data-warehouse.html/)
+		- What's Surrogate key?
+			- [Data Warehouse Surrogate Key Design – Advantages and Disadvantages](https://dwgeek.com/data-warehouse-surrogate-key-design-advantages-disadvantages.html/)
+			- Data warehouse surrogate keys are sequentially generated meaningless numbers associated with each and every record in the data warehouse. These surrogate keys are used to join dimension and fact tables.
 
 
 ## Part 1) Case 1
