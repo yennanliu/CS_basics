@@ -484,6 +484,9 @@ WINDOW ntile_window AS
   - If there is NO primary key, count(1) faster than count(col)
   - If there is a primary key, count(col) is the fastest
 
+- Ref
+  - https://stackoverflow.com/questions/3003457/count-vs-countcolumn-name-which-is-more-correct
+
 - example
 ```sql
 -- build table 
