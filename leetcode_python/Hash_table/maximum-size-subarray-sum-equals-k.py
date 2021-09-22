@@ -37,6 +37,7 @@ class Solution(object):
         for i in range(len(nums)):
             acc += nums[i]
             if acc not in dic:
+                ### NOTE : we save idx as dict value
                 dic[acc] = i
             ### acc - x = k -> so x = acc - k, that's why we check if acc - x in the dic or not
             if acc - k in dic:
