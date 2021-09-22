@@ -78,6 +78,32 @@ class Solution(object):
         return res
 ```
 
+```python
+# dict values -> array
+In [6]:
+   ...: mydict = {'a':['a1','a2','a3'], 'b':['b1','b2','b3']}
+   ...:
+   ...: res = [mydict[x] for x in mydict]
+   ...:
+   ...: print (res)
+[['a1', 'a2', 'a3'], ['b1', 'b2', 'b3']]
+
+
+# LC 049 Group Anagrams
+
+# V0
+# IDEA : HASH TABLE
+class Solution:
+    def groupAnagrams(self, strs):
+        res = {}
+        for item in strs:
+            k = ''.join(sorted(item))  # sort the string 
+            if k not in res:  #  check if exists in res 
+                res[k] = []
+            res[k].append(item)  # if same, put all the same string into dict k 
+        return [res[x] for x in res]  # output the result 
+```
+
 ## 2) LC Example
 ```python
 # 525 Contiguous Array
