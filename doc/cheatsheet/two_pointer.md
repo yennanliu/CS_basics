@@ -65,6 +65,19 @@ class Solution:
 ```
 
 ```python
+# LC 283 move-zeroes
+# V0
+class Solution(object):
+    def moveZeroes(self, nums):
+        y = 0
+        for x in range(len(nums)):
+            if nums[x] != 0:
+                nums[x], nums[y] = nums[y], nums[x]
+                y += 1
+        return nums 
+```
+
+```python
 # LC 80 : Remove Duplicates from Sorted Array II
 # V0
 # IDEA : 2 POINTERS
@@ -83,5 +96,4 @@ class Solution:
                 nums[slow+1] = nums[fast]
                 slow += 1
         return slow+1
-
 ```
