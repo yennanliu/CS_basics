@@ -39,7 +39,9 @@ class Solution(object):
             for i in x:
                 if i != "#":
                     ans.append(i)
-                if ans:
+                # both `if ans:` and `if len(ans) > 0` work
+                #if ans:
+                if len(ans) > 0:
                     if ans[-1] != "#" and i == "#":
                         ans.pop()
             return ans 
@@ -62,8 +64,6 @@ class Solution(object):
                 else: ans.append(c)
             return ''.join(ans)
         return toString(S) == toString(T)
-
-
 
 # V1'
 # http://bookshadow.com/weblog/2018/06/03/leetcode-backspace-string-compare/
