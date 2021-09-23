@@ -1032,7 +1032,7 @@
 571| [Find Median Given Frequency of Numbers](https://leetcode.com/problems/find-median-given-frequency-of-numbers/) | [MySQL](./leetcode_SQL/find_median_given_frequency_of_numbers.sql) | _O(n)_ | _O(n)_| Medium| medium number| AGAIN* (not start)
 577| [Employee Bonus](https://leetcode.com/problems/employee-bonus/) | [MySQL](./leetcode_SQL/employee_bonus.sql) | _O(n)_ | _O(n)_| Easy|| OK
 578| [Get Highest Answer Rate Question](https://leetcode.com/problems/get-highest-answer-rate-question/description/)|[MySQL](./leetcode_SQL/get_highest_answer_rate_question.sql)||| Medium |`fb`, case condition|  OK* (3)
-579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](./leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |window function, `amazon`| OK*** (3)(but again)
+579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](./leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |window function, `amazon`, good trick| OK***** (4)(but again)
 595| [Big Countries](https://leetcode.com/problems/big-countries/)|[MySQL](./leetcode_SQL/big_countries.sql)||| Easy || OK
 597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](./leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK* (4) 
 601| [Human Traffic of Stadium](https://leetcode.com/problems/human-traffic-of-stadium/) |[MySQL](./leetcode_SQL/human-traffic-of-stadium.sql)||| Hard |consecutive nums| OK* (1)
@@ -1149,7 +1149,7 @@
 1777| [Product's Price for Each Store](https://leetcode.com/problems/products-price-for-each-store/) | [MySQL](./leetcode_SQL/products-price-for-each-store.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK (2)
 1783| [Grand Slam Titles](https://leetcode.com/problems/grand-slam-titles/) | [MySQL](./leetcode_SQL/grand-slam-titles.sql) | _O(n)_ | _O(n)_| Medium|🔒, union all, good basic| OK* (1) (but again)
 1789| [Primary Department for Each Employee](https://leetcode.com/problems/primary-department-for-each-employee/) | [MySQL](./leetcode_SQL/primary-department-for-each-employee.sql) | _O(n)_ | _O(n)_| Easy|🔒, where id in| OK (1) (but again)
-1795| [Rearrange Products Table](https://leetcode.com/problems/rearrange-products-table/) | [MySQL](./leetcode_SQL/rearrange-products-table.sql) | _O(n)_ | _O(n)_| Easy|🔒, union all| OK* (1)
+1795| [Rearrange Products Table](https://leetcode.com/problems/rearrange-products-table/) | [MySQL](./leetcode_SQL/rearrange-products-table.sql) | _O(n)_ | _O(n)_| Easy|🔒, union all, good basic| OK****** (2)
 1809| [Ad-Free Sessions](https://leetcode.com/problems/ad-free-sessions/) | [MySQL](./leetcode_SQL/ad-free-sessions.sql) | _O(n)_ | _O(n)_| Easy|🔒, left join where col is null| OK**** (2)(but again)
 1811| [Find Interview Candidates](https://leetcode.com/problems/find-interview-candidates/) | [MySQL](./leetcode_SQL/find-interview-candidates.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, union all, cte, where, `good basic`| AGAIN* (1)
 1821| [Find Customers With Positive Revenue this Year](https://leetcode.com/problems/find-customers-with-positive-revenue-this-year/) | [MySQL](./leetcode_SQL/find-customers-with-positive-revenue-this-year.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
