@@ -40,6 +40,16 @@ for i in range(len(x)):
         print (x[i])
 ```
 
+```python
+# string -> array
+
+a = 1234
+a_array = list(str(a))
+
+In [12]: a_array
+Out[12]: ['1', '2', '3', '4']
+```
+
 ## 2) LC Example
 
 ### 2-1) go through 2 string, keep comparing digits in eash string

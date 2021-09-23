@@ -3,18 +3,11 @@
 670. Maximum Swap
 Medium
 
-1759
 
-100
-
-Add to List
-
-Share
 You are given an integer num. You can swap two digits at most once to get the maximum valued number.
 
 Return the maximum valued number you can get.
 
- 
 
 Example 1:
 
@@ -76,6 +69,12 @@ class Solution(object):
 
 # V0'
 # IDEA : BRUTE FORCE
+# NOTE : ans = A[:]
+#        A[:] is a `shallow copy` syntax in python,
+#        it will copy "parent obj" (not child obj) to the other instance
+#        so the changes ("parent obj" only) in original instance will NOT affect the copied instance
+# https://stackoverflow.com/questions/4081561/what-is-the-difference-between-list-and-list-in-python
+# https://github.com/yennanliu/til#20210923
 class Solution(object):
     def maximumSwap(self, num):
         A = list(str(num))
