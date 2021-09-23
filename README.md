@@ -1059,7 +1059,7 @@
 1112| [Highest Grade For Each Student](https://leetcode.com/problems/highest-grade-for-each-student/) | [MySQL](./leetcode_SQL/highest-grade-for-each-student.sql) | _O(nlogn)_ | _O(n)_ | Medium  |🔒, good basic|  OK** (4)
 1113| [Reported Posts](https://leetcode.com/problems/reported-posts/) | [MySQL](./leetcode_SQL/reported-posts.sql) | _O(n)_ | _O(n)_ | Easy |🔒| OK 
 1126| [Active Businesses](https://leetcode.com/problems/active-businesses/) | [MySQL](./leetcode_SQL/active-businesses.sql) | _O(n)_ | _O(n)_  | Medium |🔒, `good basic`|  AGAIN**
-1127| [User Purchase Platform](https://leetcode.com/problems//user-purchase-platform/) | [MySQL](./leetcode_SQL/user-purchase-platform.sql)  | _O(n)_ | _O(n)_  | Hard  |🔒, `complex`|  AGAIN*** (3)
+1127| [User Purchase Platform](https://leetcode.com/problems//user-purchase-platform/) | [MySQL](./leetcode_SQL/user-purchase-platform.sql)  | _O(n)_ | _O(n)_  | Hard  |🔒, `complex`, union all, case|  OK*** (4) (but again)
 1132| [Reported Posts II](https://leetcode.com/problems/reported-posts-ii/) | [MySQL](./leetcode_SQL/reported-posts-ii.sql)  | _O(m + n)_ | _O(n)_ | Medium   |🔒| OK**
 1141| [User Activity for the Past 30 Days I](https://leetcode.com/problems/user-activity-for-the-past-30-days-i/) | [MySQL](./leetcode_SQL/user-activity-for-the-past-30-days-i.sql) | _O(n)_ | _O(n)_       | Easy      |🔒| AGAIN* (1)
 1142| [User Activity for the Past 30 Days II](https://leetcode.com/problems/user-activity-for-the-past-30-days-ii/) | [MySQL](./leetcode_SQL/user-activity-for-the-past-30-days-ii.sql) | _O(n)_ | _O(n)_       | Easy           |🔒 | AGAIN* (1)
