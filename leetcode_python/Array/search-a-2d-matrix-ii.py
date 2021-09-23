@@ -23,6 +23,7 @@ class Solution:
         if len(matrix) == 0:
             return False        
         row, col = 0, len(matrix[0]) - 1
+        ### NOTE : col starts from len(matrix[0]) - 1; while row starts from 0
         while row < len(matrix) and col >= 0:
             if matrix[row][col] == target: 
                 return True
@@ -31,6 +32,28 @@ class Solution:
             elif matrix[row][col] > target: 
                 col -= 1
         return False
+
+# V0'
+# IDEA : BINARY SEARCH
+class Solution:
+    def searchMatrix(self, matrix, target):
+
+        def binSearch(nums, low, high):
+            while low <= high:
+                mid = (low + high) // 2
+                if nums[mid] > target:
+                    high = mid - 1
+                else:
+                    low = mid + 1
+            return high
+
+        y = len(matrix[0]) - 1
+        for x in range(len(matrix)):
+            ### NOTE : the binSearch here is searching between 0 and y
+            y = binSearch(matrix[x], 0, y)
+            if matrix[x][y] == target:
+                return True
+        return False 
 
 # V1
 # SAME AS #74 Search a 2D Matrix
@@ -88,7 +111,7 @@ class Solution:
         y = len(matrix[0]) - 1
         def binSearch(nums, low, high):
             while low <= high:
-                mid = (low + high) / 2
+                mid = (low + high) // 2
                 if nums[mid] > target:
                     high = mid - 1
                 else:

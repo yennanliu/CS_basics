@@ -2,7 +2,6 @@
 
 Given an integer array nums, return true if there exists a triple of indices (i, j, k) such that i < j < k and nums[i] < nums[j] < nums[k]. If no such indices exists, return false.
 
- 
 
 Example 1:
 
@@ -31,7 +30,23 @@ Follow up: Could you implement a solution that runs in O(n) time complexity and 
 
 """
 
-# V0 
+# V0
+# IDEA : MAINTAIN var first, second
+#        AND GO THROUGH nums to check if there exists x (on the right hand side of a, b )
+#        such that x > second > first
+class Solution(object):
+    def increasingTriplet(self, nums):
+        first, second = float('inf'), float('inf')
+        for num in nums:
+            if num <= first:     # min num
+                first = num
+            elif num <= second:  # 2nd min num
+                second = num
+            else:                # 3rd min num
+                return True      
+        return False
+
+# V0' 
 # IDEA : MAINTAIN var a, b 
 #        AND GO THROUGH nums to check if there exists x (on the right hand side of a, b )
 #        such that x > a > b
