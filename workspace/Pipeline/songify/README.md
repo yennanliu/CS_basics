@@ -7,6 +7,9 @@
 
 ## Part 2) Case 2
 - Stream ETL
+	- Given a multi-step product feature, write SQL to see how well this feature is doing (loading times, step completion %). Then use Python to constantly update average step time as new values stream in, given that there are too many to store in memory
+	- https://blog.csdn.net/weixin_26746653/article/details/109122992
+	- https://www.interviewquery.com/blog-facebook-data-engineer-interview/
 
 ## Part 3) Case 3
 - Data model
