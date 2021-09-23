@@ -29,9 +29,16 @@
 			- =======
 			- (high freq 50)
 			- https://blog.csdn.net/qq_44186838/article/details/118713154
+			- 1308
+			- 570
+			- 580
+			- 1407
+			- 1795
+			- 550
+			- 579
 			- =======
 			- (review)
-			- 1174
+			- 1241
 			- TO REVIEW:
 				- window func
 					- rank()
