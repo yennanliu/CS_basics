@@ -47,6 +47,21 @@
 				- ch19 : p.479 - 496
 				- ch20 : p.497 - 519
 					- Develop Incremental ETL Processing : p.512 ***
+			- TODO:
+				- D*
+					- https://systemdesignprimer.com/dropbox-system-design/
+					- https://systemdesignprimer.com/netflix-system-design/#database-schema
+					- https://documentation.invantive.com/2017R2/dropbox-data-model/webhelp/invantive-dropbox-provider-dropbox-dropbox-account.html
+					- https://stackoverflow.com/questions/9736548/database-schema-how-the-relationship-can-be-designed-between-user-file-and-fol
+
+				- U*
+					- https://allbigdatathings.blogspot.com/2019/04/uber-data-model.html
+					- https://medium.com/geekculture/data-warehouse-design-data-model-for-ride-sharing-or-taxi-service-5fc20d8eb424
+					- https://www.w3.org/2019/09/trans-data-ws/W3C_workshop__Extensible_Entity_Data_Models_at_Uber.pdf
+					- https://www.reddit.com/r/SQL/comments/gxbs71/data_model_for_rideshare_app/
+					- https://www.vertabelo.com/blog/calling-all-cabs-a-database-model-for-a-taxi-service/
+					- https://www.educative.io/blog/uber-backend-system-design
+
 	- https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU
 		- Tree
 		- String
