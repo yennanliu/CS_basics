@@ -104,6 +104,30 @@ class Solution:
         return [res[x] for x in res]  # output the result 
 ```
 
+- get `max index` for each element in a string
+```python
+s = 'ababcbacadefegdehijhklij'
+{k:v for k,v in enumerate(s)}
+
+# LC 763
+class Solution(object):
+    def partitionLabels(self, S):
+        # note : this trick for get max index for each element in S
+        lindex = { c: i for i, c in enumerate(S) }
+        j = anchor = 0
+        ans = []
+        for i, c in enumerate(S):
+            ### NOTE : trick here
+            #          -> via below line of code, we can get the max idx of current substring which is "has element only exist in itself"
+            #          -> e.g. the index we need to do partition 
+            j = max(j, lindex[c])
+            print ("i = " + str(i) + "," + " c = " + str(c) + "," +   " j = " + str(j) + "," +  " ans = " + str(ans))
+            if i == j:
+                ans.append(j - anchor + 1)
+                anchor = j + 1
+        return ans
+```
+
 ## 2) LC Example
 ```python
 # 525 Contiguous Array
