@@ -40,3 +40,34 @@ vector<int> nextGreaterElement(vector<int>& nums) {
 - Stack hasElement
 
 ## 2) LC Example
+```python
+# LC 394
+# V0
+# IDEA : STACK
+# NOTE : treat before cases separately
+#        1) isdigit
+#        2) isalpha
+#        3) "["
+#        4) "]"
+# and define num = 0 for dealing with "100a[b]", "10abc" cases
+class Solution:
+    def decodeString(self, s):
+        num = 0
+        string = ''
+        stack = []
+        for c in s:
+            if c.isdigit():
+                num = num*10 + int(c)
+            elif c == "[":
+                stack.append(string)
+                stack.append(num)
+                string = ''
+                num = 0
+            elif c.isalpha():
+                string += c
+            elif c == ']':
+                pre_num = stack.pop()
+                pre_string = stack.pop()
+                string = pre_string + pre_num * string
+        return string
+```
