@@ -1,6 +1,9 @@
 # Queue 
 
 ## 0) Concept  
+- A ordering linear data structure
+- can be implemented by `array` or `linkedlist`
+- first in first out
 
 ### 0-1) Framework
 - Queue
@@ -89,6 +92,5 @@ print ('pop :' , d.pop())
 print (d)
 print ('pop_left:' , d.popleft())
 print (d)
-
 ```
 ### 1-4) Stack simulate Queue
