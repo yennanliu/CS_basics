@@ -1,12 +1,79 @@
+"""
+
+763. Partition Labels
+Medium
+
+You are given a string s. We want to partition the string into as many parts as possible so that each letter appears in at most one part.
+
+Return a list of integers representing the size of these parts.
+
+
+
+Example 1:
+
+Input: s = "ababcbacadefegdehijhklij"
+Output: [9,7,8]
+Explanation:
+The partition is "ababcbaca", "defegde", "hijhklij".
+This is a partition so that each letter appears in at most one part.
+A partition like "ababcbacadefegde", "hijhklij" is incorrect, because it splits s into less parts.
+Example 2:
+
+Input: s = "eccbbbbdec"
+Output: [10]
+ 
+
+Constraints:
+
+1 <= s.length <= 500
+s consists of lowercase English letters.
+
+"""
+
 # V0 
 # IDEA : GREEDY
+# EXAMPLE :
+# x = "ababcbacadefegdehijhklij"
+# s = Solution()
+# r = s.partitionLabels(x)
+# print (r)
+# i = 0, c = a, j = 8, ans = []
+# i = 1, c = b, j = 8, ans = []
+# i = 2, c = a, j = 8, ans = []
+# i = 3, c = b, j = 8, ans = []
+# i = 4, c = c, j = 8, ans = []
+# i = 5, c = b, j = 8, ans = []
+# i = 6, c = a, j = 8, ans = []
+# i = 7, c = c, j = 8, ans = []
+# i = 8, c = a, j = 8, ans = []
+# i = 9, c = d, j = 14, ans = [9]
+# i = 10, c = e, j = 15, ans = [9]
+# i = 11, c = f, j = 15, ans = [9]
+# i = 12, c = e, j = 15, ans = [9]
+# i = 13, c = g, j = 15, ans = [9]
+# i = 14, c = d, j = 15, ans = [9]
+# i = 15, c = e, j = 15, ans = [9]
+# i = 16, c = h, j = 19, ans = [9, 7]
+# i = 17, c = i, j = 22, ans = [9, 7]
+# i = 18, c = j, j = 23, ans = [9, 7]
+# i = 19, c = h, j = 23, ans = [9, 7]
+# i = 20, c = k, j = 23, ans = [9, 7]
+# i = 21, c = l, j = 23, ans = [9, 7]
+# i = 22, c = i, j = 23, ans = [9, 7]
+# i = 23, c = j, j = 23, ans = [9, 7]
+# [9, 7, 8]
 class Solution(object):
     def partitionLabels(self, S):
-        lindex = {c: i for i, c in enumerate(S)}
+        # note : this trick for get max index for each element in S
+        lindex = { c: i for i, c in enumerate(S) }
         j = anchor = 0
         ans = []
         for i, c in enumerate(S):
+            ### NOTE : trick here
+            #          -> via below line of code, we can get the max idx of current substring which is "has element only exist in itself"
+            #          -> e.g. the index we need to do partition 
             j = max(j, lindex[c])
+            print ("i = " + str(i) + "," + " c = " + str(c) + "," +   " j = " + str(j) + "," +  " ans = " + str(ans))
             if i == j:
                 ans.append(j - anchor + 1)
                 anchor = j + 1
