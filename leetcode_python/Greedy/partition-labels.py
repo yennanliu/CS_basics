@@ -70,7 +70,7 @@ class Solution(object):
         ans = []
         for i, c in enumerate(S):
             ### NOTE : trick here
-            #          -> via below line of code, we can get the max idx of current substring which is "has element only exist in itself"
+            #          -> via below line of code, we can get the max idx of current substring which "has element only exist in itself"
             #          -> e.g. the index we need to do partition 
             j = max(j, lindex[c])
             print ("i = " + str(i) + "," + " c = " + str(c) + "," +   " j = " + str(j) + "," +  " ans = " + str(ans))
@@ -78,6 +78,23 @@ class Solution(object):
                 ans.append(j - anchor + 1)
                 anchor = j + 1
         return ans
+
+# V0'
+# https://leetcode.com/problems/partition-labels/discuss/298474/Python-two-pointer-solution-with-explanation
+class Solution:
+    def partitionLabels(self, S):
+        d = { c:i for i, c in enumerate(S) }
+        left, right = 0, 0
+        result = []
+        for i, letter in enumerate(S):
+            
+            right = max(right,d[letter])
+            
+            if i == right:
+                result += [right-left + 1]
+                left = i+1
+                
+        return result
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79265829
