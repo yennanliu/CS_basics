@@ -1,3 +1,34 @@
+"""
+
+17. Letter Combinations of a Phone Number
+Medium
+
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+
+A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+
+Example 1:
+
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+Example 2:
+
+Input: digits = ""
+Output: []
+Example 3:
+
+Input: digits = "2"
+Output: ["a","b","c"]
+ 
+
+Constraints:
+
+0 <= digits.length <= 4
+digits[i] is a digit in the range ['2', '9'].
+
+"""
+
 # V0 
 class Solution(object):
     def letterCombinations(self, digits):
@@ -11,6 +42,44 @@ class Solution(object):
         for e in digits:
             res = [w + c for c in d[e] for w in res]
         return res
+
+# V0'
+class Solution(object):
+    def letterCombinations(self, digits):
+        d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
+        r = ['']
+
+        if digits == "":
+            return []
+
+        if len(digits) == 1:
+            return d[digits]
+
+        for e in digits:
+            r = [ b+a for a in d[e] for b in r]
+        return r
+
+# V0'
+# IDEA : DFS
+class Solution(object):
+    def letterCombinations(self, digits):
+        d_map = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
+        r = []
+        idx = 0
+        tmp = ""
+
+        self.dfs(digits, idx, r, tmp, d_map)
+        return r
+
+    def dfs(self, digits, idx, r, tmp, d_map):
+        #digits = digits[idx:]
+        if idx == len(digits):
+            if tmp != "":
+                r.append(tmp)       
+            return
+            
+        for j in d_map[digits[idx]]:
+            self.dfs(digits, idx+1, r, tmp+j, d_map)
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79363119
