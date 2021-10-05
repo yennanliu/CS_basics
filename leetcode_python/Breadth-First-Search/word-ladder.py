@@ -34,10 +34,13 @@ All the words in wordList are unique.
 """
 
 # V0
+# IDEA : BFS
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):
+        # we get non-duplicated list via set here
         wordset = set(wordList)
         bfs = collections.deque()
+        ### NOTE : we use (beginWord, 1) data structure for not only get current word, but also sequence length
         bfs.append((beginWord, 1))
         while bfs:
             word, length = bfs.popleft()
@@ -47,7 +50,9 @@ class Solution(object):
             for i in range(len(word)):
                 for c in "abcdefghijklmnopqrstuvwxyz":
                     newWord = word[:i] + c + word[i + 1:]
+                    # if newword is not qeual to original word as well (newWord != word )
                     if newWord in wordset and newWord != word:
+                        # note : we need to remove the used word from wordset
                         wordset.remove(newWord)
                         bfs.append((newWord, length + 1))
         return 0
