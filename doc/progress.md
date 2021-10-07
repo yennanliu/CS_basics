@@ -24,7 +24,7 @@
 	- Crack Code
 	- System Design
 	- algorithm book (labu)
-		- p.2 - p.13
+		- p.2 - p.24
 
 # 2021-10-06
 - DOING:
