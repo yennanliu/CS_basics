@@ -10,6 +10,7 @@
 		- programming
 			- (normal order)
 			- (pdf : p.5)
+			- 388 (mock interview)
 			- =======
 			- (inverse order)
 			- =======
