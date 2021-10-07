@@ -3,20 +3,18 @@
 ## 0) Concept
 ```java
 // java
-
-// class
 public class TreeNode{
-	// attr
-	int val;  // value on node
-	TreeNode left;  // point to left clild
-	TreeNode right;  // point to right clild
+    // attr
+    int val;  // value on node
+    TreeNode left;  // point to left clild
+    TreeNode right;  // point to right clild
 
-	// constructor
-	TreeNode(int val){
-		this.val = val;
-		this.left = null;
-		this.right = null;
-	}
+    // constructor
+    TreeNode(int val){
+        this.val = val;
+        this.left = null;
+        this.right = null;
+    }
 }
 
 // init a BST
