@@ -5,6 +5,32 @@
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/k%E4%B8%AA%E4%B8%80%E7%BB%84%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8.md
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/%E5%88%A4%E6%96%AD%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8.md
 
+```java
+// java
+class ListNode {
+    // attr
+    int val;  // node's value
+    ListNode next; // point to next node
+
+    // constructor
+    ListNode(int val){
+        this.val = val;
+        this.next = null;
+    }
+}
+
+// init a ListNode
+ListNode node1 = new ListNode(1);
+ListNode node2 = new ListNode(2);
+ListNode node3 = new ListNode(3);
+
+// motify node's value
+node1.val = 0;
+
+// connect nodes
+node1.next = node2;
+node2.next = node3;
+```
 
 ### 0-1) Framework
 - Linked list
