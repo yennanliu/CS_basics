@@ -1,33 +1,47 @@
-# Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
-#
-# push(x) -- Push element x onto stack.
-# pop() -- Removes the element on top of the stack.
-# top() -- Get the top element.
-# getMin() -- Retrieve the minimum element in the stack.
-# Example:
-# MinStack minStack = new MinStack();
-# minStack.push(-2);
-# minStack.push(0);
-# minStack.push(-3);
-# minStack.getMin();   --> Returns -3.
-# minStack.pop();
-# minStack.top();      --> Returns 0.
-# minStack.getMin();   --> Returns -2.
-#
-#
-# Time:  O(n)
-# Space: O(1)
-#
-# Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
-#
-# push(x) -- Push element x onto stack.
-# pop() -- Removes the element on top of the stack.
-# top() -- Get the top element.
-# getMin() -- Retrieve the minimum element in the stack.
-#
-#
-### Stack : 「Last-In-First-Out」
-### http://alrightchiu.github.io/SecondRound/stack-introjian-jie.html
+"""
+
+155. Min Stack
+Easy
+
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+Implement the MinStack class:
+
+MinStack() initializes the stack object.
+void push(int val) pushes the element val onto the stack.
+void pop() removes the element on the top of the stack.
+int top() gets the top element of the stack.
+int getMin() retrieves the minimum element in the stack.
+ 
+
+Example 1:
+
+Input
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]
+
+Output
+[null,null,null,null,-3,null,0,-2]
+
+Explanation
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin(); // return -3
+minStack.pop();
+minStack.top();    // return 0
+minStack.getMin(); // return -2
+ 
+
+Constraints:
+
+-231 <= val <= 231 - 1
+Methods pop, top and getMin operations will always be called on non-empty stacks.
+At most 3 * 104 calls will be made to push, pop, top, and getMin.
+
+"""
+
 
 # V0
 # IDEA : STACK
@@ -44,11 +58,13 @@ class MinStack(object):
         
     def push(self, x):
         if not self.stack:
+            ### note here
             self.stack.append((x, x))
         ### NOTICE HERE 
         # stack[i][1] save to min value when every push
         # so the latest min in stack is at stack[-1][1]
         else:
+            ### note here
             self.stack.append((x, min(x, self.stack[-1][1])))
         
     def pop(self):
