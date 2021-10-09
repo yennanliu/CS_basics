@@ -38,12 +38,7 @@ p and q will exist in the BST.
 # IDEA : RECURSION
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
-        """
-        :type root: TreeNode
-        :type p: TreeNode
-        :type q: TreeNode
-        :rtype: TreeNode
-        """
+        ### NOTE : we need to assign root.val, p, q to other var first (before they are changed)
         # Value of current node or parent node.
         parent_val = root.val
 
@@ -54,13 +49,16 @@ class Solution:
         q_val = q.val
 
         # If both p and q are greater than parent
-        if p_val > parent_val and q_val > parent_val:    
+        if p_val > parent_val and q_val > parent_val:
+            ### NOTE : we need to `return` below func call   
             return self.lowestCommonAncestor(root.right, p, q)
         # If both p and q are lesser than parent
-        elif p_val < parent_val and q_val < parent_val:    
+        elif p_val < parent_val and q_val < parent_val: 
+            ### NOTE : we need to `return` below func call   
             return self.lowestCommonAncestor(root.left, p, q)
         # We have found the split point, i.e. the LCA node.
         else:
+            ### NOTE : not root.val but root
             return root
 
 # V0'
