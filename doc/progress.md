@@ -3,6 +3,26 @@
 - `TODO`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
 - `TODO2`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
 
+# 2021-10-10
+- DOING:
+	- LC (am_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
+		- programming
+			- (normal order)
+			- (pdf : p.6)
+			- 105 (fb, classics)
+			- =======
+			- back track
+			- hash table
+			- bit manipulation
+			- union find
+			- quick sort
+		- SQL
+	- Crack Code
+	- System Design
+	- algorithm book (labu)
+		- p.24 - p.30
+
 # 2021-10-09
 - DOING:
 	- LC (am_)
@@ -11,6 +31,7 @@
 			- (normal order)
 			- (pdf : p.5)
 			- 235
+			- (pdf : p.6)
 			- =======
 			- (inverse order)
 			- =======
