@@ -1,34 +1,61 @@
-# Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
-#
-# Integers in each row are sorted in ascending from left to right.
-# Integers in each column are sorted in ascending from top to bottom.
-# For example,
-#
-# Consider the following matrix:
-#
-# [
-#   [1,   4,  7, 11, 15],
-#   [2,   5,  8, 12, 19],
-#   [3,   6,  9, 16, 22],
-#   [10, 13, 14, 17, 24],
-#   [18, 21, 23, 26, 30]
-# ]
-# Given target = 5, return true.
-#
-# Given target = 20, return false.
+"""
 
-# V0 
+240. Search a 2D Matrix II
+Medium
+
+Write an efficient algorithm that searches for a target value in an m x n integer matrix. The matrix has the following properties:
+
+Integers in each row are sorted in ascending from left to right.
+Integers in each column are sorted in ascending from top to bottom.
+ 
+
+Example 1:
+
+
+Input: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
+Output: true
+Example 2:
+
+
+Input: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20
+Output: false
+ 
+
+Constraints:
+
+m == matrix.length
+n == matrix[i].length
+1 <= n, m <= 300
+-109 <= matrix[i][j] <= 109
+All the integers in each row are sorted in ascending order.
+All the integers in each column are sorted in ascending order.
+-109 <= target <= 109
+
+"""
+
+# V0
+# IDEA : 2D array op
+### NOTE : 
+#    row : --------->
+#    cols : ⬇
+#           ⬇    
 class Solution:
     def searchMatrix(self, matrix, target):
         if len(matrix) == 0:
-            return False        
+            return False
+        ### NOTE : col starts from len(matrix[0]) - 1; while row starts from 0     
         row, col = 0, len(matrix[0]) - 1
-        ### NOTE : col starts from len(matrix[0]) - 1; while row starts from 0
+        ### NOTE : since row = 0 at first, so col >= 0
+        #          row = len(matrix[0]) - 1, so  row < len(matrix)
         while row < len(matrix) and col >= 0:
+            # 3 cases
+            # case 1) matrix[row][col] == target -> find the target
             if matrix[row][col] == target: 
                 return True
+            # case 2) matrix[row][col] < target -> move to next row
             elif matrix[row][col] < target: 
                 row += 1
+            # case 3) matrix[row][col] > target -> move to next col
             elif matrix[row][col] > target: 
                 col -= 1
         return False
