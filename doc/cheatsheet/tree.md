@@ -4,7 +4,7 @@
 
 ## 0) Concept  
 
-### 0-1) Framework
+### 0-1) Types
 - Tree
 - BST (binary search tree)
 - Heap
@@ -48,6 +48,8 @@ def post_order_traverse(TreeNode):
 ```
 
 ## 1) General form
+
+- When `tree` -> think about *recursion*
 
 ### 1-1) Basic OP
 - pre-order traverse

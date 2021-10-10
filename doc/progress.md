@@ -11,7 +11,8 @@
 			- (normal order)
 			- (pdf : p.6)
 			- 240
-			- 105 (fb, classics)
+			- 105 (fb, classics) (AGAIN !!!)
+			- 106 (fb, similar as 105) (AGAIN !!!)
 			- =======
 			- back track
 			- hash table
