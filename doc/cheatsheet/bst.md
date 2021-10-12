@@ -39,3 +39,37 @@ node1.right = node3;
 ### 1-1) Basic OP
 
 ## 2) LC Example
+```python
+
+# LC 449 Serialize and Deserialize BST
+
+# V1
+# IDEA : same as LC 297
+# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/93283/Python-solution-using-BST-property
+class Codec:
+
+    def serialize(self, root):
+        vals = []
+        self._preorder(root, vals)
+        return ','.join(vals)
+        
+    def _preorder(self, node, vals):
+        if node:
+            vals.append(str(node.val))
+            self._preorder(node.left, vals)
+            self._preorder(node.right, vals)
+        
+    def deserialize(self, data):
+        vals = collections.deque(map(int, data.split(','))) if data else []
+        return self._build(vals, -float('inf'), float('inf'))
+
+    def _build(self, vals, minVal, maxVal):
+        if vals and minVal < vals[0] < maxVal:
+            val = vals.popleft()
+            root = TreeNode(val)
+            root.left = self._build(vals, minVal, val)
+            root.right = self._build(vals, val, maxVal)
+            return root
+        else:
+            return None
+```
