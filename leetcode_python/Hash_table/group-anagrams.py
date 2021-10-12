@@ -57,7 +57,33 @@ class Solution:
                 j += 1
             r[j-1].append(strs[i])
         return [x for x in r if len(x) > 0]
-      
+
+# V0''
+# IDEA : SORT + DICT 
+class Solution(object):
+    def groupAnagrams(self, strs):
+        
+        r = []
+        d = {}
+
+        if len(strs) == 1:
+            return [[strs[0]]]
+
+        for _str in strs:
+            tmp = list(_str)
+            tmp.sort()
+            _str_sorted = ''.join(tmp)
+
+            if _str_sorted not in d:
+                d[_str_sorted] = [_str]
+            else:
+                d[_str_sorted].append(_str)
+
+        for k in d.keys():
+            r.append(d[k])
+
+        return r
+
 # V1 
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81145095
 # IDEA : SORT + DICT 
