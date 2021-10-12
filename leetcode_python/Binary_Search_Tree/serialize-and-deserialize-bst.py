@@ -1,6 +1,192 @@
-# V0 
+"""
 
-# V1 
+449. Serialize and Deserialize BST
+Medium
+
+Serialization is converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+
+Design an algorithm to serialize and deserialize a binary search tree. There is no restriction on how your serialization/deserialization algorithm should work. You need to ensure that a binary search tree can be serialized to a string, and this string can be deserialized to the original tree structure.
+
+The encoded string should be as compact as possible.
+
+ 
+Example 1:
+
+Input: root = [2,1,3]
+Output: [2,1,3]
+Example 2:
+
+Input: root = []
+Output: []
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 104].
+0 <= Node.val <= 104
+The input tree is guaranteed to be a binary search tree.
+
+"""
+
+# V0 
+class Codec:
+
+    def serialize(self, root):
+        vals = []
+        self._preorder(root, vals)
+        return ','.join(vals)
+        
+    def _preorder(self, node, vals):
+        if node:
+            vals.append(str(node.val))
+            self._preorder(node.left, vals)
+            self._preorder(node.right, vals)
+        
+    def deserialize(self, data):
+        vals = collections.deque(map(int, data.split(','))) if data else []
+        return self._build(vals, -float('inf'), float('inf'))
+
+    def _build(self, vals, minVal, maxVal):
+        if vals and minVal < vals[0] < maxVal:
+            val = vals.popleft()
+            root = TreeNode(val)
+            root.left = self._build(vals, minVal, val)
+            root.right = self._build(vals, val, maxVal)
+            return root
+        else:
+            return None
+
+# V1
+# IDEA : same as LC 297
+# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/93283/Python-solution-using-BST-property
+class Codec:
+
+    def serialize(self, root):
+        vals = []
+        self._preorder(root, vals)
+        return ','.join(vals)
+        
+    def _preorder(self, node, vals):
+        if node:
+            vals.append(str(node.val))
+            self._preorder(node.left, vals)
+            self._preorder(node.right, vals)
+        
+    def deserialize(self, data):
+        vals = collections.deque(map(int, data.split(','))) if data else []
+        return self._build(vals, -float('inf'), float('inf'))
+
+    def _build(self, vals, minVal, maxVal):
+        if vals and minVal < vals[0] < maxVal:
+            val = vals.popleft()
+            root = TreeNode(val)
+            root.left = self._build(vals, minVal, val)
+            root.right = self._build(vals, val, maxVal)
+            return root
+        else:
+            return None
+
+# V1'
+# IDEA : BST property
+# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/212043/Python-solution
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        def dfs(root):
+            if not root:
+                return 
+            res.append(str(root.val) + ",")
+            dfs(root.left)
+            dfs(root.right)
+            
+        res = []
+        dfs(root)
+        return "".join(res)
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        lst = data.split(",")
+        lst.pop()
+        stack = []
+        head = None
+        for n in lst:
+            n = int(n)
+            if not head:
+                head = TreeNode(n)
+                stack.append(head)
+            else:
+                node = TreeNode(n)
+                if n < stack[-1].val:
+                    stack[-1].left = node
+                else:
+                    while stack and stack[-1].val < n: 
+                        u = stack.pop()
+                    u.right = node
+                stack.append(node)
+        return head
+
+# V1''
+# IDEA : BST property
+# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/212043/Python-solution
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        def dfs(root):
+            if not root:
+                return 
+            res.append(str(root.val) + ",")
+            dfs(root.left)
+            dfs(root.right)
+            
+        res = []
+        dfs(root)
+        return "".join(res)
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        def helper(arr, i, j):
+            if i > j:
+                return
+            if i == j:
+                node = TreeNode(arr[i])
+                return node
+            for k in range(i+1, j+1):
+                if arr[k] > arr[i]:
+                    l = helper(arr, i+1, k-1)
+                    r = helper(arr, k, j)
+                    root = TreeNode(arr[i])
+                    root.left = l
+                    root.right = r
+                    return root
+            l = helper(arr, i+1, j)
+            root = TreeNode(arr[i])
+            root.left = l
+            return root
+        
+        arr = data.split(",")
+        arr.pop()
+        data = [int(x) for x in arr]
+        return helper(data, 0, len(data)-1)
+
+# V1''
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 class Codec:
     def serialize(self, root):
@@ -27,7 +213,7 @@ class Codec:
         vals = iter(data.split())
         return doit()
 
-# V1'
+# V1'''
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -85,7 +271,7 @@ class Codec:
 # codec = Codec()
 # codec.deserialize(codec.serialize(root))
 
-# V1''
+# V1'''''
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -149,7 +335,7 @@ class Codec:
 # codec = Codec()
 # codec.deserialize(codec.serialize(root))
 
-# V1'''
+# V1''''''
 # https://www.jiuzhang.com/solution/serialize-and-deserialize-bst/#tag-highlight-lang-python
 class Solution:
     def serialize(self, root):
@@ -257,4 +443,3 @@ class Codec(object):
 
         vals = collections.deque([int(val) for val in data.split()])
         return deserializeHelper(float('-inf'), float('inf'), vals)
-
