@@ -12,7 +12,7 @@
 			- (pdf : p.6)
 			- 234
 			- =======
-			- back track
+			- **back track**
 			- hash table
 			- bit manipulation
 			- union find
@@ -21,7 +21,7 @@
 	- Crack Code
 	- System Design
 	- algorithm book (labu)
-		- p.42 -
+		- p.42 - p.50
 
 # 2021-10-12
 - DOING:

@@ -15,8 +15,19 @@
  - `End condition` : bottom of decision tree, meet this point then can't do any other choise 
 
 ### 0-2) Pattern
+
 ```python
-# python
+# pseudo code
+for choice in choice_list:
+    # do choice
+    routes.add(choice)
+    backtrack(routes, choice_list)
+    # undo choice
+    routes.remove(choice)
+```
+
+```python
+# python pseudo code
 result = []
 def backtrack(route, choice_list):
     if end_condition:
@@ -25,9 +36,9 @@ def backtrack(route, choice_list):
     
     for choice in choice_list:
     	### core of backtrack
-        do_choice
+        do_choice   ### this one is necessary
         backtrack(route, choice_list)
-        undo_choice
+        undo_choice ### this one is necessary
 ```
 
 ## 1) General form
