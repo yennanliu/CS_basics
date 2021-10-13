@@ -1,10 +1,13 @@
 # Bracktrack 
 
-> A decision tree proceed process
+> Brute force via  `decision tree process`
 
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%E4%BF%AE%E8%AE%A2%E7%89%88.md
 
 - Backtrack (brute force) -> DP (dynamic programming)
+- optimization:
+    - remove duplicated sub cases
+    - have a cache (e.g. hash table) list finished cases (not re-compute them)
 
 ## 0) Concept  
 
