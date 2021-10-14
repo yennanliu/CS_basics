@@ -16,6 +16,7 @@
 			- **back track**
 			- Binary Search Tree
 				- 230
+				- 270
 			- hash table
 			- bit manipulation
 			- union find

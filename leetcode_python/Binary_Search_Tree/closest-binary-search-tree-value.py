@@ -1,4 +1,65 @@
-# V0 
+"""
+
+LeetCode 270. Closest Binary Search Tree Value
+
+https://goodtecher.com/leetcode-270-closest-binary-search-tree-value/
+
+Description
+https://leetcode.com/problems/closest-binary-search-tree-value/
+
+Given the root of a binary search tree and a target value, return the value in the BST that is closest to the target.
+
+Example 1:
+
+
+Input: root = [4,2,5,1,3], target = 3.714286
+Output: 4
+Example 2:
+
+Input: root = [1], target = 4.428571
+Output: 1
+Constraints:
+
+The number of nodes in the tree is in the range [1, 104].
+0 <= Node.val <= 109
+-109 <= target <= 109
+Explanation
+Base on the characteristics of binary search tree to search for the target.
+
+"""
+
+# V0
+# IDEA : BST property + tree traversal
+###     -> BST property : left < root < right (value ordering)
+class Solution(object):
+    def closestValue(self, root, target):
+
+        gap = abs(root.val - target)
+        ans = root
+
+        ### INORDER TRANSVERSAL
+        while root is not None:
+
+            if root.val == target:
+                return root.val
+
+            # case 1) target < root.val
+            elif target < root.val:
+                # if found the other candidate that more close to the target
+                if abs(root.val - target) < gap:
+                    ans = root
+                    gap = abs(root.val - target)
+                # move left
+                root = root.left
+            # case 2) target > root.val
+            else:
+                if abs(root.val - target) < gap:
+                    ans = root
+                    gap = abs(root.val - target)
+                root = root.right
+        return ans.val
+
+# V0'
 # KEY : BST PROPERTY : RIGHT > ROOT > LEFT
 class Solution(object):
     def closestValue(self, root, target):
@@ -8,26 +69,37 @@ class Solution(object):
         b = self.closestValue(kid, target)
         return min((b, a), key=lambda x: abs(target - x))
 
-# V0'
-# IDEA : BST property + tree traversal
-class Solution(object):
-    def closestValue(self, root, target):
-        gap = abs(root.val - target)
-        ans = root
-        while root is not None:
-            if root.val == target:
-                return root.val
-            elif target < root.val:
-                if abs(root.val - target) < gap:
-                    ans = root
-                    gap = abs(root.val - target)
-                root = root.left
-            else:
-                if abs(root.val - target) < gap:
-                    ans = root
-                    gap = abs(root.val - target)
-                root = root.right
-        return ans.val
+# V0'' : IDEA : DFS + SORT -> NEED TO VALIDATE
+# class Solution(object):
+#     def closestValue(self, root, target):
+#
+#         def help(root):
+#             _list.append(root.val)
+#             if root.left:
+#                 self.help(root.left)
+#             if root.right:
+#                 self.help(root.right)
+#
+#         _list = []
+#         help(root)
+#         _list.sort()
+#
+#         _target = round(target)
+#
+#         if _target in _list:
+#             return _target
+#
+#         _add = 1
+#
+#         while _target not in _list:
+#             _tmp1 = _target + _add
+#             _tmp2 = _target - _add
+#
+#             if _tmp1 in _list:
+#                 return _tmp1
+#             if _tmp2 in _list:
+#                 return _tmp2
+#             _add += 1
 
 # V1 
 # http://www.voidcn.com/article/p-phbluudb-qp.html
