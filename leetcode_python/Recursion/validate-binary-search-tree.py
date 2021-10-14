@@ -50,6 +50,20 @@ class Solution(object):
         return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
 
 # V0'
+# IDEA: RECURSION 
+class Solution(object):
+    def isValidBST(self, root):
+        
+        def valid(root, _max, _min):
+            if not root:
+                return True
+            if root.val >= _max or root.val <= _min:
+                return False
+            return valid(root.left, root.val, _min) and valid(root.right, _max, root.val)
+
+        return valid(root, float('inf'), -float('inf'))
+
+# V0'
 # IDEA : BFS + Inorder traversal
 class Solution:
     def isValidBST(self, root):
@@ -64,7 +78,32 @@ class Solution:
             pre, cur = s, s.right
         return True
 
-# V1
+# V1 : TODO : figure out it
+# IDEA : INORDER TRAVERSAL
+# https://leetcode.com/problems/validate-binary-search-tree/discuss/166691/Python-solution
+class Solution(object):
+    def isValidBST(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        stack = []
+        trav = root
+        prev = -float('inf')
+        while trav or stack:
+            if trav:
+                stack.append(trav)
+                trav = trav.left
+            else:
+                u = stack.pop()
+                if u:
+                    if u.val <= prev:
+                        return False
+                    prev = u.val
+                trav = u.right
+        return True
+
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/70209865
 class Solution(object):
     def isValidBST(self, root):
