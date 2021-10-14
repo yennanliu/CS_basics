@@ -1,22 +1,56 @@
-# Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
-#
-# Note: 
-#
-# You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
-#
-# Follow up:
-#
-# What if the BST is modified (insert/delete operations) often and you need to find the kth smallest frequently? How would you optimize the kthSmallest routine?
-#
-# Hint:
-#
-# Try to utilize the property of a BST.
-#
-# What if you could modify the BST node's structure?
-#
-# The optimal runtime complexity is O(height of BST).
+"""
 
-# V0 
+230. Kth Smallest Element in a BST
+Medium
+
+Given the root of a binary search tree, and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.
+
+ 
+Example 1:
+
+
+Input: root = [3,1,4,null,2], k = 1
+Output: 1
+Example 2:
+
+
+Input: root = [5,3,6,2,4,null,null,1], k = 3
+Output: 3
+ 
+
+Constraints:
+
+The number of nodes in the tree is n.
+1 <= k <= n <= 104
+0 <= Node.val <= 104
+ 
+
+Follow up: If the BST is modified often (i.e., we can do insert and delete operations) and you need to find the kth smallest frequently, how would you optimize?
+
+"""
+
+# V0
+# IDEA : DFS
+# -> pre order traversal BST, then sort it and get the k (from 1) smallest element
+class Solution(object):
+    def kthSmallest(self, root, k):
+
+        # pre order traversal
+        def help(root):
+            _list.append(root.val)
+            if root.left:
+                help(root.left)
+            if root.right:
+                help(root.right)
+
+        if not root:
+            return None
+        _list = []
+        help(root)
+        _list.sort()
+        return _list[k-1]
+
+# V0' 
 class Solution(object):
     def kthSmallest(self, root, k):
         self.k = k
@@ -34,19 +68,45 @@ class Solution(object):
             return
         self.dfs(node.right)
 
-# V1 
-# http://bookshadow.com/weblog/2015/07/02/leetcode-kth-smallest-element-bst/
-# IDEA : using inorder survey through whole BST
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
+# V1
+# IDEA : Approach 1: Recursive Inorder Traversal
+#        -> the property of BST : inorder traversal of BST is an array sorted in the ascending order.
+# https://leetcode.com/problems/kth-smallest-element-in-a-bst/solution/
 class Solution:
-    # @param {TreeNode} root
-    # @param {integer} k
-    # @return {integer}
+    def kthSmallest(self, root, k):
+        def inorder(r):
+            return inorder(r.left) + [r.val] + inorder(r.right) if r else []
+    
+        return inorder(root)[k - 1]
+
+# V1'
+# IDEA : Approach 2: Iterative Inorder Traversal
+#        -> the property of BST : inorder traversal of BST is an array sorted in the ascending order.
+#        -> The above recursion could be converted into iteration, with the help of stack. This way one could speed up the solution because there is no need to build the entire inorder traversal, and one could stop after the kth element.
+# https://leetcode.com/problems/kth-smallest-element-in-a-bst/solution/
+class Solution:
+    def kthSmallest(self, root, k):
+        stack = []
+        
+        while True:
+            # Inorder Traversal
+            ### get all `left sub tree` first
+            while root:
+                stack.append(root)
+                root = root.left
+            # then pop each of the collected root
+            root = stack.pop()
+            k -= 1
+            # means we found the k-th smallest element
+            if not k:
+                return root.val
+            # if not yet fount it, keep Inorder Traversal
+            root = root.right
+
+# V1''
+# http://bookshadow.com/weblog/2015/07/02/leetcode-kth-smallest-element-bst/
+# IDEA : using inorder survey through whole BST (via BFS)
+class Solution:
     def kthSmallest(self, root, k):
         stack = []
         node = root
