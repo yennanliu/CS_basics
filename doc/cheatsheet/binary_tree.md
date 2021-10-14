@@ -2,7 +2,7 @@
 
 ## 0) Concept  
 
-### 0-1) Framework
+### 0-1) Properties
 
 ### 0-2) Pattern
 

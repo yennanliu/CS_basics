@@ -30,7 +30,8 @@ node1.left = node2;
 node1.right = node3;
 ```
 
-### 0-1) Framework
+### 0-1) Properties
+- the property of BST : inorder traversal of BST is an array sorted in the ascending order. (LC 230)
 
 ### 0-2) Pattern
 
@@ -72,4 +73,25 @@ class Codec:
             return root
         else:
             return None
+```
+
+```python
+# LC 230
+# V1'
+# IDEA : Approach 2: Iterative Inorder Traversal
+#        -> The above recursion could be converted into iteration, with the help of stack. This way one could speed up the solution because there is no need to build the entire inorder traversal, and one could stop after the kth element.
+# https://leetcode.com/problems/kth-smallest-element-in-a-bst/solution/
+class Solution:
+    def kthSmallest(self, root, k):
+        stack = []
+        
+        while True:
+            while root:
+                stack.append(root)
+                root = root.left
+            root = stack.pop()
+            k -= 1
+            if not k:
+                return root.val
+            root = root.right
 ```
