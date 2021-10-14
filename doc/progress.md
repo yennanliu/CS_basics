@@ -11,6 +11,7 @@
 			- (normal order)
 			- (pdf : p.6)
 			- 098
+			- 380
 			- =======
 			- **back track**
 			- hash table

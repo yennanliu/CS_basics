@@ -80,6 +80,7 @@ class RandomizedSet(object):
         """
         # Notice this
         ind = random.randint(0, self.size - 1)
+        # we use `list(self.set)` transform set to list
         return list(self.set)[ind]
 
 # V0'
