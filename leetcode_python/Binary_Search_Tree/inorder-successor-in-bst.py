@@ -71,6 +71,19 @@ class Solution(object):
             if l[i] == p:
                 return l[i+1] if i+1 < len(l) else None
 
+# V0''
+# IDEA : `bfs` like approach
+class Solution(object):
+    def inorderSuccessor(self, root, p):
+        ans = None
+        while root:
+            if p.val < root.val:
+                ans = root
+                root = root.left
+            else:
+                root = root.right
+        return ans
+
 # V1 
 # https://blog.csdn.net/danspace1/article/details/86667504
 # IDEA : DFS
