@@ -31,13 +31,12 @@ Both l1 and l2 are sorted in non-decreasing order.
 # IDEA : LOOP 2 LINKED LISTS
 class Solution(object):
     def mergeTwoLists(self, l1, l2):
-        """
-        :type l1: ListNode
-        :type l2: ListNode
-        :rtype: ListNode
-        """
         if not l1 or not l2:
             return l1 or l2
+        ### NOTICE THIS
+        #   -> we init head, and cur
+        #   -> use cur for `link` op
+        #   -> and return the `head.next`
         head = cur = ListNode(0)
         while l1 and l2:
             if l1.val < l2.val:
@@ -46,8 +45,11 @@ class Solution(object):
             else:
                 cur.next = l2
                 l2 = l2.next
+            # note this
             cur = cur.next
+         # note this
         cur.next = l1 or l2
+        ### NOTICE THIS : we return head.next
         return head.next
         
 # V1

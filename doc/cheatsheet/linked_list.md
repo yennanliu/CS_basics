@@ -253,6 +253,34 @@ class Solution(object):
         return r == r[::-1]
 ```
 
+```python
+# LC 021
+# V0
+# IDEA : LOOP 2 LINKED LISTS
+class Solution(object):
+    def mergeTwoLists(self, l1, l2):
+        if not l1 or not l2:
+            return l1 or l2
+        ### NOTICE THIS
+        #   -> we init head, and cur
+        #   -> use cur for `link` op
+        #   -> and return the `head.next`
+        head = cur = ListNode(0)
+        while l1 and l2:
+            if l1.val < l2.val:
+                cur.next = l1
+                l1 = l1.next
+            else:
+                cur.next = l2
+                l2 = l2.next
+            # note this
+            cur = cur.next
+         # note this
+        cur.next = l1 or l2
+        ### NOTICE THIS : we return head.next
+        return head.next
+```
+
 ### 2-1) Reverse linklist
 ```python
 
