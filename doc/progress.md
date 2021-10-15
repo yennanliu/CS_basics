@@ -10,7 +10,8 @@
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
 		- programming
 			- (normal order)
-			- (pdf : p.6)
+			- (pdf : p.7)
+			- 021 (Again !)
 			- =======
 			- **back track**
 			- Binary Search Tree
