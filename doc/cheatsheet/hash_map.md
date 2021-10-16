@@ -184,3 +184,28 @@ class Solution:
         return [res[x] for x in res]  # output the result 
 
 ```
+
+```python
+# LC 003
+
+# V0
+# IDEA : SLIDING WINDOW + DICT
+#       -> use a hash table (d) record visit "alphabet" (e.g. : a,b,c,...)
+#          (but NOT sub-string)
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        d = {}
+        l = 0
+        res = 0
+        for r in range(len(s)):
+            ### NOTE : if already visited, means "repeating"
+            #         -> then we need to update left pointer (l)
+            if s[r] in d:
+                # note here
+                l = max(l, d[s[r]] + 1)
+            # if not visited yet, record the alphabet
+            # and re-calculate the max length
+            d[s[r]] = r
+            res = max(res, r -l + 1)
+        return res
+```

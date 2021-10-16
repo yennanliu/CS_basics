@@ -36,12 +36,47 @@ s consists of English letters, digits, symbols and spaces.
 
 # V0
 # IDEA : SLIDING WINDOW + DICT
+#       -> use a hash table (d) record visit "alphabet" (e.g. : a,b,c,...)
+#          (but NOT sub-string)
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
-        """
-        :type s: str
-        :rtype: int
-        """
+        d = {}
+        l = 0
+        res = 0
+        for r in range(len(s)):
+            ### NOTE : if already visited, means "repeating"
+            #         -> then we need to update left pointer (l)
+            if s[r] in d:
+                # note here
+                l = max(l, d[s[r]] + 1)
+            # if not visited yet, record the alphabet
+            # and re-calculate the max length
+            d[s[r]] = r
+            res = max(res, r -l + 1)
+        return res
+
+# V0'
+# IDEA : GREEDY  + 2 pointer + set
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        left, right = 0, 0
+        chars = set()
+        res = 0
+        while left < len(s) and right < len(s):
+            if s[right] in chars:
+                if s[left] in chars:
+                    chars.remove(s[left])
+                left += 1
+            else:
+                chars.add(s[right])
+                right += 1
+                res = max(res, len(chars))
+        return res
+
+# V0''
+# IDEA : SLIDING WINDOW + DICT
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
         left, right = 0, 0
         res = 0
         chars = dict()
@@ -53,7 +88,7 @@ class Solution(object):
         return res
 
 # V1
-# IDEA : BRUTE FORCE
+# IDEA : BRUTE FORCE (time out error)
 # Time COMPLEXITY : O(n^3)
 # Space COMPLEXITY : O(mim(n,m))
 # https://leetcode.com/problems/longest-substring-without-repeating-characters/solution/
