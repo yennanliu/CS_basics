@@ -3,7 +3,23 @@
 
 ## 0) Concept  
 
-### 0-1) Framework
+### 0-1) Types
+- Fast - Slow pointers
+    - Usualy set
+        - slow pointer moves 1 idx
+        - fast pointer moves 2 inx
+    - find mid point of linked list
+    - linked list check if circular 
+    - if a circular linked list, return beginning point of circular
+    - find last k element of a single linked list
+- Left- Right pointers
+    - Usually set
+        - left pointer = 0
+        - right pointer = len(nums)
+    - [binary search](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_search.md)
+    - array reverse
+    - [2 sum](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md)
+    - [sliding window](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
 
 ### 0-2) Pattern
 ```c++
@@ -27,6 +43,23 @@ int binarySearch(int[] nums, int target) {
 ## 1) General form
 
 ### 1-1) Basic OP
+
+#### 1-1-1 : Reverse Array
+```java
+// java
+// reverse array
+void reverse(int[] nums){
+    int left = 0;
+    int right = nums.length - 1
+    while (left < right){
+        int tmp = nums(left);
+        nums(left) = nums(right)
+        nums(right) = tmp;
+        left += 1;
+        right -= 1;
+    }
+}
+```
 
 ## 2) LC Example
 
