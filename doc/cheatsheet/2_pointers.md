@@ -53,17 +53,64 @@ boolean hasCycle(ListNode head){
     while (fast != null and fast.next != null){
         slow = slow.next;
         fast = fast.next.next;
-
         if (fast == slow){
             return True
         }
     }
     return False;
 }
+```
+
+#### 1-1-2 : return the "ring start point" of circular linked list 
+```java
+// java
+ListNode detectCycle(ListNode head){
+    ListNode fast, slow;
+    fast = slow = head;
+    while (fast != null and fast.next != null){
+        fast = fast.next.next;
+        slow = slow.next;
+        if (fast == slow){
+            break;
+        }
+    }
+    slow = head;
+    while (slow != head){
+        slow = slow.next;
+        fast = fast.next;
+    }
+    return slow;
+}
 
 ```
 
-#### 1-1-2 : Reverse Array
+#### 1-1-3 : find mid point of single linked list
+```java
+// java
+while (fast != null and fast.next != null){
+    fast = fast.next.next;
+    slow = slow.next;
+}
+return slow;
+```
+
+#### 1-1-4 : find last k element in single linked list
+```java
+// java
+ListNode fast, slow;
+slow = fast = head;
+while (k > 0){
+    fast = fast.next;
+    k -= 1;
+}
+while (fast != null){
+    fast = fast.next;
+    slow = slow.next;
+}
+return slow;
+```
+
+#### 1-1-5 : Reverse Array
 ```java
 // java
 void reverse(int[] nums){
@@ -79,10 +126,16 @@ void reverse(int[] nums){
 }
 ```
 
+#### 1-1-6: [binary search](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_search.md)
+
+#### 1-1-7: [sliding window](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
+
+
 ## 2) LC Example
 
 ### 2-1) Remove Element
 ```python
+# python
 class Solution(object):
     def removeElement(self, nums, val):
         length = 0
