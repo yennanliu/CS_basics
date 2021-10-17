@@ -2,7 +2,20 @@
 # ALGORITHM DEMO : BUBBLE SORT 
 #################################################################
 
-# V0  
+# V0
+# LC 215
+def bubble_sort(nums):
+    _len = len(nums)
+    for i in range(_len - 1):
+        # since the last n element (idx = n) already minimum/maximum in every sort iteration
+        # -> we don't need to consider them again in next iteration
+        # -> so that's why j is in range(_len - 1 - i)
+        for j in range(_len - 1 - i):
+            if nums[j] > nums[j + 1]:
+                nums[j], nums[j + 1] = nums[j + 1], nums[j]
+    return nums
+
+# V0' 
 # DEMO
 # c = [9,1,2,3,0]
 # output = bubble_sort(c)

@@ -29,16 +29,50 @@ Constraints:
 # IDEA : SORTED 
 class Solution:
     def findKthLargest(self, nums, k):
-        nums.sort(key = lambda x : -x)
-        return nums[k-1]
+        nums.sort()
+        return nums[-k]
+
+# V0' 
+# IDEA : bubble sort -> OK*** (reiew again!)
+class Solution:
+    def findKthLargest(self, nums, k):
+        for i in range(k):
+            for j in range(len(nums) - i - 1):
+                if nums[j] > nums[j + 1]:
+                    nums[j], nums[j + 1] = nums[j + 1], nums[j]
+        return nums[len(nums) - k]
+# class Solution:
+#     def findKthLargest(self, nums, k):
+#         # bubble sort
+#         _len = len(nums)
+#         for i in range(k):
+#             for j in range(_len-1):
+#                 if nums[j] > nums[j+1]:
+#                     nums[j], nums[j+1] = nums[j+1], nums[j]
+#         return nums[-k]
+
+# V0''
+# IDEA : quick sort -> check again
+import random
+class Solution:
+    def findKthLargest(self, nums, k):
+        pivot = random.choice(nums)
+        nums1, nums2 = [], []
+        for num in nums:
+            if num > pivot:
+                nums1.append(num)
+            elif num < pivot:
+                nums2.append(num)
+        if k <= len(nums1):
+            return self.findKthLargest(nums1, k)
+        if k > len(nums) - len(nums2):
+            return self.findKthLargest(nums2, k - (len(nums) - len(nums2)))
+        return pivot
 
 # V1 
 # http://bookshadow.com/weblog/2015/05/23/leetcode-kth-largest-element-array/
 # IDEA : SORTED 
 class Solution:
-    # @param {integer[]} nums
-    # @param {integer} k
-    # @return {integer}
     def findKthLargest(self, nums, k):
         return sorted(nums, reverse=True)[k - 1]
 
