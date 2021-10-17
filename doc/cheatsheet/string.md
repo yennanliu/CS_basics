@@ -4,7 +4,7 @@
 
 ## 0) Concept  
 
-### 0-1) Framework
+### 0-1) Types
 
 ### 0-2) Pattern
 
@@ -52,7 +52,8 @@ Out[12]: ['1', '2', '3', '4']
 
 ## 2) LC Example
 
-### 2-1) go through 2 string, keep comparing digits in eash string
+### 2-1) Compare Version Number
+- go through 2 string, keep comparing digits in eash string
 ```python
 # 165 Compare Version Number
 class Solution(object):
@@ -74,7 +75,8 @@ class Solution(object):
         return 0
 ```
 
-### 2-2) String -> Int
+### 2-2) Add Two Numbers II,  Decode String
+- String -> Int
 ```python
 # 445 Add Two Numbers II
 # 394 Decode String
@@ -94,7 +96,7 @@ print (r)
 # 131
 ```
 
-### 2-3)
+### 2-3) Count and say
 ```python
 # LC 038 Count and say
 # V0

@@ -32,7 +32,7 @@ node1.next = node2;
 node2.next = node3;
 ```
 
-### 0-1) Framework
+### 0-1) Types
 - Linked list
 - Cycle linked list
 - Bi-direction linked list
@@ -230,6 +230,8 @@ class LinkedList:
 ### 1-1) Basic OP
 
 ## 2) LC Example
+
+### 2-1) palindrome-linked-list
 ```python
 # LC 234 : palindrome-linked-list
 # V0
@@ -253,6 +255,7 @@ class Solution(object):
         return r == r[::-1]
 ```
 
+### 2-2) Merge Two Sorted Lists
 ```python
 # LC 021
 # V0
@@ -281,7 +284,18 @@ class Solution(object):
         return head.next
 ```
 
-### 2-1) Reverse linklist
+### 2-3) Reverse Linked List
 ```python
-
+# LC 206
+class Solution:
+    def reverseList(self, head: ListNode):
+        prev = None
+        current = head 
+        while(current is not None): 
+            next_ = current.next
+            current.next = prev 
+            prev = current 
+            current = next_
+        head = prev 
+        return head
 ```

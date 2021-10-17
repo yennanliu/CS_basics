@@ -5,7 +5,7 @@
 - can be implemented by `array` or `linkedlist`
 - first in first out
 
-### 0-1) Framework
+### 0-1) Types
 - Queue
 - Priority queue
 
@@ -94,3 +94,5 @@ print ('pop_left:' , d.popleft())
 print (d)
 ```
 ### 1-4) Stack simulate Queue
+
+## 2) LC Example

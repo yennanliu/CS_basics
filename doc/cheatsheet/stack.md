@@ -9,7 +9,7 @@
 
 ## 0) Concept  
 
-### 0-1) Framework
+### 0-1) Types
 - Single stack
 - Build queue via stack
 - Build stack via queue
@@ -40,6 +40,8 @@ vector<int> nextGreaterElement(vector<int>& nums) {
 - Stack hasElement
 
 ## 2) LC Example
+
+### 2-1) Decode String
 ```python
 # LC 394
 # V0
