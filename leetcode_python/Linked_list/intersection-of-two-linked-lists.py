@@ -88,6 +88,15 @@ class Solution(object):
         return p
 
 # V0'
+class Solution(object):
+    def getIntersectionNode(self, headA, headB):
+            a_pointer, b_pointer = headA, headB
+            while a_pointer != b_pointer:
+                a_pointer = a_pointer.next if a_pointer else headB
+                b_pointer = b_pointer.next if b_pointer else headA
+            return a_pointer
+
+# V0'
 # class Solution(object):
 #     def getIntersectionNode(self, headA, headB):
 #         """
