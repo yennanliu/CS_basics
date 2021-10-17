@@ -1,6 +1,11 @@
 # BST (Binary Search Tree)
 
 ## 0) Concept
+
+### 0-1) Types
+- the property of BST : inorder traversal of BST is an array sorted in the ascending order. (LC 230)
+
+### 0-2) Pattern
 ```java
 // java
 public class TreeNode{
@@ -29,17 +34,13 @@ node1.val = 10;
 node1.left = node2;
 node1.right = node3;
 ```
-
-### 0-1) Properties
-- the property of BST : inorder traversal of BST is an array sorted in the ascending order. (LC 230)
-
-### 0-2) Pattern
-
 ## 1) General form
 
 ### 1-1) Basic OP
 
 ## 2) LC Example
+
+### 2-1) Serialize and Deserialize BST
 ```python
 
 # LC 449 Serialize and Deserialize BST
@@ -74,6 +75,8 @@ class Codec:
         else:
             return None
 ```
+
+### 2-2) Kth Smallest Element in a BST
 
 ```python
 # LC 230

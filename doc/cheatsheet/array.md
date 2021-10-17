@@ -2,13 +2,14 @@
 
 ## 0) Concept  
 
-### 0-1) Framework
+### 0-1) Types
 
 ### 0-2) Pattern
 
 ## 1) General form
 
 ### 1-1) Basic OP
+
 #### 1-1-1) Insert into Array
 ```python
 # Out[27]: [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
@@ -16,9 +17,11 @@
 # In [29]: p
 # Out[29]: [[7, 0], [6, 1], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
 ```
+
 #### 1-1-2) Delete from Array
 #### 1-1-3) check if element in Array
 #### 1-1-4) append to array (head, tail)
+
 #### 1-1-5) Sort Array*****
 ```python
 # Pattern :
@@ -84,7 +87,6 @@ for i in r3:
     print (i)
 ```
 
-
 ```python
 y = [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
 print (y)
@@ -94,7 +96,7 @@ print (y)
 # [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
 ```
 
-#### 1-1-6) go through 2 arrays (length could be different)
+#### 1-1-7) go through 2 arrays (length could be different)
 ```python
 # 2 array : s,t
 # len(s) = 10, len(t) = 7
@@ -131,7 +133,6 @@ class Solution(object):
 
         return int("".join(ans))
 ```
-
 
 ## 2) LC Example
 
@@ -257,4 +258,4 @@ class Solution(object):
                 left, right = i, max_idx        # if current max digit > current digit -> save current max digit to right idnex, and save current index to left
         digits[left], digits[right] = digits[right], digits[left] # swap left and right when loop finished 
         return int("".join(digits))
-```
+``

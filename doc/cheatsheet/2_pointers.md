@@ -4,7 +4,7 @@
 ## 0) Concept  
 
 ### 0-1) Types
-- Fast - Slow pointers
+- `Fast - Slow pointers`
     - Usualy set
         - slow pointer moves 1 idx
         - fast pointer moves 2 inx
@@ -12,7 +12,7 @@
     - linked list check if circular 
     - if a circular linked list, return beginning point of circular
     - find last k element of a single linked list
-- Left- Right pointers
+- `Left- Right pointers`
     - Usually set
         - left pointer = 0
         - right pointer = len(nums)
