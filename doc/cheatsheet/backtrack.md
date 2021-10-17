@@ -11,7 +11,7 @@
 
 ## 0) Concept  
 
-### 0-1) Framework
+### 0-1) Types
 - 3 things to consider : 
  - `Route` : The choices have made
  - `Choice list` : The choices we can select currently
