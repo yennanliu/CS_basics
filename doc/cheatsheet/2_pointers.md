@@ -44,10 +44,28 @@ int binarySearch(int[] nums, int target) {
 
 ### 1-1) Basic OP
 
-#### 1-1-1 : Reverse Array
+#### 1-1-1 : Check if there is a circular linked list 
 ```java
 // java
-// reverse array
+boolean hasCycle(ListNode head){
+    ListNode left, right;
+    fast = slow = head;
+    while (fast != null and fast.next != null){
+        slow = slow.next;
+        fast = fast.next.next;
+
+        if (fast == slow){
+            return True
+        }
+    }
+    return False;
+}
+
+```
+
+#### 1-1-2 : Reverse Array
+```java
+// java
 void reverse(int[] nums){
     int left = 0;
     int right = nums.length - 1
