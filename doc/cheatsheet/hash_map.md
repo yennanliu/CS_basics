@@ -2,7 +2,7 @@
 
 ## 0) Concept  
 
-### 0-1) Framework
+### 0-1) Types
 
 ### 0-2) Pattern
 
@@ -129,6 +129,8 @@ class Solution(object):
 ```
 
 ## 2) LC Example
+
+### 2-1) Contiguous Array
 ```python
 # 525 Contiguous Array
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/contiguous-array.py
@@ -152,6 +154,7 @@ class Solution(object):
         return r
 ```
 
+### 2-2) Continuous Subarray Sum
 ```python
 # 523 Continuous Subarray Sum
 class Solution(object):
@@ -169,6 +172,8 @@ class Solution(object):
                 _dict[tmp] = i
         return False
 ```
+
+### 2-3) Group Anagrams
 ```python
 # 049 Group Anagrams
 # V0
@@ -185,6 +190,7 @@ class Solution:
 
 ```
 
+### 2-3) Longest Substring Without Repeating Characters
 ```python
 # LC 003
 

@@ -4,7 +4,7 @@
 
 ## 0) Concept  
 
-### 0-1) Framework
+### 0-1) Types
 - Merge intervals
 - Overlap intervals
 - Courses problems

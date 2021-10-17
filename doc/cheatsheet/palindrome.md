@@ -2,7 +2,7 @@
 
 ## 0) Concept  
 
-### 0-1) Framework
+### 0-1) Types
 
 ### 0-2) Pattern
 ```python

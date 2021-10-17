@@ -6,7 +6,7 @@
 2. while loop
 3. some conditions for start and end
 
-### 0-1) Framework
+### 0-1) Types
 
 ### 0-2) Pattern
 ```java
