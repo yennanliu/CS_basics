@@ -1,6 +1,7 @@
-"""
-Python Program for Dijkstra’s shortest path algorithm
-"""
+#################################################################
+# ALGORITHM DEMO : Dijkstra’s shortest path algorithm
+#################################################################
+
 
 # V0
 

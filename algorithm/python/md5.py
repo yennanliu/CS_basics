@@ -1,9 +1,11 @@
-# V0 : DEV 
+#################################################################
+# ALGORITHM DEMO : MD5
+#################################################################
 
+# V0 : DEV 
 
 # V1 
 # https://github.com/yennanliu/Python/blob/master/hashes/md5.py
-
 import math
 def rearrange(bitString32):
 	"""[summary]
