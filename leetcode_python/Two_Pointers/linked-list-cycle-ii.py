@@ -42,6 +42,29 @@ Follow up: Can you solve it using O(1) (i.e. constant) memory?
 """
 
 # V0
+# IDEA : 2 pointers + linked list basics
+# https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md
+class Solution:
+    def detectCycle(self, head):
+        if not head or not head.next:
+            return
+        slow = fast = head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                break
+        #print ("slow = " + str(slow) + " fast = " + str(fast))
+        ### NOTE : via below condition check if is a cycle linked list
+        if not fast or not fast.next:
+            return
+        ### NOTE : re-init slow as head (from starting point)
+        slow = head
+        ### NOTE : check while slow != fast
+        while slow != fast:
+            fast = fast.next
+            slow = slow.next
+        return slow
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79530638
