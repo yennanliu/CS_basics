@@ -14,6 +14,7 @@ import colllections
 queue = colllections.deque()
 queue.append(root)
 while len(queue) > 0:
+    ### NOTE THIS : `range(len(queue))`
     for i in range(len(queue)):
         node = queue.popleft()
         # op

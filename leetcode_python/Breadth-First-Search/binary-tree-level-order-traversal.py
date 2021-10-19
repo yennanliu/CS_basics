@@ -47,6 +47,32 @@ return its level order traversal as:
 """
 
 # V0
+# IDEA : BFS
+import collections
+class Solution(object):
+    def levelOrder(self, root):
+        if not root:
+            return []
+        r = []
+        q = collections.deque()
+        q.append(root)
+        l = 0
+        while q:
+            ### NOTE THIS : `for i in range(len(q))`, but not `for i in q`
+            #             -> we visit idx of nodes in q, but not nodes itself
+            for i in range(len(q)):
+                tmp = q.popleft()
+                if len(r) < l+1:
+                    r.append([])
+                r[l].append(tmp.val)
+                if tmp.left:
+                    q.append(tmp.left)
+                if tmp.right:
+                    q.append(tmp.right)
+            l += 1
+        return r
+
+# V0'
 # IDEA : BFS 
 # Definition for a binary tree node.
 class Solution(object):
@@ -100,19 +126,19 @@ class Solution(object):
 class Solution(object):
     def levelOrder(self, root):
         res = []
-        layer = 0 
-        self.dfs(root,res,layer)
-        return res 
+        self.dfs(root, 0, res)
+        return res
 
-    def dfs(self, root, res, layer):
-        if not root: return 
-        if len(res) == layer: # in case length of res is not enough, so just add more "space", (append([]))
-            res.append([])        
-        res[layer].append(root.value) 
-        if root.left:
-            dfs(root.left, res, layer +1)
-        if root.right:
-            dfs(root.right, res, layer +1)
+    def dfs(self, root, level, res):
+        if not root: 
+            return
+        if len(res) == level: 
+            res.append([])
+        res[level].append(root.val)
+        if root.left: 
+            self.dfs(root.left, level + 1, res)
+        if root.right: 
+            self.dfs(root.right, level + 1, res)
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79616156
