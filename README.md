@@ -661,7 +661,7 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 019| [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)| [Python](./leetcode_python/Two_Pointers/remove-nth-node-from-end-of-list.py) | _O(n)_   | _O(1)_ | Medium |`linked list`,`two pointers`,`fb`| AGAIN**** (3)
 086| [Partition List](https://leetcode.com/problems/partition-list/)| [Python](./leetcode_python/Two_Pointers/partition-list.py) | _O(n)_       | _O(1)_         | Medium         || OK* 
-141| [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)| [Python](./leetcode_python/Two_Pointers/linked-list-cycle.py) | _O(n)_ | _O(1)_ | Easy |`basic`,`amazon`, `fb`|  OK* (3)
+141| [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)| [Python](./leetcode_python/Two_Pointers/linked-list-cycle.py) | _O(n)_ | _O(1)_ | Easy |`basic`,`amazon`, `fb`|  OK** (4)
 142| [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)| [Python](./leetcode_python/Two_Pointers/linked-list-cycle-ii.py) | _O(n)_ | _O(1)_   | Medium   || AGAIN* (2) (not start)
 143| [Reorder List](https://leetcode.com/problems/reorder-list/)| [Python](./leetcode_python/Two_Pointers/reorder-list.py)| _O(n)_ |  _O(1)_   | Medium  |`good trick`,`inverse linkedlist`, `merge linkedlist` ,`fb`|  AGAIN**** (4)
 167| [Two Sum II - Input array is sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/) |  [Python](./leetcode_python/Two_Pointers/two-sum-ii-input-array-is-sorted.py) | _O(n)_   | _O(1)_ | Medium | two pointer, dict, binary search,`good basic`, `amazon`| OK*  (3)
@@ -1072,7 +1072,7 @@
 1126| [Active Businesses](https://leetcode.com/problems/active-businesses/) | [MySQL](./leetcode_SQL/active-businesses.sql) | _O(n)_ | _O(n)_  | Medium |🔒, `good basic`|  AGAIN**
 1127| [User Purchase Platform](https://leetcode.com/problems//user-purchase-platform/) | [MySQL](./leetcode_SQL/user-purchase-platform.sql)  | _O(n)_ | _O(n)_  | Hard  |🔒, `complex`, union all, case|  OK*** (4) (but again)
 1132| [Reported Posts II](https://leetcode.com/problems/reported-posts-ii/) | [MySQL](./leetcode_SQL/reported-posts-ii.sql)  | _O(m + n)_ | _O(n)_ | Medium   |🔒| OK**
-1141| [User Activity for the Past 30 Days I](https://leetcode.com/problems/user-activity-for-the-past-30-days-i/) | [MySQL](./leetcode_SQL/user-activity-for-the-past-30-days-i.sql) | _O(n)_ | _O(n)_       | Easy      |🔒| AGAIN* (1)
+1141| [User Activity for the Past 30 Days I](https://leetcode.com/problems/user-activity-for-the-past-30-days-i/) | [MySQL](./leetcode_SQL/user-activity-for-the-past-30-days-i.sql) | _O(n)_ | _O(n)_| Easy|🔒| AGAIN* (2)
 1142| [User Activity for the Past 30 Days II](https://leetcode.com/problems/user-activity-for-the-past-30-days-ii/) | [MySQL](./leetcode_SQL/user-activity-for-the-past-30-days-ii.sql) | _O(n)_ | _O(n)_       | Easy           |🔒 | AGAIN* (1)
 1148| [Article Views I](https://leetcode.com/problems/article-views-i/) | [MySQL](./leetcode_SQL/article-views-i.sql) | _O(nlogn)_ | _O(n)_     | Easy  |🔒| OK
 1149| [Article Views II](https://leetcode.com/problems/article-views-ii/) | [MySQL](./leetcode_SQL/article-views-ii.sql) | _O(nlogn)_ | _O(n)_    | Medium  |🔒| OK*

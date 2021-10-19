@@ -51,6 +51,7 @@ boolean hasCycle(ListNode head){
     ListNode left, right;
     fast = slow = head;
     while (fast != null and fast.next != null){
+        /** NOTE : need to do move slow, fast pointer then compare them*/
         slow = slow.next;
         fast = fast.next.next;
         if (fast == slow){
