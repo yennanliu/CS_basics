@@ -20,6 +20,8 @@
 			- bit manipulation
 			- union find
 			- quick sort
+			- linked list
+				- 142
 		- SQL
 	- Crack Code
 	- System Design
