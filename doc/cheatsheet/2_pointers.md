@@ -23,6 +23,7 @@
 
 ### 0-2) Pattern
 ```c++
+// c++
 int binarySearch(int[] nums, int target) {
     int left = 0, right = ...;
 
@@ -76,7 +77,11 @@ ListNode detectCycle(ListNode head){
         }
     }
     slow = head;
-    while (slow != head){
+    // may need below logic to check whether if cycle linked list
+    // if (! fast or ! fast.next){
+    //     return null;
+    // }
+    while (slow != fast){
         slow = slow.next;
         fast = fast.next;
     }
@@ -85,6 +90,30 @@ ListNode detectCycle(ListNode head){
 
 ```
 
+```python
+# LC 142
+# python
+class Solution:
+    def detectCycle(self, head):
+        if not head or not head.next:
+            return
+        slow = fast = head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                break
+        ### NOTE : via below condition check if is a cycle linked list
+        if not fast or not fast.next:
+            return
+        ### NOTE : re-init slow as head (from starting point)
+        slow = head
+        ### NOTE : check while slow != fast
+        while slow != fast:
+            fast = fast.next
+            slow = slow.next
+        return slow
+```
 #### 1-1-3 : find mid point of single linked list
 ```java
 // java

@@ -16,12 +16,14 @@
 			- =======
 			- **back track**
 			- Binary Search Tree
+			- Binary Search
+			- linked list
+				- 142
+			- =======
 			- hash table
 			- bit manipulation
 			- union find
 			- quick sort
-			- linked list
-				- 142
 		- SQL
 	- Crack Code
 	- System Design
