@@ -1,9 +1,10 @@
-# V0 : DEV 
+#################################################################
+# ALGORITHM DEMO : HEAP SORT
+#################################################################
 
-
+# V0
 
 # V1 
-
 def heapify(unsorted, index, heap_size):
     largest = index
     left_index = 2 * index + 1

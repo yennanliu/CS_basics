@@ -37,6 +37,9 @@ class Solution:
 class Solution:
     def findKthLargest(self, nums, k):
         for i in range(k):
+            ### NOTE THIS : range(len(nums) - i - 1)
+            # same as bubble sort
+            # https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py#L13
             for j in range(len(nums) - i - 1):
                 if nums[j] > nums[j + 1]:
                     nums[j], nums[j + 1] = nums[j + 1], nums[j]

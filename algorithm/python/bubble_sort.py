@@ -10,6 +10,7 @@ def bubble_sort(nums):
         # since the last n element (idx = n) already minimum/maximum in every sort iteration
         # -> we don't need to consider them again in next iteration
         # -> so that's why j is in range(_len - 1 - i)
+        ### NOTE THIS : range(_len - 1 - i)
         for j in range(_len - 1 - i):
             if nums[j] > nums[j + 1]:
                 nums[j], nums[j + 1] = nums[j + 1], nums[j]
