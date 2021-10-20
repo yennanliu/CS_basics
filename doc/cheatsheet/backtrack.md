@@ -38,7 +38,7 @@ def backtrack(route, choice_list):
         return
     
     for choice in choice_list:
-    	### core of backtrack
+        ### core of backtrack
         do_choice   ### this one is necessary
         backtrack(route, choice_list)
         undo_choice ### this one is necessary
@@ -52,7 +52,7 @@ def backtrack(route, choice_list):
 
 ### 2-1) Letter Combinations of a Phone Number 
 ```python
-# 017 	Letter Combinations of a Phone Number
+# 017   Letter Combinations of a Phone Number
 # V0 
 # idea : backtrack
 class Solution(object):
@@ -144,4 +144,26 @@ class Solution(object):
         visited[i][j] = False
 
         return result
+```
+
+### 2-4) Subsets & Subsets II
+```python
+# LC 078, 090
+# V0
+# IDEA : DFS 
+class Solution(object):
+    def subsets(self, nums):
+        def dfs(layer, start, tmp):
+            if tmp not in res:
+                res.append(tmp)
+            if layer == len(nums):
+                return
+            ### NOTE : we have if condition first, then for loop
+            for i in range(start, len(nums)):
+                ### NOTE below can make loop start `start idx` updated each time
+                dfs(layer+1, i+1, tmp + [nums[i]])
+        nums.sort()
+        res = []
+        dfs(0, 0, [])
+        return res
 ```

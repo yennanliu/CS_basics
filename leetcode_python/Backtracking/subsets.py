@@ -36,6 +36,39 @@ All the numbers of nums are unique.
 """
 
 # V0
+# IDEA : DFS
+# plz also refer backtrack cheatsheet
+# https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/backtrack.md
+class Solution(object):
+    def subsets(self, nums):
+        def dfs(layer, start, tmp):
+            if tmp not in res:
+                res.append(tmp)
+            if layer == len(nums):
+                return
+            ### NOTE : we have if condition first, then for loop
+            for i in range(start, len(nums)):
+                ### NOTE below can make loop start `start idx` updated each time
+                dfs(layer+1, i+1, tmp + [nums[i]])
+        nums.sort()
+        res = []
+        dfs(0, 0, [])
+        return res
+
+# V0'
+# IDEA : BRUTE FROCE
+class Solution(object):
+    def subsets(self, nums):
+        nums.sort()
+        result = [[]]
+        for i in range(len(nums)):
+            size = len(result)
+            for j in range(size):
+                result.append(list(result[j]))
+                result[-1].append(nums[i])
+        return result
+
+# V0
 # IDEA : DFS 
 # SAME AS # 90 subset-ii 
 class Solution(object):
