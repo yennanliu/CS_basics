@@ -1,3 +1,26 @@
+"""
+
+Reverse Words in a String II
+
+# https://aaronice.gitbook.io/lintcode/string/reverse-words-in-a-string-ii
+# https://www.programcreek.com/2014/05/leetcode-reverse-words-in-a-string-ii-java/
+
+Given an input string, reverse the string word by word.
+Example:
+Input:  
+["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
+​
+Output: 
+["b","l","u","e"," ","i","s"," ","s","k","y"," ","t","h","e"]
+Note: 
+A word is defined as a sequence of non-space characters.
+The input string does not contain leading or trailing spaces.
+The words are always separated by a single space.
+Follow up: Could you do itin-placewithout allocating extra space?
+Topics: Two Pointers, String
+
+"""
+
 # V0 
 # IDEA : REVERSE WHOLE STRING -> REVERSE EACH WORD 
 class Solution(object):
