@@ -26,16 +26,33 @@ Constraints:
 s1 and s2 consist of lowercase English letters.
 
 """
+# V0
+# IDEA : collections + sliding window
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        if len(s1) > len(s2):
+            return False
+        _c1 = Counter(s1)
+        _c2 = Counter([])
+        l = r = 0
+        while r < len(s2):
+            while r - l + 1 <= len(s1):
+                _c2[s2[r]] += 1
+                #print ("l = " + str(l) + " r = " + str(r) + " s2[l:r+1] = " + str(s2[l:r+1]) + " _c2 = " + str(_c2))
+                if _c1 == _c2:
+                    return True
+                r += 1
+            _c2[s2[l]] -= 1
+            if _c2[s2[l]] == 0:
+                _c2.pop(s2[l])
+            l += 1
+        return False
 
-# V0 
+# V0
+# IDEA : collections + sliding window
 import collections
 class Solution(object):
     def checkInclusion(self, s1, s2):
-        """
-        :type s1: str
-        :type s2: str
-        :rtype: bool
-        """
         l1, l2 = len(s1), len(s2)
         c1 = collections.Counter(s1)
         c2 = collections.Counter()

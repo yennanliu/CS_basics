@@ -1,8 +1,5 @@
 # Progress
 
-- `TODO`   : FB/GOOGLE/UBER/SPOTIFY.. glassdoor, leetcode survey 
-- `TODO2`   : re-check : Array, Dynamic Programming, Graph, Geometry, Simulation
-
 # 2021-10-21
 - DOING:
 	- LC (am_)
@@ -15,6 +12,8 @@
 			- Binary Search Tree
 			- Binary Search
 			- linked list
+			- sliding window
+				- 567
 			- =======
 			- hash table
 			- bit manipulation
