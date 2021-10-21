@@ -70,3 +70,58 @@ class Solution(object):
                 p += 1
         return False
 ```
+
+### 2-2) Find All Anagrams in a String
+
+```python
+# LC 438
+# V0
+# IDEA : SLIDING WINDOW + collections.Counter()
+class Solution(object):
+    def findAnagrams(self, s, p):
+        """
+        :type s: str
+        :type p: str
+        :rtype: List[int]
+        """
+        ls, lp = len(s), len(p)
+        cp = collections.Counter(p)
+        cs = collections.Counter()
+        ans = []
+        for i in range(ls):
+            cs[s[i]] += 1
+            if i >= lp:
+                cs[s[i - lp]] -= 1
+                ### BE AWARE OF IT
+                if cs[s[i - lp]] == 0:
+                    del cs[s[i - lp]]
+            if cs == cp:
+                ans.append(i - lp + 1)
+        return ans
+```
+
+### 2-3) Longest Substring Without Repeating Characters
+
+```python
+# LC 003
+# V0
+# IDEA : SLIDING WINDOW + DICT
+#       -> use a hash table (d) record visit "alphabet" (e.g. : a,b,c,...)
+#          (but NOT sub-string)
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        d = {}
+        l = 0
+        res = 0
+        for r in range(len(s)):
+            ### NOTE : if already visited, means "repeating"
+            #         -> then we need to update left pointer (l)
+            if s[r] in d:
+                # note here
+                l = max(l, d[s[r]] + 1)
+            # if not visited yet, record the alphabet
+            # and re-calculate the max length
+            d[s[r]] = r
+            res = max(res, r -l + 1)
+        return res
+```
