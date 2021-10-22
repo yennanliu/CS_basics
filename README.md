@@ -158,7 +158,7 @@
 ## Array 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note           | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](./leetcode_python/Array/3sum.py) | _O(n^2)_ | _O(1)_  | Medium    | check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `good basic`,`amazon`,`fb`| OK*** (4)
+015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](./leetcode_python/Array/3sum.py) | _O(n^2)_ | _O(1)_  | Medium    | check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `good basic`,`amazon`,`fb`| OK***** (5)
 016 | [3 Sum Closest](https://leetcode.com/problems/3sum-closest/) | [Python](./leetcode_python/Array/3sum-closest.py) | _O(n^2)_   | _O(1)_  | Medium |`Two Pointers`, `basic`, `good trick`,`3 sum`,amazon| AGAIN**** (2)
 018| [4 Sum](https://leetcode.com/problems/4sum/) | [Python](./leetcode_python/Array/4sum.py)   | _O(n^3)_  | _O(1)_    | Medium  | `k sum`, `Two Pointers`, check `#016 3 sum`, `good trick`, `fb` | AGAIN***** (3)
 026 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)|  [Python](./leetcode_python/Array/remove-duplicates-from-sorted-array.py), [Scala](./leetcode_scala/Array/removeDuplicates.scala) | _O(n)_ | _O(1)_| Easy | `Two Pointers`, `basic`, `good trick`,`M$` ,`fb` |  AGAIN********* (6)
@@ -269,7 +269,7 @@
 ## Hash Table 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-001| [Two Sum](https://leetcode.com/problems/two-sum/)| [Python](./leetcode_python/Hash_table/two-sum.py), [Java](./leetcode_java/hash-table/twoSum.java),[Scala](./leetcode_scala/Hash_table/twoSum.scala)     | _O(n)_| _O(n)_ | Easy |`good basic`, `hash table`, `apple`, `amazon`, `UBER`, `grab`, `fb`| OK* (but again)
+001| [Two Sum](https://leetcode.com/problems/two-sum/)| [Python](./leetcode_python/Hash_table/two-sum.py), [Java](./leetcode_java/hash-table/twoSum.java),[Scala](./leetcode_scala/Hash_table/twoSum.scala)     | _O(n)_| _O(n)_ | Easy |`good basic`, `hash table`, `apple`, `amazon`, `UBER`, `grab`, `fb`| OK*** (5) (but again)
 003| [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | [Python ](./leetcode_python/Hash_table/longest-substring-without-repeating-characters.py)  | _O(n)_ | _O(1)_ | Medium |`good trick`, `hash table`,`apple`,`amazon`,`fb`| AGAIN********* (4) (but AGAIN)
 036| [Valid Sudoku](https://leetcode.com/problems/valid-sudoku/) | [Python ](./leetcode_python/Hash_table/valid-sudoku.py) | _O(9^2)_ | _O(9)_ | Easy  |`UBER`, `apple`, `amazon`| OK* 
 049| [Group Anagrams](https://leetcode.com/problems/group-anagrams/)  | [Python](./leetcode_python/Hash_table/group-anagrams.py), [Scala](./leetcode_scala/Hash_table/group-anagrams.scala) | _O(n * glogg)_ | _O(n)_   | Medium |`good basic`, dict,`trick`,`dict + sort`, `UBER`, `amazon`, `fb`| OK ********** (5)
