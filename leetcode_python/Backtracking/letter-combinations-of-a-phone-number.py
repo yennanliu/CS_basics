@@ -29,13 +29,31 @@ digits[i] is a digit in the range ['2', '9'].
 
 """
 
-# V0 
+# V0
+# IDEA : dfs + backtracking
 class Solution(object):
     def letterCombinations(self, digits):
-        """
-        :type digits: str
-        :rtype: List[str]
-        """
+        d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
+        res = []
+        def dfs(digits, idx, tmp):
+            if idx == len(digits):
+                if tmp != "":
+                    res.append(tmp)
+                return
+            ### NOTE : we loop alphabets in d map per number rather than loop over number
+            for j in d[digits[idx]]:
+                """
+                NOTE 
+                idex+1 : for loop to next number
+                tmp+j : for collect cur update
+                """
+                dfs(digits, idx+1, tmp+j)
+        dfs(digits, 0, "")
+        return res
+
+# V0'
+class Solution(object):
+    def letterCombinations(self, digits):
         if digits == "": return []
         d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
         res = ['']
