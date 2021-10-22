@@ -12,6 +12,7 @@
 			- =======
 			- **back track**
 				- 017
+				- 039
 			- Binary Search Tree
 			- Binary Search
 			- linked list

@@ -88,6 +88,7 @@ class Solution(object):
 
 ### 2-2) combination-sum
 ```python
+# LC 039 combination-sum
 class Solution(object):
     def combinationSum(self, candidates, target):
         result = []
@@ -109,7 +110,7 @@ class Solution(object):
 
 ### 2-3) Word Search
 ```python
-# 079 Word Search
+# LC 079 Word Search
 # V0
 # IDEA : DFS + backtracking
 class Solution(object):
