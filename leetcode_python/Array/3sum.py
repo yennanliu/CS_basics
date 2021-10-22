@@ -1,3 +1,35 @@
+"""
+
+15. 3Sum
+Medium
+
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+
+Notice that the solution set must not contain duplicate triplets.
+
+
+
+Example 1:
+
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+Example 2:
+
+Input: nums = []
+Output: []
+Example 3:
+
+Input: nums = [0]
+Output: []
+ 
+
+Constraints:
+
+0 <= nums.length <= 3000
+-105 <= nums[i] <= 105
+
+"""
+
 # Time:  O(n^2)
 # Space: O(1)
 # Given an array S of n integers,
@@ -12,6 +44,30 @@
 #    A solution set is:
 #    (-1, 0, 1)
 #    (-1, -1, 2)
+
+# V0
+# IDEA : 2 SUM -> 3 SUM
+class Solution(object):
+    def threeSum(self, nums):
+        res = []
+        if not nums or len(nums) <= 2:
+            return res
+        # this sort may not be necessary
+        nums.sort()
+        for i in range(len(nums)):
+            # NOTE : set target = -nums[i]
+            t = -nums[i]
+            d = {}
+            ### NOTE : we NEED tp loop from idx = i+1 to len(nums)
+            for j in range(i+1, len(nums)):
+                if  (-nums[j] + t) in d:
+                        tmp = [ nums[i], nums[j], -nums[j] + t ]
+                        tmp.sort()
+                        # note :  this trick to not append duplicated ans
+                        if tmp not in res:
+                            res.append(tmp)
+                d[nums[j]] = j
+        return res
 
 # V0 
 class Solution:
