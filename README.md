@@ -827,7 +827,7 @@
 851| [Loud and Rich](https://leetcode.com/problems/loud-and-rich/) | [Python](./leetcode_python/Depth-First-Search/loud-and-rich.py)  | _O(q + r)_    | _O(q + r)_   | Medium |`amazon`,`defaultdict`, `good basic`| AGAIN*** (3)
 491| [Increasing Subsequences](https://leetcode.com/problems/increasing-subsequences/) | [Python](./leetcode_python/Depth-First-Search/increasing_subsequences.py)  | | | Medium |`trick`,`dfs`,`dfs good trick`, `dp`,`yahoo` ,`fb`|  AGAIN***** (2)
 711| [Number of Distinct Islands II](https://leetcode.com/problems/number-of-distinct-islands-ii/) | [Python](./leetcode_python/Depth-First-Search/number-of-distinct-islands-ii.py), [Java](./leetcode_java/Depth-First-Search/number-of-distinct-islands-ii.java) | | | Hard |complex, dfs, check `# 694 Number of Distinct Islands	`,`amazon`| AGAIN (not start) 
-529| [Minesweeper](https://leetcode.com/problems/minesweeper/) | [Python](./leetcode_python/Depth-First-Search/minesweeper.py) | | | Medium | good basic, dfs, bfs,`amazon`| AGAIN**** (1)
+529| [Minesweeper](https://leetcode.com/problems/minesweeper/) | [Python](./leetcode_python/Depth-First-Search/minesweeper.py) | | | Medium | dfs, bfs, good basic, dfs, bfs,`amazon`| AGAIN**** (2) (not start)
 
 ## Backtracking 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note       | Status| 
@@ -982,7 +982,7 @@
 0381| [Insert Delete GetRandom O(1) - Duplicates allowed](https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/) | [C++](./C++/insert-delete-getrandom-o1-duplicates-allowed.cpp) [Python](./Python/insert-delete-getrandom-o1-duplicates-allowed.py) | _O(1)_ | _O(n)_ | Hard || |
 432| [All O\`one Data Structure](https://leetcode.com/problems/all-oone-data-structure/) | [C++](./C++/all-oone-data-structure.cpp) [Python](./Python/all-oone-data-structure.py) | _O(1)_ | _O(n)_| Hard || |
 460| [LFU Cache](https://leetcode.com/problems/lfu-cache/) | [Python](./leetcode_python/Design/lfu_cache.py)  | _O(1)_ | _O(k)_ | Hard | Least Frequently Used (LFU) cache, complex, `amazon`| AGAIN (not start)
-535| [Encode and Decode TinyURL](https://leetcode.com/problems/encode-and-decode-tinyurl/) | [Python](./leetcode_python/Design/encode-and-decode-tinyurl.py) | _O(1)_ | _O(n)_ | Medium |`hash map`, "duplicated", "hash map collision" ,`UBER`, `amazon`,`google` ,`fb`, design|  OK* (3)
+535| [Encode and Decode TinyURL](https://leetcode.com/problems/encode-and-decode-tinyurl/) | [Python](./leetcode_python/Design/encode-and-decode-tinyurl.py) | _O(1)_ | _O(n)_ | Medium |`hash map`, "duplicated", "hash map collision" ,`UBER`, `amazon`,`google` ,`fb`, design|  OK* (4)
 588| [Design In-Memory File System](https://leetcode.com/problems/design-in-memory-file-system/) | [C++](./C++/design-in-memory-file-system.cpp) [Python](./Python/design-in-memory-file-system.py) | ls: _O(l + klogk)_<br> mkdir: _O(l)_<br> addContentToFile: _O(l + c)_<br> readContentFromFile: _O(l + c)_ | _O(n + s)_ | Hard |🔒| |
 0604| [Design Compressed String Iterator](https://leetcode.com/problems/design-compressed-string-iterator/) | [C++](./C++/design-compressed-string-iterator.cpp) [Python](./Python/design-compressed-string-iterator.py) | _O(1)_ | _O(1)_ | Easy |🔒| 
 631| [Design Excel Sum Formula](https://leetcode.com/problems/design-excel-sum-formula/) | [C++](./C++/design-excel-sum-formula.cpp) [Python](./Python/design-excel-sum-formula.py) | set: _O((r * c)^2)_<br>get: _O(1)_<br>sum: _O((r * c)^2)_ | _O(r * c)_ | Hard |🔒| 
