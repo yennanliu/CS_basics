@@ -7,6 +7,9 @@
 		- programming
 			- (normal order)
 			- (pdf : p.9)
+				- 535
+			- (pdf : p.10)
+				- 529 (again)
 			- =======
 			- **back track**
 			- Binary Search Tree
