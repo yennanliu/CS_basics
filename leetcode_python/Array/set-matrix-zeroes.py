@@ -32,10 +32,37 @@ n == matrix[0].length
 
 """
 
+# V0
+class Solution(object):
+    def setZeroes(self, matrix):   
+
+        if not matrix:
+            return matrix
+
+        def help(matrix, xy):
+            ### NOTE : 
+            #          -> for cases matrix[i][j]:
+            #            -> y is FIRST element  (i)
+            #            -> x is SECOND element (j)
+            x = xy[1]
+            y = xy[0]
+            matrix[y] = [0] * len(matrix[0])
+            for j in range(len(matrix)):
+                matrix[j][x] = 0
+            return matrix
+
+        _list = []
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j] == 0:
+                    _list.append([i,j])
+
+        for xy in _list:
+            matrix = help(matrix, xy)
+        return matrix
+
 # V0 
 class Solution:
-    # @param matrix, a list of lists of integers
-    # RETURN NOTHING, MODIFY matrix IN PLACE.
     def setZeroes(self, matrix):
         rownum = len(matrix)
         colnum = len(matrix[0])
