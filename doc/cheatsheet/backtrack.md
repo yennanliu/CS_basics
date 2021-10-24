@@ -88,7 +88,7 @@ class Solution(object):
 
 ### 2-2) combination-sum
 ```python
-# LC 039 combination-sum
+# LC 039, LC 040 combination-sum
 # V0
 # IDEA : DFS + BACKTRACK
 class Solution(object):
@@ -114,36 +114,42 @@ class Solution(object):
 ### 2-3) Word Search
 ```python
 # LC 079 Word Search
+
 # V0
 # IDEA : DFS + backtracking
 class Solution(object):
  
     def exist(self, board, word):
+        ### NOTE : construct the visited matrix
         visited = [[False for j in range(len(board[0]))] for i in range(len(board))]
 
+        ### NOTE : we visit every element in board and trigger the dfs
         for i in range(len(board)):
             for j in range(len(board[0])):
-                if self.existRecu(board, word, 0, i, j, visited):
+                if self.dfs(board, word, 0, i, j, visited):
                     return True
 
         return False
 
-    def existRecu(self, board, word, cur, i, j, visited):
+    def dfs(self, board, word, cur, i, j, visited):
         # if "not false" till cur == len(word), means we already found the wprd in board
         if cur == len(word):
             return True
 
-        # note this condition
+        ### NOTE this condition
+        # 1) if idx out of range
+        # 2) if already visited
+        # 3) if board[i][j] != word[cur] -> not possible to be as same as word
         if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]) or visited[i][j] or board[i][j] != word[cur]:
             return False
 
         # mark as visited
         visited[i][j] = True
         ### NOTE THIS TRICK (run the existRecu on 4 directions on the same time)
-        result = self.existRecu(board, word, cur + 1, i + 1, j, visited) or\
-                 self.existRecu(board, word, cur + 1, i - 1, j, visited) or\
-                 self.existRecu(board, word, cur + 1, i, j + 1, visited) or\
-                 self.existRecu(board, word, cur + 1, i, j - 1, visited)
+        result = self.dfs(board, word, cur + 1, i + 1, j, visited) or\
+                 self.dfs(board, word, cur + 1, i - 1, j, visited) or\
+                 self.dfs(board, word, cur + 1, i, j + 1, visited) or\
+                 self.dfs(board, word, cur + 1, i, j - 1, visited)
         # mark as non-visited
         visited[i][j] = False
 
