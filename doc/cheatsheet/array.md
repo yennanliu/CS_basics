@@ -258,4 +258,37 @@ class Solution(object):
                 left, right = i, max_idx        # if current max digit > current digit -> save current max digit to right idnex, and save current index to left
         digits[left], digits[right] = digits[right], digits[left] # swap left and right when loop finished 
         return int("".join(digits))
-``
+```
+
+### 2-5) Set Matrix Zeroes
+```python
+# LC 73. Set Matrix Zeroes
+# V0
+class Solution(object):
+    def setZeroes(self, matrix):   
+
+        if not matrix:
+            return matrix
+
+        def help(matrix, xy):
+            ### NOTE : 
+            #          -> for cases matrix[i][j]:
+            #            -> y is FIRST element  (i)
+            #            -> x is SECOND element (j)
+            x = xy[1]
+            y = xy[0]
+            matrix[y] = [0] * len(matrix[0])
+            for j in range(len(matrix)):
+                matrix[j][x] = 0
+            return matrix
+
+        _list = []
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j] == 0:
+                    _list.append([i,j])
+
+        for xy in _list:
+            matrix = help(matrix, xy)
+        return matrix
+```
