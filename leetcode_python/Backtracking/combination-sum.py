@@ -47,14 +47,30 @@ All elements of candidates are distinct.
 """
 
 # V0
-# IDEA : DFS
+# IDEA : DFS + BACKTRACK
 class Solution(object):
     def combinationSum(self, candidates, target):
-        """
-        :type candidates: List[int]
-        :type target: int
-        :rtype: List[List[int]]
-        """
+
+        def dfs(tmp):
+            if sum(tmp) == target:
+                tmp.sort()
+                if tmp not in res:
+                    res.append(tmp)
+                return
+            if sum(tmp) > target:
+                return
+            for c in candidates:
+                dfs(tmp + [c])
+
+        res = []
+        tmp = []
+        dfs(tmp)
+        return res
+
+# V0'
+# IDEA : DFS + BACKTRACK
+class Solution(object):
+    def combinationSum(self, candidates, target):
         res = []
         candidates.sort() 
         self.dfs(candidates, target, 0, res, [])
