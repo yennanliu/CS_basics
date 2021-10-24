@@ -33,6 +33,38 @@ digits[i] is a digit in the range ['2', '9'].
 # IDEA : dfs + backtracking
 class Solution(object):
     def letterCombinations(self, digits):
+
+        def dfs(idx, layer, tmp):
+
+            """
+            NOTE : if idx == len(digits)
+               -> if tmp is not null, then we append tmp to our result (res)
+               -> and we out of the loop
+            """
+            if idx == len(digits):
+                if tmp != "":
+                    res.append(tmp)
+                return
+
+            ### NOTE : we loop alphabets in d map per number rather than loop over number
+            for alpha in d[digits[idx]]:
+                """
+                NOTE 
+                idex+1 : for loop to next number
+                tmp+j : for collect cur update
+                """
+                print ("digits = " + str(digits), " tmp = " + str(tmp) + " alpha = " + str(alpha))
+                dfs(idx+1, layer+1, tmp + alpha)
+
+        d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
+        res = []
+        dfs(0,0,"")
+        return res
+
+# V0
+# IDEA : dfs + backtracking
+class Solution(object):
+    def letterCombinations(self, digits):
         d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
         res = []
         def dfs(digits, idx, tmp):
