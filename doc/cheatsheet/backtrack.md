@@ -89,23 +89,26 @@ class Solution(object):
 ### 2-2) combination-sum
 ```python
 # LC 039 combination-sum
+# V0
+# IDEA : DFS + BACKTRACK
 class Solution(object):
     def combinationSum(self, candidates, target):
-        result = []
-        candidates = sorted(candidates)
-        def dfs(remain, stack):
-            if remain == 0:
-                result.append(stack)
-                return 
 
-            for item in candidates:
-                if item > remain: break
-                if stack and item < stack[-1]: continue
-                else:
-                    dfs(remain - item, stack + [item])
+        def dfs(tmp):
+            if sum(tmp) == target:
+                tmp.sort()
+                if tmp not in res:
+                    res.append(tmp)
+                return
+            if sum(tmp) > target:
+                return
+            for c in candidates:
+                dfs(tmp + [c])
 
-        dfs(target, [])
-        return result
+        res = []
+        tmp = []
+        dfs(tmp)
+        return res
 ``` 
 
 ### 2-3) Word Search
