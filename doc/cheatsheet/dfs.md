@@ -90,7 +90,7 @@ def dfs(root, value):
     if root.val > value:
         return dfs(root.left, value) 
     if root.val < value:
-        return dfs(root.right, value) 
+        return dfs(root.right, value)
 ```
 
 ## 2) LC Example
@@ -272,7 +272,6 @@ class Solution:
             if d > 0:
                 return d * graph[x][n]
         return -1.0
-
 ```
 
 ### Ref

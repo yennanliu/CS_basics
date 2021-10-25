@@ -60,3 +60,29 @@ def post_order_traverse(TreeNode):
     - left -> right -> root
 
 ## 2) LC Example
+
+### 2-1) Binary Tree Right Side View
+```python 
+# LC 199 Binary Tree Right Side View
+# V0
+# IDEA : DFS
+class Solution(object):
+    def rightSideView(self, root):
+        def dfs(root, layer):
+            if not root:
+                return
+            if len(res) <= layer+1:
+            #if len(res) == layer:     # this works as well
+                res.append([])
+            res[layer].append(root.val)
+            if root.right:
+                dfs(root.right, layer+1)
+            if root.left:
+                dfs(root.left, layer+1)
+            
+        if not root:
+            return []
+        res =[[]]
+        dfs(root, 0)
+        return [x[0] for x in res if len(x) > 0]
+```

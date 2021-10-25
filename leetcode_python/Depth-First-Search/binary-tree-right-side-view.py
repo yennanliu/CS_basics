@@ -1,3 +1,74 @@
+"""
+
+199. Binary Tree Right Side View
+Medium
+
+Given the root of a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+ 
+
+Example 1:
+
+
+Input: root = [1,2,3,null,5,null,4]
+Output: [1,3,4]
+Example 2:
+
+Input: root = [1,null,3]
+Output: [1,3]
+Example 3:
+
+Input: root = []
+Output: []
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 100].
+-100 <= Node.val <= 100
+
+"""
+
+# V0
+# IDEA : DFS
+class Solution(object):
+    def rightSideView(self, root):
+        def dfs(root, layer):
+            if not root:
+                return
+            if len(res) <= layer+1:
+            #if len(res) == layer:     # this works as well
+                res.append([])
+            res[layer].append(root.val)
+            if root.right:
+                dfs(root.right, layer+1)
+            if root.left:
+                dfs(root.left, layer+1)
+            
+        if not root:
+            return []
+        res =[[]]
+        dfs(root, 0)
+        return [x[0] for x in res if len(x) > 0]
+
+# V0'
+# IDEA : BFS
+class Solution(object):
+    def rightSideView(self, root):
+        res = []
+        if not root: return res
+        queue = collections.deque()
+        queue.append(root)
+        while queue:
+            res.append(queue[-1].val)
+            for i in range(len(queue)):
+                node = queue.popleft()
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return res
+
 # V0 
 class Solution(object):
     def rightSideView(self, root):
@@ -137,5 +208,4 @@ class Solution2(object):
                     next_level.append(node.right)                
             result.append(node.val)
             current = next_level
-
         return result
