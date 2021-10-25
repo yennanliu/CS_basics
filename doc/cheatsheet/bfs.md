@@ -33,8 +33,11 @@ def bfs(root):
     if not root:return 
     queue.append(root)
     while len(queue) > 0:
+        ### NOTE this op
         for i in range(len(queue)):
-            node=queue.popleft() 
+            ### NOTE : the variable from popleft
+            #          should be used in node.left, node.right op below
+            node = queue.popleft() 
             # do sth 
             if node.left:
                 queue.append(node.left)
@@ -44,9 +47,26 @@ def bfs(root):
 
 # V2 : via python default
 def bfs(root):
+    if not root:
+        return
+    q =[]
+    q.append(root)
+    while root:
+        for i in range(len(q)):
+            root = q.pop()
+            # do sth
+            if root.left:
+                q.append(root.left)
+            if root.right:
+                q.append(root.right)
+    # do sth
+
+# V3 : via python default
+def bfs(root):
     if not root: return 
     q=[root]
     while len(q) > 0:
+        ### NOTE this op
         for i in range(0,len(q)):
             # do sth
             if q[0].left:
@@ -55,7 +75,6 @@ def bfs(root):
                 q.append(q[0].right)
             del q[0]
     return q
-
 ```
 
 ### 1-1) Basic OP
@@ -332,4 +351,33 @@ class Solution:
                     Q.append([row, col])
                     
         return False
+```
+
+### 2-9) Binary Tree Right Side View
+```python
+# LC 199
+class Solution(object):
+    def rightSideView(self, root):
+        if not root:
+            return []
+        q = []
+        layer=0
+        res = []
+        ### NOTE : we need layer, so we design our `node` in queue as (root, layer)
+        q.append((root, layer))
+        while q:
+            for i in range(len(q)):
+                tmp = q.pop()
+                ### NOTE : every time we pop root
+                #         -> and do the root.left, root.right op below
+                root = tmp[0]
+                layer = tmp[1]
+                if len(res) == layer:
+                    res.append([])
+                res[layer].append(root.val)
+                if root.right:
+                    q.append((root.right, layer+1))
+                if root.left:
+                    q.append((root.left, layer+1))
+        return [x[-1] for x in res]
 ```

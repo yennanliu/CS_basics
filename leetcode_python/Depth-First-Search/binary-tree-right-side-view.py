@@ -55,21 +55,31 @@ class Solution(object):
 # IDEA : BFS
 class Solution(object):
     def rightSideView(self, root):
+        if not root:
+            return []
+        q = []
+        layer=0
         res = []
-        if not root: return res
-        queue = collections.deque()
-        queue.append(root)
-        while queue:
-            res.append(queue[-1].val)
-            for i in range(len(queue)):
-                node = queue.popleft()
-                if node.left:
-                    queue.append(node.left)
-                if node.right:
-                    queue.append(node.right)
-        return res
+        ### NOTE : we need layer, so we design our `node` in queue as (root, layer)
+        q.append((root, layer))
+        while q:
+            for i in range(len(q)):
+                tmp = q.pop()
+                ### NOTE : every time we pop root
+                #         -> and do the root.left, root.right op below
+                root = tmp[0]
+                layer = tmp[1]
+                if len(res) == layer:
+                    res.append([])
+                res[layer].append(root.val)
+                if root.right:
+                    q.append((root.right, layer+1))
+                if root.left:
+                    q.append((root.left, layer+1))
+        return [x[-1] for x in res]
 
-# V0 
+# V0'
+# IDEA : DFS 
 class Solution(object):
     def rightSideView(self, root):
         """
