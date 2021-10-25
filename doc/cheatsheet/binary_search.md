@@ -5,11 +5,17 @@
 ### 0-1) Types
 
 ### 0-2) Pattern
+
+#### 0-2-0) Binary search
 ```python
 # python
+# basic
 def binary_search(nums, target):
-    l, r = 0, len(nums)-1
-    while r >= l:
+    l, r = 0, len(nums) - 1
+    ### NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
+    #         -> e.g. while l <= r
+    #         -> [l, r]  
+    while l <= r:
         mid = l + (r-l)//2
         if nums[mid] == target:
             return mid 
@@ -18,7 +24,62 @@ def binary_search(nums, target):
         else:
             r = mid-1 
     return -1
+```
 
+#### 0-2-1) Binary search on `LEFT` boundary
+```java
+// java
+int left_bound(int[] nums, int target){
+    int left = 0;
+    int right = nums.length - 1;
+    // NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
+    //       -> e.g. while l <= r
+    //        -> [l, r]  
+    while (left <= right){
+        int mid = left + (right - mid) / 2;
+        if (num[mid] < target){
+            left = mid + 1;
+        }else if (nums[mid] > target){
+            right = mid - 1;
+        }else if (nums[mid] == target){
+            // DO NOT RETURN !!!, BUT REDUCE RIGHT BOUNDARY FOR FOCUSING ON LEFT BOUNDARY
+            right = mid - 1;
+        }
+    }
+    // finally check if it will be OUT OF LEFT boundary
+    if (left >= nums.length || nums[left] != target){
+        return -1;
+    return left;
+    }
+}
+```
+
+#### 0-2-2) Binary search on `RIGHT` boundary
+```java
+// java
+int right_bound(int[] nums, int target){
+    int left = 0;
+    int right = nums.length - 1;
+    // NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
+    //       -> e.g. while l <= r
+    //        -> [l, r]  
+    while (left <= right){
+        int mid = left + (right - mid) / 2;
+        if (num[mid] < target){
+            left = mid + 1;
+        }else if (nums[mid] > target){
+            right = mid - 1;
+        }else if (nums[mid] == target){
+            // DO NOT RETURN !!!, BUT REDUCE LEFT BOUNDARY FOR FOCUSING ON RIGHT BOUNDARY
+            left = mid + 1;
+        }
+    }
+    // finally check if it will be OUT OF RIGHT boundary
+    if (right < 0 || nums[right] != target){
+        return -1;
+    return right;
+    }
+}
 ```
 
 ## 1) General form
