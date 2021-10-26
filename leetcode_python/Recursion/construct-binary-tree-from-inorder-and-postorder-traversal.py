@@ -1,4 +1,49 @@
-# V0 
+"""
+
+106. Construct Binary Tree from Inorder and Postorder Traversal
+Medium
+
+Given two integer arrays inorder and postorder where inorder is the inorder traversal of a binary tree and postorder is the postorder traversal of the same tree, construct and return the binary tree.
+
+
+
+Example 1:
+
+
+Input: inorder = [9,3,15,20,7], postorder = [9,15,7,20,3]
+Output: [3,9,20,null,null,15,7]
+Example 2:
+
+Input: inorder = [-1], postorder = [-1]
+Output: [-1]
+ 
+
+Constraints:
+
+1 <= inorder.length <= 3000
+postorder.length == inorder.length
+-3000 <= inorder[i], postorder[i] <= 3000
+inorder and postorder consist of unique values.
+Each value of postorder also appears in inorder.
+inorder is guaranteed to be the inorder traversal of the tree.
+postorder is guaranteed to be the postorder traversal of the tree.
+
+"""
+
+# V0
+class Solution(object):
+    def buildTree(self, inorder, postorder):
+        if len(postorder) == 0:
+            return None
+        if len(inorder) == 1:
+            return TreeNode(inorder[0])
+        root = TreeNode(postorder[-1]) # get the value of "root" via postorder
+        index = inorder.index(postorder[-1]) # get the index of "root" in inorder 
+        root.left = self.buildTree(inorder[  : index ], postorder[ : index ])
+        root.right = self.buildTree(inorder[ index + 1 : ], postorder[ index : - 1 ])
+        return root
+        
+# V0' 
 class Solution(object):
     def buildTree(self, inorder, postorder):
         if len(inorder) == 0:
