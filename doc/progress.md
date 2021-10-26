@@ -11,6 +11,8 @@
 			- =======
 			- **back track**
 			- Binary Search Tree
+				- 105
+				- 106
 			- Binary Search
 			- linked list
 			- sliding window
