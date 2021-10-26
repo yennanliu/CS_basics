@@ -37,7 +37,6 @@ def test():
     func(x)
 test()
 print (z)
-
 ```
 
 ## 1) General form
@@ -91,6 +90,17 @@ def dfs(root, value):
         return dfs(root.left, value) 
     if root.val < value:
         return dfs(root.right, value)
+```
+
+```python
+# get sum of sub tree
+# LC 508
+def get_sum(root):
+    if not root:
+        return 0
+    s = get_sum(root.left) + root.val + get_sum(root.right)
+    res.append(s)
+    return s
 ```
 
 ## 2) LC Example
@@ -272,6 +282,29 @@ class Solution:
             if d > 0:
                 return d * graph[x][n]
         return -1.0
+```
+
+### 2-10) Most Frequent Subtree Sum
+```python
+# LC 508 Most Frequent Subtree Sum
+class Solution(object):
+    def findFrequentTreeSum(self, root):
+
+        ### NOTE : this trick : get sum of sub tree 
+        def get_sum(root):
+            if not root:
+                return 0
+            s = get_sum(root.left) + root.val + get_sum(root.right)
+            res.append(s)
+            return s
+
+        if not root:
+            return []
+        res = []
+        get_sum(root)
+        counts = collections.Counter(res)
+        _max = max(counts.values())
+        return [x for x in counts if counts[x] == _max]
 ```
 
 ### Ref
