@@ -6,6 +6,9 @@
 ## 0) Concept
 
 ### 0-1) Types
+- normal transversal (pre-order, in-order, post-order)
+- normal transversal with special op
+        - root.right -> do sth -> root.left
 
 ### 0-2) Pattern
 
@@ -101,6 +104,16 @@ def get_sum(root):
     s = get_sum(root.left) + root.val + get_sum(root.right)
     res.append(s)
     return s
+```
+```python
+# Convert BST to Greater Tree 
+# LC 538
+_sum = 0
+def dfs(root):
+    dfs(root.right)
+    _sum += root.val
+    root.val = _sum
+    dfs(root.left)
 ```
 
 ## 2) LC Example
@@ -311,6 +324,7 @@ class Solution(object):
 ```python
 # LC 538 Convert BST to Greater Tree
 # VO : IDEA : DFS + BST
+# note : there is also BFS solution
 class Solution(object):
 
     def convertBST(self, root):
