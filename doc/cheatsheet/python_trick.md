@@ -22,3 +22,11 @@ l2
 if len(l1) < len(l2):
    l1, l2 = l2, l1
 ```
+
+### 1-3) fina numeric items from a string
+```python
+# LC 008
+s = '4193 with words'
+res = re.search('(^[\+\-]?\d+)', s).group()
+print (res)
+```
