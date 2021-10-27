@@ -381,3 +381,23 @@ class Solution(object):
                     q.append((root.left, layer+1))
         return [x[-1] for x in res]
 ```
+
+### 2-10) Convert BST to Greater Tree
+```python
+# LC 538 Convert BST to Greater Tree
+# note : there is also DFS solution
+class Solution(object):
+    def convertBST(self, root):
+        total = 0      
+        node = root
+        stack = []
+        while stack or node is not None:
+            while node is not None:
+                stack.append(node)
+                node = node.right
+            node = stack.pop()
+            total += node.val
+            node.val = total
+            node = node.left
+        return root
+```
