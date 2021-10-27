@@ -11,11 +11,11 @@
 ## 1) General form
 
 ### 1-1) Basic OP
-- String plus
-- String bit op
-- String Multiplication
-- loop over string
-- inverse loop over string
+#### 1-1) String plus
+#### 1-2)String bit op
+#### 1-3) String Multiplication
+#### 1-4) loop over string
+#### 1-6) inverse loop over string
 ```python
 x = "abcd"
 for i in range(len(x)-1, -1, -1):
@@ -28,6 +28,17 @@ for i in range(len(x)-1, -1, -2):
     print (i)
 # 3
 # 1
+```
+
+#### 1-7) String -> List, List -> String
+```python
+x = "abcd"
+x_list = list(x)
+x_list
+
+y = ["d","e","f"]
+y_string = "".join(y)
+y_string
 ```
 
 ### 1-2) Tricks
@@ -102,7 +113,7 @@ print (r)
 # V0
 # IDEA : ITERATION
 class Solution:
-    def countAndSay(self, n: int) -> str:
+    def countAndSay(self, n):
         
         val = ""
         res = "1"
