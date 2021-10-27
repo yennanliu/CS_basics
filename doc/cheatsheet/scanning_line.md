@@ -12,7 +12,10 @@ for interval in intervals:
     open_close.append(interval[0], True)
     open_close.append(interval[1], False)
 
-open_close = open_close.sort(lambda x : x[0], x[1])
+# note : array.sort() will do `in place` (e.g. return nothing)
+open_close.sort( key = lambda x : (x[1], x[0]) )
+
+open_close
 
 n = 0
 max_num = 0

@@ -76,6 +76,10 @@ class Queue(object):
 ```
 
 ### 1-1) Basic OP
+- insert
+- pop
+- popleft
+- isEmpty
 
 ### 1-2) Queue
 

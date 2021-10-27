@@ -3,6 +3,10 @@
 ## 0) Concept  
 
 ### 0-1) Types
+- 2 sum
+- 3 sum
+- 4 sum
+- N sum
 
 ### 0-2) Pattern
 
@@ -13,16 +17,10 @@
 ## 2) LC Example
 
 ### 2-1) 2 Sum
-
 ```python
 # LC 001
 class Solution(object):
     def twoSum(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[int]
-        """
         lookup = {}
         for i, num in enumerate(nums):
             if target - num in lookup:
@@ -32,7 +30,6 @@ class Solution(object):
 ```
 
 ### 2-2) 3 Sum
-
 ```python
 # LC 015
 # V0
@@ -61,3 +58,27 @@ class Solution(object):
 ```
 
 ### 2-3) 4 Sum
+```python
+# LC 018
+# V0 
+class Solution(object):
+    def fourSum(self, nums, target):
+        resultList = []
+        nums.sort()
+        for num1 in range(0, len(nums)-3):
+            for num2 in range(num1 + 1, len(nums)-2):
+                num3 = num2 + 1
+                num4 = len(nums) -1
+                while num3 != num4:
+                    summer = nums[num1] + nums[num2] + nums[num3] + nums[num4]
+                    if summer == target:
+                        list_temp = [nums[num1],nums[num2],nums[num3],nums[num4]]
+                        if list_temp not in resultList:
+                            resultList.append(list_temp)
+                        num3 += 1
+                    elif summer > target:
+                        num4 -= 1
+                    else:
+                        num3 += 1
+        return resultList
+```

@@ -1,6 +1,10 @@
 # Recursion
 
-## 0) Concept  
+## 0) Concept
+- Same concept is used in
+	- DFS
+	- backtrack
+	- tree 
 
 ### 0-1) Types
 
