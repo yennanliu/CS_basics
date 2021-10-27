@@ -229,6 +229,17 @@ class LinkedList:
 
 ### 1-1) Basic OP
 
+#### 1-1-1) transversal linked list
+
+#### 1-1-2) plus one on linked list
+
+#### 1-1-2) reverse linked list
+
+#### 1-1-3) delete node
+
+#### 1-1-4) swap node
+
+
 ## 2) LC Example
 
 ### 2-1) palindrome-linked-list
