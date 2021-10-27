@@ -2,7 +2,7 @@
 
 ## Examples
 
-- Or logic for either existed element
+### 1-1) Or logic for either existed element
 ```python
 In [8]: def test(l1, l2):
    ...:     if l1 or l2:
@@ -15,4 +15,10 @@ In [8]: def test(l1, l2):
    ...: print (res2)
 l1
 l2
+```
+
+### 1-2) swap for longer array
+```python
+if len(l1) < len(l2):
+   l1, l2 = l2, l1
 ```
