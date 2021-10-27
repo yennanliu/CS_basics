@@ -307,5 +307,26 @@ class Solution(object):
         return [x for x in counts if counts[x] == _max]
 ```
 
+### 2-11) Convert BST to Greater Tree
+```python
+# LC 538 Convert BST to Greater Tree
+# VO : IDEA : DFS + BST
+class Solution(object):
+
+    def convertBST(self, root):
+        self.sum = 0
+        self.dfs(root)
+        return root
+
+    def dfs(self, cur):
+        if not cur: 
+            return
+        #print ("root.val = " + str(root.val))
+        self.dfs(cur.right)
+        self.sum += cur.val
+        cur.val = self.sum
+        self.dfs(cur.left)
+```
+
 ### Ref
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E6%93%8D%E4%BD%9C%E9%9B%86%E9%94%A6.md

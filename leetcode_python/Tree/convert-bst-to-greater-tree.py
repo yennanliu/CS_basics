@@ -1,5 +1,91 @@
-# V0 
-# IDEA : DFS 
+"""
+538. Convert BST to Greater Tree
+Medium
+
+Given the root of a Binary Search Tree (BST), convert it to a Greater Tree such that every key of the original BST is changed to the original key plus the sum of all keys greater than the original key in BST.
+
+As a reminder, a binary search tree is a tree that satisfies these constraints:
+
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+ 
+
+Example 1:
+
+
+Input: root = [4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]
+Output: [30,36,21,36,35,26,15,null,null,null,33,null,null,null,8]
+Example 2:
+
+Input: root = [0,null,1]
+Output: [1,null,1]
+Example 3:
+
+Input: root = [1,0,2]
+Output: [3,3,2]
+Example 4:
+
+Input: root = [3,2,4,1]
+Output: [7,9,4,10]
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 104].
+-104 <= Node.val <= 104
+All the values in the tree are unique.
+root is guaranteed to be a valid binary search tree.
+ 
+
+Note: This question is the same as 1038: https://leetcode.com/problems/binary-search-tree-to-greater-sum-tree/
+
+"""
+
+# V0
+# IDEA : DFS + recursion
+#      -> NOTE : via DFS, the op will being executed in `INVERSE` order (last visit will be run first, then previous, then ...)
+#      -> e.g. node1 -> node2 -> ... nodeN
+#      ->      will run nodeN -> nodeN-1 ... node1
+#
+# DEMO : input [4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]
+#
+# -> start : root = 4
+# --------------
+# visit steps
+# --------------
+#
+# dfs(4) -> dfs(6) -> dfs(7) -> dfs(8) 
+# -> dfs(5)
+# -> dfs(1) -> dfs(2) -> dfs(3)
+# -> dfs(0)
+#
+# --------------
+# OP steps
+# --------------
+# so the _sum will be calculated in `inverse` order
+#  -> dfs(8) : _sum =  8
+#  -> dfs(7) : _sum =  7 + 8 = 15
+#  -> dfs(6) : _sum = 6 + 15 = 21
+#  -> dfs(5) : _sum = 5 + 21 = 26
+#  -> dfs(4) : _sum = 4 + 26 = 30
+#  -> dfs(3) : _sum = 3 + 30 = 33
+#  -> dfs(2) : _sum = 2 + 33 = 35
+#  -> dfs(1) : _sum = 1 + 35 = 36
+#  -> dfs(0) : _sum = 0 + 36 = 0
+#
+# --------------
+# logs
+# --------------
+# root.val = 4
+# root.val = 6
+# root.val = 7
+# root.val = 8
+# root.val = 5
+# root.val = 1
+# root.val = 2
+# root.val = 3
+# root.val = 0
 class Solution(object):
 
     def convertBST(self, root):
@@ -10,6 +96,7 @@ class Solution(object):
     def dfs(self, cur):
         if not cur: 
             return
+        #print ("root.val = " + str(root.val))
         self.dfs(cur.right)
         self.sum += cur.val
         cur.val = self.sum
@@ -147,7 +234,6 @@ class Solution(object):
                     total += node.val
                     node.val = total
                     node = node.left
-        
         return root 
 
 # V2 
