@@ -4,13 +4,34 @@
 
 ## 0) Concept  
 
+
 ### 0-1) Types
 - Tree
+- binary tree
+    - complete binary tree
+    - perfect binary tree
 - BST (binary search tree)
 - Heap
 - Trie (dictionary tree)
 
+
 ### 0-2) Pattern
+
+## 1) General form
+
+- When `tree` -> think about *recursion*
+
+
+### 1-1) Basic OP
+
+#### 1-1-1) traverse
+- pre-order traverse
+    - root -> left -> right
+- in-order traverse
+    - left -> root -> right
+- post-order traverse
+    - left -> right -> root
+
 ```python
 # python
 def traverse(TreeNode):
@@ -47,17 +68,17 @@ def post_order_traverse(TreeNode):
     r.append(root.value)
 ```
 
-## 1) General form
+#### 1-1-2) get node counts
+```python
+# get node count of binary tree
 
-- When `tree` -> think about *recursion*
+# get node count of perfect tree
 
-### 1-1) Basic OP
-- pre-order traverse
-    - root -> left -> right
-- in-order traverse
-    - left -> root -> right
-- post-order traverse
-    - left -> right -> root
+# get node count of complete tree
+```
+
+#### 1-1-3) get depth
+
 
 ## 2) LC Example
 
