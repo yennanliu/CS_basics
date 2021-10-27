@@ -45,17 +45,14 @@ Explanation: The number "-91283472332" is out of the range of a 32-bit signed in
 # V0 
 class Solution(object):
     def myAtoi(self, str):
-        """
-        :type str: str
-        :rtype: int
-        """
         str = str.strip()
         try:
+            ### NOTE : this trick (regex)
             res = re.search('(^[\+\-]?\d+)', str).group()
             # res = re.search(r"\d+", s).group()
             res = int(res)
-            res = res if res <= 2147483647 else 2147483647    # 2**31 == 2147483648
-            res = res if res >= -2147483648 else -2147483648  # -(1)*(2**31) == - 2147483648
+            res = res if res <= 2**31 - 1 else 2**31 - 1    # 2**31 == 2147483648
+            res = res if res >= -1 * 2**31  else -1 * 2**31   # -(1)*(2**31) == - 2147483648
         except:
             res = 0
         return res

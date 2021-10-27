@@ -474,7 +474,7 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 005| [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [python](./leetcode_python/String/longest-palindromic-substring.py)  | _O(n)_ | _O(n)_ |  Medium | `Manacher's Algorithm`, `DP`, `UBER`, `amazon`, `fb` | AGAIN**** (3)
 006| [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/) |  [python](./leetcode_python/String/zigzag-conversion.py) | _O(n)_ | _O(1)_      | Easy       || AGAIN (not start)
-008| [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/) | [python](./leetcode_python/String/string-to-integer-atoi.py)  | _O(n)_ | _O(1)_ | Easy|`regular expression`,`UBER`, `amazon`, `fb`| AGAIN*** (3) 
+008| [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/) | [python](./leetcode_python/String/string-to-integer-atoi.py)  | _O(n)_ | _O(1)_ | Easy|`regular expression`,`UBER`, `amazon`, `fb`| OK*** (4) 
 014| [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) |  [python](./leetcode_python/String/longest-common-prefix.py)  | _O(n * k)_   | _O(1)_  | Easy   |`good basic`| OK* 
 028| [Implement strStr()](https://leetcode.com/problems/implement-strstr/) |  [python](./leetcode_python/String/implement-strstr.py)  | _O(n + k)_   | _O(k)_  | Easy  | `KMP Algorithm`, `fb` | OK (3) 
 038| [Count and Say](https://leetcode.com/problems/count-and-say/) | [python](./leetcode_python/String/count-and-say.py) | _O(n * 2^n)_  | _O(2^n)_ | Easy | `recursion`, `iteration`, basic, `fb`| AGAIN*********** (5)
