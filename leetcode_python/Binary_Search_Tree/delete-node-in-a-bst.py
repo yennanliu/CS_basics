@@ -44,17 +44,29 @@ Follow up: Could you solve it with time complexity O(height of tree)?
 
 """
 
-# V0 
+# V0
+# IDEA : RECURSION + BST PROPERTY
+#### 2 CASES :
+#   -> CASE 1 : root.val == key and NO right subtree 
+#                -> swap root and root.left, return root.left
+#   -> CASE 2 : root.val == key and THERE IS right subtree
+#                -> 1) go to 1st RIGHT sub tree
+#                -> 2) iterate to deepest LEFT subtree
+#                -> 3) swap root and  `deepest LEFT subtree` then return root
 class Solution(object):
     def deleteNode(self, root, key):
         if not root: return None
         if root.val == key:
+            # case 1 : NO right subtree 
             if not root.right:
                 left = root.left
                 return left
+            # case 2 : THERE IS right subtree
             else:
-                right = root.right
                 ### NOTE : find min in "right" sub-tree
+                #           -> because BST property, we ONLY go to 1st right tree (make sure we find the min of right sub-tree)
+                #           -> then go to deepest left sub-tree
+                right = root.right
                 while right.left:
                     right = right.left
                 root.val, right.val = right.val, root.val
