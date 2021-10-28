@@ -38,6 +38,67 @@ node1.right = node3;
 
 ### 1-1) Basic OP
 
+#### 1-1-1) add 1 to all nodes
+```java
+// java
+void plusOne(TreeNode root){
+    if (root == null){
+        return;
+    }
+    root.val += 1;
+    plusOne(root.left);
+    plusOne(root.right);
+}
+```
+
+#### 1-1-2) check if 2 BST are totally same 
+```java
+// java
+boolean isSameTree(TreeNode root1, TreeNode root2){
+    // if all null, then same
+    if (root1 == null && root2 == null){
+        return true;
+    }
+    if (root1 == null || root2 == null){
+        return false;
+    }
+    if (root1.val != root2.val){
+        return false;
+    }
+
+    return isSameTree(root1.left, root2.right) && isSameTree(root1.right, root2.right)
+}
+```
+
+#### 1-1-3) validate a BST
+```java
+// java
+boolean isValidBST(TreeNode root){
+    return isValidBST(root, null, null);
+}
+
+// help func
+boolean isValidBST(TreeNode root, TreeNode min, TreeNode max){
+    if (root == null){
+        return true;
+    }
+    if (min != null && root.val <= min.val){
+        return false;
+    }
+    if (max != null && root.val > max.val){
+        return false;
+    }
+    return isValidBST(root.left, min, root) && isValidBST(root.right, root, max)
+}
+```
+
+#### 1-1-4) find if a number is in BST
+
+#### 1-1-5) insert a number into BST
+
+#### 1-1-6) delete a number from BST
+
+
 ## 2) LC Example
 
 ### 2-1) Serialize and Deserialize BST

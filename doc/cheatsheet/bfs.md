@@ -6,6 +6,10 @@
 ## 0) Concept  
 
 ### 0-1) Types
+- Tree problems
+- String problems
+- Array problems
+- Graph problems
 
 ### 0-2) Pattern
 ```python
