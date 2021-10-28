@@ -30,3 +30,21 @@ s = '4193 with words'
 res = re.search('(^[\+\-]?\d+)', s).group()
 print (res)
 ```
+
+### 1-4) transform String to Int with N based
+```python
+# How does int(x[,base]) work?
+# -> https://stackoverflow.com/questions/33664451/how-does-intx-base-work
+# -> int(string, base) accepts an arbitrary base. You are probably familiar with binary and hexadecimal, and perhaps octal; these are just ways of noting an integer number in different bases:
+# exmaple :
+# In [76]: int('10',2)      # transform '10' to a 2 bases int                                                 
+# Out[76]: 2
+#
+# In [77]: int('11',2)      # transform '11' to a 2 bases int                                                      
+# Out[77]: 3
+#
+# In [78]: int('100',2)     # transform '100' to a 2 bases int                                                       
+# Out[78]: 4
+
+# LC 089
+```
