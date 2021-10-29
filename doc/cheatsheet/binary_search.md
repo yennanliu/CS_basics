@@ -3,6 +3,9 @@
 ## 0) Concept  
 
 ### 0-1) Types
+- find left boundary
+- find right boundary
+- recursive binary search
 
 ### 0-2) Pattern
 
@@ -102,4 +105,23 @@ class Solution(object):
                     l = mid+1
                 else:
                     r = mid-1
+```
+
+### 2-2) Find Peak Element
+```python
+# LC 162 Find Peak Element
+# V0'
+# IDEA : RECURSIVE BINARY SEARCH
+class Solution(object):
+    def findPeakElement(self, nums):
+
+        def help(nums, l, r):
+            if l == r:
+                return l
+            mid = l + (r - l) // 2
+            if (nums[mid] > nums[mid+1]):
+                return help(nums, l, mid)
+            return help(nums, mid+1, r)
+            
+        return help(nums, 0, len(nums)-1)
 ```
