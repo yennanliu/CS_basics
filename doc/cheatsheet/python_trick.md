@@ -48,3 +48,17 @@ print (res)
 
 # LC 089
 ```
+
+### 1-5) Sort freq on dict
+```python
+# LC 451 Sort Characters By Frequency
+import collections
+class Solution(object):
+    def frequencySort(self, s):
+        d = collections.Counter(s)
+        d_dict = dict(d)
+        res = ""
+        for x in sorted(d_dict, key=lambda k : -d_dict[k]):
+            res += x * d_dict[x]
+        return res
+```
