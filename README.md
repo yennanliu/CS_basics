@@ -196,7 +196,7 @@
 384| [Shuffle an Array](https://leetcode.com/problems/shuffle-an-array/) | [Python](./leetcode_python/Array/shuffle-an-array.py)  | _O(n)_ |  _O(n)_ | Medium   | EPI, `trick` | OK*
 396| [Rotate Function](https://leetcode.com/problems/rotate-function/) | [Python](./leetcode_python/Array/rotate-function.py) | _O(n)_ |  _O(1)_ | Medium |math, `trick`, `amazon`| AGAIN*** (3)
 412| [Fizz Buzz](https://leetcode.com/problems/fizz-buzz/) | [Python](./leetcode_python/Array/fizz-buzz.py), [Scala](./leetcode_scala/Array/fizzBuzz.scala)| _O(n)_ |  _O(1)_ | Easy || OK 
-414| [Third Maximum Number](https://leetcode.com/problems/third-maximum-number/) | [Python](./leetcode_python/Array/third-maximum-number.py) | _O(n)_ |  _O(1)_ | Easy |`good basic`, `amazon`| OK* (3)
+414| [Third Maximum Number](https://leetcode.com/problems/third-maximum-number/) | [Python](./leetcode_python/Array/third-maximum-number.py) | _O(n)_ |  _O(1)_ | Easy |`good basic`, `amazon`| OK* (4)
 419| [Battleships in a Board](https://leetcode.com/problems/battleships-in-a-board/) | [Python](./leetcode_python/Array/battleships-in-a-board.py)   | _O(m * n)_ |  _O(1)_ | Medium || AGAIN*
 422| [Valid Word Square](https://leetcode.com/problems/valid-word-square/) | [Python](./leetcode_python/Array/valid-word-square.py)  | _O(m * n)_ |  _O(1)_ | Easy |🔒, `basic`, `matrix`| AGAIN*
 442| [Find All Duplicates in an Array](https://leetcode.com/problems/find-all-duplicates-in-an-array/) | [Python](./leetcode_python/Array/find-all-duplicates-in-an-array.py) | _O(n)_ |  _O(1)_ | Medium || OK*
