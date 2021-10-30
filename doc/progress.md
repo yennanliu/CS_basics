@@ -41,6 +41,7 @@
 			- Binary Search
 				- 162
 				- 367
+				- 69
 			- linked list
 			- sliding window
 			- =======

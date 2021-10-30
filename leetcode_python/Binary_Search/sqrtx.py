@@ -28,6 +28,39 @@ Constraints:
 # V0
 # IDEA : binary search
 class Solution(object):
+    def mySqrt(self, num):
+        if num <= 1:
+            return num
+        l = 0
+        r = num - 1
+        while r >= l:
+            mid = l + (r - l) // 2
+            if mid * mid == num:
+                return mid
+            elif mid * mid > num:
+                r = mid - 1
+            else:
+                l = mid + 1
+        return l * l if l * l < num else l - 1
+
+# V0'
+# IDEA : binary search 
+class Solution(object):
+    def mySqrt(self, x):
+        # NOTE : this approach calculates mid 2 times
+        low, high, mid = 0, x, int(x / 2)
+        while low <= high:
+            if mid * mid > x:
+                high = mid - 1
+            else:
+                low = mid + 1
+            # NOTE : this approach calculates mid 2 times
+            mid = int((low + high) / 2)
+        return mid
+
+# V0''
+# IDEA : binary search
+class Solution(object):
     def mySqrt(self, x):
         l, r = 0, x
         mid = (l + r) // 2
@@ -41,19 +74,6 @@ class Solution(object):
                 ### NOTE THE CONDITION
                 l = mid + 1
             mid = (l + r) // 2
-        return mid
-
-# V0 
-# IDEA : binary search 
-class Solution(object):
-    def mySqrt(self, x):
-        low, high, mid = 0, x, (x+0)//2
-        while low <= high:
-            if mid * mid > x:
-                high = mid - 1
-            else:
-                low = mid + 1
-            mid = (low+high)//2
         return mid
 
 # V1 

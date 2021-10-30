@@ -129,7 +129,7 @@ class Solution(object):
 
 ### 2-3) Valid Perfect Square
 ```python
-# 367 Valid Perfect Square
+# 367 Valid Perfect Square, LC 69 Sqrt(x)
 # V0'
 # IDEA : BINARY SEARCH
 class Solution(object):
