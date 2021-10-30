@@ -276,7 +276,7 @@
 170| [Two Sum III - Data structure design](https://leetcode.com/problems/two-sum-iii-data-structure-design/) | [Python ](./leetcode_python/Hash_table/two-sum-iii-data-structure-design.py)  | _O(n)_ | _O(n)_ | Easy | 🔒, `trick`,`good basic`, `linkedin`, `fb`| OK*** (4) 
 187| [Repeated DNA Sequences](https://leetcode.com/problems/repeated-dna-sequences/) |  [Python ](./leetcode_python/Hash_table/repeated-dna-sequences.py)  | _O(n)_ | _O(n)_| Medium |`basic`,`trick`,`set`, `linkedin`| AGAIN**
 202| [Happy Number](https://leetcode.com/problems/happy-number/) | [Python ](./leetcode_python/Hash_table/happy-number.py)   | _O(k)_  | _O(k)_  | Easy |`twitter`,`airbnb`, `UBER`| AGAIN** (3)
-204| [Count Primes](https://leetcode.com/problems/count-primes/)  | [Python ](./leetcode_python/Hash_table/count-primes.py)  | _O(n)_  | _O(n)_   | Easy   |`basic`, `trick`, `M$`, `amazon`| AGAIN**** (3)
+204| [Count Primes](https://leetcode.com/problems/count-primes/)  | [Python ](./leetcode_python/Hash_table/count-primes.py)  | _O(n)_  | _O(n)_   | Medium   |`good trick`, cache, dict, set, `M$`, `amazon`| AGAIN******* (4)
 205| [Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/) | [Python ](./leetcode_python/Hash_table/isomorphic-strings.py)  | _O(n)_ | _O(1)_  | Easy  |`basic`, `trick`, `bloomberg`|  AGAIN**
 217| [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)  | [Python ](./leetcode_python/Hash_table/contains-duplicate.py) | _O(n)_    | _O(n)_  | Easy  |`yahoo`, `airbnb`| OK 
 219| [Contains Duplicate II](https://leetcode.com/problems/contains-duplicate-ii/)  | [Python ](./leetcode_python/Hash_table/contains-duplicate-ii.py) | _O(n)_  | _O(n)_  | Easy   |`basic`, `trick`, `hash table`| AGAIN*
