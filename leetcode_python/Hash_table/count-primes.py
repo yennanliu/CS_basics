@@ -1,20 +1,166 @@
-# Time:  O(n)
-# Space: O(n)
-# Description:
+"""
+
+204. Count Primes
+Medium
+
+Given an integer n, return the number of prime numbers that are strictly less than n.
+
+ 
+
+Example 1:
+
+Input: n = 10
+Output: 4
+Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
+Example 2:
+
+Input: n = 0
+Output: 0
+Example 3:
+
+Input: n = 1
+Output: 0
+ 
+
+Constraints:
+
+0 <= n <= 5 * 106
+Accepted
+550.1K
+Submissions
+1.7M
+
+"""
+
+# V0
+# IDEA : set
+# https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
+# prinme(x) : check if x is a prime
+# prinme(0) = 0
+# prinme(1) = 0
+# prinme(2) = 0
+# prinme(3) = 1
+# prinme(4) = 2
+# prinme(5) = 3
+class Solution:
+    def countPrimes(self, n):
+        # using sieve of eretosthenes algorithm
+        if n < 2: return 0
+        nonprimes = set()
+        for i in range(2, round(n**(1/2))+1):
+            if i not in nonprimes:
+                for j in range(i*i, n, i):
+                    nonprimes.add(j)
+        return n - len(nonprimes) - 2  # remove prinme(1), prime(2)
+
+# V0' 
+class Solution(object):
+    def countPrimes(self, n):
+        if n <= 2:
+            return 0
+        ### NOTE : We need cache for optimization here,
+        #          e.g. if already calculated (prime or not), we should read
+        #               that from cache (is_prime), rather than re-caculation
+        is_prime = [True] * n
+        num = n / 2
+        for i in range(3, n, 2):
+            if i * i >= n:
+                break
+            if not is_prime[i]:
+                continue
+            for j in range(i*i, n, 2*i):
+                if not is_prime[j]:
+                    continue
+                num -= 1
+                is_prime[j] = False
+        return num
+
+# V0'': -> to fix
+# class Solution(object):
+#     def countPrimes(self, n):
+#         def check(x):
+#             _count = 0
+#             for i in range(1, int(x**(0.5))+1):
+#                 print (i)
+#                 if x % i == 0:
+#                     _count += 1
+#                 if _count >= 2:
+#                     break
+#             return True if _count >= 2 else False
 #
-# Count the number of prime numbers less than a non-negative number, n
+#         res = []
+#         cache = [0,0,0,1]
 #
-# Hint: The number n could be in the order of 100,000 to 5,000,000.
+#         if n <= 3:
+#             return cache[n]
+#         for i in range(3,n):
+#             print ("i = " + str(i) + " check(i) = " + str(check(i)))
+#             _tmp = cache[-1]
+#             if not check(i):
+#                 _new = 1
+#             else:
+#                 _new = 0
+#             _tmp += _new
+#             cache.append(_tmp)
+#
+#         print ("cache = " + str(cache))
+#         return cache[-1]
 
+# V1
+# IDEA : set
+# https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
+# prinme(x) : check if x is a prime
+# prinme(0) = 0
+# prinme(1) = 0
+# prinme(2) = 0
+# prinme(3) = 1
+# prinme(4) = 2
+# prinme(5) = 3
+class Solution:
+    def countPrimes(self, n):
+        # using sieve of eretosthenes algorithm
+        if n < 2: return 0
+        nonprimes = set()
+        for i in range(2, round(n**(1/2))+1):
+            if i not in nonprimes:
+                for j in range(i*i, n, i):
+                    nonprimes.add(j)
+        return n - len(nonprimes) - 2  # remove prinme(1), prime(2)
 
-# V0 
+# V1'
+# IDEA : DICT
+# https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
+class Solution:
+    def countPrimes(self, n):
+        # using sieve of eretosthenes algorithm
+        if n < 2: return 0
+        nonprimes = {}
+        for i in range(2, round(n**(1/2))+1):
+            if i not in nonprimes:
+                for j in range(i*i, n, i):
+                    nonprimes[j] = 1
+        return n - len(nonprimes) - 2
 
-# V1 
+# V1''
+# IDEA : python style
+# https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
+class Solution:
+    def countPrimes(self, n):
+        # using sieve of eretosthenes algorithm
+        if n < 3: return 0
+        primes = [1]*n
+        primes[0] = primes[1] = 0
+        for i in range(2, round(n**(1/2)+1)):
+            if primes[i]:
+                primes[i*i: n: i] = len(primes[i*i: n: i])*[0]
+        return sum(primes)
+
+# V1''' 
 # https://www.codetd.com/article/1947747
 # http://bookshadow.com/weblog/2015/04/27/leetcode-count-primes/
 # https://blog.csdn.net/github_39261590/article/details/73864039
 # IDEA : MATH THEORY : Sieve of Eratosthenes
-
+#
 # https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 # IDEA : SUB ARRAY WITH MULTIPLIER 
 # In [29]: x = [ i for i in range(31)]
@@ -70,20 +216,21 @@ class Solution:
         
 # V1' 
 # https://blog.csdn.net/github_39261590/article/details/73864039
-# IDEA : GREEDY (TLE, time limit exceeded possibly)
+# IDEA : GREEDY (TLE, time out exception)
 import math
-def countPrimes(n):
-    count=0
+class Solution:
+    def countPrimes(self, n):
+        count=0
 
-    def judge_prime(w):
-        sqrt_w=int(math.sqrt(w))
-        for i in range(2,sqrt_w+1):
-            if x%i==0: return 0
-        return 1
+        def judge_prime(w):
+            sqrt_w=int(math.sqrt(w))
+            for i in range(2,sqrt_w+1):
+                if x%i==0: return 0
+            return 1
 
-    for x in range(2,n):
-        count=count+judge_prime(x)
-    return count
+        for x in range(2,n):
+            count=count+judge_prime(x)
+        return count
 
 # V1''
 # https://www.jiuzhang.com/solution/count-primes/#tag-highlight-lang-python

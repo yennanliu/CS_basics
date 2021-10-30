@@ -215,3 +215,28 @@ class Solution(object):
             res = max(res, r -l + 1)
         return res
 ```
+
+### 2-4) Count Primes
+```python
+# LC 204 Count Primes
+# V0
+# IDEA : dict
+# https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
+# prinme(x) : check if x is a prime
+# prinme(0) = 0
+# prinme(1) = 0
+# prinme(2) = 0
+# prinme(3) = 1
+# prinme(4) = 2
+# prinme(5) = 3
+class Solution:
+    def countPrimes(self, n):
+        # using sieve of eretosthenes algorithm
+        if n < 2: return 0
+        nonprimes = {}
+        for i in range(2, round(n**(1/2))+1):
+            if i not in nonprimes:
+                for j in range(i*i, n, i):
+                    nonprimes[j] = 1
+        return n - len(nonprimes) - 2
+```
