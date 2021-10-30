@@ -62,3 +62,15 @@ class Solution(object):
             res += x * d_dict[x]
         return res
 ```
+
+### 1-6) Insert into array (in place)
+```python
+
+# pattern
+# arr.insert(<index>,<value>)
+In [12]: x = [1,2,3]
+    ...: x.insert(2,77)
+
+In [13]: x
+Out[13]: [1, 2, 77, 3]
+```
