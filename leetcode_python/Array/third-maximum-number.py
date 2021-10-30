@@ -1,4 +1,5 @@
 """
+
 Given a non-empty array of integers, return the third maximum number in this array. If it does not exist, return the maximum number. The time complexity must be in O(n).
 
 Example 1:
@@ -20,7 +21,19 @@ Output: 1
 
 Explanation: Note that the third maximum here means the third maximum distinct number.
 Both numbers with value 2 are both considered as second maximum.
+
 """
+
+# V0
+# IDEA : COLLECTIONS 
+class Solution(object):
+    def thirdMax(self, nums):
+        import collections 
+        count_ = collections.Counter(nums)
+        if len(count_) < 3:
+            # note this
+            return max(count_.keys())
+        return sorted(count_.keys())[::-1][2]
 
 # V0 
 # IDEA : COLLECTIONS 
