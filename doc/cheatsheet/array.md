@@ -87,6 +87,8 @@ for i in r3:
     print (i)
 ```
 
+#### 1-1-7) Sort array with 2 keys
+
 ```python
 y = [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
 print (y)
@@ -96,7 +98,7 @@ print (y)
 # [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
 ```
 
-#### 1-1-7) go through 2 arrays (length could be different)
+#### 1-1-8) go through 2 arrays (length could be different)
 ```python
 # 2 array : s,t
 # len(s) = 10, len(t) = 7
@@ -109,7 +111,7 @@ for i in range(len(s)):
     print (s[i], t[i])
 ```
 
-#### 1-1-7) shallow, deep copy
+#### 1-1-9) shallow, deep copy
 ```python
 # LC 670
 # V0'
