@@ -3,9 +3,10 @@
 ## 0) Concept  
 
 ### 0-1) Types
-- find left boundary
-- find right boundary
-- recursive binary search
+- find `left` boundary
+    - LC 367 Valid Perfect Square 
+- find `right` boundary
+- `recursive` binary search
 
 ### 0-2) Pattern
 
@@ -124,4 +125,23 @@ class Solution(object):
             return help(nums, mid+1, r)
             
         return help(nums, 0, len(nums)-1)
+```
+
+### 2-3) Valid Perfect Square
+```python
+# 367 Valid Perfect Square
+# V0'
+# IDEA : BINARY SEARCH
+class Solution(object):
+    def isPerfectSquare(self, num):
+        left, right = 0, num
+        while left <= right:
+            ### NOTE : there is NO mid * mid == num condition
+            mid = (left + right) / 2
+            if mid * mid >= num:
+                right = mid - 1
+            else:
+                left = mid + 1
+        ### NOTE this
+        return left * left == num
 ```

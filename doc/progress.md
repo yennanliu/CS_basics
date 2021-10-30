@@ -40,6 +40,7 @@
 			- Binary Search Tree
 			- Binary Search
 				- 162
+				- 367
 			- linked list
 			- sliding window
 			- =======
