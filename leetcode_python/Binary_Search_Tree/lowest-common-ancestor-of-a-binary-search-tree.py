@@ -35,7 +35,10 @@ p and q will exist in the BST.
 """
 
 # V0
-# IDEA : RECURSION
+# IDEA : RECURSION + POST ORDER TRANSVERSAL
+### NOTE : we need POST ORDER TRANSVERSAL for this problem
+#          -> left -> right -> root
+#          -> we can make sure that if p == q, then the root must be p and q's "common ancestor"
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         ### NOTE : we need to assign root.val, p, q to other var first (before they are changed)
