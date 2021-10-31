@@ -371,6 +371,8 @@
 394| [Decode String](https://leetcode.com/problems/decode-string/)| [python](./leetcode_python/Stack/decode-string.py) | _O(n)_  | _O(h)_ | Medium     |stack, good basic, `amazon`, `google`| AGAIN****** (3) 
 439| [Ternary Expression Parser](https://leetcode.com/problems/ternary-expression-parser/) | [python](./leetcode_python/Stack/ternary-expression-parser.py)| _O(n)_          | _O(1)_          | Medium      |🔒| AGAIN (not start)
 456| [132 Pattern](https://leetcode.com/problems/132-pattern/) |  [python](./leetcode_python/Stack/132-pattern.py) | _O(n)_       | _O(n)_          | Medium       || AGAIN (not start)
+496| [Next Greater Element I](https://leetcode.com/problems/next-greater-element-i/) |  | _O(n)_       | _O(n)_| Easy|| 
+503| [Next Greater Element II](https://leetcode.com/problems/next-greater-element-ii/) | | _O(n)_       | _O(n)_          | Medium       || 
 636| [Exclusive Time of Functions](https://leetcode.com/problems/exclusive-time-of-functions/) |  [python](./leetcode_python/Stack/exclusive-time-of-functions.py)   | _O(n)_  | _O(n)_ | Medium |`trick`,`AGAIN`,`stack`,`UBER`, `fb`|  AGAIN********** (4)
 682| [Baseball Game](https://leetcode.com/problems/baseball-game/) | [python](./leetcode_python/Stack/baseball-game.py)  | _O(n)_  | _O(n)_         | Easy|good basic, stack,`amazon`| OK* (3)
 735| [Asteroid Collision](https://leetcode.com/problems/asteroid-collision/) | [python](./leetcode_python/Stack/asteroid-collision.py)  | _O(n)_  | _O(n)_      | Medium      || AGAIN 
