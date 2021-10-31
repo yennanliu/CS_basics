@@ -155,7 +155,6 @@ TreeNode deleteNode(TreeNode root, int key){
         // to right sub tree
         root.right = deleteNode(root.right, key);
     }
-
     return root;
 }
 
@@ -167,11 +166,9 @@ TreeNode deleteNode(TreeNode root, int key){
  *   2) there is only one left/right tree -> replace value with the sub-tree, then delete sub-tree
  * 
  *   3) there is BOTH left/right tree
- * 
  *      -> approach 3-1)  find the MIN right sub-tree and replace with value, then delete MIN right sub-tree
  *      -> approach 3-2)  find the MAX left sub-tree and replace with value, then delete MAX left sub-tree
  */
-
 
 // java code
 TreeNode deleteNode(TreeNode root, int key){
@@ -179,7 +176,7 @@ TreeNode deleteNode(TreeNode root, int key){
         // case 1) & case 2)
         if (root.left == null) return root.right;
         if (root.right == null) return root.left;
-
+        
         // case 3)
         TreeNode minNode = getMin(root.right);
         root.val = minNode.val;
@@ -193,7 +190,6 @@ TreeNode deleteNode(TreeNode root, int key){
         // to right sub tree
         root.right = deleteNode(root.right, key);
     }
-
     return root;
 }
 
