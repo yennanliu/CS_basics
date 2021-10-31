@@ -38,7 +38,7 @@ node1.right = node3;
 
 ### 1-1) Basic OP
 
-#### 1-1-1) add 1 to all nodes
+#### 1-1-1) Add 1 to all nodes
 ```java
 // java
 void plusOne(TreeNode root){
@@ -51,7 +51,7 @@ void plusOne(TreeNode root){
 }
 ```
 
-#### 1-1-2) check if 2 BST are totally the same 
+#### 1-1-2) Check if 2 BST are totally the same 
 ```java
 // java
 boolean isSameTree(TreeNode root1, TreeNode root2){
@@ -70,7 +70,7 @@ boolean isSameTree(TreeNode root1, TreeNode root2){
 }
 ```
 
-#### 1-1-3) validate a BST
+#### 1-1-3) Validate a BST
 ```java
 // java
 boolean isValidBST(TreeNode root){
@@ -92,11 +92,40 @@ boolean isValidBST(TreeNode root, TreeNode min, TreeNode max){
 }
 ```
 
-#### 1-1-4) find if a number is in BST
+#### 1-1-4) Find if a number is in BST
+```java
+// java
+// V1 : general (for tree and BST)
+boolean isInBST(TreeNode root, int target){
+    if (root == null) return false;
+    if (root.val == target) return target;
 
-#### 1-1-5) insert a number into BST
+    return isInBST(root.left, target) || isInBST(root.right, target);
+}
 
-#### 1-1-6) delete a number from BST
+// V2 : optimization for BST
+boolean isInBST(TreeNode root, int target){
+    if (root == null) return false;
+    if (root.val == target) return target;
+
+    // optimize here
+    if (root.val < target){
+        return isInBST(root.right, target);
+    }
+    if (root.val > target){
+        return isInBST(root.left, target);
+    }
+}
+
+```
+
+#### 1-1-5) Insert a number into BST
+```java
+// java
+
+```
+
+#### 1-1-6) Delete a number from BST
 
 
 ## 2) LC Example
