@@ -24,7 +24,7 @@
 
 ### 1-1) Basic OP
 
-#### 1-1-1) traverse
+#### 1-1-1) Traverse
 - pre-order traverse
     - root -> left -> right
 - in-order traverse
@@ -68,7 +68,7 @@ def post_order_traverse(TreeNode):
     r.append(root.value)
 ```
 
-#### 1-1-2) get node counts
+#### 1-1-2) Get node counts
 ```python
 # get node count of binary tree
 
@@ -77,8 +77,29 @@ def post_order_traverse(TreeNode):
 # get node count of complete tree
 ```
 
-#### 1-1-3) get depth
+#### 1-1-3) Get depth
 
+#### 1-1-4) Get LCA (Lowest Common Ancestor) of a tree
+```python
+# LC 236 Lowest Common Ancestor of a Binary Tree
+# V0
+# IDEA : RECURSION + POST ORDER TRANSVERSAL
+### NOTE : we need POST ORDER TRANSVERSAL for this problem
+#          -> left -> right -> root
+#          -> we can make sure that if p == q, then the root must be p and q's "common ancestor"
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        # if not root or find p in the tree or find q in the tree
+        if not root or p == root or q == root:
+            return root
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        # find q and p on the same time -> LCA is the current node (root)
+        if left != None and right != None:
+            return root
+        # if only find p or only find q -> LCA is the one we found at the moment
+        return left if left else right
+```
 
 ## 2) LC Example
 

@@ -193,3 +193,37 @@ class Solution(object):
         root.right = self.deleteNode(root.right, key)
         return root
 ```
+
+### 2-4) Lowest Common Ancestor of a Binary Search Tree
+```python
+# LC Lowest Common Ancestor of a Binary Search Tree
+# V0
+# IDEA : RECURSION + POST ORDER TRANSVERSAL
+### NOTE : we need POST ORDER TRANSVERSAL for this problem
+#          -> left -> right -> root
+#          -> we can make sure that if p == q, then the root must be p and q's "common ancestor"
+class Solution:
+    def lowestCommonAncestor(self, root, p, q):
+        ### NOTE : we need to assign root.val, p, q to other var first (before they are changed)
+        # Value of current node or parent node.
+        parent_val = root.val
+
+        # Value of p
+        p_val = p.val
+
+        # Value of q
+        q_val = q.val
+
+        # If both p and q are greater than parent
+        if p_val > parent_val and q_val > parent_val:
+            ### NOTE : we need to `return` below func call   
+            return self.lowestCommonAncestor(root.right, p, q)
+        # If both p and q are lesser than parent
+        elif p_val < parent_val and q_val < parent_val: 
+            ### NOTE : we need to `return` below func call   
+            return self.lowestCommonAncestor(root.left, p, q)
+        # We have found the split point, i.e. the LCA node.
+        else:
+            ### NOTE : not root.val but root
+            return root
+```
