@@ -177,7 +177,7 @@
 157 | [Read N Characters Given Read4](https://leetcode.com/problems/read-n-characters-given-read4/) |  [Python](./leetcode_python/Array/read-n-characters-given-read4.py) | _O(n)_ | _O(1)_ | Easy |🔒, `google`, `amazon`, `fb`| AGAIN**** (2)
 163 | [Missing Ranges](https://leetcode.com/problems/missing-ranges/)| [Python](./leetcode_python/Array/missing-ranges.py) | _O(n)_  | _O(1)_ | Medium    | two pointer, 🔒, `google interview` | AGAIN** (3)
 169 | [Majority Element](https://leetcode.com/problems/majority-element/) |[Python](./leetcode_python/Array/majority-element.py) | _O(n)_ | _O(1)_ | Easy || OK*
-189 | [Rotate Array](https://leetcode.com/problems/rotate-array/)   | [Python](./leetcode_python/Array/rotate-array.py) | _O(n)_ | _O(1)_  | Easy |good basic, `amazon`| OK* (3)
+189 | [Rotate Array](https://leetcode.com/problems/rotate-array/)   | [Python](./leetcode_python/Array/rotate-array.py) | _O(n)_ | _O(1)_  | Medium |good basic, `amazon`| OK* (4)
 209 | [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/) | [Python](./leetcode_python/Array/minimum-size-subarray-sum.py) | _O(n)_ | _O(1)_ | Medium | good basic, sliding window, `Binary Search`, `trick`,`2 pointers`, `fb` | AGAIN******** (4)
 215 | [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | [Python](./leetcode_python/Array/kth-largest-element-in-an-array.py) | _O(n)_ ~ _O(n^2)_ | _O(1)_ |  Medium | EPI, `quick sort`, bubble sort, sort, `amazon`,`fb`| OK* (2)
 228 | [Summary Ranges](https://leetcode.com/problems/summary-ranges/) | [Python](./leetcode_python/Array/summary-ranges.py) | _O(n)_ | _O(1)_ | Medium |check `# 163 Missing Ranges`, `basic`, array, `google`| OK*** (3) 

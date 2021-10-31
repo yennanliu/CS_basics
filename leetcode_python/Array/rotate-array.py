@@ -41,7 +41,16 @@ class Solution(object):
         k = k % len(nums)
         nums[:k], nums[k:] = nums[-k:], nums[:len(nums)-k]
 
-# V0'
+# V0'' : TODO : fix this
+# class Solution(object):
+#     def rotate(self, nums, k):
+#         _nums = nums[:]
+#         for i in range(k):
+#             #print("nums = " + str(nums))
+#             nums = [_nums[-1]] + _nums[:-1]
+#         return nums
+
+# V0'''
 # IDEA : SLICE
 class Solution(object):
     def rotate(self, nums, k):
