@@ -5,6 +5,7 @@
 
 ### Key points
 - zookeeper
+	- maintain various informations in nodes (distributed system)
 - sql or non-sql DB
 - data consistency
 - system availability

@@ -21,6 +21,7 @@
 		- SQL
 	- Crack Code
 	- System Design
+		- Twitter system design
 	- algorithm book (labu)
 		- P.266 - 272
 
