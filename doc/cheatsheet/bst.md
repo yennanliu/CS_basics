@@ -122,11 +122,123 @@ boolean isInBST(TreeNode root, int target){
 #### 1-1-5) Insert a number into BST
 ```java
 // java
+TreeNode insertIntoBST(TreeNode root, int val){
+    // if null root, then just find a space and insert new value
+    if (root == null) return new TreeNode(val);
+    // if already exist, no need to insert, return directly
+    if (root.val == val) return root;
 
+    if (root.val < val){
+        root.right = insertIntoBST(root.right, val);
+    }
+    if (root.val > val){
+        root.left = insertIntoBST(root.left, val);
+    }
+    return root;
+}
 ```
 
 #### 1-1-6) Delete a number from BST
+```java
+// java
 
+// pseudo java code
+TreeNode deleteNode(TreeNode root, int key){
+    if (root.val == key){
+        // delete
+    }
+    else if (root.val > key){
+        // to left sub tree
+        root.left = deleteNode(root.left, key);
+    }
+    else if (root.val < key){
+        // to right sub tree
+        root.right = deleteNode(root.right, key);
+    }
+
+    return root;
+}
+
+/** 
+ *   NOTE : 3 cases (algorithm book (labu) p.246)
+ * 
+ *   1) the value (to-delete value) is at the bottom (no sub left/right tree) -> delete directly
+ *   
+ *   2) there is only one left/right tree -> replace value with the sub-tree, then delete sub-tree
+ * 
+ *   3) there is BOTH left/right tree
+ * 
+ *      -> approach 3-1)  find the MIN right sub-tree and replace with value, then delete MIN right sub-tree
+ *      -> approach 3-2)  find the MAX left sub-tree and replace with value, then delete MAX left sub-tree
+ */
+
+
+// java code
+TreeNode deleteNode(TreeNode root, int key){
+    if (root.val == key){
+        // case 1) & case 2)
+        if (root.left == null) return root.right;
+        if (root.right == null) return root.left;
+
+        // case 3)
+        TreeNode minNode = getMin(root.right);
+        root.val = minNode.val;
+        root.right = deleteNode(root.right, key);
+    }
+    else if (root.val > key){
+        // to left sub tree
+        root.left = deleteNode(root.left, key);
+    }
+    else if (root.val < key){
+        // to right sub tree
+        root.right = deleteNode(root.right, key);
+    }
+
+    return root;
+}
+
+// help func
+TreeNode getMin(TreeNode node){
+    // min node is on the left of BST
+    while (node.left != null) node = node.left;
+    return node;
+}
+```
+
+```python
+# python code
+
+# LC 450 Delete Node in a BST
+# V0
+# IDEA : RECURSION + BST PROPERTY
+#### 2 CASES :
+#   -> CASE 1 : root.val == key and NO right subtree 
+#                -> swap root and root.left, return root.left
+#   -> CASE 2 : root.val == key and THERE IS right subtree
+#                -> 1) go to 1st RIGHT sub tree
+#                -> 2) iterate to deepest LEFT subtree
+#                -> 3) swap root and  `deepest LEFT subtree` then return root
+class Solution(object):
+    def deleteNode(self, root, key):
+        if not root: return None
+        if root.val == key:
+            # case 1 : NO right subtree 
+            if not root.right:
+                left = root.left
+                return left
+            # case 2 : THERE IS right subtree
+            else:
+                ### NOTE : find min in "right" sub-tree
+                #           -> because BST property, we ONLY go to 1st right tree (make sure we find the min of right sub-tree)
+                #           -> then go to deepest left sub-tree
+                right = root.right
+                while right.left:
+                    right = right.left
+                root.val, right.val = right.val, root.val
+        root.left = self.deleteNode(root.left, key)
+        root.right = self.deleteNode(root.right, key)
+        return root
+```
 
 ## 2) LC Example
 
@@ -189,41 +301,7 @@ class Solution:
             root = root.right
 ```
 
-### 2-3) Delete Node in a BST
-```python
-# LC 450 Delete Node in a BST
-# V0
-# IDEA : RECURSION + BST PROPERTY
-#### 2 CASES :
-#   -> CASE 1 : root.val == key and NO right subtree 
-#                -> swap root and root.left, return root.left
-#   -> CASE 2 : root.val == key and THERE IS right subtree
-#                -> 1) go to 1st RIGHT sub tree
-#                -> 2) iterate to deepest LEFT subtree
-#                -> 3) swap root and  `deepest LEFT subtree` then return root
-class Solution(object):
-    def deleteNode(self, root, key):
-        if not root: return None
-        if root.val == key:
-            # case 1 : NO right subtree 
-            if not root.right:
-                left = root.left
-                return left
-            # case 2 : THERE IS right subtree
-            else:
-                ### NOTE : find min in "right" sub-tree
-                #           -> because BST property, we ONLY go to 1st right tree (make sure we find the min of right sub-tree)
-                #           -> then go to deepest left sub-tree
-                right = root.right
-                while right.left:
-                    right = right.left
-                root.val, right.val = right.val, root.val
-        root.left = self.deleteNode(root.left, key)
-        root.right = self.deleteNode(root.right, key)
-        return root
-```
-
-### 2-4) Lowest Common Ancestor of a Binary Search Tree
+### 2-3) Lowest Common Ancestor of a Binary Search Tree
 ```python
 # LC Lowest Common Ancestor of a Binary Search Tree
 # V0
