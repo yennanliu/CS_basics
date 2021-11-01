@@ -69,6 +69,7 @@ class Solution(object):
                 right = root.right
                 while right.left:
                     right = right.left
+                ### NOTE : we need to swap root, right ON THE SAME TIME
                 root.val, right.val = right.val, root.val
         root.left = self.deleteNode(root.left, key)
         root.right = self.deleteNode(root.right, key)
