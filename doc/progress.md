@@ -1,5 +1,35 @@
 # Progress
 
+# 2021-11-03
+- DOING:
+	- LC (am_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
+		- programming
+			- review
+				- 162
+			- (normal order)
+			- (pdf : p.11)
+			- =======
+			- **back track**
+			- Binary Search Tree
+			- Binary Search
+			- linked list
+			- sliding window
+				- 438
+				- 713
+				- 209
+			- =======
+			- hash table
+			- bit manipulation
+			- union find
+			- quick sort
+		- SQL
+	- Crack Code
+	- System Design
+		- Twitter system design
+	- algorithm book (labu)
+		- P.279 - 284
+
 # 2021-11-02
 - DOING:
 	- LC (am_)
