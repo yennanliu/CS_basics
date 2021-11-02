@@ -101,6 +101,31 @@ class Solution(object):
         return left if left else right
 ```
 
+### 1-1-5) Merge Two Binary Trees
+```python
+# LC 617 Merge Two Binary Trees
+# V0
+# IDEA : DFS + BACKTRACK
+class Solution:
+    def mergeTrees(self, t1, t2):
+        return self.dfs(t1,t2)
+
+    def dfs(self, t1, t2):
+        if not t1 and not t2:
+            return
+        
+        if t1 and t2:
+            ### NOTE here
+            newT = TreeNode(t1.val +  t2.val)
+            newT.right = self.mergeTrees(t1.right, t2.right)
+            newT.left = self.mergeTrees(t1.left, t2.left)   
+            return newT
+        
+        ### NOTE here
+        else:
+            return t1 or t2
+```
+
 ## 2) LC Example
 
 ### 2-1) Binary Tree Right Side View
