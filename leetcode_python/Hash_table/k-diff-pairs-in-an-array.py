@@ -1,41 +1,75 @@
-# Time:  O(n)
-# Space: O(n)
-# Total Accepted: 5671
-# Total Submissions: 20941
-# Difficulty: Easy
-# Contributors: murali.kf370
-# Given an array of integers and an integer k,
-# you need to find the number of unique k-diff pairs in the array.
-# Here a k-diff pair is defined as an integer pair (i, j),
-# where i and j are both numbers in the array and their absolute difference is k.
-#
-# Example 1:
-# Input: [3, 1, 4, 1, 5], k = 2
-# Output: 2
-# Explanation: There are two 2-diff pairs in the array, (1, 3) and (3, 5).
-# Although we have two 1s in the input, we should only return the number of unique pairs.
-# Example 2:
-# Input:[1, 2, 3, 4, 5], k = 1
-# Output: 4
-# Explanation: There are four 1-diff pairs in the array, (1, 2), (2, 3), (3, 4) and (4, 5).
-# Example 3:
-# Input: [1, 3, 1, 5, 4], k = 0
-# Output: 1
-# Explanation: There is one 0-diff pair in the array, (1, 1).
-# Note:
-# The pairs (i, j) and (j, i) count as the same pair.
-# The length of the array won't exceed 10,000.
-# All the integers in the given input belong to the range: [-1e7, 1e7].
+"""
+
+532. K-diff Pairs in an Array
+Medium
+
+Given an array of integers nums and an integer k, return the number of unique k-diff pairs in the array.
+
+A k-diff pair is an integer pair (nums[i], nums[j]), where the following are true:
+
+0 <= i < j < nums.length
+|nums[i] - nums[j]| == k
+Notice that |val| denotes the absolute value of val.
+
+ 
+
+Example 1:
+
+Input: nums = [3,1,4,1,5], k = 2
+Output: 2
+Explanation: There are two 2-diff pairs in the array, (1, 3) and (3, 5).
+Although we have two 1s in the input, we should only return the number of unique pairs.
+Example 2:
+
+Input: nums = [1,2,3,4,5], k = 1
+Output: 4
+Explanation: There are four 1-diff pairs in the array, (1, 2), (2, 3), (3, 4) and (4, 5).
+Example 3:
+
+Input: nums = [1,3,1,5,4], k = 0
+Output: 1
+Explanation: There is one 0-diff pair in the array, (1, 1).
+Example 4:
+
+Input: nums = [1,2,4,4,3,3,0,9,2,3], k = 3
+Output: 2
+Example 5:
+
+Input: nums = [-1,-2,-3], k = 1
+Output: 2
+ 
+
+Constraints:
+
+1 <= nums.length <= 104
+-107 <= nums[i] <= 107
+0 <= k <= 107
+
+"""
+
+
+# V0
+# IDEA : BRUTE FORCE + BREAK
+class Solution(object):
+    def findPairs(self, nums, k):
+        d = {}
+        res = []
+        nums.sort()
+        for i in range(len(nums)-1):
+            for j in range(i+1, len(nums)):
+                if abs(nums[i] - nums[j]) == k:
+                    tmp = [nums[i],nums[j]]
+                    tmp.sort()
+                    if tmp not in res:
+                        res.append(tmp)
+                if abs(nums[j] - nums[i]) > k:
+                    break
+        return res
 
 # V0 
 import collections
 class Solution(object):
     def findPairs(self, nums, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: int
-        """
         answer = 0
         counter = collections.Counter(nums)
         for num in set(nums):
