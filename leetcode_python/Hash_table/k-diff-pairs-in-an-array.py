@@ -49,11 +49,12 @@ Constraints:
 
 
 # V0
-# IDEA : BRUTE FORCE + BREAK
+# IDEA : SORT + BRUTE FORCE + BREAK
 class Solution(object):
     def findPairs(self, nums, k):
         d = {}
         res = []
+        # NOTE : we sort here
         nums.sort()
         for i in range(len(nums)-1):
             for j in range(i+1, len(nums)):
