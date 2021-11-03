@@ -127,3 +127,36 @@ class Solution(object):
             res = max(res, r -l + 1)
         return res
 ```
+
+### 2-4) Subarray Product Less Than K
+```python
+# LC 713
+# V0 
+# IDEA : SLIDING WINDOW 
+# MAINTAIN 2 INDEX : left, i, SO THE SLIDING WINDOW IS : [left, i]
+# CHECK IF THE PRODUCT OF ALL DIGITS IN THE WINDOW [left, i] < k
+# IF NOT, REMOVE CURRENT LEFT, AND DO LEFT ++
+# REPEAT ABOVE PROCESS AND GO THOROUGH ALL ARRAY  
+class Solution:
+    def numSubarrayProductLessThanK(self, nums, k):
+        # init values
+        product = 1
+        i = 0
+        result = 0
+        
+        for j, num in enumerate(nums):
+            ### NOTE : we get product first
+            product *= num
+            ### NOTE : the while loop condition : product >= k
+            #         -> if product >= k, we do the corresponding op
+            while i <= j and product >= k:
+                ### NOTE this trick
+                #    -> divided the number back, since this number already make the product > k 
+                product = product // nums[i]
+                ### NOTE : move i to 1 right index
+                i += 1
+            ### NOTE : , the number of intervals with subarray product less than k and with right-most coordinate right, is right - left + 1
+            #    -> https://leetcode.com/problems/subarray-product-less-than-k/solution/           
+            result += (j - i + 1)           
+        return result
+```
