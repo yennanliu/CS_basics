@@ -68,6 +68,18 @@ def post_order_traverse(TreeNode):
     r.append(root.value)
 ```
 
+```python
+# init a tree with root value
+class TreeNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+s = 3
+root = TreeNode(int(s))
+```
+
 #### 1-1-2) Get node counts
 ```python
 # get node count of binary tree
