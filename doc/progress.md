@@ -15,9 +15,9 @@
 			- Binary Search
 			- linked list
 			- sliding window
-				- 438
-				- 713
-				- 209
+				- 438 (again!)
+				- 713 (not yet)
+				- 209 (not yet)
 			- =======
 			- hash table
 			- bit manipulation
