@@ -4,7 +4,7 @@
 ## 0) Concept  
 1. two pointers
 2. while loop
-3. some conditions for start and end
+3. working with conditions on `start` and `end` index
 
 ### 0-1) Types
 
@@ -18,10 +18,11 @@ window = []
 while r < len(s):
     window.append(s[r])
     r += 1
-
+    # do wth
     while valid:
         window.remove(s[l])
         l += 1
+        # do wth
 ```
 
 ```java
@@ -31,8 +32,9 @@ int left = 0, right = 0;
 while (right < s.size()) {
     window.add(s[right]);
     right++;
-    // NOTE : must of the trick is dealing with "valid" conditions
-    //        and how to cache some conditions for verfication
+    // NOTE : most of the sliding windonw trick 
+    // is dealing with "valid" conditions
+    // and how to cache some conditions for verfication
     while (valid) {
         window.remove(s[left]);
         left++;
@@ -49,7 +51,7 @@ while (right < s.size()) {
 ### 2-1) Permutation in String
 
 ```python
-# LC 567
+# LC 567 Permutation in String
 # V0 
 import collections
 class Solution(object):
@@ -74,7 +76,7 @@ class Solution(object):
 ### 2-2) Find All Anagrams in a String
 
 ```python
-# LC 438
+# LC 438 Find All Anagrams in a String
 # V0
 # IDEA : SLIDING WINDOW + collections.Counter()
 class Solution(object):
@@ -103,7 +105,7 @@ class Solution(object):
 ### 2-3) Longest Substring Without Repeating Characters
 
 ```python
-# LC 003
+# LC 003 Longest Substring Without Repeating Characters
 # V0
 # IDEA : SLIDING WINDOW + DICT
 #       -> use a hash table (d) record visit "alphabet" (e.g. : a,b,c,...)
