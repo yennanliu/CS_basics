@@ -1,4 +1,73 @@
+"""
+
+Leetcode 536. 
+Construct Binary Tree from String
+
+
+You need to construct a binary tree from a string consisting of parenthesis and integers.
+The whole input represents a binary tree. It contains an integer followed by zero, one or two pairs of parenthesis. The integer represents the root's value and a pair of parenthesis contains a child binary tree with the same structure.
+You always start to construct the left child node of the parent first if it exists.
+
+Example:
+Input: "4(2(3)(1))(6(5))"
+Output: return the tree root node representing the following tree:
+
+       4
+     /   \
+    2     6
+   / \   / 
+  3   1 5 
+
+Note:
+There will only be '(', ')', '-' and '0' ~ '9' in the input string.
+An empty tree is represented by "" instead of "()"
+
+"""
+
 # V0
+# IDEA : tree property + recursive
+class Solution(object):
+    def str2tree(self, s):
+        if not s: 
+            return None
+        n = ''
+        while s and s[0] not in ('(', ')'):
+            n += s[0]
+            s = s[1:]
+        ### NOTE this
+        node = TreeNode(int(n))
+        ### NOTE this
+        left, right = self.divide(s)
+        node.left = self.str2tree(left[1:-1])
+        node.right = self.str2tree(right[1:-1])
+        return node
+
+    def divide(self, s):
+        part, deg = '', 0
+        while s:
+            """
+            syntax exmaple :
+
+            In [9]: x = {'(' : 1, ')' : -1}
+
+            In [10]: x.get('(')
+            Out[10]: 1
+
+            In [11]: x.get('(', 0 )
+            Out[11]: 1
+
+            In [12]: x.get('&', 0 )
+            Out[12]: 0
+            """
+            deg += {'(' : 1, ')' : -1}.get(s[0], 0)
+            part += s[0]
+            s = s[1:]
+            if deg == 0:
+                break
+        return part, s
+
+# V0'
+# IDEA : tree property + recursive
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
@@ -76,7 +145,8 @@ class Solution(object):
         :type s: str
         :rtype: TreeNode
         """
-        if not s: return None
+        if not s: 
+            return None
         n = ''
         while s and s[0] not in ('(', ')'):
             n += s[0]
@@ -90,10 +160,25 @@ class Solution(object):
     def divide(self, s):
         part, deg = '', 0
         while s:
+            """
+            syntax exmaple :
+
+            In [9]: x = {'(' : 1, ')' : -1}
+
+            In [10]: x.get('(')
+            Out[10]: 1
+
+            In [11]: x.get('(', 0 )
+            Out[11]: 1
+
+            In [12]: x.get('&', 0 )
+            Out[12]: 0
+            """
             deg += {'(' : 1, ')' : -1}.get(s[0], 0)
             part += s[0]
             s = s[1:]
-            if deg == 0: break
+            if deg == 0:
+                break
         return part, s
 
 ### Test case : dev
