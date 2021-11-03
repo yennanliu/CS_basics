@@ -29,6 +29,14 @@
 
 ### 1-1) Basic OP
 
+- get value from dict with default value if key not existed
+```python
+d = {'a': 1, 'b': 2}
+d['a']
+d.get('a')
+d.get('c', 0)
+```
+
 - `setdefault()`
 	- https://www.w3schools.com/python/ref_dictionary_setdefault.asp
 ```python
