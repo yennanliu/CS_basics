@@ -1,4 +1,48 @@
+"""
+
+537. Complex Number Multiplication
+Medium
+
+A complex number can be represented as a string on the form "real+imaginaryi" where:
+
+real is the real part and is an integer in the range [-100, 100].
+imaginary is the imaginary part and is an integer in the range [-100, 100].
+i2 == -1.
+Given two complex numbers num1 and num2 as strings, return a string of the complex number that represents their multiplications.
+
+ 
+
+Example 1:
+
+Input: num1 = "1+1i", num2 = "1+1i"
+Output: "0+2i"
+Explanation: (1 + i) * (1 + i) = 1 + i2 + 2 * i = 2i, and you need convert it to the form of 0+2i.
+Example 2:
+
+Input: num1 = "1+-1i", num2 = "1+-1i"
+Output: "0+-2i"
+Explanation: (1 - i) * (1 - i) = 1 + i2 - 2 * i = -2i, and you need convert it to the form of 0+-2i.
+ 
+
+Constraints:
+
+num1 and num2 are valid complex numbers.
+
+"""
+
 # V0
+# IDEA : MATH 
+class Solution(object):
+    def complexNumberMultiply(self, num1, num2):
+        r_1 = int(num1.split("+")[0])
+        i_1 = int(num1.split("+")[1].replace("i","")) 
+        r_2 = int(num2.split("+")[0])
+        i_2 = int(num2.split("+")[1].replace("i",""))
+        r_res = str((r_1 * r_2) + -1 * (i_1 * i_2))
+        i_res = str(r_1 * i_2 + i_1 * r_2) + "i"
+        return r_res + "+" +  i_res
+
+# V0'
 # IDEA : MATH 
 class Solution(object):
     def complexNumberMultiply(self, a, b):
@@ -38,11 +82,6 @@ class Solution(object):
 # Space: O(1)
 class Solution(object):
     def complexNumberMultiply(self, a, b):
-        """
-        :type a: str
-        :type b: str
-        :rtype: str
-        """
         ra, ia = list(map(int, a[:-1].split('+')))
         rb, ib = list(map(int, b[:-1].split('+')))
         return '%d+%di' % (ra * rb - ia * ib, ra * ib + ia * rb)
