@@ -215,7 +215,7 @@
 670| [Maximum Swap](https://leetcode.com/problems/maximum-swap/) | [Python](./leetcode_python/Array/maximum-swap.py)| _O(logn)_ |  _O(logn)_ | Medium |`good basic`, AGAIN, reversed, str -> list,string + pointers , `fb`| AGAIN****** (4)
 674 | [Longest Continuous Increasing Subsequence](https://leetcode.com/problems/longest-continuous-increasing-subsequence/) | [Python](./leetcode_python/Array/longest-continuous-increasing-subsequence.py)  | _O(n)_ | _O(1)_ | Easy |`good basic`,`dp`,`2 pointers` ,`array` ,`fb`| OK*** (5)
 697| [Degree of an Array](https://leetcode.com/problems/degree-of-an-array/) | [Python](./leetcode_python/Array/degree-of-an-array.py) | _O(n)_ | _O(n)_ | Easy || AGAIN (not start)
-713 | [Subarray Product Less Than K](https://leetcode.com/problems/subarray-product-less-than-k/) | [Python](./leetcode_python/Array/subarray-product-less-than-k.py) | _O(n)_ | _O(1)_ | Medium |`basic`, `sliding window`| AGAIN*
+713 | [Subarray Product Less Than K](https://leetcode.com/problems/subarray-product-less-than-k/) | [Python](./leetcode_python/Array/subarray-product-less-than-k.py) | _O(n)_ | _O(1)_ | Medium |`basic`, `sliding window`, good trick| OK****** (3) (but again)
 717 | [1-bit and 2-bit Characters](https://leetcode.com/problems/1-bit-and-2-bit-characters/) | [Python](./leetcode_python/Array/1-bit-and-2-bit-characters.py) | _O(n)_ | _O(1)_ | Easy | Greedy |  AGAIN (not start)
 723 | [Candy Crush](https://leetcode.com/problems/candy-crush/) | [Python](./leetcode_python/Array/candy-crush.py) | _O((R * C)^2)_ | _O(1)_ | Medium |`complex`| AGAIN (not start)
 724 | [Find Pivot Index](https://leetcode.com/problems/find-pivot-index/) | [Python](./leetcode_python/Array/find-pivot-index.py)  | _O(n)_ | _O(1)_ | Easy || OK*
