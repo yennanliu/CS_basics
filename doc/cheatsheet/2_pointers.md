@@ -4,22 +4,29 @@
 ## 0) Concept  
 
 ### 0-1) Types
-- `Fast - Slow pointers`
-    - Usualy set
-        - slow pointer moves 1 idx
-        - fast pointer moves 2 inx
-    - find mid point of linked list
-    - linked list check if circular 
-    - if a circular linked list, return beginning point of circular
-    - find last k element of a single linked list
-- `Left- Right pointers`
-    - Usually set
-        - left pointer = 0
-        - right pointer = len(nums)
-    - [binary search](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_search.md)
-    - array reverse
-    - [2 sum](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md)
-    - [sliding window](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
+- Pointer types
+    - `Fast - Slow pointers`
+        - Usualy set
+            - slow pointer moves 1 idx
+            - fast pointer moves 2 inx
+        - find mid point of linked list
+        - linked list check if circular 
+        - if a circular linked list, return beginning point of circular
+        - find last k element of a single linked list
+    - `Left- Right pointers`
+        - Usually set
+            - left pointer = 0
+            - right pointer = len(nums)
+        - [binary search](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_search.md)
+        - array reverse
+        - [2 sum](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md)
+        - [sliding window](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
+- Data structure
+    - Array
+    - Linked list
+- Algorithm
+    - binary search
+    - sliding window
 
 ### 0-2) Pattern
 ```c++
@@ -77,7 +84,7 @@ ListNode detectCycle(ListNode head){
         }
     }
     slow = head;
-    // may need below logic to check whether if cycle linked list
+    // may need below logic to check whether is cycle linked list or not
     // if (! fast or ! fast.next){
     //     return null;
     // }
@@ -87,7 +94,6 @@ ListNode detectCycle(ListNode head){
     }
     return slow;
 }
-
 ```
 
 ```python
@@ -114,7 +120,7 @@ class Solution:
             slow = slow.next
         return slow
 ```
-#### 1-1-3 : find mid point of single linked list
+#### 1-1-3 : find mid point of a single linked list
 ```java
 // java
 while (fast != null and fast.next != null){
@@ -124,7 +130,7 @@ while (fast != null and fast.next != null){
 return slow;
 ```
 
-#### 1-1-4 : find last k element in single linked list
+#### 1-1-4 : find last k elements in a single linked list
 ```java
 // java
 ListNode fast, slow;
@@ -195,7 +201,6 @@ class Solution:
                 A[i], A[j+1] = A[j+1], A[i]
                 j = j + 1
         return j+1
-
 ```
 
 ```python
@@ -217,7 +222,7 @@ class Solution(object):
 # IDEA : 2 POINTERS
 #### NOTE : THE nums already ordering
 class Solution:
-    def removeDuplicates(self, nums: List[int]) -> int:
+    def removeDuplicates(self, nums):
         if len(nums) < 3:
             return len(nums)
 
