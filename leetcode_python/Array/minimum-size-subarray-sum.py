@@ -33,6 +33,37 @@ Follow up: If you have figured out the O(n) solution, try coding another solutio
 # IDEA : SLIDING WINDOW : start, end
 class Solution:
     def minSubArrayLen(self, s, nums):
+        if nums is None or len(nums) == 0:
+            return 0
+
+        n = len(nums)
+        minLength = n + 1
+        sum = 0
+        j = 0
+        for i in range(n):
+            ### NOTE the while loop condition (j < n and sum < s)
+            while j < n and sum < s:
+                sum += nums[j]
+                j += 1
+            # NOTE : we need to check if sum >= s here
+            if sum >= s:
+                minLength = min(minLength, j - i)
+
+            ### NOTE : we need to get min length of sub array
+            #          so once it meats the condition (sum >= s)
+            #          we should update the minLength (minLength = min(minLength, j - i))
+            #          and move to next i and roll back _sum (_sum -= nums[i])
+            sum -= nums[i]
+            
+        ### NOTE : if minLength == n + 1, means there is no such subarray, so return 0 instead
+        if minLength == n + 1:
+            return 0         
+        return minLength
+
+# V0'
+# IDEA : SLIDING WINDOW : start, end
+class Solution:
+    def minSubArrayLen(self, s, nums):
         size = len(nums)
         start, end, _sum = 0, 0, 0
         _ans = size + 1
@@ -79,7 +110,32 @@ class Solution:
 #           
 #         return minLength
 
-# V1 
+# V1
+# IDEA : MOVING WINDOW (START, END AS WINDOW INDEX)
+# https://www.jiuzhang.com/solution/minimum-size-subarray-sum/#tag-highlight-lang-python
+class Solution:
+    def minSubArrayLen(self, s, nums):
+        if nums is None or len(nums) == 0:
+            return 0
+
+        n = len(nums)
+        minLength = n + 1
+        sum = 0
+        j = 0
+        for i in range(n):
+            while j < n and sum < s:
+                sum += nums[j]
+                j += 1
+            if sum >= s:
+                minLength = min(minLength, j - i)
+
+            sum -= nums[i]
+            
+        if minLength == n + 1:
+            return 0         
+        return minLength
+
+# V1 ''
 # http://bookshadow.com/weblog/2015/05/12/leetcode-minimum-size-subarray-sum/
 # IDEA : MOVING WINDOW (START, END AS WINDOW INDEX)
 class Solution:
@@ -112,9 +168,6 @@ class Solution:
 # http://bookshadow.com/weblog/2015/05/12/leetcode-minimum-size-subarray-sum/
 # IDEA : BINARY SEARCH 
 class Solution:
-    # @param {integer} s
-    # @param {integer[]} nums
-    # @return {integer}
     def minSubArrayLen(self, s, nums):
         size = len(nums)
         left, right = 0, size
@@ -138,34 +191,77 @@ class Solution:
                 return True
         return False
 
-# V1''
-# https://www.jiuzhang.com/solution/minimum-size-subarray-sum/#tag-highlight-lang-python
-class Solution:
-    """
-    @param nums: an array of integers
-    @param s: An integer
-    @return: an integer representing the minimum size of subarray
-    """
-    def minimumSize(self, nums, s):
-        if nums is None or len(nums) == 0:
-            return -1
+# V1'''
+# A better brute force [Accepted]
+# https://leetcode.com/problems/minimum-size-subarray-sum/solution/
+# C++
+# int minSubArrayLen(int s, vector<int>& nums)
+# {
+#     int n = nums.size();
+#     if (n == 0)
+#         return 0;
+#     int ans = INT_MAX;
+#     vector<int> sums(n);
+#     sums[0] = nums[0];
+#     for (int i = 1; i < n; i++)
+#         sums[i] = sums[i - 1] + nums[i];
+#     for (int i = 0; i < n; i++) {
+#         for (int j = i; j < n; j++) {
+#             int sum = sums[j] - sums[i] + nums[i];
+#             if (sum >= s) {
+#                 ans = min(ans, (j - i + 1));
+#                 break; //Found the smallest subarray with sum>=s starting with index i, hence move to next index
+#             }
+#         }
+#     }
+#     return (ans != INT_MAX) ? ans : 0;
+# }
 
-        n = len(nums)
-        minLength = n + 1
-        sum = 0
-        j = 0
-        for i in range(n):
-            while j < n and sum < s:
-                sum += nums[j]
-                j += 1
-            if sum >= s:
-                minLength = min(minLength, j - i)
+# V1'''''
+# Approach #3 Using Binary search
+# https://leetcode.com/problems/minimum-size-subarray-sum/solution/
+# C++
+# int minSubArrayLen(int s, vector<int>& nums)
+# {
+#     int n = nums.size();
+#     if (n == 0)
+#         return 0;
+#     int ans = INT_MAX;
+#     vector<int> sums(n + 1, 0); //size = n+1 for easier calculations
+#     //sums[0]=0 : Meaning that it is the sum of first 0 elements
+#     //sums[1]=A[0] : Sum of first 1 elements
+#     //ans so on...
+#     for (int i = 1; i <= n; i++)
+#         sums[i] = sums[i - 1] + nums[i - 1];
+#     for (int i = 1; i <= n; i++) {
+#         int to_find = s + sums[i - 1];
+#         auto bound = lower_bound(sums.begin(), sums.end(), to_find);
+#         if (bound != sums.end()) {
+#             ans = min(ans, static_cast<int>(bound - (sums.begin() + i - 1)));
+#         }
+#     }
+#     return (ans != INT_MAX) ? ans : 0;
+# }
 
-            sum -= nums[i]
-            
-        if minLength == n + 1:
-            return -1          
-        return minLength
+# V1'''''
+# Approach #4 Using 2 pointers [Accepted]
+# https://leetcode.com/problems/minimum-size-subarray-sum/solution/
+# C++
+# int minSubArrayLen(int s, vector<int>& nums)
+# {
+#     int n = nums.size();
+#     int ans = INT_MAX;
+#     int left = 0;
+#     int sum = 0;
+#     for (int i = 0; i < n; i++) {
+#         sum += nums[i];
+#         while (sum >= s) {
+#             ans = min(ans, i + 1 - left);
+#             sum -= nums[left++];
+#         }
+#     }
+#     return (ans != INT_MAX) ? ans : 0;
+# }
 
 # V2 
 # Time:  O(n)

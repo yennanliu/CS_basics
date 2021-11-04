@@ -160,3 +160,38 @@ class Solution:
             result += (j - i + 1)           
         return result
 ```
+
+### 2-5) Minimum Size Subarray Sum
+```python
+# LC 209 Minimum Size Subarray Sum
+# V0
+# IDEA : SLIDING WINDOW : start, end
+class Solution:
+    def minSubArrayLen(self, s, nums):
+        if nums is None or len(nums) == 0:
+            return 0
+
+        n = len(nums)
+        minLength = n + 1
+        sum = 0
+        j = 0
+        for i in range(n):
+            ### NOTE the while loop condition (j < n and sum < s)
+            while j < n and sum < s:
+                sum += nums[j]
+                j += 1
+            # NOTE : we need to check if sum >= s here
+            if sum >= s:
+                minLength = min(minLength, j - i)
+
+            ### NOTE : we need to get min length of sub array
+            #          so once it meats the condition (sum >= s)
+            #          we should update the minLength (minLength = min(minLength, j - i))
+            #          and move to next i and roll back _sum (_sum -= nums[i])
+            sum -= nums[i]
+            
+        ### NOTE : if minLength == n + 1, means there is no such subarray, so return 0 instead
+        if minLength == n + 1:
+            return 0         
+        return minLength
+```

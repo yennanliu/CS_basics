@@ -145,3 +145,35 @@ class Solution(object):
         ### NOTE this
         return left * left == num
 ```
+
+### 2-4) Minimum Size Subarray Sum
+```python
+# LC 209 Minimum Size Subarray Sum
+### NOTE : there is also sliding window approach
+# V1' 
+# http://bookshadow.com/weblog/2015/05/12/leetcode-minimum-size-subarray-sum/
+# IDEA : BINARY SEARCH 
+class Solution:
+    def minSubArrayLen(self, s, nums):
+        size = len(nums)
+        left, right = 0, size
+        bestAns = 0
+        while left <= right:
+            mid = (left + right) / 2
+            if self.solve(mid, s, nums):
+                bestAns = mid
+                right = mid - 1
+            else:
+                left = mid + 1
+        return bestAns
+
+    def solve(self, l, s, nums):
+        sums = 0
+        for x in range(len(nums)):
+            sums += nums[x]
+            if x >= l:
+                sums -= nums[x - l]
+            if sums >= s:
+                return True
+        return False
+```
