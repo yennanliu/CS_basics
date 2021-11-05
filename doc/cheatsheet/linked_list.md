@@ -234,6 +234,38 @@ class LinkedList:
 #### 1-1-2) plus one on linked list
 
 #### 1-1-2) reverse linked list
+```java
+// java
+// recursive way
+// algorithm book (labu) p.290
+ListNode reverse(ListNode head){
+    // base case, if not a node or only 1 node -> return itself
+    if (head == null || head.next == null){
+        return head;
+    }
+    ListNode last = reverse(head.next);
+    head.next.next = head;
+    // point end node to null
+    head.next = null;
+    return last;
+}
+```
+
+```python
+# python
+# while loop way
+class Solution:
+    def reverseList(self, head: ListNode):
+        prev = None
+        current = head 
+        while(current is not None): 
+            next_ = current.next
+            current.next = prev 
+            prev = current 
+            current = next_
+        head = prev 
+        return head
+```
 
 #### 1-1-3) delete node
 

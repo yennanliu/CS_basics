@@ -138,6 +138,15 @@ class Solution:
             return t1 or t2
 ```
 
+### 1-1-6) Count nodes on a `basic` binary tree
+```java
+// algorithm book (labu) p. 250
+public int countNodes (TreeNode root){
+    if (root == null) return 0;
+    return 1 + countNodes(root.left) + countNodes(root.right);
+}
+```
+
 ## 2) LC Example
 
 ### 2-1) Binary Tree Right Side View
