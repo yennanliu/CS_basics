@@ -22,7 +22,7 @@
 		- SQL
 	- Crack Code
 	- System Design
-		- Twitter system design
+		- Dropbox/google drive system design
 	- algorithm book (labu)
 		- P.288 - 293
 
