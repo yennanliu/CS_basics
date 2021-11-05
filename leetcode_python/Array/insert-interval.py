@@ -48,15 +48,21 @@ newInterval.length == 2
 # V0
 # IDEA : compare merged[-1][1]. interval[0]
 # https://leetcode.com/problems/insert-interval/discuss/1236101/Python3-Easy-to-Understand-Solution
+### NOTE : there are only 2 cases
+# case 1) no overlap -> append interval directly
+# case 2) overlap -> MODIFY 2nd element in last merged interval with the bigger index
 class Solution:
-    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+    def insert(self, intervals, newInterval):
         intervals.append(newInterval)
+        # need to sort first (by 1st element)
         intervals.sort(key=lambda x:x[0])
         merged = []
         for interval in intervals:
+            ### NOTE this condition
             if not merged or merged[-1][1]<interval[0]:
                 merged.append(interval)
             else:
+                ### NOTE this op
                 merged[-1][1]= max(merged[-1][1],interval[1])
         return merged
 

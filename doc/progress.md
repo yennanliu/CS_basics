@@ -22,6 +22,8 @@
 			- bit manipulation
 			- union find
 			- quick sort
+			- intervals
+				- 57 (again!)
 		- SQL
 	- Crack Code
 	- System Design
