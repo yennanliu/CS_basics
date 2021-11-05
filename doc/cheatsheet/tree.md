@@ -113,7 +113,7 @@ class Solution(object):
         return left if left else right
 ```
 
-### 1-1-5) Merge Two Binary Trees
+#### 1-1-5) Merge Two Binary Trees
 ```python
 # LC 617 Merge Two Binary Trees
 # V0
@@ -138,7 +138,7 @@ class Solution:
             return t1 or t2
 ```
 
-### 1-1-6) Count nodes on a `basic` binary tree
+#### 1-1-6) Count nodes on a `basic` binary tree
 ```java
 // java
 // algorithm book (labu) p. 250
@@ -148,7 +148,7 @@ public int countNodes (TreeNode root){
 }
 ```
 
-### 1-1-7) Count nodes on a `perfect` binary tree
+#### 1-1-7) Count nodes on a `perfect` binary tree
 ```java
 // java
 // algorithm book (labu) p. 250
@@ -164,7 +164,7 @@ public int countNodes(TreeNode root){
 }
 ```
 
-### 1-1-8) Count nodes on a `complete` binary tree
+#### 1-1-8) Count nodes on a `complete` binary tree
 ```java
 // java
 // algorithm book (labu) p. 251

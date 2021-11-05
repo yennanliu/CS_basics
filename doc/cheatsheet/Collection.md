@@ -8,7 +8,7 @@
 
 ## 1) General form
 
-### 1-1) collection.Counter
+#### 1-1) collection.Counter
 ```python
 import collections
 s = ['a','b','c','c']
@@ -18,7 +18,7 @@ print (c.keys())
 print (c.values())
 ```
 
-### 1-2) Important method - most_common()
+#### 1-2) Important method - most_common()
 ```python
 # 451 Sort Characters By Frequency
 import collections
@@ -31,7 +31,7 @@ for item, freq in count:
 #b 1
 ```
 
-### 1-3) collection.defaultdict (int, list...)
+#### 1-3) collection.defaultdict (int, list...)
 ```python
 import collections
 s = ['a','b','c','c']
@@ -56,7 +56,7 @@ print (count.values())
 print(count.items())
 ```  
 
-### 1-3) collection.update()
+#### 1-3) collection.update()
 ```python
 # LC # 554 rick Wall
 import collections
