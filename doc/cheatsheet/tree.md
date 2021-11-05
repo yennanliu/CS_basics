@@ -140,9 +140,57 @@ class Solution:
 
 ### 1-1-6) Count nodes on a `basic` binary tree
 ```java
+// java
 // algorithm book (labu) p. 250
 public int countNodes (TreeNode root){
     if (root == null) return 0;
+    return 1 + countNodes(root.left) + countNodes(root.right);
+}
+```
+
+### 1-1-7) Count nodes on a `perfect` binary tree
+```java
+// java
+// algorithm book (labu) p. 250
+public int countNodes(TreeNode root){
+    int h = 0;
+    // get tree depth
+    while (root != null){
+        root = root.left;
+        h += 1;
+    }
+    // total nodes = 2**n + 1
+    return (int)Math.pow(2, h) - 1;
+}
+```
+
+### 1-1-8) Count nodes on a `complete` binary tree
+```java
+// java
+// algorithm book (labu) p. 251
+public int countNodes(TreeNode root){
+
+    TreeNode l = root;
+    TreeNode r = root;
+    int hl = 0;
+    int hr = 0;
+
+    while (l != null){
+        l = l = left;
+        h1 += 1;
+    }
+
+    while (r != null){
+        r = r.right;
+        hr += 1;
+    }
+
+    // if left, right sub tree have SAME depth -> this is a perfect binary tree
+    if (hl == hr){
+        return (int)Math.pow(2, hl) - 1;
+    }
+
+    // if left, right sub tree have DIFFERENT depth, then we follow the simple bianry tree approach
     return 1 + countNodes(root.left) + countNodes(root.right);
 }
 ```
