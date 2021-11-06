@@ -8,6 +8,8 @@
 			- review
 			- (normal order)
 			- (pdf : p.12)
+				- 553
+				- 606
 			- =======
 			- **back track**
 			- Binary Search Tree
@@ -23,6 +25,8 @@
 			- union find
 			- quick sort
 			- intervals
+				- 57 (ok)
+				- 56 (ok)
 		- SQL
 	- Crack Code
 	- System Design

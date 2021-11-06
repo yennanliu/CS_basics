@@ -166,7 +166,7 @@
 031 | [Next Permutation](https://leetcode.com/problems/next-permutation/)| [Python](./leetcode_python/Array/next-permutation.py),  [Scala](./leetcode_scala/Array/nextPermutation.scala)| _O(n)_ | _O(1)_ | Medium | `good TRICK`,, `google`,`amazon`, `fb` | AGAIN******** (5) (not start)
 048 | [Rotate Image](https://leetcode.com/problems/rotate-image/)   | [Python](./leetcode_python/Array/rotate-image.py) | _O(n^2)_ | _O(1)_| Medium  |`trick`, `basic`, `transpose matrix`, `amazon`| OK** (2)
 054 | [Spiral Matrix](https://leetcode.com/problems/spiral-matrix/) |  [Python](./leetcode_python/Array/spiral-matrix.py) | _O(m * n)_  | _O(1)_ | Medium |matrix,`amazon`| AGAIN** (2)
-057 | [Insert Interval](https://leetcode.com/problems/insert-interval/) |  [Python](./leetcode_python/Array/insert-interval.py) |  |  | Medium | good basic, blind LC pattern, `056 	Merge Intervals`|  OK********  (2) (again!)
+057 | [Insert Interval](https://leetcode.com/problems/insert-interval/) |  [Python](./leetcode_python/Array/insert-interval.py) |  |  | Medium | good basic, blind LC pattern, `056 Merge Intervals`|  OK********  (3) (again!)
 059 | [Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/) |  [Python](./leetcode_python/Array/spiral-matrix-ii.py) | _O(n^2)_ | _O(1)_ | Medium |check `# 054 Spiral Matrix`, `amazon`| AGAIN** (2)
 066 | [Plus One](https://leetcode.com/problems/plus-one/)      |  [Python](./leetcode_python/Array/plus-one.py)| _O(n)_   | _O(1)_ | Easy |`basic`, `digit`, `google`| OK** (2)
 073 | [Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes/) |  [Python](./leetcode_python/Array/set-matrix-zeroes.py)  | _O(m * n)_ | _O(1)_ | Medium  |`matrix`, `amazon`| OK* (3)
@@ -401,7 +401,7 @@
 548 | [Split Array with Equal Sum](https://leetcode.com/problems/split-array-with-equal-sum/) |[python](./leetcode_python/Tree/split-array-with-equal-sum.py) | _O(n^2)_ | _O(n)_ | Medium    |🔒, `good trick`, `array`| AGAIN*** (2)
 563 |[Binary Tree Tilt](https://leetcode.com/problems/binary-tree-tilt/)| [python](./leetcode_python/Tree/binary-tree-tilt.py)| _O(n)_ | _O(n)_ | Easy | | AGAIN 
 572 |[Subtree of Another Tree](https://leetcode.com/problems/subtree-of-another-tree/)| [python](./leetcode_python/Tree/subtree-of-another-tree.py) | _O(m * n)_ | _O(h)_ | Easy, tree,good basic, dfs, bfs |`amazon`,`fb`| AGAIN******* (3)
-606 |[Construct String from Binary Tree](https://leetcode.com/problems/construct-string-from-binary-tree/)| [python](./leetcode_python/Tree/construct-string-from-binary-tree.py) | _O(n)_ | _O(h)_ | Easy |good basic, tree, dfs, bfs, `amazon`| OK*** (4)
+606 |[Construct String from Binary Tree](https://leetcode.com/problems/construct-string-from-binary-tree/)| [python](./leetcode_python/Tree/construct-string-from-binary-tree.py) | _O(n)_ | _O(h)_ | Easy |good basic, tree, dfs, bfs, `amazon`| OK******** (5) (again!)
 617 |[Merge Two Binary Trees](https://leetcode.com/problems/merge-two-binary-trees/)|[python](./leetcode_python/Tree/merge-two-binary-trees.py) | _O(n)_ | _O(h)_ | Easy | tree, dfs, bfs, `good basic`, `amazon`| OK***** (3) (but again)
 623 |[Add One Row to Tree](https://leetcode.com/problems/add-one-row-to-tree/)| [python](./leetcode_python/Tree/add-one-row-to-tree.py)| _O(n)_ | _O(h)_ | Medium |`good basic`, `dfs`, `bfs` | AGAIN** (2)
 637 |[Average of Levels in Binary Tree](https://leetcode.com/problems/average-of-levels-in-binary-tree/)|  [python](./leetcode_python/Tree/average-of-levels-in-binary-tree.py) | _O(n)_ | _O(h)_ | Easy |`bfs`, `dfs`, `good basic`, `fb`| OK* (3)
@@ -602,7 +602,7 @@
 519 | [Random Flip Matrix](https://leetcode.com/problems/random-flip-matrix/) | [Python](./leetcode_python/Math/random-flip-matrix.py) | ctor: _O(1)_ <br> pick: _O(1)_ reset: _O(n)_ | _O(n)_ | Medium || AGAIN (not start)
 528 | [Random Pick with Weight](https://leetcode.com/problems/random-pick-with-weight/) | [Python](./leetcode_python/Math/random-pick-with-weight.py) | ctor: _O(n)_ <br> pick: _O(logn)_ | _O(n)_ | Medium || AGAIN (not start)
 537 | [Complex Number Multiplication](https://leetcode.com/problems/complex-number-multiplication/) | [Python](./leetcode_python/Math/complex-number-multiplication.py) | _O(1)_ | _O(1)_ | Medium |math, `amazon`| OK (3)
-553 | [Optimal Division](https://leetcode.com/problems/optimal-division/) |[Python](./leetcode_python/Math/optimal-division.py)| _O(n)_ | _O(1)_ | Medium |math, `amazon`| OK* (2) 
+553 | [Optimal Division](https://leetcode.com/problems/optimal-division/) |[Python](./leetcode_python/Math/optimal-division.py)| _O(n)_ | _O(1)_ | Medium |math, `amazon`| OK* (3) 
 573 | [Squirrel Simulation](https://leetcode.com/problems/squirrel-simulation/) | [Python](./leetcode_python/Math/squirrel-simulation.py) | _O(n)_ | _O(1)_ | Medium |🔒| AGAIN (not start)
 592 | [Fraction Addition and Subtraction](https://leetcode.com/problems/fraction-addition-and-subtraction/) | [Python](./leetcode_python/Math/fraction-addition-and-subtraction.py)| _O(nlogx)_ | _O(n)_ | Medium || AGAIN 
 593 | [Valid Square](https://leetcode.com/problems/valid-square/) | [Python](./leetcode_python/Math/valid-square.py)| _O(1)_ | _O(1)_ | Medium || AGAIN 
