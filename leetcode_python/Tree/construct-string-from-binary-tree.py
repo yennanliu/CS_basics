@@ -1,3 +1,35 @@
+"""
+
+606. Construct String from Binary Tree
+Easy
+
+Given the root of a binary tree, construct a string consisting of parenthesis and integers from a binary tree with the preorder traversal way, and return it.
+
+Omit all the empty parenthesis pairs that do not affect the one-to-one mapping relationship between the string and the original binary tree.
+
+ 
+
+Example 1:
+
+
+Input: root = [1,2,3,4]
+Output: "1(2(4))(3)"
+Explanation: Originally, it needs to be "1(2(4)())(3()())", but you need to omit all the unnecessary empty parenthesis pairs. And it will be "1(2(4))(3)"
+Example 2:
+
+
+Input: root = [1,2,3,null,4]
+Output: "1(2()(4))(3)"
+Explanation: Almost the same as the first example, except we cannot omit the first parenthesis pair to break the one-to-one mapping relationship between the input and the output.
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [1, 104].
+-1000 <= Node.val <= 1000
+
+"""
+
 # V0
 class Solution:
     def tree2str(self, t):
@@ -15,6 +47,34 @@ class Solution:
         return str(t.val) + '(' + self.tree2str(t.left) + ')' + '(' + self.tree2str(t.right) + ')'
 
 # V0'
+class Solution:
+    def tree2str(self, root):
+        if not root:
+            return ""
+        ### NOTE : this condition can make effect 
+        #          as ` return str(root.val) + "(" + self.tree2str(root.left) + ")" +  "(" + self.tree2str(root.right) + ")" ` at the bottom
+        if not root.left and not root.right:
+            return str(root.val)
+        if root.left and root.right:
+            return str(root.val) + "(" + self.tree2str(root.left) + ")" + "(" + self.tree2str(root.right) + ")"
+        if not root.right:
+            return str(root.val) + "(" + self.tree2str(root.left) + ")"
+        if not root.left:
+            return str(root.val) + "()" + "(" + self.tree2str(root.right) + ")"
+        #return str(root.val) + "(" + self.tree2str(root.left) + ")" +  "(" + self.tree2str(root.right) + ")"
+
+# V0''
+class Solution(object):
+    def tree2str(self, t):
+        if not t: return ""
+        s = str(t.val)
+        if t.left or t.right:
+            s += "(" + self.tree2str(t.left) + ")"
+        if t.right:
+            s += "(" + self.tree2str(t.right) + ")"
+        return s
+
+# V0''
 class Solution(object):
     def tree2str(self, t):
         if not t: return ''
@@ -23,7 +83,7 @@ class Solution(object):
         if t.right: ans += '(' + self.tree2str(t.right) + ')'
         return ans
 
-# V0''
+# V0'''
 class Solution(object):
     def tree2str(self, t):
         if not t:
