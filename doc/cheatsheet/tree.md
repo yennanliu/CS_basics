@@ -222,3 +222,51 @@ class Solution(object):
         dfs(root, 0)
         return [x[0] for x in res if len(x) > 0]
 ```
+
+### 2-2) Construct String from Binary Tree
+```python
+# LC 606. Construct String from Binary Tree
+# V0
+class Solution:
+    def tree2str(self, t):
+        if not t:
+            return ''
+        if not t.left and not t.right:
+            return str(t.val)
+        ### NOTICE HERE
+        if not t.left:
+            return str(t.val) + '()' + '(' + self.tree2str(t.right) + ')'
+        ### NOTICE HERE
+        if not t.right:
+            return str(t.val) + '(' + self.tree2str(t.left) + ')'
+        ### NOTICE HERE
+        return str(t.val) + '(' + self.tree2str(t.left) + ')' + '(' + self.tree2str(t.right) + ')'
+
+# V0'
+class Solution:
+    def tree2str(self, root):
+        if not root:
+            return ""
+        ### NOTE : this condition can make effect 
+        #          as ` return str(root.val) + "(" + self.tree2str(root.left) + ")" +  "(" + self.tree2str(root.right) + ")" ` at the bottom
+        if not root.left and not root.right:
+            return str(root.val)
+        if root.left and root.right:
+            return str(root.val) + "(" + self.tree2str(root.left) + ")" + "(" + self.tree2str(root.right) + ")"
+        if not root.right:
+            return str(root.val) + "(" + self.tree2str(root.left) + ")"
+        if not root.left:
+            return str(root.val) + "()" + "(" + self.tree2str(root.right) + ")"
+        #return str(root.val) + "(" + self.tree2str(root.left) + ")" +  "(" + self.tree2str(root.right) + ")"
+
+# V0''
+class Solution(object):
+    def tree2str(self, t):
+        if not t: return ""
+        s = str(t.val)
+        if t.left or t.right:
+            s += "(" + self.tree2str(t.left) + ")"
+        if t.right:
+            s += "(" + self.tree2str(t.right) + ")"
+        return s
+```
