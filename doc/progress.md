@@ -1,6 +1,6 @@
 # Progress
 
-# 2021-11-06
+# 2021-11-07
 - DOING:
 	- LC (am_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
@@ -23,6 +23,37 @@
 			- union find
 			- quick sort
 			- intervals
+		- SQL
+	- Crack Code
+	- System Design
+		- Dropbox/google drive system design
+	- algorithm book (labu)
+		- P.300 - 306
+
+# 2021-11-06
+- DOING:
+	- LC (am_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
+		- programming
+			- review
+			- (normal order)
+			- (pdf : p.12)
+				- 553
+				- 606
+			- =======
+			- **back track**
+			- Binary Search Tree
+			- Binary Search
+			- linked list
+			- sliding window
+			- =======
+			- hash table
+			- bit manipulation
+			- union find
+			- quick sort
+			- intervals
+				- 57 (again!)
+				- 56 (again!)
 		- SQL
 	- Crack Code
 	- System Design
