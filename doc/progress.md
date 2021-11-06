@@ -25,6 +25,8 @@
 			- union find
 			- quick sort
 			- intervals
+				- 57 (ok)
+				- 56 (ok)
 		- SQL
 	- Crack Code
 	- System Design
