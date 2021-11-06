@@ -602,7 +602,7 @@
 519 | [Random Flip Matrix](https://leetcode.com/problems/random-flip-matrix/) | [Python](./leetcode_python/Math/random-flip-matrix.py) | ctor: _O(1)_ <br> pick: _O(1)_ reset: _O(n)_ | _O(n)_ | Medium || AGAIN (not start)
 528 | [Random Pick with Weight](https://leetcode.com/problems/random-pick-with-weight/) | [Python](./leetcode_python/Math/random-pick-with-weight.py) | ctor: _O(n)_ <br> pick: _O(logn)_ | _O(n)_ | Medium || AGAIN (not start)
 537 | [Complex Number Multiplication](https://leetcode.com/problems/complex-number-multiplication/) | [Python](./leetcode_python/Math/complex-number-multiplication.py) | _O(1)_ | _O(1)_ | Medium |math, `amazon`| OK (3)
-553 | [Optimal Division](https://leetcode.com/problems/optimal-division/) |[Python](./leetcode_python/Math/optimal-division.py)| _O(n)_ | _O(1)_ | Medium |math, `amazon`| OK* (2) 
+553 | [Optimal Division](https://leetcode.com/problems/optimal-division/) |[Python](./leetcode_python/Math/optimal-division.py)| _O(n)_ | _O(1)_ | Medium |math, `amazon`| OK* (3) 
 573 | [Squirrel Simulation](https://leetcode.com/problems/squirrel-simulation/) | [Python](./leetcode_python/Math/squirrel-simulation.py) | _O(n)_ | _O(1)_ | Medium |🔒| AGAIN (not start)
 592 | [Fraction Addition and Subtraction](https://leetcode.com/problems/fraction-addition-and-subtraction/) | [Python](./leetcode_python/Math/fraction-addition-and-subtraction.py)| _O(nlogx)_ | _O(n)_ | Medium || AGAIN 
 593 | [Valid Square](https://leetcode.com/problems/valid-square/) | [Python](./leetcode_python/Math/valid-square.py)| _O(1)_ | _O(1)_ | Medium || AGAIN 
