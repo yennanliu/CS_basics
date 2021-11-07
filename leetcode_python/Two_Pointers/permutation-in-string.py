@@ -26,7 +26,32 @@ Constraints:
 s1 and s2 consist of lowercase English letters.
 
 """
+
 # V0
+# IDEA : collections + sliding window
+from collections import Counter
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        if len(s1) > len(s2):
+            return False   
+        l = 0
+        tmp = ""
+        _s1 = Counter(s1)
+        _s2 = Counter()     
+        for i, item in enumerate(s2):
+            ### NOTE : we need to append new element first, then compare
+            _s2[item] += 1
+            tmp = s2[l:i+1]
+            if _s2 == _s1 and len(tmp) > 0:
+                return True
+            if len(tmp) >= len(s1):
+                _s2[tmp[0]] -= 1
+                if _s2[tmp[0]] == 0:
+                    del _s2[tmp[0]]
+                l += 1
+        return False
+
+# V0'
 # IDEA : collections + sliding window
 class Solution(object):
     def checkInclusion(self, s1, s2):
@@ -37,6 +62,7 @@ class Solution(object):
         l = r = 0
         while r < len(s2):
             while r - l + 1 <= len(s1):
+                ### NOTE : we need to append new element, then compare
                 _c2[s2[r]] += 1
                 #print ("l = " + str(l) + " r = " + str(r) + " s2[l:r+1] = " + str(s2[l:r+1]) + " _c2 = " + str(_c2))
                 if _c1 == _c2:
