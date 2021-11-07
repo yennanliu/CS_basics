@@ -196,6 +196,39 @@ public int countNodes(TreeNode root){
 }
 ```
 
+#### 1-1-9) Serialize binary tree with pre-order traverse
+```java
+// java
+// algorithm book (labu) p.256
+
+String SEP = ",";
+String NULL = "#";
+
+/* main func : transform binary tree to string */
+String serialize(TreeNode root){
+    StringBuilder sb = new StringBuilder();
+    serialize(root, sb);
+    return sb.toString();
+
+/* help func : put binary tree to StringBuilder */
+void serialize(TreeNode root, StringBuilder sb){
+    if (root == null){
+        sb.append(NULL).append(SEP);
+        return;
+    }
+}
+
+/********* pre-order traverse *********/
+sb.append(root.val).append(SEP);
+/**************************************/
+
+
+serialize(root.left, sb);
+serialize(root.right, sb);
+}
+
+``` 
+
 ## 2) LC Example
 
 ### 2-1) Binary Tree Right Side View
