@@ -10,6 +10,20 @@
 # The length of A and B will be between 1 and 10000.
 
 # V0
+# IDEA : BRUTE FORCE
+class Solution(object):
+    def repeatedSubstringPattern(self, s):
+        _sub = ""
+        for i in range(len(s)):
+            if len(_sub) != 0:
+                _multi = len(s) // len(_sub)
+                if  _sub * _multi == s:
+                    return True
+            _sub += s[i]
+        #print ("_sub = " + str(_sub))
+        return False
+
+# V0'
 class Solution(object):
     def repeatedStringMatch(self, A, B):
         sa, sb = len(A), len(B)
