@@ -204,7 +204,7 @@ public int countNodes(TreeNode root){
 String SEP = ",";
 String NULL = "#";
 
-/* main func : transform binary tree to string */
+/* main func : serialize binary tree to string */
 String serialize(TreeNode root){
     StringBuilder sb = new StringBuilder();
     serialize(root, sb);
@@ -226,8 +226,44 @@ sb.append(root.val).append(SEP);
 serialize(root.left, sb);
 serialize(root.right, sb);
 }
-
 ``` 
+
+#### 1-1-10) Deserialize binary tree with pre-order traverse
+```java
+// java
+// algorithm book (labu) p.256
+
+String SEP = ",";
+String NULL = "#";
+
+/* main func : dserialize string to binary tree */
+TreeNode deserlialize(String data){
+    // transform string to linkedlist
+    LinkedList<String> nodes = new LinkedList<>();
+    for (String s: data.split(SEP)){
+        nodes.addLast(s);
+    }
+    return deserlialize(nodes);
+}
+
+
+/* **** help func : build binary tree via linkedlist (nodes) */
+TreeNode deserlialize(LinkedList<String> nodes){
+    if (nodes.isEmpty()) return null;
+
+    /********* pre-order traverse *********/
+    // the 1st element on left is the root node of the binary tree
+    String first = nodes.removeFirst();
+    if (first.equals(NULL)) return null;
+    TreeNode root = new TreeNode(Integer.parseInt(first));
+    /**************************************/
+
+    root.left = deserlialize(nodes);
+    root.right = deserlialize(nodes);
+
+    return root;
+}
+```
 
 ## 2) LC Example
 
