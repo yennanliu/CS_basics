@@ -16,7 +16,7 @@
 			- Binary Search
 			- linked list
 			- sliding window
-				- 567 (not yet)
+				- 567 (ok!)
 				- 438 (not yet)
 				- 003 (not yet)
 			- =======
@@ -25,8 +25,6 @@
 			- union find
 			- quick sort
 			- intervals
-				- 57 (ok)
-				- 56 (ok)
 		- SQL
 	- Crack Code
 	- System Design
@@ -56,8 +54,8 @@
 			- union find
 			- quick sort
 			- intervals
-				- 57 (again!)
-				- 56 (again!)
+				- 57 (ok)
+				- 56 (ok)
 		- SQL
 	- Crack Code
 	- System Design
