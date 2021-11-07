@@ -37,6 +37,7 @@
 * [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
 * [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
 * [SQL zoo](https://sqlzoo.net/) - SQL test
+* [10 SQL Tricks](https://blog.jooq.org/10-sql-tricks-that-you-didnt-think-were-possible/) : 10 SQL Tricks That You Didn’t Think Were Possible
 * [pgexercises](https://pgexercises.com/questions/aggregates/) - Postgre exercises
 * [sqlservertutorial](https://www.sqlservertutorial.net/)
 * [Books](https://github.com/yennanliu/data_science_repo/tree/master/book)
