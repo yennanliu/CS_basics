@@ -20,6 +20,7 @@
 ## 1) General form
 
 - When `tree` -> think about *recursion*
+- there are also `while loop` approaches, but depends
 
 
 ### 1-1) Basic OP
