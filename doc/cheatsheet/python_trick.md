@@ -74,3 +74,16 @@ In [12]: x = [1,2,3]
 In [13]: x
 Out[13]: [1, 2, 77, 3]
 ```
+
+### 1-7) sort string
+```python
+def _sort(x):
+    _x = list(x)
+    _x.sort()
+    return "".join(_x)
+
+x = "bca"
+print (x)
+x_ = _sort(x)
+print (x_)
+```
