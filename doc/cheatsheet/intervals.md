@@ -13,12 +13,17 @@
 ### 0-2) Pattern
 ```python
 # python
-def intervalsPattern(points):
+def intervalsPattern(intervals):
     if not points: return 0
-    points.sort(key = lambda x : x[1]) # or points.sort(key = lambda x : x[0])...depends  
+
+    # do some update on intervals, depends, e.g. : intervals.append(newInterval)
+
+    #### NOTE we need to SORT first
+    intervals.sort(key = lambda x : x[1]) # or points.sort(key = lambda x : x[0])...depends
+    
     curr_pos = points[0][1]
     ans = 1
-    for i in range(len(points)):
+    for i in range(len(intervals)):
 
         if some_condition:
             # do sth
