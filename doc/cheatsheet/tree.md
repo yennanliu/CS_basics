@@ -265,6 +265,62 @@ TreeNode deserlialize(LinkedList<String> nodes){
 }
 ```
 
+#### 1-1-11) Serialize binary tree with post-order traverse
+```java
+// java
+// algorithm book (labu) p.258
+
+String SEP = ",";
+String NULL = "#";
+
+StringBuilder sb = new StringBuilder();
+
+/* help func : pit binary tree to StringBuilder*/
+void serialize(TreeNode root, StringBuilder sb){
+    if (root == null){
+        sb.append(NULL).append(SEP);
+        return;
+    }
+
+    serialize(root.left, sb);
+    serialize(root.right, sb);
+
+    /********* post-order traverse *********/
+    sb.append(root.val).append(SEP);
+    /**************************************/
+}
+```
+
+#### 1-1-12) Deserialize binary tree with post-order traverse
+```java
+// java
+// algorithm book (labu) p.260
+
+/* main func : deserialize string to binary tree */
+TreeNode deserlialize(String data){
+    LinkedList<String> nodes = new LinkedList<>();
+    for (String s : data.split(SEP)){
+        nodes.addLast(s);
+    }
+    return deserlialize(nodes);
+}
+
+/* help func : build binary tree via linkedlist */
+TreeNode deserlialize(LinkedList<String> nodes){
+    if (nodes.isEmpty()) return null;
+    // get element from last to beginning
+    String last = nodes.removeLast();
+
+    if (last.equals(NULL)) return null;
+    TreeNode root = new TreeNode(Integer.parseInt(last));
+    // build right sub tree first, then left sub tree
+    root.right = deserlialize(nodes);
+    root.left = deserlialize(nodes);
+
+    return root;
+}
+```
+
 ## 2) LC Example
 
 ### 2-1) Binary Tree Right Side View
