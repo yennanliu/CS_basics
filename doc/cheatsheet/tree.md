@@ -32,6 +32,8 @@
     - left -> root -> right
 - post-order traverse
     - left -> right -> root
+- layer traverse (BST)
+    - layer by layer
 
 ```python
 # python
@@ -67,6 +69,36 @@ def post_order_traverse(TreeNode):
     if root.right:
         post_order_traverse(root.right)
     r.append(root.value)
+```
+
+```java
+// java
+// layer traverse (BST)
+// algorithm book (labu) p. 262
+
+void traverse(TreeNode root){
+    if (root == null) return;
+
+    // init queue, add root into queue
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+
+    while (! q.isEmpty()){
+        TreeNode cur = q.poll();
+        
+        /********* layer traverse *********/
+        System.out.println(root.val);
+        /**********************************/
+
+        if (cur.left != null){
+            q.offer(cur.left);
+        }
+
+        if (cur.right != null){
+            q.offer(cur.right);
+        }
+    }
+}
 ```
 
 ```python
