@@ -1,20 +1,32 @@
-# 645. Set Mismatch
-# Easy
-#
-#
-# Add to List
-#
-# The set S originally contains numbers from 1 to n. But unfortunately, due to the data error, one of the numbers in the set got duplicated to another number in the set, which results in repetition of one number and loss of another number.
-#
-# Given an array nums representing the data status of this set after the error. Your task is to firstly find the number occurs twice and then find the number that is missing. Return them in the form of an array.
-#
-# Example 1:
-# Input: nums = [1,2,2,4]
-# Output: [2,3]
-# Note:
-# The given array size will in the range [2, 10000].
-# The given array's numbers won't have any order.
+"""
 
+645. Set Mismatch
+Easy
+
+You have a set of integers s, which originally contains all the numbers from 1 to n. Unfortunately, due to some error, one of the numbers in s got duplicated to another number in the set, which results in repetition of one number and loss of another number.
+
+You are given an integer array nums representing the data status of this set after the error.
+
+Find the number that occurs twice and the number that is missing and return them in the form of an array.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,2,4]
+Output: [2,3]
+Example 2:
+
+Input: nums = [1,1]
+Output: [1,2]
+ 
+
+Constraints:
+
+2 <= nums.length <= 104
+1 <= nums[i] <= 104
+
+"""
 
 # V0 
 class Solution(object):
@@ -24,6 +36,16 @@ class Solution(object):
         missing = N * (N + 1) // 2 - sum(nset)
         duplicated = sum(nums) - sum(nset)
         return [duplicated, missing]
+
+# V0'
+from collections import Counter
+class Solution(object):
+    def findErrorNums(self, nums):
+        _nums = Counter(nums)
+        duplicate = int([i for i in _nums if _nums[i] > 1][0])
+        _diff = sum([i for i in range(len(nums)+1)]) - sum(nums) 
+        #print ("duplicate = " + str(duplicate))
+        return [duplicate, duplicate+_diff]
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79247916
