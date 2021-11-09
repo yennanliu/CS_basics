@@ -14,7 +14,7 @@
 			- Binary Search
 			- linked list
 			- sliding window
-				- 438 (not yet)
+				- 438 (again!)
 				- 003 (not yet)
 			- =======
 			- hash table
