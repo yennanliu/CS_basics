@@ -1,27 +1,44 @@
-# Time:  O(m * n)
-# Space: O(1)
-#
-# Given a 2D integer matrix M representing the gray scale of an image,
-# you need to design a smoother to make the gray scale of each cell becomes
-# the average gray scale (rounding down) of all the 8 surrounding cells and itself.
-# If a cell has less than 8 surrounding cells, then use as many as you can.
-#
-# Example 1:
-# Input:
-# [[1,1,1],
-#  [1,0,1],
-#  [1,1,1]]
-# Output:
-# [[0, 0, 0],
-#  [0, 0, 0],
-#  [0, 0, 0]]
-# Explanation:
-# For the point (0,0), (0,2), (2,0), (2,2): floor(3/4) = floor(0.75) = 0
-# For the point (0,1), (1,0), (1,2), (2,1): floor(5/6) = floor(0.83333333) = 0
-# For the point (1,1): floor(8/9) = floor(0.88888889) = 0
-# Note:
-# The value in the given matrix is in the range of [0, 255].
-# The length and width of the given matrix are in the range of [1, 150].
+"""
+
+661. Image Smoother
+Easy
+
+An image smoother is a filter of the size 3 x 3 that can be applied to each cell of an image by rounding down the average of the cell and the eight surrounding cells (i.e., the average of the nine cells in the blue smoother). If one or more of the surrounding cells of a cell is not present, we do not consider it in the average (i.e., the average of the four cells in the red smoother).
+
+
+Given an m x n integer matrix img representing the grayscale of an image, return the image after applying the smoother on each cell of it.
+
+ 
+
+Example 1:
+
+
+Input: img = [[1,1,1],[1,0,1],[1,1,1]]
+Output: [[0,0,0],[0,0,0],[0,0,0]]
+Explanation:
+For the points (0,0), (0,2), (2,0), (2,2): floor(3/4) = floor(0.75) = 0
+For the points (0,1), (1,0), (1,2), (2,1): floor(5/6) = floor(0.83333333) = 0
+For the point (1,1): floor(8/9) = floor(0.88888889) = 0
+Example 2:
+
+
+Input: img = [[100,200,100],[200,50,200],[100,200,100]]
+Output: [[137,141,137],[141,138,141],[137,141,137]]
+Explanation:
+For the points (0,0), (0,2), (2,0), (2,2): floor((100+200+200+50)/4) = floor(137.5) = 137
+For the points (0,1), (1,0), (1,2), (2,1): floor((200+200+50+200+100+100)/6) = floor(141.666667) = 141
+For the point (1,1): floor((50+200+200+200+200+100+100+100+100)/9) = floor(138.888889) = 138
+ 
+
+Constraints:
+
+m == img.length
+n == img[i].length
+1 <= m, n <= 200
+0 <= img[i][j] <= 255
+
+"""
+
 
 # V0
 class Solution:
@@ -29,9 +46,12 @@ class Solution:
         row, col = len(M), len(M[0])
         res = [[0]*col for i in range(row)]
         dirs = [[0,0],[0,1],[0,-1],[1,0],[-1,0],[1,1],[-1,-1],[-1,1],[1,-1]]
+        # note we need to for looping row, col
         for i in range(row):
             for j in range(col):
+                # and to below op for each i, j (row, col)
                 temp = [M[i+m][j+n] for m,n in dirs if 0<=i+m<row and 0<=j+n<col]
+                ### NOTE : this trick for getting avg
                 res[i][j] = sum(temp)//len(temp)
         return res
 

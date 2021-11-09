@@ -210,7 +210,7 @@
 605 | [Can Place Flowers](https://leetcode.com/problems/can-place-flowers/) | [Python](./leetcode_python/Array/can-place-flowers.py) | _O(n)_ | _O(1)_ | Easy |`pass vs continue`| OK*
 624 | [Maximum Distance in Arrays](https://leetcode.com/problems/maximum-distance-in-arrays/) | [Python](./leetcode_python/Array/maximum-distance-in-arrays.py) | _O(n)_ | _O(1)_ | Easy | 🔒 | AGAIN*
 643 | [Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/) | [Python](./leetcode_python/Array/maximum-average-subarray-i.py) | _O(n)_ | _O(1)_ | Easy | `Math`, `basic` |  AGAIN*
-661| [Image Smoother](https://leetcode.com/problems/image-smoother/) | [Python](./leetcode_python/Array/image-smoother.py)  | _O(m * n)_ |  _O(1)_ | Easy   |`matrix`,`basic`,`DL`, `amazon`| OK*** (3)
+661| [Image Smoother](https://leetcode.com/problems/image-smoother/) | [Python](./leetcode_python/Array/image-smoother.py)  | _O(m * n)_ |  _O(1)_ | Easy   |`matrix`,`basic`, `amazon`| OK***** (4) (but again!)
 665| [Non-decreasing Array](https://leetcode.com/problems/non-decreasing-array/) | [Python](./leetcode_python/Array/non-decreasing-array.py) | _O(n)_ |  _O(1)_ | Easy || AGAIN (not start)
 667| [Beautiful Arrangement II](https://leetcode.com/problems/beautiful-arrangement-ii/) |  [Python](./leetcode_python/Array/beautiful-arrangement-ii.py)  | _O(n)_ |  _O(1)_ | Medium  || AGAIN (not start)
 670| [Maximum Swap](https://leetcode.com/problems/maximum-swap/) | [Python](./leetcode_python/Array/maximum-swap.py)| _O(logn)_ |  _O(logn)_ | Medium |`good basic`, AGAIN, reversed, str -> list,string + pointers , `fb`| AGAIN****** (4)

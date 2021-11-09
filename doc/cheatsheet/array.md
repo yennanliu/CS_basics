@@ -294,3 +294,21 @@ class Solution(object):
             matrix = help(matrix, xy)
         return matrix
 ```
+
+### 2-6) Image Smoother
+```python
+# LC 661 Image Smoother
+class Solution:
+    def imageSmoother(self, M):
+        row, col = len(M), len(M[0])
+        res = [[0]*col for i in range(row)]
+        dirs = [[0,0],[0,1],[0,-1],[1,0],[-1,0],[1,1],[-1,-1],[-1,1],[1,-1]]
+        # note we need to for looping row, col
+        for i in range(row):
+            for j in range(col):
+                # and to below op for each i, j (row, col)
+                temp = [M[i+m][j+n] for m,n in dirs if 0<=i+m<row and 0<=j+n<col]
+                ### NOTE : this trick for getting avg
+                res[i][j] = sum(temp)//len(temp)
+        return res
+```
