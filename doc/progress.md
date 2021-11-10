@@ -26,6 +26,9 @@
 				- ref : https://leetcode.com/problem-list/5htp6xyg/?page=1
 				- 511
 				- 512
+				- 534 (again!)
+				- 550 (again!)
+				- 571 (again)
 			- =======
 	- Crack Code
 	- System Design

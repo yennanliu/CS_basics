@@ -27,7 +27,17 @@ Write a query to find the median of all numbers and name the result as median.
 
 */
 
+
+# Ref : find median in SQL
+# https://www.sisense.com/blog/medians-in-sql/
+# The where clause ensures that we’ll get the two middle values if there is an even number of values, and the single middle number if there is an odd number of values because between is inclusive of its bounds.
+-- select avg(price) as median
+-- from ordered_purchases
+-- where row_id between ct/2.0 and ct/2.0 + 1
+
+
 # V0
+
 
 # V1
 # https://circlecoder.com/find-median-given-frequency-of-numbers/
