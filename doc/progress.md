@@ -22,6 +22,11 @@
 			- quick sort
 			- intervals
 		- SQL
+			- (review)
+				- ref : https://leetcode.com/problem-list/5htp6xyg/?page=1
+				- 511
+				- 512
+			- =======
 	- Crack Code
 	- System Design
 		- Netflix system design
