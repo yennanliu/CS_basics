@@ -31,6 +31,8 @@
 					- 1158
 					- 1159
 					- 1164
+					- 1174 (again)
+					- 1194
 	- Crack Code
 	- System Design
 		- Netflix system design
