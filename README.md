@@ -59,6 +59,7 @@
 	- [leetcode_classics_collection_extra](./doc/leetcode_classics_collection_extra.md)
 	- LC sql high frequent
 		- [LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
+		- [LeetCode Curated SQL 70](https://leetcode.com/problem-list/5htp6xyg/?page=1)
 		- [cheatsheet-mysql-a4](https://cheatsheet.dennyzhang.com/cheatsheet-mysql-a4)
 * System design
 	- Video
