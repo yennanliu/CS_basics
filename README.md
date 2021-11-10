@@ -1053,7 +1053,7 @@
 597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](./leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK* (4) 
 601| [Human Traffic of Stadium](https://leetcode.com/problems/human-traffic-of-stadium/) |[MySQL](./leetcode_SQL/human-traffic-of-stadium.sql)||| Hard |consecutive nums| OK* (1)
 602| [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) |[MySQL](./leetcode_SQL/friend-requests-ii-who-has-most-friend.sql)||| Medium |union all, `fb`| OK*** (3)
-603| [Consecutive Available Seats](https://leetcode.com/problems/consecutive-available-seats/description/) |[MySQL](./leetcode_SQL/consecutive_available_seats.sql)||| Medium |consecutive nums, good basic| OK** (1)(but again)
+603| [Consecutive Available Seats](https://leetcode.com/problems/consecutive-available-seats/description/) |[MySQL](./leetcode_SQL/consecutive_available_seats.sql)||| Medium |consecutive nums, good basic| OK**** (2)(but again)
 618| [Students Report By Geography](https://leetcode.com/problems/students-report-by-geography/) |[MySQL](./leetcode_SQL/students_report_by_geography.sql)||| Hard |sql var| AGAIN (not start)
 620| [Not Boring Movies](https://leetcode.com/problems/not-boring-movies/) |[MySQL](./leetcode_SQL/not_boring_movies.sql)||| Easy || OK
 626| [Exchange Seats](https://leetcode.com/problems/exchange-seats/) |[MySQL](./leetcode_SQL/exchange_seats.sql)||| Medium || AGAIN (not start)
