@@ -1076,14 +1076,14 @@
 1113| [Reported Posts](https://leetcode.com/problems/reported-posts/) | [MySQL](./leetcode_SQL/reported-posts.sql) | _O(n)_ | _O(n)_ | Easy |🔒| OK 
 1126| [Active Businesses](https://leetcode.com/problems/active-businesses/) | [MySQL](./leetcode_SQL/active-businesses.sql) | _O(n)_ | _O(n)_  | Medium |🔒, `good basic`|  AGAIN**
 1127| [User Purchase Platform](https://leetcode.com/problems//user-purchase-platform/) | [MySQL](./leetcode_SQL/user-purchase-platform.sql)  | _O(n)_ | _O(n)_  | Hard  |🔒, `complex`, union all, case|  OK*** (4) (but again)
-1132| [Reported Posts II](https://leetcode.com/problems/reported-posts-ii/) | [MySQL](./leetcode_SQL/reported-posts-ii.sql)  | _O(m + n)_ | _O(n)_ | Medium   |🔒| OK**
+1132| [Reported Posts II](https://leetcode.com/problems/reported-posts-ii/) | [MySQL](./leetcode_SQL/reported-posts-ii.sql)  | _O(m + n)_ | _O(n)_ | Medium   |🔒| OK*** (3)
 1141| [User Activity for the Past 30 Days I](https://leetcode.com/problems/user-activity-for-the-past-30-days-i/) | [MySQL](./leetcode_SQL/user-activity-for-the-past-30-days-i.sql) | _O(n)_ | _O(n)_| Easy|🔒| AGAIN* (2)
 1142| [User Activity for the Past 30 Days II](https://leetcode.com/problems/user-activity-for-the-past-30-days-ii/) | [MySQL](./leetcode_SQL/user-activity-for-the-past-30-days-ii.sql) | _O(n)_ | _O(n)_       | Easy           |🔒 | AGAIN* (1)
 1148| [Article Views I](https://leetcode.com/problems/article-views-i/) | [MySQL](./leetcode_SQL/article-views-i.sql) | _O(nlogn)_ | _O(n)_     | Easy  |🔒| OK
 1149| [Article Views II](https://leetcode.com/problems/article-views-ii/) | [MySQL](./leetcode_SQL/article-views-ii.sql) | _O(nlogn)_ | _O(n)_    | Medium  |🔒| OK*
-1158| [Market Analysis I](https://leetcode.com/problems/market-analysis-i/) | [MySQL](./leetcode_SQL/market-analysis-i.sql) | _O(m + n)_ | _O(m + n)_ | Medium   |🔒| AGAIN*
-1159| [Market Analysis II](https://leetcode.com/problems/market-analysis-ii/) | [MySQL](./leetcode_SQL/market-analysis-ii.sql) | _O(m + n)_ | _O(m + n)_   | Hard  |🔒| AGAIN* (1)
-1164| [Product Price at a Given Date](https://leetcode.com/problems/product-price-at-a-given-date/) | [MySQL](./leetcode_SQL/product-price-at-a-given-date.sql) | _O(mlogn)_ | _O(m)_  | Medium   |🔒, good trick, union, case, not in a period| AGAIN******** (1)
+1158| [Market Analysis I](https://leetcode.com/problems/market-analysis-i/) | [MySQL](./leetcode_SQL/market-analysis-i.sql) | _O(m + n)_ | _O(m + n)_ | Medium   |🔒| AGAIN*** (4)
+1159| [Market Analysis II](https://leetcode.com/problems/market-analysis-ii/) | [MySQL](./leetcode_SQL/market-analysis-ii.sql) | _O(m + n)_ | _O(m + n)_   | Hard  |🔒, good basic| AGAIN* (2)
+1164| [Product Price at a Given Date](https://leetcode.com/problems/product-price-at-a-given-date/) | [MySQL](./leetcode_SQL/product-price-at-a-given-date.sql) | _O(mlogn)_ | _O(m)_  | Medium   |🔒, good trick, union, case, not in a period| AGAIN******** (2)
 1173| [Immediate Food Delivery I](https://leetcode.com/problems/immediate-food-delivery-i/) | [MySQL](./leetcode_SQL/immediate-food-delivery-i.sql) | _O(n)_ | _O(1)_ | Easy  |🔒| OK
 1174| [Immediate Food Delivery II](https://leetcode.com/problems/immediate-food-delivery-ii/) | [MySQL](./leetcode_SQL/immediate-food-delivery-ii.sql) | _O(n)_ | _O(m)_  | Medium  |🔒| OK*
 1179| [Reformat Department Table](https://leetcode.com/problems/reformat-department-table/) | [MySQL](./leetcode_SQL/reformat-department-table.sql) | _O(n)_ | _O(n)_       | Easy           |🔒| OK
