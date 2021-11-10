@@ -1048,6 +1048,7 @@
 577| [Employee Bonus](https://leetcode.com/problems/employee-bonus/) | [MySQL](./leetcode_SQL/employee_bonus.sql) | _O(n)_ | _O(n)_| Easy|| OK
 578| [Get Highest Answer Rate Question](https://leetcode.com/problems/get-highest-answer-rate-question/description/)|[MySQL](./leetcode_SQL/get_highest_answer_rate_question.sql)||| Medium |`fb`, case condition|  OK* (3)
 579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](./leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |window function, `amazon`, good trick| OK***** (4)(but again)
+580| [Count Student Number in Departments](https://leetcode.com/problems/count-student-number-in-departments/)|[MySQL](./leetcode_SQL/count-student-numbers-in-departments.sql)||| Medium || OK* (1)
 595| [Big Countries](https://leetcode.com/problems/big-countries/)|[MySQL](./leetcode_SQL/big_countries.sql)||| Easy || OK
 597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](./leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK* (4) 
 601| [Human Traffic of Stadium](https://leetcode.com/problems/human-traffic-of-stadium/) |[MySQL](./leetcode_SQL/human-traffic-of-stadium.sql)||| Hard |consecutive nums| OK* (1)
