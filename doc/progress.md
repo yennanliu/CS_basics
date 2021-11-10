@@ -22,7 +22,7 @@
 			- quick sort
 			- intervals
 		- SQL
-			- (review)
+			- (review # 1)
 				- ref : https://leetcode.com/problem-list/5htp6xyg/?page=1
 				- 511
 				- 512
@@ -33,6 +33,12 @@
 				- 586
 				- 603
 				- 607
+				- 608 (again!)
+			- (review # 2)
+				- ref : https://github.com/yennanliu/CS_basics#sql
+					- 0178 (again!)
+					- 0180
+					- 0183
 			- =======
 	- Crack Code
 	- System Design
