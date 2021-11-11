@@ -53,8 +53,9 @@ The employees with employee_id 3, 8 and 9 don't report their work to head
 */
 
 # V0
-### NOTE : the LEFT JOIN
-#          ther where condition `WHERE e3.manager_id = 1 AND e1.employee_id != 1`
+### NOTE : LEFT JOIN
+#          where condition `WHERE e3.manager_id = 1 AND e1.employee_id != 1`
+# The indirect relation between managers will not exceed 3 managers as the company is small.
 SELECT e1.employee_id 
 FROM   employees e1 
        LEFT JOIN employees e2 

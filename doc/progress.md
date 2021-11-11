@@ -39,6 +39,13 @@
 					- 1225
 					- 1241
 					- 1251 (again)
+					- 1270
+					- 1308
+					- 1321 (again)
+					- 1322
+					- 1369
+					- 1407
+					- 1412 (again)
 
 	- Crack Code
 	- System Design
