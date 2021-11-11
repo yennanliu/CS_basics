@@ -1122,7 +1122,7 @@
 1435| [Create a Session Bar Chart](https://leetcode.com/problems/create-a-session-bar-chart/) | [MySQL](./leetcode_SQL/create-a-session-bar-chart.sql) | _O(n)_ | _O(1)_| Easy|🔒| OK
 1440| [Evaluate Boolean Expression](https://leetcode.com/problems/evaluate-boolean-expression/) | [MySQL](./leetcode_SQL/evaluate-boolean-expression.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK
 1445| [Apples & Oranges](https://leetcode.com/problems/apples-oranges/) | [MySQL](./leetcode_SQL/apples-oranges.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK
-1454| [Active Users](https://leetcode.com/problems/active-users/) | [MySQL](./leetcode_SQL/active-users.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, good basic, window func| AGAIN*** (1)
+1454| [Active Users](https://leetcode.com/problems/active-users/) | [MySQL](./leetcode_SQL/active-users.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, good basic, window func| AGAIN*** (2)
 1459| [Rectangles Area](https://leetcode.com/problems/rectangles-area/) | [MySQL](./leetcode_SQL/rectangles-area.sql) | _O(n^2)_ | _O(n^2)_| Medium|🔒| OK*
 1468| [Calculate Salaries](https://leetcode.com/problems/calculate-salaries/) | [MySQL](./leetcode_SQL/calculate-salaries.sql) | _O(m + n)_ | _O(m + n)_       | Easy|🔒| OK*
 1479| [Sales by Day of the Week](https://leetcode.com/problems/sales-by-day-of-the-week/) | [MySQL](./leetcode_SQL/sales-by-day-of-the-week.sql) | _O(m + n)_ | _O(n)_| Hard|🔒, case, DAYOFWEEK| OK
