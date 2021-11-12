@@ -40,7 +40,40 @@
 # The range of tree node value is in the range of [-100000, 100000].
 # 1 <= n <= 10000
 
-# V0 
+
+# V0
+# IDEA : DFS + cache
+class Solution(object):
+    def checkEqualTree(self, root):
+        seen = []
+
+        def sum_(node):
+            if not node: return 0
+            seen.append(sum_(node.left) + sum_(node.right) + node.val)
+            return seen[-1]
+
+        total = sum_(root)
+        seen.pop()
+        return total / 2.0 in seen
+
+# V0
+#### NEED TO VALIDATE
+# dfs
+class Solution:
+    def checkEqualTree(self, root):
+        def dfs(root, tmp_sum):
+            if not root:
+                return 0
+            tmp_sum += root.val
+            res.append(tmp_sum)
+            dfs(root.left, tmp_sum)
+            dfs(root.right, tmp_sum)
+        _sum = 0
+        res = []
+        _total_sum = max(res)
+        return  _total_sum // 2 in res
+
+# V0''
 ### NOTE : 
 ### THE PROBLEM IS TO CHECK 
 ### "IF THERE IS A WAY TO USE A LINE SPLIT WHOLE TREE INTO 2 SUB TREE WITH SAME SUM"
