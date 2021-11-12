@@ -16,7 +16,7 @@
 			- Binary Search
 			- linked list
 			- sliding window
-				- 003 (not yet)
+				- 003 (OK)
 			- =======
 			- hash table
 			- bit manipulation

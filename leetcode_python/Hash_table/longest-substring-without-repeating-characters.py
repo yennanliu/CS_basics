@@ -36,6 +36,30 @@ s consists of English letters, digits, symbols and spaces.
 
 # V0
 # IDEA : SLIDING WINDOW + DICT
+from collections import Counter
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        if len(s) <=1:
+            return len(s)     
+        _s = Counter()
+        _max = 0
+        tmp = 0
+        for i in range(len(s)):
+            for j in range(i, len(s)):
+                #print ("i, j = " + str(i) + ", " + str(j) + " _s = " + str(_s))
+                #print (s[j] not in _s)
+                if s[j] in _s:
+                    _max = max(_max, tmp)
+                    tmp = 0
+                    _s = Counter()
+                    break
+
+                _s[s[j]] += 1
+                tmp += 1
+        return _max
+
+# V0'
+# IDEA : SLIDING WINDOW + DICT
 #       -> use a hash table (d) record visit "alphabet" (e.g. : a,b,c,...)
 #          (but NOT sub-string)
 class Solution(object):
@@ -55,7 +79,7 @@ class Solution(object):
             res = max(res, r -l + 1)
         return res
 
-# V0'
+# V0''
 # IDEA : GREEDY  + 2 pointer + set
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
@@ -73,7 +97,7 @@ class Solution(object):
                 res = max(res, len(chars))
         return res
 
-# V0''
+# V0'''
 # IDEA : SLIDING WINDOW + DICT
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
