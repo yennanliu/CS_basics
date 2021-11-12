@@ -428,3 +428,9 @@ class Solution(object):
             s += "(" + self.tree2str(t.right) + ")"
         return s
 ```
+
+### 2-3) Maximum Width of Binary Tree
+```python
+# LC 662 Maximum Width of Binary Tree
+
+```
