@@ -60,13 +60,15 @@ class Solution(object):
 
 # V0'
 # IDEA : SLIDING WINDOW + DICT
-#       -> use a hash table (d) record visit "alphabet" (e.g. : a,b,c,...)
+#       -> use a hash table (d) record visited "element" (e.g. : a,b,c,...)
 #          (but NOT sub-string)
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
         d = {}
+        # left pointer
         l = 0
         res = 0
+        # right pointer
         for r in range(len(s)):
             ### NOTE : if already visited, means "repeating"
             #         -> then we need to update left pointer (l)
