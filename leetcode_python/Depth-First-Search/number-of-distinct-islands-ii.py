@@ -45,6 +45,7 @@ Note:The length of each dimension in the givengriddoes not exceed 50.
 """
 
 # V0
+# IDEA : DFS + normalize
 class Solution(object):
     def numDistinctIslands2(self, grid):
         directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
