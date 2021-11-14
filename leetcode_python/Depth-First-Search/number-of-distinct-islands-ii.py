@@ -45,17 +45,8 @@ Note:The length of each dimension in the givengriddoes not exceed 50.
 """
 
 # V0
-
-# V1
-# https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/number-of-distinct-islands-ii.py
-# Time:  O((m * n) * log(m * n))
-# Space: O(m * n)
 class Solution(object):
     def numDistinctIslands2(self, grid):
-        """
-        :type grid: List[List[int]]
-        :rtype: int
-        """
         directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
 
         def dfs(i, j, grid, island):
@@ -69,6 +60,8 @@ class Solution(object):
                 dfs(i+d[0], j+d[1], grid, island)
             return True
 
+        ### NOTE : we use this normalize func to normalize the island and only consider the
+        #          unique islands as expected result
         def normalize(island):
             shapes = [[] for _ in range(8)]
             for x, y in island:
@@ -76,20 +69,77 @@ class Solution(object):
                                              [ y,  x], [ y, -x], [-y, x], [-y, -x]]
                 for i in range(len(rotations_and_reflections)):
                     shapes[i].append(rotations_and_reflections[i])
+            # https://blog.csdn.net/magicbean2/article/details/79282937
+            # we go through 8 "possible" transformed islands (via rotation/mirror)
+            # then return the 1st island as representative
             for shape in shapes:
                 shape.sort()  # Time: O(ilogi), i is the size of the island, the max would be (m * n)
                 origin = list(shape[0])
                 for p in shape:
                     p[0] -= origin[0]
                     p[1] -= origin[1]
+            # then return the 1st island as representative
             return min(shapes)
 
+        ### NOTE we use set() here to avoid duplication
         islands = set()
         for i in range(len(grid)):
             for j in range(len(grid[0])):
                 island = []
                 if dfs(i, j, grid, island):
                     islands.add(str(normalize(island)))
+        # return the "unique" island count
+        return len(islands)
+
+# V1
+# IDEA : DFS + normalize
+# https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/number-of-distinct-islands-ii.py
+# Time:  O((m * n) * log(m * n))
+# Space: O(m * n)
+class Solution(object):
+    def numDistinctIslands2(self, grid):
+        directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+
+        def dfs(i, j, grid, island):
+            if not (0 <= i < len(grid) and \
+                    0 <= j < len(grid[0]) and \
+                    grid[i][j] > 0):
+                return False
+            grid[i][j] *= -1
+            island.append((i, j))
+            for d in directions:
+                dfs(i+d[0], j+d[1], grid, island)
+            return True
+
+        ### NOTE : we use this normalize func to normalize the island and only consider the
+        #          unique islands as expected result
+        def normalize(island):
+            shapes = [[] for _ in range(8)]
+            for x, y in island:
+                rotations_and_reflections = [[ x,  y], [ x, -y], [-x, y], [-x, -y],
+                                             [ y,  x], [ y, -x], [-y, x], [-y, -x]]
+                for i in range(len(rotations_and_reflections)):
+                    shapes[i].append(rotations_and_reflections[i])
+            # https://blog.csdn.net/magicbean2/article/details/79282937
+            # we go through 8 "possible" transformed islands (via rotation/mirror)
+            # then return the 1st island as representative
+            for shape in shapes:
+                shape.sort()  # Time: O(ilogi), i is the size of the island, the max would be (m * n)
+                origin = list(shape[0])
+                for p in shape:
+                    p[0] -= origin[0]
+                    p[1] -= origin[1]
+            # then return the 1st island as representative
+            return min(shapes)
+
+        ### NOTE we use set() here to avoid duplication
+        islands = set()
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                island = []
+                if dfs(i, j, grid, island):
+                    islands.add(str(normalize(island)))
+        # return the "unique" island count
         return len(islands)
 
 # V1 
