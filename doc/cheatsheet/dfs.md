@@ -344,7 +344,7 @@ class Solution(object):
 
 ### 2-12) Number of Islands
 ```python
-# LC 200 Number of Islands
+# LC 200 Number of Islands, check LC 694, 711 as well
 # V0 
 # IDEA : DFS
 class Solution(object):

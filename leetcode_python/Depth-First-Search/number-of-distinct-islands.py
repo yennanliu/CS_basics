@@ -48,11 +48,15 @@ class Solution:
                 ### NOTICE HERE : not need to return pos, since pos already updated in place (when meet the condition),
                 ### so here just need a "return" to stop the while loop
                 return
+            ### NOTE : we make visited point as -1, to avoid re-visit
             grid[x][y] = -1
             directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
             for dx, dy in directions:
                 if 0 <= x+dx < row and 0 <= y+dy < col and grid[x+dx][y+dy] == 1:
+                    ### NOTE : the trick here (only add dx, dy, but not the actual x-axis, y-axis)
                     new_rel_pos = (rel_pos[0] + dx, rel_pos[1] + dy)
+                    ### NOTE : we add the current visit point to pos
+                    #         -> since in this problem we ONLY need DISTINCT islands
                     pos.append(new_rel_pos)
                     dfs(x+dx, y+dy, pos, new_rel_pos)
             
@@ -63,9 +67,48 @@ class Solution:
                 if grid[x][y] == 1:
                     # get the shape of island
                     pos = []
+                    # NOTE : (0, 0) as init rel_pos
                     dfs(x, y, pos, (0, 0))
                     shapes.add(tuple(pos))            
         return len(shapes)
+
+# V0'
+# IDEA DFS
+# TODO : validate it
+class Solution(object):
+    def numIslands(self, grid):
+        def dfs(grid, item):
+            if not grid:
+                return
+            # avoid visit again
+            tmp.append([item[0],item[1]])
+            grid[item[0]][item[1]] = "-1"
+            moves = [(0,1),(0,-1),(1,0),(-1,0)]
+            for move in moves:
+                _x = item[0] + move[0]
+                _y = item[1] + move[1]
+                if 0 <= _x < l and 0 <= _y < w and grid[_x][_y] == "1":
+                    dfs(grid, [_x, _y])
+        if not grid:
+            return 0
+        res = 0
+        l = len(grid)
+        w = len(grid[0])
+        cache = []
+        tmp = []
+        for i in range(l):
+            for j in range(w):
+                print ((i,j))
+                if grid[i][j] == "1":
+                    tmp = []
+                    dfs(grid, [i,j])
+                    tmp.sort()
+                    _tmp = [[x[0]  - tmp[0][0], x[1] - tmp[0][1]] for x in tmp]
+                    #print ("_tmp = " + str(_tmp) + " cache = " + str(cache))
+                    if _tmp not in cache:
+                        cache.append(tmp)
+                        res += 1
+        return res
 
 # V1 
 # https://blog.csdn.net/danspace1/article/details/86610850
