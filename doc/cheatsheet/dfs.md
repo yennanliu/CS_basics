@@ -342,5 +342,42 @@ class Solution(object):
         self.dfs(cur.left)
 ```
 
+### 2-12) Number of Islands
+```python
+# LC 200 Number of Islands
+# V0 
+# IDEA : DFS
+class Solution(object):
+    def numIslands(self, grid):
+        def dfs(grid, item):
+            if grid[item[0]][item[1]] == "0":
+                return
+
+            ### NOTE : MAKE grid[item[0]][item[1]] = 0 -> avoid visit again
+            grid[item[0]][item[1]] = 0
+            moves = [(0,1),(0,-1),(1,0),(-1,0)]
+            for move in moves:
+                _x = item[0] + move[0]
+                _y = item[1] + move[1]
+                ### NOTE : the boundary
+                #       -> _x < l, _y < w
+                if 0 <= _x < l and 0 <= _y < w and grid[_x][_y] != 0:
+                    dfs(grid, [_x, _y])
+  
+        if not grid:
+            return 0
+        res = 0
+        l = len(grid)
+        w = len(grid[0])
+        for i in range(l):
+            for j in range(w):
+                if grid[i][j] == "1":
+                    ### NOTE : we go through every "1" in grids, and run dfs once
+                    #         -> once dfs completed, we make res += 1 in each iteration
+                    dfs(grid, [i,j])
+                    res += 1
+        return res
+```
+
 ### Ref
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E6%93%8D%E4%BD%9C%E9%9B%86%E9%94%A6.md
