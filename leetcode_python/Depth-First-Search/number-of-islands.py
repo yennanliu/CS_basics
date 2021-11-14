@@ -38,6 +38,39 @@ grid[i][j] is '0' or '1'.
 
 # V0 
 # IDEA : DFS
+class Solution(object):
+    def numIslands(self, grid):
+        def dfs(grid, item):
+            if grid[item[0]][item[1]] == "0":
+                return
+
+            ### NOTE : MAKE grid[item[0]][item[1]] = 0 -> avoid visit again
+            grid[item[0]][item[1]] = 0
+            moves = [(0,1),(0,-1),(1,0),(-1,0)]
+            for move in moves:
+                _x = item[0] + move[0]
+                _y = item[1] + move[1]
+                ### NOTE : the boundary
+                #       -> _x < l, _y < w
+                if 0 <= _x < l and 0 <= _y < w and grid[_x][_y] != 0:
+                    dfs(grid, [_x, _y])
+  
+        if not grid:
+            return 0
+        res = 0
+        l = len(grid)
+        w = len(grid[0])
+        for i in range(l):
+            for j in range(w):
+                if grid[i][j] == "1":
+                    ### NOTE : we go through every "1" in grids, and run dfs once
+                    #         -> once dfs completed, we make res += 1 in each iteration
+                    dfs(grid, [i,j])
+                    res += 1
+        return res
+
+# V0' 
+# IDEA : DFS
 class Solution:
     def numIslands(self, grid):
         """
