@@ -75,7 +75,6 @@ def post_order_traverse(TreeNode):
 // java
 // layer traverse (BST)
 // algorithm book (labu) p. 262
-
 void traverse(TreeNode root){
     if (root == null) return;
 
@@ -348,6 +347,91 @@ TreeNode deserlialize(LinkedList<String> nodes){
     // build right sub tree first, then left sub tree
     root.right = deserlialize(nodes);
     root.left = deserlialize(nodes);
+
+    return root;
+}
+```
+
+#### 1-1-13) Serialize binary tree with layer traverse
+```java
+// java
+// layer traverse : https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md#1-1-basic-op
+// algorithm book (labu) p.263
+String SEP = ",";
+String NULL = "#";
+
+/* Serialize binary tree to string */
+String serialize(TreeNode root){
+
+    if (root == null) return "";
+    StringBuilder sb = new StringBuilder();
+
+    // init queue, put root into it
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+
+    while (!q.isEmpty()){
+        TreeNode cur = q.poll();
+
+        /***** layer traverse ******/
+        if (cur == null){
+            sb.append(NULL).append(SEP);
+            continue;
+        }
+        sb.append(cur.val).append(SEP);
+        /**************************/
+
+        q.offer(cur.left);
+        q.offer(cur.right);
+    }
+    return sb.toString();
+}
+```
+
+#### 1-1-14) Deserialize binary tree with layer traverse
+```java
+// java
+// algorithm book (labu) p.264
+
+String SEP = ",";
+String NULL = "#";
+
+/* Deserialize binary tree to string */
+TreeNode deserlialize(String data){
+    
+    if (data.isEmpty()) return null;
+
+    String[] nodes = data.split(SEP);
+
+    // root's value = 1st element's value
+    TreeNode root = new TreeNode(Integer.parseInt(node[0]));
+
+    // queue records parent node, put root into queue
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+
+    for (int i = 1; i < nodes.length){
+
+        // queue saves parent nodes
+        TreeNode parent = q.poll();
+        
+        // parent node's left sub node
+        String left = nodes[i++];
+        if (!left.equals(NULL)){
+            parent.left = new TreeNode(Integer.parseInt(left));
+            q.offer(parent.left);
+        }else {
+            parent.left = null;
+        }
+        // parent node's right sub node
+        String right = nodes[i++];
+        if (!right.equals(NULL)){
+            parent.right = new TreeNode(Integer.parseInt(right));
+            q.offer(parent.right);
+        }else{
+            parent.right = null;
+        }
+    }
 
     return root;
 }
