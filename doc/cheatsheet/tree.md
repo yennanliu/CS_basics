@@ -532,3 +532,32 @@ class Solution:
         dfs(root, 0, 0)
         return max(v[-1] - v[0] + 1 for _, v in d.items())
 ```
+
+### 2-4) Construct String from Binary Tree
+```python
+# LC 606 Construct String from Binary Tree
+# V0
+# IDEA : tree + check problem examples
+#        -> if root.right and not root.left
+#        -> if root.left and not root.right
+class Solution(object):
+    def tree2str(self, root):
+        def dfs(root):
+            if not root:
+                ### NOTICE HERE
+                return ""
+            ### NOTICE HERE
+            if not root.left and not root.right:
+                return str(root.val)
+            ### NOTICE HERE : "2()(4)" case
+            if root.right and not root.left:
+                return str(root.val) + '()' + '(' + dfs(root.right) + ')'
+            ### NOTICE HERE
+            if root.left and not root.right:
+                return str(root.val) + '(' + dfs(root.left) + ')'
+            ### NOTICE HERE
+            return str(root.val) + '(' + dfs(root.left) + ')' + '(' + dfs(root.right) + ')'
+        
+        res = dfs(root)
+        return res
+```
