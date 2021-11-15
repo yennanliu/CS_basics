@@ -516,5 +516,19 @@ class Solution(object):
 ### 2-3) Maximum Width of Binary Tree
 ```python
 # LC 662 Maximum Width of Binary Tree
-
+# V0
+# IDEA : defaultdict + DFS
+from collections import defaultdict
+class Solution:
+    def widthOfBinaryTree(self, root):
+        
+        def dfs(node, level, idx):
+            if node:
+                d[level] += [idx]
+                dfs(node.left, level+1, 2*idx)
+                dfs(node.right, level+1, 2*idx+1)
+                
+        d = defaultdict(list)
+        dfs(root, 0, 0)
+        return max(v[-1] - v[0] + 1 for _, v in d.items())
 ```
