@@ -1,34 +1,79 @@
-# Time:  O(n)
-# Space: O(n)
-#
-# Given a non-empty string check if it can be constructed by taking a substring of it
-# and appending multiple copies of the substring together.
-# You may assume the given string consists of lowercase English letters only and its length will not exceed 10000.
-#
-# Example 1:
-# Input: "abab"
-#
-# Output: True
-#
-# Explanation: It's the substring "ab" twice.
-# Example 2:
-# Input: "aba"
-#
-# Output: False
-# Example 3:
-# Input: "abcabcabcabc"
-#
-# Output: True
-#
-# Explanation: It's the substring "abc" four times. (And the substring "abcabc" twice.)
-#
-# KMP solution.
+"""
 
-# V0 
+459. Repeated Substring Pattern
+Easy
+
+
+Share
+Given a string s, check if it can be constructed by taking a substring of it and appending multiple copies of the substring together.
+
+ 
+
+Example 1:
+
+Input: s = "abab"
+Output: true
+Explanation: It is the substring "ab" twice.
+Example 2:
+
+Input: s = "aba"
+Output: false
+Example 3:
+
+Input: s = "abcabcabcabc"
+Output: true
+Explanation: It is the substring "abc" four times or the substring "abcabc" twice.
+ 
+
+Constraints:
+
+1 <= s.length <= 104
+s consists of lowercase English letters.
+
+"""
+
+# V0
+# IDEA : # only have to go through till HALF of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
+class Solution(object):
+    def repeatedSubstringPattern(self, s):
+        _len = len(s)
+        if _len == 0:
+            return True
+        if _len == 1:
+            return False
+        tmp = ""
+        for i in range(_len):
+            tmp += s[i]
+
+            if ( _len // len(tmp) ) * tmp == s:
+                return True
+            if len(tmp) >= _len // 2 and ( _len // len(tmp) ) * tmp != s:
+                return False
+        return False
+
+# V0'
+# IDEA : # only have to go through till HALF of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
+class Solution(object):
+    def repeatedSubstringPattern(self, s):
+        _len = len(s)
+        if _len == 0:
+            return True
+        if _len == 1:
+            return False
+        tmp = ""
+        for i in range(_len//2):
+            tmp += s[i]
+            if ( _len // len(tmp) ) * tmp == s:
+                return True
+            if len(tmp) >= _len // 2:
+                return False
+        return False
+
+# V0''
 class Solution(object):
     def repeatedSubstringPattern(self, str):
         size = len(str)
-        # only have to go through till half of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
+        # only have to go through till HALF of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
         for x in range(1, size // 2 + 1):
             # if len(s) is not len(s[:x]) 's  multiple
             if size % x == 1:
@@ -140,6 +185,5 @@ class Solution(object):
         """
         if not str:
             return False
-
         ss = (str + str)[1:-1]
         return ss.find(str) != -1

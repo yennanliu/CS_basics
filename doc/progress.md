@@ -7,7 +7,7 @@
 		- programming
 			- review
 			- (normal order)
-			- (pdf : p.13)
+			- (pdf : p.12)
 				- 459
 			- =======
 			- **back track**
@@ -35,7 +35,7 @@
 		- programming
 			- review
 			- (normal order)
-			- (pdf : p.13)
+			- (pdf : p.12)
 				- 606
 			- =======
 			- **back track**
@@ -67,7 +67,6 @@
 				- 200
 				- 694
 				- 711
-			- (pdf : p.13)
 			- =======
 			- **back track**
 			- Binary Search Tree
