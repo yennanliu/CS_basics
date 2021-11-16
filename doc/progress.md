@@ -10,7 +10,7 @@
 			- (pdf : p.12)
 				- 459
 				- 662 (again!)
-				- 663
+				- 663 (again)
 			- =======
 			- **back track**
 			- Binary Search Tree

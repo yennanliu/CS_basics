@@ -14,14 +14,46 @@
 
 ```python
 # python
+# form I
 def dfs(root, target):
     if root.val == target:
-        # do sth
+       # do sth
     if root.val < target:
        dfs(root.left, target)
 
     if root.val > target:
        dfs(root.right, target)
+```
+
+```python
+# form II : modify some value in the tree
+# 669 Trim a Binary Search Tree
+class Solution:
+    def dfs(self, root, L, R):
+        if not root:
+            return None
+        if root.val > R:
+            return self.dfs(root.left, L, R)
+        elif root.val < L:
+            return self.dfs(root.right, L, R)
+        else:
+            root.left = self.dfs(root.left, L, R)
+            root.right = self.dfs(root.right, L, R)
+            return root
+```
+
+```python
+# form III
+# check if a value exist in the BST
+def dfs(root, value):
+    if not root:
+        return False
+    if root.val == value:
+        return True
+    if root.val > value:
+        return dfs(root.left, value) 
+    if root.val < value:
+        return dfs(root.right, value)
 ```
 
 ### 0-3) Tricks
@@ -53,6 +85,8 @@ def dfs(root):
 ```
 
 ### 1-1) Basic OP
+
+#### 1-1-1) Add 1 to all node.value in Binary tree?
 ```python
 # Example) Add 1 to all node.value in Binary tree?
 def dfs(root):
@@ -61,7 +95,10 @@ def dfs(root):
     root.val += 1 
     dfs(root.left)
     dfs(root.right)
+```
 
+#### 1-1-2) check if 2 Binary tree are the same
+```python
 # Example) check if 2 Binary tree are the same ? 
 def dfs(root1, root2):
     if root1 == root2 == None:
@@ -75,7 +112,10 @@ def dfs(root1, root2):
             return False 
     return dfs(root1.left, root2.left) \
            and dfs(root1.right, root2.right)
+```
 
+#### 1-1-3) check if a value exist in the BST
+```python
 # Example) check if a value exist in the BST
 def dfs(root, value):
     if not root:
@@ -83,6 +123,7 @@ def dfs(root, value):
     if root.val == value:
         return True
     return dfs(root.left, value) or dfs(root.right, value)
+
 # optimized : BST prpoerty :  root.right > root.val > root.left
 def dfs(root, value):
     if not root:
@@ -95,6 +136,8 @@ def dfs(root, value):
         return dfs(root.right, value)
 ```
 
+#### 1-1-4) get sum of sub tree
+
 ```python
 # get sum of sub tree
 # LC 508
@@ -105,6 +148,8 @@ def get_sum(root):
     res.append(s)
     return s
 ```
+
+#### 1-1-5) Convert BST to Greater Tree 
 ```python
 # Convert BST to Greater Tree 
 # LC 538
