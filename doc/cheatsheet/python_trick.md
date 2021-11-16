@@ -2,6 +2,23 @@
 
 ## Examples
 
+### 0-1) inverse looping elements in string
+```python
+In [5]: def check(x):
+            #### note here : range(len(x)-1,-1, -1
+            # (end at idx = -1)
+   ...:     for i in range(len(x)-1,-1, -1):
+   ...:         #print (x[i])
+   ...:         print (i)
+   ...:
+   ...:
+   ...: x = "332"
+   ...: check(x)
+2
+1
+0
+```
+
 ### 1-1) Or logic for either existed element
 ```python
 In [8]: def test(l1, l2):
