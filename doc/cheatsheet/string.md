@@ -131,3 +131,24 @@ class Solution:
             val = ""
         return res
 ```
+
+### 2-4) Monotone Increasing Digits
+```python
+# LC 738 Monotone Increasing Digits
+class Solution:
+    def monotoneIncreasingDigits(self, N):
+        s = list(str(N));
+        ### NOTICE HERE 
+        for i in range(len(s) - 2,-1,-1):
+            # if int(s[i]) > int(s[i+1]) -> the string is not `monotone increase`
+            # -> we need to find the next biggest int, 
+            # -> so we need to make all right hand side digit as '9'
+            # -> and minus current digit with 1  (s[i] = str(int(s[i]) - 1))
+            if int(s[i]) > int(s[i+1]):
+                ### NOTICE HERE 
+                for j in range(i+1,len(s)):
+                    s[j] = '9'
+                s[i] = str(int(s[i]) - 1)
+        s = "".join(s)        
+        return int(s) 
+```
