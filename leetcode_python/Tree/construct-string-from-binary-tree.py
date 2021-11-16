@@ -50,11 +50,38 @@ class Solution(object):
             if root.left and not root.right:
                 return str(root.val) + '(' + dfs(root.left) + ')'
             ### NOTICE HERE
+            if root.left and root.right:
+                return str(root.val) + '(' + dfs(root.left) + ')' + '(' + dfs(root.right) + ')'
+        
+        res = dfs(root)
+        return res
+
+# V0'
+# IDEA : tree + check problem examples
+#        -> if root.right and not root.left
+#        -> if root.left and not root.right
+class Solution(object):
+    def tree2str(self, root):
+        def dfs(root):
+            if not root:
+                ### NOTICE HERE
+                return ""
+            ### NOTICE HERE
+            if not root.left and not root.right:
+                return str(root.val)
+            ### NOTICE HERE : "2()(4)" case
+            if root.right and not root.left:
+                return str(root.val) + '()' + '(' + dfs(root.right) + ')'
+            ### NOTICE HERE
+            if root.left and not root.right:
+                return str(root.val) + '(' + dfs(root.left) + ')'
+            ### NOTICE HERE
             return str(root.val) + '(' + dfs(root.left) + ')' + '(' + dfs(root.right) + ')'
         
         res = dfs(root)
         return res
-# V0
+
+# V0''
 class Solution:
     def tree2str(self, t):
         if not t:
@@ -70,7 +97,7 @@ class Solution:
         ### NOTICE HERE
         return str(t.val) + '(' + self.tree2str(t.left) + ')' + '(' + self.tree2str(t.right) + ')'
 
-# V0'
+# V0'''
 class Solution:
     def tree2str(self, root):
         if not root:
@@ -87,7 +114,7 @@ class Solution:
             return str(root.val) + "()" + "(" + self.tree2str(root.right) + ")"
         #return str(root.val) + "(" + self.tree2str(root.left) + ")" +  "(" + self.tree2str(root.right) + ")"
 
-# V0''
+# V0'''''
 class Solution(object):
     def tree2str(self, t):
         if not t: return ""
@@ -98,7 +125,7 @@ class Solution(object):
             s += "(" + self.tree2str(t.right) + ")"
         return s
 
-# V0''
+# V0''''''
 class Solution(object):
     def tree2str(self, t):
         if not t: return ''
