@@ -9,12 +9,15 @@
 			- (normal order)
 			- (pdf : p.12)
 				- 459
+				- 662 (again!)
+				- 663
 			- =======
 			- **back track**
 			- Binary Search Tree
 			- Binary Search
 			- linked list
 			- sliding window
+			- Tree
 			- =======
 			- hash table
 			- bit manipulation
@@ -36,7 +39,7 @@
 			- review
 			- (normal order)
 			- (pdf : p.12)
-				- 606
+				- 606 (again!)
 			- =======
 			- **back track**
 			- Binary Search Tree
