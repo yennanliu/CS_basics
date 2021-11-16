@@ -63,19 +63,20 @@ class Solution(object):
 # V0'
 #### NEED TO VALIDATE
 # dfs
-class Solution:
+class Solution(object):
     def checkEqualTree(self, root):
-        def dfs(root, tmp_sum):
+        def help(root, _sum):
             if not root:
                 return 0
-            tmp_sum += root.val
-            res.append(tmp_sum)
-            dfs(root.left, tmp_sum)
-            dfs(root.right, tmp_sum)
-        _sum = 0
-        res = []
-        _total_sum = max(res)
-        return  _total_sum // 2 in res
+            _sum += root.val
+            tmp.append(_sum)
+            help(root.left, _sum)
+            help(root.right, _sum)
+
+        tmp = []
+        check(root, 0)
+        _total_sum = tmp[-1]
+        return _total_sum // 2 in tmp
 
 # V0''
 ### NOTE : 
