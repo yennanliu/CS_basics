@@ -133,15 +133,22 @@ root = TreeNode(int(s))
 #          -> we can make sure that if p == q, then the root must be p and q's "common ancestor"
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
-        # if not root or find p in the tree or find q in the tree
+        ### NOTE here
+        # if not root or find p in tree or find q in tree
+        # -> then we quit the recursion and return root
         if not root or p == root or q == root:
             return root
+        ### NOTE here
+        #  -> not root.left, root.right, BUT left, right
         left = self.lowestCommonAncestor(root.left, p, q)
         right = self.lowestCommonAncestor(root.right, p, q)
+        ### NOTE here
         # find q and p on the same time -> LCA is the current node (root)
-        if left != None and right != None:
+        # if left and right -> p, q MUST in left, right sub tree respectively
+        if left and right:
             return root
-        # if only find p or only find q -> LCA is the one we found at the moment
+        ### NOTE here
+        # if p, q both in left sub tree or both in right sub tree
         return left if left else right
 ```
 

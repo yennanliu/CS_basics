@@ -36,6 +36,28 @@ p and q will exist in the tree.
 
 # V0
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        ### NOTE here
+        # if not root or find p in tree or find q in tree
+        # -> then we quit the recursion and return root
+        if not root or p == root or q == root:
+            return root
+        ### NOTE here
+        #  -> not root.left, root.right, BUT left, right
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        ### NOTE here
+        # find q and p on the same time -> LCA is the current node (root)
+        # if left and right -> p, q MUST in left, right sub tree respectively
+        if left and right:
+            return root
+        ### NOTE here
+        # if p, q both in left sub tree or both in right sub tree
+        return left if left else right
+
+# V0'
+# IDEA : RECURSION + POST ORDER TRANSVERSAL
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
 #          -> left -> right -> root
 #          -> we can make sure that if p == q, then the root must be p and q's "common ancestor"
