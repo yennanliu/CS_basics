@@ -36,7 +36,24 @@ Output: false
 
 """
 
-# V0 
+# V0
+# IDEA : Recursion
+class Solution(object):
+    def isSameTree(self, p, q):
+        
+        def dfs(p, q):
+            if not p and not q:
+                return True
+            elif (not p and q) or (p and not q):
+                return False
+            elif p.val != q.val:
+                return False
+            return dfs(p.left, q.left) and dfs(p.right, q.right)
+        
+        res = dfs(p, q)
+        return res
+
+# V0'
 # IDEA : Recursion
 class Solution(object):
     def isSameTree(self, p, q):
@@ -48,8 +65,6 @@ class Solution(object):
         # if p == None or q == None  or p == q == None
         return p == q == None
     
-
-
 # V0'
 # IDEA : Iteration (DFS)
 # https://leetcode.com/problems/same-tree/solution/

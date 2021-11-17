@@ -17,6 +17,9 @@
 			- Tree
 				- 236 (again!)
 				- 235 (ok)
+				- 226 (again !)
+				- 104
+				- 100
 			- =======
 			- hash table
 			- bit manipulation

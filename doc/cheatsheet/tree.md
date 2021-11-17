@@ -445,6 +445,42 @@ TreeNode deserlialize(String data){
 }
 ```
 
+### 1-1-15) Invert Binary Tree
+```python
+# LC 226 Invert Binary Tree
+# V0
+# IDEA : DFS
+class Solution(object):
+    def invertTree(self, root):
+        def dfs(root):
+            if not root:
+                return root
+            ### NOTE THIS
+            if root:
+                # NOTE : have to do root.left, root.right ON THE SAME TIME
+                root.left, root.right = dfs(root.right), dfs(root.left)
+        dfs(root)
+        return root
+
+# V0'
+# IDEA BFS
+class Solution(object):
+    def invertTree(self, root):
+        if root == None:
+            return root
+        queue = [root]
+        while queue:
+            for i in range(len(queue)):         
+                tmp = queue.pop()
+                ### NOTE here
+                tmp.left, tmp.right = tmp.right, tmp.left
+                if tmp.left:
+                    queue.append(tmp.left)
+                if tmp.right:
+                    queue.append(tmp.right)
+        return root
+```
+
 ## 2) LC Example
 
 ### 2-1) Binary Tree Right Side View
