@@ -126,6 +126,7 @@ root = TreeNode(int(s))
 #### 1-1-4) Get LCA (Lowest Common Ancestor) of a tree
 ```python
 # LC 236 Lowest Common Ancestor of a Binary Tree
+# LC 235 Lowest Common Ancestor of a Binary Search Tree
 # V0
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
