@@ -1,12 +1,97 @@
+"""
+
+# https://zxi.mytechroad.com/blog/tree/742-closest-leaf-in-a-binary-tree/
+
+[LeetCode] 742. Closest Leaf in a Binary Tree
+
+Problem:
+
+Given a binary tree where every node has a unique value, and a target key k, find the value of the closest leaf node to target k in the tree.
+
+Here, closest to a leaf means the least number of edges travelled on the binary tree to reach any leaf of the tree. Also, a node is called a leaf if it has no children.
+
+In the following examples, the input tree is represented in flattened form row by row. The actual root tree given will be a TreeNode object.
+
+Example 1:
+
+Input:
+root = [1, 3, 2], k = 1
+Diagram of binary tree:
+          1
+         / \
+        3   2
+ 
+Output: 2 (or 3)
+ 
+Explanation: Either 2 or 3 is the closest leaf node to the target of 1.
+Example 2:
+
+Input:
+root = [1], k = 1
+Output: 1
+ 
+Explanation: The closest leaf node is the root node itself.
+Example 3:
+
+Input:
+root = [1,2,3,4,null,null,null,5,null,6], k = 2
+Diagram of binary tree:
+             1
+            / \
+           2   3
+          /
+         4
+        /
+       5
+      /
+     6
+ 
+Output: 3
+Explanation: The leaf node with value 3 (and not the leaf node with value 6) is closest to the node with value 2.
+Note:
+
+root represents a binary tree with at least 1 node and at most 1000 nodes.
+Every node has a unique node.val in range [1, 1000].
+There exists some node in the given binary tree for which node.val == k.
+
+
+
+### NOTE :  closest to a leaf means the least number of edges travelled on the binary tree to reach any leaf of the tree. Also, a node is called a leaf if it has no children.
+#         -> We only consider the min distance between left (no sub tree) and k
+
+"""
+
 # V0
-# IDEA : GRAPH + BFS  
+# IDEA : DFS build GRAPH + BFS find ans
+### NOTE :  closest to a leaf means the least number of edges travelled on the binary tree to reach any leaf of the tree. Also, a node is called a leaf if it has no children.
+#         -> We only consider the min distance between left (no sub tree) and k
+### NOTE : we need DFS create the graph
 # https://www.youtube.com/watch?v=x1wXkRrpavw
 # https://blog.csdn.net/qq_17550379/article/details/87778889
 import collections
 class Solution:
+    # build graph via DFS
+    # node : current node
+    # parent : parent of current node
+    def buildGraph(self, node, parent, k):
+        if not node:
+            return
+        # if node.val == k, THEN GET THE start point FROM current "node",
+        # then build graph based on above
+        if node.val == k:
+            self.start = node
+        if parent:
+            self.graph[node].append(parent)
+            self.graph[parent].append(node)
+        self.buildGraph(node.left, node, k)
+        self.buildGraph(node.right, node, k)
+
     # search via DFS
     def findClosestLeaf(self, root, k):
+
+
         self.start = None
+        ### NOTE : we need DFS create the graph
         self.buildGraph(root, None, k)
         q, visited = [root], set()
         #q, visited = [self.start], set() # need to validate this
@@ -27,21 +112,31 @@ class Solution:
                     if node not in visited: # need to check if "if node not in visited" or "if node in visited"
                         q.append(node)
 
-    # build graph via DFS
-    # node : current node
-    # parent : parent of current node
-    def buildGraph(self, node, parent, k):
-        if not node:
-            return
-        # if node.val == k, THEN GET THE start point FROM current "node",
-        # then build graph based on above
-        if node.val == k:
-            self.start = node
-        if parent:
-            self.graph[node].append(parent)
-            self.graph[parent].append(node)
-        self.buildGraph(node.left, node, k)
-        self.buildGraph(node.right, node, k)
+# V0' : 
+# TODO : verify if correct
+# class Solution:
+#     def findClosestLeaf(self, root, k):
+#         def dfs(root, k):
+#             if not root:
+#                 return
+#             if root.val == k:
+#                 k_idx = _layer
+#             if not root.left and not root.right:
+#                 cache.append(_count)
+#                 return
+#             if root.left:
+#                 _layer += 1
+#                 dfs(root.left, k)
+#             if root.right:
+#                 _layer += 1
+#                 dfs(root.right, k)
+#         # search via DFS
+#         if not root or not root.left or not root.val:
+#             return k
+#         cache = []
+#         k_idx = 0
+#         dfs(root, k)
+#         return min ( [x - k_idx for x in cache] )
 
 # V1 
 # http://bookshadow.com/weblog/2017/12/10/leetcode-closest-leaf-in-a-binary-tree/
