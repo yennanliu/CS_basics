@@ -605,3 +605,58 @@ class Solution(object):
         res = dfs(root)
         return res
 ```
+
+### 2-5) Closest Leaf in a Binary Tree
+```python
+# LeetCode 742. Closest Leaf in a Binary Tree
+# V0
+# IDEA : DFS build GRAPH + BFS find ans
+### NOTE :  closest to a leaf means the least number of edges travelled on the binary tree to reach any leaf of the tree. Also, a node is called a leaf if it has no children.
+#         -> We only consider the min distance between left (no sub tree) and k
+### NOTE : we need DFS create the graph
+# https://www.youtube.com/watch?v=x1wXkRrpavw
+# https://blog.csdn.net/qq_17550379/article/details/87778889
+import collections
+class Solution:
+    # build graph via DFS
+    # node : current node
+    # parent : parent of current node
+    def buildGraph(self, node, parent, k):
+        if not node:
+            return
+        # if node.val == k, THEN GET THE start point FROM current "node",
+        # then build graph based on above
+        if node.val == k:
+            self.start = node
+        if parent:
+            self.graph[node].append(parent)
+            self.graph[parent].append(node)
+        self.buildGraph(node.left, node, k)
+        self.buildGraph(node.right, node, k)
+
+    # search via DFS
+    def findClosestLeaf(self, root, k):
+
+
+        self.start = None
+        ### NOTE : we need DFS create the graph
+        self.buildGraph(root, None, k)
+        q, visited = [root], set()
+        #q, visited = [self.start], set() # need to validate this
+        self.graph = collections.defaultdict(list)
+        while q:
+            for i in range(len(q)):
+                cur = q.pop(0)
+                # add cur to visited, NOT to visit this node again
+                visited.add(cur)
+                ### NOTICE HERE 
+                # if not cur.left and not cur.right: means this is the leaf (HAS NO ANY left/right node) of the tree
+                # so the first value of this is what we want, just return cur.val as answer directly
+                if not cur.left and not cur.right:
+                    # return the answer
+                    return cur.val
+                # if not find the leaf, then go through all neighbors of current node, and search again
+                for node in self.graph:
+                    if node not in visited: # need to check if "if node not in visited" or "if node in visited"
+                        q.append(node)
+```

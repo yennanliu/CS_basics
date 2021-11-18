@@ -8,6 +8,7 @@
 			- review
 			- (normal order)
 			- (pdf : p.13)
+				- 742 (again)
 			- =======
 			- **back track**
 			- Binary Search Tree
