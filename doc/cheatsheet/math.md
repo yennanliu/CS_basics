@@ -10,7 +10,46 @@
 
 ### 1-1) Basic OP
 
+#### 1-1-1) check prime number
+```python
+# LC 762 Prime Number of Set Bits in Binary Representation
+def check_prime(x):
+    if x <= 1:
+        return False
+    for i in range(2, int(x**(0.5)+1)):
+        if x % i == 0:
+            return False
+    return True
+```
+
+#### 1-1-2) count prime number
+```python
+# LC 204 Count Primes
+# V0
+# IDEA : set
+# https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
+# prinme(x) : check if x is a prime
+# prinme(0) = 0
+# prinme(1) = 0
+# prinme(2) = 0
+# prinme(3) = 1
+# prinme(4) = 2
+# prinme(5) = 3
+class Solution:
+    def countPrimes(self, n):
+        # using sieve of eretosthenes algorithm
+        if n < 2: return 0
+        nonprimes = set()
+        for i in range(2, round(n**(1/2))+1):
+            if i not in nonprimes:
+                for j in range(i*i, n, i):
+                    nonprimes.add(j)
+        return n - len(nonprimes) - 2  # remove prinme(1), prime(2)
+```
+
 ## 2) LC Example
+
+### 2-1) Excel Sheet Column Title
 ```python
 # 168 Excel Sheet Column Title
 # https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation
