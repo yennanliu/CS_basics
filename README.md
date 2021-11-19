@@ -468,7 +468,7 @@
 477 | [Total Hamming Distance](https://leetcode.com/problems/total-hamming-distance/) |[Python](./leetcode_python/Bit_Manipulation/total-hamming-distance.py) | _O(n)_ | _O(1)_ | Medium |bit manipulation, `fb`| AGAIN****** (not start*) (4)
 645 | [Set Mismatch](https://leetcode.com/problems/set-mismatch/) | [Python](./leetcode_python/Bit_Manipulation/set-mismatch.py) | _O(n)_ | _O(1)_ | Easy |`amazon`| OK* (3) 
 693 | [Binary Number with Alternating Bits](https://leetcode.com/problems/binary-number-with-alternating-bits/) | [Python](./leetcode_python/Bit_Manipulation/binary-number-with-alternating-bits.py) | _O(1)_ | _O(1)_ | Easy |`trick`| AGAIN*
-762 | [Prime Number of Set Bits in Binary Representation](https://leetcode.com/problems/prime-number-of-set-bits-in-binary-representation/) |[Python](./leetcode_python/Bit_Manipulation/prime-number-of-set-bits-in-binary-representation.py)  | _O(1)_ | _O(1)_ | Easy |`basic`,`Bit_Manipulation`, `prime number`, `amazon`| OK* (3) 
+762 | [Prime Number of Set Bits in Binary Representation](https://leetcode.com/problems/prime-number-of-set-bits-in-binary-representation/) |[Python](./leetcode_python/Bit_Manipulation/prime-number-of-set-bits-in-binary-representation.py)  | _O(1)_ | _O(1)_ | Easy |`basic`,`Bit_Manipulation`, `prime number`, `amazon`| OK* (4) 
 868 | [Binary Gap](https://leetcode.com/problems/binary-gap/) | [Python](./leetcode_python/Bit_Manipulation/binary-gap.py) | _O(1)_ | _O(1)_ | Easy |`trick`, `linear scan`| AGAIN*
 898 | [Bitwise ORs of Subarrays](https://leetcode.com/problems/bitwise-ors-of-subarrays/) | [Python](./leetcode_python/Bit_Manipulation/bitwise-ors-of-subarrays.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 
