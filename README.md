@@ -618,7 +618,7 @@
 672 | [Bulb Switcher II](https://leetcode.com/problems/bulb-switcher-ii/) | [Python](./leetcode_python/Math/bulb-switcher-ii.py)  | _O(1)_ | _O(1)_ | Medium || AGAIN (not start)
 728 | [Self Dividing Numbers](https://leetcode.com/problems/self-dividing-numbers/) | [Python](./leetcode_python/Math/self-dividing-numbers.py) | _O(n)_ | _O(1)_ | Medium || AGAIN 
 754 | [Reach a Number](https://leetcode.com/problems/reach-a-number/) |[Python](./leetcode_python/Math/reach-a-number.py) | _O(logn)_ | _O(1)_ | Medium || OK*  
-775 | [Global and Local Inversions](https://leetcode.com/problems/global-and-local-inversions/) | [Python](./leetcode_python/Math/global-and-local-inversions.py) | _O(n)_ | _O(1)_ | Medium |trick, math, string, `amazon`| AGAIN** (not start) (2)
+775 | [Global and Local Inversions](https://leetcode.com/problems/global-and-local-inversions/) | [Python](./leetcode_python/Math/global-and-local-inversions.py) | _O(n)_ | _O(1)_ | Medium |trick, math, string, `amazon`| AGAIN** (not start) (3)
 779 | [K-th Symbol in Grammar](https://leetcode.com/problems/k-th-symbol-in-grammar/) | [Python](./leetcode_python/Math/k-th-symbol-in-grammar.py) | _O(1)_ | _O(1)_ | Medium || AGAIN (not start)
 781 | [Rabbits in Forest](https://leetcode.com/problems/rabbits-in-forest/) | [Python](./leetcode_python/Math/rabbits-in-forest.py) | _O(n)_ | _O(n)_ | Medium || AGAIN (not start)
 789 | [Escape The Ghosts](https://leetcode.com/problems/escape-the-ghosts/) | [Python](./leetcode_python/Math/escape-the-ghosts.py) | _O(n)_ | _O(1)_ | Medium || AGAIN 
