@@ -9,7 +9,8 @@
 			- (normal order)
 			- (pdf : p.13)
 				- 776 (again!)
-				- 646
+				- 646 (again!)
+				- 435
 			- =======
 			- **back track**
 			- Binary Search Tree
