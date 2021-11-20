@@ -330,3 +330,24 @@ class Solution:
             ### NOTE : not root.val but root
             return root
 ```
+
+### 2-4) Split BST
+```python
+# LC 276 Split BST
+# V0
+# IDEA : BST properties (left < root < right) + recursion
+class Solution(object):
+    def splitBST(self, root, V):
+        if not root:
+            return None, None
+        ### NOTE : if root.val <= V
+        elif root.val <= V:
+            result = self.splitBST(root.right, V)
+            root.right = result[0]
+            return root, result[1]
+        ### NOTE : if root.val > V
+        else:
+            result = self.splitBST(root.left, V)
+            root.left = result[1]
+            return result[0], root
+```
