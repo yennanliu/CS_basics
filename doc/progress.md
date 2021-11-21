@@ -8,6 +8,9 @@
 			- review
 			- (normal order)
 			- (pdf : p.1)
+				- 496 (again !)
+				- 503
+				- 739
 				- 435
 			- =======
 			- **back track**
