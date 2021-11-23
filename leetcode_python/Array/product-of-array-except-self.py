@@ -52,7 +52,29 @@ class Solution:
                 r.append(int(_prod_except_z))
         return r
 
-# V0'
+# V0
+# IDEA : ARRAY OP
+class Solution(object):
+    def productExceptSelf(self, nums):
+        _len = len(nums)
+        ans = [1 for _ in range(_len)]
+        ### NOTE HERE, we define 2 vars (left, right) for left, right multiply
+        left = 1
+        right = 1
+        ### NOTE : we need to start from idx = 0 ~ idx = _len - 1
+        for i in range(0, _len-1):
+            ### NOTE here, we multuply left and nums[i]
+            left = left * nums[i]
+            ### NOTE HERE !!! we modify nums[i+1] WHEN idx = i, and the updated value =  ans[i+1] * left 
+            ans[i+1] = ans[i+1] * left
+        ### NOTE here, we start fron _len-1, and STOP at idx 0 (inverse order)
+        for j in range(_len-1, 0, -1):
+            right = right * nums[j]
+            ### NOTE HERE !!! we modify nums[j-1] WHEN idx = j, and the updated value = ans[j-1] * right
+            ans[j-1] = ans[j-1] * right
+        return ans
+
+# V0''
 class Solution:
     # @param {integer[]} nums
     # @return {integer[]}
