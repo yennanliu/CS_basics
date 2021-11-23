@@ -12,6 +12,8 @@
 				- 226 (again!)
 				- 739
 				- 435
+				- 496 (ok !)
+				- 503 (again !)
 			- =======
 			- **back track**
 			- Binary Search Tree
