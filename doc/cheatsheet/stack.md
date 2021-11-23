@@ -73,3 +73,33 @@ class Solution:
                 string = pre_string + pre_num * string
         return string
 ```
+
+### 2-2) Next Greater Element I
+```python
+# 496. Next Greater Element I
+# V0
+# IDEA : double for loop (one of loops is INVERSE ORDERING) + case conditions op
+class Solution(object):
+    def nextGreaterElement(self, nums1, nums2):
+        res = [None for _ in range(len(nums1))]
+        tmp = []
+        for i in range(len(nums1)):
+            ### NOTE : from last idx to 0 idx. (Note the start and end idx)
+            for j in range(len(nums2)-1, -1, -1):
+                #print ("i = " + str(i) + " j = " + str(j) + " tmp = " + str(tmp))
+
+                # case 1) No "next greater element" found in nums2
+                if not tmp and nums2[j] == nums1[i]:
+                    res[i] = -1
+                    break
+                # case 2) found "next greater element" in nums2, keep inverse looping
+                elif nums2[j] > nums1[i]:
+                    tmp.append(nums2[j])
+                # case 2) already reach same element in nums2 (as nums1), pop "last" "next greater element", paste to res, break the loop
+                elif tmp and nums2[j] == nums1[i]:
+                    _tmp = tmp.pop(-1)
+                    res[i] = _tmp
+                    tmp = []
+                    break
+        return res
+```
