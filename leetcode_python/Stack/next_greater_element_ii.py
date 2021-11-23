@@ -30,6 +30,27 @@ Constraints:
 """
 
 # V0
+# IDEA : STACK + circular loop handling
+class Solution:
+    def nextGreaterElements(self, nums):
+        ### NOTE : since we can search nums circurly, 
+        #  -> so here we make a new array (augLst = nums + nums) for that     
+        augLst = nums + nums
+        stack = []
+        # init ans
+        res = [-1] * len(nums)
+        ### NOTE : we looping augLst with inverse order
+        for i in range(len(augLst)-1, -1, -1):
+            ### NOTE : if stack and last value in stack smaller than augLst[i], we pop last value from stack
+            while stack and stack[-1] <= augLst[i]:
+                stack.pop()
+            ### NOTE : the remaining element in stack must fit the condition, so we append it to res
+            #   -> note : append to `i % len(nums)` idx in res
+            if stack:
+                res[i % len(nums)] = stack[-1]
+            ### NOTE : we also need to append augLst[i] to stack
+            stack.append(augLst[i])
+        return res
 
 # V1
 # https://leetcode.com/problems/next-greater-element-ii/discuss/184046/Python-solution
