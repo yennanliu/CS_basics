@@ -46,6 +46,9 @@ to
 
 # V0
 # IDEA : DFS
+# -> below code shows a good example that tree is a type of "linked list"
+# -> we don't really modify tree's "value", but we modify the pointer
+# -> e.g. make root.left point to root.right, make root.right point to root.left
 class Solution(object):
     def invertTree(self, root):
         def dfs(root):
@@ -66,9 +69,11 @@ class Solution(object):
             return root
         queue = [root]
         while queue:
+            # queue = queue[::-1] <-- this one is NOT working
             for i in range(len(queue)):         
                 tmp = queue.pop()
-                ### NOTE here
+                ### NOTE here !!!!!!
+                # -> we do invert op via below
                 tmp.left, tmp.right = tmp.right, tmp.left
                 if tmp.left:
                     queue.append(tmp.left)
