@@ -34,10 +34,33 @@ vector<int> nextGreaterElement(vector<int>& nums) {
 ## 1) General form
 
 ### 1-1) Basic OP
+
+### 1-1-1) basic ops
 - Stack insert
 - Stack pop 
 - Stack isEmpty
 - Stack hasElement
+
+### 1-1-2) next greater number
+```java
+// java
+// algorithm book (labu) p. 273
+vector<int> nextGreaterElement(vector<int> & nums){
+    vector<int> ans(nums.size()); // array for ans
+    stack<int> s;
+    // inverse ordering
+    for (int i = nums.size() - 1 ; i >= 0; i --){
+        // check whether nummber is greater
+        while (!s.empty() && s.top() <= nums[i]){
+            s.pop()
+        }
+        // the last great number in stack
+        ans[i] = s.empty() ? -1: s.top();
+        s.push(nums[i]);
+    }
+return ans;
+}
+```
 
 ## 2) LC Example
 
