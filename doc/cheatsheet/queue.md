@@ -8,6 +8,8 @@
 ### 0-1) Types
 - Queue
 - Priority queue
+- Monotonic queue
+    - LC 239
 
 ### 0-2) Pattern
 
@@ -73,6 +75,37 @@ class Queue(object):
 
     def getSize(self):
         return self.size
+```
+
+```java
+// monotonic queue
+// java
+// algorithm book (labu) p. 278, p.281
+class MonotonicQueue{
+
+    // init queue
+    LinkedList<Integer> q = new LinkedList<>();
+    
+    // add element to queue tail
+    public void push(int n){
+        while (!q.isEmpty() && q.getLast() < n){
+            q.pollLast();
+        }
+        q.addLast(n);
+    }
+
+    // return current max value in queue
+    public int max(){
+        return q.getFirst();
+    }
+
+    // if head element is n, delete it
+    public void pop(int n){
+        if (n == q.getFirst()){
+            q.pollLast();
+        }
+    }
+}
 ```
 
 ### 1-1) Basic OP
