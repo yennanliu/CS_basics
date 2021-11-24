@@ -253,18 +253,29 @@ ListNode reverse(ListNode head){
 
 ```python
 # python
-# while loop way
+# LC 206
+# V0
+# IDEA : Linkedlist basics
 class Solution:
-    def reverseList(self, head: ListNode):
-        prev = None
-        current = head 
-        while(current is not None): 
-            next_ = current.next
-            current.next = prev 
-            prev = current 
-            current = next_
-        head = prev 
+    def reverseList(self, head):
+        ### NOTE : we define _prev, _cur first
+        _prev = None
+        _cur = head
+        ### NOTE : while tbere is still node in _cur (but not head)
+        while _cur:
+            ### STEP 1) get _next
+            _next = _cur.next
+            ### STEP 2) link _cur to _prev
+            _cur.next = _prev 
+            ### STEP 3) assign _cur to _prev (make _prev as _cur)
+            _prev = _cur
+            ### STEP 4) assign _next to _cur (make _cur as _next)
+            _cur = _next
+        ### STEP 5) assign head as _prev (make head as _prev -> make head as the "inverse" head)
+        head = _prev 
+        # return the head
         return head
+        #return _prev # this one works as well
 ```
 
 #### 1-1-3) delete node

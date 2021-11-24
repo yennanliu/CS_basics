@@ -342,7 +342,7 @@
 138| [Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) | [Python](./leetcode_python/Linked_list/copy-list-with-random-pointer.py)  | _O(n)_   | _O(1)_          | Medium  |linked list,,`hash table`,`UBER`, `M$`, `amazon`, `fb`| AGAIN*** (5)
 160| [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)| [Python](./leetcode_python/Linked_list/intersection-of-two-linked-lists.py) | _O(m + n)_ | _O(1)_  | Easy  |basic, `airbnb`, `amazon`,`fb`| OK*** (5) (again!)
 203| [Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)| [Python](./leetcode_python/Linked_list/remove-linked-list-elements.py) |  _O(n)_  | _O(1)_| Easy  |linked list basic,`amazon`| AGAIN** (2)
-206| [Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)| [Python](./leetcode_python/Linked_list/reverse-linked-list.py) | _O(n)_  | _O(1)_ | Easy  |`good basic`,`amazon`,`fb`| OK***** (5) (AGAIN)
+206| [Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)| [Python](./leetcode_python/Linked_list/reverse-linked-list.py) | _O(n)_  | _O(1)_ | Easy  |`good basic`,`amazon`,`fb`| OK********* (6) (but AGAIN)
 234| [Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)|[Python](./leetcode_python/Linked_list/palindrome-linked-list.py)| _O(n)_ | _O(1)_| Easy|linked list,`amazon`,`fb`| OK (4) 
 237| [Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)| [Python](./leetcode_python/Linked_list/delete-node-in-a-linked-list.py)| _O(1)_       | _O(1)_         | Easy         | LintCode | AGAIN 
 328| [Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)|[Python](./leetcode_python/Linked_list/odd-even-linked-list.py) | _O(n)_  | _O(1)_   | Medium    |`basic` | OK** (2)
@@ -686,7 +686,7 @@
 904 | [Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/) |[Python](./leetcode_python/Two_Pointers/fruit-into-baskets.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 930 | [Binary Subarrays With Sum](https://leetcode.com/problems/binary-subarrays-with-sum/) | [Python](./leetcode_python/Two_Pointers/binary-subarrays-with-sum.py) | _O(n)_ | _O(1)_ | Medium |`trick`| AGAIN* (2) (not start)
 977 | [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/) | [Python](./leetcode_python/Two_Pointers/squares-of-a-sorted-array.py) | _O(n)_ | _O(1)_ | Easy || OK 
-042 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) | [Python](./leetcode_python/Two_Pointers/trapping-rain-water.py) || | Hard |two pointer, `amazon`|  AGAIN (not start) 
+042 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) | [Python](./leetcode_python/Two_Pointers/trapping-rain-water.py) || | Hard |two pointer, `amazon`, `apple`|  AGAIN (not start) 
 
 
 ## Recursion 
