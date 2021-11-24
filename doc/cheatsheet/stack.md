@@ -154,6 +154,27 @@ class Solution:
         return res
 ```
 
+```c++
+// c++
+// LC 503. Next Greater Element II
+// lgorithm book (labu) p. 276
+vector<int> nextGreaterElements(vector<int> & nums){
+    int n = nums.size();
+    // save the result
+    vector<int> res(n);
+    stack<int> s;
+    // `simulate` the stack has length double
+    for (int i = 2 * n - 1; i >= 0; i --){
+        while (!s.empty() && s.top() <= nums[i % n]){
+            s.pop();
+        }
+        res[i % n] = s.empty() ? -1 : s.top();
+        s.push(nums[i % n]);
+    }
+    return res;
+}
+```
+
 ### 2-4) Daily Temperatures
 ```python
 # LC 739. Daily Temperatures
@@ -190,4 +211,24 @@ class Solution(object):
             # since the result (next higher temp) is decided by the coming temp, rather than current temp 
             stack.append((t, i))
         return res
+```
+```c++
+// LC 739. Daily Temperatures
+// c++
+// lgorithm book (labu) p. 274
+vector<int> dailyTemperatures(vector<int> & T){
+    vector<int> ans(T.size());
+    // put index in below stack (not element)
+    satck<int> s;
+    for (int i = T.size()-1; i >= 0; i --){
+        while (!s.empty() && T[s.top()] <= T[i]){
+            s.pop();
+        }
+        // get index distance
+        ans[i] = s.empty() ? 0 : (s,top() - i);
+        // add index, but not element
+        s.push(i);
+    }
+    return ans;
+}
 ```
