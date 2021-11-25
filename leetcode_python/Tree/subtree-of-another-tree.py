@@ -31,7 +31,51 @@ Submissions
 
 """
 
-# V0 (### TO FIX)
+# V0
+# IDEA : DFS + DFS 
+class Solution(object):
+    def isSubtree(self, s, t):
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        return self.isSameTree(s, t) or self.isSubtree(s.left, t) or self.isSubtree(s.right, t)
+        
+    def isSameTree(self, s, t):
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
+
+# V0'
+# IDEA : BFS + DFS 
+class Solution(object):
+    def isSubtree(self, s, t):
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        que = collections.deque()
+        que.append(s)
+        while que:
+            node = que.popleft()
+            if not node:
+                continue
+            if self.isSameTree(node, t):
+                return True
+            que.append(node.left)
+            que.append(node.right)
+        return False
+        
+    def isSameTree(self, s, t):
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
+
+# V0'' (### TO FIX)
 # IDEA : tree -> string, and check if sub string
 # # https://blog.csdn.net/fuxuemingzhu/article/details/71440802
 # class Solution(object):
@@ -48,29 +92,6 @@ Submissions
 #             return
 #         self.dfs(root.left, tmp + str(root.val) + ",")
 #         self.dfs(root.right,tmp + str(root.val) + ",")
-
-
-# V0' 
-# DFS + DFS 
-class Solution(object):
-    def isSubtree(self, s, t):
-        """
-        :type s: TreeNode
-        :type t: TreeNode
-        :rtype: bool
-        """
-        if not s and not t:
-            return True
-        if not s or not t:
-            return False
-        return self.isSameTree(s, t) or self.isSubtree(s.left, t) or self.isSubtree(s.right, t)
-        
-    def isSameTree(self, s, t):
-        if not s and not t:
-            return True
-        if not s or not t:
-            return False
-        return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/71440802
