@@ -688,3 +688,51 @@ class Solution:
                     if node not in visited: # need to check if "if node not in visited" or "if node in visited"
                         q.append(node)
 ```
+
+### 2-6) Subtree of Another Tree
+```python
+# LC 572 Subtree of Another Tree
+# V0' 
+# IDEA : DFS + DFS 
+class Solution(object):
+    def isSubtree(self, s, t):
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        return self.isSameTree(s, t) or self.isSubtree(s.left, t) or self.isSubtree(s.right, t)
+        
+    def isSameTree(self, s, t):
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
+
+# V0'
+# IDEA : BFS + DFS 
+class Solution(object):
+    def isSubtree(self, s, t):
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        que = collections.deque()
+        que.append(s)
+        while que:
+            node = que.popleft()
+            if not node:
+                continue
+            if self.isSameTree(node, t):
+                return True
+            que.append(node.left)
+            que.append(node.right)
+        return False
+        
+    def isSameTree(self, s, t):
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
+```
