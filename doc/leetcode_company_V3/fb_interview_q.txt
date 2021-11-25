@@ -1,0 +1,319 @@
+# Facebook | Interview questions | July 2020 - July 2021
+
+
+# https://leetcode.com/discuss/interview-question/1376426/Facebook-or-Interview-questions-or-July-2020-July-2021/1033957
+
+Index
+
+(This post) - NEW! - Facebook | Interview questions | July 2020 - July 2021
+
+https://leetcode.com/discuss/interview-question/1376426/facebook-interview-questions-july-2020-july-2021
+NEW! - Apple | Uber | Flipkart | Swiggy | Interview questions | July 2020 - July 2021
+https://leetcode.com/discuss/interview-question/1367526/apple-uber-flipkart-swiggy-interview-questions-july-2020-july-2021
+NEW! - Amazon | Interview questions | July 2020 - July 2021 (~ last 1 year)
+https://leetcode.com/discuss/interview-question/1358505/Amazon-or-Interview-questions-or-July-2020-July-2021
+NEW! - Bloomberg | Interview questions | July 2020 - July 2021
+https://leetcode.com/discuss/interview-question/1349954/Bloomberg-or-Interview-questions-or-July-2020-July-2021
+Google | Bloomberg | Others | Interview questions | This year
+https://leetcode.com/discuss/interview-question/910825/Google-or-Bloomberg-or-Others-or-Interview-questions-or-This-year
+For Other companies I have not created them, may be these might help:
+Twitter:
+recent - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=newest_to_oldest&query=twitter
+most votes - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=most_votes&query=twitter
+Microsoft
+most votes - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=most_votes&query=microsoft
+recent - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=newest_to_oldest&query=microsoft
+JavaScript questions
+https://leetcode.com/discuss/interview-question/1043676/ea-games-interview-questions/1013277
+Facebook | Interview questions | July 2020 - July 2021
+
+Index
+
+PART 1 - Software Engineer
+PART 2 - Data Engineer
+PART 3 - Production Engineer
+PART 4 - Facebook - Prep Materials Email
+PART 1 - Software Engineer
+
+Interview questions - As Leetcode lists:
+Jul 2020 - Jul 2021 (~1 year) - https://leetcode.com/list/5jahjufm
+Jan 2021 - Jul 2021 ( last 6 months ) - https://leetcode.com/list/5jahf7b1
+May 2021 - Jul 2021 ( last 3 months ) - https://leetcode.com/list/5jaxhwc7
+Jan 2021 - Apr 2021 ( first 3 months '21 ) - https://leetcode.com/list/5jaxx2y5
+Jul 2020 - Dec 2020 ( last year, last 6 months ) - https://leetcode.com/list/5jax5p46
+How to clone above LeetCode list, for practising?
+Click on anyone of the above Leetcode List links
+Then click on Clone button
+Now, go to problem list - https://leetcode.com/problemset/all/
+Click the Lists filter (beside Difficulty & Status filters)
+Select the item that starts with pgmreddy-fb name.
+Now you can use the Difficulty filter with Easy/Medium/Hard
+Interview questions - Full list:
+Jan 2021 - Jul 2021 ( last 6 months )
+May 2021 - Jul 2021 ( last 3 months )
+https://leetcode.com/problems/add-strings/
+https://leetcode.com/problems/add-two-numbers/
+https://leetcode.com/problems/basic-calculator-ii/
+https://leetcode.com/problems/binary-tree-right-side-view/
+https://leetcode.com/problems/count-all-valid-pickup-and-delivery-options/
+https://leetcode.com/problems/course-schedule-ii/
+https://leetcode.com/problems/design-add-and-search-words-data-structure/
+https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+https://leetcode.com/problems/find-k-closest-elements/
+https://leetcode.com/problems/first-bad-version/
+https://leetcode.com/problems/integer-to-english-words/
+https://leetcode.com/problems/interval-list-intersections/
+https://leetcode.com/problems/invert-binary-tree/
+https://leetcode.com/problems/longest-continuous-increasing-subsequence/
+https://leetcode.com/problems/longest-increasing-path-in-a-matrix/
+https://leetcode.com/problems/maximum-swap/
+https://leetcode.com/problems/merge-two-sorted-lists/
+https://leetcode.com/problems/minimum-moves-to-move-a-box-to-their-target-location/
+https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/
+https://leetcode.com/problems/next-permutation/
+https://leetcode.com/problems/pacific-atlantic-water-flow/
+https://leetcode.com/problems/path-sum-iii/
+https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+https://leetcode.com/problems/simplify-path/
+https://leetcode.com/problems/squares-of-a-sorted-array/
+https://leetcode.com/problems/subarray-sum-equals-k/
+https://leetcode.com/problems/utf-8-validation/
+https://leetcode.com/problems/valid-palindrome-ii/
+https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/
+https://leetcode.com/problems/word-break-ii/
+Premium
+31. https://leetcode.com/problems/binary-tree-vertical-order-traversal/
+32. https://leetcode.com/problems/buildings-with-an-ocean-view/
+33. https://leetcode.com/problems/construct-binary-tree-from-string/
+34. https://leetcode.com/problems/dot-product-of-two-sparse-vectors/
+35. https://leetcode.com/problems/leftmost-column-with-at-least-a-one/
+Jan 2021 - Apr 2021 ( first 3 months '21 )
+https://leetcode.com/problems/add-strings/
+https://leetcode.com/problems/add-two-numbers/
+https://leetcode.com/problems/basic-calculator-ii/
+https://leetcode.com/problems/binary-search-tree-iterator/
+https://leetcode.com/problems/binary-tree-level-order-traversal/
+https://leetcode.com/problems/binary-tree-maximum-path-sum/
+https://leetcode.com/problems/cheapest-flights-within-k-stops/
+https://leetcode.com/problems/clone-graph/
+https://leetcode.com/problems/coin-change/
+https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+https://leetcode.com/problems/continuous-subarray-sum/
+https://leetcode.com/problems/course-schedule-ii/
+https://leetcode.com/problems/course-schedule/
+https://leetcode.com/problems/decode-string/
+https://leetcode.com/problems/design-circular-deque/
+https://leetcode.com/problems/distinct-subsequences/
+https://leetcode.com/problems/expression-add-operators/
+https://leetcode.com/problems/find-median-from-data-stream/
+https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+https://leetcode.com/problems/first-bad-version/
+https://leetcode.com/problems/intersection-of-two-linked-lists/
+https://leetcode.com/problems/is-graph-bipartite/
+https://leetcode.com/problems/k-closest-points-to-origin/
+https://leetcode.com/problems/kth-largest-element-in-an-array/
+https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+https://leetcode.com/problems/longest-increasing-path-in-a-matrix/
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/
+https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/
+https://leetcode.com/problems/merge-intervals/
+https://leetcode.com/problems/merge-k-sorted-lists/
+https://leetcode.com/problems/minimum-cost-for-tickets/
+https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/
+https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/
+https://leetcode.com/problems/minimum-window-substring/
+https://leetcode.com/problems/missing-number/
+https://leetcode.com/problems/move-zeroes/
+https://leetcode.com/problems/pancake-sorting/
+https://leetcode.com/problems/peeking-iterator/
+https://leetcode.com/problems/permutations/
+https://leetcode.com/problems/product-of-array-except-self/
+https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/
+https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/
+https://leetcode.com/problems/remove-linked-list-elements/
+https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+https://leetcode.com/problems/sliding-window-maximum/
+https://leetcode.com/problems/squares-of-a-sorted-array/
+https://leetcode.com/problems/subarray-sum-equals-k/
+https://leetcode.com/problems/time-needed-to-inform-all-employees/
+https://leetcode.com/problems/unique-paths-ii/
+https://leetcode.com/problems/valid-palindrome-ii/
+https://leetcode.com/problems/validate-binary-search-tree/
+https://leetcode.com/problems/verifying-an-alien-dictionary/
+https://leetcode.com/problems/word-break/
+Premium
+90. https://leetcode.com/problems/alien-dictionary/
+91. https://leetcode.com/problems/basic-calculator-iii/
+92. https://leetcode.com/problems/calculate-salaries/
+93. https://leetcode.com/problems/construct-binary-tree-from-string/
+94. https://leetcode.com/problems/design-tic-tac-toe/
+95. https://leetcode.com/problems/inorder-successor-in-bst/
+96. https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list/
+97. https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/
+98. https://leetcode.com/problems/maximum-average-subtree/
+99. https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
+100. https://leetcode.com/problems/meeting-rooms-ii/
+101. https://leetcode.com/problems/read-n-characters-given-read4-ii-call-multiple-times/
+102. https://leetcode.com/problems/read-n-characters-given-read4/
+103. https://leetcode.com/problems/robot-room-cleaner/
+104. https://leetcode.com/problems/sparse-matrix-multiplication/
+105. https://leetcode.com/problems/tree-diameter/
+Jul 2020 - Dec 2020 ( last year, last 6 months )
+106. https://leetcode.com/problems/accounts-merge/
+107. https://leetcode.com/problems/add-binary/
+108. https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
+109. https://leetcode.com/problems/check-completeness-of-a-binary-tree/
+110. https://leetcode.com/problems/clone-graph/
+111. https://leetcode.com/problems/combination-sum-ii/
+112. https://leetcode.com/problems/combination-sum/
+113. https://leetcode.com/problems/copy-list-with-random-pointer/
+114. https://leetcode.com/problems/divide-two-integers/
+115. https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+116. https://leetcode.com/problems/first-bad-version/
+117. https://leetcode.com/problems/integer-replacement/
+118. https://leetcode.com/problems/longest-arithmetic-subsequence/
+119. https://leetcode.com/problems/longest-increasing-path-in-a-matrix/
+120. https://leetcode.com/problems/longest-substring-without-repeating-characters/
+121. https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+122. https://leetcode.com/problems/merge-sorted-array/
+123. https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/
+124. https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero/
+125. https://leetcode.com/problems/number-of-music-playlists/
+126. https://leetcode.com/problems/number-of-nodes-in-the-sub-tree-with-the-same-label/
+127. https://leetcode.com/problems/partition-equal-subset-sum/
+128. https://leetcode.com/problems/product-of-array-except-self/
+129. https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/
+130. https://leetcode.com/problems/remove-linked-list-elements/
+131. https://leetcode.com/problems/rotate-array/
+132. https://leetcode.com/problems/serialize-and-deserialize-binary-tree/
+133. https://leetcode.com/problems/single-element-in-a-sorted-array/
+134. https://leetcode.com/problems/single-number/
+135. https://leetcode.com/problems/top-k-frequent-words/
+136. https://leetcode.com/problems/unique-email-addresses/
+137. https://leetcode.com/problems/unique-paths-ii/
+138. https://leetcode.com/problems/valid-number/
+139. https://leetcode.com/problems/valid-palindrome-ii/
+140. https://leetcode.com/problems/valid-palindrome/
+141. https://leetcode.com/problems/validate-binary-search-tree/
+142. https://leetcode.com/problems/verifying-an-alien-dictionary/
+Premium
+143. https://leetcode.com/problems/alien-dictionary/
+144. https://leetcode.com/problems/dot-product-of-two-sparse-vectors/
+145. https://leetcode.com/problems/employee-free-time/
+146. https://leetcode.com/problems/leftmost-column-with-at-least-a-one/
+147. https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/
+Others
+https://en.wikipedia.org/wiki/Connect_Four
+https://en.wikipedia.org/wiki/Maze-solving_algorithm
+PART 2 - Data Engineer
+
+Topics
+Leetcode Easy (Dicts/Lists)
+Python
+SQL - Queries
+ETL load using SQL from staging to production
+Design - ETL pipelines design & implementation, Distributed data warehousing
+Charts - Tableau & Funnel charts
+Product Sense
+Phone screen
+https://leetcode.com/discuss/interview-question/281149/Facebook-or-Phone-or-Data-engineer
+https://leetcode.com/discuss/interview-question/447353/Facebook-or-Pre-screen-or-Data-engineer-consultant
+https://leetcode.com/discuss/interview-question/586048/Facebook-or-Phone-or-Mismatched-sentences-and-Fill-an-Array
+https://leetcode.com/discuss/interview-question/723773/Facebook-or-Data-Scientist-or-Test-Hypothesis
+https://leetcode.com/discuss/interview-question/807990/Facebook-SQL-questions-DE
+https://leetcode.com/discuss/interview-question/896522/Facebook-Data-Engineering-Interview-Onsite
+https://leetcode.com/discuss/interview-question/808391/Facebook-Data-Engineer(Analytics)/670163
+https://leetcode.com/discuss/interview-question/1110491/Facebook-or-Data-Engineer-or-Phone-Interview-or-SQL-and-Python-Query/880146
+https://leetcode.com/discuss/interview-question/1084674/Facebook-Data-Engineer-Londonor-Onsite-Scheduled
+https://leetcode.com/discuss/interview-question/1162907/Facebook-or-Video-Interview-or-Data-Engineer-SQL-and-Python
+https://leetcode.com/discuss/interview-question/1263509/Data-Engineer-Interview-with-Facebook/988955
+Onsite
+https://leetcode.com/discuss/interview-question/1245132/Facebook-Data-Engineer-Onsite/958377
+https://leetcode.com/discuss/interview-question/1301620/Facebook-Data-Engineering-Followup-onsite/1003958
+https://leetcode.com/discuss/interview-question/1301620/Facebook-Data-Engineering-Followup-onsite/1012666
+https://leetcode.com/discuss/interview-question/1124063/Facebook-Onsite-Data-Engineer-London%3A-Rejected
+https://leetcode.com/discuss/interview-question/1124063/Facebook-Onsite-Data-Engineer-London%3A-Rejected/892540
+https://leetcode.com/discuss/interview-question/1124063/Facebook-Onsite-Data-Engineer-London%3A-Rejected/893528
+Other
+https://www.facebook.com/careers/life/an-inside-look-at-data-engineering-at-facebook
+PART 3 - Production Engineer
+
+https://leetcode.com/discuss/interview-experience/707265/facebook-apple-amazon-production-engineer-ee-sre-sysde-london-may-2020-offer
+https://leetcode.com/discuss/interview-experience/1141686/facebook-production-engineer-londondublin-onsite-interview-experience-10-march-2021
+https://leetcode.com/discuss/interview-question/685613/Production-Engineer-Interview-Questions-Facebook
+https://leetcode.com/discuss/interview-question/1320388/please-review-facebook-production-engineer-role-preparation
+https://leetcode.com/discuss/compensation/640975/Facebook-or-Production-Engineer-L3-or-Menlo-Park/547280
+https://leetcode.com/discuss/interview-experience/475177/facebook-menlo-park-production-engineer-intern-nov-2019-oaphone-screening-rejected
+https://leetcode.com/discuss/interview-question/281935/facebook-phone-interview-production-engineer-split-array
+https://leetcode.com/discuss/general-discussion/629725/can-anyone-went-through-facebook-production-engineer-interview-process
+https://leetcode.com/discuss/career/400076/production-engineer-facebook
+https://leetcode.com/discuss/compensation/924159/facebook-production-engineer-e3-menlo-park
+https://leetcode.com/discuss/interview-experience/314014/facebook-network-production-engineer-1st-phone-screen-pass
+https://leetcode.com/discuss/general-discussion/630297/is-anyone-went-through-facebook-production-engineer-interview-process
+https://leetcode.com/discuss/interview-experience/644133/facebook-pe-melno-park-pending
+https://leetcode.com/discuss/interview-experience/825014/fb-reject-phone-15-yrs-is-coding-round-just-about-code
+https://leetcode.com/discuss/general-discussion/642806/product-engineer-at-facebook
+https://leetcode.com/discuss/interview-experience/363952/facebook-production-engineer-phone-screen-1st-rejected
+https://leetcode.com/discuss/interview-experience/1181370/facebook-phone-screen
+https://leetcode.com/discuss/general-discussion/674053/production-network-engineer-coding-interview-dublin
+https://leetcode.com/discuss/interview-experience/570781/facebook-london-march-2020-offer
+https://leetcode.com/discuss/compensation/252988/google-sre-l3-new-grad-offer
+https://leetcode.com/discuss/interview-question/1099978/Discover-Production-Engineering-Facebook
+PART 4 - Facebook - Prep Materials Email
+
+From: FB RECRUITER <FB RECRUITER @ fb . com>
+Sent: Thursday, January 30, 2020 9:55 PM
+Subject: Facebook Prep Materials
+
+Hi Manohar,
+
+Thanks for your time earlier, I really enjoyed our chat. In the mean time, please send me your recent CV so that we can better prepare for the call.
+As discussed please find resources below to assist you with preparation for your Facebook interview.
+
+What to expect during the interview:
+45 mins initial interview with 2 coding questions using a whiteboard (if on site) or laptop and CoderPad (if remote).
+You will be tested on your problem solving and core CS fundamental skills (theory, algorithms, data structures, design patterns, recursions, binary tree questions, etc.).
+You will need to think of an efficient, optimised and bug-free solution to code up quickly and concisely in whatever language you code best in.
+Keep it simple! If you think it's obvious, it probably is. Start with a simple solution, and think about making it more efficient afterwards.
+Coding - we need to know you can translate your thoughts to code and work around any constraints.
+https://www.facebook.com/careers/swe-prep-techscreen
+Use Leetcode website [PRACTISE PRACTICE PRACTICE!]
+Put yourself under time constraints, speed is important in the interview (you will have 30 minutes for 2 problems). The best way to prepare is to solve at least 20-30 problems (medium difficulty), 15 minutes for each during your preparations. This should be the main core of your preparation - at least it highly correlates to success at interviewing with us. Also, please do not leave it at the last weekend or so - you might likely find yourself lacking preparation on the day.
+Talk about what you are doing throughout the interview. If you need to be quiet to think, that’s great – just let the interviewer know.
+I would suggest signing up to our live video interview prep session, this is hosted by one of our Engineers and is a great insight on what to expect from our process, and how this is conducted: https://www.eventbrite.com/o/facebook-london-master-your-fb-interview-11111111111
+
+10 steps to success in your coding interview:
+Do not jump straight into coding, take a few mins to understand the problem and ask any clarifying questions (but not too long!).
+Describe your solution to your interviewer and get their thoughts on your solution.
+Think about your algorithm(s) including the complexity and runtime. Ask the interviewer if it’s ok or if you should think about something more optimised. Then figure out your data structure (Array, Stack/Queue, Hashset/Hashmap/Hashtable/Dictionary, Tree/Binary Tree, Heap, Graph, Bloom Filter, etc.) and implement.
+Run through your code verbally with your interviewer. This is really important at this point. Does it really do what you think it does? Make sure to read what is there, not what you think is there.
+Test your code, put in an input to see what happens. We’re looking for you to find the bugs yourself and fix anything that comes up.
+Restate the complexity. Is it the same, or different to your initial thinking based on what you have actually coded up? Make sure you’re thinking about both space and time.
+Optimise. Proactively suggest ways to optimize to the interviewer and get their feedback to ensure what you’re trying to do is not overly complex and is correct, then code it up.
+Don’t worry about route memorization such as runtimes or API/native calls. It's good to know how to figure out approximate runtimes on the fly but the code you write is more important.
+You will be asked about O(Memory) constraints, the complexity of the algorithm you are writing and its runtime - O(N^2), O(N) etc.
+Important - think about testing your code throughout the interview.
+Typical questions you might get:
+
+Imagine it is your first day here at Facebook. What do you want to work on? What features would you improve on?
+Why are you interested in Facebook? Know about our technical environment (projects, challenges, etc.) and your excitement about Facebook will go a long way.
+What are the most interesting projects you have worked on and how they can be relevant to the Facebook environment.
+What are some of the biggest professional challenges you have faced, and how you have overcome them.
+Finally... Try to have 1-2 questions prepared for the end for your interviewer.
+Please let me know if you have any questions.
+
+Thanks and good luck,
+< FB RECRUITER >
+
+Additional materials:
+https://www.facebook.com/careers/life/preparing-for-your-software-engineering-interview-at-facebook
+https://www.facebook.com/notes/facebook-engineering/get-that-job-at-facebook/10150964382448920
+https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions
+http://cocoanuts.mobi/2014/08/03/facebook/
+https://www.quora.com/How-should-I-prepare-for-a-software-engineer-interview-at-Facebook
+
+Source for questions
+
+LeetCode /interview-question/ pages
+NOTE: All questions of OA, Phone screen and Onsite are included in this list.

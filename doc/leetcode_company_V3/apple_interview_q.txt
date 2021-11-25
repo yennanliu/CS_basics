@@ -1,0 +1,185 @@
+# Apple | Uber | Flipkart | Swiggy | Interview questions | July 2020 - July 2021
+
+
+# https://leetcode.com/discuss/interview-question/1367526/apple-uber-flipkart-swiggy-interview-questions-july-2020-july-2021
+
+Index
+
+NEW! - Facebook | Interview questions | July 2020 - July 2021
+https://leetcode.com/discuss/interview-question/1376426/facebook-interview-questions-july-2020-july-2021
+(This post) - NEW! - Apple | Uber | Flipkart | Swiggy | Interview questions | July 2020 - July 2021
+https://leetcode.com/discuss/interview-question/1367526/apple-uber-flipkart-swiggy-interview-questions-july-2020-july-2021
+NEW! - Amazon | Interview questions | July 2020 - July 2021 (~ last 1 year)
+https://leetcode.com/discuss/interview-question/1358505/Amazon-or-Interview-questions-or-July-2020-July-2021
+NEW! - Bloomberg | Interview questions | July 2020 - July 2021
+https://leetcode.com/discuss/interview-question/1349954/Bloomberg-or-Interview-questions-or-July-2020-July-2021
+Google | Bloomberg | Others | Interview questions | This year
+https://leetcode.com/discuss/interview-question/910825/Google-or-Bloomberg-or-Others-or-Interview-questions-or-This-year
+For Other companies I have not created them, may be these might help:
+Twitter:
+recent - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=newest_to_oldest&query=twitter
+most votes - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=most_votes&query=twitter
+Microsoft
+most votes - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=most_votes&query=microsoft
+recent - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=newest_to_oldest&query=microsoft
+JavaScript questions
+https://leetcode.com/discuss/interview-question/1043676/ea-games-interview-questions/1013277
+Apple | Uber | Flipkart | Swiggy | Interview questions | July 2020 - July 2021
+
+Interview questions, as Leetcode lists
+All in one - https://leetcode.com/list/5bsgfmym
+Apple - https://leetcode.com/list/5bkcmmgv
+Uber - https://leetcode.com/list/5bkcao6j
+Flipkart - https://leetcode.com/list/5bkc25qt
+Swiggy - https://leetcode.com/list/5bkcwgih
+How to clone above LeetCode list, for practising?
+Click on anyone of the above Leetcode List links
+Then click on Clone button
+Now, go to problem list - https://leetcode.com/problemset/all/
+Click the Lists filter (beside Difficulty & Status filters)
+Select the item that starts with pgmreddy name.
+Now you can use the Difficulty filter with Easy/Medium/Hard
+Full list of questions & more, see below.
+Apple
+
+Full list of questions
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+https://leetcode.com/problems/cut-off-trees-for-golf-event/
+https://leetcode.com/problems/find-in-mountain-array/
+https://leetcode.com/problems/frog-position-after-t-seconds/
+https://leetcode.com/problems/group-anagrams/
+https://leetcode.com/problems/intersection-of-two-arrays/
+https://leetcode.com/problems/longest-increasing-subsequence/
+https://leetcode.com/problems/lru-cache/
+https://leetcode.com/problems/maximum-gap/
+https://leetcode.com/problems/merge-sorted-array/
+https://leetcode.com/problems/merge-two-sorted-lists/description/
+https://leetcode.com/problems/min-stack/
+https://leetcode.com/problems/minimum-difference-between-largest-and-smallest-value-in-three-moves/
+https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/
+https://leetcode.com/problems/text-justification/
+https://leetcode.com/problems/valid-anagram/
+Premium
+https://leetcode.com/problems/max-stack/
+Others
+OA
+https://leetcode.com/discuss/interview-question/1324237/Apple-Codesignal-2021
+Phone Screen
+https://leetcode.com/discuss/interview-question/1297099/Apple-or-Phone-Screen
+Onsite
+https://leetcode.com/discuss/interview-question/1048724/Apple-Siri-Rotational-Program-Virtual-Onsite
+Other
+https://www.indeed.com/hire/c/info/star-interview-format
+Uber
+
+Full list of questions
+https://leetcode.com/problems/check-array-formation-through-concatenation/
+https://leetcode.com/problems/largest-rectangle-in-histogram/
+https://leetcode.com/problems/longest-consecutive-sequence/
+https://leetcode.com/problems/longest-repeating-character-replacement/
+https://leetcode.com/problems/maximum-profit-in-job-scheduling/
+https://leetcode.com/problems/minesweeper/
+https://leetcode.com/problems/minimum-window-substring/
+https://leetcode.com/problems/number-of-digit-one/
+https://leetcode.com/problems/regions-cut-by-slashes/
+https://leetcode.com/problems/restore-ip-addresses/
+https://leetcode.com/problems/rotate-image/
+https://leetcode.com/problems/smallest-string-with-swaps/
+https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/
+Premium
+https://leetcode.com/problems/robot-room-cleaner/
+Others
+OA
+https://leetcode.com/discuss/interview-question/1339156/Uber-or-Coding-assessment-online-or-Chemical-elements-in-name
+https://leetcode.com/discuss/interview-question/1272683/Maximum-number-of-stones-Uber-Online-Assessment-India-Codesignal
+https://leetcode.com/discuss/interview-question/1291481/Uber-OA-2-questions-forgot-one
+https://leetcode.com/discuss/interview-question/1273400/Uber-or-OA-or-University-2021-or-code-signal
+https://leetcode.com/discuss/interview-question/1272223/UBER-OA-Questions-codesignal-test-2021
+https://leetcode.com/discuss/interview-question/1272184/UBER-OA-codesignal
+https://leetcode.com/discuss/interview-question/1271316/Uber-or-OA-or-University-2021-or-codesignal
+https://leetcode.com/discuss/interview-question/1147715/Uber-Coding-questions-OA
+https://leetcode.com/discuss/interview-question/1066383/Uber-OA
+https://leetcode.com/discuss/interview-question/1064334/Uber-Oa
+https://leetcode.com/discuss/interview-question/1061013/Uber-OA
+https://leetcode.com/discuss/interview-question/1049739/Uber-or-Quora-OA
+https://leetcode.com/discuss/interview-question/949185/Uber-or-SDE-1-or-US-or-CodeSignal-OA
+https://leetcode.com/discuss/interview-question/788899/Uber-Intern-OA
+https://leetcode.com/discuss/interview-question/836679/Uber-Online-assessment-Sept-2020.
+https://leetcode.com/discuss/interview-question/1095987/UBER-oror-CodeSignal
+Machine coding
+https://leetcode.com/discuss/interview-question/1091960/Uber-L5a-Interview-or-Machine-coding%3A-Multithreaded-Queue-like-Kafka
+On-Campus/ Intern/ New Grad
+https://leetcode.com/discuss/interview-question/968042/Uber-On-Campus-Intern-or-Bangalore-or-2021
+https://leetcode.com/discuss/interview-question/837491/UBER-or-ON-Campus-or-BITS-Pilani-or-2021-Intern
+https://leetcode.com/discuss/interview-question/824006/Uber-Intern-2021-or-campus-or-round-1
+https://leetcode.com/discuss/interview-question/802725/UBER-ONCampus-Interview-20th-AUG-2020
+https://leetcode.com/discuss/interview-question/1272347/Uber-CodeSignal-Grad21-hiring
+Phone screen
+https://leetcode.com/discuss/interview-question/1290221/Uber-phone-screening-(Location-India)
+https://leetcode.com/discuss/interview-question/1006028/UBER-or-Phone-screen-or-Senior-Software-Engineer-iOS-Rider-foundation
+https://leetcode.com/discuss/interview-question/936314/Uber-SDE2-or-Bangalore-or-Phone
+https://leetcode.com/discuss/interview-question/853206/Uber-or-Phone-Interview-or-Subsets-without-distinct-pairs-of-elements
+https://leetcode.com/discuss/interview-question/764273/Uber-Phone-Interview-or-Full-Stack-Engineer
+https://leetcode.com/discuss/interview-question/756520/number-of-valid-parenthesis-UBER-PhoneReject
+Senior
+https://leetcode.com/discuss/interview-question/1117704/Node-sharing-question-Uber
+Design
+https://leetcode.com/discuss/interview-question/874074/Food-Delivery-App-or-Low-Level-Design-or-Interview-Question
+Flipkart
+
+Full list of questions
+https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination/
+https://leetcode.com/problems/trim-a-binary-search-tree/
+https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
+https://leetcode.com/problems/merge-intervals/
+https://leetcode.com/problems/can-place-flowers/
+Others
+Machine coding
+https://leetcode.com/discuss/interview-question?currentPage=2&orderBy=newest_to_oldest&query=flipkart
+https://leetcode.com/discuss/interview-question/1344241/Flipkart-Machine-coding-round
+https://leetcode.com/discuss/interview-question/1313481/SDE2-amazon-vs-SDE3-flipkart
+https://leetcode.com/discuss/interview-question/1250910/Flipkart-SDE1-or-Machine-Coding
+https://leetcode.com/discuss/interview-question/1250578/Flipkart-SDE-II-or-Machine-coding
+https://leetcode.com/discuss/interview-question/1243937/How-to-prepare-for-Machine-Coding-round
+https://leetcode.com/discuss/interview-question/1241021/Flipkart-Interview-Question
+https://leetcode.com/discuss/interview-question/1223473/Flipkart-SDE2-Machine-Code-Round-Question
+https://leetcode.com/discuss/interview-question/1195385/Flipkart-or-PS-round-or-SDE3
+https://leetcode.com/discuss/interview-question/1185307/Flipkart-or-Machine-Coding-or-Vehicle-Rental-Service
+https://leetcode.com/discuss/interview-question/1177601/Flipkart-or-Machine-Coding-or-Design-Online-Coding-Platform-CODING-BLOX-Leetcode-LLD
+https://leetcode.com/discuss/interview-question/1169779/Flipkart-UI-Engineer
+https://leetcode.com/discuss/interview-question/1165608/Flipkart-or-Machine-Coding-Round-or-Design-Car-Rental-System
+https://leetcode.com/discuss/interview-question/1144881/Flipkart-or-Machine-Coding-Round-or-Design-Car-Rental-System
+https://leetcode.com/discuss/interview-question/991036/Flipkart-or-OA-or-Special-substring
+https://leetcode.com/discuss/interview-question/985247/Flipkart-SDE-or-First-Round-or-Machine-Coding
+https://leetcode.com/discuss/interview-question/856450/Flipkart-or-Online-Assesment(new-grad-2021-India)-or-Draw-String
+Design
+https://leetcode.com/discuss/interview-question/1097393/Design-a-ride-sharing-application
+https://leetcode.com/discuss/interview-question/910978/Amazon-SDE-2-4-years-experience-Design-round
+https://leetcode.com/discuss/interview-question/663037/Amazon-SystemDesign-Flipkart-Suggestions-Design-Warehouse-Portal
+https://leetcode.com/discuss/interview-question/548816/Amazon-or-System-Design-or-Web-Crawler-Detector
+Swiggy
+
+Full list of questions
+https://leetcode.com/problems/burst-balloons/
+https://leetcode.com/problems/cherry-pickup/
+https://leetcode.com/problems/maximum-profit-in-job-scheduling/
+https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
+Others
+OA
+https://leetcode.com/discuss/interview-question/1097692/Swiggy-or-SDE-2-or-Hackerrank-OA-or-Flexible-Strings
+https://leetcode.com/discuss/interview-question/516442/Swiggy-or-OA-2020-or-Is-Possible-or-Minimum-start-value-or-Power-sum
+https://leetcode.com/discuss/interview-question/307731/Swiggy-online-assessment-Check-Express
+Machine Coding
+https://leetcode.com/discuss/interview-question/1222917/Swiggy-or-Machine-Coding-Round-or-SDE-2-or-Navigation-Alerts-System
+https://leetcode.com/discuss/interview-question/985247/Flipkart-SDE-or-First-Round-or-Machine-Coding
+https://leetcode.com/discuss/interview-question/1039553/Swiggy-interview-question
+Onsite
+https://leetcode.com/discuss/interview-question/370465/Swiggy-or-Onsite-or-Maximize-Revenue
+Experienced
+https://leetcode.com/discuss/interview-question/1299097/Swiggy-or-SDE-4-or-Apr-2021-or-Reject
+Design
+https://leetcode.com/discuss/interview-question/1322763/Swiggy-LLD-question
+Source for questions
+
+LeetCode /interview-question/ pages
+NOTE: All questions of OA, Phone screen and Onsite are included in this list.
