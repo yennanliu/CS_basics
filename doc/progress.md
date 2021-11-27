@@ -17,7 +17,7 @@
 				- 100 (ok)
 				- 572 (ok !!)
 				- 297 (again !!!)
-				- 124 (not start)
+				- 124 (again!)
 			- Binary Search
 			- linked list
 			- sliding window
