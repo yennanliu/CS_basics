@@ -15,8 +15,7 @@
 			- Binary Search Tree
 				- 102 (ok)
 				- 100 (ok)
-				- 572 (again !)
-
+				- 572 (ok !!)
 				- 297 (again !!)
 				- 124 (not start)
 			- Binary Search
