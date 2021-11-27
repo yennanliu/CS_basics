@@ -692,6 +692,50 @@ class Solution:
 ### 2-6) Subtree of Another Tree
 ```python
 # LC 572 Subtree of Another Tree
+
+# V0
+# IDEA : BFS + DFS
+# bfs
+class Solution(object):
+    def isSubtree(self, root, subRoot):
+        
+        # dfs
+        # IDEA : LC 100 Same tree
+        def check(p, q):
+            if (not p and not q):
+                return True
+            elif (not p and q) or (p and not q):
+                return False
+            elif (p.left and not q.left) or (p.right and not q.right):
+                return False
+            elif (not p.left and q.left) or (not p.right and q.right):
+                return False
+            return p.val == q.val and check(p.left, q.left) and check(p.right, q.right)
+        
+        # bfs
+        if (not root and subRoot) or (root and not subRoot):
+            return False
+        q = [root]
+        cache = []
+        while q:
+            for i in range(len(q)):
+                tmp = q.pop(0)
+                if tmp.val == subRoot.val:
+                    ### NOTE : here we don't return res
+                    #          -> since we may have `root = [1,1], subRoot = [1]` case
+                    #          -> so we have a cache, collect all possible res
+                    #          -> then check if there is "True" in cache
+                    res = check(tmp, subRoot)
+                    cache.append(res)
+                    #return res
+                if tmp.left:
+                    q.append(tmp.left)
+                if tmp.right:
+                    q.append(tmp.right)
+        #print ("cache = " + str(cache))
+        # check if there is "True" in cache
+        return True in cache
+
 # V0' 
 # IDEA : DFS + DFS 
 class Solution(object):
@@ -701,33 +745,6 @@ class Solution(object):
         if not s or not t:
             return False
         return self.isSameTree(s, t) or self.isSubtree(s.left, t) or self.isSubtree(s.right, t)
-        
-    def isSameTree(self, s, t):
-        if not s and not t:
-            return True
-        if not s or not t:
-            return False
-        return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
-
-# V0'
-# IDEA : BFS + DFS 
-class Solution(object):
-    def isSubtree(self, s, t):
-        if not s and not t:
-            return True
-        if not s or not t:
-            return False
-        que = collections.deque()
-        que.append(s)
-        while que:
-            node = que.popleft()
-            if not node:
-                continue
-            if self.isSameTree(node, t):
-                return True
-            que.append(node.left)
-            que.append(node.right)
-        return False
         
     def isSameTree(self, s, t):
         if not s and not t:

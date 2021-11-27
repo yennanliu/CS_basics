@@ -32,6 +32,49 @@ Submissions
 """
 
 # V0
+# IDEA : BFS + DFS
+# bfs
+class Solution(object):
+    def isSubtree(self, root, subRoot):
+        
+        # dfs
+        # IDEA : LC 100 Same tree
+        def check(p, q):
+            if (not p and not q):
+                return True
+            elif (not p and q) or (p and not q):
+                return False
+            elif (p.left and not q.left) or (p.right and not q.right):
+                return False
+            elif (not p.left and q.left) or (not p.right and q.right):
+                return False
+            return p.val == q.val and check(p.left, q.left) and check(p.right, q.right)
+        
+        # bfs
+        if (not root and subRoot) or (root and not subRoot):
+            return False
+        q = [root]
+        cache = []
+        while q:
+            for i in range(len(q)):
+                tmp = q.pop(0)
+                if tmp.val == subRoot.val:
+                    ### NOTE : here we don't return res
+                    #          -> since we may have `root = [1,1], subRoot = [1]` case
+                    #          -> so we have a cache, collect all possible res
+                    #          -> then check if there is "True" in cache
+                    res = check(tmp, subRoot)
+                    cache.append(res)
+                    #return res
+                if tmp.left:
+                    q.append(tmp.left)
+                if tmp.right:
+                    q.append(tmp.right)
+        #print ("cache = " + str(cache))
+        # check if there is "True" in cache
+        return True in cache
+
+# V0
 # IDEA : DFS + DFS 
 class Solution(object):
     def isSubtree(self, s, t):
@@ -39,6 +82,7 @@ class Solution(object):
             return True
         if not s or not t:
             return False
+        ### NOTE : below use both isSameTree, and isSubtree
         return self.isSameTree(s, t) or self.isSubtree(s.left, t) or self.isSubtree(s.right, t)
         
     def isSameTree(self, s, t):
