@@ -30,6 +30,25 @@ while len(queue) > 0:
 
 ## 1) General form
 ```python
+
+# V0 : via python default
+def bfs(root):
+    if not root:
+        return
+    q =[]
+    q.append(root)
+    while root:
+        for i in range(len(q)):
+            ### NOTE : we need to pop the 1st element (idx = 0), BUT NOT THE LAST element
+            #        -> default is pop last element (e.g. q.pop() equals q.pop(-1))
+            root = q.pop(0)
+            # do sth
+            if root.left:
+                q.append(root.left)
+            if root.right:
+                q.append(root.right)
+    # do sth
+
 # V1 : via collections.deque
 import collections
 queue = collections.deque() 
@@ -41,6 +60,7 @@ def bfs(root):
         for i in range(len(queue)):
             ### NOTE : the variable from popleft
             #          should be used in node.left, node.right op below
+            ### NOTE : we need to pop the 1st element (idx = 0), BUT NOT THE LAST element
             node = queue.popleft() 
             # do sth 
             if node.left:
@@ -50,22 +70,6 @@ def bfs(root):
         return queue
 
 # V2 : via python default
-def bfs(root):
-    if not root:
-        return
-    q =[]
-    q.append(root)
-    while root:
-        for i in range(len(q)):
-            root = q.pop()
-            # do sth
-            if root.left:
-                q.append(root.left)
-            if root.right:
-                q.append(root.right)
-    # do sth
-
-# V3 : via python default
 def bfs(root):
     if not root: return 
     q=[root]
