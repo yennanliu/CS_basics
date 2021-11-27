@@ -736,3 +736,27 @@ class Solution(object):
             return False
         return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
 ```
+
+### 2-7) Same Tree
+```python
+# LC 100 Same tree
+# V0
+# IDEA : Recursion
+class Solution(object):
+    def isSameTree(self, p, q):
+        
+        def dfs(p, q):
+            ### NOTE : we need to put this as 1st condition, or will cause "not sub tree" error
+            if not p and not q:
+                return True
+            ### NOTE : elif (but not `if`)
+            elif (not p and q) or (p and not q):
+                return False
+            ### NOTE : elif (but not `if`)
+            elif p.val != q.val:
+                return False
+            return dfs(p.left, q.left) and dfs(p.right, q.right)
+        
+        res = dfs(p, q)
+        return res
+```

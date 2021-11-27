@@ -14,8 +14,10 @@
 			- **back track**
 			- Binary Search Tree
 				- 102 (ok)
-				- 297 (again !!)
+				- 100 (ok)
 				- 572 (again !)
+
+				- 297 (again !!)
 				- 124 (not start)
 			- Binary Search
 			- linked list
