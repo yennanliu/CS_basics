@@ -769,7 +769,7 @@
 ## Breadth-First Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-102| [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)| [Python](./leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal.py)| _O(n)_| _O(n)_| Easy  |`GOOD basic`, `dfs`, `bfs`,`UBER`, `apple`,`amazon`,`fb`|  AGAIN******* (6) (must)
+102| [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)| [Python](./leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal.py)| _O(n)_| _O(n)_| Easy  |`GOOD basic`, `dfs`, `bfs`,`UBER`, `apple`,`amazon`,`fb`|  AGAIN******* (7) (must)
 107| [Binary Tree Level Order Traversal II](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)| [Python](./leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal-ii.py) | _O(n)_| _O(n)_| Easy  |same as `# 102 Binary Tree Level Order Traversal`| OK* (2) 
 103| [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)| [Python](./leetcode_python/Breadth-First-Search/binary-tree-zigzag-level-order-traversal.py) | _O(n)_| _O(n)_| Medium  |`amazon`,`fb`| OK 
 127| [Word Ladder](https://leetcode.com/problems/word-ladder/)| [Python](./leetcode_python/Breadth-First-Search/word-ladder.py) | _O(n * d)_   | _O(d)_ | Hard/Medium |check #126 Word Ladder II, `bfs`,`good trick`,  `UBER`, `amazon`, `M$`, `fb`| AGAIN********** (7)

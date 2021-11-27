@@ -90,6 +90,29 @@ def bfs(root):
 # 102 Binary Tree Level Order Traversal
 # 107 Binary Tree Level Order Traversal II
 # 103 Binary Tree Zigzag Level Order Traversal
+
+# V0
+# IDEA : BFS
+class Solution(object):
+    def levelOrder(self, root):
+        if not root:
+            return []
+        res = []
+        _layer=0
+        q = [[root, _layer]]
+        while q:
+            for i in range(len(q)):
+                tmp, _layer = q.pop(0)
+                if len(res) <= _layer:
+                    res.append([])
+                res[_layer].append(tmp.val)
+                if tmp.left:
+                    q.append([tmp.left, _layer+1])
+                if tmp.right:
+                    q.append([tmp.right, _layer+1])
+        return res
+
+# V0'
 # note : there is also a dfs solution
 class Solution(object):
     def levelOrder(self, root):

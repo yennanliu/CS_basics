@@ -1,4 +1,5 @@
 """
+
 Given a binary tree, return the level order traversal of its nodes’ values. 
 (ie, from left to right, level by level).
 
@@ -47,6 +48,27 @@ return its level order traversal as:
 """
 
 # V0
+# IDEA : BFS
+class Solution(object):
+    def levelOrder(self, root):
+        if not root:
+            return []
+        res = []
+        _layer=0
+        q = [[root, _layer]]
+        while q:
+            for i in range(len(q)):
+                tmp, _layer = q.pop(0)
+                if len(res) <= _layer:
+                    res.append([])
+                res[_layer].append(tmp.val)
+                if tmp.left:
+                    q.append([tmp.left, _layer+1])
+                if tmp.right:
+                    q.append([tmp.right, _layer+1])
+        return res
+
+# V0'
 # IDEA : BFS
 import collections
 class Solution(object):
