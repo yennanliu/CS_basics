@@ -1,11 +1,94 @@
+"""
+
+297. Serialize and Deserialize Binary Tree
+Hard
+
+Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+
+Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.
+
+Clarification: The input/output format is the same as how LeetCode serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.
+
+ 
+
+Example 1:
+
+
+Input: root = [1,2,3,null,null,4,5]
+Output: [1,2,3,null,null,4,5]
+Example 2:
+
+Input: root = []
+Output: []
+Example 3:
+
+Input: root = [1]
+Output: [1]
+Example 4:
+
+Input: root = [1,2]
+Output: [1,2]
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 104].
+-1000 <= Node.val <= 1000
+
+"""
+
 # V0
-import collections
+# IDEA : DFS + tree property + recursive  + queue
 class Codec:
+    ### DFS
     def serialize(self, root):
         vals = []
         def preOrder(root):
             if not root:
                 vals.append('#')
+            ### NOTE : we have else logic, and put all other cases under it
+            #      -> TODO : check if we can do `if elif...else`
+            else:
+                vals.append(str(root.val))
+                preOrder(root.left)
+                preOrder(root.right)
+        preOrder(root)
+        return ' '.join(vals)
+
+    def deserialize(self, data):
+        vals = [val for val in data.split()]
+        ### NOTE : recursive
+        def build():
+            ### NOTE : when there is element in vals, we keep recursive running
+            if vals:
+                ### NOTE : vals already retrieved via `[val for val in data.split()]`
+                #      -> so every time we pop its 1st element, we are able to get all if elements one by one
+                #      -> then we can build the tree via recursive (root.left = build(),  root.right = build())
+                val = vals.pop(0)
+                if val == '#':
+                    return None
+                ### NOTE : we get root via current val (val = vals.popleft())
+                root = TreeNode(int(val))
+                ### NOTE  : root.left comes from build()
+                root.left = build()
+                ### NOTE  : root.right comes from build()
+                root.right = build()
+                ### NOTE  : we need to return root
+                return root
+        return build()
+
+# V0'
+# IDEA : DFS + tree property + recursive + collections.deque
+import collections
+class Codec:
+    ### DFS
+    def serialize(self, root):
+        vals = []
+        def preOrder(root):
+            if not root:
+                vals.append('#')
+            ### NOTE : we have else logic, and put all other cases under it
+            #      -> TODO : check if we can do `if elif...else`
             else:
                 vals.append(str(root.val))
                 preOrder(root.left)
@@ -15,14 +98,21 @@ class Codec:
 
     def deserialize(self, data):
         vals = collections.deque(val for val in data.split())
+        ### NOTE : recursive
         def build():
+            ### NOTE : when there is element in vals, we keep recursive running
             if vals:
+                ### NOTE : we use popleft
                 val = vals.popleft()
                 if val == '#':
                     return None
+                ### NOTE : we get root via current val (val = vals.popleft())
                 root = TreeNode(int(val))
+                ### NOTE  : root.left comes from build()
                 root.left = build()
+                ### NOTE  : root.right comes from build()
                 root.right = build()
+                ### NOTE  : we need to return root
                 return root
         return build()
 

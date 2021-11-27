@@ -777,3 +777,47 @@ class Solution(object):
         res = dfs(p, q)
         return res
 ```
+
+### 2-8) Serialize and Deserialize Binary Tree
+```python
+# LC 297. Serialize and Deserialize Binary Tree
+# V0
+# IDEA : DFS + tree property + recursive  + queue
+class Codec:
+    ### DFS
+    def serialize(self, root):
+        vals = []
+        def preOrder(root):
+            if not root:
+                vals.append('#')
+            ### NOTE : we have else logic, and put all other cases under it
+            #      -> TODO : check if we can do `if elif...else`
+            else:
+                vals.append(str(root.val))
+                preOrder(root.left)
+                preOrder(root.right)
+        preOrder(root)
+        return ' '.join(vals)
+
+    def deserialize(self, data):
+        vals = [val for val in data.split()]
+        ### NOTE : recursive
+        def build():
+            ### NOTE : when there is element in vals, we keep recursive running
+            if vals:
+                ### NOTE : vals already retrieved via `[val for val in data.split()]`
+                #      -> so every time we pop its 1st element, we are able to get all if elements one by one
+                #      -> then we can build the tree via recursive (root.left = build(),  root.right = build())
+                val = vals.pop(0)
+                if val == '#':
+                    return None
+                ### NOTE : we get root via current val (val = vals.popleft())
+                root = TreeNode(int(val))
+                ### NOTE  : root.left comes from build()
+                root.left = build()
+                ### NOTE  : root.right comes from build()
+                root.right = build()
+                ### NOTE  : we need to return root
+                return root
+        return build()
+```
