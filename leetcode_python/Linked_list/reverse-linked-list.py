@@ -29,6 +29,30 @@ Follow up: A linked list can be reversed either iteratively or recursively. Coul
 
 # V0
 # IDEA : Linkedlist basics
+# DEMO
+# input = [1,2,3,4,5]
+# prev = None
+# prev = ListNode{val: 1, next: None}
+# prev = ListNode{val: 2, next: ListNode{val: 1, next: None}}
+# prev = ListNode{val: 3, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}
+# prev = ListNode{val: 4, next: ListNode{val: 3, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}}
+# prev = ListNode{val: 5, next: ListNode{val: 4, next: ListNode{val: 3, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}}}
+class Solution(object):
+    def reverseList(self, head):
+        if not head:
+            return head
+        prev = None
+        cur = head
+        while cur:
+            _next = cur.next
+            #print ("prev = " + str(prev))
+            cur.next = prev
+            prev = cur
+            cur = _next
+        return prev
+
+# V0'
+# IDEA : Linkedlist basics
 class Solution:
     def reverseList(self, head):
         ### NOTE : we define _prev, _cur first

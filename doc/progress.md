@@ -7,13 +7,16 @@
 		- programming
 			- review
 			- (normal order)
-			- (pdf : p.1)	
+			- (pdf : p.1)
+				- 191
+				- 237
 				- 435
 			- =======
 			- **back track**
 			- Binary Search Tree
 			- Binary Search
 			- linked list
+				- 206 (OK!)
 			- sliding window
 			- Tree
 			- =======
@@ -113,13 +116,13 @@
 			- review
 			- (normal order)
 			- (pdf : p.1)
-				- 206 (again!!!)
 				- 042
 			- =======
 			- **back track**
 			- Binary Search Tree
 			- Binary Search
 			- linked list
+				- 206 (again!!!)
 			- sliding window
 			- Tree
 			- =======
