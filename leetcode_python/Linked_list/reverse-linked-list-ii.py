@@ -1,6 +1,133 @@
+"""
+
+92. Reverse Linked List II
+Medium
+
+Given the head of a singly linked list and two integers left and right where left <= right, reverse the nodes of the list from position left to position right, and return the reversed list.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5], left = 2, right = 4
+Output: [1,4,3,2,5]
+Example 2:
+
+Input: head = [5], left = 1, right = 1
+Output: [5]
+ 
+
+Constraints:
+
+The number of nodes in the list is n.
+1 <= n <= 500
+-500 <= Node.val <= 500
+1 <= left <= right <= n
+ 
+
+Follow up: Could you do it in one pass?
+
+"""
+
 # V0
 
-# V1 
+# V1
+# IDEA : Iterative Link Reversal
+# https://leetcode.com/problems/reverse-linked-list-ii/solution/
+class Solution:
+    def reverseBetween(self, head, m, n):
+        """
+        :type head: ListNode
+        :type m: int
+        :type n: int
+        :rtype: ListNode
+        """
+
+        # Empty list
+        if not head:
+            return None
+
+        # Move the two pointers until they reach the proper starting point
+        # in the list.
+        cur, prev = head, None
+        while m > 1:
+            prev = cur
+            cur = cur.next
+            m, n = m - 1, n - 1
+
+        # The two pointers that will fix the final connections.
+        tail, con = cur, prev
+
+        # Iteratively reverse the nodes until n becomes 0.
+        while n:
+            third = cur.next
+            cur.next = prev
+            prev = cur
+            cur = third
+            n -= 1
+
+        # Adjust the final connections as explained in the algorithm
+        if con:
+            con.next = prev
+        else:
+            head = prev
+        tail.next = cur
+        return head
+
+# V1'
+# IDEA : Recursion
+# https://leetcode.com/problems/reverse-linked-list-ii/solution/
+class Solution:
+    def reverseBetween(self, head, m, n):
+        """
+        :type head: ListNode
+        :type m: int
+        :type n: int
+        :rtype: ListNode
+        """
+
+        if not head:
+            return None
+
+        left, right = head, head
+        stop = False
+        def recurseAndReverse(right, m, n):
+            nonlocal left, stop
+
+            # base case. Don't proceed any further
+            if n == 1:
+                return
+
+            # Keep moving the right pointer one step forward until (n == 1)
+            right = right.next
+
+            # Keep moving left pointer to the right until we reach the proper node
+            # from where the reversal is to start.
+            if m > 1:
+                left = left.next
+
+            # Recurse with m and n reduced.
+            recurseAndReverse(right, m - 1, n - 1)
+
+            # In case both the pointers cross each other or become equal, we
+            # stop i.e. don't swap data any further. We are done reversing at this
+            # point.
+            if left == right or right.next == left:
+                stop = True
+
+            # Until the boolean stop is false, swap data between the two pointers     
+            if not stop:
+                left.val, right.val = right.val, left.val
+
+                # Move left one step to the right.
+                # The right pointer moves one step back via backtracking.
+                left = left.next           
+
+        recurseAndReverse(right, m, n)
+        return head
+
+# V1''
 # http://bookshadow.com/weblog/2015/01/29/leetcode-reverse-linked-list-ii/
 # IDEA : dummyNode
 # Definition for singly-linked list.
@@ -19,10 +146,6 @@
 #        self.val = x
 #        self.next = None
 class Solution:
-    # @param head, a ListNode
-    # @param m, an integer
-    # @param n, an integer
-    # @return a ListNode
     def reverseBetween(self, head, m, n):
         dummyNode = ListNode(0)
         p = dummyNode
@@ -92,10 +215,6 @@ class ListNode(object):
         if self:
             return "{} -> {}".format(self.val, repr(self.__next__))
 class Solution(object):
-    # @param head, a ListNode
-    # @param m, an integer
-    # @param n, an integer
-    # @return a ListNode
     def reverseBetween(self, head, m, n):
         diff, dummy, cur = n - m + 1, ListNode(-1), head
         dummy.next = head
