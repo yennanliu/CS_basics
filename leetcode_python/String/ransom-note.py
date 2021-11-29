@@ -1,22 +1,45 @@
-# Time:  O(n)
-# Space: O(1)
+"""
 
-# Given an arbitrary ransom note string and another string containing letters
-# from all the magazines, write a function that will return true if
-# the ransom  note can be constructed from the magazines ;
-# otherwise, it will return false.
-#
-# Each letter in the magazine string can only be used once in your ransom note.
-#
-# Note:
-# You may assume that both strings contain only lowercase letters.
-#
-# canConstruct("a", "b") -> false
-# canConstruct("aa", "ab") -> false
-# canConstruct("aa", "aab") -> true
+383. Ransom Note
+Easy
 
+Given two stings ransomNote and magazine, return true if ransomNote can be constructed from magazine and false otherwise.
+
+Each letter in magazine can only be used once in ransomNote.
+
+ 
+
+Example 1:
+
+Input: ransomNote = "a", magazine = "b"
+Output: false
+Example 2:
+
+Input: ransomNote = "aa", magazine = "ab"
+Output: false
+Example 3:
+
+Input: ransomNote = "aa", magazine = "aab"
+Output: true
+ 
+
+Constraints:
+
+1 <= ransomNote.length, magazine.length <= 105
+ransomNote and magazine consist of lowercase English letters.
+
+"""
 
 # V0 
+from collections import Counter
+class Solution(object):
+    def canConstruct(self, ransomNote, magazine):
+        r_count = Counter(ransomNote)
+        m_count = Counter(magazine)
+        for key in r_count:
+            if r_count[key] > m_count[key]:
+                return False
+        return True
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/54178342
