@@ -11,6 +11,7 @@
 				- 383
 				- 74
 				- 240
+				- 036
 			- =======
 			- **back track**
 			- Binary Search Tree
