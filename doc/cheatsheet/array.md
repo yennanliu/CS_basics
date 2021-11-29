@@ -312,3 +312,33 @@ class Solution:
                 res[i][j] = sum(temp)//len(temp)
         return res
 ```
+
+### 2-7) Search a 2D Matrix
+```python
+# LC 74 Search a 2D Matrix
+# LC 240. Search a 2D Matrix II
+# V0'
+# IDEA : DFS
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        def dfs(matrix, target, x, y):
+            if matrix[y][x] == target:
+                res.append(True)
+            matrix[y][x] = "#"
+            moves = [[0,1],[0,-1],[1,0],[-1,0]]
+            for move in moves:
+                _x = x + move[1]
+                _y = y + move[0]
+                #print ("_x = " + str(_x) + " _y = " + str(_y))
+                if 0 <= _x < w and 0 <= _y < l:
+                    if matrix[_y][_x] != "#":
+                        dfs(matrix, target, _x, _y)
+
+        if not matrix:
+            return False
+        l = len(matrix)
+        w = len(matrix[0])
+        res = []
+        dfs(matrix, target, 0, 0)
+        return True in res
+```
