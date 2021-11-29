@@ -495,7 +495,7 @@
 242| [Valid Anagram](https://leetcode.com/problems/valid-anagram/)| [python](./leetcode_python/String/valid-anagram.py) | _O(n)_ | _O(1)_  | Easy | LintCode,`amazon`,`fb`|OK 
 271| [Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings/) | [python](./leetcode_python/String/encode-and-decode-strings.py)  | _O(n)_ | _O(1)_ | Medium |decode-encode, design, check `# 394 Decode String` ,🔒, `google`| AGAIN** (2) 
 306| [Addictive Number](https://leetcode.com/problems/additive-number/) | [python](./leetcode_python/String/additive-number.py)  | _O(n^3)_ | _O(n)_ | Medium    | | AGAIN (not start*)
-383| [Ransom Note](https://leetcode.com/problems/ransom-note/) |[python](./leetcode_python/String/ransom-note.py) | _O(n)_ | _O(1)_ | Easy   | EPI | OK*
+383| [Ransom Note](https://leetcode.com/problems/ransom-note/) |[python](./leetcode_python/String/ransom-note.py) | _O(n)_ | _O(1)_ | Easy   | EPI, apple | OK*
 405| [Convert a Number to Hexadecimal](https://leetcode.com/problems/convert-a-number-to-hexadecimal/) | [python](./leetcode_python/String/convert-a-number-to-hexadecimal.py) | _O(n)_ | _O(1)_ | Easy  | `basics` `decimal -> Hexadecimal`| AGAIN 
 408| [Valid Word Abbreviation](https://leetcode.com/problems/valid-word-abbreviation/) | [python](./leetcode_python/String/valid-word-abbreviation.py) | _O(n)_ | _O(1)_ | Easy     | 🔒 | AGAIN (not start)
 415| [Add Strings](https://leetcode.com/problems/add-strings/) | [python](./leetcode_python/String/add-strings.py)| _O(n)_ | _O(1)_ | Easy   | `basic`, `string add`, `Airbnb`, `google`, `fb`|  OK** (3)
