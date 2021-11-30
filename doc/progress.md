@@ -27,6 +27,8 @@
 			- 1972
 			- 1965
 			- 1951
+			- 1949
+			- 1939
 	- Crack Code
 	- System Design
 		- Netflix system design
