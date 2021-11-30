@@ -1,5 +1,46 @@
 # Progress
 
+# 2021-12-01
+- DOING:
+	- LC (appl_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
+		- programming
+			- review
+			- (normal order)
+			- (pdf : p.1)
+			- =======
+			- **back track**
+			- Binary Search Tree
+			- Binary Search
+			- linked list
+			- sliding window
+			- Tree
+			- =======
+			- hash table
+			- bit manipulation
+			- union find
+			- quick sort
+			- intervals
+		- SQL
+			- =======
+			- (inverse order)
+			- 1831
+			- 1811
+			- 1809
+			- 1795
+			- 1789
+			- 1783
+			- 1777
+			- 1747
+	- Crack Code
+	- System Design
+		- Netflix system design
+	- algorithm book (labu)
+		- read
+			- P.381 -
+		- note
+			- p.279
+
 # 2021-11-30
 - DOING:
 	- LC (appl_)
