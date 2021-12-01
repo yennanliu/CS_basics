@@ -1118,7 +1118,7 @@
 1393| [Capital Gain/Loss](https://leetcode.com/problems/capital-gainloss/) | [MySQL](./leetcode_SQL/capital-gainloss.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK
 1398| [Customers Who Bought Products A and B but Not C](https://leetcode.com/problems/customers-who-bought-products-a-and-b-but-not-c/) | [MySQL](./leetcode_SQL/customers-who-bought-products-a-and-b-but-not-c.sql) | _O(m + n)_ | _O(m + n)_| Medium|🔒| OK
 1407| [Top Travellers](https://leetcode.com/problems/top-travellers/) | [MySQL](./leetcode_SQL/top-travellers.sql) | _O(m + nlogn)_ | _O(m + n)_| Easy|🔒, ifnull| OK*
-1412| [Find the Quiet Students in All Exams](https://leetcode.com/problems/find-the-quiet-students-in-all-exams/) | [MySQL](./leetcode_SQL/find-the-quiet-students-in-all-exams.sql) | _O(m + nlogn)_ | _O(m + n)_| Hard|🔒, good trick, not in, inner join on multiple cols| OK**** (2) (but again)
+1412| [Find the Quiet Students in All Exams](https://leetcode.com/problems/find-the-quiet-students-in-all-exams/) | [MySQL](./leetcode_SQL/find-the-quiet-students-in-all-exams.sql) | _O(m + nlogn)_ | _O(m + n)_| Hard|🔒, good trick, not in, inner join on multiple cols| OK**** (3) (but again)
 1421| [NPV Queries](https://leetcode.com/problems/npv-queries/) | [MySQL](./leetcode_SQL/npv-queries.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK
 1435| [Create a Session Bar Chart](https://leetcode.com/problems/create-a-session-bar-chart/) | [MySQL](./leetcode_SQL/create-a-session-bar-chart.sql) | _O(n)_ | _O(1)_| Easy|🔒| OK
 1440| [Evaluate Boolean Expression](https://leetcode.com/problems/evaluate-boolean-expression/) | [MySQL](./leetcode_SQL/evaluate-boolean-expression.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK
