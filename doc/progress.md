@@ -45,6 +45,8 @@
 			- 1532
 			- 1511
 			- 1501
+			- 1479
+			- 1412
 	- Crack Code
 	- System Design
 		- Netflix system design
