@@ -1066,7 +1066,7 @@
 1070| [Product Sales Analysis III](https://leetcode.com/problems/product-sales-analysis-iii/) | [MySQL](./leetcode_SQL/product-sales-analysis-iii.sql) | _O(n)_ | _O(n)_       | Medium       |🔒| OK 
 1075| [Project Employees I](https://leetcode.com/problems/project-employees-i/) | [MySQL](./leetcode_SQL/project-employees-i.sql) | _O(m + n)_ | _O(m + n)_       | Easy        |🔒 | OK 
 1076| [Project Employees II](https://leetcode.com/problems/project-employees-ii/) | [MySQL](./leetcode_SQL/project-employees-ii.sql)  | _O(n)_ | _O(n)_=| Easy=|🔒|  OK (2) 
-1077| [Project Employees III](https://leetcode.com/problems/project-employees-iii/) | [MySQL](./leetcode_SQL/project-employees-iii.sql)  | _O((m + n)^2)_ | _O(m + n)_   | Medium   |🔒, `tricky where`| AGAIN 
+1077| [Project Employees III](https://leetcode.com/problems/project-employees-iii/) | [MySQL](./leetcode_SQL/project-employees-iii.sql)  | _O((m + n)^2)_ | _O(m + n)_   | Medium   |🔒, `tricky where`| OK***** (2) (but again) 
 1082| [Sales Analysis I](https://leetcode.com/problems/sales-analysis-i/) |  [MySQL](./leetcode_SQL/sales-analysis-i.sql)  | _O(n)_ | _O(n)_ | Easy   |🔒, group by only 1 col, good basic | OK*** (3)
 1083| [Sales Analysis II](https://leetcode.com/problems/sales-analysis-ii/) | [MySQL](./leetcode_SQL/sales-analysis-ii.sql) | _O(m + n)_ | _O(m + n)_| Easy|🔒| OK* (2)
 1084| [Sales Analysis III](https://leetcode.com/problems/sales-analysis-iii/) | [MySQL](./leetcode_SQL/sales-analysis-iii.sql) | _O(m + n)_ | _O(m + n)_| Easy |🔒 | OK** (2)
