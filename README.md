@@ -1070,7 +1070,7 @@
 1082| [Sales Analysis I](https://leetcode.com/problems/sales-analysis-i/) |  [MySQL](./leetcode_SQL/sales-analysis-i.sql)  | _O(n)_ | _O(n)_ | Easy   |🔒, group by only 1 col, good basic | OK*** (3)
 1083| [Sales Analysis II](https://leetcode.com/problems/sales-analysis-ii/) | [MySQL](./leetcode_SQL/sales-analysis-ii.sql) | _O(m + n)_ | _O(m + n)_| Easy|🔒| OK* (2)
 1084| [Sales Analysis III](https://leetcode.com/problems/sales-analysis-iii/) | [MySQL](./leetcode_SQL/sales-analysis-iii.sql) | _O(m + n)_ | _O(m + n)_| Easy |🔒 | OK** (2)
-1097| [Game Play Analysis V](https://leetcode.com/problems/game-play-analysis-v/) | [MySQL](./leetcode_SQL/game-play-analysis-v.sql) | _O(n^2)_ | _O(n)_  | Hard  |🔒, `good basic`,`retention`, case condition, retention, data_add, left join| AGAIN***** (5)
+1097| [Game Play Analysis V](https://leetcode.com/problems/game-play-analysis-v/) | [MySQL](./leetcode_SQL/game-play-analysis-v.sql) | _O(n^2)_ | _O(n)_  | Hard  |🔒, `good basic`,`retention`, case condition, retention, data_add, left join| AGAIN***** (6)
 1098| [Unpopular Books](https://leetcode.com/problems/unpopular-books/) | [MySQL](./leetcode_SQL/unpopular-books.sql) | _O(m + n)_ | _O(n)_ | Medium  |🔒| OK* (2)
 1107| [New Users Daily Count](https://leetcode.com/problems/new-users-daily-count/) |[MySQL](./leetcode_SQL/new-users-daily-count.sql) | _O(n)_ | _O(n)_ | Medium  |🔒|  OK*
 1112| [Highest Grade For Each Student](https://leetcode.com/problems/highest-grade-for-each-student/) | [MySQL](./leetcode_SQL/highest-grade-for-each-student.sql) | _O(nlogn)_ | _O(n)_ | Medium  |🔒, good basic|  OK** (4)
