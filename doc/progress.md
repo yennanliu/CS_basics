@@ -32,6 +32,11 @@
 		 	- 0196
 		 	- 0262
 		 	- 0512
+		 	- 0534 (again !!)
+		 	- 0550 (again !!)
+		 	- 578
+		 	- 579
+		 	- 580 (again !!)
 			- =======
 			- (inverse order)
 	- Crack Code
