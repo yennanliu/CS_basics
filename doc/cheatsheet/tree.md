@@ -821,3 +821,44 @@ class Codec:
                 return root
         return build()
 ```
+
+### 2-9) Validate Binary Search Tree
+```python
+# 98. Validate Binary Search Tree
+# V0 : BFS
+class Solution:
+    def isValidBST(self, root):
+        
+        node_min = float('-inf')
+        node_max = float('inf')   
+        bfs_queue = [(root, node_min, node_max)]
+ 
+        while bfs_queue:
+            node, node_min, node_max = bfs_queue.pop(0)
+            if node.left:
+                if node.left.val <= node_min or node.left.val >= node.val: 
+                    return False
+                bfs_queue.append((node.left, node_min, node.val))
+            if node.right:
+                if node.right.val <= node.val or node.right.val >= node_max:
+                    return False
+                bfs_queue.append((node.right, node.val, node_max))
+      
+        return True
+
+# V0'
+# IDEA: RECURSION 
+class Solution(object):
+    def isValidBST(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        return self.valid(root, float('-inf'), float('inf'))
+        
+    def valid(self, root, min_, max_):
+        if not root: return True
+        if root.val >= max_ or root.val <= min_:
+            return False
+        return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
+```

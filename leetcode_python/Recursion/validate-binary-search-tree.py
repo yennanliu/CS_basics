@@ -34,6 +34,28 @@ The number of nodes in the tree is in the range [1, 104].
 """
 
 # V0
+# IDEA : BFS
+class Solution:
+    def isValidBST(self, root):
+        
+        node_min = float('-inf')
+        node_max = float('inf')   
+        bfs_queue = [(root, node_min, node_max)]
+ 
+        while bfs_queue:
+            node, node_min, node_max = bfs_queue.pop(0)
+            if node.left:
+                if node.left.val <= node_min or node.left.val >= node.val: 
+                    return False
+                bfs_queue.append((node.left, node_min, node.val))
+            if node.right:
+                if node.right.val <= node.val or node.right.val >= node_max:
+                    return False
+                bfs_queue.append((node.right, node.val, node_max))
+      
+        return True
+
+# V0'
 # IDEA: RECURSION 
 class Solution(object):
     def isValidBST(self, root):
@@ -49,7 +71,7 @@ class Solution(object):
             return False
         return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
 
-# V0'
+# V0''
 # IDEA: RECURSION 
 class Solution(object):
     def isValidBST(self, root):
@@ -63,7 +85,7 @@ class Solution(object):
 
         return valid(root, float('inf'), -float('inf'))
 
-# V0'
+# V0'''
 # IDEA : BFS + Inorder traversal
 class Solution:
     def isValidBST(self, root):
@@ -78,7 +100,55 @@ class Solution:
             pre, cur = s, s.right
         return True
 
-# V1 : TODO : figure out it
+# V1
+# IDEA : BFS
+# https://leetcode.com/problems/validate-binary-search-tree/discuss/1532653/Python-BFS-solution-with-explanation-no-recursion
+class Solution:
+    def isValidBST(self, root):
+        
+        node_min = float('-inf')
+        node_max = float('inf')   
+        bfs_queue = collections.deque([(root, node_min, node_max)])
+ 
+        while bfs_queue:
+            node, node_min, node_max = bfs_queue.popleft()
+            if node.left:
+                if node.left.val <= node_min or node.left.val >= node.val: 
+                    return False
+                bfs_queue.append((node.left, node_min, node.val))
+            if node.right:
+                if node.right.val <= node.val or node.right.val >= node_max:
+                    return False
+                bfs_queue.append((node.right, node.val, node_max))
+      
+        return True
+
+# V1''
+# IDEA : BFS
+# https://leetcode.com/problems/validate-binary-search-tree/discuss/640837/Python-Good-use-case-for-BFS
+class Solution:
+    def isValidBST(self, root):
+        if not root:
+            return True
+        
+        QueueEntry = collections.namedtuple('QueueEntry', ['node', 'min', 'max'])
+   
+        queue = deque([QueueEntry(root, float('-inf'), float('inf'))])
+        
+        while queue:
+            node, min_bound, max_bound = queue.popleft()
+            
+            if node.val <= min_bound or node.val >= max_bound:
+                return False
+                
+            if node.left:
+                queue.append(QueueEntry(node.left, min_bound, node.val))
+            if node.right:
+                queue.append(QueueEntry(node.right, node.val, max_bound))
+    
+        return True
+
+# V1''' : TODO : figure out it
 # IDEA : INORDER TRAVERSAL
 # https://leetcode.com/problems/validate-binary-search-tree/discuss/166691/Python-solution
 class Solution(object):
