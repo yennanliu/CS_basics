@@ -947,7 +947,7 @@
 649 | [Dota2 Senate](https://leetcode.com/problems/dota2-senate/) | [Python](./leetcode_python/Greedy/dota2-senate.py)  | _O(n)_ | _O(n)_ | Medium | complex question | AGAIN (not start*)
 659 | [Split Array into Consecutive Subsequences](https://leetcode.com/problems/split-array-into-consecutive-subsequences/) | [Python](./leetcode_python/Greedy/split-array-into-consecutive-subsequences.py)  | _O(n)_ | _O(1)_ | Medium | | AGAIN (not start*)
 738 | [Monotone Increasing Digits](https://leetcode.com/problems/monotone-increasing-digits/) | [Python](./leetcode_python/Greedy/monotone-increasing-digits.py) | _O(1)_ | _O(1)_ | Medium | good trick, greedy, string, trick, `Amazon`| AGAIN********* (4)
-763 | [Partition Labels](https://leetcode.com/problems/partition-labels/) |  [Python](./leetcode_python/Greedy/partition-labels.py) | _O(n)_ | _O(n)_ | Medium |greedy,trick,dict,index,`amazon`| AGAIN****** (4) (AGAIN)
+763 | [Partition Labels](https://leetcode.com/problems/partition-labels/) |  [Python](./leetcode_python/Greedy/partition-labels.py) | _O(n)_ | _O(n)_ | Medium |greedy,trick,dict,index,`amazon`| AGAIN******* (5) (AGAIN)
 767 | [Reorganize String](https://leetcode.com/problems/reorganize-string/) | [Python](./leetcode_python/Greedy/reorganize-string.py) | _O(n)_ | _O(1)_ | Medium |`greedy`,`counter`,`good trick`,`amazon`,`fb`| AGAIN****** (4)
 861 | [Score After Flipping Matrix](https://leetcode.com/problems/score-after-flipping-matrix/) | [Python](./leetcode_python/Greedy/score-after-flipping-matrix.py)  | _O(r * c)_ | _O(1)_ | Medium || AGAIN (not start*)
 870 | [Advantage Shuffle](https://leetcode.com/problems/advantage-shuffle/) | [Python](./leetcode_python/Greedy/advantage-shuffle.py) | _O(nlogn)_ | _O(n)_ | Medium || OK*

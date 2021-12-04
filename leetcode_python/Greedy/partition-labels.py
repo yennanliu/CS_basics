@@ -80,6 +80,38 @@ class Solution(object):
         return ans
 
 # V0'
+# IDEA : GREEDY + find the max index for each element
+class Solution(object):
+    def partitionLabels(self, s):
+        d = {}
+        _set = set(s)
+        res = []
+        cache = []
+        """
+        d record the max index for each element, 
+        so when we loop from index = 0, we know whethere this element exists in the last time
+        """
+        for i in range(len(s)-1, -1, -1):
+            if len(d.keys()) == len(_set):
+                break
+            if s[i] not in d:
+                d[s[i]] = i
+            else:
+                d[s[i]] = max(d[s[i]], i)
+        #print (d)
+        for i in range(len(s)):
+            # we have a cache to record already visited elements in this loop
+            cache.append(s[i])
+            ### have to fit 2 CONDITIONS so we can split the string
+            # -> 1) the element has "last time exist index" with current index
+            # -> 2) ALL of the elements in cache with "last time exist index" should <= current index
+            if d[s[i]] == i and max([d[j] for j in cache]) <= i:
+                res.append(i+1)
+                cache = []
+        # TODO : optimize below op, e.g. [9, 16, 24] -> [9, 7, 8]
+        return [res[0]] + [ res[i] - res[i-1] for i in range(len(res)) if i >0 ]
+
+# V0''
 # https://leetcode.com/problems/partition-labels/discuss/298474/Python-two-pointer-solution-with-explanation
 class Solution:
     def partitionLabels(self, S):
