@@ -4,6 +4,10 @@
 - DOING:
 	- LC (appl_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
+	- ================
+	- LC review (amz_)
+		- ref: https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
+			- 763
 		- programming
 			- review
 			- (normal order)
