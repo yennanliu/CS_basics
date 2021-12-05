@@ -34,16 +34,19 @@
 * [bit_manipulation.md](./doc/bit_manipulation.md) - Bit Manipulation Cheet Sheet
 * [Py TimeComplexity](https://wiki.python.org/moin/TimeComplexity) - Python TimeComplexity doc
 * [Py data model](https://docs.python.org/3/reference/datamodel.html) - Python data model doc 
-* [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
-* [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
-* [SQL zoo](https://sqlzoo.net/) - SQL test
-* [10 SQL Tricks](https://blog.jooq.org/10-sql-tricks-that-you-didnt-think-were-possible/) : 10 SQL Tricks That You Didn’t Think Were Possible
 * [pgexercises](https://pgexercises.com/questions/aggregates/) - Postgre exercises
 * [sqlservertutorial](https://www.sqlservertutorial.net/)
 * [Books](https://github.com/yennanliu/data_science_repo/tree/master/book)
 * [freecodecamp - data-structures](https://www.freecodecamp.org/news/tag/data-structures/)
 * [LC interview-experience](https://leetcode.com/discuss/interview-experience?currentPage=1&orderBy=hot&query=)
 * [Cheatsheet](https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet)
+* SQL
+	- [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
+	- [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
+	- [SQL zoo](https://sqlzoo.net/) - SQL test
+	- [10 SQL Tricks](https://blog.jooq.org/10-sql-tricks-that-you-didnt-think-were-possible/) : 10 SQL Tricks That You Didn’t Think Were Possible
+	- [Zachary Thomas' SQL Questions](https://lnkd.in/g-JJzuD)
+
 * LC Pattern
 	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
