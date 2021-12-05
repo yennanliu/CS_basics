@@ -44,6 +44,7 @@ class Solution(object):
         # get the index of root.val in order to SPLIT TREE
         index = inorder.index(root.val)  # the index of root at inorder, and we can also get the length of left-sub-tree, right-sub-tree ( preorder[1:index+1]) for following using
         # recursion for root.left
+        #### NOTE : WE idx from inorder in preorder as well 
         #### NOTE : preorder[1 : index + 1] (for left sub tree)
         root.left = self.buildTree(preorder[1 : index + 1], inorder[ : index]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the left-sub-tree of Preorder as well
         # recursion for root.right 
