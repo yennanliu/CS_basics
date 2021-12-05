@@ -46,6 +46,14 @@
 	- [SQL zoo](https://sqlzoo.net/) - SQL test
 	- [10 SQL Tricks](https://blog.jooq.org/10-sql-tricks-that-you-didnt-think-were-possible/) : 10 SQL Tricks That You Didn’t Think Were Possible
 	- [Zachary Thomas' SQL Questions](https://lnkd.in/g-JJzuD)
+	- [Select * SQL](https://selectstarsql.com/)
+	- [LinkedIn Learning](https://lnkd.in/gQXFc4n)
+	- [Window Functions](https://lnkd.in/g3RtPCJ)
+	- [HackerRank](https://lnkd.in/grv_9sB)
+	- [W3 Schools](https://lnkd.in/gJPfrrv)
+	- [CodeAcademy](https://lnkd.in/gT5xmpN)
+	- [SQL Bolt](https://sqlbolt.com/)
+
 
 * LC Pattern
 	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
