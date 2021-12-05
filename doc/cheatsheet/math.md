@@ -10,6 +10,25 @@
 
 ### 1-1) Basic OP
 
+#### 1-1-0) transform interger to N base
+- to 4 base
+- to 7 base ..
+```python
+# python
+# exmaple :
+# 7 base
+# 20 -> 26
+# -100 -> -202
+# TODO : fix it so can convert negative integer (e.g. -100, -200...)
+# https://runestone.academy/runestone/books/published/pythonds/Recursion/pythondsConvertinganIntegertoaStringinAnyBase.html
+def toStr(n,base):
+   convertString = "0123456789ABCDEF"
+   if n < base:
+      return convertString[n]
+   else:
+      return toStr(n//base,base) + convertString[n%base]
+```
+
 #### 1-1-1) check prime number
 ```python
 # LC 762 Prime Number of Set Bits in Binary Representation
