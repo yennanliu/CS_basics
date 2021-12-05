@@ -13,12 +13,15 @@
 #### 1-1-0) transform interger to N base
 - to 4 base
 - to 7 base ..
+- https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png
 ```python
 # python
+#----------------
 # exmaple :
 # 7 base
 # 20 -> 26
 # -100 -> -202
+#----------------
 # TODO : fix it so can convert negative integer (e.g. -100, -200...)
 # https://runestone.academy/runestone/books/published/pythonds/Recursion/pythondsConvertinganIntegertoaStringinAnyBase.html
 def toStr(n,base):
