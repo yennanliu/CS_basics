@@ -35,6 +35,37 @@ The number of nodes in the tree is in the range [1, 104].
 
 # V0
 # IDEA : BFS
+#  -> trick : we make sure current tree and all of sub tree are valid BST
+#   -> not only compare tmp.val with tmp.left.val, tmp.right.val,
+#   -> but we need compare if tmp.left.val is SMALLER then `previous node val`
+#   -> but we need compare if tmp.right.val is BIGGER then `previous node val`
+class Solution(object):
+    def isValidBST(self, root):
+        if not root:
+            return True
+        _min = -float('inf')
+        _max = float('inf')
+        ### NOTE : we set q like below
+        q = [[root, _min, _max]]
+        while q:
+            for i in range(len(q)):
+                tmp, _min, _max = q.pop(0)
+                if tmp.left:
+                    ### NOTE : below condition
+                    if tmp.left.val >= tmp.val or tmp.left.val <= _min:
+                        return False
+                    ### NOTE : we append tmp.val as _max
+                    q.append([tmp.left, _min, tmp.val])
+                if tmp.right:
+                    ### NOTE : below condition
+                    if tmp.right.val <= tmp.val or tmp.right.val >= _max:
+                        return False
+                    ### NOTE : we append tmp.val as _min
+                    q.append([tmp.right, tmp.val, _max])
+        return True
+
+# V0'
+# IDEA : BFS
 class Solution:
     def isValidBST(self, root):
         
@@ -55,7 +86,7 @@ class Solution:
       
         return True
 
-# V0'
+# V0''
 # IDEA: RECURSION 
 class Solution(object):
     def isValidBST(self, root):
@@ -71,7 +102,7 @@ class Solution(object):
             return False
         return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
 
-# V0''
+# V0'''
 # IDEA: RECURSION 
 class Solution(object):
     def isValidBST(self, root):
@@ -85,7 +116,7 @@ class Solution(object):
 
         return valid(root, float('inf'), -float('inf'))
 
-# V0'''
+# V0''''
 # IDEA : BFS + Inorder traversal
 class Solution:
     def isValidBST(self, root):

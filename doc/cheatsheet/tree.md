@@ -825,25 +825,35 @@ class Codec:
 ### 2-9) Validate Binary Search Tree
 ```python
 # 98. Validate Binary Search Tree
-# V0 : BFS
-class Solution:
+# V0
+# IDEA : BFS
+#  -> trick : we make sure current tree and all of sub tree are valid BST
+#   -> not only compare tmp.val with tmp.left.val, tmp.right.val,
+#   -> but we need compare if tmp.left.val is SMALLER then `previous node val`
+#   -> but we need compare if tmp.right.val is BIGGER then `previous node val`
+class Solution(object):
     def isValidBST(self, root):
-        
-        node_min = float('-inf')
-        node_max = float('inf')   
-        bfs_queue = [(root, node_min, node_max)]
- 
-        while bfs_queue:
-            node, node_min, node_max = bfs_queue.pop(0)
-            if node.left:
-                if node.left.val <= node_min or node.left.val >= node.val: 
-                    return False
-                bfs_queue.append((node.left, node_min, node.val))
-            if node.right:
-                if node.right.val <= node.val or node.right.val >= node_max:
-                    return False
-                bfs_queue.append((node.right, node.val, node_max))
-      
+        if not root:
+            return True
+        _min = -float('inf')
+        _max = float('inf')
+        ### NOTE : we set q like below
+        q = [[root, _min, _max]]
+        while q:
+            for i in range(len(q)):
+                tmp, _min, _max = q.pop(0)
+                if tmp.left:
+                    ### NOTE : below condition
+                    if tmp.left.val >= tmp.val or tmp.left.val <= _min:
+                        return False
+                    ### NOTE : we append tmp.val as _max
+                    q.append([tmp.left, _min, tmp.val])
+                if tmp.right:
+                    ### NOTE : below condition
+                    if tmp.right.val <= tmp.val or tmp.right.val >= _max:
+                        return False
+                    ### NOTE : we append tmp.val as _min
+                    q.append([tmp.right, tmp.val, _max])
         return True
 
 # V0'
