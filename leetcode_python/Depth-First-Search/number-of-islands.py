@@ -40,6 +40,33 @@ grid[i][j] is '0' or '1'.
 # IDEA : DFS
 class Solution(object):
     def numIslands(self, grid):
+      
+        def dfs(grid, x, y):
+            if grid[y][x] == "0":
+                return
+            grid[y][x] = "0"
+            moves = [[0,1],[0,-1],[1,0],[-1,0]]
+            for move in moves:
+                _x = x + move[1]
+                _y = y + move[0]
+                if  0 <= _x < w and  0 <= _y < l and grid[_y][_x] == "1":
+                    dfs(grid, _x, _y)
+        if not grid:
+            return 0
+        l = len(grid)
+        w = len(grid[0])
+        _counter = 0
+        for i in range(l):
+            for j in range(w):
+                if grid[i][j] == "1":
+                    _counter += 1
+                    dfs(grid, j, i)
+        return _counter
+
+# V0'
+# IDEA : DFS
+class Solution(object):
+    def numIslands(self, grid):
         def dfs(grid, item):
             if grid[item[0]][item[1]] == "0":
                 return
@@ -69,7 +96,7 @@ class Solution(object):
                     res += 1
         return res
 
-# V0' 
+# V0'''
 # IDEA : DFS
 class Solution:
     def numIslands(self, grid):
