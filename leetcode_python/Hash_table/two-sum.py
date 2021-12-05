@@ -40,17 +40,24 @@
 # Out[2]: [1, 5]
 class Solution(object):
     def twoSum(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[int]
-        """
         lookup = {}
         for i, num in enumerate(nums):
             if target - num in lookup:
                 return [lookup[target - num], i]
             lookup[num] = i
         return [-1, -1]
+
+# V0'
+# IDEA : dict
+class Solution(object):
+    def twoSum(self, nums, target):
+        d = {}
+        for i in range(len(nums)):
+            if target - nums[i] in d:
+                return [d[target - nums[i]], i]
+            else:
+                if nums[i] not in d:
+                    d[nums[i]] = i
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/52039233
