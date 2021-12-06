@@ -54,6 +54,26 @@ nums is sorted in non-decreasing order.
 #     -> THEN SWITCH A[i] AND A[j+1]
 #     -> and j += 1
 # *** NOTE : it's swith A[j+1] (j+1) with A[i]
+# DEMO 1 
+# A = [1,1,1,2,3]
+# s = Solution()
+# s.removeDuplicates(A)
+# [1, 1, 1, 2, 3]
+# [1, 1, 1, 2, 3]
+# [1, 1, 1, 2, 3]
+# [1, 2, 1, 1, 3]
+# [1, 2, 3, 1, 1]
+#
+# DEMO 2
+# A = [1,2,2,3,4]
+# s = Solution()
+# s.removeDuplicates(A)
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 3, 2, 4]
+# -> A = [1, 2, 3, 4, 2]
 class Solution:
     def removeDuplicates(self, A):
         if len(A) == 0:
@@ -72,15 +92,6 @@ class Solution:
 # IDEA : use an index j, when i go through the array,
 # if A[i] != A[j], then swap A[i] and A[j+1] and do j=j+1 (A[i], A[j+1] = A[j+1], A[i])
 # then i keep going through the array 
-# DEMO
-# A = [1,1,1,2,3]
-# s = Solution()
-# s.removeDuplicates(A)
-# [1, 1, 1, 2, 3]
-# [1, 1, 1, 2, 3]
-# [1, 1, 1, 2, 3]
-# [1, 2, 1, 1, 3]
-# [1, 2, 3, 1, 1]
 class Solution:
     # @param a list of integers
     # @return an integer
