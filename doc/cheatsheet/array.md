@@ -58,8 +58,8 @@ def flatten_array(_array):
     
 _input = [1,0, [1,2,[4,[5,[6,[7]]]]]]#[1,[4,[6]]] #[[1,1],2,[1,1]]
 
-flatten_array(_input)
-print ("r = " + str(r))
+res = flatten_array(_input)
+print ("res = " + str(res))
 
 # V2
 # https://stackoverflow.com/questions/2158395/flatten-an-irregular-list-of-lists
@@ -71,8 +71,8 @@ def flatten(L):
             yield item
 
 r2 = flatten(_input)
-for i in r2:
-    print (i)
+r2_ = [x for x in r2]
+print (r2_)
 
 # V3
 def flatten2(L):
@@ -83,8 +83,8 @@ def flatten2(L):
             yield item
 
 r3 = flatten2(_input)
-for i in r3:
-    print (i)
+r3_ = [x for x in r3]
+print (r3_)
 ```
 
 #### 1-1-7) Sort array with 2 keys
@@ -136,9 +136,29 @@ class Solution(object):
         return int("".join(ans))
 ```
 
+#### 1-1-10) Matrix
+```python
+# 1) init matrix 
+# LC 73
+### NOTE : 
+# -> for cases matrix[i][j]:
+#    -> y is FIRST element  (i)
+#    -> x is SECOND element (j)
+
+# 2) avg value of matrix
+# LC 661
+# some code
+# M : matrix
+row, col = len(M), len(M[0])
+res = [[0]*col for i in range(row)]
+temp = [M[i+m][j+n] for m,n in dirs if 0<=i+m<row and 0<=j+n<col]
+res[i][j] = sum(temp)//len(temp)
+# some code
+```
+
 ## 2) LC Example
 
-## 2-1) Merge Intervals
+### 2-1) Merge Intervals
 - TODO : move it to "interval merge cheatsheet"
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md
 ```python
@@ -176,7 +196,7 @@ def merge(intervals):
     return res
 ```
 
-## 2-2) Non-overlapping-intervals
+### 2-2) Non-overlapping-intervals
 ```python
 # V0 
 class Solution(object):
@@ -195,7 +215,7 @@ class Solution(object):
         return res 
 ```
 
-## 2-3) Queue Reconstruction by Height
+### 2-3) Queue Reconstruction by Height
 ```python
 # 406 Queue Reconstruction by Height
 class Solution(object):
@@ -207,7 +227,7 @@ class Solution(object):
         return res
 ```
 
-## 2-4) Product of Array Except Self
+### 2-4) Product of Array Except Self
 ```python
 # 238 Product of Array Except Self
 # IDEA : 
@@ -237,7 +257,7 @@ class Solution:
         return output
 ```
 
-## 2-4) Maximum Swap
+### 2-5) Maximum Swap
 ```python
 # 670 Maximum Swap
 class Solution(object):
@@ -262,7 +282,7 @@ class Solution(object):
         return int("".join(digits))
 ```
 
-### 2-5) Set Matrix Zeroes
+### 2-6) Set Matrix Zeroes
 ```python
 # LC 73. Set Matrix Zeroes
 # V0
@@ -295,7 +315,7 @@ class Solution(object):
         return matrix
 ```
 
-### 2-6) Image Smoother
+### 2-7) Image Smoother
 ```python
 # LC 661 Image Smoother
 class Solution:
@@ -313,7 +333,7 @@ class Solution:
         return res
 ```
 
-### 2-7) Search a 2D Matrix
+### 2-8) Search a 2D Matrix
 ```python
 # LC 74 Search a 2D Matrix
 # LC 240. Search a 2D Matrix II
