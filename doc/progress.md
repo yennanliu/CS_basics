@@ -35,6 +35,8 @@
 			- p.279
 	- cheatsheet review
 		- 2_pointers.md
+		- Collection.md
+		- array.md
 
 # 2021-12-05
 - DOING:
