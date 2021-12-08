@@ -19,6 +19,54 @@ In [5]: def check(x):
 0
 ```
 
+### 0-2) assignment VS shallow copy VS deep copy
+- https://www.runoob.com/w3cnote/python-understanding-dict-copy-shallow-or-deep.html
+- https://iter01.com/578999.html
+```python
+# LC 138
+
+#-------------------------------------------------
+# CASE 1) assignment : point to the same instance
+#-------------------------------------------------
+
+In [112]: z = [1,2,3]
+
+In [113]: x = y = z
+
+In [114]: x
+Out[114]: [1, 2, 3]
+
+In [115]: y
+Out[115]: [1, 2, 3]
+
+In [116]: z
+Out[116]: [1, 2, 3]
+
+In [117]: z.append(4)
+
+In [118]: z
+Out[118]: [1, 2, 3, 4]
+
+In [119]: x
+Out[119]: [1, 2, 3, 4]
+
+In [120]: y
+Out[120]: [1, 2, 3, 4]
+
+In [121]: z
+Out[121]: [1, 2, 3, 4]
+
+
+#-------------------------------------------------
+# CASE 2) shallow copy : copy "parent" instance, but NOT sub instance
+#-------------------------------------------------
+
+
+#-------------------------------------------------
+# CASE 3) deep copy : copy "parent" instance, AND sub instance
+#-------------------------------------------------
+```
+
 ### 1-1) Or logic for either existed element
 ```python
 In [8]: def test(l1, l2):
