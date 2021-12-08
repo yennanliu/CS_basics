@@ -26,6 +26,8 @@
 			- linked list
 			- sliding window
 			- Tree
+			- bfs
+				- 127 (again)
 			- =======
 			- hash table
 			- bit manipulation
@@ -43,7 +45,8 @@
 			- p.279
 	- cheatsheet review
 		- backtrack.md
-		- bfs.md (ing)
+		- bfs.md
+		- binary_search.md (ing)
 
 # 2021-12-07
 - DOING:
