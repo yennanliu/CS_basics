@@ -13,6 +13,11 @@
 			- (pdf : p.1)
 			- =======
 			- **back track**
+				- 017 (again !)
+				- 039 (again !)
+				- 040 (again !)
+				- 079 (again !)
+				- 078 (again !)
 			- Binary Search Tree
 			- Binary Search
 			- linked list
@@ -34,9 +39,8 @@
 		- note
 			- p.279
 	- cheatsheet review
-		- 2_pointers.md
-		- Collection.md
-		- array.md
+		- backtrack.md
+		- bfs.md (ing)
 
 # 2021-12-07
 - DOING:
