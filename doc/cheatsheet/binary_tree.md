@@ -4,6 +4,19 @@
 
 ### 0-1) Types
 
+- Types
+
+- Algorithm
+    - dfs
+    - recursive
+    - tree op
+
+- Data structure
+    - TreeNode
+    - dict
+    - set
+    - array
+
 ### 0-2) Pattern
 
 ## 1) General form

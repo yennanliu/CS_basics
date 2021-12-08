@@ -5,14 +5,29 @@
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_processing_problem.png"></p>
 
 ### 0-1) Types
-- Quick union
-- Union Find
-- Topology sorting
-- Graph Bipartite
-- Dijkstra algorithm
-- DirectedEdge
-- Directed acyclic graph (DAG)
-- Route relaxation
+
+- Types
+    - Quick union
+    - Union Find
+    - Topology sorting
+    - Graph Bipartite
+    - Dijkstra algorithm
+    - DirectedEdge
+    - Directed acyclic graph (DAG)
+    - Route relaxation
+
+- Algorithm
+    - bfs
+    - dfs
+    - brute force
+    - graph Algorithm
+
+- Data structure
+    - TreeNode
+    - array
+    - string
+    - dict
+    - set
 
 ### 0-2) Pattern
 ```python

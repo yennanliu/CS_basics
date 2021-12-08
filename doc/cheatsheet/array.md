@@ -4,6 +4,21 @@
 
 ### 0-1) Types
 
+- Types
+
+- Algorithm
+    - index op
+    - array op
+    - sorting
+    - dinary search
+    - 2 pointers
+    - sliding window
+
+- Data structure
+    - dict
+    - set
+    - array
+
 ### 0-2) Pattern
 
 ## 1) General form
