@@ -22,7 +22,7 @@ Example 2:
 
 Input: nums = [1,2,1,3,5,6,4]
 Output: 5
-Explanation: Your function can return either index number 1 where the peak element is 2, or index number 5 where the peak element is 6.
+Explanation: Your function can return EITHER index number 1 where the peak element is 2, or index number 5 where the peak element is 6.
  
 
 Constraints:
@@ -35,9 +35,15 @@ nums[i] != nums[i + 1] for all valid i.
 
 # V0
 # IDEA :  Linear Scan + problem understanding
+# NOTE :  If the array contains multiple peaks, return the index to any of the peaks.
+#   -> e.g. for nums = [1,2,1,3,5,6,4], we can return EITHER index = 1 or 5
 class Solution(object):
     def findPeakElement(self, nums):
         for i in range(len(nums)-1):
+            # if we can reach idx = i
+            #  -> nums[i] > nums[i-1]
+            #   -> so if nums[i] > nums[i+1]
+            #       -> nums[i] is peak (relative to i-1, i+1)
             if nums[i] > nums[i+1]:
                 return i
         return len(nums) - 1
