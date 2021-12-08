@@ -394,3 +394,33 @@ class Solution:
         tail.next = cur
         return head
 ```
+
+### 2-5) Copy List with Random Pointer
+```python
+# LC 138. Copy List with Random Pointer
+# V0
+# IDEA : 
+#   step 1) make 2 objects (m, n) refer to same instance (head)
+#   step 2) go through m, and set up the dict
+#   step 3) go through n, and get the random pointer via the dict we set up in step 2)
+class Node(object):
+    def __init__(self, val, next, random):
+        self.val = val
+        self.next = next
+        self.random = random
+
+class Solution:
+    def copyRandomList(self, head):
+        dic = dict()
+        ### NOTE : make m, and n refer to same instance (head)
+        m = n = head
+        while m:
+            ### NOTE : the value in dict is Node type (LinkedList)
+            dic[m] = Node(m.val)
+            m = m.next
+        while n:
+            dic[n].next = dic.get(n.next)
+            dic[n].random = dic.get(n.random)
+            n = n.next
+        return dic.get(head)
+```
