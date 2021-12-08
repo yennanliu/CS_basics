@@ -4,6 +4,7 @@
 ## 0) Concept  
 
 ### 0-1) Types
+
 - Pointer types
     - `Fast - Slow pointers`
         - Usualy set
@@ -21,12 +22,14 @@
         - array reverse
         - [2 sum](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md)
         - [sliding window](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
-- Data structure
-    - Array
-    - Linked list
+
 - Algorithm
     - binary search
     - sliding window
+
+- Data structure
+    - Array
+    - Linked list
 
 ### 0-2) Pattern
 ```c++

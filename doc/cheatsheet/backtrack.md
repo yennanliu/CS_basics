@@ -12,10 +12,20 @@
 ## 0) Concept  
 
 ### 0-1) Types
+
 - 3 things to consider : 
  - `Route` : The choices have made
  - `Choice list` : The choices we can select currently
  - `End condition` : bottom of decision tree, meet this point then can't do any other choise 
+
+- Algorithm
+    - dfs
+    - recursive
+
+- Data structure
+    - dict
+    - set
+    - array
 
 ### 0-2) Pattern
 

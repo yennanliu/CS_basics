@@ -6,9 +6,22 @@
 ## 0) Concept
 
 ### 0-1) Types
-- normal transversal (pre-order, in-order, post-order)
-- normal transversal with special op
-        - root.right -> do sth -> root.left
+
+- Types
+    - normal transversal (pre-order, in-order, post-order)
+    - normal transversal with special op
+            - root.right -> do sth -> root.left
+
+- Algorithm
+    - dfs
+    - bfs
+    - recursive
+
+- Data structure
+    - TreeNode
+    - dict
+    - set
+    - array
 
 ### 0-2) Pattern
 

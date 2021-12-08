@@ -4,6 +4,20 @@
 
 ### 0-1) Types
 
+- Types
+
+- Algorithm
+    - dict/collections op
+        - collections.Counter
+        - collections.Counter().most_common()
+    - sort
+    - get most freq
+
+- Data structure
+    - dict
+    - set
+    - array
+
 ### 0-2) Pattern
 
 ## 1) General form

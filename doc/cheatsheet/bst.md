@@ -3,7 +3,18 @@
 ## 0) Concept
 
 ### 0-1) Types
-- the property of BST : inorder traversal of BST is an array sorted in the ascending order. (LC 230)
+
+- Types
+    - the property of BST : inorder traversal of BST is an array sorted in the ascending order. (LC 230)
+
+- Algorithm
+    - dfs
+    - recursive
+
+- Data structure
+    - TreeNode
+    - dict
+    - set
 
 ### 0-2) Pattern
 ```java

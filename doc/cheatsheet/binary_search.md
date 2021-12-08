@@ -3,10 +3,22 @@
 ## 0) Concept  
 
 ### 0-1) Types
-- find `left` boundary
-    - LC 367 Valid Perfect Square 
-- find `right` boundary
-- `recursive` binary search
+
+- Types
+    - find `left` boundary
+        - LC 367 Valid Perfect Square 
+    - find `right` boundary
+    - `recursive` binary search
+
+- Algorithm
+    - binary search
+    - sliding window
+    - recursive
+
+- Data structure
+    - Array
+    - Linked list
+    - dict
 
 ### 0-2) Pattern
 
