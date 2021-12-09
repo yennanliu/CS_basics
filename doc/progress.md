@@ -13,7 +13,7 @@
 			- (pdf : p.3)
 			- =======
 			- **back track**
-				- 017 (again !)
+				- 017 (ok, but again)
 				- 039 (again !)
 				- 040 (again !)
 				- 079 (again !)
@@ -41,7 +41,8 @@
 		- note
 			- p.279
 	- cheatsheet review
-		- binary_search.md (ing)
+		- binary_search.md
+		- binary_tree.md
 
 # 2021-12-08
 - DOING:

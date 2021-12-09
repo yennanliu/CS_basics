@@ -34,7 +34,7 @@ digits[i] is a digit in the range ['2', '9'].
 class Solution(object):
     def letterCombinations(self, digits):
 
-        def dfs(idx, layer, tmp):
+        def dfs(idx, tmp):
 
             """
             NOTE : if idx == len(digits)
@@ -46,19 +46,19 @@ class Solution(object):
                     res.append(tmp)
                 return
 
-            ### NOTE : we loop alphabets in d map per number rather than loop over number
+            ### NOTE : we loop alphabets in d map per number rather than loop over number !!!
             for alpha in d[digits[idx]]:
                 """
-                NOTE 
+                NOTE !!!!
                 idex+1 : for loop to next number
                 tmp+j : for collect cur update
                 """
                 print ("digits = " + str(digits), " tmp = " + str(tmp) + " alpha = " + str(alpha))
-                dfs(idx+1, layer+1, tmp + alpha)
+                dfs(idx+1, tmp + alpha)
 
         d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
         res = []
-        dfs(0,0,"")
+        dfs(0,"")
         return res
 
 # V0
