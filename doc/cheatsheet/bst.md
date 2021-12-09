@@ -77,7 +77,7 @@ boolean isSameTree(TreeNode root1, TreeNode root2){
         return false;
     }
 
-    return isSameTree(root1.left, root2.right) && isSameTree(root1.right, root2.right)
+    return isSameTree(root1.left, root2.left) && isSameTree(root1.right, root2.right)
 }
 ```
 
