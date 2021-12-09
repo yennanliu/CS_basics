@@ -43,6 +43,7 @@
 	- cheatsheet review
 		- binary_search.md
 		- binary_tree.md
+		- bst.md (ing)
 
 # 2021-12-08
 - DOING:
