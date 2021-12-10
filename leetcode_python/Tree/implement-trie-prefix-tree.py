@@ -47,6 +47,52 @@ At most 3 * 104 calls in total will be made to insert, search, and startsWith.
 """
 
 # V0
+# IDEA : trie concept :  dict + tree
+# https://blog.csdn.net/fuxuemingzhu/article/details/79388432
+### NOTE : we need implement Node class
+from collections import defaultdict
+class Node(object):
+    def __init__(self):
+        ### NOTE : we use defaultdict as dict
+        # TODO : make a default py dict version
+        self.children = defaultdict(Node)
+        self.isword = False
+        
+class Trie(object):
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        ### NOTE : we use the Node class we implement above
+        self.root = Node()
+
+    def insert(self, word):
+        current = self.root
+        for w in word:
+            current = current.children[w]
+        ### NOTE : if insert OP completed, mark isword attr as true
+        current.isword = True
+
+    def search(self, word):
+        current = self.root
+        for w in word:
+            current = current.children.get(w)
+            if current == None:
+                return False
+        ### NOTE : we need to check if isword atts is true (check if word terminated here as well)
+        return current.isword
+
+    def startsWith(self, prefix):
+        current = self.root
+        for w in prefix:
+            current = current.children.get(w)
+            if current == None:
+                return False
+        ### NOTE : we don't need to check isword here, since it is "startsWith"
+        return True
+
+# V0'
 # IDEA : USE dict AS data structure (# TrieNode: is dict, or hashmap)
 class Trie(object):            
     def __init__(self):
@@ -161,7 +207,6 @@ class Trie(object):
             if current == None:
                 return False
         return True        
-
 
 # Your Trie object will be instantiated and called as such:
 # obj = Trie()
