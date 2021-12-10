@@ -60,6 +60,7 @@ class Solution(object):
             if sum(tmp) > target:
                 return
             for c in candidates:
+                ### NOTE : we can add tmp with [c] in func arg directly (as below)
                 dfs(tmp + [c])
 
         res = []
