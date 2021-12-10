@@ -14,7 +14,7 @@
 			- (pdf : p.3)
 			- =======
 			- **back track**
-				- 039 (again !)
+				- 039 (ok, but again)
 				- 040 (again !)
 				- 079 (again !)
 				- 078 (again !)
