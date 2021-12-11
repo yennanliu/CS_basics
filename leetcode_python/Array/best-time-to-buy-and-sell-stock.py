@@ -1,4 +1,5 @@
 """
+
 Say you have an array for which the ith element is the price of a given stock on day i.
 
 If you were only permitted to complete AT MOST ONE transaction (i.e., buy one and sell one share of the stock), design an algorithm to find the maximum profit.
@@ -16,35 +17,46 @@ Example 2:
 Input: [7,6,4,3,1]
 Output: 0
 Explanation: In this case, no transaction is done, i.e. max profit = 0.
+
 """
 
-# V0 
+# V0
+# IDEA : array op + problem understanding
 class Solution(object):
     def maxProfit(self, prices):
-        """
-        :type prices: List[int]
-        :rtype: int
-        """
         if len(prices) == 0:
             return 0
+        ### NOTE : we define 1st minPrice as prices[0]
         minPrice = prices[0]
         maxProfit = 0
+        ### NOTE : we only loop prices ONCE
         for p in prices:
+            # only if p < minPrice, we get minPrice
             if p < minPrice:
                 minPrice = p
+            ### NOTE : only if p - minPrice > maxProfit, we get maxProfit
             elif p - minPrice > maxProfit:
                 maxProfit = p - minPrice
         return maxProfit
-        
+
+# V0''
+# IDEA : BRUTE FORCE (time out error)
+class Solution(object):
+    def maxProfit(self, prices):
+        res = 0
+        for i in range(len(prices)):
+            for j in range(i+1, len(prices)):
+                #print ("i = " + str(i) + " j = " + str(j))
+                if prices[j] > prices[i]:
+                    diff = prices[j] - prices[i]
+                    res = max(res, diff)
+        return res
+
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51520971
 # TO NOTE : CAN ONLY DO ONE TRANSACTION IN THE PROBLEM  
 class Solution(object):
     def maxProfit(self, prices):
-        """
-        :type prices: List[int]
-        :rtype: int
-        """
         if len(prices) == 0:
             return 0
         minPrice = prices[0]

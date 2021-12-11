@@ -377,3 +377,26 @@ class Solution(object):
         dfs(matrix, target, 0, 0)
         return True in res
 ```
+
+### 2-9) Best Time to Buy and Sell Stock
+```python
+# LC 121
+# V0
+# IDEA : array op + problem understanding
+class Solution(object):
+    def maxProfit(self, prices):
+        if len(prices) == 0:
+            return 0
+        ### NOTE : we define 1st minPrice as prices[0]
+        minPrice = prices[0]
+        maxProfit = 0
+        ### NOTE : we only loop prices ONCE
+        for p in prices:
+            # only if p < minPrice, we get minPrice
+            if p < minPrice:
+                minPrice = p
+            ### NOTE : only if p - minPrice > maxProfit, we get maxProfit
+            elif p - minPrice > maxProfit:
+                maxProfit = p - minPrice
+        return maxProfit
+```
