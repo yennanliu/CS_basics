@@ -34,30 +34,40 @@ s consist of only digits and English letters (lower-case and/or upper-case),
 
 # V0
 # IDEA : TWO POINTERS
+# -> DEAL WITH odd, even len cases
+#  -> step 1) for loop on idx 
+#  -> step 2) and start from "center" 
+#  -> step 3) and do a while loop
+#  -> step 4) check if len of sub str > 1
 # https://leetcode.com/problems/longest-palindromic-substring/discuss/1025355/Easy-to-understand-solution-with-O(n2)-time-complexity
 # Time complexity = best case O(n) to worse case O(n^2)
 # Space complexity = O(1) if not considering the space complexity for result, as all the comparison happens in place.
 class Solution:
-	# The logic I have used is very simple, iterate over each character in the array and assming that its the center of a palindrome step in either direction to see how far you can go by keeping the property of palindrome true. The trick is that the palindrome can be of odd or even length and in each case the center will be different.
-	# For odd length palindrome i am considering the index being iterating on is the center, thereby also catching the scenario of a palindrome with a length of 1.
-	# For even length palindrome I am considering the index being iterating over and the next element on the left is the center.
+    # The logic I have used is very simple, iterate over each character in the array and assming that its the center of a palindrome step in either direction to see how far you can go by keeping the property of palindrome true. The trick is that the palindrome can be of odd or even length and in each case the center will be different.
+    # For odd length palindrome i am considering the index being iterating on is the center, thereby also catching the scenario of a palindrome with a length of 1.
+    # For even length palindrome I am considering the index being iterating over and the next element on the left is the center.
     def longestPalindrome(self, s):
+
         if len(s) <= 1:
             return s
 
         res = []
 
         for idx in range(len(s)):
-		
+        
+            # CASE 1) : odd len
             # Check for odd length palindrome with idx at its center
+            ### NOTE : the only difference (between odd, even len)
             left = right = idx
             while left >= 0 and right < len(s) and s[left] == s[right]:
                 if right - left + 1 > len(res):
                     res = s[left:right + 1]
                 left -= 1
                 right += 1
-                
-	    # Check for even length palindrome with idx and idx-1 as its center
+              
+            # CASE 2) : even len  
+            # Check for even length palindrome with idx and idx-1 as its center
+            ### NOTE : the only difference (between odd, even len)
             left = idx - 1
             right = idx
             while left >= 0 and right < len(s) and s[left] == s[right]:
@@ -90,18 +100,18 @@ class Solution:
 # IDEA : TWO POINTER + RECURSION
 # https://leetcode.com/problems/longest-palindromic-substring/discuss/1057629/Python.-Super-simple-and-easy-understanding-solution.-O(n2).
 class Solution:
-	def longestPalindrome(self, s):
-		res = ""
-		length = len(s)
-		def helper(left, right):
-			while left >= 0 and right < length and s[left] == s[right]:
-				left -= 1
-				right += 1		
-			return s[left + 1 : right]
+    def longestPalindrome(self, s):
+        res = ""
+        length = len(s)
+        def helper(left, right):
+            while left >= 0 and right < length and s[left] == s[right]:
+                left -= 1
+                right += 1      
+            return s[left + 1 : right]
         
-		for index in range(len(s)):
-			res = max(helper(index, index), helper(index, index + 1), res, key = len)			
-		return res
+        for index in range(len(s)):
+            res = max(helper(index, index), helper(index, index + 1), res, key = len)           
+        return res
 
 # V0'''
 # IDEA : DP
@@ -117,6 +127,25 @@ class Solution:
                         dp[i][j] = 1
                         longest = s[j:j+i+1]
             return longest
+
+# V0'''
+# IDEA : BRUTE FORCE (TIME OUT ERROR)
+# brute force
+class Solution(object):
+    def longestPalindrome(self, s):
+        def check(_str):
+            return _str == _str[::-1]
+        if len(s) == 0:
+            return ""
+        res = ""
+        tmp = ""
+        for i in range(len(s)):
+            for j in range(i+1, len(s)+1):
+                tmp = s[i:j]
+                print ("tmp = " + str(tmp) + " check(tmp) = " + str(check(tmp)) )
+                if check(tmp):
+                    res = tmp if len(tmp) > len(res) else res
+        return res
 
 # V1
 # IDEA : LOOPING ON "MIDDLE"
