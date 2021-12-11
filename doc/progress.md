@@ -15,6 +15,7 @@
 				- 236 (ok, but again !!)
 				- 005 (ok, but again !!)
 				- 121 (ok, but again !!)
+			- (pdf : p.4)
 			- =======
 			- **back track**
 				- 039 (ok, but again)
@@ -49,7 +50,8 @@
 		- note
 			- p.279
 	- cheatsheet review
-		- bst.md (ing)
+		- bst.md
+		- dfs.md (ing)
 
 # 2021-12-10
 - DOING:
