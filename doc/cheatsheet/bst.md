@@ -310,7 +310,7 @@ class Solution:
 
 ### 2-3) Lowest Common Ancestor of a Binary Search Tree
 ```python
-# LC Lowest Common Ancestor of a Binary Search Tree
+# LC 235 Lowest Common Ancestor of a Binary Search Tree
 # V0
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
@@ -344,7 +344,7 @@ class Solution:
 
 ### 2-4) Split BST
 ```python
-# LC 276 Split BST
+# LC 776 Split BST
 # V0
 # IDEA : BST properties (left < root < right) + recursion
 class Solution(object):
