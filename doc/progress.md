@@ -11,8 +11,10 @@
 		- programming
 			- review
 			- (normal order)
-			- (pdf : p.3)
 			- (pdf : p.4)
+				- 017
+			- (pdf : p.5)
+				- 127 (again)
 			- =======
 			- **back track**
 				- 040 (again !)
