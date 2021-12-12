@@ -470,9 +470,11 @@ WINDOW ntile_window AS
 ### 16. Count(`*`) VS Count(1) in SQL ?
 
 - Difference
-  - Count(col) will only count the `Non-Null` value in the col, neglect NULL. (# of value exist in col) 
-  - Count(1) will count all value (include NULL) in the col anyway. NOT neglect NULL. (# of all record, include Null)
-  - Count(`*`) is `SAME` as Count(1) (consider all columns in table). NOT neglect NULL
+  - count on `non null`
+    - `Count(col)` will only count the `Non-Null` value in the col, neglect NULL. (# of value exist in col) 
+  - count on `all`
+    - `Count(1)` will count all value (include NULL) in the col anyway. NOT neglect NULL. (# of all record, include Null)
+    - Count(`*`) is `SAME` as Count(1) (consider all columns in table). NOT neglect NULL
 
 - Performance
   - If col is the primary key, count(col) faster than count(1)
@@ -762,5 +764,23 @@ left join
 Orders o
 on c.Id = o.CustomerId
 WHERE
-o.CustomerId is NULL
+o.CustomerId is NULL -- note this condition
 ```
+
+### 34. where in multiple cols
+```sql
+-- LC 184 Department Highest Salary
+/* V0 */
+SELECT d.name AS Department,
+       e.name AS Employee,
+       e.salary AS Salary
+FROM Employee e
+INNER JOIN Department d ON e.DepartmentId = d.Id
+--  NOTE : below where has 2 columns !!!
+WHERE (e.DepartmentId,
+       e.salary) in
+    (SELECT DepartmentId,
+            max(Salary) AS salary
+     FROM Employee GROUP
+BY DepartmentId)
+``` 
