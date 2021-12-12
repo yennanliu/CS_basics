@@ -16,6 +16,7 @@
 - Algorithm
     - dfs
     - recursive
+    - graph
 
 - Data structure
     - TreeNode
@@ -81,6 +82,7 @@ class Solution(object):
 
 ```python
 # form III : check if a value exist in the BST
+
 def dfs(root, value):
     if not root:
         return False
@@ -90,6 +92,28 @@ def dfs(root, value):
         return dfs(root.left, value) 
     if root.val < value:
         return dfs(root.right, value)
+```
+
+```python
+# form IV : check if duplicated nodes in tree
+# LC 652
+# python
+
+m = collections.defaultdict(int)
+
+# m is collection for record visited nodes
+def dfs(root, m, res):
+    if not root:
+        return "#"
+
+    ### NOTE : we get path via below, so we can know duplicated nodes
+    path = root.val + "-" + self.dfs(root.left, m, res) + "-" + self.dfs(root.right, m, res)
+
+    if m[path] == 1:
+        res.append(path)
+
+    m[path] += 1
+    return path
 ```
 
 ### 0-3) Tricks
@@ -217,6 +241,17 @@ def dfs(root):
     _sum += root.val
     root.val = _sum
     dfs(root.left)
+```
+
+#### 1-1-6) get `aggregated sum` for every node in tree
+```python
+# LC 663 Equal Tree Partition
+# LC 508 Most Frequent Subtree Sum
+seen = []
+def _sum(root):
+    if not root:
+        return 0
+    seen.append( root.val + _sum(root.left) + _sum(root.right) )
 ```
 
 ## 2) LC Example

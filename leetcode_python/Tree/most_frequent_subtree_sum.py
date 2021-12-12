@@ -32,7 +32,8 @@ The number of nodes in the tree is in the range [1, 104].
 class Solution(object):
     def findFrequentTreeSum(self, root):
 
-        ### NOTE : this trick : get sum of sub tree 
+        ### NOTE : this trick : get sum of sub tree
+        # LC 663 Equal Tree Partition
         def get_sum(root):
             if not root:
                 return 0
