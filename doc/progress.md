@@ -43,6 +43,16 @@
 			- intervals
 		- SQL
 			- faq_sql.md
+			- =======
+			- (essential)
+			- 0534
+			- 0550
+			- 580
+			- 1596 (again !)
+			- 1322 
+			- 1241 (again)
+			- =======
+			- (order)
 	- Crack Code
 	- System Design
 		- Tinder design
