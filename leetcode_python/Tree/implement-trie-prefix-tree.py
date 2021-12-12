@@ -49,6 +49,59 @@ At most 3 * 104 calls in total will be made to insert, search, and startsWith.
 # V0
 # IDEA : trie concept :  dict + tree
 # https://blog.csdn.net/fuxuemingzhu/article/details/79388432
+# deine node
+from collections import defaultdict
+
+### NOTE : need to define our Node
+class Node():
+
+    def __init__(self):
+        """
+        NOTE : we use defaultdict(Node) as our the trie data structure
+        -> use defaultdict
+            - key : every character from word
+            - value : Node (Node type)
+
+        and link children with paraent Node via defaultdict
+        """
+        self.children = defaultdict(Node)
+        self.isword = False
+
+# implement basic methods
+class Trie():
+
+    def __init__(self):
+        self.root = Node()
+
+    def insert(self, word):
+        ### NOTE : we always start from below
+        cur = self.root
+        for w in word:
+            cur = cur.children[w]
+        cur.isword = True
+
+    def search(self, word):
+        ### NOTE : we always start from below
+        cur = self.root
+        for w in word:
+            cur = cur.children.get(w)
+            if not cur:
+                return False
+        ### NOTE : need to check if isword
+        return cur.isword
+
+    def startsWith(self, prefix):
+        ### NOTE : we always start from below
+        cur = self.root
+        for p in prefix:
+            cur = cur.children.get(p)
+            if not cur:
+                return False
+        return True
+
+# V0'
+# IDEA : trie concept :  dict + tree
+# https://blog.csdn.net/fuxuemingzhu/article/details/79388432
 ### NOTE : we need implement Node class
 from collections import defaultdict
 class Node(object):
@@ -92,7 +145,7 @@ class Trie(object):
         ### NOTE : we don't need to check isword here, since it is "startsWith"
         return True
 
-# V0'
+# V0''
 # IDEA : USE dict AS data structure (# TrieNode: is dict, or hashmap)
 class Trie(object):            
     def __init__(self):
