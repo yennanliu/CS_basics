@@ -1,7 +1,8 @@
 # DFS 
-- To check is some value exists
+- To check if some value exists
 - Inorder, postorder, postorder (can recreate a tree)
 - Deep first, then breadth
+- not most efficient (compare to bfs), but can handle some specific problems
 
 ## 0) Concept
 
@@ -14,7 +15,6 @@
 
 - Algorithm
     - dfs
-    - bfs
     - recursive
 
 - Data structure
@@ -27,37 +27,60 @@
 
 ```python
 # python
-# form I
+# form I : tree transversal
 def dfs(root, target):
+
     if root.val == target:
        # do sth
+
     if root.val < target:
        dfs(root.left, target)
+       # do sth
 
     if root.val > target:
        dfs(root.right, target)
+       # do sth
 ```
 
 ```python
-# form II : modify some value in the tree
+# form II : modify some values tree
+
 # 669 Trim a Binary Search Tree
 class Solution:
-    def dfs(self, root, L, R):
+    def trimBST(self, root, L, R):
         if not root:
-            return None
+            return 
+        # NOTICE HERE 
+        # SINCE IT'S BST
+        # SO if root.val < L, THE root.right MUST LARGER THAN L
+        # SO USE self.trimBST(root.right, L, R) TO FIND THE NEXT "VALIDATE" ROOT AFTER TRIM
+        # THE REASON USE self.trimBST(root.right, L, R) IS THAT MAYBE NEXT ROOT IS TRIMMED AS WELL, SO KEEP FINDING VIA RECURSION
+        if root.val < L:
+            return self.trimBST(root.right, L, R)
+        # NOTICE HERE 
+        # SINCE IT'S BST
+        # SO if root.val > R, THE root.left MUST SMALLER THAN R
+        # SO USE self.trimBST(root.left, L, R) TO FIND THE NEXT "VALIDATE" ROOT AFTER TRIM
         if root.val > R:
-            return self.dfs(root.left, L, R)
-        elif root.val < L:
-            return self.dfs(root.right, L, R)
-        else:
-            root.left = self.dfs(root.left, L, R)
-            root.right = self.dfs(root.right, L, R)
-            return root
+            return self.trimBST(root.left, L, R)
+        root.left = self.trimBST(root.left, L, R)
+        root.right = self.trimBST(root.right, L, R)
+        return root 
+
+# 701 Insert into a Binary Search Tree
+class Solution(object):
+    def insertIntoBST(self, root, val):
+        if not root: 
+            return TreeNode(val)
+        if root.val < val: 
+            root.right = self.insertIntoBST(root.right, val);
+        elif root.val > val: 
+            root.left = self.insertIntoBST(root.left, val);
+        return(root)
 ```
 
 ```python
-# form III
-# check if a value exist in the BST
+# form III : check if a value exist in the BST
 def dfs(root, value):
     if not root:
         return False
@@ -71,7 +94,7 @@ def dfs(root, value):
 
 ### 0-3) Tricks
 ```python
-# we don't need to declare y,z in func, but we can use them there directly
+# we don't need to declare y,z in func, but we can use them in the func directly
 # and can get the returned value as well, this trick is being used a lot in the dfs
 def test():
     def func(x):
@@ -89,10 +112,32 @@ print (z)
 
 ## 1) General form
 ```python
+# form I
 def dfs(root):
+
     # if root, do sth
-    # if root, if no thing to do
-    # else, do sth
+    if root:
+        # do sth
+
+    # if not root, nothing to do
+
+    # if root.left exist
+    if root.left:
+        dfs(root.left)
+    # if root.right exist
+    if root.right:
+        dfs(root.right)
+
+# form II
+def dfs(root):
+
+    # if root, do sth
+    if root:
+        # do sth
+
+    # if not root, nothing to do
+
+    if root.left:
     dfs(root.left)
     dfs(root.right)
 ```
@@ -194,11 +239,16 @@ class Solution(object):
 ### 2-2) Insert into a Binary Search Tree
 ```python
 # 701 Insert into a Binary Search Tree
+
+# VO : recursion + dfs
 class Solution(object):
     def insertIntoBST(self, root, val):
-        if(root == None): return TreeNode(val);
-        if(root.val < val): root.right = self.insertIntoBST(root.right, val);
-        else: root.left = self.insertIntoBST(root.left, val);
+        if not root: 
+            return TreeNode(val)
+        if root.val < val: 
+            root.right = self.insertIntoBST(root.right, val);
+        elif root.val > val: 
+            root.left = self.insertIntoBST(root.left, val);
         return(root)
 ```
 
