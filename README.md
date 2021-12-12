@@ -1062,7 +1062,7 @@
 579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](./leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |window function, `amazon`, good trick| OK***** (5)(but again)
 580| [Count Student Number in Departments](https://leetcode.com/problems/count-student-number-in-departments/)|[MySQL](./leetcode_SQL/count-student-numbers-in-departments.sql)||| Medium || OK*** (2) (but again)
 595| [Big Countries](https://leetcode.com/problems/big-countries/)|[MySQL](./leetcode_SQL/big_countries.sql)||| Easy || OK
-597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](./leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK* (5) 
+597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](./leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK*** (6) 
 601| [Human Traffic of Stadium](https://leetcode.com/problems/human-traffic-of-stadium/) |[MySQL](./leetcode_SQL/human-traffic-of-stadium.sql)||| Hard |consecutive nums| OK* (1)
 602| [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) |[MySQL](./leetcode_SQL/friend-requests-ii-who-has-most-friend.sql)||| Medium |union all, `fb`| OK*** (4)
 603| [Consecutive Available Seats](https://leetcode.com/problems/consecutive-available-seats/description/) |[MySQL](./leetcode_SQL/consecutive_available_seats.sql)||| Medium |consecutive nums, good basic| OK***** (3)(but again)
