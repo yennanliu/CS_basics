@@ -1,12 +1,64 @@
-# Trie template 
+# Trie 
 
 ## 0) Concept 
 - https://blog.csdn.net/fuxuemingzhu/article/details/79388432
 - tree + dict
+    - `put Node into dict` (e.g. defaultdict(Node))
 
 ### 0-1) Types
 
 ### 0-2) Pattern
+```python
+# deine node
+from collections import defaultdict
+
+### NOTE : need to define our Node
+class Node():
+
+    def __init__(self):
+        """
+        NOTE : we use defaultdict(Node) as our the trie data structure
+        -> use defaultdict
+            - key : every character from word
+            - value : Node (Node type)
+
+        and link children with paraent Node via defaultdict
+        """
+        self.children = defaultdict(Node)
+        self.isword = False
+
+# implement basic methods
+class Trie():
+
+    def __init__(self):
+        self.root = Node()
+
+    def insert(self, word):
+        ### NOTE : we always start from below
+        cur = self.root
+        for w in word:
+            cur = cur.children[w]
+        cur.isword = True
+
+    def search(self, word):
+        ### NOTE : we always start from below
+        cur = self.root
+        for w in word:
+            cur = cur.children.get(w)
+            if not cur:
+                return False
+        ### NOTE : need to check if isword
+        return cur.isword
+
+    def startsWith(self, prefix):
+        ### NOTE : we always start from below
+        cur = self.root
+        for p in prefix:
+            cur = cur.children.get(p)
+            if not cur:
+                return False
+        return True
+```
 
 ## 1) General form
 
