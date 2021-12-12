@@ -132,21 +132,18 @@ FROM my_num;
 
 ```
 
-#### 7. Given tables: movie, actor (multi to multi relations), please design a data model and query that can report number of actor with given movie-id/movie-name ?
+### 7. Given tables: movie, actor (multi to multi relations), please design a data model and query that can report number of actor with given movie-id/movie-name ?
 
 
 ### 8. Solve the "many-to-many" DB design problem?
-- > 
-https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab
+- https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab
 
 
 ### 9. Which op is faster `union` or `union all`?
-->
-`union all` is faster, since it **WILL NOT** avoid possible duplicates.
+- `union all` is faster, since it **WILL NOT** avoid possible duplicates.
 
 
 ### 9'. Difference between `union` and `union all`?
-->
 - `Union` will remove the duplicated records (only show same record once)
 - `Union all` will return everything, includes the duplicated data (merge directly)
 - https://dataschool.com/learn-sql/what-is-the-difference-between-union-and-union-all/
@@ -154,7 +151,7 @@ https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab
 
 
 ### 10. Example of use variable in SQL ?
-->
+
 ```sql
 # mysql
 SELECT 
@@ -169,7 +166,7 @@ FROM
 
 ### 11. Delete duplicate record from table ?
 - https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/delete-duplicate-emails.sql
-->
+
 ```sql
 DELETE a
 FROM TABLE a,
@@ -178,7 +175,7 @@ WHERE a.id = b.id
   AND a.timestamp > b.timestamp
 ```
 - Follow up : if in the "whole column duplicate" case?
-->
+
 ```sql
 
 -- build the table 
@@ -221,7 +218,6 @@ WHERE id IN (
 ``` 
 
 ### 12. SQL deal with NULL value ?
-->
 
 - `IS NULL` VS ` = NULL`
 
@@ -231,7 +227,7 @@ WHERE id IN (
    FROM CUSTOMERS
    WHERE SALARY IS NOT NULL; 
 
--- select data where SALARY is  null
+-- select data where SALARY is null
  SELECT  ID, NAME, AGE, ADDRESS, SALARY
    FROM CUSTOMERS
    WHERE SALARY IS NULL; 
