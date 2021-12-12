@@ -42,7 +42,7 @@
 			- quick sort
 			- intervals
 		- SQL
-			- 
+			- faq_sql.md
 	- Crack Code
 	- System Design
 		- Tinder design
