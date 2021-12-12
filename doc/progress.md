@@ -68,8 +68,14 @@
 		- note
 			- p.279
 	- cheatsheet review
-		- dfs.md
-		- binary_search.md
+		- (order)
+		- dfs.md (ok)
+		- binary_search.md (ing)
+		- =======
+		- (inverse order)
+		- trie.md (ok)
+		- string.md (ok)
+		- stack.md (ing)
 
 # 2021-12-11
 - DOING:
