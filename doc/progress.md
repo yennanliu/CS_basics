@@ -30,6 +30,8 @@
 				- 776 (not start)
 				- 669 (not start)
 				- 538 (not start)
+				- 652 (not start !!)
+				- 662 (*not start*)
 			- bfs
 			- =======
 			- hash table
@@ -47,7 +49,8 @@
 		- note
 			- p.279
 	- cheatsheet review
-		- dfs.md (ing)
+		- dfs.md
+		- binary_search.md
 
 # 2021-12-11
 - DOING:
