@@ -1106,7 +1106,7 @@
 1211| [Queries Quality and Percentage](https://leetcode.com/problems/queries-quality-and-percentage/) | [MySQL](./leetcode_SQL/queries-quality-and-percentage.sql) | _O(n)_ | _O(n)_| Easy|| OK
 1212| [Team Scores in Football Tournament](https://leetcode.com/problems/team-scores-in-football-tournament/) | [MySQL](./leetcode_SQL/team-scores-in-football-tournament.sql) | _O(nlogn)_ | _O(n)_| Medium| good trick| OK** (2)
 1225| [Report Contiguous Dates](https://leetcode.com/problems/report-contiguous-dates/) | [MySQL](./leetcode_SQL/report-contiguous-dates.sql) | _O(nlogn)_ | _O(n)_ | Hard  |🔒| AGAIN* (2) (not start)
-1241| [Number of Comments per Post](https://leetcode.com/problems/number-of-comments-per-post/) | [MySQL](./leetcode_SQL/number-of-comments-per-post.sql) | _O(n)_ | _O(n)_| Easy |🔒, good basic| OK** (4)
+1241| [Number of Comments per Post](https://leetcode.com/problems/number-of-comments-per-post/) | [MySQL](./leetcode_SQL/number-of-comments-per-post.sql) | _O(n)_ | _O(n)_| Easy |🔒, good basic| OK**** (5) (but again)
 1251| [Average Selling Price](https://leetcode.com/problems/average-selling-price/) | [MySQL](./leetcode_SQL/average-selling-price.sql) | _O(n)_ | _O(n)_| Easy|🔒, good basic| OK*** (but again) (3)
 1264| [Page Recommendations](https://leetcode.com/problems/page-recommendations/) | [MySQL](./leetcode_SQL/page-recommendations.sql) | _O(m + n)_ | _O(m)_| Medium|🔒| OK** (2)
 1270| [All People Report to the Given Manager](https://leetcode.com/problems/all-people-report-to-the-given-manager/) | [MySQL](./leetcode_SQL/all-people-report-to-the-given-manager.sql) | _O(n)_ | _O(n)_| Medium|🔒, good basic| OK* (3)
@@ -1116,7 +1116,7 @@
 1303| [Find the Team Size](https://leetcode.com/problems/find-the-team-size/) | [MySQL](./leetcode_SQL/find-the-team-size.sql) | _O(n)_ | _O(n)_       | Easy|🔒| ok (1)
 1308| [Running Total for Different Genders](https://leetcode.com/problems/running-total-for-different-genders/) | [MySQL](./leetcode_SQL/running-total-for-different-genders.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒, good basic, union all, window func| OK**** (3)
 1321| [Restaurant Growth](https://leetcode.com/problems/restaurant-growth/) | [MySQL](./leetcode_SQL/restaurant-growth.sql) | _O(n^2)_ | _O(n)_| Medium|🔒, good basic, trick| AGAIN***** (3)
-1322| [Ads Performance](https://leetcode.com/problems/ads-performance/) | [MySQL](./leetcode_SQL/ads-performance.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒, good basic| OK**** (2) (but again)
+1322| [Ads Performance](https://leetcode.com/problems/ads-performance/) | [MySQL](./leetcode_SQL/ads-performance.sql) | _O(nlogn)_ | _O(n)_| Easy|🔒, good basic| OK******* (3) (but again)
 1327| [List the Products Ordered in a Period](https://leetcode.com/problems/list-the-products-ordered-in-a-period/) | [MySQL](./leetcode_SQL/list-the-products-ordered-in-a-period.sql) | _O(n)_ | _O(n)_| Easy|🔒| OK
 1336| [Number of Transactions per Visit](https://leetcode.com/problems/number-of-transactions-per-visit/) | [MySQL](./leetcode_SQL/number-of-transactions-per-visit.sql) | _O(m + n)_ | _O(m + n)_| Medium|🔒, complex, variable| AGAIN (not start)
 1341| [Movie Rating](https://leetcode.com/problems/movie-rating/) | [MySQL](./leetcode_SQL/movie-rating.sql) | _O(nlogn)_ | _O(n)_| Medium|🔒| AGAIN (not start)
@@ -1152,7 +1152,7 @@
 1571| [Warehouse Manager](https://leetcode.com/problems/warehouse-manager/) | [MySQL](./leetcode_SQL/warehouse-manager.sql) | _O(n)_ | _O(n)_| Medium|🔒| OK* (1)
 1581| [Customer Who Visited but Did Not Make Any Transactions](https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/) | [MySQL](./leetcode_SQL/customer-who-visited-but-did-not-make-any-transactions.sql) | _O(n)_ | _O(n)_| Easy|🔒, left join, good basic| OK** (2)(but again)
 1587| [Bank Account Summary II](https://leetcode.com/problems/bank-account-summary-ii/) | [MySQL](./leetcode_SQL/bank-account-summary-ii.sql) | _O(m + n)_ | _O(m + n)_| Easy|🔒| OK
-1596| [The Most Frequently Ordered Products for Each Customer](https://leetcode.com/problems/the-most-frequently-ordered-products-for-each-customer/) | [MySQL](./leetcode_SQL/the-most-frequently-ordered-products-for-each-customer.sql) | _O(n)_ | _O(n)_| Medium|🔒, good trick, `rank() ORDER BY count`| OK**** (2)(but again)
+1596| [The Most Frequently Ordered Products for Each Customer](https://leetcode.com/problems/the-most-frequently-ordered-products-for-each-customer/) | [MySQL](./leetcode_SQL/the-most-frequently-ordered-products-for-each-customer.sql) | _O(n)_ | _O(n)_| Medium|🔒, good trick, `rank() ORDER BY count`, get max in each group| OK********* (3)(but again)
 1607| [Sellers With No Sales](https://leetcode.com/problems/sellers-with-no-sales/) | [MySQL](./leetcode_SQL/sellers-with-no-sales.sql) | _O(nlogm)_ | _O(n + m)_       | Medium|🔒| OK
 1613| [Find the Missing IDs](https://leetcode.com/problems/find-the-missing-ids/) | [MySQL](./leetcode_SQL/find-the-missing-ids.sql) | _O(n^2)_ | _O(n)_| Medium|🔒, `RECURSIVE CTE`, good trick| AGAIN*** (2)
 1623| [All Valid Triplets That Can Represent a Country](https://leetcode.com/problems/all-valid-triplets-that-can-represent-a-country/) | [MySQL](./leetcode_SQL/all-valid-triplets-that-can-represent-a-country.sql) | _O(n^3)_ | _O(n^3)_| Easy|🔒, `<>`| AGAIN* (not start)
