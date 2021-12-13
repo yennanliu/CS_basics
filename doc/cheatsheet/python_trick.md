@@ -152,3 +152,14 @@ print (x)
 x_ = _sort(x)
 print (x_)
 ```
+
+### 1-8) get Quotient, Remainder on a integer
+```python
+In [1]: x,y = divmod(100, 3)
+
+In [2]: x
+Out[2]: 33
+
+In [3]: y
+Out[3]: 1
+```
