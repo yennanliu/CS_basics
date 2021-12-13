@@ -1,5 +1,61 @@
 # Progress
 
+# 2021-12-14
+- DOING:
+	- LC (appl_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
+	- ================
+	- LC review (amz_)
+		- ref: https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
+		- programming
+			- review
+			- (normal order)
+			- (pdf : p.5)
+			- =======
+			- **back track**
+				- 040 (again !)
+				- 079 (again !)
+				- 078 (again !)
+			- Tree
+				- 211 (not start)
+				- 212 (not start)
+				- 235 (not start !!!)
+				- 449 (not start)
+				- 776 (not start)
+				- 669 (not start)
+				- 538 (not start)
+				- 652 (not start !!)
+				- 662 (*not start*)
+			- =======
+			- bit manipulation
+			- union find
+			- quick sort
+			- intervals
+		- SQL
+	- Crack Code
+	- System Design
+		- Tinder design
+	- algorithm book (labu)
+		- read
+			- P.408 - 413
+		- note
+			- p.279
+	- cheatsheet review
+		- (order)
+		- dfs.md (ok)
+		- binary_search.md (ing)
+		- =======
+		- (inverse order)
+		- trie.md (ok)
+		- string.md (ok)
+		- stack.md (ok)
+		- string.md
+		- stack.md
+		- scanning_line.md
+		- queue.md
+		- palindrome.md
+		- n_sum.md
+		- math.md
 
 # 2021-12-12
 - DOING:
