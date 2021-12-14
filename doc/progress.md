@@ -12,10 +12,10 @@
 			- (normal order)
 			- (pdf : p.5)
 				- 002
-				- 206
+				- 206 
 			- =======
 			- **back track**
-				- 040 (again !)
+				- 040 (again !!!)
 				- 079 (again !)
 				- 078 (again !)
 			- Tree
