@@ -282,6 +282,43 @@ class Solution:
 
 #### 1-1-4) swap node
 
+#### 1-1-5) add 2 linked list
+```python
+# LC 002
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        """
+        NOTE :
+         1. we init linedlist via ListNode()
+         2. we NEED make extra head refer same linedlist, since we need to return beginning of linkedlust of this func, while res will meet "tail" at the end of while loop
+        """
+        head = res = ListNode()
+        plus = 0
+        tmp = 0
+        while l1 or l2:
+            tmp += plus
+            plus = 0
+            if l1:
+                tmp += l1.val
+                l1 = l1.next
+            if l2:
+                tmp += l2.val
+                l2 = l2.next
+            if tmp > 9:
+                tmp -= 10
+                plus = 1
+
+            res.next = ListNode(tmp)
+            res = res.next
+            tmp = 0
+        ### NOTE : need to deal with case : l1, l2 are completed, but still "remaining" plus
+        if plus != 0:
+            res.next = ListNode(plus)
+            res = res.next
+        #print ("res = " + str(res))
+        #print ("head = " + str(head))
+        return head.next
+```
 
 ## 2) LC Example
 
