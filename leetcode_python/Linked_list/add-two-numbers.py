@@ -32,7 +32,42 @@ It is guaranteed that the list represents a number that does not have leading ze
 
 """
 
-# V0 
+# V0
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        """
+        NOTE :
+         1. we init linedlist via ListNode()
+         2. we NEED make extra head refer same linedlist, since we need to return beginning of linkedlust of this func, while res will meet "tail" at the end of while loop
+        """
+        head = res = ListNode()
+        plus = 0
+        tmp = 0
+        while l1 or l2:
+            tmp += plus
+            plus = 0
+            if l1:
+                tmp += l1.val
+                l1 = l1.next
+            if l2:
+                tmp += l2.val
+                l2 = l2.next
+            if tmp > 9:
+                tmp -= 10
+                plus = 1
+
+            res.next = ListNode(tmp)
+            res = res.next
+            tmp = 0
+        ### NOTE : need to deal with case : l1, l2 are completed, but still "remaining" plus
+        if plus != 0:
+            res.next = ListNode(plus)
+            res = res.next
+        #print ("res = " + str(res))
+        #print ("head = " + str(head))
+        return head.next
+
+# V0'
 class Solution:
     # @return a ListNode
     def addTwoNumbers(self, l1, l2):
@@ -55,7 +90,7 @@ class Solution:
             l.next = ListNode(sum)
             l = l.next
         return head.next
-    
+  
 # V1
 # http://bookshadow.com/weblog/2015/04/05/leetcode-add-two-numbers/
 # IDEA : LINKED LIST
