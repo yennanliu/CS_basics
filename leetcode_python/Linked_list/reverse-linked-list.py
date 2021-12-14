@@ -41,6 +41,7 @@ class Solution(object):
     def reverseList(self, head):
         if not head:
             return head
+        ### NOTE : we define prev = None
         prev = None
         cur = head
         while cur:
@@ -49,6 +50,10 @@ class Solution(object):
             cur.next = prev
             prev = cur
             cur = _next
+        """
+        NOTE !!!
+        -> we need to return prev, instead of head or others, since prev is the "NEW head" of updated linkedlist now
+        """
         return prev
 
 # V0'

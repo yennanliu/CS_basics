@@ -276,6 +276,26 @@ class Solution:
         # return the head
         return head
         #return _prev # this one works as well
+
+# V0'
+class Solution(object):
+    def reverseList(self, head):
+        if not head:
+            return head
+        ### NOTE : we define prev = None
+        prev = None
+        cur = head
+        while cur:
+            _next = cur.next
+            #print ("prev = " + str(prev))
+            cur.next = prev
+            prev = cur
+            cur = _next
+        """
+        NOTE !!!
+        -> we need to return prev, instead of head or others, since prev is the "NEW head" of updated linkedlist now
+        """
+        return prev
 ```
 
 #### 1-1-3) delete node

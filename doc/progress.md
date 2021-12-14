@@ -12,6 +12,7 @@
 			- (normal order)
 			- (pdf : p.5)
 				- 002
+				- 206
 			- =======
 			- **back track**
 				- 040 (again !)
