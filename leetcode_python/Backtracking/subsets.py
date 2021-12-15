@@ -48,7 +48,12 @@ class Solution(object):
                 return
             ### NOTE : we have if condition first, then for loop
             for i in range(start, len(nums)):
+                """
                 ### NOTE below can make loop start `start idx` updated each time
+                NOTE : since we NOT contain duplicate subsets
+                ->  1. every loop start from i  (instead of 0 idx)
+                ->  (i start from `start`, and start = i+1 for each loop)
+                """
                 dfs(layer+1, i+1, tmp + [nums[i]])
         nums.sort()
         res = []
