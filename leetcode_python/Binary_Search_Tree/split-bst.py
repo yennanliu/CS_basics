@@ -40,6 +40,33 @@ The BST is always valid and each node’s value is different.
 
 # V0
 # IDEA : BST properties (left < root < right) + recursion
+# https://blog.csdn.net/magicbean2/article/details/79679927
+# https://www.itdaan.com/tw/d58594b92742689b5769f9827365e8b4
+### STEPS
+#  -> 1) check whether root.val > or < V
+#     -> if root.val > V : 
+#           - NO NEED TO MODIFY ALL RIGHT SUB TREE
+#           - BUT NEED TO re-connect nodes in LEFT SUB TREE WHICH IS BIGGER THAN V (root.left = right)
+#     -> if root.val < V : 
+#           - NO NEED TO MODIFY ALL LEFT SUB TREE
+#           - BUT NEED TO re-connect nodes in RIGHT SUB TREE WHICH IS SMALLER THAN V (root.right = left)
+# -> 2) return result
+class Solution(object):
+    def splitBST(self, root, V):
+        if not root: return [None, None]
+        ### NOTE : if root.val <= V
+        if root.val > V:
+            left, right = self.splitBST(root.left, V)
+            root.left = right
+            return [left, root]
+        ### NOTE : if root.val > V
+        else:
+            left, right = self.splitBST(root.right, V)
+            root.right = left
+            return [root, right]
+
+# V0'
+# IDEA : BST properties (left < root < right) + recursion
 class Solution(object):
     def splitBST(self, root, V):
         if not root:
