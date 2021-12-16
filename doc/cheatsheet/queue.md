@@ -16,6 +16,9 @@
 ## 1) General form
 ```python
 # python
+#------------------
+# Queue
+#------------------
 class Queue(object):
     def __init__(self, limit = 10):
         self.queue = []
@@ -78,7 +81,9 @@ class Queue(object):
 ```
 
 ```java
-// monotonic queue
+// ----------------
+// monotonic Queue
+// ----------------
 // java
 // algorithm book (labu) p. 278, p.281
 class MonotonicQueue{
@@ -133,3 +138,84 @@ print (d)
 ### 1-4) Stack simulate Queue
 
 ## 2) LC Example
+
+### 2-1) Sliding Window Maximum
+```python
+# LC 239 Sliding Window Maximum (hard)
+# V1
+# http://bookshadow.com/weblog/2015/07/18/leetcode-sliding-window-maximum/
+# IDEA : DEQUE
+class Solution:
+    def maxSlidingWindow(self, nums, k):
+        dq = collections.deque()
+        ans = []
+        for i in range(len(nums)):
+            while dq and nums[dq[-1]] <= nums[i]:
+                dq.pop()
+            dq.append(i)
+            if dq[0] == i - k:
+                dq.popleft()
+            if i >= k - 1:
+                ans.append(nums[dq[0]])
+        return ans
+```
+
+```java
+// LC 239 Sliding Window Maximum (hard)
+// algorithm book (labu) p. 278, p.281
+// java
+
+// monotonic queue
+class MonotonicQueue{
+
+    // init queue
+    LinkedList<Integer> q = new LinkedList<>();
+    
+    // add element to queue tail
+    public void push(int n){
+        while (!q.isEmpty() && q.getLast() < n){
+            q.pollLast();
+        }
+        q.addLast(n);
+    }
+
+    // return current max value in queue
+    public int max(){
+        return q.getFirst();
+    }
+
+    // if head element is n, delete it
+    public void pop(int n){
+        if (n == q.getFirst()){
+            q.pollLast();
+        }
+    }
+}
+
+/* main func */
+int[] maxSlidingWindow([int] nums, int k){
+    MonotonicQueue window = new MonotonicQueue();
+    List<Integer> res = new ArrayList<>();
+
+    for (int i = 0; i < nums.length; i++){
+        if (i < k - 1){
+            // insert k - 1 elements in the window
+            window.push(nums[i]);
+        }else{
+            // window move forward, add new element
+            window.push(nums[i]);
+            // record current max element in the window
+            res.add(window.max());
+            // move out element
+            window.pop(nums[i - k + 1]);
+        }
+    }
+
+    // transform res to int[] array as answer form
+    int[] arr = new int[res.size()];
+    for (int i = 0; i < res.size(); i ++){
+        arr[i] = res.get(i);
+    }
+    return arr;
+}
+```
