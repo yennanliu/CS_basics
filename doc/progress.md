@@ -18,7 +18,7 @@
 				- 212 (not start, hard)
 				- 235 (ok, but again !!!)
 				- 449 (not start)
-				- 776 (not start)
+				- 776 (again)
 				- 669 (not start)
 				- 538 (not start)
 				- 652 (not start !!)
