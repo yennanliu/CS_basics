@@ -35,19 +35,6 @@ p and q will exist in the BST.
 """
 
 # V0
-# IDEA : TREE property + recursive (same code as LC 236)
-class Solution(object):
-    def lowestCommonAncestor(self, root, p, q):
-        if not root or root == p or root == q:
-            return root
-        left = self.lowestCommonAncestor(root.left, p, q)
-        right = self.lowestCommonAncestor(root.right, p, q)
-        if left and right:
-            return root
-
-        return left if left else right
-
-# V0'
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
 #          -> left -> right -> root
@@ -78,6 +65,19 @@ class Solution:
             return root
 
 # V0'
+# IDEA : TREE property + recursive (same code as LC 236)
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        if not root or root == p or root == q:
+            return root
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        if left and right:
+            return root
+
+        return left if left else right
+
+# V0''
 # IDEA : ITERATION
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/solution/
 class Solution:
