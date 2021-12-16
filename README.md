@@ -860,6 +860,7 @@
 078| [Subsets](https://leetcode.com/problems/subsets/) | [Python](./leetcode_python/Backtracking/subsets.py) | _O(n * 2^n)_   | _O(1)_| Medium  |`good concept` , similar as, dfs, back track`#90 Subsets II `, `UBER`, `amazon`, `fb`| AGAIN********* (5) (again!)
 090| [Subsets II](https://leetcode.com/problems/subsets-ii/) | [Python](./leetcode_python/Backtracking/subsets-ii.py)  | _O(n * 2^n)_ | _O(1)_ | Medium |good basic, check `# 078 Subsets`, dfs, backtrack, `fb`| AGAIN********* (5) 
 131| [Palindrome Partitioning](https://leetcode.com/problems/palindrome-partitioning/) |[Python](./leetcode_python/Backtracking/palindrome-partitioning.py) | _O(n^2)_ ~ _O(2^n)_ | _O(n^2)_ | Medium |dfs, backtracking, good pattern,`amazon`| AGAIN***** (3)
+212| [Word Search II](https://leetcode.com/problems/word-search-ii/) |  [Python](./leetcode_python/Backtracking/word-search-ii.py)  | _O(m * n * l)_ | _O(l)_ | Hard  ||  not start
 216| [Combination Sum III](https://leetcode.com/problems/combination-sum-iii/)| [Python](./leetcode_python/Backtracking/combination-sum-iii.py) | _O(k * C(n, k))_    | _O(k)_      | Medium      || AGAIN* 
 254| [Factor Combinations](https://leetcode.com/problems/factor-combinations/) | [Python](./leetcode_python/Backtracking/factor-combinations.py)  | _O(nlogn)_ | _O(logn)_ | Medium   |🔒| AGAIN (not start)
 267| [Palindrome Permutation II](https://leetcode.com/problems/palindrome-permutation-ii/) | [Python](./leetcode_python/Backtracking/palindrome-permutation-ii.py)  | _O(n * n!)_ |  _O(n)_ | Medium     |🔒| AGAIN (not start*)
