@@ -40,7 +40,50 @@ At most 50000 calls will be made to addWord and search.
 
 """
 
-# V0 
+# V0
+from collections import defaultdict
+class Node(object):
+    def __init__(self):
+        self.children = defaultdict(Node)
+        self.isword = False
+        
+class WordDictionary(object):
+
+    def __init__(self):
+        self.root = Node()
+
+    def addWord(self, word):
+        current = self.root
+        for w in word:
+            _next = current.children[w]
+            current = _next
+        current.isword = True
+
+    def search(self, word):
+        return self.match(word, 0, self.root)
+    
+    def match(self, word, index, root):
+        """
+        NOTE : match is a helper func (for search)
+
+          - deal with 2 cases
+          -   1) word[index] != '.'
+          -   2) word[index] == '.'
+        """
+        # note the edge cases
+        if root == None:
+            return False
+        if index == len(word):
+            return root.isword
+        # CASE 1: word[index] != '.'
+        if word[index] != '.':
+            return root != None and self.match(word, index + 1, root.children.get(word[index]))
+        # CASE 2: word[index] == '.'
+        else:
+            for child in root.children.values():
+                if self.match(word, index + 1, child):
+                    return True
+        return False
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79390052
