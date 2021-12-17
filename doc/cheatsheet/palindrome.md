@@ -4,6 +4,22 @@
 
 ### 0-1) Types
 
+- Types
+    - String
+    - Array
+    - linked list
+    - int
+
+- Algorithm
+    - back tracking
+
+- Data structure
+    - hash table
+    - queue
+    - linked list
+    - int
+    - array
+
 ### 0-2) Pattern
 ```python
 # python
@@ -14,6 +30,40 @@ def check_palindrome(x):
 ## 1) General form
 
 ### 1-1) Basic OP
+
+#### 1-1-1) Get longest Palindrome string
+```java
+// algorithm book p. 283
+// java
+/** start from center, expand to left, right side */
+string palindrome(String s, int l, int r){
+    // avoid out of boundary
+    while (l >= 0 && r < s.size() && s[l] == s[r]){
+        // expand to left and right
+        l--;
+        r++;
+    }
+    return s.substr(l+1, r-l-1);
+}
+```
+
+#### 1-1-2) Check if a string is Palindrome
+```java
+// algorithm book p. 283
+// java
+/** start from left, right side, expand to center */
+boolean isPalindrome(String s){
+    int left = 0; right = s.length - 1;
+    while (right > left){
+        if (s[left] != s[right]){
+            return false;
+            left ++;
+            right --;
+        }
+    }
+    return true;
+}
+```
 
 ## 2) LC Example
 
