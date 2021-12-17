@@ -32,7 +32,7 @@
 		- read
 			- P.420 -
 		- note
-			- p.283
+			- p.284
 	- cheatsheet review
 		- (order)
 		- binary_search.md (ing)
