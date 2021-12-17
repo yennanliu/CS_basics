@@ -67,7 +67,7 @@ boolean isPalindrome(String s){
 
 ## 2) LC Example
 
-#### 2-1) Palindrome Partitioning
+### 2-1) Palindrome Partitioning
 ```python
 # 131 Palindrome Partitioning
 class Solution(object):
@@ -87,4 +87,55 @@ class Solution(object):
 
     def isPalindrome(self, x):
         return x == x[::-1]
+```
+
+### 2-2) Palindrome Linked List
+```python
+# 234. Palindrome Linked List
+
+# V0
+# IDEA : LINKED LIST -> LIST
+# EXAMPLE INPUT :
+# [1,2,2,1]
+# WHILE GO THROUGH :
+# head = ListNode{val: 2, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}
+# head = ListNode{val: 2, next: ListNode{val: 1, next: None}}
+# head = ListNode{val: 1, next: None}
+# head = None
+class Solution(object):
+    def isPalindrome(self, head):
+        ### NOTE : THE CONDITION
+        if not head or not head.next:
+            return True
+        r = []
+        ### NOTE : THE CONDITION
+        while head:
+            r.append(head.val)
+            head = head.next
+        return r == r[::-1]
+
+# V1
+class Solution(object):
+    def isPalindrome(self, head):
+        if not head or not head.next:
+            return True
+
+        new_list = []
+
+        # slow & fast pointers find the middle of the linked list 
+        slow = fast = head
+        while fast and fast.next:
+            #new_list.insert(0, slow.val)
+            new_list.append(slow.val)
+            slow = slow.next
+            fast = fast.next.next
+        # to find how many nodes in the linked list    
+        if fast: 
+            slow = slow.next
+
+        for val in new_list[::-1]:
+            if val != slow.val:
+                return False
+            slow = slow.next
+        return True
 ```
