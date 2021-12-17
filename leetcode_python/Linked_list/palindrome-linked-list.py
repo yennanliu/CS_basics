@@ -64,6 +64,31 @@ class Solution(object):
         return tmp_list[:mid_] == tmp_list[-mid_:][::-1]
 
 # V1
+class Solution(object):
+    def isPalindrome(self, head):
+        if not head or not head.next:
+            return True
+
+        new_list = []
+
+        # slow & fast pointers find the middle of the linked list 
+        slow = fast = head
+        while fast and fast.next:
+            #new_list.insert(0, slow.val)
+            new_list.append(slow.val)
+            slow = slow.next
+            fast = fast.next.next
+        # to find how many nodes in the linked list    
+        if fast: 
+            slow = slow.next
+
+        for val in new_list[::-1]:
+            if val != slow.val:
+                return False
+            slow = slow.next
+        return True
+
+# V1'
 # IDEA : LINKED LIST -> LIST
 # https://blog.csdn.net/coder_orz/article/details/51306985
 class Solution(object):
@@ -86,7 +111,7 @@ class Solution(object):
                 return False
         return True
 
-# V1'
+# V1''
 # https://blog.csdn.net/coder_orz/article/details/51306985
 class Solution(object):
     def isPalindrome(self, head):
@@ -115,7 +140,7 @@ class Solution(object):
             slow = slow.next
         return True
 
-# V1''
+# V1'''
 # https://blog.csdn.net/coder_orz/article/details/51306985
 class Solution(object):
     def isPalindrome(self, head):
@@ -151,7 +176,7 @@ class Solution(object):
             new_head = p
         return new_head
 
-# V1'
+# V1'''''
 # http://bookshadow.com/weblog/2015/07/10/leetcode-palindrome-linked-list/
 class Solution:
     # @param {ListNode} head
@@ -183,7 +208,7 @@ class Solution:
         slow.next = last
         return p1 is None
 
-# V1''
+# V1'''''''
 # https://blog.csdn.net/coder_orz/article/details/51306985
 # Definition for singly-linked list.
 class ListNode(object):

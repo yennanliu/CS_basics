@@ -340,6 +340,24 @@ class Solution(object):
         return head.next
 ```
 
+#### 1-1-6) Find linked list middle point
+```java
+// algorithm book p. 286
+// java
+Listnode slow, fast;
+slow = fast = head;
+while (fast && fast.next){
+    fast = fast.next.next;
+    slow = slow.next;
+}
+// slow pointer will be linked list middle point
+
+// if element count in linked list is odd (TO VERIFY)
+if (fast != null){
+    slow = slow.next;
+}
+```
+
 ## 2) LC Example
 
 ### 2-1) palindrome-linked-list
