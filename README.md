@@ -453,7 +453,7 @@
 378 | [Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) | [python](./leetcode_python/Heap/kth-smallest-element-in-a-sorted-matrix.py)  | _O(k * log(min(n, m, k)))_ | _O(min(n, m, k))_ | Medium | LintCode | AGAIN (not start)
 846 | [Hand of Straights](https://leetcode.com/problems/hand-of-straights/) | [python](./leetcode_python/Heap/hand-of-straights.py) | _O(nlogn)_ | _O(n)_ | Medium || OK*
 855 | [Exam Room](https://leetcode.com/problems/exam-room/) | [python](./leetcode_python/Heap/exam-room.py)  | seat: _O(logn)_ <br> leave: _O(logn)_ | _O(n)_ | Medium | BST, Hash, `trick` | AGAIN* (2) (not start)
-295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | [python](./leetcode_python/Heap/find_median_from_data_stream.py)  | | | Hard |trick ,heap, stream, `amazon`|  AGAIN****** (5)
+295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | [python](./leetcode_python/Heap/find_median_from_data_stream.py)  | | | Hard |trick ,heap, stream, `amazon`|  AGAIN****** (6)
 703 | [Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/) | [python](./leetcode_python/Heap/kth_largest_element_in_a_stream.py)  | | | Easy |heap, stream, `amazon`|  AGAIN** (2)
 
 
@@ -662,7 +662,7 @@
 274| [H-Index](https://leetcode.com/problems/h-index/) |  [Python](./leetcode_python/Sort/h-index.py)  | _O(n)_ | _O(n)_ | Medium  |Counting Sort,`good trick`, `fb`|  AGAIN***** (3)  
 280| [Wiggle Sort](https://leetcode.com/problems/wiggle-sort/) | [Python](./leetcode_python/Sort/wiggle-sort.py)  | _O(n)_ | _O(1)_| Medium  |🔒,`google`,`fb`|  OK*** (3) 
 324| [Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/) | [Python](./leetcode_python/Sort/wiggle-sort-ii.py)  | _O(n)_  on average | _O(1)_   | Medium  | variant of [Sort Colors](https://leetcode.com/problems/sort-colors/) , Tri Partition, `google`| AGAIN**  (2)
-347| [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) | [Python](./leetcode_python/Sort/top-k-frequent-elements.py)  | _O(n)_ | _O(n)_| Medium  |  Quick Select, Heap, Bucket Sort,`Yelp`,`amazon`,`fb`|  OK*
+347| [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) | [Python](./leetcode_python/Sort/top-k-frequent-elements.py)  | _O(n)_ | _O(n)_| Medium  |  Quick Select, Heap, Bucket Sort,`Yelp`,`amazon`,`fb`|  OK* (3)
 406| [Queue Reconstruction by Height](https://leetcode.com/problems/queue-reconstruction-by-height/) |  [Python](./leetcode_python/Sort/queue-reconstruction-by-height.py) | _O(n * sqrt(n))_ | _O(n)_ | Medium  | `basic`,`trick`, `sort by key`, `insert`, `google` | AGAIN*** (3)
 451| [Sort Characters By Frequency](https://leetcode.com/problems/sort-characters-by-frequency/) |  [Python](./leetcode_python/Sort/sort-characters-by-frequency.py)| _O(n)_ | _O(n)_| Medium |`collections.Counter(s).most_common`,`sorted(count_dict.items() with lambda`,good basic, `amazon`| OK* (4)
 692| [Top K Frequent Words](https://leetcode.com/problems/top-k-frequent-words/) | [Python](./leetcode_python/Sort/top-k-frequent-words.py) | _O(n + klogk)_ on average | _O(n)_  | Medium | `good basic`,Quick Select, Heap, Bucket Sort, `heapq`, `yelp`, `UBER`,`amazon`,`fb` | OK***** (5)
