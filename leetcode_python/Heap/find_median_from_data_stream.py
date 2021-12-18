@@ -1,32 +1,54 @@
-# 295. Find Median from Data Stream
-# Hard
-#
-# Median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two middle value.
-#
-# For example,
-# [2,3,4], the median is 3
-#
-# [2,3], the median is (2 + 3) / 2 = 2.5
-#
-# Design a data structure that supports the following two operations:
-#
-# void addNum(int num) - Add a integer number from the data stream to the data structure.
-# double findMedian() - Return the median of all elements so far.
-#
-# Example:
-#
-# addNum(1)
-# addNum(2)
-# findMedian() -> 1.5
-# addNum(3) 
-# findMedian() -> 2
-# 
-# Follow up:
-#
-# If all integer numbers from the stream are between 0 and 100, how would you optimize it?
-# If 99% of all integer numbers from the stream are between 0 and 100, how would you optimize it?
+"""
+
+295. Find Median from Data Stream
+Hard
+
+The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value and the median is the mean of the two middle values.
+
+For example, for arr = [2,3,4], the median is 3.
+For example, for arr = [2,3], the median is (2 + 3) / 2 = 2.5.
+Implement the MedianFinder class:
+
+MedianFinder() initializes the MedianFinder object.
+void addNum(int num) adds the integer num from the data stream to the data structure.
+double findMedian() returns the median of all elements so far. Answers within 10-5 of the actual answer will be accepted.
+ 
+
+Example 1:
+
+Input
+["MedianFinder", "addNum", "addNum", "findMedian", "addNum", "findMedian"]
+[[], [1], [2], [], [3], []]
+Output
+[null, null, null, 1.5, null, 2.0]
+
+Explanation
+MedianFinder medianFinder = new MedianFinder();
+medianFinder.addNum(1);    // arr = [1]
+medianFinder.addNum(2);    // arr = [1, 2]
+medianFinder.findMedian(); // return 1.5 (i.e., (1 + 2) / 2)
+medianFinder.addNum(3);    // arr[1, 2, 3]
+medianFinder.findMedian(); // return 2.0
+ 
+
+Constraints:
+
+-105 <= num <= 105
+There will be at least one element in the data structure before calling findMedian.
+At most 5 * 104 calls will be made to addNum and findMedian.
+ 
+
+Follow up:
+
+If all integer numbers from the stream are in the range [0, 100], how would you optimize your solution?
+If 99% of all integer numbers from the stream are in the range [0, 100], how would you optimize your solution?
+
+"""
 
 # V0
+# IDEA : python heapq (heap queue AKA priority queue)
+# https://docs.python.org/zh-tw/3/library/heapq.html
+# https://github.com/python/cpython/blob/3.10/Lib/heapq.py
 from heapq import *
 class MedianFinder:
     def __init__(self):
@@ -35,13 +57,22 @@ class MedianFinder:
 
     def addNum(self, num):
         if len(self.small) == len(self.large):
+            """
+            * heapq.heappush(heap, item)
+                -> Push the value item onto the heap, maintaining the heap invariant.
+
+            * heapq.heappushpop(heap, item)
+                -> Push item on the heap, then pop and return the smallest item from the heap. The combined action runs more efficiently than heappush() followed by a separate call to heappop().
+            """
             heappush(self.large, -heappushpop(self.small, -num))
         else:
             heappush(self.small, -heappushpop(self.large, num))
 
     def findMedian(self):
+        # even length
         if len(self.small) == len(self.large):
             return float(self.large[0] - self.small[0]) / 2.0
+        # odd length
         else:
             return float(self.large[0])
 
