@@ -90,7 +90,32 @@ Every integer represented in the list will be between -30000 and 30000.
 # The size of the input list will be between 1 and 1000.
 # Every integer represented in the list will be between -30000 and 30000.
 
-# V0 
+# V0
+# IDEA : STACK
+class Solution(object):
+    def calPoints(self, ops):
+        cache = []
+        for op in ops:
+            if op == "C":
+                if cache:
+                    cache.pop(-1)
+            elif op == "D":
+                if cache:
+                    tmp = cache[-1] * 2
+                    cache.append(tmp)
+            elif op == "+":
+                if len(cache) >= 2:
+                    tmp1 = cache[-1]
+                    tmp2 = cache[-2]
+                    cache.append(tmp1+tmp2)
+            else:
+                cache.append(int(op))
+
+        if not cache:
+            return 0
+        return sum(cache)
+
+# V0' 
 # IDEA : STACK
 class Solution(object):
     def calPoints(self, ops):
