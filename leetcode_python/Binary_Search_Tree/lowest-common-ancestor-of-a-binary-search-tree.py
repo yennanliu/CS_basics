@@ -65,6 +65,28 @@ class Solution:
             return root
 
 # V0'
+# IDEA : RECURSION + POST ORDER TRANSVERSAL
+### NOTE : we need POST ORDER TRANSVERSAL for this problem
+#          -> left -> right -> root
+#          -> we can make sure that if p == q, then the root must be p and q's "common ancestor"
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        if not root:
+            return root
+
+        p_val = p.val
+        q_val = q.val
+
+        if root.val < p_val and root.val < q_val:
+            return self.lowestCommonAncestor(root.right, p, q)
+
+        elif root.val > p_val and root.val > q_val:
+            return self.lowestCommonAncestor(root.left, p, q)
+
+        else:
+            return root
+
+# V0''
 # IDEA : TREE property + recursive (same code as LC 236)
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
