@@ -1,6 +1,6 @@
 # Progress
 
-# 2021-12-18
+# 2021-12-19
 - DOING:
 	- LC (appl_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
@@ -32,7 +32,7 @@
 		- Tinder design
 	- algorithm book (labu)
 		- read
-			- P.420 -
+			- P.420 - 424
 		- note
 			- p.289
 	- cheatsheet review
