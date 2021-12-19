@@ -46,9 +46,29 @@ If 99% of all integer numbers from the stream are in the range [0, 100], how wou
 """
 
 # V0
-# IDEA : python heapq (heap queue AKA priority queue)
 # https://docs.python.org/zh-tw/3/library/heapq.html
 # https://github.com/python/cpython/blob/3.10/Lib/heapq.py
+# Note !!! 
+#  -> that the heapq in python is a min heap, thus we need to invert the values in the smaller half to mimic a "max heap".
+# IDEA : python heapq (heap queue AKA priority queue)
+#  -> Step 1) init 2 heap : small, large
+#              -> small : stack storage "smaller than half value" elements
+#              -> large : stack storage "bigger than half value" elements
+#  -> Step 2) check if len(self.small) == len(self.large)
+#  -> Step 3-1) add num:  (if len(self.small) == len(self.large))
+#              -> since heapq in python is "min" heap, so we need to add minus to smaller stack for "max" heap simulation
+#              -> e.g. : 
+#                        "-num" in -heappushpop(self.small, -num)
+#                        "-heappushpop" is for balacing the "-" back (e.g. -(-value) == value)
+#             and pop "biggest" elment in small stack to big stack
+#  -> Step 3-2) add num:  (if len(self.small) != len(self.large))
+#             -> pop smallest element from large heap to small heap
+#             -> e.g. heappush(self.small, -heappushpop(self.large, num))
+#  -> Step 4) return median
+#             -> if even length (len(self.small) == len(self.large))
+#                 -> return float(self.large[0] - self.small[0]) / 2.0
+#             -> if odd length ((len(self.small) != len(self.large)))
+#                 -> return float(self.large[0])
 from heapq import *
 class MedianFinder:
     def __init__(self):
@@ -115,6 +135,31 @@ class MedianFinder:
             return float(self.large[0] - self.small[0]) / 2.0
         else:
             return float(self.large[0])
+
+# V1''''
+# https://leetcode.com/problems/find-median-from-data-stream/discuss/74047/JavaPython-two-heap-solution-O(log-n)-add-O(1)-find
+# JAVA
+# private PriorityQueue<Integer> small = new PriorityQueue<>(Collections.reverseOrder());
+# private PriorityQueue<Integer> large = new PriorityQueue<>();
+# private boolean even = true;
+#
+# public double findMedian() {
+#     if (even)
+#         return (small.peek() + large.peek()) / 2.0;
+#     else
+#         return small.peek();
+# }
+#
+# public void addNum(int num) {
+#     if (even) {
+#         large.offer(num);
+#         small.offer(large.poll());
+#     } else {
+#         small.offer(num);
+#         large.offer(small.poll());
+#     }
+#     even = !even;
+# }
 
 # V1'''
 # https://leetcode.com/problems/find-median-from-data-stream/discuss/74044/Very-Short-O(log-n)-%2B-O(1)

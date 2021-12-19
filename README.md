@@ -453,7 +453,7 @@
 378 | [Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) | [python](./leetcode_python/Heap/kth-smallest-element-in-a-sorted-matrix.py)  | _O(k * log(min(n, m, k)))_ | _O(min(n, m, k))_ | Medium | LintCode | AGAIN (not start)
 846 | [Hand of Straights](https://leetcode.com/problems/hand-of-straights/) | [python](./leetcode_python/Heap/hand-of-straights.py) | _O(nlogn)_ | _O(n)_ | Medium || OK*
 855 | [Exam Room](https://leetcode.com/problems/exam-room/) | [python](./leetcode_python/Heap/exam-room.py)  | seat: _O(logn)_ <br> leave: _O(logn)_ | _O(n)_ | Medium | BST, Hash, `trick` | AGAIN* (2) (not start)
-295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | [python](./leetcode_python/Heap/find_median_from_data_stream.py)  | | | Hard |trick ,heap, stream, `amazon`|  AGAIN****** (6)
+295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | [python](./leetcode_python/Heap/find_median_from_data_stream.py)  | | | Hard |priority queue, trick ,heap, stream, `amazon`|  AGAIN****** (6)
 703 | [Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/) | [python](./leetcode_python/Heap/kth_largest_element_in_a_stream.py)  | | | Easy |heap, stream, `amazon`|  AGAIN** (2)
 
 
