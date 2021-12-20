@@ -1,5 +1,41 @@
 # Progress
 
+# 2021-12-21
+- DOING:
+	- LC (appl_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
+	- ================
+	- LC review (amz_)
+		- ref: https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
+		- programming
+			- review
+			- (normal order)
+			- (pdf : p.6)
+			- =======
+			- **back track**
+			- Tree
+				- 449 (not start)
+				- 662 (*not start*)
+			- =======
+			- bit manipulation
+			- union find
+			- quick sort
+			- intervals
+		- SQL
+	- Crack Code
+	- System Design
+		- Tinder design
+	- algorithm book (labu)
+		- read
+			- P.428 - 430 (end)
+		- note
+			- p.289
+	- system design book - an insider's guide (GOTOP)
+		- p.1 - p.6
+	- cheatsheet review
+		- (order)
+		- binary_search.md (ing)
+
 # 2021-12-20
 - DOING:
 	- LC (appl_)
