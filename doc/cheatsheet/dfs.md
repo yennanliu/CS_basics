@@ -465,9 +465,11 @@ class Solution(object):
 
 ### 2-11) Convert BST to Greater Tree
 ```python
-# LC 538 Convert BST to Greater Tree
-# VO : IDEA : DFS + BST
-# note : there is also BFS solution
+# V0
+# IDEA : DFS + recursion
+#      -> NOTE : via DFS, the op will being executed in `INVERSE` order (last visit will be run first, then previous, then ...)
+#      -> e.g. node1 -> node2 -> ... nodeN
+#      ->      will run nodeN -> nodeN-1 ... node1
 class Solution(object):
 
     def convertBST(self, root):
@@ -483,6 +485,32 @@ class Solution(object):
         self.sum += cur.val
         cur.val = self.sum
         self.dfs(cur.left)
+
+# V0'
+# NOTE : the implementation difference on cur VS self.cur
+# 1) if cur : we need to ssign output of help() func to cur
+# 2) if self.cur : no need to assign, plz check V0 as reference
+class Solution(object):
+    def convertBST(self, root):
+        def help(cur, root):
+            if not root:
+                ### NOTE : if not root, still need to return cur
+                return cur
+            ### NOTE : need to assign output of help() func to cur
+            cur = help(cur, root.right)
+            cur += root.val
+            root.val = cur
+            ### NOTE : need to assign output of help() func to cur
+            cur = help(cur, root.left)
+            ### NOTE : need to return cur
+            return cur
+
+        if not root:
+            return
+
+        cur = 0
+        help(cur, root)
+        return root
 ```
 
 ### 2-12) Number of Islands
