@@ -103,6 +103,32 @@ class Solution(object):
         self.dfs(cur.left)
 
 # V0'
+# NOTE : the implementation difference on cur VS self.cur
+# 1) if cur : we need to ssign output of help() func to cur
+# 2) if self.cur : no need to assign, plz check V0 as reference
+class Solution(object):
+    def convertBST(self, root):
+        def help(cur, root):
+            if not root:
+                ### NOTE : if not root, still need to return cur
+                return cur
+            ### NOTE : need to assign output of help() func to cur
+            cur = help(cur, root.right)
+            cur += root.val
+            root.val = cur
+            ### NOTE : need to assign output of help() func to cur
+            cur = help(cur, root.left)
+            ### NOTE : need to return cur
+            return cur
+
+        if not root:
+            return
+
+        cur = 0
+        help(cur, root)
+        return root
+
+# V0''
 # IDEA : BFS
 class Solution(object):
     def convertBST(self, root):
