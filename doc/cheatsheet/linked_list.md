@@ -298,6 +298,32 @@ class Solution(object):
         return prev
 ```
 
+#### 1-1-3) reverse *first N*  linked list
+```java
+// java
+// algorithm book (labu) p.293
+
+// "postorder" node
+ListNode successor = null;
+
+// reverse first N node (from head), and return new head
+ListNode reverseN(ListNode head, int n){
+    if (n == 1){
+        // record n + 1 nodes, will be used in following steps
+        successor = head.next;
+        return head;
+    }
+
+    // set head.next as start point, return first n - 1 nodes
+    ListNode last = reverseN(head.next, n-1);
+
+    head.next.next = head;
+    // connect reversed head node and following nodes
+    head.next = successor;
+    return last;
+}
+```
+
 #### 1-1-3) delete node
 
 #### 1-1-4) swap node
