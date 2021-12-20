@@ -1,6 +1,6 @@
 # Python Tricks
 
-## Examples
+## 1) Examples
 
 ### 0-1) inverse looping elements in string
 ```python
@@ -117,15 +117,36 @@ print (res)
 ### 1-5) Sort freq on dict
 ```python
 # LC 451 Sort Characters By Frequency
+# V1
 import collections
 class Solution(object):
     def frequencySort(self, s):
         d = collections.Counter(s)
         d_dict = dict(d)
-        res = ""
+        res = []
         for x in sorted(d_dict, key=lambda k : -d_dict[k]):
-            res += x * d_dict[x]
+            res.append(x)
         return res
+
+x= [1, 2, 3, 1, 2, 1, 2, 1]
+s = Solution()
+r = s.frequencySort(x)
+
+# V2
+# https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
+import collections
+class Solution(object):
+    def frequencySort(self, s):
+        d = collections.Counter(s)
+        d_dict = dict(d)
+        res = []
+        for x in sorted(d_dict.items(), key=lambda items: -items[1]):
+            res.append(x)
+        return res
+
+x= [1, 2, 3, 1, 2, 1, 2, 1]
+s = Solution()
+r = s.frequencySort(x)
 ```
 
 ### 1-6) Insert into array (in place)
@@ -162,4 +183,20 @@ Out[2]: 33
 
 In [3]: y
 Out[3]: 1
+```
+
+### 1-9) *all* operator
+- Will return Boolean (true or false) per condition for ALL elements in a list
+```python
+# example 1
+In [36]: a = "000"
+
+In [37]: all( i == "0" for i in a )
+Out[37]: True
+
+# example 2
+In [38]: b = "abc123"
+
+In [39]: all ( i == "a" for i in b )
+Out[39]: False
 ```
