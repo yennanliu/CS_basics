@@ -29,7 +29,7 @@
 		- read
 			- P.428 - 430 (end)
 		- note
-			- p.289
+			- p.295
 	- system design book - an insider's guide (GOTOP)
 		- p.1 - p.6
 	- cheatsheet review

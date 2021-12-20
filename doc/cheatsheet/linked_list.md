@@ -233,7 +233,7 @@ class LinkedList:
 
 #### 1-1-2) plus one on linked list
 
-#### 1-1-2) reverse linked list
+#### 1-1-3) reverse linked list
 ```java
 // java
 // recursive way
@@ -298,7 +298,7 @@ class Solution(object):
         return prev
 ```
 
-#### 1-1-3) reverse *first N*  linked list
+#### 1-1-4) reverse *first N*  linked list
 ```java
 // java
 // algorithm book (labu) p.293
@@ -324,11 +324,46 @@ ListNode reverseN(ListNode head, int n){
 }
 ```
 
-#### 1-1-3) delete node
+#### 1-1-5) reverse *middle N nodes* in linked list (*start, end* as interval)
+```java
+// java
+// algorithm book (labu) p.293
 
-#### 1-1-4) swap node
+// "postorder" node
+ListNode successor = null;
 
-#### 1-1-5) add 2 linked list
+// reverse first N node (from head), and return new head
+ListNode reverseN(ListNode head, int n){
+    if (n == 1){
+        // record n + 1 nodes, will be used in following steps
+        successor = head.next;
+        return head;
+    }
+
+// reverse nodes in index = m to index = n
+ListNode reverseBetween(ListNode head, int m, int n){
+    // base case
+    if (m == 1){
+        return reverseN(head, n);
+    }
+
+    // for head.next, the op is reverse interval : [m-1, n-1]
+    // will trigger base case when when meet reverse start point
+    head.next = reverseBetween(head.next, m - 1, n - 1);
+    return head;
+```
+
+#### 1-1-6) reverse *first N*  linked list (via recursion)
+```
+// algorithm book (labu) p.295
+// TODO : complete it
+```
+
+#### 1-1-7) delete node
+
+#### 1-1-8) swap node
+
+#### 1-1-9) add 2 linked list
 ```python
 # LC 002
 class Solution(object):
@@ -366,7 +401,7 @@ class Solution(object):
         return head.next
 ```
 
-#### 1-1-6) Find linked list middle point
+#### 1-1-10) Find linked list middle point
 ```java
 // algorithm book p. 286
 // java
