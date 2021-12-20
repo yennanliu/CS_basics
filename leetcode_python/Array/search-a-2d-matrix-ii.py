@@ -34,7 +34,11 @@ All the integers in each column are sorted in ascending order.
 """
 
 # V0
-# IDEA : 2D array op
+# IDEA : 2D array op + matrix properties (this problem only)
+## NOTE :
+# The matrix has the following properties:
+# Integers in each row are sorted in ascending from left to right.
+# Integers in each column are sorted in ascending from top to bottom.
 ### NOTE : 
 #    row : --------->
 #    cols : ⬇
@@ -61,7 +65,7 @@ class Solution:
         return False
 
 # V0'
-# IDEA : DFS
+# IDEA : DFS (brute force)
 class Solution(object):
     def searchMatrix(self, matrix, target):
         def dfs(matrix, target, x, y):
