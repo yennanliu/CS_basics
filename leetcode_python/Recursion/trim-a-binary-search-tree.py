@@ -43,11 +43,13 @@ root is guaranteed to be a valid binary search tree.
 
 """
 
-# V0 
+# V0
 # IDEA :RECURSION, BST
 # IDEA : USE BST'S PROPERTY : 
 # -> FOR EVERY NODE : right > node > left 
 # -> USE ABOVE PROPERTY FOR BST TRIMMING
+# NOTE : Trimming the tree should not change the relative structure of the elements that will remain in the tree (i.e., any node's descendant should remain a descendant)
+#    -> e.g. if there is a node outside of (L,R), we have to NOT ONLY delete that node,  BUT ALSO append all of the sub tree of that node
 class Solution:
     def trimBST(self, root, L, R):
         if not root:
@@ -68,6 +70,21 @@ class Solution:
         root.left = self.trimBST(root.left, L, R)
         root.right = self.trimBST(root.right, L, R)
         return root 
+
+### NOTE : below is WRONG !!!
+# -> 1) if there is a node outside of (L,R), we have to NOT ONLY delete that node,  BUT ALSO append all of the sub tree of that node
+# -> 2) we should reutrn root as final step
+# class Solution(object):
+#     def trimBST(self, root, low, high):
+#         print ("root.val = " + str(root.val))
+#         if not root:
+#             return root
+#         elif root.val < low or root.val > high:
+#             return None
+#         else:
+#             return root
+#         root.left = self.trimBST(root.left, low, high)
+#         root.right = self.trimBST(root.right, low, high)
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83869684
