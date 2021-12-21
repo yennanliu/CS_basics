@@ -1,0 +1,326 @@
+# Amazon | Bloomberg | Interview questions | July 2020 - July 2021
+
+# https://leetcode.com/discuss/interview-question/1349954/Amazon-or-Bloomberg-or-Interview-questions-or-July-2020-July-2021
+
+Index
+
+Google Interview questions | This year
+https://leetcode.com/discuss/interview-question/1376426/Google-or-Facebook-or-Interview-questions-or-July-2020-July-2021
+NEW! - Facebook | Interview questions | July 2020 - July 2021
+https://leetcode.com/discuss/interview-question/1376426/Google-or-Facebook-or-Interview-questions-or-July-2020-July-2021
+NEW! - Amazon | Interview questions | July 2020 - July 2021 (~ last 1 year)
+https://leetcode.com/discuss/interview-question/1349954/Amazon-or-Bloomberg-or-Interview-questions-or-July-2020-July-2021
+NEW! - Bloomberg | Interview questions | July 2020 - July 2021
+https://leetcode.com/discuss/interview-question/1349954/Amazon-or-Bloomberg-or-Interview-questions-or-July-2020-July-2021
+NEW! - Apple | Uber | Flipkart | Swiggy | Interview questions | July 2020 - July 2021
+https://leetcode.com/discuss/interview-question/1367526/apple-uber-flipkart-swiggy-interview-questions-july-2020-july-2021
+For Other companies I have not created them, may be these might help:
+Twitter:
+recent - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=newest_to_oldest&query=twitter
+most votes - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=most_votes&query=twitter
+Microsoft
+most votes - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=most_votes&query=microsoft
+recent - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=newest_to_oldest&query=microsoft
+JavaScript questions
+https://leetcode.com/discuss/interview-question/1043676/ea-games-interview-questions/1013277
+======== AMAZON ========
+======== AMAZON ========
+======== AMAZON ========
+Amazon | Interview questions | July 2020 - July 2021 (~ last 1 year)
+
+Index
+
+For latest question ( this month )
+see - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=newest_to_oldest&query=amazon
+Amazon - Interview questions - Full list
+Dec 2020 - Jul 2021 (~last 8 months)
+Jul 2020 - Dec 2020 (~4 months before above)
+Amazon - Interview questions - As Leetcode lists
+How to clone LeetCode list?
+All in one - Full year
+Dec 2020 - Jul 2021 (~last 8 months)
+Jul 2020 - Dec 2020 (~4 months before above)
+Amazon - Interview questions - Full list
+Dec 2020 - Jul 2021 (~last 8 months)
+
+https://leetcode.com/problems/4sum-ii/
+https://leetcode.com/problems/as-far-from-land-as-possible/
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
+https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/
+https://leetcode.com/problems/contiguous-array/
+https://leetcode.com/problems/copy-list-with-random-pointer/
+https://leetcode.com/problems/design-front-middle-back-queue/
+https://leetcode.com/problems/find-the-difference/
+https://leetcode.com/problems/k-closest-points-to-origin/
+https://leetcode.com/problems/knight-probability-in-chessboard/
+https://leetcode.com/problems/majority-element/
+https://leetcode.com/problems/maximize-score-after-n-operations/
+https://leetcode.com/problems/maximum-units-on-a-truck/
+https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/
+https://leetcode.com/problems/number-of-provinces/
+https://leetcode.com/problems/number-of-ways-to-split-a-string/
+https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/
+https://leetcode.com/problems/peak-index-in-a-mountain-array/
+https://leetcode.com/problems/rank-transform-of-an-array/
+https://leetcode.com/problems/regular-expression-matching/
+https://leetcode.com/problems/reorder-data-in-log-files/
+https://leetcode.com/problems/robot-bounded-in-circle/
+https://leetcode.com/problems/rotting-oranges/
+https://leetcode.com/problems/search-a-2d-matrix-ii/
+https://leetcode.com/problems/sell-diminishing-valued-colored-balls/
+https://leetcode.com/problems/two-sum/
+https://leetcode.com/problems/validate-ip-address/
+https://leetcode.com/problems/word-break/
+Premium questions
+https://leetcode.com/problems/design-in-memory-file-system/
+https://leetcode.com/problems/minimum-cost-to-connect-sticks/
+https://leetcode.com/problems/shortest-path-to-get-food/
+https://leetcode.com/problems/two-sum-less-than-k/
+https://leetcode.com/problems/walls-and-gates/
+Jul 2020 - Dec 2020 (~4 months before above)
+
+https://leetcode.com/problems/add-two-numbers-ii/
+https://leetcode.com/problems/baseball-game/
+https://leetcode.com/problems/binary-tree-cameras/
+https://leetcode.com/problems/course-schedule-ii/
+https://leetcode.com/problems/critical-connections-in-a-network/
+https://leetcode.com/problems/erect-the-fence/
+https://leetcode.com/problems/find-k-closest-elements/
+https://leetcode.com/problems/kth-largest-element-in-a-stream/
+https://leetcode.com/problems/longest-consecutive-sequence/
+https://leetcode.com/problems/merge-k-sorted-lists/
+https://leetcode.com/problems/minesweeper/
+https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/
+https://leetcode.com/problems/monotone-increasing-digits/
+https://leetcode.com/problems/number-of-islands/
+https://leetcode.com/problems/number-of-provinces/
+https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/
+https://leetcode.com/problems/rotate-string/
+https://leetcode.com/problems/rotting-oranges/
+https://leetcode.com/problems/shortest-path-to-get-all-keys/
+https://leetcode.com/problems/subtree-of-another-tree/
+https://leetcode.com/problems/task-scheduler/
+https://leetcode.com/problems/trapping-rain-water/
+https://leetcode.com/problems/two-sum/
+Premium questions
+https://leetcode.com/problems/employee-free-time/
+https://leetcode.com/problems/first-unique-number/
+https://leetcode.com/problems/max-stack/
+https://leetcode.com/problems/missing-ranges/
+https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/
+https://leetcode.com/problems/number-of-distinct-islands/
+Amazon - Interview questions - As Leetcode lists
+
+NOTE: Premium questions are not covered in below lists, see above "Full list"
+
+How to clone LeetCode list?
+
+Click on anyone of the Leetcode List links, given below
+Then click on Clone button
+Now, go to problem list - https://leetcode.com/problemset/all/
+Click the Lists filter (beside Difficulty & Status filters)
+Select the item that starts with pgmreddy name.
+Now you can use the Difficulty filter with Easy/Medium/Hard
+All in one - Full year
+
+List - https://leetcode.com/list/5bpa4ok7
+Dec 2020 - Jul 2021 (~last 8 months)
+
+List - https://leetcode.com/list/5bpa1f36
+Jul 2020 - Dec 2020 (~4 months before above)
+
+List - https://leetcode.com/list/5bpa1565
+======== BLOOMBERG ========
+======== BLOOMBERG ========
+======== BLOOMBERG ========
+Bloomberg | Interview questions | July 2020 - July 2021 (~ last 1 year)
+
+Index
+
+Full list of questions
+Feb 19 - Jul 1, 2021 (~ last 5 months)
+July 21, 2020 - Feb 17, 2021 (7 months before above)
+As Leetcode lists
+How to clone LeetCode list?
+July 21, 2020 - Jul 1, 2021 ( All )
+Feb 19 - Jul 1, 2021 (~ last 5 months)
+July 21, 2020 - Feb 17, 2021 (7 months before above)
+Older questions & lists
+Bloomberg - Full list of Interview questions
+Feb 19 - Jul 1, 2021 (~ last 5 months)
+
+https://leetcode.com/problems/accounts-merge/
+https://leetcode.com/problems/basic-calculator-ii/
+https://leetcode.com/problems/basic-calculator-iii/
+https://leetcode.com/problems/clone-binary-tree-with-random-pointer/
+https://leetcode.com/problems/clone-graph/
+https://leetcode.com/problems/design-parking-system/
+https://leetcode.com/problems/design-underground-system/
+https://leetcode.com/problems/evaluate-division/
+https://leetcode.com/problems/find-bottom-left-tree-value/
+https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/
+https://leetcode.com/problems/implement-magic-dictionary/
+https://leetcode.com/problems/invalid-transactions/
+https://leetcode.com/problems/longest-substring-without-repeating-characters/
+https://leetcode.com/problems/maximum-nesting-depth-of-the-parentheses/
+https://leetcode.com/problems/maximum-width-of-binary-tree/
+https://leetcode.com/problems/meeting-rooms-ii/
+https://leetcode.com/problems/number-of-islands/
+https://leetcode.com/problems/powx-n/
+https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/
+https://leetcode.com/problems/smallest-string-starting-from-leaf/
+https://leetcode.com/problems/sort-integers-by-the-power-value/
+https://leetcode.com/problems/trapping-rain-water/
+https://leetcode.com/problems/valid-parentheses/
+https://leetcode.com/problems/word-ladder/
+July 21, 2020 - Feb 17, 2021 (7 months before above)
+
+https://leetcode.com/problems/add-two-numbers-ii/
+https://leetcode.com/problems/all-paths-from-source-to-target/
+https://leetcode.com/problems/binary-tree-level-order-traversal/
+https://leetcode.com/problems/binary-tree-paths/
+https://leetcode.com/problems/binary-tree-vertical-order-traversal/
+https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
+https://leetcode.com/problems/candy-crush/
+https://leetcode.com/problems/coin-change/
+https://leetcode.com/problems/count-and-say/
+https://leetcode.com/problems/design-a-leaderboard/
+https://leetcode.com/problems/design-browser-history/
+https://leetcode.com/problems/design-underground-system/
+https://leetcode.com/problems/diameter-of-binary-tree/
+https://leetcode.com/problems/find-k-th-smallest-pair-distance/
+https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+https://leetcode.com/problems/first-unique-character-in-a-string/
+https://leetcode.com/problems/first-unique-number/
+https://leetcode.com/problems/insert-delete-getrandom-o1/
+https://leetcode.com/problems/invalid-transactions/
+https://leetcode.com/problems/kill-process/
+https://leetcode.com/problems/longest-substring-without-repeating-characters/
+https://leetcode.com/problems/meeting-rooms-ii/
+https://leetcode.com/problems/merge-intervals/
+https://leetcode.com/problems/min-stack/
+https://leetcode.com/problems/next-permutation/
+https://leetcode.com/problems/number-of-islands/
+https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+https://leetcode.com/problems/random-pick-with-weight/
+https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/
+https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/
+https://leetcode.com/problems/reverse-words-in-a-string/
+https://leetcode.com/problems/sliding-window-maximum/
+https://leetcode.com/problems/summary-ranges/
+https://leetcode.com/problems/top-k-frequent-words/
+https://leetcode.com/problems/trapping-rain-water/
+https://leetcode.com/problems/two-city-scheduling/
+https://leetcode.com/problems/two-sum/
+https://leetcode.com/problems/valid-anagram/
+https://leetcode.com/problems/valid-parentheses/
+https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/
+https://leetcode.com/problems/word-search-ii/
+https://leetcode.com/problems/word-search/
+https://leetcode.com/problems/zuma-game/
+Bloomberg - Interview questions as Leetcode lists
+How to clone LeetCode list?
+
+Click on anyone of the Leetcode List link given below
+Click on Clone button
+Now, go to problem list - https://leetcode.com/problemset/all/
+Click the Lists filter (beside Difficulty & Status filters)
+Select the item that starts with pgmreddy name.
+Now you can use the Difficulty filter with Easy/Medium/Hard
+July 21, 2020 - Jul 1, 2021 ( All )
+
+List - https://leetcode.com/list/5c691cnm
+
+Feb 19 - Jul 1, 2021 (~ last 5 months)
+
+List - https://leetcode.com/list/5c69so0d
+Premium (not in above list)
+https://leetcode.com/problems/basic-calculator-iii/
+https://leetcode.com/problems/clone-binary-tree-with-random-pointer/
+https://leetcode.com/problems/meeting-rooms-ii/
+July 21, 2020 - Feb 17, 2021 (7 months before above)
+
+List - https://leetcode.com/list/5c6eyiz6
+Premium (not in above list)
+https://leetcode.com/problems/binary-tree-vertical-order-traversal/
+https://leetcode.com/problems/candy-crush/
+https://leetcode.com/problems/design-a-leaderboard/
+https://leetcode.com/problems/first-unique-number/
+https://leetcode.com/problems/kill-process/
+https://leetcode.com/problems/meeting-rooms-ii/
+3. Older questions & lists
+
+Older questions & lists - Bloomberg - Part 2 (Jul - Nov 2020)
+
+Non-Premium questions
+(LeetCode List) - (Has all questions, for practising Hard/Medium/Easy) -> https://leetcode.com/list/5me71cp3
+See Steps to Clone on Top
+Premium
+https://leetcode.com/problems/meeting-rooms-ii/
+https://leetcode.com/problems/design-search-autocomplete-system/
+https://leetcode.com/problems/design-a-leaderboard/
+Others
+Return First non repeating char in a string. eg: Bloomberg -> 1st non repeating char is l
+Similar one - https://leetcode.com/problems/first-unique-character-in-a-string/
+Given by @kyoko
+Output data from the stream in realtime, in order, so 1,2,3,4,5 with-out queuing: incoming is 1,4, but you cannot output 4, until you get 2, 3
+Merge K Linked Lists (different from sorted lists)
+Intersection of two arrays.
+Intersection of Intervals [1,5], [2,10 ]. Then [4,7] intersects, but [11,12] wont intersect.
+Implement stock sytem with addStocksVolume(string stockSymbol, int volume), Array< string> topKstocks(int k)
+Implement a complex number class which has real and imaginary integer parts
+Given Task start time & duration - How much time would it take to complete all tasks
+Given List & lamda function (take 2 params, returns if 2 are of same group) - return list of lists that belong to same group
+Find two elements in a list of positive integers that sum to k
+Find string at highest depth e.g.,((AB)(((CD)))) return depth 4 and string = CD
+Check if array is sorted or not.
+Break long list into 2 smaller lists, 1st smaller list has all small elements than 2nd list
+Josephus Problem
+Welsh dictionary
+Stack, Queues, recursive graph problem
+Design
+Design data structure and algorithm for an ipod with play(),pause(),next(),previous(),shuffle(),addSong(),deleteSong()
+Design a system that allow users to retrieve stock info as fast as possible.
+Design a OOP class
+Design Phonebook
+Design Graph with addRoute,printRoutes
+Design AWS S3
+Design Traffic light system.
+Design Browser History
+Design Autocomplete you send a prefix "a", this should return "abc", "abd".
+General CS
+Time complexity
+Code refractoring
+Database and linux
+Object Oriented Design a lot
+API + DB design + limitations
+Project Architecture
+Behaviourial
+Why Bloomberg?
+Top 3 things you are looking for in companies?
+Resume + behavioral questions + the design of a project that I worked on.
+Split/ From where:
+1 Hard + 2 Medium to be done in 1.5 hours
+Bloomberg tagged questions.
+One Hard level not under the Bloomberg tagged questions.
+Entry level offer - LC Count - Easy 91, Medium 134, Hard 12
+Suggestions:
+Be a nice person during the interview
+Explain your thought process well - don't stop talking - ask for requirements/ clarify the problem
+Practice well
+Interviewer pasted code, and asked: "What's the run time of this problem?"
+There's little room for mistakes and imperfection here.
+Older questions & lists - Bloomberg - Part 1 (Jan - Jun 2020)
+
+Non-Premium questions
+(LeetCode List) - (Has all questions, for practising Hard/Medium/Easy) -> https://leetcode.com/list/xj5y8m0i
+See Steps to Clone on Top
+Premium
+https://leetcode.com/problems/candy-crush
+https://leetcode.com/problems/kill-process
+https://leetcode.com/problems/number-of-ships-in-a-rectangle
+Source for questions
+
+LeetCode /interview-question/ pages
+NOTE: All questions of OA, Phone screen and Onsite are included in this list.
