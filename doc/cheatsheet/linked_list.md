@@ -233,10 +233,12 @@ class LinkedList:
 
 #### 1-1-2) plus one on linked list
 
-#### 1-1-3) reverse linked list
+#### 1-1-3) Reverse linked list (iteration, recursion)
 ```java
 // java
-// recursive way
+//---------------------------
+// recursion
+//---------------------------
 // algorithm book (labu) p.290
 ListNode reverse(ListNode head){
     // base case, if not a node or only 1 node -> return itself
@@ -253,6 +255,9 @@ ListNode reverse(ListNode head){
 
 ```python
 # python
+#-------------------------
+# iteration
+#-------------------------
 # LC 206
 # V0
 # IDEA : Linkedlist basics
@@ -298,8 +303,110 @@ class Solution(object):
         return prev
 ```
 
-#### 1-1-4) reverse *first N*  linked list
+#### 1-1-4) Reverse *first N*  linked list (iteration)
 ```java
+// java
+//---------------------------
+// iteration
+//---------------------------
+// algorithm book (labu) p.297
+ListNode reverse(ListNode a){
+    ListNode pre, cur, nxt;
+    pre = null;
+    cur = a;
+    nxt = a;
+    while (cur != null){
+        nxt = cur.next;
+        // reverse on each node
+        cur.next = pre;
+        // update pointer
+        pre = cur;
+        cur = nxt;
+    }
+
+    // return reversed nodes
+    return pre;
+}
+```
+
+
+#### 1-1-5) Reverse *nodes in [a,b]*  linked list (iteration)
+```java
+// java
+//---------------------------
+// iteration
+//---------------------------
+// algorithm book (labu) p.298
+ListNode reverse(ListNode a, Listnode b){
+    ListNode pre, cur, nxt;
+    pre = null;
+    cur = a;
+    nxt = a;
+    /** THE ONLY DIFFERENCE (reverse first N nodes VS reverse nodes in [a,b]) */
+    while (cur != b){
+        nxt = cur.next;
+        // reverse on each node
+        cur.next = pre;
+        // update pointer
+        pre = cur;
+        cur = nxt;
+    }
+
+    // return reversed nodes
+    return pre;
+}
+```
+
+#### 1-1-6) Reverse *nodes in k group*  linked list (iteration)
+```java
+// java
+//---------------------------
+// iteration
+//---------------------------
+// LC 25
+// algorithm book (labu) p.298
+ListNode reverse(ListNode a, Listnode b){
+    ListNode pre, cur, nxt;
+    pre = null;
+    cur = a;
+    nxt = a;
+    /** THE ONLY DIFFERENCE (reverse first N nodes VS reverse nodes in [a,b]) */
+    while (cur != b){
+        nxt = cur.next;
+        // reverse on each node
+        cur.next = pre;
+        // update pointer
+        pre = cur;
+        cur = nxt;
+    }
+
+    // return reversed nodes
+    return pre;
+}
+
+ListNode reverseGroup(ListNode head, int k){
+    if (head == null) return null;
+    // inverval [a,b] has k to-reverse elements
+    ListNode a, b;
+    a = b = head;
+    for (int i = 0; i < k; i++){
+        // not enough elements (amount < k), no need to reverse -> base case
+        if (b == null) return head;
+        b = b.next;
+    }
+    // reverse k elements
+    ListNode newHead = reverse(a,b);
+    // reverse remaining nodes, and connect with head
+    a.next = reverseGroup(b,k);
+    return newHead;
+}
+```
+
+#### 1-1-7) Reverse *first N*  linked list (recursion)
+```java
+//---------------------------
+// recursion
+//---------------------------
 // java
 // algorithm book (labu) p.293
 
@@ -324,9 +431,12 @@ ListNode reverseN(ListNode head, int n){
 }
 ```
 
-#### 1-1-5) reverse *middle N nodes* in linked list (*start, end* as interval)
+#### 1-1-8) Reverse *middle N nodes* in linked list (*start, end* as interval) (recursion)
 ```java
 // java
+//---------------------------
+// recursion
+//---------------------------
 // algorithm book (labu) p.293
 
 // "postorder" node
@@ -353,17 +463,11 @@ ListNode reverseBetween(ListNode head, int m, int n){
     return head;
 ```
 
-#### 1-1-6) reverse *first N*  linked list (via recursion)
-```
-// algorithm book (labu) p.295
-// TODO : complete it
-```
+#### 1-1-9) delete node
 
-#### 1-1-7) delete node
+#### 1-1-10) swap node
 
-#### 1-1-8) swap node
-
-#### 1-1-9) add 2 linked list
+#### 1-1-11) add 2 linked list
 ```python
 # LC 002
 class Solution(object):
@@ -401,7 +505,7 @@ class Solution(object):
         return head.next
 ```
 
-#### 1-1-10) Find linked list middle point
+#### 1-1-12) Find linked list middle point
 ```java
 // algorithm book p. 286
 // java
