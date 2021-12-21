@@ -16,6 +16,8 @@
 			- Tree
 				- 449 (not start)
 				- 662 (*not start*)
+			- binary search
+				- 162
 			- =======
 			- bit manipulation
 			- union find
@@ -33,8 +35,9 @@
 	- system design book - an insider's guide (GOTOP)
 		- p.1 - p.6
 	- cheatsheet review
-		- (order)
-		- binary_search.md (ing)
+		- (order) (binary_search.md - linked_list.md)
+		- binary_search.md (ok)
+		- binary_tree.md (ing)
 
 # 2021-12-20
 - DOING:
