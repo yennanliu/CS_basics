@@ -251,8 +251,65 @@ class Solution(object):
 
 ### 2-1) Serialize and Deserialize BST
 ```python
-
 # LC 449 Serialize and Deserialize BST
+# V0
+# IDEA : BFS + queue op
+class Codec:
+    def serialize(self, root):
+        if not root:
+            return '{}'
+
+        res = [root.val]
+        q = [root]
+
+        while q:
+            new_q = []
+            for i in range(len(q)):
+                tmp = q.pop(0)
+                if tmp.left:
+                    q.append(tmp.left)
+                    res.extend( [tmp.left.val] )
+                else:
+                    res.append('#')
+                if tmp.right:
+                    q.append(tmp.right)
+                    res.extend( [tmp.right.val] )
+                else:
+                    res.append('#')
+
+        while res and res[-1] == '#':
+                    res.pop()
+
+        return '{' + ','.join(map(str, res)) + '}' 
+
+
+    def deserialize(self, data):
+        if data == '{}':
+            return
+
+        nodes = [ TreeNode(x) for x in data[1:-1].split(",") ]
+        root = nodes.pop(0)
+        p = [root]
+        while p:
+            new_p = []
+            for n in p:
+                if nodes:
+                    left_node = nodes.pop(0)
+                    if left_node.val != '#':
+                        n.left = left_node
+                        new_p.append(n.left)
+                    else:
+                        n.left = None
+                if nodes:
+                    right_node = nodes.pop(0)
+                    if right_node.val != '#':
+                        n.right = right_node
+                        new_p.append(n.right)
+                    else:
+                        n.right = None
+            p = new_p 
+             
+        return root
 
 # V1
 # IDEA : same as LC 297
