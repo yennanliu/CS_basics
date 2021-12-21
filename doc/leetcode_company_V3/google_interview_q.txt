@@ -1,0 +1,104 @@
+# Google | Facebook | Interview questions | July 2020 - July 2021
+
+# https://leetcode.com/discuss/interview-question/1376426/Google-or-Facebook-or-Interview-questions-or-July-2020-July-2021
+
+Index
+
+Google Interview questions | This year
+https://leetcode.com/discuss/interview-question/1376426/Google-or-Facebook-or-Interview-questions-or-July-2020-July-2021
+NEW! - Facebook | Interview questions | July 2020 - July 2021
+https://leetcode.com/discuss/interview-question/1376426/Google-or-Facebook-or-Interview-questions-or-July-2020-July-2021
+NEW! - Amazon | Interview questions | July 2020 - July 2021 (~ last 1 year)
+https://leetcode.com/discuss/interview-question/1349954/Amazon-or-Bloomberg-or-Interview-questions-or-July-2020-July-2021
+NEW! - Bloomberg | Interview questions | July 2020 - July 2021
+https://leetcode.com/discuss/interview-question/1349954/Amazon-or-Bloomberg-or-Interview-questions-or-July-2020-July-2021
+NEW! - Apple | Uber | Flipkart | Swiggy | Interview questions | July 2020 - July 2021
+https://leetcode.com/discuss/interview-question/1367526/apple-uber-flipkart-swiggy-interview-questions-july-2020-july-2021
+For Other companies I have not created them, may be these might help:
+Twitter:
+recent - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=newest_to_oldest&query=twitter
+most votes - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=most_votes&query=twitter
+Microsoft
+most votes - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=most_votes&query=microsoft
+recent - https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=newest_to_oldest&query=microsoft
+JavaScript questions
+https://leetcode.com/discuss/interview-question/1043676/ea-games-interview-questions/1013277
+======== GOOGLE ========
+======== GOOGLE ========
+======== GOOGLE ========
+Index:
+How to clone LeetCode list
+1. Google - p2 - Jul - Oct 2020
+2. Google - p1 - Jan - Jun 2020
+3. Google - Online Assessment - Jan 2021
+4. Google Domain Specific Rounds
+5. Related links
+Source
+
+How to clone LeetCode list
+
+Steps:
+
+Step 1:
+- Click on anyone of the Leetcode List link given below
+- Click on [Clone] button
+Step 2:
+- Go here to problem list
+- Click the Lists filter (beside Difficulty & Status filters)
+- Select the item that starts with pgmreddy name.
+- Now you can use the Difficulty filter with Easy/Medium/Hard
+1. Google - p2 - Jul - Oct 2020
+
+Google - Interview questions - As Leetcode lists
+https://leetcode.com/list/5p5i7ub6
+See Steps to Clone on Top
+Premium questions
+https://leetcode.com/problems/wiggle-sort/
+https://leetcode.com/problems/optimize-water-distribution-in-a-village/
+https://leetcode.com/problems/sentence-screen-fitting/
+https://leetcode.com/problems/missing-element-in-sorted-array/
+https://leetcode.com/problems/encode-string-with-shortest-length/
+https://leetcode.com/problems/design-tic-tac-toe/
+Others
+NOTE: MAX 3 Onsites only
+2. Google - p1 - Jan - Jun 2020
+
+Google - Interview questions - As Leetcode lists
+https://leetcode.com/list/xb4m49lh
+See Steps to Clone on Top
+Premium
+https://leetcode.com/problems/moving-average-from-data-stream/
+https://leetcode.com/problems/alien-dictionary/
+https://leetcode.com/problems/confusing-number-ii/
+https://leetcode.com/problems/campus-bikes-ii/
+https://leetcode.com/problems/group-shifted-strings/
+https://leetcode.com/problems/optimal-account-balancing/
+https://leetcode.com/problems/parallel-courses/
+https://leetcode.com/problems/search-in-a-sorted-array-of-unknown-size/
+https://leetcode.com/problems/sentence-similarity-ii/
+https://leetcode.com/problems/serialize-and-deserialize-n-ary-tree/
+https://leetcode.com/problems/the-maze-ii/
+3. Google - Online Assessment - Jan 2021
+
+Non - Premium
+(LeetCode List) - (Has all questions, for practising Hard/Medium/Easy) -> https://leetcode.com/list/5waufxzt
+See Steps to Clone on Top
+4. Google Domain Specific Rounds (Jan - 2021) (latest)
+
+Domain specific rounds can be for a very senior position like L5:
+
+Domain specific examples:
+
+computer networking
+Android
+computer vision
+graphics
+iOS
+5. Related links
+
+https://leetcode.com/explore/
+https://leetcode.com/interview/
+Source for questions
+
+LeetCode /interview-question/ & /interview-experience/ pages via Google search
+NOTE: All questions of OA, Phone screen and Onsite are included in this list.
