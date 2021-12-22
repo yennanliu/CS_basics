@@ -588,6 +588,47 @@ class Solution(object):
         return head.next
 ```
 
+### 2-2') Merge K Sorted Lists
+```python
+# LC 023 Merge k sorted lists
+# V0
+# IDEA : LC 021 Merge Two Sorted Lists + implement mergeTwoLists on every 2 linedlist
+# https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/linked_list.md#1-1-6-reverse-nodes-in-k-group--linked-list-iteration
+class Solution(object):
+    def mergeKLists(self, lists):
+        if len(lists) == 0:
+            return
+        if len(lists) == 1:
+            return lists[0]
+        
+        _init_list = lists[0]
+        for _list in lists[1:]:
+            tmp = self.mergeTwoLists(_init_list, _list)
+            _init_list = tmp
+        return tmp
+
+    # LC 021 : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/merge-two-sorted-lists.py
+    def mergeTwoLists(self, l1, l2):
+
+        if not l1 or not l2:
+            return l1 or l2
+            
+        res = head = ListNode()
+        while l1 and l2:
+            if l1.val < l2.val:
+                res.next = l1
+                l1 = l1.next
+            else:
+                res.next = l2
+                l2 = l2.next
+            res = res.next
+
+        if l1 or l2:
+            res.next = l1 or l2
+
+        return head.next
+```
+
 ### 2-3) Reverse Linked List
 ```python
 # LC 206
