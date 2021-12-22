@@ -259,6 +259,8 @@ def _sum(root):
 ### 2-1) Validate Binary Search Tree
 ```python
 # 098 Validate Binary Search Tree
+### NOTE : there is also bfs solution
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/validate-binary-search-tree.py
 class Solution(object):
     def isValidBST(self, root):
         return self.valid(root, float('-inf'), float('inf'))
@@ -268,7 +270,6 @@ class Solution(object):
         if root.val >= max_ or root.val <= min_:
             return False
         return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
-
 ```
 
 ### 2-2) Insert into a Binary Search Tree

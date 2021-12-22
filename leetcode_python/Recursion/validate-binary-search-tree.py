@@ -51,13 +51,19 @@ class Solution(object):
             for i in range(len(q)):
                 tmp, _min, _max = q.pop(0)
                 if tmp.left:
+                    """
                     ### NOTE : below condition
+                    ### NOTE : we compare "tmp.left.val" with others (BEFORE we visit tmp.left)
+                    """
                     if tmp.left.val >= tmp.val or tmp.left.val <= _min:
                         return False
                     ### NOTE : we append tmp.val as _max
                     q.append([tmp.left, _min, tmp.val])
                 if tmp.right:
+                    """
                     ### NOTE : below condition
+                    ### NOTE : we compare "tmp.right.val" with others (BEFORE we visit tmp.right)
+                    """
                     if tmp.right.val <= tmp.val or tmp.right.val >= _max:
                         return False
                     ### NOTE : we append tmp.val as _min
