@@ -565,14 +565,24 @@ class Solution(object):
         head = cur = ListNode(0)
         while l1 and l2:
             if l1.val < l2.val:
+                """
+                ### NOTE
+                 1) assign node to cur.next !!! (not cur)
+                 2) assign node rather than node.val
+                """ 
                 cur.next = l1
                 l1 = l1.next
             else:
+                """
+                ### NOTE
+                 1) assign node to cur.next !!! (not cur)
+                 2) assign node rather than node.val
+                """ 
                 cur.next = l2
                 l2 = l2.next
             # note this
             cur = cur.next
-         # note this
+        ### NOTE this (in case either l1 or l2 is remaining so we need to append one of them to cur)
         cur.next = l1 or l2
         ### NOTICE THIS : we return head.next
         return head.next

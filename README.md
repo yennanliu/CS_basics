@@ -344,7 +344,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 002| [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) | [Python](./leetcode_python/Linked_list/add-two-numbers.py) | _O(n)_   | _O(1)_  | Medium | check `# 445 Add Two Numbers II`, `basic`, `linked list`, `airbnb`, `amazon`, `fb`| OK**** (5) (but again)  
-021| [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)| [Python](./leetcode_python/Linked_list/merge-two-sorted-lists.py) | _O(n)_ | _O(1)_ | Easy |`UBER`, `amazon`, `apple`, `fb`| OK***** (4)(but again)
+021| [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)| [Python](./leetcode_python/Linked_list/merge-two-sorted-lists.py) | _O(n)_ | _O(1)_ | Easy |`UBER`, `amazon`, `apple`, `fb`| OK******** (5(but again)
 024| [Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)| [Python](./leetcode_python/Linked_list/swap-nodes-in-pairs.py)  | _O(n)_ | _O(1)_ | Easy  |`GOOD basic`, `good linked list basic`,`UBER`,`amazon`, `fb`| AGAIN********** (4)
 025| [Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)| [Python](./leetcode_python/Linked_list/reverse-nodes-in-k-group.py)  | _O(n)_ | _O(1)_ | Hard  |good trick, reverse linkedlist| AGAIN* (1) (not start)
 061| [Rotate List](https://leetcode.com/problems/rotate-list/)| [Python](./leetcode_python/Linked_list/rotate-list.py)  | _O(n)_          | _O(1)_  | Medium   |`basic`|  AGAIN (2)
