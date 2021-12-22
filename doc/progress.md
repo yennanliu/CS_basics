@@ -12,6 +12,8 @@
 			- (normal order)
 			- (pdf : p.6)
 				- 098 (ok, but again!!!)
+				- 0380 (ok)
+				- 0381
 			- =======
 			- **back track**
 			- Tree
