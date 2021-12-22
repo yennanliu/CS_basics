@@ -73,7 +73,30 @@ class Solution(object):
                 result[-1].append(nums[i])
         return result
 
-# V0
+# V0''
+# IDEA : Backtracking
+class Solution:
+    def subsets(self, nums):
+        def backtrack(first = 0, curr = []):
+            # if the combination is done
+            if len(curr) == k:  
+                output.append(curr[:])
+                return
+            for i in range(first, n):
+                # add nums[i] into the current combination
+                curr.append(nums[i])
+                # use next integers to complete the combination
+                backtrack(i + 1, curr)
+                # backtrack
+                curr.pop()
+        
+        output = []
+        n = len(nums)
+        for k in range(n + 1):
+            backtrack()
+        return output
+
+# V0''''
 # IDEA : DFS 
 # SAME AS # 90 subset-ii 
 class Solution(object):
@@ -96,7 +119,7 @@ class Solution(object):
         dfs(0, 0, [])
         return res
 
-# V0' 
+# V0''''' 
 # IDEA : DFS
 class Solution:
     """
@@ -137,6 +160,60 @@ class Solution:
             combination.append(nums[i])
             self.dfs(nums, i + 1, combination, combinations)
             combination.pop()
+
+# V1'
+# https://leetcode.com/problems/subsets/solution/
+# IDEA : Cascading
+class Solution:
+    def subsets(self, nums):
+        n = len(nums)
+        output = [[]]
+        
+        for num in nums:
+            output += [curr + [num] for curr in output]
+        
+        return output
+
+# V1''
+# https://leetcode.com/problems/subsets/solution/
+# IDEA : Backtracking
+class Solution:
+    def subsets(self, nums):
+        def backtrack(first = 0, curr = []):
+            # if the combination is done
+            if len(curr) == k:  
+                output.append(curr[:])
+                return
+            for i in range(first, n):
+                # add nums[i] into the current combination
+                curr.append(nums[i])
+                # use next integers to complete the combination
+                backtrack(i + 1, curr)
+                # backtrack
+                curr.pop()
+        
+        output = []
+        n = len(nums)
+        for k in range(n + 1):
+            backtrack()
+        return output
+
+# V1'''
+# https://leetcode.com/problems/subsets/solution/
+# IDRA :  Lexicographic (Binary Sorted) Subsets
+class Solution:
+    def subsets(self, nums):
+        n = len(nums)
+        output = []
+        
+        for i in range(2**n, 2**(n + 1)):
+            # generate bitmask, from 0..00 to 1..11
+            bitmask = bin(i)[3:]
+            
+            # append subset corresponding to that bitmask
+            output.append([nums[j] for j in range(n) if bitmask[j] == '1'])
+        
+        return output
 
 # V1''
 # https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python
@@ -194,7 +271,7 @@ class Solution(object):
 
 # Time:  O(n * 2^n)
 # Space: O(1)
-class Solution2(object):
+class Solution(object):
     def subsets(self, nums):
         """
         :type nums: List[int]
@@ -216,7 +293,7 @@ class Solution2(object):
 
 # Time:  O(n * 2^n)
 # Space: O(1)
-class Solution3(object):
+class Solution(object):
     def subsets(self, nums):
         """
         :type nums: List[int]
