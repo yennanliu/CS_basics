@@ -364,7 +364,7 @@
 817 | [Linked List Components](https://leetcode.com/problems/linked-list-components/) | [Python](./leetcode_python/Linked_list/linked-list-components.py)  | _O(m + n)_ | _O(m)_ | Medium || OK* 
 430 | [Flatten a Multilevel Doubly Linked List](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/) | [Python](./leetcode_python/Linked_list/flatten_a_multilevel_doubly_linked_list.py)  |  || Medium |`good trick`,`doubly linked list`,`AGAIN`,`dfs`, `fb`|  AGAIN********* (4)
 708| [Insert into a Cyclic Sorted List](https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list) |  [python](./leetcode_python/Linked_list/insert_into_a_cyclic_sorted_sist.py)  | _O(n)_ | _O(h)_ | Medium|`AGAIN`,`cyclic linked list`,`good trick`, `google`, `amazon`, `fb` |  AGAIN******** (4)
-023| [Merge k sorted lists](https://leetcode.com/problems/merge-k-sorted-lists/) |  [python](./leetcode_python/Linked_list/merge-k-sorted-lists.py)  | _O(n)_ | _O(h)_ | Hard|linked list, check `#21 Merge Two Sorted Lists`, `amazon` | AGAIN* (not start)
+023| [Merge k sorted lists](https://leetcode.com/problems/merge-k-sorted-lists/) |  [python](./leetcode_python/Linked_list/merge-k-sorted-lists.py)  | _O(n)_ | _O(h)_ | Hard|linked list, check `#21 Merge Two Sorted Lists`, `amazon` | OK**** (2) (but again !!!)
 
 
 ## Stack 
