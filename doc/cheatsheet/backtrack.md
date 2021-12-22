@@ -170,6 +170,29 @@ class Solution(object):
 ```python
 # LC 078, 090
 # V0
+# IDEA : Backtracking
+class Solution:
+    def subsets(self, nums):
+        def backtrack(first = 0, curr = []):
+            # if the combination is done
+            if len(curr) == k:  
+                output.append(curr[:])
+                return
+            for i in range(first, n):
+                # add nums[i] into the current combination
+                curr.append(nums[i])
+                # use next integers to complete the combination
+                backtrack(i + 1, curr)
+                # backtrack
+                curr.pop()
+        
+        output = []
+        n = len(nums)
+        for k in range(n + 1):
+            backtrack()
+        return output
+
+# V0'
 # IDEA : DFS 
 class Solution(object):
     def subsets(self, nums):
@@ -186,4 +209,35 @@ class Solution(object):
         res = []
         dfs(0, 0, [])
         return res
+```
+```c++
+// c++
+// backtrack
+// (algorithm book (labu) p.303)
+
+// save all subset
+vector<vector<int>> res;
+
+/* main func */
+vector<vector<int>> subsets(vector<int> & nums){
+    // record visited routes
+    vector<int> tracks;
+    backtrack(nums, 0, track);
+    return res;
+}
+
+/* use backtrack pattern */
+void backtrack(vector<int> & nums, int start, vector<int> & track){
+    // pre-order tranverse
+    res.push_back(track);
+    // start from `start`, avoid duplivated subset
+    for (int i = start; i < nums.size(); i++){
+        // make choice
+        track.push_back(nums[i]);
+        // iteration backtrack
+        backtrack(nums, i+1, track);
+        // undo choice
+        track.push_back();
+    }
+}
 ```
