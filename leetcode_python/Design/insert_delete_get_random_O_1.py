@@ -43,6 +43,37 @@ import random
 class RandomizedSet(object):
 
     def __init__(self):
+        self.set = set()
+        self._len = 0
+
+    def insert(self, val):
+        if val in self.set:
+            return False
+        self.set.add(val)
+        self._len += 1
+        return True
+
+    def remove(self, val):
+        if val not in self.set:
+            return False
+        self.set.remove(val)
+        self._len -= 1
+        return True
+
+    def getRandom(self):
+        if self._len == 0:
+            return []
+        ### NOTE : we get idx via randint
+        idx = random.randint(0, self._len - 1)
+        ### NOTE : transform set to list, for getting element via idx
+        return list(self.set)[idx]
+
+# V0'
+# IDEA : SET
+import random
+class RandomizedSet(object):
+
+    def __init__(self):
         """
         Initialize your data structure here.
         """
