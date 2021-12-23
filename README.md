@@ -173,7 +173,7 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](./leetcode_python/Array/3sum.py) | _O(n^2)_ | _O(1)_  | Medium    | check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `good basic`,`amazon`,`fb`| OK***** (5)
 016 | [3 Sum Closest](https://leetcode.com/problems/3sum-closest/) | [Python](./leetcode_python/Array/3sum-closest.py) | _O(n^2)_   | _O(1)_  | Medium |`Two Pointers`, `basic`, `good trick`,`3 sum`,amazon| AGAIN**** (2)
-018| [4 Sum](https://leetcode.com/problems/4sum/) | [Python](./leetcode_python/Array/4sum.py)   | _O(n^3)_  | _O(1)_    | Medium  | `k sum`, `Two Pointers`, check `#016 3 sum`, `good trick`, `fb` | AGAIN***** (3)
+018| [4 Sum](https://leetcode.com/problems/4sum/) | [Python](./leetcode_python/Array/4sum.py)   | _O(n^3)_  | _O(1)_    | Medium  | `k sum`, `Two Pointers`, check `#016 3 sum`, `# 454 4 SUM II`,good trick, `fb` | AGAIN***** (3)
 026 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)|  [Python](./leetcode_python/Array/remove-duplicates-from-sorted-array.py), [Scala](./leetcode_scala/Array/removeDuplicates.scala) | _O(n)_ | _O(1)_| Easy | `Two Pointers`, `basic`, `good trick`,`M$` ,`fb` |  AGAIN*********** (6)
 027 | [Remove Element](https://leetcode.com/problems/remove-element/) | [Python](./leetcode_python/Array/remove-element.py), [Scala](./leetcode_scala/Array/removeElement.scala) | _O(n)_  | _O(1)_ | Easy  |`basic`, `amazon`| OK* (2) 
 031 | [Next Permutation](https://leetcode.com/problems/next-permutation/)| [Python](./leetcode_python/Array/next-permutation.py),  [Scala](./leetcode_scala/Array/nextPermutation.scala)| _O(n)_ | _O(1)_ | Medium | `good TRICK`,, `google`,`amazon`, `fb` | AGAIN******** (5) (not start)
@@ -676,7 +676,6 @@
 ## Two Pointers 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-018| [4Sum](https://leetcode.com/problems/4sum/) | [Python](./leetcode_python/Two_Pointers/4sum.py) | _O(n)_ | _O(1)_ | Medium  |LC 454 4SUM II|  AGAIN** (1) (not start)
 019| [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)| [Python](./leetcode_python/Two_Pointers/remove-nth-node-from-end-of-list.py) | _O(n)_   | _O(1)_ | Medium |`linked list`,`two pointers`,`fb`| AGAIN**** (3)
 086| [Partition List](https://leetcode.com/problems/partition-list/)| [Python](./leetcode_python/Two_Pointers/partition-list.py) | _O(n)_       | _O(1)_         | Medium         || OK* 
 141| [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)| [Python](./leetcode_python/Two_Pointers/linked-list-cycle.py) | _O(n)_ | _O(1)_ | Easy |`basic`,`amazon`, `fb`, linked list, 2 pointers, check #142|  OK** (4)
