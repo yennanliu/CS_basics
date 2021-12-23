@@ -20,6 +20,7 @@
 				- 077
 			- Tree
 				- 662 (*not start*)
+				- 776
 			- binary search
 				- 162
 			- =======
@@ -40,7 +41,8 @@
 		- (order) (binary_search.md - linked_list.md)
 		- binary_tree.md (ok)
 		- brute_force.md (ok)
-		- bst.md (ing)
+		- bst.md (ok)
+		- dfs.md (ing)
 
 # 2021-12-22
 - DOING:
