@@ -19,6 +19,7 @@
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
 			- 018 4sum (again !)
 			- 454 4sum-ii (again !)
+			- 1162 as-far-from-land-as-possible (again)
 	- ================
 	- LC general
 		- **back track**
