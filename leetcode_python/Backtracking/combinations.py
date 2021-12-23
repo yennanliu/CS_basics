@@ -1,6 +1,111 @@
+"""
+
+77. Combinations
+Medium
+
+Given two integers n and k, return all possible combinations of k numbers out of the range [1, n].
+
+You may return the answer in any order.
+
+
+Example 1:
+
+Input: n = 4, k = 2
+Output:
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+Example 2:
+
+Input: n = 1, k = 1
+Output: [[1]]
+ 
+
+Constraints:
+
+1 <= n <= 20
+1 <= k <= n
+
+"""
+
 # V0 
 
-# V1 
+# V1
+# https://leetcode.com/problems/combinations/discuss/1222840/Python-backtracking-simple-soln
+# IDEA : BACKTRACK
+class Solution:
+    def combine(self, n, k):
+        res=[]
+        def go(i,ma,ans):
+            if ma==k:
+                res.append(list(ans))
+                return
+            if i>n:
+                return
+            ans.append(i)
+            go(i+1,ma+1,ans)
+            ans.pop()
+            go(i+1,ma,ans)
+        go(1,0,[])
+        return res
+
+# V1''
+# https://leetcode.com/problems/combinations/discuss/286994/python
+# IDEA : BACKTRACK + dfs
+class Solution(object):
+    def combine(self, n, k):
+        result = []
+        
+        def dfs(current, start):
+            if(len(current) == k):
+                result.append(current[:])
+                return
+            
+            for i in range(start, n + 1):
+                current.append(i)
+                dsf(current, i + 1)
+                current.pop()
+            
+        dfs([], 1)
+        return result
+
+# V1'''
+# https://leetcode.com/problems/combinations/discuss/170834/Python-solution
+# IDEA : iteration
+class Solution(object):
+    def combine(self, n, k):
+        """
+        :type n: int
+        :type k: int
+        :rtype: List[List[int]]
+        """
+        if k == 0:
+            return []
+        elif k == 1:
+            return [[i] for i in range(1,n+1)]
+        res = []
+        for tail in range(n,k-1,-1):
+            tmp = self.combine(tail-1, k-1)
+            for i in range(len(tmp)):
+                tmp[i].append(tail)
+            res += tmp
+        return res          
+
+# V1''''
+# https://leetcode.com/problems/combinations/discuss/170834/Python-solution
+# IDEA : iteration
+class Solution(object):
+    def combine(self, n, k):
+        if k == 0:
+            return [[]]
+        return [x+[tail] for tail in range(n,k-1,-1) for x in self.combine(tail-1, k-1)]
+
+# V1''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79515180
 # IDEA :  RECURSION 
 # DEMO : 
@@ -46,7 +151,7 @@ class Solution(object):
             self.helper(array[1:], k - 1, res, path + [array[0]])
             self.helper(array[1:], k, res, path)
 
-# V1' 
+# V1''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79515180
 # IDEA : BACKTRACKING 
 class Solution(object):
