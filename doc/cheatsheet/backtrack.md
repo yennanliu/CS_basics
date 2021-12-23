@@ -29,9 +29,15 @@
     - array
 
 - Problems types
-    - Combinations : LC 77. backtrack. via `start` remove already used numbers and return all cases
-    - Permutations : LC 46. backtrack. via `contains` remove already used numbers and return all cases
-    - Subsets : LC 78. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
+    - Combinations
+        - LC 77 
+        - backtrack. via `start` remove already used numbers and return all cases
+    - Permutations 
+        - LC 46 
+        - backtrack. via `contains` remove already used numbers and return all cases
+    - Subsets 
+        - LC 78 
+        - find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
 
 ### 0-2) Pattern
 
