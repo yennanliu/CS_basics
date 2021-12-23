@@ -14,20 +14,25 @@
 				- 0381
 			- (pdf : p.7)
 				- 025
-			- =======
-			- **back track**
-				- 078
-				- 077
-			- Tree
-				- 662 (*not start*)
-				- 776
-			- binary search
-				- 162
-			- =======
-			- bit manipulation
-			- union find
-			- quick sort
-			- intervals
+	- ================
+	- LC (amz_, July 2020 - July 2021)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
+			- 454 4sum-ii
+	- ================
+	- LC general
+		- **back track**
+			- 078
+			- 077
+		- Tree
+			- 662 (*not start*)
+			- 776
+		- binary search
+			- 162
+		- =======
+		- bit manipulation
+		- union find
+		- quick sort
+		- intervals
 		- SQL
 	- Crack Code
 	- System Design
