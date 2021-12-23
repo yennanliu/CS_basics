@@ -676,6 +676,7 @@
 ## Two Pointers 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
+018| [4Sum](https://leetcode.com/problems/4sum/) | [Python](./leetcode_python/Two_Pointers/4sum.py) | _O(n)_ | _O(1)_ | Medium  |LC 454 4SUM II|  AGAIN** (1) (not start)
 019| [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)| [Python](./leetcode_python/Two_Pointers/remove-nth-node-from-end-of-list.py) | _O(n)_   | _O(1)_ | Medium |`linked list`,`two pointers`,`fb`| AGAIN**** (3)
 086| [Partition List](https://leetcode.com/problems/partition-list/)| [Python](./leetcode_python/Two_Pointers/partition-list.py) | _O(n)_       | _O(1)_         | Medium         || OK* 
 141| [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)| [Python](./leetcode_python/Two_Pointers/linked-list-cycle.py) | _O(n)_ | _O(1)_ | Easy |`basic`,`amazon`, `fb`, linked list, 2 pointers, check #142|  OK** (4)
@@ -689,6 +690,7 @@
 349| [Intersection of Two Arrays](https://leetcode.com/problems/intersection-of-two-arrays/) | [Python](./leetcode_python/Two_Pointers/intersection-of-two-arrays.py) | _O(m + n)_ | _O(min(m, n))_ | Easy         | EPI, Hash, Binary Search, `fb` | OK
 350| [Intersection of Two Arrays II](https://leetcode.com/problems/intersection-of-two-arrays-ii/) |  [Python](./leetcode_python/Two_Pointers/intersection-of-two-arrays-ii.py) | _O(m + n)_ | _O(1)_ | Easy         | EPI, Hash, Binary Search, `good basic`, `fb` | OK** (3)
 360| [Sort Transformed Array](https://leetcode.com/problems/sort-transformed-array/) | [Python](./leetcode_python/Two_Pointers/sort-transformed-array.py) | _O(n)_ | _O(1)_ | Medium  |`trick`,🔒,`google` ,`fb`|  AGAIN*** (3)
+454| [4Sum II](https://leetcode.com/problems/4sum-ii/) | [Python](./leetcode_python/Two_Pointers/4sum-ii.py) | _O(n)_ | _O(1)_ | Medium  |`amazon`|  AGAIN** (1) (not start)
 457| [Circular Array Loop](https://leetcode.com/problems/circular-array-loop/) | [Python](./leetcode_python/Two_Pointers/circular-array-loop.py) | _O(n)_ | _O(1)_ | Medium   || AGAIN (not start)
 567| [Permutation in String](https://leetcode.com/problems/permutation-in-string/) | [Python](./leetcode_python/Two_Pointers/permutation-in-string.py) | _O(n)_ | _O(1)_ | Medium |`Collections.counter good basic`,`sliding window`,`substring`, `good basic`,`M$`, `fb`| OK********* (7)
 611| [Valid Triangle Number](https://leetcode.com/problems/valid-triangle-number/) | [Python](./leetcode_python/Two_Pointers/valid-triangle-number.py) | _O(n^2)_ | _O(1)_ | Medium    || AGAIN (not start)
