@@ -8,6 +8,7 @@
 - optimization:
     - remove duplicated sub cases
     - have a cache (e.g. hash table) list finished cases (not re-compute them)
+    - "cut the sub-tree" via conditions such as `contains`, `start`
 
 ## 0) Concept  
 
@@ -26,6 +27,11 @@
     - dict
     - set
     - array
+
+- Problems types
+    - Combinations : LC 77. backtrack. via `start` remove already used numbers and return all cases
+    - Permutations : LC 46. backtrack. via `contains` remove already used numbers and return all cases
+    - Subsets : LC 78. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
 
 ### 0-2) Pattern
 
@@ -295,5 +301,63 @@ void backtrack(int n, int k, int start, vector<int> & track){
         // undo choice
         track.pop_back();
     }
+}
+```
+
+### 2-6) Permutations
+```python
+# LC 46. Permutations
+# V0 
+class Solution(object):
+    def permute(self, nums):
+        visited = [0] * len(nums)
+        res = []
+        path = []
+        self.dfs(path)
+        return res
+        
+    def dfs(self, path):
+        if len(path) == len(nums):
+            res.append(path)
+        else:
+            for i in range(len(nums)):
+                if not visited[i]:
+                    visited[i] = 1
+                    dfs(path + [nums[i]])
+                    visited[i] = 0    ### to check if "visited[i] = 0" is necessary
+```
+```java
+// LC 46. Permutations
+// java
+// (algorithm book (labu) p.307)
+List<List<Integer>> res = new LinkedList<>{};
+
+/* main func, insert a set with non-duplicated numbers, return its Permutations */
+List<List<Integer>> permute(int nums[]){
+    // record "route"
+    LinkedList<Integer> track = new LinkedList<>{};
+    backtrack(nums, track);
+    return res;
+
+void backtrack(int[] nums, LinkedList<Integer> track){
+    // arrive leaf node
+    if (track.size() == nums.length){
+        res.add(new LinkedList(track));
+        return ;
+    }
+
+    for (int i = 0; i < nums.length; i++){
+        // remove "illegal" choices
+        if (track.contains(nums[i])){
+            continue;
+        }
+        // make choice
+        track.add(nums[i]);
+        // go to next decision tree
+        backtrack(nums, track);
+        // undo choice
+        backtrack.removeLast();
+     }
+  }
 }
 ```
