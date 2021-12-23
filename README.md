@@ -736,6 +736,8 @@
 ## Binary Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note        | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
+033| [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | [Python](./leetcode_python/Binary_Search/search-in-rotated-sorted-array.py)||| Medium |`binary search`,`good basic` ,check `# 81 Search in Rotated Sorted Array II`,`UBER`,`amazon`,`fb`| AGAIN********* (4)
+034| [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) |[Python](./leetcode_python/Binary_Search/find-first-and-last-position-of-element-in-sorted-array.py)||| Medium |`amazon`,`fb`| AGAIN**** (1)
 034| [Search for a Range](https://leetcode.com/problems/search-for-a-range/) |[Python](./leetcode_python/Binary_Search/search-for-a-range.py) | _O(logn)_ | _O(1)_   | Medium  || AGAIN* 
 035| [Search Insert Position](https://leetcode.com/problems/search-insert-position/) | [Python](./leetcode_python/Binary_Search/search-insert-position.py) | _O(logn)_ | _O(1)_   | Medium      || AGAIN 
 069| [Sqrt(x)](https://leetcode.com/problems/sqrtx/) | [Python](./leetcode_python/Binary_Search/sqrtx.py) | _O(logn)_ | _O(1)_ | Medium |math, binary search,`amazon`,`fb`| OK* (3) 
@@ -758,9 +760,7 @@
 875 | [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/) | [Python](./leetcode_python/Binary_Search/koko-eating-bananas.py)  | _O(nlogr)_ | _O(1)_ | Medium | | OK*
 894| [All Possible Full Binary Trees](https://leetcode.com/problems/all-possible-full-binary-trees/) | [Python](./leetcode_python/Binary_Search/all-possible-full-binary-trees.py) | _O(n * 4^n / n^(3/2))_ | _O(n * 4^n / n^(3/2))_ | Medium ||  AGAIN (not start)
 911| [Online Election](https://leetcode.com/problems/online-election/) |  [Python](./leetcode_python/Binary_Search/online-election.py)| ctor: _O(n)_<br> query : _O(logn)_ | _O(n)_ | Medium    ||  AGAIN (not start)
-033| [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | [Python](./leetcode_python/Binary_Search/search-in-rotated-sorted-array.py)||| Medium |`binary search`,`good basic` ,check `# 81 Search in Rotated Sorted Array II`,`UBER`,`amazon`,`fb`| AGAIN********* (4)
-034| [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) |[Python](./leetcode_python/Binary_Search/find-first-and-last-position-of-element-in-sorted-array.py)||| Medium |`amazon`,`fb`| AGAIN**** (1)
-
+1101| [Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/) |  [Python](./leetcode_python/Binary_Search/capacity-to-ship-packages-within-d-days.py)| || Medium |good trick, binary search, amazon|  AGAIN*** (1) (not start)
 
 
 ## Binary Search Tree 
@@ -887,6 +887,7 @@
 091| [Decode Ways](https://leetcode.com/problems/decode-ways/)   |  [Python](./leetcode_python/Dynamic_Programming/decode-ways.py) | _O(n)_ | _O(1)_   | Medium  |`good basic`,`dp`, `M$`, `UBER`, `amazon`,`fb`| AGAIN*********** (3)
 096| [Unique Binary Search Trees](https://leetcode.com/problems/unique-binary-search-trees/) | [Python](./leetcode_python/Dynamic_Programming/unique-binary-search-trees.py)  | _O(n)_      | _O(1)_         | Medium         | Math|  AGAIN (not start)
 120| [Triangle](https://leetcode.com/problems/triangle/)       | [Python](./leetcode_python/Dynamic_Programming/triangle.py)   | _O(m * n)_      | _O(n)_ | Medium |`amazon`| AGAIN* (not start) (2)
+123| [Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/)       | [Python](./leetcode_python/Dynamic_Programming/best-time-to-buy-and-sell-stock-iii/.py)   | _O(m * n)_      | _O(n)_ | Medium |`amazon`| AGAIN* (not start) (1)
 139| [Word Break](https://leetcode.com/problems/word-break/)     | [Python](./leetcode_python/Dynamic_Programming/word-break.py) |  _O(n * l^2)_  | _O(n)_ | Medium  |`dp`,`trick`,`UBER`,`yahoo`,`amazon`, `google`,`fb`| AGAIN******** (4) 
 152| [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)|[Python](./leetcode_python/Dynamic_Programming/maximum-product-subarray.py)| _O(n)_ | _O(1)_ | Medium     || AGAIN (not start)
 198| [House Robber](https://leetcode.com/problems/house-robber/)| [Python](./leetcode_python/Dynamic_Programming/house-robber.py) | _O(n)_ | _O(1)_ | Easy|dp basic,`amazon`| AGAIN*** (2)
