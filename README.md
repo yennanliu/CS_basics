@@ -760,7 +760,7 @@
 875 | [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/) | [Python](./leetcode_python/Binary_Search/koko-eating-bananas.py)  | _O(nlogr)_ | _O(1)_ | Medium | | OK*
 894| [All Possible Full Binary Trees](https://leetcode.com/problems/all-possible-full-binary-trees/) | [Python](./leetcode_python/Binary_Search/all-possible-full-binary-trees.py) | _O(n * 4^n / n^(3/2))_ | _O(n * 4^n / n^(3/2))_ | Medium ||  AGAIN (not start)
 911| [Online Election](https://leetcode.com/problems/online-election/) |  [Python](./leetcode_python/Binary_Search/online-election.py)| ctor: _O(n)_<br> query : _O(logn)_ | _O(n)_ | Medium    ||  AGAIN (not start)
-1101| [Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/) |  [Python](./leetcode_python/Binary_Search/capacity-to-ship-packages-within-d-days.py)| || Medium |good trick, binary search, amazon|  AGAIN*** (1) (not start)
+1011| [Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/) |  [Python](./leetcode_python/Binary_Search/capacity-to-ship-packages-within-d-days.py)| || Medium |good trick, binary search, amazon|  AGAIN*** (1) (not start)
 
 
 ## Binary Search Tree 
