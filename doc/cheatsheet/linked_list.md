@@ -401,6 +401,37 @@ ListNode reverseGroup(ListNode head, int k){
     return newHead;
 }
 ```
+```python
+# LC 025
+class Solution:
+    def reverseKGroup(self, head, k):
+        dummy = ListNode(None)
+        dummy.next = head
+        d = dummy
+        pre = None
+        curHead = head
+        preHead = curHead
+        while self.check(curHead, k):
+            for _ in range(k):
+                temp = curHead.next
+                curHead.next = pre
+                pre = curHead
+                curHead = temp
+            dummy.next = pre
+            dummy = preHead
+            preHead.next = curHead
+            preHead = curHead
+        return d.next
+                 
+    def check(self, head, k):
+        ans = 0
+        while head:
+            ans += 1
+            if ans >= k:
+                return True
+            head = head.next
+        return False
+```
 
 #### 1-1-7) Reverse *first N*  linked list (recursion)
 ```java
