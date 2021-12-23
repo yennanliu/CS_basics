@@ -38,9 +38,13 @@ class Solution(object):
             return None
         if len(inorder) == 1:
             return TreeNode(inorder[0])
+        ### NOTE : we get root from postorder
         root = TreeNode(postorder[-1])
+        """
+        ### NOTE : the index is from inorder
         ### NOTE : we get index of root in inorder
         #    -> and this idx CAN BE USED IN BOTH inorder, postorder (Binary Tree property)
+        """
         idx = inorder.index(root.val)
         ### NOTE : inorder[:idx], postorder[:idx]
         root.left = self.buildTree(inorder[:idx], postorder[:idx])

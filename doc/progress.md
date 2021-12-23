@@ -38,7 +38,9 @@
 		- p.6 - p.16
 	- cheatsheet review
 		- (order) (binary_search.md - linked_list.md)
-		- binary_tree.md (ing)
+		- binary_tree.md (ok)
+		- brute_force.md (ok)
+		- bst.md (ing)
 
 # 2021-12-22
 - DOING:
