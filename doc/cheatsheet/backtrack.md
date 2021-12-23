@@ -237,7 +237,63 @@ void backtrack(vector<int> & nums, int start, vector<int> & track){
         // iteration backtrack
         backtrack(nums, i+1, track);
         // undo choice
-        track.push_back();
+        track.pop_back();
+    }
+}
+```
+
+### 2-5) Combinations
+```python
+# LC 77. Combinations
+# IDEA : BACKTRACK
+class Solution:
+    def combine(self, n, k):
+        res=[]
+        def go(i,ma,ans):
+            if ma==k:
+                res.append(list(ans))
+                return
+            if i>n:
+                return
+            ans.append(i)
+            go(i+1,ma+1,ans)
+            ans.pop()
+            go(i+1,ma,ans)
+        go(1,0,[])
+        return res
+```
+```c++
+// c++
+// backtrack
+// (algorithm book (labu) p.305)
+
+// record all combinations
+vector<vector<int>> res;
+
+/* main func */
+vector<vector<int>> combine(int n, int k){
+    if (k <= 0 || n <= 0) return res;
+    vector<int> track;
+    backtrack(n, k, 1, track);
+    return res;
+}
+
+/* use backtrack pattern */
+void backtrack(int n, int k, int start, vector<int> & track){
+    // not update res till visit leaf node
+    if (k == track.size()){
+        res.push_back(track);
+        return;
+    }
+
+    // increase from i
+    for (int i = start; i <= n; i ++){
+        // do choice
+        track.push_back(i);
+        // backtrack
+        backtrack(n, k, i+1, track);
+        // undo choice
+        track.pop_back();
     }
 }
 ```

@@ -16,6 +16,8 @@
 				- 025
 			- =======
 			- **back track**
+				- 078
+				- 077
 			- Tree
 				- 662 (*not start*)
 			- binary search
@@ -31,7 +33,7 @@
 		- Tinder design
 	- algorithm book (labu)
 		- note
-			- p.304
+			- p.306
 	- system design book - an insider's guide (GOTOP)
 		- p.6 - p.16
 	- cheatsheet review
