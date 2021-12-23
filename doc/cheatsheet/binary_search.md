@@ -21,7 +21,9 @@
     - dict
 
 ### 0-2) Pattern
-
+- https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems
+    - TODO : add above to cheatsheet
+    
 #### 0-2-0) Binary search
 ```python
 # python
