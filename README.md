@@ -808,6 +808,8 @@
 967|[Numbers With Same Consecutive Differences](https://leetcode.com/problems/numbers-with-same-consecutive-differences/)| [Python](./leetcode_python/Breadth-First-Search/numbers-with-same-consecutive-differences.py) | _O(2^n)_ | _O(2^n)_ | Medium |`good trick` | AGAIN** (3)
 675|[Cut Off Trees for Golf Event](https://leetcode.com/problems/cut-off-trees-for-golf-event/)| [Python](./leetcode_python/Breadth-First-Search/cut-off-trees-for-golf-event.py), [Java](./leetcode_java/Breadth-First-Search/cut-off-trees-for-golf-event.java) ||| Medium |tree, BFS, complex, `amazon` | AGAIN (not start)
 126|[Word Ladder II](https://leetcode.com/problems/word-ladder-ii/)| [Python](./leetcode_python/Breadth-First-Search/word-ladder-ii.py) ||| Hard |bfs, check `# 127 Word Ladder`,`amazon` | AGAIN (not start)
+1162| [As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) | [Python](./leetcode_python/Breadth-First-Search/as-far-from-land-as-possible.py) | | | Medium | dfs, bfs, good basic, `amazon`| AGAIN (1) (not start)
+
 
 ## Depth-First Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag     | Status| 
