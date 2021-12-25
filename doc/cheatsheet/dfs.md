@@ -1,8 +1,8 @@
 # DFS 
 - To check if some value exists
-- Inorder, postorder, postorder (can recreate a tree)
+- Inorder, preorder, postorder (can recreate a tree)
 - Deep first, then breadth
-- not most efficient (compare to bfs), but can handle some specific problems
+- not most efficient (VS bfs), but can handle some specific problems
 
 ## 0) Concept
 
@@ -10,8 +10,8 @@
 
 - Types
     - normal transversal (pre-order, in-order, post-order)
-    - normal transversal with special op
-            - root.right -> do sth -> root.left
+    - normal transversal with special op:
+        - `root.right -> do sth -> root.left`
 
 - Algorithm
     - dfs
@@ -222,7 +222,7 @@ def dfs(root, value):
 
 ```python
 # get sum of sub tree
-# LC 508
+# LC 508 Most Frequent Subtree Sum
 def get_sum(root):
     if not root:
         return 0
@@ -231,7 +231,18 @@ def get_sum(root):
     return s
 ```
 
-#### 1-1-5) Convert BST to Greater Tree 
+#### 1-1-5) get `aggregated sum` for every node in tree
+```python
+# LC 663 Equal Tree Partition
+# LC 508 Most Frequent Subtree Sum
+seen = []
+def _sum(root):
+    if not root:
+        return 0
+    seen.append( root.val + _sum(root.left) + _sum(root.right) )
+```
+
+#### 1-1-6) Convert BST to Greater Tree 
 ```python
 # Convert BST to Greater Tree 
 # LC 538
@@ -241,17 +252,6 @@ def dfs(root):
     _sum += root.val
     root.val = _sum
     dfs(root.left)
-```
-
-#### 1-1-6) get `aggregated sum` for every node in tree
-```python
-# LC 663 Equal Tree Partition
-# LC 508 Most Frequent Subtree Sum
-seen = []
-def _sum(root):
-    if not root:
-        return 0
-    seen.append( root.val + _sum(root.left) + _sum(root.right) )
 ```
 
 ## 2) LC Example
@@ -291,32 +291,35 @@ class Solution(object):
 ### 2-3) Delete Node in a BST
 ```python
 # 450 Delete Node in a BST
+# V0
+# IDEA : RECURSION + BST PROPERTY
+#### 2 CASES :
+#   -> CASE 1 : root.val == key and NO right subtree 
+#                -> swap root and root.left, return root.left
+#   -> CASE 2 : root.val == key and THERE IS right subtree
+#                -> 1) go to 1st RIGHT sub tree
+#                -> 2) iterate to deepest LEFT subtree
+#                -> 3) swap root and  `deepest LEFT subtree` then return root
 class Solution(object):
     def deleteNode(self, root, key):
-
-        if not root:
-            return root
-
-        if root.val > key:
-            root.left = self.deleteNode(root.left, key)
-        elif root.val < key:
-            root.right = self.deleteNode(root.right, key)
-        else:
-            if not root.left:
-                right = root.right
-                del root
-                return right
-            elif not root.right:
+        if not root: return None
+        if root.val == key:
+            # case 1 : NO right subtree 
+            if not root.right:
                 left = root.left
-                del root
                 return left
+            # case 2 : THERE IS right subtree
             else:
-                successor = root.right
-                while successor.left:
-                    successor = successor.left
-
-                root.val = successor.val
-                root.right = self.deleteNode(root.right, successor.val)
+                ### NOTE : find min in "right" sub-tree
+                #           -> because BST property, we ONLY go to 1st right tree (make sure we find the min of right sub-tree)
+                #           -> then go to deepest left sub-tree
+                right = root.right
+                while right.left:
+                    right = right.left
+                ### NOTE : we need to swap root, right ON THE SAME TIME
+                root.val, right.val = right.val, root.val
+        root.left = self.deleteNode(root.left, key)
+        root.right = self.deleteNode(root.right, key)
         return root
 ```
 
@@ -361,7 +364,6 @@ class Solution:
 ### 2-6) Maximum Width of Binary Tree
 ```python
 # 662 Maximum Width of Binary Tree
-
 class Solution(object):
     def widthOfBinaryTree(self, root):
         self.ans = 0
@@ -397,17 +399,34 @@ class Solution(object):
 ### 2-8) Split BST
 ```python
 # 776 Split BST
+# V0
+# IDEA : BST properties (left < root < right) + recursion
+# https://blog.csdn.net/magicbean2/article/details/79679927
+# https://www.itdaan.com/tw/d58594b92742689b5769f9827365e8b4
+### STEPS
+#  -> 1) check whether root.val > or < V
+#     -> if root.val > V : 
+#           - NO NEED TO MODIFY ALL RIGHT SUB TREE
+#           - BUT NEED TO re-connect nodes in LEFT SUB TREE WHICH IS BIGGER THAN V (root.left = right)
+#     -> if root.val < V : 
+#           - NO NEED TO MODIFY ALL LEFT SUB TREE
+#           - BUT NEED TO re-connect nodes in RIGHT SUB TREE WHICH IS SMALLER THAN V (root.right = left)
+# -> 2) return result
 class Solution(object):
     def splitBST(self, root, V):
         if not root: return [None, None]
+        ### NOTE : if root.val <= V
         if root.val > V:
             left, right = self.splitBST(root.left, V)
             root.left = right
             return [left, root]
-        left, right = self.splitBST(root.right, V)
-        root.right = left
-        return [root, right]
+        ### NOTE : if root.val > V
+        else:
+            left, right = self.splitBST(root.right, V)
+            root.right = left
+            return [root, right]
 ```
+
 ### 2-9) Evaluate Division
 ```python
 # 399 Evaluate Division
@@ -466,6 +485,7 @@ class Solution(object):
 
 ### 2-11) Convert BST to Greater Tree
 ```python
+# LC 538 Convert BST to Greater Tree
 # V0
 # IDEA : DFS + recursion
 #      -> NOTE : via DFS, the op will being executed in `INVERSE` order (last visit will be run first, then previous, then ...)
