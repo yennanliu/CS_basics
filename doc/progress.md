@@ -12,8 +12,8 @@
 			- (normal order)
 			- (pdf : p.7)
 				- 003 (OK, but again !!!!!!!!)
-				- 139
-				- 025 (not start, again !)
+				- 215 (ok)
+			- (pdf : p.8)
 	- ================
 	- LC (amz_, July 2020 - July 2021)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
