@@ -49,16 +49,35 @@ class Solution(object):
         return len(nums) - 1
 
 # V0'
+# IDEA :  Linear Scan + problem understanding
+# NOTE :  If the array contains multiple peaks, return the index to any of the peaks.
+#   -> e.g. for nums = [1,2,1,3,5,6,4], we can return EITHER index = 1 or 5
+class Solution(object):
+    def findPeakElement(self, nums):       
+        if len(nums) <= 2:
+            _max = max(nums)
+            return nums.index(_max)
+        for i in range(1, len(nums)):
+            #print ("i = " + str(i))
+            if nums[i] < nums[i-1]:
+                return i-1
+        if nums[-1] > nums[-2]:
+            return len(nums) - 1
+
+# V0'
 # IDEA : RECURSIVE BINARY SEARCH
 class Solution(object):
     def findPeakElement(self, nums):
 
+        # help func (binary recursive)
         def help(nums, l, r):
             if l == r:
                 return l
             mid = l + (r - l) // 2
             if (nums[mid] > nums[mid+1]):
+                ### NOTE : we need to return help func
                 return help(nums, l, mid)
+            ### NOTE : we need to return help func
             return help(nums, mid+1, r)
             
         return help(nums, 0, len(nums)-1)
