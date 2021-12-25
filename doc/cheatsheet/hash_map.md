@@ -248,3 +248,105 @@ class Solution:
                     nonprimes[j] = 1
         return n - len(nonprimes) - 2
 ```
+
+### 2-5) Valid Sudoku
+```python
+# python
+# LC 036 Valid Sudoku
+# V0
+class Solution(object):
+    def isValidSudoku(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: bool
+        """
+        n = len(board)
+        return self.isValidRow(board) and self.isValidCol(board) and self.isValidNineCell(board)
+        
+    def isValidRow(self, board):
+        n = len(board)
+        for r in range(n):
+            row = [x for x in board[r] if x != '.']
+            if len(set(row)) != len(row): # if not repetition 
+                return False
+        return True
+
+    def isValidCol(self, board):
+        n = len(board)
+        for c in range(n):
+            col = [board[r][c] for r in range(n) if board[r][c] != '.']
+            if len(set(col)) != len(col): # if not repetition 
+                return False
+        return True
+
+    def isValidNineCell(self, board):
+        n = len(board)
+        for r in range(0, n, 3):
+            for c in range(0, n, 3):
+                cell = []
+                for i in range(3):
+                    for j in range(3):
+                        num = board[r + i][c + j]
+                        if num != '.':
+                            cell.append(num)
+                if len(set(cell)) != len(cell): # if not repetition 
+                    return False
+        return True
+```
+```java
+// java
+// LC 036 Valid Sudoku
+// backtrack
+// (algorithm book (labu) p.311)
+boolean backtrack(char[][] boolean,int i, int j){
+
+    int m = 9, n = 9;
+    
+    if (j == n){
+        // if visit last col, start from next row
+        return backtrack(board, i + 1, 0);
+    }
+
+    if (i == m){
+        // found one solution, trigger base case
+        return true;
+    }
+
+    if (board[i][j] != '.'){
+        // if there id default number, then no need to looping
+        return backtrack(board, i, j + 1);
+    }
+
+    for (char ch = '1'; ch <= '9'; ch++){
+        // if there is no valid number, negelect it
+        if (!isValid(board, i, j, ch)){
+            continue;
+        }
+
+        board[i][j] = ch;
+
+        // if found one solution, return it and terminate the program
+        if (backtrack(board, i, j+1)){
+            return true;
+        }
+
+        board[i][j] = '.';
+    }
+
+    // if looping 1 ~ 9, still can't find a solution
+    // -> change a number to loop
+    return false;
+}
+
+bollean isValid(char[][] board, int r, int c, char n){
+    for (int i = 0; i < 9; i++){
+        // check if row has duplicate
+        if (board[r][i] == n) return false;
+        // check if col has duplicate
+        if (board[i][c] == n) return false;
+        // check if "3 x 3 matrix" has duplicate
+        if (board[ (r/3) * 3 + i / 3 ][ (c/3) * 3 + i % 3] == n) return false;
+    }
+    return true;
+}  
+```
