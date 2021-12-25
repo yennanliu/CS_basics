@@ -23,6 +23,9 @@
 			- 046
 		- Tree
 			- 662 (*not start*)
+			- 652
+			- 662
+			- 508
 			- 776
 		- binary search
 			- 162
@@ -42,7 +45,8 @@
 		- p.20 - p.27
 	- cheatsheet review
 		- (order) (binary_search.md - linked_list.md)
-		- dfs.md (ing)
+		- dfs.md (ok)
+		- graph.md (ing)
 
 # 2021-12-24
 - DOING:
