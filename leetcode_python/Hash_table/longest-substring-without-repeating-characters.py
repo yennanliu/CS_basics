@@ -35,7 +35,7 @@ s consists of English letters, digits, symbols and spaces.
 """
 
 # V0
-# IDEA : SLIDING WINDOW + DICT
+# IDEA : SLIDING WINDOW + DICT (brute force)
 from collections import Counter
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
@@ -70,10 +70,17 @@ class Solution(object):
         res = 0
         # right pointer
         for r in range(len(s)):
+            """
+            ### NOTE : we deal with "s[r] in d" case first 
             ### NOTE : if already visited, means "repeating"
-            #         -> then we need to update left pointer (l)
+            #      -> then we need to update left pointer (l)
+            """
             if s[r] in d:
-                # note here
+                """
+                NOTE !!! this
+                -> via max(l, d[s[r]] + 1) trick,
+                   we can get the "latest" idx of duplicated s[r], and start from that one
+                """
                 l = max(l, d[s[r]] + 1)
             # if not visited yet, record the alphabet
             # and re-calculate the max length

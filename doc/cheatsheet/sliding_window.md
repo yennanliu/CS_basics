@@ -105,21 +105,29 @@ class Solution(object):
 ### 2-3) Longest Substring Without Repeating Characters
 
 ```python
-# LC 003 Longest Substring Without Repeating Characters
-# V0
+# V0'
 # IDEA : SLIDING WINDOW + DICT
-#       -> use a hash table (d) record visit "alphabet" (e.g. : a,b,c,...)
+#       -> use a hash table (d) record visited "element" (e.g. : a,b,c,...)
 #          (but NOT sub-string)
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
         d = {}
+        # left pointer
         l = 0
         res = 0
+        # right pointer
         for r in range(len(s)):
+            """
+            ### NOTE : we deal with "s[r] in d" case first 
             ### NOTE : if already visited, means "repeating"
-            #         -> then we need to update left pointer (l)
+            #      -> then we need to update left pointer (l)
+            """
             if s[r] in d:
-                # note here
+                """
+                NOTE !!! this
+                -> via max(l, d[s[r]] + 1) trick,
+                   we can get the "latest" idx of duplicated s[r], and start from that one
+                """
                 l = max(l, d[s[r]] + 1)
             # if not visited yet, record the alphabet
             # and re-calculate the max length
