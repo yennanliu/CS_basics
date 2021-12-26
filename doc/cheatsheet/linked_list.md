@@ -746,3 +746,30 @@ class Solution:
             n = n.next
         return dic.get(head)
 ```
+
+### 2-6) Intersection of Two Linked Lists
+```python
+# LC 160 Intersection of Two Linked Lists
+# V0
+# IDEA : if the given 2 linked list have intersection, then 
+#        they must overlap in SOMEWHERE if we go through
+#        each of them in the same length
+#        -> e.g.
+#             process1 : headA -> headB -> headA ...
+#             process2 : headB -> headA -> headB ...
+class Solution(object):
+    def getIntersectionNode(self, headA, headB):
+        if not headA or not headB:
+            return None
+        p, q = headA, headB
+        while p and q and p != q:
+            p = p.next
+            q = q.next
+            if p == q:
+                return p
+            if not p:
+                p = headB
+            if not q:
+                q = headA
+        return p
+```

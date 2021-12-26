@@ -75,14 +75,20 @@ class Solution(object):
     def getIntersectionNode(self, headA, headB):
         if not headA or not headB:
             return None
+        ### NOTE : we need to use p, q as behalf of headA, headB. Since we need to use them (headA, headB) again below
         p, q = headA, headB
+        ### NOTE :  2 conditions
+        #     -> 1. p and q 
+        #     -> 2. p != q
         while p and q and p != q:
             p = p.next
             q = q.next
             if p == q:
                 return p
+            ### NOTE : if not p, we need to assign "headB" to p (but not "headA")
             if not p:
                 p = headB
+            ### NOTE : if not q, we need to assign "headA" to q (but not "headB")
             if not q:
                 q = headA
         return p
