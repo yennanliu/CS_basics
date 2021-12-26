@@ -42,6 +42,7 @@ Submissions
 # prinme(3) = 1
 # prinme(4) = 2
 # prinme(5) = 3
+# python 3
 class Solution:
     def countPrimes(self, n):
         # using sieve of eretosthenes algorithm
@@ -53,7 +54,8 @@ class Solution:
                     nonprimes.add(j)
         return n - len(nonprimes) - 2  # remove prinme(1), prime(2)
 
-# V0' 
+# V0'
+# python2 
 class Solution(object):
     def countPrimes(self, n):
         if n <= 2:

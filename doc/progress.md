@@ -45,6 +45,12 @@
 			- 134 (not start)
 			- 435 (not start)
 			- 767 (not start)
+		- hashmap
+			- 763 (not start)
+			- 525 (not start)
+			- 523 (not start)
+			- 204 (not start)
+			- 036 (not start)
 		- SQL
 	- Crack Code
 	- System Design
@@ -58,7 +64,8 @@
 		- (order) (binary_search.md - linked_list.md)
 		- graph.md (ok)
 		- greedy.md (ok)
-		- hash_map.md (ing)
+		- hash_map.md (ok)
+		- heap.md (ing)
 
 # 2021-12-25
 - DOING:
