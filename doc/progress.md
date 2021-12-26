@@ -19,6 +19,8 @@
 	- ================
 	- LC general
 		- **back track**
+			- 020
+			- 022
 			- 078
 			- 077
 			- 046
@@ -31,6 +33,7 @@
 			- 162 (ok, again !!)
 		- =======
 		- bit manipulation
+			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
 		- union find
 		- quick sort
 		- intervals
@@ -40,7 +43,7 @@
 		- Tinder design
 	- algorithm book (labu)
 		- note
-			- 314 -
+			- 314 -318
 	- system design book - an insider's guide (GOTOP)
 		- p.27 - p.44
 	- cheatsheet review

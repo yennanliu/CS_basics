@@ -38,6 +38,9 @@
     - Subsets 
         - LC 78 
         - find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
+    - parentheses
+        - LC 20, LC 22
+
 
 ### 0-2) Pattern
 
@@ -366,4 +369,49 @@ void backtrack(int[] nums, LinkedList<Integer> track){
      }
   }
 }
+```
+
+### 2-7) Generate Parentheses
+```java
+// java
+// LC 022 Generate Parentheses
+// (algorithm book (labu) p.316)
+
+/* main func */
+vector<String> generateParentheses(int n){
+    if (n == 0) return {};
+    // record all legal collections
+    vector<string> res;
+    // backtrack the routes (in process)
+    string track;
+    // init : available left Parentheses and right Parentheses counts as n
+    backtrack(n, n, track, res);
+    return res;
+}
+
+/* remain left Parentheses count : left ; remain right Parentheses : right */
+void backtrack(int left, int right, string& track, vector<string> & res){
+    // if count < 0 : illegal
+    if (left < 0 || right < 0) return;
+    // if remain  left Parentheses count >  right Parentheses count : illegal
+    if (right < left) return;
+    // if all Parentheses are used : legal, we got one OK solution
+    if (left == 0 && right == 0){
+        res.push_back(track);
+        return;
+    }
+
+    // add one more left Parentheses
+    track.push_back('(') // do choice
+    backtrack(left - 1, right, track, res);
+    track.push_back(); // undo choice
+
+    // add one more right Parentheses
+    track.push_back(')') // do choice
+    backtrack(left, right - 1, track, res);
+    track.push_back(); // undo choice
+}
+
+
+
 ```
