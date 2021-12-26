@@ -51,12 +51,34 @@ class Solution(object):
                 if s[j] in _s:
                     _max = max(_max, tmp)
                     tmp = 0
+                    ### NOTE : we need to clear the Counter() (if s[j] in _s)
                     _s = Counter()
                     break
 
                 _s[s[j]] += 1
                 tmp += 1
         return _max
+
+# V0'
+# IDEA : SLIDING WINDOW + defaultdict (brute force)
+from collections import defaultdict
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        if len(s) <= 1:
+            return len(s)
+        res = 0
+        tmp = defaultdict(int)
+        for i in range(len(s)):
+            for j in range(i, len(s)):
+                #print ("i = " + str(i) + " j = " + str(j))
+                if s[j] in tmp:
+                    res = max(res, tmp[j]-i+1)
+                    tmp = defaultdict(int)
+                    break
+                else:
+                    tmp[s[j]] = j
+                    res = max(res, j-i+1)
+        return res
 
 # V0'
 # IDEA : SLIDING WINDOW + DICT
