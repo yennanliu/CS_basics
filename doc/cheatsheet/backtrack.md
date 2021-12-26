@@ -389,7 +389,7 @@ vector<String> generateParentheses(int n){
     return res;
 }
 
-/* remain left Parentheses count : left ; remain right Parentheses : right */
+/* remain left Parentheses count : left ;.. remain right Parentheses : right */
 void backtrack(int left, int right, string& track, vector<string> & res){
     // if count < 0 : illegal
     if (left < 0 || right < 0) return;
@@ -411,7 +411,4 @@ void backtrack(int left, int right, string& track, vector<string> & res){
     backtrack(left, right - 1, track, res);
     track.push_back(); // undo choice
 }
-
-
-
 ```
