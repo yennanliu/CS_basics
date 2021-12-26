@@ -47,15 +47,23 @@ car = {
   "year": 1964
 }
 
-# get key "brand" value
-print (car.setdefault("brand"))
-# insert key "my_key"
-print (car.setdefault("my_key"))
+#-----------------------------------------------------------------------------
+# setdefault : will make key in dict if such key not existed yet (with value as well if defined)
+#-----------------------------------------------------------------------------
+# insert key "my_key", since my_key not existed, -> make it as new key and value as None (since not defined)
+car.setdefault("my_key")
 print (car)
-# add new key "color" and its value white
-print (car.setdefault("color", "white"))
+# In [18]: car
+# Out[18]: {'brand': 'Ford', 'model': 'Mustang', 'year': 1964, 'my_key': None}
+# insert key "color", since my_key not existed, -> make it as new key and value as white
+car.setdefault("color", "white")
 print (car)
-
+# Out[22]:
+# {'brand': 'Ford',
+#  'model': 'Mustang',
+#  'year': 1964,
+#  'my_key': None,
+#  'color': 'white'}
 ```
 
 - `sort` on ***hashmap (dict)***
@@ -96,9 +104,7 @@ In [6]:
    ...: print (res)
 [['a1', 'a2', 'a3'], ['b1', 'b2', 'b3']]
 
-
 # LC 049 Group Anagrams
-
 # V0
 # IDEA : HASH TABLE
 class Solution:
@@ -126,7 +132,7 @@ class Solution(object):
         ans = []
         for i, c in enumerate(S):
             ### NOTE : trick here
-            #          -> via below line of code, we can get the max idx of current substring which is "has element only exist in itself"
+            #          -> via below line of code, we can get the max idx of current substring which "has such element in itself"
             #          -> e.g. the index we need to do partition 
             j = max(j, lindex[c])
             print ("i = " + str(i) + "," + " c = " + str(c) + "," +   " j = " + str(j) + "," +  " ans = " + str(ans))
@@ -201,7 +207,6 @@ class Solution:
 ### 2-3) Longest Substring Without Repeating Characters
 ```python
 # LC 003
-
 # V0
 # IDEA : SLIDING WINDOW + DICT
 #       -> use a hash table (d) record visit "alphabet" (e.g. : a,b,c,...)
@@ -237,16 +242,17 @@ class Solution(object):
 # prinme(3) = 1
 # prinme(4) = 2
 # prinme(5) = 3
+# python 3
 class Solution:
     def countPrimes(self, n):
         # using sieve of eretosthenes algorithm
         if n < 2: return 0
-        nonprimes = {}
+        nonprimes = set()
         for i in range(2, round(n**(1/2))+1):
             if i not in nonprimes:
                 for j in range(i*i, n, i):
-                    nonprimes[j] = 1
-        return n - len(nonprimes) - 2
+                    nonprimes.add(j)
+        return n - len(nonprimes) - 2  # remove prinme(1), prime(2)
 ```
 
 ### 2-5) Valid Sudoku
