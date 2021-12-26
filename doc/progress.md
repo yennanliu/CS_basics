@@ -11,7 +11,7 @@
 		- programming
 			- review
 			- (normal order)
-			- 003 (OK, but again !!!!!!!!)
+			- 003 (OK)
 			- (pdf : p.8)
 				- 160 (ok, but again!!!!)
 				- 102 (ok)
