@@ -7,6 +7,11 @@
 
 ### 0-1) Types
 - Interval scheduling
+- Non-overlapping Intervals
+    - intervals.sort(key = lambda x : x[0])
+- Max length
+    - Max length of pair chain
+        - sorted(pairs, key=lambda x : x[1])
 - Sell-buy stock
 
 ### 0-2) Pattern
@@ -54,7 +59,37 @@ public int intervalSchedule(int[][] intvs) {
 
 ### 2-1) Maximum Length of Pair Chain
 ```python
-# 646 Maximum Length of Pair Chain
+# LC 646 Maximum Length of Pair Chain
+# V0 
+# IDEA : GREEDY + sorting
+# ->  we sort on pair's 1st element -> possible cases that we can get sub pairs with max length with the needed conditions
+# ->  we need to find the "max length" of "continous or non-continous" sub pairs (with condition)
+#      -> so start from the "sorted 1st pair" CAN ALWAYS MAKE US GET THE MAX LENGTH of sub pairs with the condition ( we define a pair (c, d) can follow another pair (a, b) if and only if b < c. Chain of pairs can be formed in this fashion.)
+##########
+# DEMO
+#     ...: 
+#     ...: x = [[-10,-8],[8,9],[-5,0],[6,10],[-6,-4],[1,7],[9,10],[-4,7]]
+#     ...: s = Solution()
+#     ...: r = s.findLongestChain(x)
+#     ...: print (r)
+# pairs = [[-10, -8], [-6, -4], [-5, 0], [1, 7], [-4, 7], [8, 9], [6, 10], [9, 10]]
+# x = -10 y = -8
+#  currTime = -8 ans = 1
+# x = -6 y = -4
+#  currTime = -4 ans = 2
+# x = -5 y = 0
+#  currTime = -4 ans = 2
+# x = 1 y = 7
+#  currTime = 7 ans = 3
+# x = -4 y = 7
+#  currTime = 7 ans = 3
+# x = 8 y = 9
+#  currTime = 9 ans = 4
+# x = 6 y = 10
+#  currTime = 9 ans = 4
+# x = 9 y = 10
+#  currTime = 9 ans = 4
+# 4
 class Solution(object):
     def findLongestChain(self, pairs):
         pairs = sorted(pairs, key=lambda x : x[1])
@@ -152,50 +187,4 @@ class Solution(object):
             # Be aware of it : if there is no valid "v", then the while loop will break automatically at this condition (stop = True)
             if stop: break
         return ans[1:] if len(ans[1:]) == len(S) else ''
-```
-
-### 2-7) Maximum Length of Pair Chain
-```python
-# LC 646 Maximum Length of Pair Chain
-# V0 
-# IDEA : GREEDY + sorting
-# ->  we sort on pair's 1st element -> possible cases that we can get sub pairs with max length with the needed conditions
-# ->  we need to find the "max length" of "continous or non-continous" sub pairs (with condition)
-#      -> so start from the "sorted 1st pair" CAN ALWAYS MAKE US GET THE MAX LENGTH of sub pairs with the condition ( we define a pair (c, d) can follow another pair (a, b) if and only if b < c. Chain of pairs can be formed in this fashion.)
-##########
-# DEMO
-#     ...: 
-#     ...: x = [[-10,-8],[8,9],[-5,0],[6,10],[-6,-4],[1,7],[9,10],[-4,7]]
-#     ...: s = Solution()
-#     ...: r = s.findLongestChain(x)
-#     ...: print (r)
-# pairs = [[-10, -8], [-6, -4], [-5, 0], [1, 7], [-4, 7], [8, 9], [6, 10], [9, 10]]
-# x = -10 y = -8
-#  currTime = -8 ans = 1
-# x = -6 y = -4
-#  currTime = -4 ans = 2
-# x = -5 y = 0
-#  currTime = -4 ans = 2
-# x = 1 y = 7
-#  currTime = 7 ans = 3
-# x = -4 y = 7
-#  currTime = 7 ans = 3
-# x = 8 y = 9
-#  currTime = 9 ans = 4
-# x = 6 y = 10
-#  currTime = 9 ans = 4
-# x = 9 y = 10
-#  currTime = 9 ans = 4
-# 4
-class Solution(object):
-    def findLongestChain(self, pairs):
-        pairs = sorted(pairs, key=lambda x : x[1])
-        ### NOTICE HERE
-        currTime, ans = float('-inf'), 0
-        for x, y in pairs:
-            ### NOTICE HERE
-            if currTime < x:
-                currTime = y
-                ans += 1
-        return ans
 ```

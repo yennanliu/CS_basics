@@ -5,6 +5,7 @@
 ### 0-1) Types
 
 - Types
+    - [greedy.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/greedy.md)
 
 - Algorithm
     - index op
