@@ -199,4 +199,22 @@ In [38]: b = "abc123"
 
 In [39]: all ( i == "a" for i in b )
 Out[39]: False
+
+# LC 763. Partition Labels
+class Solution(object):
+    def partitionLabels(self, s):
+        d = {val:idx for idx, val in enumerate(list(s))}
+        #print (d)
+        res = []
+        tmp = set()
+        for idx, val in enumerate(s):
+            """
+            NOTE : below condition
+            """
+            if idx == d[val] and all(idx >= d[t] for t in tmp):
+                res.append(idx+1)
+            else:
+                tmp.add(val)
+        _res = [res[0]] + [ res[i] - res[i-1] for i in range(1, len(res)) ]
+        return _res
 ```

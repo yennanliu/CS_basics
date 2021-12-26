@@ -30,7 +30,29 @@ s consists of lowercase English letters.
 
 """
 
-# V0 
+# V0
+# IDEA : GREEDY
+class Solution(object):
+    def partitionLabels(self, s):
+        d = {val:idx for idx, val in enumerate(list(s))}
+        #print (d)
+        res = []
+        tmp = set()
+        for idx, val in enumerate(s):
+            #print ("idx = " + str(idx) + " tmp = " + str(tmp) + "idx == d[val] = " + str(idx == d[val]))
+            """
+            ### have to fit 2 CONDITIONS so we can split the string
+            # -> 1) the element has "last time exist index" with current index
+            # -> 2) ALL of the elements in cache with "last time exist index" should <= current index
+            """
+            if idx == d[val] and all(idx >= d[t] for t in tmp):
+                res.append(idx+1)
+            else:
+                tmp.add(val)
+        _res = [res[0]] + [ res[i] - res[i-1] for i in range(1, len(res)) ]
+        return _res
+
+# V0'
 # IDEA : GREEDY
 # EXAMPLE :
 # x = "ababcbacadefegdehijhklij"

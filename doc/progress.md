@@ -49,7 +49,7 @@
 			- 435 (not start)
 			- 767 (not start)
 		- hashmap
-			- 763 (not start)
+			- 763 (ok)
 			- 525 (not start)
 			- 523 (not start)
 			- 204 (not start)
