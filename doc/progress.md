@@ -50,7 +50,7 @@
 			- 767 (not start)
 		- hashmap
 			- 763 (ok)
-			- 525 (not start)
+			- 525 (ok, but again!!!)
 			- 523 (not start)
 			- 204 (not start)
 			- 036 (not start)
