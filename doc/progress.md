@@ -53,7 +53,7 @@
 		- Tinder design
 	- algorithm book (labu)
 		- note
-			- 318 - 
+			- 318 - 327
 	- system design book - an insider's guide (GOTOP)
 		- p.44 - p.54
 	- cheatsheet review
