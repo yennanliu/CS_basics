@@ -783,4 +783,11 @@ WHERE (e.DepartmentId,
             max(Salary) AS salary
      FROM Employee GROUP
 BY DepartmentId)
-``` 
+```
+
+### 35. The Best Medium-Hard Data Analyst SQL Interview Questions
+- https://quip.com/2gwZArKuWk7W
+- 1) Self-Join Practice Problems
+  - 1-1) MoM Percent Change 
+- Window Function Practice Problems
+- Other Medium/Hard SQL Practice Problems  
