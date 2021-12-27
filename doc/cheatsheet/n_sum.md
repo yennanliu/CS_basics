@@ -3,10 +3,29 @@
 ## 0) Concept  
 
 ### 0-1) Types
-- 2 sum
-- 3 sum
-- 4 sum
-- N sum
+
+- Types
+    - 2 Sum
+        - 2 Sum
+        - 2 Sum II : array is sorted
+        - 2 Sum III - Data structure design
+        - 2 Sum IV - Input is a BST
+    - 3 Sum
+    - 4 Sum
+    - N Sum
+
+- Algorithm
+    - sorting
+    - 2 pointers
+        - sorting + 2 pointers
+    - hashmap op
+    - array op
+
+- Data structure
+    - dict
+    - set
+    - array
+    - Treenode
 
 ### 0-2) Pattern
 
@@ -27,6 +46,33 @@ class Solution(object):
                 return [lookup[target - num], i]
             lookup[num] = i
         return [-1, -1]
+```
+
+### 2-1') 2 Sum II
+```python
+# LC 167 Two Sum II - Input Array Is Sorted
+# V0
+# IDEA : TWO POINTERS
+#       -> l = 0, r = len(numbers) - 1
+class Solution(object):
+    def twoSum(self, numbers, target):
+        l = 0
+        ### NOTE this
+        r = len(numbers) - 1
+        res = []
+        while r > l:
+            #print ("l, r = {}, {}".format(l, r))
+            tmp = numbers[l] + numbers[r]
+            if tmp == target:
+                return [l+1, r+1]
+            ### NOTE this
+            elif tmp > target:
+                r -= 1
+            ### NOTE this
+            else:
+                l += 1
+        return [-1, -1]
+
 ```
 
 ### 2-2) 3 Sum
