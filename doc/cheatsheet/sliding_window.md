@@ -1,16 +1,46 @@
 # Sliding window 
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%8A%80%E5%B7%A7.md
+- 2 pointers + while loop + boundary condition
+- Find min/max values of sub-set with conditions with given input
 
 ## 0) Concept  
 1. two pointers
 2. while loop
-3. working with conditions on `start` and `end` index
+    - while - while
+    - for - while
+3. boundary conditions op
+    - `start` and `end` index
 
 ### 0-1) Types
 
+- Types
+    - Permutation
+    - Anagrams
+    - Substring
+        - Longest Substring Without Repeating Characters
+        - Longest Repeating Character Replacement
+    - SubArray
+        - Subarray Product Less Than K
+        - Minimum Size Subarray Sum
+
+- Algorithm
+    - sliding window
+    - Counter
+    - defaultdict
+    - 2 pointers
+
+- Data structure
+    - dict
+    - set
+    - array
+    - string
+
 ### 0-2) Pattern
 ```python
-# python pseudo code
+# python
+#-------------------------
+# V1 : while - while
+#-------------------------
 # init
 l = r = 0
 window = []
@@ -23,13 +53,47 @@ while r < len(s):
         window.remove(s[l])
         l += 1
         # do wth
+
+#-------------------------
+# V2 : for - while
+#-------------------------
+# init
+l = r = 0
+window = []
+
+for r in range(len(r)):
+    window.append(s[r])
+    r += 1
+    # do wth
+    while valid:
+        window.remove(s[l])
+        l += 1
+        # do wth
 ```
 
 ```java
 // java
+//-------------------------
+// V1 : while - while
+//-------------------------
 int left = 0, right = 0;
-
 while (right < s.size()) {
+    window.add(s[right]);
+    right++;
+    // NOTE : most of the sliding windonw trick 
+    // is dealing with "valid" conditions
+    // and how to cache some conditions for verfication
+    while (valid) {
+        window.remove(s[left]);
+        left++;
+    }
+}
+
+//-------------------------
+// V2 : for - while
+//-------------------------
+int left = 0, right = 0;
+for (int right; right < s.length() ; right++) {
     window.add(s[right]);
     right++;
     // NOTE : most of the sliding windonw trick 
