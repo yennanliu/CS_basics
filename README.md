@@ -498,7 +498,7 @@
 043| [Multiply Strings](https://leetcode.com/problems/multiply-strings/) | [python](./leetcode_python/String/multiply-strings.py) | _O(m * n)_ | _O(m + n)_  | Medium |`twitter`, `fb`| AGAIN*** (3) 
 058| [Length of Last Word](https://leetcode.com/problems/length-of-last-word/) | [python](./leetcode_python/String/length-of-last-word.py)  | _O(n)_   | _O(1)_  | Easy       || OK 
 067| [Add Binary](https://leetcode.com/problems/add-binary/)    | [python](./leetcode_python/String/add-binary.py)  | _O(n)_  | _O(1)_   | Easy   | `good basic`, `fb`, `amazon`| OK* (5) (but again)
-076| [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)    | [python](./leetcode_python/String/minimum_window_substring.py)  |  |   | Hard   |`blind LC pattern` |  
+076| [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)    | [python](./leetcode_python/String/minimum_window_substring.py)  |  |   | Hard   |`blind LC pattern` | AGAIN* (2) (not start)
 125| [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/) | [python](./leetcode_python/String/valid-palindrome.py) | _O(n)_  | _O(1)_ | Easy|`amazon`,`fb`| OK 
 151| [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/) | [python](./leetcode_python/String/reverse-words-in-a-string.py)  | _O(n)_ | _O(1)_ | Medium |`amazon`,`fb`| OK 
 161| [One Edit Distance](https://leetcode.com/problems/one-edit-distance/) |  [python](./leetcode_python/String/one-edit-distance.py)  | _O(m + n)_ | _O(1)_  | Medium  |🔒, recursion, string,  , `fb`| AGAIN****** (4)(AGAIN)
