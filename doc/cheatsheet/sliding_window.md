@@ -203,3 +203,49 @@ class Solution:
             return 0         
         return minLength
 ```
+
+### 2-6) Longest Repeating Character Replacement
+```python
+# lc 424. Longest Repeating Character Replacement
+# V0
+# IDEA : SLIDING WINDOW + DICT + 2 POINTERS
+from collections import Counter
+class Solution(object):
+    def characterReplacement(self, s, k):
+        table = Counter()
+        res = 0
+        p1 = p2 = 0
+        # below can be either while or for loop
+        while p2 < len(s):
+            table[s[p2]] += 1
+            p2 += 1
+            """
+            ### NOTE : if remain elements > k, means there is no possibility to make this substring as "longest substring containing the same letter"
+               ->  remain elements = p1 - p2 - max(table.values())
+               ->  e.g. if we consider "max(table.values()" as the "repeating character", then "p2 - p1 - max(table.values()" is the count of elements we need to replace
+               ->  so we need to clear "current candidate" for next iteration
+            """
+            while p2 - p1 - max(table.values()) > k:
+                table[s[p1]] -= 1
+                p1 += 1
+            res = max(res, p2 - p1)
+        return res
+    
+# V0'
+from collections import defaultdict
+class Solution:
+    def characterReplacement(self, s, k):
+        cnt = defaultdict(int)
+        maxLen = 0
+        l = 0
+        # below can be either while or for loop
+        for r in range(len(s)):
+            cnt[s[r]] += 1
+            ### NOTE : this condition
+            while r - l + 1 - max(cnt.values()) > k:
+                cnt[s[l]] -= 1
+                l += 1
+            maxLen = max(maxLen, r - l + 1)     
+
+        return maxLen
+```

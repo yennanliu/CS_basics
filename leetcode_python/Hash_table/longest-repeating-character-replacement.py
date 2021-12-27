@@ -30,23 +30,23 @@ s consists of only uppercase English letters.
 """
 
 # V0
-# IDEA : SLIDING WINDOW + DICT
+# IDEA : SLIDING WINDOW + DICT + 2 POINTERS
+from collections import Counter
 class Solution(object):
     def characterReplacement(self, s, k):
-        """
-        :type s: str
-        :type k: int
-        :rtype: int
-        """
-        table = collections.Counter()
+        table = Counter()
         res = 0
         p1 = p2 = 0
+        # below can be either while or for loop
         while p2 < len(s):
             table[s[p2]] += 1
             p2 += 1
-            # NOTE : if remain elements > k, means there is no possibility to make this substring as "longest substring containing the same letter"
-            #       ->  remain elements = p1 - p2 - max(table.values())
-            #       ->  so we need to clean the "potentail candidate" for next iteration
+            """
+            ### NOTE : if remain elements > k, means there is no possibility to make this substring as "longest substring containing the same letter"
+               ->  remain elements = p1 - p2 - max(table.values())
+               ->  e.g. if we consider "max(table.values()" as the "repeating character", then "p2 - p1 - max(table.values()" is the count of elements we need to replace
+               ->  so we need to clear "current candidate" for next iteration
+            """
             while p2 - p1 - max(table.values()) > k:
                 table[s[p1]] -= 1
                 p1 += 1
@@ -56,27 +56,19 @@ class Solution(object):
 # V0'
 from collections import defaultdict
 class Solution:
-    """
-    @param s: a string
-    @param k: a integer
-    @return: return a integer
-    """
     def characterReplacement(self, s, k):
-        # write your code here
-        n = len(s)
-        char2count = defaultdict(int)
-        
+        cnt = defaultdict(int)
         maxLen = 0
-        start = 0
-        for end in range(n):
-            char2count[s[end]] += 1
-            
-            while end - start + 1 - char2count[s[start]] > k:
-                char2count[s[start]] -= 1
-                start += 1
+        l = 0
+        # below can be either while or for loop
+        for r in range(len(s)):
+            cnt[s[r]] += 1
+            ### NOTE : this condition
+            while r - l + 1 - max(cnt.values()) > k:
+                cnt[s[l]] -= 1
+                l += 1
+            maxLen = max(maxLen, r - l + 1)     
 
-            maxLen = max(maxLen, end - start + 1)     
-            
         return maxLen
 
 # V1
@@ -89,11 +81,6 @@ class Solution:
 # -> IF NOT, MOVE LEFT POINT (RIGHT) AND UPDATE char2count
 from collections import defaultdict
 class Solution:
-    """
-    @param s: a string
-    @param k: a integer
-    @return: return a integer
-    """
     def characterReplacement(self, s, k):
         # write your code here
         n = len(s)
@@ -104,7 +91,8 @@ class Solution:
         for end in range(n):
             char2count[s[end]] += 1
             
-            while end - start + 1 - char2count[s[start]] > k:
+            ### NOTE : this condition
+            while end - start + 1 - max(char2count.values()) > k:
                 char2count[s[start]] -= 1
                 start += 1
 
@@ -117,11 +105,6 @@ class Solution:
 # IDEA : SLIDING WINDOW 
 class Solution(object):
     def characterReplacement(self, s, k):
-        """
-        :type s: str
-        :type k: int
-        :rtype: int
-        """
         table = collections.Counter()
         res = 0
         p1 = p2 = 0
@@ -194,6 +177,55 @@ class Solution(object):
                     sp += 1
                     cnt += invs[sp][0] - invs[sp - 1][1] - 1
         return ans
+
+# V1''''
+# https://leetcode.com/problems/longest-repeating-character-replacement/discuss/558076/Python-solution-without-library
+class Solution:
+    def characterReplacement(self, s, k):
+        if k > len(s):
+            return len(s)
+        counter = [0 for _ in range(26)]
+        ans = k
+        deleted = 0
+        for i in range(len(s)):
+            counter[ord(s[i]) - ord('A')] += 1
+            largest = max(counter)
+            if largest + k < i - deleted + 1:           
+                counter[ord(s[deleted]) - ord('A')] -= 1
+                deleted += 1
+            ans = max(ans, i - deleted + 1)
+        return ans
+
+# V1''''
+# https://leetcode.com/problems/longest-repeating-character-replacement/discuss/867755/python-solution
+class Solution:
+    def characterReplacement(self, s, k):        
+        cnt = collections.defaultdict(int)
+        i = 0
+        res = 0
+        for j in range(len(s)):
+            cnt[s[j]] += 1
+            while j - i + 1 - max(cnt.values()) > k:
+                cnt[s[i]] -= 1
+                i += 1
+            res = max(res, j - i + 1)
+        return res
+
+# V1'''''
+# https://leetcode.com/problems/longest-repeating-character-replacement/discuss/535734/Python-two-pointers
+# IDEA : 2 POINTERS
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        seen = [0] * 26
+        len_s = len(s)
+        res, left = 0, 0
+        for right in range(len_s):
+            seen[ord(s[right])-ord('A')] += 1
+            while right - left + 1 - max(seen) > k:
+                seen[ord(s[left])-ord('A')] -= 1
+                left += 1
+            res = max(res, right - left + 1)
+        return res
 
 # V2 
 # Time:  O(n)
