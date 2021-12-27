@@ -47,6 +47,11 @@
 			- 523 (not start)
 			- 204 (not start)
 			- 036 (not start)
+		- heap
+			- 355 (not start)
+			- 703 (not start)
+			- 264 (not start)
+			- 295 (not start)
 		- SQL
 			- (ordering)
 			- 0176
@@ -63,7 +68,8 @@
 		- p.44 - p.54
 	- cheatsheet review
 		- (order) (binary_search.md - linked_list.md)
-		- heap.md (ing)
+		- heap.md (ok)
+		- intervals.md (ing)
 
 # 2021-12-26
 - DOING:

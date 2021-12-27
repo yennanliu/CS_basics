@@ -7,8 +7,8 @@
 ## 0) Concept  
 
 ### 0-1) Types
-    - *priority queue*
-        - 295
+    - `priority queue`
+        - LC 295, 787
 
 ### 0-2) Pattern
 
@@ -40,21 +40,21 @@ def heapsort(iterable):
 
 ### 1-4) Priority Queue
 ```java
+// java
 PriorityQueue pq
 // random insert
 for i in {2,4,1,9,6}:
     pq.add(i)
+
 while pq not empty:
     // every time get the one minimum element
     print(pq.pop())
 
 // the output should be in order (small -> big)
 // 1,2,4,6,9
-
 ```
 ```python
 # 355 Design Twitter
-
 from collections import defaultdict
 from heapq import merge
 class Twitter(object):
@@ -96,6 +96,7 @@ class Twitter(object):
 ### 2-1) Kth Largest Element in a Stream
 ```python
 # 703 Kth Largest Element in a Stream
+import heapq
 class KthLargest(object):
 
     def __init__(self, k, nums):
