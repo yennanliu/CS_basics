@@ -64,6 +64,14 @@
 			- 295 (not start)
 		- SQL
 			- (ordering)
+			- 0185
+			- 0262
+			- 0512
+			- 0534
+			- 0550
+			- 578
+			- 579
+			- 580
 	- Crack Code
 	- System Design
 		- Tinder design
