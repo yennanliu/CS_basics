@@ -79,6 +79,10 @@
 			- 1045
 			- 1076
 			- 1077
+			- 1082 (again)
+			- 1083 (again)
+			- 1084
+			- 1097
 	- Crack Code
 	- System Design
 		- Tinder design
