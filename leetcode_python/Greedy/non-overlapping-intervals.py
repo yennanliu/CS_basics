@@ -34,21 +34,58 @@ intervals[i].length == 2
 """
 
 # V0
-# IDEA : 2 POINTERS
+# IDEA : 2 POINTERS + sorting + intervals
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
         if not intervals: return 0
         intervals.sort(key = lambda x : x[0])
+        #intervals.sort(key = lambda x : [x[0],x[1]])  # this one is OK as well
+        """
+        ### NOTE : last is the "idx" of last element
+                 -> we'll leverage it for overlap intervals removal
+        """
         last = 0
         res = 0
         for i in range(1, len(intervals)):
             if intervals[last][1] > intervals[i][0]:
+                """
+                ### NOTE : if "last" element's "second" element > intervals[i] 's  "second" element
+                         -> we need to use intervals[i] 's index as last index
+                """
                 if intervals[i][1] < intervals[last][1]:
                     last = i
                 res += 1
             else:
                 last = i
         return res
+
+# V0'
+# IDEA : 2 POINTERS + sorting + intervals
+class Solution(object):
+    def eraseOverlapIntervals(self, intervals):
+        cnt = 0
+        if len(intervals) == 0:
+            return 0
+        #intervals.sort(key = lambda x : x[0]) # this one is OK as well
+        intervals.sort(key = lambda x : [x[0],x[1]])
+        ### NOTE : we init last as intervals[0]
+        last = intervals[0]
+        ### NOTE : we start from idx = 1
+        for i in range(1,len(intervals)):
+            #print ("i = " + str(i) + " last = " + str(last) + " intervals[i] = " + str(intervals[i]))
+            if last[1] > intervals[i][0]:
+                """
+                ### NOTE : if "last" element's "second" element > intervals[i] 's  "second" element
+                         -> we need to use intervals[i] 's index as last index
+                """
+                if intervals[i][1] < last[1]:
+                    last[0] = intervals[i][0]
+                    last[1] = intervals[i][1] 
+                cnt += 1
+            else:
+                last[0] = intervals[i][0]
+                last[1] = intervals[i][1]               
+        return cnt
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82728387
