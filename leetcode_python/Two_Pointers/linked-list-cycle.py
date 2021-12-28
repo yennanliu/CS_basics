@@ -44,7 +44,22 @@ Follow up: Can you solve it using O(1) (i.e. constant) memory?
 """
 
 # V0
-# IDEA : 2 pointers + LINKED LIST basics
+# IDEA : fast-slow pointer (2 pointers)
+# https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md
+class Solution(object):
+    def hasCycle(self, head):
+        if not head:
+            return False
+        fast = slow = head:
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                return True
+        return False
+
+# V0'
+# IDEA : fast-slow pointer (2 pointers)
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md
 class Solution:
     def hasCycle(self, head):
