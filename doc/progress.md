@@ -72,6 +72,13 @@
 			- 578
 			- 579
 			- 580
+			- 597
+			- 602
+			- 603 (again!)
+			- 627
+			- 1045
+			- 1076
+			- 1077
 	- Crack Code
 	- System Design
 		- Tinder design

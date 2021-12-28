@@ -54,6 +54,14 @@
 -- Both employees with id 1 and 3 have the most experience among the employees of the first project. For the second project, the employee with id 1 has the most experience.
 
 # V0 
+select project_id, Project.employee_id
+from Project inner join Employee
+on Project.employee_id = Employee.employee_id
+where (project_id, experience_years) in 
+    (select p.project_id as project_id, max(e.xperience_years) as experience_years
+    from Project p inner join Employee e 
+    on p.employee_id = e.employee_id
+    group by p.project_id)
 
 # V1 
 # https://code.dennyzhang.com/project-employees-iii
