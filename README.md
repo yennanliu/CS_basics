@@ -45,7 +45,8 @@
 	- [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
 	- [SQL zoo](https://sqlzoo.net/) - SQL test
 	- [10 SQL Tricks](https://blog.jooq.org/10-sql-tricks-that-you-didnt-think-were-possible/) : 10 SQL Tricks That You Didn’t Think Were Possible
-	- [Zachary Thomas' SQL Questions](https://lnkd.in/g-JJzuD)
+	- [Zachary Thomas' SQL Questions](https://lnkd.in/g-JJzuD) -- The Best Medium-Hard Data Analyst SQL Interview Questions
+		- [pdf](./doc/The-Best-Medium-Hard-Data-Analyst-SQL-Interview-Questions.pdf)
 	- [Select * SQL](https://selectstarsql.com/)
 	- [LinkedIn Learning](https://lnkd.in/gQXFc4n)
 	- [Window Functions](https://lnkd.in/g3RtPCJ)
