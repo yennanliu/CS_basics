@@ -29,6 +29,12 @@ class Solution(object):
         s_list = s_.split(" ")
         return " ".join([ i[::-1] for  i in s_list])
 
+# V0'
+class Solution(object):
+    def reverseWords(self, s):
+        res = "".join(x).split(" ")[::-1]   
+        return list(" ".join(res))
+
 # V1 
 # http://www.voidcn.com/article/p-eggrnnob-zo.html
 class Solution(object):
