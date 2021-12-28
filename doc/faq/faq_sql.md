@@ -844,4 +844,22 @@ WITH mau AS
 
 ```
 - Window Function Practice Problems
-- Other Medium/Hard SQL Practice Problems  
+- Other Medium/Hard SQL Practice Problems
+
+### 36. SQL sort by desc and asc (on different columns)
+```sql
+-- LC 580 Count Student Number in Departments
+# V1
+# https://www.datageekinme.com/general/leetcode/leetcode-sql-580-count-student-number-in-departments/
+select 
+    a.dept_name,
+    coalesce(count(student_id), 0) student_number
+from 
+    department a 
+left join
+    student b
+on 
+    (a.dept_id = b.dept_id)
+group by a.dept_name
+order by student_number desc, a.dept_name asc; --- NOTE this !!!
+```

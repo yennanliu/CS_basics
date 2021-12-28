@@ -47,6 +47,17 @@ Law	0
 */
 
 # V0
+select 
+    a.dept_name,
+    coalesce(count(student_id), 0) student_number
+from 
+    department a 
+left join
+    student b
+on 
+    a.dept_id = b.dept_id
+group by a.dept_name
+order by student_number desc, a.dept_name asc;
 
 # V1
 # https://www.datageekinme.com/general/leetcode/leetcode-sql-580-count-student-number-in-departments/
