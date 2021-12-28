@@ -16,6 +16,8 @@
 				- 167 (ok)
 				- 151 (ok)
 				- 186 (ok)
+				- 78 (ok, but again !!!!!)
+				- 090
 	- ================
 	- LC (amz_, July 2020 - July 2021)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
