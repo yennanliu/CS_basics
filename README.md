@@ -55,6 +55,7 @@
 	- [CodeAcademy](https://lnkd.in/gT5xmpN)
 	- [SQL Bolt](https://sqlbolt.com/)
 	- [self-joins-calculate-retention-churn-and-reactivation-metrics](https://www.sisense.com/blog/use-self-joins-to-calculate-your-retention-churn-and-reactivation-metrics/)
+	- [Prod metric design](https://quip.com/edU3AgdiNOo1)
 
 
 * LC Pattern
