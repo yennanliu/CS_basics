@@ -155,15 +155,13 @@ class Solution:
 # V0
 # https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md
 class Solution:
-    # @param intervals, a list of Interval
-    # @return a list of Interval
     def merge(self, intervals):
-        intervals = sorted(intervals, key=lambda x: x.start)
+        intervals = sorted(intervals, key=lambda x: x[0])
         result = []
         for interval in intervals:
-            if len(result) == 0 or result[-1].end < interval.start:
+            if len(result) == 0 or result[-1][1] < interval[0]:
                 result.append(interval)
             else:
-                result[-1].end = max(result[-1].end, interval.end)
+                result[-1][1] = max(result[-1][1], interval[1])
         return result
 ```

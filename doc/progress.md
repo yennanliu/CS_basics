@@ -43,6 +43,8 @@
 		- quick sort
 		- intervals
 			- 435 (ok, but again!!)
+			- 57 (again !!!)
+			- 56 (again !!!)
 		- design
 			- all remain (not start)
 		- greedy
@@ -72,7 +74,8 @@
 		- p.54 - p.74
 	- cheatsheet review
 		- (order) (binary_search.md - linked_list.md)
-		- intervals.md (ing)
+		- intervals.md (ok)
+		- linked_list.md (ing)
 
 # 2021-12-27
 - DOING:
