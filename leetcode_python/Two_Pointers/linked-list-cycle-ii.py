@@ -58,13 +58,47 @@ class Solution:
         ### NOTE : via below condition check if is a cycle linked list
         if not fast or not fast.next:
             return
-        ### NOTE : re-init slow as head (from starting point)
+        """
+        ### NOTE : re-init slow or fast as head (from starting point)
+        -> can init slow or head
+        """
         slow = head
+        #fast = head 
+        """
         ### NOTE : check while slow != fast
+        ### NOTE : use the same speed
+        """
         while slow != fast:
             fast = fast.next
             slow = slow.next
         return slow
+
+# V0'
+# IDEA : SET
+class Solution(object):
+    def detectCycle(self, head):
+        if not head or not head.next:
+            return
+        s = set()
+        while head:
+            s.add(head)
+            head = head.next
+            if head in s:
+                return head
+        return
+
+# V0'
+# IDEA : SET
+class Solution(object):
+    def detectCycle(self, head):
+        if not head: return None
+        visited = set()
+        while head:
+            if head in visited:
+                return head
+            visited.add(head)
+            head = head.next
+        return None
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79530638
