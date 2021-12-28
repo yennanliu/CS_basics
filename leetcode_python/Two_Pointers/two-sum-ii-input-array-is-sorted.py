@@ -86,16 +86,20 @@ class Solution(object):
 # IDEA : BINARY SEARCH 
 class Solution(object):
     def twoSum(self, numbers, target):
+        ### NOTE : we still need loop on numbers
         for i in range(len(numbers)):
             l, r = i+1, len(numbers)-1
+            ### NOTE : we still need tmp = target - numbers[i] 
             tmp = target - numbers[i]
             while l <= r:
                 mid = l + (r-l)//2
                 if numbers[mid] == tmp:
                     return [i+1, mid+1]
                 elif numbers[mid] < tmp:
+                    ### binary search pattern
                     l = mid+1
                 else:
+                    ### binary search pattern
                     r = mid-1
                     
 # V1 
