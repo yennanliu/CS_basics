@@ -16,6 +16,14 @@
 				- 535 (ok, but again)
 			- (pdf : p.10)
 				- 529 (not start)
+		- ==========
+			- fast review (inverse order)
+			- 642 (again)
+			- 460 (again)
+			- 0380 (ok)
+			- 355 (again)
+			- 0146 (again)
+
 	- ================
 	- LC (amz_, July 2020 - July 2021)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
