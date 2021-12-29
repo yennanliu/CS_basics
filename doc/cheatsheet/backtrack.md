@@ -473,3 +473,28 @@ class Solution(object):
             if str(number) == s[:i] and number <= 255:
                 self.dfs(s[i:], path + [s[:i]], res)
 ```
+
+### 2-10) Generate Parentheses
+```python
+# LC 22 Generate Parentheses
+# V0'
+# https://blog.csdn.net/fuxuemingzhu/article/details/79362373
+# IDEA: BACKTRACKING + DFS 
+# NOTE : KEEP DFS WHEN MEAT 2 CONDTIONS:
+#  1) len(path) < n 
+#  2) # of "("  > # of ")" (means it's still possible to form a "paratheses" as expected)
+class Solution(object):
+    def generateParenthesis(self, n):
+        res = []
+        self.dfs(res, n, n, '')
+        return res
+        
+    def dfs(self, res, left, right, path):
+        if left == 0 and right == 0:
+            res.append(path)
+            return
+        if left > 0:
+            self.dfs(res, left - 1, right, path + '(')
+        if left < right:
+            self.dfs(res, left, right - 1, path + ')')
+```

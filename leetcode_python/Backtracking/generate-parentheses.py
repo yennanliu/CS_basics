@@ -1,3 +1,28 @@
+"""
+
+22. Generate Parentheses
+Medium
+
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+ 
+
+Example 1:
+
+Input: n = 3
+Output: ["((()))","(()())","(())()","()(())","()()()"]
+Example 2:
+
+Input: n = 1
+Output: ["()"]
+ 
+
+Constraints:
+
+1 <= n <= 8
+
+"""
+
 # V0
 
 # V0'
@@ -22,6 +47,7 @@ class Solution(object):
             self.dfs(res, left, right - 1, path + ')')
 
 # V1 
+# IDEA : DFS
 # https://blog.csdn.net/nxhyd/article/details/72514987
 # https://blog.csdn.net/fuxuemingzhu/article/details/79362373
 class Solution(object):
@@ -44,6 +70,69 @@ class Solution(object):
             self.dfs(res, left, right - 1, path + ')')
 
 # V1'
+# BRUTE FORCE
+# https://leetcode.com/problems/generate-parentheses/solution/
+class Solution(object):
+    def generateParenthesis(self, n):
+        def generate(A = []):
+            if len(A) == 2*n:
+                if valid(A):
+                    ans.append("".join(A))
+            else:
+                A.append('(')
+                generate(A)
+                A.pop()
+                A.append(')')
+                generate(A)
+                A.pop()
+
+        def valid(A):
+            bal = 0
+            for c in A:
+                if c == '(': bal += 1
+                else: bal -= 1
+                if bal < 0: return False
+            return bal == 0
+
+        ans = []
+        generate()
+        return ans
+
+# V1''
+# https://leetcode.com/problems/generate-parentheses/solution/
+# BRACKTRACKING
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        ans = []
+        def backtrack(S = [], left = 0, right = 0):
+            if len(S) == 2 * n:
+                ans.append("".join(S))
+                return
+            if left < n:
+                S.append("(")
+                backtrack(S, left+1, right)
+                S.pop()
+            if right < left:
+                S.append(")")
+                backtrack(S, left, right+1)
+                S.pop()
+        backtrack()
+        return ans
+
+# V1'''
+# https://leetcode.com/problems/generate-parentheses/solution/
+# Closure Number
+class Solution(object):
+    def generateParenthesis(self, N):
+        if N == 0: return ['']
+        ans = []
+        for c in xrange(N):
+            for left in self.generateParenthesis(c):
+                for right in self.generateParenthesis(N-1-c):
+                    ans.append('({}){}'.format(left, right))
+        return ans
+
+# V1'''''
 # https://blog.csdn.net/nxhyd/article/details/72514987
 class Solution(object):
     def generateParenthesis(self, n):
@@ -59,7 +148,7 @@ class Solution(object):
                 for q in generate(p + ')', left, right - 1) : yield q
         return list(generate('', n, n))
 
-# V1''
+# V1''''''
 # https://blog.csdn.net/nxhyd/article/details/72514987
 class Solution(object):
     def deep(self,tot,ln,rn,strs,lis):
@@ -79,7 +168,7 @@ class Solution(object):
         self.deep(n,0,0,'',lis)
         return lis
 
-# V1'''
+# V1''''''
 # https://blog.csdn.net/nxhyd/article/details/72514987
 class Solution(object):
     def generateParenthesis(self, n):
