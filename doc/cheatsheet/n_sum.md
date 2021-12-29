@@ -82,6 +82,40 @@ class Solution(object):
 # IDEA : 2 SUM -> 3 SUM
 class Solution(object):
     def threeSum(self, nums):
+        if not nums or len(nums) <= 2:
+            return []
+        res = []
+        # optimize, not necessary
+        nums.sort()
+        # loop over i
+        for i in range(len(nums)):
+            """
+            2 sum
+            """
+            d = {}
+            """
+            NOTE !!! here we loop over range(i+1, len(nums))
+            #   -> since we need non duplicated results
+            """
+            for j in range(i+1, len(nums)):
+                """
+                NOTE : nums[i] + nums[j] + nums[k] = 0
+                #    -> so - (nums[i] + nums[j]) = nums[k]
+                #    -> and we are trying to find if such k already in the dict
+                """
+                if -(nums[i] + nums[j]) in d:
+                    tmp = [nums[i]] + [nums[j], -(nums[i]+nums[j])]
+                    tmp.sort()
+                    if tmp not in res:
+                        res.append(tmp)
+                else:
+                    d[nums[j]] = j
+        return res
+
+# V0'
+# IDEA : 2 SUM -> 3 SUM
+class Solution(object):
+    def threeSum(self, nums):
         res = []
         if not nums or len(nums) <= 2:
             return res

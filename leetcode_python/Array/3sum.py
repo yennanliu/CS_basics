@@ -49,6 +49,40 @@ Constraints:
 # IDEA : 2 SUM -> 3 SUM
 class Solution(object):
     def threeSum(self, nums):
+        if not nums or len(nums) <= 2:
+            return []
+        res = []
+        # optimize, not necessary
+        nums.sort()
+        # loop over i
+        for i in range(len(nums)):
+            """
+            2 sum
+            """
+            d = {}
+            """
+            NOTE !!! here we loop over range(i+1, len(nums))
+            #   -> since we need non duplicated results
+            """
+            for j in range(i+1, len(nums)):
+                """
+                NOTE : nums[i] + nums[j] + nums[k] = 0
+                #    -> so - (nums[i] + nums[j]) = nums[k]
+                #    -> and we are trying to find if such k already in the dict
+                """
+                if -(nums[i] + nums[j]) in d:
+                    tmp = [nums[i]] + [nums[j], -(nums[i]+nums[j])]
+                    tmp.sort()
+                    if tmp not in res:
+                        res.append(tmp)
+                else:
+                    d[nums[j]] = j
+        return res
+
+# V0'
+# IDEA : 2 SUM -> 3 SUM
+class Solution(object):
+    def threeSum(self, nums):
         res = []
         if not nums or len(nums) <= 2:
             return res
@@ -69,7 +103,39 @@ class Solution(object):
                 d[nums[j]] = j
         return res
 
-# V0 
+# V0
+# BELOW WILL CAUSE "TIME OUT ERROR"
+# due to 
+#  -> _nums = nums[:i] + nums[i+1:]
+#  -> for j in range(len(_nums))
+# class Solution(object):
+#     def threeSum(self, nums):
+#         if not nums or len(nums) <= 2:
+#             return []
+#         res = []
+#         nums.sort()
+#         # loop over i
+#         for i in range(len(nums)):
+#             #print("i = " + str(i))
+#             # updated nums
+#             _nums = nums[:i] + nums[i+1:]
+#             # 2 sum
+#             d = {}
+#             for j in range(len(_nums)):
+#                 #print("j = " + str(j))
+#                 if -(nums[i]+_nums[j]) in d:
+#                     #return [i, d[target-_nums[i]]]
+#                     #tmp = [i] + [j, d[-nums[i]]]
+#                     tmp = [nums[i]] + [_nums[j], -(nums[i]+_nums[j])]
+#                     tmp.sort()
+#                     if tmp not in res:
+#                         res.append(tmp)
+#
+#                 else:
+#                     d[_nums[j]] = j
+#         return res
+
+# V0''
 class Solution:
     """
     @param numbersbers : Give an array numbersbers of n integer
