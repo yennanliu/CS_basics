@@ -66,7 +66,7 @@
 		- p.74 - p.95
 	- cheatsheet review
 		- (order) (binary_search.md - linked_list.md)
-		- linked_list.md (ing)
+		- linked_list.md (ok)
 
 # 2021-12-28
 - DOING:

@@ -45,6 +45,18 @@ node2.next = node3;
 - Linked list
 - Cycle linked list
 - Bi-direction linked list
+- Others
+    - LC 138 : 
+    ```python
+    dic = dict()
+    m = n = head
+    dic[m] = Node(m.val)
+    ```
+    - LC 208 : 
+    - [trie](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/trie.md)
+    ```python
+    self.children = defaultdict(Node)
+    ```
 
 ### 0-2) Pattern
 
