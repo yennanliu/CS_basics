@@ -14,6 +14,8 @@
 				- 090 (not start)
 				- 015 (ok, but again)
 				- 535 (ok, but again)
+			- (pdf : p.10)
+				- 529 (not start)
 	- ================
 	- LC (amz_, July 2020 - July 2021)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
@@ -58,6 +60,14 @@
 			- 295 (not start)
 		- SQL
 			- (ordering)
+			- 1098
+			- 1112
+			- 1126
+			- 1127
+			- 1132 (ok, but again)
+			- 1141
+			- 1158
+			- 1159
 	- Crack Code
 	- System Design
 		- Tinder design
@@ -67,7 +77,7 @@
 	- system design book - an insider's guide (GOTOP)
 		- p.74 - p.95
 	- cheatsheet review
-		- (order) (binary_search.md - linked_list.md)
+		- (order) (binary_search.md - linked_list.md) -> completed
 		- linked_list.md (ok)
 
 # 2021-12-28
