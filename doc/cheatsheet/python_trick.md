@@ -218,3 +218,24 @@ class Solution(object):
         _res = [res[0]] + [ res[i] - res[i-1] for i in range(1, len(res)) ]
         return _res
 ```
+
+### 1-10) `not` logic
+```python
+#----------------------------
+# can be either None, [], ""
+#----------------------------
+In [32]: x = None
+
+In [34]: not x
+Out[34]: True
+
+In [35]: y = []
+
+In [36]: not y
+Out[36]: True
+
+In [37]: z = ""
+
+In [38]: not z
+Out[38]: True
+```
