@@ -66,9 +66,17 @@ class Codec:
         return False
 
 # V0
+# In [27]: import string
+#
+# In [28]: string.ascii_letters
+# Out[28]: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+#
+# In [29]: string.digits
+# Out[29]: '0123456789'
 class Codec:
     import string
-    letters = string.ascii_letters + string.digits
+    #letters = string.ascii_letters + string.digits
+    letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' + '0123456789'
     full_tiny = {}
     tiny_full = {}
     global_counter = 0
