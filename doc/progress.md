@@ -18,7 +18,7 @@
 				- 529 (not start)
 		- ==========
 			- fast review (inverse order)
-			- design, greedy
+			- --> design, greedy
 			- 642 (again)
 			- 460 (again)
 			- 0380 (ok)
@@ -29,7 +29,7 @@
 			- 646
 			- 055 (again)
 			- 011 (again !!)
-			- backtracking
+			- --> backtracking
 			- 131 (again!)
 			- 093 (again!)
 			- 079 (again)
@@ -40,6 +40,11 @@
 			- 785 (not start)
 			- 733 (again)
 			- 695
+			- 694 (again)
+			- 257 (again !)
+			- 113 (again)
+			- 112 (again)
+			- --> Breadth-First-Search
 
 	- ================
 	- LC (amz_, July 2020 - July 2021)

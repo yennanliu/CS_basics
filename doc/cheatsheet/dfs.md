@@ -571,5 +571,138 @@ class Solution(object):
         return res
 ```
 
+
+### 2-13) Max Area of Island
+```python
+# LC 695. Max Area of Island
+# V1
+# https://blog.csdn.net/fuxuemingzhu/article/details/79182435
+# IDEA : DFS 
+# * PLEASE NOTE THAT IT IS NEEDED TO GO THROUGH EVERY ELEMENT IN THE GRID 
+#   AND RUN THE DFS WITH IN THIS PROBLEM
+class Solution(object):
+    def maxAreaOfIsland(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        self.res = 0
+        self.island = 0
+        M, N = len(grid), len(grid[0])
+        for i in range(M):
+            for j in range(N):
+                if grid[i][j]:
+                    self.dfs(grid, i, j)
+                    self.res = max(self.res, self.island)
+                    self.island = 0
+        return self.res
+    
+    def dfs(self, grid, i, j): # ensure grid[i][j] == 1
+        M, N = len(grid), len(grid[0])
+        grid[i][j] = 0
+        self.island += 1
+        dirs = [(0, 1), (0, -1), (-1, 0), (1, 0)]
+        for d in dirs:
+            x, y = i + d[0], j + d[1]
+            if 0 <= x < M and 0 <= y < N and grid[x][y]:
+                self.dfs(grid, x, y)
+```
+
+### 2-14) Binary Tree Paths
+```python
+# LC 257. Binary Tree Paths
+# V0 
+# IDEA : DFS 
+class Solution:
+    # @param {TreeNode} root
+    # @return {string[]}
+    def binaryTreePaths(self, root):
+        res, path_list = [], []
+        self.dfs(root, path_list, res)
+        return res
+
+    def dfs(self, root, path_list, res):
+        if not root:
+            return
+        path_list.append(str(root.val))
+        if not root.left and not root.right:
+            res.append('->'.join(path_list))
+        if root.left:
+            self.dfs(root.left, path_list, res)
+        if root.right:
+            self.dfs(root.right, path_list, res)
+        path_list.pop()
+```
+
+### 2-15) Lowest Common Ancestor of a Binary Tree
+```python
+# LC 236 Lowest Common Ancestor of a Binary Tree
+# V0
+# IDEA : RECURSION + POST ORDER TRANSVERSAL
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+
+        ### NOTE here
+        # if not root or find p in tree or find q in tree
+        # -> then we quit the recursion and return root
+
+        ### NOTE : we compare `p == root` and  `q == root`
+        if not root or p == root or q == root:
+            return root
+        ### NOTE here
+        #  -> not root.left, root.right, BUT left, right
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+
+        ### NOTE here
+        # find q and p on the same time -> LCA is the current node (root)
+        # if left and right -> p, q MUST in left, right sub tree respectively
+
+        ### NOTE : if left and right, means this root is OK for next recursive
+        if left and right:
+            return root
+        ### NOTE here
+        # if p, q both in left sub tree or both in right sub tree
+        return left if left else right
+```
+
+### 2-16) Path Sum
+```python
+# LC 112 Path Sum
+# V0
+# IDEA : DFS 
+class Solution(object):
+    def hasPathSum(self, root, sum):
+        if not root:
+            return False
+        if not root.left and not root.right:
+            return True if sum == root.val else False
+        else:
+            return self.hasPathSum(root.left, sum-root.val) or self.hasPathSum(root.right, sum-root.val)
+```
+
+### 2-17) Path Sum II
+```python
+# LC 113 Path Sum II
+# V0
+# IDEA : DFS
+class Solution(object):
+    def pathSum(self, root, sum):
+        if not root: return []
+        res = []
+        self.dfs(root, sum, res, [root.val])
+        return res
+
+    def dfs(self, root, target, res, path):
+        if not root: return
+        if sum(path) == target and not root.left and not root.right:
+            res.append(path)
+            return
+        if root.left:
+            self.dfs(root.left, target, res, path + [root.left.val])
+        if root.right:
+            self.dfs(root.right, target, res, path + [root.right.val])
+```
+
 ### Ref
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E6%93%8D%E4%BD%9C%E9%9B%86%E9%94%A6.md

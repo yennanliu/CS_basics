@@ -817,8 +817,8 @@
 ## Depth-First Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag     | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-112| [Path Sum](https://leetcode.com/problems/path-sum/) | [Python](./leetcode_python/Depth-First-Search/path-sum.py), [Scala](./leetcode_scala/Depth-First-Search/path-sum.scala)   | _O(n)_ | _O(h)_  | Easy  | `good concept`, `amazon`| OK*
-113| [Path Sum II](https://leetcode.com/problems/path-sum-ii/)   | [Python](./leetcode_python/Depth-First-Search/path-sum-ii.py) | _O(n)_  | _O(h)_ | Medium  | similar as `112 Path Sum`,`good basic`, `amazon`, `fb`| AGAIN**** (4)
+112| [Path Sum](https://leetcode.com/problems/path-sum/) | [Python](./leetcode_python/Depth-First-Search/path-sum.py), [Scala](./leetcode_scala/Depth-First-Search/path-sum.scala)   | _O(n)_ | _O(h)_  | Easy  | `good concept`, `amazon`, dfs| OK** (2)
+113| [Path Sum II](https://leetcode.com/problems/path-sum-ii/)   | [Python](./leetcode_python/Depth-First-Search/path-sum-ii.py) | _O(n)_  | _O(h)_ | Medium  | dfs, LC `112 Path Sum`,`good basic`, `amazon`, `fb`| AGAIN****** (5)
 128| [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)   | [Python](./leetcode_python/Depth-First-Search/longest-consecutive-sequence.py) ||  | Blind Top 75 LC pattern |  AGAIN (1)
 199| [Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view/) | [Python](./leetcode_python/Depth-First-Search/binary-tree-right-side-view.py) | _O(n)_     | _O(h)_ | Medium  |`good basic`, `dfs`, `bfs`,`apple`,`amazon`, `fb`| OK*** (4) 
 200| [Number of Islands](https://leetcode.com/problems/number-of-islands/) | [Python](./leetcode_python/Depth-First-Search/number-of-islands.py) | _O(m * n)_ | _O(m * n)_| Medium |`bfs`, `dfs`,`good basic`,check `# 694, 711 Number of Distinct Islands`,`apple`, `Goldman Sachs`,`google`,`amazon`,`fb`| OK****** (6)
