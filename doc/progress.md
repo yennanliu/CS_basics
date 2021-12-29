@@ -18,11 +18,18 @@
 				- 529 (not start)
 		- ==========
 			- fast review (inverse order)
+			- # design, greedy
 			- 642 (again)
 			- 460 (again)
 			- 0380 (ok)
 			- 355 (again)
 			- 0146 (again)
+			- 767 (again)
+			- 738
+			- 646
+			- 055 (again)
+			- 011 (again !!)
+
 
 	- ================
 	- LC (amz_, July 2020 - July 2021)
