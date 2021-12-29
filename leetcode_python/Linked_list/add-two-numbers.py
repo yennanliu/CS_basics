@@ -37,8 +37,8 @@ class Solution(object):
     def addTwoNumbers(self, l1, l2):
         """
         NOTE :
-         1. we init linedlist via ListNode()
-         2. we NEED make extra head refer same linedlist, since we need to return beginning of linkedlust of this func, while res will meet "tail" at the end of while loop
+         1. we init linkedlist via ListNode()
+         2. we NEED make extra head refer same linkedlist, since we need to return beginning of linkedlust of this func, while res will meet "tail" at the end of while loop
         """
         head = res = ListNode()
         plus = 0
