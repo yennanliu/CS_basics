@@ -165,3 +165,19 @@ class Solution:
                 result[-1][1] = max(result[-1][1], interval[1])
         return result
 ```
+
+### 2-5) Maximum Length of Pair Chain
+```python
+# LC 646 Maximum Length of Pair Chain
+class Solution(object):
+    def findLongestChain(self, pairs):
+        pairs = sorted(pairs, key=lambda x : x[1])
+        ### NOTICE HERE
+        currTime, ans = float('-inf'), 0
+        for x, y in pairs:
+            ### NOTICE HERE
+            if currTime < x:
+                currTime = y
+                ans += 1
+        return ans
+```

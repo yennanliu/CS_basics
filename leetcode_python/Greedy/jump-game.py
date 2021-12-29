@@ -1,3 +1,33 @@
+"""
+
+55. Jump Game
+Medium
+
+You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
+
+Return true if you can reach the last index, or false otherwise.
+
+ 
+
+Example 1:
+
+Input: nums = [2,3,1,1,4]
+Output: true
+Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.
+Example 2:
+
+Input: nums = [3,2,1,0,4]
+Output: false
+Explanation: You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.
+ 
+
+Constraints:
+
+1 <= nums.length <= 104
+0 <= nums[i] <= 105
+
+"""
+
 # V0 
 class Solution(object):
     def canJump(self, nums):
@@ -19,7 +49,7 @@ class Solution(object):
 # -> 2) ONLY FOCUS ON THE INDEX REACHED BY "MAX JUMP", SINCE ALL INDEX WITHIN "MAX REACH" CAN ALSO BE REACHED
 
 # TO CHECK :  DP VS GREEDY 
-# DEMO :
+# DEMO 1):
 # In [9]: nums=[2,3,1,1,4]
 #    ...: 
 #    ...: s=Solution()
@@ -32,18 +62,26 @@ class Solution(object):
 # 3 1 4
 # 4 4 4
 # True
+#
+# DEMO 2):
+#     ...: nums = [3,2,1,0,4]
+#     ...:
+#     ...: s = Solution()
+#     ...: r = s.canJump(nums)
+#     ...: print (r)
+# i = 0 num = 3 reach = 0
+# i = 1 num = 2 reach = 3
+# i = 2 num = 1 reach = 3
+# i = 3 num = 0 reach = 3
+# False
 class Solution(object):
     def canJump(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: bool
-        """
         reach = 0
         for i, num in enumerate(nums):
             # DON'T HAVE TO CARE PRIOR STEP, 
             # -> IMAGE EACH INDEX IS REACHABLE FIRST, 
             # -> THEN VALIDATE IF IT'S POSSBILE FROM PRIOR STEP TO THIS INDEX 
-            # so if i > reach, means it's not possbile form prior step to this index -> return false
+            # so if i > reach, means it's not possbile form prior step to reach this index -> return false
             if i > reach:
                 return False
             reach = max(reach, i + num)
