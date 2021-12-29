@@ -412,3 +412,64 @@ void backtrack(int left, int right, string& track, vector<string> & res){
     track.push_back(); // undo choice
 }
 ```
+### 2-8) Palindrome Partitioning
+```python
+# LC 131 Palindrome Partitioning
+# V0
+# IDEA : BACKTRCK, similar as LC 046 permutations
+class Solution(object):
+    def partition(self, s):
+        res = []
+        self.helper(s, res, [])
+        return res
+        
+    def helper(self, s, res, path):
+        if not s:
+            res.append(path)
+            return
+        # beware of the start and the end index
+        for i in range(1, len(s) + 1): 
+            if self.isPalindrome(s[:i]):
+                """
+                ### backtrcking 
+                if s[:i] is palindrome, then check if there is palindrome in s[i:] as well
+                e.g.  
+                    a a b b a 
+                  => 
+                    if 'aa' (<-) is palindrome, then check a b b a (->)
+                """
+                self.helper(s[i:], res, path + [s[:i]])
+
+    def isPalindrome(self, x):
+        return x == x[::-1]
+```
+
+### 2-9) Restore IP Addresses
+```python
+# 093 Restore IP Addresses
+# V0 
+# IDEA : DFS
+class Solution(object):
+    def restoreIpAddresses(self, s):
+        # if not valid input form (ip address length should < 12)
+        if len(s) > 12:
+            return []
+        res = []
+        self.dfs(s, [], res)
+        return res
+        
+    def dfs(self, s, path, res):
+        # if not remaining elments (not s) and path is in "xxx.xxx.xxx.xxx" form
+        if not s and len(path) == 4:
+            res.append('.'.join(path))
+            return
+        for i in [1,2,3]:
+            # avoid "out of index" error
+            if i > len(s):
+                continue
+            number = int(s[:i])
+            # str(number) == s[:i] for checking if digit is not starting from "0"
+            # e.g. 030 is not accepted form, while 30 is OK
+            if str(number) == s[:i] and number <= 255:
+                self.dfs(s[i:], path + [s[:i]], res)
+```
