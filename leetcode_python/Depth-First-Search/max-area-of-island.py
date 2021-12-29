@@ -1,4 +1,68 @@
+"""
+
+695. Max Area of Island
+Medium
+
+
+You are given an m x n binary matrix grid. An island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
+
+The area of an island is the number of cells with a value 1 in the island.
+
+Return the maximum area of an island in grid. If there is no island, return 0.
+
+ 
+
+Example 1:
+
+
+Input: grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]
+Output: 6
+Explanation: The answer is not 11, because the island must be connected 4-directionally.
+Example 2:
+
+Input: grid = [[0,0,0,0,0,0,0,0]]
+Output: 0
+ 
+
+Constraints:
+
+m == grid.length
+n == grid[i].length
+1 <= m, n <= 50
+grid[i][j] is either 0 or 1.
+
+"""
+
 # V0 
+# IDEA : DFS 
+# * PLEASE NOTE THAT IT IS NEEDED TO GO THROUGH EVERY ELEMENT IN THE GRID 
+#   AND RUN THE DFS WITH IN THIS PROBLEM
+class Solution(object):
+    def maxAreaOfIsland(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        self.res = 0
+        self.island = 0
+        M, N = len(grid), len(grid[0])
+        for i in range(M):
+            for j in range(N):
+                if grid[i][j]:
+                    self.dfs(grid, i, j)
+                    self.res = max(self.res, self.island)
+                    self.island = 0
+        return self.res
+    
+    def dfs(self, grid, i, j): # ensure grid[i][j] == 1
+        M, N = len(grid), len(grid[0])
+        grid[i][j] = 0
+        self.island += 1
+        dirs = [(0, 1), (0, -1), (-1, 0), (1, 0)]
+        for d in dirs:
+            x, y = i + d[0], j + d[1]
+            if 0 <= x < M and 0 <= y < N and grid[x][y]:
+                self.dfs(grid, x, y)
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79182435
