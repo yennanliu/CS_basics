@@ -5,6 +5,15 @@
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/k%E4%B8%AA%E4%B8%80%E7%BB%84%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8.md
 - https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/%E5%88%A4%E6%96%AD%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8.md
 
+```python
+# python
+# Definition for singly-linked list.
+class ListNode(object):
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+```
+
 ```java
 // java
 class ListNode {
@@ -65,9 +74,9 @@ class LinkedList:
   # A Linked List class with a single head node
   """
   def __init__(self):  
-    self.head = None
+    self.head = Node()
 
-  def get_LL_length(self):
+  def get_length(self):
     """
     # get list length method for the linked list
     i.e. 
@@ -81,7 +90,7 @@ class LinkedList:
         length += 1 
     return length
 
-  def get_LL_tail(self):
+  def get_tail(self):
     """
     # get list tail method for the linked list
     i.e. 
@@ -93,7 +102,7 @@ class LinkedList:
         current = current.next
     return current
 
-  def printLL(self):
+  def print(self):
     """
     # print method for the linked list
     i.e. 
@@ -152,9 +161,9 @@ class LinkedList:
          after  :  1 -> 2 -> 3 -> 4
     """
     current = self.head
-    ll_length = self.get_LL_length()
+    ll_length = self.get_length()
 
-    if idx < 0 or idx > self.get_LL_length():
+    if idx < 0 or idx > self.get_length():
       print ("idx out of linkedlist range, idx : {}".format(idx))
       return
     elif idx == 0:
@@ -185,13 +194,13 @@ class LinkedList:
        remove(0) 
        after  : 2 -> 3
     """
-    if idx < 0 or idx > self.get_LL_length():
+    if idx < 0 or idx > self.get_length():
         print ("idx out of linkedlist range, idx : {}".format(idx))
         return 
     elif idx == 0:
         current = self.head
         self.head = current.next
-    elif idx == self.get_LL_length():
+    elif idx == self.get_length():
         current = self.head
         cur_idx = 0
         while cur_idx < idx -1:
@@ -233,7 +242,7 @@ class LinkedList:
 
 #### 1-1-2) plus one on linked list
 
-#### 1-1-3) Reverse linked list (iteration, recursion)
+#### 1-1-3) Reverse linked list (recursion)
 ```java
 // java
 //---------------------------
@@ -253,6 +262,7 @@ ListNode reverse(ListNode head){
 }
 ```
 
+#### 1-1-4) Reverse linked list (iteration)
 ```python
 # python
 #-------------------------
@@ -263,6 +273,8 @@ ListNode reverse(ListNode head){
 # IDEA : Linkedlist basics
 class Solution:
     def reverseList(self, head):
+        if not head:
+            return head
         ### NOTE : we define _prev, _cur first
         _prev = None
         _cur = head
@@ -275,11 +287,9 @@ class Solution:
             ### STEP 3) assign _cur to _prev (make _prev as _cur)
             _prev = _cur
             ### STEP 4) assign _next to _cur (make _cur as _next)
-            _cur = _next
-        ### STEP 5) assign head as _prev (make head as _prev -> make head as the "inverse" head)
-        head = _prev 
+            _cur = _next 
         # return the head
-        return head
+        return _prev
         #return _prev # this one works as well
 
 # V0'
@@ -303,7 +313,6 @@ class Solution(object):
         return prev
 ```
 
-#### 1-1-4) Reverse *first N*  linked list (iteration)
 ```java
 // java
 //---------------------------
@@ -329,7 +338,6 @@ ListNode reverse(ListNode a){
 }
 ```
 
-
 #### 1-1-5) Reverse *nodes in [a,b]*  linked list (iteration)
 ```java
 // java
@@ -342,7 +350,7 @@ ListNode reverse(ListNode a, Listnode b){
     pre = null;
     cur = a;
     nxt = a;
-    /** THE ONLY DIFFERENCE (reverse first N nodes VS reverse nodes in [a,b]) */
+    /** THE ONLY DIFFERENCE (reverse nodes VS reverse nodes in [a,b]) */
     while (cur != b){
         nxt = cur.next;
         // reverse on each node
@@ -384,7 +392,7 @@ ListNode reverse(ListNode a, Listnode b){
     return pre;
 }
 
-ListNode reverseGroup(ListNode head, int k){
+ListNode reverseKGroup(ListNode head, int k){
     if (head == null) return null;
     // inverval [a,b] has k to-reverse elements
     ListNode a, b;
@@ -397,7 +405,7 @@ ListNode reverseGroup(ListNode head, int k){
     // reverse k elements
     ListNode newHead = reverse(a,b);
     // reverse remaining nodes, and connect with head
-    a.next = reverseGroup(b,k);
+    a.next = reverseKGroup(b,k);
     return newHead;
 }
 ```
@@ -505,8 +513,8 @@ class Solution(object):
     def addTwoNumbers(self, l1, l2):
         """
         NOTE :
-         1. we init linedlist via ListNode()
-         2. we NEED make extra head refer same linedlist, since we need to return beginning of linkedlust of this func, while res will meet "tail" at the end of while loop
+         1. we init linkedlist via ListNode()
+         2. we NEED make extra head refer same linkedlist, since we need to return beginning of linkedlust of this func, while res will meet "tail" at the end of while loop
         """
         head = res = ListNode()
         plus = 0

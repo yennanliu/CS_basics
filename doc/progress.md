@@ -163,6 +163,7 @@
 		- (order) (binary_search.md - linked_list.md)
 		- intervals.md (ok)
 		- linked_list.md (ing)
+			- 1-1-11) add 2 linked list
 
 # 2021-12-27
 - DOING:
