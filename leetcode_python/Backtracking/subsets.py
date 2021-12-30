@@ -61,6 +61,27 @@ class Solution(object):
         return res
 
 # V0'
+# brack tracking
+class Solution(object):
+    def subsets(self, nums):
+        def help(start, tmp, res):
+            tmp.sort()
+            if tmp not in res:
+                res.append(tmp)
+            for i in range(start, len(nums)):
+                if nums[i] not in tmp:
+                    help(start+1, tmp + [nums[i]], res)
+        res = []
+        start = 0
+        tmp = []
+        if len(nums) == 1:
+            res = [[]]
+            res.append(nums)
+            return res
+        help(start, tmp, res)
+        return res
+
+# V0''
 # IDEA : BRUTE FROCE
 class Solution(object):
     def subsets(self, nums):
@@ -73,7 +94,7 @@ class Solution(object):
                 result[-1].append(nums[i])
         return result
 
-# V0''
+# V0'''
 # IDEA : Backtracking
 class Solution:
     def subsets(self, nums):
@@ -96,7 +117,7 @@ class Solution:
             backtrack()
         return output
 
-# V0''''
+# V0''''''
 # IDEA : DFS 
 # SAME AS # 90 subset-ii 
 class Solution(object):
@@ -119,7 +140,7 @@ class Solution(object):
         dfs(0, 0, [])
         return res
 
-# V0''''' 
+# V0''''''''
 # IDEA : DFS
 class Solution:
     """
@@ -304,5 +325,4 @@ class Solution(object):
     def subsetsRecu(self, cur, nums):
         if not nums:
             return [cur]
-
         return self.subsetsRecu(cur, nums[1:]) + self.subsetsRecu(cur + [nums[0]], nums[1:])
