@@ -239,3 +239,13 @@ In [37]: z = ""
 In [38]: not z
 Out[38]: True
 ```
+
+### 1-11) `sort` on a `lambda func`
+```python
+# LC 973. K Closest Points to Origin
+# IDEA : sort + lambda
+class Solution(object):
+    def kClosest(self, points, K):
+        points.sort(key = lambda x : x[0]**2 +  x[1]**2)
+        return points[:K]
+```
