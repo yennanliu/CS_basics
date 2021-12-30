@@ -13,7 +13,11 @@ Input: [2,2,1,1,1,2,2]
 Output: 2
 """
 
-# V0 
+# V0
+class Solution(object):
+    def majorityElement(self, nums):
+        nums.sort()
+        return nums[(len(nums))/2]
 
 # V1 
 # https://blog.csdn.net/NXHYD/article/details/71713772
