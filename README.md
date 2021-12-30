@@ -192,7 +192,7 @@
 121 | [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)| [Python](./leetcode_python/Array/best-time-to-buy-and-sell-stock.py) | _O(n)_ | _O(1)_ | Easy |`dp`,`basic`,`greedy`,`UBER`, `M$`, `amazon`, `fb`| OK**** (5) (but again)
 157 | [Read N Characters Given Read4](https://leetcode.com/problems/read-n-characters-given-read4/) |  [Python](./leetcode_python/Array/read-n-characters-given-read4.py) | _O(n)_ | _O(1)_ | Easy |🔒, `google`, `amazon`, `fb`| AGAIN**** (2)
 163 | [Missing Ranges](https://leetcode.com/problems/missing-ranges/)| [Python](./leetcode_python/Array/missing-ranges.py) | _O(n)_  | _O(1)_ | Medium    | two pointer, 🔒, `google interview` | AGAIN** (3)
-169 | [Majority Element](https://leetcode.com/problems/majority-element/) |[Python](./leetcode_python/Array/majority-element.py) | _O(n)_ | _O(1)_ | Easy || OK*
+169 | [Majority Element](https://leetcode.com/problems/majority-element/) |[Python](./leetcode_python/Array/majority-element.py) | _O(n)_ | _O(1)_ | Easy |`amazon`| OK*
 189 | [Rotate Array](https://leetcode.com/problems/rotate-array/)   | [Python](./leetcode_python/Array/rotate-array.py) | _O(n)_ | _O(1)_  | Medium |good basic, `amazon`| OK* (4)
 209 | [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/) | [Python](./leetcode_python/Array/minimum-size-subarray-sum.py) | _O(n)_ | _O(1)_ | Medium | good basic, sliding window, `Binary Search`, `trick`,`2 pointers`, `fb` | OK********** (5) (but again)
 215 | [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | [Python](./leetcode_python/Array/kth-largest-element-in-an-array.py) | _O(n)_ ~ _O(n^2)_ | _O(1)_ |  Medium | EPI, `quick sort`, bubble sort, sort, `amazon`,`fb`| OK* (2)
@@ -923,7 +923,7 @@
 583 | [Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings/) | [Python](./leetcode_python//Dynamic_Programming/delete-operation-for-two-strings.py) | _O(m * n)_ | _O(n)_ | Medium |`dp`, `google`|  AGAIN (not start)
 650 | [2 Keys Keyboard](https://leetcode.com/problems/2-keys-keyboard/) | [Python](./leetcode_python//Dynamic_Programming/2-keys-keyboard.py) | _O(sqrt(n))_ | _O(1)_ | Medium |`dp`,`dp basic` ,`M$`| AGAIN*
 673 | [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) | [Python](./leetcode_python//Dynamic_Programming/number-of-longest-increasing-subsequence.py)  | _O(n^2)_ | _O(n)_ | Medium |`dp`,`good trick`, `fb`| AGAIN********** (3)
-688 | [Knight Probability in Chessboard](https://leetcode.com/problems/knight-probability-in-chessboard/) | [Python](./leetcode_python//Dynamic_Programming/knight-probability-in-chessboard.py) | _O(k * n^2)_ | _O(n^2)_ | Medium |`dp`,`dp basic`,`AGAIN`, `M$`,`Goldman Sachs`, `google`, `fb`| AGAIN********* (5)
+688 | [Knight Probability in Chessboard](https://leetcode.com/problems/knight-probability-in-chessboard/) | [Python](./leetcode_python//Dynamic_Programming/knight-probability-in-chessboard.py) | _O(k * n^2)_ | _O(n^2)_ | Medium |`dp`,`dp basic`,`AGAIN`, `M$`,`Goldman Sachs`, `google`, `fb`, `amazon`| AGAIN********* (5)
 712 | [Minimum ASCII Delete Sum for Two Strings](https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/) | [Python](./leetcode_python//Dynamic_Programming/minimum-ascii-delete-sum-for-two-strings.py) | _O(m * n)_ | _O(n)_ | Medium |`dp`| AGAIN (not start)
 714 | [Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/) |  [Python](./leetcode_python//Dynamic_Programming/best-time-to-buy-and-sell-stock-with-transaction-fee.py)  | _O(n)_ | _O(1)_ | Medium |AGAIN, `good basic`, `dp`, `greedy`,`fb`| AGAIN******** (3) 
 740 | [Delete and Earn](https://leetcode.com/problems/delete-and-earn/) |  [Python](./leetcode_python//Dynamic_Programming/delete-and-earn.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
@@ -945,6 +945,7 @@
 935| [Knight Dialer](https://leetcode.com/problems/knight-dialer/) | [Python](./leetcode_python/Dynamic_Programming/knight-dialer.py) | _O(logn)_ | _O(1)_ | Medium | Matrix Exponentiation, `google`, `M$`, `fb`| AGAIN (not start)
 518| [Coin Change 2](https://leetcode.com/problems/coin-change-2/) | [Python](./leetcode_python/Dynamic_Programming/coin_change_2.py) | _O(logn)_ | _O(1)_ | Medium | `dp basic`,`good trick`,check `# 322 Coin Change`,`dp`, `google`, `fb`| AGAIN******** (4)
 494| [Target Sum](https://leetcode.com/problems/target-sum/) | [Python](./leetcode_python/Dynamic_Programming/target-sum.py) | _O(logn)_ | _O(1)_ | Medium |dp basic, `dp`, `fb`|  AGAIN***** (1)
+1799| [Maximize Score After N Operations](https://leetcode.com/problems/maximize-score-after-n-operations/) | [Python](./leetcode_python/Dynamic_Programming/maximize-score-after-n-operations.py) | _O(logn)_ | _O(1)_ | Medium |`dp`, `amazon`| not start
  
 
 ## Greedy 
@@ -974,6 +975,7 @@
 948 | [Bag of Tokens](https://leetcode.com/problems/bag-of-tokens/) | [Python](./leetcode_python/Greedy/bag-of-tokens.py)  | _O(nlogn)_ | _O(1)_ | Medium |Two Pointers | AGAIN (not start)
 962 | [Maximum Width Ramp](https://leetcode.com/problems/maximum-width-ramp/) | [Python](./leetcode_python/Greedy/maximum-width-ramp.py)  | _O(n)_ | _O(n)_ | Medium | Descending Stack |  AGAIN (not start)
 1024 | [Video Stitching](https://leetcode.com/problems/video-stitching/) | [Python](./leetcode_python/Greedy/video_stitching.py) | | | Medium | Spotify | AGAIN (not start)
+1710 | [Maximum Units on a Truck](https://leetcode.com/problems/maximum-units-on-a-truck/) | [Python](./leetcode_python/Greedy/maximum-units-on-a-truck.py) | | | Easy | greedy, `amazon` | AGAIN*** (1) (not start)
 
 
 ## Graph 
