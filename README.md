@@ -475,7 +475,7 @@
 318| [Maximum Product of Word Lengths](https://leetcode.com/problems/maximum-product-of-word-lengths/) | [Python](./leetcode_python/Bit_Manipulation/maximum-product-of-word-lengths.py) | _O(n)_ ~ _O(n^2)_ |  _O(n)_ | Medium   |Bit Manipulation, Counting Sort, Pruning| AGAIN (not start)
 342 | [Power of Four](https://leetcode.com/problems/power-of-four/) | [Python](./leetcode_python/Bit_Manipulation/power-of-four.py) | _O(1)_ | _O(1)_ |Easy |`power of num`| OK* 
 371 | [Sum of Two Integers](https://leetcode.com/problems/sum-of-two-integers/) | [Python](./leetcode_python/Bit_Manipulation/sum-of-two-integers.py) | _O(1)_ | _O(1)_ | Easy | `good basic`, `fb`| AGAIN********* (4)(NOT START)
-389 | [Find the Difference](https://leetcode.com/problems/find-the-difference/) |  [Python](./leetcode_python/Bit_Manipulation/find-the-difference.py)  | _O(n)_ | _O(1)_ | Easy | | OK 
+389 | [Find the Difference](https://leetcode.com/problems/find-the-difference/) |  [Python](./leetcode_python/Bit_Manipulation/find-the-difference.py)  | _O(n)_ | _O(1)_ | Easy |`amazon`| OK (2)
 393 | [UTF-8 Validation](https://leetcode.com/problems/utf-8-validation/) |[Python](./leetcode_python/Bit_Manipulation/utf-8-validation.py)  | _O(n)_ | _O(1)_ | Medium | `utf-8 encoding`, `google`, `fb`| AGAIN**** (not start*) (4)
 401 | [Binary Watch](https://leetcode.com/problems/binary-watch/) | [Python](./leetcode_python/Bit_Manipulation/binary-watch.py)  | _O(1)_ | _O(1)_ | Easy | | OK*
 421 | [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | [Python](./leetcode_python/Bit_Manipulation/maximum-xor-of-two-numbers-in-an-array.py) | _O(n)_ | _O(n)_ | Medium || AGAIN (not start)
@@ -672,7 +672,7 @@
 692| [Top K Frequent Words](https://leetcode.com/problems/top-k-frequent-words/) | [Python](./leetcode_python/Sort/top-k-frequent-words.py) | _O(n + klogk)_ on average | _O(n)_  | Medium | `good basic`,Quick Select, Heap, Bucket Sort, `heapq`, `yelp`, `UBER`,`amazon`,`fb` | OK***** (5)
 937| [Reorder Log Files](https://leetcode.com/problems/reorder-log-files/) | [Python](./leetcode_python/Sort/reorder-log-files.py) | _O(nlogn * l)_ | _O(l)_   | Easy | `string`| OK* (2)
 969| [Pancake Sorting](https://leetcode.com/problems/pancake-sorting/) | [Python](./leetcode_python/Sort/pancake-sorting.py) | _O(n^2)_ | _O(l)_  | Medium    || AGAIN (not start)*
-973| [K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | [Python](./leetcode_python/Sort/k-closest-points-to-origin.py)  | _O(n)_ on average | _O(1)_     | Easy   | Quick Select, Heap| OK 
+973| [K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | [Python](./leetcode_python/Sort/k-closest-points-to-origin.py)  | _O(n)_ on average | _O(1)_ Medium | sort with lambda, Quick Select, Heap, `amazon`| OK* (2)
 976| [Largest Perimeter Triangle](https://leetcode.com/problems/largest-perimeter-triangle/) | [Python](./leetcode_python/Sort/largest-perimeter-triangle.py) | _O(nlogn)_ | _O(1)_  | Easy | | OK*
 
 

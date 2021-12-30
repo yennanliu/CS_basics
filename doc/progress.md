@@ -25,6 +25,7 @@
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
 			- https://leetcode.com/problems/contiguous-array/ LC 525 (again)
 			- https://leetcode.com/problems/design-front-middle-back-queue/ LC 1670 (again!)
+			- https://leetcode.com/problems/k-closest-points-to-origin/ LC 973 (again)
 	- ================
 	- LC general
 		- **back track**
