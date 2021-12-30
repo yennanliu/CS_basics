@@ -50,6 +50,28 @@ class Solution:
         return len(stack) == 0
 
 # V0'
+# IDEA : queue + dict
+class Solution(object):
+    def isValid(self, s):
+        d = {'(':')', '{':'}', '[':']'}
+        q = []
+        if not s:
+            return True
+        if len(s) == 1:
+            return False
+        for i in s:
+            if i in d:
+                q.append(i)
+            else:
+                if not q:
+                    return False
+                else:
+                    tmp = q.pop(-1)
+                    if d[tmp] != i:
+                        return False
+        return True if not q else False
+
+# V0'
 # IDEA : STACK + DICT
 class Solution:
     def isValid(self, s):
