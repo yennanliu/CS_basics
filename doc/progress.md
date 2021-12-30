@@ -23,6 +23,8 @@
 	- ================
 	- LC (amz_, July 2020 - July 2021)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
+			- https://leetcode.com/problems/contiguous-array/ LC 525 (again)
+			- https://leetcode.com/problems/design-front-middle-back-queue/ LC 1670 (again!)
 	- ================
 	- LC general
 		- **back track**
@@ -36,6 +38,7 @@
 			- 662
 			- 508
 			- 776
+			- 525
 		- binary search
 		- =======
 		- bit manipulation
