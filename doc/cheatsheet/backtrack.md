@@ -372,6 +372,48 @@ void backtrack(int[] nums, LinkedList<Integer> track){
 ```
 
 ### 2-7) Generate Parentheses
+```python
+# python
+# LC 022 Generate Parentheses
+# V0
+# IDEA : bracktrack + Valid Parentheses (LC 020)
+class Solution(object):
+    def generateParenthesis(self, n):
+        # help func for backtracking
+        def help(tmp, res, n):
+            if len(tmp) == n * 2 and check(tmp):
+                res.append(tmp)
+                return
+            if len(tmp) == n * 2:
+                return
+            for l in _list:
+                print ("l = " + str(l))
+                help(tmp + l, res, n)
+
+        """
+        LC 020 Valid Parentheses
+        """
+        def check(s):
+            lookup = {"(":")", "[":"]", "{":"}"}
+            q = []
+            for i in s:
+                if i not in lookup and len(q) == 0:
+                    return False
+                elif i in lookup:
+                    q.append(i)
+                else:
+                    tmp = q.pop()
+                    if lookup[tmp] != i:
+                        return False
+            return True if len(q) == 0 else False
+
+        _list = ['(', ')']
+        if n == 1:
+            return ["()"]
+        res = []
+        help("", res, n)
+        return res
+```
 ```java
 // java
 // LC 022 Generate Parentheses
