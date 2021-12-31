@@ -249,3 +249,67 @@ class Solution(object):
         points.sort(key = lambda x : x[0]**2 +  x[1]**2)
         return points[:K]
 ```
+
+### 1-12) get remainder (residue) when divided by a number
+```python
+#-----------------
+# V1 : %=
+#-----------------
+
+In [7]: x = 100
+
+In [8]: x %= 60
+
+In [9]: x
+Out[9]: 40
+
+In [10]: y = 120
+
+In [11]: y %= 60
+
+In [12]: y
+Out[12]: 0
+
+#-----------------
+# V2 : divmod
+#-----------------
+In [13]: a = 100
+
+In [14]: q, r = divmod(a, 60)
+
+In [15]: q
+Out[15]: 1
+
+In [16]: r
+Out[16]: 40
+
+In [17]: b = 120
+
+In [18]: q2, r2 = divmod(b, 60)
+
+In [19]: q2
+Out[19]: 2
+
+In [20]: r2
+Out[20]: 0
+```
+
+```python
+# LC 1010
+# V0
+# IDEA : dict
+class Solution(object):
+    def numPairsDivisibleBy60(self, time):
+        rem = {}
+        pairs = 0
+        for t in time:
+            #print ("rem = " + str(rem))
+            t %= 60
+            if (60 - t) % 60 in rem:
+                pairs += rem[(60 - t) % 60]
+            if t not in rem:
+                rem[t] = 1
+            else:
+                rem[t] += 1
+        return pairs
+```
