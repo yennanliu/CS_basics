@@ -3,6 +3,9 @@
 ## 0) Concept  
 
 ### 0-1) Types
+- Continous sum
+    - LC 525 : Contiguous Array
+    - LC 523 : Continuous Subarray Sum
 
 ### 0-2) Pattern
 
@@ -148,6 +151,7 @@ class Solution(object):
 ```python
 # 525 Contiguous Array
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/contiguous-array.py
+# explanation : https://leetcode.com/problems/contiguous-array/discuss/99655/python-on-solution-with-visual-explanation
 # HASH MAP FIND EQUAL 0, 1
 class Solution(object):
     def findMaxLength(self, nums):
