@@ -34,18 +34,40 @@ Constraints:
 """
 
 # V0
+# IDEA : HASH TABLE
+# -> if sum(nums[i:j]) % k == 0 for some i < j, 
+#   ->  then sum(nums[:j]) % k == sum(nums[:i]) % k  !!!!
+#   -> So we just need to use a dict to keep track of sum(nums[:i]) % k 
+#   -> and the corresponding index i. Once some later sum(nums[:i']) % k == sum(nums[:i]) % k and i' - i > 1, so we return True.
 class Solution(object):
     def checkSubarraySum(self, nums, k):
+        """
         # _dict = {0:-1} : for edge case (need to find a continuous subarray of size AT LEAST two )
-        # 0: -1 is for edge case that current sum mod k == 0
         # https://leetcode.com/problems/continuous-subarray-sum/discuss/236976/Python-solution
+        # 0: -1 is for edge case that current sum mod k == 0
+        # demo :
+                In [93]: nums = [0]
+                    ...: k = 1
+                    ...:
+                    ...:
+                    ...: s = Solution()
+                    ...: r = s.checkSubarraySum(nums, k)
+                    ...: print (r)
+                0
+                i - _dict[tmp] = 1
+                False
+        """
+        ### NOTE : we need to init _dict as {0:-1}
         _dict = {0:-1}
         tmp = 0
         for i in range(len(nums)):
             tmp += nums[i]
             if k != 0:
+                ### NOTE : we get remainder of tmp by k
                 tmp = tmp % k
+            # if tmp in _dict, means there is the other sub part make sub array sum % k == 0
             if tmp in _dict:
+                ### only if continuous sub array with length >= 2
                 if i - _dict[tmp] > 1:
                     return True
             else:
@@ -131,6 +153,12 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/continuous-subarray-sum/discuss/236976/Python-solution
+# IDEA : HASH TABLE
+# IDEA :
+# -> if sum(nums[i:j]) % k == 0 for some i < j, 
+# -> then sum(nums[:j]) % k == sum(nums[:i]) % k. 
+# -> So we just need to use a dictionary to keep track of sum(nums[:i]) % k 
+# -> and the corresponding index i. Once some later sum(nums[:i']) % k == sum(nums[:i]) % k and i' - i > 1, so we return True.
 class Solution():
     def checkSubarraySum(self, nums, k):
         dic = {0:-1}
