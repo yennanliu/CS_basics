@@ -834,7 +834,8 @@
 417 | [Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow/) |  [Python](./leetcode_python/Depth-First-Search/pacific-atlantic-water-flow.py) | _O(m * n)_ | _O(m * n)_ | Medium |dfs, matrix, `m$`,`google`| AGAIN* (2)
 464| [Can I Win](https://leetcode.com/problems/can-i-win/) |  [Python](./leetcode_python/Depth-First-Search/can-i-win.py) | _O(n!)_   | _O(n)_  | Medium   |`DP`, `linkedin`| AGAIN* (not start)
 515| [Find Largest Value in Each Tree Row](https://leetcode.com/problems/find-largest-value-in-each-tree-row/) |  [Python](./leetcode_python/Depth-First-Search/find-largest-value-in-each-tree-row.py)  | _O(n)_ | _O(h)_ | Medium   |`good basic`,`linkedin`| AGAIN* (3) 
-547| [Friend Circles](https://leetcode.com/problems/friend-circles/) | [Python](./leetcode_python/Depth-First-Search/friend-circles.py)  | _O(n^2)_  | _O(n)_ | Medium | Union Find,dfs, bfs,check `# 733 Flood Fill`,`bloomberg` ,`fb`| AGAIN*** (3) (not start)
+547| [Friend Circles](https://leetcode.com/problems/friend-circles/) | [Python](./leetcode_python/Depth-First-Search/friend-circles.py)  | _O(n^2)_  | _O(n)_ | Medium | graph, Union Find,dfs, bfs,check `# 733 Flood Fill`,`bloomberg` ,`fb`| AGAIN*** (3) (not start)
+547| [Number of Provinces](https://leetcode.com/problems/number-of-provinces/) | [Python](./leetcode_python/Depth-First-Search/number-of-provinces.py)  | _O(n^2)_  | _O(n)_ | Medium |`amazon`, dfs, bfs, graph, union find| AGAIN (not start)
 582| [Kill Process](https://leetcode.com/problems/kill-process/) | [Python](./leetcode_python/Depth-First-Search/kill-process.py)  | _O(n)_ | _O(n)_ | Medium |🔒, DFS, BFS,`good basic` ,`bloomberg` | AGAIN** (3) 
 638| [Shopping Offers](https://leetcode.com/problems/shopping-offers/) | [Python](./leetcode_python/Depth-First-Search/shopping-offers.py)  | _O(n * 2^n)_ | _O(n)_| Medium |`google`| AGAIN (not start*)
 690| [Employee Importance](https://leetcode.com/problems/employee-importance/) |[Python](./leetcode_python/Depth-First-Search/employee-importance.py) | _O(n)_   | _O(h)_  | Easy | DFS, BFS,`good basic` ,`UBER`| OK** (3)
@@ -945,6 +946,7 @@
 935| [Knight Dialer](https://leetcode.com/problems/knight-dialer/) | [Python](./leetcode_python/Dynamic_Programming/knight-dialer.py) | _O(logn)_ | _O(1)_ | Medium | Matrix Exponentiation, `google`, `M$`, `fb`| AGAIN (not start)
 518| [Coin Change 2](https://leetcode.com/problems/coin-change-2/) | [Python](./leetcode_python/Dynamic_Programming/coin_change_2.py) | _O(logn)_ | _O(1)_ | Medium | `dp basic`,`good trick`,check `# 322 Coin Change`,`dp`, `google`, `fb`| AGAIN******** (4)
 494| [Target Sum](https://leetcode.com/problems/target-sum/) | [Python](./leetcode_python/Dynamic_Programming/target-sum.py) | _O(logn)_ | _O(1)_ | Medium |dp basic, `dp`, `fb`|  AGAIN***** (1)
+1335| [Minimum Difficulty of a Job Schedule](https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/) | [Python](./leetcode_python/Dynamic_Programming/minimum-difficulty-of-a-job-schedule.py) | _O(logn)_ | _O(1)_ | Medium |`dp`, `amazon`| not start
 1799| [Maximize Score After N Operations](https://leetcode.com/problems/maximize-score-after-n-operations/) | [Python](./leetcode_python/Dynamic_Programming/maximize-score-after-n-operations.py) | _O(logn)_ | _O(1)_ | Medium |`dp`, `amazon`| not start
  
 
