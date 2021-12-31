@@ -341,6 +341,7 @@
 974| [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/)|[Python ](./leetcode_python/Hash_table/subarray-sums-divisible-by-k.py)  | _O(n)_ | _O(k)_ | Medium  | variant of `# 560 Subarray Sum Equals K` , `trick`, `basic`|  AGAIN** (3) (not start)
 463| [Island Perimeter](https://leetcode.com/problems/island-perimeter/)|[Python ](./leetcode_python/Hash_table/island_perimeter.py)  | _O(n)_ | _O(k)_ | Medium |`basic`,`hash table`, `google`, `fb`| OK** (1)
 657| [Robot Return to Origin](https://leetcode.com/problems/robot-return-to-origin/)|[Python ](./leetcode_python/Array/rebot_return_to_origin.py)  ||| Easy |`amazon`| OK (2)
+1010| [Pairs of Songs With Total Durations Divisible by 60](https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/)|[Python ](./leetcode_python/Hash_table/pairs-of-songs-with-total-durations-divisible-by-60.py) ||| Medium |dict, array, `amazon`| AGAIN* (1) (not start)
 
 
 ## Linked list 
