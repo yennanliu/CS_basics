@@ -8,6 +8,7 @@
 	- LC review (amz_)
 		- ref: https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
 			- https://leetcode.com/problems/number-of-provinces/ LC 547 (again!)
+			- https://leetcode.com/problems/number-of-ways-to-split-a-string/ LC 1573 (again!)
 		- programming
 			- review
 			- (normal order)
