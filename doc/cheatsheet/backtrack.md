@@ -181,9 +181,9 @@ class Solution(object):
         return result
 ```
 
-### 2-4) Subsets & Subsets II
+### 2-4) Subsets
 ```python
-# LC 078, 090
+# LC 078 Subsets
 # V0
 # IDEA : Backtracking
 class Solution:
@@ -255,6 +255,63 @@ void backtrack(vector<int> & nums, int start, vector<int> & track){
         track.pop_back();
     }
 }
+```
+
+### 2-4') Subsets II
+```python
+# LC 90 Subsets II
+# V0
+# IDEA : BACKTRACKING + LC 078 Subsets
+from collections import Counter
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        def help(start, tmp, _cnt):
+            tmp.sort()
+            if tmp not in res:
+                res.append(tmp)
+            if start >= len(nums):
+                return
+            for i in range(start, len(nums)):
+                if _cnt[nums[i]]  > 0:
+                    _cnt[nums[i]] -= 1
+                    help(start+1, tmp + [nums[i]], _cnt)
+                    """
+                    NOTE : here we "undo" the "_cnt[nums[i]] -= 1" op,
+                          -> so next recursive can still have the "capacity" of such element
+                    """
+                    _cnt[nums[i]] += 1
+
+        # edge case
+        if not nums:
+            return []
+
+        # edge case
+        if len(nums) == 1:
+            res = [[]]
+            res.append([nums[0]])
+            return res
+
+        res = [[]]
+        _cnt = Counter(nums)
+        help(0, [], _cnt)
+        print ("res = " + str(res))
+        return res
+
+# V0
+# IDEA : BRUTE FORCE
+class Solution:
+    def subsetsWithDup(self, nums):
+        # small trick (init with a null array)
+        ans=[[]]
+        for i in nums:
+            for l in list(ans):
+                # sorted here, since we want to the "non-duplicated" power set
+                temp=sorted(l+[i])
+                # avoid duplicated
+                if temp not in ans:
+                    ans.append(temp) 
+        return ans
+
 ```
 
 ### 2-5) Combinations

@@ -12,7 +12,7 @@
 			- (normal order)
 			- (pdf : p.10)
 				- 725 (ok, but again !!!)
-				- 090 (not start)
+				- 090 (ok !)
 				- 529 (not start)
 		- ==========
 			- fast review (inverse order)
