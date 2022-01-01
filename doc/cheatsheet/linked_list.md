@@ -793,3 +793,51 @@ class Solution(object):
                 q = headA
         return p
 ```
+
+### 2-7) Split Linked List in Parts
+```python
+# LC 725 Split Linked List in Parts
+# V0
+# IDEA : LINKED LIST OP + mod op
+class Solution(object):
+    def splitListToParts(self, head, k):
+        # get linked list length
+        _len = 0
+        _head = cur = head
+        while _head:
+            _len += 1
+            _head = _head.next
+        # init res
+        res = [None] * k
+        ### NOTE : we loop over k
+        for i in range(k):
+            """
+            2 cases
+
+            case 1) i < (_len % k) : there is "remainder" ((_len % k)), so we need to add extra 1
+                    -> _cnt_elem = (_len // k) + 1
+            case 2) i == (_len % k) : there NO "remainder"
+                    -> _cnt_elem = (_len // k)
+            """
+            _cnt_elem = (_len // k) + (1 if i < (_len % k) else 0)
+            ### NOTE : we loop over _cnt_elem (length of each "split" linkedlist)
+            for j in range(_cnt_elem):
+                """
+                3 cases
+                
+                case 1) j == 0
+                case 2) j == _cnt_elem - 1
+                case 3) 0 < j < _cnt_elem - 1
+
+                """
+                if j == 0:
+                    res[i] = cur
+                if j == _cnt_elem - 1:
+                    tmp = cur.next
+                    cur.next = None
+                    cur = tmp
+                else:
+                    cur = cur.next
+        print ("res = " + str(res))
+        return res
+```
