@@ -143,7 +143,7 @@ class Solution(object):
 
 ### 2-2) Find Peak Element
 ```python
-# LC 162 Find Peak Element
+# LC 162 Find Peak Element, LC 852 Peak Index in a Mountain Array
 # V0'
 # IDEA : RECURSIVE BINARY SEARCH
 class Solution(object):
