@@ -21,6 +21,7 @@
 	- LC (amz_, July 2020 - July 2021)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
 			- https://leetcode.com/problems/peak-index-in-a-mountain-array/ LC 852 (ok)
+			- https://leetcode.com/problems/rank-transform-of-an-array/ LC 1131 (ok)
 	- ================
 	- LC general
 		- **back track**
