@@ -24,6 +24,43 @@ Constraints:
 """
 
 # V0
+# IDEA : BACKTRACKING + LC 078 Subsets
+from collections import Counter
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        def help(start, tmp, _cnt):
+            tmp.sort()
+            if tmp not in res:
+                res.append(tmp)
+            if start >= len(nums):
+                return
+            for i in range(start, len(nums)):
+                if _cnt[nums[i]]  > 0:
+                    _cnt[nums[i]] -= 1
+                    help(start+1, tmp + [nums[i]], _cnt)
+                    """
+                    NOTE : here we "undo" the "_cnt[nums[i]] -= 1" op,
+                          -> so next recursive can still have the "capacity" of such element
+                    """
+                    _cnt[nums[i]] += 1
+
+        # edge case
+        if not nums:
+            return []
+
+        # edge case
+        if len(nums) == 1:
+            res = [[]]
+            res.append([nums[0]])
+            return res
+
+        res = [[]]
+        _cnt = Counter(nums)
+        help(0, [], _cnt)
+        print ("res = " + str(res))
+        return res
+
+# V0'
 # IDEA : BRUTE FORCE
 class Solution:
     def subsetsWithDup(self, nums):
@@ -38,7 +75,7 @@ class Solution:
                     ans.append(temp) 
         return ans
 
-# V0 
+# V0''
 # IDEA : DFS
 ### NOTE :
 # in py, we can pass the var into the "sub func" directly, but no need to put it in the func variable
