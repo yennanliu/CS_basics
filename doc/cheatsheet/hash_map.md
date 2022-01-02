@@ -149,6 +149,40 @@ class Solution(object):
 
 ### 2-1) Contiguous Array
 ```python
+
+# V0
+# IDEA : HashMap
+#     -> SET UP A DICT,
+#     -> FIND MAX SUB ARRAY LENGH WHEN COUNT(0) == COUNT(1)
+#     -> (WHEN cur in _dict, THERE IS THE COUNT(0) == COUNT(1) CASE)
+# explaination : https://leetcode.com/problems/contiguous-array/discuss/99655/python-on-solution-with-visual-explanation
+class Solution(object):
+    def findMaxLength(self, nums):
+        # edge case
+        if len(nums) <= 1:
+            return 0
+        if len(nums) == 2:
+            if nums.count(0) == nums.count(1):
+                return 2
+            else:
+                return 0
+
+        # init hash map like below (idx=0, no solution)
+        d = {0:-1}
+        tmp = 0
+        res = 0
+        for k, v in enumerate(nums):
+            if v == 1:
+                tmp += 1
+            else:
+                tmp -= 1
+            if tmp in d:
+                res = max(res, k - d[tmp])
+            else:
+                d[tmp] = k
+        return res
+
+# V0'
 # 525 Contiguous Array
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/contiguous-array.py
 # explanation : https://leetcode.com/problems/contiguous-array/discuss/99655/python-on-solution-with-visual-explanation
