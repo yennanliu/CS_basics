@@ -1,20 +1,64 @@
 """
 
-Given a binary array, find the maximum length of a CONTIGUOUS subarray with equal number of 0 and 1.
+525. Contiguous Array
+Medium
+
+Given a binary array nums, return the maximum length of a contiguous subarray with an equal number of 0 and 1.
+
+ 
 
 Example 1:
-Input: [0,1]
+
+Input: nums = [0,1]
 Output: 2
-Explanation: [0, 1] is the longest CONTIGUOUS subarray with equal number of 0 and 1.
+Explanation: [0, 1] is the longest contiguous subarray with an equal number of 0 and 1.
 Example 2:
-Input: [0,1,0]
+
+Input: nums = [0,1,0]
 Output: 2
-Explanation: [0, 1] (or [1, 0]) is a longest CONTIGUOUS  subarray with equal number of 0 and 1.
-Note: The length of the given binary array will not exceed 50,000.
+Explanation: [0, 1] (or [1, 0]) is a longest contiguous subarray with equal number of 0 and 1.
+ 
+
+Constraints:
+
+1 <= nums.length <= 105
+nums[i] is either 0 or 1.
 
 """
 
 # V0
+# IDEA : HashMap
+#     -> SET UP A DICT,
+#     -> FIND MAX SUB ARRAY LENGH WHEN COUNT(0) == COUNT(1)
+#     -> (WHEN cur in _dict, THERE IS THE COUNT(0) == COUNT(1) CASE)
+# explaination : https://leetcode.com/problems/contiguous-array/discuss/99655/python-on-solution-with-visual-explanation
+class Solution(object):
+    def findMaxLength(self, nums):
+        # edge case
+        if len(nums) <= 1:
+            return 0
+        if len(nums) == 2:
+            if nums.count(0) == nums.count(1):
+                return 2
+            else:
+                return 0
+
+        # init hash map like below (idx=0, no solution)
+        d = {0:-1}
+        tmp = 0
+        res = 0
+        for k, v in enumerate(nums):
+            if v == 1:
+                tmp += 1
+            else:
+                tmp -= 1
+            if tmp in d:
+                res = max(res, k - d[tmp])
+            else:
+                d[tmp] = k
+        return res
+
+# V0'
 # IDEA : HashMap
 #     -> SET UP A DICT,
 #     -> FIND MAX SUB ARRAY LENGH WHEN COUNT(0) == COUNT(1)
@@ -38,7 +82,7 @@ class Solution(object):
                 _dict[cur] = k
         return r
 
-# V0
+# V0''
 # IDEA : SET UP A DICT, cur_sum, ans 
 # -> TO SAVE THE LENGTH OF SUB ARRAY WHEN COUNT OF 0 = COUNT OF 1, AND UPDATE cur_sum, ans  BY CASES 
 # -> RETURN THE MAX OF THE ans 
@@ -60,7 +104,7 @@ class Solution:
                 index_sum[cur_sum] = i
         return ans
 
-# V0''
+# V0'''
 # IDEA : BRUTE FROCE (Time Limit Exceeded)
 class Solution:
     def findMaxLength(self, nums):

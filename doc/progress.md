@@ -52,7 +52,7 @@
 			- 767 (not start)
 		- hashmap
 			- 523 (ok, but again !!!!)
-			- 525 (ok, but again !!!!)
+			- 525 (ok !!!!)
 			- 204 (ok, but again)
 			- 036 (not start)
 		- heap
