@@ -42,19 +42,45 @@ Submissions
 # prinme(3) = 1
 # prinme(4) = 2
 # prinme(5) = 3
+#-----------------
 # python 3
+#-----------------
 class Solution:
     def countPrimes(self, n):
         # using sieve of eretosthenes algorithm
         if n < 2: return 0
         nonprimes = set()
+        """
+        NOTE :  range(2, round(n**(1/2))+1)
+        """
         for i in range(2, round(n**(1/2))+1):
             if i not in nonprimes:
+                """
+                NOTE : range start from i*i
+
+                e.g. : range(i*i, n, i)
+                """
                 for j in range(i*i, n, i):
                     nonprimes.add(j)
         return n - len(nonprimes) - 2  # remove prinme(1), prime(2)
 
 # V0'
+# python 2
+# TIME OUT ERROR (but logic is OK)
+class Solution(object):
+    def countPrimes(self, n):
+        def check(x):
+            for j in range(2, int(x**(0.5))+1):
+                if x % j == 0:
+                    return False
+            return True
+        res = 0
+        for i in range(2, n):
+            if check(i):
+                res += 1
+        return res
+
+# V0''
 # python2 
 class Solution(object):
     def countPrimes(self, n):
@@ -77,7 +103,7 @@ class Solution(object):
                 is_prime[j] = False
         return num
 
-# V0'': -> to fix
+# V0''': -> to fix
 # class Solution(object):
 #     def countPrimes(self, n):
 #         def check(x):
