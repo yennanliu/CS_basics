@@ -791,7 +791,8 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 102| [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)| [Python](./leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal.py)| _O(n)_| _O(n)_| Easy  |`GOOD basic`, `dfs`, `bfs`,`UBER`, `apple`,`amazon`,`fb`|  AGAIN******* (7) (must)
 107| [Binary Tree Level Order Traversal II](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)| [Python](./leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal-ii.py) | _O(n)_| _O(n)_| Easy  |same as `# 102 Binary Tree Level Order Traversal`| OK* (2) 
-103| [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)| [Python](./leetcode_python/Breadth-First-Search/binary-tree-zigzag-level-order-traversal.py) | _O(n)_| _O(n)_| Medium  |`amazon`,`fb`| OK 
+103| [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)| [Python](./leetcode_python/Breadth-First-Search/binary-tree-zigzag-level-order-traversal.py) | _O(n)_| _O(n)_| Medium  |`amazon`,`fb`| OK
+126|[Word Ladder II](https://leetcode.com/problems/word-ladder-ii/)| [Python](./leetcode_python/Breadth-First-Search/word-ladder-ii.py) ||| Hard |bfs, check `# 127 Word Ladder`,`amazon` | AGAIN (not start)
 127| [Word Ladder](https://leetcode.com/problems/word-ladder/)| [Python](./leetcode_python/Breadth-First-Search/word-ladder.py) | _O(n * d)_   | _O(d)_ | Hard/Medium |check #126 Word Ladder II, `bfs`,`good trick`,  `UBER`, `amazon`, `M$`, `fb`| AGAIN********** (8)
 130| [Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)| [Python](./leetcode_python/Breadth-First-Search/surrounded-regions.py) | _O(m + n)_ | | Medium |`bfs`, `dfs`,`union find`,good basic, `amazon`| AGAIN***** (4)
 133| [Clone Graph](https://leetcode.com/problems/clone-graph/)| [Python](./leetcode_python/Breadth-First-Search/clone-graph.py) | _O(n)_ | _O(n)_  | Medium  |good trick, `check #138 Copy List with Random Pointer `,`graph`,`dfs`,`bfs`, copy, `UBER`, `google`,`amazon`,`fb`|  AGAIN********** (7)
@@ -814,7 +815,7 @@
 934|[Shortest Bridge](https://leetcode.com/problems/shortest-bridge/)| [Python](./leetcode_python/Breadth-First-Search/shortest-bridge.py) | _O(n^2)_ | _O(n^2)_ | Medium |  BFS, DFS, `complex`| AGAIN (not start)
 967|[Numbers With Same Consecutive Differences](https://leetcode.com/problems/numbers-with-same-consecutive-differences/)| [Python](./leetcode_python/Breadth-First-Search/numbers-with-same-consecutive-differences.py) | _O(2^n)_ | _O(2^n)_ | Medium |`good trick` | AGAIN** (3)
 675|[Cut Off Trees for Golf Event](https://leetcode.com/problems/cut-off-trees-for-golf-event/)| [Python](./leetcode_python/Breadth-First-Search/cut-off-trees-for-golf-event.py), [Java](./leetcode_java/Breadth-First-Search/cut-off-trees-for-golf-event.java) ||| Medium |tree, BFS, complex, `amazon` | AGAIN (not start)
-126|[Word Ladder II](https://leetcode.com/problems/word-ladder-ii/)| [Python](./leetcode_python/Breadth-First-Search/word-ladder-ii.py) ||| Hard |bfs, check `# 127 Word Ladder`,`amazon` | AGAIN (not start)
+994|[Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)| [Python](./leetcode_python/Breadth-First-Search/rotting-oranges.py) ||| Medium |BFS, dp `amazon` | AGAIN (not start)
 1162| [As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) | [Python](./leetcode_python/Breadth-First-Search/as-far-from-land-as-possible.py) | | | Medium | dfs, bfs, good basic, `amazon`| AGAIN (1) (not start)
 
 
