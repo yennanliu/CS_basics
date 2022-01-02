@@ -31,6 +31,39 @@
 
 ## 1) General form
 
+```c++
+// c++
+//--------------------
+// 2 SUM general form
+//--------------------
+// (algorithm book (labu) p.329)
+vector<vector<int>> twoSumTarget(vector<int> & nums, int integer){
+    // need to sort nums first !
+    sort(nums.begin(), nums.end());
+
+    // init 2 pointers
+    int lo = 0, hi = nums.size() - 1;
+
+    vector<vector<int>> res;
+    
+    while (lo < hi){
+        int sum = nums[lo] + nums[hi];
+        int left = nums[lo], right = nums[hi];
+        if (sum < target){
+            while (lo < hi && nums[lo] == left) lo++;
+        }else if (sum > target){
+            while (lo < hi && nums[hi] == right) hi--;
+        }else{
+            res.push_back((left, right));
+            /** AVOID ADDING duplicated combinations */
+            while (lo < hi && nums[lo] == left) lo++;
+            while (lo < hi && nums[hi] == right) hi++;
+        }
+    }
+    return res;
+}
+```
+
 ### 1-1) Basic OP
 
 ## 2) LC Example
