@@ -33,9 +33,9 @@
 
 ```c++
 // c++
-//--------------------
-// 2 SUM general form
-//--------------------
+//---------------------------------
+// 2 SUM general form (target = 0)
+//---------------------------------
 // (algorithm book (labu) p.329)
 vector<vector<int>> twoSumTarget(vector<int> & nums, int integer){
     // need to sort nums first !
@@ -62,6 +62,68 @@ vector<vector<int>> twoSumTarget(vector<int> & nums, int integer){
     }
     return res;
 }
+```
+
+```c++
+// c++
+//---------------------------------
+// 3 SUM general form (target = N)
+//---------------------------------
+// (algorithm book (labu) p.331)
+vector<vector<int>> twoSumTarget(vector<int> & nums, int start, int target){ // difference
+
+    /** CHANGE left idx starts from "start", else are the same */
+    // init 2 pointers
+    int lo = start, hi = nums.size() - 1;
+
+    vector<vector<int>> res;
+    
+    while (lo < hi){
+        int sum = nums[lo] + nums[hi];
+        int left = nums[lo], right = nums[hi];
+        if (sum < target){
+            while (lo < hi && nums[lo] == left) lo++;
+        }else if (sum > target){
+            while (lo < hi && nums[hi] == right) hi--;
+        }else{
+            res.push_back((left, right));
+            /** AVOID ADDING duplicated combinations */
+            while (lo < hi && nums[lo] == left) lo++;
+            while (lo < hi && nums[hi] == right) hi++;
+        }
+    }
+    return res;
+}
+
+
+/** get all triplet combinations with sum = target */
+vector<vector<int>> threeSumTarget(vector<int> & nums, int target){
+    // need to sort nums first !
+    sort(nums.begin(), nums.end());
+
+    // init
+    int n = nums.size();
+    vector<vector<int>> res;
+
+    // looping for the 1st element in threeSum
+    for (int i = 0; i < n; i++){
+        // get twoSum from target - nums[i]
+        vector<vector<int>>
+        tuples = twoSumTarget(nums, i+1, target - nums[i]);
+
+        // if exists two sum fit requirement, add nums[i] is what we need
+        for (vector<int> & tuple: tuples){
+            tuple.push_back(nums[i]);
+            res.push_back(tuple);
+        }
+
+        /** neglect duplicated 1st element case, since duplocated combinations is NOT allowed */
+        while (i < n - 1 && nums[i] == nums[i+1]) i++;
+    }
+    return res;
+}
+
+
 ```
 
 ### 1-1) Basic OP
