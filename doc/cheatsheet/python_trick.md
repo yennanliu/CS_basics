@@ -242,12 +242,23 @@ Out[38]: True
 
 ### 1-11) `sort` on a `lambda func`
 ```python
+# example 1
 # LC 973. K Closest Points to Origin
 # IDEA : sort + lambda
 class Solution(object):
     def kClosest(self, points, K):
         points.sort(key = lambda x : x[0]**2 +  x[1]**2)
         return points[:K]
+
+
+# example 2
+In [28]: def my_func(x):
+    ...:     return x**2
+    ...:
+    ...: x = [-4,-5,0,1,2,5]
+    ...: x.sort(key=lambda x: my_func(x))
+    ...: print (x)
+[0, 1, 2, -4, -5, 5]
 ```
 
 ### 1-12) get remainder (residue) when divided by a number
@@ -312,4 +323,44 @@ class Solution(object):
             else:
                 rem[t] += 1
         return pairs
+```
+
+### 1-13) `split` method
+```python
+# python
+# syntax : split(separator, number_of_split_result) 
+# example 1
+# In [17]: x = 'dig1 8 1 5 1'
+
+# In [18]: x
+# Out[18]: 'dig1 8 1 5 1'
+
+# In [19]: x.split(" ")
+# Out[19]: ['dig1', '8', '1', '5', '1']
+
+# In [20]: x.split(" ", 1)
+# Out[20]: ['dig1', '8 1 5 1']
+
+# In [21]: x.split(" ", 2)
+# Out[21]: ['dig1', '8', '1 5 1']
+
+# In [22]: x.split(" ", 3)
+# Out[22]: ['dig1', '8', '1', '5 1']
+
+# In [23]: x.split(" ", 4)
+# Out[23]: ['dig1', '8', '1', '5', '1']
+
+# In [24]: x.split(" ", 100)
+# Out[24]: ['dig1', '8', '1', '5', '1']
+
+# example 2
+# LC 937 Reorder Data in Log Files
+class Solution:
+    def reorderLogFiles(self, logs):
+        def f(log):
+            id_, rest = log.split(" ", 1)
+            return (0, rest, id_) if rest[0].isalpha() else (1,)
+
+        logs.sort(key = lambda x : f(x))
+        return logs #sorted(logs, key = f)
 ```
