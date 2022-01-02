@@ -122,8 +122,56 @@ vector<vector<int>> threeSumTarget(vector<int> & nums, int target){
     }
     return res;
 }
+```
 
+```c++
+// c++
+//---------------------------------
+// K SUM general form (target = N)
+//---------------------------------
+// (algorithm book (labu) p.334)
 
+vector<vector<int>> nSumTarget(vector<int> & nums, int n, int start, int target){
+
+    int sz = nums.size();
+    vector<vector<int>> res;
+
+    // NEED to be AT LEAST 2 sum, and array size >= n
+    if (n < 2 || sz < n) return res;
+
+    // 2 sum is base case
+    if (n == 2){
+        // 2 pointers op
+        int lo = start, hi = sz - 1;
+        while (lo < hi){
+            int sum = nums[lo] + nums[hi];
+            int left = nums[lo], int right = nums[hi];
+            if (sum < target){
+                while (lo < hi && nums[lo] == left) lo ++;
+            }else if (sum > target){
+                while (lo < hi && nums[hi] == right) hi --;
+            }else{
+                res.push_back((left, right));
+                /** AVOID ADDING duplicated combinations */
+                while (lo < hi && nums[lo] == left) lo++;
+                while (lo < hi && nums[hi] == right) hi++;
+            }
+        }
+    }else{
+        /** n > 2, recursive get (n-1) Sum result */
+        for (int i = start; i < sz; i++){
+            vector<vector<int>>;
+            sub = nSumTarget(nums, n-1, i+1, target - nums[i]);
+            for (vector<int> & arr : sub){
+                // (n-1) Sum plus nums[i] is nSum
+                arr.push_back(nums[i]);
+                res.push_back(arr);
+            }
+            while (i < sz-1 && nums[i] == nums[i+1]) i++;
+        }
+    }
+    return  res;
+}
 ```
 
 ### 1-1) Basic OP
