@@ -125,7 +125,6 @@ class Solution:
 # V3 
 # Time:  O(nlogn * l), n is the length of files, l is the average length of strings
 # Space: O(l)
-
 class Solution(object):
     def reorderLogFiles(self, logs):
         """

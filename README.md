@@ -204,6 +204,7 @@
 245| [Shortest Word Distance III](https://leetcode.com/problems/shortest-word-distance-iii/) | [Python](./leetcode_python/Array/shortest-word-distance-iii.py)  | _O(n)_ |  _O(1)_ | Medium  |🔒, check `Shortest Word Distance I II III`| OK*
 251| [Flatten 2D Vector](https://leetcode.com/problems/flatten-2d-vector/) | [Python](./leetcode_python/Array/flatten-2d-vector.py)  | _O(1)_ |  _O(1)_ | Medium  |🔒, `basic`, `trick`, `queue`, check`# 341 Flatten Nested List Iterator`, `google`, `airbnb`, `twitter`, `amazon`| AGAIN****** (3)
 277| [Find the Celebrity](https://leetcode.com/problems/find-the-celebrity/) | [Python](./leetcode_python/Array/find-the-celebrity.py)  | _O(n)_ |  _O(1)_ | Medium  |🔒,`rool`, `fb`, `trick`| OK****** (4)
+287|[Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | [Python](./leetcode_python/Array/find_the_duplicate_number.py) | | | Medium |good trick,binary search, cycle linked list, check `# 142 Linked List Cycle II`, `amazon`| AGAIN**** (not start)
 289| [Game of Life](https://leetcode.com/problems/game-of-life/) | [Python](./leetcode_python/Array/game-of-life.py)  | _O(m * n)_ |  _O(1)_ | Medium  |simultaneous,matrix,`complex`, `google`, `amazon`| AGAIN*** (3)
 293| [Flip Game](https://leetcode.com/problems/flip-game/) | [Python](./leetcode_python/Array/flip-game.py) | _O(n * (c+1))_ | _O(1)_ | Easy |🔒, `basic`| AGAIN*
 311| [Sparse Matrix Multiplication](https://leetcode.com/problems/sparse-matrix-multiplication/) | [Python](./leetcode_python/Array/sparse-matrix-multiplication.py)   | _O(m * n * l)_ |  _O(m * l)_ | Medium |🔒, matrix, `basic`, `fb`|  OK** (2)
@@ -278,8 +279,7 @@
 056 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) |  [Python](./leetcode_python/Array/merge-intervals.py)  | _O(n)_ | _O(1)_  | Medium |`good trick`,057 Insert Interval, `twitter`,`M$`,`UBER`,`google`,`amazon`,`fb`| AGAIN********* (5) 
 498 | [Diagonal Traverse](https://leetcode.com/problems/diagonal-traverse/) | [Python](./leetcode_python/Array/diagonal_traverse.py) | _O(n)_ | _O(1)_  | Medium |`matrix`,`google`,`fb`| AGAIN*** (3) (not start)
 1014 | [Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/) | [Python](./leetcode_python/Array/best_sightseeing_pair.py) | | | Medium |dp, array, good basic, Spotify| AGAIN (not start)
-287|[Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | [Python](./leetcode_python/Array/find_the_duplicate_number.py) | | | Medium |good trick,binary search, cycle linked list, check `# 142 Linked List Cycle II`, `amazon`| AGAIN**** (not start)
-
+1041 | [Robot Bounded In Circle](https://leetcode.com/problems/robot-bounded-in-circle/) | [Python](./leetcode_python/Array/robot-bounded-in-circle.py) | | | Medium |`amazon`| AGAIN (not start)
 
 
 ## Hash Table 
