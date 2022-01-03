@@ -236,7 +236,7 @@ vector<int> dailyTemperatures(vector<int> & T){
 ### 2-5) Basic Calculator II
 ```python
 # python
-# LC 227. Basic Calculator II
+# LC 227. Basic Calculator II, LC 224. Basic Calculator
 # Algorithm book (labu) p. 342
 # IDEA : STACK + RECURSIVE
 # TODO : fix output format
