@@ -983,6 +983,7 @@
 948 | [Bag of Tokens](https://leetcode.com/problems/bag-of-tokens/) | [Python](./leetcode_python/Greedy/bag-of-tokens.py)  | _O(nlogn)_ | _O(1)_ | Medium |Two Pointers | AGAIN (not start)
 962 | [Maximum Width Ramp](https://leetcode.com/problems/maximum-width-ramp/) | [Python](./leetcode_python/Greedy/maximum-width-ramp.py)  | _O(n)_ | _O(n)_ | Medium | Descending Stack |  AGAIN (not start)
 1024 | [Video Stitching](https://leetcode.com/problems/video-stitching/) | [Python](./leetcode_python/Greedy/video_stitching.py) | | | Medium | Spotify | AGAIN (not start)
+1648 | [Sell Diminishing-Valued Colored Balls](https://leetcode.com/problems/sell-diminishing-valued-colored-balls/) | [Python](./leetcode_python/Greedy/sell-diminishing-valued-colored-balls.py) | | | Medium | binary search, greedy, `amazon` | AGAIN* (not start)
 1710 | [Maximum Units on a Truck](https://leetcode.com/problems/maximum-units-on-a-truck/) | [Python](./leetcode_python/Greedy/maximum-units-on-a-truck.py) | | | Easy | greedy, `amazon` | AGAIN*** (1) (not start)
 
 
