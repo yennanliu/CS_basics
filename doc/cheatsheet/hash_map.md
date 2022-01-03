@@ -213,6 +213,8 @@ class Solution(object):
 ```
 
 ### 2-2) Continuous Subarray Sum
+- Similar concept as Contiguous Array (LC 525)
+
 ```python
 # 523 Continuous Subarray Sum
 # V0
