@@ -150,6 +150,7 @@ class Solution(object):
 ### 2-1) Contiguous Array
 - Core concept : finding if there are `at least 2 indexes` with `SAME sum`
 - Above concept is AS SAME AS finding `any 2 x-axis with same y-axis` in below charts
+- Explanation : Said we have a sequence `[0, 0, 0, 0, 1, 1]`, the count starting from 0, will equal -1, -2, -3, -4, -3, -2 -> we can find : the longest subarray with equal number of 0 and 1 started and ended when count equals -2. Moreover, 1st chart below shows the `changes VS index` of the sequence, We can easily find out `longest subarray length is 4` (index 2 - 6), since `index 2 and index 6 have the same y-axis` -> `sum in index 2, and index 6 are the same`
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_525_1.png" ></p>
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_525_1.png" ></p>
 
