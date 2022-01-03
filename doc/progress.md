@@ -61,6 +61,8 @@
 		- stack
 			- 227 (not start)
 			- 224 (not start)
+		- sort
+			- 969 (not start)
 		- SQL
 	- System Design
 		- Tinder design
