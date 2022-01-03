@@ -148,6 +148,10 @@ class Solution(object):
 ## 2) LC Example
 
 ### 2-1) Contiguous Array
+- Core concept : finding if there are `at least 2 indexes` with `SAME sum`
+- Above concept is AS SAME AS finding `any 2 x-axis with same y-axis` in below charts
+<p align="center"><img src ="./doc/pic/doc/pic/lc_525_1.png" ></p>
+<p align="center"><img src ="./doc/pic/doc/pic/lc_525_1.png" ></p>
 ```python
 
 # V0
