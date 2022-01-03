@@ -1,11 +1,11 @@
 # Stack
 
-> Stack data structure and algorithm/LC relative to it
+> Stack data structure and aAlgorithm/LC relative to it
 > "LIFO (last in, first out)"
 
-- https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md
+- https://github.com/labuladong/fucking-aAlgorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md
 
-- https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97.md
+- https://github.com/labuladong/fucking-aAlgorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97.md
 
 ## 0) Concept  
 
@@ -44,7 +44,7 @@ vector<int> nextGreaterElement(vector<int>& nums) {
 ### 1-1-2) next greater number
 ```java
 // java
-// algorithm book (labu) p. 273
+// aAlgorithm book (labu) p. 273
 vector<int> nextGreaterElement(vector<int> & nums){
     vector<int> ans(nums.size()); // array for ans
     stack<int> s;
@@ -157,7 +157,7 @@ class Solution:
 ```c++
 // c++
 // LC 503. Next Greater Element II
-// lgorithm book (labu) p. 276
+// Algorithm book (labu) p. 276
 vector<int> nextGreaterElements(vector<int> & nums){
     int n = nums.size();
     // save the result
@@ -215,7 +215,7 @@ class Solution(object):
 ```c++
 // LC 739. Daily Temperatures
 // c++
-// lgorithm book (labu) p. 274
+// Algorithm book (labu) p. 274
 vector<int> dailyTemperatures(vector<int> & T){
     vector<int> ans(T.size());
     // put index in below stack (not element)
@@ -231,4 +231,77 @@ vector<int> dailyTemperatures(vector<int> & T){
     }
     return ans;
 }
+```
+
+### 2-5) Basic Calculator II
+```python
+# python
+# LC 227. Basic Calculator II
+# Algorithm book (labu) p. 342
+# IDEA : STACK + RECURSIVE
+# TODO : fix output format
+class Solution(object):
+    def calculate(self, s):
+
+        def helper(s):
+            stack = []
+            sign = '+'
+            num = 0
+
+            while len(s) > 0:
+                c = s.pop(0)
+                if c.isdigit():
+                    num = 10 * num + int(c)
+                    """
+                    do recursive when meet "("
+                    """
+                    if c == '(':
+                        num = helper(s)
+                    if (not c.isdigit() and c != ' ') or len(s) == 0:
+                        if sign == '+':
+                            stack.append(num)
+                        elif sign == '-':
+                            stack.append(-num)
+                        elif sign == '*':
+                            stack[-1] = stack[-1] * num
+                        elif sign == '/':
+                            stack[-1] = int(stack[-1] / float(num))
+                        num = 0
+                        sign = c
+                    """
+                    end recursive when meet ")"
+                    """
+                    if c == ')':
+                        break
+            return sum(stack)
+
+        # run the helper func    
+        return helper(list(s))
+
+# V1
+# python 3
+class Solution:
+    def calculate(self, s):
+        stack = []
+        pre_op = '+'
+        num = 0
+        for i, each in enumerate(s):
+            if each.isdigit():
+                num = 10 * num + int(each)  # the way to deal with number like "100", "10"... 
+            if i == len(s) - 1 or each in '+-*/':
+                if pre_op == '+':
+                    stack.append(num)
+                elif pre_op == '-':
+                    stack.append(-num)
+                elif pre_op == '*':
+                    stack.append(stack.pop() * num)
+                elif pre_op == '/':
+                    top = stack.pop()
+                    if top < 0:
+                        stack.append(int(top / num))
+                    else:
+                        stack.append(top // num)
+                pre_op = each
+                num = 0
+        return sum(stack)
 ```

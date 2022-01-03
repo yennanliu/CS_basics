@@ -57,12 +57,14 @@
 			- 295 (not start)
 		- graph
 			- 547 (not start)
+		- stack
+			- 227 (not start)
 		- SQL
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
 		- note
-			- 336 -
+			- 336 - 344
 	- system design book - an insider's guide (GOTOP)
 		- p.105 - p.109
 
