@@ -40,7 +40,6 @@ while len(queue) > 0:
 
 ## 1) General form
 ```python
-
 # V0 : via python default
 def bfs(root):
     if not root:
@@ -77,7 +76,7 @@ def bfs(root):
                 queue.append(node.left)
             if node.right:
                 queue.append(node.right)
-        return queue
+            # do sth
 
 # V2 : via python default
 def bfs(root):
@@ -86,13 +85,13 @@ def bfs(root):
     while len(q) > 0:
         ### NOTE this op
         for i in range(0,len(q)):
+            tmp = q[0]
             # do sth
-            if q[0].left:
-                q.append(q[0].left)
-            if q[0].right:
-                q.append(q[0].right)
-            del q[0]
-    return q
+            if tmp.left:
+                q.append(tmp.left)
+            if tmp.right:
+                q.append(tmp.right)
+            # do sth
 ```
 
 ### 1-1) Basic OP

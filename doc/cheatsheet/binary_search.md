@@ -1,4 +1,5 @@
 # Binary Search
+- Find a value (k) from a `sorted array` with two pointers
 
 ## 0) Concept  
 
@@ -29,17 +30,22 @@
 # python
 # basic
 def binary_search(nums, target):
-    l, r = 0, len(nums) - 1
-    ### NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
-    #         -> e.g. while l <= r
-    #         -> [l, r]  
+    l = 0
+    r = len(nums) - 1
+    """
+    NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
+        -> e.g. while l <= r
+        -> [l, r] 
+    """ 
     while l <= r:
         mid = l + (r-l)//2
         if nums[mid] == target:
             return mid 
         elif nums[mid] < target:
+            ### NOTE this
             l = mid+1
         else:
+            ### NOTE this
             r = mid-1 
     return -1
 ```
@@ -64,6 +70,33 @@ int binarySearch(int[] nums, int target) {
 ```
 
 #### 0-2-1) Binary search on `LEFT` boundary
+```python
+# python
+def binary_search_left_boundary(nums, target):
+    l = 0
+    r = len(nums) - 1
+    """
+    NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
+        -> e.g. while l <= r
+        -> [l, r] 
+    """ 
+    while l <= r:
+        mid = l + (r-l)//2
+        # DO NOT RETURN !!!, BUT REDUCE RIGHT BOUNDARY FOR FOCUSING ON LEFT BOUNDARY
+        if nums[mid] == target:
+            r = mid - 1 
+        elif nums[mid] < target:
+            ### NOTE this
+            l = mid + 1
+        else:
+            ### NOTE this
+            r = mid - 1
+    # finally check if it will be OUT OF LEFT boundary
+    if l >= len(nums) or nums[l] != target:
+        return - 1
+    return l
+```
+
 ```java
 // java
 int left_bound(int[] nums, int target){
@@ -92,6 +125,33 @@ int left_bound(int[] nums, int target){
 ```
 
 #### 0-2-2) Binary search on `RIGHT` boundary
+```python
+# python
+def binary_search_right_boundary(nums, target):
+    l = 0
+    r = len(nums) - 1
+    """
+    NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
+        -> e.g. while l <= r
+        -> [l, r] 
+    """ 
+    while l <= r:
+        mid = l + (r-l)//2
+        # DO NOT RETURN !!!, BUT REDUCE LEFT BOUNDARY FOR FOCUSING ON RIGHT BOUNDARY
+        if nums[mid] == target:
+            l = mid + 1 
+        elif nums[mid] < target:
+            ### NOTE this
+            l = mid + 1
+        else:
+            ### NOTE this
+            r = mid - 1
+    # finally check if it will be OUT OF RIGHT boundary
+    if r < 0 or nums[r] != target:
+        return - 1
+    return r
+```
+
 ```java
 // java
 int right_bound(int[] nums, int target){
