@@ -342,6 +342,7 @@
 463| [Island Perimeter](https://leetcode.com/problems/island-perimeter/)|[Python ](./leetcode_python/Hash_table/island_perimeter.py)  | _O(n)_ | _O(k)_ | Medium |`basic`,`hash table`, `google`, `fb`| OK** (1)
 657| [Robot Return to Origin](https://leetcode.com/problems/robot-return-to-origin/)|[Python ](./leetcode_python/Array/rebot_return_to_origin.py)  ||| Easy |`amazon`| OK (2)
 1010| [Pairs of Songs With Total Durations Divisible by 60](https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/)|[Python ](./leetcode_python/Hash_table/pairs-of-songs-with-total-durations-divisible-by-60.py) ||| Medium |dict, array, `amazon`| AGAIN* (1) (not start)
+1099| [Two Sum Less Than K](https://leetcode.com/problems/two-sum-less-than-k/)|[Python ](./leetcode_python/Hash_table/two-sum-less-than-k.py) ||| Medium |dict, sort, `amazon`| AGAIN* (1) (not start)
 1131| [Rank Transform of an Array](https://leetcode.com/problems/rank-transform-of-an-array/)|[Python ](./leetcode_python/Hash_table/rank-transform-of-an-array.py) ||| Easy |dict, array, `amazon`| OK* (1)
 
 

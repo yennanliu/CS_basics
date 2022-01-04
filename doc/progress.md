@@ -21,6 +21,7 @@
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
 			- https://leetcode.com/problems/minimum-cost-to-connect-sticks/ : LC 1167 (not start)
 			- https://leetcode.com/problems/shortest-path-to-get-food/ : LC 1730 (ok)
+			- https://leetcode.com/problems/two-sum-less-than-k/ : LC 1099 (not start)
 	- ================ 
 	- LC general
 		- **back track**
