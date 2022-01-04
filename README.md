@@ -820,7 +820,7 @@
 675|[Cut Off Trees for Golf Event](https://leetcode.com/problems/cut-off-trees-for-golf-event/)| [Python](./leetcode_python/Breadth-First-Search/cut-off-trees-for-golf-event.py), [Java](./leetcode_java/Breadth-First-Search/cut-off-trees-for-golf-event.java) ||| Medium |tree, BFS, complex, `amazon` | AGAIN (not start)
 994|[Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)| [Python](./leetcode_python/Breadth-First-Search/rotting-oranges.py) ||| Medium |BFS, dp `amazon` | AGAIN (not start)
 1162| [As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) | [Python](./leetcode_python/Breadth-First-Search/as-far-from-land-as-possible.py) | | | Medium | dfs, bfs, good basic, `amazon`| AGAIN (1) (not start)
-
+1730| [Shortest Path to Get Food](https://leetcode.com/problems/shortest-path-to-get-food/) | [Python](./leetcode_python/Breadth-First-Search/shortest-path-to-get-food.py) | | | Medium | bfs, `amazon`| OK (1)
 
 ## Depth-First Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag     | Status| 
