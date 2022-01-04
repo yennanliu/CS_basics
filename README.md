@@ -581,6 +581,8 @@
 933| [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)| [Python](./leetcode_python/Queue/number-of-recent-calls.py)  | _O(1)_ on average  | _O(w)_ | Easy|| AGAIN**
 622| [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/)|[Python](./leetcode_python/Queue/design_circular_queue.py) | | | Medium |`good basic`,`circular queue`,`amazon`,`fb`| AGAIN****** (2)
 239| [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)|[Python](./leetcode_python/Queue/sliding-window-maximum.py) | | | Hard |heap, deque, queue,`amazon`, `google`| AGAIN** (2) (not start)
+1167| [Minimum Cost to Connect Sticks](https://leetcode.com/problems/minimum-cost-to-connect-sticks/)|[Python](./leetcode_python/Queue/minimum-cost-to-connect-sticks.py) | | | Medium | queue,`amazon`| AGAIN** (2) (not start)
+
 
 ## Math 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 

@@ -19,8 +19,7 @@
 	- ================
 	- LC (amz_, July 2020 - July 2021)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
-			- https://leetcode.com/problems/sell-diminishing-valued-colored-balls/ LC 1648 (again)
-			- https://leetcode.com/problems/design-in-memory-file-system/ LC 588  (again)
+			- https://leetcode.com/problems/minimum-cost-to-connect-sticks/ : LC 1167
 	- ================
 	- LC general
 		- **back track**

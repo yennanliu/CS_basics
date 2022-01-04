@@ -196,3 +196,21 @@ class MedianFinder:
         else:
             return float(self.large[0])
 ```
+
+### 2-4) Minimum Cost to Connect Sticks
+```python
+# LC 1167 Minimum Cost to Connect Sticks
+# V0
+# IDEA : heapq
+class Solution(object):
+    def connectSticks(self, sticks):
+        from heapq import * 
+        heapify(sticks)
+        res = 0
+        while len(sticks) > 1:
+            s1 = heappop(sticks)
+            s2 = heappop(sticks)
+            res += s1 + s2 # merge 2 shortest sticks
+            heappush(sticks, s1 + s2)
+        return res 
+```
