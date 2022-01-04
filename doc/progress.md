@@ -19,8 +19,9 @@
 	- ================
 	- LC (amz_, July 2020 - July 2021)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
-			- https://leetcode.com/problems/minimum-cost-to-connect-sticks/ : LC 1167
-	- ================
+			- https://leetcode.com/problems/minimum-cost-to-connect-sticks/ : LC 1167 (not start)
+			- https://leetcode.com/problems/shortest-path-to-get-food/ : LC 1730 (ok)
+	- ================ 
 	- LC general
 		- **back track**
 			- 077
