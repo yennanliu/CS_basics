@@ -57,20 +57,20 @@ class Solution(object):
 
             case 1) i < (_len % k) : there is "remainder" ((_len % k)), so we need to add extra 1
                     -> _cnt_elem = (_len // k) + 1
-            case 2) i == (_len % k) : there NO "remainder"
+            case 2) i == (_len % k) : there is NO "remainder"
                     -> _cnt_elem = (_len // k)
             """
+            # NOTE THIS !!!
             _cnt_elem = (_len // k) + (1 if i < (_len % k) else 0)
             ### NOTE : we loop over _cnt_elem (length of each "split" linkedlist)
             for j in range(_cnt_elem):
                 """
                 3 cases
-                
-                case 1) j == 0
-                case 2) j == _cnt_elem - 1
-                case 3) 0 < j < _cnt_elem - 1
-
+                 1) j == 0                (begin of sub linked list)
+                 2) j == _cnt_elem - 1    (end of sub linked list)
+                 3) 0 < j < _cnt_elem - 1 (middle within sub linked list)
                 """
+                # NOTE THIS !!!
                 if j == 0:
                     res[i] = cur
                 if j == _cnt_elem - 1:
@@ -79,7 +79,7 @@ class Solution(object):
                     cur = tmp
                 else:
                     cur = cur.next
-        print ("res = " + str(res))
+        #print ("res = " + str(res))
         return res
 
 # V0'
@@ -102,7 +102,6 @@ class Solution:
             for j in range(no_elems):
                 if j == 0:
                     ans[i] = cur
-
                 if j == no_elems - 1:
                     temp = cur.next
                     cur.next = None
