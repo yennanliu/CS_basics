@@ -10,6 +10,7 @@
         - 2 Sum II : array is sorted
         - 2 Sum III - Data structure design
         - 2 Sum IV - Input is a BST
+        - Two Sum Less Than K
     - 3 Sum
     - 4 Sum
     - N Sum
@@ -304,4 +305,39 @@ class Solution(object):
                     else:
                         num3 += 1
         return resultList
+```
+### 2-4) Two Sum Less Than K
+```python
+# LC 1099 Two Sum Less Than K
+# V1
+# https://goodtecher.com/leetcode-1099-two-sum-less-than-k/
+class Solution:
+    def twoSumLessThanK(self, nums, k):    
+        nums = sorted(nums)
+        i = 0
+        j = len(nums) - 1
+      
+        max_sum = -1
+        
+        while i < j:
+            if nums[i] + nums[j] >= k:
+                j -= 1
+            else:
+                max_sum = max(max_sum, nums[i] + nums[j])
+                i += 1      
+        return max_sum
+
+# V1'
+# https://blog.51cto.com/u_15344287/3647641
+class Solution:
+    def twoSumLessThanK(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        ans = -1
+        for i1 in range(len(nums)):
+            n1 = nums[i1]
+            i2 = bisect.bisect_left(nums, k - nums[i1], lo=i1 + 1) - 1
+            n2 = nums[i2]
+            if i2 > i1:
+                ans = max(ans, n1 + n2)
+        return ans
 ```
