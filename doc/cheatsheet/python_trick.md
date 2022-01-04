@@ -364,3 +364,23 @@ class Solution:
         logs.sort(key = lambda x : f(x))
         return logs #sorted(logs, key = f)
 ```
+
+
+### 1-13) array `extend`
+```python
+# LC 969. Pancake Sorting
+
+In [10]: x = [1,2,3]
+
+In [11]: x.extend([4])
+
+In [12]: x
+Out[12]: [1, 2, 3, 4]
+
+In [13]: x = [1,2,3]
+
+In [14]: x = x + [4]
+
+In [15]: x
+Out[15]: [1, 2, 3, 4]
+```

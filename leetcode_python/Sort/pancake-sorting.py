@@ -51,10 +51,9 @@ All integers in arr are unique (i.e. arr is a permutation of the integers from 1
 class Solution:
     def pancakeSort(self, A):
 
-        result = []
-        n = len(A)
+        res = []
 
-        for x in range(n, 1, -1):
+        for x in range(len(A), 1, -1):
             # Carry out pancake-sort from largest number n to smallest number 1
 
             # find the index of x
@@ -63,14 +62,45 @@ class Solution:
             # flip first i+1 elements to put x on A[0]
             # flip first x elements to put x on A[x-1]
             # now, x is on its corresponding position A[x-1] on ascending order
-            result.extend([i + 1, x])
+            # 
+            """
+            # array extend
+            In [10]: x = [1,2,3]
+
+            In [11]: x.extend([4])
+
+            In [12]: x
+            Out[12]: [1, 2, 3, 4]
+
+            In [13]: x = [1,2,3]
+
+            In [14]: x = x + [4]
+
+            In [15]: x
+            Out[15]: [1, 2, 3, 4]
+
+            """
+            #res.extend([i + 1, x])
+            res = res + [i + 1, x]
 
             # update A
-            A = A[:i:-1] + A[:i]
+            """
+            https://stackoverflow.com/questions/509211/understanding-slice-notation
 
-        return result
+            a[::-1]    # all items in the array, reversed
+            a[1::-1]   # the first two items, reversed
+            a[:-3:-1]  # the last two items, reversed
+            a[-3::-1]  # everything except the last two items, reversed
+
+            -> A[:i:-1] : last i items, reversed
+
+            """
+            A = A[:i:-1] + A[:i]
+        #print ("res = " + str(res))
+        return res
 
 # V1
+# IDEA : RECURSIVE
 # https://leetcode.com/problems/pancake-sorting/discuss/553116/My-python-solution
 # https://leetcode.com/problems/pancake-sorting/discuss/274921/PythonDetailed-Explanation-for-This-Problem
 class Solution:
@@ -151,7 +181,7 @@ class Solution:
 # IDEA : similar to BUBBLE SORT
 # https://leetcode.com/problems/pancake-sorting/solution/
 class Solution:
-    def pancakeSort(self, A: List[int]) -> List[int]:
+    def pancakeSort(self, A):
         """ sort like bubble-sort
             sink the largest number to the bottom at each round
         """
@@ -218,8 +248,6 @@ def flip(stack, index):
     newStack.reverse()
     newStack += stack[(index + 1):]
     return newStack
-
-
 
 # V3 
 # https://blog.csdn.net/fuxuemingzhu/article/details/85937314
