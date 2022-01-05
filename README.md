@@ -861,7 +861,7 @@
 802| [Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/) | [Python](./leetcode_python/Depth-First-Search/find-eventual-safe-states.py) | _O(\|V\| + \|E\|)_  | _O(\|V\|)_ | Medium  |`Topological Sort`| AGAIN (3) (not start)
 841| [Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/) | [Python](./leetcode_python/Depth-First-Search/keys-and-rooms.py) | _O(n!)_          | _O(n)_          | Medium  |`google`, `bfs`, `dfs`, `good basic`| AGAIN*** (3) 
 851| [Loud and Rich](https://leetcode.com/problems/loud-and-rich/) | [Python](./leetcode_python/Depth-First-Search/loud-and-rich.py)  | _O(q + r)_    | _O(q + r)_   | Medium |`amazon`,`defaultdict`, `good basic`| AGAIN*** (3)
-1192| [Critical Connections in a Network](https://leetcode.com/problems/critical-connections-in-a-network/) | [Python](./leetcode_python/critical-connections-in-a-network.py)  | _O(q + r)_    | _O(q + r)_   | Hard |`amazon`,dfs, graph| AGAIN (not start)
+1192| [Critical Connections in a Network](https://leetcode.com/problems/critical-connections-in-a-network/) | [Python](./leetcode_python/Depth-First-Search/critical-connections-in-a-network.py)  | _O(q + r)_    | _O(q + r)_   | Hard |`amazon`,dfs, graph| AGAIN (not start)
 
 
 ## Backtracking 
