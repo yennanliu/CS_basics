@@ -185,7 +185,7 @@
 057 | [Insert Interval](https://leetcode.com/problems/insert-interval/) |  [Python](./leetcode_python/Array/insert-interval.py) |  |  | Medium | good basic, blind LC pattern, `056 Merge Intervals`|  OK********  (3) (again!)
 059 | [Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/) |  [Python](./leetcode_python/Array/spiral-matrix-ii.py) | _O(n^2)_ | _O(1)_ | Medium |check `# 054 Spiral Matrix`, `amazon`| AGAIN** (2)
 066 | [Plus One](https://leetcode.com/problems/plus-one/)      |  [Python](./leetcode_python/Array/plus-one.py)| _O(n)_   | _O(1)_ | Easy |`basic`, `digit`, `google`| OK** (2)
-073 | [Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes/) |  [Python](./leetcode_python/Array/set-matrix-zeroes.py)  | _O(m * n)_ | _O(1)_ | Medium  |`matrix`, `amazon`| OK* (3)
+073 | [Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes/) |  [Python](./leetcode_python/Array/set-matrix-zeroes.py)  | _O(m * n)_ | _O(1)_ | Medium  |`matrix`, `amazon`| OK* (4)
 080 | [Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)|  [Python](./leetcode_python/Array/remove-duplicates-from-sorted-array-ii.py)  | _O(n)_ | _O(1)_ | Medium  |`two pointers`,AGAIN, `basic`, `trick`, `fb`, `#26 Remove Duplicates from Sorted Array`| AGAIN********* (4)
 118 | [Pascal's Triangle](https://leetcode.com/problems/pascals-triangle/)| [Python](./leetcode_python/Array/pascals-triangle.py)  | _O(n^2)_ | _O(1)_  | Easy  |`trick`, `basic`| AGAIN** (2) 
 119 | [Pascal's Triangle II](https://leetcode.com/problems/pascals-triangle-ii/)| [Python](./leetcode_python/Array/pascals-triangle-ii.py) | _O(n^2)_ | _O(1)_  | Easy  |array, check with `# 118 Pascal's Triangle`, `amazon`| OK** (3)
