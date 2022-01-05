@@ -13,6 +13,7 @@
 			- (pdf : p.10)
 				- 529 (not start)
 				- 073 (ok)
+				- 199 (ok)
 		- ==========
 			- fast review (inverse order)
 			- --> Breadth-First-Search
@@ -77,7 +78,7 @@
 		- note
 			- p.349
 	- system design book - an insider's guide (GOTOP)
-		- p.121 - p.131
+		- p.121 - p.145
 
 # 2022-01-04
 - DOING:
