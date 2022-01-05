@@ -31,6 +31,9 @@
 			- 776
 			- 525
 		- binary search
+			- 278  (not start)
+			- 035  (not start)
+			- 875  (not start)
 		- =======
 		- bit manipulation
 			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary

@@ -1,5 +1,13 @@
 # Binary Search
-- Find a value (k) from a `sorted array` with two pointers
+- Find a value (k) from a `sorted search space` with two pointers
+- Steps
+    - step 1) Define boundary variables (e.g. left, right) that can `include all possible cases`
+    - step 2) Define returned values
+    - step 3) Define exit condition
+- Scenario
+    - find a value from sorted array
+    -  if there is kind of monotonicity, for example, if condition(k) is True then condition(k + 1) is True, then we can consider binary search
+
 
 ## 0) Concept  
 
@@ -22,9 +30,9 @@
     - dict
 
 ### 0-2) Pattern
-- https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems
-    - TODO : add above to cheatsheet
-    
+ - https://leetcode.com/problems/binary-search/discuss/423162/Binary-Search-101-The-Ultimate-Binary-Search-Handbook
+- https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems : TODO : add above to cheatsheet
+   
 #### 0-2-0) Binary search
 ```python
 # python
@@ -183,7 +191,8 @@ int right_bound(int[] nums, int target){
 
 ## 2) LC Example
 
-### 2-1) For loop + binary search
+### 2-1) Two Sum II - Input array is sorted
+- (For loop binary search)
 ```python
 # 167 Two Sum II - Input array is sorted
 class Solution(object):
@@ -202,6 +211,7 @@ class Solution(object):
 ```
 
 ### 2-2) Find Peak Element
+-  (recursive binary search)
 ```python
 # LC 162 Find Peak Element, LC 852 Peak Index in a Mountain Array
 # V0'
@@ -214,8 +224,8 @@ class Solution(object):
                 return l
             mid = l + (r - l) // 2
             if (nums[mid] > nums[mid+1]):
-                return help(nums, l, mid)
-            return help(nums, mid+1, r)
+                return help(nums, l, mid) # r = mid
+            return help(nums, mid+1, r) # l = mid + 1
             
         return help(nums, 0, len(nums)-1)
 ```
@@ -269,4 +279,97 @@ class Solution:
             if sums >= s:
                 return True
         return False
+```
+
+### 2-5) First Bad Version
+```python
+# LC 278
+# V0
+# IDEA : binary search
+class Solution(object):
+    def firstBadVersion(self, n):
+        left = 1 
+        right = n
+        while right > left + 1:
+            mid = (left + right)//2
+            if SVNRepo.isBadVersion(mid):
+                end = mid 
+            else:
+                left = mid 
+        if SVNRepo.isBadVersion(left):
+            return left
+        return right 
+```
+
+### 2-6) Search Insert Position
+```python
+# LC 035 Search Insert Position
+# V1' 
+# https://blog.csdn.net/fuxuemingzhu/article/details/70738108
+class Solution(object):
+    def searchInsert(self, nums, target):
+        N = len(nums)
+        left, right = 0, N #[left, right)
+        while left < right:
+            mid = left + (right - left) / 2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] > target:
+                right = mid
+            else:
+                left = mid + 1
+        return left
+```
+
+### 2-7) Capacity To Ship Packages Within D Days
+```python
+# LC 1011
+# V1
+# IDEA : BINARY SEARCH
+# https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/discuss/390359/Simple-Python-Binary-Search
+class Solution(object):
+     def shipWithinDays(self, weights, D):
+            def cannot_split(weights, D, max_wgt):
+                s = 0
+                days = 1
+                for w in weights:
+                    s += w
+                    if s > max_wgt:
+                        s = w
+                        days += 1
+                return days > D
+
+            low, high = max(weights), sum(weights)
+            while low < high:
+                mid = low + (high - low) // 2
+                if cannot_split(weights, D, mid):
+                    low = mid + 1
+                else:
+                    high = mid
+            return low
+```
+
+### 2-8) Split Array Largest Sum (Hard)
+```python
+# LC 410 Split Array Largest Sum [Hard]
+```
+
+### 2-9) Koko Eating Bananas
+```python
+# V1 
+# https://blog.csdn.net/fuxuemingzhu/article/details/82716042
+# IDEA : BINARY SEARCH 
+class Solution:
+    def minEatingSpeed(self, piles, H):
+        minSpeed, maxSpeed = 1, max(piles)
+        while minSpeed <= maxSpeed:
+            speed = minSpeed + (maxSpeed - minSpeed) // 2
+            hour = 0
+            for pile in piles:
+                hour += math.ceil(pile / speed)
+            if hour <= H:
+                maxSpeed = speed - 1
+            else:
+                minSpeed = speed + 1
+        return minSpeed
 ```
