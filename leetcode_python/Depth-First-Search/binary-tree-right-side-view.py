@@ -33,6 +33,52 @@ The number of nodes in the tree is in the range [0, 100].
 # IDEA : DFS
 class Solution(object):
     def rightSideView(self, root):
+        def dfs(root, _layer):
+            if len(res) <= _layer:
+                res.append([])
+            if root:
+                res[_layer].append(root.val)
+            if not root:
+                return
+            if root.left:
+                dfs(root.left, _layer+1)
+            if root.right:
+                dfs(root.right, _layer+1)
+        # edge case
+        if not root:
+            return
+        res = [[]]
+        _layer = 0
+        dfs(root, _layer)
+        return [x[-1] for x in res]
+
+# V0'
+# IDEA : BFS
+class Solution(object):
+    def rightSideView(self, root):
+        # edge case
+        if not root:
+            return []
+        res = [[]]
+        _layer = 0
+        q = [[root,_layer]]
+        while q:
+            for i in range(len(q)):
+                tmp, _layer = q.pop(0)
+                if len(res) <= _layer:
+                    res.append([])
+                res[_layer].append(tmp.val)
+                if tmp.right:
+                    q.append([tmp.right, _layer+1])
+                if tmp.left:
+                    q.append([tmp.left, _layer+1])
+        ans = [i[0] for i in res]
+        return ans
+
+# V0'
+# IDEA : DFS
+class Solution(object):
+    def rightSideView(self, root):
         def dfs(root, layer):
             if not root:
                 return
@@ -51,7 +97,7 @@ class Solution(object):
         dfs(root, 0)
         return [x[0] for x in res if len(x) > 0]
 
-# V0'
+# V0''
 # IDEA : BFS
 class Solution(object):
     def rightSideView(self, root):
@@ -78,7 +124,7 @@ class Solution(object):
                     q.append((root.left, layer+1))
         return [x[-1] for x in res]
 
-# V0'
+# V0'''
 # IDEA : DFS 
 class Solution(object):
     def rightSideView(self, root):
