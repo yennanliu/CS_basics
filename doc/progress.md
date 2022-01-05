@@ -17,8 +17,11 @@
 			- --> Breadth-First-Search
 
 	- ================
-	- LC (amz_, July 2020 - July 2021)
-		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
+	- LC (amz_, July 2020 - July 2021) (OK)
+			- Premium questions : OK
+	- Jul 2020 - Dec 2020 (~4 months before above) (ing)
+		- https://leetcode.com/problems/binary-tree-cameras/ LC 988 (not start)
+	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
 	- ================ 
 	- LC general
 		- **back track**
