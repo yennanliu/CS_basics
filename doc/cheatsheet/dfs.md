@@ -463,10 +463,14 @@ class Solution:
 ### 2-10) Most Frequent Subtree Sum
 ```python
 # LC 508 Most Frequent Subtree Sum
+# V0
+# IDEA : DFS + TREE
 class Solution(object):
     def findFrequentTreeSum(self, root):
-
-        ### NOTE : this trick : get sum of sub tree 
+        """
+        ### NOTE : this trick : get sum of sub tree
+        # LC 663 Equal Tree Partition
+        """
         def get_sum(root):
             if not root:
                 return 0
@@ -481,6 +485,28 @@ class Solution(object):
         counts = collections.Counter(res)
         _max = max(counts.values())
         return [x for x in counts if counts[x] == _max]
+
+# V0'
+# IDEA : DFS + COUNTER
+from collections import Counter
+class Solution(object):
+    def findFrequentTreeSum(self, root):
+        def helper(root, d):
+            if not root:
+                return 0
+            left = helper(root.left, d)
+            right = helper(root.right, d)
+            subtreeSum = left + right + root.val
+            d[subtreeSum] = d.get(subtreeSum, 0) + 1
+            return subtreeSum      
+        d = {}
+        helper(root, d)
+        mostFreq = 0
+        ans = []
+        print ("d = " + str(d))
+        _max_cnt = max(d.values())
+        ans = []
+        return [x for x in d if d[x] == _max_cnt]
 ```
 
 ### 2-11) Convert BST to Greater Tree

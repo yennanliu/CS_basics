@@ -31,9 +31,10 @@ The number of nodes in the tree is in the range [1, 104].
 # IDEA : DFS + TREE
 class Solution(object):
     def findFrequentTreeSum(self, root):
-
+        """
         ### NOTE : this trick : get sum of sub tree
         # LC 663 Equal Tree Partition
+        """
         def get_sum(root):
             if not root:
                 return 0
@@ -67,6 +68,28 @@ class Solution(object):
         count = collections.Counter(vals)
         frequent = max(count.values())
         return [x for x, v in count.items() if v == frequent]
+
+# V0'
+# IDEA : DFS + COUNTER
+from collections import Counter
+class Solution(object):
+    def findFrequentTreeSum(self, root):
+        def helper(root, d):
+            if not root:
+                return 0
+            left = helper(root.left, d)
+            right = helper(root.right, d)
+            subtreeSum = left + right + root.val
+            d[subtreeSum] = d.get(subtreeSum, 0) + 1
+            return subtreeSum      
+        d = {}
+        helper(root, d)
+        mostFreq = 0
+        ans = []
+        print ("d = " + str(d))
+        _max_cnt = max(d.values())
+        ans = []
+        return [x for x in d if d[x] == _max_cnt]
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79435381
