@@ -46,6 +46,24 @@ Medium
 """
 
 # V0
+# IDEA : DFS + LC 508 get_sum
+class Solution(object):
+    def checkEqualTree(self, root):
+        def get_sum(root):
+            if not root:
+                return
+            s = root.val + get_sum(root.left) + get_sum(root.right)
+            res.append(s)
+            return s
+        # edge case
+        if not root:
+            return True
+        res = []
+        get_sum(root)
+        _sum = max(res)
+        return _sum // 2 in res
+
+# V0'
 # IDEA : DFS + cache
 class Solution(object):
     def checkEqualTree(self, root):
