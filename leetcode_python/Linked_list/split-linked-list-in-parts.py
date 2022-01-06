@@ -71,11 +71,16 @@ class Solution(object):
                  3) 0 < j < _cnt_elem - 1 (middle within sub linked list)
                 """
                 # NOTE THIS !!!
+                # NOTE we need keep if - else in BELOW ORDER !!
+                #  -> j == 0, j == _cnt_elem - 1, else
                 if j == 0:
                     res[i] = cur
-                if j == _cnt_elem - 1:
+                if j == _cnt_elem - 1:  # note this !!!
+                    # get next first
                     tmp = cur.next
+                    # point cur.next to None
                     cur.next = None
+                    # move cur to next (tmp) for op in next i (for i in range(k))
                     cur = tmp
                 else:
                     cur = cur.next
