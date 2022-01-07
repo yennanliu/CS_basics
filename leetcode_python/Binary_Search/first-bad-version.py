@@ -40,6 +40,25 @@ Constraints:
 # IDEA : binary search
 class Solution(object):
     def firstBadVersion(self, n):
+        # edge case
+        if n <= 1:
+            return n
+        l = 0
+        r = n
+        while r >= l:
+            mid = l + (r - l)//2
+            if isBadVersion(mid) == True and isBadVersion(mid-1) == False:
+                return mid
+            elif isBadVersion(mid) == False:
+                l = mid + 1
+            elif isBadVersion(mid) == True:
+                r = mid - 1
+        return -1
+
+# V0'
+# IDEA : binary search
+class Solution(object):
+    def firstBadVersion(self, n):
         left = 1 
         right = n
         while right > left + 1:
