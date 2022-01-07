@@ -317,6 +317,31 @@ class Solution:
 ### 2-5) Combinations
 ```python
 # LC 77. Combinations
+# V0
+# BACKTRACK
+class Solution(object):
+    def combine(self, n, k): 
+        def dfs(current, start):
+            if(len(current) == k):
+                """
+                Both of below approach are OK
+                
+                list(current) : transform current reference to list
+                current[:] : shallow copy
+                """
+                result.append(list(current))
+                return
+            
+            for i in range(start, n + 1):
+                current.append(i)
+                dfs(current, i + 1)
+                current.pop()
+            
+        result = []
+        dfs([], 1)
+        return result
+
+# V0'
 # IDEA : BACKTRACK
 class Solution:
     def combine(self, n, k):

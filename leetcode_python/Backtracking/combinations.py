@@ -33,7 +33,47 @@ Constraints:
 
 """
 
-# V0 
+# V0
+# BACKTRACK
+class Solution(object):
+    def combine(self, n, k): 
+        def dfs(current, start):
+            if(len(current) == k):
+                """
+                Both of below approach are OK
+                
+                list(current) : transform current reference to list
+                current[:] : shallow copy
+                """
+                result.append(list(current))
+                return
+            
+            for i in range(start, n + 1):
+                current.append(i)
+                dfs(current, i + 1)
+                current.pop()
+            
+        result = []
+        dfs([], 1)
+        return result
+
+# V0'
+# BACKTRACK
+class Solution:
+    def combine(self, n, k):
+        res=[]
+        def help(start, _len, ans):
+            if _len == k:
+                res.append(list(ans))
+                return
+            if start > n:
+                return
+            ans.append(start)
+            help(start + 1, _len + 1, ans)
+            ans.pop()
+            help(start + 1, _len, ans)
+        help(1,0,[])
+        return res
 
 # V1
 # https://leetcode.com/problems/combinations/discuss/1222840/Python-backtracking-simple-soln
@@ -63,12 +103,19 @@ class Solution(object):
         
         def dfs(current, start):
             if(len(current) == k):
-                result.append(current[:])
+                """
+                Both of below approach are OK
+                
+                list(current) : transform current reference to list
+                current[:] : shallow copy
+                """
+                result.append(list(current))
+                #result.append(current[:])
                 return
             
             for i in range(start, n + 1):
                 current.append(i)
-                dsf(current, i + 1)
+                dfs(current, i + 1)
                 current.pop()
             
         dfs([], 1)

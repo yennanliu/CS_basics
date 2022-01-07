@@ -61,10 +61,64 @@ Out[121]: [1, 2, 3, 4]
 # CASE 2) shallow copy : copy "parent" instance, but NOT sub instance
 #-------------------------------------------------
 
+# https://docs.python.org/zh-tw/3/tutorial/datastructures.html
+# form 1
+a.copy()
+
+# form 2
+a[:]
+
+# demo
+In [90]: x = [1,2,3]
+
+In [91]: y = x[:]
+
+In [92]: y
+Out[92]: [1, 2, 3]
+
+In [93]: x.append(4)
+
+In [94]: x
+Out[94]: [1, 2, 3, 4]
+
+In [96]: y
+Out[96]: [1, 2, 3]
+
+
+# LC 77 Combinations
+class Solution(object):
+    def combine(self, n, k):
+        result = []
+        
+        def dfs(current, start):
+            if(len(current) == k):
+                result.append(current[:])
+                return
+            
+            for i in range(start, n + 1):
+                current.append(i)
+                dfs(current, i + 1)
+                current.pop()
+            
+        dfs([], 1)
+        return result
 
 #-------------------------------------------------
 # CASE 3) deep copy : copy "parent" instance, AND sub instance
 #-------------------------------------------------
+
+In [103]: x = [1,2,3]
+
+In [104]: z = x
+
+In [105]: x.append(4)
+
+In [106]: x
+Out[106]: [1, 2, 3, 4]
+
+In [107]: z
+Out[107]: [1, 2, 3, 4]
+
 ```
 
 ### 1-1) Or logic for either existed element
