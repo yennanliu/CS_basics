@@ -34,7 +34,7 @@
 			- 776
 			- 525
 		- binary search
-			- 278  (not start)
+			- 278  (ok)
 			- 035  (not start)
 			- 875  (not start)
 		- =======
