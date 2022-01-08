@@ -49,7 +49,7 @@
 			- all remain (not start)
 		- greedy
 			- 646 (ok, but again !!)
-			- 435 (not start)
+			- 435 (ok!!!)
 			- 055 (not start)
 			- 134 (not start)
 			- 767 (not start)
