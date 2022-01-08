@@ -438,3 +438,63 @@ In [14]: x = x + [4]
 In [15]: x
 Out[15]: [1, 2, 3, 4]
 ```
+
+
+### 1-14) math `ceil`
+```python
+# https://www.runoob.com/python/func-number-ceil.html
+# https://www.runoob.com/python/func-number-ceil.html
+
+"""
+The method ceil(x) in Python returns a ceiling value of x 
+-> i.e., the SMALLEST integer GREATER than or EQUAL to x.
+"""
+In [9]:
+   ...: import math
+   ...:
+   ...: # prints the ceil using ceil() method
+   ...: print ("math.ceil(-23.11) : ", math.ceil(-23.11))
+   ...: print ("math.ceil(300.16) : ", math.ceil(300.16))
+   ...: print ("math.ceil(300.72) : ", math.ceil(300.72))
+math.ceil(-23.11) :  -23
+math.ceil(300.16) :  301
+math.ceil(300.72) :  301
+
+
+# LC 875. Koko Eating Bananas
+#...
+# Iterate over the piles and calculate hour_spent.
+# We increase the hour_spent by ceil(pile / middle)
+for pile in piles:
+    # python ceil : https://www.runoob.com/python/func-number-ceil.html
+    hour_spent += math.ceil(pile / middle)
+# Check if middle is a workable speed, and cut the search space by half.
+if hour_spent <= h:
+    right = middle
+else:
+    left = middle + 1
+#...
+```
+
+### 1-15) math `floor`
+```python
+# https://www.geeksforgeeks.org/floor-ceil-function-python/
+
+"""
+floor() method in Python returns the floor of x 
+-> i.e., the LARGEST integer NOT GREATER than x. 
+"""
+
+# This will import math module
+import math   
+  
+In [8]: import math
+   ...:
+   ...: # prints the ceil using floor() method
+   ...: print ("math.floor(-23.11) : ", math.floor(-23.11))
+   ...: print ("math.floor(300.16) : ", math.floor(300.16))
+   ...: print ("math.floor(300.72) : ", math.floor(300.72))
+math.floor(-23.11) :  -24
+math.floor(300.16) :  300
+math.floor(300.72) :  300
+```
