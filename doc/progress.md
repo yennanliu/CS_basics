@@ -19,6 +19,7 @@
 		- Premium questions : OK
 		- 725 (ok, but again!!!)
 	- LC (Jul 2020 - Dec 2020 (about 4 months before above)) (ing)
+		- https://leetcode.com/problems/erect-the-fence/ LC 587 (not start)
 	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
 	- ================ 
 	- LC general
@@ -33,6 +34,8 @@
 			- 525
 		- binary search
 			- 875  (ok, but again!)
+		- String
+			- 005 (again !!!)
 		- =======
 		- bit manipulation
 			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
@@ -111,6 +114,8 @@
 			- 278  (ok)
 			- 035  (ok)
 			- 875  (ok, but again!)
+		- String
+			- 005 (again !!!)
 		- =======
 		- bit manipulation
 			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary

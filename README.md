@@ -497,7 +497,7 @@
 ## String
 |  #  | Title           |  Solution       |  Time           | Space        | Difficulty    | Status, Note       | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-005| [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [python](./leetcode_python/String/longest-palindromic-substring.py)  | _O(n)_ | _O(n)_ |  Medium | 2 pointer, `Manacher's Algorithm`, `DP`, `UBER`, `amazon`, `fb` | AGAIN******** (4)
+005| [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [python](./leetcode_python/String/longest-palindromic-substring.py)  | _O(n)_ | _O(n)_ |  Medium | 2 pointer, `Manacher's Algorithm`, `DP`, `UBER`, `amazon`, `fb` | AGAIN******** (5)
 006| [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/) |  [python](./leetcode_python/String/zigzag-conversion.py) | _O(n)_ | _O(1)_      | Easy       || AGAIN (not start)
 008| [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/) | [python](./leetcode_python/String/string-to-integer-atoi.py)  | _O(n)_ | _O(1)_ | Easy|`regular expression`,`UBER`, `amazon`, `fb`| OK*** (4) 
 014| [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) |  [python](./leetcode_python/String/longest-common-prefix.py)  | _O(n * k)_   | _O(1)_  | Easy   |`good basic`| OK* 
@@ -512,7 +512,7 @@
 161| [One Edit Distance](https://leetcode.com/problems/one-edit-distance/) |  [python](./leetcode_python/String/one-edit-distance.py)  | _O(m + n)_ | _O(1)_  | Medium  |🔒, recursion, string,  , `fb`| AGAIN****** (4)(AGAIN)
 165| [Compare Version Numbers](https://leetcode.com/problems/compare-version-numbers/) |  [python](./leetcode_python/String/compare-version-numbers.py) | _O(n)_ | _O(1)_ |Easy|good basic, string,`amazon`| AGAIN* (2) 
 186| [Reverse Words in a String II](https://leetcode.com/problems/reverse-words-in-a-string-ii/) | [python](./leetcode_python/String/reverse-words-in-a-string-ii.py) | _O(n)_ | _O(1)_ | Medium   | LC 151, LC 557, 🔒, `M$`,`UBER`, `amazon` | AGAIN*  (3)
-242| [Valid Anagram](https://leetcode.com/problems/valid-anagram/)| [python](./leetcode_python/String/valid-anagram.py) | _O(n)_ | _O(1)_  | Easy | LintCode,`amazon`,`fb`|OK 
+242| [Valid Anagram](https://leetcode.com/problems/valid-anagram/)| [python](./leetcode_python/String/valid-anagram.py) | _O(n)_ | _O(1)_  | Easy | LintCode,`amazon`,`fb`|OK
 271| [Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings/) | [python](./leetcode_python/String/encode-and-decode-strings.py)  | _O(n)_ | _O(1)_ | Medium |decode-encode, design, check `# 394 Decode String` ,🔒, `google`| AGAIN** (2) 
 306| [Addictive Number](https://leetcode.com/problems/additive-number/) | [python](./leetcode_python/String/additive-number.py)  | _O(n^3)_ | _O(n)_ | Medium    | | AGAIN (not start*)
 383| [Ransom Note](https://leetcode.com/problems/ransom-note/) |[python](./leetcode_python/String/ransom-note.py) | _O(n)_ | _O(1)_ | Easy   | EPI, apple | OK*
@@ -1003,7 +1003,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 892 | [Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/)  | [C++](./C++/surface-area-of-3d-shapes.cpp) [Python](./Python/surface-area-of-3d-shapes.py) | _O(n^2)_| _O(1)_| Easy  || 
-0587 | [Erect the Fence](https://leetcode.com/problems/erect-the-fence/)  | [C++](./C++/erect-the-fence.cpp) [Python](./Python/erect-the-fence.py) | _O(nlogn)_| _O(n)_| Hard           || Convex Hull, `Monotone Chain` | 
+0587 | [Erect the Fence](https://leetcode.com/problems/erect-the-fence/)  | [Python](./leetcode_python/Geometry/erect-the-fence.py) | _O(nlogn)_| _O(n)_| Hard|| complex, Convex Hull, `Monotone Chain` , `amazon`| not start
 0892 | [Surface Area of 3D Shapes](https://leetcode.com/problems/)||
 
 
