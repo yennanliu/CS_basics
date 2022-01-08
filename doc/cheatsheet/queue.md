@@ -10,6 +10,7 @@
 - Priority queue
 - Monotonic queue
     - LC 239
+- double-ended queue (deque)
 
 ### 0-2) Pattern
 
@@ -124,6 +125,16 @@ class MonotonicQueue{
 ### 1-3) Double-ended Queue
 ```python
 # https://pymotw.com/2/collections/deque.html
+"""
+A double-ended queue, or deque, 
+supports adding and removing elements from either end. 
+The more commonly used stacks and queues are degenerate forms of deques, 
+where the inputs and outputs are restricted to a single end.
+"""
+
+#------------
+# basic op
+#------------
 import collections
 d = collections.deque('abcdefg')
 print (d)
@@ -134,7 +145,49 @@ print ('pop :' , d.pop())
 print (d)
 print ('pop_left:' , d.popleft())
 print (d)
+
+#------------
+# populating
+#------------
+# -> A deque can be populated from either end, termed “left” and “right” in the Python implementation.
+
+In [18]: b = collections.deque()
+    ...: print (b)
+deque([])
+
+In [19]: b.extend('abcdefg') # same as collections.deque('abcdefg')
+    ...: print (b)
+deque(['a', 'b', 'c', 'd', 'e', 'f', 'g'])
+
+In [20]: b.append('h')
+    ...: print (b)
+deque(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
+
+In [21]: b.extendleft('0')
+    ...: print (b)
+deque(['0', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
+
+
+#------------
+# consuming
+#------------
+
+In [23]: import collections
+    ...: d = collections.deque('abcdefg')
+    ...: print (d)
+deque(['a', 'b', 'c', 'd', 'e', 'f', 'g'])
+
+In [24]:
+    ...: d.pop() # d.pop(-1)
+    ...: print (d)
+    ...:
+deque(['a', 'b', 'c', 'd', 'e', 'f'])
+
+In [25]: d.popleft()
+    ...: print (d)
+deque(['b', 'c', 'd', 'e', 'f'])
 ```
+
 ### 1-4) Stack simulate Queue
 
 ## 2) LC Example
