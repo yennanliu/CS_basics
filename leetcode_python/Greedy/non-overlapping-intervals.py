@@ -35,9 +35,32 @@ intervals[i].length == 2
 
 # V0
 # IDEA : 2 POINTERS + sorting + intervals
+# TODO : make it general : (sort by x[0] or x[1] and the op)
+class Solution(object):
+    def eraseOverlapIntervals(self, intervals):
+        ### NOTE THIS !!!
+        intervals.sort(key = lambda x : x[1])
+        #print ("intervals = " + str(intervals))
+        res = []
+        cnt = 0
+        last = intervals[0]
+        # edge case
+        if not intervals:
+            return 0
+        for i in range(1, len(intervals)):
+            if intervals[i][0] < last[1]:
+                cnt += 1
+            else:
+                last = intervals[i]
+                last[1] = max(intervals[i][1], last[1])
+        return cnt
+
+# V0
+# IDEA : 2 POINTERS + sorting + intervals
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
         if not intervals: return 0
+        ### NOTE THIS !!!
         intervals.sort(key = lambda x : x[0])
         #intervals.sort(key = lambda x : [x[0],x[1]])  # this one is OK as well
         """

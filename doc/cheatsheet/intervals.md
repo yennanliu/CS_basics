@@ -23,6 +23,24 @@
 ### 0-2) Pattern
 ```python
 # python
+
+#-----------
+# V1
+#-----------
+# LC 435, 646
+intervals = [[1,2],[2,3],[3,4],[1,3]]
+last = intervals[0]
+intervals.sort(key = lambda x : x[1])
+cnt = 0
+for i in range(len(intervals)):
+    if some_condition:
+        do_sth
+    else:
+        do_sth
+
+#-----------
+# V2
+#-----------
 def intervalsPattern(intervals):
     if not points: return 0
 
