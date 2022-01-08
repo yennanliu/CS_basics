@@ -9,6 +9,8 @@
 - Types
     - Merge intervals
     - Overlap intervals
+    - Non-overlap intervals
+    - Max length of pair chain
     - Courses problems
     - Meeting room problems
 
