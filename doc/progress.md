@@ -34,6 +34,7 @@
 			- 525
 		- binary search
 			- 875  (ok, but again!)
+			- 658
 		- String
 			- 005 (again !!!)
 		- =======
@@ -68,6 +69,8 @@
 			- 969 (not start)
 		- BFS
 			- 210 (not start)
+		- DFS
+			- 128
 		- SQL
 	- System Design
 		- Tinder design

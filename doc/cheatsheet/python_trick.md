@@ -206,7 +206,7 @@ r = s.frequencySort(x)
 ### 1-6) Insert into array (in place)
 ```python
 
-# pattern
+# syntax : 
 # arr.insert(<index>,<value>)
 In [12]: x = [1,2,3]
     ...: x.insert(2,77)
@@ -497,4 +497,20 @@ In [8]: import math
 math.floor(-23.11) :  -24
 math.floor(300.16) :  300
 math.floor(300.72) :  300
+```
+
+### 1-15) for loop dict
+```python
+d = {'a':1, 'b':2, 'c': 3}
+# loop over key, value
+for k, v in d.items():
+    print (k, v)
+
+# loop over key
+for k in d.keys():
+    print (k)
+
+# loop over value
+for v in d.values():
+    print (v)
 ```
