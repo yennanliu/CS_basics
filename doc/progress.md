@@ -1,5 +1,79 @@
 # Progress
 
+# 2022-01-08
+- DOING:
+	- LC (appl_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
+	- ================
+	- LC review (amz_)
+		- ref: https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
+		- programming
+			- review
+			- (normal order)
+			- (pdf : p.10)
+		- ==========
+			- fast review (inverse order)
+			- --> Breadth-First-Search
+	- ================
+	- LC (amz_, July 2020 - July 2021) (OK)
+		- Premium questions : OK
+		- 725 (ok, but again!!!)
+	- LC (Jul 2020 - Dec 2020 (about 4 months before above)) (ing)
+	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
+	- ================ 
+	- LC general
+		- **back track**
+			- 077 (AGAIN !!!!)
+			- 046
+		- Tree
+			- 662 (*not start*)
+			- 662
+			- 508
+			- 776
+			- 525
+		- binary search
+			- 875  (ok, but again!)
+		- =======
+		- bit manipulation
+			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
+		- union find
+		- quick sort
+		- intervals
+			- 57 (again !!!)
+			- 56 (again !!!)
+		- design
+			- all remain (not start)
+		- greedy
+			- 646 (not start)
+			- 055 (not start)
+			- 134 (not start)
+			- 435 (not start)
+			- 767 (not start)
+		- hashmap
+			- 036 (not start)
+		- heap
+			- 355 (not start)
+			- 703 (not start)
+			- 264 (not start)
+			- 295 (not start)
+		- graph
+			- 547 (not start)
+		- stack
+			- 227 (not start)
+			- 224 (not start)
+		- sort
+			- 969 (not start)
+		- BFS
+			- 210 (not start)
+		- SQL
+	- System Design
+		- Tinder design
+	- algorithm book (labu)
+		- note
+			- p.349
+	- system design book - an insider's guide (GOTOP)
+		- p.171 - p.181
+
 # 2022-01-07
 - DOING:
 	- LC (appl_)
@@ -35,8 +109,8 @@
 			- 525
 		- binary search
 			- 278  (ok)
-			- 035  (not start)
-			- 875  (not start)
+			- 035  (ok)
+			- 875  (ok, but again!)
 		- =======
 		- bit manipulation
 			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary

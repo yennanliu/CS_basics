@@ -37,16 +37,69 @@ piles.length <= h <= 109
 """
 # V0 
 
-# V1 
+# V1
+# IDEA : BINARY SEARCH
+# https://leetcode.com/problems/koko-eating-bananas/solution/
+class Solution:
+    def minEatingSpeed(self, piles, h):  
+        # Initalize the left and right boundaries     
+        left = 1
+        right = max(piles)
+        
+        while left < right:
+            # Get the middle index between left and right boundary indexes.
+            # hour_spent stands for the total hour Koko spends.
+            middle = (left + right) // 2            
+            hour_spent = 0
+            
+            # Iterate over the piles and calculate hour_spent.
+            # We increase the hour_spent by ceil(pile / middle)
+            for pile in piles:
+                # python ceil : https://www.runoob.com/python/func-number-ceil.html
+                hour_spent += math.ceil(pile / middle)
+            
+            # Check if middle is a workable speed, and cut the search space by half.
+            if hour_spent <= h:
+                right = middle
+            else:
+                left = middle + 1
+        
+        # Once the left and right boundaries coincide, we find the target value,
+        # that is, the minimum workable eating speed.
+        return right
+
+# V1'
+# IDEA : BRUTE FORCE
+# https://leetcode.com/problems/koko-eating-bananas/solution/
+class Solution:
+    def minEatingSpeed(self, piles, h):
+        #Start at an eating speed of 1.
+        speed = 1
+
+        while True:
+            # hour_spent stands for the total hour Koko spends with 
+            # the given eating speed.
+            hour_spent = 0
+
+            # Iterate over the piles and calculate hour_spent.
+            # We increase the hour_spent by ceil(pile / speed)
+            for pile in piles:
+                hour_spent += math.ceil(pile / speed)    
+
+            # Check if Koko can finish all the piles within h hours,
+            # If so, return speed. Otherwise, let speed increment by
+            # 1 and repeat the previous iteration.                
+            if hour_spent <= h:
+                return speed
+            else:
+                speed += 1
+
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82716042
-# IDEA : BINARY SEARCH 
+# IDEA : BINARY SEARCH
+# python 3
 class Solution:
     def minEatingSpeed(self, piles, H):
-        """
-        :type piles: List[int]
-        :type H: int
-        :rtype: int
-        """
         minSpeed, maxSpeed = 1, max(piles)
         while minSpeed <= maxSpeed:
             speed = minSpeed + (maxSpeed - minSpeed) // 2
@@ -59,7 +112,7 @@ class Solution:
                 minSpeed = speed + 1
         return minSpeed
 
-# V1' 
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82716042
 # IDEA : BINARY SEARCH 
 class Solution(object):
@@ -81,7 +134,7 @@ class Solution(object):
             else:
                 r = K
         return l
-        
+
 # V2 
 # Time:  O(nlogr)
 # Space: O(1)
