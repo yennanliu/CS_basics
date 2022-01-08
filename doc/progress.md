@@ -48,10 +48,10 @@
 		- design
 			- all remain (not start)
 		- greedy
-			- 646 (not start)
+			- 646 (ok, but again !!)
+			- 435 (not start)
 			- 055 (not start)
 			- 134 (not start)
-			- 435 (not start)
 			- 767 (not start)
 		- hashmap
 			- 036 (not start)

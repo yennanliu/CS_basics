@@ -33,9 +33,28 @@ n == pairs.length
 
 """
 
+# V0
+# IDEA : GREEDY + sorting + 2 pointers
+# IDEA :
+# -> SORT ON "1st element" (0 index)
+# -> define i pointer, cnt
+# -> loop over pairts
+# -> if j == 0 or pairs[j][0] > pairs[i][1]
+#    -> make i = j, and cnt += 1
+class Solution(object):
+    def findLongestChain(self, pairs):
+        pairs.sort(key=lambda x: x[1])
+        cnt = 0
+        i = 0
+        for j in range(len(pairs)):
+            if j == 0 or pairs[j][0] > pairs[i][1]:
+                i = j
+                cnt += 1
+        return cnt
+
 # V0 
 # IDEA : GREEDY + sorting
-# ->  we sort on pair's 1st element -> possible cases that we can get sub pairs with max length with the needed conditions
+# ->  we sort on pair's 1st element (0 index) -> possible cases that we can get sub pairs with max length with the needed conditions
 # ->  we need to find the "max length" of "continous or non-continous" sub pairs (with condition)
 #      -> so start from the "sorted 1st pair" CAN ALWAYS MAKE US GET THE MAX LENGTH of sub pairs with the condition ( we define a pair (c, d) can follow another pair (a, b) if and only if b < c. Chain of pairs can be formed in this fashion.)
 ##########
