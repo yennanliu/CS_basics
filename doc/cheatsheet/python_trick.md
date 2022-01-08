@@ -107,18 +107,36 @@ class Solution(object):
 # CASE 3) deep copy : copy "parent" instance, AND sub instance
 #-------------------------------------------------
 
-In [103]: x = [1,2,3]
+import copy
 
-In [104]: z = x
+In [25]: import copy
+    ...:
+    ...: x = [1,2,3]
+    ...: z =  copy.deepcopy(x)
+    ...:
+    ...: x
+Out[25]: [1, 2, 3]
 
-In [105]: x.append(4)
+In [26]:
 
-In [106]: x
-Out[106]: [1, 2, 3, 4]
+In [26]: z
+Out[26]: [1, 2, 3]
 
-In [107]: z
-Out[107]: [1, 2, 3, 4]
+In [27]: x.append(4)
 
+In [28]: x
+Out[28]: [1, 2, 3, 4]
+
+In [29]: z
+Out[29]: [1, 2, 3]
+
+In [31]: z.append(5)
+
+In [32]: z
+Out[32]: [1, 2, 3, 5]
+
+In [33]: x
+Out[33]: [1, 2, 3, 4]
 ```
 
 ### 1-1) Or logic for either existed element
