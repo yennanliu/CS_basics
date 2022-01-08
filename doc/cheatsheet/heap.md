@@ -1,4 +1,12 @@
 # Heap
+- a special `completed binary tree`
+- definition : given a tree, if P is C's parent node. iF P always `<=` or `>=` C.
+- types
+    - min heap
+        - given a tree, if P is C's parent node. iF P always `<=` C.
+    - max heap
+    - given a tree, if P is C's parent node. iF P always `>=` C.
+- was invented for `heap sort`
 - a heap is a specialized tree-based data structure which is essentially an almost complete tree that satisfies the heap property:
     - in a max heap, for any given node C, if P is a parent node of C, then the key (the value) of P is greater than or equal to the key of C. In a min heap, the key of P is less than or equal to the key of C.[2] The node at the "top" of the heap (with no parents) is called the root node.
 
@@ -14,12 +22,49 @@
 
 ## 1) General form
 
-### 1-1) Basic OP
-- find_max
+### 1-0) Basic OP
+- build
 - insert
+- update
+- get
+- delete
+- heapfify : transform list to heap
 - extract_max
 - delete_max
 - replace
+- find_max
+
+### 1-1) heapq (heap queue) (python api)
+- https://docs.python.org/zh-tw/3/library/heapq.html
+- Note : in py implementation, `index start from 0`
+- `pop()` will return `min` element (instead of max element)
+
+```python
+In [89]: from heapq import heappush, heappop
+    ...: x = []
+    ...: heappush(x,5)
+    ...: print(x)
+    ...:
+[5]
+
+In [90]: heappush(x,1)
+    ...: print(x)
+[1, 5]
+
+In [91]:
+
+In [91]: heappush(x,2)
+    ...: print(x)
+[1, 5, 2]
+
+# heappop : can pop current MINIMUM element from heap
+In [92]: for _ in x:
+    ...:     tmp = heappop(x)
+    ...:     print (tmp)
+    ...:
+1
+2
+```
 
 ### 1-2) Heap VS Stack VS Queue
 
@@ -35,7 +80,6 @@ def heapsort(iterable):
 
 # heapsort([1, 3, 5, 7, 9, 2, 4, 6, 8, 0])
 # >>> [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
 ``` 
 
 ### 1-4) Priority Queue
