@@ -50,7 +50,7 @@
 		- greedy
 			- 646 (ok, but again !!)
 			- 435 (ok!!!)
-			- 055 (not start)
+			- 055 (ok, but again !!)
 			- 134 (not start)
 			- 767 (not start)
 		- hashmap

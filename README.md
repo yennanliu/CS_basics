@@ -966,7 +966,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note   | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 011| [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)|[Python](./leetcode_python/Greedy/container-with-most-water.py)  | _O(n)_ | _O(1)_ | Medium |good basics, `two pointers`,`fb`, amazon|  OK*** (3) (but again !!)
-055| [Jump Game](https://leetcode.com/problems/jump-game/)     |[Python](./leetcode_python/Greedy/jump-game.py)  | _O(n)_ | _O(1)_| Medium|good trick, Greedy, DP, `amazon`| AGAIN****** (4)
+055| [Jump Game](https://leetcode.com/problems/jump-game/)     |[Python](./leetcode_python/Greedy/jump-game.py)  | _O(n)_ | _O(1)_| Medium|good trick, Greedy, DP, `amazon`| AGAIN******** (5)
 122| [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)| [Python](./leetcode_python/Greedy/best-time-to-buy-and-sell-stock-ii.py) | _O(n)_ | _O(1)_ | Easy |compare with `#309 Best Time to Buy and Sell Stock with Cooldown `, `#714 Best Time to Buy and Sell Stock with Transaction Fee`, `amazon`| OK* (2)
 134| [Gas Station](https://leetcode.com/problems/gas-station/)| [Python](./leetcode_python/Greedy/gas-station.py)   | _O(n)_ | _O(1)_ | Medium|greedy,`amazon`| AGAIN**** (3)
 376| [Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/)| [Python](./leetcode_python/Greedy/wiggle-subsequence.py)   | _O(n)_          | _O(1)_       | Medium      || AGAIN* 
