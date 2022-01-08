@@ -106,7 +106,43 @@ class Solution(object):
         return cnt
 ```
 
-### 2-2) Minimum Number of Arrows to Burst Balloons
+### 2-2) Maximum Length of Pair Chain
+```python
+# LC 646 Maximum Length of Pair Chain
+# V0
+# IDEA : GREEDY + sorting + 2 pointers
+# IDEA :
+# -> SORT ON "1st element" (0 index)
+# -> define i pointer, cnt
+# -> loop over pairts
+# -> if j == 0 or pairs[j][0] > pairs[i][1]
+#    -> make i = j, and cnt += 1
+class Solution(object):
+    def findLongestChain(self, pairs):
+        pairs.sort(key=lambda x: x[1])
+        cnt = 0
+        i = 0
+        for j in range(len(pairs)):
+            if j == 0 or pairs[j][0] > pairs[i][1]:
+                i = j
+                cnt += 1
+        return cnt
+
+# V0'
+class Solution(object):
+    def findLongestChain(self, pairs):
+        pairs = sorted(pairs, key=lambda x : x[1])
+        ### NOTICE HERE
+        currTime, ans = float('-inf'), 0
+        for x, y in pairs:
+            ### NOTICE HERE
+            if currTime < x:
+                currTime = y
+                ans += 1
+        return ans
+```
+
+### 2-3) Minimum Number of Arrows to Burst Balloons
 ```python
 # 452 Minimum Number of Arrows to Burst Balloons
 # https://blog.csdn.net/MebiuW/article/details/53096708
@@ -124,7 +160,7 @@ class Solution(object):
         return ans
 ```
 
-### 2-3) Insert Interval
+### 2-4) Insert Interval
 ```python
 # LC 57 Insert Interval
 # V0
@@ -149,7 +185,7 @@ class Solution:
         return merged
 ```
 
-### 2-4) Merge Intervals
+### 2-5) Merge Intervals
 ```python
 # LC 56. Merge Intervals
 # V0
@@ -164,20 +200,4 @@ class Solution:
             else:
                 result[-1][1] = max(result[-1][1], interval[1])
         return result
-```
-
-### 2-5) Maximum Length of Pair Chain
-```python
-# LC 646 Maximum Length of Pair Chain
-class Solution(object):
-    def findLongestChain(self, pairs):
-        pairs = sorted(pairs, key=lambda x : x[1])
-        ### NOTICE HERE
-        currTime, ans = float('-inf'), 0
-        for x, y in pairs:
-            ### NOTICE HERE
-            if currTime < x:
-                currTime = y
-                ans += 1
-        return ans
 ```
