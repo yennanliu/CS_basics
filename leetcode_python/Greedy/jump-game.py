@@ -28,13 +28,22 @@ Constraints:
 
 """
 
-# V0 
+# V0
 class Solution(object):
     def canJump(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: bool
-        """
+        # edge case
+        if not nums:
+            return True
+        cur = 0
+        for i in range(len(nums)):
+            if cur < i:
+                return False
+            cur = max(cur, i + nums[i])
+        return True
+
+# V0'
+class Solution(object):
+    def canJump(self, nums):
         reach = 0
         for i, num in enumerate(nums):
             if i > reach:

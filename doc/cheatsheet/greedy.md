@@ -106,15 +106,18 @@ class Solution(object):
 ### 2-2) Jump Game
 ```python
 # 055 Jump Game
+# V0
 class Solution(object):
     def canJump(self, nums):
-        reach = 0
-        for i, num in enumerate(nums):
-            if i > reach:
+        # edge case
+        if not nums:
+            return True
+        cur = 0
+        for i in range(len(nums)):
+            if cur < i:
                 return False
-            reach = max(reach, i + num)
+            cur = max(cur, i + nums[i])
         return True
-
 ```
 ### 2-3) Best Time to Buy and Sell Stock II
 ```python
