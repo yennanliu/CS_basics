@@ -59,10 +59,7 @@ class Solution(object):
                 d[diff].append(arr[i])
         keys = list(d.keys())
         keys.sort()
-        print ("d = " + str(d))
-        print ("keys = " + str(keys))
         for key in keys:
-            print (key)
             if len(res) >= k:
                 break 
             res += d[key]
