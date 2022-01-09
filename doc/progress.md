@@ -20,6 +20,7 @@
 		- 725 (ok, but again!!!)
 	- LC (Jul 2020 - Dec 2020 (about 4 months before above)) (ing)
 	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
+		- https://leetcode.com/problems/shortest-path-to-get-all-keys/ LC 864 (not start)
 	- ================ 
 	- LC general
 		- **back track**
@@ -50,6 +51,7 @@
 			- 767 (not start)
 		- hashmap
 			- 036 (not start)
+			- 1010 (not start)
 		- heap
 			- 355 (not start)
 			- 703 (not start)
