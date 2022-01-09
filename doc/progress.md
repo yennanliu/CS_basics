@@ -18,9 +18,10 @@
 	- LC (amz_, July 2020 - July 2021) (OK)
 		- Premium questions : OK
 		- 725 (ok, but again!!!)
-	- LC (Jul 2020 - Dec 2020 (about 4 months before above)) (ing)
+	- LC (Jul 2020 - Dec 2020 (about 4 months before above)) (OK)
+			- https://leetcode.com/problems/shortest-path-to-get-all-keys/ LC 864 (not start)
+		- Premium questions : (ing)
 	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
-		- https://leetcode.com/problems/shortest-path-to-get-all-keys/ LC 864 (not start)
 	- ================ 
 	- LC general
 		- **back track**
@@ -32,6 +33,7 @@
 			- 508
 			- 776
 			- 525
+			- 572
 		- binary search
 			- 658
 		- String
@@ -49,6 +51,7 @@
 		- greedy
 			- 134 (not start)
 			- 767 (not start)
+			- 621
 		- hashmap
 			- 036 (not start)
 			- 1010 (not start)
