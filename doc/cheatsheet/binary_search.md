@@ -405,3 +405,24 @@ class Solution:
                 minSpeed = speed + 1
         return minSpeed
 ```
+
+### 2-10) Find K Closest Elements
+```python
+# LC 658. Find K Closest Elements
+# V1'
+# https://blog.csdn.net/fuxuemingzhu/article/details/82968136
+# IDEA : TWO POINTERS 
+class Solution(object):
+    def findClosestElements(self, arr, k, x):
+        # since the array already sorted, arr[-1] must be the biggest one,
+        # while arr[0] is the smallest one
+        # so if the distance within arr[-1],  x >  arr[0],  x
+        # then remove the arr[-1] since we want to keep k elements with smaller distance,
+        # and vice versa (remove arr[0]) 
+        while len(arr) > k:
+            if x - arr[0] <= arr[-1] - x:
+                arr.pop()
+            else:
+                arr.pop(0)
+        return arr
+```
