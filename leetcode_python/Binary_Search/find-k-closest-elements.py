@@ -43,35 +43,32 @@ class Solution(object):
         return arr
 
 # V0'
-# TODO : validate it
-# class Solution(object):
-#     def findClosestElements(self, arr, k, x):
-#         # edge case
-#         if k == 0 or not arr:
-#             return []
-#         #_idx = arr.index(x)
-#         res = []
-#         d = {}
-#         for i in range(len(arr)):
-#             diff = abs(arr[i]-x)
-#             if diff not in d:
-#                 d[diff] = [arr[i]]
-#             else:
-#                 d[diff].append(arr[i])
-#
-#         #d.sort(key = lambda x : x.keys())
-#         keys = list(d.keys())
-#         keys.sort()
-#         print ("d = " + str(d))
-#         print ("keys = " + str(keys))
-#         for key in keys:
-#             print (key)
-#             if len(res) >= k:
-#                 break 
-#             res += d[key]
-#         ans=res[:k]
-#         ans.sort()
-#         return ans
+# IDEA : HASHMAP + brute force
+class Solution(object):
+    def findClosestElements(self, arr, k, x):
+        # edge case
+        if k == 0 or not arr:
+            return []
+        res = []
+        d = {}
+        for i in range(len(arr)):
+            diff = abs(arr[i]-x)
+            if diff not in d:
+                d[diff] = [arr[i]]
+            else:
+                d[diff].append(arr[i])
+        keys = list(d.keys())
+        keys.sort()
+        print ("d = " + str(d))
+        print ("keys = " + str(keys))
+        for key in keys:
+            print (key)
+            if len(res) >= k:
+                break 
+            res += d[key]
+        ans=res[:k]
+        ans.sort()
+        return ans
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82968136
