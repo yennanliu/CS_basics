@@ -1,3 +1,36 @@
+"""
+
+658. Find K Closest Elements
+Medium
+
+Given a sorted integer array arr, two integers k and x, return the k closest integers to x in the array. The result should also be sorted in ascending order.
+
+An integer a is closer to x than an integer b if:
+
+|a - x| < |b - x|, or
+|a - x| == |b - x| and a < b
+ 
+
+Example 1:
+
+Input: arr = [1,2,3,4,5], k = 4, x = 3
+Output: [1,2,3,4]
+Example 2:
+
+Input: arr = [1,2,3,4,5], k = 4, x = -1
+Output: [1,2,3,4]
+ 
+
+Constraints:
+
+1 <= k <= arr.length
+1 <= arr.length <= 104
+arr is sorted in ascending order.
+-104 <= arr[i], x <= 104
+
+
+"""
+
 # V0 
 # IDEA : TWO POINTERS
 class Solution(object):
@@ -9,17 +42,42 @@ class Solution(object):
                 arr.pop(0)
         return arr
 
+# V0'
+# TODO : validate it
+# class Solution(object):
+#     def findClosestElements(self, arr, k, x):
+#         # edge case
+#         if k == 0 or not arr:
+#             return []
+#         #_idx = arr.index(x)
+#         res = []
+#         d = {}
+#         for i in range(len(arr)):
+#             diff = abs(arr[i]-x)
+#             if diff not in d:
+#                 d[diff] = [arr[i]]
+#             else:
+#                 d[diff].append(arr[i])
+#
+#         #d.sort(key = lambda x : x.keys())
+#         keys = list(d.keys())
+#         keys.sort()
+#         print ("d = " + str(d))
+#         print ("keys = " + str(keys))
+#         for key in keys:
+#             print (key)
+#             if len(res) >= k:
+#                 break 
+#             res += d[key]
+#         ans=res[:k]
+#         ans.sort()
+#         return ans
+
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82968136
 # IDEA : HEAP 
 class Solution(object):
     def findClosestElements(self, arr, k, x):
-        """
-        :type arr: List[int]
-        :type k: int
-        :type x: int
-        :rtype: List[int]
-        """
         N = len(arr)
         sub = [((arr[i] - x) ** 2, i) for i in range(N)]
         heapq.heapify(sub)
@@ -30,12 +88,6 @@ class Solution(object):
 # IDEA : TWO POINTERS 
 class Solution(object):
     def findClosestElements(self, arr, k, x):
-        """
-        :type arr: List[int]
-        :type k: int
-        :type x: int
-        :rtype: List[int]
-        """
         # since the array already sorted, arr[-1] must be the biggest one,
         # while arr[0] is the smallest one
         # so if the distance within arr[-1],  x >  arr[0],  x
@@ -53,12 +105,6 @@ class Solution(object):
 # IDEA : BINARY SEARCH 
 class Solution(object):
     def findClosestElements(self, arr, k, x):
-        """
-        :type arr: List[int]
-        :type k: int
-        :type x: int
-        :rtype: List[int]
-        """
         left = 0
         right = len(arr) - k
         while left < right:
