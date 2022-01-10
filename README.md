@@ -1043,6 +1043,7 @@
 1244| [Design A Leaderboard](https://leetcode.com/problems/design-a-leaderboard/) | [C++](./C++/design-a-leaderboard.cpp) [Python](./leetcode_python/Design/design-a-leaderboard.py) | ctor: _O(1)_<br> add: _O(1)_<br> top: _O(n)_<br> reset: _O(1)_ | _O(n)_ | Medium | | 
 1268| [Search Suggestions System](https://leetcode.com/problems/search-suggestions-system/) | [C++](./C++/search-suggestions-system.cpp) [Python](./eetcode_python/Design/search-suggestions-system.py) | ctor: _O(n * l)_<br> suggest: _O(l^2)_ | _O(t)_ | Medium |Trie |
 1286| [Iterator for Combination](https://leetcode.com/problems/iterator-for-combination/) | [C++](./C++/iterator-for-combination.cpp) [Python](./eetcode_python/Design/iterator-for-combination.py) | _O(k)_ | _O(k)_ | Medium | Stack |
+1429| [First Unique Number](https://leetcode.com/problems/first-unique-number/) |[Python](./leetcode_python/Design/first-unique-number.py) | _O(k)_ | _O(k)_ | Medium | good trick, heap, `amazon` | AGAIN*** (not start)
 1500| [Design a File Sharing System](https://leetcode.com/problems/design-a-file-sharing-system/) | [Python](./leetcode_python/Design/design-a-file-sharing-system.py) | _O(k)_ | _O(k)_ | Medium |design, hashmap | AGAIN*** (not start)
 1670| [Design Front Middle Back Queue](https://leetcode.com/problems/design-front-middle-back-queue/) | [Python](./leetcode_python/Design/design-front-middle-back-queue.py) | _O(k)_ | _O(k)_ | Medium | good basic, Design, `amazon`| AGAIN** (1) (not start)
 
