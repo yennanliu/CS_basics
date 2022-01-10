@@ -33,7 +33,6 @@ def dfs_recursion(G,s,S=None,res=None):
 #     'e':{'f'},
 #     'f':{}
 # }
-
 # res=dfs(G,'a')
 # print(res)
 
@@ -62,5 +61,3 @@ def dfs_iteration(G,s):
 
 # res=list(dfs(G,'a'))
 # print(res) 
-
-

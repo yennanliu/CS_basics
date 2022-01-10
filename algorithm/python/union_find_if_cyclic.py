@@ -2,14 +2,14 @@
 # ALGORITHM DEMO : UNION FIND CYCLIC
 #################################################################
 
-
 # https://www.geeksforgeeks.org/union-find/
-
 # Python Program for union-find algorithm to detect cycle in a undirected graph 
 # we have one egde for any two vertex i.e 1-2 is either 1-2 or 2-1 but not both 
 
-from collections import defaultdict 
+# V0 
 
+# V1
+from collections import defaultdict 
 #This class represents a undirected graph using adjacency list representation 
 class Graph: 
 
@@ -58,14 +58,12 @@ class Graph:
 
 
 # Create a graph given in the above diagram 
-g = Graph(3) 
-g.addEdge(0, 1) 
-g.addEdge(1, 2) 
-g.addEdge(2, 0) 
+# g = Graph(3) 
+# g.addEdge(0, 1) 
+# g.addEdge(1, 2) 
+# g.addEdge(2, 0) 
 
-if g.isCyclic(): 
-    print ("Graph contains cycle")
-else : 
-    print ("Graph does not contain cycle ")
-
-#This code is contributed by Neelam Yadav 
+# if g.isCyclic(): 
+#     print ("Graph contains cycle")
+# else : 
+#     print ("Graph does not contain cycle ")

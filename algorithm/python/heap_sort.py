@@ -45,7 +45,7 @@ def heap_sort(unsorted):
 #         raw_input          # Python 2
 #     except NameError:
 #         raw_input = input  # Python 3
-
+#
 #     user_input = raw_input('Enter numbers separated by a comma:\n').strip()
 #     unsorted = [int(item) for item in user_input.split(',')]
 #     print(heap_sort(unsorted))
