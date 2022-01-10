@@ -25,7 +25,34 @@ Constraints:
 """
 
 # V0
-# IDEA : SORTING
+# IDEA : SORTING + 2 POINTERS
+class Solution(object):
+    def longestConsecutive(self, nums):
+        # edge case
+        if not nums:
+            return 0
+
+        nums.sort()
+        cur_len = 1
+        max_len = 1
+        #print ("nums = " + str(nums))
+
+        # NOTE : start from idx = 1
+        for i in range(1, len(nums)):
+            ### NOTE : start from nums[i] != nums[i-1] case
+            if nums[i] != nums[i-1]:
+                ### NOTE : if nums[i] == nums[i-1]+1 : cur_len += 1
+                if nums[i] == nums[i-1]+1:
+                    cur_len += 1
+                ### NOTE : if nums[i] != nums[i-1]+1 : get max len, and reset cur_lent as 1
+                else:
+                    max_len = max(max_len, cur_len)
+                    cur_len = 1
+        # check max len again
+        return max(max_len, cur_len)
+
+# V0'
+# IDEA : SORTING + 2 POINTERS
 class Solution:
     def longestConsecutive(self, nums):
         if not nums:
