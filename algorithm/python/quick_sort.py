@@ -2,180 +2,165 @@
 #  ALGORITHM DEMO : QUICK SORT 
 # #################################################################
 
-# # V0 
-# # idea
-# # http://bubkoo.com/2014/01/12/sort-algorithm/quick-sort/
-# # https://zh.wikipedia.org/wiki/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F
-# def quickSort(arr):
-#     less = []
-#     pivotList = []
-#     more = []
-#     if len(arr) <= 1:
-#         return arr
-#     else:
-#         pivot = arr[0]      # set the first element as pivot 
-#         for i in arr:
-#             if i < pivot:
-#                 less.append(i)
-#             elif i > pivot:
-#                 more.append(i)
-#             else:
-#                 pivotList.append(i)
+# V0
 
-#         less = quickSort(less)      # when got the 1st round output, keep running the sorting till all sorted 
-#         more = quickSort(more)
+# V1
+# https://github.com/yennanliu/Python/blob/master/sorts/quick_sort.py
+from __future__ import annotations
 
-#         return less + pivotList + more
-
-
-# # V1 
-# def quick_sort(arr, simulation=False):
-#     """ Quick sort
-#         Complexity: best O(n log(n)) avg O(n log(n)), worst O(N^2)
-#     """
-#     iteration = 0
-#     if simulation:
-#         print("iteration",iteration,":",*arr)
-#     arr, _ = quick_sort_recur(arr, 0, len(arr) - 1, iteration, simulation)
-#     return arr
-
-# def quick_sort_recur(arr, first, last, iteration, simulation):
-#     if first < last:
-#         pos = partition(arr, first, last)
-#         # Start our two recursive calls
-#         if simulation:
-#             iteration = iteration + 1
-#             print("iteration",iteration,":",*arr)
-            
-#         _, iteration = quick_sort_recur(arr, first, pos - 1, iteration, simulation)
-#         _, iteration = quick_sort_recur(arr, pos + 1, last, iteration, simulation)
-
-#     return arr, iteration
-
-# def partition(arr, first, last):
-#     wall = first
-#     for pos in range(first, last):
-#         if arr[pos] < arr[last]:  # last is the pivot
-#             arr[pos], arr[wall] = arr[wall], arr[pos]
-#             wall += 1
-#     arr[wall], arr[last] = arr[last], arr[wall]
-#     return wall
-
-# # V2 
-# # https://blog.csdn.net/razor87/article/details/71155518
-# def quick_sort_one_line():
-#     quick_sort = lambda array: array if len(array) <= 1 else quick_sort([item for item in array[1:] if item <= array[0]]) + [array[0]] + quick_sort([item for item in array[1:] if item > array[0]])
+def quick_sort(collection: list) -> list:
+    """
+    A pure Python implementation of quick sort algorithm
+    :param collection: a mutable collection of comparable items
+    :return: the same collection ordered by ascending
+    Examples:
+    >>> quick_sort([0, 5, 3, 2, 2])
+    [0, 2, 2, 3, 5]
+    >>> quick_sort([])
+    []
+    >>> quick_sort([-2, 5, 0, -45])
+    [-45, -2, 0, 5]
+    """
+    if len(collection) < 2:
+        return collection
+    pivot = collection.pop()  # Use the last element as the first pivot
+    greater: list[int] = []  # All elements greater than pivot
+    lesser: list[int] = []  # All elements less than or equal to pivot
+    for element in collection:
+        (greater if element > pivot else lesser).append(element)
+    return quick_sort(lesser) + [pivot] + quick_sort(greater)
 
 
-# def quick_sort(array, left, right):
-#     if left >= right:
-#         return
-#     low = left
-#     high = right
-#     key = array[low]
-#     while left < right:
-#         while left < right and array[right] > key:
-#             right -= 1
-#         array[left] = array[right]
-#         while left < right and array[left] <= key:
-#             left += 1
-#         array[right] = array[left]
-#     array[right] = key
-#     quick_sort(array, low, left - 1)
-#     quick_sort(array, left + 1, high)
+# if __name__ == "__main__":
+#     user_input = input("Enter numbers separated by a comma:\n").strip()
+#     unsorted = [int(item) for item in user_input.split(",")]
+#     print(quick_sort(unsorted))
 
-# def quick_sort_via_partition(array, l, r):
-#     def partition(array, l, r):
-#     x = array[r]
-#     i = l - 1
-#     for j in range(l, r):
-#         if array[j] <= x:
-#             i += 1
-#             array[i], array[j] = array[j], array[i]
-#     array[i + 1], array[r] = array[r], array[i+1]
-#     return i + 1
-
-#     if l < r:
-#         q = partition(array, l, r)
-#         quick_sort(array, l, q - 1)
-#         quick_sort(array, q + 1, r)
- 
-
-# def quick_sort_via_stack(array, l, r):
-#     if l >= r:
-#         return
-#     stack = []
-#     stack.append(l)
-#     stack.append(r)
-#     while stack:
-#         low = stack.pop(0)
-#         high = stack.pop(0)
-#         if high - low <= 0:
-#             continue
-#         x = array[high]
-#         i = low - 1
-#         for j in range(low, high):
-#             if array[j] <= x:
-#                 i += 1
-#                 array[i], array[j] = array[j], array[i]
-#         array[i + 1], array[high] = array[high], array[i + 1]
-#         stack.extend([low, i, i + 2, high])
-
-# # V4 
-# # https://github.com/qiwsir/algorithm/blob/master/quick_sort.md
-# # METHOD 1 
-# def quickSort(arr):
-#     less = []
-#     pivotList = []
-#     more = []
-#     if len(arr) <= 1:
-#         return arr
-#     else:
-#         pivot = arr[0]      #将第一个值做为基准
-#         for i in arr:
-#             if i < pivot:
-#                 less.append(i)
-#             elif i > pivot:
-#                 more.append(i)
-#             else:
-#                 pivotList.append(i)
-
-#         less = quickSort(less)      #得到第一轮分组之后，继续将分组进行下去。
-#         more = quickSort(more)
-
-#         return less + pivotList + more
+# V1'
+# https://github.com/yennanliu/Python/blob/master/sorts/recursive_quick_sort.py
+# IDEA : recursive quick sort
+def quick_sort(data: list) -> list:
+    """
+    >>> for data in ([2, 1, 0], [2.2, 1.1, 0], "quick_sort"):
+    ...     quick_sort(data) == sorted(data)
+    True
+    True
+    True
+    """
+    if len(data) <= 1:
+        return data
+    else:
+        return (
+            quick_sort([e for e in data[1:] if e <= data[0]])
+            + [data[0]]
+            + quick_sort([e for e in data[1:] if e > data[0]])
+        )
 
 
-# # METHOD 3 
-# # idea is same as above, but in different style 
-# def qsort(list):
-#     if not list:
-#         return []
-#     else:
-#         pivot = list[0]
-#         less = [x for x in list     if x <  pivot]
-#         more = [x for x in list[1:] if x >= pivot]
-#         return qsort(less) + [pivot] + qsort(more)
-
-# # METHOD 4
-# from random import *
-# def qSort(a):
-#     if len(a) <= 1:
-#         return a
-#     else:
-#         q = choice(a)       #基准的选择不同于前，是从数组中任意选择一个值做为基准
-#         return qSort([elem for elem in a if elem < q]) + [q] * a.count(q) + qSort([elem for elem in a if elem > q])
+# if __name__ == "__main__":
+#     import doctest
+#
+#     doctest.testmod()
 
 
-# # METHOD 5 
-# qs = lambda xs : ( (len(xs) <= 1 and [xs]) or [ qs( [x for x in xs[1:] if x < xs[0]] ) + [xs[0]] + qs( [x for x in xs[1:] if x >= xs[0]] ) ] )[0]
+# V1''
+# https://github.com/yennanliu/Python/blob/master/sorts/quick_sort_3_partition.py
+# IDEA : quick sort partition
+def quick_sort_3partition(sorting: list, left: int, right: int) -> None:
+    if right <= left:
+        return
+    a = i = left
+    b = right
+    pivot = sorting[left]
+    while i <= b:
+        if sorting[i] < pivot:
+            sorting[a], sorting[i] = sorting[i], sorting[a]
+            a += 1
+            i += 1
+        elif sorting[i] > pivot:
+            sorting[b], sorting[i] = sorting[i], sorting[b]
+            b -= 1
+        else:
+            i += 1
+    quick_sort_3partition(sorting, left, a - 1)
+    quick_sort_3partition(sorting, b + 1, right)
 
-# # if __name__=="__main__":
-# #     a = [4, 65, 2, -31, 0, 99, 83, 782, 1]
-# #     print quickSort(a)
-# #     print qSort(a)
 
-# #     print qs(a)
+def quick_sort_lomuto_partition(sorting: list, left: int, right: int) -> None:
+    """
+    A pure Python implementation of quick sort algorithm(in-place)
+    with Lomuto partition scheme:
+    https://en.wikipedia.org/wiki/Quicksort#Lomuto_partition_scheme
+    :param sorting: sort list
+    :param left: left endpoint of sorting
+    :param right: right endpoint of sorting
+    :return: None
+    Examples:
+    >>> nums1 = [0, 5, 3, 1, 2]
+    >>> quick_sort_lomuto_partition(nums1, 0, 4)
+    >>> nums1
+    [0, 1, 2, 3, 5]
+    >>> nums2 = []
+    >>> quick_sort_lomuto_partition(nums2, 0, 0)
+    >>> nums2
+    []
+    >>> nums3 = [-2, 5, 0, -4]
+    >>> quick_sort_lomuto_partition(nums3, 0, 3)
+    >>> nums3
+    [-4, -2, 0, 5]
+    """
+    if left < right:
+        pivot_index = lomuto_partition(sorting, left, right)
+        quick_sort_lomuto_partition(sorting, left, pivot_index - 1)
+        quick_sort_lomuto_partition(sorting, pivot_index + 1, right)
 
 
+def lomuto_partition(sorting: list, left: int, right: int) -> int:
+    """
+    Example:
+    >>> lomuto_partition([1,5,7,6], 0, 3)
+    2
+    """
+    pivot = sorting[right]
+    store_index = left
+    for i in range(left, right):
+        if sorting[i] < pivot:
+            sorting[store_index], sorting[i] = sorting[i], sorting[store_index]
+            store_index += 1
+    sorting[right], sorting[store_index] = sorting[store_index], sorting[right]
+    return store_index
 
+
+def three_way_radix_quicksort(sorting: list) -> list:
+    """
+    Three-way radix quicksort:
+    https://en.wikipedia.org/wiki/Quicksort#Three-way_radix_quicksort
+    First divide the list into three parts.
+    Then recursively sort the "less than" and "greater than" partitions.
+    >>> three_way_radix_quicksort([])
+    []
+    >>> three_way_radix_quicksort([1])
+    [1]
+    >>> three_way_radix_quicksort([-5, -2, 1, -2, 0, 1])
+    [-5, -2, -2, 0, 1, 1]
+    >>> three_way_radix_quicksort([1, 2, 5, 1, 2, 0, 0, 5, 2, -1])
+    [-1, 0, 0, 1, 1, 2, 2, 2, 5, 5]
+    """
+    if len(sorting) <= 1:
+        return sorting
+    return (
+        three_way_radix_quicksort([i for i in sorting if i < sorting[0]])
+        + [i for i in sorting if i == sorting[0]]
+        + three_way_radix_quicksort([i for i in sorting if i > sorting[0]])
+    )
+
+
+# if __name__ == "__main__":
+#     import doctest
+#
+#     doctest.testmod(verbose=True)
+#
+#     user_input = input("Enter numbers separated by a comma:\n").strip()
+#     unsorted = [int(item) for item in user_input.split(",")]
+#     quick_sort_3partition(unsorted, 0, len(unsorted) - 1)
+#     print(unsorted)

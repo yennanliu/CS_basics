@@ -2,6 +2,8 @@
 # ALGORITHM DEMO : TOPLOGICAL SORT
 #################################################################
 
+# V0
+
 # V1
 # http://www.runoob.com/python3/python-topological-sorting.html
 class Graph: 

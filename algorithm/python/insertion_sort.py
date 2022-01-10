@@ -2,7 +2,6 @@
 # ALGORITHM DEMO : INSERTION SORT
 #################################################################
 
-
 # https://www.geeksforgeeks.org/python-program-for-insertion-sort/
 # Function to do insertion sort 
 def insertionSort(arr): 

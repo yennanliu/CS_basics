@@ -2,7 +2,6 @@
 # ALGORITHM DEMO : MERGE SORT
 #################################################################
 
-
 # V0 
 # https://www.geeksforgeeks.org/merge-sort/
 # IDEA : MERGE SORT 

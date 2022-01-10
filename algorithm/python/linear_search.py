@@ -2,9 +2,7 @@
 # ALGORITHM DEMO : LINEAR SEARCH
 #################################################################
 
-
 # V0 : DEV 
-
 
 # V1
 # https://github.com/yennanliu/Python/blob/master/searches/linear_search.py
@@ -43,11 +41,10 @@ def linear_search(sequence, target):
             return index
     return None
 
-
 # if __name__ == '__main__':
 #     user_input = raw_input('Enter numbers separated by comma:\n').strip()
 #     sequence = [int(item) for item in user_input.split(',')]
-
+#
 #     target_input = raw_input('Enter a single number to be found in the list:\n')
 #     target = int(target_input)
 #     result = linear_search(sequence, target)

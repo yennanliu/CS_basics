@@ -2,7 +2,6 @@
 # ALGORITHM DEMO : Dijkstra’s shortest path algorithm
 #################################################################
 
-
 # V0
 
 # V1
