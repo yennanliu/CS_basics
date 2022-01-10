@@ -23,6 +23,33 @@ Output: [[1]]
 
 """
 
+# V0
+# IDEA : BACKTRACK, 
+# similar idea as LC 77 -> difference : contains VS start
+class Solution(object):
+    def permute(self, nums):
+        def help(cur):
+            if len(cur) == n_len:
+                if cur not in res:
+                    res.append(list(cur))
+                    return
+            if len(cur) > n_len:
+                return
+            for i in nums:
+                #print ("i = " + str(i) + " cur = " + str(cur))
+                if i not in cur:
+                    cur.append(i)
+                    help(cur)
+                    cur.pop(-1)
+        # edge case
+        if not nums:
+            return [[]]
+        n_len = len(nums)
+        res = []
+        help([])
+        #print ("res = " + str(res))
+        return res
+
 # V0 
 class Solution(object):
     def permute(self, nums):

@@ -26,8 +26,8 @@
 	- ================ 
 	- LC general
 		- **back track**
-			- 077 (AGAIN !!!!)
-			- 046
+			- 077 (ok, AGAIN !!!!)
+			- 046 (ok!)
 		- Tree
 			- 662 (*not start*)
 			- 662

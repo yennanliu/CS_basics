@@ -32,12 +32,15 @@
     - Combinations
         - LC 77 
         - backtrack. via `start` remove already used numbers and return all cases
+        - start + for loop + pop(-1) + help func
     - Permutations (排列組合)
         - LC 46 
         - backtrack. via `contains` remove already used numbers and return all cases
+        - contains (visited) (or not in `cur`) + for loop + pop(-1) + help func
     - Subsets 
         - LC 78 
         - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
+        - (for loop call help func) + for loop + pop(-1)
     - parentheses (括弧)
         - LC 20, LC 22
 
@@ -398,6 +401,33 @@ void backtrack(int n, int k, int start, vector<int> & track){
 ### 2-6) Permutations
 ```python
 # LC 46. Permutations
+# V0
+# IDEA : BACKTRACK, 
+# similar idea as LC 77 -> difference : contains VS start
+class Solution(object):
+    def permute(self, nums):
+        def help(cur):
+            if len(cur) == n_len:
+                if cur not in res:
+                    res.append(list(cur))
+                    return
+            if len(cur) > n_len:
+                return
+            for i in nums:
+                #print ("i = " + str(i) + " cur = " + str(cur))
+                if i not in cur:
+                    cur.append(i)
+                    help(cur)
+                    cur.pop(-1)
+        # edge case
+        if not nums:
+            return [[]]
+        n_len = len(nums)
+        res = []
+        help([])
+        #print ("res = " + str(res))
+        return res
+
 # V0 
 class Solution(object):
     def permute(self, nums):
