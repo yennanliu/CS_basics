@@ -218,6 +218,7 @@
 422| [Valid Word Square](https://leetcode.com/problems/valid-word-square/) | [Python](./leetcode_python/Array/valid-word-square.py)  | _O(m * n)_ |  _O(1)_ | Easy |🔒, `basic`, `matrix`| AGAIN*
 442| [Find All Duplicates in an Array](https://leetcode.com/problems/find-all-duplicates-in-an-array/) | [Python](./leetcode_python/Array/find-all-duplicates-in-an-array.py) | _O(n)_ |  _O(1)_ | Medium || OK*
 448| [Find All Numbers Disappeared in an Array](https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/) | [Python](./leetcode_python/Array/find-all-numbers-disappeared-in-an-array.py)| _O(n)_ |  _O(1)_ | Easy || OK 
+498 | [Diagonal Traverse](https://leetcode.com/problems/diagonal-traverse/) | [Python](./leetcode_python/Array/diagonal_traverse.py) | _O(n)_ | _O(1)_  | Medium |`matrix`,`google`,`fb`| AGAIN*** (3) (not start)
 531 | [Lonely Pixel I](https://leetcode.com/problems/lonely-pixel-i/) |  [Python](./leetcode_python/Array/lonely-pixel-i.py) | _O(m * n)_ | _O(m + n)_ | Medium | 🔒, `matrix`, `basic`| AGAIN*
 533 | [Lonely Pixel II](https://leetcode.com/problems/lonely-pixel-ii/) | [Python](./leetcode_python/Array/lonely-pixel-ii.py)  | _O(m * n)_ | _O(m * n)_ | Medium  |🔒| AGAIN (not start*)
 565 | [Array Nesting](https://leetcode.com/problems/array-nesting/) | [Python](./leetcode_python/Array/array-nesting.py) | _O(n)_ | _O(1)_ | Medium  || AGAIN (not start)
@@ -277,7 +278,7 @@
 004 | [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) | | _O(n)_ | _O(1)_  | Hard |`fb`, amazon|  
 010 | [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) | | _O(n)_ | _O(1)_  | Hard |`fb`|  
 056 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) |  [Python](./leetcode_python/Array/merge-intervals.py)  | _O(n)_ | _O(1)_  | Medium |`good trick`,057 Insert Interval, `twitter`,`M$`,`UBER`,`google`,`amazon`,`fb`| AGAIN********* (5) 
-498 | [Diagonal Traverse](https://leetcode.com/problems/diagonal-traverse/) | [Python](./leetcode_python/Array/diagonal_traverse.py) | _O(n)_ | _O(1)_  | Medium |`matrix`,`google`,`fb`| AGAIN*** (3) (not start)
+759 | [Employee Free Time ](https://leetcode.com/problems/employee-free-time/) |  [Python](./leetcode_python/Array/employee-free-time.py)  | _O(n)_ | _O(1)_  | Hard |scanning line, intervals, `amazon`| not start
 1014 | [Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/) | [Python](./leetcode_python/Array/best_sightseeing_pair.py) | | | Medium |dp, array, good basic, Spotify| AGAIN (not start)
 1041 | [Robot Bounded In Circle](https://leetcode.com/problems/robot-bounded-in-circle/) | [Python](./leetcode_python/Array/robot-bounded-in-circle.py) | | | Medium |`amazon`| AGAIN (not start)
 
