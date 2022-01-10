@@ -1,5 +1,82 @@
 # Progress
 
+# 2022-01-10
+- DOING:
+	- LC (appl_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
+	- ================
+	- LC review (amz_)
+		- ref: https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
+		- programming
+			- review
+			- (normal order)
+			- (pdf : p.10)
+		- ==========
+			- fast review (inverse order)
+			- --> Breadth-First-Search
+	- ================
+	- LC (amz_, July 2020 - July 2021) (OK)
+		- Premium questions : OK
+		- 725 (ok, but again!!!)
+	- LC (Jul 2020 - Dec 2020 (about 4 months before above)) (OK)
+		- Premium questions : (ing)
+	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
+	- ================ 
+	- LC general
+		- **back track**
+			- 077 (AGAIN !!!!)
+			- 046
+		- Tree
+			- 662 (*not start*)
+			- 662
+			- 508
+			- 776
+			- 525
+			- 572
+		- binary search
+		- String
+		- =======
+		- bit manipulation
+			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
+		- union find
+		- quick sort
+		- intervals
+			- 57 (again !!!)
+			- 56 (again !!!)
+		- design
+			- all remain (not start)
+		- greedy
+			- 134 (not start)
+			- 767 (not start)
+			- 621
+		- hashmap
+			- 036 (not start)
+			- 1010 (not start)
+		- heap
+			- 355 (not start)
+			- 703 (not start)
+			- 264 (not start)
+			- 295 (not start)
+		- graph
+			- 547 (not start)
+		- stack
+			- 227 (not start)
+			- 224 (not start)
+		- sort
+			- 969 (not start)
+		- BFS
+			- 210 (not start)
+		- DFS
+			- 128
+		- SQL
+	- System Design
+		- Tinder design
+	- algorithm book (labu)
+		- note
+			- p.349
+	- system design book - an insider's guide (GOTOP)
+		- p.189 - p.195
+
 # 2022-01-09
 - DOING:
 	- LC (appl_)
