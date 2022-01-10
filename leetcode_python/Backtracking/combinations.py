@@ -51,7 +51,7 @@ class Solution(object):
             for i in range(start, n + 1):
                 current.append(i)
                 dfs(current, i + 1)
-                current.pop()
+                current.pop() # same as current.pop(-1)
             
         result = []
         dfs([], 1)
