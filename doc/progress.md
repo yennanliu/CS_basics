@@ -61,7 +61,7 @@
 			- 227 (not start)
 			- 224 (not start)
 		- sort
-			- 969 (not start)
+			- 969 (OK! but again!)
 			- 128 (ok, but again!!!!)
 		- BFS
 			- 210 (not start)

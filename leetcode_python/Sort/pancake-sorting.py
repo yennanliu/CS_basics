@@ -3,7 +3,7 @@
 969. Pancake Sorting
 Medium
 
-Given an array of integers arr, sort the array by performing a series of pancake flips.
+Given an array of integers arr, sort the array by performax_idxng a series of pancake flips.
 
 In one pancake flip we do the following steps:
 
@@ -44,6 +44,40 @@ All integers in arr are unique (i.e. arr is a permutation of the integers from 1
 
 
 # V0
+# IDEA : pankcake sort + while loop
+# IDEA : 3 STEPS
+#   -> step 1) Find the maximum number in arr
+#   -> step 2) Reverse from 0 to max_idx
+#   -> step 3) Reverse whole list
+# https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py
+class Solution(object):
+    def pancakeSort(self, arr):
+        """Sort Array with Pancake Sort.
+        :param arr: Collection containing comparable items
+        :return: Collection ordered in ascending order of items
+        Examples:
+        >>> pancake_sort([0, 5, 3, 2, 2])
+        [0, 2, 2, 3, 5]
+        >>> pancake_sort([])
+        []
+        >>> pancake_sort([-2, -5, -45])
+        [-45, -5, -2]
+        """
+        cur = len(arr)
+        res = []
+        while cur > 1:
+            # step 1) Find the maximum number in arr
+            max_idx = arr.index(max(arr[0:cur]))
+            res = res + [max_idx+1, cur] # idx is 1 based
+            # step 2) Reverse from 0 to max_idx
+            #arr = arr[max_idx::-1] + arr[max_idx + 1 : len(arr)] # this is OK as well
+            arr = arr[:max_idx][::-1] + arr[max_idx + 1 : len(arr)]
+            # step 3) Reverse whole list
+            #arr = arr[cur - 1 :: -1] + arr[cur : len(arr)] # this is OK as well
+            arr = arr[:cur - 1][::-1] + arr[cur : len(arr)]
+            cur -= 1
+        print ("arr = " + str(arr))
+        return res
 
 # V1
 # https://leetcode.com/problems/pancake-sorting/discuss/817978/Python-O(n2)-by-simulation-w-Comment
@@ -178,7 +212,7 @@ class Solution:
             return res
 
 # V1'''''
-# IDEA : similar to BUBBLE SORT
+# IDEA : simax_idxlar to BUBBLE SORT
 # https://leetcode.com/problems/pancake-sorting/solution/
 class Solution:
     def pancakeSort(self, A):
@@ -250,7 +284,7 @@ def flip(stack, index):
     return newStack
 
 # V3 
-# https://blog.csdn.net/fuxuemingzhu/article/details/85937314
+# https://blog.csdn.net/fuxuemax_idxngzhu/article/details/85937314
 class Solution(object):
     def pancakeSort(self, A):
         N = len(A)
