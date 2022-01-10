@@ -32,13 +32,13 @@
     - Combinations
         - LC 77 
         - backtrack. via `start` remove already used numbers and return all cases
-    - Permutations 
+    - Permutations (排列組合)
         - LC 46 
         - backtrack. via `contains` remove already used numbers and return all cases
     - Subsets 
         - LC 78 
-        - find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
-    - parentheses
+        - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
+    - parentheses (括弧)
         - LC 20, LC 22
 
 
