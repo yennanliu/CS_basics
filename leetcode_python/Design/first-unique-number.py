@@ -78,29 +78,29 @@ At most 50000 calls will be made to showFirstUnique and add.
 # IDEA : dequeue
 from collections import Counter, deque
 class FirstUnique:
-	
-	def __init__(self, nums):
-		self.count = Counter(nums)
-		self.array = deque(nums)
-		self.first = -1
-		self._find()
+    
+    def __init__(self, nums):
+        self.count = Counter(nums)
+        self.array = deque(nums)
+        self.first = -1
+        self._find()
 
-	def showFirstUnique(self):
-		return self.first
+    def showFirstUnique(self):
+        return self.first
 
-	def add(self, value):
-		self.count[value] += 1
-		self.array.append(value)
-		if self.first == -1 or value == self.first:
-			self._find()
+    def add(self, value):
+        self.count[value] += 1
+        self.array.append(value)
+        if self.first == -1 or value == self.first:
+            self._find()
 
-	def _find(self):
-		self.first = - 
-		while self.array:
-			first = self.array.popleft()
-			if self.count[first] == 1:
-				self.first = first
-				break
+    def _find(self):
+        self.first = - 
+        while self.array:
+            first = self.array.popleft()
+            if self.count[first] == 1:
+                self.first = first
+                break
 
 # V1'
 # IDEA : dequeue
@@ -109,35 +109,35 @@ from collections import Counter, deque, defaultdict
 from heapq import heappush, heappop
 class FirstUnique:
 
-	def __init__(self, nums):
-		self.nums = nums
-		self.dic = []
-		self.pos = set()
-		self.Counter = defaultdict(int)
-		for index, num in enumerate(self.nums):
-			self.counter[num] += 1
-			if self.counter[num] == 1:
-				heappush(self.pic, (index, num))
-				self.pos.add(num)
-			elif num in self.pos and self.counter[num] == 2:
-				self.pos.remove(num)
+    def __init__(self, nums):
+        self.nums = nums
+        self.dic = []
+        self.pos = set()
+        self.Counter = defaultdict(int)
+        for index, num in enumerate(self.nums):
+            self.counter[num] += 1
+            if self.counter[num] == 1:
+                heappush(self.pic, (index, num))
+                self.pos.add(num)
+            elif num in self.pos and self.counter[num] == 2:
+                self.pos.remove(num)
 
-	def showFirstUnique(self):
-		while len(self.dic):
-			index, number = heappop(self.dic)
-			if number in self.pos:
-				heappush(self.dic, (index, number))
-				return number
-		return -1
+    def showFirstUnique(self):
+        while len(self.dic):
+            index, number = heappop(self.dic)
+            if number in self.pos:
+                heappush(self.dic, (index, number))
+                return number
+        return -1
 
-	def add(self, value):
-		self.nums.append(value)
-		self.Counter[value] += 1
-		if value in self.pos:
-			self.pos.remove(value)
-		elif self.Counter[value] == 1:
-			self.pos.add(value)
-			heappush(self.dic, (len(self.nums)-1, value))
+    def add(self, value):
+        self.nums.append(value)
+        self.Counter[value] += 1
+        if value in self.pos:
+            self.pos.remove(value)
+        elif self.Counter[value] == 1:
+            self.pos.add(value)
+            heappush(self.dic, (len(self.nums)-1, value))
 
 # V1''
 # https://github.com/jyj407/leetcode/blob/master/1429.md
