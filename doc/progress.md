@@ -20,6 +20,7 @@
 		- 725 (ok, but again!!!)
 	- LC (Jul 2020 - Dec 2020 (about 4 months before above)) (OK)
 		- Premium questions : (ing)
+			- https://leetcode.com/problems/max-stack/ LC 716 (again)
 	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
 	- ================ 
 	- LC general
