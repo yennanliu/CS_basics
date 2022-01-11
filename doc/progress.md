@@ -53,8 +53,8 @@
 		- graph
 			- 547 (not start)
 		- stack
-			- 227 (not start)
-			- 224 (not start)
+			- 227 (ok, but again!)
+			- 224 (ok, but again!)
 		- graph
 			- 210 (not start)
 		- SQL
