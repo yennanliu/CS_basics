@@ -77,7 +77,8 @@ class GetReviewList:
         print ("*"*30)
         # save to txt
         with open(self.to_review, 'w') as f_r:
-            for date in review_date:
+            # save with inverse order
+            for date in review_date[::-1]:
                 data="{} -> {}\n".format(date, str(self.review_list[date]))
                 print (data)
                 f_r.writelines(data)
