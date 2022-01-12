@@ -16,6 +16,7 @@
 		- Premium questions : OK
 	- LC (Jul 2020 - Dec 2020 (about 4 months before above)) (OK)
 		- Premium questions : (ing)
+			- https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/ LC 323 (not start)
 	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
 	- ================ 
 	- LC general
@@ -47,6 +48,7 @@
 		- graph
 			- 547 (not start)
 			- 210 (not start)
+			- 323 (not start)
 		- SQL
 	- System Design
 		- Tinder design
