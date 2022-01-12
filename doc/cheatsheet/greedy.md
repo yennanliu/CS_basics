@@ -239,3 +239,31 @@ class Solution(object):
         time = (most - 1) * (n + 1) + num_most
         return max(time, len(tasks)) # be aware of it 
 ```
+
+### 2-8) Reorganize String
+```python
+# LC 767. Reorganize String
+# V0 
+# IDEA : GREEDY + COUNTER
+# IDEA : 
+#  step 1) order exists count (big -> small)
+#  step 2) select the element which is "most remaining" and DIFFERENT from last ans element and append such element to the end of ans
+#  step 3) if can't find such element, return ""
+class Solution(object):
+    def reorganizeString(self, S):
+        cnt = collections.Counter(S)
+        # Be aware of it : ans = "#" -> not to have error in ans[-1] when first loop
+        ans = '#'
+        while cnt:
+            stop = True
+            for v, c in cnt.most_common():
+                if v != ans[-1]:
+                    stop = False
+                    ans += v
+                    cnt[v] -= 1
+                    if not cnt[v]: del cnt[v]
+                    break
+            # Be aware of it : if there is no valid "v", then the while loop will break automatically at this condition (stop = True)
+            if stop: break
+        return ans[1:] if len(ans[1:]) == len(S) else ''
+```

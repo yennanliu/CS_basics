@@ -28,6 +28,10 @@ s consists of lowercase English letters.
 
 # V0 
 # IDEA : GREEDY + COUNTER
+# IDEA : 
+#  step 1) order exists count (big -> small)
+#  step 2) select the element which is "most remaining" and DIFFERENT from last ans element and append such element to the end of ans
+#  step 3) if can't find such element, return ""
 class Solution(object):
     def reorganizeString(self, S):
         cnt = collections.Counter(S)
@@ -46,9 +50,59 @@ class Solution(object):
             if stop: break
         return ans[1:] if len(ans[1:]) == len(S) else ''
 
+# V0'
+class Solution(object):
+     def reorganizeString(self, S):
+        count = collections.Counter(S)
+        c_max, f_max = count.most_common(1)[0]
+        if 2 * f_max - 1 > len(S):
+            return ''
+        count.pop(c_max)
+        res = len(S) * ['']
+        res[:2*f_max:2] = f_max * [c_max]
+        i = 2 * f_max
+        for c in count:
+            for _ in range(count[c]):
+                if i >= len(S):
+                    i = 1
+                res[i] = c
+                i += 2
+        return ''.join(res)
+
+# V1
+# IDEA : 
+#   -> 767. Reorganize String
+#   -> 621. Task Scheduler
+#   -> 358. Rearrange String k Distance Apart
+#   -> Imagine that there are two columns needed to be filled: even-indexed and odd-indexed column,
+#   -> fill the most common chars into the even-indexed column if possible,
+#   -> fill the remaining chars into the even-indexed column, then odd-indexed column.
+# https://leetcode.com/problems/reorganize-string/discuss/442993/Python-greedy-solution-(24ms-beat-98.17)
+class Solution(object):
+     def reorganizeString(self, S):
+        count = collections.Counter(S)
+        c_max, f_max = count.most_common(1)[0]
+        if 2 * f_max - 1 > len(S):
+            return ''
+        count.pop(c_max)
+        res = len(S) * ['']
+        res[:2*f_max:2] = f_max * [c_max]
+        i = 2 * f_max
+        for c in count:
+            for _ in range(count[c]):
+                if i >= len(S):
+                    i = 1
+                res[i] = c
+                i += 2
+        return ''.join(res)
+
 # V1 
 # http://bookshadow.com/weblog/2018/01/21/leetcode-reorganize-string/
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# IDEA : 
+#  step 1) order exists count (big -> small)
+#  step 2) select the element which is "most remaining" and DIFFERENT from last ans element and append such element to the end of ans
+#  step 3) if can't find such element, return ""
 class Solution(object):
     def reorganizeString(self, S):
         """
