@@ -33,7 +33,7 @@ You can assume that no duplicate edges will appear in edges. Since all edges are
 """
 
 # V0
-# IDEA : DFS
+# IDEA : DFS + GRAPH
 class Solution:
     def countComponents(self, n, edges):
         def helper(u):

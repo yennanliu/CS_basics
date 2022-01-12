@@ -305,7 +305,6 @@
 290| [Word Pattern](https://leetcode.com/problems/word-pattern/) | [Python ](./leetcode_python/Hash_table/word-pattern.py)  | _O(n)_ | _O(c)_ | Easy | `basic`, chcek `# 205 Isomorphic Strings`,`good basic`, `for ptn, word in zip(pattern, words)`, `dropbox` , `UBER`| AGAIN* (3)
 299| [Bulls and Cows](https://leetcode.com/problems/bulls-and-cows/) | [Python ](./leetcode_python/Hash_table/bulls-and-cows.py)   | _O(n)_ | _O(1)_ | Easy   |`trick`,`map(operator.eq, a, b)`,`amazon`, `airbnb`, `google`| AGAIN*  (3)
 314| [Binary Tree Vertical Order Traversal](https://leetcode.com/problems/binary-tree-vertical-order-traversal/) |  [Python ](./leetcode_python/Hash_table/binary-tree-vertical-order-traversal.py)  | _O(n)_ | _O(n)_| Medium  | 🔒, `BFS`,`DFS`,`hash table`, `tree`, `trick`,`google`, `amazon`,`fb` | OK****  (5)
-323| [Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/) | [Python ](./leetcode_python/Hash_table/number-of-connected-components-in-an-undirected-graph.py) | _O(n)_ | _O(n)_| Medium  | 🔒 , Union Find, `graph`, `linkedin` |  AGAIN (not start)
 325| [Maximum Size Subarray Sum Equals k](https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/) | [Python ](./leetcode_python/Hash_table/maximum-size-subarray-sum-equals-k.py)  | _O(n)_ | _O(n)_|  Medium  | 🔒, `basic`, `good trick`, `dict`, `fb`| AGAIN********** (5)
 356| [Line Reflection](https://leetcode.com/problems/line-reflection/) |  [Python ](./leetcode_python/Hash_table/line-reflection.py)  | _O(n)_| _O(n)_| Medium |🔒, Hash, Two Pointers,`math`,`google`| AGAIN (not start)
 387| [First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/) |  [Python ](./leetcode_python/Hash_table/first-unique-character-in-a-string.py) | _O(n)_| _O(n)_| Easy |`amazon`, `apple`, `fb`| OK 
@@ -999,6 +998,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 959 | [Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/)  | [C++](./C++/regions-cut-by-slashes.cpp) [Python](./Python/regions-cut-by-slashes.py) | _O(n^2)_| _O(n^2)_| Medium | Union Find | 
+323| [Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/) | [Python ](./leetcode_python/Graph/number-of-connected-components-in-an-undirected-graph.py) | _O(n)_ | _O(n)_| Medium  | 🔒 , Union Find, `graph`, `linkedin`, `amazon`|  AGAIN**** (3) (not start)
 269 |[Alien Dictionary](https://leetcode.com/problems/alien-dictionary/)  | [Python](./leetcode_python/Graph/alien-dictionary.py) | | | Hard| dfs, bfs, topology sorting, `fb` |  AGAIN* (not start)
 
 ## Geometry 

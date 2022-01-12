@@ -31,6 +31,7 @@
 
 ### 0-2) Pattern
 ```python
+# DFS
 def GraphPattern(node1, node2, n):
     def dfs(node):
         # dfs logic
@@ -54,6 +55,31 @@ def GraphPattern(node1, node2, n):
         else:
             # do sth
 
+# BFS
+
+# UNION FIND
+class UnionFind(object):
+    def __init__(self, n):
+        self.set = range(n)
+        self.count = n
+ 
+    def find_set(self, x):
+       if self.set[x] != x:
+           self.set[x] = self.find_set(self.set[x])  # path compression.
+       return self.set[x]
+ 
+    def union_set(self, x, y):
+        x_root, y_root = map(self.find_set, (x, y))
+        if x_root != y_root:
+            self.set[min(x_root, y_root)] = max(x_root, y_root)
+            self.count -= 1
+            
+class Solution(object):
+    def countComponents(self, n, edges):
+        union_find = UnionFind(n)
+        for i, j in edges:
+            union_find.union_set(i, j)
+        return union_find.count
 ```
 
 ```python
@@ -194,4 +220,31 @@ class Solution(object):
                 in_degree[word2[i]].add(word1[i])
                 out_degree[word1[i]].add(word2[i])
                 break　　
+```
+
+### 2-3) Number of Connected Components in an Undirected Graph
+```python
+# LC 323 Number of Connected Components in an Undirected Graph
+# V0
+# IDEA : DFS
+class Solution:
+    def countComponents(self, n, edges):
+        def helper(u):
+            if u in pair:
+                for v in pair[u]:
+                    if v not in visited:
+                        visited.add(v)
+                        helper(v)
+            
+        pair = collections.defaultdict(set)
+        for u,v in edges:
+            pair[u].add(v)
+            pair[v].add(u)
+        count = 0
+        visited = set()
+        for i in range(n):
+            if i not in visited:
+                helper(i)
+                count+=1
+        return count
 ```
