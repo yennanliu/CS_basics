@@ -191,3 +191,51 @@ class Solution(object):
             if stop: break
         return ans[1:] if len(ans[1:]) == len(S) else ''
 ```
+
+### 2-7) Task Scheduler
+```python
+# LC 621. Task Scheduler
+# V0
+# pattern :
+#    =============================================================================
+#    -> task_time = (max_mission_count - 1) * (n + 1) + (number_of_max_mission)
+#    =============================================================================
+#   
+#    -> Example 1) :
+#    ->  AAAABBBBCCD, n=3
+#    => THE EXPECTED tuned missions is like : ABXXABXXABXXAB
+#    -> (4 - 1) * (3 + 1) + 2 = 14
+#    -> 4 is the "how many missions the max mission has" (AAAA or BBBB)
+#    -> 3 is n
+#    -> 2 is "how many mission have max mission count" -> A and B. so it's 2
+#    -> in sum,
+#    -> (4 - 1) * (3 + 1) is for ABXXABXXABXX
+#    -> and 2 is for AB
+#
+#   -> Example 2) :
+#   -> AAABBB, n = 2
+#   -> THE EXPECTED tuned missions is like : ABXABXAB
+#   -> (3 - 1) * (2 + 1) + (2) = 8
+class Solution(object):
+    def leastInterval(self, tasks, n):
+        count = collections.Counter(tasks)
+        most = count.most_common()[0][1]
+        num_most = len([i for i, v in count.items() if v == most])
+        """
+        example 1 : tasks = ["A","A","A","B","B","B"], n = 2
+            -> we can split tasks as : A -> B -> idle -> A -> B -> idle -> A -> B
+               -> 1) so there are 3-1 group. e.g. (A -> B -> idle), (A -> B -> idle)
+                     and each group has (n+1) elements. e.g. (A -> B -> idle)
+               -> 2) and the remain element is num_most. e.g. (A, B)
+               -> 3) so total cnt = (3-1) * (2+1) + 2 = 8
+    
+        example 2 : tasks = ["A","A","A","A","A","A","B","C","D","E","F","G"], n = 2
+            -> we can split tasks as A -> B -> C -> A -> D -> E -> A -> F -> G -> A -> idle -> idle -> A -> idle -> idle -> A
+                -> 1) so there are 6-1 group. e.g. (A -> B -> C), (A -> D -> E), (A -> F -> G), (A -> idle -> idle), (A -> idle -> idle)
+                      and each group has (n+1) elements. e.g. (A,B,C) .... (as above)
+                -> 2) and the remain element is num_most. e.g. (A) 
+                -> 3) so total cnt = (6-1)*(2+1) + 1 =  16
+        """
+        time = (most - 1) * (n + 1) + num_most
+        return max(time, len(tasks)) # be aware of it 
+```
