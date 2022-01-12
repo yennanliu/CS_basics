@@ -42,6 +42,7 @@ The number of nodes in the list is in the range [0, 1000].
 # IDEA : LINKED LIST OP + mod op
 class Solution(object):
     def splitListToParts(self, head, k):
+        # NO need to deal with edge case !!!
         # get linked list length
         _len = 0
         _head = cur = head
@@ -75,6 +76,9 @@ class Solution(object):
                 #  -> j == 0, j == _cnt_elem - 1, else
                 if j == 0:
                     res[i] = cur
+                ### NOTE this !!! : 
+                #    -> IF (but not elif)
+                #    -> since we also need to deal with j == 0 and j == _cnt_elem - 1 case
                 if j == _cnt_elem - 1:  # note this !!!
                     # get next first
                     tmp = cur.next
@@ -85,6 +89,36 @@ class Solution(object):
                 else:
                     cur = cur.next
         #print ("res = " + str(res))
+        return res
+
+# V0'
+class Solution(object):
+    def splitListToParts(self, head, k):
+        # NO need to deal with edge case !!!
+        # get len
+        root = cur = head
+        _len = 0
+        while root:
+            root = root.next
+            _len += 1
+        res = [None] * k
+        for i in range(k):
+            tmp_cnt = (_len // k) + (1 if i < (_len % k) else 0)
+            for j in range(tmp_cnt):
+                # 3 cases
+                # j == 0
+                if j == 0:
+                    res[i] = cur
+                # IF !!!! j == tmp_cnt - 1 !!!
+                if j == tmp_cnt-1:
+                    _next = cur.next
+                    cur.next = None
+                    cur = _next
+                # 0 < j < tmp_cnt
+                else:
+                    cur = cur.next
+
+        print ("res = " + str(res))
         return res
 
 # V0'

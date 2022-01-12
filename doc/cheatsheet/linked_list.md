@@ -801,6 +801,7 @@ class Solution(object):
 # IDEA : LINKED LIST OP + mod op
 class Solution(object):
     def splitListToParts(self, head, k):
+        # NO need to deal with edge case !!!
         # get linked list length
         _len = 0
         _head = cur = head
@@ -834,6 +835,9 @@ class Solution(object):
                 #  -> j == 0, j == _cnt_elem - 1, else
                 if j == 0:
                     res[i] = cur
+                ### NOTE this !!! : 
+                #    -> IF (but not elif)
+                #    -> since we also need to deal with j == 0 and j == _cnt_elem - 1 case
                 if j == _cnt_elem - 1:  # note this !!!
                     # get next first
                     tmp = cur.next
