@@ -17,7 +17,7 @@
 	- ================
 	- LC (amz_, July 2020 - July 2021) (OK)
 		- Premium questions : OK
-		- 725 (ok, but again!!!)
+		- 725 (ok!!!)
 	- LC (Jul 2020 - Dec 2020 (about 4 months before above)) (OK)
 		- Premium questions : (ing)
 			- https://leetcode.com/problems/max-stack/ LC 716 (again)
