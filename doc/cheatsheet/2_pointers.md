@@ -371,3 +371,38 @@ class Solution(object):
         # check max len again
         return max(max_len, cur_len)
 ```
+
+
+### 2-5) Missing Ranges
+```python
+# LC 163. Missing Ranges
+# V0
+# IDEA : 2 POINTERS
+class Solution(object):
+    def findMissingRanges(self, nums, lower, upper):
+        l, r = lower, lower
+        res = []
+        for i in range(len(nums)):
+            # if NO missing interval
+            if nums[i] == r:  
+                l, r = nums[i] + 1, nums[i] + 1
+                
+            # if missing interval 
+            elif nums[i] > r:
+                r = max(r, nums[i] - 1)
+                
+                if r != l:
+                    res.append(str(l) + "->" + str(r))
+                else:
+                    res.append(str(l))
+                    
+                l, r = nums[i] + 1, nums[i] + 1
+        
+        # deal with remaining part 
+        if l < upper:
+            res.append(str(l) + "->" + str(upper))
+        elif l == upper:
+            res.append(str(l))
+            
+        return res
+```
