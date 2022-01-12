@@ -42,7 +42,7 @@
 			- all remain (not start)
 		- greedy
 			- 134 (not start)
-			- 767 (not start)
+			- 767 (ok, again!!)
 			- 621 (ok, again)
 		- hashmap
 			- 036 (not start)
