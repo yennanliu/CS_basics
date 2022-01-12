@@ -43,7 +43,7 @@
 		- greedy
 			- 134 (not start)
 			- 767 (not start)
-			- 621
+			- 621 (ok, again)
 		- hashmap
 			- 036 (not start)
 			- 1010 (not start)
@@ -54,7 +54,6 @@
 			- 295 (not start)
 		- graph
 			- 547 (not start)
-		- graph
 			- 210 (not start)
 		- SQL
 	- System Design
