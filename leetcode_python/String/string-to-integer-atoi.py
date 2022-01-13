@@ -42,7 +42,8 @@ Explanation: The number "-91283472332" is out of the range of a 32-bit signed in
              Thefore INT_MIN (−231) is returned.
 """
 
-# V0 
+# V0
+# IDEA : REGEX
 class Solution(object):
     def myAtoi(self, str):
         str = str.strip()
@@ -57,26 +58,82 @@ class Solution(object):
             res = 0
         return res
 
+# V0'
+# IDEA : string op
+class Solution(object):
+    def myAtoi(self, _str):
+        _str = _str.strip()
+        number = 0
+        flag = 1
+        print ("_str = " + str(_str))
+        if not _str:
+            return 0
+        if _str[0] == '-':
+            _str = _str[1:]
+            flag = -1
+        elif _str[0] == '+':
+            _str = _str[1:]
+        for c in _str:
+            #if c >= '0' and c <= '9':  # '3' > '2' -> True
+            if c in [str(x) for x in range(10)]:
+                """
+                str(int) -> ord demo
+
+                Example 1 :
+                In [55]: for i in range(10):
+                        ...: print (str(i) + " ord = " + str(ord(str(i))))
+                        ...:
+                                0 ord = 48
+                                1 ord = 49
+                                2 ord = 50
+                                3 ord = 51
+                                4 ord = 52
+                                5 ord = 53
+                                6 ord = 54
+                                7 ord = 55
+                                8 ord = 56
+                                9 ord = 57
+
+                Example 2 :
+
+                            In [62]: z
+                            Out[62]: '5634'
+
+                            In [63]: ans = 0
+
+                            In [64]: for i in z:
+                                ...:     ans = 10 * ans + int(i)
+                                ...:
+
+                            In [65]: ans
+                            Out[65]: 5634
+                """
+                #number = 10*number + ord(c) - ord('0')  # _string to integer 
+                number = 10*number + int(c)  # _string to integer , above is OK as well
+            else:
+                break
+        res = flag * number
+        res = res if res <= 2**31 - 1 else 2**31 - 1    # 2**31 == 2147483648
+        res = res if res >= -1 * 2**31  else -1 * 2**31   # -(1)*(2**31) == - 2147483648
+        return res
+
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/52053932
 class Solution(object):
-    def myAtoi(self, str):
-        """
-        :type str: str
-        :rtype: int
-        """
-        if not str:
-            return 0
-        str = str.strip()
+    def myAtoi(self, _str):
+        _str = _str.strip()
         number, flag = 0, 1
-        if str[0] == '-':
-            str = str[1:]
+        print ("_str = " + str(_str))
+        if not _str:
+            return 0
+        if _str[0] == '-':
+            _str = _str[1:]
             flag = -1
-        elif str[0] == '+':
-            str = str[1:]
-        for c in str:
+        elif _str[0] == '+':
+            _str = _str[1:]
+        for c in _str:
             if c >= '0' and c <= '9':  # '3' > '2' -> True 
-                number = 10*number + ord(c) - ord('0')  # string to integer 
+                number = 10*number + ord(c) - ord('0')  # _string to integer 
             else:
                 break
         number = flag * number

@@ -8,6 +8,7 @@
 			- review
 			- (normal order)
 			- (pdf : p.10)
+				- 008 (ok, but again)
 		- ==========
 			- fast review (inverse order)
 			- --> Breadth-First-Search
@@ -15,7 +16,7 @@
 	- LC (amz_, July 2020 - July 2021) (OK)
 		- Premium questions : OK
 	- LC (Jul 2020 - Dec 2020 (about 4 months before above)) (OK)
-		- Premium questions : (ing)
+		- Premium questions : (OK)
 			- https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/ LC 323 (not start)
 	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
 	- ================ 
