@@ -93,14 +93,14 @@ class Solution(object):
         self.dfs(root)
         return root
 
-    def dfs(self, cur):
-        if not cur: 
+    def dfs(self, node):
+        if not node: 
             return
-        #print ("root.val = " + str(root.val))
-        self.dfs(cur.right)
-        self.sum += cur.val
-        cur.val = self.sum
-        self.dfs(cur.left)
+        #print ("node.val = " + str(node.val))
+        self.dfs(node.right)
+        self.sum += node.val
+        node.val = self.sum
+        self.dfs(node.left)
 
 # V0'
 # NOTE : the implementation difference on cur VS self.cur
