@@ -98,6 +98,7 @@ def str_2_int(x):
         print (i, r)
     return r
 
+# example 1
 x="131"
 r=str_2_int(x)
 print (r)
@@ -105,6 +106,19 @@ print (r)
 # 3 13
 # 1 131
 # 131
+
+# examle 2
+In [62]: z
+Out[62]: '5634'
+
+In [63]: ans = 0
+
+In [64]: for i in z:
+    ...:     ans = 10 * ans + int(i)
+    ...:
+
+In [65]: ans
+Out[65]: 5634
 ```
 
 ### 2-3) Count and say
@@ -191,4 +205,67 @@ class Solution:
             return self.validate_IPv6(IP)
         else:
             return "Neither"
+```
+
+### 2-6) String to Integer (atoi)
+```python
+# LC 008
+# V0'
+# IDEA : string op
+class Solution(object):
+    def myAtoi(self, _str):
+        _str = _str.strip()
+        number = 0
+        flag = 1
+        print ("_str = " + str(_str))
+        if not _str:
+            return 0
+        if _str[0] == '-':
+            _str = _str[1:]
+            flag = -1
+        elif _str[0] == '+':
+            _str = _str[1:]
+        for c in _str:
+            #if c >= '0' and c <= '9':  # '3' > '2' -> True
+            if c in [str(x) for x in range(10)]:
+                """
+                str(int) -> ord demo
+
+                Example 1 :
+                In [55]: for i in range(10):
+                        ...: print (str(i) + " ord = " + str(ord(str(i))))
+                        ...:
+                                0 ord = 48
+                                1 ord = 49
+                                2 ord = 50
+                                3 ord = 51
+                                4 ord = 52
+                                5 ord = 53
+                                6 ord = 54
+                                7 ord = 55
+                                8 ord = 56
+                                9 ord = 57
+
+                Example 2 :
+
+                            In [62]: z
+                            Out[62]: '5634'
+
+                            In [63]: ans = 0
+
+                            In [64]: for i in z:
+                                ...:     ans = 10 * ans + int(i)
+                                ...:
+
+                            In [65]: ans
+                            Out[65]: 5634
+                """
+                #number = 10*number + ord(c) - ord('0')  # _string to integer 
+                number = 10*number + int(c)  # _string to integer , above is OK as well
+            else:
+                break
+        res = flag * number
+        res = res if res <= 2**31 - 1 else 2**31 - 1    # 2**31 == 2147483648
+        res = res if res >= -1 * 2**31  else -1 * 2**31   # -(1)*(2**31) == - 2147483648
+        return res
 ```
