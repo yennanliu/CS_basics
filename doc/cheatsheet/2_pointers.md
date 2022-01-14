@@ -406,3 +406,43 @@ class Solution(object):
             
         return res
 ```
+
+### 2-6) Palindromic Substrings
+```python
+# LC 647. Palindromic Substrings
+# V0'
+# IDEA : TWO POINTERS
+# https://leetcode.com/problems/palindromic-substrings/discuss/1041760/Python-Easy-Solution-Beats-85
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py
+class Solution:
+    def countSubstrings(self, s):
+        ans = 0    
+        for i in range(len(s)):
+            # odd
+            ans += self.helper(s, i, i)
+            # even
+            ans += self.helper(s, i, i + 1)  
+        return ans
+        
+    def helper(self, s, l, r):     
+        ans = 0    
+        while l >= 0 and r < len(s) and s[l] == s[r]:
+            l -= 1
+            r += 1
+            ans += 1          
+        return ans
+
+# V0
+# IDEA : BRUTE FORCE
+class Solution(object):
+    def countSubstrings(self, s):
+        count = 0
+        # NOTE: since i from 0 to len(s) - 1, so for j we need to "+1" then can get go throgh all elements in str
+        for i in range(len(s)):
+            # Note : for j we need to "+1"
+            for j in range(i+1, len(s)+1):
+                if s[i:j] == s[i:j][::-1]:
+                    count += 1
+        return count
+
+```
