@@ -6,6 +6,8 @@
 - Continous sum
     - LC 525 : Contiguous Array
     - LC 523 : Continuous Subarray Sum
+- Pair of sums
+    - LC 1010 : Pairs of Songs With Total Durations Divisible by 60
 
 ### 0-2) Pattern
 
@@ -143,6 +145,21 @@ class Solution(object):
                 ans.append(j - anchor + 1)
                 anchor = j + 1
         return ans
+```
+
+- get pairs with specific sum
+```python
+# LC 1010 Pairs of Songs With Total Durations Divisible by 60
+d = {}
+res = 0
+for num in nums:
+    tmp = num % 60 # let's say sum is multiply by 60
+    if 60 - tmp in d:
+        res += d[60 - tmp]
+    if tmp not in d:
+        d[tmp] = 1
+    else:
+        d[tmp] += 1
 ```
 
 ## 2) LC Example
