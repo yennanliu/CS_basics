@@ -37,6 +37,7 @@
 			- all remain (not start)
 		- greedy
 			- 134 (not start)
+			- 647 (ok!)
 		- hashmap
 			- 036 (not start)
 			- 1010 (not start)
