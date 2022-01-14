@@ -41,6 +41,7 @@ class Solution(object):
         for t in time:
             #print ("rem = " + str(rem))
             t %= 60
+            ### NOTE this : (60 - t) % 60
             if (60 - t) % 60 in rem:
                 """
                 NOTE : this trick
