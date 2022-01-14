@@ -33,6 +33,7 @@ Constraints:
 
 # V0
 # IDEA : dict
+# IDEA : NOTE : we only count "NUMBER OF PAIRS", instead get all pairs indexes
 class Solution(object):
     def numPairsDivisibleBy60(self, time):
         rem = {}
@@ -41,10 +42,15 @@ class Solution(object):
             #print ("rem = " + str(rem))
             t %= 60
             if (60 - t) % 60 in rem:
+                """
+                NOTE : this trick
+                -> we append "all 60 duration combinations count" via the existing times of element "(60 - t) % 60" 
+                """
                 pairs += rem[(60 - t) % 60]
             if t not in rem:
                 rem[t] = 1
             else:
+                ### NOTE : here : we plus 1 when an element already exist
                 rem[t] += 1
         return pairs
 
