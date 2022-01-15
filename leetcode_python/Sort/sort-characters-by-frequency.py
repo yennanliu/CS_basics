@@ -37,6 +37,18 @@ s consists of uppercase and lowercase English letters and digits.
 """
 
 # V0
+from collections import Counter
+class Solution(object):
+    def frequencySort(self, s):
+        cnt = Counter(s)
+        print (cnt)
+        res = ""
+        for k, v in cnt.most_common():
+            res += k * v
+        #print (res)
+        return res
+
+# V0'
 import collections
 class Solution(object):
     def frequencySort(self, s):
