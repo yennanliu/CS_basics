@@ -64,9 +64,13 @@ class Solution:
     def countSubstrings(self, s):
         ans = 0    
         for i in range(len(s)):
-            # odd
+            # odd case
+            # example : s = "abc"
+            #  -> so have to set (l, r) at (2,2) (index)
             ans += self.helper(s, i, i)
-            # even
+            # even case
+            # example : s = "abcd"
+            #  -> so have to set (l, r) at (1,2) (index)
             ans += self.helper(s, i, i + 1)  
         return ans
         
