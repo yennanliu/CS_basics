@@ -29,7 +29,7 @@
 - Hash Collisions
 	- Chaining 
 	- Open addressing
-    - [hash_map_collisions.md](https://github.com/yennanliu/CS_basics/blob/master/doc/hash_map_collisions.md)
+    - [hash_map_collisions.md](https://github.com/yennanliu/CS_basics/blob/master/doc/hash_map_collision.md)
 
 - Ref 
 	- https://blog.techbridge.cc/2017/01/21/simple-hash-table-intro/

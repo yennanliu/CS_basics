@@ -1,10 +1,4 @@
-# Hash Map ref
-
-## Hash Map Defintion 
-- dev 
-
-## Hash Map Property 
-- dev 
+# Hash map collision
 
 ## Hash Map Collision probability
 - extension of "birthday question"
