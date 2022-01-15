@@ -3,6 +3,8 @@
 ## 0) Concept  
 
 ### 0-1) Types
+- N sum:
+    - [n_sum.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md)
 - Continous sum
     - LC 525 : Contiguous Array
     - LC 523 : Continuous Subarray Sum
@@ -27,6 +29,7 @@
 - Hash Collisions
 	- Chaining 
 	- Open addressing
+    - [hash_map_collisions.md](https://github.com/yennanliu/CS_basics/blob/master/doc/hash_map_collisions.md)
 
 - Ref 
 	- https://blog.techbridge.cc/2017/01/21/simple-hash-table-intro/
@@ -76,6 +79,11 @@ print (car)
 # https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
 
 x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+In [11]: x.items()
+Out[11]: dict_items([(1, 2), (3, 4), (4, 3), (2, 1), (0, 0)])
+
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+# note : have to use sorted(xxx, key=yyy), instead of xxx.sorted(....)
 sorted_x = sorted(x.items(), key=lambda kv: kv[1])
 print (sorted_x)
 # [(0, 0), (2, 1), (1, 2), (4, 3), (3, 4)]
