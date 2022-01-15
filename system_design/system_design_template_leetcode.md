@@ -6,12 +6,12 @@
         (1) Use cases
         (2) Scenarios that will not be covered
         (3) Who will use
-        (4) How many will use
+        (4) How many users will use
         (5) Usage patterns
 ```
 (2) ESTIMATIONS [5 min]
 ```
-        (1) Throughput (QPS for read and write queries)
+        (1) Throughput (QPS (query per second) for read and write queries)
         (2) Latency expected from the system (for read and write queries)
         (3) Read/Write ratio
         (4) Traffic estimates
@@ -19,7 +19,7 @@
                 - Read  (QPS, Volume of data)
         (5) Storage estimates
         (6) Memory estimates
-                - If we are using a cache, what is the kind of data we want to store in cache
+                - If we are using a cache, what's kind of data we want to store in cache
                 - How much RAM and how many machines do we need for us to achieve this ?
                 - Amount of data you want to store in disk/ssd
 ```
