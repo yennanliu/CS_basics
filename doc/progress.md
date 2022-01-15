@@ -35,7 +35,7 @@
 		- design
 			- all remain (not start)
 		- greedy
-			- 134 (not start)
+			- 134 (OK, BUT start)
 		- hashmap
 			- 036 (not start)
 			- 1010 (ok, but AGAIN!!!)
