@@ -152,10 +152,12 @@ class Solution(object):
 # LC 1010 Pairs of Songs With Total Durations Divisible by 60
 d = {}
 res = 0
+DURATION = some_duration
 for num in nums:
-    tmp = num % 60 # let's say sum is multiply by 60
-    if 60 - tmp in d:
-        res += d[60 - tmp]
+    tmp = num % DURATION # let's say sum is multiply by 60
+    ### NOTICE THIS :  (60 - tmp) % 60
+    if (DURATION - tmp) % DURATION in d:
+        res += d[(DURATION - tmp) % DURATION]
     if tmp not in d:
         d[tmp] = 1
     else:

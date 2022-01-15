@@ -137,14 +137,20 @@ class Solution:
 ### 2-4) Gas Station
 ```python
 # 134 Gas Station
-class Solution:
+# V0
+# IDEA : GREEDY
+# IDEA : if sum(gas) - sum(cost) > 0, => THERE MUST BE A SOLUTION
+# IDEA : since it's circular (symmetry), we can maintain "total" (e.g. total += gas[i] - cost[i]) of (gas[i], cost[i]) for each index as their "current sum"
+class Solution(object):
     def canCompleteCircuit(self, gas, cost):
-        start, sum_ = 0, 0 
+        start = remain = total = 0
         for i in range(len(gas)):
-            sum_ += gas[i] - cost[i]
-            if sum_ < 0:
-                start, sum_ = i+1, 0 
-        return start if sum(gas) - sum(cost) >= 0 else -1 
+            remain += gas[i] - cost[i]
+            total += gas[i] - cost[i]
+            if remain < 0:
+                remain = 0
+                start = i + 1
+        return -1 if total < 0 else start
 ```
 
 ### 2-5) Non-overlapping Intervals
