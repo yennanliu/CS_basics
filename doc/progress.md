@@ -8,6 +8,8 @@
 			- review
 			- (normal order)
 			- (pdf : p.10)
+				- 538 (ok!)
+				- 089
 		- ==========
 			- fast review (inverse order)
 			- --> Breadth-First-Search

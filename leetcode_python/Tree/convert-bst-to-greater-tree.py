@@ -89,6 +89,7 @@ Note: This question is the same as 1038: https://leetcode.com/problems/binary-se
 class Solution(object):
 
     def convertBST(self, root):
+        ### NOTE : we need set sum as self.sum (for keep updating its current value)
         self.sum = 0
         self.dfs(root)
         return root
@@ -98,9 +99,11 @@ class Solution(object):
             return
         #print ("node.val = " + str(node.val))
         self.dfs(node.right)
+        ### NOTE this : self.sum += node.val, (but not self.sum = node.val)
         self.sum += node.val
         node.val = self.sum
         self.dfs(node.left)
+        #return node # this one is optional
 
 # V0'
 # NOTE : the implementation difference on cur VS self.cur
