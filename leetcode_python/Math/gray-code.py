@@ -43,6 +43,20 @@ Constraints:
 
 # V0
 # IDEA : RECURSION & grayCode property
+class Solution(object):
+    def grayCode(self, n):
+        def help(n):
+            if n == 0:
+                return ['0']
+            elif n == 1:
+                return ['0', '1']
+            prev = help(n-1)
+            return ['0' + x for x in prev] + ['1' + x for x in prev[::-1]]
+
+        return [int(x, 2) for x in help(n)]
+
+# V0
+# IDEA : RECURSION & grayCode property
 # -> binary representation of grayCode(n) can be composed of the solution of grayCode(n - 1) padded with zeros, concatenated with the reversed grayCode(n - 1) padded with ones.
 # -> example : the binary representation of grayCode(2) is [00, 01, 11, 10]
 #     -> the first half of which can be thought of as 0 followed by [0, 1] (the binary representation of grayCode(1)), 
