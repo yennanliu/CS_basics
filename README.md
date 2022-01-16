@@ -455,7 +455,7 @@
 ## Heap 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note  | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-264| [Ugly Number II](https://leetcode.com/problems/ugly-number-ii/) | [python](./leetcode_python/Heap/ugly-number-ii.py)   | _O(n)_ | _O(1)_ | Medium   | CTCI, LintCode , BST, Heap | OK*
+264| [Ugly Number II](https://leetcode.com/problems/ugly-number-ii/) | [python](./leetcode_python/Heap/ugly-number-ii.py)   | _O(n)_ | _O(1)_ | Medium| LC 313, CTCI, LintCode , DP, Heap | AGAIN*** (3)
 313| [Super Ugly Number](https://leetcode.com/problems/super-ugly-number/) | [python](./leetcode_python/Heap/super-ugly-number.py)   | _O(n * k)_ | _O(n + k)_ | Medium     | BST, Heap | AGAIN (not start*)
 373 | [Find K Pairs with Smallest Sums](https://leetcode.com/problems/find-k-pairs-with-smallest-sums/) | [python](./leetcode_python/Heap/find-k-pairs-with-smallest-sums.py)  | _O(k * log(min(n, m, k)))_ | _O(min(n, m, k))_ | Medium || AGAIN (not start)
 378 | [Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) | [python](./leetcode_python/Heap/kth-smallest-element-in-a-sorted-matrix.py)  | _O(k * log(min(n, m, k)))_ | _O(min(n, m, k))_ | Medium | LintCode | AGAIN (not start)
