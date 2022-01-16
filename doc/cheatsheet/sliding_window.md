@@ -17,11 +17,11 @@
     - Permutation
     - Anagrams
     - Substring
-        - Longest Substring Without Repeating Characters
-        - Longest Repeating Character Replacement
+        - LC 003 : Longest Substring Without Repeating Characters
+        - LC 424 : Longest Repeating Character Replacement
     - SubArray
-        - Subarray Product Less Than K
-        - Minimum Size Subarray Sum
+        - LC 713 : Subarray Product Less Than K
+        - LC 209 : Minimum Size Subarray Sum
 
 - Algorithm
     - sliding window
@@ -169,6 +169,7 @@ class Solution(object):
 ### 2-3) Longest Substring Without Repeating Characters
 
 ```python
+# LC 003 Longest Substring Without Repeating Characters
 # V0'
 # IDEA : SLIDING WINDOW + DICT
 #       -> use a hash table (d) record visited "element" (e.g. : a,b,c,...)
@@ -202,7 +203,7 @@ class Solution(object):
 
 ### 2-4) Subarray Product Less Than K
 ```python
-# LC 713
+# LC 713 Subarray Product Less Than K
 # V0 
 # IDEA : SLIDING WINDOW 
 # MAINTAIN 2 INDEX : left, i, SO THE SLIDING WINDOW IS : [left, i]
