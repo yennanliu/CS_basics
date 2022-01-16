@@ -22,6 +22,9 @@
 
 - When to use 
 	- Use case that need data IO with ~ O(1) time complexity
+    - optimization via cache (space - time tradeoff)
+    - `sum, pair, continous`
+    - avoid double loop (O(N^2))
 
 - When Not to use
 	- When data is time sequence 
@@ -172,6 +175,32 @@ for num in nums:
         d[tmp] = 1
     else:
         d[tmp] += 1
+```
+
+- get sub array sum
+```python
+# (algorithm book (labu) p.350)
+my_array = [1,2,3,4,5]
+my_array_pre = [0] * (len(my_array)+1)
+cur = 0
+for i in range(len(my_array)):
+    cur += my_array[i]
+    my_array_pre[i+1] += cur
+
+# In [17]: print ("my_array = " + str(my_array))
+#     ...: print ("my_array_pre = " + str(my_array_pre))
+# my_array = [1, 2, 3, 4, 5]
+# my_array_pre = [0, 1, 3, 6, 10, 15]
+
+#-----------------------------------------------
+# Get sub array sum !!!!
+#    -> nums[i..j] sum = preSum[j+1] - preSum[i]
+#-----------------------------------------------
+# example 1 : sum of [1,2]
+my_array_pre[1+1] - my_array_pre[0]
+
+# example 2 : sum of [2,3,4]
+my_array_pre[3+1] - my_array_pre[1]
 ```
 
 ## 2) LC Example
@@ -537,7 +566,7 @@ int subarraySum(int[] nums, int k){
     // map :  key : prefix, value : prefix exists count
     // init hash map
     HashMap<Integer, Integer> preSum = new HashMap<Integer, Integer>();
-    
+
     // base case
     preSum.put(0,1);
 
