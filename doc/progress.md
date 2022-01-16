@@ -1,5 +1,58 @@
 # Progress
 
+# 2022-01-17
+- DOING:
+	- LC review (amz_)
+		- ref: https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
+		- programming
+			- review
+			- (normal order)
+			- (pdf : p.11)
+		- ==========
+			- fast review (inverse order)
+			- --> Breadth-First-Search
+	- ================
+	- LC (amz_, July 2020 - July 2021) (OK)
+		- Premium questions : OK
+	- LC (Jul 2020 - Dec 2020 (about 4 months before above)) (OK)
+		- Premium questions : (OK)
+	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V3/amz_interview_q.txt
+	- ================ 
+	- LC general
+		- Tree
+			- 662 (*not start*)
+			- 662
+			- 508
+			- 776
+			- 525
+			- 572
+		- =======
+		- bit manipulation
+			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
+		- intervals
+			- 57 (again !!!)
+			- 56 (again !!!)
+		- design
+			- all remain (not start)
+		- greedy
+		- hashmap
+			- 036 (not start)
+		- heap
+			- 355 (not start)
+			- 295 (not start)
+		- graph
+			- 547 (not start)
+			- 210 (not start)
+			- 323 (not start)
+		- SQL
+	- System Design
+		- Tinder design
+	- algorithm book (labu)
+		- note
+			- p.353 -
+	- system design book - an insider's guide (GOTOP)
+		- p.260 - p.268
+
 # 2022-01-16
 - DOING:
 	- LC review (amz_)
