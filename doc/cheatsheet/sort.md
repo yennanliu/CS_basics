@@ -54,7 +54,9 @@ class Solution(object):
             arr = arr[:max_idx][::-1] + arr[max_idx + 1 : len(arr)]
             # step 3) Reverse whole list
             #arr = arr[cur - 1 :: -1] + arr[cur : len(arr)] # this is OK as well
-            arr = arr[:cur - 1][::-1] + arr[cur : len(arr)]
+            #arr = arr[:cur - 1][::-1] + arr[cur : len(arr)] # this is OK as well
+            tmp = arr[::-1]
+            arr = tmp
             cur -= 1
         print ("arr = " + str(arr))
         return res
