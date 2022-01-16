@@ -140,7 +140,8 @@ class Twitter(object):
 ### 2-1) Kth Largest Element in a Stream
 ```python
 # 703 Kth Largest Element in a Stream
-import heapq
+# V0
+# IDEA : heap op
 class KthLargest(object):
 
     def __init__(self, k, nums):
@@ -149,14 +150,17 @@ class KthLargest(object):
         self.k = k
         heapq.heapify(self.pool)
         while self.size > k:
+            # heappop : get minimum element out from heap and return it 
             heapq.heappop(self.pool)
             self.size -= 1
 
     def add(self, val):
         if self.size < self.k:
+            # heappush : put item input heap, and make heap unchanged
             heapq.heappush(self.pool, val)
             self.size += 1
         elif val > self.pool[0]:
+            # get minimum value from heap and return it, and put new item into heap
             heapq.heapreplace(self.pool, val)
         return self.pool[0]
 ```
