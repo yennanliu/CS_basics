@@ -517,7 +517,10 @@ class Solution(object):
 ### 2-7) Subarray Sum Equals K
 ```python
 # LC 560 : Subarray Sum Equals K
-# V0 
+
+# V0
+# IDEA : HASH TABLE + sub array sum
+# IDEA : https://blog.csdn.net/fuxuemingzhu/article/details/82767119
 class Solution(object):
     def subarraySum(self, nums, k):
         n = len(nums)
@@ -531,6 +534,27 @@ class Solution(object):
                 res += d[sum - k]
             d[sum] += 1
         return res
+
+# V0'
+# IDEA : HASH TABLE + sub array sum
+class Solution:
+    def subarraySum(self, nums, k):
+        # write your code here
+        for i in range(1, len(nums)):
+            nums[i] += nums[i - 1]
+        print ("nums = " + str(nums))
+        d = {0:1}
+        ans = 0
+        for i in range(len(nums)):
+            # check sub array equals k
+            if(d.get(nums[i] - k) != None):
+                ans += d[nums[i] - k]
+            # update dict
+            if nums[i] not in d:
+                d[nums[i]] = 1
+            else:
+                d[nums[i]] += 1
+        return ans
 ```
 ```java
 // LC 560 : Subarray Sum Equals K
