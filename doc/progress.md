@@ -7,7 +7,9 @@
 		- programming
 			- review
 			- (normal order)
-			- (pdf : p.11) 
+			- (pdf : p.11)
+				- 204 (ok)
+				- 414 (ok)
 		- ==========
 			- fast review (inverse order)
 			- --> Breadth-First-Search

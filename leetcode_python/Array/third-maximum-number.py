@@ -26,6 +26,18 @@ Both numbers with value 2 are both considered as second maximum.
 
 # V0
 # IDEA : COLLECTIONS 
+from collections import Counter
+class Solution(object):
+    def thirdMax(self, nums):
+        cnt = Counter(nums)
+        keys = list(cnt.keys())
+        keys.sort(key = lambda x : -x)
+        if len(keys) < 3:
+            return keys[0]
+        return keys[2]
+
+# V0'
+# IDEA : COLLECTIONS 
 class Solution(object):
     def thirdMax(self, nums):
         import collections 
@@ -35,7 +47,7 @@ class Solution(object):
             return max(count_.keys())
         return sorted(count_.keys())[::-1][2]
 
-# V0 
+# V0''
 # IDEA : COLLECTIONS 
 # TIME COMPLEXITY : O(N)
 # SPACE COMPLEXITY : O(N)
@@ -49,7 +61,7 @@ class Solution(object):
             return max(count_.keys())
         return sorted(count_.keys())[-3]
 
-# V0'
+# V0''''
 # IDEA : SET 
 class Solution(object):
     def thirdMax(self, nums):
