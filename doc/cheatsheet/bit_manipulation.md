@@ -5,6 +5,9 @@
 - https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md :  bit_manipulation.md
 - https://www.runoob.com/python/python-operators.html
 
+<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bit_basic1.png" ></p>
+<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bit_basic2.png" ></p>
+
 ### 0-1) Types
 
 ### 0-2) Pattern
