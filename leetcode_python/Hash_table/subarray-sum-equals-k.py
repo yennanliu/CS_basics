@@ -32,7 +32,9 @@ Constraints:
 
 """
 
-# V0 
+# V0
+# IDEA : HASH TABLE + sub array sum
+# IDEA : https://blog.csdn.net/fuxuemingzhu/article/details/82767119
 class Solution(object):
     def subarraySum(self, nums, k):
         n = len(nums)
@@ -46,6 +48,47 @@ class Solution(object):
                 res += d[sum - k]
             d[sum] += 1
         return res
+
+# V0'
+# IDEA : HASH TABLE + sub array sum
+class Solution:
+    def subarraySum(self, nums, k):
+        # write your code here
+        for i in range(1, len(nums)):
+            nums[i] += nums[i - 1]
+        print ("nums = " + str(nums))
+        d = {0:1}
+        ans = 0
+        for i in range(len(nums)):
+            # check sub array equals k
+            if(d.get(nums[i] - k) != None):
+                ans += d[nums[i] - k]
+            # update dict
+            if nums[i] not in d:
+                d[nums[i]] = 1
+            else:
+                d[nums[i]] += 1
+        return ans
+
+# V0'
+# -> TIME OUT ERROR
+# class Solution(object):
+#     def subarraySum(self, nums, k):
+#         pre_sum = [0] * (len(nums) + 1)
+#         cur = 0
+#         for i in range(len(nums)):
+#             cur += nums[i]
+#             pre_sum[i+1] += cur
+#         res = 0
+#         for i in range(len(pre_sum)-1):
+#             l = 0
+#             while l <= i:
+#                 tmp_sum = pre_sum[i+1] - pre_sum[l]
+#                 if tmp_sum == k:
+#                     res += 1
+#                 l += 1
+#         print ("res = " + str(res))
+#         return res
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82767119
