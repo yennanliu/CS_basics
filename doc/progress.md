@@ -37,6 +37,7 @@
 		- greedy
 		- hashmap
 			- 036 (not start)
+			- 560
 		- heap
 			- 355 (not start)
 			- 703 (not start)

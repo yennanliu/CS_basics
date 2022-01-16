@@ -10,6 +10,8 @@
     - LC 523 : Continuous Subarray Sum
 - Pair of sums
     - LC 1010 : Pairs of Songs With Total Durations Divisible by 60
+- Sub array sum
+    - LC 560 : Subarray Sum Equals K
 
 ### 0-2) Pattern
 
@@ -481,4 +483,78 @@ class Solution(object):
                 ### NOTE : here : we plus 1 when an element already exist
                 rem[t] += 1
         return pairs
+```
+
+### 2-7) Subarray Sum Equals K
+```python
+# LC 560 : Subarray Sum Equals K
+# V0 
+class Solution(object):
+    def subarraySum(self, nums, k):
+        n = len(nums)
+        d = collections.defaultdict(int)
+        d[0] = 1
+        sum = 0
+        res = 0
+        for i in range(n):
+            sum += nums[i]
+            if sum - k in d:
+                res += d[sum - k]
+            d[sum] += 1
+        return res
+```
+```java
+// LC 560 : Subarray Sum Equals K
+// java
+// (algorithm book (labu) p.350)
+// V1 : brute force + cum sum
+int subarraySum(int[] nums, int k){
+    int n = nums.length;
+    // init pre sum
+    int[] sum = new int[n+1];
+    sum[0] = 0;
+    for (int i = 0; i < n; i++){
+        sum[i+1] = sum[i] + nums[i];
+    }
+
+    int ans = 0;
+    // loop over all sub array
+    for (int i=1; i <= n; i++){
+        for (int j=0; j < i; j++){
+            // sum of nums[j...i-1]
+            if (sum[i] - sum[j] == k){
+                ans += 1;
+            }
+        }
+    }
+    return ans;
+}
+
+// (algorithm book (labu) p.350)
+// V2 : hash map + cum sum
+int subarraySum(int[] nums, int k){
+    int n = nums.length;
+    // map :  key : prefix, value : prefix exists count
+    // init hash map
+    HashMap<Integer, Integer> preSum = new HashMap<Integer, Integer>();
+    
+    // base case
+    preSum.put(0,1);
+
+    int ans = 0;
+    sum0_i = 0;
+
+    for (int i = 0; i < n; i++){
+        sum0_i += nums[i];
+        // for presum : nums[0..j]
+        int sum0_j = sum0_i - k;
+        // if there is already presum, update the ans directly
+        if (preSum.containsKey(sum0_j)){
+            ans += preSum.get(sum0_j);
+        }
+        // add prefix and nums[0..i] and record exists count
+        preSum.put(sum0_i, preSum.getOrDefault(sum0_i,0) + 1);
+    }
+    return ans;
+}
 ```
