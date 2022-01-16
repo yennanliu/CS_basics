@@ -164,6 +164,24 @@ class KthLargest(object):
 ### 2-2) Ugly Number II
 ```python
 # 264 Ugly Number II
+# V0 
+# IDEA : HEAP
+# using brute force is too slow -> time out error
+# -> so here we generate "ugly number" by ourself, and order them via heap (heappush)
+# -> and return the i-th element as request
+class Solution(object):
+    def nthUglyNumber(self, n):
+        heap = [1]
+        visited = set([1])      
+        for i in range(n):
+            val = heapq.heappop(heap)
+            for factor in [2,3,5]:
+                if val*factor not in visited:
+                    heapq.heappush(heap, val*factor)
+                    visited.add(val*factor)    
+        return val
+
+# V1
 import heapq
 class Solution(object):
     def nthUglyNumber(self, n):
