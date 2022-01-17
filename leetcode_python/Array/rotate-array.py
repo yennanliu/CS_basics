@@ -34,7 +34,21 @@ Could you do it in-place with O(1) extra space?
 # Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.
 #
 
-# V0 
+# V0
+# IDEA : SLICE (in place)
+class Solution(object):
+    def rotate(self, nums, k):
+        # edge case
+        if k == 0 or not nums or len(nums) == 1:
+            return nums
+        ### NOTE this
+        k = k % len(nums)
+        if k == 0:
+            return nums
+        nums[:k], nums[k:] = nums[-k:], nums[:-k]
+        return nums
+
+# V0'
 # IDEA : SLICE (in place)
 class Solution(object):
     def rotate(self, nums, k):
