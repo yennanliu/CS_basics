@@ -21,6 +21,41 @@
 ### 2-1) Gray Code
 ```python
 # LC 89 Gray Code
+# V0
+# IDEA : bit op
+# https://blog.csdn.net/qqxx6661/article/details/78371259
+# DEMO
+# i = 0 bin(i) = 0b0 bin(i >> 1) = 0b0 bin(i >> 1) ^ i  = 0b0
+# i = 1 bin(i) = 0b1 bin(i >> 1) = 0b0 bin(i >> 1) ^ i  = 0b1
+# i = 2 bin(i) = 0b10 bin(i >> 1) = 0b1 bin(i >> 1) ^ i  = 0b11
+# i = 3 bin(i) = 0b11 bin(i >> 1) = 0b1 bin(i >> 1) ^ i  = 0b10
+# i = 4 bin(i) = 0b100 bin(i >> 1) = 0b10 bin(i >> 1) ^ i  = 0b110
+# i = 5 bin(i) = 0b101 bin(i >> 1) = 0b10 bin(i >> 1) ^ i  = 0b111
+# i = 6 bin(i) = 0b110 bin(i >> 1) = 0b11 bin(i >> 1) ^ i  = 0b101
+# i = 7 bin(i) = 0b111 bin(i >> 1) = 0b11 bin(i >> 1) ^ i  = 0b100
+# i = 8 bin(i) = 0b1000 bin(i >> 1) = 0b100 bin(i >> 1) ^ i  = 0b1100
+# i = 9 bin(i) = 0b1001 bin(i >> 1) = 0b100 bin(i >> 1) ^ i  = 0b1101
+# i = 10 bin(i) = 0b1010 bin(i >> 1) = 0b101 bin(i >> 1) ^ i  = 0b1111
+# i = 11 bin(i) = 0b1011 bin(i >> 1) = 0b101 bin(i >> 1) ^ i  = 0b1110
+# i = 12 bin(i) = 0b1100 bin(i >> 1) = 0b110 bin(i >> 1) ^ i  = 0b1010
+# i = 13 bin(i) = 0b1101 bin(i >> 1) = 0b110 bin(i >> 1) ^ i  = 0b1011
+# i = 14 bin(i) = 0b1110 bin(i >> 1) = 0b111 bin(i >> 1) ^ i  = 0b1001
+# i = 15 bin(i) = 0b1111 bin(i >> 1) = 0b111 bin(i >> 1) ^ i  = 0b1000
+class Solution(object):
+    def grayCode(self, n):
+        res = []
+        size = 2**n
+        for i in range(size):
+            print ("i = " + str(i) + " bin(i) = " + str(bin(i)) + " bin(i >> 1) = " + str(bin(i >> 1))  + " bin(i >> 1) ^ i  = " + str( bin((i >> 1) ^ i) )  )
+            """
+            NOTE : 
+              step 1) we move 1 digit right in every iteration (i >> 1), for keep adding space
+              step 2) we do (i >> 1) ^ i. for getting "inverse" binary code with i
+              step 3) append and return the result 
+            """
+            res.append((i >> 1) ^ i)
+        return res
+
 # V1'
 # https://ithelp.ithome.com.tw/articles/10213273
 # DEMO
@@ -59,43 +94,4 @@ class Solution:
                 res.append(res[add - 1 - i] + add);
             add <<= 1
         return res
-
-# V1''
-# https://blog.csdn.net/qqxx6661/article/details/78371259
-class Solution(object):
-    def grayCode(self, n):
-        """
-        :type n: int
-        :rtype: List[int]
-        """
-        res = []
-        size = 1 << n  # if n=4, left move 4 digits, from 1 to 10000, which is 16 
-        for i in range(size):
-            res.append((i >> 1) ^ i)
-        return res
-
-# V2 
-# Time:  O(2^n)
-# Space: O(1)
-class Solution(object):
-    def grayCode(self, n):
-        """
-        :type n: int
-        :rtype: List[int]
-        """
-        result = [0]
-        for i in range(n):
-            for n in reversed(result):
-                result.append(1 << i | n)
-        return result
-
-# Proof of closed form formula could be found here:
-# http://math.stackexchange.com/questions/425894/proof-of-closed-form-formula-to-convert-a-binary-number-to-its-gray-code
-class Solution2(object):
-    def grayCode(self, n):
-        """
-        :type n: int
-        :rtype: List[int]
-        """
-        return [i >> 1 ^ i for i in range(1 << n)]
 ```
