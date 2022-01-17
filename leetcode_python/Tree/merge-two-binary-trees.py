@@ -32,7 +32,44 @@ The number of nodes in both trees is in the range [0, 2000].
 """
 
 # V0
-# IDEA : DFS + BACKTRACK
+# IDEA : recursive
+class Solution(object):
+    def mergeTrees(self, root1, root2):
+        def help(root1, root2):
+            if not root1 and not root2:
+                return
+            if root1 and root2:
+                newT = TreeNode(root1.val + root2.val)
+                newT.left = help(root1.left, root2.left)
+                newT.right = help(root1.right, root2.right)
+                return newT
+            if not root1 or not root2:
+                return root1 if root1 else root2
+        res = help(root1, root2)
+        return res
+
+# V0'
+# IDEA : ITERATION, BFS
+class Solution(object):
+     def mergeTrees(self, t1, t2):
+            dummy = TreeNode(0)
+            stack = [(t1, t2, dummy, 'l')]
+            while stack:
+                n1, n2, parent, lr = stack.pop()
+                n = TreeNode((n1.val if n1 else 0 ) + (n2.val if n2 else 0 )) if n1 or n2 else None
+                if lr == 'l': 
+                    parent.left = n 
+                else:
+                    parent.right = n
+
+                if n1 or n2:
+                    stack.append((n1 and n1.left, n2 and n2.left, n, 'l'))
+                    stack.append((n1 and n1.right, n2 and n2.right, n, 'r'))
+
+            return dummy.left
+
+# V0
+# IDEA : recursive
 class Solution:
     def mergeTrees(self, t1, t2):
         return self.dfs(t1,t2)
@@ -96,7 +133,115 @@ class Solution:
         else:
             return t1 or t2
 
+# V1
+# https://leetcode.com/problems/merge-two-binary-trees/discuss/159138/Python-solution
+# IDEA : resursive
+class Solution(object):
+    def mergeTrees(self, t1, t2):
+        if t1 == None and t2 == None:
+            return None
+        elif t1 == None:
+            return t2
+        elif t2 == None:
+            return t1
+        new_root = TreeNode(t1.val + t2.val)
+        left = self.mergeTrees(t1.left, t2.left)
+        right = self.mergeTrees(t1.right, t2.right)
+        new_root.left = left
+        new_root.right = right
+        return new_root
+
+
+# V1
+# IDEA : iterative
+# https://leetcode.com/problems/merge-two-binary-trees/discuss/121170/Python-iterative
+class Solution(object):
+     def mergeTrees(self, t1, t2):
+            dummy = TreeNode(0)
+            stack = [(t1, t2, dummy, 'l')]
+            while stack:
+                n1, n2, parent, lr = stack.pop()
+                n = TreeNode((n1.val if n1 else 0 ) + (n2.val if n2 else 0 )) if n1 or n2 else None
+                if lr == 'l': 
+                    parent.left = n 
+                else:
+                    parent.right = n
+
+                if n1 or n2:
+                    stack.append((n1 and n1.left, n2 and n2.left, n, 'l'))
+                    stack.append((n1 and n1.right, n2 and n2.right, n, 'r'))
+
+            return dummy.left
+
 ### Test case : dev 
+
+# V1
+# https://leetcode.com/problems/merge-two-binary-trees/solution/
+# IDEA : resursive
+# java
+# /**
+#  * Definition for a binary tree node.
+#  * public class TreeNode {
+#  *     int val;
+#  *     TreeNode left;
+#  *     TreeNode right;
+#  *     TreeNode(int x) { val = x; }
+#  * }
+#  */
+# public class Solution {
+#     public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+#         if (t1 == null)
+#             return t2;
+#         if (t2 == null)
+#             return t1;
+#         t1.val += t2.val;
+#         t1.left = mergeTrees(t1.left, t2.left);
+#         t1.right = mergeTrees(t1.right, t2.right);
+#         return t1;
+#     }
+# }
+
+
+# V1
+# https://leetcode.com/problems/merge-two-binary-trees/solution/
+# IDEA : Iterative
+# java
+# /**
+#  * Definition for a binary tree node.
+#  * public class TreeNode {
+#  *     int val;
+#  *     TreeNode left;
+#  *     TreeNode right;
+#  *     TreeNode(int x) { val = x; }
+#  * }
+#  */
+# public class Solution {
+#     public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+#         if (t1 == null)
+#             return t2;
+#         Stack < TreeNode[] > stack = new Stack < > ();
+#         stack.push(new TreeNode[] {t1, t2});
+#         while (!stack.isEmpty()) {
+#             TreeNode[] t = stack.pop();
+#             if (t[0] == null || t[1] == null) {
+#                 continue;
+#             }
+#             t[0].val += t[1].val;
+#             if (t[0].left == null) {
+#                 t[0].left = t[1].left;
+#             } else {
+#                 stack.push(new TreeNode[] {t[0].left, t[1].left});
+#             }
+#             if (t[0].right == null) {
+#                 t[0].right = t[1].right;
+#             } else {
+#                 stack.push(new TreeNode[] {t[0].right, t[1].right});
+#             }
+#         }
+#         return t1;
+#     }
+# }
+
 
 # V1'
 # https://www.polarxiong.com/archives/LeetCode-617-merge-two-binary-trees.html
