@@ -736,6 +736,38 @@ class Solution(object):
         # check if there is "True" in cache
         return True in cache
 
+# V0'
+# IDEA : DFS + DFS (LC 100 Same tree)
+class Solution(object):
+    def isSubtree(self, root, subRoot):
+        # IDEA : LC 100 Same tree
+        def isSameTree(p, q):
+            if not p and not q:
+                return True
+            if (not p and q) or (p and not q):
+                return False
+            if p.val != q.val:
+                return False
+            return isSameTree(p.left, q.left) and isSameTree(p.right, q.right)
+        def help(root, subRoot):
+            # edge case
+            if not root and subRoot:
+                return False
+            if not root and not subRoot:
+                return True
+            # use isSameTree
+            if isSameTree(root, subRoot):
+                #return True
+                res.append(True)
+            if root.left:
+                help(root.left, subRoot)
+            if root.right:
+                help(root.right, subRoot)
+        res = []
+        help(root, subRoot)
+        #print ("res = " + str(res))
+        return True in res
+
 # V0' 
 # IDEA : DFS + DFS 
 class Solution(object):
