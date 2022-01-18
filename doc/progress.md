@@ -25,7 +25,6 @@
 			- 662
 			- 508
 			- 776
-			- 525
 			- 572 (ok!)
 		- =======
 		- bit manipulation
@@ -37,6 +36,7 @@
 			- all remain (not start)
 		- greedy
 		- hashmap
+			- 525
 			- 036 (not start)
 		- heap
 			- 355 (not start)
