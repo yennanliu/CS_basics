@@ -43,7 +43,7 @@ class Solution(object):
             else:
                 return 0
 
-        # init hash map like below (idx=0, no solution)
+        # NOTE !!! : init hash map like below (idx=0, no solution, for [0,1,1] case)
         d = {0:-1}
         tmp = 0
         res = 0
@@ -52,8 +52,10 @@ class Solution(object):
                 tmp += 1
             else:
                 tmp -= 1
+            # NOTE THIS : if tmp in d, return the max of (res,cur-index - index) from d with same cur-value
             if tmp in d:
                 res = max(res, k - d[tmp])
+            # NOTE THIS : if tmp not in d, then use its cur value as key, index as value
             else:
                 d[tmp] = k
         return res
