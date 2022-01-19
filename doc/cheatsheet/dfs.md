@@ -226,6 +226,8 @@ def dfs(root, value):
 def get_sum(root):
     if not root:
         return 0
+    ### NOTE THIS !!!
+    #  -> we need to do get_sum(root.left), get_sum(root.right) on the same time
     s = get_sum(root.left) + root.val + get_sum(root.right)
     res.append(s)
     return s
