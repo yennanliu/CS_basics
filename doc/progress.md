@@ -36,7 +36,7 @@
 			- all remain (not start)
 		- greedy
 		- hashmap
-			- 525
+			- 525 (ok, but AGAIN!)
 			- 036 (not start)
 		- heap
 			- 355 (not start)
