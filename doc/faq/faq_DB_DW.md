@@ -1,4 +1,4 @@
-# Note for Database
+# FAQ : DB, DW
 
 ## 1) DB type
 
@@ -185,9 +185,23 @@
 - NeoDDL on gcloud 
 	- https://medium.com/traveloka-engineering/data-modelling-and-processing-in-travel-super-app-8011a6ecafe6
 
-## 8) Ref 
+## 9) SCD
+- SCD : Slowly Changing Dimensions
+- G-SCD : Based-Granularity Slowly Changing Dimension
+- Type
+	- Type 0 SCD
+	- Type 1 SCD
+	- Type 2 SCD
+	- Type 3 SCD
+	- Type 4 SCD
+- ref
+	- https://www.gushiciku.cn/pl/ggNK/zh-tw
+	- https://help.aliyun.com/document_detail/295435.html#:~:text=SCD%E7%AE%80%E4%BB%8B,%E5%85%B3%E9%94%AEETL%E4%BB%BB%E5%8A%A1%E4%B9%8B%E4%B8%80%E3%80%82
+	- https://www.cnblogs.com/biwork/p/3363749.html
+	- https://www.codenong.com/cs107062349/
+
+## Ref 
 - https://deliveroo.engineering/2017/11/23/engineering-interviews.html
 - https://www.2ndquadrant.com/en/postgresql/postgresql-vs-mysql/
 - https://blog.xuite.net/jack101257/twblog/138494904-%E4%BC%81%E6%A5%AD%E8%B3%87%E6%96%99%E5%80%89%E5%84%B2DWH%E7%B0%A1%E4%BB%8B
 - http://relyky.blogspot.com/2011/04/data-warehousedimensional-data-model.html
-
