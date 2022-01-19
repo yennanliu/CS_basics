@@ -23,8 +23,8 @@
 		- Tree
 			- 662 (*not start*)
 			- 662
-			- 508
-			- 776
+			- 508 (again!!!)
+			- 776 (again)
 			- 572 (ok!)
 		- =======
 		- bit manipulation
