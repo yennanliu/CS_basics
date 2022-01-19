@@ -200,6 +200,29 @@
 	- https://www.cnblogs.com/biwork/p/3363749.html
 	- https://www.codenong.com/cs107062349/
 
+
+## 10) Clustered indexing
+
+## 11) Indexing
+
+## 12) MPP, OLAP, OLTP
+- MPP (massively parallel processing)
+	- An MPP database is a database that is optimized to be processed in parallel for many operations to be performed by many processing units at a time.
+- ref
+	- https://searchdatamanagement.techtarget.com/definition/MPP-database-massively-parallel-processing-database#:~:text=An%20MPP%20database%20is%20a,different%20parts%20of%20the%20program
+	- https://medium.com/@jockeyng/hadoop%E8%88%87mpp%E6%98%AF%E4%BB%80%E9%BA%BC%E9%97%9C%E4%BF%82-%E6%9C%89%E4%BB%80%E9%BA%BC%E5%8D%80%E5%88%A5%E5%92%8C%E8%81%AF%E7%B9%AB-afb4397e12a1
+
+## 13) normalization, denormalization
+
+## 14) SQL performance tuning
+- ref
+	- https://docs.aws.amazon.com/redshift/latest/dg/c-optimizing-query-performance.html
+	- http://udayarumilli.com/sql-server-performance-tuning-interview-questions-part-1/
+	- https://stackify.com/postgresql-performance-tutorial/
+	- https://www.revsys.com/writings/postgresql-performance.html
+	- https://www.mssqltips.com/sqlservertip/1429/sql-server-dba-performance-tuning-interview-questions/
+	- https://aws.amazon.com/tw/blogs/big-data/top-10-performance-tuning-techniques-for-amazon-redshift/
+
 ## Ref 
 - https://deliveroo.engineering/2017/11/23/engineering-interviews.html
 - https://www.2ndquadrant.com/en/postgresql/postgresql-vs-mysql/
