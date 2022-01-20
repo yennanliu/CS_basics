@@ -9,6 +9,8 @@
 			- (normal order)
 			- (pdf : p.11)
 				- 355
+				- 532 (ok, but again!!!)
+				- 119
 		- ==========
 			- fast review (inverse order)
 			- --> Breadth-First-Search
