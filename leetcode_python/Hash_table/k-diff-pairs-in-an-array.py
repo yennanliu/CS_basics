@@ -65,7 +65,7 @@ class Solution(object):
                         res.append(tmp)
                 if abs(nums[j] - nums[i]) > k:
                     break
-        return res
+        return len(res)
 
 # V0 
 import collections
