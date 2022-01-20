@@ -34,6 +34,23 @@ Follow up: Could you optimize your algorithm to use only O(rowIndex) extra space
 # V0
 class Solution(object):
     def getRow(self, rowIndex):
+        # edge case
+        if rowIndex == 0:
+            return [1]
+        if rowIndex == 1:
+            return [1,1]
+        res = [1,1]
+        for i in range(rowIndex+1):
+            if i <= 1:
+                continue
+            res = [1] + [ res[i] + res[i+1] for i in range(len(res)-1) ] + [1]
+            print (res)
+        #print ("--> res = " + str(res))
+        return res
+
+# V0
+class Solution(object):
+    def getRow(self, rowIndex):
         init = [[1], [1,1]]
         if rowIndex <= 1:
             return init[rowIndex]
