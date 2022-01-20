@@ -1,6 +1,6 @@
 # Progress
 
-# 2022-01-20
+# 2022-01-21
 - DOING:
 	- LC review (amz_)
 		- ref: https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
