@@ -927,3 +927,77 @@ class Solution(object):
         root.right = self.buildTree(preorder[index + 1 : ], inorder[index + 1 :]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the right-sub-tree of Preorder as well
         return root
 ```
+
+### 2-11) Construct Binary Tree from String
+```python
+# LC 536 Construct Binary Tree from String
+# V0
+# IDEA : tree property + recursive
+class Solution(object):
+    def str2tree(self, s):
+        if not s: 
+            return None
+        n = ''
+        while s and s[0] not in ('(', ')'):
+            n += s[0]
+            s = s[1:]
+        ### NOTE this
+        node = TreeNode(int(n))
+        ### NOTE this
+        left, right = self.divide(s)
+        node.left = self.str2tree(left[1:-1])
+        node.right = self.str2tree(right[1:-1])
+        return node
+
+    def divide(self, s):
+        part, deg = '', 0
+        while s:
+            """
+            syntax exmaple :
+            In [9]: x = {'(' : 1, ')' : -1}
+            In [10]: x.get('(')
+            Out[10]: 1
+            In [11]: x.get('(', 0 )
+            Out[11]: 1
+            In [12]: x.get('&', 0 )
+            Out[12]: 0
+            """
+            deg += {'(' : 1, ')' : -1}.get(s[0], 0)
+            part += s[0]
+            s = s[1:]
+            if deg == 0:
+                break
+        return part, s
+
+# V0'
+# IDEA : tree property + recursive
+class TreeNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution(object):
+    def str2tree(self, s):
+        """
+        :type s: str
+        :rtype: TreeNode
+        """
+        def str2treeHelper(s, i):
+            start = i
+            if s[i] == '-': i += 1
+            while i < len(s) and s[i].isdigit(): 
+                i += 1
+            node = TreeNode(int(s[start:i]))
+            if i < len(s) and s[i] == '(':
+                i += 1
+                node.left, i = str2treeHelper(s, i)
+                i += 1
+            if i < len(s) and s[i] == '(':
+                i += 1
+                node.right, i = str2treeHelper(s, i)
+                i += 1
+            return node, i
+
+        return str2treeHelper(s, 0)[0] if s else None
+```
