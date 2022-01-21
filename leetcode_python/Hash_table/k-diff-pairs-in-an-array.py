@@ -47,8 +47,56 @@ Constraints:
 
 """
 
-
 # V0
+# IDEA : HASH TABLE
+import collections
+class Solution(object):
+    def findPairs(self, nums, k):
+        answer = 0
+        cnt = collections.Counter(nums)
+        # NOTE THIS : !!! we use set(nums) for reduced time complexity, and deal with k == 0 case separately
+        for num in set(nums):
+            """
+            # [b - a] = k
+            #  -> b - a = +k or -k
+            #  -> b = k + a or b = -k + a
+            #  -> however, 0 <= k <= 10^7, so ONLY b = k + a is possible
+
+            2 cases
+                -> case 1) k > 0 and num + k in cnt
+                -> case 2) k == 0 and cnt[num] > 1
+            """
+            # case 1) k > 0 and num + k in cnt
+            if k > 0 and num + k in cnt: # | a - b | = k -> a - b = +k or -k, but here don't have to deal with "a - b = -k" case, since this sutuation will be covered when go through whole nums  
+                answer += 1
+            # case 2) k == 0 and cnt[num] > 1
+            if k == 0 and cnt[num] > 1:  # for cases k = 0 ->  pair like (1,1) will work. (i.e. 1 + (-1))
+                answer += 1
+        return answer
+
+# V0'
+# IDEA : SORT + BRUTE FORCE + BREAK
+class Solution(object):
+    def findPairs(self, nums, k):
+        # edge case
+        if not nums and k:
+            return 0
+        nums.sort()
+        res = 0
+        tmp = []
+        for i in range(len(nums)):
+            for j in range(i+1, len(nums)):
+                if abs(nums[j] - nums[i]) == k:
+                    cur = [nums[i], nums[j]]
+                    cur.sort()
+                    if cur not in tmp:
+                        res += 1
+                        tmp.append(cur)
+                elif abs(nums[j] - nums[i]) > k:
+                    break
+        return res
+
+# V0''
 # IDEA : SORT + BRUTE FORCE + BREAK
 class Solution(object):
     def findPairs(self, nums, k):
@@ -66,19 +114,6 @@ class Solution(object):
                 if abs(nums[j] - nums[i]) > k:
                     break
         return len(res)
-
-# V0 
-import collections
-class Solution(object):
-    def findPairs(self, nums, k):
-        answer = 0
-        counter = collections.Counter(nums)
-        for num in set(nums):
-            if k > 0 and num + k in counter: # | a - b | = k -> a - b = +k or -k, but here don't have to deal with "a - b = -k" case, since this sutuation will be covered when go through whole nums  
-                answer += 1
-            if k == 0 and counter[num] > 1:  # for cases k = 0 ->  pair like (1,1) will work. (i.e. 1 + (-1))
-                answer += 1
-        return answer
         
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79255633
