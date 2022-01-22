@@ -12,6 +12,7 @@
 				- 537 (ok)
 			- (pdf : p.12)
 				- 553 (ok)
+				- 606 (ok, but again)
 		- ==========
 			- fast review (inverse order)
 			- --> Breadth-First-Search
