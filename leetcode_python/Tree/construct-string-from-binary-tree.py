@@ -31,7 +31,7 @@ The number of nodes in the tree is in the range [1, 104].
 """
 
 # V0
-# IDEA : tree + check problem examples
+# IDEA : recursive + tree + check problem examples
 #        -> if root.right and not root.left
 #        -> if root.left and not root.right
 class Solution(object):
@@ -41,14 +41,25 @@ class Solution(object):
                 ### NOTICE HERE
                 return ""
             ### NOTICE HERE
+            """
+            4 cases
+            -> case 1) : not root.left and not root.right
+            -> case 2) : root.right and not root.left
+            -> case 3) : root.left and not root.right
+            -> case 4) : root.left and root.right
+            """
+            # case 1
             if not root.left and not root.right:
                 return str(root.val)
+            # case 2
             ### NOTICE HERE : "2()(4)" case
             if root.right and not root.left:
                 return str(root.val) + '()' + '(' + dfs(root.right) + ')'
+            # case 3
             ### NOTICE HERE
             if root.left and not root.right:
                 return str(root.val) + '(' + dfs(root.left) + ')'
+            # case 4
             ### NOTICE HERE
             if root.left and root.right:
                 return str(root.val) + '(' + dfs(root.left) + ')' + '(' + dfs(root.right) + ')'
