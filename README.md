@@ -7,7 +7,6 @@
 
 <p align="center"><img src ="./doc/pic/common_ds_op_cost.png" ></p>
 
-
 ![Language](https://img.shields.io/badge/language-Python%20%2F%20C%20%2F%20JAVA%2017-orange.svg) 
 ![Update](https://img.shields.io/badge/update-weekly-purple.svg)
 [![Build Status](https://travis-ci.org/yennanliu/CS_basics.svg?branch=master)](https://travis-ci.org/yennanliu/CS_basics)
@@ -19,7 +18,6 @@
 - Case Study
 
 ## Resource
-
 * [Resource.md](./doc/Resource.md) - `Resource` for coding interview (**keep updating**)
 * [ref.md](./doc/ref.md) - Leetcode ref
 * [MindMapCodeInterview](./doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
@@ -92,7 +90,6 @@
 	- http://sqlfiddle.com/
 
 ## Algorithms content
-
 * [Bit Manipulation](https://github.com/yennanliu/CS_basics#bit-manipulation)
 * [Array](https://github.com/yennanliu/CS_basics#array)
 * [String](https://github.com/yennanliu/CS_basics#string)
@@ -120,11 +117,9 @@
 * [Concurrency](https://github.com/yennanliu/CS_basics#Concurrency)
 
 ## Database
-
 * [SQL](https://github.com/yennanliu/CS_basics#sql)
 
 ## Shell
-
 * [Shell Script](https://github.com/yennanliu/CS_basics#shell-script)
 
 <br>
@@ -145,6 +140,7 @@
 ||Binary search Tree (BST)| [Python](./data_structure/python/binary_search_tree.py), [JS](./data_structure/js/binary_search_tree.js), [Scala](./data_structure/scala/binarySearch.scala), [Java](./data_structure/java/BST.java) | | | AGAIN| 
 ||Hash table| [Python](./data_structure/python/hash_table.py), [JS](./data_structure/js/hash_table.js) | usually for improving `time complexity B(O)` via extra space complexity (time-space tradeoff)|`good basic`| AGAIN****| 
 ||DirectedEdge|  [Java](./data_structure/java/DirectedEdge.java) | | | AGAIN|
+
 
 ## Algorithm basic
 |  #  | Title | Solution | Use case | Comment | Status|
@@ -170,6 +166,7 @@
 ||Quick Union | [Java](./algorithm/java/QuickUnionUF.java) | init : O(N), union : O(N), find : O(N)| lazy approach, route compression, optimized Quick Find|AGAIN| 
 ||Quick Union (Improvements) || lazy approach, path compression|AGAIN| 
 ||Priority Queue (`unsorted`) | [Java](./algorithm/java/UnorderedMaxPQ.java) | AGAIN| 
+
 
 ## Array 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note           | Status| 
@@ -452,6 +449,7 @@
 297| [ Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) |  [python](./leetcode_python/Tree/serialize-and-deserialize-binary-tree.py) ||| Hard |tree, BFS, DFS, dequeue, check `#449 Serialize and Deserialize BST` ,`amazon`|  AGAIN**** (1)
 701| [Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/) |  [python](./leetcode_python/Tree/insert-into-a-binary-search-tree.py) ||| Medium |good basic, BST, tree, BFS, DFS| OK*** (2)
 
+
 ## Heap 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note  | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
@@ -660,6 +658,7 @@
 970 | [Powerful Integers](https://leetcode.com/problems/powerful-integers/) | [Python](./leetcode_python/Math/powerful-integers.py)  | _O((logn)^2)_ | _O(r)_      | Easy |`basic`| AGAIN* (2)
 517 |[Super Washing Machines](https://leetcode.com/problems/super-washing-machines/) | [Python](./leetcode_python/Math/super-washing-machines.py) ||| Hard |`amazon`|  AGAIN (not start)
 
+
 ## Sort 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note| Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
@@ -825,6 +824,7 @@
 994|[Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)| [Python](./leetcode_python/Breadth-First-Search/rotting-oranges.py) ||| Medium |BFS, dp `amazon` | AGAIN (not start)
 1162| [As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) | [Python](./leetcode_python/Breadth-First-Search/as-far-from-land-as-possible.py) | | | Medium | dfs, bfs, good basic, `amazon`| AGAIN (1) (not start)
 1730| [Shortest Path to Get Food](https://leetcode.com/problems/shortest-path-to-get-food/) | [Python](./leetcode_python/Breadth-First-Search/shortest-path-to-get-food.py) | | | Medium | bfs, `amazon`| OK (1)
+
 
 ## Depth-First Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag     | Status| 
@@ -1001,6 +1001,7 @@
 323| [Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/) | [Python ](./leetcode_python/Graph/number-of-connected-components-in-an-undirected-graph.py) | _O(n)_ | _O(n)_| Medium  | 🔒 , Union Find, `graph`, `linkedin`, `amazon`|  AGAIN**** (3) (not start)
 269 |[Alien Dictionary](https://leetcode.com/problems/alien-dictionary/)  | [Python](./leetcode_python/Graph/alien-dictionary.py) | | | Hard| dfs, bfs, topology sorting, `fb` |  AGAIN* (not start)
 
+
 ## Geometry 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
@@ -1048,14 +1049,20 @@
 1268| [Search Suggestions System](https://leetcode.com/problems/search-suggestions-system/) | [C++](./C++/search-suggestions-system.cpp) [Python](./eetcode_python/Design/search-suggestions-system.py) | ctor: _O(n * l)_<br> suggest: _O(l^2)_ | _O(t)_ | Medium |Trie |
 1286| [Iterator for Combination](https://leetcode.com/problems/iterator-for-combination/) | [C++](./C++/iterator-for-combination.cpp) [Python](./eetcode_python/Design/iterator-for-combination.py) | _O(k)_ | _O(k)_ | Medium | Stack |
 1429| [First Unique Number](https://leetcode.com/problems/first-unique-number/) |[Python](./leetcode_python/Design/first-unique-number.py) | _O(k)_ | _O(k)_ | Medium | good trick, heap, `amazon` | AGAIN*** (not start)
+1472| [Design Browser History](https://leetcode.com/problems/design-browser-history/) | [Python](./leetcode_python/Design/design-browser-history.py) | _O(k)_ | _O(k)_ | Medium |
 1500| [Design a File Sharing System](https://leetcode.com/problems/design-a-file-sharing-system/) | [Python](./leetcode_python/Design/design-a-file-sharing-system.py) | _O(k)_ | _O(k)_ | Medium |design, hashmap | AGAIN*** (not start)
+1656| [Design an Ordered Stream](https://leetcode.com/problems/design-an-ordered-stream/) | [Python](./leetcode_python/Design/design-an-ordered-stream.py) | _O(k)_ | _O(k)_ | East || 
 1670| [Design Front Middle Back Queue](https://leetcode.com/problems/design-front-middle-back-queue/) | [Python](./leetcode_python/Design/design-front-middle-back-queue.py) | _O(k)_ | _O(k)_ | Medium | good basic, Design, `amazon`| AGAIN** (1) (not start)
+1756| [Design Recent Used Queue](https://leetcode.com/problems/design-most-recently-used-queue/) | [Python](./leetcode_python/Design/design-most-recently-used-queue.py) | _O(k)_ | _O(k)_ | Medium |design,  |
+1797| [Design Authentication Manager](https://leetcode.com/problems/design-authentication-manager/) | [Python](./leetcode_python/Design/design-authentication-manager.py) | _O(k)_ | _O(k)_ | Medium || 
+1976| [Number of Ways to Arrive at Destination](https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/) | [Python](./leetcode_python/Design/number-of-ways-to-arrive-at-destination.py) | _O(k)_ | _O(k)_ | Medium || 
 
 
 ## Simulation 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 874 | [Walking Robot Simulation](https://leetcode.com/problems/walking-robot-simulation/)  | [C++](./C++/walking-robot-simulation.cpp) [Python](./Python/walking-robot-simulation.py) | _O(n + k)_| _O(k)_| Easy           ||| 
+
 
 ## Concurrency
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
@@ -1069,6 +1076,7 @@
 1226| [The Dining Philosophers](https://leetcode.com/problems/the-dining-philosophers/)| [C++](./C++/the-dining-philosophers.cpp) [Python](./Python/the-dining-philosophers.py) | _O(n)_ | _O(1)_ | Medium ||
 1242| [Web Crawler Multithreaded](https://leetcode.com/problems/web-crawler-multithreaded/)| [C++](./C++/web-crawler-multithreaded.cpp) [Python](./Python/web-crawler-multithreaded.py) |  _O(\|V\| + \|E\|)_ | _O(\|V\|)_ | Medium |🔒| | BFS, DFS |
 1279| [Traffic Light Controlled Intersection](https://leetcode.com/problems/traffic-light-controlled-intersection/)| [C++](./C++/traffic-light-controlled-intersection.cpp) [Python](./Python/traffic-light-controlled-intersection.py) |  _O(n)_ | _O(1)_ | Easy |🔒| | |
+
 
 ## SQL
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note      | Status| 
