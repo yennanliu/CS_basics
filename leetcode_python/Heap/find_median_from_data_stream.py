@@ -76,14 +76,21 @@ class MedianFinder:
         self.large = []  # the larger half of the list, min heap
 
     def addNum(self, num):
-        if len(self.small) == len(self.large):
-            """
-            * heapq.heappush(heap, item)
-                -> Push the value item onto the heap, maintaining the heap invariant.
+        """
 
-            * heapq.heappushpop(heap, item)
-                -> Push item on the heap, then pop and return the smallest item from the heap. The combined action runs more efficiently than heappush() followed by a separate call to heappop().
-            """
+        doc : https://docs.python.org/3/library/heapq.html
+        src code : https://github.com/python/cpython/blob/3.10/Lib/heapq.py
+        
+        * heappush(heap, item)
+            -> Push the value item onto the heap, maintaining the heap invariant.
+
+        * heappop(heap)
+            -> Pop and return the smallest item from the heap, maintaining the heap invariant. If the heap is empty, IndexError is raised. To access the smallest item without popping it, use heap[0].
+
+        * heappushpop(heap, item)
+            -> Push item on the heap, then pop and return the smallest item from the heap. The combined action runs more efficiently than heappush() followed by a separate call to heappop().
+        """
+        if len(self.small) == len(self.large):
             heappush(self.large, -heappushpop(self.small, -num))
         else:
             heappush(self.small, -heappushpop(self.large, num))
