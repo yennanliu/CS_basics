@@ -63,6 +63,31 @@ class Solution(object):
         return '{}/({})'.format(nums[0], '/'.join(nums[1:]))
 
 # V0''
+# IDEA : string op
+# IDEA : only 1st "/" need to be "/", 
+#        -> other "/" can be transformed into "*"
+class Solution(object):
+    def optimalDivision(self, nums):
+        # edge case
+        if not nums:
+            return ""
+        if len(nums) == 1:
+            return str(nums[0])
+        if len(nums) == 2:
+            return "{}/{}".format(nums[0], nums[1])
+        res = ""
+        pres = str(nums[0]) + "/"
+        _nums = nums[1:]
+        for i in range(len(_nums)):
+            tmp = _nums[i]
+            if i == 0:
+                res += str(tmp)
+            else:
+                res += ("/" + str(tmp))
+        _res = pres + "(" + res + ")"
+        return _res
+
+# V0'''
 class Solution(object):
     def optimalDivision(self, nums):
         """
