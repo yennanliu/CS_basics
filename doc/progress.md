@@ -25,8 +25,7 @@
 	- ================ 
 	- LC general
 		- Tree
-			- 662 (*not start*)
-			- 662
+			- 662 (ok!)
 		- =======
 		- bit manipulation
 			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
