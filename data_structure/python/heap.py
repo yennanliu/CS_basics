@@ -1,11 +1,13 @@
+#---------------------------------------------------------------
+# HEAP
+#
+#
+# https://docs.python.org/3/library/heapq.html
+# https://github.com/python/cpython/blob/3.10/Lib/heapq.py
+#---------------------------------------------------------------
 
-
-#################################################################
-# DATA STRUCTURE DEMO : Heap  
-#################################################################
-
+# V1
 # https://github.com/OmkarPathak/Data-Structures-using-Python/blob/master/Heap/Heap.py
-
 class BinaryHeap(object):
     def __init__(self):
         self.heap = [0]
