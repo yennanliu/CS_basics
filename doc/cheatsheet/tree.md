@@ -603,6 +603,33 @@ class Solution:
         d = defaultdict(list)
         dfs(root, 0, 0)
         return max(v[-1] - v[0] + 1 for _, v in d.items())
+
+# V0'
+# IDEA : BFS
+# IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
+#        -> SO GO THROUGH ALL LAYERS IN THE TREE, CALCULATE THEIR WIDTH, AND RETRUN THE MAX WIDTH WHICH IS THE NEEDED RESPONSE
+from collections import defaultdict
+class Solution(object):
+    def widthOfBinaryTree(self, root):
+        # edge case
+        if not root:
+            return 0
+        layer = 0
+        idx = 0
+        q = [[root, layer, idx]]
+        res = defaultdict(list)
+        while q:
+            for i in range(len(q)):
+                tmp, layer, idx = q.pop(0)
+                res[layer].append(idx)
+                if tmp.left:
+                    q.append([tmp.left, layer+1, idx*2])
+                if tmp.right:
+                    q.append([tmp.right, layer+1, idx*2+1])
+        #print ("res = " + str(res))
+        _res = [max(res[x]) - min(res[x]) + 1 for x in list(res.keys()) if res[x] > 1]
+        #print ("_res = " + str(_res))
+        return max(_res)
 ```
 
 ### 2-4) Construct String from Binary Tree
