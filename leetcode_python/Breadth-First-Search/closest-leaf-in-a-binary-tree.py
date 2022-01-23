@@ -86,10 +86,8 @@ class Solution:
         self.buildGraph(node.left, node, k)
         self.buildGraph(node.right, node, k)
 
-    # search via DFS
+    # search via BFS
     def findClosestLeaf(self, root, k):
-
-
         self.start = None
         ### NOTE : we need DFS create the graph
         self.buildGraph(root, None, k)
