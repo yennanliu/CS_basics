@@ -5,6 +5,9 @@
 - tree + dict
     - `put Node into dict` (e.g. defaultdict(Node))
 
+<p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/trie_1.png" ></p>
+
+
 ### 0-1) Types
 
 ### 0-2) Pattern
@@ -17,12 +20,13 @@ class Node():
 
     def __init__(self):
         """
-        NOTE : we use defaultdict(Node) as our the trie data structure
+        NOTE : we use defaultdict(Node) as our trie data structure
+
         -> use defaultdict
             - key : every character from word
             - value : Node (Node type)
 
-        and link children with paraent Node via defaultdict
+        and link children with parent Node via defaultdict
         """
         self.children = defaultdict(Node)
         self.isword = False
@@ -37,7 +41,7 @@ class Trie():
         ### NOTE : we always start from below
         cur = self.root
         for w in word:
-            cur = cur.children[w]
+            cur = cur.children[w] # same as self.root.defaultdict[w]
         cur.isword = True
 
     def search(self, word):
