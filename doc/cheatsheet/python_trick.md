@@ -560,3 +560,26 @@ In [3]: for x, y, z, u in zip([-1, 1, 0, 0], [0, 0, -1, 1], [0,0,0,0], [9,9,9,9]
 0 -1 0 9
 0 1 0 9
 ```
+
+### 1-17) `eval()`
+```python
+# https://www.runoob.com/python/python-func-eval.html
+# https://www.programiz.com/python-programming/methods/built-in/eval
+# The eval() method parses the expression passed to this method and runs python expression (code) within the program.
+
+# syntax : eval(expression[, globals[, locals]])
+
+# eample
+In [51]: x = 7
+    ...: eval('3 * x')
+    ...:
+Out[51]: 21
+
+In [52]: eval ('2 + 2')
+    ...:
+Out[52]: 4
+
+In [53]: n = 81
+    ...: eval('n + 4')
+Out[53]: 85
+```
