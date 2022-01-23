@@ -189,12 +189,13 @@
 - SCD : Slowly Changing Dimensions
 - G-SCD : Based-Granularity Slowly Changing Dimension
 - Type
-	- Type 0 SCD
-	- Type 1 SCD
-	- Type 2 SCD
-	- Type 3 SCD
-	- Type 4 SCD
+	- Type 0
+	- Type 1: The new record replaces the original record. No trace of the old record exists.
+	- Type 2: A new record is added into the customer dimension table. Therefore, the customer is treated essentially as two people.
+	- Type 3: The original record is modified to reflect the change.
+	- Type 4
 - ref
+	- https://www.1keydata.com/datawarehousing/slowly-changing-dimensions.html
 	- https://www.gushiciku.cn/pl/ggNK/zh-tw
 	- https://help.aliyun.com/document_detail/295435.html#:~:text=SCD%E7%AE%80%E4%BB%8B,%E5%85%B3%E9%94%AEETL%E4%BB%BB%E5%8A%A1%E4%B9%8B%E4%B8%80%E3%80%82
 	- https://www.cnblogs.com/biwork/p/3363749.html
@@ -222,6 +223,14 @@
 	- https://www.revsys.com/writings/postgresql-performance.html
 	- https://www.mssqltips.com/sqlservertip/1429/sql-server-dba-performance-tuning-interview-questions/
 	- https://aws.amazon.com/tw/blogs/big-data/top-10-performance-tuning-techniques-for-amazon-redshift/
+
+## 15) Data model examples ?
+- Data models of major corps :  `Netflix, linkedin , yelp, uber, ads, e-commerce`
+-  Kimball - Star schema
+	- Inmon = bottom up approach.
+	- pros and cons of each approach. (3rd NF vs star schema , why or why not)
+	- surrogate keys or no surrogate keys (pros and cons)
+- https://www.teamblind.com/post/Facebook-DE-decision-wzQRWoCS
 
 ## Ref 
 - https://deliveroo.engineering/2017/11/23/engineering-interviews.html
