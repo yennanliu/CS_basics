@@ -62,5 +62,33 @@
     - https://www.cnblogs.com/biwork/p/3363749.html
     - https://www.codenong.com/cs107062349/
 
+### 6) Give your idea regarding factless fact? And why do we use it?
+- ideas
+    -  Factless fact table is a fact table that contains no fact measure in it. It has only the dimension keys in it.
+    - At times, certain situations may arise in the business where you need to have a factless fact table.
+    - example :  suppose you are maintaining an employee attendance record system, you can have a factless fact table having three keys.
+    - You can see that below table does not contain any measure. Now, if you want to answer the below question, you can do easily using the above single factless fact table rather than having two separate fact tables:
+        - “How many employees of a particular department were present on a particular day?”
+```
+# sql schema
+EMPLOYEE_ID
+DEPARTMENT_ID
+TIME_ID
+```
+
+### 7) Distinguish between OLTP and OLAP?
+- OLTP 
+    - `Online Transaction Processing System`
+    - OLTP maintains the transactional data of the business & is highly `normalized` generally.
+- OLAP
+    - `Online Analytical Processing System`
+    - OLAP is for `analysis and reporting` purposes & it is in `denormalized`form.
+- extra
+    - MPP (massively parallel processing)
+        - An MPP database is a database that is optimized to be processed in parallel for many operations to be performed by many processing units at a time.
+- ref
+    - https://searchdatamanagement.techtarget.com/definition/MPP-database-massively-parallel-processing-database#:~:text=An%20MPP%20database%20is%20a,different%20parts%20of%20the%20program
+    - https://medium.com/@jockeyng/hadoop%E8%88%87mpp%E6%98%AF%E4%BB%80%E9%BA%BC%E9%97%9C%E4%BF%82-%E6%9C%89%E4%BB%80%E9%BA%BC%E5%8D%80%E5%88%A5%E5%92%8C%E8%81%AF%E7%B9%AB-afb4397e12a1
+
 ## Ref:
 - https://www.softwaretestinghelp.com/data-modeling-interview-questions-answers/

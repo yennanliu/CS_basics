@@ -189,13 +189,6 @@
 
 ## 11) Indexing
 
-## 12) MPP, OLAP, OLTP
-- MPP (massively parallel processing)
-	- An MPP database is a database that is optimized to be processed in parallel for many operations to be performed by many processing units at a time.
-- ref
-	- https://searchdatamanagement.techtarget.com/definition/MPP-database-massively-parallel-processing-database#:~:text=An%20MPP%20database%20is%20a,different%20parts%20of%20the%20program
-	- https://medium.com/@jockeyng/hadoop%E8%88%87mpp%E6%98%AF%E4%BB%80%E9%BA%BC%E9%97%9C%E4%BF%82-%E6%9C%89%E4%BB%80%E9%BA%BC%E5%8D%80%E5%88%A5%E5%92%8C%E8%81%AF%E7%B9%AB-afb4397e12a1
-
 ## 13) normalization, denormalization
 
 ## 14) SQL performance tuning
