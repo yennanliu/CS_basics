@@ -519,7 +519,7 @@
 415| [Add Strings](https://leetcode.com/problems/add-strings/) | [python](./leetcode_python/String/add-strings.py)| _O(n)_ | _O(1)_ | Easy   | `basic`, `string add`, `Airbnb`, `google`, `fb`|  OK** (3)
 434| [Number of Segments in a String](https://leetcode.com/problems/number-of-segments-in-a-string/) | [python](./leetcode_python/String/number-of-segments-in-a-string.py) | _O(n)_ | _O(1)_ | Easy    | | OK 
 443| [String Compression](https://leetcode.com/problems/string-compression/) | [python](./leetcode_python/String/string-compression.py) | _O(n)_ | _O(1)_ | Easy   |`basics`| AGAIN**
-459| [Repeated Substring Pattern](https://leetcode.com/problems/repeated-substring-pattern/) | [python](./leetcode_python/String/repeated-substring-pattern.py) | _O(n)_ | _O(n)_ | Easy  | good basic, string, `KMP Algorithm`, `amazon` | OK* (4) 
+459| [Repeated Substring Pattern](https://leetcode.com/problems/repeated-substring-pattern/) | [python](./leetcode_python/String/repeated-substring-pattern.py) | _O(n)_ | _O(n)_ | Easy  | good basic, string, `KMP Algorithm`, `amazon` | OK* (5) 
 468| [Validate IP Address](https://leetcode.com/problems/validate-ip-address/) | [python](./leetcode_python/String/validate-ip-address.py) | _O(1)_ | _O(1)_ | Medium  | `ip basic`,`string`,`twitter`, `fb`, `amazon`| AGAIN****** (5)
 482| [License Key Formatting](https://leetcode.com/problems/license-key-formatting/) | [python](./leetcode_python/String/license-key-formatting.py) | _O(n)_ | _O(1)_ | Easy |string, basic, `google`| AGAIN* (1)
 520| [Detect Capital](https://leetcode.com/problems/detect-capital/) |  [python](./leetcode_python/String/detect-capital.py)  | _O(l)_ | _O(1)_ | Easy    | |  OK 
