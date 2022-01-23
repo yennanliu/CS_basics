@@ -214,8 +214,11 @@
 - We had a data warehouse that was holding the information pertaining to all these departments and then we have few data marts built on top of this data warehouse. These DataMart were specific to each department. In simple words, you can say that a DataMart is a subset of a data warehouse.
 - e.g. :  I used to work for a health insurance provider company that had different departments in it like Finance, Reporting, Sales and so forth.
 
-## Ref 
-- https://deliveroo.engineering/2017/11/23/engineering-interviews.html
-- https://www.2ndquadrant.com/en/postgresql/postgresql-vs-mysql/
-- https://blog.xuite.net/jack101257/twblog/138494904-%E4%BC%81%E6%A5%AD%E8%B3%87%E6%96%99%E5%80%89%E5%84%B2DWH%E7%B0%A1%E4%BB%8B
-- http://relyky.blogspot.com/2011/04/data-warehousedimensional-data-model.html
+## Ref
+- Edureka DW tutorial
+	- https://www.youtube.com/watch?v=9gOw3joU4a8&list=PL9ooVrP1hQOEDSc5QEbI8WYVV_EbWKJwX
+- DW general
+	- https://deliveroo.engineering/2017/11/23/engineering-interviews.html
+	- https://www.2ndquadrant.com/en/postgresql/postgresql-vs-mysql/
+	- https://blog.xuite.net/jack101257/twblog/138494904-%E4%BC%81%E6%A5%AD%E8%B3%87%E6%96%99%E5%80%89%E5%84%B2DWH%E7%B0%A1%E4%BB%8B
+	- http://relyky.blogspot.com/2011/04/data-warehousedimensional-data-model.html
