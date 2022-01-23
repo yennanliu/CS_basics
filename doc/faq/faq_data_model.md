@@ -27,9 +27,11 @@
 - Fact
     - Facts represent quantitative data.
     - the net amount due is a fact. A fact table contains numerical data and foreign keys from related dimensional tables
+    - Generally, fact table is in normalized form
 - Dimension
     - Dimensions represent qualitative data. For Example, plan, product, class are all dimensions.
     - A dimension table contains descriptive or textual attributes
+    - Generally, dimension table is in de-normalized form
 
 ### 4)  What are the different types of dimensions you have come across? Explain each of them in detail with an example?
 - 5 types of dimensions
@@ -80,9 +82,11 @@ TIME_ID
 - OLTP 
     - `Online Transaction Processing System`
     - OLTP maintains the transactional data of the business & is highly `normalized` generally.
+    - star schema
 - OLAP
     - `Online Analytical Processing System`
     - OLAP is for `analysis and reporting` purposes & it is in `denormalized`form.
+    - snowflake schema
 - extra
     - MPP (massively parallel processing)
         - An MPP database is a database that is optimized to be processed in parallel for many operations to be performed by many processing units at a time.
@@ -90,5 +94,29 @@ TIME_ID
     - https://searchdatamanagement.techtarget.com/definition/MPP-database-massively-parallel-processing-database#:~:text=An%20MPP%20database%20is%20a,different%20parts%20of%20the%20program
     - https://medium.com/@jockeyng/hadoop%E8%88%87mpp%E6%98%AF%E4%BB%80%E9%BA%BC%E9%97%9C%E4%BF%82-%E6%9C%89%E4%BB%80%E9%BA%BC%E5%8D%80%E5%88%A5%E5%92%8C%E8%81%AF%E7%B9%AB-afb4397e12a1
 
-## Ref:
+
+### 8) What is a `Surrogate key`? How is it different from a primary key?
+- `Surrogate Key` is a `unique identifier or a system-generated sequence number key that can act as a primary key`. It can be `a column or a combination of columns`. Unlike a primary key, it is `not` picked up from the `existing` application data fields.
+
+### 9) Is this true that all databases should be in 3NF?
+- It is not mandatory for a database to be in 3NF. However, if your purpose is the easy maintenance of data, less redundancy, and efficient access then you should go with a de-normalized database.
+
+
+### 10) Explain 3NF?
+
+### 11) List out a few common mistakes encountered during Data Modelling?
+- Building massive data models: 
+    - Large data models are like to have more design faults. Try to restrict your data model to not more than 200 tables.
+- Lack of purpose: 
+    - If you do not know that what is your business solution is intended for, you might come up with an incorrect data model. So having clarity on the business purpose is very important to come up with the right data model.
+- Inappropriate use of surrogate keys: 
+    - `Surrogate key should not be used unnecessarily. Use surrogate key only when the natural key cannot serve the purpose of a primary key`.
+- Unnecessary de-normalization: 
+    - `Don’t denormalize until and unless you have a solid & clear business reason to do so because de-normalization creates redundant data which is difficult to maintain`.
+
+### 12)  If a unique constraint is applied to a column then will it throw an error if you try to insert two nulls into it?
+- No, it will `not` throw any error in this case because `a null value is NOT equal to another null value`. So, more than one null will be inserted in the column without any error.
+
+### Ref:
 - https://www.softwaretestinghelp.com/data-modeling-interview-questions-answers/
+- https://www.softwaretestinghelp.com/data-modeling-tools/
