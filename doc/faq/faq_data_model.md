@@ -102,7 +102,17 @@ TIME_ID
 - It is not mandatory for a database to be in 3NF. However, if your purpose is the easy maintenance of data, less redundancy, and efficient access then you should go with a de-normalized database.
 
 
-### 10) Explain 3NF?
+### 10) Explain 1NF, 2ND, 3NF, 4NF, 5NF?
+- 1NF: 
+    - The domain of each attribute contains only atomic values, and the value of each attribute contains only a single value from that domain.
+- 2NF: 
+    - No non-prime attribute in the table is functionally dependent on a proper subset of any candidate key.
+- 3NF: 
+    - Every non-prime attribute is non-transitively dependent on every candidate key in the table. The attributes that do not contribute to the description of the primary key are removed from the table. In other words, no transitive dependency is allowed.
+- 4NF: 
+    - Every non-trivial multivalued dependency in the table is a dependency on a superkey.
+- 5NF: 
+    - Every non-trivial join dependency in the table is implied by the superkeys of the table.
 
 ### 11) List out a few common mistakes encountered during Data Modelling?
 - Building massive data models: 
@@ -117,6 +127,10 @@ TIME_ID
 ### 12)  If a unique constraint is applied to a column then will it throw an error if you try to insert two nulls into it?
 - No, it will `not` throw any error in this case because `a null value is NOT equal to another null value`. So, more than one null will be inserted in the column without any error.
 
+### 13) What is cardinality?
+- Thinking mathematically, it is the number of elements in a set. Thinking in the database world, cardinality has to do with the counts in a relationship, `one-to-one, one-to-many, or many-to-many`.
+
 ### Ref:
 - https://www.softwaretestinghelp.com/data-modeling-interview-questions-answers/
+- https://resources.biginterview.com/industry-specific/sql-interview-questions/#1-What-is-cardinality
 - https://www.softwaretestinghelp.com/data-modeling-tools/
