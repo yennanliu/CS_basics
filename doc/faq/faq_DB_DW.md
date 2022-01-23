@@ -185,23 +185,6 @@
 - NeoDDL on gcloud 
 	- https://medium.com/traveloka-engineering/data-modelling-and-processing-in-travel-super-app-8011a6ecafe6
 
-## 9) SCD
-- SCD : Slowly Changing Dimensions
-- G-SCD : Based-Granularity Slowly Changing Dimension
-- Type
-	- Type 0
-	- Type 1: The new record replaces the original record. No trace of the old record exists.
-	- Type 2: A new record is added into the customer dimension table. Therefore, the customer is treated essentially as two people.
-	- Type 3: The original record is modified to reflect the change.
-	- Type 4
-- ref
-	- https://www.1keydata.com/datawarehousing/slowly-changing-dimensions.html
-	- https://www.gushiciku.cn/pl/ggNK/zh-tw
-	- https://help.aliyun.com/document_detail/295435.html#:~:text=SCD%E7%AE%80%E4%BB%8B,%E5%85%B3%E9%94%AEETL%E4%BB%BB%E5%8A%A1%E4%B9%8B%E4%B8%80%E3%80%82
-	- https://www.cnblogs.com/biwork/p/3363749.html
-	- https://www.codenong.com/cs107062349/
-
-
 ## 10) Clustered indexing
 
 ## 11) Indexing
