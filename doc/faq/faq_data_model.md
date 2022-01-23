@@ -131,6 +131,10 @@ TIME_ID
 - Thinking mathematically, it is the number of elements in a set. Thinking in the database world, cardinality has to do with the counts in a relationship, `one-to-one, one-to-many, or many-to-many`.
 
 ### Ref:
-- https://www.softwaretestinghelp.com/data-modeling-interview-questions-answers/
-- https://resources.biginterview.com/industry-specific/sql-interview-questions/#1-What-is-cardinality
-- https://www.softwaretestinghelp.com/data-modeling-tools/
+- DB model general
+    - https://www.softwaretestinghelp.com/data-modeling-interview-questions-answers/
+    - https://resources.biginterview.com/industry-specific/sql-interview-questions/#1-What-is-cardinality
+- keys in DB
+    - https://begriffs.com/posts/2018-01-01-sql-keys-in-depth.html
+- DB model tool
+    - https://www.softwaretestinghelp.com/data-modeling-tools/
