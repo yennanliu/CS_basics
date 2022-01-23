@@ -231,6 +231,7 @@
 	- pros and cons of each approach. (3rd NF vs star schema , why or why not)
 	- surrogate keys or no surrogate keys (pros and cons)
 - https://www.teamblind.com/post/Facebook-DE-decision-wzQRWoCS
+- https://github.com/yennanliu/CS_basics/tree/master/doc/faq/faq_data_model.md
 
 ## Ref 
 - https://deliveroo.engineering/2017/11/23/engineering-interviews.html
