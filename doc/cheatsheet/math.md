@@ -96,3 +96,22 @@ class Solution:
                 res = d[r] + res
         return res
 ```
+
+### 2-2) Solve the Equation
+```python
+# LC 640. Solve the Equation
+# V0
+# IDEA : replace + eval + math
+# https://leetcode.com/problems/solve-the-equation/discuss/105362/Simple-2-liner-(and-more)
+# eval : The eval() method parses the expression passed to this method and runs python expression (code) within the program.
+# -> https://www.runoob.com/python/python-func-eval.html
+class Solution(object):
+    def solveEquation(self, equation):
+        tmp = equation.replace('x', 'j').replace('=', '-(')
+        z = eval(tmp + ")" , {'j':1j})
+        # print ("equation = " + str(equation))
+        # print ("tmp = " + str(tmp))
+        # print ("z = " + str(z))
+        a, x = z.real, -z.imag
+        return 'x=%d' % (a / x) if x else 'No solution' if a else 'Infinite solutions'
+```
