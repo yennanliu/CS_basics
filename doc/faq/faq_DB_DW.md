@@ -1,6 +1,6 @@
 # FAQ : DB, DW
 
-## 1) DB type
+### 1) DB type
 
 - RDBMS (SQL) (Relational Database Management System)
 	- MySQL 
@@ -59,7 +59,7 @@
 	- Redis
 - Others
 
-## 2) DB properties 
+### 2) DB properties 
 
 - RDBMS 
 	- ACID : atomicity, consistency, isolation, and durability
@@ -81,7 +81,7 @@
 			  if there’s a system crash immediately following the transaction. Any changes from the transaction must be stored permanently. If the system tells the user that the transaction has succeeded, the 
 			  transaction must have, in fact, succeeded.
 
-## 3) DB design 
+### 3) DB design 
 
 - Process 
 
@@ -109,7 +109,7 @@
 
 - Example 
 
-## 4) Index
+### 4) Index
 
 - What's database index ? 
 
@@ -177,21 +177,21 @@
 
 
 
-## 5) DB tuning 
+### 5) DB tuning 
 
-## 6) DB managment 
+### 6) DB managment 
 
-## 7) Case study 
+### 7) Case study 
 - NeoDDL on gcloud 
 	- https://medium.com/traveloka-engineering/data-modelling-and-processing-in-travel-super-app-8011a6ecafe6
 
-## 10) Clustered indexing
+### 10) Clustered indexing
 
-## 11) Indexing
+### 11) Indexing
 
-## 13) normalization, denormalization
+### 13) normalization, denormalization
 
-## 14) SQL performance tuning
+### 14) SQL performance tuning
 - ref
 	- https://docs.aws.amazon.com/redshift/latest/dg/c-optimizing-query-performance.html
 	- http://udayarumilli.com/sql-server-performance-tuning-interview-questions-part-1/
@@ -200,7 +200,7 @@
 	- https://www.mssqltips.com/sqlservertip/1429/sql-server-dba-performance-tuning-interview-questions/
 	- https://aws.amazon.com/tw/blogs/big-data/top-10-performance-tuning-techniques-for-amazon-redshift/
 
-## 15) Data model examples ?
+### 15) Data model examples ?
 - Data models of major corps :  `Netflix, linkedin , yelp, uber, ads, e-commerce`
 -  Kimball - Star schema
 	- Inmon = bottom up approach.
@@ -208,6 +208,11 @@
 	- surrogate keys or no surrogate keys (pros and cons)
 - https://www.teamblind.com/post/Facebook-DE-decision-wzQRWoCS
 - https://github.com/yennanliu/CS_basics/tree/master/doc/faq/faq_data_model.md
+
+### 16) What do you understand by data mart?
+-  Data marts are for the most part intended for a solitary branch of business. They are designed for the individual departments.
+- We had a data warehouse that was holding the information pertaining to all these departments and then we have few data marts built on top of this data warehouse. These DataMart were specific to each department. In simple words, you can say that a DataMart is a subset of a data warehouse.
+- e.g. :  I used to work for a health insurance provider company that had different departments in it like Finance, Reporting, Sales and so forth.
 
 ## Ref 
 - https://deliveroo.engineering/2017/11/23/engineering-interviews.html
