@@ -206,13 +206,21 @@
 	- Inmon = bottom up approach.
 	- pros and cons of each approach. (3rd NF vs star schema , why or why not)
 	- surrogate keys or no surrogate keys (pros and cons)
-- https://www.teamblind.com/post/Facebook-DE-decision-wzQRWoCS
-- https://github.com/yennanliu/CS_basics/tree/master/doc/faq/faq_data_model.md
+		- https://www.sisense.com/blog/when-and-how-to-use-surrogate-keys/
+		- https://www.mssqltips.com/sqlservertip/5431/surrogate-key-vs-natural-key-differences-and-when-to-use-in-sql-server/
+		- https://www.geeksforgeeks.org/surrogate-key-in-dbms/
+- ref
+	- https://www.teamblind.com/post/Facebook-DE-decision-wzQRWoCS
+	- https://github.com/yennanliu/CS_basics/tree/master/doc/faq/faq_data_model.md
 
 ### 16) What do you understand by data mart?
 -  Data marts are for the most part intended for a solitary branch of business. They are designed for the individual departments.
 - We had a data warehouse that was holding the information pertaining to all these departments and then we have few data marts built on top of this data warehouse. These DataMart were specific to each department. In simple words, you can say that a DataMart is a subset of a data warehouse.
 - e.g. :  I used to work for a health insurance provider company that had different departments in it like Finance, Reporting, Sales and so forth.
+
+### 17) Explain SQL keys ?
+- Ref
+	- https://begriffs.com/posts/2018-01-01-sql-keys-in-depth.html
 
 ## Ref
 - Edureka DW tutorial
