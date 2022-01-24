@@ -48,7 +48,31 @@ class Solution(object):
             res += s * s_map[s]
         return res
 
-# V0 
+# V0'
+# IDEA : COUNTER
+from collections import Counter
+class Solution(object):
+    def customSortString(self, order, s):
+        # edge case
+        if (not order) or (not order and not s):
+            return s
+        s_cnt = Counter(s)
+        res = ""
+        for o in order:
+            if not s_cnt:
+                break
+            if o in s_cnt:
+                res += s_cnt[o] * o
+                del s_cnt[o] 
+
+        if s_cnt:
+            for k in s_cnt:
+                res += s_cnt[k] * k
+
+        #print ("res = " + str(res))
+        return res
+
+# V0''
 # IDEA : COUNTER 
 from collections import Counter
 class Solution(object):
@@ -62,7 +86,7 @@ class Solution(object):
             answer += c * count[c]
         return answer
         
-# V0'
+# V0'''
 # IDEA : COUNTER + SORT KEY LAMBDA 
 class Solution(object):
     def customSortString(self, S, T):
