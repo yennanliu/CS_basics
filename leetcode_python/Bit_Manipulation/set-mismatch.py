@@ -47,6 +47,20 @@ class Solution(object):
         #print ("duplicate = " + str(duplicate))
         return [duplicate, duplicate+_diff]
 
+# V0''
+from collections import Counter
+class Solution(object):
+    def findErrorNums(self, nums):
+        cnt = Counter(nums)
+        _len = len(nums)
+        _nums = [x+1 for x in range(_len)]
+        n_sum = sum([x+1 for x in range(_len)])
+        repeat = [x for x in list(cnt.keys()) if cnt[x] == 2][0]
+        miss = n_sum - (sum(nums) - repeat)
+        # print ("repeat = " + str(repeat))
+        # print ("miss = " + str(miss))
+        return [repeat, miss]
+
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79247916
 # http://bookshadow.com/weblog/2017/07/24/leetcode-set-mismatch/
