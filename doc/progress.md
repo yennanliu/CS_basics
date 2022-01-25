@@ -38,6 +38,8 @@
 			- 210 (not start)
 			- 323 (not start)
 		- SQL
+		- cheatsheet review
+			- 2_pointers.md (ok)
 	- System Design
 		- Tinder design
 	- algorithm book (labu)

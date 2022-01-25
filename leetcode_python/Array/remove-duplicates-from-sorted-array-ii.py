@@ -59,9 +59,16 @@ class Solution:
         slow = 1
         ### NOTE : fast starts from 2
         for fast in range(2, len(nums)):
-            ### NOTE : BELOW CONDITION
+            """
+            NOTE : BELOW CONDITION
+
+            1) nums[slow] != nums[fast]: for adding "1st" element
+            2) nums[slow] != nums[slow-1] : for adding "2nd" element
+            """
             if nums[slow] != nums[fast] or nums[slow] != nums[slow-1]:
-                nums[slow+1] = nums[fast]
+                # both of below op are OK
+                #nums[slow+1] = nums[fast]
+                nums[slow+1], nums[fast] = nums[fast], nums[slow+1] 
                 slow += 1
         return slow+1
 

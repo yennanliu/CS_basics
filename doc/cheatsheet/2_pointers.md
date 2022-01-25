@@ -140,6 +140,7 @@ class Solution:
         ### NOTE : use the same speed
         """
         while slow != fast:
+            # NOTE this !!! : fast, slow move SAME speed (in this step)
             fast = fast.next
             slow = slow.next
         return slow
@@ -210,6 +211,7 @@ void reverse(int[] nums){
 ### 2-1) Remove Element
 ```python
 # python
+# basic
 class Solution(object):
     def removeElement(self, nums, val):
         length = 0
@@ -234,7 +236,8 @@ class Solution:
         if len(A) == 0:
             return 0
         j = 0
-        for i in range(0, len(A)):
+        #for i in range(0, len(A)):
+        for i in range(1, len(A)):  # start from idx=0 or idx=1 are OK
             if A[i] != A[j]:
                 A[i], A[j+1] = A[j+1], A[i]
                 j = j + 1
@@ -260,7 +263,7 @@ class Solution(object):
 # IDEA : 2 POINTERS
 #### NOTE : THE nums already ordering
 class Solution:
-    def removeDuplicates(self, nums):
+    def removeDuplicates(self, nums: List[int]) -> int:
         if len(nums) < 3:
             return len(nums)
 
@@ -268,9 +271,16 @@ class Solution:
         slow = 1
         ### NOTE : fast starts from 2
         for fast in range(2, len(nums)):
-            ### NOTE : BELOW CONDITION
+            """
+            NOTE : BELOW CONDITION
+
+            1) nums[slow] != nums[fast]: for adding "1st" element
+            2) nums[slow] != nums[slow-1] : for adding "2nd" element
+            """
             if nums[slow] != nums[fast] or nums[slow] != nums[slow-1]:
-                nums[slow+1] = nums[fast]
+                # both of below op are OK
+                #nums[slow+1] = nums[fast]
+                nums[slow+1], nums[fast] = nums[fast], nums[slow+1] 
                 slow += 1
         return slow+1
 ```
