@@ -76,7 +76,24 @@
 			- 2_pointers.md (ok)
 			- hash_map.md (ok)
 			- array.md (ok)
-			- set.md (ing)
+			- Collection.md
+			- backtrack.md
+			- bfs.md
+			- binary_tree.md
+			- bit_manipulation.md
+			- brute_force.md
+			- bst.md
+			- dfs.md
+			- greedy.md
+			- heap.md
+			- queue.md
+			- sliding_window.md
+			- sort.md
+			- sorting_string.md
+			- stack.md
+			- string.md
+			- tree.md
+			- trie.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
