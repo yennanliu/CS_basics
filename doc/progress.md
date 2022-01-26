@@ -41,7 +41,6 @@
 		- SQL
 			- (ordering)
 			- (completed)
-			- (todo)
 			- 1083 (again)
 			- 1084
 			- 1097
@@ -53,6 +52,8 @@
 			- 1141
 			- 1158
 			- 1159
+			- (todo)
+			- https://quip.com/2gwZArKuWk7W : The Best Medium-Hard Data Analyst SQL Interview Questions 
 		- cheatsheet review
 			- Collection.md
 			- backtrack.md
