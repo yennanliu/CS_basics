@@ -1105,7 +1105,7 @@
 579| [Find Cumulative Salary of an Employee ](https://leetcode.com/articles/find-cumulative-salary-of-an-employee/)|[MySQL](./leetcode_SQL/find-cumulative-salary-of-an-employee.sql)||| Hard |window function, `amazon`, good trick| OK***** (5)(but again)
 580| [Count Student Number in Departments](https://leetcode.com/problems/count-student-number-in-departments/)|[MySQL](./leetcode_SQL/count-student-numbers-in-departments.sql)||| Medium || OK*** (2) (but again)
 595| [Big Countries](https://leetcode.com/problems/big-countries/)|[MySQL](./leetcode_SQL/big_countries.sql)||| Easy || OK
-597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](./leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |`fb`| OK*** (6) 
+597| [Friend Requests I: Overall Acceptance Rate](https://leetcode.com/articles/friend-requests-i-overall-acceptance-rate/) |[MySQL](./leetcode_SQL/friend-requests-i-overall-acceptance-rate.sql)||| Medium |select distinct, ifnull,`fb`| OK*** (7) 
 601| [Human Traffic of Stadium](https://leetcode.com/problems/human-traffic-of-stadium/) |[MySQL](./leetcode_SQL/human-traffic-of-stadium.sql)||| Hard |consecutive nums| OK* (1)
 602| [Friend Requests II: Who Has Most Friend?](https://leetcode.com/articles/friend-requests-ii-who-has-most-friend/) |[MySQL](./leetcode_SQL/friend-requests-ii-who-has-most-friend.sql)||| Medium |union all, `fb`| OK*** (4)
 603| [Consecutive Available Seats](https://leetcode.com/problems/consecutive-available-seats/description/) |[MySQL](./leetcode_SQL/consecutive_available_seats.sql)||| Medium |consecutive nums, good basic, cross join| OK***** (3)(but again)
@@ -1113,7 +1113,7 @@
 620| [Not Boring Movies](https://leetcode.com/problems/not-boring-movies/) |[MySQL](./leetcode_SQL/not_boring_movies.sql)||| Easy || OK
 626| [Exchange Seats](https://leetcode.com/problems/exchange-seats/) |[MySQL](./leetcode_SQL/exchange_seats.sql)||| Medium || AGAIN (not start)
 627| [Swap Salary](https://leetcode.com/problems/swap-salary/) |[MySQL](./leetcode_SQL/swap_salary.sql)||| Easy |UPDATE with CASE, good basic| OK* (1) (but again)
-1045| [Customers Who Bought All Products](https://leetcode.com/problems/customers-who-bought-all-products/) | [MySQL](./leetcode_SQL/customers-who-bought-all-products.sql) | _O(n + k)_ | _O(n + k)_| Medium|🔒, where with count | OK* (3) 
+1045| [Customers Who Bought All Products](https://leetcode.com/problems/customers-who-bought-all-products/) | [MySQL](./leetcode_SQL/customers-who-bought-all-products.sql) | _O(n + k)_ | _O(n + k)_| Medium|🔒, where with count | OK*** (4) 
 1050| [Actors and Directors Who Cooperated At Least Three Times](https://leetcode.com/problems/actors-and-directors-who-cooperated-at-least-three-times/) | [MySQL](./leetcode_SQL/actors-and-directors-who-cooperated-at-least-three-times.sql) | _O(n)_ | _O(n)_| Easy|🔒|  OK 
 1068| [Product Sales Analysis I](https://leetcode.com/problems/product-sales-analysis-i/) | [MySQL](./leetcode_SQL/product-sales-analysis-i.sql) | _O(m + n)_ | _O(m + n)_      | Easy   |🔒|  OK 
 1069| [Product Sales Analysis II](https://leetcode.com/problems/product-sales-analysis-ii/) | [MySQL](./leetcode_SQL/product-sales-analysis-ii.sql) | _O(n)_ | _O(n)_       | Easy       |🔒|  OK 
@@ -1121,7 +1121,7 @@
 1075| [Project Employees I](https://leetcode.com/problems/project-employees-i/) | [MySQL](./leetcode_SQL/project-employees-i.sql) | _O(m + n)_ | _O(m + n)_       | Easy        |🔒 | OK 
 1076| [Project Employees II](https://leetcode.com/problems/project-employees-ii/) | [MySQL](./leetcode_SQL/project-employees-ii.sql)  | _O(n)_ | _O(n)_| Easy|🔒|  OK (2) 
 1077| [Project Employees III](https://leetcode.com/problems/project-employees-iii/) | [MySQL](./leetcode_SQL/project-employees-iii.sql)  | _O((m + n)^2)_ | _O(m + n)_   | Medium   |🔒, `tricky where`| OK***** (2) (but again) 
-1082| [Sales Analysis I](https://leetcode.com/problems/sales-analysis-i/) |  [MySQL](./leetcode_SQL/sales-analysis-i.sql)  | _O(n)_ | _O(n)_ | Easy   |🔒, group by only 1 col, good basic | OK***** (4) (again)
+1082| [Sales Analysis I](https://leetcode.com/problems/sales-analysis-i/) |  [MySQL](./leetcode_SQL/sales-analysis-i.sql)  | _O(n)_ | _O(n)_ | Easy   |🔒, group by only 1 col, good basic | OK***** (5) (again)
 1083| [Sales Analysis II](https://leetcode.com/problems/sales-analysis-ii/) | [MySQL](./leetcode_SQL/sales-analysis-ii.sql) | _O(m + n)_ | _O(m + n)_| Easy|🔒, not in| OK*** (3) (again)
 1084| [Sales Analysis III](https://leetcode.com/problems/sales-analysis-iii/) | [MySQL](./leetcode_SQL/sales-analysis-iii.sql) | _O(m + n)_ | _O(m + n)_| Easy |🔒 | OK** (2)
 1097| [Game Play Analysis V](https://leetcode.com/problems/game-play-analysis-v/) | [MySQL](./leetcode_SQL/game-play-analysis-v.sql) | _O(n^2)_ | _O(n)_  | Hard  |🔒, `good basic`,`retention`, case condition, retention, data_add, left join| AGAIN***** (7)
