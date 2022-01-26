@@ -177,7 +177,7 @@ for num in nums:
         d[tmp] += 1
 ```
 
-- get sub array sum
+- Get `sub array sum`
 ```python
 # (algorithm book (labu) p.350)
 my_array = [1,2,3,4,5]
@@ -193,14 +193,15 @@ for i in range(len(my_array)):
 # my_array_pre = [0, 1, 3, 6, 10, 15]
 
 #-----------------------------------------------
-# Get sub array sum !!!!
+# Get sub array sum !!!!!!!
 #    -> nums[i..j] sum = preSum[j+1] - preSum[i]
 #-----------------------------------------------
+
 # example 1 : sum of [1,2]
-my_array_pre[1+1] - my_array_pre[0]
+my_array_pre[1+1] - my_array_pre[0]  # 1's index is 0, and 2's index is 1. (my_array = [1, 2, 3, 4, 5])
 
 # example 2 : sum of [2,3,4]
-my_array_pre[3+1] - my_array_pre[1]
+my_array_pre[3+1] - my_array_pre[1] # 2's index is 1, and 4's index is 3. (my_array = [1, 2, 3, 4, 5])
 ```
 
 ## 2) LC Example
@@ -255,7 +256,7 @@ class Solution(object):
     def findMaxLength(self, nums):
         r = 0
         cur = 0
-        ### NOTE : WE NEED INIT DICT LIKE BELOW
+        ### NOTE : WE HAVE TO INIT DICT LIKE BELOW
         # https://blog.csdn.net/fuxuemingzhu/article/details/82667054
         _dict = {0:-1}
         for k, v in enumerate(nums):
@@ -339,7 +340,7 @@ class Solution:
 # LC 003
 # V0
 # IDEA : SLIDING WINDOW + DICT
-#       -> use a hash table (d) record visit "alphabet" (e.g. : a,b,c,...)
+#       -> use a hash table (d) record visited "alphabet" (e.g. : a,b,c,...)
 #          (but NOT sub-string)
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
@@ -365,13 +366,13 @@ class Solution(object):
 # V0
 # IDEA : dict
 # https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
-# prinme(x) : check if x is a prime
-# prinme(0) = 0
-# prinme(1) = 0
-# prinme(2) = 0
-# prinme(3) = 1
-# prinme(4) = 2
-# prinme(5) = 3
+# prime(x) : check if x is a prime
+# prime(0) = 0
+# prime(1) = 0
+# prime(2) = 0
+# prime(3) = 1
+# prime(4) = 2
+# prime(5) = 3
 # python 3
 class Solution:
     def countPrimes(self, n):
@@ -382,7 +383,7 @@ class Solution:
             if i not in nonprimes:
                 for j in range(i*i, n, i):
                     nonprimes.add(j)
-        return n - len(nonprimes) - 2  # remove prinme(1), prime(2)
+        return n - len(nonprimes) - 2  # remove prime(1), prime(2)
 ```
 
 ### 2-5) Valid Sudoku
