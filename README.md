@@ -1097,7 +1097,7 @@
 0511| [Game Play Analysis I](https://leetcode.com/problems/game-play-analysis-i/) | [MySQL](./leetcode_SQL/game-play-analysis-i.sql) | _O(n)_ | _O(n)_    | Easy    |🔒|  OK 
 0512| [Game Play Analysis II](https://leetcode.com/problems/game-play-analysis-ii/) | [MySQL](./leetcode_SQL/game-play-analysis-ii.sql)| _O(n)_ | _O(n)_ | Easy  |🔒, `2 col where` `good trick` | AGAIN**(4)
 0534| [Game Play Analysis III](https://leetcode.com/problems/game-play-analysis-iii/) | [MySQL](./leetcode_SQL/game-play-analysis-iii.sql) | _O(nlogn)_ | _O(n)_  | Medium |🔒, `SQL var`, `tricky`, window func| AGAIN******** (6)
-0550| [Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv/) | [MySQL](./leetcode_SQL/game-play-analysis-iv.sql) | _O(n)_ | _O(n)_| Medium|`tricky`, good basic, where min condition | OK********* (6) (but again)
+0550| [Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv/) | [MySQL](./leetcode_SQL/game-play-analysis-iv.sql) | _O(n)_ | _O(n)_| Medium|case, fraction, join, good basic, where min condition | OK*********** (7) (but again)
 569| [Median Employee Salary](https://leetcode.com/problems/median-employee-salary/description/) | [MySQL](./leetcode_SQL/median_employee_salary.sql) | _O(n)_ | _O(n)_| Medium| medium number| AGAIN* (not start)
 571| [Find Median Given Frequency of Numbers](https://leetcode.com/problems/find-median-given-frequency-of-numbers/) | [MySQL](./leetcode_SQL/find_median_given_frequency_of_numbers.sql) | _O(n)_ | _O(n)_| Medium| medium number| AGAIN** (not start) (2)
 577| [Employee Bonus](https://leetcode.com/problems/employee-bonus/) | [MySQL](./leetcode_SQL/employee_bonus.sql) | _O(n)_ | _O(n)_| Easy|| OK
