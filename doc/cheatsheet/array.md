@@ -270,6 +270,7 @@ def merge(intervals):
 
 ### 2-2) Non-overlapping-intervals
 ```python
+# LC 435 Non-overlapping Intervals
 # V0 
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
@@ -289,12 +290,19 @@ class Solution(object):
 
 ### 2-3) Queue Reconstruction by Height
 ```python
-# 406 Queue Reconstruction by Height
+# LC 406 Queue Reconstruction by Height
 class Solution(object):
     def reconstructQueue(self, people):
         people.sort(key = lambda x : (-x[0], x[1]))
         res = []
         for p in people:
+        """
+        py insert syntax
+        # syntax : 
+        # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md#1-6-insert-into-array-in-place
+
+        # arr.insert(<index>,<value>)
+        """
             res.insert(p[1], p)
         return res
 ```
@@ -437,7 +445,7 @@ class Solution(object):
 
 ### 2-9) Best Time to Buy and Sell Stock
 ```python
-# LC 121
+# LC 121 Best Time to Buy and Sell Stock
 # V0
 # IDEA : array op + problem understanding
 class Solution(object):

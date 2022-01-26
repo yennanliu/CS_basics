@@ -75,7 +75,8 @@
 		- cheatsheet review
 			- 2_pointers.md (ok)
 			- hash_map.md (ok)
-			- array.md (ing)
+			- array.md (ok)
+			- set.md (ing)
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
