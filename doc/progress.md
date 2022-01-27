@@ -64,6 +64,8 @@
 			- sorting_string.md
 			- sort.md
 			- sliding_window.md
+			- queue.md
+			- stack.md
 			- (todo)
 			- bfs.md
 			- binary_tree.md
@@ -71,8 +73,6 @@
 			- bst.md
 			- dfs.md
 			- heap.md
-			- queue.md
-			- stack.md
 			- tree.md
 			- trie.md
 	- System Design

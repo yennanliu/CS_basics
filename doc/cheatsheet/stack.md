@@ -1,7 +1,7 @@
 # Stack
 
 > Stack data structure and aAlgorithm/LC relative to it
-> "LIFO (last in, first out)"
+> "LIFO (Last in, First out)"
 
 - https://github.com/labuladong/fucking-aAlgorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md
 
@@ -43,6 +43,7 @@ vector<int> nextGreaterElement(vector<int>& nums) {
 
 ### 1-1-2) next greater number
 ```java
+// LC 496, 503 (see below)
 // java
 // aAlgorithm book (labu) p. 273
 vector<int> nextGreaterElement(vector<int> & nums){
@@ -66,7 +67,7 @@ return ans;
 
 ### 2-1) Decode String
 ```python
-# LC 394
+# LC 394 Decode String
 # V0
 # IDEA : STACK
 # NOTE : treat before cases separately
