@@ -58,6 +58,7 @@
 			- (completed)
 			- Collection.md
 			- backtrack.md
+			- greedy.md
 			- (todo)
 			- bfs.md
 			- binary_tree.md
@@ -65,7 +66,6 @@
 			- brute_force.md
 			- bst.md
 			- dfs.md
-			- greedy.md
 			- heap.md
 			- queue.md
 			- sliding_window.md

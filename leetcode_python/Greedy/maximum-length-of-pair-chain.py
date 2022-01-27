@@ -54,7 +54,7 @@ class Solution(object):
 
 # V0 
 # IDEA : GREEDY + sorting
-# ->  we sort on pair's 1st element (0 index) -> possible cases that we can get sub pairs with max length with the needed conditions
+# ->  we sort on pair's "2nd" element (0 index) -> possible cases that we can get sub pairs with max length with the needed conditions
 # ->  we need to find the "max length" of "continous or non-continous" sub pairs (with condition)
 #      -> so start from the "sorted 1st pair" CAN ALWAYS MAKE US GET THE MAX LENGTH of sub pairs with the condition ( we define a pair (c, d) can follow another pair (a, b) if and only if b < c. Chain of pairs can be formed in this fashion.)
 ##########
