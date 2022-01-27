@@ -59,20 +59,20 @@
 			- Collection.md
 			- backtrack.md
 			- greedy.md
+			- string.md
+			- brute_force.md
+			- sorting_string.md
+			- sort.md
 			- (todo)
 			- bfs.md
 			- binary_tree.md
 			- bit_manipulation.md
-			- brute_force.md
 			- bst.md
 			- dfs.md
 			- heap.md
 			- queue.md
 			- sliding_window.md
-			- sort.md
-			- sorting_string.md
 			- stack.md
-			- string.md
 			- tree.md
 			- trie.md
 	- System Design
