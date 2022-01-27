@@ -62,7 +62,7 @@ public int intervalSchedule(int[][] intvs) {
 # LC 646 Maximum Length of Pair Chain
 # V0 
 # IDEA : GREEDY + sorting
-# ->  we sort on pair's 1st element -> possible cases that we can get sub pairs with max length with the needed conditions
+# ->  we sort on pair's "2nd" element -> possible cases that we can get sub pairs with max length with the needed conditions
 # ->  we need to find the "max length" of "continous or non-continous" sub pairs (with condition)
 #      -> so start from the "sorted 1st pair" CAN ALWAYS MAKE US GET THE MAX LENGTH of sub pairs with the condition ( we define a pair (c, d) can follow another pair (a, b) if and only if b < c. Chain of pairs can be formed in this fashion.)
 ##########
@@ -174,13 +174,15 @@ class Solution(object):
 
 ### 2-6) Reorganize String
 ```python
-# 767 Reorganize String
+# LC 767. Reorganize String
+# V0 
+# IDEA : GREEDY + COUNTER
+# IDEA : 
+#  step 1) order exists count (big -> small)
+#  step 2) select the element which is "most remaining" and DIFFERENT from last ans element and append such element to the end of ans
+#  step 3) if can't find such element, return ""
 class Solution(object):
     def reorganizeString(self, S):
-        """
-        :type S: str
-        :rtype: str
-        """
         cnt = collections.Counter(S)
         # Be aware of it : ans = "#" -> not to have error in ans[-1] when first loop
         ans = '#'
@@ -244,32 +246,4 @@ class Solution(object):
         """
         time = (most - 1) * (n + 1) + num_most
         return max(time, len(tasks)) # be aware of it 
-```
-
-### 2-8) Reorganize String
-```python
-# LC 767. Reorganize String
-# V0 
-# IDEA : GREEDY + COUNTER
-# IDEA : 
-#  step 1) order exists count (big -> small)
-#  step 2) select the element which is "most remaining" and DIFFERENT from last ans element and append such element to the end of ans
-#  step 3) if can't find such element, return ""
-class Solution(object):
-    def reorganizeString(self, S):
-        cnt = collections.Counter(S)
-        # Be aware of it : ans = "#" -> not to have error in ans[-1] when first loop
-        ans = '#'
-        while cnt:
-            stop = True
-            for v, c in cnt.most_common():
-                if v != ans[-1]:
-                    stop = False
-                    ans += v
-                    cnt[v] -= 1
-                    if not cnt[v]: del cnt[v]
-                    break
-            # Be aware of it : if there is no valid "v", then the while loop will break automatically at this condition (stop = True)
-            if stop: break
-        return ans[1:] if len(ans[1:]) == len(S) else ''
 ```
