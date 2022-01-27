@@ -63,6 +63,7 @@
 			- brute_force.md
 			- sorting_string.md
 			- sort.md
+			- sliding_window.md
 			- (todo)
 			- bfs.md
 			- binary_tree.md
@@ -71,7 +72,6 @@
 			- dfs.md
 			- heap.md
 			- queue.md
-			- sliding_window.md
 			- stack.md
 			- tree.md
 			- trie.md
