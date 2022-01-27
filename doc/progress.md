@@ -1,5 +1,58 @@
 # Progress
 
+# 2022-01-28
+- DOING:
+	- LC review (amz_)
+		- ref: https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Amazon%20-%20LeetCode.pdf
+		- programming
+			- review
+			- (normal order)
+			- (pdf : p.12)
+	- ================ 
+	- LC general
+		- Tree
+		- =======
+		- bit manipulation
+			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
+		- intervals
+			- 57 (again !!!)
+			- 56 (again !!!)
+		- design
+			- all remain (not start)
+		- greedy
+		- hashmap
+			- 036 (not start)
+		- heap
+			- 355 (not start)
+		- graph
+			- 547 (not start)
+			- 210 (not start)
+			- 323 (not start)
+		- SQL
+			- (ordering)
+			- (completed)
+			- 1159
+			- (todo)
+			- https://quip.com/2gwZArKuWk7W : The Best Medium-Hard Data Analyst SQL Interview Questions 
+		- cheatsheet review
+			- (completed)
+			- (todo)
+			- bfs.md
+			- binary_tree.md
+			- bit_manipulation.md
+			- bst.md
+			- dfs.md
+			- heap.md
+			- tree.md
+			- trie.md
+	- System Design
+		- Tinder design
+	- algorithm book (labu)
+		- note
+			- p.353 -
+	- system design book - an insider's guide (GOTOP)
+		- 1st read (ok)
+		- review/note
 
 # 2022-01-27
 - DOING:
