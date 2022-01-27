@@ -28,7 +28,7 @@
 - update
 - get
 - delete
-- heapfify : transform list to heap
+- heapify : transform list to heap
 - extract_max
 - delete_max
 - replace
