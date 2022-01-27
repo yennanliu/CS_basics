@@ -55,8 +55,10 @@
 			- (todo)
 			- https://quip.com/2gwZArKuWk7W : The Best Medium-Hard Data Analyst SQL Interview Questions 
 		- cheatsheet review
+			- (completed)
 			- Collection.md
 			- backtrack.md
+			- (todo)
 			- bfs.md
 			- binary_tree.md
 			- bit_manipulation.md
