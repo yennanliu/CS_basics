@@ -36,13 +36,13 @@
 			- https://quip.com/2gwZArKuWk7W : The Best Medium-Hard Data Analyst SQL Interview Questions 
 		- cheatsheet review
 			- (completed)
+			- heap.md
 			- (todo)
 			- bfs.md
 			- binary_tree.md
 			- bit_manipulation.md
 			- bst.md
 			- dfs.md
-			- heap.md
 			- tree.md
 			- trie.md
 	- System Design

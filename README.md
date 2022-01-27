@@ -461,6 +461,8 @@
 855 | [Exam Room](https://leetcode.com/problems/exam-room/) | [python](./leetcode_python/Heap/exam-room.py)  | seat: _O(logn)_ <br> leave: _O(logn)_ | _O(n)_ | Medium | BST, Hash, `trick` | AGAIN* (2) (not start)
 295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | [python](./leetcode_python/Heap/find_median_from_data_stream.py)  | | | Hard |priority queue, trick ,heap, stream, `amazon`|  AGAIN****** (6)
 703 | [Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/) | [python](./leetcode_python/Heap/kth_largest_element_in_a_stream.py)  | | | Easy |heap, stream, `amazon`|  AGAIN***** (3)
+1130| [Minimum Cost Tree From Leaf Values](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/)|[Python](./leetcode_python/Heap/minimum-cost-tree-from-leaf-values.py) | | | Medium | LC 1167,heap| not start
+1167| [Minimum Cost to Connect Sticks](https://leetcode.com/problems/minimum-cost-to-connect-sticks/)|[Python](./leetcode_python/Heap/minimum-cost-to-connect-sticks.py) | | | Medium | LC 1130, good basic,heap,`amazon`| AGAIN***** (3)
 
 
 ## Bit Manipulation 
@@ -580,7 +582,6 @@
 933| [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)| [Python](./leetcode_python/Queue/number-of-recent-calls.py)  | _O(1)_ on average  | _O(w)_ | Easy|| AGAIN**
 622| [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/)|[Python](./leetcode_python/Queue/design_circular_queue.py) | | | Medium |`good basic`,`circular queue`,`amazon`,`fb`| AGAIN****** (2)
 239| [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)|[Python](./leetcode_python/Queue/sliding-window-maximum.py) | | | Hard |heap, deque, queue,`amazon`, `google`| AGAIN** (2) (not start)
-1167| [Minimum Cost to Connect Sticks](https://leetcode.com/problems/minimum-cost-to-connect-sticks/)|[Python](./leetcode_python/Queue/minimum-cost-to-connect-sticks.py) | | | Medium | queue,`amazon`| AGAIN** (2) (not start)
 
 
 ## Math 
