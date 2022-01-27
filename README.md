@@ -387,7 +387,7 @@
 331| [Verify Preorder Serialization of a Binary Tree](https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/) | [python](./leetcode_python/Stack/verify-preorder-serialization-of-a-binary-tree.py) | _O(n)_| _O(1)_| Medium || AGAIN (not start)
 341| [Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/)|  [python](./leetcode_python/Stack/flatten-nested-list-iterator.py) | _O(n)_ | _O(h)_ | Medium |🔒 Iterator, `good basic`,`amazon`,`fb***` | AGAIN**** (5)
 385| [Mini Parser](https://leetcode.com/problems/mini-parser/)| [python](./leetcode_python/Stack/mini-parser.py) | _O(n)_        | _O(h)_          | Medium           || AGAIN 
-394| [Decode String](https://leetcode.com/problems/decode-string/)| [python](./leetcode_python/Stack/decode-string.py) | _O(n)_  | _O(h)_ | Medium     |stack, good basic, `amazon`, `google`| AGAIN****** (3) 
+394| [Decode String](https://leetcode.com/problems/decode-string/)| [python](./leetcode_python/Stack/decode-string.py) | _O(n)_  | _O(h)_ | Medium     |stack, good basic!!!!, `amazon`, `google`| AGAIN************ (4) 
 439| [Ternary Expression Parser](https://leetcode.com/problems/ternary-expression-parser/) | [python](./leetcode_python/Stack/ternary-expression-parser.py)| _O(n)_          | _O(1)_          | Medium      |🔒| AGAIN (not start)
 456| [132 Pattern](https://leetcode.com/problems/132-pattern/) |  [python](./leetcode_python/Stack/132-pattern.py) | _O(n)_       | _O(n)_          | Medium       || AGAIN (not start)
 496| [Next Greater Element I](https://leetcode.com/problems/next-greater-element-i/) |  [python](./leetcode_python/Stack/next_greater_element_i.py) | _O(n)_| _O(n)_| Easy|stack, LC 739, LC 503, LC 406| OK*** (2) (but again)
