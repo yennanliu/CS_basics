@@ -37,9 +37,9 @@
 		- cheatsheet review
 			- (completed)
 			- heap.md
-			- (todo)
-			- bfs.md
 			- binary_tree.md
+			- bfs.md
+			- (todo)
 			- bit_manipulation.md
 			- bst.md
 			- dfs.md
