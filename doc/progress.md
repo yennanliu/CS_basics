@@ -39,11 +39,11 @@
 			- heap.md
 			- binary_tree.md
 			- bfs.md
-			- (todo)
-			- bit_manipulation.md
-			- bst.md
 			- dfs.md
 			- tree.md
+			- linked_list.md
+			- (todo)
+			- bit_manipulation.md
 			- trie.md
 	- System Design
 		- Tinder design
