@@ -17,6 +17,7 @@
 			- all remain (not start)
 			- 1197 (ok, but again)
 			- 1756 (again)
+			- 1472 (again)
 		- greedy
 		- hashmap
 			- 036 (not start)
