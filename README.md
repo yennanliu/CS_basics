@@ -587,7 +587,7 @@
 ## Math 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-007| [Reverse Integer](https://leetcode.com/problems/reverse-integer/) |  [Python](./leetcode_python/Math/reverse-integer.py) | _O(1)_ | _O(1)_ | Easy |`0x7FFFFFFF`, amazon| OK* (2) 
+007| [Reverse Integer](https://leetcode.com/problems/reverse-integer/) |  [Python](./leetcode_python/Math/reverse-integer.py) | _O(1)_ | _O(1)_ | Medium |`0x7FFFFFFF`, amazon, apple| OK* (3) 
 009| [Palindrome Number](https://leetcode.com/problems/palindrome-number/) |  [Python](./leetcode_python/Math/palindrome-number.py)  | _O(1)_ | _O(1)_ | Easy |amazon| OK 
 012| [Integer to Roman](https://leetcode.com/problems/integer-to-roman/) | [Python](./leetcode_python/Math/integer-to-roman.py) | _O(n)_ | _O(1)_ | Medium  |`math basic`,`twitter`, `fb`, amazon| AGAIN*** (3)
 013| [Roman to Integer](https://leetcode.com/problems/roman-to-integer/) | [Python](./leetcode_python/Math/roman-to-integer.py) | _O(n)_ | _O(1)_ | Easy |`UBER`,`amazon`, `fb`| AGAIN***** (4)
@@ -901,7 +901,7 @@
 062| [Unique Paths](https://leetcode.com/problems/unique-paths/)    | [Python](./leetcode_python/Dynamic_Programming/unique-paths.py)  | _O(m * n)_      | _O(m + n)_   | Medium         |`dp`, `basic`| AGAIN*
 063| [Unique Paths II](https://leetcode.com/problems/unique-paths-ii/) | [Python](./leetcode_python/Dynamic_Programming/unique-paths-ii.py)  |  _O(m * n)_ | _O(m + n)_   | Medium |`trick`, check `#062 Unique Paths`, `amazon`|  AGAIN* 
 064| [Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/)|  [Python](./leetcode_python/Dynamic_Programming/minimum-path-sum.py) | _O(m * n)_ | _O(m + n)_  | Medium |`DP`, `amazon`| AGAIN* 
-070| [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)|  [Python](./leetcode_python/Dynamic_Programming/climbing-stairs.py) | _O(logn)_    | _O(1)_          | Easy           | Matrix Exponentiation, `DP`, `recursion`|  OK*  
+070| [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)|  [Python](./leetcode_python/Dynamic_Programming/climbing-stairs.py) | _O(logn)_    | _O(1)_| Easy| Matrix Exponentiation, `DP`, `recursion`, `apple`|  OK*  
 091| [Decode Ways](https://leetcode.com/problems/decode-ways/)   |  [Python](./leetcode_python/Dynamic_Programming/decode-ways.py) | _O(n)_ | _O(1)_   | Medium  |`good basic`,`dp`, `M$`, `UBER`, `amazon`,`fb`| AGAIN*********** (3)
 096| [Unique Binary Search Trees](https://leetcode.com/problems/unique-binary-search-trees/) | [Python](./leetcode_python/Dynamic_Programming/unique-binary-search-trees.py)  | _O(n)_      | _O(1)_         | Medium         | Math|  AGAIN (not start)
 120| [Triangle](https://leetcode.com/problems/triangle/)       | [Python](./leetcode_python/Dynamic_Programming/triangle.py)   | _O(m * n)_      | _O(n)_ | Medium |`amazon`| AGAIN* (not start) (2)

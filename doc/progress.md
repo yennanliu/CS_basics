@@ -4,6 +4,12 @@
 - DOING:
 	- LC (appl_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
+			- (pdf : p.1)
+				- 236
+			- (pdf : p.2)
+				- 070
+				- 021
+				- 007 (ok)
 	- ================ 
 	- LC general
 		- Tree
