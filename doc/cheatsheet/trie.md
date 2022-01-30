@@ -1,4 +1,6 @@
 # Trie 
+> Whenever we come across questions with multiple strings, it is best to think if Trie can help us.
+- https://leetcode.com/problems/search-suggestions-system/solution/
 
 ## 0) Concept 
 - https://blog.csdn.net/fuxuemingzhu/article/details/79388432
@@ -7,6 +9,7 @@
 
 <p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/trie_1.png" ></p>
 
+<p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/trie_2.png" ></p>
 
 ### 0-1) Types
 
@@ -172,4 +175,14 @@ class WordDictionary(object):
 ### 2-3) Word Search II
 ```python
 # LC 212. Word Search II
+```
+
+### 2-4) Search Suggestions System
+```python
+# LC 1268. Search Suggestions System
+```
+
+### 2-5) Word Search
+```python
+# LC 79. Word Search
 ```
