@@ -27,6 +27,7 @@ The number of nodes in both lists is in the range [0, 50].
 Both l1 and l2 are sorted in non-decreasing order.
 
 """
+
 # V0
 # IDEA : LOOP 2 LINKED LISTS
 class Solution(object):
@@ -61,7 +62,29 @@ class Solution(object):
         cur.next = l1 or l2
         ### NOTICE THIS : we return head.next
         return head.next
-        
+
+# V0'
+# IDEA : LOOP 2 LINKED LISTS
+class Solution(object):
+    def mergeTwoLists(self, list1, list2):
+        # edge case
+        if not list1 and not list2:
+            return
+        res = head = ListNode()
+        while list1 and list2:
+            if list1.val < list2.val:
+                head.next = list1.val
+                list1 = list1.next
+            else:
+                head.next = list2.val
+                list2 = list2.next
+            head = head.next
+        if list1 or list2:
+            head.next = list1 if list1 else list2
+
+        #print ("head = " + str(head))
+        return res.next
+
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51529359
 class Solution(object):
