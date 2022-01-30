@@ -1054,7 +1054,7 @@
 1500| [Design a File Sharing System](https://leetcode.com/problems/design-a-file-sharing-system/) | [Python](./leetcode_python/Design/design-a-file-sharing-system.py) | _O(k)_ | _O(k)_ | Medium |design, hashmap | AGAIN*** (not start)
 1656| [Design an Ordered Stream](https://leetcode.com/problems/design-an-ordered-stream/) | [Python](./leetcode_python/Design/design-an-ordered-stream.py) | _O(k)_ | _O(k)_ | East || 
 1670| [Design Front Middle Back Queue](https://leetcode.com/problems/design-front-middle-back-queue/) | [Python](./leetcode_python/Design/design-front-middle-back-queue.py) | _O(k)_ | _O(k)_ | Medium | good basic, Design, `amazon`| AGAIN** (1) (not start)
-1756| [Design Recent Used Queue](https://leetcode.com/problems/design-most-recently-used-queue/) | [Python](./leetcode_python/Design/design-most-recently-used-queue.py) | _O(k)_ | _O(k)_ | Medium |design,  |
+1756| [Design Recent Used Queue](https://leetcode.com/problems/design-most-recently-used-queue/) | [Python](./leetcode_python/Design/design-most-recently-used-queue.py) | _O(k)_ | _O(k)_ | Medium |design, queue| AGAIN
 1797| [Design Authentication Manager](https://leetcode.com/problems/design-authentication-manager/) | [Python](./leetcode_python/Design/design-authentication-manager.py) | _O(k)_ | _O(k)_ | Medium |design, hashmap| AGAIN 
 1976| [Number of Ways to Arrive at Destination](https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/) | [Python](./leetcode_python/Design/number-of-ways-to-arrive-at-destination.py) | _O(k)_ | _O(k)_ | Medium || 
 
