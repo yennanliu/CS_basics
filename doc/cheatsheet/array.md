@@ -103,6 +103,92 @@ r3_ = [x for x in r3]
 print (r3_)
 ```
 
+```java
+// java
+// algorithm book (labu) p.355
+//------------------------------------------
+// implement NestedInteger data structure
+//------------------------------------------
+public class NestedInteger {
+    private Integer val;
+    private List<NestedInteger> list;
+
+    public NestedInteger(Integer val){
+        this.val = val;
+        this.list = null;
+    }
+
+    public NestedInteger(List<NestedInteger> list){
+        this.list = list;
+        this.val = null;
+    }
+
+    // if saved value is integer, return true, else false
+    public boolean isIntger(){
+        return val != null;
+    }
+
+    // if saved value is integer, return it, else return null
+    public Integer getInteger(){
+        return this.val;
+    }
+
+    // if saved value is array, return it, else return null
+    public List<NestedInteger> getList(){
+        return this.list;
+    }
+
+}
+```
+
+```java
+// java
+// algorithm book (labu) p.357
+//-----------------------------------------------------------
+// NestedInteger solution V1 :  via tree algorithm
+//-----------------------------------------------------------
+class NestedIterator implements Iterator<Integer>{
+
+    private Iterator<Integer> it;
+
+    public NestedInteger(List<NestedInteger> nestedList){
+        // save flatten result
+        List<Integer> result = new LinkedList<>();
+
+        for (NestedInteger node: nestedList){
+            // start from each node and proceed
+            traverse(node, result);
+        }
+
+        // get result's iterator
+        this.it = result.iterator();
+    }
+
+    public Integer next(){
+        return it.next();
+    }
+
+    public boolean hasNext(){
+        return it.hasNext();
+    }
+
+    // traverse tree with root as root, and add nodes to result array
+    private void traverse(NestedInteger root, List<Integer> result){
+        if (root.isIntger()){
+            // arrive root node
+            result.add(root.getInteger());
+            return;
+        }
+
+        // traverse framework
+        for (NestedInteger child: root.getList()){
+            traverse(child, result);
+        }
+    }
+}
+
+```
+
 #### 1-1-7) Sort array with 2 keys
 
 ```python
