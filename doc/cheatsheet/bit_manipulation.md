@@ -95,3 +95,36 @@ class Solution:
             add <<= 1
         return res
 ```
+
+### 2-2) Reverse Bits
+```python
+# 190. Reverse Bits
+# V0
+class Solution:
+    def reverseBits(self, n):
+        s = bin(n)[2:]
+        s = "0"*(32 - len(s)) + s
+        t = s[::-1]
+        return int(t,2)
+
+# V0'
+# DEMO
+# n = 10100101000001111010011100
+# n =       10100101000001111010011100
+class Solution:
+    def reverseBits(self, n):
+        n = bin(n)[2:]         # convert to binary, and remove the usual 0b prefix
+        print ("n = " + str(n))
+        n = '%32s' % n         # print number into a pre-formatted string with space-padding
+        print ("n = " + str(n))
+        n = n.replace(' ','0') # Convert the useful space-padding into zeros
+        # Now we have a  proper binary representation, so we can make the final transformation
+        return int(n[::-1],2)
+
+# V0'' 
+class Solution(object):
+    def reverseBits(self, n):
+        #b = bin(n)[:1:-1]
+        b = bin(n)[2:][::-1]
+        return int(b + '0'*(32-len(b)), 2)
+```
