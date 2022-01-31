@@ -58,6 +58,7 @@ sorted(strs, key = lambda x : ''.join(sorted(x)))
 
 #### 1-1-6) Flatten Array
 ```python
+# LC 341
 # V1
 def flatten_array(_array):
     r = []
@@ -143,6 +144,7 @@ public class NestedInteger {
 
 ```java
 // java
+// LC 341
 // algorithm book (labu) p.357
 //-----------------------------------------------------------
 // NestedInteger solution V1 :  via tree algorithm
@@ -186,7 +188,42 @@ class NestedIterator implements Iterator<Integer>{
         }
     }
 }
+```
 
+```java
+// java
+// LC 341
+// algorithm book (labu) p.358
+//-----------------------------------------------------------
+// NestedInteger solution V2 :  via lazy calling
+//-----------------------------------------------------------
+public class NestedIterator implements Iterator<Integer>{
+
+    private LinkedList<NestedInteger> list;
+
+    public NestedInteger(List<NestedInteger> nestedList){
+        // use LinkedList, for good performance in below op
+        list = new LinkedList<>(nestedList);
+    }
+
+    public Integer next(){
+        // hasNext method make sure 1st element must be Integer type
+        return list.remove(0).getInteger();
+    }
+
+    public boolean hasNext(){
+        // for loop split elements in array until 1st element is Integer type
+        while (!list.isEmpty() && list.get(0).isIntger()){
+            // when 1st element is array type, go into the loop
+            List<NestedInteger> first = list.remove(0).getList();
+            // flatten 1st array, and add to "start" in ordering
+            for (int i = first.size() - 1; i >= 0; i--){
+                list.addFirst(first.get(i));
+            }  
+        }
+        return !list.isEmpty();
+    }
+}
 ```
 
 #### 1-1-7) Sort array with 2 keys
