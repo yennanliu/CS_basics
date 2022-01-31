@@ -33,7 +33,7 @@
 		- Tinder design
 	- algorithm book (labu)
 		- note
-			- p.353 -
+			- p.353 - P.363
 	- system design book - an insider's guide (GOTOP)
 		- 1st read (ok)
 		- review/note

@@ -69,6 +69,68 @@ class Solution:
         return n - len(nonprimes) - 2  # remove prinme(1), prime(2)
 ```
 
+```java
+// java
+// algorithm book (labu) p.362
+// V1
+int countPrimes(int n){
+    boolean[] isPrime = new boolean[n];
+
+    // init array to true
+    Arrays.fill(isPrime, true);
+
+    // prime number start from 2
+    for (int i = 2; i < n; i++){
+        if (isPrime[i]){
+            // if i is prime, then i's multiple is NOT prime
+            for (int j = 2; j = 2 * i; j += i){
+                isPrime[j] = false;
+            }
+        }
+    }
+
+    int count = 0;
+    for (int i = 2; i < n; i++){
+        if (isPrime[i]){
+            count ++;
+        }
+    }
+    return count;
+}
+```
+
+```java
+// java
+// algorithm book (labu) p.363
+// V1' (optimization)
+int countPrimes(int n){
+    boolean[] isPrime = new boolean[n];
+
+    // init array to true
+    Arrays.fill(isPrime, true);
+
+    // prime number start from 2
+    for (int i = 2; i * i  < n; i++){
+        if (isPrime[i]){
+            // if i is prime, then i's multiple is NOT prime
+            /** optimize here :  make j start from i * i, instead of 2 * i */
+            // (the only difference between V1 and V1')
+            for (int j = i * i; j < n; j += i){
+                isPrime[j] = false;
+            }
+        }
+    }
+
+    int count = 0;
+    for (int i = 2; i < n; i++){
+        if (isPrime[i]){
+            count ++;
+        }
+    }
+    return count;
+}
+```
+
 ## 2) LC Example
 
 ### 2-1) Excel Sheet Column Title
