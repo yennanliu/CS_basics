@@ -44,6 +44,26 @@ class Solution(object):
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
 
 # V0'
+# bfs
+class Solution(object):
+    def maxDepth(self, root):
+        # edge case
+        if not root:
+            return 0
+        res = 0
+        layer = 0
+        q = [[root, layer]]
+        while q:
+            for i in range(len(q)):
+                tmp, layer = q.pop(0)
+                res = max(res, layer)
+                if tmp.left:
+                    q.append([tmp.left, layer+1])
+                if tmp.right:
+                    q.append([tmp.right, layer+1])                   
+        return res + 1
+
+# V0''
 # IDEA : BFS
 class Solution(object):
     def maxDepth(self, root):
@@ -61,7 +81,7 @@ class Solution(object):
             _layer += 1
         return _layer
 
-# V0'
+# V0''''
 # IDEA : DFS
 class Solution(object):
     def maxDepth(self, root):
@@ -81,7 +101,7 @@ class Solution(object):
         print (str(cache))
         return max(cache) + 1
 
-# V0'
+# V0'''
 # IDEA : DFS
 class Solution:
     def maxDepth(self, root):
