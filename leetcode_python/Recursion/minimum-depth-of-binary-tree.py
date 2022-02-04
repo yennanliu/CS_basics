@@ -1,19 +1,67 @@
+"""
+
+111. Minimum Depth of Binary Tree
+Easy
+
+Given a binary tree, find its minimum depth.
+
+The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.
+
+Note: A leaf is a node with no children.
+
+ 
+
+Example 1:
+
+
+Input: root = [3,9,20,null,null,15,7]
+Output: 2
+Example 2:
+
+Input: root = [2,null,3,null,4,null,5,null,6]
+Output: 5
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 105].
+-1000 <= Node.val <= 1000
+
+"""
+
 # V0
+# IDEA : DFS
+# compare with LC 104 : Maximum Depth of Binary Tree
 class Solution(object):
     def minDepth(self, root):
-        """
-        :type root: TreeNode
-        :rtype: int
-        """
         if not root:
             return 0
-
+        ### NOTE here : we need min depth, so if not root.left, then we need to return directly
         if not root.left:
             return 1 + self.minDepth(root.right)
+        ### NOTE here : we need min depth, so if not root.right, then we need to return directly
         elif not root.right:
             return 1 + self.minDepth(root.left)
         else:
             return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
+
+# V0'
+# IDEA : BFS
+class Solution(object):
+    def minDepth(self, root):
+        if not root:
+            return 0
+        q = [[root, 1]]
+        while q:
+            for i in range(len(q)):
+                cur, step = q.pop(0)
+                ### NOTE this
+                if not cur.left and not cur.right:
+                    return step
+                if cur.left:
+                    q.append([cur.left, step + 1])
+                if cur.right:
+                    q.append([cur.right, step + 1])
 
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51337522
@@ -56,21 +104,19 @@ class Solution(object):
 # IDEA : BFS 
 class Solution(object):
     def minDepth(self, root):
-        """
-        :type root: TreeNode
-        :rtype: int
-        """
-        if not root: return 0
-        queue = collections.deque([(root, 1)])
-        while queue:
-            node, step = queue.popleft()
-            if not node.left and not node.right:
-                return step
-            if node.left:
-                queue += (node.left, step + 1)
-            if node.right:
-                queue += (node.right, step + 1)
-                
+        if not root:
+            return 0
+        q = [[root, 1]]
+        while q:
+            for i in range(len(q)):
+                cur, step = q.pop(0)
+                if not cur.left and not cur.right:
+                    return step
+                if cur.left:
+                    q.append([cur.left, step + 1])
+                if cur.right:
+                    q.append([cur.right, step + 1])
+              
 # V1''
 # https://www.jiuzhang.com/solution/minimum-depth-of-binary-tree/#tag-highlight-lang-python
 """
