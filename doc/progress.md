@@ -21,7 +21,7 @@
 			- 721
 			- 547
 		- intervals
-			- 57 (again !!!)
+			- 57 (ok, but AGAIN !!!)
 			- 56 (again !!!)
 		- design
 			- all remain (not start)
@@ -34,6 +34,10 @@
 			- 547 (not start)
 			- 210 (not start)
 			- 323 (not start)
+		- sliding window
+			- 300
+			- 491
+			- 673
 		- SQL
 	- System Design
 		- Tinder design
