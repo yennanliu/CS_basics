@@ -67,6 +67,41 @@ Out[12]: ['1', '2', '3', '4']
 - go through 2 string, keep comparing digits in eash string
 ```python
 # 165 Compare Version Number
+# V0
+# IDEA : STRING + while op
+class Solution(object):
+    def compareVersion(self, version1, version2):
+        # edge case
+        if not version1 and not version2:
+            return
+        # split by "." as list
+        v_1 = version1.split(".")
+        v_2 = version2.split(".")
+        # compare
+        while v_1 and v_2:
+            tmp1 = int(v_1.pop(0))
+            tmp2 = int(v_2.pop(0))
+
+            if tmp1 > tmp2:
+                return 1
+            elif tmp1 < tmp2:
+                return -1
+        # if v_1 remains
+        if v_1:
+            while v_1:
+                tmp1 = int(v_1.pop(0))
+                if tmp1 != 0:
+                    return 1
+        # if v_2 remains
+        if v_2:
+            while v_2:
+                tmp2 = int(v_2.pop(0))
+                if tmp2 != 0:
+                    return -1
+        return 0
+
+# V0'
+# IDEA : STRING
 class Solution(object):
     def compareVersion(self, version1, version2):
         v1_split = version1.split('.')
