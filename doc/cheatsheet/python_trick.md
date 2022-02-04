@@ -583,3 +583,50 @@ In [53]: n = 81
     ...: eval('n + 4')
 Out[53]: 85
 ```
+
+### 1-18) starred ("`*`") expression
+```python
+# Extended Iterable Unpacking
+
+# https://www.python.org/dev/peps/pep-3132/
+# http://swaywang.blogspot.com/2012/01/pythonstarred-expression.html
+
+# example 1
+In [38]: a, *b, c = range(5)
+
+In [39]: a
+Out[39]: 0
+
+In [40]: b
+Out[40]: [1, 2, 3]
+
+In [41]: c
+Out[41]: 4
+
+# example 2
+In [43]: for a, *b in [(1, 2, 3), (4, 5, 6, 7)]:
+    ...:     print ("a = " + str(a) + " b = " + str(b))
+    ...:
+a = 1 b = [2, 3]
+a = 4 b = [5, 6, 7]
+
+# example 3
+In [44]: first, *rest = [1, 2, 3, 4, 5]
+
+In [45]: first
+Out[45]: 1
+
+In [46]: rest
+Out[46]: [2, 3, 4, 5]
+
+# example 4
+In [47]: *directories, executable = "/usr/local/bin/vim".split("/")
+    ...: print (directories)
+    ...: print (executable)
+['', 'usr', 'local', 'bin']
+vim
+
+# example 5
+args = [1,3]
+print (range(*args))
+```
