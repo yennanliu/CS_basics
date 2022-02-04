@@ -1028,3 +1028,74 @@ class Solution(object):
 
         return str2treeHelper(s, 0)[0] if s else None
 ```
+
+### 2-12) Minimum Depth of Binary Tree
+```python
+# LC 111 Minimum Depth of Binary Tree
+# V0
+# IDEA : DFS
+# compare with LC 104 : Maximum Depth of Binary Tree
+class Solution(object):
+    def minDepth(self, root):
+        if not root:
+            return 0
+        ### NOTE here : we need min depth, so if not root.left, then we need to return directly
+        if not root.left:
+            return 1 + self.minDepth(root.right)
+        ### NOTE here : we need min depth, so if not root.right, then we need to return directly
+        elif not root.right:
+            return 1 + self.minDepth(root.left)
+        else:
+            return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
+
+# V0'
+# IDEA : BFS
+class Solution(object):
+    def minDepth(self, root):
+        if not root:
+            return 0
+        q = [[root, 1]]
+        while q:
+            for i in range(len(q)):
+                cur, step = q.pop(0)
+                ### NOTE this
+                if not cur.left and not cur.right:
+                    return step
+                if cur.left:
+                    q.append([cur.left, step + 1])
+                if cur.right:
+                    q.append([cur.right, step + 1])
+```
+
+### 2-13) Maximum Depth of Binary Tree
+```python
+# LC 104 Maximum Depth of Binary Tree
+# V0
+# IDEA : DFS
+class Solution(object):
+    def maxDepth(self, root):
+
+        if root == None:
+            return 0
+        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+
+# V0'
+# bfs
+class Solution(object):
+    def maxDepth(self, root):
+        # edge case
+        if not root:
+            return 0
+        res = 0
+        layer = 0
+        q = [[root, layer]]
+        while q:
+            for i in range(len(q)):
+                tmp, layer = q.pop(0)
+                res = max(res, layer)
+                if tmp.left:
+                    q.append([tmp.left, layer+1])
+                if tmp.right:
+                    q.append([tmp.right, layer+1])                   
+        return res + 1
+```

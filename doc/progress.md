@@ -1,11 +1,11 @@
 # Progress
 
-# 2022-02-03
+# 2022-02-04
 - DOING:
 	- LC (appl_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
 			- (pdf : p.2)
-				- 111
+				- 111 (ok, but again!)
 				- 118
 	- ================
 		- LC (LC discuss sharing)
