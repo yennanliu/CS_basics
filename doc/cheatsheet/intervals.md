@@ -8,11 +8,17 @@
 
 - Types
     - Merge intervals
+        - LC 56
+    - Insert intervala
+        - LC 057
     - Overlap intervals
     - Non-overlap intervals
+        - LC 435
     - Max length of pair chain
     - Courses problems
+        - LC 207, 210
     - Meeting room problems
+        - LC 252, 253
 
 - Algorithm
     - array op
