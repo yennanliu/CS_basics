@@ -179,7 +179,7 @@
 031 | [Next Permutation](https://leetcode.com/problems/next-permutation/)| [Python](./leetcode_python/Array/next-permutation.py),  [Scala](./leetcode_scala/Array/nextPermutation.scala)| _O(n)_ | _O(1)_ | Medium | `good TRICK`,, `google`,`amazon`, `fb` | AGAIN******** (5) (not start)
 048 | [Rotate Image](https://leetcode.com/problems/rotate-image/)   | [Python](./leetcode_python/Array/rotate-image.py) | _O(n^2)_ | _O(1)_| Medium  |`trick`, `basic`, `transpose matrix`, `amazon`, `apple`| OK** (2)
 054 | [Spiral Matrix](https://leetcode.com/problems/spiral-matrix/) |  [Python](./leetcode_python/Array/spiral-matrix.py) | _O(m * n)_  | _O(1)_ | Medium |matrix,`amazon`| AGAIN** (2)
-057 | [Insert Interval](https://leetcode.com/problems/insert-interval/) |  [Python](./leetcode_python/Array/insert-interval.py) |  |  | Medium | good basic, blind LC pattern, `056 Merge Intervals`|  OK********  (3) (again!)
+057 | [Insert Interval](https://leetcode.com/problems/insert-interval/) |  [Python](./leetcode_python/Array/insert-interval.py) |  |  | Medium | good basic, blind LC pattern, `056 Merge Intervals`| AGAIN**********  (4) (MUST!)
 059 | [Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/) |  [Python](./leetcode_python/Array/spiral-matrix-ii.py) | _O(n^2)_ | _O(1)_ | Medium |check `# 054 Spiral Matrix`, `amazon`| AGAIN** (2)
 066 | [Plus One](https://leetcode.com/problems/plus-one/)      |  [Python](./leetcode_python/Array/plus-one.py)| _O(n)_   | _O(1)_ | Easy |`basic`, `digit`, `google`| OK** (2)
 073 | [Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes/) |  [Python](./leetcode_python/Array/set-matrix-zeroes.py)  | _O(m * n)_ | _O(1)_ | Medium  |`matrix`, `amazon`| OK* (4)

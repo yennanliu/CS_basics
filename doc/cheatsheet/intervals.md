@@ -191,16 +191,19 @@ class Solution(object):
 # case 2) overlap -> MODIFY 2nd element in last merged interval with the bigger index
 class Solution:
     def insert(self, intervals, newInterval):
+        ### NOTE THIS TRICK!!! : APPEND newInterval to intervals
         intervals.append(newInterval)
         # need to sort first (by 1st element)
         intervals.sort(key=lambda x:x[0])
         merged = []
         for interval in intervals:
             ### NOTE this condition
-            if not merged or merged[-1][1]<interval[0]:
+            # if not merged : append directly
+            # if merged[-1][1] < interval[0] : means no overlap : append directly as well
+            if not merged or merged[-1][1] < interval[0]:
                 merged.append(interval)
             else:
-                ### NOTE this op
+                ### NOTE this op, if there is overlap, we ONLY modify the 2nd element in last interval with BIGGER digit
                 merged[-1][1]= max(merged[-1][1],interval[1])
         return merged
 ```

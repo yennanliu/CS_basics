@@ -84,3 +84,38 @@ class Solution:
                 cur_interval=intervals[i]
         res.append(cur_interval)
         return res
+
+# V1'
+# https://leetcode.com/problems/insert-interval/discuss/21667/Python-solution-with-detailed-explanation
+# IDEA
+# First merge the newInterval with the existing sorted list. Use the standard code to merge two sorted lists.
+# Then simply run the algorithm to merge a sorted interval list. https://discuss.leetcode.com/topic/75108/python-solution-with-detailed-explanation
+class Solution(object):
+    def merge(self, intervals):
+        result = [intervals[0]]
+        for i in range(1, len(intervals)):
+            i1, i2 = result[-1], intervals[i]
+            if i2[0] > i1[1]:
+                result.append(i2)
+            elif i2[1] >= i1[1]:
+                i1[1] = i2[1]
+        return result
+
+    def insert(self, intervals, newInterval):
+        result = []
+        l1, l2 = intervals, [newInterval]
+        i, j = 0, 0
+        while i < len(l1) or j < len(l2):
+            if i == len(l1):
+                result.append(l2[j])
+                j += 1
+            elif j == len(l2):
+                result.append(l1[i])
+                i += 1
+            elif l1[i][0] <= l2[j][0]:
+                result.append(l1[i])
+                i += 1
+            else:
+                result.append(l2[j])
+                j += 1
+        return self.merge(result)
