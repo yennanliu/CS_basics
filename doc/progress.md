@@ -22,7 +22,7 @@
 			- 547
 		- intervals
 			- 57 (ok, but AGAIN !!!)
-			- 56 (again !!!)
+			- 56 (ok !!!)
 		- design
 			- all remain (not start)
 		- greedy
