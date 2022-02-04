@@ -29,7 +29,7 @@
 		- hashmap
 			- 036 (not start)
 		- heap
-			- 355 (not start)
+			- 355 (ok, but again)
 		- graph
 			- 547 (not start)
 			- 210 (not start)
