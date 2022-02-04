@@ -274,7 +274,7 @@
 961 | [N-Repeated Element in Size 2N Array](https://leetcode.com/problems/n-repeated-element-in-size-2n-array/) | [Python](./leetcode_python/Array/n-repeated-element-in-size-2n-array.py)  | _O(n)_ | _O(1)_  | Easy  || OK 
 004 | [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) | | _O(n)_ | _O(1)_  | Hard |`fb`, amazon|  
 010 | [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) | | _O(n)_ | _O(1)_  | Hard |`fb`|  
-056 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) |  [Python](./leetcode_python/Array/merge-intervals.py)  | _O(n)_ | _O(1)_  | Medium |`good trick`,057 Insert Interval, `twitter`,`M$`,`UBER`,`google`,`amazon`,`fb`| AGAIN********* (5) 
+056 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) |  [Python](./leetcode_python/Array/merge-intervals.py)  | _O(n)_ | _O(1)_  | Medium |`good trick`,057 Insert Interval, `twitter`,`M$`,`UBER`,`google`,`amazon`,`fb`| OK********* (6) (but AGAIN)
 759 | [Employee Free Time ](https://leetcode.com/problems/employee-free-time/) |  [Python](./leetcode_python/Array/employee-free-time.py)  | _O(n)_ | _O(1)_  | Hard |scanning line, intervals, `amazon`| not start
 1014 | [Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/) | [Python](./leetcode_python/Array/best_sightseeing_pair.py) | | | Medium |dp, array, good basic, Spotify| AGAIN (not start)
 1041 | [Robot Bounded In Circle](https://leetcode.com/problems/robot-bounded-in-circle/) | [Python](./leetcode_python/Array/robot-bounded-in-circle.py) | | | Medium |`amazon`| AGAIN (not start)
