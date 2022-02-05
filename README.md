@@ -159,7 +159,7 @@
 ||Selection sort| [Python](./algorithm/python/selection_sort.py), [JS](./algorithm/js/selection_sort.js) | | | AGAIN| 
 ||Topological sort| [Python](./algorithm/python/topological_sort.py) | | `Redraw` `DAG` so all edges point upwards (DAG : directed acyclic graph) | AGAIN| 
 ||md5 | [Python](./algorithm/python/md5.py) | | | AGAIN| 
-||Union Find | [Python union find](./algorithm/python/union_find.py), [Python union find check cyclic](./algorithm/python/union_find_if_cyclic.py), [Java union find](./leetcode_java/src/main/java/AlgorithmJava/UnionFind.java) | | | AGAIN| 
+||Union Find | [union_find.py](./algorithm/python/union_find.py), [union_find_if_cyclic.py](./algorithm/python/union_find_if_cyclic.py), [UnionFind.java](./leetcode_java/src/main/java/AlgorithmJava/UnionFind.java) | | | AGAIN| 
 ||Dynamic programming|[JS demo 1](./algorithm/js/dp_demo_1.js), [fibonacci_dp JS](./algorithm/js/fibonacci_dp.js) | | | AGAIN|
 ||Dijkstra algorithm|[Python](./algorithm/python/dijkstra.py),[Java](./algorithm/java/DijkstraSP.java)||| AGAIN***|
 ||Quick Find |[Python](./algorithm/python/quick_find.py), [Java](./algorithm/java/QuickFindUF.java) | init : O(N), union : O(N), find : O(1)|simple, but slow |AGAIN| 
