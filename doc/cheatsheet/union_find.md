@@ -12,16 +12,70 @@
 ## 1) General form
 ```java
 // java
-// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/UnionFind.java
-package AlgorithmJava;
-
-/** UnionFind implemented in java
- *
- *  (algorithm book (labu) p.418)
- */
+//---------------------------------------------------
+// UnionFind implemented in java (basic) (V1)
+// (algorithm book (labu) p.412)
+//---------------------------------------------------
 public class UnionFind {
     // attr
+    // connect count
+    private int count;
+    // save each node's parent node
+    private int[] parent;
+    // record tree's "weight"
+    private int[] size;
 
+    // constructor
+    public UnionFind(int n){
+        this.count = n;
+        parent = new int[n];
+        size = new int[n];
+        for (int i = 0; i < n; i++){
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+
+    // method
+    public void union(int p, int q){
+        int rootP = find(p);
+        int rootQ = find(q);
+        if (rootP == rootQ){
+            return;
+        }
+        //parent[rootQ] = rootP is OK as well
+        parent[rootP] = rootQ
+        count --;
+    }
+
+    public boolean connected(int p , int q){
+        int rootP = find(p);
+        int rootQ = find(q);
+        return rootP == rootQ;
+    }
+
+    public int find(int x){
+        while (parent[x] != x){
+            x = parent[x];
+        }
+        return x;
+    }
+
+    public int count(){
+        return count;
+    }
+}
+```
+
+```java
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/UnionFind.java
+package AlgorithmJava;
+//---------------------------------------------------
+// UnionFind implemented in java (basic) (V2)
+// (algorithm book (labu) p.418)
+//---------------------------------------------------
+public class UnionFind {
+    // attr
     // connect count
     private int count;
     // save each node's parent node
@@ -48,7 +102,7 @@ public class UnionFind {
             return;
         }
 
-        // balance tree : put small tree under big tree
+        // balance tree : put small tree under big tree (NOT necessary)
         if (size[rootP] > size[rootQ]){
             parent[rootQ] = rootP;
             size[rootP] += size[rootQ];
