@@ -1,7 +1,7 @@
 # Union Find
-> Check "connection status" for odes in graphs
-- how many connections ?
-- if 2 nodes are connected (with same parent)
+> Check "connection status" for nodes in graphs
+- How many connections ?
+- Whether 2 nodes are "connected" (with same parent)
 - Ref
     - [Union find basic](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/UnionFind%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3.md)
     - [Union find use cases](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/UnionFind%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8.md)
@@ -141,7 +141,47 @@ public class UnionFind {
 ```
 
 ```python
-# UNION FIND
+#--------------------------
+# UNION FIND V1 (basic)
+#--------------------------
+class UnionFind:
+
+    def __init__(self, n):
+        self.count = n
+        self.parent = [None] * n
+        self.size = [None] * n
+
+        for i in range(len(n)):
+            self.parent[i] = i
+            self.size = 1
+
+    def union(self, p, q):
+        rootP = self.find(p)
+        rootQ = self.find(q)
+        if rootP == rootQ:
+            return
+        #self.parent[rootQ] = rootP  # this is OK as well
+        self.parent[rootP] = rootQ
+        self.count -= 1
+
+    def connected(self, p, q):
+        rootP = self.find(p)
+        rootQ = self.find(q)
+        return rootP == rootQ
+
+    def find(self, x):
+        while self.parent[x] != x:
+            x = parent[x]
+        return x
+
+    def count(self):
+        return self.count
+```
+
+```python
+#-------------------
+# UNION FIND V2
+#-------------------
 class UnionFind(object):
     def __init__(self, n):
         self.set = range(n)
@@ -164,31 +204,6 @@ class Solution(object):
         for i, j in edges:
             union_find.union_set(i, j)
         return union_find.count
-```
-
-```python
-class Graph(object):
-
-    def __init__(self):
-        self.numberOfNodes = 0
-        self.adjacentList = {}
-
-    def addVertex(self, node):
-        self.adjacentList[node] = []
-        self.numberOfNodes += 1 
-
-    def addEdge(self, node1, node2):
-        self.adjacentList[node1].append(node2)
-        self.adjacentList[node2].append(node1)
-
-    def showConnections(self):
-        allNodes = self.adjacentList.keys()
-        for node in allNodes:
-            nodeConnections = self.adjacentList[node]
-            connections = ""
-            for vertex in nodeConnections:
-                connections += vertex + " "
-            print (node + "-->" + connections)         
 ```
 
 ### 1-1) Basic OP
