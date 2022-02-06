@@ -35,6 +35,14 @@
     - dict
     - set
 
+- Represent form (as below)
+    - matrix 
+    - dict + linkedlist
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_rep1.png"></p>
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_rep2.png"></p>
+
 ### 0-2) Pattern
 
 ## 1) General form
@@ -46,6 +54,8 @@
     - shortest_path
     - longest_path
     - is_cycle
+
+
 
 ## 2) LC Example
 
