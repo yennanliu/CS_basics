@@ -1,5 +1,47 @@
 # Progress
 
+# 2022-02-07
+- DOING:
+	- LC (appl_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
+			- (pdf : p.2)
+				- 269
+				- 257
+	- ================
+		- LC (LC discuss sharing)
+			- https://leetcode.com/discuss/interview-question/1367526/apple-uber-flipkart-swiggy-interview-questions-july-2020-july-2021
+	- ================
+	- LC general
+		- Tree
+		- =======
+		- bit manipulation
+			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
+		- union find
+			- 721
+			- 547
+		- design
+			- all remain (not start)
+		- greedy
+		- hashmap
+			- 036 (not start)
+		- graph
+			- 547 (not start)
+			- 210 (not start)
+			- 323 (not start)
+		- sliding window
+			- 300
+			- 491
+			- 673
+		- SQL
+	- System Design
+		- Tinder design
+	- algorithm book (labu)
+		- note
+			- p.363 -
+	- system design book - an insider's guide (GOTOP)
+		- 1st read (ok)
+		- review/note
+
 # 2022-02-06
 - DOING:
 	- LC (appl_)

@@ -1,5 +1,7 @@
 # Two pointers
-- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E8%AF%A6%E8%A7%A3.md
+
+- Ref
+    - [fucking-algorithm : 2 pointers](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E8%AF%A6%E8%A7%A3.md)
 
 ## 0) Concept  
 
@@ -7,17 +9,19 @@
 
 - Pointer types
     - `Fast - Slow pointers`
+        - fast, slow pointers from `same start point`
         - Usualy set
             - slow pointer moves 1 idx
             - fast pointer moves 2 idx
         - linked list
             - find mid point of linked list
-            - linked list check if circular
+            - check if linked list is circular
                 - LC 141
                 - LC 142
             - if a circular linked list, return beginning point of circular
             - find last k element of a single linked list
     - `Left- Right pointers`
+        - left, right pointers from `idx = 0, idx = len(n) - 1` respectively
         - Usually set
             - left pointer = 0
             - right pointer = len(nums)
