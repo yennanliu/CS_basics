@@ -34,9 +34,10 @@ All the pairs prerequisites[i] are unique.
 """
 
 # V0
+# IDEA : DFS + topological sort 
 import collections
 class Solution:
-    def canFinish(self, numCourses: int, prerequisites: List[List[int]]):
+    def canFinish(self, numCourses, prerequisites):
         _graph = collections.defaultdict(list)
         for i in range(len(prerequisites)):
             _graph[prerequisites[i][0]].append(prerequisites[i][1])
@@ -61,6 +62,42 @@ class Solution:
         return True
 
 # V0'
+# IDEA : BFS + topological sort 
+from collections import defaultdict, deque
+class Solution:
+    def canFinish(self, numCourses, prerequisites):
+        degree = defaultdict(int)   
+        graph = defaultdict(set)
+        q = deque()
+        
+        # init the courses with 0 deg
+        for i in range(numCourses):
+            degree[i] = 0
+        
+        # add 1 to degree of course that needs prereq
+        # build edge from prerequisite to child course (directed graph)
+        for pair in prerequisites:
+            degree[pair[0]] += 1
+            graph[pair[1]].add(pair[0])
+        
+        # start bfs queue with all classes that dont have a prerequisite
+        for key, val in degree.items():
+            if val == 0:
+                q.append(key)
+                
+        stack = []
+        
+        while q:
+            curr = q.popleft()
+            stack.append(curr)
+            for child in graph[curr]:
+                degree[child] -= 1
+                if degree[child] == 0:
+                    q.append(child)
+        
+        return len(stack) == numCourses
+
+# V0''
 # IDEA : DFS + topological sort 
 import collections
 class Solution(object):
@@ -87,15 +124,10 @@ class Solution(object):
         visited[i] = 2
         return True
 
-# V0'' (AGAIN!)
+# V0''' (AGAIN!)
 # IDEA : BFS + topological sort
 class Solution(object):
     def canFinish(self, N, prerequisites):
-        """
-        :type N,: int
-        :type prerequisites: List[List[int]]
-        :rtype: bool
-        """
         graph = collections.defaultdict(list)
         indegrees = collections.defaultdict(int)
         for u, v in prerequisites:
@@ -111,8 +143,98 @@ class Solution(object):
             indegrees[j] = -1
             for node in graph[j]:
                 indegrees[node] -= 1
-        return True       
+        return True 
+
 # V1
+# IDEA : BFS + topological sort
+# https://leetcode.com/problems/course-schedule/discuss/811500/Python-Intuitive-Solution
+from collections import defaultdict, deque
+class Solution:
+    def canFinish(self, numCourses, prerequisites):
+        degree = defaultdict(int)   
+        graph = defaultdict(set)
+        q = deque()
+        
+        # init the courses with 0 deg
+        for i in range(numCourses):
+            degree[i] = 0
+        
+        # add 1 to degree of course that needs prereq
+        # build edge from prerequisite to child course (directed graph)
+        for pair in prerequisites:
+            degree[pair[0]] += 1
+            graph[pair[1]].add(pair[0])
+        
+        # start bfs queue with all classes that dont have a prerequisite
+        for key, val in degree.items():
+            if val == 0:
+                q.append(key)
+                
+        stack = []
+        
+        while q:
+            curr = q.popleft()
+            stack.append(curr)
+            for child in graph[curr]:
+                degree[child] -= 1
+                if degree[child] == 0:
+                    q.append(child)
+        
+        return len(stack) == numCourses
+
+# V1''
+# IDEA : BFS + topological sort
+# https://leetcode.com/problems/course-schedule/discuss/1656939/python
+from collections import defaultdict, deque
+class Solution:
+    def canFinish(self, n, prereq):
+            G = [[] for _ in range(n)]
+            indeg = [0] * n
+            for v, u in prereq:
+                G[u].append(v)
+                indeg[v] += 1
+
+            q = [u for u, d in enumerate(indeg) if not d]
+            # since we only track sink nodes. we don't need track which nodes are visited or not because sink nodes are guaranteed not to be visited again
+            while q:
+                u = q.pop()
+                n -= 1
+                for v in G[u]:
+                    indeg[v] -= 1
+                    if not indeg[v]:
+                        q.append(v)
+            return n == 0
+
+# V1'''
+# IDEA : dfs + topological sort
+# https://leetcode.com/problems/course-schedule/discuss/1041737/Python-DFS
+class Solution:
+    def canFinish(self, numCourses, prerequisites):
+        g = [[] for _ in range(numCourses)]
+        visit = [0]*numCourses
+        
+        for post, pre in prerequisites:
+            g[post].append(pre)
+            
+        def dfs(node):
+            if visit[node] == -1:
+                return False
+            if visit[node] == 1:
+                return True
+            
+            visit[node] = -1
+            for neighbor in g[node]:
+                if not dfs(neighbor):
+                    return False
+            visit[node] = 1
+            return True
+        
+        for i in range(numCourses):
+            if not dfs(i):
+                return False
+        return True
+
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82951771
 # diagram explaination:
 # https://leetcode.com/problems/course-schedule/discuss/658379/Python-by-DFS-and-cycle-detection-w-Graph
@@ -146,7 +268,41 @@ class Solution(object):
         visited[i] = 2
         return True
 
-# V1'
+# V1'''''
+# IDEA : DFS + topological sort
+# https://leetcode.com/problems/course-schedule/discuss/203028/Python-solution
+# IDEA :
+# We first build a directed graph from prerequisites. The nodes are 0 to n-1, and there is an edge from i to j if i is the prerequisite of j. Then the courses can be finished if and only if the directed graph can be topologically sorted (equivalently, if and only if the directed graph is acyclic).
+# We start by labelling each node 0, meaning that they have not been dfs visited. Then we iterate i in range(numCourses), and if i has not been dfs visited, we dfs visit i. If any of such dfs visits return False, we return False; Else we return True. For the dfs visit procedure, we first label i to be 1, meaning that we are currently dfs visiting the descendants of i in the dfs tree. Then for each neighbor j of i, If j has label 1, then j is a predecessor of i in the dfs visit, and i -> j is a back edge, so the graph contains a cycle, we return False; Else if j has label 0, it has not been visited, and we need to do dfs(j). If dfs(j) returns False, it means that the dfs subgraph starting with j contains a cycle, and we need to return False. Finally, if no dfs(j) returns False, it means that the dfs subgraph starting with i is acyclic, we label i to be 2, meaning that we finished dfs searches all the descendants of i, and we return True.
+# The time complexity is O(n+m), and the space complexity is O(n+m), where n = numCourses, and m = len(prerequisites).
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        def dfs(i):
+            color[i] = 1
+            if i in graph:
+                for j in graph[i]:
+                    if color[j] == 0:
+                        if not dfs(j):
+                            return False
+                    elif color[j] == 1:
+                        return False
+            color[i] = 2
+            return True
+                            
+        graph = {}
+        for pair in prerequisites:
+            if pair[1] in graph:
+                graph[pair[1]].add(pair[0])
+            else:
+                graph[pair[1]] = set([pair[0]])         
+        color = [0]*numCourses
+        for i in range(numCourses):
+            if color[i] == 0:
+                if not dfs(i):
+                    return False
+        return True
+
+# V1''''''
 # https://www.jiuzhang.com/solution/course-schedule/#tag-highlight-lang-python
 from collections import deque
 class Solution:
@@ -177,7 +333,7 @@ class Solution:
                     queue.append(x)
         return count == numCourses
 
-# V1''
+# V1''''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82951771
 # IDEA : BFS + topological sort
 class Solution(object):

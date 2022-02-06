@@ -6,8 +6,9 @@
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
 			- (pdf : p.2)
 				- 69 (ok)
-				- 221
-				- 207
+				- 207 (AGAIN!!!)
+				- 210 (AGAIN!!!)
+				- 257
 	- ================
 		- LC (LC discuss sharing)
 			- https://leetcode.com/discuss/interview-question/1367526/apple-uber-flipkart-swiggy-interview-questions-july-2020-july-2021

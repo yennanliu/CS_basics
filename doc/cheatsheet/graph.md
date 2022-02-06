@@ -248,3 +248,76 @@ class Solution:
                 count+=1
         return count
 ```
+
+### 2-4) Course Schedule
+```python
+# LC 207 Course Schedule
+# V0
+# IDEA : DFS + topological sort 
+import collections
+class Solution:
+    def canFinish(self, numCourses, prerequisites):
+        _graph = collections.defaultdict(list)
+        for i in range(len(prerequisites)):
+            _graph[prerequisites[i][0]].append(prerequisites[i][1])
+
+        visited = [0] * numCourses
+        for i in range(numCourses):
+            if not self.dfs(_graph, visited, i):
+                return False
+        return True
+
+    # 0 : unknown, 1 :visiting, 2 : visited    
+    def dfs(self, _graph, visited, i):
+        if visited[i] == 1:
+            return False
+        if visited[i] == 2:
+            return True
+        visited[i] = 1
+        for item in _graph[i]:
+            if not self.dfs(_graph, visited, item):
+                return False
+        visited[i] = 2
+        return True
+
+# V0'
+# IDEA : BFS + topological sort 
+from collections import defaultdict, deque
+class Solution:
+    def canFinish(self, numCourses, prerequisites):
+        degree = defaultdict(int)   
+        graph = defaultdict(set)
+        q = deque()
+        
+        # init the courses with 0 deg
+        for i in range(numCourses):
+            degree[i] = 0
+        
+        # add 1 to degree of course that needs prereq
+        # build edge from prerequisite to child course (directed graph)
+        for pair in prerequisites:
+            degree[pair[0]] += 1
+            graph[pair[1]].add(pair[0])
+        
+        # start bfs queue with all classes that dont have a prerequisite
+        for key, val in degree.items():
+            if val == 0:
+                q.append(key)
+                
+        stack = []
+        
+        while q:
+            curr = q.popleft()
+            stack.append(curr)
+            for child in graph[curr]:
+                degree[child] -= 1
+                if degree[child] == 0:
+                    q.append(child)
+        
+        return len(stack) == numCourses
+```
+
+### 2-5) Course Schedule II
+```python
+# LC 210 Course Schedule II
+```
