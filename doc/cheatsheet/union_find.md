@@ -7,9 +7,16 @@
     - [Union find use cases](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/UnionFind%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8.md)
 
 ## 0) Concept
-- Key: Implement 2 API:
-    - `Union`
-    - `connected`
+- Implementation 
+    - build 2 API:
+        - `Union`
+        - `connected`
+        - find : do "route compression" in it. so union and connected API will with `O(1)` time complexity
+    - parent : array, record "parent node"
+    - size : array, record "weight of each node"
+- Use case
+    - DFS replacement
+    - graph find "connection"
 
 ### 0-1) Types
 
