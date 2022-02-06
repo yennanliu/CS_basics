@@ -10,6 +10,7 @@
     - Quick union
     - Union Find
     - Topology sorting
+        - LC 207, LC 210
     - Graph Bipartite
     - Dijkstra algorithm
     - DirectedEdge
@@ -21,6 +22,9 @@
     - dfs
     - brute force
     - graph Algorithm
+        - Dijkstra
+        - Topology sorting
+        - Union Find
 
 - Data structure
     - TreeNode
@@ -30,82 +34,6 @@
     - set
 
 ### 0-2) Pattern
-```python
-# DFS
-def GraphPattern(node1, node2, n):
-    def dfs(node):
-        # dfs logic
-    def bfs(node):
-        # bfs logic
-    def union_find(node):
-    # union_find logic
-    import collections.defaultdict
-    # build the graph
-    graph = defaultdict(set)
-    for n1, n2 in zip(node1, node2):
-        graph[n1].append(n2)
-        graph[n2].append(n1)
-
-    # go through the graph with one of the algorithms above
-    visited = []
-    for i in range(n):
-        if conditions:
-            # do sth
-            visited.append(node)
-        else:
-            # do sth
-
-# BFS
-
-# UNION FIND
-class UnionFind(object):
-    def __init__(self, n):
-        self.set = range(n)
-        self.count = n
- 
-    def find_set(self, x):
-       if self.set[x] != x:
-           self.set[x] = self.find_set(self.set[x])  # path compression.
-       return self.set[x]
- 
-    def union_set(self, x, y):
-        x_root, y_root = map(self.find_set, (x, y))
-        if x_root != y_root:
-            self.set[min(x_root, y_root)] = max(x_root, y_root)
-            self.count -= 1
-            
-class Solution(object):
-    def countComponents(self, n, edges):
-        union_find = UnionFind(n)
-        for i, j in edges:
-            union_find.union_set(i, j)
-        return union_find.count
-```
-
-```python
-class Graph(object):
-
-    def __init__(self):
-        self.numberOfNodes = 0
-        self.adjacentList = {}
-
-    def addVertex(self, node):
-        self.adjacentList[node] = []
-        self.numberOfNodes += 1 
-
-    def addEdge(self, node1, node2):
-        self.adjacentList[node1].append(node2)
-        self.adjacentList[node2].append(node1)
-
-    def showConnections(self):
-        allNodes = self.adjacentList.keys()
-        for node in allNodes:
-            nodeConnections = self.adjacentList[node]
-            connections = ""
-            for vertex in nodeConnections:
-                connections += vertex + " "
-            print (node + "-->" + connections)         
-```
 
 ## 1) General form
 
@@ -247,77 +175,4 @@ class Solution:
                 helper(i)
                 count+=1
         return count
-```
-
-### 2-4) Course Schedule
-```python
-# LC 207 Course Schedule
-# V0
-# IDEA : DFS + topological sort 
-import collections
-class Solution:
-    def canFinish(self, numCourses, prerequisites):
-        _graph = collections.defaultdict(list)
-        for i in range(len(prerequisites)):
-            _graph[prerequisites[i][0]].append(prerequisites[i][1])
-
-        visited = [0] * numCourses
-        for i in range(numCourses):
-            if not self.dfs(_graph, visited, i):
-                return False
-        return True
-
-    # 0 : unknown, 1 :visiting, 2 : visited    
-    def dfs(self, _graph, visited, i):
-        if visited[i] == 1:
-            return False
-        if visited[i] == 2:
-            return True
-        visited[i] = 1
-        for item in _graph[i]:
-            if not self.dfs(_graph, visited, item):
-                return False
-        visited[i] = 2
-        return True
-
-# V0'
-# IDEA : BFS + topological sort 
-from collections import defaultdict, deque
-class Solution:
-    def canFinish(self, numCourses, prerequisites):
-        degree = defaultdict(int)   
-        graph = defaultdict(set)
-        q = deque()
-        
-        # init the courses with 0 deg
-        for i in range(numCourses):
-            degree[i] = 0
-        
-        # add 1 to degree of course that needs prereq
-        # build edge from prerequisite to child course (directed graph)
-        for pair in prerequisites:
-            degree[pair[0]] += 1
-            graph[pair[1]].add(pair[0])
-        
-        # start bfs queue with all classes that dont have a prerequisite
-        for key, val in degree.items():
-            if val == 0:
-                q.append(key)
-                
-        stack = []
-        
-        while q:
-            curr = q.popleft()
-            stack.append(curr)
-            for child in graph[curr]:
-                degree[child] -= 1
-                if degree[child] == 0:
-                    q.append(child)
-        
-        return len(stack) == numCourses
-```
-
-### 2-5) Course Schedule II
-```python
-# LC 210 Course Schedule II
 ```
