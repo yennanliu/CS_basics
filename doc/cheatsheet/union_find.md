@@ -74,12 +74,13 @@ public class UnionFind {
 ```
 
 ```java
-// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/UnionFind.java
-package AlgorithmJava;
 //---------------------------------------------------
 // UnionFind implemented in java (basic) (V2)
 // (algorithm book (labu) p.418)
 //---------------------------------------------------
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/UnionFind.java
+
+package AlgorithmJava;
 public class UnionFind {
     // attr
     // connect count
@@ -209,3 +210,28 @@ class Solution(object):
 ### 1-1) Basic OP
 
 ## 2) LC Example
+
+### 2-1) Surrounded Regions
+```python
+# LC 130 Surrounded Regions
+```
+
+### 2-2) Graph Valid Tree
+```python
+# LC 261 Graph Valid Tree
+```
+
+### 2-3) Possible Bipartition
+```python
+# LC 886 Possible Bipartition
+```
+
+### 2-4) Evaluate Division
+```python
+# LC 399 Evaluate Division
+```
+
+### 2-5) Friend Circles
+```python
+# LC 547 Friend Circles
+```
