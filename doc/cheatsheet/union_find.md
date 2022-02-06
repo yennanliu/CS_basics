@@ -80,6 +80,83 @@ public class UnionFind {
 }
 ```
 
+```python
+# DFS
+def GraphPattern(node1, node2, n):
+    def dfs(node):
+        # dfs logic
+    def bfs(node):
+        # bfs logic
+    def union_find(node):
+    # union_find logic
+    import collections.defaultdict
+    # build the graph
+    graph = defaultdict(set)
+    for n1, n2 in zip(node1, node2):
+        graph[n1].append(n2)
+        graph[n2].append(n1)
+
+    # go through the graph with one of the algorithms above
+    visited = []
+    for i in range(n):
+        if conditions:
+            # do sth
+            visited.append(node)
+        else:
+            # do sth
+
+# BFS
+
+# UNION FIND
+class UnionFind(object):
+    def __init__(self, n):
+        self.set = range(n)
+        self.count = n
+ 
+    def find_set(self, x):
+       if self.set[x] != x:
+           self.set[x] = self.find_set(self.set[x])  # path compression.
+       return self.set[x]
+ 
+    def union_set(self, x, y):
+        x_root, y_root = map(self.find_set, (x, y))
+        if x_root != y_root:
+            self.set[min(x_root, y_root)] = max(x_root, y_root)
+            self.count -= 1
+            
+class Solution(object):
+    def countComponents(self, n, edges):
+        union_find = UnionFind(n)
+        for i, j in edges:
+            union_find.union_set(i, j)
+        return union_find.count
+```
+
+```python
+class Graph(object):
+
+    def __init__(self):
+        self.numberOfNodes = 0
+        self.adjacentList = {}
+
+    def addVertex(self, node):
+        self.adjacentList[node] = []
+        self.numberOfNodes += 1 
+
+    def addEdge(self, node1, node2):
+        self.adjacentList[node1].append(node2)
+        self.adjacentList[node2].append(node1)
+
+    def showConnections(self):
+        allNodes = self.adjacentList.keys()
+        for node in allNodes:
+            nodeConnections = self.adjacentList[node]
+            connections = ""
+            for vertex in nodeConnections:
+                connections += vertex + " "
+            print (node + "-->" + connections)         
+```
+
 ### 1-1) Basic OP
 
 ## 2) LC Example
