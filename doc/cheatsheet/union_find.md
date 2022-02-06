@@ -1,9 +1,15 @@
-# Union Find 
+# Union Find
+> Check "connection status" for odes in graphs
+- how many connections ?
+- if 2 nodes are connected (with same parent)
+- Ref
+    - [Union find basic](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/UnionFind%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3.md)
+    - [Union find use cases](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/UnionFind%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8.md)
 
-- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/UnionFind%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3.md
-- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/UnionFind%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8.md
-
-## 0) Concept  
+## 0) Concept
+- Key: Implement 2 API:
+    - `Union`
+    - `connected`
 
 ### 0-1) Types
 
@@ -135,32 +141,6 @@ public class UnionFind {
 ```
 
 ```python
-# DFS
-def GraphPattern(node1, node2, n):
-    def dfs(node):
-        # dfs logic
-    def bfs(node):
-        # bfs logic
-    def union_find(node):
-    # union_find logic
-    import collections.defaultdict
-    # build the graph
-    graph = defaultdict(set)
-    for n1, n2 in zip(node1, node2):
-        graph[n1].append(n2)
-        graph[n2].append(n1)
-
-    # go through the graph with one of the algorithms above
-    visited = []
-    for i in range(n):
-        if conditions:
-            # do sth
-            visited.append(node)
-        else:
-            # do sth
-
-# BFS
-
 # UNION FIND
 class UnionFind(object):
     def __init__(self, n):
