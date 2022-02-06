@@ -233,6 +233,24 @@ In [13]: x
 Out[13]: [1, 2, 77, 3]
 ```
 
+### 1-6') add new element to begin of array (in place)
+```python
+In [1]: x = [1,2,3]
+
+In [2]: x
+Out[2]: [1, 2, 3]
+
+In [3]: x.insert(0,0)
+
+In [4]: x
+Out[4]: [0, 1, 2, 3]
+
+In [5]: x.insert(0,-1)
+
+In [6]: x
+Out[6]: [-1, 0, 1, 2, 3]
+```
+
 ### 1-7) sort string
 ```python
 def _sort(x):
