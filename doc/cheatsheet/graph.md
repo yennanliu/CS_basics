@@ -37,7 +37,7 @@
 
 - Represent form (as below)
     - matrix 
-    - dict + linkedlist
+    - dict + list
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_rep1.png"></p>
 

@@ -54,6 +54,8 @@ class UnionFind:
 
     def __str__(self):
         return " ".join(map(str, self))
+
+# TEST
 # if __name__ == "__main__":
 #     u = UnionFind(5)
 #     print(u)
@@ -62,22 +64,69 @@ class UnionFind:
 #     print(u.find(0))
 #     print(u.find(3))
 
+# V1'
+# https://gist.github.com/splovyt/66f64923bce5c6fade8f14a44657ec4c
+class UnionFind(object):
+    '''UnionFind Python class.'''
+    def __init__(self, n):
+        assert n > 0, "n must be strictly positive"
+        self.n = n
+        # every node is it's own parent in the beginning
+        self.parent = [i for i in range(n)]
+    
+    def find(self, i):
+        '''Find the parent of an element (e.g. the group it belongs to) and compress paths along the way.'''
+        if self.parent[i] != i:
+            # path compression on the way to finding the final parent 
+            # (i.e. the element with a self loop)
+            self.parent[i] = self.find(self.parent[i])
+        return self.parent[i]
+     
+    def is_connected(self, x, y):
+        '''Check whether X and Y are connected, i.e. they have the same parent.'''
+        if self.find(x) == self.find(y):
+            return True
+        else:
+            return False
+    
+    def union(self, x, y):
+        '''Unite the two elements by uniting their parents.'''
+        xparent = self.find(x)
+        yparent = self.find(y)
+        if xparent != yparent:
+            # if these elements are not yet in the same set,
+            # we will set the y parent to the x parent
+            self.parent[yparent]= xparent
+    
+    @property
+    def disjoint_set_count(self):
+        '''Count the amount of disjoint sets.'''
+        # For every node, add the parent to the list of all parents.
+        # This represents all disjoint sets.
+        unique_parents = set([self.find(i) for i in range(self.n)])
+        # return the count
+        return len(unique_parents)
+
 # V2 
 # https://github.com/coells/100days/blob/master/day%2041%20-%20union-find.ipynb
-def find(data, i):
-    if i != data[i]:
-        data[i] = find(data, data[i])
-    return data[i]
+class UnionFind(object):
 
+    def __init__(self, n):
+        self.n = n
 
-def union(data, i, j):
-    pi, pj = find(data, i), find(data, j)
-    if pi != pj:
-        data[pi] = pj
+    def find(self, data, i):
+        if i != data[i]:
+            data[i] = find(data, data[i])
+        return data[i]
 
+    def union(self, data, i, j):
+        pi, pj = find(data, i), find(data, j)
+        if pi != pj:
+            data[pi] = pj
 
-def connected(data, i, j):
-    return find(data, i) == find(data, j)
+    def connected(self, data, i, j):
+        return find(data, i) == find(data, j)
+
 # n = 10
 # data = [i for i in range(n)]
 # connections = [(0, 1), (1, 2), (0, 9), (5, 6), (6, 4), (5, 9)]
