@@ -1,0 +1,32 @@
+# Requesting guidance from those who solved 1000+ Leets so far!
+
+# https://leetcode.com/discuss/general-discussion/705117/requesting-guidance-from-those-who-solved-1000-leets-so-far
+
+
+I had originally posted as a comment here.
+
+I thought I should open these questions to a broader set of audience as a separate article instead of a comment. Hence, this post.
+
+Requesting guidance from those who solved 1000+ Leets so far.
+
+What was your discipline/motivation/routine to spend so much time on LeetCode?
+What is your daily work at your job like?
+Do you see solution to the problems before solving it yourself?
+How about hards? Did you solve them all by yourself? If not, how long do you try before giving up?
+Do you regularly participate in any programming contests on other sites?
+How long have you been coding algorithmic problems (not just on Lc)?
+If not already working at Google or Facebook, would you like to work there? Have you interviewed with them before?
+How did you manage to stick to grinding Lc when various other options were available like open source contributions, promotions at work, learning other tools and technologies?
+How do you manage to balance time taking activities like family & friends, trips, parties, movies, netflix and chill, "oh god will i ever use this knowledge about data structures and algorithms in real life work"?
+What would be your suggestions to the folks in community who are on or wish to travel on the same path?
+Given infinite amount of time and asked to solve a problem without referring to other resources, I won't be able to solve some problems. How to deal with those questions in the interviews?
+Any suggestions specific to solving DP problems? No matter how many problems one solves, its always less, especially with the bottom-up approach.
+Those who have solved atleast 1000 questions, please feel free to answer all possible questions above.
+
+I'll keep appending to the post some selective quesitons from the comments (with credits) which add more value to the community. So feel free to comment good questions.
+
+Thanks in advance!
+
+#--------------------------------------------
+# plz check more content in original post
+#--------------------------------------------
