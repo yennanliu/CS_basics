@@ -426,3 +426,49 @@ class Solution(object):
                 arr.pop(0)
         return arr
 ```
+
+### 2-11) Sqrt(x)
+```python
+# LC 069 Sqrt(x)
+# V0
+# IDEA : binary search
+class Solution(object):
+    def mySqrt(self, x):
+        # edge case
+        if not x or x <= 0:
+            return 0
+        if x == 1:
+            return 1
+        l = 0
+        r = x-1
+        while r >= l:
+            mid = l + (r-l)//2
+            #print ("l = " + str(l) + " r = " + str(r) + " mid = " + str(mid))
+            sq = mid** 2
+            if sq == x:
+                return mid
+            elif sq < x:
+                if (mid+1)**2 > x:
+                    return mid
+                l = mid + 1
+            else:
+                r = mid - 1
+
+# V0
+# IDEA : binary search
+class Solution(object):
+    def mySqrt(self, num):
+        if num <= 1:
+            return num
+        l = 0
+        r = num - 1
+        while r >= l:
+            mid = l + (r - l) // 2
+            if mid * mid == num:
+                return mid
+            elif mid * mid > num:
+                r = mid - 1
+            else:
+                l = mid + 1
+        return l if l * l < num else l - 1
+```
