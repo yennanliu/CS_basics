@@ -3,6 +3,39 @@
 #---------------------------------------------------------------
 
 # V0
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/UnionFind.java
+class UnionFind:
+
+    def __init__(self, n):
+        self.count = n
+        self.parent = [None] * n
+        self.size = [None] * n
+
+        for i in range(len(n)):
+            self.parent[i] = i
+            self.size = 1
+
+    def union(self, p, q):
+        rootP = self.find(p)
+        rootQ = self.find(q)
+        if rootP == rootQ:
+            return
+        #self.parent[rootQ] = rootP  # this is OK as well
+        self.parent[rootP] = rootQ
+        self.count -= 1
+
+    def connected(self, p, q):
+        rootP = self.find(p)
+        rootQ = self.find(q)
+        return rootP == rootQ
+
+    def find(self, x):
+        while self.parent[x] != x:
+            x = parent[x]
+        return x
+
+    def count(self):
+        return self.count
 
 # V1 
 import collections
