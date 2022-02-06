@@ -1,10 +1,13 @@
 # Progress
 
-# 2022-02-05
+# 2022-02-06
 - DOING:
 	- LC (appl_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
 			- (pdf : p.2)
+				- 69 (ok)
+				- 221
+				- 207
 	- ================
 		- LC (LC discuss sharing)
 			- https://leetcode.com/discuss/interview-question/1367526/apple-uber-flipkart-swiggy-interview-questions-july-2020-july-2021
