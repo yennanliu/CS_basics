@@ -125,7 +125,7 @@
 <br>
 
 # Progress 
-## Data Structure basic
+## Data Structure
 |  #  | Title | Solution | Use case | Comment | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Queue| [Python ](./data_structure/python/queue2.py), [JS](./data_structure/js/queue.js) | | | AGAIN*|
@@ -142,7 +142,7 @@
 ||DirectedEdge|  [Java](./data_structure/java/DirectedEdge.java) | | | AGAIN|
 
 
-## Algorithm basic
+## Algorithm
 |  #  | Title | Solution | Use case | Comment | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Binary search|[Python](./algorithm/python/binary_search.py) | | | AGAIN| 
@@ -157,7 +157,7 @@
 ||Merge sort|[Python](./algorithm/python/merge_sort.py), [JS](./algorithm/js/merge_sort.js), [Java](./algorithm/java/MergeSort.java), [SQL](./algorithm/sql/Mergesort.sql) | | | OK* (2)| 
 ||Pancake sort| [Python](./algorithm/python/pancake_sort.py) | | | AGAIN| 
 ||Selection sort| [Python](./algorithm/python/selection_sort.py), [JS](./algorithm/js/selection_sort.js) | | | AGAIN| 
-||Topological sort| [Python](./algorithm/python/topological_sort.py) | | `Redraw` `DAG` so all edges point upwards (DAG : directed acyclic graph) | AGAIN| 
+||Topological sort| [Python](./algorithm/python/topological_sort.py) | | Topological Sort is a algorithm can find "ordering" on an "order dependency" graph | AGAIN| 
 ||md5 | [Python](./algorithm/python/md5.py) | | | AGAIN| 
 ||Union Find | [union_find.py](./algorithm/python/union_find.py), [union_find_if_cyclic.py](./algorithm/python/union_find_if_cyclic.py), [UnionFind.java](./leetcode_java/src/main/java/AlgorithmJava/UnionFind.java) | | | AGAIN| 
 ||Dynamic programming|[JS demo 1](./algorithm/js/dp_demo_1.js), [fibonacci_dp JS](./algorithm/js/fibonacci_dp.js) | | | AGAIN|

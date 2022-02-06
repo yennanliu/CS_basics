@@ -7,14 +7,46 @@
 # https://blog.techbridge.cc/2020/05/10/leetcode-topological-sort/
 # https://alrightchiu.github.io/SecondRound/graph-li-yong-dfsxun-zhao-dagde-topological-sorttuo-pu-pai-xu.html
 
-
 # V0
 # IDEA : implement topologicalSortUtil, topologicalSort, and addEdge methods
 # step 1) maintain a stack, save "ordering" nodes in it (and return in final step)
 # step 2) init visited as [False]*self.V  (all nodes are NOT visited yet)
 # step 3) iterate over all vertices in graph, if not visited, then run topologicalSortUtil
 # step 4) return result (stack)
-from collections import defaultdic t 
+from collections import defaultdict
+class Graph:
+    def __init__(self, vertices):
+        self.graph = defaultdict(list)
+        self.V = vertices
+
+    # for build graph
+    def addEdge(self, u, v):
+        self.graph[u].append(v)
+
+    def topologicalSortUtil(self, v, visited, stack):
+        visited[v] = True
+
+        ### NOTE this !!! (self.graph[v])
+        for k in self.graph[v]:
+            if visited[k] == False:
+                self.topologicalSortUtil(k, visited, stack)
+        # stack.insert(0,v) # instead of insert v to idx = 0, we can still append v to stack and reverse it and return (e.g. return stack[::-1])
+        stack.append(v)
+
+    def topologicalSort(self):
+        visited = [False] * self.V
+        stack = []
+        ### NOTE this !!! (range(self.V))
+        for v in range(self.V):
+            # call tologicalSortUtil only if visited[v] == False (the vertice is not visited yet)
+            if visited[v] == False:
+                self.topologicalSortUtil(v, visited, stack)
+        # return the result in inverse order
+        return stack[::-1]
+
+# V0'
+# IDEA : implement topologicalSortUtil, topologicalSort, and addEdge methods
+from collections import defaultdict 
 class Graph: 
     def __init__(self,vertices): 
         self.graph = defaultdict(list) 
