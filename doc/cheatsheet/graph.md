@@ -28,6 +28,7 @@
         - Union Find
 
 - Data structure
+    - defaultdict
     - TreeNode
     - array
     - string

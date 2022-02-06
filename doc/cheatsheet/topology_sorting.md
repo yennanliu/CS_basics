@@ -130,6 +130,74 @@ class Solution:
 ### 2-2) Course Schedule II
 ```python
 # LC 210 Course Schedule II
+
+# V0
+# IDEA : DFS + topological sort
+# SAME dfs logic as LC 207 (Course Schedule)
+import collections
+class Solution:
+    def findOrder(self, numCourses, prerequisites):
+        # build graph
+        _graph = collections.defaultdict(list)
+        for i in range(len(prerequisites)):
+            _graph[prerequisites[i][0]].append(prerequisites[i][1])
+
+        visited = [0] * numCourses
+        res = []
+        for i in range(numCourses):
+            if not self.dfs(_graph, visited, i, res):
+                return []
+        print ("res = " + str(res))
+        return res
+
+    # 0 : unknown, 1 :visiting, 2 : visited    
+    def dfs(self, _graph, visited, i, res):
+        if visited[i] == 1:
+            return False
+        if visited[i] == 2:
+            return True
+        visited[i] = 1
+        for item in _graph[i]:
+            if not self.dfs(_graph, visited, item, res):
+                return False
+        visited[i] = 2
+        res.append(i)
+        return True
+
+# V0'
+# IDEA : DFS + topological sort
+# SAME dfs logic as LC 207 (Course Schedule)
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+        graph = collections.defaultdict(list)
+        for u, v in prerequisites:
+            graph[u].append(v)
+        # 0 = Unknown, 1 = visiting, 2 = visited
+        visited = [0] * numCourses
+        path = []
+        for i in range(numCourses):
+            ### NOTE : if not a valid "prerequisites", then will return NULL list
+            if not self.dfs(graph, visited, i, path):
+                return []
+        return path
+    
+    def dfs(self, graph, visited, i, path):
+        # 0 = Unknown, 1 = visiting, 2 = visited
+        if visited[i] == 1: return False
+        if visited[i] == 2: return True
+        visited[i] = 1
+        for j in graph[i]:
+            if not self.dfs(graph, visited, j, path):
+                ### NOTE : the quit condition
+                return False
+        visited[i] = 2
+        path.append(i)
+        return True
 ```
 
 ### 2-3) alien-dictionary

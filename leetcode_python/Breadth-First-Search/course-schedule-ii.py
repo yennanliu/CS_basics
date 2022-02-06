@@ -36,7 +36,40 @@ All the pairs [ai, bi] are distinct.
 
 """
 
-# V0 
+# V0
+# IDEA : DFS + topological sort
+# SAME dfs logic as LC 207 (Course Schedule)
+import collections
+class Solution:
+    def findOrder(self, numCourses, prerequisites):
+        # build graph
+        _graph = collections.defaultdict(list)
+        for i in range(len(prerequisites)):
+            _graph[prerequisites[i][0]].append(prerequisites[i][1])
+
+        visited = [0] * numCourses
+        res = []
+        for i in range(numCourses):
+            if not self.dfs(_graph, visited, i, res):
+                return []
+        print ("res = " + str(res))
+        return res
+
+    # 0 : unknown, 1 :visiting, 2 : visited    
+    def dfs(self, _graph, visited, i, res):
+        if visited[i] == 1:
+            return False
+        if visited[i] == 2:
+            return True
+        visited[i] = 1
+        for item in _graph[i]:
+            if not self.dfs(_graph, visited, item, res):
+                return False
+        visited[i] = 2
+        res.append(i)
+        return True
+
+# V0'
 # IDEA : DFS + topological sort
 # SAME dfs logic as LC 207 (Course Schedule)
 class Solution(object):
