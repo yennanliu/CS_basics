@@ -40,6 +40,25 @@ class Solution(object):
         return nums 
 
 # V0'
+# IDEA : 2 POINTERS
+class Solution(object):
+    def moveZeroes(self, nums):
+        # edge case
+        if not nums:
+            return
+        j = 0
+        for i in range(1, len(nums)):
+            # if nums[j] = 0, swap with nums[i]
+            if nums[j] == 0:
+                if nums[i] != 0:
+                    nums[j], nums[i] = nums[i], nums[j]
+                    j += 1
+            # if nums[j] != 0, then move j (j+=1) for searching next 0
+            else:
+                j += 1
+        return nums
+
+# V0''
 class Solution(object):
     def moveZeroes(self, nums):
         return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ] 
