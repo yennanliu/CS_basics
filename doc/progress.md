@@ -33,6 +33,10 @@
 			- 491
 			- 673
 		- SQL
+		- cheatsheet review
+			- (completed)
+			- (ing)
+				- 2_pointers.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
