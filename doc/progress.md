@@ -7,7 +7,7 @@
 			- (pdf : p.2)
 				- 269
 				- 257 (AGAIN!!!)
-				- 585
+				- 565
 	- ================
 		- LC (LC discuss sharing)
 			- https://leetcode.com/discuss/interview-question/1367526/apple-uber-flipkart-swiggy-interview-questions-july-2020-july-2021
@@ -37,8 +37,10 @@
 		- SQL
 		- cheatsheet review
 			- (completed)
-			- (ing)
+				- Collection.md
 				- 2_pointers.md
+			- (ing)
+				- array.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
