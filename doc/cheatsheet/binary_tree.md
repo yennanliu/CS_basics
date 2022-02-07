@@ -80,3 +80,50 @@ class Solution(object):
         root.right =  self.buildTree(inorder[idx+1:], postorder[idx:-1])
         return root
 ```
+
+
+### 2-3) Binary Tree Paths
+```python
+# LC 257 Binary Tree Paths
+
+# V0
+# IDEA : BFS
+class Solution:
+    def binaryTreePaths(self, root):
+        res = []
+        ### NOTE : we set q like this : [[root, cur]]
+        cur = ""
+        q = [[root, cur]]
+        while q:
+            for i in range(len(q)):
+                node, cur = q.pop(0)
+                ### NOTE : if node exist, but no sub tree (i.e. not root.left and not root.right)
+                #         -> append cur to result
+                if node:
+                    if not node.left and not node.right:
+                        res.append(cur + str(node.val))
+                ### NOTE : we keep cur to left sub tree
+                if node.left:
+                    q.append((node.left, cur + str(node.val) + '->'))
+                ### NOTE : we keep cur to left sub tree
+                if node.right:
+                    q.append((node.right, cur + str(node.val) + '->'))
+        return res
+
+# V0'
+# IDEA : DFS 
+class Solution:
+    def binaryTreePaths(self, root):
+        ans = []
+        def dfs(r, tmp):
+            if r.left:
+                dfs(r.left, tmp + [str(r.left.val)])
+            if r.right:
+                dfs(r.right, tmp + [str(r.right.val)])
+            if not r.left and not r.right:
+                ans.append('->'.join(tmp))
+        if not root:
+            return []
+        dfs(root, [str(root.val)])
+        return ans
+```
