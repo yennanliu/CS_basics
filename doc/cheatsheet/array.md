@@ -1,4 +1,5 @@
-# Array 
+# Array
+> Basic linear data structure
 
 ## 0) Concept  
 
@@ -11,9 +12,9 @@
     - index op
     - array op
     - sorting
-    - dinary search
-    - 2 pointers
-    - sliding window
+    - [binary search](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_search.md)
+    - [2 pointers](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md)
+    - [sliding window](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
 
 - Data structure
     - dict
@@ -43,6 +44,7 @@
 # Pattern :
 # V1
 _array.sort(key = lambda x : <your_sorting_func>)
+
 # V2
 sorted(_array, key = lambda x : <your_sorting_func>)
 
@@ -255,6 +257,8 @@ for i in range(len(s)):
 # LC 670
 # V0'
 # IDEA : BRUTE FORCE
+# NOTE : there is also 2 pointers solution : 
+#        -> https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/maximum-swap.py#L49
 # NOTE : ans = A[:]
 #        A[:] is a `shallow copy` syntax in python,
 #        it will copy "parent obj" (not child obj) to the other instance
@@ -280,17 +284,22 @@ class Solution(object):
 # 1) init matrix 
 # LC 73
 ### NOTE : 
-# -> for cases matrix[i][j]:
+# -> for matrix[i][j]:
 #    -> y is FIRST element  (i)
 #    -> x is SECOND element (j)
+```
 
-# 2) avg value of matrix
+```python
+# 2) get avg value of matrix
 # LC 661
 # some code
 # M : matrix
 row, col = len(M), len(M[0])
 res = [[0]*col for i in range(row)]
+# get tmp sum
+dirs = [[0,0],[0,1],[0,-1],[1,0],[-1,0],[1,1],[-1,-1],[-1,1],[1,-1]]
 temp = [M[i+m][j+n] for m,n in dirs if 0<=i+m<row and 0<=j+n<col]
+# get avg value
 res[i][j] = sum(temp)//len(temp)
 # some code
 ```
@@ -299,14 +308,21 @@ res[i][j] = sum(temp)//len(temp)
 ```python
 # Transpose matrix
 # LC  048 Rotate Image
-def rotate(matrix):
-    n = len(matrix)
-    for i in range(n):
-        for j in range(i+1, n):
-            matrix[i][j], matrix[j][i] = \
-            matrix[j][i], matrix[i][j]
+# V0
+# IDEA : TRANSPOSE -> REVERSE 
+class Solution:
+    def rotate(self, matrix):
+        ### NOTE : TRANSPOSE matrix
+        n = len(matrix)
+        # transpose
+        for i in range(n):
+             for j in range(i+1, n):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+        # reverse
+        for i in range(n):
+            matrix[i].reverse()
+        return matrix
 
-    return matrix
 
 # Spiral matrix
 # LC 054 Spiral Matrix
