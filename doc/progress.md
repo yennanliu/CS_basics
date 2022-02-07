@@ -40,8 +40,9 @@
 			- (completed)
 				- Collection.md
 				- 2_pointers.md
-			- (ing)
 				- array.md
+			- (ing)
+				- hash_map.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
