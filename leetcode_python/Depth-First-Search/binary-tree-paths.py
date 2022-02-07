@@ -27,29 +27,88 @@ The number of nodes in the tree is in the range [1, 100].
 
 """
 
-# V0 
-# IDEA : DFS 
+# V0
+# IDEA : BFS
 class Solution:
-    # @param {TreeNode} root
-    # @return {string[]}
     def binaryTreePaths(self, root):
-        res, path_list = [], []
-        self.dfs(root, path_list, res)
+        res = []
+        ### NOTE : we set q like this : [[root, cur]]
+        cur = ""
+        q = [[root, cur]]
+        while q:
+            for i in range(len(q)):
+                node, cur = q.pop(0)
+                ### NOTE : if node exist, but no sub tree (i.e. not root.left and not root.right)
+                #         -> append cur to result
+                if node:
+                    if not node.left and not node.right:
+                        res.append(cur + str(node.val))
+                ### NOTE : we keep cur to left sub tree
+                if node.left:
+                    q.append((node.left, cur + str(node.val) + '->'))
+                ### NOTE : we keep cur to left sub tree
+                if node.right:
+                    q.append((node.right, cur + str(node.val) + '->'))
         return res
 
-    def dfs(self, root, path_list, res):
+# V0'
+# IDEA : DFS 
+class Solution:
+    def binaryTreePaths(self, root):
+        ans = []
+        def dfs(r, tmp):
+            if r.left:
+                dfs(r.left, tmp + [str(r.left.val)])
+            if r.right:
+                dfs(r.right, tmp + [str(r.right.val)])
+            if not r.left and not r.right:
+                ans.append('->'.join(tmp))
         if not root:
-            return
-        path_list.append(str(root.val))
-        if not root.left and not root.right:
-            res.append('->'.join(path_list))
-        if root.left:
-            self.dfs(root.left, path_list, res)
-        if root.right:
-            self.dfs(root.right, path_list, res)
-        path_list.pop()
-        
-# V1 
+            return []
+        dfs(root, [str(root.val)])
+        return ans
+
+# V1
+# IDEA : DFS
+# https://leetcode.com/problems/binary-tree-paths/discuss/68335/Python-DFS
+class Solution:
+    def binaryTreePaths(self, root):
+        ans = []
+        def dfs(r, tmp):
+            if r.left:
+                dfs(r.left, tmp + [str(r.left.val)])
+            if r.right:
+                dfs(r.right, tmp + [str(r.right.val)])
+            if not r.left and not r.right:
+                ans.append('->'.join(tmp))
+        if not root:
+            return []
+        dfs(root, [str(root.val)])
+        return ans
+
+# V1'
+# IDEA : DFS
+# https://leetcode.com/problems/binary-tree-paths/discuss/237550/Python-solution
+class Solution:
+    def binaryTreePaths(self, root):
+        def dfs(root):
+            if not root:
+                return
+            if not root.left and not root.right:
+                tmp.append(str(root.val))
+                res.append("->".join(tmp))
+                tmp.pop()
+                return
+            tmp.append(str(root.val))
+            dfs(root.left)
+            dfs(root.right)
+            tmp.pop()
+        tmp = []
+        res = []
+        dfs(root)
+        return res
+
+# V1''
 # https://blog.csdn.net/coder_orz/article/details/51706119
 # DEMO
 # In [14]: x
@@ -84,7 +143,7 @@ class Solution:
             self.dfs(root.right, path_list, res)
         path_list.pop()
 
-# V1' 
+# V1'''
 # https://blog.csdn.net/coder_orz/article/details/51706119
 class Solution:
     # @param {TreeNode} root
@@ -102,9 +161,9 @@ class Solution:
             res.append(str(root.val) + '->' + path)
         return res
 
-# V1'' 
+# V1'''''
 # https://blog.csdn.net/coder_orz/article/details/51706119
-# IDEA : DFS (RECURSION)
+# IDEA : BFS (RECURSION)
 class Solution:
     # @param {TreeNode} root
     # @return {string[]}
@@ -119,7 +178,7 @@ class Solution:
                 stack.append((node.right, curs + str(node.val) + '->'))
         return res
 
-# V1'''
+# V1'''''''
 # https://blog.csdn.net/coder_orz/article/details/51706119
 # IDEA : BFS 
 class Solution:
@@ -136,7 +195,7 @@ class Solution:
                 queue.insert(0, (node.right, curs + str(node.val) + '->'))
         return res
 
-# V1''''''    
+# V1'''''''''  
 # https://www.jiuzhang.com/solution/binary-tree-paths/#tag-highlight-lang-python
 class Solution:
     """

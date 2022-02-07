@@ -96,6 +96,24 @@ def bfs(root):
 
 ### 1-1) Basic OP
 
+#### 1-1) Maintain cache along binary tree path
+```python
+# LC 257 Binary Tree Paths
+cur = ""
+q = [[cur, root]]
+res = []
+while q:
+    for i in range(len(q)):
+        cur, tmp = q.pop(0)
+        if tmp:
+            if not tmp.left and not tmp.right:
+                res.append(cur + str(tmp.val))
+        if tmp.left:
+            q.append([cur + str(tmp.val) + "->", tmp.left])
+        if root.right:
+            q.append([cur + str(tmp.val) + "->", tmp.right])
+```
+
 ## 2) LC Example
 
 ### 2-1) Binary Tree Level Order Traversal
