@@ -258,7 +258,25 @@ class Solution(object):
             if nums[x] != 0:
                 nums[x], nums[y] = nums[y], nums[x]
                 y += 1
-        return nums 
+        return nums
+
+# V0'
+class Solution(object):
+    def moveZeroes(self, nums):
+        # edge case
+        if not nums:
+            return
+        j = 0
+        for i in range(1, len(nums)):
+            # if nums[j] = 0, swap with nums[i]
+            if nums[j] == 0:
+                if nums[i] != 0:
+                    nums[j], nums[i] = nums[i], nums[j]
+                    j += 1
+            # if nums[j] != 0, then move j (j+=1) for searching next 0
+            else:
+                j += 1
+        return nums
 ```
 
 ```python
@@ -267,7 +285,7 @@ class Solution(object):
 # IDEA : 2 POINTERS
 #### NOTE : THE nums already ordering
 class Solution:
-    def removeDuplicates(self, nums: List[int]) -> int:
+    def removeDuplicates(self, nums):
         if len(nums) < 3:
             return len(nums)
 
@@ -461,5 +479,4 @@ class Solution(object):
                 if s[i:j] == s[i:j][::-1]:
                     count += 1
         return count
-
 ```

@@ -16,12 +16,13 @@
 		- =======
 		- bit manipulation
 			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
+		- 2 pointers
+			- 080
 		- union find
 			- 721
 			- 547
 		- design
 			- all remain (not start)
-		- greedy
 		- hashmap
 			- 036 (not start)
 		- graph
