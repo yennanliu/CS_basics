@@ -369,7 +369,7 @@ class Solution:
  
 ## 2) LC Example
 
-### 2-3) Queue Reconstruction by Height
+### 2-1) Queue Reconstruction by Height
 ```python
 # LC 406 Queue Reconstruction by Height
 class Solution(object):
@@ -388,7 +388,7 @@ class Solution(object):
         return res
 ```
 
-### 2-4) Product of Array Except Self
+### 2-2) Product of Array Except Self
 ```python
 # 238 Product of Array Except Self
 # IDEA : 
@@ -418,7 +418,7 @@ class Solution:
         return output
 ```
 
-### 2-5) Maximum Swap
+### 2-3) Maximum Swap
 ```python
 # 670 Maximum Swap
 class Solution(object):
@@ -443,7 +443,7 @@ class Solution(object):
         return int("".join(digits))
 ```
 
-### 2-6) Set Matrix Zeroes
+### 2-4) Set Matrix Zeroes
 ```python
 # LC 73. Set Matrix Zeroes
 # V0
@@ -476,7 +476,7 @@ class Solution(object):
         return matrix
 ```
 
-### 2-7) Image Smoother
+### 2-5) Image Smoother
 ```python
 # LC 661 Image Smoother
 class Solution:
@@ -494,7 +494,7 @@ class Solution:
         return res
 ```
 
-### 2-8) Search a 2D Matrix
+### 2-6) Search a 2D Matrix
 ```python
 # LC 74 Search a 2D Matrix
 # LC 240. Search a 2D Matrix II
@@ -524,7 +524,7 @@ class Solution(object):
         return True in res
 ```
 
-### 2-9) Best Time to Buy and Sell Stock
+### 2-7) Best Time to Buy and Sell Stock
 ```python
 # LC 121 Best Time to Buy and Sell Stock
 # V0
