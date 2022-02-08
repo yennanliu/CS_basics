@@ -20,6 +20,9 @@
 			- 080
 		- array
 			- 054
+		- bfs
+			- 127
+			- 133
 		- greedy
 			- 767
 		- union find
@@ -33,6 +36,8 @@
 			- 547 (not start)
 			- 210 (not start)
 			- 323 (not start)
+			- 207
+			- 210
 		- sliding window
 			- 300
 			- 491
@@ -56,8 +61,9 @@
 				- queue.md
 				- stack.md
 				- greedy.md
-			- (ing)
 				- bfs.md
+			- (ing)
+				- dfs.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
