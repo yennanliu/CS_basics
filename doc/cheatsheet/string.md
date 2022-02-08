@@ -11,8 +11,9 @@
 ## 1) General form
 
 ### 1-1) Basic OP
+
 #### 1-1) String plus
-#### 1-2)String bit op
+#### 1-2) String bit op
 #### 1-3) String Multiplication
 #### 1-4) loop over string
 #### 1-6) inverse loop over string
