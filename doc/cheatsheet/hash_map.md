@@ -256,7 +256,7 @@ my_array_pre[3+1] - my_array_pre[1] # 2's index is 1, and 4's index is 3. (my_ar
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_525_1.png" ></p>
 
 ```python
-
+# 525 Contiguous Array
 # V0
 # IDEA : HashMap
 #     -> SET UP A DICT,
@@ -290,7 +290,6 @@ class Solution(object):
         return res
 
 # V0'
-# 525 Contiguous Array
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/contiguous-array.py
 # explanation : https://leetcode.com/problems/contiguous-array/discuss/99655/python-on-solution-with-visual-explanation
 # HASH MAP FIND EQUAL 0, 1
