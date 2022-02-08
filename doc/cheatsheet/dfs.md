@@ -4,6 +4,7 @@
 - To check if some value exists
 - Inorder, preorder, postorder (can recreate a tree)
 - not most efficient (VS bfs), but can handle some specific problems
+- Ref
 
 ## 0) Concept
 
@@ -99,9 +100,7 @@ def dfs(root, value):
 # form IV : check if duplicated nodes in tree
 # LC 652
 # python
-
 m = collections.defaultdict(int)
-
 # m is collection for record visited nodes
 def dfs(root, m, res):
     if not root:
@@ -732,6 +731,3 @@ class Solution(object):
         if root.right:
             self.dfs(root.right, target, res, path + [root.right.val])
 ```
-
-### Ref
-- https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E6%93%8D%E4%BD%9C%E9%9B%86%E9%94%A6.md
