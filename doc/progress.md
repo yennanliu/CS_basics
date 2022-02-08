@@ -41,6 +41,7 @@
 			- 394
 			- 496
 			- 503
+			- 227
 		- SQL
 		- cheatsheet review
 			- (completed)
@@ -51,8 +52,9 @@
 				- string.md
 				- n_sum.md
 				- queue.md
+				- stack.md
 			- (ing)
-				- tack.md
+				- greedy.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
