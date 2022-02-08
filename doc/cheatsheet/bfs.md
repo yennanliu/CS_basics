@@ -1,7 +1,8 @@
 # BFS
+- search algorithm
 - Shortest path searching
 - Breadth first, then deep
-- Usually choice data structure such as *queue*, *array*
+- Usually use data structure such as `queue, array`
 
 ## 0) Concept  
 
@@ -27,8 +28,13 @@
 import colllections 
 queue = colllections.deque()
 queue.append(root)
+"""
+NOTE THIS : (while len(queue) > 0)
+"""
 while len(queue) > 0:
-    ### NOTE THIS : `range(len(queue))`
+    """
+    NOTE THIS : (range(len(queue)))
+    """
     for i in range(len(queue)):
         node = queue.popleft()
         # op

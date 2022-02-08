@@ -1,7 +1,8 @@
 # DFS 
+- search algorithm
+- Deep first, then breadth
 - To check if some value exists
 - Inorder, preorder, postorder (can recreate a tree)
-- Deep first, then breadth
 - not most efficient (VS bfs), but can handle some specific problems
 
 ## 0) Concept
