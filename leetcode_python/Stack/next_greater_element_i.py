@@ -60,7 +60,7 @@ class Solution(object):
                 # case 2) found "next greater element" in nums2, keep inverse looping
                 elif nums2[j] > nums1[i]:
                     tmp.append(nums2[j])
-                # case 2) already reach same element in nums2 (as nums1), pop "last" "next greater element", paste to res, break the loop
+                # case 3) already reach same element in nums2 (as nums1), pop "last" "next greater element", paste to res, break the loop
                 elif tmp and nums2[j] == nums1[i]:
                     _tmp = tmp.pop(-1)
                     res[i] = _tmp

@@ -37,6 +37,10 @@
 			- 673
 		- linked list
 			- 445
+		- stack
+			- 394
+			- 496
+			- 503
 		- SQL
 		- cheatsheet review
 			- (completed)
