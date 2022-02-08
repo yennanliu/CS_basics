@@ -1,5 +1,5 @@
 # Greedy 
-> Greedy is the sub-class of DP (dynamic programming)
+> Greedy is sub-class of DP (dynamic programming)
 - Brute force --optimize-->  DP -> --optimize--> Greedy
 - Most of the problems don't have greedy property
 
@@ -7,12 +7,17 @@
 
 ### 0-1) Types
 - Interval scheduling
+    - LC 621
 - Non-overlapping Intervals
     - intervals.sort(key = lambda x : x[0])
+    - [intervals.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/intervals.md)
 - Max length
     - Max length of pair chain
         - sorted(pairs, key=lambda x : x[1])
+        - LC 646
+        - [intervals.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/intervals.md)
 - Sell-buy stock
+    - LC 122
 
 ### 0-2) Pattern
 ```python
@@ -57,52 +62,6 @@ public int intervalSchedule(int[][] intvs) {
 
 ## 2) LC Example
 
-### 2-1) Maximum Length of Pair Chain
-```python
-# LC 646 Maximum Length of Pair Chain
-# V0 
-# IDEA : GREEDY + sorting
-# ->  we sort on pair's "2nd" element -> possible cases that we can get sub pairs with max length with the needed conditions
-# ->  we need to find the "max length" of "continous or non-continous" sub pairs (with condition)
-#      -> so start from the "sorted 1st pair" CAN ALWAYS MAKE US GET THE MAX LENGTH of sub pairs with the condition ( we define a pair (c, d) can follow another pair (a, b) if and only if b < c. Chain of pairs can be formed in this fashion.)
-##########
-# DEMO
-#     ...: 
-#     ...: x = [[-10,-8],[8,9],[-5,0],[6,10],[-6,-4],[1,7],[9,10],[-4,7]]
-#     ...: s = Solution()
-#     ...: r = s.findLongestChain(x)
-#     ...: print (r)
-# pairs = [[-10, -8], [-6, -4], [-5, 0], [1, 7], [-4, 7], [8, 9], [6, 10], [9, 10]]
-# x = -10 y = -8
-#  currTime = -8 ans = 1
-# x = -6 y = -4
-#  currTime = -4 ans = 2
-# x = -5 y = 0
-#  currTime = -4 ans = 2
-# x = 1 y = 7
-#  currTime = 7 ans = 3
-# x = -4 y = 7
-#  currTime = 7 ans = 3
-# x = 8 y = 9
-#  currTime = 9 ans = 4
-# x = 6 y = 10
-#  currTime = 9 ans = 4
-# x = 9 y = 10
-#  currTime = 9 ans = 4
-# 4
-class Solution(object):
-    def findLongestChain(self, pairs):
-        pairs = sorted(pairs, key=lambda x : x[1])
-        ### NOTICE HERE
-        currTime, ans = float('-inf'), 0
-        for x, y in pairs:
-            ### NOTICE HERE
-            if currTime < x:
-                currTime = y
-                ans += 1
-        return ans
-```
-
 ### 2-2) Jump Game
 ```python
 # 055 Jump Game
@@ -119,6 +78,7 @@ class Solution(object):
             cur = max(cur, i + nums[i])
         return True
 ```
+
 ### 2-3) Best Time to Buy and Sell Stock II
 ```python
 # 122 Best Time to Buy and Sell Stock II
@@ -151,25 +111,6 @@ class Solution(object):
                 remain = 0
                 start = i + 1
         return -1 if total < 0 else start
-```
-
-### 2-5) Non-overlapping Intervals
-```python
-# 435 Non-overlapping Intervals
-class Solution(object):
-    def eraseOverlapIntervals(self, intervals):
-        if not intervals: return 0
-        intervals.sort(key = lambda x : x[0])
-        last = 0
-        res = 0
-        for i in range(1, len(intervals)):
-            if intervals[last][1] > intervals[i][0]:
-                if intervals[i][1] < intervals[last][1]:
-                    last = i
-                res += 1
-            else:
-                last = i
-        return res
 ```
 
 ### 2-6) Reorganize String

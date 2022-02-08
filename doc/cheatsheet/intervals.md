@@ -15,6 +15,7 @@
     - Non-overlap intervals
         - LC 435
     - Max length of pair chain
+        - LC 646
     - Courses problems
         - LC 207, 210
     - Meeting room problems
@@ -199,24 +200,22 @@ class Solution:
 ### 2-4) Maximum Length of Pair Chain
 ```python
 # LC 646 Maximum Length of Pair Chain
-# V0
-# IDEA : GREEDY + sorting + 2 pointers
-# IDEA :
-# -> SORT ON "1st element" (0 index)
-# -> define i pointer, cnt
-# -> loop over pairts
-# -> if j == 0 or pairs[j][0] > pairs[i][1]
-#    -> make i = j, and cnt += 1
+# V0 
+# IDEA : GREEDY + sorting
+# ->  we sort on pair's "2nd" element -> possible cases that we can get sub pairs with max length with the needed conditions
+# ->  we need to find the "max length" of "continous or non-continous" sub pairs (with condition)
+#      -> so start from the "sorted 1st pair" CAN ALWAYS MAKE US GET THE MAX LENGTH of sub pairs with the condition ( we define a pair (c, d) can follow another pair (a, b) if and only if b < c. Chain of pairs can be formed in this fashion.)
 class Solution(object):
     def findLongestChain(self, pairs):
-        pairs.sort(key=lambda x: x[1])
-        cnt = 0
-        i = 0
-        for j in range(len(pairs)):
-            if j == 0 or pairs[j][0] > pairs[i][1]:
-                i = j
-                cnt += 1
-        return cnt
+        pairs = sorted(pairs, key=lambda x : x[1])
+        ### NOTICE HERE
+        currTime, ans = float('-inf'), 0
+        for x, y in pairs:
+            ### NOTICE HERE
+            if currTime < x:
+                currTime = y
+                ans += 1
+        return ans
 
 # V0'
 class Solution(object):

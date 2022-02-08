@@ -20,6 +20,8 @@
 			- 080
 		- array
 			- 054
+		- greedy
+			- 767
 		- union find
 			- 721
 			- 547
@@ -53,8 +55,9 @@
 				- n_sum.md
 				- queue.md
 				- stack.md
-			- (ing)
 				- greedy.md
+			- (ing)
+				- bfs.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
