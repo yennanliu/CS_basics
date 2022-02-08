@@ -45,8 +45,10 @@
 				- array.md
 				- hash_map.md
 				- string.md
-			- (ing)
 				- n_sum.md
+				- queue.md
+			- (ing)
+				- tack.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
