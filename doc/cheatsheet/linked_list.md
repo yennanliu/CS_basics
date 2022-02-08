@@ -556,6 +556,51 @@ class Solution(object):
         return head.next
 ```
 
+```python
+# LC 445 Add Two Numbers II
+# V0
+# IDEA : string + linked list
+# DEMO
+# input :
+# [7,2,4,3]
+# [5,6,4]
+# intermedia output : 
+# l1_num = 7243
+# l2_num = 564
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        if not l1 and not l2:
+            return None
+
+        l1_num = 0
+        while l1:
+            l1_num = l1_num * 10 + l1.val
+            l1 = l1.next
+
+        l2_num = 0
+        while l2:
+            l2_num = l2_num * 10 + l2.val
+            l2 = l2.next
+
+        print ("l1_num = " + str(l1_num))
+        print ("l2_num = " + str(l2_num))
+
+
+        ### NOTE : trick here :
+        #    -> get int format of 2 linked list first (l1, l2)
+        #    -> then sum them (l1_num + l2_num)
+        lsum = l1_num + l2_num
+
+        head = ListNode(None)
+        cur = head
+        ### NOTE : go thrpigh the linked list int sum, append each digit to ListNode and return it
+        for istr in str(lsum):
+            cur.next = ListNode(int(istr))
+            cur = cur.next
+        # NOTE : need to return head (but not cur, since cur already meet the end of ListNode)
+        return head.next
+```
+
 #### 1-1-12) Find linked list middle point
 ```java
 // algorithm book p. 286

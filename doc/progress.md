@@ -35,6 +35,8 @@
 			- 300
 			- 491
 			- 673
+		- linked list
+			- 445
 		- SQL
 		- cheatsheet review
 			- (completed)
