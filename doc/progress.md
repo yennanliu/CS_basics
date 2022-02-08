@@ -23,6 +23,8 @@
 		- bfs
 			- 127
 			- 133
+		- dfs
+			- 652
 		- greedy
 			- 767
 		- union find
