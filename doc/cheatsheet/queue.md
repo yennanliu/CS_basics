@@ -3,7 +3,7 @@
 ## 0) Concept  
 - A ordering linear data structure
 - can be implemented by `array` or `linkedlist`
-- first in first out
+- first in first out (FIFO)
 
 ### 0-1) Types
 - Queue
@@ -123,6 +123,8 @@ class MonotonicQueue{
 ### 1-2) Queue
 
 ### 1-3) Double-ended Queue
+> deque
+
 ```python
 # https://pymotw.com/2/collections/deque.html
 """
