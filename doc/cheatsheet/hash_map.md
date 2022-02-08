@@ -12,6 +12,9 @@
     - LC 1010 : Pairs of Songs With Total Durations Divisible by 60
 - Sub array sum
     - LC 560 : Subarray Sum Equals K
+- Any problems with below:
+    - need to cache
+    - avoid double loop
 
 ### 0-2) Pattern
 
@@ -42,12 +45,21 @@
 
 ### 1-1) Basic OP
 
-- get value from dict with default value if key not existed
+- `get` : get value from dict with default value if key not existed
 ```python
-d = {'a': 1, 'b': 2}
-d['a']
-d.get('a')
-d.get('c', 0)
+In [10]: d = {'a': 1, 'b': 2}
+    ...: d['a']
+Out[10]: 1
+
+In [11]: d.get('a')
+Out[11]: 1
+
+In [12]: d.get('c', 0)
+Out[12]: 0
+
+In [13]: d.get('z')
+
+In [14]:
 ```
 
 - `setdefault()`
@@ -63,12 +75,14 @@ car = {
 #-----------------------------------------------------------------------------
 # setdefault : will make key in dict if such key not existed yet (with value as well if defined)
 #-----------------------------------------------------------------------------
-# insert key "my_key", since my_key not existed, -> make it as new key and value as None (since not defined)
+
+# example 1) insert key "my_key", since my_key not existed, -> make it as new key and value as None (since not defined)
 car.setdefault("my_key")
 print (car)
 # In [18]: car
 # Out[18]: {'brand': 'Ford', 'model': 'Mustang', 'year': 1964, 'my_key': None}
-# insert key "color", since my_key not existed, -> make it as new key and value as white
+
+# example 2) insert key "color", since my_key not existed, -> make it as new key and value as white
 car.setdefault("color", "white")
 print (car)
 # Out[22]:
@@ -87,12 +101,15 @@ x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
 In [11]: x.items()
 Out[11]: dict_items([(1, 2), (3, 4), (4, 3), (2, 1), (0, 0)])
 
+#----------------------------------
+# Sort hashMap by key/value !!!
+#----------------------------------
 x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
 # note : have to use sorted(xxx, key=yyy), instead of xxx.sorted(....)
+### NOTE this !!! : x.items()
 sorted_x = sorted(x.items(), key=lambda kv: kv[1])
 print (sorted_x)
 # [(0, 0), (2, 1), (1, 2), (4, 3), (3, 4)]
-
 
 x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
 sorted_x = sorted(x.items(), key=lambda kv: kv[0])
@@ -105,6 +122,7 @@ class Solution(object):
     def frequencySort(self, s):
         count = collections.Counter(s)
         count_dict = dict(count)
+        ### NOTE this !!! : count_dict.items()
         count_tuple_sorted = sorted(count_dict.items(), key=lambda kv : -kv[1])
         res = ''
         for item in count_tuple_sorted:
