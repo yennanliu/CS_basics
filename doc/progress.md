@@ -63,6 +63,8 @@
 			- p.363 -
 	- system design book - an insider's guide (GOTOP)
 		- 1st read (ok)
+		- 2nd read : note
+			- p.1 - p.35
 		- review/note
 
 # 2022-02-08

@@ -42,11 +42,20 @@
 - system design book (GOTOP) P.18
 
 ### 8) What's cache ?
+- system design book (GOTOP) P.11
 
 ### 9) What's DC (data center) ?
+- system design book (GOTOP) P.21
 
 ### 10) What's message queue ?
+- system design book (GOTOP) P.23
 
 ### 11) examples on metric, logging, automation ? what to track ? why ?
+- system design book (GOTOP) P.25
+- Metrics
+	- server (machine) level metric : CPU, memory, disk IO..
+	- integrated level metric : all DB layer, cache layer ...
+	- business metric : DAU, retention, income (e.g. GMV) ...
 
 ### 12) DB scaling out strategy ?
+- system design book (GOTOP) P.27
