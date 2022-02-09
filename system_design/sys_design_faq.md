@@ -9,7 +9,6 @@
 	- need to storage large scale data
 - when SQL ?
 
-
 ### 2) Vertical VS horizontal scale ?
 - system design book (GOTOP) P.5
 - Vertical scale
@@ -28,4 +27,26 @@
 ### 3) What's is Load balancer (LB) ? how to use it in distributed system ?
 - system design book (GOTOP) P.6
 
-### 4)
+### 4) DB read-write strategy
+- system design book (GOTOP) P.7
+- Master-slave mode
+- Master-master mode
+
+### 5) What's CDN (content delivery network) ?
+- system design book (GOTOP) P.11, p.14
+
+### 6) What's cache ?
+- system design book (GOTOP) P.11
+
+### 7) What's `stateful / stateless` server ?
+- system design book (GOTOP) P.18
+
+### 8) What's cache ?
+
+### 9) What's DC (data center) ?
+
+### 10) What's message queue ?
+
+### 11) examples on metric, logging, automation ? what to track ? why ?
+
+### 12) DB scaling out strategy ?
