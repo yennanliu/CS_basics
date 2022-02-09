@@ -242,3 +242,25 @@ class Solution(object):
 ```python
 # LC 547 Friend Circles
 ```
+
+### 2-6) Array Nesting
+```python
+# LC 565. Array Nesting
+# V0
+# IDEA : UNION FIND
+class Solution(object):
+    def arrayNesting(self, nums):
+        def search(idx):
+            cnt = 0
+            while nums[idx] >= 0:
+                cnt += 1
+                next = nums[idx]
+                nums[idx] = -1
+                idx = next
+            return cnt
+        ans = 0
+        for x in range(len(nums)):
+            if nums[x] >= 0:
+                ans = max(ans, search(x))
+        return ans
+```
