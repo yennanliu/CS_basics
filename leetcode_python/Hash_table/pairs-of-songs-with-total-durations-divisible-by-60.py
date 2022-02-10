@@ -47,6 +47,7 @@ class Solution(object):
                 NOTE : this trick
                 -> we append "all 60 duration combinations count" via the existing times of element "(60 - t) % 60" 
                 """
+                ### NOTE this : (60 - t) % 60
                 pairs += rem[(60 - t) % 60]
             if t not in rem:
                 rem[t] = 1
