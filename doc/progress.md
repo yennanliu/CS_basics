@@ -55,6 +55,7 @@
 		- Review
 			- 670
 			- 406
+			- 1010
 		- SQL
 		- cheatsheet review
 			- (completed)
