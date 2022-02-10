@@ -48,19 +48,16 @@ Constraints:
 # Out[36]: ['1', '2', '3', '4']
 class Solution(object):
     def maximumSwap(self, num):
-        """
-        :type num: int
-        :rtype: int
-        """
         # BE AWARE OF IT 
         digits = list(str(num))
         left, right = 0, 0
+        ### NOTE !!! we set max_idx = len(digits)-1
         max_idx = len(digits)-1
         for i in range(len(digits))[::-1]:
-            # BE AWARE OF IT 
+            ### NOTE !!!
             if digits[i] > digits[max_idx]:
                 max_idx = i
-            # BE AWARE OF IT  
+            ### NOTE !!!
             # if current digit > current max digit -> swap them 
             elif digits[max_idx] > digits[i]:
                 left, right = i, max_idx        # if current max digit > current digit -> save current max digit to right idnex, and save current index to left
