@@ -4,8 +4,7 @@
 - DOING:
 	- LC (appl_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Apple%20-%20LeetCode.pdf
-			- (pdf : p.2)
-				- 269
+			- OK
 				- 565 (ok, but again!!)
 	- ================
 		- LC (LC discuss sharing)
@@ -51,6 +50,8 @@
 			- 496
 			- 503
 			- 227
+		- topology sorting
+			- 269
 		- SQL
 		- cheatsheet review
 			- (completed)
