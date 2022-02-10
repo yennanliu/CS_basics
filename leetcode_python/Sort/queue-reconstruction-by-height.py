@@ -39,7 +39,11 @@ It is guaranteed that the queue can be reconstructed.
 # V0 
 class Solution(object):
     def reconstructQueue(self, people):
+        ### NOTE : the sort logic :
+        #    -> sort on 1st element (idx=0)
+        #    -> then sort on 2nd element (idx = 1)
         people.sort(key = lambda x : (-x[0], x[1]))
+        ### NOTE : we make a new array for insert, and return as ans
         res = []
         for p in people:
         """
