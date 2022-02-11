@@ -227,7 +227,7 @@ class Solution(object):
 ```
 
 ```python
-# LC 26 : Remove Duplicates from Sorted Array
+# LC 026 : Remove Duplicates from Sorted Array
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-duplicates-from-sorted-array.py
 # V0
 # IDEA : 2 POINTERS: i, j
@@ -317,10 +317,20 @@ class Solution(object):
 ```
 
 ```python
-# LC 80 : Remove Duplicates from Sorted Array II
+# LC 080 : Remove Duplicates from Sorted Array II
 # V0
 # IDEA : 2 POINTERS
 #### NOTE : THE nums already ordering
+# DEMO
+# example 1
+# nums = [1,1,1,2,2,3]
+#           i j
+#           i   j
+#        [1,1,2,1,2,3]
+#             i   j
+#             i     j
+#        [1,1,2,2,1,3]
+#               i   j       
 class Solution:
     def removeDuplicates(self, nums):
         if len(nums) < 3:

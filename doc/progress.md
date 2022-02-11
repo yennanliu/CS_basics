@@ -55,6 +55,7 @@
 			- 525
 			- 523
 			- 026
+			- 080 (AGAIN!!)
 		- SQL
 		- cheatsheet review
 			- (completed)
