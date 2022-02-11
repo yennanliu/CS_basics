@@ -224,6 +224,7 @@
 605 | [Can Place Flowers](https://leetcode.com/problems/can-place-flowers/) | [Python](./leetcode_python/Array/can-place-flowers.py) | _O(n)_ | _O(1)_ | Easy |`pass vs continue`| OK*
 624 | [Maximum Distance in Arrays](https://leetcode.com/problems/maximum-distance-in-arrays/) | [Python](./leetcode_python/Array/maximum-distance-in-arrays.py) | _O(n)_ | _O(1)_ | Easy | 🔒 | AGAIN*
 643 | [Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/) | [Python](./leetcode_python/Array/maximum-average-subarray-i.py) | _O(n)_ | _O(1)_ | Easy | `Math`, `basic` |  AGAIN*
+658 | [Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | [Python](./leetcode_python/Array/find-k-closest-elements.py) | _O(n)_ | _O(1)_ | Medium | `amazon` |
 661| [Image Smoother](https://leetcode.com/problems/image-smoother/) | [Python](./leetcode_python/Array/image-smoother.py)  | _O(m * n)_ |  _O(1)_ | Easy   |`matrix`,`basic`, `amazon`| OK***** (4) (but again!)
 665| [Non-decreasing Array](https://leetcode.com/problems/non-decreasing-array/) | [Python](./leetcode_python/Array/non-decreasing-array.py) | _O(n)_ |  _O(1)_ | Easy || AGAIN (not start)
 667| [Beautiful Arrangement II](https://leetcode.com/problems/beautiful-arrangement-ii/) |  [Python](./leetcode_python/Array/beautiful-arrangement-ii.py)  | _O(n)_ |  _O(1)_ | Medium  || AGAIN (not start)
@@ -272,6 +273,7 @@
 950 | [Reveal Cards In Increasing Order](https://leetcode.com/problems/reveal-cards-in-increasing-order/) | [Python](./leetcode_python/Array/reveal-cards-in-increasing-order.py) | _O(n)_ | _O(n)_  | Medium  || AGAIN (not start)
 954 | [Array of Doubled Pairs](https://leetcode.com/problems/array-of-doubled-pairs/) | [Python](./leetcode_python/Array/array-of-doubled-pairs.py) | _O(n + klogk)_ | _O(k)_  | Medium |`counter`, `dict`, `trick`| AGAIN** 
 961 | [N-Repeated Element in Size 2N Array](https://leetcode.com/problems/n-repeated-element-in-size-2n-array/) | [Python](./leetcode_python/Array/n-repeated-element-in-size-2n-array.py)  | _O(n)_ | _O(1)_  | Easy  || OK 
+973 | [K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | [Python](./leetcode_python/Array/k-closest-points-to-origin.py)  | _O(n)_ | _O(1)_  | Medium  |amazon| 
 004 | [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) | | _O(n)_ | _O(1)_  | Hard |`fb`, amazon|  
 010 | [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) | | _O(n)_ | _O(1)_  | Hard |`fb`|  
 056 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) |  [Python](./leetcode_python/Array/merge-intervals.py)  | _O(n)_ | _O(1)_  | Medium |`good trick`,057 Insert Interval, `twitter`,`M$`,`UBER`,`google`,`amazon`,`fb`| OK********* (6) (but AGAIN)
@@ -572,6 +574,7 @@
 944 | [Delete Columns to Make Sorted](https://leetcode.com/problems/delete-columns-to-make-sorted/) | [python](./leetcode_python/String/delete-columns-to-make-sorted.py) | _O(n * l)_ | _O(1)_      | Medium     || AGAIN (not start)
 953 | [Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/) | [python](./leetcode_python/String/verifying-an-alien-dictionary.py) | _O(n * l)_ | _O(1)_ | Easy || AGAIN (not start)
 955 | [Delete Columns to Make Sorted II](https://leetcode.com/problems/delete-columns-to-make-sorted-ii/) | [python](./leetcode_python/String/delete-columns-to-make-sorted-ii.py) | _O(n * l)_ | _O(n)_  | Medium   || AGAIN (not start)
+1119 | [Remove Vowels from a String](https://leetcode.com/problems/remove-vowels-from-a-string/) | [python](./leetcode_python/String/remove-vowels-from-a-string.py) | _O(n * l)_ | _O(n)_  | Medium |`amazon`| not start
 
 
 ## Queue
