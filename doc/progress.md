@@ -53,6 +53,8 @@
 		- Review
 			- 054
 			- 525
+			- 523
+			- 026
 		- SQL
 		- cheatsheet review
 			- (completed)

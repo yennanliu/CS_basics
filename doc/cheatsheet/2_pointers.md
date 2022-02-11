@@ -229,19 +229,56 @@ class Solution(object):
 ```python
 # LC 26 : Remove Duplicates from Sorted Array
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-duplicates-from-sorted-array.py
+# V0
+# IDEA : 2 POINTERS: i, j
+class Solution(object):
+    def removeDuplicates(self, nums):
+        # edge case
+        if not nums:
+            return
+        i = 0
+        for j in range(1, len(nums)):
+            if nums[j] != nums[i]:
+                nums[i+1], nums[j] = nums[j], nums[i+1]
+                i += 1
+
+        #print ("nums = " + str(nums))
+        return i+1
+
+# V0'
 # IDEA : 2 POINTERS
 # HAVE A POINTER j STARTS FROM 0 AND THE OTHER POINTER i GO THROUGH nums
 #  -> IF A[i] != A[j]
 #     -> THEN SWITCH A[i] AND A[j+1]
 #     -> and j += 1
 # *** NOTE : it's swith A[j+1] (j+1) with A[i]
+# DEMO 1 
+# A = [1,1,1,2,3]
+# s = Solution()
+# s.removeDuplicates(A)
+# [1, 1, 1, 2, 3]
+# [1, 1, 1, 2, 3]
+# [1, 1, 1, 2, 3]
+# [1, 2, 1, 1, 3]
+# [1, 2, 3, 1, 1]
+#
+# DEMO 2
+# A = [1,2,2,3,4]
+# s = Solution()
+# s.removeDuplicates(A)
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 3, 2, 4]
+# -> A = [1, 2, 3, 4, 2]
 class Solution:
     def removeDuplicates(self, A):
         if len(A) == 0:
             return 0
         j = 0
-        #for i in range(0, len(A)):
-        for i in range(1, len(A)):  # start from idx=0 or idx=1 are OK
+        for i in range(0, len(A)):
+            ###  NOTE : below condition
             if A[i] != A[j]:
                 A[i], A[j+1] = A[j+1], A[i]
                 j = j + 1
