@@ -50,8 +50,18 @@ nums is sorted in non-decreasing order.
 # V0
 # IDEA : 2 POINTERS
 #### NOTE : THE nums already ordering
+# DEMO
+# example 1
+# nums = [1,1,1,2,2,3]
+#           i j
+#           i   j
+#        [1,1,2,1,2,3]
+#             i   j
+#             i     j
+#        [1,1,2,2,1,3]
+#               i   j       
 class Solution:
-    def removeDuplicates(self, nums: List[int]) -> int:
+    def removeDuplicates(self, nums):
         if len(nums) < 3:
             return len(nums)
 
