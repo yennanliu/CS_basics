@@ -29,6 +29,37 @@ The number of nodes in the tree is in the range [1, 100].
 
 # V0
 # IDEA : BFS
+# bfs
+class Solution(object):
+    def binaryTreePaths(self, root):
+        # edge case
+        if not root:
+            return []
+        cache = ""
+        res = []
+        q = [[cache, root]]
+        while q:
+            for i in range(len(q)):
+                cache, tmp = q.pop(0)
+                """
+                NOTE this !!!
+
+                1) condition : if tmp and not tmp.left and not tmp.right
+                2) we need to append cache + str(tmp.val) to res
+                   -> since we also need to collect "bottom" sbt-tree's val
+                """
+                if tmp and not tmp.left and not tmp.right:
+                    res.append(cache + str(tmp.val))
+                if tmp.left:
+                    q.append([ cache + "{}->".format(tmp.val), tmp.left])
+                if tmp.right:
+                    q.append([ cache + "{}->".format(tmp.val), tmp.right])
+
+        #print ("res = " + str(res))
+        return res
+
+# V0'
+# IDEA : BFS
 class Solution:
     def binaryTreePaths(self, root):
         res = []
