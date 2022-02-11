@@ -257,6 +257,7 @@ my_array_pre[3+1] - my_array_pre[1] # 2's index is 1, and 4's index is 3. (my_ar
 
 ```python
 # 525 Contiguous Array
+
 # V0
 # IDEA : HashMap
 #     -> SET UP A DICT,
@@ -268,14 +269,15 @@ class Solution(object):
         # edge case
         if len(nums) <= 1:
             return 0
+        # note this edge case
         if len(nums) == 2:
             if nums.count(0) == nums.count(1):
                 return 2
             else:
                 return 0
 
-        # init hash map like below (idx=0, no solution)
-        d = {0:-1}
+        # NOTE !!! : init hash map like below (idx=0, no solution, for [0,1,1] case)
+        d = {0:-1} # {tmp_sum : index}
         tmp = 0
         res = 0
         for k, v in enumerate(nums):
@@ -283,10 +285,18 @@ class Solution(object):
                 tmp += 1
             else:
                 tmp -= 1
+            """
+            Case 1 : if tmp sum in dict
+            # NOTE THIS : if tmp in d, return the max of (res,cur-index - index) from d with same cur-value
+            """
             if tmp in d:
                 res = max(res, k - d[tmp])
+            """
+            Case 2 : if tmp sum NOT in dict
+            # NOTE THIS : if tmp not in d, then use its cur value as key, index as value
+            """
             else:
-                d[tmp] = k
+                d[tmp] = k ### NOTE : we just need to add index to dict at once, since what we need is MAX len of continous subarray with condition, so we only add 1st index to dist will make this work (max len subarray)
         return res
 
 # V0'
