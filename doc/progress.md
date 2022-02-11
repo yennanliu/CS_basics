@@ -57,6 +57,8 @@
 			- 026
 			- 080 (AGAIN!!)
 			- 257
+			- 011
+			- 128 (ok!, but can again)
 		- SQL
 		- cheatsheet review
 			- (completed)
