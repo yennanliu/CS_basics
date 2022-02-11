@@ -51,9 +51,7 @@
 		- topology sorting
 			- 269
 		- Review
-			- 670
-			- 406
-			- 1010
+			- 054
 		- SQL
 		- cheatsheet review
 			- (completed)

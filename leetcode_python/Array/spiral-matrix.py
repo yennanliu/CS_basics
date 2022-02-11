@@ -27,6 +27,41 @@ n == matrix[i].length
 """
 
 # V0
+# IDEA : 4 cases : right, down, left, up
+#      -> NOTE : boundary condition
+class Solution(object):
+    def spiralOrder(self, matrix):
+        if not matrix:
+            return []
+        res = []
+        y0 = 0
+        y1 = len(matrix)
+        x0 = 0
+        x1 = len(matrix[0])
+        while y1 > y0 and x1 > x0:
+            # right
+            for i in range(x0, x1):
+                res.append(matrix[y0][i])
+            # down
+            for j in range(y0+1, y1-1):
+                res.append(matrix[j][x1-1])
+            # left
+            ### NOTE THIS
+            if y1 != y0+1:
+                for i in range(x1-1, x0-1, -1):
+                    res.append(matrix[y1-1][i])
+            # up
+            ### NOTE THIS
+            if x0 != x1-1:
+                for j in range(y1-2, y0, -1):
+                    res.append(matrix[j][x0])
+            y0 += 1
+            y1 -= 1
+            x0 += 1
+            x1 -= 1
+        return res
+
+# V0'
 class Solution(object):
     # @param matrix, a list of lists of integers
     # @return a list of integers
@@ -56,7 +91,7 @@ class Solution(object):
 
         return result
 
-# V0'
+# V0''
 class Solution:
     def spiralOrder(self, matrix):
         res = []
@@ -98,6 +133,40 @@ class Solution:
         return res
 
 # V1
+# IDEA : matrix + array op
+# https://leetcode.com/problems/spiral-matrix/discuss/208593/Python-solution
+# Time complexity: O(nm), space complexity: O(nm), where n = len(matrix), and m = len(matrix[0]).
+class Solution(object):
+    def spiralOrder(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: List[int]
+        """
+        if not matrix or not matrix[0]:
+            return []
+        res = []
+        y0 = 0
+        y1 = len(matrix)
+        x0 = 0
+        x1 = len(matrix[0])
+        while y1 > y0 and x1 > x0:
+            for i in range(x0, x1):
+                res.append(matrix[y0][i])
+            for j in range(y0+1, y1-1):
+                res.append(matrix[j][x1-1])
+            if y1 != y0+1:
+                for i in range(x1-1, x0-1, -1):
+                    res.append(matrix[y1-1][i])
+            if x0 != x1-1:
+                for j in range(y1-2, y0, -1):
+                    res.append(matrix[j][x0])
+            y0 += 1
+            y1 -= 1
+            x0 += 1
+            x1 -= 1
+        return res
+
+# V1'
 # https://leetcode.com/problems/spiral-matrix/discuss/591493/Easy-to-understand-Python-solution
 # IDEA : 4 Cases
 # (1) move right if possible, otherwise break out; 

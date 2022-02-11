@@ -326,45 +326,70 @@ class Solution:
 
 # Spiral matrix
 # LC 054 Spiral Matrix
-class Solution:
+# V0
+# IDEA : 4 cases : right, down, left, up
+#      -> NOTE : boundary condition
+class Solution(object):
     def spiralOrder(self, matrix):
+        if not matrix:
+            return []
         res = []
-        if len(matrix) == 0:
-            return res
-        num_row = max(0, len(matrix) - 1)
-        num_col = len(matrix[0])
-        row = 0
-        col = -1
-        while True:
+        y0 = 0
+        y1 = len(matrix)
+        x0 = 0
+        x1 = len(matrix[0])
+        while y1 > y0 and x1 > x0:
             # right
-            if num_col == 0:
-                break
-            for i in range(num_col):
-                col += 1
-                res.append(matrix[row][col])                
-            num_col -= 1
+            for i in range(x0, x1):
+                res.append(matrix[y0][i])
             # down
-            if num_row == 0:
-                break
-            for i in range(num_row):
-                row += 1
-                res.append(matrix[row][col])
-            num_row -= 1
+            for j in range(y0+1, y1-1):
+                res.append(matrix[j][x1-1])
             # left
-            if num_col == 0:
-                break
-            for i in range(num_col):
-                col -= 1
-                res.append(matrix[row][col])
-            num_col -= 1
+            ### NOTE THIS
+            if y1 != y0+1:
+                for i in range(x1-1, x0-1, -1):
+                    res.append(matrix[y1-1][i])
             # up
-            if num_row == 0:
-                break
-            for i in range(num_row):
-                row -= 1
-                res.append(matrix[row][col])
-            num_row -= 1
+            ### NOTE THIS
+            if x0 != x1-1:
+                for j in range(y1-2, y0, -1):
+                    res.append(matrix[j][x0])
+            y0 += 1
+            y1 -= 1
+            x0 += 1
+            x1 -= 1
         return res
+
+# V0'
+class Solution(object):
+    # @param matrix, a list of lists of integers
+    # @return a list of integers
+    def spiralOrder(self, matrix):
+        result = []
+        if matrix == []:
+            return result
+
+        left, right, top, bottom = 0, len(matrix[0]) - 1, 0, len(matrix) - 1
+
+        while left <= right and top <= bottom:
+            # right
+            for j in range(left, right + 1):
+                result.append(matrix[top][j])
+            # down
+            for i in range(top + 1, bottom):
+                result.append(matrix[i][right])
+            # left
+            for j in (range(left, right + 1))[::-1]:
+                if top < bottom: # notice
+                    result.append(matrix[bottom][j])
+            # up
+            for i in range(top + 1, bottom)[::-1]:
+                if left < right: # notice
+                    result.append(matrix[i][left])
+            left, right, top, bottom = left + 1, right - 1, top + 1, bottom - 1
+
+        return result
 ```
  
 ## 2) LC Example
