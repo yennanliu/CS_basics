@@ -48,6 +48,22 @@ nums is sorted in non-decreasing order.
 """
 
 # V0
+# IDEA : 2 POINTERS: i, j
+class Solution(object):
+    def removeDuplicates(self, nums):
+        # edge case
+        if not nums:
+            return
+        i = 0
+        for j in range(1, len(nums)):
+            if nums[j] != nums[i]:
+                nums[i+1], nums[j] = nums[j], nums[i+1]
+                i += 1
+
+        #print ("nums = " + str(nums))
+        return i+1
+
+# V0'
 # IDEA : 2 POINTERS
 # HAVE A POINTER j STARTS FROM 0 AND THE OTHER POINTER i GO THROUGH nums
 #  -> IF A[i] != A[j]
