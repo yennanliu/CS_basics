@@ -426,7 +426,50 @@ class Solution(object):
 ### 2-4) Longest Consecutive Sequence
 ```python
 # LC 128 Longest Consecutive Sequence
+
 # V0
+# IDEA : sliding window
+class Solution(object):
+    def longestConsecutive(self, nums):
+        # edge case
+        if not nums:
+            return 0
+        nums = list(set(nums))
+        # if len(nums) == 1: # not necessary
+        #     return 1
+        # sort first
+        nums.sort()
+        res = 0
+        l = 0
+        r = 1
+        """
+        NOTE !!!
+
+        Sliding window here :
+            condition :  l, r are still in list (r < len(nums) and l < len(nums))
+
+            2 cases
+
+                case 1) nums[r] != nums[r-1] + 1
+                    -> means not continous, 
+                        -> so we need to move r to right (1 idx)
+                        -> and MOVE l to r - 1, since it's NOT possible to have any continous subarray within [l, r] anymore
+                case 2) nums[r] == nums[r-1] + 1
+                        -> means there is continous subarray currently, so we keep moving r to right (r+=1) and get current max sub array length (res = max(res, r-l+1))
+        """
+        while r < len(nums) and l < len(nums):
+            # case 1)
+            if nums[r] != nums[r-1] + 1:
+                r += 1
+                l = (r-1)
+            # case 2)
+            else:
+                res = max(res, r-l+1)
+                r += 1
+        # edge case : if res == 0, means no continous array (with len > 1), so we return 1 (a single alphabet can be recognized as a "continous assay", and its len = 1)
+        return res if res > 1 else 1
+
+# V0'
 # IDEA : SORTING + 2 POINTERS
 class Solution(object):
     def longestConsecutive(self, nums):
