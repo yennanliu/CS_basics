@@ -574,7 +574,7 @@
 944 | [Delete Columns to Make Sorted](https://leetcode.com/problems/delete-columns-to-make-sorted/) | [python](./leetcode_python/String/delete-columns-to-make-sorted.py) | _O(n * l)_ | _O(1)_      | Medium     || AGAIN (not start)
 953 | [Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/) | [python](./leetcode_python/String/verifying-an-alien-dictionary.py) | _O(n * l)_ | _O(1)_ | Easy || AGAIN (not start)
 955 | [Delete Columns to Make Sorted II](https://leetcode.com/problems/delete-columns-to-make-sorted-ii/) | [python](./leetcode_python/String/delete-columns-to-make-sorted-ii.py) | _O(n * l)_ | _O(n)_  | Medium   || AGAIN (not start)
-1119 | [Remove Vowels from a String](https://leetcode.com/problems/remove-vowels-from-a-string/) | [python](./leetcode_python/String/remove-vowels-from-a-string.py) | _O(n * l)_ | _O(n)_  | Medium |`amazon`| not start
+1119 | [Remove Vowels from a String](https://leetcode.com/problems/remove-vowels-from-a-string/) | [python](./leetcode_python/String/remove-vowels-from-a-string.py) | _O(n * l)_ | _O(n)_  | Easy |`amazon`| OK
 
 
 ## Queue
