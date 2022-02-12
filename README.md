@@ -273,7 +273,6 @@
 950 | [Reveal Cards In Increasing Order](https://leetcode.com/problems/reveal-cards-in-increasing-order/) | [Python](./leetcode_python/Array/reveal-cards-in-increasing-order.py) | _O(n)_ | _O(n)_  | Medium  || AGAIN (not start)
 954 | [Array of Doubled Pairs](https://leetcode.com/problems/array-of-doubled-pairs/) | [Python](./leetcode_python/Array/array-of-doubled-pairs.py) | _O(n + klogk)_ | _O(k)_  | Medium |`counter`, `dict`, `trick`| AGAIN** 
 961 | [N-Repeated Element in Size 2N Array](https://leetcode.com/problems/n-repeated-element-in-size-2n-array/) | [Python](./leetcode_python/Array/n-repeated-element-in-size-2n-array.py)  | _O(n)_ | _O(1)_  | Easy  || OK 
-973 | [K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | [Python](./leetcode_python/Array/k-closest-points-to-origin.py)  | _O(n)_ | _O(1)_  | Medium  |amazon| 
 004 | [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) | | _O(n)_ | _O(1)_  | Hard |`fb`, amazon|  
 010 | [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) | | _O(n)_ | _O(1)_  | Hard |`fb`|  
 056 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) |  [Python](./leetcode_python/Array/merge-intervals.py)  | _O(n)_ | _O(1)_  | Medium |`good trick`,057 Insert Interval, `twitter`,`M$`,`UBER`,`google`,`amazon`,`fb`| OK********* (6) (but AGAIN)
