@@ -682,7 +682,7 @@
 692| [Top K Frequent Words](https://leetcode.com/problems/top-k-frequent-words/) | [Python](./leetcode_python/Sort/top-k-frequent-words.py) | _O(n + klogk)_ on average | _O(n)_  | Medium | `good basic`,Quick Select, Heap, Bucket Sort, `heapq`, `yelp`, `UBER`,`amazon`,`fb` | OK***** (5)
 937| [Reorder Log Files](https://leetcode.com/problems/reorder-log-files/) | [Python](./leetcode_python/Sort/reorder-log-files.py) | _O(nlogn * l)_ | _O(l)_   | Easy | `string`, `amazon`| OK* (3) (again)
 969| [Pancake Sorting](https://leetcode.com/problems/pancake-sorting/) | [Python](./leetcode_python/Sort/pancake-sorting.py) | _O(n^2)_ | _O(l)_  | Medium |`fb`, sorting| AGAIN******* (3)
-973| [K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | [Python](./leetcode_python/Sort/k-closest-points-to-origin.py)  | _O(n)_ on average | _O(1)_ Medium | sort with lambda, Quick Select, Heap, `amazon`| OK* (2)
+973| [K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | [Python](./leetcode_python/Sort/k-closest-points-to-origin.py)  | _O(n)_ on average | _O(1)_ |  Medium | sort with lambda, Quick Select, Heap, `amazon`| OK* (2)
 976| [Largest Perimeter Triangle](https://leetcode.com/problems/largest-perimeter-triangle/) | [Python](./leetcode_python/Sort/largest-perimeter-triangle.py) | _O(nlogn)_ | _O(1)_  | Easy | | OK*
 
 
