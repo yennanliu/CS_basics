@@ -660,7 +660,7 @@
 963 | [Minimum Area Rectangle II](https://leetcode.com/problems/minimum-area-rectangle-ii/) | [Python](./leetcode_python/Math/minimum-area-rectangle-ii.py) | _O(n^2)_ ~ _O(n^3)_ | _O(n^2)_      | Medium  || AGAIN (not start)
 970 | [Powerful Integers](https://leetcode.com/problems/powerful-integers/) | [Python](./leetcode_python/Math/powerful-integers.py)  | _O((logn)^2)_ | _O(r)_      | Easy |`basic`| AGAIN* (2)
 517 |[Super Washing Machines](https://leetcode.com/problems/super-washing-machines/) | [Python](./leetcode_python/Math/super-washing-machines.py) ||| Hard |`amazon`|  AGAIN (not start)
-
+1979 |[Find Greatest Common Divisor of Array](https://leetcode.com/problems/find-greatest-common-divisor-of-array/) | [Python](./leetcode_python/Math/find-greatest-common-divisor-of-array.py) ||| Easy |GCD| not start
 
 ## Sort 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note| Status| 
