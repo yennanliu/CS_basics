@@ -42,6 +42,12 @@ Note:
 # V0
 
 # V1
+# IDEA : DFS
+
+# V1'
+# IDEA : greedy
+
+# V1''
 # IDEA : DP
 # https://leetcode.com/discuss/interview-question/383669/Amazon-or-OAA-2019-or-Max-Min-Path-Value
 class Solution(object):
