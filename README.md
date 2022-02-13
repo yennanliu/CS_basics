@@ -278,6 +278,7 @@
 056 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) |  [Python](./leetcode_python/Array/merge-intervals.py)  | _O(n)_ | _O(1)_  | Medium |`good trick`,057 Insert Interval, `twitter`,`M$`,`UBER`,`google`,`amazon`,`fb`| OK********* (6) (but AGAIN)
 759 | [Employee Free Time ](https://leetcode.com/problems/employee-free-time/) |  [Python](./leetcode_python/Array/employee-free-time.py)  | _O(n)_ | _O(1)_  | Hard |scanning line, intervals, `amazon`| not start
 1014 | [Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/) | [Python](./leetcode_python/Array/best_sightseeing_pair.py) | | | Medium |dp, array, good basic, Spotify| AGAIN (not start)
+1027 | [Longest Arithmetic Subsequence](https://leetcode.com/problems/longest-arithmetic-subsequence/) | [Python](./leetcode_python/Array/longest-arithmetic-subsequence.py) | | | Medium |google, amazon| not start
 1041 | [Robot Bounded In Circle](https://leetcode.com/problems/robot-bounded-in-circle/) | [Python](./leetcode_python/Array/robot-bounded-in-circle.py) | | | Medium |`amazon`| AGAIN (not start)
 
 
