@@ -10,7 +10,14 @@ Note:
 
 Note that in some languages, such as Java, there is no unsigned integer type. In this case, both input and output will be given as a signed integer type. They should not affect your implementation, as the integer's internal binary representation is the same, whether it is signed or unsigned.
 In Java, the compiler represents the signed integers using 2's complement notation. Therefore, in Example 2 above, the input represents the signed integer -3 and the output represents the signed integer -1073741825.
- 
+
+
+# https://blog.csdn.net/coder_orz/article/details/51705094
+
+翻轉一個給定的32位無符號數的位。
+比如，給定輸入整數43261596（二進製表示為00000010100101000001111010011100）
+，返回964176192（二進製表示為00111001011110000010100101000000）。
+進一步：如果該函數被多次調用，你該如何優化它？
 
 Example 1:
 

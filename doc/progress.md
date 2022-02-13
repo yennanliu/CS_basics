@@ -59,12 +59,12 @@
 			- 128 (ok!, but can again)
 			- 207 (ok, but again!)
 			- 210 (ok, but again!)
-			- =============
-			- (ing)
-			- 565
 			- 111 (ok)
 			- 104 (ok)
-			- 165
+			- =============
+			- (ing)
+			- 565 (not start!)
+			- 190 (not start!)
 		- SQL
 		- cheatsheet review
 			- (completed)
