@@ -73,6 +73,12 @@
 		- [LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
 		- [LeetCode Curated SQL 70](https://leetcode.com/problem-list/5htp6xyg/?page=1)
 		- [cheatsheet-mysql-a4](https://cheatsheet.dennyzhang.com/cheatsheet-mysql-a4)
+* LC flow
+	- high level idea : data structure, algorithm
+	- offer time & space complexity
+	- code implementation
+	- offer test case (consider edge case)
+	- discussion & follow up
 * System design
 	- Video
 		- [Tech Dummies Narendra L Utube](https://www.youtube.com/channel/UCn1XnDWhsLS5URXTi5wtFTA)
