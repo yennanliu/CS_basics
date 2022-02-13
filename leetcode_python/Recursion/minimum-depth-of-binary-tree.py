@@ -30,6 +30,35 @@ The number of nodes in the tree is in the range [0, 105].
 """
 
 # V0
+# IDEA : BFS
+# compare with LC 104 : Maximum Depth of Binary Tree
+class Solution(object):
+    def minDepth(self, root):
+        # edge case
+        if not root:
+            return 0
+        if root and not root.left and not root.right:
+            return 1
+        layer = 1
+        q = [[layer, root]]
+        res = []
+        while q:
+            for i in range(len(q)):
+                layer, tmp = q.pop(0)
+                """
+                NOTE !!! : via below condition, we get "layer" of " A leaf is a node with no children."
+                """
+                if tmp and not tmp.left and not tmp.right:
+                    res.append(layer)
+                if tmp.left:
+                    q.append([layer+1, tmp.left])
+                if tmp.right:
+                    q.append([layer+1, tmp.right])
+        # get min
+        #print ("res = " + str(res))
+        return min(res)
+
+# V0'
 # IDEA : DFS
 # compare with LC 104 : Maximum Depth of Binary Tree
 class Solution(object):
@@ -45,7 +74,7 @@ class Solution(object):
         else:
             return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
 
-# V0'
+# V0''
 # IDEA : BFS
 class Solution(object):
     def minDepth(self, root):

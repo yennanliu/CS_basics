@@ -122,6 +122,35 @@ root = TreeNode(int(s))
 ```
 
 #### 1-1-3) Get depth
+- LC 111 : Minimum Depth of Binary Tree 
+- LC 104 : Maximum Depth of Binary Tree
+
+```python
+#-----------------
+# BFS
+#-----------------
+# ....
+layer = 1
+q = [[layer, root]]
+res = []
+while q:
+    for i in range(len(q)):
+        layer, tmp = root.pop(0)
+        """
+        KEY here !!!!
+        """
+        if tmp and not tmp.left and not tmp.right:
+            res.append(layer)
+        if tmp.left:
+            q.append([layer+1, tmp.left])
+        if tmp.right:
+            q.append([layer+1, tmp.right])
+        # ...
+
+#-----------------
+# DFS
+#-----------------
+```
 
 #### 1-1-4) Get LCA (Lowest Common Ancestor) of a tree
 ```python
@@ -1032,7 +1061,36 @@ class Solution(object):
 ### 2-12) Minimum Depth of Binary Tree
 ```python
 # LC 111 Minimum Depth of Binary Tree
+
 # V0
+# IDEA : BFS
+class Solution(object):
+    def minDepth(self, root):
+        # edge case
+        if not root:
+            return 0
+        if root and not root.left and not root.right:
+            return 1
+        layer = 1
+        q = [[layer, root]]
+        res = []
+        while q:
+            for i in range(len(q)):
+                layer, tmp = q.pop(0)
+                """
+                NOTE !!! : via below condition, we get "layer" of " A leaf is a node with no children."
+                """
+                if tmp and not tmp.left and not tmp.right:
+                    res.append(layer)
+                if tmp.left:
+                    q.append([layer+1, tmp.left])
+                if tmp.right:
+                    q.append([layer+1, tmp.right])
+        # get min
+        #print ("res = " + str(res))
+        return min(res)
+
+# V0'
 # IDEA : DFS
 # compare with LC 104 : Maximum Depth of Binary Tree
 class Solution(object):
@@ -1047,24 +1105,6 @@ class Solution(object):
             return 1 + self.minDepth(root.left)
         else:
             return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
-
-# V0'
-# IDEA : BFS
-class Solution(object):
-    def minDepth(self, root):
-        if not root:
-            return 0
-        q = [[root, 1]]
-        while q:
-            for i in range(len(q)):
-                cur, step = q.pop(0)
-                ### NOTE this
-                if not cur.left and not cur.right:
-                    return step
-                if cur.left:
-                    q.append([cur.left, step + 1])
-                if cur.right:
-                    q.append([cur.right, step + 1])
 ```
 
 ### 2-13) Maximum Depth of Binary Tree
