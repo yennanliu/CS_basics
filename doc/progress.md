@@ -59,7 +59,7 @@
 			- =============
 			- (ing)
 			- 207 (ok, but again!)
-			- 210
+			- 210 (ok, but again!)
 			- 565
 		- SQL
 		- cheatsheet review
