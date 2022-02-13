@@ -616,7 +616,7 @@
 390 | [Elimination Game](https://leetcode.com/problems/elimination-game/) |  [Python](./leetcode_python/Math/elimination-game.py) | _O(logn)_ | _O(1)_ | Medium || AGAIN (not start)
 398 | [Random Pick Index](https://leetcode.com/problems/random-pick-index/) |  [Python](./leetcode_python/Math/random-pick-index.py) | _O(n)_ | _O(1)_ | Medium | `Reservoir Sampling` , `fb`| OK* (4)
 400 | [Nth Digit](https://leetcode.com/problems/nth-digit/) |  [Python](./leetcode_python/Math/nth-digit.py) | _O(logn)_ | _O(1)_ | Easy || AGAIN 
-413 | [Arithmetic Slices](https://leetcode.com/problems/arithmetic-slices/) | [Python](./leetcode_python/Math/arithmetic-slices.py)| _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
+413 | [Arithmetic Slices](https://leetcode.com/problems/arithmetic-slices/) | [Python](./leetcode_python/Math/arithmetic-slices.py)| _O(n)_ | _O(1)_ | Medium |`amazon`| AGAIN (not start)
 423 | [Reconstruct Original Digits from English](https://leetcode.com/problems/reconstruct-original-digits-from-english/) | [Python](./leetcode_python/Math/reconstruct-original-digits-from-english.py) | _O(n)_ | _O(1)_ | Medium | [GCJ2016 - Round 1B](https://code.google.com/codejam/contest/11254486/dashboard#s=p0)| AGAIN (not start)
 441 | [Arranging Coins](https://leetcode.com/problems/arranging-coins/) |  [Python](./leetcode_python/Math/arranging-coins.py)| _O(nlogn)_ | _O(1)_ | Easy | Binary Search| OK 
 453 | [Minimum Moves to Equal Array Elements](https://leetcode.com/problems/minimum-moves-to-equal-array-elements/) | [Python](./leetcode_python/Math/minimum-moves-to-equal-array-elements.py) | _O(n)_ | _O(1)_ | Easy || AGAIN 
