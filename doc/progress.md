@@ -54,14 +54,13 @@
 		- topology sorting
 			- 269
 		- Review
-			- 054
-			- 525
-			- 523
-			- 026
 			- 080 (AGAIN!!)
-			- 257
-			- 011
 			- 128 (ok!, but can again)
+			- =============
+			- (ing)
+			- 207 (ok, but again!)
+			- 210
+			- 565
 		- SQL
 		- cheatsheet review
 			- (completed)
