@@ -60,6 +60,28 @@ public int intervalSchedule(int[][] intvs) {
 
 ### 1-1) Basic OP
 
+#### 1-1) re-organzie string
+```python
+# LC 767
+# ...
+from collections import Counter
+cnt = Counter(s)
+res = "#"
+while cnt:
+    stop = True
+    for k, _count in cnt.most_common():
+        if res[-1] != k:
+            stop = False
+            res += k
+            cnt[k] -= 1
+            if cnt[k] == 0:
+                del cnt[k]
+            break
+    if stop:
+        break
+# ...
+```
+
 ## 2) LC Example
 
 ### 2-2) Jump Game
