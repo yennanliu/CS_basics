@@ -26,7 +26,9 @@
 			- 652
 			- 490
 		- greedy
-			- 767
+			- 767 (ok, but agiain!!)
+			- 621
+			- 358
 		- union find
 			- 721
 			- 547
