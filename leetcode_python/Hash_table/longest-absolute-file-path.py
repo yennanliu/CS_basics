@@ -66,7 +66,7 @@ input may contain lowercase or uppercase English letters, a new line character '
 class Solution(object):
     def lengthLongestPath(self, input):
         # NOTE : we maintain a dict for collecting key and the length till now
-        dict={}
+        d={}
         longest=0
         fileList=input.split("\n")
         for i in fileList:
@@ -74,16 +74,18 @@ class Solution(object):
             if "." not in i:
                 key = i.count("\t") # level of directory
                 value = len(i.replace("\t","")) # length after removing '\t'
-                dict[key]=value
+                d[key]=value
             # file
             else:
                 key=i.count("\t")
                 ### NOTE :　length of doc (all directory length + doc length + count of '\') 
-                length = sum([dict[j] for j in dict.keys() if j<key]) + len(i.replace("\t","")) + key
+                length = sum([d[j] for j in d.keys() if j<key]) + len(i.replace("\t","")) + key
                 longest=max(longest,length)
+        print (d)
         return longest
 
 # V0'
+# IDEA : HASH TABLE
 class Solution(object):
     def lengthLongestPath(self, input):
         maxlen = 0
@@ -97,6 +99,26 @@ class Solution(object):
             else:
                 pathlen[depth + 1] = pathlen[depth] + len(name) + 1
         return maxlen
+
+# V0''
+# IDEA : stack + string op
+class Solution:
+    def lengthLongestPath(self, input):
+        parts = input.split('\n')
+        ans = 0
+        stack = []
+        L = 0
+        for s in parts:
+            # strip '\t' on left end only 
+            cs = s.lstrip('\t')
+            level = len(s) - len(cs)
+            while stack and stack[-1][1] >= level:
+                L -= len(stack.pop()[0])
+            stack.append((cs, level))
+            L += len(cs)
+            if "." in cs:
+                ans = max(ans, len(stack) + L - 1)                
+        return ans
 
 # V1
 # IDEA :STACK
@@ -273,7 +295,7 @@ class Solution:
 # V1'''''''
 # https://leetcode.com/problems/longest-absolute-file-path/discuss/328592/python3-beats-99
 class Solution:
-    def lengthLongestPath(self, input: str) -> int:
+    def lengthLongestPath(self, input):
         parts = input.split('\n')
         ans = 0
         stack = []
