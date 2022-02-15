@@ -4,6 +4,7 @@
 - DOING:
 	- LC (goog_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
+			- 681 (ok)
 	- ================
 		- LC (appl_, LC discuss sharing)
 			- https://leetcode.com/discuss/interview-question/1367526/apple-uber-flipkart-swiggy-interview-questions-july-2020-july-2021

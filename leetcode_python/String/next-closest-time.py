@@ -1,4 +1,64 @@
-# V0 
+"""
+
+# https://ttzztt.gitbooks.io/lc/content/string/next-closet-time.html
+
+681.Next Closest Time
+
+Given a time represented in the format "HH:MM", form the next closest time by reusing the current digits. There is no limit on how many times a digit can be reused.
+
+You may assume the given input string is always valid. For example, "01:34", "12:09" are all valid. "1:34", "12:9" are all invalid.
+
+Example 1:
+
+Input:
+ "19:34"
+
+Output:
+ "19:39"
+
+Explanation:
+ The next closest time choosing from digits 1, 9, 3, 4, is 19:39, which occurs 5 minutes later.  It is not 19:33, 
+ because this occurs 23 hours and 59 minutes later.
+Example 2:
+
+Input:
+ "23:59"
+
+Output:
+ "22:22"
+
+Explanation:
+ The next closest time choosing from digits 2, 3, 5, 9, is 22:22. 
+ It may be assumed that the returned time is next day's time since it is smaller than the input time numerically.
+
+"""
+
+# V0
+# IDEA : brute force + check subset of set
+# there is only 60 * 24 = 1440 min per day
+# so we can for loop over 1440 mins and check if all digits are still in original set (and return min if there is)
+from datetime import datetime, timedelta
+class Solution:
+    def nextClosestTime(self, time):
+        def check(x):
+            s = set([_ for _ in list(time) if _ != ':'])
+            x_ = [_ for _ in list(x) if _ != ':']
+            for _ in x_:
+                if _ not in s:
+                    return False
+            return True
+
+        time_ =  datetime.strptime(time, "%H:%M")
+        # there is 60 * 24 = 1440 min per day
+        for i in range(1, 1441):
+            tmp = time_ + timedelta(minutes=i)
+            tmp = tmp.strftime("%H:%M")
+            #print ("i = " + str(i) + " time_ = " + str(time_) + " tmp = " + str(tmp))
+            if check(tmp):
+                return tmp
+        return -1
+
+# V0'
 # IDEA : brute force + check subset of set 
 # LOGIC : start from the given time, then "add 1 minute" in every loop, 
 # if all the elements in the upddated time are also the subset of the original time set -> return True (find the answer)

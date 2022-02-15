@@ -548,7 +548,7 @@
 657| [Judge Route Circle](https://leetcode.com/articles/judge-route-circle/) | [python](./leetcode_python/String/judge-route-circle.py)  | _O(n)_ | _O(1)_ | Easy    | | OK 
 678| [Valid Parenthesis String](https://leetcode.com/problems/valid-parenthesis-string/) | [python](./leetcode_python/String/valid-palindrome.py)   | _O(n)_ | _O(1)_ | Medium    | | AGAIN** 
 680| [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/) |  [python](./leetcode_python/String/valid-palindrome-ii.py)  | _O(n)_  | _O(1)_    | Easy |`good basic`, `string`, `fb`| OK
-681| [Next Closest Time](https://leetcode.com/problems/next-closest-time/) | [python](./leetcode_python/String/next-closest-time.py)  | _O(1)_  | _O(1)_  | Medium |`subset of set`, `<=`,`strptime`,  `google`,`fb`| OK*** (4)
+681| [Next Closest Time](https://leetcode.com/problems/next-closest-time/) | [python](./leetcode_python/String/next-closest-time.py)  | _O(1)_  | _O(1)_  | Medium |`subset of set`, `<=`,`strptime`,  `google`,`fb`| OK*** (5)
 686 | [Repeated String Match](https://leetcode.com/problems/repeated-string-match/) | [python](./leetcode_python/String/repeated-string-match.py)  | _O(n + m)_ | _O(1)_ | Easy | `Rabin-Karp Algorithm`, `google` | AGAIN* (2) 
 696| [Count Binary Substrings](https://leetcode.com/problems/count-binary-substrings/) | [python](./leetcode_python/String/count-binary-substrings.py) | _O(n)_ | _O(1)_ | Easy|| AGAIN (not start*)
 720| [Longest Word in Dictionary](https://leetcode.com/problems/longest-word-in-dictionary/) | [python](./leetcode_python/String/longest-word-in-dictionary.py) | _O(n)_ | _O(t)_ | Easy  | Trie | AGAIN (not start)
