@@ -648,3 +648,35 @@ vim
 args = [1,3]
 print (range(*args))
 ```
+
+### 1-19) `datetime() <-> string()`
+```python
+# LC 681.Next Closest Time
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/next-closest-time.py
+
+from datetime import datetime, timedelta
+
+x = "10:20"
+
+#--------------------------------------
+# strptime : string -> datetime 
+# (Return a datetime corresponding to date_string, parsed according to format.)
+#--------------------------------------
+x_datetime =  datetime.strptime(x, "%H:%M")
+print (x_datetime)
+# 1900-01-01 10:20:00
+
+
+#--------------------------------------
+# strftime : datetime -> string 
+# (Return a string representing the date)
+#--------------------------------------
+x_str = x_datetime.strftime("%H:%M")
+print (x_str)
+# 10:20
+
+# eatra : timedelta
+tmp = x_datetime + timedelta(minutes=10)
+print (tmp)
+# 1900-01-01 10:30:00
+```
