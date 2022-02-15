@@ -455,6 +455,7 @@
 979| [Distribute Coins in Binary Tree](https://leetcode.com/problems/distribute-coins-in-binary-tree/) |  [python](./leetcode_python/Tree/distribute-coins-in-binary-tree.py)  | _O(n)_          | _O(h)_          | Medium   | DFS, `trick` | AGAIN*** (2)
 508| [ Most Frequent Subtree Sum](https://leetcode.com/problems/most-frequent-subtree-sum/) |  [python](./leetcode_python/Tree/most_frequent_subtree_sum.py)  ||| Medium   |tree, dfs, bfs, good basic,`amazon`| OK*********** (4) (but again MUST)
 297| [ Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) |  [python](./leetcode_python/Tree/serialize-and-deserialize-binary-tree.py) ||| Hard |tree, BFS, DFS, dequeue, check `#449 Serialize and Deserialize BST` ,`amazon`|  AGAIN**** (1)
+683| [K Empty Slots](https://leetcode.com/problems/k-empty-slots/) |  [python](./leetcode_python/Tree/k-empty-slots.py) ||| Hard |BST, tree, bucket, `google`| not start
 701| [Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/) |  [python](./leetcode_python/Tree/insert-into-a-binary-search-tree.py) ||| Medium |good basic, BST, tree, BFS, DFS| OK*** (2)
 
 
