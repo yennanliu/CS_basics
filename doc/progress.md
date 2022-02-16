@@ -17,7 +17,7 @@
 		- bit manipulation
 			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
 		- 2 pointers
-			- 080
+			- 080 (again!!!)
 		- math
 			- 413 (ok!)
 		- array

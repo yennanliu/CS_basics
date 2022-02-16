@@ -309,6 +309,7 @@ class Solution(object):
 ### 2-7) License Key Formatting
 ```python
 # LC 482. License Key Formatting
+# ref : LC 725. Split Linked List in Parts
 
 # V0
 class Solution(object):
