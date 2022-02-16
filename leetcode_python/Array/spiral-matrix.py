@@ -27,6 +27,50 @@ n == matrix[i].length
 """
 
 # V0
+# IDEA : 4 cases : right, down, left, up + boundary condition
+class Solution(object):
+    def spiralOrder(self, matrix):
+        # edge case
+        if not matrix:
+            return
+        res=[]
+        """
+        NOTE this : we define 4 boundaries
+        """
+        left, right, top, bottom = 0, len(matrix[0])-1, 0, len(matrix)-1
+        """
+        NOTE : this condition
+        """
+        while left <= right and top <= bottom:
+            # right
+            for j in range(left, right+1):  # note : range(left, right+1)
+                res.append(matrix[top][j])
+            # down
+            for i in range(top+1, bottom):  # note : range(top+1, bottom)
+                res.append(matrix[i][right])
+            # left
+            for j in range(left, right+1)[::-1]: # note : range(left, right+1)[::-1]
+                """
+                NOTE : this condition
+                """
+                if top < bottom:
+                    res.append(matrix[bottom][j])
+            # up
+            for i in range(top+1, bottom)[::-1]: # note : range(top+1, bottom)[::-1]
+                """
+                NOTE : this condition
+                """
+                if left < right:
+                    res.append(matrix[i][left])
+
+            left += 1
+            right -= 1
+            top += 1
+            bottom -= 1
+            
+        return res
+
+# V0
 # IDEA : 4 cases : right, down, left, up
 #      -> NOTE : boundary condition
 class Solution(object):
@@ -63,8 +107,6 @@ class Solution(object):
 
 # V0'
 class Solution(object):
-    # @param matrix, a list of lists of integers
-    # @return a list of integers
     def spiralOrder(self, matrix):
         result = []
         if matrix == []:
