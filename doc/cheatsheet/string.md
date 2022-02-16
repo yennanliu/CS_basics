@@ -305,3 +305,56 @@ class Solution(object):
         res = res if res >= -1 * 2**31  else -1 * 2**31   # -(1)*(2**31) == - 2147483648
         return res
 ```
+
+### 2-7) License Key Formatting
+```python
+# LC 482. License Key Formatting
+
+# V0
+class Solution(object):
+    def licenseKeyFormatting(self, S, K):
+        result = []
+        for i in reversed(range(len(S))):
+            if S[i] == '-':
+                continue
+            if len(result) % (K + 1) == K:
+                result += '-'
+            result += S[i].upper()
+        return "".join(reversed(result))
+
+# V0'
+# IDEA : string op + brute force
+class Solution(object):
+    def licenseKeyFormatting(self, s, k):
+        # edge case
+        if not s or not k:
+            return s
+        s = s.replace("-", "")
+        s_ = ""
+        for _ in s:
+            if _.isalpha():
+                s_ += _.upper()
+            else:
+                s_ += _
+
+        s_ = list(s_)
+        #print ("s_ = " + str(s_))
+        s_len = len(s)
+        remain = s_len % k
+        #res = []
+        res = ""
+        tmp = ""
+        # if s_len % k != 0
+        while remain != 0:
+            tmp += s_.pop(0)
+            remain -= 1
+        #res.append(tmp)
+        res += (tmp + "-")
+        tmp = ""
+        # if s_len % k == 0
+        for i in range(0, len(s_), k):
+            #print (s_[i:i+k])
+            #res.append(s_[i:i+k])
+            res += ("".join(s_[i:i+k]) + "-")
+        return res.strip("-")
+```

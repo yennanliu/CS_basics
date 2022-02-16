@@ -533,7 +533,7 @@
 443| [String Compression](https://leetcode.com/problems/string-compression/) | [python](./leetcode_python/String/string-compression.py) | _O(n)_ | _O(1)_ | Easy   |`basics`| AGAIN**
 459| [Repeated Substring Pattern](https://leetcode.com/problems/repeated-substring-pattern/) | [python](./leetcode_python/String/repeated-substring-pattern.py) | _O(n)_ | _O(n)_ | Easy  | good basic, string, `KMP Algorithm`, `amazon` | OK* (5) 
 468| [Validate IP Address](https://leetcode.com/problems/validate-ip-address/) | [python](./leetcode_python/String/validate-ip-address.py) | _O(1)_ | _O(1)_ | Medium  | `ip basic`,`string`,`twitter`, `fb`, `amazon`| AGAIN****** (5)
-482| [License Key Formatting](https://leetcode.com/problems/license-key-formatting/) | [python](./leetcode_python/String/license-key-formatting.py) | _O(n)_ | _O(1)_ | Easy |string, basic, `google`| AGAIN* (1)
+482| [License Key Formatting](https://leetcode.com/problems/license-key-formatting/) | [python](./leetcode_python/String/license-key-formatting.py) | _O(n)_ | _O(1)_ | Easy |string, basic, `google`| OK** (2) (again)
 520| [Detect Capital](https://leetcode.com/problems/detect-capital/) |  [python](./leetcode_python/String/detect-capital.py)  | _O(l)_ | _O(1)_ | Easy    | |  OK 
 521| [Longest Uncommon Subsequence I](https://leetcode.com/problems/longest-uncommon-subsequence-i/) | [python](./leetcode_python/String/longest-uncommon-subsequence-i.py) | _O(min(a, b))_ | _O(1)_ | Easy     | | OK* 
 522| [Longest Uncommon Subsequence II](https://leetcode.com/problems/longest-uncommon-subsequence-ii/) | [python](./leetcode_python/String/longest-uncommon-subsequence-ii.py)  | _O(l * n^2)_ | _O(1)_ | Medium   |  Sort | AGAIN (not start) 
