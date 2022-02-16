@@ -31,8 +31,33 @@ Constraints:
 """
 
 # V0
+# IDEA : SLIDING DINDOW + 2 pointers
+# STEPS:
+#   -> step 1) loop over nums from idx=2 (for i in range(2, len(A)))
+#   -> step 2) use the other pointer j, "look back to idx = 0" via while loop
+#       -> if there is any case fit condition, add to result
+#   -> step 3) return ans
+class Solution(object):
+    def numberOfArithmeticSlices(self, A):
+        # edge case
+        if not A or len(A) < 3:
+            return 0
+        res = 0
+        j = 2
+        for i in range(2, len(A)):
+            # use the other pointer j, "look back to idx = 0" via while loop
+            j = i
+            while j-2 >= 0:
+                # if there is any case fit condition, add to result
+                if A[j] - A[j-1] == A[j-1] - A[j-2]:
+                    res += 1
+                    j -= 1
+                else:
+                    break
+        return res 
 
 # V0'
+# IDEA : for loop
 class Solution(object):
     def numberOfArithmeticSlices(self, A):
         # edge case
