@@ -1,15 +1,41 @@
 """
+
+# https://baihuqian.github.io/2018-08-09-moving-average-from-data-stream/
+# https://www.cnblogs.com/grandyang/p/5450001.html
+
+[LeetCode] 346. Moving Average from Data Stream
+ 
+
 Given a stream of integers and a window size, calculate the moving average of all integers in the sliding window.
 
-For example,
+Example:
+
 MovingAverage m = new MovingAverage(3);
 m.next(1) = 1
 m.next(10) = (1 + 10) / 2
 m.next(3) = (1 + 10 + 3) / 3
 m.next(5) = (10 + 3 + 5) / 3
+
 """
 
 # V0
+# IDEA : deque
+from collections import deque
+class MovingAverage(object):
+
+    def __init__(self, size):
+        self.size = size
+        self.q = deque([])
+
+    def next(self, val):
+        self.q.append(val)
+        self.size += 1
+        if len(self.q) > self.size:
+            self.q.pop(0)
+        return sum(self.q) / len(self.q)
+
+# V0'
+# IDEA : deque
 from collections import deque
 class MovingAverage(object):
 
