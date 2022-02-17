@@ -1,5 +1,74 @@
 # Progress
 
+
+# 2022-02-18
+- DOING:
+	- LC (goog_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
+	- ================
+		- LC (amz_, LC discuss sharing) : review
+			- https://leetcode.com/discuss/interview-question/1349954/Amazon-or-Bloomberg-or-Interview-questions-or-July-2020-July-2021
+	- ================
+	- LC general
+		- Tree
+		- =======
+		- bit manipulation
+			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
+		- bfs
+			- 127
+			- 133
+		- dfs
+			- 652
+			- 490
+		- greedy
+			- 358 (again, not start!)
+				- check `heappush, heappop`
+		- union find
+			- 721
+			- 547
+		- design
+			- all remain (not start)
+		- hashmap
+			- 036 (not start)
+		- graph
+			- 547 (not start)
+			- 210 (not start)
+			- 323 (not start)
+			- 207
+			- 210
+		- sliding window
+			- 300
+			- 491
+			- 673
+		- linked list
+			- 445
+		- stack
+			- 394
+			- 496
+			- 503
+			- 227
+		- topology sorting
+			- 269 (not start! again)
+		- Review
+			- (OK)
+			- =============
+			- (ing)
+		- SQL
+		- cheatsheet review
+			- (completed)
+			- (ing)
+				- dfs.md
+	- System Design
+		- Tinder design
+	- algorithm book (labu)
+		- note
+			- p.363 -
+	- system design book - an insider's guide (GOTOP)
+		- 1st read (ok)
+		- 2nd read : note
+			- p.1 - p.35
+		- review/note
+
 # 2022-02-17
 - DOING:
 	- LC (goog_)
