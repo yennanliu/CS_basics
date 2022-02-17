@@ -1,29 +1,45 @@
-# Given two strings A and B, find the minimum number of times A has to be repeated
-# such that B is a substring of it. If no such solution, return -1.
-#
-# For example, with A = "abcd" and B = "cdabcdab".
-#
-# Return 3, because by repeating A three times (“abcdabcdabcd”), B is a substring of it;
-# and B is not a substring of A repeated two times ("abcdabcd").
-#
-# Note:
-# The length of A and B will be between 1 and 10000.
+"""
+
+686. Repeated String Match
+Medium
+
+Given two strings a and b, return the minimum number of times you should repeat string a so that string b is a substring of it. If it is impossible for b​​​​​​ to be a substring of a after repeating it, return -1.
+
+Notice: string "abc" repeated 0 times is "", repeated 1 time is "abc" and repeated 2 times is "abcabc".
+
+ 
+
+Example 1:
+
+Input: a = "abcd", b = "cdabcdab"
+Output: 3
+Explanation: We return 3 because by repeating a three times "abcdabcdabcd", b is a substring of it.
+Example 2:
+
+Input: a = "a", b = "aa"
+Output: 2
+ 
+
+Constraints:
+
+1 <= a.length, b.length <= 104
+a and b consist of lowercase English letters.
+
+"""
 
 # V0
 # IDEA : BRUTE FORCE
-class Solution(object):
-    def repeatedSubstringPattern(self, s):
-        _sub = ""
-        for i in range(len(s)):
-            if len(_sub) != 0:
-                _multi = len(s) // len(_sub)
-                if  _sub * _multi == s:
-                    return True
-            _sub += s[i]
-        #print ("_sub = " + str(_sub))
-        return False
-
-# V0'
+# https://leetcode.com/problems/repeated-string-match/discuss/108090/Intuitive-Python-2-liner
+# -> if there is a sufficient solution, B must "inside" A
+# -> Let n be the answer, 
+# -> Let x be the theoretical lower bound, which is ceil(len(B)/len(A)).
+# -> the value of n can br ONLY "x" or "x + 1"
+# -> e.g. : in the case where len(B) is a multiple of len(A) like in A = "abcd" and B = "cdabcdab") and not more. Because if B is already in A * n, B is definitely in A * (n + 1).
+# --> So all we need to check whether are:
+#       -> 1) B in A * x
+#         or
+#       -> 2) B in A * (x+1)
+# -> return -1 if above contitions are not met
 class Solution(object):
     def repeatedStringMatch(self, A, B):
         sa, sb = len(A), len(B)
@@ -35,23 +51,57 @@ class Solution(object):
         return -1
 
 # V0'
-class Solution:
+class Solution(object):
+    def repeatedStringMatch(self, a, b):
+        # edge case
+        if not a and b:
+            return -1
+        if (not a and not b) or (a == b) or (b in a):
+            return 1
+        res = 1
+        sa = len(a)
+        sb = len(b)
+        #while res * sa <= 3 * max(sa, sb):  # this condition is OK as well
+        while (res-1) * sa <= 2 * max(sa, sb):
+            a_ = res * a
+            if b in a_:
+                return res
+            res += 1
+        return -1
+
+# V1
+# https://leetcode.com/problems/repeated-string-match/discuss/108090/Intuitive-Python-2-liner
+# IDEA : BRUTE FORCE
+# Let n be the answer, the minimum number of times A has to be repeated.
+# For B to be inside A, A has to be repeated sufficient times such that it is at least as long as B (or one more), hence we can conclude that the theoretical lower bound for the answer would be length of B / length of A.
+# Let x be the theoretical lower bound, which is ceil(len(B)/len(A)).
+# The answer n can only be x or x + 1 (in the case where len(B) is a multiple of len(A) like in A = "abcd" and B = "cdabcdab") and not more. Because if B is already in A * n, B is definitely in A * (n + 1).
+# Hence we only need to check whether B in A * x or B in A * (x + 1), and if both are not possible return -1.
+class Solution(object):
     def repeatedStringMatch(self, A, B):
-        r = math.ceil(len(B) / len(A))
-        for a in [r, r + 1]:
-            if B in A * a:
-                return a
+        t = -(-len(B) // len(A)) # Equal to ceil(len(b) / len(a))
+        return t * (B in A * t) or (t + 1) * (B in A * (t + 1)) or -1
+
+# V1
+# https://leetcode.com/problems/repeated-string-match/discuss/108090/Intuitive-Python-2-liner
+# IDEA : BRUTE FORCE
+# Let n be the answer, the minimum number of times A has to be repeated.
+# For B to be inside A, A has to be repeated sufficient times such that it is at least as long as B (or one more), hence we can conclude that the theoretical lower bound for the answer would be length of B / length of A.
+# Let x be the theoretical lower bound, which is ceil(len(B)/len(A)).
+# The answer n can only be x or x + 1 (in the case where len(B) is a multiple of len(A) like in A = "abcd" and B = "cdabcdab") and not more. Because if B is already in A * n, B is definitely in A * (n + 1).
+# Hence we only need to check whether B in A * x or B in A * (x + 1), and if both are not possible return -1.
+class Solution(object):
+    def repeatedStringMatch(self, A, B):
+        times = -(-len(B) // len(A)) # Equal to ceil(len(b) / len(a))
+        for i in range(2):
+          if B in (A * (times + i)):
+            return times + i
         return -1
 
 # V1 
 # http://bookshadow.com/weblog/2017/10/01/leetcode-repeated-string-match/
 class Solution(object):
     def repeatedStringMatch(self, A, B):
-        """
-        :type A: str
-        :type B: str
-        :rtype: int
-        """
         sa, sb = len(A), len(B)
         x = 1
         while (x - 1) * sa <= 2 * max(sa, sb):

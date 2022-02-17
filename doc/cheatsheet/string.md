@@ -359,3 +359,49 @@ class Solution(object):
             res += ("".join(s_[i:i+k]) + "-")
         return res.strip("-")
 ```
+
+### 2-8) Repeated String Match
+```python
+# LC 686. Repeated String Match
+# V0
+# IDEA : BRUTE FORCE
+# https://leetcode.com/problems/repeated-string-match/discuss/108090/Intuitive-Python-2-liner
+# -> if there is a sufficient solution, B must "inside" A
+# -> Let n be the answer, 
+# -> Let x be the theoretical lower bound, which is ceil(len(B)/len(A)).
+# -> the value of n can br ONLY "x" or "x + 1"
+# -> e.g. : in the case where len(B) is a multiple of len(A) like in A = "abcd" and B = "cdabcdab") and not more. Because if B is already in A * n, B is definitely in A * (n + 1).
+# --> So all we need to check whether are:
+#       -> 1) B in A * x
+#         or
+#       -> 2) B in A * (x+1)
+# -> return -1 if above contitions are not met
+class Solution(object):
+    def repeatedStringMatch(self, A, B):
+        sa, sb = len(A), len(B)
+        x = 1
+        while (x - 1) * sa <= 2 * max(sa, sb):
+            if B in A * x: 
+                return x
+            x += 1
+        return -1
+
+# V0'
+class Solution(object):
+    def repeatedStringMatch(self, a, b):
+        # edge case
+        if not a and b:
+            return -1
+        if (not a and not b) or (a == b) or (b in a):
+            return 1
+        res = 1
+        sa = len(a)
+        sb = len(b)
+        #while res * sa <= 3 * max(sa, sb):  # this condition is OK as well
+        while (res-1) * sa <= 2 * max(sa, sb):
+            a_ = res * a
+            if b in a_:
+                return res
+            res += 1
+        return -1
+```
