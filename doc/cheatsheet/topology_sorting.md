@@ -10,6 +10,10 @@
 
 
 ### 0-1) Types
+- Courses
+    - LC 207, LC 210
+- Alien Dictionary
+    - LC 269
 
 ### 0-2) Pattern
 
