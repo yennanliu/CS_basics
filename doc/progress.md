@@ -5,6 +5,10 @@
 - DOING:
 	- LC (goog_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
+			- (pdf : p.1)
+				- 686 (again!!)
+			- (pdf : p.2)
+				- 298
 	- ================
 		- LC (amz_, LC discuss sharing) : review
 			- https://leetcode.com/discuss/interview-question/1349954/Amazon-or-Bloomberg-or-Interview-questions-or-July-2020-July-2021
@@ -20,6 +24,7 @@
 		- dfs
 			- 652
 			- 490
+			- 079
 		- greedy
 			- 358 (again, not start!)
 				- check `heappush, heappop`
@@ -41,6 +46,7 @@
 			- 491
 			- 673
 		- linked list
+			- 206
 			- 445
 		- stack
 			- 394
