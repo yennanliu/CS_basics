@@ -56,7 +56,7 @@ There may be multiple valid order of letters, return any one of them is fine.
 # https://blog.csdn.net/qq_37821701/article/details/108807236
 # IDEA : Topological sorting (official solution)
 class Solution:
-    def alienOrder(self, words: List[str]) -> str:
+    def alienOrder(self, words):
         # create adject matrx of the graph
         adj_list = collections.defaultdict(set)
         # create initial indegrees 0 for all distinct words
@@ -107,6 +107,131 @@ class Solution:
             return ''
         
         return "".join(ans)
+
+
+# V1''''
+# https://leetcode.jp/leetcode-269-alien-dictionary-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90/
+# JAVA
+# // 用于统计排在每种字母后面的所有字母
+# Map<Character, List<Character>> map = new HashMap<>();
+# // 拓扑排序用的访问数组
+# int[] visited = new int[26];
+# // 用于统计words中存在哪些字母
+# boolean[] has = new boolean[26];
+# public String alienOrder(String[] words) {
+#     // 统计words中存在哪些字母
+#     for(int i=0;i<words.length;i++){
+#         String current=words[i];
+#         for(int j=0;j<current.length();j++){
+#             has[current.charAt(j)-'a']=true;
+#         }
+#     }
+#     // 相邻2单词比较，统计排在每种字母后面的所有字母
+#     for(int i=1;i<words.length;i++){
+#         // 前单词
+#         String pre = words[i-1];
+#         // 当前单词
+#         String current=words[i];
+#         // 单词下标
+#         int index=0;
+#         // 比较2单词同一下标
+#         while(index<pre.length() && index<current.length()){
+#             // 前单词当前字符
+#             char p = pre.charAt(index);
+#             // 当前单词当前字符
+#             char c = current.charAt(index);
+#             // 2字符不同
+#             if(p!=c){
+#                 // 将当前字母放入前字母的后续列表中
+#                 List<Character> l=map.getOrDefault(p,new ArrayList<>());
+#                 l.add(c);
+#                 map.put(p, l);
+#                 break;
+#             }
+#             index++;
+#         }
+#     }
+#     // 返回结果
+#     String res="";
+#     // 循环dfs每种字符
+#     for(int i=0;i<26;i++){
+#         // 如果该字母没有出现过，跳过
+#         if(!has[i]) continue;
+#         // 如果存在非法排序，返回空
+#         if(!dfs((char)(i+'a'))) return res;
+#     }
+#     // 因为拓扑排序是反向遍历，所以将结果倒序打印出来。
+#     for(int i=resList.size()-1;i>=0;i--){
+#         res+=resList.get(i);
+#     }
+#     return res;
+# }
+# List<Character> resList = new ArrayList<>();
+# // 拓扑排序（dfs）
+# boolean dfs(char c){
+#     if(visited[c-'a']==1) return false;
+#     if(visited[c-'a']==2) return true;
+#     visited[c-'a']=1;
+#     List<Character> list = map.get(c);
+#     if(list!=null) {
+#         for(Character next : list){
+#             if(!dfs(next)) return false;
+#         }
+#     }
+#     visited[c-'a']=2;
+#     resList.add(c);
+#     return true;
+# }
+
+
+# V1
+# https://www.jiuzhang.com/solution/alien-dictionary/
+# IDEA : Topological sorting
+class Solution:
+    def alienOrder(self, words):
+        # Write your code here
+        from collections import defaultdict
+        from collections import deque
+        import heapq
+        
+        graph = {}
+
+        # initial graph
+        for w in words:
+            for c in w:
+                graph[c] = set()
+        
+        for i in range(1, len(words)):
+            for j in range(min(len(words[i]), len(words[i-1]))):
+                if words[i-1][j] != words[i][j]:
+                    graph[words[i-1][j]].add(words[i][j])
+                    break
+
+        indegree = defaultdict(int)
+        for g in graph:
+            for ne in graph[g]:
+                indegree[ne] += 1
+
+        q = [w for w in graph if indegree[w] == 0]
+        heapq.heapify(q)
+
+        order = []
+        visited = set()
+        while q:
+            # n = q.pop()
+            n = heapq.heappop(q)
+
+            if n in visited:
+                continue
+            visited.add(n)
+            order.append(n)
+
+            for ne in graph[n]:
+                indegree[ne] -= 1
+                if indegree[ne] == 0:
+                    # q.appendleft(ne)
+                    heapq.heappush(q, ne)
+        return ''.join(order) if len(order) == len(graph) else ''
 
 # V1'
 # https://www.cnblogs.com/lightwindy/p/8531872.html
@@ -294,6 +419,7 @@ class Solution(object):
                 if not pre[b]:
                     charToProcess.add(b)
         return order * (set(order) == chars)
+
 
 # V1''''
 # https://blog.csdn.net/a921122/article/details/60407972
@@ -526,4 +652,3 @@ class Solution2(object):
             # So it is cyclic.
             return True
         return False
-
