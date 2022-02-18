@@ -8,7 +8,7 @@
 			- (pdf : p.1)
 				- 686 (again!!)
 			- (pdf : p.2)
-				- 298
+				- 298 (ok)
 	- ================
 		- LC (amz_, LC discuss sharing) : review
 			- https://leetcode.com/discuss/interview-question/1349954/Amazon-or-Bloomberg-or-Interview-questions-or-July-2020-July-2021

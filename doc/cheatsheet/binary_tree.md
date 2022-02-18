@@ -127,3 +127,59 @@ class Solution:
         dfs(root, [str(root.val)])
         return ans
 ```
+
+### 2-4) inary Tree Longest Consecutive Sequence
+```python
+# LC 298 Binary Tree Longest Consecutive Sequence
+# V0
+# IDEA : DFS
+class Solution(object):
+    def longestConsecutive(self, root):
+        if not root:
+            return 0
+
+        self.result = 0
+        self.helper(root, 1)
+
+        return self.result
+
+    def helper(self, root, curLen):
+        self.result = curLen if curLen > self.result else self.result
+        if root.left:
+            if root.left.val == root.val + 1:
+                self.helper(root.left, curLen + 1)
+            else:
+                self.helper(root.left, 1)
+        if root.right:
+            if root.right.val == root.val + 1:
+                self.helper(root.right, curLen + 1)
+            else:
+                self.helper(root.right, 1)
+
+# V0'
+# IDEA : BFS
+class Solution(object):
+    def longestConsecutive(self, root):
+        if root is None:
+            return 0
+
+        stack = list()
+        stack.append((root, 1))
+        maxLen = 1
+        while len(stack) > 0:
+            node, pathLen = stack.pop()
+            if node.left is not None:
+                if node.val + 1 == node.left.val:
+                    stack.append((node.left, pathLen + 1))
+                    maxLen = max(maxLen, pathLen + 1)
+                else:
+                    stack.append((node.left, 1))
+            if node.right is not None:
+                if node.val + 1 == node.right.val:
+                    stack.append((node.right, pathLen + 1))
+                    maxLen = max(maxLen, pathLen + 1)
+                else:
+                    stack.append((node.right, 1))
+
+        return maxLen
+```
