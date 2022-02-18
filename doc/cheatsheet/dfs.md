@@ -731,3 +731,34 @@ class Solution(object):
         if root.right:
             self.dfs(root.right, target, res, path + [root.right.val])
 ```
+
+
+### 2-7) Clone graph
+```python
+# 133 Clone graph
+# note : there is also a BFS solution
+# V0
+# IDEA : DFS
+# NOTE :
+#  -> 1) we init node via : node_copy = Node(node.val, [])
+#  -> 2) we copy graph via dict
+class Solution(object):
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+        node_copy = self.dfs(node, dict())
+        return node_copy
+    
+    def dfs(self, node, hashd):
+        if not node: return None
+        if node in hashd: return hashd[node]
+        node_copy = Node(node.val, [])
+        hashd[node] = node_copy
+        for n in node.neighbors:
+            n_copy = self.dfs(n, hashd)
+            if n_copy:
+                node_copy.neighbors.append(n_copy)
+        return node_copy
+```
