@@ -254,74 +254,36 @@ class LinkedList:
 
 #### 1-1-2) plus one on linked list
 
-#### 1-1-3) Reverse linked list (recursion)
-```java
-// java
-//---------------------------
-// recursion
-//---------------------------
-// algorithm book (labu) p.290
-ListNode reverse(ListNode head){
-    // base case, if not a node or only 1 node -> return itself
-    if (head == null || head.next == null){
-        return head;
-    }
-    ListNode last = reverse(head.next);
-    head.next.next = head;
-    // point end node to null
-    head.next = null;
-    return last;
-}
-```
-
-#### 1-1-4) Reverse linked list (iteration)
+#### 1-1-3) Reverse linked list (iteration)
 ```python
 # python
 #-------------------------
 # iteration
 #-------------------------
 # LC 206
+
 # V0
 # IDEA : Linkedlist basics
-class Solution:
-    def reverseList(self, head):
-        if not head:
-            return head
-        ### NOTE : we define _prev, _cur first
-        _prev = None
-        _cur = head
-        ### NOTE : while tbere is still node in _cur (but not head)
-        while _cur:
-            ### STEP 1) get _next
-            _next = _cur.next
-            ### STEP 2) link _cur to _prev
-            _cur.next = _prev 
-            ### STEP 3) assign _cur to _prev (make _prev as _cur)
-            _prev = _cur
-            ### STEP 4) assign _next to _cur (make _cur as _next)
-            _cur = _next 
-        # return the head
-        return _prev
-        #return _prev # this one works as well
-
-# V0'
+# STEPS)
+# -> STEP 1) cache "next"
+# -> STEP 2) point head.next to prev
+# -> STEP 3) move prev to head
+# -> STEP 4) move head to "next"
 class Solution(object):
     def reverseList(self, head):
+        # edge case
         if not head:
-            return head
-        ### NOTE : we define prev = None
+            return
         prev = None
-        cur = head
-        while cur:
-            _next = cur.next
-            #print ("prev = " + str(prev))
-            cur.next = prev
-            prev = cur
-            cur = _next
-        """
-        NOTE !!!
-        -> we need to return prev, instead of head or others, since prev is the "NEW head" of updated linkedlist now
-        """
+        while head:
+            # cache "next"
+            tmp = head.next
+            # point head.next to prev
+            head.next = prev
+            # move prev to head
+            prev = head
+            # move head to "next"
+            head = tmp
         return prev
 ```
 
@@ -347,6 +309,26 @@ ListNode reverse(ListNode a){
 
     // return reversed nodes
     return pre;
+}
+```
+
+#### 1-1-4) Reverse linked list (recursion)
+```java
+// java
+//---------------------------
+// recursion
+//---------------------------
+// algorithm book (labu) p.290
+ListNode reverse(ListNode head){
+    // base case, if not a node or only 1 node -> return itself
+    if (head == null || head.next == null){
+        return head;
+    }
+    ListNode last = reverse(head.next);
+    head.next.next = head;
+    // point end node to null
+    head.next = null;
+    return last;
 }
 ```
 
