@@ -35,6 +35,10 @@ All the words in wordList are unique.
 
 # V0
 # IDEA : BFS
+# NOTE !!! 
+#  1) since we use BFS, so the solution will be shortest one
+#  2) from problem : All the words in wordList are unique.
+#     -> so there is ONLY one possibility for next word within each iteration
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):
         # we get non-duplicated list via set here
@@ -46,8 +50,10 @@ class Solution(object):
             word, length = bfs.popleft()
             if word == endWord:
                 return length
+            """
             ### NOTE : we looping elements in bfs here
             ### NOTE : we have 2 looping here :  for i in range(len(word)), for c in "abcdefghijklmnopqrstuvwxyz"
+            """
             for i in range(len(word)):
                 for c in "abcdefghijklmnopqrstuvwxyz":
                     newWord = word[:i] + c + word[i + 1:]
@@ -87,6 +93,7 @@ class Solution(object):
 ### Test case : dev 
 
 # V1'
+# IDEA : BFS
 # https://leetcode.com/problems/word-ladder/discuss/40729/Compact-Python-solution
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):
@@ -105,6 +112,7 @@ class Solution(object):
         return 0
 
 # V1''
+# IDEA : BFS
 # https://leetcode.com/problems/word-ladder/discuss/157376/Python-(BFS)-tm
 class Solution(object):
     def ladderLength(self, start, end, arr):
@@ -126,6 +134,7 @@ class Solution(object):
         return 0
 
 # V1 
+# IDEA : BFS
 # https://blog.csdn.net/fuxuemingzhu/article/details/82903681
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):
