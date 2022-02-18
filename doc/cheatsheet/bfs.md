@@ -1,6 +1,7 @@
 # BFS
 - search algorithm
 - Shortest path searching
+    - LC 127
 - Breadth first, then deep
 - Usually use data structure such as `queue, array`
 
@@ -172,25 +173,37 @@ class Solution(object):
 
 ### 2-2) Word Ladder
 ```python
-# 127 Word Ladder
+# LC 227 : Word Ladder
+# V0
+# IDEA : BFS
+# NOTE !!! 
+#  1) since we use BFS, so the solution will be shortest one
+#  2) from problem : All the words in wordList are unique.
+#     -> so there is ONLY one possibility for next word within each iteration
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):
-
+        # we get non-duplicated list via set here
         wordset = set(wordList)
         bfs = collections.deque()
+        ### NOTE : we use (beginWord, 1) data structure for not only get current word, but also sequence length
         bfs.append((beginWord, 1))
         while bfs:
             word, length = bfs.popleft()
             if word == endWord:
                 return length
+            """
+            ### NOTE : we looping elements in bfs here
+            ### NOTE : we have 2 looping here :  for i in range(len(word)), for c in "abcdefghijklmnopqrstuvwxyz"
+            """
             for i in range(len(word)):
                 for c in "abcdefghijklmnopqrstuvwxyz":
                     newWord = word[:i] + c + word[i + 1:]
+                    # if newword is not qeual to original word as well (newWord != word )
                     if newWord in wordset and newWord != word:
+                        # note : we need to remove the used word from wordset
                         wordset.remove(newWord)
                         bfs.append((newWord, length + 1))
         return 0
-
 ```
 ### 2-3) Closest Leaf in a Binary Tree
 ```python
