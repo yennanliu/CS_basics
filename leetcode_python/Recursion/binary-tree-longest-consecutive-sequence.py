@@ -1,28 +1,49 @@
-# Given a binary tree, find the length of the longest consecutive sequence path.
-#
-# The path refers to any sequence of nodes from some starting node to any node in the tree along the parent-child connections. The longest consecutive path need to be from parent to child (cannot be the reverse).
-#
-# For example,
-#
-#    1
-#     \
-#      3
-#     / \
-#    2   4
-#         \
-#          5
-# Longest consecutive sequence path is 3-4-5, so return 3.
-#
-#    2
-#     \
-#      3
-#     / 
-#    2    
-#   / 
-#  1
-# Longest consecutive sequence path is 2-3,not3-2-1, so return 2.
+"""
+
+# https://baihuqian.github.io/2018-08-01-binary-tree-longest-consecutive-sequence/
+
+Leetcode 298: Binary Tree Longest Consecutive Sequence
+
+Question
+Given a binary tree, find the length of the longest consecutive sequence path.
+
+The path refers to any sequence of nodes from some starting node to any node in the tree along the parent-child connections. The longest consecutive path need to be from parent to child (cannot be the reverse).
+
+Example 1:
+
+Input:
+
+   1
+    \
+     3
+    / \
+   2   4
+        \
+         5
+
+Output: 3
+
+Explanation: Longest consecutive sequence path is 3-4-5, so return 3.
+Example 2:
+
+Input:
+
+   2
+    \
+     3
+    /
+   2    
+  /
+ 1
+
+Output: 2
+
+Explanation: Longest consecutive sequence path is 2-3, not 3-2-1, so return 2.
+
+"""
 
 # V0
+# IDEA : DFS
 class Solution(object):
     def longestConsecutive(self, root):
         if not root:
@@ -45,6 +66,62 @@ class Solution(object):
                 self.helper(root.right, curLen + 1)
             else:
                 self.helper(root.right, 1)
+
+# V0'
+# IDEA : BFS
+class Solution(object):
+    def longestConsecutive(self, root):
+        if root is None:
+            return 0
+
+        stack = list()
+        stack.append((root, 1))
+        maxLen = 1
+        while len(stack) > 0:
+            node, pathLen = stack.pop()
+            if node.left is not None:
+                if node.val + 1 == node.left.val:
+                    stack.append((node.left, pathLen + 1))
+                    maxLen = max(maxLen, pathLen + 1)
+                else:
+                    stack.append((node.left, 1))
+            if node.right is not None:
+                if node.val + 1 == node.right.val:
+                    stack.append((node.right, pathLen + 1))
+                    maxLen = max(maxLen, pathLen + 1)
+                else:
+                    stack.append((node.right, 1))
+
+        return maxLen
+
+# V0''
+# IDEA : BFS
+# TODO : validate this approach
+# BFS
+# class Solution(object):
+#     def longestConsecutive(self, root):
+#         # edge case
+#         if not root:
+#             return 0
+#         cache = []
+#         q = [[cache, root]]
+#         res = []
+#         while q:
+#             for i in range(len(q)):
+#                 cache, tmp = q.pop(0)
+#                 if cache:
+#                     if tmp.val = cache[-1] + 1:
+#                         cache.append(tmp.val)
+#                         res = max(res, len(cache))
+#                     else:
+#                         res = max(res, len(cache))
+#                         cache = []
+#                 if tmp.left:
+#                     q.append([cache, tmp.left])
+#
+#                 if tmp.right:
+#                     q.append([cache, tmp.right])
+#         return res
 
 # V1 
 # https://www.jianshu.com/p/ebabdeed9bca
@@ -77,6 +154,34 @@ class Solution(object):
                 self.helper(root.right, 1)
 
 ### Test case : dev
+
+# V1'
+# IDEA : BFS
+# https://baihuqian.github.io/2018-08-01-binary-tree-longest-consecutive-sequence/
+class Solution(object):
+    def longestConsecutive(self, root):
+        if root is None:
+            return 0
+
+        stack = list()
+        stack.append((root, 1))
+        maxLen = 1
+        while len(stack) > 0:
+            node, pathLen = stack.pop()
+            if node.left is not None:
+                if node.val + 1 == node.left.val:
+                    stack.append((node.left, pathLen + 1))
+                    maxLen = max(maxLen, pathLen + 1)
+                else:
+                    stack.append((node.left, 1))
+            if node.right is not None:
+                if node.val + 1 == node.right.val:
+                    stack.append((node.right, pathLen + 1))
+                    maxLen = max(maxLen, pathLen + 1)
+                else:
+                    stack.append((node.right, 1))
+
+        return maxLen
 
 # V1'
 # https://eugenejw.github.io/2017/08/leetcode-298
