@@ -176,6 +176,110 @@ assert s.solve([["X","X","O"],["X","X","X"]]) == [["X","X","O"],["X","X","X"]]
 assert s.solve([["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]) ==  [["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]
 assert s.solve([["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","X","X","X"]]) ==  [["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","X","X","X"]]
 
+# V1
+# IDEA : UNION FIND
+# https://leetcode.com/problems/surrounded-regions/discuss/1764075/Python-or-Union-Find
+class DSU:
+    def __init__(self, n):
+        self.root = list(range(n))
+        self.rank = [0]*n
+    
+    def find(self, x):
+        if self.root[x] != x:
+            self.root[x] = self.find(self.root[x])
+        return self.root[x]
+    
+    def union(self, x, y):
+        rx, ry = self.find(x), self.find(y)
+        
+        if rx == ry:
+            return False
+        
+        if self.rank[rx] == self.rank[ry]:
+            self.rank[ry] += 1
+        
+        if self.rank[rx]  < self.rank[ry]:
+            self.root[rx] = ry
+        else:
+            self.root[ry] = rx
+        
+        return True
+        
+class Solution:
+    def solve(self, board):
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        
+        #use union find to group the Os
+        #the Os on the edge has higher rank
+        #in the end, check each O cell, if the root of the cell is not in the edge, flip to x
+        
+        m, n = len(board), len(board[0])
+        dsu = DSU(m*n)
+        edges = set()
+        for i in range(m):
+            for j in range(n):
+                if i == 0 or i == m - 1 or j == 0 or j == n - 1:
+                    dsu.rank[n*i + j] = float("inf")
+                    edges.add(n*i + j)
+        
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == "X": continue
+                for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:
+                    if 0 <= ni < m and 0 <= nj < n and board[ni][nj] == "O":
+                        dsu.union(n*i + j, n*ni + nj)
+        
+        
+        for i in range(m):
+            for j in range(n):
+                if dsu.find(n*i + j) not in edges:
+                    board[i][j] = "X"
+        
+        return board
+
+# V1
+# IDEA : UNION FIND
+# https://leetcode.com/problems/surrounded-regions/discuss/1371795/python3-%2B-Union-Find
+class Solution:
+    def solve(self, board):
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        f = {} #dic index : root
+        
+        def find(x):
+            f.setdefault(x, x)
+            if f[x] != x:
+                f[x] = find(f[x])
+            return f[x]
+        
+        def union(x, y):
+            f[find(y)] = find(x)
+      
+        if not board or not board[0]:
+            return
+        row = len(board)
+        col = len(board[0])
+        dummy = row * col
+        #dummy is Point O colletion dont' need to be changed(need to be remained)
+        for i in range(row):
+            for j in range(col):
+                if board[i][j] == "O":
+                    if i == 0 or i == row - 1 or j == 0 or j == col - 1:
+                        union(i * col + j, dummy)#need to be remained O
+                    else:
+                        for x, y in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                            if board[i + x][j + y] == "O":#union all connected O
+                                union(i * col + j, (i + x) * col + (j + y))
+        for i in range(row):
+            for j in range(col):
+                if find(dummy) == find(i * col + j):#Point O colletion dont' need to be changed 
+                    board[i][j] = "O"
+                else:
+                    board[i][j] = "X"
+
 # V1'
 # https://leetcode.com/problems/surrounded-regions/discuss/475014/python3-BFS-and-DFS
 # IDEA : DFS
