@@ -716,3 +716,51 @@ class Solution(object):
                     break
         return res
 ```
+
+### 2-9) Sentence Similarity
+```python
+# LC 734. Sentence Similarity
+# V0'
+# https://zxi.mytechroad.com/blog/hashtable/leetcode-734-sentence-similarity/
+import collections
+class Solution(object):
+    def areSentencesSimilar(self, words1, words2, pairs):
+        if len(words1) != len(words2): return False
+        similars = collections.defaultdict(set)
+        for w1, w2 in pairs:
+            similars[w1].add(w2)
+            similars[w2].add(w1)
+        for w1, w2 in zip(words1, words2):
+            if w1 != w2 and w2 not in similars[w1]:
+                return False
+        return True
+
+# V0
+# IDEA : array op
+#   -> Apart from edge cases
+#   -> there are cases we need to consider
+#     -> 1) if sentence1[i] == sentence2[i]
+#     -> 2) if sentence1[i] != sentence2[i] and
+#           -> [sentence1[i], sentence2[i]] in similarPairs
+#           -> [sentence2[i], sentence1[i]] in similarPairs
+class Solution(object):
+    def areSentencesSimilar(self, sentence1, sentence2, similarPairs):
+        # edge case
+        if sentence1 == sentence2:
+            return True
+        if len(sentence1) != len(sentence2):
+            return False
+        for i in range(len(sentence1)):
+            tmp = [sentence1[i], sentence2[i]]
+            """
+            NOTE : below condition
+                1) sentence1[i] != sentence2[i]
+                  AND
+                2) (tmp not in similarPairs and tmp[::-1] not in similarPairs)
+
+                -> return false
+            """
+            if sentence1[i] != sentence2[i] and (tmp not in similarPairs and tmp[::-1] not in similarPairs):
+                return False
+        return True
+```
