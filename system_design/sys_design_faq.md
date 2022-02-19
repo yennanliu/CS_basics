@@ -7,6 +7,10 @@
 	- data is `NOT structure`. i.e. : no relational data
 	- need to `serialize and deserialize` on `JSON, XML, YAML` data
 	- need to storage large scale data
+	- ref
+		- https://docs.microsoft.com/zh-tw/dotnet/architecture/cloud-native/relational-vs-nosql-data
+		- Cassandra
+			- https://dotblogs.com.tw/chris0920/2010/09/21/17835
 - when SQL ?
 
 ### 2) Vertical VS horizontal scale ?
