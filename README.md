@@ -167,7 +167,9 @@
 ||md5 | [Python](./algorithm/python/md5.py) | | | AGAIN| 
 ||Union Find | [Python 1](./algorithm/python/union_find.py), [Python 2](./algorithm/python/union_find_if_cyclic.py), [Java 1](./leetcode_java/src/main/java/AlgorithmJava/UnionFind.java) | | | AGAIN| 
 ||Dynamic programming|[JS 1](./algorithm/js/dp_demo_1.js), [fibonacci_dp JS](./algorithm/js/fibonacci_dp.js) | | | AGAIN|
-||Dijkstra algorithm|[Python](./algorithm/python/dijkstra.py),[Java](./algorithm/java/DijkstraSP.java)||| AGAIN***|
+||Dijkstra|[Python](./algorithm/python/dijkstra.py),[Java](./algorithm/java/DijkstraSP.java)||| AGAIN***|
+||Floyd-Warshall|[Python](./algorithm/python/floyd_warshall.py)||| not start
+||Bellman-Ford|[Python](./algorithm/python/bellman_ford.py)||| not start
 ||Quick Find |[Python](./algorithm/python/quick_find.py), [Java](./algorithm/java/QuickFindUF.java) | init : O(N), union : O(N), find : O(1)|simple, but slow |AGAIN| 
 ||Quick Union | [Java](./algorithm/java/QuickUnionUF.java) | init : O(N), union : O(N), find : O(N)| lazy approach, route compression, optimized Quick Find|AGAIN| 
 ||Quick Union (Improvements) || lazy approach, path compression|AGAIN| 
