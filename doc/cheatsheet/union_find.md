@@ -11,7 +11,7 @@
     - build 2 API:
         - `Union`
         - `connected`
-        - find : do "route compression" in it. so union and connected API will with `O(1)` time complexity
+        - find : once "route compression" is applied, then union and connected API will be `O(1)` time complexity
     - parent : array, record "parent node"
     - size : array, record "weight of each node"
 - Use case
@@ -263,4 +263,51 @@ class Solution(object):
             if nums[x] >= 0:
                 ans = max(ans, search(x))
         return ans
+```
+
+### 2-7) Sentence Similarity II
+```python
+# LC 737. Sentence Similarity II
+# NOTE : there is also DFS, BFS approaches
+# V0'''
+# IDEA : UNION FIND
+class Solution(object):
+    def areSentencesSimilarTwo(self, words1, words2, pairs):
+        if len(words1) != len(words2):
+            return False
+        
+        parent = dict()
+        
+        def add(x):
+            if x not in parent:
+                parent[x] = x
+                
+        def find(x):
+            if x == parent[x]:
+                return x
+            parent[x] = find(parent[x])
+            return parent[x]
+        
+        def union(x, y):
+            parentX = find(x)
+            parentY = find(y)
+            if parentX == parentY:
+                return
+            parent[parentY] = parentX
+            
+        for a, b in pairs:
+            add(a)
+            add(b)
+            union(a, b)
+            
+        # print parent
+        for word1, word2 in zip(words1, words2):
+            # print word1, word2
+            if word1 == word2:
+                continue
+            if word1 not in parent or word2 not in parent:
+                return False
+            if find(word1) != find(word2):
+                return False
+        return True
 ```
