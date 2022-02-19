@@ -311,3 +311,8 @@ class Solution(object):
                 return False
         return True
 ```
+
+### 2-8) Number of Connected Components in an Undirected Graph
+```python
+# LC 323 Number of Connected Components in an Undirected Graph
+```

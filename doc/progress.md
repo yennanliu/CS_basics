@@ -31,6 +31,8 @@
 		- hashmap
 			- 036 (not start)
 		- graph
+			- 130 (Union Find)
+			- 261 (Union Find) 
 			- 547 (Union Find) (not start)
 			- 323 (Union Find) (not start)
 			- 210 (Topological Sort) not start)
