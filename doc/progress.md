@@ -31,11 +31,11 @@
 		- hashmap
 			- 036 (not start)
 		- graph
-			- 547 (not start)
-			- 210 (not start)
-			- 323 (not start)
-			- 207
-			- 210
+			- 547 (Union Find) (not start)
+			- 323 (Union Find) (not start)
+			- 210 (Topological Sort) not start)
+			- 207 (Topological Sort)
+			- 210 (Topological Sort)
 		- sliding window
 			- 300
 			- 491
@@ -55,9 +55,6 @@
 			- (ing)
 		- SQL
 		- cheatsheet review
-			- (completed)
-			- (ing)
-				- dfs.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
