@@ -5,9 +5,10 @@
 	- LC (goog_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
 			- (pdf : p.2)
+				- 737
 	- ================
-		- LC (amz_, LC discuss sharing) : review
-			- https://leetcode.com/discuss/interview-question/1349954/Amazon-or-Bloomberg-or-Interview-questions-or-July-2020-July-2021
+		- LC (amz_, latest 6 months) :
+			- /LC-amazon-6-mointh.pdf
 	- ================
 	- LC general
 		- Tree
