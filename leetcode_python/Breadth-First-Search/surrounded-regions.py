@@ -31,7 +31,64 @@ board[i][j] is 'X' or 'O'.
 
 """
 
-# V0 
+# V0
+# IDEA : BFS
+class Solution(object):
+    def solve(self, board):
+        # edge case
+        if not board:
+            return board
+
+        l = len(board)
+        w = len(board[0])
+        """
+        NOTE : z_list : get "O" in boarder
+        """
+        z_list = []
+        for i in range(l):
+            for j in range(w):
+                if board[i][j] == "O":
+                    if ( i == l-1 or i == 0  or j == 0 or j == w-1)  and (board[i][j] == "O"):
+                    #if i in [0, l-1] or j in [0, w-1] and board[i][j] == "O":
+                        z_list.append([i, j])
+
+        # bfs
+        #print ("z_list = " + str(z_list))
+        moves = [[0,1],[0,-1],[1,0],[-1,0]]
+        """
+        NOTE !!!
+            1) we use bfs go through z_list (list of "O" at boarder)
+            2) if there is [y, x] with condition : 0 <= x < w and 0 <= y < l and board[y][x] == "O"
+                -> we lebel them as "#"
+                -> since those points CONNECT to "O" at boarder,
+                -> they SHOULD NOT be transformed to "X"
+            3) we use moves for each move ([y + dy, x + dx])
+        """
+        q = z_list
+        while q:
+            y, x = q.pop(0)
+            if 0 <= x < w and 0 <= y < l and board[y][x] == "O":
+                board[y][x] = "#"
+                for dy, dx in moves:
+                    q.append([y + dy, x + dx])
+
+        """
+        NOTE !!!
+            2 op here
+                1) if board[i][j] == "#" -> make them as "O"
+                    -> since they connect to "O" at boarder
+                2) if board[i][j] == "O" -> make them as "X"
+                    -> since they are "O" not connect to any "O" at boarder
+        """
+        for i in range(l):
+            for j in range(w):
+                if board[i][j] == "#":
+                    board[i][j] = "O"
+                elif board[i][j] == "O":
+                    board[i][j] = "X"
+        return board
+
+# V0'
 # IDEA : BFS
 class Solution(object):
     def solve(self, board):
