@@ -39,6 +39,7 @@
 			- 207 (Topological Sort)
 			- 210 (Topological Sort)
 			- 743 (dijkstra) (not start)
+			- 787 (dijkstra) (not start)
 		- sliding window
 			- 300
 			- 491
