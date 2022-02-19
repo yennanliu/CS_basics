@@ -732,7 +732,6 @@ class Solution(object):
             self.dfs(root.right, target, res, path + [root.right.val])
 ```
 
-
 ### 2-7) Clone graph
 ```python
 # 133 Clone graph
@@ -761,4 +760,40 @@ class Solution(object):
             if n_copy:
                 node_copy.neighbors.append(n_copy)
         return node_copy
+```
+
+### 2-8) Sentence Similarity II
+```python
+# LC 737. Sentence Similarity II
+# NOTE : there is also union-find solution
+# V0
+# IDEA : DFS
+from collections import defaultdict
+class Solution(object):
+    def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
+        # helper func
+        def dfs(w1, w2, visited):
+            for j in d[w2]:
+                if w1 == w2:
+                    return True
+                elif j not in visited:
+                    visited.add(j)
+                    if dfs(w1, j, visited):
+                        return True
+            return False
+        
+        # edge case
+        if len(sentence1) != len(sentence2):
+            return False
+      
+        d = defaultdict(list)
+        for a, b in similarPairs:
+            d[a].append(b)
+            d[b].append(a)
+            
+        for i in range(len(sentence1)):
+            visited =  set([sentence2[i]])
+            if sentence1[i] != sentence2[i] and not dfs(sentence1[i],  sentence2[i], visited):
+                return False
+        return True
 ```

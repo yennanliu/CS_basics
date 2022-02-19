@@ -48,6 +48,92 @@ xi and yi consist of English letters.
 """
 
 # V0
+# IDEA : DFS
+from collections import defaultdict
+class Solution(object):
+    def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
+    	# helper func
+        def dfs(w1, w2, visited):
+            for j in d[w2]:
+                if w1 == w2:
+                    return True
+                elif j not in visited:
+                    visited.add(j)
+                    if dfs(w1, j, visited):
+                        return True
+            return False
+        
+        # edge case
+        if len(sentence1) != len(sentence2):
+            return False
+      
+        d = defaultdict(list)
+        for a, b in similarPairs:
+            d[a].append(b)
+            d[b].append(a)
+            
+        for i in range(len(sentence1)):
+            visited =  set([sentence2[i]])
+            if sentence1[i] != sentence2[i] and not dfs(sentence1[i],  sentence2[i], visited):
+                return False
+        return True
+
+# V0
+# IDEA : DFS (queue format)
+class Solution(object):
+    def areSentencesSimilarTwo(self, words1, words2, pairs):
+        if len(words1) != len(words2): 
+        	return False
+
+        graph = collections.defaultdict(list)
+        for w1, w2 in pairs:
+            graph[w1].append(w2)
+            graph[w2].append(w1)
+
+        for w1, w2 in zip(words1, words2):
+            stack, seen = [w1], {w1}
+            while stack:
+                word = stack.pop()
+                if word == w2: break
+                for nei in graph[word]:
+                    if nei not in seen:
+                        seen.add(nei)
+                        stack.append(nei)
+            else:
+                return False
+        return True
+
+# V0''
+# IDEA : UNION FIND
+class DSU:
+    def __init__(self, N):
+        self.par = range(N)
+    def find(self, x):
+        if self.par[x] != x:
+            self.par[x] = self.find(self.par[x])
+        return self.par[x]
+    def union(self, x, y):
+        self.par[self.find(x)] = self.find(y)
+
+class Solution(object):
+    def areSentencesSimilarTwo(self, words1, words2, pairs):
+        if len(words1) != len(words2): return False
+
+        index = {}
+        count = itertools.count()
+        dsu = DSU(2 * len(pairs))
+        for pair in pairs:
+            for p in pair:
+                if p not in index:
+                    index[p] = next(count)
+            dsu.union(index[pair[0]], index[pair[1]])
+
+        return all(w1 == w2 or
+                   w1 in index and w2 in index and
+                   dsu.find(index[w1]) == dsu.find(index[w2])
+                   for w1, w2 in zip(words1, words2))
+
+# V0
 # https://zxi.mytechroad.com/blog/hashtable/leetcode-737-sentence-similarity-ii/
 # IDEA : DFS
 # CONCEPT : 
@@ -82,7 +168,7 @@ class Solution(object):
         return True
 
 # V1
-# IDEA : DFS
+# IDEA : DFS (queue format)
 # https://leetcode.com/problems/sentence-similarity-ii/solution/
 class Solution(object):
     def areSentencesSimilarTwo(self, words1, words2, pairs):
@@ -143,12 +229,6 @@ class Solution(object):
 import collections
 class Solution(object):
     def areSentencesSimilarTwo(self, words1, words2, pairs):
-        """
-        :type words1: List[str]
-        :type words2: List[str]
-        :type pairs: List[List[str]]
-        :rtype: bool
-        """
         if len(words1) != len(words2): return False
         similars = collections.defaultdict(set)
         for w1, w2 in pairs:
