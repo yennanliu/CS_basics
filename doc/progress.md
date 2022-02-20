@@ -11,7 +11,7 @@
 			- (pdf : p.1)
 				- 828 (not start)
 				- 937 (ok, but again!!!)
-				- 1268
+				- 1268 (again!!!)
 	- ================
 	- LC general
 		- Tree
