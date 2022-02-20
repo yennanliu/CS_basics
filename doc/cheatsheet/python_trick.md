@@ -351,6 +351,20 @@ In [28]: def my_func(x):
 [0, 1, 2, -4, -5, 5]
 ```
 
+```python
+# LC 937
+# https://leetcode.com/problems/reorder-data-in-log-files/solution/
+def my_func(input):
+    # do sth
+    if condition:
+        return key1, key2, key3....
+    else:
+        return key4, key5, key6....
+
+my_array=["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
+my_array.sort(key=lambda x : my_func)
+```
+
 ### 1-12) get remainder (residue) when divided by a number
 ```python
 #-----------------

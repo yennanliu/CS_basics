@@ -46,24 +46,42 @@ class Solution:
     def reorderLogFiles(self, logs):
         def f(log):
             id_, rest = log.split(" ", 1)
+            """
+            NOTE !!!
+              2 cases:
+               1) case 1: rest[0].isalpha() => sort by rest, id_
+               2) case 2: rest[0] is digit =>  DO NOTHING (keep original order)
+
+               syntax:
+                 if condition:
+                    return key1, key2, key3 ....
+            """
             if rest[0].isalpha():
                 return 0, rest, id_
             else:
                 return 1, None, None
+                #return 100, None, None  # since we need to put Digit-logs behind of Letter-logs, so first key should be ANY DIGIT BIGGER THAN 0 
 
         logs.sort(key = lambda x : f(x))
         return logs
 
-# V0'
-# IDEA : SORT BY KEY
+# V1
+# IDEA : SORT BY keys
+# https://leetcode.com/problems/reorder-data-in-log-files/solution/
 class Solution:
     def reorderLogFiles(self, logs):
-        def f(log):
-            id_, rest = log.split(" ", 1)
-            return (0, rest, id_) if rest[0].isalpha() else (1,)
 
-        logs.sort(key = lambda x : f(x))
-        return logs
+        def get_key(log):
+            _id, rest = log.split(" ", maxsplit=1)
+            """
+            NOTE !!!
+              2 cases:
+               1) case 1: rest[0].isalpha() => sort by rest, id_
+               2) case 2: rest[0] is digit =>  DO NOTHING (keep original order)
+            """
+            return (0, rest, _id) if rest[0].isalpha() else (1, )
+
+        return sorted(logs, key=get_key)
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83961188
@@ -94,6 +112,50 @@ class Solution:
             return (0, rest, _id) if rest[0].isalpha() else (1, )
 
         return sorted(logs, key=get_key)
+
+# V1'
+# IDEA : Comparator
+# https://leetcode.com/problems/reorder-data-in-log-files/solution/
+# JAVA
+# class Solution {
+#     public String[] reorderLogFiles(String[] logs) {
+#
+#         Comparator<String> myComp = new Comparator<String>() {
+#             @Override
+#             public int compare(String log1, String log2) {
+#                 // split each log into two parts: <identifier, content>
+#                 String[] split1 = log1.split(" ", 2);
+#                 String[] split2 = log2.split(" ", 2);
+#
+#                 boolean isDigit1 = Character.isDigit(split1[1].charAt(0));
+#                 boolean isDigit2 = Character.isDigit(split2[1].charAt(0));
+#
+#                 // case 1). both logs are letter-logs
+#                 if (!isDigit1 && !isDigit2) {
+#                     // first compare the content
+#                     int cmp = split1[1].compareTo(split2[1]);
+#                     if (cmp != 0)
+#                         return cmp;
+#                     // logs of same content, compare the identifiers
+#                     return split1[0].compareTo(split2[0]);
+#                 }
+#
+#                 // case 2). one of logs is digit-log
+#                 if (!isDigit1 && isDigit2)
+#                     // the letter-log comes before digit-logs
+#                     return -1;
+#                 else if (isDigit1 && !isDigit2)
+#                     return 1;
+#                 else
+#                     // case 3). both logs are digit-log
+#                     return 0;
+#             }
+#         };
+#
+#         Arrays.sort(logs, myComp);
+#         return logs;
+#     }
+# }
 
 # V2
 # https://www.programiz.com/python-programming/methods/string/isalpha
