@@ -697,4 +697,75 @@ print (tmp)
 
 ### 1-20) `itertools`
 ```python
+# https://docs.python.org/zh-cn/3/library/itertools.html
+# https://docs.python.org/zh-tw/3/library/itertools.html
+
+# itertools — Functions creating iterators for efficient looping
+
+#-----------------------------------------------------------------------------------------------------
+# example 1 : itertools.accumulate : Aggregated sum
+#-----------------------------------------------------------------------------------------------------
+In [10]: import itertools
+    ...: x = itertools.accumulate(range(10))
+    ...: print (list(x))
+[0, 1, 3, 6, 10, 15, 21, 28, 36, 45]
+
+#-----------------------------------------------------------------------------------------------------
+# example 2 : itertools.combinations : get NON-duplicated elements from collections (with given len)
+#-----------------------------------------------------------------------------------------------------
+In [15]:  x = itertools.combinations(range(4), 3)
+
+In [16]: print (list(x))
+[(0, 1, 2), (0, 1, 3), (0, 2, 3), (1, 2, 3)]
+
+In [17]: x = itertools.combinations(range(4), 4)
+
+In [18]: print (list(x))
+[(0, 1, 2, 3)]
+
+#-----------------------------------------------------------------------------------------------------
+# example 3 : itertools.combinations_with_replacement : get duplicated or non-duplicated elements from collections (with given len)
+#-----------------------------------------------------------------------------------------------------
+In [19]: x = itertools.combinations_with_replacement('ABC', 2)
+
+In [20]: print(list(x))
+[('A', 'A'), ('A', 'B'), ('A', 'C'), ('B', 'B'), ('B', 'C'), ('C', 'C')]
+
+In [21]: x = itertools.combinations_with_replacement('ABC', 1)
+
+In [22]: print(list(x))
+[('A',), ('B',), ('C',)]
+
+In [24]: x = itertools.combinations_with_replacement([1,2,2,1], 2)
+
+In [25]: print (list(x))
+[(1, 1), (1, 2), (1, 2), (1, 1), (2, 2), (2, 2), (2, 1), (2, 2), (2, 1), (1, 1)]
+
+#-----------------------------------------------------------------------------------------------------
+# example 4 : itertools.compress : filter elements by True/False
+#-----------------------------------------------------------------------------------------------------
+In [26]: x = itertools.compress(range(5), (True, False, True, True, False))
+
+In [27]: print (list(x))
+[0, 2, 3]
+
+#-----------------------------------------------------------------------------------------------------
+# example 5 : itertools.count : a counter, can define start point and path len
+#-----------------------------------------------------------------------------------------------------
+In [2]: x = itertools.count(start=20, step=-1)
+
+In [3]: print(list(itertools.islice(x, 0, 10, 1)))
+[20, 19, 18, 17, 16, 15, 14, 13, 12, 11]
+
+#-----------------------------------------------------------------------------------------------------
+# example 6 : itertools.groupby : group by lists by value
+#-----------------------------------------------------------------------------------------------------
+In [4]: x = itertools.groupby(range(10), lambda x: x < 5 or x > 8)
+
+In [5]: for condition, numbers in x:
+   ...:     print(condition, list(numbers))
+   ...:
+True [0, 1, 2, 3, 4]
+False [5, 6, 7, 8]
+True [9]
 ```
