@@ -12,6 +12,8 @@
 				- 828 (not start)
 				- 937 (ok, but again!!!)
 				- 1268 (again!!!)
+				- 926 (again, not start!!!)
+				- 696
 	- ================
 	- LC general
 		- Tree
