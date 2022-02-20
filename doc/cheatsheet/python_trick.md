@@ -694,3 +694,7 @@ tmp = x_datetime + timedelta(minutes=10)
 print (tmp)
 # 1900-01-01 10:30:00
 ```
+
+### 1-20) `itertools`
+```python
+```
