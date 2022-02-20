@@ -566,6 +566,7 @@
 819| [Most Common Word](https://leetcode.com/problems/most-common-word/) | [python](./leetcode_python/String/most-common-word.py) | _O(m + n)_ | _O(m + n)_ | Easy  |`regular expression`, `amazon`| OK** (2)
 820| [Short Encoding of Words](https://leetcode.com/problems/short-encoding-of-words/) | [python](./leetcode_python/String/short-encoding-of-words.py) | _O(n)_ | _O(t)_ | Medium | Trie | AGAIN (not start)
 824| [Goat Latin](https://leetcode.com/problems/goat-latin/) | [python](./leetcode_python/String/goat-latin.py) | _O(n + w^2)_ | _O(l)_ | Easy| `string basic`, `fb`| OK
+828| [Count Unique Characters of All Substrings of a Given String](https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/) | [python](./leetcode_python/String/count-unique-characters-of-all-substrings-of-a-given-string.py) | _O(n + w^2)_ | _O(l)_ | Hard| dp, `string`, `amazon`| not start
 831| [Masking Personal Information](https://leetcode.com/problems/masking-personal-information/) | [python](./leetcode_python/String/masking-personal-information.py) | _O(1)_ | _O(1)_ | Medium |`regular expression`| OK* 
 833| [Find And Replace in String](https://leetcode.com/problems/find-and-replace-in-string/) | [python](./leetcode_python/String/find-and-replace-in-string.py) | _O(n + m)_ | _O(n)_ | Medium | Union Find | AGAIN (not start)
 848 | [Shifting Letters](https://leetcode.com/problems/shifting-letters/) | [python](./leetcode_python/String/shifting-letters.py) | _O(n)_ | _O(1)_ | Medium |`remainder`, `basic`| AGAIN**
