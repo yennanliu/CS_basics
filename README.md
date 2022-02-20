@@ -695,7 +695,7 @@
 969| [Pancake Sorting](https://leetcode.com/problems/pancake-sorting/) | [Python](./leetcode_python/Sort/pancake-sorting.py) | _O(n^2)_ | _O(l)_  | Medium |`fb`, sorting| AGAIN******* (3)
 973| [K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | [Python](./leetcode_python/Sort/k-closest-points-to-origin.py)  | _O(n)_ on average | _O(1)_ |  Medium | sort with lambda, Quick Select, Heap, `amazon`| OK* (2)
 976| [Largest Perimeter Triangle](https://leetcode.com/problems/largest-perimeter-triangle/) | [Python](./leetcode_python/Sort/largest-perimeter-triangle.py) | _O(nlogn)_ | _O(1)_  | Easy | | OK*
-
+1152| [Analyze User Website Visit Pattern](https://leetcode.com/problems/analyze-user-website-visit-pattern/) | [Python](./leetcode_python/Sort/analyze-user-website-visit-pattern.py) | _O(nlogn)_ | _O(1)_  | Medium | itertools.combinations, sort, brute force, set, `amazon`| AGAIN*** (1) (not start)
 
 ## Two Pointers 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
