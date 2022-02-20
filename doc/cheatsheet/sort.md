@@ -17,6 +17,21 @@
 
 ### 1-1) Basic OP
 
+#### 1-1-1) Py sort syntax
+```python
+# LC 937
+# https://leetcode.com/problems/reorder-data-in-log-files/solution/
+def my_func(input):
+    # do sth
+    if condition:
+        return key1, key2, key3....
+    else:
+        return key4, key5, key6....
+
+my_array=["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
+my_array.sort(key=lambda x : my_func)
+```
+
 ## 2) LC Example
 
 ### 2-1) Pancake Sorting
@@ -182,4 +197,52 @@ void reverse(int[] arr, int i, int j){
 		j--;
 	}
 }
+```
+
+
+### 2-1) Reorder Data in Log Files
+```python
+# LC 937. Reorder Data in Log Files
+# V0
+# IDEA : SORT BY KEY
+class Solution:
+    def reorderLogFiles(self, logs):
+        def f(log):
+            id_, rest = log.split(" ", 1)
+            """
+            NOTE !!!
+              2 cases:
+               1) case 1: rest[0].isalpha() => sort by rest, id_
+               2) case 2: rest[0] is digit =>  DO NOTHING (keep original order)
+
+               syntax:
+                 if condition:
+                    return key1, key2, key3 ....
+            """
+            if rest[0].isalpha():
+                return 0, rest, id_
+            else:
+                return 1, None, None
+                #return 100, None, None  # since we need to put Digit-logs behind of Letter-logs, so first key should be ANY DIGIT BIGGER THAN 0 
+
+        logs.sort(key = lambda x : f(x))
+        return logs
+
+# V1
+# IDEA : SORT BY keys
+# https://leetcode.com/problems/reorder-data-in-log-files/solution/
+class Solution:
+    def reorderLogFiles(self, logs):
+
+        def get_key(log):
+            _id, rest = log.split(" ", maxsplit=1)
+            """
+            NOTE !!!
+              2 cases:
+               1) case 1: rest[0].isalpha() => sort by rest, id_
+               2) case 2: rest[0] is digit =>  DO NOTHING (keep original order)
+            """
+            return (0, rest, _id) if rest[0].isalpha() else (1, )
+
+        return sorted(logs, key=get_key)
 ```
