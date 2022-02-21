@@ -16,7 +16,7 @@
 
 ### 0-1) Types
     - `priority queue`
-        - LC 295, 787
+        - LC 295, 787, 1492
 
 ### 0-2) Pattern
 
@@ -286,4 +286,35 @@ class Solution(object):
             res += s1 + s2 # merge 2 shortest sticks
             heappush(sticks, s1 + s2)
         return res 
+```
+
+### 2-5) The kth Factor of n
+```python
+# LC 1492  The kth Factor of n
+# note : there is also brute force, math approaches
+
+# V1
+# IDEA : HEAP
+# Initialize max heap. Use PriorityQueue in Java and heap in Python. heap is a min-heap. Hence, to implement max heap, change the sign of divisor before pushing it into the heap.
+# https://leetcode.com/problems/the-kth-factor-of-n/solution/
+class Solution:
+    def kthFactor(self, n, k):
+        # push into heap
+        # by limiting size of heap to k
+        def heappush_k(num):
+            heappush(heap, - num)
+            if len(heap) > k:
+                heappop(heap)
+            
+        # Python heap is min heap 
+        # -> to keep max element always on top,
+        # one has to push negative values
+        heap = []
+        for x in range(1, int(n**0.5) + 1):
+            if n % x == 0:
+                heappush_k(x)
+                if x != n // x:
+                    heappush_k(n // x)
+                
+        return -heappop(heap) if k == len(heap) else -1
 ```

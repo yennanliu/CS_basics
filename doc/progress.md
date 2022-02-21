@@ -10,7 +10,7 @@
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.1)
 				- 1152 (again!!!)
-				- 1492
+				- 1492 (ok, but again)
 				- 146
 	- ================
 	- LC general
