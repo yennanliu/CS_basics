@@ -1032,7 +1032,7 @@
 ## Design
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-0146| [LRU Cache](https://leetcode.com/problems/lru-cache/submissions/) | [Python](./leetcode_python/Design/lru-cache.py) | _O(1)_ | _O(k)_ | Hard |LRU,Least Recently Used, LinkedHashMap, LinkedList, `amazon`| AGAIN** (not start)
+0146| [LRU Cache](https://leetcode.com/problems/lru-cache/submissions/) | [Python](./leetcode_python/Design/lru-cache.py) | _O(1)_ | _O(k)_ | Hard |good basic, LRU,Least Recently Used, LinkedHashMap, OrderedDict, priority queue, LinkedList, `amazon`| AGAIN***** (3)
 0225| [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/)     | [C++](./C++/implement-stack-using-queues.cpp) [Python](./Python/implement-stack-using-queues.py)  | push: _O(n)_, pop: _O(1)_, top: _O(1)_ | _O(n)_ | Easy ||
 284| [Peeking Iterator](https://leetcode.com/problems/peeking-iterator/)| [C++](./C++/Design/peeking-iterator.cpp) [Python](./leetcode_python/Design/peeking-iterator.py) | _O(1)_ | _O(1)_ | Medium |good basic, `google`, apple| not start*** (1)
 0348| [Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/) | [Python](./leetcode_python/Design/design-tic-tac-toe.py) | _O(1)_ | _O(n^2)_ | Medium |🔒, `fb`|  AGAIN** (3)
