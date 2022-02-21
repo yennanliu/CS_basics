@@ -798,3 +798,152 @@ In [11]:  x = itertools.product('ABC', range(3))
 In [12]: print(list(x))
 [('A', 0), ('A', 1), ('A', 2), ('B', 0), ('B', 1), ('B', 2), ('C', 0), ('C', 1), ('C', 2)]
 ```
+
+### 1-21) move array element to rightmost/leftmost : `remove`, `append`
+```python
+# LC 146 LRU Cache
+In [18]: x
+Out[18]: [1, 3, 2]
+
+In [19]: x = [1,2,3]
+
+In [20]: x.remove(2)
+
+In [21]: x.append(2)
+
+In [22]: x
+Out[22]: [1, 3, 2]
+
+In [23]:
+
+In [23]: x.remove(1)
+
+In [24]: x.append(1)
+
+In [25]: x
+Out[25]: [3, 2, 1]
+```
+
+### 1-22) `OrderedDict ` ( hashmap + linked list)
+```python
+# LC 146 LRU Cache
+
+# There is a structure called ordered dictionary, it combines behind both hashmap and linked list. In Python this structure is called OrderedDict and in Java LinkedHashMap.
+
+# https://docs.python.org/3/library/collections.html#collections.OrderedDict
+# https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/367557/
+# https://www.w3help.cc/a/202107/420653.html
+
+"""
+
+# OrderedDict = hashmap + linked list
+# CAN make dict ordering (default dict is NOT ordering)
+# Return an instance of a dict subclass that has methods specialized for rearranging dictionary order
+
+* popitem(last=True)
+    The popitem() method for ordered dictionaries returns and removes a (key, value) pair. The pairs are returned in LIFO order if last is true or FIFO order if false.
+
+* move_to_end(key, last=True)
+    Move an existing key to either end of an ordered dictionary. The item is moved to the right end if last is true (the default) or to the beginning if last is false. Raises KeyError if the key does not exist:
+
+"""
+
+#----------------------------
+# example 0
+#----------------------------
+
+# default dict
+In [34]: d = {}
+    ...: d['a'] = 'A'
+    ...: d['b'] = 'B'
+    ...: d['c'] = 'C'
+    ...: d['d'] = 'D'
+    ...: d['e'] = 'E'
+    ...:
+    ...: for k, v in d.items():
+    ...:     print (k, v)
+    ...:
+# NON ordering
+a A
+b B
+c C
+d D
+e E
+
+# OrderedDict
+In [35]: from collections import OrderedDict
+    ...: d = OrderedDict()
+    ...: d['a'] = 'A'
+    ...: d['b'] = 'B'
+    ...: d['c'] = 'C'
+    ...: d['d'] = 'D'
+    ...: d['e'] = 'E'
+    ...:
+    ...: for k, v in d.items():
+    ...:     print (k, v)
+    ...:
+
+# ordering !!!
+a A
+b B
+c C
+d D
+e E
+
+
+#----------------------------
+# example 1
+#----------------------------
+In [28]:  d = OrderedDict.fromkeys('abcde')
+
+In [29]: d
+Out[29]: OrderedDict([('a', None), ('b', None), ('c', None), ('d', None), ('e', None)])
+
+In [30]: d.move_to_end('b')
+
+In [31]: "".join(d)
+Out[31]: 'acdeb'
+
+In [32]:
+
+In [32]: d.move_to_end('b', last=False)
+
+In [33]: "".join(d)
+Out[33]: 'bacde'
+
+#----------------------------
+# example 2
+#----------------------------
+class LastUpdatedOrderedDict(OrderedDict):
+    'Store items in the order the keys were last added'
+
+    def __setitem__(self, key, value):
+        super().__setitem__(key, value)
+        self.move_to_end(key)
+
+#----------------------------
+# example 3
+#----------------------------
+from time import time
+
+class TimeBoundedLRU:
+    "LRU Cache that invalidates and refreshes old entries."
+
+    def __init__(self, func, maxsize=128, maxage=30):
+        self.cache = OrderedDict()      # { args : (timestamp, result)}
+        self.func = func
+        self.maxsize = maxsize
+        self.maxage = maxage
+
+    def __call__(self, *args):
+        if args in self.cache:
+            self.cache.move_to_end(args)
+            timestamp, result = self.cache[args]
+            if time() - timestamp <= self.maxage:
+                return result
+        result = self.func(*args)
+        self.cache[args] = time(), result
+        if len(self.cache) > self.maxsize:
+            self.cache.popitem(0)
+        return result
+```
