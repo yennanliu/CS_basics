@@ -764,3 +764,47 @@ class Solution(object):
                 return False
         return True
 ```
+
+### 2-10) LRU Cache
+```python
+# LC 146 LRU Cache
+# note : there is also array/queue approach
+# V1
+# IDEA : Ordered dictionary
+# https://leetcode.com/problems/lru-cache/solution/
+# IDEA : 
+#       -> There is a structure called ordered dictionary, it combines behind both hashmap and linked list. 
+#       -> In Python this structure is called OrderedDict 
+#       -> and in Java LinkedHashMap.
+from collections import OrderedDict
+class LRUCache(OrderedDict):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.capacity = capacity
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        if key not in self:
+            return - 1
+        
+        self.move_to_end(key)
+        return self[key]
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: void
+        """
+        if key in self:
+            self.move_to_end(key)
+        self[key] = value
+        if len(self) > self.capacity:
+            self.popitem(last = False)
+```
