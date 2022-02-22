@@ -28,6 +28,26 @@ intervals[i].length == 2
 """
 
 # V0
+class Solution(object):
+    def merge(self, intervals):
+        # edge case
+        if not intervals or len(intervals) == 1:
+            return intervals
+        """
+        NOTE : we sort on x[0] (1st element)
+        """
+        intervals.sort(key = lambda x : x[0])
+
+        res = []
+        for i, j in enumerate(intervals):
+            if res and res[-1][1] >= intervals[i][0]:
+                res[-1][1] = max(intervals[i][1], res[-1][1])
+            else:
+                res.append([intervals[i][0], intervals[i][1]])
+
+        return res
+
+# V0'
 # IDEA : interval op, LC 57
 class Solution(object):
     def merge(self, intervals):
