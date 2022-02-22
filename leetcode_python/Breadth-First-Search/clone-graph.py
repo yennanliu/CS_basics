@@ -49,6 +49,29 @@ class Solution(object):
         return node_copy
 
 # V0'
+# IDEA : BFS
+class Solution(object):
+    def cloneGraph(self, node):
+        # edge case
+        if not node:
+            return
+        q = []
+        hashd = dict()
+        q.append(node)
+        node_copy = Node(node.val, [])
+        hashd[node] = node_copy
+        while q:
+            t = q.pop(0)
+            if t:
+                for n in t.neighbors:
+                    if n not in hashd:
+                        hashd[n] = Node(n.val, [])
+                        q.append(n)
+                    hashd[t].neighbors.append(hashd[n])
+        return node_copy
+
+# V0''
+# IDEA : BFS
 class Solution:
 
     def __init__(self):
