@@ -53,6 +53,11 @@
 			- 227
 		- topology sorting
 			- 269 (not start! again)
+		- queue
+			- 346 (ok)
+		- heap
+			- 295 (again!)
+			- 703
 		- Review
 			- (OK)
 			- =============
