@@ -18,6 +18,7 @@
 		- =======
 		- bit manipulation
 			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
+			- 393 again (not start)
 		- dfs
 			- 652
 			- 490
