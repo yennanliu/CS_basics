@@ -38,6 +38,34 @@ Constraints:
 """
 
 # V0
+# IDEA : GREEDY + sorting
+class Solution(object):
+    def maximumUnits(self, boxTypes, truckSize):
+        # boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]:
+        # edge case
+        if not boxTypes or not truckSize:
+            return 0
+        """
+        NOTE : we sort on sort(key=lambda x : -x[1])
+
+            -> if unit is bigger, we can get bigger aggregated result (n * unit)
+        """
+        boxTypes.sort(key=lambda x : -x[1])
+        res = 0
+        for n, unit in boxTypes:
+            # case 1 : truckSize == 0, break for loop and return ans
+            if truckSize == 0:
+                break
+            # case 2 : truckSize < n, we CAN'T add all n to truck, but CAN only add (truckSize * unit) amount to truck
+            elif truckSize < n:
+                res += (truckSize * unit)
+                truckSize = 0
+                break
+            # case 3 : normal case, it's OK to put all (n * unit) to truck once
+            else:      
+                res += (n * unit)
+                truckSize -= n
+        return res
 
 # V1
 # IDEA : GREEDY
