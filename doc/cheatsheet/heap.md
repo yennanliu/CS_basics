@@ -33,42 +33,123 @@
 - update
 - get
 - delete
-- heapify : transform list to heap
 - extract_max
 - delete_max
 - replace
 - find_max
 
-### 1-1) heapq (heap queue) (python api)
-- https://docs.python.org/zh-tw/3/library/heapq.html
-- Note : in py implementation, `index start from 0`
-- `pop()` will return `min` element (instead of max element)
+### 1-1) heapq (`heap queue` AKA `priority queue`) (Py api)
+- Note :
+    - in Py, heapq is `MIN heap`
+        - if we need max heap, can use `-1 * val`
+    - in Py implementation, `index start from 0`
+    - `pop()` will return `min` element (instead of max element)
+
+- Basic API
+    - heapify : transform list to heap
+    - heappush : put element into heap
+    - heappop  : get (remove) element from heap
+    - heappushpop : heappush then heappop (put first, then pop)
+    - heapreplace : heappop then heappush (pop first, then put)
+    - nlargest : return top N large elements
+    - nsmallest : return top N least elements
+- Ref
+    - https://docs.python.org/zh-tw/3/library/heapq.html
+    - https://ithelp.ithome.com.tw/articles/10247299
+    - https://cloud.tencent.com/developer/article/1794191#:~:text=heapq%20%E5%BA%93%E6%98%AFPython%E6%A0%87%E5%87%86,%E7%AD%89%E4%BA%8E)%E5%AE%83%E7%9A%84%E5%AD%90%E8%8A%82%E7%82%B9%E3%80%82
 
 ```python
-In [89]: from heapq import heappush, heappop
-    ...: x = []
-    ...: heappush(x,5)
-    ...: print(x)
+#------------------------
+# PY API examples
+#------------------------
+
+#----------------------
+# 1) build heapq
+#----------------------
+In [43]: import heapq
     ...:
-[5]
-
-In [90]: heappush(x,1)
-    ...: print(x)
-[1, 5]
-
-In [91]:
-
-In [91]: heappush(x,2)
-    ...: print(x)
-[1, 5, 2]
-
-# heappop : can pop current MINIMUM element from heap
-In [92]: for _ in x:
-    ...:     tmp = heappop(x)
-    ...:     print (tmp)
     ...:
-1
-2
+    ...: array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+    ...: heap = []
+    ...: for num in array:
+    ...:     heapq.heappush(heap, num)
+    ...: print("array:", array)
+    ...: print("heap: ", heap)
+    ...:
+    ...: heapq.heapify(array)
+    ...: print("array:", array)
+array: [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+heap:  [5, 7, 21, 15, 10, 24, 27, 45, 17, 30, 36, 50]
+array: [5, 7, 21, 10, 17, 24, 27, 45, 15, 30, 36, 50]
+
+# NOTE : there are 2 ways create heap (in py)
+#  1) heappush(heap, num)
+#  2) heapify(array)
+#
+# -> we can see above results are a bit different. However this not affect the "min heap" property in py. We can still get min element, and heap will get updated accordingly.
+
+#----------------------
+# 2) sorting via heapq
+#----------------------
+In [44]: array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+    ...: heap = []
+    ...: for num in array:
+    ...:     heapq.heappush(heap, num)
+    ...: print(heap[0])
+5
+
+In [45]: heap_sort = [heapq.heappop(heap) for _ in range(len(heap))]
+    ...: print("heap sort result: ", heap_sort)
+heap sort result:  [5, 7, 10, 15, 17, 21, 24, 27, 30, 36, 45, 50]
+
+#----------------------
+# 3) get Min or Max from heap
+#----------------------
+
+In [48]: array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+    ...: heapq.heapify(array)
+    ...: print(heapq.nlargest(2, array))
+    ...: print(heapq.nsmallest(3, array))
+[50, 45]
+[5, 7, 10]
+
+#----------------------
+# 4) merge 2 sorted list via heap
+#----------------------
+In [49]: array_a = [10, 7, 15, 8]
+    ...: array_b = [17, 3, 8, 20, 13]
+    ...: array_merge = heapq.merge(sorted(array_a), sorted(array_b))
+    ...: print("merge result:", list(array_merge))
+merge result: [3, 7, 8, 8, 10, 13, 15, 17, 20]
+
+
+#----------------------
+# 5) heap replace element
+#----------------------
+
+In [50]: array_c = [10, 7, 15, 8]
+    ...: heapq.heapify(array_c)
+    ...: print("before:", array_c)
+    ...: # heappushpop : push first, then pop
+    ...: item = heapq.heappushpop(array_c, 5)
+    ...: print("after: ", array_c)
+    ...: print(item)
+    ...:
+before: [7, 8, 15, 10]
+after:  [7, 8, 15, 10]
+5
+
+
+In [51]: array_d = [10, 7, 15, 8]
+    ...: heapq.heapify(array_d)
+    ...: print("before:", array_d)
+    ...: # pop first, then push
+    ...: item = heapq.heapreplace(array_d, 5)
+    ...: print("after: ", array_d)
+    ...: print(item)
+before: [7, 8, 15, 10]
+after:  [5, 8, 15, 10]
+7
 ```
 
 ### 1-2) Heap VS Stack VS Queue
