@@ -290,6 +290,27 @@ class Solution(object):
 ```
 
 ```python
+# transpose matrix
+# LC  048 Rotate Image
+matrix = [
+    [1,2,4],
+    [4,5,6],
+    [7,8,9]
+]
+for i in range(len(matrix)):
+    """
+    NOTE this range (x-axis) !!!
+        range(i+1, len(matrix[0]))
+    """
+    for j in range(i+1, len(matrix[0])):
+        matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+
+print (matrix)
+# In [36]: matrix
+# Out[36]: [[1, 4, 7], [2, 5, 8], [4, 6, 9]]
+```
+
+```python
 # 2) get avg value of matrix
 # LC 661
 # some code
