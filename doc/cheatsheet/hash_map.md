@@ -126,7 +126,11 @@ class Solution(object):
     def frequencySort(self, s):
         count = collections.Counter(s)
         count_dict = dict(count)
-        ### NOTE this !!! : count_dict.items()
+        """
+        NOTE this !!!
+            1. use sorted()
+            2. count_dict.items()
+        """
         count_tuple_sorted = sorted(count_dict.items(), key=lambda kv : -kv[1])
         res = ''
         for item in count_tuple_sorted:
