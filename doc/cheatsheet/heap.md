@@ -44,6 +44,14 @@
         - if we need max heap, can use `-1 * val`
     - in Py implementation, `index start from 0`
     - `pop()` will return `min` element (instead of max element)
+    - 2 ways build heap (in py)
+        - heappush(heap, num)
+        - heapify(array)
+    - complexity
+        - push/pop
+            - time : O(log(N))
+            - spce : O(N)
+            - ref : https://stackoverflow.com/questions/38806202/whats-the-time-complexity-of-functions-in-heapq-library#:~:text=heapq%20is%20a%20binary%20heap,O(n%20log%20n).
 
 - Basic API
     - heapify : transform list to heap
@@ -150,6 +158,30 @@ In [51]: array_d = [10, 7, 15, 8]
 before: [7, 8, 15, 10]
 after:  [5, 8, 15, 10]
 7
+
+#----------------------
+# 5) make a MAX heapq
+#----------------------
+In [54]: numbers = [4,1,24,2,1]
+    ...:
+    ...: # invert numbers so that the largest values are now the smalles
+    ...: t
+    ...: numbers = [-1 * n for n in numbers]
+    ...:
+    ...: # turn numbers into min heap
+    ...: heapq.heapify(numbers)
+    ...:
+    ...: # pop out 5 times
+    ...: k = 5
+    ...: klargest = []
+    ...: for i in range(k):
+    ...:     # multiply by -1 to get our inital number back
+    ...:     klargest.append(-1 * heapq.heappop(numbers))
+    ...:
+
+In [55]: klargest
+Out[55]: [24, 4, 2, 1, 1]
+
 ```
 
 ### 1-2) Heap VS Stack VS Queue
@@ -207,6 +239,7 @@ class Twitter(object):
 
         tweets = []
         # complexity is 10lg(n), n is twitter's user number in worst case
+        # NOTE : we use heapq.merge method here
         for t in merge(*candidate_tweets):
             tweets.append(t[1])
             if len(tweets) == 10:

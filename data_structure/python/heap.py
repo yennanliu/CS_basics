@@ -79,3 +79,8 @@ print(('Deleted:', bh.delete()))
 bh.insert(3)
 print(('Deleted:', bh.delete()))
 print(bh)
+
+
+# V2
+# PY source code
+# https://github.com/python/cpython/blob/3.8/Lib/heapq.py
