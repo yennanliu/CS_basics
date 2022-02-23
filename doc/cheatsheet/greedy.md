@@ -250,3 +250,55 @@ class Solution(object):
         time = (most - 1) * (n + 1) + num_most
         return max(time, len(tasks)) # be aware of it 
 ```
+
+### 2-8) Maximum Units on a Truck
+```python
+# LC 1710. Maximum Units on a Truck
+# V0
+# IDEA : GREEDY + sorting
+class Solution(object):
+    def maximumUnits(self, boxTypes, truckSize):
+        # boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]:
+        # edge case
+        if not boxTypes or not truckSize:
+            return 0
+        """
+        NOTE : we sort on sort(key=lambda x : -x[1])
+
+            -> if unit is bigger, we can get bigger aggregated result (n * unit)
+        """
+        boxTypes.sort(key=lambda x : -x[1])
+        res = 0
+        for n, unit in boxTypes:
+            # case 1 : truckSize == 0, break for loop and return ans
+            if truckSize == 0:
+                break
+            # case 2 : truckSize < n, we CAN'T add all n to truck, but CAN only add (truckSize * unit) amount to truck
+            elif truckSize < n:
+                res += (truckSize * unit)
+                truckSize = 0
+                break
+            # case 3 : normal case, it's OK to put all (n * unit) to truck once
+            else:      
+                res += (n * unit)
+                truckSize -= n
+        return res
+
+# V1
+# IDEA : GREEDY
+# https://leetcode.com/problems/maximum-units-on-a-truck/discuss/1045318/Python-solution
+class Solution(object):
+    def maximumUnits(self, boxTypes, truckSize):
+        boxTypes.sort(key = lambda x: -x[1])
+        n = len(boxTypes)
+        result = 0
+        i = 0
+        while truckSize >= boxTypes[i][0]:
+            result += boxTypes[i][1] * boxTypes[i][0]
+            truckSize -= boxTypes[i][0]
+            i += 1
+            if i == n:
+                return result
+        result += truckSize * boxTypes[i][1]
+        return result
+```

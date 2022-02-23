@@ -797,3 +797,33 @@ class Solution(object):
                 return False
         return True
 ```
+
+### 2-9) Concatenated Words
+```python
+# LC 472. Concatenated Words
+# V1
+# http://bookshadow.com/weblog/2016/12/18/leetcode-concatenated-words/
+# IDEA : DFS 
+class Solution(object):
+    def findAllConcatenatedWordsInADict(self, words):
+        """
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        ans = []
+        self.wordSet = set(words)
+        for word in words:
+            self.wordSet.remove(word) # avoid the search process find itself (word) when search all word in words  
+            if self.search(word):
+                ans.append(word)
+            self.wordSet.add(word)    # add the word back for next search with new "word"
+        return ans
+
+    def search(self, word):
+        if word in self.wordSet:
+            return True
+        for idx in range(1, len(word)):
+            if word[:idx] in self.wordSet and self.search(word[idx:]):
+                return True
+        return False
+```
