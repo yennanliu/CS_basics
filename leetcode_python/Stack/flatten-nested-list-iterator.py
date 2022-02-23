@@ -1,5 +1,8 @@
 """
 
+341. Flatten Nested List Iterator
+Medium
+
 You are given a nested list of integers nestedList. Each element is either an integer or a list whose elements may also be integers or other lists. Implement an iterator to flatten it.
 
 Implement the NestedIterator class:
@@ -164,6 +167,216 @@ class NestedIterator(object):
             for elem in reversed(top.getList()):
                 self.stack.append(elem)
         return False
+
+# V1
+# IDEA :  Make a Flat List with Recursion
+# https://leetcode.com/problems/flatten-nested-list-iterator/solution/
+class NestedIterator:
+    
+    def __init__(self, nestedList):
+        def flatten_list(nested_list):
+            for nested_integer in nested_list:
+                if nested_integer.isInteger():
+                    self._integers.append(nested_integer.getInteger())
+                else:
+                    flatten_list(nested_integer.getList()) 
+        self._integers = []
+        self._position = -1 # Pointer to previous returned.
+        flatten_list(nestedList)
+    
+    def next(self):
+        self._position += 1
+        return self._integers[self._position]
+        
+    def hasNext(self):
+        return self._position + 1 < len(self._integers)
+
+# V1
+# IDEA : Stack
+# https://leetcode.com/problems/flatten-nested-list-iterator/solution/
+class NestedIterator:
+    
+    def __init__(self, nestedList):
+        self.stack = list(reversed(nestedList))
+        
+        
+    def next(self):
+        self.make_stack_top_an_integer()
+        return self.stack.pop().getInteger()
+    
+        
+    def hasNext(self):
+        self.make_stack_top_an_integer()
+        return len(self.stack) > 0
+        
+        
+    def make_stack_top_an_integer(self):
+        # While the stack contains a nested list at the top...
+        while self.stack and not self.stack[-1].isInteger():
+            # Unpack the list at the top by putting its items onto
+            # the stack in reverse order.
+            self.stack.extend(reversed(self.stack.pop().getList()))
+
+# V1
+# IDEA : Two Stacks
+# https://leetcode.com/problems/flatten-nested-list-iterator/solution/
+class NestedIterator:
+    
+    def __init__(self, nestedList):
+        self.stack = [[nestedList, 0]]
+        
+    def make_stack_top_an_integer(self):
+        
+        while self.stack:
+            
+            # Essential for readability :)
+            current_list = self.stack[-1][0]
+            current_index = self.stack[-1][1]
+            
+            # If the top list is used up, pop it and its index.
+            if len(current_list) == current_index:
+                self.stack.pop()
+                continue
+            
+            # Otherwise, if it's already an integer, we don't need 
+            # to do anything.
+            if current_list[current_index].isInteger():
+                break
+            
+            # Otherwise, it must be a list. We need to increment the index
+            # on the previous list, and add the new list.
+            new_list = current_list[current_index].getList()
+            self.stack[-1][1] += 1 # Increment old.
+            self.stack.append([new_list, 0])
+            
+    
+    def next(self):
+        self.make_stack_top_an_integer()
+        current_list = self.stack[-1][0]
+        current_index = self.stack[-1][1]
+        self.stack[-1][1] += 1
+        return current_list[current_index].getInteger()
+        
+    
+    def hasNext(self):
+        self.make_stack_top_an_integer()
+        return len(self.stack) > 0
+
+# V1
+# IDEA : Stack of Iterators
+# https://leetcode.com/problems/flatten-nested-list-iterator/solution/
+# JAVA
+# import java.util.NoSuchElementException;
+#
+# public class NestedIterator implements Iterator<Integer> {
+#   
+#     // This time, our stack will hold list iterators instead of just lists.
+#     private Deque<ListIterator<NestedInteger>> stackOfIterators = new ArrayDeque();
+#     private Integer peeked = null;
+#
+#     public NestedIterator(List<NestedInteger> nestedList) {
+#         // Make an iterator with the input and put it on the stack. 
+#         // Note that creating a list iterator is an O(1) operation.
+#         stackOfIterators.addFirst(nestedList.listIterator());
+#     }
+#
+#     private void setPeeked() {
+#        
+#         // If peeked is already set, there's nothing to do.
+#         if (peeked != null) return;
+#        
+#         while (!stackOfIterators.isEmpty()) {
+#            
+#             // If the iterator at the top of the stack doesn't have a next,
+#             // remove that iterator and continue on.
+#             if (!stackOfIterators.peekFirst().hasNext()) {
+#                 stackOfIterators.removeFirst();
+#                 continue;
+#             }
+#            
+#             // Otherwise, we need to check whether that next is a list or 
+#             // an integer.
+#             NestedInteger next = stackOfIterators.peekFirst().next();
+#            
+#             // If it's an integer, set peeked to it and return as we're done.
+#             if (next.isInteger()) {
+#                 peeked = next.getInteger();
+#                 return;
+#             }
+#            
+#             // Otherwise, it's a list. Create a new iterator with it, and put
+#             // the new iterator on the top of the stack.
+#             stackOfIterators.addFirst(next.getList().listIterator());
+#         }        
+#     }
+#    
+#
+#     @Override
+#     public Integer next() {
+#        
+#         // As per Java specs, throw an exception if there are no further elements.
+#         if (!hasNext()) throw new NoSuchElementException();
+#        
+#         // hasNext() called setPeeked(), which ensures peeked has the next integer 
+#         // in it. We need to clear the peeked field so that the element is returned
+#         // again.
+#         Integer result = peeked;
+#         peeked = null;
+#         return result;
+#     }
+#
+#     @Override
+#     public boolean hasNext() {
+#
+#         // Try to set the peeked field. If any integers are remaining, it will
+#         // contain the next one to be returned after this call.
+#         setPeeked();
+#        
+#         // There are elements remaining iff peeked contains a value.
+#         return peeked != null;
+#     }
+# }
+
+
+# V1
+# IDEA : Using a Generator
+# https://leetcode.com/problems/flatten-nested-list-iterator/solution/
+class NestedIterator:
+
+    def __init__(self, nestedList: [NestedInteger]):
+        # Get a generator object from the generator function, passing in
+        # nestedList as the parameter.
+        self._generator = self._int_generator(nestedList)
+        # All values are placed here before being returned.
+        self._peeked = None
+
+    # This is the generator function. It can be used to create generator
+    # objects.
+    def _int_generator(self, nested_list) -> "Generator[int]":
+        # This code is the same as Approach 1. It's a recursive DFS.
+        for nested in nested_list:
+            if nested.isInteger():
+                yield nested.getInteger()
+            else:
+                # We always use "yield from" on recursive generator calls.
+                yield from self._int_generator(nested.getList())
+        # Will automatically raise a StopIteration.
+    
+    def next(self) -> int:
+        # Check there are integers left, and if so, then this will
+        # also put one into self._peeked.
+        if not self.hasNext(): return None
+        # Return the value of self._peeked, also clearing it.
+        next_integer, self._peeked = self._peeked, None
+        return next_integer
+        
+    def hasNext(self) -> bool:
+        if self._peeked is not None: return True
+        try: # Get another integer out of the generator.
+            self._peeked = next(self._generator)
+            return True
+        except: # The generator is finished so raised StopIteration.
+            return False
 
 # V2 
 # Time:  O(n), n is the number of the integers.
