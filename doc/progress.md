@@ -47,6 +47,7 @@
 			- 300
 			- 491
 			- 673
+			- 239
 		- linked list
 			- 019
 			- 002
@@ -65,6 +66,7 @@
 		- heap
 			- 295 (again!)
 			- 703
+			- 239
 		- Review
 			- (OK)
 			- =============
@@ -73,8 +75,9 @@
 		- cheatsheet review
 			- done
 				- stack.md
-			- ing
 				- queue.md
+			- ing
+				- array.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
