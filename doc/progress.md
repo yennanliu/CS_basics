@@ -25,6 +25,9 @@
 			- 079
 		- bfs
 			- 133 (ok, but again!!!)
+		- tree
+			- 094
+			- 144			
 		- greedy
 			- 358 (again, not start!)
 				- check `heappush, heappop`
