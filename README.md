@@ -38,24 +38,8 @@
 * [freecodecamp - data-structures](https://www.freecodecamp.org/news/tag/data-structures/)
 * [LC interview-experience](https://leetcode.com/discuss/interview-experience?currentPage=1&orderBy=hot&query=)
 * [Cheatsheet](https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet)
-* SQL
-	- [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
-	- [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
-	- [SQL zoo](https://sqlzoo.net/) - SQL test
-	- [10 SQL Tricks](https://blog.jooq.org/10-sql-tricks-that-you-didnt-think-were-possible/) : 10 SQL Tricks That You Didn’t Think Were Possible
-	- [Zachary Thomas' SQL Questions](https://lnkd.in/g-JJzuD) -- The Best Medium-Hard Data Analyst SQL Interview Questions
-		- [pdf](./doc/The-Best-Medium-Hard-Data-Analyst-SQL-Interview-Questions.pdf)
-	- [Select * SQL](https://selectstarsql.com/)
-	- [LinkedIn Learning](https://lnkd.in/gQXFc4n)
-	- [Window Functions](https://lnkd.in/g3RtPCJ)
-	- [HackerRank](https://lnkd.in/grv_9sB)
-	- [W3 Schools](https://lnkd.in/gJPfrrv)
-	- [CodeAcademy](https://lnkd.in/gT5xmpN)
-	- [SQL Bolt](https://sqlbolt.com/)
-	- [self-joins-calculate-retention-churn-and-reactivation-metrics](https://www.sisense.com/blog/use-self-joins-to-calculate-your-retention-churn-and-reactivation-metrics/)
-	- [Prod metric design](https://quip.com/edU3AgdiNOo1)
-
-
+* Data structure
+	- [py core data structure interview](https://python.plainenglish.io/python-for-interviewing-an-overview-of-the-core-data-structures-666abdf8b698)
 * LC Pattern
 	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
@@ -90,6 +74,22 @@
 		- [Crack the system design interview](https://tianpan.co/notes/2016-02-13-crack-the-system-design-interview?fbclid=IwAR2S4jmyL7qvTVO519x2JpH-Rr4MxMNcx1ee1d5bPK81Kc5dYUROnzZJOEA)
 	- Repo
 		- [system-design-primer repo](https://github.com/donnemartin/system-design-primer)
+* SQL
+	- [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
+	- [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
+	- [SQL zoo](https://sqlzoo.net/) - SQL test
+	- [10 SQL Tricks](https://blog.jooq.org/10-sql-tricks-that-you-didnt-think-were-possible/) : 10 SQL Tricks That You Didn’t Think Were Possible
+	- [Zachary Thomas' SQL Questions](https://lnkd.in/g-JJzuD) -- The Best Medium-Hard Data Analyst SQL Interview Questions
+		- [pdf](./doc/The-Best-Medium-Hard-Data-Analyst-SQL-Interview-Questions.pdf)
+	- [Select * SQL](https://selectstarsql.com/)
+	- [LinkedIn Learning](https://lnkd.in/gQXFc4n)
+	- [Window Functions](https://lnkd.in/g3RtPCJ)
+	- [HackerRank](https://lnkd.in/grv_9sB)
+	- [W3 Schools](https://lnkd.in/gJPfrrv)
+	- [CodeAcademy](https://lnkd.in/gT5xmpN)
+	- [SQL Bolt](https://sqlbolt.com/)
+	- [self-joins-calculate-retention-churn-and-reactivation-metrics](https://www.sisense.com/blog/use-self-joins-to-calculate-your-retention-churn-and-reactivation-metrics/)
+	- [Prod metric design](https://quip.com/edU3AgdiNOo1)
 * Tools
 	- https://coderpad.io/
 	- https://codeshare.io/
