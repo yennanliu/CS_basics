@@ -1,16 +1,21 @@
 # Heap
 - a special `completed binary tree`
-- definition : given a tree, if P is C's parent node. iF P always `<=` or `>=` C.
+- definition : given a tree, if P is C's parent node -> P always `<=` or `>=` C.
 - types
     - min heap
-        - given a tree, if P is C's parent node. iF P always `<=` C.
+        - given a tree, if P is C's parent node -> P always `<=` C.
     - max heap
-    - given a tree, if P is C's parent node. iF P always `>=` C.
+        - given a tree, if P is C's parent node -> P always `>=` C.
 - was invented for `heap sort`
-- a heap is a specialized tree-based data structure which is essentially an almost complete tree that satisfies the heap property:
-    - in a max heap, for any given node C, if P is a parent node of C, then the key (the value) of P is greater than or equal to the key of C. In a min heap, the key of P is less than or equal to the key of C.[2] The node at the "top" of the heap (with no parents) is called the root node.
+- a heap is a specialized tree-based data structure which is essentially an almost completed tree that satisfies the heap property:
+    - In a max heap
+        - for any given node C, if P is a parent node of C, then the key (the value) of P is greater than or equal to the key of C
+    - In a min heap
+        - the key of P is less than or equal to the key of C.[2] The node at the "top" of the heap (with no parents) is called the root node.
+- Ref
+    - https://www.geeksforgeeks.org/heap-data-structure/
 
-<p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/Max-Heap.png" ></p>
+<p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap.png" ></p>
 
 ## 0) Concept  
 
