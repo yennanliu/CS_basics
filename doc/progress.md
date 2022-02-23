@@ -70,6 +70,7 @@
 			- 295 (again!)
 			- 703
 			- 239
+			- 264
 		- Review
 			- (OK)
 			- =============
@@ -80,8 +81,9 @@
 				- stack.md
 				- queue.md
 				- array.md
-			- ing
 				- heap.md
+			- ing
+				- hash_map.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)

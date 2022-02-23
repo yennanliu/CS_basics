@@ -42,6 +42,7 @@
 - Note :
     - in Py, heapq is `MIN heap`
         - if we need max heap, can use `-1 * val`
+            - LC 1492
     - in Py implementation, `index start from 0`
     - `pop()` will return `min` element (instead of max element)
     - 2 ways build heap (in py)
@@ -65,6 +66,7 @@
     - https://docs.python.org/zh-tw/3/library/heapq.html
     - https://ithelp.ithome.com.tw/articles/10247299
     - https://cloud.tencent.com/developer/article/1794191#:~:text=heapq%20%E5%BA%93%E6%98%AFPython%E6%A0%87%E5%87%86,%E7%AD%89%E4%BA%8E)%E5%AE%83%E7%9A%84%E5%AD%90%E8%8A%82%E7%82%B9%E3%80%82
+    - https://python.plainenglish.io/python-for-interviewing-an-overview-of-the-core-data-structures-666abdf8b698
 
 ```python
 #------------------------
@@ -280,6 +282,7 @@ class KthLargest(object):
             self.size += 1
         elif val > self.pool[0]:
             # get minimum value from heap and return it, and put new item into heap
+            # heapreplace : pop first, then push
             heapq.heapreplace(self.pool, val)
         return self.pool[0]
 ```
