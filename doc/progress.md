@@ -10,7 +10,7 @@
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.1)
 				- 1710 (ok, but again)
-				- 472
+				- 472 (ok, but again!!!)
 			- (pdf : p.2)
 				- 200
 	- ================
