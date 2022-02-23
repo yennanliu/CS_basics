@@ -55,7 +55,9 @@
 			- 394
 			- 496
 			- 503
+			- 739
 			- 227
+			- 224
 		- topology sorting
 			- 269 (not start! again)
 		- queue
@@ -69,7 +71,10 @@
 			- (ing)
 		- SQL
 		- cheatsheet review
-			- stack.md
+			- done
+				- stack.md
+			- ing
+				- queue.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
