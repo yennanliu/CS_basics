@@ -60,6 +60,8 @@
 			- 227
 			- 224
 			- 341
+		- array
+			- 670
 		- topology sorting
 			- 269 (not start! again)
 		- queue
@@ -77,8 +79,9 @@
 			- done
 				- stack.md
 				- queue.md
-			- ing
 				- array.md
+			- ing
+				- heap.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
