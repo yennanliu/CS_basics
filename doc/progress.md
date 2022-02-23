@@ -12,7 +12,7 @@
 				- 1710 (ok, but again)
 				- 472 (ok, but again!!!)
 			- (pdf : p.2)
-				- 200
+				- 200 (ok)
 	- ================
 	- LC general
 		- Tree
@@ -69,6 +69,7 @@
 			- (ing)
 		- SQL
 		- cheatsheet review
+			- stack.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
