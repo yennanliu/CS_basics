@@ -19,7 +19,7 @@
 ### 0-2) Pattern
 
 ## 1) General form
-<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/hash_table_2.png" ></p>
+<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/hash_table_3.png" ></p>
 
 - Definition 
 
@@ -65,16 +65,20 @@ In [14]:
 - `setdefault()`
 	- https://www.w3schools.com/python/ref_dictionary_setdefault.asp
 ```python
+#-------------------------------------------------------------------------------
+# setdefault : will creatte key if key NOT existed (with value as well if defined)
+#-------------------------------------------------------------------------------
+
+# syntax
+d.setdefault(new_key)
+d.setdefault(new_key, new_value)
+
 # 662 Maximum Width of Binary Tree
 car = {
   "brand": "Ford",
   "model": "Mustang",
   "year": 1964
 }
-
-#-----------------------------------------------------------------------------
-# setdefault : will make key in dict if such key not existed yet (with value as well if defined)
-#-----------------------------------------------------------------------------
 
 # example 1) insert key "my_key", since my_key not existed, -> make it as new key and value as None (since not defined)
 car.setdefault("my_key")
