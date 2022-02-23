@@ -1,8 +1,8 @@
 # Queue 
 
 ## 0) Concept  
-- A ordering linear data structure
-- can be implemented by `array` or `linkedlist`
+- An ordering linear data structure
+- can be implemented by either `array` or `linkedlist`
 - first in first out (FIFO)
 
 ### 0-1) Types
