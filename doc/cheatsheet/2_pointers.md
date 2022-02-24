@@ -585,3 +585,46 @@ class Solution(object):
                     count += 1
         return count
 ```
+
+### 2-7) Sum of Subarray Ranges
+```python
+# LC 2104. Sum of Subarray Ranges
+# V0
+# IDEA : BRUTE FORCE
+class Solution:
+    def subArrayRanges(self, nums):
+        res = 0
+        for i in range(len(nums)):
+            curMin = float("inf")
+            curMax = -float("inf")
+            for j in range(i, len(nums)):
+                curMin = min(curMin, nums[j])
+                curMax = max(curMax, nums[j])
+                res += curMax - curMin
+        return res
+
+# V0'
+# IDEA : INCREASING STACK
+class Solution:
+    def subArrayRanges(self, A0):
+        res = 0
+        inf = float('inf')
+        A = [-inf] + A0 + [-inf]
+        s = []
+        for i, x in enumerate(A):
+            while s and A[s[-1]] > x:
+                j = s.pop()
+                k = s[-1]
+                res -= A[j] * (i - j) * (j - k)
+            s.append(i)
+            
+        A = [inf] + A0 + [inf]
+        s = []
+        for i, x in enumerate(A):
+            while s and A[s[-1]] < x:
+                j = s.pop()
+                k = s[-1]
+                res += A[j] * (i - j) * (j - k)
+            s.append(i)
+        return res
+```
