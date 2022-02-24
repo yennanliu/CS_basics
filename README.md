@@ -702,6 +702,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 019| [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)| [Python](./leetcode_python/Two_Pointers/remove-nth-node-from-end-of-list.py) | _O(n)_   | _O(1)_ | Medium |`linked list`,`two pointers`,`fb`| AGAIN**** (3)
+042 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) | [Python](./leetcode_python/Two_Pointers/trapping-rain-water.py) || | Hard |two pointer, `amazon`, `apple`|  AGAIN (1) (not start)
 086| [Partition List](https://leetcode.com/problems/partition-list/)| [Python](./leetcode_python/Two_Pointers/partition-list.py) | _O(n)_       | _O(1)_         | Medium         || OK* 
 141| [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)| [Python](./leetcode_python/Two_Pointers/linked-list-cycle.py) | _O(n)_ | _O(1)_ | Easy |`basic`,`amazon`, `fb`, linked list, 2 pointers, check #142|  OK** (5)
 142| [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)| [Python](./leetcode_python/Two_Pointers/linked-list-cycle-ii.py) | _O(n)_ | _O(1)_   | Medium   |linked list, 2 pointers, check #141| AGAIN****** (4) (again!)
@@ -724,8 +725,7 @@
 904 | [Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/) |[Python](./leetcode_python/Two_Pointers/fruit-into-baskets.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 930 | [Binary Subarrays With Sum](https://leetcode.com/problems/binary-subarrays-with-sum/) | [Python](./leetcode_python/Two_Pointers/binary-subarrays-with-sum.py) | _O(n)_ | _O(1)_ | Medium |`trick`| AGAIN* (2) (not start)
 977 | [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/) | [Python](./leetcode_python/Two_Pointers/squares-of-a-sorted-array.py) | _O(n)_ | _O(1)_ | Easy || OK 
-042 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) | [Python](./leetcode_python/Two_Pointers/trapping-rain-water.py) || | Hard |two pointer, `amazon`, `apple`|  AGAIN (1) (not start)
-
+1151 | [Minimum Swaps to Group All 1's Together](https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/) | [Python](./leetcode_python/Two_Pointers/minimum-swaps-to-group-all-1s-together.py) | _O(n)_ | _O(1)_ | Medium |good basic, 2 pointers, Deque (Double-ended Queue), `amazon`| AGAIN***** (not start )
 
 ## Recursion 
 |  #  | Title     |  Solution     |  Time           | Space           | Difficulty    | Note | Status| 
