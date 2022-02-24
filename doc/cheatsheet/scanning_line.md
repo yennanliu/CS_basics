@@ -37,37 +37,58 @@ for i in open_close:
 ### 2-1) Meeting Rooms II
 ```python
 # LC 253 Meeting Rooms II
+# NOTE : there're also priority queue, sorting approaches
+
 # V0
+# IDEA : SCANNING LINE : Sort all time points and label the start and end points. Move a vertical line from left to right.
+class Solution:
+     def minMeetingRooms(self, intervals):
+            lst = []
+            """
+            NOTE THIS !!!
+            """
+            for start, end in intervals:
+                lst.append((start, 1))
+                lst.append((end, -1))
+            # all of below sort work
+            #lst.sort()
+            #lst.sort(key = lambda x : [x[0], x[1]])
+            lst.sort(key = lambda x : x[0])
+            res, curr_rooms = 0, 0
+            for t, n in lst:
+                curr_rooms += n
+                res = max(res, curr_rooms)
+            return res
+
+# V0''
 # IDEA : SCANNING LINE
 # Step 1 : split intervals to points, and label start, end point
 # Step 2 : reorder the points
 # Step 3 : go through every point, if start : result + 1, if end : result -1, and record the maximum result in every iteration
-# https://www.1point3acres.com/bbs/thread-295648-1-1.html
 class Solution:
-    """
-    @param intervals: an array of meeting time intervals
-    @return: the minimum number of conference rooms required
-    """
     def minMeetingRooms(self, intervals):
-        open_close = []   
-        needed_room = 0  
-        res = 0  
-        for interval in intervals:
-            # "open" the room
-            open_close.append((interval[0], "open"))
-            # "close" the room
-            open_close.append((interval[1], "close"))
+        if intervals is None or len(intervals) == 0:
+            return 0
 
-        # sort the time 
-        open_close_ = open_close.sort(lambda x : x[0])
-        # go through every start-end time slot
-        for i in open_close_:
-            # if there is a "open" => open 2 new room 
-            if i[1] == "open":
-                needed_room += 2
-                res = max(res, needed_room)
-            # if there is a "close" => close 1 new room 
-            elif i[1] == "close":
-                needed_room -= 1
-        return res
+        tmp = []
+
+        # set up start and end points 
+        for inter in intervals:
+            tmp.append((inter[0], True))
+            tmp.append((inter[1], False))
+
+        # sort 
+        tmp = sorted(tmp, key=lambda v: (v[0], v[1]))
+
+        n = 0
+        max_num = 0
+        for arr in tmp:
+            # start point +1 
+            if arr[1]:
+                n += 1
+            # end point -1 
+            else:
+                n -= 1 # release the meeting room
+            max_num = max(n, max_num)
+        return max_num
 ```
