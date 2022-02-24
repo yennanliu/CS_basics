@@ -65,6 +65,8 @@
 			- 080
 		- topology sorting
 			- 269 (not start! again)
+		- 2 pointers
+			- 163
 		- queue
 			- 346 (ok)
 		- heap
@@ -83,8 +85,8 @@
 				- queue.md
 				- array.md
 				- heap.md
-			- ing
 				- 2_pointers.md
+			- ing
 				- hash_map.md
 	- System Design
 		- Tinder design
