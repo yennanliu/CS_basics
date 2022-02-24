@@ -50,7 +50,10 @@ class Solution(object):
     def hasCycle(self, head):
         if not head:
             return False
-        fast = slow = head:
+        fast = slow = head
+        """
+        NOTE : below conditions (while fast and fast.next)
+        """
         while fast and fast.next:
             fast = fast.next.next
             slow = slow.next

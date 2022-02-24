@@ -19,7 +19,7 @@
                 - LC 141
                 - LC 142
             - if a circular linked list, return beginning point of circular
-            - find last k element of a single linked list
+            - find last k elements of a single linked list
     - `Left- Right pointers`
         - left, right pointers from `idx = 0, idx = len(n) - 1` respectively
         - Usually set
@@ -76,10 +76,10 @@ for i in range(lens(s)):
 ```java
 // java
 boolean hasCycle(ListNode head){
-    ListNode left, right;
     fast = slow = head;
+    // NOTE : while loop condition
     while (fast != null and fast.next != null){
-        /** NOTE : need to do move slow, fast pointer then compare them*/
+        /** NOTE : need to do move slow, fast pointer then compare them */
         slow = slow.next;
         fast = fast.next.next;
         if (fast == slow){
