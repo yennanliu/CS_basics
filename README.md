@@ -683,7 +683,7 @@
 147| [Insertion Sort List](https://leetcode.com/problems/insertion-sort-list/)|[Python](./leetcode_python/Sort/insertion-sort-list.py) | _O(n^2)_ | _O(1)_ | Medium |`trick`| AGAIN* (2)
 148| [Sort List](https://leetcode.com/problems/sort-list/)     | [Python](./leetcode_python/Sort/sort-list.py) | _O(nlogn)_      | _O(logn)_  | Medium |`basic`, check `# 21 Merge Two Sorted Lists`| AGAIN** (2)
 179| [Largest Number](https://leetcode.com/problems/largest-number/) | [Python](./leetcode_python/Sort/largest-number.py) | _O(nlogn)_   | _O(1)_  | Medium|sort, sort with lambda,`amazon`| AGAIN** (2)
-252| [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | [Python](./leetcode_python/Sort/meeting-rooms.py) | _O(nlogn)_ | _O(n)_ | Easy |🔒,`UBER`,`amazon`, `fb`| OK 
+252| [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | [Python](./leetcode_python/Sort/meeting-rooms.py) | _O(nlogn)_ | _O(n)_ | Easy |🔒,`UBER`,`amazon`, `fb`| OK*** (3) (but again) 
 253| [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) | [Python](./leetcode_python/Sort/meeting-rooms-ii.py)| _O(nlogn)_   | _O(n)_   | Medium   |🔒,`scanning line`, `trick`,`booking.com`,`good`,`UBER`, `amazon`,`google`,`fb`| AGAIN******* (3)
 274| [H-Index](https://leetcode.com/problems/h-index/) |  [Python](./leetcode_python/Sort/h-index.py)  | _O(n)_ | _O(n)_ | Medium  |Counting Sort,`good trick`, `fb`|  AGAIN***** (3)  
 280| [Wiggle Sort](https://leetcode.com/problems/wiggle-sort/) | [Python](./leetcode_python/Sort/wiggle-sort.py)  | _O(n)_ | _O(1)_| Medium  |🔒,`google`,`fb`|  OK*** (3) 
