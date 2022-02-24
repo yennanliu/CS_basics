@@ -57,9 +57,24 @@ nums is sorted in non-decreasing order.
 #           i   j
 #        [1,1,2,1,2,3]
 #             i   j
-#             i     j
 #        [1,1,2,2,1,3]
-#               i   j       
+#               i   j
+#
+# example 2
+# nums = [0,0,1,1,1,1,2,3,3] 
+#           i j
+#        [0,0,1,1,1,1,2,3,3]
+#             i j
+#        [0,0,1,1,1,1,2,3,3]
+#               i j
+#        [0,0,1,1,1,1,2,3,3]
+#               i   j
+#               i     j
+#        [0,0,1,1,2,1,1,3,3]
+#                 i     j  
+#        [0,0,1,1,2,3,1,1,3]
+#                   i     j
+#        [0,0,1,1,2,3,3,1,1]
 class Solution:
     def removeDuplicates(self, nums):
         if len(nums) < 3:
