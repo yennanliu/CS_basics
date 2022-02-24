@@ -83,6 +83,7 @@
 				- array.md
 				- heap.md
 			- ing
+				- 2_pointers.md
 				- hash_map.md
 	- System Design
 		- Tinder design
