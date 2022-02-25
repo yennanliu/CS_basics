@@ -1,5 +1,100 @@
 # Progress
 
+# 2022-02-26
+- DOING:
+	- LC (goog_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
+			- (pdf : p.2)
+	- ================
+	- LC (amz_, latest 6 months) :
+		- /LC-amazon-6-mointh.pdf
+			- (pdf : p.2)
+	- ================
+	- LC general
+		- Tree
+		- =======
+		- bit manipulation
+			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
+			- 393 again (not start)
+		- dfs
+			- 652
+			- 490
+			- 079
+		- bfs
+			- 133 (ok, but again!!!)
+		- greedy
+			- 358 (again, not start!)
+				- check `heappush, heappop`
+		- union find
+			- 721
+			- 547
+		- design
+			- all remain (not start)
+		- hashmap
+			- 036 (not start)
+		- graph
+			- 261 (Union Find) 
+			- 547 (Union Find) (not start)
+			- 323 (Union Find) (not start)
+			- 210 (Topological Sort) not start)
+			- 207 (Topological Sort)
+			- 210 (Topological Sort)
+		- sliding window
+			- 300
+			- 491
+			- 673
+			- 239
+		- linked list
+			- 002
+			- 445
+		- stack
+			- 394
+			- 496
+			- 503
+			- 739
+			- 227
+			- 224
+			- 341
+		- array
+			- 670
+			- 080
+		- topology sorting
+			- 269 (not start! again)
+		- 2 pointers
+			- 163
+		- heap
+			- 295 (again!)
+			- 703
+			- 239
+			- 264
+		- trie
+			- 208
+			- 212
+		- Review
+			- (OK)
+			- =============
+			- (ing)
+		- SQL
+		- cheatsheet review
+			- done
+				- stack.md
+				- queue.md
+				- array.md
+				- heap.md
+				- 2_pointers.md
+			- ing
+				- hash_map.md
+	- System Design
+		- Tinder design
+	- algorithm book (labu)
+		- note
+			- p.363 -
+	- system design book - an insider's guide (GOTOP)
+		- 1st read (ok)
+		- 2nd read : note
+			- p.1 - p.35
+		- review/note
+
 # 2022-02-25
 - DOING:
 	- LC (goog_)
