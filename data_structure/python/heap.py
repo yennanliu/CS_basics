@@ -6,6 +6,9 @@
 # https://github.com/python/cpython/blob/3.10/Lib/heapq.py
 #---------------------------------------------------------------
 
+# NOTE !!! : in py, (heapq) heap implementation is "MINIMUM heap"
+
+
 # V1
 # https://github.com/OmkarPathak/Data-Structures-using-Python/blob/master/Heap/Heap.py
 class BinaryHeap(object):
