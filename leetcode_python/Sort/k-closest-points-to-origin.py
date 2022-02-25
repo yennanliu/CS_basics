@@ -43,6 +43,19 @@ class Solution(object):
         points.sort(key = lambda x : x[0]**2 +  x[1]**2)
         return points[:K]
 
+# V0'
+# IDEA : sort + lambda
+class Solution(object):
+    def kClosest(self, points, k):
+        def my_func(x, y):
+            return x**2 + y**2
+        # edge case
+        if not points:
+            return
+        points.sort(key= lambda (x, y) : my_func(x, y))
+        #print ("points = " + str(points))
+        return points[:k]
+
 # V1 
 class Solution(object):
     def kClosest(self, points, K):
