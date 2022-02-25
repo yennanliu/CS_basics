@@ -38,6 +38,62 @@ Constraints:
 
 # V0
 
+# V0'
+# IDEA : max-heap (heap) (TLE)
+# TODO : fix below
+# from heapq import *
+# class Solution(object):
+#     def maxProfit(self, inventory, orders):
+#         # edge case
+#         if not orders:
+#             return 0
+#         if orders == 1:
+#             return inventory[0]
+#         if len(inventory) == 1 and orders==inventory[0]:
+#             #return 0
+#             return int((inventory[0]+inventory[-1])*(len(inventory))*0.5)
+#         res = 0
+#         _inventory = [ -1 * (x % (10**9 + 7)) for x in inventory]
+#         heapify(_inventory)
+#         # queue
+#         while orders > 0:
+#             tmp = heappop(_inventory)
+#             res += (-1 * tmp)
+#             heappush(_inventory, (1+tmp))
+#             orders -= 1
+#         return res
+
+# V1''''''
+# check its video
+# https://zxi.mytechroad.com/blog/greedy/leetcode-1648-sell-diminishing-valued-colored-balls/
+# C++
+# class Solution {
+# public:
+#   int maxProfit(vector<int>& inventory, int orders) {
+#     constexpr int kMod = 1e9 + 7;
+#     const int n = inventory.size();
+#     sort(rbegin(inventory), rend(inventory));
+#     long cur = inventory[0];
+#     long ans = 0;
+#     int c = 0;
+#     while (orders) {      
+#       while (c < n && inventory[c] == cur) ++c;
+#       int nxt = c == n ? 0 : inventory[c];      
+#       int count = min(static_cast<long>(orders), c * (cur - nxt));
+#       int t = cur - nxt;
+#       int r = 0;
+#       if (orders < c * (cur - nxt)) {
+#         t = orders / c;
+#         r = orders % c;
+#       }
+#       ans = (ans + (cur + cur - t + 1) * t / 2 * c + (cur - t) * r) % kMod;
+#       orders -= count;
+#       cur = nxt;
+#     }
+#     return ans;
+#   }
+# };
+
 # V1
 # IDEA : GREEDY
 # https://leetcode.com/problems/sell-diminishing-valued-colored-balls/discuss/927679/Python-greedy-solution
@@ -241,5 +297,11 @@ class Solution:
                 maxHeap.pop()
                 
         return totalCost % (10**9 + 7)
+
+# V1''''''''
+# https://www.codeleading.com/article/96184919374/
+
+# V1''''''''''''''
+# https://www.krammerliu.com/blog/leetcode-1648-sell-diminishing-valued-colored-balls/
 
 # V2

@@ -141,6 +141,7 @@
 ||Tree| [Python ](./data_structure/python/tree.py) | | | AGAIN**|
 ||Trie| [Python ](./data_structure/python/trie.py) | | | AGAIN|
 ||Heap| [Python ](./data_structure/python/heap.py), [Java](./algorithm/java/BinaryHeap.java) | | | AGAIN|
+||Max Heap| [Python ](./data_structure/python/max_heap.py) | | | AGAIN|
 ||Array| [Python ](./data_structure/python/array.py) | | | AGAIN*|
 ||Graph| [Python ](./data_structure/python/graph.py), [JS](./data_structure/js/graph.js). [Java-graph](./algorithm/java/Graph.java), [Java-graph-client](./algorithm/java/GraphClient.java) | | | OK***|
 ||Binary search Tree (BST)| [Python](./data_structure/python/binary_search_tree.py), [JS](./data_structure/js/binary_search_tree.js), [Scala](./data_structure/scala/binarySearch.scala), [Java](./data_structure/java/BST.java) | | | AGAIN| 
@@ -1010,7 +1011,7 @@
 962 | [Maximum Width Ramp](https://leetcode.com/problems/maximum-width-ramp/) | [Python](./leetcode_python/Greedy/maximum-width-ramp.py)  | _O(n)_ | _O(n)_ | Medium | Descending Stack |  AGAIN (not start)
 1024 | [Video Stitching](https://leetcode.com/problems/video-stitching/) | [Python](./leetcode_python/Greedy/video_stitching.py) | | | Medium | Spotify | AGAIN (not start)
 1102 | [Path With Maximum Minimum Value](https://leetcode.com/problems/path-with-maximum-minimum-value/) | [Python](./leetcode_python/Greedy/path-with-maximum-minimum-value.py) | | | Medium | dfs, dp , greedy, `amazon` | not start
-1648 | [Sell Diminishing-Valued Colored Balls](https://leetcode.com/problems/sell-diminishing-valued-colored-balls/) | [Python](./leetcode_python/Greedy/sell-diminishing-valued-colored-balls.py) | | | Medium | binary search, greedy, `amazon` | AGAIN* (not start)
+1648 | [Sell Diminishing-Valued Colored Balls](https://leetcode.com/problems/sell-diminishing-valued-colored-balls/) | [Python](./leetcode_python/Greedy/sell-diminishing-valued-colored-balls.py) | | | Medium | trick, sorting, heapq, binary search, greedy, `amazon` | AGAIN*** (2) (not start)
 1710 | [Maximum Units on a Truck](https://leetcode.com/problems/maximum-units-on-a-truck/) | [Python](./leetcode_python/Greedy/maximum-units-on-a-truck.py) | | | Easy |sort, greedy, `amazon` | OK***** (2) (but again)
 
 
