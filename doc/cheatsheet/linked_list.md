@@ -877,3 +877,28 @@ class Solution(object):
         #print ("res = " + str(res))
         return res
 ```
+
+### 2-7) Remove Nth Node From End of List
+```python
+# LC 19. Remove Nth Node From End of List
+# NOTE : there is (two pass algorithm) approach
+# V0
+# IDEA : FAST-SLOW POINTERS (One pass algorithm)
+# IDEA :
+#   step 1) we move fast pointers n+1 steps -> so slow, fast pointers has n distance (n+1-1 == n)
+#   step 2) we move fast, and slow pointers till fast pointer meet the end
+#   step 3) then we point slow.next to slow.next.next (same as we remove n node)
+#   step 4) we return new_head.next as final result
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        new_head = ListNode(0)
+        new_head.next = head
+        fast = slow = new_head
+        for i in range(n+1):
+            fast = fast.next
+        while fast:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next
+        return new_head.next
+```

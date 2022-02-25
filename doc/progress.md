@@ -52,7 +52,7 @@
 			- 673
 			- 239
 		- linked list
-			- 019
+			- 019 (OK, but again!!!!)
 			- 002
 			- 445
 		- stack
@@ -70,8 +70,6 @@
 			- 269 (not start! again)
 		- 2 pointers
 			- 163
-		- queue
-			- 346 (ok)
 		- heap
 			- 295 (again!)
 			- 703
