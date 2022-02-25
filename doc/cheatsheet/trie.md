@@ -407,4 +407,102 @@ class Solution {
 ### 2-5) Word Search II
 ```python
 # LC 212. Word Search II
-``1
+# V1
+# IDEA : Backtracking with Trie
+# https://leetcode.com/problems/word-search-ii/solution/
+class Solution:
+    def findWords(self, board, words):
+        WORD_KEY = '$'
+        
+        trie = {}
+        for word in words:
+            node = trie
+            for letter in word:
+                # retrieve the next node; If not found, create a empty node.
+                node = node.setdefault(letter, {})
+            # mark the existence of a word in trie node
+            node[WORD_KEY] = word
+        
+        rowNum = len(board)
+        colNum = len(board[0])
+        
+        matchedWords = []
+        
+        def backtracking(row, col, parent):    
+            
+            letter = board[row][col]
+            currNode = parent[letter]
+            
+            # check if we find a match of word
+            word_match = currNode.pop(WORD_KEY, False)
+            if word_match:
+                # also we removed the matched word to avoid duplicates,
+                #   as well as avoiding using set() for results.
+                matchedWords.append(word_match)
+            
+            # Before the EXPLORATION, mark the cell as visited 
+            board[row][col] = '#'
+            
+            # Explore the neighbors in 4 directions, i.e. up, right, down, left
+            for (rowOffset, colOffset) in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+                newRow, newCol = row + rowOffset, col + colOffset     
+                if newRow < 0 or newRow >= rowNum or newCol < 0 or newCol >= colNum:
+                    continue
+                if not board[newRow][newCol] in currNode:
+                    continue
+                backtracking(newRow, newCol, currNode)
+        
+            # End of EXPLORATION, we restore the cell
+            board[row][col] = letter
+        
+            # Optimization: incrementally remove the matched leaf node in Trie.
+            if not currNode:
+                parent.pop(letter)
+
+        for row in range(rowNum):
+            for col in range(colNum):
+                # starting from each of the cells
+                if board[row][col] in trie:
+                    backtracking(row, col, trie)
+        
+        return matchedWords
+
+# V1
+# IDEA : DFS + trie
+# https://leetcode.com/problems/word-search-ii/discuss/59808/Python-DFS-362ms
+class Solution(object):
+    def checkList(self, board, row, col, word, trie, rList):
+        if row<0 or row>=len(board) or col<0 or col>=len(board[0]) or board[row][col] == '.' or board[row][col] not in trie: return
+        c = board[row][col]
+        _word= word + c
+        if '#' in trie[c]: 
+            rList.add(_word)
+            if len(trie[c]) == 1: return # if next node is empty, return as no there is no need to search further
+        board[row][col] = '.'
+        self.checkList(board, row-1, col, _word, trie[c], rList) #up
+        self.checkList(board, row+1, col, _word, trie[c], rList) #down
+        self.checkList(board, row, col-1, _word, trie[c], rList) #left
+        self.checkList(board, row, col+1, _word, trie[c], rList) #right
+        board[row][col] = c
+    
+    def findWords(self, board, words):
+        """
+        :type board: List[List[str]]
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        if not board or not words: return []
+        # building Trie
+        trie, rList = {}, set()
+        for word in words:
+            t = trie
+            for c in word:
+                if c not in t: t[c] = {}
+                t = t[c]
+            t['#'] = None
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                if board[row][col] not in trie: continue
+                self.checkList(board, row, col, "", trie, rList)
+        return list(rList)
+```
