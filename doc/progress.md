@@ -12,7 +12,7 @@
 				- 588 (again)
 				- 1730 (ok)
 			- (pdf : p.3)
-				- 42
+				- 42 (again)
 	- ================
 	- LC general
 		- Tree
