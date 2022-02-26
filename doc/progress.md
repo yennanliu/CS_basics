@@ -81,6 +81,8 @@
 			- 1011
 			- 410 (not start yet)
 			- 875
+		- backtrack
+			- 131
 		- Review
 			- (OK)
 			- =============
@@ -96,8 +98,10 @@
 				- Collection.md
 				- math.md
 				- binary_search.md
+				- palindrome.md
 			- ing
 				- hash_map.md
+				- string.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
