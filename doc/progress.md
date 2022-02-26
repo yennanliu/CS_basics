@@ -86,8 +86,10 @@
 				- array.md
 				- heap.md
 				- 2_pointers.md
+				- Collection.md
 			- ing
 				- hash_map.md
+				- math.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)

@@ -50,13 +50,13 @@ def check_prime(x):
 # V0
 # IDEA : set
 # https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
-# prinme(x) : check if x is a prime
-# prinme(0) = 0
-# prinme(1) = 0
-# prinme(2) = 0
-# prinme(3) = 1
-# prinme(4) = 2
-# prinme(5) = 3
+# prime(x) : number of prime in [0, x]
+# prime(0) = 0
+# prime(1) = 0
+# prime(2) = 0
+# prime(3) = 1
+# prime(4) = 2
+# prime(5) = 3
 class Solution:
     def countPrimes(self, n):
         # using sieve of eretosthenes algorithm
@@ -66,7 +66,7 @@ class Solution:
             if i not in nonprimes:
                 for j in range(i*i, n, i):
                     nonprimes.add(j)
-        return n - len(nonprimes) - 2  # remove prinme(1), prime(2)
+        return n - len(nonprimes) - 2  # remove prime(1), prime(2)
 ```
 
 ```java
