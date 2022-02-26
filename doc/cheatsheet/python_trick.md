@@ -947,3 +947,46 @@ class TimeBoundedLRU:
             self.cache.popitem(0)
         return result
 ```
+
+### 1-23) `filter()`
+```python
+# https://www.runoob.com/python/python-func-filter.html
+
+#-----------------------------------------------
+# syntax : filter(<filter_func>, <iterable>)
+#-----------------------------------------------
+
+# note !!! : in py 3, it will return iterable instance; while in py 2, it will return a list directly
+
+#----------------------------
+# example 1
+#----------------------------
+In [13]: def is_odd(n):
+    ...:     return n % 2 == 1
+    ...:
+    ...: newlist = filter(is_odd, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    ...: print(newlist)
+<filter object at 0x7fc71c3dced0>
+
+In [14]:
+
+In [14]: list(newlist)
+Out[14]: [1, 3, 5, 7, 9]
+
+
+#----------------------------
+# example 2
+#----------------------------
+In [15]: import math
+    ...: def is_sqr(x):
+    ...:     return math.sqrt(x) % 1 == 0
+    ...:
+    ...: newlist = filter(is_sqr, range(1, 101))
+    ...: print(newlist)
+<filter object at 0x7fc71bb10450>
+
+In [16]:
+
+In [16]: list(newlist)
+Out[16]: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+```
