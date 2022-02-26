@@ -74,6 +74,8 @@
 		- trie
 			- 208
 			- 212
+		- math
+			- 168
 		- Review
 			- (OK)
 			- =============
@@ -87,9 +89,10 @@
 				- heap.md
 				- 2_pointers.md
 				- Collection.md
+				- math.md
 			- ing
 				- hash_map.md
-				- math.md
+				- binary_search.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
