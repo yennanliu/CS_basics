@@ -2,6 +2,7 @@
 - search algorithm
 - Shortest path searching
     - LC 127
+    - LC 1730
 - Breadth first, then deep
 - Usually use data structure such as `queue, array`
 
@@ -512,4 +513,57 @@ class Solution(object):
             node.val = total
             node = node.left
         return root
+```
+
+### 2-11) Shortest Path to Get Food
+```python
+# LC 1730. Shortest Path to Get Food
+# V0
+# IDEA : BFS
+class Solution:
+    def getFood(self, grid):
+        # edge case
+        if not grid:
+            return 0
+        l = len(grid)
+        w = len(grid[0])
+        #initx = inity = -1
+        
+        # step 1)
+        # find (initx, inity) ("*" location)
+        for i in range(l):
+            for j in range(w):
+                if grid[i][j] == "*":
+                    initx = i
+                    inity = j
+                    break
+
+        dirt = [(1,0),(0,1),(-1,0),(0,-1)]
+        q = []
+        
+        # step 2) start from (initx, inity)
+        q.append((initx, inity))
+        step = 1
+        seen = set()
+        seen.add((initx,inity))
+        # step 3) bfs
+        while q:
+            size = len(q)
+            #print(q)
+            for _ in range(size):
+                x,y = q.pop(0)
+                
+                for dx,dy in dirt:
+                    newx = x + dx
+                    newy = y + dy
+                    if 0 <= newx < l and 0 <= newy < w and (newx, newy) not in seen:
+                        if grid[newx][newy] == '#':
+                            return step
+                        elif grid[newx][newy] == 'O':
+                            q.append((newx, newy))
+                            seen.add((newx,newy))
+                        elif grid[newx][newy] == 'X':
+                            seen.add((newx,newy))                          
+            step += 1
+        return -1
 ```
