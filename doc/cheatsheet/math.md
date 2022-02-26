@@ -137,6 +137,24 @@ int countPrimes(int n){
 ```python
 # 168 Excel Sheet Column Title
 # https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation
+
+# V0
+# https://www.jianshu.com/p/591d3a2ab45d
+class Solution(object):
+    def convertToTitle(self, n):
+        tar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        res = ""
+        while n > 0:
+            # why (n-1) ? : idx start from 0
+            m = (n-1) % 26
+            #result += tar[m]
+            res = (tar[m] + res)
+            if m == 0:
+                # why n=n+1 ? : since there is no 0 residual (m = (n-1) % 26), so we need to "pass" this case
+                n = n + 1
+            n = (n-1) // 26
+        return res
+# V0'
 class Solution:
     def convertToTitle(self, n):
         """
