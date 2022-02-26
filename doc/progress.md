@@ -76,6 +76,11 @@
 			- 212
 		- math
 			- 168
+		- binary search
+			- 162
+			- 1011
+			- 410 (not start yet)
+			- 875
 		- Review
 			- (OK)
 			- =============
@@ -90,9 +95,9 @@
 				- 2_pointers.md
 				- Collection.md
 				- math.md
+				- binary_search.md
 			- ing
 				- hash_map.md
-				- binary_search.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
