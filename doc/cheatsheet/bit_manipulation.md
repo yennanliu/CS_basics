@@ -1,9 +1,14 @@
 # Bit Manipulation 
 
 ## 0) Concept
-- http://web.ntnu.edu.tw/~algo/Bit.html : bit VS byte
-- https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md :  bit_manipulation.md
-- https://www.runoob.com/python/python-operators.html
+- [bit VS byte](http://web.ntnu.edu.tw/~algo/Bit.html)
+    - bit : 8 bytes (字節)
+    - byte : 16 bytes (字符)
+    - ref:
+        - [java example](https://github.com/yennanliu/JavaHelloWorld/blob/main/src/main/java/Advances/IOFlow/demo1.java#L25)
+- ref
+    - [bit_manipulation.md](https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md)
+    - [python-operators.html](https://www.runoob.com/python/python-operators.html)
 
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bit_basic1.png" ></p>
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bit_basic2.png" ></p>
