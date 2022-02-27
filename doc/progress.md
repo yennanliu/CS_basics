@@ -9,6 +9,12 @@
 	- LC (amz_, latest 6 months) :
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.3)
+				- 642 (again)
+				- 1597 (again, not start)
+				- 460
+				- 1481
+				- 049
+			- (pdf : p.4)
 	- ================
 	- LC general
 		- Tree
@@ -72,6 +78,7 @@
 		- trie
 			- 208
 			- 212
+			- 642
 		- math
 			- 168
 		- string
