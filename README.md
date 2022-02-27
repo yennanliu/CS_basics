@@ -608,7 +608,7 @@
 029| [Divide Two Integers](https://leetcode.com/problems/divide-two-integers/) | [Python](./leetcode_python/Math/divide-two-integers.py) | _O(1)_ | _O(1)_ | Medium  |`binary search`,`trick`,`fb`| AGAIN*****  (3)
 050| [Pow(x, n)](https://leetcode.com/problems/powx-n/)     | [Python](./leetcode_python/Math/powx-n.py) | _O(1)_| _O(1)_| Medium |`good trick`,`amazon`, `fb`, recursion| AGAIN****** (4) 
 060| [Permutation Sequence](https://leetcode.com/problems/permutation-sequence/) | [Python](./leetcode_python/Math/permutation-sequence.py) | _O(n^2)_ | _O(n)_  | Medium         |`Cantor Ordering`,trick ,`amazon`| AGAIN*** (2)
-089| [Gray Code](https://leetcode.com/problems/gray-code/)     | [Python](./leetcode_python/Math/gray-code.py) | _O(2^n)_ | _O(1)_  | Medium |bit op, math, `amazon`| AGAIN ******* (5)
+089| [Gray Code](https://leetcode.com/problems/gray-code/)     | [Python](./leetcode_python/Math/gray-code.py) | _O(2^n)_ | _O(1)_  | Medium |bit op, math, `amazon`| AGAIN ********** (6)
 166| [Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/) | [Python](./leetcode_python/Math/fraction-to-recurring-decimal.py)| _O(logn)_ | _O(1)_ | Medium    || AGAIN (not start)
 168| [Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/) |[Python](./leetcode_python/Math/excel-sheet-column-title.py) | _O(logn)_ | _O(1)_ | Easy |math, AGAIN,`fb`| AGAIN**** (4)
 171| [Excel Sheet Column Number](https://leetcode.com/problems/excel-sheet-column-number/) | [Python](./leetcode_python/Math/excel-sheet-column-number.py) | _O(n)_ | _O(1)_ | Easy  || AGAIN (not start)

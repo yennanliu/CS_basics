@@ -1,9 +1,12 @@
 # Bit Manipulation 
 
 ## 0) Concept
-- [bit VS byte](http://web.ntnu.edu.tw/~algo/Bit.html)
-    - bit : 8 bytes (字節)
-    - byte : 16 bytes (字符)
+- [bit VS byte VS char](http://web.ntnu.edu.tw/~algo/Bit.html)
+    - basic
+        - bit : binary number (use 2 as base : 0, 1)
+        - Hexadecimal Number : use 16 as base : 0123456789abcdef (lower, upper case are same)
+    - byte : 8 bytes (字節)
+    - char : 16 bytes (字符)
     - ref:
         - [java example](https://github.com/yennanliu/JavaHelloWorld/blob/main/src/main/java/Advances/IOFlow/demo1.java#L25)
 - ref
