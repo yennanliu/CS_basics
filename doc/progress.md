@@ -21,6 +21,8 @@
 		- bit manipulation
 			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
 			- 393 again (not start)
+			- 089 (ok, but again)
+			- 190 (again!!!)
 		- dfs
 			- 652
 			- 490
@@ -103,6 +105,7 @@
 				- math.md
 				- binary_search.md
 				- palindrome.md
+				- bit_manipulation.md
 			- ing
 				- hash_map.md
 				- string.md
