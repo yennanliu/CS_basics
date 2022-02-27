@@ -840,7 +840,7 @@
 967|[Numbers With Same Consecutive Differences](https://leetcode.com/problems/numbers-with-same-consecutive-differences/)| [Python](./leetcode_python/Breadth-First-Search/numbers-with-same-consecutive-differences.py) | _O(2^n)_ | _O(2^n)_ | Medium |`good trick` | AGAIN** (3)
 675|[Cut Off Trees for Golf Event](https://leetcode.com/problems/cut-off-trees-for-golf-event/)| [Python](./leetcode_python/Breadth-First-Search/cut-off-trees-for-golf-event.py), [Java](./leetcode_java/Breadth-First-Search/cut-off-trees-for-golf-event.java) ||| Medium |tree, BFS, complex, `amazon` | AGAIN (not start)
 864|[Shortest Path to Get All Keys](https://leetcode.com/problems/shortest-path-to-get-all-keys/)| [Python](./leetcode_python/Breadth-First-Search/shortest-path-to-get-all-keys.py) ||| Hard |BFS, `amazon` | AGAIN (not start)
-994|[Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)| [Python](./leetcode_python/Breadth-First-Search/rotting-oranges.py) ||| Medium |BFS, dp `amazon` | AGAIN (not start)
+994|[Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)| [Python](./leetcode_python/Breadth-First-Search/rotting-oranges.py) ||| Medium |BFS, dp `amazon` | OK** (2)
 1162| [As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) | [Python](./leetcode_python/Breadth-First-Search/as-far-from-land-as-possible.py) | | | Medium | dfs, bfs, good basic, `amazon`| AGAIN (1) (not start)
 1730| [Shortest Path to Get Food](https://leetcode.com/problems/shortest-path-to-get-food/) | [Python](./leetcode_python/Breadth-First-Search/shortest-path-to-get-food.py) | | | Medium |shortest path, bfs, `amazon`| OK (2)
 
@@ -1042,7 +1042,7 @@
 0146| [LRU Cache](https://leetcode.com/problems/lru-cache/submissions/) | [Python](./leetcode_python/Design/lru-cache.py) | _O(1)_ | _O(k)_ | Hard |good basic, LRU,Least Recently Used, LinkedHashMap, OrderedDict, priority queue, LinkedList, `amazon`| AGAIN***** (3)
 0225| [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/)     | [C++](./C++/implement-stack-using-queues.cpp) [Python](./Python/implement-stack-using-queues.py)  | push: _O(n)_, pop: _O(1)_, top: _O(1)_ | _O(n)_ | Easy ||
 284| [Peeking Iterator](https://leetcode.com/problems/peeking-iterator/)| [C++](./C++/Design/peeking-iterator.cpp) [Python](./leetcode_python/Design/peeking-iterator.py) | _O(1)_ | _O(1)_ | Medium |good basic, `google`, apple| not start*** (1)
-0348| [Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/) | [Python](./leetcode_python/Design/design-tic-tac-toe.py) | _O(1)_ | _O(n^2)_ | Medium |🔒, `fb`|  AGAIN** (3)
+0348| [Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/) | [Python](./leetcode_python/Design/design-tic-tac-toe.py) | _O(1)_ | _O(n^2)_ | Medium |matrix, array, 🔒, `fb`, `amazon`|  OK**** (4)
 0353| [Design Snake Game](https://leetcode.com/problems/design-snake-game/) | [C++](./C++/design-snake-game.cpp) [Python](./leetcode_python/Design/design-snake-game.py) | _O(1)_ | _O(s)_ | Medium |🔒| Deque |
 355| [Design Twitter](https://leetcode.com/problems/design-twitter/) | [Python](./leetcode_python/Design/design-twitter.py)  | _O(klogu)_ | _O(t + f)_ | Medium | good trick, data structure, heapq, defaultdict, `amazon` | OK******** (6)
 0359| [Logger Rate Limiter](https://leetcode.com/problems/logger-rate-limiter/) | [C++](./C++/logger-rate-limiter.cpp) [Python](./leetcode_python/Design/logger-rate-limiter.py) | _O(1), amortized_ | _O(k)_ | Easy |🔒| Deque |
