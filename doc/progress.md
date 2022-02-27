@@ -82,6 +82,9 @@
 			- 212
 		- math
 			- 168
+		- string
+			- 482
+			- 696
 		- binary search
 			- 162
 			- 1011
