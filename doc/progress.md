@@ -112,9 +112,10 @@
 				- binary_search.md
 				- palindrome.md
 				- bit_manipulation.md
+				- string.md
 			- ing
 				- hash_map.md
-				- string.md
+				- sort.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
