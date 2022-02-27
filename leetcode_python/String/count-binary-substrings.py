@@ -35,9 +35,38 @@ Submissions
 """
 
 # V0 
+# IDEA :  Group By Character
+# https://leetcode.com/problems/count-binary-substrings/solution/
+class Solution(object):
+    def countBinarySubstrings(self, s):
+        groups = [1]
+        for i in range(1, len(s)):
+            if s[i-1] != s[i]:
+                groups.append(1)
+            else:
+                groups[-1] += 1
 
+        ans = 0
+        for i in range(1, len(groups)):
+            ans += min(groups[i-1], groups[i])
+        return ans
 
 # V0'
+# IDEA : LINEAR SCAN
+# # https://leetcode.com/problems/count-binary-substrings/solution/
+class Solution(object):
+    def countBinarySubstrings(self, s):
+        ans, prev, cur = 0, 0, 1
+        for i in range(1, len(s)):
+            if s[i-1] != s[i]:
+                ans += min(prev, cur)
+                prev, cur = cur, 1
+            else:
+                cur += 1
+
+        return ans + min(prev, cur)
+
+# V0''
 # IDEA : BRUTE FORCE (TLE)
 # class Solution(object):
 #     def countBinarySubstrings(self, s):
@@ -80,7 +109,7 @@ class Solution(object):
         return ans
 
 # V1'
-# IDEA : Group By Character
+# IDEA : Group By Character (Alternate Implentation as above (same idea))
 # https://leetcode.com/problems/count-binary-substrings/solution/
 class Solution(object):
     def countBinarySubstrings(self, s):

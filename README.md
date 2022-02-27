@@ -553,7 +553,7 @@
 680| [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/) |  [python](./leetcode_python/String/valid-palindrome-ii.py)  | _O(n)_  | _O(1)_    | Easy |`good basic`, `string`, `fb`| OK
 681| [Next Closest Time](https://leetcode.com/problems/next-closest-time/) | [python](./leetcode_python/String/next-closest-time.py)  | _O(1)_  | _O(1)_  | Medium |`subset of set`, `<=`,`strptime`,  `google`,`fb`| OK*** (5)
 686 | [Repeated String Match](https://leetcode.com/problems/repeated-string-match/) | [python](./leetcode_python/String/repeated-string-match.py)  | _O(n + m)_ | _O(1)_ | Medium |brute force, string, string match, `Rabin-Karp Algorithm`, `google` | AGAIN**** (3) 
-696| [Count Binary Substrings](https://leetcode.com/problems/count-binary-substrings/) | [python](./leetcode_python/String/count-binary-substrings.py) | _O(n)_ | _O(1)_ | Easy|group, string, `amazon`| AGAIN*** (2) (not start*)
+696| [Count Binary Substrings](https://leetcode.com/problems/count-binary-substrings/) | [python](./leetcode_python/String/count-binary-substrings.py) | _O(n)_ | _O(1)_ | Easy|good trick, linear scan, group, string, `amazon`| AGAIN******* (3)
 720| [Longest Word in Dictionary](https://leetcode.com/problems/longest-word-in-dictionary/) | [python](./leetcode_python/String/longest-word-in-dictionary.py) | _O(n)_ | _O(t)_ | Easy  | Trie | AGAIN (not start)
 722| [Remove Comments](https://leetcode.com/problems/remove-comments/) | [python](./leetcode_python/String/remove-comments.py) | _O(n)_ | _O(k)_ | Medium || AGAIN (not start)
 751| [IP to CIDR](https://leetcode.com/problems/ip-to-cidr/) |[python](./leetcode_python/String/ip-to-cidr.py) | _O(n)_ | _O(1)_ | Medium | `ip`| AGAIN (not start*)

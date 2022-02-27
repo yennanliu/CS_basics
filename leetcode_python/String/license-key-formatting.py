@@ -33,16 +33,17 @@ s consists of English letters, digits, and dashes '-'.
 """
 
 # V0
+# IDEA : inverse traversal + residual
 class Solution(object):
     def licenseKeyFormatting(self, S, K):
         result = []
-        for i in reversed(range(len(S))):
+        for i in range(len(S))[::-1]:
             if S[i] == '-':
                 continue
             if len(result) % (K + 1) == K:
                 result += '-'
             result += S[i].upper()
-        return "".join(reversed(result))
+        return "".join(result[::-1])
 
 # V0'
 # IDEA : string op + brute force

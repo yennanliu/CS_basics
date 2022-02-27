@@ -78,7 +78,7 @@ class Solution(object):
             if c in [str(x) for x in range(10)]:
                 """
                 str(int) -> ord demo
-
+                             
                 Example 1 :
                 In [55]: for i in range(10):
                         ...: print (str(i) + " ord = " + str(ord(str(i))))
