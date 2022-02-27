@@ -1,13 +1,13 @@
-#################################################################
-# ALGORITHM DEMO : BFS (Breadth-First Search) 
-#################################################################
+#---------------------------------------------------------------
+# BFS (Breadth-First Search) 
+#---------------------------------------------------------------
 
 # BFS VS DFS 
 # https://cuijiahua.com/blog/2018/01/alogrithm_10.html
 
 # V0 : DEV 
 
-# BFS V1 
+# V1 
 # https://super9.space/archives/1562
 # http://www.csie.ntnu.edu.tw/~u91029/Graph.html
 # https://changyuheng.github.io/2014/implementations-of-dfs-and-bfs-in-python.html
@@ -34,8 +34,7 @@ class BFS:
                     n.visited = True
                     self.queue.append(n) 
 
-
-# BFS V2 
+# V2 
 def bfs(graph, queue, visited=None):
     if visited is None:
         visited = set()

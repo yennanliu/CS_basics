@@ -1,6 +1,6 @@
-#################################################################
-# ALGORITHM DEMO : DFS (Depth-First Search) 
-#################################################################
+#---------------------------------------------------------------
+#  DFS
+#---------------------------------------------------------------
 
 # BFS VS DFS 
 # https://cuijiahua.com/blog/2018/01/alogrithm_10.html
@@ -35,7 +35,6 @@ def dfs_recursion(G,s,S=None,res=None):
 # }
 # res=dfs(G,'a')
 # print(res)
-
 
 # DFS in Iteration verison 
 def dfs_iteration(G,s):
