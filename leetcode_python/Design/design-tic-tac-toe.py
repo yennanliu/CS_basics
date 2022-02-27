@@ -1,110 +1,123 @@
+"""
+
+348. Design Tic-Tac-Toe
+Medium
+
+Assume the following rules are for the tic-tac-toe game on an n x n board between two players:
+
+A move is guaranteed to be valid and is placed on an empty block.
+Once a winning condition is reached, no more moves are allowed.
+A player who succeeds in placing n of their marks in a horizontal, vertical, or diagonal row wins the game.
+Implement the TicTacToe class:
+
+TicTacToe(int n) Initializes the object the size of the board n.
+int move(int row, int col, int player) Indicates that the player with id player plays at the cell (row, col) of the board. The move is guaranteed to be a valid move.
+ 
+
+Example 1:
+
+Input
+["TicTacToe", "move", "move", "move", "move", "move", "move", "move"]
+[[3], [0, 0, 1], [0, 2, 2], [2, 2, 1], [1, 1, 2], [2, 0, 1], [1, 0, 2], [2, 1, 1]]
+Output
+[null, 0, 0, 0, 0, 0, 0, 1]
+
+Explanation
+TicTacToe ticTacToe = new TicTacToe(3);
+Assume that player 1 is "X" and player 2 is "O" in the board.
+ticTacToe.move(0, 0, 1); // return 0 (no one wins)
+|X| | |
+| | | |    // Player 1 makes a move at (0, 0).
+| | | |
+
+ticTacToe.move(0, 2, 2); // return 0 (no one wins)
+|X| |O|
+| | | |    // Player 2 makes a move at (0, 2).
+| | | |
+
+ticTacToe.move(2, 2, 1); // return 0 (no one wins)
+|X| |O|
+| | | |    // Player 1 makes a move at (2, 2).
+| | |X|
+
+ticTacToe.move(1, 1, 2); // return 0 (no one wins)
+|X| |O|
+| |O| |    // Player 2 makes a move at (1, 1).
+| | |X|
+
+ticTacToe.move(2, 0, 1); // return 0 (no one wins)
+|X| |O|
+| |O| |    // Player 1 makes a move at (2, 0).
+|X| |X|
+
+ticTacToe.move(1, 0, 2); // return 0 (no one wins)
+|X| |O|
+|O|O| |    // Player 2 makes a move at (1, 0).
+|X| |X|
+
+ticTacToe.move(2, 1, 1); // return 1 (player 1 wins)
+|X| |O|
+|O|O| |    // Player 1 makes a move at (2, 1).
+|X|X|X|
+ 
+
+Constraints:
+
+2 <= n <= 100
+player is 1 or 2.
+0 <= row, col < n
+(row, col) are unique for each different call to move.
+At most n2 calls will be made to move.
+ 
+
+Follow-up: Could you do better than O(n2) per move() operation?
+
+"""
+
 # V0
 # https://github.com/yennanliu/utility_Python/blob/master/game/tic_tac_toe.py
 class TicTacToe:
 
-    def __init__(self):
-        self.matrix = [ [None]*3 for _ in range(3) ]
-
-    def check_x_axis(self):
-        # x axis
-        for i in range(len(self.matrix)):
-            if (self.matrix[i].count("x") == 3 ):
-                print (" {} win the game".format("x"))
-                return True, "x"
-
-            elif (self.matrix[i].count("y") == 3 ):
-                print (" {} win the game".format("y"))
-                return True, "y"
-
-    def check_y_axis(self):
-        # y axis
-        for j in range(len(self.matrix[1])):
-            count_x, count_y = 0, 0 
-            for i_ in range(len(self.matrix)):
-                if self.matrix[i_][j] == 'x':
-                    count_x += 1 
-                elif self.matrix[i_][j] == 'y':
-                    count_y += 1 
-                if count_x == 3:
-                    return True, "x"
-                elif count_y == 3:
-                    return True, "y"
-
-    def check_left_diagonal(self):
-        # left diagonal  
-        sum_of_left_d_X = sum([self.matrix[i][i] == "x" for i in range(len(self.matrix))])
-        sum_of_left_d_y = sum([self.matrix[i][i] == "y" for i in range(len(self.matrix))])
-
-        if sum_of_left_d_X == 3:
-            return True, "x"
-        elif sum_of_left_d_y == 3:
-            return True, "y"
-
-    def check_right_diagonal(self):
-        # right diagonal
-        sum_of_left_d_X = sum([self.matrix[i][len(self.matrix)-i-1] == "x" for i in range(len(self.matrix))])
-        sum_of_left_d_y = sum([self.matrix[i][len(self.matrix)-i-1] == "y" for i in range(len(self.matrix))])
-
-        if sum_of_left_d_X == 3:
-            return True, "x"
-        elif sum_of_left_d_y == 3:
-            return True, "y"
-
-    def check_win(self):
-        if self.check_x_axis():
-            return self.check_x_axis()
-
-        elif self.check_y_axis():
-            return self.check_y_axis()
-
-        elif self.check_left_diagonal():
-            return self.check_left_diagonal()
-
-        elif self.check_right_diagonal():
-            return self.check_right_diagonal()
-
-        #elif self.check_occupied():
-        #    return (False, "even")
-
-    def check_occupied(self):
-        for i in range(len(self.matrix)):
-            if None in self.matrix[i]:
-                return False
-        return True
-
-    def operate_game(self):
-        # start from "x", then "o". so the process is : x -> o -> x....
-        while ( not self.check_win()) and ( not self.check_occupied() ):
-
-            input_x = input("plz input x : ")
-            input_y = input("plz input y : ")
-            x, y = int(input_x), int(input_y)
-
-            print ("x, y = ", x, y) 
+    def __init__(self, n):
+        """
+        Initialize your data structure here.
+        :type n: int
+        """
+        self.grid = [[' ']*n for i in range(n)]       
         
-            round_ = 1 
-            if x < 0 or x > 3 or y < 0 or y > 3:
-                print ("out of range, plz select x, y again")
 
-            if round_ % 2 == 1:
-                icon = "x"
-                round_ += 1 
-
-            elif round_ % 2 == 1:
-                icon = "o"
-                round_ += 1 
-
-            print ("player put {} at [{}, {}]".format(icon, x, y))
-            self.matrix[x][y] = icon
-            print ("current matrix :", self.matrix)
-            print ("self.check_win() ", self.check_win())
-
-        if self.check_win():
-            result =  self.check_win()
-            print (" {} win the game".format(result[1]))
-            return "{} win!".format(result[1])
+    def move(self, row, col, player):
+        """
+        Player {player} makes a move at ({row}, {col}).
+        @param row The row of the board.
+        @param col The column of the board.
+        @param player The player, can be either 1 or 2.
+        @return The current winning condition, can be either:
+                0: No one wins.
+                1: Player 1 wins.
+                2: Player 2 wins.
+        :type row: int
+        :type col: int
+        :type player: int
+        :rtype: int
+        """
+        if player == 1:
+            mark = 'X'
         else:
-            return "even"
+            mark = 'O'
+            
+        self.grid[row][col] = mark
+        # check wining condition
+        # check if the row has the same mark
+        n = len(self.grid)
+        sum_of_row = sum([self.grid[row][c] == mark for c in range(n)])
+        sum_of_col = sum([self.grid[r][col]== mark for r in range(n)])
+        sum_of_left_d = sum([self.grid[i][i] == mark for i in range(n)])
+        sum_of_right_d = sum([self.grid[i][n-1-i] == mark for i in range(n)])
+        if sum_of_row == n or sum_of_col == n or sum_of_left_d== n or sum_of_right_d == n:
+            return player        
+        else:
+            return 0
             
 # t_game = TicTacToe()
 # t_game.operate_game()
@@ -153,6 +166,113 @@ class TicTacToe:
             return player        
         else:
             return 0
+
+
+# V1
+# IDEA : Optimized Brute Force
+# https://leetcode.com/problems/design-tic-tac-toe/solution/
+# JAVA
+# class TicTacToe {
+#
+#     private int[][] board;
+#     private int n;
+#
+#     public TicTacToe(int n) {
+#         board = new int[n][n];
+#         this.n = n;
+#     }
+#
+#     public int move(int row, int col, int player) {
+#         board[row][col] = player;
+#         // check if the player wins
+#         if ((checkRow(row, player)) ||
+#             (checkColumn(col, player)) ||
+#             (row == col && checkDiagonal(player)) ||
+#             (col == n - row - 1 && checkAntiDiagonal(player))) {
+#             return player;
+#         }
+#         // No one wins
+#         return 0;
+#     }
+#
+#     private boolean checkDiagonal(int player) {
+#         for (int row = 0; row < n; row++) {
+#             if (board[row][row] != player) {
+#                 return false;
+#             }
+#         }
+#         return true;
+#     }
+#
+#     private boolean checkAntiDiagonal(int player) {
+#         for (int row = 0; row < n; row++) {
+#             if (board[row][n - row - 1] != player) {
+#                 return false;
+#             }
+#         }
+#         return true;
+#     }
+#
+#     private boolean checkColumn(int col, int player) {
+#         for (int row = 0; row < n; row++) {
+#             if (board[row][col] != player) {
+#                 return false;
+#             }
+#         }
+#         return true;
+#     }
+#
+#     private boolean checkRow(int row, int player) {
+#         for (int col = 0; col < n; col++) {
+#             if (board[row][col] != player) {
+#                 return false;
+#             }
+#         }
+#         return true;
+#     }
+# }
+
+
+# V1
+# IDEA : Optimised Approach
+# https://leetcode.com/problems/design-tic-tac-toe/solution/
+# public class TicTacToe {
+#     int[] rows;
+#     int[] cols;
+#     int diagonal;
+#     int antiDiagonal;
+#
+#     public TicTacToe(int n) {
+#         rows = new int[n];
+#         cols = new int[n];
+#     }
+#
+#     public int move(int row, int col, int player) {
+#         int currentPlayer = (player == 1) ? 1 : -1;
+#         // update currentPlayer in rows and cols arrays
+#         rows[row] += currentPlayer;
+#         cols[col] += currentPlayer;
+#         // update diagonal
+#         if (row == col) {
+#             diagonal += currentPlayer;
+#         }
+#         //update anti diagonal
+#         if (col == (cols.length - row - 1)) {
+#             antiDiagonal += currentPlayer;
+#         }
+#         int n = rows.length;
+#         // check if the current player wins
+#         if (Math.abs(rows[row]) == n ||
+#                 Math.abs(cols[col]) == n ||
+#                 Math.abs(diagonal) == n ||
+#                 Math.abs(antiDiagonal) == n) {
+#             return player;
+#         }
+#         // No one wins
+#         return 0;
+#     }
+# }
+
 
 # V1''
 # https://blog.csdn.net/danspace1/article/details/86616981
@@ -206,27 +326,27 @@ class TicTacToe:
 #     private char[][] board;
 # 	private char currentPlayerMark;
 # 	private boolean gameEnd;
-
+#
 # 	public TicTacToe() {
 # 		board = new char[3][3];
 # 		initialize();
 # 	}
-
+#
 # 	public char getCurrentPlayer() {
 # 		return currentPlayerMark;
 # 	}
-
+#
 # 	public void initialize() {
 # 		gameEnd = false;
 # 		currentPlayerMark = 'x';
-
+#
 # 		for (int i = 0; i < 3; i++) {
 # 			for (int j = 0; j < 3; j++) {
 # 				board[i][j] = '-';
 # 			}
 # 		}
 # 	}
-
+#
 # 	public boolean isBoardFull() {
 # 		for (int i = 0; i < 3; i++) {
 # 			for (int j = 0; j < 3; j++) {
@@ -238,30 +358,30 @@ class TicTacToe:
 # 		gameEnd = true;
 # 		return true;
 # 	}
-
+#
 # 	public void changePlayer() {
 # 		if (currentPlayerMark == 'x')
 # 			currentPlayerMark = 'o';
 # 		else
 # 			currentPlayerMark = 'x';
-
+#
 # 	}
-
+#
 # 	// true means this move wins the game, false means otherwise
 # 	public boolean move(int row, int col) throws AlreadyTakenException, GameEndException {
-
+#
 # 		if (gameEnd) {
 # 			throw new GameEndException();
 # 		}
-
+#
 # 		if (board[row][col] != '-') {
 # 			throw new AlreadyTakenException();
 # 		}
-
+#
 # 		board[row][col] = currentPlayerMark;
-
+#
 # 		boolean win;
-
+#
 # 		//check row
 # 		win = true;
 # 		for (int i = 0; i < board.length; i++) {
@@ -270,12 +390,12 @@ class TicTacToe:
 # 				break;
 # 			}
 # 		}
-
+#
 # 		if (win) {
 # 			gameEnd = true;
 # 			return win;
 # 		}
-
+#
 # 		//check column
 # 		win = true;
 # 		for (int i = 0; i < board.length; i++) {
@@ -284,12 +404,12 @@ class TicTacToe:
 # 				break;
 # 			}
 # 		}
-
+#
 # 		if (win) {
 # 			gameEnd = true;
 # 			return win;
 # 		}
-
+#
 # 		//check back diagonal
 # 		win = true;
 # 		for (int i = 0; i < board.length; i++) {
@@ -298,12 +418,12 @@ class TicTacToe:
 # 				break;
 # 			}
 # 		}
-
+#
 # 		if (win) {
 # 			gameEnd = true;
 # 			return win;
 # 		}
-
+#
 # 		//check forward diagonal
 # 		win = true;
 # 		for (int i = 0; i < board.length; i++) {
@@ -312,7 +432,7 @@ class TicTacToe:
 # 				break;
 # 			}
 # 		}
-
+#
 # 		if (win) {
 # 			gameEnd = true;
 #             return win;
@@ -321,15 +441,15 @@ class TicTacToe:
 # 		return win;
 # 	}
 # }
-
-
+#
+#
 # class GameEndException extends Exception{
 # 	public GameEndException()
 # 	{
 # 		super("Game has been ended, cannot make any more moves");
 # 	}
 # }
-
+#
 # class AlreadyTakenException extends Exception {
 # 	public AlreadyTakenException()
 # 	{
