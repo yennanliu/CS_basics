@@ -1,6 +1,6 @@
-#################################################################
-# ALGORITHM DEMO : BINARY SEARCH 
-#################################################################
+#---------------------------------------------------------------
+#  BINARY SEARCH 
+#---------------------------------------------------------------
 
 # V0  
 
@@ -32,16 +32,6 @@ def binary_search_loop(lst,value):
         else:
             return mid
     return None
-
-
-# Binary search via module "bisect" 
-# def binary_search_bisect(lst, x):
-# from bisect import bisect_left
-# 	i = bisect_left(lst, x)
-# 	if i != len(lst) and lst[i] == x:
-# 		return i
-# 	return None
-
 
 # V2 
 # https://github.com/yennanliu/algorithms/blob/master/algorithms/search/binary_search.py

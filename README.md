@@ -175,8 +175,8 @@
 ||Quick Union | [Java](./algorithm/java/QuickUnionUF.java) | init : O(N), union : O(N), find : O(N)| lazy approach, route compression, optimized Quick Find|AGAIN| 
 ||Quick Union (Improvements) || lazy approach, path compression|AGAIN| 
 ||Priority Queue (`unsorted`) | [Java](./algorithm/java/UnorderedMaxPQ.java) || AGAIN| 
-||LRU cache | [Python](./algorithm/python/lru_cache.py) | LC 146 | AGAIN| 
-||LFU Cache | [Python](./algorithm/python/lfu_cache.py) | LC 460 | AGAIN| 
+||LRU cache | [Python](./algorithm/python/lru_cache.py) || LC 146 | AGAIN| 
+||LFU Cache | [Python](./algorithm/python/lfu_cache.py) || LC 460 | AGAIN| 
 
 
 ## Array 

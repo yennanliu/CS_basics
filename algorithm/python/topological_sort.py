@@ -119,7 +119,6 @@ class Graph:
         # Print contents of the stack
         print(stack[::-1]) # return list in reverse order
 
-
 # TEST
 # Driver Code
 # g = Graph(6)
