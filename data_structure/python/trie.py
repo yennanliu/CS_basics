@@ -3,6 +3,42 @@
 #---------------------------------------------------------------
 
 # V1
+# LC 1268
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Design/search-suggestions-system.py#L51
+class TrieNode:
+    def __init__(self):
+        self.children = dict()
+        self.words = []
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+            node.words.append(word)
+            node.words.sort()
+            while len(node.words) > 3:
+                node.words.pop()
+    
+    def search(self, word):
+        res = []
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                break
+            node = node.children[char]
+            res.append(node.words[:])
+        l_remain = len(word) - len(res)
+        for _ in range(l_remain):
+            res.append([])
+        return res
+
+# V1'
 # https://www.geeksforgeeks.org/trie-insert-and-search/
 # Python program for insert and search 
 # operation in a Trie 
