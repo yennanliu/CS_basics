@@ -672,7 +672,7 @@
 963 | [Minimum Area Rectangle II](https://leetcode.com/problems/minimum-area-rectangle-ii/) | [Python](./leetcode_python/Math/minimum-area-rectangle-ii.py) | _O(n^2)_ ~ _O(n^3)_ | _O(n^2)_      | Medium  || AGAIN (not start)
 970 | [Powerful Integers](https://leetcode.com/problems/powerful-integers/) | [Python](./leetcode_python/Math/powerful-integers.py)  | _O((logn)^2)_ | _O(r)_      | Easy |`basic`| AGAIN* (2)
 517 |[Super Washing Machines](https://leetcode.com/problems/super-washing-machines/) | [Python](./leetcode_python/Math/super-washing-machines.py) ||| Hard |`amazon`|  AGAIN (not start)
-1342 |[Number of Steps to Reduce a Number to Zero](https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/) | [Python](./leetcode_python/Math/number-of-steps-to-reduce-a-number-to-zero) ||| easy |`gra*`| ok
+1342 |[Number of Steps to Reduce a Number to Zero](https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/) | [Python](./leetcode_python/Math/number-of-steps-to-reduce-a-number-to-zero.py) ||| easy |`gra*`| ok
 1492 |[The kth Factor of n](https://leetcode.com/problems/the-kth-factor-of-n/) | [Python](./leetcode_python/Math/the-kth-factor-of-n.py) ||| Medium |`amazon`|  AGAIN (not start)
 1979 |[Find Greatest Common Divisor of Array](https://leetcode.com/problems/find-greatest-common-divisor-of-array/) | [Python](./leetcode_python/Math/find-greatest-common-divisor-of-array.py) ||| Easy |GCD| not start
 
@@ -1012,6 +1012,9 @@
 962 | [Maximum Width Ramp](https://leetcode.com/problems/maximum-width-ramp/) | [Python](./leetcode_python/Greedy/maximum-width-ramp.py)  | _O(n)_ | _O(n)_ | Medium | Descending Stack |  AGAIN (not start)
 1024 | [Video Stitching](https://leetcode.com/problems/video-stitching/) | [Python](./leetcode_python/Greedy/video_stitching.py) | | | Medium | Spotify | AGAIN (not start)
 1102 | [Path With Maximum Minimum Value](https://leetcode.com/problems/path-with-maximum-minimum-value/) | [Python](./leetcode_python/Greedy/path-with-maximum-minimum-value.py) | | | Medium | dfs, dp , greedy, `amazon` | not start
+319 | [Bulb Switcher](https://leetcode.com/problems/bulb-switcher/) | [Python](./leetcode_python/Greedy/bulb-switcher.py) | | | Medium |  | not start
+672 | [Bulb Switcher II](https://leetcode.com/problems/bulb-switcher-ii/) | [Python](./leetcode_python/Greedy/bulb-switcher-ii.py) | | | Medium |  | not start
+1375 | [Bulb Switcher III](https://zxi.mytechroad.com/blog/algorithms/array/leetcode-1375-bulb-switcher-iii/) | [Python](./leetcode_python/Greedy/bulb-switcher-iii.py) | | | Medium | queue, array, `gra*` | AGAIN*** (1)
 1648 | [Sell Diminishing-Valued Colored Balls](https://leetcode.com/problems/sell-diminishing-valued-colored-balls/) | [Python](./leetcode_python/Greedy/sell-diminishing-valued-colored-balls.py) | | | Medium | trick, sorting, heapq, binary search, greedy, `amazon` | AGAIN*** (2) (not start)
 1710 | [Maximum Units on a Truck](https://leetcode.com/problems/maximum-units-on-a-truck/) | [Python](./leetcode_python/Greedy/maximum-units-on-a-truck.py) | | | Easy |sort, greedy, `amazon` | OK***** (2) (but again)
 
