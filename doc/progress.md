@@ -92,6 +92,8 @@
 			- 875
 		- backtrack
 			- 131
+		- sort
+			- 969
 		- others
 			- 1342
 			- 1375 (again)
@@ -113,9 +115,10 @@
 				- palindrome.md
 				- bit_manipulation.md
 				- string.md
+				- sort.md
 			- ing
 				- hash_map.md
-				- sort.md
+				- sliding_window.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
