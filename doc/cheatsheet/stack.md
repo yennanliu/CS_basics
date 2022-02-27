@@ -330,3 +330,23 @@ class Solution:
             s2.append([A[i], count])
         return sum(a * l * r for a, l, r in zip(A, left, right)) % mod
 ```
+
+### 2-6) Asteroid Collision
+```python
+# LC 735. Asteroid Collision
+# V0
+class Solution(object):
+    def asteroidCollision(self, asteroids):
+        ans = []
+        for new in asteroids:
+            while ans and new < 0 < ans[-1]:
+                if ans[-1] < -new:
+                    ans.pop()
+                    continue
+                elif ans[-1] == -new:
+                    ans.pop()
+                break
+            else:
+                ans.append(new)
+        return ans
+```
