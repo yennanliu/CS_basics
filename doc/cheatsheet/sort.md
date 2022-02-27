@@ -9,7 +9,7 @@
 - Heap sort
 - Merge sort
 - Selection sort
-- Topological sort
+- [Topological sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py)
 
 ### 0-2) Pattern
 
