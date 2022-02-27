@@ -601,3 +601,22 @@ class Solution(object):
                 maxProfit = p - minPrice
         return maxProfit
 ```
+
+### 2-8) Bulb Switcher III
+```python
+# LC 1375. Bulb Switcher III
+# V0
+class Solution:
+    def numTimesAllBlue(self, light):
+        max_bulb_ind = 0
+        count = 0
+        turnedon_bulb = 0
+        
+        for bulb in light:
+            max_bulb_ind = max(max_bulb_ind,bulb)
+            turnedon_bulb += 1
+            if turnedon_bulb == max_bulb_ind:
+                count += 1
+        
+        return count
+```
