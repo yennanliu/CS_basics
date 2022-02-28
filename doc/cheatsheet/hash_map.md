@@ -12,6 +12,7 @@
     - LC 1010 : Pairs of Songs With Total Durations Divisible by 60
 - Sub array sum
     - LC 560 : Subarray Sum Equals K
+        - `TODO : note this as pattern!!!`
 - Any problems with below:
     - need to cache
     - avoid double loop
@@ -590,6 +591,8 @@ class Solution(object):
         res = 0
         for i in range(n):
             sum += nums[i]
+            # if sum - k in d
+            #  -> if sum - (every _ in d) == k
             if sum - k in d:
                 res += d[sum - k]
             d[sum] += 1
