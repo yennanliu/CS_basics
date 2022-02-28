@@ -125,6 +125,16 @@
 				- prefix_sum.md
 			- ing
 				- hash_map.md
+				- python_trick.md
+				- n_sum.md
+				- linked_list.md
+				- intervals.md
+				- greedy.md
+				- graph.md
+				- dfs.md
+				- bst.md
+				- bfs.md
+				- backtrack.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
