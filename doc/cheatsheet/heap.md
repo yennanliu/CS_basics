@@ -440,3 +440,51 @@ class Solution:
                 
         return -heappop(heap) if k == len(heap) else -1
 ```
+
+### 2-6) Least Number of Unique Integers after K Removals
+```python
+# LC 1481. Least Number of Unique Integers after K Removals
+# NOTE : there's also Counter approaches
+# V1'''''
+# IDEA : Counter + heapq
+# https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/704179/python-solution%3A-Counter-and-Priority-Queue
+# IDEA
+# -> Count the occurence of each number.
+# -> We want to delete the number with lowest occurence thus we can use minimum steps to reduce the total unique numbers in the list. For example,[4,3,1,1,3,3,2]. The Counter of this array will be: {3:3, 1:2, 4:1, 2:1}. Given k = 3, the greedy approach is to delete 2 and 4 first because both of them are appearing once. We need an ordering data structure to give us the lowest occurence of number each time. As you may know, Priority Queue comes to play
+# -> Use heap to build PQ for the counter. We store each member as a tuple: (count, number) Python heap module will sort it based on the first member of the tuple.
+# -> loop through k times to pop member out of heap and check if we need to push it back
+class Solution(object):
+    def findLeastNumOfUniqueInts(self, arr, k):
+            # use counter, and heap (priority queue)
+            from collections import Counter
+            import heapq
+            h = []
+            for key, val in Counter(arr).items():
+                heapq.heappush(h,(val,key))
+
+            while k > 0:
+                item = heapq.heappop(h)    
+                if item[0] != 1:
+                    heapq.heappush(h, (item[0]-1, item[1]))      
+                k -=1
+
+            return len(h)
+
+# V1'''''''
+# IDEA : Counter + heapq
+# https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/1542356/Python-MinHeap-Solution
+class Solution:
+    def findLeastNumOfUniqueInts(self, arr, k):
+        counter = collections.Counter(arr)
+        minHeap = []
+        for key, val in counter.items():
+            heapq.heappush(minHeap, val)
+        
+        while k:
+            minHeap[0] -= 1
+            if minHeap[0] == 0:
+                heapq.heappop(minHeap)
+            k -= 1
+        
+        return len(minHeap)
+```
