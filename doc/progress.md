@@ -41,6 +41,8 @@
 			- 460
 		- hashmap
 			- 036 (not start)
+			- 525
+			- 560
 		- graph
 			- 261 (Union Find) 
 			- 547 (Union Find) (not start)
@@ -125,8 +127,9 @@
 				- scanning_line.md
 				- prefix_sum.md
 				- linked_list.md
-			- ing
+				- backtrack.md
 				- hash_map.md
+			- ing
 				- python_trick.md
 				- n_sum.md
 				- intervals.md
@@ -135,7 +138,6 @@
 				- dfs.md
 				- bst.md
 				- bfs.md
-				- backtrack.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
