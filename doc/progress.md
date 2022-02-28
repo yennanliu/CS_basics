@@ -13,7 +13,7 @@
 				- 1597 (again, not start)
 				- 460 (again)
 				- 1481 (again)
-				- 049
+				- 049 (ok)
 			- (pdf : p.4)
 	- ================
 	- LC general
@@ -185,6 +185,10 @@
 			- 491
 			- 673
 			- 239
+			- 567
+			- 713
+			- 209
+			- 1151
 		- linked list
 			- 002
 			- 445
@@ -247,9 +251,10 @@
 				- bit_manipulation.md
 				- string.md
 				- sort.md
+				- sliding_window.md
 			- ing
 				- hash_map.md
-				- sliding_window.md
+				- scanning_line.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
