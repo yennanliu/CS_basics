@@ -1,5 +1,5 @@
 # Sliding window 
-- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%8A%80%E5%B7%A7.md
+- [fucking-algorithm : sliding window](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%8A%80%E5%B7%A7.md)
 - 2 pointers + while loop + boundary condition
 - Find min/max values of sub-set with conditions with given input
 
@@ -170,6 +170,36 @@ class Solution(object):
 
 ```python
 # LC 003 Longest Substring Without Repeating Characters
+# V0'
+# IDEA : SLIDING WINDOW + DICT
+#       -> use a hash table (d) record visited "element" (e.g. : a,b,c,...)
+#          (but NOT sub-string)
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        d = {}
+        # left pointer
+        l = 0
+        res = 0
+        # right pointer
+        for r in range(len(s)):
+            """
+            ### NOTE : we deal with "s[r] in d" case first 
+            ### NOTE : if already visited, means "repeating"
+            #      -> then we need to update left pointer (l)
+            """
+            if s[r] in d:
+                """
+                NOTE !!! this
+                -> via max(l, d[s[r]] + 1) trick,
+                   we can get the "latest" idx of duplicated s[r], and start from that one
+                """
+                l = max(l, d[s[r]] + 1)
+            # if not visited yet, record the alphabet
+            # and re-calculate the max length
+            d[s[r]] = r
+            res = max(res, r -l + 1)
+        return res
+
 # V0'
 # IDEA : SLIDING WINDOW + DICT
 #       -> use a hash table (d) record visited "element" (e.g. : a,b,c,...)

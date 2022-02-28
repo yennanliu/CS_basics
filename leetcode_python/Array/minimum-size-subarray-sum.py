@@ -1,7 +1,11 @@
 """
 
+209. Minimum Size Subarray Sum
+Medium
+
 Given an array of positive integers nums and a positive integer target, return the minimal length of a contiguous subarray [numsl, numsl+1, ..., numsr-1, numsr] of which the sum is greater than or equal to target. If there is no such subarray, return 0 instead.
 
+ 
 
 Example 1:
 
@@ -44,6 +48,7 @@ class Solution:
             ### NOTE the while loop condition (j < n and sum < s)
             while j < n and sum < s:
                 sum += nums[j]
+                # e.g. move right pointer to "1 right idx"
                 j += 1
             # NOTE : we need to check if sum >= s here
             if sum >= s:
@@ -53,6 +58,8 @@ class Solution:
             #          so once it meats the condition (sum >= s)
             #          we should update the minLength (minLength = min(minLength, j - i))
             #          and move to next i and roll back _sum (_sum -= nums[i])
+            #
+            # e.g. move left pointer to "1 right idx"
             sum -= nums[i]
             
         ### NOTE : if minLength == n + 1, means there is no such subarray, so return 0 instead
