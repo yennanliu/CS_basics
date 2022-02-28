@@ -98,6 +98,9 @@
 		- others
 			- 1342
 			- 1375 (again)
+		- prefix sum
+			- 926 (again!!!!)
+			- 370 (again!!!)
 		- Review
 			- (OK)
 			- =============
@@ -117,9 +120,11 @@
 				- bit_manipulation.md
 				- string.md
 				- sort.md
+				- sliding_window.md
+				- scanning_line.md
+				- prefix_sum.md
 			- ing
 				- hash_map.md
-				- sliding_window.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
