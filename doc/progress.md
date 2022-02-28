@@ -56,6 +56,7 @@
 		- linked list
 			- 002
 			- 445
+			- 019
 		- stack
 			- 394
 			- 496
@@ -123,11 +124,11 @@
 				- sliding_window.md
 				- scanning_line.md
 				- prefix_sum.md
+				- linked_list.md
 			- ing
 				- hash_map.md
 				- python_trick.md
 				- n_sum.md
-				- linked_list.md
 				- intervals.md
 				- greedy.md
 				- graph.md
