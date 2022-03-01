@@ -44,6 +44,12 @@ class Solution(object):
         res = 0
         for i in range(n):
             sum += nums[i]
+            """
+            NOTE this !!!
+              if sum - k in d
+              -> sum - (sum - k) == k      (exclude "sum - k" term from aggregated sum)
+              -> so the sum equal to k
+            """
             if sum - k in d:
                 res += d[sum - k]
             d[sum] += 1
