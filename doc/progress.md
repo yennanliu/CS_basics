@@ -80,6 +80,8 @@
 			- 208
 			- 212
 			- 642
+		- bst
+			- 449
 		- math
 			- 168
 		- string
@@ -133,7 +135,6 @@
 				- intervals.md
 				- graph.md
 				- dfs.md
-				- bst.md
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
