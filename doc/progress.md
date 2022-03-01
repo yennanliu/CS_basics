@@ -129,10 +129,10 @@
 				- hash_map.md
 				- greedy.md
 				- bfs.md
+				- intervals.md
 			- ing
 				- python_trick.md
 				- n_sum.md
-				- intervals.md
 				- graph.md
 				- dfs.md
 	- System Design
