@@ -130,8 +130,8 @@
 				- greedy.md
 				- bfs.md
 				- intervals.md
-			- ing
 				- python_trick.md
+			- ing
 				- n_sum.md
 				- graph.md
 				- dfs.md
