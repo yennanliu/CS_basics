@@ -76,6 +76,9 @@ while cnt:
             cnt[k] -= 1
             if cnt[k] == 0:
                 del cnt[k]
+            """
+            NOTE this !!!
+            """
             break
     if stop:
         break
@@ -139,45 +142,6 @@ class Solution(object):
 ```python
 # LC 767. Reorganize String
 
-# V0'
-# IDEA : GREEDY + COUNTER
-# IDEA : 
-#  step 1) order exists count (big -> small)
-#  step 2) select the element which is "most remaining" and DIFFERENT from last ans element and append such element to the end of ans
-#  step 3) if can't find such element, return ""
-from collections import Counter
-class Solution(object):
-    def reorganizeString(self, s):
-        # edge case
-        if not s:
-            return ""
-
-        cnt = Counter(s)
-        # we init ans as "#" for compare its last element with key    
-        ans = "#"
-
-        while cnt:
-            stop = True
-            for k, _count in cnt.most_common():
-                """
-                NOTE !!! trick here
-
-                1) we only compare last element in ans and current key (v), if they are different, then append
-                2) we break at the end of each for loop -> MAKE SURE two adjacent characters are not the same.
-                3) we use a flag "stop", to decide whether should stop while loop or not
-                """
-                if k != ans[-1]:
-                    stop = False
-                    ans += k
-                    cnt[k] -= 1
-                    if cnt[k] == 0:
-                        del cnt[k]
-                    break
-            if stop:
-                break
-        # len(ans) - 1 == len(s), since ans init with "#", we need to substract 1 on length comparison
-        return ans[1:] if (len(ans) - 1 == len(s)) else ""
-
 # V0 
 # IDEA : GREEDY + COUNTER
 # IDEA : 
@@ -192,14 +156,27 @@ class Solution(object):
         while cnt:
             stop = True
             for v, c in cnt.most_common():
+                """
+                NOTE !!! trick here
+
+                1) we only compare last element in ans and current key (v), if they are different, then append
+                2) we break at the end of each for loop -> MAKE SURE two adjacent characters are not the same.
+                3) we use a flag "stop", to decide whether should stop while loop or not
+                """
                 if v != ans[-1]:
                     stop = False
                     ans += v
                     cnt[v] -= 1
-                    if not cnt[v]: del cnt[v]
+                    if not cnt[v]:
+                        del cnt[v]
+                    """
+                    NOTE !!!
+                     -> we BREAK right after each op, since we want to get next NEW most common element from "updated" cnt.most_common()
+                    """
                     break
             # Be aware of it : if there is no valid "v", then the while loop will break automatically at this condition (stop = True)
-            if stop: break
+            if stop:
+                break
         return ans[1:] if len(ans[1:]) == len(S) else ''
 ```
 

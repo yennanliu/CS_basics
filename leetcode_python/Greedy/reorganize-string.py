@@ -51,10 +51,16 @@ class Solution(object):
                     stop = False
                     ans += v
                     cnt[v] -= 1
-                    if not cnt[v]: del cnt[v]
+                    if not cnt[v]:
+                        del cnt[v]
+                    """
+                    NOTE !!!
+                     -> we BREAK right after each op, since we want to get next NEW most common element from "updated" cnt.most_common()
+                    """
                     break
             # Be aware of it : if there is no valid "v", then the while loop will break automatically at this condition (stop = True)
-            if stop: break
+            if stop:
+                break
         return ans[1:] if len(ans[1:]) == len(S) else ''
 
 # V0'
