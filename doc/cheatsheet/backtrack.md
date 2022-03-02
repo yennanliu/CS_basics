@@ -692,3 +692,74 @@ class Solution(object):
             if str(number) == s[:i] and number <= 255:
                 self.dfs(s[i:], path + [s[:i]], res)
 ```
+
+### 2-9) Word Break
+```python
+# LC 139 Word Break
+# V0
+# IDEA : BFS
+class Solution:
+    def wordBreak(self, s, wordDict):
+        if not s or not wordDict:
+            return
+        q = collections.deque()
+        q.append(0)
+        visited = [None]*len(s)
+        while q:
+            i = q.popleft()
+            if not visited[i]:
+                for j in range(i+1,len(s)+1):                 
+                    if s[i:j] in wordDict:                    
+                        if j == len(s):
+                            return True  
+                        q.append(j)
+                visited[i]=True
+```
+
+### 2-10) Word Break II
+```python
+# LC 140 Word Break II
+# NOTE : there is also dfs, dp approaches
+# V1
+# IDEA : RECURSION
+# https://leetcode.com/problems/word-break-ii/discuss/1426014/Python-interview-friendly-simple-recursion
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        def recur(s, path):
+            if not s:
+                out.append(' '.join(path))
+                return
+            for i in range(1,len(s)+1):
+                w,new_s = s[:i], s[i:]
+                if w in wordDict:
+                    recur(new_s, path + [w])
+        wordDict, out = set(wordDict), []
+        recur(s,[])
+        return out
+
+# V1
+# IDEA : BACKTRCK
+# https://leetcode.com/problems/word-break-ii/discuss/44404/Python-backtracking
+class Solution:
+    def wordBreak(self, s, dic):
+        if not dic:
+            return []
+        n = max(len(d) for d in dic)
+        stack, parents = [0], collections.defaultdict(set)
+        while stack:
+            parent = stack.pop()
+            for child in range(parent+1, parent+n+1):
+                if s[parent:child] in dic:
+                    if child not in parents:
+                        stack.append(child)
+                    parents[child].add(parent)
+        stack, res = [[len(s)]], []
+        while stack:
+            r = stack.pop()
+            if r[0] == 0:
+                r = [s[i:j] for i, j in zip(r[:-1], r[1:])]
+                res.append(' '.join(r))
+            for parent in parents[r[0]]:
+                stack.append([parent]+r)
+        return res
+```
