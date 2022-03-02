@@ -36,6 +36,25 @@ All the strings of wordDict are unique.
 
 """
 
+# V0
+# IDEA : BFS
+class Solution:
+    def wordBreak(self, s, wordDict):
+        if not s or not wordDict:
+            return
+        q = collections.deque()
+        q.append(0)
+        visited = [None]*len(s)
+        while q:
+            i = q.popleft()
+            if not visited[i]:
+                for j in range(i+1,len(s)+1):                 
+                    if s[i:j] in wordDict:                    
+                        if j == len(s):
+                            return True  
+                        q.append(j)
+                visited[i]=True
+
 # V0 
 # IDEA : DP
 class Solution(object):
@@ -52,6 +71,118 @@ class Solution(object):
                 if dp[k] and s[k:i] in wordDict:
                     dp[i] = True
         return dp.pop()
+
+# V1
+# IDEA : BFS
+# https://leetcode.com/problems/word-break/discuss/535831/Python-BFS
+class Solution:
+    def wordBreak(self, s, wordDict):
+        if not s or not wordDict: return
+        q = collections.deque()
+        q.append(0)
+        visited = [None]*len(s)
+        while q:
+            i = q.popleft()
+            if not visited[i]:
+                for j in range(i+1,len(s)+1):                 
+                    if s[i:j] in wordDict:                    
+                        if j == len(s):
+                            return True  
+                        q.append(j)
+                visited[i]=True
+
+# V1
+# IDEA : Brute Force (TLE)
+# https://leetcode.com/problems/word-break/solution/
+class Solution:
+    def wordBreak(self, s, wordDict):
+        def wordBreakRecur(s: str, word_dict: Set[str], start: int):
+            if start == len(s):
+                return True
+            for end in range(start + 1, len(s) + 1):
+                if s[start:end] in word_dict and wordBreakRecur(s, word_dict, end):
+                    return True
+            return False
+
+        return wordBreakRecur(s, set(wordDict), 0)
+
+# V1
+# IDEA : RECURSION WITH MEMORY
+# https://leetcode.com/problems/word-break/solution/
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        @lru_cache
+        def wordBreakMemo(s: str, word_dict: FrozenSet[str], start: int):
+            if start == len(s):
+                return True
+            for end in range(start + 1, len(s) + 1):
+                if s[start:end] in word_dict and wordBreakMemo(s, word_dict, end):
+                    return True
+            return False
+
+        return wordBreakMemo(s, frozenset(wordDict), 0)
+
+# V1
+# IDEA : BFS
+# https://leetcode.com/problems/word-break/solution/
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        word_set = set(wordDict)
+        q = deque()
+        visited = set()
+
+        q.append(0)
+        while q:
+            start = q.popleft()
+            if start in visited:
+                continue
+            for end in range(start + 1, len(s) + 1):
+                if s[start:end] in word_set:
+                    q.append(end)
+                    if end == len(s):
+                        return True
+            visited.add(start)
+        return False
+
+# V1
+# IDEA : DP
+# https://leetcode.com/problems/word-break/solution/
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        word_set = set(wordDict)
+        dp = [False] * (len(s) + 1)
+        dp[0] = True
+
+        for i in range(1, len(s) + 1):
+            for j in range(i):
+                if dp[j] and s[j:i] in word_set:
+                    dp[i] = True
+                    break
+        return dp[len(s)]
+
+# V1
+# IDEA : Iterative
+# https://leetcode.com/problems/word-break/discuss/1659559/Python-or-Iterative
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        parts = []
+        wordDict = set(wordDict)
+        for i in range(len(s)+1):
+            if s[:i] in wordDict:
+                parts.append(i)
+            else:
+                k = len(parts)-1
+                while k >=0:
+                    if s[parts[k]:i] in wordDict:
+                        parts.append(i)
+                        break
+                    else:
+                        k-=1
+        if not parts:
+            return False
+        if parts[-1]== len(s):
+            return True
+        return False
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79368360
@@ -96,6 +227,54 @@ class Solution:
                     f[i] = True
                     break        
         return f[n]
+
+# V1
+# IDEA : Dynamic Programming bottom up
+# https://leetcode.com/problems/word-break/discuss/164472/Python-solution
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        wordSet = set(wordDict)
+        dp = [0]*(len(s)+1)
+        dp[0] = 1
+        for i in range(1, len(s)+1):
+            for j in range(i):
+                if dp[j] == 1 and s[j:i] in wordSet:
+                    dp[i] = 1
+                    break
+            else:
+                dp[i] = 0
+        return dp[-1] == 1
+
+# V1
+# IDEA : Dynamic Programming top down (memoization)
+# https://leetcode.com/problems/word-break/discuss/164472/Python-solution
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        def dfs(i):
+            if i == len(s):
+                return True
+            if rec[i] != -1:
+                return True if rec[i] == 1 else False
+            for j in range(i, len(s)):
+                if s[i:j+1] in wordSet:
+                    rec[j+1] = 1 if dfs(j+1) else 0
+                    if rec[j+1] == 1:
+                        return True
+            return False
+        
+        rec = [-1]*(len(s)+1)
+        wordSet = set(wordDict)
+        return dfs(0)
 
 # V2 
 # Time:  O(n * l^2)
