@@ -292,6 +292,7 @@
 1014 | [Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/) | [Python](./leetcode_python/Array/best_sightseeing_pair.py) | | | Medium |dp, array, good basic, Spotify| AGAIN (not start)
 1027 | [Longest Arithmetic Subsequence](https://leetcode.com/problems/longest-arithmetic-subsequence/) | [Python](./leetcode_python/Array/longest-arithmetic-subsequence.py) | | | Medium |google, amazon| not start
 1041 | [Robot Bounded In Circle](https://leetcode.com/problems/robot-bounded-in-circle/) | [Python](./leetcode_python/Array/robot-bounded-in-circle.py) | | | Medium |`amazon`| AGAIN (not start)
+1275 | [Find Winner on a Tic Tac Toe Game](https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/) | [Python](./leetcode_python/Array/find-winner-on-a-tic-tac-toe-game.py) | | | Easy |`amazon`| AGAIN (not start)
 
 
 ## Hash Table 
