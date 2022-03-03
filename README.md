@@ -271,7 +271,7 @@
 888 | [Fair Candy Swap](https://leetcode.com/problems/fair-candy-swap/) | [Python](./leetcode_python/Array/fair-candy-swap.py) | _O(m + n)_ | _O(m + n)_ | Easy |`basic`, `trick`| OK*
 896 | [Monotonic Array](https://leetcode.com/problems/monotonic-array/) | [Python](./leetcode_python/Array/monotonic-array.py) | _O(n)_ | _O(1)_   | Easy  |`all`,`array` ,`fb`| OK
 905 | [Sort Array By Parity](https://leetcode.com/problems/sort-array-by-parity/) | [Python](./leetcode_python/Array/sort-array-by-parity.py) | _O(n)_ | _O(1)_    | Easy  |`sort by lambda`| OK
-909 | [Snakes and Ladders](https://leetcode.com/problems/snakes-and-ladders/) | [Python](./leetcode_python/Array/snakes-and-ladders.py)| _O(n^2)_ | _O(n^2)_ | Medium  |`complex`| AGAIN (not start)
+909 | [Snakes and Ladders](https://leetcode.com/problems/snakes-and-ladders/) | [Python](./leetcode_python/Array/snakes-and-ladders.py)| _O(n^2)_ | _O(n^2)_ | Medium  |matrix, dfs,`complex`, `amazon`| AGAIN** (2)
 915 | [Partition Array into Disjoint Intervals](https://leetcode.com/problems/partition-array-into-disjoint-intervals/) | [Python](./leetcode_python/Array/partition-array-into-disjoint-intervals.py) | _O(n)_ | _O(n)_ | Medium   |`basic`, `trick`| AGAIN* (not start)
 918 | [Maximum Sum Circular Subarray](https://leetcode.com/problems/maximum-sum-circular-subarray/) |  [Python](./leetcode_python/Array/maximum-sum-circular-subarray.py)  | _O(n)_ | _O(1)_ | Medium |check `# 053 Maximum Subarray`, `basic`, `trick`| AGAIN* (not start)
 921 | [Minimum Add to Make Parentheses Valid](https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/) | [Python](./leetcode_python/Array/minimum-add-to-make-parentheses-valid.py) | _O(n)_ | _O(1)_  | Medium |`basic`, `trick`| AGAIN** 
