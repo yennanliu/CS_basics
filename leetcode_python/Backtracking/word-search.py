@@ -45,7 +45,9 @@ class Solution(object):
         ### NOTE : construct the visited matrix
         visited = [[False for j in range(len(board[0]))] for i in range(len(board))]
 
-        ### NOTE : we visit every element in board and trigger the dfs
+        """
+        NOTE !!!! : we visit every element in board and trigger the dfs
+        """
         for i in range(len(board)):
             for j in range(len(board[0])):
                 if self.dfs(board, word, 0, i, j, visited):
@@ -65,7 +67,7 @@ class Solution(object):
         if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]) or visited[i][j] or board[i][j] != word[cur]:
             return False
 
-        # mark as visited
+        # NOTE THIS !! : mark as visited
         visited[i][j] = True
         ### NOTE THIS TRICK (run the existRecu on 4 directions on the same time)
         result = self.dfs(board, word, cur + 1, i + 1, j, visited) or\
