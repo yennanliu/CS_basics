@@ -42,18 +42,42 @@ light is a permutation of  [1, 2, ..., n]
 """
 
 # V0
+# IDEA:
+# https://iter01.com/575553.html
+# if bulb on idx = k can be changed to blue
+#  -> ALL of bulb on the left (idx=k) SHOULD also on
+#  -> idx=0 ~ k-1 bulb are ALL on
+# so, we can maintain 2 var: max_open, cur_open
+# max_open get current open bulb with MAX index
+# cur_open records how many bulb are on currently
+# and if max_open == cur_open on idx=k
+#   -> means all bulb on left are on, so current bulb (idx=k) can become blue
+class Solution:
+    def numTimesAllBlue(self, light):
+        # edge case
+        if not light:
+            return
+        res = 0
+        max_open = 0
+        cur_open = 0
+        for i in range(len(light)):
+            max_open = max(max_open, light[i])
+            cur_open += 1
+            if max_open == cur_open:
+                res += 1
+        return res
+
+# V0'
 class Solution:
     def numTimesAllBlue(self, light):
         max_bulb_ind = 0
         count = 0
         turnedon_bulb = 0
-        
         for bulb in light:
             max_bulb_ind = max(max_bulb_ind,bulb)
             turnedon_bulb += 1
             if turnedon_bulb == max_bulb_ind:
-                count += 1
-        
+                count += 1     
         return count
 
 # V1
