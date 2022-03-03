@@ -414,6 +414,7 @@
 872| [Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/) |  [python](./leetcode_python/Stack/leaf-similar-trees.py) | _O(n)_  | _O(h)_         | Easy      || AGAIN* 
 901| [Online Stock Span](https://leetcode.com/problems/online-stock-span/) | [python](./leetcode_python/Stack/online-stock-span.py) | _O(n)_  | _O(n)_      | Medium        || AGAIN (not start)
 946| [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/) |  [python](./leetcode_python/Stack/validate-stack-sequences.py)  | _O(n)_  | _O(n)_         | Medium           || AGAIN 
+1896| [Minimum Cost to Change the Final Value of Expression](https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/) |  [python](./leetcode_python/Stack/minimum-cost-to-change-the-final-value-of-expression.py)  | _O(n)_  | _O(n)_| Hard|complex, stack, dp, dp+stack, dfs, `amazon`| AGAIN (not start)
 
 
 ## Tree 
