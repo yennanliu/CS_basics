@@ -567,3 +567,26 @@ class Solution:
             step += 1
         return -1
 ```
+
+### 2-12) Kill Process
+```python
+# LC 582 Kill Process
+# NOTE : there is also dfs approach
+# V0
+# IDEA : BFS + defaultdict
+from collections import defaultdict
+class Solution(object):
+    def killProcess(self, pid, ppid, kill):
+        d = defaultdict(set)
+        for a, b in zip(ppid, pid):
+            d[a].add(b)
+        q = [kill]
+        res = []
+        while q:
+            for i in range(len(q)):
+                tmp = q.pop(-1)
+                res.append(tmp)
+                for _ in d[tmp]:
+                    q.append(_)
+        return res
+```
