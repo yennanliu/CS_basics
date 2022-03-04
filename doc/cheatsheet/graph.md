@@ -131,3 +131,77 @@ class Solution:
                 count+=1
         return count
 ```
+
+### 2-3) Clone Graph
+```python
+# LC 133. Clone Graph
+
+# V0
+# IDEA : BFS
+class Solution(object):
+    def cloneGraph(self, node):
+        if not node:
+            return
+        q = [node]
+        """
+        NOTE !!! : we init res as Node(node.val, [])
+          -> since Node has structure as below :
+
+          class Node:
+            def __init__(self, val = 0, neighbors = None):
+                self.val = val
+                self.neighbors = neighbors if neighbors is not None else []
+        """
+        res = Node(node.val, [])
+        """
+        NOTE !!! : we use dict as visited,
+                   and we use node as visited dict key 
+        """
+        visited = dict()
+        visited[node] = res
+        while q:
+            #t = q.pop(0) # this works as well
+            t = q.pop(-1)
+            if not t:
+                continue
+            for n in t.neighbors:
+                if n not in visited:
+                    """
+                    NOTE !!! : we need to 
+                         -> use n as visited key
+                         -> use Node(n.val, []) as visited value
+                    """
+                    visited[n] = Node(n.val, [])
+                    q.append(n)
+                """
+                NOTE !!! 
+                    -> we need to append visited[n] to visited[t].neighbors
+                """
+                visited[t].neighbors.append(visited[n])
+        return res
+
+# V0
+# IDEA : DFS
+# NOTE :
+#  -> 1) we init node via : node_copy = Node(node.val, [])
+#  -> 2) we copy graph via dict
+class Solution(object):
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+        node_copy = self.dfs(node, dict())
+        return node_copy
+    
+    def dfs(self, node, hashd):
+        if not node: return None
+        if node in hashd: return hashd[node]
+        node_copy = Node(node.val, [])
+        hashd[node] = node_copy
+        for n in node.neighbors:
+            n_copy = self.dfs(n, hashd)
+            if n_copy:
+                node_copy.neighbors.append(n_copy)
+        return node_copy
+```
