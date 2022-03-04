@@ -620,3 +620,33 @@ class Solution:
         
         return count
 ```
+
+### 2-9) Robot Bounded In Circle
+```python
+# LC 1041. Robot Bounded In Circle
+# V0
+# IDEA : math + array
+class Solution:
+    def isRobotBounded(self, instructions):
+        """
+        NOTE !!! we make direction as below
+        """
+        dirs = [[0,1], [1,0], [0,-1], [-1,0]]
+        x = 0;
+        y = 0;
+        idx = 0;
+        for c in instructions:
+            print ("c = " + str(c) + " idx = " + str(idx))
+            """
+            NOTE !!! since we need to verify if robot back to start point
+                -> we use (idx + k)  % 4 for detecting cyclic cases
+            """
+            if c == 'L':
+                idx = (idx + 3) % 4
+            elif c == 'R':
+                idx = (idx + 1) % 4
+            elif c == 'G':
+                x = x + dirs[idx][0]
+                y = y + dirs[idx][1]
+        return (x == 0 and y ==0) or idx !=0
+```
