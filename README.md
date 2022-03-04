@@ -293,6 +293,7 @@
 1027 | [Longest Arithmetic Subsequence](https://leetcode.com/problems/longest-arithmetic-subsequence/) | [Python](./leetcode_python/Array/longest-arithmetic-subsequence.py) | | | Medium |google, amazon| not start
 1041 | [Robot Bounded In Circle](https://leetcode.com/problems/robot-bounded-in-circle/) | [Python](./leetcode_python/Array/robot-bounded-in-circle.py) | | | Medium |array, math, `amazon`| AGAIN** (2)
 1275 | [Find Winner on a Tic Tac Toe Game](https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/) | [Python](./leetcode_python/Array/find-winner-on-a-tic-tac-toe-game.py) | | | Easy |`amazon`| AGAIN (not start)
+1914 | [Cyclically Rotating a Grid](https://leetcode.com/problems/cyclically-rotating-a-grid/) | [Python](./leetcode_python/Array/cyclically-rotating-a-grid.py) | | | Medium |array, brute force, dequeue`amazon`| AGAIN (not start)
 
 
 ## Hash Table 

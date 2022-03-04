@@ -12,8 +12,8 @@
 				- 909 (again)
 				- 1041 (again)
 				- 1339 (again!!)
-				- 380
-				- 1914
+				- 0380 (ok)
+				- 1914 (again, not start)
 				- 103
 	- ================
 	- LC general
