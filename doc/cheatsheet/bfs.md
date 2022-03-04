@@ -590,3 +590,28 @@ class Solution(object):
                     q.append(_)
         return res
 ```
+
+### 2-13) Word Break
+```python
+# LC 139 Word Break
+# NOTE : there is also dp approach
+# V0
+# IDEA : BFS
+class Solution:
+    def wordBreak(self, s, wordDict):
+        if not s or not wordDict:
+            return
+        q = collections.deque()
+        q.append(0)
+        visited = [False]*len(s)
+        while q:
+            i = q.popleft()
+            if not visited[i]:
+                for j in range(i+1,len(s)+1):                 
+                    if s[i:j] in wordDict:                    
+                        if j == len(s):
+                            return True  
+                        q.append(j)
+                visited[i]=True
+        return False
+```

@@ -44,7 +44,7 @@ class Solution:
             return
         q = collections.deque()
         q.append(0)
-        visited = [None]*len(s)
+        visited = [False]*len(s)
         while q:
             i = q.popleft()
             if not visited[i]:
@@ -54,8 +54,9 @@ class Solution:
                             return True  
                         q.append(j)
                 visited[i]=True
+        return False
 
-# V0 
+# V0'
 # IDEA : DP
 class Solution(object):
     def wordBreak(self, s, wordDict):
