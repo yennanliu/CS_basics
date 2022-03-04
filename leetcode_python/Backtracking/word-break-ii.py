@@ -35,6 +35,35 @@ All the strings of wordDict are unique.
 """
 
 # V0
+# IDEA : BACKTRCK, LC 078 Subsets
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        def help(res, cur):
+            """
+            NOTE this !!! : 
+                -> shallow copy cur[:]
+            """
+            if "".join(cur[:]) == s:
+                res.append(" ".join(cur[:]))
+                #return
+            if len("".join(cur[:])) > len(s):
+                return
+            for i in range(len(wordDict)):
+                cur.append(wordDict[i])
+                help(res, cur)
+                # NOTE this
+                cur.pop()
+
+        # edge case
+        if not wordDict:
+            return []
+        max_len = max([len(x) for x in wordDict])
+        res = []
+        cur = [] #""
+        cnt = 0
+        help(res, cur)
+        print ("res = " + str(res))
+        return res
 
 # V1
 # IDEA : RECURSION
