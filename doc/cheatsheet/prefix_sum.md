@@ -4,6 +4,8 @@
 ```
 We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if S[i] == '1', else A[i] = 0. We can calculate P in linear time.
 ```
+- Ref
+    - [hash_map.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/hash_map.md)
 
 ### 0-1) Types
 
@@ -116,4 +118,25 @@ class Solution(object):
             ret[i], sum = ret[i] + sum, ret[i] + sum
         
         return ret[0:-1]
+```
+
+### 2-3) Count Number of Nice Subarrays
+```python
+# 1248. Count Number of Nice Subarrays
+# NOTE : there are also array, window, deque.. approaches
+# V0
+# IDEA : cumsum + dict (Prefix sum)
+class Solution:
+    def numberOfSubarrays(self, nums, k):
+        d = collections.defaultdict(int)
+        d[0] = 1
+        cur_sum = 0
+        res = 0
+        for i in nums:
+            if i % 2 == 1:
+                cur_sum += 1
+            if cur_sum - k in d:
+                res += d[cur_sum - k]
+            d[cur_sum] += 1
+        return res
 ```
