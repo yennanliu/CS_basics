@@ -896,3 +896,44 @@ In [10]: def my_func(x):
     ...: [ x if my_func(x) else 999  for x in range(5)]
 Out[10]: [0, 999, 2, 999, 4]
 ```
+
+### 1-26) Add Two Numbers II,  Decode String
+- String -> Int
+```python
+# 445 Add Two Numbers II
+# 394 Decode String
+def str_2_int(x):
+    r=0
+    for i in x:
+        r = int(r)*10 + int(i)
+        print (i, r)
+    return r
+
+def str_2_int_v2(x):
+    res = 0
+    for i in x:
+        res = (res + int(i) % 10) * 10
+    return int(res / 10)
+
+# example 1
+x="131"
+r=str_2_int(x)
+print (r)
+# 1 1
+# 3 13
+# 1 131
+# 131
+
+# examle 2
+In [62]: z
+Out[62]: '5634'
+
+In [63]: ans = 0
+
+In [64]: for i in z:
+    ...:     ans = 10 * ans + int(i)
+    ...:
+
+In [65]: ans
+Out[65]: 5634
+```
