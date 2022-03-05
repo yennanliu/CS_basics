@@ -49,7 +49,7 @@ Constraints:
 """
 
 # V0 
-# IDEA 
+# IDEA
 # In [8]: 1200%100
 # Out[8]: 0
 # In [9]: 1234%1000
@@ -58,6 +58,13 @@ Constraints:
 # Out[10]: 34
 # In [11]: 1234%10
 # Out[11]: 4
+# example :
+# def str_2_int(x):
+#     r=0
+#     for i in x:
+#         r = int(r)*10 + int(i)
+#         print (i, r)
+#     return r
 class Solution(object):
     def intToRoman(self, num):
         M = ["", "M", "MM", "MMM"]
