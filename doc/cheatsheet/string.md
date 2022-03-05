@@ -447,3 +447,29 @@ class Solution(object):
 
         return ans + min(prev, cur)
 ```
+
+### 2-10) Roman to Integer
+```python
+# LC 13. Roman to Integer
+# V0
+class Solution(object):
+    def romanToInt(self, s):
+        # helper ref
+        roman = {"I":1, "V":5, "X":10, "L":50, "C":100, "D":500, "M":1000}
+        # NOTE : we init res as below
+        res = roman[s[-1]]
+        N = len(s)
+        """
+        2 cases:
+            case 1) XY, X > Y -> res = X - Y
+            case 2) XY, X < Y -> res = X + Y
+        """
+        for i in range(N - 2, -1, -1):
+            # case 1
+            if roman[s[i]] < roman[s[i + 1]]:
+                res -= roman[s[i]]
+            # case 2
+            else:
+                res += roman[s[i]]
+        return res
+```

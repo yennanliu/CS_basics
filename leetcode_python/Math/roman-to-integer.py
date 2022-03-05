@@ -1,5 +1,8 @@
 """
 
+13. Roman to Integer
+Easy
+
 Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
 
 Symbol       Value
@@ -25,20 +28,13 @@ Example 1:
 
 Input: s = "III"
 Output: 3
+Explanation: III = 3.
 Example 2:
-
-Input: s = "IV"
-Output: 4
-Example 3:
-
-Input: s = "IX"
-Output: 9
-Example 4:
 
 Input: s = "LVIII"
 Output: 58
 Explanation: L = 50, V= 5, III = 3.
-Example 5:
+Example 3:
 
 Input: s = "MCMXCIV"
 Output: 1994
@@ -50,23 +46,30 @@ Constraints:
 1 <= s.length <= 15
 s contains only the characters ('I', 'V', 'X', 'L', 'C', 'D', 'M').
 It is guaranteed that s is a valid roman numeral in the range [1, 3999].
-
-
+Accepted
+1,414,292
+Submissions
+2,443,425
 """
 
 # V0
 class Solution(object):
     def romanToInt(self, s):
+        # helper ref
         roman = {"I":1, "V":5, "X":10, "L":50, "C":100, "D":500, "M":1000}
-        ### NOTE THIS TRICK (loop from last 2 element)
+        # NOTE : we init res as below
         res = roman[s[-1]]
         N = len(s)
-        ### NOTE THIS : set -1 as stop point can always loop til the final element (inverse order)
+        """
+        2 cases:
+            case 1) XY, X > Y -> res = X - Y
+            case 2) XY, X < Y -> res = X + Y
+        """
         for i in range(N - 2, -1, -1):
-            ### NOTE : if any left element < right element  -> need to minus the left element (NOT LIMIT TO 2 ELEMENT PAIR)
+            # case 1
             if roman[s[i]] < roman[s[i + 1]]:
                 res -= roman[s[i]]
-            ### NOTE : if any left element > right element  -> need to add the left element (NOT LIMIT TO 2 ELEMENT PAIR)
+            # case 2
             else:
                 res += roman[s[i]]
         return res
