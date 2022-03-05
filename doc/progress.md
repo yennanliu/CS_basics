@@ -106,7 +106,7 @@
 			- 1342
 			- 1375 (again)
 		- prefix sum
-			- 926 (again!!!!)
+			- 926 (again!!!!!!)
 			- 370 (again!!!)
 		- Review
 			- (OK)
