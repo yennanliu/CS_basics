@@ -127,7 +127,7 @@ class Solution:
 
         return ret
 
-# V1
+# V1'
 # IDEA : DFS
 # https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/solution/
 # Definition for a binary tree node.
@@ -165,7 +165,7 @@ class Solution:
 
         return results
 
-# V1 
+# V1''
 # https://www.cnblogs.com/zuoyuan/p/3722022.html
 # Definition for a  binary tree node
 # class TreeNode:
