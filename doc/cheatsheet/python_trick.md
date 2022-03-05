@@ -871,3 +871,28 @@ In [16]:
 In [16]: list(newlist)
 Out[16]: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 ```
+
+### 1-24) list comprehension
+```python
+#----------------------------
+# example 1
+#----------------------------
+# https://stackoverflow.com/questions/4260280/if-else-in-a-list-comprehension
+
+In [8]: [ x for x in range(5) ]
+Out[8]: [0, 1, 2, 3, 4]
+
+# NOTE this !!!!
+In [9]: [ x if x % 2 == 0 else -1 for x in range(5) ]
+   ...:
+   ...:
+Out[9]: [0, -1, 2, -1, 4]
+
+In [10]: def my_func(x):
+    ...:     if x % 2 ==0:
+    ...:         return True
+    ...:     return False
+    ...:
+    ...: [ x if my_func(x) else 999  for x in range(5)]
+Out[10]: [0, 999, 2, 999, 4]
+```

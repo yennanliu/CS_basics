@@ -9,7 +9,14 @@
 	- LC (amz_, latest 6 months) :
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.4)
-				- 103
+				- 103 (ok)
+			- (pdf : p.5)
+				- 004
+				- 1567
+				- 012
+				- 863
+				- 1248
+				- 023
 	- ================
 	- LC general
 		- Tree
