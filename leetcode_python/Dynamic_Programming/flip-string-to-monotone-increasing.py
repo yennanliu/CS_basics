@@ -35,7 +35,50 @@ s[i] is either '0' or '1'.
 
 """
 
-# V0 
+# V0
+class Solution:
+    def minFlipsMonoIncr(self, s):
+        ones = 0
+        """
+        NOTE !!! :
+            -> assume all element in s is "0"
+            -> then we adjust this hypothesis below
+
+        ones : # of ones on [:k]
+        zeros : # of zero on [k+1:]
+        """
+        res = zeros = s.count("0")
+        # go through s
+        for c in s:
+            """
+            case 1) if current c == "1"
+                -> all right MUST be current zeros
+                -> while left ones need to plus 1
+            """
+            if c == "1":
+                ones, zeros = (ones + 1, zeros)
+            # """
+            # case 2) if current c == "0"
+            #     -> all right MUST be current - 1 zeros
+            #     -> while left ones be the same
+            # """
+            else:
+                ones, zeros = (ones, zeros - 1)
+            """
+            NOTE : the op (flip) we need to take :
+                -> num(ones) + nums(zeros)
+                since we ones "1" on [:k] and zeros on [k+1:]
+                -> so in order to make the string "Monotone Increasing"
+                -> we need to 
+                    -> flip "1" on [:k] to "0"
+                    -> flip "0" in [k+1:] to "1"
+
+                    -> so (ones + zeros) op
+            """
+            res = min(res, ones + zeros)
+        return res
+
+# V0' 
 # IDEA : PREFIX SUM
 class Solution(object):
     def minFlipsMonoIncr(self, S):
@@ -49,7 +92,7 @@ class Solution(object):
             res = min(res, P[j] + len(S)-j-(P[-1]-P[j]))
         return res
 
-# V0'
+# V0''
 class Solution:
     def minFlipsMonoIncr(self, s, ones = 0):
         res = zeros = s.count("0")
@@ -102,6 +145,10 @@ class Solution:
 
 # V1'''
 # https://leetcode.com/problems/flip-string-to-monotone-increasing/discuss/184080/Python-3-liner
+# IDEA :
+#  -> We start with assuming "111.." section occupies all string, s.
+#  -> Then we update "000.." section as s[:i + 1] and "111.." section as s[i + 1:] during iteration as well as the result
+#  -> "zeros" variable counts all misplaced "0"s and "ones" variable counts all misplaced "1"s
 class Solution:
     def minFlipsMonoIncr(self, s):
         res = cur = s.count("0")
