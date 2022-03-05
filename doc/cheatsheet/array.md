@@ -650,3 +650,54 @@ class Solution:
                 y = y + dirs[idx][1]
         return (x == 0 and y ==0) or idx !=0
 ```
+
+### 2-10) Maximum Length of Subarray With Positive Product
+```python
+# LC 1567 Maximum Length of Subarray With Positive Product
+
+# V0
+class Solution:
+    def getMaxLen(self, nums):
+        first_neg, zero = None, -1
+        mx = neg = 0
+        for i,v in enumerate(nums):
+            if v == 0:
+                first_neg, zero, neg = None, i, 0
+                continue
+            if v < 0:
+                neg += 1
+                if first_neg == None:
+                    first_neg = i
+            j = zero if not neg % 2 else first_neg if first_neg != None else 10**9
+            mx = max(mx, i-j)
+        return mx
+
+# V0'
+# IDEA : 2 POINTERS
+class Solution:
+    def getMaxLen(self, nums):
+        res = 0
+        k = -1 # most recent 0
+        j = -1 # first negative after most recent 0
+        cnt = 0 # count of negatives after most recent 0
+        for i, n in enumerate(nums):
+            if n == 0:
+                k = i
+                j = i
+                cnt = 0
+            elif n < 0:
+                cnt += 1
+                if cnt % 2 == 0:
+                    res = max(res, i - k)
+                else:
+                    if cnt == 1:
+                        j = i
+                    else:
+                        res = max(res, i - j)        
+            else:
+                if cnt % 2 == 0:
+                    res = max(res, i - k)
+                else:
+                    res = max(res, i - j)
+        return res
+```
