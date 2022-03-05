@@ -35,6 +35,32 @@ Constraints:
 # IDEA : double loop -> 2 single loops,  prefix sum
 class Solution(object):
     def getModifiedArray(self, length, updates):
+        # edge case
+        if not length:
+            return
+        if length and not updates:
+            return [0 for i in range(length)]
+        # init res
+        res = [0 for i in range(length)]
+        # get cumsum on start and end idx
+        # then go through res, adjust the sum
+        for _start, _end, val in updates:
+            res[_start] += val
+            if _end+1 < length:
+                res[_end+1] -= val
+
+        #print ("res = " + str(res))
+        cur = 0
+        for i in range(len(res)):
+            cur += res[i]
+            res[i] = cur
+        #print ("--> res = " + str(res))
+        return res
+
+# V0'
+# IDEA : double loop -> 2 single loops,  prefix sum
+class Solution(object):
+    def getModifiedArray(self, length, updates):
         # NOTE : we init res with (len+1)
         res = [0] * (length + 1)
         """
