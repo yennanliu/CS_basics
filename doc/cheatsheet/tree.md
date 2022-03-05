@@ -538,6 +538,26 @@ class Solution(object):
         return root
 ```
 
+### 1-1-16) Get neighborhood node (for each node) from tree
+```python
+# LC 863. All Nodes Distance K in Binary Tree
+# dfs
+# IDEA : DFS
+# ...
+from collections import defaultdict
+def build(parent,child):
+    graph = defaultdict(list)
+    if parent and child:
+        graph[parent.val].append(child.val)
+        graph[child.val].append(parent.val)
+    if child.left:
+        build(child,child.left)
+    if child.right:
+        build(child,child.right)
+# ....
+```
+
+
 ## 2) LC Example
 
 ### 2-1) Binary Tree Right Side View
@@ -1138,4 +1158,38 @@ class Solution(object):
                 if tmp.right:
                     q.append([tmp.right, layer+1])                   
         return res + 1
+```
+
+### 2-14) All Nodes Distance K in Binary Tree
+```python
+# LC 863. All Nodes Distance K in Binary Tree
+# V0
+# IDEA : DFS + BFS
+from collections import defaultdict
+class Solution:
+    
+    def build(self,parent,child):
+        if parent and child:
+            self.graph[parent.val].append(child.val)
+            self.graph[child.val].append(parent.val)
+        if child.left:
+            self.build(child,child.left)
+        if child.right:
+            self.build(child,child.right)
+            
+    def distanceK(self, root, target, K):
+        self.graph=defaultdict(list)
+        self.build(None,root)
+        q=[(target.val,1)]
+        vis=set([target.val])
+        ans=[]
+        while q:
+            i,j=q.pop(0)
+            for node in self.graph[i]:
+                if node not in vis:
+                    if j==K:
+                        ans.append(node)
+                    vis.add(node)
+                    q.append((node,j+1))
+        return ans if len(q) < K else [target.val]
 ```
