@@ -134,6 +134,12 @@ def str_2_int(x):
         print (i, r)
     return r
 
+def str_2_int_v2(x):
+    res = 0
+    for i in x:
+        res = (res + int(i) % 10) * 10
+    return int(res / 10)
+
 # example 1
 x="131"
 r=str_2_int(x)
