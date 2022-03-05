@@ -1,6 +1,9 @@
 # Hash Map
 
-## 0) Concept  
+## 0) Concept 
+
+- Ref
+    - [prefix_sum.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/prefix_sum.md) 
 
 ### 0-1) Types
 - N sum:

@@ -9,7 +9,8 @@
 	- LC (amz_, latest 6 months) :
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.5)
-				- 1248
+				- 1248 (again!!!!)
+				- 828
 				- 023
 				- 139
 				- 1372
@@ -43,6 +44,7 @@
 		- hashmap
 			- 525
 			- 560
+			- 1248
 		- graph
 			- 261 (Union Find) 
 			- 547 (Union Find) (not start)
@@ -113,8 +115,11 @@
 			- p.363 -
 	- system design book - an insider's guide (GOTOP)
 		- 1st read (ok)
-		- 2nd read : note
-			- p.1 - p.35
+		- 2nd read :
+			- read
+				- p.95 
+			- note
+				- p.1 - p.35
 		- review/note
 
 # 2022-03-05
