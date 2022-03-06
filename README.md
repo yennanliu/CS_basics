@@ -43,16 +43,13 @@
 * LC Pattern
 	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
+	- [LC top 100 likes](https://leetcode.com/problem-list/top-100-liked-questions/?page=1&fbclid=IwAR2MzUDDOscDklba5gL815lkLKzxK-zOR2WV2-W80_gRmvtfAsNWyut_USw)
 	- [LC Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
 	- [fucking-algorithm](https://github.com/labuladong/fucking-algorithm)
 	- [cheatsheet-leetcode-a4](https://cheatsheet.dennyzhang.com/cheatsheet-leetcode-a4)
 	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
 	- [grokking-the-coding-interview](https://www.educative.io/courses/grokking-the-coding-interview)
 * LC problems
-	- [leetcode_company_V1](https://github.com/yennanliu/CS_basics/tree/master/doc/leetcode_company_V1)
-	- [leetcode_company_V2](./doc/leetcode_company_V2.md)
-	- [leetcode_classics_collection](./doc/leetcode_classics_collection.md)
-	- [leetcode_classics_collection_extra](./doc/leetcode_classics_collection_extra.md)
 	- LC sql high frequent
 		- [LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
 		- [LeetCode Curated SQL 70](https://leetcode.com/problem-list/5htp6xyg/?page=1)
@@ -188,6 +185,8 @@
 026 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)|  [Python](./leetcode_python/Array/remove-duplicates-from-sorted-array.py), [Scala](./leetcode_scala/Array/removeDuplicates.scala) | _O(n)_ | _O(1)_| Easy | `Two Pointers`, `basic`, `good trick`,`M$` ,`fb` |  AGAIN*********** (7)
 027 | [Remove Element](https://leetcode.com/problems/remove-element/) | [Python](./leetcode_python/Array/remove-element.py), [Scala](./leetcode_scala/Array/removeElement.scala) | _O(n)_  | _O(1)_ | Easy  |`basic`, `amazon`| OK* (2) 
 031 | [Next Permutation](https://leetcode.com/problems/next-permutation/)| [Python](./leetcode_python/Array/next-permutation.py),  [Scala](./leetcode_scala/Array/nextPermutation.scala)| _O(n)_ | _O(1)_ | Medium | `good TRICK`,, `google`,`amazon`, `fb` | AGAIN******** (5) (not start)
+034 | [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)| [Python](./leetcode_python/Array/find-first-and-last-position-of-element-in-sorted-array.py)| _O(n)_ | _O(1)_ | Medium | LC top 100 like, `amazon`, `fb`, google, apple, uber | AGAIN (not start)
+041 | [First Missing Positive](https://leetcode.com/problems/first-missing-positive/)| [Python](./leetcode_python/Array/first-missing-positive.py)| _O(n)_ | _O(1)_ | Medium | array, LC top 100 like, `amazon`, `fb`, google, apple, uber | AGAIN (not start)
 048 | [Rotate Image](https://leetcode.com/problems/rotate-image/)   | [Python](./leetcode_python/Array/rotate-image.py) | _O(n^2)_ | _O(1)_| Medium  |`trick`, `basic`, `transpose matrix`, `amazon`, `apple`| OK** (2)
 054 | [Spiral Matrix](https://leetcode.com/problems/spiral-matrix/) |  [Python](./leetcode_python/Array/spiral-matrix.py) | _O(m * n)_  | _O(1)_ | Medium |good basic, array boundary, matrix,`amazon`| AGAIN**** (4)
 057 | [Insert Interval](https://leetcode.com/problems/insert-interval/) |  [Python](./leetcode_python/Array/insert-interval.py) |  |  | Medium | good basic, blind LC pattern, `056 Merge Intervals`| AGAIN**********  (4) (MUST!)
@@ -391,6 +390,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note | Status | 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](./leetcode_python/Stack/valid-parentheses.py) | _O(n)_ | _O(n)_ | Easy |`good basic`,`fb`, `amazon`| OK** (5) 
+032| [Longest Valid Parentheses](https://leetcode.com/problems/longest-valid-parentheses/)| [Python](./leetcode_python/Stack/longest-valid-parentheses.py) | _O(n)_ | _O(n)_ | Hard |brute force, dp, stack, LC top 100 likes, `amazon`| AGAIN (not start)
 071| [Simplify Path](https://leetcode.com/problems/simplify-path/)|  [Python](./leetcode_python/Stack/simplify-path.py) | _O(n)_ | _O(n)_ | Medium |`basic`, `stack`, `amazon`,`fb`| OK* (4)
 101| [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)| [Python](./leetcode_python/Stack/symmetric-tree.py) | _O(n)_ | _O(h)_ | Easy |`good basic`,`bfs`, `dfs`, `linkedin`, `M$`,`amazon`, `fb`| AGAIN** (3) 
 150| [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)|  [Python](./leetcode_python/Stack/evaluate-reverse-polish-notation.py) | _O(n)_| _O(n)_| Medium |stack, good trick,`amazon`| OK**** (3)
