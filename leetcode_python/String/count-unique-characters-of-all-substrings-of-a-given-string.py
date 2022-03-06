@@ -38,6 +38,18 @@ s consists of uppercase English letters only.
 """
 
 # V0
+class Solution(object):
+     def uniqueLetterString(self, S):
+            index = {c: [-1, -1] for c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+            res = 0
+            for i, c in enumerate(S):
+                k, j = index[c]
+                res += (i - j) * (j - k)
+                index[c] = [j, i]
+            for c in index:
+                k, j = index[c]
+                res += (len(S) - j) * (j - k)
+            return res % (10**9 + 7)
 
 # V1
 # https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/discuss/128952/C%2B%2BJavaPython-One-pass-O(N)
@@ -67,6 +79,40 @@ class Solution(object):
                 k, j = index[c]
                 res += (len(S) - j) * (j - k)
             return res % (10**9 + 7)
+
+# V0'
+# TODO : fix below
+# from collections import Counter, defaultdict
+# class Solution:
+#     def uniqueLetterString(self, s):
+#         # edge case
+#         if not s:
+#             return 0
+#         d = defaultdict(int)
+#         res = []
+#         l = 0
+#         cur = ""
+#         for l in range(len(s)):
+#             r = l+1
+#             while r <= len(s):
+#                 print ("l = " + str(l) + " r = " + str(r))
+#                 #r = r+1
+#                 if d[s[r-1]] > 1:
+#                     cur = ""
+#                     d[s[r-1]] -= 1
+#                     res.append(s[r-1])
+#                     if d[s[r-1]] == 0:
+#                         del d[s[r-1]]
+#                     break
+#                 else:
+#                     cur += s[r-1]
+#                     if cur not in res:
+#                         res.append(cur)
+#                     d[s[r-1]] += 1
+#                     r += 1
+#             cur = ""
+#         print ("res = " + str(res))
+#         return res
 
 # V1'
 # https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/discuss/128974/10-line-Python-Solution
