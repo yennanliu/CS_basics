@@ -467,6 +467,8 @@
 683| [K Empty Slots](https://leetcode.com/problems/k-empty-slots/) |  [python](./leetcode_python/Tree/k-empty-slots.py) ||| Hard |BST, tree, bucket, `google`| not start
 701| [Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/) |  [python](./leetcode_python/Tree/insert-into-a-binary-search-tree.py) ||| Medium |good basic, BST, tree, BFS, DFS| OK*** (2)
 1339| [Maximum Product of Splitted Binary Tree](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/) |  [python](./leetcode_python/Tree/maximum-product-of-splitted-binary-tree.py) ||| Medium |dfs, tree, amazon| AGAIN*** (1) (not start)
+1372| [Longest ZigZag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/) |  [python](./leetcode_python/Tree/longest-zigzag-path-in-a-binary-tree.py) ||| Medium |dfs, bfs, post order, good trick, tree, amazon| AGAIN*** (1) (not start)
+
 
 ## Heap 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note  | Status| 
