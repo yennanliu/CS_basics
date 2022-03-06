@@ -615,3 +615,36 @@ class Solution:
                 visited[i]=True
         return False
 ```
+
+### 2-14) Longest ZigZag Path in a Binary Tree
+```python
+# LC 1372. Longest ZigZag Path in a Binary Tree
+# NOTE : there is also dfs, post order approaches
+# V1
+# IDEA : BFS
+# https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/discuss/534968/Python-BFS-solution-(100)
+class Solution:
+    def longestZigZag(self, root):
+        q = [(root, 1, 0)] # node, direction, length; direction can be initialized to be 1 (to right child) or -1 (to left child)
+        res = 0
+        while q:
+            node, direction, length = q.pop(0)
+            while True:
+                if direction == 1:
+                    if node.left:
+                        q.append((node.left, direction, 1))
+                    if node.right:
+                        node, direction, length = node.right, -direction, length + 1
+                    else:
+                        res = max(res, length)
+                        break
+                else:
+                    if node.right:
+                        q.append((node.right, direction, 1))
+                    if node.left:
+                        node, direction, length = node.left, -direction, length + 1
+                    else:
+                        res = max(res, length)
+                        break
+        return res
+```
