@@ -1193,3 +1193,100 @@ class Solution:
                     q.append((node,j+1))
         return ans if len(q) < K else [target.val]
 ```
+
+### 2-15) Boundary of Binary Tree
+```python
+# LC 545. Boundary of Binary Tree
+# V0
+# IDEA : DFS
+# https://xiaoguan.gitbooks.io/leetcode/content/LeetCode/545-boundary-of-binary-tree-medium.html
+# https://www.cnblogs.com/lightwindy/p/9583723.html
+class Solution(object):
+    def boundaryOfBinaryTree(self, root):
+        def leftBoundary(root, nodes):
+            if not root or (not root.left and not root.right):
+                return
+            nodes.append(root.val)
+            """
+            NOTE this !!!
+            """
+            if not root.left:
+                leftBoundary(root.right, nodes)
+            else:
+                leftBoundary(root.left, nodes)
+ 
+        def rightBoundary(root, nodes):
+            if not root or (not root.left and not root.right):
+                return
+            """
+            NOTE this !!!
+            """
+            if not root.right:
+                rightBoundary(root.left, nodes)
+            else:
+                rightBoundary(root.right, nodes)
+            nodes.append(root.val)
+ 
+        def leaves(root, nodes):
+            if not root:
+                return
+            if not root.left and not root.right:
+                nodes.append(root.val)
+                return
+            leaves(root.left, nodes)
+            leaves(root.right, nodes)
+ 
+        if not root:
+            return []
+ 
+        nodes = [root.val]
+        leftBoundary(root.left, nodes)
+        """
+        NOTE this !!!
+        """
+        leaves(root.left, nodes)
+        leaves(root.right, nodes)
+        rightBoundary(root.right, nodes)
+        return nodes
+
+# V0'
+class Solution(object):
+    def boundaryOfBinaryTree(self, root):
+        if not root: return []
+
+        left_bd_nodes = [root]
+        cur = root.left
+        while cur:
+            left_bd_nodes.append(cur)
+            cur = cur.left or cur.right
+
+        right_bd_nodes = [root]
+        cur = root.right
+        while cur:
+            right_bd_nodes.append(cur)
+            cur = cur.right or cur.left
+
+        leaf_nodes = []
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+            if not node.left and not node.right:
+                leaf_nodes.append(node)
+
+        ans = []
+        seen = set()
+        def visit(node):
+            if node not in seen:
+                seen.add(node)
+                ans.append(node.val)
+
+        for node in left_bd_nodes: visit(node)
+        for node in leaf_nodes: visit(node)
+        for node in reversed(right_bd_nodes): visit(node)
+
+        return ans
+```

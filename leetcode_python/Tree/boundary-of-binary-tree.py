@@ -60,13 +60,18 @@ The right-most node is also defined by the same way with left and right exchange
 """
 
 # V0
-#https://xiaoguan.gitbooks.io/leetcode/content/LeetCode/545-boundary-of-binary-tree-medium.html
+# IDEA : DFS
+# https://xiaoguan.gitbooks.io/leetcode/content/LeetCode/545-boundary-of-binary-tree-medium.html
+# https://www.cnblogs.com/lightwindy/p/9583723.html
 class Solution(object):
     def boundaryOfBinaryTree(self, root):
         def leftBoundary(root, nodes):
             if not root or (not root.left and not root.right):
                 return
             nodes.append(root.val)
+            """
+            NOTE this !!!
+            """
             if not root.left:
                 leftBoundary(root.right, nodes)
             else:
@@ -75,6 +80,9 @@ class Solution(object):
         def rightBoundary(root, nodes):
             if not root or (not root.left and not root.right):
                 return
+            """
+            NOTE this !!!
+            """
             if not root.right:
                 rightBoundary(root.left, nodes)
             else:
@@ -95,10 +103,54 @@ class Solution(object):
  
         nodes = [root.val]
         leftBoundary(root.left, nodes)
+        """
+        NOTE this !!!
+        """
         leaves(root.left, nodes)
         leaves(root.right, nodes)
         rightBoundary(root.right, nodes)
         return nodes
+
+# V0'
+class Solution(object):
+    def boundaryOfBinaryTree(self, root):
+        if not root: return []
+
+        left_bd_nodes = [root]
+        cur = root.left
+        while cur:
+            left_bd_nodes.append(cur)
+            cur = cur.left or cur.right
+
+        right_bd_nodes = [root]
+        cur = root.right
+        while cur:
+            right_bd_nodes.append(cur)
+            cur = cur.right or cur.left
+
+        leaf_nodes = []
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+            if not node.left and not node.right:
+                leaf_nodes.append(node)
+
+        ans = []
+        seen = set()
+        def visit(node):
+            if node not in seen:
+                seen.add(node)
+                ans.append(node.val)
+
+        for node in left_bd_nodes: visit(node)
+        for node in leaf_nodes: visit(node)
+        for node in reversed(right_bd_nodes): visit(node)
+
+        return ans
 
 # V1
 # https://www.cnblogs.com/lightwindy/p/9583723.html
@@ -146,6 +198,115 @@ class Solution(object):
         return nodes
 
 ### Test case : dev
+
+# V1
+# https://leetcode.com/problems/boundary-of-binary-tree/discuss/101309/Python-Straightforward-with-Explanation
+# IDEA :
+# Let's merely get the nodes from the left boundary, the right boundary, and the leaves, in counter-clockwise order.
+# To get nodes from the left boundary, we start from root.left and move left if we can, else right, until we can't move anymore. The right boundary is similar.
+# To get nodes from the leaves, we DFS until we hit a leaf (until node.left and node.right are both None). We should take care to add to our stack in the order (right, left) so that they are popped in the order (left, right).
+# Now armed with all the nodes we could visit, let's visit them in order. As we visit a node, we should skip over ones we've seen before (comparing node objects by pointer, not node.val), and otherwise add node.val to our answer.
+# We could also rewrite this answer by calling visit(cur) directly instead of appending to left_bd_nodes, etc. to save a little space.
+class Solution(object):
+    def boundaryOfBinaryTree(self, root):
+        if not root: return []
+
+        left_bd_nodes = [root]
+        cur = root.left
+        while cur:
+            left_bd_nodes.append(cur)
+            cur = cur.left or cur.right
+
+        right_bd_nodes = [root]
+        cur = root.right
+        while cur:
+            right_bd_nodes.append(cur)
+            cur = cur.right or cur.left
+
+        leaf_nodes = []
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+            if not node.left and not node.right:
+                leaf_nodes.append(node)
+
+        ans = []
+        seen = set()
+        def visit(node):
+            if node not in seen:
+                seen.add(node)
+                ans.append(node.val)
+
+        for node in left_bd_nodes: visit(node)
+        for node in leaf_nodes: visit(node)
+        for node in reversed(right_bd_nodes): visit(node)
+
+        return ans
+
+# V1
+# https://leetcode.com/problems/boundary-of-binary-tree/discuss/422802/python-concise-solution
+class Solution:
+    def boundaryOfBinaryTree(self, root: TreeNode) -> List[int]:
+        def dfs(root,isl,isr):
+            if root:
+                isleaf=not root.left and not root.right
+                if isl or isleaf:
+                    res.append(root.val)
+                dfs(root.left,isl,isr and not root.right)
+                dfs(root.right,isl and not root.left,isr)
+                if isr and not isleaf:
+                    res.append(root.val)
+                
+        if not root:
+            return []
+        res=[root.val]
+        dfs(root.left,True,False)
+        dfs(root.right,False,True)
+        return res
+
+# V1
+# https://leetcode.com/problems/boundary-of-binary-tree/discuss/422802/python-concise-solution
+class Solution:
+    def boundaryOfBinaryTree(self, root: TreeNode) -> List[int]:
+        def leaf(root):
+            if not root:
+                return 
+            if not root.left and not root.right:
+                res.append(root.val)
+            leaf(root.left)
+            leaf(root.right)
+            
+        def left_boundary(root):#not take leaf to avoid duplicate
+            if not root or not root.left and not root.right:
+                return 
+            res.append(root.val)
+            if root.left:
+                left_boundary(root.left)
+            else:
+                left_boundary(root.right)
+                
+        
+        def right_boundary(root):
+            if not root or not root.left and not root.right:
+                return 
+            if root.right:
+                right_boundary(root.right)
+            else:
+                right_boundary(root.left)
+            res.append(root.val)
+            
+        if not root:
+            return []
+        res=[root.val]
+        left_boundary(root.left)#not include leaf
+        leaf(root.left)
+        leaf(root.right)
+        right_boundary(root.right)
+        return res
 
 # V1'
 # https://www.jiuzhang.com/solution/boundary-of-binary-tree/#tag-highlight-lang-python
@@ -310,6 +471,137 @@ class Solution:
         leaves(root)
         rightBoundary(root.right)
         return b
+
+# V1
+# IDEA : Simple Solution
+# https://leetcode.com/problems/boundary-of-binary-tree/solution/
+# JAVA
+# /**
+#  * Definition for a binary tree node.
+#  * public class TreeNode {
+#  *     int val;
+#  *     TreeNode left;
+#  *     TreeNode right;
+#  *     TreeNode(int x) { val = x; }
+#  * }
+#  */
+# public class Solution {
+#
+#     public boolean isLeaf(TreeNode t) {
+#         return t.left == null && t.right == null;
+#     }
+#
+#     public void addLeaves(List<Integer> res, TreeNode root) {
+#         if (isLeaf(root)) {
+#             res.add(root.val);
+#         } else {
+#             if (root.left != null) {
+#                 addLeaves(res, root.left);
+#             }
+#             if (root.right != null) {
+#                 addLeaves(res, root.right);
+#             }
+#         }
+#     }
+#
+#     public List<Integer> boundaryOfBinaryTree(TreeNode root) {
+#         ArrayList<Integer> res = new ArrayList<>();
+#         if (root == null) {
+#             return res;
+#         }
+#         if (!isLeaf(root)) {
+#             res.add(root.val);
+#         }
+#         TreeNode t = root.left;
+#         while (t != null) {
+#             if (!isLeaf(t)) {
+#                 res.add(t.val);
+#             }
+#             if (t.left != null) {
+#                 t = t.left;
+#             } else {
+#                 t = t.right;
+#             }
+#
+#         }
+#         addLeaves(res, root);
+#         Stack<Integer> s = new Stack<>();
+#         t = root.right;
+#         while (t != null) {
+#             if (!isLeaf(t)) {
+#                 s.push(t.val);
+#             }
+#             if (t.right != null) {
+#                 t = t.right;
+#             } else {
+#                 t = t.left;
+#             }
+#         }
+#         while (!s.empty()) {
+#             res.add(s.pop());
+#         }
+#         return res;
+#     }
+# }
+
+# V1
+# IDEA :  PreOrder Traversal 
+# https://leetcode.com/problems/boundary-of-binary-tree/solution/
+# JAVA
+# public class Solution {
+#     public List < Integer > boundaryOfBinaryTree(TreeNode root) {
+#         List < Integer > left_boundary = new LinkedList < > (), right_boundary = new LinkedList < > (), leaves = new LinkedList < > ();
+#         preorder(root, left_boundary, right_boundary, leaves, 0);
+#         left_boundary.addAll(leaves);
+#         left_boundary.addAll(right_boundary);
+#         return left_boundary;
+#     }
+#
+#     public boolean isLeaf(TreeNode cur) {
+#         return (cur.left == null && cur.right == null);
+#     }
+#
+#     public boolean isRightBoundary(int flag) {
+#         return (flag == 2);
+#     }
+#
+#     public boolean isLeftBoundary(int flag) {
+#         return (flag == 1);
+#     }
+#
+#     public boolean isRoot(int flag) {
+#         return (flag == 0);
+#     }
+#
+#     public int leftChildFlag(TreeNode cur, int flag) {
+#         if (isLeftBoundary(flag) || isRoot(flag))
+#             return 1;
+#         else if (isRightBoundary(flag) && cur.right == null)
+#             return 2;
+#         else return 3;
+#     }
+#
+#     public int rightChildFlag(TreeNode cur, int flag) {
+#         if (isRightBoundary(flag) || isRoot(flag))
+#             return 2;
+#         else if (isLeftBoundary(flag) && cur.left == null)
+#             return 1;
+#         else return 3;
+#     }
+#
+#     public void preorder(TreeNode cur, List < Integer > left_boundary, List < Integer > right_boundary, List < Integer > leaves, int flag) {
+#         if (cur == null)
+#             return;
+#         if (isRightBoundary(flag))
+#             right_boundary.add(0, cur.val);
+#         else if (isLeftBoundary(flag) || isRoot(flag))
+#             left_boundary.add(cur.val);
+#         else if (isLeaf(cur))
+#             leaves.add(cur.val);
+#         preorder(cur.left, left_boundary, right_boundary, leaves, leftChildFlag(cur, flag));
+#         preorder(cur.right, left_boundary, right_boundary, leaves, rightChildFlag(cur, flag));
+#     }
+# }
 
 # V2 
 # Time:  O(n)
