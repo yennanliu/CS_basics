@@ -9,8 +9,12 @@
 	- LC (amz_, latest 6 months) :
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.6)
-				- 1109
+				- 1109 (again!)
 				- 545
+				- 2021
+				- 694
+				- 1915
+				- 002
 	- ================
 	- LC top 100 likes
 		- 032
@@ -130,7 +134,7 @@
 		- 1st read (ok)
 		- 2nd read :
 			- read
-				- p.95 - 101
+				- p.101 - 109
 			- note
 				- p.1 - p.35
 		- review/note

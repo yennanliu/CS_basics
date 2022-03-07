@@ -701,3 +701,50 @@ class Solution:
                     res = max(res, i - j)
         return res
 ```
+
+### 2-11) Corporate Flight Bookings
+```python
+# LC 1109. Corporate Flight Bookings
+# V1
+# IDEA : ARRAY + prefix sum
+# https://leetcode.com/problems/corporate-flight-bookings/discuss/328856/JavaC%2B%2BPython-Sweep-Line
+# IDEA :
+# Set the change of seats for each day.
+# If booking = [i, j, k],
+# it needs k more seat on ith day,
+# and we don't need these seats on j+1th day.
+# We accumulate these changes then we have the result that we want.
+# Complexity
+# Time O(booking + N) for one pass on bookings
+# Space O(N) for the result
+class Solution:
+    def corpFlightBookings(self, bookings, n):
+        res = [0] * (n + 1)
+        for i, j, k in bookings:
+            res[i - 1] += k
+            res[j] -= k
+        for i in range(1, n):
+            res[i] += res[i - 1]
+        return res[:-1]
+
+# V1''
+# IDEA : ARRAY
+# https://leetcode.com/problems/corporate-flight-bookings/discuss/328893/Short-python-solution
+# IDEA : Simply use two arrays to keep track of how many bookings are added for every flight.
+class Solution:
+    def corpFlightBookings(self, bookings: List[List[int]], n: int) -> List[int]:        
+        opens = [0]*n
+        closes = [0]*n
+        
+        for e in bookings:
+            opens[e[0]-1] += e[2]
+            closes[e[1]-1] += e[2]
+            
+        ret, tmp = [0]*n, 0
+        for i in range(n):
+            tmp += opens[i]
+            ret[i] = tmp
+            tmp -= closes[i]
+            
+        return ret
+```
