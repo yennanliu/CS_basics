@@ -10,7 +10,7 @@
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.6)
 				- 1109 (again!)
-				- 545
+				- 545 (again)
 				- 2021
 				- 694
 				- 1915
