@@ -1,12 +1,14 @@
 """
 
-There are a total of numCourses courses you have to take, 
-labeled from 0 to numCourses - 1. 
-You are given an array prerequisites where prerequisites[i] = [ai, bi] 
-indicates that you must take course bi first if you want to take course ai.
+207. Course Schedule
+Medium
+
+There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
 
 For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
 Return true if you can finish all courses. Otherwise, return false.
+
+ 
 
 Example 1:
 
@@ -14,7 +16,6 @@ Input: numCourses = 2, prerequisites = [[1,0]]
 Output: true
 Explanation: There are a total of 2 courses to take. 
 To take course 1 you should have finished course 0. So it is possible.
-
 Example 2:
 
 Input: numCourses = 2, prerequisites = [[1,0],[0,1]]
@@ -30,12 +31,15 @@ Constraints:
 prerequisites[i].length == 2
 0 <= ai, bi < numCourses
 All the pairs prerequisites[i] are unique.
+Accepted
+809,202
+Submissions
+1,801,276
 
 """
 
 # V0
-# IDEA : DFS + topological sort 
-# dfs
+# IDEA : DFS
 from collections import defaultdict
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
@@ -87,7 +91,7 @@ class Solution(object):
         return True
 
 # V0'
-# IDEA : DFS + topological sort 
+# IDEA : DFS
 from collections import defaultdict
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
@@ -134,7 +138,53 @@ class Solution(object):
                 return False
         return True
 
-# V0'
+# V0''
+# IDEA : Backtracking
+# https://leetcode.com/problems/course-schedule/solution/
+# IDEA : -> check : if the corresponding graph is a DAG (Directed Acyclic Graph), i.e. there is no cycle existed in the graph.
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        from collections import defaultdict
+        courseDict = defaultdict(list)
+
+        for relation in prerequisites:
+            nextCourse, prevCourse = relation[0], relation[1]
+            courseDict[prevCourse].append(nextCourse)
+
+        path = [False] * numCourses
+        for currCourse in range(numCourses):
+            if self.isCyclic(currCourse, courseDict, path):
+                return False
+        return True
+
+
+    def isCyclic(self, currCourse, courseDict, path):
+        """
+        backtracking method to check that no cycle would be formed starting from currCourse
+        """
+        if path[currCourse]:
+            # come across a previously visited node, i.e. detect the cycle
+            return True
+
+        # before backtracking, mark the node in the path
+        path[currCourse] = True
+
+        # backtracking
+        ret = False
+        for child in courseDict[currCourse]:
+            ret = self.isCyclic(child, courseDict, path)
+            if ret: break
+
+        # after backtracking, remove the node from the path
+        path[currCourse] = False
+        return ret
+
+# V0''''
 # IDEA : DFS + topological sort 
 import collections
 class Solution:
@@ -162,7 +212,7 @@ class Solution:
         visited[i] = 2
         return True
 
-# V0''
+# V0''''''
 # IDEA : BFS + topological sort 
 from collections import defaultdict, deque
 class Solution:
@@ -198,7 +248,7 @@ class Solution:
         
         return len(stack) == numCourses
 
-# V0'''
+# V0''''''''
 # IDEA : DFS + topological sort 
 import collections
 class Solution(object):
@@ -225,7 +275,7 @@ class Solution(object):
         visited[i] = 2
         return True
 
-# V0''' (AGAIN!)
+# V0''''''' (AGAIN!)
 # IDEA : BFS + topological sort
 class Solution(object):
     def canFinish(self, N, prerequisites):
@@ -286,6 +336,7 @@ class Solution:
 # V1
 # IDEA : Backtracking
 # https://leetcode.com/problems/course-schedule/solution/
+# IDEA : -> check : if the corresponding graph is a DAG (Directed Acyclic Graph), i.e. there is no cycle existed in the graph.
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         """
