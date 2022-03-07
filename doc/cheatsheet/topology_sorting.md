@@ -8,7 +8,6 @@
 - Code
 	- https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py
 
-
 ### 0-1) Types
 - Courses
     - LC 207, LC 210
@@ -16,6 +15,26 @@
     - LC 269
 
 ### 0-2) Pattern
+```
+# pseudo code
+# https://leetcode.com/problems/course-schedule/solution/
+
+L = Empty list that will contain the sorted elements
+S = Set of all nodes with no incoming edge
+
+while S is non-empty do
+    remove a node n from S
+    add n to tail of L
+    for each node m with an edge e from n to m do
+        remove edge e from the graph
+        if m has no other incoming edges then
+            insert m into S
+
+if graph has edges then
+    return error   (graph has at least one cycle)
+else 
+    return L   (a topologically sorted order)
+```
 
 ## 1) General form
 
@@ -66,6 +85,61 @@ class Graph:
 ### 2-1) Course Schedule
 ```python
 # LC 207 Course Schedule
+# NOTE : there are also bracktrack, dfs approachs for this problem
+
+# V1
+# IDEA : Topological Sort
+# https://leetcode.com/problems/course-schedule/solution/
+class GNode(object):
+    """  data structure represent a vertex in the graph."""
+    def __init__(self):
+        self.inDegrees = 0
+        self.outNodes = []
+
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        from collections import defaultdict, deque
+        # key: index of node; value: GNode
+        graph = defaultdict(GNode)
+
+        totalDeps = 0
+        for relation in prerequisites:
+            nextCourse, prevCourse = relation[0], relation[1]
+            graph[prevCourse].outNodes.append(nextCourse)
+            graph[nextCourse].inDegrees += 1
+            totalDeps += 1
+
+        # we start from courses that have no prerequisites.
+        # we could use either set, stack or queue to keep track of courses with no dependence.
+        nodepCourses = deque()
+        for index, node in graph.items():
+            if node.inDegrees == 0:
+                nodepCourses.append(index)
+
+        removedEdges = 0
+        while nodepCourses:
+            # pop out course without dependency
+            course = nodepCourses.pop()
+
+            # remove its outgoing edges one by one
+            for nextCourse in graph[course].outNodes:
+                graph[nextCourse].inDegrees -= 1
+                removedEdges += 1
+                # while removing edges, we might discover new courses with prerequisites removed, i.e. new courses without prerequisites.
+                if graph[nextCourse].inDegrees == 0:
+                    nodepCourses.append(nextCourse)
+
+        if removedEdges == totalDeps:
+            return True
+        else:
+            # if there are still some edges left, then there exist some cycles
+            # Due to the dead-lock (dependencies), we cannot remove the cyclic edges
+            return False
 
 # V0
 # IDEA : DFS + topological sort 
