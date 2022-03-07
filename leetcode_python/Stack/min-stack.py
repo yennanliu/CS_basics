@@ -103,6 +103,36 @@ class MinStack(object):
     def getMin(self):
         return self.min[-1]
 
+# V0
+# IDEA : heap
+# TODO : validate if below is correct
+from heapq import *
+class MinStack:
+
+    def __init__(self):
+        self.stack = []
+        self.size = 0
+
+    def push(self, val):
+        heappush(self.stack, val)
+        self.size += 1
+
+    def pop(self):
+        if self.size > 0:
+            tmp = self.stack.pop(-1)
+            self.size -= 1
+            return tmp
+        
+    def top(self):
+        if self.size > 0:
+            return self.stack[-1]
+    
+    def getMin(self):
+        if self.size > 0:
+            self.size -= 1
+            return heappop(self.stack)
+            #return nsmallest(1, self.stack)
+
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79253237
 # IDEA : STACK
