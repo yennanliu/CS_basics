@@ -420,3 +420,30 @@ class Solution(object):
 ```python
 # LC 323 Number of Connected Components in an Undirected Graph
 ```
+
+### 2-9) Connecting Cities With Minimum Cost
+```python
+# LC 1135. Connecting Cities With Minimum Cost
+# note : there is also prime, Kruskal approaches
+# V1
+# IDEA : UNION FIND
+# https://leetcode.com/problems/connecting-cities-with-minimum-cost/discuss/831263/Python-very-Concise-Union-Find
+class Solution:
+    def minimumCost(self, N: int, connections: List[List[int]]) -> int:
+        parents = [x for x in range(N)]
+        
+        def find(x):
+            if parents[x] != x: parents[x] = find(parents[x])
+            return parents[x]
+        
+        def union(u, v):
+            if find(u) == find(v): return False
+            parents[find(v)] = find(u)
+            return True
+
+        connections.sort(key = lambda x: x[2])
+        ans = 0
+        for u, v, val in connections:
+            if union(u-1, v-1): ans += val
+        return ans if len(set(find(x) for x in parents)) == 1 else -1
+```
