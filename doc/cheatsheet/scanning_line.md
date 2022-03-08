@@ -92,3 +92,26 @@ class Solution:
             max_num = max(n, max_num)
         return max_num
 ```
+
+### 2-2) Brightest Position on Street
+```python
+# LC 2021. Brightest Position on Street
+# V1
+# IDEA : LC 253 MEETING ROOM II
+# https://leetcode.com/problems/brightest-position-on-street/discuss/1494005/Python%3A-Basically-meeting-room-II
+# IDEA :
+# So, the only difference in this problem in comparison to meeting room II is that we have to convert our input into intervals, which is straightforward and basically suggested to use by the first example. So, here is my code and here is meeting rooms II https://leetcode.com/problems/meeting-rooms-ii/
+class Solution:
+    def brightestPosition(self, lights: List[List[int]]) -> int:
+        intervals, heap, res, best = [], [], 0, 0
+        for x, y in lights: intervals.append([x-y, x+y])
+        intervals.sort()
+
+        for left, right in intervals:            
+            while heap and heap[0] < left: heappop(heap)
+            heappush(heap, right)
+            if len(heap) > best:
+                best = len(heap)
+                res = left
+        return res
+```
