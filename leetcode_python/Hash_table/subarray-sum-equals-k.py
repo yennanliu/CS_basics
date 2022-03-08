@@ -46,9 +46,22 @@ class Solution(object):
             sum += nums[i]
             """
             NOTE this !!!
-              if sum - k in d
-              -> sum - (sum - k) == k      (exclude "sum - k" term from aggregated sum)
-              -> so the sum equal to k
+
+              version 1)
+                if array = [a,b,c,d,e]
+                 -> prefix sum = a
+                                 a+b
+                                 a+b+c...
+                -> so if prefix sum == k
+                    (assume we need to subtract x, so prefix sum == k)
+                    -> (a+b) - (x) = k
+                    -> x = (a+b) - k
+                    -> which is "if sum - k in d" comdition below
+
+              version 2)
+                  if sum - k in d
+                  -> sum - (sum - k) == k      (exclude "sum - k" term from aggregated sum)
+                  -> so the sum equal to k
             """
             if sum - k in d:
                 res += d[sum - k]
