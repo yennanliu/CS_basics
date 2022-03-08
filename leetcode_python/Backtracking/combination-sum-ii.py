@@ -68,7 +68,49 @@ class Solution(object):
         dfs(candidates, target, 0, res, [])
         return res
 
-# V1 
+# V0
+# IDEA : backtrack
+# TODO : fix TLE
+# from collections import Counter
+# class Solution(object):
+#     def combinationSum2(self, candidates, target):
+#         def help(idx, cur, visited):
+#             if sum(cur) == target:
+#                 tmp = cur[:]
+#                 tmp.sort()
+#                 if tmp not in res:
+#                     res.append(tmp)
+#                     cur = []
+#                     visited =[]
+#                     return
+#             if sum(cur) > target or len(cur) > _len:
+#                 cur = []
+#                 visited = []
+#                 return
+#             for i in range(idx, _len):
+#                 if i not in visited:
+#                     visited.append(i)
+#                     cur.append(candidates[i])
+#                     help(idx+1, cur, visited)
+#                     cur.pop(-1)
+#                     visited.pop(-1)
+#         # edge case
+#         if not candidates and target:
+#             return []
+#         if sum(candidates) < target:
+#             return []
+#         res = []
+#         cur = []
+#         visited = []
+#         idx = 0
+#         candidates.sort()
+#         _len = len(candidates)
+#         cnt = Counter(candidates)
+#         help(idx, cur, visited)
+#         print ("res = " + str(res))
+#         return res
+
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79343638
 # IDEA : DFS 
 class Solution(object):
