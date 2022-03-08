@@ -4,10 +4,17 @@
 ```
 We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if S[i] == '1', else A[i] = 0. We can calculate P in linear time.
 ```
+- Get `sub array` with `some conditions`
+- Cases we don't want double loop, but want single loop instead
+    - prefix sum + dict
 - Ref
     - [hash_map.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/hash_map.md)
 
 ### 0-1) Types
+- Flip string
+- Range addition
+- Count nums in sub array
+
 
 ### 0-2) Pattern
 
