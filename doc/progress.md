@@ -9,8 +9,8 @@
 	- LC (amz_, latest 6 months) :
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.6)
-				- 002
-				- 53
+				- 002 (ok)
+				- 53 (again! dp basic)
 				- 91
 				- 669
 				- 1353
@@ -120,6 +120,8 @@
 			- 969
 		- scanning line
 			- 2021
+		- dp
+			- 053
 		- others
 		- Review
 			- (OK)
@@ -136,7 +138,7 @@
 		- 1st read (ok)
 		- 2nd read :
 			- read
-				- p.109 - 121
+				- p.121 - 131
 					- Cassandra
 						- SSTable
 						- Bloom filter
