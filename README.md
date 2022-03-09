@@ -516,6 +516,7 @@
 868 | [Binary Gap](https://leetcode.com/problems/binary-gap/) | [Python](./leetcode_python/Bit_Manipulation/binary-gap.py) | _O(1)_ | _O(1)_ | Easy |`trick`, `linear scan`| AGAIN*
 898 | [Bitwise ORs of Subarrays](https://leetcode.com/problems/bitwise-ors-of-subarrays/) | [Python](./leetcode_python/Bit_Manipulation/bitwise-ors-of-subarrays.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 1573 | [Number of Ways to Split a String](https://leetcode.com/problems/number-of-ways-to-split-a-string/) | [Python](./leetcode_python/Bit_Manipulation/number-of-ways-to-split-a-string.py) | _O(n)_ | _O(1)_ | Medium |`amazon`, binary| AGAIN** (not start)
+1915 | [Number of Wonderful Substrings](https://leetcode.com/problems/number-of-wonderful-substrings/) | [Python](./leetcode_python/Bit_Manipulation/number-of-wonderful-substrings.py) | _O(n)_ | _O(1)_ | Medium |bit, prefix sum, dp, `amazon`| AGAIN** (not start)
 
 
 ## String

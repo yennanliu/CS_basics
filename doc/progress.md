@@ -10,7 +10,7 @@
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.6)
 				- 694 (again!)
-				- 1915
+				- 1915 (again, not start)
 				- 002
 				- 53
 				- 91
