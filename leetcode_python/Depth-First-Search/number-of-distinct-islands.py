@@ -73,6 +73,49 @@ class Solution:
         return len(shapes)
 
 # V0'
+# IDEA : DFS
+# TODO : fix below
+# class Solution:
+#     def numDistinctIslands(self, grid):
+#         def normalize(arr):
+#             x_min = min( x[1] for x in arr)
+#             y_min = min( x[0] for x in arr)
+#             _arr = [ [x[0]-y_min, x[1] - x_min] for x in arr ]
+#             return _arr
+#
+#         def dfs(x, y, cur, visited):
+#             moves = [[0,1],[0,-1],[1,0],[-1,0]]
+#             for m in moves:
+#                 _x = x + m[1]
+#                 _y = y + m[0]
+#                 if 0 <= _x < w and 0 <= _y < l and grid[_y][_x] != 0 and [_y,_x] not in visited:
+#                     cur.append([_y,_x])
+#                     #cur.append([m[0],m[1]])
+#                     visited.append([_y,_x])
+#                     dfs(_x, _y, cur, visited)
+#            
+#         # edge case
+#         if not grid:
+#             return 0
+#         w = len(grid[0])
+#         l = len(grid)
+#         res = []
+#         visited = []
+#         for i in range(l):
+#             for j in range(w):
+#                 cur = []
+#                 if not dfs(j, i, cur, visited):
+#                     if cur:
+#                         #print ("cur = " + str(cur))
+#                         #print ("_cur = " + str(cur))
+#                         _cur = normalize(cur)
+#                         _cur.sort()
+#                         if _cur not in res:
+#                             res.append(_cur)
+#         print ("res = " + str(res))
+#         return len(res)
+
+# V0'
 # IDEA DFS
 # TODO : validate it
 class Solution(object):
@@ -141,6 +184,116 @@ class Solution:
         return len(shapes)
 
 ### Test case : dev 
+
+# V1
+# IDEA : Brute Force
+# https://leetcode.com/problems/number-of-distinct-islands/solution/
+class Solution:
+    def numDistinctIslands(self, grid: List[List[int]]) -> int:
+        
+        def current_island_is_unique():
+            for other_island in unique_islands:
+                if len(other_island) != len(current_island):
+                    continue
+                for cell_1, cell_2 in zip(current_island, other_island):
+                    if cell_1 != cell_2:
+                        break
+                else:
+                    return False
+            return True
+            
+        # Do a DFS to find all cells in the current island.
+        def dfs(row, col):
+            if row < 0 or col < 0 or row >= len(grid) or col >= len(grid[0]):
+                return
+            if (row, col) in seen or not grid[row][col]:
+                return
+            seen.add((row, col))
+            current_island.append((row - row_origin, col - col_origin))
+            dfs(row + 1, col)
+            dfs(row - 1, col)
+            dfs(row, col + 1)
+            dfs(row, col - 1)
+        
+        # Repeatedly start DFS's as long as there are islands remaining.
+        seen = set()
+        unique_islands = []
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
+                current_island = []
+                row_origin = row
+                col_origin = col
+                dfs(row, col)
+                if not current_island or not current_island_is_unique():
+                    continue
+                unique_islands.append(current_island)
+        print(unique_islands)
+        return len(unique_islands)
+
+# V1
+# IDEA : Hash By Local Coordinates
+# https://leetcode.com/problems/number-of-distinct-islands/solution/
+class Solution:
+    def numDistinctIslands(self, grid: List[List[int]]) -> int:
+
+        # Do a DFS to find all cells in the current island.
+        def dfs(row, col):
+            if row < 0 or col < 0 or row >= len(grid) or col >= len(grid[0]):
+                return
+            if (row, col) in seen or not grid[row][col]:
+                return
+            seen.add((row, col))
+            current_island.add((row - row_origin, col - col_origin))
+            dfs(row + 1, col)
+            dfs(row - 1, col)
+            dfs(row, col + 1)
+            dfs(row, col - 1)
+        
+        # Repeatedly start DFS's as long as there are islands remaining.
+        seen = set()
+        unique_islands = set()
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
+                current_island = set()
+                row_origin = row
+                col_origin = col
+                dfs(row, col)
+                if current_island:
+                    unique_islands.add(frozenset(current_island))
+        
+        return len(unique_islands)
+
+# V1
+# IDEA : Hash By Path Signature
+# https://leetcode.com/problems/number-of-distinct-islands/solution/
+class Solution:
+    def numDistinctIslands(self, grid: List[List[int]]) -> int:
+
+        # Do a DFS to find all cells in the current island.
+        def dfs(row, col, direction):
+            if row < 0 or col < 0 or row >= len(grid) or col >= len(grid[0]):
+                return
+            if (row, col) in seen or not grid[row][col]:
+                return
+            seen.add((row, col))
+            path_signature.append(direction)
+            dfs(row + 1, col, "D")
+            dfs(row - 1, col, "U")
+            dfs(row, col + 1, "R")
+            dfs(row, col - 1, "L")
+            path_signature.append("0")
+        
+        # Repeatedly start DFS's as long as there are islands remaining.
+        seen = set()
+        unique_islands = set()
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
+                path_signature = []
+                dfs(row, col, "0")
+                if path_signature:
+                    unique_islands.add(tuple(path_signature))
+        
+        return len(unique_islands)
 
 # V1'
 # https://www.jiuzhang.com/solution/number-of-distinct-islands/#tag-highlight-lang-python
