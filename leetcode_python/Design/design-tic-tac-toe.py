@@ -75,6 +75,39 @@ Follow-up: Could you do better than O(n2) per move() operation?
 """
 
 # V0
+# IDEA : optimize from V0'
+class TicTacToe:
+
+    def __init__(self, n):
+        self.n = n
+        self.grid = [[i for i in range(n)] for j in range(n)]
+
+    def check(self, row, col, player, mark):
+        n = self.n
+        sum_of_row = sum([self.grid[row][c] == mark for c in range(n)])
+        sum_of_col = sum([self.grid[r][col]== mark for r in range(n)])
+        sum_of_left_d = sum([self.grid[i][i] == mark for i in range(n)])
+        sum_of_right_d = sum([self.grid[i][n-1-i] == mark for i in range(n)])
+
+        if sum_of_row == n or sum_of_col == n or sum_of_left_d== n or sum_of_right_d == n:
+            return player  
+        
+    def move(self, row, col, player):
+        if player == 1:
+            mark = 'X'
+        else:
+            mark = 'O'
+            
+        self.grid[row][col] = mark
+        # check wining condition
+        # check if the row has the same mark
+        n = len(self.grid)
+        if self.check(row, col, player, mark):
+            return player   
+        else:
+            return 0
+
+# V0'
 # https://github.com/yennanliu/utility_Python/blob/master/game/tic_tac_toe.py
 class TicTacToe:
 
@@ -122,7 +155,7 @@ class TicTacToe:
 # t_game = TicTacToe()
 # t_game.operate_game()
 
-# V0
+# V0''
 # TODO : validate/fix below
 class TicTacToe(object):
 
