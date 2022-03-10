@@ -421,6 +421,20 @@ class Solution(object):
 
         return result
 ```
+
+```python
+# -------------------------
+# get diagonal sum of matrix
+# -------------------------
+# LC 348. Design Tic-Tac-Toe
+# ...
+n = len(self.grid)
+sum_of_row = sum([self.grid[row][c] == mark for c in range(n)])
+sum_of_col = sum([self.grid[r][col]== mark for r in range(n)])
+sum_of_left_d = sum([self.grid[i][i] == mark for i in range(n)])
+sum_of_right_d = sum([self.grid[i][n-1-i] == mark for i in range(n)])
+# ....
+```
  
 ## 2) LC Example
 
