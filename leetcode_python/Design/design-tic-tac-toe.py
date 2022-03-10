@@ -122,6 +122,58 @@ class TicTacToe:
 # t_game = TicTacToe()
 # t_game.operate_game()
 
+# V0
+# TODO : validate/fix below
+class TicTacToe(object):
+
+    def __init__(self, n):
+        self.n = n
+        self.board = [ [None for i in range(n)] for j in range(n) ]
+        
+    def check(self, x, y, player):
+        # check col
+        tmp = []
+        for i in range(self.n):
+            tmp.append(self.board[i][x])
+        if tmp.count(player) == self.n:
+            return True
+
+        # check row
+        if self.board[i].count(player) == self.n:
+            return True
+        
+        # check diagonal
+        tmp = []
+        idxs = [[i,i] for i in range(self.n)]
+        for idx in idxs:
+            tmp.append(self.board[idx[0]][idx[1]])
+        if tmp.count(player) == self.n:
+            return True
+        
+        return False
+        
+    def move(self, row, col, player):
+        print ("-> self.board = " + str(self.board))
+        self.board[row][col] = player
+        if self.check(row, col, player):
+            return player
+        return 0
+
+# n = 3
+# t = TicTacToe(n)
+# _moves = [[0, 0, 1], [0, 2, 2], [2, 2, 1], [1, 1, 2], [2, 0, 1], [1, 0, 2], [2, 1, 1]]
+# for m in _moves:
+#     r = t.move(m[0], m[1], m[2])
+#     print (r)
+
+# n = 2
+# t = TicTacToe(n)
+# _moves = [[0,0,2],[1,1,1],[0,1,2]]
+# for m in _moves:
+#     r = t.move(m[0], m[1], m[2])
+#     print (r)
+
+
 # V1
 # https://blog.csdn.net/danspace1/article/details/86616981
 class TicTacToe:
