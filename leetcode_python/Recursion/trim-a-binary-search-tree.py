@@ -86,6 +86,34 @@ class Solution:
 #         root.left = self.trimBST(root.left, low, high)
 #         root.right = self.trimBST(root.right, low, high)
 
+# V0'
+# IDEA : DFS
+class Solution(object):
+    def trimBST(self, root, low, high):
+        def dfs(root):
+            if not root:
+                return
+            if root.val < low:
+                # NOTE THIS !!!
+                return  dfs(root.right)
+            if root.val > high:
+                # NOTE THIS !!!
+                return dfs(root.left)
+            root.left = dfs(root.left)
+            root.right = dfs(root.right)
+            return root
+
+        # edge case
+        if not root:
+            return
+        
+        """
+        NOTE THIS !!!
+        """
+        _root = dfs(root)
+        print ("-> _root = " + str(_root))
+        return _root
+
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83869684
 class Solution:
