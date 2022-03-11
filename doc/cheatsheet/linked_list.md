@@ -902,3 +902,51 @@ class Solution(object):
         slow.next = slow.next.next
         return new_head.next
 ```
+
+### 2-8) Reorder List
+```python
+# LC 143. Reorder List
+
+# V0 
+class Solution:
+    def reorderList(self, head):
+        if head is None:
+            return head
+
+        #find mid
+        slow = head
+        fast = head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+        mid = slow
+
+        #cut in the mid
+        left = head
+        right = mid.next
+        if right is None:
+            return head
+        mid.next = None
+
+        #reverse right half
+        cursor = right.next
+        right.next = None
+        while cursor:
+            next = cursor.next
+            cursor.next = right
+            right = cursor
+            cursor = next
+        
+        #merge left and right
+        dummy = ListNode(0)
+        while left or right:
+            if left is not None:
+                dummy.next = left
+                left = left.next
+                dummy = dummy.next
+            if right is not None:
+                dummy.next = right
+                right = right.next
+                dummy = dummy.next
+        return head
+```
