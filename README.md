@@ -359,7 +359,7 @@
 1010| [Pairs of Songs With Total Durations Divisible by 60](https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/)|[Python ](./leetcode_python/Hash_table/pairs-of-songs-with-total-durations-divisible-by-60.py) ||| Medium |good basicm dict, array, `amazon`| AGAIN********* (4) (MUST)
 1099| [Two Sum Less Than K](https://leetcode.com/problems/two-sum-less-than-k/)|[Python ](./leetcode_python/Hash_table/two-sum-less-than-k.py) ||| Medium |dict, sort, `amazon`| AGAIN* (1) (not start)
 1131| [Rank Transform of an Array](https://leetcode.com/problems/rank-transform-of-an-array/)|[Python ](./leetcode_python/Hash_table/rank-transform-of-an-array.py) ||| Easy |dict, array, `amazon`| OK* (1)
-
+1923| [Longest Common Subpath](https://leetcode.com/problems/longest-common-subpath/) |  [python](./leetcode_python/Hash_table/longest-common-subpath.py)  | _O(n)_ | _O(h)_ | Hard|hash, bit,  `amazon`|  AGAIN (not start)
 
 ## Linked list 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
@@ -386,7 +386,6 @@
 817 | [Linked List Components](https://leetcode.com/problems/linked-list-components/) | [Python](./leetcode_python/Linked_list/linked-list-components.py)  | _O(m + n)_ | _O(m)_ | Medium || OK* 
 430 | [Flatten a Multilevel Doubly Linked List](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/) | [Python](./leetcode_python/Linked_list/flatten_a_multilevel_doubly_linked_list.py)  |  || Medium |`good trick`,`doubly linked list`,`AGAIN`,`dfs`, `fb`|  AGAIN********* (4)
 708| [Insert into a Cyclic Sorted List](https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list) |  [python](./leetcode_python/Linked_list/insert_into_a_cyclic_sorted_sorted_linked_list.py)  | _O(n)_ | _O(h)_ | Medium|`AGAIN`,`cyclic linked list`,`good trick`, `google`, `amazon`, `fb` |  AGAIN******** (4)
-1923| [Longest Common Subpath](https://leetcode.com/problems/longest-common-subpath/) |  [python](./leetcode_python/Linked_list/longest-common-subpath.py)  | _O(n)_ | _O(h)_ | Hard|hash, bit,  `amazon`|  AGAIN (not start)
 
 
 ## Stack 
