@@ -96,6 +96,39 @@ class Solution:
 ### 2-2) Brightest Position on Street
 ```python
 # LC 2021. Brightest Position on Street
+# V0
+# IDEA : Scanning line, meeting room
+from collections import defaultdict
+class Solution(object):
+    def brightestPosition(self, lights):
+        # edge case
+        if not lights:
+            return
+        _lights = []
+        for x in lights:
+            """
+            NOTE this !!!
+             -> 1) scanning line trick
+             -> 2) we add 1 to idx for close session (_lights.append([x[0]+x[1]+1, -1]))
+            """
+            _lights.append([x[0]-x[1], 1])
+            _lights.append([x[0]+x[1]+1, -1])
+        _lights.sort(key = lambda x : x)
+        #print ("_lights = " + str(_lights))
+        d = defaultdict(int)
+        up = 0
+        for a, b in _lights:
+            if b == 1:
+                up += 1
+            else:
+                up -= 1
+            d[a] = up
+        print ("d = " + str(d))
+        _max = max(d.values())
+        res = [i for i in d if d[i] == _max]
+        #print ("res = " + str(res))
+        return min (res)
+
 # V1
 # IDEA : LC 253 MEETING ROOM II
 # https://leetcode.com/problems/brightest-position-on-street/discuss/1494005/Python%3A-Basically-meeting-room-II
@@ -104,11 +137,14 @@ class Solution:
 class Solution:
     def brightestPosition(self, lights: List[List[int]]) -> int:
         intervals, heap, res, best = [], [], 0, 0
-        for x, y in lights: intervals.append([x-y, x+y])
+        for x, y in lights:
+            intervals.append([x-y, x+y])
+            
         intervals.sort()
 
         for left, right in intervals:            
-            while heap and heap[0] < left: heappop(heap)
+            while heap and heap[0] < left: 
+                heappop(heap)
             heappush(heap, right)
             if len(heap) > best:
                 best = len(heap)

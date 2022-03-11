@@ -55,6 +55,37 @@ lights[i].length == 2
 """
 
 # V0
+# IDEA : Scanning line, meeting room
+from collections import defaultdict
+class Solution(object):
+    def brightestPosition(self, lights):
+        # edge case
+        if not lights:
+            return
+        _lights = []
+        for x in lights:
+            """
+            NOTE this !!!
+             -> 1) scanning line trick
+             -> 2) we add 1 to idx for close session (_lights.append([x[0]+x[1]+1, -1]))
+            """
+            _lights.append([x[0]-x[1], 1])
+            _lights.append([x[0]+x[1]+1, -1])
+        _lights.sort(key = lambda x : x)
+        #print ("_lights = " + str(_lights))
+        d = defaultdict(int)
+        up = 0
+        for a, b in _lights:
+            if b == 1:
+                up += 1
+            else:
+                up -= 1
+            d[a] = up
+        print ("d = " + str(d))
+        _max = max(d.values())
+        res = [i for i in d if d[i] == _max]
+        #print ("res = " + str(res))
+        return min (res)
 
 # V1
 # IDEA : LC 253 MEETING ROOM II
