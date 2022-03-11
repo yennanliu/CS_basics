@@ -488,3 +488,24 @@ class Solution:
         
         return len(minHeap)
 ```
+
+### 2-7) Maximum Number of Events That Can Be Attended
+```python
+# LC 1353. Maximum Number of Events That Can Be Attended
+# V1
+class Solution(object):
+    def maxEvents(self, A):
+            A.sort(reverse=True)
+            h = []
+            res = d = 0
+            while A or h:
+                if not h: d = A[-1][0]
+                while A and A[-1][0] <= d:
+                    heapq.heappush(h, A.pop()[1])
+                heapq.heappop(h)
+                res += 1
+                d += 1
+                while h and h[0] < d:
+                    heapq.heappop(h)
+            return res
+```
