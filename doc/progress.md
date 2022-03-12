@@ -9,7 +9,7 @@
 	- LC (amz_, latest 6 months) :
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.6)
-				- 815
+				- 815 (ok, again)
 				- 1972
 			- (pdf : p.7)
 				- 297
@@ -51,6 +51,7 @@
 		- bfs
 			- 227
 			- 133
+			- 815
 		- greedy
 			- 358 (again, not start!)
 				- check `heappush, heappop`
@@ -140,7 +141,7 @@
 		- 1st read (ok)
 		- 2nd read :
 			- read
-				- p.131 - 145
+				- p.145 - 179
 					- Cassandra
 						- SSTable
 						- Bloom filter
