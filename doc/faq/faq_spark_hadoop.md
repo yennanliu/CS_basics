@@ -304,14 +304,12 @@ rdd.groupByKey().mapValue(_.sum)
 38. Explain repartition?
 	- repartition():
 		- shuffles the data between the executors and divides the data into number of partitions. But this might be an `expensive` operation since it `shuffles` the data between executors and involves `network traffic`. `Ideal place to partition` is at the `data source`, while fetching the data. Things can speed up greatly when data is partitioned the right way but can dramatically slow down when done wrong, especially due the Shuffle operation.
-
-	- repartition
 		- Reshuffle the data in the RDD `randomly` to create either `more or fewer` partitions and balance it across them. This always `shuffles ALL DATA over the network`.
 	- repartitionAndSortWithinPartitions
 		- Repartition the RDD according to the `given partitioner` and, within each resulting partition, sort records by their keys. This is `more efficient` than calling `repartition` and then sorting within each partition because it can push the sorting down into the shuffle machinery.
 	- https://spark.apache.org/docs/latest/rdd-programming-guide.html
 
-31. RDD Wide/narrow dependency ?
+39. RDD Wide/narrow dependency ?
 	- Narrow dependencies
 		- When each partition at the parent RDD is used by at most one partition of the child RDD, then we have a narrow dependency. Computations of transformations with this kind of dependency are rather fast as they do not require any data shuffling over the cluster network. 
 	- Wide dependencies
@@ -323,7 +321,7 @@ rdd.groupByKey().mapValue(_.sum)
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/package_nego.png" width="500" height="300"> 
 
-32. Cache/Persist VS Checkpoint ?
+40. Cache/Persist VS Checkpoint ?
 	- Cache/Persist
 		- Persisting or caching with StorageLevel.DISK_ONLY (in `RAM`) cause the generation of RDD to be computed and stored in a location such that subsequent use of that RDD will not go beyond that points in recomputing the linage.
 		- After persist is called, Spark still remembers the lineage of the RDD even though it doesn't call it.
