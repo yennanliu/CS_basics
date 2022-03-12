@@ -256,6 +256,16 @@ def dfs(root):
     dfs(root.left)
 ```
 
+#### 1-1-7) Serialize and Deserialize Binary Tree
+```python
+# LC 297. Serialize and Deserialize Binary Tree
+```
+
+#### 1-1-8) Serialize and Deserialize BST
+```python
+# LC 449. Serialize and Deserialize BST
+```
+
 ## 2) LC Example
 
 ### 2-1) Validate Binary Search Tree
@@ -850,4 +860,174 @@ class Solution(object):
         for s in all_sums:
             best = max(best, s * (total - s))   
         return best % (10 ** 9 + 7)
+```
+
+### 2-11) Serialize and Deserialize Binary Tree
+```python
+# LC 297. Serialize and Deserialize Binary Tree
+# V0
+# IDRA : DFS
+class Codec:
+
+    def serialize(self, root):
+        """ Encodes a tree to a single string.
+        :type root: TreeNode
+        :rtype: str
+        """
+        def rserialize(root, string):
+            """ a recursive helper function for the serialize() function."""
+            # check base case
+            if root is None:
+                string += 'None,'
+            else:
+                string += str(root.val) + ','
+                string = rserialize(root.left, string)
+                string = rserialize(root.right, string)
+            return string
+        
+        return rserialize(root, '')    
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        :type data: str
+        :rtype: TreeNode
+        """
+        def rdeserialize(l):
+            """ a recursive helper function for deserialization."""
+            if l[0] == 'None':
+                l.pop(0)
+                return None
+                
+            root = TreeNode(l[0])
+            l.pop(0)
+            root.left = rdeserialize(l)
+            root.right = rdeserialize(l)
+            return root
+
+        data_list = data.split(',')
+        root = rdeserialize(data_list)
+        return root
+
+# V1
+# IDEA : same as LC 297
+# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/93283/Python-solution-using-BST-property
+class Codec:
+
+    def serialize(self, root):
+        vals = []
+        self._preorder(root, vals)
+        return ','.join(vals)
+        
+    def _preorder(self, node, vals):
+        if node:
+            vals.append(str(node.val))
+            self._preorder(node.left, vals)
+            self._preorder(node.right, vals)
+        
+    def deserialize(self, data):
+        vals = collections.deque(map(int, data.split(','))) if data else []
+        return self._build(vals, -float('inf'), float('inf'))
+
+    def _build(self, vals, minVal, maxVal):
+        if vals and minVal < vals[0] < maxVal:
+            val = vals.popleft()
+            root = TreeNode(val)
+            root.left = self._build(vals, minVal, val)
+            root.right = self._build(vals, val, maxVal)
+            return root
+        else:
+            return None
+```
+
+### 2-12) Serialize and Deserialize BST
+```python
+# LC 449. Serialize and Deserialize BST
+# V0
+# IDEA : BFS + queue op
+class Codec:
+    def serialize(self, root):
+        if not root:
+            return '{}'
+
+        res = [root.val]
+        q = [root]
+
+        while q:
+            new_q = []
+            for i in range(len(q)):
+                tmp = q.pop(0)
+                if tmp.left:
+                    q.append(tmp.left)
+                    res.extend( [tmp.left.val] )
+                else:
+                    res.append('#')
+                if tmp.right:
+                    q.append(tmp.right)
+                    res.extend( [tmp.right.val] )
+                else:
+                    res.append('#')
+
+        while res and res[-1] == '#':
+                    res.pop()
+
+        return '{' + ','.join(map(str, res)) + '}' 
+
+
+    def deserialize(self, data):
+        if data == '{}':
+            return
+
+        nodes = [ TreeNode(x) for x in data[1:-1].split(",") ]
+        root = nodes.pop(0)
+        p = [root]
+        while p:
+            new_p = []
+            for n in p:
+                if nodes:
+                    left_node = nodes.pop(0)
+                    if left_node.val != '#':
+                        n.left = left_node
+                        new_p.append(n.left)
+                    else:
+                        n.left = None
+                if nodes:
+                    right_node = nodes.pop(0)
+                    if right_node.val != '#':
+                        n.right = right_node
+                        new_p.append(n.right)
+                    else:
+                        n.right = None
+            p = new_p 
+             
+        return root
+
+# V1
+# IDEA : same as LC 297
+# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/93283/Python-solution-using-BST-property
+class Codec:
+
+    def serialize(self, root):
+        vals = []
+        self._preorder(root, vals)
+        return ','.join(vals)
+        
+    def _preorder(self, node, vals):
+        if node:
+            vals.append(str(node.val))
+            self._preorder(node.left, vals)
+            self._preorder(node.right, vals)
+        
+    def deserialize(self, data):
+        vals = collections.deque(map(int, data.split(','))) if data else []
+        return self._build(vals, -float('inf'), float('inf'))
+
+    def _build(self, vals, minVal, maxVal):
+        if vals and minVal < vals[0] < maxVal:
+            val = vals.popleft()
+            root = TreeNode(val)
+            root.left = self._build(vals, minVal, val)
+            root.right = self._build(vals, val, maxVal)
+            return root
+        else:
+            return None
 ```

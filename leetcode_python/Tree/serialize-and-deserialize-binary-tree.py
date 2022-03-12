@@ -38,6 +38,49 @@ The number of nodes in the tree is in the range [0, 104].
 """
 
 # V0
+# IDRA : DFS
+class Codec:
+
+    def serialize(self, root):
+        """ Encodes a tree to a single string.
+        :type root: TreeNode
+        :rtype: str
+        """
+        def rserialize(root, string):
+            """ a recursive helper function for the serialize() function."""
+            # check base case
+            if root is None:
+                string += 'None,'
+            else:
+                string += str(root.val) + ','
+                string = rserialize(root.left, string)
+                string = rserialize(root.right, string)
+            return string
+        
+        return rserialize(root, '')    
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        :type data: str
+        :rtype: TreeNode
+        """
+        def rdeserialize(l):
+            """ a recursive helper function for deserialization."""
+            if l[0] == 'None':
+                l.pop(0)
+                return None
+                
+            root = TreeNode(l[0])
+            l.pop(0)
+            root.left = rdeserialize(l)
+            root.right = rdeserialize(l)
+            return root
+
+        data_list = data.split(',')
+        root = rdeserialize(data_list)
+        return root
+  
+# V0
 # IDEA : DFS + tree property + recursive  + queue
 class Codec:
     ### DFS
@@ -116,6 +159,52 @@ class Codec:
                 return root
         return build()
 
+# V1
+# IDEA : DFS
+# CHECK Solution description !!!
+# https://leetcode.com/problems/serialize-and-deserialize-binary-tree/solution/
+# Deserialization 
+class Codec:
+
+    def serialize(self, root):
+        """ Encodes a tree to a single string.
+        :type root: TreeNode
+        :rtype: str
+        """
+        def rserialize(root, string):
+            """ a recursive helper function for the serialize() function."""
+            # check base case
+            if root is None:
+                string += 'None,'
+            else:
+                string += str(root.val) + ','
+                string = rserialize(root.left, string)
+                string = rserialize(root.right, string)
+            return string
+        
+        return rserialize(root, '')    
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        :type data: str
+        :rtype: TreeNode
+        """
+        def rdeserialize(l):
+            """ a recursive helper function for deserialization."""
+            if l[0] == 'None':
+                l.pop(0)
+                return None
+                
+            root = TreeNode(l[0])
+            l.pop(0)
+            root.left = rdeserialize(l)
+            root.right = rdeserialize(l)
+            return root
+
+        data_list = data.split(',')
+        root = rdeserialize(data_list)
+        return root
+
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79571892
 # IDEA : DEQUE (collections.deque)
@@ -181,6 +270,99 @@ class Codec:
         return build()
 
 ### Test case : dev
+
+# V1
+# IDEA : ASCII
+# http://zxi.mytechroad.com/blog/tree/leetcode-297-serialize-and-deserialize-binary-tree/
+# C++
+# class Codec {
+# public:
+#
+#     // Encodes a tree to a single string.
+#     string serialize(TreeNode* root) {
+#         ostringstream out;
+#         serialize(root, out);
+#         return out.str();
+#     }
+#
+#     // Decodes your encoded data to tree.
+#     TreeNode* deserialize(string data) {
+#         istringstream in(data);
+#         return deserialize(in);
+#     }
+# private:
+#     void serialize(TreeNode* root, ostringstream& out) {
+#         if (!root) {
+#             out << "# ";
+#             return;
+#         }        
+#         out << root->val << " ";
+#         serialize(root->left, out);
+#         serialize(root->right, out);
+#     }
+#    
+#     TreeNode* deserialize(istringstream& in) {
+#         string val;
+#         in >> val;
+#         if (val == "#") return nullptr;        
+#         TreeNode* root = new TreeNode(stoi(val));        
+#         root->left = deserialize(in);
+#         root->right = deserialize(in);        
+#         return root;
+#     }
+# };
+
+
+# V1
+# IDEA : BINARY
+# http://zxi.mytechroad.com/blog/tree/leetcode-297-serialize-and-deserialize-binary-tree/
+# C++
+# class Codec {
+# public:
+# 
+#     // Encodes a tree to a single string.
+#     string serialize(TreeNode* root) {
+#         ostringstream out;
+#         serialize(root, out);
+#         return out.str();
+#     }
+#
+#     // Decodes your encoded data to tree.
+#     TreeNode* deserialize(string data) {
+#         istringstream in(data);
+#         return deserialize(in);
+#     }
+# private:
+#     enum STATUS {
+#         ROOT_NULL = 0x0,
+#         ROOT = 0x1,
+#         LEFT = 0x2,
+#         RIGHT = 0x4
+#     };
+#    
+#     void serialize(TreeNode* root, ostringstream& out) {
+#         char status = 0;
+#         if (root) status |= ROOT;
+#         if (root && root->left) status |= LEFT;
+#         if (root && root->right) status |= RIGHT;
+#         out.write(&status, sizeof(char));        
+#         if (!root) return;
+#         out.write(reinterpret_cast<char*>(&(root->val)), sizeof(root->val));
+#         if (root->left) serialize(root->left, out);
+#         if (root->right) serialize(root->right, out);
+#     }
+#   
+#     TreeNode* deserialize(istringstream& in) {
+#         char status;
+#         in.read(&status, sizeof(char));
+#         if (!status & ROOT) return nullptr;
+#         auto root = new TreeNode(0);
+#         in.read(reinterpret_cast<char*>(&root->val), sizeof(root->val));        
+#         root->left = (status & LEFT) ? deserialize(in) : nullptr;
+#         root->right = (status & RIGHT) ? deserialize(in) : nullptr;
+#         return root;
+#     }
+# };
 
 # V1'
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
