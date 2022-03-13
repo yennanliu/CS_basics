@@ -52,6 +52,35 @@
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//compare_hadoop_spark_flink.png" width="500" height="300">
 
+11. What are the key programming constructs of a Flink streaming application?
+- A Flink streaming application consists of four key programming constructs.
+	- 1) Stream execution environment - Every Flink streaming application requires an environment in which the streaming program is executed.
+	- 2) Data sources Data sources are applications or data stores from which the Flink application will read the input data from.
+	- 3) Data streams and transformation operations - Input data from data sources are read by the Flink application in the form of data streams.
+	- 4) Data sinks - The transformed data from data streams are consumed by data sinks which output the data to external systems. 
+
+12. explain `Complex Event Processing (CEP)` ?
+- FlinkCEP is an API in Apache Flink, which analyses event patterns on continuous streaming data. These events are near real time, which have high throughput and low latency. This API is used mostly on Sensor data, which come in real-time and are very complex to process.
+- CEP: It is used for complex event processing.
+- https://www.tutorialspoint.com/apache_flink/apache_flink_libraries.htm
+
+13. What are the Apache Flink domain-specific libraries?
+- FlinkML: It is used for machine learning.
+- Table: It is used to perform the relational operation.
+- Gelly: It is used to perform the Graph operation.
+- CEP: It is used for complex event processing.
+- https://www.cloudduggu.com/flink/interview-questions/
+
+14. What are the different ways to use Apache Flink?
+Apache Flink can be deployed and configured in the below ways.
+	- Flink can be setup Locally (Single Machine)
+	- It can be deployed on a VM machine.
+	- We can use Flink as a Docker image.
+	- We can configure and deploy Flink as a standalone cluster.
+	- Flink can be deployed and configured on Hadoop YARN and another resource managing framework.
+	- Flink can be deployed and configured on a Cloud system.
 
 ## Ref
 - https://www.techgeeknext.com/apache/apache-flink-interview-questions
+- https://www.interviewgrid.com/interview_questions/flink
+- https://www.tutorialspoint.com/apache_flink/index.htm
