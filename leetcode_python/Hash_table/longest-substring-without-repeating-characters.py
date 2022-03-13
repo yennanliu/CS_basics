@@ -1,41 +1,38 @@
 """
 
+3. Longest Substring Without Repeating Characters
+Medium
+
 Given a string s, find the length of the longest substring without repeating characters.
 
+ 
 
 Example 1:
 
 Input: s = "abcabcbb"
 Output: 3
 Explanation: The answer is "abc", with the length of 3.
-
 Example 2:
 
 Input: s = "bbbbb"
 Output: 1
 Explanation: The answer is "b", with the length of 1.
-
 Example 3:
 
 Input: s = "pwwkew"
 Output: 3
 Explanation: The answer is "wke", with the length of 3.
 Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
-Example 4:
-
-Input: s = ""
-Output: 0
  
 
 Constraints:
 
 0 <= s.length <= 5 * 104
-s consists of English letters, digits, symbols and spaces.
 
 """
 
 # V0
-# IDEA : SLIDING WINDOW + DICT (brute force)
+# IDEA : brute force : SLIDING WINDOW + DICT
 from collections import Counter
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
@@ -60,28 +57,7 @@ class Solution(object):
         return _max
 
 # V0'
-# IDEA : SLIDING WINDOW + defaultdict (brute force)
-from collections import defaultdict
-class Solution(object):
-    def lengthOfLongestSubstring(self, s):
-        if len(s) <= 1:
-            return len(s)
-        res = 0
-        tmp = defaultdict(int)
-        for i in range(len(s)):
-            for j in range(i, len(s)):
-                #print ("i = " + str(i) + " j = " + str(j))
-                if s[j] in tmp:
-                    res = max(res, tmp[j]-i+1)
-                    tmp = defaultdict(int)
-                    break
-                else:
-                    tmp[s[j]] = j
-                    res = max(res, j-i+1)
-        return res
-
-# V0'
-# IDEA : SLIDING WINDOW + DICT
+# IDEA : TWO POINTER + SLIDING WINDOW + DICT (NOTE this method !!!!)
 #       -> use a hash table (d) record visited "element" (e.g. : a,b,c,...)
 #          (but NOT sub-string)
 class Solution(object):
@@ -108,6 +84,27 @@ class Solution(object):
             # and re-calculate the max length
             d[s[r]] = r
             res = max(res, r -l + 1)
+        return res
+
+# V0'
+# IDEA : SLIDING WINDOW + defaultdict (brute force)
+from collections import defaultdict
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        if len(s) <= 1:
+            return len(s)
+        res = 0
+        tmp = defaultdict(int)
+        for i in range(len(s)):
+            for j in range(i, len(s)):
+                #print ("i = " + str(i) + " j = " + str(j))
+                if s[j] in tmp:
+                    res = max(res, tmp[j]-i+1)
+                    tmp = defaultdict(int)
+                    break
+                else:
+                    tmp[s[j]] = j
+                    res = max(res, j-i+1)
         return res
 
 # V0''
