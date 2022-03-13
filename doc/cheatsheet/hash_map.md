@@ -101,7 +101,7 @@ print (car)
 #  'color': 'white'}
 ```
 
-- `sort` on ***hashmap (dict)***
+- `Sort` on ***hashmap (dict)***
 ```python
 # https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
 
@@ -166,7 +166,7 @@ class Solution:
         return [res[x] for x in res]  # output the result 
 ```
 
-- get `max index` for each element in a string
+- Get `max index` for each element in a string
 ```python
 s = 'ababcbacadefegdehijhklij'
 {k:v for k,v in enumerate(s)}
@@ -214,7 +214,7 @@ class Solution(object):
         return ans
 ```
 
-- get pairs with specific sum
+- Get pairs with specific sum
 ```python
 # LC 1010 Pairs of Songs With Total Durations Divisible by 60
 d = {}
@@ -256,6 +256,22 @@ my_array_pre[1+1] - my_array_pre[0]  # 1's index is 0, and 2's index is 1. (my_a
 
 # example 2 : sum of [2,3,4]
 my_array_pre[3+1] - my_array_pre[1] # 2's index is 1, and 4's index is 3. (my_array = [1, 2, 3, 4, 5])
+```
+
+- Longest Substring
+```python
+# LC 003
+# 2 pointers + dict
+# ....
+l = 0
+d = {}
+res = 0
+for r in range(len(s)):
+    if s[r] in d:
+        l = max(l, d[s[r]]+1)
+    d[s[r]] = r
+    res = max(res, r-l+1)
+# ...
 ```
 
 ## 2) LC Example
@@ -401,20 +417,29 @@ class Solution:
 ### 2-3) Longest Substring Without Repeating Characters
 ```python
 # LC 003
-# V0
-# IDEA : SLIDING WINDOW + DICT
-#       -> use a hash table (d) record visited "alphabet" (e.g. : a,b,c,...)
+# V0'
+# IDEA : TWO POINTER + SLIDING WINDOW + DICT (NOTE this method !!!!)
+#       -> use a hash table (d) record visited "element" (e.g. : a,b,c,...)
 #          (but NOT sub-string)
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
         d = {}
+        # left pointer
         l = 0
         res = 0
+        # NOTE !!! right pointer
         for r in range(len(s)):
+            """
+            ### NOTE : deal with "s[r] in d" case ONLY !!! 
             ### NOTE : if already visited, means "repeating"
-            #         -> then we need to update left pointer (l)
+            #      -> then we need to update left pointer (l)
+            """
             if s[r] in d:
-                # note here
+                """
+                NOTE !!! this
+                -> via max(l, d[s[r]] + 1) trick,
+                   we can get the "latest" idx of duplicated s[r], and start from that one
+                """
                 l = max(l, d[s[r]] + 1)
             # if not visited yet, record the alphabet
             # and re-calculate the max length
