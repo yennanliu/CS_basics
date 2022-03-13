@@ -53,6 +53,45 @@
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/map_reduce_pattern.png" width="500" height="300">  
 
 2. Things happen after `spark-submit`?
+	- step 1) This program invokes the main() method that is specified in the spark-submit command, which launches the driver program.
+	- step 2)  The driver program `converts the code` into `Directed Acyclic Graph(DAG)` which will `have all the RDDs and transformations` to be performed on them. ( During this phase driver program also does some optimizations and then it converts the DAG to a physical execution plan with set of stages.)
+	- step 3) After this physical plan, driver creates small execution units called tasks. Then these tasks are sent to Spark Cluster.
+	- step 4) The driver program then talks to the cluster manager and requests for the resources for execution
+	- step 5) Then the cluster manger launches the executors on the worker nodes
+	- step 6)  Executors will register themselves with driver program so the driver program will have the complete knowledge about the executors
+	- step 7) Then driver program sends the tasks to the executors and starts the execution. Driver program always monitors these tasks that are running on the executors till the completion of job.
+	- step 8) When the job is completed or called stop() method in case of any failures, the driver program terminates and frees the allocated resources
+
+- http://www.bigdatainterview.com/explain-spark-architecture-or-what-happens-when-submit-a-spark-job/
+
+
+2'. `spark-submit` cmd explain ?
+```bash
+# pattern
+./bin/spark-submit \
+  --master <master-url> \
+  --deploy-mode <deploy-mode> \
+  --conf <key<=<value> \
+  --driver-memory <value>g \
+  --executor-memory <value>g \
+  --executor-cores <number of cores>  \
+  --jars  <comma separated dependencies>
+  --class <main-class> \
+  <application-jar> \
+  [application-arguments]
+```
+
+- https://sparkbyexamples.com/spark/spark-submit-command/
+
+2'' `SparkSession` VS `SparkContext` ?
+- SparkContext 
+	- an entry point to Spark and defined in org.apache.spark package since 1.x and used to programmatically create Spark RDD, accumulators and broadcast variables on the cluster. Since Spark 2.0 most of the functionalities (methods) available in SparkContext are also available in SparkSession. Its object sc is default available in spark-shell and it can be programmatically created using SparkContext class.
+- SparkContext
+	- introduced in version 2.0 and and is an entry point to underlying Spark functionality in order to programmatically create Spark RDD, DataFrame and DataSet. It’s object spark is default available in spark-shell and it can be created programmatically using SparkSession builder pattern.
+	- SparkSession can be used in replace with SQLContext and HiveContext.
+
+- https://sparkbyexamples.com/spark/sparksession-vs-sparkcontext/
+
 
 3. What's RDD, HDFS ?
 
@@ -148,7 +187,8 @@
 
 16. How to set up spark master HA ?
 
-17. How does `spark-submit` import external `jars`  
+17. How does `spark-submit` import external `jars` 
+- https://sparkbyexamples.com/spark/add-multiple-jars-to-spark-submit-classpath/ 
 
 18. Explain spark Polyglot, Lazy Evaluation ?
 
