@@ -648,3 +648,27 @@ class Solution:
                         break
         return res
 ```
+
+### 2-14) Coin Change
+```python
+# LC 322 Coin Change
+# note : there is also dp approach
+# IDEA :  BFS
+class Solution(object):
+    def coinChange(self, coins, amount):
+        steps = collections.defaultdict(int)
+        queue = collections.deque([0])
+        steps[0] = 0
+        while queue:
+            front = queue.popleft()
+            level = steps[front]
+            if front == amount:
+                return level
+            for c in coins:
+                if front + c > amount:
+                    continue
+                if front + c not in steps:
+                    queue += front + c,
+                    steps[front + c] = level + 1
+        return -1
+```
