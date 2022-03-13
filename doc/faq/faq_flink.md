@@ -30,11 +30,27 @@
 -  Ordered ingestion is not needed to process bounded streams since a bounded data set could always be sorted. Processing of bounded streams is also called as batch processing.
 
 6. What is Dataset API in Apache Flink?
+- The Apache Flink Dataset API is used to do `batch` operations on data over time. 
+- This API is available in Java, Scala, and Python. 
+- It may perform various transformations on datasets such as filtering, mapping, aggregating, joining, and grouping.
+
 7. What is DataStream API in Apache Flink?
+- The Apache Flink DataStream API is used to handle data in a continuous `stream`.
+- On the stream data, you can perform operations such as filtering, routing, windowing, and aggregation.
+- On this data stream, there are different sources such as message queues, files, and socket streams, and the resulting data can be written to different sinks such as command line terminals. 
+
 8. What is Apache Flink Table API?
+- Table API is a relational API with an expression language similar to SQL. 
+- This API is capable of `batch` and `stream` processing.
+- . It is compatible with the Java and Scala Dataset and Datastream APIs. 
+- Tables can be generated from internal Datasets and Datastreams as well as from external data sources. You can use this relational API to perform operations such as join, select, aggregate, and filter. 
+
 9. What is Apache Flink FlinkML?
+- FlinkML is the Flink Machine Learning (ML) library.
+
 10. What are the differences between Apache Hadoop, Apache Spark and Apache Flink?
 
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//compare_hadoop_spark_flink.png" width="500" height="300">
 
 
 ## Ref
