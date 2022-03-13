@@ -66,10 +66,10 @@ class Solution(object):
         # left pointer
         l = 0
         res = 0
-        # right pointer
+        # NOTE !!! right pointer
         for r in range(len(s)):
             """
-            ### NOTE : we deal with "s[r] in d" case first 
+            ### NOTE : deal with "s[r] in d" case ONLY !!! 
             ### NOTE : if already visited, means "repeating"
             #      -> then we need to update left pointer (l)
             """
