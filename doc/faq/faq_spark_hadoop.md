@@ -180,12 +180,21 @@
 12. What errors may happen when `spark streaming` ? how to fix them ? 
 
 13. How to prevent spark `out of memeory` `(OOM)` problem ?
+- https://medium.com/swlh/spark-oom-error-closeup-462c7a01709d
+- https://dzone.com/articles/common-reasons-your-spark-applications-are-slow-or
+
+13' how executor memory(heap memory) is managed in spark ?
 
 14. How does saprk split `stage` ?
 
 15. What're spark work, stage, task; and there relationship ?
 
 16. How to set up spark master HA ?
+- Standby Masters with ZooKeeper
+- Single-Node Recovery with Local File System
+- https://spark.apache.org/docs/latest/spark-standalone.html#high-availability
+- https://support.datafabric.hpe.com/s/article/How-to-enable-High-Availability-on-Spark-with-Zookeeper?language=en_US
+
 
 17. How does `spark-submit` import external `jars` 
 - https://sparkbyexamples.com/spark/add-multiple-jars-to-spark-submit-classpath/ 
