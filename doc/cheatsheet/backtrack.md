@@ -2,7 +2,7 @@
 
 > Brute force via  `decision tree process`
 
-- https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%E4%BF%AE%E8%AE%A2%E7%89%88.md
+- [fuck algorithm : backtrack]( https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%E4%BF%AE%E8%AE%A2%E7%89%88.md)
 
 - Backtrack (brute force) -> DP (dynamic programming)
 - optimization:
@@ -29,26 +29,72 @@
     - array
 
 - Problems types
-    - Combinations
-        - LC 77 
+    - `Combinations (組成)` 
+        - LC 77
         - backtrack. via `start` remove already used numbers and return all cases
+        - deal with `idx` !!! (start idx)
         - start + for loop + pop(-1) + help func
-    - Permutations (排列組合)
-        - LC 46 
+        ```python
+        # ...
+        cur = []
+        res = []
+        def help(idx, cur):
+            if len(cur) == k:
+                res.append(cur)
+                return
+            for i in range(idx, n+1):
+                cur.append(i)
+                help(idx+1, cur)
+                cur.pop(-1)
+        # ...
+        ```
+    - `Permutations (排列組合)`
+        - LC 46
         - backtrack. via `contains` remove already used numbers and return all cases
         - contains (visited) (or not in `cur`) + for loop + pop(-1) + help func
         ```python
-        # NOTE this condition !!!
-        if i not in cur:
-            cur.append(i)
-            help(cur)
-            cur.pop(-1)
+        # ...
+        res = []
+        cur = []
+        def help(cur):
+            if len(cur) == len(s):
+                res.append(cur[:])
+                return
+            if len(cur) > len(s):
+                return
+            for i in nums:
+                # NOTE this !!!
+                if i not in cur:
+                    cur.append(i)
+                    help(cur)
+                    cur.pop(-1)
+        # ...
         ```
-    - Subsets 
-        - LC 78 
+    - `Subsets`
+        - LC 78, 140
         - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
         - (for loop call help func) + for loop + pop(-1)
-    - parentheses (括弧)
+        - "全排列"
+        ```python
+        # ...
+        cur = []
+        res = []
+        def help(cur):
+            _cur = "".join(cur[:])
+            if _cur == s:
+                res.append(cur[:])
+                return
+            if len(_cur) > len(s):
+                cur = []
+                return
+            # NOTE !!! since we need get ALL sub group (全排列), so WE DON'T NEED deal with idx here
+            for i in range(len(wordDict)):
+                cur.append(wordDict[i])
+                help(cur)
+                cur.pop(-1)
+        # ...
+        ```
+    - Parentheses (括弧)
         - LC 20, LC 22
 
 
