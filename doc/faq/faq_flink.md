@@ -80,6 +80,15 @@ Apache Flink can be deployed and configured in the below ways.
 	- Flink can be deployed and configured on Hadoop YARN and another resource managing framework.
 	- Flink can be deployed and configured on a Cloud system.
 
+15. Explain how flink implement `exactly once` ? what's the logics, mechanisms.. ?
+- `distributed snapshot`
+- `2 phases commit`
+	- TwoPhaseCommitSinkFunction
+- https://segmentfault.com/a/1190000022891333
+- https://flink.apache.org/features/2018/03/01/end-to-end-exactly-once-apache-flink.html
+- https://eng.uber.com/real-time-exactly-once-ad-event-processing/
+- https://zhuanlan.zhihu.com/p/266620519
+
 ## Ref
 - https://www.techgeeknext.com/apache/apache-flink-interview-questions
 - https://www.interviewgrid.com/interview_questions/flink
