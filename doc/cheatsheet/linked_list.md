@@ -1,9 +1,9 @@
 # Linked List 
 
 ## 0) Concept
-- https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%80%92%E5%BD%92%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E7%9A%84%E4%B8%80%E9%83%A8%E5%88%86.md
-- https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/k%E4%B8%AA%E4%B8%80%E7%BB%84%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8.md
-- https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/%E5%88%A4%E6%96%AD%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8.md
+- [fucking algorithm : reverse part of linked list](https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%80%92%E5%BD%92%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E7%9A%84%E4%B8%80%E9%83%A8%E5%88%86.md)
+- [fucking algorithm : reverse k set of linked list](https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/k%E4%B8%AA%E4%B8%80%E7%BB%84%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8.md)
+- [fucking algorithm : check palindrome linked list](https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/%E5%88%A4%E6%96%AD%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8.md)
 
 ```python
 # python
@@ -57,6 +57,18 @@ node2.next = node3;
     ```python
     self.children = defaultdict(Node)
     ```
+- problem types
+    - reverse
+        - reverse linked list
+        - reverse part of linked list
+        - reverse k set of linked list
+    - merge
+        - merge 2 linked list
+    - check
+        - check cyclic linked list
+        - check beginning of cyclic linked list
+    -  combinations
+        - combinations of above cases
 
 ### 0-2) Pattern
 
@@ -924,8 +936,72 @@ class Solution(object):
 ### 2-8) Reorder List
 ```python
 # LC 143. Reorder List
+# V0
+# IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists
+class Solution:
+    def reorderList(self, head):
+        if not head:
+            return 
+        
+        # find the middle of linked list [Problem 876]
+        # in 1->2->3->4->5->6 find 4 
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next 
+            
+        # reverse the second part of the list [Problem 206]
+        # convert 1->2->3->4->5->6 into 1->2->3->4 and 6->5->4
+        # reverse the second half in-place
+        prev, curr = None, slow
+        while curr:
+            tmp = curr.next
+            
+            curr.next = prev
+            prev = curr
+            curr = tmp    
 
-# V0 
+        # merge two sorted linked lists [Problem 21]
+        # merge 1->2->3->4 and 6->5->4 into 1->6->2->5->3->4
+        first, second = head, prev
+        while second.next:
+            tmp = first.next
+            first.next = second
+            first = tmp
+            
+            tmp = second.next
+            second.next = first
+            second = tmp
+
+# V0'
+# IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists (simplified code from V1)
+class Solution:
+    def reorderList(self, head):
+        if not head:
+            return 
+        
+        # find the middle of linked list [Problem 876]
+        # in 1->2->3->4->5->6 find 4 
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next 
+            
+        # reverse the second part of the list [Problem 206]
+        # convert 1->2->3->4->5->6 into 1->2->3->4 and 6->5->4
+        # reverse the second half in-place
+        prev, curr = None, slow
+        while curr:
+            curr.next, prev, curr = prev, curr, curr.next       
+
+        # merge two sorted linked lists [Problem 21]
+        # merge 1->2->3->4 and 6->5->4 into 1->6->2->5->3->4
+        first, second = head, prev
+        while second.next:
+            first.next, first = second, first.next
+            second.next, second = first, second.next
+
+# V0'''
 class Solution:
     def reorderList(self, head):
         if head is None:
