@@ -601,6 +601,24 @@ if (fast != null){
 }
 ```
 
+```python
+# LC 876 Middle of the Linked List
+# V0
+# IDEA : fast, slow pointers + linkedlist
+class Solution(object):
+    def middleNode(self, head):
+        # edge case
+        if not head:
+            return
+        s = f = head
+        while f and f.next:
+            # if not f:
+            #     break
+            f = f.next.next
+            s = s.next
+        return s
+```
+
 ## 2) LC Example
 
 ### 2-1) palindrome-linked-list
