@@ -142,7 +142,7 @@
 		- 1st read (ok)
 		- 2nd read :
 			- read
-				- p.203 - 213
+				- p.213 - 251
 					- Cassandra
 						- SSTable
 						- Bloom filter
