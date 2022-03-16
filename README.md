@@ -932,7 +932,8 @@
 676| [Implement Magic Dictionary](https://leetcode.com/problems/implement-magic-dictionary/) | [Python](./leetcode_python/Backtracking/implement-magic-dictionary.py)  | _O(n)_ | _O(d)_  | Medium | Trie, DFS | AGAIN (not start)
 698| [Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) | [Python](./leetcode_python/Backtracking/partition-to-k-equal-sum-subsets.py)  | _O(n * 2^n)_ | _O(2^n)_ | Medium | DFS, DP, Memoization, similar as `#416 Partition Equal Subset Sum, #473 Matchsticks to Square` | AGAIN (not start*)
 718 | [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/) |  [Python](./leetcode_python/Backtracking/maximum-length-of-repeated-subarray.py)  | _O(m * n)_ | _O(min(m, n))_ | Medium | DP, Hash, Binary Search |  AGAIN (not start*)
-784| [Letter Case Permutation](https://leetcode.com/problems/letter-case-permutation/)    | [Python](./leetcode_python/Backtracking/letter-case-permutation.py)  | _O(n * 2^n)_ | _O(1)_ | Medium, dfs, recursion, `good trick` |`fb`| AGAIN****** (3)
+784| [Letter Case Permutation](https://leetcode.com/problems/letter-case-permutation/)    | [Python](./leetcode_python/Backtracking/letter-case-permutation.py)  | _O(n * 2^n)_ | _O(1)_ | Medium | dfs, recursion, `good trick`,`fb`| AGAIN****** (3)
+980| [Unique Paths III](https://leetcode.com/problems/unique-paths-iii/)    | [Python](./leetcode_python/Backtracking/unique-paths-iii.py)  | _O(n * 2^n)_ | _O(1)_ |Hard| backtrack, dfs, amazon, google,`fb`| AGAIN (not start)
 
 
 ## Dynamic Programming 

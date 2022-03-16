@@ -1,6 +1,6 @@
 # Progress
 
-# 2022-03-15
+# 2022-03-16
 - DOING:
 	- LC (goog_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
@@ -13,7 +13,7 @@
 				- 017
 				- 227
 				- 041
-				- 980
+				- 980 (again, not start)
 				- 121
 	- ================
 	- LC top 100 likes
@@ -48,6 +48,7 @@
 			- 079
 			- 297
 			- 449
+			- 980
 		- bfs
 			- 227
 			- 133
