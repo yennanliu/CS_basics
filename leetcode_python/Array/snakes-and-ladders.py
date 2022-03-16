@@ -48,6 +48,44 @@ The squares labeled 1 and n2 do not have any ladders or snakes.
 """
 
 # V0
+# IDEA : BFS + Matrix op
+# https://www.youtube.com/watch?v=6lH4nO3JfLk
+class Solution(object):
+    def snakesAndLadders(self, board):
+        length = len(board)
+        # reverse the board, so our code is more straight forward
+        board.reverse()
+        # help func
+        def intToPos(square):
+            # minus 1, since idx usually start from 0
+            r = (square - 1) // length
+            c = (square - 1) % length
+            # special handling for odd row
+            if r % 2 == 1:
+                c = length - 1 - c
+            return [r, c]
+        q = deque()
+        q.append([1,0]) # [square, moves]
+        visited = set()
+        while q:
+            square, moves = q.popleft()
+            # simulate dice throw
+            for i in range(1, 7):
+                nextSquare = square + i
+                r, c = intToPos(nextSquare)
+                # if no short cut (ladder)
+                if board[r][c] != -1:
+                    nextSquare = board[r][c]
+                # if meet the end point
+                if nextSquare == length * length:
+                    return moves + 1
+                # if meet short cut (ladder) and not visited yet
+                if  nextSquare not in visited:
+                    visited.add(nextSquare)
+                    q.append([nextSquare, moves+1])
+        return -1
+
+# V0
 # IDEA : BFS
 class Solution(object):
     def snakesAndLadders(self, board):
@@ -82,6 +120,44 @@ class Solution(object):
         return -1
 
 # V1
+# IDEA : BFS + Matrix op
+# https://www.youtube.com/watch?v=6lH4nO3JfLk
+class Solution(object):
+    def snakesAndLadders(self, board):
+        length = len(board)
+        # reverse the board, so our code is more straight forward
+        board.reverse()
+        # help func
+        def intToPos(square):
+            # minus 1, since idx usually start from 0
+            r = (square - 1) // length
+            c = (square - 1) % length
+            # special handling for odd row
+            if r % 2 == 1:
+                c = length - 1 - c
+            return [r, c]
+        q = deque()
+        q.append([1,0]) # [square, moves]
+        visited = set()
+        while q:
+            square, moves = q.popleft()
+            # simulate dice throw
+            for i in range(1, 7):
+                nextSquare = square + i
+                r, c = intToPos(nextSquare)
+                # if no short cut (ladder)
+                if board[r][c] != -1:
+                    nextSquare = board[r][c]
+                # if meet the end point
+                if nextSquare == length * length:
+                    return moves + 1
+                # if meet short cut (ladder) and not visited yet
+                if  nextSquare not in visited:
+                    visited.add(nextSquare)
+                    q.append([nextSquare, moves+1])
+        return -1
+
+# V1'
 # IDEA : BFS
 # http://us.jiuzhang.com/solution/snakes-and-ladders/#tag-highlight-lang-python
 class Solution(object):
@@ -109,7 +185,7 @@ class Solution(object):
                     queue.append(s2)
         return -1
 
-# V1'
+# V1''
 # https://zxi.mytechroad.com/blog/searching/leetcode-909-snakes-and-ladders/
 # C++
 # class Solution {
