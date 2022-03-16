@@ -241,6 +241,10 @@ print (y)
 
 #### 1-1-8) go through 2 arrays (length could be different)
 ```python
+#--------------------
+# example 1
+#--------------------
+
 # 2 array : s,t
 # len(s) = 10, len(t) = 7
 # or
@@ -250,6 +254,28 @@ if len(s) > len(t):
 
 for i in range(len(s)):
     print (s[i], t[i])
+
+
+#--------------------
+# example 2
+#--------------------
+# LC 165
+class Solution:
+    def compareVersion(self, version1: str, version2: str) -> int:
+        nums1 = version1.split('.')
+        nums2 = version2.split('.')
+        n1, n2 = len(nums1), len(nums2)
+        
+        # NOTE here !!!
+        # compare versions
+        for i in range(max(n1, n2)):
+            i1 = int(nums1[i]) if i < n1 else 0
+            i2 = int(nums2[i]) if i < n2 else 0
+            if i1 != i2:
+                return 1 if i1 > i2 else -1
+        
+        # the versions are equal
+        return 0
 ```
 
 #### 1-1-9) shallow, deep copy
