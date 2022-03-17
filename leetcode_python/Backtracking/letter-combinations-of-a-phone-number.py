@@ -30,6 +30,34 @@ digits[i] is a digit in the range ['2', '9'].
 """
 
 # V0
+# IDEA : backtracking
+class Solution(object):
+    def letterCombinations(self, digits):
+        # help func
+        def help(idx, cur):
+            if len(cur) == len(digits):
+                tmp = "".join(cur[:])
+                res.append(tmp)
+                cur = []
+                return
+            if len(cur) > len(digits):
+                cur = []
+                return
+            for a in d[digits[idx]]:
+                cur.append(a)
+                help(idx+1, cur)
+                cur.pop(-1)  # NOTE this !!! : we pop last element
+        # edge case
+        if not digits:
+            return []
+        res = []
+        cur = []
+        idx = 0
+        d =  {'2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl', '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'}
+        help(idx, cur)
+        return res
+
+# V0'
 # IDEA : dfs + backtracking
 class Solution(object):
     def letterCombinations(self, digits):
@@ -61,7 +89,7 @@ class Solution(object):
         dfs(0,"")
         return res
 
-# V0
+# V0''
 # IDEA : dfs + backtracking
 class Solution(object):
     def letterCombinations(self, digits):
@@ -83,7 +111,7 @@ class Solution(object):
         dfs(digits, 0, "")
         return res
 
-# V0'
+# V0''''
 class Solution(object):
     def letterCombinations(self, digits):
         if digits == "": return []
@@ -93,7 +121,7 @@ class Solution(object):
             res = [w + c for c in d[e] for w in res]
         return res
 
-# V0'
+# V0''''''
 class Solution(object):
     def letterCombinations(self, digits):
         d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
@@ -109,7 +137,7 @@ class Solution(object):
             r = [ b+a for a in d[e] for b in r]
         return r
 
-# V0'
+# V0'''''''
 # IDEA : DFS
 class Solution(object):
     def letterCombinations(self, digits):

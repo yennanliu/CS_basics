@@ -71,7 +71,7 @@
         # ...
         ```
     - `Subsets`
-        - LC 78, 140
+        - LC 78, 140, 17
         - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
         - (for loop call help func) + for loop + pop(-1)
         - "全排列"
@@ -134,8 +134,35 @@ def backtrack(route, choice_list):
 ### 2-1) Letter Combinations of a Phone Number 
 ```python
 # 017   Letter Combinations of a Phone Number
-
 # V0
+# IDEA : backtracking
+class Solution(object):
+    def letterCombinations(self, digits):
+        # help func
+        def help(idx, cur):
+            if len(cur) == len(digits):
+                tmp = "".join(cur[:])
+                res.append(tmp)
+                cur = []
+                return
+            if len(cur) > len(digits):
+                cur = []
+                return
+            for a in d[digits[idx]]:
+                cur.append(a)
+                help(idx+1, cur)
+                cur.pop(-1)  # NOTE this !!! : we pop last element
+        # edge case
+        if not digits:
+            return []
+        res = []
+        cur = []
+        idx = 0
+        d =  {'2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl', '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'}
+        help(idx, cur)
+        return res
+
+# V0'
 # IDEA : dfs + backtracking
 class Solution(object):
     def letterCombinations(self, digits):
