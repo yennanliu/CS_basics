@@ -43,9 +43,9 @@ intervals.sort(key = lambda x : x[1])
 cnt = 0
 for i in range(len(intervals)):
     if some_condition:
-        do_sth
+        # do sth
     else:
-        do_sth
+        # do sth
 
 #-----------
 # V2
