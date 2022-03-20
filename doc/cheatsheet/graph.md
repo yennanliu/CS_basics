@@ -55,8 +55,6 @@
     - longest_path
     - is_cycle
 
-
-
 ## 2) LC Example
 
 ### 2-1) Closest Leaf in a Binary Tree
@@ -73,7 +71,7 @@ class Solution:
         self.graph = collections.defaultdict(list)
         while q:
             for i in range(len(q)):
-                cur = q.pop(0)
+                cur = q.pop(0) # this is dfs
                 # add cur to visited, NOT to visit this node again
                 visited.add(cur)
                 ### NOTICE HERE 
