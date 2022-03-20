@@ -1001,6 +1001,7 @@
 935| [Knight Dialer](https://leetcode.com/problems/knight-dialer/) | [Python](./leetcode_python/Dynamic_Programming/knight-dialer.py) | _O(logn)_ | _O(1)_ | Medium | Matrix Exponentiation, `google`, `M$`, `fb`| AGAIN (not start)
 518| [Coin Change 2](https://leetcode.com/problems/coin-change-2/) | [Python](./leetcode_python/Dynamic_Programming/coin_change_2.py) | _O(logn)_ | _O(1)_ | Medium | `dp basic`,`good trick`,check `# 322 Coin Change`,`dp`, `google`, `fb`| AGAIN******** (4)
 494| [Target Sum](https://leetcode.com/problems/target-sum/) | [Python](./leetcode_python/Dynamic_Programming/target-sum.py) | _O(logn)_ | _O(1)_ | Medium |dp basic, `dp`, `fb`|  AGAIN***** (1)
+1312| [Minimum Insertion Steps to Make a String Palindrome](https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/) | [Python](./leetcode_python/Dynamic_Programming/minimum-insertion-steps-to-make-a-string-palindrome.py) | _O(logn)_ | _O(1)_ | Hard |dp, amazon|  AGAIN (not start)
 1335| [Minimum Difficulty of a Job Schedule](https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/) | [Python](./leetcode_python/Dynamic_Programming/minimum-difficulty-of-a-job-schedule.py) | _O(logn)_ | _O(1)_ | Medium |`dp`, `amazon`| not start
 1799| [Maximize Score After N Operations](https://leetcode.com/problems/maximize-score-after-n-operations/) | [Python](./leetcode_python/Dynamic_Programming/maximize-score-after-n-operations.py) | _O(logn)_ | _O(1)_ | Medium |`dp`, `amazon`| not start
  
