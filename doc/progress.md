@@ -12,7 +12,7 @@
 				- 227
 				- 1312 (not start)
 				- 2009 (again!)
-				- 895
+				- 895 (again!!)
 				- 025
 	- ================
 	- LC top 100 likes
@@ -105,6 +105,7 @@
 			- 264
 			- 1481
 			- 1353
+			- 895
 		- trie
 			- 208
 			- 212
@@ -141,6 +142,12 @@
 	- algorithm book (labu)
 		- note
 			- p.363 -
+	- LC basic:
+		- know time, space complexity on ALL main data structure, algorithm
+			- avg
+			- best, worst
+			- implementation
+		- know tradeoff on why choose DS a, algorithm b, but not DS c, algorithm d...
 	- system design book - an insider's guide (GOTOP)
 		- 1st read (ok)
 		- 2nd read :

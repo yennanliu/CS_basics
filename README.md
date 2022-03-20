@@ -417,6 +417,7 @@
 853| [Car Fleet](https://leetcode.com/problems/car-fleet/)  | [python](./leetcode_python/Stack/car-fleet.py) | _O(nlogn)_  | _O(n)_      | Medium       || AGAIN (not start)
 856| [Score of Parentheses](https://leetcode.com/problems/score-of-parentheses/) | [python](./leetcode_python/Stack/score-of-parentheses.py) | _O(n)_  | _O(1)_   | Medium   || AGAIN (not start)
 872| [Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/) |  [python](./leetcode_python/Stack/leaf-similar-trees.py) | _O(n)_  | _O(h)_         | Easy      || AGAIN* 
+895| [Maximum Frequency Stack](https://leetcode.com/problems/maximum-frequency-stack/) |  [python](./leetcode_python/Stack/maximum-frequency-stack.py) | _O(n)_  | _O(h)_| Hard| good basic, heap, design, stack, amazon, apple, linkedin, m$, twitter| AGAIN********** (1) (not start) 
 901| [Online Stock Span](https://leetcode.com/problems/online-stock-span/) | [python](./leetcode_python/Stack/online-stock-span.py) | _O(n)_  | _O(n)_      | Medium        || AGAIN (not start)
 946| [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/) |  [python](./leetcode_python/Stack/validate-stack-sequences.py)  | _O(n)_  | _O(n)_         | Medium           || AGAIN 
 1703| [Minimum Adjacent Swaps for K Consecutive Ones](https://leetcode.com/problems/minimum-adjacent-swaps-for-k-consecutive-ones/) |  [python](./leetcode_python/Stack/minimum-adjacent-swaps-for-k-consecutive-ones.py)  | _O(n)_  | _O(n)_| Hard|heap, sliding window, amazon| AGAIN (not start)
@@ -809,7 +810,7 @@
 894| [All Possible Full Binary Trees](https://leetcode.com/problems/all-possible-full-binary-trees/) | [Python](./leetcode_python/Binary_Search/all-possible-full-binary-trees.py) | _O(n * 4^n / n^(3/2))_ | _O(n * 4^n / n^(3/2))_ | Medium ||  AGAIN (not start)
 911| [Online Election](https://leetcode.com/problems/online-election/) |  [Python](./leetcode_python/Binary_Search/online-election.py)| ctor: _O(n)_<br> query : _O(logn)_ | _O(n)_ | Medium    ||  AGAIN (not start)
 1011| [Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/) |  [Python](./leetcode_python/Binary_Search/capacity-to-ship-packages-within-d-days.py)| || Medium |good trick, binary search, amazon|  AGAIN*** (1) (not start)
-2099| [Minimum Number of Operations to Make Array Continuous](https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/) |  [Python](./leetcode_python/Binary_Search/minimum-number-of-operations-to-make-array-continuous.py)| || Hard |binary search, sliding window, dequeue, bisect.bisect_right, amazon|  AGAIN (not start)
+2009| [Minimum Number of Operations to Make Array Continuous](https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/) |  [Python](./leetcode_python/Binary_Search/minimum-number-of-operations-to-make-array-continuous.py)| || Hard |binary search, sliding window, dequeue, bisect.bisect_right, amazon|  AGAIN (not start)
 
 
 ## Binary Search Tree 
