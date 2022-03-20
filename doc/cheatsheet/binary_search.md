@@ -8,6 +8,9 @@
     - find a value from sorted array
     -  if there is kind of monotonicity, for example, if condition(k) is True then condition(k + 1) is True, then we can consider binary search
 
+- Ref
+    - bisect : check [python_trick.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md) : can get idx, and keep array sorted, when there is a element inserted
+
 
 ## 0) Concept  
 
