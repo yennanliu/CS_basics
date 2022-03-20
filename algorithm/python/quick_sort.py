@@ -3,6 +3,22 @@
 #---------------------------------------------------------------
 
 # V0
+def quick_sort(arr):
+    # edge case
+    if len(arr) < 2:
+        return arr
+    # use last element as first pivot
+    pivot = arr.pop(-1)
+    # init small, big array
+    small = []
+    big = []
+    for i in arr:
+        if i > pivot:
+            big.append(i)
+        else:
+            small.append(i)
+    # recursive do quick_sort
+    return quick_sort(small) + [pivot] + quick_sort(big)
 
 # V1
 # https://github.com/yennanliu/Python/blob/master/sorts/quick_sort.py
