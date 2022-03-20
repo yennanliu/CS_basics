@@ -937,3 +937,83 @@ In [64]: for i in z:
 In [65]: ans
 Out[65]: 5634
 ```
+
+### 1-27) bisect : bisect_right, bisect_left (Array bisection algorithm)
+- algorithm for `NOT sorting an array eveytime` whenever there is a new inserted element 
+```python
+# https://docs.python.org/zh-tw/3/library/bisect.html
+# src code : https://github.com/python/cpython/blob/3.10/Lib/bisect.py
+# https://myapollo.com.tw/zh-tw/python-bisect/
+# https://www.liujiangblog.com/course/python/57
+
+
+"""
+NOTE !!! before using bisect, we need SORT the array
+"""
+
+#-------------------------------
+# bisect_left
+#-------------------------------
+# will return an idx for inserting new element a, and keep the new array sorted, if element a already existed in array, will insert to "original" a's left idx
+
+# example 1
+In [3]: import bisect
+   ...: a = [2,4,6]
+   ...: idx = bisect.bisect_left(a, 3)
+   ...: print (idx)
+   ...:
+   ...: a.insert(idx, 3)
+   ...: print (a)
+   ...:
+1
+[2, 3, 4, 6]
+
+
+# example 2
+In [4]: import bisect
+   ...: a = [2, 4, 6]
+   ...: idx = bisect.bisect_left(a, 4)
+   ...: print (idx)
+   ...:
+   ...: a.insert(idx, 4)
+   ...: print (a)
+1
+[2, 4, 4, 6]
+
+#-------------------------------
+# bisect_right
+#-------------------------------
+# will return an idx for inserting new element a, and keep the new array sorted, if element a already existed in array, will insert to "original" a's right idx
+
+In [5]:
+   ...: import bisect
+   ...: a = a = [2, 2, 4, 4, 6, 6, 8, 8]
+   ...: idx = bisect.bisect_right(a, 4)
+   ...: print (idx)
+   ...:
+   ...: a.insert(idx, 4)
+   ...: print (a)
+4
+[2, 2, 4, 4, 4, 6, 6, 8, 8]
+
+
+#-------------------------------
+# insort, insort_right, insort_left
+#-------------------------------
+# insort, insort_right, insort_left : will get idx and insert to array  (with idx) directly
+
+# example 1
+In [8]: import bisect
+   ...: a = [2, 4, 6, 8]
+   ...: bisect.insort_left(a, 4)
+   ...: print (a)
+   ...:
+[2, 4, 4, 6, 8]
+
+# exmaple 2
+In [7]: import bisect
+   ...: a = [2, 4, 6, 8]
+   ...: bisect.insort_right(a, 4)
+   ...: print (a)
+[2, 4, 4, 6, 8]
+```
