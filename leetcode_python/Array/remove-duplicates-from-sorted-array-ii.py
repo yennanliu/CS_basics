@@ -1,5 +1,8 @@
 """
 
+80. Remove Duplicates from Sorted Array II
+Medium
+
 Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique element appears at most twice. The relative order of the elements should be kept the same.
 
 Since it is impossible to change the length of the array in some languages, you must instead have the result be placed in the first part of the array nums. More formally, if there are k elements after removing the duplicates, then the first k elements of nums should hold the final result. It does not matter what you leave beyond the first k elements.
@@ -75,12 +78,18 @@ nums is sorted in non-decreasing order.
 #        [0,0,1,1,2,3,1,1,3]
 #                   i     j
 #        [0,0,1,1,2,3,3,1,1]
+# NOTE !!!
+# -> two pointers : 
+#    -> slow : init with idx = 1
+#    -> fast : init with idx = 2
 class Solution:
     def removeDuplicates(self, nums):
         if len(nums) < 3:
             return len(nums)
 
+        """
         ### NOTE : slow starts from 1
+        """
         slow = 1
         ### NOTE : fast starts from 2
         for fast in range(2, len(nums)):
