@@ -811,6 +811,7 @@
 894| [All Possible Full Binary Trees](https://leetcode.com/problems/all-possible-full-binary-trees/) | [Python](./leetcode_python/Binary_Search/all-possible-full-binary-trees.py) | _O(n * 4^n / n^(3/2))_ | _O(n * 4^n / n^(3/2))_ | Medium ||  AGAIN (not start)
 911| [Online Election](https://leetcode.com/problems/online-election/) |  [Python](./leetcode_python/Binary_Search/online-election.py)| ctor: _O(n)_<br> query : _O(logn)_ | _O(n)_ | Medium    ||  AGAIN (not start)
 1011| [Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/) |  [Python](./leetcode_python/Binary_Search/capacity-to-ship-packages-within-d-days.py)| || Medium |good trick, binary search, amazon|  AGAIN*** (1) (not start)
+1889| [ Minimum Space Wasted From Packaging](https://leetcode.com/problems/minimum-space-wasted-from-packaging/) |  [Python](./leetcode_python/Binary_Search/minimum-space-wasted-from-packaging.py)| || Hard| heap, prefix sum, binary search, amazon|  AGAIN (not start)
 2009| [Minimum Number of Operations to Make Array Continuous](https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/) |  [Python](./leetcode_python/Binary_Search/minimum-number-of-operations-to-make-array-continuous.py)| || Hard |binary search, sliding window, dequeue, bisect.bisect_right, amazon|  AGAIN (not start)
 
 

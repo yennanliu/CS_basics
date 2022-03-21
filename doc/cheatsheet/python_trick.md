@@ -996,6 +996,24 @@ In [5]:
 4
 [2, 2, 4, 4, 4, 6, 6, 8, 8]
 
+#-------------------------------
+# bisect
+#-------------------------------
+# bisect.bisect : 
+#   -> similar as bisect.bisect_right
+#   -> similar as bisect.bisect_left, but will insert to element RIGHT instead
+# https://docs.python.org/zh-tw/3/library/bisect.html
+# https://blog.csdn.net/qq_34914551/article/details/100062973
+
+# example 1
+# In [3]: import bisect
+#    ...: a = [2, 4, 6, 8]
+#    ...: idx = bisect.bisect(a, 7)
+#    ...: print (idx)
+#    ...: a.insert(idx, 7)
+#    ...: print (a)
+# 3
+# [2, 4, 6, 7, 8]
 
 #-------------------------------
 # insort, insort_right, insort_left
