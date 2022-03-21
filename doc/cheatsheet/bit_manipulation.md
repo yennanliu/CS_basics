@@ -69,30 +69,31 @@ class Solution(object):
 # DEMO
 # In [23]: add=1
 
-# In [24]: add<<=1
+# In [24]: add = add << 1
 
 # In [25]: add
 # Out[25]: 2
 
-# In [26]: add<<=1
+# In [26]: add = add << 1
 
 # In [27]: add
 # Out[27]: 4
 
-# In [28]: add<<=1
+# In [28]: add = add << 1
 
 # In [29]: add
 # Out[29]: 8
 
-# In [30]: add<<=1
+# In [30]: add = add << 1
 
 # In [31]: add
 # Out[31]: 16
 
-# In [32]: add<<=1
+# In [32]: add = add << 1
 
 # In [33]: add
 # Out[33]: 32
+#
 class Solution:
     def grayCode(self, n):
         res = [0]
