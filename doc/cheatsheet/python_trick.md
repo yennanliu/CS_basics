@@ -1035,3 +1035,44 @@ In [7]: import bisect
    ...: print (a)
 [2, 4, 4, 6, 8]
 ```
+
+
+### 1-28) useful `functools` modules
+- functools.lru_cache
+    - implement cache via LRU (Least Recently Used (LRU) cache) in py
+- ref
+    - https://walkonnet.com/archives/451257
+    - https://docs.python.org/3/library/functools.html
+```python
+# example 1
+@lru_cache
+def count_vowels(sentence):
+    return sum(sentence.count(vowel) for vowel in 'AEIOUaeiou')
+
+# example 2
+@lru_cache(maxsize=32)
+def get_pep(num):
+    'Retrieve text of a Python Enhancement Proposal'
+    resource = 'https://www.python.org/dev/peps/pep-%04d/' % num
+    try:
+        with urllib.request.urlopen(resource) as s:
+            return s.read()
+    except urllib.error.HTTPError:
+        return 'Not Found'
+
+# example 3
+@lru_cache(maxsize=None)
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n-1) + fib(n-2)
+
+# example 4
+@api.route("/user/info", methods=["GET"])
+@functools.lru_cache()
+@login_require
+def get_userinfo_list():
+    userinfos = UserInfo.query.all()
+    userinfo_list = [user.to_dict() for user in userinfos]
+    return jsonify(userinfo_list)
+```

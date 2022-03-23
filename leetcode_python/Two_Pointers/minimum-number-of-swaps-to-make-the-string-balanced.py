@@ -50,11 +50,6 @@ The number of opening brackets '[' equals n / 2, and the number of closing brack
 # V0
 
 # V1
-
-# V1
-
-
-# V1
 # IDEA : greedy
 # https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/discuss/1390249/JavaPython-3-Space-O(1)-time-O(n)-codes-w-brief-explanation.
 # IDEA :
