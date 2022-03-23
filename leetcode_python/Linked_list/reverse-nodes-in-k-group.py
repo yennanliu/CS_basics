@@ -31,11 +31,183 @@ Follow-up: Can you solve the problem in O(1) extra memory space?
 
 """
 
+# V0
+# IDEA : Iterative
+class Solution:
+    def reverseKGroup(self, head, k):
+        # help func
+        # check if # of sub nodes still > k
+        def check(head, k):
+            ans = 0
+            while head:
+                ans += 1
+                if ans >= k:
+                    return True
+                head = head.next
+            return False
+
+        # edge case
+        if not head:
+            return
+        dummy = ListNode(None)
+        dummy.next = head
+        d = dummy
+        pre = None
+        curHead = head
+        preHead = curHead
+        while check(curHead, k):
+            for _ in range(k):
+                # reverse linked list
+                tmp = curHead.next
+                curHead.next = pre
+                pre = curHead
+                curHead = tmp
+            # reverse linked list
+            # ???
+            dummy.next = pre
+            dummy = preHead
+            preHead.next = curHead
+            preHead = curHead
+        return d.next
 
 # V0
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/linked_list.md#1-1-6-reverse-nodes-in-k-group--linked-list-iteration
 
 # V1
+# IDEA : Recursion
+# https://leetcode.com/problems/reverse-nodes-in-k-group/solution/
+class Solution:
+    
+    def reverseLinkedList(self, head, k):
+        
+        # Reverse k nodes of the given linked list.
+        # This function assumes that the list contains 
+        # atleast k nodes.
+        new_head, ptr = None, head
+        while k:
+            
+            # Keep track of the next node to process in the
+            # original list
+            next_node = ptr.next
+            
+            # Insert the node pointed to by "ptr"
+            # at the beginning of the reversed list
+            ptr.next = new_head
+            new_head = ptr
+            
+            # Move on to the next node
+            ptr = next_node
+            
+            # Decrement the count of nodes to be reversed by 1
+            k -= 1
+        
+        # Return the head of the reversed list
+        return new_head
+                
+    
+    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
+        
+        count = 0
+        ptr = head
+        
+        # First, see if there are atleast k nodes
+        # left in the linked list.
+        while count < k and ptr:
+            ptr = ptr.next
+            count += 1
+        
+        # If we have k nodes, then we reverse them
+        if count == k: 
+            
+            # Reverse the first k nodes of the list and
+            # get the reversed list's head.
+            reversedHead = self.reverseLinkedList(head, k)
+            
+            # Now recurse on the remaining linked list. Since
+            # our recursion returns the head of the overall processed
+            # list, we use that and the "original" head of the "k" nodes
+            # to re-wire the connections.
+            head.next = self.reverseKGroup(ptr, k)
+            return reversedHead
+        return head
+
+# V1'
+# IDEA : Iterative O(1) space
+# https://leetcode.com/problems/reverse-nodes-in-k-group/solution/
+class Solution:
+    
+    def reverseLinkedList(self, head, k):
+        
+        # Reverse k nodes of the given linked list.
+        # This function assumes that the list contains 
+        # atleast k nodes.
+        new_head, ptr = None, head
+        while k:
+            
+            # Keep track of the next node to process in the
+            # original list
+            next_node = ptr.next
+            
+            # Insert the node pointed to by "ptr"
+            # at the beginning of the reversed list
+            ptr.next = new_head
+            new_head = ptr
+            
+            # Move on to the next node
+            ptr = next_node
+            
+            # Decrement the count of nodes to be reversed by 1
+            k -= 1
+        
+        # Return the head of the reversed list
+        return new_head
+                
+    
+    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
+        
+        ptr = head
+        ktail = None
+        
+        # Head of the final, moified linked list
+        new_head = None
+        
+        # Keep going until there are nodes in the list
+        while ptr:
+            count = 0
+            
+            # Start counting nodes from the head
+            ptr = head
+            
+            # Find the head of the next k nodes
+            while count < k and ptr:
+                ptr = ptr.next
+                count += 1
+
+            # If we counted k nodes, reverse them        
+            if count == k:
+                
+                # Reverse k nodes and get the new head
+                revHead = self.reverseLinkedList(head, k)
+                
+                # new_head is the head of the final linked list
+                if not new_head:
+                    new_head = revHead
+                
+                # ktail is the tail of the previous block of 
+                # reversed k nodes
+                if ktail:
+                    ktail.next = revHead
+                    
+                ktail = head 
+                head = ptr
+        
+        # attach the final, possibly un-reversed portion
+        if ktail:
+            ktail.next = head
+        
+        return new_head if new_head else head
+
+# V1''
 # IDEA : ITERATION + help func
 # https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/462808/Python-Clear-Solution
 class Solution:
@@ -67,7 +239,34 @@ class Solution:
             head = head.next
         return False
 
-# V1'
+# V1
+# https://zxi.mytechroad.com/blog/list/leetcode-25-reverse-nodes-in-k-group/
+# C++
+# class Solution {
+# public:
+#   ListNode *reverseKGroup(ListNode *head, int k) {
+#     if (!head || k == 1) return head;
+#     ListNode dummy(0);
+#     dummy.next = head;
+#     int len = 1;
+#     while (head = head->next) len++;
+#     ListNode* pre = &dummy;    
+#     for (int l = 0; l + k <= len; l += k) {
+#       ListNode* cur = pre->next;
+#       ListNode* nxt = cur->next;
+#       for (int i = 1; i < k; ++i) {
+#         cur->next = nxt->next;
+#         nxt->next = pre->next;
+#         pre->next = nxt;
+#         nxt = cur->next;
+#       }
+#       pre = cur;
+#     }
+#     return dummy.next;
+#   }
+# };
+
+# V1'''
 # IDEA : RECURSIVE
 # https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/11676/64ms-python-solution1
 class Solution(object):
@@ -92,7 +291,7 @@ class Solution(object):
 
         return tail
 
-# V1''
+# V1'''''
 # https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/11508/Python-solution-with-detailed-explanation
 class Solution(object):
     def reverseKGroup(self, head, K):
@@ -126,7 +325,7 @@ class Solution(object):
                     k -= 1
         return start.next
             
-# V1'''
+# V1'''''''
 # https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/211534/Python-solution
 class Solution(object):
     def reverseKGroup(self, head, k):
@@ -175,7 +374,7 @@ class Solution(object):
                             prev = tmp
                 return record.next
 
-# V1''''
+# V1''''''''
 # https://zxi.mytechroad.com/blog/list/leetcode-25-reverse-nodes-in-k-group/
 # C++
 # class Solution {
