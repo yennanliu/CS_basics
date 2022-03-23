@@ -1,6 +1,6 @@
 # Progress
 
-# 2022-03-22
+# 2022-03-23
 - DOING:
 	- LC (goog_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
@@ -16,6 +16,12 @@
 				- 020
 				- 733
 				- 663
+				- 1000
+				- 238
+				- 45
+				- 236
+				- 347
+				- 1963 (again)
 	- ================
 	- LC top 100 likes
 		- 032
@@ -58,6 +64,7 @@
 		- greedy
 			- 358 (again, not start!)
 				- check `heappush, heappop`
+			- 1963
 		- union find
 			- 721
 			- 547
