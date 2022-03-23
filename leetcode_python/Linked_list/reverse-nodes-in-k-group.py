@@ -49,12 +49,9 @@ class Solution:
         # edge case
         if not head:
             return
-        dummy = ListNode(None)
-        dummy.next = head
-        d = dummy
+        d = dummy = ListNode(None)
         pre = None
-        curHead = head
-        preHead = curHead
+        preHead = curHead = head
         while check(curHead, k):
             for _ in range(k):
                 # reverse linked list
@@ -70,7 +67,7 @@ class Solution:
             preHead = curHead
         return d.next
 
-# V0
+# V0'
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/linked_list.md#1-1-6-reverse-nodes-in-k-group--linked-list-iteration
 
 # V1
