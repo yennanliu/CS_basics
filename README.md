@@ -1020,6 +1020,7 @@
 055| [Jump Game](https://leetcode.com/problems/jump-game/)     |[Python](./leetcode_python/Greedy/jump-game.py)  | _O(n)_ | _O(1)_| Medium|good trick, Greedy, DP, `amazon`| AGAIN******** (5)
 122| [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)| [Python](./leetcode_python/Greedy/best-time-to-buy-and-sell-stock-ii.py) | _O(n)_ | _O(1)_ | Easy |compare with `#309 Best Time to Buy and Sell Stock with Cooldown `, `#714 Best Time to Buy and Sell Stock with Transaction Fee`, `amazon`| OK* (2)
 134| [Gas Station](https://leetcode.com/problems/gas-station/)| [Python](./leetcode_python/Greedy/gas-station.py)   | _O(n)_ | _O(1)_ | Medium|trick, greedy,`amazon`| AGAIN****** (5)
+135| [Candy](https://leetcode.com/problems/candy/)| [Python](./leetcode_python/Greedy/candy.py)   | _O(n)_ | _O(1)_ | Hard|LC 123, greedy, array, `amazon`| AGAIN (not start)
 330| [Patching Array](https://leetcode.com/problems/patching-array/)| [Python](./leetcode_python/Greedy/patching-array.py)   | _O(n)_ | _O(1)_ | Hard| array, greedy,`amazon`| AGAIN (not start)
 358| [Rearrange String k Distance Apart](https://leetcode.com/problems/rearrange-string-k-distance-apart/)| [Python](./leetcode_python/Greedy/rearrange-string-k-distance-apar.py)   | _O(n)_ | _O(1)_ | Medium|heap, greedy, check LC 767| not start
 376| [Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/)| [Python](./leetcode_python/Greedy/wiggle-subsequence.py)   | _O(n)_          | _O(1)_       | Medium      || AGAIN* 
