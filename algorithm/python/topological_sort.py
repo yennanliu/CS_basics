@@ -31,7 +31,10 @@ class Graph:
             if visited[k] == False:
                 self.topologicalSortUtil(k, visited, stack)
         # stack.insert(0,v) # instead of insert v to idx = 0, we can still append v to stack and reverse it and return (e.g. return stack[::-1])
-        stack.append(v)
+        """
+        ### NOTE !! stack.append(v) is wrong, we SHOULD use  stack.insert(0,v)
+        """
+        stack.insert(0,v)
 
     def topologicalSort(self):
         visited = [False] * self.V
@@ -43,6 +46,22 @@ class Graph:
                 self.topologicalSortUtil(v, visited, stack)
         # return the result in inverse order
         return stack[::-1]
+
+### TEST
+{"A": 0, "B":1, "C":2, "D": 3}
+v = 4
+g = Graph(v)
+g.addEdge(0, 1)
+g.addEdge(0, 2)
+g.addEdge(2, 3)
+g.addEdge(3, 1)
+
+print (g.graph)
+
+# ans should be TableB, TableD, TableC, TableA.
+r = g.topologicalSort()
+print (r)
+
 
 # V0'
 # IDEA : implement topologicalSortUtil, topologicalSort, and addEdge methods
@@ -101,7 +120,8 @@ class Graph:
                 self.topologicalSortUtil(i, visited, stack)
 
         # Push current vertex to stack which stores result
-        stack.append(v)
+        #stack.append(v)
+        stack.insert(0,v)
 
     # The function to do Topological Sort. It uses recursive
     # topologicalSortUtil()
