@@ -38,6 +38,28 @@ Output: true
 
 # V0
 # IDEA : STACK + DICT
+class Solution(object):
+    def isValid(self, s):
+        # edge case
+        if not s:
+            return True
+        if len(s)==1 or len(s) % 2 == 1:
+            return False
+        q = []
+        d = {"(":")", "[":"]", "{":"}"}
+        for i in s:
+            if i in d.keys():
+                q.append(i)
+            else:
+                if not q:
+                    return False
+                tmp = q.pop(-1)
+                if d[tmp] != i:
+                    return False
+        return True if not q else False
+
+# V0'
+# IDEA : STACK + DICT
 class Solution:
     # @return a boolean
     def isValid(self, s):
@@ -49,7 +71,7 @@ class Solution:
                 return False
         return len(stack) == 0
 
-# V0'
+# V0''
 # IDEA : queue + dict
 class Solution(object):
     def isValid(self, s):
@@ -71,7 +93,7 @@ class Solution(object):
                         return False
         return True if not q else False
 
-# V0'
+# V0'''
 # IDEA : STACK + DICT
 class Solution:
     def isValid(self, s):
