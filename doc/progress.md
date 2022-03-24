@@ -1,6 +1,6 @@
 # Progress
 
-# 2022-03-24
+# 2022-03-25
 - DOING:
 	- LC (goog_)
 		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
@@ -10,7 +10,7 @@
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.8)
 				- 015
-				- 020
+				- 020 (ok)
 				- 733
 				- 663
 				- 238

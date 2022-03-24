@@ -391,7 +391,7 @@
 ## Stack 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note | Status | 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](./leetcode_python/Stack/valid-parentheses.py) | _O(n)_ | _O(n)_ | Easy |`good basic`,`fb`, `amazon`| OK** (5) 
+020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](./leetcode_python/Stack/valid-parentheses.py) | _O(n)_ | _O(n)_ | Easy |`good basic`,`fb`, `amazon`| OK** (6) 
 032| [Longest Valid Parentheses](https://leetcode.com/problems/longest-valid-parentheses/)| [Python](./leetcode_python/Stack/longest-valid-parentheses.py) | _O(n)_ | _O(n)_ | Hard |brute force, dp, stack, LC top 100 likes, `amazon`| AGAIN (not start)
 071| [Simplify Path](https://leetcode.com/problems/simplify-path/)|  [Python](./leetcode_python/Stack/simplify-path.py) | _O(n)_ | _O(n)_ | Medium |`basic`, `stack`, `amazon`,`fb`| OK* (4)
 101| [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)| [Python](./leetcode_python/Stack/symmetric-tree.py) | _O(n)_ | _O(h)_ | Easy |`good basic`,`bfs`, `dfs`, `linkedin`, `M$`,`amazon`, `fb`| AGAIN** (3) 
