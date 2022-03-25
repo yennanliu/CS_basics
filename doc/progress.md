@@ -9,7 +9,7 @@
 	- LC (amz_, latest 6 months) :
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.8)
-				- 015
+				- 015 (ok, good basic)
 				- 020 (ok)
 				- 733 (ok)
 				- 663

@@ -30,6 +30,48 @@ Constraints:
 
 """
 
+# V0
+# IDEA : for loop + 2 sum
+class Solution(object):
+    def threeSum(self, nums):
+        # edge case
+        if not nums or len(nums) < 3:
+            return []
+        if len(nums) == 3:
+            return [nums] if sum(nums) == 0 else []
+        if nums.count(0) == len(nums):
+            return [[0,0,0]]
+        res = []
+        nums.sort()
+        # for loop
+        for i in range(len(nums)):
+            cur = nums[i]
+            # 2 sum
+            d = {}
+            """
+            NOTE !!!
+             -> we don't need below implementation (will cause TLE)
+
+                #_nums = nums[:i] + nums[i+1:]
+                #for j, x in enumerate(_nums):
+
+             -> this one is enough : for j, x in enumerate(nums[i+1:])
+            """
+            for j, x in enumerate(nums[i+1:]):
+                # cur + x + y = 0
+                # -> y = -x - cur
+                if -x-cur in d:
+                    tmp = [cur, x, -x-cur]
+                    tmp.sort()
+                    if tmp not in res:
+                        res.append(tmp)
+                    #res.append([cur, x, -x-cur])
+                else:
+                    d[x] = j
+        return res
+
+# V0'
+# IDEA : 2 SUM -> 3 SUM
 # Time:  O(n^2)
 # Space: O(1)
 # Given an array S of n integers,
@@ -44,9 +86,6 @@ Constraints:
 #    A solution set is:
 #    (-1, 0, 1)
 #    (-1, -1, 2)
-
-# V0
-# IDEA : 2 SUM -> 3 SUM
 class Solution(object):
     def threeSum(self, nums):
         if not nums or len(nums) <= 2:
@@ -79,7 +118,7 @@ class Solution(object):
                     d[nums[j]] = j
         return res
 
-# V0'
+# V0''
 # IDEA : 2 SUM -> 3 SUM
 class Solution(object):
     def threeSum(self, nums):
@@ -103,7 +142,7 @@ class Solution(object):
                 d[nums[j]] = j
         return res
 
-# V0
+# V0''''
 # BELOW WILL CAUSE "TIME OUT ERROR"
 # due to 
 #  -> _nums = nums[:i] + nums[i+1:]
@@ -135,7 +174,7 @@ class Solution(object):
 #                     d[_nums[j]] = j
 #         return res
 
-# V0''
+# V0''''''
 class Solution:
     """
     @param numbersbers : Give an array numbersbers of n integer
