@@ -316,7 +316,9 @@ class Solution(object):
 ```
 
 ```python
+#----------------------
 # transpose matrix
+#----------------------
 # LC  048 Rotate Image
 matrix = [
     [1,2,4],
@@ -337,7 +339,28 @@ print (matrix)
 ```
 
 ```python
+#----------------------
+# Rotate matrix
+#----------------------
+# LC  048 Rotate Image
+class Solution:
+    def rotate(self, matrix):
+        ### NOTE : TRANSPOSE matrix
+        n = len(matrix)
+        # transpose
+        for i in range(n):
+             for j in range(i+1, n):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+        # reverse
+        for i in range(n):
+            matrix[i].reverse()
+        return matrix
+```
+
+```python
+#----------------------
 # 2) get avg value of matrix
+#----------------------
 # LC 661
 # some code
 # M : matrix
@@ -369,7 +392,6 @@ class Solution:
         for i in range(n):
             matrix[i].reverse()
         return matrix
-
 
 # Spiral matrix
 # LC 054 Spiral Matrix
