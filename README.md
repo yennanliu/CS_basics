@@ -655,6 +655,7 @@
 470 | [Implement Rand10() Using Rand7()](https://leetcode.com/problems/implement-rand10-using-rand7/) | [Python](./leetcode_python/Math/implement-rand10-using-rand7.py) | _O(1)_ | _O(1)_ | Medium || AGAIN (not start)
 478 | [Generate Random Point in a Circle](https://leetcode.com/problems/generate-random-point-in-a-circle/) | [Python](./leetcode_python/Math/generate-random-point-in-a-circle.py)| _O(1)_ | _O(1)_ | Medium || AGAIN (not start)
 497 | [Random Point in Non-overlapping Rectangles](https://leetcode.com/problems/random-point-in-non-overlapping-rectangles/) | [Python](./leetcode_python/Math/random-point-in-non-overlapping-rectangles.py) | ctor: _O(n)_ <br> pick: _O(logn)_ | _O(n)_ | Medium || AGAIN (not start)
+504 | [Base 7](https://leetcode.com/problems/base-7/) | [Python](./leetcode_python/Math/base-7.py) |binary, math, good basic| _O(n)_ | Easy || AGAIN******** (1)
 519 | [Random Flip Matrix](https://leetcode.com/problems/random-flip-matrix/) | [Python](./leetcode_python/Math/random-flip-matrix.py) | ctor: _O(1)_ <br> pick: _O(1)_ reset: _O(n)_ | _O(n)_ | Medium || AGAIN (not start)
 528 | [Random Pick with Weight](https://leetcode.com/problems/random-pick-with-weight/) | [Python](./leetcode_python/Math/random-pick-with-weight.py) | ctor: _O(n)_ <br> pick: _O(logn)_ | _O(n)_ | Medium || AGAIN (not start)
 537 | [Complex Number Multiplication](https://leetcode.com/problems/complex-number-multiplication/) | [Python](./leetcode_python/Math/complex-number-multiplication.py) | _O(1)_ | _O(1)_ | Medium |math, `amazon`| OK (3)
