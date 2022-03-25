@@ -16,22 +16,6 @@
 - https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png
 ```python
 # python
-#----------------
-# exmaple :
-# 7 base
-# 20 -> 26
-# -100 -> -202
-#----------------
-# TODO : fix it so can convert negative integer (e.g. -100, -200...)
-# https://runestone.academy/runestone/books/published/pythonds/Recursion/pythondsConvertinganIntegertoaStringinAnyBase.html
-# def toStr(n,base):
-#    convertString = "0123456789ABCDEF"
-#    if n < base:
-#       return convertString[n]
-#    else:
-#       return toStr(n//base,base) + convertString[n%base]
-
-
 # 504. Base 7
 
 # V0
@@ -73,6 +57,19 @@ class Solution(object):
             return _res
         else:
             return "-" + _res
+
+# test
+#----------------
+# exmaple :
+# 7 base
+# 20 -> 26
+# -100 -> -202
+#----------------
+num = 20   # 26
+num = -100 # -202
+s = Solution()
+r = s.convertToBase7(num)
+print (r)
 
 # V1
 # https://www.itread01.com/content/1544603062.html
