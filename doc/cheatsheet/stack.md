@@ -459,7 +459,24 @@ class Solution(object):
         return ans
 ```
 
-### 2-7) Asteroid Collision
+### 2-7) Remove All Adjacent Duplicates in String
+```python
+# LC 1047. Remove All Adjacent Duplicates In String
+# V1
+# IDEA : STACK
+# https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/discuss/294893/JavaC%2B%2BPython-Two-Pointers-and-Stack-Solution
+class Solution:
+    def removeDuplicates(self, S):
+            res = []
+            for c in S:
+                if res and res[-1] == c:
+                    res.pop()
+                else:
+                    res.append(c)
+            return "".join(res)
+```
+
+### 2-8) Remove All Adjacent Duplicates in String II
 ```python
 # LC 1209. Remove All Adjacent Duplicates in String II
 # V0
