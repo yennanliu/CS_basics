@@ -458,3 +458,23 @@ class Solution(object):
                 ans.append(new)
         return ans
 ```
+
+### 2-7) Asteroid Collision
+```python
+# LC 1209. Remove All Adjacent Duplicates in String II
+# V0
+# IDEA : STACK
+# NOTE !!! we DON'T need to modify original s, (but maintain an extra stack for duplicated checks)
+class Solution:
+     def removeDuplicates(self, s, k):
+            stack = [['#', 0]]
+            for c in s:
+                #print ("c = " + str(c) + " stack = " + str(stack))
+                if stack[-1][0] == c:
+                    stack[-1][1] += 1
+                    if stack[-1][1] == k:
+                        stack.pop()
+                else:
+                    stack.append([c, 1])
+            return ''.join(c * k for c, k in stack)
+```
