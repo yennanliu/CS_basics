@@ -1,6 +1,55 @@
+"""
+
+790. Domino and Tromino Tiling
+Medium
+
+You have two types of tiles: a 2 x 1 domino shape and a tromino shape. You may rotate these shapes.
+
+
+Given an integer n, return the number of ways to tile an 2 x n board. Since the answer may be very large, return it modulo 109 + 7.
+
+In a tiling, every square must be covered by a tile. Two tilings are different if and only if there are two 4-directionally adjacent cells on the board such that exactly one of the tilings has both squares occupied by a tile.
+
+ 
+
+Example 1:
+
+
+Input: n = 3
+Output: 5
+Explanation: The five different ways are show above.
+Example 2:
+
+Input: n = 1
+Output: 1
+ 
+
+Constraints:
+
+1 <= n <= 1000
+
+"""
+
 # V0
+# IDEA : DP
+class Solution(object):
+    def numTilings(self, N):
+        """
+        :type N: int
+        :rtype: int
+        """
+        MOD = 10**9 + 7
+        dp = [[0] * 3 for x in range(N + 10)]
+        dp[0] = [1, 0, 0]
+        dp[1] = [1, 1, 1]
+        for x in range(2, N + 1):
+            dp[x][0] = (dp[x - 1][0] + sum(dp[x - 2])) % MOD
+            dp[x][1] = (dp[x - 1][0] + dp[x - 1][2]) % MOD
+            dp[x][2] = (dp[x - 1][0] + dp[x - 1][1]) % MOD
+        return dp[N][0]
 
 # V1
+# IDEA : DP
 # http://bookshadow.com/weblog/2018/02/25/leetcode-domino-and-tromino-tiling/
 class Solution(object):
     def numTilings(self, N):
