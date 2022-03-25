@@ -37,7 +37,36 @@ n == image[i].length
 
 """
 
-# V0 
+# V0
+# IDEA : DFS
+# dfs
+class Solution(object):
+    def floodFill(self, image, sr, sc, newColor):
+        def dfs(x, y):
+            #print ("x = " + str(x) + " y = " + str(y))
+            moves = [[0,-1],[0,1],[-1,0],[1,0]]
+            for m in moves:
+                _x = x + m[1]
+                _y = y + m[0]
+                if 0 <= _x < w and 0 <= _y < l and image[_y][_x] == curColor and [_x, _y] not in visited:
+                    visited.append([_x, _y])
+                    image[_y][_x] = newColor
+                    dfs(_x, _y)
+        # edge case
+        if not image:
+            return
+        visited = []
+        l = len(image)
+        w = len(image[0])
+        # start point : (sr, sc)
+        # sr : "y"
+        # sc : "x"
+        curColor = image[sr][sc]
+        image[sr][sc] = newColor
+        dfs(sc, sr)
+        return image
+
+# V0'
 # IDEA : DFS 
 class Solution(object):
     def floodFill(self, image, sr, sc, newColor):
