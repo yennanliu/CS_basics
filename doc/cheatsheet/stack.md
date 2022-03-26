@@ -462,18 +462,43 @@ class Solution(object):
 ### 2-7) Remove All Adjacent Duplicates in String
 ```python
 # LC 1047. Remove All Adjacent Duplicates In String
-# V1
+# V0
 # IDEA : STACK
-# https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/discuss/294893/JavaC%2B%2BPython-Two-Pointers-and-Stack-Solution
 class Solution:
-    def removeDuplicates(self, S):
-            res = []
-            for c in S:
-                if res and res[-1] == c:
-                    res.pop()
+     def removeDuplicates(self, x):
+          # edge
+          if not x:
+            return
+          stack = []
+          """
+          NOTE !!! below op
+          """
+          for i in range(len(x)):
+               # NOTE !!! : trick here : if stack last element == current x's element
+               #       -> we pop last stack element
+               #       -> and NOT add current element
+               if stack and stack[-1] == x[i]:
+                    stack.pop(-1)
+               # if stack last element != current x's element
+               #      -> we append x[i]
+               else:
+                    stack.append(x[i])
+          return "".join(stack)
+
+# V0'
+# IDEA : TWO POINTERS
+#      -> pointers : end, c
+class Solution:
+     def removeDuplicates(self, S):
+            end =  -1
+            a = list(S)
+            for c in a:
+                if end >= 0 and a[end] == c:
+                    end -= 1
                 else:
-                    res.append(c)
-            return "".join(res)
+                    end += 1
+                    a[end] = c
+            return ''.join(a[: end + 1])
 ```
 
 ### 2-8) Remove All Adjacent Duplicates in String II
