@@ -52,6 +52,7 @@
 			- 133
 			- 815
 			- 322
+			- 1022
 		- greedy
 			- 358 (again, not start!)
 				- check `heappush, heappop`

@@ -107,6 +107,7 @@ def bfs(root):
 #### 1-1) Maintain cache along binary tree path
 ```python
 # LC 257 Binary Tree Paths
+# LC 1022. Sum of Root To Leaf Binary Numbers
 cur = ""
 q = [[cur, root]]
 res = []
@@ -671,4 +672,53 @@ class Solution(object):
                     queue += front + c,
                     steps[front + c] = level + 1
         return -1
+```
+
+### 2-15) Sum of Root To Leaf Binary Numbers
+```python
+# LC 1022 Sum of Root To Leaf Binary Numbers
+# V0
+# IDEA : 257. Binary Tree Paths
+class Solution(object):
+    def sumRootToLeaf(self, root):
+        def help(_str):
+            res = 0
+            _str = _str[::-1]
+            for i in range(len(_str)):
+                res += (2**i) * int(_str[i])
+            return res
+        # bfs
+        # edge case
+        if not root:
+            return
+        """
+        NOTE !!! we init cache as string, so NO need to deal with array idx, len
+        """
+        cache = ""
+        res = []
+        q = [[root, cache]]
+        cnt = 0
+        while q:
+            for i in range(len(q)):
+                _tmp, _cache = q.pop(0)
+                """
+                NOTE !!! if _tmp and not _tmp.left and not _tmp.right
+                  -> consider there is tmp, but no sub trees
+                """
+                if _tmp and not _tmp.left and not _tmp.right:
+                    res.append(_cache + str(_tmp.val))
+                """
+                NOTE !!!
+                  -> we add val to cache when _tmp.left, _tmp.right
+                """
+                if _tmp.left:
+                    q.append([_tmp.left, _cache + str(_tmp.val)])
+                if _tmp.right:
+                    q.append([_tmp.right, _cache + str(_tmp.val)])
+        #print("res = " + str(res))
+        """
+        NOTE !! : both work
+        """
+        #return sum([help(x) for x in res])
+        return sum([int(x, 2) for x in res])
 ```
