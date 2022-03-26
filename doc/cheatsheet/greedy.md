@@ -104,6 +104,25 @@ class Solution(object):
         return True
 ```
 
+
+### 2-2') Jump Game II
+```python
+# 045 Jump Game II
+# V1
+# IDEA : GREEDY
+# https://leetcode.com/problems/jump-game-ii/discuss/1672485/Python-Greedy
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        l = r = res = farthest = 0
+        while r < len(nums) - 1:
+            for idx in range(l, r+1):
+                farthest = max(farthest, idx + nums[idx])
+            l = r+1
+            r = farthest 
+            res += 1
+        return res
+```
+
 ### 2-3) Best Time to Buy and Sell Stock II
 ```python
 # 122 Best Time to Buy and Sell Stock II
