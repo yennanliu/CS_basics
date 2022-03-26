@@ -10,7 +10,7 @@
 
 ### 1-1) Basic OP
 
-#### 1-1-0) transform interger to N base
+#### 1-1-0) transform `10 based interger to N based`
 - to 4 base
 - to 7 base ..
 - https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png
@@ -40,6 +40,8 @@
 
         -> so res = [2,0,2]
 """
+
+# V1
 class Solution(object):
     def convertToBase7(self, num):
         # edge case
@@ -91,6 +93,23 @@ class Solution(object):
             return _res
         else:
             return "-" + _res 
+```
+
+#### 1-1-0') transform `N based integer to 10 based`
+```python
+# V1
+# LC 1022. Sum of Root To Leaf Binary Numbers
+def convertToBaseN(num, n):
+    return int(str(num), n)
+
+In [34]: int("100",7)
+Out[34]: 49
+
+In [35]: int("14",7)
+Out[35]: 11
+
+In [36]: int("66",7)
+Out[36]: 48
 ```
 
 #### 1-1-1) check prime number
