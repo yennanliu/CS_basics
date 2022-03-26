@@ -506,6 +506,38 @@ class Solution:
 # LC 1209. Remove All Adjacent Duplicates in String II
 # V0
 # IDEA : STACK
+class Solution:
+     def removeDuplicates(self, x, k):
+          # edge case
+          if not x:
+            return None
+          stack = []
+          """
+          NOTE !!!
+            1) we use [[element, _count]] format for below op
+            2) note the case when deal with duplicated elements
+
+               if stack and stack[-1][0] == x[i]:
+                    if stack[-1][1] < k-1:
+                         stack[-1][1] += 1
+                    else:
+                         stack.pop(-1)
+          """
+          for i in range(len(x)):
+               if stack and stack[-1][0] == x[i]:
+                    if stack[-1][1] < k-1:
+                         stack[-1][1] += 1
+                    else:
+                         stack.pop(-1)
+               else:
+                    stack.append([x[i], 1])
+          #print (">> stack = " + str(stack))
+          tmp = [x[0]*x[1] for x in stack]
+          #print (">> tmp = " + str(tmp))
+          return "".join(tmp)
+
+# V0'
+# IDEA : STACK
 # NOTE !!! we DON'T need to modify original s, (but maintain an extra stack for duplicated checks)
 class Solution:
      def removeDuplicates(self, s, k):
