@@ -10,7 +10,6 @@
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.8)
 				- 663
-				- 238
 				- 45 (not start, again!!)
 				- 236
 				- 347
@@ -72,6 +71,7 @@
 		- design
 			- all remain (not start)
 			- 460
+			- 1166
 		- hashmap
 			- 525
 			- 560
