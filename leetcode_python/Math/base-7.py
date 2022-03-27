@@ -25,6 +25,33 @@ Constraints:
 
 # V0
 # IDEA : MATH : 10 based -> 7 based
+class Solution(object):
+    def convertToBase7(self, num):
+        # help fumc
+        def help(x):
+            x = int(x)
+            res = ""
+            while x:
+                a, b = divmod(x, 7)
+                x = a
+                res += str(b)
+            return res[::-1]
+        """
+        # if positvie, based 10 -> based 7
+        # if negative, move - away, do based 10 -> based 7, then add - back
+        """
+        # edge case
+        if num == 0:
+            return "0"
+        minus = False
+        if num < 0:
+            num = abs(num)
+            minus = True
+        _res = help(num)
+        return _res if not minus else "-" + _res
+
+# V0'
+# IDEA : MATH : 10 based -> 7 based
 """
 ### NOTE :
     1) for negative num : transform to positive int first, do 10 based -> 7 based op
