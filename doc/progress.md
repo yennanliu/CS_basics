@@ -1,5 +1,178 @@
 # Progress
 
+# 2022-03-28
+- DOING:
+	- LC (goog_)
+		- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
+			- (pdf : p.2)
+	- ================
+	- LC (amz_, latest 6 months) :
+		- /LC-amazon-6-mointh.pdf
+			- (pdf : p.8)
+				- 663
+				- 236
+				- 347
+				- 1963
+				- 138
+				- 054
+				- 277
+				- 540
+			- (pdf : p.9)
+				- 1603
+				- 006
+	- ================
+	- LC top 100 likes
+		- 032
+		- 034
+		- 041
+		- 045
+		- 062
+		- 064
+		- 072
+		- 084
+		- 085
+		- 096
+		- 101
+		- 114
+		- 221
+		- 337
+		- 416
+		- 437
+	- ================
+	- LC general
+		- Tree
+		- =======
+		- bit manipulation
+			- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
+			- 393 again (not start)
+			- 089 (ok, but again)
+		- dfs
+			- 652
+			- 490
+			- 079
+			- 297
+			- 449
+			- 980
+		- bfs
+			- 133
+			- 815
+			- 322
+			- 1022
+		- greedy
+			- 358 (again, not start!)
+				- check `heappush, heappop`
+			- 045
+		- union find
+			- 721
+			- 547
+		- design
+			- all remain (not start)
+			- 460
+			- 1166
+		- hashmap
+			- 525
+			- 560
+			- 1248 (todo !!!)
+		- graph
+			- 261 (Union Find) 
+			- 547 (Union Find) (not start)
+			- 323 (Union Find) (not start)
+			- 210 (Topological Sort) not start)
+			- 210 (Topological Sort)
+		- sliding window
+			- 300
+			- 491
+			- 673
+			- 239
+		- linked list
+			- 002
+			- 445
+			- 019
+		- stack
+			- 394
+			- 496
+			- 503
+			- 739
+			- 341
+			- 735
+		- array
+			- 670
+			- 041
+		- topology sorting
+			- 269 (not start! again)
+			- 444
+		- heap
+			- 703
+			- 239
+			- 264
+			- 1481
+			- 1353
+			- 895
+		- trie
+			- 208
+			- 212
+			- 642
+		- bst
+			- 449
+		- math
+			- 168
+		- string
+			- 482
+			- 696
+		- binary search
+			- 162
+			- 1011
+			- 410 (not start yet)
+			- 875
+			- 2009
+			- 1889
+		- backtrack
+			- 131
+		- sort
+			- 969
+		- dp
+			- 053
+			- 091
+		- others
+		- Review
+			- (OK)
+			- =============
+			- (ing)
+		- SQL
+		- cheatsheet review
+	- System Design
+		- Tinder design
+	- algorithm book (labu)
+		- note
+			- p.363 -
+	- LC basic:
+		- know time, space complexity on ALL main data structure, algorithm
+			- avg
+			- best, worst
+			- implementation
+		- know tradeoff on why choose DS a, algorithm b, but not DS c, algorithm d...
+	- system design book - an insider's guide (GOTOP)
+		- 1st read (ok)
+		- 2nd read :
+			- read
+				- p.251 -
+					- Cassandra
+						- SSTable
+						- Bloom filter
+					- base 62
+						- 11570 (10 based) = [2,T,X] (62 based)
+					- API
+						- GET, POST with auth_token
+					- chatting system
+						- client-server prototype
+							- HTTP
+							- Polling (輪詢)
+							- Long polling (長輪詢)
+							- webSocket
+			- note
+				- p.1 - p.35
+		- review/note
+
 # 2022-03-27
 - DOING:
 	- LC (goog_)
