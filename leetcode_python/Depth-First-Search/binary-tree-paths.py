@@ -29,7 +29,36 @@ The number of nodes in the tree is in the range [1, 100].
 
 # V0
 # IDEA : BFS
-# bfs
+class Solution(object):
+    def binaryTreePaths(self, root):
+        # edge case
+        if not root:
+            return
+        # bfs
+        res = []
+        cache = ""
+        q = [[root, cache]]
+        while q:
+            for i in range(len(q)):
+                tmp_root, cache = q.pop(0)
+                # NOTE : this condition
+                if tmp_root and not tmp_root.left and not tmp_root.right:
+                    cache += ("->" + str(tmp_root.val))
+                    res.append(cache)
+                """
+                NOTE !!! we append tmp_root.val to cache within left, right sub tree op
+                """
+                if tmp_root.left:
+                    q.append([tmp_root.left, cache + "->" + str(tmp_root.val)])
+                if tmp_root.right:
+                    q.append([tmp_root.right, cache + "->" + str(tmp_root.val)])
+
+        #print ("res = " + str(res))
+        #return [x.strip("->") for x in res]
+        return ["->".join(x.split("->")[1:]) for x in res]
+
+# V0
+# IDEA : BFS
 class Solution(object):
     def binaryTreePaths(self, root):
         # edge case
@@ -50,6 +79,9 @@ class Solution(object):
                 """
                 if tmp and not tmp.left and not tmp.right:
                     res.append(cache + str(tmp.val))
+                """
+                NOTE !!! we append tmp_root.val to cache within left, right sub tree op
+                """
                 if tmp.left:
                     q.append([ cache + "{}->".format(tmp.val), tmp.left])
                 if tmp.right:
