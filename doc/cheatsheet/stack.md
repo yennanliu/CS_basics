@@ -5,6 +5,19 @@
     - [fucking-Algorithm - single stack](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md)
     - [fucking-Algorithm - implement array via stack](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97.md)
 
+- Use cases
+    - Find next `big number`
+        - LC 496
+        - LC 503
+        - LC 739
+    - Calculator
+        - LC 224
+        - LC 227
+
+    - Remove all adjacent duplicates
+         - LC 1047
+         - LC 1209
+
 ## 0) Concept  
 
 ### 0-1) Types

@@ -37,6 +37,24 @@ asteroids[i] != 0
 """
 
 # V0
+# IDEA : STACK
+class Solution(object):
+    def asteroidCollision(self, asteroids):
+        stack = []
+        for item in asteroids:
+            while stack and item < 0 and stack[-1] >= 0:
+                pre = stack.pop()
+                if item == -pre:
+                    item = None
+                    break
+                elif -item < pre:
+                    item = pre
+            if item != None:
+                stack.append(item)
+        return stack
+
+# V0
+# IDEA : STACK
 class Solution(object):
     def asteroidCollision(self, asteroids):
         ans = []
