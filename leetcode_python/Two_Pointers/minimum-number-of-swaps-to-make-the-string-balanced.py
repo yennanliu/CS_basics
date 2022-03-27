@@ -48,6 +48,31 @@ The number of opening brackets '[' equals n / 2, and the number of closing brack
 """
 
 # V0
+# IDEA : GREEDY
+# STEP 1) : remove "[]" pair
+# STEP 2) : since all "[]" pairs are removed already
+#           -> the remaining are like : "]]][[["...
+#               ->For every 2 pairs of square brackets, a swap will make them matched;
+#               -> If only 1 pair not matched, we need a swap.
+#               -> Therefore, we need at least (pairs + 1) / 2 swaps.
+#           -> so the min swap is (pairs + 1) // 2
+#
+# DEMO
+# x = "]]][[["
+# s = Solution()
+# r = s.minSwaps(x)
+# print (r)
+# stk = ['[', '[', '[']
+# 2
+class Solution:
+    def minSwaps(self, s):
+            stk = []
+            for c in s:
+                if stk and c == ']':
+                    stk.pop()
+                elif c == '[':
+                    stk.append(c)
+            return (len(stk) + 1) // 2
 
 # V1
 # IDEA : greedy
