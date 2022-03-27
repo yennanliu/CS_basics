@@ -42,20 +42,25 @@ The answer is guaranteed to fit in a 32-bit integer
 class Solution:
     def calculate(self, s):
         stack = []
-        # NOTE THIS !!
+        # NOTE THIS !!! we init pre_op as "+"
         pre_op = '+'
         num = 0
         for i, each in enumerate(s):
             # case 1) : digit
             if each.isdigit():
                 num = 10 * num + int(each)  # the way to deal with number like "100", "10"... 
+            """
+            ### NOTE !!!
+                1) use if (instead of elif)
+                2) if i == len(s) - 1 or each in '+-*/' condition
+            """
             if i == len(s) - 1 or each in '+-*/':
                 """
                 NOTE !!! : we deal with "pre_op" (rather than current op)
                 """
                 # case 2) : "+"
                 if pre_op == '+':
-                    stack.append(num)
+                    stack.append(num)   # since pre_op init as "+", so here we can append first num to stack
                 # case 3) : "-"    
                 elif pre_op == '-':
                     stack.append(-num)
@@ -69,9 +74,11 @@ class Solution:
                         stack.append(int(top / num))
                     else:
                         stack.append(top // num)
-                # NOTE this!
-                pre_op = each
-                num = 0
+                """
+                NOTE this !!!!
+                """
+                pre_op = each  # get pre_op from each
+                num = 0   # init num
         return sum(stack)
 
 # V1
