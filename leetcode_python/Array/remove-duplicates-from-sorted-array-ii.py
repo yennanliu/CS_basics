@@ -107,20 +107,6 @@ class Solution:
         return slow+1
 
 # V0'
-# IDEA : 2 POINTERS
-class Solution:
-    def removeDuplicates(self, nums: List[int]) -> int:
-        if len(nums) < 3:
-            return len(nums)
-
-        slow = 1
-        for fast in range(2, len(nums)):
-            if nums[slow] != nums[fast] or nums[slow] != nums[slow-1]:
-                nums[slow+1], nums[fast] = nums[fast], nums[slow+1]
-                slow += 1
-        return slow+1
-
-# V0''
 # IDEA : TWO POINTER
 # TO NOTE : have to the list IN PLACE
 # DEMO
@@ -141,6 +127,20 @@ class Solution(object):
                 nums[i] = n
                 i += 1
         return i
+
+# V0''
+# IDEA : 2 POINTERS
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        if len(nums) < 3:
+            return len(nums)
+
+        slow = 1
+        for fast in range(2, len(nums)):
+            if nums[slow] != nums[fast] or nums[slow] != nums[slow-1]:
+                nums[slow+1], nums[fast] = nums[fast], nums[slow+1]
+                slow += 1
+        return slow+1
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82829709
