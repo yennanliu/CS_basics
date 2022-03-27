@@ -31,7 +31,25 @@ n == matrix.length == matrix[i].length
 """
 
 # V0
-# IDEA : TRANSPOSE -> REVERSE 
+# IDEA : TRANSPOSE (i,j -> j,i) -> REVERSE 
+class Solution(object):
+    def rotate(self, matrix):
+        # edge case
+        if not matrix:
+            return
+        # step 1) i, j -> j, i
+        l = len(matrix)
+        w = len(matrix[0])
+        for i in range(l):
+            for j in range(i+1, w):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+        # step 2) inverse
+        for i in range(l):
+            matrix[i] = matrix[i][::-1]
+        return matrix
+
+# V0'
+# IDEA : TRANSPOSE (i,j -> j,i) -> REVERSE 
 class Solution:
     def rotate(self, matrix):
         ### NOTE !!! the ordering : transpose -> reverse
@@ -55,7 +73,6 @@ assert s.rotate([[1,2,3],[4,5,6],[7,8,9]]) == [[7,4,1],[8,5,2],[9,6,3]]
 assert s.rotate([]) == []
 assert s.rotate([[1,2]]) == [[2,1]]
 assert s.rotate([[[],[]]]) == [[[],[]]]
-
 
 # V1 
 # https://www.cnblogs.com/zuoyuan/p/3772978.html
