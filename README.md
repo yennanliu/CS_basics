@@ -629,7 +629,7 @@
 060| [Permutation Sequence](https://leetcode.com/problems/permutation-sequence/) | [Python](./leetcode_python/Math/permutation-sequence.py) | _O(n^2)_ | _O(n)_  | Medium         |`Cantor Ordering`,trick ,`amazon`| AGAIN*** (2)
 089| [Gray Code](https://leetcode.com/problems/gray-code/)     | [Python](./leetcode_python/Math/gray-code.py) | _O(2^n)_ | _O(1)_  | Medium |bit op, math, `amazon`| AGAIN ********** (6)
 166| [Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/) | [Python](./leetcode_python/Math/fraction-to-recurring-decimal.py)| _O(logn)_ | _O(1)_ | Medium    || AGAIN (not start)
-168| [Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/) |[Python](./leetcode_python/Math/excel-sheet-column-title.py) | _O(logn)_ | _O(1)_ | Easy |math, AGAIN,`fb`| AGAIN**** (4)
+168| [Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/) |[Python](./leetcode_python/Math/excel-sheet-column-title.py) | _O(logn)_ | _O(1)_ | Easy | trick, residual, math, AGAIN,`fb`| AGAIN****** (5)
 171| [Excel Sheet Column Number](https://leetcode.com/problems/excel-sheet-column-number/) | [Python](./leetcode_python/Math/excel-sheet-column-number.py) | _O(n)_ | _O(1)_ | Easy  || AGAIN (not start)
 172| [Factorial Trailing Zeroes](https://leetcode.com/problems/factorial-trailing-zeroes/) | [Python](./leetcode_python/Math/factorial-trailing-zeroes.py)  | _O(1)_ | _O(1)_ | Easy |`basic`, `iteration`, `recursion`| AGAIN* (2)
 223| [Rectangle Area](https://leetcode.com/problems/rectangle-area/) |  [Python](./leetcode_python/Math/rectangle-area.py)  | _O(1)_ | _O(1)_ | Easy   || AGAIN 
