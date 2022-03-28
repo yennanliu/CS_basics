@@ -3,9 +3,14 @@
 ## Basics
 
 ### 1) What's spring ?
+
 ### 2) spring main modules ?
+
 ### 3) what's IoC (inversion of control) ?
+- https://welson327.gitbooks.io/java-spring/content/spring/ioc_di.html
+
 ### 3) what's DI (dependency injection) ?
+
 ### 3) what's AOP (aspect-oriended programming) ?
 
 ### 1) Design pattern in Spring ?
