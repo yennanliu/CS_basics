@@ -81,6 +81,25 @@ class Solution(object):
         print ("arr = " + str(arr))
         return res
 
+# V0'
+# IDEA : pancake_sort.py
+# https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py#L44
+class Solution(object):
+    def pancakeSort(self, arr):
+        cur = len(arr)
+        res = []
+        while cur > 1:
+            # Find the maximum number in arr
+            mi = arr.index(max(arr[0:cur]))
+            #res.append(mi)
+            res = res + [mi+1, cur] ### NOTE here !!!
+            # Reverse from 0 to mi 
+            arr = arr[mi::-1] + arr[mi+1:len(arr)]
+            # Reverse whole list 
+            arr = arr[cur-1::-1] + arr[cur:len(arr)]
+            cur -= 1
+        return res
+
 # V1
 # https://leetcode.com/problems/pancake-sorting/discuss/817978/Python-O(n2)-by-simulation-w-Comment
 # https://leetcode.com/problems/pancake-sorting/discuss/330990/Python
