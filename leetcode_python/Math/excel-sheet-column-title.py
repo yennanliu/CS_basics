@@ -1,5 +1,8 @@
 """
 
+168. Excel Sheet Column Title
+Easy
+
 Given an integer columnNumber, return its corresponding column title as it appears in an Excel sheet.
 
 For example:
@@ -26,10 +29,6 @@ Example 3:
 
 Input: columnNumber = 701
 Output: "ZY"
-Example 4:
-
-Input: columnNumber = 2147483647
-Output: "FXSHRXW"
  
 
 Constraints:
@@ -54,6 +53,28 @@ class Solution(object):
                 n = n + 1
             n = (n-1) // 26
         return res
+
+# V0'
+# TODO : fix below
+# class Solution(object):
+#     def convertToTitle(self, columnNumber):
+#         alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#         # edge case
+#         if not columnNumber:
+#             return
+#         if columnNumber <= 25:
+#             return alpha[columnNumber-1]
+#         res = ""
+#         while columnNumber > 0:
+#             print ("columnNumber = " + str(columnNumber))
+#             a, b = divmod(columnNumber, 26)
+#             columnNumber = a
+#             #res += str(alpha[a])
+#             res += alpha[b-1]
+#             if b == 0:
+#                 return res[::-1]
+#         print ("res = " + str(res))
+#         return res[::-1]
 
 # V0'
 class Solution(object):
