@@ -394,6 +394,22 @@ class Solution(object):
 ### 2-7) Equal Tree Partition
 ```python
 # 663 Equal Tree Partition
+# V0
+# IDEA : DFS + cache
+class Solution(object):
+    def checkEqualTree(self, root):
+        seen = []
+
+        def sum_(node):
+            if not node: return 0
+            seen.append(sum_(node.left) + sum_(node.right) + node.val)
+            return seen[-1]
+
+        sum_(root)
+        #print ("seen = " + str(seen))
+        return seen[-1] / 2.0 in seen[:-1]
+
+# V0'
 class Solution(object):
     def checkEqualTree(self, root):
         seen = []
