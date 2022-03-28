@@ -7,6 +7,8 @@
 - Thread stack
 - heap
 
+### 
+
 ### 2) Thread, progress, program ?
 - https://oldmo860617.medium.com/%E9%80%B2%E7%A8%8B-%E7%B7%9A%E7%A8%8B-%E5%8D%94%E7%A8%8B-%E5%82%BB%E5%82%BB%E5%88%86%E5%BE%97%E6%B8%85%E6%A5%9A-a09b95bd68dd
 
