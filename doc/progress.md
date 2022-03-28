@@ -8,7 +8,7 @@
 	- LC (amz_, latest 6 months) :
 		- /LC-amazon-6-mointh.pdf
 			- (pdf : p.8)
-				- 663
+				- 663 (again!!)
 				- 236
 				- 347
 				- 1963

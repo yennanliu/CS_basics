@@ -45,25 +45,24 @@ Medium
 
 """
 
+# NOTE !!! this problem seems can only be solved with DFS approach (but not BFS)
+
 # V0
-# IDEA : DFS + LC 508 get_sum
+# IDEA : DFS + cache
 class Solution(object):
     def checkEqualTree(self, root):
-        def get_sum(root):
-            if not root:
-                return
-            s = root.val + get_sum(root.left) + get_sum(root.right)
-            res.append(s)
-            return s
-        # edge case
-        if not root:
-            return True
-        res = []
-        get_sum(root)
-        _sum = max(res)
-        return _sum // 2 in res
+        seen = []
 
-# V0'
+        def sum_(node):
+            if not node: return 0
+            seen.append(sum_(node.left) + sum_(node.right) + node.val)
+            return seen[-1]
+
+        sum_(root)
+        #print ("seen = " + str(seen))
+        return seen[-1] / 2.0 in seen[:-1]
+
+# V0''
 # IDEA : DFS + cache
 class Solution(object):
     def checkEqualTree(self, root):
@@ -96,7 +95,7 @@ class Solution(object):
 #             tmp.append(_sum)
 #             help(root.left, _sum)
 #             help(root.right, _sum)
-
+#
 #         tmp = []
 #         check(root, 0)
 #         _total_sum = tmp[-1]
@@ -208,6 +207,22 @@ class Solution:
 
 # V1''
 # https://leetcode.com/articles/equal-tree-partition/
+class Solution(object):
+    def checkEqualTree(self, root):
+        seen = []
+
+        def sum_(node):
+            if not node: return 0
+            seen.append(sum_(node.left) + sum_(node.right) + node.val)
+            return seen[-1]
+
+        total = sum_(root)
+        seen.pop()
+        return total / 2.0 in seen
+
+# V1
+# IDEA : DFS
+# https://leetcode.com/problems/equal-tree-partition/solution/
 class Solution(object):
     def checkEqualTree(self, root):
         seen = []

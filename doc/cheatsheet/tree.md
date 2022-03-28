@@ -36,6 +36,20 @@
     - layer by layer
 
 ```python
+# Init a tree in py
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+root = TreeNode(0)
+root.left = TreeNode(1)
+root.right =  TreeNode(2)
+print (root)
+```
+
+```python
 # python
 def traverse(TreeNode):
     for child in root.childern:
