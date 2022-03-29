@@ -74,6 +74,24 @@ return ans;
 }
 ```
 
+### 1-1-3) get `non balanced` String
+```python
+# LC 1963. Minimum Number of Swaps to Make the String Balanced
+
+# NOTE !!! below trick will ONLY collect not Balanced ], [
+#          -> e.g. "]][[" or "]]][[["
+ 
+s = "]]][[["
+stack = []
+for i in range(len(s)):
+    # NOTE HERE !!!
+    if stack and s[i] == "]":
+        stack.pop(-1)
+    else:
+        stack.append()
+print (stack)
+```
+
 ## 2) LC Example
 
 ### 2-1) Decode String
