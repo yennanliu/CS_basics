@@ -27,6 +27,40 @@ nums[i] is either 0 or 1.
 """
 
 # V0
+# IDEA : PREFIX SUM, LC 1248,560
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/count-number-of-nice-subarrays.py
+from collections import defaultdict
+class Solution(object):
+    def findMaxLength(self, nums):
+        # edge case
+        if not nums:
+            return 0
+        res = 0
+        d = defaultdict(int)
+        """
+        definition of hash map (in this problem)
+            -> d[cum_sum] = number_of_cum_sum_till_now
+                -> HOWEVER, in this problem, we do cum_sum + 1 ONLY if meet +1,
+                -> which means if cum_sum == 0 -> there MUST BE a set with equal 0, 1 (e.g. (0,1), (0,0,1,1) ...)
+            -> so at beginning, cum_sum = 0, and its count = -1 (which means is NOT accessible at the moment)
+            -> so we init hash map via "d[0] = -1"
+        """
+        cum_sum = 0
+        d[cum_sum] = -1
+        for i in range(len(nums)):
+            # NOTE : the conditions below
+            if nums[i] == 1:
+                cum_sum += 1
+            elif nums[i] == 0:
+                cum_sum -= 1
+            if cum_sum in d:
+                res = max(res, i - d[cum_sum]) # NOTE !! we use "i - d[cum_sum]" 
+            # only record the idx when cum_sum shown first time
+            else:
+                d[cum_sum] = i
+        return res
+
+# V0
 # IDEA : HashMap
 #     -> SET UP A DICT,
 #     -> FIND MAX SUB ARRAY LENGH WHEN COUNT(0) == COUNT(1)
