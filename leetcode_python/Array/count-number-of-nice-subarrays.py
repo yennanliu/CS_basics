@@ -38,15 +38,35 @@ Constraints:
 class Solution:
     def numberOfSubarrays(self, nums, k):
         d = collections.defaultdict(int)
+        """
+        definition of hash map (in this problem)
+
+            -> d[cum_sum] = number_of_cum_sum_till_now
+
+            -> so at beginning, cum_sum = 0, and its count = 1
+            -> so we init hash map via "d[0] = 1"
+        """
         d[0] = 1
-        cur_sum = 0
+        # init cum_sum
+        cum_sum = 0
         res = 0
+        # go to each element
         for i in nums:
+            ### NOTE : we need to check "if i % 2 == 1" first, so in the next logic, we can append val to result directly
             if i % 2 == 1:
-                cur_sum += 1
-            if cur_sum - k in d:
-                res += d[cur_sum - k]
-            d[cur_sum] += 1
+                cum_sum += 1
+            """
+            NOTE !!! : trick here !!!
+             -> same as 2 sum ...
+             -> if cum_sum - x == k
+                -> x = cum_sum - k
+                -> so we need to check if "cum_sum - k" already in our hash map
+            """
+            if cum_sum - k in d:
+                ### NOTE !!! here : we need to use d[cum_sum - k], since this is # of sub string combination that with # of odd numbers  == k
+                res += d[cum_sum - k]
+            ### NOTE !!! : we need to add 1 to count of "cum_sum", since in current loop, we got a new cur_sum (as above)
+            d[cum_sum] += 1
         return res
 
 # V1

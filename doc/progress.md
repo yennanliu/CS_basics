@@ -72,7 +72,7 @@
 		- hashmap
 			- 525
 			- 560
-			- 1248 (todo !!!)
+			- 1248 (OK, BUT AGAIN!!!)
 		- graph
 			- 261 (Union Find) 
 			- 547 (Union Find) (not start)
