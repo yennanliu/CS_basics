@@ -14,7 +14,13 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
 - Flip string
 - Range addition
 - Count nums in sub array
-
+- sub array
+    - sum array sum == k
+        - LC 560
+    - Count Number of Nice Subarrays
+        - LC 1248
+    - Continuous Subarray Sum
+        - LC 523
 
 ### 0-2) Pattern
 
