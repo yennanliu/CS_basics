@@ -35,6 +35,36 @@ p and q will exist in the BST.
 """
 
 # V0
+# IDEA : LC 236
+# V0
+# IDEA : RECURSION + POST ORDER TRANSVERSAL
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+
+        ### NOTE here
+        # if not root or find p in tree or find q in tree
+        # -> then we quit the recursion and return root
+
+        ### NOTE : we compare `p == root` and  `q == root`
+        if not root or p == root or q == root:
+            return root
+        ### NOTE here
+        # -> WE DON'T need to have if root.left, if root.right logic, but get left, right directly (search to left, right)
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+
+        ### NOTE here
+        # find q and p on the same time -> LCA is the current node (root)
+        # if left and right -> p, q MUST in left, right sub tree respectively
+
+        ### NOTE : if left and right, means this root is OK for next recursive
+        if left and right:
+            return root
+        ### NOTE here
+        # if p, q both in left sub tree or both in right sub tree
+        return left if left else right
+
+# V0
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
 #          -> left -> right -> root
