@@ -8,14 +8,16 @@
 ### 0-1) Types
 - N sum:
     - [n_sum.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md)
-- Continous sum
-    - LC 525 : Contiguous Array
-    - LC 523 : Continuous Subarray Sum
-- Pair of sums
-    - LC 1010 : Pairs of Songs With Total Durations Divisible by 60
-- Sub array sum
-    - LC 560 : Subarray Sum Equals K
-        - `TODO : note this as pattern!!!`
+- Prefix problems
+    - [prefix_sum.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/prefix_sum.md)
+    - Continous sum
+        - LC 525 : Contiguous Array
+        - LC 523 : Continuous Subarray Sum
+    - Pair of sums
+        - LC 1010 : Pairs of Songs With Total Durations Divisible by 60
+    - Sub array sum
+        - LC 560 : Subarray Sum Equals K
+            - `TODO : note this as pattern!!!`
 - Any problems with below:
     - need to cache
     - avoid double loop

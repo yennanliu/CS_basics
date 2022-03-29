@@ -33,6 +33,35 @@ Constraints:
 """
 
 # V0
+# IDEA : PREFIX SUM, LC 1248
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/count-number-of-nice-subarrays.py
+from collections import defaultdict
+class Solution(object):
+    def subarraySum(self, nums, k):
+        # edge case
+        if not nums:
+            return 0
+        """
+        definition of hash map (in this problem)
+            -> d[cum_sum] = number_of_cum_sum_till_now
+            -> so at beginning, cum_sum = 0, and its count = 1
+            -> so we init hash map via "d[0] = 1"
+        """
+        d = defaultdict(int)
+        cum_sum = 0
+        d[cum_sum] = 1
+        res = 0
+        for i in range(len(nums)):
+            cum_sum += nums[i]
+            # cum_sum - x == k
+            # -> x = cum_sum - k
+            if cum_sum - k in d:
+                res += (d[cum_sum - k])
+            d[cum_sum] += 1
+        #print ("d = " + str(d))
+        return res
+
+# V0'
 # IDEA : HASH TABLE + sub array sum
 # IDEA : https://blog.csdn.net/fuxuemingzhu/article/details/82767119
 class Solution(object):
