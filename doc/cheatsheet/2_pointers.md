@@ -54,8 +54,8 @@ for i in range(lens(s)):
     while left >= 0 and right < len(s) and s[left] == s[right]:
         if right+1-left > len(res):
             res = s[left:right+1]
-    left -= 1
-    right += 1
+        left -= 1
+        right += 1
     
     # if even
     left = i - 1
@@ -63,8 +63,8 @@ for i in range(lens(s)):
     while left >= 0 and right < len(s) and s[left] == s[right]:
         if right+1-left > len(res):
             res = s[left:right+1]
-    left -= 1
-    right += 1
+        left -= 1
+        right += 1
 # ...
 ```
 

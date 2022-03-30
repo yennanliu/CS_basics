@@ -16,6 +16,12 @@
 				- 1603 (ok)
 				- 006
 	- ================
+	- AMZ review
+		- 
+	- cheatsheet review
+		- 2_pointers.md (non LC example OK)
+		- Collection.md (ok)
+	- ================
 	- LC top 100 likes
 		- 032
 		- 034
@@ -65,6 +71,7 @@
 			- all remain (not start)
 			- 460
 			- 1166
+			- 146 (OrderedDict)
 		- hashmap
 		- graph
 			- 261 (Union Find) 
@@ -127,7 +134,6 @@
 			- =============
 			- (ing)
 		- SQL
-		- cheatsheet review
 	- System Design
 		- Tinder design
 	- algorithm book (labu)
