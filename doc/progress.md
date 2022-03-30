@@ -21,6 +21,9 @@
 	- cheatsheet review
 		- 2_pointers.md (non LC example OK)
 		- Collection.md (ok)
+		- Dijkstra.md
+		- array.md (non LC example OK)
+		- backtrack.md
 	- ================
 	- LC top 100 likes
 		- 032
@@ -101,6 +104,7 @@
 		- topology sorting
 			- 269 (not start! again)
 			- 444
+			- 054
 		- heap
 			- 703
 			- 239
