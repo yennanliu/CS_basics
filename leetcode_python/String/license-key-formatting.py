@@ -32,7 +32,45 @@ s consists of English letters, digits, and dashes '-'.
 
 """
 
+
 # V0
+# IDEA : BRUTE FORCE + STRTING OP
+class Solution(object):
+    def licenseKeyFormatting(self, s, k):
+        # help func
+        def help(_str):
+            _res = ""
+            i = 0
+            _len = len(_str)
+            while i < _len:
+                tmp = s[i:i+k]
+                print ("tmp = " + str(tmp))
+                i = i+k
+                _res = (_res + "-" + tmp)
+            return _res.strip("-")       
+        _s  = [ x.upper() if x.isalpha() else x for x in s.replace("-", "")  ]
+        s = "".join(_s)
+        # edge case
+        if not s or k == len(s):
+            return s
+        # str op
+        _len = len(s)
+        res = ""
+        print ("s = " + str(s))
+        # if can split by k
+        if _len % k == 0:
+            res = help(s)
+            res.strip("-")
+        # else, (there is a remaining)
+        else:
+            _remain = _len % k
+            resmin = s[:_remain]
+            s = s[_remain:]
+            res = help(s)
+            res =  resmin + "-" + res
+        return res.strip("-")
+
+# V0'
 # IDEA : inverse traversal + residual
 class Solution(object):
     def licenseKeyFormatting(self, S, K):
@@ -45,7 +83,7 @@ class Solution(object):
             result += S[i].upper()
         return "".join(result[::-1])
 
-# V0'
+# V0''
 # IDEA : string op + brute force
 class Solution(object):
     def licenseKeyFormatting(self, s, k):
@@ -81,7 +119,7 @@ class Solution(object):
             res += ("".join(s_[i:i+k]) + "-")
         return res.strip("-")
 
-# V0 
+# V0'''
 # IDEA : GO THROUGH THE STRING FROM BACK,
 #        -> SO NO NEED TO THINK ABOUT THE "len(S) % K > 1"  cases
 class Solution:
@@ -89,7 +127,7 @@ class Solution:
         S = S.replace("-", "").upper()[::-1]
         return '-'.join(S[i:i+K] for i in range(0, len(S), K))[::-1]
 
-# V0
+# V0''''
 # DEMO : range with gap
 #    ...: for i in range(1,10, 2):
 #    ...: ^Iprint (i)
