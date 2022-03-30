@@ -108,7 +108,7 @@
 		- bst
 			- 449
 		- string
-			- 482
+			- 482 (ok)
 		- binary search
 			- 162
 			- 1011
