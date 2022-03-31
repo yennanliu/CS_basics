@@ -9,12 +9,15 @@
 		- broker : kafka cluster has many nodes. The node can also called as `broker`
 		- topic : every event on kafka belong to a class, which is "topic"
 		- partition : each topic has multiple partition
+			- Note : same broker can have multiple partition
+					-> broker count has NO relation to partition count
 		- segment : each partition has multiple segment.
 			-> Each segment has 2 parts:
 				- .index : index file. for finding offset in .log file
 				- .log :  file save data
 		- producer : msg producer, send msg to kafka broker
-		- consumer : msg consumer, each consumer belogs to a specific `consumer group` (we can define consumer's group name)
+		- consumer : msg consumer (client), read msg from kafka
+		- consumer group : each consumer belogs to a specific `consumer group` (we can define consumer's group name)
 	- Ref
 		- https://www.gushiciku.cn/pl/g6Tu/zh-tw
 
