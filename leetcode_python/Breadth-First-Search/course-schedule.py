@@ -36,7 +36,48 @@ All the pairs prerequisites[i] are unique.
 """
 
 # V0
-# IDEA : LC Course Schedule II 
+# IDEA : DFS, LC Course Schedule II
+from collections import defaultdict
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        def dfs(res, graph, visited, x):
+            # 0 : not visited
+            # 1 : visiting
+            # 2 : visited
+            if visited[x] == 1:
+                return False
+            # NOTE this !!!!
+            if visited[x] == 2:
+                return True
+            visited[x] = 1
+            for k in graph[x]:
+                # NOTE THIS !!!! -> use dfs, instead of "not visited[k]"
+                #if not visited[k]:
+                if not dfs(res, graph, visited, k):
+                    #dfs(graph, visited, k)
+                    return False
+            # NOTE this !!!!
+            visited[x] = 2
+            res.insert(0, x)
+            return True
+        # edge case
+        if not prerequisites:
+            return True
+        # build graph
+        graph = defaultdict(list)
+        for p in prerequisites:
+            graph[p[0]].append(p[1])
+        # dfs
+        visited = [0] * numCourses
+        res = []
+        for c in range(numCourses-1):
+            # NOTE this !!!!
+            if not dfs(res, graph, visited, c):
+                return False
+        return len(res) > 0
+
+# V0
+# IDEA : DFS, LC Course Schedule II 
 from collections import defaultdict
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
