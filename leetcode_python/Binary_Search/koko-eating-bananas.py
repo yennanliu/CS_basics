@@ -35,7 +35,45 @@ piles.length <= h <= 109
 1 <= piles[i] <= 109
 
 """
+
 # V0 
+# IDEA : BINARY SEARCH
+import math
+class Solution(object):
+    def minEatingSpeed(self, piles, h):
+        def help(piles, speed):
+            res = 0
+            for p in piles:
+                # NOTE !!! we use math.ceil here
+                res += math.ceil(p / speed)
+            return res
+        # edge case
+        if not piles:
+            return 0            
+        # binary search
+        piles.sort()
+        """
+        NOTE !!! we init l as 1, r as piles[-1] (or max(piles))
+        """
+        l = 1
+        r = piles[-1]
+        while r >= l:
+            mid = l + (r - l) // 2
+            _hour = help(piles, mid)
+            #print ("mid = " + str(mid) + " _hour = " + str(_hour) + " h = " + str(h))
+            """
+            NOTE !!! the binary search boundary condition is a bit different here:
+                -> if _hour <= h (not "<=" !!!)
+                    -> we make r = mid -1 
+                -> else
+                    -> l = mid + 1
+            """
+            if _hour <= h:
+                r = mid - 1
+            else:
+                l = mid + 1
+        ### NOTE : return l, since we minimum integer k (hour) that fit the condition 
+        return l
 
 # V1
 # IDEA : BINARY SEARCH
