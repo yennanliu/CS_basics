@@ -22,8 +22,11 @@
 		- Collection.md (ok)
 		- Dijkstra.md
 		- array.md (non LC example OK)
-		- backtrack.md
-	- ================
+		- backtrack.md (non LC example OK)
+		- bfs.md (non LC example OK)
+		- binary_search.md  (non LC example OK)
+		- inary_tree.md 
+	- ================ 
 	- LC top 100 likes
 		- 032
 		- 034
