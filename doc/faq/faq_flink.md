@@ -89,6 +89,16 @@ Apache Flink can be deployed and configured in the below ways.
 - https://eng.uber.com/real-time-exactly-once-ad-event-processing/
 - https://zhuanlan.zhihu.com/p/266620519
 
+16. Explain flink savepoint mechanisms ?
+
+17. Explain flink checkpoint mechanisms ?
+
+18. Explain flink backpressure ?
+
+19. Explain how flink submit job to yarn ?
+
+20. Explain how flink parallelism ?
+
 ## Ref
 - https://www.techgeeknext.com/apache/apache-flink-interview-questions
 - https://www.interviewgrid.com/interview_questions/flink
