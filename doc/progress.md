@@ -25,7 +25,9 @@
 		- backtrack.md (non LC example OK)
 		- bfs.md (non LC example OK)
 		- binary_search.md  (non LC example OK)
-		- inary_tree.md 
+		- binary_tree.md (non LC example OK)
+		- bit_manipulation.md (non LC example OK)
+		- brute_force.md
 	- ================ 
 	- LC top 100 likes
 		- 032
