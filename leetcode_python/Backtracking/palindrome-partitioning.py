@@ -30,6 +30,25 @@ s contains only lowercase English letters.
 # IDEA : BACKTRCK, similar as LC 046 permutations
 class Solution(object):
     def partition(self, s):
+        def help(s, res, path):
+            if not s:
+                res.append(path)
+                return
+            for i in range(1, len(s)+1):
+                if s[:i] == s[:i][::-1]:
+                    help(s[i:], res, path + [s[:i]])
+        # edge case
+        if not s:
+            return
+        res = []
+        path = []
+        help(s, res, path)
+        return res
+
+# V0
+# IDEA : BACKTRCK, similar as LC 046 permutations
+class Solution(object):
+    def partition(self, s):
         res = []
         self.helper(s, res, [])
         return res
@@ -149,6 +168,64 @@ class Solution(object):
             for i in range(1, len(s)+1)
             if s[:i] == s[i-1::-1]
             for rest in self.partition(s[i:])] or [[]]
+
+# V1
+# IDEA : Backtracking
+# https://leetcode.com/problems/palindrome-partitioning/solution/
+# JAVA
+# class Solution {
+#     public List<List<String>> partition(String s) {
+#         List<List<String>> result = new ArrayList<List<String>>();
+#         dfs(0, result, new ArrayList<String>(), s);
+#         return result;
+#     }
+#
+#     void dfs(int start, List<List<String>> result, List<String> currentList, String s) {
+#         if (start >= s.length()) result.add(new ArrayList<String>(currentList));
+#         for (int end = start; end < s.length(); end++) {
+#             if (isPalindrome(s, start, end)) {
+#                 // add current substring in the currentList
+#                 currentList.add(s.substring(start, end + 1));
+#                 dfs(end + 1, result, currentList, s);
+#                 // backtrack and remove the current substring from currentList
+#                 currentList.remove(currentList.size() - 1);
+#             }
+#         }
+#     }
+#
+#     boolean isPalindrome(String s, int low, int high) {
+#         while (low < high) {
+#             if (s.charAt(low++) != s.charAt(high--)) return false;
+#         }
+#         return true;
+#     }
+# }
+
+# V1
+# IDEA : Backtracking with Dynamic Programming
+# https://leetcode.com/problems/palindrome-partitioning/solution/
+# JAVA
+# class Solution {
+#     public List<List<String>> partition(String s) {
+#         int len = s.length();
+#         boolean[][] dp = new boolean[len][len];
+#         List<List<String>> result = new ArrayList<>();
+#         dfs(result, s, 0, new ArrayList<>(), dp);
+#         return result;
+#     }
+#
+#     void dfs(List<List<String>> result, String s, int start, List<String> currentList, boolean[][] dp) {
+#         if (start >= s.length()) result.add(new ArrayList<>(currentList));
+#         for (int end = start; end < s.length(); end++) {
+#             if (s.charAt(start) == s.charAt(end) && (end - start <= 2 || dp[start + 1][end - 1])) {
+#                 dp[start][end] = true;
+#                 currentList.add(s.substring(start, end + 1));
+#                 dfs(result, s, end + 1, currentList, dp);
+#                 currentList.remove(currentList.size() - 1);
+#             }
+#         }
+#     }
+# }
 
 # V2 
 # Time:  O(n^2 ~ 2^n)

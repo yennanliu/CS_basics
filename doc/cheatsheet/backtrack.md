@@ -711,6 +711,25 @@ void backtrack(int left, int right, string& track, vector<string> & res){
 # IDEA : BACKTRCK, similar as LC 046 permutations
 class Solution(object):
     def partition(self, s):
+        def help(s, res, path):
+            if not s:
+                res.append(path)
+                return
+            for i in range(1, len(s)+1):
+                if s[:i] == s[:i][::-1]:
+                    help(s[i:], res, path + [s[:i]])
+        # edge case
+        if not s:
+            return
+        res = []
+        path = []
+        help(s, res, path)
+        return res
+
+# V0'
+# IDEA : BACKTRCK, similar as LC 046 permutations
+class Solution(object):
+    def partition(self, s):
         res = []
         self.helper(s, res, [])
         return res
