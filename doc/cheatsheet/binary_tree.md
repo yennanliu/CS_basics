@@ -128,7 +128,7 @@ class Solution:
         return ans
 ```
 
-### 2-4) inary Tree Longest Consecutive Sequence
+### 2-4) Binary Tree Longest Consecutive Sequence
 ```python
 # LC 298 Binary Tree Longest Consecutive Sequence
 # V0
