@@ -62,8 +62,48 @@ print (g.graph)
 r = g.topologicalSort()
 print (r)
 
-
 # V0'
+from collections import defaultdict
+
+class Graph:
+
+    def __init__(self, v):
+        self.graph = defaultdict(list)
+        self.v = v
+
+    def addEdge(self, a, b):
+        self.graph[a].append(b)
+
+    def topologicalSortUtil(self, x, visited, stack):
+        # V1
+        if visited[x]:
+            return
+        for k in self.graph[x]:
+            self.topologicalSortUtil(k, visited, stack)
+        visited[x] = True
+        stack.insert(0, x)
+        # V2
+        # visited[v] = True
+        # ### NOTE this !!! (self.graph[v])
+        # for k in self.graph[v]:
+        #     if visited[k] == False:
+        #         self.topologicalSortUtil(k, visited, stack)
+        # # stack.insert(0,v) # instead of insert v to idx = 0, we can still append v to stack and reverse it and return (e.g. return stack[::-1])
+        # """
+        # ### NOTE !! stack.append(v) is wrong, we SHOULD use  stack.insert(0,v)
+        # """
+        # stack.insert(0,v)
+
+    def topologicalSort(self):
+        visited = [False] * self.v
+        stack = []
+        for x in range(self.v):
+            if not visited[x]:
+                self.topologicalSortUtil(x, visited, stack)
+        print ("stack = " + str(stack))
+        return stack[::-1]
+
+# V0''
 # IDEA : implement topologicalSortUtil, topologicalSort, and addEdge methods
 from collections import defaultdict 
 class Graph: 
