@@ -1,5 +1,23 @@
 # FAQ : Kafka
 
+1. explain kafka architecture ?
+	- Feature
+		- kafka is a `distributed` pub-sub (publish-subscribe) message system
+		- developed by Linkedin via scala
+		- can work with both online and offlie msg. Data saved on disk with replica -> prevent data lost
+	- component
+		- broker : kafka cluster has many nodes. The node can also called as `broker`
+		- topic : every event on kafka belong to a class, which is "topic"
+		- partition : each topic has multiple partition
+		- segment : each partition has multiple segment.
+			-> Each segment has 2 parts:
+				- .index : index file. for finding offset in .log file
+				- .log :  file save data
+		- producer : msg producer, send msg to kafka broker
+		- consumer : msg consumer, each consumer belogs to a specific `consumer group` (we can define consumer's group name)
+	- Ref
+		- https://www.gushiciku.cn/pl/g6Tu/zh-tw
+
 1. How does kafka implement `exactly once` ?
 
 2. Explain kafka's ACKS ?
@@ -18,6 +36,11 @@
 		- https://blog.csdn.net/lbh199466/article/details/89917693
 
 3. Explain kafka basic data model ?
+
+3. Explain how does kafka save data (low level, file system level) ?
+	- File
+		- .log : file save data
+		- .idnex : file save .log files' index 
 
 4. explain kafka master, slaves relation ? regarding data partition, ... ?
 
