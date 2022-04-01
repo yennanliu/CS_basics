@@ -105,6 +105,7 @@ Apache Flink can be deployed and configured in the below ways.
 19. Explain how flink submit job to yarn ?
 - Ref
 	- https://blog.csdn.net/penriver/article/details/120221565
+	- https://blog.csdn.net/lb812913059/article/details/86601150
 
 20. Explain how flink parallelism ?
 
