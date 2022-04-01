@@ -1,3 +1,4 @@
+#!/bin/sh
 get_brief_leetcode_solution_list(){
 
     ls -lR leetcode_python | egrep "leetcode_python/|total "

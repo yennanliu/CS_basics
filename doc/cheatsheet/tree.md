@@ -36,6 +36,7 @@
     - layer by layer
 
 ```python
+# python
 # Init a tree in py
 class TreeNode(object):
     def __init__(self, val=0, left=None, right=None):

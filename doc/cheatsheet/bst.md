@@ -47,6 +47,22 @@ node1.val = 10;
 node1.left = node2;
 node1.right = node3;
 ```
+
+```python
+# python
+# Init a tree in py
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+root = TreeNode(0)
+root.left = TreeNode(1)
+root.right =  TreeNode(2)
+print (root)
+```
+
 ## 1) General form
 
 ### 1-1) Basic OP
@@ -62,6 +78,37 @@ void plusOne(TreeNode root){
     plusOne(root.left);
     plusOne(root.right);
 }
+```
+
+```python
+# python
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+root = TreeNode(0)
+root.left = TreeNode(1)
+root.right =  TreeNode(2)
+
+print (root.val)
+print (root.left.val)
+print (root.right.val)
+
+print("==============")
+
+def add_one(root):
+    if not root:
+        return
+    root.val += 1
+    add_one(root.left)
+    add_one(root.right)
+
+add_one(root)
+print (root.val)
+print (root.left.val)
+print (root.right.val)
 ```
 
 #### 1-1-2) Check if 2 BST are totally the same 
