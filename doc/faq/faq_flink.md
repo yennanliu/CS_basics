@@ -6,6 +6,13 @@
 2. Explain Apache Flink Architecture?
 - Apache Flink is based on the Kappa architecture. The Kappa architecture uses a single processor - stream, who accepts all information as a stream, and the streaming engine processes data in real-time. Batch data in kappa architecture is a form of streaming data.
 
+- Ref
+	- note below !!!
+	- https://www.shuzhiduo.com/A/amd0NwnXJg/
+
+2' Explain Apache Flink execution graph and its step  ?
+- StreamGraph -> JobGraph -> ExecutionGraph -> physical graph
+
 3. Explain the Apache Flink Job Execution Architecture?
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/flink-job-exe-architecture.png" width="500" height="300">
@@ -96,6 +103,8 @@ Apache Flink can be deployed and configured in the below ways.
 18. Explain flink backpressure ?
 
 19. Explain how flink submit job to yarn ?
+- Ref
+	- https://blog.csdn.net/penriver/article/details/120221565
 
 20. Explain how flink parallelism ?
 
