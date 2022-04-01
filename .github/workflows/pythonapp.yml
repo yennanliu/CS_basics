@@ -35,6 +35,5 @@ jobs:
         bash script/list_leetcode_solutions_by_type.sh
         bash script/get_company_LC.sh google output1.txt
         cat '#--------------------------#'
-        cat output1.txt
+        cat ./output1.txt
         cat '#--------------------------#'
-        
