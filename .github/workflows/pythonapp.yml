@@ -24,9 +24,17 @@ jobs:
         #flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         #flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
+    - name: Run pytest
+      run: |
+        pip install pytest
+        python script/get_review_list.py        
+    - name: List LC
       run: |
         pip install pytest
         #pytest
         bash script/list_leetcode_solutions_by_type.sh
-        python script/get_review_list.py
+        bash script/get_company_LC.sh google output1.txt
+        cat '#--------------------------#'
+        cat output1.txt
+        cat '#--------------------------#'
+        
