@@ -31,7 +31,8 @@
 		- dfs.md (non LC example OK)	
 		- binary_search.md  (non LC example OK)
 		- binary_tree.md (non LC example OK)
-		- graph.md
+		- graph.md (non LC example OK)
+		- greedy.md
 	- ================ 
 	- LC top 100 likes
 		- 032
