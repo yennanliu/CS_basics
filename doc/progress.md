@@ -32,7 +32,9 @@
 		- binary_search.md  (non LC example OK)
 		- binary_tree.md (non LC example OK)
 		- graph.md (non LC example OK)
-		- greedy.md
+		- greedy.md (non LC example OK)
+		- hash_map.md (non LC example OK)
+		- heap.md
 	- ================ 
 	- LC top 100 likes
 		- 032
@@ -85,6 +87,7 @@
 			- 146 (OrderedDict)
 			- 635
 		- hashmap
+			- 523
 		- graph
 			- 261 (Union Find) 
 			- 547 (Union Find) (not start)
