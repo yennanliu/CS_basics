@@ -24,13 +24,14 @@
 		- array.md (non LC example OK)
 		- backtrack.md (non LC example OK)
 		- bfs.md (non LC example OK)
-		- binary_search.md  (non LC example OK)
-		- binary_tree.md (non LC example OK)
 		- bit_manipulation.md (non LC example OK)
 		- brute_force.md (ok)
 		- bst.md (non LC example OK)
 		- design.md (non LC example OK)
-		- dfs.md
+		- dfs.md (non LC example OK)	
+		- binary_search.md  (non LC example OK)
+		- binary_tree.md (non LC example OK)
+		- graph.md
 	- ================ 
 	- LC top 100 likes
 		- 032
