@@ -49,11 +49,13 @@
         - heappush(heap, num)
         - heapify(array)
     - complexity
-        - push/pop
+        - push/pop (each)
             - time : O(log(N))
             - spce : O(N)
-            - ref : https://stackoverflow.com/questions/38806202/whats-the-time-complexity-of-functions-in-heapq-library#:~:text=heapq%20is%20a%20binary%20heap,O(n%20log%20n).
-
+            - ref : https://stackoverflow.com/questions/38806202/whats-the-time-complexity-of-functions-in-heapq-library#:~:text=heapq%20is%20a%20binary%20heap,O(n%20log%20n)
+        - so, if implement push/pop on all elements, will cost
+            - time : O(N log(N))
+            - spce : O(N)
 - Basic API
     - heapify : transform list to heap
     - heappush : put element into heap
@@ -167,16 +169,15 @@ after:  [5, 8, 15, 10]
 In [54]: numbers = [4,1,24,2,1]
     ...:
     ...: # invert numbers so that the largest values are now the smalles
-    ...: t
+    ...:
     ...: numbers = [-1 * n for n in numbers]
     ...:
     ...: # turn numbers into min heap
     ...: heapq.heapify(numbers)
     ...:
     ...: # pop out 5 times
-    ...: k = 5
     ...: klargest = []
-    ...: for i in range(k):
+    ...: for i in range(len(numbers)):
     ...:     # multiply by -1 to get our inital number back
     ...:     klargest.append(-1 * heapq.heappop(numbers))
     ...:
@@ -219,6 +220,8 @@ while pq not empty:
 ```
 ```python
 # 355 Design Twitter
+# V0
+# https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E8%AE%BE%E8%AE%A1Twitter.md
 from collections import defaultdict
 from heapq import merge
 class Twitter(object):
@@ -233,15 +236,27 @@ class Twitter(object):
         self.time_stamp -= 1
 
     def getNewsFeed(self, userId):
+        # get the followees list
         followees = self.follower_followees_map[userId]
+        # add userId as well, since he/she can also see his/her post in the timeline
         followees.add(userId)
         
         # reversed(.) returns a listreverseiterator, so the complexity is O(1) not O(n)
         candidate_tweets = [reversed(self.user_tweets_map[u]) for u in followees]
 
         tweets = []
-        # complexity is 10lg(n), n is twitter's user number in worst case
-        # NOTE : we use heapq.merge method here
+        """
+        python starred expression :
+        -> will extend Iterable Unpacking
+        example 1 : *candidate_tweets
+        exmaple 2 : a, *b, c = range(5)
+        ref :
+        https://www.python.org/dev/peps/pep-3132/
+        https://blog.csdn.net/weixin_41521681/article/details/103528136
+        http://swaywang.blogspot.com/2012/01/pythonstarred-expression.html
+        https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md
+        """
+        # complexity is 10*log(n), n is twitter's user number in worst case
         for t in merge(*candidate_tweets):
             tweets.append(t[1])
             if len(tweets) == 10:
@@ -253,7 +268,6 @@ class Twitter(object):
 
     def unfollow(self, followerId, followeeId):
         self.follower_followees_map[followerId].discard(followeeId)
-
 ```
 
 ## 2) LC Example

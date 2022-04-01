@@ -34,7 +34,8 @@
 		- graph.md (non LC example OK)
 		- greedy.md (non LC example OK)
 		- hash_map.md (non LC example OK)
-		- heap.md
+		- heap.md (non LC example OK)
+		- intervals.md
 	- ================ 
 	- LC top 100 likes
 		- 032
