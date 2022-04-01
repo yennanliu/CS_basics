@@ -27,7 +27,10 @@
 		- binary_search.md  (non LC example OK)
 		- binary_tree.md (non LC example OK)
 		- bit_manipulation.md (non LC example OK)
-		- brute_force.md
+		- brute_force.md (ok)
+		- bst.md (non LC example OK)
+		- design.md (non LC example OK)
+		- dfs.md
 	- ================ 
 	- LC top 100 likes
 		- 032
@@ -78,6 +81,7 @@
 			- 460
 			- 1166
 			- 146 (OrderedDict)
+			- 635
 		- hashmap
 		- graph
 			- 261 (Union Find) 
