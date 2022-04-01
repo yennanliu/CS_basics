@@ -106,6 +106,8 @@ Apache Flink can be deployed and configured in the below ways.
 - Ref
 	- https://blog.csdn.net/penriver/article/details/120221565
 	- https://blog.csdn.net/lb812913059/article/details/86601150
+	- https://blog.51cto.com/u_15478540/4911346
+	- https://cloud.tencent.com/developer/article/1708704
 
 20. Explain how flink parallelism ?
 
