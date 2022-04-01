@@ -46,7 +46,7 @@ def dfs(root, target):
 ```
 
 ```python
-# form II : modify some values tree
+# form II : modify values in tree
 
 # 669 Trim a Binary Search Tree
 class Solution:
@@ -259,11 +259,13 @@ def dfs(root):
 #### 1-1-7) Serialize and Deserialize Binary Tree
 ```python
 # LC 297. Serialize and Deserialize Binary Tree
+# please check below 2) LC Example
 ```
 
 #### 1-1-8) Serialize and Deserialize BST
 ```python
 # LC 449. Serialize and Deserialize BST
+# please check below 2) LC Example
 ```
 
 ## 2) LC Example
