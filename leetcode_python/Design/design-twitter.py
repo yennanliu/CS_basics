@@ -84,7 +84,10 @@ class Twitter(object):
         https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md
         """
         # complexity is 10*log(n), n is twitter's user number in worst case
-        for t in merge(*candidate_tweets):
+        # both of below work
+        candidates = list(merge(*candidate_tweets))
+        #for t in merge(*candidate_tweets):
+        for t in candidates:
             tweets.append(t[1])
             if len(tweets) == 10:
                 break
