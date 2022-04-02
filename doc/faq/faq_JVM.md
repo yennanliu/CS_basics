@@ -9,26 +9,47 @@
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_2.jpeg">
 
 - JVM internal storage
-	- Thread local
+	- 1) Thread local
 		- program counter :
 			- (no OutOfMemoryError), every thread has its own counter
 		- VM stack (`thread stack`)
+			- serves for java method
 			- will create a `stack frame` when every method run.
 			- stack frame storges : `local var, op stack, Dynamic Linking, method returned val, Dispatch Exception ...`
 			- each method from `called -> completed` mapping the process : `push-to-stack -> pop-from-stack` (no matter method runs success or not)
 			- stack frame : storage intermedia/result information. 
 		- native method stack
-	- Thread shared
+			- serves for native method
+	- 2) Thread shared
 		- java heap
 		- method area
-	- Direct memory (not managed by JVM GC)
+	- 3) Direct memory (not managed by JVM GC)
 - Ref
 	- https://copyfuture.com/blogs-details/20210918043412580m
 	- https://cloud.tencent.com/developer/article/1648836
 
+### 2) Difference between JVM heap, stack ?
+- JVM heap
+	- storage class
+	- shared by all threads in JVM
+- JVM stack
+	- storage stack frame, local var
+	- smaller than heap in most cases 
+	- NOT shared by different threads. used by local thread only
+
 ### 2) JVM GC ? stragegy ? algorithm ?
 
+### 3) how to get memory in java program, heap usage percentage (%) ?
+- via `java.lang.Runtime`    : get remaining memory, all memory, max heap memory
+- via `Runtime.freeMemory()` : get remain memory in binary
+- via `Runtime.totalMemory()`: get total memory in binary
+- via `Runtime.maxMemory() ` : get max memory in binary
+ 
 ### 3) Explain classLoader ?
+- Implemented by `ClassLoader` class (and its sub class)
+- Ref
+	- https://blog.csdn.net/briblue/article/details/54973413
+	- https://kknews.cc/zh-tw/code/8zvokbq.html
 
 ### 4) does `memory leakage` happen in java ? how ?
 - Yes, it may happen in users self defined data structure
