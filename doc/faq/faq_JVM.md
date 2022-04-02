@@ -5,7 +5,8 @@
 
 ### 1) JVN internal storage ?
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_1.jpeg" width="500" height="300">
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_1.jpeg">
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_2.jpeg">
 
 - JVM internal storage
 	- Thread local
