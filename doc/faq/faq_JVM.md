@@ -48,8 +48,25 @@
 		- escape analysis
 	- HOW ? (GC remove algorithm)
 		- Mark-Sweep
+			- mark the to-clean area
+			- pros:
+				- easy understand, implement
+			- cons:
+				- low efficiency
+				- will cause "space fragments" -> hard to maintain a "continuous storage space"
 		- Mark-Compact
+			- mark the to-clean area, merge/move them altogether, then clean
+			- pros:
+				- can keep "continuous storage space"
+			- cons:
+				- spend extra time/resource on "merge/move" op
 		- Mark-Copy
+			- split memory space to 50%, 50%. Only use 50% each time, move to-clean to the other 50% when clean
+			- pros:
+				- fast, easy to implement, not cause  "space fragments"
+			- cons:
+				- Only 50% of memory space can be used everytime
+				- will cause more frequent GC
 		- generation collection
 - properties:
 	- GC process is a `local priority`, `independent` thread
