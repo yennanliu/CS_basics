@@ -37,7 +37,8 @@
 		- heap.md (non LC example OK)
 		- intervals.md (non LC example OK)
 		- linked_list.md (non LC example OK)
-		- math.md
+		- math.md (non LC example OK)
+		- n_sum.md 
 	- ================ 
 	- LC top 100 likes
 		- 032
