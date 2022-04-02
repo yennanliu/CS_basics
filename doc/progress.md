@@ -38,7 +38,8 @@
 		- intervals.md (non LC example OK)
 		- linked_list.md (non LC example OK)
 		- math.md (non LC example OK)
-		- n_sum.md 
+		- n_sum.md (non LC example OK)
+		- palindrome.md
 	- ================ 
 	- LC top 100 likes
 		- 032
@@ -136,6 +137,8 @@
 		- binary search
 			- 162
 			- 1011
+		- 2 pointers
+			- 1099
 		- dp
 			- 053
 			- 091
