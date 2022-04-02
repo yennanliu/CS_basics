@@ -5,15 +5,22 @@
 We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if S[i] == '1', else A[i] = 0. We can calculate P in linear time.
 ```
 - Get `sub array` with `some conditions`
-- Cases we don't want double loop, but want single loop instead
-    - prefix sum + dict
+- Cases we don't want double loop, but want a `single loop` instead
+    - prefix sum + dict (check if "-x-cum_sum" in dict)
+- Use cases:
+    - `subarray sum` in problems
+    - if want to match count -> can use hashMap
+    - if want to check Divisible -> get remainder with k for each num
 - Ref
+    - [LC trick I : prefix sum](https://www.twblogs.net/a/5edebd5274efa30adcc735cc)
     - [hash_map.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/hash_map.md)
+    - [LC official problem set](https://leetcode.com/tag/prefix-sum/)
+    - [LC problem set I](https://leetcode.com/discuss/general-discussion/563022/prefix-sum-problems)
 
 ### 0-1) Types
 - Flip string
 - Range addition
-- Count nums in sub array
+    - LC 370
 - sub array
     - sum array sum == k
         - LC 560
@@ -21,6 +28,10 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
         - LC 1248
     - Continuous Subarray Sum
         - LC 523
+    - Number of Sub-arrays of Size K and Average Greater than or Equal to Threshold
+        - LC 1343
+    - Subarray Sums Divisible by K
+        - LC 974
 
 ### 0-2) Pattern
 
