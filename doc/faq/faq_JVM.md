@@ -47,7 +47,20 @@
  
 ### 3) Explain classLoader ?
 - Implemented by `ClassLoader` class (and its sub class)
+- Load `.class` files to JVM
+- Tyeps
+	- java class classLoader 
+		- null class loader
+			- implemented by c/c++. we CAN'T access them (but they do exist!).
+			- load essential/core java classes under `JAVA_HOME/jre/lib`
+		- ExtClassLoader
+			- we can access them (but seldom do that)
+			- load jar class under `JAVA_HOME/lib/ext`
+		- AppClassLoader
+			- load classes in application, e.g. test class, 3rd party class..
+	- user defined classLoader
 - Ref
+	- https://juejin.cn/post/6844904005580111879
 	- https://blog.csdn.net/briblue/article/details/54973413
 	- https://kknews.cc/zh-tw/code/8zvokbq.html
 
