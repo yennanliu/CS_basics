@@ -9,21 +9,21 @@
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_2.jpeg">
 
 - JVM internal storage
-- 1) Thread local
-	- program counter :
-		- (no OutOfMemoryError), every thread has its own counter
-	- VM stack (`thread stack`)
-		- serves for java method
-		- will create a `stack frame` when every method run.
-		- stack frame storges : `local var, op stack, Dynamic Linking, method returned val, Dispatch Exception ...`
-		- each method from `called -> completed` mapping the process : `push-to-stack -> pop-from-stack` (no matter method runs success or not)
-		- stack frame : storage intermedia/result information. 
-	- native method stack
-		- serves for native method
-- 2) Thread shared
-	- java heap
-	- method area
-- 3) Direct memory (not managed by JVM GC)
+	- part 1) Thread local
+		- program counter :
+			- (no OutOfMemoryError), every thread has its own counter
+		- VM stack (`thread stack`)
+			- serves for java method
+			- will create a `stack frame` when every method run.
+			- stack frame storges : `local var, op stack, Dynamic Linking, method returned val, Dispatch Exception ...`
+			- each method from `called -> completed` mapping the process : `push-to-stack -> pop-from-stack` (no matter method runs success or not)
+			- stack frame : storage intermedia/result information. 
+		- native method stack
+			- serves for native method
+	- part 2) Thread shared
+		- java heap
+		- method area
+	- part 3) Direct memory (not managed by JVM GC)
 - Ref
 	- https://copyfuture.com/blogs-details/20210918043412580m
 	- https://cloud.tencent.com/developer/article/1648836
@@ -40,10 +40,10 @@
 ### 2) JVM GC ? stragegy ? algorithm ?
 
 ### 3) how to get memory in java program, heap usage percentage (%) ?
-- via `java.lang.Runtime`    : get remaining memory, all memory, max heap memory
-- via `Runtime.freeMemory()` : get remain memory in binary
-- via `Runtime.totalMemory()`: get total memory in binary
-- via `Runtime.maxMemory() ` : get max memory in binary
+- `java.lang.Runtime`    : get remaining memory, all memory, max heap memory
+- `Runtime.freeMemory()` : get remain memory in binary
+- `Runtime.totalMemory()`: get total memory in binary
+- `Runtime.maxMemory() ` : get max memory in binary
  
 ### 3) Explain classLoader ?
 - Implemented by `ClassLoader` class (and its sub class)
@@ -64,19 +64,20 @@
 			- run after ExtClassLoader
 		- User defined classLoader
 - Steps:
-	Bootstrap class loader -> ExtClassLoader -> AppClassLoader (loader step)
-- Steps inside classLoader
+	- Bootstrap class loader -> ExtClassLoader -> AppClassLoader (loader step)
+- Steps (inside classLoader):
 	- load -> connect -> class init
-	- load:
-		- load `.class` file to memory (create a binary array read .class), and create the corresponding class instance
-	- connect
-		- validate, prepare, and extract/load are included. 
-		- validate : check if loaded class will "harm" JVM
-		- prepare : give default init val to static val.
-		- extract : modify "sign reference" to "direct reference"
-	- class init:
-		- if there is parent class which is not init yet -> init this parent class first
-		- init "init code" in class in order
+	- Explain:
+		- load:
+			- load `.class` file to memory (create a binary array read .class), and create the corresponding class instance
+		- connect
+			- validate, prepare, and extract/load are included. 
+			- validate : check if loaded class will "harm" JVM
+			- prepare : give default init val to static val.
+			- extract : modify "sign reference" to "direct reference"
+		- class init:
+			- if there is parent class which is not init yet -> init this parent class first
+			- init "init code" in class in order
 - Ref
 	- https://juejin.cn/post/6844904005580111879
 	- https://blog.csdn.net/briblue/article/details/54973413
