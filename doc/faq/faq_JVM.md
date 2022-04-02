@@ -9,21 +9,21 @@
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_2.jpeg">
 
 - JVM internal storage
-	- 1) Thread local
-		- program counter :
-			- (no OutOfMemoryError), every thread has its own counter
-		- VM stack (`thread stack`)
-			- serves for java method
-			- will create a `stack frame` when every method run.
-			- stack frame storges : `local var, op stack, Dynamic Linking, method returned val, Dispatch Exception ...`
-			- each method from `called -> completed` mapping the process : `push-to-stack -> pop-from-stack` (no matter method runs success or not)
-			- stack frame : storage intermedia/result information. 
-		- native method stack
-			- serves for native method
-	- 2) Thread shared
-		- java heap
-		- method area
-	- 3) Direct memory (not managed by JVM GC)
+- 1) Thread local
+	- program counter :
+		- (no OutOfMemoryError), every thread has its own counter
+	- VM stack (`thread stack`)
+		- serves for java method
+		- will create a `stack frame` when every method run.
+		- stack frame storges : `local var, op stack, Dynamic Linking, method returned val, Dispatch Exception ...`
+		- each method from `called -> completed` mapping the process : `push-to-stack -> pop-from-stack` (no matter method runs success or not)
+		- stack frame : storage intermedia/result information. 
+	- native method stack
+		- serves for native method
+- 2) Thread shared
+	- java heap
+	- method area
+- 3) Direct memory (not managed by JVM GC)
 - Ref
 	- https://copyfuture.com/blogs-details/20210918043412580m
 	- https://cloud.tencent.com/developer/article/1648836
@@ -50,19 +50,38 @@
 - Load `.class` files to JVM
 - Tyeps
 	- java class classLoader 
-		- null class loader
+		- Bootstrap class loader
 			- implemented by c/c++. we CAN'T access them (but they do exist!).
-			- load essential/core java classes under `JAVA_HOME/jre/lib`
+			- load essential/core java classes under `JAVA_HOME/jre/lib` (jre path) (defined by `sun.boot.class.path`)
+			- run after JVM launch
 		- ExtClassLoader
 			- we can access them (but seldom do that)
-			- load jar class under `JAVA_HOME/lib/ext`
+			- load jar class under `JAVA_HOME/lib/ext` (defined by `java.ext.dirs`)
+			- run after Bootstrap class loader
 		- AppClassLoader
 			- load classes in application, e.g. test class, 3rd party class..
-	- user defined classLoader
+			- load jar under `Classpath` (defined by `java.class.path`)
+			- run after ExtClassLoader
+		- User defined classLoader
+- Steps:
+	Bootstrap class loader -> ExtClassLoader -> AppClassLoader (loader step)
+- Steps inside classLoader
+	- load -> connect -> class init
+	- load:
+		- load `.class` file to memory (create a binary array read .class), and create the corresponding class instance
+	- connect
+		- validate, prepare, and extract/load are included. 
+		- validate : check if loaded class will "harm" JVM
+		- prepare : give default init val to static val.
+		- extract : modify "sign reference" to "direct reference"
+	- class init:
+		- if there is parent class which is not init yet -> init this parent class first
+		- init "init code" in class in order
 - Ref
 	- https://juejin.cn/post/6844904005580111879
 	- https://blog.csdn.net/briblue/article/details/54973413
 	- https://kknews.cc/zh-tw/code/8zvokbq.html
+	- https://openhome.cc/Gossip/JavaGossip-V2/IntroduceClassLoader.htm#:~:text=Bootstrap%20Loader%E6%98%AF%E7%94%B1C,lib%2Fext%20%E7%9B%AE%E9%8C%84%E4%B8%8B%E7%9A%84
 
 ### 4) does `memory leakage` happen in java ? how ?
 - Yes, it may happen in users self defined data structure
