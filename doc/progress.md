@@ -18,6 +18,7 @@
 	- amazon/sde_2022/amz_cs_basic.md
 		- 016 (again!)
 		- 027
+		- 031 (again!!!!)
 	- cheatsheet review
 		- 2_pointers.md (non LC example OK)
 		- Collection.md (ok)
