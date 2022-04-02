@@ -35,7 +35,8 @@
 		- greedy.md (non LC example OK)
 		- hash_map.md (non LC example OK)
 		- heap.md (non LC example OK)
-		- intervals.md
+		- intervals.md (non LC example OK)
+		- linked_list.md 
 	- ================ 
 	- LC top 100 likes
 		- 032
