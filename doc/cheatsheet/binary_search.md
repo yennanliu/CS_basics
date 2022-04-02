@@ -476,3 +476,30 @@ class Solution(object):
                 l = mid + 1
         return l if l * l < num else l - 1
 ```
+
+### 2-12) Find First and Last Position of Element in Sorted Array
+```python
+# 34. Find First and Last Position of Element in Sorted Array
+# V0
+# IDEA : BINARY SEARCH
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        
+        def search(x):
+            lo, hi = 0, len(nums)           
+            while lo < hi:
+                mid = (lo + hi) // 2
+                if nums[mid] < x:
+                    lo = mid+1
+                else:
+                    hi = mid                    
+            return lo
+        
+        lo = search(target)
+        hi = search(target+1)-1
+        
+        if lo <= hi:
+            return [lo, hi]
+                
+        return [-1, -1]
+```
