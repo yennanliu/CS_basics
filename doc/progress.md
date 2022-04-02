@@ -15,8 +15,8 @@
 			- (pdf : p.9)
 				- 006
 	- ================
-	- AMZ review
-		- 
+	- amazon/sde_2022/amz_cs_basic.md
+		- 016 (again!)
 	- cheatsheet review
 		- 2_pointers.md (non LC example OK)
 		- Collection.md (ok)
@@ -42,7 +42,7 @@
 		- palindrome.md
 		- prefix_sum.md (non LC example OK)
 		- python_trick.md
-	- ================ 
+	- ================
 	- LC top 100 likes
 		- 032
 		- 034
