@@ -37,15 +37,34 @@
 	- smaller than heap in most cases 
 	- NOT shared by different threads. used by local thread only
 
-### 2) JVM GC ? stragegy ? algorithm ?
+### 3) Explain JVM GC ? GC stragegy ? algorithm ?
+- 5W1H
+	- Where ? JVM heap
+	- Why ? prevent `memory leakage`. use available memory efficiently
+	- What ? GC "recycle" obj which are will not be used anymore 
+	- When ?
+		- reference counting : remove when reference count=0. But NOT working when "cyclic reference" case
+		- tracing : tranverse from GC root, if not in visited list, means not used, then remove them
+		- escape analysis
+	- HOW ? (GC remove algorithm)
+		- Mark-Sweep
+		- Mark-Compact
+		- Mark-Copy
+		- generation collection
+- properties:
+	- GC process is a `local priority`, `independent` thread
+	- JVM GC is an automatic mechanism. we can also manually trigger it : `System.gc();`
+- Ref
+	- https://www.jyt0532.com/2020/03/12/garbage-collector/
+	- https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)
 
-### 3) how to get memory in java program, heap usage percentage (%) ?
+### 4) how to get memory in java program, heap usage percentage (%) ?
 - `java.lang.Runtime`    : get remaining memory, all memory, max heap memory
 - `Runtime.freeMemory()` : get remain memory in binary
 - `Runtime.totalMemory()`: get total memory in binary
 - `Runtime.maxMemory() ` : get max memory in binary
  
-### 3) Explain classLoader ?
+### 5) Explain classLoader ?
 - Implemented by `ClassLoader` class (and its sub class)
 - Load `.class` files to JVM
 - Tyeps
@@ -84,20 +103,25 @@
 	- https://kknews.cc/zh-tw/code/8zvokbq.html
 	- https://openhome.cc/Gossip/JavaGossip-V2/IntroduceClassLoader.htm#:~:text=Bootstrap%20Loader%E6%98%AF%E7%94%B1C,lib%2Fext%20%E7%9B%AE%E9%8C%84%E4%B8%8B%E7%9A%84
 
-### 4) does `memory leakage` happen in java ? how ?
+### 6) Explain `memory leakage` ?
+
+### 7) does `memory leakage` happen in java ? how ?
 - Yes, it may happen in users self defined data structure
 - example ?
 - how ?
 - Ref
 	- https://cloud.tencent.com/developer/article/1648836
 
-### 5) Difference between Serial and Parallel GC  ? 
+### 8) Difference between Serial and Parallel GC  ? 
 
-### 2) Thread, progress, program ?
+### 9) Thread, progress, program ?
 - https://oldmo860617.medium.com/%E9%80%B2%E7%A8%8B-%E7%B7%9A%E7%A8%8B-%E5%8D%94%E7%A8%8B-%E5%82%BB%E5%82%BB%E5%88%86%E5%BE%97%E6%B8%85%E6%A5%9A-a09b95bd68dd
+
+### 10) Explain JVM `reflection` ? `dynamic proxy` ? 
 
 ## Ref
 - https://dunwu.github.io/javacore/#%F0%9F%93%96-%E5%86%85%E5%AE%B9
+- https://www.jyt0532.com/2020/03/14/epilogue/
 - https://cloud.tencent.com/developer/article/1648836
 - https://iter01.com/565257.html
 - https://www.51cto.com/article/670305.html
