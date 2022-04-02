@@ -36,7 +36,8 @@
 		- hash_map.md (non LC example OK)
 		- heap.md (non LC example OK)
 		- intervals.md (non LC example OK)
-		- linked_list.md 
+		- linked_list.md (non LC example OK)
+		- math.md
 	- ================ 
 	- LC top 100 likes
 		- 032

@@ -525,7 +525,7 @@ class Solution(object):
         """
         NOTE :
          1. we init linkedlist via ListNode()
-         2. we NEED make extra head refer same linkedlist, since we need to return beginning of linkedlust of this func, while res will meet "tail" at the end of while loop
+         2. we NEED make extra head refer same linkedlist, since we need to return beginning of linkedlist of this func, while res will meet "tail" at the end of while loop
         """
         head = res = ListNode()
         plus = 0
