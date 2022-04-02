@@ -29,23 +29,28 @@
 	- https://cloud.tencent.com/developer/article/1648836
 
 ### 2) Difference between JVM heap, stack ?
-- JVM heap
+- JVM `heap`
 	- storage class
 	- shared by all threads in JVM
-- JVM stack
+- JVM `stack`
 	- storage stack frame, local var
-	- smaller than heap in most cases 
+	- smaller than heap in general
 	- NOT shared by different threads. used by local thread only
+- Ref
+	- https://github.com/yennanliu/JavaHelloWorld
 
 ### 3) Explain JVM GC ? GC stragegy ? algorithm ?
 - 5W1H
-	- Where ? JVM heap
-	- Why ? prevent `memory leakage`. use available memory efficiently
-	- What ? GC "recycle" obj which are will not be used anymore 
+	- Where ? 
+		- JVM heap
+	- Why ? 
+		- prevent `memory leakage`. in order to use memory efficiently
+	- What ? 
+		- GC "recycle" obj which are will not be used anymore 
 	- When ?
-		- reference counting : remove when reference count=0. But NOT working when "cyclic reference" case
-		- tracing : tranverse from GC root, if not in visited list, means not used, then remove them
-		- escape analysis
+		- Reference counting : remove when "reference count = 0". But NOT working when "cyclic reference"
+		- Tracing : tranverse ("dependence tree") from GC root, if not in visited list, means not used, then remove them
+		- Escape analysis
 	- HOW ? (GC remove algorithm)
 		- Mark-Sweep
 			- mark the to-clean area
@@ -53,7 +58,7 @@
 				- easy understand, implement
 			- cons:
 				- low efficiency
-				- will cause "space fragments" -> hard to maintain a "continuous storage space"
+				- will cause "space fragments" -> hard to maintain the "continuous storage space"
 		- Mark-Compact
 			- mark the to-clean area, merge/move them altogether, then clean
 			- pros:
@@ -61,13 +66,14 @@
 			- cons:
 				- spend extra time/resource on "merge/move" op
 		- Mark-Copy
-			- split memory space to 50%, 50%. Only use 50% each time, move to-clean to the other 50% when clean
+			- split memory space to 50%, 50%. Only use 50% each time, move "to-clean instance" to the other 50% when clean
 			- pros:
 				- fast, easy to implement, not cause  "space fragments"
 			- cons:
 				- Only 50% of memory space can be used everytime
 				- will cause more frequent GC
 		- generation collection
+			- TODO
 - properties:
 	- GC process is a `local priority`, `independent` thread
 	- JVM GC is an automatic mechanism. we can also manually trigger it : `System.gc();`
@@ -84,6 +90,8 @@
 ### 5) Explain classLoader ?
 - Implemented by `ClassLoader` class (and its sub class)
 - Load `.class` files to JVM
+- Steps:
+	- Bootstrap class loader -> ExtClassLoader -> AppClassLoader (loader step)
 - Tyeps
 	- java class classLoader 
 		- Bootstrap class loader
@@ -99,8 +107,6 @@
 			- load jar under `Classpath` (defined by `java.class.path`)
 			- run after ExtClassLoader
 		- User defined classLoader
-- Steps:
-	- Bootstrap class loader -> ExtClassLoader -> AppClassLoader (loader step)
 - Steps (inside classLoader):
 	- load -> connect -> class init
 	- Explain:
