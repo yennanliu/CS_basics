@@ -44,7 +44,8 @@
 		- n_sum.md (non LC example OK)
 		- palindrome.md
 		- prefix_sum.md (non LC example OK)
-		- python_trick.md
+		- python_trick.md (non LC example OK)
+		- queue.md
 	- ================
 	- LC top 100 likes
 		- 032

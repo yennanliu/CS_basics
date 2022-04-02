@@ -132,6 +132,8 @@ Out[29]: [1, 2, 3]
 
 In [31]: z.append(5)
 
+# NOTE : x, z NOT affect on each other
+
 In [32]: z
 Out[32]: [1, 2, 3, 5]
 
@@ -168,19 +170,21 @@ res = re.search('(^[\+\-]?\d+)', s).group()
 print (res)
 ```
 
-### 1-4) transform String to Int with N based
+### 1-4) transform N based integer to 10 based
 ```python
+# https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/math.md
+
 # How does int(x[,base]) work?
 # -> https://stackoverflow.com/questions/33664451/how-does-intx-base-work
 # -> int(string, base) accepts an arbitrary base. You are probably familiar with binary and hexadecimal, and perhaps octal; these are just ways of noting an integer number in different bases:
 # exmaple :
-# In [76]: int('10',2)      # transform '10' to a 2 bases int                                                 
+# In [76]: int('10',2)      # transform '10' from 2 based to 10 based                                                  
 # Out[76]: 2
 #
-# In [77]: int('11',2)      # transform '11' to a 2 bases int                                                      
+# In [77]: int('11',2)      # # transform '11' from 2 based to 10 based                                                 
 # Out[77]: 3
 #
-# In [78]: int('100',2)     # transform '100' to a 2 bases int                                                       
+# In [78]: int('100',2)     # # transform '100' from 2 based to 10 based                                                 
 # Out[78]: 4
 
 # LC 089
@@ -212,8 +216,9 @@ class Solution(object):
         d = collections.Counter(s)
         d_dict = dict(d)
         res = []
-        for x in sorted(d_dict.items(), key=lambda items: -items[1]):
-            res.append(x)
+        #for x in sorted(d_dict.items(), key=lambda items: -items[1]):
+        for _ in sorted(d_dict.items(), key=lambda x: -x[1]):
+            res.append(_)
         return res
 
 x= [1, 2, 3, 1, 2, 1, 2, 1]
@@ -264,7 +269,7 @@ x_ = _sort(x)
 print (x_)
 ```
 
-### 1-8) get Quotient, Remainder on a integer
+### 1-8) get Quotient, Remainder of a integer with dividend
 ```python
 In [1]: x,y = divmod(100, 3)
 
@@ -365,7 +370,7 @@ my_array=["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
 my_array.sort(key=lambda x : my_func)
 ```
 
-### 1-12) get remainder (residue) when divided by a number
+### 1-12) get remainder (residual) when divided by a number
 ```python
 #-----------------
 # V1 : %=
@@ -754,6 +759,7 @@ In [27]: print (list(x))
 #-----------------------------------------------------------------------------------------------------
 # example 5 : itertools.count : a counter, can define start point and path len
 #-----------------------------------------------------------------------------------------------------
+# NOTE THIS !!!!
 In [2]: x = itertools.count(start=20, step=-1)
 
 In [3]: print(list(itertools.islice(x, 0, 10, 1)))
