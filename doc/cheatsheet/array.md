@@ -27,6 +27,27 @@
 
 ### 1-1) Basic OP
 
+#### 1-1-0) Split Array
+```python
+# https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md
+
+#-----------------------------------------------------------------------------------------------------
+# example 7 : itertools.islice : slice on iterator
+#-----------------------------------------------------------------------------------------------------
+# https://docs.python.org/3/library/itertools.html#itertools.islice
+# syntax : itertools.islice(seq, [start,] stop [, step])
+
+In [6]:  x = itertools.islice(range(10), 0, 9, 2)
+
+In [7]: print (list(x))
+[0, 2, 4, 6, 8]
+
+
+In [18]: y = itertools.islice(range(10), 0, 10, 3)
+    ...: print (list(y))
+[0, 3, 6, 9]
+```
+
 #### 1-1-1) Insert into Array
 ```python
 p=[[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
