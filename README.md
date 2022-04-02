@@ -359,6 +359,7 @@
 1010| [Pairs of Songs With Total Durations Divisible by 60](https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/)|[Python ](./leetcode_python/Hash_table/pairs-of-songs-with-total-durations-divisible-by-60.py) ||| Medium |good basicm dict, array, `amazon`| AGAIN********* (4) (MUST)
 1099| [Two Sum Less Than K](https://leetcode.com/problems/two-sum-less-than-k/)|[Python ](./leetcode_python/Hash_table/two-sum-less-than-k.py) ||| Medium |dict, sort, `amazon`| AGAIN* (1) (not start)
 1131| [Rank Transform of an Array](https://leetcode.com/problems/rank-transform-of-an-array/)|[Python ](./leetcode_python/Hash_table/rank-transform-of-an-array.py) ||| Easy |dict, array, `amazon`| OK* (1)
+1296| [Divide Array in Sets of K Consecutive Numbers](https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/)|[Python ](./leetcode_python/Hash_table/divide-array-in-sets-of-k-consecutive-numbers.py) ||| Medium |LC 846, dict, `google`| AGAIN (not start)
 1923| [Longest Common Subpath](https://leetcode.com/problems/longest-common-subpath/) |  [python](./leetcode_python/Hash_table/longest-common-subpath.py)  | _O(n)_ | _O(h)_ | Hard|hash, bit,  `amazon`|  AGAIN (not start)
 
 ## Linked list 
@@ -484,7 +485,7 @@
 313| [Super Ugly Number](https://leetcode.com/problems/super-ugly-number/) | [python](./leetcode_python/Heap/super-ugly-number.py)   | _O(n * k)_ | _O(n + k)_ | Medium     | BST, Heap | AGAIN (not start*)
 373 | [Find K Pairs with Smallest Sums](https://leetcode.com/problems/find-k-pairs-with-smallest-sums/) | [python](./leetcode_python/Heap/find-k-pairs-with-smallest-sums.py)  | _O(k * log(min(n, m, k)))_ | _O(min(n, m, k))_ | Medium || AGAIN (not start)
 378 | [Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) | [python](./leetcode_python/Heap/kth-smallest-element-in-a-sorted-matrix.py)  | _O(k * log(min(n, m, k)))_ | _O(min(n, m, k))_ | Medium | LintCode | AGAIN (not start)
-846 | [Hand of Straights](https://leetcode.com/problems/hand-of-straights/) | [python](./leetcode_python/Heap/hand-of-straights.py) | _O(nlogn)_ | _O(n)_ | Medium || OK*
+846 | [Hand of Straights](https://leetcode.com/problems/hand-of-straights/) | [python](./leetcode_python/Heap/hand-of-straights.py) | _O(nlogn)_ | _O(n)_ | Medium |LC 1296, google, hashmap| OK*
 855 | [Exam Room](https://leetcode.com/problems/exam-room/) | [python](./leetcode_python/Heap/exam-room.py)  | seat: _O(logn)_ <br> leave: _O(logn)_ | _O(n)_ | Medium | BST, Hash, `trick` | AGAIN* (2) (not start)
 295 | [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | [python](./leetcode_python/Heap/find_median_from_data_stream.py)  | | | Hard |priority queue, trick ,heap, stream, `amazon`|  AGAIN****** (6)
 703 | [Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/) | [python](./leetcode_python/Heap/kth_largest_element_in_a_stream.py)  | | | Easy |heap, stream, `amazon`|  AGAIN***** (3)
