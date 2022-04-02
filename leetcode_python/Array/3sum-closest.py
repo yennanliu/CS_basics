@@ -1,3 +1,36 @@
+"""
+
+16. 3Sum Closest
+Medium
+
+Given an integer array nums of length n and an integer target, find three integers in nums such that the sum is closest to target.
+
+Return the sum of the three integers.
+
+You may assume that each input would have exactly one solution.
+
+ 
+
+Example 1:
+
+Input: nums = [-1,2,1,-4], target = 1
+Output: 2
+Explanation: The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+Example 2:
+
+Input: nums = [0,0,0], target = 1
+Output: 0
+ 
+
+Constraints:
+
+3 <= nums.length <= 1000
+-1000 <= nums[i] <= 1000
+-104 <= target <= 104
+
+
+"""
+
 # https://leetcode.com/problems/3sum-closest/description/
 # Time:  O(n^2)
 # Space: O(1)
@@ -15,11 +48,6 @@
 # IDEA : SORT + DOUBLE POINTER
 class Solution(object):
     def threeSumClosest(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: int
-        """
         N = len(nums)
         nums.sort()
         ### beware of it 
@@ -31,13 +59,22 @@ class Solution(object):
             ### beware of it 
             while i < j:
                 _sum = nums[t] + nums[i] + nums[j]
+                """
+                NOTE !!! we have below 4 conditions:
+                    1) abs(_sum - target) < abs(res - target)
+                    2) _sum > target
+                    3) _sum < target
+                    4) _sum == target
+                """
                 if abs(_sum - target) < abs(res - target):
                     res = _sum
+                # note : we still use if in below
                 if _sum > target:
                     j -= 1
                 elif _sum < target:
                     i += 1
-                else:
+                #else:
+                elif _sum == target:
                     return target
         return res
 
@@ -49,6 +86,47 @@ assert s.threeSumClosest([-3, 0, 1, 2] , 1) == 0
 assert s.threeSumClosest([2, 0, 1, -3] , 1) == 0
 assert s.threeSumClosest([ 1 for _ in range(100)] , 1) == 3
 assert s.threeSumClosest([ 1 for _ in range(1000)] , 0) == 3
+
+# V1
+# IDEA : 2 POINTERS
+# https://leetcode.com/problems/3sum-closest/solution/
+class Solution:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        diff = float('inf')
+        nums.sort()
+        for i in range(len(nums)):
+            lo, hi = i + 1, len(nums) - 1
+            while (lo < hi):
+                sum = nums[i] + nums[lo] + nums[hi]
+                if abs(target - sum) < abs(diff):
+                    diff = target - sum
+                if sum < target:
+                    lo += 1
+                else:
+                    hi -= 1
+            if diff == 0:
+                break
+        return target - diff
+
+# V1
+# IEDA : BINARY SEARCH
+# https://leetcode.com/problems/3sum-closest/solution/
+class Solution:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        diff = float('inf')
+        nums.sort()
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                complement = target - nums[i] - nums[j]
+                hi = bisect_right(nums, complement, j + 1)
+                lo = hi - 1
+                if hi < len(nums) and abs(complement - nums[hi]) < abs(diff):
+                    diff = complement - nums[hi]
+                if lo > j and abs(complement - nums[lo]) < abs(diff):
+                    diff = complement - nums[lo]
+            if diff == 0:
+                break
+        return target - diff
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83116781
@@ -101,11 +179,6 @@ class Solution:
 # Space: O(1)
 class Solution(object):
     def threeSumClosest(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: int
-        """
         nums, result, min_diff, i = sorted(nums), float("inf"), float("inf"), 0
         while i < len(nums) - 2:
             if i == 0 or nums[i] != nums[i - 1]:
