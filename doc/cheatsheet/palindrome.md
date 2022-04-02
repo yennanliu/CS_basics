@@ -1,4 +1,4 @@
-# Palindrome 
+# Palindrome (回文)
 
 ## 0) Concept  
 
