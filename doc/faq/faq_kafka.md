@@ -42,9 +42,32 @@
 			- Each segment has 2 parts:
 				- .index : index file (for .log). for finding offset in .log file
 				- .log :  record actual event data
+			- Name convention
+				- consider "global partition". Start from 0
+				- Next segment name if last partition's MAX offset (offset msg count)
+				- offset is 64 bit Long, 20 digit nunber, fill with 0 if no digit
 		- example:
 			- ` 3,497` in `index` : means 3rd msg in .log file, and its offset = 497
 			- `Message 368772` in `log` : means it's 368772 rd msg in global partition
+			- .log and .index
+			```bash
+			# file structure
+			/<topic_name>-<partition_name>
+			/.../xxx.index
+			/.../xxx.log
+
+			# index file
+			00000000000000000000.index   // <offset>.index
+			# log content
+			00000000000000000000.log     // <offset>.log
+			```
+			```bash
+			# example
+			-rw-r--r--. 1 root root 389k  1月  17  18:03   00000000000000000000.index
+			-rw-r--r--. 1 root root 1.0G  1月  17  18:03   00000000000000000000.log
+			-rw-r--r--. 1 root root  10M  1月  17  18:03   00000000000000077894.index
+			-rw-r--r--. 1 root root 127M  1月  17  18:03   00000000000000077894.log
+			```
 		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/index_log_file1.png">
 	- `Producer`
 		- msg producer, send msg to kafka broker
@@ -65,6 +88,8 @@
 
 - Ref
 	- https://www.gushiciku.cn/pl/g6Tu/zh-tw
+
+### 1') Explain how kafka kafka find .log file via index ?
 
 ### 2) How does kafka implement `exactly once` ?
 
