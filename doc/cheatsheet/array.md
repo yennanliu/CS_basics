@@ -14,8 +14,11 @@
     - sorting
     - [binary search](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_search.md)
     - [2 pointers](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md)
+        - fast-slow pointers
+        - left-right pointers
     - [sliding window](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
-
+    - [prefix sum](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/prefix_sum.md)
+    - [difference array](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/diffence_array.md)
 - Data structure
     - dict
     - set

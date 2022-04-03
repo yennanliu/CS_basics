@@ -45,7 +45,9 @@
 		- palindrome.md
 		- prefix_sum.md (non LC example OK)
 		- python_trick.md (non LC example OK)
-		- queue.md
+		- queue.md (non LC example OK)
+		- recursion.md (OK)
+		- scanning_line.md
 	- ================
 	- LC top 100 likes
 		- 032

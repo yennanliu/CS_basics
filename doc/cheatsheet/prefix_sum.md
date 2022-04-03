@@ -12,6 +12,7 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
     - if want to match count -> can use hashMap
     - if want to check Divisible -> get remainder with k for each num
 - Ref
+    - [fucking algorithm - Prefix sum](https://labuladong.github.io/algo/2/19/22/)
     - [LC trick I : prefix sum](https://www.twblogs.net/a/5edebd5274efa30adcc735cc)
     - [hash_map.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/hash_map.md)
     - [LC official problem set](https://leetcode.com/tag/prefix-sum/)
