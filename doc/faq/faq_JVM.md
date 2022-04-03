@@ -56,16 +56,16 @@
 			- cons:
 				- low efficiency
 				- will cause "space fragments" -> hard to maintain the "continuous storage space"
+			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_sweep.png">
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_sweep.png">
 		- `Mark-Compact`
 			- mark the to-clean area, merge/move them altogether, then clean
 			- pros:
 				- can keep "continuous storage space"
 			- cons:
 				- spend extra time/resource on "merge/move" op
+			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_compact.png">
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_compact.png">
 		- `Mark-Copy`
 			- split memory space to 50%, 50%. Only use 50% each time, move "to-clean instance" to the other 50% when clean
 			- pros:
@@ -73,8 +73,8 @@
 			- cons:
 				- Only 50% of memory space can be used everytime
 				- will cause more frequent GC
+			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_copy.png">
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_copy.png">
 		- `Generation collection`
 			- > Java 1.3
 			- mechanisms:
