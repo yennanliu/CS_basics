@@ -1,20 +1,20 @@
 # Kafka FAQ
 
-### 1)  explain kafka architecture ?
+### 1) Explain kafka architecture ?
 - Feature
 	- kafka is a sustainable `distributed` pub-sub (publish-subscribe) message system
 	- developed by Linkedin via scala
 	- can work with both online and offlie msg. Data saved on disk with replica -> prevent data lost
-- component
-	- broker
+- Component
+	- `Broker`
 		- kafka cluster has many nodes
 		- A broker is a node/server
-	- topic
+	- `Topic`
 		- every event on kafka belong to a class, which is "topic"
 		- each topic for different data source (feeds of messages)
 		- can have unlimit topics
 		- producer-subscriber use "topic" as basic unit. Can split further via topic partition
-	- partition
+	- `Partition`
 		- each topic has multiple partition
 		- NOTE : same broker can have multiple partition
 				-> broker count has NO relation to partition count
@@ -25,17 +25,17 @@
 		- partition defines the MAX "con-current" consumer in the same consumer group
 		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition1.png">
 		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition2.png">
-	- segment
+	- `Segment`
 		- each partition has multiple segment.
 			- Each segment has 2 parts:
 				- .index : index file. for finding offset in .log file
 				- .log :  file save data
-	- producer
+	- `Producer`
 		- msg producer, send msg to kafka broker
-	- consumer
+	- `Consumer`
 		- msg consumer (client), read msg from kafka
 		- consumer MUST belong to a consumer group
-	- consumer group
+	- `Consumer group`
 		- each consumer belogs to a specific `consumer group` (we can define consumer's group name)
 		- SAME consumer in SAME consunmer group ONLY consume same msg ONCE
 		- each consumer has a ID (group ID). All consumers can subscribe all partition under a topic
@@ -70,7 +70,7 @@
 	- .log : file save data
 	- .idnex : file save .log files' index 
 
-### 6) explain kafka master, slaves relation ? regarding data partition, ... ?
+### 6) Explain kafka master, slaves relation ? regarding data partition, ... ?
 
 ### 7) Steps when a consumer consumes a kafka topic ?
 
