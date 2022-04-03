@@ -46,6 +46,7 @@
 	- [LC top 100 likes](https://leetcode.com/problem-list/top-100-liked-questions/?page=1&fbclid=IwAR2MzUDDOscDklba5gL815lkLKzxK-zOR2WV2-W80_gRmvtfAsNWyut_USw)
 	- [LC Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
 	- [fucking-algorithm](https://github.com/labuladong/fucking-algorithm)
+	- [fucking-algorithm website](https://labuladong.github.io/algo/)
 	- [cheatsheet-leetcode-a4](https://cheatsheet.dennyzhang.com/cheatsheet-leetcode-a4)
 	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
 	- [grokking-the-coding-interview](https://www.educative.io/courses/grokking-the-coding-interview)
