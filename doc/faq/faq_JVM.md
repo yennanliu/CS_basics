@@ -2,9 +2,6 @@
 
 ### 1) JVN internal storage ?
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_1.jpeg">
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_2.jpeg">
-
 - JVM internal storage
 	- `part 1) Thread local`
 		- program counter :
@@ -21,6 +18,9 @@
 		- java heap
 		- method area (Non-heap memory)
 	- `part 3) Direct memory (not managed by JVM GC)`
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_1.jpeg">
+    <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_2.jpeg">
+
 - Ref
 	- https://copyfuture.com/blogs-details/20210918043412580m
 	- https://cloud.tencent.com/developer/article/1648836
