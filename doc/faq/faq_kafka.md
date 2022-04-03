@@ -2,22 +2,47 @@
 
 ### 1)  explain kafka architecture ?
 - Feature
-	- kafka is a `distributed` pub-sub (publish-subscribe) message system
+	- kafka is a sustainable `distributed` pub-sub (publish-subscribe) message system
 	- developed by Linkedin via scala
 	- can work with both online and offlie msg. Data saved on disk with replica -> prevent data lost
 - component
-	- broker : kafka cluster has many nodes. The node can also called as `broker`
-	- topic : every event on kafka belong to a class, which is "topic"
-	- partition : each topic has multiple partition
-		- Note : same broker can have multiple partition
+	- broker
+		- kafka cluster has many nodes
+		- A broker is a node/server
+	- topic
+		- every event on kafka belong to a class, which is "topic"
+		- each topic for different data source (feeds of messages)
+		- can have unlimit topics
+		- producer-subscriber use "topic" as basic unit. Can split further via topic partition
+	- partition
+		- each topic has multiple partition
+		- NOTE : same broker can have multiple partition
 				-> broker count has NO relation to partition count
-	- segment : each partition has multiple segment.
-		-> Each segment has 2 parts:
-			- .index : index file. for finding offset in .log file
-			- .log :  file save data
-	- producer : msg producer, send msg to kafka broker
-	- consumer : msg consumer (client), read msg from kafka
-	- consumer group : each consumer belogs to a specific `consumer group` (we can define consumer's group name)
+		- each topic has a partition id. Start from 0
+		- NOTE!!! : 
+			- data in each partition can be ordering. But CAN'T guarantee global data (all data in topic) is ordering
+			- ordering : keep the same ordering in producer' data and data read by consumer
+		- partition defines the MAX "con-current" consumer in the same consumer group
+		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition1.png">
+		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition2.png">
+	- segment
+		- each partition has multiple segment.
+			- Each segment has 2 parts:
+				- .index : index file. for finding offset in .log file
+				- .log :  file save data
+	- producer
+		- msg producer, send msg to kafka broker
+	- consumer
+		- msg consumer (client), read msg from kafka
+		- consumer MUST belong to a consumer group
+	- consumer group
+		- each consumer belogs to a specific `consumer group` (we can define consumer's group name)
+		- SAME consumer in SAME consunmer group ONLY consume same msg ONCE
+		- each consumer has a ID (group ID). All consumers can subscribe all partition under a topic
+		- each partition CAN ONLY be consumed by A consumer under a consumer group
+- Pics
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/kafka_architecture1.png">
+
 - Ref
 	- https://www.gushiciku.cn/pl/g6Tu/zh-tw
 
