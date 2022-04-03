@@ -35,12 +35,17 @@
 			- the follower replica which is in sync called "in-sync-replicas(ISR)"
 			- NOTE !!! : `producer and consumer` BOTH read and write data from `leader replica`, not interact with follower replica
 			- For data reliability when data I/O
+			- if leader down, then will raise the other follower as new leader
 		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition_replicas.png">
 	- `Segment`
 		- each partition has multiple segment.
 			- Each segment has 2 parts:
-				- .index : index file. for finding offset in .log file
-				- .log :  file save data
+				- .index : index file (for .log). for finding offset in .log file
+				- .log :  record actual event data
+		- example:
+			- ` 3,497` in `index` : means 3rd msg in .log file, and its offset = 497
+			- `Message 368772` in `log` : means it's 368772 rd msg in global partition
+		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/index_log_file1.png">
 	- `Producer`
 		- msg producer, send msg to kafka broker
 		- write data to `leader replica`
