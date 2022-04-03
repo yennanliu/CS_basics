@@ -1,4 +1,4 @@
-# MapReduce faq
+# MapReduce FAQ
 
 ## SQL -> MapReduce 
 - https://chamibuddhika.wordpress.com/2011/11/11/modelling-sql-queries-using-map-reduce/

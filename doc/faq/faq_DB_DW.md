@@ -1,4 +1,4 @@
-# FAQ : DB, DW
+# DB, DW FAQ
 
 ### 1) DB type
 

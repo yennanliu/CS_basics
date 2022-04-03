@@ -1,4 +1,4 @@
-# FAQ : Data Modeling
+# Data Modeling FAQ
 
 
 ### 1) What are the different design schemas in Data Modelling? Explain with the example?
