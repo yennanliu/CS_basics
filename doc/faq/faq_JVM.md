@@ -76,7 +76,7 @@
 			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_copy.png">
 
 		- `Generation collection`
-			- > Java 1.3
+			- after Java 1.3
 			- mechanisms:
 				- step 1) new instances storaged in Young Generation, when it's full, will trigger minor GC
 				- step 2) move survived instances to FromSpace.
@@ -123,20 +123,20 @@
 - Steps:
 	- Bootstrap class loader -> ExtClassLoader -> AppClassLoader (loader step)
 - Tyeps
-	- java class classLoader 
-		- Bootstrap class loader
-			- implemented by c/c++. we CAN'T access them (but they do exist!).
-			- load essential/core java classes under `JAVA_HOME/jre/lib` (jre path) (defined by `sun.boot.class.path`)
-			- run after JVM launch
-		- ExtClassLoader
-			- we can access them (but seldom do that)
-			- load jar class under `JAVA_HOME/lib/ext` (defined by `java.ext.dirs`)
-			- run after Bootstrap class loader
-		- AppClassLoader
-			- load classes in application, e.g. test class, 3rd party class..
-			- load jar under `Classpath` (defined by `java.class.path`)
-			- run after ExtClassLoader
-		- User defined classLoader
+	- `BootstrapClassLoader`
+		- implemented by c/c++. we CAN'T access them (but they do exist!).
+		- load core java classes under `JAVA_HOME/jre/lib` (jre path) (defined by `sun.boot.class.path`)
+		- run after JVM launch
+	- ExtensionClassLoader
+		- we can access them (but seldom do that)
+		- load jar class under `JAVA_HOME/lib/ext` (defined by `java.ext.dirs`)
+		- run after Bootstrap class loader
+	- AppClassLoader
+		- load classes in application, e.g. test class, 3rd party class..
+		- load jar under `Classpath` (defined by `java.class.path`) or `-cp` or `-classpath`
+		- run after ExtClassLoader
+	- `User defined classLoader`
+		-  TODO
 - Steps (inside classLoader):
 	- load -> connect -> class init
 	- Explain:
@@ -150,10 +150,20 @@
 		- class init:
 			- if there is parent class which is not init yet -> init this parent class first
 			- init "init code" in class in order
+- Important methods
+	- loadClass() : load target c;ass, will check if current ClassLoader or its parent already have it. If not, will call findClass()
+	- findClass() : can load user-defined class
+	- defineClass() : when findClass() get class, defineClass() will transfrom such class to .class instance
+- Pics
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//classloader1.png">
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//classloader2.png">
 - Ref
+	- https://www.baeldung.com/java-classloaders
+	- https://www.javatpoint.com/classloader-in-java
 	- https://juejin.cn/post/6844904005580111879
 	- https://blog.csdn.net/briblue/article/details/54973413
 	- https://kknews.cc/zh-tw/code/8zvokbq.html
+	- https://kknews.cc/tech/34pn9ba.html
 	- https://openhome.cc/Gossip/JavaGossip-V2/IntroduceClassLoader.htm#:~:text=Bootstrap%20Loader%E6%98%AF%E7%94%B1C,lib%2Fext%20%E7%9B%AE%E9%8C%84%E4%B8%8B%E7%9A%84
 
 ### 6) Explain `memory leakage` ?
@@ -165,7 +175,9 @@
 - Ref
 	- https://cloud.tencent.com/developer/article/1648836
 
-### 8) Difference between Serial and Parallel GC  ? 
+### 8) Difference between Serial and Parallel GC  ?
+- Ref
+	- https://www.alexleo.click/java-%E5%96%9D%E6%9D%AF%E5%92%96%E5%95%A1%EF%BC%8C%E8%81%8A%E9%BB%9E-gc%EF%BC%88%E4%B8%80%EF%BC%89-%E5%9F%BA%E7%A4%8E%E6%A6%82%E5%BF%B5/
 
 ### 9) Thread, progress, program ?
 - https://oldmo860617.medium.com/%E9%80%B2%E7%A8%8B-%E7%B7%9A%E7%A8%8B-%E5%8D%94%E7%A8%8B-%E5%82%BB%E5%82%BB%E5%88%86%E5%BE%97%E6%B8%85%E6%A5%9A-a09b95bd68dd
