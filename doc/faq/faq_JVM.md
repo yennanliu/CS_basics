@@ -111,6 +111,20 @@
 
 ### 3') Explain GC's ”stop-the-world” ? 
 
+### 3'') Explain type of GC collector ?
+- Serial collector
+	- will cause "stop-the-world"
+	- only ONE thread
+- Parallel collector
+	- will cause "stop-the-world"
+	- can have MUTI thread
+- Parallel Old collector
+- Parnew collector
+- CMS collector
+- G1 collector
+- Ref
+	- https://cloud.tencent.com/developer/article/1648836
+
 ### 4) how to get memory in java program, heap usage percentage (%) ?
 - `java.lang.Runtime`    : get remaining memory, all memory, max heap memory
 - `Runtime.freeMemory()` : get remain memory in binary
@@ -183,6 +197,51 @@
 - https://oldmo860617.medium.com/%E9%80%B2%E7%A8%8B-%E7%B7%9A%E7%A8%8B-%E5%8D%94%E7%A8%8B-%E5%82%BB%E5%82%BB%E5%88%86%E5%BE%97%E6%B8%85%E6%A5%9A-a09b95bd68dd
 
 ### 10) Explain JVM `reflection` ? `dynamic proxy` ? 
+
+### 11) Explain JVM instance creation steps ?
+- Ref
+	- https://github.com/Homiss/Java-interview-questions/blob/master/JVM/JVM%E9%9D%A2%E8%AF%95%E9%A2%98.md
+
+### 12) Explain JVM instance life cycle ?
+
+### 13) Explain JVM instance structure ?
+
+### 14) Common JVM command ?
+- jps 
+- jstat 
+- jmap 
+- jhat 
+- jstack 
+- jinfo
+
+### 15) Common JVM tune command ?
+- jconsole
+- jvisualvm
+- MAT(Memory Analyzer Tool)、GChisto
+
+### 16) Common JVM tune parameter ?
+- `Xms` : min of java heap
+- `Xmx` : max of java heap
+- `-XX:NewSize` : new generation size
+- `XX:NewRatio` : new generation pct VS old generation pct
+- `XX:SurvivorRatio` : Eden pct VS survivor pct
+
+### 17) What's int length in 64 bit JVM ?
+- Not relative to platform. `Int length is a fixed value. It's always 34 bit`
+
+### 18) Difference between WeakReference and SoftReference  and PhantomReference ?
+
+### 19) Explain ` -XX:+UseCompressedOops` ?
+
+### 20) What's max heap storage in 32 bit JVM and 64 bit JVM ?
+- theoretically
+	- 32 bit : `2**32` max heap storage
+	- 64 bit : `2**64` max heap storage
+
+### 21) Difference between JRE, JDK and JIT ?
+- JRE : java run-time
+- JDK : java development kit : java dev tool. JRE is included in it
+- JIT : java in time compilation
 
 ## Ref
 - https://dunwu.github.io/javacore/#%F0%9F%93%96-%E5%86%85%E5%AE%B9
