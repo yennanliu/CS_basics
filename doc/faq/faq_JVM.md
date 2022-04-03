@@ -1,8 +1,5 @@
 # JVM FAQ
 
-## Basics
-- https://dunwu.github.io/javacore/java-interview.html#%E5%9F%BA%E7%A1%80
-
 ### 1) JVN internal storage ?
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_1.jpeg">
@@ -61,7 +58,6 @@
 				- will cause "space fragments" -> hard to maintain the "continuous storage space"
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_sweep.png">
-
 		- `Mark-Compact`
 			- mark the to-clean area, merge/move them altogether, then clean
 			- pros:
@@ -70,7 +66,6 @@
 				- spend extra time/resource on "merge/move" op
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_compact.png">
-
 		- `Mark-Copy`
 			- split memory space to 50%, 50%. Only use 50% each time, move "to-clean instance" to the other 50% when clean
 			- pros:
@@ -80,7 +75,6 @@
 				- will cause more frequent GC
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_copy.png">
-
 		- `Generation collection`
 			- > Java 1.3
 			- mechanisms:
