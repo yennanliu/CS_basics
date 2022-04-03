@@ -19,12 +19,23 @@
 		- NOTE : same broker can have multiple partition
 				-> broker count has NO relation to partition count
 		- each topic has a partition id. Start from 0
-		- NOTE!!! : 
+		- NOTE !!! : 
 			- data in each partition can be ordering. But CAN'T guarantee global data (all data in topic) is ordering
 			- ordering : keep the same ordering in producer' data and data read by consumer
 		- partition defines the MAX "con-current" consumer in the same consumer group
+		- So, we can raise consuming speed, if we have more partition
 		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition1.png">
 		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition2.png">
+	-  Partition replicas
+		- replication-factor
+			- define how many replicas (on different brokers.
+			- `# of replicas == # of broker` in general
+			- Each partition has its own `leader replica` and `follower replica`
+				- e.g. 1 leader, N folloers
+			- the follower replica which is in sync called "in-sync-replicas(ISR)"
+			- NOTE !!! : `producer and consumer` BOTH read and write data from `leader replica`, not interact with follower replica
+			- For data reliability when data I/O
+		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition_replicas.png">
 	- `Segment`
 		- each partition has multiple segment.
 			- Each segment has 2 parts:
@@ -32,9 +43,13 @@
 				- .log :  file save data
 	- `Producer`
 		- msg producer, send msg to kafka broker
+		- write data to `leader replica`
 	- `Consumer`
 		- msg consumer (client), read msg from kafka
 		- consumer MUST belong to a consumer group
+		- read data from `leader replica`
+		- NOTE !!! : `# of consumer` should `<=` `# of partition in topic`
+			- since same data should ONLY be consumed by one consumer under same consumer group at once
 	- `Consumer group`
 		- each consumer belogs to a specific `consumer group` (we can define consumer's group name)
 		- SAME consumer in SAME consunmer group ONLY consume same msg ONCE
@@ -81,9 +96,10 @@
 
 ### 9) Explain kafka's (事務性)
 
-### 10) Explain ISR (In-sync replica) ?
+### 10) Explain AR（Assigned Replicas), ISR (In-sync replica), and OSR（Out-of-Sync Replicas）?
 - Ref
 	- http://hk.noobyard.com/article/p-azlfvsay-mq.html
+	- https://www.gushiciku.cn/pl/pTAJ/zh-tw
 
 ### 11) Describe kafka limitation ?
 - auto scale : it's hard to scale down if scale out first (modify partition data in topics)
