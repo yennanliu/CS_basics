@@ -83,17 +83,35 @@
 		- SAME consumer in SAME consunmer group ONLY consume same msg ONCE
 		- each consumer has a ID (group ID). All consumers can subscribe all partition under a topic
 		- each partition CAN ONLY be consumed by A consumer under a consumer group
-- Pics
+- Pic
 	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/kafka_architecture1.png">
 
 - Ref
 	- https://www.gushiciku.cn/pl/g6Tu/zh-tw
 
-### 1') Explain how kafka kafka find .log file via index ?
+### 1') Kafka message structure ?
+- As below, every msg sent from producer will be pre-processed via kafka, then saved as below structure (in kafka broker). Only last field is the actual data from broker
+- Pic
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/kafka_msg.png">
+
+### 1'') How kafka kafka find .log file via index ?
 
 ### 2) How does kafka implement `exactly once` ?
 
-### 3) Explain kafka's ACKS ?
+### 3) How kafka avoid data missing ?
+- producer can use `sync`, `async` mode send data to kafka
+- Sync mode
+	- send a batch data to kafka, wait for kafka's response
+		- producer wait 10 sec (?), if no ACK response, mark as failure
+		- producer retry 3 times (?), if no ACK response, mark as failure
+- Async mode
+	- send a batch data to kafka, ONLY offer a `callback()` method
+	- save data in producer's buffer first, buffer size is about 20k
+	- if meat threshold, then can send data (to kafka)
+	- size of batch data is about 500
+	- NOTE : if there is no ACK from kafka broker, but producer buffer is full, developer can decide mechanisms whether clean buffer or not (programmatically)
+
+### 3') Explain kafka's ACKS ?
 - `request.required.acks` : how to acknowledge when kafka writes producers' messgage to its (kafka) copy
 - it's a tradeoff between efficiency (response speed) and reliability (fault tolerance) 
 - cases
