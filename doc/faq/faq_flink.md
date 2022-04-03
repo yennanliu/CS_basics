@@ -111,6 +111,9 @@ Apache Flink can be deployed and configured in the below ways.
 
 20. Explain how flink parallelism ?
 
+21. Explain flink watermark ?
+
+
 ## Ref
 - https://www.techgeeknext.com/apache/apache-flink-interview-questions
 - https://www.interviewgrid.com/interview_questions/flink

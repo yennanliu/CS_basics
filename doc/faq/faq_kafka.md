@@ -94,7 +94,7 @@
 - Pic
 	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/kafka_msg.png">
 
-### 1'') How kafka kafka find .log file via index ?
+### 1'') How kafka find .log file via index ?
 
 ### 2) How does kafka implement `exactly once` ?
 
@@ -159,6 +159,21 @@
 ### 11) Describe kafka limitation ?
 - auto scale : it's hard to scale down if scale out first (modify partition data in topics)
 - keep publish event in `global ordering`
+
+### 12) Explain why kafka can do high I/O ?
+- ordering read/write
+- zero copy
+- split file
+- batch transmit
+- data compression
+- Ref
+	- https://iter01.com/639107.html
+
+### 13) Explain kafka topic partition strategy ?
+- Range strategy
+- RoundRobin strategy
+- Ref
+	- https://iter01.com/639107.html
 
 ## Ref
 - https://blog.csdn.net/ajianyingxiaoqinghan/article/details/107171104
