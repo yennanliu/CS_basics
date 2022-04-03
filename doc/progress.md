@@ -23,7 +23,7 @@
 	- cheatsheet review
 		- 2_pointers.md (non LC example OK)
 		- Collection.md (ok)
-		- Dijkstra.md
+		- Dijkstra.md (`not yet`)
 		- array.md (non LC example OK)
 		- backtrack.md (non LC example OK)
 		- bfs.md (non LC example OK)
@@ -47,7 +47,10 @@
 		- python_trick.md (non LC example OK)
 		- queue.md (non LC example OK)
 		- recursion.md (OK)
-		- scanning_line.md
+		- scanning_line.md (OK)
+		- set.md (OK)
+		- sliding_window.md (non LC example OK)
+		- sort.md
 	- ================
 	- LC top 100 likes
 		- 032
