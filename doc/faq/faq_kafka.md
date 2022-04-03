@@ -99,27 +99,34 @@
 ### 2) How does kafka implement `exactly once` ?
 
 ### 3) How kafka avoid data missing ?
-- producer can use `sync`, `async` mode send data to kafka
-- Sync mode
-	- send a batch data to kafka, wait for kafka's response
-		- producer wait 10 sec (?), if no ACK response, mark as failure
-		- producer retry 3 times (?), if no ACK response, mark as failure
-- Async mode
-	- send a batch data to kafka, ONLY offer a `callback()` method
-	- save data in producer's buffer first, buffer size is about 20k
-	- if meat threshold, then can send data (to kafka)
-	- size of batch data is about 500
-	- NOTE : if there is no ACK from kafka broker, but producer buffer is full, developer can decide mechanisms whether clean buffer or not (programmatically)
+- Producer 
+	- Can use `sync`, `async` mode send data to kafka
+	- Mode
+	- Sync mode
+		- send a batch data to kafka, wait for kafka's response
+			- producer wait 10 sec (?), if no ACK response, mark as failure
+			- producer retry 3 times (?), if no ACK response, mark as failure
+	- Async mode
+		- send a batch data to kafka, ONLY offer a `callback()` method
+		- save data in producer's buffer first, buffer size is about 20k
+		- if meat threshold, then can send data (to kafka)
+		- size of batch data is about 500
+		- NOTE : if there is no ACK from kafka broker, but producer buffer is full, developer can decide mechanisms whether clean buffer or not (programmatically)
+- Producer
+	- Use `Partition replicas` avoid data missing
+- Consumer
+	- Each consumer record/maintain its own offset. can avoid data missing
+	- We can save offset on client's file system, DB, Redis...
 
-### 3') Explain kafka's ACKS ?
+### 3') Explain kafka `ACK` ?
 - `request.required.acks` : how to acknowledge when kafka writes producers' messgage to its (kafka) copy
-- it's a tradeoff between efficiency (response speed) and reliability (fault tolerance) 
+- A tradeoff between efficiency (response speed) and reliability (fault tolerance) 
 - cases
-	- ack = 1 (default): 
-		- when producer -> kafka broker. if kafka leader comfirms msg received successfully -> success.but will lost data if leader down before followers sync
-	- ack = 0
-		- whenever roducer -> kafka broker, mark it as success. Highest speed, but will lost data if broker down
-	- ack = -1 (or all)
+	- `ack = 1 (default)`: 
+		- when producer -> kafka broker. if kafka leader comfirms msg received successfully -> Success, will lost data if leader down before followers sync
+	- `ack = 0`
+		- whenever roducer -> kafka broker, mark it as success. Highest speed, will lost data if broker down
+	- `ack = -1 (or all)`
 		- when producer -> kafka broker, have to wait `leader and ALL followers' confirmation`. Slowest speed, but make sure NO data lost. 
 - Ref
 	- https://blog.51cto.com/u_15193673/2850009
