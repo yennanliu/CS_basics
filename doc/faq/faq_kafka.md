@@ -1,4 +1,4 @@
-# FAQ : Kafka
+# Kafka FAQ
 
 1. explain kafka architecture ?
 	- Feature

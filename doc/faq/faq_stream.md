@@ -1,4 +1,4 @@
-# Stream faq
+# Stream FAQ
 
 ## Simple stream from scratch
 - via socker

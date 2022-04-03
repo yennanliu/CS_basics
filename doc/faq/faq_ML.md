@@ -1,4 +1,4 @@
-## ML - FAQ
+## ML FAQ
 
 - https://www.edureka.co/blog/interview-questions/machine-learning-interview-questions/
 
