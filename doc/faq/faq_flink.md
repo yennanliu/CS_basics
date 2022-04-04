@@ -117,14 +117,36 @@ Apache Flink can be deployed and configured in the below ways.
 20. Explain how flink parallelism ?
 
 21. Explain flink watermark ?
+- `watermark` is a `timestamp` (event happened time, NOT processed time)
+- `watermark` tells Flink `since when it DOES NOT need to wait for delay event`
+- Stream frameworks use it for "evaluate if there is still a event not arrived"
+- Types
+	- Punctuated Watermark
+		- make watermark when there is "special event"
+		- not relative to window time, depends when "special event" is received
+		- usually used for "real real-time" scenario
+	- Periodic Watermark
+		- periodically make watermark
+		- time gap can be defined by users
+- examples :
+	- "out-of-order"
+		- `watermark` timestamp > window endTime
+		- there is data in window_start_time, window_end_time] 
+	- "late element" event case
+		- once after `watermark` -> trigger `window` -> do the op/calculation 
 - Ref
 	- https://nightlies.apache.org/flink/flink-docs-master/zh/docs/dev/datastream/event-time/generating_watermarks/#:~:text=%E6%97%B6%E9%97%B4%E6%A6%82%E8%A7%88%E5%B0%8F%E8%8A%82%E3%80%82-,Watermark%20%E7%AD%96%E7%95%A5%E7%AE%80%E4%BB%8B,%E5%8E%BB%E8%AE%BF%E9%97%AE%2F%E6%8F%90%E5%8F%96%E6%97%B6%E9%97%B4%E6%88%B3%E3%80%82
-	- http://chris-liu.cn/Flink-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%80%94%E2%80%94%E2%80%94-WaterMark-%E6%B0%B4%E5%8D%B0.html
 	- https://www.cnblogs.com/rossiXYZ/p/12286407.html
+	- http://chris-liu.cn/Flink-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%80%94%E2%80%94%E2%80%94-WaterMark-%E6%B0%B4%E5%8D%B0.html
 	- https://www.gushiciku.cn/pl/pRWT/zh-tw
 
 22. Explain flink EvenTime, IngestionTime, ProcessingTime ?
-
+- `EvenTime`
+	- "event happened time". The most accurate time when things happended
+- `IngestionTime`
+	- time when event ingested into Flink, the time source operator created. Is Flink job manager's system time in most cases
+- `ProcessingTime`
+	- Event processed time. Is timestamp when transformation happened. created in Flink task manager
 
 ## Ref
 - https://www.techgeeknext.com/apache/apache-flink-interview-questions
