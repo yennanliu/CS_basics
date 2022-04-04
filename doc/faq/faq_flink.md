@@ -97,8 +97,34 @@ Apache Flink can be deployed and configured in the below ways.
 - https://zhuanlan.zhihu.com/p/266620519
 
 ### 16. Explain flink `savepoint` ?
+- `savepoint` is a "global backup" of flink status of a timestamp moment
+- For software upgrade, change conf. Can make flink restart from the last savepoint
+- Triggered by users
+- will keep existing until user delete
 
 ### 17. Explain flink `checkpoint` ?
+- checkpoint is a "false tolerance" mechanism
+- make sure flink can auto-recover when error/exception during running
+- managed/op by flink. Users only need to define parameter
+- Auto op by flink
+- default `concurrent = 1` -> there is ONLY ONE runs per flink app
+- when a Flink DataStream runs
+	- steps:
+		- StreamGraph -> JobGraph -> ExecutionGraph -> physical DAG
+			- when "ExecutionGraph" init, "CheckpointCoordinator" get init as well
+			- for each flink task, it will init a "CheckpointCoordinator"
+		- Flink will trigger "Barrier" periodically
+		- (check below)
+- can disable checkpoint via `CheckpointConfig` setting
+	- DELETE_ON_CANCELLATION : delete checkpoint when program canceled
+	- RETAIN_ON_CANCELLATION : keep checkpoint when program canceled
+- Ref
+	- https://zhuanlan.zhihu.com/p/79526638
+
+### 17' Explain flink `Barrier` ?
+- A special event
+- Will follow event from upstream operator to downstream operator
+- ONLY when "final" operator (e.g. sink operator) receive Barrier, and confirm checkpoint is OK, then this "checkpoint" is completed
 
 ### 18. Explain flink `backpressure` ?
 - Is a common concept in stream framework
