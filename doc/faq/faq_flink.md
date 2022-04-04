@@ -167,6 +167,22 @@ Apache Flink can be deployed and configured in the below ways.
 	- https://zhuanlan.zhihu.com/p/264637970
 
 ### 19. Explain how flink submit job to yarn ?
+- Components
+	- ResourceManager (RM)
+	- NodeManager (NM)
+	- AppMaster (`job manager runs in the same container`)
+	- Container (task manager runs on it)
+- Steps
+	- step 1) flink client upload `flink jar, app jar, and conf` to HDFS
+	- step 2) client submit job to Yarn ResourceManager, and register resources
+	- step 3) ResourceManager diepense container and launch `AppMaster`, then AppMaster load jar files and config env, then launch `job manager`
+	- step 4) once above steps success, AppMaster knows job manager's ip
+	- step 5) Job Manager create a new flink conf for task manager, this conf also uploaded to HDFS. AppMaster offer flink web service endpoint
+		- NOTE : endpoints offered by Yarn are ALL temporal ones, user can run multiple flink on Yarn
+	- step 6) AppMaster ask ResourceManager for resources. NodeManager load flink jar and launch TaskManager
+	- step 7) TaskManager successfully launched, send hear-beat to job manager, ready to execute missions (job manager's command)
+- Pic
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/flink-job-exe-flink_yarn_1.png">
 - Ref
 	- https://blog.csdn.net/penriver/article/details/120221565
 	- https://blog.csdn.net/lb812913059/article/details/86601150
