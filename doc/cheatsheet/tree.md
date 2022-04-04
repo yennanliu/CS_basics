@@ -53,7 +53,7 @@ print (root)
 ```python
 # python
 def traverse(TreeNode):
-    for child in root.childern:
+    for child in root.children:
         # op in pre-traverse
         traverse(child)
         # op in post-traverse
