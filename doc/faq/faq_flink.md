@@ -101,6 +101,15 @@ Apache Flink can be deployed and configured in the below ways.
 17. Explain flink `checkpoint` ?
 
 18. Explain flink `backpressure` ?
+- Is a common concept in stream framework
+- It happens when `"downstream" CAN'T catchup "upstream"'s processing speed`
+	- -> So there's a mechanism `push back` to upstream and ask them `slow down` their process
+- Can due to internet, disk I/O, freqent GC, data hotpoint...
+- Can also affect checkpoint
+	- if data get delay -> checkpoint get delay (more longer)
+	- if "exactly once" -> have to wait delay barrier -> more data will be cached -> checkpoint get bigger
+	- above make cause checkpoint failed, or OOM
+- Not really a problem at all cases, have a backpressure sometimes means system is using fully of its resources. But a serious backpressure can cause system delay
 
 - Ref
 	- https://zhuanlan.zhihu.com/p/264637970
