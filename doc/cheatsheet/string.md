@@ -13,11 +13,17 @@
 ### 1-1) Basic OP
 
 #### 1-1) String plus
+
 #### 1-2) String bit op
+- [bit_manipulation.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/bit_manipulation.md)
+
 #### 1-3) String Multiplication
+
 #### 1-4) loop over string
+
 #### 1-6) inverse loop over string
 ```python
+# exmaple 1
 x = "abcd"
 for i in range(len(x)-1, -1, -1):
     print (i)
@@ -25,6 +31,8 @@ for i in range(len(x)-1, -1, -1):
 # 2
 # 1
 # 0
+
+# exmaple 2
 for i in range(len(x)-1, -1, -2):
     print (i)
 # 3
@@ -33,12 +41,19 @@ for i in range(len(x)-1, -1, -2):
 
 #### 1-7) String -> List, List -> String
 ```python
+# exmaple 1
 x = "abcd"
 x_list = list(x)
 x_list
 
+# exmaple 2
 y = ["d","e","f"]
 y_string = "".join(y)
+y_string
+
+# exmaple 3 : join with a splitor
+y = ["d","e","f"]
+y_string = ",".join(y)
 y_string
 ```
 
