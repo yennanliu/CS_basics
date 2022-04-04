@@ -96,11 +96,16 @@ Apache Flink can be deployed and configured in the below ways.
 - https://eng.uber.com/real-time-exactly-once-ad-event-processing/
 - https://zhuanlan.zhihu.com/p/266620519
 
-16. Explain flink savepoint mechanisms ?
+16. Explain flink `savepoint` ?
 
-17. Explain flink checkpoint mechanisms ?
+17. Explain flink `checkpoint` ?
 
-18. Explain flink backpressure ?
+18. Explain flink `backpressure` ?
+
+- Ref
+	- https://zhuanlan.zhihu.com/p/264637970
+	- https://www.modb.pro/db/128767
+	- https://zhuanlan.zhihu.com/p/266638799
 
 19. Explain how flink submit job to yarn ?
 - Ref
@@ -112,6 +117,13 @@ Apache Flink can be deployed and configured in the below ways.
 20. Explain how flink parallelism ?
 
 21. Explain flink watermark ?
+- Ref
+	- https://nightlies.apache.org/flink/flink-docs-master/zh/docs/dev/datastream/event-time/generating_watermarks/#:~:text=%E6%97%B6%E9%97%B4%E6%A6%82%E8%A7%88%E5%B0%8F%E8%8A%82%E3%80%82-,Watermark%20%E7%AD%96%E7%95%A5%E7%AE%80%E4%BB%8B,%E5%8E%BB%E8%AE%BF%E9%97%AE%2F%E6%8F%90%E5%8F%96%E6%97%B6%E9%97%B4%E6%88%B3%E3%80%82
+	- http://chris-liu.cn/Flink-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%80%94%E2%80%94%E2%80%94-WaterMark-%E6%B0%B4%E5%8D%B0.html
+	- https://www.cnblogs.com/rossiXYZ/p/12286407.html
+	- https://www.gushiciku.cn/pl/pRWT/zh-tw
+
+22. Explain flink EvenTime, IngestionTime, ProcessingTime ?
 
 
 ## Ref
