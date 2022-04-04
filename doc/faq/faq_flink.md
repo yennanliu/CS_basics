@@ -181,8 +181,13 @@ Apache Flink can be deployed and configured in the below ways.
 		- NOTE : endpoints offered by Yarn are ALL temporal ones, user can run multiple flink on Yarn
 	- step 6) AppMaster ask ResourceManager for resources. NodeManager load flink jar and launch TaskManager
 	- step 7) TaskManager successfully launched, send hear-beat to job manager, ready to execute missions (job manager's command)
+- pros:
+	- "use as needed" -> can raise memory usage pct in system
+	- can run jobs basd on "priority" as priority setting in Yarn jobs
+	- can automatically deal with `Failover on various roles`
+		- JobManager, TaskManager error/exception... can automatically retry/rerun by Yarn
 - Pic
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/flink-job-exe-flink_yarn_1.png">
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/flink_yarn_1.png">
 - Ref
 	- https://blog.csdn.net/penriver/article/details/120221565
 	- https://blog.csdn.net/lb812913059/article/details/86601150
