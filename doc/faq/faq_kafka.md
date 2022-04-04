@@ -10,42 +10,42 @@
 		- kafka cluster has many nodes
 		- A broker is a node/server
 	- `Topic`
-		- every event on kafka belong to a class, which is "topic"
+		- every event on kafka belongs to a class, which is "topic"
 		- each topic for different data source (feeds of messages)
 		- can have unlimit topics
 		- producer-subscriber use "topic" as basic unit. Can split further via topic partition
 	- `Partition`
-		- each topic has multiple partition
+		- each topic has multiple partitions
 		- NOTE : same broker can have multiple partition
 				-> broker count has NO relation to partition count
 		- each topic has a partition id. Start from 0
 		- NOTE !!! : 
 			- data in each partition can be ordering. But CAN'T guarantee global data (all data in topic) is ordering
-			- ordering : keep the same ordering in producer' data and data read by consumer
+			- ordering : keep the same ordering in producer's data and data read by consumer
 		- partition defines the MAX "con-current" consumer in the same consumer group
 		- So, we can raise consuming speed, if we have more partition
 		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition1.png">
 		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition2.png">
 	-  Partition replicas
 		- replication-factor
-			- define how many replicas (on different brokers.
+			- define how many replicas (on different brokers).
 			- `# of replicas == # of broker` in general
-			- Each partition has its own `leader replica` and `follower replica`
-				- e.g. 1 leader, N folloers
+			- Each `partition` has its own `leader replica` and `follower replica`
+				- e.g. 1 leader, N followers -> N replicas
 			- the follower replica which is in sync called "in-sync-replicas(ISR)"
-			- NOTE !!! : `producer and consumer` BOTH read and write data from `leader replica`, not interact with follower replica
+			- NOTE !!! : `producer and consumer` BOTH `read and write` data from `leader replica`, NOT interact with follower replica
 			- For data reliability when data I/O
 			- if leader down, then will raise the other follower as new leader
 		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition_replicas.png">
 	- `Segment`
-		- each partition has multiple segment.
+		- each partition has `multiple` segments.
 			- Each segment has 2 parts:
-				- .index : index file (for .log). for finding offset in .log file
-				- .log :  record actual event data
+				- `.index` : index file (for .log). for finding offset in .log file
+				- `.log` :  record actual event data
 			- Name convention
 				- consider "global partition". Start from 0
 				- Next segment name if last partition's MAX offset (offset msg count)
-				- offset is 64 bit Long, 20 digit nunber, fill with 0 if no digit
+				- offset is 64 bit Long, 20 digit nunber, filled with 0 if no digit
 		- example:
 			- ` 3,497` in `index` : means 3rd msg in .log file, and its offset = 497
 			- `Message 368772` in `log` : means it's 368772 rd msg in global partition
@@ -122,10 +122,10 @@
 - `request.required.acks` : how to acknowledge when kafka writes producers' messgage to its (kafka) copy
 - A tradeoff between efficiency (response speed) and reliability (fault tolerance) 
 - cases
-	- `ack = 1 (default)`: 
+	- `ack = 1 (default)`
 		- when producer -> kafka broker. if kafka leader comfirms msg received successfully -> Success, will lost data if leader down before followers sync
 	- `ack = 0`
-		- whenever roducer -> kafka broker, mark it as success. Highest speed, will lost data if broker down
+		- whenever producer -> kafka broker, mark it as success. Highest speed, will lost data if broker down
 	- `ack = -1 (or all)`
 		- when producer -> kafka broker, have to wait `leader and ALL followers' confirmation`. Slowest speed, but make sure NO data lost. 
 - Ref
@@ -158,7 +158,7 @@
 
 ### 11) Describe kafka limitation ?
 - auto scale : it's hard to scale down if scale out first (modify partition data in topics)
-- keep publish event in `global ordering`
+- keep published event in `ordering in global`
 
 ### 12) Explain why kafka can do high I/O ?
 - ordering read/write
