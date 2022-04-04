@@ -51,7 +51,8 @@
 		- set.md (OK)
 		- sliding_window.md (non LC example OK)
 		- sort.md (OK)
-		- stack.md
+		- stack.md (OK)
+		- string.md
 	- ================
 	- LC top 100 likes
 		- 032
