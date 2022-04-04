@@ -96,6 +96,8 @@
 
 ### 1'') How kafka find .log file via index ?
 
+### 1''') Explain how does zookeeper (ZK) work in kafka ? how kafka interact with offset via ZK ?
+
 ### 2) How does kafka implement `exactly once` ?
 
 ### 3) How kafka avoid data missing ?
