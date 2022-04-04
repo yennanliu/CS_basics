@@ -101,6 +101,13 @@ Apache Flink can be deployed and configured in the below ways.
 - For software upgrade, change conf. Can make flink restart from the last savepoint
 - Triggered by users
 - will keep existing until user delete
+- CAN recognize `savepoint` as a `special snapshot` of `checkpoint` in a specific time
+- Trigger way
+	- `flink savepoint` command
+	- `flink cancel -s` command, when cancel flink job
+	- via REST API : `**/jobs/:jobid /savepoints**`
+- Ref
+	- https://zhuanlan.zhihu.com/p/79526638
 
 ### 17. Explain flink `checkpoint` ?
 - checkpoint is a "false tolerance" mechanism
@@ -115,6 +122,15 @@ Apache Flink can be deployed and configured in the below ways.
 			- for each flink task, it will init a "CheckpointCoordinator"
 		- Flink will trigger "Barrier" periodically
 		- (check below)
+- low level mechanisms:
+	- 1) when checkpoint/savepoint triggered, get HDFS path based on its type
+	- 2) if savepoint:
+			- HDFS path = savepoint root path + savepoint-jobid-first-6-digit + random_num
+		 if checkpoint:
+		 	- checkpoint root path + other + checkpoint_numbers (??) (to fix)
+	- 3) there is `_metadata` file under savepoint (index for status doc)
+	- 4) can use various "status backend" for checkpoint storage
+
 - can disable checkpoint via `CheckpointConfig` setting
 	- DELETE_ON_CANCELLATION : delete checkpoint when program canceled
 	- RETAIN_ON_CANCELLATION : keep checkpoint when program canceled
