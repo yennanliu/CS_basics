@@ -53,7 +53,8 @@
 		- sort.md (OK)
 		- stack.md (OK)
 		- string.md (non LC example OK)
-		- topology_sorting.md
+		- topology_sorting.md (non LC example OK)
+		- tree.md
 	- ================
 	- LC top 100 likes
 		- 032
