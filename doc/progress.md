@@ -52,7 +52,8 @@
 		- sliding_window.md (non LC example OK)
 		- sort.md (OK)
 		- stack.md (OK)
-		- string.md
+		- string.md (non LC example OK)
+		- topology_sorting.md
 	- ================
 	- LC top 100 likes
 		- 032
