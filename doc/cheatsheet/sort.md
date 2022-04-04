@@ -3,15 +3,19 @@
 ## 0) Concept  
 
 ### 0-1) Types
-- Bubble sort
-- Quick sort
-- Insertion sort
-- Heap sort
-- Merge sort
-- Selection sort
+- [Bubble sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py)
+- [Quick sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)
+- [Insertion sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/insertion_sort.py)
+- [Heap sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/heap_sort.py)
+- [Merge sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py)
+- [Selection sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py)
 - [Topological sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py)
 
-### 0-2) Pattern
+### 0-2) Algorithm
+
+### 0-3) Trade-off and use-cases
+
+### 0-4) Pattern
 
 ## 1) General form
 
