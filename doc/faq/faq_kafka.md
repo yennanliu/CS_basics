@@ -189,7 +189,25 @@
 - why not use producer id (PID), but introduce TransactionalId ?
 	- producer id (PID) get refreshed when producer restart, so `we use TransactionalId make each event unique`
 - make sure "exactly once"
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/TransactionCoordinator1.png">
+- Implementation
+	- step 1) find `Tranaction Corordinator (TC)`
+		- producer sends `FindCoordinatorRequest` to a broker, then finds a TC, and gets its node_id, host, port
+	- step 2) init initTransaction
+		- producer sends `InitpidRequest` to TC, gets PID (producer ID), TC will record `<TransactionalId,pid>` to Transaction Log, state infromation (e.g. `Empty/Ongoing/PrepareCommit/PrepareAbort/CompleteCommit/CompleteAbort/Dead`) is also included
+		- Commit/Abort non-completed tasks
+		- add PIC with epoch, make transactional in producer
+	- step 3) begin Transaction
+		- run producer's `beginTransacion()`. Will mark a transaction as "start" state in local record. 
+	- step 4) read-process-write
+		- Once producer start sending event, TC will save `<Transaction, Topic, Partition>` to Transaction Log, and set it "start" state, also record the time.
+		- Broker will save sent event in its disk (without commit/abort). If there is an "abort", msg on broker will NOT be canceled, but changed state to "abort"
+	- step 5) commitTransaction/abortTransaction
+		- while producer run commit/abort, TC will do 2 phase commit
+			- phase 1 : modify Transaction log to `PREPARE_COMMIT` or `PREPARE_ABORT`
+			- phase 2 : modify all events written by Transaction Marker to committed or aborted
+		- once Transaction Marker complete writing, TC will write final status to Transaction log and mark such transaction is completed
+- pic
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/TransactionCoordinator1.png">
 - Ref
 	- https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9A,number%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5%E3%80%82
 
