@@ -138,6 +138,8 @@ Apache Flink can be deployed and configured in the below ways.
 	- JM triggers checkpoint periodically
 	- Once TM receive all CheckpointBarrier, it will start checkpoint op, once completed, TM will inform JM. ONLY when all sink operator finish their checkpoint, and send back to JM, such checkpoint is called completed
 		- in HA, checkpoint will be saved in ZK as well
+		- CheckpointBarrier is a special event, will flow to downstream operator, ONLY when skink operator receive it, we say checkpoint completed
+		- NOTE : CheckpointBarrier sync time also need to be considered
 	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint2.png">
 	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint3.png">
 - `CheckpointCoordinator` is an important class in Checkpoint op
@@ -148,18 +150,16 @@ Apache Flink can be deployed and configured in the below ways.
 		- restoreLatestCheckpointedState
 		- receiveAcknowledgeMessage
 	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint4.png">
-- low level mechanisms:
-	- 1) when checkpoint/savepoint triggered, get HDFS path based on its type
-	- 2) if savepoint:
-			- HDFS path = savepoint root path + savepoint-jobid-first-6-digit + random_num
-		 if checkpoint:
-		 	- checkpoint root path + other + checkpoint_numbers (??) (to fix)
-	- 3) there is `_metadata` file under savepoint (index for status doc)
-	- 4) can use various "status backend" for checkpoint storage
-
-- can disable checkpoint via `CheckpointConfig` setting
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint5.png">
+- Disable checkpoint via `CheckpointConfig` setting
 	- DELETE_ON_CANCELLATION : delete checkpoint when program canceled
 	- RETAIN_ON_CANCELLATION : keep checkpoint when program canceled
+- Common reasons why checkpoint fail:
+	- No exception handling on client/external system code
+		- e.g. json parse error, time out, exception on sink system
+	- freqent GC, Not enough memory -> cause OOM
+	- internet issues, machine issues
+- Things to care when set up checkpoint
 - Ref
 	- https://tech.youzan.com/flink_checkpoint_mechanism/
 	- https://zhuanlan.zhihu.com/p/79526638
