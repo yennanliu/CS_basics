@@ -2,9 +2,29 @@
 
 ## 0) Concept 
 
+- FAQ
+    - why hashmap search time complexity ~= O(1) ? explain ?
+        - TL;DR : O(1) is avg and best case. worst case could be O(N) (hash collision)
+        - hash func matters -> how to storage data & possible hash collision happens
+        - OP
+            - insert
+                - get key, get hash val via hash func
+                - find bucket in memory based on hash val
+                - save key and value in the bucket
+            - query
+                - get index based on key
+                - find bucket location based on index
+                    - NOTE !!! use bit op (`int pos = (n - 1) & hash`), so this op can be O(1) time complexity. (find bucket address directly, NO need to loop over all items)
+                - loop over all elements under that key (if there is one element, then do once)
+                - return value
+        - pic
+            <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/hash_map1.png" ></p>
+            <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/hash_map2.jpeg" ></p>
+        - [ref 1](https://blog.csdn.net/junqing_wu/article/details/104606619)
+        - [ref 2](https://blog.csdn.net/john1337/article/details/104727895)
+        - [ref 3](https://medium.com/@prinswu/time-complexity-of-hashmap-get-is-o-1-why-7b845390594#:~:text=%E4%B8%80%E8%88%AC%E5%B8%B8%E8%A6%8B%E7%9A%84%E8%A7%A3%E9%87%8B%EF%BC%8CHashMap,%E5%87%BA%E4%BE%86(%E6%9C%80%E4%BD%B3%E7%8B%80%E6%B3%81%E3%80%82)
 - Ref
     - [prefix_sum.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/prefix_sum.md) 
-
 ### 0-1) Types
 - N sum:
     - [n_sum.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md)

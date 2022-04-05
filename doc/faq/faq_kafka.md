@@ -149,9 +149,9 @@
 ### 8) Explain kafka's Idempotence (冪等性)
 - Idempotence -> when run same process multiple times, the result SHOULD BE THE SAME
 - "Exactly once". data from kafka will only be consumed ONCE, no data loss, no duplication
+- kafka gives each producer a PID, also maintain a `<PID, Partition> -> partition` mapping for each Partition in each producer
 - Can ONLY make sure Idempotence inside producer, can't guarantee if producer down and restart
 - Can ONLY make sure Idempotence inside single partition, can't across topic-partition.
-- If want to guarantee across topic-partition -> need to use `transactional (事務性)`
 - core concept : PID（Producer ID), sequence number
 - Implementation
 	- Producer
