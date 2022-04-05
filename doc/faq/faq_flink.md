@@ -23,6 +23,7 @@
 	- client server that takes code for to-run program, creates a job dataflow graph, which is then passed to JM (job manager).
 - Job manager (JM)
 	- It is responsible for generating the execution graph after obtaining the Job Dataflow Graph from the Client. It assigns the job to TaskManagers in the cluster and monitors its execution.
+	- trigger `Checkpoint` periodically
 - Task manager (TM)
 	- It is in charge of executing all of the tasks assigned to it by JobManager. Both TaskManagers execute the tasks in their respective slots in the specified parallelism. It is in charge of informing JobManager about the status of the tasks.
 
@@ -102,10 +103,11 @@ Apache Flink can be deployed and configured in the below ways.
 		- commit
 			- move tmp file to actual dest path. May have some delay
 	- NOTE : external system also needs to have "transaction" mechanism, so can have end-to-end "exactly once"
-- https://segmentfault.com/a/1190000022891333
-- https://flink.apache.org/features/2018/03/01/end-to-end-exactly-once-apache-flink.html
-- https://eng.uber.com/real-time-exactly-once-ad-event-processing/
-- https://zhuanlan.zhihu.com/p/266620519
+- Ref
+	- https://segmentfault.com/a/1190000022891333
+	- https://flink.apache.org/features/2018/03/01/end-to-end-exactly-once-apache-flink.html
+	- https://eng.uber.com/real-time-exactly-once-ad-event-processing/
+	- https://zhuanlan.zhihu.com/p/266620519
 
 ### 16. Explain flink `savepoint` ?
 - `savepoint` is a "global backup" of flink status of a timestamp moment
@@ -121,18 +123,31 @@ Apache Flink can be deployed and configured in the below ways.
 	- https://zhuanlan.zhihu.com/p/79526638
 
 ### 17. Explain flink `checkpoint` ?
-- checkpoint is a "false tolerance" mechanism
+- checkpoint save current flink status, is a "false tolerance" mechanism
+	- flink status
+		- Operator status : e.g. offset
+		- KeyedState status : e.g. : MapState、ListState、ValueState
 - make sure flink can auto-recover when error/exception during running
+- example : if flink failed on chk-5, then it will try to recover from chk-4
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint1.jpeg">
 - managed/op by flink. Users only need to define parameter
 - Auto op by flink
 - default `concurrent = 1` -> there is ONLY ONE runs per flink app
-- when a Flink DataStream runs
-	- steps:
-		- StreamGraph -> JobGraph -> ExecutionGraph -> physical DAG
-			- when "ExecutionGraph" init, "CheckpointCoordinator" get init as well
-			- for each flink task, it will init a "CheckpointCoordinator"
-		- Flink will trigger "Barrier" periodically
-		- (check below)
+- 3 components work on checkpoint : JM, TM, ZK
+- Mechanisms
+	- JM triggers checkpoint periodically
+	- Once TM receive all CheckpointBarrier, it will start checkpoint op, once completed, TM will inform JM. ONLY when all sink operator finish their checkpoint, and send back to JM, such checkpoint is called completed
+		- in HA, checkpoint will be saved in ZK as well
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint2.png">
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint3.png">
+- `CheckpointCoordinator` is an important class in Checkpoint op
+	- it has below important methods
+		- triggerCheckpoint
+		- triggerSavepoint
+		- restoreSavepoint
+		- restoreLatestCheckpointedState
+		- receiveAcknowledgeMessage
+	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint4.png">
 - low level mechanisms:
 	- 1) when checkpoint/savepoint triggered, get HDFS path based on its type
 	- 2) if savepoint:
@@ -146,6 +161,7 @@ Apache Flink can be deployed and configured in the below ways.
 	- DELETE_ON_CANCELLATION : delete checkpoint when program canceled
 	- RETAIN_ON_CANCELLATION : keep checkpoint when program canceled
 - Ref
+	- https://tech.youzan.com/flink_checkpoint_mechanism/
 	- https://zhuanlan.zhihu.com/p/79526638
 
 ### 17' Explain flink `Barrier` ?
