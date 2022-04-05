@@ -208,17 +208,30 @@
 ### 13) Explain JVM instance structure ?
 
 ### 14) Common JVM command ?
-- jps 
-- jstat 
-- jmap 
-- jhat 
-- jstack 
+- jps
+	- JVM Process Status Tool, show all system's hotspot threads in JVM
+- jstat
+	- JVM statistics Monitoring. Monitor JVM running status, can show class loading, inner memory GC, JIT
+- jmap
+	- JVM Memory Map. For creating heap dump doc
+- jhat
+	- JVM Heap Analysis. Use with jmap. analyze jmap's dump output. there is a HTTP/HTML server in jhat, can view view browser
+- jstack
+	- Create current JVM thread shanshot
 - jinfo
+	- JVM Configuration Info. Check/modify JVM running parameters in real-time 
 
 ### 15) Common JVM tune command ?
 - jconsole
+	- Java Monitoring and Management Console
+	- java default too, for memory, thread, GC monitoring
 - jvisualvm
-- MAT(Memory Analyzer Tool)、GChisto
+	- JDK default too, can record memory/thread/ snapshot, monitor GC
+- MAT
+	- Memory Analyzer Tool
+	- analyze JVM heap usage, can find memory leakage, usage
+- GChisto
+	- analyze GC log tool
 
 ### 16) Common JVM tune parameter ?
 - `Xms` : min of java heap
