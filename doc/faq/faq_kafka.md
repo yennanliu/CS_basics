@@ -146,20 +146,48 @@
 
 ### 7) Steps when a consumer consumes a kafka topic ?
 
-### 8) Explain kafka's (冪等性)
+### 8) Explain kafka's Idempotence (冪等性)
+- Idempotence -> when run same process multiple times, the result SHOULD BE THE SAME
+- "Exactly once". data from kafka will only be consumed ONCE, no data loss, no duplication
+- Can ONLY make sure Idempotence inside producer, can't guarantee if producer down and restart
+- Can ONLY make sure Idempotence inside single partition, can't across topic-partition.
+- If want to guarantee across topic-partition -> need to use `transactional (事務性)`
+- core concept : PID（Producer ID), sequence number
+- Implementation
+	- Producer
+		- `PID（Producer ID)` : 
+			- recognize each producer client
+			- every producer gets a global unique PID when init
+			- if producer resrart, it will get a new PID
+			- for each PID,  sequence number starts from 0
+			- each topic-partition has a independent sequence number
+			- apply PID via ZK:
+				- step 1) get `/latest_producer_id_block` from zk for lastest allocated PID
+				- step 2) if such node is new, start PID from 0 (0-1000), get 1000 PID at once (default)
+				- step 3) if such node existed, get its data, get PID based on block_end
+				- step 4) get PID, and write such inform back to ZK, it writes success -> whole process OK, if fail, means maybe node already updated/other, will redo from step 1)
+		- `Sequence number` : 
+			- every msg (from producer client) has this value, for checking if a record is duplicated
 - Ref
 	- https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9A,number%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5%E3%80%82
-	- http://matt33.com/2018/10/24/kafka-idempotent/
 
-### 9) Explain kafka's (事務性)
+### 9) Explain kafka's transactional (事務性)
+- `ATOM` property -> ONLY when ALL ops success, then commit and say these ops are success, else -> rollback
+- make sure "exactly once"
+- Ref
+	- https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9A,number%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5%E3%80%82
 
 ### 10) Explain AR（Assigned Replicas), ISR (In-sync replica), and OSR（Out-of-Sync Replicas）?
+- AR（Assigned Replicas)
+- ISR (In-sync replica)
+- OSR（Out-of-Sync Replicas）
 - Ref
 	- http://hk.noobyard.com/article/p-azlfvsay-mq.html
 	- https://www.gushiciku.cn/pl/pTAJ/zh-tw
 
 ### 11) Describe kafka limitation ?
 - auto scale : it's hard to scale down if scale out first (modify partition data in topics)
+	- can have 2 kafka clusters, if one wants to scale up/down still. (Use the other service request first, avoid downtime)
 - keep published event in `ordering in global`
 
 ### 12) Explain why kafka can do high I/O ?
