@@ -76,12 +76,13 @@
 			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_copy.png">
 
 		- `Generation collection`
+			- implement above algorithm to young, old generation seperately
 			- after Java 1.3
 			- mechanisms:
 				- step 1) new instances storaged in Young Generation, when it's full, will trigger minor GC
-				- step 2) move survived instances to FromSpace.
+				- step 2) move survived instances to FromSpace (survivor 0).
 				- step 3) when FromSpace full, trigger minor GC
-				- step 4) move survived instances to ToSpace.
+				- step 4) move survived instances to ToSpace (survivor 1).
 				- ....
 				- step 5) move still-survived instances to Old Generation
 			- Young Generation
@@ -101,7 +102,7 @@
 				- there is also GC here. "major GC"
 - properties:
 	- GC process is a `local priority`, `independent` thread
-	- JVM GC is an automatic mechanism. we can also manually trigger it : `System.gc();`
+	- JVM GC is an automatic mechanism. we can also manually trigger it : `System.gc();` (but NOT recommended)
 - Ref
 	- https://www.jyt0532.com/2020/03/12/garbage-collector/
 	- https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)
@@ -165,7 +166,7 @@
 			- if there is parent class which is not init yet -> init this parent class first
 			- init "init code" in class in order
 - Important methods
-	- loadClass() : load target c;ass, will check if current ClassLoader or its parent already have it. If not, will call findClass()
+	- loadClass() : load target class, will check if current ClassLoader or its parent already have it. If not, will call findClass()
 	- findClass() : can load user-defined class
 	- defineClass() : when findClass() get class, defineClass() will transfrom such class to .class instance
 - Pics
