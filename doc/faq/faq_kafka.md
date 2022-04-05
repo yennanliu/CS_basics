@@ -4,7 +4,7 @@
 - Feature
 	- kafka is a sustainable `distributed` pub-sub (publish-subscribe) message system
 	- developed by Linkedin via scala
-	- can work with both online and offlie msg. Data saved on disk with replica -> prevent data lost
+	- can work with both online and offline msg. Data saved on disk with replica -> prevent data lost
 - Component
 	- `Broker`
 		- kafka cluster has many nodes
@@ -99,23 +99,28 @@
 ### 1''') Explain how does zookeeper (ZK) work in kafka ? how kafka interact with offset via ZK ?
 
 ### 2) How does kafka implement `exactly once` ?
+- please check below ` Idempotence (冪等性)`, ` transactional (事務性)`
+- TL;DR
+	- PID (producer ID), sequence number
+	- transaction
 
 ### 3) How kafka avoid data missing ?
 - Producer 
+	- Via `ACK`
 	- Can use `sync`, `async` mode send data to kafka
 	- Mode
-	- Sync mode
-		- send a batch data to kafka, wait for kafka's response
-			- producer wait 10 sec (?), if no ACK response, mark as failure
-			- producer retry 3 times (?), if no ACK response, mark as failure
-	- Async mode
-		- send a batch data to kafka, ONLY offer a `callback()` method
-		- save data in producer's buffer first, buffer size is about 20k
-		- if meat threshold, then can send data (to kafka)
-		- size of batch data is about 500
-		- NOTE : if there is no ACK from kafka broker, but producer buffer is full, developer can decide mechanisms whether clean buffer or not (programmatically)
-- Producer
-	- Use `Partition replicas` avoid data missing
+		- Sync
+			- send a batch data to kafka, wait for kafka's response
+				- producer wait 10 sec (?), if no ACK response, mark as failure
+				- producer retry 3 times (?), if no ACK response, mark as failure
+		- Async
+			- send a batch data to kafka, ONLY offer a `callback()` method
+			- save data in producer's buffer first, buffer size is about 20k
+			- if meat threshold, then can send data (to kafka)
+			- size of batch data is about 500
+			- NOTE : if there is no ACK from kafka broker, but producer buffer is full, developer can decide mechanisms whether clean buffer or not (programmatically)
+- Broker
+	- Via `Partition replicas` avoid data missing
 - Consumer
 	- Each consumer record/maintain its own offset. can avoid data missing
 	- We can save offset on client's file system, DB, Redis...
