@@ -91,6 +91,17 @@ Apache Flink can be deployed and configured in the below ways.
 - `distributed snapshot`
 - `2 phases commit`
 	- TwoPhaseCommitSinkFunction
+- Steps)
+	- step 1) for each checkpoint, flink will start a "transaction", add all inform to the transaction
+		- beginTransaction
+			- before transaction, create a tmp file, write data into it first
+	- step 2) when data sink to external system, not commit, but `pre-commit`
+		- pre-commit
+			- "flush" in-memory data into tmp file, then close file. repeat this step to next checkpoint
+	- step 3) when flink receive checkpoint's confirmation, commit the transaction, data is then "really" written to external system
+		- commit
+			- move tmp file to actual dest path. May have some delay
+	- NOTE : external system also needs to have "transaction" mechanism, so can have end-to-end "exactly once"
 - https://segmentfault.com/a/1190000022891333
 - https://flink.apache.org/features/2018/03/01/end-to-end-exactly-once-apache-flink.html
 - https://eng.uber.com/real-time-exactly-once-ad-event-processing/
