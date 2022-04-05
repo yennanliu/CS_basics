@@ -55,7 +55,8 @@
 		- string.md (non LC example OK)
 		- topology_sorting.md (non LC example OK)
 		- tree.md (non LC example OK)
-		- trie.md
+		- trie.md (non LC example OK)
+		- union_find.md
 	- ================
 	- LC top 100 likes
 		- 032
