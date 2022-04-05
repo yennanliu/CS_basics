@@ -148,14 +148,19 @@
 
 ### 8) Explain kafka's Idempotence (冪等性)
 - Idempotence -> when run same process multiple times, the result SHOULD BE THE SAME
-- "Exactly once". data from kafka will only be consumed ONCE, no data loss, no duplication
-- kafka gives each producer a PID, also maintain a `<PID, Partition> -> partition` mapping for each Partition in each producer
+- core concept : PID（Producer ID), sequence numbe
+- kafka gives each producer a PID, also maintain a `<PID, Partition> -> sequence number` mapping for each Partition in each producer
 - Can ONLY make sure Idempotence inside producer, can't guarantee if producer down and restart
-- Can ONLY make sure Idempotence inside single partition, can't across topic-partition.
-- core concept : PID（Producer ID), sequence number
+- Can ONLY make sure Idempotence inside single partition, can't across topic-partition.r
 - Implementation
+	- Broker
+		- when get event
+			- If `sequence number = "<PID, Partition>"'s sequence number + 1 `: broker accept this event
+			- If `sequence number < "<PID, Partition>"'s sequence number`: duplicated event, broker will neglect it
+			- If `sequence number > "<PID, Partition>"'s sequence number`: there is data missing, broker will raise `OutOfOrderSequenceException` exception
 	- Producer
-		- `PID（Producer ID)` : 
+		- `PID（Producer ID)` :
+			- use `Properties.put(“enable.idempotence”,true);` enable Idempotence
 			- recognize each producer client
 			- every producer gets a global unique PID when init
 			- if producer resrart, it will get a new PID
@@ -172,10 +177,23 @@
 	- https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9A,number%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5%E3%80%82
 
 ### 9) Explain kafka's transactional (事務性)
-- `ATOM` property -> ONLY when ALL ops success, then commit and say these ops are success, else -> rollback
+- offer "partition writing" `ATOM` -> ONLY when ALL ops success, then commit and say these ops are success, else -> rollback (e.g. ALL success or ALL failure)
+- core concept :
+	- TransactionalId
+	-  `_transaction_state（Topic)`
+	- Producer epoch
+	- ControlBatch (aka Control Mesage, Transaction Marker)
+		- special event sent from producer to kafka topic.
+		- 2 types: COMMIT, ABORT (commuit success or not)
+	- TransactionCoordinator
+- why not use producer id (PID), but introduce TransactionalId ?
+	- producer id (PID) get refreshed when producer restart, so `we use TransactionalId make each event unique`
 - make sure "exactly once"
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/TransactionCoordinator1.png">
 - Ref
 	- https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9A,number%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5%E3%80%82
+
+### 9') Explain Transaction Coordinator and it mechanism ?
 
 ### 10) Explain AR（Assigned Replicas), ISR (In-sync replica), and OSR（Out-of-Sync Replicas）?
 - AR（Assigned Replicas)
