@@ -153,10 +153,10 @@
 
 ### 8) Explain kafka's Idempotence (冪等性)
 - Idempotence -> when run same process multiple times, the result SHOULD BE THE SAME
-- core concept : PID（Producer ID), sequence numbe
+- core concept : PID（Producer ID), sequence number
 - kafka gives each producer a PID, also maintain a `<PID, Partition> -> sequence number` mapping for each Partition in each producer
 - Can ONLY make sure Idempotence inside producer, can't guarantee if producer down and restart
-- Can ONLY make sure Idempotence inside single partition, can't across topic-partition.r
+- Can ONLY make sure Idempotence inside single partition, can't across topic-partition
 - Implementation
 	- Broker
 		- when get event
@@ -175,7 +175,7 @@
 				- step 1) get `/latest_producer_id_block` from zk for lastest allocated PID
 				- step 2) if such node is new, start PID from 0 (0-1000), get 1000 PID at once (default)
 				- step 3) if such node existed, get its data, get PID based on block_end
-				- step 4) get PID, and write such inform back to ZK, it writes success -> whole process OK, if fail, means maybe node already updated/other, will redo from step 1)
+				- step 4) get PID, and write such inform back to ZK, if writes success -> whole process OK, if fail, means maybe node already updated/other, will redo from step 1)
 		- `Sequence number` : 
 			- every msg (from producer client) has this value, for checking if a record is duplicated
 - Ref
@@ -200,7 +200,7 @@
 	- step 2) init initTransaction
 		- producer sends `InitpidRequest` to TC, gets PID (producer ID), TC will record `<TransactionalId,pid>` to Transaction Log, state infromation (e.g. `Empty/Ongoing/PrepareCommit/PrepareAbort/CompleteCommit/CompleteAbort/Dead`) is also included
 		- Commit/Abort non-completed tasks
-		- add PIC with epoch, make transactional in producer
+		- add PIC with epoch, make transaction in producer
 	- step 3) begin Transaction
 		- run producer's `beginTransacion()`. Will mark a transaction as "start" state in local record. 
 	- step 4) read-process-write
