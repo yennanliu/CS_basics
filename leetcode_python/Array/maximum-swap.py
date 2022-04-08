@@ -48,11 +48,21 @@ Constraints:
 # Out[36]: ['1', '2', '3', '4']
 class Solution(object):
     def maximumSwap(self, num):
-        # BE AWARE OF IT 
+        """
+        NOTE !!!
+         -> we use 3 index : 
+            l, r, max_idx
+            and init them as below:
+
+            l = 0
+            r = 0
+            max_idx = len(num) - 1
+        """
         digits = list(str(num))
         left, right = 0, 0
         ### NOTE !!! we set max_idx = len(digits)-1
         max_idx = len(digits)-1
+        # NOTE !!! we loop over array in INVERSE ordering
         for i in range(len(digits))[::-1]:
             ### NOTE !!!
             if digits[i] > digits[max_idx]:
