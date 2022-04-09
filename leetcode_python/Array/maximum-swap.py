@@ -27,7 +27,39 @@ Constraints:
 
 """
 
-# V0 
+# V0
+# IDEA : 3 pointers + array op
+# IDEA : 3 pointers + array op
+# -> MAINTAIN 3 pointers : left, right, and max_idx
+# -> AND GO THROUGH FROM max idx to 0 idx
+# -> DURING GO THROUGH, COMPARE THE digits[max_idx] and digits[i]
+#    -> if digits[max_idx] > digits[i] : do nothing
+#    -> elif digits[max_idx] < digits[i] : update left, right = i, max_idx
+# -> FINALLY, swap digits[left] and digits[right]
+#
+# SET UP 2 INDEX : LEFT, RIGHT. FOR COMPARING WITH CURRENT INDEX AND SAVE MAX INDEX 
+# SINCE WE ARE ONLY ALLOWED TO SWAP ONCE TO GET THE MAX VALUE
+# SO WE KEEP UPDATING THE LEFT AND RIGHT INDEX AND GO THOROUGH ALL GIVEN NUM  
+class Solution(object):
+    def maximumSwap(self, num):
+        # edge case
+        if not num:
+            return num
+        num = list(str(num))
+        l = 0
+        r = 0
+        _max_idx = len(num)-1
+        for i in range(len(num))[::-1]:
+            if int(num[i]) > int(num[_max_idx]):
+                _max_idx = i
+            elif int(num[i]) < int(num[_max_idx]):
+                l = i
+                r = _max_idx
+        #print ("l = " + str(l) + " r = " + str(r))
+        num[l], num[r] = num[r], num[l]
+        return int("".join(num))
+
+# V0'
 # IDEA : 3 pointers + array op
 # -> MAINTAIN 3 pointers : left, right, and max_idx
 # -> AND GO THROUGH FROM max idx to 0 idx
@@ -74,7 +106,7 @@ class Solution(object):
         digits[left], digits[right] = digits[right], digits[left] # swap left and right when loop finished 
         return int("".join(digits))
 
-# V0'
+# V0''
 # IDEA : BRUTE FORCE
 # NOTE : ans = A[:]
 #        A[:] is a `shallow copy` syntax in python,
