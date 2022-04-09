@@ -36,24 +36,6 @@ Follow up: Can you come up with an algorithm that runs in O(n log(n)) time compl
 
 """
 
-# V9
-# IDEA : ARRAY
-class Solution:
-    def lengthOfLIS(self, nums):
-        sub = [nums[0]]
-        
-        for num in nums[1:]:
-            if num > sub[-1]:
-                sub.append(num)
-            else:
-                # Find the first element in sub that is greater than or equal to num
-                i = 0
-                while num > sub[i]:
-                    i += 1
-                sub[i] = num
-
-        return len(sub)
-
 # V0
 # IDEA : DP 
 # DP equation : 
@@ -73,11 +55,32 @@ class Solution:
         dp = [1] * len(nums)
         for i in range(len(nums)):
             for j in range(i):
+                """
+                NOTE !!! we ONLY need to deal with "if nums[i] > nums[j]" condition
+                """
                 if nums[i] > nums[j]:
                     dp[i] = max(dp[i], dp[j]+1)
         return max(dp)
 
 # V0'
+# IDEA : ARRAY
+class Solution:
+    def lengthOfLIS(self, nums):
+        sub = [nums[0]]
+        
+        for num in nums[1:]:
+            if num > sub[-1]:
+                sub.append(num)
+            else:
+                # Find the first element in sub that is greater than or equal to num
+                i = 0
+                while num > sub[i]:
+                    i += 1
+                sub[i] = num
+
+        return len(sub)
+
+# V0''
 # IDEA : DP 
 # time complexity : O(n^2), space complexity : O(n)
 class Solution(object):
@@ -97,7 +100,7 @@ class Solution(object):
             dp[i] = tmax
         return max(dp) 
 
-# V0''
+# V0'''
 # IDEA : improve With Binary Search
 # https://leetcode.com/problems/longest-increasing-subsequence/solution/
 class Solution:
