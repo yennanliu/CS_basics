@@ -32,13 +32,34 @@ class Solution:
     def findLeastNumOfUniqueInts(self, arr, k):
         num_counter = Counter(arr)
         remove_ele = []
-        for key, freq in sorted(num_counter.items(), key = lambda x : x[1]):
+        _num_counter = sorted(num_counter.items(), key = lambda x : x[1])
+        for key, freq in _num_counter:
+            """
+            NOTE !!!
+                -> we need to remove exactly k elements and make remain unique integers as less as possible
+                -> since we ALREADY sort num_counter,
+                -> so the elements NOW are ordering with their count
+                    -> so we need to remove ALL element while k still > 0
+                    -> so k -= freq, since for element key, there are freq count for it in arr
+            """
             if freq <= k:
                 k -= freq
                 remove_ele.append(key)
         return len(num_counter) - len(remove_ele)
 
 # V0'
+# IDEA : Counter
+class Solution:
+    def findLeastNumOfUniqueInts(self, arr, k):
+        num_counter = Counter(arr)
+        remove_ele = []
+        for key, freq in sorted(num_counter.items(), key = lambda x : x[1]):
+            if freq <= k:
+                k -= freq
+                remove_ele.append(key)
+        return len(num_counter) - len(remove_ele)
+
+# V0''
 # IDEA : Counter + heapq
 class Solution(object):
     def findLeastNumOfUniqueInts(self, arr, k):
@@ -193,5 +214,30 @@ class Solution:
             k -= 1
         
         return len(minHeap)
+
+# V1'''''''
+# IDEA : GREEDY
+# https://zxi.mytechroad.com/blog/hashtable/leetcode-1481-least-number-of-unique-integers-after-k-removals/
+# C++
+# class Solution {
+# public:
+#   int findLeastNumOfUniqueInts(vector<int>& arr, int k) {    
+#     unordered_map<int, int> c;
+#     for (int x : arr) ++c[x];
+#     vector<int> m; // freq
+#     for (const auto [x, f] : c)
+#       m.push_back(f);
+#     sort(begin(m), end(m));
+#     int ans = m.size();    
+#     int i = 0;
+#     while (k--) {
+#       if (--m[i] == 0) {
+#         ++i;
+#         --ans;
+#       }
+#     }
+#     return ans;
+#   }
+# };
 
 # V2
