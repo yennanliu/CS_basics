@@ -506,22 +506,63 @@ class Solution:
 ### 2-7) Maximum Number of Events That Can Be Attended
 ```python
 # LC 1353. Maximum Number of Events That Can Be Attended
-# V1
-class Solution(object):
-    def maxEvents(self, A):
-            A.sort(reverse=True)
-            h = []
-            res = d = 0
-            while A or h:
-                if not h: d = A[-1][0]
-                while A and A[-1][0] <= d:
-                    heapq.heappush(h, A.pop()[1])
+# V0
+# IDEA : PRIORITY QUEUE
+# NOTE !!!
+# We just need to attend d where startTimei <= d <= endTimei, then we CAN attend the meeting
+# startTimei <= d <= endTimei. You can only attend one event at any time d.
+class Solution:
+    def maxEvents(self, events: List[List[int]]) -> int:
+        # algorithm: greedy+heap
+        # step1: loop from min to max day
+        # step2: each iteration put the candidates in the heap
+        # step3: each iteration eliminate the ineligibility ones from the heap
+        # step4: each iteration choose one event attend if it is possible
+        # time complexity: O(max(n1logn1, n2))
+        # space complexity: O(n1)
+        events.sort(key = lambda x: -x[0])
+        h = []
+        ans = 0
+        minDay = 1 #events[-1][0]
+        maxDay = 100001 #max(x[1] for x in events) + 1
+        for day in range(minDay, maxDay):
+            # add all days that can start today
+            while events and events[-1][0] <= day:
+                heapq.heappush(h, events.pop()[1])
+            
+            # remove all days that cannot start
+            while h and h[0]<day:
                 heapq.heappop(h)
-                res += 1
-                d += 1
-                while h and h[0] < d:
-                    heapq.heappop(h)
-            return res
+            
+            # if can attend meeting
+            if h:
+                heapq.heappop(h)
+                ans += 1            
+        return ans
+
+# V0'
+# IDEA : PRIORITY QUEUE
+# NOTE !!!
+# We just need to attend d where startTimei <= d <= endTimei, then we CAN attend the meeting
+# startTimei <= d <= endTimei. You can only attend one event at any time d.
+class Solution:
+    def maxEvents(self, events):
+        events.sort(key = lambda x: (-x[0], -x[1]))
+        endday = []
+        ans = 0
+        for day in range(1, 100001, 1):
+            # check if events is not null and  events start day = day (events[-1][0] == day)
+            # if above conditions are True, we insert "events.pop()[1]" to endday 
+            while events and events[-1][0] == day:
+                heapq.heappush(endday, events.pop()[1])
+            # check if endday is not null, if first day in endday < day, then we pop its element
+            while endday and endday[0] < day:
+                heapq.heappop(endday)
+            # if there is still remaining elements in endday -> means we CAN atten the meeting, so ans += 1 
+            if endday:
+                ans += 1
+                heapq.heappop(endday)
+        return  ans
 ```
 
 ### 2-8) Maximum Frequency Stack
