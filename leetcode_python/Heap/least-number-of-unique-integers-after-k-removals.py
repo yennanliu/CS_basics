@@ -28,6 +28,33 @@ Constraints:
 
 # V0
 # IDEA : Counter
+from collections import Counter
+class Solution:
+    def findLeastNumOfUniqueInts(self, arr, k):
+        # edge case
+        if not arr:
+            return 0
+        cnt = dict(Counter(arr))
+        cnt_sorted = sorted(cnt.items(), key = lambda x : x[1])
+        #print ("cnt_sorted = " + str(cnt_sorted))
+        removed = 0
+        for key, freq in cnt_sorted:
+            """
+            NOTE !!!
+                -> we need to remove exactly k elements and make remain unique integers as less as possible
+                -> since we ALREADY sort num_counter,
+                -> so the elements NOW are ordering with their count
+                    -> so we need to remove ALL element while k still > 0
+                    -> so k -= freq, since for element key, there are freq count for it in arr
+            """
+            if freq <= k:
+                k -= freq
+                removed += 1
+
+        return len(cnt.keys()) - removed
+
+# V0
+# IDEA : Counter
 class Solution:
     def findLeastNumOfUniqueInts(self, arr, k):
         num_counter = Counter(arr)
