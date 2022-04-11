@@ -481,7 +481,7 @@
 ## Heap 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note  | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-264| [Ugly Number II](https://leetcode.com/problems/ugly-number-ii/) | [python](./leetcode_python/Heap/ugly-number-ii.py)   | _O(n)_ | _O(1)_ | Medium| LC 313, CTCI, LintCode , DP, Heap | AGAIN*** (3)
+264| [Ugly Number II](https://leetcode.com/problems/ugly-number-ii/) | [python](./leetcode_python/Heap/ugly-number-ii.py)   | _O(n)_ | _O(1)_ | Medium| LC 263, LC 313, CTCI, LintCode , DP, Heap | AGAIN*** (3)
 313| [Super Ugly Number](https://leetcode.com/problems/super-ugly-number/) | [python](./leetcode_python/Heap/super-ugly-number.py)   | _O(n * k)_ | _O(n + k)_ | Medium     | BST, Heap | AGAIN (not start*)
 373 | [Find K Pairs with Smallest Sums](https://leetcode.com/problems/find-k-pairs-with-smallest-sums/) | [python](./leetcode_python/Heap/find-k-pairs-with-smallest-sums.py)  | _O(k * log(min(n, m, k)))_ | _O(min(n, m, k))_ | Medium || AGAIN (not start)
 378 | [Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) | [python](./leetcode_python/Heap/kth-smallest-element-in-a-sorted-matrix.py)  | _O(k * log(min(n, m, k)))_ | _O(min(n, m, k))_ | Medium | LintCode | AGAIN (not start)
@@ -635,7 +635,7 @@
 172| [Factorial Trailing Zeroes](https://leetcode.com/problems/factorial-trailing-zeroes/) | [Python](./leetcode_python/Math/factorial-trailing-zeroes.py)  | _O(1)_ | _O(1)_ | Easy |`basic`, `iteration`, `recursion`| AGAIN* (2)
 223| [Rectangle Area](https://leetcode.com/problems/rectangle-area/) |  [Python](./leetcode_python/Math/rectangle-area.py)  | _O(1)_ | _O(1)_ | Easy   || AGAIN 
 258| [Add Digits](https://leetcode.com/problems/add-digits/) | [Python](./leetcode_python/Math/add-digits.py) | _O(1)_ | _O(1)_ | Easy         || AGAIN 
-263| [Ugly Number](https://leetcode.com/problems/ugly-number/) | [Python](./leetcode_python/Math/ugly-number.py) | _O(1)_ | _O(1)_ | Easy         || OK*
+263| [Ugly Number](https://leetcode.com/problems/ugly-number/) | [Python](./leetcode_python/Math/ugly-number.py) | _O(1)_ | _O(1)_ | Easy|math| OK* (2)
 273| [ Integer to English Words](https://leetcode.com/problems/integer-to-english-words/) | [Python](./leetcode_python/Math/integer-to-english-words.py) | _O(1)_ | _O(1)_ | Hard |`amazon`, passed| not start
 292| [Nim Game](https://leetcode.com/problems/nim-game/) |[Python](./leetcode_python/Math/nim-game.py)  | _O(1)_ | _O(1)_ | Easy      | LintCode | OK* 
 319 | [Bulb Switcher](https://leetcode.com/problems/bulb-switcher/) | [Python](./leetcode_python/Math/bulb-switcher.py) | _O(1)_ | _O(1)_ | Medium || AGAIN 
