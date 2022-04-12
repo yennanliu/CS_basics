@@ -275,7 +275,32 @@ class Twitter(object):
 ### 2-1) Kth Largest Element in a Stream
 ```python
 # 703 Kth Largest Element in a Stream
+
 # V0
+# IDEA : HEAP
+# NOTE !!! : we ONLY need to return k biggest element
+#           -> we ONLY need to keep at most k element
+#               -> if element more than k, then pop element out
+#                   -> then return 0 element directly
+import heapq
+class KthLargest:
+
+    def __init__(self, k, nums):
+        self.k = k
+        heapq.heapify(nums)
+        self.heap = nums
+        while len(self.heap) > k:
+            heapq.heappop(self.heap)
+
+    def add(self, val):
+        if len(self.heap) < self.k:
+            heapq.heappush(self.heap, val)
+        else:
+            heapq.heappushpop(self.heap, val)
+            
+        return self.heap[0]
+
+# V0'
 # IDEA : heap op
 class KthLargest(object):
 
