@@ -43,6 +43,36 @@ Follow up: Could you find an O(nums1.length + nums2.length) solution?
 """
 
 # V0
+# IDEA : STACK (for + while loop)
+class Solution(object):
+    def nextGreaterElement(self, nums1, nums2):
+        # edge case
+        if not nums2 or (not nums1 and not nums2):
+            return nums1
+        res = []
+        # NOTE : the trick here (found as a flag)
+        found = False
+        for i in nums1:
+            #print ("i = " + str(i) + " res = " + str(res))
+            idx = nums2.index(i)
+            # start from "next" element in nums2
+            # here we init tmp _nums2
+            _nums2 = nums2[idx+1:]
+            # while loop keep pop _nums2 for finding the next bigger element
+            while _nums2:
+                tmp = _nums2.pop(0)
+                # if found, then append to res, and break the while loop directly
+                if tmp > i:
+                    found = True
+                    res.append(tmp)
+                    break
+            # if not found, we need to append -1 to res
+            if not found:
+                res.append(-1)
+            found = False
+        return res
+
+# V0'
 # IDEA : double for loop (one of loops is INVERSE ORDERING) + case conditions op
 class Solution(object):
     def nextGreaterElement(self, nums1, nums2):
