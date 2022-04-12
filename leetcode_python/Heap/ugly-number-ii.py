@@ -32,12 +32,16 @@ Constraints:
 # using brute force is too slow -> time out error
 # -> so here we generate "ugly number" by ourself, and order them via heap (heappush)
 # -> and return the i-th element as request
+import heapq
 class Solution(object):
     def nthUglyNumber(self, n):
+        # NOTE : we init heap as [1], visited = set([1])
         heap = [1]
         visited = set([1])      
         for i in range(n):
+            # NOTE !!! trick here, we use last element via heappop
             val = heapq.heappop(heap)
+            # and we genrate ugly by ourself
             for factor in [2,3,5]:
                 if val*factor not in visited:
                     heapq.heappush(heap, val*factor)
