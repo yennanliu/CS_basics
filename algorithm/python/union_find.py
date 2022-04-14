@@ -8,12 +8,12 @@ class UnionFind:
 
     def __init__(self, n):
         self.count = n
-        self.parent = [None] * n
-        self.size = [None] * n
+        #self.parent = [None] * n
+        self.parent = [i for i in range(n)]
 
-        for i in range(len(n)):
-            self.parent[i] = i
-            self.size = 1
+        # for i in range(len(n)):
+        #     self.parent[i] = i
+        #     self.size = 1
 
     def union(self, p, q):
         rootP = self.find(p)
@@ -29,9 +29,12 @@ class UnionFind:
         rootQ = self.find(q)
         return rootP == rootQ
 
+    # NOTE !!! here we just keep finding its partent via "x = parent[x]", but not call find method recursively
+    # find "top parent" of x 
     def find(self, x):
         while self.parent[x] != x:
             x = parent[x]
+        # NOTE !!! we return x as final output
         return x
 
     def count(self):
