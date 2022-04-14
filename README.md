@@ -7,6 +7,8 @@
 
 <p align="center"><img src ="./doc/pic/common_ds_op_cost.png" ></p>
 
+<p align="center"><img src ="./doc/pic/sort_algorithm_complexity.png" ></p>
+
 ![Language](https://img.shields.io/badge/language-Python%20%2F%20C%20%2F%20JAVA%2017-orange.svg) 
 ![Update](https://img.shields.io/badge/update-weekly-purple.svg)
 [![Build Status](https://travis-ci.org/yennanliu/CS_basics.svg?branch=master)](https://travis-ci.org/yennanliu/CS_basics)
@@ -159,7 +161,7 @@
 ||Bucket sort| [Python](./algorithm/python/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](./algorithm/python/quick_sort.py)| | | AGAIN***| 
 ||Heap sort| [Python](./algorithm/python/heap_sort.py)| | | AGAIN**| 
-||Merge sort|[Python](./algorithm/python/merge_sort.py), [JS](./algorithm/js/merge_sort.js), [Java](./algorithm/java/MergeSort.java), [SQL](./algorithm/sql/Mergesort.sql) | |`time : O(n*Log n)`, `space : O(n)` | OK* (2)| 
+||Merge sort|[Python](./algorithm/python/merge_sort.py), [JS](./algorithm/js/merge_sort.js), [Java](./algorithm/java/MergeSort.java), [SQL](./algorithm/sql/Mergesort.sql) | | | OK* (2)| 
 ||Pancake sort| [Python](./algorithm/python/pancake_sort.py) | | | AGAIN| 
 ||Selection sort| [Python](./algorithm/python/selection_sort.py), [JS](./algorithm/js/selection_sort.js) | | | AGAIN| 
 ||Topological sort| [Python](./algorithm/python/topological_sort.py) | | Topological Sort is a algorithm can find "ordering" on an "order dependency" graph | AGAIN| 
