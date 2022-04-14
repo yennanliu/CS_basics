@@ -33,6 +33,43 @@ Constraints:
 # IDEA : STACK + circular loop handling
 class Solution:
     def nextGreaterElements(self, nums):
+        stack = []
+        res = [-1] * len(nums)
+        for i in range(2*len(nums)-1, -1, -1):
+            index = i % len(nums)
+            while stack and stack[-1] <= nums[index]:
+                stack.pop()
+            if stack:
+                res[index] = stack[-1]
+            stack.append(nums[index])
+        return res
+
+# V0'
+# IDEA : STACK + circular loop handling
+class Solution(object):
+    def nextGreaterElements(self, nums):
+        # edge case
+        if not nums:
+            return
+        _len = len(nums)
+        res = [-1] * _len
+        nums2 = nums * 2
+        stack  = []
+        # # NOTE this !!! we loop from "nums2" with inverse ordering
+        for i in range(len(nums2)-1, -1, -1):
+            while stack and stack[-1] <= nums2[i]:
+                stack.pop(-1)
+            if stack:
+                # NOTE this !!! (handling cyclic array)
+                res[ i % _len ] = stack[-1]
+
+            stack.append(nums2[i])
+        return res
+
+# V0'
+# IDEA : STACK + circular loop handling
+class Solution:
+    def nextGreaterElements(self, nums):
         ### NOTE : since we can search nums circurly, 
         #  -> so here we make a new array (augLst = nums + nums) for that     
         augLst = nums + nums
@@ -50,6 +87,29 @@ class Solution:
                 res[i % len(nums)] = stack[-1]
             ### NOTE : we also need to append augLst[i] to stack
             stack.append(augLst[i])
+        return res
+
+# V0''
+# IDER : brute force (for + while loop) : TLE
+class Solution(object):
+    def nextGreaterElements(self, nums):
+        # edge case
+        if not nums:
+            return
+        res = []
+        nums2 = nums * 2
+        for i in range(len(nums)):
+            found = False
+            tmp_nums = nums2[i+1:]
+            while tmp_nums:
+                cur = tmp_nums.pop(0)
+                if cur > nums[i]:
+                    res.append(cur)
+                    found = True
+                    break
+            if not found:
+                res.append(-1)
+        #print ("")
         return res
 
 # V1
@@ -222,6 +282,5 @@ class Solution:
 #         return ans;
 #     }
 # };
-
 
 # V2
