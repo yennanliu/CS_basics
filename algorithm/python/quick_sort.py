@@ -3,6 +3,14 @@
 #---------------------------------------------------------------
 
 # V0
+# steps
+# 0) get pivot (last element from original array)
+# 1) init big, small sub array
+# 2) loop over element 
+#      ->  put "< pivot" elements to small sub array, 
+#      ->  put "> pivot" elements to small big array
+# 3) run same algorithm on sub array, big array
+# 4) return result
 def quick_sort(arr):
     # edge case
     if len(arr) < 2:
