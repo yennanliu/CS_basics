@@ -14,11 +14,6 @@
 [![Build Status](https://travis-ci.org/yennanliu/CS_basics.svg?branch=master)](https://travis-ci.org/yennanliu/CS_basics)
 [![PRs](https://img.shields.io/badge/PRs-welcome-6574cd.svg)](https://github.com/yennanliu/CS_basics/pulls)
 
-- Algorithm 
-- Data Structure
-- System design 
-- Case Study
-
 ## Resource
 * [Resource.md](./doc/Resource.md) - `Resource` for coding interview (**keep updating**)
 * [ref.md](./doc/ref.md) - Leetcode ref
