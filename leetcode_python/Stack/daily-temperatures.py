@@ -47,8 +47,10 @@ class Solution(object):
     def dailyTemperatures(self, T):
         N = len(T)
         stack = []
+        # note this !!! we init res as below
         res = [0] * N
         ### NOTE : we only use 1 for loop in this problem
+        ### NOTE : we loop T in NORMAL order
         for i, t in enumerate(T):
             # if stack is not bland and last temp < current tmpe
             # -> pop the stack (get its temp)
@@ -59,6 +61,7 @@ class Solution(object):
                 res[oi] = i - oi
             # no matter any case, we have to insert current temp into stack anyway
             # since the result (next higher temp) is decided by the coming temp, rather than current temp 
+            # NOTE !!! : we add (t, idx) to stack
             stack.append((t, i))
         return res
 

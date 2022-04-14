@@ -411,7 +411,7 @@
 636| [Exclusive Time of Functions](https://leetcode.com/problems/exclusive-time-of-functions/) |  [python](./leetcode_python/Stack/exclusive-time-of-functions.py)   | _O(n)_  | _O(n)_ | Medium |`trick`,`AGAIN`,`stack`,`UBER`, `fb`|  AGAIN********** (4)
 682| [Baseball Game](https://leetcode.com/problems/baseball-game/) | [python](./leetcode_python/Stack/baseball-game.py)  | _O(n)_  | _O(n)_         | Easy|good basic, stack,`amazon`| OK* (3)
 735| [Asteroid Collision](https://leetcode.com/problems/asteroid-collision/) | [python](./leetcode_python/Stack/asteroid-collision.py)  | _O(n)_  | _O(n)_ | Medium| good basic, stack, m$, GS, fb, `amazon`| AGAIN********** (3) 
-739| [Daily Temperatures](https://leetcode.com/problems/daily-temperatures/) | [python](./leetcode_python/Stack/daily-temperatures.py)  | _O(n)_  | _O(n)_ | Medium |LC 739, LC 503, LC 406, AGAIN, stack, good trick,`amazon`| AGAIN*************** (6) (MUST)
+739| [Daily Temperatures](https://leetcode.com/problems/daily-temperatures/) | [python](./leetcode_python/Stack/daily-temperatures.py)  | _O(n)_  | _O(n)_ | Medium |LC 739, LC 503, LC 406, AGAIN, stack, good trick,`amazon`| AGAIN*************** (7) (MUST)
 772| [Basic Calculator III](https://leetcode.com/problems/basic-calculator-iii/) |[python](./leetcode_python/Stack/basic-calculator-iii.py)| _O(n)_| _O(n)_| Medium |check LC 224, 227| AGAIN (not start)
 853| [Car Fleet](https://leetcode.com/problems/car-fleet/)  | [python](./leetcode_python/Stack/car-fleet.py) | _O(nlogn)_  | _O(n)_      | Medium       || AGAIN (not start)
 856| [Score of Parentheses](https://leetcode.com/problems/score-of-parentheses/) | [python](./leetcode_python/Stack/score-of-parentheses.py) | _O(n)_  | _O(1)_   | Medium   || AGAIN (not start)
