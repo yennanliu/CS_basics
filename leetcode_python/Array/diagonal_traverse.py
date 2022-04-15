@@ -63,6 +63,60 @@ class Solution(object):
             count += 1
         return res
 
+# V0'
+# IDEA : Diagonal Iteration and Reversal
+# NOTE !!! : for "odd" diagoal traversal, we just need to go over it and REVERSE it before append tp res
+class Solution:
+    def findDiagonalOrder(self, matrix):
+        
+        # Check for empty matrices
+        if not matrix or not matrix[0]:
+            return []
+        
+        # Variables to track the size of the matrix
+        N, M = len(matrix), len(matrix[0])
+        
+        # The two arrays as explained in the algorithm
+        result, intermediate = [], []
+        
+        # We have to go over all the elements in the first
+        # row and the last column to cover all possible diagonals
+        for d in range(N + M - 1):
+            
+            # Clear the intermediate array everytime we start
+            # to process another diagonal
+            intermediate = []
+            
+            # We need to figure out the "head" of this diagonal
+            # The elements in the first row and the last column
+            # are the respective heads.
+            # r : row idx
+            # c : col idx
+            #r, c = 0 if d < M else d - M + 1, d if d < M else M - 1
+            if d < M:
+                r = 0
+                c = d
+            else:
+                r = d - M + 1
+                c = M - 1
+            
+            # Iterate until one of the indices goes out of scope
+            # Take note of the index math to go down the diagonal
+            while r < N and c > -1:
+                intermediate.append(matrix[r][c])
+                r += 1
+                c -= 1
+            
+            # Reverse even numbered diagonals. The
+            # article says we have to reverse odd 
+            # numbered articles but here, the numbering
+            # is starting from 0 :P
+            if d % 2 == 0:
+                result.extend(intermediate[::-1])
+            else:
+                result.extend(intermediate)
+        return result        
+
 # V1
 # IDEA : Diagonal Iteration and Reversal
 # https://leetcode.com/problems/diagonal-traverse/solution/
