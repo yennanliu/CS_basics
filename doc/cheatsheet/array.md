@@ -536,6 +536,27 @@ sum_of_left_d = sum([self.grid[i][i] == mark for i in range(n)])
 sum_of_right_d = sum([self.grid[i][n-1-i] == mark for i in range(n)])
 # ....
 ```
+
+```python
+# LC 311. Sparse Matrix Multiplication
+# V0 
+# TODO : OPTIMIZE THE PROCESS DUE TO THE SPARSE-MATRIX CONDITION 
+class Solution(object):
+    def multiply(self, A, B):
+        """
+        :type A: List[List[int]]
+        :type B: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        m, n, l = len(A), len(A[0]), len(B[0])
+        res = [[0 for _ in range(l)] for _ in range(m)]
+        for i in range(m):
+            for k in range(n):
+                if A[i][k]:
+                    for j in range(l):
+                        res[i][j] += A[i][k] * B[k][j]
+        return res
+```
  
 ## 2) LC Example
 
