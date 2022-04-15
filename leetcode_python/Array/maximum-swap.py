@@ -45,11 +45,24 @@ class Solution(object):
         # edge case
         if not num:
             return num
+        # note this
         num = list(str(num))
+        # NOTE !!! we init l, r = 0, 0
+        #          we init _max_idx = len(num) - 1
         l = 0
         r = 0
+        # this one is OK as well
+        # l = len(num) - 1
+        # r = len(num) - 1
         _max_idx = len(num)-1
         for i in range(len(num))[::-1]:
+            """
+            NOTE !!! below condition and op
+                1) if int(num[i]) > int(num[_max_idx]) or int(num[i]) < int(num[_max_idx])
+                2) if int(num[i]) < int(num[_max_idx])
+                     -> l = i
+                     -> r = _max_idx
+            """
             if int(num[i]) > int(num[_max_idx]):
                 _max_idx = i
             elif int(num[i]) < int(num[_max_idx]):
