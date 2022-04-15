@@ -30,6 +30,28 @@ Constraints:
 
 # V0
 # IDEA : STACK
+class Solution(object):
+    def dailyTemperatures(self, tmp):
+        # edge case
+        if not tmp:
+            return
+        _len = len(tmp)
+        # NOTE !!! we init res as below
+        res = [0] * _len
+        stack = []
+        # NOTE : for loop in NORMAL order !!!
+        for i in range(len(tmp)):
+            # NOTE : while condition
+            while stack and stack[-1][1] < tmp[i]:
+                # NOTE !!!! we do op right after while loop conditon is satisfied
+                idx, val = stack.pop(-1)
+                res[idx] = i - idx
+            # NOTE !!! : append [idx, value] to stack
+            stack.append([i, tmp[i]])
+        return res
+
+# V0'
+# IDEA : STACK
 # DEMO 
 #     ...: T=[73, 74, 75, 71, 69, 72, 76, 73]
 #     ...: s=Solution()
@@ -65,7 +87,7 @@ class Solution(object):
             stack.append((t, i))
         return res
 
-# V0'
+# V0''
 # IDEA : STACK
 class Solution:
     def dailyTemperatures(self, T):
@@ -78,8 +100,8 @@ class Solution:
             stack.append(i)
         return res
 
-# V0''
-# IDEA : BRUTE FORCE : TIME OUT ERROR
+# V0'''
+# IDEA : BRUTE FORCE : TLE
 class Solution:
     def dailyTemperatures(self,T):
         r=[]
