@@ -1,7 +1,11 @@
 """
 
+334. Increasing Triplet Subsequence
+Medium
+
 Given an integer array nums, return true if there exists a triple of indices (i, j, k) such that i < j < k and nums[i] < nums[j] < nums[k]. If no such indices exists, return false.
 
+ 
 
 Example 1:
 
@@ -36,7 +40,12 @@ Follow up: Could you implement a solution that runs in O(n) time complexity and 
 #        such that x > second > first
 class Solution(object):
     def increasingTriplet(self, nums):
-        first, second = float('inf'), float('inf')
+        """
+        NOTE !!! we init first, second as POSITIVE float('inf')
+        """
+        first = float('inf')
+        second = float('inf')
+        # loop with normal ordering
         for num in nums:
             if num <= first:     # min num
                 first = num
@@ -75,7 +84,40 @@ class Solution(object):
                 return True
         return False
 
-# V1 
+# V0'
+# IDEA : brute force + 2 pointers : TLE
+class Solution(object):
+    def increasingTriplet(self, nums):
+        # edge case
+        if not nums or len(nums) < 3:
+            return False
+        _len = len(nums)
+        # 2 pointers
+        for i in range(_len-2):
+            for j in range(i+1, _len-1):
+                if nums[j] <= i:
+                    break
+                if any(x > nums[j] for x in nums[j+1:]):
+                    return True
+        return False
+
+# V1
+# IDEA : LINEAR SCAN
+# https://leetcode.com/problems/increasing-triplet-subsequence/solution/
+class Solution:
+    def increasingTriplet(self, nums: List[int]) -> bool:
+        first_num = float("inf")
+        second_num = float("inf")
+        for n in nums:
+            if n <= first_num:
+                first_num = n
+            elif n <= second_num:
+                second_num = n
+            else:
+                return True
+        return False
+
+# V1'
 # http://bookshadow.com/weblog/2016/02/16/leetcode-increasing-triplet-subsequence/
 # IDEA :  MAINTAIN ON 2 VAR a, b (min and 2nd min)
 # a IS THE CURRENT MIN ELEMENT ; 
@@ -103,7 +145,7 @@ class Solution(object):
                 return True
         return False
 
-# V1'
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79826703
 class Solution(object):
     def increasingTriplet(self, nums):

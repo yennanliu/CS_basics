@@ -932,3 +932,28 @@ class Solution:
             
         return n + 1
 ```
+
+### 2-13) Increasing Triplet Subsequence
+```python
+# LC 334 Increasing Triplet Subsequence
+# V0
+# IDEA : MAINTAIN var first, second
+#        AND GO THROUGH nums to check if there exists x (on the right hand side of a, b )
+#        such that x > second > first
+class Solution(object):
+    def increasingTriplet(self, nums):
+        """
+        NOTE !!! we init first, second as POSITIVE float('inf')
+        """
+        first = float('inf')
+        second = float('inf')
+        # loop with normal ordering
+        for num in nums:
+            if num <= first:     # min num
+                first = num
+            elif num <= second:  # 2nd min num
+                second = num
+            else:                # 3rd min num
+                return True      
+        return False
+```
