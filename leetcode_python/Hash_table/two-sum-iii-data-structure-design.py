@@ -1,31 +1,44 @@
 """
-Design and implement a TwoSum class. It should support the following operations: add and find.
 
-add - Add the number to an internal data structure.
-find - Find if there exists any pair of numbers which sum is equal to the value.
+170. Two Sum III - Data structure design
+Easy
 
-For example,
+Design a data structure that accepts a stream of integers and checks if it has a pair of integers that sum up to a particular value.
 
-add(1); add(3); add(5);
-find(4) -> true
-find(7) -> false
+Implement the TwoSum class:
+
+TwoSum() Initializes the TwoSum object, with an empty array initially.
+void add(int number) Adds number to the data structure.
+boolean find(int value) Returns true if there exists any pair of numbers whose sum is equal to value, otherwise, it returns false.
+ 
+
+Example 1:
+
+Input
+["TwoSum", "add", "add", "add", "find", "find"]
+[[], [1], [3], [5], [4], [7]]
+Output
+[null, null, null, null, true, false]
+
+Explanation
+TwoSum twoSum = new TwoSum();
+twoSum.add(1);   // [] --> [1]
+twoSum.add(3);   // [1] --> [1,3]
+twoSum.add(5);   // [1,3] --> [1,3,5]
+twoSum.find(4);  // 1 + 3 = 4, return true
+twoSum.find(7);  // No two integers sum up to 7, return false
+ 
+
+Constraints:
+
+-105 <= number <= 105
+-231 <= value <= 231 - 1
+At most 104 calls will be made to add and find.
 
 """
 
-# Time:  O(n)
-# Space: O(n)
-
-# Design and implement a TwoSum class. It should support the following operations: add and find.
-#
-# add - Add the number to an internal data structure.
-# find - Find if there exists any pair of numbers which sum is equal to the value.
-#
-# For example,
-# add(1); add(3); add(5);
-# find(4) -> true
-# find(7) -> false
-
 # V0
+# IDEA : hashmap + 2 sum
 class TwoSum(object):
 
     def __init__(self):
@@ -45,8 +58,100 @@ class TwoSum(object):
                 return True
         return False
 
+# V1
+# IDEA : SORTED LIST
+# https://leetcode.com/problems/two-sum-iii-data-structure-design/solution/
+class TwoSum(object):
 
-# V1 
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.nums = []
+        self.is_sorted = False
+
+
+    def add(self, number):
+        """
+        Add the number to an internal data structure..
+        :type number: int
+        :rtype: None
+        """
+        # Inserting while maintaining the ascending order.
+        # for index, num in enumerate(self.nums):
+        #     if number <= num:
+        #         self.nums.insert(index, number)
+        #         return
+        ## larger than any number
+        #self.nums.append(number)
+
+        self.nums.append(number)
+        self.is_sorted = False
+    
+
+    def find(self, value):
+        """
+        Find if there exists any pair of numbers which sum is equal to the value.
+        :type value: int
+        :rtype: bool
+        """
+        if not self.is_sorted:
+            self.nums.sort()
+            self.is_sorted = True
+
+        low, high = 0, len(self.nums)-1
+        while low < high:
+            currSum = self.nums[low] + self.nums[high]
+            if currSum < value:
+                low += 1
+            elif currSum > value:
+                high -= 1
+            else: # currSum == value
+                return True
+        
+        return False
+
+
+# V1'
+# IDEA : HASHMAP
+# https://leetcode.com/problems/two-sum-iii-data-structure-design/solution/
+class TwoSum(object):
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.num_counts = {}
+
+
+    def add(self, number):
+        """
+        Add the number to an internal data structure..
+        :type number: int
+        :rtype: None
+        """
+        if number in self.num_counts:
+            self.num_counts[number] += 1
+        else:
+            self.num_counts[number] = 1
+
+    def find(self, value):
+        """
+        Find if there exists any pair of numbers which sum is equal to the value.
+        :type value: int
+        :rtype: bool
+        """
+        for num in self.num_counts.keys():
+            comple = value - num
+            if num != comple:
+                if comple in self.num_counts:
+                    return True
+            elif self.num_counts[num] > 1:
+                return True
+        
+        return False
+
+# V1''
 # http://www.voidcn.com/article/p-qhmcmxvf-qp.html
 class TwoSum(object):
 
