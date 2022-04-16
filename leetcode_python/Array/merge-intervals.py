@@ -1,8 +1,10 @@
 """
 
-Given an array of intervals where intervals[i] = [starti, endi], 
-merge all overlapping intervals, 
-and return an array of the non-overlapping intervals that cover all the intervals in the input.
+56. Merge Intervals
+Medium
+
+
+Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
 
  
 
@@ -11,7 +13,6 @@ Example 1:
 Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
 Output: [[1,6],[8,10],[15,18]]
 Explanation: Since intervals [1,3] and [2,6] overlaps, merge them into [1,6].
-
 Example 2:
 
 Input: intervals = [[1,4],[4,5]]
@@ -28,6 +29,7 @@ intervals[i].length == 2
 """
 
 # V0
+# IDEA : interval op, LC 57
 class Solution(object):
     def merge(self, intervals):
         # edge case
@@ -48,6 +50,31 @@ class Solution(object):
         return res
 
 # V0'
+# IDEA : interval op + last
+class Solution(object):
+    def merge(self, intervals):
+        # edge case
+        if not intervals:
+            return []
+        intervals.sort(key = lambda x: (x[0], x[1]))
+        #print ("intervals = " + str(intervals))
+        res = []
+        last = []
+        for k, v in enumerate(intervals):
+            if not last:
+                last = v
+            elif last and last[1] < v[0]:
+                res.append(last)
+                last = v
+            elif last and last[1] >= v[0]:
+                last[1] = max(last[1], v[1])
+        # print ("res = " + str(res))
+        # print ("last = " + str(last))
+        if last:
+            res.append(last)
+        return res
+
+# V0''
 # IDEA : interval op, LC 57
 class Solution(object):
     def merge(self, intervals):
@@ -63,7 +90,7 @@ class Solution(object):
                 res[-1][1] = max(intervals[i][1], res[-1][1])
         return res
 
-# V0'
+# V0'''
 # IDEA : interval op
 # https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md
 class Solution:
