@@ -40,7 +40,23 @@ Follow up: If the maximum number of allowed calls to the API knows is 3 * n, cou
 
 """
 
-# V0 
+# V0
+class Solution:
+    def findCelebrity(self, n: int) -> int:
+        self.n = n
+        for i in range(n):
+            if self.is_celebrity(i):
+                return i
+        return -1
+    
+    def is_celebrity(self, i):
+        for j in range(self.n):
+            if i == j: continue # Don't ask if they know themselves.
+            if knows(i, j) or not knows(j, i):
+                return False
+        return True
+
+# V0'
 class Solution:
     # @param {int} n a party with n people
     # @return {int} the celebrity's label or -1
