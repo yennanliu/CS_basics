@@ -722,3 +722,32 @@ class Solution(object):
         #return sum([help(x) for x in res])
         return sum([int(x, 2) for x in res])
 ```
+
+### 2-16) Binary Tree Vertical Order Traversal
+```python
+# LC 314. Binary Tree Vertical Order Traversal
+# NOTE : there's also DFS approach
+# V0
+# IDEA : BFS + defaultdict
+from collections import defaultdict
+class Solution(object):
+    def verticalOrder(self, root):
+        # edge
+        if not root:
+            return []
+        idx = 0
+        q = [[idx, root]]
+        res = defaultdict(list)
+        while q:
+            for i in range(len(q)):
+                _idx, tmp = q.pop(0)
+                res[_idx].append(tmp.val)
+                if tmp.left:
+                    q.append([_idx-1, tmp.left])
+                if tmp.right:
+                    q.append([_idx+1, tmp.right])
+        d_res = dict(res)
+        d_res_ = sorted(d_res.items(), key = lambda x : x[0])
+        print ("d_res_ = " + str(d_res_))
+        return [x[1] for x in d_res_]
+```

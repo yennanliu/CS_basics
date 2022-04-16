@@ -1,83 +1,95 @@
-# Given a binary tree, return the vertical order traversal of its nodes' values. (ie, from top to bottom, column by column).
+"""
 
-# If two nodes are in the same row and column, the order should be from left to right.
+314. Binary Tree Vertical Order Traversal
+Medium
 
-# Examples:
-# Given binary tree [3,9,20,null,null,15,7],
+Given the root of a binary tree, return the vertical order traversal of its nodes' values. (i.e., from top to bottom, column by column).
 
-#     3
-#    / \
-#   9  20
-#     /  \
-#    15   7
-# return its vertical order traversal as:
+If two nodes are in the same row and column, the order should be from left to right.
 
-# [
-#   [9],
-#   [3,15],
-#   [20],
-#   [7]
-# ]
-# Given binary tree [3,9,20,4,5,2,7],
+ 
 
-#     _3_
-#    /   \
-#   9    20
-#  / \   / \
-# 4   5 2   7
-# return its vertical order traversal as:
+Example 1:
 
-# [
-#   [4],
-#   [9],
-#   [3,5,2],
-#   [20],
-#   [7]
-# ]
 
-# V0 
-# DFS + collections.defaultdict(list)
-#####  NEED TO VALIDATE #####
-import collections
+Input: root = [3,9,20,null,null,15,7]
+Output: [[9],[3,15],[20],[7]]
+Example 2:
+
+
+Input: root = [3,9,8,4,0,1,7]
+Output: [[4],[9],[3,0,1],[8],[7]]
+Example 3:
+
+
+Input: root = [3,9,8,4,0,1,7,null,null,null,2,5]
+Output: [[4],[9,5],[3,0,1],[8,2],[7]]
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 100].
+-100 <= Node.val <= 100
+
+"""
+
+# V0
+# IDEA : BFS + defaultdict
+from collections import defaultdict
 class Solution(object):
     def verticalOrder(self, root):
+        # edge
+        if not root:
+            return []
         idx = 0
-        cols = collections.defaultdict(list)
-        self.dfs(root, idx, cols)
-        return [cols[c] for c in sorted(cols.keys())]
-
-    def dfs(self, root, idx, cols):
-        if not root: return []
-        if not root.left and not root.right:
-            return 
-        cols[idx].append(root.value)
-        if root.left:
-            self.dfs(roots, idx - 1, cols)
-        if root.right:
-            self.dfs(roots, idx + 1, cols)
+        q = [[idx, root]]
+        res = defaultdict(list)
+        while q:
+            for i in range(len(q)):
+                _idx, tmp = q.pop(0)
+                res[_idx].append(tmp.val)
+                if tmp.left:
+                    q.append([_idx-1, tmp.left])
+                if tmp.right:
+                    q.append([_idx+1, tmp.right])
+        d_res = dict(res)
+        d_res_ = sorted(d_res.items(), key = lambda x : x[0])
+        print ("d_res_ = " + str(d_res_))
+        return [x[1] for x in d_res_]
 
 # V0'
-# IDEA : BFS + collections.defaultdict(list)
-#####  NEED TO VALIDATE #####
-import collections
-class Solution(object):
+# IDEA : DFS
+from collections import defaultdict
+class Solution:
     def verticalOrder(self, root):
-        """
-        :type root: TreeNode
-        :rtype: List[List[int]]
-        """
-        # base case
-        if not root: return []
-        r = collections.defaultdict(list)
-        q = [(root,0)]
-        while q:
-            tmp = q.pop()
-            r[tmp[1]].append(root.value)
-            if tmp[0].left:
-                q.append((tmp[0].left, tmp[0] -1))
-            if tmp[0].right:
-                q.append((tmp[0].right, tmp[0] +1))
-        return r
+        
+        if root is None:
+            return []
+
+        columnTable = defaultdict(list)
+        min_column = max_column = 0
+
+        def DFS(node, row, column):
+            if node is not None:
+                nonlocal min_column, max_column
+                columnTable[column].append((row, node.val))
+                min_column = min(min_column, column)
+                max_column = max(max_column, column)
+
+                # preorder DFS
+                DFS(node.left, row + 1, column - 1)
+                DFS(node.right, row + 1, column + 1)
+
+        DFS(root, 0, 0)
+
+        # order by column and sort by row
+        ret = []
+        for col in range(min_column, max_column + 1):
+            columnTable[col].sort(key=lambda x:x[0])
+            colVals = [val for row, val in columnTable[col]]
+            ret.append(colVals)
+
+        return ret
 
 # V0''
 # IDEA : BFS + collections.defaultdict(list)
@@ -98,6 +110,104 @@ class Solution(object):
                     new_q.append((node.right, col+1))
             q = new_q          
         return [cols[c] for c in sorted(cols.keys())]
+
+# V1
+# IDEA : BFS
+# https://leetcode.com/problems/binary-tree-vertical-order-traversal/solution/
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+from collections import defaultdict
+class Solution:
+    def verticalOrder(self, root: TreeNode) -> List[List[int]]:
+        columnTable = defaultdict(list)
+        queue = deque([(root, 0)])
+
+        while queue:
+            node, column = queue.popleft()
+
+            if node is not None:
+                columnTable[column].append(node.val)
+                
+                queue.append((node.left, column - 1))
+                queue.append((node.right, column + 1))
+                        
+        return [columnTable[x] for x in sorted(columnTable.keys())]
+
+# V1
+# IDEA : BFS WITHOUT SORTING
+# https://leetcode.com/problems/binary-tree-vertical-order-traversal/solution/
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+from collections import defaultdict
+class Solution:
+    def verticalOrder(self, root: TreeNode) -> List[List[int]]:
+        if root is None:
+            return []
+
+        columnTable = defaultdict(list)
+        min_column = max_column = 0
+        queue = deque([(root, 0)])
+
+        while queue:
+            node, column = queue.popleft()
+
+            if node is not None:
+                columnTable[column].append(node.val)
+                min_column = min(min_column, column)
+                max_column = max(max_column, column)
+
+                queue.append((node.left, column - 1))
+                queue.append((node.right, column + 1))
+
+        return [columnTable[x] for x in range(min_column, max_column + 1)]
+
+# V1
+# IDEA : DFS
+# https://leetcode.com/problems/binary-tree-vertical-order-traversal/solution/
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+from collections import defaultdict
+class Solution:
+    def verticalOrder(self, root: TreeNode) -> List[List[int]]:
+        if root is None:
+            return []
+
+        columnTable = defaultdict(list)
+        min_column = max_column = 0
+
+        def DFS(node, row, column):
+            if node is not None:
+                nonlocal min_column, max_column
+                columnTable[column].append((row, node.val))
+                min_column = min(min_column, column)
+                max_column = max(max_column, column)
+
+                # preorder DFS
+                DFS(node.left, row + 1, column - 1)
+                DFS(node.right, row + 1, column + 1)
+
+        DFS(root, 0, 0)
+
+        # order by column and sort by row
+        ret = []
+        for col in range(min_column, max_column + 1):
+            columnTable[col].sort(key=lambda x:x[0])
+            colVals = [val for row, val in columnTable[col]]
+            ret.append(colVals)
+
+        return ret
 
 # V1 
 # https://blog.csdn.net/qq508618087/article/details/50760661
