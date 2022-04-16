@@ -34,6 +34,8 @@
 		- 896 (ok)
 		- 010 (again)
 		- 056 (ok)
+		- 003 (ok)
+		- 049 (ok)
 	- cheatsheet review
 	- ================
 	- LC top 100 likes
