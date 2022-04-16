@@ -1,18 +1,39 @@
 """
+
+246. Strobogrammatic Number
+Easy
+
+Given a string num which represents an integer, return true if num is a strobogrammatic number.
+
 A strobogrammatic number is a number that looks the same when rotated 180 degrees (looked at upside down).
 
-Write a function to determine if a number is strobogrammatic. The number is represented as a string.
+ 
 
-For example, the numbers "69", "88", and "818" are all strobogrammatic.
+Example 1:
+
+Input: num = "69"
+Output: true
+Example 2:
+
+Input: num = "88"
+Output: true
+Example 3:
+
+Input: num = "962"
+Output: false
+ 
+
+Constraints:
+
+1 <= num.length <= 50
+num consists of only digits.
+num does not contain any leading zeros except for zero itself.
+
 """
 
 # V0 
 class Solution(object):
     def isStrobogrammatic(self, num):
-        """
-        :type num: str
-        :rtype: bool
-        """
         d = {'0':'0','1':'1','6':'9','8':'8','9':'6'}
         ans = ''
         for n in num:
