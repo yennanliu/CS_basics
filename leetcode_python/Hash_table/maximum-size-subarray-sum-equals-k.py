@@ -1,19 +1,29 @@
 """
 
-Given an array nums and a target value k, find the maximum length of a subarray that sums to k. If there isn't one, return 0 instead.
+325. Maximum Size Subarray Sum Equals k
+Medium
+
+Given an integer array nums and an integer k, return the maximum length of a subarray that sums to k. If there is not one, return 0 instead.
+
+ 
 
 Example 1:
 
-Given nums = [1, -1, 5, -2, 3], k = 3,
-return 4. (because the subarray [1, -1, 5, -2] sums to 3 and is the longest)
-
+Input: nums = [1,-1,5,-2,3], k = 3
+Output: 4
+Explanation: The subarray [1, -1, 5, -2] sums to 3 and is the longest.
 Example 2:
 
-Given nums = [-2, -1, 2, 1], k = 1,
-return 2. (because the subarray [-1, 2] sums to 1 and is the longest)
+Input: nums = [-2,-1,2,1], k = 1
+Output: 2
+Explanation: The subarray [-1, 2] sums to 1 and is the longest.
+ 
 
-Follow Up:
-Can you do it in O(n) time?
+Constraints:
+
+1 <= nums.length <= 2 * 105
+-104 <= nums[i] <= 104
+-109 <= k <= 109
 
 """
 
@@ -32,6 +42,7 @@ class Solution(object):
     def maxSubArrayLen(self, nums, k):
 
         result, acc = 0, 0
+        # NOTE !!! we init dic as {0:-1} ({sum:idx})
         dic = {0: -1}
 
         for i in range(len(nums)):
@@ -57,7 +68,34 @@ class Solution(object):
                     tmp.append(j-i)
         return 0 if len(tmp) == 0 else max(tmp)
 
-# V1 
+# V1
+# IDEA :  Prefix Sum + Hash Map
+# https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/solution/
+class Solution:
+    def maxSubArrayLen(self, nums: List[int], k: int) -> int:
+        prefix_sum = longest_subarray = 0
+        indices = {}
+        
+        for i, num in enumerate(nums):
+            prefix_sum += num
+            
+            # Check if all of the numbers seen so far sum to k.
+            if prefix_sum == k:
+                longest_subarray = i + 1
+                
+            # If any subarray seen so far sums to k, then
+            # update the length of the longest_subarray. 
+            if prefix_sum - k in indices:
+                longest_subarray = max(longest_subarray, i - indices[prefix_sum - k])
+                
+            # Only add the current prefix_sum index pair to the 
+            # map if the prefix_sum is not already in the map.
+            if prefix_sum not in indices:
+                indices[prefix_sum] = i
+        
+        return longest_subarray
+
+# V1'
 # http://www.voidcn.com/article/p-pbvzylrp-qp.html
 # https://www.cnblogs.com/lightwindy/p/9760070.html
 # IDEA : DICT 
@@ -83,7 +121,7 @@ class Solution(object):
                 result = max(result, i - dic[acc-k])
         return result
 
-# V1'
+# V1''
 # https://www.jiuzhang.com/solution/maximum-size-subarray-sum-equals-k/#tag-highlight-lang-python
 class Solution:
     """

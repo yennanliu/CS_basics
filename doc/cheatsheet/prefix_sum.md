@@ -25,6 +25,8 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
 - sub array
     - sum array sum == k
         - LC 560
+    - Maximum Size Subarray Sum Equals k
+        - LC 325
     - Count Number of Nice Subarrays
         - LC 1248
     - Continuous Subarray Sum
@@ -182,4 +184,36 @@ class Solution:
             ### NOTE !!! : we need to add 1 to count of "cum_sum", since in current loop, we got a new cur_sum (as above)
             d[cum_sum] += 1
         return res
+```
+
+### 2-4) Maximum Size Subarray Sum Equals k
+```python
+# LC 325. Maximum Size Subarray Sum Equals k
+# V0 
+# time complexity : O(N) | space complexity : O(N)
+# IDEA : HASH TBALE
+# -> have a var acc keep sum of all item in nums,
+# -> and use dic collect acc and its index
+# -> since we want to find nums[i:j] = k  -> so it's a 2 sum problem now
+# -> i.e. if acc - k in dic => there must be a solution (i,j) of  nums[i:j] = k  
+# -> return the max result 
+# -> ### acc DEMO : given array a = [1,2,3,4,5] ###
+# -> acc_list = [1,3,6,10,15]
+# -> so sum(a[1:3]) = 9 = acc_list[3] - acc_list[1-1] = 10 - 1 = 9 
+class Solution(object):
+    def maxSubArrayLen(self, nums, k):
+
+        result, acc = 0, 0
+        # NOTE !!! we init dic as {0:-1} ({sum:idx})
+        dic = {0: -1}
+
+        for i in range(len(nums)):
+            acc += nums[i]
+            if acc not in dic:
+                ### NOTE : we save idx as dict value
+                dic[acc] = i
+            ### acc - x = k -> so x = acc - k, that's why we check if acc - x in the dic or not
+            if acc - k in dic:
+                result = max(result, i - dic[acc-k])
+        return result
 ```
