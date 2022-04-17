@@ -867,3 +867,26 @@ class LRUCache(OrderedDict):
         if len(self) > self.capacity:
             self.popitem(last = False)
 ```
+
+### 2-11) Find All Anagrams in a String
+```python
+# LC 438. Find All Anagrams in a String
+# V0
+# IDEA : SLIDING WINDOW + collections.Counter()
+class Solution(object):
+    def findAnagrams(self, s, p):
+        ls, lp = len(s), len(p)
+        cp = collections.Counter(p)
+        cs = collections.Counter()
+        ans = []
+        for i in range(ls):
+            cs[s[i]] += 1
+            if i >= lp:
+                cs[s[i - lp]] -= 1
+                ### BE AWARE OF IT
+                if cs[s[i - lp]] == 0:
+                    del cs[s[i - lp]]
+            if cs == cp:
+                ans.append(i - lp + 1)
+        return ans
+```
