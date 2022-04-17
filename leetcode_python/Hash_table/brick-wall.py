@@ -1,11 +1,15 @@
 """
 
+554. Brick Wall
+Medium
+
 There is a rectangular brick wall in front of you with n rows of bricks. The ith row has some number of bricks each of the same height (i.e., one unit) but they can be of different widths. The total width of each row is the same.
 
 Draw a vertical line from the top to the bottom and cross the least bricks. If your line goes through the edge of a brick, then the brick is not considered as crossed. You cannot draw a line just along one of the two vertical edges of the wall, in which case the line will obviously cross no bricks.
 
 Given the 2D array wall that contains the information about the wall, return the minimum number of crossed bricks after drawing such a vertical line.
 
+ 
 
 Example 1:
 
@@ -26,7 +30,6 @@ n == wall.length
 1 <= sum(wall[i].length) <= 2 * 104
 sum(wall[i]) is the same for each row i.
 1 <= wall[i][j] <= 231 - 1
-
 
 """
 
@@ -115,7 +118,31 @@ class Solution(object):
                 left_counter.update([left])
                 count = max(count, left_counter[left])
         return len(wall) - count
-        
+
+# V1''
+# IDEA : HASHMAP
+# https://leetcode.com/problems/brick-wall/solution/
+# JAVA
+# public class Solution {
+#     public int leastBricks(List < List < Integer >> wall) {
+#         HashMap < Integer, Integer > map = new HashMap < > ();
+#         for (List < Integer > row: wall) {
+#             int sum = 0;
+#             for (int i = 0; i < row.size() - 1; i++) {
+#                 sum += row.get(i);
+#                 if (map.containsKey(sum))
+#                     map.put(sum, map.get(sum) + 1);
+#                 else
+#                     map.put(sum, 1);
+#             }
+#         }
+#         int res = wall.size();
+#         for (int key: map.keySet())
+#             res = Math.min(res, wall.size() - map.get(key));
+#         return res;
+#     }
+# }
+
 # V2 
 # Time:  O(n), n is the total number of the bricks
 # Space: O(m), m is the total number different widths
