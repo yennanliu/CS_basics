@@ -1,69 +1,37 @@
 """
-Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
 
-Strings consists of lowercase English letters only and the length of both strings s and p will not be larger than 20,100.
+438. Find All Anagrams in a String
+Medium
 
-The order of output does not matter.
+Given two strings s and p, return an array of all the start indices of p's anagrams in s. You may return the answer in any order.
+
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+ 
 
 Example 1:
 
-Input:
-s: "cbaebabacd" p: "abc"
-
-Output:
-[0, 6]
-
+Input: s = "cbaebabacd", p = "abc"
+Output: [0,6]
 Explanation:
 The substring with start index = 0 is "cba", which is an anagram of "abc".
 The substring with start index = 6 is "bac", which is an anagram of "abc".
 Example 2:
 
-Input:
-s: "abab" p: "ab"
-
-Output:
-[0, 1, 2]
-
+Input: s = "abab", p = "ab"
+Output: [0,1,2]
 Explanation:
 The substring with start index = 0 is "ab", which is an anagram of "ab".
 The substring with start index = 1 is "ba", which is an anagram of "ab".
 The substring with start index = 2 is "ab", which is an anagram of "ab".
+ 
+
+Constraints:
+
+1 <= s.length, p.length <= 3 * 104
+s and p consist of lowercase English letters.
 
 """
-# Time:  O(n)
-# Space: O(1)
-
-# Given a string s and a non-empty string p, find all the start indices
-# of p's anagrams in s.
-#
-# Strings consists of lowercase English letters only and the length of
-# both strings s and p will not be larger than 20,100.
-#
-# The order of output does not matter.
-#
-# Example 1:
-#
-# Input:
-# s: "cbaebabacd" p: "abc"
-#
-# Output:
-# [0, 6]
-#
-# Explanation:
-# The substring with start index = 0 is "cba", which is an anagram of "abc".
-# The substring with start index = 6 is "bac", which is an anagram of "abc".
-# Example 2:
-#
-# Input:
-# s: "abab" p: "ab"
-#
-# Output:
-# [0, 1, 2]
-#
-# Explanation:
-# The substring with start index = 0 is "ab", which is an anagram of "ab".
-# The substring with start index = 1 is "ba", which is an anagram of "ab".
-# The substring with start index = 2 is "ab", which is an anagram of "ab".
 
 # V0
 # IDEA : SLIDING WINDOW + collections.Counter()
@@ -125,7 +93,71 @@ class Solution(object):
                     del sCounter[s[index - (n - 1)]]
         return answer
 
-# V1 
+# V1
+# IDEA :  Sliding Window with HashMap
+# https://leetcode.com/problems/find-all-anagrams-in-a-string/solution/
+from collections import Counter
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        ns, np = len(s), len(p)
+        if ns < np:
+            return []
+
+        p_count = Counter(p)
+        s_count = Counter()
+        
+        output = []
+        # sliding window on the string s
+        for i in range(ns):
+            # add one more letter 
+            # on the right side of the window
+            s_count[s[i]] += 1
+            # remove one letter 
+            # from the left side of the window
+            if i >= np:
+                if s_count[s[i - np]] == 1:
+                    del s_count[s[i - np]]
+                else:
+                    s_count[s[i - np]] -= 1
+            # compare array in the sliding window
+            # with the reference array
+            if p_count == s_count:
+                output.append(i - np + 1)
+        
+        return output
+
+# V1'
+# IDEA : Sliding Window with Array
+# https://leetcode.com/problems/find-all-anagrams-in-a-string/solution/
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        ns, np = len(s), len(p)
+        if ns < np:
+            return []
+
+        p_count, s_count = [0] * 26, [0] * 26
+        # build reference array using string p
+        for ch in p:
+            p_count[ord(ch) - ord('a')] += 1
+        
+        output = []
+        # sliding window on the string s
+        for i in range(ns):
+            # add one more letter 
+            # on the right side of the window
+            s_count[ord(s[i]) - ord('a')] += 1
+            # remove one letter 
+            # from the left side of the window
+            if i >= np:
+                s_count[ord(s[i - np]) - ord('a')] -= 1
+            # compare array in the sliding window
+            # with the reference array
+            if p_count == s_count:
+                output.append(i - np + 1)
+        
+        return output
+
+# V1''
 # http://bookshadow.com/weblog/2016/10/23/leetcode-find-all-anagrams-in-a-string/
 # https://blog.csdn.net/fuxuemingzhu/article/details/79184109
 # IDEA : collections.Counter 
@@ -150,8 +182,7 @@ class Solution(object):
                 ans.append(i - lp + 1)
         return ans
 
- 
-# V1'
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79184109
 # IDEA : collections.Counter
 from collections import Counter
@@ -178,7 +209,7 @@ class Solution(object):
                     del sCounter[s[index - n + 1]]
         return answer
 
-# V1''
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79184109
 # IDEA : TWO POINTERS 
 class Solution(object):
@@ -205,7 +236,7 @@ class Solution(object):
             right += 1
         return res
 
-# V1''
+# V1''''''
 # http://zxi.mytechroad.com/blog/hashtable/leetcode-438-find-all-anagrams-in-a-string/
 # C++
 # // Author: Huahua
@@ -253,5 +284,4 @@ class Solution(object):
             if right - left + 1 == len(p):
                 result.append(left)
             right += 1
-
         return result
