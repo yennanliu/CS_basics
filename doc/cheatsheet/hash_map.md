@@ -890,3 +890,25 @@ class Solution(object):
                 ans.append(i - lp + 1)
         return ans
 ```
+
+### 2-12) Brick Wall
+```python
+# LC 554. Brick Wall
+# V0
+# IDEA : HASH TABLE + COUNTER UPDATE (looping every element in the list and cumsum and 
+import collections
+class Solution(object):
+    def leastBricks(self, wall):
+        _counter = collections.Counter()
+        count = 0
+        # go through every sub-wall in wall
+        for w in wall:
+            cum_sum = 0
+            # go through every element in sub-wall
+            for i in range(len(w) - 1):
+                cum_sum += w[i]
+                ### NOTE we can update collections.Counter() via below
+                _counter.update([cum_sum])
+                count = max(count, _counter[cum_sum])
+        return len(wall) - count
+```
