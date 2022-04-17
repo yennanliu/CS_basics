@@ -34,7 +34,9 @@
 	- 325 (ok, but again!!!)
 	- 387 (ok)
 	- 438 (again)
-	- 463
+	- 463 (again)
+	- 523 (again!!!)
+	- 525 (again!!!)
 - cheatsheet review
 - ================
 - LC top 100 likes
