@@ -614,3 +614,23 @@ class Solution:
                     stack.append([c, 1])
             return ''.join(c * k for c, k in stack)
 ```
+
+### 2-9) Simplify Path
+```python
+# LC 71. Simplify Path
+
+# V0
+# IDEA : STACK
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        s = path.split('/')
+        result = []
+        for i in range(len(s)):
+            if s[i] and s[i] != '.' and s[i]!='/' and s[i]!='..':
+                result.append(s[i])
+            elif s[i] == '..':
+                if result:
+                    result.pop()
+        
+        return "/"+"/".join(result)
+```
