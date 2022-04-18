@@ -390,7 +390,7 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](./leetcode_python/Stack/valid-parentheses.py) | _O(n)_ | _O(n)_ | Easy |`good basic`,`fb`, `amazon`| OK** (6) 
 032| [Longest Valid Parentheses](https://leetcode.com/problems/longest-valid-parentheses/)| [Python](./leetcode_python/Stack/longest-valid-parentheses.py) | _O(n)_ | _O(n)_ | Hard |brute force, dp, stackm deque, LC top 100 likes, `amazon`, fb, m$| AGAIN***** (1) (not start)
-071| [Simplify Path](https://leetcode.com/problems/simplify-path/)|  [Python](./leetcode_python/Stack/simplify-path.py) | _O(n)_ | _O(n)_ | Medium |`basic`, `stack`, `amazon`,`fb`| OK* (4)
+071| [Simplify Path](https://leetcode.com/problems/simplify-path/)|  [Python](./leetcode_python/Stack/simplify-path.py) | _O(n)_ | _O(n)_ | Medium |`basic`, `stack`, `amazon`,`fb`| OK** (5)
 101| [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)| [Python](./leetcode_python/Stack/symmetric-tree.py) | _O(n)_ | _O(h)_ | Easy |`good basic`,`bfs`, `dfs`, `linkedin`, `M$`,`amazon`, `fb`| AGAIN** (3) 
 150| [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)|  [Python](./leetcode_python/Stack/evaluate-reverse-polish-notation.py) | _O(n)_| _O(n)_| Medium |stack, good trick,`amazon`| OK**** (3)
 155| [Min Stack](https://leetcode.com/problems/min-stack/)     | [Python](./leetcode_python/Stack/min-stack.py)  | _O(n)_ | _O(1)_  | Easy |basic,stack,data structure, `amazon`| OK** (3)

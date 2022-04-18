@@ -44,6 +44,7 @@
 	- `002 - 708 (Linked list, pass)`
 	- 020 (ok)
 	- 032 (again, not start)
+	- 071 (ok, but again)
 - cheatsheet review
 - ================
 - LC top 100 likes

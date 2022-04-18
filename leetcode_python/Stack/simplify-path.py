@@ -1,5 +1,8 @@
 """
 
+71. Simplify Path
+Medium
+
 Given a string path, which is an absolute path (starting with a slash '/') to a file or directory in a Unix-style file system, convert it to the simplified canonical path.
 
 In a Unix-style file system, a period '.' refers to the current directory, a double period '..' refers to the directory up a level, and any multiple consecutive slashes (i.e. '//') are treated as a single slash '/'. For this problem, any other format of periods such as '...' are treated as file/directory names.
@@ -29,10 +32,6 @@ Example 3:
 Input: path = "/home//foo/"
 Output: "/home/foo"
 Explanation: In the canonical path, multiple consecutive slashes are replaced by a single one.
-Example 4:
-
-Input: path = "/a/./b/../../c/"
-Output: "/c"
  
 
 Constraints:
@@ -43,29 +42,23 @@ path is a valid absolute Unix path.
 
 """
 
-# e.g. :
-# path  = "/../a/b/c/./.. "
-# -- > output = "/a/b"
-# TRICK :  
-# IF  ".." , then stack pop 
-# IF  "."  , then do nothing 
-# ELSE     , push to stack  
-
-# STEP 1. "/" : root directory 
-
-# STEP 2. ".." : to the upper directory, since it is blank, so still stay at root directory 
-
-# STEP 3. "a"  : to sub directory a, now at "/a"
-
-# STEP 4. "b"  :  to sub directory a, now at "/a/b"
-
-# STEP 5. "c"  : to sub directory a, now at  "/a/b/c"
-
-# STEP 6. "."  : current directory, do nothing. still at "/a/b/c"
-
-# STEP 7. ".." : back to the upper directory, stay at "/a/b" finally 
-
 # V0
+# IDEA : STACK
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        s = path.split('/')
+        result = []
+        for i in range(len(s)):
+            if s[i] and s[i] != '.' and s[i]!='/' and s[i]!='..':
+                result.append(s[i])
+            elif s[i] == '..':
+                if result:
+                    result.pop()
+        
+        return "/"+"/".join(result)
+
+# V0'
+# IDEA : STACK
 class Solution(object):
     def simplifyPath(self, path):
         stack = []
@@ -80,7 +73,7 @@ class Solution(object):
                 stack.append(dir)
         return '/' + '/'.join(stack)
 
-# V0'
+# V0''
 class Solution(object):
     def simplifyPath(self, path):
         s_final = []
@@ -100,7 +93,102 @@ class Solution(object):
                 s_final.append(p)
         return "/" + "/".join(s_final)
 
-# V1 
+# V1
+# IDEA : STACK
+# https://leetcode.com/problems/simplify-path/solution/
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+
+        # Initialize a stack
+        stack = []
+
+        # Split the input string on "/" as the delimiter
+        # and process each portion one by one
+        for portion in path.split("/"):
+
+            # If the current component is a "..", then
+            # we pop an entry from the stack if it's non-empty
+            if portion == "..":
+                if stack:
+                    stack.pop()
+            elif portion == "." or not portion:
+                # A no-op for a "." or an empty string
+                continue
+            else:
+                # Finally, a legitimate directory name, so we add it
+                # to our stack
+                stack.append(portion)
+
+        # Stich together all the directory names together
+        final_str = "/" + "/".join(stack)
+        return final_str
+
+# V1'
+# IDEA : STACK
+# https://leetcode.com/problems/simplify-path/discuss/1958861/Python-3
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        s = path.split('/')
+        result = []
+        for i in range(len(s)):
+            if s[i] and s[i] != '.' and s[i]!='/' and s[i]!='..':
+                result.append(s[i])
+            elif s[i] == '..':
+                if result:
+                    result.pop()
+        
+        return "/"+"/".join(result)
+
+# V1''
+# IDEA : STACK
+# https://leetcode.com/problems/simplify-path/discuss/1050588/Python-stack
+class Solution:
+    def simplifyPath(self, path):
+        s = []
+        for x in path.split('/'):
+            if not x: 
+                continue
+            elif x == '.':
+                continue
+            elif x == '..':
+                if s:
+                    s.pop()
+            else:
+                s.append(x)
+        return '/' + '/'.join(s)
+
+# V1'''
+# IDEA : STACK
+# https://leetcode.com/problems/simplify-path/discuss/1050624/Python-by-stack-w-Comment
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        
+        # stack to store directory name
+        stack = []
+        
+        # check each directory name in given path, split by '/'
+        for dir_name in path.split('/'):
+        
+            if dir_name == '' or dir_name == '.':
+                
+                # do nothing if directory name is either empty string or '.'
+                continue
+                
+            elif dir_name == '..':
+                
+                # go back to parnet level and pop stack if stack is not empty
+                if stack:
+                    stack.pop()
+                else:
+                    continue
+            
+            else:
+                # push current directory name into stack
+                stack.append(dir_name)
+                        
+        return '/' + '/'.join(stack)
+
+# V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80812350
 # https://www.cnblogs.com/zuoyuan/p/3777289.html
 # IDEA  :  SIMULATE THE PROCESS 
