@@ -41,6 +41,8 @@
 	- 560 (again!!!)
 	- 721 (again !!!!!! not start)
 	- 825 (again)
+	- `002 - 708 (Linked list, pass)`
+	- 020 (ok)
 - cheatsheet review
 - ================
 - LC top 100 likes
