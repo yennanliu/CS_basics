@@ -534,7 +534,7 @@
 058| [Length of Last Word](https://leetcode.com/problems/length-of-last-word/) | [python](./leetcode_python/String/length-of-last-word.py)  | _O(n)_   | _O(1)_  | Easy       || OK 
 067| [Add Binary](https://leetcode.com/problems/add-binary/)    | [python](./leetcode_python/String/add-binary.py)  | _O(n)_  | _O(1)_   | Easy   | `good basic`, `fb`, `amazon`| OK* (5) (but again)
 076| [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)    | [python](./leetcode_python/String/minimum_window_substring.py)  |  |   | Hard   |`blind LC pattern` | AGAIN* (2) (not start)
-125| [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/) | [python](./leetcode_python/String/valid-palindrome.py) | _O(n)_  | _O(1)_ | Easy|`amazon`,`fb`| OK 
+125| [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/) | [python](./leetcode_python/String/valid-palindrome.py) | _O(n)_  | _O(1)_ | Easy|LC 680, `amazon`,`fb`| OK 
 151| [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/) | [python](./leetcode_python/String/reverse-words-in-a-string.py)  | _O(n)_ | _O(1)_ | Medium |`amazon`,`fb`| OK (2) 
 161| [One Edit Distance](https://leetcode.com/problems/one-edit-distance/) |  [python](./leetcode_python/String/one-edit-distance.py)  | _O(m + n)_ | _O(1)_  | Medium  |🔒, trick, recursion, string,  , `fb`| AGAIN ******** (6)(AGAIN)
 165| [Compare Version Numbers](https://leetcode.com/problems/compare-version-numbers/) |  [python](./leetcode_python/String/compare-version-numbers.py) | _O(n)_ | _O(1)_ |Medium|good basic, string,`amazon`, `apple`| OK** (5)
@@ -566,7 +566,7 @@
 648| [Replace Words](https://leetcode.com/problems/replace-words/) | [python](./leetcode_python/String/replace-words.py) | _O(n)_ | _O(t)_ | Medium  | Trie, `good basic`| OK* 
 657| [Judge Route Circle](https://leetcode.com/articles/judge-route-circle/) | [python](./leetcode_python/String/judge-route-circle.py)  | _O(n)_ | _O(1)_ | Easy    | | OK 
 678| [Valid Parenthesis String](https://leetcode.com/problems/valid-parenthesis-string/) | [python](./leetcode_python/String/valid-palindrome.py)   | _O(n)_ | _O(1)_ | Medium    | | AGAIN** 
-680| [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/) |  [python](./leetcode_python/String/valid-palindrome-ii.py)  | _O(n)_  | _O(1)_    | Easy |`good basic`, `string`, `fb`| OK
+680| [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/) |  [python](./leetcode_python/String/valid-palindrome-ii.py)  | _O(n)_  | _O(1)_    | Easy |LC 125, two pointers, `good basic`, Palindrome, `string`, `fb`| AGAIN******** (3)
 681| [Next Closest Time](https://leetcode.com/problems/next-closest-time/) | [python](./leetcode_python/String/next-closest-time.py)  | _O(1)_  | _O(1)_  | Medium |`subset of set`, `<=`,`strptime`,  `google`,`fb`| OK*** (5)
 686 | [Repeated String Match](https://leetcode.com/problems/repeated-string-match/) | [python](./leetcode_python/String/repeated-string-match.py)  | _O(n + m)_ | _O(1)_ | Medium |brute force, string, string match, `Rabin-Karp Algorithm`, `google` | AGAIN**** (3) 
 696| [Count Binary Substrings](https://leetcode.com/problems/count-binary-substrings/) | [python](./leetcode_python/String/count-binary-substrings.py) | _O(n)_ | _O(1)_ | Easy|good trick, linear scan, group, string, `amazon`| AGAIN******* (3)
