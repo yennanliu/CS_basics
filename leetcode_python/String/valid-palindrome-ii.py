@@ -1,138 +1,172 @@
-# Time:  O(n)
-# Soace: O(1)
-# Given a non-empty string s, you may delete at most one character.
-# Judge whether you can make it a palindrome.
-#
-# Example 1:
-# Input: "aba"
-# Output: True
-# Example 2:
-# Input: "abca"
-# Output: True
-# Explanation: You could delete the character 'c'.
-# Note:
-# The string will only contain lowercase characters a-z. The maximum length of the string is 50000.
+"""
+
+680. Valid Palindrome II
+Easy
+
+Given a string s, return true if the s can be palindrome after deleting at most one character from it.
+
+ 
+
+Example 1:
+
+Input: s = "aba"
+Output: true
+Example 2:
+
+Input: s = "abca"
+Output: true
+Explanation: You could delete the character 'c'.
+Example 3:
+
+Input: s = "abc"
+Output: false
+ 
+
+Constraints:
+
+1 <= s.length <= 105
+s consists of lowercase English letters.
+
+"""
 
 # V0 
+class Solution:
+    def validPalindrome(self, s):
+        
+        l, r = 0, len(s) - 1
+        
+        while l < r:
+            if s[l] != s[r]:
+                """
+                # NOTE this !!!!
+                -> break down the problem to even, odd cases
+                """
+                even, odd = s[l:r], s[l+1:r+1]
+                # NOTE this !!!!
+                return even == even[::-1] or odd == odd[::-1]
+            else:
+                l += 1
+                r -= 1
+                
+        return True 
 
-# V1 
-# https://blog.csdn.net/fuxuemingzhu/article/details/79252936
-# The isalnum() returns:
-# True if all characters in the string are alphanumeric
-# False if at least one character is not alphanumeric
-# https://www.programiz.com/python-programming/methods/string/isalnum
-class Solution(object):
-    def isPalindrome(self, s):
-        """
-        :type s: str
-        :rtype: bool
-        """
-        isValid = lambda x : x == x[::-1]
-        string = ''.join([x for x in s.lower() if x.isalnum()])
-        return isValid(string)
+# V1
+# IDEA : 2 pointers + array op
+# https://leetcode.com/problems/valid-palindrome-ii/discuss/469677/JavaScript-and-Python-Solution
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        
+        l, r = 0, len(s) - 1
+        
+        while l < r:
+            if s[l] != s[r]:
+                """
+                # NOTE this !!!!
+                -> break down the problem to even, odd cases
+                """
+                even, odd = s[l:r], s[l+1:r+1]
+                # NOTE this !!!!
+                return even == even[::-1] or odd == odd[::-1]
+            else:
+                l += 1
+                r -= 1
+                
+        return True 
 
-# V1' 
-# https://blog.csdn.net/fuxuemingzhu/article/details/79252936
-# IDEA : REGULAR EXPRESSION 
+# V1'
+# IDEA : 2 pointers + array op
+# https://leetcode.com/problems/valid-palindrome-ii/discuss/107723/Super-Simple-Python-Solution
 class Solution(object):
-    def isPalindrome(self, s):
-        """
-        :type s: str
-        :rtype: bool
-        """
-        s = s.lower()
-        s = re.sub("\W", "", s)
-        N = len(s)
-        left, right = 0, N - 1
-        while left <= right:
-            if s[left] != s[right]:
-                return False
-            left += 1
-            right -= 1
+    def validPalindrome(self, s):
+        i = 0
+        j = len(s)-1
+        while i <= j:
+            if s[i] == s[j]:
+                i += 1
+                j -= 1
+            else:
+                return s[i:j] == s[i:j][::-1] or s[i+1:j+1] == s[i+1:j+1][::-1]
         return True
 
-# V1'' 
-# https://blog.csdn.net/fuxuemingzhu/article/details/79252936
-# IDEA : TWO POINTERS (DEV)
+# V1''
+# IDEA : 2 pointers + RECURSIVE
+# https://leetcode.com/problems/valid-palindrome-ii/discuss/1123875/Python
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        isPalindrome = lambda x: x == x[:: -1]
+        left, right = 0, len(s) - 1
+        while left < right:
+            if s[left] == s[right]:
+                left += 1
+                right -= 1
+            else:
+                return isPalindrome(s[left: right]) or isPalindrome(s[left + 1: right + 1])
+        return True
 
 # V1'''
-# http://bookshadow.com/weblog/2017/09/17/leetcode-valid-palindrome-ii/
-class Solution(object):
-    def validPalindrome(self, s):
-        """
-        :type s: str
-        :rtype: bool
-        """
-        isPalindrome = lambda s: s == s[::-1]
-        strPart = lambda s, x: s[:x] + s[x + 1:]
-        size = len(s)
-        lo, hi = 0, size - 1
-        while lo < hi:
-            if s[lo] != s[hi]:
-                return validPalindrome(strPart(s, lo)) or validPalindrome(strPart(s, hi))
-            lo += 1
-            hi -= 1
-        return True
-        
-# V2 
-class Solution(object):
-    def validPalindrome(self, s):
-        """
-        :type s: str
-        :rtype: bool
-        """
-        def validPalindrome(s, left, right):
-            while left < right:
-                if s[left] != s[right]:
+# IDEA : Two Pointers
+# https://leetcode.com/problems/valid-palindrome-ii/submissions/
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        def check_palindrome(s, i, j):
+            while i < j:
+                if s[i] != s[j]:
                     return False
-                left, right = left+1, right-1
-            return True
-
-        left, right = 0, len(s)-1
-        while left < right:
-            if s[left] != s[right]:
-                return validPalindrome(s, left, right-1) or validPalindrome(s, left+1, right)
-            left, right = left+1, right-1
-        return True
-
-# V3 
-# Time:  O(n)
-# Space: O(1)
-class Solution(object):
-    # @param s, a string
-    # @return a boolean
-    def isPalindrome(self, s):
-        i, j = 0, len(s) - 1
-        while i < j:
-            while i < j and not s[i].isalnum():
                 i += 1
-            while i < j and not s[j].isalnum():
                 j -= 1
-            if s[i].lower() != s[j].lower():
-                return False
-            i, j = i + 1, j - 1
-        return True
-
-# V4 
-# Time:  O(n)
-# Space: O(1)
-class Solution(object):
-    def validPalindrome(self, s):
-        """
-        :type s: str
-        :rtype: bool
-        """
-        def validPalindrome(s, left, right):
-            while left < right:
-                if s[left] != s[right]:
-                    return False
-                left, right = left+1, right-1
+            
             return True
 
-        left, right = 0, len(s)-1
-        while left < right:
-            if s[left] != s[right]:
-                return validPalindrome(s, left, right-1) or validPalindrome(s, left+1, right)
-            left, right = left+1, right-1
-        return True
+        i = 0
+        j = len(s) - 1
+        while i < j:
+            # Found a mismatched pair - try both deletions
+            if s[i] != s[j]:
+                return check_palindrome(s, i, j - 1) or check_palindrome(s, i + 1, j)
+            i += 1
+            j -= 1
         
+        return True
+
+# V1''''
+# https://leetcode.com/problems/valid-palindrome-ii/discuss/1410354/Recursive-Python
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        if not s:
+            return True
+        def isPalindrome(l, r, edit_used):
+            while l <= r and s[l] == s[r]:
+                l += 1
+                r -= 1
+            if l < r and not edit_used:
+                return isPalindrome(l+1, r, True) or isPalindrome(l, r-1, True)
+            elif l < r:
+                return False
+            else:
+                return True
+        
+        return isPalindrome(0, len(s)-1, False)
+
+# V1'''''
+# https://leetcode.com/problems/valid-palindrome-ii/discuss/219079/Simple-Python-Solution
+class Solution:
+    def isValid(self, s):
+        try:
+            while s[-1] == s[0]:
+                s.pop(-1)
+                s.pop(0)
+        except:
+            pass
+        return len(s) == 0
+    def validPalindrome(self, s):
+        s = list(s)
+        if s[::-1] == s:
+            return True
+        while s[-1] == s[0]:
+            s.pop(-1)
+            s.pop(0)
+        if len(s) > 1:
+            return self.isValid(list(s)[1:]) or self.isValid(list(s)[:-1])
+        return True
+
+# V2

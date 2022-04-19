@@ -30,6 +30,12 @@
         - [2 sum](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md)
         - [sliding window](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
 
+- `Expand` from center
+
+- Deal with `odd, even` cases
+    - LC 680
+    - LC 647
+
 - Algorithm
     - binary search
     - sliding window
@@ -709,4 +715,28 @@ class Solution(object):
                 l = i
         num[k], num[l] = num[l], num[k]
         num[k + 1:] = num[:k:-1] ### dounle check here ###
+```
+
+### 2-10) Next Permutation II
+```python
+# LC 680. Valid Palindrome II
+class Solution:
+    def validPalindrome(self, s):
+        
+        l, r = 0, len(s) - 1
+        
+        while l < r:
+            if s[l] != s[r]:
+                """
+                # NOTE this !!!!
+                -> break down the problem to even, odd cases
+                """
+                even, odd = s[l:r], s[l+1:r+1]
+                # NOTE this !!!!
+                return even == even[::-1] or odd == odd[::-1]
+            else:
+                l += 1
+                r -= 1
+                
+        return True 
 ```
