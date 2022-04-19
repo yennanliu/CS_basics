@@ -546,7 +546,7 @@
 383| [Ransom Note](https://leetcode.com/problems/ransom-note/) |[python](./leetcode_python/String/ransom-note.py) | _O(n)_ | _O(1)_ | Easy   | EPI, apple | OK*
 405| [Convert a Number to Hexadecimal](https://leetcode.com/problems/convert-a-number-to-hexadecimal/) | [python](./leetcode_python/String/convert-a-number-to-hexadecimal.py) | _O(n)_ | _O(1)_ | Easy  | `basics` `decimal -> Hexadecimal`| AGAIN 
 408| [Valid Word Abbreviation](https://leetcode.com/problems/valid-word-abbreviation/) | [python](./leetcode_python/String/valid-word-abbreviation.py) | _O(n)_ | _O(1)_ | Easy     | 🔒 | AGAIN (not start)
-415| [Add Strings](https://leetcode.com/problems/add-strings/) | [python](./leetcode_python/String/add-strings.py)| _O(n)_ | _O(1)_ | Easy   | `basic`, `string add`, `Airbnb`, `google`, `fb`|  OK** (3)
+415| [Add Strings](https://leetcode.com/problems/add-strings/) | [python](./leetcode_python/String/add-strings.py)| _O(n)_ | _O(1)_ | Easy| `good basic`, `add xxx to sum`, `Airbnb`, `google`, `fb`|  OK****** (4)
 434| [Number of Segments in a String](https://leetcode.com/problems/number-of-segments-in-a-string/) | [python](./leetcode_python/String/number-of-segments-in-a-string.py) | _O(n)_ | _O(1)_ | Easy    | | OK 
 443| [String Compression](https://leetcode.com/problems/string-compression/) | [python](./leetcode_python/String/string-compression.py) | _O(n)_ | _O(1)_ | Easy   |shoptify, `basics`| AGAIN**
 459| [Repeated Substring Pattern](https://leetcode.com/problems/repeated-substring-pattern/) | [python](./leetcode_python/String/repeated-substring-pattern.py) | _O(n)_ | _O(n)_ | Easy  | good basic, string, `KMP Algorithm`, `amazon` | OK* (5) 

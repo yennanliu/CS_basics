@@ -30,6 +30,37 @@ num1 and num2 don't have any leading zeros except for the zero itself.
 """
 
 # V0
+# IDEA : string + math
+class Solution(object):
+    def addStrings(self, num1, num2):
+        result = []
+        # note : we init carry as 0
+        carry = 0
+        num1 = list(num1)
+        num2 = list(num2)
+        # while there is still non-add digit in num1, and num2; or there is non-zero carry 
+        while num1 or num2 or carry:
+            digit = carry
+            if num1:
+                tmp1 = num1.pop(-1)
+                digit += int(tmp1)
+            if num2:
+                tmp2 = num2.pop(-1)
+                digit += int(tmp2)
+            """
+            if digit > 9 -> we need to "carry" 1 to next digit -> carry = 1
+            else -> carry = 0
+            """
+            if digit > 9:
+                carry = 1
+            else:
+                carry = 0
+            # NOTE !!! we get "remain" by 10 via below code
+            result.append(str(digit % 10))
+        return ''.join(result[::-1]) 
+
+# V0'
+# IDEA : string + math
 class Solution(object):
     def addStrings(self, num1, num2):
         result = []
