@@ -3,13 +3,17 @@
 ## 0) Concept  
 
 ### 0-1) Types
-- [Bubble sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py)
-- [Quick sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)
-- [Insertion sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/insertion_sort.py)
-- [Heap sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/heap_sort.py)
-- [Merge sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py)
-- [Selection sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py)
-- [Topological sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py)
+- Algorithm
+    - [Bubble sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py)
+    - [Quick sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)
+    - [Insertion sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/insertion_sort.py)
+    - [Heap sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/heap_sort.py)
+    - [Merge sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py)
+    - [Selection sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py)
+    - [Topological sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py)
+- Data Structure
+    - Sort on string
+        - LC 791
 
 ### 0-2) Algorithm
 
@@ -269,4 +273,24 @@ class Solution:
             if intervals[i][0] < intervals[i-1][1]:
                 return False
         return True
+```
+
+
+### 2-3) Custom Sort String
+```python
+# LC 791. Custom Sort String
+# V0
+# IDEA : COUNTER
+from collections import Counter
+class Solution(object):
+    def customSortString(self, order, s):
+        s_map = Counter(s)
+        res = ""
+        for o in order:
+            if o in s_map:
+                res += (o * s_map[o])
+                del s_map[o]
+        for s in s_map:
+            res += s * s_map[s]
+        return res
 ```
