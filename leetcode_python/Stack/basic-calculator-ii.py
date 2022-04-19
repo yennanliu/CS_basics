@@ -39,6 +39,13 @@ The answer is guaranteed to fit in a 32-bit integer
 
 # V0
 # IDEA : STACK
+# NOTE !!! 
+#   -> 1) we init pre_op = '+'
+#   -> 2) how we deal with cases with pre_op
+#         -> for i, each in enumerate(s):
+#           -> if i == len(s) - 1 or each in '+-*/':
+#              ...
+#              -> pre_op = each
 class Solution:
     def calculate(self, s):
         stack = []

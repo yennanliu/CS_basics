@@ -58,6 +58,9 @@ class BSTIterator(object):
     def inOrder(self, root):
         if not root:
             return
+        """
+        NOTE !!! how we do inorder traversal here
+        """
         self.inOrder(root.right)
         self.stack.append(root.val)
         self.inOrder(root.left)
