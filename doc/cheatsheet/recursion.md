@@ -34,3 +34,26 @@ class Solution(object):
             return False
         return self.mirror(left.left, right.right) and self.mirror(left.right, right.left)
 ```
+
+### 2-2) One Edit Distance
+```python
+# LC 161. One Edit Distance
+# V0
+# IDER : RECURSION
+class Solution:
+    def isOneEditDistance(self, s, t):
+        m = len(s)
+        n = len(t)
+        if abs(m - n) > 1:
+            return False
+        if m > n:
+            return self.isOneEditDistance(t, s)
+        for i in range(m):
+            if s[i] != t[i]:
+                # case 1
+                if m == n:
+                    return s[i + 1:] == t[i + 1:]
+                # case 2
+                return s[i:] == t[i + 1:]
+        return m != n # double check this condition
+```
