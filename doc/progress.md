@@ -24,15 +24,11 @@
 	- 031 (again!!!!)
 	- 080 (again)
 	- 157 (again)
-	- 209
 	- 277 (again!!!)
 	- 311 (ok, but again)
 	- 498 (again)
-	- 674
 	- 010 (again)
-	- 170
 	- 325 (ok, but again!!!)
-	- 387 (ok)
 	- 438 (again)
 	- 463 (again)
 	- 523 (again!!!)
@@ -42,10 +38,10 @@
 	- 721 (again !!!!!! not start)
 	- 825 (again)
 	- `002 - 708 (Linked list, pass)`
-	- 020 (ok)
 	- 032 (again, not start)
 	- 071 (ok, but again)
 	- 101 (ok)
+	- 173 (ok, but again)
 - cheatsheet review
 - ================
 - LC top 100 likes
