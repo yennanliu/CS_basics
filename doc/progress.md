@@ -62,6 +62,8 @@
 	- 680 (again!!!)
 	- 681
 	- 791 (again!!!)
+	- 824
+	- 281 (again!!! not start)
 - cheatsheet review
 - ================
 - LC top 100 likes
