@@ -50,6 +50,9 @@
 	- 1047 (ok!!!)
 	- 1209 (ok!!)
 	- `094 - 653 (tree, pass)`
+	- 1353 (again!!!)
+	- `136 - 067 (bit op, pass)`
+	- 125
 - cheatsheet review
 - ================
 - LC top 100 likes
