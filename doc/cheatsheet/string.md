@@ -535,3 +535,20 @@ class Solution(object):
                 res += (len(S) - j) * (j - k)
             return res % (10**9 + 7)
 ```
+
+### 2-12) Palindromic Substrings
+```python
+# LC 647. Palindromic Substrings
+# V0
+# IDEA : BRUTE FORCE
+class Solution(object):
+    def countSubstrings(self, s):
+        count = 0
+        # NOTE: since i from 0 to len(s) - 1, so for j we need to "+1" then can get go throgh all elements in str
+        for i in range(len(s)):
+            # Note : for j we need to "+1"
+            for j in range(i+1, len(s)+1):
+                if s[i:j] == s[i:j][::-1]:
+                    count += 1
+        return count
+```
