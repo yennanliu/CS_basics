@@ -1,24 +1,37 @@
-# Time:  O(n)
-# Space: O(1)
-# Given two non-negative numbers num1 and num2 represented as string,
-# return the sum of num1 and num2.
-#
-# Note:
-#
-# The length of both num1 and num2 is < 5100.
-# Both num1 and num2 contains only digits 0-9.
-# Both num1 and num2 does not contain any leading zero.
-# You must not use any built-in BigInteger library or
-# convert the inputs to integer directly.
+"""
+
+415. Add Strings
+Easy
+
+Given two non-negative integers, num1 and num2 represented as string, return the sum of num1 and num2 as a string.
+
+You must solve the problem without using any built-in library for handling large integers (such as BigInteger). You must also not convert the inputs to integers directly.
+
+Example 1:
+
+Input: num1 = "11", num2 = "123"
+Output: "134"
+Example 2:
+
+Input: num1 = "456", num2 = "77"
+Output: "533"
+Example 3:
+
+Input: num1 = "0", num2 = "0"
+Output: "0"
+ 
+
+Constraints:
+
+1 <= num1.length, num2.length <= 104
+num1 and num2 consist of only digits.
+num1 and num2 don't have any leading zeros except for the zero itself.
+
+"""
 
 # V0
 class Solution(object):
     def addStrings(self, num1, num2):
-        """
-        :type num1: str
-        :type num2: str
-        :rtype: str
-        """
         result = []
         carry = 0
         while num1 or num2 or carry:  # while there is still non-add digit in num1, and num2; or there is non-zero carry 
@@ -32,6 +45,55 @@ class Solution(object):
             carry = digit > 9 # true if digit (e.g. 10,11...), so carry == True and will do addition to next digit. vice versa.
             result.append(str(digit % 10))
         return ''.join(result[::-1]) 
+
+# V1
+# IDEA : MATH
+# https://leetcode.com/problems/add-strings/solution/
+"""
+
+Facebook interviewers like this question and propose it in four main variations. The choice of algorithm should be based on the input format:
+
+Strings (the current problem). Use schoolbook digit-by-digit addition. Note, that to fit into constant space is not possible for languages with immutable strings, for example, for Java and Python. Here are two examples:
+
+Add Binary: sum two binary strings.
+
+Add Strings: sum two non-negative numbers in a string representation without converting them to integers directly.
+
+Integers. Usually, the interviewer would ask you to implement a sum without using + and - operators. Use bit manipulation approach. Here is an example:
+
+Sum of Two Integers: Sum two integers without using + and - operators.
+Arrays. The same textbook addition. Here is an example:
+
+Add to Array Form of Integer.
+Linked Lists. Sentinel Head + Textbook Addition. Here are some examples:
+
+Plus One.
+
+Add Two Numbers.
+
+Add Two Numbers II.
+
+"""
+class Solution:
+    def addStrings(self, num1: str, num2: str) -> str:
+        res = []
+
+        carry = 0
+        p1 = len(num1) - 1
+        p2 = len(num2) - 1
+        while p1 >= 0 or p2 >= 0:
+            x1 = ord(num1[p1]) - ord('0') if p1 >= 0 else 0
+            x2 = ord(num2[p2]) - ord('0') if p2 >= 0 else 0
+            value = (x1 + x2 + carry) % 10
+            carry = (x1 + x2 + carry) // 10
+            res.append(value)
+            p1 -= 1
+            p2 -= 1
+        
+        if carry:
+            res.append(carry)
+        
+        return ''.join(str(x) for x in res[::-1])
 
 # V1 
 # http://bookshadow.com/weblog/2016/10/09/leetcode-add-strings/

@@ -1,26 +1,43 @@
-# Time:  O(n)
-# Space: O(1)
-#
-# Given two strings s and t, write a function to
-# determine if t is an anagram of s.
-#
-# For example,
-# s = "anagram", t = "nagaram", return true.
-# s = "rat", t = "car", return false.
-#
-# Note:
-# You may assume the string contains only lowercase alphabets.
-#
+"""
+
+242. Valid Anagram
+Easy
+
+Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+ 
+
+Example 1:
+
+Input: s = "anagram", t = "nagaram"
+Output: true
+Example 2:
+
+Input: s = "rat", t = "car"
+Output: false
+ 
+
+Constraints:
+
+1 <= s.length, t.length <= 5 * 104
+s and t consist of lowercase English letters.
+ 
+
+Follow up: What if the inputs contain Unicode characters? How would you adapt your solution to such a case?
+
+"""
 
 # V0 
+class Solution:
+    def isAnagram(self, s, t):
+        return sorted(s) == sorted(t)
 
 # V1 
 # https://blog.csdn.net/liuchonge/article/details/51913298
 # http://bookshadow.com/weblog/2015/08/01/leetcode-valid-anagram/
 class Solution:
-    # @param {string} s
-    # @param {string} t
-    # @return {boolean}
     def isAnagram(self, s, t):
         return sorted(s) == sorted(t)
 
