@@ -65,22 +65,28 @@ The values of the integers in the nested list is in the range [-106, 106].
 #        :rtype List[NestedInteger]
 #        """
 
-
 # V0
-#### key : define a r = [] outside of the func
-# r = []
-# def flatten_array(_array):
-#     for i in _array:
-#         if type(i) == int:
-#             print (i)
-#             r.append(i)
-#         else:
-#             flatten_array(i)
-#
-# _input = [1,0, [1,2,[4,[5,[6,[7]]]]]]
-#
-# flatten_array(_input)
-# print ("r = " + str(r))
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+
+        self.queue = []
+        
+        def getAll(nests):
+            for nest in nests:
+                if nest.isInteger():
+                    self.queue.append(nest.getInteger())
+                else:
+                    getAll(nest.getList())
+        getAll(nestedList)
+
+    def next(self):
+
+        return self.queue.pop(0)
+
+    def hasNext(self):
+
+        return len(self.queue)
 
 # V0'
 import collections
@@ -105,6 +111,22 @@ class NestedIterator(object):
     def hasNext(self):
 
         return len(self.queue)
+
+# V0''
+#### key : define a r = [] outside of the func
+# r = []
+# def flatten_array(_array):
+#     for i in _array:
+#         if type(i) == int:
+#             print (i)
+#             r.append(i)
+#         else:
+#             flatten_array(i)
+#
+# _input = [1,0, [1,2,[4,[5,[6,[7]]]]]]
+#
+# flatten_array(_input)
+# print ("r = " + str(r))
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79529982
