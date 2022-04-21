@@ -55,21 +55,33 @@ class Solution:
 
         for idx in range(len(s)):
         
+            """
             # CASE 1) : odd len
             # Check for odd length palindrome with idx at its center
-            ### NOTE : the only difference (between odd, even len)
+
+            -> NOTE : the only difference (between odd, even len)
+            
+            -> NOTE !!!  : 2 idx : left = right = idx
+            """
             left = right = idx
+            # note the condition !!!
             while left >= 0 and right < len(s) and s[left] == s[right]:
                 if right - left + 1 > len(res):
                     res = s[left:right + 1]
                 left -= 1
                 right += 1
               
+            """"
             # CASE 2) : even len  
             # Check for even length palindrome with idx and idx-1 as its center
-            ### NOTE : the only difference (between odd, even len)
+
+            -> NOTE : the only difference (between odd, even len)
+
+            -> NOTE !!!  : 2 idx : left = idx - 1,  right = idx
+            """
             left = idx - 1
             right = idx
+            # note the condition !!!
             while left >= 0 and right < len(s) and s[left] == s[right]:
                 if right - left + 1 > len(res):
                     res = s[left:right + 1]
@@ -79,6 +91,23 @@ class Solution:
         return res
 
 # V0'
+# IDEA : TWO POINTER + RECURSION
+# https://leetcode.com/problems/longest-palindromic-substring/discuss/1057629/Python.-Super-simple-and-easy-understanding-solution.-O(n2).
+class Solution:
+    def longestPalindrome(self, s):
+        res = ""
+        length = len(s)
+        def helper(left, right):
+            while left >= 0 and right < length and s[left] == s[right]:
+                left -= 1
+                right += 1      
+            return s[left + 1 : right]
+        
+        for index in range(len(s)):
+            res = max(helper(index, index), helper(index, index + 1), res, key = len)           
+        return res
+
+# V0''
 # IDEA : TWO POINTERS
 # https://leetcode.com/problems/longest-palindromic-substring/discuss/1025496/Python-Clean-and-Simple
 class Solution:
@@ -95,23 +124,6 @@ class Solution:
                 left = i-size
                 size += 1
         return s[left:left+size]
-
-# V0''
-# IDEA : TWO POINTER + RECURSION
-# https://leetcode.com/problems/longest-palindromic-substring/discuss/1057629/Python.-Super-simple-and-easy-understanding-solution.-O(n2).
-class Solution:
-    def longestPalindrome(self, s):
-        res = ""
-        length = len(s)
-        def helper(left, right):
-            while left >= 0 and right < length and s[left] == s[right]:
-                left -= 1
-                right += 1      
-            return s[left + 1 : right]
-        
-        for index in range(len(s)):
-            res = max(helper(index, index), helper(index, index + 1), res, key = len)           
-        return res
 
 # V0'''
 # IDEA : DP
