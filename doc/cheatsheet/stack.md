@@ -26,6 +26,19 @@
 - Build stack via queue
 
 ### 0-2) Pattern
+```python
+# python
+# LC 739
+# ...
+stack = [] # [[idx, val]]
+for i, val in enumerate(len(tmp)):
+    while stack and stack[-1][1] < val:
+        _idx, _val = stack.pop(-1)
+        res[tmp[_idx]] = i - _idx
+    stack.append([i, val]) 
+# ...
+```
+
 ```c++
 // c++
 vector<int> nextGreaterElement(vector<int>& nums) {
