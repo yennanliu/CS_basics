@@ -43,9 +43,19 @@ class Solution(object):
         for i in range(len(tmp)):
             # NOTE : while condition
             while stack and stack[-1][1] < tmp[i]:
-                # NOTE !!!! we do op right after while loop conditon is satisfied
+                """
+                NOTE !!!! 
+                    1) we do op right after while loop conditon is satisfied
+                    2) there is NO if-else logic
+                    3) core of algorithm:
+                        ...
+                        while stack and stack[-1][1] < tmp[i]:
+                            idx, val = stacl.pop(-1)
+                            res[idx] = i - idx
+                        ...
+                """
                 idx, val = stack.pop(-1)
-                res[idx] = i - idx
+                res[idx] = i - idx # NOTE !! res[idx], since we are comparing with elment in idx index
             # NOTE !!! : append [idx, value] to stack
             stack.append([i, tmp[i]])
         return res
