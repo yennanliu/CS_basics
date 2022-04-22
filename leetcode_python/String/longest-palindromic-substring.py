@@ -58,7 +58,9 @@ class Solution:
             left = right = idx
             # note the condition !!!
             while left >= 0 and right < len(s) and s[left] == s[right]:
+                # note !!! this
                 if right - left + 1 > len(res):
+                    # note !!! this
                     res = s[left:right + 1]
                 left -= 1
                 right += 1
@@ -69,13 +71,18 @@ class Solution:
 
             -> NOTE : the only difference (between odd, even len)
 
-            -> NOTE !!!  : 2 idx : left = idx - 1,  right = idx
+            -> NOTE !!!  : 
+                -> we init 
+                    left = idx - 1
+                    right = idx
             """
             left = idx - 1
             right = idx
             # note the condition !!!
             while left >= 0 and right < len(s) and s[left] == s[right]:
+                # note !!! this
                 if right - left + 1 > len(res):
+                    # note !!! this
                     res = s[left:right + 1]
                 left -= 1
                 right += 1
