@@ -41,7 +41,12 @@ class Solution(object):
         l = len(matrix)
         w = len(matrix[0])
         for i in range(l):
+            """
+            NOTE !!!
+                -> j start from i+1 to len(matrix[0])
+            """
             for j in range(i+1, w):
+                #print ("i = " + str(i) + " j = " + str(j) + " matrix = " + str(matrix))
                 matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
         # step 2) inverse
         for i in range(l):

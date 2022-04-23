@@ -380,10 +380,10 @@ matrix = [
 ]
 for i in range(len(matrix)):
     """
-    NOTE this range (x-axis) !!!
-        range(i+1, len(matrix[0]))
+    NOTE !!!
+        -> j start from i+1 to len(matrix[0])
     """
-    for j in range(i+1, len(matrix[0])):
+    for j in range(i+1, len(matrix[0])): # NOTE THIS !!!!
         matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
 print (matrix)
