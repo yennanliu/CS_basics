@@ -30,6 +30,31 @@ Constraints:
 """
 
 # V0
+# IDEA : LC 739
+class Solution(object):
+    def nextGreaterElements(self, nums):
+        # edge case
+        if not nums:
+            return
+        _len = len(nums)
+        # note : we init res as [-1] * _len
+        res = [-1] * _len
+        # note : we use "nums = 2 * nums" to simuldate "circular array"
+        nums = 2 * nums
+        stack = [] # [[idx, val]]
+        for idx, val in enumerate(nums):
+            while stack and stack[-1][1] < val:
+                _idx, _val = stack.pop(-1)
+                """
+                NOTE !!!
+                    -> we get remainder via "_idx % _len" for handling idx issue
+                      (since we made nums = 2 * nums earlier)
+                """
+                res[_idx % _len] = val
+            stack.append([idx, val])
+        return res
+
+# V0'
 # IDEA : STACK + circular loop handling
 class Solution:
     def nextGreaterElements(self, nums):
