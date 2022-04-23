@@ -31,10 +31,26 @@ Constraints:
 """
 
 # V0
+# IDEA : for loop + while loop + problem understanding
+class Solution:
+    def firstMissingPositive(self, nums):
+        for i, n in enumerate(nums):
+            if n < 0:
+                continue
+            else:
+                while n <= len(nums) and n > 0:
+                    tmp = nums[n-1]
+                    nums[n-1] = float('inf')
+                    n = tmp
+        for i in range(len(nums)):
+            if nums[i] != float('inf'):
+                return i+1
+            
+        return len(nums)+1
 
 # V1
+# IDEA : for loop + while loop + problem understanding
 # https://leetcode.com/problems/first-missing-positive/discuss/231337/Python-solution
-# IDEA :
 # Idea: change nums[n-1] to float('inf') for all n in nums if 1 <= n <= len(nums), meaning that we have seen n in nums. Then we traverse nums once more, and find the first idx such that nums[idx] != float('inf'), then idx+1 will be the first missing positive in nums. If no such idx exists, it means that we have seen 1, 2, ..., len(nums) in nums, hence the first missing positive is len(nums)+1.
 # Time complexity: O(n), space complexity: O(1).
 class Solution:
