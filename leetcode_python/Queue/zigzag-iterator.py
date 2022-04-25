@@ -47,7 +47,33 @@ Output: [1,4,8,2,5,9,3,6,7]
 
 """
 
-# V0 
+# V0
+# IDEA : ququq + problem understanding
+# NOTE : 
+#    1) we NEED Zigzag loop over v1, v2 (if v1 and v2 both exist). e.g. (v1, v2, v1, v2 ...)
+#    2) ZigzagIterator.next() will ONLY return one element either from v1 or v2 (if v1 and v2 both exist)
+#    3) if 
+#         v1 not exidt -> next() will return element from v2 ONLY
+#         v2 not exidt -> next() will return element from v1 ONLY
+class ZigzagIterator(object):
+
+    def __init__(self, v1, v2):
+        self.v1 = v1
+        self.v2 = v2
+        self.flag = "v1"
+        
+    def next(self):
+        if (self.v1 and self.flag == "v1") or (not self.v2):
+            tmp1 = self.v1.pop(0)
+            self.flag = "v2"
+            return tmp1
+        if (self.v2 and self.flag == "v2") or (not self.v1):
+            tmp2 = self.v2.pop(0)
+            self.flag = "v1"
+            return tmp2
+        
+    def hasNext(self):
+        return self.v1 or self.v2
 
 # V1
 # IDEA deque

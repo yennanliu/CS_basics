@@ -608,7 +608,7 @@
 ## Queue
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-281| [Zigzag Iterator](https://leetcode.com/problems/zigzag-iterator/)| [Python](./leetcode_python/Queue/zigzag-iterator.py) | _O(n)_ | _O(k)_ | Medium  |`good basic`,🔒, `google`,`fb`| AGAIN******* (4) (not start)
+281| [Zigzag Iterator](https://leetcode.com/problems/zigzag-iterator/)| [Python](./leetcode_python/Queue/zigzag-iterator.py) | _O(n)_ | _O(k)_ | Medium  |`good basic`, queue, 🔒, `google`,`fb`| AGAIN******* (5)
 346| [Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)| [Python](./leetcode_python/Queue/moving-average-from-data-stream.py)  | _O(1)_ | _O(w)_  | Easy |🔒, queue, `google`, `fb`| OK** (6)
 933| [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)| [Python](./leetcode_python/Queue/number-of-recent-calls.py)  | _O(1)_ on average  | _O(w)_ | Easy|| AGAIN**
 622| [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/)|[Python](./leetcode_python/Queue/design_circular_queue.py) | | | Medium |`good basic`,`circular queue`,`amazon`,`fb`| AGAIN****** (2)
