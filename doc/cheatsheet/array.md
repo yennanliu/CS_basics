@@ -1013,3 +1013,35 @@ class Solution:
             
         return len(nums)+1
 ```
+
+### 2-15) Rotate Array
+```python
+# LC 189. Rotate Array
+# V0
+# IDEA : pop + insert
+class Solution(object):
+    def rotate(self, nums, k):
+        _len = len(nums)
+        k = k % _len
+        while k > 0:
+            tmp = nums.pop(-1)
+            nums.insert(0, tmp)
+            k -= 1
+
+# V0'
+# IDEA : SLICE (in place)
+class Solution(object):
+    def rotate(self, nums, k):
+        # edge case
+        if k == 0 or not nums or len(nums) == 1:
+            return nums
+        ### NOTE this
+        k = k % len(nums)
+        if k == 0:
+            return nums
+        """
+        NOTE this !!!!
+        """
+        nums[:k], nums[k:] = nums[-k:], nums[:-k]
+        return nums
+```

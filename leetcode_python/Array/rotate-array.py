@@ -1,9 +1,14 @@
 """
+
+189. Rotate Array
+Medium
+
 Given an array, rotate the array to the right by k steps, where k is non-negative.
+
 
 Example 1:
 
-Input: [1,2,3,4,5,6,7] and k = 3
+Input: nums = [1,2,3,4,5,6,7], k = 3
 Output: [5,6,7,1,2,3,4]
 Explanation:
 rotate 1 steps to the right: [7,1,2,3,4,5,6]
@@ -11,30 +16,39 @@ rotate 2 steps to the right: [6,7,1,2,3,4,5]
 rotate 3 steps to the right: [5,6,7,1,2,3,4]
 Example 2:
 
-Input: [-1,-100,3,99] and k = 2
+Input: nums = [-1,-100,3,99], k = 2
 Output: [3,99,-1,-100]
 Explanation: 
 rotate 1 steps to the right: [99,-1,-100,3]
 rotate 2 steps to the right: [3,99,-1,-100]
-Note:
+ 
 
-Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.
+Constraints:
+
+1 <= nums.length <= 105
+-231 <= nums[i] <= 231 - 1
+0 <= k <= 105
+ 
+
+Follow up:
+
+Try to come up with as many solutions as you can. There are at least three different ways to solve this problem.
 Could you do it in-place with O(1) extra space?
 
 """
 
-# Time:  O(n)
-# Space: O(1)
-#
-# Rotate an array of n elements to the right by k steps.
-#
-# For example, with n = 7 and k = 3, the array [1,2,3,4,5,6,7] is rotated to [5,6,7,1,2,3,4].
-#
-# Note:
-# Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.
-#
-
 # V0
+# IDEA : pop + insert
+class Solution(object):
+    def rotate(self, nums, k):
+        _len = len(nums)
+        k = k % _len
+        while k > 0:
+            tmp = nums.pop(-1)
+            nums.insert(0, tmp)
+            k -= 1
+
+# V0'
 # IDEA : SLICE (in place)
 class Solution(object):
     def rotate(self, nums, k):
@@ -45,10 +59,13 @@ class Solution(object):
         k = k % len(nums)
         if k == 0:
             return nums
+        """
+        NOTE this !!!!
+        """
         nums[:k], nums[k:] = nums[-k:], nums[:-k]
         return nums
 
-# V0'
+# V0''
 # IDEA : SLICE (in place)
 class Solution(object):
     def rotate(self, nums, k):
@@ -64,7 +81,7 @@ class Solution(object):
 #             nums = [_nums[-1]] + _nums[:-1]
 #         return nums
 
-# V0'''
+# V0''''
 # IDEA : SLICE
 class Solution(object):
     def rotate(self, nums, k):
@@ -221,7 +238,6 @@ class Solution3(object):
                     break
             start += 1
 
-
 # Time:  O(n)
 # Space: O(n)
 class Solution4(object):
@@ -237,7 +253,6 @@ class Solution4(object):
         :rtype: void Do not return anything, modify nums in-place instead.
         """
         nums[:] = nums[len(nums) - k:] + nums[:len(nums) - k]
-        
 
 # Time:  O(k * n)
 # Space: O(1)
