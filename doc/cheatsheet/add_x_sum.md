@@ -131,7 +131,16 @@ class Souluton:
 
 ### 2-4) Add to Array Form of Integer
 ```python
-# LC 989 Add to Array Form of Integer.
+# LC 989 Add to Array Form of Integer
+# V0
+# IDEA : array op
+class Solution:
+    def addToArrayForm(self, num, k):
+        s = ""
+        for i in num:
+            s += str(i)       
+        answer = int(s) + k
+        return  list("".join(str(answer)))
 ```
 
 ### 2-5) Plus One
