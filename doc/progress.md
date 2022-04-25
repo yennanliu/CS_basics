@@ -22,6 +22,9 @@
 	- 034 (again!!!!)
 	- 041 (again!!)
 	- 048 (ok, but again!!!)
+	- 054 (not start)
+	- 059 (not start)
+	- 073 (ok)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
