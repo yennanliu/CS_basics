@@ -26,6 +26,7 @@ class Souluton:
         tmp = math.exp(a) * math.exp(b)
         r = int(math.log(tmp))
         return r
+
 # V0'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79379939
 #########
