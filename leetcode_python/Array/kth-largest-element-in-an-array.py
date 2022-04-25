@@ -28,11 +28,22 @@ Constraints:
 # V0
 # IDEA : SORTED 
 class Solution:
+    def findKthLargest(self, nums):
+        # edge case
+        if not nums:
+            return
+        nums.sort(key=lambda x : -x)
+        print ("nums = " + str(nums))
+        return nums[k-1]
+
+# V0'
+# IDEA : SORTED 
+class Solution:
     def findKthLargest(self, nums, k):
         nums.sort()
         return nums[-k]
 
-# V0' 
+# V0''
 # IDEA : bubble sort -> OK*** (reiew again!)
 class Solution:
     def findKthLargest(self, nums, k):
@@ -54,7 +65,7 @@ class Solution:
 #                     nums[j], nums[j+1] = nums[j+1], nums[j]
 #         return nums[-k]
 
-# V0''
+# V0'''
 # IDEA : quick sort -> check again
 import random
 class Solution:
