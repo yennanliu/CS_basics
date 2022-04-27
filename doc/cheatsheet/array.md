@@ -1048,3 +1048,30 @@ class Solution(object):
         nums[:k], nums[k:] = nums[-k:], nums[:-k]
         return nums
 ```
+
+### 2-16) Flatten 2D Vector
+```python
+# LC 251. Flatten 2D Vector
+# V0
+# IDEA : ARRAY OP
+class Vector2D:
+
+    def __init__(self, v):
+        # We need to iterate over the 2D vector, getting all the integers
+        # out of it and putting them into the nums list.
+        self.nums = []
+        for inner_list in v:
+            for num in inner_list:
+                self.nums.append(num)
+        # We'll keep position 1 behind the next number to return.
+        self.position = -1
+
+    def next(self):
+        # Move up to the current element and return it.
+        self.position += 1
+        return self.nums[self.position]
+
+    def hasNext(self):
+        # If the next position is a valid index of nums, return True.
+        return self.position + 1 < len(self.nums)
+```

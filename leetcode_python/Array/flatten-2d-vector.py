@@ -1,26 +1,73 @@
-# Implement an iterator to flatten a 2d vector.
-#
-# For example,
-# Given 2d vector =
-#
-# [
-#   [1,2],
-#   [3],
-#   [4,5,6]
-# ]
-# By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,2,3,4,5,6].
-#
-# Hint:
-#
-# How many variables do you need to keep track?
-# Two variables is all you need. Try with x and y.
-# Beware of empty rows. It could be the first few rows.
-# To write correct code, think about the invariant to maintain. What is it?
-# The invariant is x and y must always point to a valid point in the 2d vector. Should you maintain your invariant ahead of time or right when you need it?
-# Not sure? Think about how you would implement hasNext(). Which is more complex?
-# Common logic in two different places should be refactored into a common method.
+"""
 
-# V0 
+251. Flatten 2D Vector
+Medium
+
+Design an iterator to flatten a 2D vector. It should support the next and hasNext operations.
+
+Implement the Vector2D class:
+
+Vector2D(int[][] vec) initializes the object with the 2D vector vec.
+next() returns the next element from the 2D vector and moves the pointer one step forward. You may assume that all the calls to next are valid.
+hasNext() returns true if there are still some elements in the vector, and false otherwise.
+ 
+
+Example 1:
+
+Input
+["Vector2D", "next", "next", "next", "hasNext", "hasNext", "next", "hasNext"]
+[[[[1, 2], [3], [4]]], [], [], [], [], [], [], []]
+Output
+[null, 1, 2, 3, true, true, 4, false]
+
+Explanation
+Vector2D vector2D = new Vector2D([[1, 2], [3], [4]]);
+vector2D.next();    // return 1
+vector2D.next();    // return 2
+vector2D.next();    // return 3
+vector2D.hasNext(); // return True
+vector2D.hasNext(); // return True
+vector2D.next();    // return 4
+vector2D.hasNext(); // return False
+ 
+
+Constraints:
+
+0 <= vec.length <= 200
+0 <= vec[i].length <= 500
+-500 <= vec[i][j] <= 500
+At most 105 calls will be made to next and hasNext.
+ 
+
+Follow up: As an added challenge, try to code it using only iterators in C++ or iterators in Java.
+
+"""
+
+# V0
+# IDEA : ARRAY OP
+class Vector2D:
+
+    def __init__(self, v):
+        # We need to iterate over the 2D vector, getting all the integers
+        # out of it and putting them into the nums list.
+        self.nums = []
+        for inner_list in v:
+            for num in inner_list:
+                self.nums.append(num)
+        # We'll keep position 1 behind the next number to return.
+        self.position = -1
+
+    def next(self):
+        # Move up to the current element and return it.
+        self.position += 1
+        return self.nums[self.position]
+
+    def hasNext(self):
+        # If the next position is a valid index of nums, return True.
+        return self.position + 1 < len(self.nums)
+
+# V0'
+# IDEA : ARRAY OP
 class Vector2D(object):
 
     def __init__(self, vec2d):
@@ -55,6 +102,71 @@ class Vector2D(object):
         return self.row < len(self.vec2d)
 
 # V1
+# IDEA : Flatten List in Constructor
+# https://leetcode.com/problems/flatten-2d-vector/solution/
+class Vector2D:
+
+    def __init__(self, v: List[List[int]]):
+        # We need to iterate over the 2D vector, getting all the integers
+        # out of it and putting them into the nums list.
+        self.nums = []
+        for inner_list in v:
+            for num in inner_list:
+                self.nums.append(num)
+        # We'll keep position 1 behind the next number to return.
+        self.position = -1
+
+    def next(self) -> int:
+        # Move up to the current element and return it.
+        self.position += 1
+        return self.nums[self.position]
+
+    def hasNext(self) -> bool:
+        # If the next position is a valid index of nums, return True.
+        return self.position + 1 < len(self.nums)
+
+# V1'
+# IDEA : Two Pointers
+# https://leetcode.com/problems/flatten-2d-vector/solution/
+class Vector2D:
+
+    def __init__(self, v: List[List[int]]):
+        self.vector = v
+        self.inner = 0
+        self.outer = 0
+
+    # If the current outer and inner point to an integer, this method does nothing.
+    # Otherwise, inner and outer are advanced until they point to an integer.
+    # If there are no more integers, then outer will be equal to vector.length
+    # when this method terminates.
+    def advance_to_next(self):
+        # While outer is still within the vector, but inner is over the
+        # end of the inner list pointed to by outer, we want to move
+        # forward to the start of the next inner vector.
+        while self.outer < len(self.vector) and self.inner == len(self.vector[self.outer]):
+            self.outer += 1
+            self.inner = 0
+
+    def next(self) -> int:
+        # Ensure the position pointers are moved such they point to an integer,
+        # or put outer = vector.length.
+        self.advance_to_next()
+        # Return current element and move inner so that is after the current
+        # element.
+        result = self.vector[self.outer][self.inner]
+        self.inner += 1
+        return result
+
+
+    def hasNext(self) -> bool:
+        # Ensure the position pointers are moved such they point to an integer,
+        # or put outer = vector.length.
+        self.advance_to_next()
+        # If outer = vector.length then there are no integers left, otherwise
+        # we've stopped at an integer and so there's an integer left.
+        return self.outer < len(self.vector)
+
+# V1'
 # https://www.jiuzhang.com/solution/flatten-2d-vector/#tag-highlight-lang-python
 class Vector2D(object):
 
@@ -78,80 +190,7 @@ class Vector2D(object):
             self.row, self.col = self.row + 1, 0
         return self.row < len(self.vec2d)
 
-### Test case
-# 1 
-vec2d=[
-    [1,2],
-    [3],
-    [4,5,6]
-] 
-v=Vector2D(vec2d)
-r=[]
-while v.hasNext():
-    #print (v.next())
-    r.append(v.next())
-assert r==[1,2,3,4,5,6]
-# 2
-vec2d=[
-    [],
-    []
-] 
-v=Vector2D(vec2d)
-r=[]
-while v.hasNext():
-    #print (v.next())
-    r.append(v.next())
-assert r==[]
-# 3
-vec2d=[
-    []
-] 
-v=Vector2D(vec2d)
-r=[]
-while v.hasNext():
-    #print (v.next())
-    r.append(v.next())
-assert r==[]
-# 4
-vec2d=[
-    [],
-    [1,2],
-    [],
-    [99,100]
-] 
-v=Vector2D(vec2d)
-r=[]
-while v.hasNext():
-    #print (v.next())
-    r.append(v.next())
-assert r==[1,2,99,100]
-# 5
-vec2d=[
-    [],
-    [1,2],
-    [99,100],
-    []
-] 
-v=Vector2D(vec2d)
-r=[]
-while v.hasNext():
-    #print (v.next())
-    r.append(v.next())
-assert r==[1,2,99,100]
-# 6
-vec2d=[
-    [99,100],
-    [99,100],
-    [99,100]
-] 
-v=Vector2D(vec2d)
-r=[]
-while v.hasNext():
-    #print (v.next())
-    r.append(v.next())
-assert r==[99,100,99,100,99,100]
-
-# V1'
+# V1''
 # https://www.jiuzhang.com/solution/flatten-2d-vector/#tag-highlight-lang-python
 class Vector2D(object):
 
@@ -186,7 +225,7 @@ class Vector2D(object):
             
         return False
 
-# V1''
+# V1'''
 # https://github.com/criszhou/LeetCode-Python/blob/master/251.%20Flatten%202D%20Vector.py
 class Vector2D(object):
     def __init__(self, vec2d):
@@ -224,7 +263,7 @@ class Vector2D(object):
         """
         return self.i1 < len(self.vec2d)
 
-# V1'''
+# V1''''
 # http://www.voidcn.com/article/p-qxkyrjri-zo.html
 class Vector2D(object):
 
