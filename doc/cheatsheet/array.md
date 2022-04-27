@@ -723,6 +723,9 @@ class Solution:
 ```python
 # LC 74 Search a 2D Matrix
 # LC 240. Search a 2D Matrix II
+"""
+NOTE !!!  boundary condition
+"""
 # V0'
 # IDEA : DFS
 class Solution(object):

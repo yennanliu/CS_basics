@@ -27,6 +27,8 @@
 	- 157 (again)
 	- 163 (not start) (bad question)
 	- 189 (ok, but again)
+	- 238
+	- 240 (ok, but again)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
