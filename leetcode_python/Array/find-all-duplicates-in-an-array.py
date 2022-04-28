@@ -1,24 +1,59 @@
-# Given an array of integers, 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
+"""
 
-# Find all the elements that appear twice in this array.
+287. Find the Duplicate Number
+Medium
 
-# Could you do it without extra space and in O(n) runtime?
+Given an array of integers nums containing n + 1 integers where each integer is in the range [1, n] inclusive.
 
-# Example:
-# Input:
-# [4,3,2,7,8,2,3,1]
+There is only one repeated number in nums, return this repeated number.
 
-# Output:
-# [2,3]
+You must solve the problem without modifying the array nums and uses only constant extra space.
+
+ 
+
+Example 1:
+
+Input: nums = [1,3,4,2,2]
+Output: 2
+Example 2:
+
+Input: nums = [3,1,3,4,2]
+Output: 3
+ 
+
+Constraints:
+
+1 <= n <= 105
+nums.length == n + 1
+1 <= nums[i] <= n
+All the integers in nums appear only once except for precisely one integer which appears two or more times.
+ 
+
+Follow up:
+
+How can we prove that at least one duplicate number must exist in nums?
+Can you solve the problem in linear runtime complexity?
+
+"""
 
 # V0
+# IDEA : Counter
+from collections import Counter
+class Solution(object):
+    def findDuplicate(self, nums):
+        # edge case
+        if not nums:
+            return
+        cnt = Counter(nums)
+        for c in cnt:
+            if cnt[c] > 1:
+                return c
+
+# V0'
+# IDEA : Counter
 from collections import Counter
 class Solution(object):
     def findDuplicates(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[int]
-        """
         return [elem for elem, count in Counter(nums).items() if count == 2]
 
 # V1
