@@ -815,7 +815,11 @@ Out[18]: [1, 3, 2]
 
 In [19]: x = [1,2,3]
 
+# NOTE this !!!!
+# LC 146
 In [20]: x.remove(2)
+#x
+#[1,2]
 
 In [21]: x.append(2)
 

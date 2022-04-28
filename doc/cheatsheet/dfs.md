@@ -73,6 +73,17 @@ class Solution:
 # 701 Insert into a Binary Search Tree
 class Solution(object):
     def insertIntoBST(self, root, val):
+        """
+        NOTE !!!
+            1) we ALWAYS do op first, then do recursive
+                -> e.g.
+                        ...
+                        if not root: 
+                            return TreeNode(val)
+                        if root.val < val:
+                            root.right = self.insertIntoBST(root.right, val)
+                        ...
+        """
         if not root: 
             return TreeNode(val)
         if root.val < val: 
