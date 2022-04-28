@@ -1,24 +1,53 @@
-# 287. Find the Duplicate Number
-# Medium
-#
-# Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive), prove that at least one duplicate number must exist. Assume that there is only one duplicate number, find the duplicate one.
-#
-# Example 1:
-#
-# Input: [1,3,4,2,2]
-# Output: 2
-# Example 2:
-#
-# Input: [3,1,3,4,2]
-# Output: 3
-# Note:
-#
-# You must not modify the array (assume the array is read only).
-# You must use only constant, O(1) extra space.
-# Your runtime complexity should be less than O(n2).
-# There is only one duplicate number in the array, but it could be repeated more than once.
-### Note
-# The first two approaches mentioned do not satisfy the constraints given in the prompt, but they are solutions that you might be likely to come up with during a technical interview. As an interviewer, I personally would not expect someone to come up with the cycle detection solution unless they have heard it before.
+"""
+
+287. Find the Duplicate Number
+Medium
+
+Given an array of integers nums containing n + 1 integers where each integer is in the range [1, n] inclusive.
+
+There is only one repeated number in nums, return this repeated number.
+
+You must solve the problem without modifying the array nums and uses only constant extra space.
+
+ 
+
+Example 1:
+
+Input: nums = [1,3,4,2,2]
+Output: 2
+Example 2:
+
+Input: nums = [3,1,3,4,2]
+Output: 3
+ 
+
+Constraints:
+
+1 <= n <= 105
+nums.length == n + 1
+1 <= nums[i] <= n
+All the integers in nums appear only once except for precisely one integer which appears two or more times.
+ 
+
+Follow up:
+
+How can we prove that at least one duplicate number must exist in nums?
+Can you solve the problem in linear runtime complexity?
+
+"""
+
+# V0
+# IDEA : Counter
+from collections import Counter
+class Solution(object):
+    def findDuplicate(self, nums):
+        # edge case
+        if not nums:
+            return
+        cnt = Counter(nums)
+        for c in cnt:
+            if cnt[c] > 1:
+                return c
 
 # V0
 # IDEA : DICT
