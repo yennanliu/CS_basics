@@ -38,7 +38,26 @@ Could you do it in-place with O(1) extra space?
 """
 
 # V0
-# IDEA : pop + insert
+# IDEA : pop + insert (python 3)
+class Solution(object):
+    def rotate(self, nums, k):
+        # edge case
+        if not nums:
+            return
+        _len = len(nums)
+        # optimize
+        k = k % _len
+        for i in range(k):
+            tmp = nums.pop(-1)
+            """
+            NOTE !!! we need to user "insert" here, but not append 
+            """
+            #nums = [tmp] + nums # this one is WRONG
+            nums.insert(0, tmp)
+            #print("i = " + str(i) + " nums = " + str(nums))
+
+# V0
+# IDEA : pop + insert (python 3)
 class Solution(object):
     def rotate(self, nums, k):
         _len = len(nums)
