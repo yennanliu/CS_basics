@@ -1,7 +1,7 @@
 # Difference Array 
 
 ## 0) Concept
-- [fucking algorithm - Difference Array](https://labuladong.github.io/algo/2/19/23/)
+- [fucking algorithm - Difference Array](https://labuladong.gitee.io/algo/2/18/22/)
 
 ### 0-1) Types
 
