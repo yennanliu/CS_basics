@@ -42,16 +42,23 @@ Follow up: If the maximum number of allowed calls to the API knows is 3 * n, cou
 
 # V0
 class Solution:
-    def findCelebrity(self, n: int) -> int:
+    def findCelebrity(self, n):
         self.n = n
         for i in range(n):
+            # NOTE : we return the celebrity directly (if found)
             if self.is_celebrity(i):
                 return i
         return -1
     
+    # func check if i if celebrity
     def is_celebrity(self, i):
         for j in range(self.n):
-            if i == j: continue # Don't ask if they know themselves.
+            if i == j:
+                continue # Don't ask if they know themselves.
+            """
+            NOTE : here we check
+                knows(i, j) or not knows(j, i)
+            """
             if knows(i, j) or not knows(j, i):
                 return False
         return True
