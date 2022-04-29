@@ -1,5 +1,6 @@
 # Binary Search
 - Find a value (k) from a `sorted search space` with two pointers
+    - Not really NEED to "all sorted", `partial sorted`, `rotated sorted` is possible as well
 - Steps
     - step 1) Define boundary variables (e.g. left, right) that can `include all possible cases`
     - step 2) Define returned values
@@ -21,7 +22,9 @@
         - LC 367 Valid Perfect Square 
     - find `right` boundary
     - `recursive` binary search
-        - Garena/test1.py 
+        - Garena/test1.py
+    - Search in Rotated Sorted Array
+        - LC 033
 
 - Algorithm
     - binary search
@@ -194,6 +197,54 @@ int right_bound(int[] nums, int target){
 ## 1) General form
 
 ## 2) LC Example
+
+### 2-0) Search in Rotated Sorted Array
+```python
+# LC 33. Search in Rotated Sorted Array
+# V0
+# IDEA : BINARY SEARCH
+#        -> CHECK WHICH PART IS ORDERING
+#        -> CHECK IF TARGET IS IN WHICH PART
+# CASES :
+#  1) if mid is on the right of pivot -> array[mid:] is ordering
+#     -> check if mid in on the left or right on mid
+#     -> binary search on left or right sub array
+#  2) if mid in on the left of pivot  -> array[:mid] is ordering
+#     -> check if mid in on the left or right on mid
+#     -> binary search on left or right sub array
+### NOTE : THE NESTED IF ELSE CONDITION 
+class Solution(object):
+    def search(self, nums, target):
+        if not nums: return -1
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] == target:
+                return mid
+            #---------------------------------------------
+            # Case 1 :  nums[mid:right] is ordering
+            #---------------------------------------------
+            # all we need to do is : 1) check if target is within mid - right, and move the left or right pointer
+            if nums[mid] < nums[right]:
+                # mind NOT use (" nums[mid] < target <= nums[right]")
+                # mind the "<="
+                if target > nums[mid] and target <= nums[right]: # check the relationship with target, which is different from the default binary search
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            #---------------------------------------------
+            # Case 2 :  nums[left:mid] is ordering
+            #---------------------------------------------
+            # all we need to do is : 1) check if target is within left - mid, and move the left or right pointer
+            else:
+                # # mind NOT use (" nums[left] <= target < nums[mid]")
+                # mind the "<="
+                if target < nums[mid] and target >= nums[left]:  # check the relationship with target, which is different from the default binary search
+                    right = mid - 1
+                else:
+                    left = mid + 1
+        return -1     
+```
 
 ### 2-1) Two Sum II - Input array is sorted
 - (For loop binary search)
