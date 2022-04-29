@@ -32,6 +32,8 @@
 	- 251 (ok, but again)
 	- 277 (ok, but again)
 	- 289 (again)
+	- 370 (again !!!)
+	- 598
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
