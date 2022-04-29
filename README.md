@@ -216,7 +216,7 @@
 334| [Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/) | [Python](./leetcode_python/Array/increasing-triplet-subsequence.py) | _O(n)_ |  _O(1)_ | Medium |AGAIN, check `# 300 Longest Increasing Subsequence`, `trick`, `fb`, variables|OK***** (but again) (4)
 370| [Range Addition](https://leetcode.com/problems/range-addition/) | [Python](./leetcode_python/Array/range-addition.py) | _O(k + n)_ |  _O(1)_ | Medium  |prefix sum, array, 🔒, check `# 598 Range Addition II`, `amazon`| AGAIN************** (4) (MUST)
 384| [Shuffle an Array](https://leetcode.com/problems/shuffle-an-array/) | [Python](./leetcode_python/Array/shuffle-an-array.py)  | _O(n)_ |  _O(n)_ | Medium   | EPI, `trick` | OK*
-396| [Rotate Function](https://leetcode.com/problems/rotate-function/) | [Python](./leetcode_python/Array/rotate-function.py) | _O(n)_ |  _O(1)_ | Medium |math, `trick`, `amazon`| AGAIN*** (3)
+396| [Rotate Function](https://leetcode.com/problems/rotate-function/) | [Python](./leetcode_python/Array/rotate-function.py) | _O(n)_ |  _O(1)_ | Medium |can pass, math, `trick`, `amazon`| AGAIN*** (3)
 412| [Fizz Buzz](https://leetcode.com/problems/fizz-buzz/) | [Python](./leetcode_python/Array/fizz-buzz.py), [Scala](./leetcode_scala/Array/fizzBuzz.scala)| _O(n)_ |  _O(1)_ | Easy || OK 
 414| [Third Maximum Number](https://leetcode.com/problems/third-maximum-number/) | [Python](./leetcode_python/Array/third-maximum-number.py) | _O(n)_ |  _O(1)_ | Easy |`good basic`, `amazon`| OK* (4)
 419| [Battleships in a Board](https://leetcode.com/problems/battleships-in-a-board/) | [Python](./leetcode_python/Array/battleships-in-a-board.py)   | _O(m * n)_ |  _O(1)_ | Medium || AGAIN*
