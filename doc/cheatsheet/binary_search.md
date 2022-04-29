@@ -200,7 +200,8 @@ int right_bound(int[] nums, int target){
 
 ### 2-0) Search in Rotated Sorted Array
 ```python
-# LC 33. Search in Rotated Sorted Array
+# LC 033. Search in Rotated Sorted Array
+# LC 081. Search in Rotated Sorted Array II
 # V0
 # IDEA : BINARY SEARCH
 #        -> CHECK WHICH PART IS ORDERING
