@@ -165,6 +165,7 @@
 	- binary search
 		- 162
 		- 1011
+		- 033
 	- 2 pointers
 		- 1099
 	- dp

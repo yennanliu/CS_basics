@@ -788,7 +788,7 @@
 ## Binary Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note        | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-033| [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | [Python](./leetcode_python/Binary_Search/search-in-rotated-sorted-array.py)||| Medium |`binary search`,`good basic` ,check `# 81 Search in Rotated Sorted Array II`,`UBER`,`amazon`,`fb`| AGAIN********* (4)
+033| [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | [Python](./leetcode_python/Binary_Search/search-in-rotated-sorted-array.py)||| Medium |`binary search`,`good basic` ,check `# 81 Search in Rotated Sorted Array II`,`UBER`,`amazon`,`fb`| AGAIN************ (5) (MUST)
 034 | [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)| [Python](./leetcode_python/Binary_Search/find-first-and-last-position-of-element-in-sorted-array.py)| _O(n)_ | _O(1)_ | Medium | binary search, LC top 100 like, `amazon`, `fb`, google, apple, uber | AGAIN************ (2) (MUST)
 034| [Search for a Range](https://leetcode.com/problems/search-for-a-range/) |[Python](./leetcode_python/Binary_Search/search-for-a-range.py) | _O(logn)_ | _O(1)_   | Medium  || AGAIN* 
 035| [Search Insert Position](https://leetcode.com/problems/search-insert-position/) | [Python](./leetcode_python/Binary_Search/search-insert-position.py) | _O(logn)_ | _O(1)_   | Medium      || AGAIN 
