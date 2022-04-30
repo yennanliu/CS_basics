@@ -232,7 +232,6 @@
 605 | [Can Place Flowers](https://leetcode.com/problems/can-place-flowers/) | [Python](./leetcode_python/Array/can-place-flowers.py) | _O(n)_ | _O(1)_ | Easy |`pass vs continue`| OK*
 624 | [Maximum Distance in Arrays](https://leetcode.com/problems/maximum-distance-in-arrays/) | [Python](./leetcode_python/Array/maximum-distance-in-arrays.py) | _O(n)_ | _O(1)_ | Easy | 🔒 | AGAIN*
 643 | [Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/) | [Python](./leetcode_python/Array/maximum-average-subarray-i.py) | _O(n)_ | _O(1)_ | Easy | `Math`, `basic` |  AGAIN*
-658 | [Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | [Python](./leetcode_python/Array/find-k-closest-elements.py) | _O(n)_ | _O(1)_ | Medium | `amazon` |
 661| [Image Smoother](https://leetcode.com/problems/image-smoother/) | [Python](./leetcode_python/Array/image-smoother.py)  | _O(m * n)_ |  _O(1)_ | Easy   |`matrix`,`basic`, `amazon`| OK***** (4) (but again!)
 665| [Non-decreasing Array](https://leetcode.com/problems/non-decreasing-array/) | [Python](./leetcode_python/Array/non-decreasing-array.py) | _O(n)_ |  _O(1)_ | Easy || AGAIN (not start)
 667| [Beautiful Arrangement II](https://leetcode.com/problems/beautiful-arrangement-ii/) |  [Python](./leetcode_python/Array/beautiful-arrangement-ii.py)  | _O(n)_ |  _O(1)_ | Medium  || AGAIN (not start)
@@ -807,7 +806,7 @@
 436 | [Find Right Interval](https://leetcode.com/problems/find-right-interval/) | [Python](./leetcode_python/Binary_Search/find-right-interval.py)  | _O(nlogn)_ | _O(n)_ | Medium | | AGAIN (not start)
 475 | [Heaters](https://leetcode.com/problems/heaters/) | [Python](./leetcode_python/Binary_Search/heaters.py) | _O((m + n) * logn)_ | _O(1)_ | Easy | | AGAIN (not start) 
 540|[Single Element in a Sorted Array](https://leetcode.com/problems/dsingle-element-in-a-sorted-array/)| [Python](./leetcode_python/Binary_Search/single-element-in-a-sorted-array.py) | _O(logn)_ | _O(1)_ | Medium | | OK* 
-658 | [Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | [Python](./leetcode_python/Binary_Search/find-k-closest-elements.py) | _O(logn + k)_ | _O(1)_ | Medium |`good trick`,`two pointers`,`binary search`,`amazon`,`fb`| OK****** (4) 
+658 | [Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | [Python](./leetcode_python/Binary_Search/find-k-closest-elements.py) | _O(logn + k)_ | _O(1)_ | Medium |`good trick`, sorting, stack, `two pointers`,`binary search`,`amazon`,`fb`, google| AGAIN ************** (5) (MUST) 
 744 | [Find Smallest Letter Greater Than Target](https://leetcode.com/problems/find-smallest-letter-greater-than-target/) | [Python](./leetcode_python/Binary_Search/find-smallest-letter-greater-than-target.py) | _O(logn)_ | _O(1)_ | Easy | | OK* 
 852 | [Peak Index in a Mountain Array](https://leetcode.com/problems/peak-index-in-a-mountain-array/) | [Python](./leetcode_python/Binary_Search/peak-index-in-a-mountain-array.py) | _O(logn)_ | _O(1)_ | Easy | LC 162 Find Peak Element, `amazon`| OK* (2)
 875 | [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/) | [Python](./leetcode_python/Binary_Search/koko-eating-bananas.py)  | _O(nlogr)_ | _O(1)_ | Medium | binary search, good basic| AGAIN******* (3)
