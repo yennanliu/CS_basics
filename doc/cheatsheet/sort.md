@@ -294,3 +294,23 @@ class Solution(object):
             res += s * s_map[s]
         return res
 ```
+
+### 2-4) Find K Closest Elements
+```python
+# LC 658. Find K Closest Elements
+# NOTE : there is also stack, binary search.. approaches
+# V0'
+# IDEA : SORTING
+class Solution:
+    def findClosestElements(self, arr, k, x):
+        # Sort using custom comparator
+        sorted_arr = sorted(arr, key = lambda num: abs(x - num))
+
+        # Only take k elements
+        result = []
+        for i in range(k):
+            result.append(sorted_arr[i])
+        
+        # Sort again to have output in ascending order
+        return sorted(result)
+```

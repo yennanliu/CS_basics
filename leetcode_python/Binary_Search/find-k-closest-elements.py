@@ -37,12 +37,41 @@ class Solution(object):
     def findClosestElements(self, arr, k, x):
         while len(arr) > k:
             if x - arr[0] <= arr[-1] - x:
-                arr.pop()
+                arr.pop(-1)
             else:
                 arr.pop(0)
         return arr
 
 # V0'
+# IDEA : SORTING
+class Solution:
+    def findClosestElements(self, arr, k, x):
+        # Sort using custom comparator
+        sorted_arr = sorted(arr, key = lambda num: abs(x - num))
+
+        # Only take k elements
+        result = []
+        for i in range(k):
+            result.append(sorted_arr[i])
+        
+        # Sort again to have output in ascending order
+        return sorted(result)
+
+# V0''
+# IDEA : BINARY SEARCH 
+class Solution(object):
+    def findClosestElements(self, arr, k, x):
+        left = 0
+        right = len(arr) - k
+        while left < right:
+            mid = left + (right - left) // 2
+            if x - arr[mid] > arr[mid + k] - x:
+                left = mid + 1
+            else:
+                right = mid
+        return arr[left : left + k]
+
+# V0'''
 # IDEA : HASHMAP + brute force
 class Solution(object):
     def findClosestElements(self, arr, k, x):
@@ -67,7 +96,72 @@ class Solution(object):
         ans.sort()
         return ans
 
-# V1 
+# V1
+# IDEA :  Sort With Custom Comparator
+# https://leetcode.com/problems/find-k-closest-elements/solution/
+class Solution:
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+        # Sort using custom comparator
+        sorted_arr = sorted(arr, key = lambda num: abs(x - num))
+
+        # Only take k elements
+        result = []
+        for i in range(k):
+            result.append(sorted_arr[i])
+        
+        # Sort again to have output in ascending order
+        return sorted(result)
+
+# V1'
+# IDEA : Binary Search + Sliding Window
+# https://leetcode.com/problems/find-k-closest-elements/solution/
+class Solution:
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+        # Base case
+        if len(arr) == k:
+            return arr
+        
+        # Find the closest element and initialize two pointers
+        left = bisect_left(arr, x) - 1
+        right = left + 1
+
+        # While the window size is less than k
+        while right - left - 1 < k:
+            # Be careful to not go out of bounds
+            if left == -1:
+                right += 1
+                continue
+            
+            # Expand the window towards the side with the closer number
+            # Be careful to not go out of bounds with the pointers
+            if right == len(arr) or abs(arr[left] - x) <= abs(arr[right] - x):
+                left -= 1
+            else:
+                right += 1
+        
+        # Return the window
+        return arr[left + 1:right]
+
+# V1''
+# IDEA :  Binary Search To Find The Left Bound
+# https://leetcode.com/problems/find-k-closest-elements/solution/
+class Solution:
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+        # Initialize binary search bounds
+        left = 0
+        right = len(arr) - k
+        
+        # Binary search against the criteria described
+        while left < right:
+            mid = (left + right) // 2
+            if x - arr[mid] > arr[mid + k] - x:
+                left = mid + 1
+            else:
+                right = mid
+
+        return arr[left:left + k]
+
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82968136
 # IDEA : HEAP 
 class Solution(object):
@@ -77,7 +171,7 @@ class Solution(object):
         heapq.heapify(sub)
         return sorted([arr[heapq.heappop(sub)[1]] for i in range(k)])
 
-# V1'
+# V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82968136
 # IDEA : TWO POINTERS 
 class Solution(object):
@@ -94,7 +188,7 @@ class Solution(object):
                 arr.pop(0)
         return arr
 
-# V1''
+# V1'''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82968136
 # IDEA : BINARY SEARCH 
 class Solution(object):
@@ -102,14 +196,14 @@ class Solution(object):
         left = 0
         right = len(arr) - k
         while left < right:
-            mid = left + (right - left) / 2
+            mid = left + (right - left) // 2
             if x - arr[mid] > arr[mid + k] - x:
                 left = mid + 1
             else:
                 right = mid
         return arr[left : left + k]
 
-# V1'''
+# V1'''''''
 # https://www.jiuzhang.com/solution/460-find-k-closest-elements/#tag-highlight-lang-python
 class Solution:
     # @param {int[]} A an integer array
