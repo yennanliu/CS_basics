@@ -38,6 +38,9 @@
 	- 658 (again !!!!)
 	- 661 (ok)
 	- 909
+	- 004
+	- 056 (again)
+	- 759 (again)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
