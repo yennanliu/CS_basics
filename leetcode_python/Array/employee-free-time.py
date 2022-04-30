@@ -1,4 +1,5 @@
 """
+
 LC 759
 
 We are given a list schedule of employees, which represents the working time for each employee.
@@ -33,6 +34,139 @@ schedule and schedule[i] are lists with lengths in range [1, 50].
 # V0
 
 # V1
+# IDEA : heapq
+# https://leetcode.com/problems/employee-free-time/discuss/1805842/Python-Solution
+class Solution:
+    def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
+        pq = []
+        for i, s in enumerate(schedule):
+            heapq.heappush(pq, (s[0].start, i, 0))
+        prev = pq[0][0]
+        res = []
+        while pq:
+            s, i, j = heapq.heappop(pq)
+            if s > prev:
+                res.append(Interval(prev, s))
+            prev = max(prev, schedule[i][j].end)
+            if j + 1 < len(schedule[i]):
+                heapq.heappush(pq, (schedule[i][j + 1].start, i, j + 1))
+        return res
+
+# V1'
+# IDEA : SORT by start
+# https://leetcode.com/problems/employee-free-time/discuss/408522/Python-sort-by-start
+class Solution:
+    def employeeFreeTime(self, schedule: 'list<list<Interval>>') -> 'list<Interval>':
+        
+        # sort all intervals by start time
+        intervals = []
+        for timeSlots in schedule:
+            for timeSlot in timeSlots:
+                intervals.append(timeSlot)
+        
+        intervals.sort(key= lambda x: x.start)
+        
+        # Maintain left and right pointer pointing to the interval
+        left = right = 0
+        commonFree = []
+        
+        # iterate through intervals with left pointer
+        # if left.start > right.end, append the common free time to the ans
+        # else, assign right to the lastest-ended intervals we heve visited so far.
+        while left < len(intervals) - 1:
+            left += 1
+            if intervals[left].start > intervals[right].end:
+                commonFree.append(Interval(intervals[right].end,intervals[left].start))
+                right = left
+            else:
+                if intervals[left].end > intervals[right].end:
+                    right = left
+        return commonFree
+
+# V1''
+# https://leetcode.com/problems/employee-free-time/discuss/877358/Python-O(N-log-K)-heap-solution
+# IDEA : 
+# I merge the intervals while keeping the heap size less than or equal to K. It is only less than K when I've already popped out all the elements from a certain employee. My solution treats each employees intervals as a queue. pop(0) in python is O(n) so if you wanted you could just convert all of the intervals to deque so your pop(0) is O(1) and it functions as an actual queue but I just pretended pop(0) was O(1) for demonstration purposes.
+class Solution:
+    def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
+        k = len(schedule)
+        intervals = []
+        heap = []
+        for i in range(k):
+            val = schedule[i].pop(0)
+            heappush(heap, ([val.start, val.end], i))
+            
+        elem = [heap[0][0][0], heap[0][0][1]] 
+        while heap:
+            val = heappop(heap)
+            start, end, idx = val[0][0], val[0][1], val[1]
+            if start > elem[1]:
+                intervals.append(elem)
+                elem = [start, end]
+            else:
+                elem = [min(elem[0], start), max(elem[1], end)]
+                
+            if schedule[idx]:
+                item = schedule[idx].pop(0)
+                heappush(heap, ([item.start, item.end], idx))
+        intervals.append(elem)
+        out = []
+        for i in range(1, len(intervals)):
+            out.append(Interval(intervals[i-1][1], intervals[i][0]))
+        return out
+
+# V1'''
+# IDEA : SORT
+# https://leetcode.com/problems/employee-free-time/discuss/1039353/pythonjava-solution
+class Solution:
+    def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
+        listSchedule = []
+        for i in schedule:
+            for j in i:
+                listSchedule.append([j.start, j.end])
+        listSchedule.sort(key = lambda x: (x[0], x[1]))
+        minStart = listSchedule[0][0]
+        maxEnd = listSchedule[0][1]
+        res = []        
+        for curStart, curEnd in listSchedule:
+            if curStart <= maxEnd:
+                maxEnd = max(maxEnd, curEnd)
+            else:
+                res.append(Interval(maxEnd, curStart))
+                minStart = curStart
+                maxEnd = curEnd
+        return res
+
+# V1''''
+# IDEA : bisect
+# https://leetcode.com/problems/employee-free-time/discuss/113142/Python-with-bisect
+from bisect import *
+class Solution(object):
+    def employeeFreeTime(self, avails):
+        time=[-float('inf'),float('inf')]
+        for p in avails:
+            for itv in p:
+                s=itv.start
+                e=itv.end
+                l=bisect_right(time,s)
+                r=bisect_left(time,e)
+                if l%2:
+                    if r%2:
+                        time=time[:l]+[s,e]+time[r:]
+                    else:
+                        time=time[:l]+[s]+time[r:]
+                else:
+                    if r%2:
+                        time=time[:l]+[e]+time[r:]
+                    else:
+                        time=time[:l]+time[r:]
+        ans=[]
+        for i in range(3,len(time)-2,2):
+            if time[i-1]<time[i]:
+                ans.append(Interval(time[i-1],time[i]))
+        return ans
+
+# V1'''''
 # https://zxi.mytechroad.com/blog/geometry/leetcode-759-employee-free-time/
 # https://www.youtube.com/watch?v=4XiZ-mVxvbk
 # C++
@@ -59,7 +193,7 @@ schedule and schedule[i] are lists with lengths in range [1, 50].
 #     }
 # };
 
-# V1
+# V1''''''
 # https://www.acwing.com/file_system/file/content/whole/index/content/2808852/
 class Solution:
     def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
@@ -90,7 +224,7 @@ class Solution:
 
         return res
 
-# V1
+# V1'''''''
 # https://github.com/xiaoningning/LeetCode-Python/blob/master/759%20Employee%20Free%20Time.py
 # https://github.com/DataStudySquad/LeetCode-5/blob/master/759%20Employee%20Free%20Time.py
 from typing import List
