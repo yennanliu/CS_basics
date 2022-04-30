@@ -37,6 +37,36 @@ Constraints:
 """
 
 # V0
+# IDEA : DP
+class Solution:
+    def longestArithSeqLength(self, A):
+            dp = {}
+            for i in range(len(A)):
+                for j in range(i + 1, len(A)):
+                    dp[j, A[j] - A[i]] = dp.get((i, A[j] - A[i]), 1) + 1
+            return max(dp.values())
+
+# V0'
+# IDEA : HASH TABLE
+# https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/274657/Short-Python-solution
+class Solution:
+    def longestArithSeqLength(self, A):
+        aux, cnt, prefix = {a : {} for a in A}, {}, set()
+        for a in A:
+            cnt[a] = cnt[a] + 1 if a in cnt else 1
+            for b in prefix:
+                if a != b:
+                    aux[a][a - b] = 1 + aux[b][a - b] if a - b in aux[b] else 2
+            prefix.add(a)
+            
+        max_const = max(cnt.values())
+        max_aux = max(max(d.values()) for a, d in aux.items() if d)
+        return max(max_const, max_aux, 2)
+
+# V1
+# https://www.796t.com/article.php?id=154559
+# http://www.noteanddata.com/leetcode-1027-Longest-Arithmetic-Sequence-Google-Interview-Problem-java-solution-note.html
+# https://blog.csdn.net/w5688414/article/details/109696664
 
 # V1
 # IDEA : HASH

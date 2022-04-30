@@ -41,6 +41,7 @@
 	- 004
 	- 056 (again)
 	- 759 (again)
+	- 1027 (not start)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
