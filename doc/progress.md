@@ -43,6 +43,7 @@
 	- 1027 (not start)
 	- 1041 (again)
 	- 024 (again!!!!)
+	- `025 - 708 (Linked list, pass)`
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
