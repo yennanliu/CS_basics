@@ -745,17 +745,22 @@ class Solution(object):
 ### 2-3) Reverse Linked List
 ```python
 # LC 206
-class Solution:
-    def reverseList(self, head: ListNode):
+class Solution(object):
+    def reverseList(self, head):
+        # edge case
+        if not head:
+            return
         prev = None
-        current = head 
-        while(current is not None): 
-            next_ = current.next
-            current.next = prev 
-            prev = current 
-            current = next_
-        head = prev 
-        return head
+        while head:
+            # cache "next"
+            tmp = head.next
+            # point head.next to prev
+            head.next = prev
+            # move prev to head
+            prev = head
+            # move head to "next"
+            head = tmp
+        return prev
 ```
 
 ### 2-4) Reverse Linked List II
