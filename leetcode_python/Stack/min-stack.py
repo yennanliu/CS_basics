@@ -58,6 +58,11 @@ class MinStack(object):
         
     def push(self, x):
         if not self.stack:
+            """
+            NOTE : we use stack = [(x, y)]
+                    x is the current element
+                    y in current MIN value in current stack
+            """
             ### note here
             self.stack.append((x, x))
         ### NOTICE HERE 
