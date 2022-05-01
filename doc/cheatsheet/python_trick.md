@@ -605,6 +605,7 @@ In [3]: for x, y, z, u in zip([-1, 1, 0, 0], [0, 0, -1, 1], [0,0,0,0], [9,9,9,9]
 # The eval() method parses the expression passed to this method and runs python expression (code) within the program.
 
 # LC 640
+# LC 150
 
 # syntax : eval(expression[, globals[, locals]])
 
