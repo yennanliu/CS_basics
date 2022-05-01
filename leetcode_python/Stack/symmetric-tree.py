@@ -1,6 +1,6 @@
 """
 
-101. Symmetric Tree
+                                       . Symmetric Tree
 Easy
 
 Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
@@ -30,6 +30,37 @@ Follow up: Could you solve it both recursively and iteratively?
 """
 
 # V0
+# IDEA : Iterative
+class Solution:
+    # @param root, a tree node
+    # @return a boolean
+    def isSymmetric(self, root):
+        if root is None:
+            return True
+        stack = []
+        # NOTE !!! we append root.left, and root.right to stack
+        stack.append(root.left)
+        stack.append(root.right)
+
+        while stack:
+            # NOTE !!! we pop and get p, q seperately
+            p, q = stack.pop(), stack.pop()
+
+            if p is None and q is None:
+                continue
+
+            if p is None or q is None or p.val != q.val:
+                return False
+
+            stack.append(p.left)
+            stack.append(q.right)
+
+            stack.append(p.right)
+            stack.append(q.left)
+
+        return True
+
+# V0'
 # IDEA : Recursive
 class Solution(object):
     def isSymmetric(self, root):

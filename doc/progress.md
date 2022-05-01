@@ -44,6 +44,8 @@
 	- 1041 (again)
 	- 024 (again!!!!)
 	- `025 - 708 (Linked list, pass)`
+	- 032 (not start)
+	- 071 (ok, but again)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
@@ -85,6 +87,7 @@
 	- 824
 	- 281 (ok!!!)
 	- 346 (ok!)
+	- 101 (ok, but again)
 - cheatsheet review
 - ================
 - LC top 100 likes
