@@ -673,3 +673,46 @@ class Solution:
         
         return "/"+"/".join(result)
 ```
+
+### 2-10) Min Stack
+```python
+# LC 155. Min Stack
+# V0
+# IDEA : STACK
+# IDEA : 
+# -> USE A STACK TO STORAGE MIN VALUE IN THE STACK WHEN EVERY PUSH
+# -> SO WE CAN RETURN getMin IN CONSTANT TIEM VIA STACK ABOVE
+class MinStack(object):
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.stack = []
+        
+    def push(self, x):
+        if not self.stack:
+            """
+            NOTE : we use stack = [(x, y)]
+                    x is the current element
+                    y in current MIN value in current stack
+            """
+            ### note here
+            self.stack.append((x, x))
+        ### NOTICE HERE 
+        # stack[i][1] save to min value when every push
+        # so the latest min in stack is at stack[-1][1]
+        else:
+            ### note here
+            self.stack.append((x, min(x, self.stack[-1][1])))
+        
+    def pop(self):
+        self.stack.pop()
+        
+    def top(self):
+        return self.stack[-1][0]
+        
+    def getMin(self):
+        # the latest min in stack is at stack[-1][1]
+        return self.stack[-1][1]
+```
