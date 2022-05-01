@@ -1,3 +1,34 @@
+"""
+
+24. Swap Nodes in Pairs
+Medium
+
+
+Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
+
+
+Example 1:
+
+
+Input: head = [1,2,3,4]
+Output: [2,1,4,3]
+Example 2:
+
+Input: head = []
+Output: []
+Example 3:
+
+Input: head = [1]
+Output: [1]
+ 
+
+Constraints:
+
+The number of nodes in the list is in the range [0, 100].
+0 <= Node.val <= 100
+
+"""
+
 # V0 
 # IDEA : LINKED LIST
 # NOTE : 
@@ -6,19 +37,20 @@
 #      i.e. : n1.next = n2.next ( connect n1 to next node) -> connect n2 to n1 (n2.next = n1) -> connect dummy to n2 (head.next = n2)
 #   3) THEN MOVE HEAD FORWARD (head = n1)
 class Solution:
-  def swapPairs(self, head):
-    if not head or not head.next: return head
-    dummy = ListNode(0)
-    dummy.next = head
-    head = dummy
-    while head.next and head.next.next:
-      n1, n2 = head.next, head.next.next
-      n1.next = n2.next
-      n2.next = n1
-      head.next = n2      
-      head = n1
-    return dummy.next
-    
+    def swapPairs(self, head):
+        if not head or not head.next:
+            return head
+        dummy = ListNode(0)
+        dummy.next = head
+        head = dummy
+        while head.next and head.next.next:
+            n1, n2 = head.next, head.next.next
+            n1.next = n2.next
+            n2.next = n1
+            head.next = n2      
+            head = n1
+        return dummy.next
+
 # V1
 # https://zxi.mytechroad.com/blog/list/leetcode-24-swap-nodes-in-pairs/
 # VIDEO DEMO 
@@ -55,6 +87,65 @@ class Solution:
       head.next = n2      
       head = n1
     return dummy.next
+
+# V1
+# IDEA : Recursive Approach
+# https://leetcode.com/problems/swap-nodes-in-pairs/solution/
+class Solution(object):
+    def swapPairs(self, head: ListNode) -> ListNode:
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+
+        # If the list has no node or has only one node left.
+        if not head or not head.next:
+            return head
+
+        # Nodes to be swapped
+        first_node = head
+        second_node = head.next
+
+        # Swapping
+        first_node.next  = self.swapPairs(second_node.next)
+        second_node.next = first_node
+
+        # Now the head is the second node
+        return second_node
+
+# V1
+# IDEA : Iterative Approach
+# https://leetcode.com/problems/swap-nodes-in-pairs/solution/
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        # Dummy node acts as the prevNode for the head node
+        # of the list and hence stores pointer to the head node.
+        dummy = ListNode(-1)
+        dummy.next = head
+
+        prev_node = dummy
+
+        while head and head.next:
+
+            # Nodes to be swapped
+            first_node = head;
+            second_node = head.next;
+
+            # Swapping
+            prev_node.next = second_node
+            first_node.next = second_node.next
+            second_node.next = first_node
+
+            # Reinitializing the head and prev_node for next swap
+            prev_node = first_node
+            head = first_node.next
+
+        # Return the new head node.
+        return dummy.next
 
 # V1' 
 # https://blog.csdn.net/coder_orz/article/details/51532184

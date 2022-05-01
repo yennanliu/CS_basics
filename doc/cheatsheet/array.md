@@ -803,6 +803,9 @@ class Solution:
     def isRobotBounded(self, instructions):
         """
         NOTE !!! we make direction as below
+
+         c == 'L':  move LEFT : [0,-1]
+         c == 'R':  move RIGHT : [0,1]
         """
         dirs = [[0,1], [1,0], [0,-1], [-1,0]]
         x = 0;
