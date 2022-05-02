@@ -54,6 +54,10 @@
 	- 394 (again!!!)
 	- 682 (ok)
 	- 735 (again)
+	- 739
+	- 895 (again)
+	- 1703 (not start)
+	- 1896 (not start)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
