@@ -137,3 +137,18 @@ class Solution(object):
         b = bin(n)[2:][::-1]
         return int(b + '0'*(32-len(b)), 2)
 ```
+
+### 2-3) Power of Two
+```python
+# LC 231. Power of Two
+# NOTE : there is also brute force approach
+# V0'
+# IDEA : BIT OP
+# IDEA : Bitwise operators : Turn off the Rightmost 1-bit
+# https://leetcode.com/problems/power-of-two/solution/
+class Solution(object):
+    def isPowerOfTwo(self, n):
+        if n == 0:
+            return False
+        return n & (n - 1) == 0
+```

@@ -501,7 +501,7 @@
 190 | [Reverse Bits](https://leetcode.com/problems/reverse-bits/)  |[Python](./leetcode_python/Bit_Manipulation/reverse-bits.py) | _O(1)_| _O(1)_| Easy |bit, `apple`| AGAIN*** (2)
 191  |[Number of 1 Bits](https://leetcode.com/problems/number-of-1-bits/) | [Python](./leetcode_python/Bit_Manipulation/number-of-1-bits.py) | _O(1)_ | _O(1)_| Easy|apple| OK* 
 201 | [Bitwise AND of Numbers Range](https://leetcode.com/problems/bitwise-and-of-numbers-range/) | [Python](./leetcode_python/Bit_Manipulation/bitwise-and-of-numbers-range.py) | _O(1)_ | _O(1)_ | Medium || AGAIN (not start)
-231 | [Power of Two](https://leetcode.com/problems/power-of-two/) | [Python](./leetcode_python/Bit_Manipulation/power-of-two.py)  | _O(1)_ | _O(1)_ | Easy |Bit Manipulation ,`amazon`| OK* (2)
+231 | [Power of Two](https://leetcode.com/problems/power-of-two/) | [Python](./leetcode_python/Bit_Manipulation/power-of-two.py)  | _O(1)_ | _O(1)_ | Easy |good basic, Bit Manipulation ,`amazon`| OK*** (3)
 260 | [Single Number III](https://leetcode.com/problems/single-number-iii/) | [Python](./leetcode_python/Bit_Manipulation/single-number-iii.py) | _O(n)_ | _O(1)_ | Medium  |`xor`, `^=`, `^`| AGAIN*
 268| [Missing Number](https://leetcode.com/problems/missing-number/) | [Python](./leetcode_python/Bit_Manipulation/missing-number.py) | _O(n)_ |  _O(1)_ | Medium | `xor`,`amazon`,`fb`| OK* (2) 
 318| [Maximum Product of Word Lengths](https://leetcode.com/problems/maximum-product-of-word-lengths/) | [Python](./leetcode_python/Bit_Manipulation/maximum-product-of-word-lengths.py) | _O(n)_ ~ _O(n^2)_ |  _O(n)_ | Medium   |Bit Manipulation, Counting Sort, Pruning| AGAIN (not start)
