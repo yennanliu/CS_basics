@@ -489,8 +489,8 @@
 703 | [Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/) | [python](./leetcode_python/Heap/kth_largest_element_in_a_stream.py)  | | | Easy |heap, stream, `amazon`|  AGAIN***** (4)
 1130| [Minimum Cost Tree From Leaf Values](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/)|[Python](./leetcode_python/Heap/minimum-cost-tree-from-leaf-values.py) | | | Medium | LC 1167,heap| not start
 1167| [Minimum Cost to Connect Sticks](https://leetcode.com/problems/minimum-cost-to-connect-sticks/)|[Python](./leetcode_python/Heap/minimum-cost-to-connect-sticks.py) | | | Medium | LC 1130, good basic,heap,`amazon`| AGAIN***** (3)
-1353| [Maximum Number of Events That Can Be Attended](https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/)|[Python](./leetcode_python/Heap/maximum-number-of-events-that-can-be-attended.py) | | | Medium | LC 252, 253, good trick, meeting room, heap, greedy, brute force, dp, bit, fb, twitter, `amazon`| AGAIN******* (1) MUST
-1481| [Least Number of Unique Integers after K Removals](https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/)|[Python](./leetcode_python/Heap/least-number-of-unique-integers-after-k-removals.py) | | | Medium | good trick, greedy, Counter, dict, heap,`amazon`| AGAIN******** (2)
+1353| [Maximum Number of Events That Can Be Attended](https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/)|[Python](./leetcode_python/Heap/maximum-number-of-events-that-can-be-attended.py) | | | Medium | LC 252, 253, good trick, meeting room, heap, greedy, brute force, PRIORITY QUEUE, dp, bit, fb, twitter, `amazon`| AGAIN********* (2) MUST
+1481| [Least Number of Unique Integers after K Removals](https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/)|[Python](./leetcode_python/Heap/least-number-of-unique-integers-after-k-removals.py) | | | Medium | good trick, greedy, Counter, dict, heap,`amazon`| AGAIN******** (3)
 
 
 ## Bit Manipulation 

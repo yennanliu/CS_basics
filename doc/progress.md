@@ -58,6 +58,11 @@
 	- 895 (again)
 	- 1703 (not start)
 	- 1896 (not start)
+	- `208 - 1372 (tree, pass)`
+	- 703 (ok)
+	- 1167 (ok)
+	- 1353 (again!!)
+	- 1481 (again!!)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
@@ -101,6 +106,7 @@
 	- 346 (ok!)
 	- 101 (ok, but again)
 	- 150 (again)
+	- 295
 - cheatsheet review
 	- linked_list.md (ok)
 	- tree.md (ok)
