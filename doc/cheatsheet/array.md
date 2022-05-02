@@ -114,6 +114,30 @@ sorted(strs, key = lambda x : ''.join(sorted(x)))
 #### 1-1-6) Flatten Array
 ```python
 # LC 341
+# V0
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+
+        self.queue = []
+        
+        def getAll(nests):
+            for nest in nests:
+                if nest.isInteger():
+                    self.queue.append(nest.getInteger())
+                else:
+                    getAll(nest.getList())
+        getAll(nestedList)
+
+    def next(self):
+
+        return self.queue.pop(0)
+
+    def hasNext(self):
+
+        return len(self.queue)
+
+# default py
 # V1
 def flatten_array(_array):
     r = []
