@@ -53,16 +53,30 @@ class Solution:
         num = 0
         string = ''
         stack = []
+        """
+        NOTE : we deal with 4 cases
+            1) digit
+            2) "["
+            3) alphabet
+            4) "]"
+
+        NOTE : 
+            we use pre_num, pre_string for dealing with previous result
+        """
         for c in s:
+            # case 1) : digit
             if c.isdigit():
                 num = num*10 + int(c)
+            # case 2) : "["
             elif c == "[":
                 stack.append(string)
                 stack.append(num)
                 string = ''
                 num = 0
+            # case 3) : alphabet
             elif c.isalpha():
                 string += c
+            # case 4) "]"
             elif c == ']':
                 pre_num = stack.pop()
                 pre_string = stack.pop()
