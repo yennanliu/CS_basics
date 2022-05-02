@@ -63,6 +63,8 @@
 	- 1167 (ok)
 	- 1353 (again!!)
 	- 1481 (again!!)
+	- 136 (ok)
+	- 231 (ok!)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
