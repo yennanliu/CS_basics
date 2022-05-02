@@ -60,6 +60,43 @@ class BSTIterator(object):
             return
         """
         NOTE !!! how we do inorder traversal here
+
+        irOrder : left -> root -> right
+        """
+        self.inOrder(root.left)
+        self.stack.append(root.val)
+        self.inOrder(root.right)
+    
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return len(self.stack) > 0
+
+    def next(self):
+        """
+        :rtype: int
+        """
+        return self.stack.pop(0)  # NOTE here
+
+# V0'
+# IDEA : STACK + tree
+class BSTIterator(object):
+    def __init__(self, root):
+        """
+        :type root: TreeNode
+        """
+        self.stack = []
+        self.inOrder(root)
+    
+    def inOrder(self, root):
+        if not root:
+            return
+        """
+        NOTE !!! how we do inorder traversal here
+
+        -> since we pop last element from stack,
+        -> here we do "inverse" inOrder
         """
         self.inOrder(root.right)
         self.stack.append(root.val)
@@ -75,7 +112,7 @@ class BSTIterator(object):
         """
         :rtype: int
         """
-        return self.stack.pop() 
+        return self.stack.pop(-1)  # NOTE here
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79436947

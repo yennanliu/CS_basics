@@ -490,3 +490,41 @@ class Solution(object):
             root.left = result[1]
             return result[0], root
 ```
+
+### 2-5) Binary Search Tree Iterator
+```python
+# LC 173. Binary Search Tree Iterator
+# V0
+# IDEA : STACK + tree
+class BSTIterator(object):
+    def __init__(self, root):
+        """
+        :type root: TreeNode
+        """
+        self.stack = []
+        self.inOrder(root)
+    
+    def inOrder(self, root):
+        if not root:
+            return
+        """
+        NOTE !!! how we do inorder traversal here
+
+        irOrder : left -> root -> right
+        """
+        self.inOrder(root.left)
+        self.stack.append(root.val)
+        self.inOrder(root.right)
+    
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return len(self.stack) > 0
+
+    def next(self):
+        """
+        :rtype: int
+        """
+        return self.stack.pop(0)  # NOTE here
+```
