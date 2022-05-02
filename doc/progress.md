@@ -47,6 +47,10 @@
 	- 071 (ok, but again)
 	- 155 (ok, but again)
 	- 173 (ok!!)
+	- 224 (again)
+	- 227 (again)
+	- 232 (ok)
+	- 341 (ok, but again)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
