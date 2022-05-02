@@ -10,10 +10,10 @@
         - LC 496
         - LC 503
         - LC 739
-    - Calculator
+    - Calculator, decode string
         - LC 224
         - LC 227
-
+        - LC 394
     - Remove all adjacent duplicates
          - LC 1047
          - LC 1209
@@ -105,6 +105,29 @@ for i in range(len(s)):
 print (stack)
 ```
 
+### 1-1-4) deal with `pre num, pre string`
+```python
+# LC 227, 394
+# ...
+for i, each in enumerate(s):
+    # ...
+    if i == len(s) - 1 or each in "+-*/":
+        if pre_op == "+":
+            # ...
+        elif pre_op == "-":
+            # ...
+        elif pre_op == "*":
+            # ...
+        elif pre_op == "/":
+            # ...
+        """
+        NOTE this !!!
+        """
+        pre_op = each
+        num = 0
+# ...
+```
+
 ## 2) LC Example
 
 ### 2-1) Decode String
@@ -123,16 +146,30 @@ class Solution:
         num = 0
         string = ''
         stack = []
+        """
+        NOTE : we deal with 4 cases
+            1) digit
+            2) "["
+            3) alphabet
+            4) "]"
+
+        NOTE : 
+            we use pre_num, pre_string for dealing with previous result
+        """
         for c in s:
+            # case 1) : digit
             if c.isdigit():
                 num = num*10 + int(c)
+            # case 2) : "["
             elif c == "[":
                 stack.append(string)
                 stack.append(num)
                 string = ''
                 num = 0
+            # case 3) : alphabet
             elif c.isalpha():
                 string += c
+            # case 4) "]"
             elif c == ']':
                 pre_num = stack.pop()
                 pre_string = stack.pop()
