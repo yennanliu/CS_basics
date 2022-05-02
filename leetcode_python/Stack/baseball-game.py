@@ -1,94 +1,63 @@
 """
-You're now a baseball game point recorder.
 
-Given a list of strings, each string can be one of the 4 following types:
+682. Baseball Game
+Easy
 
-Integer (one round's score): Directly represents the number of points you get in this round.
-"+" (one round's score): Represents that the points you get in this round are the sum of the last two valid round's points.
-"D" (one round's score): Represents that the points you get in this round are the doubled data of the last valid round's points.
-"C" (an operation, which isn't a round's score): Represents the last valid round's points you get were invalid and should be removed.
-Each round's operation is permanent and could have an impact on the round before and the round after.
+You are keeping score for a baseball game with strange rules. The game consists of several rounds, where the scores of past rounds may affect future rounds' scores.
 
-You need to return the sum of the points you could get in all the rounds.
+At the beginning of the game, you start with an empty record. You are given a list of strings ops, where ops[i] is the ith operation you must apply to the record and is one of the following:
+
+An integer x - Record a new score of x.
+"+" - Record a new score that is the sum of the previous two scores. It is guaranteed there will always be two previous scores.
+"D" - Record a new score that is double the previous score. It is guaranteed there will always be a previous score.
+"C" - Invalidate the previous score, removing it from the record. It is guaranteed there will always be a previous score.
+Return the sum of all the scores on the record. The test cases are generated so that the answer fits in a 32-bit integer.
+
+ 
 
 Example 1:
-Input: ["5","2","C","D","+"]
+
+Input: ops = ["5","2","C","D","+"]
 Output: 30
-Explanation: 
-Round 1: You could get 5 points. The sum is: 5.
-Round 2: You could get 2 points. The sum is: 7.
-Operation 1: The round 2's data was invalid. The sum is: 5.  
-Round 3: You could get 10 points (the round 2's data has been removed). The sum is: 15.
-Round 4: You could get 5 + 10 = 15 points. The sum is: 30.
+Explanation:
+"5" - Add 5 to the record, record is now [5].
+"2" - Add 2 to the record, record is now [5, 2].
+"C" - Invalidate and remove the previous score, record is now [5].
+"D" - Add 2 * 5 = 10 to the record, record is now [5, 10].
+"+" - Add 5 + 10 = 15 to the record, record is now [5, 10, 15].
+The total sum is 5 + 10 + 15 = 30.
 Example 2:
-Input: ["5","-2","4","C","D","9","+","+"]
+
+Input: ops = ["5","-2","4","C","D","9","+","+"]
 Output: 27
-Explanation: 
-Round 1: You could get 5 points. The sum is: 5.
-Round 2: You could get -2 points. The sum is: 3.
-Round 3: You could get 4 points. The sum is: 7.
-Operation 1: The round 3's data is invalid. The sum is: 3.  
-Round 4: You could get -4 points (the round 3's data has been removed). The sum is: -1.
-Round 5: You could get 9 points. The sum is: 8.
-Round 6: You could get -4 + 9 = 5 points. The sum is 13.
-Round 7: You could get 9 + 5 = 14 points. The sum is 27.
-Note:
-The size of the input list will be between 1 and 1000.
-Every integer represented in the list will be between -30000 and 30000.
+Explanation:
+"5" - Add 5 to the record, record is now [5].
+"-2" - Add -2 to the record, record is now [5, -2].
+"4" - Add 4 to the record, record is now [5, -2, 4].
+"C" - Invalidate and remove the previous score, record is now [5, -2].
+"D" - Add 2 * -2 = -4 to the record, record is now [5, -2, -4].
+"9" - Add 9 to the record, record is now [5, -2, -4, 9].
+"+" - Add -4 + 9 = 5 to the record, record is now [5, -2, -4, 9, 5].
+"+" - Add 9 + 5 = 14 to the record, record is now [5, -2, -4, 9, 5, 14].
+The total sum is 5 + -2 + -4 + 9 + 5 + 14 = 27.
+Example 3:
+
+Input: ops = ["1","C"]
+Output: 0
+Explanation:
+"1" - Add 1 to the record, record is now [1].
+"C" - Invalidate and remove the previous score, record is now [].
+Since the record is empty, the total sum is 0.
+ 
+
+Constraints:
+
+1 <= ops.length <= 1000
+ops[i] is "C", "D", "+", or a string representing an integer in the range [-3 * 104, 3 * 104].
+For operation "+", there will always be at least two previous scores on the record.
+For operations "C" and "D", there will always be at least one previous score on the record.
 
 """
-# Time:  O(n)
-# Space: O(n)
-
-# You're now a baseball game point recorder.
-# Given a list of strings, each string can be one of the 4 following types:
-#
-# 1. Integer (one round's score): Directly represents the number of points
-#    you get in this round.
-# 2. "+" (one round's score): Represents that the points you get in
-#                             this round are the sum of the last two valid
-#                             round's points.
-# 3. "D" (one round's score): Represents that the points you get in this round
-#                             are the doubled data of the last valid round's
-#                             points.
-# 4. "C" (an operation, which isn't a round's score): Represents the last
-#                             valid round's points you get were invalid and
-#                             should be removed.
-#
-# Each round's operation is permanent and could have an impact on the round
-# before and the round after.
-# You need to return the sum of the points you could get in all the rounds.
-#
-# Example 1:
-#
-# Input: ["5","2","C","D","+"]
-# Output: 30
-# Explanation:
-# Round 1: You could get 5 points. The sum is: 5.
-# Round 2: You could get 2 points. The sum is: 7.
-# Operation 1: The round 2's data was invalid. The sum is: 5.
-# Round 3: You could get 10 points (the round 2's data has been removed).
-#          The sum is: 15.
-# Round 4: You could get 5 + 10 = 15 points. The sum is: 30.
-#
-# Example 2:
-#
-# Input: ["5","-2","4","C","D","9","+","+"]
-# Output: 27
-# Explanation:
-# Round 1: You could get 5 points. The sum is: 5.
-# Round 2: You could get -2 points. The sum is: 3.
-# Round 3: You could get 4 points. The sum is: 7.
-# Operation 1: The round 3's data is invalid. The sum is: 3.
-# Round 4: You could get -4 points (the round 3's data has been removed).
-#          The sum is: -1.
-# Round 5: You could get 9 points. The sum is: 8.
-# Round 6: You could get -4 + 9 = 5 points. The sum is 13.
-# Round 7: You could get 9 + 5 = 14 points. The sum is 27.
-#
-# Note:
-# The size of the input list will be between 1 and 1000.
-# Every integer represented in the list will be between -30000 and 30000.
 
 # V0
 # IDEA : STACK
@@ -129,6 +98,24 @@ class Solution(object):
                 stack.append(stack[-2] + stack[-1]) 
             else:
                 stack.append(int(op))
+        return sum(stack)
+
+# V1
+# IDEA : STACK
+# https://leetcode.com/problems/baseball-game/solution/
+class Solution(object):
+    def calPoints(self, ops):
+        stack = []
+        for op in ops:
+            if op == '+':
+                stack.append(stack[-1] + stack[-2])
+            elif op == 'C':
+                stack.pop()
+            elif op == 'D':
+                stack.append(2 * stack[-1])
+            else:
+                stack.append(int(op))
+
         return sum(stack)
 
 # V1 
