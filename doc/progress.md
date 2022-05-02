@@ -90,6 +90,8 @@
 	- 101 (ok, but again)
 	- 150 (again)
 - cheatsheet review
+	- linked_list.md (ok)
+	- tree.md (ok)
 - ================
 - LC top 100 likes
 	- 032
