@@ -76,6 +76,8 @@
 	- 242 (ok)
 	- 459 (ok, but again)
 	- 468 (not start)
+	- 696 (ok, but again)
+	- 791 (ok, but again)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
