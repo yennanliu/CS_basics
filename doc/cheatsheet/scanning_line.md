@@ -52,8 +52,7 @@ class Solution:
                 lst.append((end, -1))
             # all of below sort work
             #lst.sort()
-            #lst.sort(key = lambda x : [x[0], x[1]])
-            lst.sort(key = lambda x : x[0])
+            lst.sort(key = lambda x : [x[0], x[1]])
             res, curr_rooms = 0, 0
             for t, n in lst:
                 curr_rooms += n

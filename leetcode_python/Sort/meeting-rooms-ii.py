@@ -36,9 +36,9 @@ class Solution:
                 lst.append((start, 1))
                 lst.append((end, -1))
             # all of below sort work
-            #lst.sort()
+            lst.sort()
             #lst.sort(key = lambda x : [x[0], x[1]])
-            lst.sort(key = lambda x : x[0])
+            #lst.sort(key = lambda x : x[0]) # <--- this is WRONG !!!
             res, curr_rooms = 0, 0
             for t, n in lst:
                 curr_rooms += n
