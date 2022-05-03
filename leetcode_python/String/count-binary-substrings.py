@@ -35,8 +35,16 @@ Submissions
 """
 
 # V0 
-# IDEA :  Group By Character
+# IDEA :  Group By Character + continous sub-string
 # https://leetcode.com/problems/count-binary-substrings/solution/
+# https://blog.csdn.net/fuxuemingzhu/article/details/79183556
+# IDEA :
+#   -> for x = “0110001111”, how many continuous "0" or "1"
+#   -> [1,2,3,4]
+#   -> So, if we want to find # of "equal 0 and 1 sub string"
+#   -> all we need to do : min(3,4) = 3. e.g. ("01", "0011", "000111")
+#   -> since for every "cross" sub string (e.g. 0 then 1 or 1 then 0),
+#   -> we can the "number of same continuous 0 and 1"  by min(groups[i-1], groups[i])
 class Solution(object):
     def countBinarySubstrings(self, s):
         groups = [1]

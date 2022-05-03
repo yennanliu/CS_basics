@@ -5,10 +5,10 @@
 ## 0) Concept  
 
 ### 0-1) Types
+- Group sub-string
+    - LC 696
 
 ### 0-2) Pattern
-
-## 1) General form
 
 ### 1-1) Basic OP
 
@@ -21,7 +21,7 @@
 
 #### 1-4) loop over string
 
-#### 1-6) inverse loop over string
+#### 1-5) inverse loop over string
 ```python
 # exmaple 1
 x = "abcd"
@@ -39,7 +39,7 @@ for i in range(len(x)-1, -1, -2):
 # 1
 ```
 
-#### 1-7) String -> List, List -> String
+#### 1-6) String -> List, List -> String
 ```python
 # exmaple 1
 x = "abcd"
@@ -57,7 +57,7 @@ y_string = ",".join(y)
 y_string
 ```
 
-### 1-2) Tricks
+#### 1-7) Tricks
 ```python
 # go through elements in str AVOID index out of range error
 x = '1234'
@@ -75,6 +75,29 @@ a_array = list(str(a))
 
 In [12]: a_array
 Out[12]: ['1', '2', '3', '4']
+```
+
+#### 1-8) Group sub-string
+```python
+# LC 696. Count Binary Substrings
+# ...
+groups = [1]
+for i in range(1, len(s)):
+    """
+    NOTE here !!!
+    """
+    if s[i-1] != s[i]:
+        groups.append(1)
+    else:
+        groups[-1] += 1
+ans = 0
+for i in range(1, len(groups)):
+    """
+    NOTE here !!!
+    """
+    ans += mins(groups[i-1], groups[i])
+# ...
+
 ```
 
 ## 2) LC Example
@@ -430,6 +453,31 @@ class Solution(object):
 ### 2-9) Count Binary Substrings
 ```python
 # LC 696. Count Binary Substrings
+# V0 
+# IDEA :  Group By Character + continous sub-string
+# https://leetcode.com/problems/count-binary-substrings/solution/
+# https://blog.csdn.net/fuxuemingzhu/article/details/79183556
+# IDEA :
+#   -> for x = “0110001111”, how many continuous "0" or "1"
+#   -> [1,2,3,4]
+#   -> So, if we want to find # of "equal 0 and 1 sub string"
+#   -> all we need to do : min(3,4) = 3. e.g. ("01", "0011", "000111")
+#   -> since for every "cross" sub string (e.g. 0 then 1 or 1 then 0),
+#   -> we can the "number of same continuous 0 and 1"  by min(groups[i-1], groups[i])
+class Solution(object):
+    def countBinarySubstrings(self, s):
+        groups = [1]
+        for i in range(1, len(s)):
+            if s[i-1] != s[i]:
+                groups.append(1)
+            else:
+                groups[-1] += 1
+
+        ans = 0
+        for i in range(1, len(groups)):
+            ans += min(groups[i-1], groups[i])
+        return ans
+
 # V1
 # IDEA :  Group By Character
 # https://leetcode.com/problems/count-binary-substrings/solution/
