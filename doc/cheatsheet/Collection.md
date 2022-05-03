@@ -12,6 +12,9 @@
         - collections.Counter().most_common()
     - sort
     - get most freq
+    - get sub-string with validated alphabets
+    - custom sort
+        - LC 791
 
 - Data structure
     - dict
@@ -21,6 +24,21 @@
 ### 0-2) Pattern
 
 ## 1) General form
+
+#### 1-0) get element if existed in collecitons (custom sort)
+```python
+# LC 791. Custom Sort String
+# ...
+s_map = Counter(s)
+res = ""
+for o in order:
+    if o in s_map:
+        res += (o * s_map[o])
+        del s_map[o]
+for s in s_map:
+    res += (s * s_map[s])
+# ...
+```
 
 #### 1-1) collection.Counter
 ```python
@@ -217,4 +235,25 @@ class TimeBoundedLRU:
         if len(self.cache) > self.maxsize:
             self.cache.popitem(0)
         return result
+```
+
+## 2) LC Example
+
+### 2-1) Custom Sort String
+```python
+# LC 791. Custom Sort String
+# V0
+# IDEA : COUNTER
+from collections import Counter
+class Solution(object):
+    def customSortString(self, order, s):
+        s_map = Counter(s)
+        res = ""
+        for o in order:
+            if o in s_map:
+                res += (o * s_map[o])
+                del s_map[o]
+        for s in s_map:
+            res += s * s_map[s]
+        return res
 ```
