@@ -3,6 +3,7 @@
 ## 0) Concept  
 
 ### 0-1) Types
+
 - Algorithm
     - [Bubble sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py)
     - [Quick sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)
@@ -14,6 +15,8 @@
 - Data Structure
     - Sort on string
         - LC 791
+    - Sort on numbers
+        - LC 179
 
 ### 0-2) Algorithm
 
@@ -207,7 +210,6 @@ void reverse(int[] arr, int i, int j){
 }
 ```
 
-
 ### 2-1) Reorder Data in Log Files
 ```python
 # LC 937. Reorder Data in Log Files
@@ -275,7 +277,6 @@ class Solution:
         return True
 ```
 
-
 ### 2-3) Custom Sort String
 ```python
 # LC 791. Custom Sort String
@@ -313,4 +314,21 @@ class Solution:
         
         # Sort again to have output in ascending order
         return sorted(result)
+```
+
+### 2-5) Largest Number
+```python
+# LC 179. Largest Number
+# V0
+# IDEA : Sorting via Custom Comparator
+class compare(str):
+    # __lt__ defines ">" operator in python
+    def __lt__(x, y):
+        return x+y > y+x
+
+class Solution:
+    def largestNumber(self, nums):
+        largest = sorted([str(v) for v in nums], key=compare) 
+        largest = ''.join(largest) 
+        return '0' if largest[0] == '0' else largest 
 ```
