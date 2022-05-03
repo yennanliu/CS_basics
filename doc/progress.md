@@ -69,6 +69,12 @@
 	- 005 (ok, but again!!!)
 	- 008 (again, not start)
 	- 067 (ok, but again!)
+	- 125 (ok)
+	- 151 (ok)
+	- 165 (ok)
+	- 186 (ok)
+	- 242 (ok)
+	- 459 (ok, but again)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)

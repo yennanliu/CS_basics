@@ -552,3 +552,27 @@ class Solution(object):
                     count += 1
         return count
 ```
+
+### 2-13) Repeated Substring Pattern
+```python
+# LC 459. Repeated Substring Pattern
+# V0
+# IDEA : # only have to go through till HALF of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
+class Solution(object):
+    def repeatedSubstringPattern(self, s):
+        _len_s = len(s)
+        i = 0
+        tmp = ""
+        while i < _len_s:
+            if i == 0:
+                multiply = 0
+            if i != 0:
+                multiply = _len_s // i
+            if multiply * tmp == s:
+                return True
+            if i > _len_s // 2:
+                return False
+            tmp += s[i]
+            i += 1
+        return False
+```
