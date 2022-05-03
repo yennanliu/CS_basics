@@ -11,6 +11,8 @@
 - Monotonic queue
     - LC 239
 - double-ended queue (deque)
+- design circulr queue
+    - LC 622
 
 ### 0-2) Pattern
 
@@ -273,4 +275,148 @@ int[] maxSlidingWindow([int] nums, int k){
     }
     return arr;
 }
+```
+
+### 2-2) Design Circular Queue
+```python
+# LC 622. Design Circular Queue
+# V0 
+# IDEA : ARRAY
+# https://leetcode.com/problems/design-circular-queue/solution/
+class MyCircularQueue:
+
+    def __init__(self, k):
+        """
+        Initialize your data structure here. Set the size of the queue to be k.
+        """
+        self.queue = [0]*k
+        self.headIndex = 0
+        self.count = 0
+        self.capacity = k
+
+    def enQueue(self, value):
+        """
+        Insert an element into the circular queue. Return true if the operation is successful.
+        """
+        if self.count == self.capacity:
+            return False
+        self.queue[(self.headIndex + self.count) % self.capacity] = value
+        self.count += 1
+        return True
+
+    def deQueue(self):
+        """
+        Delete an element from the circular queue. Return true if the operation is successful.
+        """
+        if self.count == 0:
+            return False
+        self.headIndex = (self.headIndex + 1) % self.capacity
+        self.count -= 1
+        return True
+
+    def Front(self):
+        """
+        Get the front item from the queue.
+        """
+        if self.count == 0:
+            return -1
+        return self.queue[self.headIndex]
+
+    def Rear(self):
+        """
+        Get the last item from the queue.
+        """
+        # empty queue
+        if self.count == 0:
+            return -1
+        return self.queue[(self.headIndex + self.count - 1) % self.capacity]
+
+    def isEmpty(self):
+        """
+        Checks whether the circular queue is empty or not.
+        """
+        return self.count == 0
+
+    def isFull(self):
+        """
+        Checks whether the circular queue is full or not.
+        """
+        return self.count == self.capacity
+
+# V0'
+# IDEA : LINKED LIST
+# https://leetcode.com/problems/design-circular-queue/solution/
+class Node:
+    def __init__(self, value, nextNode=None):
+        self.value = value
+        self.next = nextNode
+
+class MyCircularQueue:
+
+    def __init__(self, k):
+        """
+        Initialize your data structure here. Set the size of the queue to be k.
+        """
+        self.capacity = k
+        self.head = None
+        self.tail = None
+        self.count = 0
+
+    def enQueue(self, value):
+        """
+        Insert an element into the circular queue. Return true if the operation is successful.
+        """
+        if self.count == self.capacity:
+            return False
+        
+        if self.count == 0:
+            self.head = Node(value)
+            self.tail = self.head
+        else:
+            newNode = Node(value)
+            self.tail.next = newNode
+            self.tail = newNode
+        self.count += 1
+        return True
+
+
+    def deQueue(self):
+        """
+        Delete an element from the circular queue. Return true if the operation is successful.
+        """
+        if self.count == 0:
+            return False
+        self.head = self.head.next
+        self.count -= 1
+        return True
+
+
+    def Front(self):
+        """
+        Get the front item from the queue.
+        """
+        if self.count == 0:
+            return -1
+        return self.head.value
+
+    def Rear(self):
+        """
+        Get the last item from the queue.
+        """
+        # empty queue
+        if self.count == 0:
+            return -1
+        return self.tail.value
+    
+    def isEmpty(self):
+        """
+        Checks whether the circular queue is empty or not.
+        """
+        return self.count == 0
+
+    def isFull(self):
+        """
+        Checks whether the circular queue is full or not.
+        """
+        return self.count == self.capacity
 ```
