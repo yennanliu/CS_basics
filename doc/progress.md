@@ -89,6 +89,10 @@
 	- 179 (ok, but again!)
 	- 252 (ok)
 	- 253 (AGAIN !!!)
+	- 347 (ok)
+	- 451 (ok)
+	- 692 (ok)
+	- 937 (ok, but again!!)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
