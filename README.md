@@ -577,7 +577,7 @@
 751| [IP to CIDR](https://leetcode.com/problems/ip-to-cidr/) |[python](./leetcode_python/String/ip-to-cidr.py) | _O(n)_ | _O(1)_ | Medium | `ip`| AGAIN (not start*)
 758| [Bold Words in String](https://leetcode.com/contest/weekly-contest-66/problems/bold-words-in-string/) | [python](./leetcode_python/String/bold-words-in-string.py) | _O(n * l)_ | _O(t)_ |  Easy | 🔒, variant of [Add Bold Tag in String](https://leetcode.com/problems/add-bold-tag-in-string/) | AGAIN (not start)
 791| [Custom Sort String](https://leetcode.com/problems/custom-sort-string/) | [python](./leetcode_python/String/custom-sort-string.py) | _O(n)_ | _O(1)_ | Medium |`good basic`, sort, counter, `amazon`, `fb`| AGAIN************ (7) (MUST)
-796| [Rotate String](https://leetcode.com/problems/rotate-string/) | [python](./leetcode_python/String/rotate-string.py) | _O(n)_ | _O(1)_ | Easy  | `KMP Algorithm`, `Rabin-Karp Algorithm`,`amazon` | OK 
+796| [Rotate String](https://leetcode.com/problems/rotate-string/) | [python](./leetcode_python/String/rotate-string.py) | _O(n)_ | _O(1)_ | Easy  | good basic, `KMP Algorithm`, `Rabin-Karp Algorithm`,`amazon` | OK**** (2)(but again)
 804| [Unique Morse Code Words](https://leetcode.com/problems/unique-morse-code-words/) | [python](./leetcode_python/String/unique-morse-code-words.py)  | _O(n)_ | _O(n)_ | Easy    || OK* 
 806| [Number of Lines To Write String](https://leetcode.com/problems/number-of-lines-to-write-string/) | [python](./leetcode_python/String/number-of-lines-to-write-string.py) | _O(n)_ | _O(1)_ | Easy  || OK*
 809| [Expressive Words](https://leetcode.com/problems/expressive-words/) | [python](./leetcode_python/String/expressive-words.py) | _O(n + s)_ | _O(l + s)_ | Medium  || AGAIN (not start)

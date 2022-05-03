@@ -1,33 +1,44 @@
-# Time:  O(n)
-# Space: O(1)
-# We are given two strings, A and B.
-#
-# A shift on A consists of taking string A and moving the leftmost character to the rightmost position.
-# For example, if A = 'abcde', then it will be 'bcdea' after one shift on A. Return True
-# if and only if A can become B after some number of shifts on A.
-#
-# Example 1:
-# Input: A = 'abcde', B = 'cdeab'
-# Output: true
-#
-# Example 2:
-# Input: A = 'abcde', B = 'abced'
-# Output: false
-#
-# Note:
-# - A and B will have length at most 100.
+"""
+
+796. Rotate String
+Easy
+
+Given two strings s and goal, return true if and only if s can become goal after some number of shifts on s.
+
+A shift on s consists of moving the leftmost character of s to the rightmost position.
+
+For example, if s = "abcde", then it will be "bcdea" after one shift.
+ 
+
+Example 1:
+
+Input: s = "abcde", goal = "cdeab"
+Output: true
+Example 2:
+
+Input: s = "abcde", goal = "abced"
+Output: false
+ 
+
+Constraints:
+
+1 <= s.length, goal.length <= 100
+s and goal consist of lowercase English letters.
+
+"""
 
 # V0 
+class Solution(object):
+    def rotateString(self, A, B):
+        for i in range(len(A)):
+            if A[i:] + A[:i] == B:
+                return True
+        return False
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79521194
 class Solution(object):
     def rotateString(self, A, B):
-        """
-        :type A: str
-        :type B: str
-        :rtype: bool
-        """
         for i in range(len(A)):
             if A[i:] + A[:i] == B:
                 return True

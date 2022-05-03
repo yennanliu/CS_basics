@@ -7,6 +7,8 @@
 ### 0-1) Types
 - Group sub-string
     - LC 696
+- Rotate String
+    - LC 796
 
 ### 0-2) Pattern
 
@@ -97,7 +99,17 @@ for i in range(1, len(groups)):
     """
     ans += mins(groups[i-1], groups[i])
 # ...
+```
 
+#### 1-9) Rotate string
+```python
+# LC 796. Rotate String
+class Solution(object):
+    def rotateString(self, A, B):
+        for i in range(len(A)):
+            if A[i:] + A[:i] == B:
+                return True
+        return False
 ```
 
 ## 2) LC Example
