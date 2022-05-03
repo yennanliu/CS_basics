@@ -152,3 +152,71 @@ class Solution(object):
             return False
         return n & (n - 1) == 0
 ```
+
+### 2-4) Add Binary
+```python
+# LC 67. Add Binary
+# V0
+# IDEA : Bit-by-Bit Computation
+class Solution:
+    def addBinary(self, a, b):
+        n = max(len(a), len(b))
+        """
+        NOTE : zfill syntax
+            -> fill n-1 "0" to a string at beginning
+
+            example :
+                In [10]: x = '1'
+
+                In [11]: x.zfill(2)
+                Out[11]: '01'
+
+                In [12]: x.zfill(3)
+                Out[12]: '001'
+
+                In [13]: x.zfill(4)
+                Out[13]: '0001'
+
+                In [14]: x.zfill(10)
+                Out[14]: '0000000001'
+        """
+        a, b = a.zfill(n), b.zfill(n)
+        
+        carry = 0
+        answer = []
+        for i in range(n - 1, -1, -1):
+            if a[i] == '1':
+                carry += 1
+            if b[i] == '1':
+                carry += 1
+                
+            if carry % 2 == 1:
+                answer.append('1')
+            else:
+                answer.append('0')
+            
+            carry //= 2
+        
+        if carry == 1:
+            answer.append('1')
+        answer.reverse()
+        
+        return ''.join(answer)
+
+# V0''''
+# IDEA : py default
+class Solution:
+    def addBinary(self, a, b) -> str:
+        return '{0:b}'.format(int(a, 2) + int(b, 2))
+
+# V0''''
+# IDEA : Bit Manipulation
+class Solution:
+    def addBinary(self, a, b) -> str:
+        x, y = int(a, 2), int(b, 2)
+        while y:
+            answer = x ^ y
+            carry = (x & y) << 1
+            x, y = answer, carry
+        return bin(x)[2:]
+```

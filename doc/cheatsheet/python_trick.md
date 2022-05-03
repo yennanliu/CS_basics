@@ -1087,3 +1087,25 @@ def get_userinfo_list():
     userinfo_list = [user.to_dict() for user in userinfos]
     return jsonify(userinfo_list)
 ```
+
+### 1-29) fill "0" to String
+```python
+# LC 67. Add Binary
+#NOTE : zfill syntax
+#    -> fill n-1 "0" to a string at beginning
+
+#example :
+In [10]: x = '1'
+
+In [11]: x.zfill(2)
+Out[11]: '01'
+
+In [12]: x.zfill(3)
+Out[12]: '001'
+
+In [13]: x.zfill(4)
+Out[13]: '0001'
+
+In [14]: x.zfill(10)
+Out[14]: '0000000001'
+```
