@@ -83,6 +83,9 @@
 	- 828 (not start)
 	- 1119 (ok)
 	- 622 (again!!!)
+	- 239
+	- `007 - 1492 (math, pass)`
+	- 088 (ok, but again!)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
