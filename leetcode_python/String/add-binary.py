@@ -1,8 +1,12 @@
 """
 
-Given two binary strings, return their sum (also a binary string).
+67. Add Binary
+Easy
 
-The input strings are both non-empty and contains only characters 1 or 0.
+
+Given two binary strings a and b, return their sum as a binary string.
+
+ 
 
 Example 1:
 
@@ -11,11 +15,65 @@ Output: "100"
 Example 2:
 
 Input: a = "1010", b = "1011"
-Output: "10101" 
+Output: "10101"
+ 
+
+Constraints:
+
+1 <= a.length, b.length <= 104
+a and b consist only of '0' or '1' characters.
+Each string does not contain leading zeros except for the zero itself.
 
 """
 
 # V0
+# IDEA : Bit-by-Bit Computation
+class Solution:
+    def addBinary(self, a, b):
+        n = max(len(a), len(b))
+        """
+        NOTE : zfill syntax
+            -> fill n-1 "0" to a string at beginning
+
+            example :
+                In [10]: x = '1'
+
+                In [11]: x.zfill(2)
+                Out[11]: '01'
+
+                In [12]: x.zfill(3)
+                Out[12]: '001'
+
+                In [13]: x.zfill(4)
+                Out[13]: '0001'
+
+                In [14]: x.zfill(10)
+                Out[14]: '0000000001'
+        """
+        a, b = a.zfill(n), b.zfill(n)
+        
+        carry = 0
+        answer = []
+        for i in range(n - 1, -1, -1):
+            if a[i] == '1':
+                carry += 1
+            if b[i] == '1':
+                carry += 1
+                
+            if carry % 2 == 1:
+                answer.append('1')
+            else:
+                answer.append('0')
+            
+            carry //= 2
+        
+        if carry == 1:
+            answer.append('1')
+        answer.reverse()
+        
+        return ''.join(answer)
+
+# V0'
 # IDEA : STRING + BINARY
 class Solution(object):
     def addBinary(self, a, b):
@@ -45,7 +103,7 @@ class Solution(object):
         else: 
             return result[::-1] ### NOTE WE NEED TO REVERSE IT!
 
-# V0
+# V0''
 class Solution(object):
     def addBinary(self, a, b):
         """
@@ -62,7 +120,7 @@ class Solution(object):
             i, j, plus = i-1, j-1, plus//2  # since max of "plus" is 3 in bimary case, so "plus//2" works here
         return res
 
-# V0'
+# V0'''
 class Solution(object):
     # @param a, a string
     # @param b, a string
@@ -81,7 +139,24 @@ class Solution(object):
             result += str(carry)
         return result[::-1]
 
-# V0'
+# V0''''
+# IDEA : py default
+class Solution:
+    def addBinary(self, a, b) -> str:
+        return '{0:b}'.format(int(a, 2) + int(b, 2))
+
+# V0''''
+# IDEA : Bit Manipulation
+class Solution:
+    def addBinary(self, a, b) -> str:
+        x, y = int(a, 2), int(b, 2)
+        while y:
+            answer = x ^ y
+            carry = (x & y) << 1
+            x, y = answer, carry
+        return bin(x)[2:]
+
+# V0'''''
 # class Solution(object):
 #     # @param a, a string
 #     # @param b, a string
@@ -103,7 +178,65 @@ class Solution(object):
 #             res += str(plus)
 #         return res[::-1]
 
-# V1 
+# V1
+# IDEA : py default
+# https://leetcode.com/problems/add-binary/solution/
+class Solution:
+    def addBinary(self, a, b) -> str:
+        return '{0:b}'.format(int(a, 2) + int(b, 2))
+
+# V1'
+# IDEA : Bit-by-Bit Computation
+# https://leetcode.com/problems/add-binary/solution/
+class Solution:
+    def addBinary(self, a, b) -> str:
+        n = max(len(a), len(b))
+        a, b = a.zfill(n), b.zfill(n)
+        
+        carry = 0
+        answer = []
+        for i in range(n - 1, -1, -1):
+            if a[i] == '1':
+                carry += 1
+            if b[i] == '1':
+                carry += 1
+                
+            if carry % 2 == 1:
+                answer.append('1')
+            else:
+                answer.append('0')
+            
+            carry //= 2
+        
+        if carry == 1:
+            answer.append('1')
+        answer.reverse()
+        
+        return ''.join(answer)
+
+# V1''
+# IDEA : Bit Manipulation
+# https://leetcode.com/problems/add-binary/solution/
+class Solution:
+    def addBinary(self, a, b) -> str:
+        x, y = int(a, 2), int(b, 2)
+        while y:
+            answer = x ^ y
+            carry = (x & y) << 1
+            x, y = answer, carry
+        return bin(x)[2:]
+
+# V1'''
+# IDEA : Bit Manipulation V2
+# https://leetcode.com/problems/add-binary/solution/
+class Solution:
+    def addBinary(self, a, b) -> str:
+        x, y = int(a, 2), int(b, 2)
+        while y:
+            x, y = x ^ y, (x & y) << 1
+        return bin(x)[2:]
+
+# V1''''
 # https://blog.csdn.net/coder_orz/article/details/51706532
 # IDEA : syntax of int() func
 # int(x=0, base=10), 
@@ -128,7 +261,7 @@ class Solution(object):
         """
         return bin(int(a, 2) + int(b, 2))[2:]
 
-# V1' 
+# V1''''''
 # https://blog.csdn.net/coder_orz/article/details/51706532
 class Solution(object):
     def addBinary(self, a, b):
@@ -146,7 +279,7 @@ class Solution(object):
             i, j, plus = i-1, j-1, plus//2
         return res
 
-# V1'' 
+# V1'''''''
 # https://blog.csdn.net/coder_orz/article/details/51706532
 # IDEA : RECURSION 
 class Solution(object):
@@ -165,7 +298,7 @@ class Solution(object):
         else:
             return self.addBinary(a[:-1], b[:-1]) + '1'
 
-# V1'''
+# V1''''''''
 # https://www.jiuzhang.com/solution/add-binary/#tag-highlight-lang-python
 class Solution:
     # @param {string} a a number

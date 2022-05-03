@@ -68,6 +68,7 @@
 	- 1915 (again, not start)
 	- 005 (ok, but again!!!)
 	- 008 (again, not start)
+	- 067 (ok, but again!)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
