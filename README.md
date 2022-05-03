@@ -520,7 +520,7 @@
 868 | [Binary Gap](https://leetcode.com/problems/binary-gap/) | [Python](./leetcode_python/Bit_Manipulation/binary-gap.py) | _O(1)_ | _O(1)_ | Easy |`trick`, `linear scan`| AGAIN*
 898 | [Bitwise ORs of Subarrays](https://leetcode.com/problems/bitwise-ors-of-subarrays/) | [Python](./leetcode_python/Bit_Manipulation/bitwise-ors-of-subarrays.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 1573 | [Number of Ways to Split a String](https://leetcode.com/problems/number-of-ways-to-split-a-string/) | [Python](./leetcode_python/Bit_Manipulation/number-of-ways-to-split-a-string.py) | _O(n)_ | _O(1)_ | Medium |`amazon`, binary| AGAIN** (not start)
-1915 | [Number of Wonderful Substrings](https://leetcode.com/problems/number-of-wonderful-substrings/) | [Python](./leetcode_python/Bit_Manipulation/number-of-wonderful-substrings.py) | _O(n)_ | _O(1)_ | Medium |bit, prefix sum, dp, `amazon`| AGAIN** (not start)
+1915 | [Number of Wonderful Substrings](https://leetcode.com/problems/number-of-wonderful-substrings/) | [Python](./leetcode_python/Bit_Manipulation/number-of-wonderful-substrings.py) | _O(n)_ | _O(1)_ | Medium |bit mask, bit, prefix sum, dp, `amazon`| AGAIN*** (2) (not start)
 
 
 ## String
@@ -528,7 +528,7 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 005| [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [python](./leetcode_python/String/longest-palindromic-substring.py)  | _O(n)_ | _O(n)_ |  Medium | good trick, 2 pointer, recursive, `Manacher's Algorithm`, LC 100 like, `DP`, `UBER`, `amazon`, `fb` | AGAIN************** (8)(MUST)
 006| [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/) |  [python](./leetcode_python/String/zigzag-conversion.py) | _O(n)_ | _O(1)_      | Easy       || AGAIN (not start)
-008| [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/) | [python](./leetcode_python/String/string-to-integer-atoi.py)  | _O(n)_ | _O(1)_ | Medium|string op, `regular expression`,`UBER`, `amazon`, `fb`| OK***** (5) 
+008| [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/) | [python](./leetcode_python/String/string-to-integer-atoi.py)  | _O(n)_ | _O(1)_ | Medium|string op, `regular expression`,`UBER`, `amazon`, `fb`| AGAIN***** (5) 
 014| [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) |  [python](./leetcode_python/String/longest-common-prefix.py)  | _O(n * k)_   | _O(1)_  | Easy   |`good basic`| OK* 
 028| [Implement strStr()](https://leetcode.com/problems/implement-strstr/) |  [python](./leetcode_python/String/implement-strstr.py)  | _O(n + k)_   | _O(k)_  | Easy  | `KMP Algorithm`, `fb` | OK (3) 
 038| [Count and Say](https://leetcode.com/problems/count-and-say/) | [python](./leetcode_python/String/count-and-say.py) | _O(n * 2^n)_  | _O(2^n)_ | Easy | `recursion`, `iteration`, basic, `fb`| AGAIN*********** (5)
