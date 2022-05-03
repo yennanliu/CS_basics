@@ -142,7 +142,8 @@
 	- tree.md (ok)
 	- prefix_sum.md (ok)
 	- greedy.md (ok)
-	- 2_pointers.md
+	- 2_pointers.md (ok)
+	- binary_search (ok)
 	- intervals.md
 - ================
 - LC top 100 likes
