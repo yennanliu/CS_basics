@@ -3,13 +3,6 @@
 88. Merge Sorted Array
 Easy
 
-983
-
-118
-
-Add to List
-
-Share
 You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
 
 Merge nums1 and nums2 into a single array sorted in non-decreasing order.
@@ -53,6 +46,28 @@ Follow up: Can you come up with an algorithm that runs in O(m + n) time?
 """
 
 # V0
+# IDEA : 2 pointers
+### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
+# -> SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
+# -> Then paste the remain elements
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        ### NOTE : we define 2 pointers (p, q) here
+        p, q = m-1, n-1
+        ### NOTE : the while loop conditions
+        while p >= 0 and q >= 0:
+            if nums1[p] > nums2[q]:
+                #***** NOTE : WE START FROM p+q+1 index, since that's the count of non-zero elements in nums1, and nums2
+                nums1[p+q+1] = nums1[p]
+                p = p-1
+            else:
+                ### NOTE WE START FROM p+q+1 index, reason same as above
+                nums1[p+q+1] = nums2[q]
+                q = q-1
+        # if there're still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])
+        nums1[:q+1] = nums2[:q+1]
+
+# V0'
 # IDEA : 2 pointers + merge sort
 # https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py
 # TRICK : START FROM BIGGEST -> SMALLEST
@@ -82,28 +97,6 @@ class Solution:
             A[pos] = B[j]
             pos-=1
             j-=1
-            
-# V0'
-# IDEA : 2 pointers
-### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
-# -> SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
-# -> Then paste the remain elements
-class Solution(object):
-    def merge(self, nums1, m, nums2, n):
-        ### NOTE : we define 2 pointers (p, q) here
-        p, q = m-1, n-1
-        ### NOTE : the while loop conditions
-        while p >= 0 and q >= 0:
-            if nums1[p] > nums2[q]:
-                #***** NOTE : WE START FROM p+q+1 index, since that's the count of non-zero elements in nums1, and nums2
-                nums1[p+q+1] = nums1[p]
-                p = p-1
-            else:
-                ### NOTE WE START FROM p+q+1 index, reason same as above
-                nums1[p+q+1] = nums2[q]
-                q = q-1
-        # if there're still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])
-        nums1[:q+1] = nums2[:q+1]
 
 # V0''
 # IDEA : 2 pointers

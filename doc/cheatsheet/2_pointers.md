@@ -34,6 +34,8 @@
     - LC 680
     - LC 647
     - LC 005
+- Merge Sorted Array
+    - LC 88
 
 - Algorithm
     - binary search
@@ -768,4 +770,30 @@ class Solution:
                 r -= 1
                 
         return True 
+```
+
+### 2-11) Merge Sorted Array
+```python
+# LC 88. Merge Sorted Array
+# V0
+# IDEA : 2 pointers
+### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
+# -> SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
+# -> Then paste the remain elements
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        ### NOTE : we define 2 pointers (p, q) here
+        p, q = m-1, n-1
+        ### NOTE : the while loop conditions
+        while p >= 0 and q >= 0:
+            if nums1[p] > nums2[q]:
+                #***** NOTE : WE START FROM p+q+1 index, since that's the count of non-zero elements in nums1, and nums2
+                nums1[p+q+1] = nums1[p]
+                p = p-1
+            else:
+                ### NOTE WE START FROM p+q+1 index, reason same as above
+                nums1[p+q+1] = nums2[q]
+                q = q-1
+        # if there're still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])
+        nums1[:q+1] = nums2[:q+1]
 ```
