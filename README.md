@@ -1057,7 +1057,7 @@
 672 | [Bulb Switcher II](https://leetcode.com/problems/bulb-switcher-ii/) | [Python](./leetcode_python/Greedy/bulb-switcher-ii.py) | | | Medium |  | not start
 1375 | [Bulb Switcher III](https://zxi.mytechroad.com/blog/algorithms/array/leetcode-1375-bulb-switcher-iii/) | [Python](./leetcode_python/Greedy/bulb-switcher-iii.py) | | | Medium | queue, array, `gra*` | AGAIN*** (1)
 1648 | [Sell Diminishing-Valued Colored Balls](https://leetcode.com/problems/sell-diminishing-valued-colored-balls/) | [Python](./leetcode_python/Greedy/sell-diminishing-valued-colored-balls.py) | | | Medium | trick, sorting, heapq, binary search, greedy, `amazon` | AGAIN*** (2) (not start)
-1710 | [Maximum Units on a Truck](https://leetcode.com/problems/maximum-units-on-a-truck/) | [Python](./leetcode_python/Greedy/maximum-units-on-a-truck.py) | | | Easy |sort, greedy, `amazon` | OK***** (2) (but again)
+1710 | [Maximum Units on a Truck](https://leetcode.com/problems/maximum-units-on-a-truck/) | [Python](./leetcode_python/Greedy/maximum-units-on-a-truck.py) | | | Easy |sort, greedy, `amazon` | AGAIN******** (3) (MUST)
 
 
 ## Graph 
