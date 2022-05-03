@@ -140,7 +140,10 @@
 - cheatsheet review
 	- linked_list.md (ok)
 	- tree.md (ok)
-	- prefix_sum.md
+	- prefix_sum.md (ok)
+	- greedy.md (ok)
+	- 2_pointers.md
+	- intervals.md
 - ================
 - LC top 100 likes
 	- 032
