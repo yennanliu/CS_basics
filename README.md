@@ -526,7 +526,7 @@
 ## String
 |  #  | Title           |  Solution       |  Time           | Space        | Difficulty    | Status, Note       | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-005| [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [python](./leetcode_python/String/longest-palindromic-substring.py)  | _O(n)_ | _O(n)_ |  Medium | good trick, 2 pointer, recursive, `Manacher's Algorithm`, LC 100 like, `DP`, `UBER`, `amazon`, `fb` | AGAIN************** (8)(MUST)
+005| [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [python](./leetcode_python/String/longest-palindromic-substring.py)  | _O(n)_ | _O(n)_ |  Medium | LC 647, good trick, 2 pointer, recursive, `Manacher's Algorithm`, LC 100 like, `DP`, `UBER`, `amazon`, `fb` | AGAIN************** (8)(MUST)
 006| [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/) |  [python](./leetcode_python/String/zigzag-conversion.py) | _O(n)_ | _O(1)_      | Easy       || AGAIN (not start)
 008| [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/) | [python](./leetcode_python/String/string-to-integer-atoi.py)  | _O(n)_ | _O(1)_ | Medium|string op, `regular expression`,`UBER`, `amazon`, `fb`| AGAIN***** (5) 
 014| [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) |  [python](./leetcode_python/String/longest-common-prefix.py)  | _O(n * k)_   | _O(1)_  | Easy   |`good basic`| OK* 
@@ -564,7 +564,7 @@
 556| [Next Greater Element III](https://leetcode.com/problems/next-greater-element-iii/) | [python](./leetcode_python/String/next-greater-element-iii.py) | _O(1)_ | _O(1)_ | Medium | | AGAIN (not start)
 557| [Reverse Words in a String III](https://leetcode.com/problems/reverse-words-in-a-string-iii/) | [python](./leetcode_python/String/reverse-words-in-a-string-iii.py) | _O(n)_ | _O(1)_ | Easy    | | OK 
 616| [Add Bold Tag in String](https://leetcode.com/problems/add-bold-tag-in-string/) | [python](./leetcode_python/String/add-bold-tag-in-string.py) | _O(n * d * l)_ | _O(n)_ |  Medium | 🔒, `google` | AGAIN (not start)
-647| [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) | [python](./leetcode_python/String/palindromic-substrings.py) |_O(n)_ | _O(n)_ | Medium | greedy, DP, expand from center, 2 pointers, `good basic`,`Manacher's Algorithm`, `Linkedin`,`amazon`,`fb` | OK**** (6)
+647| [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) | [python](./leetcode_python/String/palindromic-substrings.py) |_O(n)_ | _O(n)_ | Medium | LC 005, greedy, DP, expand from center, 2 pointers, `good basic`,`Manacher's Algorithm`, `Linkedin`,`amazon`,`fb` | OK******* (7) (MUST)
 648| [Replace Words](https://leetcode.com/problems/replace-words/) | [python](./leetcode_python/String/replace-words.py) | _O(n)_ | _O(t)_ | Medium  | Trie, `good basic`| OK* 
 657| [Judge Route Circle](https://leetcode.com/articles/judge-route-circle/) | [python](./leetcode_python/String/judge-route-circle.py)  | _O(n)_ | _O(1)_ | Easy    | | OK 
 678| [Valid Parenthesis String](https://leetcode.com/problems/valid-parenthesis-string/) | [python](./leetcode_python/String/valid-palindrome.py)   | _O(n)_ | _O(1)_ | Medium    | | AGAIN** 

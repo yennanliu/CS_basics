@@ -79,7 +79,7 @@ class Solution:
             r += 1
             ans += 1          
         return ans
-    
+
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79433960
 # IDEA : GREEDY 

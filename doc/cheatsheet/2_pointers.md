@@ -30,11 +30,10 @@
         - [2 sum](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md)
         - [sliding window](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
 
-- `Expand` from center
-
-- Deal with `odd, even` cases
+- `Expand` from center (and Deal with `odd, even` cases)
     - LC 680
     - LC 647
+    - LC 005
 
 - Algorithm
     - binary search
@@ -50,6 +49,7 @@
 #### 0-2-1) for loop + "expand `left`, `right` from center"
 ```python
 # LC 005  Longest Palindromic Substring
+# LC 647 Palindromic Substrings
 # python
 # pseudo code
 # ...
