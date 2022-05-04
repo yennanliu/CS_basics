@@ -751,3 +751,32 @@ class Solution(object):
         print ("d_res_ = " + str(d_res_))
         return [x[1] for x in d_res_]
 ```
+
+
+### 2-17) Populating Next Right Pointers in Each Node
+```python
+# LC 116. Populating Next Right Pointers in Each Node
+# LC 117. Populating Next Right Pointers in Each Node II
+# NOTE : there is also DFS approach
+# V0
+# IDEA : BFS
+# REF : LC # 117 : populating-next-right-pointers-in-each-node-ii/
+class Solution:
+    def connect(self, root):
+        if not root: 
+            return None
+        queue = []
+        queue.append(root)
+        while queue:
+            _len = len(queue)
+            for i in range(_len):
+                node = queue.pop(0)
+                ### IF NOT LAST NODE, POINT NEXT TO FIRST NODE IN THE QUEUE
+                if i < _len - 1:
+                    node.next = queue[0]
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return root
+```
