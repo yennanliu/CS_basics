@@ -751,7 +751,7 @@
 930 | [Binary Subarrays With Sum](https://leetcode.com/problems/binary-subarrays-with-sum/) | [Python](./leetcode_python/Two_Pointers/binary-subarrays-with-sum.py) | _O(n)_ | _O(1)_ | Medium |`trick`| AGAIN* (2) (not start)
 977 | [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/) | [Python](./leetcode_python/Two_Pointers/squares-of-a-sorted-array.py) | _O(n)_ | _O(1)_ | Easy || OK 
 1151 | [Minimum Swaps to Group All 1's Together](https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/) | [Python](./leetcode_python/Two_Pointers/minimum-swaps-to-group-all-1s-together.py) | _O(n)_ | _O(1)_ | Medium |good basic, 2 pointers, Deque (Double-ended Queue), `amazon`| AGAIN***** (not start )
-1963| [Minimum Number of Swaps to Make the String Balanced](https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/) |[Python](./leetcode_python/Two_Pointers/minimum-number-of-swaps-to-make-the-string-balanced.py) | _O(n)_| _O(h)_ | Medium|greedy, stack, 2 pointers, amazon, fb, m$| AGAIN**** (1)
+1963| [Minimum Number of Swaps to Make the String Balanced](https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/) |[Python](./leetcode_python/Two_Pointers/minimum-number-of-swaps-to-make-the-string-balanced.py) | _O(n)_| _O(h)_ | Medium|good basic, greedy, stack, 2 pointers, amazon, fb, m$| AGAIN******** (2)
 2104 | [Sum of Subarray Ranges](https://leetcode.com/problems/sum-of-subarray-ranges/) | [Python](./leetcode_python/Two_Pointers/sum-of-subarray-ranges.py) | _O(n)_ | _O(1)_ | Medium |LC 907, 2 pointers, dp, `amazon`| AGAIN***** (not start )
 
 ## Recursion 
