@@ -1,10 +1,41 @@
 """
+
+110. Balanced Binary Tree
+Easy
+
 Given a binary tree, determine if it is height-balanced.
 
-For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
+For this problem, a height-balanced binary tree is defined as:
+
+a binary tree in which the left and right subtrees of every node differ in height by no more than 1.
+
+ 
+
+Example 1:
+
+
+Input: root = [3,9,20,null,null,15,7]
+Output: true
+Example 2:
+
+
+Input: root = [1,2,2,3,3,null,null,4,4]
+Output: false
+Example 3:
+
+Input: root = []
+Output: true
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 5000].
+-104 <= Node.val <= 104
 
 """
-# V0  
+
+# V0
+# https://blog.csdn.net/coder_orz/article/details/51335758
 class Solution(object):
     def isBalanced(self, root):
         """
@@ -30,6 +61,54 @@ class Solution(object):
         return root.val
 
 # V1
+# IDEA : TOP DOWN RECURSION
+# https://leetcode.com/problems/balanced-binary-tree/solution/
+class Solution:
+    # Compute the tree's height via recursion
+    def height(self, root: TreeNode) -> int:
+        # An empty tree has height -1
+        if not root:
+            return -1
+        return 1 + max(self.height(root.left), self.height(root.right))
+    
+    def isBalanced(self, root: TreeNode) -> bool:
+        # An empty tree satisfies the definition of a balanced tree
+        if not root:
+            return True
+
+        # Check if subtrees have height within 1. If they do, check if the
+        # subtrees are balanced
+        return abs(self.height(root.left) - self.height(root.right)) < 2 \
+            and self.isBalanced(root.left) \
+            and self.isBalanced(root.right)
+
+# V1'
+# IDEA : BOTTOM UP RECURSION
+# https://leetcode.com/problems/balanced-binary-tree/solution/
+class Solution:
+    # Return whether or not the tree at root is balanced while also returning
+    # the tree's height
+    def isBalancedHelper(self, root: TreeNode) -> (bool, int):
+        # An empty tree is balanced and has height -1
+        if not root:
+            return True, -1
+        
+        # Check subtrees to see if they are balanced. 
+        leftIsBalanced, leftHeight = self.isBalancedHelper(root.left)
+        if not leftIsBalanced:
+            return False, 0
+        rightIsBalanced, rightHeight = self.isBalancedHelper(root.right)
+        if not rightIsBalanced:
+            return False, 0
+        
+        # If the subtrees are balanced, check if the current tree is balanced
+        # using their height
+        return (abs(leftHeight - rightHeight) < 2), 1 + max(leftHeight, rightHeight)
+        
+    def isBalanced(self, root: TreeNode) -> bool:
+        return self.isBalancedHelper(root)[0]
+
+# V1''
 # https://blog.csdn.net/coder_orz/article/details/51335758
 # IDEA : DFS 
 class Solution(object):
@@ -56,7 +135,7 @@ class Solution(object):
         root.val = 1 + max(self.getAllDepth(root.left), self.getAllDepth(root.right))
         return root.val
 
-# V1'
+# V1'''
 # https://blog.csdn.net/coder_orz/article/details/51335758
 # IDEA : OPTIMIZED DFS
 class Solution(object):
@@ -79,7 +158,7 @@ class Solution(object):
             return -1
         return 1 + max(left_depth, right_depth) if abs(left_depth - right_depth) <= 1  else -1 
 
-# V1''
+# V1''''
 # https://blog.csdn.net/coder_orz/article/details/51335758
 # IDEA : RECURSION 
 class Solution(object):
@@ -103,7 +182,7 @@ class Solution(object):
             return 0
         return 1 + max(self.getDepth(root.left), self.getDepth(root.right))
 
-# V1'''
+# V1''''''
 # https://www.jiuzhang.com/solution/balanced-binary-tree/#tag-highlight-lang-python
 """
 Definition of TreeNode:
