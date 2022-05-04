@@ -67,6 +67,25 @@ class Solution:
         return res
 
 # V0'
+# IDEA : monotonic stack
+# https://zhuanlan.zhihu.com/p/444725220
+class Solution:
+    def subArrayRanges(self, nums):
+        A, s, res = [-float('inf')] + nums + [-float('inf')], [], 0
+        for i, num in enumerate(A):
+            while s and num < A[s[-1]]:
+                j = s.pop()
+                res -= (i - j) * (j - s[-1]) * A[j]
+            s.append(i)
+        A, s = [float('inf')] + nums + [float('inf')], []
+        for i, num in enumerate(A):
+            while s and num > A[s[-1]]:
+                j = s.pop()
+                res += (i - j) * (j - s[-1]) * A[j]
+            s.append(i)
+        return res 
+
+# V0''
 # IDEA : INCREASING STACK
 class Solution:
     def subArrayRanges(self, A0):

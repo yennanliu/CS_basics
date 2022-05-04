@@ -17,6 +17,8 @@
     - Remove all adjacent duplicates
          - LC 1047
          - LC 1209
+    - monotonic stack
+        - LC 2104
 
 ## 0) Concept  
 
@@ -752,4 +754,28 @@ class MinStack(object):
     def getMin(self):
         # the latest min in stack is at stack[-1][1]
         return self.stack[-1][1]
+```
+
+### 2-11) Sum of Subarray Ranges
+```python
+# LC 2104. Sum of Subarray Ranges
+# NOTE : there are also brute force, 2 pointers ... approaches
+# V0'
+# IDEA : monotonic stack
+# https://zhuanlan.zhihu.com/p/444725220
+class Solution:
+    def subArrayRanges(self, nums):
+        A, s, res = [-float('inf')] + nums + [-float('inf')], [], 0
+        for i, num in enumerate(A):
+            while s and num < A[s[-1]]:
+                j = s.pop()
+                res -= (i - j) * (j - s[-1]) * A[j]
+            s.append(i)
+        A, s = [float('inf')] + nums + [float('inf')], []
+        for i, num in enumerate(A):
+            while s and num > A[s[-1]]:
+                j = s.pop()
+                res += (i - j) * (j - s[-1]) * A[j]
+            s.append(i)
+        return res 
 ```
