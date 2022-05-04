@@ -98,6 +98,44 @@ class Solution:
             count = sum([collections.Counter(set(itertools.combinations(dp[u], 3))) for u in dp], collections.Counter())
             return list(min(count, key=lambda k: (-count[k], k)))
 
+# V1
+# https://blog.51cto.com/u_15344287/3648546
+# https://blog.csdn.net/qq_21201267/article/details/107784313
+class Solution:
+    def mostVisitedPattern(self, username: List[str], timestamp: List[int], website: List[str]) -> List[str]:
+        size1 = len(username)
+
+        # process with users
+        # O(N)
+        count1 = collections.defaultdict(list)
+        for i in range(size1):
+            user, time, site = username[i], timestamp[i], website[i]
+            count1[user].append((time, site))
+
+        count2 = collections.defaultdict(list)
+        for user, lst in count1.items():
+            count2[user] = [i[1] for i in sorted(lst)]
+
+        # process with paths
+        count3 = collections.Counter()
+        for lst in count2.values():
+            paths = set()
+            size2 = len(lst)
+            for i in range(size2):
+                for j in range(i + 1, size2):
+                    for k in range(j + 1, size2):
+                        paths.add((lst[i], lst[j], lst[k]))
+
+            # de-duplicate with user
+            for path in paths:
+                count3[path] += 1
+
+        # return result
+        ans = list(count3.keys())
+        ans.sort(key=lambda x: (-count3[x], x))
+
+        return list(ans[0])
+
 # V1''
 # IDEA : SUBSET
 # https://leetcode.com/problems/analyze-user-website-visit-pattern/discuss/355385/Python-using-subset3
