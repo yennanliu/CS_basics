@@ -96,6 +96,35 @@ class Solution:
 ```python
 # LC 2021. Brightest Position on Street
 # V0
+# IDEA : Scanning line, LC 253 MEETING ROOM II
+class Solution:
+    def brightestPosition(self, lights: List[List[int]]) -> int:
+        # light range array
+        light_r = []
+        for p,r in lights:
+            light_r.append((p-r,'start'))
+            light_r.append((p+r+1,'end'))
+        light_r.sort(key = lambda x:x[0])
+        # focus on the boundary of light range 
+        
+        bright = collections.defaultdict(int)
+        power = 0
+        for l in light_r:
+            if 'start' in l:
+                power += 1
+            else:
+                power -= 1
+            bright[l[0]] = power # NOTE : we update "power" in each iteration
+                
+        list_bright = list(bright.values())
+        list_position = list(bright.keys())
+        
+        max_bright = max(list_bright)
+        max_bright_index = list_bright.index(max_bright)
+        
+        return list_position[max_bright_index]
+
+# V0'
 # IDEA : Scanning line, meeting room
 from collections import defaultdict
 class Solution(object):
