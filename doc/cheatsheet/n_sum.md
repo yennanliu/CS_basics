@@ -195,6 +195,7 @@ class Solution(object):
 ### 2-1') 2 Sum II
 ```python
 # LC 167 Two Sum II - Input Array Is Sorted
+# NOTE : we can also use "2 sum" dict approach
 # V0
 # IDEA : TWO POINTERS
 #       -> l = 0, r = len(numbers) - 1
@@ -216,7 +217,6 @@ class Solution(object):
             else:
                 l += 1
         return [-1, -1]
-
 ```
 
 ### 2-2) 3 Sum
