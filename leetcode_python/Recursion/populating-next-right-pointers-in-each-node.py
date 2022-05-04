@@ -49,12 +49,12 @@ class Solution:
     def connect(self, root):
         if not root: 
             return None
-        queue = collections.deque()
+        queue = []
         queue.append(root)
         while queue:
             _len = len(queue)
             for i in range(_len):
-                node = queue.popleft()
+                node = queue.pop(0)
                 ### IF NOT LAST NODE, POINT NEXT TO FIRST NODE IN THE QUEUE
                 if i < _len - 1:
                     node.next = queue[0]
@@ -64,7 +64,7 @@ class Solution:
                     queue.append(node.right)
         return root
 
-# V0
+# V0'
 # IDEA : BFS
 ### NOTE : in this problem, we need to populate the result as LINKED LIST form
 from collections import deque
