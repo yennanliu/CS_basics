@@ -89,6 +89,10 @@
 	- 1151 (again!!!)
 	- 1963 (again!)
 	- 2104 (ok, again)
+	- 010 (not start)
+	- 098 (ok, but again!)
+	- 100 (ok)
+	- 104 (ok!)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
