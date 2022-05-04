@@ -97,6 +97,7 @@
 	- 111 (ok)
 	- 116 (ok)
 	- 117 (ok, but again)
+	- 669 (again)
 - fb/sde_2022/cs_basic_fb.md
 	- 031 (again!!!!)
 	- 080 (again)
