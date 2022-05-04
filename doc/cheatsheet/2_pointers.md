@@ -37,6 +37,9 @@
 - Merge Sorted Array
     - LC 88
 
+- Minimum Swaps to Group All 1's Together
+    - LC 1151 (check [sliding_window.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md))
+
 - Algorithm
     - binary search
     - sliding window
