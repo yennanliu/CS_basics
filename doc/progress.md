@@ -1,6 +1,6 @@
 # Progress
 
-# 2022-05-11
+# 2022-05-12
 - LC (goog_)
 	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
 		- (pdf : p.2)
@@ -242,6 +242,7 @@
 		- 162
 		- 1011
 		- 033
+		- 034
 	- 2 pointers
 		- 1099
 	- dp
