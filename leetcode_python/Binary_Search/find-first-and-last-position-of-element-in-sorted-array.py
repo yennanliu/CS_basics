@@ -37,6 +37,42 @@ nums is a non-decreasing array.
 # V0
 # IDEA : BINARY SEARCH
 class Solution:
+    def searchRange(self, nums, target):
+        l = self.findLeft(nums, target)
+        r = self.findRight(nums, target)
+        return [l, r] if l <= r else [-1, -1]
+     
+    def findLeft(self, nums, target):
+        l = 0
+        r = len(nums)-1
+        while l <= r:
+            mid = l + (r-l)//2
+            """
+            NOTE HERE !!!
+            """
+            if nums[mid] < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+        return l    
+    
+    def findRight(self, nums, target):
+        l = 0
+        r = len(nums)-1
+        while l <= r:
+            mid = l + (r-l)//2
+            """
+            NOTE HERE !!!
+            """
+            if nums[mid] <= target:
+                l = mid + 1
+            else:
+                r = mid - 1
+        return r
+
+# V0'
+# IDEA : BINARY SEARCH
+class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
         
         def search(x):
@@ -56,6 +92,23 @@ class Solution:
             return [lo, hi]
                 
         return [-1, -1]
+
+# V0'
+# IDEA : BRUTE FORCE + PY default
+# binary search : time O(n log n)
+class Solution(object):
+    def searchRange(self, nums, target):
+        # edge case
+        if not nums:
+            return [-1, -1]
+        if target not in nums:
+            return [-1, -1]
+        f_idx = nums.index(target)
+        idx = f_idx
+        _len = len(nums)
+        while idx < _len and nums[idx] == target:
+            idx += 1
+        return [f_idx, idx-1]
 
 # V1
 # IDEA : BINARY SEARCH
