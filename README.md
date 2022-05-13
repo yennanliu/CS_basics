@@ -179,7 +179,7 @@
 ## Array 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note           | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](./leetcode_python/Array/3sum.py) | _O(n^2)_ | _O(1)_  | Medium    | good basic, check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `good basic`,`amazon`,`fb`| OK******* (7)
+015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](./leetcode_python/Array/3sum.py) | _O(n^2)_ | _O(1)_  | Medium    | Curated Top 75, good basic, check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `good basic`,`amazon`,`fb`| OK******* (7)
 016 | [3 Sum Closest](https://leetcode.com/problems/3sum-closest/) | [Python](./leetcode_python/Array/3sum-closest.py) | _O(n^2)_   | _O(1)_  | Medium |`Two Pointers`, `basic`, `good trick`,`3 sum`,google, fb, apple, m$, GS, amazon| AGAIN**** (2)
 018| [4 Sum](https://leetcode.com/problems/4sum/) | [Python](./leetcode_python/Array/4sum.py)   | _O(n^3)_  | _O(1)_    | Medium  | `k sum`, `Two Pointers`, check `#016 3 sum`, `# 454 4 SUM II`,good trick, `fb` | AGAIN******** (4)
 026 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)|  [Python](./leetcode_python/Array/remove-duplicates-from-sorted-array.py), [Scala](./leetcode_scala/Array/removeDuplicates.scala) | _O(n)_ | _O(1)_| Easy | `Two Pointers`, `basic`, `good trick`,`M$` ,`fb` |  AGAIN*********** (9)
@@ -195,7 +195,7 @@
 080 | [Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)|  [Python](./leetcode_python/Array/remove-duplicates-from-sorted-array-ii.py)  | _O(n)_ | _O(1)_ | Medium  |`two pointers`,AGAIN, `basic`, `trick`, `fb`, `#26 Remove Duplicates from Sorted Array`| AGAIN************ (8)
 118 | [Pascal's Triangle](https://leetcode.com/problems/pascals-triangle/)| [Python](./leetcode_python/Array/pascals-triangle.py)  | _O(n^2)_ | _O(1)_  | Easy  |`trick`, `basic`| AGAIN** (2) 
 119 | [Pascal's Triangle II](https://leetcode.com/problems/pascals-triangle-ii/)| [Python](./leetcode_python/Array/pascals-triangle-ii.py) | _O(n^2)_ | _O(1)_  | Easy  |array, check with `# 118 Pascal's Triangle`, `amazon`| OK** (4)
-121 | [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)| [Python](./leetcode_python/Array/best-time-to-buy-and-sell-stock.py) | _O(n)_ | _O(1)_ | Easy |`dp`,`basic`,`greedy`,`UBER`, `M$`, `amazon`, `fb`| OK****** (6) (but again)
+121 | [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)| [Python](./leetcode_python/Array/best-time-to-buy-and-sell-stock.py) | _O(n)_ | _O(1)_ | Easy |Curated Top 75, `dp`,`basic`,`greedy`,`UBER`, `M$`, `amazon`, `fb`| OK****** (6) (but again)
 157 | [Read N Characters Given Read4](https://leetcode.com/problems/read-n-characters-given-read4/) |  [Python](./leetcode_python/Array/read-n-characters-given-read4.py) | _O(n)_ | _O(1)_ | Easy |🔒, buffer, `google`, `amazon`, `fb`| AGAIN**** (3)
 163 | [Missing Ranges](https://leetcode.com/problems/missing-ranges/)| [Python](./leetcode_python/Array/missing-ranges.py) | _O(n)_  | _O(1)_ | Medium| two pointer, 🔒, `google`, `amazon` | AGAIN******* (3)
 169 | [Majority Element](https://leetcode.com/problems/majority-element/) |[Python](./leetcode_python/Array/majority-element.py) | _O(n)_ | _O(1)_ | Easy |`amazon`| OK*
@@ -204,7 +204,7 @@
 215 | [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | [Python](./leetcode_python/Array/kth-largest-element-in-an-array.py) | _O(n)_ ~ _O(n^2)_ | _O(1)_ |  Medium | EPI, `quick sort`, bubble sort, sort, `amazon`,`fb`| OK* (2)
 228 | [Summary Ranges](https://leetcode.com/problems/summary-ranges/) | [Python](./leetcode_python/Array/summary-ranges.py) | _O(n)_ | _O(1)_ | Easy |check `# 163 Missing Ranges`, `basic`, array, `google`| OK*** (3) 
 229 | [Majority Element II](https://leetcode.com/problems/majority-element-ii/) | [Python](./leetcode_python/Array/majority-element-ii.py)  | _O(n)_ | _O(1)_ | Medium  || OK 
-238 | [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/) | [Python](./leetcode_python/Array/product-of-array-except-self.py)  | _O(n)_ | _O(1)_ | Medium  | array, LintCode, `good trick`, `Apple`, `M$`, `amazon`, `fb`| OK******* (but again)(5)
+238 | [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/) | [Python](./leetcode_python/Array/product-of-array-except-self.py)  | _O(n)_ | _O(1)_ | Medium  | Curated Top 75, array, LintCode, `good trick`, `Apple`, `M$`, `amazon`, `fb`| OK******* (but again)(5)
 240 | [Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/) |  [Python](./leetcode_python/Array/search-a-2d-matrix-ii.py)  | _O(m + n)_ | _O(1)_ | Medium   | LintCode, `basic`, `matrix`, `trick`, `binary search`, check `# 74 Search a 2D Matrix`, `amazon`, `apple`| OK***** (6) (but again)
 243| [Shortest Word Distance](https://leetcode.com/problems/shortest-word-distance/)  | [Python](./leetcode_python/Array/shortest-word-distance.py)  | _O(n)_ |  _O(1)_ | Easy |🔒, `basic`| OK*
 245| [Shortest Word Distance III](https://leetcode.com/problems/shortest-word-distance-iii/) | [Python](./leetcode_python/Array/shortest-word-distance-iii.py)  | _O(n)_ |  _O(1)_ | Medium  |🔒, check `Shortest Word Distance I II III`| OK*
@@ -309,7 +309,7 @@
 202| [Happy Number](https://leetcode.com/problems/happy-number/) | [Python ](./leetcode_python/Hash_table/happy-number.py)   | _O(k)_  | _O(k)_  | Easy |`twitter`,`airbnb`, `UBER`| AGAIN** (3)
 204| [Count Primes](https://leetcode.com/problems/count-primes/)  | [Python ](./leetcode_python/Hash_table/count-primes.py)  | _O(n)_  | _O(n)_   | Medium   |`good trick`, cache, dict, set, `M$`, `amazon`| AGAIN******** (5)
 205| [Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/) | [Python ](./leetcode_python/Hash_table/isomorphic-strings.py)  | _O(n)_ | _O(1)_  | Easy  |`basic`, `trick`, `bloomberg`|  AGAIN**
-217| [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)  | [Python ](./leetcode_python/Hash_table/contains-duplicate.py) | _O(n)_    | _O(n)_  | Easy  |`yahoo`, `airbnb`| OK 
+217| [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)  | [Python ](./leetcode_python/Hash_table/contains-duplicate.py) | _O(n)_    | _O(n)_  | Easy  |Curated Top 75, `yahoo`, `airbnb`| OK 
 219| [Contains Duplicate II](https://leetcode.com/problems/contains-duplicate-ii/)  | [Python ](./leetcode_python/Hash_table/contains-duplicate-ii.py) | _O(n)_  | _O(n)_  | Easy   |`basic`, `trick`, `hash table`| AGAIN*
 244| [Shortest Word Distance II](https://leetcode.com/problems/shortest-word-distance-ii/) | [Python ](./leetcode_python/Hash_table/shortest-word-distance-ii.py) | ctor: _O(n)_, lookup: _O(a + b)_ | _O(n)_ | Medium |🔒| AGAIN (not start*)
 246| [Strobogrammatic Number](https://leetcode.com/problems/strobogrammatic-number/) | [Python ](./leetcode_python/Hash_table/strobogrammatic-number.py)  | _O(n)_ | _O(1)_ | Easy  |🔒, `google`, `fb` | OK* (4)
@@ -363,7 +363,7 @@
 ## Linked list 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-002| [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) | [Python](./leetcode_python/Linked_list/add-two-numbers.py) | _O(n)_   | _O(1)_  | Medium | check `# 445 Add Two Numbers II`, `basic`, `linked list`, `airbnb`, `amazon`, `fb`| OK**** (5) (but again)  
+002| [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) | [Python](./leetcode_python/Linked_list/add-two-numbers.py) | _O(n)_   | _O(1)_  | Medium | Curated Top 75, check `# 445 Add Two Numbers II`, `basic`, `linked list`, `airbnb`, `amazon`, `fb`| OK**** (5) (but again)  
 021| [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)| [Python](./leetcode_python/Linked_list/merge-two-sorted-lists.py) | _O(n)_ | _O(1)_ | Easy |`UBER`, `amazon`, `apple`, `fb`| OK******** (6) (but again)
 023| [Merge k sorted lists](https://leetcode.com/problems/merge-k-sorted-lists/) |  [python](./leetcode_python/Linked_list/merge-k-sorted-lists.py)  | _O(n)_ | _O(h)_ | Hard|linked list, check `#21 Merge Two Sorted Lists`, `amazon` | OK**** (2) (but again !!!
 024| [Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)| [Python](./leetcode_python/Linked_list/swap-nodes-in-pairs.py)  | _O(n)_ | _O(1)_ | Easy  |`GOOD basic`, LC 100 like, `UBER`,`amazon`, `fb`| AGAIN************* (5) (MUST)
@@ -789,14 +789,14 @@
 ## Binary Search 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note        | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-033| [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | [Python](./leetcode_python/Binary_Search/search-in-rotated-sorted-array.py)||| Medium |`binary search`,`good basic` ,check `# 81 Search in Rotated Sorted Array II`,`UBER`,`amazon`,`fb`| AGAIN************ (5) (MUST)
+033| [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | [Python](./leetcode_python/Binary_Search/search-in-rotated-sorted-array.py)||| Medium |Curated Top 75, `binary search`,`good basic` ,check `# 81 Search in Rotated Sorted Array II`,`UBER`,`amazon`,`fb`| AGAIN************ (5) (MUST)
 034 | [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)| [Python](./leetcode_python/Binary_Search/find-first-and-last-position-of-element-in-sorted-array.py)| _O(n)_ | _O(1)_ | Medium | binary search, LC top 100 like, `amazon`, `fb`, google, apple, uber | AGAIN************** (3) (MUST)
 034| [Search for a Range](https://leetcode.com/problems/search-for-a-range/) |[Python](./leetcode_python/Binary_Search/search-for-a-range.py) | _O(logn)_ | _O(1)_   | Medium  || AGAIN* 
 035| [Search Insert Position](https://leetcode.com/problems/search-insert-position/) | [Python](./leetcode_python/Binary_Search/search-insert-position.py) | _O(logn)_ | _O(1)_   | Medium      || AGAIN 
 069| [Sqrt(x)](https://leetcode.com/problems/sqrtx/) | [Python](./leetcode_python/Binary_Search/sqrtx.py) | _O(logn)_ | _O(1)_ | Medium |math, binary search,`amazon`,`fb`| OK* (4)
 074| [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/) | [Python](./leetcode_python/Binary_Search/search-a-2d-matrix.py)  | _O(logm + logn)_ | _O(1)_ | Medium |binary search in 2D matrix,`amazon`| OK* (2)
 081| [Search in Rotated Sorted Array II](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/) | [Python](./leetcode_python/Binary_Search/search-in-rotated-sorted-array-ii.py) | _O(logn)_ | _O(1)_  | Medium |`binary search`,check `# 33 Search in Rotated Sorted Array` first,`array`, `fb`, amazon, linkedin| OK***** (6)
-153| [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)         | [Python](./leetcode_python/Binary_Search/find-minimum-in-rotated-sorted-array.py)    | _O(logn)_  | _O(1)_ | Medium |binary search, good basic,`amazon`| AGAIN****** (2)
+153| [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)         | [Python](./leetcode_python/Binary_Search/find-minimum-in-rotated-sorted-array.py)    | _O(logn)_  | _O(1)_ | Medium |Curated Top 75, binary search, good basic,`amazon`| AGAIN****** (2)
 162| [Find Peak Element](https://leetcode.com/problems/find-peak-element/) |  [Python](./leetcode_python/Binary_Search/find-peak-element.py)| _O(logn)_  | _O(1)_  | Medium |good trick, recursive binary search,`M$`, `google`, `fb`| AGAIN********** (5)
 222| [Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes/) |  [Python](./leetcode_python/Binary_Search/count-complete-tree-nodes.py)   | _O((logn)^2)_       | _O(1)_        | Medium      || AGAIN (not start)
 275| [H-Index II](https://leetcode.com/problems/h-index-ii/) | [Python](./leetcode_python/Binary_Search/h-index-ii.py)  | _O(logn)_ | _O(1)_ | Medium |similar as `# 274 H-Index`, Binary Search, `fb` | AGAIN**** (3) 
@@ -952,7 +952,7 @@
 ## Dynamic Programming 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-053| [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)| [Python](./leetcode_python/Dynamic_Programming/maximum-subarray.py)  | _O(n)_     | _O(1)_    | easy  |brute force, divied & conquer, `DP`,`dp basic`,`amazon`,`fb`| AGAIN******** (5)
+053| [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)| [Python](./leetcode_python/Dynamic_Programming/maximum-subarray.py)  | _O(n)_     | _O(1)_    | easy  |Curated Top 75, brute force, divied & conquer, `DP`,`dp basic`,`amazon`,`fb`| AGAIN******** (5)
 062| [Unique Paths](https://leetcode.com/problems/unique-paths/)    | [Python](./leetcode_python/Dynamic_Programming/unique-paths.py)  | _O(m * n)_      | _O(m + n)_   | Medium         |`dp`, `basic`| AGAIN*
 063| [Unique Paths II](https://leetcode.com/problems/unique-paths-ii/) | [Python](./leetcode_python/Dynamic_Programming/unique-paths-ii.py)  |  _O(m * n)_ | _O(m + n)_   | Medium |`trick`, check `#062 Unique Paths`, `amazon`|  AGAIN* 
 064| [Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/)|  [Python](./leetcode_python/Dynamic_Programming/minimum-path-sum.py) | _O(m * n)_ | _O(m + n)_  | Medium |`DP`, `amazon`| AGAIN* 
@@ -961,7 +961,7 @@
 096| [Unique Binary Search Trees](https://leetcode.com/problems/unique-binary-search-trees/) | [Python](./leetcode_python/Dynamic_Programming/unique-binary-search-trees.py)  | _O(n)_      | _O(1)_         | Medium         | Math, fb, amazon|  AGAIN (not start)
 120| [Triangle](https://leetcode.com/problems/triangle/)       | [Python](./leetcode_python/Dynamic_Programming/triangle.py)   | _O(m * n)_      | _O(n)_ | Medium |`amazon`| AGAIN* (not start) (2)
 123| [Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/)       | [Python](./leetcode_python/Dynamic_Programming/best-time-to-buy-and-sell-stock-iii/.py)   | _O(m * n)_      | _O(n)_ | Medium |`amazon`| AGAIN* (not start) (1)
-152| [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)|[Python](./leetcode_python/Dynamic_Programming/maximum-product-subarray.py)| _O(n)_ | _O(1)_ | Medium     || AGAIN (not start)
+152| [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)|[Python](./leetcode_python/Dynamic_Programming/maximum-product-subarray.py)| _O(n)_ | _O(1)_ | Medium |Curated Top 75| AGAIN (not start)
 198| [House Robber](https://leetcode.com/problems/house-robber/)| [Python](./leetcode_python/Dynamic_Programming/house-robber.py) | _O(n)_ | _O(1)_ | Easy|dp basic,`amazon`| AGAIN*** (2)
 213| [House Robber II](https://leetcode.com/problems/house-robber-ii/)| [Python](./leetcode_python/Dynamic_Programming/house-robber-iii.py) | _O(n)_          | _O(1)_          | Medium        || AGAIN (not start)
 221| [Maximal Square](https://leetcode.com/problems/maximal-square/)|[Python](./leetcode_python/Dynamic_Programming/maximal-square.py) | _O(n^2)_   | _O(n)_ | Medium | EPI, dp, `amazon`,`fb` | AGAIN** (3) (not start)
@@ -1024,7 +1024,7 @@
 ## Greedy 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note   | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-011| [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)|[Python](./leetcode_python/Greedy/container-with-most-water.py)  | _O(n)_ | _O(1)_ | Medium |good basics, `two pointers`,`fb`, amazon|  OK*** (3) (but again !!)
+011| [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)|[Python](./leetcode_python/Greedy/container-with-most-water.py)  | _O(n)_ | _O(1)_ | Medium |Curated Top 75, good basics, `two pointers`,`fb`, amazon|  OK*** (3) (but again !!)
 045| [Jump Game II](https://leetcode.com/problems/jump-game-ii/)     |[Python](./leetcode_python/Greedy/jump-game-ii.py)  | _O(n)_ | _O(1)_| Medium|Greedy, google, apple, fb, tesla, `amazon`| AGAIN**** (not start)
 055| [Jump Game](https://leetcode.com/problems/jump-game/)     |[Python](./leetcode_python/Greedy/jump-game.py)  | _O(n)_ | _O(1)_| Medium|good trick, Greedy, DP, `amazon`| AGAIN******** (5)
 122| [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)| [Python](./leetcode_python/Greedy/best-time-to-buy-and-sell-stock-ii.py) | _O(n)_ | _O(1)_ | Easy |compare with `#309 Best Time to Buy and Sell Stock with Cooldown `, `#714 Best Time to Buy and Sell Stock with Transaction Fee`, `amazon`| OK* (2)
