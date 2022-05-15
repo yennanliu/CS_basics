@@ -1,39 +1,78 @@
 """
 
-Given n nodes labeled from 0 to n - 1 and a list of undirected edges 
-(each edge is a pair of nodes), 
-write a function to find the number of connected components in an undirected graph.
+323. Number of Connected Components in an Undirected Graph
+Medium
+
+You have a graph of n nodes. You are given an integer n and an array edges where edges[i] = [ai, bi] indicates that there is an edge between ai and bi in the graph.
+
+Return the number of connected components in the graph.
+
+ 
 
 Example 1:
 
-Input: n = 5 and edges = [[0, 1], [1, 2], [3, 4]]
 
-     0          3
-     |          |
-     1 --- 2    4 
-
+Input: n = 5, edges = [[0,1],[1,2],[3,4]]
 Output: 2
-
-
 Example 2:
 
-Input: n = 5 and edges = [[0, 1], [1, 2], [2, 3], [3, 4]]
 
-     0           4
-     |           |
-     1 --- 2 --- 3
+Input: n = 5, edges = [[0,1],[1,2],[2,3],[3,4]]
+Output: 1
+ 
 
-Output:  1
+Constraints:
 
-Note:
-
-You can assume that no duplicate edges will appear in edges. Since all edges are undirected, 
-[0, 1] is the same as [1, 0] and thus will not appear together in edges.
+1 <= n <= 2000
+1 <= edges.length <= 5000
+edges[i].length == 2
+0 <= ai <= bi < n
+ai != bi
+There are no repeated edges.
 
 """
 
-# V0
+# V0'
+# IDEA : DFS
+from collections import defaultdict
+class Solution:
+    def countComponents(self, n, edges):
+        def help(x):
+            """
+            NOTE !!! only execute if x is in graph's key
+            """
+            if x in g:
+                for item in g[x]:
+                    """
+                    NOTE !!!
+                        1) execute if item NOT in visited
+                        2) add item to visited in each loop (for item in g[x])
+                    """
+                    if item not in visited:
+                        visited.add(item)
+                        help(item)
+        res = 0
+        visited = set()
+        # build graph
+        g = defaultdict(set)
+        for a, b in edges:
+            g[a].add(b)
+            g[b].add(a)
+        """
+        NOTE !!! we loop over n (INSTEAD OF edges)
+        """
+        for i in range(n):
+            # have a filter here
+            if i not in visited:
+                #print ("i = " + str(i) + " visited = " + str(visited))
+                help(i)
+                # NOTE here !!!, we plus res when call help func every time
+                res += 1
+        return res
+
+# V0'
 # IDEA : DFS + GRAPH
+from collections import defaultdict
 class Solution:
     def countComponents(self, n, edges):
         def helper(u):
@@ -42,8 +81,9 @@ class Solution:
                     if v not in visited:
                         visited.add(v)
                         helper(v)
-            
+        # init graph
         pair = collections.defaultdict(set)
+        # build graph
         for u,v in edges:
             pair[u].add(v)
             pair[v].add(u)
@@ -51,6 +91,9 @@ class Solution:
         visited = set()
         for i in range(n):
             if i not in visited:
+                """
+                NOTE here !!!
+                """
                 helper(i)
                 count+=1
         return count
@@ -182,6 +225,96 @@ class Solution:
         for edge in edges:
             unionfind(edge[0],edge[1])
         return count
+
+# V1
+# IDEA : DFS
+# https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/solution/
+# JAVA
+# class Solution {
+#   
+#      private void dfs(List<Integer>[] adjList, int[] visited, int startNode) {
+#         visited[startNode] = 1;
+#         
+#         for (int i = 0; i < adjList[startNode].size(); i++) {
+#             if (visited[adjList[startNode].get(i)] == 0) {
+#                 dfs(adjList, visited, adjList[startNode].get(i));
+#             }
+#         }
+#     }
+#    
+#     public int countComponents(int n, int[][] edges) {
+#         int components = 0;
+#         int[] visited = new int[n];
+#        
+#         List<Integer>[] adjList = new ArrayList[n]; 
+#         for (int i = 0; i < n; i++) {
+#             adjList[i] = new ArrayList<Integer>();
+#         }
+#        
+#         for (int i = 0; i < edges.length; i++) {
+#             adjList[edges[i][0]].add(edges[i][1]);
+#             adjList[edges[i][1]].add(edges[i][0]);
+#         }
+#        
+#         for (int i = 0; i < n; i++) {
+#             if (visited[i] == 0) {
+#                 components++;
+#                 dfs(adjList, visited, i);
+#             }
+#         }
+#         return components;
+#     }
+# }
+
+# V1
+# IDEA : Disjoint Set Union (DSU)
+# https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/solution/
+# JAVA
+# public class Solution {
+#
+#     private int find(int[] representative, int vertex) {
+#         if (vertex == representative[vertex]) {
+#             return vertex;
+#         }
+#        
+#         return representative[vertex] = find(representative, representative[vertex]);
+#     }
+#    
+#     private int combine(int[] representative, int[] size, int vertex1, int vertex2) {
+#         vertex1 = find(representative, vertex1);
+#         vertex2 = find(representative, vertex2);
+#        
+#         if (vertex1 == vertex2) {
+#             return 0;
+#         } else {
+#             if (size[vertex1] > size[vertex2]) {
+#                 size[vertex1] += size[vertex2];
+#                 representative[vertex2] = vertex1;
+#             } else {
+#                 size[vertex2] += size[vertex1];
+#                 representative[vertex1] = vertex2;
+#             }
+#             return 1;
+#         }
+#     }
+#
+#     public int countComponents(int n, int[][] edges) {
+#         int[] representative = new int[n];
+#         int[] size = new int[n];
+#        
+#         for (int i = 0; i < n; i++) {
+#             representative[i] = i;
+#             size[i] = 1;
+#         }
+#        
+#         int components = n;
+#         for (int i = 0; i < edges.length; i++) { 
+#             components -= combine(representative, size, edges[i][0], edges[i][1]);
+#         }
+#
+#         return components;
+#     }
+# }
 
 # V2 
 # Time:  O(nlog*n) ~= O(n), n is the length of the positions
