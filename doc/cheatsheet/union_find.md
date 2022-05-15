@@ -419,6 +419,56 @@ class Solution(object):
 ### 2-8) Number of Connected Components in an Undirected Graph
 ```python
 # LC 323 Number of Connected Components in an Undirected Graph
+# NOTE : there is ALSO dfs, bfs approaches
+# V0
+# IDEA : UNION FIND
+# union find basic algorithm
+class UnionFind:
+
+    def __init__(self, n):
+        self.n = n
+        self.parent = [x for x in range(n)]
+
+    def union(self, x, y):
+        print (">>> union : x = {}, y = {}".format(x, y))
+        parentX = self.find(x)
+        parentY = self.find(y)
+        """
+        NOTE this !!!
+            -> if parentX == parentY, we DO NOTHING
+        """
+        if parentX == parentY:
+            return
+        self.parent[parentX] = parentY
+        self.n -= 1 
+
+    def find(self, x):
+        while x != self.parent[x]:
+            x = self.parent[x]
+        return x
+
+    def connected(self, x, y):
+        parentX = self.find(x)
+        parentY = self.find(y)
+        return parentX == parentY
+
+    def count(self):
+        return self.n
+
+from collections import defaultdict
+class Solution:
+    def countComponents(self, n, edges):
+        """
+        build union find
+
+            step 1) init class (uf)
+            step 2) union all (a, b) in edges
+            step 3) return uf.count
+        """
+        uf = UnionFind(n)
+        for a, b in edges:
+            uf.union(a, b)
+        return uf.count()
 ```
 
 ### 2-9) Connecting Cities With Minimum Cost

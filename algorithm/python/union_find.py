@@ -3,6 +3,47 @@
 #---------------------------------------------------------------
 
 # V0
+# plz also refer LC 323
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Graph/number-of-connected-components-in-an-undirected-graph.py
+class UnionFind:
+
+    def __init__(self, n):
+        """
+        NOTE !!!
+            we ONLY need to init 2 things
+                1) n
+                2) parent array
+        """
+        self.n = n
+        self.parent = [x for x in range(n)]
+
+    def union(self, x, y):
+        print (">>> union : x = {}, y = {}".format(x, y))
+        parentX = self.find(x)
+        parentY = self.find(y)
+        """
+        NOTE this !!!
+            -> if parentX == parentY, we DO NOTHING
+        """
+        if parentX == parentY:
+            return
+        self.parent[parentX] = parentY
+        self.n -= 1 
+
+    def find(self, x):
+        while x != self.parent[x]:
+            x = self.parent[x]
+        return x
+
+    def connected(self, x, y):
+        parentX = self.find(x)
+        parentY = self.find(y)
+        return parentX == parentY
+
+    def count(self):
+        return self.n
+
+# V0'
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/UnionFind.java
 class UnionFind:
 
