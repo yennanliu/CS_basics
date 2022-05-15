@@ -18,7 +18,7 @@ class UnionFind:
         self.parent = [x for x in range(n)]
 
     def union(self, x, y):
-        print (">>> union : x = {}, y = {}".format(x, y))
+        #print (">>> union : x = {}, y = {}".format(x, y))
         parentX = self.find(x)
         parentY = self.find(y)
         """
