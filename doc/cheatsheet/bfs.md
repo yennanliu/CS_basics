@@ -653,24 +653,32 @@ class Solution:
 ### 2-14) Coin Change
 ```python
 # LC 322 Coin Change
-# note : there is also dp approach
-# IDEA :  BFS
+# NOTE : there is also DFS, DP approach
+# V0
+# IDEA : BFS
+from collections import defaultdict
 class Solution(object):
     def coinChange(self, coins, amount):
-        steps = collections.defaultdict(int)
-        queue = collections.deque([0])
+        """
+        NOTE !!! 
+            1) we use defaultdict(int)
+            2) we init steps via : steps[0] = 0
+        """
+        steps = defaultdict(int)
         steps[0] = 0
+        queue = [0]
         while queue:
-            front = queue.popleft()
-            level = steps[front]
-            if front == amount:
+            tmp = queue.pop(0)
+            level = steps[tmp]
+            if tmp == amount:
                 return level
             for c in coins:
-                if front + c > amount:
+                if tmp + c > amount:
                     continue
-                if front + c not in steps:
-                    queue += front + c,
-                    steps[front + c] = level + 1
+                if tmp + c not in steps:
+                    # queue += (tmp + c), # this is syntax suger, should be equal as below
+                    queue.append(tmp + c)
+                    steps[tmp + c] = level + 1
         return -1
 ```
 

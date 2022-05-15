@@ -190,8 +190,8 @@
 	- bfs
 		- 133
 		- 815
-		- 322
 		- 1022
+		- 322 (OK, BUT AGAIN!!!)
 	- greedy
 		- 358 (again, not start!)
 			- check `heappush, heappop`

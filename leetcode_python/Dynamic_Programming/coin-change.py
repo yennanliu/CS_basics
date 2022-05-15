@@ -28,6 +28,50 @@ Output: 0
 """
 
 # V0
+# IDEA : BFS
+from collections import defaultdict
+class Solution(object):
+    def coinChange(self, coins, amount):
+        """
+        NOTE !!! 
+            1) we use defaultdict(int)
+            2) we init steps via : steps[0] = 0
+        """
+        steps = defaultdict(int)
+        steps[0] = 0
+        queue = [0]
+        while queue:
+            tmp = queue.pop(0)
+            level = steps[tmp]
+            if tmp == amount:
+                return level
+            for c in coins:
+                if tmp + c > amount:
+                    continue
+                if tmp + c not in steps:
+                    # queue += (tmp + c), # this is syntax suger, should be equal as below
+                    queue.append(tmp + c)
+                    steps[tmp + c] = level + 1
+        return -1
+
+# V0'
+# IDEA : DFS
+class Solution(object):
+    def coinChange(self, coins, amount):
+        # help func
+        def dfs(pt, rem, count):
+            if not rem:
+                self.res = min(self.res, count)
+            for i in range(pt, lenc):
+                if coins[i] <= rem < coins[i] * (self.res-count): # if hope still exists
+                    dfs(i, rem-coins[i], count+1)
+
+        coins.sort(reverse = True)
+        lenc, self.res = len(coins), 2**31-1
+        
+        for i in range(lenc):
+            dfs(i, amount, 0)
+        return self.res if self.res < 2**31-1 else -1
 
 # V1 
 # http://bookshadow.com/weblog/2015/12/27/leetcode-coin-change/
@@ -163,11 +207,6 @@ class Solution:
 # IDDA : DFS
 class Solution:
     def coinChange(self, coins, amount):
-        """
-        :type coins: List[int]
-        :type amount: int
-        :rtype: int
-        """
         if amount == 0:
             return 0
         
@@ -205,11 +244,6 @@ class Solution:
 # IDEA : DFS
 class Solution:
     def coinChange(self, coins, amount):
-                """
-        :type coins: List[int]
-        :type amount: int
-        :rtype: int
-        """
         # improved dfs, use division first
         l = len(coins) - 1
         coins.sort(reverse=True)
@@ -242,9 +276,7 @@ class Solution:
 # IDEA : DFS
 class Solution(object):
     def coinChange(self, coins, amount):
-        coins.sort(reverse = True)
-        lenc, self.res = len(coins), 2**31-1
-    
+        # help func
         def dfs(pt, rem, count):
             if not rem:
                 self.res = min(self.res, count)
@@ -252,9 +284,12 @@ class Solution(object):
                 if coins[i] <= rem < coins[i] * (self.res-count): # if hope still exists
                     dfs(i, rem-coins[i], count+1)
 
+        coins.sort(reverse = True)
+        lenc, self.res = len(coins), 2**31-1
+
         for i in range(lenc):
             dfs(i, amount, 0)
-    return self.res if self.res < 2**31-1 else -1
+        return self.res if self.res < 2**31-1 else -1
 
 # V2 
 # Time:  O(n * k), n is the number of coins, k is the amount of money
