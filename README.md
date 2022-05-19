@@ -11,6 +11,8 @@
 
 <p align="center"><img src ="./doc/pic/big-o-cheat-sheet-poster.png" ></p>
 
+<p align="center"><img src ="./doc/pic/data_structure_2.png" ></p>
+
 ![Language](https://img.shields.io/badge/language-Python%20%2F%20C%20%2F%20JAVA%2017-orange.svg) 
 ![Update](https://img.shields.io/badge/update-weekly-purple.svg)
 [![Build Status](https://travis-ci.org/yennanliu/CS_basics.svg?branch=master)](https://travis-ci.org/yennanliu/CS_basics)

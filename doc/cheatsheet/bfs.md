@@ -6,6 +6,8 @@
 - Breadth first, then deep
 - Usually use data structure such as `queue, array`
 
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bfs_2.png"></p>
+
 ## 0) Concept  
 
 ### 0-1) Types

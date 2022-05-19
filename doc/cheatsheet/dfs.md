@@ -6,6 +6,8 @@
 - not most efficient (VS bfs), but can handle some specific problems
 - Ref
 
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_2.png"></p>
+
 ## 0) Concept
 
 ### 0-1) Types
