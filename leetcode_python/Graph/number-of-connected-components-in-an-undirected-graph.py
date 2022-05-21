@@ -120,6 +120,60 @@ class Solution:
         return uf.count()
 
 # V0''
+# IDEA : UNION FIND
+class UnionFind(object):
+
+    def __init__(self, n):
+        self.parents = []
+        self.count = n
+
+    def add(self, x):
+        self.parents.append(x)
+
+    def find(self, x):
+        while x != self.parents[x]:
+            x = self.parents[x]
+        return x
+
+    def check(self, x, y):
+        if x == y:
+            return True
+        parentX = self.find(x)
+        parentY = self.find(y)
+        return parentX == parentY
+
+    def union(self, x, y):
+        """
+        NOTE this !!!
+            -> if parentX == parentY, we DO NOTHING
+        """
+        parentX = self.find(x)
+        parentY = self.find(y)
+        if self.check(parentX, parentY):
+            return
+        self.parents[parentX] = parentY
+        self.count -= 1
+
+    def count(self):
+        return self.count
+
+class Solution(object):
+    def countComponents(self, n, edges):
+        # union find
+        # edge case
+        if not n:
+            return
+        # init
+        uf = UnionFind(n)
+        for i in range(n):
+            uf.add(i)
+        #print ("uf.parents = " + str(uf.parents))
+        for a, b in edges:
+            uf.union(a, b)
+        #print ("uf.parents = " + str(uf.parents))
+        return uf.count
+
+# V0'''
 # IDEA : DFS + GRAPH
 from collections import defaultdict
 class Solution:
