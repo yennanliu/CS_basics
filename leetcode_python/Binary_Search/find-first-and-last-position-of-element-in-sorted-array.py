@@ -72,6 +72,62 @@ class Solution:
 
 # V0'
 # IDEA : BINARY SEARCH
+class Solution(object):
+    def searchRange(self, nums, target):
+        # help func
+        def getMin(l, r):
+            l = l
+            r = r
+            # note this
+            while r >= l:
+                mid = l + (r-l) // 2
+                """
+                NOTE THIS !!!
+
+                    -> if nums[mid] == target
+                    -> we want to SMALLER index
+                """
+                if nums[mid] == target:
+                    r = mid - 1
+                elif nums[mid] < target:
+                    l = mid + 1
+                elif nums[mid] > target:
+                    r = mid - 1
+            # NOTE !!! we return l
+            return l
+
+        def getMax(l, r):
+            l = l
+            r = r
+            # note this
+            while r >= l:
+                mid = l + (r-l) // 2
+                """
+                NOTE THIS !!!
+
+                    -> if nums[mid] == target
+                    -> we want to BIGGER index
+                """
+                if nums[mid] == target:
+                    l = mid + 1
+                elif nums[mid] < target:
+                    l = mid + 1
+                elif nums[mid] > target:
+                    r = mid - 1
+            # NOTE !!! we return r
+            return r
+        # edge case
+        if not nums or target not in nums:
+            return [-1, -1]
+        res = [-1, -1]
+        l = 0
+        r = len(nums) - 1
+        _min = getMin(l, r)
+        _max = getMax(l, r)
+        return [_min, _max]
+
+# V0'
+# IDEA : BINARY SEARCH
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
         
