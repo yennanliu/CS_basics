@@ -91,6 +91,9 @@
 	- 117 (ok, but again)
 	- 669 (again)
 - ================
+- blind_curated_75.md
+	- 269 (not start)
+- ================
 - LC top 100 likes
 	- 032
 	- 034
