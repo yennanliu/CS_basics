@@ -53,7 +53,7 @@ class Solution:
 
         return max(helper(root))
 
-# V1
+# V1'
 # IDEA : RECURSION WITH MEMORY
 # https://leetcode.com/problems/house-robber-iii/solution/
 class Solution:
@@ -82,7 +82,7 @@ class Solution:
 
         return helper(root, False)
 
-# V1
+# V1''
 # IDEA : DP
 # https://leetcode.com/problems/house-robber-iii/solution/
 class Solution:
@@ -123,7 +123,26 @@ class Solution:
 
         return max(dp_rob[0], dp_not_rob[0])
 
-# V1 
+# V1''''
+# https://blog.csdn.net/fuxuemingzhu/article/details/80779068
+# for more solutions, plz check the link above 
+class Solution(object):
+    def rob(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        def dfs(root):
+            # from bottom to top
+            if not root: return [0, 0] # before layer, no robcurr, robcurr
+            robleft = dfs(root.left)
+            robright = dfs(root.right)
+            norobcurr = robleft[1] + robright[1]
+            robcurr = max(root.val + robleft[0] + robright[0], norobcurr)
+            return [norobcurr, robcurr]
+        return dfs(root)[1]
+
+# V1''''''
 # https://www.hrwhisper.me/leetcode-house-robber-iii/
 class Solution(object):
     def rob(self, root):
