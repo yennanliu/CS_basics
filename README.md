@@ -965,7 +965,7 @@
 123| [Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/)       | [Python](./leetcode_python/Dynamic_Programming/best-time-to-buy-and-sell-stock-iii/.py)   | _O(m * n)_      | _O(n)_ | Medium |`amazon`| AGAIN* (not start) (1)
 152| [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)|[Python](./leetcode_python/Dynamic_Programming/maximum-product-subarray.py)| _O(n)_ | _O(1)_ | Medium |Curated Top 75| AGAIN (not start)
 198| [House Robber](https://leetcode.com/problems/house-robber/)| [Python](./leetcode_python/Dynamic_Programming/house-robber.py) | _O(n)_ | _O(1)_ | Easy|Curated Top 75, dp basic,`amazon`| AGAIN*** (2)
-213| [House Robber II](https://leetcode.com/problems/house-robber-ii/)| [Python](./leetcode_python/Dynamic_Programming/house-robber-iii.py) | _O(n)_| _O(1)_| Medium|Curated Top 75| AGAIN (not start)
+213| [House Robber II](https://leetcode.com/problems/house-robber-ii/)| [Python](./leetcode_python/Dynamic_Programming/house-robber-ii.py) | _O(n)_| _O(1)_| Medium|brute force, recursion, dp, Curated Top 75, google, amazon| AGAIN (not start)
 221| [Maximal Square](https://leetcode.com/problems/maximal-square/)|[Python](./leetcode_python/Dynamic_Programming/maximal-square.py) | _O(n^2)_   | _O(n)_ | Medium | EPI, dp, `amazon`,`fb` | AGAIN** (3) (not start)
 256| [Paint House](https://leetcode.com/problems/paint-house/) | [Python](./leetcode_python/Dynamic_Programming/paint-house.py) | _O(n)_| _O(1)_| Medium |🔒| AGAIN (not start) 
 276| [Paint Fence](https://leetcode.com/problems/paint-fence/) | [Python](./leetcode_python/Dynamic_Programming/paint-fence.py) | _O(n)_| _O(1)_| Easy |🔒| AGAIN 
