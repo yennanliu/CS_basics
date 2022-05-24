@@ -55,7 +55,7 @@ class Solution(object):
         return -1
 
 # V0'
-# IDEA : DFS
+# IDEA : DFS (TLE, need fix)
 class Solution(object):
     def coinChange(self, coins, amount):
         # help func
@@ -72,6 +72,38 @@ class Solution(object):
         for i in range(lenc):
             dfs(i, amount, 0)
         return self.res if self.res < 2**31-1 else -1
+
+# V0''
+# IDEA : DFS, backtrack (TLE, need fix)
+class Solution(object):
+    def coinChange(self, coins, amount):
+        # help func
+        def dfs(tmp):
+            #print (">>> tmp = {}, sum = {}".format(tmp, sum(tmp)))
+            if sum(tmp[:]) == amount:
+                #res.append(list(tmp[:]))
+                res.add(len(tmp[:]))
+                tmp = []
+                return res
+            if sum(tmp[:]) > amount:
+                cnt = 0
+                tmp = []
+                return
+            for i in coins:
+                if sum(tmp[:]) + i <= amount:
+                    tmp.append(i)
+                    dfs(tmp)
+                    tmp.pop(-1)
+        # edge case
+        if amount == 0:
+            return 0
+        res = set()
+        tmp = []
+        coins = list(set(coins))
+        coins.sort()
+        dfs(tmp)
+        #print ("res = " + str(res))
+        return min(res) if res else -1
 
 # V1 
 # http://bookshadow.com/weblog/2015/12/27/leetcode-coin-change/

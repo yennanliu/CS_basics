@@ -1,6 +1,6 @@
 # Progress
 
-# 2022-05-23
+# 2022-05-24
 - LC (goog_)
 	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
 		- (pdf : p.2)
@@ -93,6 +93,8 @@
 - ================
 - blind_curated_75.md
 	- 269 (not start)
+	- 1143 (not start)
+	- 322 (again!!!)
 - ================
 - LC top 100 likes
 	- 032
