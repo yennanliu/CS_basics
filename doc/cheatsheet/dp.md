@@ -52,3 +52,63 @@ class Solution:
 
         return d[m - 1][n - 1]
 ```
+
+
+### 2-2) Maximum Product Subarray
+```python
+# NOTE : there is also brute force approach
+# V0
+# IDEA : brute force + product
+class Solution(object):
+    def maxProduct(self, A):
+        global_max, local_max, local_min = float("-inf"), 1, 1
+        for x in A:
+            local_max = max(1, local_max)
+            if x > 0:
+                local_max, local_min = local_max * x, local_min * x
+            else:
+                local_max, local_min = local_min * x, local_max * x
+            global_max = max(global_max, local_max)
+        return global_max
+
+# V1
+# IDEA : BRUTE FORCE (TLE)
+# https://leetcode.com/problems/maximum-product-subarray/solution/
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        if len(nums) == 0:
+            return 0
+
+        result = nums[0]
+
+        for i in range(len(nums)):
+            accu = 1
+            for j in range(i, len(nums)):
+                accu *= nums[j]
+                result = max(result, accu)
+
+        return result
+
+# V1
+# IDEA : DP
+# https://leetcode.com/problems/maximum-product-subarray/solution/
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        if len(nums) == 0:
+            return 0
+
+        max_so_far = nums[0]
+        min_so_far = nums[0]
+        result = max_so_far
+
+        for i in range(1, len(nums)):
+            curr = nums[i]
+            temp_max = max(curr, max_so_far * curr, min_so_far * curr)
+            min_so_far = min(curr, max_so_far * curr, min_so_far * curr)
+
+            max_so_far = temp_max
+
+            result = max(max_so_far, result)
+
+        return result
+```
