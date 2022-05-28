@@ -407,6 +407,47 @@ class Solution {
 ### 2-5) Word Search II
 ```python
 # LC 212. Word Search II
+
+# V0
+# IDEA : DFS + trie
+# DEMO
+# >>> words = ['oath', 'pea', 'eat', 'rain'], trie = {'o': {'a': {'t': {'h': {'#': None}}}}, 'p': {'e': {'a': {'#': None}}}, 'e': {'a': {'t': {'#': None}}}, 'r': {'a': {'i': {'n': {'#': None}}}}}
+class Solution(object):
+    def checkList(self, board, row, col, word, trie, rList):
+        if row<0 or row>=len(board) or col<0 or col>=len(board[0]) or board[row][col] == '.' or board[row][col] not in trie:
+            return
+        c = board[row][col]
+        _word= word + c
+        if '#' in trie[c]: 
+            rList.add(_word)
+            if len(trie[c]) == 1:
+                return # if next node is empty, return as no there is no need to search further
+        board[row][col] = '.'
+        self.checkList(board, row-1, col, _word, trie[c], rList) #up
+        self.checkList(board, row+1, col, _word, trie[c], rList) #down
+        self.checkList(board, row, col-1, _word, trie[c], rList) #left
+        self.checkList(board, row, col+1, _word, trie[c], rList) #right
+        board[row][col] = c
+    
+    def findWords(self, board, words):
+        if not board or not words:
+            return []
+        # building Trie
+        trie, rList = {}, set()
+        for word in words:
+            t = trie
+            for c in word:
+                if c not in t:
+                    t[c] = {}
+                t = t[c]
+            t['#'] = None
+        #print (">>> words = {}, trie = {}".format(words, trie))
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                if board[row][col] in trie:
+                    self.checkList(board, row, col, "", trie, rList)
+        return list(rList)
+
 # V1
 # IDEA : Backtracking with Trie
 # https://leetcode.com/problems/word-search-ii/solution/
@@ -467,7 +508,7 @@ class Solution:
         
         return matchedWords
 
-# V1
+# V1'
 # IDEA : DFS + trie
 # https://leetcode.com/problems/word-search-ii/discuss/59808/Python-DFS-362ms
 class Solution(object):
