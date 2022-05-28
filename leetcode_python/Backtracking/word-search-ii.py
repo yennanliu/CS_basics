@@ -59,7 +59,9 @@ class Solution(object):
         if not board or not words:
             return []
         # building Trie
-        trie, rList = {}, set()
+        # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/trie.md
+        trie = {}
+        rList = set()
         for word in words:
             t = trie
             for c in word:
