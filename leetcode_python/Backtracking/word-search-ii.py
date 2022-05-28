@@ -35,6 +35,44 @@ All the strings of words are unique.
 """
 
 # V0
+# IDEA : DFS + trie
+# DEMO
+# >>> words = ['oath', 'pea', 'eat', 'rain'], trie = {'o': {'a': {'t': {'h': {'#': None}}}}, 'p': {'e': {'a': {'#': None}}}, 'e': {'a': {'t': {'#': None}}}, 'r': {'a': {'i': {'n': {'#': None}}}}}
+class Solution(object):
+    def checkList(self, board, row, col, word, trie, rList):
+        if row<0 or row>=len(board) or col<0 or col>=len(board[0]) or board[row][col] == '.' or board[row][col] not in trie:
+            return
+        c = board[row][col]
+        _word= word + c
+        if '#' in trie[c]: 
+            rList.add(_word)
+            if len(trie[c]) == 1:
+                return # if next node is empty, return as no there is no need to search further
+        board[row][col] = '.'
+        self.checkList(board, row-1, col, _word, trie[c], rList) #up
+        self.checkList(board, row+1, col, _word, trie[c], rList) #down
+        self.checkList(board, row, col-1, _word, trie[c], rList) #left
+        self.checkList(board, row, col+1, _word, trie[c], rList) #right
+        board[row][col] = c
+    
+    def findWords(self, board, words):
+        if not board or not words:
+            return []
+        # building Trie
+        trie, rList = {}, set()
+        for word in words:
+            t = trie
+            for c in word:
+                if c not in t:
+                    t[c] = {}
+                t = t[c]
+            t['#'] = None
+        #print (">>> words = {}, trie = {}".format(words, trie))
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                if board[row][col] in trie:
+                    self.checkList(board, row, col, "", trie, rList)
+        return list(rList)
 
 # V1
 # IDEA : Backtracking with Trie
@@ -120,7 +158,8 @@ class Solution(object):
         :type words: List[str]
         :rtype: List[str]
         """
-        if not board or not words: return []
+        if not board or not words:
+            return []
         # building Trie
         trie, rList = {}, set()
         for word in words:
@@ -131,7 +170,8 @@ class Solution(object):
             t['#'] = None
         for row in range(len(board)):
             for col in range(len(board[0])):
-                if board[row][col] not in trie: continue
+                if board[row][col] not in trie:
+                    continue
                 self.checkList(board, row, col, "", trie, rList)
         return list(rList)
 
