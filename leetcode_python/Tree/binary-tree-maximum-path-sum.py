@@ -33,6 +33,41 @@ The number of nodes in the tree is in the range [1, 3 * 104].
 """
 
 # V0
+# IDEA : DFS
+class Solution(object):
+    def maxPathSum(self, root):
+        def dfs(root):
+            if not root:
+                return 0
+            l_max = dfs(root.left)
+            r_max = dfs(root.right)
+            """
+            handle if l_max < 0:
+                    -> start again from root.val
+                   else:
+                    -> l_max += root.val
+            """
+            if l_max < 0:
+                l_max = root.val
+            else:
+                l_max += root.val
+            """
+            handle if r_max < 0:
+                    -> start again from root.val
+                   else:
+                    -> r_max += root.val
+            """
+            if r_max < 0:
+                r_max = root.val
+            else:
+                r_max += root.val
+
+            self.maximum = max(self.maximum, l_max + r_max - root.val)
+            return max(l_max, r_max)
+           
+        self.maximum = -float('inf')
+        dfs(root)
+        return self.maximum
 
 # V1
 # IDEA : DFS
@@ -44,20 +79,65 @@ class Solution(object):
                 return 0
             l_max = dfs(root.left)
             r_max = dfs(root.right)
+            """
+            handle if l_max < 0:
+                    -> start again from root.val
+                   else:
+                    -> l_max += root.val
+            """
             if l_max < 0:
                 l_max = root.val
             else:
                 l_max += root.val
+            """
+            handle if r_max < 0:
+                    -> start again from root.val
+                   else:
+                    -> r_max += root.val
+            """
             if r_max < 0:
                 r_max = root.val
             else:
                 r_max += root.val
-            self.maximum = max(self.maximum, l_max+r_max-root.val)
+
+            self.maximum = max(self.maximum, l_max + r_max - root.val)
             return max(l_max, r_max)
            
         self.maximum = -float('inf')
         dfs(root)
-        return self.maximum 
+        return self.maximum
+
+# V1
+# IDEA : DFS
+# https://leetcode.com/problems/binary-tree-maximum-path-sum/solution/
+class Solution:
+    def maxPathSum(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        def max_gain(node):
+            nonlocal max_sum
+            if not node:
+                return 0
+
+            # max sum on the left and right sub-trees of node
+            left_gain = max(max_gain(node.left), 0)
+            right_gain = max(max_gain(node.right), 0)
+            
+            # the price to start a new path where `node` is a highest node
+            price_newpath = node.val + left_gain + right_gain
+            
+            # update max_sum if it's better to start a new path
+            max_sum = max(max_sum, price_newpath)
+        
+            # for recursion :
+            # return the max gain if continue the same path
+            return node.val + max(left_gain, right_gain)
+   
+        max_sum = float('-inf')
+        max_gain(root)
+        return max_sum
 
 # V1'
 # IDEA : DFS
