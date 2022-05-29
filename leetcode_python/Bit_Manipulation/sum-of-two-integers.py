@@ -1,12 +1,16 @@
 """
+
+371. Sum of Two Integers
+Medium
+
 Given two integers a and b, return the sum of the two integers without using the operators + and -.
 
+ 
 
 Example 1:
 
 Input: a = 1, b = 2
 Output: 3
-
 Example 2:
 
 Input: a = 2, b = 3
@@ -26,6 +30,12 @@ class Souluton:
         tmp = math.exp(a) * math.exp(b)
         r = int(math.log(tmp))
         return r
+
+# V0'
+# https://leetcode.com/problems/sum-of-two-integers/discuss/196889/Python-one-liner
+class Solution(object):
+    def getSum(self, a, b):
+        return sum([a,b])
 
 # V0'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79379939
@@ -79,6 +89,112 @@ class Solution():
         while b != 0:
             a, b = (a ^ b) & mask, ((a & b) << 1)
         return a if a <= MAX else ~(a ^ mask)
+
+# V1
+# https://leetcode.com/problems/sum-of-two-integers/solution/
+# IDEA : Bit Manipulation: Easy and Language-Independent
+class Solution:
+    def getSum(self, a: int, b: int) -> int:
+        x, y = abs(a), abs(b)
+        # ensure that abs(a) >= abs(b)
+        if x < y:
+            return self.getSum(b, a)
+        
+        # abs(a) >= abs(b) --> 
+        # a determines the sign
+        sign = 1 if a > 0 else -1
+        
+        if a * b >= 0:
+            # sum of two positive integers x + y
+            # where x > y
+            
+            # TODO
+        else:
+            # difference of two integers x - y
+            # where x > y
+            
+            # TODO
+        
+        return x * sign
+
+# V1
+# https://leetcode.com/problems/sum-of-two-integers/solution/
+# IDEA : Bit Manipulation: Easy and Language-Independent
+class Solution:
+    def getSum(self, a: int, b: int) -> int:
+        x, y = abs(a), abs(b)
+        # ensure that abs(a) >= abs(b)
+        if x < y:
+            return self.getSum(b, a)
+        
+        # abs(a) >= abs(b) --> 
+        # a determines the sign
+        sign = 1 if a > 0 else -1
+        
+        if a * b >= 0:
+            # sum of two positive integers x + y
+            # where x > y
+            while y:
+                answer = x ^ y
+                carry = (x & y) << 1
+                x, y = answer, carry
+        else:
+            # difference of two integers x - y
+            # where x > y
+            while y:
+                answer = x ^ y
+                borrow = ((~x) & y) << 1
+                x, y = answer, borrow
+        
+        return x * sign
+
+# V1
+# https://leetcode.com/problems/sum-of-two-integers/solution/
+# IDEA : Bit Manipulation: Easy and Language-Independent
+class Solution:
+    def getSum(self, a: int, b: int) -> int:
+        x, y = abs(a), abs(b)
+        # ensure x >= y
+        if x < y:
+            return self.getSum(b, a)  
+        sign = 1 if a > 0 else -1
+        
+        if a * b >= 0:
+            # sum of two positive integers
+            while y:
+                x, y = x ^ y, (x & y) << 1
+        else:
+            # difference of two positive integers
+            while y:
+                x, y = x ^ y, ((~x) & y) << 1
+        
+        return x * sign
+
+# V1
+# https://leetcode.com/problems/sum-of-two-integers/solution/
+# IDEA : Bit Manipulation: Short Language-Specific Solution
+class Solution:
+    def getSum(self, a: int, b: int) -> int:
+        mask = 0xFFFFFFFF
+        
+        while b != 0:
+            a, b = (a ^ b) & mask, ((a & b) << 1) & mask
+        
+        max_int = 0x7FFFFFFF
+        return a if a < max_int else ~(a ^ mask)
+
+# V1
+# https://leetcode.com/problems/sum-of-two-integers/solution/
+# IDEA : Bit Manipulation: Short Language-Specific Solution
+class Solution:
+    def getSum(self, a: int, b: int) -> int:
+        mask = 0xFFFFFFFF
+        
+        while b != 0:
+            a, b = (a ^ b) & mask, ((a & b) << 1) & mask
+        
+        max_int = 0x7FFFFFFF
+        return a if a < max_int else ~(a ^ mask)
 
 # V1 
 # http://bookshadow.com/weblog/2016/06/30/leetcode-sum-of-two-integers/
