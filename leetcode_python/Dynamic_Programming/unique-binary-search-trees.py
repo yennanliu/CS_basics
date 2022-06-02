@@ -1,6 +1,97 @@
-# V0 : DEV 
+"""
 
-# V1 
+96. Unique Binary Search Trees
+Medium
+
+Given an integer n, return the number of structurally unique BST's (binary search trees) which has exactly n nodes of unique values from 1 to n.
+
+ 
+
+Example 1:
+
+
+Input: n = 3
+Output: 5
+Example 2:
+
+Input: n = 1
+Output: 1
+ 
+
+Constraints:
+
+1 <= n <= 19
+
+"""
+
+# V0 
+
+
+# V1
+# IDEA : DP
+# https://leetcode.com/problems/unique-binary-search-trees/solution/
+class Solution:
+    def numTrees(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        G = [0]*(n+1)
+        G[0], G[1] = 1, 1
+
+        for i in range(2, n+1):
+            for j in range(1, i+1):
+                G[i] += G[j-1] * G[i-j]
+
+        return G[n]
+
+# V1'
+# IDEA : MATH
+# https://leetcode.com/problems/unique-binary-search-trees/solution/
+class Solution(object):
+    def numTrees(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        C = 1
+        for i in range(0, n):
+            C = C * 2*(2*i+1)/(i+2)
+        return int(C)
+
+# V1'
+# IDEA : recursion (TLE)
+# https://leetcode.com/problems/unique-binary-search-trees/discuss/164915/Python-solution
+class Solution:
+    def numTrees(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n == 0:
+            return 1
+        res = 0
+        for i in range(1, n+1):
+            res += self.numTrees(i-1)*self.numTrees(n-i)
+        return res
+
+# V1'''
+# IDEA : DP
+# https://leetcode.com/problems/unique-binary-search-trees/discuss/164915/Python-solution
+class Solution:
+    def numTrees(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        arr = [0]*(n+1)
+        arr[0] = 1
+        for i in range(1, n+1):
+            for j in range(1, i+1):
+                arr[i] += arr[j-1] * arr[i-j]
+        return arr[-1]
+
+# V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79367789
 class Solution(object):
     def __init__(self):
@@ -21,7 +112,7 @@ class Solution(object):
         self.dp[n] = ans
         return ans
 
-# V1' 
+# V1'''''''
 class Solution(object):
     def numTrees(self, n):
         """
