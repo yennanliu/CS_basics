@@ -129,6 +129,25 @@ def backtrack(route, choice_list):
 
 ### 1-1) Basic OP
 
+### 1-2) Trick
+```python
+# LC 131. Palindrome Partitioning
+
+# ...
+def help(s, res, path):
+    if not s:
+        res.append(path)
+    for i in range(1, len(s)):
+        if s[:i] == s[:i][::-1]:
+            """
+            NOTE below !!!
+                -> we call help recursively with s[i:] subset
+                -> we append [s[:i]] to tmp cache (path) 
+            """
+            help(s[i:], res, path + [s[:i]])
+# ...
+```
+
 ## 2) LC Example
 
 ### 2-1) Letter Combinations of a Phone Number 
