@@ -21,6 +21,7 @@
 ## Resource
 * [Resource.md](./doc/Resource.md) - `Resource` for coding interview (**keep updating**)
 * [ref.md](./doc/ref.md) - Leetcode ref
+* [teach yourself CS](teachyourselfcs)
 * [MindMapCodeInterview](./doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
 * [CodeInterviewCheatsheet](./doc/cheatsheet/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
 * [repl.it](https://repl.it/) - Coding online!
