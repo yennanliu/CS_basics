@@ -1,4 +1,4 @@
-# Internet Basic
+# Computer Network
 
 ## Material
 - Video
