@@ -17,5 +17,5 @@
 		- https://pages.cs.wisc.edu/~remzi/OSTEP/
 
 ## Other Ref
-- [teach yourself CS](teachyourselfcs)
+- [teach yourself CS](https://teachyourselfcs.com/)
 - Other OS courses
