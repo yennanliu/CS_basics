@@ -27,6 +27,59 @@ s contains only lowercase English letters.
 """
 
 # V0
+# IDEA : BACKTRCK
+class Solution(object):
+    def partition(self, s):
+        # help func
+        def help(s, tmp):
+            # NOTE !! if not s, means there is NO remaining s, then append tmp to res, and return (end the recursion)
+            if not s:
+                res.append(tmp[:])
+                return
+            """
+
+            NOTE !!! we have to start from 1, end at len(s) + 1
+
+            example :
+
+                    In [75]: x = "aab"
+                        ...: for i in range(1, len(x)+1):
+                        ...:     print (x[:i])
+                        ...:
+                    a
+                    aa
+                    aab
+
+                    In [76]:
+
+                    In [76]: x = "aab"
+                        ...: for i in range(1, len(x)):
+                        ...:     print (x[:i])
+                        ...:
+                    a
+                    aa
+
+            """
+            for i in range(1, len(s)+1):
+                if s[:i] == s[:i][::-1]:
+                    """
+                    NOTE here !!!!
+                        -> we subset s by "s[i:]"
+                        -> we update current tmp by "tmp + [s[:i]]"
+                    """
+
+                    help(s[i:], tmp + [s[:i]])
+        # edge case
+        if not s:
+            return [[""]]
+        if len(s) == 1:
+            return [[s]]
+        res = []
+        tmp = []
+        help(s, tmp)
+        return res
+
+# V0'
 # IDEA : BACKTRCK, similar as LC 046 permutations
 class Solution(object):
     def partition(self, s):
@@ -45,7 +98,7 @@ class Solution(object):
         help(s, res, path)
         return res
 
-# V0
+# V0''
 # IDEA : BACKTRCK, similar as LC 046 permutations
 class Solution(object):
     def partition(self, s):
