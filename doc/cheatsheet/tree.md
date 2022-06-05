@@ -1319,3 +1319,72 @@ class Solution(object):
         dfs(root)
         return self.maximum
 ```
+
+### 2-17) Build Binary Expression Tree From Infix Expression
+```python
+# LC 1597 Build Binary Expression Tree From Infix Expression
+# V0
+# IDEA : LC 224 Basic Calculator
+class Solution(object):
+
+    def help(self, numSt, opSt):
+        right = numSt.pop()
+        left = numSt.pop()
+        # Node(val=op, left=lhs, right=rhs)
+        return Node(opSt.pop(), left, right)
+
+    def expTree(self, s):
+        # hashmap for operator ordering
+        pr = {'*': 1, '/': 1, '+': 2, '-': 2, ')': 3, '(': 4}
+        numSt = []
+        opSt = []
+        i = 0
+        while i < len(s):
+            c = s[i]
+            i += 1
+            # check if int(c) if string
+            if c.isnumeric():
+                numSt.append(Node(c))
+            else:                
+                if c == '(':
+                    opSt.append('(')
+                else:
+                    while(len(opSt) > 0 and pr[c] >= pr[opSt[-1]]):
+                        numSt.append(self.help(numSt, opSt))
+                    if c == ')':
+                        opSt.pop() # Now what remains is the closing bracket ')'
+                    else:
+                        opSt.append(c)
+        while len(opSt) > 0:
+            numSt.append(self.help(numSt, opSt))
+        print (">>> numSt = {}, opSt = {}".format(str(numSt), opSt))
+        return numSt.pop()
+
+# V0'
+# IDEA : RECURSIVE
+class Solution:
+    def expTree(self, s):
+        n = len(s)
+        if n == 1:
+            return Node(s)
+
+        fstOpIdx = None
+        kets = 0
+        for i in range(n-1, 0, -1):
+            if s[i] == ")":
+                kets += 1
+            elif s[i] == "(":
+                kets -= 1
+            elif kets == 0:
+                if s[i] in "+-":
+                    fstOpIdx = i
+                    break
+                elif s[i] in "*/" and fstOpIdx is None:
+                    fstOpIdx = i
+        if fstOpIdx is None:
+            return self.expTree(s[1:-1])
+        rtNd = Node(s[fstOpIdx])
+        rtNd.left = self.expTree(s[:fstOpIdx])
+        rtNd.right = self.expTree(s[fstOpIdx+1:])
+        return rtNd
+```
