@@ -5,7 +5,13 @@
 	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
 		- (pdf : p.2)
 - ================
+- Blind Curated 75
+	- OK
+- ================
 - LC (amz_, latest 6 months) :
+- ================
+- leetcode_company_V5/LC-goog.pdf
+	- 
 - ================
 - amazon/sde_2022/amz_cs_basic.md
 	- 016 (again!)
@@ -90,6 +96,7 @@
 	- 116 (ok)
 	- 117 (ok, but again)
 	- 669 (again)
+	- 1011
 - ================
 - LC top 100 likes
 	- 032

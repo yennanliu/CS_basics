@@ -50,6 +50,40 @@ Constraints:
 """
 
 # V0
+# IDEA : BINARY SEARCH
+class Solution(object):
+     def shipWithinDays(self, weights, D):
+            """
+            NOTE !!!
+                -> for this help func,
+                -> we ONLY need to check weights can split by offered max_wgt
+                -> so the return val is boolean (True or False)
+            """
+            # help func
+            def cannot_split(weights, D, max_wgt):
+                s = 0
+                days = 1
+                for w in weights:
+                    s += w
+                    if s > max_wgt:
+                        s = w
+                        days += 1
+                return days > D
+
+            """
+            NOTE this !!!
+                -> for l, we use max(weights)
+                -> for r, we use sum(weights)
+            """
+            l = max(weights)
+            r = sum(weights)
+            while l <= r:
+                mid = l + (r - l) // 2
+                if cannot_split(weights, D, mid):
+                    l = mid + 1
+                else:
+                    r = mid - 1
+            return l
 
 # V1
 # IDEA : BINARY SEARCH
