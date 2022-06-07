@@ -42,6 +42,184 @@ src != dst
 # V0 
 
 # V1
+# https://leetcode.com/problems/cheapest-flights-within-k-stops/solution/
+# IDEA :  Dijkstra
+import heapq
+
+class Solution:
+    
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
+        
+        # Build the adjacency matrix
+        adj_matrix = [[0 for _ in range(n)] for _ in range(n)]
+        for s, d, w in flights:
+            adj_matrix[s][d] = w
+            
+        # Shortest distances array
+        distances = [float("inf") for _ in range(n)]
+        current_stops = [float("inf") for _ in range(n)]
+        distances[src], current_stops[src] = 0, 0
+        
+        # Data is (cost, stops, node)
+        minHeap = [(0, 0, src)]     
+        
+        while minHeap:
+            
+            cost, stops, node = heapq.heappop(minHeap)
+            
+            # If destination is reached, return the cost to get here
+            if node == dst:
+                return cost
+            
+            # If there are no more steps left, continue 
+            if stops == K + 1:
+                continue
+             
+            # Examine and relax all neighboring edges if possible 
+            for nei in range(n):
+                if adj_matrix[node][nei] > 0:
+                    dU, dV, wUV = cost, distances[nei], adj_matrix[node][nei]
+                    
+                    # Better cost?
+                    if dU + wUV < dV:
+                        distances[nei] = dU + wUV
+                        heapq.heappush(minHeap, (dU + wUV, stops + 1, nei))
+                        current_stops[nei] = stops
+                    elif stops < current_stops[nei]:
+                        #  Better steps?
+                        heapq.heappush(minHeap, (dU + wUV, stops + 1, nei))
+                        
+        return -1 if distances[dst] == float("inf") else distances[dst]
+
+# V1
+# https://leetcode.com/problems/cheapest-flights-within-k-stops/solution/
+# IDEA :  Depth-First-Search with Memoization
+class Solution:
+    
+    def __init__(self):
+        self.adj_matrix = None
+        self.memo = {}
+    
+    def findShortest(self, node, stops, dst, n):
+            
+        # No need to go any further if the destination is reached    
+        if node == dst:
+            return 0
+        
+        # Can't go any further if no stops left
+        if stops < 0:
+            return float("inf")
+        
+        # If the result of this state is already cached, return it
+        if (node, stops) in self.memo:
+            return self.memo[(node, stops)]
+        
+        # Recursive calls over all the neighbors
+        ans = float("inf")
+        for neighbor in range(n):
+            if self.adj_matrix[node][neighbor] > 0:
+                ans = min(ans, self.findShortest(neighbor, stops-1, dst, n) + self.adj_matrix[node][neighbor])
+        
+        # Cache the result
+        self.memo[(node, stops)] = ans        
+        return ans
+    
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
+        
+        self.adj_matrix = [[0 for _ in range(n)] for _ in range(n)]
+        self.memo = {}
+        for s, d, w in flights:
+            self.adj_matrix[s][d] = w
+        
+        result = self.findShortest(src, K, dst, n)
+        return -1 if result == float("inf") else result
+
+# V1
+# https://leetcode.com/problems/cheapest-flights-within-k-stops/solution/
+# IDEA :  Bellman-Ford
+class Solution:
+    
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
+        
+        # We use two arrays for storing distances and keep swapping
+        # between them to save on the memory
+        distances = [[float('inf')] * n for _ in range(2)]
+        distances[0][src] = distances[1][src] = 0
+        
+        # K + 1 iterations of Bellman Ford
+        for iterations in range(K + 1):
+            
+            # Iterate over all the edges
+            for s, d, wUV in flights:
+                
+                # Current distance of node "s" from src
+                dU = distances[1 - iterations&1][s]
+                
+                # Current distance of node "d" from src
+                # Note that this will port existing values as
+                # well from the "previous" array if they didn't already exist
+                dV = distances[iterations&1][d]
+                
+                # Relax the edge if possible
+                if dU + wUV < dV:
+                    distances[iterations&1][d] = dU + wUV
+                    
+        return -1 if distances[K&1][dst] == float("inf") else distances[K&1][dst]
+
+# V1
+# https://leetcode.com/problems/cheapest-flights-within-k-stops/solution/
+# IDEA :  Breadth First Search
+class Solution:
+    
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
+        
+        # Build the adjacency matrix
+        adj_matrix = [[0 for _ in range(n)] for _ in range(n)]
+        for s, d, w in flights:
+            adj_matrix[s][d] = w
+            
+        # Shortest distances dictionary
+        distances = {}
+        distances[(src, 0)] = 0
+        
+        # BFS Queue
+        bfsQ = deque([src])
+        
+        # Number of stops remaining
+        stops = 0
+        ans = float("inf")
+        
+        # Iterate until we exhaust K+1 levels or the queue gets empty
+        while bfsQ and stops < K + 1:
+            
+            # Iterate on current level
+            length = len(bfsQ)
+            for _ in range(length):
+                node = bfsQ.popleft()
+                
+                # Loop over neighbors of popped node
+                for nei in range(n):
+                    if adj_matrix[node][nei] > 0:
+                        dU = distances.get((node, stops), float("inf"))
+                        dV = distances.get((nei, stops + 1), float("inf"))
+                        wUV = adj_matrix[node][nei]
+                        
+                        # No need to update the minimum cost if we have already exhausted our K stops. 
+                        if stops == K and nei != dst:
+                            continue
+                        
+                        if dU + wUV < dV:
+                            distances[nei, stops + 1] = dU + wUV
+                            bfsQ.append(nei)
+                            
+                            # Shortest distance of the destination from the source
+                            if nei == dst:
+                                ans = min(ans, dU + wUV)
+            stops += 1   
+        
+        return -1 if ans == float("inf") else ans
+
+# V1
 # IDEA : Dijkstra
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/267200/Python-Dijkstra
 # IDEA
