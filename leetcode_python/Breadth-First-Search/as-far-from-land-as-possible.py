@@ -37,6 +37,9 @@ grid[i][j] is 0 or 1
 class Solution(object):
     def maxDistance(self, grid):
             m,n = len(grid), len(grid[0])
+            """
+            NOTE !!! we get all (y, x) == 1 as queue
+            """ 
             q = [(i,j) for i in range(m) for j in range(n) if grid[i][j] == 1] 
             if len(q) == m * n or len(q) == 0: return -1
             level = 0
@@ -45,8 +48,14 @@ class Solution(object):
                     i,j = q.pop(0)
                     for x,y in [(1,0), (-1, 0), (0, 1), (0, -1)]:
                         xi, yj = x+i, y+j
+                        """
+                        NOTE !!!
+                            -> 1) we deal with ALL land ((y, x) == 1) distance on the same time
+                            -> 2) so we do level+= 1 outside of for loop as once (since we only care max length)
+                        """
                         if 0 <= xi < m and 0 <= yj < n and grid[xi][yj] == 0:
                             q.append((xi, yj))
+                            # NOTE !! we modify visited val = 1, so avoid visit again
                             grid[xi][yj] = 1
                 level += 1
             return level-1
