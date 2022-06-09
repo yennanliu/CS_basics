@@ -33,6 +33,38 @@ grid[i][j] is 0 or 1
 """
 
 # V0
+# IDEA : BFS
+class Solution(object):
+    def maxDistance(self, grid):
+        # edge
+        if not grid:
+            return -1
+        l = len(grid)
+        w = len(grid[0])
+        lands = []
+        for i in range(l):
+            for j in range(w):
+                if grid[i][j] == 1:
+                    lands.append([i, j])
+        if len(lands) == 0 or len(lands) == l * w:
+            return -1
+        # bfs
+        q = lands
+        level = 0
+        moves = [[0,-1], [0,1], [1,0], [-1,0]]
+        while q:
+            for i in range(len(q)):
+                y, x = q.pop(0)
+                for m in moves:
+                    _y = y + m[0]
+                    _x = x + m[1]
+                    if 0 <= _x < w and 0 <= _y < l and grid[_y][_x] == 0:
+                        q.append([_y, _x])
+                        grid[_y][_x] = 1
+            level += 1
+        return level - 1
+
+# V0
 # IDEA : BFS + queue (made by array)
 class Solution(object):
     def maxDistance(self, grid):
