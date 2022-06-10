@@ -37,6 +37,35 @@ isConnected[i][j] == isConnected[j][i]
 """
 
 # V0
+# BFS : TODO : fix this
+# class Solution(object):
+#     def findCircleNum(self, isConnected):
+#         # edge
+#         if not isConnected:
+#             return 0
+#         d = defaultdict(set)
+#         l = len(isConnected)
+#         w = len(isConnected[0])
+#         for i in range(l):
+#             for j in range(w):
+#                 if isConnected[i][j] == 1:
+#                     d[i+1].add(j+1)
+#                     d[j+1].add(i+1)
+#         print (">>> d = " + str(d))
+#         cnt = 0
+#         q = [x+1 for x in range(l)]
+#         visited = set()
+#         while q:
+#             for i in range(len(q)):
+#                 tmp = q.pop(0)
+#                 visited.add(tmp)
+#                 if tmp not in visited:
+#                     for x in d[tmp]:
+#                         q.append(x)
+#                         visited.add(x)
+#
+#             cnt += 1
+#         return cnt
 
 # V1
 # IDEA : DFS ITERATIVE
@@ -212,5 +241,92 @@ class Solution(object):
                 dfs(i)
                 ans += 1
         return ans
+
+# V1''''
+# IDEA : DFS
+# JAVA
+# public class Solution {
+#     public void dfs(int[][] M, int[] visited, int i) {
+#         for (int j = 0; j < M.length; j++) {
+#             if (M[i][j] == 1 && visited[j] == 0) {
+#                 visited[j] = 1;
+#                 dfs(M, visited, j);
+#             }
+#         }
+#     }
+#     public int findCircleNum(int[][] M) {
+#         int[] visited = new int[M.length];
+#         int count = 0;
+#         for (int i = 0; i < M.length; i++) {
+#             if (visited[i] == 0) {
+#                 dfs(M, visited, i);
+#                 count++;
+#             }
+#         }
+#         return count;
+#     }
+# }
+
+
+# V1''''
+# IDEA : BFS
+# JAVA
+# public class Solution {
+#     public int findCircleNum(int[][] M) {
+#         int[] visited = new int[M.length];
+#         int count = 0;
+#         Queue < Integer > queue = new LinkedList < > ();
+#         for (int i = 0; i < M.length; i++) {
+#             if (visited[i] == 0) {
+#                 queue.add(i);
+#                 while (!queue.isEmpty()) {
+#                     int s = queue.remove();
+#                     visited[s] = 1;
+#                     for (int j = 0; j < M.length; j++) {
+#                         if (M[s][j] == 1 && visited[j] == 0)
+#                             queue.add(j);
+#                     }
+#                 }
+#                 count++;
+#             }
+#         }
+#         return count;
+#     }
+# }
+
+# V1''''
+# IDEA : UNION FIND
+# JAVA
+# public class Solution {
+#     int find(int parent[], int i) {
+#         if (parent[i] == -1)
+#             return i;
+#         return find(parent, parent[i]);
+#     }
+#
+#     void union(int parent[], int x, int y) {
+#         int xset = find(parent, x);
+#         int yset = find(parent, y);
+#         if (xset != yset)
+#             parent[xset] = yset;
+#     }
+#     public int findCircleNum(int[][] M) {
+#         int[] parent = new int[M.length];
+#         Arrays.fill(parent, -1);
+#         for (int i = 0; i < M.length; i++) {
+#             for (int j = 0; j < M.length; j++) {
+#                 if (M[i][j] == 1 && i != j) {
+#                     union(parent, i, j);
+#                 }
+#             }
+#         }
+#         int count = 0;
+#         for (int i = 0; i < parent.length; i++) {
+#             if (parent[i] == -1)
+#                 count++;
+#         }
+#         return count;
+#     }
+# }
 
 # V2
