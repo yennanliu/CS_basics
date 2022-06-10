@@ -1,11 +1,6 @@
 # Progress
 
-# 2022-06-09
-- LC (goog_)
-	- ref : https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V1/Google%20-%20LeetCode.pdf
-		- (pdf : p.2)
-- ================
-- LC (amz_, latest 6 months) :
+# 2022-06-10
 - ================
 - leetcode_company_V5/LC-goog.pdf
 	- 
