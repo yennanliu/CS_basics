@@ -1,6 +1,14 @@
 # DP (Dynamic programming)  
 
-## 0) Concept  
+## 0) Concept
+- Dynamic programming, like the divide-and-conquer method, solves
+problems by combining the solutions to subproblems
+    - Dynamic: time-varying
+    - Programming: a tabular method
+- space -> time 用空間換取時間
+- trace progress 讓走過的留下痕跡
+- Ref
+    - https://predoc.dlc.ntu.edu.tw/viewer?embedded=true&url=https%3A%2F%2Fcool.ntu.edu.tw%2Fcourses%2F8583%2Ffiles%2F1165602%2Fdownload%3Fverifier%3DnlJ3s1a9TTmgYQzbJgj9vnrGlKKZB4w0wUZyEKgm 
 
 ### 0-1) Types
 
