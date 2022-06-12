@@ -1,5 +1,5 @@
 # Stack
-> Last in, First out (LIFO)
+- Last in, First out (LIFO)
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack.jpeg"></p>
 
 - Ref
