@@ -99,8 +99,10 @@
 	- 1162 (again)
 	- 529 (again)
 	- 547 (again)
-	- 1192
+	- 1192 (again, not start)
 	- 1650 (again!!!!)
+	- 980
+	- 096
 - ================
 - LC top 100 likes
 	- 064
