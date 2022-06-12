@@ -8,5 +8,4 @@
 	- two pointers
 	- sliding window
 
-
 ### Part 2 : (Bottom Up)(Implement tricks)

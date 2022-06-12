@@ -31,9 +31,9 @@ while S is non-empty do
             insert m into S
 
 if graph has edges then
-    return error   (graph has at least one cycle)
+    return error (graph has at least one cycle)
 else 
-    return L   (a topologically sorted order)
+    return L (a topologically sorted order)
 ```
 
 ## 1) General form
