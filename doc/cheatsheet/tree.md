@@ -7,12 +7,12 @@
 
 ### 0-1) Types
 - Tree
-- binary tree
+- [binary tree](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_tree.md)
     - complete binary tree
     - perfect binary tree
-- BST (binary search tree)
-- Heap
-- Trie (dictionary tree)
+- [BST (binary search tree)](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/bst.md)
+- [Heap](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/heap.md)
+- [Trie (dictionary tree)](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/trie.md)
 
 
 ### 0-2) Pattern
@@ -21,7 +21,6 @@
 
 - When `tree` -> think about *recursion*
 - there are also `while loop` approaches, but depends
-
 
 ### 1-1) Basic OP
 
@@ -129,11 +128,11 @@ root = TreeNode(int(s))
 
 #### 1-1-2) Get node counts
 ```python
-# get node count of binary tree
+# get nodes count of binary tree
 
-# get node count of perfect tree
+# get nodes count of perfect tree
 
-# get node count of complete tree
+# get nodes count of complete tree
 ```
 
 #### 1-1-3) Get depth
@@ -171,6 +170,7 @@ while q:
 ```python
 # LC 236 Lowest Common Ancestor of a Binary Tree
 # LC 235 Lowest Common Ancestor of a Binary Search Tree
+# LC 1650 Lowest Common Ancestor of a Binary Tree III
 # V0
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
