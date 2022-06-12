@@ -37,6 +37,124 @@ isConnected[i][j] == isConnected[j][i]
 """
 
 # V0
+# BFS
+from collections import defaultdict
+class Solution(object):
+    def findCircleNum(self, M):
+        # init graph
+        d = defaultdict(set)      
+        for i in range(len(M)):
+            for j in range(len(M)):
+                if M[i][j] == 1:
+                    d[i].add(j)
+                    d[j].add(i)
+
+        answer = 0
+        seen = set()
+   
+        """
+        NOTE !!! 
+            -> 1) we go through all keys in d
+            -> 2) if key in seen pass
+            -> 3) we init stack every time (stack = [key]), and do bfd on it
+        """
+        for key in d:
+            if key in seen:
+                continue
+            
+            """
+            NOTE !!!
+                -> we set stack = [key] in each iteration
+            """
+            # flag : processed or not
+            stack = [key]
+            flag = False
+            
+            while stack:
+                for x in range(len(stack)):
+                    key = stack.pop(-1)
+
+                    for val in d[key]:
+                        if val in seen:
+                            continue
+                        flag = True    
+                        seen.add(val)
+                        stack.append(val)         
+            """
+            NOTE this !!!
+            """
+            if flag:
+                answer += 1       
+        return answer
+
+# V0'
+# IDEA : DFS ITERATIVE
+class Solution(object):
+    def findCircleNum(self, M):
+        res = 0
+        n = len(M)
+        seen = [0]*n
+        for i in range(n):
+            if seen[i] == 0:
+                res += 1
+                seen[i] = 1
+                stack = [i]
+                while stack:
+                    u = stack.pop()
+                    for j in range(n):
+                        if M[u][j] == 1 and seen[j] == 0:
+                            seen[j] = 1
+                            stack.append(j)
+        return res
+
+# V0''
+# IDEA : UNION FIND
+class UnionFind(object):
+    def __init__(self, n):
+        self.n = n
+        self.parent = [-1]*n
+        for i in range(n):
+            self.parent[i] = i
+    
+    def find(self, i):
+    #Path Compression
+        if self.parent[i] != i:
+            self.parent[i] = self.find(self.parent[i])
+        return self.parent[i]
+    
+    def union(self, x, y):
+        xroot = self.find(x)
+        yroot = self.find(y)
+        if xroot != yroot:
+            self.parent[yroot]= xroot
+    
+    def get_count(self):
+        total = set()
+        print(self.parent)
+        for i in range(self.n):
+            total.add(self.find(i))
+        print("total", total)
+        return len(total)
+
+
+class Solution:
+    def findCircleNum(self, M):
+        """
+        :type M: List[List[int]]
+        :rtype: int
+        """
+        #Union-Find Solution
+        n = len(M[0])
+        uf = UnionFind(n)
+        
+        for r in range(len(M)):
+            for c in range(len(M[0])):
+                if M[r][c] == 1:
+                    uf.union(r,c)
+        
+        return uf.get_count()
+
+# V0
 # BFS : TODO : fix this
 # class Solution(object):
 #     def findCircleNum(self, isConnected):

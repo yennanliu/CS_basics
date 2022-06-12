@@ -345,7 +345,7 @@ class Solution:
 ### 2-5) Friend Circles
 ```python
 # LC 547 Friend Circles
-# NOTE !! there is also BFS, DFS approaches
+# NOTE !! there are also BFS, DFS approaches
 class UnionFind(object):
     def __init__(self, n):
         self.n = n
