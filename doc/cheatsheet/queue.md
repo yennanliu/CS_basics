@@ -1,6 +1,6 @@
 # Queue 
-- first in first out (FIFO)
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/queue2.png"></p>
+- first in first out (FIFO)
 
 ## 0) Concept  
 - An ordering linear data structure
