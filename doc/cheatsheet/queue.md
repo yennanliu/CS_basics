@@ -1,5 +1,5 @@
 # Queue 
-
+- first in first out (FIFO)
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/queue2.png"></p>
 
 ## 0) Concept  
