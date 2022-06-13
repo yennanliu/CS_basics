@@ -52,6 +52,32 @@ There is exactly one starting cell and one ending cell.
 """
 
 # V0
+# IDEA : BACKTRACK
+class Solution:
+    def uniquePathsIII(self, A):
+        # help func
+        def dfs(x, y, empty):
+            if not (0 <= x < m and 0 <= y < n and A[x][y] >= 0):
+                return
+            if A[x][y] == 2:
+                self.res += (empty == 0)
+                return
+            A[x][y] = -2
+            dfs(x + 1, y, empty - 1) or \
+            dfs(x - 1, y, empty - 1) or \
+            dfs(x, y + 1, empty - 1) or \
+            dfs(x, y - 1, empty - 1)
+            A[x][y] = 0        
+        self.res = 0
+        m, n, empty = len(A), len(A[0]), 1
+        for i in range(m):
+            for j in range(n):
+                if A[i][j] == 1:
+                    x, y = (i, j)
+                elif A[i][j] == 0:
+                    empty += 1
+        dfs(x, y, empty)
+        return self.res
 
 # V1
 # IDEA : BACKTRACK
