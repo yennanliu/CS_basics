@@ -32,6 +32,29 @@ Constraints:
 """
 
 # V0
+# IDEA : GREEDY
+"""
+Steps:
+    step 1) Initialize three integer variables: jumps to count the number of jumps, currentJumpEnd to mark the end of the range that we can jump to, and farthest to mark the farthest place that we can reach. Set each variable to zero
+    step 2) terate over nums. Note that we exclude the last element from our iteration because as soon as we reach the last element, we do not need to jump anymore.
+            - Update farthest to i + nums[i] if the latter is larger.
+            - If we reach currentJumpEnd, it means we finished the current jump, and can begin checking the next jump by setting currentJumpEnd = farthest.
+    step 3) return jumps
+"""
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+            jumps = 0
+            current_jump_end = 0
+            farthest = 0
+            for i in range(len(nums) - 1):
+                # we continuously find the how far we can reach in the current jump
+                farthest = max(farthest, i + nums[i])
+                # if we have come to the end of the current jump,
+                # we need to make another jump
+                if i == current_jump_end:
+                    jumps += 1
+                    current_jump_end = farthest
+            return jumps
 
 # V1
 # IDEA : GREEDY
@@ -84,6 +107,14 @@ class Solution:
 # V1'''
 # IDEA : GREEDY
 # https://leetcode.com/problems/jump-game-ii/solution/
+"""
+Steps:
+    step 1) Initialize three integer variables: jumps to count the number of jumps, currentJumpEnd to mark the end of the range that we can jump to, and farthest to mark the farthest place that we can reach. Set each variable to zero
+    step 2) terate over nums. Note that we exclude the last element from our iteration because as soon as we reach the last element, we do not need to jump anymore.
+            - Update farthest to i + nums[i] if the latter is larger.
+            - If we reach currentJumpEnd, it means we finished the current jump, and can begin checking the next jump by setting currentJumpEnd = farthest.
+    step 3) return jumps
+"""
 class Solution:
     def jump(self, nums: List[int]) -> int:
             jumps = 0
