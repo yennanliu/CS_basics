@@ -109,6 +109,13 @@
 	- 096 (dp, not start)
 	- 120 (dp, not start)
 	- 123 (dp, not start)
+	- 221 (dp, not start)
+	- 801 (dp, not start)
+	- 1000 (dp, not start)
+	- 1312 (dp, not start)
+	- 1335 (dp, not start)
+	- 1799 (dp, not start)
+	- 045
 - ================
 - LC top 100 likes
 	- 064
