@@ -1,6 +1,6 @@
 # Progress
 
-# 2022-06-16
+# 2022-06-18
 - ================
 - leetcode_company_V5/LC-goog.pdf
 	- 
@@ -106,6 +106,8 @@
 	- 120 (dp, not start)
 	- 123
 	- 221 (dp, not start)
+	- 096 (dp, not start)
+	- 120 (dp, not start)
 - ================
 - LC top 100 likes
 	- 064
