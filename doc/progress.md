@@ -139,6 +139,8 @@
 		- 393 again (not start)
 	- String
 		- 076
+	- 2 pointers
+		- 031
 	- dfs
 		- 652
 		- 490
