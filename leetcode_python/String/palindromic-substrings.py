@@ -54,7 +54,34 @@ class Solution(object):
                     count += 1
         return count
 
-# V0'
+# V0''
+# IDEA : TWO POINTERS (similar as LC 005)
+class Solution(object):
+    def countSubstrings(self, s):
+        count = 0
+        for i in range(len(s)):
+            # for every single character
+            count += 1
+            
+            # case 1) palindromic substrings length is odd 
+            left = i - 1
+            right = i + 1
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                count += 1
+                left -= 1
+                right += 1
+
+            # case 2) palindromic substrings length is even 
+            left = i - 1
+            right = i
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                count += 1
+                left -= 1
+                right += 1
+
+        return count
+
+# V0''
 # IDEA : TWO POINTERS
 # https://leetcode.com/problems/palindromic-substrings/discuss/1041760/Python-Easy-Solution-Beats-85
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py

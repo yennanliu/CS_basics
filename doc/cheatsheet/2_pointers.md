@@ -558,41 +558,6 @@ class Solution(object):
         return max(max_len, cur_len)
 ```
 
-
-### 2-5) Missing Ranges
-```python
-# LC 163. Missing Ranges
-# V0
-# IDEA : 2 POINTERS
-class Solution(object):
-    def findMissingRanges(self, nums, lower, upper):
-        l, r = lower, lower
-        res = []
-        for i in range(len(nums)):
-            # if NO missing interval
-            if nums[i] == r:  
-                l, r = nums[i] + 1, nums[i] + 1
-                
-            # if missing interval 
-            elif nums[i] > r:
-                r = max(r, nums[i] - 1)
-                
-                if r != l:
-                    res.append(str(l) + "->" + str(r))
-                else:
-                    res.append(str(l))
-                    
-                l, r = nums[i] + 1, nums[i] + 1
-        
-        # deal with remaining part 
-        if l < upper:
-            res.append(str(l) + "->" + str(upper))
-        elif l == upper:
-            res.append(str(l))
-            
-        return res
-```
-
 ### 2-6) Palindromic Substrings
 ```python
 # LC 647. Palindromic Substrings
@@ -629,6 +594,33 @@ class Solution(object):
             for j in range(i+1, len(s)+1):
                 if s[i:j] == s[i:j][::-1]:
                     count += 1
+        return count
+
+# V0''
+# IDEA : TWO POINTERS (similar as LC 005)
+class Solution(object):
+    def countSubstrings(self, s):
+        count = 0
+        for i in range(len(s)):
+            # for every single character
+            count += 1
+            
+            # case 1) palindromic substrings length is odd 
+            left = i - 1
+            right = i + 1
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                count += 1
+                left -= 1
+                right += 1
+
+            # case 2) palindromic substrings length is even 
+            left = i - 1
+            right = i
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                count += 1
+                left -= 1
+                right += 1
+
         return count
 ```
 
