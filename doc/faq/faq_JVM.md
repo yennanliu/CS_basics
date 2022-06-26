@@ -180,6 +180,7 @@
 	- https://kknews.cc/zh-tw/code/8zvokbq.html
 	- https://kknews.cc/tech/34pn9ba.html
 	- https://openhome.cc/Gossip/JavaGossip-V2/IntroduceClassLoader.htm#:~:text=Bootstrap%20Loader%E6%98%AF%E7%94%B1C,lib%2Fext%20%E7%9B%AE%E9%8C%84%E4%B8%8B%E7%9A%84
+	- https://www.youtube.com/watch?v=oHM_fVXnPTE&list=PLmOn9nNkQxJH0qBIrtV6otI0Ep4o2q67A&index=660
 
 ### 6) Explain `memory leakage` ?
 
