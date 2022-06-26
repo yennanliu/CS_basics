@@ -749,7 +749,7 @@ class Solution(object):
         num[k + 1:] = num[:k:-1] ### dounle check here ###
 ```
 
-### 2-10) Next Permutation II
+### 2-10) Valid Palindrome II
 ```python
 # LC 680. Valid Palindrome II
 class Solution:
