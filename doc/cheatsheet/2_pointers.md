@@ -249,6 +249,12 @@ class Solution(object):
             return
         i = 0
         for j in range(1, len(nums)):
+            """
+            NOTE !!!
+             -> note this condition
+             -> we HAVE to swap i+1, j once nums[i], nums[j] are different
+             -> so we MAKE SURE there is no duplicate
+            """
             if nums[j] != nums[i]:
                 nums[i+1], nums[j] = nums[j], nums[i+1]
                 i += 1
