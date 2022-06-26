@@ -141,6 +141,8 @@
 		- 076
 	- 2 pointers
 		- 031
+	- prefix sum
+		- 926
 	- dfs
 		- 652
 		- 490
