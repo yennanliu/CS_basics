@@ -3,6 +3,8 @@
 - Video
 - doc
 - course
+	- NTHU
+		- https://ocw.nthu.edu.tw/ocw/index.php?page=course&cid=141
 	- UC Berkeley
 		- https://www.youtube.com/watch?v=hry_qqXLej8&list=PLRdybCcWDFzCag9A0h1m9QYaujD0xefgM
 	- Udacity
