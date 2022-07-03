@@ -12,6 +12,7 @@
 - ref
     - [bit_manipulation.md](https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md)
     - [python-operators.html](https://www.runoob.com/python/python-operators.html)
+    - [leetcode-easy-bitwise-xor-summary](https://steveyang.blog/2022/07/02/leetcode-easy-bitwise-xor-summary/)
 
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bit_basic1.png" ></p>
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bit_basic2.png" ></p>
