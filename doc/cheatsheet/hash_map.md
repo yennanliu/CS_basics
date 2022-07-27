@@ -50,12 +50,12 @@
 - When to use 
 	- Use case that need data IO with ~ O(1) time complexity
     - optimization via cache (space - time tradeoff)
-    - `sum, pair, continous`
+    - `sum, pair, continuous`
     - avoid double loop (O(N^2))
 
 - When Not to use
 	- When data is time sequence 
-	- When data in in ordering 
+	- When data is in ordering 
 	- https://www.reddit.com/r/learnprogramming/comments/29t4s4/when_is_it_bad_to_use_a_hash_table/
 
 - Hash Collisions
