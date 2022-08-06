@@ -78,4 +78,37 @@ class Solution:
         
         return d[n][m]
 
+# V1'
+# IDEA : DP
+# https://www.twblogs.net/a/61b587a5f84fc55b46945724
+# C++
+# class Solution {
+# public:
+# 	vector<vector<int>> dp;
+# 	int minDistance(string word1, string word2) {
+# 		int len = max(word1.size(), word2.size());
+# 		dp = vector<vector<int>>(len+10,vector<int>(len+10));
+# 		word1.insert(word1.begin(), '#');
+# 		word2.insert(word2.begin(), '@');
+#
+# 		for (int i = 0; i <= word1.size(); i++) { dp[i][0] = i; }
+# 		for (int i = 0; i <= word2.size(); i++) { dp[0][i] = i; }
+#
+# 		for (int i = 1; i <= word1.size(); i++) {
+# 			for (int j = 1; j <= word2.size(); j++) {
+# 				dp[i][j] = min(dp[i][j - 1]+1, dp[i - 1][j]+1);
+# 				if (word1[i] == word2[j]) {
+# 					dp[i][j] = min(dp[i][j], dp[i - 1][j - 1]);
+# 				}
+# 				else {
+# 					dp[i][j] = min(dp[i][j], dp[i - 1][j - 1] + 1);
+# 				}
+# 			}
+# 		}
+#
+# 		return dp[word1.size()][word2.size()];
+# 	}
+# };
+
+
 # V2
