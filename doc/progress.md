@@ -3,7 +3,10 @@
 # 2022-08-06
 - ================
 - leetcode_company_V5/LC-goog.pdf
-	- 
+- ================
+- Recursion I
+	- https://leetcode.com/explore/learn/card/recursion-i/
+		-  Solution - Reverse String
 - ================
 - LC top 100 likes
 	- 064 (dp) (again, not start)
