@@ -6,7 +6,7 @@
 - ================
 - Recursion I
 	- https://leetcode.com/explore/learn/card/recursion-i/
-		-  Solution - Reverse String
+		-  Recurrence Relation
 - ================
 - LC top 100 likes
 	- 114
