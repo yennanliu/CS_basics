@@ -3,12 +3,12 @@
 For a problem, if there exists a recursive solution, we can follow the guidelines below to implement it. 
 
 ```
-For instance, we define the problem as the function F(X) to implement, where {X}X is the input of the function which also defines the scope of the problem.
+For instance, we define the problem as the function F(X) to implement, where X is the input of the function which also defines the scope of the problem.
 
 Then, in the function F(X), we will:
 
-1. Break the problem down into smaller scopes, such as x0 belongs X, x0 belongs X... xn belogns X 
-2. Call function {F(x_0)}, F(x_1), ..., F(x_n) recursively to solve the subproblems of X;
+1. Break the problem down into smaller scopes, such as x0 belongs X, x0 belongs X ..., xn belogns X 
+2. Call function F(x_0), F(x_1), ..., F(x_n) recursively to solve the subproblems of X;
 3. Finally, process the results from the recursive function calls to solve the problem corresponding to X.
 ```
 
