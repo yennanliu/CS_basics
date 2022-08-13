@@ -13,10 +13,43 @@ Then, in the function F(X), we will:
 ```
 
 ## 0) Concept
+
 - Same concept is used in
 	- DFS
 	- backtrack
-	- tree 
+	- tree
+
+- Optimization
+    - Memoization
+        - https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/
+        - use a cache save "already calculated" result, so when same request comes again, return cache directly. `hash map` is a good candidate for cache implementation.
+        - example : fibonacci number
+        ```python
+        # V1 : without Memoization (cache):
+        def fibonacci(n):
+            """
+            :type n: int
+            :rtype: int
+            """
+            if n < 2:
+                return n
+            else:
+                return fibonacci(n-1) + fibonacci(n-2)
+
+        # V2 : with Memoization (cache):
+        def fibonacci(n):
+            cache = {}
+            def help(n):
+                if n in cache:
+                    return cache[n]
+                if n < 2:
+                    res = n
+                else:
+                    res = help(n-1) + help(n-2)
+                cache[n] = res
+                return res
+            return help(n)
+        ```
 
 ### 0-1) Types
 
