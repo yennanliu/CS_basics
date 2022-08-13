@@ -1,12 +1,55 @@
-# Time:  O(n)
-# Space: O(1)
-#
-# You are climbing a stair case. It takes n steps to reach to the top.
-#
-# Each time you can either climb 1 or 2 steps.
-# In how many distinct ways can you climb to the top?
+"""
 
-# V0  
+70. Climbing Stairs
+Easy
+
+You are climbing a staircase. It takes n steps to reach the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+ 
+
+Example 1:
+
+Input: n = 2
+Output: 2
+Explanation: There are two ways to climb to the top.
+1. 1 step + 1 step
+2. 2 steps
+Example 2:
+
+Input: n = 3
+Output: 3
+Explanation: There are three ways to climb to the top.
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
+ 
+
+Constraints:
+
+1 <= n <= 45
+
+"""
+
+# V0
+# IDEA : RECURSION + MEMORIZATION
+# https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1662/
+class Solution(object):
+    def climbStairs(self, n):
+        cache = {}
+        def help(n):
+            if n in cache:
+                return cache[n]
+            if n <= 2:
+                res = n
+            else:
+                res = help(n-2) + help(n-1)
+            cache[n] = res
+            return res
+        return help(n)
+
+# V0' 
 class Solution:
     # Time:  O(2^n)
     # Space: O(n)
