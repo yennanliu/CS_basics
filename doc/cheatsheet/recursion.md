@@ -23,7 +23,7 @@ Then, in the function F(X), we will:
     - Memoization
         - https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/
         - use a cache save "already calculated" result, so when same request comes again, return cache directly. `hash map` is a good candidate for cache implementation.
-        - example : fibonacci number
+        - Example 1 : fibonacci number
         ```python
         # V1 : without Memoization (cache):
         def fibonacci(n):
@@ -49,6 +49,35 @@ Then, in the function F(X), we will:
                 cache[n] = res
                 return res
             return help(n)
+        ```
+        - Example 2 : Climbing Stairs
+        ```python
+        # 070  Climbing Stairs
+        # V0 : without MEMORIZATION
+        class Solution:
+            # Time:  O(2^n)
+            # Space: O(n)
+            def climbStairs(self, n):
+                if n == 1:
+                    return 1
+                if n == 2:
+                    return 2
+                return self.climbStairs(n - 1) + self.climbStairs(n - 2)
+        # V0' :  RECURSION + MEMORIZATION
+        # https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1662/
+        class Solution(object):
+            def climbStairs(self, n):
+                cache = {}
+                def help(n):
+                    if n in cache:
+                        return cache[n]
+                    if n <= 2:
+                        res = n
+                    else:
+                        res = help(n-2) + help(n-1)
+                    cache[n] = res
+                    return res
+                return help(n)
         ```
 
 ### 0-1) Types
