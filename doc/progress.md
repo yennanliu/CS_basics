@@ -5,8 +5,8 @@
 - leetcode_company_V5/LC-goog.pdf
 - ================
 - Recursion I
-	- https://leetcode.com/explore/learn/card/recursion-i/
-		-  Recurrence Relation
+	- https://leetcode.com/explore/learn/card/recursion-i/251/scenario-i-recurrence-relation/3234/
+		- Pascal's Triangle II
 - ================
 - LC top 100 likes
 	- 114

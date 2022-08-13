@@ -530,3 +530,27 @@ class BSTIterator(object):
         """
         return self.stack.pop(0)  # NOTE here
 ```
+
+### 2-6) Search in a Binary Search Tree
+```python
+# LC 700 Search in a Binary Search Tree
+# V1
+# IDEA : RECURSION + BST property
+# https://leetcode.com/problems/search-in-a-binary-search-tree/solution/
+class Solution:
+    def searchBST(self, root: TreeNode, val: int) -> TreeNode:
+        if root is None or val == root.val:
+            return root
+        
+        return self.searchBST(root.left, val) if val < root.val \
+            else self.searchBST(root.right, val)
+
+# V1'
+# IDEA : ITERATION
+# https://leetcode.com/problems/search-in-a-binary-search-tree/solution/
+class Solution:
+    def searchBST(self, root: TreeNode, val: int) -> TreeNode:
+        while root is not None and root.val != val:
+            root = root.left if val < root.val else root.right
+        return root
+```
