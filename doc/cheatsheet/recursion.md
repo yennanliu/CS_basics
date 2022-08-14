@@ -19,6 +19,24 @@ Then, in the function F(X), we will:
 	- backtrack
 	- tree
 
+- Complexity analysis
+    - Time complexity
+        - https://leetcode.com/explore/learn/card/recursion-i/256/complexity-analysis/1669/
+    - Space complexity
+        - https://leetcode.com/explore/learn/card/recursion-i/256/complexity-analysis/1671/
+        - Recursion `Related` Space
+            - stack
+                - local variables (used in recursive func calls)
+                - input param
+                - output variables
+                - "stackoverflow"
+                    - where the stack allocated for a program reaches its maximum space limit and the program crashes. 
+        - Recursion `Non-Related` Space
+            - heap
+                - global variables (call before func, can be used by all funcs)
+                - memoization (keep track all intermediate results)
+                - NOTE : it's important to consider memoization space usage when use memoization in code
+
 - Optimization
     - Memoization
         - https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/
