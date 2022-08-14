@@ -6,7 +6,7 @@
 - ================
 - Recursion I
 	- complex analysis
-		- https://leetcode.com/explore/learn/card/recursion-i/256/complexity-analysis/1669/
+		- https://leetcode.com/explore/learn/card/recursion-i/256/complexity-analysis/2374/
 - ================
 - LC top 100 likes
 	- 114
