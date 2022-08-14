@@ -5,8 +5,8 @@
 - leetcode_company_V5/LC-goog.pdf
 - ================
 - Recursion I
-	- complex analysis
-		- https://leetcode.com/explore/learn/card/recursion-i/256/complexity-analysis/2374/
+	- pow
+		- https://leetcode.com/explore/learn/card/recursion-i/256/complexity-analysis/2380/
 - ================
 - LC top 100 likes
 	- 114
