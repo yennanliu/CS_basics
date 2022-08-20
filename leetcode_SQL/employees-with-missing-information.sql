@@ -156,3 +156,14 @@ SELECT employee_id
 FROM all_employee_info_cte tmp
 WHERE name IS NULL OR salary IS NULL
 ORDER BY 1;
+    
+#V3
+    (select employee_id from Employees
+     minus
+     select employee_id from Salaries)
+     union
+    (select employee_id from salaries
+     minus
+     select employee_id from Employees)
+    
+    
