@@ -12,6 +12,12 @@ Then, in the function F(X), we will:
 3. Finally, process the results from the recursive function calls to solve the problem corresponding to X.
 ```
 
+- Tips
+    - When in doubt, write down the `recurrence relationship`
+    - Whenever possible, apply `memoization`
+    - When stack overflows, `tail recursion` might come to help 
+        - https://leetcode.com/explore/learn/card/recursion-i/253/conclusion/1650/
+
 ## 0) Concept
 
 - Same concept is used in
