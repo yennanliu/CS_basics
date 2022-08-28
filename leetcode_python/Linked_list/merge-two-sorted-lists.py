@@ -85,6 +85,19 @@ class Solution(object):
         #print ("head = " + str(head))
         return res.next
 
+# V0''
+# IDEA : RECURSION
+class Solution(object):
+    def mergeTwoLists(self, l1, l2):
+        if not l1 or not l2:
+            return l1 or l2
+        if l1.val < l2.val:
+            l1.next = self.mergeTwoLists(l1.next, l2)
+            return l1
+        else:
+            l2.next = self.mergeTwoLists(l1, l2.next)
+            return l2
+
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51529359
 class Solution(object):
@@ -139,14 +152,9 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/51529359
-# IDEA : ITERION
+# IDEA : RECURSION
 class Solution(object):
     def mergeTwoLists(self, l1, l2):
-        """
-        :type l1: ListNode
-        :type l2: ListNode
-        :rtype: ListNode
-        """
         if not l1 or not l2:
             return l1 or l2
         if l1.val < l2.val:
