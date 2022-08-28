@@ -156,3 +156,22 @@ class Solution:
                 return s[i:] == t[i + 1:]
         return m != n # double check this condition
 ```
+
+### 2-3) Merge Two Sorted Lists
+```python
+# LC 021 Merge Two Sorted Lists
+# NOTE : there is also iteration solution
+
+# V0''
+# IDEA : RECURSION
+class Solution(object):
+    def mergeTwoLists(self, l1, l2):
+        if not l1 or not l2:
+            return l1 or l2
+        if l1.val < l2.val:
+            l1.next = self.mergeTwoLists(l1.next, l2)
+            return l1
+        else:
+            l2.next = self.mergeTwoLists(l1, l2.next)
+            return l2
+```
