@@ -7,7 +7,7 @@ For instance, we define the problem as the function F(X) to implement, where X i
 
 Then, in the function F(X), we will:
 
-1. Break the problem down into smaller scopes, such as x0 belongs X, x0 belongs X ..., xn belogns X 
+1. Break the problem down into smaller scopes, such as x0 belongs X, x0 belongs X ..., xn belongs X 
 2. Call function F(x_0), F(x_1), ..., F(x_n) recursively to solve the subproblems of X;
 3. Finally, process the results from the recursive function calls to solve the problem corresponding to X.
 ```
@@ -28,6 +28,7 @@ Then, in the function F(X), we will:
 - Complexity analysis
     - Time complexity
         - https://leetcode.com/explore/learn/card/recursion-i/256/complexity-analysis/1669/
+        - Given a recursion algorithm, its time complexity O(T) is typically the product of `the number of recursion invocations `(denoted as R) and `the time complexity of calculation` (denoted as O(s)) that incurs along with each recursion call: `O(T) = R * O(S)`
     - Space complexity
         - https://leetcode.com/explore/learn/card/recursion-i/256/complexity-analysis/1671/
         - Recursion `Related` Space
