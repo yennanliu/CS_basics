@@ -6,7 +6,7 @@
 - ================
 - Recursion I
 	- Conclusion
-		- https://leetcode.com/explore/learn/card/recursion-i/253/conclusion/1675/
+		- https://leetcode.com/explore/learn/card/recursion-i/253/conclusion/2384/
 - ================
 - LC top 100 likes
 	- 114
