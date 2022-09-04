@@ -107,6 +107,16 @@ Then, in the function F(X), we will:
 
 ### 0-1) Types
 
+- Basics
+- Divide and Conquer
+    - know some classical examples of divide-and-conquer algorithms, e.g. `merge sort` and `quick sort`.
+    - know how to apply a pseudocode template to implement the divide-and-conquer algorithms.
+    - know a theoretical tool called master theorem to calculate the time complexity for certain types of divide-and-conquer algorithms.
+    - Steps
+        - Divide -> Conquer -> Combine
+- Backtracking
+- master theorem
+
 ### 0-2) Pattern
 
 ## 1) General form
