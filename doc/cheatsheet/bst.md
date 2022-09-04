@@ -1,6 +1,8 @@
 # BST (Binary Search Tree)
 - Ref
-    - [fucking-algorithm - BST](https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E6%93%8D%E4%BD%9C%E9%9B%86%E9%94%A6.md)
+    - [fucking-algorithm - BST pt.1](https://labuladong.github.io/algo/2/21/43/)
+    - [fucking-algorithm - BST pt.1](https://labuladong.github.io/algo/2/21/44/)
+    - [fucking-algorithm - BST pt.1](https://labuladong.github.io/algo/2/21/42/)
 
 ## 0) Concept
 
@@ -553,4 +555,41 @@ class Solution:
         while root is not None and root.val != val:
             root = root.left if val < root.val else root.right
         return root
+```
+
+### 2-7) Unique Binary Search Trees II
+```python
+# LC 95 Unique Binary Search Trees II
+# V1
+# IDEA : RECURSION
+# https://leetcode.com/problems/unique-binary-search-trees-ii/solution/
+class Solution:
+    def generateTrees(self, n):
+        """
+        :type n: int
+        :rtype: List[TreeNode]
+        """
+        def generate_trees(start, end):
+            if start > end:
+                return [None,]
+            
+            all_trees = []
+            for i in range(start, end + 1):  # pick up a root
+                # all possible left subtrees if i is choosen to be a root
+                left_trees = generate_trees(start, i - 1)
+                
+                # all possible right subtrees if i is choosen to be a root
+                right_trees = generate_trees(i + 1, end)
+                
+                # connect left and right subtrees to the root i
+                for l in left_trees:
+                    for r in right_trees:
+                        current_tree = TreeNode(i)
+                        current_tree.left = l
+                        current_tree.right = r
+                        all_trees.append(current_tree)
+            
+            return all_trees
+        
+        return generate_trees(1, n) if n else []
 ```
