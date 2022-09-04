@@ -5,8 +5,9 @@
 - leetcode_company_V5/LC-goog.pdf
 - ================
 - Recursion I
-	- Conclusion
-		- https://leetcode.com/explore/learn/card/recursion-i/253/conclusion/2384/
+	- completed
+- Recursion II
+	- https://leetcode.com/explore/learn/card/recursion-ii/
 - ================
 - LC top 100 likes
 	- 114
