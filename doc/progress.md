@@ -7,8 +7,8 @@
 - Recursion I
 	- completed
 - Recursion II
-	- D&C intro
-		- https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2869/
+	- Search a 2D Matrix II
+		- https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2872/
 - ================
 - LC top 100 likes
 	- 114
