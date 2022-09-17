@@ -161,7 +161,7 @@
 ||Bucket sort| [Python](./algorithm/python/bucket_sort.py)  | | |AGAIN| 
 ||Quick sort| [Python](./algorithm/python/quick_sort.py)| | | AGAIN***| 
 ||Heap sort| [Python](./algorithm/python/heap_sort.py)| | | AGAIN**| 
-||Merge sort|[merge_sort_topdown.py](./algorithm/python/merge_sort_topdown.py), [JS](./algorithm/js/merge_sort.js), [Java](./algorithm/java/MergeSort.java), [SQL](./algorithm/sql/Mergesort.sql) | | | OK* (2)| 
+||Merge sort|[merge_sort_topdown.py](./algorithm/python/merge_sort_topdown.py), [mergesort_bottomup.py](./algorithm/python/mergesort_bottomup.py), [MergeSortTopDown.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/MergeSortTopDown.java), [SQL](./algorithm/sql/Mergesort.sql) | | | OK* (2)| 
 ||Pancake sort| [Python](./algorithm/python/pancake_sort.py) | | | AGAIN| 
 ||Selection sort| [Python](./algorithm/python/selection_sort.py), [JS](./algorithm/js/selection_sort.js) | | | AGAIN| 
 ||Topological sort| [Python](./algorithm/python/topological_sort.py) | | Topological Sort is a algorithm can find "ordering" on an "order dependency" graph | AGAIN| 
