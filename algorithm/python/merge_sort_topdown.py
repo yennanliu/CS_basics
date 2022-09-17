@@ -4,6 +4,9 @@
 
 # https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2868/
 
+# time : O(N)
+# space : O(N)
+
 def merge_sort(nums):
     # bottom cases: empty or list of a single element.
     if len(nums) <= 1:

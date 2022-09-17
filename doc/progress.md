@@ -7,8 +7,8 @@
 - Recursion I
 	- completed
 - Recursion II
-	- Merge sort
-		- https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2868/
+	- D&C intro
+		- https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2869/
 - ================
 - LC top 100 likes
 	- 114
@@ -23,6 +23,8 @@
 	- bit manipulation
 		- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
 		- 393 again (not start)
+	- sort
+		- 912
 	- String
 		- 076
 	- 2 pointers
