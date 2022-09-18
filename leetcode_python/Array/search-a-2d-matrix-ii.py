@@ -65,6 +65,22 @@ class Solution:
         return False
 
 # V0'
+# IDEA : py array op (may not acceptable to interviewer)
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        # edge case
+        if not matrix:
+            return False
+        l = len(matrix) - 1
+        w = len(matrix[0]) - 1
+        i = j = 0
+        while i < l:
+            if target in matrix[i]:
+                return True
+            i += 1
+        return target in matrix[l]
+
+# V0''
 # IDEA : DFS (brute force)
 class Solution(object):
     def searchMatrix(self, matrix, target):
@@ -89,7 +105,7 @@ class Solution(object):
         dfs(matrix, target, 0, 0)
         return True in res
 
-# V0''
+# V0'''
 # IDEA : BINARY SEARCH
 class Solution:
     def searchMatrix(self, matrix, target):
