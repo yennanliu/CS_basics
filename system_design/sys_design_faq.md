@@ -63,3 +63,11 @@
 
 ### 12) DB scaling out strategy ?
 - system design book (GOTOP) P.27
+
+### 13) Types of notification ?
+- server push
+	- WebSocket
+	- Server-Sent Events(SSE)
+- client pull
+	- long polling (e.g. Comet Based on XHR)
+	- short polling (e.g. AJAX-based timer)
