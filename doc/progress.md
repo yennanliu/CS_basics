@@ -12,8 +12,10 @@
 			- https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2870/
 - ================
 - Fucking algorithm
-	- 二叉搜索树（构造篇
+	- 二叉搜索树（构造篇) : 筆記!
 		- https://labuladong.github.io/algo/2/21/44/
+	- 二叉搜索树（基操篇）: 筆記!
+		- https://labuladong.github.io/algo/2/21/43/
 - ================
 - LC top 100 likes
 	- 114
