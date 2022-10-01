@@ -14,6 +14,8 @@
 			- https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2654/
 		- N-Queens II
 			- https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2804/
+		- Backtracking Template
+			- https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2793/
 - ================
 - Fucking algorithm
 	- 二叉搜索树（构造篇) : 筆記!
