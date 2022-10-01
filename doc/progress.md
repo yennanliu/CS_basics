@@ -8,8 +8,12 @@
 	- Recursion I
 		- completed
 	- Recursion II
-		- Quick sort
-			- https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2870/
+		- Master Theorem
+			- https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2871/
+		- Backtracking
+			- https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2654/
+		- N-Queens II
+			- https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2804/
 - ================
 - Fucking algorithm
 	- 二叉搜索树（构造篇) : 筆記!
