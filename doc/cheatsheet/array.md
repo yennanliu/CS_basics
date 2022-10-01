@@ -389,10 +389,10 @@ class Solution(object):
         - https://leetcode.com/problems/n-queens-ii/solutions/1146740/n-queens-ii/
         - diagonal
             - For each square on a given diagonal, the difference between the row and column indexes (row - col) will be constant. Think about the diagonal that starts from (0, 0) - the i th square has coordinates (i, i), so the difference is always 0.
-            - <img src ="./doc/pic/diagonal.png" ></p>
+            - <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/diagonal.png" ></p>
         - anti-diagonal
             - For each square on a given anti-diagonal, the sum of the row and column indexes (row + col) will be constant. If you were to start at the highest square in an anti-diagonal and move downwards, the row index increments by 1 (row + 1), and the column index decrements by 1 (col - 1).
-            - <img src ="./doc/pic/anti-diagonal.png" ></p>
+            - <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/anti-diagonal.png" ></p>
 
 ```python
 # 1) init matrix 
