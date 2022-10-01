@@ -102,6 +102,25 @@
 
 ```python
 # python pseudo code 1
+# https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2793/
+def backtrack(candidate):
+    if find_solution(candidate):
+        output(candidate)
+        return
+    
+    # iterate all possible candidates.
+    for next_candidate in list_of_candidates:
+        if is_valid(next_candidate):
+            # try this partial candidate solution
+            place(next_candidate)
+            # given the candidate, explore further.
+            backtrack(next_candidate)
+            # backtrack
+            remove(next_candidate)
+```
+
+```python
+# python pseudo code 2
 for choice in choice_list:
     # do choice
     routes.add(choice)
@@ -111,7 +130,7 @@ for choice in choice_list:
 ```
 
 ```python
-# python pseudo code 2
+# python pseudo code 3
 result = []
 def backtrack(route, choice_list):
     if end_condition:
