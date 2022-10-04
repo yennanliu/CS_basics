@@ -1,10 +1,29 @@
 # BST (Binary Search Tree)
 - Ref
     - [fucking-algorithm - BST pt.1](https://labuladong.github.io/algo/2/21/43/)
-    - [fucking-algorithm - BST pt.1](https://labuladong.github.io/algo/2/21/44/)
-    - [fucking-algorithm - BST pt.1](https://labuladong.github.io/algo/2/21/42/)
+    - [fucking-algorithm - BST pt.2](https://labuladong.github.io/algo/2/21/44/)
+    - [fucking-algorithm - BST pt.3](https://labuladong.github.io/algo/2/21/42/)
 
 ## 0) Concept
+
+- For each node
+    - `left sub node < than current node`
+    - `right sub node > than current node`
+
+- BST's `in-order traversal` is `ASCENDING ORDERING`
+    - LC 230
+    - LC 538
+    - LC 1038
+```java
+// below will print BST elements in ascending ordering
+// java
+void traverse(TreeNode root) {
+    if (root == null) return;
+    traverse(root.left);
+    // in-order traversal
+    print(root.val);
+    traverse(root.right);
+```
 
 ### 0-1) Types
 
@@ -592,4 +611,87 @@ class Solution:
             return all_trees
         
         return generate_trees(1, n) if n else []
+```
+
+### 2-8) Insert into a Binary Search Tree
+```python
+# LC 701 Insert into a Binary Search Tree
+# VO : recursion + dfs
+class Solution(object):
+    def insertIntoBST(self, root, val):
+        if not root: 
+            return TreeNode(val)
+        if root.val < val: 
+            root.right = self.insertIntoBST(root.right, val);
+        elif root.val > val: 
+            root.left = self.insertIntoBST(root.left, val);
+        return(root)
+```
+
+### 2-9) Validate Binary Search Tree
+```python
+# LC 98 Validate Binary Search Tree
+# V0
+# IDEA : BFS
+#  -> trick : we make sure current tree and all of sub tree are valid BST
+#   -> not only compare tmp.val with tmp.left.val, tmp.right.val,
+#   -> but we need compare if tmp.left.val is SMALLER then `previous node val`
+#   -> but we need compare if tmp.right.val is BIGGER then `previous node val`
+class Solution(object):
+    def isValidBST(self, root):
+        if not root:
+            return True
+        _min = -float('inf')
+        _max = float('inf')
+        ### NOTE : we set q like below
+        q = [[root, _min, _max]]
+        while q:
+            for i in range(len(q)):
+                tmp, _min, _max = q.pop(0)
+                if tmp.left:
+                    """
+                    ### NOTE : below condition
+                    ### NOTE : we compare "tmp.left.val" with others (BEFORE we visit tmp.left)
+                    """
+                    if tmp.left.val >= tmp.val or tmp.left.val <= _min:
+                        return False
+                    ### NOTE : we append tmp.val as _max
+                    q.append([tmp.left, _min, tmp.val])
+                if tmp.right:
+                    """
+                    ### NOTE : below condition
+                    ### NOTE : we compare "tmp.right.val" with others (BEFORE we visit tmp.right)
+                    """
+                    if tmp.right.val <= tmp.val or tmp.right.val >= _max:
+                        return False
+                    ### NOTE : we append tmp.val as _min
+                    q.append([tmp.right, tmp.val, _max])
+        return True
+
+# V0''
+# IDEA: RECURSION 
+class Solution(object):
+    def isValidBST(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        return self.valid(root, float('-inf'), float('inf'))
+        
+    def valid(self, root, min_, max_):
+        if not root: return True
+        if root.val >= max_ or root.val <= min_:
+            return False
+        return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
+```
+
+
+### 2-10)
+```python
+# LC 538
+```
+
+### 2-11)
+```python
+# LC 1038
 ```
