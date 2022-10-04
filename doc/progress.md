@@ -12,10 +12,13 @@
 			- https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2793/
 - ================
 - Fucking algorithm
-	- 二叉搜索树（构造篇) : 筆記!
-		- https://labuladong.github.io/algo/2/21/44/
 	- 二叉搜索树（基操篇）: 筆記!
 		- https://labuladong.github.io/algo/2/21/43/
+	- 二叉搜索树（特性篇）: 筆記!
+		- https://labuladong.github.io/algo/2/21/42/		
+	- 二维数组的花式遍历技巧: 筆記!
+		- https://labuladong.github.io/algo/2/20/26/		
+
 - ================
 - LC top 100 likes
 	- 114
