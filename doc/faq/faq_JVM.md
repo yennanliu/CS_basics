@@ -26,24 +26,25 @@
 	- https://cloud.tencent.com/developer/article/1648836
 
 ### 2) Difference between JVM heap, stack ?
-- JVM `heap`
-	- storage class
-	- shared by all threads in JVM
+
 - JVM `stack`
 	- storage stack frame, local var
 	- smaller than heap in general
 	- NOT shared by different threads. used by local thread only
+- JVM `heap`
+	- storage class
+	- shared by all threads in JVM
 - Ref
 	- https://github.com/yennanliu/JavaHelloWorld
 
-### 3) Explain JVM GC ? GC stragegy ? algorithm ?
+### 3) Explain JVM GC ? GC strategy ? algorithm ?
 - 5W1H
 	- Where ? 
 		- JVM heap
 	- Why ? 
 		- prevent `memory leakage`. in order to use memory efficiently
 	- What ? 
-		- GC "recycle" obj which are will not be used anymore 
+		- GC "recycle" object which NOT used anymore
 	- When ?
 		- Reference counting : remove when "reference count = 0". But NOT working when "cyclic reference"
 		- Tracing : tranverse ("dependence tree") from GC root, if not in visited list, means not used, then remove them
@@ -183,6 +184,9 @@
 	- https://www.youtube.com/watch?v=oHM_fVXnPTE&list=PLmOn9nNkQxJH0qBIrtV6otI0Ep4o2q67A&index=660
 
 ### 6) Explain `memory leakage` ?
+- http://cloudtu.github.io/blog/2011/12/java-memory-leak.html
+- https://www.baeldung.com/java-memory-leaks
+- https://stackify.com/memory-leaks-java/
 
 ### 7) does `memory leakage` happen in java ? how ?
 - Yes, it may happen in users self defined data structure
