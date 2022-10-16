@@ -38,7 +38,7 @@
     - Ref
         - https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/solutions/263241/convert-binary-search-tree-to-sorted-doubly-linked-list/
 
-- <img src ="./doc/pic/tree_traverse.png" ></p>
+- <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/tree_traverse.png" ></p>
 
 - pre-order traverse
     - root -> left -> right
