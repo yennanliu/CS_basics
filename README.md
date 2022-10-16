@@ -433,7 +433,7 @@
 ## Tree 
 |  #  | Title           |  Solution   |  Time   | Space  | Difficulty    | Note | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-094 | [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)  | [python](./leetcode_python/Tree/binary-tree-inorder-traversal.py) | _O(n)_| _O(1)_| Medium   |`good basic`,`Morris Traversal`, `M$`, `fb` | AGAIN**** (3)
+094 | [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)  | [python](./leetcode_python/Tree/binary-tree-inorder-traversal.py) | _O(n)_| _O(1)_| Medium   |tree, iteration, recursion, `good basic`,`Morris Traversal`, `M$`, `fb` | AGAIN********* (4) (MUST)
 124 | [Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/)  | [python](./leetcode_python/Tree/binary-tree-maximum-path-sum.py) | _O(n)_| _O(1)_| Hard   |Curated Top 75, google, amazon, fb, m$, twitter | AGAIN******* (2)
 144 | [Binary Tree Preorder Traversal](https://leetcode.com/problems/binary-tree-preorder-traversal/) |  [python](./leetcode_python/Tree/binary-tree-preorder-traversal.py)  | _O(n)_| _O(1)_| Medium |`Morris Traversal`| AGAIN 
 208 | [Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/) | [python](./leetcode_python/Tree/implement-trie-prefix-tree.py) | _O(n)_ | _O(1)_ | Medium |Curated Top 75, dict tree, trie, `amazon`,`fb`| AGAIN************** (6) (MUST)
