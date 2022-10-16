@@ -10,7 +10,7 @@
     - have a cache (e.g. hash table) list finished cases (not re-compute them)
     - "cut the sub-tree" via conditions such as `contains`, `start`
 
-- <img src ="./doc/pic/backtrack1.png" ></p>
+- <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/backtrack1.png" ></p>
 
 ## 0) Concept  
 
