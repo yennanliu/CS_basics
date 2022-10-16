@@ -17,6 +17,8 @@ Then, in the function F(X), we will:
     - Whenever possible, apply `memoization`
     - When stack overflows, `tail recursion` might come to help 
         - https://leetcode.com/explore/learn/card/recursion-i/253/conclusion/1650/
+- Ref
+    - https://medium.com/appworks-school/%E9%80%B2%E5%85%A5%E9%81%9E%E8%BF%B4-recursion-%E7%9A%84%E4%B8%96%E7%95%8C-%E4%B8%80-59fa4b394ef6
 
 ## 0) Concept
 
@@ -167,6 +169,17 @@ def divide_and_conquer( S ):
 ## 1) General form
 
 ### 1-1) Basic OP
+
+- Endless for loop elment in list
+```python
+# LC 022
+# ...
+_list = ["(", ")"]
+for x in _list:
+    _tmp = tmp + x
+    help(_tmp)
+# ...
+```
 
 ## 2) LC Example
 
