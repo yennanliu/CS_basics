@@ -35,6 +35,7 @@ The number of nodes in the tree is in the range [0, 2000].
 All the values of the tree are unique.
 
 """
+
 # V0
 # IDEA : DFS + INORDER
 class Solution:
@@ -72,6 +73,45 @@ class Solution:
         return first
 
 # V1
+# https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/solutions/263241/convert-binary-search-tree-to-sorted-doubly-linked-list/
+class Solution:
+    def treeToDoublyList(self, root: 'Node') -> 'Node':
+        def helper(node):
+            """
+            Performs standard inorder traversal:
+            left -> node -> right
+            and links all nodes into DLL (double linked list)
+            """
+            nonlocal last, first
+            if node:
+                # left
+                helper(node.left)
+                # node 
+                if last:
+                    # link the previous node (last)
+                    # with the current one (node)
+                    last.right = node
+                    node.left = last
+                else:
+                    # keep the smallest node
+                    # to close DLL later on
+                    first = node        
+                last = node
+                # right
+                helper(node.right)
+        
+        if not root:
+            return None
+        
+        # the smallest (first) and the largest (last) nodes
+        first, last = None, None
+        helper(root)
+        # close DLL
+        last.right = first
+        first.left = last
+        return first
+
+# V1'
 # https://blog.csdn.net/zhangpeterx/article/details/89567460
 # IDEA : BFS + INORDER 
 class Solution:
@@ -90,7 +130,7 @@ class Solution:
         dummy.right.left, prev.right = prev, dummy.right
         return dummy.right
 
-# V1'
+# V1''
 # https://www.jiuzhang.com/solution/convert-binary-search-tree-to-sorted-doubly-linked-list/#tag-highlight-lang-python
 # IDEA : DFS + INORDER
 class Solution:
@@ -127,7 +167,7 @@ class Solution:
         last.right = first
         return first
         
-# V1''
+# V1'''
 # https://blog.csdn.net/zhangpeterx/article/details/89567460
 class Solution:
     def treeToDoublyList(self, root: 'Node') -> 'Node':
