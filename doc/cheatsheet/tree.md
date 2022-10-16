@@ -27,10 +27,77 @@
 #### 1-1-1) Traverse
 - pre-order traverse
     - root -> left -> right
+```python
+# pre-order traversal
+r = []
+def pre_order_traverse(TreeNode):
+    r.append(root.value)
+    if root.left:
+        pre_order_traverse(root.left)
+    if root.right:
+        pre_order_traverse(root.right)
+```
 - in-order traverse
     - left -> root -> right
+```python
+# LC 094
+# in-order traversel
+# LC 94
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/binary-tree-inorder-traversal.py
+# V0
+# IDEA : recursion
+# https://leetcode.com/problems/binary-tree-inorder-traversal/solutions/332283/python-recursive-and-iterative-solutions/
+
+class Solution(object):
+    # left -> root -> right
+    def inorderTraversal(self, root):
+        # help func
+        def dfs(root, res):
+            if not root:
+                return
+            if root.left:
+                dfs(root.left)
+            res.append(root.val)
+            if root.right:
+                dfs(root.right)
+        res = []
+        dfs(root)
+        return root
+
+# V0'
+# IDEA : ITERATION
+class Solution:
+    def inorderTraversal(self, root):
+        stack = []
+        res = []
+        
+        while True:
+            # NOTE !!! : we GO THROUGH left sub tree to the end first, and form our stack on the same time, then do in-order transversal
+            while root:
+                stack.append(root)
+                root = root.left
+            
+            if len(stack) == 0:
+                # NOTE here
+                break
+            
+            root = stack.pop()
+            res.append(root.val)
+            root = root.right
+        return res
+```
 - post-order traverse
     - left -> right -> root
+```python
+# postorder traversal
+r = []
+def post_order_traverse(TreeNode):
+    if root.left:
+        post_order_traverse(root.left)
+    if root.right:
+        post_order_traverse(root.right)
+    r.append(root.value)
+```
 - layer traverse (BST)
     - layer by layer
 
@@ -56,33 +123,6 @@ def traverse(TreeNode):
         # op in pre-traverse
         traverse(child)
         # op in post-traverse
-
-# pre-order traverse
-r = []
-def pre_order_traverse(TreeNode):
-    r.append(root.value)
-    if root.left:
-        pre_order_traverse(root.left)
-    if root.right:
-        pre_order_traverse(root.right)
-
-# in-order traverse
-r = []
-def in_order_traverse(TreeNode):
-    if root.left:
-        in_order_traverse(root.left)
-    r.append(root.value)
-    if root.right:
-        in_order_traverse(root.right)
-
-# postorder traverse
-r = []
-def post_order_traverse(TreeNode):
-    if root.left:
-        post_order_traverse(root.left)
-    if root.right:
-        post_order_traverse(root.right)
-    r.append(root.value)
 ```
 
 ```java
