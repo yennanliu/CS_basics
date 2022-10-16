@@ -1,6 +1,6 @@
 # Progress
 
-# 2022-10-15
+# 2022-10-16
 - ================
 - leetcode_company_V5/LC-goog.pdf
 - ================
@@ -8,8 +8,8 @@
 	- Recursion I
 		- completed
 	- Recursion II
-		- Combinations
-			- https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2798/
+		- Generate Parentheses
+			- https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2772/
 - ================
 - Fucking algorithm
 	- 二叉搜索树（基操篇）: 筆記!

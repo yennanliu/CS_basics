@@ -133,6 +133,23 @@ def divide_and_conquer( S ):
     return combine([R1, R2,... Rn])
 ```
 
+- Recursion to iteration (Unfold Recursion)
+    - Reason
+        - Risk of Stackoverflow
+        - Efficiency
+        - Complexity
+    - Tips
+        - The good news is that we can always convert a recursion to iteration. In order to do so, in general, we use a data structure of `stack or queue`, which replaces the role of the system call stack during the process of recursion.
+    - Steps
+        - Step 1: We use a stack or queue data structure within the function, to replace the role of the system call stack. At each occurrence of recursion, we simply push the parameters as a new element into the data structure that we created, instead of invoking a recursion.
+        - Step 2: In addition, we create a loop over the data structure that we created before. The chain invocation of recursion would then be replaced with the iteration within the loop.
+    - LC
+        - 100
+ 
+    - Ref
+        - https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2693/
+
+
 ### 0-1) Types
 
 - Basics
