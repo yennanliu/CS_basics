@@ -28,15 +28,21 @@ Constraints:
 class Solution(object):
     def generateParenthesis(self, n):
         # help func for backtracking
-        def help(tmp, res, n):
+        def help(tmp):
             if len(tmp) == n * 2 and check(tmp):
                 res.append(tmp)
                 return
             if len(tmp) == n * 2:
                 return
+            """
+            NOTE !!! via "for l in _list" + recursion, we can for "endless" for loop over element in _list till terminate confition is met
+            """
             for l in _list:
                 print ("l = " + str(l))
-                help(tmp + l, res, n)
+                help(tmp + l) ### NOTE !!! we HAVE TO use "tmp + l" instead of "tmp += l"
+                # below is OK as well
+                #_tmp = tmp + l
+                #help(_tmp)
 
         """
         LC 020 Valid Parentheses
@@ -59,7 +65,8 @@ class Solution(object):
         if n == 1:
             return ["()"]
         res = []
-        help("", res, n)
+        tmp = ""
+        help(tmp)
         return res
 
 # V0'

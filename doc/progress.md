@@ -8,8 +8,8 @@
 	- Recursion I
 		- completed
 	- Recursion II
-		- Generate Parentheses
-			- https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2772/
+		- Binary Tree Inorder Traversal
+			- https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2774/
 - ================
 - Fucking algorithm
 	- 二叉搜索树（基操篇）: 筆記!
