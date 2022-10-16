@@ -9,7 +9,7 @@
 		- completed
 	- Recursion II
 		- Binary Tree Level Order Traversal
-			- https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2784/
+			- https://leetcode.com/explore/learn/card/recursion-ii/507/beyond-recursion/2899/
 - ================
 - Fucking algorithm
 	- 二叉搜索树（基操篇）: 筆記!

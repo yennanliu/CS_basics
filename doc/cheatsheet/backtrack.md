@@ -10,6 +10,8 @@
     - have a cache (e.g. hash table) list finished cases (not re-compute them)
     - "cut the sub-tree" via conditions such as `contains`, `start`
 
+- <img src ="./doc/pic/backtrack1.png" ></p>
+
 ## 0) Concept  
 
 ### 0-1) Types
