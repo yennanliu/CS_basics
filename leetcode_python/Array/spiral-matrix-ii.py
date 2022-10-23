@@ -1,14 +1,28 @@
-# Given an integer n, generate a square matrix filled with elements from 1 to n2 in spiral order.
-#
-# For example,
-# Given n = 3,
-#
-# You should return the following matrix:
-# [
-#  [ 1, 2, 3 ],
-#  [ 8, 9, 4 ],
-#  [ 7, 6, 5 ]
-# ]
+"""
+
+59. Spiral Matrix II
+Medium
+
+Given a positive integer n, generate an n x n matrix filled with elements from 1 to n2 in spiral order.
+
+ 
+
+Example 1:
+
+
+Input: n = 3
+Output: [[1,2,3],[8,9,4],[7,6,5]]
+Example 2:
+
+Input: n = 1
+Output: [[1]]
+ 
+
+Constraints:
+
+1 <= n <= 20
+
+"""
 
 # V0 
 class Solution:
