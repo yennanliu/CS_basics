@@ -31,6 +31,16 @@ n == matrix[i].length
 
 # V0
 # IDEA : 4 cases : right, down, left, up + boundary condition
+# PATTERN:
+# while condition:
+#     # right
+#     for ..
+#     # down
+#     for ...
+#     # left
+#     for ...
+#     # up
+#     for ...
 class Solution(object):
     def spiralOrder(self, matrix):
         # edge case
@@ -40,11 +50,15 @@ class Solution(object):
         """
         NOTE this : we define 4 boundaries
         """
-        left, right, top, bottom = 0, len(matrix[0])-1, 0, len(matrix)-1
+        left = 0
+        right = len(matrix[0])-1
+        top = 0
+        bottom = len(matrix)-1
         """
         NOTE : this condition
         """
         while left <= right and top <= bottom:
+            # NOTE !!! we use for loop INSTEAD of while
             # right
             for j in range(left, right+1):  # note : range(left, right+1)
                 res.append(matrix[top][j])
@@ -66,6 +80,7 @@ class Solution(object):
                 if left < right:
                     res.append(matrix[i][left])
 
+            # NOTE !!! we do boundary update AFTER each "right-down-left-up" iteration
             left += 1
             right -= 1
             top += 1
