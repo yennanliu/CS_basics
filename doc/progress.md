@@ -1,5 +1,134 @@
 # Progress
 
+# 2022-10-23
+- ================
+- leetcode_company_V5/LC-goog.pdf
+- ================
+- LC learning
+	- Recursion I
+		- completed
+	- Recursion II
+		- Largest Rectangle in Histogram
+			- https://leetcode.com/explore/learn/card/recursion-ii/507/beyond-recursion/2901/
+- ================
+- Fucking algorithm
+	- 二维数组的花式遍历技巧: 筆記!
+		- https://labuladong.github.io/algo/2/20/26/
+	- 一次看懂遞迴 (Recursion) 的思維模式（一）筆記!
+		- https://medium.com/appworks-school/%E9%80%B2%E5%85%A5%E9%81%9E%E8%BF%B4-recursion-%E7%9A%84%E4%B8%96%E7%95%8C-%E4%B8%80-59fa4b394ef6
+
+- ================
+- LC top 100 likes
+	- 114
+	- 221
+	- 337
+	- 437
+- ================
+- LC general
+	- BST (inorder traversal)
+		- 230
+	    - 538
+	    - 1038
+	- Tree
+		- 536
+	- =======
+	- bit manipulation
+		- [Curated-List-of-Top-100-LC](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : binary
+		- 393 again (not start)
+	- sort
+		- 912
+	- String
+		- 076
+	- 2 pointers
+		- 031
+	- prefix sum
+		- 926
+	- dfs
+		- 652
+		- 490
+		- 079
+		- 449
+		- 980
+		- 1650
+		- 297
+		- 449
+	- bfs
+		- 133
+		- 815
+		- 1022
+	- greedy
+		- 358 (again, not start!)
+			- check `heappush, heappop`
+		- 045
+	- union find
+		- 721
+		- 547
+	- design
+		- all remain (not start)
+		- 460
+		- 1166
+		- 146 (OrderedDict)
+		- 635
+	- hashmap
+		- 523
+	- graph
+		- 261 (Union Find) 
+		- 547 (Union Find) (not start)
+		- 323 (Union Find) (not start)
+		- 210 (Topological Sort) not start)
+		- 210 (Topological Sort)
+	- sliding window
+		- 300
+		- 491
+		- 673
+		- 239
+	- linked list
+		- 002
+		- 445
+		- 019
+		- 092
+	- stack
+		- 394
+		- 341
+		- 735
+	- array
+		- 041
+	- topology sorting
+		- 269 (not start! again)
+		- 444
+		- 054
+	- heap
+		- 239
+		- 895
+	- trie
+		- 208
+		- 642
+	- binary search
+		- 162
+		- 033
+		- 034
+	- 2 pointers
+		- 1099
+	- dp
+		- 053
+		- 091
+	- others
+	- Review
+		- (OK)
+		- =============
+		- (ing)
+	- SQL
+- System Design
+- algorithm book (labu)
+	- note
+		- p.363 -
+- system design book - an insider's guide (GOTOP)
+	- 1st read (ok)
+	- 2nd read :
+		- read
+			- p.1 - p.35
+	- review/note
+
 # 2022-10-16
 - ================
 - leetcode_company_V5/LC-goog.pdf
