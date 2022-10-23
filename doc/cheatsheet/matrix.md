@@ -11,6 +11,10 @@
 
 - Algorithm
     - [fucking algorithm : 二维数组的花式遍历技巧](https://labuladong.github.io/algo/2/20/26/)
+        - LC 151
+        - LC 48
+        - LC 54
+        - LC 59
 
 - Data structure
     - array
@@ -43,9 +47,9 @@
 ```
 
 ```python
-#----------------------
-# transpose matrix
-#----------------------
+#--------------------------------
+# transpose (i,j) -> (j, i)
+#--------------------------------
 # LC  048 Rotate Image
 matrix = [
     [1,2,4],
@@ -61,8 +65,30 @@ for i in range(len(matrix)):
         matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
 print (matrix)
+
+# output
+# i = 0 j = 1
+# i = 0 j = 2
+# i = 1 j = 2
 # In [36]: matrix
 # Out[36]: [[1, 4, 7], [2, 5, 8], [4, 6, 9]]
+
+
+matrix = [
+    [1,2,3,4],
+    [5,6,7,8],
+    [9,10,11,12],
+    [13,14,15,16]
+]
+
+# output
+# i = 0 j = 1
+# i = 0 j = 2
+# i = 0 j = 3
+# i = 1 j = 2
+# i = 1 j = 3
+# i = 2 j = 3
+# [[1, 5, 9, 13], [2, 6, 10, 14], [3, 7, 11, 15], [4, 8, 12, 16]]
 ```
 
 ```python

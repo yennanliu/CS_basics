@@ -12,8 +12,6 @@
 			- https://leetcode.com/explore/learn/card/recursion-ii/507/beyond-recursion/2901/
 - ================
 - Fucking algorithm
-	- 二维数组的花式遍历技巧: 筆記!
-		- https://labuladong.github.io/algo/2/20/26/
 	- 一次看懂遞迴 (Recursion) 的思維模式（一）筆記!
 		- https://medium.com/appworks-school/%E9%80%B2%E5%85%A5%E9%81%9E%E8%BF%B4-recursion-%E7%9A%84%E4%B8%96%E7%95%8C-%E4%B8%80-59fa4b394ef6
 
