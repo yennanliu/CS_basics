@@ -56,12 +56,15 @@ matrix = [
     [4,5,6],
     [7,8,9]
 ]
-for i in range(len(matrix)):
+
+l = len(matrix)
+w = len(matrix[0])
+for i in range(l):
     """
     NOTE !!!
         -> j start from i+1 to len(matrix[0])
     """
-    for j in range(i+1, len(matrix[0])): # NOTE THIS !!!!
+    for j in range(i+1, w): # NOTE THIS !!!!
         matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
 print (matrix)
