@@ -20,7 +20,7 @@
 	- `part 3) Direct memory (not managed by JVM GC)`
 	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_1.jpeg">
     <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_2.jpeg">
-    <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_3.jpeg">
+    <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_3.png">
 - Ref
 	- https://copyfuture.com/blogs-details/20210918043412580m
 	- https://cloud.tencent.com/developer/article/1648836
