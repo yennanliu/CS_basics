@@ -44,7 +44,7 @@ class Solution:
                 max_area = max(max_area, min_height * (j - i + 1))
         return max_area
 
-# V1
+# V1'
 # IDEA : BETTER BRURE FORCE
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
 class Solution:
@@ -53,11 +53,115 @@ class Solution:
         for i in range(len(heights)):
             min_height = inf
             for j in range(i, len(heights)):
+                # NOTE : we maintain min_height
                 min_height = min(min_height, heights[j])
                 max_area = max(max_area, min_height * (j - i + 1))
         return max_area
 
-# V1
+# V1'''
+# IDEA : STACK
+# https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
+# Algorithm:
+# In this approach, we maintain a stack. Initially, we push a -1 onto the stack to mark the end. We start with the leftmost bar and keep pushing the current bar's index onto the stack until we get two successive numbers in descending order, i.e. until we get heights[i]<heights[i−1]heights[i] < heights[i-1]heights[i]<heights[i−1]. Now, we start popping the numbers from the stack until we hit a number stack[j]stack[j]stack[j] on the stack such that heights[stack[j]]≤heights[i]heights\big[stack[j]\big] \leq heights[i]heights[stack[j]]≤heights[i]. Every time we pop, we find out the area of rectangle formed using the current element as the height of the rectangle and the difference between the the current element's index pointed to in the original array and the element stack[top−1]−1stack[top-1] - 1stack[top−1]−1 as the width i.e. if we pop an element stack[top]stack[top]stack[top] and i is the current index to which we are pointing in the original array, the current area of the rectangle will be considered as: 
+# (i−stack[top−1]−1)×heights[stack[top]].(i-stack[top-1]-1) \times heights\big[stack[top]\big].
+# (i−stack[top−1]−1)×heights[stack[top]]. Further, if we reach the end of the array, we pop all the elements of the stack and at every pop, this time we use the following equation to find the area: (heights.length−stack[top−1]−1)×heights[stack[top]](heights.length - stack[top-1] - 1) \times heights\big[stack[top]\big](heights.length−stack[top−1]−1)×heights[stack[top]], where stack[top]stack[top]stack[top] refers to the element just popped. Thus, we can get the area of the of the largest rectangle by comparing the new area found everytime.
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        stack = [-1]
+        max_area = 0
+        for i in range(len(heights)):
+            while stack[-1] != -1 and heights[stack[-1]] >= heights[i]:
+                current_height = heights[stack.pop()]
+                current_width = i - stack[-1] - 1
+                max_area = max(max_area, current_height * current_width)
+            stack.append(i)
+
+        while stack[-1] != -1:
+            current_height = heights[stack.pop()]
+            current_width = len(heights) - stack[-1] - 1
+            max_area = max(max_area, current_height * current_width)
+        return max_area
+
+# V1''
+# IDEA : STACK (monotone stack)
+# https://leetcode.com/problems/largest-rectangle-in-histogram/solutions/1083629/python-by-monotone-stack-w-comment/
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        
+        # store x coordination, init as -1
+        stack = [ -1 ]
+        
+        # add zero as dummy tail 
+        heights.append( 0 )
+        
+        # top index for stack
+        top = -1
+        
+        # area of rectangle
+        rectangle = 0
+        
+        # scan each x coordination and y coordination
+        for x_coord, y_coord in enumerate(heights):
+            
+            while heights[ stack[top] ] > y_coord:
+            # current height is lower than previous
+            # update rectangle area from previous heights
+                
+                # get height
+                h = heights[ stack.pop() ]
+                
+                # compute width
+                w = x_coord - stack[top] -1 
+                
+                # update maximal area
+                rectangle = max(rectangle, h * w)
+                
+            # push current x coordination into stack
+            stack.append( x_coord )
+                  
+        return rectangle
+
+# V1'''
+# IDEA : STACK
+# https://leetcode.com/problems/largest-rectangle-in-histogram/solutions/342507/python-different-solutins/
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        stack = [0]
+        heights.append(0)
+        
+        res = 0
+        for right in range(1,len(heights)):
+            while stack and heights[stack[-1]] > heights[right]:
+                h = heights[stack.pop()]
+                left = -1 if not stack else stack[-1] # because pop operation, left = stack.pop() is not the left boundary
+                w = right - left -1
+                res = max(res,h*w)
+            stack.append(right)
+        return res
+
+# V1'''''
+# IDEA : STACK
+# https://leetcode.com/problems/largest-rectangle-in-histogram/solutions/1023979/python-solution/
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        stack = []
+        max_area = 0
+        l = len(heights)
+        for i, n in enumerate(heights):
+            if not stack or stack[-1][1] <= n:
+                stack.append((i, n))
+            else:
+                while stack and stack[-1][1] > n:
+                    j, m = stack.pop()
+                    max_area = max(max_area, (i - j) * m)
+                stack.append((j, n))
+        
+        while stack:
+            j, m = stack.pop()
+            max_area = max(max_area, (l - j) * m)
+        return max_area
+
+# V1'''''''
 # IDEA : Divide and Conquer Approach
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
 class Solution:
@@ -150,25 +254,5 @@ class Solution:
 #     return heights[leftMin] < heights[rightMin] ? leftMin : rightMin;
 #   }
 # };
-
-# V1
-# IDEA : STACK
-# https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
-class Solution:
-    def largestRectangleArea(self, heights: List[int]) -> int:
-        stack = [-1]
-        max_area = 0
-        for i in range(len(heights)):
-            while stack[-1] != -1 and heights[stack[-1]] >= heights[i]:
-                current_height = heights[stack.pop()]
-                current_width = i - stack[-1] - 1
-                max_area = max(max_area, current_height * current_width)
-            stack.append(i)
-
-        while stack[-1] != -1:
-            current_height = heights[stack.pop()]
-            current_width = len(heights) - stack[-1] - 1
-            max_area = max(max_area, current_height * current_width)
-        return max_area
 
 # V2
