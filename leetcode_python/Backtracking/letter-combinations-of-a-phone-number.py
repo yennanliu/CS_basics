@@ -43,9 +43,10 @@ class Solution(object):
             if len(cur) > len(digits):
                 cur = []
                 return
-            for a in d[digits[idx]]:
+            for a in d[digits[idx]]: # NOTE !!! what's idx for here
+                # print ( "idx = " + str(idx) + " alpha = " + str(digits[idx]) + " a = " + str(a))
                 cur.append(a)
-                help(idx+1, cur)
+                help(idx+1, cur) # NOTE !!! we make idx + 1, so can visit next digit (and its alphebets)
                 cur.pop(-1)  # NOTE this !!! : we pop last element
         # edge case
         if not digits:
