@@ -40,6 +40,9 @@ class Solution(object):
                 if i not in cur:
                     cur.append(i)
                     help(cur)
+                    """
+                    NOTE !!! : we UNDO the last op we just made (pop last element we put into array)
+                    """
                     cur.pop(-1)
         # edge case
         if not nums:
