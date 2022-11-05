@@ -8,8 +8,8 @@
 	- Recursion I
 		- completed
 	- Recursion II
-		- Largest Rectangle in Histogram
-			- https://leetcode.com/explore/learn/card/recursion-ii/507/beyond-recursion/2901/
+		- Permutations
+			- https://leetcode.com/explore/learn/card/recursion-ii/507/beyond-recursion/2903/
 - ================
 - Fucking algorithm
 	- 一次看懂遞迴 (Recursion) 的思維模式（一）筆記!
