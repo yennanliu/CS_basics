@@ -1,5 +1,7 @@
 # Heap
 
+<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap_space_time_complexity.png" ></p>
+
 - Intro
     - https://leetcode.com/explore/learn/card/heap/
     - In many CS applications, we only need to `access the largest or smallest element` in the dataset. We DO NOT care about `the order of other data in the data set`. How do we efficiently access the largest or smallest element in the current dataset? The answer would be `Heap`.
@@ -158,6 +160,49 @@ maxHeap = [-x for x in maxHeap]
 heapq.heapify(maxHeap)
 # The top element of maxHeap is -3
 # Convert -3 to 3, which is the maximum value in the original maxHeap
+
+#----------------------
+# 2) insert into element
+#----------------------
+
+# https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4023/
+
+# Insert an element to the Min Heap
+heapq.heappush(minHeap, 5)
+
+# Insert an element to the Max Heap
+# Multiply the element by -1
+# As we are converting the Min Heap to a Max Heap
+heapq.heappush(maxHeap, -1 * 5)
+
+
+#----------------------
+# 3) delete the top element
+#----------------------
+
+# https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4025/
+
+# Delete top element from the Min Heap
+heapq.heappop(minHeap)
+
+# Delete top element from the Max Heap
+heapq.heappop(maxHeap)
+
+
+#----------------------
+# 3) get top element
+#----------------------
+
+# https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4024/
+
+# Get top element from the Min Heap
+# i.e. the smallest element
+minHeap[0]
+# Get top element from the Max Heap
+# i.e. the largest element
+# When inserting an element, we multiplied it by -1
+# Therefore, we need to multiply the element by -1 to revert it back
+-1 * maxHeap[0]
 
 #----------------------
 # 2) sorting via heapq
