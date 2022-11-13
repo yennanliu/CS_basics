@@ -5,7 +5,8 @@
 - leetcode_company_V5/LC-goog.pdf
 - ================
 - LC learning
-	- [bit-manipulation](https://leetcode.com/explore/learn/card/bit-manipulation/)
+	- bit-manipulation
+		- https://leetcode.com/explore/learn/card/bit-manipulation/669/bit-manipulation-concepts/4495/
 - ================
 - Fucking algorithm
 	- 一次看懂遞迴 (Recursion) 的思維模式（一）筆記!
