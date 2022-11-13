@@ -3,9 +3,9 @@
 ## 0) Concept
 
 -  Note if we use an `array` to represent the `complete binary tree`,and `store the root node at index 1`
-        -> index of the `parent` node of any node is `[index of the node / 2]`
-        -> index of the `left child` node is `[index of the node * 2]`
-        -> index of the `right child` node is `[index of the node * 2 + 1]`
+        - so, index of the `parent` node of any node is `[index of the node / 2]`
+        - so, index of the `left child` node is `[index of the node * 2]`
+        - so, index of the `right child` node is `[index of the node * 2 + 1]`
         - https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/MinHeap.py#L36-L40
 
 ### 0-1) Types
