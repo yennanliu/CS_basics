@@ -7,6 +7,8 @@
 - LC learning
 	- bit-manipulation
 		- https://leetcode.com/explore/learn/card/bit-manipulation/669/bit-manipulation-concepts/4495/
+	- Heap
+		- https://leetcode.com/explore/learn/card/heap/643/heap/4019/
 - ================
 - Fucking algorithm
 	- 一次看懂遞迴 (Recursion) 的思維模式（一）筆記!
