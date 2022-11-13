@@ -1,11 +1,29 @@
 # Heap
-- a special `completed binary tree`
-- definition : given a tree, if P is C's parent node -> P always `<=` or `>=` C.
-- types
-    - min heap
-        - given a tree, if P is C's parent node -> P always `<=` C.
-    - max heap
-        - given a tree, if P is C's parent node -> P always `>=` C.
+
+- Intro
+    - https://leetcode.com/explore/learn/card/heap/
+    - In many CS applications, we only need to `access the largest or smallest element` in the dataset. We DO NOT care about `the order of other data in the data set`. How do we efficiently access the largest or smallest element in the current dataset? The answer would be `Heap`.
+    - Priority Queue
+        - a priority queue is an `abstract data type` similar to a regular queue or stack data structure in which each element additionally has a `"priority"` associated with it. In a priority queue, an element with high priority is served before an element with low priority.
+        - Heap != Priority Queue
+        - Priority Queue is a abstract data type
+        - Heap is a way to implemenrt Priority Queue
+
+- Heap:
+    - a special `completed binary tree`
+    - The value of each node must be no greater than (or no less than) the value of its child nodes.
+    - Properties:
+        - Insertion of an element into the Heap has a time complexity of `O( log N)`
+        - Deletion of an element from the Heap has a time complexity of `O( log N)`
+        - The maximum/minimum value in the Heap can be obtained with `O(1)` time complexity.
+    <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/type_of_heap.png" ></p>
+
+    - Definition : given a tree, if P is C's parent node -> P always `<=` or `>=` C.
+    - Types
+        - min heap
+            - given a tree, if P is C's parent node -> P always `<=` C.
+        - max heap
+            - given a tree, if P is C's parent node -> P always `>=` C.
 - was invented for `heap sort`
 - a heap is a specialized tree-based data structure which is essentially an almost completed tree that satisfies the heap property:
     - In a max heap
