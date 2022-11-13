@@ -1,6 +1,14 @@
 # Bit Manipulation 
 
 ## 0) Concept
+- Base
+    - [Ref](https://leetcode.com/explore/learn/card/bit-manipulation/669/bit-manipulation-concepts/4494/)
+    - The actual value of a base-X number is determined by each digit and its location.
+    - example :
+        - 123.45 (base 10) = 1 * 10^2 + 2 * 10^1 + 3 * 10^0 + 4 * 10^(-1) + 5 * 10^(-2)
+        - 720.5 (base 8) = 7 * 8^2 + 2 * 8^1 + 0 * 8^0 + 5 * 8^(-1)
+    - In computer science, the binary system is most commonly used. It has two digits: 0, and 1. Octal (base-8) and hexadecimal (base 16) are also commonly used. Octal has eight digits: 0, 1, 2, 3, 4, 5, 6, and 7.
+
 - [bit VS byte VS char](http://web.ntnu.edu.tw/~algo/Bit.html)
     - basic
         - bit : binary number (use 2 as base : 0, 1)
