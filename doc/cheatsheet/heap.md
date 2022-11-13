@@ -8,8 +8,13 @@
         - Heap != Priority Queue
         - Priority Queue is a abstract data type
         - Heap is a way to implemenrt Priority Queue
+    - `Complete binary tree`
+        - A complete binary tree is a binary tree in which every level, `except possibly the last`, is completely filled, and all nodes in the last level are as far left as possible.
+        - [wiki](https://en.wikipedia.org/wiki/Binary_tree#:~:text=A%20complete%20binary%20tree%20is,tree%20is%20not%20necessarily%20perfect.)
+        - example :
+            - <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/complete_binary_tree1.png" ></p>
 
-- Heap:
+- Heap
     - a special `completed binary tree`
     - The value of each node must be no greater than (or no less than) the value of its child nodes.
     - Properties:
@@ -32,8 +37,6 @@
         - the key of P is less than or equal to the key of C.[2] The node at the "top" of the heap (with no parents) is called the root node.
 - Ref
     - https://www.geeksforgeeks.org/heap-data-structure/
-
-<p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap.png" ></p>
 
 ## 0) Concept  
 
