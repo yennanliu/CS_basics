@@ -44,15 +44,24 @@
 ## 1) General form
 
 ### 1-0) Basic OP
-- build
-- insert
-- update
-- get
-- delete
-- extract_max
-- delete_max
-- replace
-- find_max
+
+- V1
+    - build
+    - insert
+    - update
+    - get
+    - delete
+    - extract_max
+    - delete_max
+    - replace
+    - find_max
+- V2
+    - Construct a Max Heap and a Min Heap.
+    - Insert elements into a Heap.
+    - Get the top element of a Heap.
+    - Delete the top element from a Heap.
+    - Get the length of a Heap.
+    - Perform time and space complexity analysis for common applications that use a Heap.
 
 ### 1-1) heapq (`heap queue` AKA `priority queue`) (Py api)
 - Note :
@@ -115,6 +124,40 @@ array: [5, 7, 21, 10, 17, 24, 27, 45, 15, 30, 36, 50]
 #  2) heapify(array)
 #
 # -> we can see above results are a bit different. However this not affect the "min heap" property in py. We can still get min element, and heap will get updated accordingly.
+
+#----------------------
+# 1') build heapq V2
+#----------------------
+
+# https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4022/
+
+import heapq
+
+# Construct an empty Min Heap
+minHeap = []
+heapq.heapify(minHeap)
+
+# Construct an empty Max Heap
+# As there are no internal functions to construct a Max Heap in Python,
+# So, we will not construct a Max Heap.
+
+# Construct a Heap with Initial values
+# this process is called "Heapify"
+# The Heap is a Min Heap
+heapWithValues = [3,1,2]
+heapq.heapify(heapWithValues)
+
+# Trick in constructing a Max Heap
+# As there are no internal functions to construct a Max Heap
+# We can multiply each element by -1, then heapify with these modified elements.
+# The top element will be the smallest element in the modified set,
+# It can also be converted to the maximum value in the original dataset.
+# Example
+maxHeap = [1,2,3]
+maxHeap = [-x for x in maxHeap]
+heapq.heapify(maxHeap)
+# The top element of maxHeap is -3
+# Convert -3 to 3, which is the maximum value in the original maxHeap
 
 #----------------------
 # 2) sorting via heapq
