@@ -2,11 +2,28 @@
 
 ## 0) Concept
 
--  Note if we use an `array` to represent the `complete binary tree`,and `store the root node at index 1`
-    - so, index of the `parent` node of any node is `[index of the node / 2]`
-    - so, index of the `left child` node is `[index of the node * 2]`
-    - so, index of the `right child` node is `[index of the node * 2 + 1]`
-    - https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/MinHeap.py#L36-L40
+- Complete Tree to Array
+    -  Note if we use an `array` to represent the `complete binary tree`,and `store the root node at index 1`
+        - so, index of the `parent` node of any node is `[index of the node / 2]`
+        - so, index of the `left child` node is `[index of the node * 2]`
+        - so, index of the `right child` node is `[index of the node * 2 + 1]`
+        - https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/MinHeap.py#L36-L40
+        - [video](https://leetcode.com/explore/learn/card/heap/643/heap/4017/) : very good explanation!!!
+        - properties
+            - how to store ? 
+                - via Array and index
+            - how to find the parent node ?
+                - n / 2
+                - NOTE : `n is "index"`
+            - how to find the left and right children ?
+                - left children : n * 2
+                - right children : n * 2 + 1
+            - how to check if a node is leaf node ?
+                - check if i > (# of nodes) / 2
+            - <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/complete_tree_to_array.png" ></p>
+
+- Array to Complete Tree
+    - dev
 
 ### 0-1) Types
 
