@@ -1,13 +1,12 @@
 #---------------------------------------------------------------
-# HEAP
-#
-#
-# https://docs.python.org/3/library/heapq.html
-# https://github.com/python/cpython/blob/3.10/Lib/heapq.py
+# HEAP V1
 #---------------------------------------------------------------
 
-# NOTE !!! : in py, (heapq) heap implementation is "MINIMUM heap"
+# https://docs.python.org/3/library/heapq.html
+# https://github.com/python/cpython/blob/3.10/Lib/heapq.py
 
+# Implementing "Min Heap" 
+# NOTE !!! : in py, (heapq) heap implementation is "MINIMUM heap"
 
 # V1
 # https://github.com/OmkarPathak/Data-Structures-using-Python/blob/master/Heap/Heap.py
@@ -84,6 +83,5 @@ print(('Deleted:', bh.delete()))
 print(bh)
 
 
-# V2
-# PY source code
+# V2 : python src code
 # https://github.com/python/cpython/blob/3.8/Lib/heapq.py

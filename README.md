@@ -140,7 +140,7 @@
 ||Doubly LinkedList| [Python](./data_structure/python/doublylinkedlist.py), [JS](./data_structure/js/doublylinkedList.js) | | | AGAIN|
 ||Tree| [Python ](./data_structure/python/tree.py) | | | AGAIN**|
 ||Trie| [Python ](./data_structure/python/trie.py) | | | AGAIN|
-||Heap| [Python ](./data_structure/python/heap.py), [Java](./algorithm/java/BinaryHeap.java) | | | AGAIN|
+||Heap| [heap.py](./data_structure/python/heap.py), [heap2.py](./data_structure/python/heap2.py), [BinaryHeap.java](./algorithm/java/BinaryHeap.java), [MinHeap.java](leetcode_java/src/main/java/AlgorithmJava/MinHeap.java) | | | AGAIN|
 ||Max Heap| [Python ](./data_structure/python/max_heap.py) | | | AGAIN|
 ||Array| [Python ](./data_structure/python/array.py) | | | AGAIN*|
 ||Graph| [Python ](./data_structure/python/graph.py), [JS](./data_structure/js/graph.js). [Java-graph](./algorithm/java/Graph.java), [Java-graph-client](./algorithm/java/GraphClient.java) | | | OK***|
