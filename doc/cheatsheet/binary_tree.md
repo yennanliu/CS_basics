@@ -25,6 +25,15 @@
 - Array to Complete Tree
     - dev
 
+- `Complete binary tree`
+    - A complete binary tree is a binary tree in which every level, `except possibly the last`, is completely filled, and all nodes in the last level are as far left as possible.
+    - [wiki](https://en.wikipedia.org/wiki/Binary_tree#:~:text=A%20complete%20binary%20tree%20is,tree%20is%20not%20necessarily%20perfect.)
+    - example :
+        - complete binary tree
+        <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/complete_binary_tree1.png" ></p>
+        - NOT complete binary tree
+        <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/not_complete_binary_tree.png" ></p>
+
 ### 0-1) Types
 
 - Types
