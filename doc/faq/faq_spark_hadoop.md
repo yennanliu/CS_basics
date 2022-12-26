@@ -72,8 +72,8 @@
   --master <master-url> \
   --deploy-mode <deploy-mode> \
   --conf <key<=<value> \
-  --driver-memory <value>g \
-  --executor-memory <value>g \
+  --driver-memory <amount of memory> \
+  --executor-memory <amount of memory> \
   --executor-cores <number of cores>  \
   --jars  <comma separated dependencies>
   --class <main-class> \
