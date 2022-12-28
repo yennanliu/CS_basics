@@ -80,13 +80,13 @@
 - https://www.cloudduggu.com/flink/interview-questions/
 
 ### 14. What are the different ways to use Apache Flink?
-Apache Flink can be deployed and configured in the below ways.
-	- Flink can be setup Locally (Single Machine)
-	- It can be deployed on a VM machine.
-	- We can use Flink as a Docker image.
-	- We can configure and deploy Flink as a standalone cluster.
-	- Flink can be deployed and configured on Hadoop YARN and another resource managing framework.
-	- Flink can be deployed and configured on a Cloud system.
+Apache Flink can be deployed and configured in below ways.
+- Flink can be setup Locally (Single Machine)
+- It can be deployed on a VM machine.
+- We can use Flink as a Docker image.
+- We can configure and deploy Flink as a standalone cluster.
+- Flink can be deployed and configured on Hadoop YARN and another resource managing framework.
+- Flink can be deployed and configured on a Cloud system.
 
 ### 15. Explain how flink implement `exactly once` ? what's the logics, mechanisms.. ?
 - `distributed snapshot`
