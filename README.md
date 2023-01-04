@@ -16,7 +16,7 @@
 ![Update](https://img.shields.io/badge/update-weekly-purple.svg)
 [![Build Status](https://travis-ci.org/yennanliu/CS_basics.svg?branch=master)](https://travis-ci.org/yennanliu/CS_basics)
 [![Star History Chart](https://api.star-history.com/svg?repos=yennanliu/CS_basics&type=Date)](https://star-history.com/#yennanliu/CS_basics&Date)
-[![PRs](https://img.shields.io/badge/PRs-welcome-6574cd.svg)](https://github.com/yennanliu/CS_basics/pulls)
+
 
 ## Resource
 * [Resource.md](./doc/Resource.md) - `Resource` for coding interview (**keep updating**)
