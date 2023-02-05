@@ -71,3 +71,13 @@
 - client pull
 	- long polling (e.g. Comet Based on XHR)
 	- short polling (e.g. AJAX-based timer)
+
+### 14) CAP theorem?
+	- In distribution, we can ONLY have either "CP" or "AP" in our system
+	- https://youtu.be/PZxcnNSoles?t=311
+	- C : Consistency
+	- A : Availability
+	- P : Partition tolerance
+	- NOTE!!
+		- `"P" is necessary`
+		- So only "CP" or "AP" is possible
