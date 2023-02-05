@@ -73,8 +73,10 @@
 	- short polling (e.g. AJAX-based timer)
 
 ### 14) CAP theorem?
-	- In distribution, we can ONLY have either "CP" or "AP" in our system
+	- In distribution system, we can ONLY have either "CP" or "AP" in it
 	- https://youtu.be/PZxcnNSoles?t=311
+		- https://thesecretlivesofdata.com/raft/
+		- https://raft.github.io/
 	- C : Consistency
 	- A : Availability
 	- P : Partition tolerance
