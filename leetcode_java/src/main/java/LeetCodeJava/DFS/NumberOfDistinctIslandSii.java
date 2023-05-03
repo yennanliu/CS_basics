@@ -7,7 +7,7 @@ import java.util.*;
 
 // V1'
 // http://www.noteanddata.com/leetcode-711-Number-of-Distinct-Islands-II-java-solution-note.html
-class Solution {
+class NumberOfDistinctIslandSii {
     public int numDistinctIslands2(int[][] grid) {
         boolean[][] visited = new boolean[grid.length][grid[0].length];
 
