@@ -29,33 +29,27 @@
 	- [Leetcode cookbook](https://github.com/halfrost/LeetCode-Go)
 	- [fucking-algorithm](https://github.com/labuladong/fucking-algorithm)
 	- [fucking-algorithm website](https://labuladong.github.io/algo/)
-* LC problems
-	- LC sql high frequent
-		- [LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
-		- [LeetCode Curated SQL 70](https://leetcode.com/problem-list/5htp6xyg/?page=1)
-		- [cheatsheet-mysql-a4](https://cheatsheet.dennyzhang.com/cheatsheet-mysql-a4)
-* LC flow
+* LC Flow
 	- high level idea : data structure, algorithm
 	- offer time & space complexity
 	- code implementation
 	- offer test case (consider edge case)
 	- discussion & follow up
+* LC SQL high frequent
+		- [LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
+		- [LeetCode Curated SQL 70](https://leetcode.com/problem-list/5htp6xyg/?page=1)
+		- [cheatsheet-mysql-a4](https://cheatsheet.dennyzhang.com/cheatsheet-mysql-a4)
 * [Resource.md](./doc/Resource.md) - `Resource` for coding interview (**keep updating**)
-* [teach yourself CS](https://teachyourselfcs.com/)
+* [Teach yourself CS](https://teachyourselfcs.com/)
 * [MindMapCodeInterview](./doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
 * [CodeInterviewCheatsheet](./doc/cheatsheet/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
 * [repl.it](https://repl.it/) - Coding online!
 
 * Visualization
-
-	<details>
-	<summary>Visualization</summary>
-
 	- [visualgo - DFS / BFS](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
 	- [visualgo - linkedlist](https://visualgo.net/en/list) - Linkedlist visualization
 	- [visualgo - BST](https://visualgo.net/bn/bst) - binary search tree visualization
 	- [toptal-sorting-algorithms](https://www.toptal.com/developers/sorting-algorithms)- sorting algorithms online
-	</details>
 
 * [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
 * [bit_manipulation.md](./doc/bit_manipulation.md) - Bit Manipulation Cheet Sheet
@@ -81,9 +75,6 @@
 	- Repo
 		- [system-design-primer repo](https://github.com/donnemartin/system-design-primer)
 * SQL
-	<details>
-	<summary>SQL</summary>
-
 	- [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
 	- [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
 	- [SQL zoo](https://sqlzoo.net/) - SQL test
@@ -99,8 +90,6 @@
 	- [SQL Bolt](https://sqlbolt.com/)
 	- [self-joins-calculate-retention-churn-and-reactivation-metrics](https://www.sisense.com/blog/use-self-joins-to-calculate-your-retention-churn-and-reactivation-metrics/)
 	- [Prod metric design](https://quip.com/edU3AgdiNOo1)
-	</details>
-
 * Tools
 	- https://coderpad.io/
 	- https://codeshare.io/
