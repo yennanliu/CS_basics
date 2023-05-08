@@ -16,17 +16,47 @@
 
 
 ## Resource
+* LC Pattern
+	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
+	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
+	- [LC top 100 likes](https://leetcode.com/problem-list/top-100-liked-questions/?page=1&fbclid=IwAR2MzUDDOscDklba5gL815lkLKzxK-zOR2WV2-W80_gRmvtfAsNWyut_USw)
+	- [LC Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
+	- [cheatsheet-leetcode-a4](https://cheatsheet.dennyzhang.com/cheatsheet-leetcode-a4)
+	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
+	- [grokking-the-coding-interview](https://www.educative.io/courses/grokking-the-coding-interview)
+* LC Resource
+	- [代碼隨想錄](https://github.com/youngyangyang04/leetcode-master)
+	- [Leetcode cookbook](https://github.com/halfrost/LeetCode-Go)
+	- [fucking-algorithm](https://github.com/labuladong/fucking-algorithm)
+	- [fucking-algorithm website](https://labuladong.github.io/algo/)
+* LC problems
+	- LC sql high frequent
+		- [LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
+		- [LeetCode Curated SQL 70](https://leetcode.com/problem-list/5htp6xyg/?page=1)
+		- [cheatsheet-mysql-a4](https://cheatsheet.dennyzhang.com/cheatsheet-mysql-a4)
+* LC flow
+	- high level idea : data structure, algorithm
+	- offer time & space complexity
+	- code implementation
+	- offer test case (consider edge case)
+	- discussion & follow up
 * [Resource.md](./doc/Resource.md) - `Resource` for coding interview (**keep updating**)
-* [ref.md](./doc/ref.md) - Leetcode ref
 * [teach yourself CS](https://teachyourselfcs.com/)
 * [MindMapCodeInterview](./doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
 * [CodeInterviewCheatsheet](./doc/cheatsheet/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
 * [repl.it](https://repl.it/) - Coding online!
+
 * Visualization
+
+	<details>
+	<summary>Visualization</summary>
+
 	- [visualgo - DFS / BFS](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
 	- [visualgo - linkedlist](https://visualgo.net/en/list) - Linkedlist visualization
 	- [visualgo - BST](https://visualgo.net/bn/bst) - binary search tree visualization
-	- [toptal-sorting-algorithms](https://www.toptal.com/developers/sorting-algorithms)- sorting algorithms online 
+	- [toptal-sorting-algorithms](https://www.toptal.com/developers/sorting-algorithms)- sorting algorithms online
+	</details>
+
 * [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
 * [bit_manipulation.md](./doc/bit_manipulation.md) - Bit Manipulation Cheet Sheet
 * [Py TimeComplexity](https://wiki.python.org/moin/TimeComplexity) - Py basic data structure `Time Complexity` ref
@@ -39,27 +69,6 @@
 * [Cheatsheet](https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet)
 * Data structure
 	- [py core data structure interview](https://python.plainenglish.io/python-for-interviewing-an-overview-of-the-core-data-structures-666abdf8b698)
-* LC Pattern
-	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
-	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
-	- [LC top 100 likes](https://leetcode.com/problem-list/top-100-liked-questions/?page=1&fbclid=IwAR2MzUDDOscDklba5gL815lkLKzxK-zOR2WV2-W80_gRmvtfAsNWyut_USw)
-	- [LC Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
-	- [fucking-algorithm](https://github.com/labuladong/fucking-algorithm)
-	- [fucking-algorithm website](https://labuladong.github.io/algo/)
-	- [cheatsheet-leetcode-a4](https://cheatsheet.dennyzhang.com/cheatsheet-leetcode-a4)
-	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
-	- [grokking-the-coding-interview](https://www.educative.io/courses/grokking-the-coding-interview)
-* LC problems
-	- LC sql high frequent
-		- [LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
-		- [LeetCode Curated SQL 70](https://leetcode.com/problem-list/5htp6xyg/?page=1)
-		- [cheatsheet-mysql-a4](https://cheatsheet.dennyzhang.com/cheatsheet-mysql-a4)
-* LC flow
-	- high level idea : data structure, algorithm
-	- offer time & space complexity
-	- code implementation
-	- offer test case (consider edge case)
-	- discussion & follow up
 * System design
 	- Video
 		- [Tech Dummies Narendra L Utube](https://www.youtube.com/channel/UCn1XnDWhsLS5URXTi5wtFTA)
@@ -72,6 +81,9 @@
 	- Repo
 		- [system-design-primer repo](https://github.com/donnemartin/system-design-primer)
 * SQL
+	<details>
+	<summary>SQL</summary>
+
 	- [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
 	- [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
 	- [SQL zoo](https://sqlzoo.net/) - SQL test
@@ -87,6 +99,8 @@
 	- [SQL Bolt](https://sqlbolt.com/)
 	- [self-joins-calculate-retention-churn-and-reactivation-metrics](https://www.sisense.com/blog/use-self-joins-to-calculate-your-retention-churn-and-reactivation-metrics/)
 	- [Prod metric design](https://quip.com/edU3AgdiNOo1)
+	</details>
+
 * Tools
 	- https://coderpad.io/
 	- https://codeshare.io/
