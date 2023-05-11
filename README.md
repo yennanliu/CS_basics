@@ -136,7 +136,7 @@
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||Queue| [Python ](./data_structure/python/queue2.py), [JS](./data_structure/js/queue.js) | | | AGAIN*|
 ||Stack| [Python ](./data_structure/python/stack.py), [JS stack (via linkedlist)](./data_structure/js/stack_linkedlist.js), [JS - stack (via array)](./data_structure/js/stack_array.js) | | | OK|
-||LinkedList| [Python](./data_structure/python/linkedList.py), [JS](./data_structure/js/linkedlist.js) | | | OK**|
+||LinkedList| [Python](./data_structure/python/linkedList.py), [JS](./data_structure/js/linkedlist.js), [Java](./data_structure/java/LinkedinList.java) | | | OK**|
 ||Doubly LinkedList| [Python](./data_structure/python/doublylinkedlist.py), [JS](./data_structure/js/doublylinkedList.js) | | | AGAIN|
 ||Tree| [Python ](./data_structure/python/tree.py) | | | AGAIN**|
 ||Trie| [Python ](./data_structure/python/trie.py) | | | AGAIN|
