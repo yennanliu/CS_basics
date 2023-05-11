@@ -3,6 +3,7 @@
 #---------------------------------------------------------------
 
 # V0
+# https://github.com/youngyangyang04/leetcode-master/blob/master/problems/%E9%93%BE%E8%A1%A8%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80.md
 
 # V1
 class Node:
