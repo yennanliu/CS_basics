@@ -9,6 +9,7 @@ import java.util.Stack;
 
 public class ValidParentheses {
 
+    // V0
     public boolean isValid(String s) {
 
         HashMap<String, String> map = new HashMap<>();
