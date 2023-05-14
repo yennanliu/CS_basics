@@ -392,7 +392,7 @@
 ## Stack 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note | Status | 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](./leetcode_python/Stack/valid-parentheses.py) | _O(n)_ | _O(n)_ | Easy |Curated Top 75, `good basic`,`fb`, `amazon`| OK** (6) 
+020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](./leetcode_python/Stack/valid-parentheses.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Stack/ValidParentheses.java) | _O(n)_ | _O(n)_ | Easy |Curated Top 75, `good basic`,`fb`, `amazon`| OK** (6) 
 032| [Longest Valid Parentheses](https://leetcode.com/problems/longest-valid-parentheses/)| [Python](./leetcode_python/Stack/longest-valid-parentheses.py) | _O(n)_ | _O(n)_ | Hard |brute force, dp, stackm deque, LC top 100 likes, `amazon`, fb, m$| AGAIN***** (1) (not start)
 071| [Simplify Path](https://leetcode.com/problems/simplify-path/)|  [Python](./leetcode_python/Stack/simplify-path.py) | _O(n)_ | _O(n)_ | Medium |`basic`, `stack`, `amazon`,`fb`| OK** (5)
 085| [Maximal Rectangle](https://leetcode.com/problems/maximal-rectangle/)|  [Python](./leetcode_python/Stack/maximal-rectangle.py) | _O(n)_ | _O(n)_ | Hard |top-100-like, brute force, stack, dp, LC 084, google, amazon, apple| AGAIN (not start)
