@@ -2,7 +2,6 @@ package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/symmetric-tree/
 
-//import javax.swing.tree.TreeNode;
 import java.util.LinkedList;
 import java.util.Queue;
 
