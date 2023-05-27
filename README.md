@@ -419,7 +419,7 @@
 772| [Basic Calculator III](https://leetcode.com/problems/basic-calculator-iii/) |[python](./leetcode_python/Stack/basic-calculator-iii.py)| _O(n)_| _O(n)_| Medium |check LC 224, 227| AGAIN (not start)
 853| [Car Fleet](https://leetcode.com/problems/car-fleet/)  | [python](./leetcode_python/Stack/car-fleet.py) | _O(nlogn)_  | _O(n)_      | Medium       || AGAIN (not start)
 856| [Score of Parentheses](https://leetcode.com/problems/score-of-parentheses/) | [python](./leetcode_python/Stack/score-of-parentheses.py) | _O(n)_  | _O(1)_   | Medium   || AGAIN (not start)
-872| [Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/) |  [python](./leetcode_python/Stack/leaf-similar-trees.py) | _O(n)_  | _O(h)_         | Easy      || AGAIN* 
+872| [Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/) |  [python](./leetcode_python/Stack/leaf-similar-trees.py),  [Java](./leetcode_java/src/main/java/LeetCodeJava/Stack/LeafSimilarTrees.java)  | _O(n)_  | _O(h)_| Easy|| AGAIN* 
 895| [Maximum Frequency Stack](https://leetcode.com/problems/maximum-frequency-stack/) |  [python](./leetcode_python/Stack/maximum-frequency-stack.py) | _O(n)_  | _O(h)_| Hard| good basic, heap, design, stack, amazon, apple, linkedin, m$, twitter| AGAIN********** (1) (not start) 
 901| [Online Stock Span](https://leetcode.com/problems/online-stock-span/) | [python](./leetcode_python/Stack/online-stock-span.py) | _O(n)_  | _O(n)_      | Medium        || AGAIN (not start)
 946| [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/) |  [python](./leetcode_python/Stack/validate-stack-sequences.py)  | _O(n)_  | _O(n)_         | Medium|| AGAIN
