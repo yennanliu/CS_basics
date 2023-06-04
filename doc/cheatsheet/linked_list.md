@@ -244,7 +244,7 @@ class LinkedList:
   def reverse(self): 
     """
     https://www.youtube.com/watch?v=D7y_hoT_YZI
-    
+
     # reverse method for the linked list
     # https://www.geeksforgeeks.org/python-program-for-reverse-a-linked-list/
     i.e. 
@@ -299,6 +299,7 @@ class Solution(object):
             prev = head
             # move head to "next" (for next iteration)
             head = tmp
+        # NOTE!!! we return prev
         return prev
 ```
 
