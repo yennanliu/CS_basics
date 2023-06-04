@@ -13,6 +13,7 @@ public class SwapNodesInPairs {
             return head;
         }
 
+        // NOTE here!!!
         ListNode dummy  = new ListNode(0);
         dummy.next = head;
         head = dummy;
@@ -22,10 +23,13 @@ public class SwapNodesInPairs {
 
             ListNode firstNode = head.next;
             ListNode SecondNode = head.next.next;
+            ListNode _next = SecondNode.next;
 
-            firstNode.next = SecondNode.next;
+            firstNode.next = _next;
             SecondNode.next = firstNode;
             head.next = SecondNode;
+
+            // for next iteration
             head = firstNode;
         }
 
@@ -48,14 +52,14 @@ public class SwapNodesInPairs {
         ListNode secondNode = head.next;
 
         // Swapping
-        firstNode.next  = swapPairs(secondNode.next);
+        firstNode.next  = swapPairs_2(secondNode.next);
         secondNode.next = firstNode;
 
         // Now the head is the second node
         return secondNode;
     }
 
-    
+
     // V2
     // IDEA : Iterative
     // https://leetcode.com/problems/swap-nodes-in-pairs/editorial/
