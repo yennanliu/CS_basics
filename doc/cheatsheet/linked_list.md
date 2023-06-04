@@ -243,6 +243,8 @@ class LinkedList:
 
   def reverse(self): 
     """
+    https://www.youtube.com/watch?v=D7y_hoT_YZI
+    
     # reverse method for the linked list
     # https://www.geeksforgeeks.org/python-program-for-reverse-a-linked-list/
     i.e. 
@@ -276,6 +278,7 @@ class LinkedList:
 
 # V0
 # IDEA : Linkedlist basics
+# https://www.youtube.com/watch?v=D7y_hoT_YZI
 # STEPS)
 # -> STEP 1) cache "next"
 # -> STEP 2) point head.next to prev
@@ -292,9 +295,9 @@ class Solution(object):
             tmp = head.next
             # point head.next to prev
             head.next = prev
-            # move prev to head
+            # move prev to head (for next iteration)
             prev = head
-            # move head to "next"
+            # move head to "next" (for next iteration)
             head = tmp
         return prev
 ```
