@@ -20,7 +20,6 @@ import java.util.Queue;
  *     }
  * }
  */
-
 public class SymmetricTree {
 
     // V0
