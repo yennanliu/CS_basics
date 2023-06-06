@@ -1,6 +1,4 @@
-package LeetCodeJava.Stack;
-
-import java.lang.annotation.Target;
+package LeetCodeJava.DataStructure;
 
 /**
  * Definition for a binary tree node.
@@ -21,9 +19,9 @@ import java.lang.annotation.Target;
 public class TreeNode {
 
     // attr
-    int val;
-    TreeNode left;
-    TreeNode right;
+    public int val;
+    public TreeNode left;
+    public TreeNode right;
 
     // constructor
     TreeNode(){

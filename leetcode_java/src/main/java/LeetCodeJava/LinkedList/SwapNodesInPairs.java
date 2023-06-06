@@ -2,6 +2,8 @@ package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/swap-nodes-in-pairs/
 
+import LeetCodeJava.DataStructure.ListNode;
+
 public class SwapNodesInPairs {
 
 

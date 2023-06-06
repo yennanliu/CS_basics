@@ -1,6 +1,6 @@
 package dev;
 
-import LeetCodeJava.LinkedList.ListNode;
+import LeetCodeJava.DataStructure.ListNode;
 
 public class Test1 {
 
