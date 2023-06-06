@@ -309,22 +309,25 @@ class Solution(object):
 // iteration
 //---------------------------
 // algorithm book (labu) p.297
-ListNode reverse(ListNode a){
-    ListNode pre, cur, nxt;
-    pre = null;
-    cur = a;
-    nxt = a;
-    while (cur != null){
-        nxt = cur.next;
-        // reverse on each node
-        cur.next = pre;
-        // update pointer
-        pre = cur;
-        cur = nxt;
+// LC 206
+public ListNode reverseList(ListNode head) {
+
+    if (head == null) {
+        return null;
     }
 
-    // return reversed nodes
-    return pre;
+    ListNode _prev = null;
+
+    while (head != null) {
+        ListNode _next = head.next;
+        head.next = _prev;
+        _prev = head;
+        head = _next;
+    }
+
+    // NOTE!!! we return _prev here, since it's now "new head"
+    return _prev;
+
 }
 ```
 

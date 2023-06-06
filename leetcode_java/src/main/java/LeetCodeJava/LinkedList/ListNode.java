@@ -6,7 +6,7 @@ public class ListNode{
 
     // attr
     int val;
-    ListNode next;
+    public ListNode next;
 
     // constructor
     ListNode(){
