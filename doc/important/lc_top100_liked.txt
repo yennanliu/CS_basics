@@ -1,0 +1,98 @@
+# LC TOP 100 LIKED QUESTIONS
+# https://leetcode.com/problem-list/top-100-liked-questions/
+
+No.	Problems	Difficulty	Source Code	Solution
+
+001	Two_Sum	Easy	Java	2种方法：暴力 和 HashMap
+002	Add Two Numbers	Medium	Java	2种方法：模拟 和 递归
+003	Longest Substring Without Repeating Characters	Medium	Java	
+004	Median of Two Sorted Arrays	Hard	Java	4种方法：合并数组，暴力法，二分搜索，划分数组
+005	Longest Palindromic Substring	Medium	Java	
+010	Regular Expression Matching	Hard	Java	
+011	Container With Most Water	Medium	Java	
+015	3Sum	Medium	Java	3种方法：暴力，Hash，双指针
+017	Letter Combinations of a Phone Number	Medium	Java	
+019	Remove Nth Node From End of List	Easy	Java	
+020	Valid Parentheses	Easy	Java	
+021	Merge Two Sorted Lists	Easy	Java	
+022	Generate Parentheses	Medium	Java	2种方法：暴力法 和 回溯法
+023	Merge k Sorted Lists	Hard	Java	
+031	Next Permutation	Medium	Java	
+032	Longest Valid Parentheses	Hard	Java	
+033	Search in Rotated Sorted Array	Medium	Java	
+039	Combination Sum	Medium	Java	
+042	Trapping Rain Water	Hard	Java	
+046	Permutations	Medium	Java	
+048	Rotate Image	Medium	Java	
+049	Group Anagrams	Medium	Java	
+053	Maximum Subarray	Medium	Java	
+055	Jump Game	Medium	Java	
+056	Merge Intervals	Medium	Java	
+062	Unique Paths	Medium	Java	
+064	Minimum Path Sum	Medium	Java	
+070	Climbing Stairs	Easy	Java	
+072	Edit Distance	Hard	Java	
+075	Sort Colors	Medium	Java	
+076	Minimum Window Substring	Hard	Java	
+078	Subsets	Medium	Java	
+079	Word Search	Medium	Java	
+084	Largest Rectangle in Histogram	Hard	Java	
+085	Maximal Rectangle	Hard	Java	
+094	Binary Tree Inorder Traversal	Medium	Java	
+096	Unique Binary Search Trees	Medium	Java	
+098	Validate Binary Search Tree	Medium	Java	
+101	Symmetric Tree	Easy	Java	
+104	Maximum Depth of Binary Tree	Easy	Java	
+105	Construct Binary Tree from Preorder and Inorder Traversal	Medium	Java	
+114	Flatten Binary Tree to Linked List	Medium	Java	
+121	Best Time to Buy and Sell Stock	Easy	Java	
+128	Longest Consecutive Sequence	Hard	Java	
+136	Single Number	Easy	Java	
+139	Word Break	Medium	Java	
+141	Linked List Cycle	Easy	Java	
+142	Linked List Cycle II	Medium	Java	
+146	LRU Cache	Hard	Java	
+148	Sort List	Medium	Java	
+152	Maximum Product Subarray	Medium	Java	
+155	Min Stack	Easy	Java	
+160	Intersection of Two Linked Lists	Easy	Java	
+169	Majority Element	Easy	Java	
+198	House Robber	Easy	Java	
+206	Reverse Linked List	Easy	Java	
+207	Course Schedule	Medium	Java	
+208	Implement Trie (Prefix Tree)	Medium	Java	
+210	Course Schedule II	Medium	Java	
+215	Kth Largest Element in an Array	Medium	Java	
+221	Maximal Square	Medium	Java	
+226	Invert Binary Tree	Easy	Java	
+230	Kth Smallest Element in a BST	Medium	Java	
+234	Palindrome Linked List	Easy	Java	
+239	Sliding Window Maximum	Hard	Java	
+240	Search a 2D Matrix II	Medium	Java	
+253	Meeting Rooms II	Medium	没权限	
+279	Perfect Squares	Medium	Java	
+300	Longest Increasing Subsequence	Medium	Java	
+301	Remove Invalid Parentheses	Hard	Java	
+309	Best Time to Buy and Sell Stock with Cooldown	Medium	Java	
+312	Burst Balloons	Hard	Java	
+322	Coin Change	Medium	Java	
+328	Odd Even Linked List	Medium	Java	
+337	House Robber III	Medium	Java	
+338	Counting Bits	Medium	Java	
+347	Top K Frequent Elements	Medium	Java	
+394	Decode String	Medium	Java	
+399	Evaluate Division	Medium	Java	
+406	Queue Reconstruction by Height	Medium	Java	
+416	Partition Equal Subset Sum	Medium	Java	
+437	Path Sum III	Easy	Java	
+448	Find All Numbers Disappeared in an Array	Easy	Java	
+461	Hamming Distance	Easy	Java	
+494	Target Sum	Medium	Java	
+538	Convert BST to Greater Tree	Easy	Java	
+543	Diameter of Binary Tree	Easy	Java	
+560	Subarray Sum Equals K	Medium	Java	
+581	Shortest Unsorted Continuous Subarray	Easy	Java	
+617	Merge Two Binary Trees	Easy	Java	
+621	Task Scheduler	Medium	Java	
+647	Palindromic Substrings	Medium	Java	
+739	Daily Temperatures	Medium	Java	
