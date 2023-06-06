@@ -16,16 +16,26 @@ class ListNode(object):
 
 ```java
 // java
-class ListNode {
+public class ListNode{
+
     // attr
-    int val;  // node's value
-    ListNode next; // point to next node
+    public int val;
+    public ListNode next;
 
     // constructor
-    ListNode(int val){
-        this.val = val;
-        this.next = null;
+    public ListNode(){
+
     }
+
+    public ListNode(int val){
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next){
+        this.val = val;
+        this.next = next;
+    }
+
 }
 
 // init a ListNode
@@ -308,8 +318,8 @@ class Solution(object):
 //---------------------------
 // iteration
 //---------------------------
-// algorithm book (labu) p.297
 // LC 206
+// algorithm book (labu) p.297
 public ListNode reverseList(ListNode head) {
 
     if (head == null) {
@@ -337,17 +347,18 @@ public ListNode reverseList(ListNode head) {
 //---------------------------
 // recursion
 //---------------------------
+// LC 206
 // algorithm book (labu) p.290
-ListNode reverse(ListNode head){
-    // base case, if not a node or only 1 node -> return itself
-    if (head == null || head.next == null){
+// IDEA : Recursive
+// https://leetcode.com/problems/reverse-linked-list/editorial/
+public ListNode reverseList_3(ListNode head) {
+    if (head == null || head.next == null) {
         return head;
     }
-    ListNode last = reverse(head.next);
+    ListNode p = reverseList_3(head.next);
     head.next.next = head;
-    // point end node to null
     head.next = null;
-    return last;
+    return p;
 }
 ```
 
