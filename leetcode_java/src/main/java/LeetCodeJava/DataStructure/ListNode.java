@@ -1,19 +1,19 @@
-package LeetCodeJava.LinkedList;
+package LeetCodeJava.DataStructure;
 
 // https://leetcode.com/problems/merge-two-sorted-lists/
 
 public class ListNode{
 
     // attr
-    int val;
+    public int val;
     public ListNode next;
 
     // constructor
-    ListNode(){
+    public ListNode(){
 
     }
 
-    ListNode(int val){
+    public ListNode(int val){
         this.val = val;
     }
 

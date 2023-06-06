@@ -2,6 +2,8 @@ package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/reverse-linked-list/
 
+import LeetCodeJava.DataStructure.ListNode;
+
 public class ReverseLinkedList {
 
     class Solution {

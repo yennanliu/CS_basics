@@ -2,6 +2,8 @@ package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/remove-linked-list-elements/
 
+import LeetCodeJava.DataStructure.ListNode;
+
 public class RemoveLinkedListElements {
 
     // V0

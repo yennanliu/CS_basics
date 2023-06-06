@@ -2,6 +2,8 @@ package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/remove-duplicates-from-sorted-list/
 
+import LeetCodeJava.DataStructure.ListNode;
+
 import java.util.HashSet;
 import java.util.Set;
 

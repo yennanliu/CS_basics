@@ -2,6 +2,8 @@ package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/intersection-of-two-linked-lists/
 
+import LeetCodeJava.DataStructure.ListNode;
+
 import java.util.HashSet;
 import java.util.Set;
 
