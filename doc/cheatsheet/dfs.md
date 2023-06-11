@@ -371,6 +371,35 @@ class Codec:
         return head
 ```
 
+#### 1-1-9) find longest distance between nodes
+```java
+// java
+// LC 543 Diameter of Binary Tree
+// V1
+// IDEA : DFS
+// https://leetcode.com/problems/diameter-of-binary-tree/editorial/
+private int diameter;
+public int diameterOfBinaryTree_2(TreeNode root) {
+    diameter = 0;
+    longestPath(root);
+    return diameter;
+}
+private int longestPath(TreeNode node){
+    if(node == null) return 0;
+    // recursively find the longest path in
+    // both left child and right child
+    int leftPath = longestPath(node.left);
+    int rightPath = longestPath(node.right);
+
+    // update the diameter if left_path plus right_path is larger
+    diameter = Math.max(diameter, leftPath + rightPath);
+
+    // return the longest one between left_path and right_path;
+    // remember to add 1 for the path connecting the node and its parent
+    return Math.max(leftPath, rightPath) + 1;
+}
+```
+
 ## 2) LC Example
 
 ### 2-1) Validate Binary Search Tree
