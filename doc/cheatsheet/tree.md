@@ -278,6 +278,7 @@ TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q){
 #### 1-1-5) Merge Two Binary Trees
 ```python
 # LC 617 Merge Two Binary Trees
+# NOTE !!! there is also BFS solution
 # V0
 # IDEA : DFS + BACKTRACK
 class Solution:
@@ -298,6 +299,37 @@ class Solution:
         ### NOTE here
         else:
             return t1 or t2
+```
+
+```java
+// java
+// V0
+// IDEA : RECURSIVE
+public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+
+    if (t1 == null && t2 == null){
+        return null;
+    }
+
+    if (t1 != null && t2 != null){
+        t1.val += t2.val;
+    }
+
+    if (t1 == null && t2 != null){
+        // NOTE!!! return t2 directly here
+        return t2;
+    }
+
+    if (t1 != null && t2 == null){
+        // NOTE!!! return t1 directly here
+        return t1;
+    }
+
+    t1.left = mergeTrees(t1.left, t2.left);
+    t1.right = mergeTrees(t1.right, t2.right);
+
+    return t1;
+}
 ```
 
 #### 1-1-6) Count nodes on a `basic` binary tree
