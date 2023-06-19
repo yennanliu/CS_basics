@@ -5,6 +5,17 @@
 # 1) Basic op
 
 
+### 1-0) String to Char array
+```java
+// java
+// LC 844
+String s = "abc";
+for (char c: S.toCharArray()) {
+        // do sth
+        System.out.println("c = " + c);
+    }
+```
+
 ### 1-1) Swap elements in char array
 
 ```java
@@ -19,7 +30,6 @@
     }
 ```   
 
-
 ### 1-2) Char array to String
 
 ```java
@@ -31,4 +41,17 @@ char[] list=s.toCharArray();
 System.out.println(list);
 char[] y = list;
 String.valueOf(list);     
-```   
+```  
+
+### 1-3) Stack to String
+
+```java
+// java
+// LC 844
+// https://leetcode.com/problems/backspace-string-compare/editorial/
+Stack<Character> ans = new Stack();
+ans.push("a");
+ans.push("b");
+ans.push("c");
+String.valueOf(ans);
+```  
