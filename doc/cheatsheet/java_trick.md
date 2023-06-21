@@ -43,6 +43,15 @@ char[] y = list;
 String.valueOf(list);     
 ```  
 
+### 1-2-1) Array to String
+
+```java
+// java
+// https://youtu.be/xOppee_iSvo?t=206
+Integer[] data = {5, 5, 7, 8, 9, 0};
+Arrays.toString(data);   
+```  
+
 ### 1-3) Stack to String
 
 ```java
