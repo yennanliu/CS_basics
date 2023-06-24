@@ -267,7 +267,7 @@ class Solution(object):
 ```
 
 ### 2-2) Find Peak Element
--  (recursive binary search)
+-  (recursive/iterative binary search)
 ```python
 # LC 162 Find Peak Element, LC 852 Peak Index in a Mountain Array
 # V0'
@@ -284,6 +284,40 @@ class Solution(object):
             return help(nums, mid+1, r) # l = mid + 1
             
         return help(nums, 0, len(nums)-1)
+```
+
+```java
+// java
+// LC 162
+// V2
+// IDEA: RECURSIVE BINARY SEARCH
+// https://leetcode.com/problems/find-peak-element/editorial/
+    public int findPeakElement_2(int[] nums) {
+        return search(nums, 0, nums.length - 1);
+    }
+    public int search(int[] nums, int l, int r) {
+        if (l == r)
+            return l;
+        int mid = (l + r) / 2;
+        if (nums[mid] > nums[mid + 1])
+            return search(nums, l, mid);
+        return search(nums, mid + 1, r);
+    }
+
+// V3
+// IDEA: ITERATIVE BINARY SEARCH
+// https://leetcode.com/problems/find-peak-element/editorial/
+    public int findPeakElement_3(int[] nums) {
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (nums[mid] > nums[mid + 1])
+                r = mid;
+            else
+                l = mid + 1;
+        }
+        return l;
+    }
 ```
 
 ### 2-3) Valid Perfect Square
