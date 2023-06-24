@@ -37,6 +37,11 @@ nums[i] != nums[i + 1] for all valid i.
 # IDEA :  Linear Scan + problem understanding
 # NOTE :  If the array contains multiple peaks, return the index to any of the peaks.
 #   -> e.g. for nums = [1,2,1,3,5,6,4], we can return EITHER index = 1 or 5
+#
+#
+#
+# NOTE : ONLY have to compare index i with index i + 1 (its right element)
+#        ; otherwise, i-1 already returned as answer
 class Solution(object):
     def findPeakElement(self, nums):
         for i in range(len(nums)-1):
