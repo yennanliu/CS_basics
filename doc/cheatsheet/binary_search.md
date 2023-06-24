@@ -292,6 +292,8 @@ class Solution(object):
 // V2
 // IDEA: RECURSIVE BINARY SEARCH
 // https://leetcode.com/problems/find-peak-element/editorial/
+    // NOTE : ONLY have to compare index i with index i + 1 (its right element)
+    //        ; otherwise, i-1 already returned as answer
     public int findPeakElement_2(int[] nums) {
         return search(nums, 0, nums.length - 1);
     }
