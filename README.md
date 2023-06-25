@@ -20,6 +20,7 @@
 	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
 	- [LC top 100 likes](https://leetcode.com/problem-list/top-100-liked-questions/?page=1&fbclid=IwAR2MzUDDOscDklba5gL815lkLKzxK-zOR2WV2-W80_gRmvtfAsNWyut_USw)
+	- [neetcode 150 LC list](https://neetcode.io/practice)
 	- [LC Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
 	- [cheatsheet-leetcode-a4](https://cheatsheet.dennyzhang.com/cheatsheet-leetcode-a4)
 	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
@@ -709,7 +710,7 @@
 147| [Insertion Sort List](https://leetcode.com/problems/insertion-sort-list/)|[Python](./leetcode_python/Sort/insertion-sort-list.py) | _O(n^2)_ | _O(1)_ | Medium |`trick`| AGAIN* (2)
 148| [Sort List](https://leetcode.com/problems/sort-list/)     | [Python](./leetcode_python/Sort/sort-list.py) | _O(nlogn)_      | _O(logn)_  | Medium |`basic`, check `# 21 Merge Two Sorted Lists`| AGAIN** (2)
 179| [Largest Number](https://leetcode.com/problems/largest-number/) | [Python](./leetcode_python/Sort/largest-number.py) | _O(nlogn)_   | _O(1)_  | Medium|good basic, sort with lambda,`amazon`| AGAIN************ (3)
-252| [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | [Python](./leetcode_python/Sort/meeting-rooms.py) | _O(nlogn)_ | _O(n)_ | Easy |Curated Top 75, 🔒,`UBER`,`amazon`, `fb`| OK*** (3) (but again) 
+252| [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) | [Python](./leetcode_python/Sort/meeting-rooms.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Sort/MeetingRooms.java)  | _O(nlogn)_ | _O(n)_ | Easy |Curated Top 75, sort, 🔒,`UBER`,`amazon`, `fb`| OK*** (4) (but again) 
 253| [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) | [Python](./leetcode_python/Sort/meeting-rooms-ii.py)| _O(nlogn)_   | _O(n)_   | Medium   |Curated Top 75, 🔒, sort, priority queue (min-heap),`scanning line`, `trick`,`booking.com`,`good`,`UBER`, `amazon`,`google`,`fb`| AGAIN************ (5) (MUST)
 274| [H-Index](https://leetcode.com/problems/h-index/) |  [Python](./leetcode_python/Sort/h-index.py)  | _O(n)_ | _O(n)_ | Medium  |Counting Sort,`good trick`, `fb`|  AGAIN***** (3)  
 280| [Wiggle Sort](https://leetcode.com/problems/wiggle-sort/) | [Python](./leetcode_python/Sort/wiggle-sort.py)  | _O(n)_ | _O(1)_| Medium  |🔒,`google`,`fb`|  OK*** (3) 
