@@ -74,3 +74,13 @@ String.valueOf(ans);
 intervals = [[0,30],[5,10],[15,20]]
 Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 ```
+
+### 1-5) Get sub array
+```java
+// java
+// LC 976
+// https://leetcode.com/problems/largest-perimeter-triangle/description/
+nums = [1,2,1,10, 11, 22, 33]
+int i = 2;
+int[] tmp = Arrays.copyOfRange(nums, i, i+3);
+```
