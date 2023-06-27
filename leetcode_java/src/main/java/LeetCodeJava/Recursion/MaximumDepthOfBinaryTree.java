@@ -3,7 +3,6 @@ package LeetCodeJava.Recursion;
 // https://leetcode.com/problems/maximum-depth-of-binary-tree/
 
 import LeetCodeJava.DataStructure.TreeNode;
-
 import java.util.LinkedList;
 
 public class MaximumDepthOfBinaryTree {
@@ -57,15 +56,7 @@ public class MaximumDepthOfBinaryTree {
     // V2
     // IDEA : Tail Recursion + BFS
     // https://leetcode.com/problems/maximum-depth-of-binary-tree/editorial/
-    public int maxDepth_2(TreeNode root) {
-        if (root == null) {
-            return 0;
-        } else {
-            int left_height = maxDepth(root.left);
-            int right_height = maxDepth(root.right);
-            return java.lang.Math.max(left_height, right_height) + 1;
-        }
-    }
+    // only available in C++ (not in Java, Python)
 
     // V3
     // IDEA : Iteration
