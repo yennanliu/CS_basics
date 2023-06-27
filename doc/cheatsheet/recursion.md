@@ -181,6 +181,16 @@ for x in _list:
 # ...
 ```
 
+### 1-2) Top down Recursion
+```
+# LC 110
+```
+
+### 1-3) Bottom up Recursion
+```
+# LC 110
+```
+
 ## 2) LC Example
 
 ### 2-1) Symmetric Tree
