@@ -16,6 +16,49 @@ for (char c: S.toCharArray()) {
     }
 ```
 
+### 1-0-1) Init an List
+```java
+// java
+// LC 102
+   public static void main(String[] args) {
+
+       List<Integer> tmpArray = new ArrayList<>();
+       System.out.println(tmpArray);
+       tmpArray.add(1);
+       tmpArray.add(2);
+       System.out.println(tmpArray);
+
+       System.out.println("--->");
+
+       List<List<Integer>> res = new ArrayList<>();
+       System.out.println(res);
+       res.add(tmpArray);
+       System.out.println(res);
+   }
+```
+
+### 1-0-2) Paste value to List with index
+```java
+// java
+// LC 102
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        
+        List<List<Integer>> levels = new ArrayList<List<Integer>>();
+        // ...
+        while ( !queue.isEmpty() ) {
+            // ...
+            for(int i = 0; i < level_length; ++i) {
+                // fulfill the current level
+                // NOTE !!! this trick
+                levels.get(level).add(node.val);
+                // ...
+            }
+            // ...
+        }
+        // ..
+    }
+```
+
 ### 1-1) Swap elements in char array
 
 ```java
