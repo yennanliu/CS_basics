@@ -42,7 +42,7 @@ for (char c: S.toCharArray()) {
 // java
 // LC 102
     public List<List<Integer>> levelOrder(TreeNode root) {
-        
+
         List<List<Integer>> levels = new ArrayList<List<Integer>>();
         // ...
         while ( !queue.isEmpty() ) {
@@ -57,6 +57,17 @@ for (char c: S.toCharArray()) {
         }
         // ..
     }
+```
+
+### 1-0-3) Reverse List
+```java
+// java
+// LC 107
+
+// ...
+List<List<Integer>> levels = new ArrayList<List<Integer>>();
+Collections.reverse(levels);
+// ...
 ```
 
 ### 1-1) Swap elements in char array
