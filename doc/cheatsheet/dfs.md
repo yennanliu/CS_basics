@@ -892,6 +892,50 @@ class Solution(object):
             self.dfs(root.right, target, res, path + [root.right.val])
 ```
 
+```java
+// java
+// LC 113
+// V0
+// IDEA : DFS + backtracking
+// NOTE !!! we have res attr, so can use this.res collect result
+private List<List<Integer>> res = new ArrayList<>();
+
+public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+
+    if (root == null){
+        return this.res;
+    }
+
+    List<Integer> cur = new ArrayList<>();
+    getPath(root, cur, targetSum);
+    return this.res;
+}
+
+ private void getPath(TreeNode root, List<Integer> cur, int targetSum){
+
+    // return directly if root is null (not possible to go further, so just quit directly)
+    if (root == null){
+        return;
+    }
+
+    // NOTE !!! we add val to cache here instead of while calling method recursively ( e.g. getPath(root.left, cur, targetSum - root.val))
+    //          -> so we just need to backtrack (cancel last operation) once (e.g. cur.remove(cur.size() - 1);)
+    //          -> please check V0' for example with backtrack in recursively step
+    cur.add(root.val);
+
+    if (root.left == null && root.right == null && targetSum == root.val){
+        this.res.add(new ArrayList<>(cur));
+    }else{
+        // NOTE !!! we update targetSum here (e.g. targetSum - root.val)
+        getPath(root.left, cur, targetSum - root.val);
+        getPath(root.right, cur, targetSum - root.val);
+    }
+
+     // NOTE !!! we do backtrack here (cancel previous adding to cur)
+     cur.remove(cur.size() - 1);
+}
+```
+
 ### 2-7) Clone graph
 ```python
 # 133 Clone graph
