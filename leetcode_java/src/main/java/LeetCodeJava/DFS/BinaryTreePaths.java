@@ -11,6 +11,8 @@ import java.util.List;
 
 public class BinaryTreePaths {
 
+    // V0
+    // IDEA : DFS
     private List<List<Integer>> collected = new ArrayList<>();
 
     public List<String> binaryTreePaths(TreeNode root) {
@@ -25,11 +27,9 @@ public class BinaryTreePaths {
 
         List<Integer> cur = new ArrayList<>();
         getPath(root, cur);
-
         List<String> res = new ArrayList<>();
 
         for (List<Integer> item : collected){
-            //System.out.println("item = " + item.toString());
             String tmp = "";
             for (int i = 0; i < item.size(); i++){
                 if (i > 0){
@@ -41,7 +41,6 @@ public class BinaryTreePaths {
             res.add(tmp);
         }
 
-        //System.out.println("collected = " + collected.toString());
         return res;
     }
 
