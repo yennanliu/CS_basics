@@ -5,6 +5,17 @@
 - [fucking algorithm : reverse k set of linked list](https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/k%E4%B8%AA%E4%B8%80%E7%BB%84%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8.md)
 - [fucking algorithm : check palindrome linked list](https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/%E5%88%A4%E6%96%AD%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8.md)
 
+
+- Use "pseudo head node" 虛擬頭節點
+    - [代碼隨想錄: LC 203 Remove Linked List Elements](https://youtu.be/Y4oQJklHxVo?t=1111)
+- When delete node from linked list, we need to be at "previous" node, then can delete NEXT node
+    - so, need to be at `cur` node, than can `cur.next` node
+    ```python
+    # python
+    # https://youtu.be/Y4oQJklHxVo?t=965
+    cur.next = cur.next.next
+    ```
+
 ```python
 # python
 # Definition for singly-linked list.
