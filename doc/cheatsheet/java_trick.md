@@ -9,11 +9,18 @@
 ```java
 // java
 // LC 844
+// V1
 String s = "abc";
 for (char c: S.toCharArray()) {
         // do sth
         System.out.println("c = " + c);
     }
+
+
+// V2
+// LC 49
+String strs = "scvsdacvdsa";
+char array [] = strs.toCharArray();   
 ```
 
 ### 1-0-1) Init an List
@@ -101,9 +108,17 @@ String.valueOf(list);
 
 ```java
 // java
+// V1
 // https://youtu.be/xOppee_iSvo?t=206
 Integer[] data = {5, 5, 7, 8, 9, 0};
-Arrays.toString(data);   
+Arrays.toString(data);
+
+
+// V2
+// LC 49
+char array [] = strs.toCharArray();
+Arrays.sort(array);
+return String.valueOf(array);
 ```  
 
 ### 1-3) Stack to String
