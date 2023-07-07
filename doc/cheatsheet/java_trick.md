@@ -91,6 +91,19 @@ Collections.reverse(levels);
     }
 ```   
 
+### 1-1-1) Assign value to an integer array
+```java
+// java
+// LC 347
+// NOTE !! we define size when init int[]
+int[] top = new int[k];
+for(int i = k - 1; i >= 0; --i) {
+    // assign val to int[] via below
+    top[i] = heap.poll();
+}
+
+```
+
 ### 1-2) Char array to String
 
 ```java
