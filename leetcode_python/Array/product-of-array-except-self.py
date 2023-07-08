@@ -29,6 +29,12 @@ Follow up: Can you solve the problem in O(1) extra space complexity? (The output
 """
 
 # V0
+# IDEA : array product + deal with 0 case
+#  get all products, 
+#  if val != 0, productExceptSelf  = all_products / val
+#  if val == 0, set val = 1, get tmp_all_products,  productExceptSelf  = tmp_all_products / 1
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/ProductOfArrayExceptSelf.java#L9
+# V0
 class Solution:
     def productExceptSelf(self, nums):
         # CASE 1: has `more that one 0` -> the `Product of Array Except Self` should always equal 0
@@ -40,7 +46,7 @@ class Solution:
             for n in nums:
                 if n != 0:
                     _prod_except_z = n * _prod_except_z
-        # for non 0 element, we still get the Product of Array for op later
+        # for non 0 elements, we still get the Product of Array for op later
         _prod = 1
         for n in nums:
             _prod = n * _prod
