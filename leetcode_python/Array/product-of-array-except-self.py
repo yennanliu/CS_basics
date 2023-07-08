@@ -34,7 +34,8 @@ Follow up: Can you solve the problem in O(1) extra space complexity? (The output
 #  if val != 0, productExceptSelf  = all_products / val
 #  if val == 0, set val = 1, get tmp_all_products,  productExceptSelf  = tmp_all_products / 1
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/ProductOfArrayExceptSelf.java#L9
-# V0
+
+# V0'
 class Solution:
     def productExceptSelf(self, nums):
         # CASE 1: has `more that one 0` -> the `Product of Array Except Self` should always equal 0
@@ -58,7 +59,7 @@ class Solution:
                 r.append(int(_prod_except_z))
         return r
 
-# V0
+# V0''
 # IDEA : ARRAY OP
 class Solution(object):
     def productExceptSelf(self, nums):
@@ -80,7 +81,7 @@ class Solution(object):
             ans[j-1] = ans[j-1] * right
         return ans
 
-# V0''
+# V0'''''
 class Solution:
     # @param {integer[]} nums
     # @return {integer[]}
