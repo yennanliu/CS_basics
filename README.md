@@ -395,6 +395,7 @@
 725 | [Split Linked List in Parts](https://leetcode.com/problems/split-linked-list-in-parts/) | [Python](./leetcode_python/Linked_list/split-linked-list-in-parts.py)  | _O(n + k)_ | _O(1)_ | Medium |mod, split linked list, linked list, good trick,`amazon`| AGAIN************ (6) (again)
 817 | [Linked List Components](https://leetcode.com/problems/linked-list-components/) | [Python](./leetcode_python/Linked_list/linked-list-components.py)  | _O(m + n)_ | _O(m)_ | Medium || OK* 
 430 | [Flatten a Multilevel Doubly Linked List](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/) | [Python](./leetcode_python/Linked_list/flatten_a_multilevel_doubly_linked_list.py)  |  || Medium |`good trick`,`doubly linked list`,`AGAIN`,`dfs`, `fb`|  AGAIN********* (4)
+707| [Design Linked List](https://leetcode.com/problems/design-linked-list/) |  [Python](./leetcode_python/Linked_list/design_linked_list.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/LinkedList/DesignLinkedList.java) | _O(n)_ | _O(h)_ | Medium|linked list basic OP| AGAIN (1)
 708| [Insert into a Cyclic Sorted List](https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list) |  [Python](./leetcode_python/Linked_list/insert_into_a_cyclic_sorted_sorted_linked_list.py)  | _O(n)_ | _O(h)_ | Medium|`AGAIN`,`cyclic linked list`,`good trick`, `google`, `amazon`, `fb` |  AGAIN******** (4)
 
 
