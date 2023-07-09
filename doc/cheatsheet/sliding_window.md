@@ -231,6 +231,46 @@ class Solution(object):
         return res
 ```
 
+```java
+// java
+// V0
+// IDEA : SLIDING WINDOW + HASH SET
+public int lengthOfLongestSubstring(String s) {
+
+    if (s.equals("")){
+        return 0;
+    }
+
+    if (s.equals(" ")){
+        return 1;
+    }
+
+    if (s.length() == 1){
+        return 1;
+    }
+
+    int ans = 0;
+    char[] s_array = s.toCharArray();
+    for (int i = 0; i < s_array.length-1; i++){
+        int j = i;
+        Set<String> set = new HashSet<String>();
+        while (j < s_array.length){
+            String cur = String.valueOf(s_array[j]);
+            if (set.contains(cur)){
+                ans = Math.max(ans, set.size());
+                break;
+            }else{
+                set.add(cur);
+                ans = Math.max(ans, set.size());
+                j += 1;
+            }
+        }
+    }
+
+    return ans;
+}
+```
+
 ### 2-4) Subarray Product Less Than K
 ```python
 # LC 713 Subarray Product Less Than K

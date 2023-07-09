@@ -8,6 +8,8 @@ public class SwapNodesInPairs {
 
 
     // V0
+    // IDEA : linked list op + swap
+    // https://youtu.be/GI1Ghz7Lej0?t=915
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/swap-nodes-in-pairs.py
     public ListNode swapPairs(ListNode head) {
 
