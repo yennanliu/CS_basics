@@ -190,7 +190,7 @@
 ## Array 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note           | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](./leetcode_python/Array/3sum.py) | _O(n^2)_ | _O(1)_  | Medium    | Curated Top 75, good basic, check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `good basic`,`amazon`,`fb`| OK******* (7)
+015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](./leetcode_python/Array/3sum.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/ThreeSum.java)| _O(n^2)_ | _O(1)_  | Medium    | Curated Top 75, good basic, check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `good basic`,`amazon`,`fb`| OK******* (7)
 016 | [3 Sum Closest](https://leetcode.com/problems/3sum-closest/) | [Python](./leetcode_python/Array/3sum-closest.py) | _O(n^2)_   | _O(1)_  | Medium |`Two Pointers`, `basic`, `good trick`,`3 sum`,google, fb, apple, m$, GS, amazon| AGAIN**** (2)
 018| [4 Sum](https://leetcode.com/problems/4sum/) | [Python](./leetcode_python/Array/4sum.py)   | _O(n^3)_  | _O(1)_    | Medium  | `k sum`, `Two Pointers`, check `#016 3 sum`, `# 454 4 SUM II`,good trick, `fb` | AGAIN******** (4)
 026 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)|  [Python](./leetcode_python/Array/remove-duplicates-from-sorted-array.py), [Scala](./leetcode_scala/Array/removeDuplicates.scala), [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/RemoveDuplicatesFromSortedArray.java) | _O(n)_ | _O(1)_| Easy | `Two Pointers`, `basic`, `good trick`,`M$` ,`fb` |  AGAIN*********** (10)
