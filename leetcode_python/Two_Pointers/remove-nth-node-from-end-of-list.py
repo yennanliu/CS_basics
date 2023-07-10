@@ -37,6 +37,8 @@ Follow up: Could you do this in one pass?
 
 # V0
 # IDEA : FAST-SLOW POINTERS (One pass algorithm)
+# Video : https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+#
 # check LC solution video for more info. : https://leetcode.com/problems/remove-nth-node-from-end-of-list/solution/
 # IDEA :
 #   step 1) we move fast pointers n+1 steps -> so slow, fast pointers has n distance (n+1-1 == n)
