@@ -42,6 +42,10 @@ public class PermutationInString {
 //        return builder.toString();
 //    }
 
+    // V0'
+    // IDEA : COUNTER : count element in string
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/permutation-in-string.py
+
     // V1
     // IDEA: BRUTE FORCE
     // https://leetcode.com/problems/permutation-in-string/editorial/
