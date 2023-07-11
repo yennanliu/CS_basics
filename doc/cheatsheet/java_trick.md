@@ -181,3 +181,11 @@ nums = [1,2,1,10, 11, 22, 33]
 int i = 2;
 int[] tmp = Arrays.copyOfRange(nums, i, i+3);
 ```
+
+### 1-6) Print elements in array
+```java
+// java
+// LC 155
+Object[] array = this.queue.toArray();
+System.out.println("--> getMin : array = " + Arrays.toString(array));
+```
