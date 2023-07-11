@@ -332,3 +332,54 @@ class Solution:
         largest = ''.join(largest) 
         return '0' if largest[0] == '0' else largest 
 ```
+
+
+### 2-6) Permutation in String
+```python
+# LC 567 
+# V0
+# IDEA : collections + sliding window
+from collections import Counter
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        if len(s1) > len(s2):
+            return False   
+        l = 0
+        tmp = ""
+        _s1 = Counter(s1)
+        _s2 = Counter()     
+        for i, item in enumerate(s2):
+            ### NOTE : we need to append new element first, then compare
+            _s2[item] += 1
+            tmp = s2[l:i+1]
+            if _s2 == _s1 and len(tmp) > 0:
+                return True
+            if len(tmp) >= len(s1):
+                _s2[tmp[0]] -= 1
+                if _s2[tmp[0]] == 0:
+                    del _s2[tmp[0]]
+                l += 1
+        return False
+```
+
+```java
+// java
+// LC 567
+// V2
+// IDEA : SORTING
+// https://leetcode.com/problems/permutation-in-string/editorial/
+public boolean checkInclusion_3(String s1, String s2) {
+    s1 = sort(s1);
+    for (int i = 0; i <= s2.length() - s1.length(); i++) {
+        if (s1.equals(sort(s2.substring(i, i + s1.length()))))
+            return true;
+    }
+    return false;
+}
+
+public String sort(String s) {
+    char[] t = s.toCharArray();
+    Arrays.sort(t);
+    return new String(t);
+} 
+```

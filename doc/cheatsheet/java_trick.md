@@ -77,6 +77,21 @@ Collections.reverse(levels);
 // ...
 ```
 
+### 1-0-4) Reverse String
+```java
+// java
+// LC 567
+private String reverseString(String input){
+
+    if (input.equals(null) || input.length() == 0){
+        return null;
+    }
+
+    StringBuilder builder = new StringBuilder(input).reverse();
+    return builder.toString();
+} 
+```
+
 ### 1-1) Swap elements in char array
 
 ```java
