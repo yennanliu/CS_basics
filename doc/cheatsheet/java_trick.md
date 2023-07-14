@@ -201,3 +201,12 @@ init[0]  = temperatures[0];
 init[1] = 0;
 stack.push(init);
 ```
+
+### 1-8) remove element in String
+```java
+// LC 22
+StringBuilder b = new StringBuilder("wefew");
+System.out.println(b.toString());
+b.deleteCharAt(2);
+System.out.println(b.toString());
+```
