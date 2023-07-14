@@ -744,6 +744,37 @@ void backtrack(int left, int right, string& track, vector<string> & res){
     track.push_back(); // undo choice
 }
 ```
+
+```java
+// java
+// V2
+// IDEA :  Backtracking, Keep Candidate Valid
+// https://leetcode.com/problems/generate-parentheses/editorial/
+public List<String> generateParenthesis_3(int n) {
+    List<String> answer = new ArrayList<>();
+    backtracking(answer, new StringBuilder(), 0, 0, n);
+
+    return answer;
+}
+
+private void backtracking(List<String> answer, StringBuilder curString, int leftCount, int rightCount, int n) {
+    if (curString.length() == 2 * n) {
+        answer.add(curString.toString());
+        return;
+    }
+    if (leftCount < n) {
+        curString.append("(");
+        backtracking(answer, curString, leftCount + 1, rightCount, n);
+        curString.deleteCharAt(curString.length() - 1);
+    }
+    if (leftCount > rightCount) {
+        curString.append(")");
+        backtracking(answer, curString, leftCount, rightCount + 1, n);
+        curString.deleteCharAt(curString.length() - 1);
+    }
+}
+```
+
 ### 2-8) Palindrome Partitioning
 ```python
 # LC 131 Palindrome Partitioning
