@@ -170,5 +170,5 @@ public class GenerateParentheses {
                     answer.add("(" + leftString + ")" + rightString);
         return answer;
     }
-    
+
 }
