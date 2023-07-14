@@ -189,3 +189,15 @@ int[] tmp = Arrays.copyOfRange(nums, i, i+3);
 Object[] array = this.queue.toArray();
 System.out.println("--> getMin : array = " + Arrays.toString(array));
 ```
+
+### 1-7) Put array into stack
+```java
+// java
+// LC 739
+Stack<int[]> stack = new Stack<>();
+
+int[] init = new int[2];
+init[0]  = temperatures[0];
+init[1] = 0;
+stack.push(init);
+```

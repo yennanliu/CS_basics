@@ -352,6 +352,71 @@ class Solution(object):
             stack.append((t, i))
         return res
 ```
+
+```java
+// java
+// LC 739
+// VO
+// IDEA : INCREASING STACK
+// https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj
+/**  NOTE !!! WE USE "INCREASING"  STACK HERE
+ *
+ *   It's critical to define whether "increasing" or "decreasing" stack
+ *   We're going to use in stack LC before implement it
+ */
+public int[] dailyTemperatures(int[] temperatures) {
+
+    if (temperatures.length == 0 || temperatures.equals(null)){
+        return new int[temperatures.length];
+    }
+
+    int[] res = new int[temperatures.length];
+    // TODO : double check this
+    Stack<int[]> stack = new Stack<>();
+
+    int[] init = new int[2];
+    init[0]  = temperatures[0];
+    init[1] = 0;
+    stack.push(init);
+
+    for (int i = 1; i < temperatures.length; i++){
+
+        int cur_tmp = temperatures[i];
+
+        int[] _cur = new int[2];
+        /**
+         *  data structure : [cur_temperature, index]
+         *  so we save cur temperature as 1st element
+         *  index of above element as 2nd element
+         *  so we can compare temperature and get index difference via above
+         */
+        _cur[0] = temperatures[i];
+        _cur[1] = i;
+
+        // case 1 : cur < stack top element
+        if (cur_tmp < stack.peek()[0]){
+            stack.push(_cur);
+        // case 2 : cur == stack top element
+        }else if (cur_tmp == stack.peek()[0]){
+            stack.push(_cur);
+        } // case 3 : cur > stack top element
+        else{
+            // make sure stack is NOT empty
+            while(!stack.empty() && stack.peek()[0] < cur_tmp){
+                int[] _top = stack.pop();
+                res[_top[1]] = i - _top[1];
+            }
+            int[] to_push = new int[2];
+            to_push[0] = cur_tmp;
+            to_push[1] = i;
+            stack.push(to_push);
+        }
+    }
+
+    return res;
+}
+```
+
 ```c++
 // LC 739. Daily Temperatures
 // c++

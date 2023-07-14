@@ -30,6 +30,7 @@ Constraints:
 
 # V0
 # IDEA : STACK
+# // https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj
 class Solution(object):
     def dailyTemperatures(self, tmp):
         # edge case
