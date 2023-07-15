@@ -8,6 +8,12 @@
 - Types
     - [greedy.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/greedy.md)
     - [array.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array.md)
+    - Search in 2D Matrix
+        - LC 74 : flatten matrix + binary search
+            - [binary_search.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_search.md)
+    - Spiral Matrix I
+        - LC 54
+        - LC 59
 
 - Algorithm
     - [fucking algorithm : 二维数组的花式遍历技巧](https://labuladong.github.io/algo/2/20/26/)

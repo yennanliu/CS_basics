@@ -25,6 +25,8 @@
         - Garena/test1.py
     - Search in Rotated Sorted Array
         - LC 033
+    - Search in 2D array
+        - LC 74
 
 - Algorithm
     - binary search
@@ -605,4 +607,42 @@ class Solution:
             return [lo, hi]
                 
         return [-1, -1]
+```
+
+### 2-13) Search a 2D Matrix
+```java
+// java
+// LC 74
+// V1
+// IDEA : BINARY SEARCH + FLATTEN MATRIX
+// https://leetcode.com/problems/search-a-2d-matrix/editorial/
+public boolean searchMatrix_2(int[][] matrix, int target) {
+    int m = matrix.length;
+    if (m == 0)
+        return false;
+    int n = matrix[0].length;
+
+    // binary search
+    /** NOTE !!! FLATTEN MATRIX */
+    int left = 0, right = m * n - 1;
+    int pivotIdx, pivotElement;
+    while (left <= right) {
+        pivotIdx = (left + right) / 2;
+        /** NOTE !!! TRICK HERE :
+         *
+         *   pivotIdx / n : y index
+         *   pivotIdx % n : x index
+         */
+        pivotElement = matrix[pivotIdx / n][pivotIdx % n];
+        if (target == pivotElement)
+            return true;
+        else {
+            if (target < pivotElement)
+                right = pivotIdx - 1;
+            else
+                left = pivotIdx + 1;
+        }
+    }
+    return false;
+}
 ```
