@@ -18,9 +18,33 @@
 ### 0-1) Types
 
 - Types
-    - find `left` boundary
-        - LC 367 Valid Perfect Square 
-    - find `right` boundary
+    - find `LEFT` boundary
+        - LC 367 Valid Perfect Square
+        - LC 875 Koko Eating Bananas
+        - the condition are nearly the same, ONLY difference : return `LEFT`
+        ```python
+        # python
+        while r >= l:
+            mid = (l + r) // 2
+            if mid < target:
+                r = mid - 1
+            else:
+                l = mid + 1
+        return l
+        ```
+
+    - find `RIGHT` boundary
+        - the condition are nearly the same, ONLY difference : return `RIGHT`
+        ```python
+        # python
+        while r >= l:
+            mid = (l + r) // 2
+            if mid < target:
+                r = mid - 1
+            else:
+                l = mid + 1
+        return r
+        ```
     - `recursive` binary search
         - Garena/test1.py
     - Search in Rotated Sorted Array
@@ -513,6 +537,35 @@ class Solution:
             else:
                 minSpeed = speed + 1
         return minSpeed
+```
+
+```java
+// java
+// LC 875
+
+// V0
+// IDEA : BINARY SEARCH (close boundary)
+public int minEatingSpeed(int[] piles, int h) {
+
+    if (piles.length == 0 || piles.equals(null)){
+        return 0;
+    }
+
+    int l = 1; //Arrays.stream(piles).min().getAsInt();
+    int r = Arrays.stream(piles).max().getAsInt();
+
+    while (r >= l){
+        int mid = (l + r) / 2;
+        int _hour = getCompleteTime(piles, mid);
+        if (_hour <= h){
+            r = mid - 1;
+        }else{
+            l = mid + 1;
+        }
+    }
+
+    return l;
+}
 ```
 
 ### 2-10) Find K Closest Elements

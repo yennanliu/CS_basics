@@ -224,3 +224,12 @@ for (int i = 0; i < position.length; i++){
 // order by map key
 Map<Integer, Integer> tree_map = new TreeMap(map);
 ```
+
+### 1-10) Get max val from an Array
+```java
+// java
+// LC 875
+// https://stackoverflow.com/questions/1484347/finding-the-max-min-value-in-an-array-of-primitives-using-java
+int[] piles = new int[5];
+int r = Arrays.stream(piles).max().getAsInt();
+```
