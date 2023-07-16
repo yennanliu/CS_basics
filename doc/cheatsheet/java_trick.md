@@ -215,6 +215,7 @@ System.out.println(b.toString());
 ```java
 // java
 // LC 853
+// V1
 HashMap<Integer, Integer> map = new HashMap<>();
 for (int i = 0; i < position.length; i++){
    int p = -1 * position[i]; // for inverse sorting
@@ -223,6 +224,14 @@ for (int i = 0; i < position.length; i++){
 }
 // order by map key
 Map<Integer, Integer> tree_map = new TreeMap(map);
+```
+
+```java
+// java
+// LC 853
+// order Map key instead
+HashMap<Integer, Integer> map = new HashMap<>();
+Arrays.sort(map.keySet().toArray());
 ```
 
 ### 1-10) Get max val from an Array
