@@ -2,6 +2,7 @@ package dev;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 public class workSpace1 {
@@ -80,6 +81,11 @@ public class workSpace1 {
         }
 
         return false;
+    }
+
+    public List<String> generateParenthesis(int n) {
+
+        return null;
     }
 
 }
