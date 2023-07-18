@@ -172,6 +172,13 @@ intervals = [[0,30],[5,10],[15,20]]
 Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 ```
 
+### 1-4-1) Sort 2D array
+```java
+// java
+// LC 452
+Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
+```
+
 ### 1-5) Get sub array
 ```java
 // java
