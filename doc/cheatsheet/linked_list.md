@@ -863,6 +863,58 @@ class Solution:
         return dic.get(head)
 ```
 
+```java
+// java
+// NOTE : there is also recursive solution
+// LC 138
+// V2
+// IDEA :  Iterative with O(N) Space
+// https://leetcode.com/problems/copy-list-with-random-pointer/editorial/
+// Visited dictionary to hold old node reference as "key" and new node reference as the "value"
+HashMap<Node, Node> visited = new HashMap<Node, Node>();
+
+public Node getClonedNode(Node node) {
+    // If the node exists then
+    if (node != null) {
+        // Check if the node is in the visited dictionary
+        if (this.visited.containsKey(node)) {
+            // If its in the visited dictionary then return the new node reference from the dictionary
+            return this.visited.get(node);
+        } else {
+            // Otherwise create a new node, add to the dictionary and return it
+            this.visited.put(node, new Node(node.val, null, null));
+            return this.visited.get(node);
+        }
+    }
+    return null;
+}
+
+public Node copyRandomList_3(Node head) {
+
+    if (head == null) {
+        return null;
+    }
+
+    Node oldNode = head;
+
+    // Creating the new head node.
+    Node newNode = new Node(oldNode.val);
+    this.visited.put(oldNode, newNode);
+
+    // Iterate on the linked list until all nodes are cloned.
+    while (oldNode != null) {
+        // Get the clones of the nodes referenced by random and next pointers.
+        newNode.random = this.getClonedNode(oldNode.random);
+        newNode.next = this.getClonedNode(oldNode.next);
+
+        // Move one step ahead in the linked list.
+        oldNode = oldNode.next;
+        newNode = newNode.next;
+    }
+    return this.visited.get(head);
+}
+```
+
 ### 2-6) Intersection of Two Linked Lists
 ```python
 # LC 160 Intersection of Two Linked Lists
