@@ -66,6 +66,8 @@ node2.next = node3;
 - Linked list
 - Cycle linked list
 - Bi-direction linked list
+- Double Linked list
+    - LC 146
 - Others
     - LC 138 : 
     ```python
