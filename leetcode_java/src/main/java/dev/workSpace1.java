@@ -1,5 +1,7 @@
 package dev;
 
+import LeetCodeJava.DataStructure.TreeNode;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -87,5 +89,29 @@ public class workSpace1 {
 
         return null;
     }
+
+
+    // https://leetcode.com/problems/maximum-depth-of-binary-tree/
+    // recursive
+    public int maxDepth(TreeNode root) {
+
+        if (root == null){
+            return 0;
+        }
+
+//        if (root.left == null && root.right == null){
+//            return 1;
+//        }
+
+        int leftD = maxDepth(root.left) + 1;
+        int rightD = maxDepth(root.right) + 1;
+
+        return Math.max(leftD, rightD);
+    }
+
+    private int getDepth(TreeNode root){
+        return 0;
+    }
+
 
 }
