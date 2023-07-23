@@ -127,5 +127,81 @@ public class workSpace1 {
         return Math.min(leftD, rightD);
     }
 
+    // https://leetcode.com/problems/diameter-of-binary-tree/
+    public int diameterOfBinaryTree(TreeNode root) {
+
+        if (root == null){
+            return 0;
+        }
+
+        int leftD = diameterOfBinaryTree(root.left) + 1;
+        int rightD = diameterOfBinaryTree(root.right) + 1;
+
+        return Math.max(leftD, rightD) + 1;
+    }
+
+
+
+    // A height-balanced binary tree
+    // is a binary tree in which the depth of the two subtrees of every node
+    // never differs by more than one.
+    public boolean isBalanced(TreeNode root) {
+
+        Boolean result = (
+                    (Math.abs(getDepth2(root.left) - getDepth2(root.right)) <= 1) &&
+                    (isBalanced(root.left)) &&
+                    (isBalanced(root.right))
+                );
+        return result;
+    }
+
+    private int getDepth2(TreeNode root){
+
+        if (root == null){
+            return 0;
+        }
+
+        int leftDep = getDepth2(root.left) + 1;
+        int rightDep = getDepth2(root.right) + 1;
+
+        return Math.max(leftDep, rightDep) + 1;
+    }
+
+    // https://leetcode.com/problems/subtree-of-another-tree/
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+
+        if (root == null) {
+            return false;
+        }
+
+//        if (root == null && subRoot != null){
+//            return false;
+//        }
+
+
+        // check
+
+        // case 1)
+        if (isSame(root, subRoot)){
+            return true;
+        }
+
+        // case 2)
+        return isSame(root.left, subRoot) || isSame(root.right, subRoot);
+    }
+
+    private Boolean isSame(TreeNode node1, TreeNode node2){
+
+        if (node1 == null || node2 == null){
+            return node1 == null && node2 == null;
+        }
+
+//        if (node1.val != node2.val){
+//            return false;
+//        }
+
+        return node1.val == node2.val && isSame(node1.left, node2.left) && isSame(node1.right, node2.right);
+    }
+
 
 }
