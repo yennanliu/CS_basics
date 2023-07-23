@@ -2,10 +2,7 @@ package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class workSpace1 {
 
@@ -111,6 +108,23 @@ public class workSpace1 {
 
     private int getDepth(TreeNode root){
         return 0;
+    }
+
+
+    // https://leetcode.com/problems/minimum-depth-of-binary-tree/
+
+    int depth = 0;
+    List<Integer> cache = new ArrayList<>();
+    public int help(TreeNode root) {
+        if (root == null){
+            cache.add(this.depth);
+            this.depth = 0;
+            return 0;
+        }
+
+        int leftD = help(root.left) + 1;
+        int rightD = help(root.right) + 1;
+        return Math.min(leftD, rightD);
     }
 
 
