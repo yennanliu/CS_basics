@@ -191,9 +191,30 @@ root = TreeNode(int(s))
 # get nodes count of complete tree
 ```
 
-#### 1-1-3) Get depth
-- LC 111 : Minimum Depth of Binary Tree 
+#### 1-1-3 -1) Get Maximum depth
 - LC 104 : Maximum Depth of Binary Tree
+
+```java
+// java
+// V0
+// IDEA : RECURSIVE (DFS)
+public int maxDepth(TreeNode root) {
+
+    if (root == null){
+        return 0;
+    }
+
+    // NOTE : below conditon is optional (have or not use is OK)
+//        if (root.left == null && root.right == null){
+//            return 1;
+//        }
+
+    int leftD = maxDepth(root.left) + 1;
+    int rightD = maxDepth(root.right) + 1;
+
+    return Math.max(leftD, rightD);
+}
+```
 
 ```python
 #-----------------
@@ -216,10 +237,48 @@ while q:
         if tmp.right:
             q.append([layer+1, tmp.right])
         # ...
+```
 
-#-----------------
-# DFS
-#-----------------
+#### 1-1-3 -2) Get Minimum depth
+- LC 111 : Minimum Depth of Binary Tree 
+
+```java
+// java
+
+// V0'
+// IDEA : DFS
+public int minDepth(TreeNode root) {
+
+    if (root == null){
+        return  0;
+    }
+
+    return getDepth(root);
+}
+
+private int getDepth(TreeNode root){
+
+    if (root == null){
+        return 0;
+    }
+
+    /**
+     *  NOTE !!! below condition
+     *  -> we need to go till meat a node, then calculate min depths (number of node)
+     *  -> Note: A leaf is a node with no children.
+     *  -> plz check below example for idea
+     *  example : [2,null,3,null,4,null,5,null,6]
+     *
+     *
+     */
+    if (root.left == null) {
+        return 1 + getDepth(root.right);
+    } else if (root.right == null) {
+        return 1 + getDepth(root.left);
+    }
+
+    return 1 + Math.min(getDepth(root.left), getDepth(root.right));
+}
 ```
 
 #### 1-1-4) Get LCA (Lowest Common Ancestor) of a tree
