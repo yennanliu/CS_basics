@@ -5,11 +5,48 @@ package LeetCodeJava.Tree;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class SubtreeOfAnotherTree {
+
+    // V0
+    // IDEA : DFS
+    // TODO : fix below
+//    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+//
+//        if (root == null) {
+//            return false;
+//        }
+//
+////        if (root == null && subRoot != null){
+////            return false;
+////        }
+//
+//
+//        // check
+//
+//        // case 1)
+//        if (isSame(root, subRoot)){
+//            return true;
+//        }
+//
+//        // case 2)
+//        return isSame(root.left, subRoot) || isSame(root.right, subRoot);
+//    }
+//
+//    private Boolean isSame(TreeNode node1, TreeNode node2){
+//
+//        if (node1 == null || node2 == null){
+//            return node1 == null && node2 == null;
+//        }
+//
+////        if (node1.val != node2.val){
+////            return false;
+////        }
+//
+//        return node1.val == node2.val && isSame(node1.left, node2.left) && isSame(node1.right, node2.right);
+//    }
+
 
     // V1
     // IDEA : DFS

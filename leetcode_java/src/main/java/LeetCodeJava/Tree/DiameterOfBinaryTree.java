@@ -6,6 +6,9 @@ import LeetCodeJava.DataStructure.TreeNode;
 
 public class DiameterOfBinaryTree {
 
+    // V0
+    // IDEA : DFS
+
     // V1
     // IDEA : DFS
     // https://leetcode.com/problems/diameter-of-binary-tree/editorial/

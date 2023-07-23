@@ -163,6 +163,8 @@ def divide_and_conquer( S ):
         - Divide -> Conquer -> Combine
 - Backtracking
 - master theorem
+- Recursively and call the other recursion function
+    - LC 572
 
 ### 0-2) Pattern
 
@@ -282,4 +284,140 @@ class Solution(object):
         else:
             l2.next = self.mergeTwoLists(l1, l2.next)
             return l2
+```
+
+### 2-4) Subtree of Another Tree
+```python
+# LC 572 Subtree of Another Tree
+
+# V0
+# IDEA : BFS + DFS
+# bfs
+class Solution(object):
+    def isSubtree(self, root, subRoot):
+        
+        # dfs
+        # IDEA : LC 100 Same tree
+        def check(p, q):
+            if (not p and not q):
+                return True
+            elif (not p and q) or (p and not q):
+                return False
+            elif (p.left and not q.left) or (p.right and not q.right):
+                return False
+            elif (not p.left and q.left) or (not p.right and q.right):
+                return False
+            return p.val == q.val and check(p.left, q.left) and check(p.right, q.right)
+        
+        # bfs
+        if (not root and subRoot) or (root and not subRoot):
+            return False
+        q = [root]
+        cache = []
+        while q:
+            for i in range(len(q)):
+                tmp = q.pop(0)
+                if tmp.val == subRoot.val:
+                    ### NOTE : here we don't return res
+                    #          -> since we may have `root = [1,1], subRoot = [1]` case
+                    #          -> so we have a cache, collect all possible res
+                    #          -> then check if there is "True" in cache
+                    res = check(tmp, subRoot)
+                    cache.append(res)
+                    #return res
+                if tmp.left:
+                    q.append(tmp.left)
+                if tmp.right:
+                    q.append(tmp.right)
+        #print ("cache = " + str(cache))
+        # check if there is "True" in cache
+        return True in cache
+
+# V0'
+# IDEA : DFS + DFS (LC 100 Same tree)
+class Solution(object):
+    def isSubtree(self, root, subRoot):
+        # IDEA : LC 100 Same tree
+        def isSameTree(p, q):
+            if not p and not q:
+                return True
+            if (not p and q) or (p and not q):
+                return False
+            if p.val != q.val:
+                return False
+            return isSameTree(p.left, q.left) and isSameTree(p.right, q.right)
+        def help(root, subRoot):
+            # edge case
+            if not root and subRoot:
+                return False
+            if not root and not subRoot:
+                return True
+            # use isSameTree
+            if isSameTree(root, subRoot):
+                #return True
+                res.append(True)
+            if root.left:
+                help(root.left, subRoot)
+            if root.right:
+                help(root.right, subRoot)
+        res = []
+        help(root, subRoot)
+        #print ("res = " + str(res))
+        return True in res
+
+# V0' 
+# IDEA : DFS + DFS 
+class Solution(object):
+    def isSubtree(self, s, t):
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        return self.isSameTree(s, t) or self.isSubtree(s.left, t) or self.isSubtree(s.right, t)
+        
+    def isSameTree(self, s, t):
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
+```
+
+```java
+// java
+// LC 572
+ public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+
+        // If this node is Empty, then no tree is rooted at this Node
+        // Hence, "tree rooted at node" cannot be equal to "tree rooted at subRoot"
+        // "tree rooted at subRoot" will always be non-empty, as per constraints
+        if (root == null) {
+            return false;
+        }
+
+        // Check if the "tree rooted at root" is identical to "tree roooted at subRoot"
+        if (isIdentical(root, subRoot)) {
+            return true;
+        }
+
+        // If not, check for "tree rooted at root.left" and "tree rooted at root.right"
+        // If either of them returns true, return true
+        // NOTE !!! either left or right tree equals subRoot is acceptable
+        return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+    }
+
+    /** NOTE !!! check this help func */
+    private boolean isIdentical(TreeNode node1, TreeNode node2) {
+
+        // If any of the nodes is null, then both must be null
+        if (node1 == null || node2 == null) {
+            return node1 == null && node2 == null;
+        }
+
+        // If both nodes are non-empty, then they are identical only if
+        // 1. Their values are equal
+        // 2. Their left subtrees are identical
+        // 3. Their right subtrees are identical
+        return node1.val == node2.val && isIdentical(node1.left, node2.left) && isIdentical(node1.right, node2.right);
+    }
 ```
