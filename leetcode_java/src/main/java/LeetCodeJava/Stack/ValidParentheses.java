@@ -9,8 +9,55 @@ import java.util.Stack;
 
 public class ValidParentheses {
 
+    // V0'
+    // IDEA : STACK + add "inverse" Parentheses to stack directly
+    // https://www.bilibili.com/video/BV1AF411w78g/?share_source=copy_web&vd_source=771d0eba9b524b4f63f92e37bde71301
+    public boolean isValid_(String s) {
+
+        if (s.length() % 2 != 0){
+            return false;
+        }
+
+        Stack st = new Stack();
+
+        for (int i = 0; i < s.length(); i++){
+
+            String cur = String.valueOf(s.charAt(i));
+
+            if (cur.equals("(")){
+                st.push(")");
+                continue;
+            }
+            else if (cur.equals("{")){
+                st.push("}");
+                continue;
+            }
+            else if (cur.equals("[")){
+                st.push("]");
+                continue;
+            }
+            else{
+                if (st.empty()){
+                    return false;
+                }else{
+                    String _cur = (String) st.pop();
+                    if (!_cur.equals(cur)){
+                        return false;
+                    }
+                }
+            }
+
+        }
+        return true ? st.empty() : false;
+    }
+
     // V0
+    // IDEA : STACK
     public boolean isValid(String s) {
+
+        if (s.length() % 2 != 0){
+            return false;
+        }
 
         HashMap<String, String> map = new HashMap<>();
         Stack st = new Stack();
