@@ -8,6 +8,37 @@ import java.util.LinkedList;
 public class MaximumDepthOfBinaryTree {
 
     // V0
+    // IDEA : RECURSIVE
+    public int maxDepth(TreeNode root) {
+
+        if (root == null){
+            return 0;
+        }
+
+        // NOTE : below conditon is optional (have or not use is OK)
+//        if (root.left == null && root.right == null){
+//            return 1;
+//        }
+
+        int leftD = maxDepth(root.left) + 1;
+        int rightD = maxDepth(root.right) + 1;
+
+        return Math.max(leftD, rightD);
+    }
+
+
+    // V0'
+    // IDEA : RECURSIVE
+    public int maxDepth_1(TreeNode root) {
+
+        if (root == null){
+            return 0;
+        }
+        return Math.max(maxDepth_1(root.left) + 1, maxDepth_1(root.right) + 1);
+    }
+
+
+    // V0
 //    public int maxDepth(TreeNode root) {
 //
 //        if (root == null){
@@ -42,12 +73,12 @@ public class MaximumDepthOfBinaryTree {
     // V1
     // IDEA : RECURSION
     // https://leetcode.com/problems/maximum-depth-of-binary-tree/editorial/
-    public int maxDepth(TreeNode root) {
+    public int maxDepth_2(TreeNode root) {
         if (root == null) {
             return 0;
         } else {
-            int left_height = maxDepth(root.left);
-            int right_height = maxDepth(root.right);
+            int left_height = maxDepth_2(root.left);
+            int right_height = maxDepth_2(root.right);
             return java.lang.Math.max(left_height, right_height) + 1;
         }
     }
