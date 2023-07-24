@@ -204,4 +204,56 @@ public class workSpace1 {
     }
 
 
+    // https://leetcode.com/problems/top-k-frequent-elements/
+    public int[] topKFrequent(int[] nums, int k) {
+
+        if (nums.equals(null) || nums.length == 0){
+            return null;
+        }
+
+        // min stack
+//        PriorityQueue<Integer> pq = new PriorityQueue<>();
+//        for (int x : nums){
+//            if (pq.isEmpty()){
+//                pq.add(x);
+//            }
+//        }
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int x : nums){
+            if (!map.containsKey(x)){
+                map.put(x, 1);
+            }else{
+                int cur = map.get(x);
+                map.put(x, cur+1);
+            }
+        }
+
+        int _size = map.keySet().size();
+        int[][] tmp = new int[_size][2];
+        int z = 0;
+        for (int j : map.keySet()){
+            tmp[z][0] = j;
+            tmp[z][1] = map.get(j);
+            z += 1;
+        }
+
+        // order
+        Arrays.sort(tmp, (x, y) -> Integer.compare(-x[1], -y[1]));
+        System.out.println(">>> ");
+        Arrays.stream(tmp).forEach(x -> System.out.println(x[0]));
+        System.out.println(">>> ");
+
+        int[] res = new int[k];
+//        for (int i = tmp.length-1; i >=0;  i--){
+//            res[0] = tmp[i][0];
+//        }
+        for (int i = 0 ; i < tmp.length; i++){
+            res[i] = tmp[i][0];
+        }
+
+        return res;
+    }
+
+
 }
