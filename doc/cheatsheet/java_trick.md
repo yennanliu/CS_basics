@@ -241,6 +241,13 @@ HashMap<Integer, Integer> map = new HashMap<>();
 Arrays.sort(map.keySet().toArray());
 ```
 
+```java
+// java
+// LC 346
+// sort array in descending order
+Arrays.sort(tmp, (x, y) -> Integer.compare(-x[1], -y[1]));
+```
+
 ### 1-10) Get max val from an Array
 ```java
 // java

@@ -7,42 +7,52 @@ import java.util.stream.Collectors;
 
 public class TopKFrequentElements {
 
-//
-//    public int[] topKFrequent(int[] nums, int k) {
-//
-//        if (nums.length == 0 || nums.equals(null) || nums.length < k){
-//            return nums;
-//        }
-//
-//        HashMap<Integer, Integer> map = new HashMap<>();
-//        for (int i : nums){
-//            if (!map.containsKey(i)){
-//                map.put(i, 1);
-//            }else{
-//                int count = map.get(i);
-//                count += 1;
-//                map.put(i, count);
-//            }
-//        }
-//
-//        //List<Integer> topKVal = map.values().stream().sorted().collect(Collectors.toList());
-//
-//
-//        map.entrySet().stream().sorted(Map.Entry.comparingByValue());
-//
-//        int[] ans = new int[k];
-//        int l = 0;
-//        for (int j : map.keySet()){
-//            if (l == k){
-//                break;
-//            }
-//            System.out.println("j = " + j + " val = " + map.get(j));
-//            ans[l] = j;
-//            l += 1;
-//        }
-//
-//        return ans;
-//    }
+    // V0
+    // IDEA : HASHMAP + ARRAY ORDERING
+    public int[] topKFrequent(int[] nums, int k) {
+
+        if (nums.equals(null) || nums.length == 0){
+            return null;
+        }
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int x : nums){
+            if (!map.containsKey(x)){
+                map.put(x, 1);
+            }else{
+                int cur = map.get(x);
+                map.put(x, cur+1);
+            }
+        }
+
+        int _size = map.keySet().size();
+        // tmp array save (k, count) from map
+        // for ordering op below
+        int[][] tmp = new int[_size][2];
+        int z = 0;
+        for (int j : map.keySet()){
+            tmp[z][0] = j;
+            tmp[z][1] = map.get(j);
+            z += 1;
+        }
+
+        // order array
+        /** NOTE !!! sort syntax here
+         *
+         * -> Integer.compare(-x[1], -y[1]) for reverse ordering (descending)
+         */
+        Arrays.sort(tmp, (x, y) -> Integer.compare(-x[1], -y[1]));
+        // System.out.println(">>> ");
+        // Arrays.stream(tmp).forEach(x -> System.out.println(x[0]));
+        // System.out.println(">>> ");
+
+        int[] res = new int[k];
+        for (int i = 0 ; i < k; i++){
+            res[i] = tmp[i][0];
+        }
+
+        return res;
+    }
 
     // V1
     // IDEA : HEAP
