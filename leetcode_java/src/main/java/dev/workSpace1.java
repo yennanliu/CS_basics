@@ -255,5 +255,84 @@ public class workSpace1 {
         return res;
     }
 
+    // https://leetcode.com/problems/evaluate-reverse-polish-notation/
+    public int evalRPN(String[] tokens) {
+
+        if (tokens.length == 0){
+            return 0;
+        }
+
+        int ans = 0;
+        String signs = "+-*/";
+        Stack<Integer> stack = new Stack<>();
+        for(String x : tokens){
+
+            if (!signs.contains(x)){
+                stack.push(Integer.parseInt(x));
+                continue;
+            }
+
+            int _tmp = 0;
+            int _first = stack.pop();
+            int _second = stack.pop();
+
+            if (x.equals("+")){
+                _tmp = _second + _first;
+                stack.push(_tmp);
+
+            } else if (x.equals("-")){
+                _tmp = _second - _first;
+                stack.push(_tmp);
+
+            }else if (x.equals("+")){
+                _tmp = _second * _first;
+                stack.push(_tmp);
+
+            }else{
+                _tmp = _second / _first;
+                stack.push(_tmp);
+            }
+        }
+
+        System.out.println(">>> stack size = " + stack.size());
+        return stack.pop();
+    }
+
+    // https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/
+    public String removeDuplicates(String s) {
+
+        if (s.equals(null)){
+            return s;
+        }
+
+        String ans = "";
+        Stack<String> stack = new Stack<>();
+        //Arrays.
+        // char array [] = strs.toCharArray();
+        char[] s_array = s.toCharArray();
+        for (char x : s_array){
+            String _x = String.valueOf(x);
+            if (stack.isEmpty()){
+                stack.push(_x);
+            }else{
+                if (_x.equals(stack.peek())){
+                    stack.pop();
+                }else{
+                    stack.push(_x);
+                }
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        while(!stack.isEmpty()){
+            String cur = stack.pop();
+            //ans += cur;
+            sb.append(cur);
+        }
+
+        return sb.reverse().toString();
+    }
+
 
 }
