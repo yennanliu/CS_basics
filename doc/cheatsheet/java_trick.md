@@ -20,7 +20,7 @@ for (char c: S.toCharArray()) {
 // V2
 // LC 49
 String strs = "scvsdacvdsa";
-char array [] = strs.toCharArray();   
+char[] array = strs.toCharArray();   
 ```
 
 ### 1-0-1) Init an List
