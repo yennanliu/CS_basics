@@ -16,6 +16,8 @@
 
 
 ### 0-2) Pattern
+- Gat max, min element in path
+    - LC 1448 : ONLY need to maintain cur max val in path, and compare cur node with it
 
 ## 1) General form
 
@@ -1437,4 +1439,71 @@ class Solution:
         rtNd.left = self.expTree(s[:fstOpIdx])
         rtNd.right = self.expTree(s[fstOpIdx+1:])
         return rtNd
+```
+
+### 2-18) Count Good Nodes in Binary Tree
+```java
+// java
+// LC 1448
+ // V1
+    // IDEA : DFS
+    // https://leetcode.com/problems/count-good-nodes-in-binary-tree/editorial/
+    private int numGoodNodes = 0;
+
+    public int goodNodes_2(TreeNode root) {
+        dfs(root, Integer.MIN_VALUE);
+        return numGoodNodes;
+    }
+
+    private void dfs(TreeNode node, int maxSoFar) {
+        if (maxSoFar <= node.val) {
+            numGoodNodes++;
+        }
+
+        if (node.right != null) {
+            dfs(node.right, Math.max(node.val, maxSoFar));
+        }
+
+        if (node.left != null) {
+            dfs(node.left, Math.max(node.val, maxSoFar));
+        }
+    }
+
+
+    // V2
+    // IDEA : DFS + Iterative
+    // https://leetcode.com/problems/count-good-nodes-in-binary-tree/editorial/
+    class Pair {
+
+        public TreeNode node;
+        public int maxSoFar;
+
+        public Pair(TreeNode node, int maxSoFar) {
+            this.node = node;
+            this.maxSoFar = maxSoFar;
+        }
+    }
+
+    public int goodNodes_3(TreeNode root) {
+        int numGoodNodes = 0;
+        Stack<Pair> stack = new Stack<>();
+        stack.push(new Pair(root, Integer.MIN_VALUE));
+
+        while (stack.size() > 0) {
+            Pair curr = stack.pop();
+            if (curr.maxSoFar <= curr.node.val) {
+                numGoodNodes++;
+            }
+
+            if (curr.node.left != null) {
+                stack.push(new Pair(curr.node.left, Math.max(curr.node.val, curr.maxSoFar)));
+            }
+
+            if (curr.node.right != null) {
+                stack.push(new Pair(curr.node.right, Math.max(curr.node.val, curr.maxSoFar)));
+            }
+        }
+
+        return numGoodNodes;
+    }
 ```

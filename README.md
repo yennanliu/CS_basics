@@ -487,7 +487,7 @@
 701| [Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/) |  [Python](./leetcode_python/Tree/insert-into-a-binary-search-tree.py) ||| Medium |good basic, BST, tree, BFS, DFS| OK*** (2)
 1339| [Maximum Product of Splitted Binary Tree](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/) |  [Python](./leetcode_python/Tree/maximum-product-of-splitted-binary-tree.py) ||| Medium |dfs, tree, amazon| AGAIN*** (1) (not start)
 1372| [Longest ZigZag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/) |  [Python](./leetcode_python/Tree/longest-zigzag-path-in-a-binary-tree.py) ||| Medium |dfs, bfs, post order, good trick, tree, amazon| AGAIN*** (1) (not start)
-
+1448| [Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/) |  [Python](./leetcode_python/Tree/count-good-nodes-in-binary-tree.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/CountGoodNodesInBinaryTree.java) ||| Medium |max in path, dfs, bfs, good trick, tree, needcode, google, amz, m$| AGAIN********* (1) (MUST)
 
 ## Heap 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note  | Status| 
