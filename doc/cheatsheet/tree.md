@@ -42,6 +42,9 @@
 
 - <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/tree_traverse.png" ></p>
 
+- Tree traverse
+    - https://www.bilibili.com/video/BV1Hy4y1t7ij/?share_source=copy_web&vd_source=771d0eba9b524b4f63f92e37bde71301
+
 - pre-order traverse
     - root -> left -> right
 ```python
