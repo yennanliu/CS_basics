@@ -334,5 +334,36 @@ public class workSpace1 {
         return sb.reverse().toString();
     }
 
+    // Test
+    //TreeNode root2 = new TreeNode();
+    public List<Integer> rightSideView(TreeNode root) {
+        if (root == null){
+            return null;
+        }
+
+        TreeNode root2 = this._dfs(root);
+        System.out.println("---> ");
+        System.out.println(">>> root2 = " + root2.toString());
+        System.out.println(">>> root2.val  = " + root2.val);
+        System.out.println(">>> root2.right  = " + root2.right);
+        System.out.println(">>> root2.left  = " + root2.left);
+        System.out.println("---> ");
+        return null;
+    }
+
+    private TreeNode _dfs(TreeNode node){
+
+        if (node == null){
+            return null;
+        }
+
+        TreeNode root2 = node;
+        root2.left = this._dfs(node.left);
+        root2.right = this._dfs(node.right);
+
+        /** NOTE !!! we need to return root as final step */
+        return root2;
+    }
+
 
 }

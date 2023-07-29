@@ -30,6 +30,27 @@
 
 ### 0-2) Pattern
 
+
+- Important !!!!
+```java
+// java
+// LC 199
+private TreeNode _dfs(TreeNode node){
+
+    if (node == null){
+        return null;
+    }
+
+    /** NOTE !!! no need to create global node, but can define inside the method */
+    TreeNode root2 = node;
+    root2.left = this._dfs(node.left);
+    root2.right = this._dfs(node.right);
+
+    /** NOTE !!! we need to return root as final step */
+    return root2;
+}
+```
+
 ```python
 # python
 # form I : tree transversal
