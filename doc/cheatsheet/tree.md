@@ -44,6 +44,9 @@
 
 - Tree traverse
     - https://www.bilibili.com/video/BV1Hy4y1t7ij/?share_source=copy_web&vd_source=771d0eba9b524b4f63f92e37bde71301
+- Tree traverse ordering != Tree operation ordering (for iterative approach)
+    - https://www.bilibili.com/video/BV1Zf4y1a77g/?share_source=copy_web&vd_source=771d0eba9b524b4f63f92e37bde71301
+    - example : Inorder traverse VS Inorder operation
 
 - pre-order traverse
     - root -> left -> right
