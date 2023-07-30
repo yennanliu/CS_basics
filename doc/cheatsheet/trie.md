@@ -228,6 +228,93 @@ class Trie(object):
         return True
 ```
 
+```java
+// java
+// LC 208
+// V1
+// https://leetcode.com/problems/implement-trie-prefix-tree/editorial/
+class TrieNode {
+
+    // R links to node children
+    private TrieNode[] links;
+
+    private final int R = 26;
+
+    private boolean isEnd;
+
+    public TrieNode() {
+        links = new TrieNode[R];
+    }
+
+    public boolean containsKey(char ch) {
+        return links[ch -'a'] != null;
+    }
+    public TrieNode get(char ch) {
+        return links[ch -'a'];
+    }
+    public void put(char ch, TrieNode node) {
+        links[ch -'a'] = node;
+    }
+    public void setEnd() {
+        isEnd = true;
+    }
+    public boolean isEnd() {
+        return isEnd;
+    }
+}
+
+class Trie2 {
+    private TrieNode root;
+
+    public Trie2() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        TrieNode node = root;
+        for (int i = 0; i < word.length(); i++) {
+            char currentChar = word.charAt(i);
+            if (!node.containsKey(currentChar)) {
+                node.put(currentChar, new TrieNode());
+            }
+            node = node.get(currentChar);
+        }
+        node.setEnd();
+    }
+
+
+    // search a prefix or whole key in trie and
+    // returns the node where search ends
+    private TrieNode searchPrefix(String word) {
+        TrieNode node = root;
+        for (int i = 0; i < word.length(); i++) {
+            char curLetter = word.charAt(i);
+            if (node.containsKey(curLetter)) {
+                node = node.get(curLetter);
+            } else {
+                return null;
+            }
+        }
+        return node;
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        TrieNode node = searchPrefix(word);
+        return node != null && node.isEnd();
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        TrieNode node = searchPrefix(prefix);
+        return node != null;
+    }
+
+}
+```
+
 ### 2-2) Add and Search Word - Data structure design
 ```python
 # LC 211 Add and Search Word - Data structure design
@@ -275,6 +362,79 @@ class WordDictionary(object):
                 if self.match(word, index + 1, child):
                     return True
         return False
+```
+
+```java
+// java
+// LC 211
+
+// V1
+// IDEA : TRIE
+// https://leetcode.com/problems/design-add-and-search-words-data-structure/editorial/
+class TrieNode {
+    Map<Character, TrieNode> children = new HashMap();
+    boolean word = false;
+    public TrieNode() {}
+}
+
+class WordDictionary2 {
+    TrieNode trie;
+
+    /** Initialize your data structure here. */
+    public WordDictionary2() {
+        trie = new TrieNode();
+    }
+
+    /** Adds a word into the data structure. */
+    public void addWord(String word) {
+        TrieNode node = trie;
+
+        for (char ch : word.toCharArray()) {
+            if (!node.children.containsKey(ch)) {
+                node.children.put(ch, new TrieNode());
+            }
+            node = node.children.get(ch);
+        }
+        node.word = true;
+    }
+
+    /** Returns if the word is in the node. */
+    public boolean searchInNode(String word, TrieNode node) {
+        for (int i = 0; i < word.length(); ++i) {
+            char ch = word.charAt(i);
+            if (!node.children.containsKey(ch)) {
+                // if the current character is '.'
+                // check all possible nodes at this level
+                if (ch == '.') {
+                    for (char x : node.children.keySet()) {
+                        TrieNode child = node.children.get(x);
+                        /** NOTE !!!
+                         *  -> if ".", we HAVE to go through all nodes in next levels
+                         *  -> and check if any of them is valid
+                         *  -> so we need to RECURSIVELY call searchInNode method with "i+1" sub string
+                         */
+                        if (searchInNode(word.substring(i + 1), child)) {
+                            return true;
+                        }
+                    }
+                }
+                // if no nodes lead to answer
+                // or the current character != '.'
+                return false;
+            } else {
+                // if the character is found
+                // go down to the next level in trie
+                node = node.children.get(ch);
+            }
+        }
+        return node.word;
+    }
+
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    public boolean search(String word) {
+        return searchInNode(word, trie);
+    }
+}
 ```
 
 ### 2-3) Search Suggestions System
