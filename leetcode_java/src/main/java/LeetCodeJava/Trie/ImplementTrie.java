@@ -1,4 +1,4 @@
-package LeetCodeJava.Tree;
+package LeetCodeJava.Trie;
 
 // https://leetcode.com/problems/implement-trie-prefix-tree/
 
