@@ -62,6 +62,7 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
         preorderIndex = 0;
         // build a hashmap to store value -> its index relations
         inorderIndexMap = new HashMap<>();
+        /** NOTE !!! hashmap save Inorder 's  val-index info */
         for (int i = 0; i < inorder.length; i++) {
             inorderIndexMap.put(inorder[i], i);
         }
