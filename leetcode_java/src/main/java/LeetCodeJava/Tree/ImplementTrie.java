@@ -14,6 +14,10 @@ public class ImplementTrie {
 
 
     // V0
+    // IDEA : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py#L49
+    // TODO : implement above
+
+    // V0'
     // TODO : fix below
 
 //    public class ListNode2{
