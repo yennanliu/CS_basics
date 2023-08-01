@@ -366,4 +366,64 @@ public class workSpace1 {
     }
 
 
+    // https://leetcode.com/problems/kth-largest-element-in-a-stream/
+    class KthLargest {
+
+        // attr
+        PriorityQueue<Integer> heap;
+        int k;
+
+        // constructor
+        public KthLargest(int k, int[] nums) {
+
+            this.k = k;
+            this.heap = new PriorityQueue<>();
+            for (int x : nums){
+                //this.heap.add(x);
+                this.heap.offer(x);
+            }
+
+            // pop elements if heap size > k
+            while(this.heap.size() > k){
+                this.heap.poll();
+            }
+        }
+
+        public int add(int val) {
+
+            this.heap.offer(val);
+            if (heap.size() > k){
+                this.heap.poll();
+            }
+
+            return this.heap.peek();
+
+//            this.heap.add(val);
+//            List<Integer> tmp = new ArrayList<>();
+//            int _size = this.heap.size();
+//            int _cnt = 0;
+//            Integer toPop = null;
+//            while (_size > 0){
+//                int cur = this.heap.remove();
+//                if (_cnt == this.k){
+//                    toPop = cur;
+//                    return cur;
+//                }
+//                tmp.add(cur);
+//                _cnt += 1;
+//            }
+//
+//            // put rest of elements back to current heap
+//            for (int x : tmp) {
+//                if (toPop != null && x != toPop){
+//                    this.heap.add(x);
+//                }
+//            }
+//
+//            return 0;
+        }
+
+    }
+
+
 }

@@ -2,6 +2,14 @@
 
 # 0) Basic data structures
 
+- Java heap:
+    - LC 703
+    - Default : min-heap
+    ```java
+    // java
+    PriorityQueue<Integer> heap = new PriorityQueue<>();
+    ```
+
 # 1) Basic op
 
 
