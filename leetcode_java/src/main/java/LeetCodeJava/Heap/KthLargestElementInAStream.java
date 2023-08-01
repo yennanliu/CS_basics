@@ -7,6 +7,47 @@ import java.util.PriorityQueue;
 public class KthLargestElementInAStream {
 
     // V0
+    // IDEA : SMALL PRIORITY QUEUE
+    //      -> NOTE !!!
+    //      -> min-heap (min means that the heap will remove/find the smallest element,
+    //      -> a max heap is the same thing but for the largest element)
+    //
+    //      -> so if we maintain a k size min-heap, when we get smallest, it is k largest element of the nums
+    //      -> and we DON'T care rest of the element, so we can remove them
+    //
+    //      -> summary : maintain a k size min-heap, remove elements when there is a new num added and when size > k
+    class KthLargest {
+
+        // attr
+        PriorityQueue<Integer> heap;
+        int k;
+
+        // constructor
+        public KthLargest(int k, int[] nums) {
+
+            this.k = k;
+            this.heap = new PriorityQueue<>();
+            for (int x : nums){
+                //this.heap.add(x);
+                this.heap.offer(x);
+            }
+
+            // pop elements if heap size > k
+            while(this.heap.size() > k){
+                this.heap.poll();
+            }
+        }
+
+        public int add(int val) {
+
+            this.heap.offer(val);
+            if (heap.size() > k){
+                this.heap.poll();
+            }
+
+            return this.heap.peek();
+        }
+    }
 
     // V1
     // IDEA : PRIORITY QUEUE
