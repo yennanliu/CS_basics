@@ -28,12 +28,13 @@ public class KthLargestElementInAStream {
             this.k = k;
             this.heap = new PriorityQueue<>();
             for (int x : nums){
-                //this.heap.add(x);
+                //this.heap.add(x); // this one is OK as well
                 this.heap.offer(x);
             }
 
             // pop elements if heap size > k
             while(this.heap.size() > k){
+                //this.heap.remove(); // this one is OK as well
                 this.heap.poll();
             }
         }
@@ -42,6 +43,7 @@ public class KthLargestElementInAStream {
 
             this.heap.offer(val);
             if (heap.size() > k){
+                //this.heap.remove(); // this one is OK as well
                 this.heap.poll();
             }
 
