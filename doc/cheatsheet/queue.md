@@ -6,6 +6,8 @@
 - An ordering linear data structure
 - can be implemented by either `array` or `linkedlist`
 - first in first out (FIFO)
+- [Java Queue](https://juejin.cn/post/7032838878696308766)
+    - Low level : Linked list or Array
 
 ### 0-1) Types
 - Queue

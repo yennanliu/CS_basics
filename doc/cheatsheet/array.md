@@ -1,7 +1,9 @@
 # Array
 > Basic linear data structure
 
-## 0) Concept  
+## 0) Concept
+- [Java Array](https://cloud.tencent.com/developer/article/1672332)
+    - Low level : continuous blocks in memory space
 
 ### 0-1) Types
 
