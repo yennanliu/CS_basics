@@ -24,7 +24,9 @@
     - monotonic stack
         - LC 2104
 
-## 0) Concept  
+## 0) Concept
+- [Java Stack](https://blog.csdn.net/oChangWen/article/details/72859556)
+    - Low level : Array
 
 ### 0-1) Types
 - Single stack

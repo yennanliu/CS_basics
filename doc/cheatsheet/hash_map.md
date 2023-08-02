@@ -1,6 +1,8 @@
 # Hash Map
 
-## 0) Concept 
+## 0) Concept
+
+- [Java HashMap](https://bbs.huaweicloud.com/blogs/276884?utm_source=juejin&utm_medium=bbs-ex&utm_campaign=other&utm_content=content) 
 
 - FAQ
     - why hashmap search time complexity ~= O(1) ? explain ?
