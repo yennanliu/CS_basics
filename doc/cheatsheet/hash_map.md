@@ -2,7 +2,10 @@
 
 ## 0) Concept
 
-- [Java HashMap](https://bbs.huaweicloud.com/blogs/276884?utm_source=juejin&utm_medium=bbs-ex&utm_campaign=other&utm_content=content) 
+- [Java HashMap](https://bbs.huaweicloud.com/blogs/276884?utm_source=juejin&utm_medium=bbs-ex&utm_campaign=other&utm_content=content)
+    - Low level : Array + Linked list / red-black tree
+        - if Linked list length > 8 -> transform Linked list to red-black tree
+        - if Linked list length < 6 -> transform red-black tree back to Linked list
 
 - FAQ
     - why hashmap search time complexity ~= O(1) ? explain ?
