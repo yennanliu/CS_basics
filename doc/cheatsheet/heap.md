@@ -40,6 +40,8 @@
 ### 0-1) Types
     - `priority queue`
         - LC 295, 787, 1492
+    - K th biggest integer
+        - LC 215
 
 ### 0-2) Pattern
 
