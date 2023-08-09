@@ -1,5 +1,6 @@
 package dev;
 
+import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
@@ -425,5 +426,152 @@ public class workSpace1 {
 
     }
 
+
+    // https://leetcode.com/problems/design-add-and-search-words-data-structure/
+//    class Trie{
+//
+//        // attr
+//        HashMap<String, Trie> children;
+//        Boolean isEnd;
+//
+//        // constructor
+//        public Trie(){
+//
+//        }
+//
+//    }
+//    class WordDictionary {
+//
+//        // attr
+//        Trie trie;
+//
+//        public WordDictionary() {
+//            trie = new Trie();
+//        }
+//
+//        public void addWord(String word) {
+//
+//            Trie node = this.trie;
+//
+//            if (word.length() == 0){
+//                return;
+//            }
+//
+//            char[] w_array = word.toCharArray();
+//            for (char x : w_array){
+//                String cur = String.valueOf(x);
+//                node.children.put(cur, new Trie());
+//                node = node.children.get(cur);
+//            }
+//
+//            node.isEnd = true;
+//        }
+//
+//        public boolean search(String word) {
+//
+//            Trie node = this.trie;
+//
+//            if (word.length() == 0){
+//                return true;
+//            }
+//
+//            char[] w_array = word.toCharArray();
+//            int _len = w_array.length;
+//            for (int i = 0; i < w_array.length; i++){
+//
+//                String cur = String.valueOf(w_array[i]);
+//
+//                if (node.children.keySet().contains(cur)){
+//
+//                    node = node.children.get(cur);
+//
+//                }else{
+//
+//                    // recursive call
+//                    if (cur.equals(".")){
+//                        for (String x : node.children.keySet()){
+//                            char[] _w_array = Arrays.copyOfRange(w_array, i+1, _len);
+//                            search(word.substring(i+1, _len));
+//                        }
+//                    }else{
+//                        if (!this.trie.children.containsKey(cur)){
+//                            return false;
+//                        }
+//                    }
+//
+//                }
+//
+//            }
+//
+//            return false;
+//        }
+//
+//    }
+
+
+    // https://leetcode.com/problems/implement-trie-prefix-tree/
+
+    class Trie {
+
+        // attr
+        Trie node;
+        HashMap<String, Trie> children;
+        Boolean isEnd;
+
+        // constructor
+        public Trie() {
+            this.node = new Trie();
+            this.children = new HashMap<>();
+            this.isEnd = false;
+        }
+
+        public void insert(String word) {
+
+            Trie _node = this.node;
+            char[] _array_word = word.toCharArray();
+            for (char x : _array_word){
+                String key = String.valueOf(x);
+                if (!_node.children.containsKey(key)){
+                    _node.children.put(key, new Trie());
+                }
+
+                _node = _node.children.get(key);
+            }
+
+            _node.isEnd = true;
+        }
+
+        public boolean search(String word) {
+
+            Trie _node = this.node;
+            char[] _array_word = word.toCharArray();
+            for (char x : _array_word){
+                String key = String.valueOf(x);
+                if (!_node.children.containsKey(key)){
+                    return false;
+                }
+
+                _node = _node.children.get(key);
+            }
+
+            return true ? _node.isEnd.equals(true) : false;
+        }
+
+        public boolean startsWith(String prefix) {
+
+            Trie _node = this.node;
+            char[] _array_word = prefix.toCharArray();
+            for (char x : _array_word){
+                String key = String.valueOf(x);
+                if (!_node.children.containsKey(key)){
+                    return false;
+                }
+
+                _node = _node.children.get(key);
+            }
+            return true;
+        }
+
+    }
 
 }
