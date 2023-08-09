@@ -193,6 +193,40 @@ Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
 ```
 
+### 1-4-2) Sort List VS Array
+```java
+// java
+// LC 214
+// https://stackoverflow.com/questions/1694751/java-array-sort-descending
+
+// for Array
+Arrays.sort(_array, Collections.reverseOrder());
+
+// for List
+Collections.sort(_list, Collections.reverseOrder());
+
+
+// example
+Integer[] _array = new Integer[4];
+_array[0] = 10;
+_array[1] = -2;
+_array[2] = 0;
+_array[3] = 99;
+Arrays.stream(_array).forEach(System.out::println);
+Arrays.sort(_array, Collections.reverseOrder());
+System.out.println("---");
+Arrays.stream(_array).forEach(System.out::println);
+
+System.out.println("--->");
+
+List<Integer> _list = Arrays.asList(1,2,3,4);
+_list.forEach(System.out::println);
+Collections.sort(_list, Collections.reverseOrder());
+System.out.println("---");
+_list.forEach(System.out::println);
+```
+
+
 ### 1-5) Get sub array
 ```java
 // java
