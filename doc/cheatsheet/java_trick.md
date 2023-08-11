@@ -304,3 +304,9 @@ Arrays.sort(tmp, (x, y) -> Integer.compare(-x[1], -y[1]));
 int[] piles = new int[5];
 int r = Arrays.stream(piles).max().getAsInt();
 ```
+
+
+### 1-11) Sort by Map key, value
+
+
+### 1-12) Get most freq element in an array
