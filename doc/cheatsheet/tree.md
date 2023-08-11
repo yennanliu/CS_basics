@@ -18,6 +18,10 @@
 ### 0-2) Pattern
 - Gat max, min element in path
     - LC 1448 : ONLY need to maintain cur max val in path, and compare cur node with it
+- Check sub tree (children)
+    - use post traverse
+    - LC 101
+        - https://www.bilibili.com/video/BV1ue4y1Y7Mf/?spm_id_from=333.999.0.0&vd_source=28459ac8543f6a81e3a8c993dc73b54e
 
 ## 1) General form
 
