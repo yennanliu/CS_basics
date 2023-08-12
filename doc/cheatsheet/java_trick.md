@@ -310,3 +310,10 @@ int r = Arrays.stream(piles).max().getAsInt();
 
 
 ### 1-12) Get most freq element in an array
+
+### 1-13) Pair data structure
+```java
+// java
+// LC 355
+// https://leetcode.com/problems/design-twitter/solutions/2720611/java-simple-hashmap-stack/
+```
