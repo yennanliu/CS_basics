@@ -312,10 +312,35 @@ int r = Arrays.stream(piles).max().getAsInt();
 ### 1-12) Get most freq element in an array
 
 ### 1-13) Pair data structure
+
+- Pair offers a (key, value) structure
+- offer getKey, getValue method
+- can be used in other data structure (e.g. queue, hashmap...)
+- available in default Java lib, or apache.common lib or other lib
+
 ```java
 // java
 // LC 355
 // https://leetcode.com/problems/design-twitter/solutions/2720611/java-simple-hashmap-stack/
+
+// https://blog.csdn.net/neweastsun/article/details/80294811
+// https://blog.51cto.com/u_5650011/5386895
+
+/** 
+ * 
+ * 
+ * 
+ */
+// init
+Pair<Integer, String> p1 = new Pair<>(1, "one");
+// get key
+Integer k1 = p1.getKey();
+// get value
+String v1 = p1.getValue();
+
+// use with other data structure
+Queue<Pair<Integer, String>> q = new LinkedList<>();
+q.add(p1);
 ```
 
 ### 1-14) k++ VS k++

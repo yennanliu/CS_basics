@@ -92,6 +92,7 @@ class Solution(object):
         time = (most - 1) * (n + 1) + num_most
         return max(time, len(tasks)) # be aware of it 
 
+
 # V1'
 # https://www.jiuzhang.com/solution/task-scheduler/#tag-highlight-lang-python
 class Solution:
@@ -107,6 +108,37 @@ class Solution:
         longest = max(counts)
         ans = (longest - 1) * (n + 1) + counts.count(longest)
         return max(len(tasks), ans)
+
+# V1
+# IDEA : MAX HEAP + Dqeue (double end queue)
+# -> maintain a heap for current max element
+# -> and a queue for (count, and idleTime)
+# -> and a time variable increase with every while loop
+# -> once idleTime == time, pop element from queue, and add idle time and add it back to heap
+
+# https://www.youtube.com/watch?v=s8p8ukTyA2I
+# https://github.com/neetcode-gh/leetcode/blob/main/python/0621-task-scheduler.py
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        count = Counter(tasks)
+        maxHeap = [-cnt for cnt in count.values()]
+        heapq.heapify(maxHeap)
+
+        time = 0
+        q = deque()  # pairs of [-cnt, idleTime]
+        while maxHeap or q:
+            
+            time += 1
+
+            if not maxHeap:
+                time = q[0][1]
+            else:
+                cnt = 1 + heapq.heappop(maxHeap)
+                if cnt:
+                    q.append([cnt, time + n])
+            if q and q[0][1] == time:
+                heapq.heappush(maxHeap, q.popleft()[0])
+        return time
 
 # V2 
 # Time:  O(n)
