@@ -105,6 +105,37 @@ public class Subsets {
     }
 
     // V1
+    // IDEA : BACKTRACK
+    // https://www.youtube.com/watch?v=REOH22Xwdkk&t=4s
+    // https://github.com/neetcode-gh/leetcode/blob/main/java/0078-subsets.java
+    public List<List<Integer>> subsets_1_2(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        helper(ans, 0, nums, list);
+        return ans;
+    }
+
+    public void helper(
+            List<List<Integer>> ans,
+            int start,
+            int[] nums,
+            List<Integer> list
+    ) {
+        if (start >= nums.length) {
+            ans.add(new ArrayList<>(list));
+        } else {
+
+            // decision tree :  add the element and start the  recursive call
+            list.add(nums[start]);
+            helper(ans, start + 1, nums, list);
+
+            // decision tree :  remove the element and do the backtracking call.
+            list.remove(list.size() - 1);
+            helper(ans, start + 1, nums, list);
+        }
+    }
+
+    // V1
     // IDEA : Cascading
     // https://leetcode.com/problems/subsets/editorial/
     public List<List<Integer>> subsets_2(int[] nums) {
