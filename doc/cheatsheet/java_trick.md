@@ -317,3 +317,17 @@ int r = Arrays.stream(piles).max().getAsInt();
 // LC 355
 // https://leetcode.com/problems/design-twitter/solutions/2720611/java-simple-hashmap-stack/
 ```
+
+### 1-14) k++ VS k++
+```java
+// java
+// LC 78
+
+/** NOTE HERE !!!
+ *
+ *  ++i : i+1 first,  then do op
+ *  i++ : do op first, then i+1
+ *
+ *  -> i++ or ++i is both OK here
+ */
+```

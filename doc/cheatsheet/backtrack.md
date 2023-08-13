@@ -385,6 +385,55 @@ class Solution(object):
         dfs(0, 0, [])
         return res
 ```
+
+```java
+// java
+// LC 78
+    // V0'
+    // IDEA : Backtracking
+    // https://leetcode.com/problems/subsets/editorial/
+    List<List<Integer>> output = new ArrayList();
+    int n, k;
+
+    public void backtrack(int first, ArrayList<Integer> curr, int[] nums) {
+        // if the combination is done
+        if (curr.size() == k) {
+            output.add(new ArrayList(curr));
+            return;
+        }
+        /** NOTE HERE !!!
+         *
+         *  ++i : i+1 first,  then do op
+         *  i++ : do op first, then i+1
+         *
+         *  -> i++ or ++i is both OK here
+         */
+        for (int i = first; i < n; i++) {
+            // add i into the current combination
+            curr.add(nums[i]);
+            // use next integers to complete the combination
+            backtrack(i + 1, curr, nums);
+            // backtrack
+            curr.remove(curr.size() - 1);
+        }
+    }
+
+    public List<List<Integer>> subsets(int[] nums) {
+        n = nums.length;
+        /** NOTE HERE !!!
+         *
+         *  ++k : k+1 first,  then do op
+         *  k++ : do op first, then k+1
+         *
+         *  -> k++ or ++k is both OK here
+         */
+        for (k = 0; k < n + 1; k++) {
+            backtrack(0, new ArrayList<Integer>(), nums);
+        }
+        return output;
+    }
+```
+
 ```c++
 // c++
 // backtrack
