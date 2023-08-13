@@ -78,6 +78,7 @@
         - (for loop call help func) + for loop + pop(-1)
         - "全排列"
         ```python
+        # V1
         # ...
         cur = []
         res = []
@@ -95,6 +96,28 @@
                 help(cur)
                 cur.pop(-1)
         # ...
+        ```
+        ```python
+        # V2
+        class Solution:
+            def subsets(self, nums: List[int]) -> List[List[int]]:
+                res = []
+
+                subset = []
+
+                def dfs(i):
+                    if i >= len(nums):
+                        res.append(subset.copy())
+                        return
+                    # decision to include nums[i]
+                    subset.append(nums[i])
+                    dfs(i + 1)
+                    # decision NOT to include nums[i]
+                    subset.pop()
+                    dfs(i + 1)
+
+                dfs(0)
+                return res
         ```
     - Parentheses (括弧)
         - LC 20, LC 22
@@ -389,9 +412,9 @@ class Solution(object):
 ```java
 // java
 // LC 78
-    // V0'
-    // IDEA : Backtracking
-    // https://leetcode.com/problems/subsets/editorial/
+// V0'
+// IDEA : Backtracking
+// https://leetcode.com/problems/subsets/editorial/
     List<List<Integer>> output = new ArrayList();
     int n, k;
 
@@ -432,6 +455,39 @@ class Solution(object):
         }
         return output;
     }
+
+
+
+// V1
+// IDEA : BACKTRACK
+// https://www.youtube.com/watch?v=REOH22Xwdkk&t=4s
+// https://github.com/neetcode-gh/leetcode/blob/main/java/0078-subsets.java
+    public List<List<Integer>> subsets_1_2(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        helper(ans, 0, nums, list);
+        return ans;
+    }
+
+    public void helper(
+            List<List<Integer>> ans,
+            int start,
+            int[] nums,
+            List<Integer> list
+    ) {
+        if (start >= nums.length) {
+            ans.add(new ArrayList<>(list));
+        } else {
+
+            // decision tree :  add the element and start the  recursive call
+            list.add(nums[start]);
+            helper(ans, start + 1, nums, list);
+
+            // decision tree :  remove the element and do the backtracking call.
+            list.remove(list.size() - 1);
+            helper(ans, start + 1, nums, list);
+        }
+    }    
 ```
 
 ```c++
