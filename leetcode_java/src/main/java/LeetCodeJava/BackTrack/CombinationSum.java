@@ -131,8 +131,38 @@ public class CombinationSum {
     }
 
     // V2
-    // https://leetcode.com/problems/combination-sum/solutions/3804814/java-easy-solution-using-backtracking/
+    // https://www.youtube.com/watch?v=GBKI9VSKdGg
+    // https://github.com/neetcode-gh/leetcode/blob/main/java/0039-combination-sum.java
     public List<List<Integer>> combinationSum_3(int[] candidates, int target) {
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        List<Integer> cur = new ArrayList();
+        backtrack(candidates, target, ans, cur, 0);
+        return ans;
+    }
+
+    public void backtrack(
+            int[] candidates,
+            int target,
+            List<List<Integer>> ans,
+            List<Integer> cur,
+            int index
+    ) {
+        if (target == 0) {
+            ans.add(new ArrayList(cur));
+        } else if (target < 0 || index >= candidates.length) {
+            return;
+        } else {
+            cur.add(candidates[index]);
+            backtrack(candidates, target - candidates[index], ans, cur, index);
+
+            cur.remove(cur.get(cur.size() - 1));
+            backtrack(candidates, target, ans, cur, index + 1);
+        }
+    }
+
+    // V3
+    // https://leetcode.com/problems/combination-sum/solutions/3804814/java-easy-solution-using-backtracking/
+    public List<List<Integer>> combinationSum_4(int[] candidates, int target) {
         List<List<Integer>> list = new ArrayList<>();
         Arrays.sort(candidates);
         backtrack(list, new ArrayList<>(), candidates, target, 0);
@@ -149,5 +179,5 @@ public class CombinationSum {
             }
         }
     }
-    
+
 }
