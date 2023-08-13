@@ -114,6 +114,28 @@ class Solution(object):
                 return
             self.dfs(nums, target - nums[i], i, res, path + [nums[i]])
 
+# V1
+# https://github.com/neetcode-gh/leetcode/blob/main/python/0039-combination-sum.py
+# https://www.youtube.com/watch?v=GBKI9VSKdGg
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+
+        def dfs(i, cur, total):
+            if total == target:
+                res.append(cur.copy())
+                return
+            if i >= len(candidates) or total > target:
+                return
+
+            cur.append(candidates[i])
+            dfs(i, cur, total + candidates[i])
+            cur.pop()
+            dfs(i + 1, cur, total)
+
+        dfs(0, [], 0)
+        return res
+
 ### Test case : dev
 
 # V1'
