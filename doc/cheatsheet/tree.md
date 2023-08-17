@@ -24,14 +24,17 @@
         - https://www.bilibili.com/video/BV1ue4y1Y7Mf/?spm_id_from=333.999.0.0&vd_source=28459ac8543f6a81e3a8c993dc73b54e
 - Get tree height, depth
     - https://www.bilibili.com/video/BV1Gd4y1V75u/?share_source=copy_web&vd_source=771d0eba9b524b4f63f92e37bde71301
+    - https://www.bilibili.com/video/BV1Ug411S7my/?share_source=copy_web
 
     - height
         - distance from any node to lowest node (start from 0 or 1 is OK)
         - via Post-order traverse (後序遍歷)
+        - 後序遍歷求 高度 (子節點 下到上 到 root 距離)
     - depth
         - distance from any node to root (start from 0 or 1 is OK)
         - via Pre-order traverse (前序遍歷)
         - LC 104
+        - 前序遍歷求 深度 (root 上到下 到 子節點 距離)
 
 ## 1) General form
 

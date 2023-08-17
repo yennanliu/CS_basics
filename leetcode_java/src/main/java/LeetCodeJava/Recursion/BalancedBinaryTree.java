@@ -14,6 +14,10 @@ import java.util.List;
 public class BalancedBinaryTree {
 
     // V0
+    // IDEA : POST TRAVERSE
+    // https://www.bilibili.com/video/BV1Ug411S7my/?share_source=copy_web
+
+    // V0'
 //    public boolean isBalanced(TreeNode root) {
 //
 //        List<Integer> cache = Arrays.asList();
