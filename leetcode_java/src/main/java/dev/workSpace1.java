@@ -3,6 +3,7 @@ package dev;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.sql.Array;
 import java.util.*;
 
 public class workSpace1 {
@@ -571,6 +572,90 @@ public class workSpace1 {
             }
             return true;
         }
+
+    }
+
+
+    // https://leetcode.com/problems/subsets/
+
+//    List<List<Integer>> ans = new ArrayList();
+//    public List<List<Integer>> subsets(int[] nums) {
+//
+//        List<List<Integer>> ans = new ArrayList();
+//
+////        if (nums.length == 1){
+////            List<List<Integer>> _ans = new ArrayList();
+////            this.ans.add(new ArrayList<>());
+////            this.ans.add(new ArrayList<>(nums[0]));
+////            return this.ans;
+////        }
+//
+//        ans.add(new ArrayList<>());
+//        //ans.add();
+//        List<Integer> cur = new ArrayList<>();
+//        _helper(nums, cur, 0);
+//        return this.ans;
+//    }
+//
+//    private void _helper(int[] nums, List<Integer> cur, int idx){
+//
+//        if (cur.size() > nums.length){
+//            return;
+//        }
+//
+//        Collections.sort(cur);
+//        if (!this.ans.contains(cur)){
+//            System.out.println("new ArrayList<>(cur) = " + new ArrayList<>(cur));
+//            //   this.ans.add(new ArrayList<>(cur));
+//            this.ans.add(new ArrayList<>(cur));
+//            //return;
+//        }
+//
+//        for (int i = 0; i < nums.length; i++){
+//            System.out.println(i);
+//            int val = nums[i];
+//
+////            if(!cur.contains(val)){
+////                cur.add(val);
+////                // recursive
+////                _helper(nums, cur, i+1);
+////                // backtrack
+////                cur.remove(cur.size()-1);
+////            }
+//
+//            cur.add(val);
+//            _helper(nums, cur, i+1);
+//        }
+//
+//    }
+
+    List<List<Integer>> ans = new ArrayList();
+    int k = 0;
+
+    public List<List<Integer>> subsets(int[] nums) {
+
+        for (k = 0; k < nums.length+1; k++){
+            ArrayList<Integer> cur = new ArrayList<>();
+            _help(k, nums, cur);
+        }
+
+        return ans;
+    }
+
+    private void _help(int first, int[] nums, ArrayList<Integer> cur){
+
+        if (cur.size() == k){
+            ans.add(new ArrayList<>(cur));
+            return;
+        }
+
+        for(int i = first; i < n; i++){
+            int val = nums[i];
+            cur.add(val);
+            _help(i + 1, nums, cur);
+            cur.remove(cur.size()-1);
+        }
+
 
     }
 
