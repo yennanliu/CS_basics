@@ -711,38 +711,53 @@ class Solution(object):
 ```
 ```java
 // LC 46. Permutations
-// java
-// (algorithm book (labu) p.307)
-List<List<Integer>> res = new LinkedList<>{};
+    List<List<Integer>> ans = new ArrayList<>();
 
-/* main func, insert a set with non-duplicated numbers, return its Permutations */
-List<List<Integer>> permute(int nums[]){
-    // record "route"
-    LinkedList<Integer> track = new LinkedList<>{};
-    backtrack(nums, track);
-    return res;
+    // V0
+    // IDEA : BACKTRACK
+    public List<List<Integer>> permute(int[] nums) {
 
-void backtrack(int[] nums, LinkedList<Integer> track){
-    // arrive leaf node
-    if (track.size() == nums.length){
-        res.add(new LinkedList(track));
-        return ;
+        if (nums.length == 1){
+            List<List<Integer>> _ans = new ArrayList<>();
+            List<Integer> cur = new ArrayList<>();
+            cur.add(nums[0]);
+            _ans.add(cur);
+            return _ans;
+        }
+
+        List<Integer> cur = new ArrayList<>();
+        /** NOTE !!! we don't need to set idx param */
+        helper(nums, cur);
+
+        return this.ans;
     }
 
-    for (int i = 0; i < nums.length; i++){
-        // remove "illegal" choices
-        if (track.contains(nums[i])){
-            continue;
+    private void helper(int[] nums, List<Integer> cur){
+
+        if (cur.size() > nums.length){
+            return;
         }
-        // make choice
-        track.add(nums[i]);
-        // go to next decision tree
-        backtrack(nums, track);
-        // undo choice
-        backtrack.removeLast();
-     }
-  }
-}
+
+        if (!this.ans.contains(cur) && cur.size() == nums.length){
+
+            /** NOTE !!! we use below to add current ArrayList instance to ans */
+            this.ans.add(new ArrayList<>(cur));
+        }
+
+        
+        for (int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            // input nums is array with distinct integers
+            /** NOTE !!! ONLY do recursive, backtrack when meet distinct element */
+            if(!cur.contains(val)){
+                cur.add(val);
+                // recursive call
+                helper(nums, cur);
+                // undo last op
+                cur.remove(cur.size()-1); // NOTE !!! remove last element
+            }
+        }
+    }
 ```
 
 ### 2-7) Generate Parentheses
