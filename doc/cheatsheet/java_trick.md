@@ -356,3 +356,14 @@ q.add(p1);
  *  -> i++ or ++i is both OK here
  */
 ```
+
+### 1-15) Get/copy current object instance
+```java
+// java
+// LC 46
+List<List<Integer>> ans = new ArrayList<>();
+List<Integer> cur = new ArrayList<>();
+//...
+ans.add(new ArrayList<>(cur));
+//...
+```
