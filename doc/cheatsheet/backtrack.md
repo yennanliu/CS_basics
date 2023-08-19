@@ -72,6 +72,31 @@
                     cur.pop(-1)
         # ...
         ```
+        ```java
+        // java
+        private void helper(int[] nums, List<Integer> cur){
+
+            if (cur.size() > nums.length){
+                return;
+            }
+
+            if (!ans.contains(cur) && cur.size() == nums.length){
+
+                /** NOTE !!! we use below to add current ArrayList instance to ans */
+                ans.add(new ArrayList<>(cur));
+            }
+
+            // NOTE
+            for (int i = 0; i < nums.length; i++){
+                int val = nums[i];
+                if (!cur.contains[i]){
+                    cur.add(val);
+                    helper(nums, cur);
+                    cur.remove(cur.length-1); // NOTE
+                }
+            }
+        }
+        ```
     - `Subsets`
         - LC 78, 140, 17
         - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
