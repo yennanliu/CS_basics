@@ -100,24 +100,19 @@ public class Subsets {
         return ans;
     }
 
-    public void helper(
-            List<List<Integer>> ans,
-            int start,
-            int[] nums,
-            List<Integer> list
-    ) {
-        if (start >= nums.length) {
-            ans.add(new ArrayList<>(list));
-        } else {
+    public void helper(List<List<Integer>> ans, int start, int[] nums, List<Integer> list) {
 
-            // decision tree :  add the element and start the  recursive call
-            list.add(nums[start]);
-            helper(ans, start + 1, nums, list);
+            if (start >= nums.length) {
+                ans.add(new ArrayList<>(list));
+            } else {
+                // decision tree :  add the element and start the  recursive call
+                list.add(nums[start]);
+                helper(ans, start + 1, nums, list);
 
-            // decision tree :  remove the element and do the backtracking call.
-            list.remove(list.size() - 1);
-            helper(ans, start + 1, nums, list);
-        }
+                // decision tree :  remove the element and do the backtracking call.
+                list.remove(list.size() - 1);
+                helper(ans, start + 1, nums, list);
+            }
     }
 
     // V1
