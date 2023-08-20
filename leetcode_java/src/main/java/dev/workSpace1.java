@@ -649,7 +649,7 @@ public class workSpace1 {
             return;
         }
 
-        for(int i = first; i < n; i++){
+        for(int i = first; i < nums.length; i++){
             int val = nums[i];
             cur.add(val);
             _help(i + 1, nums, cur);
