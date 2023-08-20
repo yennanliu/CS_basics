@@ -2,7 +2,8 @@
 
 > Brute force via  `decision tree process`
 
-- [fuck algorithm : backtrack]( https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%E4%BF%AE%E8%AE%A2%E7%89%88.md)
+- [Fuck algorithm : BackTrack]( https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%E4%BF%AE%E8%AE%A2%E7%89%88.md)
+- [BackTrack Java LC General approach](https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/)
 
 - Backtrack (brute force) -> DP (dynamic programming)
 - optimization:
@@ -31,72 +32,7 @@
     - array
 
 - Problems types
-    - `Combinations (組成)` 
-        - LC 77
-        - backtrack. via `start` remove already used numbers and return all cases
-        - deal with `idx` !!! (start idx)
-        - start + for loop + pop(-1) + help func
-        ```python
-        # ...
-        cur = []
-        res = []
-        def help(idx, cur):
-            if len(cur) == k:
-                res.append(cur)
-                return
-            for i in range(idx, n+1):
-                cur.append(i)
-                help(idx+1, cur)
-                cur.pop(-1)
-        # ...
-        ```
-    - `Permutations (排列組合)`
-        - LC 46
-        - backtrack. via `contains` remove already used numbers and return all cases
-        - contains (visited) (or not in `cur`) + for loop + pop(-1) + help func
-        ```python
-        # ...
-        res = []
-        cur = []
-        def help(cur):
-            if len(cur) == len(s):
-                res.append(cur[:])
-                return
-            if len(cur) > len(s):
-                return
-            for i in nums:
-                # NOTE this !!!
-                if i not in cur:
-                    cur.append(i)
-                    help(cur)
-                    cur.pop(-1)
-        # ...
-        ```
-        ```java
-        // java
-        private void helper(int[] nums, List<Integer> cur){
 
-            if (cur.size() > nums.length){
-                return;
-            }
-
-            if (!ans.contains(cur) && cur.size() == nums.length){
-
-                /** NOTE !!! we use below to add current ArrayList instance to ans */
-                ans.add(new ArrayList<>(cur));
-            }
-
-            // NOTE
-            for (int i = 0; i < nums.length; i++){
-                int val = nums[i];
-                if (!cur.contains[i]){
-                    cur.add(val);
-                    helper(nums, cur);
-                    cur.remove(cur.length-1); // NOTE
-                }
-            }
-        }
-        ```
     - `Subsets`
         - LC 78, 140, 17
         - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
@@ -122,31 +58,228 @@
                 cur.pop(-1)
         # ...
         ```
+        ```java
+        // java
+        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+        public List<List<Integer>> subsets(int[] nums) {
+            List<List<Integer>> list = new ArrayList<>();
+            Arrays.sort(nums);
+            backtrack(list, new ArrayList<>(), nums, 0);
+            return list;
+        }
+
+        private void backtrack(List<List<Integer>> list , List<Integer> tempList, int [] nums, int start){
+            list.add(new ArrayList<>(tempList));
+            for(int i = start; i < nums.length; i++){
+                tempList.add(nums[i]);
+                backtrack(list, tempList, nums, i + 1);
+                tempList.remove(tempList.size() - 1);
+            }
+        }
+        ```
+
+    - `Subsets II`
+        - LC 90
+        ```java
+        // java
+        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+        public List<List<Integer>> subsetsWithDup(int[] nums) {
+            List<List<Integer>> list = new ArrayList<>();
+            Arrays.sort(nums);
+            backtrack(list, new ArrayList<>(), nums, 0);
+            return list;
+        }
+
+        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int start){
+            list.add(new ArrayList<>(tempList));
+            for(int i = start; i < nums.length; i++){
+                if(i > start && nums[i] == nums[i-1]) continue; // skip duplicates
+                tempList.add(nums[i]);
+                backtrack(list, tempList, nums, i + 1);
+                tempList.remove(tempList.size() - 1);
+            }
+        } 
+        ```
+
+    - `Permutations (排列組合)`
+        - LC 46
+        - backtrack. via `contains` remove already used numbers and return all cases
+        - contains (visited) (or not in `cur`) + for loop + pop(-1) + help func
         ```python
-        # V2
-        class Solution:
-            def subsets(self, nums: List[int]) -> List[List[int]]:
-                res = []
+        # ...
+        res = []
+        cur = []
+        def help(cur):
+            if len(cur) == len(s):
+                res.append(cur[:])
+                return
+            if len(cur) > len(s):
+                return
+            for i in nums:
+                # NOTE this !!!
+                if i not in cur:
+                    cur.append(i)
+                    help(cur)
+                    cur.pop(-1)
+        # ...
+        ```
+        ```java
+        // java
+        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+        public List<List<Integer>> permute(int[] nums) {
+           List<List<Integer>> list = new ArrayList<>();
+           // Arrays.sort(nums); // not necessary
+           backtrack(list, new ArrayList<>(), nums);
+           return list;
+        }
 
-                subset = []
+        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums){
+           if(tempList.size() == nums.length){
+              list.add(new ArrayList<>(tempList));
+           } else{
+              for(int i = 0; i < nums.length; i++){ 
+                 if(tempList.contains(nums[i])) continue; // element already exists, skip
+                 tempList.add(nums[i]);
+                 backtrack(list, tempList, nums);
+                 tempList.remove(tempList.size() - 1);
+              }
+           }
+        } 
+        ```
 
-                def dfs(i):
-                    if i >= len(nums):
-                        res.append(subset.copy())
-                        return
-                    # decision to include nums[i]
-                    subset.append(nums[i])
-                    dfs(i + 1)
-                    # decision NOT to include nums[i]
-                    subset.pop()
-                    dfs(i + 1)
+    - `Permutations II (排列組合)`
+        - LC 47
+        ```java
+        // java
+        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+        public List<List<Integer>> permuteUnique(int[] nums) {
+            List<List<Integer>> list = new ArrayList<>();
+            Arrays.sort(nums);
+            backtrack(list, new ArrayList<>(), nums, new boolean[nums.length]);
+            return list;
+        }
 
-                dfs(0)
-                return res
+        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, boolean [] used){
+            if(tempList.size() == nums.length){
+                list.add(new ArrayList<>(tempList));
+            } else{
+                for(int i = 0; i < nums.length; i++){
+                    if(used[i] || i > 0 && nums[i] == nums[i-1] && !used[i - 1]) continue;
+                    used[i] = true; 
+                    tempList.add(nums[i]);
+                    backtrack(list, tempList, nums, used);
+                    used[i] = false; 
+                    tempList.remove(tempList.size() - 1);
+                }
+            }
+        }        
+        ```
+
+    - `Combinations (組成)` 
+        - LC 77
+        - backtrack. via `start` remove already used numbers and return all cases
+        - deal with `idx` !!! (start idx)
+        - start + for loop + pop(-1) + help func
+        ```python
+        # ...
+        cur = []
+        res = []
+        def help(idx, cur):
+            if len(cur) == k:
+                res.append(cur)
+                return
+            for i in range(idx, n+1):
+                cur.append(i)
+                help(idx+1, cur)
+                cur.pop(-1)
+        # ...
         ```
     - Parentheses (括弧)
         - LC 20, LC 22
 
+    - Combination Sum
+        - LC 39
+        ```java
+        // java
+        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+        public List<List<Integer>> combinationSum(int[] nums, int target) {
+            List<List<Integer>> list = new ArrayList<>();
+            Arrays.sort(nums);
+            backtrack(list, new ArrayList<>(), nums, target, 0);
+            return list;
+        }
+
+        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int remain, int start){
+            if(remain < 0) return;
+            else if(remain == 0) list.add(new ArrayList<>(tempList));
+            else{ 
+                for(int i = start; i < nums.length; i++){
+                    tempList.add(nums[i]);
+                    backtrack(list, tempList, nums, remain - nums[i], i); // not i + 1 because we can reuse same elements
+                    tempList.remove(tempList.size() - 1);
+                }
+            }
+        }
+        ```
+
+    - Combination Sum II
+        - LC 40
+        ```java
+        // java
+        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+         public List<List<Integer>> combinationSum2(int[] nums, int target) {
+            List<List<Integer>> list = new ArrayList<>();
+            Arrays.sort(nums);
+            backtrack(list, new ArrayList<>(), nums, target, 0);
+            return list;
+            
+        }
+
+        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int remain, int start){
+            if(remain < 0) return;
+            else if(remain == 0) list.add(new ArrayList<>(tempList));
+            else{
+                for(int i = start; i < nums.length; i++){
+                    if(i > start && nums[i] == nums[i-1]) continue; // skip duplicates
+                    tempList.add(nums[i]);
+                    backtrack(list, tempList, nums, remain - nums[i], i + 1);
+                    tempList.remove(tempList.size() - 1); 
+                }
+            }
+        }        
+        ```
+
+    - Palindrome Partitioning
+        - LC 131
+        ```java
+        // java
+        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+        public List<List<String>> partition(String s) {
+           List<List<String>> list = new ArrayList<>();
+           backtrack(list, new ArrayList<>(), s, 0);
+           return list;
+        }
+
+        public void backtrack(List<List<String>> list, List<String> tempList, String s, int start){
+           if(start == s.length())
+              list.add(new ArrayList<>(tempList));
+           else{
+              for(int i = start; i < s.length(); i++){
+                 if(isPalindrome(s, start, i)){
+                    tempList.add(s.substring(start, i + 1));
+                    backtrack(list, tempList, s, i + 1);
+                    tempList.remove(tempList.size() - 1);
+                 }
+              }
+           }
+        }
+
+        public boolean isPalindrome(String s, int low, int high){
+           while(low < high)
+              if(s.charAt(low++) != s.charAt(high--)) return false;
+           return true;
+        } 
+        ```
 
 ### 0-2) Pattern
 
