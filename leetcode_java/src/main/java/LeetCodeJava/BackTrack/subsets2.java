@@ -7,9 +7,29 @@ import java.util.*;
 public class subsets2 {
 
     // V0
+    // IDEA : BACKTRACK
+    // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        Arrays.sort(nums);
+        backtrack(list, new ArrayList<>(), nums, 0);
+        return list;
+    }
+
+    private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int start){
+        list.add(new ArrayList<>(tempList));
+        for(int i = start; i < nums.length; i++){
+            if(i > start && nums[i] == nums[i-1]) continue; // skip duplicates
+            tempList.add(nums[i]);
+            backtrack(list, tempList, nums, i + 1);
+            tempList.remove(tempList.size() - 1);
+        }
+    }
+
+    // V0
     // IDEA : Backtracking
     // https://leetcode.com/problems/subsets-ii/editorial/
-    public List<List<Integer>> subsetsWithDup(int[] nums) {
+    public List<List<Integer>> subsetsWithDup_(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> subsets = new ArrayList<>();
         List<Integer> currentSubset = new ArrayList<>();
