@@ -49,48 +49,44 @@ public class Subsets {
 //        }
 //    }
 
-    // V0'
-    // IDEA : Backtracking
-    // https://leetcode.com/problems/subsets/editorial/
-    List<List<Integer>> output = new ArrayList();
-    int n, k;
 
-    public void backtrack(int first, ArrayList<Integer> curr, int[] nums) {
-        // if the combination is done
-        if (curr.size() == k) {
-            output.add(new ArrayList(curr));
-            return;
-        }
-        /** NOTE HERE !!!
-         *
-         *  ++i : i+1 first,  then do op
-         *  i++ : do op first, then i+1
-         *
-         *  -> i++ or ++i is both OK here
-         */
-        for (int i = first; i < n; i++) {
-            // add i into the current combination
-            curr.add(nums[i]);
-            // use next integers to complete the combination
-            backtrack(i + 1, curr, nums);
-            // backtrack
-            curr.remove(curr.size() - 1);
+    // V0
+    // IDEA : BACKTRACK
+    // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        Arrays.sort(nums); // optional
+        _backtrack(list, new ArrayList<>(), nums, 0);
+        return list;
+    }
+
+    private void _backtrack(List<List<Integer>> list , List<Integer> tempList, int [] nums, int start){
+        list.add(new ArrayList<>(tempList));
+        for(int i = start; i < nums.length; i++){
+            tempList.add(nums[i]);
+            _backtrack(list, tempList, nums, i + 1);
+            tempList.remove(tempList.size() - 1);
         }
     }
 
-    public List<List<Integer>> subsets_2(int[] nums) {
-        n = nums.length;
-        /** NOTE HERE !!!
-         *
-         *  ++k : k+1 first,  then do op
-         *  k++ : do op first, then k+1
-         *
-         *  -> k++ or ++k is both OK here
-         */
-        for (k = 0; k < n + 1; k++) {
-            backtrack(0, new ArrayList<Integer>(), nums);
+
+    // V1
+    // IDEA : BACKTRACK
+    // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+    public List<List<Integer>> subsets_2_(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        Arrays.sort(nums);
+        backtrack(list, new ArrayList<>(), nums, 0);
+        return list;
+    }
+
+    private void backtrack(List<List<Integer>> list , List<Integer> tempList, int [] nums, int start){
+        list.add(new ArrayList<>(tempList));
+        for(int i = start; i < nums.length; i++){
+            tempList.add(nums[i]);
+            backtrack(list, tempList, nums, i + 1);
+            tempList.remove(tempList.size() - 1);
         }
-        return output;
     }
 
     // V1

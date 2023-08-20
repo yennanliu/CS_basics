@@ -54,6 +54,29 @@ public class Permutations {
         }
     }
 
+    // V1
+    // IDEA : BACKTRACK
+    // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+    public List<List<Integer>> permute_1(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        // Arrays.sort(nums); // not necessary
+        backtrack_(list, new ArrayList<>(), nums);
+        return list;
+    }
+
+    private void backtrack_(List<List<Integer>> list, List<Integer> tempList, int [] nums){
+        if(tempList.size() == nums.length){
+            list.add(new ArrayList<>(tempList));
+        } else{
+            for(int i = 0; i < nums.length; i++){
+                if(tempList.contains(nums[i])) continue; // element already exists, skip
+                tempList.add(nums[i]);
+                backtrack_(list, tempList, nums);
+                tempList.remove(tempList.size() - 1);
+            }
+        }
+    }
+
 
     // V1
     // IDEA : BACKTRACK
