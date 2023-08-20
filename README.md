@@ -12,6 +12,8 @@
 
 <p align="center"><img src ="./doc/pic/data_structure_2.png" ></p>
 
+<p align="center"><img src ="./doc/pic/needcode_roadmap.png" ></p>
+
 [![Star History Chart](https://api.star-history.com/svg?repos=yennanliu/CS_basics&type=Date)](https://star-history.com/#yennanliu/CS_basics&Date)
 
 
@@ -21,6 +23,7 @@
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
 	- [LC top 100 likes](https://leetcode.com/problem-list/top-100-liked-questions/?page=1&fbclid=IwAR2MzUDDOscDklba5gL815lkLKzxK-zOR2WV2-W80_gRmvtfAsNWyut_USw)
 	- [neetcode 150 LC list](https://neetcode.io/practice)
+		- [My Brain after 569 Leetcode Problems](https://youtu.be/8wysIxzqgPI)
 	- [LC Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
 	- [cheatsheet-leetcode-a4](https://cheatsheet.dennyzhang.com/cheatsheet-leetcode-a4)
 	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
