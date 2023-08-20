@@ -10,54 +10,43 @@ public class Subsets {
     HashSet<Integer> _set = new HashSet<>();
 
     // V0
-    // IDEA :
-    // TODO : fix this
+    // IDEA : BACKTRACK
+//    List<List<Integer>> ans = new ArrayList<>();
+//    int _k;
 //    public List<List<Integer>> subsets(int[] nums) {
 //
-//        if (nums.length == 1){
-//            List<List<Integer>> _res = new ArrayList<>();
-//            List<Integer> tmp = new ArrayList<>();
-//            tmp.add(null);
-//            tmp.add(nums[0]);
-//            _res.add(tmp);
-//            return _res;
+//        // k : sub array length
+//        for (int _k=0; _k < nums.length+1; _k++){
+//            List<Integer> cur = new ArrayList<>();
+//            this._helper(0, cur, nums);
 //        }
 //
-//        // help func
-//        List<Integer> cur = new ArrayList();
-//        int layer = 0;
-//        int idx = 0;
-//        help(nums, cur, layer, idx);
-//        //res.add(new ArrayList<>());
-//        return res;
+//        return this.ans;
 //    }
 //
-//    private void help(int[] nums, List<Integer> cur, int layer, int idx){
+//    // first : start idx
+//    private void _helper(int first, List<Integer> cur, int[] nums){
 //
-//        // add to list
-//        Collections.sort(cur);
-//        if (!_set.contains(cur)){
-//            res.add(cur);
-//        }
-//
-////        if (cur.size() >= nums.length){
-////            return;
-////        }
-//
-//        if (layer >= nums.length){
+//        if (cur.size() == _k){
+//            ans.add(new ArrayList<>(cur));
 //            return;
 //        }
 //
-//        for (int i=idx; i < nums.length; i++){
-//            int _val = nums[i];
-//            cur.add(_val);
-//            // recursive call
-//            help(nums, cur, layer+1, i+1);
-////            // undo
-////            i -= 1;
-////            cur.remove(0);
+//        for(int i = first; i < nums.length; i++){
+//            int val = nums[i];
+////            if(!cur.contains(val)){
+////                cur.add(val);
+////                // recursive
+////                _helper(i+1, cur, nums);
+////                // undo
+////                cur.remove(cur.size()-1);
+////            }
+//            cur.add(val);
+//            // recursive
+//            _helper(i+1, cur, nums);
+//            // undo
+//            cur.remove(cur.size()-1);
 //        }
-//
 //    }
 
     // V0'
@@ -89,7 +78,7 @@ public class Subsets {
         }
     }
 
-    public List<List<Integer>> subsets(int[] nums) {
+    public List<List<Integer>> subsets_2(int[] nums) {
         n = nums.length;
         /** NOTE HERE !!!
          *
@@ -138,7 +127,7 @@ public class Subsets {
     // V1
     // IDEA : Cascading
     // https://leetcode.com/problems/subsets/editorial/
-    public List<List<Integer>> subsets_2(int[] nums) {
+    public List<List<Integer>> subsets_3(int[] nums) {
         List<List<Integer>> output = new ArrayList();
         output.add(new ArrayList<Integer>());
 
