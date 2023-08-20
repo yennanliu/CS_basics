@@ -35,6 +35,12 @@
         - via Pre-order traverse (前序遍歷)
         - LC 104
         - 前序遍歷求 深度 (root 上到下 到 子節點 距離)
+- Odering (pre-order or in-order ..)
+    - If there is NO "root op logic" (e.g. 沒有中節點處理邏輯)
+        -> then it can be any order
+        -> e.g. pre-order or in-order or post-order is fine
+        - https://www.bilibili.com/video/BV19t4y1L7CR/?share_source=copy_web
+        - https://www.bilibili.com/video/BV1424y1Z7pn/?share_source=copy_web
 
 ## 1) General form
 
