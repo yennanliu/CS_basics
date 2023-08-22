@@ -19,13 +19,21 @@ public class CombinationSum2 {
 //
 //        Arrays.sort(candidates);
 //
+//        HashMap<Integer, Integer> counter = new HashMap<>();
+//        for (int candidate : candidates) {
+//            if (counter.containsKey(candidate))
+//                counter.put(candidate, counter.get(candidate) + 1);
+//            else
+//                counter.put(candidate, 1);
+//        }
+//
 //        ArrayList<Integer> cur = new ArrayList<>();
 //        int[] _candidates = candidates;
-//        _help(candidates, target, cur, 0);
+//        _help(candidates, target, cur, 0, counter);
 //        return this.ans;
 //    }
 //
-//    private void _help(int[] candidates, int target, ArrayList cur, int idx){
+//    private void _help(int[] candidates, int target, ArrayList cur, int idx, HashMap counter){
 //
 //        int _sum = _getSum(cur);
 //
@@ -47,9 +55,12 @@ public class CombinationSum2 {
 //                return;
 //            }
 //            cur.add(val);
+//            int _cnt = (int) counter.get(val);
+//            counter.put(val, _cnt - 1);
 //            // recursive
-//            _help(candidates, target, cur, idx+1);
+//            _help(candidates, target, cur, idx+1, counter);
 //            // undo
+//            counter.put(val, _cnt + 1);
 //            cur.remove(cur.size()-1);
 //        }
 //
