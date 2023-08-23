@@ -655,8 +655,67 @@ public class workSpace1 {
             _help(i + 1, nums, cur);
             cur.remove(cur.size()-1);
         }
+    }
 
+    // https://leetcode.com/problems/sum-of-left-leaves/
+    // A leaf is a node with no children. A left leaf is a leaf that is the left child of another node.
+    int res = 0;
+    public int sumOfLeftLeaves(TreeNode root) {
 
+        if (root == null){
+            return this.res;
+        }
+
+        if (root.left == null && root.right == null){
+            return this.res;
+        }
+
+        if (root.left != null && root.right == null){
+            return root.left.val;
+        }
+
+        // helper
+        this._help(root, false, 0);
+        return this.res;
+    }
+
+    private void _help(TreeNode root, boolean isLeft, int lastVal){
+
+        // post traverse
+        if (root == null){
+            return;
+        }
+
+        _help(root.left, true, root.val);
+        _help(root.right, false, root.val);
+
+        if (root.left == null && root.right == null){
+            if(isLeft){
+                System.out.println(">>> lastval = " + lastVal);
+                this.res += root.val;
+            }
+        }
+    }
+
+    private int sumOfLeftLeaves(TreeNode subtree, boolean isLeft) {
+
+        // Base case: This is an empty subtree.
+        if (subtree == null) {
+            return 0;
+        }
+
+        // Base case: This is a leaf node.
+        if (subtree.left == null && subtree.right == null) {
+            if (isLeft){
+                return subtree.val;
+            }else{
+                return 0;
+            }
+        }
+
+        // Recursive case: We need to add and return the results of the
+        // left and right subtrees.
+        return sumOfLeftLeaves(subtree.left, true) + sumOfLeftLeaves(subtree.right, false);
     }
 
 }
