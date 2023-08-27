@@ -367,3 +367,34 @@ List<Integer> cur = new ArrayList<>();
 ans.add(new ArrayList<>(cur));
 //...
 ```
+
+### 1-16) Check if a string is Palindrome
+```java
+// java
+// LC 131
+boolean isPalindrome(String s, int low, int high) {
+    while (low < high) {
+        if (s.charAt(low++) != s.charAt(high--)) return false;
+    }
+    return true;
+}   
+```
+
+# 2) Other tricks
+
+### 2-1) Init var, modify it in another method, and use it
+```java
+// java
+// LC 131
+// ...
+public List<List<String>> partition_1(String s) {
+        /** NOTE : we can init result, pass it to method, modify it, and return as ans */
+        List<List<String>> result = new ArrayList<List<String>>();
+        dfs_1(0, result, new ArrayList<String>(), s);
+        return result;
+}
+// ...
+ void dfs_1(int start, List<List<String>> result, List<String> currentList, String s) {
+    // ..
+ }
+```
