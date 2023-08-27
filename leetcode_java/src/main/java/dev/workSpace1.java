@@ -45,21 +45,21 @@ public class workSpace1 {
         return res.size();
     }
 
-    public static void main(String[] args) {
-        int[] x = new int[5];
-        x[0] = -1;
-        x[1] = 5;
-        x[2] = 3;
-
-        Arrays.stream(x).forEach(System.out::println);
-
-        System.out.println("-----------");
-
-        Arrays.sort(x);
-
-        Arrays.stream(x).forEach(System.out::println);
-
-    }
+//    public static void main(String[] args) {
+//        int[] x = new int[5];
+//        x[0] = -1;
+//        x[1] = 5;
+//        x[2] = 3;
+//
+//        Arrays.stream(x).forEach(System.out::println);
+//
+//        System.out.println("-----------");
+//
+//        Arrays.sort(x);
+//
+//        Arrays.stream(x).forEach(System.out::println);
+//
+//    }
 
     public boolean searchMatrix(int[][] matrix, int target) {
 
@@ -717,5 +717,95 @@ public class workSpace1 {
         // left and right subtrees.
         return sumOfLeftLeaves(subtree.left, true) + sumOfLeftLeaves(subtree.right, false);
     }
+
+    // https://leetcode.com/problems/word-search/
+    // backtrack + recursive
+    public boolean exist(char[][] board, String word) {
+
+        int len = board.length;
+        int width = board[0].length;
+
+        if (board.length == 1 && board[0].length == 1){
+             board[0].toString();
+        }
+
+        for (int i = 0; i < len; i++){
+            for (int j = 0; j < width; j++){
+                List<String> cur = new ArrayList<>();
+                if(_help(board, word, cur, j, i, 0)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean _help(char[][] board, String word, List<String> cur, int x, int y, int idx) {
+
+        int len = board.length;
+        int width = board[0].length;
+
+        // directions : up, down, left, right
+        List<List<Integer>> direc = new ArrayList<>();
+        direc.add(Arrays.asList(0, 1)); // (x, y)
+        direc.add(Arrays.asList(0, -1));
+        direc.add(Arrays.asList(-1, 0));
+        direc.add(Arrays.asList(1, 0));
+
+        if (cur.size() >= word.length()) {
+            return true;
+        }
+
+//        if (arrayToStr(cur).equals(word)){
+//            return true;
+//        }
+
+        if (x < 0 || x >= width || y < 0 || y >= len || board[y][x] != word.charAt(idx)) {
+            return false;
+        }
+
+        //boolean res = false;
+
+        for (List<Integer> d : direc) {
+            x += d.get(0);
+            y += d.get(1);
+            //boolean res = false;
+            char val = board[y][x];
+            String _val = String.valueOf(val);
+            board[y][x] = '#';
+            cur.add(_val);
+            // _help(char[][] board, String word, List<String> cur, int x, int y){
+            if (_help(board, word, cur, x, y, idx + 1)) {
+                return true;
+            }
+            //idx -= 1;
+            board[y][x] = val;
+            return false;
+        }
+
+        // ?
+        return false;
+    }
+
+
+    private static String arrayToStr(List<String> input){
+        String output = "";
+        for (String x : input){
+            output += String.valueOf(x);
+        }
+
+        return output;
+    }
+
+//    public static void main(String[] args) {
+//
+//        char[] my_char = new char[3];
+//        my_char[0] = 'a';
+//        my_char[1] = 'b';
+//        my_char[2] = 'c';
+//        System.out.println(String.valueOf(my_char));
+//        //System.out.println(arrayToStr(my_char));
+//    }
 
 }
