@@ -798,14 +798,77 @@ public class workSpace1 {
         return output;
     }
 
-//    public static void main(String[] args) {
-//
+    // https://leetcode.com/problems/palindrome-partitioning/
+    List<List<String>> _ans = new ArrayList<>();
+    public List<List<String>> partition(String s) {
+
+//        if (s.length() == 1){
+//            List<String> tmp = new ArrayList<>();
+//            tmp.add(s);
+//            this._ans.add(tmp);
+//            return this._ans;
+//        }
+
+        // helper func
+        List<String> _cur = new ArrayList<>();
+        _help(s, 0, _cur);
+        return this._ans;
+    }
+
+    private void _help(String s, int start_idx, List<String> cur){
+
+        // ?? >= or ==
+        if (start_idx >= s.length()){
+            this._ans.add(new ArrayList<>(cur));
+        }
+
+        for(int i = start_idx; i < s.length(); i++){
+            if (isPalindrome(s, start_idx, i+1)){
+                cur.add(s.substring(start_idx, i + 1));
+                _help(s, start_idx+1, cur);
+                //end_idx -= 1;
+                cur.remove(cur.size()-1);
+            }
+        }
+
+    }
+
+    boolean isPalindrome(String s, int low, int high) {
+        while (low < high) {
+            if (s.charAt(low++) != s.charAt(high--)) return false;
+        }
+        return true;
+    }
+
+    private Boolean _check(String input){
+        int l = 0;
+        int r = input.length()-1;
+        System.out.println(">>> _check" + " l = " + l + " r = " + r);
+        while (r > l){
+            if (input.charAt(r) != input.charAt(l)){
+                return false;
+            }
+            r -= 1;
+            l += 1;
+        }
+        return true;
+    }
+
+
+    public static void main(String[] args) {
+
 //        char[] my_char = new char[3];
 //        my_char[0] = 'a';
 //        my_char[1] = 'b';
 //        my_char[2] = 'c';
 //        System.out.println(String.valueOf(my_char));
-//        //System.out.println(arrayToStr(my_char));
-//    }
+        //System.out.println(arrayToStr(my_char));
+
+        String my_str = "abc";
+        System.out.println(my_str.substring(0, 1));
+        System.out.println(my_str.substring(0, my_str.length()));
+        System.out.println(my_str.charAt(2));
+    }
+
 
 }
