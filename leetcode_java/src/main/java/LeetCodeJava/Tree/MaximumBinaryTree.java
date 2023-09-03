@@ -104,24 +104,4 @@ public class MaximumBinaryTree {
         return max_i;
     }
 
-
-//    public static void main(String[] args) {
-//
-//        Integer[] _nums = new Integer[]{1,2,3};
-//        Integer[] sub = Arrays.copyOfRange(_nums, 0, 2);
-//
-//        System.out.println(_nums);
-//        System.out.println(Arrays.asList(_nums).indexOf(3));
-//
-//        Integer[] array1 = {2, 4, 6, 8, 10};
-//        int index = Arrays.asList(array1).indexOf(8);
-//        System.out.println("Found element at location at index:"+index);
-//
-//
-////        for(int x :sub){
-////            System.out.println(x);
-////        }
-//        //System.out.println(Arrays.copyOfRange(_nums, 0,3));
-//    }
-
 }
