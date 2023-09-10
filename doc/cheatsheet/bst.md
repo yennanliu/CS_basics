@@ -31,6 +31,13 @@ void traverse(TreeNode root) {
     - the property of BST : inorder traversal of BST is an array sorted in the ascending order. (LC 230)
     - Trim BST
         - LC 669 (check [dfs.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/dfs.md))
+    - BST's 2 pointers op
+        - LC 501
+            - [video](https://www.bilibili.com/video/BV1fD4y117gp/?share_source=copy_web)
+        - LC 530
+            - [video](https://www.bilibili.com/video/BV1DD4y11779/?share_source=copy_web)
+        - LC 538
+            - [video](https://www.bilibili.com/video/BV1d44y1f7wP/?share_source=copy_web)
 
 - Algorithm
     - dfs
