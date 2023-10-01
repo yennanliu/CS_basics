@@ -387,6 +387,13 @@ boolean isPalindrome(String s, int low, int high) {
 }   
 ```
 
+### 1-17) init 2D array
+```java
+// java
+// LC 417
+private static final int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+```
+
 # 2) Other tricks
 
 ### 2-1) Init var, modify it in another method, and use it
