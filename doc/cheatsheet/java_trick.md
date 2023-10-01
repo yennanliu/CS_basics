@@ -19,6 +19,13 @@
 # 1) Basic op
 
 
+### 0-0)
+- [Arrays.asList vs new ArrayList()](https://www.baeldung.com/java-arrays-aslist-vs-new-arraylist#:~:text=asList%20method%20returns%20a%20type,the%20add%20and%20remove%20methods.)
+
+- Conclusion:
+    - Arrays.asList : only wrap existing array, it NOT implement "add", "remove" methods (but has modify method)
+    - new ArrayList : implement "add", "remove" and "modify" methods, not affect original array
+
 ### 1-0) String to Char array
 ```java
 // java
