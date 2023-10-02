@@ -101,4 +101,8 @@ class NumberOfDistinctIslandSii {
             dfs(grid, nextx, nexty, visited, ox, oy, allList);
         }
     }
+
+    public static void main(String[] args) {
+        //System.out.println(true + false);
+    }
 }

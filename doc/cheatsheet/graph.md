@@ -56,9 +56,9 @@
     - is_cycle
 
 
-#### 1-1-1) Number of Distinct Islands
+#### 1-1-1) Number of Islands
 
-- LC 694
+- LC 200
 
 ```java
 // java

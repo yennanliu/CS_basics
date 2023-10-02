@@ -923,4 +923,52 @@ public class workSpace1 {
                 _getArea(grid, seen, x, y-1);
     }
 
+    // https://leetcode.com/problems/number-of-islands/description/
+
+    int num_island = 0;
+    boolean[][] _seen;
+    public int numIslands(char[][] grid) {
+
+        if (grid.length == 1 && grid[0].length == 1){
+            if (grid[0][0] == '1'){
+                return 1;
+            }
+            return 0;
+        }
+
+        int len = grid.length;
+        int width = grid[0].length;
+
+        this._seen = new boolean[len][width];
+
+        for (int i = 0; i < len; i++){
+            for (int j = 0; j < width; j++){
+                if (_is_island(grid, j, i, this._seen)){
+                    this.num_island += 1;
+                }
+            }
+        }
+
+        return this.num_island;
+    }
+
+    private boolean _is_island(char[][] grid, int x, int y, boolean[][] seen){
+
+        int len = grid.length;
+        int width = grid[0].length;
+
+        if (x < 0 || x >= width || y < 0 || y >= len || this._seen[y][x] == true || grid[y][x] == '0'){
+            return false;
+        }
+
+        this._seen[y][x] = true;
+
+        _is_island(grid, x+1, y, seen);
+        _is_island(grid, x-1, y, seen);
+        _is_island(grid, x, y+1, seen);
+        _is_island(grid, x, y-1, seen);
+
+        return true;
+    }
+
 }
