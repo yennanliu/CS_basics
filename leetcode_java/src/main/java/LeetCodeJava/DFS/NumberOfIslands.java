@@ -8,70 +8,58 @@ public class NumberOfIslands {
 
     // V0
     // IDEA : DFS
-    // TODO : fix below
-//    int ans = 0;
-//    public int numIslands(char[][] grid) {
-//
-//        if (grid.length == 0 && grid[0].length == 0){
-//            return 0;
-//        }
-//
-//        int _len = grid.length;
-//        int _width = grid[0].length;
-//
-//        // get all "1"
-//        List<List<Integer>> toVisit = new ArrayList();
-//        for (int i = 0; i < _width; i++){
-//            for (int j = 0; j < _len; j++){
-//                String val = String.valueOf(grid[j][i]);
-//                if (val == "1"){
-//                    toVisit.add(Arrays.asList(j, i));
-//                }
-//            }
-//        }
-//
-//        // dfs
-//        for (List<Integer> point : toVisit){
-//            int _x = point.get(1);
-//            int _y = point.get(0);
-//            if (_dfs(grid, _x, _y)){
-//                this.ans += 1;
-//            }
-//        }
-//
-//        return this.ans;
-//    }
-//
-//    private boolean _dfs(char[][] grid, int x, int y){
-//
-//        int _len = grid.length;
-//        int _width = grid[0].length;
-//
-//        String val = String.valueOf(grid[y][x]);
-//        if (val == "#" || val == "0"){
-//            return false;
-//        }
-//
-//        List<List<Integer>> diresctions = new ArrayList();
-//        diresctions.add(Arrays.asList(0, 1));
-//        diresctions.add(Arrays.asList(0, -1));
-//        diresctions.add(Arrays.asList(1, 0));
-//        diresctions.add(Arrays.asList(-1, 0));
-//
-//        for (List<Integer> direction : diresctions){
-//
-//            x += direction.get(1);
-//            y += direction.get(0);
-//
-//            if (x >= 0 && x < _width && y >= 0 && y < _len){
-//                // https://stackoverflow.com/questions/5859934/char-initial-value-in-java
-//                grid[y][x] = '#';
-//                _dfs(grid, x, y);
-//            }
-//
-//        }
-//        return true;
-//    }
+    int num_island = 0;
+    boolean[][] _seen;
+    public int numIslands(char[][] grid) {
+
+        if (grid.length == 1 && grid[0].length == 1){
+            if (grid[0][0] == '1'){
+                return 1;
+            }
+            return 0;
+        }
+
+        int len = grid.length;
+        int width = grid[0].length;
+
+        // NOTE !!! how we init M X N boolean matrix
+        this._seen = new boolean[len][width];
+
+        for (int i = 0; i < len; i++){
+            for (int j = 0; j < width; j++){
+                if (_is_island(grid, j, i, this._seen)){
+                    this.num_island += 1;
+                }
+            }
+        }
+
+        return this.num_island;
+    }
+
+    private boolean _is_island(char[][] grid, int x, int y, boolean[][] seen){
+
+        int len = grid.length;
+        int width = grid[0].length;
+
+        // NOTE !!! boundary condition :  x >= width, y >= len
+        // since index = lenth - 1
+        if (x < 0 || x >= width || y < 0 || y >= len || this._seen[y][x] == true || grid[y][x] == '0'){
+            return false;
+        }
+
+        this._seen[y][x] = true;
+
+        /** NOTE !!! we do 4 direction traverse on the same time */
+        _is_island(grid, x+1, y, seen);
+        _is_island(grid, x-1, y, seen);
+        _is_island(grid, x, y+1, seen);
+        _is_island(grid, x, y-1, seen);
+
+        // NOTE !!! if code can arrive here, means there is at least "1 direction" meet "1" value
+        //          -> there is an island
+        //          -> so we return true as we found an island
+        return true;
+    }
 
     // V1
     // IDEA : DFS
