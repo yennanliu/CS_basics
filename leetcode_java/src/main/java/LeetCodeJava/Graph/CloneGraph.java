@@ -39,8 +39,49 @@ class Node {
 
 public class CloneGraph {
 
-    // TODO : fix below
     // V0
+    // IDEA : DFS
+    public Node cloneGraph(Node node) {
+
+        // init hashmap
+        // NOTE : hashmap form : <Integer, Node>
+        HashMap<Integer, Node> _visited = new HashMap<>();
+        return _clone(_visited, node);
+    }
+
+    private Node _clone(HashMap<Integer, Node> visited, Node node){
+
+        // NOTE !!! handle edge case, if node is null, return itself directly
+        if (node == null) {
+            return node;
+        }
+
+        int cur_val = node.val;
+
+        //  case 1) already visited, then return hashmap 's value (Node type) directly
+        if (visited.containsKey(cur_val)){
+            return visited.get(cur_val);
+        }
+
+        // NOTE !!! we init copied node as below
+        Node copiedNode = new Node(node.val, new ArrayList());
+        visited.put(cur_val, copiedNode);
+
+        // case 2) node is NOT visited yet, we go through all its neighbors,
+        for (Node _node : node.neighbors){
+            // NOTE !!! op here : we add new copied node to copiedNode.neighbors,
+            //          (e.g. : copiedNode.neighbors.add)
+            //          instead of return it directly
+            copiedNode.neighbors.add(_clone(visited, _node));
+        }
+
+        // NOTE !!! we return copiedNode as final step in code
+        //         -> once code reach here, means all after all recursive call are completed
+        //         -> copiedNode should have all collected nodes
+        return copiedNode;
+    }
+
+    // V0'
 //    Node clonedNode = new Node();
 //    public Node cloneGraph(Node node) {
 //

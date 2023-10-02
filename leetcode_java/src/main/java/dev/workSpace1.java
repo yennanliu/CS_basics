@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
+import LeetCodeJava.DataStructure.Node;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.sql.Array;
@@ -969,6 +970,46 @@ public class workSpace1 {
         _is_island(grid, x, y-1, seen);
 
         return true;
+    }
+
+    // https://leetcode.com/problems/clone-graph/
+    /**
+     *
+     *  if input = [[2,4],[1,3],[2,4],[1,3]]
+     *
+     *  then, _visited :
+     *      {1 : Node(1, List(2, 4)), 2 :  Node(List(1,3)) ...}
+     *
+     */
+    public Node cloneGraph(Node node) {
+
+        // init hashmap
+        HashMap<Integer, Node> _visited = new HashMap<>();
+        return _clone(_visited, node);
+    }
+
+    private Node _clone(HashMap<Integer, Node> visited, Node node){
+
+        if (node == null) {
+            return node;
+        }
+
+
+        int cur_val = node.val;
+
+        if (visited.containsKey(cur_val)){
+            return visited.get(cur_val);
+        }
+
+        Node copiedNode = new Node(node.val, new ArrayList());
+        visited.put(cur_val, copiedNode);
+
+
+        for (Node _node : node.neighbors){
+            copiedNode.neighbors.add(_clone(visited, _node));
+        }
+
+        return copiedNode; // ?
     }
 
 }
