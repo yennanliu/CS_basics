@@ -140,6 +140,28 @@ for(int i = k - 1; i >= 0; --i) {
 
 ```
 
+### 1-1-2) Init M X N boolean matrix
+```java
+// java
+// LC 695
+public static void main(String[] args) {
+
+    // ex1
+    Boolean[][] x = new Boolean[3][4];
+    System.out.println(x);
+    System.out.println(x[0][0]); // null
+
+    // ex2
+    boolean[][] y = new boolean[3][4];
+    System.out.println(y);
+    System.out.println(y[0][0]); // false
+
+    // ex3
+    boolean[][] seen;
+    seen = new boolean[3][4];
+}
+```
+
 ### 1-2) Char array to String
 
 ```java

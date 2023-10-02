@@ -870,5 +870,57 @@ public class workSpace1 {
         System.out.println(my_str.charAt(2));
     }
 
+    // https://leetcode.com/problems/max-area-of-island/
+    int maxArea = 0;
+    boolean[][] seen;
+    public int maxAreaOfIsland(int[][] grid) {
+
+        int len = grid.length;
+        int width = grid[0].length;
+
+        // edge case
+        if (grid.length == 1 && grid[0].length == 1){
+            if (grid[0][0] == 0){
+                return 0;
+            }
+            return 1;
+        }
+
+        // dfs
+        // private static final int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}}
+        //Boolean[][] seen = new Boolean[len][width];
+        //boolean[][] seen;
+        this.seen = new boolean[grid.length][grid[0].length];
+
+        for (int i = 0; i < len; i++){
+            for (int j = 0; j < width; j++){
+                System.out.println("i = " + i + " j = " + j);
+                if (grid[i][j] == 1){
+                    int _area = _getArea(grid, this.seen, j, i);
+                    System.out.println("_area = " + _area);
+                    this.maxArea = Math.max(this.maxArea, _area);
+                }
+            }
+        }
+        return this.maxArea;
+    }
+
+    private int _getArea(int[][] grid, boolean[][] seen, int x, int y){
+
+        int len = grid.length;
+        int width = grid[0].length;
+
+        if (x < 0 || x >= width || y < 0 || y >= len || seen[y][x] == true || grid[y][x] == 0){
+            return 0;
+        }
+
+        // ??
+        seen[y][x] = true;
+
+        return 1 + _getArea(grid, seen, x+1, y) +
+                _getArea(grid, seen, x-1, y) +
+                _getArea(grid, seen, x, y+1) +
+                _getArea(grid, seen, x, y-1);
+    }
 
 }

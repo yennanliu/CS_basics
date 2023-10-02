@@ -2,98 +2,81 @@ package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/max-area-of-island/
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Stack;
-
-//
-//class Point {
-//    int x;
-//    int y;
-//
-//    Point(int x, int y) {
-//        this.x = x;
-//        this.y = y;
-//    }
-//}
 
 public class MaxAreaOfIsland {
 
-    // TODO : fix below
-//    int ans = 0;
-//    List<Point> toVisit = Arrays.asList();
-//    List<List<Integer>> collected;
-//
-//    // V0
-//    public int maxAreaOfIsland(int[][] grid) {
-//
-//        int len = grid.length;
-//        int width = grid[0].length;
-//
-//        if (len == 0 && width == 0) {
-//            return 0;
-//        }
-//
-//        // collect "1" points
-//        for (int i = 0; i < len; i++) {
-//            for (int j = 0; j < width; j++) {
-//                if (grid[i][j] == 1) {
-//                    toVisit.add(new Point(j, i));
-//                }
-//            }
-//        }
-//
-//        // dfs
-//        for (Point point : toVisit) {
-//            int tmp = this._help(grid, point.y, point.x, Arrays.asList());
-//            this.ans = Math.max(this.ans, tmp);
-//        }
-//        return this.ans;
-//    }
-//
-//    private int _help(int[][] grid, int x, int y, List<Integer> tmp) {
-//
-//        int len = grid.length;
-//        int width = grid[0].length;
-//
-//        if (grid[y][x] != 1) {
-//            return 0;
-//        }
-//
-//        if (x >= width || y >= len) {
-//            return 0;
-//        }
-//
-//        // mark as visit
-//        grid[y][x] = -1;
-//        // double check??
-//        tmp.add(1);
-//        _help(grid, x + 1, y, tmp);
-//        _help(grid, x - 1, y, tmp);
-//        _help(grid, x, y + 1, tmp);
-//        _help(grid, x, y - 1, tmp);
-//
-//        return tmp.size();
-//    }
+    // V0
+    // IDEA : DFS
+    int maxArea = 0;
+    // NOTE !!! we NEED to use boolean instead of BOOLEAN,
+    //          since boolean' default value is "false", BOOLEAN 's default value is "null"
+    boolean[][] seen;
+
+    public int maxAreaOfIsland(int[][] grid) {
+
+        int len = grid.length;
+        int width = grid[0].length;
+
+        // edge case
+        if (grid.length == 1 && grid[0].length == 1){
+            if (grid[0][0] == 0){
+                return 0;
+            }
+            return 1;
+        }
+
+        // NOTE !!! we use below to init a M X N matrix
+        this.seen = new boolean[grid.length][grid[0].length];
+
+        for (int i = 0; i < len; i++){
+            for (int j = 0; j < width; j++){
+                //System.out.println("i = " + i + " j = " + j);
+                if (grid[i][j] == 1){
+                    int _area = _getArea(grid, this.seen, j, i);
+                    //System.out.println("_area = " + _area);
+                    this.maxArea = Math.max(this.maxArea, _area);
+                }
+            }
+        }
+        return this.maxArea;
+    }
+
+    private int _getArea(int[][] grid, boolean[][] seen, int x, int y){
+
+        int len = grid.length;
+        int width = grid[0].length;
+
+        if (x < 0 || x >= width || y < 0 || y >= len || seen[y][x] == true || grid[y][x] == 0){
+            return 0;
+        }
+
+        seen[y][x] = true;
+
+        return 1 + _getArea(grid, seen, x+1, y) +
+                _getArea(grid, seen, x-1, y) +
+                _getArea(grid, seen, x, y+1) +
+                _getArea(grid, seen, x, y-1);
+    }
 
     // V1
     // IDEA : DFS (recursive)
     // https://leetcode.com/problems/max-area-of-island/editorial/
     int[][] grid;
-    boolean[][] seen;
+    boolean[][] _seen;
 
     public int area(int r, int c) {
         if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length ||
-                seen[r][c] || grid[r][c] == 0)
+                _seen[r][c] || grid[r][c] == 0)
             return 0;
-        seen[r][c] = true;
+        _seen[r][c] = true;
         return (1 + area(r+1, c) + area(r-1, c)
                 + area(r, c-1) + area(r, c+1));
     }
 
     public int maxAreaOfIsland_1(int[][] grid) {
         this.grid = grid;
-        seen = new boolean[grid.length][grid[0].length];
+        _seen = new boolean[grid.length][grid[0].length];
         int ans = 0;
         for (int r = 0; r < grid.length; r++) {
             for (int c = 0; c < grid[0].length; c++) {
