@@ -2,7 +2,6 @@ package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/surrounded-regions/
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,6 +70,17 @@ public class SurroundedRegions {
     // V1
     // IDEA : DFS
     // https://leetcode.com/problems/surrounded-regions/editorial/
+
+    class Pair<U, V> {
+        public U first;
+        public V second;
+
+        public Pair(U first, V second) {
+            this.first = first;
+            this.second = second;
+        }
+    }
+
     protected Integer ROWS = 0;
     protected Integer COLS = 0;
 
@@ -83,6 +93,7 @@ public class SurroundedRegions {
 
         List<Pair<Integer, Integer>> borders = new LinkedList<Pair<Integer, Integer>>();
         // Step 1). construct the list of border cells
+        // NOTE !!! this is "border" list for escaped celles (not considered as island)
         for (int r = 0; r < this.ROWS; ++r) {
             borders.add(new Pair(r, 0));
             borders.add(new Pair(r, this.COLS - 1));
@@ -93,6 +104,8 @@ public class SurroundedRegions {
         }
 
         // Step 2). mark the escaped cells
+        // NOTE !!!  dfs only implement on "escaped cells"
+        //           so
         for (Pair<Integer, Integer> pair : borders) {
             this.DFS(board, pair.first, pair.second);
         }
@@ -109,10 +122,13 @@ public class SurroundedRegions {
     }
 
     protected void DFS(char[][] board, int row, int col) {
+
         if (board[row][col] != 'O')
             return;
 
         board[row][col] = 'E';
+
+        // TODO : double check below
         if (col < this.COLS - 1)
             this.DFS(board, row, col + 1);
         if (row < this.ROWS - 1)
@@ -121,58 +137,59 @@ public class SurroundedRegions {
             this.DFS(board, row, col - 1);
         if (row > 0)
             this.DFS(board, row - 1, col);
-        }
     }
-
-    class Pair<U, V> {
-        public U first;
-        public V second;
-
-        public Pair(U first, V second) {
-            this.first = first;
-            this.second = second;
-        }
 
 
     // V2
     // IDEA : BFS
     // https://leetcode.com/problems/surrounded-regions/editorial/
-    protected Integer ROWS = 0;
-    protected Integer COLS = 0;
+    class Pair2<U, V> {
+        public U first;
+        public V second;
+
+        public Pair2(U first, V second) {
+            this.first = first;
+            this.second = second;
+        }
+
+    }
+
+    protected Integer ROWS2 = 0;
+    protected Integer COLS2 = 0;
 
     public void solve_2(char[][] board) {
-            if (board == null || board.length == 0) {
-                return;
-            }
-            this.ROWS = board.length;
-            this.COLS = board[0].length;
+        if (board == null || board.length == 0) {
+            return;
+        }
+        this.ROWS2 = board.length;
+        this.COLS2 = board[0].length;
 
-            List<Pair<Integer, Integer>> borders = new LinkedList<Pair<Integer, Integer>>();
-            // Step 1). construct the list of border cells
-            for (int r = 0; r < this.ROWS; ++r) {
-                borders.add(new Pair(r, 0));
-                borders.add(new Pair(r, this.COLS - 1));
-            }
-            for (int c = 0; c < this.COLS; ++c) {
-                borders.add(new Pair(0, c));
-                borders.add(new Pair(this.ROWS - 1, c));
-            }
+        List<Pair<Integer, Integer>> borders = new LinkedList<Pair<Integer, Integer>>();
+        // Step 1). construct the list of border cells
+        for (int r = 0; r < this.ROWS2; ++r) {
+            borders.add(new Pair(r, 0));
+            borders.add(new Pair(r, this.COLS2 - 1));
+        }
+        for (int c = 0; c < this.COLS2; ++c) {
+            borders.add(new Pair(0, c));
+            borders.add(new Pair(this.ROWS2 - 1, c));
+        }
 
-            // Step 2). mark the escaped cells
-            for (Pair<Integer, Integer> pair : borders) {
-                this.BFS(board, pair.first, pair.second);
-            }
+        // Step 2). mark the escaped cells
+        for (Pair<Integer, Integer> pair : borders) {
+            this.BFS(board, pair.first, pair.second);
+        }
 
-            // Step 3). flip the cells to their correct final states
-            for (int r = 0; r < this.ROWS; ++r) {
-                for (int c = 0; c < this.COLS; ++c) {
-                    if (board[r][c] == 'O')
-                        board[r][c] = 'X';
-                    if (board[r][c] == 'E')
-                        board[r][c] = 'O';
-                }
+        // Step 3). flip the cells to their correct final states
+        for (int r = 0; r < this.ROWS2; ++r) {
+            for (int c = 0; c < this.COLS2; ++c) {
+                if (board[r][c] == 'O')
+                    board[r][c] = 'X';
+                if (board[r][c] == 'E')
+                    board[r][c] = 'O';
             }
         }
+    }
 
         protected void BFS(char[][] board, int r, int c) {
             LinkedList<Pair2<Integer, Integer>> queue = new LinkedList<Pair2<Integer, Integer>>();
@@ -195,16 +212,72 @@ public class SurroundedRegions {
                     queue.offer(new Pair2<>(row - 1, col));
             }
         }
-    }
 
+    // V3
+    // IDEA : DFS
+    // https://leetcode.com/problems/surrounded-regions/solutions/3805983/java-100-faster-step-by-step-explained/
+    public void solve(char[][] board) {
+        int rows = board.length;
+        int cols = board[0].length;
 
-    class Pair2<U, V> {
-        public U first;
-        public V second;
+        int[] delRows = {-1, 0, 1, 0}; // Array to represent changes in row index to traverse in all four directions
+        int[] delCols = {0, 1, 0, -1}; // Array to represent changes in column index to traverse in all four directions
 
-        public Pair2(U first, V second) {
-            this.first = first;
-            this.second = second;
+        int[][] visited = new int[rows][cols]; // Matrix to keep track of visited cells
+
+        // Process first row and last row
+        for (int i = 0; i < cols; i++) {
+            // Process first row
+            if (board[0][i] == 'O' && visited[0][i] == 0) {
+                dfs(0, i, board, visited, delRows, delCols); // Call the dfs method to explore the connected region of 'O's
+            }
+            // Process last row
+            if (board[rows - 1][i] == 'O' && visited[rows - 1][i] == 0) {
+                dfs(rows - 1, i, board, visited, delRows, delCols); // Call the dfs method to explore the connected region of 'O's
+            }
         }
 
+        // Process first and last column
+        for (int i = 0; i < rows; i++) {
+            // Process first column
+            if (board[i][0] == 'O' && visited[i][0] == 0) {
+                dfs(i, 0, board, visited, delRows, delCols); // Call the dfs method to explore the connected region of 'O's
+            }
+            // Process last column
+            if (board[i][cols - 1] == 'O' && visited[i][cols - 1] == 0) {
+                dfs(i, cols - 1, board, visited, delRows, delCols); // Call the dfs method to explore the connected region of 'O's
+            }
+        }
+
+        // Convert surrounded 'O's to 'X's
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == 'O' && visited[i][j] == 0) {
+                    board[i][j] = 'X'; // Mark the surrounded 'O's as 'X'
+                }
+            }
+        }
+    }
+
+    // Depth First Search (DFS) method to explore the connected region of 'O's
+    private static void dfs(int row, int col, char[][] board, int[][] visited, int[] delRows, int[] delCols) {
+        visited[row][col] = 1; // Mark the current cell as visited
+
+        int rows = board.length;
+        int cols = board[0].length;
+
+        // Explore all four directions
+        for (int i = 0; i < 4; i++) {
+            int newRow = row + delRows[i];
+            int newCol = col + delCols[i];
+
+            // Check if the new cell is within bounds and is an unvisited 'O'
+            if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols
+                    && board[newRow][newCol] == 'O' && visited[newRow][newCol] == 0) {
+                dfs(newRow, newCol, board, visited, delRows, delCols); // Recursively call dfs for the new cell
+            }
+        }
+    }
+
 }
+
