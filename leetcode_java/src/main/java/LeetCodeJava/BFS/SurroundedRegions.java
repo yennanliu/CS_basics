@@ -7,8 +7,12 @@ import java.util.List;
 
 public class SurroundedRegions {
 
-    // TODO : fix below
     // V0
+    // IDEA : DFS OR BFS
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/surrounded-regions.py
+
+    // TODO : fix below
+    // V0'
 //    int[][] points = new int[][]{};
 //    public void solve(char[][] board) {
 //
