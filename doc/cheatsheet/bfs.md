@@ -411,6 +411,7 @@ class Solution:
 ```
 ### 2-7) Walls and gates
 ```python
+# python
 # 286 Walls and Gates
 
 # note : there is also a dfs solution
@@ -434,6 +435,103 @@ class Solution:
                     # update the value
                     rooms[new_x][new_y] = distance
                     q.append((new_x, new_y))
+```
+
+```java
+// java
+// Lc 286
+    public void wallsAndGates(int[][] rooms) {
+
+        class Pair<U, V, W> {
+            U key;
+            V value;
+            W value2;
+
+            Pair(U key, V value, W value2) {
+                this.key = key;
+                this.value = value;
+                this.value2 = value2;
+            }
+
+            U getKey() {
+                return this.key;
+            }
+
+            V getValue() {
+                return this.value;
+            }
+
+            W getValue2() {
+                return this.value2;
+            }
+
+        }
+
+        // edge case
+        if (rooms.length == 1 && rooms[0].length == 1) {
+            return;
+        }
+
+        int space_cnt = 0;
+        int gete_cnt = 0;
+        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+        int len = rooms.length;
+        int width = rooms[0].length;
+
+        // init queue
+        Queue<Pair> q = new LinkedList<Pair>();
+
+        // get cnt
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < len; j++) {
+                if (rooms[j][i] == 0) {
+                    gete_cnt += 1;
+                    // NOTE !!! we should do BFS with "gete" instead of space point
+                    q.add(new Pair(i, j, -1));
+                } else if (rooms[j][i] == 2147483647) {
+                    space_cnt += 1;
+                    //q.add(new Pair(i, j, -1)); // append space point to queue, for BFS
+                } else {
+                    //obstacle_cnt += 1;
+                }
+            }
+        }
+
+        // if there is no gate or no space -> quit directly
+        if (gete_cnt == 0 || space_cnt == 0) {
+            return;
+        }
+
+        // bfs
+        while (!q.isEmpty()) {
+
+            Pair p = q.poll();
+            int x = (int) p.getKey();
+            int y = (int) p.getValue();
+            int dist = (int) p.getValue2();
+
+            for (int[] dir : dirs) {
+
+                int dx = dir[0];
+                int dy = dir[1];
+                int new_x = x + dx;
+                int new_y = y + dy;
+
+                String idx = new_x + "-" + new_x;
+
+                if (0 <= new_x && new_x < width && 0 <= new_x && new_y < len) {
+                    // NOTE !!! we do NOTHING if point is out of border or point is "NOT a space"
+                    if (new_x < 0 || new_x > width || new_y < 0 || new_y > len || rooms[new_y][new_x] != 2147483647) {
+                        continue;
+                    }
+                    rooms[new_y][new_x] = rooms[y][x] + 1;
+                    q.add(new Pair(new_x, new_y, dist + 1));
+                }
+
+            }
+        }
+    }
 ```
 
 ### 2-8) The Maze
