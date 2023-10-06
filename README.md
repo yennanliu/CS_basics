@@ -47,15 +47,15 @@
 	- code implementation
 	- offer test case (consider edge case)
 	- discussion & follow up
-* LC SQL high frequent
+- LC SQL high frequent
 		- [LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
 		- [LeetCode Curated SQL 70](https://leetcode.com/problem-list/5htp6xyg/?page=1)
 		- [cheatsheet-mysql-a4](https://cheatsheet.dennyzhang.com/cheatsheet-mysql-a4)
-* [Resource.md](./doc/Resource.md) - `Resource` for coding interview (**keep updating**)
-* [Teach yourself CS](https://teachyourselfcs.com/)
-* [MindMapCodeInterview](./doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
-* [CodeInterviewCheatsheet](./doc/cheatsheet/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
-* [repl.it](https://repl.it/) - Coding online!
+- [Resource.md](./doc/Resource.md) - `Resource` for coding interview (**keep updating**)
+- [Teach yourself CS](https://teachyourselfcs.com/)
+- [MindMapCodeInterview](./doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
+- [CodeInterviewCheatsheet](./doc/cheatsheet/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
+- [repl.it](https://repl.it/) - Coding online!
 
 * Visualization
 	- [visualgo - DFS / BFS](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
@@ -63,16 +63,16 @@
 	- [visualgo - BST](https://visualgo.net/bn/bst) - binary search tree visualization
 	- [toptal-sorting-algorithms](https://www.toptal.com/developers/sorting-algorithms)- sorting algorithms online
 
-* [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
-* [bit_manipulation.md](./doc/bit_manipulation.md) - Bit Manipulation Cheat Sheet
-* [Py TimeComplexity](https://wiki.python.org/moin/TimeComplexity) - Py basic data structure `Time Complexity` ref
-* [Py data model](https://docs.python.org/3/reference/datamodel.html) - Python data model doc 
-* [pgexercises](https://pgexercises.com/questions/aggregates/) - Postgre exercises
-* [sqlservertutorial](https://www.sqlservertutorial.net/)
-* [Books](https://github.com/yennanliu/data_science_repo/tree/master/book)
-* [freecodecamp - data-structures](https://www.freecodecamp.org/news/tag/data-structures/)
-* [LC interview-experience](https://leetcode.com/discuss/interview-experience?currentPage=1&orderBy=hot&query=)
-* [Cheatsheet](https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet)
+- [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
+- [bit_manipulation.md](./doc/bit_manipulation.md) - Bit Manipulation Cheat Sheet
+- [Py TimeComplexity](https://wiki.python.org/moin/TimeComplexity) - Py basic data structure `Time Complexity` ref
+- [Py data model](https://docs.python.org/3/reference/datamodel.html) - Python data model doc 
+- [pgexercises](https://pgexercises.com/questions/aggregates/) - Postgre exercises
+- [sqlservertutorial](https://www.sqlservertutorial.net/)
+- [Books](https://github.com/yennanliu/data_science_repo/tree/master/book)
+- [freecodecamp - data-structures](https://www.freecodecamp.org/news/tag/data-structures/)
+- [LC interview-experience](https://leetcode.com/discuss/interview-experience?currentPage=1&orderBy=hot&query=)
+- [Cheatsheet](https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet)
 * Data structure
 	- [py core data structure interview](https://python.plainenglish.io/python-for-interviewing-an-overview-of-the-core-data-structures-666abdf8b698)
 * System design
@@ -161,33 +161,33 @@
 
 
 ## Algorithm
-|  #  | Title | Solution | Use case | Comment | Status|
-| --- | ----- | -------- | ---- | ----- | ---- |
-||Binary search|[Python](./algorithm/python/binary_search.py) | | | AGAIN| 
-||Linear search|[Python](./algorithm/python/linear_search.py) | | | AGAIN| 
-||Breadth-first search (BFS)| [Python](./algorithm/python/bfs.py), [JS](./algorithm/js/bfs.js)|`FIND SHORTEST PATH`|| AGAIN***| 
-||Depth-first search (DFS) |[Python](./algorithm/python/dfs.py), [JS](./algorithm/js/dfs.js)| `TO CHECK IF SOMETHING EXIST`| `inorder`, `postorder`, `postorder (can recreate a tree)`| AGAIN***| 
-||Bubble sort| [Python](./algorithm/python/bubble_sort.py), [JS](./algorithm/js/bubble_sort.js) , [C](./algorithm/c/bubble_sort.c)| | | OK* (3)|  
-||Insertion sort| [Python](./algorithm/python/insertion_sort.py), [JS](./algorithm/js/insertion_sort.js) |`stable` sort| work very fast for `nearly sorted` array|AGAIN| 
-||Bucket sort| [Python](./algorithm/python/bucket_sort.py)  | | |AGAIN| 
-||Quick sort| [quick_sort.py](./algorithm/python/quick_sort.py), [quick_sort_v2.py](./algorithm/python/quick_sort_v2.py), [QuickSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/QuickSort.java)| | | AGAIN***| 
+|  #  | Title | Solution | Use case | Comment | Time complexity | Space complexity | Status|
+| --- | ----- | -------- | ---- | ----- | ---- | ---- | ---- |
+||Binary search|[Python](./algorithm/python/binary_search.py) | | | | | AGAIN| 
+||Linear search|[Python](./algorithm/python/linear_search.py) | | | | | AGAIN| 
+||Breadth-first search (BFS)| [Python](./algorithm/python/bfs.py), [JS](./algorithm/js/bfs.js)|`FIND SHORTEST PATH`|| | | AGAIN***| 
+||Depth-first search (DFS) |[Python](./algorithm/python/dfs.py), [JS](./algorithm/js/dfs.js)| `TO CHECK IF SOMETHING EXIST`| `inorder`, `postorder`, `postorder (can recreate a tree)`| | | AGAIN***| 
+||Bubble sort| [Python](./algorithm/python/bubble_sort.py), [JS](./algorithm/js/bubble_sort.js) , [C](./algorithm/c/bubble_sort.c)| | | | | OK* (3)|  
+||Insertion sort| [Python](./algorithm/python/insertion_sort.py), [JS](./algorithm/js/insertion_sort.js) |`stable` sort| work very fast for `nearly sorted` array| | | AGAIN| 
+||Bucket sort| [Python](./algorithm/python/bucket_sort.py)  | | | | | AGAIN| 
+||Quick sort| [quick_sort.py](./algorithm/python/quick_sort.py), [quick_sort_v2.py](./algorithm/python/quick_sort_v2.py), [QuickSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/QuickSort.java)| | | `Best : O(N Log N), Avg : O(N Log N), Worst : O(N^2)` | | AGAIN***| 
 ||Heap sort| [Python](./algorithm/python/heap_sort.py)| | | AGAIN**| 
-||Merge sort|[merge_sort_topdown.py](./algorithm/python/merge_sort_topdown.py), [mergesort_bottomup.py](./algorithm/python/mergesort_bottomup.py), [MergeSortTopDown.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/MergeSortTopDown.java), [SQL](./algorithm/sql/Mergesort.sql) | | | OK* (2)| 
-||Pancake sort| [Python](./algorithm/python/pancake_sort.py) | | | AGAIN| 
-||Selection sort| [Python](./algorithm/python/selection_sort.py), [JS](./algorithm/js/selection_sort.js) | | | AGAIN| 
-||Topological sort| [Python](./algorithm/python/topological_sort.py) | | Topological Sort is a algorithm can find "ordering" on an "order dependency" graph | AGAIN| 
-||md5 | [Python](./algorithm/python/md5.py) | | | AGAIN| 
+||Merge sort|[merge_sort_topdown.py](./algorithm/python/merge_sort_topdown.py), [mergesort_bottomup.py](./algorithm/python/mergesort_bottomup.py), [MergeSortTopDown.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/MergeSortTopDown.java), [SQL](./algorithm/sql/Mergesort.sql) | | | | | OK* (2)| 
+||Pancake sort| [Python](./algorithm/python/pancake_sort.py) | | | | | AGAIN| 
+||Selection sort| [Python](./algorithm/python/selection_sort.py), [JS](./algorithm/js/selection_sort.js) | | | | |  AGAIN| 
+||Topological sort| [Python](./algorithm/python/topological_sort.py) | | Topological Sort is a algorithm can find "ordering" on an "order dependency" graph | | | AGAIN| 
+||md5 | [Python](./algorithm/python/md5.py) | | | | | AGAIN| 
 ||Union Find | [Python 1](./algorithm/python/union_find.py), [Python 2](./algorithm/python/union_find_if_cyclic.py), [Java 1](./leetcode_java/src/main/java/AlgorithmJava/UnionFind.java) | | | AGAIN| 
-||Dynamic programming|[JS 1](./algorithm/js/dp_demo_1.js), [fibonacci_dp JS](./algorithm/js/fibonacci_dp.js) | | | AGAIN|
+||Dynamic programming|[JS 1](./algorithm/js/dp_demo_1.js), [fibonacci_dp JS](./algorithm/js/fibonacci_dp.js) | | | | | AGAIN|
 ||Dijkstra|[Python](./algorithm/python/dijkstra.py),[Java](./algorithm/java/DijkstraSP.java)||| AGAIN***|
-||Floyd-Warshall|[Python](./algorithm/python/floyd_warshall.py)||| not start
-||Bellman-Ford|[Python](./algorithm/python/bellman_ford.py)||| not start
-||Quick Find |[Python](./algorithm/python/quick_find.py), [Java](./algorithm/java/QuickFindUF.java) | init : O(N), union : O(N), find : O(1)|simple, but slow |AGAIN| 
-||Quick Union | [Java](./algorithm/java/QuickUnionUF.java) | init : O(N), union : O(N), find : O(N)| lazy approach, route compression, optimized Quick Find|AGAIN| 
-||Quick Union (Improvements) || lazy approach, path compression|AGAIN| 
-||Priority Queue (`unsorted`) | [Java](./algorithm/java/UnorderedMaxPQ.java) || AGAIN| 
-||LRU cache | [Python](./algorithm/python/lru_cache.py) || LC 146 | AGAIN| 
-||LFU Cache | [Python](./algorithm/python/lfu_cache.py) || LC 460 | AGAIN| 
+||Floyd-Warshall|[Python](./algorithm/python/floyd_warshall.py)||| | | not start
+||Bellman-Ford|[Python](./algorithm/python/bellman_ford.py)||| | | not start
+||Quick Find |[Python](./algorithm/python/quick_find.py), [Java](./algorithm/java/QuickFindUF.java) | init : O(N), union : O(N), find : O(1)|simple, but slow | | |AGAIN| 
+||Quick Union | [Java](./algorithm/java/QuickUnionUF.java) | init : O(N), union : O(N), find : O(N)| lazy approach, route compression, optimized Quick Find|| | AGAIN| 
+||Quick Union (Improvements) || lazy approach, path compression|| | AGAIN| 
+||Priority Queue (`unsorted`) | [Java](./algorithm/java/UnorderedMaxPQ.java) || | | AGAIN| 
+||LRU cache | [Python](./algorithm/python/lru_cache.py) || LC 146 | | | AGAIN| 
+||LFU Cache | [Python](./algorithm/python/lfu_cache.py) || LC 460 | | | AGAIN| 
 
 
 ## Array 
