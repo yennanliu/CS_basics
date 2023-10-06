@@ -1,10 +1,8 @@
 package dev;
 
-import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.Node;
 import LeetCodeJava.DataStructure.TreeNode;
 
-import java.sql.Array;
 import java.util.*;
 
 public class workSpace1 {
@@ -1005,11 +1003,100 @@ public class workSpace1 {
         visited.put(cur_val, copiedNode);
 
 
-        for (Node _node : node.neighbors){
+        for (Node _node : node.neighbors) {
             copiedNode.neighbors.add(_clone(visited, _node));
         }
 
         return copiedNode; // ?
+    }
+
+    // https://leetcode.com/problems/rotting-oranges/
+    // BFS
+    public int orangesRotting(int[][] grid) {
+
+        class Pair<U, V> {
+            U key;
+            V value;
+
+            Pair(U key, V value) {
+                this.key = key;
+                this.value = value;
+            }
+
+            U getKey() {
+                return this.key;
+            }
+
+            V getValue() {
+                return this.value;
+            }
+
+        }
+
+        int len = grid.length;
+        int width = grid[0].length;
+
+        int ans = 0;
+        int fresh_cnt = 0;
+
+        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        Queue<Pair> q = new LinkedList<>();
+
+        // collect rotting orange
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < len; j++) {
+                if (grid[j][i] == 2) {
+                    q.add(new Pair(i, j));
+                } else if (grid[j][i] == 1) {
+                    fresh_cnt += 1;
+                }
+            }
+        }
+
+        if (fresh_cnt == 0) {
+            return 0; // ?
+        }
+
+        // bfs
+        while (!q.isEmpty()) {
+
+            Pair p = q.poll();
+            int x = (int) p.getKey();
+            int y = (int) p.getValue();
+
+            boolean finish_cycle = false;
+
+            for (int[] dir : dirs) {
+
+                int dx = dir[0];
+                int dy = dir[1];
+
+                int new_x = x + dx;
+                int new_y = y + dy;
+
+                if (new_x >= 0 && new_x < width && new_y >= 0 && new_y < len) {
+                    if (grid[new_y][new_x] == 1) {
+                        q.add(new Pair(new_x, new_y));
+                        grid[new_y][new_x] = 2; // become rotting orange
+                        fresh_cnt -= 1;
+
+                    }
+                }
+
+                if (fresh_cnt == 0) {
+                    return ans;
+                }
+
+                finish_cycle = true;
+            }
+
+            if (finish_cycle) {
+                ans += 1;
+            }
+        }
+
+        System.out.println("fresh_cnt = " + fresh_cnt + " ans = " + ans);
+        return fresh_cnt == 0 ? ans : -1;
     }
 
 }

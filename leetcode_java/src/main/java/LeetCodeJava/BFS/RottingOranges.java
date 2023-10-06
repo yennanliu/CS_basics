@@ -7,6 +7,96 @@ import java.util.*;
 public class RottingOranges {
 
     // TODO : fix below
+    // VO
+    // IDRA : BFS
+//    public int orangesRotting(int[][] grid) {
+//
+//        class Pair<U, V> {
+//            U key;
+//            V value;
+//
+//            Pair(U key, V value) {
+//                this.key = key;
+//                this.value = value;
+//            }
+//
+//            U getKey() {
+//                return this.key;
+//            }
+//
+//            V getValue() {
+//                return this.value;
+//            }
+//
+//        }
+//
+//        int len = grid.length;
+//        int width = grid[0].length;
+//
+//        int ans = 0;
+//        int fresh_cnt = 0;
+//
+//        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+//        Queue<Pair> q = new LinkedList<>();
+//
+//        // collect rotting orange
+//        for (int i = 0; i < width; i++) {
+//            for (int j = 0; j < len; j++) {
+//                if (grid[j][i] == 2) {
+//                    q.add(new Pair(i, j));
+//                } else if (grid[j][i] == 1) {
+//                    fresh_cnt += 1;
+//                }
+//            }
+//        }
+//
+//        if (fresh_cnt == 0) {
+//            return 0; // ?
+//        }
+//
+//        // bfs
+//        while (!q.isEmpty()) {
+//
+//            Pair p = q.poll();
+//            int x = (int) p.getKey();
+//            int y = (int) p.getValue();
+//
+//            boolean finish_cycle = false;
+//
+//            for (int[] dir : dirs) {
+//
+//                int dx = dir[0];
+//                int dy = dir[1];
+//
+//                int new_x = x + dx;
+//                int new_y = y + dy;
+//
+//                if (new_x >= 0 && new_x < width && new_y >= 0 && new_y < len) {
+//                    if (grid[new_y][new_x] == 1) {
+//                        q.add(new Pair(new_x, new_y));
+//                        grid[new_y][new_x] = 2; // become rotting orange
+//                        fresh_cnt -= 1;
+//
+//                    }
+//                }
+//
+//                if (fresh_cnt == 0) {
+//                    return ans;
+//                }
+//
+//                finish_cycle = true;
+//            }
+//
+//            if (finish_cycle) {
+//                ans += 1;
+//            }
+//        }
+//
+//        System.out.println("fresh_cnt = " + fresh_cnt + " ans = " + ans);
+//        return fresh_cnt == 0 ? ans : -1;
+//    }
+
+    // TODO : fix below
     // V0
     // IDEA : BFS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/rotting-oranges.py
@@ -95,86 +185,6 @@ public class RottingOranges {
 //        }
 //
 //        return fresh == 0 ? 0 : -1;
-//    }
-
-    // TODO : fix below (should use BFS instead)
-    // V0'
-    // IDEA : DFS
-//    public int ans = 0;
-//    public int fresh = 0;
-//
-//    List<List<Integer>> rotting = new ArrayList() {};
-//    // VO
-//    public int orangesRotting(int[][] grid) {
-//
-//        // collect init rotting oranges
-//        //int[][] rotting = new int[][]{};
-//        //List<List<Integer>> fresh = new ArrayList(){};
-//
-//        int len = grid.length;
-//        int width = grid[0].length;
-//
-//        for (int i = 0; i < width; i++) {
-//            for (int j = 0; j < len; j++) {
-//                if (grid[j][i] == 2) {
-//                    List<Integer> _tmp = new ArrayList() {};
-//                    _tmp.add(i);
-//                    _tmp.add(j);
-//                    this.rotting.add(_tmp);
-//                }
-//                if (grid[j][i] == 1) {
-////                    List<Integer> _tmp2 = new ArrayList(){};
-////                    _tmp2.add(i);
-////                    _tmp2.add(j);
-////                    fresh.add(_tmp2);
-//                    this.fresh += 1;
-//                }
-//            }
-//        }
-//
-//        // if there is no fresh orange, quit directly
-//        if (this.fresh == 0) {
-//            return 0;
-//        }
-//
-//        // dfs
-//        for (List<Integer> point : rotting){
-//
-//            int x = point.get(0);
-//            int y = point.get(1);
-//
-//            if (this.fresh == 0) {
-//                return 0;
-//            }
-//            _dfs(grid, x, y);
-//            this.ans += 1;
-//
-//        }
-//        return this.ans;
-//    }
-//
-//    private void _dfs(int[][] grid, int x, int y) {
-//
-//        int len = grid.length;
-//        int width = grid[0].length;
-//
-//        if (x < 0 || x >= width || y < 0 || y >= len || grid[y][x] == 0) {
-//            return;
-//        }
-//
-//        if (grid[y][x] == 1) {
-//            List<Integer> _tmp = new ArrayList() {};
-//            _tmp.add(x);
-//            _tmp.add(y);
-//            this.rotting.add(_tmp);
-//            grid[y][x] = 2;
-//            this.fresh -= 1;
-//        }
-//
-//        _dfs(grid, x + 1, y);
-//        _dfs(grid, x - 1, y);
-//        _dfs(grid, x, y + 1);
-//        _dfs(grid, x, y - 1);
 //    }
 
     // V1
