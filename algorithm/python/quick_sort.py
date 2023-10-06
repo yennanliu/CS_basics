@@ -1,8 +1,39 @@
 #---------------------------------------------------------------
-# QUICK SORT
+# QUICK SORT V1
 #---------------------------------------------------------------
 
 # V0
+# https://www.bilibili.com/video/BV1at411T75o/
+# https://hackmd.io/@Aquamay/H1nxBOLcO/https%3A%2F%2Fhackmd.io%2F%40Aquamay%2FB1SPnfRq_
+# https://www.baeldung.com/cs/quicksort-time-complexity-worst-case
+#
+# Steps
+# Step 1) find pivot (can be any idx, we choose idx 0 for simplicity)
+# Step 2) move element < pivot to left sub array, move element > pivot to right sub array
+# Step 3) repeat above to all sub array
+def quick_sort(sorting: list, left: int, right: int) -> None:
+    if right <= left:
+        return
+    a = i = left
+    b = right
+    pivot = sorting[left]
+    while i <= b:
+        if sorting[i] < pivot:
+            sorting[a], sorting[i] = sorting[i], sorting[a]
+            a += 1
+            i += 1
+        elif sorting[i] > pivot:
+            sorting[b], sorting[i] = sorting[i], sorting[b]
+            b -= 1
+        else:
+            i += 1
+    quick_sort(sorting, left, a - 1)
+    quick_sort(sorting, b + 1, right)
+
+    return sorting
+
+
+# V1
 # steps
 # 0) get pivot (last element from original array)
 # 1) init big, small sub array
@@ -27,6 +58,7 @@ def quick_sort(arr):
             small.append(i)
     # recursive do quick_sort
     return quick_sort(small) + [pivot] + quick_sort(big)
+
 
 # V1
 # https://github.com/yennanliu/Python/blob/master/sorts/quick_sort.py
@@ -79,12 +111,6 @@ def quick_sort(data: list) -> list:
             + [data[0]]
             + quick_sort([e for e in data[1:] if e > data[0]])
         )
-
-
-# if __name__ == "__main__":
-#     import doctest
-#
-#     doctest.testmod()
 
 
 # V1''
@@ -177,14 +203,3 @@ def three_way_radix_quicksort(sorting: list) -> list:
         + [i for i in sorting if i == sorting[0]]
         + three_way_radix_quicksort([i for i in sorting if i > sorting[0]])
     )
-
-
-# if __name__ == "__main__":
-#     import doctest
-#
-#     doctest.testmod(verbose=True)
-#
-#     user_input = input("Enter numbers separated by a comma:\n").strip()
-#     unsorted = [int(item) for item in user_input.split(",")]
-#     quick_sort_3partition(unsorted, 0, len(unsorted) - 1)
-#     print(unsorted)
