@@ -11,7 +11,7 @@
 # Step 1) find pivot (can be any idx, we choose idx 0 for simplicity)
 # Step 2) move element < pivot to left sub array, move element > pivot to right sub array
 # Step 3) repeat above to all sub array
-def quick_sort(sorting: list, left: int, right: int) -> None:
+def quick_sort(sorting: list, left: int, right: int) -> list:
     if right <= left:
         return
     a = i = left
