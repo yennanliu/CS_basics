@@ -36,6 +36,24 @@ All the numbers of nums are unique.
 """
 
 # V0
+# IDEA : BACKTRACK
+class Solution:
+    def subsets(self, nums):
+        result = []
+        path = []
+        self.backtracking(nums, 0, path, result)
+        return result
+
+    def backtracking(self, nums, startIndex, path, result):
+        result.append(path[:])  # NOTE here
+        if startIndex >= len(nums):  # optional
+            return
+        for i in range(startIndex, len(nums)): # NOTE here : we start from startIndex every time
+            path.append(nums[i])
+            self.backtracking(nums, i + 1, path, result) # NOTE here
+            path.pop(-1) # NOTE here
+
+# V0
 # IDEA : DFS
 # plz also refer backtrack cheatsheet
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/backtrack.md
@@ -53,6 +71,10 @@ class Solution(object):
                 NOTE : since we NOT contain duplicate subsets
                 ->  1. every loop start from i  (instead of 0 idx)
                 ->  (i start from `start`, and start = i+1 for each loop)
+
+
+                -> NOTE !!! below line actually has backtrack logic
+                -> tmp + [nums[i]] is NOT adding new element to tmp, but only add new element to current recursive call, for other call tmp is unchaged
                 """
                 dfs(layer+1, i+1, tmp + [nums[i]])
         nums.sort()
@@ -160,6 +182,26 @@ class Solution:
             combination.append(nums[i])
             self.dfs(nums, i + 1, combination, combinations)
             combination.pop()
+
+
+# V1
+# IDEA : BACKTRACK
+# https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md
+class Solution:
+    def subsets(self, nums):
+        result = []
+        path = []
+        self.backtracking(nums, 0, path, result)
+        return result
+
+    def backtracking(self, nums, startIndex, path, result):
+        result.append(path[:])  # 收集子集，要放在终止添加的上面，否则会漏掉自己
+        # if startIndex >= len(nums):  # 终止条件可以不加
+        #     return
+        for i in range(startIndex, len(nums)):
+            path.append(nums[i])
+            self.backtracking(nums, i + 1, path, result)
+            path.pop()
 
 # V1
 # https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python
