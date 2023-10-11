@@ -15,8 +15,6 @@
 
 ## 0) Concept  
 
-### 0-1) Types
-
 - 3 things to consider : 
  - `Route` : The choices have made
  - `Choice list` : The choices we can select currently
@@ -30,6 +28,8 @@
     - dict
     - set
     - array
+
+### 0-1) Types
 
 - Problems types
 
@@ -139,10 +139,11 @@
                         _cnt[nums[i]] += 1
         ```
 
-    - Type 2) : `Permutations (排列組合)`
-        - LC 46
+    - Type 2) : `Permutations (排列組合)` (全排列)
+        - Problems : LC 46, 47
+        - (for loop call help func) + contains + pop(-1)
         - backtrack. via `contains` remove already used numbers and return all cases
-        - contains (visited) (or not in `cur`) + for loop + pop(-1) + help func
+        - NO NEED to use start_idx
         ```python
         # ...
         res = []
@@ -161,56 +162,73 @@
                     cur.pop(-1)
         # ...
         ```
-        ```java
-        // java
-        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-        public List<List<Integer>> permute(int[] nums) {
-           List<List<Integer>> list = new ArrayList<>();
-           // Arrays.sort(nums); // not necessary
-           backtrack(list, new ArrayList<>(), nums);
-           return list;
-        }
 
-        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums){
-           if(tempList.size() == nums.length){
-              list.add(new ArrayList<>(tempList));
-           } else{
-              for(int i = 0; i < nums.length; i++){ 
-                 if(tempList.contains(nums[i])) continue; // element already exists, skip
-                 tempList.add(nums[i]);
-                 backtrack(list, tempList, nums);
-                 tempList.remove(tempList.size() - 1);
-              }
-           }
-        } 
+    - Permutations I (排列組合)
+        - LC 46
+    ```python
+    # python
+    class Solution(object):
+        def permute(self, nums):
+            def help(cur):
+                if len(cur) == n_len:
+                    if cur not in res:
+                        res.append(list(cur))
+                        return
+                if len(cur) > n_len:
+                    return
+                for i in nums:
+                    #print ("i = " + str(i) + " cur = " + str(cur))
+                    if i not in cur:
+                        cur.append(i)
+                        help(cur)
+                        """
+                        NOTE !!! : we UNDO the last op we just made (pop last element we put into array)
+                        """
+                        cur.pop(-1)
+            # edge case
+            if not nums:
+                return [[]]
+            n_len = len(nums)
+            res = []
+            help([])
+            #print ("res = " + str(res))
+            return res
         ```
 
     - `Permutations II (排列組合)`
         - LC 47
-        ```java
-        // java
-        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-        public List<List<Integer>> permuteUnique(int[] nums) {
-            List<List<Integer>> list = new ArrayList<>();
-            Arrays.sort(nums);
-            backtrack(list, new ArrayList<>(), nums, new boolean[nums.length]);
-            return list;
-        }
-
-        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, boolean [] used){
-            if(tempList.size() == nums.length){
-                list.add(new ArrayList<>(tempList));
-            } else{
-                for(int i = 0; i < nums.length; i++){
-                    if(used[i] || i > 0 && nums[i] == nums[i-1] && !used[i - 1]) continue;
-                    used[i] = true; 
-                    tempList.add(nums[i]);
-                    backtrack(list, tempList, nums, used);
-                    used[i] = false; 
-                    tempList.remove(tempList.size() - 1);
-                }
-            }
-        }        
+        ```python
+        # python
+        class Solution(object):
+            def permuteUnique(self, nums):
+                def help(res, cur, cnt):
+                    if len(cur) == len(nums):
+                        if cur not in res:
+                            res.append(cur[:])
+                            return
+                    if len(cur) > len(nums):
+                        return
+                    for x in _cnt:
+                        #print ("i = " + str(i) + " cur = " + str(cur))
+                        #if i not in cur:
+                        if _cnt[x] > 0:
+                            cur.append(x)
+                            _cnt[x] -= 1
+                            help(res, cur, _cnt)
+                            """
+                            NOTE !!! : we UNDO the last op we just made (pop last element we put into array)
+                            """
+                            cur.pop(-1)
+                            _cnt[x] += 1
+                # edge case
+                if not nums:
+                    return [[]]
+                _cnt = Counter(nums)
+                #print ("_cnt = " + str(_cnt))
+                res = []
+                cur = []
+                help(res, cur, _cnt)
+                return res
         ```
 
     - Type 3) : `Combinations (組成)` 
