@@ -33,17 +33,17 @@
 
 - Problems types
 
-    - `Subsets`
-        - LC 78, 140, 17
+    - Type 1) : `Subsets` (子集)
+        - Problems : LC 78, 90, 17
+        - [代碼隨想錄 - 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
+        - (for loop call help func) +  start_idx + for loop + pop(-1)
         - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
-        - (for loop call help func) + for loop + pop(-1)
-        - "全排列"
         ```python
         # V1
         # ...
         cur = []
         res = []
-        def help(cur):
+        def help(start_idx, cur):
             _cur = "".join(cur[:])
             if _cur == s:
                 res.append(cur[:])
@@ -51,10 +51,17 @@
             if len(_cur) > len(s):
                 cur = []
                 return
-            # NOTE !!! since we need get ALL sub group (全排列), so WE DON'T NEED deal with idx here
-            for i in range(len(wordDict)):
+            """
+            NOTE !!! start_idx
+
+            we need start_idx here to AVOID re-select previous element
+            """
+            for i in range(start_idx, len(wordDict)):
                 cur.append(wordDict[i])
-                help(cur)
+                help(start_idx+1, cur)
+                """
+                NOTE !!! pop(-1)
+                """
                 cur.pop(-1)
         # ...
         ```
@@ -78,30 +85,61 @@
         }
         ```
 
-    - `Subsets II`
-        - LC 90
-        ```java
-        // java
-        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-        public List<List<Integer>> subsetsWithDup(int[] nums) {
-            List<List<Integer>> list = new ArrayList<>();
-            Arrays.sort(nums);
-            backtrack(list, new ArrayList<>(), nums, 0);
-            return list;
-        }
+    - `Subsets I`
+        - LC 78
+        - start idx + backtrack
+        ```python
+        # python
+        class Solution:
+            def subsets(self, nums):
+                result = []
+                path = []
+                self.backtracking(nums, 0, path, result)
+                return result
 
-        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int start){
-            list.add(new ArrayList<>(tempList));
-            for(int i = start; i < nums.length; i++){
-                if(i > start && nums[i] == nums[i-1]) continue; // skip duplicates
-                tempList.add(nums[i]);
-                backtrack(list, tempList, nums, i + 1);
-                tempList.remove(tempList.size() - 1);
-            }
-        } 
+            def backtracking(self, nums, startIndex, path, result):
+                result.append(path[:])  # NOTE here
+                if startIndex >= len(nums):  # optional
+                    return
+                for i in range(startIndex, len(nums)): # NOTE here : we start from startIndex every time
+                    path.append(nums[i])
+                    self.backtracking(nums, i + 1, path, result) # NOTE here
+                    path.pop(-1) # NOTE here
         ```
 
-    - `Permutations (排列組合)`
+    - `Subsets II`
+        - LC 90
+        - start idx + backtrack + dedup (seen)
+        - dedup : can use dict counter or idx
+        ```python
+        # python
+        from collections import Counter
+        class Solution:
+            def subsetsWithDup(self, nums):
+                result = []
+                path = []
+                # sort nums, so same element are in neighbor
+                nums.sort()
+                # NOTE : we use _cnt for record how count of element and used element
+                _cnt = Counter(nums)
+                self.backtracking(nums, 0, path, result, _cnt)
+                return result
+
+            def backtracking(self, nums, startIndex, path, result, _cnt):
+                if path not in result: # this line is optional
+                    result.append(path[:])  # NOTE here
+                if startIndex >= len(nums):  # optional
+                    return
+                for i in range(startIndex, len(nums)): # NOTE here : we start from startIndex every time
+                    if _cnt[nums[i]] > 0:
+                        _cnt[nums[i]] -= 1
+                        path.append(nums[i])
+                        self.backtracking(nums, i + 1, path, result, _cnt) # NOTE here
+                        path.pop(-1) # NOTE here
+                        _cnt[nums[i]] += 1
+        ```
+
+    - Type 2) : `Permutations (排列組合)`
         - LC 46
         - backtrack. via `contains` remove already used numbers and return all cases
         - contains (visited) (or not in `cur`) + for loop + pop(-1) + help func
@@ -175,7 +213,7 @@
         }        
         ```
 
-    - `Combinations (組成)` 
+    - Type 3) : `Combinations (組成)` 
         - LC 77
         - backtrack. via `start` remove already used numbers and return all cases
         - deal with `idx` !!! (start idx)

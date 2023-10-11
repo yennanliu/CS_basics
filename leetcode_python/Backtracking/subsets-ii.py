@@ -29,7 +29,34 @@ Constraints:
 """
 
 # V0
-# IDEA : BACKTRACKING + LC 078 Subsets
+# IDEA : BACKTRACK + LC 078 Subsets + dict
+from collections import Counter
+class Solution:
+    def subsetsWithDup(self, nums):
+        result = []
+        path = []
+        # sort nums, so same element are in neighbor
+        nums.sort()
+        # NOTE : we use _cnt for record how count of element and used element
+        _cnt = Counter(nums)
+        self.backtracking(nums, 0, path, result, _cnt)
+        return result
+
+    def backtracking(self, nums, startIndex, path, result, _cnt):
+        if path not in result: # this line is optional
+            result.append(path[:])  # NOTE here
+        if startIndex >= len(nums):  # optional
+            return
+        for i in range(startIndex, len(nums)): # NOTE here : we start from startIndex every time
+            if _cnt[nums[i]] > 0:
+                _cnt[nums[i]] -= 1
+                path.append(nums[i])
+                self.backtracking(nums, i + 1, path, result, _cnt) # NOTE here
+                path.pop(-1) # NOTE here
+                _cnt[nums[i]] += 1
+
+# V0'
+# IDEA : BACKTRACKING + LC 078 Subsets + dict
 from collections import Counter
 class Solution(object):
     def subsetsWithDup(self, nums):
@@ -64,6 +91,32 @@ class Solution(object):
         help(0, [], _cnt)
         print ("res = " + str(res))
         return res
+
+# V0'''' 
+# IDEA : backtrack + seen
+# https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0090.%E5%AD%90%E9%9B%86II.md
+class Solution:
+    def subsetsWithDup(self, nums):
+        result = []
+        path = []
+        used = [False] * len(nums)
+        nums.sort()  # 去重需要排序
+        self.backtracking(nums, 0, used, path, result)
+        return result
+
+    def backtracking(self, nums, startIndex, used, path, result):
+        result.append(path[:])  # 收集子集
+        for i in range(startIndex, len(nums)):
+            # used[i - 1] == True，说明同一树枝 nums[i - 1] 使用过
+            # used[i - 1] == False，说明同一树层 nums[i - 1] 使用过
+            # 而我们要对同一树层使用过的元素进行跳过
+            if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:
+                continue
+            path.append(nums[i])
+            used[i] = True
+            self.backtracking(nums, i + 1, used, path, result)
+            used[i] = False
+            path.pop()
 
 # V0'
 # IDEA : BRUTE FORCE
