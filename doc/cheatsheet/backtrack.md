@@ -163,37 +163,37 @@
         # ...
         ```
 
-    - Permutations I (排列組合)
+    - `Permutations I (排列組合)`
         - LC 46
-    ```python
-    # python
-    class Solution(object):
-        def permute(self, nums):
-            def help(cur):
-                if len(cur) == n_len:
-                    if cur not in res:
-                        res.append(list(cur))
+        ```python
+        # python
+        class Solution(object):
+            def permute(self, nums):
+                def help(cur):
+                    if len(cur) == n_len:
+                        if cur not in res:
+                            res.append(list(cur))
+                            return
+                    if len(cur) > n_len:
                         return
-                if len(cur) > n_len:
-                    return
-                for i in nums:
-                    #print ("i = " + str(i) + " cur = " + str(cur))
-                    if i not in cur:
-                        cur.append(i)
-                        help(cur)
-                        """
-                        NOTE !!! : we UNDO the last op we just made (pop last element we put into array)
-                        """
-                        cur.pop(-1)
-            # edge case
-            if not nums:
-                return [[]]
-            n_len = len(nums)
-            res = []
-            help([])
-            #print ("res = " + str(res))
-            return res
-        ```
+                    for i in nums:
+                        #print ("i = " + str(i) + " cur = " + str(cur))
+                        if i not in cur:
+                            cur.append(i)
+                            help(cur)
+                            """
+                            NOTE !!! : we UNDO the last op we just made (pop last element we put into array)
+                            """
+                            cur.pop(-1)
+                # edge case
+                if not nums:
+                    return [[]]
+                n_len = len(nums)
+                res = []
+                help([])
+                #print ("res = " + str(res))
+                return res
+            ```
 
     - `Permutations II (排列組合)`
         - LC 47
@@ -233,9 +233,7 @@
 
     - Type 3) : `Combinations (組成)` 
         - LC 77
-        - backtrack. via `start` remove already used numbers and return all cases
-        - deal with `idx` !!! (start idx)
-        - start + for loop + pop(-1) + help func
+        - (for loop call help func) +  start_idx + for loop + + check if len == k + pop(-1)
         ```python
         # ...
         cur = []
@@ -250,6 +248,36 @@
                 cur.pop(-1)
         # ...
         ```
+
+    - Combinations
+        - LC 77
+        ```python
+        # python
+        class Solution(object):
+            def combine(self, n, k): 
+                def dfs(current, start):
+                    if(len(current) == k):
+                        """
+                        Both of below approach are OK
+                        
+                        list(current) : transform current reference to list
+                        current[:] : shallow copy
+                        """
+                        result.append(list(current))
+                        return
+                    
+                    for i in range(start, n + 1):
+                        current.append(i)
+                        dfs(current, i + 1)
+                        current.pop() # same as current.pop(-1)
+                    
+                result = []
+                dfs([], 1)
+                return result
+        ```
+
+    - Type 3) : Others
+    
     - Parentheses (括弧)
         - LC 20, LC 22
 
