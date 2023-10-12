@@ -65,12 +65,27 @@ The number of the nodes in the tree will be in the range [1, 10^4]
 #
 # In [36]: m
 # Out[36]: defaultdict(int, {0: 0, 1: 1, 2: 1})
+#
+# Example 1 : root = [2,1,1]
+# output :
+#      >>> m = defaultdict(<type 'int'>, {'2-1-#-#-1-#-#': 1, '1-#-#': 2})
+# 
+# Example 2 : root = [2,2,2,3,null,3,null]
+# output :
+#      >>> m = defaultdict(<type 'int'>, {'2-2-3-#-#-#-2-3-#-#-#': 1, '2-3-#-#-#': 2, '3-#-#': 2})
+#
+# Example 3 : root = [1,2,3,4,null,2,4,null,null,4]
+# output :
+#     >>> m = defaultdict(<type 'int'>, {'4-#-#': 3, '1-2-4-#-#-#-3-2-4-#-#-#-4-#-#': 1, '2-4-#-#-#': 2, '3-2-4-#-#-#-4-#-#': 1})
+#
+#
 import collections
 class Solution(object):
     def findDuplicateSubtrees(self, root):
         res = []
         m = collections.defaultdict(int)
         self.dfs(root, m, res)
+        #print(">>> m = " + str(m))
         return res
 
     def dfs(self, root, m, res):
