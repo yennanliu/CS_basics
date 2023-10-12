@@ -56,10 +56,14 @@ def bfs(root):
         return
     q =[]
     q.append(root)
-    while root:
+    while q:
         for i in range(len(q)):
-            ### NOTE : we need to pop the 1st element (idx = 0), BUT NOT THE LAST element
-            #        -> default is pop last element (e.g. q.pop() equals q.pop(-1))
+            """
+            ### NOTE : 
+
+                we need to pop the 1st element (idx = 0), BUT NOT THE LAST element
+                -> default is pop last element (e.g. q.pop() equals q.pop(-1))
+            """
             root = q.pop(0)
             # do sth
             if root.left:

@@ -30,6 +30,39 @@
 
 ### 0-2) Pattern
 
+#### 0-2-1) General form
+
+```python
+# form I
+def dfs(root):
+
+    # if root, do sth
+    if root:
+        # do sth, pre-order (root->left->right) in this code
+
+    # if not root, do NOTHING
+
+    # if root.left exist
+    if root.left:
+        dfs(root.left)
+    # if root.right exist
+    if root.right:
+        dfs(root.right)
+
+# form II
+def dfs(root):
+
+    # if root, do sth
+    if root:
+        # do sth, pre-order (root->left->right) in this code
+
+    # if not root, nothing to do
+
+    dfs(root.left)
+    dfs(root.right)
+```
+
+#### 0-2-2) Basic Tricks
 
 - Important !!!!
 ```java
@@ -51,6 +84,8 @@ private TreeNode _dfs(TreeNode node){
 }
 ```
 
+- Tree transversal (DFS)
+
 ```python
 # python
 # form I : tree transversal
@@ -67,6 +102,8 @@ def dfs(root, target):
        dfs(root.right, target)
        # do sth
 ```
+
+- Tree value moddify (DFS)
 
 ```python
 # form II : modify values in tree
@@ -109,11 +146,14 @@ class Solution(object):
         """
         if not root: 
             return TreeNode(val)
+
         if root.val < val: 
-            root.right = self.insertIntoBST(root.right, val);
+            root.right = self.insertIntoBST(root.right, val)
+
         elif root.val > val: 
-            root.left = self.insertIntoBST(root.left, val);
-        return(root)
+            root.left = self.insertIntoBST(root.left, val)
+
+        return root
 ```
 
 ```python
@@ -166,38 +206,6 @@ def test():
     func(x)
 test()
 print (z)
-```
-
-## 1) General form
-```python
-# form I
-def dfs(root):
-
-    # if root, do sth
-    if root:
-        # do sth
-
-    # if not root, nothing to do
-
-    # if root.left exist
-    if root.left:
-        dfs(root.left)
-    # if root.right exist
-    if root.right:
-        dfs(root.right)
-
-# form II
-def dfs(root):
-
-    # if root, do sth
-    if root:
-        # do sth
-
-    # if not root, nothing to do
-
-    if root.left:
-    dfs(root.left)
-    dfs(root.right)
 ```
 
 ### 1-1) Basic OP
