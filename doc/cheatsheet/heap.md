@@ -5,14 +5,15 @@
 - Intro
     - https://leetcode.com/explore/learn/card/heap/
     - In many CS applications, we only need to `access the largest or smallest element` in the dataset. We DO NOT care about `the order of other data in the data set`. How do we efficiently access the largest or smallest element in the current dataset? The answer would be `Heap`.
+
     - Priority Queue
         - a priority queue is an `abstract data type` similar to a regular queue or stack data structure in which each element additionally has a `"priority"` associated with it. In a priority queue, an element with high priority is served before an element with low priority.
-        - Heap != Priority Queue
+        - `Heap != Priority Queue`
         - Priority Queue is a abstract data type
         - Heap is a way to implemenrt Priority Queue
 
 - Heap
-    - a special `completed binary tree`
+    - a special `completed binary tree` (heap is binary tree)
     - The value of each node must be no greater than (or no less than) the value of its child nodes.
     - Properties:
         - Insertion of an element into the Heap has a time complexity of `O( log N)`
@@ -80,15 +81,17 @@
     - complexity
         - push/pop (each)
             - time : O(log(N))
-            - spce : O(N)
-            - ref : https://stackoverflow.com/questions/38806202/whats-the-time-complexity-of-functions-in-heapq-library#:~:text=heapq%20is%20a%20binary%20heap,O(n%20log%20n)
+            - space : O(N)
+            - ref : [SF - whats-the-time-complexity-of-functions-in-heapq-library](https://stackoverflow.com/questions/38806202/whats-the-time-complexity-of-functions-in-heapq-library#:~:text=heapq%20is%20a%20binary%20heap,O(n%20log%20n))
         - so, if implement push/pop on all elements, will cost
             - time : O(N log(N))
-            - spce : O(N)
+            - space : O(N)
 - Basic API
     - heapify : transform list to heap
     - heappush : put element into heap
-    - heappop  : get (remove) element from heap
+    - heappop  : get (remove) top element from heap
+        - Min heap : delete top element from the Min Heap
+        - Max heap : delete top element from the Max Heap
     - heappushpop : heappush then heappop (put first, then pop)
     - heapreplace : heappop then heappush (pop first, then put)
     - nlargest : return top N large elements

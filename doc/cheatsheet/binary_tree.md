@@ -2,6 +2,11 @@
 
 ## 0) Concept
 
+-  Definition : a binary tree is a tree data structure in which each node has *at most* two children, referred to as the left child and the right child.
+    - BST (binary search tree), Heap.. are all binary tree
+    - [wiki](https://en.wikipedia.org/wiki/Binary_tree)
+    - [Binary Tree - 演算法筆記](https://web.ntnu.edu.tw/~algo/BinaryTree.html)
+
 - Complete Tree to Array
     -  Note if we use an `array` to represent the `complete binary tree`,and `store the root node at index 1`
         - so, index of the `parent` node of any node is `[index of the node / 2]`
