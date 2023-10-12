@@ -3,12 +3,14 @@
 # 0) Basic data structures
 
 - Java heap:
-    - LC 703
+
     - Default : min-heap
+        - LC 703
     ```java
     // java
     PriorityQueue<Integer> heap = new PriorityQueue<>();
     ```
+
     - Define max-heap
         - LC 1046
      ```java
@@ -23,8 +25,8 @@
 - [Arrays.asList vs new ArrayList()](https://www.baeldung.com/java-arrays-aslist-vs-new-arraylist#:~:text=asList%20method%20returns%20a%20type,the%20add%20and%20remove%20methods.)
 
 - Conclusion:
-    - Arrays.asList : only wrap existing array, it NOT implement "add", "remove" methods (but has modify method)
-    - new ArrayList : implement "add", "remove" and "modify" methods, not affect original array
+    - Arrays.asList : only wrap existing array, it NOT implements "add", "remove" methods (but has modify method)
+    - new ArrayList : implement "add", "remove" and "modify" methods, not affect original array -> `preferable`
 
 ### 1-0) String to Char array
 ```java
@@ -42,6 +44,18 @@ for (char c: S.toCharArray()) {
 // LC 49
 String strs = "scvsdacvdsa";
 char[] array = strs.toCharArray();   
+```
+
+```java
+// Java
+// Array VS List
+
+// List
+List<String> _list = new ArrayList<>(); // this is List (with "List" keyword)
+
+
+// Array
+int[] _array = {0,1,2,3}; // this is Array (without "List" keyword)
 ```
 
 ### 1-0-1) Init an List
@@ -95,6 +109,8 @@ char[] array = strs.toCharArray();
 // ...
 List<List<Integer>> levels = new ArrayList<List<Integer>>();
 Collections.reverse(levels);
+
+// NOTE : reverse != decreasing order
 // ...
 ```
 
@@ -229,9 +245,11 @@ Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
 // https://stackoverflow.com/questions/1694751/java-array-sort-descending
 
 // for Array
+Integer[] _array = {5, 5, 7, 8, 9, 0};
 Arrays.sort(_array, Collections.reverseOrder());
 
 // for List
+List<Integer> _list = new ArrayList();
 Collections.sort(_list, Collections.reverseOrder());
 
 
@@ -242,6 +260,7 @@ _array[1] = -2;
 _array[2] = 0;
 _array[3] = 99;
 Arrays.stream(_array).forEach(System.out::println);
+// Array sort
 Arrays.sort(_array, Collections.reverseOrder());
 System.out.println("---");
 Arrays.stream(_array).forEach(System.out::println);
@@ -250,6 +269,7 @@ System.out.println("--->");
 
 List<Integer> _list = Arrays.asList(1,2,3,4);
 _list.forEach(System.out::println);
+// List sort
 Collections.sort(_list, Collections.reverseOrder());
 System.out.println("---");
 _list.forEach(System.out::println);
@@ -337,7 +357,6 @@ int r = Arrays.stream(piles).max().getAsInt();
 
 ### 1-11) Sort by Map key, value
 
-
 ### 1-12) Get most freq element in an array
 
 ### 1-13) Pair data structure
@@ -372,6 +391,26 @@ Queue<Pair<Integer, String>> q = new LinkedList<>();
 q.add(p1);
 ```
 
+- Or, you can define your own pair data structure:
+
+```java
+// java
+public class MyPair<U, V> {
+
+    public U first;
+    public V second;
+
+    MyPair(U first, V second){
+        this.first = first;
+        this.second = second;
+    }
+
+    // getter
+
+    // setter
+}
+```
+
 ### 1-14) k++ VS k++
 ```java
 // java
@@ -382,11 +421,10 @@ q.add(p1);
  *  ++i : i+1 first,  then do op
  *  i++ : do op first, then i+1
  *
- *  -> i++ or ++i is both OK here
  */
 ```
 
-### 1-15) Get/copy current object instance
+### 1-15) Get/copy current object (e.g. Array, List...) instance
 ```java
 // java
 // LC 46
@@ -410,10 +448,11 @@ boolean isPalindrome(String s, int low, int high) {
 ```
 
 ### 1-17) init 2D array
+
 ```java
 // java
 // LC 417
-private static final int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+public int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 ```
 
 # 2) Other tricks
