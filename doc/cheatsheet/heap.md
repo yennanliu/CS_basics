@@ -6,7 +6,8 @@
     - https://leetcode.com/explore/learn/card/heap/
     - In many CS applications, we only need to `access the largest or smallest element` in the dataset. We DO NOT care about `the order of other data in the data set`. How do we efficiently access the largest or smallest element in the current dataset? The answer would be `Heap`.
 
-    - Priority Queue
+    - Priority Queue (PQ)
+        - Priority queue is one of the imeplementations of heap
         - a priority queue is an `abstract data type` similar to a regular queue or stack data structure in which each element additionally has a `"priority"` associated with it. In a priority queue, an element with high priority is served before an element with low priority.
         - `Heap != Priority Queue`
         - Priority Queue is a abstract data type
@@ -21,12 +22,14 @@
         - The maximum/minimum value in the Heap can be obtained with `O(1)` time complexity.
     <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/type_of_heap.png" ></p>
 
-    - Definition : given a tree, if P is C's parent node -> P always `<=` or `>=` C.
+    - Definition : if P parent node, C is child node -> P always `<=` or `>=` C.
     - Types
         - min heap
-            - given a tree, if P is C's parent node -> P always `<=` C.
+            - if P parent node, C is child node -> P always <= C
+            - 父節點總是 <= 子節點的值 (不需 右子節點 <= 父節點 <= 左子節點)
         - max heap
-            - given a tree, if P is C's parent node -> P always `>=` C.
+            - if P parent node, C is child node -> P always >= C
+            - 父節點總是 >= 子節點的值 (不需 右子節點 <= 父節點 <= 左子節點)
 - was invented for `heap sort`
 - a heap is a specialized tree-based data structure which is essentially an almost completed tree that satisfies the heap property:
     - In a max heap
@@ -51,7 +54,9 @@
 ### 1-0) Basic OP
 
 - V1
-    - build
+    - build heap
+    - upHeap
+    - downHeap
     - insert
     - update
     - get
