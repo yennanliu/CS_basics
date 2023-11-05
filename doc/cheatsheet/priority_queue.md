@@ -2,7 +2,7 @@
 
 ## 0) Concept
 
-- Priority queue is one of the imeplementations of heap 
+- Priority queue is one of the implementations of heap 
 
 ### 0-1) Types
 
