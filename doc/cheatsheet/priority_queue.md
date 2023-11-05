@@ -1,6 +1,8 @@
-# cheatsheet template 
+# Priority Queue (PQ) 
 
 ## 0) Concept
+
+- Priority queue is one of the imeplementations of heap 
 
 ### 0-1) Types
 
