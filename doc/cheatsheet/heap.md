@@ -7,7 +7,7 @@
     - In many CS applications, we only need to `access the largest or smallest element` in the dataset. We DO NOT care about `the order of other data in the data set`. How do we efficiently access the largest or smallest element in the current dataset? The answer would be `Heap`.
 
     - Priority Queue (PQ)
-        - Priority queue is one of the imeplementations of heap
+        - Priority queue is one of the implementations of heap
         - a priority queue is an `abstract data type` similar to a regular queue or stack data structure in which each element additionally has a `"priority"` associated with it. In a priority queue, an element with high priority is served before an element with low priority.
         - `Heap != Priority Queue`
         - Priority Queue is a abstract data type
