@@ -18,6 +18,7 @@
 
 
 ## Resource
+
 * LC Pattern
 	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
@@ -28,6 +29,7 @@
 	- [cheatsheet-leetcode-a4](https://cheatsheet.dennyzhang.com/cheatsheet-leetcode-a4)
 	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
 	- [grokking-the-coding-interview](https://www.educative.io/courses/grokking-the-coding-interview)
+
 * LC Resource
 	- [代碼隨想錄](https://github.com/youngyangyang04/leetcode-master)
 	- [Leetcode cookbook](https://github.com/halfrost/LeetCode-Go)
@@ -47,6 +49,7 @@
 	- code implementation
 	- offer test case (consider edge case)
 	- discussion & follow up
+
 - LC SQL high frequent
 		- [LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
 		- [LeetCode Curated SQL 70](https://leetcode.com/problem-list/5htp6xyg/?page=1)
@@ -108,6 +111,7 @@
 	- http://sqlfiddle.com/
 
 ## Algorithms content
+
 * [Bit Manipulation](https://github.com/yennanliu/CS_basics#bit-manipulation)
 * [Array](https://github.com/yennanliu/CS_basics#array)
 * [String](https://github.com/yennanliu/CS_basics#string)
@@ -135,34 +139,43 @@
 * [Concurrency](https://github.com/yennanliu/CS_basics#Concurrency)
 
 ## Database
+
 * [SQL](https://github.com/yennanliu/CS_basics#sql)
 
 ## Shell
+
 * [Shell Script](https://github.com/yennanliu/CS_basics#shell-script)
 
 <br>
 
 # Progress 
+
 ## Data Structure
+
 |  #  | Title | Solution | Use case | Comment | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
+||`Linear`| | | | |
 ||Array| [Py](./data_structure/python/array.py) | | | AGAIN*|
 ||Queue| [Py](./data_structure/python/queue2.py), [JS](./data_structure/js/queue.js) | | | AGAIN*|
 ||Stack| [Py](./data_structure/python/stack.py), [JS (linkedlist)](./data_structure/js/stack_linkedlist.js), [JS (array)](./data_structure/js/stack_array.js) | | | OK|
+||Hash table| [Py](./data_structure/python/hash_table.py), [JS](./data_structure/js/hash_table.js) | usually for improving `time complexity B(O)` via extra space complexity (time-space tradeoff)|`good basic`| AGAIN****|
+||`Linear, Pointer`| | | | |
 ||LinkedList| [Py](./data_structure/python/linkedList.py), [JS](./data_structure/js/linkedlist.js), [Java](./data_structure/java/LinkedinList.java) | | | OK**|
 ||Doubly LinkedList| [Python](./data_structure/python/doublylinkedlist.py), [JS](./data_structure/js/doublylinkedList.js) | | | AGAIN|
-||Hash table| [Py](./data_structure/python/hash_table.py), [JS](./data_structure/js/hash_table.js) | usually for improving `time complexity B(O)` via extra space complexity (time-space tradeoff)|`good basic`| AGAIN****|
+||`Non Linear, Pointer`| | | | |
 ||Tree| [Py](./data_structure/python/tree.py) | | | AGAIN**|
 ||Binary search Tree (BST)| [Python](./data_structure/python/binary_search_tree.py), [JS](./data_structure/js/binary_search_tree.js), [Scala](./data_structure/scala/binarySearch.scala), [Java](./data_structure/java/BST.java) | | | AGAIN|
 ||Binary Tree| [Py](./data_structure/python/binary_tree.py) | | | AGAIN**|
 ||Trie| [Py](./data_structure/python/trie.py) | | | AGAIN|
 ||Heap| [heap.py](./data_structure/python/heap.py), [MinHeap.py](./data_structure/python/MinHeap.py), [MaxHeap.py](./data_structure/python/MaxHeap.py), [MinHeap.java](./leetcode_java/src/main/java/AlgorithmJava/MinHeap.java), [MaxHeap.java](./leetcode_java/src/main/java/AlgorithmJava/MaxHeap.java) | | | AGAIN|
 ||Priority Queue (PQ)| [Py 1](./data_structure/python/pq_1.py), [Py 2](./data_structure/python/pq_2.py), [Py 3](./data_structure/python/pq_3.py) | | | AGAIN|
+||`Graph`| | | | |
 ||Graph| [Py](./data_structure/python/graph.py), [JS](./data_structure/js/graph.js). [Java1](./algorithm/java/Graph.java), [Java2](./algorithm/java/GraphClient.java) | | | OK***|
 ||DirectedEdge|  [Java](./data_structure/java/DirectedEdge.java) | | | AGAIN|
 
 
 ## Algorithm
+
 |  #  | Title | Solution | Use case | Comment | Time complexity | Space complexity | Status|
 | --- | ----- | -------- | ---- | ----- | ---- | ---- | ---- |
 ||Binary search|[Python](./algorithm/python/binary_search.py) | | | | | AGAIN| 
@@ -192,7 +205,8 @@
 ||LFU Cache | [Python](./algorithm/python/lfu_cache.py) || LC 460 | | | AGAIN| 
 
 
-## Array 
+## Array
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note           | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 015 | [3 Sum](https://leetcode.com/problems/3sum/) |  [Python](./leetcode_python/Array/3sum.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/ThreeSum.java)| _O(n^2)_ | _O(1)_  | Medium    | Curated Top 75, good basic, check with `# 001 Two Sum`, `#018 4 sum`, `Two Pointers`, `good basic`,`amazon`,`fb`| OK******* (7)
@@ -313,7 +327,8 @@
 1914 | [Cyclically Rotating a Grid](https://leetcode.com/problems/cyclically-rotating-a-grid/) | [Python](./leetcode_python/Array/cyclically-rotating-a-grid.py) | | | Medium |array, brute force, dequeue`amazon`| AGAIN (not start)
 
 
-## Hash Table 
+## Hash Table
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 001| [Two Sum](https://leetcode.com/problems/two-sum/)| [Python](./leetcode_python/Hash_table/two-sum.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/TwoSum.java),[Scala](./leetcode_scala/Hash_table/twoSum.scala)     | _O(n)_| _O(n)_ | Easy |`good basic`, `hash table`, `apple`, `amazon`, `UBER`, `grab`, `fb`| OK*** (6) (but again)
@@ -376,7 +391,8 @@
 1296| [Divide Array in Sets of K Consecutive Numbers](https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/)|[Python ](./leetcode_python/Hash_table/divide-array-in-sets-of-k-consecutive-numbers.py) ||| Medium |LC 846, dict, `google`| AGAIN (not start)
 1923| [Longest Common Subpath](https://leetcode.com/problems/longest-common-subpath/) |  [Python](./leetcode_python/Hash_table/longest-common-subpath.py)  | _O(n)_ | _O(h)_ | Hard|hash, bit,  `amazon`|  AGAIN (not start)
 
-## Linked list 
+## Linked list
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 002| [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) | [Python](./leetcode_python/Linked_list/add-two-numbers.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/LinkedList/AddTwoNumbers.java) | _O(n)_   | _O(1)_  | Medium | Curated Top 75, check `# 445 Add Two Numbers II`, `basic`, `linked list`, `airbnb`, `amazon`, `fb`| OK**** (6) (but again)  
@@ -404,7 +420,8 @@
 708| [Insert into a Cyclic Sorted List](https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list) |  [Python](./leetcode_python/Linked_list/insert_into_a_cyclic_sorted_sorted_linked_list.py)  | _O(n)_ | _O(h)_ | Medium|`AGAIN`,`cyclic linked list`,`good trick`, `google`, `amazon`, `fb` |  AGAIN******** (4)
 
 
-## Stack 
+## Stack
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note | Status | 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 020| [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| [Python](./leetcode_python/Stack/valid-parentheses.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Stack/ValidParentheses.java) | _O(n)_ | _O(n)_ | Easy |Curated Top 75, `good basic`,`fb`, `amazon`| OK** (6) 
@@ -444,7 +461,8 @@
 1896| [Minimum Cost to Change the Final Value of Expression](https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/) |  [Python](./leetcode_python/Stack/minimum-cost-to-change-the-final-value-of-expression.py)  | _O(n)_  | _O(n)_| Hard|complex, stack, dp, dp+stack, dfs, `amazon`| AGAIN (not start)
 
 
-## Tree 
+## Tree
+
 |  #  | Title           |  Solution   |  Time   | Space  | Difficulty    | Note | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 094 | [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)  | [Python](./leetcode_python/Tree/binary-tree-inorder-traversal.py) | _O(n)_| _O(1)_| Medium   |tree, iteration, recursion, `good basic`,`Morris Traversal`, `M$`, `fb` | AGAIN********* (4) (MUST)
@@ -494,7 +512,8 @@
 1372| [Longest ZigZag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/) |  [Python](./leetcode_python/Tree/longest-zigzag-path-in-a-binary-tree.py) ||| Medium |dfs, bfs, post order, good trick, tree, amazon| AGAIN*** (1) (not start)
 1448| [Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/) |  [Python](./leetcode_python/Tree/count-good-nodes-in-binary-tree.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/CountGoodNodesInBinaryTree.java) ||| Medium |max in path, dfs, bfs, good trick, tree, needcode, google, amz, m$| AGAIN********* (1) (MUST)
 
-## Heap 
+## Heap
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note  | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 264| [Ugly Number II](https://leetcode.com/problems/ugly-number-ii/) | [Python](./leetcode_python/Heap/ugly-number-ii.py)   | _O(n)_ | _O(1)_ | Medium| good trick, LC 263, LC 313, Heap, LintCode , DP, M$| AGAIN*********** (4) (MUST)
@@ -512,7 +531,8 @@
 1481| [Least Number of Unique Integers after K Removals](https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/)|[Python](./leetcode_python/Heap/least-number-of-unique-integers-after-k-removals.py) | | | Medium | good trick, greedy, Counter, dict, heap,`amazon`| AGAIN******** (3)
 
 
-## Bit Manipulation 
+## Bit Manipulation
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 136 | [Single Number](https://leetcode.com/problems/single-number/) | [Python](./leetcode_python/Bit_Manipulation/single-number.py) | _O(n)_ | _O(1)_ | Easy|`airbnb`,`amazon`,`fb`| OK 
@@ -543,6 +563,7 @@
 
 
 ## String
+
 |  #  | Title           |  Solution       |  Time           | Space        | Difficulty    | Status, Note       | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 005| [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [Python](./leetcode_python/String/longest-palindromic-substring.py)  | _O(n)_ | _O(n)_ |  Medium | Curated Top 75, LC 647, good trick, 2 pointer, recursive, `Manacher's Algorithm`, LC 100 like, `DP`, `UBER`, `amazon`, `fb` | AGAIN************** (8)(MUST)
@@ -626,6 +647,7 @@
 
 
 ## Queue
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 281| [Zigzag Iterator](https://leetcode.com/problems/zigzag-iterator/)| [Python](./leetcode_python/Queue/zigzag-iterator.py) | _O(n)_ | _O(k)_ | Medium  |`good basic`, queue, 🔒, `google`,`fb`| AGAIN******* (5)
@@ -635,7 +657,8 @@
 239| [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)|[Python](./leetcode_python/Queue/sliding-window-maximum.py) | | | Hard |sliding window, heap, deque, queue,`amazon`, `google`| AGAIN********* (4)
 
 
-## Math 
+## Math
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 007| [Reverse Integer](https://leetcode.com/problems/reverse-integer/) |  [Python](./leetcode_python/Math/reverse-integer.py) | _O(1)_ | _O(1)_ | Medium |`0x7FFFFFFF`, amazon, apple| OK* (3) 
@@ -716,7 +739,8 @@
 1492 |[The kth Factor of n](https://leetcode.com/problems/the-kth-factor-of-n/) | [Python](./leetcode_python/Math/the-kth-factor-of-n.py) ||| Medium |`amazon`|  AGAIN (not start)
 1979 |[Find Greatest Common Divisor of Array](https://leetcode.com/problems/find-greatest-common-divisor-of-array/) | [Python](./leetcode_python/Math/find-greatest-common-divisor-of-array.py) ||| Easy |GCD| not start
 
-## Sort 
+## Sort
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note| Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 075| [Sort Colors](https://leetcode.com/problems/sort-colors/)   | [Python](./leetcode_python/Sort/sort-colors.py) | _O(n)_ | _O(1)_ | Medium |sorting, Tri Partition,`two pointers`, `M$`, `fb`| OK** (4)
@@ -743,7 +767,8 @@
 2021| [Brightest Position on Street](https://leetcode.com/problems/brightest-position-on-street/) | [Python](./leetcode_python/Sort/brightest-position-on-street.py) | _O(nlogn)_ | _O(1)_  | Medium | LC 253 meeting room II, priority queue (min-heap), scanning line, trick, `amazon`| AGAIN*********** (3) (MUST)
 
 
-## Two Pointers 
+## Two Pointers
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 019| [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)| [Python](./leetcode_python/Two_Pointers/remove-nth-node-from-end-of-list.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/LinkedList/RemoveNthNodeFromEndOfList.java) | _O(n)_   | _O(1)_ | Medium |Curated Top 75, good basic, `linked list`,`two pointers`,`fb`| AGAIN********** (4) (MUST)
@@ -774,7 +799,8 @@
 1963| [Minimum Number of Swaps to Make the String Balanced](https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/) |[Python](./leetcode_python/Two_Pointers/minimum-number-of-swaps-to-make-the-string-balanced.py) | _O(n)_| _O(h)_ | Medium|good basic, greedy, stack, 2 pointers, amazon, fb, m$| AGAIN******** (2)
 2104 | [Sum of Subarray Ranges](https://leetcode.com/problems/sum-of-subarray-ranges/) | [Python](./leetcode_python/Two_Pointers/sum-of-subarray-ranges.py) | _O(n)_ | _O(1)_ | Medium |LC 907,  monotonic stack, brute force, 2 pointers, dp, `amazon`| AGAIN******* (3)
 
-## Recursion 
+## Recursion
+
 |  #  | Title     |  Solution     |  Time           | Space           | Difficulty    | Note | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 10| [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) |[Python](./leetcode_python/Recursion/regular-expression-matching.py) | _O(n)_ | _O(h)_ | Hard | recursive, dp, `amazon`| AGAIN (not start)
@@ -806,7 +832,8 @@
 671| [Second Minimum Node In a Binary Tree](https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/) |[Python](./leetcode_python/Recursion/second-minimum-node-in-a-binary-tree.py) | _O(n)_          | _O(h)_ | Easy|dfs,tree| OK* (2)
 
 
-## Binary Search 
+## Binary Search
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note        | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 033| [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | [Python](./leetcode_python/Binary_Search/search-in-rotated-sorted-array.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/SearchInRotatedSortedArray.java) ||| Medium |Curated Top 75, `binary search`,`good basic` ,check `# 81 Search in Rotated Sorted Array II`, binary search, rotation array, `UBER`,`amazon`,`fb`| AGAIN************ (6) (MUST)
@@ -840,7 +867,8 @@
 2009| [Minimum Number of Operations to Make Array Continuous](https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/) |  [Python](./leetcode_python/Binary_Search/minimum-number-of-operations-to-make-array-continuous.py)| || Hard |binary search, sliding window, dequeue, bisect.bisect_right, amazon|  AGAIN (not start)
 
 
-## Binary Search Tree 
+## Binary Search Tree
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag,Note        | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 220| [Contains Duplicate III](https://leetcode.com/problems/contains-duplicate-iii/)  | [Python](./leetcode_python/Binary_Search_Tree/contains-duplicate-iii.py)   | _O(nlogk)_      | _O(k)_      | Medium  || AGAIN (not start)
@@ -859,7 +887,8 @@
 1022| [ Sum of Root To Leaf Binary Numbers](https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/) |  [Python](./leetcode_python/Binary_Search_Tree/sum-of-root-to-leaf-binary-numbers.py)| | _O(n)_ | Easy|good basic, LC 257, bst path, dfs, bfs,`amazon`|  AGAIN******** (1) (MUST)
 1597| [Build Binary Expression Tree From Infix Expression](https://leetcode.com/problems/build-binary-expression-tree-from-infix-expression/) |  [Python](./leetcode_python/Binary_Search_Tree/build-binary-expression-tree-from-infix-expression.py)| | _O(n)_ | Hard|LC 224, recursive, iteration, stack, `amazon`, google, bst|  AGAIN*** (1)
 
-## Breadth-First Search 
+## Breadth-First Search
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 102| [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)| [Python](./leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/BinaryTreeLevelOrderTraversal.java)| _O(n)_| _O(n)_| Easy  |Curated Top 75, `GOOD basic`, `dfs`, `bfs`,`UBER`, `apple`,`amazon`,`fb`, LC 199|  AGAIN******* (8) (must)
@@ -895,7 +924,8 @@
 1730| [Shortest Path to Get Food](https://leetcode.com/problems/shortest-path-to-get-food/) | [Python](./leetcode_python/Breadth-First-Search/shortest-path-to-get-food.py) | | | Medium |shortest path, bfs, `amazon`| OK (2)
 
 
-## Depth-First Search 
+## Depth-First Search
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag     | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 112| [Path Sum](https://leetcode.com/problems/path-sum/) | [Python](./leetcode_python/Depth-First-Search/path-sum.py), [Scala](./leetcode_scala/Depth-First-Search/path-sum.scala), [Java](./leetcode_java/src/main/java/LeetCodeJava/DFS/PathSum.java)   | _O(n)_ | _O(h)_  | Easy  | `good concept`, `amazon`, dfs, recursion| AGAIN** (2)
@@ -940,7 +970,8 @@
 1676| [Lowest Common Ancestor of a Binary Tree IV](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iv/) | [Python](./leetcode_python/Depth-First-Search/lowest-common-ancestor-of-a-binary-tree-iv.py)  | _O(q + r)_    | _O(q + r)_   | Medium |LCA, LC 236, a m$| AGAIN (not start)
 
 
-## Backtracking 
+## Backtracking
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note       | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 017| [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)| [Python](./leetcode_python/Backtracking/letter-combinations-of-a-phone-number.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BackTrack/LetterCombinationsOfAPhoneNumber.java)  | _O(n * 4^n)_ | _O(n)_ | Medium |dfs, backtrack, `good trick`,`UBER`, `amazon`, `google`, `fb`| AGAIN************* (10) (MUST)
@@ -973,7 +1004,8 @@
 784| [Letter Case Permutation](https://leetcode.com/problems/letter-case-permutation/)    | [Python](./leetcode_python/Backtracking/letter-case-permutation.py)  | _O(n * 2^n)_ | _O(1)_ | Medium | dfs, recursion, `good trick`,`fb`| AGAIN****** (3)
 980| [Unique Paths III](https://leetcode.com/problems/unique-paths-iii/)    | [Python](./leetcode_python/Backtracking/unique-paths-iii.py)  | _O(n * 2^n)_ | _O(1)_ |Hard| backtrack, dfs, amazon, google,`fb`| AGAIN**** (1)
 
-## Dynamic Programming 
+## Dynamic Programming
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 053| [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)| [Python](./leetcode_python/Dynamic_Programming/maximum-subarray.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MaximumSubarray.java)  | _O(n)_     | _O(1)_    | Medium  |Curated Top 75, brute force, divied & conquer, `DP`,`dp basic`,`amazon`,`fb`| AGAIN******** (5)
@@ -1047,7 +1079,8 @@
 1799| [Maximize Score After N Operations](https://leetcode.com/problems/maximize-score-after-n-operations/) | [Python](./leetcode_python/Dynamic_Programming/maximize-score-after-n-operations.py) | _O(logn)_ | _O(1)_ | Medium |`dp`, `amazon`| not start
  
 
-## Greedy 
+## Greedy
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note   | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 011| [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)|[Python](./leetcode_python/Greedy/container-with-most-water.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/ContainerWithMostWater.java) | _O(n)_ | _O(1)_ | Medium |Curated Top 75, good basics, `two pointers`,`fb`, amazon|  OK*** (3) (but again !!)
@@ -1088,7 +1121,8 @@
 1710 | [Maximum Units on a Truck](https://leetcode.com/problems/maximum-units-on-a-truck/) | [Python](./leetcode_python/Greedy/maximum-units-on-a-truck.py) | | | Easy |sort, greedy, `amazon` | AGAIN******** (3) (MUST)
 
 
-## Graph 
+## Graph
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 269 |[Alien Dictionary](https://leetcode.com/problems/alien-dictionary/)  | [Python](./leetcode_python/Graph/alien-dictionary.py) | | | Hard| Curated Top 75, dfs, bfs, topology sort, `fb`, google, m$, airbnb, uber, amazon |  AGAIN******** (3) (not start)
@@ -1097,7 +1131,8 @@
 1135 | [Connecting Cities With Minimum Cost](https://leetcode.com/problems/connecting-cities-with-minimum-cost/)  | [Python](./leetcode_python/Graph/connecting-cities-with-minimum-cost.py) | _O(n^2)_| _O(n^2)_| Medium | union find, Kruskal, prime, graph, amazon | AGAIN (not start)
 
 
-## Geometry 
+## Geometry
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 892 | [Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/)  | [C++](./C++/surface-area-of-3d-shapes.cpp) [Python](./Python/surface-area-of-3d-shapes.py) | _O(n^2)_| _O(1)_| Easy  || 
@@ -1106,6 +1141,7 @@
 
 
 ## Design
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 146| [LRU Cache](https://leetcode.com/problems/lru-cache/submissions/) | [Python](./leetcode_python/Design/lru-cache.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/LinkedList/LRUCache_.java) | _O(1)_ | _O(k)_ | Medium |good basic, LRU, Least Recently Used, Double Linkedlist, LinkedHashMap, OrderedDict, priority queue, `amazon`| AGAIN****** (4)
@@ -1156,12 +1192,14 @@
 
 
 ## Simulation 
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 874 | [Walking Robot Simulation](https://leetcode.com/problems/walking-robot-simulation/)  | [C++](./C++/walking-robot-simulation.cpp) [Python](./Python/walking-robot-simulation.py) | _O(n + k)_| _O(k)_| Easy           ||| 
 
 
 ## Concurrency
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 1114| [Print in Order](https://leetcode.com/problems/print-in-order/)     | [C++](./C++/print-in-order.cpp) [Python](./Python/print-in-order.py)  | _O(n)_ | _O(1)_ | Easy ||
@@ -1176,6 +1214,7 @@
 
 
 ## SQL
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag, Note      | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 0175| [Combine Two Tables](https://leetcode.com/problems/combine-two-tables/) | [MySQL](./leetcode_SQL/combine-two-tables.sql) | _O(m + n)_   | _O(m + n)_ | Easy     || OK (4)
@@ -1346,6 +1385,7 @@
 
 
 ## Shell Script
+
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 0192 | [Word Frequency](https://leetcode.com/problems/word-frequency/) | [Shell](./leetcode_shell/word-frequency.sh)  | _O(n)_ | _O(k)_ | Medium ||
