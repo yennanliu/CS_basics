@@ -4,6 +4,30 @@
 
 ## 0) Concept  
 
+- Tree in Array representation
+- https://www.prepbytes.com/blog/tree/array-representation-of-binary-tree/
+- https://www.geeksforgeeks.org/binary-tree-array-implementation/
+
+```
+
+# Tree
+
+      1
+     / \
+    2   3
+   / \  
+  4   5
+
+
+# Array
+
+# We can represent Tree in Array below :
+
+[1,2,3,4,5]
+
+# so, in tree, node with val 1 is idx 0, node with val is 2... and node with val 5 is idx 4
+# we can transform between tree and array
+```
 
 ### 0-1) Types
 - Tree
