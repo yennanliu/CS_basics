@@ -146,18 +146,19 @@
 ## Data Structure
 |  #  | Title | Solution | Use case | Comment | Status|
 | --- | ----- | -------- | ---- | ----- | ---- |
-||Queue| [Python ](./data_structure/python/queue2.py), [JS](./data_structure/js/queue.js) | | | AGAIN*|
-||Stack| [Python ](./data_structure/python/stack.py), [JS stack (via linkedlist)](./data_structure/js/stack_linkedlist.js), [JS - stack (via array)](./data_structure/js/stack_array.js) | | | OK|
-||LinkedList| [Python](./data_structure/python/linkedList.py), [JS](./data_structure/js/linkedlist.js), [Java](./data_structure/java/LinkedinList.java) | | | OK**|
+||Queue| [Py](./data_structure/python/queue2.py), [JS](./data_structure/js/queue.js) | | | AGAIN*|
+||Stack| [Py](./data_structure/python/stack.py), [JS (linkedlist)](./data_structure/js/stack_linkedlist.js), [JS (array)](./data_structure/js/stack_array.js) | | | OK|
+||LinkedList| [Py](./data_structure/python/linkedList.py), [JS](./data_structure/js/linkedlist.js), [Java](./data_structure/java/LinkedinList.java) | | | OK**|
 ||Doubly LinkedList| [Python](./data_structure/python/doublylinkedlist.py), [JS](./data_structure/js/doublylinkedList.js) | | | AGAIN|
-||Tree| [Python ](./data_structure/python/tree.py) | | | AGAIN**|
-||Trie| [Python ](./data_structure/python/trie.py) | | | AGAIN|
+||Tree| [Py](./data_structure/python/tree.py) | | | AGAIN**|
+||Trie| [Py](./data_structure/python/trie.py) | | | AGAIN|
 ||Heap| [heap.py](./data_structure/python/heap.py), [MinHeap.py](./data_structure/python/MinHeap.py), [MaxHeap.py](./data_structure/python/MaxHeap.py), [MinHeap.java](./leetcode_java/src/main/java/AlgorithmJava/MinHeap.java), [MaxHeap.java](./leetcode_java/src/main/java/AlgorithmJava/MaxHeap.java) | | | AGAIN|
-||Array| [Python ](./data_structure/python/array.py) | | | AGAIN*|
-||Graph| [Python ](./data_structure/python/graph.py), [JS](./data_structure/js/graph.js). [Java-graph](./algorithm/java/Graph.java), [Java-graph-client](./algorithm/java/GraphClient.java) | | | OK***|
+||Array| [Py](./data_structure/python/array.py) | | | AGAIN*|
+||Graph| [Py](./data_structure/python/graph.py), [JS](./data_structure/js/graph.js). [Java1](./algorithm/java/Graph.java), [Java2](./algorithm/java/GraphClient.java) | | | OK***|
 ||Binary search Tree (BST)| [Python](./data_structure/python/binary_search_tree.py), [JS](./data_structure/js/binary_search_tree.js), [Scala](./data_structure/scala/binarySearch.scala), [Java](./data_structure/java/BST.java) | | | AGAIN| 
-||Hash table| [Python](./data_structure/python/hash_table.py), [JS](./data_structure/js/hash_table.js) | usually for improving `time complexity B(O)` via extra space complexity (time-space tradeoff)|`good basic`| AGAIN****| 
+||Hash table| [Py](./data_structure/python/hash_table.py), [JS](./data_structure/js/hash_table.js) | usually for improving `time complexity B(O)` via extra space complexity (time-space tradeoff)|`good basic`| AGAIN****| 
 ||DirectedEdge|  [Java](./data_structure/java/DirectedEdge.java) | | | AGAIN|
+||Priority Queue (PQ)| [Py 1](./data_structure/python/pq_1.py), [Py 2](./data_structure/python/pq_2.py), [Py 3](./data_structure/python/pq_3.py) | | | AGAIN|
 
 
 ## Algorithm
