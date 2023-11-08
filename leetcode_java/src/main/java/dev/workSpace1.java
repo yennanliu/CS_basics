@@ -1099,4 +1099,41 @@ public class workSpace1 {
         return fresh_cnt == 0 ? ans : -1;
     }
 
+
+    // https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
+    public int findMinArrowShots(int[][] points) {
+
+        if (points == null || points.length == 0){
+            return 0;
+        }
+
+        int ans = 1;
+
+        // sorting
+//        Arrays.sort(points, (x,y) -> {
+//            if (x[1]-y[1] == 0){
+//                return 0;
+//            }
+//            if (x[1]-y[1] > 0){
+//                return 1;
+//            }
+//            return -1;
+//        });
+
+        Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
+
+        for (int i = 1; i < points.length; i++){
+            // case 1 : NOT overlap
+            if (points[i][0] > points[i-1][1]){
+                ans += 1;
+            // case 2 : overlap
+            }else{
+                // update boundary
+                points[i][1] = Math.min(points[i-1][1], points[i][1]);
+            }
+        }
+
+        return ans;
+    }
+
 }
