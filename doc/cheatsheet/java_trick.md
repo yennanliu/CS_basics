@@ -61,6 +61,8 @@ int[] _array = {0,1,2,3}; // this is Array (without "List" keyword)
 ### 1-0-1) Init an List
 ```java
 // java
+
+
 // LC 102
    public static void main(String[] args) {
 
@@ -77,6 +79,10 @@ int[] _array = {0,1,2,3}; // this is Array (without "List" keyword)
        res.add(tmpArray);
        System.out.println(res);
    }
+
+// init a list with 2D content
+// LC 406
+List<int[]> result = new ArrayList<>(); //return value
 ```
 
 ### 1-0-2) Paste value to List with index
@@ -229,7 +235,26 @@ String.valueOf(ans);
 /// https://leetcode.com/problems/meeting-rooms/editorial/
 intervals = [[0,30],[5,10],[15,20]]
 Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+
+
+// 2) Sort with 1 attr first, then sort on the other attr
+// LC 406
+// V1
+Arrays.sort(people, (a, b) -> {
+    int x = Integer.compare(b[0], a[0]);
+    if(x == 0) return Integer.compare(a[1], b[1]);
+    else return x; });
+
+// V2
+Arrays.sort(people, new Comparator<int[]>() {
+    @Override
+    public int compare(int[] o1, int[] o2) {
+        // if the heights are equal, compare k-values
+        return o1[0] == o2[0] ? o1[1] - o2[1] : o2[0] - o1[0];
+    }
+}); 
 ```
+
 
 ### 1-4-1) Sort 2D array
 ```java
