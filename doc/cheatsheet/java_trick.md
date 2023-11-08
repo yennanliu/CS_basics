@@ -225,7 +225,7 @@ String.valueOf(ans);
 
 ```java
 // 1) Sort integer Array
-// LC 252
+// LC 252, LC 452
 /// https://leetcode.com/problems/meeting-rooms/editorial/
 intervals = [[0,30],[5,10],[15,20]]
 Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));

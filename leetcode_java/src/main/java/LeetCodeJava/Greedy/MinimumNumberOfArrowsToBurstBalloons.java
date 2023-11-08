@@ -17,11 +17,14 @@ public class MinimumNumberOfArrowsToBurstBalloons {
 
         int ans = 1;
         // sort
-        print2DArray(points);
-        System.out.println("");
-        /** NOTE !!! we sort 2D array via below */
+//        print2DArray(points);
+//        System.out.println("");
+
+        /** NOTE !!! we sort 2D array via 1st element (idx = 0) */
         Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
-        print2DArray(points);
+
+//        print2DArray(points);
+
         for (int i = 1; i < points.length; i++){
             int[] cur = points[i];
             int[] prev = points[i-1];
@@ -48,6 +51,7 @@ public class MinimumNumberOfArrowsToBurstBalloons {
                 ans += 1;
             // case 2) : overlap
             }else{
+                // NOTE !!! we update i idx 's 2nd element (idx=1)
                 points[i][1] = Math.min(prev[1], cur[1]);
             }
         }
