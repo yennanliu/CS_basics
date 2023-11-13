@@ -22,6 +22,7 @@ In [5]: def check(x):
 ### 0-2) assignment VS shallow copy VS deep copy
 - https://www.runoob.com/w3cnote/python-understanding-dict-copy-shallow-or-deep.html
 - https://iter01.com/578999.html
+- Type of copy : deep copy, shallow copy, reference copy
 ```python
 # LC 138
 

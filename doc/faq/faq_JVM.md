@@ -117,6 +117,7 @@
 ### 3') Explain GC's ”stop-the-world” ? 
 
 ### 3'') Explain type of GC collector ?
+
 - Serial collector
 	- will cause "stop-the-world"
 	- only ONE thread
@@ -131,12 +132,14 @@
 	- https://cloud.tencent.com/developer/article/1648836
 
 ### 4) how to get memory in java program, heap usage percentage (%) ?
+
 - `java.lang.Runtime`    : get remaining memory, all memory, max heap memory
 - `Runtime.freeMemory()` : get remain memory in binary
 - `Runtime.totalMemory()`: get total memory in binary
 - `Runtime.maxMemory() ` : get max memory in binary
  
 ### 5) Explain classLoader ?
+
 - Implemented by `ClassLoader` class (and its sub class)
 - Load `.class` files to JVM
 - Steps:
@@ -187,11 +190,13 @@
 	- https://www.youtube.com/watch?v=oHM_fVXnPTE&list=PLmOn9nNkQxJH0qBIrtV6otI0Ep4o2q67A&index=660
 
 ### 6) Explain `memory leakage` ?
+
 - http://cloudtu.github.io/blog/2011/12/java-memory-leak.html
 - https://www.baeldung.com/java-memory-leaks
 - https://stackify.com/memory-leaks-java/
 
 ### 7) does `memory leakage` happen in java ? how ?
+
 - Yes, it may happen in users self defined data structure
 - example ?
 - how ?
@@ -199,15 +204,18 @@
 	- https://cloud.tencent.com/developer/article/1648836
 
 ### 8) Difference between Serial and Parallel GC  ?
+
 - Ref
 	- https://www.alexleo.click/java-%E5%96%9D%E6%9D%AF%E5%92%96%E5%95%A1%EF%BC%8C%E8%81%8A%E9%BB%9E-gc%EF%BC%88%E4%B8%80%EF%BC%89-%E5%9F%BA%E7%A4%8E%E6%A6%82%E5%BF%B5/
 
 ### 9) Thread, progress, program ?
+
 - https://oldmo860617.medium.com/%E9%80%B2%E7%A8%8B-%E7%B7%9A%E7%A8%8B-%E5%8D%94%E7%A8%8B-%E5%82%BB%E5%82%BB%E5%88%86%E5%BE%97%E6%B8%85%E6%A5%9A-a09b95bd68dd
 
 ### 10) Explain JVM `reflection` ? `dynamic proxy` ? 
 
 ### 11) Explain JVM instance creation steps ?
+
 - Ref
 	- https://github.com/Homiss/Java-interview-questions/blob/master/JVM/JVM%E9%9D%A2%E8%AF%95%E9%A2%98.md
 
@@ -216,6 +224,7 @@
 ### 13) Explain JVM instance structure ?
 
 ### 14) Common JVM command ?
+
 - jps
 	- JVM Process Status Tool, show all system's hotspot threads in JVM
 - jstat
@@ -230,6 +239,7 @@
 	- JVM Configuration Info. Check/modify JVM running parameters in real-time 
 
 ### 15) Common JVM tune command ?
+
 - jconsole
 	- Java Monitoring and Management Console
 	- java default too, for memory, thread, GC monitoring
@@ -242,6 +252,7 @@
 	- analyze GC log tool
 
 ### 16) Common JVM tune parameter ?
+
 - `Xms` : min of java heap
 - `Xmx` : max of java heap
 - `-XX:NewSize` : new generation size
@@ -249,6 +260,7 @@
 - `XX:SurvivorRatio` : Eden pct VS survivor pct
 
 ### 17) What's int length in 64 bit JVM ?
+
 - Not relative to platform. `Int length is a fixed value. It's always 34 bit`
 
 ### 18) Difference between WeakReference and SoftReference  and PhantomReference ?
@@ -256,16 +268,20 @@
 ### 19) Explain ` -XX:+UseCompressedOops` ?
 
 ### 20) What's max heap storage in 32 bit JVM and 64 bit JVM ?
+
 - theoretically
 	- 32 bit : `2**32` max heap storage
 	- 64 bit : `2**64` max heap storage
 
 ### 21) Difference between JRE, JDK and JIT ?
+
 - JRE : java run-time
 - JDK : java development kit : java dev tool. JRE is included in it
 - JIT : java in time compilation
 
 ## Ref
+
+- https://javaguide.cn/java/jvm/memory-area.html#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%9B%E5%BB%BA
 - https://dunwu.github.io/javacore/#%F0%9F%93%96-%E5%86%85%E5%AE%B9
 - https://www.jyt0532.com/2020/03/14/epilogue/
 - https://cloud.tencent.com/developer/article/1648836
