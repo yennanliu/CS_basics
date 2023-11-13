@@ -1,5 +1,9 @@
 # Java Tricks
 
+# Ref
+
+- [Syntax sugar](https://javaguide.cn/java/basis/syntactic-sugar.html#%E5%86%85%E9%83%A8%E7%B1%BB)
+
 # 0) Basic data structures
 
 - Java heap:
