@@ -95,8 +95,19 @@ System.out.println(aa==bb);// true
 
 - member variable
 	- belong to class
+	- storage
+		- with static : belong to class (heap)
+		- without static :  belong to instance
+	- life
+		- exist when class exist
+	- has default value
 
 - local variable
+	- in code block or in method
+	- storage : belong to stack
+	- life
+		- deleted when method execution complete
+	- has NO default value
 
 ```java
 // java
@@ -132,6 +143,13 @@ public class VariableExample {
 }
 
 ```
+
+### What static variable for ?
+
+
+### static method VS instance method ?
+
+### Overwrite VS overload ?
 
 ### String VS StringBuffer VS StringBuilder ?
 
