@@ -182,3 +182,14 @@ public class VariableExample {
 ### try-with-resource VS try-catch-final ?
 
 - https://javaguide.cn/java/basis/syntactic-sugar.html#try-with-resource
+
+### Explain generic type ?
+
+- https://javaguide.cn/java/basis/java-basic-questions-03.html#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B3%9B%E5%9E%8B-%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8
+
+
+### Explain reflection ?
+
+
+### Java IO flow ?
+
