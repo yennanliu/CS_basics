@@ -484,6 +484,11 @@ boolean isPalindrome(String s, int low, int high) {
 public int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 ```
 
+### 1-18) Arrays.fill
+
+```java
+```
+
 # 2) Other tricks
 
 ### 2-1) Init var, modify it in another method, and use it
