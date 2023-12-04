@@ -74,8 +74,9 @@ public class JumpGame {
 
     // V0'
     // IDEA : GREEDY
-    public boolean canJump_7(int[] nums) {
+    public boolean canJump_(int[] nums) {
         int lastPos = nums.length - 1;
+        // NOTE : loop from right to left (<--)
         for (int i = nums.length - 1; i >= 0; i--) {
             if (i + nums[i] >= lastPos) {
                 lastPos = i;
