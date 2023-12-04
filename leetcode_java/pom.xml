@@ -7,6 +7,21 @@
     <groupId>org.example</groupId>
     <artifactId>leetcode_java</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+
+        <!--
+        TODO : double check if should use Oracle JDK, so javafx is installed by default
+        https://juejin.cn/s/gradle%20error%20package%20javafx.util%20does%20not%20exist
+        -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>21.0.1</version>
+        </dependency>
+
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
