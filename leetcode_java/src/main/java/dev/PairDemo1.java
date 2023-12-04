@@ -13,15 +13,16 @@ public class PairDemo1 {
     public static void main(String[] args) {
 
         // init
-        Pair<Integer, String> p1 = new Pair<>(1, "one");
-        // get key
-        Integer k1 = p1.getKey();
-        // get value
-        String v1 = p1.getValue();
+//        Pair<Integer, String> p1 = new Pair<>(1, "one");
+//        // get key
+//        Integer k1 = p1.getKey();
+//        // get value
+//        String v1 = p1.getValue();
+//
+//        // use with other data structure
+//        Queue<Pair<Integer, String>> q = new LinkedList<>();
+//        q.add(p1);
 
-        // use with other data structure
-        Queue<Pair<Integer, String>> q = new LinkedList<>();
-        q.add(p1);
-
+        System.out.println(123);
     }
 }
