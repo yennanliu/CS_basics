@@ -10,8 +10,47 @@ import java.util.Set;
 public class LongestSubstringWithoutRepeatingCharacters {
 
     // V0
-    // IDEA : SLIDING WINDOW + HASH SET
+    // IDEA : HASHMAP + SLIDING DINDOW
     public int lengthOfLongestSubstring(String s) {
+
+        Map<String, Integer> map = new HashMap();
+
+        // left pointer
+        int left = 0;
+        // right pointer
+        int right = 0;
+        // final result
+        int res = 0;
+
+        while (right < s.length()) {
+
+            String cur = String.valueOf(s.charAt(right));
+
+            // NOTE !!! we add element to map first
+            if (map.containsKey(cur)){
+                map.put(cur, map.get(cur)+1);
+            }else{
+                map.put(cur, 1);
+            }
+
+            // NOTE !!! if map has element -> duplicated elelment
+            //          -> keep remove count from element and move left pointer to right
+            while (map.get(cur) > 1) {
+                String l = String.valueOf(s.charAt(left));
+                map.put(l, map.get(l) - 1);
+                left += 1;
+            }
+
+            res = Math.max(res, right - left + 1);
+
+            right += 1;
+        }
+        return res;
+    }
+
+    // V0'
+    // IDEA : SLIDING WINDOW + HASH SET
+    public int lengthOfLongestSubstring_(String s) {
 
         if (s.equals("")){
             return 0;
