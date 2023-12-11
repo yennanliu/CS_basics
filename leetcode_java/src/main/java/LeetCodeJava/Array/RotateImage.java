@@ -85,7 +85,7 @@ public class RotateImage {
             l += 1;
             r -= 1;
         }
-        
+
     }
 
     // V1
