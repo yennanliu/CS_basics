@@ -383,5 +383,60 @@ public class Test1 {
         return res;
     }
 
+    /**
+     *  exp 1
+     *      nums = [-2,1,-3,4,-1,2,1,-5,4]
+     *
+     *      sub :
+     *          [-2]
+     *          [1],  cumsum =  -2+1 < 0, remove -2, max = 1
+     *          [] cumsum = 1 + (-3) < 0, remove 1, -3, max = 1
+     *          [4], max = 4
+     *          [ 4, -1], max = 4
+     *          [4, -1, 2], max = 5
+     *          [4, -1, 2, 1], max = 6
+     *          [4, -1, 2, 1, -5], max =6
+     *          [4, -1, 2, 1, -5, -4], max = 6
+     *
+     *
+     *   exp 2
+     *
+     *      nums = [5,4,-1,7,8]
+     *
+     *      [5], max = 5
+     *      [5, 4], max = 9
+     *      [5,4,-1], max = 9
+     *      [5,4,-1, 7], max = 15
+     *      [5,4,-1, 7, 8], max = 23
+     *
+     */
 
+    // 2 pointers
+    // https://leetcode.com/problems/maximum-subarray/
+    public int maxSubArray(int[] nums) {
+
+        if (nums == null || nums.length == 0){
+            return 0;
+        }
+
+        if (nums.length == 1){
+            return nums[0];
+        }
+
+        int cumsum = 0;
+        int maxSum = -1 * Integer.MAX_VALUE;
+
+        for (int i = 0; i < nums.length; i++){
+            int cur = nums[i];
+            if (cumsum + cur >= 0){
+                cumsum = cumsum + cur;
+                maxSum = Math.max(maxSum, cumsum);
+            }else{
+                maxSum = Math.max(maxSum, cur);
+                cumsum = 0;
+            }
+        }
+
+        return maxSum;
+    }
 }
