@@ -10,8 +10,64 @@ public class CombinationSum {
     List<List<Integer>> res = new ArrayList<>();
     HashSet<List<Integer>> set = new HashSet<>();
 
-
     // V0
+    // IDEA : BACKTRACK
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+
+        if (candidates == null || candidates.length == 0){
+            return null;
+        }
+
+        Arrays.sort(candidates);
+
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> tmp = new ArrayList<>();
+        int idx = 0;
+
+        backTrack(candidates, target, tmp, res, idx);
+        return res;
+    }
+
+    private void backTrack(int[] candidates, int target, List<Integer> tmp, List<List<Integer>> res, int idx){
+
+        if (getSum(tmp) == target){
+            tmp.sort(Comparator.comparing(x -> x));
+            if (!res.contains(tmp)){
+                res.add(new ArrayList<>(tmp));
+            }
+            return;
+        }
+
+        if (getSum(tmp) > target){
+            return;
+        }
+
+        // backtrack logic
+        for (int i = idx; i < candidates.length; i++){
+            int cur = candidates[i];
+            tmp.add(cur);
+            /** NOTE !!! need to use start from i index in recursion call */
+            backTrack(candidates, target, tmp, res, i);
+            // undo
+            tmp.remove(tmp.size()-1);
+        }
+
+    }
+
+    private int getSum(List<Integer> input){
+
+        if (input == null || input.size() == 0){
+            return 0;
+        }
+
+        int res = 0;
+        for (Integer x : input){
+            res += x;
+        }
+        return res;
+    }
+
+    // V0'
     // IDEA : BACKTRACK
     /**
      *  Example output :
@@ -43,7 +99,7 @@ public class CombinationSum {
      * i = 2 cur = [5]
      *
      */
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+    public List<List<Integer>> combinationSum_(int[] candidates, int target) {
 
         // sort
         Arrays.sort(candidates);
@@ -71,7 +127,7 @@ public class CombinationSum {
             }
         }
 
-        if (getSum(cur) > target){
+        if (getSum_(cur) > target){
             return;
         }
 
@@ -87,7 +143,7 @@ public class CombinationSum {
 
     }
 
-    private Integer getSum(List<Integer> input){
+    private Integer getSum_(List<Integer> input){
         int sum = 0;
         for (Integer x : input){
             sum += x;
