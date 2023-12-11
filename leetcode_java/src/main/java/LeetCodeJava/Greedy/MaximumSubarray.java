@@ -5,9 +5,48 @@ package LeetCodeJava.Greedy;
 public class MaximumSubarray {
 
     // V0
+    // IDEA : BRUTE FORCE + SUB ARRAY
+    public int maxSubArray(int[] nums) {
+
+        if (nums == null || nums.length == 0){
+            return 0;
+        }
+
+        if (nums.length == 1){
+            return nums[0];
+        }
+
+        int cumsum = 0;
+        int maxSum = -1 * Integer.MAX_VALUE;
+
+        for (int i = 0; i < nums.length; i++){
+            int cur = nums[i];
+            // NOTE !!! only add cur if cumsum + cur >= 0
+            //          -> e.g. add cur element to cur sub array
+            if (cumsum + cur >= 0){
+                cumsum = cumsum + cur;
+                maxSum = Math.max(maxSum, cumsum);
+            /**
+             *  NOTE !!!
+             *      need to consider "negative all input cases" (Math.max(maxSum, cur);)
+             *      e.g.  nums = [-1, -2]
+             *      -> so we get max between maxSum and cur
+             *      -> since whatever sub array sum in this case is < 0
+             *      -> so we choose the "biggest" negative element in nums
+             */
+            }else{
+                maxSum = Math.max(maxSum, cur);
+                cumsum = 0;
+            }
+        }
+
+        return maxSum;
+    }
+
+    // V0'
     // IDEA : BRUTE FORCE
     // https://www.bilibili.com/video/BV1aY4y1Z7ya/?share_source=copy_web&vd_source=49348a1975630e1327042905e52f488a
-    public int maxSubArray(int[] nums) {
+    public int maxSubArray_(int[] nums) {
 
         if (nums.length == 0 || nums == null){
             return 0;
