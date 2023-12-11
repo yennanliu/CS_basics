@@ -19,55 +19,65 @@ public class Test1 {
     }
 
     public static void main(String[] args) {
-//        String[] my_array = new String[10];
-//        my_array[1] = "wef";
-//        my_array[2] = "xxxf";
+////        String[] my_array = new String[10];
+////        my_array[1] = "wef";
+////        my_array[2] = "xxxf";
+////
+////        System.out.println(String.valueOf(my_array[1]));
 //
-//        System.out.println(String.valueOf(my_array[1]));
+//        // reverse list
+//        List<Integer> l1 = new ArrayList<Integer>();
+//        l1.add(10);
+//        l1.add(-1);
+//        l1.add(99);
+//        System.out.println(l1);
+//        Collections.reverse(l1);
+//        /**
+//         *  src code:
+//         *
+//         *     @SuppressWarnings({"rawtypes", "unchecked"})
+//         *     public static void reverse(List<?> list) {
+//         *         int size = list.size();
+//         *         if (size < REVERSE_THRESHOLD || list instanceof RandomAccess) {
+//         *             for (int i=0, mid=size>>1, j=size-1; i<mid; i++, j--)
+//         *                 swap(list, i, j);
+//         *         } else {
+//         *             // instead of using a raw type here, it's possible to capture
+//         *             // the wildcard but it will require a call to a supplementary
+//         *             // private method
+//         *             ListIterator fwd = list.listIterator();
+//         *             ListIterator rev = list.listIterator(size);
+//         *             for (int i=0, mid=list.size()>>1; i<mid; i++) {
+//         *                 Object tmp = fwd.next();
+//         *                 fwd.set(rev.previous());
+//         *                 rev.set(tmp);
+//         *             }
+//         *         }
+//         *     }
+//         */
+//        System.out.println(l1);
+//
+//
+//        System.out.println("========================");
+//
+//        // https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Sort/MeetingRooms.java
+//        int[][] intervals = {{0,1}, {2,3}, {3,4}};
+//        //System.out.println(Arrays.stream(intervals).toArray().toString());
+//        // Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
+//        Arrays.sort(intervals, (x,y) -> Integer.compare(x[1], y[1]));
+//
+//        int[] _array = {0,1,2,3};
+//        System.out.println(_array);
 
-        // reverse list
-        List<Integer> l1 = new ArrayList<Integer>();
-        l1.add(10);
-        l1.add(-1);
-        l1.add(99);
-        System.out.println(l1);
-        Collections.reverse(l1);
-        /**
-         *  src code:
-         *
-         *     @SuppressWarnings({"rawtypes", "unchecked"})
-         *     public static void reverse(List<?> list) {
-         *         int size = list.size();
-         *         if (size < REVERSE_THRESHOLD || list instanceof RandomAccess) {
-         *             for (int i=0, mid=size>>1, j=size-1; i<mid; i++, j--)
-         *                 swap(list, i, j);
-         *         } else {
-         *             // instead of using a raw type here, it's possible to capture
-         *             // the wildcard but it will require a call to a supplementary
-         *             // private method
-         *             ListIterator fwd = list.listIterator();
-         *             ListIterator rev = list.listIterator(size);
-         *             for (int i=0, mid=list.size()>>1; i<mid; i++) {
-         *                 Object tmp = fwd.next();
-         *                 fwd.set(rev.previous());
-         *                 rev.set(tmp);
-         *             }
-         *         }
-         *     }
-         */
-        System.out.println(l1);
 
+        List<Integer> tmp = new ArrayList<>();
 
-        System.out.println("========================");
+        tmp.add(1);
+        tmp.add(2);
+        System.out.println(tmp);
 
-        // https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Sort/MeetingRooms.java
-        int[][] intervals = {{0,1}, {2,3}, {3,4}};
-        //System.out.println(Arrays.stream(intervals).toArray().toString());
-        // Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
-        Arrays.sort(intervals, (x,y) -> Integer.compare(x[1], y[1]));
-
-        int[] _array = {0,1,2,3};
-        System.out.println(_array);
+        tmp.remove(tmp.size()-1);
+        System.out.println(tmp);
     }
 
     class ListNode {
@@ -235,5 +245,143 @@ public class Test1 {
         }
         return res;
     }
+
+    // https://leetcode.com/problems/search-in-rotated-sorted-array/?envType=list&envId=xoqag3yj
+
+    /**
+     *
+     *  target = 0
+     *
+     *  [4,5,6,7,0,1,2]
+     *   l     x     r
+     *         l x   r  -> OK
+     *
+     *
+     *  target = 3
+     *
+     *  [4,5,6,7,0,1,2]
+     *   l     x     r
+     *
+     *
+     *   target = 1
+     *
+     *  [2,3,4,5,1]
+     *   l   x   r
+     *
+     *
+     *   target = 5
+     *
+     *
+     *   [1,2,3,4,5]
+     *    l   x   r
+     *
+     *
+     *
+     */
+
+    public int search(int[] nums, int target) {
+
+        if (nums == null || nums.length == 0){
+            return -1;
+        }
+
+//        if (!Arrays.asList(nums).contains(target)){
+//            return -1;
+//        }
+
+        // binary search
+        int l = 0;
+        int r = nums.length -1;
+        //int mid = (l + r) / 2;
+
+        while (r >= l){
+
+            int mid = (l + r) / 2;
+
+            if (nums[mid] == target){
+                return mid;
+            }
+
+            // case 1) nums[mid:right] is ordering
+            else if (nums[mid] <= nums[r]){
+                // if target > mid and target < nums[right]
+                if (target > nums[mid] && target <= nums[r]){
+                    l = mid+1;
+                }else{
+                    r = mid-1;
+                }
+            }
+
+            // case 2) nums[left:mid] is ordering
+            else{
+                // if target < mid && target > nums[left]
+                if ( target < nums[mid] && target >=  nums[l]){
+                    r = mid-1;
+                }else{
+                    l = mid+1;
+                }
+            }
+
+        }
+
+        return -1;
+    }
+
+    // https://leetcode.com/problems/combination-sum/
+    // backtrack
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+
+        if (candidates == null || candidates.length == 0){
+            return null;
+        }
+
+        Arrays.sort(candidates);
+
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> tmp = new ArrayList<>();
+        int idx = 0;
+
+        backTrack(candidates, target, tmp, res, idx);
+        return res;
+    }
+
+    private void backTrack(int[] candidates, int target, List<Integer> tmp, List<List<Integer>> res, int idx){
+
+        if (getSum(tmp) == target){
+            tmp.sort(Comparator.comparing(x -> x));
+            if (!res.contains(tmp)){
+                res.add(new ArrayList<>(tmp));
+            }
+            return;
+        }
+
+        if (getSum(tmp) > target){
+            return;
+        }
+
+        // main logic
+        for (int i = idx; i < candidates.length; i++){
+            int cur = candidates[i];
+            tmp.add(cur);
+            backTrack(candidates, target, tmp, res, i);
+            // undo
+            tmp.remove(tmp.size()-1);
+        }
+
+    }
+
+    private int getSum(List<Integer> input){
+
+        if (input == null || input.size() == 0){
+            return 0;
+        }
+
+        int res = 0;
+        for (Integer x : input){
+            res += x;
+        }
+        return res;
+    }
+
 
 }
