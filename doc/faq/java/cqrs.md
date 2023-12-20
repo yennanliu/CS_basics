@@ -13,9 +13,9 @@
 		normalized data model
 		one-way dependency
 	讀取模型：
-	Eventually consistency
-	de-normalized data model (materialized view)
-	any-way dependency
+		Eventually consistency
+		de-normalized data model (materialized view)
+		any-way dependency
 - Scalability：
 	很多系統的讀取頻率遠大於寫入，例如在電子商務系統中大部分的使用者都在瀏覽資料，少部分的操作才會改變系統狀態。在這種情況下，套用CQRS可以單獨針對讀取部分加以拓展，如圖3所示。
 - Speed (Performance)：

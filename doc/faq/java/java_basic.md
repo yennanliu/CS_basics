@@ -54,7 +54,7 @@ b = ++a;
     String a = new String("123");
     String b = new String("123");
 
-    System.out.println(a==b); // false ( "new" will use new address in internal storage)
+    System.out.println(a==b); // false ( "new" will use NEW address in internal storage)
 
 	// without new : will fetch from constant pool
     String c = b;
@@ -83,11 +83,14 @@ int n = i; // unboxing
 
 ```java
 // java
+
 // 在堆中创建字符串对象”ab“
 // 将字符串对象”ab“的引用保存在字符串常量池中
 String aa = "ab";
+
 // 直接返回字符串常量池中字符串对象”ab“的引用
 String bb = "ab";
+
 System.out.println(aa==bb);// true
 ```
 
@@ -149,7 +152,24 @@ public class VariableExample {
 
 ### static method VS instance method ?
 
+
 ### Overwrite VS overload ?
+
+覆寫(Override)是指子類別可以覆寫父類別的方法內容，使該方法擁有不同於父類別的行為。
+
+多載(Overload)指在一個類別(class)中，定義多個名稱相同，但參數(Parameter)不同的方法(Method)。
+
+- https://medium.com/@c824751/override-%E8%A6%86%E5%AF%AB-overload-%E5%A4%9A%E8%BC%89-polymorphism-%E5%A4%9A%E5%9E%8B-%E7%9A%84%E5%B7%AE%E7%95%B0-3de1a499de29
+
+- https://matthung0807.blogspot.com/2018/02/java-overload.html
+
+
+### Explain 多型 Polymorphism ?
+
+多型(Polymorphism)是指父類別可透過子類別衍伸成多種型態，而父類別為子類別的通用型態，再透過子類別可覆寫父類別的方法來達到多型的效果，也就是同樣的方法名稱會有多種行為。
+
+- https://matthung0807.blogspot.com/2018/02/java-overload.html
+
 
 ### String VS StringBuffer VS StringBuilder ?
 
@@ -176,6 +196,13 @@ public class VariableExample {
 - https://javaguide.cn/java/basis/serialization.html#%E6%80%BB%E7%BB%93
 
 ### Java @transient explain ?
+
+Variables may be marked transient to indicate that they are not part of the persistent state of an object.
+我們都知道一個物件只要實現了Serilizable接口，這個物件就可以被序列化，java的這種序列化模式為開發者提供了很多便利，我們可以不必關係具體序列化的過程，只要這個類別實現了Serilizable 接口，這個類別的所有屬性和方法都會自動序列化。
+
+然而在實際開發過程中，我們常常會遇到這樣的問題，這個類別的有些屬性需要序列化，而其他屬性不需要被序列化，打個比方，如果一個使用者有一些敏感資訊（如密碼，銀行 卡號等），為了安全起見，不希望在網路操作（主要涉及到序列化操作，本地序列化快取也適用）中被傳輸，這些資訊對應的變數就可以加上transient關鍵字。 換句話說，這個欄位的生命週期僅存於呼叫者的記憶體中而不會寫到磁碟裡持久化。
+
+總之，java 的transient關鍵字為我們提供了便利，你只需要實現Serilizable接口，將不需要序列化的屬性前添加關鍵字transient，序列化對象的時候，這個屬性就不會序列化到指定的目的 地中。
 
 - https://www.cnblogs.com/huzi007/p/6600559.htmls
 
