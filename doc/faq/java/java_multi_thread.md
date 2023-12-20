@@ -13,3 +13,59 @@
 
 同步：發出一個呼叫之後，在沒有得到結果之前， 該呼叫就不可以返回，一直等待。
 非同步：呼叫在發出之後，不用等待返回結果，該呼叫直接傳回。
+
+
+### volatile explain ?
+
+在 Java 中，volatile 關鍵字除了保證變數的可見性，還有一個重要的功能是防止 JVM 的指令重新排序。 如果我們將變數宣告為 volatile ，在對這個變數進行讀寫操作的時候，會透過插入特定的 記憶體屏障 的方式來禁止指令重排序。
+
+```java
+// java
+// example : Singleton
+
+public class Singleton {
+
+	/** volatile */
+
+    private volatile static Singleton uniqueInstance;
+
+    private Singleton() {
+    }
+
+    public  static Singleton getUniqueInstance() {
+       //先判断对象是否已经实例过，没有实例化过才进入加锁代码
+        if (uniqueInstance == null) {
+            //类对象加锁
+            synchronized (Singleton.class) {
+                if (uniqueInstance == null) {
+                    uniqueInstance = new Singleton();
+                }
+            }
+        }
+        return uniqueInstance;
+    }
+}
+```
+
+
+uniqueInstance 採用volatile 關鍵字修飾也是必要的， uniqueInstance = new Singleton(); 這段程式碼其實是分為三步驟執行：為uniqueInstance 分配記憶體空間初始化uniqueInstance將uniqueInstance 指向分配的記憶體位址但是由於JVM 具有指令重 排的特性，執行順序有可能變成1->3->2。 指令重排在單執行緒環境下不會出現問題，但是在多執行緒環境下會導致一個執行緒獲得還沒有初始化的實例。 例如，執行緒 T1 執行了 1 和 3，此時 T2 呼叫 getUniqueInstance() 後發現 uniqueInstance 不為空，因此傳回 uniqueInstance，但此時 uniqueInstance 還未被初始化。
+
+
+- https://javaguide.cn/java/concurrent/java-concurrent-questions-02.html#%E5%A6%82%E4%BD%95%E7%A6%81%E6%AD%A2%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92%E5%BA%8F
+
+
+### 樂觀鎖 VS 悲觀鎖
+
+- 悲觀鎖
+	- 悲觀鎖總是假設最壞的情況，認為共享資源每次被訪問的時候就會出現問題(比如共享資料被修改)，所以每次在獲取資源操作的時候都會上鎖，這樣其他線程想拿到 這個資源就會阻塞直到鎖被上一個持有者釋放。 也就是說，共享資源每次只給一個執行緒使用，其它執行緒阻塞，用完後再把資源轉讓給其它執行緒。
+	- example : synchronized, ReentrantLock
+
+- 樂觀鎖
+	- 版本號控制
+	- CAS算法
+
+- Comparision:
+	- 悲觀鎖 多用於`寫比較多`的情況（多寫場景，競爭激烈），這樣可以避免頻繁失敗和重試影響性能，悲觀鎖的開銷是固定的。 不過，如果樂觀鎖解決了頻繁失敗和重試這個問題的話（例如LongAdder），也是可以考慮使用樂觀鎖的，要視實際情況而定。 
+	- 樂觀鎖 多用於`寫比較少`的情況（多讀場景，競爭較少），這樣可以避免頻繁加鎖影響效能. 不過，樂觀鎖定主要針對的物件是單一共享變數（參考java.util.concurrent.atomic套件下面的原子變數類別
+
+- https://javaguide.cn/java/concurrent/java-concurrent-questions-02.html#%E4%BB%80%E4%B9%88%E6%98%AF%E4%B9%90%E8%A7%82%E9%94%81
