@@ -62,10 +62,42 @@ uniqueInstance 採用volatile 關鍵字修飾也是必要的， uniqueInstance =
 
 - 樂觀鎖
 	- 版本號控制
-	- CAS算法
+	- CAS算法 (compare and swap)
 
 - Comparision:
 	- 悲觀鎖 多用於`寫比較多`的情況（多寫場景，競爭激烈），這樣可以避免頻繁失敗和重試影響性能，悲觀鎖的開銷是固定的。 不過，如果樂觀鎖解決了頻繁失敗和重試這個問題的話（例如LongAdder），也是可以考慮使用樂觀鎖的，要視實際情況而定。 
 	- 樂觀鎖 多用於`寫比較少`的情況（多讀場景，競爭較少），這樣可以避免頻繁加鎖影響效能. 不過，樂觀鎖定主要針對的物件是單一共享變數（參考java.util.concurrent.atomic套件下面的原子變數類別
 
 - https://javaguide.cn/java/concurrent/java-concurrent-questions-02.html#%E4%BB%80%E4%B9%88%E6%98%AF%E4%B9%90%E8%A7%82%E9%94%81
+
+
+### synchronized explain ?
+
+1. 修飾實例方法
+2. 修飾靜態方法
+3. 修飾代碼塊
+
+- synchronized 關鍵字加到static 靜態方法和synchronized(class) 程式碼區塊上都是是給Class 類別上鎖；
+- synchronized 關鍵字加到實例方法上是給物件實例上鎖；
+- 盡量不要使用synchronized(String a) 因為JVM 中，字串常數池具有快取功能
+
+- https://javaguide.cn/java/concurrent/java-concurrent-questions-02.html#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-synchronized
+- https://tech.youzan.com/javasuo-yu-xian-cheng-de-na-xie-shi/
+
+
+### ReentrantLock ?
+
+synchronized VS ReentrantLock ?
+
+- 都是可重入鎖
+	- 可重入鎖 也叫遞歸鎖，指的是線程可以再次取得自己的內部鎖。 例如一個執行緒獲得了某個物件的鎖，此時這個物件鎖還沒有釋放，當其再次想要取得這個物件的鎖的時候還是可以取得的，如果是不可重入鎖的話，就會造成死鎖 。
+- synchronized 依赖于 JVM 而 ReentrantLock 依赖于 API
+	- synchronized 的優化屬於JVM虛擬機層面, 並沒有暴露給用戶
+	- ReentrantLock 的優化是API層面, 暴露了 lock() 和 unlock() 方法配合 try/finally
+- ReentrantLock 比 synchronized 增加了一些高级功能
+	- 等待可中断 : lock.lockInterruptibly()
+	- 可實現公平鎖 : ReentrantLock(boolean fair)
+	- 可實現選擇性通知(鎖綁定多個條件) : wait()和notify()/notifyAll(), newCondition()
+- ReentrantLock 是可中斷鎖, synchronized是不可中斷鎖
+
+- https://javaguide.cn/java/concurrent/java-concurrent-questions-02.html#synchronized-%E5%92%8C-volatile-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB
