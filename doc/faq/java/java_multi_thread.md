@@ -101,3 +101,10 @@ synchronized VS ReentrantLock ?
 - ReentrantLock 是可中斷鎖, synchronized是不可中斷鎖
 
 - https://javaguide.cn/java/concurrent/java-concurrent-questions-02.html#synchronized-%E5%92%8C-volatile-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB
+
+### Atom class ?
+
+Atomic 是指一個操作是不可中斷的。 即使在多個執行緒一起執行的時候，一個操作一旦開始，就不會被其他執行緒干擾。
+所以，所謂原子類說簡單點就是具有原子/原子操作特徵的類別。
+
+- https://javaguide.cn/java/concurrent/atomic-classes.html
