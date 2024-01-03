@@ -3,12 +3,11 @@
 DB ACID : ACID(Atomicity, Consistency, Isolation, Durability)
 Here we discuss the level of Isolation.
 
-There are 4 isolation levels:
-
-Repeatable Read
-Read Committed
-Read Uncommitted
-Serializable
+- 4 type of isolation levels:
+ - Read Uncommitted
+ - Read Committed
+ - Repeatable Read
+ - Serializable
 
 p.s. MySQL 的 InnoDB 預設的 Isolation Level 是 Repeatable Read
 p.s. PostgreSQL 預設的 Isolation Level 是 Read Committed
