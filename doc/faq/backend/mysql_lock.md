@@ -1,4 +1,4 @@
-# LOCK
+# MySQL Lock
 
 ### 1) Mysql Lock
 
@@ -131,10 +131,18 @@ mysql> unlock tables; Query OK, 0 rows affected (0.00 sec)
 
 - Record Lock
 	- 針對該行的cluster index上鎖，即使這張表沒有設定任何index，InnoDB也會設定一個隱藏的index(hidden clustered index)，並為此index加鎖
-	- Record Lock根據阻擋層級也可以分為Share Record Lock、Exclusive Record Lock，
+	- Record Lock根據阻擋層級也可以分為Share Record Lock、Exclusive Record Lock
+	- 紀錄鎖都是加在索引上，就算表沒有建立索引，DB也會創建隱式索引
+	- 如果where條件沒有加在index, 則會全表掃描
+
+```sql
+mysql> UPDATE accounts SET level = 100 WHERE id = 5;
+```
 
 - Gap Lock
-	- Gap Lock會建立一個前開後開的Gap，ex：(3,5)不限制3、5本身。Gap Lock只有在Repeatable Read這隔離層級才存在，若將隔離層級改為Read Committed，則Gap Lock會引性地失效
+	- 這種鎖是為了避免，同一個 transaction 中，連續兩次讀取結果不一樣
+	- 間隙鎖是一種加在兩個索引之間的鎖，或是第一個索引之前，或最後一個索引之後的間隙，又叫做範圍鎖 （Range Locks
+	- 可以跨一個索引或是多個索引甚至是空的，可以防止其他 transaction 在這個範圍內插入或是修改紀錄，保證兩次讀取這個範圍的紀錄不會改變，防止幻讀（兩次讀取結果不同）現象發生。
 
 - Next-Key Lock
 	- Next-Key Lock概念上就等於Record Lock + Gap Lock，會建立一個Index Gap避免其他事務在這gap插入資料，也在Index本身加上鎖。雖說Next-Key Lock=Record Lock+Gap Lock，但Next-Key Lock建立的Gap其實是前開後閉的，
@@ -155,12 +163,14 @@ select * from authors for update;
 # SQL client 2
 ```
 
+### 2) Dead Lock
 
-### 2) Redis Lock
+- 死鎖根本原因是有兩個或多個事務加鎖順序不一致導致
 
-### 3) Zookeeper (ZK) Lock
+- Examples:
+	- https://blog.twjoin.com/%E9%8E%96-lock-%E7%9A%84%E4%BB%8B%E7%B4%B9%E8%88%87%E6%AD%BB%E9%8E%96%E5%88%86%E6%9E%90-19833c18baab
 
-### 4) Modern DB deal with concurrence:
+### 3) How Modern DB deal with concurrence ?
 
 - Types
  	- 2PL (2 phase locking)
