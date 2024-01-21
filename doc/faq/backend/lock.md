@@ -81,8 +81,33 @@ unlock tables
 
 
 #### 行級鎖
+	- InnoDB 引擎是支援行級鎖定的，而 MyISAM 引擎並不支援行級鎖定
+
+```sql
+# sql
+
+# SQL client 1
+# 对读取的记录加共享锁
+# select * from accounts where id = 5 lock in share mode;
+select * from authors where id = 1 lock in share modes;
+
+
+# 对读取的记录加独占锁
+select * from authors for update;
+
+# SQL client 2
+```
 
 
 ### 2) Redis Lock
 
 ### 3) Zookeeper (ZK) Lock
+
+### 4) Modern DB deal with concurrence:
+
+- Types
+ - 2PL (2 phase locking)
+ - MVCC (Multiversion concurrency control) (多版本並行控制)
+
+- Ref
+ - https://www.fanyilun.me/2017/04/20/MySQL%E5%8A%A0%E9%94%81%E5%88%86%E6%9E%90/?source=post_page-----19833c18baab--------------------------------

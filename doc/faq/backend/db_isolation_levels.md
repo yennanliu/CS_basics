@@ -59,6 +59,7 @@ Consistent reads within the same transaction read the snapshot established by th
 
 - https://blog.amis.com/database-transaction-isolation-a1e448a7736e
 - https://www.mysql.tw/2023/05/mysql-lock.html
+- https://fanyilun.me/2015/12/29/%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E4%BB%A5%E5%8F%8AMysql%E4%BA%8B%E5%8A%A1%E7%9A%84%E4%BD%BF%E7%94%A8/
 - https://blog.csdn.net/weixin_45670060/article/details/119977481
 - https://ithelp.ithome.com.tw/articles/10194749
 - https://myapollo.com.tw/blog/database-transaction-isolation-levels/
