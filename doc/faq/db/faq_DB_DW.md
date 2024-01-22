@@ -222,6 +222,9 @@
 - Ref
 	- https://begriffs.com/posts/2018-01-01-sql-keys-in-depth.html
 
+### 18) DB normalization VS Denormalization
+ - https://www.explainthis.io/zh-hant/swe/database-denormalization
+
 ## Ref
 - Edureka DW tutorial
 	- https://www.youtube.com/watch?v=9gOw3joU4a8&list=PL9ooVrP1hQOEDSc5QEbI8WYVV_EbWKJwX
