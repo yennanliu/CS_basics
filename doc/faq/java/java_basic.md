@@ -302,3 +302,8 @@ LinkedList
 ### Class(類) 生命週期
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/class_life_cycle.jpeg">
+
+### MyBatis 常見設計模式
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/mybatis_design_pattern.jpeg">
+

@@ -179,3 +179,11 @@ select * from authors for update;
 - Ref
 	- https://blog.twjoin.com/%E9%8E%96-lock-%E7%9A%84%E4%BB%8B%E7%B4%B9%E8%88%87%E6%AD%BB%E9%8E%96%E5%88%86%E6%9E%90-19833c18baab
  	- https://www.fanyilun.me/2017/04/20/MySQL%E5%8A%A0%E9%94%81%E5%88%86%E6%9E%90/?source=post_page-----19833c18baab--------------------------------
+
+### 4) InnoDB VS MyIsam
+
+- 在 MySQL 5.1 及之前的版本中，MyISAM 是預設的儲存引擎，而在 MySQL 5.5 版本之後，預設使用 InnoDB 儲存引擎。
+- MyISAM 不支援行級鎖，換句話說，MyISAM 會對整張表加鎖，而不是針對行。 同時，MyISAM 不支援事務和外鍵。 MyISAM 可被壓縮，儲存空間較小，而且 MyISAM 在篩選大量資料時非常快。
+- InnoDB 是事務型引擎，當交易異常提交時，會被回滾。 同時，InnoDB 支援行鎖。 此外，InnoDB 需要更多儲存空間，會在記憶體中建立其專用的緩衝池用於高速緩衝資料和索引。 InnoDB 支援自動奔潰恢復特性。
+
+- https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md
