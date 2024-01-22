@@ -40,6 +40,15 @@ JWT 的缺點:
 
 	- TCP 和 UDP 的主要差別在於傳送資料的可靠性：TCP 提供可靠的傳送，而 UDP 不保證傳送的可靠性。因此，如果對資料的完整性有更高的要求，則選用 TCP；如果通信需要更快的速度，則選用 UDP。
 
+4. ORM
+
+- https://www.explainthis.io/zh-hant/swe/orm-intro
+
+5. MVC, MVVM
+
+- https://www.explainthis.io/zh-hant/swe/orm-intro
+
+
 
 ### Ref
 - https://github.com/yongxinz/backend-interview

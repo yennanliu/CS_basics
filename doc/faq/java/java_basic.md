@@ -217,6 +217,43 @@ Variables may be marked transient to indicate that they are not part of the pers
 
 ### Explain reflection ?
 
-
 ### Java IO flow ?
+
+### Object common methods ?
+
+- https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md
+
+### How many ways Java create a new instance ?s
+
+- new、反射、clone 拷貝、反序列化
+- https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md
+
+
+### ArrayList VS LinkedList ?
+
+
+ArrayList
+
+	- 優點：ArrayList 是實現了基於動態數組的資料結構，因為位址連續，一旦資料儲存好了，查詢操作效率會比較高（在記憶體裡是連著放的）。
+	- 缺點：因為位址連續，ArrayList 要移動數據，所以插入和刪除操作效率比較低。
+
+LinkedList
+
+	- 優點：LinkedList 是基於鍊錶的資料結構，位址是任意的，所以在開闢記憶體空間的時候不需要等一個連續的位址。 對於新增和刪除操作，LinkedList 比較佔優勢。 LinkedList 適用於要頭尾操作或插入指定位置的場景。
+	- 缺點：因為 LinkedList 要移動指針，所以查詢操作效能比較低。
+適用場景分析
+
+- 當需要對資料進行對隨機存取的時候，選用 ArrayList。
+- 當需要對資料進行多次增加刪除修改時，採用 LinkedList。
+- 如果容量固定，且只會加入尾部，不會造成擴容，優先採用 ArrayList。
+
+當然，在絕大數業務的場景下，使用 ArrayList 就夠了，但需要注意避免 ArrayList 的擴容，以及非順序的插入。
+
+
+
+### Why have ArrayList, consider we already have Array
+
+- 我們常說的陣列是定死的數組，ArrayList 是動態數組
+- 高並發的情況下，線程不安全。 多個執行緒同時操作 ArrayList，會引發不可預測的例外狀況或錯誤。
+- ArrayList 實作了 Cloneable 接口，標識著它可以被複製。 注意：ArrayList 裡面的 clone() 複製其實是淺複製
 
