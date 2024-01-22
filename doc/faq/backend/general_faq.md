@@ -71,5 +71,14 @@ HTTP 協定的長連接和短連接，實質上是 TCP 協定的長連接和短�
 長連接
 	- 從 HTTP/1.1 起，預設使用長連接，以保持連接特性。 在使用長連線的情況下，當一個網頁開啟完成後，用戶端和伺服器之間用於傳輸 HTTP 資料的 TCP 連線不會關閉。 如果客戶端再次造訪這個伺服器上的網頁，會繼續使用這一條已經建立的連線。 Keep-Alive 不會永久保持連接，它有一個保持時間，可以在不同的伺服器軟體（如 Apache）中設定這個時間。
 
+7. HTTP 304
+
+- 304 已讀取過的圖片或網頁，由瀏覽器緩存 (cache) 中讀取。
+
+- https://blog.csdn.net/huwei2003/article/details/70139062
+- https://www.puritys.me/docs-blog/article-45-Http-status-%E7%8B%80%E6%85%8B-404-304.html
+- https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/304s
+
+
 ### Ref
 - https://github.com/yongxinz/backend-interview
