@@ -286,9 +286,9 @@ LinkedList
 
 - 載入、驗證、準備、解析、初始化
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//class_load_step.jpeg">
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/class_load_step.jpeg">
 
-### new ㄧ個Class(類)步驟
+### New ㄧ個Class(類)步驟
 
 - 檢測類別是否已載入過
 - 為對象分配記憶體
@@ -296,4 +296,9 @@ LinkedList
 - 對對象進行其他相關設置
 - 執行 init 方法
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//new_class_step.jpeg">
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/new_class_step.jpeg">
+
+
+### Class(類) 生命週期
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/class_life_cycle.jpeg">

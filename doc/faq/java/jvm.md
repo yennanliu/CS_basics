@@ -21,9 +21,11 @@
 	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_1.jpeg">
     <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_2.jpeg">
     <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_3.png">
+     <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_4.jpeg">
 - Ref
 	- https://copyfuture.com/blogs-details/20210918043412580m
 	- https://cloud.tencent.com/developer/article/1648836
+	- https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md
 
 ### 2) Difference between JVM heap, stack ?
 
