@@ -257,3 +257,43 @@ LinkedList
 - 高並發的情況下，線程不安全。 多個執行緒同時操作 ArrayList，會引發不可預測的例外狀況或錯誤。
 - ArrayList 實作了 Cloneable 接口，標識著它可以被複製。 注意：ArrayList 裡面的 clone() 複製其實是淺複製
 
+### Hashtable VS HashMap
+
+- 都實作了 Map、Cloneable、Serializable（目前 JDK 版本 1.8）。
+- HashMap 繼承的是 AbstractMap，而 AbstractMap 也實作了 Map 介面
+- Hashtable 繼承 Dictionary。
+- Hashtable 中大部分 public 修飾普通方法都是 synchronized 欄位修飾的，是線程安全的
+- HashMap 是非線程安全的
+- Hashtable key, val 不能為null
+- HashMap key, val 可以為null
+- If need thread safety, can use
+	- ConcurrentHashMap
+
+- https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md
+
+
+###  HashMap VS ConcurrentHashMap
+
+- 都是 key-value 形式的儲存資料；
+- HashMap 是線程不安全的
+- ConcurrentHashMap 是 JUC 下的線程安全的；
+- HashMap 底層資料結構是數組 + 鍊錶（JDK 1.8 之前）。 JDK 1.8 之後是陣列 + 鍊錶 + 紅黑樹。 當鍊錶中元素個數達到 8 的時候，鍊錶的查詢速度不如紅黑樹快，鍊錶會轉為紅黑樹，紅黑樹查詢速度快；
+- HashMap 初始陣列大小為 16（預設），當出現擴容的時候，以 0.75 * 陣列大小的方式進行擴容；
+- ConcurrentHashMap 在 JDK 1.8 之前是採用分段鎖定現實的 Segment + HashEntry，Segment 陣列大小預設是 16，2 的 n 次方；JDK 1.8 之後，採用 Node + CAS + Synchronized 來確保並發安全進行實作。
+
+
+### Class(類)加載步驟
+
+- 載入、驗證、準備、解析、初始化
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//class_load_step.jpeg">
+
+### new ㄧ個Class(類)步驟
+
+- 檢測類別是否已載入過
+- 為對象分配記憶體
+- 為分配的記憶體空間初始化為 0
+- 對對象進行其他相關設置
+- 執行 init 方法
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//new_class_step.jpeg">
