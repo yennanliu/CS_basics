@@ -172,6 +172,7 @@
 		- class init:
 			- if there is parent class which is not init yet -> init this parent class first
 			- init "init code" in class in order
+		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//class_load_step.jpeg">
 - Important methods
 	- loadClass() : load target class, will check if current ClassLoader or its parent already have it. If not, will call findClass()
 	- findClass() : can load user-defined class
