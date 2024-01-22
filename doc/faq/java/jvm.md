@@ -1,6 +1,6 @@
 # JVM FAQ
 
-### 1) JVN internal storage ?
+### 1) JVM internal storage ?
 
 - JVM internal storage
 	- `part 1) Thread local`

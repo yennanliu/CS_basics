@@ -225,6 +225,15 @@
 ### 18) DB normalization VS Denormalization
  - https://www.explainthis.io/zh-hant/swe/database-denormalization
 
+
+### 19) Index pros and cons
+
+- https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md
+
+
+### 20) Mysql Index
+
+
 ## Ref
 - Edureka DW tutorial
 	- https://www.youtube.com/watch?v=9gOw3joU4a8&list=PL9ooVrP1hQOEDSc5QEbI8WYVV_EbWKJwX
