@@ -1,11 +1,23 @@
 #---------------------------------------------------------------
-# MERGE SORT topdown
+# MERGE SORT - topdown
 #---------------------------------------------------------------
 
 # https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2868/
+# https://rust-algo.club/sorting/mergesort/
 
-# time : O(N)
-# space : O(N)
+"""
+
+Time complexity
+
+Best : O(N Log N)
+Avg : O(N Log N)
+Worst : O(N Log N)`
+
+
+Space complexity
+
+O(N)
+"""
 
 def merge_sort(nums):
     # bottom cases: empty or list of a single element.
