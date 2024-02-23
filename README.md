@@ -178,14 +178,14 @@
 
 |  #  | Title | Solution | Use case | Comment | Time complexity | Space complexity | Status|
 | --- | ----- | -------- | ---- | ----- | ---- | ---- | ---- |
-||Binary search|[Python](./algorithm/python/binary_search.py) | | | | | AGAIN| 
+||Binary search|[Python](./algorithm/python/binary_search.py) | [complexity ref](https://www.geeksforgeeks.org/complexity-analysis-of-binary-search/) | `Best : O(1), Avg : O(log N), Worst : O(log N)` | | | AGAIN| 
 ||Linear search|[Python](./algorithm/python/linear_search.py) | | | | | AGAIN| 
 ||Breadth-first search (BFS)| [Python](./algorithm/python/bfs.py), [JS](./algorithm/js/bfs.js)|`FIND SHORTEST PATH`|| | | AGAIN***| 
 ||Depth-first search (DFS) |[Python](./algorithm/python/dfs.py), [JS](./algorithm/js/dfs.js)| `TO CHECK IF SOMETHING EXIST`| `inorder`, `postorder`, `postorder (can recreate a tree)`| | | AGAIN***| 
 ||Bubble sort| [Python](./algorithm/python/bubble_sort.py), [JS](./algorithm/js/bubble_sort.js) , [C](./algorithm/c/bubble_sort.c)| | | | | OK* (3)|  
 ||Insertion sort| [Python](./algorithm/python/insertion_sort.py), [JS](./algorithm/js/insertion_sort.js) |`stable` sort| work very fast for `nearly sorted` array| | | AGAIN| 
 ||Bucket sort| [Python](./algorithm/python/bucket_sort.py)  | | | | | AGAIN| 
-||Quick sort| [quick_sort.py](./algorithm/python/quick_sort.py), [quick_sort_v2.py](./algorithm/python/quick_sort_v2.py), [QuickSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/QuickSort.java)| | | `Best : O(N Log N), Avg : O(N Log N), Worst : O(N^2)` | | AGAIN***| 
+||Quick sort| [quick_sort.py](./algorithm/python/quick_sort.py), [quick_sort_v2.py](./algorithm/python/quick_sort_v2.py), [QuickSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/QuickSort.java)| NOTE !!!, avg is NLogN, worst is N**2, [complexity ref](https://www.geeksforgeeks.org/time-and-space-complexity-analysis-of-quick-sort/) | `Best : O(N Log N), Avg : O(N Log N), Worst : O(N^2)` | | AGAIN***| 
 ||Heap sort| [Python](./algorithm/python/heap_sort.py)| | | AGAIN**| 
 ||Merge sort|[merge_sort_topdown.py](./algorithm/python/merge_sort_topdown.py), [mergesort_bottomup.py](./algorithm/python/mergesort_bottomup.py), [MergeSortTopDown.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/MergeSortTopDown.java), [SQL](./algorithm/sql/Mergesort.sql) | | | | | OK* (2)| 
 ||Pancake sort| [Python](./algorithm/python/pancake_sort.py) | | | | | AGAIN| 
