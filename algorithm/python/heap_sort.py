@@ -2,6 +2,23 @@
 # HEAP SORT
 #---------------------------------------------------------------
 
+# https://rust-algo.club/sorting/heapsort/index.html
+
+"""
+
+Time complexity
+
+Best : O(N Log N)
+Avg : O(N Log N)
+Worst : O(N Log N)
+
+
+Space complexity
+
+Worst : O(1) auxiliary
+
+"""
+
 # V0
 
 # V1 
@@ -39,13 +56,3 @@ def heap_sort(unsorted):
         unsorted[0], unsorted[i] = unsorted[i], unsorted[0]
         heapify(unsorted, 0, i)
     return unsorted
-
-# if __name__ == '__main__':
-#     try:
-#         raw_input          # Python 2
-#     except NameError:
-#         raw_input = input  # Python 3
-#
-#     user_input = raw_input('Enter numbers separated by a comma:\n').strip()
-#     unsorted = [int(item) for item in user_input.split(',')]
-#     print(heap_sort(unsorted))

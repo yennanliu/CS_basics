@@ -186,7 +186,7 @@
 ||Insertion sort| [Python](./algorithm/python/insertion_sort.py), [JS](./algorithm/js/insertion_sort.js) |`stable` sort| work very fast for `nearly sorted` array| | | AGAIN| 
 ||Bucket sort| [Python](./algorithm/python/bucket_sort.py)  | | | | | AGAIN| 
 ||Quick sort| [quick_sort.py](./algorithm/python/quick_sort.py), [quick_sort_v2.py](./algorithm/python/quick_sort_v2.py), [QuickSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/QuickSort.java)| NOTE !!!, `avg is NLogN, worst is N**2`, [big O ref](https://www.geeksforgeeks.org/time-and-space-complexity-analysis-of-quick-sort/), [big O ref 2](https://rust-algo.club/sorting/quicksort/) | `Best : O(N Log N), Avg : O(N Log N), Worst : O(N^2)` | | AGAIN***| 
-||Heap sort| [Python](./algorithm/python/heap_sort.py)| | | AGAIN**| 
+||Heap sort| [Python](./algorithm/python/heap_sort.py)| [big O ref](https://rust-algo.club/sorting/heapsort/index.html) |`Best : O(N Log N), Avg : O(N Log N), Worst : O(N Log N)` | | AGAIN**| 
 ||Merge sort|[merge_sort_topdown.py](./algorithm/python/merge_sort_topdown.py), [mergesort_bottomup.py](./algorithm/python/merge_sort_bottomup.py), [MergeSortTopDown.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/MergeSortTopDown.java), [SQL](./algorithm/sql/Mergesort.sql) | | | `Best : O(N Log N), Avg : O(N Log N), Worst : O(N Log N)` | O(N)| OK* (2)| 
 ||Pancake sort| [Python](./algorithm/python/pancake_sort.py) | | | | | AGAIN| 
 ||Selection sort| [Python](./algorithm/python/selection_sort.py), [JS](./algorithm/js/selection_sort.js) | | | | |  AGAIN| 

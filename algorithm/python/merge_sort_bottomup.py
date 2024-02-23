@@ -1,5 +1,5 @@
 #---------------------------------------------------------------
-# MERGE SORT - bottomup
+# Merge sort - bottom up
 #---------------------------------------------------------------
 
 # https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2868/
