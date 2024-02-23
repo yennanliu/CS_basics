@@ -2,6 +2,24 @@
 # QUICK SORT V1
 #---------------------------------------------------------------
 
+"""
+
+Time complexity
+
+Best    O(n log n)
+Average O(n log n)
+Worst   O(n^2) 
+
+
+
+Space complexity
+
+Worst space $O(log n) $ or $O(n) $ auxiliary
+
+"""
+
+# https://rust-algo.club/sorting/quicksort/index.html
+
 # V0
 # https://www.bilibili.com/video/BV1at411T75o/
 # https://hackmd.io/@Aquamay/H1nxBOLcO/https%3A%2F%2Fhackmd.io%2F%40Aquamay%2FB1SPnfRq_

@@ -3,6 +3,23 @@
 #---------------------------------------------------------------
 
 # https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2870/
+# https://rust-algo.club/sorting/quicksort/index.html
+
+"""
+
+Time complexity
+
+Best    O(n log n)
+Average O(n log n)
+Worst   O(n^2) 
+
+
+
+Space complexity
+
+Worst space $O(log n) $ or $O(n) $ auxiliary
+
+"""
 
 def quicksort(lst):
     """
