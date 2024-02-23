@@ -183,7 +183,7 @@
 ||Breadth-first search (BFS)| [Python](./algorithm/python/bfs.py), [JS](./algorithm/js/bfs.js)|`FIND SHORTEST PATH`|| | | AGAIN***| 
 ||Depth-first search (DFS) |[Python](./algorithm/python/dfs.py), [JS](./algorithm/js/dfs.js)| `TO CHECK IF SOMETHING EXIST`| `inorder`, `postorder`, `postorder (can recreate a tree)`| | | AGAIN***| 
 ||Bubble sort| [Python](./algorithm/python/bubble_sort.py), [JS](./algorithm/js/bubble_sort.js) , [C](./algorithm/c/bubble_sort.c)| | | | | OK* (3)|  
-||Insertion sort| [Python](./algorithm/python/insertion_sort.py), [JS](./algorithm/js/insertion_sort.js) |`stable` sort| work very fast for `nearly sorted` array| | | AGAIN| 
+||Insertion sort| [Python](./algorithm/python/insertion_sort.py), [JS](./algorithm/js/insertion_sort.js) |`stable` sort| work very fast for `nearly sorted` array| `Best :O(n), Average : O(n^2), Worst : O(n^2)`| Worst : O(1)| AGAIN| 
 ||Bucket sort| [Python](./algorithm/python/bucket_sort.py)  | | | | | AGAIN| 
 ||Quick sort| [quick_sort.py](./algorithm/python/quick_sort.py), [quick_sort_v2.py](./algorithm/python/quick_sort_v2.py), [QuickSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/QuickSort.java)| NOTE !!!, `avg is NLogN, worst is N**2`, [big O ref](https://www.geeksforgeeks.org/time-and-space-complexity-analysis-of-quick-sort/), [big O ref 2](https://rust-algo.club/sorting/quicksort/) | `Best : O(N Log N), Avg : O(N Log N), Worst : O(N^2)` | | AGAIN***| 
 ||Heap sort| [Python](./algorithm/python/heap_sort.py)| [big O ref](https://rust-algo.club/sorting/heapsort/index.html) |`Best : O(N Log N), Avg : O(N Log N), Worst : O(N Log N)` | | AGAIN**| 
