@@ -53,12 +53,16 @@ https://www.facebook.com/photo?fbid=787938986701653&set=a.620391230123097# Tree
     - height
         - distance from any node to lowest node (start from 0 or 1 is OK)
         - via Post-order traverse (後序遍歷)
-        - 後序遍歷求 高度 (`子節點 到 bottom 距離`)
+        - 後序遍歷求 高度 (`子節點 到 bottom 距離`) (`node -> bottom`)
     - depth
         - distance from any node to root (start from 0 or 1 is OK)
         - via Pre-order traverse (前序遍歷)
         - LC 104
-        - 前序遍歷求 深度 (`root 到 子節點 距離`)
+        - 前序遍歷求 深度 (`root 到 子節點 距離`) (`root -> node`)
+    - [tree : height vs depth](https://stackoverflow.com/questions/2603692/what-is-the-difference-between-depth-and-height-in-a-tree)
+
+- <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/tree_depth_vs_height.jpeg" ></p>
+
 - Ordering (pre-order or in-order ..)
     - If there is NO "root op logic" (e.g. 沒有中節點處理邏輯)
         -> then it can be any order
