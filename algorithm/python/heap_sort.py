@@ -8,14 +8,14 @@
 
 Time complexity
 
-Best : O(N Log N)
-Avg : O(N Log N)
-Worst : O(N Log N)
+    Best : O(N Log N)
+    Avg : O(N Log N)
+    Worst : O(N Log N)
 
 
 Space complexity
 
-Worst : O(1) auxiliary
+    Worst : O(1) auxiliary
 
 """
 
