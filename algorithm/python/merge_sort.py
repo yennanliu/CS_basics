@@ -2,6 +2,21 @@
 # Merge sort
 #---------------------------------------------------------------
 
+"""
+
+Time complexity
+
+    Best : O(N Log N)
+    Avg : O(N Log N)
+    Worst : O(N Log N)`
+
+
+Space complexity
+
+    O(N)
+
+"""
+
 # https://www.journaldev.com/31541/merge-sort-algorithm-java-c-python#:~:text=The%20time%20complexity%20of%20MergeSort,time%20to%20merge%20two%20halves.
 # Merge sort is one of the most efficient sorting algorithms. 
 # It works on the principle of Divide and Conquer based on the 

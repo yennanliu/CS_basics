@@ -8,13 +8,14 @@
 
 Time complexity
 
-Best    O(n)
-Average O(n^2)
-Worst   O(n^2)
+    Best    O(n)
+    Average O(n^2)
+    Worst   O(n^2)
 
 Space complexity
 
-Worst space O(1) auxiliary
+    Worst space O(1) auxiliary
+
 """
 
 # V0

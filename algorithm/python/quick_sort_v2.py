@@ -9,15 +9,14 @@
 
 Time complexity
 
-Best    O(n log n)
-Average O(n log n)
-Worst   O(n^2) 
-
+    Best : O(N Log N)
+    Avg : O(N Log N)
+    Worst : O(N Log N)`
 
 
 Space complexity
 
-Worst space $O(log n) $ or $O(n) $ auxiliary
+    O(N)
 
 """
 

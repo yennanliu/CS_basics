@@ -9,14 +9,15 @@
 
 Time complexity
 
-Best : O(N Log N)
-Avg : O(N Log N)
-Worst : O(N Log N)`
+    Best : O(N Log N)
+    Avg : O(N Log N)
+    Worst : O(N Log N)`
 
 
 Space complexity
 
-O(N)
+    O(N)
+
 """
 
 def merge_sort(nums):
