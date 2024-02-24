@@ -51,6 +51,32 @@ return its level order traversal as:
 # IDEA : BFS
 class Solution(object):
     def levelOrder(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+        if not root:
+            return []
+        res = []
+        layer = 0
+        queue = [[layer, root]]
+        while queue:
+            # NOTE !!! we DON'T need for loop here
+            # since pop(0) automatically remove first added element (FIFO)
+            layer, tmp = queue.pop(0)
+            if layer + 1 > len(res):
+                res.append([])
+            res[layer].append(tmp.val)
+            if tmp.left:
+                queue.append([layer+1, tmp.left])
+            if tmp.right:
+                queue.append([layer+1, tmp.right])
+        return res
+
+# V0'
+# IDEA : BFS
+class Solution(object):
+    def levelOrder(self, root):
         if not root:
             return []
         res = []

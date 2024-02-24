@@ -1,4 +1,4 @@
-# Tree
+https://www.facebook.com/photo?fbid=787938986701653&set=a.620391230123097# Tree
 
 > Tree data structure and algorithm/LC relative to it
 
@@ -53,13 +53,13 @@
     - height
         - distance from any node to lowest node (start from 0 or 1 is OK)
         - via Post-order traverse (後序遍歷)
-        - 後序遍歷求 高度 (子節點 下到上 到 root 距離)
+        - 後序遍歷求 高度 (`子節點 到 bottom 距離`)
     - depth
         - distance from any node to root (start from 0 or 1 is OK)
         - via Pre-order traverse (前序遍歷)
         - LC 104
-        - 前序遍歷求 深度 (root 上到下 到 子節點 距離)
-- Odering (pre-order or in-order ..)
+        - 前序遍歷求 深度 (`root 到 子節點 距離`)
+- Ordering (pre-order or in-order ..)
     - If there is NO "root op logic" (e.g. 沒有中節點處理邏輯)
         -> then it can be any order
         -> e.g. pre-order or in-order or post-order is fine
@@ -280,18 +280,18 @@ layer = 1
 q = [[layer, root]]
 res = []
 while q:
-    for i in range(len(q)):
-        layer, tmp = root.pop(0)
-        """
-        KEY here !!!!
-        """
-        if tmp and not tmp.left and not tmp.right:
-            res.append(layer)
-        if tmp.left:
-            q.append([layer+1, tmp.left])
-        if tmp.right:
-            q.append([layer+1, tmp.right])
-        # ...
+    # NOTE !!! FIFO, so we pop first added element (new element added at right hand side)
+    layer, tmp = root.pop(0)
+    """
+    KEY here !!!!
+    """
+    if tmp and not tmp.left and not tmp.right:
+        res.append(layer)
+    if tmp.left:
+        q.append([layer+1, tmp.left])
+    if tmp.right:
+        q.append([layer+1, tmp.right])
+    # ...
 ```
 
 #### 1-1-3 -2) Get Minimum depth
