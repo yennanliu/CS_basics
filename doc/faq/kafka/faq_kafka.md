@@ -266,6 +266,21 @@
 - In different group : Yes
 	- Two consumers in two groups (Consumer 1 from Group 1, Consumer 1 from Group 2) CAN consume the same message from partition (Partition 0).
 
+
+
+### 14) streaming model ?
+
+- Msg queue (e.g. rebbitMQ)
+	- each serve can only read part of msg fro queue
+
+- pub - sub (e.g. publish, subscriber)
+
+- https://youtu.be/7YS0gOAXnWM?si=WUqoQTs7IE7ljsNP&t=546
+
+Note : In kafka, the concept of "consumer group" offers the generic of mix above
+ - multiple consumers in same group ~= reading from queue
+
+
 ## Ref
 - https://blog.csdn.net/ajianyingxiaoqinghan/article/details/107171104
 - https://so.csdn.net/so/search?spm=1001.2101.3001.4498&q=Kafka%E6%8A%80%E6%9C%AF%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93&t=&u=
