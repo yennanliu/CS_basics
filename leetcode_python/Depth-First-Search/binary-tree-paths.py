@@ -39,19 +39,19 @@ class Solution(object):
         cache = ""
         q = [[root, cache]]
         while q:
-            for i in range(len(q)):
-                tmp_root, cache = q.pop(0)
-                # NOTE : this condition
-                if tmp_root and not tmp_root.left and not tmp_root.right:
-                    cache += ("->" + str(tmp_root.val))
-                    res.append(cache)
-                """
-                NOTE !!! we append tmp_root.val to cache within left, right sub tree op
-                """
-                if tmp_root.left:
-                    q.append([tmp_root.left, cache + "->" + str(tmp_root.val)])
-                if tmp_root.right:
-                    q.append([tmp_root.right, cache + "->" + str(tmp_root.val)])
+            #for i in range(len(q)):
+            tmp_root, cache = q.pop(0)
+            # NOTE : this condition
+            if tmp_root and not tmp_root.left and not tmp_root.right:
+                cache += ("->" + str(tmp_root.val))
+                res.append(cache)
+            """
+            NOTE !!! we append tmp_root.val to cache within left, right sub tree op
+            """
+            if tmp_root.left:
+                q.append([tmp_root.left, cache + "->" + str(tmp_root.val)])
+            if tmp_root.right:
+                q.append([tmp_root.right, cache + "->" + str(tmp_root.val)])
 
         #print ("res = " + str(res))
         #return [x.strip("->") for x in res]
@@ -68,24 +68,24 @@ class Solution(object):
         res = []
         q = [[cache, root]]
         while q:
-            for i in range(len(q)):
-                cache, tmp = q.pop(0)
-                """
-                NOTE this !!!
+            #for i in range(len(q)):
+            cache, tmp = q.pop(0)
+            """
+            NOTE this !!!
 
-                1) condition : if tmp and not tmp.left and not tmp.right
-                2) we need to append cache + str(tmp.val) to res
-                   -> since we also need to collect "bottom" sbt-tree's val
-                """
-                if tmp and not tmp.left and not tmp.right:
-                    res.append(cache + str(tmp.val))
-                """
-                NOTE !!! we append tmp_root.val to cache within left, right sub tree op
-                """
-                if tmp.left:
-                    q.append([ cache + "{}->".format(tmp.val), tmp.left])
-                if tmp.right:
-                    q.append([ cache + "{}->".format(tmp.val), tmp.right])
+            1) condition : if tmp and not tmp.left and not tmp.right
+            2) we need to append cache + str(tmp.val) to res
+               -> since we also need to collect "bottom" sbt-tree's val
+            """
+            if tmp and not tmp.left and not tmp.right:
+                res.append(cache + str(tmp.val))
+            """
+            NOTE !!! we append tmp_root.val to cache within left, right sub tree op
+            """
+            if tmp.left:
+                q.append([ cache + "{}->".format(tmp.val), tmp.left])
+            if tmp.right:
+                q.append([ cache + "{}->".format(tmp.val), tmp.right])
 
         #print ("res = " + str(res))
         return res

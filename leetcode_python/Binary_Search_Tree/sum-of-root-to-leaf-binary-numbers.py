@@ -54,22 +54,22 @@ class Solution(object):
         q = [[root, cache]]
         cnt = 0
         while q:
-            for i in range(len(q)):
-                _tmp, _cache = q.pop(0)
-                """
-                NOTE !!! if _tmp and not _tmp.left and not _tmp.right
-                  -> consider there is tmp, but no sub trees
-                """
-                if _tmp and not _tmp.left and not _tmp.right:
-                    res.append(_cache + str(_tmp.val))
-                """
-                NOTE !!!
-                  -> we add val to cache when _tmp.left, _tmp.right
-                """
-                if _tmp.left:
-                    q.append([_tmp.left, _cache + str(_tmp.val)])
-                if _tmp.right:
-                    q.append([_tmp.right, _cache + str(_tmp.val)])
+            #for i in range(len(q)):
+            _tmp, _cache = q.pop(0)
+            """
+            NOTE !!! if _tmp and not _tmp.left and not _tmp.right
+              -> consider there is tmp, but no sub trees
+            """
+            if _tmp and not _tmp.left and not _tmp.right:
+                res.append(_cache + str(_tmp.val))
+            """
+            NOTE !!!
+              -> we add val to cache when _tmp.left, _tmp.right
+            """
+            if _tmp.left:
+                q.append([_tmp.left, _cache + str(_tmp.val)])
+            if _tmp.right:
+                q.append([_tmp.right, _cache + str(_tmp.val)])
         #print("res = " + str(res))
         """
         NOTE !! : both work
