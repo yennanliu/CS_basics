@@ -3,8 +3,8 @@
 - A data structute with Last in, First out (LIFO) propery
 
 - Ref
-    - [fucking-Algorithm - single stack](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md)
-    - [fucking-Algorithm - implement array via stack](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97.md)
+    - [fuck-Algorithm - single stack](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md)
+    - [fuck-Algorithm - implement array via stack / stack via array ](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97.md)
 
 - It's critical to verify the to use stack if `increasing` or `decreasing` (AKA `monotonic stack`) when solving LC problem
 - [Vodeo ref1](https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj)
@@ -14,6 +14,7 @@
         - LC 496
         - LC 503
         - LC 739
+        - LC 503
     - Calculator, decode string
         - LC 224
         - LC 227
@@ -36,7 +37,7 @@
 ### 0-2) Pattern
 ```python
 # python
-# LC 739, LC 503
+# LC 739, LC 503 - Find next `big number`
 # ...
 stack = [] # [[idx, val]]
 for i, val in enumerate(len(tmp)):
@@ -45,22 +46,6 @@ for i, val in enumerate(len(tmp)):
         res[tmp[_idx]] = i - _idx
     stack.append([i, val]) 
 # ...
-```
-
-```c++
-// c++
-vector<int> nextGreaterElement(vector<int>& nums) {
-    vector<int> ans(nums.size()); // list storage answer
-    stack<int> s;
-    for (int i = nums.size() - 1; i >= 0; i--) { // put into stack with inverser order
-        while (!s.empty() && s.top() <= nums[i]) { // check if height is higher or shorter 
-            s.pop(); // start from shorter height
-        }
-        ans[i] = s.empty() ? -1 : s.top(); // the first higher after this one
-        s.push(nums[i]); // put into stack, will check the height later
-    }
-    return ans;
-}
 ```
 
 ## 1) General form
@@ -74,25 +59,32 @@ vector<int> nextGreaterElement(vector<int>& nums) {
 - Stack hasElement
 
 ### 1-1-2) next greater number
-```java
-// LC 496, 503 (see below)
-// java
-// aAlgorithm book (labu) p. 273
-vector<int> nextGreaterElement(vector<int> & nums){
-    vector<int> ans(nums.size()); // array for ans
-    stack<int> s;
-    // inverse ordering
-    for (int i = nums.size() - 1 ; i >= 0; i --){
-        // check whether nummber is greater
-        while (!s.empty() && s.top() <= nums[i]){
-            s.pop()
-        }
-        // the last great number in stack
-        ans[i] = s.empty() ? -1: s.top();
-        s.push(nums[i]);
-    }
-return ans;
-}
+
+```python
+# V0
+# IDEA : LC 739, LC 503
+class Solution(object):
+    def nextGreaterElements(self, nums):
+        # edge case
+        if not nums:
+            return
+        _len = len(nums)
+        # note : we init res as [-1] * _len
+        res = [-1] * _len
+        # note : we use "nums = 2 * nums" to simuldate "circular array"
+        nums = 2 * nums
+        stack = [] # [[idx, val]]
+        for idx, val in enumerate(nums):
+            while stack and stack[-1][1] < val:
+                _idx, _val = stack.pop(-1)
+                """
+                NOTE !!!
+                    -> we get remainder via "_idx % _len" for handling idx issue
+                      (since we made nums = 2 * nums earlier)
+                """
+                res[_idx % _len] = val
+            stack.append([idx, val])
+        return res
 ```
 
 ### 1-1-3) get `non balanced` String
