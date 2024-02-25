@@ -36,16 +36,13 @@ queue.append(root)
 NOTE THIS : (while len(queue) > 0)
 """
 while len(queue) > 0:
-    """
-    NOTE THIS : (range(len(queue)))
-    """
-    for i in range(len(queue)):
-        node = queue.popleft()
-        # op
-        if node.left:
-            queue.append(node.left)
-        if node.right:
-            queue.append(node.right) 
+
+    node = queue.popleft()
+    # op
+    if node.left:
+        queue.append(node.left)
+    if node.right:
+        queue.append(node.right) 
 ```
 
 ## 1) General form
@@ -57,19 +54,21 @@ def bfs(root):
     q =[]
     q.append(root)
     while q:
-        for i in range(len(q)):
+        # NO NEED to use for loop !!! 
+        # -> since we already pop first element in code below (q.pop(0))
+        #for i in range(len(q)):
             """
             ### NOTE : 
 
                 we need to pop the 1st element (idx = 0), BUT NOT THE LAST element
                 -> default is pop last element (e.g. q.pop() equals q.pop(-1))
             """
-            root = q.pop(0)
-            # do sth
-            if root.left:
-                q.append(root.left)
-            if root.right:
-                q.append(root.right)
+        root = q.pop(0)
+        # do sth
+        if root.left:
+            q.append(root.left)
+        if root.right:
+            q.append(root.right)
     # do sth
 
 # V1 : via collections.deque
@@ -80,17 +79,17 @@ def bfs(root):
     queue.append(root)
     while len(queue) > 0:
         ### NOTE this op
-        for i in range(len(queue)):
-            ### NOTE : the variable from popleft
-            #          should be used in node.left, node.right op below
-            ### NOTE : we need to pop the 1st element (idx = 0), BUT NOT THE LAST element
-            node = queue.popleft() 
-            # do sth 
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
-            # do sth
+        #for i in range(len(queue)):
+        ### NOTE : the variable from popleft
+        #          should be used in node.left, node.right op below
+        ### NOTE : we need to pop the 1st element (idx = 0), BUT NOT THE LAST element
+        node = queue.popleft() 
+        # do sth 
+        if node.left:
+            queue.append(node.left)
+        if node.right:
+            queue.append(node.right)
+        # do sth
 
 # V2 : via python default
 def bfs(root):
@@ -98,14 +97,13 @@ def bfs(root):
     q=[root]
     while len(q) > 0:
         ### NOTE this op
-        for i in range(0,len(q)):
-            tmp = q[0]
-            # do sth
-            if tmp.left:
-                q.append(tmp.left)
-            if tmp.right:
-                q.append(tmp.right)
-            # do sth
+        tmp = q[0]
+        # do sth
+        if tmp.left:
+            q.append(tmp.left)
+        if tmp.right:
+            q.append(tmp.right)
+        # do sth
 ```
 
 ### 1-1) Basic OP
@@ -118,15 +116,15 @@ cur = ""
 q = [[cur, root]]
 res = []
 while q:
-    for i in range(len(q)):
-        cur, tmp = q.pop(0)
-        if tmp:
-            if not tmp.left and not tmp.right:
-                res.append(cur + str(tmp.val))
-        if tmp.left:
-            q.append([cur + str(tmp.val) + "->", tmp.left])
-        if root.right:
-            q.append([cur + str(tmp.val) + "->", tmp.right])
+    #for i in range(len(q)):
+    cur, tmp = q.pop(0)
+    if tmp:
+        if not tmp.left and not tmp.right:
+            res.append(cur + str(tmp.val))
+    if tmp.left:
+        q.append([cur + str(tmp.val) + "->", tmp.left])
+    if root.right:
+        q.append([cur + str(tmp.val) + "->", tmp.right])
 ```
 
 ## 2) LC Example
@@ -147,15 +145,15 @@ class Solution(object):
         _layer=0
         q = [[root, _layer]]
         while q:
-            for i in range(len(q)):
-                tmp, _layer = q.pop(0)
-                if len(res) <= _layer:
-                    res.append([])
-                res[_layer].append(tmp.val)
-                if tmp.left:
-                    q.append([tmp.left, _layer+1])
-                if tmp.right:
-                    q.append([tmp.right, _layer+1])
+            #for i in range(len(q)):
+            tmp, _layer = q.pop(0)
+            if len(res) <= _layer:
+                res.append([])
+            res[_layer].append(tmp.val)
+            if tmp.left:
+                q.append([tmp.left, _layer+1])
+            if tmp.right:
+                q.append([tmp.right, _layer+1])
         return res
 
 # V0'
@@ -168,13 +166,13 @@ class Solution(object):
         queue.append(root)
         while queue:
             level = []
-            for i in range(len(queue)):  # NOTE THAT HERE WE HAVE TO GO THROUGH EVERY ELEMENT IN THE SAME LAYER OF BST 
-                node = queue.popleft()
-                level.append(node.val)
-                if node.left:
-                    queue.append(node.left)
-                if node.right:
-                    queue.append(node.right)
+            #for i in range(len(queue)):  # NOTE THAT HERE WE HAVE TO GO THROUGH EVERY ELEMENT IN THE SAME LAYER OF BST 
+            node = queue.popleft()
+            level.append(node.val)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
             res.append(level)
         return res
 ```
