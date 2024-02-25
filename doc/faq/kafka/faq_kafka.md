@@ -246,6 +246,24 @@
 - Ref
 	- https://iter01.com/639107.html
 
+
+### 14) What's if multiple consumers in same consumer group ? 
+
+- Can multiple Kafka consumers read same message from the partition ?
+
+- [swf ref](https://stackoverflow.com/questions/35561110/can-multiple-kafka-consumers-read-same-message-from-the-partition)
+- [o relly ref](https://www.oreilly.com/library/view/kafka-the-definitive/9781491936153/ch04.html#:~:text=Kafka%20consumers%20are%20typically%20part,the%20partitions%20in%20the%20topic.)
+- https://youtu.be/a_Oafk7fAjY?si=w6V-rpDUMjyswRRw&t=1538
+
+- Kafka consumers are typically part of a consumer group. When multiple consumers are subscribed to a topic and belong to the `same consumer group`, `each consumer` in the group will receive messages from a different `subset` of the partitions in the topic.
+
+- In same group : No
+ 	- Two consumers (Consumer 1, 2) within the same group (Group 1) `CAN NOT` consume the same message from partition (Partition 0)
+
+- In different group : Yes
+	- Two consumers in two groups (Consumer 1 from Group 1, Consumer 1 from Group 2) CAN consume the same message from partition (Partition 0).
+
+
 ## Ref
 - https://blog.csdn.net/ajianyingxiaoqinghan/article/details/107171104
 - https://so.csdn.net/so/search?spm=1001.2101.3001.4498&q=Kafka%E6%8A%80%E6%9C%AF%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93&t=&u=
