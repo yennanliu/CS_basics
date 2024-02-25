@@ -257,12 +257,14 @@
 
 - Kafka consumers are typically part of a consumer group. When multiple consumers are subscribed to a topic and belong to the `same consumer group`, `each consumer` in the group will receive messages from a different `subset` of the partitions in the topic.
 
+- 如果ㄧ個consumer group 裡有複數個consumer -> 每個consumer只會收到topic`部分`的訊息
+- 如果consumer 分屬不同 consumer group (訂閱同個topic) -> 每個consumer都會收到topic`全部`訊息
+
 - In same group : No
  	- Two consumers (Consumer 1, 2) within the same group (Group 1) `CAN NOT` consume the same message from partition (Partition 0)
 
 - In different group : Yes
 	- Two consumers in two groups (Consumer 1 from Group 1, Consumer 1 from Group 2) CAN consume the same message from partition (Partition 0).
-
 
 ## Ref
 - https://blog.csdn.net/ajianyingxiaoqinghan/article/details/107171104
