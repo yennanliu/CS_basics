@@ -90,6 +90,8 @@ node2.next = node3;
     - check
         - check cyclic linked list
         - check beginning of cyclic linked list
+    - remove N th node
+        - Remove Nth Node From End of List - LC 19
     -  combinations
         - combinations of above cases
 
@@ -1024,6 +1026,68 @@ class Solution(object):
             slow = slow.next
         slow.next = slow.next.next
         return new_head.next
+```
+
+```java
+// java
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+
+        if (head == null){
+            return head;
+        }
+
+        if (head.next == null && head.val == n){
+            return null;
+        }
+
+        // move fast pointer only with n+1 step
+        // 2 cases:
+        //   - 1) node count is even
+        //   - 2) node count is odd
+        /** NOTE !! we init dummy pointer, and let fast, slow pointers point to it */
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        // NOTE here
+        ListNode fast = dummy;
+        ListNode slow = dummy;
+        /**
+         *  Explanation V1:
+         *
+         *   -> So we have fast, and slow pointer,
+         *   if we move fast N steps first,
+         *   then slow starts to move
+         *      -> fast, slow has N step difference
+         *      -> what's more, when fast reach the end,
+         *      -> fast, slow STILL has N step difference
+         *      -> and slow has N step difference with the end,
+         *      -> so we can remove N th pointer accordingly
+         *
+         *  Explanation V2:
+         *
+         *
+         *   // NOTE !!! we let fast pointer move N+1 step first
+         *   // so once fast pointers reach the end after fast, slow pointers move together
+         *   // we are sure that slow pointer is at N-1 node
+         *   // so All we need to do is :
+         *   // point slow.next to slow.next.next
+         *   // then we remove N node from linked list
+         */
+        for (int i = 1; i <= n+1; i++){
+            //System.out.println("i = " + i);
+            fast = fast.next;
+        }
+
+        // move fast and slow pointers on the same time
+        while (fast != null){
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        // NOTE here
+        slow.next = slow.next.next;
+        // NOTE !!! we return dummy.next instead of slow
+        return dummy.next;
+    }
 ```
 
 ### 2-8) Reorder List

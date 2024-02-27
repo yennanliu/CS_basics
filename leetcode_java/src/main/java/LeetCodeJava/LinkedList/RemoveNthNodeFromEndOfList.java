@@ -29,14 +29,30 @@ public class RemoveNthNodeFromEndOfList {
         // NOTE here
         ListNode fast = dummy;
         ListNode slow = dummy;
-        // NOTE !!! we let fast pointer move N+1 step first
-        // so once fast pointers reach the end after fast, slow pointers move together
-        // we are sure that slow pointer is at N-1 node
-        // so All we need to do is :
-        // point slow.next to slow.next.next
-        // then we remove N node from linked list
+        /**
+         *  Explanation V1:
+         *
+         *   -> So we have fast, and slow pointer,
+         *   if we move fast N steps first,
+         *   then slow starts to move
+         *      -> fast, slow has N step difference
+         *      -> what's more, when fast reach the end,
+         *      -> fast, slow STILL has N step difference
+         *      -> and slow has N step difference with the end,
+         *      -> so we can remove N th pointer accordingly
+         *
+         *  Explanation V2:
+         *
+         *
+         *   // NOTE !!! we let fast pointer move N+1 step first
+         *   // so once fast pointers reach the end after fast, slow pointers move together
+         *   // we are sure that slow pointer is at N-1 node
+         *   // so All we need to do is :
+         *   // point slow.next to slow.next.next
+         *   // then we remove N node from linked list
+         */
         for (int i = 1; i <= n+1; i++){
-            System.out.println("i = " + i);
+            //System.out.println("i = " + i);
             fast = fast.next;
         }
 

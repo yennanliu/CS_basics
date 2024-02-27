@@ -5,8 +5,37 @@ package LeetCodeJava.Greedy;
 public class ContainerWithMostWater {
 
     // V0
-    // IDEA : BRUTE FORCE
+    // IDEA : 2 POINTERS
     public int maxArea(int[] height) {
+
+        if (height.length == 0 || height.equals(null)){
+            return 0;
+        }
+
+        int ans = 0;
+        int left = 0;
+        // NOTE : right as height.length - 1
+        int right = height.length - 1;
+
+        // either ">=" or ">" is OK for this problem, but for logic alignment, we use ">=" here
+        while (right >= left){
+            int leftVal = height[left];
+            int rightVal = height[right];
+            // NOTE !!! right - left, we get distance between left, right pointer
+            int amount = (right - left) * Math.min(leftVal, rightVal);
+            ans = Math.max(amount, ans);
+            if (rightVal > leftVal){
+                left += 1;
+            }else{
+                right -= 1;
+            }
+        }
+        return ans;
+    }
+
+    // V0'
+    // IDEA : BRUTE FORCE
+    public int maxArea_1(int[] height) {
 
         if (height.length == 0 || height.equals(null)){
             return 0;
