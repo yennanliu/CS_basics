@@ -289,6 +289,34 @@ class LinkedList:
 
 ### 1-1) Basic OP
 
+
+#### 1-1-0) Remove Nth node from end
+```java
+// java
+// LC 19
+
+// ...
+ListNode dummy = new ListNode(0);
+dummy.next = head;
+ListNode fast = dummy;
+ListNode slow = dummy;
+
+for (int i = 1; i <= n+1; i++){
+    //System.out.println("i = " + i);
+    fast = fast.next;
+}
+
+// move fast and slow pointers on the same time
+while (fast != null){
+    fast = fast.next;
+    slow = slow.next;
+}
+
+// NOTE here
+slow.next = slow.next.next;
+// ...
+```
+
 #### 1-1-1) transversal linked list
 
 #### 1-1-2) plus one on linked list
