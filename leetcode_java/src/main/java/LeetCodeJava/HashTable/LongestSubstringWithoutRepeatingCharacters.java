@@ -13,6 +13,10 @@ public class LongestSubstringWithoutRepeatingCharacters {
     // IDEA : HASHMAP + SLIDING DINDOW
     public int lengthOfLongestSubstring(String s) {
 
+        /**
+         *  key : element
+         *  value : element count
+         */
         Map<String, Integer> map = new HashMap();
 
         // left pointer
@@ -22,6 +26,11 @@ public class LongestSubstringWithoutRepeatingCharacters {
         // final result
         int res = 0;
 
+        /**
+         * NOTE !!! sliding window (while - while)
+         *
+         *  https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md
+         */
         while (right < s.length()) {
 
             String cur = String.valueOf(s.charAt(right));
