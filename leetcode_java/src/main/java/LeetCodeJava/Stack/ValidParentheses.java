@@ -9,6 +9,40 @@ import java.util.Stack;
 
 public class ValidParentheses {
 
+    // V0
+    // IDEA : STACK + DICT
+    public boolean isValid(String s) {
+
+        if (s.length() % 2 != 0){
+            return false;
+        }
+
+        HashMap<String, String> map = new HashMap<>();
+        Stack st = new Stack();
+
+        map.put("(", ")");
+        map.put("{", "}");
+        map.put("[", "]");
+
+        for (int i = 0; i < s.length(); i++){
+            String cur = String.valueOf(s.charAt(i));
+            if (st.empty() && !map.containsKey(cur)){
+                return false;
+            }
+            if (map.containsKey(cur)){
+                st.push(cur);
+            }
+            else{
+                String popElement = (String) st.pop();
+                String expect = map.get(popElement);
+                if (!expect.equals(cur)){
+                    return false;
+                }
+            }
+        }
+        return true ? st.empty() : false;
+    }
+
     // V0'
     // IDEA : STACK + add "inverse" Parentheses to stack directly
     // https://www.bilibili.com/video/BV1AF411w78g/?share_source=copy_web&vd_source=771d0eba9b524b4f63f92e37bde71301
@@ -47,40 +81,6 @@ public class ValidParentheses {
                 }
             }
 
-        }
-        return true ? st.empty() : false;
-    }
-
-    // V0
-    // IDEA : STACK
-    public boolean isValid(String s) {
-
-        if (s.length() % 2 != 0){
-            return false;
-        }
-
-        HashMap<String, String> map = new HashMap<>();
-        Stack st = new Stack();
-
-        map.put("(", ")");
-        map.put("{", "}");
-        map.put("[", "]");
-
-        for (int i = 0; i < s.length(); i++){
-            String cur = String.valueOf(s.charAt(i));
-            if (st.empty() && !map.containsKey(cur)){
-               return false;
-            }
-            if (map.containsKey(cur)){
-                st.push(cur);
-            }
-            else{
-                String popElement = (String) st.pop();
-                String expect = map.get(popElement);
-                if (!expect.equals(cur)){
-                    return false;
-                }
-            }
         }
         return true ? st.empty() : false;
     }
