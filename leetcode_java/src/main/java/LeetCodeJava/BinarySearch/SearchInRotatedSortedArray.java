@@ -4,6 +4,10 @@ package LeetCodeJava.BinarySearch;
 
 public class SearchInRotatedSortedArray {
 
+    // V0
+    // IDEA : BINARY SEARCH
+    // CASE 1) sub array left is sorted
+    // CASE 2) sub array right is sorted
     public int search(int[] nums, int target) {
 
         if (nums.length == 0 || nums.equals(null)){
@@ -46,7 +50,7 @@ public class SearchInRotatedSortedArray {
              *          - target > nums[r] || target < nums[mid]
              *
              */
-            // Case 2: subarray on mid's left is sorted
+            // Case 1: subarray on mid's left is sorted
             /** NOTE !!! we compare mid with left, instead of 0 idx element */
             else if (nums[mid] >= nums[l]) {
                 if (target >= nums[l] && target < nums[mid]) {
@@ -56,7 +60,7 @@ public class SearchInRotatedSortedArray {
                 }
             }
 
-            // Case 3: subarray on mid's right is sorted
+            // Case 2: subarray on mid's right is sorted
             else {
                 if (target <= nums[r] && target > nums[mid]) {
                     l = mid + 1;
