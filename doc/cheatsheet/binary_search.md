@@ -49,6 +49,8 @@
         - Garena/test1.py
     - Search in Rotated Sorted Array
         - LC 033
+            - // CASE 1) sub array left is sorted
+            - // CASE 2) sub array right is sorted
     - Search in 2D array
         - LC 74
     - Find min in Rotation array
