@@ -299,7 +299,12 @@
             else{ 
                 for(int i = start; i < nums.length; i++){
                     tempList.add(nums[i]);
-                    backtrack(list, tempList, nums, remain - nums[i], i); // not i + 1 because we can reuse same elements
+                    /** NOTE !!!
+                     *
+                     *   use i, since we need to use start from current (i) index in recursion call
+                     *    (reuse current index)
+                     */
+                    backtrack(list, tempList, nums, remain - nums[i], i);
                     tempList.remove(tempList.size() - 1);
                 }
             }
