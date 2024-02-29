@@ -18,6 +18,7 @@ public class CombinationSum {
             return null;
         }
 
+        // NOTE !!! we sore here
         Arrays.sort(candidates);
 
         List<List<Integer>> res = new ArrayList<>();
@@ -46,7 +47,11 @@ public class CombinationSum {
         for (int i = idx; i < candidates.length; i++){
             int cur = candidates[i];
             tmp.add(cur);
-            /** NOTE !!! need to use start from i index in recursion call */
+            /** NOTE !!!
+             *
+             *    use i, since we need to use start from current (i) index in recursion call
+             *    (reuse current index)
+             */
             backTrack(candidates, target, tmp, res, i);
             // undo
             tmp.remove(tmp.size()-1);
