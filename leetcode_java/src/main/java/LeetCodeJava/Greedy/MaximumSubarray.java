@@ -35,8 +35,8 @@ public class MaximumSubarray {
              *      -> so we choose the "biggest" negative element in nums
              */
             }else{
-                maxSum = Math.max(maxSum, cur);
                 cumsum = 0;
+                maxSum = Math.max(maxSum, cur);
             }
         }
 

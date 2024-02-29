@@ -57,7 +57,7 @@ public class RotateImage {
          *  Exp 1
          *
          *   [1,2,3,4]
-         *   l     r
+         *   l      r
          *
          *   [4,2,3,1]
          *      l r
