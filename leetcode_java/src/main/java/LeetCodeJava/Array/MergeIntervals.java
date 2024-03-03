@@ -25,41 +25,52 @@ public class MergeIntervals {
      *          [[1,6], [8,10], [15,18]]
      */
 
-    // TODO : fix V0
     // V0
     // IDEA : ARRAY OP + BOUNDARY OP
-//    public int[][] merge(int[][] intervals) {
-//
-//        if (intervals == null || intervals.length == 0){
-//            return intervals;
-//        }
-//
-//        // sort
-////        Arrays.stream(intervals).sorted();
-////
-////        Arrays.stream(intervals).sorted((x,y) -> {
-////            // Step 1) compare first element
-////            if (x[0] > 0) {
-////                return 1;
-////            } else if (x[0] > 0) {
-////                return -1;
-////            }
-////
-////            // Step 2) compare second element
-////
-////            return 0;
-////        });
-//
-//        int[] tmp = new int[]{};
-//
-//        return intervals;
-//    }
+    public int[][] merge(int[][] intervals) {
+        /**
+         *
+         *
+         *  1) Arrays.sort(intervals, ...) is used to sort the intervals array.
+         *
+         *  2) (a, b) -> Integer.compare(a[0], b[0]) is a lambda expression used as a comparator for sorting.
+         *
+         *  3) a and b are two intervals (arrays) being compared.
+         *     a[0] and b[0] are the first elements of the intervals, which represent the start values of the intervals.
+         *     Integer.compare(a[0], b[0])
+         *     compares the start values of intervals a and b and
+         *     returns -1 if a should come before b,
+         *     0 if they are equal,
+         *     and 1 if b should come before a.
+         *
+         *  -> Putting it all together, the Arrays.sort method uses the provided comparator (a, b) -> Integer.compare(a[0], b[0]) to sort the intervals array based on the start values of the intervals.
+         *
+         */
+        // NOTE !!! sort on 1st element
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        // NOTE !!! we set res as linkedlist type (can use queue as well)
+        LinkedList<int[]> res = new LinkedList<>();
+        for (int[] interval : intervals) {
+            // if the list of merged intervals is empty or if the current
+            // interval does not overlap with the previous, simply append it.
+            if (res.isEmpty() || res.getLast()[1] < interval[0]) {
+                res.add(interval);
+            }
+            // otherwise, there is overlap, so we merge the current and previous
+            // intervals.
+            else {
+                res.getLast()[1] = Math.max(res.getLast()[1], interval[1]);
+            }
+        }
+        return res.toArray(new int[res.size()][]);
+    }
 
     // V1
     // IDEA : Sorting
     // https://leetcode.com/problems/merge-intervals/editorial/
     public int[][] merge_1(int[][] intervals) {
         Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        // NOTE !!! we set res as linkedlist type
         LinkedList<int[]> merged = new LinkedList<>();
         for (int[] interval : intervals) {
             // if the list of merged intervals is empty or if the current
