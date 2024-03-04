@@ -8,61 +8,103 @@ import java.util.List;
 
 public class WordSearch {
 
-      // TODO : fix V0
-//    // V0
-//    public boolean exist(char[][] board, String word) {
+//      // TODO : fix V0
+//      // V0
+//      // IDEA : DFS OR BACKTRACK
+//      private int len;
+//      private int wid;
+//      private char[][] board_;
 //
-//        if (board == null || board.length == 0){
-//            return false;
-//        }
+//      public boolean exist(char[][] board, String word) {
 //
-//        Boolean[][] visited = new Boolean[board.length][board[0].length];
-//        List<String> cur = new ArrayList<>();
-//        return _help(board, word, cur, visited);
-//    }
+//          if (board == null || board.length == 0){
+//              return false;
+//          }
 //
-//    private boolean _help(char[][] board, String word, List<String> cur, Boolean[][] visited){
+//          len = board.length;
+//          wid = board[0].length;
+//          board_ = board;
 //
-//        int len = board.length;
-//        int width = board[0].length;
+//          for (int y = 0; y < len; y++){
+//              for (int x = 0; x < wid; x++){
+//                  int index = 0;
+//                  if (this.backtrack_(x, y, word, index)){
+//                      return true;
+//                  }
+//              }
+//          }
 //
-//        String curStr = array2String(cur);
-//        if (curStr.equals(word)){
+//          return false;
+//      }
+//
+//    boolean backtrack_(int x, int y, String word, int index){
+//
+//          if (index >= word.length()){
 //            return true;
-//        }
+//          }
 //
-//        if (cur.size() > word.length()){
-//            return false;
-//        }
+//          if (x < 0 || x >= wid || y < 0 || y >= len || this.board_[y][x] != word.charAt(index)){
+//              return false;
+//          }
 //
-//        for (int i=0; i < len; i++){
-//            for (int j=0; j < width; j++){
-//                String val = String.valueOf(board[i][j]);
-//                if (visited[i][j] == null){
-//                    // do recursive
-//                    cur.add(val);
-//                    visited[i][j] = true;
-//                    _help(board, word, cur, visited);
-//                    // undo
-//                    visited[i][j] = null;
-//                    cur.remove(cur.size()-1);
-//                    _help(board, word, cur, visited);
-//                }
-//            }
-//        }
-//
-//        return false;
-//    }
-//
-//    private String array2String(List<String> input){
-//        String output = "";
-//        for (String x : input){
-//            output += x;
-//        }
-//        return output;
+//          //public int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+//          int[][] moves = new int[][]{ {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
+//          for (int[] move : moves){
+//              index += 1;
+//              backtrack_(move[0], move[1], word, index);
+//              this.board[x][y] = word.charAt(index);
+//              index -= 1;
+//          }
+//          return false;
 //    }
 
+
     // V1
+    // IDEA : DFS
+    // https://leetcode.com/problems/word-search/solutions/4791515/java-easy-solution-dfs-backtracking/
+    public boolean exist(char[][] board, String word) {
+        int n = board.length;
+        int m = board[0].length;
+
+        boolean[][] visited = new boolean[n][m];
+
+        for(int row = 0; row < n; row++){
+            for(int col = 0; col < m; col++){
+                if(board[row][col] == word.charAt(0)){
+                    if(dfs(row, col, word, 0, visited, board)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean dfs(int row, int col, String word, int lvl, boolean[][] visited, char[][] board){
+        int n = board.length;
+        int m = board[0].length;
+
+        if(lvl == word.length()){
+            return true;
+        }
+
+        if(row < 0 || row >= n || col < 0 || col >= m || visited[row][col] || board[row][col] != word.charAt(lvl)){
+            return false;
+        }
+
+        visited[row][col] = true;
+
+        boolean didFindNextCharacter =
+                dfs(row + 1, col, word, lvl + 1, visited, board)||
+                        dfs(row - 1, col, word, lvl + 1, visited, board)||
+                        dfs(row, col + 1, word, lvl + 1, visited, board)||
+                        dfs(row, col - 1, word, lvl + 1, visited, board);
+
+        visited[row][col] = false;  // Backtrack
+        return didFindNextCharacter;
+    }
+    
+    // V1'
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/word-search/editorial/
     private char[][] board;
