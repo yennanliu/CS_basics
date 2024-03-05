@@ -38,37 +38,25 @@ public class MaximumDepthOfBinaryTree {
     }
 
 
-    // V0
-//    public int maxDepth(TreeNode root) {
-//
-//        if (root == null){
-//            return 0;
-//        }
-//
-//        int resultL = findDepth(root.left, 0);
-//        int resultR = findDepth(root.right, 0);
-//
-//        return Math.max(resultL, resultR);
-//    }
-//
-//    private int findDepth(TreeNode root, int layer) {
-//
-//        if (root == null){
-//            return layer;
-//        }
-//
-//        if (root.left != null){
-//            layer += 1;
-//            findDepth(root.left, layer);
-//        }
-//
-//        if (root.right != null){
-//            layer += 1;
-//            findDepth(root.right, layer);
-//        }
-//
-//        return layer;
-//    }
+    // V0''
+    // IDEA : DFS (RECURSION)
+    public int maxDepth__(TreeNode root) {
+
+        if (root == null){
+            return 0;
+        }
+        int cur = 0;
+        int depth = 0;
+        return dfs(root, cur, depth);
+    }
+    private int dfs(TreeNode root, int cur, int depth){
+        if (root == null){
+            depth =  Math.max(cur, depth);
+            return depth;
+        }
+        return Math.max(dfs(root.left, cur+1, depth), dfs(root.right, cur+1, depth));
+    }
+
 
     // V1
     // IDEA : RECURSION
