@@ -24,7 +24,8 @@ public class SameTree {
             return false;
         }
 
-        return check(p.left, q.left) && check(p.right, q.right);
+        //return check(p.left, q.left) && check(p.right, q.right);
+        return check(p, q); // this one is OK as well
     }
 
     private Boolean check(TreeNode t1, TreeNode t2){
