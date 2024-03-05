@@ -8,50 +8,31 @@ import java.util.*;
 
 public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
-//    // V0
-//    // IDEA : DFS
-//    TreeNode root = new TreeNode();
-//    public TreeNode buildTree(int[] preorder, int[] inorder) {
-//
-//        if (preorder == null && inorder == null){
-//            return null;
-//        }
-//
-//        if (preorder.length == 1 && inorder.length == 1){
-//            return new TreeNode(preorder[0]);
-//        }
-//
-//        // help func
-//        //this._buildTree(preorder, inorder);
-//        return this.root;
-//    }
+    // V0
+    // TODO : implement
 
-
-//    private TreeNode  _buildTree(int[] preOrder, int[] inOrder){
-//
-//        //Arrays.copyOfRange(preOrder, 2, 3);
-//        //if (preOrder == null)
-//        if (preOrder.equals(inOrder)){
-//            return null;
-//        }
-//
-//        if (preOrder.equals(null) || inOrder.equals(null)){
-//            return null;
-//        }
-//        int _root = preOrder[0];
-//        int _left = inOrder[0];
-//        int idxRightPreorder = Arrays.asList(preOrder).indexOf(_left)+1;
-//        int idxRightInorder = Arrays.asList(inOrder).indexOf(_root)+1;
-//
-//        this.resNode = new TreeNode(_root);
-//        this.resNode.left = new TreeNode(_left);
-//        this.resNode.left = this._buildTree(
-//                Arrays.copyOfRange(preOrder, idxRightPreorder, preOrder.length-1),
-//                Arrays.copyOfRange(inOrder, idxRightInorder, inOrder.length-1)
-//        );
-//
-//        return null;
-//    }
+    // V0'
+    // IDEA : RECURSION (DFS) (transform below py code to java by GPT)
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/construct-binary-tree-from-preorder-and-inorder-traversal.py#L36
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if (preorder.length == 0) {
+            return null;
+        }
+        if (preorder.length == 1) {
+            return new TreeNode(preorder[0]);
+        }
+        TreeNode root = new TreeNode(preorder[0]);
+        int index = 0;
+        for (int i = 0; i < inorder.length; i++) {
+            if (inorder[i] == root.val) {
+                index = i;
+                break;
+            }
+        }
+        root.left = buildTree(Arrays.copyOfRange(preorder, 1, index + 1), Arrays.copyOfRange(inorder, 0, index));
+        root.right = buildTree(Arrays.copyOfRange(preorder, index + 1, preorder.length), Arrays.copyOfRange(inorder, index + 1, inorder.length));
+        return root;
+    }
 
     // V1
     // IDEA : The recursive structure in a Tree.
