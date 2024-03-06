@@ -56,6 +56,52 @@
 
 ### 0-2) Pattern
 
+### 0-2-1) Construct Binary Tree from Preorder and Inorder Traversal
+
+- LC 105
+- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/construct-binary-tree-from-preorder-and-inorder-traversal.py
+
+- NOTE !!!
+    - Binary tree is `symmetric`, so the distance(left-sub-tree, root), distance(right-sub-tree, root) is the same
+    - and the distance above is "idx"
+    - `root` always at first element when Preorder
+
+- Steps
+    - step 1) get root val in Preorder
+    - step 2) get root idx in Inorder
+    - step 3) split sub left tree, sub right tree in Preorder, Inorder via root idx
+
+
+```
+Preorder :
+        
+            root ---- left - right
+                 <-->     <-->
+                  idx      idx
+
+
+Inorder :
+        
+            left ---- root - right
+                 <-->     <-->
+                  idx      idx
+``` 
+
+so we can use below go represent left, right sub tree in Preorder and Inorder 
+
+```python
+# python
+
+# Preorder:
+# left sub tree : preorder[1 : index + 1]
+# right sub tree : preorder[index + 1 : ]
+
+# Inorder
+# left sub tree : inorder[ : index]
+# right sub tree : inorder[index + 1 :]
+```
+
+
 ## 1) General form
 
 ### 1-1) Basic OP
