@@ -33,7 +33,37 @@ public class WordBreak {
 //    }
 
     // V0
-    // IDEA : BACKTRACK (modify above via GPT)
+    // IDEA : BFS
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/word-break.py
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s == null || s.length() == 0 || wordDict == null || wordDict.size() == 0) {
+            return false;
+        }
+
+        Deque<Integer> q = new ArrayDeque<>();
+        q.offer(0);
+        boolean[] visited = new boolean[s.length()];
+
+        while (!q.isEmpty()) {
+            int i = q.poll();
+            if (!visited[i]) {
+                for (int j = i + 1; j <= s.length(); j++) {
+                    if (wordDict.contains(s.substring(i, j))) {
+                        if (j == s.length()) {
+                            return true;
+                        }
+                        q.offer(j);
+                    }
+                }
+                visited[i] = true;
+            }
+        }
+
+        return false;
+    }
+
+    // V0
+    // IDEA : BACKTRACK (modified via GPT)
     public boolean wordBreak_(String s, List<String> wordDict) {
         return check(s, new HashSet<>(wordDict), 0, new Boolean[s.length()]);
     }
