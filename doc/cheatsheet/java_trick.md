@@ -507,3 +507,13 @@ public List<List<String>> partition_1(String s) {
     // ..
  }
 ```
+
+### 2-2) Get max, min from 3 numbers
+
+```java
+// java
+
+// LC 152
+max = Math.max(Math.max(max * nums[i], min * nums[i]), nums[i]);
+min = Math.min(Math.min(temp * nums[i], min * nums[i]), nums[i]);
+```
