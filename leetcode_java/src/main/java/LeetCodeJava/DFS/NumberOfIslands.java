@@ -61,6 +61,55 @@ public class NumberOfIslands {
         return true;
     }
 
+    // V0
+    // IDEA : DFS (with looping) (modified by GPT)
+    int num_island_2 = 0;
+    boolean[][] _seen_2;
+
+    public int numIslands_0(char[][] grid) {
+        if (grid.length == 1 && grid[0].length == 1) {
+            return grid[0][0] == '1' ? 1 : 0;
+        }
+
+        int len = grid.length;
+        int width = grid[0].length;
+        this._seen = new boolean[len][width];
+
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < width; j++) {
+                if (_is_island_2(grid, j, i, this._seen_2)) {
+                    this.num_island_2 += 1;
+                }
+            }
+        }
+
+        return this.num_island_2;
+    }
+
+    private boolean _is_island_2(char[][] grid, int x, int y, boolean[][] seen) {
+
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+        int len = grid.length;
+        int width = grid[0].length;
+
+        if (x < 0 || x >= width || y < 0 || y >= len || this._seen[y][x] || grid[y][x] == '0') {
+            return false;
+        }
+
+        this._seen_2[y][x] = true;
+
+        for (int[] dir : directions) {
+            int newX = x + dir[0];
+            int newY = y + dir[1];
+            _is_island(grid, newX, newY, seen);
+        }
+
+        return true;
+    }
+
+
+
     // V1
     // IDEA : DFS
     // https://leetcode.com/problems/number-of-islands/editorial/

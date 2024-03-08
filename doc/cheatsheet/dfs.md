@@ -84,6 +84,7 @@ private TreeNode _dfs(TreeNode node){
 }
 ```
 
+
 - Tree transversal (DFS)
 
 ```python
@@ -188,6 +189,39 @@ def dfs(root, m, res):
 
     m[path] += 1
     return path
+```
+
+- Grpah transversal (DFS)
+
+
+- Transversal in 4 directions (up, down, left, right)
+```java
+// java
+// LC 200
+
+/** NOTE !!!! BELOW approach has same effect */
+
+// V1
+
+// private boolean _is_island(char[][] grid, int x, int y, boolean[][] seen){}
+
+// ....
+_is_island(grid, x+1, y, seen);
+_is_island(grid, x-1, y, seen);
+_is_island(grid, x, y+1, seen);
+_is_island(grid, x, y-1, seen);
+// ....
+
+// V2
+// private boolean _is_island_2(char[][] grid, int x, int y, boolean[][] seen) {}
+
+int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+for (int[] dir : directions) {
+    int newX = x + dir[0];
+    int newY = y + dir[1];
+    _is_island(grid, newX, newY, seen);
+}
 ```
 
 ### 0-3) Tricks
