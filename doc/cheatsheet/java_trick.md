@@ -170,6 +170,7 @@ for(int i = k - 1; i >= 0; --i) {
 ```java
 // java
 // LC 695
+// LC 200
 public static void main(String[] args) {
 
     // ex1
@@ -185,6 +186,10 @@ public static void main(String[] args) {
     // ex3
     boolean[][] seen;
     seen = new boolean[3][4];
+
+    int x = 3;
+    int y = 4;
+    boolean visit = boolean[y][x];
 }
 ```
 
