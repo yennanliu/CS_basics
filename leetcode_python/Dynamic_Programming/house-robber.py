@@ -11,17 +11,35 @@
 #
 
 # V0
-class Solution:
-    # @param num, a list of integer
-    # @return an integer
-    def rob(self, num):
-        size = len(num)
-        dp = [0] * (size + 1)
-        if size:
-            dp[1] = num[0]
-        for i in range(2, size + 1):
-            dp[i] = max(dp[i - 1], dp[i - 2] + num[i - 1])
-        return dp[size]
+class Solution(object):
+    def rob(self, nums: List[int]):
+            if not nums:
+                return 0
+            if len(nums) < 2:
+                return nums[0]
+            nums[1] = max(nums[0], nums[1])
+            for i in range(2, len(nums)):
+                """
+                NOTE !!!
+
+                    nums[i-2]+nums[i] : rob nums[i]
+                    nums[i-1] : not rob nums[i]
+                """
+                nums[i] = max((nums[i-2]+nums[i]), nums[i-1])
+            return nums[-1]
+
+# V0'
+# class Solution:
+#     # @param num, a list of integer
+#     # @return an integer
+#     def rob(self, num):
+#         size = len(num)
+#         dp = [0] * (size + 1)
+#         if size:
+#             dp[1] = num[0]
+#         for i in range(2, size + 1):
+#             dp[i] = max(dp[i - 1], dp[i - 2] + num[i - 1])
+#         return dp[size]
 
 # V1
 # http://bookshadow.com/weblog/2015/04/01/leetcode-house-robber/
