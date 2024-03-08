@@ -18,6 +18,17 @@ public class ReverseLinkedList {
             ListNode _prev = null;
 
             while (head != null) {
+                /**
+                 *  NOTE !!!!
+                 *
+                 *   4 operations
+                 *
+                 *    step 1) cache next
+                 *    step 2) point cur to prev
+                 *    step 3) move prev to cur
+                 *    step 4) move cur to next
+                 *
+                 */
                 ListNode _next = head.next;
                 head.next = _prev;
                 _prev = head;

@@ -362,7 +362,7 @@ class Solution(object):
 // iteration
 //---------------------------
 // LC 206
-// algorithm book (labu) p.297
+// V0
 public ListNode reverseList(ListNode head) {
 
     if (head == null) {
@@ -372,6 +372,17 @@ public ListNode reverseList(ListNode head) {
     ListNode _prev = null;
 
     while (head != null) {
+        /**
+         *  NOTE !!!!
+         *
+         *   4 operations
+         *
+         *    step 1) cache next
+         *    step 2) point cur to prev
+         *    step 3) move prev to cur
+         *    step 4) move cur to next
+         *
+         */
         ListNode _next = head.next;
         head.next = _prev;
         _prev = head;
@@ -394,15 +405,8 @@ public ListNode reverseList(ListNode head) {
 // algorithm book (labu) p.290
 // IDEA : Recursive
 // https://leetcode.com/problems/reverse-linked-list/editorial/
-public ListNode reverseList_3(ListNode head) {
-    if (head == null || head.next == null) {
-        return head;
-    }
-    ListNode p = reverseList_3(head.next);
-    head.next.next = head;
-    head.next = null;
-    return p;
-}
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseLinkedList.java
+// same as above 
 ```
 
 #### 1-1-5) Reverse *nodes in [a,b]*  linked list (iteration)
