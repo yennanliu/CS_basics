@@ -68,33 +68,100 @@ public class CourseSchedule {
 //        return true;
 //    }
 
-    // V1
+    // V0'
     // IDEA : BFS
-    // https://leetcode.com/problems/course-schedule/solutions/58775/my-java-bfs-solution/
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
         int[] indegree = new int[numCourses];
         Queue<Integer> queue = new LinkedList<Integer>();
         int count = numCourses;
+
+        /** NOTE !!! numCourses */
         for (int i = 0; i < numCourses; i++) {
             map.put(i, new ArrayList<Integer>());
         }
+
+        /** NOTE !!! prerequisites */
         for (int i = 0; i < prerequisites.length; i++) {
             map.get(prerequisites[i][0]).add(prerequisites[i][1]);
+
+            /** NOTE : below approaches has same effect */
             // V1
             //indegree[prerequisites[i][1]]++;
             // V2
             indegree[prerequisites[i][1]] += 1;
         }
+
+        /** NOTE !!! numCourses */
         for (int i = 0; i < numCourses; i++) {
+            // only insert to queue if "indegree == 0" (course has NO prerequisite)
             if (indegree[i] == 0) {
-                queue.offer(i);
+                queue.offer(i); // insert to queue
             }
         }
+
         while (!queue.isEmpty()) {
-            int current = queue.poll();
+            int current = queue.poll(); // pop from queue
             for (int i : map.get(current)) {
 
+                /** NOTE : below approaches has same effect */
+                // V1
+//                if (--indegree[i] == 0) {
+//                    queue.offer(i);
+//                }
+
+                // V2
+                if (indegree[i] == 1) {
+                    queue.offer(i);
+                } else {
+                    indegree[i] -= 1;
+                }
+
+            }
+            // when finish a course checking ( course visit and course prerequisite visit)
+            count--;
+        }
+        return count == 0;
+    }
+
+    // V1
+    // IDEA : BFS
+    // https://leetcode.com/problems/course-schedule/solutions/58775/my-java-bfs-solution/
+    public boolean canFinish__(int numCourses, int[][] prerequisites) {
+        Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
+        int[] indegree = new int[numCourses];
+        Queue<Integer> queue = new LinkedList<Integer>();
+        int count = numCourses;
+
+        /** NOTE !!! numCourses */
+        for (int i = 0; i < numCourses; i++) {
+            map.put(i, new ArrayList<Integer>());
+        }
+
+        /** NOTE !!! prerequisites */
+        for (int i = 0; i < prerequisites.length; i++) {
+            map.get(prerequisites[i][0]).add(prerequisites[i][1]);
+
+            /** NOTE : below approaches has same effect */
+            // V1
+            //indegree[prerequisites[i][1]]++;
+            // V2
+            indegree[prerequisites[i][1]] += 1;
+        }
+
+        /** NOTE !!! numCourses */
+        for (int i = 0; i < numCourses; i++) {
+            // only insert to queue if "indegree == 0" (course has NO prerequisite)
+            if (indegree[i] == 0) {
+                queue.offer(i); // insert to queue
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            int current = queue.poll(); // pop from queue
+            for (int i : map.get(current)) {
+
+                  /** NOTE : below approaches has same effect */
                   // V1
 //                if (--indegree[i] == 0) {
 //                    queue.offer(i);
@@ -108,6 +175,7 @@ public class CourseSchedule {
                 }
 
             }
+            // when finish a course checking ( course visit and course prerequisite visit)
             count--;
         }
         return count == 0;
