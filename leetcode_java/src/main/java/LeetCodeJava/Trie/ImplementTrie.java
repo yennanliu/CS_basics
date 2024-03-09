@@ -9,115 +9,85 @@ package LeetCodeJava.Trie;
  * boolean param_2 = obj.search(word);
  * boolean param_3 = obj.startsWith(prefix);
  */
+import java.util.HashMap;
+import java.util.Map;
 
 public class ImplementTrie {
 
-
     // V0
     // IDEA : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py#L49
-    // TODO : implement above
+    // modified by GPT
+    class TrieNode {
+        Map<String, TrieNode> children;
+        boolean isWord;
 
-    // V0'
-    // TODO : fix below
+        public TrieNode() {
+            children = new HashMap<>();
+            isWord = false;
+        }
+    }
 
-//    public class ListNode2{
-//
-//        // attr
-//        public String val;
-//        public ListNode2 next;
-//
-//        // constructor
-//        public ListNode2(){
-//
-//        }
-//
-//        public ListNode2(String val){
-//            this.val = val;
-//        }
-//
-//        ListNode2(String val, ListNode2 next){
-//            this.val = val;
-//            this.next = next;
-//        }
-//
-//    }
+    class Trie {
+        TrieNode root;
 
-//    class Trie {
-//
-//        // attr
-//        //LinkedList<String> node;
-//        ListNode2 node;
-//        HashMap<String, ListNode2> map;
-//
-//        // constructor
-//        public Trie() {
-//            this.node = new ListNode2();
-//            this.map = new HashMap<>();
-//        }
-//
-//        public void insert(String word) {
-//            String _first = String.valueOf(word.charAt(0));
-//            if (!this.map.containsKey(_first)){
-//                this.map.put(_first, new ListNode2(_first));
-//            }else{
-//                ListNode2 tmpNode = this.map.get(_first);
-//                ListNode2 tmpNodeUpdated = this.addElementToNode(_first, tmpNode);
-//                map.put(_first, tmpNodeUpdated);
-//            }
-//        }
-//
-//        public boolean search(String word) {
-//
-//            char[] charArray = word.toCharArray();
-//            String _first = String.valueOf(word.charAt(0));
-//            if (! startsWith(_first)){
-//                return false;
-//            }
-//            if (!this.map.containsKey(_first)){
-//                return false;
-//            }
-//            ListNode2 curNode = this.map.get(_first);
-//            while (curNode.next != null){
-//
-//            }
-//
-//            return true;
-//        }
-//
-//        public boolean startsWith(String prefix) {
-//
-//            return false;
-//        }
-//
-//        private ListNode2 addElementToNode(String element, ListNode2 node){
-//
-//            return node;
-//        }
-//
-//    }
+        public Trie() {
+            root = new TrieNode();
+        }
+
+        public void insert(String word) {
+            TrieNode cur = root;
+            for (String c : word.split("")) {
+                cur.children.putIfAbsent(c, new TrieNode());
+                cur = cur.children.get(c);
+            }
+            cur.isWord = true;
+        }
+
+        public boolean search(String word) {
+            TrieNode cur = root;
+            for (String c : word.split("")) {
+                cur = cur.children.get(c);
+                if (cur == null) {
+                    return false;
+                }
+            }
+            return cur.isWord;
+        }
+
+        public boolean startsWith(String prefix) {
+            TrieNode cur = root;
+            for (String c : prefix.split("")) {
+                cur = cur.children.get(c);
+                if (cur == null) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 
     // V1
     // https://leetcode.com/problems/implement-trie-prefix-tree/editorial/
-    class TrieNode {
+    class TrieNode2 {
 
         // R links to node children
-        private TrieNode[] links;
+        private TrieNode2[] links;
 
         private final int R = 26;
 
         private boolean isEnd;
 
-        public TrieNode() {
-            links = new TrieNode[R];
+        public TrieNode2() {
+            links = new TrieNode2[R];
         }
 
         public boolean containsKey(char ch) {
             return links[ch -'a'] != null;
         }
-        public TrieNode get(char ch) {
+        public TrieNode2 get(char ch) {
             return links[ch -'a'];
         }
-        public void put(char ch, TrieNode node) {
+        public void put(char ch, TrieNode2 node) {
             links[ch -'a'] = node;
         }
         public void setEnd() {
@@ -128,20 +98,21 @@ public class ImplementTrie {
         }
     }
 
+
     class Trie2 {
-        private TrieNode root;
+        private TrieNode2 root;
 
         public Trie2() {
-            root = new TrieNode();
+            root = new TrieNode2();
         }
 
         // Inserts a word into the trie.
         public void insert(String word) {
-            TrieNode node = root;
+            TrieNode2 node = root;
             for (int i = 0; i < word.length(); i++) {
                 char currentChar = word.charAt(i);
                 if (!node.containsKey(currentChar)) {
-                    node.put(currentChar, new TrieNode());
+                    node.put(currentChar, new TrieNode2());
                 }
                 node = node.get(currentChar);
             }
@@ -151,8 +122,8 @@ public class ImplementTrie {
 
         // search a prefix or whole key in trie and
         // returns the node where search ends
-        private TrieNode searchPrefix(String word) {
-            TrieNode node = root;
+        private TrieNode2 searchPrefix(String word) {
+            TrieNode2 node = root;
             for (int i = 0; i < word.length(); i++) {
                 char curLetter = word.charAt(i);
                 if (node.containsKey(curLetter)) {
@@ -166,18 +137,19 @@ public class ImplementTrie {
 
         // Returns if the word is in the trie.
         public boolean search(String word) {
-            TrieNode node = searchPrefix(word);
+            TrieNode2 node = searchPrefix(word);
             return node != null && node.isEnd();
         }
 
         // Returns if there is any word in the trie
         // that starts with the given prefix.
         public boolean startsWith(String prefix) {
-            TrieNode node = searchPrefix(prefix);
+            TrieNode2 node = searchPrefix(prefix);
             return node != null;
         }
 
     }
+
 
     // V2
     // https://leetcode.com/problems/implement-trie-prefix-tree/solutions/3309950/java-easiest-solution/
