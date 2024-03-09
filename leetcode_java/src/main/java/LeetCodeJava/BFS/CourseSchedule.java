@@ -70,7 +70,7 @@ public class CourseSchedule {
 
     // V0'
     // IDEA : BFS
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_(int numCourses, int[][] prerequisites) {
         Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
         int[] indegree = new int[numCourses];
         Queue<Integer> queue = new LinkedList<Integer>();
@@ -124,10 +124,52 @@ public class CourseSchedule {
         return count == 0;
     }
 
+    // V0'''
+    // IDEA : DFS
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule.py
+    public boolean canFinish_0_2(int numCourses, int[][] prerequisites) {
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int[] prerequisite : prerequisites) {
+            graph.computeIfAbsent(prerequisite[0], k -> new ArrayList<>()).add(prerequisite[1]);
+        }
+
+        int[] visited = new int[numCourses];
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (!dfs(res, graph, visited, i)) {
+                return false;
+            }
+        }
+
+        return res.size() > 0;
+    }
+
+    private boolean dfs(List<Integer> res, Map<Integer, List<Integer>> graph, int[] visited, int course) {
+        if (visited[course] == 1) {
+            return false;
+        }
+        if (visited[course] == 2) {
+            return true;
+        }
+
+        visited[course] = 1;
+        if (graph.containsKey(course)) {
+            for (int neighbor : graph.get(course)) {
+                if (!dfs(res, graph, visited, neighbor)) {
+                    return false;
+                }
+            }
+        }
+        visited[course] = 2;
+        res.add(0, course);
+
+        return true;
+    }
+
     // V1
     // IDEA : BFS
     // https://leetcode.com/problems/course-schedule/solutions/58775/my-java-bfs-solution/
-    public boolean canFinish__(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_0_3(int numCourses, int[][] prerequisites) {
         Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
         int[] indegree = new int[numCourses];
         Queue<Integer> queue = new LinkedList<Integer>();
