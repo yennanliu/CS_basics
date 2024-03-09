@@ -69,7 +69,7 @@ public class CourseSchedule {
 //    }
 
     // V1
-    // IDEA : DFS
+    // IDEA : BFS
     // https://leetcode.com/problems/course-schedule/solutions/58775/my-java-bfs-solution/
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
@@ -81,7 +81,10 @@ public class CourseSchedule {
         }
         for (int i = 0; i < prerequisites.length; i++) {
             map.get(prerequisites[i][0]).add(prerequisites[i][1]);
-            indegree[prerequisites[i][1]]++;
+            // V1
+            //indegree[prerequisites[i][1]]++;
+            // V2
+            indegree[prerequisites[i][1]] += 1;
         }
         for (int i = 0; i < numCourses; i++) {
             if (indegree[i] == 0) {
@@ -91,9 +94,19 @@ public class CourseSchedule {
         while (!queue.isEmpty()) {
             int current = queue.poll();
             for (int i : map.get(current)) {
-                if (--indegree[i] == 0) {
+
+                  // V1
+//                if (--indegree[i] == 0) {
+//                    queue.offer(i);
+//                }
+
+                // V2
+                if (indegree[i] == 1) {
                     queue.offer(i);
+                } else {
+                    indegree[i] -= 1;
                 }
+
             }
             count--;
         }
