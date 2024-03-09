@@ -139,6 +139,26 @@ private String reverseString(String input){
 } 
 ```
 
+
+### 1-0-5) Access elements in a String
+```java
+// java
+String word = "heloooo 123 111";
+for (String x : word.split("")){
+    System.out.println(x);
+}
+
+// LC 208
+// ..
+for (String c : word.split("")) {
+    cur = cur.children.get(c);
+    if (cur == null) {
+        return false;
+    }
+}
+// ..
+```
+
 ### 1-1) Swap elements in char array
 
 ```java
