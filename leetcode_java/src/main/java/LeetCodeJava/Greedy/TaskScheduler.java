@@ -2,7 +2,7 @@ package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/task-scheduler/
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 
 import java.util.*;
 
@@ -54,29 +54,29 @@ public class TaskScheduler {
     // IDEA : MAX HEAP + DQUEUE
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0621-task-scheduler.java
     // https://www.youtube.com/watch?v=s8p8ukTyA2I
-    public int leastInterval_5(char[] tasks, int n) {
-        if (n == 0) return tasks.length;
-        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
-        Queue<Pair<Integer, Integer>> q = new LinkedList<>();
-        int[] arr = new int[26];
-        for (char c : tasks) arr[c - 'A']++;
-        for (int val : arr) if (val > 0) pq.add(val);
-        int time = 0;
-
-        while ((!pq.isEmpty() || !q.isEmpty())) {
-            time++;
-            if (!pq.isEmpty()) {
-                int val = pq.poll();
-                val--;
-                if (val > 0) q.add(new Pair(val, time + n));
-            }
-
-            if (!q.isEmpty() && q.peek().getValue() == time) pq.add(
-                    q.poll().getKey()
-            );
-        }
-        return time;
-    }
+//    public int leastInterval_5(char[] tasks, int n) {
+//        if (n == 0) return tasks.length;
+//        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+//        Queue<Pair<Integer, Integer>> q = new LinkedList<>();
+//        int[] arr = new int[26];
+//        for (char c : tasks) arr[c - 'A']++;
+//        for (int val : arr) if (val > 0) pq.add(val);
+//        int time = 0;
+//
+//        while ((!pq.isEmpty() || !q.isEmpty())) {
+//            time++;
+//            if (!pq.isEmpty()) {
+//                int val = pq.poll();
+//                val--;
+//                if (val > 0) q.add(new Pair(val, time + n));
+//            }
+//
+//            if (!q.isEmpty() && q.peek().getValue() == time) pq.add(
+//                    q.poll().getKey()
+//            );
+//        }
+//        return time;
+//    }
 
     // V1
     // IDEA : Greedy
