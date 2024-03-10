@@ -11,8 +11,44 @@ import java.util.Stack;
 public class InvertBinaryTree {
 
     // V0
-    // IDEA : BFS
+    // IDEA : DFS
     public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        /** NOTE !!!!
+         *
+         *   instead of calling invertTree and assign value to sub tree directly,
+         *   we need to CACHE invertTree result, and assign later
+         *   -> since assign directly will cause tree changed, and affect the other invertTree call
+         *
+         *   e.g. below is WRONG,
+         *      root.left = invertTree(root.right);
+         *      root.right = invertTree(root.left);
+         *
+         *   need to cache result
+         *
+         *       TreeNode left = invertTree(root.left);
+         *       TreeNode right = invertTree(root.right);
+         *
+         *   then assign to sub tree
+         *
+         *       root.left = right;
+         *       root.right = left;
+         */
+        TreeNode left = invertTree(root.left);
+        TreeNode right = invertTree(root.right);
+        root.left = right;
+        root.right = left;
+        /** NOTE !!!! below is WRONG */
+//        root.left = invertTree(root.right);
+//        root.right = invertTree(root.left);
+        return root;
+    }
+
+    // V0
+    // IDEA : BFS
+    public TreeNode invertTree_(TreeNode root) {
 
         if (root == null) {
             return null;
@@ -48,8 +84,8 @@ public class InvertBinaryTree {
         if (root == null) {
             return null;
         }
-        TreeNode right = invertTree(root.right);
-        TreeNode left = invertTree(root.left);
+        TreeNode right = invertTree_2(root.right);
+        TreeNode left = invertTree_2(root.left);
         root.left = right;
         root.right = left;
         return root;
