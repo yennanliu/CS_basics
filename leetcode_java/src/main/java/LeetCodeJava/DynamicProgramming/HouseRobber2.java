@@ -43,6 +43,37 @@ public class HouseRobber2 {
         return dp[end];
     }
 
+    // V0'
+    // IDEA : BRUTE FORCE (MODIFIED BY GPT)
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/house-robber-ii.py
+    public int rob_(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        int prevMax = 0;
+        int currMax = 0;
+
+        for (int i = 0; i < nums.length - 1; i++) {
+            int tmp = currMax;
+            currMax = Math.max(currMax, prevMax + nums[i]);
+            prevMax = tmp;
+        }
+        int rec = currMax;
+
+        prevMax = 0;
+        currMax = 0;
+        for (int i = nums.length - 1; i > 0; i--) {
+            int tmp = currMax;
+            currMax = Math.max(currMax, prevMax + nums[i]);
+            prevMax = tmp;
+        }
+        return Math.max(rec, currMax);
+    }
+
     // V1
     // https://leetcode.com/problems/house-robber-ii/solutions/4844002/beats-100-simple-to-understand/
     public int robber(int[] nums) {
