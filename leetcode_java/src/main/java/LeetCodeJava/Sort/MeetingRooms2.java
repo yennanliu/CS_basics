@@ -99,7 +99,9 @@ public class MeetingRooms2 {
 
         for (int[] interval : intervals) {
             // There's no overlap, so we can reuse the same room.
+            // peak : Retrieves, but does not remove, the head of this queue, or returns null if this queue is empty.
             if (!minHeap.isEmpty() && interval[0] >= minHeap.peek())
+                // Retrieves and removes the head of this queue,
                 minHeap.poll();
             minHeap.offer(interval[1]);
         }
