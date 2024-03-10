@@ -38,7 +38,13 @@ Constraints:
 # V1
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/house-robber-ii/discuss/230657/Python-solution
-# Since nums[0] and nums[-1] cannot be robbed simultaneously, The robber has to rob houses in nums[:-1] or in nums[1:], whichever is larger. Therefore, the problem reduces to two LC 198. House Robber I problems, which have already been solved.
+# IDEA : 
+# Since nums[0] and nums[-1] cannot be robbed simultaneously, 
+# The robber has to rob houses in nums[:-1] or in nums[1:], 
+# whichever is larger. Therefore, the problem reduces to two LC 198. 
+# House Robber I problems, which have already been solved.
+# -> so same as LC 198 (House robber)
+# -> just need to implement method on nums[:-1] or nums[1:], and return max
 class Solution:
     def rob(self, nums):
         """
