@@ -759,6 +759,46 @@ class Solution(object):
         return root
 ```
 
+```java
+// java
+// DFS
+    // V0
+    // IDEA : DFS
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        /** NOTE !!!!
+         *
+         *   instead of calling invertTree and assign value to sub tree directly,
+         *   we need to CACHE invertTree result, and assign later
+         *   -> since assign directly will cause tree changed, and affect the other invertTree call
+         *
+         *   e.g. below is WRONG,
+         *      root.left = invertTree(root.right);
+         *      root.right = invertTree(root.left);
+         *
+         *   need to cache result
+         *
+         *       TreeNode left = invertTree(root.left);
+         *       TreeNode right = invertTree(root.right);
+         *
+         *   then assign to sub tree
+         *
+         *       root.left = right;
+         *       root.right = left;
+         */
+        TreeNode left = invertTree(root.left);
+        TreeNode right = invertTree(root.right);
+        root.left = right;
+        root.right = left;
+        /** NOTE !!!! below is WRONG */
+//        root.left = invertTree(root.right);
+//        root.right = invertTree(root.left);
+        return root;
+    }
+```
+
 ### 1-1-16) Get neighborhood node (for each node) from tree
 ```python
 # LC 863. All Nodes Distance K in Binary Tree
