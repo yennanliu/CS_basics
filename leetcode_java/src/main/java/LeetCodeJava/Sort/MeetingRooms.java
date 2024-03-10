@@ -6,7 +6,24 @@ import java.util.Arrays;
 
 public class MeetingRooms {
 
+    // V0
+    // IDEA : SORT
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms.py
     public boolean canAttendMeetings(int[][] intervals) {
+        // SORT ON 1st element (idx = 0)
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        // NOTE !!! start from idx=1
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i-1][1] > intervals[i][0]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // V1
+    // IDEA : SORT
+    public boolean canAttendMeetings_(int[][] intervals) {
 
         // sort
         //Arrays.sort(intervals, Comparator.comparingInt((x, y) -> x[0] - y[0]).reversed());
@@ -38,11 +55,11 @@ public class MeetingRooms {
         return true;
     }
 
-    // V1
+    // V2
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/meeting-rooms/editorial/
 
-    // V1
+    // V3
     // IDEA : SORTING
     // https://leetcode.com/problems/meeting-rooms/editorial/
     public boolean canAttendMeetings_2(int[][] intervals) {
