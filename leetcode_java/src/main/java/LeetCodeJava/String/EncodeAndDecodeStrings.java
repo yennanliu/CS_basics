@@ -13,58 +13,57 @@ import java.util.List;
 public class EncodeAndDecodeStrings {
 
     // V0
+    // TODO : implement it
     // Encodes a list of strings to a single string.
-//    public String encode(List<String> strs) {
-//
-//        if (strs.size() == 0 || strs.equals(null)){
-//            return "";
-//        }
-//
-//        if (strs.size() == 1 && strs.get(0).equals("")){
-//            return "";
-//        }
-//
-//        String encodeStr = "";
-//        for (String msg : strs){
-//            if (msg!="#"){
-//                String cur = "#";
-//                cur += msg;
-//                encodeStr += cur;
-//            }else{
-//                String cur = "#";
-//                cur += "?";
-//                encodeStr += cur;
-//            }
-//
-//        }
-//
-//        return encodeStr;
-//    }
-//
-//    // Decodes a single string to a list of strings.
-//    public List<String> decode(String s) {
-//
-//        if (s.equals("")){
-//            List<String> res = new ArrayList<>();
-//            res.add("");
-//            return res;
-//        }
-//
-//        String[] decodeArray = s.split("#");
-//        List<String> output = new ArrayList<>();
-//        for (String x : decodeArray){
-//            String val = String.valueOf(x);
-//            if (val.length() > 0 && !val.equals(null)){
-//                if(!val.equals("?")){
-//                    output.add(val);
-//                }else{
-//                    output.add("#");
-//                }
-//            }
-//        }
-//
-//        return output;
-//    }
+
+    // V0'
+    // IDEA : STRING, ARRAY OP
+    public String encode_0(List<String> strs) {
+        StringBuilder encodedString = new StringBuilder();
+        // Iterate through the list of strings
+        for (String s : strs) {
+            // Append each string to the StringBuilder followed by the delimiter
+            encodedString.append(s);
+            encodedString.append("π");
+        }
+        // Return the entire encoded string
+        return encodedString.toString();
+    }
+
+    // Decodes a single string to a list of strings.
+    public List<String> decode_0(String s) {
+        // Split the encoded string at each occurrence of the delimiter
+        // Note: We use -1 as the limit parameter to ensure trailing empty strings are included
+        /**
+         *
+         *  In the given code, split("π", -1) is splitting a
+         *  string s using the delimiter "π". The second argument, -1,
+         *  is used to control the behavior of the split operation.
+         *
+         *  When you use -1 as the second argument in the split method,
+         *  it indicates that you want to include all trailing empty strings
+         *  in the resulting array. -> `This means that if there are consecutive
+         *  delimiters at the end of the input string, the split method
+         *  will include empty strings for each of those delimiters.`
+         *
+         *
+         *  Example :
+         *
+         *   String s = "appleπbananaπ";
+         *   String[] decodedStrings = s.split("π", -1);
+         *   System.out.println(Arrays.toString(decodedStrings));
+         *
+         *   # result:
+         *
+         *   [apple, banana, ]
+         *
+         *
+         */
+        String[] decodedStrings = s.split("π", -1);
+        // Convert the array to a list and return it
+        // Note: We remove the last element because it's an empty string resulting from the final delimiter
+        return new ArrayList<>(Arrays.asList(decodedStrings).subList(0, decodedStrings.length - 1));
+    }
 
     // V1
     // IDEA :  Non-ASCII delimiter
@@ -86,6 +85,31 @@ public class EncodeAndDecodeStrings {
     public List<String> decode_2(String s) {
         // Split the encoded string at each occurrence of the delimiter
         // Note: We use -1 as the limit parameter to ensure trailing empty strings are included
+        /**
+         *
+         *  In the given code, split("π", -1) is splitting a
+         *  string s using the delimiter "π". The second argument, -1,
+         *  is used to control the behavior of the split operation.
+         *
+         *  When you use -1 as the second argument in the split method,
+         *  it indicates that you want to include all trailing empty strings
+         *  in the resulting array. -> `This means that if there are consecutive
+         *  delimiters at the end of the input string, the split method
+         *  will include empty strings for each of those delimiters.`
+         *
+         *
+         *  Example :
+         *
+         *   String s = "appleπbananaπ";
+         *   String[] decodedStrings = s.split("π", -1);
+         *   System.out.println(Arrays.toString(decodedStrings));
+         *
+         *   # result:
+         *
+         *   [apple, banana, ]
+         *
+         *
+         */
         String[] decodedStrings = s.split("π", -1);
         // Convert the array to a list and return it
         // Note: We remove the last element because it's an empty string resulting from the final delimiter
