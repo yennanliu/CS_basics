@@ -24,60 +24,60 @@ import java.util.Queue;
 public class SerializeAndDeserializeBinaryTree {
 
     // VO
-    // TODO : fix it
-//    public class Codec {
-//        String res = "";
-//        // should use BFS (visit layer by layer)
-//        public String bfs(TreeNode root) {
-//            Queue<TreeNode> queue = new LinkedList<>();
-//            queue.add(root);
-//            while (!queue.isEmpty()) {
-//                TreeNode cur = queue.poll();
-//                if (cur == null){
-//                    this.res += "#" + " ";
-//                    continue;
-//                }
-//                System.out.println(">>> cur = " + cur.val);
-//                this.res += cur.val + " ";
-//                queue.add(cur.left);
-//                queue.add(cur.right);
-//            }
-//            return this.res;
-//        }
-//
-//        // Encodes a tree to a single string.
-//        public String serialize(TreeNode root) {
-//            if (root == null) {
-//                return "";
-//            }
-//            if (root.left == null && root.right == null) {
-//                return String.valueOf(root.val);
-//            }
-//            String finalRes = bfs(root);
-//            System.out.println(">>> finalRes = " + finalRes);
-//            return finalRes;
-//        }
-//
-//        // Decodes your encoded data to tree.
-//        public TreeNode deserialize(String data) {
-//            TreeNode deCodeRes = new TreeNode();
-//            Queue<TreeNode> queue = new LinkedList<>();
-//            if (data == null || data.length() == 0){
-//                return deCodeRes;
-//            }
-//            // use BFS again : add decoded string acquired via BFS
-//            String[] dataList = data.split(" ");
-//            for (String x: dataList){
-//                if (x == "#"){
-//                    deCodeRes = null;
-//                }
-//                deCodeRes.val = Integer.parseInt(x);
-//                queue.add(deCodeRes);
-//            }
-//
-//            return deCodeRes;
-//        }
-//    }
+    // IDEA : DFS
+    public class Codec{
+        public String serialize(TreeNode root) {
+
+            /** NOTE !!!
+             *
+             *     if root == null, return "#"
+             */
+            if (root == null){
+                return "#";
+            }
+
+            /** NOTE !!! return result via pre-order, split with "," */
+            return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+        }
+
+        public TreeNode deserialize(String data) {
+
+            /** NOTE !!!
+             *
+             *   1) init queue and append serialize output
+             *   2) even use queue, but helper func still using DFS
+             */
+            Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
+            return helper(queue);
+        }
+
+        private TreeNode helper(Queue<String> queue) {
+
+            // get val from queue first
+            String s = queue.poll();
+
+            if (s.equals("#")){
+                return null;
+            }
+            /** NOTE !!! init current node  */
+            TreeNode root = new TreeNode(Integer.valueOf(s));
+            /** NOTE !!!
+             *
+             *    since serialize is "pre-order",
+             *    deserialize we use "pre-order" as well
+             *    e.g. root -> left sub tree -> right sub tree
+             *    -> so we get sub tree via below :
+             *
+             *       root.left = helper(queue);
+             *       root.right = helper(queue);
+             *
+             */
+            root.left = helper(queue);
+            root.right = helper(queue);
+            /** NOTE !!! don't forget to return final deserialize result  */
+            return root;
+        }
+    }
 
     // V1
     // IDEA : BFS + QUEUE OP
@@ -123,13 +123,15 @@ public class SerializeAndDeserializeBinaryTree {
             for (int i = 1; i < len; i++) {
                 TreeNode parent = q.poll();
 
-                if (!nodes[i].equals("#")) {
+                /** NOTE !!! if node[i] is NOT null ( nodes[i] != "#" ) */
+                if (! nodes[i].equals("#")) {
                     TreeNode leftNode = new TreeNode(Integer.parseInt(nodes[i]));
                     parent.left = leftNode;
                     q.add(leftNode);
                 }
 
-                if (!nodes[++i].equals("#")) {
+                /** NOTE !!! if node[++i] is NOT null ( node[++i] != "#" ) */
+                if (! nodes[++i].equals("#")) {
                     TreeNode rightNode = new TreeNode(Integer.parseInt(nodes[i]));
                     parent.right = rightNode;
                     q.add(rightNode);

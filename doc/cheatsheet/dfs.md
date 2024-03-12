@@ -380,6 +380,64 @@ class Codec:
         return root
 ```
 
+```java
+// java
+// LC 297
+public class Codec{
+    public String serialize(TreeNode root) {
+
+        /** NOTE !!!
+         *
+         *     if root == null, return "#"
+         */
+        if (root == null){
+            return "#";
+        }
+
+        /** NOTE !!! return result via pre-order, split with "," */
+        return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+    }
+
+    public TreeNode deserialize(String data) {
+
+        /** NOTE !!!
+         *
+         *   1) init queue and append serialize output
+         *   2) even use queue, but helper func still using DFS
+         */
+        Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
+        return helper(queue);
+    }
+
+    private TreeNode helper(Queue<String> queue) {
+
+        // get val from queue first
+        String s = queue.poll();
+
+        if (s.equals("#")){
+            return null;
+        }
+        /** NOTE !!! init current node  */
+        TreeNode root = new TreeNode(Integer.valueOf(s));
+        /** NOTE !!!
+         *
+         *    since serialize is "pre-order",
+         *    deserialize we use "pre-order" as well
+         *    e.g. root -> left sub tree -> right sub tree
+         *    -> so we get sub tree via below :
+         *
+         *       root.left = helper(queue);
+         *       root.right = helper(queue);
+         *
+         */
+        root.left = helper(queue);
+        root.right = helper(queue);
+        /** NOTE !!! don't forget to return final deserialize result  */
+        return root;
+    }
+}
+```
+
 #### 1-1-8) Serialize and Deserialize BST
 ```python
 # LC 449. Serialize and Deserialize BST
