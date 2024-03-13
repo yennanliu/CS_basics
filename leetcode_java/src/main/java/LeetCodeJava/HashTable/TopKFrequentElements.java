@@ -54,6 +54,45 @@ public class TopKFrequentElements {
         return res;
     }
 
+    // V0'
+    // IDEA : PQ (priority queue)
+    public int[] topKFrequent_0(int[] nums, int k) {
+
+        // O(1) time
+        if (k == nums.length) {
+            return nums;
+        }
+
+        // Step 1. build hash map : character and how often it appears
+        // O(N) time
+        Map<Integer, Integer> count = new HashMap();
+        for (int n: nums) {
+            count.put(n, count.getOrDefault(n, 0) + 1);
+        }
+
+        // init heap 'the less frequent element first'
+        Queue<Integer> heap = new PriorityQueue<>((n1, n2) -> count.get(n1) - count.get(n2));
+
+        /** NOTE !!! here */
+        // Step 2. keep k top frequent elements in the heap
+        // O(N log k) < O(N log N) time
+        for (int n: count.keySet()) {
+            heap.add(n);
+            /** if size > k, remove smallest element (e.g. keep k top frequent elements in the heap) */
+            if (heap.size() > k){
+                heap.poll();
+            }
+        }
+
+        // Step 3. build an output array
+        // O(k log k) time
+        int[] top = new int[k];
+        for(int i = k - 1; i >= 0; --i) {
+            top[i] = heap.poll();
+        }
+        return top;
+    }
+
     // V1
     // IDEA : HEAP
     // https://leetcode.com/problems/top-k-frequent-elements/editorial/
