@@ -7,67 +7,57 @@ import java.util.Queue;
 
 public class PacificAtlanticWaterFlow {
 
-    // TODO : fix below
-//    List<List<Integer>> res = new ArrayList<>();
-//    //boolean[][] seen;
+    // V0
+    // IDEA : DFS
+//    private static final int[][] DIRECTIONS_ = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+//    private int numRows_;
+//    private int numCols_;
+//    private int[][] landHeights_;
 //
-//    // V0
-//    public List<List<Integer>> pacificAtlantic(int[][] heights) {
-//
-//        // double check ??
-//        if (heights.length == 1 && heights[0].length == 1) {
-//            List<Integer> _ans = new ArrayList<>();
-//            _ans.add(0);
-//            _ans.add(0);
-//            this.res.add(_ans);
-//            return this.res;
+//    public List<List<Integer>> pacificAtlantic(int[][] matrix) {
+//        if (matrix.length == 0 || matrix[0].length == 0) {
+//            return new ArrayList<>();
 //        }
 //
-//        int len = heights.length;
-//        int width = heights[0].length;
+//        numRows_ = matrix.length;
+//        numCols_ = matrix[0].length;
+//        landHeights_ = matrix;
+//        boolean[][] pacificReachable = new boolean[numRows_][numCols_];
+//        boolean[][] atlanticReachable = new boolean[numRows_][numCols_];
 //
-//        for (int x = 0; x < width; x++) {
-//            for (int y = 0; y < len; y++) {
+//        for (int i = 0; i < numRows_; i++) {
+//            dfs_(i, 0, pacificReachable);
+//            dfs_(i, numCols_ - 1, atlanticReachable);
+//        }
+//        for (int i = 0; i < numCols_; i++) {
+//            dfs_(0, i, pacificReachable);
+//            dfs_(numRows_ - 1, i, atlanticReachable);
+//        }
 //
-//                boolean[][] seen = new boolean[len][width];
-//                String status = _help(heights, x, y, 0, 0, seen, null);
-//                System.out.println(">>> status = " + status + " (x,y) = " + x + ", " + y);
-//
-//                if (status != null && status.contains("a") && status.contains("p")) {
-//                    List<Integer> _cur = new ArrayList<>();
-//                    _cur.add(x);
-//                    _cur.add(y);
-//                    this.res.add(_cur);
+//        List<List<Integer>> commonCells = new ArrayList<>();
+//        for (int i = 0; i < numRows_; i++) {
+//            for (int j = 0; j < numCols_; j++) {
+//                if (pacificReachable[i][j] && atlanticReachable[i][j]) {
+//                    List<Integer> cell = new ArrayList<>();
+//                    cell.add(i);
+//                    cell.add(j);
+//                    commonCells.add(cell);
 //                }
 //            }
 //        }
-//
-//        return this.res;
+//        return commonCells;
 //    }
 //
-//    private String _help(int[][] heights, int x, int y, int lastX, int lastY, boolean[][] seen, String status) {
-//
-//        int len = heights.length;
-//        int width = heights[0].length;
-//
-//        if (y == 0 || x == 0){
-//            status += "-p";
+//    private void dfs_(int row, int col, boolean[][] reachable) {
+//        reachable[row][col] = true;
+//        for (int[] dir : DIRECTIONS_) {
+//            int newRow = row + dir[0];
+//            int newCol = col + dir[1];
+//            if (newRow < 0 || newRow >= numRows_ || newCol < 0 || newCol >= numCols_ || reachable[newRow][newCol] || landHeights[newRow][newCol] < landHeights[row][col]) {
+//                continue;
+//            }
+//            dfs(newRow, newCol, reachable);
 //        }
-//
-//        if (y == len-1 || x == width-1){
-//            status += "-a";
-//        }
-//
-//        seen[y][x] = true;
-//
-//        if (x >= width || x < 0 || y >= len || y < 0 || seen[y][x] == true || heights[lastY][lastX] < heights[y][x]) {
-//            return status;
-//        }
-//
-//        return  _help(heights, x+1, y, x, y, seen, status) +
-//                _help(heights, x-1, y, x, y, seen, status)+
-//                _help(heights, x, y+1, x, y, seen, status)+
-//                _help(heights, x, y-1, x, y, seen, status);
 //    }
 
     // V1
