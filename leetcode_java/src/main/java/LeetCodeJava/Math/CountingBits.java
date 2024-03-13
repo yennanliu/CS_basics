@@ -56,5 +56,5 @@ public class CountingBits {
         for (int i=1; i<=num; i++) f[i] = f[i >> 1] + (i & 1);
         return f;
     }
-    
+
 }
