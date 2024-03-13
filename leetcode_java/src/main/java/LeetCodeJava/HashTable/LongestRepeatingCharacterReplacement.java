@@ -2,11 +2,43 @@ package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/longest-repeating-character-replacement/
 
-import java.lang.reflect.Array;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LongestRepeatingCharacterReplacement {
+
+    // V0
+    // IDEA : TWO POINTER + HASHMAP (modified by GPT)
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/longest-repeating-character-replacement.py
+    public int characterReplacement(String s, int k) {
+        Map<Character, Integer> table = new HashMap<>();
+        int res = 0;
+        int p1 = 0, p2 = 0;
+
+        while (p2 < s.length()) {
+            char c = s.charAt(p2);
+            table.put(c, table.getOrDefault(c, 0) + 1);
+            p2++;
+
+            while (p2 - p1 - getMaxValue(table) > k) {
+                char c1 = s.charAt(p1);
+                table.put(c1, table.get(c1) - 1);
+                p1++;
+            }
+            res = Math.max(res, p2 - p1);
+        }
+        return res;
+    }
+
+    private int getMaxValue(Map<Character, Integer> map) {
+        int max = 0;
+        for (int value : map.values()) {
+            max = Math.max(max, value);
+        }
+        return max;
+    }
+
 
 //    // V0
 //    // IDEA : SLIDING WINDOW
