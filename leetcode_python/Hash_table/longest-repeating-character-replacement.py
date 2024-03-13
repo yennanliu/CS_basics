@@ -34,18 +34,34 @@ s consists of only uppercase English letters.
 from collections import Counter
 class Solution(object):
     def characterReplacement(self, s, k):
+        """
+        NOTE !!!
+
+         table record frequent of element met in while loop
+        """
         table = Counter()
         res = 0
+        """
+        Define 2 pointers
+
+        p1 : left pointer
+        p2 : right pointer
+        """
         p1 = p2 = 0
         # below can be either while or for loop
         while p2 < len(s):
             table[s[p2]] += 1
             p2 += 1
             """
-            ### NOTE : if remain elements > k, means there is no possibility to make this substring as "longest substring containing the same letter"
-               ->  remain elements = p1 - p2 - max(table.values())
-               ->  e.g. if we consider "max(table.values()" as the "repeating character", then "p2 - p1 - max(table.values()" is the count of elements we need to replace
-               ->  so we need to clear "current candidate" for next iteration
+            ### NOTE : if remain different elements > k, means there is no possibility to make this substring as "longest substring containing the same letter"
+               ->  remain different elements = p1 - p2 - max(table.values())
+               ->  e.g. if we consider "max(table.values()" as the "repeating character", then "p2 - p1 - max(table.values()" is the count of different elements we need to replace
+
+
+               ->  we also need to clear "current candidate" for next iteration (while move left pointer)
+               e.g.           
+                    table[s[p1]] -= 1
+                    p1 += 1
             """
             while p2 - p1 - max(table.values()) > k:
                 table[s[p1]] -= 1
