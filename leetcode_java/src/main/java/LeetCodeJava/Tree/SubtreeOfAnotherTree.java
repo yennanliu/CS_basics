@@ -10,48 +10,33 @@ import java.util.List;
 public class SubtreeOfAnotherTree {
 
     // V0
-    // IDEA : DFS
-    // TODO : fix below
-//    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-//
-//        if (root == null) {
-//            return false;
-//        }
-//
-////        if (root == null && subRoot != null){
-////            return false;
-////        }
-//
-//
-//        // check
-//
-//        // case 1)
-//        if (isSame(root, subRoot)){
-//            return true;
-//        }
-//
-//        // case 2)
-//        return isSame(root.left, subRoot) || isSame(root.right, subRoot);
-//    }
-//
-//    private Boolean isSame(TreeNode node1, TreeNode node2){
-//
-//        if (node1 == null || node2 == null){
-//            return node1 == null && node2 == null;
-//        }
-//
-////        if (node1.val != node2.val){
-////            return false;
-////        }
-//
-//        return node1.val == node2.val && isSame(node1.left, node2.left) && isSame(node1.right, node2.right);
-//    }
+    // IDEA : DFS + DFS (modified by GPT)
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/subtree-of-another-tree.py#L110
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        if (s == null && t == null) {
+            return true;
+        }
+        if (s == null || t == null) {
+            return false;
+        }
+        // NOTE !!! isSameTree and isSubtree with sub left, sub right tree
+        return isSameTree(s, t) || isSubtree(s.left, t) || isSubtree(s.right, t);
+    }
 
+    private boolean isSameTree(TreeNode s, TreeNode t) {
+        if (s == null && t == null) {
+            return true;
+        }
+        if (s == null || t == null) {
+            return false;
+        }
+        return s.val == t.val && isSameTree(s.left, t.left) && isSameTree(s.right, t.right);
+    }
 
     // V1
     // IDEA : DFS
     // https://leetcode.com/problems/subtree-of-another-tree/editorial/
-    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+    public boolean isSubtree_1(TreeNode root, TreeNode subRoot) {
 
         // If this node is Empty, then no tree is rooted at this Node
         // Hence, "tree rooted at node" cannot be equal to "tree rooted at subRoot"
