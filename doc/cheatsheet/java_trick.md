@@ -86,10 +86,30 @@ int[] _array = {0,1,2,3}; // this is Array (without "List" keyword)
 
 // init a list with 2D content
 // LC 406
+List<List<Integer>> commonCells = new ArrayList<>();
+
 List<int[]> result = new ArrayList<>(); //return value
 ```
 
-### 1-0-2) Paste value to List with index
+### 1-0-2) append value to a 2D list
+```java
+// java
+// LC 417
+
+List<List<Integer>> commonCells = new ArrayList<>();
+for (int i = 0; i < numRows; i++) {
+    for (int j = 0; j < numCols; j++) {
+        if (pacificReachable[i][j] && atlanticReachable[i][j]) {
+
+            // NOTE code here
+             commonCells.add(Arrays.asList(i, j));
+        }
+    }
+}
+```
+
+
+### 1-0-3) Paste value to List with index
 ```java
 // java
 // LC 102

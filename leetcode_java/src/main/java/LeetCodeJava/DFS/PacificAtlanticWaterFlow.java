@@ -1,9 +1,6 @@
 package LeetCodeJava.DFS;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class PacificAtlanticWaterFlow {
 
@@ -63,12 +60,16 @@ public class PacificAtlanticWaterFlow {
     // V1
     // IDEA : DFS
     // https://leetcode.com/problems/pacific-atlantic-water-flow/editorial/
+
+
+    /** NOTE !!! init directions */
     private static final int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
     private int numRows;
     private int numCols;
     private int[][] landHeights;
 
     public List<List<Integer>> pacificAtlantic_1(int[][] matrix) {
+
         // Check if input is empty
         if (matrix.length == 0 || matrix[0].length == 0) {
             return new ArrayList<>();
@@ -77,15 +78,20 @@ public class PacificAtlanticWaterFlow {
         // Save initial values to parameters
         numRows = matrix.length;
         numCols = matrix[0].length;
+
+        /** NOTE !!! cope matrix, for reference below  */
         landHeights = matrix;
         boolean[][] pacificReachable = new boolean[numRows][numCols];
         boolean[][] atlanticReachable = new boolean[numRows][numCols];
 
+        /** NOTE !!! only move 1 direction at once, for avoiding double loop  */
         // Loop through each cell adjacent to the oceans and start a DFS
         for (int i = 0; i < numRows; i++) {
             dfs(i, 0, pacificReachable);
             dfs(i, numCols - 1, atlanticReachable);
         }
+
+        /** NOTE !!! only move 1 direction at once, for avoiding double loop  */
         for (int i = 0; i < numCols; i++) {
             dfs(0, i, pacificReachable);
             dfs(numRows - 1, i, atlanticReachable);
@@ -96,8 +102,12 @@ public class PacificAtlanticWaterFlow {
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
                 if (pacificReachable[i][j] && atlanticReachable[i][j]) {
-                    // TODO : fix below
                     //commonCells.add(List.of(i, j));
+//                    List<Integer> coord = new ArrayList<>();
+//                    coord.add(i);
+//                    coord.add(j);
+//                    commonCells.add(coord);
+                     commonCells.add(Arrays.asList(i, j));
                 }
             }
         }
@@ -105,24 +115,37 @@ public class PacificAtlanticWaterFlow {
     }
 
     private void dfs(int row, int col, boolean[][] reachable) {
+
+        /** NOTE !!! set visited as true */
         // This cell is reachable, so mark it
         reachable[row][col] = true;
         for (int[] dir : DIRECTIONS) { // Check all 4 directions
             int newRow = row + dir[0];
             int newCol = col + dir[1];
+
             // Check if new cell is within bounds
             if (newRow < 0 || newRow >= numRows || newCol < 0 || newCol >= numCols) {
+
+                /** NOTE !!! neglect below code and jump to next loop (continue) */
                 continue;
             }
+
             // Check that the new cell hasn't already been visited
             if (reachable[newRow][newCol]) {
+
+                /** NOTE !!! neglect below code and jump to next loop (continue) */
                 continue;
             }
+
             // Check that the new cell has a higher or equal height,
             // So that water can flow from the new cell to the old cell
             if (landHeights[newRow][newCol] < landHeights[row][col]) {
+
+                /** NOTE !!! neglect below code and jump to next loop (continue) */
                 continue;
             }
+
+            /** NOTE !!! if can reach here, means this move is "OK" then we do next move via recursion call */
             // If we've gotten this far, that means the new cell is reachable
             dfs(newRow, newCol, reachable);
         }
@@ -170,6 +193,7 @@ public class PacificAtlanticWaterFlow {
                 if (pacificReachable[i][j] && atlanticReachable[i][j]) {
                     // TODO : fix below
                     //commonCells.add(List.of(i, j));
+                    commonCells.add(Arrays.asList(i, j));
                 }
             }
         }
