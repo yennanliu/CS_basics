@@ -17,7 +17,7 @@
 
     - Define max-heap
         - LC 1046
-     ```java
+    ```java
     // java
     PriorityQueue<Integer> heap = new PriorityQueue<>(Comperator.reverseOrder());
     ```       
