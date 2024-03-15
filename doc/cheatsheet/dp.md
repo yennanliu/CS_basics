@@ -100,6 +100,7 @@ class Solution:
 # V1
 # IDEA : DP
 # https://leetcode.com/problems/maximum-product-subarray/solution/
+# LC 152
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
         if len(nums) == 0:
@@ -119,4 +120,69 @@ class Solution:
             result = max(max_so_far, result)
 
         return result
+```
+
+```java
+// java
+// LC 152
+
+// V0
+// IDEA : DP
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/maximum-product-subarray.py#L69
+// IDEA : cur max = max (cur, cur * dp[k-1])
+//        But, also needs to consider "minus number"
+//        -> e.g.  (-1) * (-3) = 3
+//        -> so we NEED to track maxSoFar, and minSoFar
+public int maxProduct(int[] nums) {
+
+    // null check
+    if (nums.length == 0){
+        return 0;
+    }
+    // init
+    int maxSoFar = nums[0];
+    int minSoFar = nums[0];
+    int res = maxSoFar;
+
+    for (int i = 1; i < nums.length; i++){
+
+        int cur = nums[i];
+        /**
+         *  or, can use below trick to get max in 3 numbers
+         *
+         *   max = Math.max(Math.max(max * nums[i], min * nums[i]), nums[i]);
+         *   min = Math.min(Math.min(temp * nums[i], min * nums[i]), nums[i]);
+         *
+         */
+        int tmpMax = findMax(cur, maxSoFar * cur, minSoFar * cur);
+        minSoFar = findMin(cur, maxSoFar * cur, minSoFar * cur);
+        maxSoFar = tmpMax;
+
+        res = Math.max(maxSoFar, res);
+    }
+
+    return res;
+}
+
+private int findMax(int a, int b, int c){
+    if (a >= b && a >= c){
+        return a;
+    }
+    else if (b >= a && b >= c){
+        return b;
+    }else{
+        return c;
+    }
+}
+
+private int findMin(int a, int b, int c){
+    if (a <= b && a <= c){
+        return a;
+    }
+    else if (b <= a && b <= c){
+        return b;
+    }else{
+        return c;
+    }
+}
 ```
