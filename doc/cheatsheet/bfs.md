@@ -608,6 +608,19 @@ class Solution(object):
         node = root
         stack = []
         while stack or node is not None:
+            """
+            NOTE !!!
+
+              since BST has property:
+
+                      left sub tree < root < right sub tree
+
+              -> so in order to get "sum over bigger tree"
+              -> we first visit all right sub tree
+              -> get cumsum
+              -> then to left
+              -> visit ordering :  right sub tree -> left sub tree
+            """
             while node is not None:
                 stack.append(node)
                 node = node.right
