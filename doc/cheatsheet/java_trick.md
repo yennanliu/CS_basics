@@ -62,7 +62,7 @@ List<String> _list = new ArrayList<>(); // this is List (with "List" keyword)
 int[] _array = {0,1,2,3}; // this is Array (without "List" keyword)
 ```
 
-### 1-0-1) Init an List
+### 1-0-1) Init a List
 ```java
 // java
 

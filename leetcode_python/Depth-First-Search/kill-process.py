@@ -50,7 +50,7 @@ class Solution(object):
         res = []
         while q:
             for i in range(len(q)):
-                tmp = q.pop(-1)
+                tmp = q.pop(-1) # TODO check : should be pop(0) ??? 
                 res.append(tmp)
                 for _ in d[tmp]:
                     q.append(_)
