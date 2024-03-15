@@ -1,8 +1,8 @@
 package dev;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import LeetCodeJava.DataStructure.TreeNode;
+
+import java.util.*;
 
 public class Test2 {
     public static void main(String[] args) {
@@ -34,6 +34,22 @@ public class Test2 {
         System.out.println(new int[]{1,2,3});
 
         List<Integer> x2 = new ArrayList<>(Arrays.asList(1, 2, 3));
+
+
+        // PriorityQueue for PriorityQueue
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.add(1);
+
+        // LinkedList for Queue
+        Queue<Integer> q = new LinkedList<>();
+        q.add(1);
+
+
+        String str = "abcd";
+
+        System.out.println(str);
+        System.out.println(str.indexOf(1));
+
     }
     
 }
