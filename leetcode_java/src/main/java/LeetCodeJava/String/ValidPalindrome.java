@@ -24,6 +24,29 @@ public class ValidPalindrome {
             return true;
         }
 
+        StringBuilder sb = new StringBuilder();
+        for (int idx = 0; idx < s.length(); idx++){
+            if (Character.isLetterOrDigit(s.charAt(idx))){
+                sb.append(String.valueOf(s.charAt(idx)).toUpperCase());
+            }
+        }
+
+        // NOTE : should use equals (so compare value but not memory address)
+        /**
+         * The issue in your code is with the comparison of strings using ==.
+         * In Java, you should use the equals method to compare strings for equality.
+         * Here's the corrected code:
+         */
+        return sb.toString().equals(sb.reverse().toString());
+    }
+
+    // V0'
+    public boolean isPalindrome_0(String s) {
+
+        if (s == null || s.length() == 0){
+            return true;
+        }
+
         String sUpper = "";
         for (int idx = 0; idx < s.length(); idx++){
             if (Character.isLetterOrDigit(s.charAt(idx))){
