@@ -19,6 +19,27 @@ public class workspace3 {
         for (ThreadInfo threadInfo : threadInfos) {
             System.out.println("[" + threadInfo.getThreadId() + "] " + threadInfo.getThreadName());
         }
-
     }
+
+    // LC 125
+    public boolean isPalindrome(String s) {
+
+        if (s == null || s.length() == 0){
+            return true;
+        }
+        String s_updated = "";
+        StringBuilder sb = new StringBuilder();
+        //String[] s_split = s.split(",");
+        char[] array = s.toCharArray();
+        for (char x : array){
+            String x_ = Character.toString(x);
+            if (x_ != null && x_ != "" && Character.isAlphabetic(x)){
+                sb.append(x_.toLowerCase());
+            }
+        }
+
+        System.out.println(sb.toString());
+        return sb.toString() == sb.reverse().toString();
+    }
+
 }
