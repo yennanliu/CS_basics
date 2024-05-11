@@ -2,6 +2,30 @@
 # SELECTION SORT
 #---------------------------------------------------------------
 
+# https://github.com/yennanliu/CS_basics/blob/master/doc/pic/select_sort_1.jpg
+# https://github.com/yennanliu/CS_basics/blob/master/doc/pic/select_sort_2.jpg
+
+"""
+
+2 pointers
+keep finding minimum element, and swap with 1st element in to-order list
+
+Step 1) find minimum element, swap with 1st element in to-order list
+Step 2) move pointer in to-order list
+Step 3) repeat steps above
+
+
+
+Time complexity
+
+        O(n^2)
+
+Space complexity
+
+    Worst space O(1) auxiliary
+
+"""
+
 # V0
 def selection_sort(list_): 
     for i in range(len(list_)-1):
