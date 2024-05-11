@@ -42,4 +42,43 @@ public class workspace3 {
         return sb.toString() == sb.reverse().toString();
     }
 
+    // LC 121
+    public int maxProfit(int[] prices) {
+
+        if (prices.length == 0){
+            return 0;
+        }
+
+        int res = 0;
+        int min = -1;
+        int max = -1;
+
+        for (int i : prices){
+            int cur = i; //prices[i];
+            System.out.println("cur = " + cur);
+            if (min == -1){
+                min = cur;
+                continue;
+            }
+            if (min > cur){
+                min = cur;
+                continue;
+            }
+            if (max == -1){
+                max = cur;
+                max = cur;
+            }
+            if (cur > max){
+                max = cur;
+            }
+            int tmp = max - min;
+            System.out.println("max = " + max + " min = " + min + " tmp = " + tmp);
+            max = -1;
+            res = Math.max(tmp, res);
+        }
+
+        return res;
+    }
+
+
 }
