@@ -2,9 +2,21 @@
 # INSERTION SORT
 #---------------------------------------------------------------
 
+# https://github.com/yennanliu/CS_basics/blob/master/doc/pic/insert_sort_1.jpg
+
 # https://rust-algo.club/sorting/insertion_sort/index.html
 
 """
+
+Step 1) start from i = 1, find idx on left side (i=0), and insert (make left array ordering)
+Step 2) start from i = 2, find idx on left side (0 <= i <= 1), and insert (make left array ordering)
+Step 3) start from i = 3, find idx on left side (0 <= i <= 2), and insert (make left array ordering)
+.
+.
+.
+
+
+
 
 Time complexity
 
