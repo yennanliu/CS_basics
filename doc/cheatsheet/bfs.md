@@ -4,7 +4,7 @@
     - LC 127
     - LC 1730
 - Breadth first, then deep
-- Usually use data structure such as `queue, array`
+- Use data structure : `Queue` (FIFO)
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bfs_2.png"></p>
 
