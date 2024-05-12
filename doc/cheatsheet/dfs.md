@@ -1,6 +1,7 @@
 # DFS 
 - search algorithm
 - Deep first, then breadth
+- Use data structure : `Stack`   (FILO)
 - To check if some value exists
 - Inorder, preorder, postorder (can recreate a tree)
 - not most efficient (VS bfs), but can handle some specific problems
