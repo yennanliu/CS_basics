@@ -1,9 +1,10 @@
-# Prefix Sum
+# Prefix Sum (累積和)
 
 ## 0) Concept
 ```
 We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if S[i] == '1', else A[i] = 0. We can calculate P in linear time.
 ```
+- Get sub array sum in linear time (O(N))
 - Get `sub array` with `some conditions`
 - Cases we don't want double loop, but want a `single loop` instead
     - prefix sum + dict (check if "-x-cum_sum" in dict)
@@ -11,6 +12,9 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
     - `subarray sum` in problems
     - if want to match count -> can use hashMap
     - if want to check Divisible -> get remainder with k for each num
+- Use cases
+    - 1 D prefix sum
+    - 2 D prefix sum
 - Ref
     - [fucking algorithm - Prefix sum](https://labuladong.github.io/algo/2/19/22/)
     - [LC trick I : prefix sum](https://www.twblogs.net/a/5edebd5274efa30adcc735cc)
@@ -35,6 +39,8 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
         - LC 1343
     - Subarray Sums Divisible by K
         - LC 974
+- get count of overlap intervals
+    LC 253
 
 ### 0-2) Pattern
 
