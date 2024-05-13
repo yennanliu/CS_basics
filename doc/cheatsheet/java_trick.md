@@ -146,8 +146,9 @@ Collections.reverse(levels);
 
 ### 1-0-4) Reverse String
 ```java
-// java
+// java (via StringBuilder)
 // LC 567
+
 private String reverseString(String input){
 
     if (input.equals(null) || input.length() == 0){
@@ -162,7 +163,8 @@ private String reverseString(String input){
 
 ### 1-0-5) Access elements in a String
 ```java
-// java
+// java (via .split(""))
+
 String word = "heloooo 123 111";
 for (String x : word.split("")){
     System.out.println(x);

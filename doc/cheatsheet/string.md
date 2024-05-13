@@ -79,6 +79,17 @@ In [12]: a_array
 Out[12]: ['1', '2', '3', '4']
 ```
 
+```java
+// java
+// split string (java)
+/** NOTE !!! split string via .split("") */
+
+ for (String x : s.split("")){
+    System.out.println(x);
+ }
+```
+
+
 #### 1-8) Group sub-string
 ```python
 # LC 696. Count Binary Substrings

@@ -15,10 +15,10 @@ public class ValidAnagram {
         if (s == null && t == null){
             return true;
         }
-//        if ((s == null && t != null) || (s != null && t == null) ){
-//            return false;
-//        }
+
         Map<String, Integer> sMap = new HashMap<>();
+
+        /** NOTE !!! split string via .split("") */
         for (String x : s.split("")){
             if (!sMap.containsKey(x)){
                 sMap.put(x, 1);

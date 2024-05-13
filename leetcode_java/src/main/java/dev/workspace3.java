@@ -3,9 +3,7 @@ package dev;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 // https://javaguide.cn/java/concurrent/java-concurrent-questions-01.html#%E4%BD%95%E4%B8%BA%E7%BA%BF%E7%A8%8B
 
@@ -172,6 +170,51 @@ public class workspace3 {
 
         sb.append(str);
         return sb.toString();
+    }
+
+    // LC 242
+    public boolean isAnagram(String s, String t) {
+
+        if (s == null && t == null){
+            return true;
+        }
+
+        if (s == null || t == null){
+            return false;
+        }
+
+        Map<String, Integer> map = new HashMap();
+        char[] s_array = s.toCharArray();
+        char[] t_array = t.toCharArray();
+
+        for (char x : s_array){
+            String cur = String.valueOf(x);
+            if (!map.containsKey(cur)) {
+                map.put(cur, 1);
+            }else{
+                map.put(cur, map.get(cur)+1);
+            }
+        }
+
+        for (char y: t_array){
+            String cur = String.valueOf(y);
+            if (!map.containsKey(cur)) {
+                return false;
+            }else{
+                map.put(cur, map.get(cur)-1);
+                if (map.get(cur) == 0){
+                    map.remove(cur);
+                }
+            }
+        }
+
+        System.out.println("map = " + map);
+
+        if (map.keySet().size() != 0){
+            return false;
+        }
+
+        return true;
     }
 
 
