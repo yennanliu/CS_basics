@@ -1,5 +1,7 @@
 package dev;
 
+import LeetCodeJava.DataStructure.TreeNode;
+
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
@@ -216,6 +218,27 @@ public class workspace3 {
 
         return true;
     }
+
+    // LC 235
+    // DFS
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+
+        if (root.equals(p) || root.equals(q)) {
+            return root;
+        }
+
+        // BST property : right > root > left
+        if (p.val > root.val && q.val > root.val){
+            return this.lowestCommonAncestor(root.right, p, q);
+        }
+        if (p.val < root.val && q.val < root.val){
+            return this.lowestCommonAncestor(root.left, p, q);
+        }
+
+        // p, q are in different side (sub tree)
+        return root;
+    }
+
 
 
 }
