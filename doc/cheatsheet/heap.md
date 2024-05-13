@@ -5,6 +5,7 @@
 - Intro
     - https://leetcode.com/explore/learn/card/heap/
     - In many CS applications, we only need to `access the largest or smallest element` in the dataset. We DO NOT care about `the order of other data in the data set`. How do we efficiently access the largest or smallest element in the current dataset? The answer would be `Heap`.
+    - heap is a "complete binary tree"
 
     - Priority Queue (PQ)
         - Priority queue is one of the implementations of heap
@@ -72,6 +73,14 @@
     - Delete the top element from a Heap.
     - Get the length of a Heap.
     - Perform time and space complexity analysis for common applications that use a Heap.
+
+- V3
+    - up heap
+        - (new big element added to max heap, move it to root)
+    - down heap
+        - (new samll element added to max heap, move it to sub tree)
+    - build heap
+    - PQ
 
 ### 1-1) heapq (`heap queue` AKA `priority queue`) (Py api)
 - Note :
