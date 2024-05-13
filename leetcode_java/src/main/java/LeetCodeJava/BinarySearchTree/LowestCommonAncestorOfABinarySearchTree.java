@@ -32,11 +32,34 @@ import LeetCodeJava.DataStructure.TreeNode;
 
 public class LowestCommonAncestorOfABinarySearchTree {
 
-    // V0
-    // IDEA : RECURSIVE + BST PROPERTY
     class Solution {
 
+        // V0
+        // IDEA : RECURSIVE + BST PROPERTY
         public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+
+            // if root equals p or q, return root as LCA
+            if (root.equals(p) || root.equals(q)) {
+                return root;
+            }
+
+            /** NOTE !!! BST property : right > root > left */
+            // search on right sub tree
+            if (p.val > root.val && q.val > root.val){
+                return this.lowestCommonAncestor(root.right, p, q);
+            }
+            // search on left sub tree
+            if (p.val < root.val && q.val < root.val){
+                return this.lowestCommonAncestor(root.left, p, q);
+            }
+
+            // p, q are in different side (sub tree), then return root as LCA directly
+            return root;
+        }
+
+        // V0'
+        // IDEA : RECURSIVE + BST PROPERTY
+        public TreeNode lowestCommonAncestor_0(TreeNode root, TreeNode p, TreeNode q) {
 
             // below logic is optional
             if (root == null || root == p || root == q){
@@ -49,14 +72,14 @@ public class LowestCommonAncestorOfABinarySearchTree {
                  *
                  *   -> e.g. return lowestCommonAncestor(root.right, p, q) instead of lowestCommonAncestor(root.right, p, q)
                  */
-                return lowestCommonAncestor(root.right, p, q);
+                return lowestCommonAncestor_0(root.right, p, q);
             // BST property : left child always < root val
             }else if (root.val > p.val && root.val > q.val) {
                 /** NOTE !!! we need to return recursive call below
                  *
                  *   -> e.g. return lowestCommonAncestor(root.right, p, q) instead of lowestCommonAncestor(root.right, p, q)
                  */
-                return lowestCommonAncestor(root.left, p, q);
+                return lowestCommonAncestor_0(root.left, p, q);
             }else{
                 return root;
             }
