@@ -9,12 +9,62 @@ import java.util.*;
 public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
     // V0
-    // TODO : implement
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+
+        if (preorder.length == 0) {
+            return null;
+        }
+
+        if (preorder.length == 1) {
+            return new TreeNode(preorder[0]);
+        }
+
+        // setup root
+        TreeNode root = new TreeNode(preorder[0]);
+        // get root idx
+        int root_idx = 0;
+        for (int i = 0; i < inorder.length; i++) {
+            if (inorder[i] == root.val) {
+                root_idx = i;
+                break;
+            }
+        }
+        /** NOTE !!! copy sub array syntax : Arrays.copyOfRange */
+        /**
+         *  NOTE !!!
+         *
+         *  1) we get root_idx from "inorder" to split tree
+         *  2) root_idx will be used as "length" (root - sub left tree)
+         *  3) root_idx will be used on both "preorder" and "inorder"
+         *
+         *  4) for "preorder",
+         *
+         *      left sub tree : Arrays.copyOfRange(preorder, 1, root_idx + 1)
+         *          -> left sub tree start from idx = 1
+         *          -> left sub tree end at root_idx + 1 (root_idx is "length" of sub tree)
+         *
+         *      right sub tree: Arrays.copyOfRange(preorder, 1 + root_idx, preorder.length)
+         *          -> right sub tree start from 1 + root_idx (root_idx is "length" of sub tree)
+         *          -> right sub tree end at end of rest of preorder
+         *
+         */
+        root.left = buildTree(
+                Arrays.copyOfRange(preorder, 1, root_idx + 1),
+                Arrays.copyOfRange(inorder, 0, root_idx)
+        );
+
+        root.right = buildTree(
+                Arrays.copyOfRange(preorder, root_idx + 1, preorder.length),
+                Arrays.copyOfRange(inorder, root_idx + 1, inorder.length)
+        );
+
+        return root;
+    }
 
     // V0'
     // IDEA : RECURSION (DFS) (transform below py code to java by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/construct-binary-tree-from-preorder-and-inorder-traversal.py#L36
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
+    public TreeNode buildTree_0(int[] preorder, int[] inorder) {
         if (preorder.length == 0) {
             return null;
         }
@@ -29,8 +79,8 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
                 break;
             }
         }
-        root.left = buildTree(Arrays.copyOfRange(preorder, 1, index + 1), Arrays.copyOfRange(inorder, 0, index));
-        root.right = buildTree(Arrays.copyOfRange(preorder, index + 1, preorder.length), Arrays.copyOfRange(inorder, index + 1, inorder.length));
+        root.left = buildTree_0(Arrays.copyOfRange(preorder, 1, index + 1), Arrays.copyOfRange(inorder, 0, index));
+        root.right = buildTree_0(Arrays.copyOfRange(preorder, index + 1, preorder.length), Arrays.copyOfRange(inorder, index + 1, inorder.length));
         return root;
     }
 
