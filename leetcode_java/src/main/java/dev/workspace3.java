@@ -241,38 +241,38 @@ public class workspace3 {
 
     // LC 105
     // DFS
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-
-        if (preorder == null && inorder == null){
-            return null;
-        }
-
-        if (preorder.length == 1 && inorder.length == 1){
-            return new TreeNode(preorder[0]);
-        }
-
-        TreeNode root = new TreeNode(preorder[0]);
-
-        int root_idx = -1;
-        for (int i = 0; i < inorder.length; i++){
-            if (inorder[i] == root.val){
-                root_idx = i;
-                break;
-            }
-        }
-
-        root.left = this.buildTree(
-                Arrays.copyOfRange(preorder, 1,root_idx+1),
-                Arrays.copyOfRange(inorder, 0,root_idx)
-        );
-
-        root.right = this.buildTree(
-                Arrays.copyOfRange(preorder, root_idx+1,preorder.length),
-                Arrays.copyOfRange(inorder, root_idx+1,inorder.length)
-        );
-
-        return root;
-    }
+//    public TreeNode buildTree(int[] preorder, int[] inorder) {
+//
+//        if (preorder == null && inorder == null){
+//            return null;
+//        }
+//
+//        if (preorder.length == 1 && inorder.length == 1){
+//            return new TreeNode(preorder[0]);
+//        }
+//
+//        TreeNode root = new TreeNode(preorder[0]);
+//
+//        int root_idx = -1;
+//        for (int i = 0; i < inorder.length; i++){
+//            if (inorder[i] == root.val){
+//                root_idx = i;
+//                break;
+//            }
+//        }
+//
+//        root.left = this.buildTree(
+//                Arrays.copyOfRange(preorder, 1,root_idx+1),
+//                Arrays.copyOfRange(inorder, 0,root_idx)
+//        );
+//
+//        root.right = this.buildTree(
+//                Arrays.copyOfRange(preorder, root_idx+1,preorder.length),
+//                Arrays.copyOfRange(inorder, root_idx+1,inorder.length)
+//        );
+//
+//        return root;
+//    }
 
 //    public TreeNode help(List<Integer> preorderList, List<Integer> inorderList, TreeNode res){
 //
@@ -290,6 +290,46 @@ public class workspace3 {
 //
 //        return res;
 //    }
+
+    // LC 106
+    // inorder : left -> root -> right
+    // postorder : left -> right -> root
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+
+        if (postorder.length == 0) {
+            return null;
+        }
+
+        // either each of below works
+        if (postorder.length == 1) {
+            return new TreeNode(postorder[0]);
+        }
+
+//        if (inorder.length == 1) {
+//            return new TreeNode(inorder[0]);
+//        }
+
+        TreeNode root = new TreeNode(postorder[postorder.length - 1]);
+        int root_idx = -1;
+        for (int i = 0; i < inorder.length; i++) {
+            /** NOTE !!! need to get root_idx from inorder */
+            if (inorder[i] == postorder[postorder.length - 1]) {
+                root_idx = i;
+                break;
+            }
+        }
+
+        root.left = this.buildTree(
+                Arrays.copyOfRange(inorder, 0, root_idx),
+                Arrays.copyOfRange(postorder, 0, root_idx)
+                );
+        root.right = this.buildTree(
+                Arrays.copyOfRange(inorder, root_idx+1, inorder.length),
+                Arrays.copyOfRange(postorder, root_idx, postorder.length-1)
+                );
+
+        return root;
+    }
 
 
 

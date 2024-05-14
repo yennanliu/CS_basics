@@ -9,48 +9,48 @@ import java.util.HashMap;
 
 public class ConstructBinaryTreeFromInorderAndPostorderTraversal {
 
-    // TODO : fix V0
     // V0
-    // IDEA :
-    //TreeNode root = new TreeNode();
-//    public TreeNode buildTree(int[] inorder, int[] postorder) {
-//
-//        if (inorder.length == 1){
+    // IDEA : DFS
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/construct-binary-tree-from-inorder-and-postorder-traversal.py
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+
+        if (postorder.length == 0) {
+            return null;
+        }
+
+        // either each of below works
+        if (postorder.length == 1) {
+            return new TreeNode(postorder[0]);
+        }
+
+//        if (inorder.length == 1) {
 //            return new TreeNode(inorder[0]);
 //        }
-//
-//        //TreeNode _root = new TreeNode(inorder[0]);
-//
-//        // dfs
-//        return _help(inorder, postorder, 0);
-//    }
-//
-//    private TreeNode _help(int[] inorder, int[] postorder, int idx){
-//
-//        if (inorder.length == 0){
-//            return null;
-//        }
-//
-//        int root_val = postorder[postorder.length-1];
-//        TreeNode _root = new TreeNode(root_val);
-//        int root_idx = getIdx(inorder, root_val);
-//        int left_val = inorder[root_idx-1];
-//        int left_idx = getIdx(postorder, left_val);
-//
-//        _root.left = _help(Arrays.copyOfRange(inorder, 0, root_idx), Arrays.copyOfRange(postorder, 0, left_idx), root_idx);
-//        _root.right = _help(Arrays.copyOfRange(inorder, root_idx+1, inorder.length-1), Arrays.copyOfRange(postorder, left_idx+1, root_idx), root_idx);
-//        return _root;
-//    }
-//
-//    private int getIdx(int[] input, int val){
-//        int idx = -1;
-//        for (int i = 0; i < input.length; i++){
-//            if(input[i] == val){
-//                return i;
-//            }
-//        }
-//        return idx;
-//    }
+
+        // NOTE !!! : get root from postorder
+        TreeNode root = new TreeNode(postorder[postorder.length - 1]);
+        int root_idx = -1;
+        for (int i = 0; i < inorder.length; i++) {
+
+            /** NOTE !!! need to get root_idx from inorder */
+            if (inorder[i] == postorder[postorder.length - 1]) {
+                root_idx = i;
+                break;
+            }
+
+        }
+
+        root.left = this.buildTree(
+                Arrays.copyOfRange(inorder, 0, root_idx),
+                Arrays.copyOfRange(postorder, 0, root_idx)
+        );
+        root.right = this.buildTree(
+                Arrays.copyOfRange(inorder, root_idx+1, inorder.length),
+                Arrays.copyOfRange(postorder, root_idx, postorder.length-1)
+        );
+
+        return root;
+    }
 
     // V1
     // IDEA : RECURSION
