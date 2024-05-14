@@ -239,6 +239,58 @@ public class workspace3 {
         return root;
     }
 
+    // LC 105
+    // DFS
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+
+        if (preorder == null && inorder == null){
+            return null;
+        }
+
+        if (preorder.length == 1 && inorder.length == 1){
+            return new TreeNode(preorder[0]);
+        }
+
+        TreeNode root = new TreeNode(preorder[0]);
+
+        int root_idx = -1;
+        for (int i = 0; i < inorder.length; i++){
+            if (inorder[i] == root.val){
+                root_idx = i;
+                break;
+            }
+        }
+
+        root.left = this.buildTree(
+                Arrays.copyOfRange(preorder, 1,root_idx+1),
+                Arrays.copyOfRange(inorder, 0,root_idx)
+        );
+
+        root.right = this.buildTree(
+                Arrays.copyOfRange(preorder, root_idx+1,preorder.length),
+                Arrays.copyOfRange(inorder, root_idx+1,inorder.length)
+        );
+
+        return root;
+    }
+
+//    public TreeNode help(List<Integer> preorderList, List<Integer> inorderList, TreeNode res){
+//
+//        int root = preorderList.get(0);
+//
+//        int leftIdx = inorderList.get(root) - 1;
+//
+//        int left = inorderList.get(leftIdx);
+//
+//        res = new TreeNode(root);
+//
+//        res.left = new TreeNode(left);
+//
+//        res.right = this.help(Arrays.stream(preorderList, 1,2), inorderList, res);
+//
+//        return res;
+//    }
+
 
 
 }
