@@ -31,6 +31,19 @@ postorder is guaranteed to be the postorder traversal of the tree.
 """
 
 # V0
+class Solution(object):
+    def buildTree(self, inorder, postorder):
+        if len(postorder) == 0:
+            return None
+        if len(inorder) == 1:
+            return TreeNode(inorder[0])
+        root = TreeNode(postorder[-1]) # get the value of "root" via postorder
+        index = inorder.index(postorder[-1]) # get the index of "root" in inorder 
+        root.left = self.buildTree(inorder[  : index ], postorder[ : index ])
+        root.right = self.buildTree(inorder[ index + 1 : ], postorder[ index : - 1 ])
+        return root
+
+# V0
 # IDEA : Binary Tree property, same as LC 105 
 class Solution(object):
     def buildTree(self, inorder, postorder):
@@ -51,20 +64,7 @@ class Solution(object):
         ### NOTE : postorder[idx:-1]
         root.right =  self.buildTree(inorder[idx+1:], postorder[idx:-1])
         return root
-
-# V0'
-class Solution(object):
-    def buildTree(self, inorder, postorder):
-        if len(postorder) == 0:
-            return None
-        if len(inorder) == 1:
-            return TreeNode(inorder[0])
-        root = TreeNode(postorder[-1]) # get the value of "root" via postorder
-        index = inorder.index(postorder[-1]) # get the index of "root" in inorder 
-        root.left = self.buildTree(inorder[  : index ], postorder[ : index ])
-        root.right = self.buildTree(inorder[ index + 1 : ], postorder[ index : - 1 ])
-        return root
-        
+   
 # V0' 
 class Solution(object):
     def buildTree(self, inorder, postorder):
