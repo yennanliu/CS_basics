@@ -20,14 +20,34 @@ public class MaximumDepthOfBinaryTree {
 //            return 1;
 //        }
 
+        /** NOTE !!! we get max left, right depth first, then return bigger one as final answer */
         int leftD = maxDepth(root.left) + 1;
         int rightD = maxDepth(root.right) + 1;
 
         return Math.max(leftD, rightD);
     }
 
-
     // V0'
+    // NOTE !!! below is wrong, we should get max left, right depth first, then compare them
+//    public int maxDepth(TreeNode root) {
+//
+//        if (root == null){
+//            return 0;
+//        }
+//
+//        if (root.left != null){
+//            return 1 + this.maxDepth(root.left);
+//        }
+//
+//        if (root.right != null){
+//            return 1 + this.maxDepth(root.right);
+//        }
+//
+//        return Math.max(this.maxDepth(root.left), this.maxDepth(root.right));
+//    }
+
+
+    // V0''
     // IDEA : RECURSIVE
     public int maxDepth_1(TreeNode root) {
 

@@ -331,6 +331,22 @@ public class workspace3 {
         return root;
     }
 
+    // LC 104
+    // DFS
+    public int maxDepth(TreeNode root) {
 
+        if (root == null){
+            return 0;
+        }
+
+        if (root.left == null && root.right == null){
+            return 1;
+        }
+
+        int leftDepth = this.maxDepth(root.left) + 1;
+        int rightDepth = this.maxDepth(root.right) + 1;
+
+        return Math.max(leftDepth, rightDepth);
+    }
 
 }
