@@ -101,6 +101,9 @@ https://www.facebook.com/photo?fbid=787938986701653&set=a.620391230123097# Tree
 
 - pre-order traverse
     - root -> left -> right
+    - use in "need root val in sub-tree calculation"
+        - quick sort
+
 ```python
 # pre-order traversal
 r = []
@@ -162,6 +165,10 @@ class Solution:
 ```
 - post-order traverse
     - left -> right -> root
+    - use in "need sub-tree val in root calculation"
+        - divide and conquer algorithm
+        - DP (dynamic programming)
+
 ```python
 # postorder traversal
 r = []
