@@ -4,10 +4,7 @@ package LeetCodeJava.BinarySearchTree;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,9 +27,56 @@ import java.util.stream.Stream;
 public class KthSmallestElementInABST {
 
     // V0
+    // IDEA : BFS + PQ
+    public int kthSmallest(TreeNode root, int k) {
+
+        if (root.left == null && root.right == null){
+            return root.val;
+        }
+
+        /** NOTE !!!
+         *
+         *   we use PQ (priority queue) for getting k-th small element
+         *
+         *   In java, default PQ is small PQ, if we need big PQ, can use update comparator
+         *
+         *
+         *    // Small PQ (default min-heap)
+         *    PriorityQueue<Integer> smallPQ = new PriorityQueue<>();
+         *
+         *    // Big PQ (max-heap)
+         *    PriorityQueue<Integer> bigPQ = new PriorityQueue<>(Comparator.reverseOrder());
+         *
+         */
+        PriorityQueue<Integer> pq = new PriorityQueue();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        // bfs
+        while(!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            pq.add(node.val);
+            if (node.left != null){
+                queue.add(node.left);
+            }
+            if (node.right != null){
+                queue.add(node.right);
+            }
+        }
+
+        // 1-bases k-th small element
+        while (k > 1){
+            pq.poll();
+            k -= 1;
+        }
+
+        return pq.poll();
+    }
+
+    // V0'
     // IDEA : DFS
     List<Integer> cache = new ArrayList();
-    public int kthSmallest(TreeNode root, int k) {
+    public int kthSmallest_0(TreeNode root, int k) {
 
         if (root.left == null && root.right == null){
             return k;
@@ -65,9 +109,6 @@ public class KthSmallestElementInABST {
             dfs(root.right);
         }
     }
-
-    // V0'
-    // IDEA : BFS
 
     // V1
     // IDEA : Recursive Inorder Traversal + STACK

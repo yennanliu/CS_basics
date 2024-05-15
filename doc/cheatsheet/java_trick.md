@@ -536,6 +536,36 @@ public int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 ```java
 ```
 
+### 1-19) PQ
+```java
+
+// Small PQ (default min-heap)
+PriorityQueue<Integer> smallPQ = new PriorityQueue<>();
+
+// Big PQ (max-heap)
+PriorityQueue<Integer> bigPQ = new PriorityQueue<>(Comparator.reverseOrder());
+
+// Add elements to PQs
+smallPQ.add(5);
+smallPQ.add(10);
+smallPQ.add(1);
+
+bigPQ.add(5);
+bigPQ.add(10);
+bigPQ.add(1);
+
+// Print elements from PQs
+System.out.println("Small PQ (min-heap):");
+while (!smallPQ.isEmpty()) {
+    System.out.println(smallPQ.poll());
+}
+
+System.out.println("Big PQ (max-heap):");
+while (!bigPQ.isEmpty()) {
+    System.out.println(bigPQ.poll());
+} 
+```
+
 # 2) Other tricks
 
 ### 2-1) Init var, modify it in another method, and use it
