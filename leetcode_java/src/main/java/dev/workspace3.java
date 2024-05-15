@@ -409,4 +409,52 @@ public class workspace3 {
         return pq.poll();
     }
 
+    // LC 102
+    // bfs
+    public List<List<Integer>> levelOrder(TreeNode root) {
+
+        if (root == null){
+            return new ArrayList();
+        }
+
+        List<List<Integer>> res = new ArrayList<>();
+        Queue<MyQueue> queue = new LinkedList<>(); // double check
+        int layer = 0;
+        queue.add(new MyQueue(layer, root));
+
+        while (!queue.isEmpty()){
+            MyQueue cur = queue.poll();
+            int curLayer = cur.layer;
+            if (curLayer >= res.size()){
+                res.add(new ArrayList());
+            }
+            List<Integer> collected = res.get(curLayer);
+            res.set(curLayer, collected);
+            collected.add(cur.root.val);
+            if (cur.root.left != null){
+                queue.add(new MyQueue(curLayer+1, cur.root.left));
+            }
+            if (cur.root.right != null){
+                queue.add(new MyQueue(curLayer+1, cur.root.right));
+            }
+        }
+
+        return res;
+    }
+
+    public class MyQueue{
+        public int layer;
+        public TreeNode root;
+
+        MyQueue(){
+
+        }
+
+        MyQueue(int layer, TreeNode root){
+            this.layer = layer;
+            this.root = root;
+        }
+    }
+
+
 }
