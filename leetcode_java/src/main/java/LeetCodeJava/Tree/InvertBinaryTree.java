@@ -10,9 +10,27 @@ import java.util.Stack;
 
 public class InvertBinaryTree {
 
-    // V0
-    // IDEA : DFS
+    // VO
+    // IDEA : DFS + cache
     public TreeNode invertTree(TreeNode root) {
+
+        if (root == null){
+            return root;
+        }
+
+        // NOTE !!! we cache left sub tree first
+        // then can assign such node to right sub tree
+        TreeNode tmp = root.left;
+        root.left = invertTree(root.right);
+        root.right = invertTree(tmp);
+
+        return root;
+    }
+
+
+    // V0'
+    // IDEA : DFS
+    public TreeNode invertTree_0(TreeNode root) {
         if (root == null) {
             return null;
         }
@@ -36,8 +54,8 @@ public class InvertBinaryTree {
          *       root.left = right;
          *       root.right = left;
          */
-        TreeNode left = invertTree(root.left);
-        TreeNode right = invertTree(root.right);
+        TreeNode left = invertTree_0(root.left);
+        TreeNode right = invertTree_0(root.right);
         root.left = right;
         root.right = left;
         /** NOTE !!!! below is WRONG */
