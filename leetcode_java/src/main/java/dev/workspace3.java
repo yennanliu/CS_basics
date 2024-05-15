@@ -23,17 +23,45 @@ public class workspace3 {
 //            System.out.println("[" + threadInfo.getThreadId() + "] " + threadInfo.getThreadName());
 //        }
 
-        int n1 = 1;
-        int n2 = 2;
-        int n3 = 0;
+//        int n1 = 1;
+//        int n2 = 2;
+//        int n3 = 0;
+//
+//        String binary1 = Integer.toBinaryString(n1);
+//        String binary2 = Integer.toBinaryString(2);
+//        String binary3 = Integer.toBinaryString(3);
+//
+//        System.out.println(n1 + " in binary is: " + binary1);
+//        System.out.println(n2 + " in binary is: " + binary2);
+//        System.out.println(n3 + " in binary is: " + binary3);
 
-        String binary1 = Integer.toBinaryString(n1);
-        String binary2 = Integer.toBinaryString(2);
-        String binary3 = Integer.toBinaryString(3);
 
-        System.out.println(n1 + " in binary is: " + binary1);
-        System.out.println(n2 + " in binary is: " + binary2);
-        System.out.println(n3 + " in binary is: " + binary3);
+
+        // Small PQ (default min-heap)
+        PriorityQueue<Integer> smallPQ = new PriorityQueue<>();
+
+        // Big PQ (max-heap)
+        PriorityQueue<Integer> bigPQ = new PriorityQueue<>(Comparator.reverseOrder());
+
+        // Add elements to PQs
+        smallPQ.add(5);
+        smallPQ.add(10);
+        smallPQ.add(1);
+
+        bigPQ.add(5);
+        bigPQ.add(10);
+        bigPQ.add(1);
+
+        // Print elements from PQs
+        System.out.println("Small PQ (min-heap):");
+        while (!smallPQ.isEmpty()) {
+            System.out.println(smallPQ.poll());
+        }
+
+        System.out.println("Big PQ (max-heap):");
+        while (!bigPQ.isEmpty()) {
+            System.out.println(bigPQ.poll());
+        }
 
     }
 
@@ -347,6 +375,38 @@ public class workspace3 {
         int rightDepth = this.maxDepth(root.right) + 1;
 
         return Math.max(leftDepth, rightDepth);
+    }
+
+
+    // LC 230
+    // bfs
+    public int kthSmallest(TreeNode root, int k) {
+
+        if (root.left == null && root.right == null){
+            return root.val;
+        }
+
+        PriorityQueue<Integer> pq = new PriorityQueue();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while(!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            pq.add(node.val);
+            if (node.left != null){
+                queue.add(node.left);
+            }
+            if (node.right != null){
+                queue.add(node.right);
+            }
+        }
+
+        while (k > 1){
+            pq.poll();
+            k -= 1;
+        }
+
+        return pq.poll();
     }
 
 }
