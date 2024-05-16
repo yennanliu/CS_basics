@@ -54,7 +54,15 @@ public class ValidateBinarySearchTree {
             return true;
         }
 
-        if (root.val <= smallest_val || root.val >= biggest_val) {
+//        if (root.val <= smallest_val || root.val >= biggest_val) {
+//            return false;
+//        }
+
+        if (root.val <= smallest_val){
+            return false;
+        }
+
+        if (root.val >= biggest_val){
             return false;
         }
 
