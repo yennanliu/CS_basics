@@ -494,7 +494,48 @@ public class workspace3 {
         return root;
     }
 
+    // LC 98
+    // dfs
+    /**
+     *
+     * A valid BST is defined as follows:
+     *
+     * 1) The left subtree of a node contains only nodes with keys less than the node's key.
+     * 2) The right subtree of a node contains only nodes with keys greater than the node's key.
+     * 3) Both the left and right subtrees must also be binary search trees.
+     */
+    public boolean isValidBST(TreeNode root) {
 
+        if (root == null){
+            return true;
+        }
+
+        if (root.left == null && root.right == null){
+            return true;
+        }
+
+        int smallest_val = -1 * Integer.MAX_VALUE - 1;
+        int biggest_val = Integer.MAX_VALUE + 1;
+        return this.check_(root, smallest_val, biggest_val);
+    }
+
+    public boolean check_(TreeNode root, int smallest_val, int biggest_val){
+
+        if (root == null){
+            return true;
+        }
+
+        if (root.val <= smallest_val){
+            return false;
+        }
+
+        if (root.val >= biggest_val){
+            return false;
+        }
+
+        return this.check_(root.left, smallest_val, root.val) &&
+                this.check_(root.right, root.val, biggest_val);
+    }
 
 
 }

@@ -18,38 +18,49 @@ import java.util.LinkedList;
 public class ValidateBinarySearchTree {
 
     // V0
-    // IDEA : DFS
-    // TODO : fix below
-//    public boolean isValidBST(TreeNode root) {
-//
-//        if (root == null){
-//            return true;
-//        }
-//
-//        if (root.left == null && root.right == null){
-//            return true;
-//        }
-//
-//        if (!check(root, Integer.MAX_VALUE-1, Integer.MIN_VALUE)){
-//            return false;
-//        }
-//
-//        return true;
-//    }
-//
-//    private Boolean check(TreeNode root, Integer curMax, Integer curMin){
-//
-//        if (root == null){
-//            return true;
-//        }
-//
-//        if (root.val < curMin || root.val > curMax){
-//            return false;
-//        }
-//
-//        return check(root.left, Math.max(root.val, Integer.MIN_VALUE), curMin)
-//                && check(root.right, curMax, Math.min(root.val, Integer.MAX_VALUE));
-//    }
+    // IDEA : DFS + BST property + setup smallest, biggest val
+
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+
+        /** NOTE !!!
+         *
+         *  since for valid BST, all its sub-tree needs to be valid BST as well,
+         *  so we need to keep comparing sub-tree with "its root and its sub-tree"
+         *  -> so we need to set up a "tree-wide" smallest, and biggest value,
+         *  -> for "left sub tree val < root.val < right sub tree val" check
+         *
+         *  if any sub-tree failed to meet BST requirement
+         *  (e.g. left sub tree val < root.val < right sub tree val),
+         *  then this tree is NOT a BST
+         */
+        /**
+         *  NOTE !!!
+         *
+         *  Use long to handle edge cases for Integer.MIN_VALUE and Integer.MAX_VALUE
+         *  -> use long to handle overflow issue (NOT use int type)
+         */
+        long smallest_val = Long.MIN_VALUE;
+        long biggest_val = Long.MAX_VALUE;
+
+        return check_(root, smallest_val, biggest_val);
+    }
+
+    public boolean check_(TreeNode root, long smallest_val, long biggest_val) {
+
+        if (root == null) {
+            return true;
+        }
+
+        if (root.val <= smallest_val || root.val >= biggest_val) {
+            return false;
+        }
+
+        return check_(root.left, smallest_val, root.val) &&
+                check_(root.right, root.val, biggest_val);
+    }
 
     // V1
     // IDEA : Recursive Traversal with Valid Range

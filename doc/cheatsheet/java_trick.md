@@ -594,3 +594,25 @@ public List<List<String>> partition_1(String s) {
 max = Math.max(Math.max(max * nums[i], min * nums[i]), nums[i]);
 min = Math.min(Math.min(temp * nums[i], min * nums[i]), nums[i]);
 ```
+
+### 2-3) Use long to avoid int overflow
+
+```java
+// java
+// LC 98
+
+// ...
+
+ /**
+ *  NOTE !!!
+ *
+ *  Use long to handle edge cases for Integer.MIN_VALUE and Integer.MAX_VALUE
+ *  -> use long to handle overflow issue (NOT use int type)
+ */
+long smallest_val = Long.MIN_VALUE;
+long biggest_val = Long.MAX_VALUE;
+
+return check_(root, smallest_val, biggest_val);
+
+// ...
+```
