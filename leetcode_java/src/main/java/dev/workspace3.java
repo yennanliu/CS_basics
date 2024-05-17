@@ -652,5 +652,10 @@ public class workspace3 {
         return top;
     }
 
+    // LC 91
+    public int numDecodings(String s) {
 
+        return 0;
+    }
+    
 }
