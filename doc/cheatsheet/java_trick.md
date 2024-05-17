@@ -536,7 +536,7 @@ public int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 ```java
 ```
 
-### 1-19) PQ
+### 1-19) PQ (priority queue)
 ```java
 
 // Small PQ (default min-heap)
@@ -564,6 +564,27 @@ System.out.println("Big PQ (max-heap):");
 while (!bigPQ.isEmpty()) {
     System.out.println(bigPQ.poll());
 } 
+```
+
+### 1-19-1) PQ (priority queue) with custom logic
+```java
+// java
+// LC 347
+// ...
+
+// Step 1. Count the frequency of each element
+Map<Integer, Integer> countMap = new HashMap<>();
+for (int num : nums) {
+    countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+}
+
+/** NOTE !!! how to init PQ below */
+// Step 2. Use a Min-Heap (Priority Queue) to keep track of top K elements
+PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>(
+        (a, b) -> a.getValue() - b.getValue()
+);
+
+// ...
 ```
 
 # 2) Other tricks
