@@ -6,6 +6,8 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 // https://javaguide.cn/java/concurrent/java-concurrent-questions-01.html#%E4%BD%95%E4%B8%BA%E7%BA%BF%E7%A8%8B
 
@@ -535,6 +537,119 @@ public class workspace3 {
 
         return this.check_(root.left, smallest_val, root.val) &&
                 this.check_(root.right, root.val, biggest_val);
+    }
+
+    // LC 347
+    public int[] topKFrequent(int[] nums, int k) {
+
+        if (nums.length == 1 || nums.length == k){
+            return nums;
+        }
+
+
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int x : nums){
+            if (!map.containsKey(x)) {
+                map.put(x, 1);
+            }else{
+                map.put(x, map.get(x)+1);
+            }
+        }
+
+        // map(k,v) ->  inverseMap(v, k)
+        Map<Integer, Integer> inverseMap = new HashMap<>();
+        for (int key: map.keySet()){
+            inverseMap.put(map.get(key), key);
+        }
+
+        System.out.println("map = " + map);
+        System.out.println("inverseMap = " + inverseMap);
+
+        int[] res = new int[k];
+        List<Integer> countSort = map.values().stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
+        System.out.println("countSort = " + countSort);
+
+        for (int i = 0; i < k; i++){
+            int val = inverseMap.get(countSort.get(i));
+            System.out.println("val = " + val);
+            res[i]= val;
+        }
+
+        System.out.println("res = " + res.toString());
+        return res;
+    }
+
+    // LC 347 V2
+    public int[] topKFrequent_1(int[] nums, int k) {
+        // Step 1. Count the frequency of each element
+        Map<Integer, Integer> countMap = new HashMap<>();
+        for (int num : nums) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+        }
+
+        // Step 2. Use a Min-Heap (Priority Queue) to keep track of top K elements
+        PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>(
+                (a, b) -> a.getValue() - b.getValue()
+        );
+
+        // Step 3. Maintain the heap of size k
+        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
+            heap.add(entry);
+            if (heap.size() > k) {
+                heap.poll();  // Remove the element with the smallest frequency
+            }
+        }
+
+        // Step 4. Extract the elements from the heap
+        int[] topK = new int[k];
+        for (int i = 0; i < k; i++) {
+            topK[i] = heap.poll().getKey();
+        }
+
+        return topK;
+    }
+
+
+    public int[] topKFrequent_0(int[] nums, int k) {
+
+        // O(1) time
+        if (k == nums.length) {
+            return nums;
+        }
+
+        // Step 1. build hash map : character and how often it appears
+        // O(N) time
+        Map<Integer, Integer> count = new HashMap();
+        for (int n: nums) {
+            count.put(n, count.getOrDefault(n, 0) + 1);
+        }
+
+        // init heap 'the less frequent element first'
+        //Queue<Integer> heap = new PriorityQueue<>((n1, n2) -> count.get(n1) - count.get(n2));
+        Queue<Integer> heap = new PriorityQueue<>(
+                // (a, b) -> a.getValue() - b.getValue()
+                (a,b) -> a - b
+        );
+
+        /** NOTE !!! here */
+        // Step 2. keep k top frequent elements in the heap
+        // O(N log k) < O(N log N) time
+        for (int n: count.keySet()) {
+            heap.add(n);
+            /** if size > k, remove smallest element (e.g. keep k top frequent elements in the heap) */
+            if (heap.size() > k){
+                heap.poll();
+            }
+        }
+
+        // Step 3. build an output array
+        // O(k log k) time
+        int[] top = new int[k];
+        for(int i = k - 1; i >= 0; --i) {
+            top[i] = heap.poll();
+        }
+        return top;
     }
 
 

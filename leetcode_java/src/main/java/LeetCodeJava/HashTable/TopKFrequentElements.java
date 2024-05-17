@@ -70,6 +70,33 @@ public class TopKFrequentElements {
             count.put(n, count.getOrDefault(n, 0) + 1);
         }
 
+        /** NOTE !!! how to init PQ below
+         *
+         *
+         *  Priority Queue with Custom Comparator based on a Map (count):
+         *
+         *   1) This priority queue uses a custom comparator that compares the elements
+         *   based on their values in a map (count).
+         *
+         *   2) count.get(n1) retrieves the frequency of n1 from the map,
+         *   and count.get(n2) retrieves the frequency of n2.
+         *
+         *  3)  The comparator orders the elements by their frequencies in ascending order.
+         *  Elements with lower frequencies will
+         *  have higher priority (i.e., they will be at the front of the queue).
+         *
+         *
+         *  NOTE !!!
+         *
+         *   Queue<Integer> heap = new PriorityQueue<>((n1, n2) -> count.get(n1) - count.get(n2));
+         *
+         *   and
+         *
+         *   PriorityQueue<Integer> bigPQ = new PriorityQueue<>(Comparator.reverseOrder());
+         *
+         *   are DIFFERENT
+         *
+         */
         // init heap 'the less frequent element first'
         Queue<Integer> heap = new PriorityQueue<>((n1, n2) -> count.get(n1) - count.get(n2));
 
@@ -91,6 +118,39 @@ public class TopKFrequentElements {
             top[i] = heap.poll();
         }
         return top;
+    }
+
+    // V0''
+    // IDEA : HASH MAP + PQ (by GPT)
+    public int[] topKFrequent_0_1(int[] nums, int k) {
+
+        // Step 1. Count the frequency of each element
+        Map<Integer, Integer> countMap = new HashMap<>();
+        for (int num : nums) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+        }
+
+        /** NOTE !!! how to init PQ below */
+        // Step 2. Use a Min-Heap (Priority Queue) to keep track of top K elements
+        PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>(
+                (a, b) -> a.getValue() - b.getValue()
+        );
+
+        // Step 3. Maintain the heap of size k
+        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
+            heap.add(entry);
+            if (heap.size() > k) {
+                heap.poll();  // Remove the element with the smallest frequency
+            }
+        }
+
+        // Step 4. Extract the elements from the heap
+        int[] topK = new int[k];
+        for (int i = 0; i < k; i++) {
+            topK[i] = heap.poll().getKey();
+        }
+
+        return topK;
     }
 
     // V1
