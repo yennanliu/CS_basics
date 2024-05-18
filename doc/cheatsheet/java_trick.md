@@ -637,3 +637,27 @@ return check_(root, smallest_val, biggest_val);
 
 // ...
 ```
+
+
+### 2-4) get "1" count from integer's binary format
+```java
+// java
+
+/**
+ *  Integer.bitCount
+ *
+ *  -> java default get number of "1" from binary representation of a 10 based integer
+ *
+ *  -> e.g.
+ *      Integer.bitCount(0) = 0
+ *      Integer.bitCount(1) = 1
+ *      Integer.bitCount(2) = 1
+ *      Integer.bitCount(3) = 2
+ *
+ *  Ref
+ *      - https://blog.csdn.net/weixin_42092787/article/details/106607426
+ */
+
+// LC 338
+
+```
