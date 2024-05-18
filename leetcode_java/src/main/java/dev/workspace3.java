@@ -2,12 +2,8 @@ package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadInfo;
-import java.lang.management.ThreadMXBean;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 // https://javaguide.cn/java/concurrent/java-concurrent-questions-01.html#%E4%BD%95%E4%B8%BA%E7%BA%BF%E7%A8%8B
 
@@ -657,5 +653,92 @@ public class workspace3 {
 
         return 0;
     }
-    
+
+    // LC 213
+    // brute force
+    public int rob(int[] nums) {
+
+        if (nums.length == 0){
+            return 0;
+        }
+
+
+        return 0;
+    }
+
+    // LC 211
+    // trie ? (dict + tree)
+    // 1.30 pm
+    class WordDictionary {
+
+        class TrieNode{
+            // attr
+            private Map<String, TrieNode> child;
+            private Boolean isEnd;
+
+            TrieNode(){}
+        }
+
+        // attr
+        private TrieNode trie;
+
+        // constructor
+        public WordDictionary() {
+            this.trie = new TrieNode();
+        }
+
+        public void addWord(String word) {
+            if (word == "" || word.length() == 0){
+                return;
+            }
+            for (String x : word.split("")){
+                if (!this.trie.child.containsKey(x)){
+                    this.trie.child.put(x, new TrieNode());
+                }
+                // move to child node
+                this.trie = this.trie.child.get(x);
+            }
+
+            // set cur node isEnd as true
+            this.trie.isEnd = true;
+        }
+
+        public boolean search(String word) {
+            TrieNode trie = this.trie;
+            return this.search_sub(word, this.trie);
+        }
+
+        public boolean search_sub(String word, TrieNode trie) {
+
+            for (int i = 0; i < word.length(); i++){
+                char w = word.charAt(i);
+                String x = String.valueOf(w);
+                // case 1) no such element
+                if (!trie.child.containsKey(x)){
+                    // case 1-1) if "."
+                    if (x == "."){
+                        for (String key : trie.child.keySet()){
+                            TrieNode new_trie = this.trie.child.get(key);
+                            // start from idx+1 sub string
+                            this.search_sub(word.substring(i+1), new_trie);
+                        }
+                    }
+                    // case 1-2) if not "."
+                    else{
+                        return false;
+                    }
+                }
+                // case 2) has such element
+                else{
+                    trie = trie.child.get(x);
+                }
+            }
+
+            return trie.isEnd;
+        }
+
+    }
+
+
+
 }
