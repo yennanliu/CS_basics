@@ -35,30 +35,44 @@ public class workspace3 {
 
 
 
-        // Small PQ (default min-heap)
-        PriorityQueue<Integer> smallPQ = new PriorityQueue<>();
+//        // Small PQ (default min-heap)
+//        PriorityQueue<Integer> smallPQ = new PriorityQueue<>();
+//
+//        // Big PQ (max-heap)
+//        PriorityQueue<Integer> bigPQ = new PriorityQueue<>(Comparator.reverseOrder());
+//
+//        // Add elements to PQs
+//        smallPQ.add(5);
+//        smallPQ.add(10);
+//        smallPQ.add(1);
+//
+//        bigPQ.add(5);
+//        bigPQ.add(10);
+//        bigPQ.add(1);
+//
+//        // Print elements from PQs
+//        System.out.println("Small PQ (min-heap):");
+//        while (!smallPQ.isEmpty()) {
+//            System.out.println(smallPQ.poll());
+//        }
+//
+//        System.out.println("Big PQ (max-heap):");
+//        while (!bigPQ.isEmpty()) {
+//            System.out.println(bigPQ.poll());
+//        }
 
-        // Big PQ (max-heap)
-        PriorityQueue<Integer> bigPQ = new PriorityQueue<>(Comparator.reverseOrder());
+        for (int i = 0; i <= 3; i++){
+            int b_cnt = Integer.bitCount(i);
 
-        // Add elements to PQs
-        smallPQ.add(5);
-        smallPQ.add(10);
-        smallPQ.add(1);
-
-        bigPQ.add(5);
-        bigPQ.add(10);
-        bigPQ.add(1);
-
-        // Print elements from PQs
-        System.out.println("Small PQ (min-heap):");
-        while (!smallPQ.isEmpty()) {
-            System.out.println(smallPQ.poll());
-        }
-
-        System.out.println("Big PQ (max-heap):");
-        while (!bigPQ.isEmpty()) {
-            System.out.println(bigPQ.poll());
+            /**
+             *
+             * i = 0 , b_cnt = 0
+             * i = 1 , b_cnt = 1
+             * i = 2 , b_cnt = 1
+             * i = 3 , b_cnt = 2
+             *
+             */
+            System.out.println("i = " + i + " , b_cnt = " + b_cnt);
         }
 
     }
@@ -737,6 +751,32 @@ public class workspace3 {
             return trie.isEnd;
         }
 
+    }
+
+    // LC 338
+    public int[] countBits(int n) {
+        if (n == 0){
+            return new int[]{0};
+        }
+
+        int[] res = new int[n+1];
+
+        for (int i = 0; i < n+1; i++){
+            /**
+             *  Integer.bitCount
+             *
+             *  -> java default get number of "1" from binary representation of a 10 based integer
+             *
+             *  -> e.g.
+             *      Integer.bitCount(0) = 0
+             *      Integer.bitCount(1) = 1
+             *      Integer.bitCount(2) = 1
+             *      Integer.bitCount(3) = 2
+             */
+            int cnt = Integer.bitCount(i);
+            res[i] = cnt;
+        }
+        return res;
     }
 
 

@@ -29,6 +29,37 @@ public class CountingBits {
         return count;
     }
 
+    // V0
+    // IDEA : java default
+    public int[] countBits_0(int n) {
+
+        if (n == 0){
+            return new int[]{0};
+        }
+
+        int[] res = new int[n+1];
+
+        for (int i = 0; i < n+1; i++){
+            /**
+             *  Integer.bitCount
+             *
+             *  -> java default get number of "1" from binary representation of a 10 based integer
+             *
+             *  -> e.g.
+             *      Integer.bitCount(0) = 0
+             *      Integer.bitCount(1) = 1
+             *      Integer.bitCount(2) = 1
+             *      Integer.bitCount(3) = 2
+             *
+             *  Ref
+             *      - https://blog.csdn.net/weixin_42092787/article/details/106607426
+             */
+            int cnt = Integer.bitCount(i);
+            res[i] = cnt;
+        }
+        return res;
+    }
+
     // V1
     // https://leetcode.com/problems/counting-bits/solutions/3987279/java-solution-using-right-shift-operator/
     public int countOnes(int n) {
