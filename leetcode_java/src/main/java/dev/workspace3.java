@@ -1,5 +1,6 @@
 package dev;
 
+import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
@@ -934,6 +935,42 @@ public class workspace3 {
         }
 
         return false;
+    }
+
+    // LC 206
+    public ListNode reverseList(ListNode head) {
+
+        if (head == null){
+            return head;
+        }
+
+        /**
+         *    1 -> 2 -> 3
+         *
+         *   pre 1 -> 2 -> 3
+         *    ↑  ↑
+         *
+         *   pre <- 1 -> 2 -> 3
+         *          ↑    ↑
+         *
+         *   pre <- 1 <- 2 -> 3
+         *               ↑    ↑
+         */
+
+        //ListNode root = head;
+        ListNode prev = new ListNode();
+        System.out.println("prev.val = " + prev.val);
+
+        while (head != null){
+            System.out.println("head = " + head.val);
+
+            ListNode next = head.next;
+            head.next = prev;
+            prev = head;
+            head = next;
+        }
+
+        return prev;
     }
 
 }
