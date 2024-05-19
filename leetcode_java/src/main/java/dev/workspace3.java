@@ -802,4 +802,77 @@ public class workspace3 {
         }
     }
 
+    // LC 207
+    // dfs ?
+    // 0930 am
+    /**
+     *  prerequisites[i] = [ai, bi]
+     *  indicates that
+     *  you must take course "bi" first
+     *  if you want to take course "ai"
+     */
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+
+         if (numCourses == 0 && prerequisites.length == 0){
+             return true;
+         }
+
+        if (prerequisites.length == 0){
+            return true;
+        }
+
+         Map<Integer, List<Integer>> map = new HashMap<>();
+
+         for (int[] x : prerequisites){
+             if (!map.containsKey(x[0])){
+                 List<Integer> cur = new ArrayList<>();
+                 cur.add(x[1]);
+                 map.put(x[0], cur);
+             }else{
+                 List<Integer> cur = map.get(x[0]);
+                 cur.add(x[1]);
+                 map.put(x[0], cur);
+             }
+         }
+
+         System.out.println("map = " + map);
+
+         int[] visited = new int[numCourses];
+         for (int i = 0; i < numCourses; i++){
+             visited[i] = 0;
+         }
+
+         for (int i = 0; i < numCourses; i++){
+             if (! this._help_check(i, visited, map)){
+                 return false;
+             }
+         }
+
+         return true;
+        //return Arrays.stream(visited).sum() == numCourses;
+    }
+
+    public boolean _help_check(int courseId, int[] visited, Map<Integer, List<Integer>> map){
+
+        System.out.println("---> courseId = " + courseId + " map = " + map + " visited = " + visited);
+
+        if (!map.containsKey(courseId)){
+            return true;
+        }
+
+        for (int val : map.get(courseId)){
+            if (visited[courseId] == 1){
+                return false;
+            }
+            if (courseId == val){
+                return false;
+            }
+            visited[courseId] = 1;
+            this._help_check(val, visited, map);
+            visited[courseId] = 0;
+        }
+
+        return true;
+    }
+
 }

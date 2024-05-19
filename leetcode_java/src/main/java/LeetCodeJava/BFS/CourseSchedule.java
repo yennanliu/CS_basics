@@ -167,6 +167,26 @@ public class CourseSchedule {
     }
 
     private boolean dfs(List<Integer> res, Map<Integer, List<Integer>> graph, int[] visited, int course) {
+
+        /** NOTE !!!
+         *
+         *  here we maintain 3 status:
+         *
+         *   status = 0 : not visited
+         *   status = 1 : visiting
+         *   status = 2 : visited
+         *
+         *   ->
+         *   So,
+         *   if status == 2, return true directly, since such course already been visited, we should not visit it again
+         *
+         *   if status = 1, should return false directly, since "it is being visiting now",
+         *                  any other progress try to visit the same course at the same time
+         *                  means course conflict, -> can't take such course
+         *
+         *
+         *  Ref : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule.py#L44
+         */
         if (visited[course] == 1) {
             return false;
         }
