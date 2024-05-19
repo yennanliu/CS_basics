@@ -597,6 +597,82 @@ class Solution(object):
         return result
 ```
 
+```java
+// java
+// LC 079
+// V0'
+// IDEA : DFS + BACKTRACK (modified by GPT)
+public boolean exist_0(char[][] board, String word) {
+    if (board == null || board.length == 0) {
+        return false;
+    }
+
+    int l = board.length;
+    int w = board[0].length;
+
+    boolean[][] visited = new boolean[l][w];
+
+    for (int i = 0; i < l; i++) {
+        for (int j = 0; j < w; j++) {
+            if (dfs_(board, i, j, 0, word, visited)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+private boolean dfs_(char[][] board, int y, int x, int idx, String word, boolean[][] visited) {
+
+    if (idx == word.length()) {
+        return true;
+    }
+
+    int l = board.length;
+    int w = board[0].length;
+
+    if (y < 0 || y >= l || x < 0 || x >= w || visited[y][x] || board[y][x] != word.charAt(idx)) {
+        return false;
+    }
+
+    /** NOTE !!! we update visited on x, y here */
+    visited[y][x] = true;
+
+    int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    /**
+     *  NOTE !!!
+     *
+     *   instead of below structure:
+     *
+     *       boolean didFindNextCharacter =
+     *                 dfs2(row + 1, col, word, lvl + 1, visited, board) ||
+     *                 dfs2(row - 1, col, word, lvl + 1, visited, board) ||
+     *                 dfs2(row, col + 1, word, lvl + 1, visited, board) ||
+     *                 dfs2(row, col - 1, word, lvl + 1, visited, board);
+     *
+     *   we can use below logic as well:
+     *
+     *          for (int[] dir : dirs) {
+     *             if (dfs_(board, y + dir[0], x + dir[1], idx + 1, word, visited)) {
+     *                 return true;
+     *             }
+     *         }
+     *
+     */
+    for (int[] dir : dirs) {
+        if (dfs_(board, y + dir[0], x + dir[1], idx + 1, word, visited)) {
+            return true;
+        }
+    }
+
+    /** NOTE !!! we undo (backtrack) updated x, y here */
+    visited[y][x] = false;
+
+    return false;
+}
+```
+
 ### 2-4) Subsets
 ```python
 # LC 078 Subsets
