@@ -8,6 +8,8 @@
 
 <p align="center"><img src ="./doc/pic/sort_algorithm_complexity.png" ></p>
 
+<p align="center"><img src ="./doc/pic/sort_algorithm_complexity_2.jpeg" ></p>
+
 <p align="center"><img src ="./doc/pic/big-o-cheat-sheet-poster.png" ></p>
 
 <p align="center"><img src ="./doc/pic/data_structure_2.png" ></p>
