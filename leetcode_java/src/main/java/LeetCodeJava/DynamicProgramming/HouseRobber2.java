@@ -19,11 +19,15 @@ public class HouseRobber2 {
             return Math.max(nums[0], nums[1]);
         }
 
-        // Consider the scenario where the first and last houses are adjacent
+        // Consider the scenario where the first and last houses are adjacent (nums is a "circular" array)
         // so either
-        //  -> we rob first and last 2 idx
-        //  -> or rob 2nd and last idx
+        //
+        //  -> case 1) we rob first and last 2 idx (e.g. 0 idx, and k-2 idx)
+        //  -> case 2) or rob 2nd and last idx (e.g. 1 idx, and k-1 idx)
+
+        // case 1)
         int max1 = robRange(nums, 0, nums.length - 2);
+        // case 2)
         int max2 = robRange(nums, 1, nums.length - 1);
 
         return Math.max(max1, max2);
@@ -32,11 +36,13 @@ public class HouseRobber2 {
     // NOTE !!! define robRange(int[] nums, int start, int end)
     // with start, end idx
     public int robRange(int[] nums, int start, int end) {
+
         int[] dp = new int[nums.length];
         dp[start] = nums[start];
         dp[start + 1] = Math.max(nums[start], nums[start + 1]);
 
         for (int i = start + 2; i <= end; i++) {
+            // still the same dp logic as LC 198
             dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
         }
 
