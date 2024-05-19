@@ -1022,4 +1022,67 @@ public class workspace3 {
         return dp[nums.length-1];
     }
 
+    // LC 213
+    public int rob_2(int[] nums) {
+
+        if (nums.length <= 3){
+
+            if (nums.length == 0){
+                return 0;
+            }
+
+            if (nums.length == 1){
+                return nums[0];
+            }
+
+            if (nums.length == 2){
+                return Math.max(nums[0], nums[1]);
+            }
+
+            return Math.max(nums[0]+nums[2], nums[1]);
+        }
+
+        int[] dp = new int[nums.length];
+
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+
+        /**
+         *
+         *  // 1, 2, 3, ... k-2, k-1, k
+         *  // case 1) take dp[1]
+         *
+         *   dp[k] = max(dp(k-2), dp(k-1))
+         *
+         *  // case 2) NOT take dp[1]
+         *
+         *   dp[0] = 0
+         *   dp[1] = nums[1]
+         *   dp[k] = max(dp(k-2) + nums[k], dp(k-1))
+         *
+         *
+         *  nums = [1,2,3,1]
+         *
+         *  case 1)
+         *   dp[0] = 1
+         *   dp[1] = 2
+         *   dp[2] = 4
+         *   dp[3] =
+         *    max(dp(k-2), dp(k-1))  = 4
+         *     or
+         *    max(dp(k-2) + k, dp(k-1)) = 3
+         *
+         */
+
+        for (int i = 2; i < nums.length; i++){
+            dp[i] = Math.max(dp[i-2] + nums[i], dp[i-1]);
+        }
+
+        System.out.println("dp = " + dp.toString());
+        for (int x : dp){
+            System.out.println(x);
+        }
+        return dp[nums.length-1];
+    }
+
 }
