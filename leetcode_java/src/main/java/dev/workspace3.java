@@ -838,41 +838,102 @@ public class workspace3 {
          System.out.println("map = " + map);
 
          int[] visited = new int[numCourses];
-         for (int i = 0; i < numCourses; i++){
-             visited[i] = 0;
-         }
+//         for (int i = 0; i < numCourses; i++){
+//             visited[i] = 0;
+//         }
+
+         int res = 0;
 
          for (int i = 0; i < numCourses; i++){
-             if (! this._help_check(i, visited, map)){
+             if (! this._help_check(i, visited, map, res)){
                  return false;
              }
          }
 
-         return true;
-        //return Arrays.stream(visited).sum() == numCourses;
+         return res > 0;
     }
 
-    public boolean _help_check(int courseId, int[] visited, Map<Integer, List<Integer>> map){
+    public boolean _help_check(int courseId, int[] visited, Map<Integer, List<Integer>> map, int res){
 
         System.out.println("---> courseId = " + courseId + " map = " + map + " visited = " + visited);
 
-        if (!map.containsKey(courseId)){
+        if (visited[courseId] == 1){
+            return false;
+        }
+
+        if (visited[courseId] == 2){
             return true;
         }
 
-        for (int val : map.get(courseId)){
-            if (visited[courseId] == 1){
-                return false;
+        if (map.containsKey(courseId)){
+            for (int val : map.get(courseId)){
+                if (!this._help_check(val, visited, map, res)){
+                    return false;
+                }
             }
-            if (courseId == val){
-                return false;
-            }
-            visited[courseId] = 1;
-            this._help_check(val, visited, map);
-            visited[courseId] = 0;
         }
 
+        visited[courseId] = 2;
+        res += 1;
+
         return true;
+    }
+
+
+    // LC 79
+    // dfs
+    public boolean exist(char[][] board, String word) {
+
+        if (board.length == 1 && board[0].length == 1){
+            return String.valueOf(board[0][0]) == word;
+        }
+
+        int l = board.length;
+        int w = board[0].length;
+
+        boolean[][] visited = new boolean[l][w];
+
+        for (int i = 0; i < l; i++){
+            for (int j = 0; j < w; j++){
+
+                int idx = 0;
+                String cur = "";
+                String[] word_ = word.split("");
+
+                if (dfs_(board, j, i, idx, word_, cur, visited)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean dfs_(char[][] board, int x, int y, int idx, String[] word_, String cur, boolean[][] visited){
+
+        int l = board.length;
+        int w = board[0].length;
+
+        if (cur == word_.toString()){
+            return true;
+        }
+
+        int[][] dirs = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+        for (int[] dir : dirs){
+            int x_ = x + dir[1];
+            int y_ = y + dir[0];
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                String tmp = String.valueOf(board[y_][x_]);
+                if (tmp == word_[idx]){
+                    cur += tmp;
+                    visited[y_][x_] = true;
+                    this.dfs_(board, x_, y_, idx+1, word_, cur, visited);
+                }
+            }
+            visited[y_][x_] = false;
+        }
+
+        return false;
     }
 
 }
