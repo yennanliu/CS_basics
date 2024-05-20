@@ -1187,4 +1187,35 @@ public class workspace3 {
         return true;
     }
 
+    // LC 70
+    public int climbStairs(int n) {
+
+        if (n <= 2){
+            if (n == 1){
+                return 1;
+            }
+            return 2;
+        }
+
+        /**
+         *
+         *  0, 1, 2, 3..... k-2, k-1, k
+         *  dp[k] = dp[k-2] + dp[k-1]
+         *
+         */
+
+        int[] dp = new int[n+1];
+        dp[0] = 1;
+        dp[1] = 2;
+
+        for (int i = 2; i < n; i++){
+            //dp[i] = Math.max(dp[i-2]+1, dp[i-1]);
+            dp[i] = dp[i-2] + dp[i-1];
+            //System.out.println("dp[i] = " + dp[i]);
+        }
+
+        return dp[n-1];
+    }
+
+
 }
