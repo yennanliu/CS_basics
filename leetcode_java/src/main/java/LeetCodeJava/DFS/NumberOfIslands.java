@@ -61,12 +61,67 @@ public class NumberOfIslands {
         return true;
     }
 
-    // V0
+    // V0'
+    // IDEA: DFS (with looping)
+    public int numIslands_0(char[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+        int res = 0;
+
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                /**
+                 *  NOTE !!!
+                 *
+                 *   if grid[i][j] == '1', no need to collect the coordinate (x,y),
+                 *   -> just add res with 1,
+                 *   -> and call dfs function
+                 */
+                if (grid[i][j] == '1') {
+                    res += 1;
+                    dfs(grid, i, j);
+                }
+            }
+        }
+
+        return res;
+    }
+
+    /** NOTE !!!
+     *
+     *   NO NEED to return boolean val on this helper function (dfs),
+     *   since we mark point as "visited" in place with traversing,
+     *   so no response (void) is OK
+     */
+    private void dfs(char[][] grid, int y, int x) {
+        
+        int l = grid.length;
+        int w = grid[0].length;
+
+        if (y < 0 || y >= l || x < 0 || x >= w || grid[y][x] != '1') {
+            return;
+        }
+
+        grid[y][x] = '#'; // Mark the cell as visited
+
+        int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        for (int[] dir : dirs) {
+            int newY = y + dir[0];
+            int newX = x + dir[1];
+            dfs(grid, newY, newX);
+        }
+    }
+
+    // V0'
     // IDEA : DFS (with looping) (modified by GPT)
     int num_island_2 = 0;
     boolean[][] _seen_2;
 
-    public int numIslands_0(char[][] grid) {
+    public int numIslands_0_1(char[][] grid) {
         if (grid.length == 1 && grid[0].length == 1) {
             return grid[0][0] == '1' ? 1 : 0;
         }

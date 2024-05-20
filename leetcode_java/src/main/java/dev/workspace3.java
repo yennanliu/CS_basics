@@ -1126,4 +1126,65 @@ public class workspace3 {
         return;
     }
 
+    // LC 200
+    // dfs
+    public int numIslands(char[][] grid) {
+
+        if (grid.length == 0 && grid[0].length == 0){
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // get "1"
+        List<int[]> collected = new ArrayList<>();
+        for (int i = 0; i < w; i++){
+            for (int j = 0; j < l; j++){
+                if (grid[j][i] == '1'){
+                    collected.add(new int[]{i,j});
+                }
+            }
+        }
+
+        System.out.println("--> collected = ");
+        for (int[] point : collected){
+            System.out.println("x = " + point[0] + " y = " + point[1]);
+        }
+
+        int res = 0;
+        // dfs
+        for (int[] point : collected){
+            if (this.dfs_help(grid, point[0], point[1])){
+                res += 1;
+            }
+        }
+
+        return res;
+    }
+
+    public boolean dfs_help(char[][] grid, int x, int y){
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // dirs
+        int[][] dirs = new int[][]{{0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != '1'){
+            return false;
+        }
+
+        for (int[] dir: dirs){
+
+            int x_ = x + dir[0];
+            int y_ = y + dir[1];
+
+            // mark as visited
+            grid[y_][x_] = '#'; // NOTE !!! we setup char via single quote ('#')
+            this.dfs_help(grid, x_, y_);
+        }
+        return true;
+    }
+
 }
