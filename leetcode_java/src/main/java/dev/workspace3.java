@@ -1085,4 +1085,45 @@ public class workspace3 {
         return dp[nums.length-1];
     }
 
+    // LC 73
+    public void setZeroes(int[][] matrix) {
+
+        if (matrix.length == 0 && matrix[0].length == 0){
+            return;
+        }
+
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        // get zero
+        List<int[]> collected = new ArrayList<>();
+        for (int i = 0; i < w; i++){
+            for (int j = 0; j < l; j++){
+                if(matrix[j][i] == 0){
+                    collected.add(new int[]{i, j});
+                }
+            }
+        }
+
+        //System.out.println("collected = " + collected);
+        for (int[] point : collected){
+
+            System.out.println("x = " + point[0] + " y = " + point[1]);
+            int x = point[0];
+            int y = point[1];
+
+            // make x - direction as zero
+            for (int i = 0; i < w; i++){
+                matrix[y][i] = 0;
+            }
+
+            // make y - direction as zero
+            for (int j = 0; j < l; j++){
+                matrix[j][x] = 0;
+            }
+        }
+
+        return;
+    }
+
 }
