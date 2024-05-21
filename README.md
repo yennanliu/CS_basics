@@ -24,7 +24,7 @@
 * LC Pattern
 	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
-	- [LC top 100 likes](https://leetcode.com/problem-list/top-100-liked-questions/?page=1&fbclid=IwAR2MzUDDOscDklba5gL815lkLKzxK-zOR2WV2-W80_gRmvtfAsNWyut_USw)
+	- [LC top 100 likes](https://leetcode.com/studyplan/top-interview-150/)
 	- [neetcode 150 LC list](https://neetcode.io/practice)
 		- [My Brain after 569 Leetcode Problems](https://youtu.be/8wysIxzqgPI)
 	- [LC Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
