@@ -1310,4 +1310,31 @@ public class workspace3 {
     }
 
 
+    // LC 190
+    public int reverseBits(int n) {
+
+        //String bin = Integer.toBinaryString(n);
+//        // reverse
+//        System.out.println("bin = " + bin);
+          String res = reverse(String.valueOf(n));
+//        System.out.println("res = " + res);
+
+        int ans = Integer.parseInt(res, 2);
+        System.out.println("ans = " + ans);
+        return ans;
+    }
+
+    public String reverse(String input){
+        String res = "";
+        for (String x : input.split("")){
+            //System.out.println("x = " + x);
+            if (x.equals("1")) {
+                res += "0";
+            }else{
+                res += "1";
+            }
+        }
+        return res;
+    }
+
 }
