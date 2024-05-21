@@ -62,19 +62,27 @@ public class workspace3 {
 //            System.out.println(bigPQ.poll());
 //        }
 
-        for (int i = 0; i <= 3; i++){
-            int b_cnt = Integer.bitCount(i);
+//        for (int i = 0; i <= 3; i++){
+//            int b_cnt = Integer.bitCount(i);
+//
+//            /**
+//             *
+//             * i = 0 , b_cnt = 0
+//             * i = 1 , b_cnt = 1
+//             * i = 2 , b_cnt = 1
+//             * i = 3 , b_cnt = 2
+//             *
+//             */
+//            System.out.println("i = " + i + " , b_cnt = " + b_cnt);
+//        }
 
-            /**
-             *
-             * i = 0 , b_cnt = 0
-             * i = 1 , b_cnt = 1
-             * i = 2 , b_cnt = 1
-             * i = 3 , b_cnt = 2
-             *
-             */
-            System.out.println("i = " + i + " , b_cnt = " + b_cnt);
-        }
+        int x = 1;
+        int y = 1;
+        System.out.println(x / y);
+
+        int[] a = new int[1];
+        a[0] = 1;
+        System.out.println(a[0] / 1);
 
     }
 
@@ -1215,6 +1223,68 @@ public class workspace3 {
         }
 
         return dp[n-1];
+    }
+
+    // LC 323
+    public int countComponents_1(int n, int[][] edges){
+
+        
+        return 0;
+    }
+
+    // LC 322
+    // backtrack
+    //int res = 0;
+    List<List<Integer>> cache = new ArrayList<>();
+    int minCnt = -1;
+    public int coinChange(int[] coins, int amount) {
+
+        if (coins.length == 1) {
+            if (amount % coins[0] == 0){
+                return  amount / coins[0];
+            }
+            return -1;
+        }
+
+        if (coins.length == 0){
+            return -1;
+        }
+
+
+        List<Integer> cur = new ArrayList<>();
+        this._backtrack(coins, amount, cur);
+
+        return this.minCnt;
+    }
+
+    public void _backtrack(int[] coins, int amount, List<Integer> cur){
+
+        System.out.println("_backtrack START");
+
+        // TODO : double check
+        int curSum = cur.stream().mapToInt(Integer::intValue).sum();
+
+        if (curSum == amount){
+            this.cache.add(cur);
+            if (this.minCnt > 0){
+                this.minCnt = Math.min(minCnt, cur.size());
+            }else{
+                this.minCnt = cur.size();
+            }
+            return;
+        }
+
+        if (curSum > amount){
+            return;
+        }
+
+        for (int i = 0; i < coins.length; i++){
+            if (coins[i] <= amount){
+                cur.add(coins[i]);
+                this._backtrack(coins, amount, cur);
+                cur.remove(cur.size()-1);
+            }
+        }
     }
 
 
