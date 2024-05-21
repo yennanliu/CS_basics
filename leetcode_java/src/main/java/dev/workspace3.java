@@ -1288,4 +1288,26 @@ public class workspace3 {
     }
 
 
+    // LC 191
+    public int hammingWeight(int n) {
+
+        String bin = Integer.toBinaryString(n);
+        //System.out.println("bin = " + bin);
+        int res = count_one(bin);
+        //System.out.println("res = " + res);
+        return res;
+    }
+
+    public int count_one(String input){
+        int res = 0;
+        for (String x : input.split("")){
+            //System.out.println("x = " + x);
+            if (x.equals("1")) {
+                res += 1;
+            }
+        }
+        return res;
+    }
+
+
 }
