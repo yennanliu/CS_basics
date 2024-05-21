@@ -1,10 +1,16 @@
 # BFS
+- Breadth-first search
 - search algorithm
-- Shortest path searching
+- Find `Shortest path`
     - LC 127
     - LC 1730
 - Breadth first, then deep
 - Use data structure : `Queue` (FIFO)
+- 3 states when BFS run
+    - state = 0 : not visited
+    - state = 1 : visiting
+    - state = 2 : visited
+    - LC 207
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bfs_2.png"></p>
 
