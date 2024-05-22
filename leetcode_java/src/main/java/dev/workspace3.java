@@ -1337,4 +1337,31 @@ public class workspace3 {
         return res;
     }
 
+    // LC 62
+    // dp, math ?
+    public int uniquePaths(int m, int n) {
+
+        if (m == 1 && n == 1){
+            return 1;
+        }
+
+        int m_ = m -1;
+        int n_ = n - 1;
+        int res = get_factorial(m_ + n_) / (m_ * n_);
+        System.out.println("m_ = " + m_ + " n_ = " + n_ + " res = " + res);
+
+        return res;
+    }
+
+    public int get_factorial(int n){
+        if (n == 1){
+            return 1;
+        }
+        int res = 1;
+        for (int i = 1; i <= n; i++){
+            res = res * i;
+        }
+        return res;
+    }
+
 }
