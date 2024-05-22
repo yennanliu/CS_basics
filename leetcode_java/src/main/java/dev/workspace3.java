@@ -76,13 +76,18 @@ public class workspace3 {
 //            System.out.println("i = " + i + " , b_cnt = " + b_cnt);
 //        }
 
-        int x = 1;
-        int y = 1;
-        System.out.println(x / y);
+//        int x = 1;
+//        int y = 1;
+//        System.out.println(x / y);
+//
+//        int[] a = new int[1];
+//        a[0] = 1;
+//        System.out.println(a[0] / 1);
 
-        int[] a = new int[1];
-        a[0] = 1;
-        System.out.println(a[0] / 1);
+        int[] newInterval = new int[]{1,2,3};
+
+        /** NOTE !!!  create list from array */
+        List<int[]> intervalList = new ArrayList<>(Arrays.asList(newInterval));
 
     }
 

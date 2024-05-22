@@ -32,6 +32,37 @@
     - Arrays.asList : only wrap existing array, it NOT implements "add", "remove" methods (but has modify method)
     - new ArrayList : implement "add", "remove" and "modify" methods, not affect original array -> `preferable`
 
+
+### 0-0-1) Array <--> List
+
+```java
+// java
+// LC 57
+
+int[] newInterval = new int[]{1,2,3};
+
+/** 
+ *  
+ * 1) Array -> List
+ *  
+ */
+List<int[]> intervalList = new ArrayList<>(Arrays.asList(newInterval));
+
+
+
+List<int[]> merged = new ArrayList<>();
+
+/** 
+ *  
+ * 2) List -> Array
+ *  
+ */
+
+merged.toArray(new int[merged.size()][]);
+```
+
+
+
 ### 1-0) String to Char array
 ```java
 // java
