@@ -1364,4 +1364,43 @@ public class workspace3 {
         return res;
     }
 
+    // LC 572
+    // dfs
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+
+        if (root == null && subRoot.val == root.val){
+            return true;
+        }
+
+        if (root == null || subRoot.val == root.val){
+            return false;
+        }
+
+        //return false;
+        return this.isSameTree_(root, subRoot) ||
+                this.isSameTree_(root.left, subRoot) ||
+                this.isSameTree_(root.right, subRoot);
+    }
+
+    public boolean isSameTree_(TreeNode root, TreeNode subRoot){
+
+        System.out.println("root = " + root.val + " subRoot = " + subRoot.val);
+
+        if (root.val != subRoot.val){
+            return false;
+        }
+
+        if (root.left == null || subRoot.left == null){
+            return false;
+        }
+
+        if (root.right == null || subRoot.right == null){
+            return false;
+        }
+
+        return root.val == subRoot.val &&
+                this.isSameTree_(root.left, subRoot.left) &&
+                this.isSameTree_(root.right, subRoot.right);
+    }
+
 }

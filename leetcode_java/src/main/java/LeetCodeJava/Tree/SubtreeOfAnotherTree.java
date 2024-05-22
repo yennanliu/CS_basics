@@ -19,17 +19,39 @@ public class SubtreeOfAnotherTree {
         if (s == null || t == null) {
             return false;
         }
-        // NOTE !!! isSameTree and isSubtree with sub left, sub right tree
+        /**
+         * NOTE !!! isSameTree and isSubtree with sub left, sub right tree
+         *
+         * e.g.
+         *   isSubtree(s.left, t)
+         *   isSubtree(s.right, t)
+         *
+         *   -> only take sub tree on s (root), but use the same t (sub root)
+         *
+         *
+         *  NOTE !!!
+         *   -> below is "or" logic
+         */
         return isSameTree(s, t) || isSubtree(s.left, t) || isSubtree(s.right, t);
     }
 
+    /** NOTE !!!
+     *
+     *  isSameTree func is comparing if s, t are the same tree (same structure, val)
+     */
     private boolean isSameTree(TreeNode s, TreeNode t) {
+
         if (s == null && t == null) {
             return true;
         }
         if (s == null || t == null) {
             return false;
         }
+        /**
+         *  NOTE !!!
+         *
+         *   -> below is "and" logic
+         */
         return s.val == t.val && isSameTree(s.left, t.left) && isSameTree(s.right, t.right);
     }
 
