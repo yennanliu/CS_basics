@@ -1,11 +1,11 @@
 # DFS 
+- Deep-first search
 - search algorithm
 - Deep first, then breadth
 - Use data structure : `Stack`   (FILO)
 - To check if some value exists
 - Inorder, preorder, postorder (can recreate a tree)
 - not most efficient (VS bfs), but can handle some specific problems
-- Ref
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_2.png"></p>
 
