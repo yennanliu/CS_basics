@@ -1403,4 +1403,42 @@ public class workspace3 {
                 this.isSameTree_(root.right, subRoot.right);
     }
 
+    // LC 57
+    // idea : array
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+
+        if (intervals.length == 0){
+            if (newInterval.length == 0){
+                return new int[][]{};
+            }
+            return new int[][]{newInterval};
+        }
+
+        List<int[]> intervalList = new ArrayList<>(Arrays.asList(intervals));
+        intervalList.add(newInterval);
+        intervalList.sort(Comparator.comparingInt(a -> a[0]));
+
+        List<int[]> merged = new ArrayList<>();
+
+        for (int[] x : intervalList){
+            System.out.println("1st = " + x[0] + " 2nd = " + x[1]);
+            // case 1) & case 2)
+            if (merged.isEmpty() || merged.get(merged.size()-1)[1] < x[0]){
+                merged.add(x);
+            }
+            // case 3)
+            else{
+                /**
+                 *  if overlap
+                 *   last : |-----|
+                 *   x :      |------|
+                 */
+                merged.get(merged.size()-1)[0] = Math.min(merged.get(merged.size()-1)[0], x[0]);
+                merged.get(merged.size()-1)[1] = Math.max(merged.get(merged.size()-1)[1], x[1]);
+            }
+        }
+
+        return merged.toArray(new int[merged.size()][]);
+    }
+
 }
