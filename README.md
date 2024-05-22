@@ -192,7 +192,7 @@
 ||Merge sort|[merge_sort_topdown.py](./algorithm/python/merge_sort_topdown.py), [mergesort_bottomup.py](./algorithm/python/merge_sort_bottomup.py), [MergeSortTopDown.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/MergeSortTopDown.java), [SQL](./algorithm/sql/Mergesort.sql) | | | `Best : O(N Log N), Avg : O(N Log N), Worst : O(N Log N)` | O(N)| OK* (2)| 
 ||Pancake sort| [Python](./algorithm/python/pancake_sort.py) | | | | | AGAIN| 
 ||Selection sort| [Python](./algorithm/python/selection_sort.py), [JS](./algorithm/js/selection_sort.js) | | | | |  AGAIN| 
-||Topological sort| [Python](./algorithm/python/topological_sort.py) | | Topological Sort is a algorithm can find "ordering" on an "order dependency" graph | | | AGAIN| 
+||Topological sort| [Python](./algorithm/python/topological_sort.py), [Java](./leetcode_java/src/main/java/AlgorithmJava/TopologicalSort.java) | | Topological Sort is a algorithm can find "ordering" on an "order dependency" graph | | | AGAIN| 
 ||md5 | [Python](./algorithm/python/md5.py) | | | | | AGAIN| 
 ||Union Find | [Python 1](./algorithm/python/union_find.py), [Python 2](./algorithm/python/union_find_if_cyclic.py), [Java 1](./leetcode_java/src/main/java/AlgorithmJava/UnionFind.java) | | | AGAIN| 
 ||Dynamic programming|[JS 1](./algorithm/js/dp_demo_1.js), [fibonacci_dp JS](./algorithm/js/fibonacci_dp.js) | | | | | AGAIN|
