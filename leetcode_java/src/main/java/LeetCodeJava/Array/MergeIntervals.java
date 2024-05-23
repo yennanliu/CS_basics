@@ -65,6 +65,42 @@ public class MergeIntervals {
         return res.toArray(new int[res.size()][]);
     }
 
+    // V0'
+    // IDEA: SORT + ARRAY OP + BOUNDARY HANDLING
+    public int[][] merge_0(int[][] intervals) {
+
+        if (intervals.length <= 1){
+            return intervals;
+        }
+
+        /** NOTE !!! array -> list */
+        List<int[]> intervalList = new ArrayList<>(Arrays.asList(intervals));
+
+        // sort on 1st element (0 idx)
+        intervalList.sort(Comparator.comparingInt(x -> x[0]));
+
+        List<int[]> tmp = new ArrayList<>();
+        for (int[] x : intervalList){
+            // case 1 : tmp is null
+            if (tmp.size() == 0){
+                tmp.add(x);
+            }
+            // case 2 : no overlap
+            if (tmp.get(tmp.size() - 1)[1] < x[0]){
+                tmp.add(x);
+            }
+            // case 3 : overlap
+            else{
+                int[] last = tmp.get(tmp.size()-1);
+                tmp.remove(tmp.size()-1);
+                tmp.add(new int[]{Math.min(last[0], x[0]), Math.max(last[1], x[1])});
+            }
+        }
+
+        /** NOTE !!! list -> array */
+        return tmp.toArray(new int[tmp.size()][]);
+    }
+
     // V1
     // IDEA : Sorting
     // https://leetcode.com/problems/merge-intervals/editorial/

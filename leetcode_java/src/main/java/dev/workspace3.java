@@ -5,6 +5,7 @@ import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 // https://javaguide.cn/java/concurrent/java-concurrent-questions-01.html#%E4%BD%95%E4%B8%BA%E7%BA%BF%E7%A8%8B
 
@@ -1444,6 +1445,42 @@ public class workspace3 {
         }
 
         return merged.toArray(new int[merged.size()][]);
+    }
+
+    // LC 56
+    public int[][] merge(int[][] intervals) {
+
+        if (intervals.length <= 1){
+            return intervals;
+        }
+
+        List<int[]> intervalList = new ArrayList<>(Arrays.asList(intervals));
+
+        // sort on 1st element (0 idx)
+        //Object[] y = Arrays.stream(intervals).sorted(Comparator.comparingInt(x -> x[0])).toArray();
+        intervalList.sort(Comparator.comparingInt(x -> x[0]));
+
+        List<int[]> tmp = new ArrayList<>();
+        for (int[] x : intervalList){
+            System.out.println("x = " + x);
+            // case 1 : tmp is null
+            if (tmp.size() == 0){
+                tmp.add(x);
+            }
+            // case 2 : no overlap
+            if (tmp.get(tmp.size() - 1)[1] < x[0] || x[0] == x[1]){
+                tmp.add(x);
+            }
+            // case 3 : overlap
+            else{
+               int[] last = tmp.get(tmp.size()-1);
+               tmp.remove(tmp.size()-1);
+               tmp.add(new int[]{Math.min(last[0], x[0]), Math.max(last[1], x[1])});
+            }
+        }
+
+        // list -> array
+        return tmp.toArray(new int[tmp.size()][]);
     }
 
 }
