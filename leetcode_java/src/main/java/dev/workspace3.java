@@ -1648,5 +1648,39 @@ public class workspace3 {
         return res;
     }
 
+    // LC 300
+    // DP ?
+    /**
+     * A subsequence is an array that
+     * can be derived from another array by deleting some or
+     * no elements without changing the order of
+     * the remaining elements.
+     */
+    public int lengthOfLIS(int[] nums) {
+
+        if (nums.length <= 1){
+            return nums.length;
+        }
+
+        int res = 0;
+
+        // init dp
+        int[] dp = new int[nums.length];
+        dp[0] = 1;
+        if (nums[1] > nums[0]){
+            dp[1] = 2;
+        }else{
+            dp[1] = 1;
+        }
+        /**
+         *  0, 1, 2, .... k-2, k-1, k
+         *
+         *  dp[k] =
+         *
+         */
+
+        return res;
+    }
+
 
 }
