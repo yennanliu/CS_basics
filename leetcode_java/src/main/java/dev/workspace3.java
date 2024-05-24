@@ -1554,4 +1554,65 @@ public class workspace3 {
         return res;
     }
 
+    /**
+     *
+     *  example 1)
+     *
+     *
+     *  [[1,2],[2,3],[3,4],[1,3]]
+     *
+     *  -> sort
+     *  [[1,2],[1,3],[2,3],[3,4]]
+     *
+     *
+     *   1-2
+     *   1---3
+     *
+     *
+     *   example 2)
+     *
+     *   [[1,100],[11,22],[1,11],[2,12]]
+     *
+     *   -> sort
+     *
+     *   [[1,11],[2,12],[11,22], [1,100]]
+     *
+     *   -> [[1,11]]
+     *   -> [[1,11]]
+     *   -> [[1,11], [11,22]]
+     *   -> [[1,11], [11,22]]
+     */
+    // LC 435
+    public int eraseOverlapIntervals(int[][] intervals) {
+
+        if (intervals.length <= 1){
+            return 0;
+        }
+
+        int res = 0;
+
+        // array -> list
+        List<int[]> cur = new ArrayList<>(Arrays.asList(intervals));
+        // sort on 2nd**** element
+        cur.sort(Comparator.comparingInt(x -> x[1]));
+
+        Stack<int[]> stack = new Stack<>();
+
+        for(int[] x : cur){
+            System.out.println("1st = " + x[0] + "2nd = " + x[1]);
+            if (stack.empty()){
+                stack.add(x);
+            }else if (x[1] > stack.peek()[0]){
+                res += 1;
+            }else{
+                if (stack.peek()[1] < x[1]) {
+                    stack.pop();
+                    stack.add(x);
+                }
+            }
+        }
+
+        return res;
+    }
+
 }

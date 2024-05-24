@@ -9,13 +9,17 @@ import java.util.Comparator;
 public class NonOverlappingIntervals {
 
     // V0
-    // IDEA : 2 POINTERS + sorting + intervals (modified by GPT)
+    // IDEA : sorting + intervals (modified by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/non-overlapping-intervals.py
     public int eraseOverlapIntervals(int[][] intervals) {
+
+        /** NOTE !!! sort on 2nd element */
         Arrays.sort(intervals, Comparator.comparingInt(a -> a[1]));
+
         int cnt = 0;
         int[] last = intervals[0];
 
+        // NOTE !! start from idx = 1
         for (int i = 1; i < intervals.length; i++) {
             if (intervals[i][0] < last[1]) {
                 cnt++;
@@ -26,8 +30,39 @@ public class NonOverlappingIntervals {
         return cnt;
     }
 
+    // V0
+    // IDEA : array + boundary op (GPT)
+    public int eraseOverlapIntervals_0(int[][] intervals) {
 
-    // V0'
+        if (intervals.length <= 1) {
+            return 0;
+        }
+
+        int res = 0;
+
+        // Sort intervals by their end time (second element)
+        /** NOTE !!! sort on 2nd element */
+        Arrays.sort(intervals, Comparator.comparingInt(x -> x[1]));
+
+        // Keep track of the end time of the last interval that doesn't overlap
+        int lastEndTime = intervals[0][1];
+
+        // NOTE !! start from idx = 1
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] < lastEndTime) {
+                // Overlapping interval, increment the count
+                res++;
+            } else {
+                // No overlap, update the lastEndTime
+                lastEndTime = intervals[i][1];
+            }
+        }
+
+        return res;
+    }
+    
+
+    // V0''
     // TODO : implement it
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/non-overlapping-intervals.py
 //    public int eraseOverlapIntervals(int[][] intervals) {
