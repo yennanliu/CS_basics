@@ -1615,4 +1615,38 @@ public class workspace3 {
         return res;
     }
 
+    // LC 49
+    public List<List<String>> groupAnagrams(String[] strs) {
+
+        List<List<String>> res = new ArrayList<>();
+
+        if (strs.length == 1){
+            List<String> tmp = new ArrayList<>();
+            tmp.add(strs[0]);
+            res.add(tmp);
+            return res;
+        }
+
+        HashMap<String, List<String>> map = new HashMap<>();
+        for (String x : strs){
+            String[] x_ = x.split("");
+            Arrays.sort(x_);
+            String key = x_.toString();
+            if (!map.containsKey(x_)){
+                map.put(key, new ArrayList<>());
+            }else{
+                List<String> cur = map.get(key);
+                cur.add(x);
+                map.put(key, cur);
+            }
+        }
+
+        for (String k : map.keySet()){
+            res.add(map.get(k));
+        }
+
+        return res;
+    }
+
+
 }
