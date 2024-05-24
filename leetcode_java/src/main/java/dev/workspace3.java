@@ -1522,4 +1522,36 @@ public class workspace3 {
         return dist >= nums.length-1; // dist < nums.length ? false : true;
     }
 
+    // LC 53
+    // sliding window
+    public int maxSubArray(int[] nums) {
+
+        if (nums.length==1){
+            return nums[0];
+        }
+        
+        int res = -1 * Integer.MAX_VALUE;
+        int cur = 0;
+        //List<Integer> cache = new ArrayList<>();
+        int l = 0;
+        int r = 0;
+        
+        while (r < nums.length){
+            System.out.println("l = " + l + " r = " + r + " cur = " + cur + " res = " + res);
+            int updated = cur + nums[r];
+            if (r == 0 || updated > 0) {
+                cur += nums[r];
+                r += 1;
+                res = Math.max(res, cur);
+            } else {
+                r += 1;
+                l = r;
+                cur = 0;
+                res = Math.max(res, cur);
+            }
+        }
+
+        return res;
+    }
+
 }

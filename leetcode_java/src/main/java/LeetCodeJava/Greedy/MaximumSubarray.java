@@ -63,7 +63,18 @@ public class MaximumSubarray {
         int cumSum = 0;
 
         for (int i = 0; i < nums.length; i++){
+            /** NOTE !!!
+             *
+             *  ONLY use "cumSum + nums[i]" as condition
+             *  to check whether give up current cumsum, and create a new one
+             *  or keep cumsum
+             */
             if (cumSum + nums[i] < 0){
+                /**
+                 * NOTE !!!
+                 *    if cumSum + nums[i] < 0,
+                 *    still need to get max val from (ans, cumSum + nums[i])
+                 */
                 ans = Math.max(ans, cumSum + nums[i]);
                 cumSum = 0;
             }else{
@@ -74,6 +85,63 @@ public class MaximumSubarray {
 
         return ans;
     }
+
+    // V0''
+    // IDEA : BRUTE FORCE (by GPT)
+    public int maxSubArray_0(int[] nums) {
+        // If there is only one element, the maximum subarray is the element itself
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        // Initialize variables
+        int res = nums[0]; // This will store the maximum subarray sum
+        int cur = nums[0]; // This will store the current subarray sum
+
+        // Iterate through the array starting from the second element
+        for (int i = 1; i < nums.length; i++) {
+            // Update current subarray sum
+            cur = Math.max(nums[i], cur + nums[i]);
+
+            // Update the result with the maximum value found so far
+            res = Math.max(res, cur);
+        }
+
+        return res;
+    }
+
+    // V0'''
+    // IDEA : GREEDY (modified by GPT)
+    public int maxSubArray_0_1(int[] nums) {
+
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        int res = nums[0];
+        int cur = nums[0];
+
+        // Left pointer (l) and right pointer (r) initialized to the first element
+        //int l = 0;
+        int r = 1;
+
+        while (r < nums.length) {
+            // If current sum is negative, reset it to the current element
+            if (cur < 0) {
+                //l = r;
+                cur = nums[r];
+            } else {
+                // Otherwise, add the current element to the current sum
+                cur += nums[r];
+            }
+            // Update the result with the maximum value found so far
+            res = Math.max(res, cur);
+            r++;
+        }
+
+        return res;
+    }
+
 
     // V1
     // IDEA : OPTIMIZED BRUTE FORCE (TLE)
