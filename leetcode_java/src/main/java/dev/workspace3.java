@@ -1483,4 +1483,43 @@ public class workspace3 {
         return tmp.toArray(new int[tmp.size()][]);
     }
 
+    // LC 55
+    public boolean canJump(int[] nums) {
+
+        if (nums.length == 1){
+            return true;
+        }
+
+        if (nums.length == 2){
+            if (nums[0] > 0){
+                return true;
+            }
+        }
+
+        if (nums[0] == 0){
+            return false;
+        }
+
+        int tmp = -1;
+        int dist = 0;
+        int startIdx = 0;
+
+        for (int i = 0; i < nums.length - 1; i ++){
+            int cur = nums[i];
+            if (i == 0 || i - startIdx >=  tmp){
+                startIdx = i;
+                tmp = cur;
+                dist += tmp;
+            } else if (cur > tmp) {
+                startIdx = i;
+                tmp = Math.max(tmp, cur);
+                dist += tmp;
+            }
+        }
+
+        System.out.println("dist = " + dist);
+
+        return dist >= nums.length-1; // dist < nums.length ? false : true;
+    }
+
 }
