@@ -85,6 +85,36 @@ public class JumpGame {
         return lastPos == 0;
     }
 
+    // V0''
+    // IDEA : GREEDY (modified by GPT)
+    public boolean canJump_0(int[] nums) {
+        // If there is only one element, we are already at the last index
+        if (nums.length == 1) {
+            return true;
+        }
+
+        int maxReach = 0; // The maximum index we can currently reach
+
+        for (int i = 0; i < nums.length; i++) {
+            // If we cannot reach this index, return false
+            if (i > maxReach) {
+                return false;
+            }
+
+            // Update the maximum index we can reach
+            maxReach = Math.max(maxReach, i + nums[i]);
+
+            // If we can reach or exceed the last index, return true
+            if (maxReach >= nums.length - 1) {
+                return true;
+            }
+        }
+
+        // If we exit the loop without having reached the last index, return false
+        return false;
+    }
+
+
     // V1
     // IDEA : Backtracking
     // https://leetcode.com/problems/jump-game/editorial/
