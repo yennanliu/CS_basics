@@ -7,10 +7,49 @@ import java.util.Arrays;
 public class LongestIncreasingSubsequence {
 
     // V0
-    // TODO : implement it
-//    public int lengthOfLIS(int[] nums) {
-//        return 0;
-//    }
+    // IDEA : DP
+    // TODO : check & implment again
+    public int lengthOfLIS(int[] nums) {
+
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+
+        int n = nums.length;
+        // init dp
+        int[] dp = new int[nums.length];
+        /**
+         *
+         * NOTE !!!
+         *
+         * Arrays.fill(dp, 1);
+         * -> sets every element in the array dp to the value 1.
+         *
+         */
+        Arrays.fill(dp,1);
+        // set res as final result (Longest Increasing Subsequence length) , keep updating it
+        int res = 1;
+        /**
+         * NOTE !!!
+         *
+         *  main dp logic : dp[i]=Math.max(dp[i],dp[j]+1);
+         *
+         *  -> we still use "brute force", double looping over i, j
+         *  However, we use dp to "memorize" the result already calculated before
+         *
+         *
+         *  i start from 1, while j start from 0
+         */
+        for(int i=1; i<n; i++){
+            for(int j=0; j<i; j++){
+                if(nums[i]>nums[j]){
+                    dp[i] = Math.max(dp[i],dp[j]+1);
+                    res = Math.max(res, dp[i]);
+                }
+            }
+        }
+        return res;
+    }
 
     // V1
     // IDEA : DP

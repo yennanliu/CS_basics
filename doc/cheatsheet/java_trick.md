@@ -565,6 +565,12 @@ public int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 ### 1-18) Arrays.fill
 
 ```java
+// java
+// LC 300
+
+// example 1
+int[] dp = new int[10];
+Arrays.fill(dp,1);
 ```
 
 ### 1-19) PQ (priority queue)
