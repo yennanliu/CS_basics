@@ -1839,5 +1839,46 @@ public class workspace3 {
         return res;
     }
 
+    // LC 206
+    public ListNode reverseList_(ListNode head) {
+
+        if (head == null) {
+            return null;
+        }
+
+        ListNode root = new ListNode();
+        ListNode _prev = null;
+        root.next = _prev;
+
+        while (head != null) {
+            /**
+             *  NOTE !!!!
+             *
+             *   4 operations
+             *
+             *    Step 0) set _prev as null
+             *    step 1) cache next
+             *    step 2) point cur to prev
+             *    step 3) move prev to cur  (NOTE !!! the step)
+             *    step 4) move cur to next
+             */
+            ListNode _next = head.next;
+            head.next = _prev;
+            /** NOTE !!!
+             *
+             *  -> have to assign _prev val to head first,
+             *     then assign head val to _next,
+             *     since if we assign head val to _next first,
+             *     then head is changed (become "_next" node), then we will assign _prev to _next node,
+             *     which is WRONG
+             */
+            _prev = head;
+            head = _next;
+        }
+
+        // NOTE!!! we return _prev here, since it's now "new head"
+        return root.next; //_prev;
+    }
+
 
 }

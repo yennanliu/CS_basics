@@ -24,13 +24,22 @@ public class ReverseLinkedList {
                  *
                  *   4 operations
                  *
+                 *    Step 0) set _prev as null
                  *    step 1) cache next
                  *    step 2) point cur to prev
-                 *    step 3) move prev to cur
+                 *    step 3) move prev to cur  (NOTE !!! the step)
                  *    step 4) move cur to next
                  */
                 ListNode _next = head.next;
                 head.next = _prev;
+                /** NOTE !!!
+                 *
+                 *  -> have to assign _prev val to head first,
+                 *     then assign head val to _next,
+                 *     since if we assign head val to _next first,
+                 *     then head is changed (become "_next" node), then we will assign _prev to _next node,
+                 *     which is WRONG
+                 */
                 _prev = head;
                 head = _next;
             }
