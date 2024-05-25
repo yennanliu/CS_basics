@@ -1682,5 +1682,90 @@ public class workspace3 {
         return res;
     }
 
+    // LC 424
+//    public int characterReplacement(String s, int k) {
+//
+//        if (s.length() < k){
+//            return 0;
+//        }
+//
+//        Map<String, Integer> map = new HashMap<>();
+//        String[] s_array = s.split("");
+//
+//        // key : element, val : "closet" index
+//        for (int i = 1; i < s_array.length; i++){
+//            String key = s_array[i];
+//            //map.put(key, i);
+//            if (!map.containsKey(key)){
+//                map.put(key, i);
+//            }
+//        }
+//
+//
+//        int res = 0;
+//        int tmp = 0;
+//
+//        String cur = null;
+//
+//        int l = 0;
+//        int k_ = k;
+//
+//        for (int r = 1; r < s_array.length; r++){
+//            if (s_array[r] != s_array[l]){
+//                if (k_ > 0){
+//                    k_ -= 1;
+//                    cur += s_array[r];
+//                    res = Math.max(res, r - map.get(s_array[l]) + 1);
+//                }
+//                else{
+//                    k_ = k;
+//                    l = r;
+//                    cur = s_array[r];
+//                }
+//            }else{
+//                cur = s_array[r];
+//                res = Math.max(res, r - map.get(s_array[l]) + 1);
+//            }
+//        }
+//
+//        return res;
+//    }
+    public int characterReplacement(String s, int k) {
+
+        if (s.length() < k){
+            return 0;
+        }
+
+        Map<String, Integer> map = new HashMap<>();
+        String[] s_array = s.split("");
+        int l = 0;
+        int res = 0;
+        for (int r = 0; r < s_array.length; r++){
+            String key = s_array[r];
+            map.put(key, map.getOrDefault(key,0)+1);
+
+            while ((r - l + 1) - getMaxValue(map) > k){
+                map.put(s_array[l], map.get(s_array[l])-1);
+                if (map.get(s_array[l]) == 0){
+                    map.remove(s_array[l]);
+                }
+                l += 1;
+            }
+
+            res = Math.max(res, r - l + 1);
+        }
+
+        return res;
+
+    }
+
+    private int getMaxValue(Map<String, Integer> map) {
+        int max = 0;
+        for (int value : map.values()) {
+            max = Math.max(max, value);
+        }
+        return max;
+    }
+
 
 }
