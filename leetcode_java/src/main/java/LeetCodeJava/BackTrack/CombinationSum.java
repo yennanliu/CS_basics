@@ -44,6 +44,7 @@ public class CombinationSum {
         }
 
         // backtrack logic
+        // NOTE !!! have to start from "start" idx
         for (int i = idx; i < candidates.length; i++){
             int cur = candidates[i];
             tmp.add(cur);
@@ -51,6 +52,13 @@ public class CombinationSum {
              *
              *    use i, since we need to use start from current (i) index in recursion call
              *    (reuse current index)
+             */
+            /** NOTE !!!
+             *
+             *   we have to set i starts from "start" idx
+             *   since we have to reuse same element in recursion call
+             *
+             *   ONLY 全排列 (Permutations) can go without "start" idx
              */
             backTrack(candidates, target, tmp, res, i);
             // undo
@@ -67,6 +75,50 @@ public class CombinationSum {
 
         int res = 0;
         for (Integer x : input){
+            res += x;
+        }
+        return res;
+    }
+
+    // V0'
+    // IDEA : BACKTRACK (GPT)
+    List<List<Integer>> res_0 = new ArrayList<>();
+
+    public List<List<Integer>> combinationSum_0(int[] candidates, int target) {
+        List<Integer> cur = new ArrayList<>();
+        //Arrays.sort(candidates); // Optional: sort to improve efficiency
+        backtrack_0(candidates, target, cur, res_0, 0);
+        return res_0;
+    }
+
+    public void backtrack_0(int[] candidates, int target, List<Integer> cur, List<List<Integer>> res, int start) {
+        if (getSum_0(cur) == target) {
+            res.add(new ArrayList<>(cur)); // Add a copy of the current list
+            return;
+        }
+
+        if (getSum(cur) > target) {
+            return;
+        }
+
+        // NOTE !!! have to start from "start" idx
+        for (int i = start; i < candidates.length; i++) {
+            cur.add(candidates[i]);
+            /** NOTE !!!
+             *
+             *   we have to set i starts from "start" idx
+             *   since we have to reuse same element in recursion call
+             *
+             *   ONLY 全排列 (Permutations) can go without "start" idx
+             */
+            backtrack_0(candidates, target, cur, res, i); // Not i+1 because we can reuse the same elements
+            cur.remove(cur.size() - 1); // Undo the last addition
+        }
+    }
+
+    public int getSum_0(List<Integer> cur) {
+        int res = 0;
+        for (int x : cur) {
             res += x;
         }
         return res;
