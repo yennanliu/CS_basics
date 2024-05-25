@@ -624,6 +624,18 @@ PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>(
 // ...
 ```
 
+### 1-20) Hashmap return defalut val
+```java
+
+// LC 424
+// NOTE : map.getOrDefault(key,0) syntax :  if can find key, return its value, else, return default 0
+map.put(key, map.getOrDefault(key,0)+1);
+
+
+// e.g.
+map.getOrDefault(key,0)
+```
+
 # 2) Other tricks
 
 ### 2-1) Init var, modify it in another method, and use it

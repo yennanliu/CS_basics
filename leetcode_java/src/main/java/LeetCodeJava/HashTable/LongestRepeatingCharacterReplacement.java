@@ -39,6 +39,61 @@ public class LongestRepeatingCharacterReplacement {
     }
 
     // V0'
+    public int characterReplacement_0_1(String s, int k) {
+
+        if (s.length() < k){
+            return 0;
+        }
+
+        Map<String, Integer> map = new HashMap<>();
+        String[] s_array = s.split("");
+        int l = 0;
+        int res = 0;
+        for (int r = 0; r < s_array.length; r++){
+
+            String key = s_array[r];
+            /**
+             *  NOTE !!!
+             *
+             *  we use hashmap for recording element, and its count (and keep updating it in for loop)
+             *  e.g.
+             *      key : element
+             *      value : element count
+             */
+            // NOTE : map.getOrDefault(key,0) syntax :  if can find key, return its value, else, return default 0
+            map.put(key, map.getOrDefault(key,0)+1);
+
+            /** NOTE !!!
+             *
+             *  put "(r - l + 1) - getMaxValue_0_1(map) > k" in while loop
+             *  -> keep checking if "remaining different elements count < k"
+             *  -> e.g. keep if they can be changed into the same element <= k times
+             */
+            while ((r - l + 1) - getMaxValue_0_1(map) > k){
+                map.put(s_array[l], map.get(s_array[l])-1);
+                // map return key if val is 0
+                if (map.get(s_array[l]) == 0){
+                    map.remove(s_array[l]);
+                }
+                l += 1;
+            }
+
+            res = Math.max(res, r - l + 1);
+        }
+
+        return res;
+
+    }
+
+    private int getMaxValue_0_1(Map<String, Integer> map) {
+        int max = 0;
+        for (int value : map.values()) {
+            max = Math.max(max, value);
+        }
+        return max;
+    }
+
+    // V0''
     // IDEA : TWO POINTER + HASHMAP (modified by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/longest-repeating-character-replacement.py
     public int characterReplacement_0(String s, int k) {
