@@ -1767,5 +1767,77 @@ public class workspace3 {
         return max;
     }
 
+    // LC 39
+    // backtrack
+//    List<List<Integer>> res = new ArrayList<>();
+//    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+//        List<Integer> cur = new ArrayList<>();
+//        //Arrays.sort(candidates); // Optional: sort to improve efficiency
+//        backtrack_2(candidates, target, cur, res, 0);
+//        return res;
+//    }
+//
+//    public void backtrack_2(int[] candidates, int target, List<Integer> cur, List<List<Integer>> res, int idx){
+//
+//        if (getSum(cur) == target){
+//            cur.sort(Comparator.comparingInt(x -> x));
+//            if (!res.contains(cur)) {
+//                res.add(new ArrayList<>(cur)); // NOTE here
+//            }
+//        }
+//
+//        if (getSum(cur) > target){
+//            return;
+//        }
+//
+//        for (int i = idx; i < candidates.length; i++){
+//            cur.add(candidates[i]);
+//            this.backtrack_2(candidates, target, cur, res, i);
+//            // undo
+//            cur.remove(cur.size()-1);
+//        }
+//    }
+//
+//    public int getSum(List<Integer> cur){
+//        int res = 0;
+//        for (int x : cur){
+//            res += x;
+//        }
+//        return res;
+//    }
+
+    List<List<Integer>> res = new ArrayList<>();
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<Integer> cur = new ArrayList<>();
+        Arrays.sort(candidates); // Optional: sort to improve efficiency
+        backtrack(candidates, target, cur, res);
+        return res;
+    }
+
+    public void backtrack(int[] candidates, int target, List<Integer> cur, List<List<Integer>> res) {
+        if (getSum(cur) == target) {
+            res.add(new ArrayList<>(cur)); // Add a copy of the current list
+            return;
+        }
+
+        if (getSum(cur) > target) {
+            return;
+        }
+
+        for (int i = 0; i < candidates.length; i++) {
+            cur.add(candidates[i]);
+            backtrack(candidates, target, cur, res); // Not i+1 because we can reuse the same elements
+            cur.remove(cur.size() - 1); // Undo the last addition
+        }
+    }
+    public int getSum(List<Integer> cur) {
+        int res = 0;
+        for (int x : cur) {
+            res += x;
+        }
+        return res;
+    }
+
 
 }

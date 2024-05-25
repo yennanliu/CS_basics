@@ -143,7 +143,7 @@
         - Problems : LC 46, 47
         - (for loop call help func) + contains + pop(-1)
         - backtrack. via `contains` remove already used numbers and return all cases
-        - NO NEED to use start_idx
+        - `NO NEED` to use start_idx
         ```python
         # ...
         res = []
@@ -374,7 +374,7 @@
         - "subset" need "start idx"
             - Type I : Subsets (子集)
             - Type III : Combinations (組成)
-        - 全排列 NO NEED "start idx"
+        - ONLY 全排列 (Permutations) NO NEED "start idx". *********
             - Type II : Permutations (排列組合)
 
 ### 0-2) Pattern
