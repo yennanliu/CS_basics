@@ -26,6 +26,17 @@ public class MaximumProductSubarray {
 
             int cur = nums[i];
             /**
+             *  NOTE !!!
+             *
+             *   keep track below
+             *   1) global max (maxSoFar)
+             *   2) global min (minSoFar)
+             *   3) local max (tmpMax)
+             *
+             *   DP equation :
+             *     d
+             */
+            /**
              *  or, can use below trick to get max in 3 numbers
              *
              *   max = Math.max(Math.max(max * nums[i], min * nums[i]), nums[i]);
@@ -88,7 +99,7 @@ public class MaximumProductSubarray {
     }
 
     // V2
-    // IDEA : Just the slight modification of previous approach. As we know that on multiplying with negative number max will become min and min will become max, so why not as soon as we encounter negative element, we swap the max and min already.
+    // IDEA : Just the slight modification of previous approach.As we know that on multiplying with negative number max will become min and min will become max, so why not as soon as we encounter negative element, we swap the max and min already.
     // https://leetcode.com/problems/maximum-product-subarray/solutions/1608862/java-3-solutions-detailed-explanation-using-image/
     public int maxProduct_2(int[] nums) {
 
