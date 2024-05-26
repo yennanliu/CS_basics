@@ -5,63 +5,111 @@ import java.util.*;
 public class PacificAtlanticWaterFlow {
 
     // V0
-    // IDEA : DFS
-//    private static final int[][] DIRECTIONS_ = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-//    private int numRows_;
-//    private int numCols_;
-//    private int[][] landHeights_;
-//
-//    public List<List<Integer>> pacificAtlantic(int[][] matrix) {
-//        if (matrix.length == 0 || matrix[0].length == 0) {
-//            return new ArrayList<>();
-//        }
-//
-//        numRows_ = matrix.length;
-//        numCols_ = matrix[0].length;
-//        landHeights_ = matrix;
-//        boolean[][] pacificReachable = new boolean[numRows_][numCols_];
-//        boolean[][] atlanticReachable = new boolean[numRows_][numCols_];
-//
-//        for (int i = 0; i < numRows_; i++) {
-//            dfs_(i, 0, pacificReachable);
-//            dfs_(i, numCols_ - 1, atlanticReachable);
-//        }
-//        for (int i = 0; i < numCols_; i++) {
-//            dfs_(0, i, pacificReachable);
-//            dfs_(numRows_ - 1, i, atlanticReachable);
-//        }
-//
-//        List<List<Integer>> commonCells = new ArrayList<>();
-//        for (int i = 0; i < numRows_; i++) {
-//            for (int j = 0; j < numCols_; j++) {
-//                if (pacificReachable[i][j] && atlanticReachable[i][j]) {
-//                    List<Integer> cell = new ArrayList<>();
-//                    cell.add(i);
-//                    cell.add(j);
-//                    commonCells.add(cell);
-//                }
-//            }
-//        }
-//        return commonCells;
-//    }
-//
-//    private void dfs_(int row, int col, boolean[][] reachable) {
-//        reachable[row][col] = true;
-//        for (int[] dir : DIRECTIONS_) {
-//            int newRow = row + dir[0];
-//            int newCol = col + dir[1];
-//            if (newRow < 0 || newRow >= numRows_ || newCol < 0 || newCol >= numCols_ || reachable[newRow][newCol] || landHeights[newRow][newCol] < landHeights[row][col]) {
-//                continue;
-//            }
-//            dfs(newRow, newCol, reachable);
-//        }
-//    }
+    // IDEA : DFS (fixed by GPT)
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+
+        if (heights == null || heights.length == 0 || heights[0].length == 0) {
+            return new ArrayList<>();
+        }
+
+        int l = heights.length;
+        int w = heights[0].length;
+
+        /**
+         *
+         * The pacificReachable and atlanticReachable arrays are used to keep track
+         * of which cells in the matrix can reach the Pacific and Atlantic oceans, respectively.
+         *
+         *
+         * pacificReachable[i][j] will be true if water can flow from cell (i, j) to the Pacific Ocean.
+         * The Pacific Ocean is on the top and left edges of the matrix.
+         *
+         * atlanticReachable[i][j] will be true if water can flow from cell (i, j) to the Atlantic Ocean.
+         * The Atlantic Ocean is on the bottom and right edges of the matrix.
+         *
+         *
+         * NOTE !!!!
+         *
+         * The pacificReachable and atlanticReachable arrays serve a dual purpose:
+         *
+         * Tracking Reachability: They track whether each cell can reach the respective ocean.
+         * Tracking Visited Cells: They also help in tracking whether a cell has already been visited during the depth-first search (DFS) to prevent redundant work and infinite loops.
+         *
+         */
+        boolean[][] pacificReachable = new boolean[l][w];
+        boolean[][] atlanticReachable = new boolean[l][w];
+
+        // Move x-axis
+        for (int x = 0; x < w; x++) {
+            dfs(heights, pacificReachable, 0, x);
+            dfs(heights, atlanticReachable, l - 1, x);
+        }
+
+        // Move y-axis
+        for (int y = 0; y < l; y++) {
+            dfs(heights, pacificReachable, y, 0);
+            dfs(heights, atlanticReachable, y, w - 1);
+        }
+
+        List<List<Integer>> commonCells = new ArrayList<>();
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                if (pacificReachable[i][j] && atlanticReachable[i][j]) {
+                    commonCells.add(Arrays.asList(i, j));
+                }
+            }
+        }
+        return commonCells;
+    }
+
+    private void dfs(int[][] heights, boolean[][] reachable, int y, int x) {
+
+        int l = heights.length;
+        int w = heights[0].length;
+
+        reachable[y][x] = true;
+
+        int[][] directions = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+        for (int[] dir : directions) {
+            int newY = y + dir[0];
+            int newX = x + dir[1];
+
+            /**
+             *  NOTE !!!  only meet below conditions, then do recursion call
+             *
+             *  1. newX, newY still in range
+             *  2. newX, newY is still not reachable (!reachable[newY][newX])
+             *  3. heights[newY][newX] >= heights[y][x]
+             *
+             *
+             *  NOTE !!!
+             *
+             *  The condition !reachable[newY][newX] in the dfs function
+             *  ensures that each cell is only processed once
+             *
+             *  1. Avoid Infinite Loops
+             *  2. Efficiency
+             *  3. Correctness
+             *
+             *
+             *  NOTE !!! "inverse" comparison
+             *
+             *  we use the "inverse" comparison, e.g.  heights[newY][newX] >= heights[y][x]
+             *  so we start from "cur point" (heights[y][x]), and compare with "next point" (heights[newY][newX])
+             *  if "next point" is "higher" than "cur point"  (e.g. heights[newY][newX] >= heights[y][x])
+             *  -> then means water at "next point" can flow to "cur point"
+             *  -> then we keep track back to next point of then "next point"
+             *  -> repeat ...
+             */
+            if (newY >= 0 && newY < l && newX >= 0 && newX < w && !reachable[newY][newX] && heights[newY][newX] >= heights[y][x]) {
+                dfs(heights, reachable, newY, newX);
+            }
+        }
+    }
 
     // V1
     // IDEA : DFS
     // https://leetcode.com/problems/pacific-atlantic-water-flow/editorial/
-
-
     /** NOTE !!! init directions */
     private static final int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
     private int numRows;
