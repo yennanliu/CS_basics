@@ -1960,5 +1960,171 @@ public class workspace3 {
         }
     }
 
+    // LC 33
+    // There is an integer array nums sorted in ascending order (with distinct values).
+    // binary search
+    public int search(int[] nums, int target) {
+
+        if (nums.length == 0 || nums.equals(null)){
+            return -1;
+        }
+
+        if (nums.length <= 1){
+            if (nums[0] == target){
+                return 0;
+            }
+            return -1;
+        }
+
+        /**
+         *  rotated sorted array
+         *
+         *   if
+         *      nums[k] < nums[k-1]
+         *      and nums[k-1] > nums[k-2]
+         *      and nums[k+2] < nums[k+3]
+         *
+         *   [4,5,6,7,0,1,2]
+         *
+         *
+         *   example 1:
+         *
+         *    [4,5,6,7,0,1,2] , target = 0
+         *     l     m     r   -> m > target, and nums[m] > nums[m+1]
+         *                     -> m is pivot
+         *                     -> move right
+         *
+         *             l m r    -> l = m+1, r = r
+         *                      -> m > target,
+         *                      -> r = m-1
+         *             l
+         *             r
+         *             m        -> m = target, found!
+         *
+         *
+         *   example 2 :
+         *
+         *   [4,5,6,7,0,1,2],  target = 3
+         *    l     m     r   -> m > target, and nums[m] > nums[m+1]
+         *                    -> m is pivot
+         *                    -> move right
+         *
+         *            l m r    -> target > r, can't found -> return -1
+         *
+         */
+
+        // 2 pm
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (r > l){
+
+            int m = (l + r) / 2;
+
+            System.out.println("l = " + l + " r = " + r + " mid = " + m);
+
+            if (nums[m] == target){
+                return m;
+            }
+            // target > m
+            if (nums[m] > target){
+                // m is pivot, right sub array is increasing
+                if (nums[m+1] < nums[m]){
+                    // not possible to find a solution ??
+                    if (nums[r] > target){
+                        l = m + 1;
+                    }else{
+                        r = m;
+                    }
+                }
+            } // target < m
+            else{
+                // m is pivot, right sub array is increasing
+                if (nums[m+1] < nums[m]){
+                    // not possible to find a solution ??
+                    if (nums[r] > target){
+                        l = m+1;
+                    }else{
+                        r = m;
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    public int search_2(int[] nums, int target) {
+
+        if (nums.length == 0){
+            return -1;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        // NOTE : "r >= l" as binary search condition
+        while (r >= l){
+
+            int mid = (l + r) / 2;
+            int cur = nums[mid];
+
+            // case 1)
+            if (cur == target){
+                return mid;
+            }
+
+            /**
+             *  case 2) mid is pivot,  left half is sorted.
+             *  left array is sorted (increasing)
+             */
+            else if (nums[mid] >= nums[l]){
+                /**
+                 *  NOTE !!!
+                 *
+                 *  since left sub array is sorted (increasing)
+                 *  the only condition we can use is : left sub array
+                 *  e.g. : check if target is bigger than left boundary or not
+                 */
+                /**
+                 *
+                 *  NOTE !!!
+                 *  below is WRONG!!! (right sub array may have "pivot",
+                 *  can't use right sub array  as condition
+                 */
+//                if (target > nums[mid] && nums[r] >= target){
+//                    l = mid + 1;
+//                }else{
+//                    r = mid - 1; // NOTE !!!! not "r = mid"
+//                }
+                if (target >= nums[l] && target < cur) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            /**
+             *  Case 3): right half is sorted (increasing)
+             */
+            /**
+             *  NOTE !!!
+             *
+             *  since right sub array is sorted (increasing)
+             *  the only condition we can use is : right sub array
+             *  e.g. : check if target is smaller than right boundary or not
+             */
+            else{
+                if (target > nums[mid] && target <= nums[r]){
+                    l = mid + 1;
+                }else{
+                    r = mid - 1; // NOTE !!! not " r = mid"
+                }
+            }
+        }
+
+        return -1;
+    }
+
 
 }

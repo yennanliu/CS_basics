@@ -74,6 +74,79 @@ public class SearchInRotatedSortedArray {
         return -1;
     }
 
+    // V0'
+    // IDEA : BINARY SEARCH (fixed by GPT)
+    public int search_0(int[] nums, int target) {
+
+        if (nums.length == 0){
+            return -1;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        // NOTE : "r >= l" as binary search condition
+        while (r >= l){
+
+            int mid = (l + r) / 2;
+            int cur = nums[mid];
+
+            // case 1)
+            if (cur == target){
+                return mid;
+            }
+
+            /**
+             *  case 2) mid is pivot,  left half is sorted.
+             *  left array is sorted (increasing)
+             */
+            else if (nums[mid] >= nums[l]){
+                /**
+                 *  NOTE !!!
+                 *
+                 *  since left sub array is sorted (increasing)
+                 *  the only condition we can use is : left sub array
+                 *  e.g. : check if target is bigger than left boundary or not
+                 */
+                /**
+                 *
+                 *  NOTE !!!
+                 *  below is WRONG!!! (right sub array may have "pivot",
+                 *  can't use right sub array  as condition
+                 */
+//                if (target > nums[mid] && nums[r] >= target){
+//                    l = mid + 1;
+//                }else{
+//                    r = mid - 1; // NOTE !!!! not "r = mid"
+//                }
+                if (target >= nums[l] && target < cur) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            /**
+             *  Case 3): right half is sorted (increasing)
+             */
+            /**
+             *  NOTE !!!
+             *
+             *  since right sub array is sorted (increasing)
+             *  the only condition we can use is : right sub array
+             *  e.g. : check if target is smaller than right boundary or not
+             */
+            else{
+                if (target > nums[mid] && target <= nums[r]){
+                    l = mid + 1;
+                }else{
+                    r = mid - 1; // NOTE !!! not " r = mid"
+                }
+            }
+        }
+
+        return -1;
+    }
+
 
     // V1
     // IDEA : Find Pivot Index + Binary Search
