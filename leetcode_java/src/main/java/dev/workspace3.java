@@ -1880,5 +1880,85 @@ public class workspace3 {
         return root.next; //_prev;
     }
 
+    // LC 417
+    /**
+     * Return a 2D list of grid coordinates result where result[i] = [ri, ci]
+     * Denotes that rain water can flow from cell (ri, ci) to both the Pacific and Atlantic oceans.
+     */
+
+    // DFS
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+
+        if (heights.length == 0 || heights[0].length == 0) {
+            return new ArrayList<>();
+        }
+
+        int l = heights.length;
+        int w = heights[0].length;
+
+        int[][] landHeights = heights;
+        boolean[][] pacificReachable = new boolean[l][w];
+        boolean[][] atlanticReachable = new boolean[l][w];
+
+        // move x-axis
+        for (int x = 0; x < w; x++){
+            this.dfs_flow(heights, x,0, atlanticReachable, "atlantic");
+            this.dfs_flow(heights, x, l, pacificReachable, "pacific");
+        }
+
+        // move y-axis
+        for (int y = 0; y < l; y++){
+            this.dfs_flow(heights, 0, y, atlanticReachable, "atlantic");
+            this.dfs_flow(heights, w, y, pacificReachable, "pacific");
+        }
+
+        List<List<Integer>> commonCells = new ArrayList<>();
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                if (pacificReachable[i][j] && atlanticReachable[i][j]) {
+                    commonCells.add(Arrays.asList(i, j));
+                }
+            }
+        }
+        return commonCells;
+    }
+
+    public void dfs_flow(int[][] heights, int x, int y, boolean[][] collected, String target){
+
+        collected[y][x] = true;
+
+        int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+
+        int l = heights.length;
+        int w = heights[0].length;
+
+        if (x < 0 || x >= w || y < 0 || y >= l){
+            return;
+        }
+
+        // pacific
+        if (target == "pacific") {
+            if (y == 0 || x == 0){
+                collected[y][x] = true;
+                return;
+            }
+        }else{
+            // atlantic
+            if (y == l-1 || x == w-1){
+                collected[y][x] = true;
+                return;
+            }
+        }
+
+        for (int[] dir : DIRECTIONS){
+            int x_ = x+dir[0];
+            int y_ = y+dir[1];
+            if (x_ < 0 || x_ >= w || y_ < 0 || y_>= l || heights[y_][x_] < heights[y][x]){
+                return;
+            }
+            this.dfs_flow(heights, x+dir[0], y+dir[1], collected, target);
+        }
+    }
+
 
 }
