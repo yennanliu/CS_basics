@@ -12,8 +12,7 @@ public class FindMinimumInRotatedSortedArray {
     /**
      *
      * NOTE !!! the turing point (rotation point)
-     *          -> is ALWAYS the area that min element located (may at at i, i+1, i-1 place)
-     *
+     *          -> it's ALWAYS the place that min element located (may at at i, i+1, i-1 place)
      *
      *    case 1) check turing point
      *    case 2) check if left / right sub array is in Ascending order
@@ -40,6 +39,15 @@ public class FindMinimumInRotatedSortedArray {
         /** NOTE !!! here : r >= l (closed boundary) */
         while (r >= l){
             int mid = (l + r) / 2;
+
+            /** NOTE !!! BELOW 4 CONDITIONS
+             *
+             *  - turning point, check mid, mid+1
+             *  - turning point, check mid, mid-1
+             *  - left sub array is sorted (increasing order)
+             *  - right sub array is sorted (increasing order)
+             *
+             */
 
             /** NOTE !!! we found turing point, and it's the minimum element  (idx = mid + 1) */
             if (nums[mid] > nums[mid+1]){

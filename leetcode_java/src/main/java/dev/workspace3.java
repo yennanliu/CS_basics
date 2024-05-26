@@ -2126,5 +2126,78 @@ public class workspace3 {
         return -1;
     }
 
+    // LC 153
+    /**
+     * Suppose an array of length n sorted in ascending order is rotated
+     * between 1 and n times. For example,
+     *
+     * the array nums = [0,1,2,4,5,6,7] might become:
+     *
+     * [4,5,6,7,0,1,2] if it was rotated 4 times.
+     * [0,1,2,4,5,6,7] if it was rotated 7 times.
+     *
+     *
+     * Given the sorted rotated array nums of unique elements,
+     * return the minimum element of this array.
+     *
+     *
+     * [1,2,3,4]
+     *
+     * [4,1,2,3]
+     *  p
+     *
+     * [3,4,1,2]
+     *    p
+     * [2,3,4,1]
+     *      p
+     *
+     * [1,2,3,4]
+     *
+     *
+     *  3.10
+     */
+    public int findMin(int[] nums) {
+
+        if (nums.length == 1){
+            return nums[0];
+        }
+
+        // binary search
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (r >= l){
+
+            int mid = (l + r) / 2;
+            System.out.println("l = " + l + " r = " + r + " mid = " + mid);
+
+//            // case 1) found pivot
+//            if (nums[mid] > nums[mid-1]){
+//                return nums[mid-1];
+//            }
+
+            if (nums[mid] > nums[mid+1]){
+                return nums[mid+1];
+            }
+
+            if (nums[mid-1] > nums[mid]){
+                return nums[mid];
+            }
+
+            // case 2) left half is sorted (increasing)
+            else if (nums[mid] >= nums[l]){
+                l = mid + 1;
+            }
+            // case 3) right half is sorted (increasing)
+            else{
+                r = mid - 1;
+            }
+
+        }
+
+        // ??
+        return nums[l];
+    }
+
 
 }
