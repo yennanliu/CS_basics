@@ -2199,5 +2199,42 @@ public class workspace3 {
         return nums[l];
     }
 
+    // LC 152
+    // A subarray is a contiguous non-empty sequence of elements within an array.
+    /**
+     *  dp
+     *
+     *  0, 1, 2,,, k-1, k
+     *
+     *  dp[k] = max(dp[k-2], dp[k-1] * num[k])
+     *
+     */
+    public int maxProduct(int[] nums) {
+
+        if(nums.length == 1){
+            return nums[0];
+        }
+
+        int ans = 0;
+
+        int[] dp = new int[nums.length+1];
+        if (nums[0] > 0 && nums[1] > 0){
+            dp[0] = nums[0];
+            dp[1] = nums[0] * nums[1];
+        }
+        if (nums[0] < 0 && nums[1] < 0){
+            dp[0] = 0;
+            dp[1] = nums[0] * nums[1];
+        }
+        if (nums[0] == 0 || nums[1] == 0){
+           if (nums[0] == 0){
+               dp[0] = 0;
+           }
+        }
+
+
+        return ans;
+    }
+
 
 }
