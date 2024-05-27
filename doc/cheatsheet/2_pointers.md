@@ -20,6 +20,7 @@
                 - LC 142
             - if a circular linked list, return beginning point of circular
             - find last k elements of a single linked list
+                - LC 19 : Remove Nth Node From End of List
     - `Left- Right pointers`
         - left, right pointers from `idx = 0, idx = len(n) - 1` respectively
         - Usually set

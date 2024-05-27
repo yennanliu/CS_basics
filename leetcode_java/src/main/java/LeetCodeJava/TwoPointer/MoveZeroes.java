@@ -5,40 +5,24 @@ package LeetCodeJava.TwoPointer;
 public class MoveZeroes {
 
     // V0
-//    public void moveZeroes(int[] nums) {
-//
-//        if (nums == null || nums.length == 0 || nums.length == 1) {
-//            return;
-//        }
-//
-//        int left = 0;
-//        int right = 1;
-//
-//        while (right < nums.length) {
-//
-//            int leftVal = nums[left];
-//            int rightVal = nums[right];
-//
-//            if (leftVal == 0) {
-//                while (rightVal == 0) {
-//                    right += 1;
-//                }
-//                nums[left] = rightVal;
-//                nums[right] = leftVal;
-//
-//                left += 1;
-//                right += 1;
-//            }
-//
-//            left += 1;
-//        }
-//
-//    }
+    // IDEA : 2 POINTER (gpt)
+    public void moveZeroes(int[] nums) {
+        int y = 0;
+        for (int x = 0; x < nums.length; x++) {
+            if (nums[x] != 0) {
+                // Swap nums[x] and nums[y]
+                int temp = nums[x];
+                nums[x] = nums[y];
+                nums[y] = temp;
+                y++;
+            }
+        }
+    }
 
     // V1
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/move-zeroes/solutions/72000/1ms-java-solution/
-    public void moveZeroes(int[] nums) {
+    public void moveZeroes_1(int[] nums) {
 
         int j = 0;
         for (int i = 0; i < nums.length; i++) {
@@ -49,7 +33,6 @@ public class MoveZeroes {
                 j++;
             }
         }
-
     }
 
     // V2
