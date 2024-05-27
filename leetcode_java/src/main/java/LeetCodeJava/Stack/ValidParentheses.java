@@ -5,6 +5,7 @@ package LeetCodeJava.Stack;
 // https://www.softwaretestinghelp.com/java-queue-interface/
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class ValidParentheses {
@@ -12,6 +13,40 @@ public class ValidParentheses {
     // V0
     // IDEA : STACK + DICT
     public boolean isValid(String s) {
+
+        if (s == null || s.length() == 0){
+            return true;
+        }
+
+        Map<String, String> map = new HashMap<>();
+        map.put("(", ")");
+        map.put("{", "}");
+        map.put("[", "]");
+
+        /** NOTE !!! use stack here, FILO */
+        Stack<String> stack = new Stack<>();
+
+        for (String x : s.split("")){
+            //System.out.println("x = " + x + " stack = " + stack);
+            if (map.containsKey(x)){
+                stack.add(x);
+            }else{
+                if (stack.isEmpty()){
+                    return false;
+                }
+                String last = stack.pop();
+                if (!map.get(last).equals(x)){
+                    return false;
+                }
+            }
+        }
+
+        return stack.isEmpty();
+    }
+
+    // V0'
+    // IDEA : STACK + DICT
+    public boolean isValid_0(String s) {
 
         if (s.length() % 2 != 0){
             return false;

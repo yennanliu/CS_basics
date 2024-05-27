@@ -2312,4 +2312,36 @@ public class workspace3 {
         return root.next;
     }
 
+    // LC 20
+    public boolean isValid(String s) {
+
+        if (s == null || s.length() == 0){
+            return true;
+        }
+
+        Map<String, String> map = new HashMap<>();
+        map.put("(", ")");
+        map.put("{", "}");
+        map.put("[", "]");
+
+        Stack<String> stack = new Stack<>(); // TODO : check
+
+        for (String x : s.split("")){
+            System.out.println("x = " + x + " stack = " + stack);
+            if (map.containsKey(x)){
+                stack.add(x);
+            }else{
+                if (stack.isEmpty()){
+                    return false;
+                }
+                String last = stack.pop();
+                if (!map.get(last).equals(x)){
+                    return false;
+                }
+            }
+        }
+
+        return stack.isEmpty();
+    }
+
 }
