@@ -2413,4 +2413,44 @@ public class workspace3 {
         return root_.next;
     }
 
+    // LC 271
+    public String encode(List<String> strs) {
+
+        if (strs == null || strs.size() == 0){
+            return "";
+        }
+
+        String res = "";
+        for (String x : strs){
+            if (x != ""){
+                res = res + x + ",";
+            }else{
+                res = res + "?" + ","; // ?
+            }
+        }
+
+        return res;
+    }
+
+    public List<String> decode(String s) {
+
+        List<String> res = new ArrayList<>();
+
+        if (s == ""){
+            res.add("");
+            return res;
+        }
+
+        for (String x : s.split(",")){
+            if (x == "?"){
+                res.add("");
+            }else{
+                res.add(x);
+            }
+        }
+
+        return res;
+    }
+
+
 }
