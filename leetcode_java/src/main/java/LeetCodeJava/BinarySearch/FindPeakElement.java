@@ -7,51 +7,68 @@ import java.util.OptionalInt;
 
 public class FindPeakElement {
 
-//    public int findPeakElement(int[] nums) {
-//
-//        if (nums.length == 1){
-//            return 0;
-//        }
-//
-//        if (nums.length == 2){
-//            int _first = nums[0];
-//            int _second = nums[1];
-//            if (_second > _first){
-//                return 1;
-//            }
-//            return 0;
-//        }
-//
-//        if (nums.length == 3){
-//            return 1;
-//        }
-//
-//        int l = 0;
-//        int r = nums.length - 1;
-//
-//        while (r >= l){
-//
-//            int mid =  l + (r - l) / 2;
-//            int mid_val = nums[mid];
-//            int mid_left_val = nums[mid-1];
-//            int mid_right_val = nums[mid+1];
-//
-//            System.out.println("l = " + l + " r = " + r + " mid = " + mid);
-//
-//            if (mid_val > mid_left_val && mid > mid_right_val){
-//                return mid;
-//            }
-//
-//            if (mid_val > mid_right_val){
-//                r = mid-1;
-//            }else{
-//                l = mid+1;
-//            }
-//
-//        }
-//
-//        return 0;
-//    }
+    // V0
+    // IDEA: ITERATIVE BINARY SEARCH
+    public int findPeakElement(int[] nums) {
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        /**
+         *
+         *  NOTE !!!
+         *
+         *  // Change from 'l <= r' to 'l < r' to avoid accessing out of bounds
+         *
+         *
+         *
+         *
+         *  DON'T use below code
+         *
+         *  while (l <= r) {
+         *     int mid = (l + r) / 2;
+         *     if (nums[mid] > nums[mid + 1])
+         *         r = mid;
+         *     else
+         *         l = mid + 1;
+         * }
+         *
+         *  reason :
+         *
+         *  When l becomes equal to r, the condition l <= r is still true.
+         *  Inside the loop, mid is calculated as (l + r) / 2,
+         *  which will be equal to l (or r) in this case. Then,
+         *  nums[mid + 1] will be accessed, which is out of bounds
+         *  if mid is the last index of the array.
+         *
+         */
+        while (l < r) {
+            int mid = (l + r) / 2;
+            /**
+             * If nums[mid] > nums[mid + 1],
+             * it indicates a potential peak in the left half (including mid),
+             * so r = mid.
+             */
+            if (nums[mid] > nums[mid + 1])
+                r = mid;
+            /**
+             *
+             * If nums[mid] <= nums[mid + 1],
+             * it indicates a potential peak in the right half (excluding mid),
+             * so l = mid + 1.
+             */
+            else
+                l = mid + 1;
+        }
+        //  return r is OK as well
+        // e.g. return r;
+        /**
+         * When l equals r, the loop terminates,
+         * and l (or r) is the index of a peak element.
+         */
+        return l;
+    }
+
 
     // V1
     // IDEA: LINEAR SCAN

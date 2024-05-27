@@ -51,6 +51,37 @@
         - LC 033
             - // CASE 1) sub array left is sorted
             - // CASE 2) sub array right is sorted
+        ```java
+        // java
+        while (r >= l){
+            int mid = (l + r) / 2;
+            int cur = nums[mid];
+
+            // Case 0: found
+            if (cur == target){
+                return mid;
+            }
+            // Case 1: subarray on mid's left is sorted
+            /** NOTE !!! we compare mid with left, instead of 0 idx element */
+            else if (nums[mid] >= nums[l]) {
+                if (target >= nums[l] && target < nums[mid]) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+
+            // Case 2: subarray on mid's right is sorted
+            else {
+                if (target <= nums[r] && target > nums[mid]) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+
+        }
+        ```
     - Search in 2D array
         - LC 74
     - Find min in Rotation array
