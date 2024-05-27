@@ -444,6 +444,36 @@ class Solution(object):
         return left * left == num
 ```
 
+```java
+// java
+// LC 367
+public boolean isPerfectSquare(int num) {
+
+    if (num < 2) {
+        return true;
+    }
+
+    long left = 2;
+    long right = num / 2; // NOTE !!!, "long right = num;" is OK as well
+    long x;
+    long guessSquared;
+
+    while (left <= right) {
+        x = (left + right) / 2;
+        guessSquared = x * x;
+        if (guessSquared == num) {
+            return true;
+        }
+        if (guessSquared > num) {
+            right = x - 1;
+        } else {
+            left = x + 1;
+        }
+    }
+    return false;
+}
+```
+
 ### 2-4) Minimum Size Subarray Sum
 ```python
 # LC 209 Minimum Size Subarray Sum
