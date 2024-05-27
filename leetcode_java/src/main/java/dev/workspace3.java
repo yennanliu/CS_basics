@@ -2452,5 +2452,13 @@ public class workspace3 {
         return res;
     }
 
+    // LC 269
+    // idea : topological sort
+    public String alienOrder(String[] words) {
+
+
+        return null;
+    }
+
 
 }
