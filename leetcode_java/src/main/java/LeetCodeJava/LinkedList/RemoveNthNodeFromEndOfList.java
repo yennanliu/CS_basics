@@ -45,7 +45,7 @@ public class RemoveNthNodeFromEndOfList {
          *
          *
          *   // NOTE !!! we let fast pointer move N+1 step first
-         *   // so once fast pointers reach the end after fast, slow pointers move together
+         *   // so before fast pointers reach the end,  fast, and slow pointers move together
          *   // we are sure that slow pointer is at N-1 node
          *   // so All we need to do is :
          *   // point slow.next to slow.next.next
@@ -66,6 +66,75 @@ public class RemoveNthNodeFromEndOfList {
         slow.next = slow.next.next;
         // NOTE !!! we return dummy.next instead of slow
         return dummy.next;
+    }
+
+    // V0'
+    // IDEA : get len of linkedlist, and re-point node
+    public ListNode removeNthFromEnd_0(ListNode head, int n) {
+
+        if (head.next == null){
+            return null;
+        }
+
+        // below op is optional
+//        if (head.next.next == null){
+//            if (n == 1){
+//                return new ListNode(head.val);
+//            }
+//            return new ListNode(head.next.val);
+//        }
+
+        // get len
+        int len = 0;
+        ListNode head_ = head;
+        while (head_ != null){
+            head_ = head_.next;
+            len += 1;
+        }
+
+        ListNode root = new ListNode();
+        /** NOTE !!! root_ is the actual final result */
+        ListNode root_ = root;
+
+        // if n == len
+        if (n == len){
+            head = head.next;
+            root.next = head;
+            root = root.next;
+        }
+
+        /**
+         *  IDEA: get length of linked list,
+         *        then if want to delete n node from the end of linked list,
+         *        -> then we need to stop at "len - n" idx,
+         *        -> and reconnect "len - n" idx to "len -n + 2" idx
+         *        -> (which equals delete "n" idx node
+         *
+         *
+         *  Consider linked list below :
+         *
+         *   0, 1, 2 , 3, 4 .... k-2, k-1, k
+         *
+         *   if n = 1, then "k-1" is the node to be removed.
+         *   -> so we find "k-2" node, and re-connect it to "k" node
+         */
+        /** NOTE !!!
+         *
+         *  idx is the index, that we "stop",  and re-connect
+         *  from idx to its next next node (which is the actual "delete" node op
+         */
+        int idx = len - n; // NOTE !!! this
+        while (idx > 0){
+            root.next = head;
+            root = root.next;
+            head = head.next;
+            idx -= 1;
+        }
+
+        ListNode next = head.next;
+        root.next = next;
+
+        return root_.next;
     }
 
     // V1

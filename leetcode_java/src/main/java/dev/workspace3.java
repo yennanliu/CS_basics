@@ -2344,4 +2344,73 @@ public class workspace3 {
         return stack.isEmpty();
     }
 
+    // LC 19
+    // Given the head of a linked list,
+    // remove the nth node from the "end" of the list and return its head.
+    // 6.47
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+
+        if (head.next == null){
+            return null;
+        }
+
+        if (head.next.next == null){
+            if (n == 1){
+                return new ListNode(head.val);
+            }
+            return new ListNode(head.next.val);
+        }
+
+        // get len
+        int len = 0;
+        ListNode head_ = head;
+        while (head_ != null){
+            head_ = head_.next;
+            len += 1;
+        }
+
+
+        System.out.println("len = " + len);
+
+        ListNode root = new ListNode();
+        ListNode root_ = root;
+
+        // if n == len
+        if (n == len){
+            head = head.next;
+            root.next = head;
+            root = root.next;
+        }
+
+        /**
+         *   0, 1, 2 , 3, 4 .... k-2, k-1, k
+         *
+         *   if n = 1, then "k-1" is the node to remove.
+         *   -> so we find "k-2" node, and connect it to "k" node
+         *
+         *  example 1 :
+         *    n = 2
+         *    0, 1, 2, 3 ,4
+         *             *
+         *
+         *   len = 5
+         *   (len - n - 1) =  5 - 2 -1 = 2
+         *
+         */
+        // find n-1 node, connect n-2 node and n node
+        int idx = len - n;
+        while (idx > 0){
+            System.out.println("idx = " + idx + " head.val = " + head.val);
+            root.next = head;
+            root = root.next;
+            head = head.next;
+            idx -= 1;
+        }
+
+        ListNode next = head.next;
+        root.next = next;
+
+        return root_.next;
+    }
+
 }
