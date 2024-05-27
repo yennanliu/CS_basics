@@ -710,3 +710,13 @@ return check_(root, smallest_val, biggest_val);
 // LC 338
 
 ```
+
+### 2-5) Init Queue
+
+- https://stackoverflow.com/questions/4626812/how-do-i-instantiate-a-queue-object-in-java
+
+- A Queue is an `interface`, which means you cannot construct a Queue directly.
+- Consinder use one of below implementation:
+```
+    AbstractQueue, ArrayBlockingQueue, ArrayDeque, ConcurrentLinkedQueue, DelayQueue, LinkedBlockingQueue, LinkedList, PriorityBlockingQueue, PriorityQueue, or SynchronousQueue.
+```
