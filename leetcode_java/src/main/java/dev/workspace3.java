@@ -2565,5 +2565,26 @@ public class workspace3 {
 
     }
 
+    // LC 268
+    /**
+     *  n = 3
+     *  so sum_ = ((1+3)/ 2 ) * 3 = 6
+     *  curSum = 4
+     *  si 6 - 4 = 2
+     *
+     *  n = 2
+     *  so sum_ = ((1+2)/ 2 ) * 2 = 3
+     *  3 - 1 = 2
+     *
+     *
+     */
+    public int missingNumber(int[] nums) {
+
+        int n = nums.length;
+        int sum_ = ((1+n) * (n)) / 2;
+        int curSum = Arrays.stream(nums).sum();
+        System.out.println("sum_ = " + sum_ + " curSum = " + curSum);
+        return sum_ - curSum;
+    }
 
 }
