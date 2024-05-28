@@ -9,6 +9,18 @@ public class MissingNumber {
     // V0
     // IDEA : MATH
     public int missingNumber(int[] nums) {
+
+        int n = nums.length;
+        // NOTE !!! the ordering
+        int sum_ = ((1+n) * (n)) / 2;
+        int curSum = Arrays.stream(nums).sum();
+        //System.out.println("sum_ = " + sum_ + " curSum = " + curSum);
+        return sum_ - curSum;
+    }
+
+    // V0'
+    // IDEA : MATH
+    public int missingNumber_0(int[] nums) {
         if (nums.length == 0 || nums == null){
             return 0;
         }
