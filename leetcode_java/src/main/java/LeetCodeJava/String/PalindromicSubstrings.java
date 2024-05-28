@@ -5,9 +5,34 @@ package LeetCodeJava.String;
 public class PalindromicSubstrings {
 
     // V0
+    // IDEA : 2 POINTER + for loop + odd / even length handling (gpt) (LC 005)
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/palindromic-substrings.py#L59
+    public int countSubstrings(String s) {
+        int ans = 0;
+        for (int i = 0; i < s.length(); i++) {
+            // odd
+            ans += helper(s, i, i);
+            // even
+            ans += helper(s, i, i + 1);
+        }
+        return ans;
+    }
+
+    private int helper(String s, int l, int r) {
+        int ans = 0;
+        while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
+            l--;
+            r++;
+            ans++;
+        }
+        return ans;
+    }
+
+
+    // V0'
     // IDEA : BRUTE FORCE
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/palindromic-substrings.py
-    public int countSubstrings(String s) {
+    public int countSubstrings_0(String s) {
         int cnt = 0;
         if (s == null || s.length() == 0){
             return cnt;
