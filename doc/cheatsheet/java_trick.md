@@ -39,18 +39,17 @@
 // java
 // LC 57
 
-int[] newInterval = new int[]{1,2,3};
-
 /** 
  *  
  * 1) Array -> List
  *  
  */
-List<int[]> intervalList = new ArrayList<>(Arrays.asList(newInterval));
 
+Integer [] arr1 = new Integer[]{1,2,3};
 
+/** Arrays.asList */
+List<Integer> list1 = Arrays.asList(arr1); // NOTE here !!!
 
-List<int[]> merged = new ArrayList<>();
 
 /** 
  *  
@@ -58,7 +57,13 @@ List<int[]> merged = new ArrayList<>();
  *  
  */
 
-merged.toArray(new int[merged.size()][]);
+List<Integer> list2 = new ArrayList<>();
+list2.add(1);
+list2.add(2);
+list2.add(3);
+
+/** list2.toArray with size */
+Integer [] arr2 = list2.toArray(new Integer[list2.size()]); // NOTE here !!!
 ```
 
 
