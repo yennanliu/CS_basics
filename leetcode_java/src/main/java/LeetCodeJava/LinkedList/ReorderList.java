@@ -7,35 +7,106 @@ import LeetCodeJava.DataStructure.ListNode;
 public class ReorderList {
 
     // V0
-//    public void reorderList(ListNode head) {
-//
-//        if (head.equals(null) || head.next.equals(null)){
-//            return;
-//        }
-//
-//        int n = 0;
-//        ListNode _tmp = head;
-//        while (!_tmp.next.equals(null)){
-//            _tmp = _tmp.next;
-//            n += 1;
-//        }
-//
-//        ListNode dummy = new ListNode();
-//        dummy.next = head;
-//
-//        for (int j = 0; j < n; j++){
-//            int _start = j;
-//            int _end = n - j;
-//            ListNode _tmp2 = head;
-//            while(!_tmp2.next.equals(null)){
-//
-//            }
-//
-//        }
-//
-//        return;
-//
-//    }
+    // IDEA : split linked list, reorder + merge (fixed by GPT)
+    /**
+     *  IDEA :
+     *
+     *     This problem is a combination of these three easy problems:
+     *
+     *     LC 876 Middle of the Linked List.
+     *
+     *     LC 206 Reverse Linked List.
+     *
+     *     LC 21 Merge Two Sorted Lists.
+     */
+    /**
+     *
+     *
+     *  example 1:
+     *
+     *  Input: head = [1,2,3,4]
+     *  Output: [1,4,2,3]
+     *
+     *  make 2 node
+     *   - 1st half node : 1->2
+     *   - 2nd half  node : 3->4
+     *
+     * then reverse even node: 4 -> 3
+     * then merge 2 node:
+     *   start from odd, then even
+     *   ...
+     *
+     *   1 -> 4 -> 2 -> 3
+     *
+     *
+     *  example 2 :
+     *
+     *  Input: head = [1,2,3,4,5]
+     *  Output: [1,5,2,4,3]
+     *
+     *
+     *  make 2 node
+     *
+     *  - 1st half node : 1->2 -> 3 (?)
+     *  - 2nd half  node : 4 -> 5
+     *
+     *  reverse even node : 5 -> 4
+     *
+     *  then merge 2 node:
+     *      start from odd, then even
+     *      ...
+     *
+     *   1 -> 5 -> 2 -> 4 -> 3
+     *
+     */
+    public void reorderList(ListNode head) {
+        if (head == null || head.next == null) {
+            return;
+        }
+
+        // Find the middle of the list (via fast - slow pointer)
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Reverse the second half of the list
+        /**
+         *  NOTE !!!!
+         *
+         *   4 operations
+         *
+         *    step 1) cache next
+         *    step 2) point cur to prev
+         *    step 3) move prev to cur
+         *    step 4) move cur to next
+         *
+         */
+        ListNode prev = null;
+        ListNode curr = slow;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        ListNode secondHalf = prev;
+
+        // Merge the two halves
+        ListNode firstHalf = head;
+        while (secondHalf.next != null) {
+            ListNode temp1 = firstHalf.next;
+            ListNode temp2 = secondHalf.next;
+
+            firstHalf.next = secondHalf;
+            secondHalf.next = temp1;
+
+            firstHalf = temp1;
+            secondHalf = temp2;
+        }
+    }
 
     // V1
     // https://leetcode.com/problems/reorder-list/editorial/
@@ -50,7 +121,6 @@ public class ReorderList {
      *
      *     LC 21 Merge Two Sorted Lists.
      */
-
     public void reorderList_2(ListNode head) {
         if (head == null) return;
 

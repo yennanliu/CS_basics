@@ -2460,5 +2460,110 @@ public class workspace3 {
         return null;
     }
 
+    // LC 143
+    /**
+     *
+     *
+     * You are given the head of a singly linked-list.
+     * The list can be represented as:
+     *
+     * L0 → L1 → … → Ln - 1 → Ln
+     *
+     *
+     * Reorder the list to be on the following form:
+     *
+     * L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+     *
+     *
+     *  example 1:
+     *
+     *  Input: head = [1,2,3,4]
+     *  Output: [1,4,2,3]
+     *
+     *  make 2 node
+     *   - 1st half node : 1->2
+     *   - 2nd half  node : 3->4
+     *
+     * then reverse even node: 4 -> 3
+     * then merge 2 node:
+     *   start from odd, then even
+     *   ...
+     *
+     *   1 -> 4 -> 2 -> 3
+     *
+     *
+     *
+     *  example 2 :
+     *
+     *  Input: head = [1,2,3,4,5]
+     *  Output: [1,5,2,4,3]
+     *
+     *
+     *  make 2 node
+     *
+     *  - 1st half node : 1->2 -> 3 (?)
+     *  - 2nd half  node : 4 -> 5
+     *
+     *  reverse even node : 5 -> 4
+     *
+     *  then merge 2 node:
+     *      start from odd, then even
+     *      ...
+     *
+     *   1 -> 5 -> 2 -> 4 -> 3
+     *
+     */
+    public void reorderList(ListNode head) {
+
+        if (head == null || head.next == null){
+            return;
+        }
+
+        // get len
+        int len = 0;
+        ListNode head_1 = head;
+        while (head_1 != null){
+            head_1 = head_1.next;
+            len += 1;
+        }
+
+        // get 1st half, and 2nd half sub list node
+        ListNode firstHalf = new ListNode();
+        ListNode secondHalf = new ListNode();
+
+        ListNode head_2 = head;
+        int i = 0;
+        while (i < len / 2){
+            i += 1;
+            firstHalf.next = head_2;
+            head_2 = head_2.next;
+        }
+
+        secondHalf.next = head_2;
+
+        // reverse secondHalf
+        //ListNode reversedSecondHalf = new ListNode();
+        ListNode prev = null;
+        ListNode reversedSecondHalf = prev;
+        while (secondHalf != null){
+            ListNode next = secondHalf.next;
+            secondHalf.next = prev;
+            prev = secondHalf;
+            secondHalf = next;
+        }
+
+        //ListNode reversedSecondHalf = secondHalf;
+
+        // connect firstHalf and secondHalf
+        ListNode res = new ListNode();
+        while (firstHalf != null && reversedSecondHalf != null){
+            res.next = firstHalf;
+            firstHalf = firstHalf.next;
+            res.next = reversedSecondHalf;
+            reversedSecondHalf = reversedSecondHalf.next;
+        }
+
+    }
+
 
 }
