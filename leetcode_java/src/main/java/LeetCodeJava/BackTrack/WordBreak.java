@@ -84,7 +84,6 @@ public class WordBreak {
         return memo[start] = false;
     }
 
-
     // V0''
     // IDEA : BACKTRACK
     Boolean[] memo_;
@@ -109,6 +108,95 @@ public class WordBreak {
         }
         memo_[start] = false;
         return false;
+    }
+
+    // V0''''
+    // IDEA : BACKTRACK + MEMORIZATION (improve efficiency) (gpt)
+    /**
+     *
+     * 1) Memoization:
+     *
+     *  Use a Map<String, Boolean> called memo to store whether a given substring can be segmented using the word dictionary.
+     *  This avoids re-computation for the same substring multiple times.
+     *
+     * 2) Base Case:
+     *
+     *  If the string s is empty, return true because an empty string is considered to be fully segmented.
+     *
+     * 3) Check Memo:
+     *
+     *  Before performing any computations, check if the result for the current substring s is already computed and stored in memo.
+     *
+     * 4) Iterate Through Word Dictionary:
+     *
+     *  For each word in the dictionary, check if the current substring s starts with that word.
+     *  If it does, recursively call canBuild on the remaining substring (suffix).
+     *  If the recursive call returns true, store the result in memo and return true.
+     *  Store False in Memo:
+     *
+     * If none of the words match or lead to a solution, store false in memo for the current substring s.
+     * This approach enhances the efficiency of the backtracking algorithm by ensuring that each substring is processed only once, reducing the overall time complexity significantly.
+     *
+     */
+    private Map<String, Boolean> memo = new HashMap<>();
+
+    public boolean wordBreak_0_2(String s, List<String> wordDict) {
+        return canBuild(s, wordDict);
+    }
+
+    private boolean canBuild(String s, List<String> wordDict) {
+        if (s.isEmpty()) {
+            return true;
+        }
+
+        if (memo.containsKey(s)) {
+            return memo.get(s);
+        }
+
+        for (String word : wordDict) {
+            if (s.startsWith(word)) {
+                String suffix = s.substring(word.length());
+                if (canBuild(suffix, wordDict)) {
+                    memo.put(s, true);
+                    return true;
+                }
+            }
+        }
+
+        memo.put(s, false);
+        return false;
+    }
+
+
+    // V0''''
+    // IDEA : DP (modified by GPT)
+    /**
+     *
+     * To improve the efficiency of your wordBreak implementation,
+     * we should switch from a backtracking approach to a dynamic programming (DP) approach.
+     * The backtracking approach can lead to a lot of repeated work
+     * and can be very slow for larger inputs,
+     * whereas the DP approach will allow us to efficiently
+     * check if the word can be segmented.
+     *
+     * Here is the improved version using dynamic programming:
+     *
+     */
+    public boolean wordBreak_0_3(String s, List<String> wordDict) {
+        Set<String> wordSet = new HashSet<>(wordDict);
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true; // empty string is always breakable
+
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordSet.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return dp[s.length()];
     }
 
     // V1
@@ -137,25 +225,25 @@ public class WordBreak {
     // V2
     // IDEA : MEMORIZATION
     // https://leetcode.com/problems/word-break/solutions/3687504/recursion-memoization-tabulation/
-    Boolean[] memo;
-    public boolean wordBreak_2(String s, List<String> wordDict) {
-        memo=new Boolean[s.length()];
-        return _wordBreak(s,wordDict,0);
-    }
-    public boolean _wordBreak(String s, List<String> wordDict, int si) {
-        if(si>=s.length()){
-            return true;
-        }
-        if(memo[si]!=null) return memo[si];
-        for(int i=si; i<s.length(); i++){
-            if(wordDict.contains(s.substring(si,i+1))){
-                if(_wordBreak(s,wordDict,i+1)){
-                    return memo[si] = true;
-                }
-            }
-        }
-        return memo[si] = false;
-    }
+//    Boolean[] memo;
+//    public boolean wordBreak_2(String s, List<String> wordDict) {
+//        memo=new Boolean[s.length()];
+//        return _wordBreak(s,wordDict,0);
+//    }
+//    public boolean _wordBreak(String s, List<String> wordDict, int si) {
+//        if(si>=s.length()){
+//            return true;
+//        }
+//        if(memo[si]!=null) return memo[si];
+//        for(int i=si; i<s.length(); i++){
+//            if(wordDict.contains(s.substring(si,i+1))){
+//                if(_wordBreak(s,wordDict,i+1)){
+//                    return memo[si] = true;
+//                }
+//            }
+//        }
+//        return memo[si] = false;
+//    }
 
     // V3
     // IDEA : Tabulation

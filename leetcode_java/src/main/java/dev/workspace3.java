@@ -2587,4 +2587,48 @@ public class workspace3 {
         return sum_ - curSum;
     }
 
+    // LC 139
+    // backtrack
+    boolean found = false;
+    public boolean wordBreak(String s, List<String> wordDict) {
+
+        if (wordDict.size() == 1){
+            if (wordDict.get(0).equals(s)){
+                return true;
+            }
+            return false;
+        }
+
+        // backtrack
+        //return false;
+        String cur = "";
+        int startIdx = 0;
+        this.canBuild(s, wordDict, startIdx, cur);
+        return found;
+    }
+
+    public void canBuild(String s, List<String> wordDict, int startIdx, String cur){
+
+        System.out.println("cur.equals(s) = " + cur.equals(s));
+        if (cur.equals(s)){
+            found = true;
+            return;
+        }
+
+        if (cur.length() >= s.length()){
+            return;
+        }
+
+        for (int idx = startIdx; idx < wordDict.size(); idx++){
+            String tmp = wordDict.get(idx);
+            String cur_ = cur + tmp;
+            System.out.println("idx = " + idx + " tmp = " + tmp + " cur_ = " + cur_ + " cur = " + cur);
+            if (s.contains(cur_)){
+                this.canBuild(s, wordDict, startIdx, cur_);
+                // undo
+                cur_ = cur;
+            }
+        }
+    }
+
 }
