@@ -178,6 +178,21 @@ Collections.reverse(levels);
 
 // NOTE : reverse != decreasing order
 // ...
+
+
+List<Integer> list2 = new ArrayList<>();
+list2.add(1);
+list2.add(2);
+list2.add(3);
+
+System.out.println("list2 = " + list2); // list2 = [1, 2, 3]
+
+/** Reverse List 
+ *
+ *   // NOTE !!! reverse in place, e.g. NO return val
+ */
+Collections.reverse(list2);
+System.out.println("list2 = " + list2); // list2 = [3, 2, 1]
 ```
 
 ### 1-0-4) Reverse String
@@ -350,7 +365,56 @@ Arrays.sort(people, new Comparator<int[]>() {
 Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
 ```
 
-### 1-4-2) Sort List VS Array
+
+### 1-4-2) Arrays.sort VS Arrays.stream(intervals).sorted()
+
+- The two methods Arrays.stream(intervals).sorted() and Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0])) perform different operations:
+
+1) `Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]))`:
+
+- This sorts the array intervals `in place`.
+- The sorting is based on the first element of each sub-array (a[0] and b[0]).
+- The Integer.compare(a[0], b[0]) comparator ensures that the array is sorted in ascending order based on the first elements of the sub-arrays.
+- After this operation, the original array intervals is modified and sorted accordingly.
+
+2) `Arrays.stream(intervals).sorted()`:
+
+- This creates a stream of the array intervals.
+- The .sorted() method sorts the stream in natural order.
+- However, this does NOT modify the original array intervals in place.
+- The result of this sorting is a sorted stream, but if you do not collect or process this sorted stream, the original array remains unchanged.
+
+
+
+```java
+// java
+// example code :
+
+  int[][] intervals = new int[][]{ {15,20}, {0,30}, {5,10} };
+        System.out.println("---> intervals before sorting");
+        for (int[] interval : intervals){
+            System.out.println("1st = " + interval[0] + ", 2nd = " + interval[1]);
+        }
+
+        // Using Arrays.stream(intervals).sorted();
+        Arrays.stream(intervals).sorted();
+        System.out.println("---> intervals after Arrays.stream(intervals).sorted()");
+        for (int[] interval : intervals){
+            System.out.println("1st = " + interval[0] + ", 2nd = " + interval[1]);
+        }
+
+        // Using Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        System.out.println("---> intervals after Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]))");
+        for (int[] interval : intervals){
+            System.out.println("1st = " + interval[0] + ", 2nd = " + interval[1]);
+        }
+
+```
+
+
+
+### 1-4-3) Sort List VS Array
 ```java
 // java
 // LC 214
@@ -567,12 +631,13 @@ boolean isPalindrome(String s, int low, int high) {
 public int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 ```
 
-### 1-18) Arrays.fill
+### 1-18) Arrays.fill (1 D)
 
 ```java
 // java
 // LC 300
 
+/** NOTE !!! ONLY work for 1 D (since array is 1 dimension) */
 // example 1
 int[] dp = new int[10];
 Arrays.fill(dp,1);
