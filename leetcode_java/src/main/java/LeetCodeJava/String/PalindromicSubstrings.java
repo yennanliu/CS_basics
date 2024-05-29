@@ -72,6 +72,26 @@ public class PalindromicSubstrings {
         return true;
     }
 
+    // V0'''
+    // IDEA : 2 pointers with all cases covered (gpt)
+    public int countSubstrings_0_1(String s) {
+        int n = s.length();
+        int res = 0;
+
+        // Expand around center for all possible centers
+        for (int center = 0; center < 2 * n - 1; center++) {
+            int left = center / 2;
+            int right = left + center % 2;
+            while (left >= 0 && right < n && s.charAt(left) == s.charAt(right)) {
+                res++;
+                left--;
+                right++;
+            }
+        }
+
+        return res;
+    }
+
     // V1
     // https://leetcode.com/problems/palindromic-substrings/solutions/4705208/beats-100-easy-to-understand-c-java-python-solution/
     public int check(String s, int i, int j) {

@@ -6,7 +6,7 @@
 
 # 0) Basic data structures
 
-- Java heap:
+- heap:
 
     - Default : min-heap
         - LC 703
@@ -21,6 +21,26 @@
     // java
     PriorityQueue<Integer> heap = new PriorityQueue<>(Comperator.reverseOrder());
     ```       
+
+- Character
+    - https://www.runoob.com/java/java-character.html
+    - https://www.runoob.com/java/java-string-charat.html
+        - `charAt() ` offer a method a access String element with idx
+        ```java
+        // java
+        String s = "www.google.com";
+        char result = s.charAt(6);
+        System.out.println(result);
+
+        // LC 647
+        // ...
+        while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
+            l--;
+            r++;
+            ans++;
+        }
+        // ...
+        ```
 
 # 1) Basic op
 
