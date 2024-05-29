@@ -8,7 +8,10 @@
 
 - Types
     - Quick union
+    - [Quick Find](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/quick_find.md)
     - [Union Find](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/union_find.md)
+        - Union-Find is more efficient than Quick Find for large datasets because of its nearly constant time complexity for both union and find operations.
+        - Quick Find has a simple implementation but can be very slow for union operations, making it less suitable for large datasets.
     - [Topology sorting](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/topology_sorting.md)
         - LC 207, LC 210
     - Graph Bipartite
