@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
+import LeetCodeJava.DataStructure.Node;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
@@ -2770,6 +2771,12 @@ public class workspace3 {
         }
 
         return false;
+    }
+
+    // LC 133
+    public Node cloneGraph(Node node) {
+
+        return null;
     }
 
 }
