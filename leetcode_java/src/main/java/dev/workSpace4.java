@@ -142,6 +142,23 @@ public class workSpace4 {
         System.out.println(_list2);
 
 
+
+        System.out.println("----------------");
+
+        String x_ = "leetcode";
+        String[] x_arr = x_.split("");
+        System.out.println(x_arr[0]);
+        System.out.println(x_arr[1]);
+        System.out.println(x_arr[0].equals("l"));
+
+        System.out.println("----------------");
+
+        String s = "www.runoob.com";
+        char result = s.charAt(6);
+        System.out.println(result);
+        System.out.println(String.valueOf(result));
+
+
     }
 
 }

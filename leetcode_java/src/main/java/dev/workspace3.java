@@ -2631,4 +2631,85 @@ public class workspace3 {
         }
     }
 
+    // LC 647
+    // brute force + odd/even handling
+//    public int countSubstrings(String s) {
+//
+//        if (s.length() == 1){
+//            return 1;
+//        }
+//
+//        int len = s.length();
+//        int res = 0;
+//        String[] s_arr = s.split("");
+//        for (String x : s_arr){
+//            System.out.println("---> x = " + x);
+//        }
+//
+//        String s1 = s_arr[0];
+//
+//        /**
+//         *  abc
+//         *
+//         *  abcd
+//         *
+//         *  aaa
+//         *  l r
+//         *
+//         *
+//         */
+//
+//        System.out.println("len = " + len);
+//        System.out.println("s_arr = " + s_arr);
+//
+//        // odd
+//        if (len % 2 == 1){
+//            int l = 0;
+//            int r = len - 1;
+//            System.out.println("odd, l = " + l + ", r= " + r + "  s_arr[l] = " +  s_arr[l].toString());
+//            System.out.println("s_arr[l].equals(s_arr[r]) = " + s_arr[l].equals(s_arr[r]));
+//            while (l < len && r >= 0 && r >= l && s.charAt(l) == (s.charAt(r))){
+//                l += 1;
+//                r -= 1;
+//                res = Math.max(res, r - l + 1);
+//            }
+//        }
+//        // even
+//        else{
+//            int l = 1;
+//            int r = len - 2;
+//            System.out.println("even, l = " + l + ", r= " + r);
+//            while (l < len && r >= 0 && r >= l && s.charAt(l) == (s.charAt(r))){
+//                l += 1;
+//                r -= 1;
+//                res = Math.max(res, r - l + 1);
+//            }
+//
+//        }
+//
+//        return res;
+//    }
+
+    public int countSubstrings(String s) {
+        int ans = 0;
+        for (int i = 0; i < s.length(); i++) {
+            // odd
+            ans += helper(s, i, i);
+            // even
+            ans += helper(s, i, i + 1);
+        }
+        return ans;
+    }
+
+    private int helper(String s, int l, int r) {
+        int ans = 0;
+        while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
+            l--;
+            r++;
+            ans++;
+        }
+        return ans;
+    }
+
+
 }
