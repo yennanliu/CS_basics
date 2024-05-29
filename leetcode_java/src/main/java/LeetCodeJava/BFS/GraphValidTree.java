@@ -9,6 +9,47 @@ public class GraphValidTree {
     // V0
     // TODO : implement it
 
+    // V0'
+    // IDEA : QUICK FIND (gpt)
+    public boolean validTree_0(int n, int[][] edges) {
+        if (n == 0) {
+            return false;
+        }
+
+        // Initialize root array where each node is its own parent
+        int[] root = new int[n];
+        for (int i = 0; i < n; i++) {
+            root[i] = i;
+        }
+
+        // Process each edge
+        for (int[] edge : edges) {
+            int root1 = find(root, edge[0]);
+            int root2 = find(root, edge[1]);
+
+            // If the roots are the same, there's a cycle
+            if (root1 == root2) {
+                return false;
+            } else {
+                // Union the sets
+                root[root1] = root2;
+            }
+        }
+
+        // Check if the number of edges is exactly n - 1
+        return edges.length == n - 1; // NOTE !!! this check
+    }
+
+    // Find function with path compression
+    private int find(int[] root, int e) {
+        if (root[e] == e) {
+            return e;
+        } else {
+            root[e] = find(root, root[e]); // Path compression
+            return root[e];
+        }
+    }
+
     // V1
     // IDEA : BFS
     // https://protegejj.gitbook.io/algorithm-practice/leetcode/graph/261-graph-valid-tree

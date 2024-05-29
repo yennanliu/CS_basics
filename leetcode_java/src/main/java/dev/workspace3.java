@@ -2712,4 +2712,64 @@ public class workspace3 {
     }
 
 
+    // LC 261
+    // dfs
+    public boolean validTree_1(int n, int[][] edges) {
+
+        if (edges.length == 0){
+            return true;
+        }
+
+        // build map
+        /**
+         * edges = [[0,1], [0,2], [0,3], [1,4]]
+         *
+         *  -> [0,1] : 0 : start, 1 : root
+         *  -> ... so map :
+         *   {
+         *    0 : [1,2,3],
+         *    1: [4],
+         *    2: [0],
+         *    3: [0]
+         *  }
+         *
+         */
+        Map<Integer, List<Integer>>map = new HashMap<>();
+        for (int[] x : edges){
+            List<Integer> cur = map.getOrDefault(x, new ArrayList<>());
+            cur.add(x[1]);
+            map.put(x[0], cur);
+        }
+        System.out.println("map = " + map);
+
+        return true;
+    }
+
+    public boolean dfsValidTree(int n, int[][] edges, int[] state, int status, Map<Integer, List<Integer>> map, Integer cur){
+        /**
+         *  3 state:
+         *
+         *  0 : not visited
+         *  1 : visiting
+         *  2 : visited
+         */
+        if (status == 1){
+            return false;
+        }
+
+        if (n == 0){
+            return true;
+        }
+
+        status = 1;
+
+        n -= 1;
+
+        for (Integer k : map.get(cur)){
+            this.dfsValidTree(n, edges, state, status, map, k);
+        }
+
+        return false;
+    }
+
 }
