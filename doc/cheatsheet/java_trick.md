@@ -329,13 +329,14 @@ ans.push("c");
 String.valueOf(ans);
 ```  
 
-### 1-4) Sort Array
+### 1-4) Sort Array (`Arrays.sort`)
 
 ```java
 // 1) Sort integer Array
 // LC 252, LC 452
 /// https://leetcode.com/problems/meeting-rooms/editorial/
-intervals = [[0,30],[5,10],[15,20]]
+int[][] intervals = new int[][]{ {15,20}, {0,30}, {5,10} };
+
 Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 
 
@@ -420,13 +421,41 @@ Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
 // LC 214
 // https://stackoverflow.com/questions/1694751/java-array-sort-descending
 
-// for Array
+/** Sort Array */
 Integer[] _array = {5, 5, 7, 8, 9, 0};
+
+// V1
 Arrays.sort(_array, Collections.reverseOrder());
 
-// for List
+// V2
+Arrays.sort(_array, (a,b) -> Integer.compare(-a, -b));
+
+
+
+
+
+/** Sort List */
+
+// V1
 List<Integer> _list = new ArrayList();
 Collections.sort(_list, Collections.reverseOrder());
+
+// V2
+Collections.sort(_list, (a,b) -> Integer.compare(-a, -b));
+
+// V3
+/** Using the Stream API: 
+    You can use stream(), sorted(), and collect(Collectors.toList()) to sort the list.
+*/
+List<Integer> _list2 = new ArrayList<>(Arrays.asList(3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5));
+// System.out.println(_list2);
+_list2 = _list2.stream()
+                .sorted((a, b) -> b - a)  // Using Comparator to sort in reverse order
+                .collect(Collectors.toList());
+// System.out.println(_list2);
+
+
+
 
 
 // example
