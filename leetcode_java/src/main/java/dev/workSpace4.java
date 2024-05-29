@@ -1,6 +1,7 @@
 package dev;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class workSpace4 {
     public static void main(String[] args) {
@@ -84,6 +85,61 @@ public class workSpace4 {
 //        for (int[] interval : sortedIntervals){
 //            System.out.println("1st = " + sortedIntervals[0] + ", 2nd = " + sortedIntervals[1]);
 //        }
+
+
+        /** Array sort example 1 */
+        System.out.println("---> array sort example 1 ");
+        Integer[] _array = {5, 5, 7, 8, 9, 0};
+        for (int a : _array){
+            System.out.println("1st = " + a);
+        }
+
+        //Arrays.sort(_array, (a,b) -> Integer.compare(a, b));
+        Arrays.sort(_array, (a,b) -> Integer.compare(-a, -b));
+
+        System.out.println("---> array sort example 1 -- after sorted ");
+        //Arrays.sort(_array, Collections.reverseOrder());
+        for (int a : _array){
+            System.out.println("1st = " + a);
+        }
+
+        /** List sort example 1 */
+        System.out.println("----> List sort example 1");
+        List<Integer> _list = new ArrayList();
+        _list.add(5);
+        _list.add(1);
+        _list.add(3);
+        _list.add(0);
+        for (int a : _list){
+            System.out.println("1st = " + a);
+        }
+
+        System.out.println("----> List sort example 1 -- after sorted ");
+        // sort
+        //Collections.sort(_list, (a,b) -> Integer.compare(a, b));
+        Collections.sort(_list, (a,b) -> Integer.compare(-a, -b));
+        for (int a : _list){
+            System.out.println("1st = " + a);
+        }
+
+
+        /** List sort example 2 */
+
+        System.out.println("----> List sort example 2");
+
+        List<Integer> _list2 = new ArrayList<>(Arrays.asList(3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5));
+//        for (int a : _list2){
+//            System.out.println("1st = " + a);
+//        }
+        System.out.println(_list2);
+
+        // Sort using Stream API
+        _list2 = _list2.stream()
+                .sorted((a, b) -> b - a)  // Using Comparator to sort in reverse order
+                .collect(Collectors.toList());
+
+        System.out.println("----> List sort example 2 -- after sorted ");
+        System.out.println(_list2);
 
 
     }
