@@ -159,6 +159,64 @@ public class workSpace4 {
         System.out.println(String.valueOf(result));
 
 
+
+        System.out.println(" ---------------- SORT ON HASH MAP ----------------");
+
+
+        // Create a HashMap
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("apple", 5);
+        map.put("banana", 2);
+        map.put("cherry", 8);
+        map.put("date", 1);
+
+        // Print the original map
+        System.out.println("Original map: " + map);
+
+        // Sort the map by values
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+
+        // Create a new LinkedHashMap to preserve the order of the sorted entries
+        LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+
+//        // V1 : via Entry
+//        for (Map.Entry<String, Integer> entry : list) {
+//            sortedMap.put(entry.getKey(), entry.getValue());
+//        }
+
+
+        // V2 : via key
+        // Get the list of keys
+        List<String> keys = new ArrayList<>(map.keySet());
+
+        // Sort the keys based on their corresponding values
+        keys.sort((k1, k2) -> map.get(k1).compareTo(map.get(k2)));
+
+        /**
+         * You can modify the code to avoid using Map.Entry by converting the
+         * HashMap to a list of keys and then sorting the keys based on
+         * their corresponding values. Here is the modified version:
+         */
+        for (String key : keys) {
+            sortedMap.put(key, map.get(key));
+        }
+
+        // Print the sorted map
+        System.out.println("Sorted map: " + sortedMap);
+
+
+        //--------------
+
+//        List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(map.entrySet());
+//        sortedEntries.sort(Map.Entry.comparingByValue());
+//
+//        // Print the sorted entries
+//        for (Map.Entry<String, Integer> entry : sortedEntries) {
+//            System.out.println(entry.getKey() + ": " + entry.getValue());
+//        }
+
+
     }
 
 }
