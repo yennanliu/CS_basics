@@ -2779,4 +2779,103 @@ public class workspace3 {
         return null;
     }
 
+    // LC 005
+    // A string is palindromic if it reads the same forward and backward.
+    // 4.20
+    public String longestPalindrome(String s) {
+
+        if (s.length() == 1){
+            return s;
+        }
+
+        if (s.length() == 2){
+            if (s.charAt(0) == s.charAt(1)){
+                return s;
+            }
+            return String.valueOf(s.charAt(0));
+        }
+
+        int len = s.length();
+        int max_len = 1;
+        String res = "";
+        for (int i = 0; i < len-1; i++){
+            for (int j = i; j < len; j++){
+                System.out.println("i = " + i + " j = " + j);
+                if (IsPalindromic_(s, i, j)){
+                    if (j-i+1 > max_len){
+                        max_len = j-i+1;
+                        res = s.substring(i, j+1);
+                    }
+                }
+            }
+        }
+
+//        // odd
+//        String odd_res = getMaxPalindromicLen(s, 0, 0);
+//        // even
+//        String even_res = getMaxPalindromicLen(s, 0, 1);
+//        System.out.println("odd_res = " + odd_res + " even_res = " + even_res);
+//        if (odd_res.length() > even_res.length()){
+//            return odd_res;
+//        }
+        return res.length() > 0 ? res : String.valueOf(s.charAt(0));
+    }
+
+    public boolean IsPalindromic_(String s,int l, int r){
+        while (r >= l){
+            if (s.charAt(l) != s.charAt(r)){
+                return false;
+            }else{
+                r -= 1;
+                l += 1;
+            }
+        }
+        return true;
+    }
+
+    // LC 003
+    // A substring is a contiguous non-empty sequence of characters within a string.
+    // s consists of English letters, digits, symbols and spaces.
+    // 2 pointers
+    // 5.10
+    /**
+     *  s = "abcabcbb"
+     *       l
+     *          r
+     *
+     *
+     */
+    public int lengthOfLongestSubstring(String s) {
+
+        if (s.length() <= 1){
+            return s.length();
+        }
+        int len = s.length();
+        int ans = 0;
+        int l = 0;
+        int r = 1;
+        Map<String, Integer> map = new HashMap<>();
+        map.put(String.valueOf(s.charAt(l)), 1);
+        while (r > l && r < len){
+            System.out.println("l = " + l + " r = " + r + " map = " + map);
+            String cur = String.valueOf(s.charAt(r));
+            if (map.containsKey(cur)){
+                //ans = Math.max(ans, r - l); // the len is from "last" r and l
+                l = r;
+                r += 1;
+                // reset map
+                //System.out.println(">>>> reset map ");
+                map = new HashMap<>();
+                //System.out.println(">>>> updated map  = " + map);
+            }else{
+                System.out.println("ohh");
+                map.put(cur, 1);
+                r += 1;
+                ans = Math.max(ans, r - l + 1);
+            }
+        }
+
+        return ans;
+    }
+
 }

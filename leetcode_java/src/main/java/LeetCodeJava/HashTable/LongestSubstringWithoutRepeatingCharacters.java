@@ -10,7 +10,7 @@ import java.util.Set;
 public class LongestSubstringWithoutRepeatingCharacters {
 
     // V0
-    // IDEA : HASHMAP + SLIDING DINDOW
+    // IDEA : HASHMAP + SLIDING WINDOW
     public int lengthOfLongestSubstring(String s) {
 
         /**
@@ -35,15 +35,22 @@ public class LongestSubstringWithoutRepeatingCharacters {
 
             String cur = String.valueOf(s.charAt(right));
 
-            // NOTE !!! we add element to map first
+            /**
+             * NOTE !!!
+             *        Add element to map first (do val checks, index update below)
+             */
             if (map.containsKey(cur)){
                 map.put(cur, map.get(cur)+1);
             }else{
                 map.put(cur, 1);
             }
 
-            // NOTE !!! if map has element -> duplicated elelment
-            //          -> keep remove count from element and move left pointer to right
+            /**
+             *  NOTE !!! if map has element -> duplicated element
+             *    -> keep remove (while loop) count from element and move left pointer to right
+             *    -> on the same time, left pointer (l) is moved to left
+             *    -> and map is updated (remove element count)
+             */
             while (map.get(cur) > 1) {
                 String l = String.valueOf(s.charAt(left));
                 map.put(l, map.get(l) - 1);
