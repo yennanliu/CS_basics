@@ -216,6 +216,10 @@ public class workSpace4 {
 //            System.out.println(entry.getKey() + ": " + entry.getValue());
 //        }
 
+        System.out.println("sub string --------------");
+        String str1 = "abcd";
+        System.out.println(str1);
+        System.out.println(str1.substring(0,2));
 
     }
 
