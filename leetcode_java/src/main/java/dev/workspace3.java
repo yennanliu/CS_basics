@@ -2955,4 +2955,37 @@ public class workspace3 {
         return ans;
     }
 
+    // LC 261
+    // quick find
+    public boolean validTree_2(int n, int[][] edges) {
+        if (edges.length == 0){
+            return true;
+        }
+        // init
+        int[] relations = new int[n];
+        for (int i = 0; i < n; i++){
+            relations[i] = i;
+        }
+
+        // union find
+        for (int[] edge: edges){
+            int root1 = this.union_(edge[0], relations);
+            int root2 = this.union_(edge[1], relations);
+            if (root1 == root2){
+                return false;
+            }else{
+                relations[root1] = root2;
+            }
+        }
+
+        return edges.length == n-1;
+    }
+
+    public int union_(int x, int[] relations){
+        if (x != relations[x]){
+            return this.union_(relations[x], relations);
+        }
+        return x;
+    }
+
 }

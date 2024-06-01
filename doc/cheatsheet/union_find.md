@@ -332,6 +332,73 @@ class Solution:
 # LC 261 Graph Valid Tree
 ```
 
+```java
+// java
+// LC 261 Graph Valid Tree
+    // V0'
+    // IDEA : QUICK FIND (gpt)
+    public boolean validTree_0(int n, int[][] edges) {
+        if (n == 0) {
+            return false;
+        }
+
+        /**
+         * Step 1) Initialize root array where each node is its own parent
+         *
+         *  NOTE !!!
+         *   we init an array with n length (NOT from edges)
+         */
+        int[] root = new int[n];
+        for (int i = 0; i < n; i++) {
+            root[i] = i;
+        }
+
+        /**
+         * Step 2) update relation (union find)
+         */
+        // Process each edge
+        for (int[] edge : edges) {
+
+            /**
+             *  NOTE !!!
+             *
+             *    find node "parent" with 2 perspective
+             *     1) from 1st element (e.g. edge[0])
+             *     2) from 2nd element (e.g. edge[1])
+             *
+             *    so, if parent1 == parent2
+             *     -> means there is a circular (because they have same parent, so nodes must "connect itself back" at some point),
+             *     -> so input is NOT a valid tree
+             */
+            int root1 = find(root, edge[0]); // parent1
+            int root2 = find(root, edge[1]); // parent2
+
+            // If the roots are the same, there's a cycle
+            if (root1 == root2) {
+                /** NOTE !!!  if a cycle, return false directly */
+                return false;
+            } else {
+                // Union the sets
+                /** NOTE !!!  if not a cycle, then "compress" the route, e.g. make node as the other node's parent */
+                root[root1] = root2;
+            }
+        }
+
+        /** Check if the number of edges is exactly n - 1 */
+        return edges.length == n - 1; // NOTE !!! this check
+    }
+
+    // Find function with path compression
+    private int find(int[] root, int e) {
+        if (root[e] == e) {
+            return e;
+        } else {
+            root[e] = find(root, root[e]); // Path compression
+            return root[e];
+        }
+    }
+```
+
 ### 2-3) Possible Bipartition
 ```python
 # LC 886 Possible Bipartition
