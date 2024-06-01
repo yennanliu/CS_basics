@@ -10,12 +10,17 @@ public class LongestConsecutiveSequence {
     // IDEA : SORT + SLIDING WINDOW (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/longest-consecutive-sequence.py#L32
     public int longestConsecutive(int[] nums) {
+
         // Edge case
         if (nums.length == 0) {
             return 0;
         }
 
-        // Remove duplicates and sort the array
+        /**
+         *  step 1) Remove duplicates and sort the array
+         *
+         *  NOTE !!! need to remove duplicates from array (via set)
+         */
         Set<Integer> set = new HashSet<>();
         for (int num : nums) {
             set.add(num);
@@ -25,12 +30,26 @@ public class LongestConsecutiveSequence {
         for (int num : set) {
             nums[index++] = num;
         }
+        /**
+         *  step 2) sort
+         *
+         *  NOTE !!! sort array via Arrays.sort()
+         *
+         *   https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/java_trick.md#1-4-3-sort-list-vs-array
+         */
         Arrays.sort(nums);
 
         int res = 0;
         int l = 0;
         int r = 1;
 
+        /**
+         *  step 3) Sliding window
+         *
+         *   1. keep comparing r and r - 1
+         *   2. if r != r-1,  make l = r, r = r + 1
+         *   3. NOTE !!! l here is ONLY for continuous sub-array calculation 
+         */
         /*
          * Sliding window here :
          * condition : l, r are still in the array (r < nums.length and l < nums.length)

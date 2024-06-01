@@ -221,6 +221,10 @@ public class workSpace4 {
         System.out.println(str1);
         System.out.println(str1.substring(0,2));
 
+//        for (int z : new int[]{1,2,3}){
+//            System.out.println(z);
+//        }
+
     }
 
 }
