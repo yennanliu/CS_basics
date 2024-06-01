@@ -2878,4 +2878,81 @@ public class workspace3 {
         return ans;
     }
 
+    // LC 128
+    // 2 pointers
+    /**
+     *
+     *  example 1 :
+     *
+     *  [1, 2, 3, 4, 100, 200]
+     *   l  r
+     *   l     r
+     *   l        r
+     *   l            r
+     *                l     r
+     *
+     *  example 2 :
+     *
+     *   [0, 0, 1, 2, 3, 4, 5, 6, 7, 8]
+     *    l  r
+     *       l  r
+     *       l     r
+     *       l        r
+     *       l           r
+     *       l              r
+     *       l                 r
+     *       l                   r
+     *       l                       r
+     *
+     *
+     */
+    public int longestConsecutive(int[] nums) {
+
+        if (nums.length <= 1){
+            return nums.length;
+        }
+        //System.out.println(Arrays.toString(Arrays.stream(nums).toArray()));
+
+        // only get non duplicated elements
+        HashSet<Integer> set = new HashSet<>();
+        for (int x : nums){
+            set.add(x);
+        }
+
+        int i = 0;
+        int[] nums2 = new int[set.size()];
+        for (Iterator<Integer> it = set.iterator(); it.hasNext(); ) {
+            int x = it.next();
+            it.remove();
+            nums2[i] = x;
+            i += 1;
+        }
+
+        System.out.println(Arrays.toString(Arrays.stream(nums2).toArray()));
+
+        // sort
+        Arrays.sort(nums2);
+        System.out.println(Arrays.toString(Arrays.stream(nums2).toArray()));
+
+        int l = 0;
+        int r = 1;
+        int ans = 1;
+        while (r < nums2.length && r > l){
+            System.out.println("l = " + l + ", r = " + r + ", ans = " + ans);
+            if (nums2[r-1] + 1 == nums2[r]){
+                r += 1;
+                ans = Math.max(ans, r - l);
+            }else{
+                System.out.println("ohhhh");
+                ans = Math.max(ans, r - l);
+                l = r;
+                r += 1;
+            }
+        }
+
+        //ans = Math.max(ans, r - l);
+
+        return ans;
+    }
+
 }
