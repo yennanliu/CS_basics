@@ -30,4 +30,4 @@ script:
     #- pip3 uninstall -y algorithms 
 notifications:
     on_success: change
-    on_failure: change  # `always` will be the setting once code changes slow down
+    on_failure: change  # `always`  will be the setting once code changes slow down
