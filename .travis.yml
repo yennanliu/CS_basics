@@ -27,7 +27,7 @@ script:
     #- tox -e $TOX_ENV
     #- tox -e $(echo py$TOX_ENV | tr -d .)
     # Check python uninstall package
-    #- pip3 uninstall -y algorithms
+    #- pip3 uninstall -y algorithms 
 notifications:
     on_success: change
     on_failure: change  # `always` will be the setting once code changes slow down
