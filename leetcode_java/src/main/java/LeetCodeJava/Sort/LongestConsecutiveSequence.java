@@ -48,7 +48,7 @@ public class LongestConsecutiveSequence {
          *
          *   1. keep comparing r and r - 1
          *   2. if r != r-1,  make l = r, r = r + 1
-         *   3. NOTE !!! l here is ONLY for continuous sub-array calculation 
+         *   3. NOTE !!! l here is ONLY for continuous sub-array calculation
          */
         /*
          * Sliding window here :
