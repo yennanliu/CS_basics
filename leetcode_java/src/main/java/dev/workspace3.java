@@ -2988,7 +2988,112 @@ public class workspace3 {
         return x;
     }
 
+    // LC 207
+    // union find (CAN'T USE THIS)
+    // 3.20
+//    public boolean canFinish_1(int numCourses, int[][] prerequisites) {
+//
+//        if (prerequisites.length <= 1){
+//            return true;
+//        }
+//
+//        // init
+//        // at beginning, every node is itself parent
+//        int[] parents = new int[numCourses];
+//        for (int i = 0; i < numCourses; i++){
+//            parents[i] = i;
+//        }
+//
+//        // union find
+//        for (int[] item : prerequisites){
+//            int p1 = this.findParent(item[0], parents);
+//            int p2 = this.findParent(item[1], parents);
+//            // if 2 node have same parent -> cyclic
+//            if (p1 == p2){
+//                return false;
+//            }
+//
+//            // update parents (route compression)
+//            parents[p1] = p2;
+//        }
+//
+//        System.out.println("reach here !!!");
+//        // Return true if you can finish all courses. Otherwise, return false.
+//        return prerequisites.length == numCourses-1; // ?
+//    }
+//
+//    public int findParent(int x, int[] parents){
+//        if (x == parents[x]){
+//            return x;
+//        }else{
+//            //parents[x] = this.findParent(parents[x], parents);
+//            //return parents[x];
+//            return this.findParent(parents[x], parents);
+//        }
+//    }
 
+    // LC 207
+    // dfs
+    public boolean canFinish_3(int numCourses, int[][] prerequisites) {
 
+        if (prerequisites.length == 0){
+            return true;
+        }
+
+        // init
+        int[] visited = new int[numCourses];
+        Arrays.fill(visited, 0);
+
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int[] pre: prerequisites){
+            int k = pre[0];
+            if (!map.containsKey(k)){
+                List<Integer> cur = new ArrayList<>();
+                cur.add(pre[1]);
+                map.put(k, cur);
+            }else{
+                List<Integer> cur = map.get(k);
+                cur.add(pre[1]);
+                map.put(k, cur);
+            }
+        }
+
+        // dfs
+        for (int i = 0; i < numCourses; i++){
+            if (!canAttend(i, visited, map)){
+                return false;
+            }
+        }
+
+        return Arrays.stream(visited).sum() == numCourses;
+    }
+
+    /**
+     *  0 : not visited
+     *  1 : visiting
+     *  2 : visited
+     *
+     */
+    public boolean canAttend(int x, int[] visited, Map<Integer, List<Integer>> map){
+
+        if (visited[x] == 2){
+            return true;
+        }
+
+        if (visited[x] == 1){
+            //if (x != )
+            return false;
+        }
+
+        for (Integer key: map.keySet()){
+            if (key == x){
+                visited[x] = 1;
+                this.canAttend(key, visited, map);
+            }
+        }
+
+        visited[x] = 0;
+        return true; // ??
+    }
 
 }

@@ -7,68 +7,112 @@ import java.util.*;
 public class CourseSchedule {
 
     // V0
-    // IDEA ; GRAPH + RECURSION
-//    public boolean canFinish(int numCourses, int[][] prerequisites) {
-//
-//        if (prerequisites == null){
-//            return true;
-//        }
-//
-//        // build graph
-//        HashMap<Integer, Object> map = new HashMap<>();
-//        for (int[] item : prerequisites){
-//            int cur = item[0];
-//            int prior = item[1];
-//            if (!map.containsKey(cur)){
-//                List<Integer> tmp = new ArrayList<>();
-//                tmp.add(prior);
-//                map.put(cur, tmp);
-//            }else{
-//                List<Integer> tmp = (List<Integer>) map.get(cur);
-//                tmp.add(prior);
-//                map.put(cur, tmp);
-//            }
-//        }
-//
-//        // dfs (check)
-//        // status : { 0 : not yet, 1 : ing, 2 : finished }
-//        for (int i = 0; i < numCourses; i++){
-//            if (!check(map, 0, 0)){
-//                return false;
-//            }
-//        }
-//
-//        return true;
-//    }
-//
-//    private Boolean check(HashMap<Integer, Object> map, int cur, int status){
-//        if (status == 0){
-//            //return true;
-//            int[] prior = (int[]) map.get(cur);
-//            for (int i : prior){
-//                if (map.containsKey(cur)){
-//                    return false;
-//                }
-//                if (((int[]) map.get(cur)).length == 0){
-//                    return true;
-//                }
-//                status = 1;
-//                return check(map, i, status);
-//            }
-//        }
-//        else if(status == 1){
-//            if (!map.containsKey(cur)){
-//                status = 2;
-//                return true;
-//            }else{
-//                return false;
-//            }
-//        }
-//
-//        return true;
-//    }
+    // IDEA : DFS
+    // TODO : implement
 
-    // V0'
+    // VO'
+    // IDEA : TOPOLOGICAL SORT
+    // TODO : implement
+
+    // V0''
+    // IDEA : DFS
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule.py
+    public boolean canFinish_0_2(int numCourses, int[][] prerequisites) {
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int[] prerequisite : prerequisites) {
+            graph.computeIfAbsent(prerequisite[0], k -> new ArrayList<>()).add(prerequisite[1]);
+        }
+
+        int[] visited = new int[numCourses];
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (!dfs(res, graph, visited, i)) {
+                return false;
+            }
+        }
+
+        return res.size() > 0;
+    }
+
+    private boolean dfs(List<Integer> res, Map<Integer, List<Integer>> graph, int[] visited, int course) {
+
+        /** NOTE !!!
+         *
+         *  here we maintain 3 status:
+         *
+         *   status = 0 : not visited (The course has not been visited yet.)
+         *   status = 1 : visiting (The course is currently being visited in the traversal.)
+         *   status = 2 : visited (The course has been visited and processed.)
+         *
+         *   ->
+         *   So,
+         *   if status == 2, return true directly, since such course already been visited, we should not visit it again
+         *
+         *   if status = 1, should return false directly, since "it is being visiting now",
+         *                  any other progress try to visit the same course at the same time
+         *                  means course conflict, -> can't take such course
+         *
+         *
+         *  Ref : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule.py#L44
+         */
+
+        /**
+         *  Cycle Detection: It checks if the current course
+         *  is being visited (visited[course] == 1).
+         *  If so, it means there's a cycle in the graph, and the method returns false.
+         */
+        if (visited[course] == 1) {
+            return false;
+        }
+        /**
+         * Visited Check: If the course has already
+         * been visited (visited[course] == 2),
+         * it returns true.
+         */
+        if (visited[course] == 2) {
+            return true;
+        }
+
+        /**
+         *  NOTE !!!
+         *   Mark as Visiting: It marks the current
+         *   course as visiting (visited[course] = 1)
+         *   before visiting its neighbors.
+         */
+        visited[course] = 1;
+        if (graph.containsKey(course)) {
+            /**
+             * NOTE !!!
+             *   DFS on Neighbors: For each neighbor of the current course,
+             *   it recursively calls dfs. If any neighbor returns false,
+             *   it means the current course can't be finished,
+             *   and the method returns false
+             */
+            for (int neighbor : graph.get(course)) {
+                if (!dfs(res, graph, visited, neighbor)) {
+                    return false;
+                }
+            }
+        }
+
+        /**
+         * Mark as Visited: After visiting all neighbors,
+         * it marks the current course as visited (visited[course] = 2)
+         * and adds it to the result list res.
+         */
+        visited[course] = 2;
+        res.add(0, course);
+
+        /**
+         * The dfs function needs to return "true" at the end
+         * to indicate that the current course (and its prerequisites)
+         * can be completed successfully.
+         *  which is checking if it's possible to finish all courses.
+         */
+        return true;
+    }
+
+    // V0'''
     // IDEA : BFS
     // NOTE !!! we have 3 loop : numCourses, prerequisites, numCourses
     public boolean canFinish_(int numCourses, int[][] prerequisites) {
@@ -144,68 +188,6 @@ public class CourseSchedule {
             count--;
         }
         return count == 0;
-    }
-
-    // V0'''
-    // IDEA : DFS
-    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule.py
-    public boolean canFinish_0_2(int numCourses, int[][] prerequisites) {
-        Map<Integer, List<Integer>> graph = new HashMap<>();
-        for (int[] prerequisite : prerequisites) {
-            graph.computeIfAbsent(prerequisite[0], k -> new ArrayList<>()).add(prerequisite[1]);
-        }
-
-        int[] visited = new int[numCourses];
-        List<Integer> res = new ArrayList<>();
-        for (int i = 0; i < numCourses; i++) {
-            if (!dfs(res, graph, visited, i)) {
-                return false;
-            }
-        }
-
-        return res.size() > 0;
-    }
-
-    private boolean dfs(List<Integer> res, Map<Integer, List<Integer>> graph, int[] visited, int course) {
-
-        /** NOTE !!!
-         *
-         *  here we maintain 3 status:
-         *
-         *   status = 0 : not visited
-         *   status = 1 : visiting
-         *   status = 2 : visited
-         *
-         *   ->
-         *   So,
-         *   if status == 2, return true directly, since such course already been visited, we should not visit it again
-         *
-         *   if status = 1, should return false directly, since "it is being visiting now",
-         *                  any other progress try to visit the same course at the same time
-         *                  means course conflict, -> can't take such course
-         *
-         *
-         *  Ref : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule.py#L44
-         */
-        if (visited[course] == 1) {
-            return false;
-        }
-        if (visited[course] == 2) {
-            return true;
-        }
-
-        visited[course] = 1;
-        if (graph.containsKey(course)) {
-            for (int neighbor : graph.get(course)) {
-                if (!dfs(res, graph, visited, neighbor)) {
-                    return false;
-                }
-            }
-        }
-        visited[course] = 2;
-        res.add(0, course);
-
-        return true;
     }
 
     // V1
