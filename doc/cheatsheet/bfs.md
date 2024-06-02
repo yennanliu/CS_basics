@@ -185,7 +185,7 @@ class Solution(object):
 
 ### 2-2) Word Ladder
 ```python
-# LC 227 : Word Ladder
+# LC 127 : Word Ladder
 # V0
 # IDEA : BFS
 # NOTE !!! 
