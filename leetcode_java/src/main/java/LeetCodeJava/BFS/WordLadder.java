@@ -2,7 +2,7 @@ package LeetCodeJava.BFS;
 
 import java.util.*;
 
-public class WorderLadder {
+public class WordLadder {
 
     // V0
     // TODO : implement
