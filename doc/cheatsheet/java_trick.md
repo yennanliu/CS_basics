@@ -887,3 +887,18 @@ return check_(root, smallest_val, biggest_val);
 ```
     AbstractQueue, ArrayBlockingQueue, ArrayDeque, ConcurrentLinkedQueue, DelayQueue, LinkedBlockingQueue, LinkedList, PriorityBlockingQueue, PriorityQueue, or SynchronousQueue.
 ```
+
+
+### 2-6) for loop over map
+```java
+// java
+// LC 742
+Map<TreeNode, List<TreeNode>> g;
+for (Map.Entry<TreeNode, List<TreeNode>> entry : g.entrySet()) {
+            if (entry.getKey() != null && entry.getKey().val == k) {
+                q.offer(entry.getKey());
+                break;
+            }
+        }
+// ...
+```
