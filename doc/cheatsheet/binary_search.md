@@ -21,28 +21,36 @@
     - Find `LEFT` boundary
         - LC 367 Valid Perfect Square
         - LC 875 Koko Eating Bananas
-        - the condition are nearly the same, ONLY difference : return `LEFT`
+        - the condition are nearly the same, ONLY difference :  `mid == target`, final check
         ```python
         # python
         while r >= l:
             mid = (l + r) // 2
             if mid < target:
-                r = mid - 1
-            else:
                 l = mid + 1
+            else if mid > target:
+                r = mid - 1
+            else if mid == target:
+                r = mid - 1 # reduce right boundary,
+        if l >= nums.length or nums[l] != target: # check if l is out of boundary
+            return -1
         return l
         ```
 
     - Find `RIGHT` boundary
-        - the condition are nearly the same, ONLY difference : return `RIGHT`
+        - the condition are nearly the same, ONLY difference :  `mid == target`, final check
         ```python
         # python
-        while r >= l:
+       while r >= l:
             mid = (l + r) // 2
             if mid < target:
-                r = mid - 1
-            else:
                 l = mid + 1
+            else if mid > target:
+                r = mid - 1
+            else if mid == target:
+                l = mid + 1   # reduce left boundary
+        if r < 0 or nums[r] != target: # check if r is out of boundary
+            return -1
         return r
         ```
     - `Recursive` binary search
