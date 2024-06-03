@@ -3,7 +3,8 @@ package LeetCodeJava.LinkedList;
 // https://leetcode.com/problems/lru-cache/description/
 
 import java.util.*;
-
+import java.util.LinkedHashMap;
+import java.util.Map;
 /**
  * Your LRUCache object will be instantiated and called as such:
  * LRUCache obj = new LRUCache(capacity);
@@ -14,96 +15,116 @@ import java.util.*;
 public class LRUCache_ {
 
     // V0
-    // IDEA : DICT + QUEUE
-    // or DICT + ARRAY
-    // TODO : fix below, ref : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Design/lru-cache.py#L48
-//    class LRUCache {
-//
-//        // attr
-//        private HashMap<Integer, Integer> map = new HashMap<>();
-//        Integer lruKey = null;
-//        Queue<Integer> queue = new LinkedList<>();
-//        Integer capacity = 0;
-//
-//        public LRUCache(int capacity) {
-//            this.capacity = capacity;
-//        }
-//
-//        public int get(int key) {
-//
-//            if (!this.map.containsKey(key)){
-//                return -1;
-//            }
-//
-//            int val = this.map.get(this.queue.peek());
-//            // update LRU cache
-//            this.updateStack(val);
-//            return val;
-//        }
-//
-//        public void put(int key, int value) {
-//
-//            this.queue.add(key);
-//
-//            // case 1) exceed capacity
-//            if (this.map.keySet().size() == this.capacity){
-//                int toDelete = this.queue.peek();
-//                map.remove(toDelete);
-//                map.put(key, value);
-//                // update LRU cache
-//                this.updateStack(key);
-//                return;
-//            }
-//
-//            // case 2) key already existed, but size still lower than capacity
-//            else if (this.map.containsKey(key)){
-//                map.put(key, value);
-//                // update LRU cache
-//                this.updateStack(key);
-//                return;
-//            }
-//
-//            // case 3) key not existed and not exceed capacity
-//            else{
-//                map.put(key, value);
-//                // update LRU cache
-//                this.updateStack(key);
-//                return;
-//            }
-//        }
-//
-//        private void updateStack(int lruKey){
-//
-//            if (queue.isEmpty()){
-//                this.lruKey = lruKey;
-//                return;
-//            }
-//
-//            System.out.println(">>> this.queue = " + this.queue.toString());
-//            System.out.println(">>> this.queue = " + Arrays.toString(this.queue.toArray()));
-//
-//            Queue<Integer> newQueue = new LinkedList<>();
-//            Integer toAdd = null;
-//            while (!this.queue.isEmpty()){
-//                int _val = this.queue.poll();
-//                if (map.containsKey(_val)){
-//                    if (_val == lruKey){
-//                        toAdd = _val;
-//                    }else{
-//                        newQueue.add(_val);
-//                    }
-//                }
-//            }
-//
-//            if (toAdd != null){
-//                newQueue.add(toAdd);
-//            }
-//
-//            this.lruKey = newQueue.peek();
-//            this.queue = newQueue;
-//        }
-//
-//    }
+    // TODO : implement
+
+    // V0'
+    // IDEA : LinkedHashMap (OrderedDict) (gpt)
+    class LRUCache {
+        private int capacity;
+        private LinkedHashMap<Integer, Integer> lruCache;
+
+        public LRUCache(int capacity) {
+
+            this.capacity = capacity;
+
+            /**
+             *  0.75f is the load factor.
+             *
+             *  By using 0.75f, you ensure a balance between space efficiency and performance in terms of access speed, which is particularly important for operations that are common in an LRU cache like this one.
+             *
+             *  The 0.75f load factor is a compromise that provides a good balance between memory usage and performance.
+             *
+             *  It ensures that the hash table will resize when it is 75% full, which helps maintain efficient access times without wasting too much memory.
+             */
+            this.lruCache = new LinkedHashMap<Integer, Integer>(capacity, 0.75f, true) {
+                protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+                    return size() > LRUCache.this.capacity;
+                }
+            };
+        }
+
+        public int get(int key) {
+            if (!lruCache.containsKey(key)) {
+                return -1;
+            } else {
+                return lruCache.get(key);
+            }
+        }
+
+        public void put(int key, int value) {
+            lruCache.put(key, value);
+        }
+    }
+
+    // V0''
+    // IDEA : DOUBLE LINKED LIST (gpt)
+
+    class LRUCache0_ {
+        private class Node {
+            int key;
+            int value;
+            Node next;
+            Node prev;
+
+            Node(int key, int value) {
+                this.key = key;
+                this.value = value;
+            }
+        }
+
+        private int capacity;
+        private HashMap<Integer, Node> cache;
+        private Node head;
+        private Node tail;
+
+        public LRUCache0_(int capacity) {
+            this.capacity = capacity;
+            this.cache = new HashMap<>(capacity);
+            this.head = new Node(-1, -1);
+            this.tail = new Node(-1, -1);
+            head.next = tail;
+            tail.prev = head;
+        }
+
+        public int get(int key) {
+            if (!cache.containsKey(key)) {
+                return -1;
+            }
+            Node node = cache.get(key);
+            removeNode(node);
+            addToHead(node);
+            return node.value;
+        }
+
+        public void put(int key, int value) {
+            if (cache.containsKey(key)) {
+                Node node = cache.get(key);
+                node.value = value;
+                removeNode(node);
+                addToHead(node);
+            } else {
+                if (cache.size() >= capacity) {
+                    cache.remove(tail.prev.key);
+                    removeNode(tail.prev);
+                }
+                Node newNode = new Node(key, value);
+                cache.put(key, newNode);
+                addToHead(newNode);
+            }
+        }
+
+        private void removeNode(Node node) {
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        }
+
+        private void addToHead(Node node) {
+            node.next = head.next;
+            node.prev = head;
+            head.next.prev = node;
+            head.next = node;
+        }
+    }
 
     // V1
     // IDEA :  DOUBLE LINKED LIST
