@@ -3156,4 +3156,209 @@ public class workspace3 {
 //        return res;
     }
 
+    // LC 139
+    // backtrack
+    public boolean wordBreak_1(String s, List<String> wordDict) {
+
+        if (wordDict.size()==1){
+            if (wordDict.get(0) == s){
+                return true;
+            }
+        }
+
+        int startIdx = 0;
+
+        // backtrack
+        if (!check_(startIdx, s, wordDict)){
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean check_(int startIdx, String s, List<String> wordDict){
+
+        if (startIdx == s.length()){
+            return true;
+        }
+
+        if (startIdx > s.length()){
+            return false;
+        }
+
+        for (int i = startIdx; i < wordDict.size(); i++){
+            String tmp = wordDict.get(i);
+            int rIdx = tmp.length() + startIdx;
+            if (rIdx < s.length() && tmp.equals(s.substring(startIdx, rIdx))){
+                this.check_(startIdx+1, s, wordDict);
+                startIdx -= 1;
+            }
+        }
+
+        return false;
+    }
+
+    // LC 139
+    // BFS
+    public boolean wordBreak_2(String s, List<String> wordDict){
+        if (s == null || s.length() == 0 || wordDict == null || wordDict.size() == 0) {
+            return false;
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        //q.add()
+        boolean[] visited = new boolean[s.length()];
+        while (!q.isEmpty()){
+            int i = q.poll();
+            for (int j = i + 1; j <= s.length(); j++){
+                if (wordDict.contains(s.substring(i, j))){
+                    if (j == s.length()){
+                        return true;
+                    }
+                    q.offer(j);
+                }
+            }
+            visited[i] = true;
+        }
+
+        return false;
+    }
+
+    // LC 582
+    /**
+     *  Input:
+     * pid =  [1, 3, 10, 5]
+     * ppid = [3, 0, 5, 3]
+     * kill = 5
+     * Output: [5,10]
+     *
+     * Explanation:
+     *            3
+     *          /   \
+     *         1     5
+     *              /
+     *             10
+     * Kill 5 will also kill 10.
+     *
+     */
+    public List<Integer> killProcess(List<Integer> pid, List<Integer> ppid, int kill) {
+
+        if (!ppid.contains(kill) && !pid.contains(kill)){
+            return null;
+        }
+
+        if (!ppid.contains(kill)){
+            List<Integer> ans = new ArrayList<>();
+            ans.add(kill);
+            return ans;
+        }
+
+        // init
+        /**
+         *  {ppid : [pid1, pid2, ....], }
+         *
+         * pid =  [1, 3, 10, 5]
+         * ppid = [3, 0, 5, 3]
+         *
+         * kill = 5
+         *
+         *
+         *  so for
+         *             3
+         *          /   \
+         *         1     5
+         *              /
+         *             10
+         *
+         *  map as below :
+         *
+         *   {
+         *       3 : [1, 5,10],
+         *       1: [],
+         *       5: [10],
+         *   }
+         *
+         *
+         */
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < ppid.size(); i+=1){
+            int ppidVal = ppid.get(i);
+            int pidVal = pid.get(i);
+            map.put(ppidVal, new ArrayList<>());
+//            if (!map.containsKey(ppidVal)){
+//                map.put(ppidVal, new ArrayList<>());
+//            }else{
+//                List<Integer> list_ = map.get(ppidVal);
+//                list_.add(pidVal);
+//                map.put(ppidVal, list_);
+//            }
+        }
+
+        // bfs
+        Queue<Integer> q = new LinkedList<>();
+        q.add(kill);
+        //List<Integer> ans = new ArrayList<>();
+        while (q.isEmpty()){
+           int cur = q.poll();
+          // ans.add(cur);
+           if (ppid.contains(cur)){
+               for (int j = 0; j < ppid.size(); j+=1){
+                   if (ppid.get(j) == cur){
+                       List<Integer> list_ = map.get(ppid.get(j));
+                       list_.add(ppid.get(j));
+                       map.put(ppid.get(j),list_);
+                       q.add(pid.get(j));
+                   }
+               }
+           }
+        }
+        System.out.println("map = " + map);
+        return map.get(kill);
+    }
+
+    // LC 146
+    /**
+     * Design a data structure
+     * that follows the constraints
+     * of a Least Recently Used (LRU) cache.
+     */
+    class LRUCache {
+
+        // key, value
+        Map<Integer, Integer> map = new HashMap<>();
+        int capacity;
+        int elementCnt;
+        Queue<Integer> queue; // FIFO
+        //int timeClock;
+
+        public LRUCache(int capacity) {
+            this.map = new HashMap<>();
+            this.capacity = capacity;
+            this.elementCnt = 0;
+            this.queue = new LinkedList<>();
+        }
+
+        public int get(int key) {
+            if (this.map.keySet().size()==0){
+                return -1;
+            }
+            return this.map.get(key);
+        }
+
+        public void put(int key, int value) {
+            if (this.elementCnt >= capacity){
+                if (!queue.isEmpty()){
+                    queue.poll();
+                    this.map.put(key, map.get(key)-1);
+                    if (this.map.get(key) == 0){
+                        this.map.remove(key);
+                    }
+                }
+            }
+            if(!this.map.containsKey(key)){
+                map.put(key, value);
+            }
+        }
+    }
+
 }
