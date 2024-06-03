@@ -8,20 +8,25 @@
 2. while loop
     - while - while
     - for - while
+    - NOTE !!! : `1st while` find an acceptable solution, `2nd while` optimize solution, find the best one
 3. boundary conditions op
     - `start` and `end` index
 
 ### 0-1) Types
 
 - Types
-    - Permutation
+    - Permutation(排列)
+        - LC 567: check if a permutation existed in the other string
     - Anagrams
+        - LC 438: Find All Anagrams (字謎詞) in a String
     - Substring
         - LC 003 : Longest Substring Without Repeating Characters
         - LC 424 : Longest Repeating Character Replacement
     - SubArray
         - LC 713 : Subarray Product Less Than K
         - LC 209 : Minimum Size Subarray Sum
+    - SubString without repeating elements
+        - LC 003 : Longest Substring Without Repeating Characters
 
 - Algorithm
     - sliding window
@@ -41,6 +46,11 @@
 #-------------------------
 # V1 : while - while
 #-------------------------
+
+# NOTE !!! : 
+# `1st while` find an acceptable solution, 
+# `2nd while` optimize solution, find the best one
+
 # init
 l = r = 0
 window = []
