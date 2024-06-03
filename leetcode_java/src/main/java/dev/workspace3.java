@@ -3,6 +3,7 @@ package dev;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.Node;
 import LeetCodeJava.DataStructure.TreeNode;
+import com.sun.org.apache.bcel.internal.generic.PUSH;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -3094,6 +3095,65 @@ public class workspace3 {
 
         visited[x] = 0;
         return true; // ??
+    }
+
+    // LC 133
+    /**
+     * Given a reference of a node in a connected undirected graph.
+     *
+     * Return a deep copy (clone) of the graph.
+     *
+     */
+    // dfs
+    // 4.50
+    public Node cloneGraph_3(Node node) {
+
+        if (node == null || node.neighbors == null){
+            return node;
+        }
+
+        HashMap<Integer, Node> visited = new HashMap<>();
+
+        Node res = new Node();
+        // dfs
+
+        return this.copyNode(visited, res);
+    }
+
+    public Node copyNode(HashMap<Integer, Node> visited, Node node){
+        if (node == null){
+            return null;
+        }
+        int cur_val = node.val;
+        // case 1) already visited
+        if (visited.containsKey(cur_val)){
+            return visited.get(cur_val);
+        }
+
+        // NOTE !!! we init copied node as below
+        Node copiedNode = new Node(node.val, new ArrayList());
+        visited.put(cur_val, copiedNode);
+
+        // case 2) node is NOT visited yet, we go through all its neighbors,
+        for (Node _node : node.neighbors){
+//            if (!visited.containsKey(_node)){
+//                //visited.put(x.val, x);
+//                //this.copyNode(visited, x);
+//                copiedNode.neighbors.add(_clone(visited, _node));
+//            }
+            copiedNode.neighbors.add(copyNode(visited, _node));
+        }
+
+        return copiedNode;
+
+//        //if (node ==)
+//        if(node == res){
+//            return node;
+//        }
+//        for (Node x: node.neighbors){
+//            res.neighbors.add(this.copyNode(x, res));
+//        }
+//        return res;
     }
 
 }
