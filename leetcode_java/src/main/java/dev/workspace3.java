@@ -3384,6 +3384,114 @@ public class workspace3 {
         return ans;
     }
 
+    // LC 121
+    /**
+     *  prices = [7,1,5,3,6,4]
+     *
+     *
+     *  [7, 1 ,5,    3,  6,   4]
+     *   r
+     *  m=7
+     *     r
+     *     m=1
+     *         r    r    r   r
+     *         m=1  m=1 m=1  m=1
+     *         M=5  M=5 M=6  M=6
+     *         a=4  a=4 a=5  a=5
+     *
+     *
+     *
+     *  4.15
+     */
+    public int maxProfit_3(int[] prices) {
+        if (prices.length <= 1){
+            return 0;
+        }
+
+        int res = 0;
+        int min = -1; //Integer.MAX_VALUE;
+        int max = -1; //0;
+
+        for (int x: prices){
+            if (min == -1){
+                min = x;
+                continue;
+            }
+            if (max == -1){
+                max = x;
+                //continue;
+            }
+            if (x > max){
+                max = x;
+                //continue;
+            }
+            //int tmp = max - min;
+            res = Math.max(res, max - min);
+        }
+
+        return res;
+    }
+
+    // LC 567
+    /**
+     * Given two strings s1 and s2,
+     *
+     * return true if s2 contains a permutation of s1, or false otherwise.
+     *
+     * In other words, return true if one of
+     *
+     * s1's permutations is the substring of s2.
+     *
+     */
+    // sliding window
+    public boolean checkInclusion(String s1, String s2) {
+        if (s1.equals(s2)){
+            return true;
+        }
+
+        Map<String, Integer> map = new HashMap<>();
+        for (char x : s1.toCharArray()){
+            map.put(String.valueOf(x), map.getOrDefault(x, 0)+1);
+        }
+
+        System.out.println("map = " + map);
+
+        int l = 0;
+        //int r = 0;
+        while (l < s2.length()){
+            int r = l;
+            while (r < s1.length()){
+                String cur = String.valueOf(s2.charAt(r));
+                map.put(String.valueOf(r), map.getOrDefault(r, 0)+1);
+                System.out.println("l = " + l + ", r = " + r + ", map = " + map);
+               // l = r;
+                r += 1;
+                // reset map
+                //map = new HashMap<>();
+            }
+            if (this.hasPermutation(l, r, s2, map)){
+                return true;
+            }
+            //l += s1.length();
+            l = r+1;
+            //r += 1;
+            map = new HashMap<>();
+            System.out.println("new l = " + l  + ", new r = " + r + " reset map = " + map);
+        }
+
+        return false;
+    }
+
+    public boolean hasPermutation(int l, int r, String s, Map<String, Integer> map){
+        String subS = s.substring(l, r);
+        for (String x : subS.split("")){
+            if (!map.containsKey(x)){
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 
 }
