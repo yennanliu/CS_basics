@@ -3494,29 +3494,43 @@ public class workspace3 {
 
 
     // LC 155
-//    class MinStack {
-//
-//        public MinStack() {
-//
-//        }
-//
-//        public void push(int val) {
-//
-//        }
-//
-//        public void pop() {
-//
-//        }
-//
-//        public int top() {
-//
-//        }
-//
-//        public int getMin() {
-//
-//        }
-//    }
-//
+    // stack : FILO
+    // PQ (?
+    class MinStack {
+
+        PriorityQueue<Integer> pq;
+
+        public MinStack() {
+            // ??
+            //this.pq = new PriorityQueue<>(Comparator.reverseOrder());
+            //this.pq = new PriorityQueue<>();
+            //Comparator.comparingInt(a);
+            this.pq = new PriorityQueue<>(Integer::compare);
+        }
+
+        public void push(int val) {
+            this.pq.add(val);
+        }
+
+        public void pop() {
+            if (!this.pq.isEmpty()){
+                this.pq.poll();
+            }
+        }
+
+        public int top() {
+            if (!this.pq.isEmpty()){
+                return this.pq.poll();
+            }
+            // ?
+            return -1;
+        }
+
+        public int getMin() {
+            return this.pq.peek();
+        }
+    }
+
 
 
 
