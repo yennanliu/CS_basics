@@ -4,47 +4,57 @@ package LeetCodeJava.TwoPointer;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class PermutationInString {
 
     // V0
-    // IDEA : String OP
-    // TODO : fix this, need to consider all cases when element in s2 with whatever order
-    // NOTE !!! we need to consider s2 with all orders
-    //        -> so this questions is asking if all cases of sorted sub string in s2 contains s1 permutation
-    //        -> instead of simply check if s1 permutation in origin s2
-//    public boolean checkInclusion(String s1, String s2) {
-//
-//        if (s1.equals(null) && !s2.equals(null)){
-//            return false;
-//        }
-//
-//        if (!s1.equals(null) && s2.equals(null)){
-//            return false;
-//        }
-//
-//        if (s1.equals(null) && s2.equals(null)){
-//            return true;
-//        }
-//
-//        String s1Reverse = reverseString(s1);
-//        return s2.contains(s1Reverse);
-//    }
-//
-//    // https://www.baeldung.com/java-reverse-string
-//    private String reverseString(String input){
-//
-//        if (input.equals(null) || input.length() == 0){
-//            return null;
-//        }
-//
-//        StringBuilder builder = new StringBuilder(input).reverse();
-//        return builder.toString();
-//    }
+    // TODO implement
 
     // V0'
-    // IDEA : COUNTER : count element in string
+    // IDEA : COUNTER : count element in string (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/permutation-in-string.py
+    public boolean checkInclusion_0(String s1, String s2) {
+        if (s1.length() > s2.length()) {
+            return false;
+        }
+
+        // Create frequency maps for s1 and the sliding window in s2
+        Map<Character, Integer> mapS1 = new HashMap<>();
+        Map<Character, Integer> mapS2 = new HashMap<>();
+
+        for (char c : s1.toCharArray()) {
+            mapS1.put(c, mapS1.getOrDefault(c, 0) + 1);
+        }
+
+        int left = 0;
+        for (int right = 0; right < s2.length(); right++) {
+            char rightChar = s2.charAt(right);
+            mapS2.put(rightChar, mapS2.getOrDefault(rightChar, 0) + 1);
+
+            /** NOTE !!!
+             *
+             *  we simply check permutation with below trick
+             *  -> e.g. if 2 map are equal
+             */
+            // Check if the current window matches the frequency map of s1
+            if (mapS1.equals(mapS2)) {
+                return true;
+            }
+
+            // If the window size exceeds the size of s1, move the left pointer
+            if (right - left + 1 >= s1.length()) {
+                char leftChar = s2.charAt(left);
+                mapS2.put(leftChar, mapS2.get(leftChar) - 1);
+                if (mapS2.get(leftChar) == 0) {
+                    mapS2.remove(leftChar);
+                }
+                left++;
+            }
+        }
+
+        return false;
+    }
 
     // V1
     // IDEA: BRUTE FORCE
