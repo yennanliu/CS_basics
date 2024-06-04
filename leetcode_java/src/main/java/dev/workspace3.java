@@ -3361,6 +3361,29 @@ public class workspace3 {
         }
     }
 
+    // LC 167
+    // 2 ponter
+    public int[] twoSum(int[] numbers, int target) {
+        int[] ans = new int[2];
+        int l = 0;
+        int r = numbers.length-1;
+        while (r >= l){
+            int cur_s = numbers[l] + numbers[r];
+            System.out.println("l = " + l + ", r = " + r + ", cur_s = " + cur_s);
+            if (cur_s == target){
+                ans[0] = l+1;
+                ans[1] = r+1;
+                return ans;
+            }
+            else if (cur_s < target){
+                l += 1;
+            }else{
+                r -= 1;
+            }
+        }
+        return ans;
+    }
+
 
 
 }
