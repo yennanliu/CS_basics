@@ -52,7 +52,7 @@ public class MinStack_ {
 //    }
 
     // V1
-    // IDEA : PRIORITY QUEUE
+    // IDEA : PRIORITY QUEUE (for getMin) + STACK (for "top")
     // https://leetcode.com/problems/min-stack/solutions/1611233/java-stack-priorityqueue/
     class MinStack {
         Stack<Integer> st;
