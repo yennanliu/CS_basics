@@ -232,6 +232,15 @@ public class workSpace4 {
         System.out.println(token1.contains("+"));
         System.out.println(token1.contains("7"));
 
+
+        System.out.println("array init val --------------");
+        Integer[] arr_10 = new Integer[5];
+        Arrays.fill(arr_10, 0);
+        System.out.println("arr_10 = " + arr_10.toString());
+        for (Integer y : arr_10){
+            System.out.println(y);
+        }
+
     }
 
 }
