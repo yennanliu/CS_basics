@@ -225,6 +225,13 @@ public class workSpace4 {
 //            System.out.println(z);
 //        }
 
+
+        System.out.println("in string --------------");
+
+        String token1 = "+-*/";
+        System.out.println(token1.contains("+"));
+        System.out.println(token1.contains("7"));
+
     }
 
 }

@@ -3,8 +3,6 @@ package dev;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.Node;
 import LeetCodeJava.DataStructure.TreeNode;
-import com.sun.org.apache.bcel.internal.generic.PUSH;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -3531,7 +3529,119 @@ public class workspace3 {
         }
     }
 
+    // LC 150
+    // 4.35
+    /**
+     *  example 1)
+     *
+     *  Input: tokens = ["2","1","+","3","*"]
+     *  Output: 9
+     *  Explanation: ((2 + 1) * 3) = 9
+     *
+     *  ->
+     *
+     *  [2,1]
+     *  [+]
+     *
+     *  ->
+     *  (2+1) = 3
+     *
+     *  [3]
+     *  []
+     *
+     *  ->
+     *
+     *  [3,3]
+     *  [*]
+     *
+     *  ->
+     *  [9]
+     *
+     *
+     *  example 2)
+     *
+     *  Input: tokens = ["4","13","5","/","+"]
+     *  Output: 6
+     *  Explanation: (4 + (13 / 5)) = 6
+     *                     i2   i1
+     *
+     *  ->
+     *   [4,13,5]
+     *   []
+     *
+     *  ->
+     *
+     *   [4,13,5]
+     *   [/]
+     *
+     *   ->
+     *
+     *   [4, 13/5]
+     *   [+]
+     *
+     *   ->
+     *
+     *   [4 + (13/5) ]
+     *
+     */
+    public int evalRPN(String[] tokens) {
 
+        if (tokens.length == 0){
+            return 0;
+        }
+        int ans = 0;
+        Stack<Integer> st1 = new Stack<>();
+        Stack<String> st2 = new Stack<>();
 
+        String operators = "+-*/";
+
+        for (String x : tokens){
+            System.out.println("x = " + x + ", st1 = " + st1 + ", st2 = " + st2);
+            // case 1) st1 is NOT empty, so pop operator, and do calculation
+            if (operators.contains(x)){
+                st2.add(x);
+                String op = st2.pop();
+                Integer i1 = st1.pop();
+                Integer i2 = st1.pop();
+                Integer res = this.calculate(i1, i2, op);
+                System.out.println("--> res = " + res);
+                st1.add(res);
+            }
+            // case 2) st1 is empty, and input is in "+-*/", so append op to st2
+//            else if (operators.contains(x)){
+//                st2.add(x);
+//            }
+            // case 3) input is "number", append to st1
+            else{
+                st1.add(Integer.parseInt(x));
+            }
+        }
+
+        System.out.println("---> st1 = " + st1);
+        System.out.println("---> st2 = " + st2);
+
+        while (!st1.empty()){
+            ans += st1.pop();
+        }
+
+        return ans;
+    }
+
+    public Integer calculate(Integer i1, Integer i2, String op){
+        if (op.equals("+")){
+            return i1 + i2;
+        }
+        if(op.equals("-")){
+            return  i2 - i1;
+        }
+        if(op.equals( "*")){
+            return i1 * i2;
+        }else{
+            if (i1 == 0){
+                return 0;
+            }
+        }
+        return  i2 / i1;
+    }
 
 }
