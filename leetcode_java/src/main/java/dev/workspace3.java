@@ -3644,4 +3644,27 @@ public class workspace3 {
         return  i2 / i1;
     }
 
+    // LC 22
+    // 5.20
+    /**
+     *  example 1)
+     *
+     *  Input: n = 3
+     *  Output: ["((()))","(()())","(())()","()(())","()()()"]
+     *
+     *   ((( )))
+     *   () () ()
+     *
+     */
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        if(n==1){
+            res.add("(");
+            res.add(")");
+            return res;
+        }
+
+        return null;
+    }
+
 }
