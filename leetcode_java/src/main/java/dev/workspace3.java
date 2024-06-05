@@ -3667,4 +3667,119 @@ public class workspace3 {
         return null;
     }
 
+    // LC 739
+    // 6.10
+    /**
+     *  example 1)
+     *
+     *  Input: temperatures = [73,74,75,71,69,72,76,73]
+     *  Output: [1,1,4,2,1,1,0,0]
+     *
+     *  -> st = [0,0,0,0,0,0,0,0]
+     *
+     *  -> (inverse order), and find element which is SMALLER than cur,
+     *  save the distance
+     *
+     *
+     *
+     *
+     */
+//    public int[] dailyTemperatures(int[] temperatures) {
+//        if (temperatures.length == 1){
+//            return new int[]{0};
+//        }
+//        int[] ans = new int[temperatures.length];
+//        Arrays.fill(ans, 0);
+//        Stack<Integer> st1 = new Stack<>();
+//        for (Integer x : temperatures){
+//            st1.add(x);
+//        }
+//
+//        // reverse traverse
+//        for (int j = ans.length-2; j > 0; j++){
+//            Stack<Integer> st1_tmp = st1;
+//            int idx = j;
+//            while (!st1_tmp.isEmpty()){
+//                int curTmp = st1_tmp.pop();
+//                System.out.println("j = " + j + ",curTmp =" + curTmp + ", idx = " + idx);
+//                if (curTmp > temperatures[j-1]){
+//                    ans[j-1] = (idx - j);
+//                    //continue;
+//                }else{
+//                    idx -= 1;
+//                }
+//            }
+//        }
+//
+//        return ans;
+//    }
+
+    // LC 739
+    /**
+     *
+     *  tmps = [73,74,75,71,69,72,76,73]
+     *  st = []
+     *  ans = [0,0,0,0,0,0,0,0]
+     *
+     *  -> [73,74,75,71,69,72,76,73]
+     *     idx
+     *  st = [73]
+     *  ans = [0,0,0,0,0,0,0,0]
+     *
+     *  -> [73,74,75,71,69,72,76,73]
+     *         idx
+     *
+     *  st = [74]
+     *  ans = [1,0,0,0,0,0,0,0]
+     *
+     *
+     *  -> [73,74,75,71,69,72,76,73]
+     *            idx
+     *
+     *  st = [75]
+     *  ans = [1,1,0,0,0,0,0,0]
+     *
+     *
+     *  -> [73,74,75,71,69,72,76,73]
+     *               idx
+     *  st = [75, 71]
+     *  ans = [1,1,0,0,0,0,0,0]
+     *
+     *
+     * -> [73,74,75,71,69,72,76,73]
+     *                 idx
+     *  st = [75, 71, 69]
+     *  ans = [1,1,0,0,0,0,0,0]
+     *
+     *  -> [73,74,75,71,69,72,76,73]
+     *                     idx
+     *
+     * st = [75, 71, 69, 72]
+     * ans = [1,1,0,0,0,0,0,0]
+     *
+     *
+     * -> [73,74,75,71,69,72,76,73]
+     *                       idx
+     *
+     * st = [76]
+     * ans = [1,1,4,2,1,0,0,0]
+     *
+     *
+     * -> [73,74,75,71,69,72,76,73]
+     *                          idx
+     *
+     *  st = [76, 73]
+     *  ans = [1,1,4,2,1,0,0,0]
+     *
+     *
+     *
+     **/
+    public int[] dailyTemperatures(int[] temperatures) {
+
+        if (temperatures.length == 1){
+            return new int[]{0};
+        }
+        return null;
+    }
+
 }

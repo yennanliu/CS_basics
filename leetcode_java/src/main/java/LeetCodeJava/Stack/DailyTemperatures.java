@@ -68,6 +68,50 @@ public class DailyTemperatures {
         return res;
     }
 
+    // V0'
+    // IDEA : STACK (gpt)
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/daily-temperatures.py#L34
+    public int[] dailyTemperatures_0_1(int[] temperatures) {
+        // Edge case: if the input array is null or empty, return an empty array
+        if (temperatures == null || temperatures.length == 0) {
+            return new int[0];
+        }
+
+        int n = temperatures.length;
+        int[] res = new int[n];
+        Stack<int[]> stack = new Stack<>();
+
+        // Loop through the temperatures in normal order
+        for (int i = 0; i < n; i++) {
+            /**
+             * While stack is not empty
+             * and the current temperature is greater
+             * than the temperature at the index stored at the top of the stack
+             */
+            while (!stack.isEmpty() && stack.peek()[1] < temperatures[i]) {
+                /**
+                 * Pop the top element from the stack
+                 * and calculate the number of days to wait
+                 */
+                int[] top = stack.pop();
+                int idx = top[0];
+                res[idx] = i - idx;
+            }
+            /**
+             *  NOTE !!!
+             *
+             *  push 2 elements to stack
+             *  1) current idx
+             *  2) temperature
+             *
+             *  e.g. : Push the current index and temperature onto the stack
+             */
+            stack.push(new int[] { i, temperatures[i] });
+        }
+
+        return res;
+    }
+
     // V1
     // IDEA : Monotonic Stack
     // https://leetcode.com/problems/daily-temperatures/editorial/
