@@ -10,53 +10,59 @@ import java.util.Stack;
 public class EvaluateReversePolishNotation {
 
     // V0 : IDEA : STACK
-    // TODO: fix below
-//    public int evalRPN(String[] tokens) {
-//
-//        if (tokens.length == 0 || tokens.equals(null)){
-//            return 0;
-//        }
-//
-//        Stack<String> stack = new Stack<>();
-//        List<String> _signs =  Arrays.asList("+", "-", "*", "/");
-//        for (int i = 0; i < tokens.length; i++){
-//            String cur = tokens[i];
-//            System.out.println("cur = " + cur);
-//            stack.forEach(System.out::println);
-//            // case 1 : digit
-//            if (!_signs.contains(cur)){
-//                stack.push(cur);
-//            } // case 2 : "+", "-", "*", "/"
-//            else{
-//                if(stack.size() >= 2){
-//                    int _first = Integer.parseInt(stack.pop());
-//                    int _second = Integer.parseInt(stack.pop());
-//                    System.out.println("_first = " + _first + " _second = " + _second);
-//
-//                    if (cur == "+"){
-//                        int _res = _second + _first;
-//                        stack.push(String.valueOf(_res));
-//                    }else if (cur == "-"){
-//                        int _res = _second - _first;
-//                        stack.push(String.valueOf(_res));
-//                    }else if (cur == "*"){
-//                        int _res = _second * _first;
-//                        stack.push(String.valueOf(_res));
-//                    }else if (cur == "/"){
-//                        int _res = _second / _first;
-//                        stack.push(String.valueOf(_res));
-//                    }
-//                }
-//            }
-//        }
-//
-//        System.out.println("stack = " + stack.toArray());
-//        int ans = Integer.parseInt(stack.peek());
-//        while (!stack.isEmpty()){
-//            System.out.println("--> " + stack.pop());
-//        }
-//        return ans;
-//    }
+    public int evalRPN(String[] tokens) {
+
+        if (tokens.length == 0){
+            return 0;
+        }
+        int ans = 0;
+        Stack<Integer> st1 = new Stack<>();
+        Stack<String> st2 = new Stack<>();
+
+        String operators = "+-*/";
+
+        for (String x : tokens){
+            //System.out.println("x = " + x + ", st1 = " + st1 + ", st2 = " + st2);
+            // case 1) input is operator (in "+-*/"), so pop and do calculation
+            if (operators.contains(x)){
+                st2.add(x);
+                String op = st2.pop();
+                Integer i1 = st1.pop();
+                Integer i2 = st1.pop();
+                Integer res = this.calculate(i1, i2, op);
+                //System.out.println("--> res = " + res);
+                st1.add(res);
+            }
+            // case 2) input is "number", so just add it to the stack, for following operation
+            else{
+                st1.add(Integer.parseInt(x));
+            }
+        }
+
+        // do final calculation at once
+        while (!st1.empty()){
+            ans += st1.pop();
+        }
+
+        return ans;
+    }
+
+    public Integer calculate(Integer i1, Integer i2, String op){
+        if (op.equals("+")){
+            return i1 + i2;
+        }
+        if(op.equals("-")){
+            return  i2 - i1;
+        }
+        if(op.equals( "*")){
+            return i1 * i2;
+        }else{
+            if (i1 == 0){
+                return 0;
+            }
+        }
+        return  i2 / i1;
+    }
 
     // V1
     // IDEA : Reducing the List In-place
