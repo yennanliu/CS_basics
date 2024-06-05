@@ -6,85 +6,62 @@ import java.util.*;
 
 public class GenerateParentheses {
 
-//    private List<String> res = new ArrayList<String>();;
-//
-//    // V0
-//    public List<String> generateParenthesis(int n) {
-//
-//        if (n == 0){
-//            return null;
-//        }
-//
-//        if (n == 1){
-//            this.res.add("()");
-//            return this.res;
-//        }
-//
-//        Stack<String> stack = new Stack<>();
-//        helper(n*2, stack);
-//        System.out.println(">>>> this.res = " + this.res.toString());
-//        return this.res;
-//    }
-//
-//    private void helper(int n, Stack<String> stack){
-//        List<String> _list = Arrays.asList("(", ")");
-//        System.out.println("n = " + n + " stack = " + String.valueOf(stack));
-//        if (n == 0){
-//            if (validate(stack)){
-//                this.res.add(stack2String(stack));
-//            }
-//            this.res.add(stack2String(stack));
-//            return;
-//        }
-//        if (n < 0){
-//            return;
-//        }
-//        while (n >= 0){
-//            for (String i : _list){
-//                stack.push(i);
-//                n -= 1;
-//                helper(n, stack);
-//                // undo op
-//                //stack.pop();
-//            }
-//        }
-//    }
-//
-//    private String stack2String(Stack<String> input){
-//        Stack<String> _input = input;
-//        if (_input.isEmpty()){
-//            return "";
-//        }
-//        String _res = "";
-//        while(!_input.isEmpty()){
-//            _res += _input.pop();
-//        }
-//        return _res;
-//    }
-//
-//    private Boolean validate(Stack<String> input){
-//        Stack<String> _input = input;
-//        HashMap<String, String> lookup = new HashMap<>();
-//        lookup.put("(", "(");
-//        lookup.put("[", "]");
-//        lookup.put("{", "}");
-//        Stack<String> s = new Stack<>();
-//        while(!_input.isEmpty()){
-//            String cur = _input.pop();
-//            if (!lookup.containsKey(cur) && s.isEmpty()){
-//                return false;
-//            }else if (lookup.containsKey(cur)){
-//                s.push(cur);
-//            }else{
-//              String last = s.peek();
-//              if (lookup.get(last) != cur){
-//                  return false;
-//              }
-//            }
-//        }
-//
-//        return s.isEmpty() ? true : false;
-//    }
+    // V0
+    // TODO : implement
+
+    // V0'
+    // IDEA : backtrack + valid parentheses (gpt)
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/generate-parentheses.py#L27
+    // Method to generate all combinations of well-formed parentheses
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        //List<String> _list = List.of("(", ")");
+        List<String> _list = new ArrayList<>();
+        _list.add("(");
+        _list.add(")");
+
+
+        // Backtracking helper function
+        generateParenthesisHelper(res, "", n, _list);
+        return res;
+    }
+
+    // Helper function for backtracking
+    private void generateParenthesisHelper(List<String> res, String tmp, int n, List<String> _list) {
+        if (tmp.length() == n * 2) {
+            if (isValid_0(tmp)) {
+                res.add(tmp);
+            }
+            return;
+        }
+
+        for (String l : _list) {
+            generateParenthesisHelper(res, tmp + l, n, _list);
+        }
+    }
+
+    // Method to check if a string of parentheses is valid
+    private boolean isValid_0(String s) {
+        java.util.Map<Character, Character> lookup = new java.util.HashMap<>();
+        lookup.put('(', ')');
+        lookup.put('[', ']');
+        lookup.put('{', '}');
+
+        java.util.Stack<Character> q = new java.util.Stack<>();
+        for (char i : s.toCharArray()) {
+            if (!lookup.containsKey(i) && q.isEmpty()) {
+                return false;
+            } else if (lookup.containsKey(i)) {
+                q.push(i);
+            } else {
+                char tmp = q.pop();
+                if (lookup.get(tmp) != i) {
+                    return false;
+                }
+            }
+        }
+        return q.isEmpty();
+    }
 
     // V1
     // IDEA : Brute Force
