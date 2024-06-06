@@ -3876,5 +3876,49 @@ public class workspace3 {
 
     }
 
+    // LC 138
+    class Node2 {
+
+        // attr
+        int val;
+        Node2 next;
+        Node2 random;
+
+        // constructor
+        public Node2(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+
+        public Node2(int _val,Node2 _next,Node2 _random) {
+            val = _val;
+            next = _next;
+            random = _random;
+        }
+    }
+
+    // LC 141
+    public boolean hasCycle(ListNode head) {
+
+        if (head == null || head.next == null || head.next.next == null){
+            return false;
+        }
+
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast != null && fast.next != null){
+//            fast = fast.next.next;
+//            slow = slow.next;
+            if (fast == slow){ // ?
+                return true;
+            }
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+
+        return false;
+    }
+
 
 }

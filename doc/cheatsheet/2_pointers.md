@@ -105,10 +105,12 @@ boolean hasCycle(ListNode head){
 #### 1-1-2 : return the "ring start point" of circular linked list 
 ```java
 // java
+// LC 141
 ListNode detectCycle(ListNode head){
     ListNode fast, slow;
     fast = slow = head;
     while (fast != null and fast.next != null){
+        /** NOTE !!! We move pointers first */
         fast = fast.next.next;
         slow = slow.next;
         if (fast == slow){
