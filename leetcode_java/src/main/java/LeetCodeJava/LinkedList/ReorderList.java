@@ -84,6 +84,7 @@ public class ReorderList {
          *    step 4) move cur to next
          *
          */
+        // NOTE !!!  slow is actually the "right half linked list"
         ListNode prev = null;
         ListNode curr = slow;
         while (curr != null) {
@@ -92,11 +93,21 @@ public class ReorderList {
             prev = curr;
             curr = next;
         }
-        ListNode secondHalf = prev;
 
         // Merge the two halves
+        /** NOTE !!! setup below val for clear code */
         ListNode firstHalf = head;
+        ListNode secondHalf = prev;
+
         while (secondHalf.next != null) {
+            /**
+             *  3 steps
+             *
+             *  step 1) get next
+             *  step 2) point cur to next
+             *  step 3) move cur to next
+             *
+             */
             ListNode temp1 = firstHalf.next;
             ListNode temp2 = secondHalf.next;
 

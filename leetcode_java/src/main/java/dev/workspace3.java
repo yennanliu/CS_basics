@@ -3782,4 +3782,99 @@ public class workspace3 {
         return null;
     }
 
+    // LC 206
+    public ListNode reverseList_2(ListNode head) {
+
+        if (head == null || head.next == null){
+            return head;
+        }
+
+        /**
+         *  5 steps
+         *
+         *  1) init null pointer
+         *  2) prev
+         *  3) next
+         *  4) cur -> prev
+         *  5) cur = next
+         */
+
+        // NOTE !!! here
+        ListNode prev = null; //new ListNode();
+        while (head != null){
+            ListNode next = head.next;
+            head.next = prev;
+            prev = head;
+            head = next;
+        }
+
+        return prev;
+    }
+
+    // LC 143
+    /**
+     *  step 1) get len, and split listNode to left half, right half
+     *
+     *  step 2) reverse right half,
+     *
+     *  step 3) merge left and right half
+     *
+     */
+    // 5.00
+    public void reorderList_3(ListNode head) {
+
+        if (head == null || head.next == null) {
+            return;
+        }
+
+        ListNode fast = new ListNode();
+        ListNode slow = new ListNode();
+        // ?
+        while (fast != null && fast.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        // so fast is now "right half"
+        // and slow is "left half"
+
+        // reverse "right half"
+        ListNode prev = null;
+        ListNode cur = slow; // NOTE !! here
+        while (cur != null){
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+
+        ListNode secondHalf = prev;
+        ListNode firstHalf = head;
+
+        // merge 2 sub linded list
+        // ?
+        while (secondHalf.next != null){
+
+            ListNode sec_next = prev.next;
+            ListNode first_next = firstHalf.next;
+
+            firstHalf.next = secondHalf;
+            secondHalf.next = first_next;
+
+            firstHalf = first_next;
+            secondHalf = sec_next;
+        }
+
+//        while (prev != null && prev.next != null && slow != null &&  slow.next != null){
+//            ListNode slow_next = slow.next;
+//            ListNode prev_next = prev.next;
+//            ListNode _slow = slow;
+//            ListNode _prev = prev;
+//            slow.next = _prev;
+//            slow = slow_next.next;
+//            prev = prev_next.next;
+//        }
+
+    }
+
+
 }
