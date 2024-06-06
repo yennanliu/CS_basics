@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class workSpace4 {
+    int abc = 100;
     public static void main(String[] args) {
 
 
@@ -241,6 +242,14 @@ public class workSpace4 {
             System.out.println(y);
         }
 
+
+        workSpace4 wp = new workSpace4();
+        wp.myFunc();
+
+    }
+
+    private void myFunc(){
+        System.out.println("abc = " + abc);
     }
 
 }

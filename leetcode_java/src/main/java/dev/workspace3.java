@@ -3954,5 +3954,68 @@ public class workspace3 {
 
     }
 
+    // LC 543
+    public int diameterOfBinaryTree(TreeNode root) {
+
+        return 0;
+    }
+
+    // LC 110
+    // 6.55
+    // Given a binary tree, determine if it is
+    // height-balanced
+    //.
+    /**
+     * A height-balanced binary tree
+     * is a binary tree in which the depth of the
+     * two subtrees of every node never differs by more than one.
+     */
+    public boolean isBalanced(TreeNode root) {
+
+        if (root == null){
+            return true;
+        }
+
+        // ?
+        return Math.abs(this.height(root.left) - this.height(root.right)) < 2
+                && isBalanced(root.left)
+                && isBalanced(root.right);
+    }
+
+    private int height(TreeNode root) {
+        // An empty tree has height -1
+        if (root == null) {
+            return -1;
+        }
+        return 1 + Math.max(height(root.left), height(root.right));
+    }
+
+
+//    public boolean checkSub(TreeNode root){
+//        if (root.left == null && root.right == null){
+//            return true;
+//        }
+//
+//        if (root.left == null && root.right != null){
+//            if (root.right.right != null || root.right.left != null){
+//                return false;
+//            }
+//        }
+//
+//        if (root.right == null && root.left != null){
+//            if (root.left.right != null || root.left.left != null){
+//                return false;
+//            }
+//        }
+//
+//        if (root.right != null && root.left != null){
+////            if (root.left.right != null || root.left.left != null){
+////                return false;
+////            }
+//        }
+//
+//        return false;
+//    }
+
 
 }
