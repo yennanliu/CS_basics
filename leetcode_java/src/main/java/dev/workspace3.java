@@ -388,21 +388,21 @@ public class workspace3 {
 
     // LC 104
     // DFS
-    public int maxDepth(TreeNode root) {
-
-        if (root == null){
-            return 0;
-        }
-
-        if (root.left == null && root.right == null){
-            return 1;
-        }
-
-        int leftDepth = this.maxDepth(root.left) + 1;
-        int rightDepth = this.maxDepth(root.right) + 1;
-
-        return Math.max(leftDepth, rightDepth);
-    }
+//    public int maxDepth(TreeNode root) {
+//
+//        if (root == null){
+//            return 0;
+//        }
+//
+//        if (root.left == null && root.right == null){
+//            return 1;
+//        }
+//
+//        int leftDepth = this.maxDepth(root.left) + 1;
+//        int rightDepth = this.maxDepth(root.right) + 1;
+//
+//        return Math.max(leftDepth, rightDepth);
+//    }
 
 
     // LC 230
@@ -508,18 +508,18 @@ public class workspace3 {
 
     // LC 226
     // DFS
-    public TreeNode invertTree(TreeNode root) {
-
-        if (root == null){
-            return root;
-        }
-
-        TreeNode tmp = root.left;
-        root.left = invertTree(root.right);
-        root.right = invertTree(tmp);
-
-        return root;
-    }
+//    public TreeNode invertTree(TreeNode root) {
+//
+//        if (root == null){
+//            return root;
+//        }
+//
+//        TreeNode tmp = root.left;
+//        root.left = invertTree(root.right);
+//        root.right = invertTree(tmp);
+//
+//        return root;
+//    }
 
     // LC 98
     // dfs
@@ -3918,6 +3918,40 @@ public class workspace3 {
         }
 
         return false;
+    }
+
+
+    // LC 226
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null){
+            return root;
+        }
+        // cache left, right sub tree first,
+        // so below assign NOT affect each other
+        TreeNode _left = root.left;
+        TreeNode _right = root.right;
+
+        root.left = this.invertTree(_right);
+        root.right = this.invertTree(_left);
+        return root;
+    }
+
+    // LC 104
+    //int ans = 0;
+    public int maxDepth(TreeNode root) {
+        if (root == null){
+            //return this.ans;
+            return 0;
+        }
+//        if (root.left != null){
+//            return this.maxDepth(root.left) + 1;
+//        }
+
+        return Math.max(
+                this.maxDepth(root.left) + 1,
+                this.maxDepth(root.right) + 1
+        );
+
     }
 
 
