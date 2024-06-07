@@ -11,7 +11,47 @@ import java.util.Map;
 public class NextGreaterElement_I {
 
     // V0
+    // IDEA : STACK
+    // IDEA : implement
+    /** NOTE !!!
+     *
+     *  nums1 is "sub set" of nums2,
+     *  so all elements in nums1 are in nums2 as well
+     *  and in order to find next greater element in nums1 reference nums2
+     *  -> ACTUALLY we only need to check nums2
+     *  -> then append result per element in nums1
+     */
+
+    // V0'
+    // IDEA : STACK
+    // https://www.youtube.com/watch?v=68a1Dc_qVq4
+    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0496-next-greater-element-i.java
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+        int[] res = new int[nums1.length];
+        int counter=0;
+
+        for(int i: nums1){
+            res[counter++]=ans(i, nums2);
+        }
+
+        return res;
+    }
+
+    private int ans(int i, int[] nums){
+        for(int n=0; n<nums.length; n++){
+            if(nums[n]==i){
+                for(int j=n+1; j<nums.length; j++){
+                    if(nums[j]>i)
+                        return nums[j];
+                }
+            }
+        }
+        return -1;
+    }
+
+    // V0'
+    public int[] nextGreaterElement_0_1(int[] nums1, int[] nums2) {
 
         if (nums1.equals(null) && nums2.equals(null)) {
             return nums1;
