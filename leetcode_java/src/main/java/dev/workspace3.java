@@ -4076,5 +4076,36 @@ public class workspace3 {
         //return null;
     }
 
+    // LC 236
+    // 4.25
+    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+
+        // since p != q
+//        if (root.equals(p) && root.equals(q)){
+//            return root;
+//        }
+
+        if ((root == null) || (root.equals(p) || root.equals(q))){
+            return root;
+        }
+
+
+        // ???
+        TreeNode left = this.lowestCommonAncestor2(root.left, p, q);
+        TreeNode right = this.lowestCommonAncestor2(root.right, p, q);
+
+        if (left != null && right != null){
+            return root;
+        }
+
+//        if (left == null || right == null){
+//            if (left == null){
+//                return right;
+//            }
+//            return left;
+//        }
+        return (left != null && right == null) ? left : right;
+    }
+
 
 }
