@@ -52,6 +52,7 @@ public class NextGreaterElement_I {
     // V1
     // IDEA : STACK
     // https://leetcode.com/problems/next-greater-element-i/solutions/2910456/java/
+    // https://leetcode.com/problems/next-greater-element-i/solutions/97595/java-10-lines-linear-time-complexity-o-n-with-explanation/?orderBy=most_votes
     public int[] nextGreaterElement_1(int[] nums1, int[] nums2) {
         Map<Integer, Integer> nextGreater = new HashMap<>();
         Deque<Integer> stack = new ArrayDeque<>();
