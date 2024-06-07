@@ -74,5 +74,5 @@ public class LowestCommonAncestorOfABinaryTree {
         else
             return root;
     }
-    
+
 }

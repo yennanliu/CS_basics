@@ -4107,5 +4107,38 @@ public class workspace3 {
         return (left != null && right == null) ? left : right;
     }
 
+    // LC 496
+    /**
+     *  example 1)
+     *
+     *   Input: nums1 = [4,1,2], nums2 = [1,3,4,2]
+     *  -> Output: [-1,3,-1]
+     *
+     *
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+        // init
+        Map<Integer, Integer> nextGreater = new HashMap<>();
+        //Deque<Integer> stack = new ArrayDeque<>();
+        Stack<Integer> st = new Stack<>();
+
+        // prepare next greater map
+        for (int x : nums2){
+            while (!st.isEmpty() && st.peek() < x){
+                nextGreater.put(st.pop(), x);
+            }
+            st.push(x);
+        }
+
+        // prepare ans
+        int[] ans = new int[nums1.length];
+        for (int i = 0; i < nums1.length; i++){
+            // NOTE !!!
+            ans[i] = nextGreater.getOrDefault(nums1[i], -1);
+        }
+
+        return ans;
+    }
 
 }
