@@ -276,23 +276,23 @@ public class workspace3 {
 
     // LC 235
     // DFS
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-
-        if (root.equals(p) || root.equals(q)) {
-            return root;
-        }
-
-        // BST property : right > root > left
-        if (p.val > root.val && q.val > root.val){
-            return this.lowestCommonAncestor(root.right, p, q);
-        }
-        if (p.val < root.val && q.val < root.val){
-            return this.lowestCommonAncestor(root.left, p, q);
-        }
-
-        // p, q are in different side (sub tree)
-        return root;
-    }
+//    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+//
+//        if (root.equals(p) || root.equals(q)) {
+//            return root;
+//        }
+//
+//        // BST property : right > root > left
+//        if (p.val > root.val && q.val > root.val){
+//            return this.lowestCommonAncestor(root.right, p, q);
+//        }
+//        if (p.val < root.val && q.val < root.val){
+//            return this.lowestCommonAncestor(root.left, p, q);
+//        }
+//
+//        // p, q are in different side (sub tree)
+//        return root;
+//    }
 
     // LC 105
     // DFS
@@ -4016,6 +4016,65 @@ public class workspace3 {
 //
 //        return false;
 //    }
+
+    // LC 110
+    public boolean isBalanced_2(TreeNode root) {
+
+        if (root == null){
+            return true;
+        }
+
+        return this.isBalanced_2(root.left) &&
+                this.isBalanced_2(root.right) &&
+                Math.abs(this.getMaxDepth(root.left) - this.getMaxDepth(root.right)) < 2;
+    }
+
+    public int getMaxDepth(TreeNode root){
+        if (root == null){
+            return 0;
+        }
+        return Math.max(
+                this.getMaxDepth(root.left)+1,
+                this.getMaxDepth(root.right)+1
+        );
+    }
+
+    // LC 235
+    // dfs
+    // 4.10
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+
+//        if (root == null){
+//            return root;  // ?
+//        }
+
+        // NOTE !!! equals
+        if (root.equals(p) || root.equals(q)){
+            return root;
+        }
+
+        // case 1) root > p, q
+        if (root.val > p.val && root.val > q.val){
+            return this.lowestCommonAncestor(root.left, p, q);
+        }
+
+        // case 1') root < p, q
+        if (root.val < p.val && root.val < q.val){
+            return this.lowestCommonAncestor(root.right, p, q);
+        }
+
+        // case 2) root is between p, q
+        // ->  // return root directly, since p, q MUST in different sides
+//        if ((root.val < p.val && root.val > q.val) || (root.val > p.val && root.val < q.val)){
+//            return root;
+//        }
+        return root;
+
+        // case 2) found p, q in different side
+        // case 3) root == p or root == q
+
+        //return null;
+    }
 
 
 }
