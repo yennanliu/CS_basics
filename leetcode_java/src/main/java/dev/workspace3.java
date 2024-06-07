@@ -4141,4 +4141,64 @@ public class workspace3 {
         return ans;
     }
 
+    // LC 1448
+    /**
+     *  Given a binary tree root,
+     *  a node X in the tree is named good if in the path
+     *  from root to X there are no nodes with a value greater than X.
+     *  Return the number of good nodes in the binary tree.
+     *
+     *
+     *  NOTE : if in the path from root to X there are no nodes with a value greater than X.
+     */
+
+    // dfs (post order) (left -> right -> root)
+    // step 1) go through nodes, collect path (root -> node)
+    // step 2) check if  elements in path < X
+    // step 3) return res
+    int goodNodeCnt = 0;
+    public int goodNodes(TreeNode root) {
+
+        if (root == null){
+            return 0;
+        }
+
+        if (root.left == null && root.right == null){
+            return 1;
+        }
+
+        // dfs
+        //List<Integer> collected = new ArrayList<>();
+        this.isGoodNode(root, Integer.MIN_VALUE); // ?
+        return goodNodeCnt;
+    }
+
+    public void isGoodNode(TreeNode root, int maxSoFar){
+
+        if (root.val <= maxSoFar){
+            //return;
+            this.goodNodeCnt += 1;
+        }
+
+        if (root.left != null){
+            this.isGoodNode(root.left, Math.max(root.val, maxSoFar));
+        }
+
+        if (root.right != null){
+            this.isGoodNode(root.right, Math.max(root.val, maxSoFar));
+        }
+
+////        if (root == null){
+////            //return true; // ? already reach the end
+////        }
+//
+//        if (root.val <= cur.val){
+//            //return false;
+//        }
+//
+//        return this.isGoodNode(root, cur.left, collected) &&
+//                this.isGoodNode(root, cur.right, collected);
+
+    }
+
 }
