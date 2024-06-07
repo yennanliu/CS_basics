@@ -10,7 +10,7 @@
 - [Vodeo ref1](https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj)
 
 - Use cases
-    - Find next `big number`
+    - Find next `big number` (next great number)
         - LC 496
         - LC 503
         - LC 739
