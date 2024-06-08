@@ -4269,4 +4269,29 @@ public class workspace3 {
         return pq.size() == 0 ? 0 : pq.peek();
     }
 
+    // LC 215
+    public int findKthLargest(int[] nums, int k) {
+        if (nums.length == 1){
+            if (k == 1){
+                return nums[0];
+            }
+            return -1; // ?
+        }
+
+        // init
+        int ans = 0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        for (int x : nums){
+            pq.add(x);
+        }
+        System.out.println("pq = " + pq);
+        int cur = -1;
+        while (k > 0){
+            cur = pq.poll();
+            k -= 1;
+        }
+
+        return cur;
+    }
+
 }
