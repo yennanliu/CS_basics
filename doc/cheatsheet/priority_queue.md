@@ -54,3 +54,16 @@ while (!bigPQ.isEmpty()) {
 ```
 
 ## 2) LC Example
+
+
+### 2-1) Kth Largest Element in an Array
+```java
+// LC 215
+```
+
+
+### 2-2) Last Stone Weight
+```java
+// LC 1046
+```
+
