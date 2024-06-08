@@ -4294,4 +4294,16 @@ public class workspace3 {
         return cur;
     }
 
+    // LC 621
+    /**
+     *  Input: tasks = ["A","A","A","B","B","B"], n = 2
+     *
+     *
+     */
+    public int leastInterval(char[] tasks, int n) {
+
+        return 0;
+    }
+
+
 }
