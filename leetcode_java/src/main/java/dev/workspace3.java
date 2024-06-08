@@ -4386,6 +4386,22 @@ public class workspace3 {
         }
     }
 
+    // LC 40
+//    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+//
+//        List<List<Integer>> res = new ArrayList<>();
+//        if (candidates.length == 1){
+//            if (candidates[0] == target){
+//                List<Integer> cur = new ArrayList<>();
+//                cur.add(candidates[0]);
+//                res.add(cur);
+//                return res;
+//            }
+//        }
+//
+//        return null;
+//    }
+
 
 
 }
