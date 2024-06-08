@@ -3,16 +3,13 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/next-greater-element-i/
 // https://github.com/yennanliu/JavaHelloWorld/blob/main/src/main/java/Basics/Array1D.java#L14
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class NextGreaterElement_I {
 
     // V0
     // IDEA : STACK
-    // IDEA : implement
+    // https://www.youtube.com/watch?v=68a1Dc_qVq4
     /** NOTE !!!
      *
      *  nums1 is "sub set" of nums2,
@@ -21,12 +18,56 @@ public class NextGreaterElement_I {
      *  -> ACTUALLY we only need to check nums2
      *  -> then append result per element in nums1
      */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+        if (nums1.length == 1 && nums2.length == 1){
+            return new int[]{-1};
+        }
+
+        /**
+         *  NOTE !!!
+         *  we use map " collect next greater element"
+         *  map definition :  {element, next-greater-element}
+         */
+        Map<Integer, Integer> map = new HashMap<>();
+        Stack<Integer> st = new Stack<>();
+
+        for (int x : nums2){
+            /**
+             *  NOTE !!!
+             *   1) use while loop
+             *   2) while stack is NOT null and stack "top" element is smaller than current element (x) is nums2
+             *
+             *   -> found "next greater element", so update map
+             */
+            while(!st.isEmpty() && st.peek() < x){
+                int cur = st.pop();
+                map.put(cur, x);
+            }
+            /** NOTE !!! if not feat above condition, we put element to stack */
+            st.add(x);
+        }
+
+        //System.out.println("map = " + map);
+        int[] res = new int[nums1.length];
+        // fill with -1 for element without next greater element
+        Arrays.fill(res, -1);
+        for (int j = 0; j < nums1.length; j++){
+            if(map.containsKey(nums1[j])){
+                res[j] = map.get(nums1[j]);
+            }
+        }
+
+        //System.out.println("res = " + res);
+        return res;
+    }
+
 
     // V0'
-    // IDEA : STACK
+    // IDEA : BRUTE FORCE
     // https://www.youtube.com/watch?v=68a1Dc_qVq4
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0496-next-greater-element-i.java
-    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+    public int[] nextGreaterElement_0_1(int[] nums1, int[] nums2) {
 
         int[] res = new int[nums1.length];
         int counter=0;
@@ -51,7 +92,7 @@ public class NextGreaterElement_I {
     }
 
     // V0'
-    public int[] nextGreaterElement_0_1(int[] nums1, int[] nums2) {
+    public int[] nextGreaterElement_0_2(int[] nums1, int[] nums2) {
 
         if (nums1.equals(null) && nums2.equals(null)) {
             return nums1;

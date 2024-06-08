@@ -4402,6 +4402,87 @@ public class workspace3 {
 //        return null;
 //    }
 
+    // LC 496
+    // stack + map
+    /**
+     *
+     *  Example 1)
+     *
+     *  nums2 = [1,3,4,2]
+     *           x
+     *             x
+     *               x
+     *                 x
+     *  st = [1]
+     *  st = [3]  map : {1:3}
+     *  st = [4], map : {1:3, 3:4}
+     *  st = [], map : {1:3, 3:4}
+     *
+     *
+     *  nums1 = [4,1,2]
+     *
+     *  so, res = [-1, 3, -1]
+     *
+     *
+     *  Example 2)
+     *
+     *   nums2 = [6,5,4,3,2,1,7]
+     *            x
+     *              x
+     *               x
+     *                 x
+     *                   x
+     *                     x
+     *                       x
+     *                         x
+     *
+     *  st = [6], map :{}
+     *  st = [6,5],  map :{}
+     *  ..
+     *
+     *  st = [6,5,4,3,2,1], map = {}
+     *
+     *  st = [], map = {6:7, 5:7,4:7,3:7,2:7,1:7}
+     *
+     *
+     *
+     *   nums1 = [1,3,5,2,4]
+     *
+     *
+     */
+    public int[] nextGreaterElement_2(int[] nums1, int[] nums2) {
+
+        if (nums1.length == 1 && nums2.length == 1){
+            return new int[]{-1};
+        }
+
+        // map collect next greater element
+        // map : {element, next-greater-element}
+        Map<Integer, Integer> map = new HashMap<>();
+        Stack<Integer> st = new Stack<>();
+
+        for (int x : nums2){
+            while(!st.isEmpty() && st.peek() < x){
+                int cur = st.pop();
+                map.put(cur, x);
+            }
+            st.add(x);
+        }
+
+        System.out.println("map = " + map);
+
+        int[] res = new int[nums1.length];
+        Arrays.fill(res, -1);
+        for (int j = 0; j < nums1.length; j++){
+            if(map.containsKey(nums1[j])){
+                res[j] = map.get(nums1[j]);
+            }
+        }
+
+        System.out.println("res = " + res);
+
+        return res;
+    }
 
 
 }

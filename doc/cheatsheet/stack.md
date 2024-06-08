@@ -6,7 +6,7 @@
     - [fuck-Algorithm - single stack](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md)
     - [fuck-Algorithm - implement array via stack / stack via array ](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97.md)
 
-- It's critical to verify the to use stack if `increasing` or `decreasing` (AKA `monotonic stack`) when solving LC problem
+- It's critical to verify the to use stack if `increasing` or `decreasing` (aka `monotonic stack`) when solving LC problem
 - [Vodeo ref1](https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj)
 
 - Use cases
@@ -236,6 +236,65 @@ class Solution(object):
                     tmp = []
                     break
         return res
+```
+
+```java
+// java
+// LC 496
+// V0
+// IDEA : STACK
+// https://www.youtube.com/watch?v=68a1Dc_qVq4
+/** NOTE !!!
+ *
+ *  nums1 is "sub set" of nums2,
+ *  so all elements in nums1 are in nums2 as well
+ *  and in order to find next greater element in nums1 reference nums2
+ *  -> ACTUALLY we only need to check nums2
+ *  -> then append result per element in nums1
+ */
+public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+    if (nums1.length == 1 && nums2.length == 1){
+        return new int[]{-1};
+    }
+
+    /**
+     *  NOTE !!!
+     *  we use map " collect next greater element"
+     *  map definition :  {element, next-greater-element}
+     */
+    Map<Integer, Integer> map = new HashMap<>();
+    Stack<Integer> st = new Stack<>();
+
+    for (int x : nums2){
+        /**
+         *  NOTE !!!
+         *   1) use while loop
+         *   2) while stack is NOT null and stack "top" element is smaller than current element (x) is nums2
+         *
+         *   -> found "next greater element", so update map
+         */
+        while(!st.isEmpty() && st.peek() < x){
+            int cur = st.pop();
+            map.put(cur, x);
+        }
+        /** NOTE !!! if not feat above condition, we put element to stack */
+        st.add(x);
+    }
+
+    //System.out.println("map = " + map);
+    int[] res = new int[nums1.length];
+    // fill with -1 for element without next greater element
+    Arrays.fill(res, -1);
+    for (int j = 0; j < nums1.length; j++){
+        if(map.containsKey(nums1[j])){
+            res[j] = map.get(nums1[j]);
+        }
+    }
+
+    //System.out.println("res = " + res);
+    return res;
+}
 ```
 
 ### 2-3) Next Greater Element II
