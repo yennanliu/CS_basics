@@ -11,49 +11,55 @@ public class Subsets {
 
     // V0
     // IDEA : BACKTRACK
-//    List<List<Integer>> ans = new ArrayList<>();
-//    int _k;
-//    public List<List<Integer>> subsets(int[] nums) {
-//
-//        // k : sub array length
-//        for (int _k=0; _k < nums.length+1; _k++){
-//            List<Integer> cur = new ArrayList<>();
-//            this._helper(0, cur, nums);
-//        }
-//
-//        return this.ans;
-//    }
-//
-//    // first : start idx
-//    private void _helper(int first, List<Integer> cur, int[] nums){
-//
-//        if (cur.size() == _k){
-//            ans.add(new ArrayList<>(cur));
-//            return;
-//        }
-//
-//        for(int i = first; i < nums.length; i++){
-//            int val = nums[i];
-////            if(!cur.contains(val)){
-////                cur.add(val);
-////                // recursive
-////                _helper(i+1, cur, nums);
-////                // undo
-////                cur.remove(cur.size()-1);
-////            }
-//            cur.add(val);
-//            // recursive
-//            _helper(i+1, cur, nums);
-//            // undo
-//            cur.remove(cur.size()-1);
-//        }
-//    }
+    // NOTE !!! ONLY permutation (全排列) DON'T NEED "start_idx"
+    // NOTE !!! for subset, we need "!cur.contains(nums[i])" to NOT add duplicated element
+    public List<List<Integer>> subsets(int[] nums) {
 
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length == 0){
+            return res;
+        }
+        // backtrack
+        int start_idx = 0;
+        List<Integer> cur = new ArrayList<>();
+        //System.out.println("(before) res = " + res);
+        this.getSubSet(start_idx, nums, cur, res);
+        //System.out.println("(after) res = " + res);
+        return res;
+    }
+
+    public void getSubSet(int start_idx, int[] nums, List<Integer> cur, List<List<Integer>> res){
+
+        if (!res.contains(cur)){
+            // NOTE !!! init new list via below
+            res.add(new ArrayList<>(cur));
+        }
+
+        if (cur.size() > nums.length){
+            return;
+        }
+
+        for (int i = start_idx; i < nums.length; i++){
+            /**
+             * NOTE !!!
+             *
+             *  for subset,
+             *  we need "!cur.contains(nums[i])"
+             *  -> to NOT add duplicated element
+             */
+            if (!cur.contains(nums[i])){
+                cur.add(nums[i]);
+                this.getSubSet(i+1, nums, cur, res);
+                // undo
+                cur.remove(cur.size()-1);
+            }
+        }
+    }
 
     // V0
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-    public List<List<Integer>> subsets(int[] nums) {
+    public List<List<Integer>> subsets_0_1(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         Arrays.sort(nums); // optional
         _backtrack(list, new ArrayList<>(), nums, 0);
