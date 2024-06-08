@@ -4300,9 +4300,46 @@ public class workspace3 {
      *
      *
      */
-    public int leastInterval(char[] tasks, int n) {
+//    public int leastInterval(char[] tasks, int n) {
+//
+//        return 0;
+//    }
 
-        return 0;
+    // LC 78
+    public List<List<Integer>> subsets(int[] nums) {
+
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length == 0){
+            return res;
+        }
+        // backtrack
+        int start_idx = 0;
+        List<Integer> cur = new ArrayList<>();
+        System.out.println("(before) res = " + res);
+        this.getSubSet(start_idx, nums, cur, res);
+        System.out.println("(after) res = " + res);
+        return res;
+    }
+
+    public void getSubSet(int start_idx, int[] nums, List<Integer> cur, List<List<Integer>> res){
+
+        if (!res.contains(cur)){
+            // NOTE !!! init new list via below
+            res.add(new ArrayList<>(cur));
+        }
+
+        if (cur.size() > nums.length){
+            return;
+        }
+
+        for (int i = start_idx; i < nums.length; i++){
+            if (!cur.contains(nums[i])){
+                cur.add(nums[i]);
+                this.getSubSet(i+1, nums, cur, res);
+                // undo
+                cur.remove(cur.size()-1);
+            }
+        }
     }
 
 

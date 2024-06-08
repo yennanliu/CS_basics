@@ -38,6 +38,7 @@
         - [代碼隨想錄 - 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
         - (for loop call help func) +  start_idx + for loop + pop(-1)
         - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
+        - Need `!cur.contains(nums[i])` -> to NOT add duplicated element
         ```python
         # V1
         # ...
@@ -67,20 +68,46 @@
         ```
         ```java
         // java
-        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
         public List<List<Integer>> subsets(int[] nums) {
-            List<List<Integer>> list = new ArrayList<>();
-            Arrays.sort(nums);
-            backtrack(list, new ArrayList<>(), nums, 0);
-            return list;
+
+            List<List<Integer>> res = new ArrayList<>();
+            if (nums.length == 0){
+                return res;
+            }
+            // backtrack
+            int start_idx = 0;
+            List<Integer> cur = new ArrayList<>();
+            //System.out.println("(before) res = " + res);
+            this.getSubSet(start_idx, nums, cur, res);
+            //System.out.println("(after) res = " + res);
+            return res;
         }
 
-        private void backtrack(List<List<Integer>> list , List<Integer> tempList, int [] nums, int start){
-            list.add(new ArrayList<>(tempList));
-            for(int i = start; i < nums.length; i++){
-                tempList.add(nums[i]);
-                backtrack(list, tempList, nums, i + 1);
-                tempList.remove(tempList.size() - 1);
+        public void getSubSet(int start_idx, int[] nums, List<Integer> cur, List<List<Integer>> res){
+
+            if (!res.contains(cur)){
+                // NOTE !!! init new list via below
+                res.add(new ArrayList<>(cur));
+            }
+
+            if (cur.size() > nums.length){
+                return;
+            }
+
+            for (int i = start_idx; i < nums.length; i++){
+                /**
+                 * NOTE !!!
+                 *
+                 *  for subset,
+                 *  we need "!cur.contains(nums[i])"
+                 *  -> to NOT add duplicated element
+                 */
+                if (!cur.contains(nums[i])){
+                    cur.add(nums[i]);
+                    this.getSubSet(i+1, nums, cur, res);
+                    // undo
+                    cur.remove(cur.size()-1);
+                }
             }
         }
         ```

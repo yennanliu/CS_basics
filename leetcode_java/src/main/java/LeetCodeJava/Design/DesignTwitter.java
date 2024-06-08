@@ -10,7 +10,7 @@ public class DesignTwitter {
 
     // V0
     // TODO : implement
-    
+
 
     // V1
     // https://leetcode.com/problems/design-twitter/solutions/2720611/java-simple-hashmap-stack/
