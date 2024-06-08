@@ -4342,5 +4342,50 @@ public class workspace3 {
         }
     }
 
+    // LC 46
+    public List<List<Integer>> permute(int[] nums) {
+
+        List<List<Integer>> res = new ArrayList<>();
+
+        if (nums.length == 1){
+            List<Integer> cur = new ArrayList<>();
+            cur.add(nums[0]);
+            System.out.println("cur = " + cur);
+            res.add(cur);
+            System.out.println("res = " + res);
+            return res;
+        }
+
+        // backtrack
+        List<Integer> cur = new ArrayList<>();
+        System.out.println("res = " + res);
+        this.getPermutation(nums, cur, res);
+        System.out.println("(after) res = " + res);
+        return res;
+    }
+
+    public void getPermutation(int[] nums, List<Integer> cur, List<List<Integer>> res){
+
+        if (cur.size() > nums.length){
+            return;
+        }
+
+        if (cur.size() == nums.length){
+            if (!res.contains(cur)){
+                res.add(new ArrayList<>(cur));
+            }
+        }
+
+        for (int i = 0; i < nums.length; i++){
+            if (!cur.contains(nums[i])){
+                cur.add(nums[i]);
+                this.getPermutation(nums, cur, res);
+                // undo
+                cur.remove(cur.size()-1);
+            }
+        }
+    }
+
+
 
 }

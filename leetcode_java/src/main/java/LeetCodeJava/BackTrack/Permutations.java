@@ -6,11 +6,69 @@ import java.util.*;
 
 public class Permutations {
 
-    List<List<Integer>> ans = new ArrayList<>();
-
     // V0
     // IDEA : BACKTRACK
+    /** NOTE !!!
+     *
+     *  for Permutations,
+     *
+     *  1) NO NEED "start_idx" since CAN'T get duplicated element
+     *  2) via "!cur.contains(nums[i])" to NOT use duplicated element in recursive call within for loop
+     */
     public List<List<Integer>> permute(int[] nums) {
+
+        List<List<Integer>> res = new ArrayList<>();
+
+        if (nums.length == 1){
+            List<Integer> cur = new ArrayList<>();
+            cur.add(nums[0]);
+            //System.out.println("cur = " + cur);
+            res.add(cur);
+            //System.out.println("res = " + res);
+            return res;
+        }
+
+        // backtrack
+        List<Integer> cur = new ArrayList<>();
+        //System.out.println("res = " + res);
+        this.getPermutation(nums, cur, res);
+        //System.out.println("(after) res = " + res);
+        return res;
+    }
+
+    public void getPermutation(int[] nums, List<Integer> cur, List<List<Integer>> res){
+
+        if (cur.size() > nums.length){
+            return;
+        }
+
+        if (cur.size() == nums.length){
+            if (!res.contains(cur)){
+                res.add(new ArrayList<>(cur));
+            }
+        }
+
+        /** NOTE !!! NO NEED to use "start_idx" */
+        for (int i = 0; i < nums.length; i++){
+            /** NOTE !!!
+             *
+             *
+             * via "!cur.contains(nums[i])" to NOT use duplicated element in recursive call within for loop
+             */
+            if (!cur.contains(nums[i])){
+                cur.add(nums[i]);
+                this.getPermutation(nums, cur, res);
+                // undo
+                cur.remove(cur.size()-1);
+            }
+        }
+    }
+
+    List<List<Integer>> ans = new ArrayList<>();
+
+    // V0'
+    // IDEA : BACKTRACK
+    public List<List<Integer>> permute_0_1(int[] nums) {
 
         if (nums.length == 1){
             List<List<Integer>> _ans = new ArrayList<>();
