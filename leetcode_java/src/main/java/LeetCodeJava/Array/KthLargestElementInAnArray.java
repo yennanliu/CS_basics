@@ -7,8 +7,34 @@ import java.util.*;
 public class KthLargestElementInAnArray {
 
     // V0
-    // IDEA : ARRAY + SORTING
+    // IDEA : PQ (priority queue)
     public int findKthLargest(int[] nums, int k) {
+        if (nums.length == 1){
+            if (k == 1){
+                return nums[0];
+            }
+            return -1; // ?
+        }
+
+        // init
+        // NOTE !!! init MAX PQ via Comparator.reverseOrder()
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        for (int x : nums){
+            pq.add(x);
+        }
+        //System.out.println("pq = " + pq);
+        int cur = -1;
+        while (k > 0){
+            cur = pq.poll();
+            k -= 1;
+        }
+
+        return cur;
+    }
+
+    // V0
+    // IDEA : ARRAY + SORTING
+    public int findKthLargest_0_1(int[] nums, int k) {
 
         if (nums.length == 1 && k == 1){
             return nums[0];
