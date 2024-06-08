@@ -4484,5 +4484,58 @@ public class workspace3 {
         return res;
     }
 
+    // LC 739
+    // stack
+    /**
+     *  Example 1)
+     *
+     *     [73,74,75,71,69,72,76,73]
+     *      x
+     *         x
+     *            x
+     *               x
+     *                 x
+     *                    x
+     *                       x
+     *                           x
+     *
+     *
+     *   st = [73], map = {}
+     *   st = [74], map = {73:1}
+     *   st = [75], map = {73:1, 74:1}
+     *   st = [75, 71],   map = {73:1, 74: 1}
+     *   st = [75,71,69],  map = {73:1, 74: 1}
+     *   st = [75,72],  map = {73:1, 74: 1, 69:1, 71:2}
+     *   st = [76],  map = {73:1, 74: 1, 69:1, 71:2, 72:1, 75:3}
+     *   st = [76,73], map = {73:1, 74: 1, 69:1, 71:2, 72:1, 75:3}
+     */
+    public int[] dailyTemperatures2(int[] temperatures) {
+
+        if (temperatures.length == 1){
+            return temperatures;
+        }
+
+        // get "next warmer" temperature
+        Stack<List<Integer>> st = new Stack<>(); // element, idx
+        //Map<Integer, Integer> map = new HashMap<>(); // {temperature : idx-of-next-warmer-temperature}
+        int[] nextGreater = new int[temperatures.length];
+        Arrays.fill(nextGreater, 0); // idx : temperature, val : idx-of-next-warmer-temperature
+        for (int j = 0; j < temperatures.length; j++){
+            int x = temperatures[j];
+            while (!st.isEmpty() && st.peek().get(0) < x){
+                //map.put(st.peek().get(0), j - st.peek().get(1));
+                nextGreater[st.peek().get(1)] = j - st.peek().get(1);
+                st.pop();
+            }
+            List<Integer> cur = new ArrayList<>();
+            cur.add(x); // element
+            cur.add(j); // idx
+            st.add(cur);
+        }
+
+        System.out.println("nextGreater = " + nextGreater);
+        return nextGreater;
+    }
+
 
 }
