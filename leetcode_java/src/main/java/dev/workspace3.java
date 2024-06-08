@@ -4201,4 +4201,72 @@ public class workspace3 {
 
     }
 
+    // LC 703
+    class KthLargest {
+
+        PriorityQueue<Integer> pq;
+        int k;
+//        public KthLargest(){
+//            this.pq = new PriorityQueue();
+//            this.k = 0;
+//        }
+
+        public KthLargest(int k, int[] nums) {
+            this.pq = new PriorityQueue();
+            this.k = 0;
+            for (int x : nums){
+                pq.add(x);
+            }
+            while(pq.size() > k){
+                pq.poll();
+                //k -= 1;
+            }
+        }
+
+        public int add(int val) {
+            this.pq.add(val);
+            if (this.pq.size() > k){
+                pq.poll();
+            }
+            //this.pq.add(val);
+
+            return this.pq.peek();
+        }
+    }
+
+
+    // LC 1046
+    public int lastStoneWeight(int[] stones) {
+
+        if (stones.length == 0){
+            return 0;
+        }
+
+        if (stones.length == 1){
+            return stones[0];
+        }
+
+        // init a Max pq
+        int ans = 0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder()); // ?
+        for (int x : stones){
+            pq.add(x);
+        }
+
+        System.out.println("pq = " + pq);
+
+        // pop 2 biggest elements
+        while (pq.size() >= 2){
+            int first = pq.poll();
+            int second = pq.poll();
+            int tmp = 0;
+            if (first > second){
+                tmp = first - second;
+            }
+            pq.add(tmp);
+        }
+
+        return pq.size() == 0 ? 0 : pq.peek();
+    }
+
 }

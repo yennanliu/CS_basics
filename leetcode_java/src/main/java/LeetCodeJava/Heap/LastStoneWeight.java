@@ -7,8 +7,46 @@ import java.util.*;
 public class LastStoneWeight {
 
     // V0
-    // IDEA : MAX HEAP (PRIORITY QUEUE)
+    // IDEA : PQ (MAX HEAP)
     public int lastStoneWeight(int[] stones) {
+
+        if (stones.length == 0){
+            return 0;
+        }
+
+        if (stones.length == 1){
+            return stones[0];
+        }
+
+        // init a Max pq
+        /** NOTE !!!
+         *
+         *  init MAX PQ via Comparator.reverseOrder()
+         */
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        for (int x : stones){
+            pq.add(x);
+        }
+
+       // System.out.println("pq = " + pq);
+
+        // pop 2 biggest elements
+        while (pq.size() >= 2){
+            int first = pq.poll();
+            int second = pq.poll();
+            int tmp = 0;
+            if (first > second){
+                tmp = first - second;
+            }
+            pq.add(tmp);
+        }
+
+        return pq.size() == 0 ? 0 : pq.peek();
+    }
+
+    // V0'
+    // IDEA : MAX HEAP (PRIORITY QUEUE)
+    public int lastStoneWeight_0_1(int[] stones) {
 
         if (stones.length == 0 || stones.equals(null)){
             return 0;
@@ -45,7 +83,6 @@ public class LastStoneWeight {
     // V1
     // IDEA : Array-Based Simulation
     // https://leetcode.com/problems/last-stone-weight/editorial/
-
     private int removeLargest(List<Integer> stones) {
         int indexOfLargest = stones.indexOf(Collections.max(stones));
         int result = stones.get(indexOfLargest);
