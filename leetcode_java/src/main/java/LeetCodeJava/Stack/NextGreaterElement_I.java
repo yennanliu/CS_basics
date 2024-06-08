@@ -18,6 +18,45 @@ public class NextGreaterElement_I {
      *  -> ACTUALLY we only need to check nums2
      *  -> then append result per element in nums1
      */
+    /**
+     *
+     *  Example 1)
+     *
+     *  nums1 = [4,1,2]
+     *  nums2 = [1,3,4,2]
+     *           x
+     *             x
+     *               x
+     *                 x
+     *  st = [1]
+     *  st = [3]  map : {1:3}
+     *  st = [4], map : {1:3, 3:4}
+     *  st = [], map : {1:3, 3:4}
+     *
+     *  so, res = [-1, 3, -1]
+     *
+     *
+     *  Example 2)
+     *
+     *   nums1 = [1,3,5,2,4]
+     *   nums2 = [6,5,4,3,2,1,7]
+     *            x
+     *              x
+     *               x
+     *                 x
+     *                   x
+     *                     x
+     *                       x
+     *                         x
+     *
+     *  st = [6], map :{}
+     *  st = [6,5],  map :{}
+     *  ..
+     *
+     *  st = [6,5,4,3,2,1], map = {}
+     *  st = [], map = {6:7, 5:7,4:7,3:7,2:7,1:7}
+     *
+     */
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 
         if (nums1.length == 1 && nums2.length == 1){
