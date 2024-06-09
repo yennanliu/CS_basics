@@ -20,7 +20,7 @@ public class GenerateParentheses {
         List<String> _list = new ArrayList<>();
         _list.add("(");
         _list.add(")");
-        
+
         // Backtracking helper function
         generateParenthesisHelper(res, "", n, _list);
         return res;
