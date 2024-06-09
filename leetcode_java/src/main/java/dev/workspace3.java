@@ -4537,5 +4537,60 @@ public class workspace3 {
         return nextGreater;
     }
 
+    // LC 236
+    // dfs
+    // 2.15
+//    public TreeNode lowestCommonAncestor3(TreeNode root, TreeNode p, TreeNode q) {
+//
+//        if(root == null && p == null && q == null){
+//            return root;
+//        }
+//
+//        if (root == p || root == q){
+//            return root;
+//        }
+//
+//        //TreeNode res = null;
+//        //this.findLCA(res, p, q);
+//        return this.findLCA(root, p, q);
+//    }
+//
+//    public TreeNode findLCA(TreeNode root, TreeNode p, TreeNode q){
+//
+//        if(root == null){
+//            return root; // ?
+//        }
+//
+//        if (root == p || root == q){
+//            return root;
+//        }
+//
+//        if (root.left != null){
+//           this.findLCA(root.left, p, q);
+//        }
+//        if (root.right != null){
+//            this.findLCA(root.right, p, q);
+//        }
+//
+//        // ?
+//        return root;
+//    }
+
+    public TreeNode lowestCommonAncestor3(TreeNode root, TreeNode p, TreeNode q) {
+
+        if (root == null  || (root.equals(p) || root.equals(q)) ){
+            return root;
+        }
+
+        TreeNode left = this.lowestCommonAncestor3(root.left, p, q);
+        TreeNode right = this.lowestCommonAncestor3(root.right, p, q);
+
+        if (left != null && right != null){
+            return root;
+        }
+
+        return left != null ? left : right;
+    }
+
 
 }
