@@ -9,6 +9,8 @@ import java.util.*;
 public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
     // V0
+    // IDEA : RECURSIVE + PRE-ORDER, IN-ORDER PROPERTY
+    // https://www.youtube.com/watch?v=ihj4IQGZ2zc
     public TreeNode buildTree(int[] preorder, int[] inorder) {
 
         if (preorder.length == 0) {
@@ -80,6 +82,7 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
             }
         }
         root.left = buildTree_0(Arrays.copyOfRange(preorder, 1, index + 1), Arrays.copyOfRange(inorder, 0, index));
+        // (below recursion parameter) both preorder, inorder are "start from" idx+1, and "end at" the length of tree array
         root.right = buildTree_0(Arrays.copyOfRange(preorder, index + 1, preorder.length), Arrays.copyOfRange(inorder, index + 1, inorder.length));
         return root;
     }
