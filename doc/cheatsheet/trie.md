@@ -14,6 +14,94 @@
 ### 0-1) Types
 
 ### 0-2) Pattern
+
+```java
+// java
+// LC 208
+    // V0
+    // IDEA : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py#L49
+    // modified by GPT
+    class TrieNode {
+
+        /** NOTE !!!!
+         *
+         *  Define children as map structure:
+         *
+         *   Map<String, TrieNode>
+         *
+         *  -> string : current "element"
+         *  -> TrieNode : the child object
+         *
+         */
+        Map<String, TrieNode> children;
+        boolean isWord;
+
+        public TrieNode() {
+            children = new HashMap<>();
+            isWord = false;
+        }
+    }
+
+    /**
+     *  NOTE !!!
+     *
+     *  Define 2 classes
+     *
+     *   1) TrieNode
+     *   2) Trie
+     *
+     */
+    class Trie {
+        TrieNode root;
+
+        public Trie() {
+
+            root = new TrieNode();
+        }
+
+        public void insert(String word) {
+            /**
+             *  NOTE !!! get current node first
+             */
+            TrieNode cur = root;
+            for (String c : word.split("")) {
+                cur.children.putIfAbsent(c, new TrieNode());
+                // move node to its child
+                cur = cur.children.get(c);
+            }
+            cur.isWord = true;
+        }
+
+        public boolean search(String word) {
+            /**
+             *  NOTE !!! get current node first
+             */
+            TrieNode cur = root;
+            for (String c : word.split("")) {
+                cur = cur.children.get(c);
+                if (cur == null) {
+                    return false;
+                }
+            }
+            return cur.isWord;
+        }
+
+        public boolean startsWith(String prefix) {
+            /**
+             *  NOTE !!! get current node first
+             */
+            TrieNode cur = root;
+            for (String c : prefix.split("")) {
+                cur = cur.children.get(c);
+                if (cur == null) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+```
+
 ```python
 # python
 
@@ -71,108 +159,9 @@ class Trie():
         return True
 ```
 
-```python
-#  python
-#--------------------------
-# V2
-#--------------------------
-# LC 1268
-class TrieNode:
-    def __init__(self):
-        self.children = dict()
-        self.words = []
-
-class Trie:
-    def __init__(self):
-        self.root = TrieNode()
-    
-    def insert(self, word):
-        node = self.root
-        for char in word:
-            if char not in node.children:
-                node.children[char] = TrieNode()
-            node = node.children[char]
-            node.words.append(word)
-            node.words.sort()
-            while len(node.words) > 3:
-                node.words.pop()
-    
-    def search(self, word):
-        res = []
-        node = self.root
-        for char in word:
-            if char not in node.children:
-                break
-            node = node.children[char]
-            res.append(node.words[:])
-        l_remain = len(word) - len(res)
-        for _ in range(l_remain):
-            res.append([])
-        return res
-```
-
-```java
-// java
-
-// Custom class Trie with function to get 3 words starting with given prefix
-// LC 1268
-// https://leetcode.com/problems/search-suggestions-system/
-class Trie {
-
-    // Node definition of a trie
-    class Node {
-        boolean isWord = false;
-        List<Node> children = Arrays.asList(new Node[26]);
-    };
-    Node Root, curr;
-    List<String> resultBuffer;
-
-    // Runs a DFS on trie starting with given prefix and adds all the words in the resultBuffer, limiting result size to 3
-    void dfsWithPrefix(Node curr, String word) {
-        if (resultBuffer.size() == 3)
-            return;
-        if (curr.isWord)
-            resultBuffer.add(word);
-
-        // Run DFS on all possible paths.
-        for (char c = 'a'; c <= 'z'; c++)
-            if (curr.children.get(c - 'a') != null)
-                dfsWithPrefix(curr.children.get(c - 'a'), word + c);
-    }
-    Trie() {
-        Root = new Node();
-    }
-
-    // Inserts the string in trie.
-    void insert(String s) {
-
-        // Points curr to the root of trie.
-        curr = Root;
-        for (char c : s.toCharArray()) {
-            if (curr.children.get(c - 'a') == null)
-                curr.children.set(c - 'a', new Node());
-            curr = curr.children.get(c - 'a');
-        }
-
-        // Mark this node as a completed word.
-        curr.isWord = true;
-    }
-    List<String> getWordsStartingWith(String prefix) {
-        curr = Root;
-        resultBuffer = new ArrayList<String>();
-        // Move curr to the end of prefix in its trie representation.
-        for (char c : prefix.toCharArray()) {
-            if (curr.children.get(c - 'a') == null)
-                return resultBuffer;
-            curr = curr.children.get(c - 'a');
-        }
-        dfsWithPrefix(curr, prefix);
-        return resultBuffer;
-    }
-};
-```
 
 ## 1) General form
+
 
 ### 1-1) Basic OP
 
