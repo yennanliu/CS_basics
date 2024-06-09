@@ -8,6 +8,7 @@ public class GenerateParentheses {
 
     // V0
     // TODO : implement
+    // https://www.youtube.com/watch?v=s9fokUqJ76A
 
     // V0'
     // IDEA : backtrack + valid parentheses (gpt)
@@ -19,8 +20,7 @@ public class GenerateParentheses {
         List<String> _list = new ArrayList<>();
         _list.add("(");
         _list.add(")");
-
-
+        
         // Backtracking helper function
         generateParenthesisHelper(res, "", n, _list);
         return res;
