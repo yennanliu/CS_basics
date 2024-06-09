@@ -6,6 +6,7 @@ public class PacificAtlanticWaterFlow {
 
     // V0
     // IDEA : DFS (fixed by GPT)
+    // https://www.youtube.com/watch?v=s-VkcjHqkGI
     public List<List<Integer>> pacificAtlantic(int[][] heights) {
 
         if (heights == null || heights.length == 0 || heights[0].length == 0) {
@@ -39,13 +40,13 @@ public class PacificAtlanticWaterFlow {
         boolean[][] pacificReachable = new boolean[l][w];
         boolean[][] atlanticReachable = new boolean[l][w];
 
-        // Move x-axis
+        // check on x-axis
         for (int x = 0; x < w; x++) {
             dfs(heights, pacificReachable, 0, x);
             dfs(heights, atlanticReachable, l - 1, x);
         }
 
-        // Move y-axis
+        // check on y-axis
         for (int y = 0; y < l; y++) {
             dfs(heights, pacificReachable, y, 0);
             dfs(heights, atlanticReachable, y, w - 1);
