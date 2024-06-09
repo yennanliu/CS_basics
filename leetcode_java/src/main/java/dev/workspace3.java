@@ -4640,4 +4640,65 @@ public class workspace3 {
         }
     }
 
+    // LC 208
+    // 3.20
+    class Trie3 {
+
+        // attr
+        //Trie3 node;
+        //Map<Trie3, List<Trie3>> children;
+        Map<String, Trie3> children;
+        Boolean isEnd;
+
+        public Trie3() {
+            //this.node = new Trie3();
+            //this.val = wor
+            this.children = new HashMap<>();
+            this.isEnd = true;
+        }
+
+        public void insert(String word) {
+            Trie3 cur = null;
+            //this.children.put(new Trie3())
+            //this.node = new Trie3();
+            for (String x : word.split("")){
+                if (!this.children.containsKey(x)){
+                    this.children.put(x, new Trie3());
+                }
+                cur = this.children.get(x);
+            }
+
+            cur.isEnd = true;
+        }
+
+        public boolean search(String word) {
+
+            Trie3 cur = null;
+            for (String x : word.split("")){
+                cur = this.children.get(x);
+                if(!this.children.containsKey(x)){
+                    return false;
+                }
+                //cur = this.children.get(x);
+            }
+
+            return cur.isEnd; // check if is end
+        }
+
+        public boolean startsWith(String prefix) {
+
+            Trie3 cur = null;
+            for (String x : prefix.split("")){
+                cur = this.children.get(x);
+                if(!this.children.containsKey(x)){
+                    return false;
+                }
+                //cur = this.children.get(x);
+            }
+
+            return true;
+        }
+    }
+
+
 }
