@@ -49,7 +49,7 @@ public class NumberOfIslands {
 
         this._seen[y][x] = true;
 
-        /** NOTE !!! we do 4 direction traverse on the same time */
+        /** NOTE !!! we do 4 direction traverse in sequence order */
         _is_island(grid, x+1, y, seen);
         _is_island(grid, x-1, y, seen);
         _is_island(grid, x, y+1, seen);
