@@ -8,6 +8,7 @@ public class SearchInRotatedSortedArray {
     // IDEA : BINARY SEARCH
     // CASE 1) sub array left is sorted
     // CASE 2) sub array right is sorted
+    // https://www.youtube.com/watch?v=U8XENwh8Oy8
     public int search(int[] nums, int target) {
 
         if (nums.length == 0 || nums.equals(null)){
