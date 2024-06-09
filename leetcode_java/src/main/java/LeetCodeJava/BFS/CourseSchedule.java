@@ -9,10 +9,56 @@ public class CourseSchedule {
     // V0
     // IDEA : DFS
     // TODO : implement
+    // NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach
+    //      -> e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,
+    //      -> means "cyclic", so return false directly
+    // https://www.youtube.com/watch?v=EgI5nU9etnU
 
     // VO'
     // IDEA : TOPOLOGICAL SORT
     // TODO : implement
+
+    // V0''
+    // IDEA : DFS
+    // https://github.com/neetcode-gh/leetcode/blob/main/java/0207-course-schedule.java
+    // https://www.youtube.com/watch?v=EgI5nU9etnU
+    public boolean canFinish_0_1(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < prerequisites.length; i++) {
+            adj.get(prerequisites[i][0]).add(prerequisites[i][1]);
+        }
+
+        int[] visited = new int[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            if (visited[i] == 0) {
+                if (isCyclic(adj, visited, i)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean isCyclic(List<List<Integer>> adj, int[] visited, int curr) {
+        if (visited[curr] == 2) {
+            return true;
+        }
+
+        visited[curr] = 2;
+        for (int i = 0; i < adj.get(curr).size(); i++) {
+            if (visited[adj.get(curr).get(i)] != 1) {
+                if (isCyclic(adj, visited, adj.get(curr).get(i))) {
+                    return true;
+                }
+            }
+        }
+        visited[curr] = 1;
+        return false;
+    }
 
     // V0''
     // IDEA : DFS
