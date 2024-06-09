@@ -18,6 +18,17 @@ public class ImplementTrie {
     // IDEA : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py#L49
     // modified by GPT
     class TrieNode {
+
+        /** NOTE !!!!
+         *
+         *  Define children as map structure:
+         *
+         *   Map<String, TrieNode>
+         *
+         *  -> string : current "element"
+         *  -> TrieNode : the child object
+         *
+         */
         Map<String, TrieNode> children;
         boolean isWord;
 
@@ -27,23 +38,40 @@ public class ImplementTrie {
         }
     }
 
+    /**
+     *  NOTE !!!
+     *
+     *  Define 2 classes
+     *
+     *   1) TrieNode
+     *   2) Trie
+     *
+     */
     class Trie {
         TrieNode root;
 
         public Trie() {
+
             root = new TrieNode();
         }
 
         public void insert(String word) {
+            /**
+             *  NOTE !!! get current node first
+             */
             TrieNode cur = root;
             for (String c : word.split("")) {
                 cur.children.putIfAbsent(c, new TrieNode());
+                // move node to its child
                 cur = cur.children.get(c);
             }
             cur.isWord = true;
         }
 
         public boolean search(String word) {
+            /**
+             *  NOTE !!! get current node first
+             */
             TrieNode cur = root;
             for (String c : word.split("")) {
                 cur = cur.children.get(c);
@@ -55,6 +83,9 @@ public class ImplementTrie {
         }
 
         public boolean startsWith(String prefix) {
+            /**
+             *  NOTE !!! get current node first
+             */
             TrieNode cur = root;
             for (String c : prefix.split("")) {
                 cur = cur.children.get(c);
