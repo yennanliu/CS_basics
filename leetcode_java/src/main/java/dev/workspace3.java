@@ -4700,5 +4700,109 @@ public class workspace3 {
         }
     }
 
+    // LC 695
+    // dfs
+//    int biggestArea = 0;
+//    public int maxAreaOfIsland(int[][] grid) {
+//
+//        if (grid.length == 1 && grid[0].length == 1){
+//            if (grid[0][0] == 1){
+//                return 1;
+//            }
+//            return 0;
+//        }
+//
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        for (int i = 0; i < w; i++){
+//            for (int j = 0; j < l; j++){
+//                if (grid[j][i] == 1){
+//                    this.getBiggestArea(i, j, grid, 1);
+//                }
+//            }
+//        }
+//
+//        return this.biggestArea;
+//    }
+//
+//    public void getBiggestArea(int x, int y, int[][] grid, int curArea){
+//
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        System.out.println("x = " + x + ", y = " + y + ", curArea = " + curArea + ", this.biggestArea = " + this.biggestArea);
+//
+//        this.biggestArea = Math.max(this.biggestArea, curArea);
+//
+//        if (grid[y][x] != 1){
+//            //this.biggestArea = Math.max(this.biggestArea, curArea);
+//            curArea = 0;
+//            //return false;
+//            return;
+//        }
+//
+//        grid[y][x] = -1; // mark as "visited"
+//
+//        int[][] dirs = { {0,1}, {0,-1}, {1,0}, {-1,0} };
+//        for (int[] dir : dirs){
+//            int x_ = x + dir[0];
+//            int y_ = y + dir[1];
+//            if ( x_ < w && x_ >= 0 && y_ < l && y_ >= 0 && grid[y_][x_] == 1){
+//                this.getBiggestArea(x_, y_, grid, curArea+1);
+//            }
+//        }
+//
+//        //return true;
+//    }
+
+    int biggestArea = 0;
+
+    public int maxAreaOfIsland(int[][] grid) {
+        int l = grid.length;
+        int w = grid[0].length;
+
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                if (grid[i][j] == 1) {
+                    /** NOTE !!!
+                     *
+                     *  Reset curArea for each new island found
+                     */
+                    int curArea = 1;
+                    getBiggestArea(j, i, grid, curArea);
+                    biggestArea = Math.max(biggestArea, curArea);
+                }
+            }
+        }
+        return biggestArea;
+    }
+
+    public void getBiggestArea(int x, int y, int[][] grid, int curArea) {
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // NOTE !!! below check if optional
+//        if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1) {
+//            return 0;
+//        }
+
+        grid[y][x] = -1; // mark as visited
+        //int area = 1; // current cell
+
+        int[][] dirs = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+        for (int[] dir : dirs) {
+            int x_ = x + dir[0];
+            int y_ = y + dir[1];
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && grid[y_][x_] == 1) {
+                curArea += 1;
+                this.getBiggestArea(x_, y_, grid, curArea);
+            }
+        }
+
+        //return curArea;
+    }
+
 
 }

@@ -7,13 +7,74 @@ import java.util.Stack;
 public class MaxAreaOfIsland {
 
     // V0
+    // IDEA : DFS (modified by gpt)
+    int biggestArea = 0;
+
+    public int maxAreaOfIsland(int[][] grid) {
+        int l = grid.length;
+        int w = grid[0].length;
+
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                if (grid[i][j] == 1) {
+                    /** NOTE !!!
+                     *
+                     *  Reset curArea for each new island found
+                     *
+                     *  Get cur area in each getBiggestArea call,
+                     *  then get max by comparing with biggestArea
+                     */
+                    int curArea = getBiggestArea(j, i, grid);
+                    biggestArea = Math.max(biggestArea, curArea);
+                }
+            }
+        }
+        return biggestArea;
+    }
+
+    public int getBiggestArea(int x, int y, int[][] grid) {
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // NOTE !!! below check if optional
+//        if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1) {
+//            return 0;
+//        }
+
+        grid[y][x] = -1; // mark as visited
+        int area = 1; // current cell
+
+        int[][] dirs = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+        for (int[] dir : dirs) {
+            int x_ = x + dir[0];
+            int y_ = y + dir[1];
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && grid[y_][x_] == 1) {
+                area += getBiggestArea(x_, y_, grid);
+            }
+        }
+
+        /** NOTE !!!
+         *
+         *  Need to return current area,
+         *
+         *  so, in the main func, can get current area as output
+         *  in x, y direction transverse
+         *
+         *  (int curArea = getBiggestArea(j, i, grid);)
+         *
+         */
+        return area;
+    }
+
+    // V0'
     // IDEA : DFS
     int maxArea = 0;
     // NOTE !!! we NEED to use boolean instead of BOOLEAN,
     //          since boolean' default value is "false", BOOLEAN 's default value is "null"
     boolean[][] seen;
 
-    public int maxAreaOfIsland(int[][] grid) {
+    public int maxAreaOfIsland_0_1(int[][] grid) {
 
         int len = grid.length;
         int width = grid[0].length;
