@@ -24,85 +24,56 @@ import java.util.*;
 
 public class CountGoodNodesInBinaryTree {
 
-//    int cnt = 1;
-//    // V0
-//    // IDEA : DFS
-//    public int goodNodes(TreeNode root) {
-//
-//        int ans = 1;
-//
-//        if (root.left == null && root.right == null){
-//            return ans;
-//        }
-//
-//        // BFS
-//        Queue<TreeNode> queue = new LinkedList<>();
-//        queue.add(root);
-//        int size = 0;
-//        //HashMap<Integer, List<Integer>> map = new HashMap<>();
-//        List<List<Integer>> res = new LinkedList<>();
-//        while (!queue.isEmpty()){
-//           size = queue.size();
-//           for (int i = 0 ; i < size; i++){
-//
-//               TreeNode tmpNode = queue.remove();
-//               // get path and check if it's good node
-//               List<Integer> cache = new ArrayList<>();
-//               List<Integer> path = getPath(tmpNode, root, cache);
-//               res.add(path);
-//               if (tmpNode.left != null){
-//                   queue.add(tmpNode.left);
-//               }
-//
-//               if (tmpNode.right != null){
-//                   queue.add(tmpNode.right);
-//               }
-//            }
-//        }
-//
-//        System.out.println("-->");
-//        res.stream().forEach(System.out::println);
-//        System.out.println("-->");
-//        return 0;
-//    }
-//
-//    private List<Integer> getPath(TreeNode node, TreeNode root, List<Integer> path) {
-//
-//        if (node == null) {
-//            return path;
-//        }
-//
-//        if (root.equals(node)) {
-//            return path;
-//        }
-//
-//        path.add(node.val);
-//
-//        if (node.left != null) {
-//            return getPath(node.left, root, path);
-//        }
-//
-//        if (node.right != null) {
-//            return getPath(node.right, root, path);
-//
-//        }
-//
-//        return path;
-//    }
+    // V0
+    // IDEA : DFS + maintain min value
+    private int numGoodNodes = 0;
+
+    public int goodNodes(TreeNode root) {
+        //dfs(root, Integer.MIN_VALUE);
+        findGoodNode(root, root.val); // can use root.val as well
+        return numGoodNodes;
+    }
+
+    private void findGoodNode(TreeNode node, int maxSoFar) {
+
+        if (maxSoFar <= node.val) {
+            numGoodNodes += 1; // found a good node
+        }
+
+        if (node.right != null) {
+            /** NOTE !!!
+             *
+             *  maintian the "max so far" value,
+             *  so instead of comparing all nodes in path
+             *  -> ONLY need to compare current node val with maxSoFar
+             */
+            findGoodNode(node.right, Math.max(node.val, maxSoFar));
+        }
+
+        if (node.left != null) {
+            /** NOTE !!!
+             *
+             *  maintian the "max so far" value,
+             *  so instead of comparing all nodes in path
+             *  -> ONLY need to compare current node val with maxSoFar
+             */
+            findGoodNode(node.left, Math.max(node.val, maxSoFar));
+        }
+    }
 
     // V1
     // IDEA : DFS
     // https://leetcode.com/problems/count-good-nodes-in-binary-tree/editorial/
-    private int numGoodNodes = 0;
+    private int numGoodNodes_1 = 0;
 
     public int goodNodes_2(TreeNode root) {
         dfs(root, Integer.MIN_VALUE);
-        return numGoodNodes;
+        return numGoodNodes_1;
     }
 
     private void dfs(TreeNode node, int maxSoFar) {
         if (maxSoFar <= node.val) {
-            numGoodNodes++;
+            numGoodNodes_1++;
         }
 
         if (node.right != null) {

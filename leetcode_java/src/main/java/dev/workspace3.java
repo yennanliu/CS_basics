@@ -4592,5 +4592,52 @@ public class workspace3 {
         return left != null ? left : right;
     }
 
+    // LC 1448
+    /**
+     * Given a binary tree root,
+     *
+     * a node X in the tree is named good if in the path from root to X
+     *
+     * there are no nodes with a value greater than X.
+     *
+     * Return the number of good nodes in the binary tree.
+     *
+     */
+    // 2.33
+    int cnt = 0;
+    public int goodNodes2(TreeNode root) {
+
+        if (root.left == null && root.right == null){
+            return 1;
+        }
+
+        // dfs
+        //int cnt = 0;
+        TreeNode cur = root;
+        //Boolean found = true;
+        this.checkGoodNode2(root, cur, root.val);
+        return this.cnt;
+    }
+
+    public void checkGoodNode2(TreeNode root, TreeNode cur, int curSmall){
+
+        System.out.println("cur = " + cur.val + " , curSmall = " + curSmall);
+
+//        if (cur.val < curSmall){
+//            flag = false;
+//        }
+
+        if (cur.val > curSmall){
+            this.cnt += 1;
+        }
+
+        if(cur.left != null){
+            this.checkGoodNode2(root, cur.left, Math.max(cur.val, root.val));
+        }
+
+        if(cur.right != null){
+            this.checkGoodNode2(root, cur.right, Math.max(cur.val, root.val));
+        }
+    }
 
 }
