@@ -8,6 +8,7 @@ public class GraphValidTree {
 
     // V0
     // TODO : implement it
+    // https://www.youtube.com/watch?v=bXsUuownnoQ
 
     // V0'
     // IDEA : QUICK FIND (gpt)
@@ -70,6 +71,50 @@ public class GraphValidTree {
             root[e] = find(root, root[e]); // Path compression
             return root[e];
         }
+    }
+
+    // V0'
+    // IDEA : DFS + GRAPH
+    // https://github.com/neetcode-gh/leetcode/blob/main/java/0261-graph-valid-tree.java
+    private Map<Integer, List<Integer>> adjacencyList = new HashMap<>();
+
+    public boolean validTree_0_1(int n, int[][] edges) {
+        if (n == 0 || n == 1) return true;
+
+        if (edges.length == 0) return false;
+
+        for (int[] edge : edges) {
+            int node1 = edge[0];
+            int node2 = edge[1];
+            adjacencyList.putIfAbsent(node1, new ArrayList<>());
+            adjacencyList.putIfAbsent(node2, new ArrayList<>());
+            adjacencyList.get(node1).add(node2);
+            adjacencyList.get(node2).add(node1);
+        }
+
+        Set<Integer> visited = new HashSet<>();
+
+        return (
+                depthFirstSearch(edges[0][0], -1, visited) && visited.size() == n
+        );
+    }
+
+    private boolean depthFirstSearch(
+            int node,
+            int previous,
+            Set<Integer> visited
+    ) {
+        if (visited.contains(node)) return false;
+
+        visited.add(node);
+
+        for (Integer neighbor : adjacencyList.get(node)) {
+            if (neighbor == previous) continue;
+
+            if (!depthFirstSearch(neighbor, node, visited)) return false;
+        }
+
+        return true;
     }
 
     // V1
