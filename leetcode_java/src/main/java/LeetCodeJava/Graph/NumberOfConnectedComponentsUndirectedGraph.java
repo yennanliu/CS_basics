@@ -9,13 +9,70 @@ import java.util.*;
 public class NumberOfConnectedComponentsUndirectedGraph {
 
     // V0
-    // IDEA : GRAPH
+    // IDEA : UNION FIND
     // TODO : implement it
+    // https://www.youtube.com/watch?v=8f1XPm4WOUc
 //    public int countComponents(int n, int[][] edges) {
 //        return 0;
 //    }
 
-    // V0
+    // V1
+    // IDEA : UNION FIND
+    // https://github.com/neetcode-gh/leetcode/blob/main/java/0323-number-of-connected-components-in-an-undirected-graph.java
+    // https://www.youtube.com/watch?v=8f1XPm4WOUc
+    private int[] parent;
+    private int[] rank;
+
+    public int countComponents_1(int n, int[][] edges) {
+        parent = new int[n];
+        rank = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            rank[i] = 1;
+        }
+
+        int result = n;
+        for (int i = 0; i < edges.length; i++) {
+            if (union_1(edges[i][0], edges[i][1]) == 1) {
+                result--;
+            }
+        }
+
+        return result;
+    }
+
+    private int find_1(int node) {
+        int result = node;
+
+        while (parent[result] != result) {
+            parent[result] = parent[parent[result]];
+            result = parent[result];
+        }
+
+        return result;
+    }
+
+    private int union_1(int n1, int n2) {
+        int p1 = this.find_1(n1);
+        int p2 = this.find_1(n2);
+
+        if (p1 == p2) {
+            return 0;
+        }
+
+        if (rank[p2] > rank[p1]) {
+            parent[p1] = p2;
+            rank[p2] += rank[p1];
+        } else {
+            parent[p2] = p1;
+            rank[p1] += rank[p2];
+        }
+
+        return 1;
+    }
+
+    // V1
     // IDEA : UNION FIND (gpt)
     // TODO : validate
     static class UnionFind {
@@ -67,7 +124,7 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         }
     }
 
-    public int countComponents_0_1(int n, int[][] edges) {
+    public int countComponents_1_1(int n, int[][] edges) {
         UnionFind uf = new UnionFind(n);
 
         for (int[] edge : edges) {
@@ -78,12 +135,12 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     }
 
 
-    // V1
+    // V2
     // IDEA : UNION FIND
     // https://leetcode.ca/2016-10-18-323-Number-of-Connected-Components-in-an-Undirected-Graph/
     private int[] p;
 
-    public int countComponents_1(int n, int[][] edges) {
+    public int countComponents_2(int n, int[][] edges) {
         p = new int[n];
         for (int i = 0; i < n; ++i) {
             p[i] = i;
@@ -108,10 +165,10 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         return p[x];
     }
 
-    // V2
+    // V3
     // IDEA : DFS
     // https://www.cnblogs.com/cnoodle/p/14197652.html
-    public int countComponents_2(int n, int[][] edges) {
+    public int countComponents_3(int n, int[][] edges) {
         int count = 0;
         List<List<Integer>> g = new ArrayList<>();
         boolean[] visited = new boolean[n];
@@ -141,10 +198,10 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         }
     }
 
-    // V3
+    // V4
     // IDEA :  UNION FIND
     // https://www.cnblogs.com/cnoodle/p/14197652.html
-    public int countComponents_3(int n, int[][] edges) {
+    public int countComponents_4(int n, int[][] edges) {
         int count = n;
         int[] parents = new int[n];
         for (int i = 0; i < n; i++) {
@@ -169,10 +226,10 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         return i;
     }
 
-    // V4
+    // V5
     // IDEA :  BFS
     // https://www.cnblogs.com/cnoodle/p/14197652.html
-    public int countComponents_4(int n, int[][] edges) {
+    public int countComponents_5(int n, int[][] edges) {
         int count = 0;
         List<List<Integer>> g = new ArrayList<>();
         boolean[] visited = new boolean[n];
