@@ -4804,5 +4804,92 @@ public class workspace3 {
         //return curArea;
     }
 
+    // LC 22
+    // IDEA : Backtrack
+    // 1 <= n <= 8
+    // 3.30
+    List<String> res_ = new ArrayList<>();
+    public List<String> generateParenthesis2(int n) {
+
+        //List<String> res = new ArrayList<>();
+        if (n == 1){
+            this.res_.add("(");
+            this.res_.add(")");
+            return this.res_;
+        }
+
+        // backtrack
+        String cur = "";
+        this.getParenthesis_(n, cur);
+        System.out.println("this.res_ = " + this.res_);
+        return this.res_;
+    }
+
+    // leftCnt : "(" count
+    // rightCnt : ") count
+    public void getParenthesis_(int n, String cur) {
+
+        if (cur.length() > 2 * n){
+            return;
+        }
+
+        if (isValidP(cur.toString()) && cur.toString().length() == 2 * n) {
+            if (!this.res_.contains(cur)) {
+                this.res_.add(cur);
+                cur = ""; // ?
+                return;
+            }
+        }
+
+        String[] choices = {"(", ")"};
+        StringBuilder sb = new StringBuilder(cur);
+        for (String c : choices) {
+            /**
+             *  2 conditions
+             *
+             *  1)  leftCnt > rightCnt
+             *  2)  1st element must be "("
+             *
+             */
+            // case 1) invalid string
+            if (!isValidP(cur)) {
+                return;
+            }
+
+            // case 2) cur is null
+            if (sb.length() == 0) {
+                sb.append("(");
+            }else{
+                // case 3) OK to append "(" or ")"
+                sb.append(c);
+            }
+            // undo
+            this.getParenthesis_(n, sb.toString());
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+
+    public boolean isValidP(String input){
+        if (input.length() == 0){
+            return true;
+        }
+        // leftCnt : "(" count
+        // rightCnt : ") count
+        int leftCnt = 0;
+        int rightCnt = 0;
+        for (String x : input.split("")){
+            if (x.equals("(")){
+                leftCnt += 1;
+            }else{
+                rightCnt += 1;
+            }
+            if (rightCnt > leftCnt){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
 }

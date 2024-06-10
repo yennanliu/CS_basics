@@ -246,6 +246,33 @@ public class workSpace4 {
         workSpace4 wp = new workSpace4();
         wp.myFunc();
 
+
+        System.out.println("isValidP test --------------");
+        String mystr = "(())"; //"()))";
+        System.out.println(wp.isValidP(mystr));
+
+    }
+
+    public boolean isValidP(String input){
+        System.out.println("---> input = " + input);
+        if (input.length() == 0){
+            return true;
+        }
+        // leftCnt : "(" count
+        // rightCnt : ") count
+        int leftCnt = 0;
+        int rightCnt = 0;
+        for (String x : input.split("")){
+            if (x.equals("(")){
+                leftCnt += 1;
+            }else{
+                rightCnt += 1;
+            }
+            if (rightCnt > leftCnt){
+                return false;
+            }
+        }
+        return true;
     }
 
     private void myFunc(){
