@@ -4995,6 +4995,81 @@ public class workspace3 {
         return true;
     }
 
+    // LC 323
+    // Quick Union (route compression)
+    /**
+     *  Example 1)
+     *
+     *   Input: n = 5, edges = [[0,1],[1,2],[3,4]]
+     *   Output: 2
+     *
+     *
+     *  -> parents = [0,1,2,3,4]
+     *  -> quick union ...
+     *
+     *  ->   e = 0
+     *  ->   parents = [0,1,2,3,4]
+     *
+     *  -> e = 1
+     *  -> parents = [0,1,2,3,4]
+     *
+     *  -> e = 3
+     *  ->  parents = [0,1,2,3,4]
+     *
+     *
+     *  -> e = 1
+     *  ->  parents = [0,1,2,3,4]
+     *
+     *
+     *
+     *
+     *
+     */
+    int connectCnt = 0;
+    public int countComponents_3(int n, int[][] edges) {
+
+        if (n == 1){
+            return 1;
+        }
+
+        // init
+        // every element is its parent initially
+        int[] parents = new int[n];
+        for (int i = 0; i < n; i++){
+            parents[i] = i;
+        }
+
+        // union find
+        for (int[] e : edges){
+            int n1 = this.unionFind_(e[0], parents);
+            int n2 = this.unionFind_(e[1], parents);
+//            if (n1 != n2){
+//                this.connectCnt += 1;
+//            }else{
+//                // union
+//                parents[n1] = n2;
+//            }
+
+            parents[n1] = n2;
+        }
+
+        System.out.println("---> parents = " + parents);
+
+        return connectCnt;
+    }
+
+    public int unionFind_(int x, int[] parents){
+
+        if (x == parents[x]){
+            return x;
+        }
+
+        // same as below ?
+        // return this.unionFind_(parents[x], parents);
+        parents[x] = this.unionFind_(parents[x], parents);
+        return parents[x];
+    }
+
 
 
 }

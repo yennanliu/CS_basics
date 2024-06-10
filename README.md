@@ -200,7 +200,7 @@
 ||Floyd-Warshall|[Python](./algorithm/python/floyd_warshall.py)||| | | not start
 ||Bellman-Ford|[Python](./algorithm/python/bellman_ford.py)||| | | not start
 ||Quick Find |[Python](./algorithm/python/quick_find.py), [Java](./algorithm/java/QuickFindUF.java) | init : O(N), union : O(N), find : O(1)|simple, but slow | | |AGAIN| 
-||Quick Union | [Java](./algorithm/java/QuickUnionUF.java) | init : O(N), union : O(N), find : O(N)| lazy approach, route compression, optimized Quick Find|| | AGAIN| 
+||Quick Union | [Java](./algorithm/java/QuickUnionUF.java), [Java v2](./leetcode_java/src/main/java/AlgorithmJava/QuickUnion.java) | init : O(N), union : O(N), find : O(N)| lazy approach, route compression, optimized Quick Find|| | AGAIN| 
 ||Quick Union (Improvements) || lazy approach, path compression|| | AGAIN| 
 ||Priority Queue (`unsorted`) | [Java](./algorithm/java/UnorderedMaxPQ.java) || | | AGAIN| 
 ||LRU cache | [Python](./algorithm/python/lru_cache.py) || LC 146 | | | AGAIN| 
