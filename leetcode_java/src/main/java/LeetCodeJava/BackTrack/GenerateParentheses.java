@@ -7,14 +7,79 @@ import java.util.*;
 public class GenerateParentheses {
 
     // V0
-    // TODO : implement
+    // IDEA : BACKTRACK (fix by gpt)
     // https://www.youtube.com/watch?v=s9fokUqJ76A
+    // https://github.com/neetcode-gh/leetcode/blob/main/java/0022-generate-parentheses.java
+    List<String> res_ = new ArrayList<>();
+    public List<String> generateParenthesis(int n) {
+        if (n == 0) {
+            return res_;
+        }
+
+        // Backtrack
+        getParenthesis_(n, 0, 0, new StringBuilder());
+        //System.out.println("this.res_ = " + this.res_);
+        return this.res_;
+    }
+
+    // leftCnt : "(" count
+    // rightCnt : ")" count
+    private void getParenthesis_(int n, int leftCnt, int rightCnt, StringBuilder cur) {
+        if (cur.length() == 2 * n) {
+            res_.add(cur.toString());
+            return;
+        }
+
+        if (leftCnt < n) {
+            cur.append("(");
+            getParenthesis_(n, leftCnt + 1, rightCnt, cur);
+            cur.deleteCharAt(cur.length() - 1);
+        }
+        if (rightCnt < leftCnt) {
+            cur.append(")");
+            getParenthesis_(n, leftCnt, rightCnt + 1, cur);
+            cur.deleteCharAt(cur.length() - 1);
+        }
+    }
+
+    // V0'
+    // https://github.com/neetcode-gh/leetcode/blob/main/java/0022-generate-parentheses.java
+    // https://www.youtube.com/watch?v=s9fokUqJ76A
+    // IDEA : BACKTRACK
+    Stack<Character> stack = new Stack<>();
+    List<String> res = new ArrayList<>();
+
+    public List<String> generateParenthesis_0_1(int n) {
+        backtrack(0, 0, n);
+        return res;
+    }
+
+    private void backtrack(int openN, int closedN, int n) {
+        if (openN == closedN && closedN == n) {
+            Iterator vale = stack.iterator();
+            String temp = "";
+            while (vale.hasNext()) {
+                temp = temp + vale.next();
+            }
+            res.add(temp);
+        }
+        if (openN < n) {
+            stack.push('(');
+            backtrack(openN + 1, closedN, n);
+            stack.pop();
+        }
+        if (closedN < openN) {
+            stack.push(')');
+            backtrack(openN, closedN + 1, n);
+            stack.pop();
+        }
+    }
 
     // V0'
     // IDEA : backtrack + valid parentheses (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/generate-parentheses.py#L27
     // Method to generate all combinations of well-formed parentheses
-    public List<String> generateParenthesis(int n) {
+    public List<String> generateParenthesis_0_2(int n) {
         List<String> res = new ArrayList<>();
         //List<String> _list = List.of("(", ")");
         List<String> _list = new ArrayList<>();
