@@ -365,7 +365,7 @@ class Solution(object):
 # 207 Couese Schedule
 # 210 Course Schedule II
 
-# note : there is also a dfs solution
+# note : there is also a dfs / backtrack solution
 # IDEA : BFS
 class Solution(object):
     def canFinish(self, N, prerequisites):

@@ -4890,6 +4890,111 @@ public class workspace3 {
         return true;
     }
 
+    // LC 207
+    public boolean canFinish_5(int numCourses, int[][] prerequisites) {
+
+        if (prerequisites.length == 0){
+            return true;
+        }
+
+        if (prerequisites.length == 1 && numCourses == 1){
+            return true;
+        }
+
+        // init
+        // map : {course, [course_prerequisites]}
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int[] item : prerequisites){
+            if (!map.containsKey(item[0])){
+                map.put(item[0], new ArrayList<>());
+            }else{
+                List<Integer> cur = map.get(item[0]);
+                cur.add(item[1]);
+                map.put(item[0], cur);
+            }
+        }
+        // set : current visiting courses
+        HashSet<Integer> set = new HashSet<>();
+        HashSet<Integer> visited = new HashSet<>();
+
+        // dfs
+        int cur = 0; // ?
+        if (!checkPrereq(cur, map, set, visited)){
+            return false;
+        }
+        return set.size() == numCourses;
+    }
+
+    public boolean checkPrereq(int cur, Map<Integer, List<Integer>> map, HashSet<Integer> set, HashSet<Integer> visited){
+
+        visited.add(cur);
+
+        if (set.contains(cur)){
+            return false;
+        }
+
+        set.add(cur);
+        if (!map.containsKey(cur) || map.get(cur).size() == 0){
+            return true;
+        }
+
+        for (Integer x : map.get(cur)){
+            this.checkPrereq(x, map, set, visited);
+        }
+
+        // undo
+        set.remove(cur);
+
+        return true;
+    }
+
+    // LC 207
+    //import java.util.*;
+    public boolean canFinish_6(int numCourses, int[][] prerequisites) {
+        // Initialize adjacency list for storing prerequisites
+        Map<Integer, List<Integer>> preMap = new HashMap<>();
+        for (int i = 0; i < numCourses; i++) {
+            preMap.put(i, new ArrayList<>());
+        }
+
+        // Populate the adjacency list with prerequisites
+        for (int[] pair : prerequisites) {
+            int crs = pair[0];
+            int pre = pair[1];
+            preMap.get(crs).add(pre);
+        }
+
+        // Set for tracking courses during the current DFS path
+        Set<Integer> visiting = new HashSet<>();
+
+        // Recursive DFS function
+        for (int c = 0; c < numCourses; c++) {
+            if (!dfs(c, preMap, visiting)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean dfs(int crs, Map<Integer, List<Integer>> preMap, Set<Integer> visiting) {
+        if (visiting.contains(crs)) {
+            return false;
+        }
+        if (preMap.get(crs).isEmpty()) {
+            return true;
+        }
+
+        visiting.add(crs);
+        for (int pre : preMap.get(crs)) {
+            if (!dfs(pre, preMap, visiting)) {
+                return false;
+            }
+        }
+        visiting.remove(crs);
+        preMap.get(crs).clear(); // Clear prerequisites as the course is confirmed to be processed
+        return true;
+    }
+
 
 
 }
