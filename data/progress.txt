@@ -1,4 +1,4 @@
-20240610:
+20240610: 22(ok*)
 20240609: 236(again*),1448(again),needcode_trie,208(ok*),needcode_graph,695,22(todo),981(todo),207(todo),261(todo)
 20240608: 503(todo),739(ok),105(todo),needcode_heap_pq,1046,215,needcode_backtrack,78,39(todo),46,90(todo),77
 20240607: 235(ok),236(again),496(ok),110(ok),1448(again!)
