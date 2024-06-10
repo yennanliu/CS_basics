@@ -15,6 +15,69 @@ public class NumberOfConnectedComponentsUndirectedGraph {
 //        return 0;
 //    }
 
+    // V0
+    // IDEA : UNION FIND (gpt)
+    // TODO : validate
+    static class UnionFind {
+        private int[] root;
+        private int[] rank;
+
+        public UnionFind(int size) {
+            root = new int[size];
+            rank = new int[size];
+            for (int i = 0; i < size; i++) {
+                root[i] = i;
+                rank[i] = 1;
+            }
+        }
+
+        public int find(int x) {
+            if (root[x] == x) {
+                return x;
+            }
+            root[x] = find(root[x]); // Path compression
+            return root[x];
+        }
+
+        public boolean union(int x, int y) {
+            int rootX = find(x);
+            int rootY = find(y);
+
+            if (rootX != rootY) {
+                // Union by rank
+                if (rank[rootX] > rank[rootY]) {
+                    root[rootY] = rootX;
+                } else if (rank[rootX] < rank[rootY]) {
+                    root[rootX] = rootY;
+                } else {
+                    root[rootY] = rootX;
+                    rank[rootX] += 1;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public int getCount() {
+            Set<Integer> uniqueRoots = new HashSet<>();
+            for (int i = 0; i < root.length; i++) {
+                uniqueRoots.add(find(i));
+            }
+            return uniqueRoots.size();
+        }
+    }
+
+    public int countComponents_0_1(int n, int[][] edges) {
+        UnionFind uf = new UnionFind(n);
+
+        for (int[] edge : edges) {
+            uf.union(edge[0], edge[1]);
+        }
+
+        return uf.getCount();
+    }
+
+
     // V1
     // IDEA : UNION FIND
     // https://leetcode.ca/2016-10-18-323-Number-of-Connected-Components-in-an-Undirected-Graph/
