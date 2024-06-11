@@ -412,85 +412,63 @@ class Solution(object):
 ```java
 // java
 // LC 739
-// VO
-// IDEA : INCREASING STACK
-// https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj
-/**  NOTE !!! WE USE "INCREASING"  STACK HERE
- *
- *   It's critical to define whether "increasing" or "decreasing" stack
- *   We're going to use in stack LC before implement it
- */
+
+// V0
+// IDEA : STACK (MONOTONIC STACK)
+// LC 496
 public int[] dailyTemperatures(int[] temperatures) {
 
-    if (temperatures.length == 0 || temperatures.equals(null)){
-        return new int[temperatures.length];
+    if (temperatures.length == 1){
+        return temperatures;
     }
 
-    int[] res = new int[temperatures.length];
-    // TODO : double check this
-    Stack<int[]> stack = new Stack<>();
-
-    int[] init = new int[2];
-    init[0]  = temperatures[0];
-    init[1] = 0;
-    stack.push(init);
-
-    for (int i = 1; i < temperatures.length; i++){
-
-        int cur_tmp = temperatures[i];
-
-        int[] _cur = new int[2];
+    /**
+     *  Stack :
+     *
+     *   -> cache elements (temperature) that DOESN'T have (NOT found) next warmer temperature yet
+     *   -> structure : stack ([temperature, idx])
+     */
+    Stack<List<Integer>> st = new Stack<>(); // element, idx
+    /** NOTE !!!
+     *
+     *    can't use map, since there will be "duplicated" temperature
+     *   -> which will cause different val has same key (hashMap key)
+     */
+    //Map<Integer, Integer> map = new HashMap<>(); // {temperature : idx-of-next-warmer-temperature}
+    /**
+     *  NOTE !!!
+     *
+     *   we use nextGreater collect answer,
+     *   -> idx : temperature, val : idx-of-next-warmer-temperature
+     */
+    int[] nextGreater = new int[temperatures.length];
+    Arrays.fill(nextGreater, 0); // idx : temperature, val : idx-of-next-warmer-temperature
+    for (int j = 0; j < temperatures.length; j++){
+        int x = temperatures[j];
         /**
-         *  data structure : [cur_temperature, index]
-         *  so we save cur temperature as 1st element
-         *  index of above element as 2nd element
-         *  so we can compare temperature and get index difference via above
+         *  NOTE !!!
+         *   1) while loop
+         *   2) stack is NOT empty
+         *   3) cache temperature smaller than current temperature
+         *
+         *   st.peek().get(0) is cached temperature
          */
-        _cur[0] = temperatures[i];
-        _cur[1] = i;
-
-        // case 1 : cur < stack top element
-        if (cur_tmp < stack.peek()[0]){
-            stack.push(_cur);
-        // case 2 : cur == stack top element
-        }else if (cur_tmp == stack.peek()[0]){
-            stack.push(_cur);
-        } // case 3 : cur > stack top element
-        else{
-            // make sure stack is NOT empty
-            while(!stack.empty() && stack.peek()[0] < cur_tmp){
-                int[] _top = stack.pop();
-                res[_top[1]] = i - _top[1];
-            }
-            int[] to_push = new int[2];
-            to_push[0] = cur_tmp;
-            to_push[1] = i;
-            stack.push(to_push);
+        while (!st.isEmpty() && st.peek().get(0) < x){
+            /**
+             *  st.peek().get(1) is idx
+             *
+             */
+            nextGreater[st.peek().get(1)] = j - st.peek().get(1);
+            st.pop();
         }
+        List<Integer> cur = new ArrayList<>();
+        cur.add(x); // element
+        cur.add(j); // idx
+        st.add(cur);
     }
 
-    return res;
-}
-```
-
-```c++
-// LC 739. Daily Temperatures
-// c++
-// Algorithm book (labu) p. 274
-vector<int> dailyTemperatures(vector<int> & T){
-    vector<int> ans(T.size());
-    // put index in below stack (not element)
-    satck<int> s;
-    for (int i = T.size()-1; i >= 0; i --){
-        while (!s.empty() && T[s.top()] <= T[i]){
-            s.pop();
-        }
-        // get index distance
-        ans[i] = s.empty() ? 0 : (s,top() - i);
-        // add index, but not element
-        s.push(i);
-    }
-    return ans;
+    //System.out.println("nextGreater = " + nextGreater);
+    return nextGreater;
 }
 ```
 
