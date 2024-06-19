@@ -5070,6 +5070,82 @@ public class workspace3 {
         return parents[x];
     }
 
+    /**
+     *  Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+     *  Output: [[7,4,1],[8,5,2],[9,6,3]]
+     *
+     *
+     *
+     * step 1)
+     *
+     *  i, j -> j, i
+     *
+     * [
+     * [1,4,7],
+     * [2,5,8],
+     * [3,6,9]
+     * ]
+     *
+     *  step 2)
+     *
+     *  inverse
+     *
+     *  [
+     *  [7,4,1],
+     *  [8,5,2],
+     *  [9,6,3]
+     *  ]
+     *
+     *
+     */
+
+    // LC 48
+    public void rotate(int[][] matrix) {
+
+        if (matrix.length == 0 || matrix[0].length == 0){
+            return;
+        }
+
+        // step 1) i, j -> j, i
+        int l = matrix.length;
+        int w = matrix[0].length;
+        for (int i = 0; i < l; i++){
+            // (1,0) <-> (0,1)
+            // (2,0) <-> (0,2)
+
+            /**
+             *  (0,1), (0,2), (0,3)
+             *  (1,2), (1,3)
+             *  (2,3
+             *
+             *
+             */
+            for (int j = i+1; j < w; j++){
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = tmp;
+            }
+        }
+
+        // step 2) inverse
+        for (int i = 1; i < l; i++){
+//            int[] cur = matrix[i];
+//            //Arrays.stream(cur).toArray().
+//            matrix[i] = reverse(matrix[i]);
+            reverse(matrix[i]);
+        }
+    }
+
+    public int[] reverse(int[] input){
+        int l = 0;
+        int r = input.length-1;
+        while (r > l){
+            int tmp = input[r];
+            input[r] = input[l];
+            input[l] = tmp;
+        }
+        return input;
+    }
 
 
 }
