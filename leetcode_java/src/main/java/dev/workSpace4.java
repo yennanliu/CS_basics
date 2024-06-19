@@ -261,6 +261,14 @@ public class workSpace4 {
             }
         }
 
+        System.out.println("mypow --------------");
+
+        System.out.println(wp.myPow(2.0, 10));
+        System.out.println(wp.myPow(2.1, 3));
+        System.out.println(wp.myPow(2.0, -2));
+        System.out.println(wp.myPow(0, 10));
+        System.out.println(wp.myPow(1, 10));
+        System.out.println(wp.myPow(2.0, -2147483648));
     }
 
     public boolean isValidP(String input){
@@ -286,7 +294,39 @@ public class workSpace4 {
     }
 
     private void myFunc(){
+
         System.out.println("abc = " + abc);
     }
+
+    public double myPow(double x, int n) {
+
+        if (x == 1.0 || x == 0.0){
+            return x;
+        }
+
+        if (n == 0){
+            return 1;
+        }
+
+        boolean negative = false;
+        if (n < 0){
+            negative = true;
+            n = n * -1;
+        }
+        Long n_ = new Long(n);
+        double res = 1.0;
+        while (n_ > 0){
+            res = res * x;
+            n_ -= 1;
+        }
+
+        System.out.println("res = " + res);
+        if (negative){
+            return 1 / res;
+        }
+
+        return res;
+    }
+
 
 }
