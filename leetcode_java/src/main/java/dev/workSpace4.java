@@ -251,6 +251,16 @@ public class workSpace4 {
         String mystr = "(())"; //"()))";
         System.out.println(wp.isValidP(mystr));
 
+
+        System.out.println("matrix for loop testing --------------");
+        int l = 4;
+        int w = 4;
+        for (int i = 0; i < l; i++){
+            for (int j = i+1; j < w; j++){
+                System.out.println("i = " + i + ", j = " + j);
+            }
+        }
+
     }
 
     public boolean isValidP(String input){

@@ -35,6 +35,25 @@ public class RotateImage {
         int width = matrix[0].length;
 
         // Step 1) : mirror ([i, j] -> [j, i])
+        /**
+         *  Example :
+         *
+         *  matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+         *
+         *  so, below double loop will visit :
+         *
+         *  (0,1), (0,2), (0,3)
+         *  (1,2), (1,3)
+         *  (2,3
+         *
+         */
+        /** NOTE !!!
+         *
+         * for (int i = 0; i < len; i++)
+         *   for (int j = i+1; j < width; j++)
+         *
+         * (j start from i+1)
+         */
         for (int i = 0; i < len; i++){
             for (int j = i+1; j < width; j++){
                 int tmp = matrix[i][j];
