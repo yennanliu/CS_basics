@@ -5147,5 +5147,34 @@ public class workspace3 {
         return input;
     }
 
+    // LC 50
+    public double myPow(double x, int n) {
+
+        if (x == 1.0 || x == 0.0){
+            return x;
+        }
+
+        if (n == 0){
+            return 1;
+        }
+
+        boolean negative = false;
+        if (n < 0){
+            negative = true;
+            n = n * -1;
+        }
+        double res = 1.0;
+        while (n > 0){
+            res = res * x;
+            n -= 1;
+        }
+
+        if (negative){
+            return 1 / res;
+        }
+
+        return res;
+    }
+
 
 }
