@@ -269,6 +269,11 @@ public class workSpace4 {
         System.out.println(wp.myPow(0, 10));
         System.out.println(wp.myPow(1, 10));
         System.out.println(wp.myPow(2.0, -2147483648));
+
+        System.out.println("long test --------------");
+        Long l1 = 101L;
+        System.out.println("l1 = " + l1);
+        System.out.println("l1 - 1L = " + (l1 - 1L));
     }
 
     public boolean isValidP(String input){
