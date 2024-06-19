@@ -5177,4 +5177,29 @@ public class workspace3 {
     }
 
 
+    // LC 43
+    public String multiply(String num1, String num2) {
+
+        if (num1.equals("0") || num2.equals("0")){
+            return "0";
+        }
+
+        if (num1.equals("1") || num2.equals("1")){
+            if (num1.equals("1")){
+                return num2;
+            }
+            return num1;
+        }
+
+        Long res = 0L;
+        Long num2Int = Long.parseLong(num2);
+        Long num1Int = Long.parseLong(num1);
+        while (num2Int > 0){
+            res += num1Int;
+            num2Int -= 1L;
+        }
+
+        return String.valueOf(res);
+    }
+
 }
