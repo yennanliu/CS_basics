@@ -5202,4 +5202,60 @@ public class workspace3 {
         return String.valueOf(res);
     }
 
+    // LC 684
+    // graph
+    public int[] findRedundantConnection(int[][] edges) {
+
+        if (edges.length <= 1){
+            return null;
+        }
+
+        if (edges.length == 3){
+            return edges[2];
+        }
+
+        // init graph
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int[] x : edges){
+            List<Integer> cur = map.getOrDefault(x[0], new ArrayList<>());
+            cur.add(x[1]);
+            map.put(x[0], cur);
+        }
+
+        System.out.println("map = " + map);
+
+        for (int [] x : edges){
+            // update map
+            Map<Integer, List<Integer>> newMap = updateMap(x, map);
+            if (!isCycle(x, newMap)){
+                return x;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean isCycle(int[] x, Map<Integer, List<Integer>> map){
+
+        return true;
+    }
+
+    public Map<Integer, List<Integer>> updateMap(int[] x, Map<Integer, List<Integer>> map){
+        for (int k : map.keySet()){
+            if (k == x[0]){
+                map.remove(k);
+                continue;
+            }
+            if (map.get(k).contains(x[1])){
+              List<Integer> cur = map.get(k);
+              cur.remove(x[1]);
+              map.put(k, cur);
+              continue;
+            }
+        }
+        return map;
+    }
+
+
+
 }
