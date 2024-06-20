@@ -740,6 +740,7 @@
 1342 |[Number of Steps to Reduce a Number to Zero](https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/) | [Python](./leetcode_python/Math/number-of-steps-to-reduce-a-number-to-zero.py) ||| easy |`gra*`| ok
 1492 |[The kth Factor of n](https://leetcode.com/problems/the-kth-factor-of-n/) | [Python](./leetcode_python/Math/the-kth-factor-of-n.py) ||| Medium |`amazon`|  AGAIN (not start)
 1979 |[Find Greatest Common Divisor of Array](https://leetcode.com/problems/find-greatest-common-divisor-of-array/) | [Python](./leetcode_python/Math/find-greatest-common-divisor-of-array.py) ||| Easy |GCD| not start
+2013 |[Detect Squares](https://leetcode.com/problems/detect-squares/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/DetectSquares.java) ||| Medium |math| not start
 
 ## Sort
 
