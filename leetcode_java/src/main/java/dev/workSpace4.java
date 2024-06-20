@@ -274,6 +274,27 @@ public class workSpace4 {
         Long l1 = 101L;
         System.out.println("l1 = " + l1);
         System.out.println("l1 - 1L = " + (l1 - 1L));
+
+
+        // https://github.com/yennanliu/CS_basics/blob/master/doc/faq/java/java_basic.md
+        System.out.println("basic, reference type test --------------");
+        String a = "aa";
+        String a1 = "aa";
+        String b = new String("bb");
+        String b1 = new String("bb");
+        System.out.println(a == a1); // true
+        System.out.println(b == b1); // false
+
+
+        System.out.println("generic test --------------");
+
+        // 创建不同类型数组：Integer, Double 和 Character
+        Integer[] intArray = { 1, 2, 3 };
+        String[] stringArray = { "Hello", "World" };
+        printArray( intArray  );
+        printArray( stringArray  );
+
+
     }
 
     public boolean isValidP(String input){
@@ -331,6 +352,21 @@ public class workSpace4 {
         }
 
         return res;
+    }
+
+    // https://javaguide.cn/java/basis/java-basic-questions-03.html#%E6%B3%9B%E5%9E%8B%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D
+
+    public interface Generator<T> {
+        public T method();
+    }
+
+
+    public static < E > void printArray( E[] inputArray )
+    {
+        for ( E element : inputArray ){
+            System.out.printf( "%s ", element );
+        }
+        System.out.println();
     }
 
 
