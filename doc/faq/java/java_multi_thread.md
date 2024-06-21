@@ -6,6 +6,17 @@
 
 ### Java multi thread ?
 
+### 並發(Concurrent) VS 並行(parallel)
+
+<p><img src ="./doc/pic/parallel.png" ></p>
+- 並行(parallel): 同ㄧ時刻, 多個指令在多個處理器同時運行
+
+<p><img src ="./doc/pic/Concurrent.png" ></p>
+- 並發(Concurrent): 同ㄧ時刻, 只有ㄧ個指令運行, 但多個進程被交錯運行 (並非同時運行), 把時間段切成小塊,
+多個進程快速交替運行
+
+- https://blog.csdn.net/scarificed/article/details/114645082
+
 ### Async VS Sync ?
 
 - Async : return and NOT wait till receive response
