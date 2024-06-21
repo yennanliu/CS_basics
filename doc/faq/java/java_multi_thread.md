@@ -8,10 +8,10 @@
 
 ### 並發(Concurrent) VS 並行(parallel)
 
-<p><img src ="./doc/pic/parallel.png" ></p>
+<p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/parallel.png" ></p>
 - 並行(parallel): 同ㄧ時刻, 多個指令在多個處理器同時運行
 
-<p><img src ="./doc/pic/Concurrent.png" ></p>
+<p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/concurrent.png" ></p>
 - 並發(Concurrent): 同ㄧ時刻, 只有ㄧ個指令運行, 但多個進程被交錯運行 (並非同時運行), 把時間段切成小塊,
 多個進程快速交替運行
 
