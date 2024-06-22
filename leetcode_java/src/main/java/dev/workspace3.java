@@ -5204,6 +5204,26 @@ public class workspace3 {
 
     // LC 684
     // graph
+    /**
+     * example 1)
+     *
+     * edges = [[1,2],[1,3],[2,3]]
+     * -> map = {
+     *     1: [2,3],
+     *     2: [3]
+     * }
+     *
+     * example 2)
+     *
+     *  edges = [[1,2],[2,3],[3,4],[1,4],[1,5]]
+     * -> map = {
+     *     1: [2, 5],
+     *     2: [3],
+     *     3: [4],
+     * }
+     *
+     *
+     */
     public int[] findRedundantConnection(int[][] edges) {
 
         if (edges.length <= 1){
