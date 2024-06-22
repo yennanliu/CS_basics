@@ -1,4 +1,4 @@
-package LeetCodeJava.Graph;
+package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/redundant-connection/description/
 
