@@ -127,6 +127,71 @@ public class WordSearch {
         return false;
     }
 
+    // V0''
+    // IDEA : modified version of v0' (gpt)
+    public boolean exist_0_1(char[][] board, String word) {
+        if (board == null || board.length == 0) {
+            return false;
+        }
+
+        int l = board.length;
+        int w = board[0].length;
+
+        boolean[][] visited = new boolean[l][w];
+
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                if (dfs_0_1(board, i, j, 0, word, visited)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean dfs_0_1(char[][] board, int y, int x, int idx, String word, boolean[][] visited) {
+        if (idx == word.length()) {
+            return true;
+        }
+
+        int l = board.length;
+        int w = board[0].length;
+
+        if (y < 0 || y >= l || x < 0 || x >= w || visited[y][x] || board[y][x] != word.charAt(idx)) {
+            return false;
+        }
+
+        // Mark this cell as visited
+        visited[y][x] = true;
+
+        // Directions array for exploring up, down, left, and right
+        int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+        /** NOTE !!! init found flag, for tracking found status */
+        boolean found = false; // Variable to store if the word is found in any direction
+
+        // Explore all four directions
+        for (int[] dir : dirs) {
+            if (dfs_0_1(board, y + dir[0], x + dir[1], idx + 1, word, visited)) {
+                /** NOTE !!! if found, update found status */
+                found = true;
+                /** NOTE !!!
+                 *
+                 *  if found, break the loop,
+                 *  then will go to final line in dfs (e.g. return found;),
+                 *  and return found status directly
+                 */
+                break; // We can break out of the loop if we found the word in any direction
+            }
+        }
+
+        // Backtrack: unmark this cell as visited
+        visited[y][x] = false;
+
+        return found;
+    }
+
 
     // V1
     // IDEA : DFS + BACKTRACK

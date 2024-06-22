@@ -5276,6 +5276,75 @@ public class workspace3 {
         return map;
     }
 
+    // LC 79
+    //List<String> collected = new ArrayList<>();
+    public boolean exist_1(char[][] board, String word) {
+
+        if (board.length == 1 && board[0].length == 1){
+            return String.valueOf(board[0][0]).equals(word);
+        }
+
+        // dfs
+        int l = board.length;
+        int w = board[0].length;
+        //for (int i)
+        for (int i = 0; i < w; i++){
+            for (int j = 0; j < l; j++){
+                int idx = 0;
+                List<String> cur = new ArrayList<>();
+                boolean[][] visited = new boolean[l][w];
+                if (dfs_check(board, word, i, j, idx, visited)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean dfs_check(char[][] board, String word, int x, int y, int idx, boolean[][] visited){
+
+        int l = board.length;
+        int w = board[0].length;
+
+        // mark as visited
+        visited[x][y] = true;
+
+        if (idx == word.length()){
+            return true;
+        }
+
+        if (idx > word.length()){
+            return false;
+        }
+
+//        if (cur.toString().equals(word)){
+//            //collected.add(String.valueOf(cur)); // ?
+//            return true;
+//        }
+//
+//        if (cur.size() > word.length()){
+//            return false;
+//        }
+
+        int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+        for (int[] dir : dirs){
+            int x_ = x + dir[0];
+            int y_ = y + dir[1];
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && word.indexOf(idx) == board[y_][x_] && !visited[x_][y_]){
+                //cur.add(String.valueOf(board[y_][x_]));
+                if (this.dfs_check(board, word, x_, y_, idx+1, visited)){
+                    return true;
+                }
+                // undo ?? -> mark as Not visitet
+                visited[x_][y_] = false;
+            }
+        }
+
+        return false;
+    }
+
+
 
 
 }
