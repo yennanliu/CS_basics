@@ -5412,6 +5412,55 @@ public class workspace3 {
 //        return found;
 //    }
 
+    // LC 3190
+    /**
+     *  Return the minimum number of operations
+     *  to make all elements of nums divisible by 3.
+     *
+     */
+    /**
+     *  nums = [1,2,3,4]
+     *
+     *  init sum = 10
+     *
+     *
+     *  -> [0, 1, 2, 3]
+     *  -> so output = 3
+     *
+     *
+     *
+     *
+     */
+    public int minimumOperations(int[] nums) {
+
+        if (nums.length == 1){
+            return nums[0] % 3; // to check
+        }
+
+        //int sum = 0;
+        //boolean canDivided = true;
+        int res = 0;
+        for (int x : nums){
+//            if (x % 3 != 0){
+//                canDivided = false;
+//                break;
+//            }
+            int diff = (x % 3);
+            int diff_ = diff;
+            if (diff == 2){
+                diff_ = 1;
+            }
+            System.out.println("x = " + x + ", diff = " + diff + " diff_ = " + diff_);
+            res += Math.abs(diff_);
+        }
+
+//        if (canDivided){
+//            return 0;
+//        }
+
+        return res;
+    }
+
 
 
 
