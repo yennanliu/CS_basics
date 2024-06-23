@@ -73,15 +73,30 @@ public class minimumOperationsToMakeBinaryArrayElementsEqualToOneI {
     // https://leetcode.com/problems/minimum-operations-to-make-binary-array-elements-equal-to-one-i/submissions/1297671097/
     public int minOperations_1(int[] nums) {
         int n = nums.length;
-        int i = 0, j = 2, ans = 0;
+        int i = 0;
+        /** NOTE !!! j init as 2 */
+        int j = 2;
+        int ans = 0;
 
         while (j < n) {
+            /** NOTE !!!
+             *
+             *  if  element == 0, flip it to 1 (idx ~ idx +3)
+             *  then i to next idx (idx+=1), check again if element == 0, if so, repeat above flip
+             *  ... and continue same op
+             */
             if (nums[i] == 0) {
                 ans++;
                 for (int k = i; k < i + 3; k++) {
                     nums[k] = (nums[k] == 0) ? 1 : 0;
                 }
             }
+            /** NOTE !!!
+             *
+             *  keep adding i and j in every while loop
+             *  and since j is ahead i with 2 idx
+             *  so at last iteration of  "j < n", i should already be able to visit whole array (for (int k = i; k < i + 3; k++))
+             */
             i++;
             j++;
         }
@@ -153,5 +168,5 @@ public class minimumOperationsToMakeBinaryArrayElementsEqualToOneI {
 
         return ans;
     }
-    
+
 }
