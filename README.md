@@ -803,6 +803,7 @@
 1151 | [Minimum Swaps to Group All 1's Together](https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/) | [Python](./leetcode_python/Two_Pointers/minimum-swaps-to-group-all-1s-together.py) | _O(n)_ | _O(1)_ | Medium |good basic, 2 pointers, Deque (Double-ended Queue), `amazon`| AGAIN***** (not start )
 1963| [Minimum Number of Swaps to Make the String Balanced](https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/) |[Python](./leetcode_python/Two_Pointers/minimum-number-of-swaps-to-make-the-string-balanced.py) | _O(n)_| _O(h)_ | Medium|good basic, greedy, stack, 2 pointers, amazon, fb, m$| AGAIN******** (2)
 2104 | [Sum of Subarray Ranges](https://leetcode.com/problems/sum-of-subarray-ranges/) | [Python](./leetcode_python/Two_Pointers/sum-of-subarray-ranges.py) | _O(n)_ | _O(1)_ | Medium |LC 907,  monotonic stack, brute force, 2 pointers, dp, `amazon`| AGAIN******* (3)
+3191| [Minimum Operations to Make Binary Array Elements Equal to One I](https://leetcode.com/problems/minimum-operations-to-make-binary-array-elements-equal-to-one-i/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/TwoPointer/minimumOperationsToMakeBinaryArrayElementsEqualToOneI.java) | _O(n)_  | _O(h)_ | Medium|2 pointers| Again* (2)
 
 ## Recursion
 

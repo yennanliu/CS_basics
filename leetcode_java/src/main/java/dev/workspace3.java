@@ -5461,6 +5461,119 @@ public class workspace3 {
         return res;
     }
 
+    // LC 3191
+    // 6.15
+    /**
+     *  A binary array is an array which contains only 0 and 1.
+     *
+     *  You can do the following operation on the array any number of times (possibly zero):
+     *
+     *  -> Choose any 3 consecutive elements from the array and flip all of them.
+     *
+     *
+     *   - Flipping an element means changing its value from 0 to 1, and from 1 to 0.
+     *
+     */
+    /**
+     *  example 1 :
+     *
+     *    [0,1,1,1]
+     *
+     *    -> [1,0,0,1]
+     *    -> [1, 1,1,0]
+     *    -> return -1
+     *
+     * example 2 :
+     *
+     *   [0,1,1,1,0,0]
+     *
+     *   -> [1,0,0 1,0,0]
+     *           i
+     *   -> [ 1, 1,1,0, 0, 0]
+     *               i
+     *   -> [1,1,1,1,1,1,1]
+     *
+     *   -> 3 ( 3 ops)
+     *
+     *
+     *
+     *   example 3
+     *
+     *    [0,1,1,1,0,1]
+     *
+     *    -> [1,0,0 1,0,1]
+     *    ->  [1,1,1,0,0,1]
+     *
+     */
+    /**
+     * nums = [0,1,1,1,0,0]
+     *
+     *  idx = 0, [0,1,1] -> [1,0,0]. idx = 1, nums=[1,0,0,1,0,0]
+     *
+     *  idx = 1, [0,0,1] -> [1,1,0], idx =3, nums = [1,1,1,0,0,0]
+     *
+     *  idx = 3, [0,0,0] -> [1,1,1]. idx=-1, nums = [1,1,1,1,1,1]
+     *
+     */
+    // brute force, pointers
+    public int minOperations(int[] nums) {
+
+        int res = 0;
+
+        if (nums.length == 3){
+            if (Arrays.stream(nums).sum() == 0){
+                return 1;
+            }
+            if (Arrays.stream(nums).sum() == 3){
+                return 0;
+            }
+            return -1;
+        }
+
+        int idx = 0;
+
+        // get 1st 0 element
+        for (int j = 0; j < nums.length; j++){
+            if (nums[j] == 0){
+                idx = j;
+                break;
+            }
+        }
+
+        System.out.println("idx = " + idx);
+
+        while (idx <= nums.length-3){
+            idx = flip(nums, idx);
+            res += 1;
+            if (idx==-1){
+                break;
+            }
+        }
+
+        System.out.println("---> nums =  " + Arrays.toString(nums) + ", idx = " + idx);
+        //return idx == nums.length ? res : -1;
+        return nums.length == Arrays.stream(nums).sum() ? res : -1;
+    }
+
+    public int flip(int[] input, int idx){
+        System.out.println("input =  " + Arrays.toString(input) + ", idx = " + idx);
+        int zeroIdx = -1;
+        for (int i = idx; i < idx+3; i++){
+            if (input[i] == 0){
+                input[i] = 1;
+            }else{
+                input[i] = 0;
+                if (zeroIdx==-1){
+                    zeroIdx = i;
+                }
+            }
+        }
+        if (zeroIdx == input.length){
+            return input.length;
+        }
+        System.out.println("input =  " + Arrays.toString(input) + ", idx = " + idx + ", zeroIdx = " + zeroIdx);
+        return zeroIdx;
+    }
 
 
 
