@@ -86,7 +86,7 @@ list2.add(3);
 Integer [] arr2 = list2.toArray(new Integer[list2.size()]); // NOTE here !!!
 ```
 
-
+- https://javaguide.cn/java/collection/java-collection-precautions-for-use.html#%E6%95%B0%E7%BB%84%E8%BD%AC%E9%9B%86%E5%90%88
 
 ### 1-0) String to Char array
 ```java
