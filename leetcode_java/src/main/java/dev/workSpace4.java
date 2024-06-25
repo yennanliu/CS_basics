@@ -334,6 +334,16 @@ public class workSpace4 {
 //        System.out.println(myList.get(1));//报错：ArrayIndexOutOfBoundsException
 //        Integer [] array = (Integer[]) myList.get(0);
 //        System.out.println(array[0]);//1
+
+
+        System.out.println("bit op test --------------");
+//        String a_1 = "1001";
+//        System.out.println(a_1);
+//        System.out.println(~a_1);
+        int[] array_1 = {1,0,1};
+        System.out.println(Arrays.toString(array_1));
+        String array_1_str = array_1.toString().replace("0", "1");
+        System.out.println(array_1_str);
     }
 
     public class Person implements Comparable<Person>{

@@ -5609,6 +5609,63 @@ public class workspace3 {
         return res;
     }
 
+    // LC 3192
+    // 5.35
+    /**
+     *  You can do the following operation on the
+     *  array any number of times (possibly zero):
+     *
+     *
+     *  -> Choose any index i from the array and flip all the elements
+     *   from index i to the end of the array.
+     *
+     */
+    /**
+     *  example 1)  [0,1,1,0,1]
+     *
+     *   i=0, [1,0,0,1,0]
+     *   i=1, [1,1,1,0,1]
+     *   i=3, [1,1,1,1,0]
+     *   i=4, [1,1,1,1,1]
+     *
+     *
+     *  example 2) [1,0,0,0]
+     *
+     *  i = 1, [1,1,1,1]
+     */
+    public int minOperations_2_1(int[] nums) {
+
+        if (Arrays.stream(nums).sum() == nums.length){
+            return 0;
+        }
+
+        int res = 0;
+        int i = 0;
+        while (i < nums.length){
+            if (nums[i] == 0){
+                for (int j = i; j < nums.length; j++){
+                    // if 0, do op
+                    if (nums[j] == 0){
+                        nums[j] = 1;
+                    }else{
+                        nums[j] = 0;
+                    }
+                }
+                res += 1;
+            }
+            System.out.println("nums =  " + Arrays.toString(nums));
+            i += 1;
+        }
+
+        for (int k = 0; k < nums.length; k++){
+            if (nums[k] == 0){
+                return -1;
+            }
+        }
+
+        return res;
+    }
+
 
 
 }
