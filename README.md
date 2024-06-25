@@ -329,6 +329,12 @@
 1914 | [Cyclically Rotating a Grid](https://leetcode.com/problems/cyclically-rotating-a-grid/) | [Python](./leetcode_python/Array/cyclically-rotating-a-grid.py) | | | Medium |array, brute force, dequeue`amazon`| AGAIN (not start)
 
 
+## Set
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note           | Status| 
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
+2357 | [Make Array Zero by Subtracting Equal Amounts](https://leetcode.com/problems/make-array-zero-by-subtracting-equal-amounts/description/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Set/makeArrayZeroBySubtractingEqualAmounts.java)| _O(n^2)_ | _O(1)_  | Medium    | set| Again (1)
+
 ## Hash Table
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
