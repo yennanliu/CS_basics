@@ -294,7 +294,48 @@ public class workSpace4 {
         printArray( intArray  );
         printArray( stringArray  );
 
+        System.out.println("compare test --------------");
+        ArrayList<Integer> arrayList = new ArrayList<Integer>();
+        arrayList.add(1);
+        arrayList.add(3);
+        arrayList.add(2);
 
+        System.out.println("arrayList before sort = " + arrayList);
+        Collections.sort(arrayList, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                //return 0;
+                //return o2.compareTo(o1);
+                return o1.compareTo(o2);
+            }
+        });
+
+        System.out.println("arrayList after sort = " + arrayList);
+
+
+        System.out.println("compareTo test --------------");
+
+    }
+
+    public class Person implements Comparable<Person>{
+
+        private String name;
+        private int age;
+
+        public int getAge(){
+            return age;
+        }
+
+        @Override
+        public int compareTo(Person o) {
+            if (this.age > o.getAge()){
+                return 1;
+            }
+            if (this.age < o.getAge()){
+                return -1;
+            }
+            return 0;
+        }
     }
 
     public boolean isValidP(String input){
