@@ -315,6 +315,25 @@ public class workSpace4 {
 
         System.out.println("compareTo test --------------");
 
+
+        System.out.println("Arrays.asList test --------------");
+
+//        int[] myArray = {1, 2, 3};
+//        List myList = Arrays.asList(myArray);
+//        System.out.println(myList.size());//1
+//        System.out.println(myList.get(0));//数组地址值
+//        System.out.println(myList.get(1));//报错：ArrayIndexOutOfBoundsException
+//        int[] array = (int[]) myList.get(0);
+//        System.out.println(array[0]);//1
+
+
+//        Integer[] myArray = {1, 2, 3};
+//        List myList = Arrays.asList(myArray);
+//        System.out.println(myList.size());//1
+//        System.out.println(myList.get(0));//数组地址值
+//        System.out.println(myList.get(1));//报错：ArrayIndexOutOfBoundsException
+//        Integer [] array = (Integer[]) myList.get(0);
+//        System.out.println(array[0]);//1
     }
 
     public class Person implements Comparable<Person>{
