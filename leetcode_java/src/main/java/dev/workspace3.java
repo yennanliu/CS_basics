@@ -5666,6 +5666,59 @@ public class workspace3 {
         return res;
     }
 
+    // LC 217
+    public boolean containsDuplicate(int[] nums) {
+        if (nums.length== 1){
+            return false;
+        }
+        HashSet set = new HashSet();
+        for (int i : nums){
+            if (set.contains(i)){
+                return true;
+            }
+            set.add(i);
+        }
+        return false;
 
+    }
+
+    // LC 2357
+    // brute force
+    /**
+     *  {idx : val}
+     *  {
+     *      0: 1,
+     *      1: 5,
+     *      3: 3,
+     *      4: 5
+     *  }
+     *
+     */
+    public int minimumOperations_1(int[] nums) {
+
+        if (nums.length == 0){
+            if (nums[0] == 0){
+                return 0;
+            }
+            return 1;
+        }
+
+        int res = 0;
+        //int i = 0;
+        for (int i = 0; i < nums.length; i++){
+            if (nums[i] != 0){
+                int[] sub = Arrays.copyOfRange(nums, i, nums.length-1);
+                int minVal = Arrays.stream(sub).min().getAsInt();
+                for (int j = i; j < nums.length; j++){
+                    if (nums[j] != 0){
+                        nums[j] -= minVal;
+                    }
+                }
+                res += 1;
+            }
+        }
+
+        return res;
+    }
 
 }
