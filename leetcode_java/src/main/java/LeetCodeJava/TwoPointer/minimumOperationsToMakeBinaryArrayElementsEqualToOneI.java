@@ -7,66 +7,53 @@ import java.util.Arrays;
 public class minimumOperationsToMakeBinaryArrayElementsEqualToOneI {
 
     // V0
-    // IDEA : BRUTE FORCE
-    // TODO : fix, implement
-//    public int minOperations(int[] nums) {
-//
-//        int res = 0;
-//
-//        if (nums.length == 3){
-//            if (Arrays.stream(nums).sum() == 0){
-//                return 1;
-//            }
-//            if (Arrays.stream(nums).sum() == 3){
-//                return 0;
-//            }
-//            return -1;
-//        }
-//
-//        int idx = 0;
-//
-//        // get 1st 0 element
-//        for (int j = 0; j < nums.length; j++){
-//            if (nums[j] == 0){
-//                idx = j;
-//                break;
-//            }
-//        }
-//
-//        System.out.println("idx = " + idx);
-//
-//        while (idx <= nums.length-3){
-//            idx = flip(nums, idx);
-//            res += 1;
-//            if (idx==-1){
-//                break;
-//            }
-//        }
-//
-//        System.out.println("---> nums =  " + Arrays.toString(nums) + ", idx = " + idx);
-//        //return idx == nums.length ? res : -1;
-//        return nums.length == Arrays.stream(nums).sum() ? res : -1;
-//    }
-//
-//    public int flip(int[] input, int idx){
-//        System.out.println("input =  " + Arrays.toString(input) + ", idx = " + idx);
-//        int zeroIdx = -1;
-//        for (int i = idx; i < idx+3; i++){
-//            if (input[i] == 0){
-//                input[i] = 1;
-//            }else{
-//                input[i] = 0;
-//                if (zeroIdx==-1){
-//                    zeroIdx = i;
-//                }
-//            }
-//        }
-//        if (zeroIdx == input.length){
-//            return input.length;
-//        }
-//        System.out.println("input =  " + Arrays.toString(input) + ", idx = " + idx + ", zeroIdx = " + zeroIdx);
-//        return zeroIdx;
-//    }
+    // IDEA :  2 POINTERS
+    public int minOperations(int[] nums) {
+
+        int res = 0;
+
+        /**
+         *  NOTE !!!
+         *
+         *  here we set up l, r as 2 pointers
+         *
+         *  l : index check if element is 0
+         *  r : check if pointer reach the end of array
+         */
+        int l = 0;
+        int r = 2;
+        while (r < nums.length){
+            if (nums[l] == 0){
+                /**
+                 *  NOTE !!!
+                 *
+                 *  here we use a tmp pointer j
+                 *  to check sub array value
+                 *  and do "flip" op
+                 */
+                for (int j = l; j <= l+2; j++){
+                    if (nums[j] == 0){
+                        nums[j] = 1;
+                    }else{
+                        nums[j] = 0;
+                    }
+                }
+                //System.out.println("nums =  " + Arrays.toString(nums));
+                res += 1;
+            }
+            r += 1;
+            l += 1;
+        }
+
+        // check if still has 0
+        for (int i = 0; i < nums.length; i++){
+            if (nums[i] == 0){
+                return -1;
+            }
+        }
+
+        return res;
+    }
 
     // V1
     // IDEA : 2 POINTERS

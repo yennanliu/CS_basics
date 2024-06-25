@@ -5575,6 +5575,40 @@ public class workspace3 {
         return zeroIdx;
     }
 
+    // LC 3191
+    // 2 pointers
+    public int minOperations_2(int[] nums) {
+
+        int res = 0;
+
+        int l = 0;
+        int r = 2;
+        while (r < nums.length){
+            if (nums[l] == 0){
+                for (int j = l; j <= l+2; j++){
+                    if (nums[j] == 0){
+                        nums[j] = 1;
+                    }else{
+                        nums[j] = 0;
+                    }
+                }
+                System.out.println("nums =  " + Arrays.toString(nums));
+                res += 1;
+            }
+            r += 1;
+            l += 1;
+        }
+
+        // check if still has 0
+        for (int i = 0; i < nums.length; i++){
+            if (nums[i] == 0){
+                return -1;
+            }
+        }
+
+        return res;
+    }
+
 
 
 }
