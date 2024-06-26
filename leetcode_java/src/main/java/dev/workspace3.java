@@ -5843,4 +5843,88 @@ public class workspace3 {
         return res;
     }
 
+    // LC 2177
+    /**
+     *  Given an integer num, return three consecutive integers (as a sorted array)
+     *  that sum to num. If num cannot be expressed as the sum of three consecutive
+     *  integers, return an empty array.
+     *
+     */
+    // 5.10 pm
+    /**
+     *  array = [1,2,3,4...... N]
+     *
+     *
+     */
+    public long[] sumOfThree(long num) {
+
+        long avg = num / 3;
+        System.out.println("avg = " + avg);
+
+        long long_1 = avg - 1L;
+        long long_2 = avg;
+        long long_3 = avg + 1L;
+
+        long[] res = new long[3];
+
+        boolean found = false;
+
+        if (isValid(long_1, long_1+1L, long_1+2L, num)){
+            res[0] = long_1;
+            res[1] = long_1+1L;
+            res[2] = long_1+2L;
+            found = true;
+        }else if (isValid(long_2, long_2+1L, long_2+2L, num)){
+            res[0] = long_2;
+            res[1] = long_2+1L;
+            res[2] = long_2+2L;
+            found = true;
+        }else if (isValid(long_3, long_3+1L, long_3+2L, num)){
+            res[0] = long_3;
+            res[1] = long_3+1L;
+            res[2] = long_3+2L;
+            found = true;
+        }
+
+        if (!found){
+            return new long[0];
+        }
+
+        return res;
+    }
+
+    public boolean isValid(long x, long y, long z, long num){
+        if (x + y + z  == num){
+            return true;
+        }
+        return false;
+    }
+
+    // LC 234
+    public boolean isPalindrome(ListNode head) {
+
+        if (head == null || head.next == null){
+            return true;
+        }
+
+        List<Integer> tmp = new ArrayList<>();
+        while (head != null){
+            tmp.add(head.val);
+            head = head.next;
+        }
+
+        System.out.println("tmp = " + tmp);
+        int l = 0;
+        int r = tmp.size()-1;
+        while (r > l){
+            if (!tmp.get(l).equals(tmp.get(r))){
+               return false;
+            }
+            l += 1;
+            r -= 1;
+        }
+
+        return true;
+    }
+
 }
