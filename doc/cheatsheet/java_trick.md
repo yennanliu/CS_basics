@@ -231,6 +231,27 @@ private String reverseString(String input){
 } 
 ```
 
+### 1-0-4-1) Sort String
+
+```java
+// java
+// LC 49
+
+/** NOTE !!!
+ *
+ *  We sort String via below op
+ *
+ *  step 1) string to char array
+ *  step 2) sort char array via "Arrays.sort"
+ *  step 3) char array to string (String x_str  = new String(x_array))
+ *
+ */
+String x = "cba";
+char[] x_array = x.toCharArray();
+Arrays.sort(x_array);
+String x_str  = new String(x_array);
+```
+
 
 ### 1-0-5) Access elements in a String
 ```java

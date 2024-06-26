@@ -50,6 +50,55 @@ public class GroupAnagrams {
         return String.valueOf(array);
     }
 
+    // V0'
+    // IDEA : HASH TABLE
+    public List<List<String>> groupAnagrams_0_1(String[] strs) {
+
+        List<List<String>> res = new ArrayList<>();
+        if (strs.length == 0){
+            List<String> val = new ArrayList<>();
+            val.add("");
+            res.add(val);
+            return res;
+        }
+
+        Map<String, List<String>> map = new HashMap<>();
+        for (String x : strs){
+            /** NOTE !!!
+             *
+             *  We sort String via below op
+             *
+             *  step 1) string to char array
+             *  step 2) sort char array via "Arrays.sort"
+             *  step 3) char array to string (String x_str  = new String(x_array))
+             *
+             */
+            char[] x_array = x.toCharArray();
+            Arrays.sort(x_array);
+            String x_str  = new String(x_array);
+            //System.out.println("x = " + x + " x_str = " + x_str);
+            if(!map.containsKey(x_str)){
+                List<String> val = new ArrayList<>();
+                val.add(x);
+                map.put(x_str, val);
+            }else{
+                List<String> cur = map.get(x_str);
+                cur.add(x);
+                map.put(x_str, cur);
+            }
+        }
+
+        //System.out.println("map = " + map);
+
+        for (String k : map.keySet()){
+            res.add(map.get(k));
+        }
+
+        //System.out.println("res = " + res);
+
+        return res;
+    }
+
     // V1
     // IDEA : Categorize by Sorted String
     // https://leetcode.com/problems/group-anagrams/editorial/
