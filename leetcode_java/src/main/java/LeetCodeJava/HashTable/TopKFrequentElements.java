@@ -153,6 +153,45 @@ public class TopKFrequentElements {
         return topK;
     }
 
+    // V0'''
+    // IDEA : PQ + MAP
+    public int[] topKFrequent_0_2(int[] nums, int k) {
+
+        if (nums.length == 1){
+            return nums;
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int x : nums){
+            Integer cnt = map.getOrDefault(x, 0);
+            map.put(x, cnt+1);
+        }
+
+        /** NOTE !!!
+         *
+         *  init a PQ with "REVERSE order" with map value
+         */
+        PriorityQueue<Integer> pq = new PriorityQueue<>((x, y) -> {
+            if(map.get(x) < map.get(y)){
+                return 1;
+            }else if (map.get(x) > map.get(y)){
+                return -1;
+            }
+            return 0;
+        });
+
+
+        for (int key : map.keySet()){
+            pq.add(key);
+        }
+
+        int[] res = new int[k];
+        for(int i = k - 1; i >= 0; --i) {
+            res[i] = pq.poll();
+        }
+        return res;
+    }
+
     // V1
     // IDEA : HEAP
     // https://leetcode.com/problems/top-k-frequent-elements/editorial/
