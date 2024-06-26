@@ -5806,4 +5806,41 @@ public class workspace3 {
         return res;
     }
 
+    // LC 128
+    public int longestConsecutive_2(int[] nums) {
+
+        if (nums.length <= 1){
+            return nums.length;
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for (int x: nums){
+            set.add(x);
+        }
+        Integer[] array = new Integer[set.size()];
+        int j = 0;
+        for(int y : set){
+            array[j] = y;
+            j += 1;
+        }
+
+        System.out.println("nums before sort = " + Arrays.toString(array));
+        Arrays.sort(array);
+        System.out.println("nums after sort = " + Arrays.toString(array));
+
+        int res = 1;
+        int l = 0;
+        int r = 1;
+        while (r < array.length){
+            if (array[r-1] + 1 != array[r]){
+                l = r;
+                //break;
+            }
+            res = Math.max(res, r-l+1);
+            r += 1;
+        }
+
+        return res;
+    }
+
 }
