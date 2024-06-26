@@ -5955,4 +5955,10 @@ public class workspace3 {
         return profit;
     }
 
+    // LC 3
+    public int lengthOfLongestSubstring_2(String s) {
+
+        return 0;
+    }
+
 }
