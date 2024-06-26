@@ -5760,4 +5760,50 @@ public class workspace3 {
         return res;
     }
 
+    // LC 347
+    // PQ
+    public int[] topKFrequent_2(int[] nums, int k) {
+
+        if (nums.length == 1){
+            return nums;
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int x : nums){
+            Integer cnt = map.getOrDefault(x, 0);
+            map.put(x, cnt+1);
+        }
+
+        // init a "big" PQ
+        //PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        // Queue<Integer> heap = new PriorityQueue<>((n1, n2) -> count.get(n1) - count.get(n2));
+        PriorityQueue<Integer> pq = new PriorityQueue<>((x, y) -> {
+             if(map.get(x) > map.get(y)){
+                 return 1;
+             }else if (map.get(x) < map.get(y)){
+                 return -1;
+             }
+             return 0;
+        });
+
+//        for(int val : map.values()){
+//           pq.add(val);
+//        }
+
+        for (int key : map.keySet()){
+            pq.add(key);
+            //if (pq.size()>)
+        }
+
+        System.out.println("map = " + map);
+        System.out.println("pq = " + pq);
+        int[] res = new int[k];
+        while(k > 0){
+            res[k] = pq.poll();
+            k -= 1;
+        }
+
+        return res;
+    }
+
 }
