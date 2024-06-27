@@ -8,3 +8,11 @@
 ### MySQL index
 - B+ tree as underline structure
 - https://javaguide.cn/database/mysql/mysql-index.html#%E7%B4%A2%E5%BC%95%E4%BB%8B%E7%BB%8D
+
+
+### MySQL `explain` (execution plan)
+- https://javaguide.cn/database/mysql/mysql-query-execution-plan.html#id
+
+
+### use `DateTime` or `TimeStamp` ?
+- https://javaguide.cn/database/mysql/some-thoughts-on-database-storage-time.html#%E6%97%B6%E5%8C%BA%E4%BF%A1%E6%81%AF
