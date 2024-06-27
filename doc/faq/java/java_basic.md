@@ -5,7 +5,7 @@
 - https://javaguide.cn/java/basis/java-basic-questions-01.html
 - https://cloud.tencent.com/developer/article/2183300
 - https://github.com/yennanliu/JavaHelloWorld/tree/main/doc/java_interview_guide_PDF-main
-
+- https://javabetter.cn/sidebar/sanfene/javase.html#_25-final%E3%80%81finally%E3%80%81finalize-%E7%9A%84%E5%8C%BA%E5%88%AB
 
 ### Java memoery model
 
@@ -308,3 +308,19 @@ LinkedList
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/mybatis_design_pattern.jpeg">
 
+
+ ### Throw vs throws
+ - https://matthung0807.blogspot.com/2018/02/java-throw-throws.html
+ - https://javabetter.cn/sidebar/sanfene/javase.html#_40-%E5%BC%82%E5%B8%B8%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F
+ 
+ ```java
+ // java
+ public String getUserName(int userId) throws SQLException { // 會將SQLException拋給caller（就是呼叫這個方法的程式）
+    
+    String userName = userDao.getUserName(userId);
+    if(userName == null){
+        throw new SQLException(); // 拋出一個SQLException例外
+    }
+
+}
+ ```
