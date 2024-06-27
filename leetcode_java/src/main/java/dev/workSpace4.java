@@ -344,6 +344,18 @@ public class workSpace4 {
         System.out.println(Arrays.toString(array_1));
         String array_1_str = array_1.toString().replace("0", "1");
         System.out.println(array_1_str);
+
+        System.out.println("sort string test --------------");
+
+        String my_str_1 = "bac";
+        System.out.println("my_str_1 before sort = " + my_str_1); // my_str_1 before sort = bac
+
+//        StringBuilder sb = new StringBuilder(my_str_1);
+//        System.out.println(sb.reverse().toString());
+
+        char[] char_array = my_str_1.toCharArray();
+        Arrays.sort(char_array);
+        System.out.println("my_str_1 after sort = " + new String(char_array)); // my_str_1 after sort = abc
     }
 
     public class Person implements Comparable<Person>{

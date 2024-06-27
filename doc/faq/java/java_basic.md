@@ -4,6 +4,7 @@
 
 - https://javaguide.cn/java/basis/java-basic-questions-01.html
 - https://cloud.tencent.com/developer/article/2183300
+- https://github.com/yennanliu/JavaHelloWorld/tree/main/doc/java_interview_guide_PDF-main
 
 
 ### Java memoery model
