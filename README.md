@@ -40,6 +40,7 @@
 	- [FAANG 面試準備經驗與建議（一）](https://arthur-lin.medium.com/faang-%E9%9D%A2%E8%A9%A6%E6%BA%96%E5%82%99%E7%B6%93%E9%A9%97%E8%88%87%E5%BB%BA%E8%AD%B0-%E4%B8%80-b7add6a7b9a6)
 	- [FAANG 面試準備經驗與建議（二）](https://arthur-lin.medium.com/faang-%E9%9D%A2%E8%A9%A6%E6%BA%96%E5%82%99%E7%B6%93%E9%A9%97%E8%88%87%E5%BB%BA%E8%AD%B0-%E4%BA%8C-%E6%A8%A1%E6%93%AC%E9%9D%A2%E8%A9%A6%E8%88%87%E8%B3%87%E6%BA%90%E4%BB%8B%E7%B4%B9-b06cc097b665)
 	- [LC 小知識](https://ithelp.ithome.com.tw/articles/10299626)
+	- [Meta SWE interview prep](https://www.metacareers.com/profile/trial/?redirect=job_details&chooseView=Arrays)
 	- 來和大家聊聊我是如何刷題的 : pt1, pt2, pt3
 		- https://blog.csdn.net/azl397985856/article/details/110358828
 		- https://mp.weixin.qq.com/s/guCR2DCTGoWf4ojeqq2M8A
