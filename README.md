@@ -749,6 +749,7 @@
 1979 |[Find Greatest Common Divisor of Array](https://leetcode.com/problems/find-greatest-common-divisor-of-array/) | [Python](./leetcode_python/Math/find-greatest-common-divisor-of-array.py) ||| Easy |GCD| not start
 2013 |[Detect Squares](https://leetcode.com/problems/detect-squares/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/DetectSquares.java) ||| Medium |math| not start
 3190 |[Find Minimum Operations to Make All Elements Divisible by Three](https://leetcode.com/problems/find-minimum-operations-to-make-all-elements-divisible-by-three/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/FindMinimumOperationsToMakeAllElementsDivisibleByThree.java) ||| Easy |LC weekly, math| OK
+3194|[Minimum Average of Smallest and Largest Elements](https://leetcode.com/problems/minimum-average-of-smallest-and-largest-elements/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/minimumAverageOfSmallestAndLargestElements.java) ||| Easy |LC weekly, math| OK
 
 
 ## Sort
