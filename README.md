@@ -328,6 +328,7 @@
 1275 | [Find Winner on a Tic Tac Toe Game](https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/) | [Python](./leetcode_python/Array/find-winner-on-a-tic-tac-toe-game.py) | | | Easy |`amazon`| AGAIN (not start)
 1567 | [Maximum Length of Subarray With Positive Product](https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/) | [Python](./leetcode_python/Array/maximum-length-of-subarray-with-positive-product.py) | | | Medium |good trick, array, dp, 2 pointers, amazon| AGAIN**** (1) (not start)
 1914 | [Cyclically Rotating a Grid](https://leetcode.com/problems/cyclically-rotating-a-grid/) | [Python](./leetcode_python/Array/cyclically-rotating-a-grid.py) | | | Medium |array, brute force, dequeue`amazon`| AGAIN (not start)
+3195 | [Find the Minimum Area to Cover All Ones I](https://leetcode.com/problems/find-the-minimum-area-to-cover-all-ones-i/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/findTheMinimumAreaToCoverAllOnesI.java)  | | | Medium |array, LC weekly| AGAIN (1)
 
 
 ## Set

@@ -5998,4 +5998,110 @@ public class workspace3 {
         return collected.get(0);
     }
 
+    // LC 3195
+    /**
+     *
+     *  Find a rectangle with horizontal and vertical sides with
+     *  the smallest area, such that all
+     *  the 1's in grid lie inside this rectangle.
+     *
+     */
+    /**
+     *  example 1)
+     *
+     *  grid = [
+     *      [0,1,0],
+     *      [1,0,1]
+     *   ]
+     *
+     *  -> 6
+     *
+     *
+     *  example 2)
+     *
+     *  grid = [
+     *      [0,0,0],
+     *      [0,0,0],
+     *      [0,0,0],
+     *      [1,0,1]
+     *    ]
+     *
+     */
+    // 2 pointers ?
+    // 4.15
+    public int minimumArea(int[][] grid) {
+
+        if (grid.length == 1 && grid[0].length == 1){
+            return 1;
+        }
+
+        // define x, y pointers, move x, y direction respectively
+        int x_start = -1;
+        int x_end = -1;
+        int y_start = -1;
+        int y_end = -1;
+
+        // y-direction
+        for (int i = 0; i < grid.length; i++){
+            if (Arrays.stream(grid[i]).filter(x -> x==1).count() > 0){
+                if(x_start == -1){
+                    x_start = i;
+                }else{
+                    //x_end = Math.max(i, x_end);
+                    x_end = i;
+                }
+            }
+        }
+
+        // x-direction
+        for (int j = 0; j < grid[0].length; j++){
+            int[] yArray = collectYArray(grid, j);
+            if (Arrays.stream(yArray).filter(x -> x==1).count() > 0){
+                if(y_start == -1){
+                    y_start = j;
+                }else{
+                    //y_end = Math.max(j, y_end);
+                    y_end = j;
+                }
+            }
+;        }
+
+        System.out.println("x_start = " + x_start +
+                ", x_end = " + x_end +
+                " y_start = " + y_start +
+                ", y_end = " + y_end
+        );
+
+//        if (x_end == -1){
+//            x_end = 0;
+//        }
+//
+//        if (y_end == -1){
+//            y_end = 0;
+//        }
+
+        if (x_start == -1 || y_start == -1) {
+            return 0;
+        }
+
+
+        if (x_end == -1) {
+            x_end = x_start;
+        }
+
+        if (y_end == -1) {
+            y_end = y_start;
+        }
+
+        return  (x_start - x_end + 1) * (y_end - y_start + 1);
+    }
+
+    public int[] collectYArray(int[][] grid, int x){
+        int[] res = new int[grid.length];
+        for (int y = 0; y < grid.length; y++){
+            res[y] = grid[y][x];
+        }
+        return res;
+    }
+
 }
