@@ -1093,6 +1093,7 @@
 1312| [Minimum Insertion Steps to Make a String Palindrome](https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/) | [Python](./leetcode_python/Dynamic_Programming/minimum-insertion-steps-to-make-a-string-palindrome.py) | _O(logn)_ | _O(1)_ | Hard |dp, amazon|  AGAIN (not start)
 1335| [Minimum Difficulty of a Job Schedule](https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/) | [Python](./leetcode_python/Dynamic_Programming/minimum-difficulty-of-a-job-schedule.py) | _O(logn)_ | _O(1)_ | Medium |`dp`, `amazon`| not start
 1799| [Maximize Score After N Operations](https://leetcode.com/problems/maximize-score-after-n-operations/) | [Python](./leetcode_python/Dynamic_Programming/maximize-score-after-n-operations.py) | _O(logn)_ | _O(1)_ | Medium |`dp`, `amazon`| not start
+3196| [ Maximize Total Cost of Alternating Subarrays](https://leetcode.com/problems/maximize-total-cost-of-alternating-subarrays/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/maximizeTotalCostOfAlternatingSubarrays.java)  | _O(logn)_ | _O(1)_ | Medium |`dp`, LC weekly| Again
  
 
 ## Greedy
