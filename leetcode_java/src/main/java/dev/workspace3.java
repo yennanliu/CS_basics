@@ -6104,4 +6104,76 @@ public class workspace3 {
         return res;
     }
 
+    // 6.40
+    // LC 3196
+    // https://leetcode.com/problems/maximize-total-cost-of-alternating-subarrays/description/
+    /**
+     *
+     *  A subarray is a contiguous non-empty sequence of elements within an array.
+     *
+     *
+     *  ex 1)
+     *   nums = [1,-2,3,4]
+     *
+     *   -> [1,2,3], [4]
+     *   -> 10
+     *
+     *
+     *  ex 2)
+     *
+     *  nums = [1,-1,1,-1]
+     *
+     *  -> [1,-1], [1,-1]
+     *  -> 4
+     *
+     *
+     */
+    public long maximumTotalCost(int[] nums) {
+
+        if (nums.length == 1){
+            //return Math.abs(nums[0]);
+            return nums[0];
+        }
+
+        if (nums.length == 2){
+            int v1 = nums[0] + nums[1];
+            int v2 = nums[0] - nums[1];
+            return Math.max(v1, v2);
+        }
+
+        Long res = 0L;
+
+        List<int []> cache = new ArrayList<>();
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < nums.length; i++){
+            if (nums[i] < 0){
+                queue.add(i);
+            }
+        }
+
+        System.out.println("queue = " + queue); // ?
+
+        int j = 0;
+        while (!queue.isEmpty()){
+            Integer idx = queue.poll();
+            cache.add(Arrays.copyOfRange(nums, j, idx+1));
+            j = idx+1;
+        }
+
+        if (j < nums.length){
+            cache.add(Arrays.copyOfRange(nums, j, nums.length));
+        }
+
+        System.out.println("------>");
+        //System.out.println("cache = " + String.join("\n", cache)); // ?
+        cache.stream().forEach(x -> {System.out.println(Arrays.toString(x));});
+
+        for (int[] item : cache){
+            int cur = Arrays.stream(item).map(x -> Math.abs(x)).sum();
+            res += cur;
+        }
+
+        return res;
+    }
+
 }
