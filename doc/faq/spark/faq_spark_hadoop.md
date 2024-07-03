@@ -386,3 +386,4 @@ rdd.groupByKey().mapValue(_.sum)
 - https://www.edureka.co/blog/interview-questions/top-apache-spark-interview-questions-2016/
 - https://data-flair.training/blogs/spark-rdd-operations-transformations-actions/
 - https://zhuanlan.zhihu.com/p/47499258
+- https://bbs.huaweicloud.com/blogs/326863
