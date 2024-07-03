@@ -284,3 +284,4 @@ Note : In kafka, the concept of "consumer group" offers the generic of mix above
 ## Ref
 - https://blog.csdn.net/ajianyingxiaoqinghan/article/details/107171104
 - https://so.csdn.net/so/search?spm=1001.2101.3001.4498&q=Kafka%E6%8A%80%E6%9C%AF%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93&t=&u=
+- https://github.com/IcyBiscuit/Java-Guide/blob/master/docs/system-design/distributed-system/message-queue/Kafka%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93.md
