@@ -6176,4 +6176,77 @@ public class workspace3 {
         return res;
     }
 
+    // LC 1007
+    // 5.30
+    /**
+     * Return the minimum number of rotations
+     * so that all the values in tops
+     * are the same, or all the values in bottoms are the same.
+     */
+    /**
+     * ex1)
+     *
+     * tops =    [2,1,2,4,2,2],
+     * bottoms = [5,2,6,2,3,2]
+     *
+     *
+     * ex 2)
+     *
+     * tops =    [3,5,1,2,3],
+     * bottoms = [3,6,3,3,4]
+     *
+     *
+     */
+    public int minDominoRotations(int[] tops, int[] bottoms) {
+
+        //if (tops.length == 2 && )
+
+        Map<Integer, Integer> map1 = new HashMap<>();
+        Map<Integer, Integer> map2 = new HashMap<>();
+        List<Integer[]> zip = new ArrayList<>();
+
+        int cnt = tops.length;
+
+        for (int j = 0; j < tops.length; j++){
+            Integer[] tmp = new Integer[2];
+            tmp[0] = tops[j];
+            tmp[1] = bottoms[j];
+            zip.add(tmp);
+        }
+
+
+        for(int i : tops){
+            //int cnt = map1.getOrDefault(i,0);
+            map1.put(i, map1.getOrDefault(i,0)+1);
+        }
+
+        for(int i : bottoms){
+            //int cnt = map1.getOrDefault(i,0);
+            map2.put(i, map2.getOrDefault(i,0)+1);
+        }
+
+        System.out.println("map1 = " + map1 + ", map2 = " + map2);
+        HashSet<Integer> candidates = new HashSet<>();
+
+        for (Integer[] item : zip){
+            System.out.println("item = " + item.toString());
+            if (map1.getOrDefault(item[0],0) + map2.getOrDefault(item[0],0) < cnt
+                    && map1.getOrDefault(item[1],0) +  map2.getOrDefault(item[1],0) < cnt){
+                return -1;
+            }
+            if (map1.getOrDefault(item[0],0) + map2.getOrDefault(item[0],0) >= cnt){
+                candidates.add(item[0]);
+            }
+            if (map1.getOrDefault(item[1],0) + map2.getOrDefault(item[1],0) >= cnt){
+                candidates.add(item[1]);
+            }
+        }
+
+        System.out.println("candidates = " + candidates);
+
+        return 0;
+
+    }
+
+
 }
