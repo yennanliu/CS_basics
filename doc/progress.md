@@ -1,5 +1,9 @@
 # Progress
 
+# 2024-07-04
+- https://github.com/yennanliu/CS_basics/blob/master/doc/Leetcode_company_frequency-master/Google%206months-%20LeetCode.pdf
+
+
 # 2022-12-26
 - ================
 - leetcode_company_V5/LC-goog.pdf
