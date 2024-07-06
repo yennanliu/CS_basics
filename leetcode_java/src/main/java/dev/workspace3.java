@@ -6248,5 +6248,11 @@ public class workspace3 {
 
     }
 
+    // LC 410
+    // https://leetcode.com/problems/split-array-largest-sum/description/
+    public int splitArray(int[] nums, int k) {
+
+        return 0;
+    }
 
 }
