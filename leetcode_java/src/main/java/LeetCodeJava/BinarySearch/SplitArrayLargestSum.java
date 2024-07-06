@@ -37,7 +37,9 @@ public class SplitArrayLargestSum {
         int chunks = 0, i=0;
         while(i < nums.length){
             int val = 0;
-            while(i < nums.length && nums[i] + val <= mid) val += nums[i++];
+            while(i < nums.length && nums[i] + val <= mid){
+                val += nums[i++];
+            };
             chunks++;
         }
         return chunks <= m;
