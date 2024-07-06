@@ -249,12 +249,57 @@ root = TreeNode(int(s))
 ```
 
 #### 1-1-2) Get node counts
-```python
-# get nodes count of binary tree
+```java
+// get nodes count of binary tree
 
-# get nodes count of perfect tree
+// get nodes count of perfect tree
 
-# get nodes count of complete tree
+// get nodes count of complete tree
+// LC 222
+
+// dfs
+class Solution {
+    public int countNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        // Recursively count the nodes in the left subtree
+        int leftCount = countNodes(root.left);
+
+        // Recursively count the nodes in the right subtree
+        int rightCount = countNodes(root.right);
+
+        // Return the total count (current node + left subtree + right subtree)
+        return 1 + leftCount + rightCount;
+    }
+}
+
+
+// bfs
+public int countNodes_2(TreeNode root) {
+
+    if (root == null){
+        return 0;
+    }
+    List<TreeNode> collected = new ArrayList<>();
+    Queue<TreeNode> q = new LinkedList<>();
+    q.add(root);
+    while (!q.isEmpty()){
+        TreeNode cur = q.poll();
+        collected.add(cur);
+        if (cur.left != null) {
+            q.add(cur.left);
+        }
+        if (cur.right != null) {
+            q.add(cur.right);
+        }
+    }
+
+    //return this.count;
+    System.out.println("collected = " + collected.toString());
+    return collected.size();
+}
 ```
 
 #### 1-1-3 -1) Get Maximum depth

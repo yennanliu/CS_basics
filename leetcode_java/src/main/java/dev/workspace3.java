@@ -1,5 +1,6 @@
 package dev;
 
+import LeetCodeJava.BackTrack.Subsets;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.Node;
 import LeetCodeJava.DataStructure.TreeNode;
@@ -6250,9 +6251,110 @@ public class workspace3 {
 
     // LC 410
     // https://leetcode.com/problems/split-array-largest-sum/description/
+    /**
+     *
+     *  ... such that the largest sum of any subarray is minimized.
+     *
+     *  A subarray is a contiguous part of the array.
+     */
+    /**
+     *  ex 1)
+     *
+     *  nums = [7,2,5,10,8], k = 2
+     *
+     *  -> can split nums as below
+     *  -> total 4 ways
+     *
+     *   - [7], [2,5,10,8] -> 7, 25
+     *   - [7,2], [5,10,8] -> 9, 23
+     *   - [7,2,5], [10,8] -> 14, 18
+     *   - [7,2,5,10], [8] -> 24, 8
+     *
+     */
     public int splitArray(int[] nums, int k) {
 
-        return 0;
+        if (nums.length == 1){
+            return nums[0];
+        }
+
+        int res = 0;
+        for (int i = 1; i < nums.length; i += 1){
+            System.out.println("i = " + i);
+            getSubArraySum(nums, i);
+        }
+
+        return res;
+    }
+
+    public List<Integer> getSubArraySum(int[] nums, int idx){
+        List<Integer> res = new ArrayList<>();
+        int len = nums.length;
+        if (nums.length == 0){
+            return res;
+        }
+        if (nums.length == 1){
+            res.add(nums[0]);
+            return res;
+        }
+        int[] leftArray = Arrays.copyOfRange(nums, 0, idx);
+        int[] rightArray = Arrays.copyOfRange(nums, idx, len);
+        Arrays.stream(leftArray).sum();
+        res.add(Arrays.stream(leftArray).sum());
+        res.add(Arrays.stream(rightArray).sum());
+        System.out.println("idx = " + idx + " res = " + res.toString());
+        return res;
+    }
+
+    // LC 222
+    // https://leetcode.com/problems/count-complete-tree-nodes/
+    //int count = 0;
+    // bfs
+    public int countNodes_2(TreeNode root) {
+
+        if (root == null){
+            return 0;
+        }
+        List<TreeNode> collected = new ArrayList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()){
+            TreeNode cur = q.poll();
+            collected.add(cur);
+            if (cur.left != null) {
+                q.add(cur.left);
+            }
+            if (cur.right != null) {
+                q.add(cur.right);
+            }
+        }
+
+        //return this.count;
+        System.out.println("collected = " + collected.toString());
+        return collected.size();
+    }
+
+    // dfs
+    //int count = 1;
+    public int countNodes(TreeNode root) {
+
+        if (root == null){
+            return 0;
+        }
+
+        //this.count += 1;
+
+//        if (root.left != null){
+//            return this.countNodes(root.left) + 1;
+//        }
+//
+//        if (root.right != null){
+//            return this.countNodes(root.right) + 1;
+//        }
+        int count = 1;
+        count += this.countNodes(root.left);
+        count += this.countNodes(root.right);
+
+        return count;
     }
 
 }
