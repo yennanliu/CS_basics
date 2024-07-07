@@ -356,6 +356,22 @@ public class workSpace4 {
         char[] char_array = my_str_1.toCharArray();
         Arrays.sort(char_array);
         System.out.println("my_str_1 after sort = " + new String(char_array)); // my_str_1 after sort = abc
+
+
+        System.out.println("alphabets test --------------");
+        String alphabets = "abcdefghijklmnopqrstuvwyz";
+        for (String alpha : alphabets.split("")){
+            System.out.println(alpha);
+        }
+
+        System.out.println("alphabets order --------------");
+        String a_ = "a";
+        String b_ = "b";
+        System.out.println(a_.compareTo(b_));
+        System.out.println(b_.compareTo(b_));
+        System.out.println(b_.compareTo(a_));
+
+
     }
 
     public class Person implements Comparable<Person>{
