@@ -1,12 +1,10 @@
 package dev;
 
-import LeetCodeJava.BackTrack.Subsets;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.Node;
 import LeetCodeJava.DataStructure.TreeNode;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 // https://javaguide.cn/java/concurrent/java-concurrent-questions-01.html#%E4%BD%95%E4%B8%BA%E7%BA%BF%E7%A8%8B
 
@@ -6355,6 +6353,76 @@ public class workspace3 {
         count += this.countNodes(root.right);
 
         return count;
+    }
+
+    // LC 1170
+    // 5.20
+    /**
+     * count the number of words in words
+     * such that f(queries[i]) < f(W) for each W in words.
+     */
+    public int[] numSmallerByFrequency(String[] queries, String[] words) {
+
+        Map<Integer, Integer> q_map = new HashMap<>();
+        Map<String, List<Integer>> w_map = new HashMap<>();
+
+
+        if (queries.length == 1 && words.length == 1){
+            String q = getSmallestChar(queries[0]);
+            String w = getSmallestChar(words[0]);
+
+            int q_cnt = getCharCount(q, queries[0]);
+            int w_cnt = getCharCount(w, words[0]);
+
+            return w_cnt > q_cnt ? new int[]{1} : new int[]{0};
+        }
+
+        Integer[] w_cnt = new Integer[words.length];
+        //Integer[] q_cnt = new Integer[queries.length];
+
+        for (String w : words){
+            String w_cur = getSmallestChar(w);
+            Integer w_cur_cnt = getCharCount(w_cur, w);
+            List<Integer> cur_cnt = w_map.getOrDefault(w_cur, new ArrayList<>());
+            cur_cnt.add(w_cur_cnt);
+            w_map.put(w_cur, cur_cnt);
+        }
+
+        System.out.println(">>> w_map = " + w_map);
+
+        //List<Integer> res = new ArrayList<>();
+        int[] res = new int[queries.length];
+
+        for (int i = 0; i < queries.length; i++){
+            String q = getSmallestChar(queries[i]);
+            res[i] = 1;
+        }
+
+        return res;
+    }
+
+    public String getSmallestChar(String input){
+        String alphabets = "abcdefghijklmnopqrstuvwyz";
+        //char[] charArr = input.toCharArray();
+        for (String alpha : alphabets.split("")){
+            //System.out.println(alpha);
+            if (input.contains(alpha)){
+                return alpha;
+            }
+        }
+
+        System.out.println("alphabet not matched");
+        return null;
+    }
+
+    public Integer getCharCount(String str, String input){
+        int res = 0;
+        for (String x : input.split("")){
+            if (x.equals(str)){
+                res += 1;
+            }
+        }
+        return res;
     }
 
 }
