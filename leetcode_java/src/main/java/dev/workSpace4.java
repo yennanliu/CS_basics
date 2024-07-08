@@ -367,10 +367,16 @@ public class workSpace4 {
         System.out.println("alphabets order --------------");
         String a_ = "a";
         String b_ = "b";
-        System.out.println(a_.compareTo(b_));
+        System.out.println("a_.compareTo(b_) = " + a_.compareTo(b_)); // -1
         System.out.println(b_.compareTo(b_));
-        System.out.println(b_.compareTo(a_));
+        System.out.println("b_.compareTo(a_) = " + b_.compareTo(a_)); // 1
 
+        System.out.println("alphabets reverse --------------");
+
+        String alphabets2 = "abcdefghijklmnopqrstuvwyz";
+        StringBuilder sb = new StringBuilder(alphabets2);
+        String alphabetsReversed = sb.reverse().toString();
+        System.out.println("alphabetsReversed = " + alphabetsReversed);
 
     }
 

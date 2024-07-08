@@ -10,12 +10,77 @@ import java.util.Map;
 public class CompareStringsByFrequencyOfTheSmallestCharacter {
 
     // V0
-    // TODO : implement & fix
-//    public int[] numSmallerByFrequency(String[] queries, String[] words) {
-//
-//        return null;
-//    }
+    // IDEA : HASH MAP + SORT + BINARY SEARCH (fixed by gpt)
+    public int[] numSmallerByFrequency(String[] queries, String[] words) {
 
+        int[] wordsFrequency = new int[words.length];
+        Map<String, Integer> frequencyMap = new HashMap<>();
+
+        // Calculate the frequency of the smallest character for each word and store in map
+        for (int i = 0; i < words.length; i++) {
+            wordsFrequency[i] = getFrequencyOfSmallestCharacter_(words[i], frequencyMap);
+        }
+
+        //System.out.println(">>> (before sort) wordsFrequency = " + Arrays.toString(wordsFrequency));
+
+        // sort, for binary search
+        Arrays.sort(wordsFrequency);
+        //System.out.println(">>> (after sort) wordsFrequency = " + Arrays.toString(wordsFrequency));
+
+        int[] result = new int[queries.length];
+
+        for (int i = 0; i < queries.length; i++) {
+            int queryFrequency = getFrequencyOfSmallestCharacter_(queries[i], frequencyMap);
+            result[i] = countGreater_(wordsFrequency, queryFrequency);
+        }
+
+        System.out.println(">>> result = " + Arrays.toString(result));
+
+        return result;
+    }
+
+    public int getFrequencyOfSmallestCharacter_(String word, Map<String, Integer> map){
+        int cnt = 1;
+        String prev = null;
+        for (String w : word.split("")){
+            //System.out.println("w = " + w + ", prev = " + prev + ", cnt = " + cnt);
+            if (prev == null){
+                prev = w;
+                cnt = 1;
+            }
+            else if (prev.compareTo(w) > 0){
+                prev = w;
+                cnt = 1;
+            }
+            else if (prev.equals(w)){
+                cnt += 1;
+            }
+        }
+        return cnt;
+    }
+
+    public int countGreater_(int[] wordFreq, int freq) {
+        // binary search (find bigger num idx)
+        int l = 0;
+        int r = wordFreq.length - 1;
+
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (wordFreq[mid] <= freq) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+
+        // After exiting the loop, `l` should be pointing to the first element greater than `freq`.
+        // If all elements are less than or equal to `freq`, `l` will be at the end of the array.
+        if (wordFreq[l] <= freq) {
+            return 0;
+        }
+
+        return wordFreq.length - l;
+    }
 
     // V1
     // IDEA : HASHMAP (gpt)

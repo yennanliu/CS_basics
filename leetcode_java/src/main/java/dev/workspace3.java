@@ -6425,4 +6425,93 @@ public class workspace3 {
         return res;
     }
 
+    // LC 1170
+    public int[] numSmallerByFrequency_2(String[] queries, String[] words) {
+
+        int[] wordsFrequency = new int[words.length];
+        Map<String, Integer> frequencyMap = new HashMap<>();
+
+        // Calculate the frequency of the smallest character for each word and store in map
+        for (int i = 0; i < words.length; i++) {
+            wordsFrequency[i] = getFrequencyOfSmallestCharacter(words[i], frequencyMap);
+        }
+
+        System.out.println(">>> (before sort) wordsFrequency = " + Arrays.toString(wordsFrequency));
+
+        // sort, for binary search
+        Arrays.sort(wordsFrequency);
+        System.out.println(">>> (after sort) wordsFrequency = " + Arrays.toString(wordsFrequency));
+
+        int[] result = new int[queries.length];
+
+        for (int i = 0; i < queries.length; i++) {
+            int queryFrequency = getFrequencyOfSmallestCharacter(queries[i], frequencyMap);
+            result[i] = countGreater(wordsFrequency, queryFrequency);
+        }
+
+
+        System.out.println(">>> result = " + Arrays.toString(result));
+
+        return result;
+    }
+
+    public int getFrequencyOfSmallestCharacter(String word, Map<String, Integer> map){
+        int cnt = 1;
+        String prev = null;
+        for (String w : word.split("")){
+            System.out.println("w = " + w + ", prev = " + prev + ", cnt = " + cnt);
+            if (prev == null){
+                prev = w;
+                cnt = 1;
+            }
+            else if (prev.compareTo(w) > 0){
+                prev = w;
+                cnt = 1;
+            }
+            else if (prev.equals(w)){
+                cnt += 1;
+            }
+        }
+        return cnt;
+    }
+
+//    private int countGreater(int[] arr, int value) {
+//        int left = 0, right = arr.length;
+//
+//        while (left < right) {
+//            int mid = left + (right - left) / 2;
+//            if (arr[mid] <= value) {
+//                left = mid + 1;
+//            } else {
+//                right = mid;
+//            }
+//        }
+//
+//        return arr.length - left;
+//    }
+
+    public int countGreater(int[] wordFreq, int freq){
+        // binary search (find bigger num idx)
+        int l = 0;
+        int r = wordFreq.length - 1; // TODO : check wordFreq.length - 1 or wordFreq.length ??
+        while (r > l){
+            int mid = (l + r) / 2;
+            if (wordFreq[mid] <= freq){
+                l = mid + 1;
+            }
+//            else if (wordFreq[mid] > freq){
+//                r = mid;
+//            }
+            else{
+                r = mid;
+            }
+
+            if (wordFreq[l] <= freq) {
+                return 0;
+            }
+        }
+
+        return wordFreq.length - l;
+    }
+
 }
