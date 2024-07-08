@@ -6514,4 +6514,43 @@ public class workspace3 {
         return wordFreq.length - l;
     }
 
+    // LC 482
+    // https://leetcode.com/problems/license-key-formatting/description/
+    /**
+     *
+     * We want to reformat the string s such that each group contains exactly k characters,
+     * except for the first group, which could be shorter than k but
+     * still must contain at least one character.
+     */
+    public String licenseKeyFormatting(String s, int k) {
+
+        if (s.length() == 1){
+            return s;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String x : s.split("")){
+            if (!x.equals("-")){
+                sb.append(x);
+            }
+        }
+        String s_ = sb.toString();
+        System.out.println("s_ = " + s_);
+
+        int remain = s_.length() % k;
+        int len = s_.length() / k;
+
+        StringBuilder sb2 = new StringBuilder();
+        sb2.append(s_, 0, remain);
+        sb2.append("-");
+
+        String s_2 = s_.substring(remain+1);
+        for (int i=0; i < s_2.length(); i+=len){
+            sb2.append(s_2, i, i+len);
+            sb2.append("-");
+        }
+
+        return sb2.toString();
+    }
+
 }
