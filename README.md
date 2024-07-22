@@ -632,7 +632,7 @@
 796| [Rotate String](https://leetcode.com/problems/rotate-string/) | [Python](./leetcode_python/String/rotate-string.py) | _O(n)_ | _O(1)_ | Easy  | good basic, `KMP Algorithm`, `Rabin-Karp Algorithm`,`amazon` | OK**** (2)(but again)
 804| [Unique Morse Code Words](https://leetcode.com/problems/unique-morse-code-words/) | [Python](./leetcode_python/String/unique-morse-code-words.py)  | _O(n)_ | _O(n)_ | Easy    || OK* 
 806| [Number of Lines To Write String](https://leetcode.com/problems/number-of-lines-to-write-string/) | [Python](./leetcode_python/String/number-of-lines-to-write-string.py) | _O(n)_ | _O(1)_ | Easy  || OK*
-809| [Expressive Words](https://leetcode.com/problems/expressive-words/) | [Python](./leetcode_python/String/expressive-words.py) | _O(n + s)_ | _O(l + s)_ | Medium  || AGAIN (not start)
+809| [Expressive Words](https://leetcode.com/problems/expressive-words/) | [Python](./leetcode_python/String/expressive-words.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/String/expressiveWords.java)  | _O(n + s)_ | _O(l + s)_ | Medium  |google, string| AGAIN (1)
 816| [Ambiguous Coordinates](https://leetcode.com/problems/ambiguous-coordinates/) | [Python](./leetcode_python/String/ambiguous-coordinates.py) | _O(n^4)_ | _O(n)_ | Medium   || AGAIN (not start*)
 819| [Most Common Word](https://leetcode.com/problems/most-common-word/) | [Python](./leetcode_python/String/most-common-word.py) | _O(m + n)_ | _O(m + n)_ | Easy  |`regular expression`, `amazon`| OK** (2)
 820| [Short Encoding of Words](https://leetcode.com/problems/short-encoding-of-words/) | [Python](./leetcode_python/String/short-encoding-of-words.py) | _O(n)_ | _O(t)_ | Medium | Trie | AGAIN (not start)

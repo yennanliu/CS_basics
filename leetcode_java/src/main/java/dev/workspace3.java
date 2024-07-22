@@ -6553,4 +6553,71 @@ public class workspace3 {
         return sb2.toString();
     }
 
+    //  LC 482
+    public String licenseKeyFormatting_2(String s, int k) {
+
+        return null;
+    }
+
+
+    // LC 809
+    /**
+     *
+     *  And add some number of characters c to the group so
+     *  that the size of the group is three or more.
+     */
+    public int expressiveWords(String s, String[] words) {
+
+        int ans = 0;
+
+        if (words.length == 0){
+            return 0;
+        }
+
+        Map<String, Integer> map = getCountMap(s);
+
+        List<Map<String, Integer>> list = new ArrayList<>();
+        for (String w: words){
+            Map<String, Integer> tmpMap = getCountMap(w);
+            System.out.println("tmpMap = " + tmpMap);
+            boolean canExpress = true;
+            int keyCnt = 0;
+
+            // s = "aaa", words = ["aaaa"]
+
+            for (String k : tmpMap.keySet()){
+                keyCnt += 1;
+                if (!map.containsKey(k)){
+                    canExpress = false;
+                    break;
+                }
+                if (tmpMap.get(k) < map.get(k) && map.get(k) < 3){
+                    canExpress = false;
+                    break;
+                }
+                if (tmpMap.get(k) > map.get(k)){
+                    canExpress = false;
+                    break;
+                }
+
+            }
+            if (canExpress && keyCnt == map.keySet().size()){
+                ans += 1;
+            }
+        }
+
+        System.out.println("map = " + map);
+
+        return ans;
+    }
+
+    private Map<String, Integer> getCountMap(String s){
+        Map<String, Integer> map = new HashMap<>();
+        for (String x : s.split("")){
+            map.put(x, map.getOrDefault(x, 0)+1);
+        }
+        return map;
+    }
+
+
 }
