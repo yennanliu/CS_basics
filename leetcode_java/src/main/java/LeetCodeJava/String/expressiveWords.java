@@ -65,8 +65,66 @@ public class expressiveWords {
 //    }
 
     // V1
+    // IDEA : (gpt)
+    /**
+     * 	2.	Stretchy Check:
+     * 	•	The isStretchy method checks if a word can be stretched to match the string s.
+     * 	•	It uses two pointers i and j to traverse through s and the word respectively.
+     * 	•	It compares the characters at i and j. If they don’t match, it returns false.
+     * 	•	If they match, it gets the length of the group of repeated characters starting from i in s (len1) and starting from j in the word (len2).
+     * 	•	It checks if len1 is less than len2 or if len1 is greater than len2 but less than 3, in which case it returns false.
+     * 	•	It moves the pointers i and j by len1 and len2 respectively.
+     *
+     *
+     * 	3.	Getting Repeated Length:
+     * 	•	The getRepeatedLength method calculates the length of the group of repeated characters starting from the given index.
+     *
+     */
+    public int expressiveWords_1(String s, String[] words) {
+        int count = 0;
+        for (String word : words) {
+            if (isStretchy(s, word)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private boolean isStretchy(String s, String word) {
+        int n = s.length();
+        int m = word.length();
+        int i = 0, j = 0;
+
+        while (i < n && j < m) {
+            if (s.charAt(i) != word.charAt(j)) {
+                return false;
+            }
+
+            int len1 = getRepeatedLength(s, i);
+            int len2 = getRepeatedLength(word, j);
+
+            if ((len1 < len2) || (len1 > len2 && len1 < 3)) {
+                return false;
+            }
+
+            i += len1;
+            j += len2;
+        }
+
+        return i == n && j == m;
+    }
+
+    private int getRepeatedLength(String str, int index) {
+        int start = index;
+        while (index < str.length() && str.charAt(index) == str.charAt(start)) {
+            index++;
+        }
+        return index - start;
+    }
+
+    // V2
     // https://leetcode.com/problems/expressive-words/solutions/4729707/java-easy-100-solution-easy-to-understand/
-    public int expressiveWords_1(final String s, final String[] words) {
+    public int expressiveWords_2(final String s, final String[] words) {
         int count = 0;
 
         for(final String word : words)
@@ -108,9 +166,9 @@ public class expressiveWords {
         return i >= s.length() && j >= word.length();
     }
 
-    // V2
+    // V3
     // https://leetcode.com/problems/expressive-words/solutions/1850024/java-solution-using-frequency-lists/
-    public int expressiveWords_2(String s, String[] words) {
+    public int expressiveWords_3(String s, String[] words) {
 
         int expressive = 0;
 
