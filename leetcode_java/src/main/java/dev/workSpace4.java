@@ -378,6 +378,14 @@ public class workSpace4 {
         String alphabetsReversed = sb.reverse().toString();
         System.out.println("alphabetsReversed = " + alphabetsReversed);
 
+
+        System.out.println("reverse loop --------------");
+        int[] mydata = new int[]{1,2,3};
+        for (int i = mydata.length-1; i >= 0; i--){
+            System.out.println(mydata[i]);
+        }
+
+
     }
 
     public class Person implements Comparable<Person>{

@@ -6619,5 +6619,84 @@ public class workspace3 {
         return map;
     }
 
+    // LC 315
+    // 6.28
+    public List<Integer> countSmaller(int[] nums) {
+
+        List<Integer> res = new ArrayList<>();
+
+        if (nums.length == 1){
+            res.add(0);
+            return res;
+        }
+
+        if (nums.length == 2){
+            if (nums[0] > nums[1]){
+                res.add(1);
+            }else{
+                res.add(0);
+            }
+            res.add(0);
+            return res;
+        }
+
+        // V1 : brute force (TLE)
+//        for (int i = 0; i < nums.length-1; i++){
+//            int cnt = 0;
+//            for (int j = i+1; j < nums.length; j++){
+//                if (nums[j] < nums[i]){
+//                    cnt += 1;
+//                }
+//            }
+//            System.out.println("i = " + i + ", cnt = " + cnt);
+//            res.add(cnt);
+//        }
+
+        // V2 : sub array + binary search
+        /**
+         *  {5: 0, 2: 1, 6:2, 1: 3}
+         *
+         *  from right to left, (pass last element)
+         *
+         *  5,2,6,  1 -> [1]
+         *  5,2    6,1, reorder, -> [1,1]
+         *  5,    2,6,1, reorder, 1,2,6, find smaller element cnt via binary search -> [2]
+         *
+         */
+        for (int i = nums.length-1; i >= 0; i--){
+            //int cnt2 = 0;
+            int[] subNums = Arrays.copyOfRange(nums, i, nums.length);
+            // ascending order
+            Arrays.sort(subNums);
+            // binary search
+            int cnt2 = getSmallerCnt(subNums, nums[i]);
+            res.add(cnt2);
+            System.out.println("subNums = " + subNums + ", i = " + i + ", cnt2 = " + cnt2);
+            //res.add(cnt);
+        }
+
+        res.add(0);
+        return res;
+    }
+
+    private int getSmallerCnt(int[] input, int value){
+        int left = 0;
+        int right = input.length-1;
+        int mid = 0;
+        while (right > left){
+            mid = (left + right) / 2;
+            if (value < input[mid+1] && value > input[mid]){
+                return mid+1;
+            }
+            if (value < input[mid]){
+                left = mid+1;
+            }
+            else if (value > input[mid]){
+                right = mid;
+            }
+        }
+        return mid+1;
+    }
+
 
 }
