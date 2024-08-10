@@ -7,7 +7,39 @@ import java.util.*;
 public class countOfSmallerNumbersAfterSelf {
 
     // V0
-    // TODO : implement
+    // IDEA : BINARY SEARCH (fixed by GPT)
+    public List<Integer> countSmaller(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        List<Integer> sortedList = new ArrayList<>();
+
+        // Iterate from right to left
+        for (int i = nums.length - 1; i >= 0; i--) {
+            int pos = findInsertPosition_(sortedList, nums[i]);
+            res.add(pos);
+            sortedList.add(pos, nums[i]);
+        }
+
+        // Reverse the result list because we populated it in reverse order
+        Collections.reverse(res);
+        return res;
+    }
+
+    private int findInsertPosition_(List<Integer> sortedList, int target) {
+        int left = 0;
+        int right = sortedList.size();
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (sortedList.get(mid) >= target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return left;
+    }
+
 
     // V1
     // IDEA : BINARY SEARCH (GPT)
