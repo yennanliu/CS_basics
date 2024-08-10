@@ -50,17 +50,47 @@ public class countOfSmallerNumbersAfterSelf {
     }
 
     // Helper method to find the insert position using binary search
+    /**
+     *  The findInsertPosition method is designed to find the correct position in the sortedList
+     *  where the target number should be inserted to maintain the list’s sorted order. (Ascending order!!!)
+     *
+     *  NOTE !!! -> This position also represents the number of elements in sortedList that are smaller than target.
+     */
     private int findInsertPosition(List<Integer> sortedList, int target) {
+
+        /**
+         *  left: The starting index of the range we are considering. Initially set to 0.
+         * 	right: The ending index of the range we are considering. Initially set to sortedList.size() (which is one past the last valid index).
+         */
         int left = 0;
         int right = sortedList.size();
 
+        /**
+         *  Loop Termination:
+         *   The loop continues until left and right converge on the same index.
+         *   This index represents the correct position to insert target.
+         */
         while (left < right) {
             int mid = left + (right - left) / 2;
-            // sortedList[mid] >= target
+
+            /**
+             *  sortedList[mid] >= target
+             *
+             *   -> If the element at mid is greater than or equal to target,
+             *     it means target should be inserted before mid (or at mid),
+             *     so we move the right pointer to mid.
+             */
             if (sortedList.get(mid) >= target) {
                 right = mid;
             }
-            // sortedList[mid] < target
+
+            /**
+             *  sortedList[mid] < target
+             *
+             *   -> If the element at mid is less than target,
+             *      it means target should be inserted after mid.
+             *      Thus, we move the left pointer to mid + 1.
+             */
             else {
                 left = mid + 1;
             }
