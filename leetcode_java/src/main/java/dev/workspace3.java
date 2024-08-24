@@ -6698,5 +6698,32 @@ public class workspace3 {
         return mid+1;
     }
 
+    // LC 359
+    // https://leetcode.ca/2016-11-23-359-Logger-Rate-Limiter/
+    // https://leetcode.com/problems/logger-rate-limiter/description/
+    class Logger {
+
+        private Map<String, Integer> limiter;
+
+        /** Initialize your data structure here. */
+        public Logger() {
+            limiter = new HashMap<>();
+        }
+
+        public boolean shouldPrintMessage(int timestamp, String message) {
+            if (this.limiter.containsKey(message)){
+                this.limiter.put(message, timestamp+10);
+                return true;
+            }
+            int canPrintTime = this.limiter.get(message);
+            if (timestamp > canPrintTime){
+                return true;
+            }
+            return false;
+        }
+    }
+
+
+
 
 }
