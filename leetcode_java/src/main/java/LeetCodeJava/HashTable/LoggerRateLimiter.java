@@ -62,7 +62,7 @@ public class LoggerRateLimiter {
         }
 
         public boolean shouldPrintMessage(int timestamp, String message) {
-            if (this.limiter.containsKey(message)){
+            if (!this.limiter.containsKey(message)){
                 this.limiter.put(message, timestamp+10);
                 return true;
             }
