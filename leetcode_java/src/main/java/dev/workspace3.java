@@ -6880,6 +6880,46 @@ public class workspace3 {
         }
     }
 
+    // LC 1055
+    // https://leetcode.ca/all/1055.html
+    // bfs
+    public int shortestWay(String source, String target) {
 
+        // check if target has element NOT existrd in soruce
+        Set<String> srcSet = new HashSet<>();
+        Set<String> targetSet = new HashSet<>();
+        for (String t : target.split("")){
+            targetSet.add(t);
+        }
+        for (String s : source.split("")){
+            if (!targetSet.contains(s)){
+                return -1;
+            }
+            srcSet.add(s);
+        }
+
+        int cnt = 0;
+
+        // count num of concatenation
+        // sliding window (?)
+        int l = 0;
+        //int r = 0;
+        String[] targetArr = target.split("");
+        String[] srcArr = source.split("");
+
+        while (l < target.length()){
+            int r = l;
+            String t_val = targetArr[l];
+            String s_val = targetArr[l];
+            int srcIdx = source.indexOf(t_val);
+            while (t_val.equals(s_val)){
+                r += 1;
+            }
+            cnt += 1;
+            l = r;
+        }
+
+        return cnt;
+    }
 
 }
