@@ -6723,6 +6723,162 @@ public class workspace3 {
         }
     }
 
+    // LC 1057
+    // https://leetcode.ca/all/1057.html
+    // 6.50 pm
+    /**
+     *
+     *  NOTE !!
+     *  Return an array answer of length n, where answer[i] is the
+     *  index (0-indexed) of the bike that the ith worker is assigned to.
+     */
+    /**
+     *  example 1 :
+     *
+     *  Input: workers = [[0,0],[2,1]], bikes = [[1,2],[3,3]]
+     *  Output: [1,0]
+     *          1: bike 0 is assigned to worker 1
+     *          0: bike 1 is assigned to worker 0
+     *
+     *  ->
+     *
+     *  worker-bike :
+     *    0-0 : 3
+     *    0-1 : 6
+     *    1-0 : 2
+     *    1-1 : 3
+     *
+     *  -> so, after ordering,
+     *   0-0 : 3
+     *   1-1 : 3
+     *   1-0 : 2
+     *   0-1 : 6
+     *
+     *  -> so,
+     *
+     *
+     */
+    public int[] assignBikes(int[][] workers, int[][] bikes) {
+        // step 1) get bike - worker distance
+        List<bikeWorkerDist> distances = new ArrayList<>();
+        List<Integer> result = new ArrayList<>();
+        int bikeId = 0;
+        int workerId = 0;
+        for (int[] bike : bikes){
+            for (int[] worker : workers){
+                int x1 = bike[0];
+                int y1 = bike[1];
+                int x2 = worker[0];
+                int y2 = worker[1];
+                int dist = getManhattanDist(x1,y1,x2,y2);
+                distances.add(new bikeWorkerDist(worker, bike, bikeId, workerId, dist));
+
+                bikeId += 1;
+                workerId += 1;
+            }
+        }
+
+        System.out.println("distances = " + distances);
+
+
+        // step 2) sorting
+        distances.sort(new Comparator<bikeWorkerDist>() {
+            @Override
+            public int compare(bikeWorkerDist o1, bikeWorkerDist o2) {
+                if (o1.dist < o2.dist){
+                    return 1;
+                }
+                if (o1.dist > o2.dist){
+                    return -1;
+                }
+                // if same dist, choose smallest worker id
+                if (o1.dist == o2.dist){
+                    if (o1.getWorkerId() < o2.getWorkerId()){
+                        return 1;
+                    }  if (o1.getWorkerId() > o2.getWorkerId()){
+                        return -1;
+                    }
+
+                    // if still same, choose smallest bike id
+                    if (o1.getBikeId() > o2.getBikeId()){
+                        return 1;
+                    }
+                    return -1;
+                }
+                // TODO : double check
+                return -1;
+            }
+        });
+
+
+        // step 3) prepare ans
+        return null;
+    }
+
+    private int getManhattanDist(int x1, int y1, int x2, int y2){
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+
+    class bikeWorkerDist{
+        private int[] worker;
+        private int[] bike;
+
+        private int workerId;
+        private int bikeId;
+
+        public int getWorkerId() {
+            return workerId;
+        }
+
+        public void setWorkerId(int workerId) {
+            this.workerId = workerId;
+        }
+
+        public int getBikeId() {
+            return bikeId;
+        }
+
+        public void setBikeId(int bikeId) {
+            this.bikeId = bikeId;
+        }
+
+        private int dist;
+
+        public bikeWorkerDist(){
+
+        }
+        public bikeWorkerDist(int[] worker, int[] bike, int workerId, int bikeId, int dist){
+            this.worker = worker;
+            this.bike = bike;
+            this.workerId = workerId;
+            this.bikeId = bikeId;
+            this.dist = dist;
+        }
+
+        public int[] getWorker() {
+            return worker;
+        }
+
+        public void setWorker(int[] worker) {
+            this.worker = worker;
+        }
+
+        public int[] getBike() {
+            return bike;
+        }
+
+        public void setBike(int[] bike) {
+            this.bike = bike;
+        }
+
+        public int getDist() {
+            return dist;
+        }
+
+        public void setDist(int dist) {
+            this.dist = dist;
+        }
+    }
 
 
 
