@@ -3,6 +3,7 @@ package dev;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.Node;
 import LeetCodeJava.DataStructure.TreeNode;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,6 @@ public class workspace3 {
 //        System.out.println(n1 + " in binary is: " + binary1);
 //        System.out.println(n2 + " in binary is: " + binary2);
 //        System.out.println(n3 + " in binary is: " + binary3);
-
 
 
 //        // Small PQ (default min-heap)
@@ -192,7 +192,7 @@ public class workspace3 {
                 plus = 1;
                 cur -= 2;
             }
-           sb.append(cur);
+            sb.append(cur);
         }
 
         if (plus != 0){
@@ -376,11 +376,11 @@ public class workspace3 {
         root.left = this.buildTree(
                 Arrays.copyOfRange(inorder, 0, root_idx),
                 Arrays.copyOfRange(postorder, 0, root_idx)
-                );
+        );
         root.right = this.buildTree(
                 Arrays.copyOfRange(inorder, root_idx+1, inorder.length),
                 Arrays.copyOfRange(postorder, root_idx, postorder.length-1)
-                );
+        );
 
         return root;
     }
@@ -522,6 +522,7 @@ public class workspace3 {
 
     // LC 98
     // dfs
+
     /**
      *
      * A valid BST is defined as follows:
@@ -569,7 +570,6 @@ public class workspace3 {
         if (nums.length == 1 || nums.length == k){
             return nums;
         }
-
 
 
         Map<Integer, Integer> map = new HashMap<>();
@@ -653,7 +653,7 @@ public class workspace3 {
         //Queue<Integer> heap = new PriorityQueue<>((n1, n2) -> count.get(n1) - count.get(n2));
         Queue<Integer> heap = new PriorityQueue<>(
                 // (a, b) -> a.getValue() - b.getValue()
-                (a,b) -> a - b
+                (a, b) -> a - b
         );
 
         /** NOTE !!! here */
@@ -819,6 +819,7 @@ public class workspace3 {
     // LC 207
     // dfs ?
     // 0930 am
+
     /**
      *  prerequisites[i] = [ai, bi]
      *  indicates that
@@ -827,44 +828,44 @@ public class workspace3 {
      */
     public boolean canFinish(int numCourses, int[][] prerequisites) {
 
-         if (numCourses == 0 && prerequisites.length == 0){
-             return true;
-         }
+        if (numCourses == 0 && prerequisites.length == 0){
+            return true;
+        }
 
         if (prerequisites.length == 0){
             return true;
         }
 
-         Map<Integer, List<Integer>> map = new HashMap<>();
+        Map<Integer, List<Integer>> map = new HashMap<>();
 
-         for (int[] x : prerequisites){
-             if (!map.containsKey(x[0])){
-                 List<Integer> cur = new ArrayList<>();
-                 cur.add(x[1]);
-                 map.put(x[0], cur);
-             }else{
-                 List<Integer> cur = map.get(x[0]);
-                 cur.add(x[1]);
-                 map.put(x[0], cur);
-             }
-         }
+        for (int[] x : prerequisites){
+            if (!map.containsKey(x[0])){
+                List<Integer> cur = new ArrayList<>();
+                cur.add(x[1]);
+                map.put(x[0], cur);
+            }else{
+                List<Integer> cur = map.get(x[0]);
+                cur.add(x[1]);
+                map.put(x[0], cur);
+            }
+        }
 
-         System.out.println("map = " + map);
+        System.out.println("map = " + map);
 
-         int[] visited = new int[numCourses];
+        int[] visited = new int[numCourses];
 //         for (int i = 0; i < numCourses; i++){
 //             visited[i] = 0;
 //         }
 
-         int res = 0;
+        int res = 0;
 
-         for (int i = 0; i < numCourses; i++){
-             if (! this._help_check(i, visited, map, res)){
-                 return false;
-             }
-         }
+        for (int i = 0; i < numCourses; i++){
+            if (! this._help_check(i, visited, map, res)){
+                return false;
+            }
+        }
 
-         return res > 0;
+        return res > 0;
     }
 
     public boolean _help_check(int courseId, int[] visited, Map<Integer, List<Integer>> map, int res){
@@ -1233,7 +1234,7 @@ public class workspace3 {
     // LC 323
     public int countComponents_1(int n, int[][] edges){
 
-        
+
         return 0;
     }
 
@@ -1242,6 +1243,7 @@ public class workspace3 {
     //int res = 0;
     List<List<Integer>> cache = new ArrayList<>();
     int minCnt = -1;
+
     public int coinChange(int[] coins, int amount) {
 
         if (coins.length == 1) {
@@ -1321,7 +1323,7 @@ public class workspace3 {
         //String bin = Integer.toBinaryString(n);
 //        // reverse
 //        System.out.println("bin = " + bin);
-          String res = reverse(String.valueOf(n));
+        String res = reverse(String.valueOf(n));
 //        System.out.println("res = " + res);
 
         int ans = Integer.parseInt(res, 2);
@@ -1472,9 +1474,9 @@ public class workspace3 {
             }
             // case 3 : overlap
             else{
-               int[] last = tmp.get(tmp.size()-1);
-               tmp.remove(tmp.size()-1);
-               tmp.add(new int[]{Math.min(last[0], x[0]), Math.max(last[1], x[1])});
+                int[] last = tmp.get(tmp.size()-1);
+                tmp.remove(tmp.size()-1);
+                tmp.add(new int[]{Math.min(last[0], x[0]), Math.max(last[1], x[1])});
             }
         }
 
@@ -1528,13 +1530,13 @@ public class workspace3 {
         if (nums.length==1){
             return nums[0];
         }
-        
+
         int res = -1 * Integer.MAX_VALUE;
         int cur = 0;
         //List<Integer> cache = new ArrayList<>();
         int l = 0;
         int r = 0;
-        
+
         while (r < nums.length){
             System.out.println("l = " + l + " r = " + r + " cur = " + cur + " res = " + res);
             int updated = cur + nums[r];
@@ -1649,6 +1651,7 @@ public class workspace3 {
 
     // LC 300
     // DP ?
+
     /**
      * A subsequence is an array that
      * can be derived from another array by deleting some or
@@ -1830,6 +1833,7 @@ public class workspace3 {
             cur.remove(cur.size() - 1); // Undo the last addition
         }
     }
+
     public int getSum(List<Integer> cur) {
         int res = 0;
         for (int x : cur) {
@@ -1880,6 +1884,7 @@ public class workspace3 {
     }
 
     // LC 417
+
     /**
      * Return a 2D list of grid coordinates result where result[i] = [ri, ci]
      * Denotes that rain water can flow from cell (ri, ci) to both the Pacific and Atlantic oceans.
@@ -2126,6 +2131,7 @@ public class workspace3 {
     }
 
     // LC 153
+
     /**
      * Suppose an array of length n sorted in ascending order is rotated
      * between 1 and n times. For example,
@@ -2200,6 +2206,7 @@ public class workspace3 {
 
     // LC 152
     // A subarray is a contiguous non-empty sequence of elements within an array.
+
     /**
      *  dp
      *
@@ -2226,9 +2233,9 @@ public class workspace3 {
             dp[1] = nums[0] * nums[1];
         }
         if (nums[0] == 0 || nums[1] == 0){
-           if (nums[0] == 0){
-               dp[0] = 0;
-           }
+            if (nums[0] == 0){
+                dp[0] = 0;
+            }
         }
 
 
@@ -2460,6 +2467,7 @@ public class workspace3 {
     }
 
     // LC 143
+
     /**
      *
      *
@@ -2565,6 +2573,7 @@ public class workspace3 {
     }
 
     // LC 268
+
     /**
      *  n = 3
      *  so sum_ = ((1+3)/ 2 ) * 3 = 6
@@ -2589,6 +2598,7 @@ public class workspace3 {
     // LC 139
     // backtrack
     boolean found = false;
+
     public boolean wordBreak(String s, List<String> wordDict) {
 
         if (wordDict.size() == 1){
@@ -2836,6 +2846,7 @@ public class workspace3 {
     // s consists of English letters, digits, symbols and spaces.
     // 2 pointers
     // 5.10
+
     /**
      *  s = "abcabcbb"
      *       l
@@ -2878,6 +2889,7 @@ public class workspace3 {
 
     // LC 128
     // 2 pointers
+
     /**
      *
      *  example 1 :
@@ -3095,6 +3107,7 @@ public class workspace3 {
     }
 
     // LC 133
+
     /**
      * Given a reference of a node in a connected undirected graph.
      *
@@ -3222,6 +3235,7 @@ public class workspace3 {
     }
 
     // LC 582
+
     /**
      *  Input:
      * pid =  [1, 3, 10, 5]
@@ -3296,24 +3310,25 @@ public class workspace3 {
         q.add(kill);
         //List<Integer> ans = new ArrayList<>();
         while (q.isEmpty()){
-           int cur = q.poll();
-          // ans.add(cur);
-           if (ppid.contains(cur)){
-               for (int j = 0; j < ppid.size(); j+=1){
-                   if (ppid.get(j) == cur){
-                       List<Integer> list_ = map.get(ppid.get(j));
-                       list_.add(ppid.get(j));
-                       map.put(ppid.get(j),list_);
-                       q.add(pid.get(j));
-                   }
-               }
-           }
+            int cur = q.poll();
+            // ans.add(cur);
+            if (ppid.contains(cur)){
+                for (int j = 0; j < ppid.size(); j+=1){
+                    if (ppid.get(j) == cur){
+                        List<Integer> list_ = map.get(ppid.get(j));
+                        list_.add(ppid.get(j));
+                        map.put(ppid.get(j),list_);
+                        q.add(pid.get(j));
+                    }
+                }
+            }
         }
         System.out.println("map = " + map);
         return map.get(kill);
     }
 
     // LC 146
+
     /**
      * Design a data structure
      * that follows the constraints
@@ -3371,8 +3386,7 @@ public class workspace3 {
                 ans[0] = l+1;
                 ans[1] = r+1;
                 return ans;
-            }
-            else if (cur_s < target){
+            } else if (cur_s < target){
                 l += 1;
             }else{
                 r -= 1;
@@ -3382,6 +3396,7 @@ public class workspace3 {
     }
 
     // LC 121
+
     /**
      *  prices = [7,1,5,3,6,4]
      *
@@ -3430,6 +3445,7 @@ public class workspace3 {
     }
 
     // LC 567
+
     /**
      * Given two strings s1 and s2,
      *
@@ -3461,7 +3477,7 @@ public class workspace3 {
                 String cur = String.valueOf(s2.charAt(r));
                 map.put(String.valueOf(r), map.getOrDefault(r, 0)+1);
                 System.out.println("l = " + l + ", r = " + r + ", map = " + map);
-               // l = r;
+                // l = r;
                 r += 1;
                 // reset map
                 //map = new HashMap<>();
@@ -3530,6 +3546,7 @@ public class workspace3 {
 
     // LC 150
     // 4.35
+
     /**
      *  example 1)
      *
@@ -3645,6 +3662,7 @@ public class workspace3 {
 
     // LC 22
     // 5.20
+
     /**
      *  example 1)
      *
@@ -3714,6 +3732,7 @@ public class workspace3 {
 //    }
 
     // LC 739
+
     /**
      *
      *  tmps = [73,74,75,71,69,72,76,73]
@@ -3811,6 +3830,7 @@ public class workspace3 {
     }
 
     // LC 143
+
     /**
      *  step 1) get len, and split listNode to left half, right half
      *
@@ -3964,6 +3984,7 @@ public class workspace3 {
     // Given a binary tree, determine if it is
     // height-balanced
     //.
+
     /**
      * A height-balanced binary tree
      * is a binary tree in which the depth of the
@@ -4107,6 +4128,7 @@ public class workspace3 {
     }
 
     // LC 496
+
     /**
      *  example 1)
      *
@@ -4156,6 +4178,7 @@ public class workspace3 {
     // step 2) check if  elements in path < X
     // step 3) return res
     int goodNodeCnt = 0;
+
     public int goodNodes(TreeNode root) {
 
         if (root == null){
@@ -4294,6 +4317,7 @@ public class workspace3 {
     }
 
     // LC 621
+
     /**
      *  Input: tasks = ["A","A","A","B","B","B"], n = 2
      *
@@ -4403,6 +4427,7 @@ public class workspace3 {
 
     // LC 496
     // stack + map
+
     /**
      *
      *  Example 1)
@@ -4485,6 +4510,7 @@ public class workspace3 {
 
     // LC 739
     // stack
+
     /**
      *  Example 1)
      *
@@ -4604,6 +4630,7 @@ public class workspace3 {
      */
     // 2.33
     int cnt = 0;
+
     public int goodNodes2(TreeNode root) {
 
         if (root.left == null && root.right == null){
@@ -4808,6 +4835,7 @@ public class workspace3 {
     // 1 <= n <= 8
     // 3.30
     List<String> res_ = new ArrayList<>();
+
     public List<String> generateParenthesis2(int n) {
 
         //List<String> res = new ArrayList<>();
@@ -5025,6 +5053,7 @@ public class workspace3 {
      *
      */
     int connectCnt = 0;
+
     public int countComponents_3(int n, int[][] edges) {
 
         if (n == 1){
@@ -5203,6 +5232,7 @@ public class workspace3 {
 
     // LC 684
     // graph
+
     /**
      * example 1)
      *
@@ -5266,10 +5296,10 @@ public class workspace3 {
                 continue;
             }
             if (map.get(k).contains(x[1])){
-              List<Integer> cur = map.get(k);
-              cur.remove(x[1]);
-              map.put(k, cur);
-              continue;
+                List<Integer> cur = map.get(k);
+                cur.remove(x[1]);
+                map.put(k, cur);
+                continue;
             }
         }
         return map;
@@ -5683,6 +5713,7 @@ public class workspace3 {
 
     // LC 2357
     // brute force
+
     /**
      *  {idx : val}
      *  {
@@ -5777,12 +5808,12 @@ public class workspace3 {
         //PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
         // Queue<Integer> heap = new PriorityQueue<>((n1, n2) -> count.get(n1) - count.get(n2));
         PriorityQueue<Integer> pq = new PriorityQueue<>((x, y) -> {
-             if(map.get(x) > map.get(y)){
-                 return 1;
-             }else if (map.get(x) < map.get(y)){
-                 return -1;
-             }
-             return 0;
+            if(map.get(x) > map.get(y)){
+                return 1;
+            }else if (map.get(x) < map.get(y)){
+                return -1;
+            }
+            return 0;
         });
 
 //        for(int val : map.values()){
@@ -5850,6 +5881,7 @@ public class workspace3 {
      *
      */
     // 5.10 pm
+
     /**
      *  array = [1,2,3,4...... N]
      *
@@ -5917,7 +5949,7 @@ public class workspace3 {
         int r = tmp.size()-1;
         while (r > l){
             if (!tmp.get(l).equals(tmp.get(r))){
-               return false;
+                return false;
             }
             l += 1;
             r -= 1;
@@ -6106,6 +6138,7 @@ public class workspace3 {
     // 6.40
     // LC 3196
     // https://leetcode.com/problems/maximize-total-cost-of-alternating-subarrays/description/
+
     /**
      *
      *  A subarray is a contiguous non-empty sequence of elements within an array.
@@ -6357,6 +6390,7 @@ public class workspace3 {
 
     // LC 1170
     // 5.20
+
     /**
      * count the number of words in words
      * such that f(queries[i]) < f(W) for each W in words.
@@ -6463,12 +6497,10 @@ public class workspace3 {
             if (prev == null){
                 prev = w;
                 cnt = 1;
-            }
-            else if (prev.compareTo(w) > 0){
+            } else if (prev.compareTo(w) > 0){
                 prev = w;
                 cnt = 1;
-            }
-            else if (prev.equals(w)){
+            } else if (prev.equals(w)){
                 cnt += 1;
             }
         }
@@ -6516,6 +6548,7 @@ public class workspace3 {
 
     // LC 482
     // https://leetcode.com/problems/license-key-formatting/description/
+
     /**
      *
      * We want to reformat the string s such that each group contains exactly k characters,
@@ -6561,16 +6594,16 @@ public class workspace3 {
 
 
     // LC 809
+
     /**
-     *
-     *  And add some number of characters c to the group so
-     *  that the size of the group is three or more.
+     * And add some number of characters c to the group so
+     * that the size of the group is three or more.
      */
-    public int expressiveWords(String s, String[] words) {
+    public int expressiveWords_1(String s, String[] words) {
 
         int ans = 0;
 
-        if (words.length == 0){
+        if (words.length == 0) {
             return 0;
         }
 
@@ -6690,8 +6723,7 @@ public class workspace3 {
             }
             if (value < input[mid]){
                 left = mid+1;
-            }
-            else if (value > input[mid]){
+            } else if (value > input[mid]){
                 right = mid;
             }
         }
@@ -6847,6 +6879,7 @@ public class workspace3 {
         public bikeWorkerDist(){
 
         }
+
         public bikeWorkerDist(int[] worker, int[] bike, int workerId, int bikeId, int dist){
             this.worker = worker;
             this.bike = bike;
@@ -6912,7 +6945,7 @@ public class workspace3 {
             String t_val = targetArr[l];
             String s_val = targetArr[l];
             int srcIdx = source.indexOf(t_val);
-            while (t_val.equals(s_val)){
+            while (t_val.equals(s_val)) {
                 r += 1;
             }
             cnt += 1;
@@ -6921,5 +6954,105 @@ public class workspace3 {
 
         return cnt;
     }
+
+    // LC 809
+    // https://leetcode.com/problems/expressive-words/
+    // 2 pointers
+    public int expressiveWords(String s, String[] words) {
+
+        if (words.length == 0) {
+            return 0;
+        }
+
+        int cnt = 0;
+
+        for (String w : words) {
+            if (canExpress(s, w)) {
+                cnt += 1;
+            }
+        }
+
+        return cnt;
+    }
+
+    private Boolean canExpress(String s, String input) {
+
+        int i = 0;
+        int j = 0;
+        String[] s_array = s.split("");
+        String[] input_array = input.split("");
+
+        // i : pointer of input
+        //
+        while (i < input.length()){
+            //int j = i;
+            int cnt = 0;
+            String x = s_array[i];
+            Boolean found = false;
+            while (s_array[i].equals(input_array[i])){
+                found = true;
+                j += 1;
+                cnt += 1;
+            }
+            if (cnt < 3 && found){
+                return false;
+            }
+            found = false;
+            i += 1;
+        }
+
+        return true;
+    }
+
+//    public int expressiveWords(String s, String[] words) {
+//
+//        if (words.length == 0){
+//            return 0;
+//        }
+//        int cnt = 0;
+//        Map<String, Integer> targetMap = getElementCnt(s);
+//
+//        for (String w : words){
+//            // get cnt map
+//            Map<String, Integer> map = getElementCnt(w);
+//            System.out.println("map = " + map + ", w = " + w);
+//            // check
+//            if (canExpress(map, targetMap)){
+//                cnt += 1;
+//            }
+//        }
+//
+//        return cnt;
+//    }
+//
+//    private Boolean canExpress(Map<String, Integer> map, Map<String, Integer> mapTarget){
+//        for (String k: mapTarget.keySet()){
+//            if (!map.containsKey(k)){
+//                return false;
+//            }
+//            if (map.get(k) > mapTarget.get(k)){
+//                return false;
+//            }
+//            if (map.get(k).equals(mapTarget.get(k))){
+//                continue;
+//            }
+//            if (map.get(k) < mapTarget.get(k) && mapTarget.get(k) < 3){
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+//
+//    private Map<String, Integer> getElementCnt(String input){
+//        Map<String, Integer> map = new HashMap<>();
+//        for (String x : input.split("")){
+//            if (!map.containsKey(x)){
+//                map.put(x, 1);
+//            }else{
+//                map.put(x, map.get(x)+1);
+//            }
+//        }
+//        return map;
+//    }
 
 }
