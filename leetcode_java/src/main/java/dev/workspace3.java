@@ -7055,4 +7055,94 @@ public class workspace3 {
 //        return map;
 //    }
 
+    // LC 1110
+    // https://leetcode.com/problems/delete-nodes-and-return-forest/
+    // 6.13 start -> 6.40
+
+    /**
+     * ex 1) root = [1,2,3,4,5,6,7], to_delete = [3,5]
+     * <p>
+     * 1
+     * 2     3
+     * 4  5   6  7
+     * <p>
+     * ex 2)
+     * <p>
+     * Input: root = [1,2,4,null,3], to_delete = [3]
+     * <p>
+     * 1
+     * 2    4
+     * 3
+     */
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+
+        List<TreeNode> res = new ArrayList<>();
+        // TODO : optimize below
+        List<Integer> toDeleteList = new ArrayList<>();
+        for (int x : to_delete) {
+            toDeleteList.add(x);
+        }
+
+        if (root == null || to_delete.length == 0) {
+            return res;
+        }
+
+        // bfs
+        Queue<TreeNode> q = new LinkedList<>();
+        //q.add(new TreeInfo(0, root));
+        q.add(root);
+        while (!q.isEmpty()) {
+            TreeNode node = q.poll();
+            if (toDeleteList.contains(node.val)) {
+                // mark as -1
+                root.val = root.val * (-1);
+            }
+
+            if (node.left != null) {
+                q.add(node.left);
+            }
+            if (node.right != null) {
+                q.add(node.right);
+            }
+        }
+
+        // dfs
+        getForest(root, new ArrayList<>());
+        System.out.println("res = " + res);
+
+        return res;
+    }
+
+    public void getForest(TreeNode root, List<Integer> cur){
+        if (root.val < 0){
+            cur.add(null);
+            res.add(cur);
+            cur = new ArrayList<>();
+        }
+        cur.add(root.val);
+        if (root.left != null){
+            getForest(root.left, cur);
+        }
+        if (root.right != null){
+            getForest(root.right, cur);
+        }
+    }
+
+
+
+
+//    public class TreeInfo{
+//        public int idx;
+//        public TreeNode treeNode;
+//
+//        public TreeInfo(){
+//
+//        }
+//
+//        public TreeInfo(int idx, TreeNode treeNode) {
+//            this.idx = idx;
+//            this.treeNode = treeNode;
+//        }
+//    }
+
 }
