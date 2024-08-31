@@ -385,6 +385,13 @@ public class workSpace4 {
             System.out.println(mydata[i]);
         }
 
+        System.out.println("array add test --------------");
+        List<String> x_1 = new ArrayList<>();
+        x_1.add("a");
+        x_1.add("b");
+        // >>> x_1 = [a, b]
+        System.out.println(">>> x_1 = " + x_1.toString());
+
 
     }
 
