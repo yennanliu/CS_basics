@@ -42,10 +42,59 @@ public class ShortestWayToFormString {
     // IDEA : 2 POINTER
     // TODO : implement
 
-    // V1
+    // V1_1
+    // IDEA : 2 POINTER (gpt)
+    // TODO : validate below
+    public int shortestWay_1(String source, String target) {
+        // Step 1: Check if every character in target exists in source
+        for (char x : target.toCharArray()) {
+            if (source.indexOf(x) == -1) {
+                return -1;
+            }
+        }
+
+        int sourceLen = source.length();
+        int targetLen = target.length();
+        int sourceIdx = 0;
+        int targetIdx = 0;
+        int res = 0;
+
+        // Step 2: Iterate through the target string
+        while (targetIdx < targetLen) {
+            int currentIdx = targetIdx;
+
+            // Step 3: Match as many characters as possible from source with target
+            /** NOTE !!! below logic
+             *
+             *   while src idx < src len && target idx < target len.
+             *   keep comparing src and target val
+             */
+            while (sourceIdx < sourceLen && targetIdx < targetLen) {
+                if (source.charAt(sourceIdx) == target.charAt(targetIdx)) {
+                    targetIdx++;
+                }
+                sourceIdx++;
+            }
+
+            // Step 4: If no progress was made in this pass, it means the target cannot be formed
+            if (targetIdx == currentIdx) {
+                return -1;
+            }
+
+            // Step 5: Reset source index and increment the subsequence count
+            /** NOTE !!! reset src idx after src idx reach src len */
+            sourceIdx = 0;
+            res++;
+        }
+
+        return res;
+    }
+
+
+    // V2_1
     // https://leetcode.ca/2018-10-20-1055-Shortest-Way-to-Form-String/
     // IDEA : 2 POINTER
-    public int shortestWay_1(String source, String target) {
+    public int shortestWay_2_1(String source, String target) {
         int m = source.length(), n = target.length();
         int ans = 0, j = 0;
         while (j < n) {

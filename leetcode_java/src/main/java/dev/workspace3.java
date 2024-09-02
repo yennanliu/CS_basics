@@ -6916,7 +6916,7 @@ public class workspace3 {
     // LC 1055
     // https://leetcode.ca/all/1055.html
     // bfs
-    public int shortestWay(String source, String target) {
+    public int shortestWay_0(String source, String target) {
 
         // check if target has element NOT existrd in soruce
         Set<String> srcSet = new HashSet<>();
@@ -6955,7 +6955,41 @@ public class workspace3 {
         return cnt;
     }
 
-    // LC 809
+    // LC 1055
+    // https://leetcode.ca/all/1055.html
+    // bfs
+    public int shortestWay(String source, String target) {
+
+        for (String x : target.split("")){
+            if (!source.contains(x)) {
+                return -1;
+            }
+        }
+
+        String[] src_list = source.split("");
+        String[] target_list = target.split("");
+
+        int res = 0;
+        boolean sameSubStr = true;
+
+        for (int i = 0; i < target.length(); i++){
+            //int j = Arrays.asList(src_list).indexOf(target_list[i]);
+            int j = 1;
+            while (!target_list[i].equals(src_list[j]) && j < target.length()){
+                j += 1;
+                sameSubStr = false;
+            }
+            if(!sameSubStr){
+                res += 1;
+                j = 1;
+            }
+        }
+
+        return res > 0 ? res : - 1;
+    }
+
+
+        // LC 809
     // https://leetcode.com/problems/expressive-words/
     // 2 pointers
     public int expressiveWords(String s, String[] words) {
