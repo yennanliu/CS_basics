@@ -6988,55 +6988,54 @@ public class workspace3 {
         return res > 0 ? res : - 1;
     }
 
-
-        // LC 809
+    // LC 809
     // https://leetcode.com/problems/expressive-words/
     // 2 pointers
-    public int expressiveWords(String s, String[] words) {
-
-        if (words.length == 0) {
-            return 0;
-        }
-
-        int cnt = 0;
-
-        for (String w : words) {
-            if (canExpress(s, w)) {
-                cnt += 1;
-            }
-        }
-
-        return cnt;
-    }
-
-    private Boolean canExpress(String s, String input) {
-
-        int i = 0;
-        int j = 0;
-        String[] s_array = s.split("");
-        String[] input_array = input.split("");
-
-        // i : pointer of input
-        //
-        while (i < input.length()){
-            //int j = i;
-            int cnt = 0;
-            String x = s_array[i];
-            Boolean found = false;
-            while (s_array[i].equals(input_array[i])){
-                found = true;
-                j += 1;
-                cnt += 1;
-            }
-            if (cnt < 3 && found){
-                return false;
-            }
-            found = false;
-            i += 1;
-        }
-
-        return true;
-    }
+//    public int expressiveWords(String s, String[] words) {
+//
+//        if (words.length == 0) {
+//            return 0;
+//        }
+//
+//        int cnt = 0;
+//
+//        for (String w : words) {
+//            if (canExpress(s, w)) {
+//                cnt += 1;
+//            }
+//        }
+//
+//        return cnt;
+//    }
+//
+//    private Boolean canExpress(String s, String input) {
+//
+//        int i = 0;
+//        int j = 0;
+//        String[] s_array = s.split("");
+//        String[] input_array = input.split("");
+//
+//        // i : pointer of input
+//        //
+//        while (i < input.length()){
+//            //int j = i;
+//            int cnt = 0;
+//            String x = s_array[i];
+//            Boolean found = false;
+//            while (s_array[i].equals(input_array[i])){
+//                found = true;
+//                j += 1;
+//                cnt += 1;
+//            }
+//            if (cnt < 3 && found){
+//                return false;
+//            }
+//            found = false;
+//            i += 1;
+//        }
+//
+//        return true;
+//    }
 
 //    public int expressiveWords(String s, String[] words) {
 //
@@ -7088,6 +7087,90 @@ public class workspace3 {
 //        }
 //        return map;
 //    }
+
+
+//    public int expressiveWords(String s, String[] words) {
+//        if (words == null || words.length == 0){
+//            return 0;
+//        }
+//
+//        int res = 0;
+//        for (String x : words){
+//            System.out.println("x = " + x + ",  canForm(x, s) = " + canForm(x, s));
+//            if (canForm(x, s)) {
+//                res += 1;
+//            }
+//        }
+//
+//        return res;
+//    }
+//
+//    private boolean canForm(String x, String target){
+//        List<String> x_arr = Arrays.asList(x.split(""));
+//        List<String> t_arr = Arrays.asList(target.split(""));
+//        //int i = 0;
+//        int j = 0;
+//        for (int i = 0; i < x_arr.size(); i++){
+//            if (!t_arr.contains(x_arr.get(i))){
+//                return false;
+//            }
+//            if (j == target.length() && i < x.length()-1){
+//                return false;
+//            }
+//            //int j = i;
+//            int cnt = 0;
+//            while(t_arr.get(j).equals(x_arr.get(i))){
+//                j += 1;
+//                cnt += 1;
+//            }
+//            if (cnt == 2){
+//                return false;
+//            }
+//            j += 1;
+//        }
+//
+//        return true;
+//    }
+
+
+    public int expressiveWords(String s, String[] words) {
+        if (words == null || words.length == 0){
+            return 0;
+        }
+
+        int res = 0;
+        for (String x : words){
+            System.out.println("x = " + x + ",  canForm(x, s) = " + canForm(x, s));
+            if (canForm(x, s)) {
+                res += 1;
+            }
+        }
+
+        return res;
+    }
+
+    private boolean canForm(String x, String target){
+        List<String> x_arr = Arrays.asList(x.split(""));
+        List<String> t_arr = Arrays.asList(target.split(""));
+        //int i = 0;
+        for (int i = 0; i < x_arr.size(); i++){
+            if (!t_arr.contains(x_arr.get(i))){
+                return false;
+            }
+            int j = i;
+            int cnt = 0;
+            while(t_arr.get(j).equals(x_arr.get(i))){
+                j += 1;
+                cnt += 1;
+            }
+            if (cnt == 2){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     // LC 1110
     // https://leetcode.com/problems/delete-nodes-and-return-forest/
