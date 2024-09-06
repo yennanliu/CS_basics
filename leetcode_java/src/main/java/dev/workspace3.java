@@ -6958,7 +6958,7 @@ public class workspace3 {
     // LC 1055
     // https://leetcode.ca/all/1055.html
     // bfs
-    public int shortestWay(String source, String target) {
+    public int shortestWay_1(String source, String target) {
 
         for (String x : target.split("")){
             if (!source.contains(x)) {
@@ -6986,6 +6986,35 @@ public class workspace3 {
         }
 
         return res > 0 ? res : - 1;
+    }
+
+    public int shortestWay(String source, String target) {
+        if (source.length() == 0 || target.length() == 0){
+            return 0;
+        }
+        // 2 pointers
+        int cnt = 0;
+        //int i = 0;
+        int j = 0;
+        while (j < target.length()){
+            for (int i = 0; i < source.length(); i++){
+
+                // j meat source len, repeat loop over source
+                if (j == source.length()-1){
+                    break;
+                }
+                if (source.charAt(i) == target.charAt(j)){
+                    //i += 1;
+                    j += 1;
+                }
+                else{
+                    cnt += 1;
+                    break;
+                }
+            }
+        }
+
+        return cnt;
     }
 
     // LC 809
@@ -7149,40 +7178,73 @@ public class workspace3 {
         return res;
     }
 
-    private boolean canForm(String x, String target){
-        int i = 0;
-        int j = 0;
-        int n = x.length();
-        int m = target.length();
-        while (i < n && j < m){
-            if (x.charAt(i) != target.charAt(j)){
+    private boolean canForm(String x, String target) {
+        int i = 0, j = 0;
+        int n = x.length(), m = target.length();
+
+        while (i < n && j < m) {
+            if (x.charAt(i) != target.charAt(j)) {
                 return false;
             }
+
             int len1 = getRepeatedLen(x, i);
-            int len2 = getRepeatedLen(target, i);
+            int len2 = getRepeatedLen(target, j);
 
             if (len1 > len2 || (len2 < 3 && len1 != len2)) {
                 return false;
             }
 
-
             i += len1;
             j += len2;
         }
 
+        // Both strings should be fully traversed for a match
         return i == n && j == m;
     }
 
-    private int getRepeatedLen(String input, int i){
-        int init = input.charAt(i);
-        int j = i;
-        int res = 0;
-        while(input.charAt(j) == init && j + i < input.length()){
-            j += 1;
-            res += 1;
+//    private boolean canForm(String x, String target){
+//        int i = 0;
+//        int j = 0;
+//        int n = x.length();
+//        int m = target.length();
+//        while (i < n && j < m){
+//            if (x.charAt(i) != target.charAt(j)){
+//                return false;
+//            }
+//            int len1 = getRepeatedLen(x, i);
+//            int len2 = getRepeatedLen(target, i);
+//
+//            if (len1 > len2 || (len2 < 3 && len1 != len2)) {
+//                return false;
+//            }
+//
+//
+//            i += len1;
+//            j += len2;
+//        }
+//
+//        return i == n && j == m;
+//    }
+
+    private int getRepeatedLen(String input, int index) {
+        int count = 0;
+        char currentChar = input.charAt(index);
+        while (index + count < input.length() && input.charAt(index + count) == currentChar) {
+            count++;
         }
-        return res;
+        return count;
     }
+
+//    private int getRepeatedLen(String input, int i){
+//        int init = input.charAt(i);
+//        int j = i;
+//        int res = 0;
+//        while(input.charAt(j) == init && j + i < input.length()){
+//            j += 1;
+//            res += 1;
+//        }
+//        return res;
+//    }
 
 
     // LC 1110

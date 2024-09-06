@@ -41,6 +41,36 @@ public class ShortestWayToFormString {
     // V0
     // IDEA : 2 POINTER
     // TODO : implement
+    // TODO : validate below (modified by gpt)
+//    public int shortestWay(String source, String target) {
+//        int sourceLength = source.length();
+//        int targetLength = target.length();
+//
+//        int j = 0; // pointer for target
+//        int cnt = 0; // count of subsequences used
+//
+//        // Loop over the target string
+//        while (j < targetLength) {
+//            int startJ = j; // Track the initial position of j for this subsequence
+//            // Loop through the source string and try to match the target
+//            for (int i = 0; i < sourceLength; i++) {
+//                // Check if the current character matches
+//                if (j < targetLength && source.charAt(i) == target.charAt(j)) {
+//                    j++;
+//                }
+//            }
+//
+//            // If no progress is made (i.e., no characters from target are matched)
+//            if (startJ == j) {
+//                return -1; // It's impossible to form target using subsequences of source
+//            }
+//
+//            cnt++; // We've used one more subsequence of source
+//        }
+//
+//        return cnt;
+//    }
+
 
     // V1_1
     // IDEA : 2 POINTER (gpt)
