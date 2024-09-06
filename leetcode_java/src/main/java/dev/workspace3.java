@@ -7150,25 +7150,38 @@ public class workspace3 {
     }
 
     private boolean canForm(String x, String target){
-        List<String> x_arr = Arrays.asList(x.split(""));
-        List<String> t_arr = Arrays.asList(target.split(""));
-        //int i = 0;
-        for (int i = 0; i < x_arr.size(); i++){
-            if (!t_arr.contains(x_arr.get(i))){
+        int i = 0;
+        int j = 0;
+        int n = x.length();
+        int m = target.length();
+        while (i < n && j < m){
+            if (x.charAt(i) != target.charAt(j)){
                 return false;
             }
-            int j = i;
-            int cnt = 0;
-            while(t_arr.get(j).equals(x_arr.get(i))){
-                j += 1;
-                cnt += 1;
-            }
-            if (cnt == 2){
+            int len1 = getRepeatedLen(x, i);
+            int len2 = getRepeatedLen(target, i);
+
+            if (len1 > len2 || (len2 < 3 && len1 != len2)) {
                 return false;
             }
+
+
+            i += len1;
+            j += len2;
         }
 
-        return true;
+        return i == n && j == m;
+    }
+
+    private int getRepeatedLen(String input, int i){
+        int init = input.charAt(i);
+        int j = i;
+        int res = 0;
+        while(input.charAt(j) == init && j + i < input.length()){
+            j += 1;
+            res += 1;
+        }
+        return res;
     }
 
 

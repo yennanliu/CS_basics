@@ -3,11 +3,9 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/expressive-words/
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class expressiveWords {
+public class ExpressiveWords {
 
     // V0
     // TODO : fix
@@ -120,6 +118,56 @@ public class expressiveWords {
             index++;
         }
         return index - start;
+    }
+
+    // V1_1 (modified by gpt)
+    public int expressiveWords_1_1(String s, String[] words) {
+        if (words == null || words.length == 0) {
+            return 0;
+        }
+
+        int res = 0;
+        for (String x : words) {
+            System.out.println("x = " + x + ", canForm(x, s) = " + canForm(x, s));
+            if (canForm(x, s)) {
+                res += 1;
+            }
+        }
+
+        return res;
+    }
+
+    private boolean canForm(String x, String target) {
+        int i = 0, j = 0;
+        int n = x.length(), m = target.length();
+
+        while (i < n && j < m) {
+            if (x.charAt(i) != target.charAt(j)) {
+                return false;
+            }
+
+            int len1 = getRepeatedLen(x, i);
+            int len2 = getRepeatedLen(target, j);
+
+            if (len1 > len2 || (len2 < 3 && len1 != len2)) {
+                return false;
+            }
+
+            i += len1;
+            j += len2;
+        }
+
+        // Both strings should be fully traversed for a match
+        return i == n && j == m;
+    }
+
+    private int getRepeatedLen(String input, int index) {
+        int count = 0;
+        char currentChar = input.charAt(index);
+        while (index + count < input.length() && input.charAt(index + count) == currentChar) {
+            count++;
+        }
+        return count;
     }
 
     // V2
