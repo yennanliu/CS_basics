@@ -6655,6 +6655,58 @@ public class workspace3 {
     // LC 315
     // 6.28
     public List<Integer> countSmaller(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        if (nums == null || nums.length == 0){
+            return null;
+        }
+        if (nums.length == 1){
+            res.add(0);
+            return res;
+        }
+        // brute force
+        for (int i = 0; i < nums.length; i++){
+//            int cnt = 0;
+//            for (int j = i+1; j < nums.length; j++){
+//                if (nums[i] > nums[j]){
+//                    cnt += 1;
+//                }
+//            }
+//            res.add(cnt);
+            int cnt = findSmallerCnt(i, nums);
+            System.out.println(">>> cnt = " + cnt + ", i = " + i + " , nums = " + nums);
+            res.add(cnt);
+        }
+
+        return res;
+    }
+
+    private int findSmallerCnt(int idx, int[] nums){
+        int cnt = 0;
+        // binary search
+        int toCompare = nums[idx];
+        int[] nums_ = Arrays.copyOfRange(nums, idx+1, nums.length);
+        Arrays.sort(nums_);
+        int l = 0;
+        int r = nums_.length;
+        int mid = (l + r) / 2;
+        while (r > l){
+            System.out.println("l = " + l + ", r = " + r + ", mid = " + mid);
+            // found
+            if (toCompare < nums[mid+1] && toCompare > nums[mid-1]){
+                return nums_.length - mid;
+            }
+            if (toCompare > nums[mid]){
+                l = mid + 1;
+            }else{
+                r = mid;
+            }
+        }
+
+        return cnt;
+    }
+
+    ///////
+    public List<Integer> countSmaller_1(int[] nums) {
 
         List<Integer> res = new ArrayList<>();
 
