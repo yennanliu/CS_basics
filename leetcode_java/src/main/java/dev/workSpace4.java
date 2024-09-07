@@ -392,6 +392,20 @@ public class workSpace4 {
         // >>> x_1 = [a, b]
         System.out.println(">>> x_1 = " + x_1.toString());
 
+        System.out.println("copyOfRange --------------");
+
+//        List<Integer> arr_100 = new ArrayList<>();
+//        arr_100.add(1);
+//        arr_100.add(2);
+//        arr_100.add(3);
+        int[] arr_100 = new int[]{1,2,3};
+        // int[] nums_ = Arrays.copyOfRange(nums, idx, nums.length);
+        //System.out.println(Arrays.copyOfRange(arr_100, 1, arr_100.length).toString());
+        int[] copy = Arrays.copyOfRange(arr_100, 1, arr_100.length);
+        for (int val : copy){
+            System.out.println(val);
+        }
+
 
     }
 

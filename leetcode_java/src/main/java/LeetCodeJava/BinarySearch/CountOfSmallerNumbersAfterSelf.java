@@ -4,7 +4,7 @@ package LeetCodeJava.BinarySearch;
 
 import java.util.*;
 
-public class countOfSmallerNumbersAfterSelf {
+public class CountOfSmallerNumbersAfterSelf {
 
     // V0
     // IDEA : BINARY SEARCH (fixed by GPT)
@@ -16,6 +16,13 @@ public class countOfSmallerNumbersAfterSelf {
         for (int i = nums.length - 1; i >= 0; i--) {
             int pos = findInsertPosition_(sortedList, nums[i]);
             res.add(pos);
+            /**
+             *  NOTE !!! insert op below
+             *
+             *  syntax :
+             *
+             *  public abstract void add(int index, E element )
+             */
             sortedList.add(pos, nums[i]);
         }
 
@@ -27,6 +34,29 @@ public class countOfSmallerNumbersAfterSelf {
     private int findInsertPosition_(List<Integer> sortedList, int target) {
         int left = 0;
         int right = sortedList.size();
+
+        /**
+         *  Log for below:
+         *
+         *   exp 1 : nums = [5,2,6,1]
+         *
+         *   sortedList = []
+         *   sortedList = [1]
+         *   sortedList = [1, 6]
+         *   sortedList = [1, 2, 6]
+         *
+         *
+         *   exp 2 :  nums = [-1]
+         *
+         *   sortedList = []
+         *
+         *
+         *  exp 3 :  nums = [-1,-1]
+         *
+         *   sortedList = []
+         *   sortedList = [-1]
+         */
+        System.out.println("sortedList = " + sortedList);
 
         while (left < right) {
             int mid = left + (right - left) / 2;
