@@ -7389,4 +7389,63 @@ public class workspace3 {
 //        }
 //    }
 
+    // LC 1066
+    // https://leetcode.ca/all/1066.html#google_vignette
+    // 4.30
+    /**
+     * exp 1:
+     *
+     * Input: workers = [[0,0],[2,1]], bikes = [[1,2],[3,3]]
+     * Output: 6
+     *
+     *  op1 : 3 + 3 = 6
+     *      - We assign bike 0 to worker 0, bike 1 to worker 1. The Manhattan distance of both assignments is 3, so the output is 6.)
+     *
+     *  op2 : 2 + 6 = 8
+     *
+     *  b0 -> w 0
+     *  b1 -> w 1
+     *
+     *  b0 -> w1
+     *  b1 -> w0
+     *
+     *  6 < 8,
+     *  so, choose op1
+     *
+     *  exp 2 :
+     *
+     * Input: workers = [[0,0],[1,1],[2,0]], bikes = [[1,0],[2,2],[2,1]]
+     * Output: 4
+     *
+     *   op1 :  1 + 2 + 1 = 4
+     *     -  We first assign bike 0 to worker 0, then assign bike 1 to worker 1 or worker 2, bike 2 to worker 2 or worker 1. Both assignments lead to sum of the Manhattan distances as 4.
+     *
+     *   op2 : 4 + 1 + 1 = 6
+     *    - bike 0 -> worker 1
+     *    - bike 1 -> worker 0
+     *    - bike 2 -> worker 2
+     *
+     *   op3 : 1 + 1 + 2 = 4
+     *    - bike 0 -> w 0
+     *    - bike 1 -> w 2
+     *    - bike 2 -> w 1
+     *
+     *   op4 : 3 + 2 + 1
+     *    - bike 0 -> w2
+     *    - bike 1 -> bike 1
+     *    - bike 2 -> w 0
+     *
+     *    ..
+     *
+     *    op 6
+     *
+     *
+     */
+    public int assignBikes_1_1(int[][] workers, int[][] bikes){
+        // get all possible M distances
+        // sort
+
+        return 0;
+    }
+
 }

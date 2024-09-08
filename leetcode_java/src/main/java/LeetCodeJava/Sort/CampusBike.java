@@ -48,6 +48,7 @@ import java.util.Arrays;
  * Amazon ByteDance Google
  *
  */
+// NOTE !!! If there are multiple (worker, bike) pairs with the same shortest Manhattan distance, we choose the pair with the smallest worker index; if there are multiple ways to do that, we choose the pair with the smallest bike index). We repeat this process until there are no available workers.
 public class CampusBike {
 
     // V0
@@ -60,29 +61,49 @@ public class CampusBike {
     // IDEA : sorting
     // https://leetcode.ca/2018-10-22-1057-Campus-Bikes/
     public int[] assignBikes_1(int[][] workers, int[][] bikes) {
-        int n = workers.length, m = bikes.length;
+        int n = workers.length;
+        int m = bikes.length;
+        /** NOTE !!!
+         *
+         *  - we setup array with (m * n, 3) dimension
+         *  - m * n : all combination count
+         *  - 3 : for saving 3 variables (dist, i, j)
+         *
+         */
         int[][] arr = new int[m * n][3];
+        // NOTE !!! k start from 0
         for (int i = 0, k = 0; i < n; ++i) {
             for (int j = 0; j < m; ++j) {
                 int dist
                         = Math.abs(workers[i][0] - bikes[j][0]) + Math.abs(workers[i][1] - bikes[j][1]);
+                // NOTE !!! here we append 3 var
                 arr[k++] = new int[] {dist, i, j};
             }
         }
+
+        // sorting
+        // If there are multiple (worker, bike) pairs with the same shortest Manhattan distance, we choose the pair with the smallest worker index; if there are multiple ways to do that, we choose the pair with the smallest bike index). We repeat this process until there are no available workers.
         Arrays.sort(arr, (a, b) -> {
+            // compare dist
             if (a[0] != b[0]) {
                 return a[0] - b[0];
             }
+            // compare i (worker index)
             if (a[1] != b[1]) {
                 return a[1] - b[1];
             }
+            // compare j (bike index)
             return a[2] - b[2];
         });
+
+        // prepare final result
+        // init vis1, vis2 to record when the coordination is used (added to result)
         boolean[] vis1 = new boolean[n];
         boolean[] vis2 = new boolean[m];
         int[] ans = new int[n];
         for (int[] e : arr) {
             int i = e[1], j = e[2];
+            // NOTE !!! to avoid reuse same element
             if (!vis1[i] && !vis2[j]) {
                 vis1[i] = true;
                 vis2[j] = true;

@@ -781,6 +781,7 @@
 976| [Largest Perimeter Triangle](https://leetcode.com/problems/largest-perimeter-triangle/) | [Python](./leetcode_python/Sort/largest-perimeter-triangle.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Sort/LargestPerimeterTriangle.java) | _O(nlogn)_ | _O(1)_  | Easy | | OK* (2)
 912| [Sort an Array](https://leetcode.com/problems/sort-an-array/) | [Python](./leetcode_python/Sort/sort_an_array.py) | _O(nlogn)_ | _O(1)_  | Medium | sort, merge sort, quick sort, apple, amazon, m$| AGAIN** (1)
 1057| [Campus Bike](https://leetcode.com/problems/campus-bikes/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Sort/CampusBike.java) | _O(nlogn)_ | _O(1)_  | Medium | sorting, google| AGAIN
+1066| [Campus Bike II](https://leetcode.com/problems/campus-bikes-ii/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Sort/CampusBike2.java) | _O(nlogn)_ | _O(1)_  | Medium | sorting, google| AGAIN
 1152| [Analyze User Website Visit Pattern](https://leetcode.com/problems/analyze-user-website-visit-pattern/) | [Python](./leetcode_python/Sort/analyze-user-website-visit-pattern.py) | _O(nlogn)_ | _O(1)_  | Medium | itertools.combinations, sort, brute force, set, `amazon`| AGAIN***** (2) (not start)
 2021| [Brightest Position on Street](https://leetcode.com/problems/brightest-position-on-street/) | [Python](./leetcode_python/Sort/brightest-position-on-street.py) | _O(nlogn)_ | _O(1)_  | Medium | LC 253 meeting room II, priority queue (min-heap), scanning line, trick, `amazon`| AGAIN*********** (3) (MUST)
 
