@@ -7442,10 +7442,63 @@ public class workspace3 {
      *
      */
     public int assignBikes_1_1(int[][] workers, int[][] bikes){
-        // get all possible M distances
-        // sort
 
-        return 0;
+        int n = workers.length;
+        int m = bikes.length;
+        int k = 0;
+        // get all possible Manhattan distances
+        int[][] cache = new int[n * m][3];
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < m; j++){
+                int dist
+                        = Math.abs(workers[i][0] - bikes[j][0]) + Math.abs(workers[i][1] - bikes[j][1]);
+                // NOTE !!! here we append 3 var
+                //cache.add(dist, i, j);
+                cache[k] = new int[]{dist, i, j};
+                k += 1;
+            }
+        }
+
+        // sorting
+        Arrays.stream(cache).sorted(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                // dist
+                if (o1[0] != o2[0]){
+                    return o1[0] - o2[0];
+                }
+                // compare i (worker index)
+                if (o1[1] != o2[1]){
+                    return o1[1] - o2[1];
+                }
+                // compare j (bike index)
+//                if (o1[2] != o2[2]){
+//                    return o1[2] - o2[2];
+//                }
+                // TODO : check
+               // return 0;
+                return o1[2] - o2[2];
+            }
+        });
+
+        int res = 0;
+
+        // prepare final result
+        Boolean[] visited_1 = new Boolean[n];
+        Boolean[] visited_2 = new Boolean[m];
+        for (int[] c : cache){
+            //Object y = x;
+            int dist = c[0];
+            int i = c[1];
+            int j = c[2];
+            if (!visited_1[i] && !visited_2[j]){
+                res += dist;
+                visited_1[i] = true;
+                visited_2[j] = true;
+            }
+        }
+
+        return res;
     }
 
 }
