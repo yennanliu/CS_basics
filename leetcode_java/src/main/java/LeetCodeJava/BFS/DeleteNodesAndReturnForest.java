@@ -9,11 +9,106 @@ import java.util.*;
 public class DeleteNodesAndReturnForest {
 
     // V0
-    // TODO : implement below
-//    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
-//
-//        return null;
-//    }
+    // IDEA : BFS
+    // TODO : implement by my way
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+
+        Set<Integer> toDeleteSet = new HashSet<>();
+        for (int val : to_delete) {
+            toDeleteSet.add(val);
+        }
+
+        List<TreeNode> res = new ArrayList<>();
+
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+
+        // bfs
+        while (!q.isEmpty()) {
+            TreeNode currentNode = q.poll();
+
+            /** NOTE !!!
+             *
+             *  if root.left is not null,
+             *  we do below op
+             *   1) append root.left to queue
+             *   2) check if root.left is in to-delete, if true, then
+             *      SET root.left as null
+             *
+             *   -> NOTE !!!
+             *     we ONLY do 2) when root.left is NOT null
+             *     since if root.left is null, then it makes no sense
+             *     to compare it with to_delete
+             */
+            if (currentNode.left != null) {
+                q.add(currentNode.left);
+                // Disconnect the left child if it needs to be deleted
+                if (toDeleteSet.contains(currentNode.left.val)) {
+                    currentNode.left = null;
+                }
+            }
+
+            /**
+             *  same as above, we check and do op on root.right as well
+             */
+            if (currentNode.right != null) {
+                q.add(currentNode.right);
+                // Disconnect the right child if it needs to be deleted
+                if (toDeleteSet.contains(currentNode.right.val)) {
+                    currentNode.right = null;
+                }
+            }
+
+            /**
+             * NOTE !!!
+             *
+             *   if current node (e.g. root) need to be deleted
+             *   -> again, check if its child node (root.left, root.right) is null
+             *      if they are not null, append them to res
+             *
+             *     example :
+             *
+             *      Input: root = [1,2,3,4,5,6,7], to_delete = [3,5]
+             *      Output: [[1,2,null,4],[6],[7]]
+             *
+             *      -> we need to append [6], [7] to result as well
+             */
+            // If the current node needs to be deleted, add its non-null children to the forest
+            if (toDeleteSet.contains(currentNode.val)) {
+                if (currentNode.left != null) {
+                    res.add(currentNode.left);
+                }
+                if (currentNode.right != null) {
+                    res.add(currentNode.right);
+                }
+            }
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *   consider edge case : if the original root is NOT in the to-delete list
+         *   -> need to append the root as well
+         */
+        // Ensure the root is added to the forest if it is not to be deleted
+        if (!toDeleteSet.contains(root.val)) {
+            res.add(root);
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *  note that the return type of this problem is
+         *  List<TreeNode>, meaning that
+         *  we ONLY need to do "remove op", and append "root head"
+         *  to result, that's it. we DON'T need to append every node
+         *  to result, only the "root head"
+         */
+        return res;
+    }
 
 
     // V1

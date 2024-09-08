@@ -7318,60 +7318,170 @@ public class workspace3 {
      * 2    4
      * 3
      */
+//    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+//
+//        List<TreeNode> res = new ArrayList<>();
+//        // TODO : optimize below
+//        List<Integer> toDeleteList = new ArrayList<>();
+//        for (int x : to_delete) {
+//            toDeleteList.add(x);
+//        }
+//
+//        if (root == null || to_delete.length == 0) {
+//            return res;
+//        }
+//
+//        // bfs
+//        Queue<TreeNode> q = new LinkedList<>();
+//        //q.add(new TreeInfo(0, root));
+//        q.add(root);
+//        while (!q.isEmpty()) {
+//            TreeNode node = q.poll();
+//            if (toDeleteList.contains(node.val)) {
+//                // mark as -1
+//                root.val = root.val * (-1);
+//            }
+//
+//            if (node.left != null) {
+//                q.add(node.left);
+//            }
+//            if (node.right != null) {
+//                q.add(node.right);
+//            }
+//        }
+//
+//        // dfs
+//        getForest(root, new ArrayList<>());
+//        System.out.println("res = " + res);
+//
+//        return res;
+//    }
+//
+//    public void getForest(TreeNode root, List<Integer> cur){
+//        if (root.val < 0){
+//            cur.add(null);
+//            res.add(cur);
+//            cur = new ArrayList<>();
+//        }
+//        cur.add(root.val);
+//        if (root.left != null){
+//            getForest(root.left, cur);
+//        }
+//        if (root.right != null){
+//            getForest(root.right, cur);
+//        }
+//    }
+
+    // bfs
     public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
 
         List<TreeNode> res = new ArrayList<>();
-        // TODO : optimize below
-        List<Integer> toDeleteList = new ArrayList<>();
-        for (int x : to_delete) {
-            toDeleteList.add(x);
-        }
 
-        if (root == null || to_delete.length == 0) {
+        if (root == null){
             return res;
         }
 
-        // bfs
-        Queue<TreeNode> q = new LinkedList<>();
-        //q.add(new TreeInfo(0, root));
-        q.add(root);
-        while (!q.isEmpty()) {
-            TreeNode node = q.poll();
-            if (toDeleteList.contains(node.val)) {
-                // mark as -1
-                root.val = root.val * (-1);
-            }
-
-            if (node.left != null) {
-                q.add(node.left);
-            }
-            if (node.right != null) {
-                q.add(node.right);
-            }
+        List<Integer> toDelList = new ArrayList<>();
+        for (int x : to_delete){
+            toDelList.add(x);
         }
 
-        // dfs
-        getForest(root, new ArrayList<>());
-        System.out.println("res = " + res);
+        if (root.left == null && root.right == null){
+            if (toDelList.contains(root.val)){
+                return res;
+            }
+            res.add(root);
+            return res;
+        }
 
+        // go through tree
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()){
+
+            TreeNode node = q.poll();
+            System.out.println(">>> node val = " + node.val);
+            System.out.println(">>> q = ");
+            q.forEach(System.out::println);
+
+            if (node.left != null){
+                q.add(root.left);
+            }
+
+            if (node.right != null){
+                q.add(root.right);
+            }
+
+            // TODO : check
+            if (toDelList.contains(root.left.val)){
+                root.left = null;
+            }
+
+            if (toDelList.contains(root.right.val)){
+                root.right = null;
+            }
+
+        }
+
+        // TODO : check
+        // prepare final res
+        res.add(root);
         return res;
     }
 
-    public void getForest(TreeNode root, List<Integer> cur){
-        if (root.val < 0){
-            cur.add(null);
-            res.add(cur);
-            cur = new ArrayList<>();
-        }
-        cur.add(root.val);
-        if (root.left != null){
-            getForest(root.left, cur);
-        }
-        if (root.right != null){
-            getForest(root.right, cur);
-        }
-    }
 
+    public List<TreeNode> delNodes_2(TreeNode root, int[] to_delete) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+
+        Set<Integer> toDeleteSet = new HashSet<>();
+        for (int val : to_delete) {
+            toDeleteSet.add(val);
+        }
+
+        List<TreeNode> forest = new ArrayList<>();
+
+        Queue<TreeNode> nodesQueue = new LinkedList<>();
+        nodesQueue.add(root);
+
+        while (!nodesQueue.isEmpty()) {
+            TreeNode currentNode = nodesQueue.poll();
+
+            if (currentNode.left != null) {
+                nodesQueue.add(currentNode.left);
+                // Disconnect the left child if it needs to be deleted
+                if (toDeleteSet.contains(currentNode.left.val)) {
+                    currentNode.left = null;
+                }
+            }
+
+            if (currentNode.right != null) {
+                nodesQueue.add(currentNode.right);
+                // Disconnect the right child if it needs to be deleted
+                if (toDeleteSet.contains(currentNode.right.val)) {
+                    currentNode.right = null;
+                }
+            }
+
+            // If the current node needs to be deleted, add its non-null children to the forest
+            if (toDeleteSet.contains(currentNode.val)) {
+                if (currentNode.left != null) {
+                    forest.add(currentNode.left);
+                }
+                if (currentNode.right != null) {
+                    forest.add(currentNode.right);
+                }
+            }
+        }
+
+        // Ensure the root is added to the forest if it is not to be deleted
+        if (!toDeleteSet.contains(root.val)) {
+            forest.add(root);
+        }
+
+        return forest;
+    }
 
 
 
