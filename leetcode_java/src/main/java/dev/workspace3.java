@@ -7611,4 +7611,98 @@ public class workspace3 {
         return res;
     }
 
+    // LC 659
+    // https://leetcode.com/problems/split-array-into-consecutive-subsequences/
+    // 7.51 pm - 8.10 pm
+    /**
+     *  NOTE
+     *
+     *  1. nums that is sorted in non-decreasing order.
+     *
+     *  conditions are true:
+     *
+     *  - 1) Each subsequence is a consecutive increasing sequence (i.e. each integer is exactly one more than the previous integer).
+     *  - 2) All subsequences have a length of 3 or more.
+     *
+     *   exp 1
+     *
+     *   Input: nums = [1,2,3,3,4,5]
+     *   Output: true
+     *   Explanation: nums can be split into the following subsequences:
+     *   [1,2,3,3,4,5] --> 1, 2, 3
+     *    x x x
+     *
+     *
+     *   [1,2,3,3,4,5] --> 3, 4, 5
+     *          x x x
+     *
+     *   exp 2
+     *
+     *   Input: nums = [1,2,3,3,4,4,5,5]
+     *   Output: true
+     *   Explanation: nums can be split into the following subsequences:
+     *   [1,2,3,3,4,4,5,5] --> 1, 2, 3, 4, 5
+     *   [1,2,3,3,4,4,5,5] --> 3, 4, 5
+     *
+     *
+     *   [1,2]
+     *
+     *   3,4,5
+     *   3,4,5
+     *
+     *
+     *  exp 3
+     *
+     *   nums = [1,2,3,4,4,5]
+     *
+     *   1,2,3,4
+     *   4
+     *
+     *  exp 4
+     *
+     *  nums = [1,2,3,3,4,4,5,5]
+     *
+     *  1,2,3,4,5
+     *  3,4,5
+     *
+     *  exp 5
+     *
+     *  nums = [1,2,3,3,3,4,4,4,5,5,5]
+     *
+     *  1,2,3,4,5
+     *  3,4,5
+     *  3,4,5
+     */
+//    public boolean isPossible(int[] nums) {
+//
+//        if (nums.length == 1){
+//            return true;
+//        }
+//
+//        if (nums.length < 3){
+//            return false;
+//        }
+//
+//        List<List<Integer>> cache = new ArrayList<>();
+//
+//        //cache.add(new ArrayList<>());
+//        // brute force
+//        for(int x : nums){
+//            int size = cache.size();
+//            if(size==0){
+//                List<Integer> tmp = new ArrayList<>();
+//                tmp.add(x);
+//                cache.add(tmp);
+//                continue;
+//            } if (!cache.get(size).contains(x)){
+//                List<Integer> tmp = cache.get(size);
+//                tmp.add(x);
+//                cache.add(tmp);
+//                continue;
+//        }
+//
+//        return false;
+//    }
+
+
 }
