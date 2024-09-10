@@ -54,6 +54,7 @@ import java.util.PriorityQueue;
 public class SplitArrayIntoConsecutiveSubsequences {
 
     // V0
+    // TODO : implement
 //    public boolean isPossible(int[] nums) {
 //
 //    }
@@ -68,6 +69,8 @@ public class SplitArrayIntoConsecutiveSubsequences {
         for (int num : nums) increaseCount(notPlacedCount, num);
 
         for (int num : nums) {
+
+            // NOTE !!! below conditions
             boolean alreadyContains = notPlacedCount.get(num) == 0;
             boolean canAddToExisting = sequenceEndCount.getOrDefault(num - 1, 0) > 0;
             boolean canAddNewSequence = notPlacedCount.getOrDefault(num + 1, 0) > 0 && notPlacedCount.getOrDefault(num + 2, 0) > 0;
