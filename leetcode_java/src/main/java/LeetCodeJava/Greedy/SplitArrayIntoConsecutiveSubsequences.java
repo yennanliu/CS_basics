@@ -276,6 +276,14 @@ public class SplitArrayIntoConsecutiveSubsequences {
     // IDEA: DP + GREEDY + PQ
     // https://leetcode.com/problems/split-array-into-consecutive-subsequences/submissions/1385341810/
     public boolean isPossible_5(int[] nums) {
+        /**
+         *  NOTE !!!
+         *
+         *  Map<Integer, PriorityQueue<Integer>> lastElements, is a map
+         *
+         *  - where the key is an integer representing the "last element" of a subsequence
+         *  - the value is a PriorityQueue<Integer> containing the "lengths of subsequences ending with that key".
+         */
         Map<Integer, PriorityQueue<Integer>>lastElements = new HashMap<>();
         for (int element: nums){
             int subseqCount = 0;
