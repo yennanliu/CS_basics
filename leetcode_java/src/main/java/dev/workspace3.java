@@ -7757,6 +7757,19 @@ public class workspace3 {
         }
     }
 
+    // LC 727
+    // https://leetcode.ca/all/727.html
+    // 6.18 pm - 6.30 pm
+    /**
+     *  dp equation:
+     *
+     *  dp[i][j] = min(dp[i-1][j-1]
+     *
+     */
+    public String minWindow_2(String s1, String s2) {
+        return null;
+    }
+
 
 
 }
