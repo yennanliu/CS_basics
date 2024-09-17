@@ -7704,6 +7704,17 @@ public class workspace3 {
 //        return false;
 //    }
 
+    // IDEA : HASHMAP
+    public boolean isPossible(int[] nums) {
+        if (nums == null || nums.length == 0){
+            return false;
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+
+        return false;
+    }
+
+
     // LC 271
     /**
      *  exp 1:
@@ -7766,9 +7777,10 @@ public class workspace3 {
      *  dp[i][j] = min(dp[i-1][j-1]
      *
      */
-    public String minWindow_2(String s1, String s2) {
-        return null;
-    }
+//    public String minWindow_2(String s1, String s2) {
+//        return null;
+//    }
+
 
 
 
