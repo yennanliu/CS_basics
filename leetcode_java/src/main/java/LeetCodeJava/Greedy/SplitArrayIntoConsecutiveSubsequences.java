@@ -289,7 +289,7 @@ public class SplitArrayIntoConsecutiveSubsequences {
          *  ->   key is the "last element" of subsequences
          *  ->   value is the length of subsequences end with that key
          */
-        Map<Integer, PriorityQueue<Integer>>lastElements = new HashMap<>();
+        Map<Integer, PriorityQueue<Integer>> lastElements = new HashMap<>();
         // The loop processes each element in the nums array to update the lastElements map.
         for (int element: nums){
             /**
@@ -305,7 +305,9 @@ public class SplitArrayIntoConsecutiveSubsequences {
             int subseqCount = 0;
             if (lastElements.containsKey(element-1)){
                 subseqCount = lastElements.get(element-1).poll();
-                if (lastElements.get(element-1).isEmpty()) lastElements.remove(element-1);
+                if (lastElements.get(element-1).isEmpty()){
+                    lastElements.remove(element-1);
+                }
             }
             // The lastElements map is updated to include or update the entry for the current element,
             // Adding a new subsequence of length subseqCount + 1.
@@ -317,8 +319,13 @@ public class SplitArrayIntoConsecutiveSubsequences {
              * - subseqCount + 1 indicates that the current subsequence is being extended by 1, because the element has been added to the subsequence.
              * - add() adds this updated subsequence length
              *    (i.e., subseqCount + 1) to the PriorityQueue associated with the element.
+             *
              */
-            lastElements.get(element).add(subseqCount+1);
+            // below code are equivalent to each other
+            //lastElements.get(element).add(subseqCount+1);
+            PriorityQueue<Integer> pq = lastElements.getOrDefault(element, new PriorityQueue<>());
+            pq.add(subseqCount + 1);
+            lastElements.put(element, pq);
         }
         for (Map.Entry<Integer,PriorityQueue<Integer>>entry: lastElements.entrySet()){
             /**
