@@ -7704,5 +7704,59 @@ public class workspace3 {
 //        return false;
 //    }
 
+    // LC 271
+    /**
+     *  exp 1:
+     *   input : ["", "helo"]
+     *   output : ["", "helo"]
+     *
+     *   encode : "?,helo"
+     *
+     *   exp 2:
+     *
+     *   input : ["helo", "world"]
+     *   output :  ["helo", "world"]
+     *
+     *   encode : "helo,world"
+     *
+     *
+     */
+    public class Codec {
+
+        // Encodes a list of strings to a single string.
+        public String encode(List<String> strs) {
+            //String res = null;
+            StringBuilder sb = new StringBuilder();
+            for (String x : strs){
+                if (x == null){
+                    sb.append("?");
+                    sb.append(",");
+                }else{
+                    sb.append(x);
+                    sb.append(",");
+                }
+            }
+            // remove last ","
+            return sb.deleteCharAt(sb.length()-1).toString();
+        }
+
+        // Decodes a single string to a list of strings.
+        public List<String> decode(String s) {
+            List<String> res = new ArrayList<>();
+            if (s == null){
+                return res;
+            }
+            for (String x : s.split(",")){
+                if (x.equals("?")){
+                    res.add("");
+                }else{
+                    res.add(x);
+                }
+            }
+            return res;
+        }
+    }
+
+
 
 }
