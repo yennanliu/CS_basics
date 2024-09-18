@@ -54,10 +54,64 @@ import java.util.PriorityQueue;
 public class SplitArrayIntoConsecutiveSubsequences {
 
     // V0
-    // TODO : implement
-//    public boolean isPossible(int[] nums) {
-//
-//    }
+    // IDEA : HASHMAP + PQ (fixed by gpt)
+    public boolean isPossible(int[] nums) {
+        // edge case
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+
+        // Map to track the subsequences
+        Map<Integer, PriorityQueue<Integer>> map = new HashMap<>();
+
+        for (int x : nums) {
+            int subSeqCnt = 0;
+
+            // Try to extend an existing subsequence ending with x-1
+            /** NOTE !!! below logic
+             *
+             *
+             *  especially map.containsKey(x - 1)
+             */
+            if (map.containsKey(x - 1)) {
+                subSeqCnt = map.get(x - 1).poll();
+                if (map.get(x - 1).isEmpty()) {
+                    map.remove(x - 1);  // Remove if no more subsequences end with x-1
+                }
+            }
+
+            // Add the current number x to the subsequence
+            /** NOTE !!! below logic
+             *
+             */
+            PriorityQueue<Integer> curPq = map.getOrDefault(x, new PriorityQueue<>());
+            curPq.offer(subSeqCnt + 1);  // Add the length of the extended subsequence
+            map.put(x, curPq);
+        }
+
+        // Check if all subsequences have at least length 3
+        for (PriorityQueue<Integer> pq : map.values()) {
+            /**
+             *  NOTE !!!
+             *
+             *   can't use pq.size() < 3 as validation logic
+             *
+             *   Using pq.size() < 3 would not correctly check the length of each individual subsequence in this context because:
+             *
+             * 	1.	What the PriorityQueue Stores: The PriorityQueue in your map is not storing the lengths of subsequences directly; rather, it stores the counts of individual subsequences. For example, for a number x, the queue might contain values like [2, 4, 5], meaning that there are subsequences of lengths 2, 4, and 5 that end with x.
+             * 	2.	Why pq.size() is Incorrect: The size of the PriorityQueue (pq.size()) gives you the number of subsequences ending with a specific number, not the actual length of those subsequences. Therefore, pq.size() < 3 would only be comparing the count of subsequences, not the length of each subsequence.
+             * 	3.	Correct Logic: The correct logic is to check the actual length of each subsequence (i.e., the value stored in the PriorityQueue). This is why we poll each element from the queue and check if any subsequence has a length less than 3 (pq.poll() < 3).
+             *
+             */
+            while (!pq.isEmpty()) {
+                if (pq.poll() < 3) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 
     // V1
     // IDEA : MAP
