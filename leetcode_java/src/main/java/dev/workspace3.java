@@ -7704,14 +7704,49 @@ public class workspace3 {
 //        return false;
 //    }
 
-    // IDEA : HASHMAP
+    // IDEA : HASHMAP + PQ
     public boolean isPossible(int[] nums) {
+        // edge case
         if (nums == null || nums.length == 0){
             return false;
         }
-        Map<Integer, Integer> map = new HashMap<>();
+        // check subsequence
+        // key : last element (?)
+        // val : PQ (subsequence ?)
+        Map<Integer, PriorityQueue<Integer>> map = new HashMap<>();
+        for (int x : nums){
+            int subSeqCnt = 0;
+            if (map.containsKey(x-1)){
+                /**
+                 * .poll() : get and remove last element
+                 */
+                subSeqCnt = map.get(x-1).poll();
+                if (map.get(x-1).isEmpty()){
+                    map.remove(x-1);
+                }
+            }
+            PriorityQueue<Integer> pq = new PriorityQueue<>();
+            PriorityQueue<Integer> curPq = map.get(x);
+            if (curPq.isEmpty()){
+                pq.add(1);
+                map.put(x, pq);
+            }else{
+                curPq.add(subSeqCnt+1); // ?
+                map.put(x, curPq);
+            }
+            //map.putIfAbsent(x, pq);
+        }
 
-        return false;
+        // check
+        int cnt = 0;
+        for (Integer k : map.keySet()){
+            PriorityQueue<Integer> _pq = map.get(k);
+            if (_pq.size() < 3){
+                return false;
+            }
+            cnt += _pq.size();
+        }
+        return cnt == nums.length;
     }
 
 
