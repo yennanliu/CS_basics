@@ -7781,6 +7781,23 @@ public class workspace3 {
 //        return null;
 //    }
 
+    // LC 753
+    // 7.34 - 8.00 PM
+    // https://leetcode.com/problems/cracking-the-safe/
+    /**
+     * n digit
+     * each digit in [0, k-1] range
+     * check recent n digits if it same as expect pwd
+     *
+     *  There is a safe protected by a password.
+     *  The password is a sequence of n digits where each digit
+     *  can be in the range [0, k - 1].
+     *
+     */
+    public String crackSafe(int n, int k) {
+        return null;
+    }
+
 
 
 
