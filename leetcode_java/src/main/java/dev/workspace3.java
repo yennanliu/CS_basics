@@ -7833,6 +7833,76 @@ public class workspace3 {
         return null;
     }
 
+    // LC 947
+    // 4.39 - 4.50
+    /**
+     *  exp 1)
+     *
+     *  Input: stones = [[0,0],[0,1],[1,0],[1,2],[2,1],[2,2]]
+     *  Output: 5
+     *
+     *    [ x, x, 0 ,0 ,
+     *      x, 0, x, 0,
+     *      0, x, x, 0,
+     *    ]
+     *
+     *   remove :
+     *      - (2,2)
+     *      - (2,1)
+     *      - (1,2)
+     *      - (1,0)
+     *
+     *      and (0,0) can not be removed
+     *
+     *  exp  2)
+     *
+     *  stones = [[0,0],[0,2],[1,1],[2,0],[2,2]]
+     *  Output: 3
+     *
+     *   [
+     *    x,0,x,
+     *    0,x,0,
+     *    x,0,x,
+     *   ]
+     *
+     *
+     *
+     *   remove :
+     *       - (2,2)
+     *       - (2,0)
+     *       - (0,2)
+     *
+     *      and (0,0), (1,1) can not be removed
+     *
+     */
+    public int removeStones(int[][] stones) {
+
+        if (stones.length == 1 && stones[0].length == 1){
+            return 0;
+        }
+
+        int l = 0;
+        int w = 0;
+        for (int[] item : stones){
+            l = Math.max(l, item[0]);
+            w = Math.max(w, item[1]);
+        }
+
+        System.out.println(">>> l = " + l + ",  w = " + w);
+
+        //List<List<Integer>> toRmmove = new ArrayList<>();
+        boolean[][] toRemove = new boolean[l+1][w+1];
+        for (int[] item : stones){
+            System.out.println("item[0] = " + item[0] + ", item[1] = " + item[1]);
+            toRemove[item[0]][item[1]] = true;
+        }
+
+        //System.out.println(">>> toRemove = " + toRemove.toString());
+
+        int res = 0;
+
+        return res;
+    }
 
 
 
