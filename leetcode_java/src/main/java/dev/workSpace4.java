@@ -407,6 +407,33 @@ public class workSpace4 {
         }
 
 
+        System.out.println("getShipDays --------------");
+
+//        List<Integer> w_1 = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+//        int d1 = getShipDays(15, w_1);
+//        System.out.println(">>> d1 = " + d1);
+
+        List<Integer> w_1 = Arrays.asList(3,2,2,4,1,4);
+        int d1 = getShipDays(8, w_1);
+        System.out.println(">>> d1 = " + d1);
+
+    }
+
+    private static int getShipDays(int capacity, List<Integer> weightList){
+        int curSum = 0;
+        int days  = 0;
+        for (int x : weightList){
+            System.out.println(">>> capacity = " + capacity + ", days = " + days + ", curSum = " + curSum);
+            if (curSum + x <= capacity){
+                curSum += x;
+            }else{
+                days += 1;
+                //curSum = 0;
+                //curSum -= capacity;
+                curSum = x;
+            }
+        }
+        return curSum > 0? days+1 : days;
     }
 
     public class Person implements Comparable<Person>{

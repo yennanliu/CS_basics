@@ -8002,5 +8002,62 @@ public class workspace3 {
         return sb.toString();
     }
 
+    // LC 1011
+    // 5.43 - 6.10 pm
+    /**
+     *
+     * the ith package on the conveyor belt has a weight of weights[i].
+     * Each day, we load the ship with packages on
+     * the conveyor belt (in the order given by weights)
+     *
+     */
+    public int shipWithinDays(int[] weights, int days) {
+
+        List<Integer> weightList = new ArrayList<>();
+        int maxCap = 0;
+
+        for(int x : weights){
+            weightList.add(x);
+            maxCap += x;
+        }
+        if (weights.length==1){
+            return weightList.get(0);
+        }
+        // binary search
+        int left = 1;
+        int right = maxCap;
+        while (right > left){
+            int mid = (left + right) / 2;
+            int calculatedDays = getShipDays(mid, weightList);
+            System.out.println(">>> calculatedDays = " + calculatedDays);
+            if (calculatedDays == days){
+                return mid;
+            }else if (calculatedDays > days){
+                left = mid + 1;
+            }else{
+                right = mid - 1;
+            }
+
+        }
+        return -1;
+
+    }
+
+    private int getShipDays(int capacity, List<Integer> weightList){
+        int curSum = 0;
+        int days  = 0;
+        for (int x : weightList){
+            System.out.println(">>> capacity = " + capacity + ", days = " + days + ", curSum = " + curSum);
+            if (curSum + x <= capacity){
+                curSum += x;
+            }else{
+                days += 1;
+                //curSum = 0;
+                //curSum -= capacity;
+                curSum = x;
+            }
+        }
+        return curSum > 0? days+1 : days;
+    }
 
 }
