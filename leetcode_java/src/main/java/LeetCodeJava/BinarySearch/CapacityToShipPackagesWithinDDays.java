@@ -54,10 +54,65 @@ import java.util.Arrays;
 public class CapacityToShipPackagesWithinDDays {
 
     // V0
-    // TODO : implement below
-//    public int shipWithinDays(int[] weights, int days) {
-//
-//    }
+    // IDEA : BINARY SEARCH (modified by GPT)
+    public int shipWithinDays(int[] weights, int days) {
+        int maxWeight = 0;
+        int totalWeight = 0;
+
+        // Find the maximum single weight and the total weight
+        for (int weight : weights) {
+            maxWeight = Math.max(maxWeight, weight);
+            totalWeight += weight;
+        }
+
+        // Binary search between maxWeight (minimum capacity) and totalWeight (maximum capacity)
+        int left = maxWeight;
+        int right = totalWeight;
+
+        while (left < right) {
+
+            int mid = left + (right - left) / 2;
+
+            int calculatedDays = getShipDays(mid, weights);
+
+            /** NOTE !!!!
+             *
+             *  we CAN'T return result directly if calculatedDays == days,
+             *  since what this problem wants is : minimum capacity that can move all goods
+             *  so, instead of return directly, we need to KEEP FINDING smaller possible capacity
+             */
+//            if (calculatedDays==days){
+//                return mid;
+//            }
+
+            if (calculatedDays <= days) {
+                // NOTE !!! If we can ship within 'days', try for a smaller capacity
+                right = mid;
+            } else {
+                // If it takes more than 'days', we need a larger capacity
+                left = mid + 1;
+            }
+        }
+
+        // can return right as well
+        return left; // Left and right will converge to the minimum valid capacity
+    }
+
+    private int getShipDays(int capacity, int[] weights) {
+        int curSum = 0;
+        int days = 1;  // Start with 1 day
+
+        for (int weight : weights) {
+            if (curSum + weight > capacity) {
+                // If adding the current weight exceeds capacity, ship on a new day
+                days++;
+                curSum = 0;
+            }
+            curSum += weight;
+        }
+
+        return days;
+    }
 
     // V1
     // IDEA : BINARY SEARCH
