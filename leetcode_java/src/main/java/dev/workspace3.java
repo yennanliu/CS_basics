@@ -7965,5 +7965,42 @@ public class workspace3 {
 
     }
 
+    // LC 844
+    public boolean backspaceCompare(String s, String t) {
+
+        if (s == null && t == null){
+            return true;
+        }
+
+        if (s == null || t == null){
+            return false;
+        }
+
+        String s_ = backSpaceStr(s);
+        String t_ = backSpaceStr(t);
+        System.out.println("s_ = " + s_ + ", t_ = " + t_);
+        return s_.equals(t_);
+    }
+
+    private String backSpaceStr(String input){
+        Stack<String> stack = new Stack<>();
+        for(String x: input.split("")){
+            if (!x.equals("#")){
+                stack.add(x);
+            }else{
+                if(!stack.isEmpty()){
+                    stack.pop();
+                }
+            }
+        }
+        // stack to str
+        StringBuilder sb = new StringBuilder();
+        while(!stack.isEmpty()){
+            sb.append(stack.pop());
+        }
+
+        return sb.toString();
+    }
+
 
 }
