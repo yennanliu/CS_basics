@@ -7904,6 +7904,66 @@ public class workspace3 {
         return res;
     }
 
+    // LC 1032
+    // https://leetcode.com/problems/stream-of-characters/
+    // 4.34 pm - 4.50 pm
+    // trie (dist tree)
+
+    class StreamChecker {
+
+        String[] words;
+        List<String> wordsList;
+        MyTrie trie;
+
+        public StreamChecker(String[] words) {
+            this.words = words;
+            this.wordsList = Arrays.asList(words);
+            this.trie = new MyTrie();
+        }
+
+        public boolean query(char letter) {
+            if (this.wordsList.size()==0){
+                return false;
+            }
+            if (this.wordsList.contains(letter)){
+                // still need to update trie ?
+                return true;
+            }
+
+            String letterVal = String.valueOf(letter);
+            if (!this.trie.child.containsKey(letterVal)){
+                this.trie.child.put(letterVal, new MyTrie());
+                this.trie = this.trie.child.get(letterVal);
+                return false;
+            }else{
+                //for ()
+                // recursive call, and visit till find a letter or still can't fine one
+                return true;
+            }
+        }
+
+        private void updateTrie(String letterVal){
+            if (this.trie.child.containsKey(letterVal)){
+                return;
+            }
+            this.trie.child.put(letterVal, new MyTrie());
+        }
+
+    }
+
+    class MyTrie{
+
+        // attr
+        Map<String, MyTrie> child;
+        Boolean isEnd;
+
+        // constructor
+        public MyTrie(){
+            this.child = new HashMap<>();
+            this.isEnd = true;
+        }
+
+    }
 
 
 }
