@@ -8018,7 +8018,8 @@ public class workspace3 {
 
         for(int x : weights){
             weightList.add(x);
-            maxCap += x;
+            //maxCap += x;
+            maxCap = Math.max(x, maxCap);
         }
         if (weights.length==1){
             return weightList.get(0);
