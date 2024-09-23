@@ -8061,4 +8061,32 @@ public class workspace3 {
         return curSum > 0? days+1 : days;
     }
 
+    // LC 363
+    // 9.27 pm - 9.40 pm
+    public int maxSumSubmatrix(int[][] matrix, int k) {
+
+        // brute force
+        // only 1 way to create sub rectangle
+        if (matrix.length < 2 && matrix[0].length < 2){
+            return k;
+        }
+        int l = matrix.length;
+        int w = matrix[0].length;
+        int res = 0;
+
+        for (int i = 0; i < l; i++){
+            int cur = 0;
+            for(int j = 0; j < w; j++){
+                if (cur <= k){
+                    res = Math.max(res, cur);
+                }else{
+                    break;
+                }
+                cur += matrix[i][j];
+            }
+        }
+
+        return res;
+    }
+
 }
