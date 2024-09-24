@@ -92,6 +92,119 @@ public class FlattenMultilevelDoublyLinkedList {
 //    }
 
     // V1
+    // IDEA : LINKED LIST OP + one off
+    // https://zihengcat.github.io/2019/09/02/leetcode-430-flatten-a-multilevel-doubly-linked-list/
+    public Node flatten_1(Node head) {
+        if (head == null) {
+            return head;
+        }
+        /* Using a pointer */
+        Node p = head;
+        while (p != null) {
+            /* CASE: the node has child */
+            if (p.child != null) {
+                Node childNode = p.child;
+                /* Find the tail node of child doubly linked list */
+                while (childNode.next != null) {
+                    childNode = childNode.next;
+                }
+                /* Connect tail with p.next, if it is not null */
+                childNode.next = p.next;
+                if (p.next != null) {
+                    p.next.prev = childNode;
+                }
+                /* Connect p with p.child, and remove p.child */
+                p.next = p.child;
+                p.child.prev = p;
+                p.child = null;
+            } else {
+                /* CASE: if no child, just move forward */
+                p = p.next;
+            }
+        }
+        return head;
+    }
+
+    // V2
+    // IDEA : DFS + LINKED LIST (modified by GPT)
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/flatten_a_multilevel_doubly_linked_list.py#L2
+    public Node flatten_2(Node head) {
+        dfs_2(head);
+        return head;
+    }
+
+    private Node dfs_2(Node head) {
+        Node cur = head;
+
+        while (cur != null) {
+            // If there is a child node, proceed with DFS
+            if (cur.child != null) {
+                Node next = cur.next;
+                cur.next = cur.child;
+                cur.next.prev = cur;
+
+                // Recursively flatten the child list
+                Node childLast = dfs_2(cur.child);
+
+                // Connect the child list to the next node in the main list
+                childLast.next = next;
+                if (next != null) {
+                    next.prev = childLast;
+                }
+
+                // Unlink the child after flattening
+                cur.child = null;
+            }
+            head = cur;
+            cur = cur.next;
+        }
+        return head;
+    }
+
+    // V11
+    // https://leetcode.cn/problems/flatten-a-multilevel-doubly-linked-list/solutions/1013884/bian-ping-hua-duo-ji-shuang-xiang-lian-b-383h/
+    // IDEA : RECURSIVE + LINKED LIST (LC CN official)
+    public Node flatten_11(Node head) {
+        dfs(head);
+        return head;
+    }
+
+    public Node dfs(Node node) {
+        Node cur = node;
+        // record last node in linked list
+        Node last = null;
+
+        while (cur != null) {
+            Node next = cur.next;
+            //  if there is a child node, deal with child node first
+            if (cur.child != null) {
+                Node childLast = dfs(cur.child);
+
+                next = cur.next;
+                //  connect node and child
+                cur.next = cur.child;
+                cur.child.prev = cur;
+
+                //  if next is not null, connect last and next
+                if (next != null) {
+                    childLast.next = next;
+                    next.prev = childLast;
+                }
+
+                // set child as null
+                cur.child = null;
+                last = childLast;
+            } else {
+                last = cur;
+            }
+            cur = next;
+        }
+        return last;
+    }
+
+
+
+    // V10
     // https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/solutions/5667355/easy-java-solution/
     class Node {
         public int val;
@@ -116,7 +229,7 @@ public class FlattenMultilevelDoublyLinkedList {
         }
     }
 
-    public Node flatten_1(Node head) {
+    public Node flatten_10(Node head) {
         helper(head);
         if (store.peek() == null)
             return head;
@@ -132,8 +245,7 @@ public class FlattenMultilevelDoublyLinkedList {
         return retval;
     }
 
-
-    // V2
+    // V12
     // IDEA : LINKED LIST + CUSTOM CLASS
     // https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/solutions/4031041/single-pass-solution-using-custom-class/
     class lc430Helper {
@@ -141,7 +253,7 @@ public class FlattenMultilevelDoublyLinkedList {
         Node tail;
     }
 
-    public Node flatten_2(Node head) {
+    public Node flatten_12(Node head) {
         return util1(head).head;
     }
 
@@ -173,9 +285,9 @@ public class FlattenMultilevelDoublyLinkedList {
         return ans;
     }
 
-    // V3
+    // V13
     // https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/solutions/5328452/easy-to-understand-best-solution/
-    public Node flatten_3(Node head) {
+    public Node flatten_13(Node head) {
         Node temp = head;
         while(temp != null){
             Node list1Tail = temp;
@@ -184,7 +296,7 @@ public class FlattenMultilevelDoublyLinkedList {
 
             if(temp.child != null){
                 // we are assuming that recursion will give us flatten output, so we just need to adjust the pointers
-                Node list2Head = flatten_3(temp.child);
+                Node list2Head = flatten_13(temp.child);
 
                 // find list2 tail
                 Node list2Tail = list2Head;
