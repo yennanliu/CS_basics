@@ -1,6 +1,8 @@
 package dev;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class workspace5 {
@@ -69,6 +71,56 @@ public class workspace5 {
             this.res = _child_res; // ???
         }
         //return this.res;
+    }
+
+    // LC 1011
+    // 8.23 pm - 8.40 pm
+    public int shipWithinDays(int[] weights, int days) {
+
+        if (weights.length==1){
+            return weights[0] / days;
+        }
+
+        int res = 0;
+        List<Integer> weightsList = new ArrayList<>();
+        int fastest = 0;
+        int slowest = 1;
+        for (int w : weights){
+            weightsList.add(w);
+            fastest = Math.max(fastest, w);
+        }
+        // binary search
+        while(fastest > slowest){
+            int mid = (fastest + slowest) / 2;
+            int calculatedDays = getDays(weightsList, mid);
+            System.out.println(">>> mid = " + mid  + ", fastest = " + fastest + ", slowest = " + slowest);
+            // need to return max possible speed within D days
+            if (calculatedDays <= days){
+                fastest = mid;
+            }else{
+                slowest = mid+1;
+            }
+        }
+
+        return slowest; // ??? or return mid
+    }
+
+    private int getDays(List<Integer> weightsList, int speed){
+        int cur = 0;
+        int days = 0;
+        for (Integer w :weightsList){
+            if (cur + w <= speed){
+                cur += w;
+            }else{
+                days += 1;
+                cur = w;
+            }
+        }
+        if (cur > 0){
+            days += 1;
+        }
+        System.out.println(">>> speed = " + speed + ", days = " + days);
+        return days;
     }
 
 }

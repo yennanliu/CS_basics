@@ -410,13 +410,37 @@ public class workSpace4 {
         System.out.println("getShipDays --------------");
 
 //        List<Integer> w_1 = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
-//        int d1 = getShipDays(15, w_1);
+//        //int d1 = getShipDays(15, w_1);
+//        int d1 = getDays(w_1, 15);
 //        System.out.println(">>> d1 = " + d1);
 
         List<Integer> w_1 = Arrays.asList(3,2,2,4,1,4);
-        int d1 = getShipDays(8, w_1);
+        //int d1 = getShipDays(8, w_1);
+        int d1 = getDays(w_1, 6);
         System.out.println(">>> d1 = " + d1);
 
+//        List<Integer> w_1 = Arrays.asList(1,2,3,1,1);
+//        int d1 = getDays(w_1, 3);
+//        System.out.println(">>> d1 = " + d1);
+
+    }
+
+    private static int getDays(List<Integer> weightsList, int speed){
+        int cur = 0;
+        int days = 0;
+        for (Integer w :weightsList){
+            if (cur + w <= speed){
+                cur += w;
+            }else{
+                days += 1;
+                cur = w;
+            }
+        }
+        if (cur > 0){
+            days += 1;
+        }
+        System.out.println(">>> speed = " + speed + ", days = " + days);
+        return days;
     }
 
     private static int getShipDays(int capacity, List<Integer> weightList){
