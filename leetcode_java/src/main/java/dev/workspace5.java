@@ -81,28 +81,31 @@ public class workspace5 {
             return weights[0] / days;
         }
 
-        int res = 0;
         List<Integer> weightsList = new ArrayList<>();
-        int fastest = 0;
-        int slowest = 1;
+        int maxWeight = 0;
+        int totalWeight = 0;
         for (int w : weights){
             weightsList.add(w);
-            fastest = Math.max(fastest, w);
+            maxWeight = Math.max(maxWeight, w);
+            totalWeight += w;
         }
+
+        int left = maxWeight;
+        int right = totalWeight;
         // binary search
-        while(fastest > slowest){
-            int mid = (fastest + slowest) / 2;
+        while(right > left){
+            int mid = (left + right) / 2;
             int calculatedDays = getDays(weightsList, mid);
-            System.out.println(">>> mid = " + mid  + ", fastest = " + fastest + ", slowest = " + slowest);
+            System.out.println(">>> mid = " + mid  + ", maxWeight = " + maxWeight + ", totalWeight = " + totalWeight);
             // need to return max possible speed within D days
             if (calculatedDays <= days){
-                fastest = mid;
+                right = mid;
             }else{
-                slowest = mid+1;
+                left = mid+1;
             }
         }
 
-        return slowest; // ??? or return mid
+        return left; // ??? or return mid
     }
 
     private int getDays(List<Integer> weightsList, int speed){

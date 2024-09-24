@@ -2,7 +2,9 @@ package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/description/
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 1011. Capacity To Ship Packages Within D Days
@@ -54,8 +56,75 @@ import java.util.Arrays;
 public class CapacityToShipPackagesWithinDDays {
 
     // V0
-    // IDEA : BINARY SEARCH (modified by GPT)
+    // IDEA : BINARY SEARCH
     public int shipWithinDays(int[] weights, int days) {
+
+        if (weights.length==1){
+            return weights[0] / days;
+        }
+
+        List<Integer> weightsList = new ArrayList<>();
+        /**
+         *  NOTE !!!
+         *
+         *   we get mex weight, and total weight from weights array
+         */
+        int maxWeight = 0;
+        int totalWeight = 0;
+        for (int w : weights){
+            weightsList.add(w);
+            maxWeight = Math.max(maxWeight, w);
+            totalWeight += w;
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *   we use mex weight, and total weight as
+         *   left, and right pointer of binary search
+         *
+         *   (not mex,  smallest weight or anything else)
+         *   (since we want to get the least weight capacity within D days)
+         */
+        int left = maxWeight;
+        int right = totalWeight;
+        // binary search
+        while(right > left){
+            int mid = (left + right) / 2;
+            int calculatedDays = getDays(weightsList, mid);
+            System.out.println(">>> mid = " + mid  + ", maxWeight = " + maxWeight + ", totalWeight = " + totalWeight);
+            // need to return max possible speed within D days
+            if (calculatedDays <= days){
+                right = mid;
+            }else{
+                left = mid+1;
+            }
+        }
+
+        return left; // ??? or return mid
+    }
+
+    private int getDays(List<Integer> weightsList, int speed){
+        int cur = 0;
+        int days = 0;
+        for (Integer w :weightsList){
+            if (cur + w <= speed){
+                cur += w;
+            }else{
+                days += 1;
+                cur = w;
+            }
+        }
+        if (cur > 0){
+            days += 1;
+        }
+        System.out.println(">>> speed = " + speed + ", days = " + days);
+        return days;
+    }
+
+    // V0
+    // IDEA : BINARY SEARCH (modified by GPT)
+    public int shipWithinDays_0_1(int[] weights, int days) {
         int maxWeight = 0;
         int totalWeight = 0;
 
