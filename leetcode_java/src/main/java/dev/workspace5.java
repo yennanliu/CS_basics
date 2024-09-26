@@ -126,4 +126,41 @@ public class workspace5 {
         return days;
     }
 
+    // LC 939
+    // 7.41 - 8.10 pm
+    /**
+     *  NOTE !!!
+     *
+     *   Return the minimum area of a rectangle ...
+     *
+     *
+     *   exp 1:
+     *
+     *   Input: points = [[1,1],[1,3],[3,1],[3,3],[2,2]]
+     *   Output: 4
+     *
+     *
+     *
+     *   idea :
+     *     get min "x len"
+     *     and get min "y len"
+     *     then ans = x_len * y_len
+     *
+     */
+    public int minAreaRect(int[][] points) {
+        // edge case
+//        if (points.length == 0 && points[0].length == 0){
+//            return 0;
+//        }
+        if (points.length == 1 || points[0].length == 1){
+            return points.length * points[0].length;
+        }
+        // init
+        int x_len = 0;
+        int y_len = 0;
+        // find min x_len and min y_len
+
+        return x_len * y_len;
+    }
+
 }

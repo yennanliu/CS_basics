@@ -652,7 +652,7 @@
 917 | [Reverse Only Letters](https://leetcode.com/problems/reverse-only-letters/) | [Python](./leetcode_python/String/reverse-only-letters.py) | _O(n)_ | _O(1)_ | Easy |`basic`,`stack`,`pointer`| OK* 
 925 | [Long Pressed Name](https://leetcode.com/problems/long-pressed-name/) | [Python](./leetcode_python/String/long-pressed-name.py) | _O(n)_ | _O(1)_ | Easy |`two pointer`, `basic`, `trick`| AGAIN*
 929 | [Unique Email Addresses](https://leetcode.com/problems/unique-email-addresses/) |  [Python](./leetcode_python/String/unique-email-addresses.py) | _O(n * l)_ | _O(n * l)_ | Easy || OK 
-939 | [Minimum Area Rectangle](https://leetcode.com/problems/minimum-area-rectangle/) | [Python](./leetcode_python/String/minimum-area-rectangle.py) | _O(n^1.5)_ on average | _O(n)_ | Medium || OK* 
+939 | [Minimum Area Rectangle](https://leetcode.com/problems/minimum-area-rectangle/) | [Python](./leetcode_python/String/minimum-area-rectangle.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/String/MinimumAreaRectangle.java) | _O(n^1.5)_ on average | _O(n)_ | Medium |hashmap, brute force, google| AGAIN !!! (2) 
 942 | [DI String Match](https://leetcode.com/problems/di-string-match/) | [Python](./leetcode_python/String/di-string-match.py) | _O(n)_ | _O(1)_      | Easy   || AGAIN (not start)
 944 | [Delete Columns to Make Sorted](https://leetcode.com/problems/delete-columns-to-make-sorted/) | [Python](./leetcode_python/String/delete-columns-to-make-sorted.py) | _O(n * l)_ | _O(1)_      | Medium     || AGAIN (not start)
 953 | [Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/) | [Python](./leetcode_python/String/verifying-an-alien-dictionary.py) | _O(n * l)_ | _O(1)_ | Easy || AGAIN (not start)
