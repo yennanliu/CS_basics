@@ -1,9 +1,6 @@
 package dev;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class workspace5 {
 
@@ -30,48 +27,113 @@ public class workspace5 {
         public Node next;
         public Node child;
     };
+
     public Node flatten(Node head) {
+        if(head == null){
+            return head;
+        }
+        if (head.next == null && head.child == null){
+            return head;
+        }
+        Node node = new Node();
+        Node ans = node;
 
-        Queue<Node> store = new LinkedList<>();
+        Node cur = head; // /???
+
         /**
-         *     /**
-         *      * Inserts the specified element into this queue if it is possible to do
-         *      * so immediately without violating capacity restrictions.
-         *      * When using a capacity-restricted queue, this method is generally
-         *      * preferable to {@link #add}, which can fail to insert an element only
-         *      * by throwing an exception.
+         *  if without "child"
+         *  then it's a regular bi-linked list
+         *  -> so we deal with child node via dfs (recursive)
+         *  -> and deal with next node via while loop (iteration)
          */
-        //store.offer(new Node());// ?
+        while(cur != null){
 
-        if (head == null){
-            return head;
-        }
+            Node _next = cur.next;
+            cur.next = cur.child; // NOTE !!! need to flatten
+            cur.next.prev = cur; // NOTE !!! need to connect to prev
 
-        if (head.child == null && head.next == null){
-            return head;
-        }
+            Node _child = this.dfs(cur.child);
 
-        Node res = new Node();
-        Node ans = res;
-        while(head.next != null){
-            dfs(head);
-            Node _next = head.next;
-            head = _next;
+            _child.next = _next;
+
+            if (_next != null){
+                _next.prev = _child;
+            }
+
+            cur.child = null;
+
+            //Node _cur = new Node();
+
+//            while(_child != null){
+//                Node _next2 = _child.next;
+//                _cur.next = _next2;
+//                _child = _next2;
+//                _cur = _cur.next;
+//            }
+//
+//            if (_child == null){
+//                _cur.next = _next; // ??
+//            }
+
         }
 
         return ans;
     }
 
-    private void dfs(Node head){
+    private Node dfs(Node head){
+        if (head == null){
+            return null;
+        }
         while (head.child != null){
             Node _child = head.child;
-            Node _child_res = this.res.child; // ??
-            this.res.child = _child;
+            head.child = this.dfs(head);
             head = _child;
-            this.res = _child_res; // ???
         }
-        //return this.res;
+        return head;
     }
+
+//    public Node flatten(Node head) {
+//
+//        Queue<Node> store = new LinkedList<>();
+//        /**
+//         *     /**
+//         *      * Inserts the specified element into this queue if it is possible to do
+//         *      * so immediately without violating capacity restrictions.
+//         *      * When using a capacity-restricted queue, this method is generally
+//         *      * preferable to {@link #add}, which can fail to insert an element only
+//         *      * by throwing an exception.
+//         */
+//        //store.offer(new Node());// ?
+//
+//        if (head == null){
+//            return head;
+//        }
+//
+//        if (head.child == null && head.next == null){
+//            return head;
+//        }
+//
+//        Node res = new Node();
+//        Node ans = res;
+//        while(head.next != null){
+//            dfs(head);
+//            Node _next = head.next;
+//            head = _next;
+//        }
+//
+//        return ans;
+//    }
+//
+//    private void dfs(Node head){
+//        while (head.child != null){
+//            Node _child = head.child;
+//            Node _child_res = this.res.child; // ??
+//            this.res.child = _child;
+//            head = _child;
+//            this.res = _child_res; // ???
+//        }
+//        //return this.res;
+//    }
 
     // LC 1011
     // 8.23 pm - 8.40 pm
