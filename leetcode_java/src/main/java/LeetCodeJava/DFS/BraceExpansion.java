@@ -57,6 +57,28 @@ public class BraceExpansion {
         ans = new ArrayList<>();
         items = new ArrayList<>();
         convert(s);
+
+        System.out.println(">>> items = ");
+        /**
+         *
+         * NOTE !!!
+         *
+         *  exp 1:
+         *
+         *  Input: s = "{a,b}c{d,e}f"
+         *  Output: ["acdf","acef","bcdf","bcef"]
+         *
+         *  so,
+         * >>> items =
+         * [a, b]
+         * [c]
+         * [d, e]
+         * [f]
+         */
+        for (String[] item : items){
+            System.out.println(Arrays.toString(item));
+        }
+
         dfs(0, new ArrayList<>());
         Collections.sort(ans);
         return ans.toArray(new String[0]);
@@ -81,6 +103,18 @@ public class BraceExpansion {
         }
     }
 
+    // backtrack
+    /**
+     * NOTE !!!
+     *
+     *  once we get items, then the problem
+     *  is transformed as "how to get all collections
+     *  from each item from items", a classic backtrack pattern
+     *
+     *  dfs(int i, List<String> t)
+     *  i is "starting index" we use it and "undo" to collect
+     *  all item from items
+     */
     private void dfs(int i, List<String> t) {
         if (i == items.size()) {
             ans.add(String.join("", t));
@@ -89,6 +123,7 @@ public class BraceExpansion {
         for (String c : items.get(i)) {
             t.add(c);
             dfs(i + 1, t);
+            // undo
             t.remove(t.size() - 1);
         }
     }
