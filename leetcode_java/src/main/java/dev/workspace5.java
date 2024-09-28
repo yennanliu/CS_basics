@@ -1,6 +1,9 @@
 package dev;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class workspace5 {
 
@@ -214,7 +217,7 @@ public class workspace5 {
 //        if (points.length == 0 && points[0].length == 0){
 //            return 0;
 //        }
-        if (points.length == 1 || points[0].length == 1){
+        if (points.length == 1 || points[0].length == 1) {
             return points.length * points[0].length;
         }
         // init
@@ -224,5 +227,74 @@ public class workspace5 {
 
         return x_len * y_len;
     }
+
+    // LC 1087
+    // https://leetcode.ca/2018-11-21-1087-Brace-Expansion/
+    // 5.02 pm - 5.20 pm
+//    public static void main(String[] args) {
+//        System.out.println(this.expand(s));
+//    }
+
+    List<String> collected = new ArrayList<>();
+    List<String> regular = new ArrayList<>();
+    public String[] expand(String s) {
+
+        // no possible to have bracket ("{}")
+        if (s.length() < 3){
+            return new String[]{s};
+        }
+        List<String> candidates = new ArrayList<>();
+        for (String x : s.split("")){
+            Queue<String> q = new LinkedList<>();
+            boolean tooAdd = false;
+            if (x == "{"){
+                tooAdd =  true;
+                break;
+            }
+            else if (!tooAdd){
+                q.add(x);
+                break;
+            }
+            else if (x == "}"){
+                tooAdd = false;
+                StringBuilder sb = new StringBuilder();
+                while(!q.isEmpty()){
+                    sb.append(q.poll());
+                    candidates.add(sb.toString());
+                }
+            }else{
+            }
+
+
+        }
+
+
+        // dfs
+        //List<String> collected = new ArrayList<>();
+        String[] x= (String[]) collected.toArray();
+        // order with lexicographical
+
+        return (String[]) collected.toArray(); // TODO : double check
+    }
+
+    int strLen = 5; // TODO : fix
+    private void dfs(List<String> regular, List<String> candidates, int startIdx, String cur){
+        if (candidates.size()==0){
+            return;
+        }
+        if (cur.length() == strLen){
+            this.collected.add(cur);
+            cur = "";
+            return;
+        }
+        if (cur.length() > strLen){
+            cur = "";
+            return;
+        }
+
+    }
+
+
+
 
 }
