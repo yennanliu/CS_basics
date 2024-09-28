@@ -423,6 +423,15 @@ public class workSpace4 {
 //        int d1 = getDays(w_1, 3);
 //        System.out.println(">>> d1 = " + d1);
 
+
+        System.out.println("split test --------------");
+
+
+        s = "{a,b}c{d,e}f";
+        for(String z_ : s.split("}")){
+            System.out.println(z_);
+        }
+
     }
 
     private static int getDays(List<Integer> weightsList, int speed){
