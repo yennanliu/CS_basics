@@ -25,7 +25,7 @@
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
 	- [Grind 75](https://www.techinterviewhandbook.org/grind75/)
 	- [Grind 169](https://www.techinterviewhandbook.org/grind75/?weeks=28&hours=6)
-	- [LC 官神Github題目分類整理](https://github.com/wisdompeak/LeetCode/blob/master/Readme.mds)
+	- [LC 官神Github題目分類整理](https://github.com/wisdompeak/LeetCode/tree/master)
 	- [LC top 100 likes](https://leetcode.com/studyplan/top-interview-150/)
 	- [neetcode 150 LC list](https://neetcode.io/practice)
 		- [My Brain after 569 Leetcode Problems](https://youtu.be/8wysIxzqgPI)
@@ -37,6 +37,9 @@
 
 
 * LC experiences
+	- [LC難度表](https://zerotrac.github.io/leetcode_problem_rating/#/)
+		- 數字越高, 題目越難, 挑與自己LC排名接近的題庫
+		- (e.g. LC rank ~= 1600, pick 1600 problem)
 	- [代碼隨想錄](https://github.com/youngyangyang04/leetcode-master)
 	- [Leetcode cookbook](https://github.com/halfrost/LeetCode-Go)
 	- [fucking-algorithm](https://github.com/labuladong/fucking-algorithm)
