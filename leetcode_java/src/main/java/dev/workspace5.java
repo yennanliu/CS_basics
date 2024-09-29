@@ -212,86 +212,139 @@ public class workspace5 {
      *
      */
     public int minAreaRect(int[][] points) {
-        // edge case
-//        if (points.length == 0 && points[0].length == 0){
-//            return 0;
-//        }
-        if (points.length == 1 || points[0].length == 1) {
-            return points.length * points[0].length;
-        }
-        // init
-        int x_len = 0;
-        int y_len = 0;
-        // find min x_len and min y_len
 
-        return x_len * y_len;
+        return 0;
     }
+
+//    public int minAreaRect(int[][] points) {
+//        // edge case
+////        if (points.length == 0 && points[0].length == 0){
+////            return 0;
+////        }
+//        if (points.length == 1 || points[0].length == 1) {
+//            return points.length * points[0].length;
+//        }
+//        // init
+//        int x_len = 0;
+//        int y_len = 0;
+//        // find min x_len and min y_len
+//
+//        return x_len * y_len;
+//    }
 
     // LC 1087
     // https://leetcode.ca/2018-11-21-1087-Brace-Expansion/
+    // 6.19 pm - 6.30 pm
+    // TODO : implement, validate
+    List<String> collected = new ArrayList<>();
+    public String[] expand(String s) {
+        if (s.length() < 3){
+            return new String[]{s};
+        }
+
+        // prepare list
+
+        // dfs (backtrack)
+        //String[] x = new String[]{};
+        return null;
+    }
+
+    private List<String> getCandidates(String s){
+      return null;
+    }
+
+    private void backtrack(int startIdx, List<String> candidates, List<String> cur){
+        if (cur.size() == candidates.size()){
+            StringBuilder sb = new StringBuilder();
+            for (String x : cur){
+                sb.append(x);
+            }
+            String str = sb.toString();
+            if (!this.collected.contains(str)){
+                this.collected.add(str);
+            }
+        }
+        if (cur.size() > candidates.size()){
+            return;
+        }
+        // ??? check
+        for (int i = startIdx; i < candidates.size(); i++){
+           // update cur
+           cur.add(candidates.get(i));
+           // recursive
+           this.backtrack(i, candidates, cur);
+           // undo
+           cur.remove(cur.size()-1);
+        }
+    }
+
+
+
+
+
     // 5.02 pm - 5.20 pm
 //    public static void main(String[] args) {
 //        System.out.println(this.expand(s));
 //    }
 
-    List<String> collected = new ArrayList<>();
-    List<String> regular = new ArrayList<>();
-    public String[] expand(String s) {
-
-        // no possible to have bracket ("{}")
-        if (s.length() < 3){
-            return new String[]{s};
-        }
-        List<String> candidates = new ArrayList<>();
-        for (String x : s.split("")){
-            Queue<String> q = new LinkedList<>();
-            boolean tooAdd = false;
-            if (x == "{"){
-                tooAdd =  true;
-                break;
-            }
-            else if (!tooAdd){
-                q.add(x);
-                break;
-            }
-            else if (x == "}"){
-                tooAdd = false;
-                StringBuilder sb = new StringBuilder();
-                while(!q.isEmpty()){
-                    sb.append(q.poll());
-                    candidates.add(sb.toString());
-                }
-            }else{
-            }
-
-
-        }
-
-
-        // dfs
-        //List<String> collected = new ArrayList<>();
-        String[] x= (String[]) collected.toArray();
-        // order with lexicographical
-
-        return (String[]) collected.toArray(); // TODO : double check
-    }
-
-    int strLen = 5; // TODO : fix
-    private void dfs(List<String> regular, List<String> candidates, int startIdx, String cur){
-        if (candidates.size()==0){
-            return;
-        }
-        if (cur.length() == strLen){
-            this.collected.add(cur);
-            cur = "";
-            return;
-        }
-        if (cur.length() > strLen){
-            cur = "";
-            return;
-        }
-
-    }
+//    List<String> collected = new ArrayList<>();
+//    List<String> regular = new ArrayList<>();
+//    public String[] expand(String s) {
+//
+//        // no possible to have bracket ("{}")
+//        if (s.length() < 3){
+//            return new String[]{s};
+//        }
+//        List<String> candidates = new ArrayList<>();
+//        for (String x : s.split("")){
+//            Queue<String> q = new LinkedList<>();
+//            boolean tooAdd = false;
+//            if (x == "{"){
+//                tooAdd =  true;
+//                break;
+//            }
+//            else if (!tooAdd){
+//                q.add(x);
+//                break;
+//            }
+//            else if (x == "}"){
+//                tooAdd = false;
+//                StringBuilder sb = new StringBuilder();
+//                while(!q.isEmpty()){
+//                    sb.append(q.poll());
+//                    candidates.add(sb.toString());
+//                }
+//            }else{
+//            }
+//
+//
+//        }
+//
+//
+//        // dfs
+//        //List<String> collected = new ArrayList<>();
+//        String[] x= (String[]) collected.toArray();
+//        // order with lexicographical
+//
+//        return (String[]) collected.toArray(); // TODO : double check
+//    }
+//
+//    int strLen = 5; // TODO : fix
+//    private void dfs(List<String> regular, List<String> candidates, int startIdx, String cur){
+//        if (candidates.size()==0){
+//            return;
+//        }
+//        if (cur.length() == strLen){
+//            this.collected.add(cur);
+//            cur = "";
+//            return;
+//        }
+//        if (cur.length() > strLen){
+//            cur = "";
+//            return;
+//        }
+//
+//    }
 
     // LC 981
     // https://leetcode.com/problems/time-based-key-value-store/
