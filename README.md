@@ -24,6 +24,8 @@
 * LC Pattern
 	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
+	- [Grind 75](https://www.techinterviewhandbook.org/grind75/)
+	- [Grind 169](https://www.techinterviewhandbook.org/grind75/?weeks=28&hours=6)
 	- [LC top 100 likes](https://leetcode.com/studyplan/top-interview-150/)
 	- [neetcode 150 LC list](https://neetcode.io/practice)
 		- [My Brain after 569 Leetcode Problems](https://youtu.be/8wysIxzqgPI)
@@ -41,6 +43,7 @@
 	- [FAANG 面試準備經驗與建議（二）](https://arthur-lin.medium.com/faang-%E9%9D%A2%E8%A9%A6%E6%BA%96%E5%82%99%E7%B6%93%E9%A9%97%E8%88%87%E5%BB%BA%E8%AD%B0-%E4%BA%8C-%E6%A8%A1%E6%93%AC%E9%9D%A2%E8%A9%A6%E8%88%87%E8%B3%87%E6%BA%90%E4%BB%8B%E7%B4%B9-b06cc097b665)
 	- [LC 小知識](https://ithelp.ithome.com.tw/articles/10299626)
 	- [Meta SWE interview prep](https://www.metacareers.com/profile/trial/?redirect=job_details&chooseView=Arrays)
+	- [0到100的軟體工程師面試之路](https://ithelp.ithome.com.tw/users/20152262/ironman/5615?page=2)
 	- 來和大家聊聊我是如何刷題的 : pt1, pt2, pt3
 		- https://blog.csdn.net/azl397985856/article/details/110358828
 		- https://mp.weixin.qq.com/s/guCR2DCTGoWf4ojeqq2M8A
