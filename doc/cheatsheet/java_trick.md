@@ -923,3 +923,12 @@ for (Map.Entry<TreeNode, List<TreeNode>> entry : g.entrySet()) {
         }
 // ...
 ```
+
+### 2-7) TreeMap
+- java.util.TreeMap.floorKey()
+    - will return max val in its key set, if empty, return null
+    - 還有一種Map，它在內部對Key進行排序，Map就是SortedMap。
+    - SortedMap保證遍歷時以Key的順序來進行排序。預設按字母排序：
+    - 使用TreeMap時，輸入的Key必須實作Comparable介面。
+- https://www.yxjc123.com/post/v0i7dl
+- https://liaoxuefeng.com/books/java/collection/tree-map/index.html
