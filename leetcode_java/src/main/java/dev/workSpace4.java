@@ -1,5 +1,6 @@
 package dev;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -431,6 +432,13 @@ public class workSpace4 {
         for(String z_ : s.split("}")){
             System.out.println(z_);
         }
+
+        System.out.println("array to str test --------------");
+        List<String> mystr99 = new ArrayList<>();
+        mystr99.add("a");
+        mystr99.add("b");
+        mystr99.add("c");
+        System.out.println(Arrays.toString(mystr99.toArray()));
 
     }
 
