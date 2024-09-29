@@ -1,9 +1,8 @@
 package dev;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class workspace5 {
 
@@ -294,7 +293,149 @@ public class workspace5 {
 
     }
 
+    // LC 981
+    // https://leetcode.com/problems/time-based-key-value-store/
+    // 4.25 pm
+    /**
+     * Your TimeMap object will be instantiated and called as such:
+     * TimeMap obj = new TimeMap();
+     * obj.set(key,value,timestamp);
+     * String param_2 = obj.get(key,timestamp);
+     *
+     *
+     *
+     *  NOTE :
+     *
+     * String get(String key, int timestamp)
+     * Returns a value such that set was called previously,
+     * with timestamp_prev <= timestamp. If there are multiple such values,
+     * it returns the value associated with the largest timestamp_prev.
+     * If there are no values, it returns "".
+     *
+     */
+    /**
+     *
+     *  exp 1:
+     *
+     *  input : "foo", "bar", 1
+     *
+     *  {"foo" :  ["bar", 1]}
+     *
+     *  {"foo" :  ["bar", [1]]}
+     *
+     *  {"foo" :  {"bar" : [1]} }
+     *
+     *  {"foo" :  ["bar" : [1]] }
+     *
+     *  {"foo" : ["bar-1", "bar2-4", ...]}
+     *
+     *   map : {"foo" : ["bar", "bar2", ...]}
+     *   time_array : [ 1,4,...]
+     *
+     *   {"foo" : [1,4,...]}
+     *
+     *
+     *   input : "foo", "zee", 2
+     *
+     *
+     *   {"foo" : {"bar":1, "bar2" : 4, ....}}
+     *
+     */
+//    class TimeMap {
+//
+//        // attr
+////        private String key;
+////        private List<String> value;
+//        private Map<String, List<String>> map; // save key-value info
+//        //private List<Integer> timeArray;
+//        private Map<String, List<Integer>> timeArray; // save key-insert time history info
+//
+//        public TimeMap() {
+//            this.map = new HashMap<>();
+//            this.timeArray = new HashMap<>(); //new ArrayList<>();
+//        }
+//
+//        public void set(String key, String value, int timestamp) {
+//            //String _key = key + "-" + timestamp;
+//            List<String> values; // ???
+//            if(!this.map.containsKey(key)){
+//                values = new ArrayList<>();
+//            }else{
+//                //this.map.put()
+//                values = this.map.get(key);
+//            }
+//            values.add(value);
+//            this.map.put(key, values);
+//            List<Integer> timeArray =  this.timeArray.getOrDefault(key, new ArrayList<>());
+//            timeArray.add(timestamp);
+//            this.timeArray.put(key, timeArray);
+//            //this.timeArray.add(timestamp); // insert with idx ???
+//        }
+//
+//        public String get(String key, int timestamp) {
+//            String res = "";
+//            if (!this.map.containsKey(key)){
+//                return res;
+//            }
+//            // binary search
+//            List<Integer> list = this.timeArray.get(key);
+//            int idx  = getRecentAddedValue(list, timestamp);
+//            res = this.map.get(key).get(idx);
+//            return res;
+//        }
+//        private Integer getRecentAddedValue(List<Integer> input, int x){
+//            int left = 0;
+//            int right = input.size();
+//            while (right > left){
+//                int mid = (left + right) / 2;
+//                int val = input.get(mid);
+//                if (val >= x){
+//                    //left = mid+1;
+//                    right = mid;
+//                }else{
+//                    left = mid+1;
+//                }
+//            }
+//            return left; // ?
+//        }
+//    }
 
+    class TimeMap {
+
+        // attr
+        // HashMap<String, HashMap<Integer, String>> keyTimeMap;
+        Map<String, Map<Integer, String>> keyTimeMap;
+
+        public TimeMap() {
+            this.keyTimeMap = new HashMap<>();
+        }
+
+        public void set(String key, String value, int timestamp) {
+            Map<Integer, String> valueMap = null;
+            if (!this.keyTimeMap.containsKey(key)){
+                valueMap = new HashMap<>();
+            }else{
+                valueMap = this.keyTimeMap.get(key);
+            }
+            valueMap.put(timestamp, value);
+            this.keyTimeMap.put(key, valueMap);
+        }
+
+        public String get(String key, int timestamp) {
+            // linear search ???
+            if (!this.keyTimeMap.containsKey(key)){
+                return "";
+            }
+            // binary search
+            for (int x = timestamp; x >= 1; x-=1){
+                if (this.keyTimeMap.get(key).containsKey(x)){
+                    return this.keyTimeMap.get(key).get(x);
+                    //return x;
+                }
+            }
+            return "";
+        }
+    }
 
 
 }
