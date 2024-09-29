@@ -21,20 +21,22 @@
 
 ## Resource
 
-* LC Pattern
-	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
+* LC classics problems
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
 	- [Grind 75](https://www.techinterviewhandbook.org/grind75/)
 	- [Grind 169](https://www.techinterviewhandbook.org/grind75/?weeks=28&hours=6)
+	- [LC 官神Github題目分類整理](https://github.com/wisdompeak/LeetCode/blob/master/Readme.mds)
 	- [LC top 100 likes](https://leetcode.com/studyplan/top-interview-150/)
 	- [neetcode 150 LC list](https://neetcode.io/practice)
 		- [My Brain after 569 Leetcode Problems](https://youtu.be/8wysIxzqgPI)
+	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
 	- [LC Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
 	- [cheatsheet-leetcode-a4](https://cheatsheet.dennyzhang.com/cheatsheet-leetcode-a4)
 	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
 	- [grokking-the-coding-interview](https://www.educative.io/courses/grokking-the-coding-interview)
 
-* LC Resource
+
+* LC experiences
 	- [代碼隨想錄](https://github.com/youngyangyang04/leetcode-master)
 	- [Leetcode cookbook](https://github.com/halfrost/LeetCode-Go)
 	- [fucking-algorithm](https://github.com/labuladong/fucking-algorithm)
@@ -42,7 +44,7 @@
 	- [FAANG 面試準備經驗與建議（一）](https://arthur-lin.medium.com/faang-%E9%9D%A2%E8%A9%A6%E6%BA%96%E5%82%99%E7%B6%93%E9%A9%97%E8%88%87%E5%BB%BA%E8%AD%B0-%E4%B8%80-b7add6a7b9a6)
 	- [FAANG 面試準備經驗與建議（二）](https://arthur-lin.medium.com/faang-%E9%9D%A2%E8%A9%A6%E6%BA%96%E5%82%99%E7%B6%93%E9%A9%97%E8%88%87%E5%BB%BA%E8%AD%B0-%E4%BA%8C-%E6%A8%A1%E6%93%AC%E9%9D%A2%E8%A9%A6%E8%88%87%E8%B3%87%E6%BA%90%E4%BB%8B%E7%B4%B9-b06cc097b665)
 	- [LC 小知識](https://ithelp.ithome.com.tw/articles/10299626)
-	- [Meta SWE interview prep](https://www.metacareers.com/profile/trial/?redirect=job_details&chooseView=Arrays)
+	- [Meta SWE isnterview prep](https://www.metacareers.com/profile/trial/?redirect=job_details&chooseView=Arrays)
 	- [0到100的軟體工程師面試之路](https://ithelp.ithome.com.tw/users/20152262/ironman/5615?page=2)
 	- 來和大家聊聊我是如何刷題的 : pt1, pt2, pt3
 		- https://blog.csdn.net/azl397985856/article/details/110358828
@@ -56,10 +58,6 @@
 	- offer test case (consider edge case)
 	- discussion & follow up
 
-- LC SQL high frequent
-		- [LC sql high frequent 50](https://blog.csdn.net/qq_44186838/article/details/118713154)
-		- [LeetCode Curated SQL 70](https://leetcode.com/problem-list/5htp6xyg/?page=1)
-		- [cheatsheet-mysql-a4](https://cheatsheet.dennyzhang.com/cheatsheet-mysql-a4)
 - [Resource.md](./doc/Resource.md) - `Resource` for coding interview (**keep updating**)
 - [Teach yourself CS](https://teachyourselfcs.com/)
 - [MindMapCodeInterview](./doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
@@ -95,26 +93,14 @@
 		- [Crack the system design interview](https://tianpan.co/notes/2016-02-13-crack-the-system-design-interview?fbclid=IwAR2S4jmyL7qvTVO519x2JpH-Rr4MxMNcx1ee1d5bPK81Kc5dYUROnzZJOEA)
 	- Repo
 		- [system-design-primer repo](https://github.com/donnemartin/system-design-primer)
-* SQL
-	- [SQL exercises](https://www.w3resource.com/sql-exercises/) - w3resource SQL exercises
-	- [SQL tutorial](https://mode.com/sql-tutorial/) - mode.com sql tutorial
-	- [SQL zoo](https://sqlzoo.net/) - SQL test
-	- [10 SQL Tricks](https://blog.jooq.org/10-sql-tricks-that-you-didnt-think-were-possible/) : 10 SQL Tricks That You Didn’t Think Were Possible
-	- [Zachary Thomas' SQL Questions](https://lnkd.in/g-JJzuD) -- The Best Medium-Hard Data Analyst SQL Interview Questions
-		- [pdf](./doc/The-Best-Medium-Hard-Data-Analyst-SQL-Interview-Questions.pdf)
-	- [Select * SQL](https://selectstarsql.com/)
-	- [LinkedIn Learning](https://lnkd.in/gQXFc4n)
-	- [Window Functions](https://lnkd.in/g3RtPCJ)
-	- [HackerRank](https://lnkd.in/grv_9sB)
-	- [W3 Schools](https://lnkd.in/gJPfrrv)
-	- [CodeAcademy](https://lnkd.in/gT5xmpN)
-	- [SQL Bolt](https://sqlbolt.com/)
-	- [self-joins-calculate-retention-churn-and-reactivation-metrics](https://www.sisense.com/blog/use-self-joins-to-calculate-your-retention-churn-and-reactivation-metrics/)
-	- [Prod metric design](https://quip.com/edU3AgdiNOo1)
+
 * Tools
 	- https://coderpad.io/
 	- https://codeshare.io/
 	- http://sqlfiddle.com/
+
+* LC SQL resources
+	- [LC SQL resource](./doc/lc_sql_resource.md)
 
 ## Algorithms content
 
