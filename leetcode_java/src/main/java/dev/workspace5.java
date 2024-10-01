@@ -438,6 +438,75 @@ public class workspace5 {
      *   {"foo" : {"bar":1, "bar2" : 4, ....}}
      *
      */
+    // 5.57 PM - 6.20 pm
+
+    class TimeMap {
+
+        // attr
+        Map<String, List<String>> keyValueMap;
+        Map<String, List<Integer>> InsertTimeMap;
+
+        public TimeMap() {
+            this.keyValueMap = new HashMap<>();
+            this.InsertTimeMap = new HashMap<>();
+        }
+
+        public void set(String key, String value, int timestamp) {
+
+            // update keyValueMap
+            List<String> values = this.keyValueMap.getOrDefault(key, new ArrayList<>());
+            //values = this.keyValueMap.get(key);
+            values.add(value);
+            this.keyValueMap.put(key, values);
+
+            // update InsertTimeMap
+            List<Integer> times = this.InsertTimeMap.getOrDefault(key, new ArrayList<>());
+            times.add(timestamp);
+            this.InsertTimeMap.put(key, times);
+        }
+
+        public String get(String key, int timestamp) {
+            if (!this.keyValueMap.containsKey(key)){
+                return "";
+            }
+            // linear search
+            List<Integer> times = this.InsertTimeMap.get(key);
+//            while (timestamp >= 0){
+//                if (times.contains(timestamp)){
+//                    int idx = times.indexOf(timestamp);
+//                    return this.keyValueMap.get(key).get(idx);
+//                }
+//                timestamp -= 1;
+//            }
+            int idx = this.binaryGetLatestTime(timestamp, times);
+            System.out.println(">>> idx = " + idx);
+
+            return idx >= 0 ? this.keyValueMap.get(key).get(idx) : "";
+        }
+
+        private int binaryGetLatestTime(int timestamp, List<Integer> times){
+            int left = 0;
+            int right = times.size() - 1;
+            while (right >= left){
+                int mid = (left + right) / 2;
+                Integer val = times.get(mid);
+                if (val.equals(timestamp)){
+                    return mid;
+                }
+                if (val > timestamp){
+                    right = mid - 1;
+                }else{
+                    left = mid + 1;
+                }
+            }
+
+            //return right <= timestamp ? right : -1;
+            return right >= 0 ? right : -1;
+            //return -1;
+        }
+    }
+
+
 //    class TimeMap {
 //
 //        // attr
@@ -497,42 +566,42 @@ public class workspace5 {
 //        }
 //    }
 
-    class TimeMap {
-
-        // attr
-        // HashMap<String, HashMap<Integer, String>> keyTimeMap;
-        Map<String, Map<Integer, String>> keyTimeMap;
-
-        public TimeMap() {
-            this.keyTimeMap = new HashMap<>();
-        }
-
-        public void set(String key, String value, int timestamp) {
-            Map<Integer, String> valueMap = null;
-            if (!this.keyTimeMap.containsKey(key)){
-                valueMap = new HashMap<>();
-            }else{
-                valueMap = this.keyTimeMap.get(key);
-            }
-            valueMap.put(timestamp, value);
-            this.keyTimeMap.put(key, valueMap);
-        }
-
-        public String get(String key, int timestamp) {
-            // linear search ???
-            if (!this.keyTimeMap.containsKey(key)){
-                return "";
-            }
-            // binary search
-            for (int x = timestamp; x >= 1; x-=1){
-                if (this.keyTimeMap.get(key).containsKey(x)){
-                    return this.keyTimeMap.get(key).get(x);
-                    //return x;
-                }
-            }
-            return "";
-        }
-    }
+//    class TimeMap {
+//
+//        // attr
+//        // HashMap<String, HashMap<Integer, String>> keyTimeMap;
+//        Map<String, Map<Integer, String>> keyTimeMap;
+//
+//        public TimeMap() {
+//            this.keyTimeMap = new HashMap<>();
+//        }
+//
+//        public void set(String key, String value, int timestamp) {
+//            Map<Integer, String> valueMap = null;
+//            if (!this.keyTimeMap.containsKey(key)){
+//                valueMap = new HashMap<>();
+//            }else{
+//                valueMap = this.keyTimeMap.get(key);
+//            }
+//            valueMap.put(timestamp, value);
+//            this.keyTimeMap.put(key, valueMap);
+//        }
+//
+//        public String get(String key, int timestamp) {
+//            // linear search ???
+//            if (!this.keyTimeMap.containsKey(key)){
+//                return "";
+//            }
+//            // binary search
+//            for (int x = timestamp; x >= 1; x-=1){
+//                if (this.keyTimeMap.get(key).containsKey(x)){
+//                    return this.keyTimeMap.get(key).get(x);
+//                    //return x;
+//                }
+//            }
+//            return "";
+//        }
+//    }
 
     // LC 837
     // https://leetcode.com/problems/new-21-game/description/
@@ -544,9 +613,9 @@ public class workspace5 {
      *
      *  -> find the prob that point < n
      */
-    public double new21Game(int n, int k, int maxPts) {
-        return 0.0;
-    }
+//    public double new21Game(int n, int k, int maxPts) {
+//        return 0.0;
+//    }
 
 
 }

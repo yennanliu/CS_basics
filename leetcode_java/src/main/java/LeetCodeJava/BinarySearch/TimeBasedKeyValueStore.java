@@ -1,21 +1,141 @@
 package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/time-based-key-value-store/description/
-
+/**
+ *
+ * 981. Time Based Key-Value Store
+ * 
+ * Design a time-based key-value data structure that can store multiple values for the same key at different time stamps and retrieve the key's value at a certain timestamp.
+ *
+ * Implement the TimeMap class:
+ *
+ * TimeMap() Initializes the object of the data structure.
+ * void set(String key, String value, int timestamp) Stores the key key with the value value at the given time timestamp.
+ * String get(String key, int timestamp) Returns a value such that set was called previously, with timestamp_prev <= timestamp. If there are multiple such values, it returns the value associated with the largest timestamp_prev. If there are no values, it returns "".
+ *
+ *
+ * Example 1:
+ *
+ * Input
+ * ["TimeMap", "set", "get", "get", "set", "get", "get"]
+ * [[], ["foo", "bar", 1], ["foo", 1], ["foo", 3], ["foo", "bar2", 4], ["foo", 4], ["foo", 5]]
+ * Output
+ * [null, null, "bar", "bar", null, "bar2", "bar2"]
+ *
+ * Explanation
+ * TimeMap timeMap = new TimeMap();
+ * timeMap.set("foo", "bar", 1);  // store the key "foo" and value "bar" along with timestamp = 1.
+ * timeMap.get("foo", 1);         // return "bar"
+ * timeMap.get("foo", 3);         // return "bar", since there is no value corresponding to foo at timestamp 3 and timestamp 2, then the only value is at timestamp 1 is "bar".
+ * timeMap.set("foo", "bar2", 4); // store the key "foo" and value "bar2" along with timestamp = 4.
+ * timeMap.get("foo", 4);         // return "bar2"
+ * timeMap.get("foo", 5);         // return "bar2"
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= key.length, value.length <= 100
+ * key and value consist of lowercase English letters and digits.
+ * 1 <= timestamp <= 107
+ * All the timestamps timestamp of set are strictly increasing.
+ * At most 2 * 105 calls will be made to set and get.
+ *
+ *
+ */
 //import javafx.util.Pair;
 import java.util.*;
 
 public class TimeBasedKeyValueStore {
 
     // V0
-    // IDEA : HASHMAP + BINARY SEARCH (fixed by GPT)
+    // IDEA : HASHMAP + BINARY SEARCH
     class TimeMap {
+
+        // attr
+        Map<String, List<String>> keyValueMap;
+        Map<String, List<Integer>> InsertTimeMap;
+
+        public TimeMap() {
+            this.keyValueMap = new HashMap<>();
+            this.InsertTimeMap = new HashMap<>();
+        }
+
+        public void set(String key, String value, int timestamp) {
+
+            // update keyValueMap
+            List<String> values = this.keyValueMap.getOrDefault(key, new ArrayList<>());
+            //values = this.keyValueMap.get(key);
+            values.add(value);
+            this.keyValueMap.put(key, values);
+
+            // update InsertTimeMap
+            List<Integer> times = this.InsertTimeMap.getOrDefault(key, new ArrayList<>());
+            times.add(timestamp);
+            this.InsertTimeMap.put(key, times);
+        }
+
+        public String get(String key, int timestamp) {
+            if (!this.keyValueMap.containsKey(key)){
+                return "";
+            }
+
+            // V1 : linear search (TLE)
+            List<Integer> times = this.InsertTimeMap.get(key);
+//            while (timestamp >= 0){
+//                if (times.contains(timestamp)){
+//                    int idx = times.indexOf(timestamp);
+//                    return this.keyValueMap.get(key).get(idx);
+//                }
+//                timestamp -= 1;
+//            }
+
+            // V2 : binary search (OK)
+            int idx = this.binaryGetLatestTime(timestamp, times);
+
+            return idx >= 0 ? this.keyValueMap.get(key).get(idx) : "";
+        }
+
+        private int binaryGetLatestTime(int timestamp, List<Integer> times){
+            int left = 0;
+            int right = times.size() - 1;
+            // NOTE !!!! right >= left
+            while (right >= left){
+                int mid = (left + right) / 2;
+                Integer val = times.get(mid);
+                if (val.equals(timestamp)){
+                    return mid;
+                }
+                if (val > timestamp){
+                    // NOTE !!! right  = mid - 1;
+                    right = mid - 1;
+                }else{
+                    // NOTE !!! left = mid + 1;
+                    left = mid + 1;
+                }
+            }
+
+            //return right <= timestamp ? right : -1;
+            //return -1;
+            /**
+             * NOTE !!!!
+             *
+             *  need to have below handling logic:
+             *  if right is a valid idx (>=0), then return it
+             *  as binary search result, otherwise return -1
+             */
+            return right >= 0 ? right : -1;
+        }
+    }
+
+    // V0_1
+    // IDEA : HASHMAP + BINARY SEARCH (fixed by GPT)
+    class TimeMap_0_1 {
 
         // Map that stores key -> (timestamps -> values)
         private Map<String, List<Integer>> keyToTimestamps;
         private Map<String, List<String>> keyToValues;
 
-        public TimeMap() {
+        public TimeMap_0_1() {
             keyToTimestamps = new HashMap<>();
             keyToValues = new HashMap<>();
         }
@@ -69,7 +189,7 @@ public class TimeBasedKeyValueStore {
         }
     }
 
-    // V0_1
+    // V0_2
     // IDEA :  TREEMAP +  floorKey
     /**
      *
@@ -84,12 +204,12 @@ public class TimeBasedKeyValueStore {
      * 	•	Usage: It is useful when you’re working with sorted data and need to find the nearest lower value for a given key.
      *
      */
-    class TimeMap_0_1 {
+    class TimeMap_0_2 {
 
         // Use TreeMap to maintain order of timestamps for binary search
         private Map<String, TreeMap<Integer, String>> keyTimeMap;
 
-        public TimeMap_0_1() {
+        public TimeMap_0_2() {
             this.keyTimeMap = new HashMap<>();
         }
 
@@ -116,14 +236,14 @@ public class TimeBasedKeyValueStore {
         }
     }
 
-    // V0_2
+    // V0_3
     // IDEA : DICT + BINARY SEARCH (fixed by GPT)
-    class TimeMap_0_2 {
+    class TimeMap_0_3 {
 
         private Map<String, List<String>> map; // save key-value info
         private Map<String, List<Integer>> timeArray; // save key-insert time history info
 
-        public TimeMap_0_2() {
+        public TimeMap_0_3() {
             this.map = new HashMap<>();
             this.timeArray = new HashMap<>();
         }
