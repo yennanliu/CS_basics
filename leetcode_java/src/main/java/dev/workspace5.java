@@ -534,5 +534,19 @@ public class workspace5 {
         }
     }
 
+    // LC 837
+    // https://leetcode.com/problems/new-21-game/description/
+    // 5.26 pm - 5.40
+    /**
+     *  n : find prob that point < n
+     *  k : will stop when point  >= k
+     * [1, maxPts] : get point randomly from [1, maxPts] range
+     *
+     *  -> find the prob that point < n
+     */
+    public double new21Game(int n, int k, int maxPts) {
+        return 0.0;
+    }
+
 
 }
