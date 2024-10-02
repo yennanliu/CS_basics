@@ -617,5 +617,70 @@ public class workspace5 {
 //        return 0.0;
 //    }
 
+    // LC 743
+    // https://leetcode.com/problems/network-delay-time/description/
+    // 2.01 pm - 2.15 pm
+    /**
+     *  n : we have nodes,
+     *      from 1 to n
+     *
+     *  times[i] = (ui, vi, wi):
+     *      ui is the source node,
+     *      vi is the target node,
+     *      wi is the time it takes for a signal to travel from source to target.
+     *
+     *  -> k: We will send a signal from a given node k.
+     *     Return the minimum time it takes for "all the n nodes" to receive the signal.
+     *     If it is impossible for all the n nodes to receive the signal, return -1.
+     */
+    /**
+     *  idea :
+     *
+     *
+     */
+    public int networkDelayTime(int[][] times, int n, int k) {
+        Set<Integer> nodes = new HashSet<>();
+        for (int[] x :times){
+            nodes.add(x[0]);
+        }
+        if(!nodes.contains(k)){
+            return -1; // not possible to visit "k" node
+        }
+        int time = 0;
+
+        // build graph
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+
+        for (int[] x :times){
+            Set<Integer> neighbors = map.getOrDefault(x[0], new HashSet<>());
+            neighbors.add(x[1]);
+            map.put(x[0], neighbors);
+        }
+
+        // bfs (since need to find min time)
+        Set<Integer> visited = new HashSet<>();
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(k);
+        while(!queue.isEmpty()){
+            int cur = queue.poll();
+            if (map.containsKey(cur) && !visited.contains(cur)){
+                visited.add(cur);
+                Set<Integer> neighbors = map.get(cur);
+                //time += map.g
+                for (Integer node : neighbors){
+                    if(!visited.contains(cur)){ // check ?
+                        queue.add(node);
+                    }
+                }
+            }
+        }
+
+        if (visited.size() < k){
+            return -1;
+        }
+        return time;
+    }
+
+
 
 }
