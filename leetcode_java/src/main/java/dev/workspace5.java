@@ -249,9 +249,9 @@ public class workspace5 {
                 int x2 = points[j][0];
                 int y2 = points[j][1];
                 // check
-                boolean canFormRectangle = (x1 != x2 && y1 != y2 && mapX.containsKey(x1) && mapX.containsKey(x2) && mapX.get(x1).equals(y2) && mapX.get(x2).equals(y1));
+                boolean canFormRectangle = (x1 != x2 && y1 != y2 && mapX.containsKey(x1) && mapX.containsKey(x2));
                 if (canFormRectangle){
-                    int area = (x2 - x1) * (y2 - y1);
+                    int area = Math.abs(x2 - x1) * Math.abs(y2 - y1);
                     res = Math.min(res, area);
                 }
             }
