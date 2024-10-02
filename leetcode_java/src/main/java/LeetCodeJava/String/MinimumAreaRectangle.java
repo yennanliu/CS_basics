@@ -42,7 +42,7 @@ public class MinimumAreaRectangle {
     // V0
     // IDEA : HASHMAP + BRUTE FORCE + LOGIC (fixed by gpt)
     public int minAreaRect(int[][] points) {
-        
+
         // Step 1: Build a map where key = x-coordinate and value = list of y-coordinates for that x
         Map<Integer, Set<Integer>> mapX = new HashMap<>();
 

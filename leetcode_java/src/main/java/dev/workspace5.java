@@ -1,5 +1,7 @@
 package dev;
 
+import LeetCodeJava.DataStructure.TreeNode;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -691,6 +693,26 @@ public class workspace5 {
             return -1;
         }
         return time;
+    }
+
+    // LC 889
+    // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/
+    // 3.27 PM - 3.40 PM
+    /**
+     * preorder  :  root -> left -> right
+     * postorder : left -> right -> root
+     *
+     * idea :
+     *   1. preorder : get root
+     *   2. postorder : split left, right sub tree and root
+     *   3. preorder : get next root
+     */
+    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        if (preorder.length==1 && postorder.length==1){
+            return new TreeNode(postorder[0]);
+        }
+
+        return null;
     }
 
 
