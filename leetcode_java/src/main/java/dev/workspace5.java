@@ -219,40 +219,52 @@ public class workspace5 {
      *    }
      *
      */
+    // 2,53 -> 3.05
     public int minAreaRect(int[][] points) {
 
         // build map
-        Map<Integer, List<Integer>> mapX = new HashMap<>();
-        Map<Integer, List<Integer>> mapY = new HashMap<>();
+        Map<Integer, Set<Integer>> mapX = new HashMap<>();
+        //Map<Integer, List<Integer>> mapY = new HashMap<>();
 
         for (int[] point : points){
 
             int x = point[0];
-            int y = point[1];
+            //int y = point[1];
 
-            List<Integer> xList =  mapX.getOrDefault(x, new ArrayList<>());
-            List<Integer> yList =  mapY.getOrDefault(x, new ArrayList<>());
+            // xList : list of "y coordination" with given x
+            Set<Integer> xList =  mapX.getOrDefault(x, new HashSet<>());
+            //List<Integer> yList =  mapY.getOrDefault(x, new ArrayList<>());
 
+//            if(!xList.contains(y)){
+//                xList.add(x);
+//            }
             xList.add(x);
-            yList.add(y);
+            //yList.add(y);
 
             mapX.put(x, xList);
-            mapY.put(y, yList);
+            //mapY.put(y, yList);
         }
 
         int res = Integer.MAX_VALUE;
 
         for (int i = 0; i < points.length; i++){
-            for (int j = 0; j <points.length; j++){
+            // NOTE !! int j = i+1; j <points.length; j++
+            // not j = 0
+            for (int j = i+1; j <points.length; j++){
                 int x1 = points[i][0];
                 int y1 = points[i][1];
                 int x2 = points[j][0];
                 int y2 = points[j][1];
                 // check
-                boolean canFormRectangle = (x1 != x2 && y1 != y2 && mapX.containsKey(x1) && mapX.containsKey(x2));
-                if (canFormRectangle){
-                    int area = Math.abs(x2 - x1) * Math.abs(y2 - y1);
-                    res = Math.min(res, area);
+                // mapX.containsKey(x1) :  there is a y coordination with x1
+                // !mapX.get(x1).equals(y1) ; the y coordination is not (x1, y1) (not itself)
+                //boolean canFormRectangle = (x1 != x2 && y1 != y2 && mapX.containsKey(x1) && mapX.containsKey(x2) && !mapX.get(x1).equals(y1) && !mapX.get(x2).equals(y2));
+                boolean canFormRectangle = mapX.get(x1).contains(y2) && mapX.get(x2).contains(y1);
+                if (x1 != x2 && y1 != y2){
+                    if (canFormRectangle){
+                        int area = Math.abs(x2 - x1) * Math.abs(y2 - y1);
+                        res = Math.min(res, area);
+                    }
                 }
             }
         }

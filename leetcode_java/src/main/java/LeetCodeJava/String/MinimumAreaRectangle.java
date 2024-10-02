@@ -4,6 +4,7 @@ package LeetCodeJava.String;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -39,9 +40,50 @@ import java.util.Set;
 public class MinimumAreaRectangle {
 
     // V0
-//    public int minAreaRect(int[][] points) {
-//
-//    }
+    // IDEA : HASHMAP + BRUTE FORCE + LOGIC (fixed by gpt)
+    public int minAreaRect(int[][] points) {
+        
+        // Step 1: Build a map where key = x-coordinate and value = list of y-coordinates for that x
+        Map<Integer, Set<Integer>> mapX = new HashMap<>();
+
+        for (int[] point : points) {
+            int x = point[0];
+            int y = point[1];
+            mapX.putIfAbsent(x, new HashSet<>());
+
+            /** NOTE : below are equivalent
+             */
+            // V1
+            //mapX.get(x).add(y);
+
+            // V2
+            Set<Integer> set = mapX.get(x);
+            set.add(y);
+            mapX.put(x, set);
+        }
+
+        // Step 2: Iterate through pairs of points to calculate the area of rectangles
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < points.length; i++) {
+            for (int j = i + 1; j < points.length; j++) {
+                int x1 = points[i][0], y1 = points[i][1];
+                int x2 = points[j][0], y2 = points[j][1];
+
+                // Step 3: Check if we have a potential rectangle by ensuring x1 != x2 and y1 != y2
+                if (x1 != x2 && y1 != y2) {
+                    // Step 4: Check if the other two corners (x1, y2) and (x2, y1) exist
+                    if (mapX.get(x1).contains(y2) && mapX.get(x2).contains(y1)) {
+                        // Calculate the area of the rectangle
+                        int area = Math.abs(x2 - x1) * Math.abs(y2 - y1);
+                        res = Math.min(res, area);
+                    }
+                }
+            }
+        }
+
+        // Return the result, if no rectangle was found return 0
+        return res == Integer.MAX_VALUE ? 0 : res;
+    }
 
     // V1
 
