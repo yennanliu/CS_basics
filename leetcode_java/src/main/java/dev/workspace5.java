@@ -848,4 +848,40 @@ public class workspace5 {
         return j == x.length();
     }
 
+    // LC 221
+    // https://leetcode.com/problems/maximal-square/
+    // 3.38 pm - 3.48
+    /**
+     *  find the largest square containing only 1's and return its area.
+     *
+     *
+     *  idea 1)
+     *
+     *  1
+     *
+     *  11
+     *  1?
+     *
+     *  111
+     *  111
+     *  11?
+     *
+     *
+     *  dp[0][0] = 1 or 0
+     *
+     *  dp[i][j] = if (dp[i-1]dp[j]==1 && dp[i]dp[j-1]==1), then 1
+     *             else 0
+     *
+     *  ...
+     *
+     */
+    public int maximalSquare(char[][] matrix) {
+        if (matrix.length == 1 && matrix[0].length == 1){
+            return matrix[0][0];
+        }
+
+        int res = 0;
+        return 0;
+    }
+
 }
