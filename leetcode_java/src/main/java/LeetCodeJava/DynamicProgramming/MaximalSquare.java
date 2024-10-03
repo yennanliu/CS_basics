@@ -60,13 +60,60 @@ public class MaximalSquare {
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
                 if (a[i - 1][j - 1] == '1') {
+                    /**
+                     *  NOTE !!!
+                     *
+                     *  dp logic:
+                     *
+                     *  4.	Transition Formula:
+                     *
+                     * 	  • The idea is to update each cell in dp based on the neighboring cells:
+                     *
+                     * 	  • If a[i-1][j-1] == '1', the cell at dp[i][j] will be
+                     * 	    the minimum of its top (dp[i-1][j]), left (dp[i][j-1]),
+                     * 	    and top-left (dp[i-1][j-1]) neighbors, plus 1.
+                     *
+                     * 	  • This is because a square at position (i, j) can only expand
+                     * 	    if all three neighboring squares (above, left, and top-left)
+                     * 	    can also form squares.
+                     *
+                     */
                     dp[i][j] = Math.min(dp[i - 1][j - 1], Math.min(dp[i - 1][j], dp[i][j - 1])) + 1;
+                    /**
+                     * 5. Updating Maximum:
+                     * 	- Every time dp[i][j] is updated, the value is compared to
+                     * 	  the current maximum side length (max) and updated accordingly
+                     * 	  if a larger square is found.
+                     *
+                     */
                     max = Math.max(max, dp[i][j]);
                 }
             }
         }
 
         // return the area
+        /**
+         *  example :
+         *
+         *  input:
+         *
+         *  [
+         *     ['1', '0', '1', '0'],
+         *     ['1', '0', '1', '1'],
+         *     ['1', '1', '1', '1'],
+         *     ['0', '1', '1', '1']
+         * ]
+         *
+         * output:
+         * [
+         *     [0, 0, 0, 0, 0],
+         *     [0, 1, 0, 1, 0],
+         *     [0, 1, 0, 1, 1],
+         *     [0, 1, 1, 2, 2],
+         *     [0, 0, 1, 2, 3]
+         * ]
+         *
+         */
         return max * max;
     }
 
