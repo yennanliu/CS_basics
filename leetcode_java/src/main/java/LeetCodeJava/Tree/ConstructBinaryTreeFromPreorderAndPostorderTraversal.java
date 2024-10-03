@@ -279,7 +279,9 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
     }
 
     // V7
+    // IDEA : TREE PROPERTY
     // https://zxi.mytechroad.com/blog/tree/leetcode-889-construct-binary-tree-from-preorder-and-postorder-traversal/
+    // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_889.png
     // PYTHON
 //    class Solution:
 //    def constructFromPrePost(self, pre, post):
