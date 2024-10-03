@@ -36,9 +36,64 @@ public class LongestWordInDictionaryThroughDeleting {
 
     // V0
     // TODO: implement
-//    public String findLongestWord(String s, List<String> dictionary) {
-//
-//    }
+    public String findLongestWord(String s, List<String> dictionary) {
+        if (dictionary.size() == 0 && s != null){
+            return "";
+        }
+
+        List<String> collected = new ArrayList<>();
+        // check
+        for (String item : dictionary){
+            //Map<String, Integer> curMap = this.getElementCount(item);
+            if (canForm(item, s)){
+                collected.add(item);
+            }
+        }
+        System.out.println(">>> collected = " + collected);
+
+        if (collected.size()==0){
+            return "";
+        }
+
+        Collections.sort(collected, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                /**
+                 * // First compare by length
+                 * // NOTE !! inverse order, e.g. longest str at first
+                 */
+                int lengthComparison = Integer.compare(o2.length(), o1.length());
+                /**
+                 *  // If lengths are equal, compare lexicographically
+                 *  // NOTE !!! if lengths are the same, we compare  lexicographically
+                 */
+                if (lengthComparison == 0) {
+                    return o1.compareTo(o2); // lexicographical order
+                }
+                return lengthComparison; // sort by length
+            }
+        });
+
+        System.out.println(">>> (sorted) collected = " + collected);
+        return collected.get(0);
+    }
+
+    /**
+     *  NOTE !!!
+     *
+     *   x : str in dict
+     *   y : s
+     *
+     *   ref : isSubsequence_3(str, s)
+     */
+    private boolean canForm(String x, String y){
+        int j = 0;
+        for (int i = 0; i < y.length() && j < x.length(); i++)
+            if (x.charAt(j) == y.charAt(i))
+                j++;
+        return j == x.length();
+    }
+
 
     // V1_1
     // IDEA : Brute Force

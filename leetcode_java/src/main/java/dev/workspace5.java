@@ -775,7 +775,7 @@ public class workspace5 {
         // check
         for (String item : dictionary){
             //Map<String, Integer> curMap = this.getElementCount(item);
-            if (canForm(s, item)){
+            if (canForm(item, s)){
                 collected.add(item);
             }
         }
@@ -813,32 +813,39 @@ public class workspace5 {
         return map;
     }
 
-    private boolean canForm(String s, String item){
-        Map<String, Integer> sMap = this.getElementCount(s);
-        Map<String, Integer> curMap = this.getElementCount(item);
-        for (String k: curMap.keySet()){
-            if(!sMap.keySet().contains(k)){
-                return false;
-            }
-        }
-        int idx_s = 0;
-        int idx_i = 0;
-        while(idx_s < s.length() && idx_i < item.length()){
+    // isSubsequence_3(str, s)
+    private boolean canForm(String x, String y){
+//        Map<String, Integer> sMap = this.getElementCount(s);
+//        Map<String, Integer> curMap = this.getElementCount(item);
+//        for (String k: curMap.keySet()){
+//            if(!sMap.keySet().contains(k)){
+//                return false;
+//            }
+//        }
+//        int idx_s = 0;
+//        int idx_i = 0;
+//        while(idx_s < s.length() && idx_i < item.length()){
+//
+//            if (idx_s >= s.length() || idx_i >= item.length()){
+//                return false;
+//            }
+//
+//            if(s.charAt(idx_s) != item.charAt(idx_i)){
+//                return false;
+//            }
+//            while(s.charAt(idx_s) == item.charAt(idx_i)){
+//                idx_i += 1;
+//            }
+//            idx_i += 1;
+//            idx_s += 1;
+//        }
+//        return true;
 
-            if (idx_s >= s.length() || idx_i >= item.length()){
-                return false;
-            }
-
-            if(s.charAt(idx_s) != item.charAt(idx_i)){
-                return false;
-            }
-            while(s.charAt(idx_s) == item.charAt(idx_i)){
-                idx_i += 1;
-            }
-            idx_i += 1;
-            idx_s += 1;
-        }
-        return true;
+        int j = 0;
+        for (int i = 0; i < y.length() && j < x.length(); i++)
+            if (x.charAt(j) == y.charAt(i))
+                j++;
+        return j == x.length();
     }
 
 }
