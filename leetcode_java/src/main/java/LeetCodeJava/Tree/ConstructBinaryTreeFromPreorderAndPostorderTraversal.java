@@ -278,4 +278,21 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
         return root;
     }
 
+    // V7
+    // https://zxi.mytechroad.com/blog/tree/leetcode-889-construct-binary-tree-from-preorder-and-postorder-traversal/
+    // PYTHON
+//    class Solution:
+//    def constructFromPrePost(self, pre, post):
+//    def build(i, j, n):
+//            if n <= 0: return None
+//            root = TreeNode(pre[i])
+//      if n == 1: return root
+//            k = j
+//      while post[k] != pre[i + 1]: k += 1
+//    l = k - j + 1
+//    root.left = build(i + 1, j, l)
+//    root.right = build(i + l + 1, k + 1, n - l - 1)
+//      return root
+//    return build(0, 0, len(pre))
+
 }
