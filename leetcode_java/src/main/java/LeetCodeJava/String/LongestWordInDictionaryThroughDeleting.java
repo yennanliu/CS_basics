@@ -55,6 +55,12 @@ public class LongestWordInDictionaryThroughDeleting {
             return "";
         }
 
+
+        /** NOTE !!!!
+         *
+         *  custom sorting list
+         *  via Collections.sort and new Comparator<String>()
+         */
         Collections.sort(collected, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -82,15 +88,58 @@ public class LongestWordInDictionaryThroughDeleting {
      *  NOTE !!!
      *
      *   x : str in dict
-     *   y : s
+     *   s : s
      *
      *   ref : isSubsequence_3(str, s)
      */
-    private boolean canForm(String x, String y){
+    private boolean canForm(String x, String s){
+
+        /**
+         * NOTE !!!
+         *
+         *  via below algorithm, we can check
+         *  if "s" can be formed by the other str
+         *  by some element deletion
+         *
+         *  e.g.:
+         *
+         *  check if "apple" can be formed by "applezz"
+         *
+         *  NOTE !!!
+         *
+         *   "i" as idx for s
+         *   "j" as idx for x  (str in dict)
+         *
+         *   we go thorough element in "s",
+         *   plus, we also check condition : i < s.length() && j < x.length()
+         *   and once looping is completed
+         *   then we check if j == x.length(),
+         *   since ONLY when idx (j) reach
+         *
+         *
+         */
         int j = 0;
-        for (int i = 0; i < y.length() && j < x.length(); i++)
-            if (x.charAt(j) == y.charAt(i))
+        // V1 (below 2 approaches are both OK)
+        for (int i = 0; i < s.length() && j < x.length(); i++){
+            // NOTE !!! if element are the same, then we move x idx (j)
+            if (x.charAt(j) == s.charAt(i))
                 j++;
+        }
+
+        // V2
+//        for (int i = 0; i < y.length(); i++){
+//            if (j >= x.length()){
+//                return j == x.length();
+//            }
+//            if (x.charAt(j) == y.charAt(i))
+//                j++;
+//        }
+        /** NOTE !!!
+         *
+         *  if j == x.length()
+         *  -> means s idx can go through,
+         *  -> means s can be formed by x (str in dict)
+         */
         return j == x.length();
     }
 
