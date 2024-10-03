@@ -715,6 +715,130 @@ public class workspace5 {
         return null;
     }
 
+    // LC 524
+    // https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/
+    // 1.45 pm - 1.55 pm
+    /**
+     * NOTE !!!
+     *
+     *  return the longest string in the dictionary
+     *  that can be formed by deleting some of the
+     *  given string characters.
+     *
+     *  If there is more than one possible result,
+     *  -> return the 1) longest word with 2) the smallest lexicographical order.
+     *
+     *  If there is no possible result, return the empty string.
+     *
+     *
+     *  lexicographical : 字母序 (?)
+     *
+     *
+     *  idea 1)
+     *
+     *   1. loop over dict
+     *      maintain a res string
+     *   2. check if can "delete some element" in s,
+     *      -> check via compare dict element
+     *      so can be same as dict
+     *      if ok, save value
+     *
+     *      e.g. :
+     *         s = {a:2, b:1, p:2, c:1, l:1, e:1}
+     *         so, for ale, it is {a:1, l:1, e:1} OK, ale
+     *             for apple, it is {a:1, p:2, l:1, e: 1}, OK, apple
+     *         ...
+     *         collected = [ale, apple, plea],
+     *         apple is apple, so return apple as ans
+     *
+     *
+     *
+     *      e.g:
+     *        s = {a:2, b:1, p:2, c:1, l:e, e:1}
+     *        ...
+     *        collected = [a,b,c]
+     *        return a as ans
+     *
+     *
+     *   3. check longest and return ans
+     *
+     */
+    public String findLongestWord(String s, List<String> dictionary) {
+        if (dictionary.size() == 0 && s != null){
+            return "";
+        }
 
+        Map<String, Integer> sMap = this.getElementCount(s);
+        System.out.println(">>> sMap = " + sMap);
+
+        List<String> collected = new ArrayList<>();
+        // check
+        for (String item : dictionary){
+            //Map<String, Integer> curMap = this.getElementCount(item);
+            if (canForm(s, item)){
+                collected.add(item);
+            }
+        }
+
+        System.out.println(">>> collected = " + collected);
+
+        if (collected.size()==0){
+            return "";
+        }
+
+        Collections.sort(collected, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                // First compare by length
+                int lengthComparison = Integer.compare(o2.length(), o1.length());
+                // If lengths are equal, compare lexicographically
+                if (lengthComparison == 0) {
+                    return o1.compareTo(o2); // lexicographical order
+                }
+                return lengthComparison; // sort by length
+            }
+        });
+
+        System.out.println(">>> (sorted) collected = " + collected);
+
+        return collected.get(0);
+    }
+
+    private Map<String, Integer> getElementCount(String s){
+        Map<String, Integer> map = new HashMap<>();
+        for(String x : s.split("")){
+            int cnt = map.getOrDefault(x, 0);
+            map.put(x, cnt+1);
+        }
+        return map;
+    }
+
+    private boolean canForm(String s, String item){
+        Map<String, Integer> sMap = this.getElementCount(s);
+        Map<String, Integer> curMap = this.getElementCount(item);
+        for (String k: curMap.keySet()){
+            if(!sMap.keySet().contains(k)){
+                return false;
+            }
+        }
+        int idx_s = 0;
+        int idx_i = 0;
+        while(idx_s < s.length() && idx_i < item.length()){
+
+            if (idx_s >= s.length() || idx_i >= item.length()){
+                return false;
+            }
+
+            if(s.charAt(idx_s) != item.charAt(idx_i)){
+                return false;
+            }
+            while(s.charAt(idx_s) == item.charAt(idx_i)){
+                idx_i += 1;
+            }
+            idx_i += 1;
+            idx_s += 1;
+        }
+        return true;
+    }
 
 }
