@@ -697,7 +697,7 @@ public class workspace5 {
 
     // LC 889
     // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/
-    // 3.27 PM - 3.40 PM
+    // 4.19 - 4.39 pm
     /**
      * preorder  :  root -> left -> right
      * postorder : left -> right -> root
@@ -706,13 +706,38 @@ public class workspace5 {
      *   1. preorder : get root
      *   2. postorder : split left, right sub tree and root
      *   3. preorder : get next root
+     *
+     *   4. 1st element in left sub tree in pre-order
+     *      is the LAST element of  left sub tree in post-order (???)
      */
     public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
-        if (preorder.length==1 && postorder.length==1){
+
+        // edge case
+        if(preorder == null || postorder == null || preorder.length == 0 || postorder.length == 0){
+            return null;
+        }
+
+        if (preorder.length == 1){
             return new TreeNode(postorder[0]);
         }
 
-        return null;
+        TreeNode root = new TreeNode(preorder[0]);
+        int mid = 0;
+
+        // find mid
+        for (int i = 0; i < postorder.length; i++){
+            if (postorder[i] == preorder[0]){
+                mid = i;
+                break;
+            }
+        }
+
+        // recursive build tree
+
+        root.left = this.constructFromPrePost(Arrays.copyOfRange(preorder, 1, mid-1), Arrays.copyOfRange(postorder, 1, mid-1));
+        root.right = this.constructFromPrePost(preorder, postorder);
+
+        return root;
     }
 
     // LC 524
