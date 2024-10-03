@@ -121,7 +121,7 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
             }
         }
 
-        // ecursive Construction of Left and Right Subtrees:
+        // recursive Construction of Left and Right Subtrees:
 
         /**
          * The left subtree is constructed recursively using:
@@ -214,7 +214,16 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
     // V5
     // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/solutions/1647023/concise-java-solution-with-explanation/
     /**
-     * Explanation - We know that first element in pre array is the root. We also know that second element in the pre array is the root of the left subtree. Now if we can find this second element in the post array then all elements before it and including it would belong to the left sub tree and all elements after it (excluding the last element which is the root) will be the elements in the right subtree. We can apply this logic recursively while processing each element in the pre array and build the tree. We use a hashmap for fast lookups in the post array.
+     * Explanation -
+     *   We know that first element in pre array is the root.
+     *   We also know that second element in the pre array is the root
+     *   of the left subtree. Now if we can find this second element
+     *   in the post array then all elements before it and including
+     *   it would belong to the left sub tree and all elements after
+     *   it (excluding the last element which is the root) will be the
+     *   elements in the right subtree. We can apply this logic recursively
+     *   while processing each element in the pre array and build the tree.
+     *   We use a hashmap for fast lookups in the post array.
      */
     private Map<Integer,Integer> postMap = new HashMap<>();
     private int preIdx;
@@ -234,6 +243,38 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
 
         root.left = buildTree(lo, leftSubRootPostIdx, pre, post);
         root.right = buildTree(leftSubRootPostIdx + 1, hi - 1, pre, post);
+        return root;
+    }
+
+    class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+    }
+
+    // V6
+    // IDEA : TREE (offered by gpt)
+    private int preIndex = 0;
+    private int postIndex = 0;
+
+    public TreeNode constructFromPrePost_6(int[] preorder, int[] postorder) {
+        // Create the root node from the current preorder value
+        TreeNode root = new TreeNode(preorder[preIndex++]);
+
+        // If root is not a leaf node, recursively build left and right subtrees
+        if (root.val != postorder[postIndex]) {
+            root.left = constructFromPrePost_6(preorder, postorder);
+        }
+        if (root.val != postorder[postIndex]) {
+            root.right = constructFromPrePost_6(preorder, postorder);
+        }
+
+        // Move the postorder index for root node
+        postIndex++;
         return root;
     }
 
