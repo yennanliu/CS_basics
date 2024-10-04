@@ -702,13 +702,24 @@ public class workspace5 {
      * preorder  :  root -> left -> right
      * postorder : left -> right -> root
      *
-     * idea :
+     * idea 1:
      *   1. preorder : get root
      *   2. postorder : split left, right sub tree and root
      *   3. preorder : get next root
      *
      *   4. 1st element in left sub tree in pre-order
      *      is the LAST element of  left sub tree in post-order (???)
+     *
+     *
+     *  idea 2 :
+     *
+     *
+     *  1. 2nd element (idx=1) in pre-order is
+     *     lest element of sub left tree (e.g. sub left tree root) in post-order
+     *
+     *  2. we then can know "tree width" via above
+     *     -> distance between left and root
+     *
      */
     public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
 
