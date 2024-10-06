@@ -846,6 +846,7 @@
 669| [Trim a Binary Search Tree](https://leetcode.com/problems/trim-a-binary-search-tree/) | [Python](./leetcode_python/Recursion/trim-a-binary-search-tree.py) | _O(n)_ | _O(h)_ | Medium |good basic, BST, dfs, recursion,`amazon`| AGAIN******* (4)
 671| [Second Minimum Node In a Binary Tree](https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/) |[Python](./leetcode_python/Recursion/second-minimum-node-in-a-binary-tree.py) | _O(n)_          | _O(h)_ | Easy|dfs,tree| OK* (2)
 753| [Cracking the Safes](https://leetcode.com/problems/cracking-the-safe/description/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Recursion/CrackingTheSafes.java) | _O(n)_| _O(h)_ | Hard|dfs,recursion,google| AGAIN (not start)
+1145| [Binary Tree Coloring Game](https://leetcode.com/problems/binary-tree-coloring-game/description/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Recursion/BinaryTreeColoringGame.java) | _O(n)_| _O(h)_ | Medium|tree,recursion,google| AGAIN (not start)
 
 ## Binary Search
 
