@@ -928,4 +928,81 @@ public class workspace5 {
         return false;
     }
 
+    // LC 1219
+    // https://leetcode.com/problems/path-with-maximum-gold/
+    // 4.06 pm - 4.26pm
+    int maxGold = 0;
+    public int getMaximumGold(int[][] grid) {
+
+        // dfs
+        // edge case
+        if (grid.length == 1 && grid[0].length == 1){
+            return grid[0][0];
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // collect "start point" candidate
+        List<List<Integer>> startCandidates = new ArrayList<>();
+        for (int i = 0; i < l; i++){
+            for (int j = 0; j < w; j++){
+                if (grid[i][j] > 0){
+                    //int[][] cur = new int[][]{{i,j}};
+                    List<Integer> cur = new ArrayList<>();
+                    cur.add(i);
+                    cur.add(j);
+                    startCandidates.add(cur);
+                }
+            }
+        }
+
+        // dfs + backtrack
+        for (int i = 0; i < l; i++){
+            for (int j = 0; j < w; j++){
+                if (grid[i][j] > 0){
+                    Boolean[][] visited = new Boolean[l][w];
+                    int val = 0;
+                    int goldValue = this.getGold(j, i, val, grid, visited);
+                    maxGold = Math.max(maxGold, goldValue);
+                }
+            }
+        }
+
+//        System.out.println("startCandidates = ");
+//        for (List<Integer> item : startCandidates){
+//            System.out.println("x = " + item.get(0) + ", y = " + item.get(1));
+//        }
+
+        return maxGold;
+    }
+
+    private int getGold(int x, int y, int val, int[][] grid, Boolean[][] visited){
+
+        int[][] moves = new int[][]{{0,1}, {0,-1}, {1,0}, {-1,0}};
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+//        if (visited[y][x]){
+//            return 0;
+//        }
+        val += grid[y][x];
+        for (int[] move : moves){
+            int x_ = x + move[0];
+            int y_ = y + move[1];
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && !visited[y_][x_]){
+                visited[y_][x_] = true;
+                val += grid[y_][x_];
+                this.getGold(x_, y_, val, grid, visited);
+                // undo
+                visited[x_][y_] = false;
+                val -= grid[y_][x_];
+            }
+        }
+
+        return val;
+    }
+
+
 }
