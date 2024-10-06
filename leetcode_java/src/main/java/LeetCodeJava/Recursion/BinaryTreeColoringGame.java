@@ -201,5 +201,33 @@ public class BinaryTreeColoringGame {
         findNode(node.left, x, res);
         findNode(node.right, x, res);
     }
-    
+
+    // V5
+    // IDEA : TREE + RECURSION
+    // https://www.youtube.com/watch?v=0MGbvRHYZxc
+    // https://zxi.mytechroad.com/blog/tree/leetcode-1145-binary-tree-coloring-game/
+    // C++
+//    class Solution {
+//        public:
+//        bool btreeGameWinningMove(TreeNode* root, int n, int x) {
+//            int red_left;
+//            int red_right;
+//            function<int(TreeNode*)> count = [&](TreeNode* node){
+//                if (!node) return 0;
+//                int l = count(node->left);
+//                int r = count(node->right);
+//                if (root->val == x) {
+//                    red_left = l;
+//                    red_right = r;
+//                }
+//                return 1 + l + r;
+//            };
+//            count(root);
+//            // Color red's parent.
+//            if (1 + red_left + red_right <= n / 2) return true;
+//            // Color the child that has the larger subtree.
+//            return max(red_left, red_right) > n / 2;
+//        }
+//    };
+
 }
