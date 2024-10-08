@@ -1022,7 +1022,7 @@
 718 | [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/) |  [Python](./leetcode_python/Backtracking/maximum-length-of-repeated-subarray.py)  | _O(m * n)_ | _O(min(m, n))_ | Medium | DP, Hash, Binary Search |  AGAIN (not start*)
 784| [Letter Case Permutation](https://leetcode.com/problems/letter-case-permutation/)    | [Python](./leetcode_python/Backtracking/letter-case-permutation.py)  | _O(n * 2^n)_ | _O(1)_ | Medium | dfs, recursion, `good trick`,`fb`| AGAIN****** (3)
 980| [Unique Paths III](https://leetcode.com/problems/unique-paths-iii/)    | [Python](./leetcode_python/Backtracking/unique-paths-iii.py)  | _O(n * 2^n)_ | _O(1)_ |Hard| backtrack, dfs, amazon, google,`fb`| AGAIN**** (1)
-1219| [Path with Maximum Gold](https://leetcode.com/problems/path-with-maximum-gold/description/)| [Java](./leetcode_java/src/main/java/LeetCodeJava/BackTrack/PathWithMaximumGold.java)  | _O(n * 2^n)_ | _O(1)_ |Hard| backtrack, dfs, bfs, google| AGAIN**** (1)
+1219| [Path with Maximum Gold](https://leetcode.com/problems/path-with-maximum-gold/description/)| [Java](./leetcode_java/src/main/java/LeetCodeJava/BackTrack/PathWithMaximumGold.java)  | _O(n * 2^n)_ | _O(1)_ |Medium| backtrack, dfs, bfs, google| AGAIN**** (1)
 
 
 ## Dynamic Programming
