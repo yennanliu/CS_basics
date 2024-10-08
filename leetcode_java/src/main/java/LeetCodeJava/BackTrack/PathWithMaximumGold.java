@@ -2,12 +2,6 @@ package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/path-with-maximum-gold/description/
 
-import jdk.internal.net.http.common.Pair;
-
-import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Set;
 
 /**
  * 1219. Path with Maximum Gold
@@ -16,59 +10,137 @@ import java.util.Set;
  * Companies
  * Hint
  * In a gold mine grid of size m x n, each cell in this mine has an integer representing the amount of gold in that cell, 0 if it is empty.
- *
+ * <p>
  * Return the maximum amount of gold you can collect under the conditions:
- *
+ * <p>
  * Every time you are located in a cell you will collect all the gold in that cell.
  * From your position, you can walk one step to the left, right, up, or down.
  * You can't visit the same cell more than once.
  * Never visit a cell with 0 gold.
  * You can start and stop collecting gold from any position in the grid that has some gold.
- *
- *
+ * <p>
+ * <p>
  * Example 1:
- *
+ * <p>
  * Input: grid = [[0,6,0],[5,8,7],[0,9,0]]
  * Output: 24
  * Explanation:
  * [[0,6,0],
- *  [5,8,7],
- *  [0,9,0]]
+ * [5,8,7],
+ * [0,9,0]]
  * Path to get the maximum gold, 9 -> 8 -> 7.
  * Example 2:
- *
+ * <p>
  * Input: grid = [[1,0,7],[2,0,6],[3,4,5],[0,3,0],[9,0,20]]
  * Output: 28
  * Explanation:
  * [[1,0,7],
- *  [2,0,6],
- *  [3,4,5],
- *  [0,3,0],
- *  [9,0,20]]
+ * [2,0,6],
+ * [3,4,5],
+ * [0,3,0],
+ * [9,0,20]]
  * Path to get the maximum gold, 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7.
- *
- *
+ * <p>
+ * <p>
  * Constraints:
- *
+ * <p>
  * m == grid.length
  * n == grid[i].length
  * 1 <= m, n <= 15
  * 0 <= grid[i][j] <= 100
  * There are at most 25 cells containing gold.
- *
  */
 public class PathWithMaximumGold {
 
     // V0
-    // TODO : implement
-//    public int getMaximumGold(int[][] grid) {
-//
-//    }
+    // IDEA : DFS + BACKTRACK
+    private final int[] DIRECTIONS = new int[]{0, 1, 0, -1, 0};
+
+    public int getMaximumGold(int[][] grid) {
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int maxGold = 0;
+
+        // Search for the path with the maximum gold starting from each cell
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                // run dfs backtrack here
+                maxGold = Math.max(maxGold, dfsBacktrack(grid, x, y));
+            }
+        }
+        return maxGold;
+    }
+
+    private int dfsBacktrack(int[][] grid, int x, int y) {
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        /** NOTE !!!
+         *
+         *  we validate here that if given (x,y) is a valid coordination
+         *  as well as if it's OK to "walk" from current status ((x,y)), e.g. grid[y][x] != 0
+         */
+        // Base case: this cell is not in the matrix or this cell has no gold
+        if (x < 0 || y < 0 || x == w || y == l || grid[y][x] == 0) {
+            return 0;
+        }
+
+        // NOTE !!! we init maxGold as 0
+        int maxGold = 0;
+
+
+        // NOTE !!! we cache the current grid value (for backtrack "undo")
+        int originalVal = grid[y][x];
+        /** NOTE !!!
+         *
+         *  Mark the cell as visited and save the value,
+         *  SO WE DON'T REVISIT THE ALREADY-VISITED PATH
+         */
+        grid[y][x] = 0;
+
+        // Backtrack in each of the four directions
+        /**
+         * NOTE !!! trick below
+         *
+         *  we get max on all possible "next step"
+         *
+         */
+        for (int direction = 0; direction < 4; direction++) {
+            maxGold = Math.max(maxGold,
+                    dfsBacktrack(grid, DIRECTIONS[direction] + x,
+                            DIRECTIONS[direction + 1] + y));
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *   we do "undo" here, so the grid remain unchanged,
+         *   and can be used by other iteration
+         *
+         *   e.g.:
+         *
+         *           for (int y = 0; y < l; y++) {
+         *             for (int x = 0; x < w; x++) {
+         *                 // run dfs backtrack here
+         *                 maxGold = Math.max(maxGold, dfsBacktrack(grid, x, y));
+         *             }
+         *         }
+         *
+         */
+        // Set the cell back to its original value
+        grid[y][x] = originalVal;
+
+        return maxGold + originalVal;
+    }
+
 
     // V1-1
     // IDEA : DFS + BACKTRACK
     //https://leetcode.com/problems/path-with-maximum-gold/editorial/
-    private final int[] DIRECTIONS = new int[] { 0, 1, 0, -1, 0 };
+    private final int[] DIRECTIONS2 = new int[]{0, 1, 0, -1, 0};
 
     public int getMaximumGold_1_1(int[][] grid) {
         int rows = grid.length;
@@ -78,13 +150,13 @@ public class PathWithMaximumGold {
         // Search for the path with the maximum gold starting from each cell
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                maxGold = Math.max(maxGold, dfsBacktrack(grid, rows, cols, row, col));
+                maxGold = Math.max(maxGold, dfsBacktrack2(grid, rows, cols, row, col));
             }
         }
         return maxGold;
     }
 
-    private int dfsBacktrack(int[][] grid, int rows, int cols, int row, int col) {
+    private int dfsBacktrack2(int[][] grid, int rows, int cols, int row, int col) {
         // Base case: this cell is not in the matrix or this cell has no gold
         if (row < 0 || col < 0 || row == rows || col == cols || grid[row][col] == 0) {
             return 0;
@@ -104,8 +176,8 @@ public class PathWithMaximumGold {
          */
         for (int direction = 0; direction < 4; direction++) {
             maxGold = Math.max(maxGold,
-                    dfsBacktrack(grid, rows, cols, DIRECTIONS[direction] + row,
-                            DIRECTIONS[direction + 1] + col));
+                    dfsBacktrack2(grid, rows, cols, DIRECTIONS2[direction] + row,
+                            DIRECTIONS2[direction + 1] + col));
         }
 
         // Set the cell back to its original value
@@ -229,12 +301,13 @@ public class PathWithMaximumGold {
     int r = 0;
     int c = 0;
     int max = 0;
+
     public int getMaximumGold_3(int[][] grid) {
         r = grid.length;
         c = grid[0].length;
-        for(int i = 0; i < r; i++) {
-            for(int j = 0; j < c; j++) {
-                if(grid[i][j] != 0) {
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (grid[i][j] != 0) {
                     dfs3(grid, i, j, 0);
                 }
             }
@@ -243,7 +316,7 @@ public class PathWithMaximumGold {
     }
 
     private void dfs3(int[][] grid, int i, int j, int cur) {
-        if(i < 0 || i >= r || j < 0 || j >= c || grid[i][j] == 0) {
+        if (i < 0 || i >= r || j < 0 || j >= c || grid[i][j] == 0) {
             max = Math.max(max, cur);
             return;
         }
