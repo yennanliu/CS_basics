@@ -49,8 +49,8 @@ PriorityQueue<Integer> heap = new PriorityQueue<>(Comperator.reverseOrder());
 - [Arrays.asList vs new ArrayList()](https://www.baeldung.com/java-arrays-aslist-vs-new-arraylist#:~:text=asList%20method%20returns%20a%20type,the%20add%20and%20remove%20methods.)
 
 - Conclusion:
-- Arrays.asList : only wrap existing array, it NOT implements "add", "remove" methods (but has modify method)
-- new ArrayList : implement "add", "remove" and "modify" methods, not affect original array -> `preferable`
+- `Arrays.asList` : only wrap existing array, `add`, `remove` methods (but has modify method) are NOT implemented
+- `new ArrayList` : implement "add", "remove" and "modify" methods, not affect original array -> `preferable`
 
 
 ### 0-0-1) Array <--> List
@@ -99,11 +99,12 @@ for (char c: S.toCharArray()) {
     System.out.println("c = " + c);
 }
 
-
 // V2
 // LC 49
 String strs = "scvsdacvdsa";
-char[] array = strs.toCharArray();   
+char[] array = strs.toCharArray();
+
+// or, can use myStr1.split(""), can access element in string as well 
 ```
 
 ```java
