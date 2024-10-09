@@ -62,13 +62,41 @@ public class BinaryTreeColoringGame {
      */
 
     // V0
-    // TODO : implement
-//    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
-//
-//    }
+    // IDEA : RECURSION + TREE OP (fixed by GPT)
+    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+        // Get the total count of nodes in the left and right subtree of the node with value x
+        TreeNode xNode = findNode(root, x);
+        int leftSubtreeCount = getSubNodeCount(xNode.left);
+        int rightSubtreeCount = getSubNodeCount(xNode.right);
+
+        // Player 1's count is the sum of nodes in x's left and right subtrees + x itself
+        int player1Cnt = leftSubtreeCount + rightSubtreeCount + 1;
+
+        // Player 2 can choose any one of the three options:
+        // 1. The left subtree of x
+        // 2. The right subtree of x
+        // 3. Everything else (which is n - player1Cnt)
+        int player2MaxCnt = Math.max(Math.max(leftSubtreeCount, rightSubtreeCount), n - player1Cnt);
+
+        // Player 2 wins if they can control more than half the nodes
+        return player2MaxCnt > n / 2;
+    }
+
+    private TreeNode findNode(TreeNode root, int x) {
+        if (root == null || root.val == x) return root;
+        TreeNode left = findNode(root.left, x);
+        if (left != null) return left;
+        return findNode(root.right, x);
+    }
+
+    private int getSubNodeCount(TreeNode root) {
+        if (root == null) return 0;
+        return 1 + getSubNodeCount(root.left) + getSubNodeCount(root.right);
+    }
 
     // V1
     // https://leetcode.com/problems/binary-tree-coloring-game/solutions/367682/simple-clean-java-solution/
+
     /**
      * When you find the selected node,
      * there are three different paths you can block:

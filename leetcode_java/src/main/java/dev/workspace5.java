@@ -922,10 +922,60 @@ public class workspace5 {
 
     // LC 1145
     // https://leetcode.com/problems/binary-tree-coloring-game/
-    // 2.55 pm - 3.20 pm
+    // 8.10 pm - 8.30 pm
+//    int player2Cnt = 0;
+//    int nodeCnt = 0;
     public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
 
-        return false;
+        if (root.left==null && root.right==null){
+            return false;
+        }
+
+        if (root.left==null || root.right==null){
+            return false;
+        }
+
+        // get total count
+        //int player2Cnt = this.getAllNodeCount(root, 0);
+        int player1Cnt = this.getSubNodeCountWithStartPoint(root, 0, x, false);
+
+        // get max possible count of "player2" color
+//        int nodeCnt = Math.max(
+//                this.getAllNodeCount(root.left, 0),
+//                this.getAllNodeCount(root.right, 0)
+//        );
+
+        // check whether player2 (us) can color > node / 2
+        // then we're sure that player 2 can win the game
+        //return player2Cnt > n / 2;
+
+        // if player1Cnt < n / 2, then player2 can win for sure
+        return player1Cnt < n / 2;
+    }
+
+    private int getSubNodeCountWithStartPoint(TreeNode root, int cnt, int x, boolean flag){
+
+        if (root == null){
+            return cnt;
+        }
+        // if "found" the start point
+        if (root.val == x){
+            flag = true;
+        }
+        // once start point is found, all the following nodes need to be count
+        if (flag){
+            cnt += 1;
+        }
+        return this.getSubNodeCountWithStartPoint(root.left, cnt, x, flag) +
+                this.getSubNodeCountWithStartPoint(root.right, cnt, x, flag);
+    }
+
+    private int getAllNodeCount(TreeNode root, int cnt){
+        if (root == null){
+            return cnt;
+        }
+        return 1 + this.getAllNodeCount(root.left, cnt) +
+                this.getAllNodeCount(root.right, cnt);
     }
 
     // LC 1219
