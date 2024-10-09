@@ -64,7 +64,9 @@ public class BinaryTreeColoringGame {
     // V0
     // IDEA : RECURSION + TREE OP (fixed by GPT)
     public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+
         // Get the total count of nodes in the left and right subtree of the node with value x
+        // NOTE !!! xNode is the node that player1 color at first move
         TreeNode xNode = findNode(root, x);
         int leftSubtreeCount = getSubNodeCount(xNode.left);
         int rightSubtreeCount = getSubNodeCount(xNode.right);
@@ -76,6 +78,7 @@ public class BinaryTreeColoringGame {
         // 1. The left subtree of x
         // 2. The right subtree of x
         // 3. Everything else (which is n - player1Cnt)
+        // NOTE !!! : below code get max val from 3 values (e.g. : leftSubtreeCount, rightSubtreeCount, n - player1Cnt)
         int player2MaxCnt = Math.max(Math.max(leftSubtreeCount, rightSubtreeCount), n - player1Cnt);
 
         // Player 2 wins if they can control more than half the nodes
