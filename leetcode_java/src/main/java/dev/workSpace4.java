@@ -440,6 +440,12 @@ public class workSpace4 {
         mystr99.add("c");
         System.out.println(Arrays.toString(mystr99.toArray()));
 
+        System.out.println("split string --------------");
+        String myStr1 = "thisisLC";
+        for(String val : myStr1.split("")){
+            System.out.println("val = " + val);
+        }
+
     }
 
     private static int getDays(List<Integer> weightsList, int speed){
