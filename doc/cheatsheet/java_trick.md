@@ -474,13 +474,13 @@ Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
 - This sorts the array intervals `in place`.
 - The sorting is based on the first element of each sub-array (a[0] and b[0]).
 - The Integer.compare(a[0], b[0]) comparator ensures that the array is sorted in ascending order based on the first elements of the sub-arrays.
-- After this operation, the original array intervals is modified and sorted accordingly.
+- After this operation, the `original` array intervals is modified and sorted accordingly.
 
 2) `Arrays.stream(intervals).sorted()`:
 
 - This creates a stream of the array intervals.
 - The .sorted() method sorts the stream in natural order.
-- However, this does NOT modify the original array intervals in place.
+- However, this does `NOT` modify the `original` array intervals in place.
 - The result of this sorting is a sorted stream, but if you do not collect or process this sorted stream, the original array remains unchanged.
 
 
@@ -519,7 +519,9 @@ int[][] intervals = new int[][]{ {15,20}, {0,30}, {5,10} };
 // LC 214
 // https://stackoverflow.com/questions/1694751/java-array-sort-descending
 
+/* -------------------------- */
 /** Sort Array */
+/* -------------------------- */
 Integer[] _array = {5, 5, 7, 8, 9, 0};
 
 // V1
@@ -530,9 +532,9 @@ Arrays.sort(_array, (a,b) -> Integer.compare(-a, -b));
 
 
 
-
-
+/* -------------------------- */
 /** Sort List */
+/* -------------------------- */
 
 // V1
 List<Integer> _list = new ArrayList();
