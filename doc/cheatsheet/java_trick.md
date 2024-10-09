@@ -640,7 +640,7 @@ init[1] = 0;
 stack.push(init);
 ```
 
-### 1-8) remove element in String
+### 1-8) remove element in String (`StringBuilder`)
 ```java
 // LC 22
 StringBuilder b = new StringBuilder("wefew");
@@ -649,7 +649,7 @@ b.deleteCharAt(2);
 System.out.println(b.toString());
 ```
 
-### 1-9) Order HashMap by key
+### 1-9) Order HashMap by key (`TreeMap`)
 ```java
 // java
 // LC 853
@@ -920,7 +920,10 @@ map.getOrDefault(key,0)
 // LC 131
 // ...
 public List<List<String>> partition_1(String s) {
-    /** NOTE : we can init result, pass it to method, modify it, and return as ans */
+    /** NOTE : 
+     * 
+     *  we can init result, pass it to method, modify it, and return as ans 
+     */
     List<List<String>> result = new ArrayList<List<String>>();
     dfs_1(0, result, new ArrayList<String>(), s);
     return result;
@@ -991,17 +994,23 @@ return check_(root, smallest_val, biggest_val);
 
 - https://stackoverflow.com/questions/4626812/how-do-i-instantiate-a-queue-object-in-java
 
-- A Queue is an `interface`, which means you cannot construct a Queue directly.
+- A Queue is an `interface`, which means you `cannot` construct a Queue directly.
 - Consinder use one of below implementation:
 ```
 AbstractQueue, ArrayBlockingQueue, ArrayDeque, ConcurrentLinkedQueue, DelayQueue, LinkedBlockingQueue, LinkedList, PriorityBlockingQueue, PriorityQueue, or SynchronousQueue.
 ```
 
 
-### 2-6) for loop over map
+### 2-6) loop over elements in map
 ```java
 // java
+
 // LC 742
+/** NOTE
+ *  
+ *  Map.Entry<TreeNode, List<TreeNode>> entry : g.entrySet()
+ * 
+ */
 Map<TreeNode, List<TreeNode>> g;
 for (Map.Entry<TreeNode, List<TreeNode>> entry : g.entrySet()) {
         if (entry.getKey() != null && entry.getKey().val == k) {
