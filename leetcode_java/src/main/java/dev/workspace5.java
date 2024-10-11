@@ -1054,5 +1054,27 @@ public class workspace5 {
         return val;
     }
 
+    // LC 528
+    // https://leetcode.com/problems/random-pick-with-weight/
+    // 6.56 - 7.20 pm
+
+    class Solution {
+
+        int[] w;
+
+        public Solution(int[] w) {
+            this.w = w;
+        }
+
+        public int pickIndex() {
+            if (this.w.length == 1){
+                return 0;
+            }
+            Random r = new Random();
+            int low = 0;
+            int high = w.length-1;
+            return r.nextInt(high-low) + low;
+        }
+    }
 
 }
