@@ -1077,4 +1077,41 @@ public class workspace5 {
         }
     }
 
+
+    // LC 334
+    // https://leetcode.com/problems/increasing-triplet-subsequence/
+    // 0745 - 0800
+    /**
+     *
+     * Given an integer array nums,
+     * return true if there exists a triple of indices (i, j, k)
+     * such that i < j < k and nums[i] < nums[j] < nums[k].
+     * If no such indices exists, return false.
+     *
+     */
+    public boolean increasingTriplet(int[] nums) {
+
+        if (nums.length < 3){
+            return false;
+        }
+
+        // 2 pointers
+        for (int i = 0; i < nums.length-2; i++){
+            int cnt = 1;
+            int prev = nums[i];
+            for (int j = i+1; j < nums.length; j++){
+                if (cnt >= 3){
+                    return true;
+                }
+                if (nums[j] > prev){
+                    cnt += 1;
+                    prev = nums[j];
+                }
+                j += 1;
+            }
+        }
+
+        return false;
+    }
+
 }
