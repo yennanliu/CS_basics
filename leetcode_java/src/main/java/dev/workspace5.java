@@ -1080,7 +1080,7 @@ public class workspace5 {
 
     // LC 334
     // https://leetcode.com/problems/increasing-triplet-subsequence/
-    // 0745 - 0800
+    // 0720 - 0730
     /**
      *
      * Given an integer array nums,
@@ -1091,28 +1091,50 @@ public class workspace5 {
      */
     public boolean increasingTriplet(int[] nums) {
 
-        if (nums.length < 3){
-            return false;
-        }
+        Integer biggest_1 = Integer.MAX_VALUE;
+        Integer biggest_2 = Integer.MAX_VALUE;
+        //Integer biggest_3 = Integer.MAX_VALUE;
 
-        // 2 pointers
-        for (int i = 0; i < nums.length-2; i++){
-            int cnt = 1;
-            int prev = nums[i];
-            for (int j = i+1; j < nums.length; j++){
-                if (cnt >= 3){
-                    return true;
-                }
-                if (nums[j] > prev){
-                    cnt += 1;
-                    prev = nums[j];
-                }
-                j += 1;
+        for (int x : nums){
+            if (biggest_1 >= x){
+                biggest_1 = x;
+            }
+            // else if (biggest_2 >= x){
+            else if (x > biggest_1){
+                biggest_2 = x;
+            }else{
+                //biggest_3 = x;
+                return true;
             }
         }
 
         return false;
     }
+
+//    public boolean increasingTriplet(int[] nums) {
+//
+//        if (nums.length < 3){
+//            return false;
+//        }
+//
+//        // 2 pointers
+//        for (int i = 0; i < nums.length-2; i++){
+//            int cnt = 1;
+//            int prev = nums[i];
+//            for (int j = i+1; j < nums.length; j++){
+//                if (cnt >= 3){
+//                    return true;
+//                }
+//                if (nums[j] > prev){
+//                    cnt += 1;
+//                    prev = nums[j];
+//                }
+//                j += 1;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     // LC 353
     // https://leetcode.ca/2016-11-17-353-Design-Snake-Game/
