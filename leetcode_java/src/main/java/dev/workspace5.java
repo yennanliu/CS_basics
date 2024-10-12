@@ -1114,4 +1114,59 @@ public class workspace5 {
         return false;
     }
 
+    // LC 353
+    // https://leetcode.ca/2016-11-17-353-Design-Snake-Game/
+    // 6.24 pm - 6.40 pm
+    class SnakeGame {
+        private int m;
+        private int n;
+        private int[][] food;
+        private int score;
+        private int idx;
+        private Deque<Integer> q = new ArrayDeque<>();
+        private Set<Integer> vis = new HashSet<>();
+
+        public SnakeGame(int width, int height, int[][] food) {
+            this.m = width;
+            this.n = height;
+            this.food = food;
+        }
+
+        public int move(String direction) {
+
+            if (this.m == 0 && this.n == 0){
+                return -1;
+            }
+
+            int[][] move = getMove(direction);
+            //int[][] current = this.q.getFirst();
+
+
+            // move and update score
+
+            return this.score;
+        }
+
+        private int[][] getMove(String direction){
+            if (direction == null){
+                //return new int[][]{{-1,-1}};
+                throw new RuntimeException("invalid direction");
+            }
+            switch (direction){
+                case "R":
+                    return new int[][]{{0,1}};
+                case "L":
+                    return new int[][]{{0,-1}};
+                case "D":
+                    return new int[][]{{1,0}};
+                case "U":
+                    return new int[][]{{-1,0}};
+                default:
+                    return new int[][]{{-1,-1}};
+            }
+        }
+
+    }
+
+
 }
