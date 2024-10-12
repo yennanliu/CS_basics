@@ -40,10 +40,26 @@ package LeetCodeJava.Array;
 public class IncreasingTripletSubsequence {
 
     // V0
-    // TODO : implement
-//    public boolean increasingTriplet(int[] nums) {
-//
-//    }
+    public boolean increasingTriplet(int[] nums) {
+
+        // NOTE !!! we init as max integer
+        Integer biggest_1 = Integer.MAX_VALUE;
+        Integer biggest_2 = Integer.MAX_VALUE;
+        
+        for (int x : nums){
+            // NOTE !!! condition below
+            if (biggest_1 >= x){
+                biggest_1 = x;
+             // NOTE !!! condition below
+            }else if (biggest_2 >= x){
+                biggest_2 = x;
+            }else{
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     // V1
     // IDEA : LOOP (fixed by gpt)
