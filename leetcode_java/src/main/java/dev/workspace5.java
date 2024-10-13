@@ -1190,5 +1190,66 @@ public class workspace5 {
 
     }
 
+    // LC 686
+    // https://leetcode.com/problems/repeated-string-match/
+    // 5.13 pm - 5.30 pm
+    /**
+     * Given two strings a and b,
+     * return the minimum number of times you should repeat
+     * string a so that string b is a substring of it.
+     *
+     * Notice: string "abc" repeated 0 times is "",
+     * repeated 1 time is "abc"
+     * and repeated 2 times is "abcabc".
+     *
+     *  exp 1:
+     *
+     *   Input: a = "abcd", b = "cdabcdab"
+     *
+     *   -> return 3
+     *
+     *   abcdabcdabcd
+     *     x      x
+     *
+     *
+     *  exp 2:
+     *
+     *  Input: a = "a", b = "aa"
+     *  -> Output: 2
+     *
+     *
+     *  idea 1:
+     *
+     */
+    public int repeatedStringMatch(String a, String b) {
+
+        // edge case
+//        if (a.length() == b.length()){
+//            if(a.equals(b)){
+//                return 1;
+//            }
+//            return -1;
+//        }
+
+        if (a.contains(b)){
+            return 1;
+        }
+
+        int cnt = 1;
+        StringBuilder sb = new StringBuilder();
+        sb.append(a);
+        // TODO : check ??
+        // 1 <= a.length, b.length <= 10^4
+        while (sb.toString().length() <= 10000){
+            if (sb.toString().contains(b)){
+                return cnt;
+            }
+            sb.append(a);
+            cnt += 1;
+        }
+
+        return -1;
+    }
+
 
 }
