@@ -3,8 +3,6 @@ package dev;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class workspace5 {
 
@@ -194,6 +192,7 @@ public class workspace5 {
 
     // LC 939
     // 7.41 - 8.10 pm
+
     /**
      *  NOTE !!!
      *
@@ -295,6 +294,7 @@ public class workspace5 {
     // 6.19 pm - 6.30 pm
     // TODO : implement, validate
     List<String> collected = new ArrayList<>();
+
     public String[] expand(String s) {
         if (s.length() < 3){
             return new String[]{s};
@@ -308,7 +308,7 @@ public class workspace5 {
     }
 
     private List<String> getCandidates(String s){
-      return null;
+        return null;
     }
 
     private void backtrack(int startIdx, List<String> candidates, List<String> cur){
@@ -326,18 +326,15 @@ public class workspace5 {
             return;
         }
         // ??? check
-        for (int i = startIdx; i < candidates.size(); i++){
-           // update cur
-           cur.add(candidates.get(i));
-           // recursive
-           this.backtrack(i, candidates, cur);
-           // undo
-           cur.remove(cur.size()-1);
+        for (int i = startIdx; i < candidates.size(); i++) {
+            // update cur
+            cur.add(candidates.get(i));
+            // recursive
+            this.backtrack(i, candidates, cur);
+            // undo
+            cur.remove(cur.size() - 1);
         }
     }
-
-
-
 
 
     // 5.02 pm - 5.20 pm
@@ -698,6 +695,7 @@ public class workspace5 {
     // LC 889
     // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/
     // 4.19 - 4.39 pm
+
     /**
      * preorder  :  root -> left -> right
      * postorder : left -> right -> root
@@ -754,6 +752,7 @@ public class workspace5 {
     // LC 524
     // https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/
     // 1.45 pm - 1.55 pm
+
     /**
      * NOTE !!!
      *
@@ -887,6 +886,7 @@ public class workspace5 {
     // LC 221
     // https://leetcode.com/problems/maximal-square/
     // 3.38 pm - 3.48
+
     /**
      *  find the largest square containing only 1's and return its area.
      *
@@ -982,6 +982,7 @@ public class workspace5 {
     // https://leetcode.com/problems/path-with-maximum-gold/
     // 4.06 pm - 4.26pm
     int maxGold = 0;
+
     public int getMaximumGold(int[][] grid) {
 
         // dfs
@@ -1081,6 +1082,7 @@ public class workspace5 {
     // LC 334
     // https://leetcode.com/problems/increasing-triplet-subsequence/
     // 0720 - 0730
+
     /**
      *
      * Given an integer array nums,
@@ -1193,6 +1195,7 @@ public class workspace5 {
     // LC 686
     // https://leetcode.com/problems/repeated-string-match/
     // 5.13 pm - 5.30 pm
+
     /**
      * Given two strings a and b,
      * return the minimum number of times you should repeat
@@ -1241,7 +1244,7 @@ public class workspace5 {
         // TODO : check ??
         // 1 <= a.length, b.length <= 10^4
         while (sb.toString().length() <= 10000){
-            if (sb.toString().contains(b)){
+            if (sb.toString().contains(b)) {
                 return cnt;
             }
             sb.append(a);
@@ -1252,4 +1255,91 @@ public class workspace5 {
     }
 
 
+    // LC 734
+    // https://leetcode.ca/all/734.html
+    // 5.59 pm - 6.10 pm
+    /**
+     *  1) NOT transitive:
+     *
+     *  great, fine -> s
+     *  fine, good -> s
+     *
+     *  but great, good -> NOT necessary s
+     *
+     *  2) Symmetric:
+     *
+     *  great, fine -> s
+     *
+     *  -> fine, great -> s
+     *
+     *  3) Also, a word is always similar with itself.:
+     *
+     *   e.g.
+     *  -> great, great -> s
+     *
+     *
+     *  4)  sentences can only be similar if they have the same number of words.
+     *
+     *  ->  words1 = ["great"] can never be similar to words2 = ["doubleplus","good"].
+     *  (different # of word)
+     *
+     *
+     *  Given two sentences words1, words2 (each represented
+     *  as an array of strings),
+     *  and a list of similar word pairs pairs,
+     *  determine if two sentences are similar.
+     *
+     *  exp 2:
+     *
+     * Input: sentence1 = ["great","acting","skills"]
+     * sentence2 = ["fine","drama","talent"]
+     *
+     * similarPairs = [["great","fine"],["drama","acting"],["skills","talent"]]
+     * Output: true
+     *
+     * Explanation: The two sentences have the same length and each word i of sentence1 is also similar to the corresponding word in sentence2.
+     *
+     *
+     *  -> idea 1
+     *   a hashmap record "similar" relation"
+     *   {great: fine,
+     *    fine: great,
+     *   }
+     *
+     *
+     *
+     */
+    public boolean areSentencesSimilar(
+            String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
+        if (sentence1.length != sentence2.length){
+            return false;
+        }
+        Map<String, String> map = new HashMap<>();
+        for(int i = 0; i < similarPairs.size(); i++){
+            List<String> cur = similarPairs.get(i);
+            map.putIfAbsent(cur.get(0), cur.get(1));
+            //map.putIfAbsent(cur.get(1), cur.get(0));
+        }
+
+        for (int j = 0; j < sentence1.length; j++){
+            String s_1 = sentence1[j];
+            String s_2 = sentence2[j];
+            if (!map.containsKey(s_1) && !map.containsKey(s_2)){
+                return false;
+            }
+            if (!map.get(s_1).equals(s_2) && !map.get(s_2).equals(s_1)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // LC 737
+    // https://leetcode.ca/all/737.html
+    public boolean areSentencesSimilarTwo(){
+        return false;
+    }
 }
+
+
