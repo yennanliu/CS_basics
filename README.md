@@ -616,9 +616,7 @@
 678| [Valid Parenthesis String](https://leetcode.com/problems/valid-parenthesis-string/) | [Python](./leetcode_python/String/valid-palindrome.py)   | _O(n)_ | _O(1)_ | Medium    | | AGAIN** 
 680| [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/) |  [Python](./leetcode_python/String/valid-palindrome-ii.py)  | _O(n)_  | _O(1)_    | Easy |LC 125, two pointers, `good basic`, Palindrome, `string`, `fb`| AGAIN******** (3)
 681| [Next Closest Time](https://leetcode.com/problems/next-closest-time/) | [Python](./leetcode_python/String/next-closest-time.py)  | _O(1)_  | _O(1)_  | Medium |`subset of set`, `<=`,`strptime`,  `google`,`fb`| OK*** (5)
-686 | [Repeated String Match](https://leetcode.com/problems/repeated-string-match/) | [Python](./leetcode_python/String/repeated-string-match.py), 
-[Java](./leetcode_java/src/main/java/LeetCodeJava/String/RepeatedStringMatch.java) 
- | _O(n + m)_ | _O(1)_ | Medium |brute force, math, string, `Rabin-Karp Algorithm`, `google` | AGAIN**** (3) 
+686 | [Repeated String Match](https://leetcode.com/problems/repeated-string-match/) | [Python](./leetcode_python/String/repeated-string-match.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/String/RepeatedStringMatch.java)| _O(n + m)_ | _O(1)_ | Medium |brute force, math, string, `Rabin-Karp Algorithm`, `google` | AGAIN**** (3) 
 696| [Count Binary Substrings](https://leetcode.com/problems/count-binary-substrings/) | [Python](./leetcode_python/String/count-binary-substrings.py) | _O(n)_ | _O(1)_ | Easy|good trick, linear scan, group sub-string, `amazon`| AGAIN******* (3) (MUST)
 720| [Longest Word in Dictionary](https://leetcode.com/problems/longest-word-in-dictionary/) | [Python](./leetcode_python/String/longest-word-in-dictionary.py) | _O(n)_ | _O(t)_ | Easy  | Trie | AGAIN (not start)
 722| [Remove Comments](https://leetcode.com/problems/remove-comments/) | [Python](./leetcode_python/String/remove-comments.py) | _O(n)_ | _O(k)_ | Medium || AGAIN (not start)
