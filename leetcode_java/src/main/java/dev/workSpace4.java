@@ -446,6 +446,10 @@ public class workSpace4 {
             System.out.println("val = " + val);
         }
 
+        System.out.println("sub string test --------------");
+        String a_1 = "abcdabcdabcd";
+        String b_1 = "abcd";
+        System.out.println(a_1.contains(b_1));
     }
 
     private static int getDays(List<Integer> weightsList, int speed){
