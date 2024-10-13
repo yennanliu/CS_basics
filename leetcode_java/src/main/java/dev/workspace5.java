@@ -1057,26 +1057,85 @@ public class workspace5 {
 
     // LC 528
     // https://leetcode.com/problems/random-pick-with-weight/
-    // 6.56 - 7.20 pm
-
+    //6.35 pm - 6.40 pm
+    // idea : presum array + binary search (?
+    /**
+     *  ep 1:
+     *
+     *   w = [1, 3]
+     *   -> preSum = [0,1,4]
+     *   -> so
+     *       sum(0) = preSum(1) - preSum(0) = 1
+     *       sum(1) = preSum(2) - preSum(0) = 4
+     *
+     *
+     *
+     */
     class Solution {
 
         int[] w;
+        int[] preSumArray;
 
         public Solution(int[] w) {
+
             this.w = w;
+            this.preSumArray = new int[w.length+1];
+            preSumArray[0] = 0;
+
+            // build preSumArray
+            int preSum = 0;
+            for (int i = 0; i < w.length; i++){
+                int cur = w[i];
+                preSum += cur;
+                preSumArray[i+1] = preSum;
+            }
         }
 
         public int pickIndex() {
-            if (this.w.length == 1){
+            if (this.w.length==1){
                 return 0;
             }
-            Random r = new Random();
-            int low = 0;
-            int high = w.length-1;
-            return r.nextInt(high-low) + low;
+
+            // binary search ???
+            Random random = new Random();
+            int x = random.nextInt();
+            int l = 0;
+            int r = preSumArray.length;
+            while (r >= l){
+                int mid = (l+r) / 2;
+                // ???? TODO : fix
+                if (mid == x){
+                    int curSum = preSumArray[mid+1] - preSumArray[0];
+                    int total = preSumArray[preSumArray.length-1];
+                    return curSum / total;
+                }if (mid > x){
+                    r = mid-1;
+                }else{
+                    l = mid + 1;
+                }
+            }
+            return 0;
         }
     }
+
+//    class Solution {
+//
+//        int[] w;
+//
+//        public Solution(int[] w) {
+//            this.w = w;
+//        }
+//
+//        public int pickIndex() {
+//            if (this.w.length == 1){
+//                return 0;
+//            }
+//            Random r = new Random();
+//            int low = 0;
+//            int high = w.length-1;
+//            return r.nextInt(high-low) + low;
+//        }
+//    }
 
 
     // LC 334

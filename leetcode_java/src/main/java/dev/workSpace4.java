@@ -450,6 +450,14 @@ public class workSpace4 {
         String a_1 = "abcdabcdabcd";
         String b_1 = "abcd";
         System.out.println(a_1.contains(b_1));
+
+        System.out.println("random test --------------");
+        Random random = new Random();
+
+        //  * @param bound the upper bound (exclusive).  Must be positive.
+        System.out.println(random.nextInt(10));
+        System.out.println(random.nextInt(10));
+        System.out.println(random.nextInt(100));
     }
 
     private static int getDays(List<Integer> weightsList, int speed){

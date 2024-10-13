@@ -1029,3 +1029,19 @@ for (Map.Entry<TreeNode, List<TreeNode>> entry : g.entrySet()) {
 - 使用TreeMap時，輸入的Key必須實作Comparable介面。
 - https://www.yxjc123.com/post/v0i7dl
 - https://liaoxuefeng.com/books/java/collection/tree-map/index.html
+
+
+### 2-8) `random.nextInt`
+```java
+// java
+// LC 528
+
+/** bound : range of random int can be returned */
+//  @param bound the upper bound (exclusive).  Must be positive.
+Random random = new Random();
+
+//  * @param bound the upper bound (exclusive).  Must be positive.
+System.out.println(random.nextInt(10));
+System.out.println(random.nextInt(10));
+System.out.println(random.nextInt(100));
+```
