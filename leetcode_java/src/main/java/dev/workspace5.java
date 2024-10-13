@@ -925,7 +925,83 @@ public class workspace5 {
     // 8.10 pm - 8.30 pm
 //    int player2Cnt = 0;
 //    int nodeCnt = 0;
+    /**
+     *  idea 1
+     *
+     *   1. if player1 color at root
+     *       - player 2 can color at one of left sub tree
+     *       - player 2 can color at one of right sub tree
+     *
+     *   2. if player1 color at one of left sub tree
+     *      - player 2 can color at root
+     *      - player 2 can color at one of left sub tree
+     *      - player 2 can color at one of right sub tree
+     *
+     *   3. if player1 color at one of right sub tree
+     *      - player 2 can color at root
+     *      - player 2 can color at one of left sub tree
+     *      - player 2 can color at one of right sub tree
+     *
+     *
+     *  -> finally, compare player1 color VS total color
+     *  e.g.  (n - player1_color) > 2 / n ?
+     *
+     */
     public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+
+        if (root.left==null && root.right==null){
+            return false;
+        }
+
+        // case 1: player color "root"
+        if (x == root.val){
+            return btreeGameWinningMove(root.left, n, x)
+                    || btreeGameWinningMove(root.right, n, x);
+        }
+
+        // case 2: player color "sub left tree"
+        if (root.left != null && x == root.left.val){
+            return btreeGameWinningMove(root, n, x)
+                    || btreeGameWinningMove(root.left, n, x)
+                    || btreeGameWinningMove(root.right, n, x);
+        }
+
+        // case 3: player color "sub right tree"
+        if (root.right != null && x == root.right.val){
+            return btreeGameWinningMove(root, n, x)
+                    || btreeGameWinningMove(root.left, n, x)
+                    || btreeGameWinningMove(root.right, n, x);
+        }
+
+        return false;
+    }
+
+    private TreeNode findNode(TreeNode root, int x){
+        // ??
+        if (root == null){
+            return null;
+        }
+        if (root.val == x){
+            return root;
+        }
+        root.left = findNode(root.left, x);
+        root.right = findNode(root.right, x);
+
+        return root;
+    }
+
+    private int getColorCountAtX(TreeNode root, int x){
+        // ???
+        if (root == null){
+            return 0;
+        }
+        TreeNode node = this.findNode(root, x);
+        return 1 +
+                this.getColorCountAtX(node.left, x)
+                + this.getColorCountAtX(node.right, x);
+    }
+
+    public boolean btreeGameWinningMove_1(TreeNode root, int n, int x) {
 
         if (root.left==null && root.right==null){
             return false;
