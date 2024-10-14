@@ -82,4 +82,97 @@ public class SentenceSimilarity2 {
     }
 
     // V2
+
+    // V3
+    // IDEA : Disjoint-set
+    // https://blog.csdn.net/susuxuezhang/article/details/100127908
+    // https://www.cnblogs.com/grandyang/p/8053934.html
+
+    // V4-1
+    // IDEA : DFS
+    // https://zxi.mytechroad.com/blog/hashtable/leetcode-737-sentence-similarity-ii/
+    // C++
+//    class Solution {
+//        public:
+//        bool areSentencesSimilarTwo(vector<string>& words1, vector<string>& words2, vector<pair<string, string>>& pairs) {
+//            if (words1.size() != words2.size()) return false;
+//
+//            g_.clear();
+//
+//            for (const auto& p : pairs) {
+//                g_[p.first].insert(p.second);
+//                g_[p.second].insert(p.first);
+//            }
+//
+//            unordered_set<string> visited;
+//
+//            for (int i = 0; i < words1.size(); ++i) {
+//                visited.clear();
+//                if (!dfs(words1[i], words2[i], visited)) return false;
+//            }
+//
+//            return true;
+//        }
+//        private:
+//        bool dfs(const string& src, const string& dst, unordered_set<string>& visited) {
+//            if (src == dst) return true;
+//            visited.insert(src);
+//            for (const auto& next : g_[src]) {
+//                if (visited.count(next)) continue;
+//                if (dfs(next, dst, visited)) return true;
+//            }
+//            return false;
+//        }
+//        unordered_map<string, unordered_set<string>> g_;
+//    };
+
+
+    // V4-2
+    // IDEA : Union Find
+    // https://zxi.mytechroad.com/blog/hashtable/leetcode-737-sentence-similarity-ii/
+    // C++
+//    class UnionFindSet {
+//        public:
+//        bool Union(const string& word1, const string& word2) {
+//        const string& p1 = Find(word1, true);
+//        const string& p2 = Find(word2, true);
+//            if (p1 == p2) return false;
+//            parents_[p1] = p2;
+//            return true;
+//        }
+//
+//    const string& Find(const string& word, bool create = false) {
+//            if (!parents_.count(word)) {
+//                if (!create) return word;
+//                return parents_[word] = word;
+//            }
+//
+//            string w = word;
+//            while (w != parents_[w]) {
+//                parents_[w] = parents_[parents_[w]];
+//                w = parents_[w];
+//            }
+//
+//            return parents_[w];
+//        }
+//        private:
+//        unordered_map<string, string> parents_;
+//    };
+//
+//    class Solution {
+//        public:
+//        bool areSentencesSimilarTwo(vector<string>& words1, vector<string>& words2, vector<pair<string, string>>& pairs) {
+//            if (words1.size() != words2.size()) return false;
+//
+//            UnionFindSet s;
+//            for (const auto& pair : pairs)
+//            s.Union(pair.first, pair.second);
+//
+//            for (int i = 0; i < words1.size(); ++i)
+//                if (s.Find(words1[i]) != s.Find(words2[i])) return false;
+//
+//            return true;
+//        }
+//    };
+
 }
