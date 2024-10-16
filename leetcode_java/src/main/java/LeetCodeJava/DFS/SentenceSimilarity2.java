@@ -46,7 +46,38 @@ public class SentenceSimilarity2 {
             return false;
         }
         int n = similarPairs.size();
-        p = new int[n << 1];
+
+
+        /**
+         *
+         *  Explain p = new int[n << 1]; ?
+         *
+         * The p variable is being initialized as an integer array with a size of n << 1. Here’s a breakdown of the key elements:
+         *
+         * 	1.	int[n << 1]:
+         * 	    •	The n << 1 operation is a bitwise left shift. This means that the value of n is shifted left by 1 bit. In binary terms, this effectively multiplies n by 2.
+         * 	    •	For example, if n = 5, its binary representation is 101. Shifting it left by one position (n << 1) gives 1010, which is 10 in decimal. Therefore, n << 1 results in 2 * n.
+         * 	2.	p = new int[n << 1]:
+         * 	    •	This allocates an integer array of size 2 * n. For instance, if n = 5, the size of the array p would be 10.
+         *
+         *
+         * Purpose:
+         *
+         * This operation is often used when you need to allocate extra space, such as in algorithms involving data structures like stacks, arrays, or graphs. Doubling the size can be beneficial for dynamic resizing or managing additional elements.
+         *
+         *
+         *
+         * 
+         * Yes,
+         * you can replace the bitwise operation n << 1
+         * with a simple multiplication by 2.
+         * The left shift operation n << 1 is equivalent to multiplying n by 2
+         */
+        //p = new int[n << 1];
+        p = new int[n * 2];
+
+
+
         for (int i = 0; i < p.length; ++i) {
             p[i] = i;
         }

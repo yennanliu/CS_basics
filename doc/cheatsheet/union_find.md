@@ -8,7 +8,7 @@
 
 ## 0) Concept
 - Implementation 
-    - build 2 API:
+    - build 3 API:
         - `Union`
         - `connected`
         - find : once "route compression" is applied, then union and connected API will be `O(1)` time complexity
