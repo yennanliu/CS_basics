@@ -679,6 +679,23 @@ Arrays.sort(map.keySet().toArray());
 Arrays.sort(tmp, (x, y) -> Integer.compare(-x[1], -y[1]));
 ```
 
+- `floorEntry` method in `TreeMap`
+- https://blog.csdn.net/a1510841693/article/details/124323418
+- floorEntry() : It returns a key-value mapping associated with the greatest key less than or equal to the given key, or null if there is no such key.
+
+```java
+// floorEntry
+// LC 1146
+
+// ...
+ TreeMap<Integer, Integer>[] historyRecords;
+// ...
+public int get(int index, int snapId) {
+    return historyRecords[index].floorEntry(snapId).getValue();
+}
+// ...
+```
+
 ### 1-10) Get max val from an Array
 ```java
 // java
