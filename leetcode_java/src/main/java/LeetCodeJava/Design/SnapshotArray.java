@@ -2,9 +2,7 @@ package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/snapshot-array/description/
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * 1146. Snapshot Array
@@ -170,4 +168,84 @@ public class SnapshotArray {
     }
 
     // V2
+    // IDEA : HASHMAP
+    // https://leetcode.com/problems/snapshot-array/solutions/350574/java-python-3-3-codes-w-analysis-store-difference-by-hashmap-and-treemap-respectively/
+    class SnapshotArray_2_1 {
+
+        private List<Map<Integer, Integer>> shot;
+        private Map<Integer, Integer> diff;
+
+        public SnapshotArray_2_1(int length) {
+            shot = new ArrayList<>(length);
+            diff = new HashMap<>(length);
+        }
+
+        public void set(int index, int val) {
+            diff.put(index, val);
+        }
+
+        public int snap() {
+            shot.add(diff);
+            diff = new HashMap<>();
+            return shot.size() - 1;
+        }
+
+        public int get(int index, int snap_id) {
+            for (int i = snap_id; i >= 0; --i)
+                if (shot.get(i).containsKey(index))
+                    return shot.get(i).get(index);
+            return 0;
+        }
+    }
+
+    // V2-2
+    // https://leetcode.com/problems/snapshot-array/solutions/350574/java-python-3-3-codes-w-analysis-store-difference-by-hashmap-and-treemap-respectively/
+    // IDEA : BINARY SEARCH
+    class SnapshotArray_2_2 {
+        private int snapId;
+        private List<List<int[]>> shot;
+
+        public SnapshotArray_2_2(int length) {
+            this.snapId = 0;
+            this.shot = new ArrayList<>();
+            // Initialize the list with [-1, 0] for each index
+            for (int i = 0; i < length; i++) {
+                List<int[]> snapshotList = new ArrayList<>();
+                snapshotList.add(new int[]{-1, 0}); // Add [-1, 0] as the initial state
+                this.shot.add(snapshotList);
+            }
+        }
+
+        public void set(int index, int val) {
+            List<int[]> a = this.shot.get(index);
+            if (a.get(a.size() - 1)[0] == this.snapId) {
+                a.get(a.size() - 1)[1] = val;  // Update if snapId matches the last entry
+            } else {
+                a.add(new int[]{this.snapId, val});  // Otherwise add new entry
+            }
+        }
+
+        public int snap() {
+            this.snapId++;
+            return this.snapId - 1; // Return the current snapId, then increment
+        }
+
+        public int get(int index, int snapId) {
+            List<int[]> a = this.shot.get(index);
+            int low = 0, high = a.size() - 1;
+
+            // Binary search to find the correct snapshot using snapId
+            while (low < high) {
+                int mid = (low + high + 1) / 2;
+                if (a.get(mid)[0] <= snapId) {
+                    low = mid;
+                } else {
+                    high = mid - 1;
+                }
+            }
+
+            return a.get(low)[1];  // Return the value for the found snapshot
+        }
+    }
+    
 }
