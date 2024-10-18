@@ -1475,6 +1475,85 @@ public class workspace5 {
     public boolean areSentencesSimilarTwo(){
         return false;
     }
+
+    // LC 1146
+    // https://leetcode.com/problems/snapshot-array/
+    // 7.56 pm - 8.20 pm
+    /**
+     * {snap_id: cnt}
+     *
+     */
+    class SnapshotArray {
+
+        Integer[] elements;
+        Map<Integer, Integer[]> snapshotMap;
+        Integer snapshotCount;
+
+        public SnapshotArray(int length) {
+            this.elements = new Integer[length];
+            this.snapshotMap = new HashMap<>();
+            this.snapshotCount = 0;
+            // Store the initial snapshot (snapshot 0)
+            this.snapshotMap.put(this.snapshotCount, this.elements.clone());
+        }
+
+        public void set(int index, int val) {
+            // Set value in the current snapshot (current version of elements)
+            this.elements[index] = val;
+        }
+
+        public int snap() {
+            // Take a snapshot of the current elements array by creating a new copy
+            snapshotMap.put(snapshotCount, elements.clone());
+            // Increment snapshotCount to prepare for the next snapshot
+            return snapshotCount++;
+        }
+
+        public int get(int index, int snap_id) {
+            // Retrieve the value from the snapshot with the given snap_id
+            return snapshotMap.get(snap_id)[index];
+        }
+    }
+//    class SnapshotArray {
+//
+//        Integer[] elements;
+//        Map<Integer, Integer[]> snapshotMap;
+//
+//        Integer snapshotCount;
+//
+//        public SnapshotArray(int length) {
+//            this.elements = new Integer[length];
+//            this.snapshotMap = new HashMap<>();
+//            this.snapshotCount = 0;
+//            // this.elements.clone() ???
+//            this.snapshotMap.put(this.snapshotCount, this.elements.clone());
+//            System.out.println(">>> this.snapshotMap = " + this.snapshotMap);
+//        }
+//
+//        public void set(int index, int val) {
+////            Integer[] curElements = this.snapshotMap.get(this.snapshotCount);
+////            System.out.println(">>> curElements = " + curElements);
+////            curElements[index] = val;
+////            //this.elements[index] = val;
+////            this.snapshotMap.put(this.snapshotCount, curElements);
+//            this.elements[index] = val;
+//        }
+//
+//        public int snap() {
+////            int curSnapShotCnt = this.snapshotCount;
+////            snapshotMap.put(curSnapShotCnt+1, snapshotMap.get(snapshotMap));
+////            this.snapshotCount += 1; // ?
+////            return this.snapshotCount -1;
+//            this.snapshotMap.put(this.snapshotCount, this.elements.clone());
+//            this.snapshotCount += 1;
+//            return this.snapshotCount;
+//        }
+//
+//        public int get(int index, int snap_id) {
+//            return this.snapshotMap.get(snap_id)[index];
+//        }
+//    }
+
 }
 
 
