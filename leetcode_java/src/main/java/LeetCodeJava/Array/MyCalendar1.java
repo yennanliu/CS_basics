@@ -131,5 +131,94 @@ public class MyCalendar1 {
         }
     }
 
-    // V2
+    // V2-1
+    // IDEA : LINKEDLIST
+    // https://leetcode.com/problems/my-calendar-i/solutions/1262570/js-python-java-c-easy-sorted-tree-linked-list-solutions-w-explanation/
+    class ListNode {
+        public int start, end;
+        public ListNode next;
+
+        public ListNode(int s, int e, ListNode n) {
+            start = s;
+            end = e;
+            next = n;
+        }
+    }
+
+    class MyCalendar_2_1 {
+        ListNode calendar;
+
+        public MyCalendar_2_1() {
+            ListNode tail = new ListNode(Integer.MAX_VALUE, Integer.MAX_VALUE, null);
+            calendar = new ListNode(-1, -1, tail);
+        }
+
+        public boolean book(int start, int end) {
+            ListNode curr = calendar, last = curr;
+            while (start >= curr.end) {
+                last = curr;
+                curr = curr.next;
+            }
+            if (curr.start < end)
+                return false;
+            last.next = new ListNode(start, end, curr);
+            return true;
+        }
+    }
+
+    // V3
+    // IDEA : LINKEDLIST
+    // https://leetcode.com/problems/my-calendar-i/solutions/2372060/java-easy-solution-100-faster-code/
+    class Node {
+        int start, end;
+        Node left;
+        Node right;
+
+        public Node(int start, int end) {
+            this.start = start;
+            this.end = end;
+            left = null;
+            right = null;
+        }
+    }
+
+    class MyCalendar_3 {
+
+        Node root;
+
+        public MyCalendar_3() {
+            this.root = null;
+
+        }
+
+        public boolean insert(Node parent, int s, int e) {
+            if (parent.start >= e) {
+                if (parent.left == null) {
+                    parent.left = new Node(s, e);
+                    return true;
+                } else {
+                    return insert(parent.left, s, e);
+                }
+            } else if (parent.end <= s) {
+                if (parent.right == null) {
+                    parent.right = new Node(s, e);
+                    return true;
+                } else {
+                    return insert(parent.right, s, e);
+                }
+            }
+
+            return false;
+        }
+
+        public boolean book(int start, int end) {
+            if (root == null) {
+                root = new Node(start, end);
+                return true;
+            } else {
+                return insert(root, start, end);
+            }
+        }
+    }
+    
 }
