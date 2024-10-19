@@ -1554,6 +1554,66 @@ public class workspace5 {
 //        }
 //    }
 
+    // LC 298
+    /// https://leetcode.ca/all/298.html
+    // 2.33 pm - 3.00 pm
+    /**
+     * A consecutive sequence path is a
+     * path where the values increase by one along the path.
+     *
+     * -> start from each nodes, get longest path
+     * -> compare with current longest path
+     * -> return final ans
+     *
+     */
+    int longestCnt = 0;
+    public int longestConsecutive_1_1(TreeNode root) {
+        if (root.left == null && root.right == null){
+            return 0;
+        }
+
+        // bfs
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()){
+            TreeNode node = q.poll();
+            // dfs
+            int length = dfsCount(node);
+            longestCnt = Math.max(longestCnt, length);
+            if (node.left != null){
+                q.add(node.left);
+            }
+            if (node.right != null){
+                q.add(node.right);
+            }
+        }
+
+        return longestCnt;
+    }
+
+    private int dfsCount(TreeNode root){
+
+        if (root == null){
+            return 0;
+        }
+
+        if (root.left != null && root.val + 1 == root.left.val){
+            return this.dfsCount(root.left) + 1;
+        }
+
+        if (root.right != null && root.val + 1 == root.right.val){
+            return this.dfsCount(root.right) + 1;
+        }
+
+        // TODO : double check ???
+        return Math.max(
+                Math.max(this.dfsCount(root.left), this.dfsCount(root.right)),
+                this.dfsCount(root)
+        );
+
+    }
+
+
 }
 
 
