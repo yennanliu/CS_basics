@@ -49,6 +49,7 @@ public class MyCalendar1 {
 
     // V0
     // IDEA : BRUTE FORCE (fixed by gpt)
+    // detailed explain : https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array_overlap_explaination.md
     class MyCalendar {
         List<List<Integer>> dates;
 

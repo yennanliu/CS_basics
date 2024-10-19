@@ -1,6 +1,9 @@
 # Intervals
 - [fucking algorithm : interval merge](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md)
 - [fucking algorithm : interval overlap](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E4%BA%A4%E9%9B%86%E9%97%AE%E9%A2%98.md)
+- [Visualization explaination](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array_overlap_explaination.md
+)
+
 
 ## 0) Concept  
 
@@ -20,6 +23,8 @@
         - LC 207, 210
     - Meeting room problems
         - LC 252, 253
+    - Check if overlap existed
+        - LC 729
 
 - Algorithm
     - array op
@@ -29,7 +34,45 @@
     - array
     - dict
 
+
 ### 0-2) Pattern
+
+
+
+#### 0-2-1) Check if 2 intervals are overlap
+
+- LC 729
+- https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/MyCalendar1.java
+
+
+- *Conclusion*:
+if `start < date.get(1) and end > date.get(0)`
+-> then intervals are OVERLAP
+
+- Overlap cases
+
+```
+# case 1
+
+New:       |-------|
+Existing:     |------|
+
+
+# case 2
+
+New:         |---|
+Existing:   |-------|
+
+# case 3
+
+New:     |-----------|
+Existing:   |-----|
+
+
+
+-> All of cases above are with `start < date.get(1) and end > date.get(0)` condition
+```
+
 ```python
 # python
 
