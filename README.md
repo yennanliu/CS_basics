@@ -269,7 +269,7 @@
 717 | [1-bit and 2-bit Characters](https://leetcode.com/problems/1-bit-and-2-bit-characters/) | [Python](./leetcode_python/Array/1-bit-and-2-bit-characters.py) | _O(n)_ | _O(1)_ | Easy | Greedy |  AGAIN (not start)
 723 | [Candy Crush](https://leetcode.com/problems/candy-crush/) | [Python](./leetcode_python/Array/candy-crush.py) | _O((R * C)^2)_ | _O(1)_ | Medium |`complex`| AGAIN (not start)
 724 | [Find Pivot Index](https://leetcode.com/problems/find-pivot-index/) | [Python](./leetcode_python/Array/find-pivot-index.py)  | _O(n)_ | _O(1)_ | Easy || OK*
-729 | [My Calendar I](https://leetcode.com/problems/my-calendar-i/) |  [Python](./leetcode_python/Array/my-calendar-i.py) | _O(nlogn)_ | _O(n)_ | Medium |`python class`| AGAIN* (not start)
+729 | [My Calendar I](https://leetcode.com/problems/my-calendar-i/) |  [Python](./leetcode_python/Array/my-calendar-i.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/MyCalendar1.java) | _O(nlogn)_ | _O(n)_ | Medium |good basic, brute force, binary search, google| AGAIN**** (1)
 731 | [My Calendar II](https://leetcode.com/problems/my-calendar-ii/) | [Python](./leetcode_python/Array/my-calendar-ii.py) | _O(n^2)_ | _O(n)_ | Medium |`trick`, `basic`| AGAIN** (not start)
 747 | [Largest Number At Least Twice of Others](https://leetcode.com/problems/largest-number-at-least-twice-of-others/) | [Python](./leetcode_python/Array/largest-number-at-least-twice-of-others.py) | _O(n)_ | _O(1)_ | Easy |`good basic`, `data structure`| OK* 
 755 | [Pour Water](https://leetcode.com/problems/pour-water/) | [Python](./leetcode_python/Array/pour-water.py) | _O(v * n)_ | _O(1)_ | Medium |`complex`| AGAIN (not start)
