@@ -1478,42 +1478,102 @@ public class workspace5 {
 
     // LC 1146
     // https://leetcode.com/problems/snapshot-array/
-    // 7.56 pm - 8.20 pm
+    // 4.29 pm - 4.50 pm
+
     /**
+     * idea 1:
      * {snap_id: cnt}
-     *
+     * <p>
+     * idea 2:
+     * <p>
+     * use TreeMap to record "UPDATED records with its index"
+     * {snap_id : [[new_val_1, idx_1], [new_val_2, idx_2] ....]}
+     * <p>
+     * -> whenever get() is called
+     * -> read from TreeMap (with snapshot_id) and update elements
+     * -> then return res
      */
     class SnapshotArray {
 
-        Integer[] elements;
-        Map<Integer, Integer[]> snapshotMap;
-        Integer snapshotCount;
+        //TreeMap<Integer, List<List<Integer>>> map;
+        Map<Integer, List<List<Integer>>> map;
+        Integer[] values;
+
+        int snapshot_id;
+
+        List<List<Integer>> updatedValues;
 
         public SnapshotArray(int length) {
-            this.elements = new Integer[length];
-            this.snapshotMap = new HashMap<>();
-            this.snapshotCount = 0;
-            // Store the initial snapshot (snapshot 0)
-            this.snapshotMap.put(this.snapshotCount, this.elements.clone());
+            this.map = new HashMap<>();
+            this.values = new Integer[length];
+            this.snapshot_id = 0;
+            this.updatedValues = new ArrayList<>();
         }
 
         public void set(int index, int val) {
-            // Set value in the current snapshot (current version of elements)
-            this.elements[index] = val;
+            List<Integer> newValue = new ArrayList<>();
+            newValue.add(val);
+            newValue.add(index);
+            this.updatedValues.add(newValue);
         }
 
         public int snap() {
-            // Take a snapshot of the current elements array by creating a new copy
-            snapshotMap.put(snapshotCount, elements.clone());
-            // Increment snapshotCount to prepare for the next snapshot
-            return snapshotCount++;
+            map.putIfAbsent(snapshot_id, this.updatedValues);
+            // init again
+            this.updatedValues = new ArrayList<>();
+            this.snapshot_id += 1;
+            return this.snapshot_id - 1;
         }
 
         public int get(int index, int snap_id) {
-            // Retrieve the value from the snapshot with the given snap_id
-            return snapshotMap.get(snap_id)[index];
+            if (this.map.containsKey(snap_id)){
+                //int key = this.map.floorKey(index);
+                //List<List<Integer>> updatedValues = this.map.get(key);
+                for (List<Integer> value : updatedValues) {
+                    int idx = value.get(1);
+                    if (idx == index) {
+                        return value.get(0);
+                    }
+                }
+            }
+            // if val not updated (not in updatedValues)
+            // means val is unchanged, then return 0, as default
+            return 0;
         }
     }
+
+
+//    class SnapshotArray {
+//
+//        Integer[] elements;
+//        Map<Integer, Integer[]> snapshotMap;
+//        Integer snapshotCount;
+//
+//        public SnapshotArray(int length) {
+//            this.elements = new Integer[length];
+//            this.snapshotMap = new HashMap<>();
+//            this.snapshotCount = 0;
+//            // Store the initial snapshot (snapshot 0)
+//            this.snapshotMap.put(this.snapshotCount, this.elements.clone());
+//        }
+//
+//        public void set(int index, int val) {
+//            // Set value in the current snapshot (current version of elements)
+//            this.elements[index] = val;
+//        }
+//
+//        public int snap() {
+//            // Take a snapshot of the current elements array by creating a new copy
+//            snapshotMap.put(snapshotCount, elements.clone());
+//            // Increment snapshotCount to prepare for the next snapshot
+//            return snapshotCount++;
+//        }
+//
+//        public int get(int index, int snap_id) {
+//            // Retrieve the value from the snapshot with the given snap_id
+//            return snapshotMap.get(snap_id)[index];
+//        }
+//    }
 //    class SnapshotArray {
 //
 //        Integer[] elements;

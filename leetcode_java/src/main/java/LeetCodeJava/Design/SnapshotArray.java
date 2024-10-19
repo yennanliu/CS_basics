@@ -83,7 +83,7 @@ public class SnapshotArray {
 //        }
 //    }
 
-    // V0_
+    // V0_1
     // IDEA : (fix by GPT)
     /**
      * Key Optimizations
@@ -136,6 +136,56 @@ public class SnapshotArray {
         public int get(int index, int snap_id) {
             // Get the greatest key less than or equal to snap_id
             return snapshots.get(index).floorEntry(snap_id).getValue();
+        }
+    }
+
+    // V0_2
+    // IDEA : HASHMAP + LIST (fixed by gpt) + binary search
+    class SnapshotArray_0_2 {
+
+        private int snapId;
+        private Map<Integer, List<int[]>> snapshots;
+
+        public SnapshotArray_0_2(int length) {
+            this.snapId = 0;
+            this.snapshots = new HashMap<>();
+            // Initialize each index with a snapshot at snapId 0, where the value is 0
+            for (int i = 0; i < length; i++) {
+                snapshots.put(i, new ArrayList<>());
+                snapshots.get(i).add(new int[]{0, 0});  // {snapId, value}
+            }
+        }
+
+        public void set(int index, int val) {
+            // Store the new value along with the current snapId
+            List<int[]> snapshotList = snapshots.get(index);
+            // If the last snapshot has the same snapId, just update the value
+            if (!snapshotList.isEmpty() && snapshotList.get(snapshotList.size() - 1)[0] == snapId) {
+                snapshotList.get(snapshotList.size() - 1)[1] = val;
+            } else {
+                snapshotList.add(new int[]{snapId, val});
+            }
+        }
+
+        public int snap() {
+            return snapId++;
+        }
+
+        public int get(int index, int snap_id) {
+            List<int[]> snapshotList = snapshots.get(index);
+
+            // Perform a binary search to find the largest snapId <= snap_id
+            int low = 0, high = snapshotList.size() - 1;
+            while (low < high) {
+                int mid = (low + high + 1) / 2;
+                if (snapshotList.get(mid)[0] <= snap_id) {
+                    low = mid;  // Move right if the current snapId is valid
+                } else {
+                    high = mid - 1;  // Move left if the current snapId is too large
+                }
+            }
+
+            return snapshotList.get(low)[1];
         }
     }
 
