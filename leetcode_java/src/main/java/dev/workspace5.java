@@ -1613,6 +1613,111 @@ public class workspace5 {
 
     }
 
+    // LC 729
+    // https://leetcode.com/problems/my-calendar-i/
+    // 3.11 pm - 3.30 pm
+    /**
+     *
+     * -> We can add a new event if adding the event
+     * will not cause a double booking.
+     *
+     *
+     * -> A double booking happens when two events have
+     * some non-empty intersection
+     * (i.e., some moment is common to both events.).
+     *
+     *
+     * -> boolean book(int start, int end)
+     * Returns true if the event can be added to
+     * the calendar successfully without
+     * causing a double booking. Otherwise,
+     * return false and do not add the event to the calendar.
+     *
+     *  exp 1
+     *
+     *  Input
+     *   ["MyCalendar", "book", "book", "book"]
+     *   [[], [10, 20], [15, 25], [20, 30]]
+     *   Output
+     *   [null, true, false, true]
+     *
+     *
+     *   10   20           -> true
+     *      15    25       -> false
+     *        20     30    -> true
+     *
+     */
+        class MyCalendar {
+            List<List<Integer>> dates;
+        public MyCalendar() {
+            this.dates = new ArrayList<>();
+        }
+
+        public boolean book(int start, int end) {
+            for (List<Integer> date : dates){
+                if (start < date.get(1) && end < date.get(0)){
+                    return false;
+                }
+            }
+            List<Integer> newBook = new ArrayList<>();
+            newBook.add(start);
+            newBook.add(end);
+            this.dates.add(newBook);
+            return true;
+        }
+    }
+
+
+//    class MyCalendar {
+//        List<List<Integer>> dates;
+//
+//        public MyCalendar() {
+//            this.dates = new ArrayList<>();
+//        }
+//
+//        public boolean book(int start, int end) {
+//            if (this.dates.size() == 0){
+//                List<Integer> newBook = new ArrayList<>();
+//                newBook.add(start);
+//                newBook.add(end);
+//                this.dates.add(newBook);
+//                return true;
+//            }
+//
+//            // sort (from small to big)
+//            // scanning line
+//            //Arrays.sort(this.dates);
+//            if(isOverlap(start, end, this.dates)){
+//                return false;
+//            }
+//
+//            List<Integer> newBook = new ArrayList<>();
+//            newBook.add(start);
+//            newBook.add(end);
+//            this.dates.add(newBook);
+//            return true;
+//        }
+//
+//        /**
+//         *
+//         *    2     10
+//         *      3  8
+//         *  1           11
+//         *
+//         */
+//        private Boolean isOverlap(int start, int end, List<List<Integer>> dates){
+//            int overlap = 0;
+//            for (List<Integer> date : dates){
+//                Integer start_ = date.get(0);
+//                Integer end_ = date.get(1);
+//                if (end_ > end || start_ < start){
+//                    return false;
+//                }
+//            }
+//            return true;
+//        }
+//    }
+
 
 }
 
