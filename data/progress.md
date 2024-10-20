@@ -1,5 +1,8 @@
 # Progress
 
+# 2024-10-20
+- https://github.com/yennanliu/CS_basics/blob/master/doc/Leetcode_company_frequency-master/Google%206months-%20LeetCode.pdf
+
 # 2024-10-19
 - https://github.com/yennanliu/CS_basics/blob/master/doc/Leetcode_company_frequency-master/Google%206months-%20LeetCode.pdf
 
