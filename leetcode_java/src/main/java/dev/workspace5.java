@@ -1707,25 +1707,81 @@ public class workspace5 {
      *        20     30    -> true
      *
      */
-        class MyCalendar {
-            List<List<Integer>> dates;
+    // https://leetcode.com/problems/my-calendar-i/
+    // 4.37 pm - 5.00 pm
+    class MyCalendar {
+
+        List<List<Integer>> bookings;
+
         public MyCalendar() {
-            this.dates = new ArrayList<>();
+            this.bookings = new ArrayList<>();
         }
 
         public boolean book(int start, int end) {
-            for (List<Integer> date : dates){
-                if (start < date.get(1) && end < date.get(0)){
+            if (this.bookings.size()==0){
+                List<Integer> newBooking = new ArrayList<>();
+                newBooking.add(start);
+                newBooking.add(end);
+                this.bookings.add(newBooking);
+                return true;
+            }
+            /**
+             *  overlap 3 cases
+             *
+             *  case 1)
+             *
+             *    |-----| old       new[1] > old[0] && new[0] < old[1]
+             * |----|     new
+             *
+             *
+             * case 2)
+             *    |-----|      old     new[1] > old[0] && new[0] < old[1]
+             *        |-----|  new
+             *
+             * case 3)
+             *
+             *    |------|       old    new[1] > old[0] && new[0] < old[1]
+             *  |-------------|  new
+             *
+             */
+            for (List<Integer> booking: bookings){
+                if (booking.get(1) > start && booking.get(0) < end){
                     return false;
                 }
             }
-            List<Integer> newBook = new ArrayList<>();
-            newBook.add(start);
-            newBook.add(end);
-            this.dates.add(newBook);
+            List<Integer> newBooking = new ArrayList<>();
+            newBooking.add(start);
+            newBooking.add(end);
+            this.bookings.add(newBooking);
             return true;
         }
     }
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar obj = new MyCalendar();
+ * boolean param_1 = obj.book(start,end);
+ */
+
+//        class MyCalendar {
+//            List<List<Integer>> dates;
+//        public MyCalendar() {
+//            this.dates = new ArrayList<>();
+//        }
+//
+//        public boolean book(int start, int end) {
+//            for (List<Integer> date : dates){
+//                if (start < date.get(1) && end < date.get(0)){
+//                    return false;
+//                }
+//            }
+//            List<Integer> newBook = new ArrayList<>();
+//            newBook.add(start);
+//            newBook.add(end);
+//            this.dates.add(newBook);
+//            return true;
+//        }
+//    }
 
 
 //    class MyCalendar {

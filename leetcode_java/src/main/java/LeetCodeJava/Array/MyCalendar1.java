@@ -83,6 +83,60 @@ public class MyCalendar1 {
         }
     }
 
+    // V0-1
+    // IDEA : ARRAY + BOUNDARY HANDLING
+    class MyCalendar_0_1 {
+
+        List<List<Integer>> bookings;
+
+        public MyCalendar_0_1() {
+            this.bookings = new ArrayList<>();
+        }
+
+        public boolean book(int start, int end) {
+            if (this.bookings.size()==0){
+                List<Integer> newBooking = new ArrayList<>();
+                newBooking.add(start);
+                newBooking.add(end);
+                this.bookings.add(newBooking);
+                return true;
+            }
+            /**
+             *  Overlap 3 cases
+             *
+             *  case 1)
+             *
+             *    |-----| old       new[1] > old[0] && new[0] < old[1]
+             * |----|     new
+             *
+             *
+             * case 2)
+             *    |-----|      old     new[1] > old[0] && new[0] < old[1]
+             *        |-----|  new
+             *
+             * case 3)
+             *
+             *    |------|       old    new[1] > old[0] && new[0] < old[1]
+             *  |-------------|  new
+             *
+             *
+             *  -> so, all overlap cases
+             *  -> are with condition : "new[1] > old[0] && new[0] < old[1]"
+             */
+            for (List<Integer> booking: bookings){
+                // NOTE !!! check if overlap happens
+                if (booking.get(1) > start && booking.get(0) < end){
+                    return false;
+                }
+            }
+            List<Integer> newBooking = new ArrayList<>();
+            newBooking.add(start);
+            newBooking.add(end);
+            this.bookings.add(newBooking);
+            return true;
+        }
+    }
+
     // V1-1
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/my-calendar-i/editorial/
