@@ -1778,6 +1778,77 @@ public class workspace5 {
 //        }
 //    }
 
+    // LC 163
+    // https://leetcode.ca/all/163.html
+    // 3.51 pm - 4.20 pm
+    /**
+     *  Given a sorted integer array nums, where the range of
+     *  elements are in the inclusive range [lower, upper],
+     *  return its missing ranges.
+     *
+     *
+     *  exp 1:
+     *  Input: nums = [0, 1, 3, 50, 75], lower = 0 and upper = 99,
+     *  Output: ["2", "4->49", "51->74", "76->99"]
+     *
+     *  -> idea 1
+     *
+     *  0,1, [2] 3, [50], [75]
+     *
+     *  -> "2",  "4,49",  "51,74", "76,99"
+     *
+     *
+     *  -> loop over elements, compare prev, and current element
+     *  -> if any missing, then collect, then add to result array
+     *  -> then finally check upper bound and last element
+     *  -> add to result accordingly if there is a missing element
+     */
+    public List<List<Integer>> findMissingRanges(int[] nums, int lower, int upper) {
+        if (nums.length == 0){
+            return null;
+        }
+
+        /**
+         * Input: nums = [0, 1, 3, 50, 75], lower = 0 and upper = 99,
+         * Output: ["2", "4->49", "51->74", "76->99"]
+         *
+         *  nums = [0, 1, 3, 50, 75]     res = []
+         *          x
+         *             x                 res = []
+         *                x              res = [[2]]
+         *                    x          res = [[2], [4,49]]
+         *                        x      res = [[2], [4,49], [51,74]]
+         *
+         *                                res = [[2], [4,49], [51,74], [76,99]]
+         */
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 1; i < nums.length; i++){
+            // case 1:  nums = [1, 3]
+            if (nums[i] == nums[i-1]+2){
+                List<Integer> missingPeriod = new ArrayList<>();
+                missingPeriod.add(nums[i-1]+1);
+                res.add(missingPeriod);
+            }
+            // case 2 : nums = [3, 50]
+            else if (nums[i] != nums[i-1]){
+                List<Integer> missingPeriod = new ArrayList<>();
+                missingPeriod.add(nums[i-1]+1);
+                missingPeriod.add(nums[i]-1);
+                res.add(missingPeriod);
+            }
+        }
+
+        // finally, check last element and upper bound
+        if (upper != nums[nums.length-1]){
+            List<Integer> missingPeriod = new ArrayList<>();
+            missingPeriod.add(nums[nums.length-1] + 1);
+            missingPeriod.add(upper);
+            res.add(missingPeriod);
+        }
+
+        return res;
+    }
+
 
 }
 
