@@ -1849,6 +1849,13 @@ public class workspace5 {
         return res;
     }
 
+    // LC 1048
+    // 4.19 pm - 4.30 pm
+    // https://leetcode.com/problems/longest-string-chain/
+    public int longestStrChain(String[] words) {
+        return 0;
+    }
+
 
 }
 
