@@ -48,6 +48,29 @@ for i, val in enumerate(len(tmp)):
 # ...
 ```
 
+```java
+// java
+// LC 739
+        for (int j = 0; j < temperatures.length; j++){
+            int x = temperatures[j];
+            /**
+             *  NOTE !!!
+             *   1) while loop
+             *   2) stack is NOT empty
+             *   3) cache temperature smaller than current temperature
+             *
+             *   st.peek().get(0) is cached temperature
+             */
+            while (!st.isEmpty() && st.peek().get(0) < x){
+                /**
+                 *  st.peek().get(1) is idx
+                 *
+                 */
+                nextGreater[st.peek().get(1)] = j - st.peek().get(1);
+                st.pop();
+            }
+```
+
 ## 1) General form
 
 ### 1-1) Basic OP
@@ -58,7 +81,110 @@ for i, val in enumerate(len(tmp)):
 - Stack isEmpty
 - Stack hasElement
 
-### 1-1-2) next greater number
+
+
+### 1-1-2-1) next greater element
+
+```java
+// java
+// LC 496
+  // V0
+    // IDEA : STACK
+    // https://www.youtube.com/watch?v=68a1Dc_qVq4
+    /** NOTE !!!
+     *
+     *  nums1 is "sub set" of nums2,
+     *  so all elements in nums1 are in nums2 as well
+     *  and in order to find next greater element in nums1 reference nums2
+     *  -> ACTUALLY we only need to check nums2
+     *  -> then append result per element in nums1
+     */
+    /**
+     *
+     *  Example 1)
+     *
+     *  nums1 = [4,1,2]
+     *  nums2 = [1,3,4,2]
+     *           x
+     *             x
+     *               x
+     *                 x
+     *  st = [1]
+     *  st = [3]  map : {1:3}
+     *  st = [4], map : {1:3, 3:4}
+     *  st = [], map : {1:3, 3:4}
+     *
+     *  so, res = [-1, 3, -1]
+     *
+     *
+     *  Example 2)
+     *
+     *   nums1 = [1,3,5,2,4]
+     *   nums2 = [6,5,4,3,2,1,7]
+     *            x
+     *              x
+     *               x
+     *                 x
+     *                   x
+     *                     x
+     *                       x
+     *                         x
+     *
+     *  st = [6], map :{}
+     *  st = [6,5],  map :{}
+     *  ..
+     *
+     *  st = [6,5,4,3,2,1], map = {}
+     *  st = [], map = {6:7, 5:7,4:7,3:7,2:7,1:7}
+     *
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+        if (nums1.length == 1 && nums2.length == 1){
+            return new int[]{-1};
+        }
+
+        /**
+         *  NOTE !!!
+         *  we use map " collect next greater element"
+         *  map definition :  {element, next-greater-element}
+         */
+        Map<Integer, Integer> map = new HashMap<>();
+        Stack<Integer> st = new Stack<>();
+
+        for (int x : nums2){
+            /**
+             *  NOTE !!!
+             *   1) use while loop
+             *   2) while stack is NOT null and stack "top" element is smaller than current element (x) is nums2
+             *
+             *   -> found "next greater element", so update map
+             */
+            while(!st.isEmpty() && st.peek() < x){
+                int cur = st.pop();
+                map.put(cur, x);
+            }
+            /** NOTE !!! if not feat above condition, we put element to stack */
+            st.add(x);
+        }
+
+        //System.out.println("map = " + map);
+        int[] res = new int[nums1.length];
+        // fill with -1 for element without next greater element
+        Arrays.fill(res, -1);
+        for (int j = 0; j < nums1.length; j++){
+            if(map.containsKey(nums1[j])){
+                res[j] = map.get(nums1[j]);
+            }
+        }
+
+        //System.out.println("res = " + res);
+        return res;
+    }
+```
+
+
+### 1-1-2-2) next greater element 2
 
 ```python
 # V0

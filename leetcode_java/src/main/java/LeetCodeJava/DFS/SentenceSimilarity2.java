@@ -67,7 +67,7 @@ public class SentenceSimilarity2 {
          *
          *
          *
-         * 
+         *
          * Yes,
          * you can replace the bitwise operation n << 1
          * with a simple multiplication by 2.
