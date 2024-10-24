@@ -1912,6 +1912,48 @@ public class workspace5 {
         return 0;
     }
 
+    // LC 951
+    // https://leetcode.com/problems/flip-equivalent-binary-trees/
+    // 7.23 pm - 7.40 pm
+    public boolean flipEquiv(TreeNode root1, TreeNode root2) {
+
+        // edge cases
+        if (root1 == null || root2 == null) {
+            return false;
+        }
+
+        if (root1.val != root2.val) {
+            return false;
+        }
+
+        if (root1 == null && root2 == null) {
+            return true;
+        }
+
+
+        return isSameTree(root1, root2);
+    }
+
+    private boolean isSameTree(TreeNode root1, TreeNode root2) {
+
+        if (root1 == null || root2 == null) {
+            return false;
+        }
+
+        if (root1.val != root2.val) {
+            return false;
+        }
+
+        if (root1 == null && root2 == null) {
+            return true;
+        }
+
+        return (isSameTree(root1.left, root2.right)
+                && isSameTree(root1.right, root2.left))
+                || (isSameTree(root1.right, root2.left)
+                && isSameTree(root1.right, root2.left)) ;
+                //&& isSameTree(root1, root2); // ?? needed ?
+    }
 
 }
 
