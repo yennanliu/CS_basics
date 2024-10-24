@@ -1955,6 +1955,116 @@ public class workspace5 {
                 //&& isSameTree(root1, root2); // ?? needed ?
     }
 
+    // LC 792
+    // https://leetcode.com/problems/number-of-matching-subsequences/
+    // 8.00 - 8.25 pm
+    public int numMatchingSubseq(String s, String[] words) {
+        if (words.length == 0) {
+            return 0;
+        }
+
+        int res = 0;
+        for (String word : words) {
+            if (isSubsequences(word, s)) {
+                res += 1;
+            }
+        }
+        return res;
+    }
+
+    private boolean isSubsequences(String word, String s) {
+
+        // Handle edge cases
+        if (word == null || s == null) {
+            return false;
+        }
+
+        Map<String, Integer> map = new HashMap<>();
+        for (String x : s.split("")){
+            map.put(x, map.getOrDefault(x, 0)+1);
+        }
+
+        // 2 pointers approach
+        int i = 0; // pointer for word
+        int j = 0; // pointer for s
+
+        // Traverse through both strings
+        while (i < word.length() && j < s.length()) {
+            // If characters match, move both pointers
+            if (word.charAt(i) == s.charAt(j)) {
+                i++;
+            }
+            // Always move j (string `s`)
+            j++;
+        }
+
+        // If i equals the word's length, the entire word is a subsequence
+        return i == word.length();
+    }
+
+//    public int numMatchingSubseq(String s, String[] words) {
+//
+//        if (words.length == 0){
+//            return 0;
+//        }
+//
+//        int res = 0;
+//        for (String word : words){
+//            if (isSubsequences(word, s)){
+//                res += 1;
+//            }
+//        }
+//
+//        return res;
+//    }
+
+//    private boolean isSubsequences(String word, String s){
+//        // 2 pointers
+//        if (word == null || s == null){
+//            return false;
+//        }
+//
+//        // TODO: check word.length() && j < s.length()
+//        /**
+//         *  exp 1:
+//         *   s = "abcde"
+//         *   word = "bb"
+//         *
+//         *   -> s = "abcde"
+//         *               j
+//         *
+//         *      word = "bb"
+//         *               i
+//         *
+//         *  exp 2:
+//         *
+//         *   s = "abcde"
+//         *   word =  acd
+//         *
+//         *   -> s = "abcde"
+//         *              j
+//         *
+//         *      word = acd
+//         *               i
+//         *
+//         */
+//        int i = 0; // idx for word
+//        int j = 0; // idx for s
+//        //for (int i = 0; i < word.length() && j < s.length(); i++){
+//        while (i < word.length() && j < s.length()){
+//            while (word.indexOf(i) != s.indexOf(j)){
+//                // if not match, keep moving j idx
+//                j += 1;
+//            }
+//            // match, move i, j idx on the same time
+//            i += 1;
+//            j += 1;
+//        }
+//
+//        // make sure i index go through all elements in word
+//        return i == word.length() - 1;
+//    }
+
 }
 
 
