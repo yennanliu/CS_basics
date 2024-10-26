@@ -2065,6 +2065,20 @@ public class workspace5 {
 //        return i == word.length() - 1;
 //    }
 
+    // LC 932
+    // https://leetcode.com/problems/beautiful-array/
+    /**
+     *
+     * For every 0 <= i < j < n,
+     * there is no index k with i < k < j
+     * where 2 * nums[k] == nums[i] + nums[j].
+     *
+     */
+    public int[] beautifulArray(int n) {
+
+        return null;
+    }
+
 }
 
 
