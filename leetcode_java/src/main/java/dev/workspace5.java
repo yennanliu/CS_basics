@@ -2,6 +2,7 @@ package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class workspace5 {
@@ -2108,6 +2109,96 @@ public class workspace5 {
 
         }
 
+    }
+
+    // LC 846
+    // https://leetcode.com/problems/hand-of-straights/
+    // 5.29 pm - 5.45 pm
+    /**
+     *  input 1:
+     *
+     *  [1,2,3,6,2,3,4,7,8]
+     *
+     *  -> sort
+     *
+     *  [1,2,2,3,3,4,6,7,8]
+     *
+     *  [1,2,3]
+     *  [2,3,4]
+     *  [6,7,8]
+     *
+     *
+     *  idea 1:
+     *
+     *  step 1. sort array
+     *  step 2. find min val
+     *      construct sub array
+     *
+     *
+     */
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+
+        if (hand.length % groupSize != 0){
+            return false;
+        }
+
+        if (groupSize==1){
+            return true;
+        }
+
+        if (hand.length == groupSize){
+            // sort
+            Arrays.sort(hand);
+            //int min = hand[0];
+            for (int k = 0; k < hand.length-1; k++){
+                if (hand[k]+1 != hand[k+1]){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        // PQ (max heap???)
+        PriorityQueue<Integer> pq = new PriorityQueue();
+        for (int i = 0; i < hand.length; i++){
+            // NOTE !! we put "-1 * i"
+            // so can create a "small" PQ
+            pq.add(-1 * hand[i]);
+        }
+
+        System.out.println(">>> pq = " + pq);
+
+        // check
+        while (!pq.isEmpty()){
+            // get cur min element
+            int cnt = 0;
+            int min = pq.poll();
+            Queue<Integer> tmpQ = new LinkedList<>();
+            if (!pq.contains(min+1) || !pq.contains(min+2)){
+                return false;
+            }
+            // till collect groupSize count of element
+            for (int j = 0; j < groupSize && !pq.isEmpty(); j++){
+                int cur = pq.poll();
+                // found consecutive element
+                if (cur == min+1){
+                    min += 1;
+                // if not found, add to tmp queue
+                }else{
+                    tmpQ.add(cur);
+                }
+            }
+
+            // put tmp element back to pq
+            while (!tmpQ.isEmpty()){
+                pq.add(tmpQ.poll());
+            }
+
+            // re-ordering PQ ??? needed ?
+        }
+
+        return true;
     }
 
 
