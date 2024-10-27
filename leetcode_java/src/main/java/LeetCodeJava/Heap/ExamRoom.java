@@ -46,6 +46,8 @@ package LeetCodeJava.Heap;
  */
 
 import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Your ExamRoom object will be instantiated and called as such:
@@ -73,17 +75,89 @@ public class ExamRoom {
 
     // V1
 
-    // V2
-    // (offered by gpt)
-    public class ExamRoom_2 {
+    // V2-1
+    // IDEA : Linkedlist (offered by gpt)
+    public class ExamRoom_2_1 {
+
+        private int n;
+        private ArrayList<Integer> seats;
+
+        public ExamRoom_2_1(int n) {
+            this.n = n;
+            this.seats = new ArrayList<>();
+        }
+
+        public int seat() {
+            // If no one is seated, the first student sits at seat 0
+            if (seats.isEmpty()) {
+                seats.add(0);
+                return 0;
+            }
+
+            // Determine where to seat the next student
+            int maxDist = seats.get(0); // Distance from seat 0 to the first occupied seat
+            int seat = 0; // Initially, consider the first seat
+
+            // Check gaps between seated students
+            for (int i = 0; i < seats.size() - 1; i++) {
+                // calculates the halfway distance between two students
+                // who are already seated at positions seats.get(i) and seats.get(i + 1).
+                int dist = (seats.get(i + 1) - seats.get(i)) / 2;
+                if (dist > maxDist) {
+                    maxDist = dist;
+                    seat = seats.get(i) + dist; // The seat in the middle
+                }
+            }
+
+            // Check the distance from the last seated student to the last seat
+            if (n - 1 - seats.get(seats.size() - 1) > maxDist) {
+                seat = n - 1;
+            }
+
+            // Add the student to the seat
+            seats.add(seat);
+            Collections.sort(seats); // Sort to maintain seat order
+            return seat;
+        }
+
+        public void leave(int p) {
+            seats.remove(Integer.valueOf(p)); // Remove the student from the seat
+        }
+
+    }
+
+    // V2-2
+    // IDEA : Treeset (offered by gpt)
+    /**
+     *  Idea:
+     *
+     *  You can solve the problem by maintaining a sorted list of occupied seats.
+     *  Each time a student enters, you look for the largest available gap between two occupied seats,
+     *  or between an occupied seat and the room boundaries (start or end).
+     *  When a student leaves, you remove their seat from the list.
+     */
+    public class ExamRoom_2_2 {
+
+        /**
+         * TreeSet: A TreeSet is used to maintain the seats in sorted order.
+         * This helps efficiently finding gaps between occupied seats
+         * and determining where the next student should sit.
+         */
         private TreeSet<Integer> seats;
         private int n;
 
-        public ExamRoom_2(int n) {
+        public ExamRoom_2_2(int n) {
             this.n = n;
             this.seats = new TreeSet<>();
         }
 
+        /**
+         * 	2.	seat():
+         *
+         * 	    •	If no seats are occupied, the student sits at seat 0.
+         * 	    •	Otherwise, iterate through the list of occupied seats to find the largest gap between two seats. For each gap, calculate the middle seat and check if it maximizes the distance to the nearest student.
+         * 	    •	Finally, also consider the distance from the last occupied seat to the end of the row, in case sitting at the last seat maximizes the distance.
+         */
         public int seat() {
             int seat = 0;
 
@@ -115,6 +189,9 @@ public class ExamRoom {
             return seat;
         }
 
+        /**
+         * 3.	leave(int p): Simply remove seat p from the
+         */
         public void leave(int p) {
             seats.remove(p);
         }
