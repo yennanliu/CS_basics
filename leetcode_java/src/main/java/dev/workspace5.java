@@ -2079,6 +2079,38 @@ public class workspace5 {
         return null;
     }
 
+    // LC 855
+    // https://leetcode.com/problems/exam-room/
+    // 4.28 pm - 4.40 pm
+    /**
+     *  ep 1:
+     *
+     *  [x,x,x,x,x,x,x,x,x,x]
+     *   o
+     *                     o
+     *           o
+     *       o
+     *
+     *
+     *
+     */
+    class ExamRoom {
+
+        public ExamRoom(int n) {
+
+        }
+
+        public int seat() {
+            return 0;
+        }
+
+        public void leave(int p) {
+
+        }
+
+    }
+
+
 }
 
 
