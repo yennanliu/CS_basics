@@ -111,6 +111,7 @@ Then, in the function F(X), we will:
 
 - Divide & Conquer
     - https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2869/
+
 ```
 # template
 
@@ -163,6 +164,13 @@ def divide_and_conquer( S ):
     - know a theoretical tool called master theorem to calculate the time complexity for certain types of divide-and-conquer algorithms.
     - Steps
         - Divide -> Conquer -> Combine
+    - LC 22
+    - LC 84
+    - LC 315
+    - LC 327
+    - LC 493
+    - LC 1649
+    - LC 426
 - Backtracking
 - master theorem
 - Recursively and call the other recursion function
