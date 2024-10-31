@@ -1,7 +1,7 @@
 # Two pointers
 
 - Ref
-    - [fucking-algorithm : 2 pointers](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E8%AF%A6%E8%A7%A3.md)
+    - [fucking-algorithm : 2 pointers](https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9)
 
 ## 0) Concept  
 
@@ -10,17 +10,6 @@
 - Pointer types
     - `Fast - Slow pointers`
         - fast, slow pointers from `same start point`
-        - Usualy set
-            - slow pointer moves 1 idx
-            - fast pointer moves 2 idx
-        - linked list
-            - find mid point of linked list
-            - check if linked list is circular
-                - LC 141
-                - LC 142
-            - if a circular linked list, return beginning point of circular
-            - find last k elements of a single linked list
-                - LC 19 : Remove Nth Node From End of List
     - `Left- Right pointers`
         - left, right pointers from `idx = 0, idx = len(n) - 1` respectively
         - Usually set
@@ -51,6 +40,34 @@
     - Linked list
 
 ### 0-2) Pattern
+
+### 0-2-0) Remove Duplicates from Sorted Array
+```java
+// java
+// LC 26
+// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        int slow = 0, fast = 0;
+        while (fast < nums.length) {
+            // NOTE !!! if slow pointer != fast pointer
+            if (nums[fast] != nums[slow]) {
+                // NOTE !!! move slow pointer first
+                slow++;
+                // 维护 nums[0..slow] 无重复
+                // NOTE !!! swap slow, fast pointer val
+                nums[slow] = nums[fast];
+            }
+            fast++;
+        }
+        // 数组长度为索引 + 1
+        return slow + 1;
+    }
+}
+```
 
 #### 0-2-1) for loop + "expand `left`, `right` from center"
 ```python
@@ -84,126 +101,7 @@ for i in range(lens(s)):
 
 ### 1-1) Basic OP
 
-#### 1-1-1 : Check if there is a circular linked list 
-```java
-// java
-boolean hasCycle(ListNode head){
-    fast = slow = head;
-    // NOTE : while loop condition
-    while (fast != null and fast.next != null){
-        /** NOTE : need to do move slow, fast pointer then compare them */
-        slow = slow.next;
-        fast = fast.next.next;
-        if (fast == slow){
-            return True
-        }
-    }
-    return False;
-}
-```
-
-#### 1-1-2 : return the "ring start point" of circular linked list 
-```java
-// java
-// LC 141
-ListNode detectCycle(ListNode head){
-    ListNode fast, slow;
-    fast = slow = head;
-    while (fast != null and fast.next != null){
-        /** NOTE !!! We move pointers first */
-        fast = fast.next.next;
-        slow = slow.next;
-        if (fast == slow){
-            break;
-        }
-    }
-    slow = head;
-    // may need below logic to check whether is cycle linked list or not
-    // if (! fast or ! fast.next){
-    //     return null;
-    // }
-    while (slow != fast){
-        slow = slow.next;
-        fast = fast.next;
-    }
-    return slow;
-}
-```
-
-```python
-# LC 142. Linked List Cycle II
-# python
-class Solution:
-    def detectCycle(self, head):
-        if not head or not head.next:
-            return
-        slow = fast = head
-        while fast and fast.next:
-            fast = fast.next.next
-            slow = slow.next
-            if fast == slow:
-                break
-        #print ("slow = " + str(slow) + " fast = " + str(fast))
-        ### NOTE : via below condition check if is a cycle linked list
-        if not fast or not fast.next:
-            return
-        """
-        ### NOTE : re-init slow or fast as head (from starting point)
-        -> can init slow or head
-        """
-        slow = head
-        #fast = head 
-        """
-        ### NOTE : check while slow != fast
-        ### NOTE : use the same speed
-        """
-        while slow != fast:
-            # NOTE this !!! : fast, slow move SAME speed (in this step)
-            fast = fast.next
-            slow = slow.next
-        return slow
-
-# V0'
-# IDEA : SET
-class Solution(object):
-    def detectCycle(self, head):
-        if not head or not head.next:
-            return
-        s = set()
-        while head:
-            s.add(head)
-            head = head.next
-            if head in s:
-                return head
-        return
-```
-#### 1-1-3 : find mid point of a single linked list
-```java
-// java
-while (fast != null and fast.next != null){
-    fast = fast.next.next;
-    slow = slow.next;
-}
-return slow;
-```
-
-#### 1-1-4 : find last k elements in a single linked list
-```java
-// java
-ListNode fast, slow;
-slow = fast = head;
-while (k > 0){
-    fast = fast.next;
-    k -= 1;
-}
-while (fast != null){
-    fast = fast.next;
-    slow = slow.next;
-}
-return slow;
-```
-
-#### 1-1-5 : Reverse Array
+#### 1-1-1 : Reverse Array
 ```java
 // java
 void reverse(int[] nums){
