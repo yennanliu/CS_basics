@@ -44,7 +44,7 @@
 ### 0-2-0) Remove Duplicates from Sorted Array
 ```java
 // java
-// LC 26
+// LC 26 (LC 83)
 // https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
 class Solution {
     public int removeDuplicates(int[] nums) {
@@ -68,8 +68,28 @@ class Solution {
     }
 }
 ```
+### 0-2-1) Remove Element
+```java
+// java
+// LC 27
+// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int fast = 0, slow = 0;
+        while (fast < nums.length) {
+            if (nums[fast] != val) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+            fast++;
+        }
+        return slow;
+    }
+}
+```
 
-#### 0-2-1) for loop + "expand `left`, `right` from center"
+
+#### 0-2-3) for loop + "expand `left`, `right` from center"
 ```python
 # LC 005  Longest Palindromic Substring
 # LC 647 Palindromic Substrings
