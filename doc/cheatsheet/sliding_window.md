@@ -86,15 +86,18 @@ for r in range(len(r)):
 //-------------------------
 // V1 : while - while
 //-------------------------
+// sliding window pattern
+// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
 int left = 0, right = 0;
-while (right < s.size()) {
-    window.add(s[right]);
+
+while (right < nums.size()) {
+    // enlarge window
+    window.addLast(nums[right]);
     right++;
-    // NOTE : most of the sliding windonw trick 
-    // is dealing with "valid" conditions
-    // and how to cache some conditions for verfication
-    while (valid) {
-        window.remove(s[left]);
+    
+    while (window needs shrink) {
+        // lower window
+        window.removeFirst(nums[left]);
         left++;
     }
 }
