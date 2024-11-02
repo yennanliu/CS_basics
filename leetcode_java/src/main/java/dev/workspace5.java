@@ -2201,6 +2201,14 @@ public class workspace5 {
         return true;
     }
 
+    // LC 802
+    // 5,28 - 5.40 PM
+    // https://leetcode.com/problems/find-eventual-safe-states/
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+
+        return null;
+    }
+
 
 }
 
