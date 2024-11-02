@@ -2248,6 +2248,86 @@ public class workspace5 {
         return -1;
     }
 
+    // LC 26
+    // https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/
+    // 7.05 - 7.15 PM
+    // 2 pointers
+    /**
+     *  - exp 1
+     *
+     *  nums = [1,1,2]
+     *
+     *  ->  [1,1,2]     if nums[s] == nums[f], swap nums[s] and nums[f]
+     *       s
+     *       f
+     *
+     *      [1,1,2]     if nums[s] == nums[f], and s != f, move s
+     *         f
+     *       s s
+     *
+     *      [1,2, 1]      if nums[s] != nums[f], swap nums[s] and nums[f]
+     *           f
+     *         s
+     *
+     *
+     *   - exp 2
+     *
+     *    nums = [0,0,1,1,1,2,2,3,3,4]
+     *
+     *
+     *
+     *    ->  [0,0,1,1,1,2,2,3,3,4]   if nums[s] != nums[f], swap nums[s] and nums[f]
+     *         s
+     *         f
+     *
+     *   ->  [0,0,1,1,1,2,2,3,3,4]    if nums[s] == nums[f], move s
+     *          f
+     *        s s
+     *
+     *
+     *   ->  [0,1,0,1,1,2,2,3,3,4]    if nums[s] != nums[f], swap nums[s] and nums[f]
+     *          s f
+     *
+     *
+     *   ->  [0,1,0,1,1,2,2,3,3,4]    if nums[s] == nums[f], move s
+     *          s   f
+     *            s
+     */
+    /**
+     *  [1,1,2]
+     *   s
+     *     f
+     *
+     *   [1,2,1]
+     *    s s
+     *        f
+     *
+     *
+     *    [1,1,2]
+     *         s
+     *         f
+     *
+     *
+     */
+    public int removeDuplicates(int[] nums) {
+        if (nums.length==0){
+            return 0;
+        }
+        int s = 0;
+        int f = 1;
+
+        while (f < nums.length){
+            if (nums[s] == nums[f]){
+
+                s += 1;
+                int tmp = nums[f];
+                nums[f] = nums[s];
+                nums[s] = tmp;
+            }
+            f += 1;
+        }
+        return s;
+    }
 
 }
 
