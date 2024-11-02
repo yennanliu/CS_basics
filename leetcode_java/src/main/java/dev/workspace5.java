@@ -2,7 +2,6 @@ package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class workspace5 {
@@ -2207,6 +2206,46 @@ public class workspace5 {
     public List<Integer> eventualSafeNodes(int[][] graph) {
 
         return null;
+    }
+
+    // LC 1197
+    // https://leetcode.ca/all/1197.html
+    // 6.25 pm - 6.40 pm
+    // bfs
+    public int minKnightMoves(int x, int y) {
+
+        if (x==0 && y==0){
+            return 0;
+        }
+
+        // init
+        int[][] moves = new int[][]{ {1,2}, {2,1}, {2,-1}, {1,-2}, {-1,-2}, {-2,-1}, {-2,1}, {-1,2} };
+        // queue : FIFO
+        Queue<List<Integer>> q = new LinkedList<>(); // Queue([x, y, step])
+        List<Integer> tmp = new ArrayList<>();
+        tmp.add(0); // x
+        tmp.add(0); // y
+        tmp.add(0); // step
+        q.add(tmp);
+
+        while(!q.isEmpty()){
+            List<Integer> cur = q.poll();
+            int cur_x = cur.get(0);
+            int cur_y = cur.get(1);
+            int cur_step = cur.get(2);
+            if (cur_x == x && cur_y == y){
+                return cur_step;
+            }
+            for (int[] move : moves){
+                List<Integer> newCoor = new ArrayList<>();
+                newCoor.add(cur_x + move[0]);
+                newCoor.add(cur_y + move[1]);
+                newCoor.add(cur_step + 1);
+                q.add(newCoor);
+            }
+        }
+
+        return -1;
     }
 
 

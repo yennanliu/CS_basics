@@ -940,6 +940,7 @@
 994|[Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)| [Python](./leetcode_python/Breadth-First-Search/rotting-oranges.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/RottingOranges.java) ||| Medium |BFS, dp `amazon` | OK** (2)
 1110|[Delete Nodes And Return Forest](https://leetcode.com/problems/delete-nodes-and-return-forest/editorial/)| [Python](./leetcode_python/Breadth-First-Search/delete_nodes_and_return_forest.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/DeleteNodesAndReturnForest.java) ||| Medium |BFS, recursive `google` | not start
 1162| [As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) | [Python](./leetcode_python/Breadth-First-Search/as-far-from-land-as-possible.py) | | | Medium | dfs, bfs, good basic, `amazon`| AGAIN**** (3)
+1197|[Minimum Knight Moves](https://leetcode.com/problems/minimum-knight-moves/description/)| [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/MinimumKnightMoves.java) ||| Medium |BFS, `google` | OK (1)
 1730| [Shortest Path to Get Food](https://leetcode.com/problems/shortest-path-to-get-food/) | [Python](./leetcode_python/Breadth-First-Search/shortest-path-to-get-food.py) | | | Medium |shortest path, bfs, `amazon`| OK (2)
 
 
