@@ -65,6 +65,79 @@ public class FindEventualSafeStates {
 //
 //    }
 
+    // V1-0
+    // IDEA : DFS
+    // KEY : check if there is a "cycle" on a node
+    // https://www.youtube.com/watch?v=v5Ni_3bHjzk
+    // https://zxi.mytechroad.com/blog/graph/leetcode-802-find-eventual-safe-states/
+    // https://github.com/yennanliu/CS_basics/tree/master/doc/pic/lc_802.png
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        // init
+        int n = graph.length;
+        State[] states = new State[n];
+        for (int i = 0; i < n; i++) {
+            states[i] = State.UNKNOWN;
+        }
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            // if node is with SAFE state, add to result
+            if (dfs(graph, i, states) == State.SAFE) {
+                result.add(i);
+            }
+        }
+        return result;
+    }
+
+    private enum State {
+        UNKNOWN, VISITING, SAFE, UNSAFE
+    }
+
+    private State dfs(int[][] graph, int node, State[] states) {
+        /**
+         * NOTE !!!
+         *  if a node with "VISITING" state,
+         *  but is visited again (within the other iteration)
+         *  -> there must be a cycle
+         *  -> this node is UNSAFE
+         */
+        if (states[node] == State.VISITING) {
+            return states[node] = State.UNSAFE;
+        }
+        /**
+         * NOTE !!!
+         *  if a node is not with "UNKNOWN" state,
+         *  -> update its state
+         */
+        if (states[node] != State.UNKNOWN) {
+            return states[node];
+        }
+
+        /**
+         * NOTE !!!
+         *  update node state as VISITING
+         */
+        states[node] = State.VISITING;
+        for (int next : graph[node]) {
+            /**
+             * NOTE !!!
+             *   for every sub node, if any one them
+             *   has UNSAFE state,
+             *   -> set and return node state as UNSAFE directly
+             */
+            if (dfs(graph, next, states) == State.UNSAFE) {
+                return states[node] = State.UNSAFE;
+            }
+        }
+
+        /**
+         * NOTE !!!
+         *   if can pass all above checks
+         *   -> this is node has SAFE state
+         */
+        return states[node] = State.SAFE;
+    }
+
     // V1-1
     // https://leetcode.com/problems/find-eventual-safe-states/editorial/
     // IDEA : DFS
