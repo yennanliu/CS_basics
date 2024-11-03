@@ -46,6 +46,54 @@
 // java
 // LC 26 (LC 83)
 // https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
+/**
+ *  //--------------------------------
+ *  Example 1
+ *  //--------------------------------
+ *
+ *  nums = [1,1,2]
+ *
+ *  [1,1,2]
+ *   s f
+ *
+ *  [1,2, 1]     if nums[f] != nums[s], move s, then swap f, s
+ *   s s  f
+ *
+ *
+ *   //--------------------------------
+ *   Example 2
+ *   //--------------------------------
+ *
+ *   nums = [0,0,1,1,1,2,2,3,3,4]
+ *
+ *   [0,0,1,1,1,2,2,3,3,4]
+ *    s f
+ *
+ *   [0,1,0,1,1,2,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
+ *    s s f
+ *
+ *   [0,1,0,1,1,2,2,3,3,4]
+ *      s   f
+ *
+ *   [0,1,0,1,1,2,2,3,3,4]
+ *      s     f
+ *
+ *   [0,1,2,1,1,0,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
+ *      s s     f
+ *
+ *   [0,1,2,1,1,0,2,3,3,4]
+ *        s       f
+ *
+ *   [0,1,2,3,1,0,2,1,3,4]  if nums[f] != nums[s], move s, then swap f, s
+ *        s s       f
+ *
+ *   [0,1,2,3,1,0,2,1,3,4]
+ *          s         f
+ *
+ *   [0,1,2,3,4,0,2,1,3,1]   if nums[f] != nums[s], move s, then swap f, s
+ *          s s         f
+ *
+ */
 class Solution {
     public int removeDuplicates(int[] nums) {
         if (nums.length == 0) {
@@ -73,6 +121,69 @@ class Solution {
 // java
 // LC 27
 // https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
+/**
+ *  //--------------------
+ *  Example 1
+ *  //--------------------
+ *
+ *  nums = [3,2,2,3], val = 3
+ *
+ *  [3,2,2,3]
+ *   s
+ *   f
+ *
+ *  [2,3,2,3]    if nums[f] != val, swap, move s
+ *   s s
+ *     f
+ *
+ *  [2,2,3,3]   if nums[f] != val, swap, move s
+ *     s s
+ *       f
+ *
+ * [2,2,3,3]
+ *      s
+ *        f
+ *
+ *
+ *  //--------------------
+ *  Example 2
+ *  //--------------------
+ *
+ *  nums = [0,1,2,2,3,0,4,2], val = 2
+ *
+ *
+ *  [0,1,2,2,3,0,4,2]   if nums[f] != val, swap, move s
+ *   s s
+ *   f
+ *
+ *  [0,1,2,2,3,0,4,2]     if nums[f] != val, swap, move s
+ *     s s
+ *     f
+ *
+ *  [0,1,2,2,3,0,4,2]
+ *       s
+ *       f
+ *
+ * [0,1,2,2,3,0,4,2]
+ *      s
+ *        f
+ *
+ * [0,1,3,2,2,0,4,2]   if nums[f] != val, swap, move s
+ *      s s
+ *          f
+ *
+ * [0,1,3,0,2,2,4,2]   if nums[f] != val, swap, move s
+ *        s s
+ *            f
+ *
+ * [0,1,3,0,4,2,2,2]    if nums[f] != val, swap, move s
+ *          s s
+ *              f
+ *
+ *  [0,1,3,0,4,2,2,2]
+ *             s
+ *                 f
+ */
 class Solution {
     public int removeElement(int[] nums, int val) {
         int fast = 0, slow = 0;
