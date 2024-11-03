@@ -2388,6 +2388,61 @@ public class workspace5 {
 //        return s;
 //    }
 
+    // LC 27
+    // https://leetcode.com/problems/remove-element/description/
+    /**
+     *  exp 1
+     *
+     *  nums = [3,2,2,3], val = 3
+     *
+     *  [3,2,2,3]
+     *   s
+     *     f
+     *
+     *  [2,3,2,3]    if nums[f] != val, swap
+     *   s s
+     *     f
+     *
+     *  [2,2,3,3]  if nums[f] != val, swap
+     *     s s
+     *       f
+     *
+     *   [2,2,3,3]
+     *      s s
+     *          f
+     *
+     *
+     *  exp 2
+     *   nums = [0,1,2,2,3,0,4,2], val = 2
+     *
+     *
+     *   [0,1,2,2,3,0,4,2]    if nums[f] != val, move s, f
+     *    s f
+     *
+     *   [0,1,2,2,3,0,4,2]   if nums[f] == val, swap
+     *      s
+     *        f
+     *
+     */
+    public int removeElement(int[] nums, int val) {
+
+        int s = 0;
+        for (int f = 0; f < nums.length; f++){
+            if (nums[f] != val){
+//                // do sth
+//                int tmp = nums[f];
+//                nums[f] = nums[s];
+//                nums[s] = tmp;
+//                //s += 1;
+                nums[s] = nums[s];
+                s+=1;
+            }
+            //s += 1;
+        }
+
+        return s;
+    }
+
 }
 
 
