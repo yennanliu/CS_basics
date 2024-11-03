@@ -72,7 +72,7 @@ public class RemoveDuplicatesFromSortedArray {
      *  [1,2, 1]     if nums[f] != nums[s], move s, then swap f, s
      *   s s  f
      *
-     * 
+     *
      *   //--------------------------------
      *   Example 2
      *   //--------------------------------
