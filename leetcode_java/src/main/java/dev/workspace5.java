@@ -2250,8 +2250,67 @@ public class workspace5 {
 
     // LC 26
     // https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/
-    // 7.05 - 7.15 PM
+    // 8.31 am - 8.40 am
+    /**
+     *  exp 1
+     *
+     *  nums = [1,1,2]
+     *
+     *  [1,1,2]
+     *   s f
+     *
+     *  [1,2, 1]     if nums[f] != nums[s], move s, then swap f, s
+     *   s s  f
+     *
+     *
+     *   exp 2
+     *
+     *   nums = [0,0,1,1,1,2,2,3,3,4]
+     *
+     *   [0,0,1,1,1,2,2,3,3,4]
+     *    s f
+     *
+     *   [0,1,0,1,1,2,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
+     *    s s f
+     *
+     *   [0,1,0,1,1,2,2,3,3,4]
+     *      s   f
+     *
+     *   [0,1,0,1,1,2,2,3,3,4]
+     *      s     f
+     *
+     *   [0,1,2,1,1,0,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
+     *      s s     f
+     *
+     *   [0,1,2,1,1,0,2,3,3,4]
+     *        s       f
+     *
+     *   [0,1,2,3,1,0,2,1,3,4]  if nums[f] != nums[s], move s, then swap f, s
+     *        s s       f
+     *
+     *   [0,1,2,3,1,0,2,1,3,4]
+     *          s         f
+     *
+     *   [0,1,2,3,4,0,2,1,3,1]   if nums[f] != nums[s], move s, then swap f, s
+     *          s s         f
+     *
+     */
     // 2 pointers
+    public int removeDuplicates(int[] nums) {
+        //
+        int s = 0;
+        for (int f = 1; f < nums.length; f++){
+            if (nums[f] != nums[s]){
+                //
+                s += 1;
+                int tmp = nums[f];
+                nums[f] = nums[s];
+                nums[s] = tmp;
+            }
+        }
+        //
+        return s+1;
+    }
     /**
      *  - exp 1
      *
@@ -2309,25 +2368,25 @@ public class workspace5 {
      *
      *
      */
-    public int removeDuplicates(int[] nums) {
-        if (nums.length==0){
-            return 0;
-        }
-        int s = 0;
-        int f = 1;
-
-        while (f < nums.length){
-            if (nums[s] == nums[f]){
-
-                s += 1;
-                int tmp = nums[f];
-                nums[f] = nums[s];
-                nums[s] = tmp;
-            }
-            f += 1;
-        }
-        return s;
-    }
+//    public int removeDuplicates(int[] nums) {
+//        if (nums.length==0){
+//            return 0;
+//        }
+//        int s = 0;
+//        int f = 1;
+//
+//        while (f < nums.length){
+//            if (nums[s] == nums[f]){
+//
+//                s += 1;
+//                int tmp = nums[f];
+//                nums[f] = nums[s];
+//                nums[s] = tmp;
+//            }
+//            f += 1;
+//        }
+//        return s;
+//    }
 
 }
 

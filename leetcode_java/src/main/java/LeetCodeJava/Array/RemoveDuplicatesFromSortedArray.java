@@ -59,15 +59,85 @@ public class RemoveDuplicatesFromSortedArray {
 
     // V0
     // IDEA : 2 POINTERS
+    /**
+     *  //--------------------------------
+     *  Example 1
+     *  //--------------------------------
+     *
+     *  nums = [1,1,2]
+     *
+     *  [1,1,2]
+     *   s f
+     *
+     *  [1,2, 1]     if nums[f] != nums[s], move s, then swap f, s
+     *   s s  f
+     *
+     * 
+     *   //--------------------------------
+     *   Example 2
+     *   //--------------------------------
+     *
+     *   nums = [0,0,1,1,1,2,2,3,3,4]
+     *
+     *   [0,0,1,1,1,2,2,3,3,4]
+     *    s f
+     *
+     *   [0,1,0,1,1,2,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
+     *    s s f
+     *
+     *   [0,1,0,1,1,2,2,3,3,4]
+     *      s   f
+     *
+     *   [0,1,0,1,1,2,2,3,3,4]
+     *      s     f
+     *
+     *   [0,1,2,1,1,0,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
+     *      s s     f
+     *
+     *   [0,1,2,1,1,0,2,3,3,4]
+     *        s       f
+     *
+     *   [0,1,2,3,1,0,2,1,3,4]  if nums[f] != nums[s], move s, then swap f, s
+     *        s s       f
+     *
+     *   [0,1,2,3,1,0,2,1,3,4]
+     *          s         f
+     *
+     *   [0,1,2,3,4,0,2,1,3,1]   if nums[f] != nums[s], move s, then swap f, s
+     *          s s         f
+     *
+     */
     public int removeDuplicates(int[] nums) {
-        int i = 0;
-        for (int j = 1; j < nums.length; j++) {
-            if (nums[i] != nums[j]) {
-                i++;
-                nums[i] = nums[j];
+        /**
+         *  NOTE !!!  we init slow, fast pointers as s, f
+         *            and use for loop go through over fast pointer (f)
+         */
+        int s = 0;
+        for (int f = 1; f < nums.length; f++){
+            /**
+             *  NOTE !!!
+             *
+             *   we do swap when f NOT EQUALS s
+             */
+            if (nums[f] != nums[s]){
+                /**
+                 *  NOTE !!!
+                 *
+                 *   we move slow pointer first,
+                 *   then do swap
+                 */
+                s += 1;
+                int tmp = nums[f];
+                nums[f] = nums[s];
+                nums[s] = tmp;
             }
         }
-        return i + 1;
+        /**
+         *  NOTE !!!
+         *
+         *   we return s+1 as non-duplicated array length, since length = index + 1
+         */
+        return s+1;
     }
 
     // V1
