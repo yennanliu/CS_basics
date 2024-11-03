@@ -2513,6 +2513,21 @@ public class workspace5 {
 //        return s;
 //    }
 
+    // LC 900
+    // https://leetcode.com/problems/rle-iterator/
+    // 5.07 pm - 5.25 pm
+    class RLEIterator {
+
+        public RLEIterator(int[] encoding) {
+
+        }
+
+        public int next(int n) {
+            return 0;
+        }
+    }
+
+
 }
 
 
