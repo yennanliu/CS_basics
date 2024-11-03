@@ -74,6 +74,12 @@ public class FindEventualSafeStates {
     public List<Integer> eventualSafeNodes(int[][] graph) {
         // init
         int n = graph.length;
+        /**
+         *  NOTE !!!
+         *
+         *   we init status array (states)
+         *   and set all init value as "UNKNOWN"
+         */
         State[] states = new State[n];
         for (int i = 0; i < n; i++) {
             states[i] = State.UNKNOWN;
@@ -82,6 +88,11 @@ public class FindEventualSafeStates {
         List<Integer> result = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             // if node is with SAFE state, add to result
+            /**
+             *  NOTE !!!
+             *
+             *   the dfs parameter: we use index, state array as well
+             */
             if (dfs(graph, i, states) == State.SAFE) {
                 result.add(i);
             }
@@ -100,6 +111,12 @@ public class FindEventualSafeStates {
          *  but is visited again (within the other iteration)
          *  -> there must be a cycle
          *  -> this node is UNSAFE
+         *
+         *
+         *  NOTE !!!
+         *
+         *   we DON'T compare current status,
+         *   but compare state (states[node]) via index, and enum
          */
         if (states[node] == State.VISITING) {
             return states[node] = State.UNSAFE;
@@ -108,6 +125,10 @@ public class FindEventualSafeStates {
          * NOTE !!!
          *  if a node is not with "UNKNOWN" state,
          *  -> update its state
+         *
+         *   NOTE !!!
+         *   we DON'T compare current status,
+         *   but compare state (states[node]) via index, and enum
          */
         if (states[node] != State.UNKNOWN) {
             return states[node];
@@ -121,7 +142,7 @@ public class FindEventualSafeStates {
         for (int next : graph[node]) {
             /**
              * NOTE !!!
-             *   for every sub node, if any one them
+             *   for every sub node, if any of them
              *   has UNSAFE state,
              *   -> set and return node state as UNSAFE directly
              */

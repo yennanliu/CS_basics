@@ -2201,11 +2201,55 @@ public class workspace5 {
     }
 
     // LC 802
-    // 5,28 - 5.40 PM
+    // 6.15 pm - 6.30
     // https://leetcode.com/problems/find-eventual-safe-states/
+    // dfs
+    List<String> states = new ArrayList<>();
     public List<Integer> eventualSafeNodes(int[][] graph) {
 
-        return null;
+        for (int i = 0; i < graph.length; i++){
+            states.add("UNKNOWN");
+        }
+
+        if (graph.length==0){
+            return null;
+        }
+
+        List<Integer> res = new ArrayList<>();
+
+        for (int i = 0; i < graph.length; i++){
+            if (isSafe(i, graph)){
+               res.add(i);
+            }
+        }
+
+        return res;
+    }
+
+    // 4 states : UNKNOWN, VISITING, SAFE, UNSAFE
+    private boolean isSafe(int idx, int[][] graph){
+        String curState = states.get(idx);
+        if (curState.equals("SAFE")){
+            return true;
+        }
+        if (curState.equals("VISITING")){
+            return false;
+        }
+        // TODO : check
+//        if (!curState.equals("UNKNOWN")){
+//            return curState.equals("SAFE"); // ??
+//        }
+
+        curState = "VISITING";
+
+        for (int j = 0; j < graph.length; j++){
+            if (!this.isSafe(j, graph)){
+                return false;
+            }
+        }
+
+        //curState =
+        return true; // ??? curState.equals("SAFE"); // ??
     }
 
     // LC 1197
