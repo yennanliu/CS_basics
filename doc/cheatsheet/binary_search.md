@@ -1,4 +1,5 @@
 # Binary Search
+
 - Find a value (k) from a `sorted search space` with two pointers
     - Not really NEED to "all sorted", `partial sorted`, `rotated sorted` is possible as well
 - Steps
@@ -10,6 +11,11 @@
     -  if there is kind of monotonicity, for example, if condition(k) is True then condition(k + 1) is True, then we can consider binary search
 
 - Ref
+    - basic:
+        - https://labuladong.online/algo/essential-technique/binary-search-framework/
+    - problems:
+        - https://labuladong.online/algo/frequency-interview/binary-search-in-action/
+        - https://labuladong.online/algo/problem-set/binary-search/
     - bisect : check [python_trick.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md) : can get idx, and keep array sorted, when there is a element inserted
 
 
@@ -18,6 +24,7 @@
 ### 0-1) Types
 
 - Types
+    - Basic binary search
     - Find `LEFT` boundary
         - LC 367 Valid Perfect Square
         - LC 875 Koko Eating Bananas
@@ -112,16 +119,16 @@
    
 #### 0-2-0) Binary search
 
-- Key: 
-```
-分析二分查找的一個技巧是：不要出現 else，而是把所有情況用 else if 寫清楚，這樣可以清楚地展現所有細節。本文都會使用 else if，旨在講清楚，讀者理解後可自行簡化。
-```
-
-- NOTE!!!
+- Conclusion!!!
     - `left = 0, right = nums.len - 1`
     - `while left <= right`
     - `left = mid + 1`
     - `right = mid - 1`
+
+- Key: 
+```
+分析二分查找的一個技巧是：不要出現 else，而是把所有情況用 else if 寫清楚，這樣可以清楚地展現所有細節。本文都會使用 else if，旨在講清楚，讀者理解後可自行簡化。
+```
 
 - https://labuladong.online/algo/essential-technique/binary-search-framework/#%E9%9B%B6%E3%80%81%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E6%A1%86%E6%9E%B6
 
@@ -195,7 +202,7 @@ def binary_search(nums, target):
  *       }
  *       // 判断一下 nums[left] 是不是 target
  *       return nums[left] == target ? left : -1;
- * 
+ *
  * 
  */
 
@@ -264,6 +271,59 @@ def binary_search_left_boundary(nums, target):
 ```
 
 #### 0-2-2) Binary search on `RIGHT` boundary
+
+
+- https://labuladong.online/algo/essential-technique/binary-search-framework/#%E5%A6%82%E6%9E%9C-target-%E4%B8%8D%E5%AD%98%E5%9C%A8%E6%97%B6%E8%BF%94%E5%9B%9E%E4%BB%80%E4%B9%88
+
+
+```java
+// java
+
+/** 
+ *  2 difference between regular binary search
+ * 
+ *   1. else if (nums[mid] == target) {
+ *          // 收缩左侧边界
+ *           left = mid + 1;
+ *       }
+ *
+ *     
+ *
+ *   2. validate result step
+ *    
+ *   // 最后改成返回 left - 1
+ *   if (left - 1 < 0 || left - 1 >= nums.length) {
+ *       return -1;
+ *   }
+ *  return nums[left - 1] == target ? (left - 1) : -1;
+ *
+ * 
+ */
+
+int right_bound(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid - 1;
+        } else if (nums[mid] == target) {
+            // 这里改成收缩左侧边界即可
+            left = mid + 1;
+        }
+    }
+
+
+    // 最后改成返回 left - 1
+    if (left - 1 < 0 || left - 1 >= nums.length) {
+        return -1;
+    }
+    return nums[left - 1] == target ? (left - 1) : -1;
+}
+```
+
+
 ```python
 # python
 def binary_search_right_boundary(nums, target):
@@ -289,33 +349,6 @@ def binary_search_right_boundary(nums, target):
     if r < 0 or nums[r] != target:
         return - 1
     return r
-```
-
-```java
-// java
-int right_bound(int[] nums, int target){
-    int left = 0;
-    int right = nums.length - 1;
-    // NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
-    //       -> e.g. while l <= r
-    //        -> [l, r]  
-    while (left <= right){
-        int mid = left + (right - mid) / 2;
-        if (num[mid] < target){
-            left = mid + 1;
-        }else if (nums[mid] > target){
-            right = mid - 1;
-        }else if (nums[mid] == target){
-            // DO NOT RETURN !!!, BUT REDUCE LEFT BOUNDARY FOR FOCUSING ON RIGHT BOUNDARY
-            left = mid + 1;
-        }
-    }
-    // finally check if it will be OUT OF RIGHT boundary
-    if (right < 0 || nums[right] != target){
-        return -1;
-    return right;
-    }
-}
 ```
 
 ## 1) General form
