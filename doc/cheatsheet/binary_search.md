@@ -111,6 +111,43 @@
 - [py powerful-ultimate-binary-search-template-solved-many-problems](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems) : TODO : add above to cheatsheet
    
 #### 0-2-0) Binary search
+
+- Key: 
+```
+分析二分查找的一個技巧是：不要出現 else，而是把所有情況用 else if 寫清楚，這樣可以清楚地展現所有細節。本文都會使用 else if，旨在講清楚，讀者理解後可自行簡化。
+```
+
+- NOTE!!!
+    - `left = 0, right = nums.len - 1`
+    - `while left <= right`
+    - `left = mid + 1`
+    - `right = mid - 1`
+
+- https://labuladong.online/algo/essential-technique/binary-search-framework/#%E9%9B%B6%E3%80%81%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E6%A1%86%E6%9E%B6
+
+```java
+// java
+int binarySearch(int[] nums, int target) {
+    int left = 0; 
+    // 注意
+    int right = nums.length - 1;
+
+    // NOTE !!! <=, need to search when "left == right" idx as well
+    while(left <= right) {
+        int mid = left + (right - left) / 2;
+        if(nums[mid] == target)
+            return mid; 
+        else if (nums[mid] < target)
+            // 注意
+            left = mid + 1;
+        else if (nums[mid] > target)
+            // 注意
+            right = mid - 1;
+    }
+    return -1;
+}
+```
+
 ```python
 # python
 # basic
@@ -136,6 +173,69 @@ def binary_search(nums, target):
 ```
 
 #### 0-2-1) Binary search on `LEFT` boundary
+
+- https://labuladong.online/algo/essential-technique/binary-search-framework/#%E8%83%BD%E5%90%A6%E7%BB%9F%E4%B8%80%E6%88%90%E4%B8%A4%E7%AB%AF%E9%83%BD%E9%97%AD%E7%9A%84%E6%90%9C%E7%B4%A2%E5%8C%BA%E9%97%B4
+
+```java
+
+/** 
+ *  2 difference between regular binary search
+ * 
+ *   1. else if (nums[mid] == target) {
+ *          // 收缩右侧边界
+ *           right = mid - 1;
+ *       }
+ *
+ *     
+ *
+ *   2. validate result step
+ *    
+ *        if (left < 0 || left >= nums.length) {
+ *           return -1;
+ *       }
+ *       // 判断一下 nums[left] 是不是 target
+ *       return nums[left] == target ? left : -1;
+ * 
+ * 
+ */
+
+// java
+int left_bound(int[] nums, int target){
+    int left = 0;
+    int right = nums.length - 1;
+    // NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
+    //       -> e.g. while l <= r
+    //        -> [l, r]  
+    while (left <= right){
+        int mid = left + (right - mid) / 2;
+        if (num[mid] < target){
+            // 搜索区间变为 [mid+1, right]
+            left = mid + 1;
+        }else if (nums[mid] > target){
+            // 搜索区间变为 [left, mid-1]
+            right = mid - 1;
+        }else if (nums[mid] == target){
+            // DO NOT RETURN !!!, BUT REDUCE RIGHT BOUNDARY FOR FOCUSING ON LEFT BOUNDARY
+            // 收缩右侧边界
+            right = mid - 1;
+        }
+    }
+    // // finally check if it will be OUT OF LEFT boundary
+    // if (left >= nums.length || nums[left] != target){
+    //     return -1;
+    // return left;
+
+
+    // 判断 target 是否存在于 nums 中
+    // 如果越界，target 肯定不存在，返回 -1
+    if (left < 0 || left >= nums.length) {
+        return -1;
+    }
+    // 判断一下 nums[left] 是不是 target
+    return nums[left] == target ? left : -1;
+}
+```
+
 ```python
 # python
 def binary_search_left_boundary(nums, target):
@@ -161,33 +261,6 @@ def binary_search_left_boundary(nums, target):
     if l >= len(nums) or nums[l] != target:
         return - 1
     return l
-```
-
-```java
-// java
-int left_bound(int[] nums, int target){
-    int left = 0;
-    int right = nums.length - 1;
-    // NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
-    //       -> e.g. while l <= r
-    //        -> [l, r]  
-    while (left <= right){
-        int mid = left + (right - mid) / 2;
-        if (num[mid] < target){
-            left = mid + 1;
-        }else if (nums[mid] > target){
-            right = mid - 1;
-        }else if (nums[mid] == target){
-            // DO NOT RETURN !!!, BUT REDUCE RIGHT BOUNDARY FOR FOCUSING ON LEFT BOUNDARY
-            right = mid - 1;
-        }
-    }
-    // finally check if it will be OUT OF LEFT boundary
-    if (left >= nums.length || nums[left] != target){
-        return -1;
-    return left;
-    }
-}
 ```
 
 #### 0-2-2) Binary search on `RIGHT` boundary
