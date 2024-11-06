@@ -2,7 +2,11 @@
 
 > Brute force via  `decision tree process`
 
-- [Fuck algorithm : BackTrack]( https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%E4%BF%AE%E8%AE%A2%E7%89%88.md)
+- [Fuck algorithm : BackTrack](https://labuladong.online/algo/essential-technique/backtrack-framework/#%E4%B8%80%E3%80%81%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98)
+- [Fuck algorithm : BackTrack different view](https://labuladong.online/algo/practice-in-action/two-views-of-backtrack/)
+    - https://labuladong.online/algo/practice-in-action/sudoku/
+    - https://labuladong.online/algo/practice-in-action/generate-parentheses/
+    - https://labuladong.online/algo/practice-in-action/partition-to-k-equal-sum-subsets/
 - [BackTrack Java LC General approach](https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/)
 
 - Backtrack (brute force) -> DP (dynamic programming)
@@ -12,6 +16,24 @@
     - "cut the sub-tree" via conditions such as `contains`, `start`
 
 - <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/backtrack1.png" ></p>
+
+
+- Framework
+```
+# pseudo code 
+
+result = []
+
+def backtrack(路徑, 選擇清單):
+ if 滿足結束條件:
+     result.add(路徑)
+     return
+
+ for 選擇 in 選擇清單:
+     做選擇
+     backtrack(路徑, 選擇列表)
+     撤銷選擇
+```
 
 ## 0) Concept  
 
