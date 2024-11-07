@@ -2094,10 +2094,24 @@ public class workspace5 {
      *
      *
      */
+    /**
+     *   if no one in room -> seat at idx 0
+     *   if someone in the room -> seat max distance from it
+     *
+     *   a heap to track "all distance", so can pop max val from heap
+     *
+     *
+     *
+     *
+     */
     class ExamRoom {
+        // attr
+        int[] seats;
+        PriorityQueue<Integer> pq;
 
         public ExamRoom(int n) {
-
+            this.seats = new int[n];
+            this.pq = new PriorityQueue();
         }
 
         public int seat() {
@@ -2105,7 +2119,7 @@ public class workspace5 {
         }
 
         public void leave(int p) {
-
+            this.seats[p] = 0;
         }
 
     }
@@ -2339,22 +2353,34 @@ public class workspace5 {
      *          s s         f
      *
      */
-    // 2 pointers
     public int removeDuplicates(int[] nums) {
-        //
         int s = 0;
         for (int f = 1; f < nums.length; f++){
-            if (nums[f] != nums[s]){
-                //
+            if (nums[s] != nums[f]){
                 s += 1;
                 int tmp = nums[f];
                 nums[f] = nums[s];
                 nums[s] = tmp;
             }
         }
-        //
         return s+1;
     }
+    // 2 pointers
+//    public int removeDuplicates(int[] nums) {
+//        //
+//        int s = 0;
+//        for (int f = 1; f < nums.length; f++){
+//            if (nums[f] != nums[s]){
+//                //
+//                s += 1;
+//                int tmp = nums[f];
+//                nums[f] = nums[s];
+//                nums[s] = tmp;
+//            }
+//        }
+//        //
+//        return s+1;
+//    }
     /**
      *  - exp 1
      *
@@ -2531,12 +2557,27 @@ public class workspace5 {
         int s = 0;
         for (int f = 0; f < nums.length; f++){
             if (nums[f] != val){
+                //int tmp = nums[f];
                 nums[s] = nums[f];
                 s += 1;
             }
         }
         return s;
     }
+
+
+
+
+//    public int removeElement(int[] nums, int val) {
+//        int s = 0;
+//        for (int f = 0; f < nums.length; f++){
+//            if (nums[f] != val){
+//                nums[s] = nums[f];
+//                s += 1;
+//            }
+//        }
+//        return s;
+//    }
 
 //    public int removeElement(int[] nums, int val) {
 //
