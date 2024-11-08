@@ -2612,6 +2612,41 @@ public class workspace5 {
         }
     }
 
+    // LC 1188
+    // https://leetcode.ca/all/1188.html
+    // 7.28 pm - 7.40 pm
+    class BoundedBlockingQueue {
+
+        // attr
+        int capacity;
+        Queue<Integer> queue;
+
+        public BoundedBlockingQueue(int capacity) {
+            this.capacity = capacity;
+            this.queue = new LinkedList<>(); // ??
+        }
+
+        public void enqueue(int element) throws InterruptedException {
+            while(this.queue.size() == this.capacity){
+                // wait till not full
+            }
+            this.queue.add(element);
+        }
+
+        public int dequeue() throws InterruptedException {
+            while(this.queue.size() == 0){
+                // wait till not empty
+            }
+            int curElement = this.queue.poll();
+            return curElement;
+        }
+
+        public int size() {
+            //return this.capacity;
+            return this.queue.size();
+        }
+    }
+
 
 }
 
