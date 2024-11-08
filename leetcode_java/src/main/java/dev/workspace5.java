@@ -2101,7 +2101,7 @@ public class workspace5 {
      *   a heap to track "all distance", so can pop max val from heap
      *
      *
-     *
+     *   [0,x,0,0,x]  dis = 1,4
      *
      */
     class ExamRoom {
@@ -2115,10 +2115,18 @@ public class workspace5 {
         }
 
         public int seat() {
+            // if not one seated, select the 0 idx seat
+            if (this.pq.isEmpty()){
+                this.seats[0] = 0;
+                return 0;
+            }
+
+            // TODO : fix
             return 0;
         }
 
         public void leave(int p) {
+
             this.seats[p] = 0;
         }
 
