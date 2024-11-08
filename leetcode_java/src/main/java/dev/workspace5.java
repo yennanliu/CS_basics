@@ -2647,6 +2647,56 @@ public class workspace5 {
         }
     }
 
+    // LC 130
+    // https://leetcode.com/problems/surrounded-regions/description/
+    // 7.53 - 8.15 PM
+    public void solve(char[][] board) {
+        if (board.length == 1 && board[0].length == 1){
+            return;
+        }
+        // get all "0"
+        List<List<Integer>> collected = new ArrayList<>();
+        int l = board.length;
+        int w = board[0].length;
+        for (int y = 0; y < l; y++){
+            for (int x = 0; x < w; x++){
+                if (String.valueOf(board[y][x]).equals("O")){
+                    List<Integer> tmp = new ArrayList<>();
+                    tmp.add(x);
+                    tmp.add(y);
+                    collected.add(tmp);
+                }
+            }
+        }
+
+        // dfs
+        for (List<Integer> element : collected){
+            dfsUpdate(element.get(0), element.get(1), board);
+        }
+    }
+
+    private void dfsUpdate(int x, int y, char[][] board){
+
+        int l = board.length;
+        int w = board[0].length;
+
+        if (String.valueOf(board[y][x]).equals("X")){
+            return;
+        }
+
+        // update as "X"
+        //board[y][x] = new Character("X"); //??
+
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+        for (int[] move : moves){
+            int x_ = x + move[0];
+            int y_ = y + move[1];
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l  && !String.valueOf(board[y_][x_]).equals("X")){
+                dfsUpdate(x_, y_, board);
+            }
+        }
+    }
+
 
 }
 
