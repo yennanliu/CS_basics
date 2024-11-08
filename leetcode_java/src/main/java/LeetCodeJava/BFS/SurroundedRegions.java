@@ -72,6 +72,87 @@ public class SurroundedRegions {
 //    }
 
     // V1
+    // IDEA : DFS (fixed by gpt)
+    public void solve_1(char[][] board) {
+        if (board == null || board.length == 0 || board[0].length == 0) {
+            return;
+        }
+
+        int rows = board.length;
+        int cols = board[0].length;
+
+        // Mark border 'O's and connected 'O's as temporary 'T'
+        // NOTE !!! mark as "T" (so we can flip them as "O" in the following step)
+        for (int i = 0; i < rows; i++) {
+            if (board[i][0] == 'O') {
+                dfsMark(i, 0, board);
+            }
+            if (board[i][cols - 1] == 'O') {
+                dfsMark(i, cols - 1, board);
+            }
+        }
+        // Mark border 'O's and connected 'O's as temporary 'T'
+        // NOTE !!! mark as "T" (so we can flip them as "O" in the following step)
+        for (int j = 0; j < cols; j++) {
+            if (board[0][j] == 'O') {
+                dfsMark(0, j, board);
+            }
+            if (board[rows - 1][j] == 'O') {
+                dfsMark(rows - 1, j, board);
+            }
+        }
+
+        // Flip all remaining 'O' to 'X' and 'T' back to 'O'
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
+                /**
+                 * NOTE !!!
+                 *
+                 *  if still 'O', means
+                 *
+                 *   1) they are connected 'O', surrounded by X
+                 *   2) and NOT at boundary
+                 */
+                if (board[y][x] == 'O') {
+                    board[y][x] = 'X';
+                /**
+                 *  NOTE !!!
+                 *
+                 *   if is 'T', means
+                 *
+                 *   1) they are connected 'O', but at boundary
+                 *
+                 *   so need to flip them back as 'O'
+                 */
+                } else if (board[y][x] == 'T') {
+                    board[y][x] = 'O';
+                }
+            }
+        }
+    }
+
+    private void dfsMark(int y, int x, char[][] board) {
+        int rows = board.length;
+        int cols = board[0].length;
+
+        // If out of bounds or not 'O', return
+        if (y < 0 || y >= rows || x < 0 || x >= cols || board[y][x] != 'O') {
+            return;
+        }
+
+        // Mark 'O' as temporary 'T'
+        board[y][x] = 'T';
+
+        // Explore all 4 directions
+        int[][] moves = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+        for (int[] move : moves) {
+            int newY = y + move[0];
+            int newX = x + move[1];
+            dfsMark(newY, newX, board);
+        }
+    }
+
+    // V1_1
     // IDEA : DFS
     // https://leetcode.com/problems/surrounded-regions/editorial/
 
@@ -88,7 +169,7 @@ public class SurroundedRegions {
     protected Integer ROWS = 0;
     protected Integer COLS = 0;
 
-    public void solve_1(char[][] board) {
+    public void solve_1_1(char[][] board) {
         if (board == null || board.length == 0) {
             return;
         }
