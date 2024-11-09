@@ -2720,6 +2720,12 @@ public class workspace5 {
         return false;
     }
 
+    // LC 207
+    // https://leetcode.com/problems/course-schedule/
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        return false;
+    }
+
 
 }
 
