@@ -172,7 +172,8 @@ public class TopologicalSort {
         TopologicalSort topoSort = new TopologicalSort();
         int numCourses = 4;
         // Directed Acyclic Graph (DAG) where each directed edge u -> v means that u comes before v.
-        int[][] prerequisites = {{1, 0}, {2, 0}, {3, 1}, {3, 2}};
+        //int[][] prerequisites = {{1, 0}, {2, 0}, {3, 1}, {3, 2}};
+        int[][] prerequisites = {{1, 0}, {3, 1}, {2, 0}, {3, 2}};
 
         int[] result = topoSort.topologicalSort(numCourses, prerequisites);
         System.out.println("Topological Order: " + Arrays.toString(result));
