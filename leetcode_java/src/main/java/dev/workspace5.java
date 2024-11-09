@@ -2705,6 +2705,21 @@ public class workspace5 {
         }
     }
 
+    // LC 444
+    // https://leetcode.ca/all/444.html
+    // https://leetcode.ca/2017-02-16-444-Sequence-Reconstruction/
+    // 5.18 pm - 5.35 pm
+    /**
+     *  step 1) build seq
+     *  step 2) check if there is only 1 way ???
+     *
+     *
+     */
+    public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences) {
+
+        return false;
+    }
+
 
 }
 
