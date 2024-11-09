@@ -2723,7 +2723,59 @@ public class workspace5 {
     // LC 207
     // https://leetcode.com/problems/course-schedule/
     public boolean canFinish(int numCourses, int[][] prerequisites) {
+        if (prerequisites.length==0){
+            return true;
+        }
+//        if (prerequisites.length==1){
+//            return true;
+//        }
+
         return false;
+    }
+
+    private int[] topoSort(int numCourses, int[][] prerequisites){
+        int[] tSorting = new int[]{numCourses};
+
+        // init : 1) preList 2) degree
+        Map<Integer, List<Integer>> preList = new HashMap<>();
+        //Map<Integer, Integer> degree = new HashMap<>();
+        List<Integer> degree = new ArrayList<>();
+
+        for (int[] x : prerequisites){
+            int pre = x[1];
+            int cur = x[0]; // ???
+            if (!preList.containsKey(pre)){
+                preList.put(pre, new ArrayList<>());
+            }else{
+                List<Integer> curItems = preList.get(pre);
+                curItems.add(cur);
+                preList.put(pre, curItems);
+            }
+        }
+
+        for (int[] x : prerequisites){
+            int pre = x[1];
+            int cur = x[0]; // ???
+            degree.set(cur, degree.get(cur)+1);
+        }
+
+        Queue<Integer> queue = new LinkedList();
+        queue.add(0);
+        int idx = 0;
+        tSorting[idx] = 0;
+
+        while(!queue.isEmpty()){
+            Integer curNode = queue.poll();
+            for (Integer subNode : preList.get(curNode)){
+                if (degree.get(subNode).equals(0)){
+                    idx += 1;
+                    tSorting[idx] = subNode;
+                    degree.set(subNode, degree.get(subNode)-1);
+                }
+            }
+        }
+
+        return tSorting;
     }
 
 
