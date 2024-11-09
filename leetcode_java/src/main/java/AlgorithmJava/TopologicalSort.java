@@ -37,6 +37,17 @@ public class TopologicalSort {
      */
     public int[] topologicalSort(int numCourses, int[][] prerequisites) {
 
+        /**  NOTE !!!
+         *
+         *   we create 2 things for topological sort
+         *
+         *   1) List<List<Integer>> graph : for tracking nodes and their "prerequisite" node
+         *
+         *   2) int[] inDegree = new int[numCourses] : for tracking "degree" of a node,
+         *                                             when degree==0, the node CAN be ACCESSED
+         *
+         */
+
         // Step 1: Build the graph
         List<List<Integer>> graph = new ArrayList<>();
         for (int i = 0; i < numCourses; i++) {
@@ -60,8 +71,8 @@ public class TopologicalSort {
              *
              *    int[][] prerequisites = { {1, 0}, {2, 0}, {3, 1}, {3, 2} };
              *
-             *    -> 0 is a prerequisite for 1 and 2.
-             *    -> 1 and 2 are prerequisites for 3.
+             *    -> 0 is the prerequisite for 1 and 2.
+             *    -> 1 and 2 are the prerequisites for 3.
              *
              */
             // int dest = prereq[0];: dest represents the course that depends on src.

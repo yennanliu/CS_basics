@@ -1,12 +1,15 @@
 # Topology sorting
 
-## 0) Concept  
-- Topological Sort is a algorithm can find "ordering" on an "order dependency" graph
+## 0) Concept
+
+- Topological Sort is a algorithm can find `ordering` based on `order dependency` graph
+
 - Concept
 	- [techbridge : topological-sort](https://blog.techbridge.cc/2020/05/10/leetcode-topological-sort/)
 	- [do topological-sort via DFS](https://alrightchiu.github.io/SecondRound/graph-li-yong-dfsxun-zhao-dagde-topological-sorttuo-pu-pai-xu.html)
 - Code
-	- [algorithm/python/topological_sort.py](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py)
+	- [topological_sort.py](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py)
+    - [TopologicalSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSort.java)
 
 ### 0-1) Types
 - Courses
