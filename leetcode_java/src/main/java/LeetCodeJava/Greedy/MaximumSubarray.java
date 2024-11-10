@@ -86,6 +86,34 @@ public class MaximumSubarray {
         return maxSum;
     }
 
+    // V0'-1
+    // IDEA : PRE-SUM ARRAY (fixed by gpt)
+    public int maxSubArray_0_1_1(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            throw new IllegalArgumentException("Input array cannot be null or empty");
+        }
+
+        int n = nums.length;
+        int[] prefixSum = new int[n + 1];
+
+        // Build the prefix sum array
+        for (int i = 0; i < n; i++) {
+            prefixSum[i + 1] = prefixSum[i] + nums[i];
+        }
+
+        int maxSum = Integer.MIN_VALUE;
+        int minPrefixSum = 0;
+
+        // Calculate max subarray sum using prefix sums
+        for (int i = 1; i <= n; i++) {
+            maxSum = Math.max(maxSum, prefixSum[i] - minPrefixSum);
+            minPrefixSum = Math.min(minPrefixSum, prefixSum[i]);
+        }
+
+        return maxSum;
+    }
+
+
     // V0'
     // IDEA : BRUTE FORCE
     // https://www.bilibili.com/video/BV1aY4y1Z7ya/?share_source=copy_web&vd_source=49348a1975630e1327042905e52f488a
