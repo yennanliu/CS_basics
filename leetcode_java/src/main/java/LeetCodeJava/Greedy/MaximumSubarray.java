@@ -1,7 +1,45 @@
 package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/maximum-subarray/
-
+/**
+ * 53. Maximum Subarray
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given an integer array nums, find the
+ * subarray
+ *  with the largest sum, and return its sum.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+ * Output: 6
+ * Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+ * Example 2:
+ *
+ * Input: nums = [1]
+ * Output: 1
+ * Explanation: The subarray [1] has the largest sum 1.
+ * Example 3:
+ *
+ * Input: nums = [5,4,-1,7,8]
+ * Output: 23
+ * Explanation: The subarray [5,4,-1,7,8] has the largest sum 23.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= nums.length <= 105
+ * -104 <= nums[i] <= 104
+ *
+ *
+ * Follow up: If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
+ *
+ *
+ */
 public class MaximumSubarray {
 
     // V0
@@ -23,6 +61,11 @@ public class MaximumSubarray {
             int cur = nums[i];
             // NOTE !!! only add cur if cumsum + cur >= 0
             //          -> e.g. add cur element to cur sub array
+            /**
+             * NOTE !!!
+             *  we DON'T need double loop to for loop over i, j
+             *  -> simply RESET cumsum as 0 if cumsum + cur < 0
+             */
             if (cumsum + cur >= 0){
                 cumsum = cumsum + cur;
                 maxSum = Math.max(maxSum, cumsum);
@@ -162,6 +205,22 @@ public class MaximumSubarray {
     // V2
     // IDEA : Dynamic Programming, Kadane's Algorithm
     // https://leetcode.com/problems/maximum-subarray/editorial/
+    /**
+     * Explanation of the Code
+     *
+     * 	1.	Edge Case Handling: If the input array is null or empty, an IllegalArgumentException is thrown.
+     *
+     * 	2.	Kadane’s Algorithm:
+     * 	    •	currentSum keeps track of the maximum sum of the subarray ending at the current index.
+     * 	    •	For each element in the array, we decide whether to:
+     * 	    •	Start a new subarray from this element, or
+     * 	    •	Extend the existing subarray to include this element.
+     * 	    •	maxSum keeps track of the maximum subarray sum encountered so far.
+     *
+     * 	3.	Final Output: After iterating through the array, maxSum contains the maximum subarray sum.
+     *
+     *
+     */
     public int maxSubArray_3(int[] nums) {
         // Initialize our variables using the first element.
         int currentSubarray = nums[0];
