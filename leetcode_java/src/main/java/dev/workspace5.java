@@ -2733,50 +2733,122 @@ public class workspace5 {
         return false;
     }
 
-    private int[] topoSort(int numCourses, int[][] prerequisites){
-        int[] tSorting = new int[]{numCourses};
+    /**
+     *  int[][] prerequisites: [1, 2], so 1 is 2's prerequisite
+     *
+     */
+    private List<Integer> topoSort(int numCourses, int[][] prerequisites){
+
+        //int[] tSorting = new int[]{numCourses};
 
         // init : 1) preList 2) degree
         Map<Integer, List<Integer>> preList = new HashMap<>();
-        //Map<Integer, Integer> degree = new HashMap<>();
-        List<Integer> degree = new ArrayList<>();
+        List<Integer> degrees = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
 
+        // init all degree as 0
+        for (int i = 0; i < numCourses; i++){
+            degrees.add(i);
+        }
+
+        // init preList and update degrees
         for (int[] x : prerequisites){
-            int pre = x[1];
-            int cur = x[0]; // ???
+            int pre = x[0];
+            int cur = x[1]; // ???
+
+            // update degrees
+            degrees.set(cur, degrees.get(cur)+1); // ???
+            // update PreList
             if (!preList.containsKey(pre)){
                 preList.put(pre, new ArrayList<>());
             }else{
                 List<Integer> curItems = preList.get(pre);
                 curItems.add(cur);
                 preList.put(pre, curItems);
+                //preList.put(pre, preList.get(pre).add(cur));
             }
         }
 
-        for (int[] x : prerequisites){
-            int pre = x[1];
-            int cur = x[0]; // ???
-            degree.set(cur, degree.get(cur)+1);
-        }
 
         Queue<Integer> queue = new LinkedList();
-        queue.add(0);
-        int idx = 0;
-        tSorting[idx] = 0;
+        // add all node with degree=0 to queue
+        for (int j = 0; j < degrees.size(); j++){
+            if (degrees.get(j).equals(0)){
+                queue.add(j);
+            }
+        }
+
+//        int idx = 0;
+//        tSorting[idx] = 0;
 
         while(!queue.isEmpty()){
             Integer curNode = queue.poll();
+            // NOTE !!! add node poll from queue to final result
+            res.add(curNode);
+
             for (Integer subNode : preList.get(curNode)){
-                if (degree.get(subNode).equals(0)){
-                    idx += 1;
-                    tSorting[idx] = subNode;
-                    degree.set(subNode, degree.get(subNode)-1);
+//                if (degrees.get(subNode).equals(0)){
+//                    idx += 1;
+//                    tSorting[idx] = subNode;
+//                    degrees.set(subNode, degrees.get(subNode)-1);
+//                }
+
+                //preList[subNode] -= 1;
+                degrees.set(subNode, degrees.get(subNode)-1);
+                if (degrees.get(subNode).equals(0)){
+                    queue.add(subNode);
                 }
             }
         }
 
-        return tSorting;
+        return res;
     }
+
+
+//    private int[] topoSort(int numCourses, int[][] prerequisites){
+//        int[] tSorting = new int[]{numCourses};
+//
+//        // init : 1) preList 2) degree
+//        Map<Integer, List<Integer>> preList = new HashMap<>();
+//        //Map<Integer, Integer> degree = new HashMap<>();
+//        List<Integer> degree = new ArrayList<>();
+//
+//        for (int[] x : prerequisites){
+//            int pre = x[1];
+//            int cur = x[0]; // ???
+//            if (!preList.containsKey(pre)){
+//                preList.put(pre, new ArrayList<>());
+//            }else{
+//                List<Integer> curItems = preList.get(pre);
+//                curItems.add(cur);
+//                preList.put(pre, curItems);
+//            }
+//        }
+//
+//        for (int[] x : prerequisites){
+//            int pre = x[1];
+//            int cur = x[0]; // ???
+//            degree.set(cur, degree.get(cur)+1);
+//        }
+//
+//        Queue<Integer> queue = new LinkedList();
+//        queue.add(0);
+//        int idx = 0;
+//        tSorting[idx] = 0;
+//
+//        while(!queue.isEmpty()){
+//            Integer curNode = queue.poll();
+//            for (Integer subNode : preList.get(curNode)){
+//                if (degree.get(subNode).equals(0)){
+//                    idx += 1;
+//                    tSorting[idx] = subNode;
+//                    degree.set(subNode, degree.get(subNode)-1);
+//                }
+//            }
+//        }
+//
+//        return tSorting;
+//    }
 
 
 }
