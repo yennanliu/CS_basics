@@ -2726,83 +2726,154 @@ public class workspace5 {
         if (prerequisites.length==0){
             return true;
         }
-//        if (prerequisites.length==1){
-//            return true;
-//        }
 
-        return false;
+        if (TopologicalSort(numCourses, prerequisites) == null){
+            return false;
+        }
+
+        return true;
     }
+
+    public List<Integer> TopologicalSort(int numNodes, int[][] edges) {
+        // Step 1: Build the graph and calculate in-degrees
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        int[] inDegree = new int[numNodes];
+
+        for (int i = 0; i < numNodes; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+
+        for (int[] edge : edges) {
+            int from = edge[0];
+            int to = edge[1];
+            graph.get(from).add(to);
+            inDegree[to]++;
+        }
+
+        // Step 2: Initialize a queue with nodes that have in-degree 0
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numNodes; i++) {
+            /**
+             * NOTE !!!
+             *
+             *  we add ALL nodes with degree = 0 to queue at init step
+             */
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        List<Integer> topologicalOrder = new ArrayList<>();
+
+        // Step 3: Process the nodes in topological order
+        while (!queue.isEmpty()) {
+            /**
+             * NOTE !!!
+             *
+             *  ONLY "degree = 0"  nodes CAN be added to queue
+             *
+             *  -> so we can add whatever node from queue to final result (topologicalOrder)
+             */
+            int current = queue.poll();
+            topologicalOrder.add(current);
+
+            for (int neighbor : graph.get(current)) {
+                inDegree[neighbor] -= 1;
+                /**
+                 * NOTE !!!
+                 *
+                 *  if a node "degree = 0"  means this node can be ACCESSED now,
+                 *
+                 *  -> so we need to add it to the queue (for adding to topologicalOrder in the following while loop iteration)
+                 */
+                if (inDegree[neighbor] == 0) {
+                    queue.offer(neighbor);
+                }
+            }
+        }
+
+        // If topologicalOrder does not contain all nodes, there was a cycle in the graph
+        if (topologicalOrder.size() != numNodes) {
+            //throw new IllegalArgumentException("The graph has a cycle, so topological sort is not possible.");
+            return null;
+        }
+
+        /** NOTE !!! reverse ordering */
+        Collections.reverse(topologicalOrder);
+        return topologicalOrder;
+    }
+
 
     /**
      *  int[][] prerequisites: [1, 2], so 1 is 2's prerequisite
      *
      */
-    private List<Integer> topoSort(int numCourses, int[][] prerequisites){
-
-        //int[] tSorting = new int[]{numCourses};
-
-        // init : 1) preList 2) degree
-        Map<Integer, List<Integer>> preList = new HashMap<>();
-        List<Integer> degrees = new ArrayList<>();
-        List<Integer> res = new ArrayList<>();
-
-        // init all degree as 0
-        for (int i = 0; i < numCourses; i++){
-            degrees.add(i);
-        }
-
-        // init preList and update degrees
-        for (int[] x : prerequisites){
-            int pre = x[0];
-            int cur = x[1]; // ???
-
-            // update degrees
-            degrees.set(cur, degrees.get(cur)+1); // ???
-            // update PreList
-            if (!preList.containsKey(pre)){
-                preList.put(pre, new ArrayList<>());
-            }else{
-                List<Integer> curItems = preList.get(pre);
-                curItems.add(cur);
-                preList.put(pre, curItems);
-                //preList.put(pre, preList.get(pre).add(cur));
-            }
-        }
-
-
-        Queue<Integer> queue = new LinkedList();
-        // add all node with degree=0 to queue
-        for (int j = 0; j < degrees.size(); j++){
-            if (degrees.get(j).equals(0)){
-                queue.add(j);
-            }
-        }
-
-//        int idx = 0;
-//        tSorting[idx] = 0;
-
-        while(!queue.isEmpty()){
-            Integer curNode = queue.poll();
-            // NOTE !!! add node poll from queue to final result
-            res.add(curNode);
-
-            for (Integer subNode : preList.get(curNode)){
+//    private List<Integer> topoSort(int numCourses, int[][] prerequisites){
+//
+//        //int[] tSorting = new int[]{numCourses};
+//
+//        // init : 1) preList 2) degree
+//        Map<Integer, List<Integer>> preList = new HashMap<>();
+//        List<Integer> degrees = new ArrayList<>();
+//        List<Integer> res = new ArrayList<>();
+//
+//        // init all degree as 0
+//        for (int i = 0; i < numCourses; i++){
+//            degrees.add(i);
+//        }
+//
+//        // init preList and update degrees
+//        for (int[] x : prerequisites){
+//            int pre = x[0];
+//            int cur = x[1]; // ???
+//
+//            // update degrees
+//            degrees.set(cur, degrees.get(cur)+1); // ???
+//            // update PreList
+//            if (!preList.containsKey(pre)){
+//                preList.put(pre, new ArrayList<>());
+//            }else{
+//                List<Integer> curItems = preList.get(pre);
+//                curItems.add(cur);
+//                preList.put(pre, curItems);
+//                //preList.put(pre, preList.get(pre).add(cur));
+//            }
+//        }
+//
+//
+//        Queue<Integer> queue = new LinkedList();
+//        // add all node with degree=0 to queue
+//        for (int j = 0; j < degrees.size(); j++){
+//            if (degrees.get(j).equals(0)){
+//                queue.add(j);
+//            }
+//        }
+//
+////        int idx = 0;
+////        tSorting[idx] = 0;
+//
+//        while(!queue.isEmpty()){
+//            Integer curNode = queue.poll();
+//            // NOTE !!! add node poll from queue to final result
+//            res.add(curNode);
+//
+//            for (Integer subNode : preList.get(curNode)){
+////                if (degrees.get(subNode).equals(0)){
+////                    idx += 1;
+////                    tSorting[idx] = subNode;
+////                    degrees.set(subNode, degrees.get(subNode)-1);
+////                }
+//
+//                //preList[subNode] -= 1;
+//                degrees.set(subNode, degrees.get(subNode)-1);
 //                if (degrees.get(subNode).equals(0)){
-//                    idx += 1;
-//                    tSorting[idx] = subNode;
-//                    degrees.set(subNode, degrees.get(subNode)-1);
+//                    queue.add(subNode);
 //                }
-
-                //preList[subNode] -= 1;
-                degrees.set(subNode, degrees.get(subNode)-1);
-                if (degrees.get(subNode).equals(0)){
-                    queue.add(subNode);
-                }
-            }
-        }
-
-        return res;
-    }
+//            }
+//        }
+//
+//        return res;
+//    }
 
 
 //    private int[] topoSort(int numCourses, int[][] prerequisites){
