@@ -63,8 +63,6 @@ public class CourseSchedule2 {
         }
 
         // topologic ordering
-
-        //return topoOrdering(numCourses, prerequisites);
         List<Integer> ordering = topologicalSort(numCourses, prerequisites);
         //System.out.println(">>> ordering = " + ordering);
         if (ordering == null){
