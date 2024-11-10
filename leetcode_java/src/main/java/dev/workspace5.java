@@ -2955,19 +2955,20 @@ public class workspace5 {
         Map<Integer, List<Integer>> preList = new HashMap<>();
 
         // init degrees
-        for (int i = 0; i < numCourses; i++){
-            degrees[i] = 0;
-        }
+//        for (int i = 0; i < numCourses; i++){
+//            degrees[i] = 0;
+//        }
 
         // init preList
         for (int[] x : prerequisites){
             int pre = x[0];
             int following = x[1];
-            degrees[following] = degrees[following] + 1; // ??? check
+            //degrees[following] = degrees[following] + 1; // ??? check
+            degrees[following] += 1;
             if (!preList.containsKey(x)){
                 preList.put(pre, new ArrayList<>());
             }else{
-                List<Integer> tmp = preList.get(x);
+                List<Integer> tmp = preList.get(pre);
                 tmp.add(following);
                 preList.put(pre, tmp);
             }
@@ -2987,6 +2988,8 @@ public class workspace5 {
             int x = queue.poll();
             res.add(x);
             if (preList.containsKey(x)){
+                // NOTE!!!!
+                degrees[x] -= 1;
                 for (Integer sub : preList.get(x)){
                     if (degrees[sub] == 0){
                         queue.add(sub);
