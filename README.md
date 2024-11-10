@@ -1031,7 +1031,7 @@
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-053| [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)| [Python](./leetcode_python/Dynamic_Programming/maximum-subarray.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MaximumSubarray.java)  | _O(n)_     | _O(1)_    | Medium  |Curated Top 75, brute force, divied & conquer, `DP`,`dp basic`,`amazon`,`fb`| AGAIN************* (6)
+053| [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)| [Python](./leetcode_python/Dynamic_Programming/maximum-subarray.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MaximumSubarray.java)  | _O(n)_     | _O(1)_    | Medium  |Curated Top 75, brute force, divied & conquer, `DP`,`dp basic`,`amazon`,`fb`| AGAIN************* (7)
 062| [Unique Paths](https://leetcode.com/problems/unique-paths/)| [Python](./leetcode_python/Dynamic_Programming/unique-paths.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/UniquePaths.java)  | _O(m * n)_| _O(m + n)_   | Medium|Curated Top 75, `dp`, `basic`, fb, google, apple, amazon, m$| AGAIN**** (2)
 063| [Unique Paths II](https://leetcode.com/problems/unique-paths-ii/) | [Python](./leetcode_python/Dynamic_Programming/unique-paths-ii.py)  |  _O(m * n)_ | _O(m + n)_   | Medium |`trick`, check `#062 Unique Paths`, `amazon`|  AGAIN* 
 064| [Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/)|  [Python](./leetcode_python/Dynamic_Programming/minimum-path-sum.py) | _O(m * n)_ | _O(m + n)_  | Medium |`DP`, `amazon`| AGAIN* 

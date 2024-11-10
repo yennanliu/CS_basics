@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
+import org.graalvm.compiler.nodes.calc.IsNullNode;
 
 import java.util.*;
 
@@ -2849,6 +2850,110 @@ public class workspace5 {
 //
 //        return tSorting;
 //    }
+
+    // LC 53
+    // https://leetcode.com/problems/maximum-subarray/description/
+    // 5.11 pm - 5.30 pm
+    // A subarray is a contiguous non-empty sequence of elements within an array.
+    /**
+     *   IDEA :
+     *
+     *    "pre-sum" array
+     *
+     *    -> so sum(i) =  pre-sum(i+1) - pre-sum(i)
+     *
+     *    -> sum(0) = presum(1) - presum(0)
+     *    -> sum(1) = presum(2) - presum(0)
+     *    -> sum(2) = presum(2) - presum(0)
+     *
+     *
+     *    exp 0:
+     *     nums = [1,2,3,4,5]
+     *     -> pre-sum = [0,1,3,6,10,15]
+     *
+     *     -> sum(0,1) = presum(1) -  presum(0)
+     *     -> sum(1,2) = presum(3) -  presum(1)
+     *     -> sum(3,4) = presum(5) - presum(3) = 15 - 6 = 9
+     *     ..
+     *     -> sum(i, j) = presum(j+1) - presum(i)
+     *
+     *    exp 1:
+     *      nums = [-2,1,-3,4,-1,2,1,-5,4]
+     *
+     *      -> pre-sum = [0, -2, -1, -4, 0, -1, 1, 2, -3, 1]
+     *
+     */
+    public int maxSubArray_2(int[] nums) {
+        if (nums.length == 1){
+            return nums[0];
+        }
+
+        // pre-sum array
+        //  -> sum(i, j) = presum(j+1) - presum(i)
+        List<Integer> presum = new ArrayList<>();
+        presum.add(0);
+        for (int i = 0; i < nums.length; i++){
+            presum.add(nums[i] + presum.get(i-1));
+        }
+        System.out.println(">>> presum = " + presum);
+        int localMin = Integer.MAX_VALUE;
+        int localMax = -1 * Integer.MAX_VALUE;
+        int maxSum = 0;
+        // get "minimal" val and "biggest" val after it
+        for (int j = 0; j < presum.size(); j++){
+            int cur = presum.get(j);
+            if (cur > localMin){
+                localMin = Math.min(cur, localMin);
+            }else{
+
+            }
+        }
+
+        return maxSum;
+    }
+
+    /**
+     *  exp 1:
+     *
+     *  nums = [-2,1,-3,4,-1,2,1,-5,4]
+     *
+     *  -> [-2,1,-3,4,-1,2,1,-5,4]
+     *      i  j
+     *
+     *  -> [-2,1,-3,4,-1,2,1,-5,4]
+     *         i
+     *         j
+     *
+     */
+
+    public int maxSubArray(int[] nums) {
+
+        if (nums.length == 1){
+            return nums[0];
+        }
+
+//        int res = -1 * Integer.MAX_VALUE;
+//        for (int x : nums){
+//            res = Math.max(res, x);
+//        }
+
+        // 2 pointers
+        int finalSum = -1 * Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++){
+            int tmpSum = 0;
+            int j = i;
+            while (j < nums.length && tmpSum >= 0){
+                tmpSum += nums[j];
+                finalSum = Math.max(tmpSum, finalSum);
+                //System.out.println(">>> i = " + i + ", j = " + j + ", tmpSum = " + tmpSum + ", finalSum= " + finalSum);
+                j += 1;
+            }
+        }
+
+        //return Math.max(res, tmpSum);
+        //return Math.max(finalSum, 0);
+        return finalSum;
+    }
 
 
 }
