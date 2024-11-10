@@ -104,7 +104,241 @@ print (r)
 
 ## 2) LC Example
 
-### 2-1) Course Schedule
+### 2-2) Course Schedule II
+
+```java
+// java
+// LC 210
+public class CourseSchedule2 {
+
+    // V0
+    // IDEA : TOPOLOGICAL SORT (fixed by gpt)
+    // ref : https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSortV2.java
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        if (numCourses == 1) {
+            return new int[]{0};
+        }
+
+        // topologic ordering
+        List<Integer> ordering = topologicalSort(numCourses, prerequisites);
+        //System.out.println(">>> ordering = " + ordering);
+        if (ordering == null){
+            return new int[]{};
+        }
+        int[] res = new int[numCourses];
+        for (int x = 0; x < ordering.size(); x++) {
+            int val = ordering.get(x);
+            //System.out.println(val);
+            res[x] = val;
+        }
+
+        return res;
+    }
+
+    public List<Integer> topologicalSort(int numNodes, int[][] edges) {
+        // Step 1: Build the graph and calculate in-degrees
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        int[] inDegree = new int[numNodes];
+
+        for (int i = 0; i < numNodes; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+
+        for (int[] edge : edges) {
+            int from = edge[0];
+            int to = edge[1];
+            graph.get(from).add(to);
+            inDegree[to]++;
+        }
+
+        // Step 2: Initialize a queue with nodes that have in-degree 0
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numNodes; i++) {
+            /**
+             * NOTE !!!
+             *
+             *  we add ALL nodes with degree = 0 to queue at init step
+             */
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        List<Integer> topologicalOrder = new ArrayList<>();
+
+        // Step 3: Process the nodes in topological order
+        while (!queue.isEmpty()) {
+            /**
+             * NOTE !!!
+             *
+             *  ONLY "degree = 0"  nodes CAN be added to queue
+             *
+             *  -> so we can add whatever node from queue to final result (topologicalOrder)
+             */
+            int current = queue.poll();
+            topologicalOrder.add(current);
+
+            for (int neighbor : graph.get(current)) {
+                inDegree[neighbor] -= 1;
+                /**
+                 * NOTE !!!
+                 *
+                 *  if a node "degree = 0"  means this node can be ACCESSED now,
+                 *
+                 *  -> so we need to add it to the queue (for adding to topologicalOrder in the following while loop iteration)
+                 */
+                if (inDegree[neighbor] == 0) {
+                    queue.offer(neighbor);
+                }
+            }
+        }
+
+        // If topologicalOrder does not contain all nodes, there was a cycle in the graph
+        if (topologicalOrder.size() != numNodes) {
+            //throw new IllegalArgumentException("The graph has a cycle, so topological sort is not possible.");
+            return null;
+        }
+
+        /** NOTE !!! reverse ordering */
+        Collections.reverse(topologicalOrder);
+        return topologicalOrder;
+    }
+
+```
+
+```python
+# LC 210 Course Schedule II
+# V0
+# IDEA : DFS + topological sort
+# SAME dfs logic as LC 207 (Course Schedule)
+from collections import defaultdict
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        # edge case
+        if not prerequisites:
+            return [x for x in range(numCourses)]
+        
+        # help func : dfs
+        # 3 cases :  0 : unknown, 1 :visiting, 2 : visited   
+        def dfs(idx, visited, g, res):
+            if visited[idx] == 1:
+                return False
+            # NOTE !!! if visited[idx] == 2, means already visited, return True directly (and check next idx in range(numCourses))
+            if visited[idx] == 2:
+                return True
+            visited[idx] = 1
+            """
+            NOTE this !!!
+
+                1) for j in g[idx] (but not for i in range(numCourses))
+                2) go through idx in g[idx]
+            """
+            for j in g[idx]:
+                if not dfs(j, visited, g, res):
+                    return False
+            """
+            don't forget to make idx as visited (visited[idx] = 2)
+            """
+            visited[idx] = 2
+            """
+            NOTE : the main difference between LC 207, 210
+
+            -> we append idx to res (our ans)
+            """
+            res.append(idx)
+            return True
+        # init
+        visited = [0] * numCourses
+        # build grath
+        g = defaultdict(list)
+        for p in prerequisites:
+            g[p[0]].append(p[1])
+        res = []
+        """
+        NOTE :  go through idx in numCourses (for idx in range(numCourses))
+        """
+        for idx in range(numCourses):
+            if not dfs(idx, visited, g, res):
+                return []
+        return res
+
+# V0'
+# IDEA : DFS + topological sort
+# SAME dfs logic as LC 207 (Course Schedule)
+import collections
+class Solution:
+    def findOrder(self, numCourses, prerequisites):
+        # build graph
+        _graph = collections.defaultdict(list)
+        for i in range(len(prerequisites)):
+            _graph[prerequisites[i][0]].append(prerequisites[i][1])
+
+        visited = [0] * numCourses
+        res = []
+        for i in range(numCourses):
+            if not self.dfs(_graph, visited, i, res):
+                return []
+        print ("res = " + str(res))
+        return res
+
+    # 0 : unknown, 1 :visiting, 2 : visited    
+    def dfs(self, _graph, visited, i, res):
+        if visited[i] == 1:
+            return False
+        if visited[i] == 2:
+            return True
+        visited[i] = 1
+        for item in _graph[i]:
+            if not self.dfs(_graph, visited, item, res):
+                return False
+        visited[i] = 2
+        res.append(i)
+        return True
+
+# V0'
+# IDEA : DFS + topological sort
+# SAME dfs logic as LC 207 (Course Schedule)
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+        graph = collections.defaultdict(list)
+        for u, v in prerequisites:
+            graph[u].append(v)
+        # 0 = Unknown, 1 = visiting, 2 = visited
+        visited = [0] * numCourses
+        path = []
+        for i in range(numCourses):
+            ### NOTE : if not a valid "prerequisites", then will return NULL list
+            if not self.dfs(graph, visited, i, path):
+                return []
+        return path
+    
+    def dfs(self, graph, visited, i, path):
+        # 0 = Unknown, 1 = visiting, 2 = visited
+        if visited[i] == 1: return False
+        if visited[i] == 2: return True
+        visited[i] = 1
+        for j in graph[i]:
+            if not self.dfs(graph, visited, j, path):
+                ### NOTE : the quit condition
+                return False
+        visited[i] = 2
+        path.append(i)
+        return True
+```
+
+### 2-2) Course Schedule
+
+```java
+// java
+// LC 207
+// same as LC 210
+```
+
 ```python
 # LC 207 Course Schedule
 # NOTE : there are also bracktrack, dfs approachs for this problem
@@ -325,132 +559,6 @@ class Solution:
                     q.append(child)
         
         return len(stack) == numCourses
-```
-
-### 2-2) Course Schedule II
-```python
-# LC 210 Course Schedule II
-# V0
-# IDEA : DFS + topological sort
-# SAME dfs logic as LC 207 (Course Schedule)
-from collections import defaultdict
-class Solution(object):
-    def findOrder(self, numCourses, prerequisites):
-        # edge case
-        if not prerequisites:
-            return [x for x in range(numCourses)]
-        
-        # help func : dfs
-        # 3 cases :  0 : unknown, 1 :visiting, 2 : visited   
-        def dfs(idx, visited, g, res):
-            if visited[idx] == 1:
-                return False
-            # NOTE !!! if visited[idx] == 2, means already visited, return True directly (and check next idx in range(numCourses))
-            if visited[idx] == 2:
-                return True
-            visited[idx] = 1
-            """
-            NOTE this !!!
-
-                1) for j in g[idx] (but not for i in range(numCourses))
-                2) go through idx in g[idx]
-            """
-            for j in g[idx]:
-                if not dfs(j, visited, g, res):
-                    return False
-            """
-            don't forget to make idx as visited (visited[idx] = 2)
-            """
-            visited[idx] = 2
-            """
-            NOTE : the main difference between LC 207, 210
-
-            -> we append idx to res (our ans)
-            """
-            res.append(idx)
-            return True
-        # init
-        visited = [0] * numCourses
-        # build grath
-        g = defaultdict(list)
-        for p in prerequisites:
-            g[p[0]].append(p[1])
-        res = []
-        """
-        NOTE :  go through idx in numCourses (for idx in range(numCourses))
-        """
-        for idx in range(numCourses):
-            if not dfs(idx, visited, g, res):
-                return []
-        return res
-
-# V0'
-# IDEA : DFS + topological sort
-# SAME dfs logic as LC 207 (Course Schedule)
-import collections
-class Solution:
-    def findOrder(self, numCourses, prerequisites):
-        # build graph
-        _graph = collections.defaultdict(list)
-        for i in range(len(prerequisites)):
-            _graph[prerequisites[i][0]].append(prerequisites[i][1])
-
-        visited = [0] * numCourses
-        res = []
-        for i in range(numCourses):
-            if not self.dfs(_graph, visited, i, res):
-                return []
-        print ("res = " + str(res))
-        return res
-
-    # 0 : unknown, 1 :visiting, 2 : visited    
-    def dfs(self, _graph, visited, i, res):
-        if visited[i] == 1:
-            return False
-        if visited[i] == 2:
-            return True
-        visited[i] = 1
-        for item in _graph[i]:
-            if not self.dfs(_graph, visited, item, res):
-                return False
-        visited[i] = 2
-        res.append(i)
-        return True
-
-# V0'
-# IDEA : DFS + topological sort
-# SAME dfs logic as LC 207 (Course Schedule)
-class Solution(object):
-    def findOrder(self, numCourses, prerequisites):
-        """
-        :type numCourses: int
-        :type prerequisites: List[List[int]]
-        :rtype: List[int]
-        """
-        graph = collections.defaultdict(list)
-        for u, v in prerequisites:
-            graph[u].append(v)
-        # 0 = Unknown, 1 = visiting, 2 = visited
-        visited = [0] * numCourses
-        path = []
-        for i in range(numCourses):
-            ### NOTE : if not a valid "prerequisites", then will return NULL list
-            if not self.dfs(graph, visited, i, path):
-                return []
-        return path
-    
-    def dfs(self, graph, visited, i, path):
-        # 0 = Unknown, 1 = visiting, 2 = visited
-        if visited[i] == 1: return False
-        if visited[i] == 2: return True
-        visited[i] = 1
-        for j in graph[i]:
-            if not self.dfs(graph, visited, j, path):
-                ### NOTE : the quit condition
-                return False
-        visited[i] = 2
-        path.append(i)
-        return True
 ```
 
 ### 2-3) alien-dictionary

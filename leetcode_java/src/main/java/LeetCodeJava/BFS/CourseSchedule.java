@@ -6,6 +6,7 @@ import java.util.*;
 
 public class CourseSchedule {
 
+    // V0
     // IDEA : TOPOLOGICAL SORT
     // LC 210
     public boolean canFinish(int numCourses, int[][] prerequisites) {
