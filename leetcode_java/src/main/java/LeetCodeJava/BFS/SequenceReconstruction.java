@@ -60,9 +60,103 @@ import java.util.*;
 public class SequenceReconstruction {
 
     // V0
-    // TODO : implement
+    // TODO : validate below
+    // IDEA : TOPOLOGICAL SORT. LC 210
 //    public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences) {
 //
+//        if (sequences.size()==0){
+//            return true;
+//        }
+//
+//        return TopologicalSort(nums, sequences);
+//    }
+//
+//    public boolean TopologicalSort(int[] nums, List<List<Integer>> edges) {
+//        // Step 1: Build the graph and calculate in-degrees
+//        Map<Integer, List<Integer>> graph = new HashMap<>();
+//        int[] inDegree = new int[nums.length];
+//
+//        for (int i = 0; i < nums.length; i++) {
+//            graph.put(i, new ArrayList<>());
+//        }
+//
+//        for (List<Integer> edge : edges) {
+//            int from = edge.get(0);
+//            int to = edge.get(1);
+//            graph.get(from).add(to);
+//            inDegree[to]++;
+//        }
+//
+//        // Step 2: Initialize a queue with nodes that have in-degree 0
+//        Queue<Integer> queue = new LinkedList<>();
+//        for (int i = 0; i < nums.length; i++) {
+//            /**
+//             * NOTE !!!
+//             *
+//             *  we add ALL nodes with degree = 0 to queue at init step
+//             */
+//            if (inDegree[i] == 0) {
+//                queue.offer(i);
+//            }
+//        }
+//
+//        List<Integer> topologicalOrder = new ArrayList<>();
+//
+//        // Step 3: Process the nodes in topological order
+//        while (!queue.isEmpty()) {
+//
+//            /**
+//             *  NOTE !!!
+//             *
+//             *   if queue size > 1,
+//             *   means there are MORE THAN 1 possible solution
+//             *   -> return false directly
+//             *
+//             */
+//            if (queue.size() != 1){
+//                return false;
+//            }
+//
+//            /**
+//             * NOTE !!!
+//             *
+//             *  ONLY "degree = 0"  nodes CAN be added to queue
+//             *
+//             *  -> so we can add whatever node from queue to final result (topologicalOrder)
+//             */
+//            int current = queue.poll();
+//
+//
+//            // TODO : fix below
+//            //if(curr != nums[index++]) return false;
+//
+//            topologicalOrder.add(current);
+//
+//            for (int neighbor : graph.get(current)) {
+//                inDegree[neighbor] -= 1;
+//                /**
+//                 * NOTE !!!
+//                 *
+//                 *  if a node "degree = 0"  means this node can be ACCESSED now,
+//                 *
+//                 *  -> so we need to add it to the queue (for adding to topologicalOrder in the following while loop iteration)
+//                 */
+//                if (inDegree[neighbor] == 0) {
+//                    queue.offer(neighbor);
+//                }
+//            }
+//        }
+//
+//        // If topologicalOrder does not contain all nodes, there was a cycle in the graph
+//        if (topologicalOrder.size() != nums.length) {
+//            //throw new IllegalArgumentException("The graph has a cycle, so topological sort is not possible.");
+//            return false;
+//        }
+//
+//        /** NOTE !!! reverse ordering */
+//        //Collections.reverse(topologicalOrder);
+//        //return topologicalOrder;
+//        return true;
 //    }
 
     // V1
