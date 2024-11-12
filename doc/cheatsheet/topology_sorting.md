@@ -18,6 +18,8 @@
     - LC 444
 - Alien Dictionary
     - LC 269
+- Others
+    - LC 666, 802
 
 ### 0-2) Pattern
 ```
