@@ -2,6 +2,7 @@ package LeetCodeJava.String;
 
 // https://leetcode.com/problems/find-and-replace-in-string/description/
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,6 +60,7 @@ import java.util.Map;
 public class FindAndReplaceInString {
 
     // V0
+    // TODO : implement
 //    public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
 //
 //    }
@@ -67,12 +69,44 @@ public class FindAndReplaceInString {
     // IDEA : HASHMAP
     // https://leetcode.com/problems/find-and-replace-in-string/submissions/1454170265/
     public String findReplaceString_1(String s, int[] indices, String[] sources, String[] targets) {
+        /**
+         * 	•	Purpose:
+         * 	    •	Create a map where the key is the index in the string s where a valid replacement can occur, and the value is the index in the sources and targets arrays.
+         *
+         * 	•	Logic:
+         * 	    •	Loop through each replacement instruction (indices, sources, targets).
+         * 	    •	Check if sources[i] exists as a substring of s starting at indices[i]:
+         * 	    •	Use s.startsWith(sources[i], indices[i]) to verify this condition.
+         * 	    •	If the condition is true, store the index (indices[i]) in the map with its corresponding sources/targets index (i).
+         *
+         * 	•	Result:
+         * 	    •	The map will only contain valid replacement indices, ensuring that only valid replacements are performed.
+         *
+         */
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < indices.length; i++) {
             if (s.startsWith(sources[i], indices[i])) {
                 map.put(indices[i], i);
             }
         }
+
+        /**
+         * 	•	Purpose:
+         * 	    •	Construct the final string using a StringBuilder, processing each character of s sequentially.
+         *
+         * 	•	Logic:
+         * 	    •	Case 1: If the current index i is not in the map, it means no replacement starts at this index.
+         * 	        •	Append the character at s[i] to the StringBuilder and move to the next character (i++).
+         * 	    •	Case 2: If the current index i is in the map, it means a valid replacement starts here.
+         * 	        •	Retrieve the corresponding index from map.get(i) and:
+         * 	                •	Append the replacement string (targets[map.get(i)]) to the StringBuilder.
+         * 	                •	Skip over the characters in the source substring (i += sources[map.get(i)].length()).
+         *
+         *
+         * 	•	Why Use StringBuilder:
+         * 	    •	Strings in Java are immutable, so using StringBuilder allows efficient in-place concatenation.
+         *
+         */
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); ) {
             if (!map.containsKey(i)) {
@@ -87,9 +121,72 @@ public class FindAndReplaceInString {
     }
 
     // V2
+    // IDEA : HASHMAP (gpt)
+    /**
+     * 	1.	Sorting the Indices:
+     * 	    •	The replacements must not interfere with each other. For example, if you replace earlier substrings, it can shift the later indices.
+     * 	    •	To avoid this issue, the indices are processed in descending order.
+     *
+     * 	2.	String Replacement:
+     * 	    •	For each replacement index i, check if the substring starting at indices[i] in s matches sources[i] using s.startsWith(source, start).
+     * 	    •	If it matches, replace the substring from start to start + source.length() with targets[i].
+     *
+     * 	3.	StringBuilder for Efficient Modifications:
+     * 	    •	Use StringBuilder to perform in-place modifications on the string, which is more efficient than creating new strings repeatedly.
+     *
+     */
+    public String findReplaceString_2(String s, int[] indices, String[] sources, String[] targets) {
+        // Create an array of indices and sort them in descending order
+        /**
+         *
+         *  - To avoid affecting the indices of unprocessed replacements, we process the replacements in reverse order of their indices.
+         * 	- Sorting the indices ensures that replacements starting from the largest index occur first.
+         *
+         *
+         * 	Why Reverse Order:
+         * 	    •	For example, consider s = "abcd", indices = [0, 2], sources = ["a", "cd"], and targets = ["eee", "ffff"].
+         *          If we replace "a" (at index 0) first, it would shift the position of "cd", causing the second replacement to fail.
+         *          Replacing "cd" first avoids this issue.
+         */
+        Integer[] sortedIndices = new Integer[indices.length];
+        for (int i = 0; i < indices.length; i++) {
+            sortedIndices[i] = i;
+        }
+        Arrays.sort(sortedIndices, (a, b) -> Integer.compare(indices[b], indices[a]));
+
+        // Perform replacements
+        /**
+         * 	•	Using StringBuilder:
+         * 	    •	Strings in Java are immutable, meaning every modification creates a new string.
+         * 	    •	Using StringBuilder allows us to modify the string efficiently in-place.
+         *
+         * 	•	Checking Substring Match:
+         * 	    •	The method s.startsWith(source, start) checks whether the substring at index start matches the source string.
+         * 	    •	If it matches, we proceed to replace it with the target.
+         *
+         * 	•	Replacing Substrings:
+         * 	    •	The method sb.replace(start, start + source.length(), target) replaces the substring from start to start + source.length() with the target.
+         */
+        StringBuilder sb = new StringBuilder(s);
+        for (int idx : sortedIndices) {
+            int start = indices[idx];
+            String source = sources[idx];
+            String target = targets[idx];
+
+            // Check if `source` exists at `start`
+            if (s.startsWith(source, start)) {
+                sb.replace(start, start + source.length(), target);
+            }
+        }
+
+        return sb.toString();
+    }
+
+
+    // V3
     // TODO : replacer `Pair` in code
     // https://leetcode.com/problems/find-and-replace-in-string/submissions/1454169549/
-//    public String findReplaceString_2(String s, int[] indices, String[] sources, String[] targets) {
+//    public String findReplaceString_3(String s, int[] indices, String[] sources, String[] targets) {
 //        Map<Integer , Pair> replacements = new TreeMap<>();
 //        StringBuilder res = new StringBuilder();
 //
@@ -109,5 +206,8 @@ public class FindAndReplaceInString {
 //
 //        return res.toString();
 //    }
+
+    // V3
+    // https://blog.csdn.net/qq_37821701/article/details/125737152
 
 }
