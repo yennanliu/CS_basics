@@ -3182,6 +3182,17 @@ public class workspace5 {
         return finalSum;
     }
 
+    // LC 833
+    // https://leetcode.com/problems/find-and-replace-in-string/
+    // 4.23 pm - 4.40 pm
+    public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
+
+//        if (sources.length == 1 && targets.length == 1){
+//        }
+
+        return null;
+    }
+
 
 }
 
