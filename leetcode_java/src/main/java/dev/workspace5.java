@@ -3193,6 +3193,13 @@ public class workspace5 {
         return null;
     }
 
+    // LC 950
+    // https://leetcode.com/problems/reveal-cards-in-increasing-order/
+    // 5.14 pm - 5.30 pm
+    public int[] deckRevealedIncreasing(int[] deck) {
+        return null;
+    }
+
 
 }
 
