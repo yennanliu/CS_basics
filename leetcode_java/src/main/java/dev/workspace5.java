@@ -925,6 +925,7 @@ public class workspace5 {
     // 8.10 pm - 8.30 pm
 //    int player2Cnt = 0;
 //    int nodeCnt = 0;
+
     /**
      *  idea 1
      *
@@ -1135,6 +1136,7 @@ public class workspace5 {
     // https://leetcode.com/problems/random-pick-with-weight/
     //6.35 pm - 6.40 pm
     // idea : presum array + binary search (?
+
     /**
      *  ep 1:
      *
@@ -1393,6 +1395,7 @@ public class workspace5 {
     // LC 734
     // https://leetcode.ca/all/734.html
     // 5.59 pm - 6.10 pm
+
     /**
      *  1) NOT transitive:
      *
@@ -1627,6 +1630,7 @@ public class workspace5 {
      *
      */
     int longestCnt = 0;
+
     public int longestConsecutive_1_1(TreeNode root) {
         if (root.left == null && root.right == null){
             return 0;
@@ -1676,6 +1680,7 @@ public class workspace5 {
     // LC 729
     // https://leetcode.com/problems/my-calendar-i/
     // 3.11 pm - 3.30 pm
+
     /**
      *
      * -> We can add a new event if adding the event
@@ -1837,6 +1842,7 @@ public class workspace5 {
     // LC 163
     // https://leetcode.ca/all/163.html
     // 3.51 pm - 4.20 pm
+
     /**
      *  Given a sorted integer array nums, where the range of
      *  elements are in the inclusive range [lower, upper],
@@ -1952,7 +1958,7 @@ public class workspace5 {
                 && isSameTree(root1.right, root2.left))
                 || (isSameTree(root1.right, root2.left)
                 && isSameTree(root1.right, root2.left)) ;
-                //&& isSameTree(root1, root2); // ?? needed ?
+        //&& isSameTree(root1, root2); // ?? needed ?
     }
 
     // LC 792
@@ -2067,6 +2073,7 @@ public class workspace5 {
 
     // LC 932
     // https://leetcode.com/problems/beautiful-array/
+
     /**
      *
      * For every 0 <= i < j < n,
@@ -2135,6 +2142,7 @@ public class workspace5 {
     // LC 846
     // https://leetcode.com/problems/hand-of-straights/
     // 5.29 pm - 5.45 pm
+
     /**
      *  input 1:
      *
@@ -2205,7 +2213,7 @@ public class workspace5 {
                 // found consecutive element
                 if (cur == min+1){
                     min += 1;
-                // if not found, add to tmp queue
+                    // if not found, add to tmp queue
                 }else{
                     tmpQ.add(cur);
                 }
@@ -2227,6 +2235,7 @@ public class workspace5 {
     // https://leetcode.com/problems/find-eventual-safe-states/
     // dfs
     List<String> states = new ArrayList<>();
+
     public List<Integer> eventualSafeNodes(int[][] graph) {
 
         for (int i = 0; i < graph.length; i++){
@@ -2241,7 +2250,7 @@ public class workspace5 {
 
         for (int i = 0; i < graph.length; i++){
             if (isSafe(i, graph)){
-               res.add(i);
+                res.add(i);
             }
         }
 
@@ -2317,6 +2326,7 @@ public class workspace5 {
     // LC 26
     // https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/
     // 8.31 am - 8.40 am
+
     /**
      *  exp 1
      *
@@ -2574,8 +2584,6 @@ public class workspace5 {
     }
 
 
-
-
 //    public int removeElement(int[] nums, int val) {
 //        int s = 0;
 //        for (int f = 0; f < nums.length; f++){
@@ -2709,6 +2717,7 @@ public class workspace5 {
     // https://leetcode.ca/all/444.html
     // https://leetcode.ca/2017-02-16-444-Sequence-Reconstruction/
     // 5.18 pm - 5.35 pm
+
     /**
      *  step 1) build seq
      *  step 2) check if there is only 1 way ???
@@ -3082,6 +3091,7 @@ public class workspace5 {
     // https://leetcode.com/problems/maximum-subarray/description/
     // 5.11 pm - 5.30 pm
     // A subarray is a contiguous non-empty sequence of elements within an array.
+
     /**
      *   IDEA :
      *
@@ -3198,6 +3208,96 @@ public class workspace5 {
     // 5.14 pm - 5.30 pm
     public int[] deckRevealedIncreasing(int[] deck) {
         return null;
+    }
+
+
+    // LC 394
+    // https://leetcode.ca/all/394.html
+    // 4.52 - 5.15 pm
+
+    /**
+     * s = "3[a]2[bc]", return "aaabcbc".
+     * s = "3[a2[c]]", return "accaccacc".
+     * s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
+     * <p>
+     * <p>
+     * idea : stack (FILO)
+     * <p>
+     * - use stack save val (numerical, "[")
+     * - if "[",  save to stack
+     * - if "]", pop all elements in stock
+     * - append alphabet val,
+     * - if "numerical", multiply, then append to result
+     * <p>
+     * <p>
+     * ex 1: s = "3[a]2[bc]",
+     * <p>
+     * <p>
+     * "3[a]2[bc]"   s = [3]
+     * x
+     * <p>
+     * "3[a]2[bc]"   s = [3, "[" ]
+     * x
+     * <p>
+     * "3[a]2[bc]"   s = [3, "[", "a" ]
+     * x
+     * <p>
+     * "3[a]2[bc]"   s = [3, "[", "a" ] , res = aaa, s = []
+     * x
+     * <p>
+     * "3[a]2[bc]"   s = [2] , res = aaa
+     * x
+     * <p>
+     * "3[a]2[bc]"   s = [2, "["] , res = aaa
+     * x
+     * <p>
+     * "3[a]2[bc]"   s = [2, "[", "b"] , res = aaa
+     * x
+     * <p>
+     * "3[a]2[bc]"   s = [2, "[", "b", "c"] , res = aaa
+     * x
+     * <p>
+     * "3[a]2[bc]"   s = [2, "[", "b", "c"] , res = aaabcbc, s = []
+     * x
+     */
+    public String decodeString(String s) {
+        if (s.length() == 0) {
+            return null;
+        }
+        // init
+        Stack<String> stack = new Stack<>(); // ??
+        StringBuilder sb = new StringBuilder();
+        String A_TO_Z = "abcdefghijklmnopqrstuvwxyz";
+        for (String x : s.split("")) {
+            if (!x.equals("]")) {
+                if (!x.equals("[")) {
+                    stack.add(x);
+                }
+            } else {
+                // pop all elements from stack, multiply, and add to res
+                String tmp = "";
+                while (!stack.isEmpty()) {
+                    String cur = stack.pop(); // ??
+                    if (A_TO_Z.contains(cur)) {
+                        tmp += cur;
+                    } else {
+                        tmp = getMultiplyStr(tmp, Integer.parseInt(cur));
+                    }
+                }
+
+            }
+
+        }
+
+        return sb.toString();
+    }
+
+    private String getMultiplyStr(String cur, Integer multiply) {
+        StringBuilder sb = new StringBuilder();
+        for (int x = 0; x < multiply; x++) {
+            sb.append(cur);
+        }
+        return sb.toString();
     }
 
 
