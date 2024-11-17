@@ -3194,13 +3194,39 @@ public class workspace5 {
 
     // LC 833
     // https://leetcode.com/problems/find-and-replace-in-string/
-    // 4.23 pm - 4.40 pm
+    // 6.50 - 7.10 pm
     public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
 
-//        if (sources.length == 1 && targets.length == 1){
-//        }
+        if (indices.length == 0){
+            return s;
+        }
 
-        return null;
+        // re-order indices
+        Arrays.sort(indices);
+
+        // check if overlap
+        //boolean isOverlap = false;
+        if (isOverlap(s, indices)){
+            return s;
+        }
+
+        Map<Integer, String> map = new HashMap<>();
+        for (int i = 0; i < indices.length; i++){
+            map.put(i, targets[i]);
+        }
+
+        String res = "";
+        String[] sArray = s.split("");
+        for (int j = indices.length; j > 0; j++){
+            sArray[j] = map.get(j);
+        }
+
+        // array -> string
+        return sArray.toString(); // ?
+    }
+
+    private boolean isOverlap(String s, int[] indices){
+        return false;
     }
 
     // LC 950

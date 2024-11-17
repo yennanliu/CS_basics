@@ -57,6 +57,22 @@ import java.util.Map;
  * s consists of only lowercase English letters.
  * sources[i] and targets[i] consist of only lowercase English letters.
  */
+/**
+ *  NOTE !!!
+ *
+ *  -> The testcases will be generated such that the replacements will not overlap.
+ *  (All replacement operations must occur simultaneously,
+ *   meaning the replacement operations should not affect the
+ *   indexing of each other. The testcases will be generated
+ *   such that the replacements will not overlap.)
+ *
+ *   -> e.g. case like below will NOT happen:
+ *
+ *   s = "abc", indices = [0, 1], and sources = ["ab","bc"]
+ *
+ *   -> so, it's NO NEEDED that our code to handle scenario as above
+ *
+ */
 public class FindAndReplaceInString {
 
     // V0
