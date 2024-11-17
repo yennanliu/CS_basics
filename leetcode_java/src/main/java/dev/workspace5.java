@@ -3205,9 +3205,70 @@ public class workspace5 {
 
     // LC 950
     // https://leetcode.com/problems/reveal-cards-in-increasing-order/
-    // 5.14 pm - 5.30 pm
+    // 5.54 pm - 6.15 pm
+    // idea : queue simulation
+    /**
+     *
+     * You will do the following steps repeatedly until all cards are revealed:
+     *
+     * - Take the top card of the deck, reveal it, and take it out of the deck.
+     *
+     * - If there are still cards in the deck then put the next top card of the
+     *   deck at the bottom of the deck.
+     *
+     * - If there are still unrevealed cards, go back to step 1. Otherwise, stop.
+     *
+     */
+    /**
+     *  Idea 1)
+     *
+     *   deck = [17,13,11,2,3,5,7]
+     *
+     *   step 1) sort
+     *     -> [2,3,5,7,11,13,17]
+     *
+     *   step 2)
+     *     queue simulation flip op
+     *     -> [3,5,7,11,13,17], queue = [2]
+     *
+     *
+     *    -> [5,7,11,13,17], queue = [2,      3]
+     *
+     *    -> [7,11,13,17], queue = [5, 2,      3]
+     *
+     *    -> [11,13,17], queue = [5, 2,      ,7,3]
+     *
+     *    -> [13,17], queue = [5, 2, 11,     ,7,3]
+     *
+     *
+     *
+     *
+     */
     public int[] deckRevealedIncreasing(int[] deck) {
-        return null;
+        //List<Integer> list = new ArrayList<>();
+        if (deck.length == 0){
+            return null; // ?
+        }
+        if (deck.length == 1){
+            return deck; // ?
+        }
+
+        // sorting
+        Arrays.sort(deck);
+
+        // init
+        Queue<Integer> queue = new LinkedList<>();
+        List<Integer> idxList = new ArrayList<>();
+
+
+        int[] res = new int[deck.length];
+        int j = 0;
+        while(!queue.isEmpty()){
+            res[j] = queue.poll();
+            j += 1;
+        }
+
+        return res;
     }
 
 

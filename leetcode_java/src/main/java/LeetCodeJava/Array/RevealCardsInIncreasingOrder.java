@@ -60,6 +60,10 @@ public class RevealCardsInIncreasingOrder {
 //
 //    }
 
+    // V0-1
+    // IDEA : QUEUE
+    // https://www.youtube.com/watch?v=i2QrUdwWlak
+
     // V1-1
     // IDEA : Simulation with Queue
     // https://leetcode.com/problems/reveal-cards-in-increasing-order/editorial/
