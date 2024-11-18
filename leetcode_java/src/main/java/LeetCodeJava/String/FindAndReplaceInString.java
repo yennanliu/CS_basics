@@ -81,6 +81,46 @@ public class FindAndReplaceInString {
 //
 //    }
 
+    // V0-1
+    // IDEA : MAP + startsWith (fixed by GPT)
+    public String findReplaceString_0_1(String s, int[] indices, String[] sources, String[] targets) {
+        // Map to store valid replacement indices and their respective replacement info
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // Collect all validated replacements
+        for (int i = 0; i < indices.length; i++) {
+            if (s.startsWith(sources[i], indices[i])) {
+                map.put(indices[i], i);
+            }
+        }
+
+        // Construct the updated string
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); ) {
+            if (map.containsKey(i)) {
+                int replacementIndex = map.get(i);
+                sb.append(targets[replacementIndex]); // Add the replacement
+                /**
+                 *  NOTE !!!
+                 *
+                 *   update index with replacement string length
+                 *
+                 */
+                i += sources[replacementIndex].length(); // Skip the replaced substring
+            } else {
+                sb.append(s.charAt(i)); // Add the original character
+                /**
+                 *  NOTE !!!
+                 *
+                 *   move index 1 to right (i = i +1)
+                 */
+                i++;
+            }
+        }
+
+        return sb.toString();
+    }
+
     // V1
     // IDEA : HASHMAP
     // https://leetcode.com/problems/find-and-replace-in-string/submissions/1454170265/

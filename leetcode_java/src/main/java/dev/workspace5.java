@@ -3197,33 +3197,69 @@ public class workspace5 {
     // 6.50 - 7.10 pm
     public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
 
-        if (indices.length == 0){
-            return s;
-        }
-
-        // re-order indices
-        Arrays.sort(indices);
-
-        // check if overlap
-        //boolean isOverlap = false;
-        if (isOverlap(s, indices)){
-            return s;
-        }
-
         Map<Integer, String> map = new HashMap<>();
-        for (int i = 0; i < indices.length; i++){
-            map.put(i, targets[i]);
-        }
-
-        String res = "";
         String[] sArray = s.split("");
-        for (int j = indices.length; j > 0; j++){
-            sArray[j] = map.get(j);
+
+        // collect all validated replacement
+        for (int i = 0; i < sources.length; i++){
+            String target = targets[i];
+            String source = sources[i];
+            //  public boolean startsWith(String prefix, int toffset) {}
+            if (s.startsWith(source, indices[i])){
+                //map.put(indices[i], target);
+                map.put(indices[i], target);
+            }
         }
 
-        // array -> string
-        return sArray.toString(); // ?
+        System.out.println(">>> map = " + map);
+
+        // update string
+        StringBuilder sb = new StringBuilder();
+        for (int j = 0; j < sArray.length;){
+            if (map.containsKey(j)){
+                sb.append(map.get(j));
+                // NOTE !!!
+                j += sources[j].length();
+            }else{
+                sb.append(sArray[j]);
+                //j = j + sArray[j].length();
+                j += 1;
+            }
+        }
+
+        return sb.toString();
     }
+
+
+//    public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
+//
+//        if (indices.length == 0){
+//            return s;
+//        }
+//
+//        // re-order indices
+//        Arrays.sort(indices);
+//
+//        // check if overlap
+//        //boolean isOverlap = false;
+//        if (isOverlap(s, indices)){
+//            return s;
+//        }
+//
+//        Map<Integer, String> map = new HashMap<>();
+//        for (int i = 0; i < indices.length; i++){
+//            map.put(i, targets[i]);
+//        }
+//
+//        String res = "";
+//        String[] sArray = s.split("");
+//        for (int j = indices.length; j > 0; j++){
+//            sArray[j] = map.get(j);
+//        }
+//
+//        // array -> string
+//        return sArray.toString(); // ?
+//    }
 
     private boolean isOverlap(String s, int[] indices){
         return false;
