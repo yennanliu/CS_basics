@@ -105,6 +105,8 @@ public class FindAndReplaceInString {
                  *
                  *   update index with replacement string length
                  *
+                 *   -> NOTE !!! we use "source" length (with replacementIndex)
+                 *               (but NOT target length)
                  */
                 i += sources[replacementIndex].length(); // Skip the replaced substring
             } else {
