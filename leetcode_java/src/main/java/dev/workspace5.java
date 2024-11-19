@@ -2088,7 +2088,7 @@ public class workspace5 {
 
     // LC 855
     // https://leetcode.com/problems/exam-room/
-    // 4.28 pm - 4.40 pm
+    // 6.53 - 7.15 am
     /**
      *  ep 1:
      *
@@ -2112,32 +2112,78 @@ public class workspace5 {
      *
      */
     class ExamRoom {
-        // attr
+
         int[] seats;
-        PriorityQueue<Integer> pq;
+        int seated;
 
         public ExamRoom(int n) {
-            this.seats = new int[n];
-            this.pq = new PriorityQueue();
+            seats = new int[n]; // init val ??
+            seated = 0;
         }
 
         public int seat() {
-            // if not one seated, select the 0 idx seat
-            if (this.pq.isEmpty()){
-                this.seats[0] = 0;
+            //return 0;
+            if (seated == 0){
+                seats[0] = 1;
+                seated += 1;
                 return 0;
             }
 
-            // TODO : fix
-            return 0;
+            // get "to compare" seat
+            int idx = -1;
+            for (int j = 0; j < seats.length; j++){
+                // get distance
+                //int dis = 1;
+                if (seats[j] == 0){
+                    idx = j;
+                    break;
+                }
+            }
+
+            int toPutIdx = -1;
+            // find "maximizes the distance to the closest person"
+            for (int i = seats.length; i > 0; i--){
+                if (seats[i] != 0){
+                    toPutIdx = i;
+                    break;
+                }
+            }
+            return toPutIdx; // ???
         }
 
         public void leave(int p) {
-
-            this.seats[p] = 0;
+            seats[p] = 0;
+            seated -= 1;
         }
-
     }
+
+//    class ExamRoom {
+//        // attr
+//        int[] seats;
+//        PriorityQueue<Integer> pq;
+//
+//        public ExamRoom(int n) {
+//            this.seats = new int[n];
+//            this.pq = new PriorityQueue();
+//        }
+//
+//        public int seat() {
+//            // if not one seated, select the 0 idx seat
+//            if (this.pq.isEmpty()){
+//                this.seats[0] = 0;
+//                return 0;
+//            }
+//
+//            // TODO : fix
+//            return 0;
+//        }
+//
+//        public void leave(int p) {
+//
+//            this.seats[p] = 0;
+//        }
+//
+//    }
 
     // LC 846
     // https://leetcode.com/problems/hand-of-straights/
