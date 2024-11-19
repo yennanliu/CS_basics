@@ -2,7 +2,7 @@
 
 # 2024-11-17
 - https://github.com/wisdompeak/LeetCode/tree/master?tab=readme-ov-file#two-pointers
-	- (Two pointers for two sequences)
+	- (Two pointers for two sequences, Binary Search)
 
 # 2024-11-17
 - https://github.com/yennanliu/CS_basics/blob/master/doc/Leetcode_company_frequency-master/Google%206months-%20LeetCode.pdf
