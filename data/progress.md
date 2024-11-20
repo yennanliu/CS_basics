@@ -1,5 +1,9 @@
 # Progress
 
+# 2024-11-21
+- https://github.com/wisdompeak/LeetCode/tree/master?tab=readme-ov-file#two-pointers
+	- (Two pointers for two sequences, Binary Search)
+
 # 2024-11-17
 - https://github.com/wisdompeak/LeetCode/tree/master?tab=readme-ov-file#two-pointers
 	- (Two pointers for two sequences, Binary Search)
