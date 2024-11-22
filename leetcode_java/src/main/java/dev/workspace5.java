@@ -3522,6 +3522,33 @@ public class workspace5 {
         return null;
     }
 
+    // LC 31
+    // https://leetcode.com/problems/next-permutation/description/
+    // 10.49 - 11.20 AM
+    /**
+     *
+     *   exp 1) [1,2,3] -> [1,3,2]
+     *
+     *
+     *   exp 2) [2,3,1] -> [3,1,2]
+     *
+     *  Idea 1)
+     *
+     *   from right -> left, find if there is a bigger val
+     *   if yes, then find right most place (idx) and swap
+     *   the bigger val with the value at idx
+     *
+     *
+     *   find max val, mo
+     *
+     *
+     *
+     *
+     */
+    public void nextPermutation(int[] nums) {
+
+    }
+
 }
 
 
