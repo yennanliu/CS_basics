@@ -3469,6 +3469,58 @@ public class workspace5 {
         return sb.toString();
     }
 
+    // LC 776
+    // https://leetcode.ca/2018-01-14-776-Split-BST/
+    // https://leetcode.ca/all/776.html
+    // 10.09 am - 10.20 am
+    /**
+     *   Idea : split tree
+     *
+     *   -> split tree into smaller, bigger array
+     *   -> then build BST again from 2 arrays above
+     */
+    public TreeNode[] splitBST(TreeNode root, int target) {
+
+        // split to 2 arrays
+        List<Integer> smaller = new ArrayList<>();
+        List<Integer> bigger = new ArrayList<>();
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        // bfs
+        while(!queue.isEmpty()){
+            // update array
+            TreeNode cur = queue.poll();
+            if (cur.val <= target){
+                smaller.add(cur.val);
+            }else{
+                bigger.add(cur.val);
+            }
+            // add to queue
+            if (cur.left != null){
+                queue.add(cur.left);
+            }
+            if (cur.right != null){
+                queue.add(cur.right);
+            }
+        }
+
+        // build tree
+        TreeNode smallerTree = buildTree(smaller);
+        TreeNode biggerTree = buildTree(bigger);
+
+        // collect result
+        TreeNode[] res = new TreeNode[2];
+        res[0] = smallerTree;
+        res[1] = biggerTree;
+
+        return res;
+    }
+
+    private TreeNode buildTree(List<Integer> input){
+        return null;
+    }
 
 }
 
