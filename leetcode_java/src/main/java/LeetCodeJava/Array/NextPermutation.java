@@ -86,7 +86,7 @@ public class NextPermutation {
     // Helper method to reverse elements from start to end
     private void reverse_(int[] nums, int start, int end) {
         while (start < end) {
-            swap(nums, start, end);
+            swap_(nums, start, end);
             start++;
             end--;
         }
