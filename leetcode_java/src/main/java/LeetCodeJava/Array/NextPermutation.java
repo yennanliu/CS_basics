@@ -46,6 +46,91 @@ public class NextPermutation {
     // V0
     // IDEA : 2 POINTERS (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/next-permutation.py#L43
+    /**
+     *  Examples :
+     *
+     *
+     *  ## Example 1
+     *
+     * **Input:** `nums = [1, 2, 3]`
+     * **Initial State:** `nums = [1, 2, 3]`
+     *
+     * ### Step-by-Step Execution
+     *
+     * 1. **Find the first decreasing element from the end:**
+     *    - Start with `i = nums.length - 1 = 2`.
+     *    - Compare `nums[i - 1] = nums[1] = 2` with `nums[i] = nums[2] = 3`. Since `2 < 3`, stop. `i = 2`.
+     *
+     * 2. **Find the last "ascending" position:**
+     *    - `k = i - 1 = 1`.
+     *    - `nums[k] = nums[1] = 2`.
+     *
+     * 3. **Find the element just larger than `nums[k]`:**
+     *    - Start with `j = nums.length - 1 = 2`.
+     *    - Compare `nums[j] = nums[2] = 3` with `nums[k] = nums[1] = 2`. Since `3 > 2`, stop. `j = 2`.
+     *
+     * 4. **Swap `nums[k]` and `nums[j]`:**
+     *    - Swap `nums[1]` and `nums[2]`.
+     *    - After swap: `nums = [1, 3, 2]`.
+     *
+     * 5. **Reverse the sequence from `k + 1` to the end:**
+     *    - Subarray to reverse: `[2]`.
+     *    - No change since reversing a single element: `nums = [1, 3, 2]`.
+     *
+     * **Final Output:** `nums = [1, 3, 2]`
+     *
+     * ---
+     *
+     * ## Example 2
+     *
+     * **Input:** `nums = [3, 2, 1]`
+     * **Initial State:** `nums = [3, 2, 1]`
+     *
+     * ### Step-by-Step Execution
+     *
+     * 1. **Find the first decreasing element:**
+     *    - Start with `i = nums.length - 1 = 2`.
+     *    - Compare `nums[1] = 2` with `nums[2] = 1`: `2 >= 1`, decrement `i`.
+     *    - Compare `nums[0] = 3` with `nums[1] = 2`: `3 >= 2`, decrement `i`.
+     *    - `i = 0`.
+     *
+     * 2. **Reverse the entire array:**
+     *    - Since `i == 0`, reverse the array: `nums = [1, 2, 3]`.
+     *
+     * **Final Output:** `nums = [1, 2, 3]`
+     *
+     * ---
+     *
+     * ## Key Points
+     *
+     * 1. The algorithm works in **O(n)** time.
+     * 2. It rearranges the elements in-place using three main steps:
+     *    - Find the first decreasing element.
+     *    - Swap it with the next larger element.
+     *    - Reverse the sequence after the swapped position to get the next lexicographical order.
+     */
+    /**
+     *  IDEA :
+     *
+     *  Explanation of the Algorithm:
+     *
+     * 	1.	Identify the first decreasing element from the end:
+     * 	    •	Traverse the array from the right and find the first index i such that nums[i] < nums[i + 1].
+     * 	    •	This is the pivot point where the next permutation is possible.
+     *
+     * 	2.	Find the smallest element larger than nums[i] to the right of i:
+     * 	    •	From the end of the array, find the first index j such that nums[j] > nums[i].
+     *
+     * 	3.	Swap nums[i] and nums[j]:
+     * 	    •	Swap these elements to ensure the next permutation is lexicographically greater.
+     *
+     * 	4.	Reverse the suffix starting from i + 1:
+     * 	    •	Reverse the elements to the right of i to ensure they are in ascending order, giving the smallest lexicographical order for the suffix.
+     *
+     * 	5.	If no i is found (i.e., the array is in descending order):
+     * 	    •	Reverse the entire array to reset it to the smallest permutation.
+     *
+     */
     public void nextPermutation(int[] nums) {
 
         int i = nums.length - 1;
