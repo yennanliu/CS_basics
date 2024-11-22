@@ -1,5 +1,8 @@
 # Progress
 
+# 2024-11-22
+- https://github.com/yennanliu/CS_basics/blob/master/doc/Leetcode_company_frequency-master/Google%206months-%20LeetCode.pdf
+
 # 2024-11-21
 - https://github.com/wisdompeak/LeetCode/tree/master?tab=readme-ov-file#two-pointers
 	- (Two pointers for two sequences, Binary Search)
