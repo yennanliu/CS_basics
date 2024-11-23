@@ -3524,7 +3524,7 @@ public class workspace5 {
 
     // LC 31
     // https://leetcode.com/problems/next-permutation/description/
-    // 10.49 - 11.20 AM
+    // 5.39 pm - 6.15 pm
     /**
      *
      *   exp 1) [1,2,3] -> [1,3,2]
@@ -3541,9 +3541,36 @@ public class workspace5 {
      *
      *   find max val, mo
      *
+     *   ================================
+     *
+     *  Idea 2)
+     *
+     *   1) from right -> left, find 1st "pivot"
+     *     -> if there is a val bigger than its left
+     *     (if no pivot, means input array already sorted, return directly
+     *
+     *
+     *   2) from left -> right, find 1st element that smaller than pivot,
+     *      if found, swap (pivot <---> element)
+     *
+     *   3) reorder (small -> big ?? ) all val on the right-hand side of element
      *
      *
      *
+     *   demo
+     *
+     *  input : [1,2,3]
+     *
+     *   -> [1,2,3] , so pivot is 3
+     *           i
+     *
+     *   -> [1,2,3]   1 < 3, cur = 3
+     *       j
+     *
+     *   -> [1,2,3]  2 < 3, cur = 2
+     *         i
+     *
+     *   -> so, swap 2 and 3 -> [1,3,2]
      */
     public void nextPermutation(int[] nums) {
 
