@@ -1,13 +1,31 @@
 package LeetCodeJava.Sort;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 
 // https://leetcode.com/problems/meeting-rooms-ii/description/
-
+// https://leetcode.ca/all/253.html
+/**
+ * 253. Meeting Rooms II
+ * Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
+ *
+ * Example 1:
+ *
+ * Input: [[0, 30],[5, 10],[15, 20]]
+ * Output: 2
+ * Example 2:
+ *
+ * Input: [[7,10],[2,4]]
+ * Output: 1
+ * NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
+ *
+ * Difficulty:
+ * Medium
+ * Lock:
+ * Prime
+ * Company:
+ * Amazon Apple Atlassian Baidu Bloomberg Booking.com Cisco Citrix Drawbridge eBay Expedia Facebook GoDaddy Goldman Sachs Google Lyft Microsoft Nutanix Oracle Paypal Postmates Quora Snapchat Uber Visa Walmart Labs Yelp
+ */
 
 public class MeetingRooms2 {
 
@@ -40,7 +58,82 @@ public class MeetingRooms2 {
     }
 
     // V0'
-    // TODO : validate below
+    // TODO : validate
+    // IDEA : SCANNING LINE
+    // ref code : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms-ii.py#L90
+    class Meeting {
+        int time;
+        String status;
+
+        Meeting(int time, String status) {
+            this.time = time;
+            this.status = status;
+        }
+
+        public int getTime() {
+            return time;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+    }
+
+    public class MeetingRooms_0_1 {
+        public int minMeetingRooms(int[][] intervals) {
+            if (intervals.length <= 1) {
+                return intervals.length;
+            }
+
+            List<Meeting> meetings = new ArrayList<>();
+
+            // Convert intervals into meeting start and end events
+            for (int[] interval : intervals) {
+                int start = interval[0];
+                int end = interval[1];
+                meetings.add(new Meeting(start, "open"));
+                meetings.add(new Meeting(end, "end"));
+            }
+
+            // Sort meetings: by time ascending; if times are equal, "end" comes before "open"
+            // V1
+//            meetings.sort((x,y) -> {
+//                if (x.getTime() < y.getTime()){
+//                    return -1;
+//                }
+//                if (x.getTime() > y.getTime()){
+//                    return 1;
+//                }
+//                return 0;
+//            });
+
+            // V2
+            meetings.sort((x, y) -> {
+                if (x.getTime() != y.getTime()) {
+                    return Integer.compare(x.getTime(), y.getTime());
+                }
+                return x.getStatus().equals("end") ? -1 : 1;
+            });
+
+            // Track room requirements
+            int maxRooms = 0;
+            int currentRooms = 0;
+
+            for (Meeting meeting : meetings) {
+                if (meeting.getStatus().equals("open")) {
+                    currentRooms++;
+                } else {
+                    currentRooms--;
+                }
+                maxRooms = Math.max(maxRooms, currentRooms);
+            }
+
+            return maxRooms;
+        }
+    }
+
+    // V0'
+    // TODO : validate
     // IDEA : ARRAY SORT + BOUNDARY OP
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms-ii.py#L90
     // IDEA : CREATE A NEW ARRAY WITH
@@ -135,6 +228,23 @@ public class MeetingRooms2 {
                 ++j;
 
         return ans;
+    }
+
+    // V3
+    // https://leetcode.ca/2016-08-09-253-Meeting-Rooms-II/
+    public int minMeetingRooms_3(int[][] intervals) {
+        int n = 1000010;
+        int[] delta = new int[n];
+        for (int[] e : intervals) {
+            ++delta[e[0]];
+            --delta[e[1]];
+        }
+        int res = delta[0];
+        for (int i = 1; i < n; ++i) {
+            delta[i] += delta[i - 1];
+            res = Math.max(res, delta[i]);
+        }
+        return res;
     }
 
 }

@@ -3549,6 +3549,100 @@ public class workspace5 {
 
     }
 
+    // LC 253
+    // https://leetcode.ca/all/253.html
+    // 4.57 pm - 5.10 pm
+    /**
+     * [[s1,e1],[s2,e2],...]
+     *
+     *  s : start, e : end
+     *
+     *  Idea 1) sorting + scanning line
+     *
+     *   -> sort by s, e
+     *   -> get the "max" concurrent room count as res
+     *   -> return res
+     *
+     *
+     *  |------------------------|
+     *  0                        30
+     *       |-------|
+     *       5      10
+     *                  |-----|
+     *                 15     20
+     *
+     *
+     *  [0,5,10,15,20,30]
+     *   o o  c  o  c  c
+     */
+
+    class Meeting{
+        int time;
+        String status;
+
+        Meeting(){
+
+        }
+
+        Meeting(int time, String status){
+            this.time = time;
+            this.status = status;
+        }
+
+        public int getTime() {
+            return time;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+    }
+    public int minMeetingRooms(int[][] intervals) {
+        if (intervals.length <= 1){
+            return intervals.length;
+        }
+
+        List<Meeting> meetings = new ArrayList<>();
+
+        for (int[] item : intervals){
+            //Meeting meeting = new Meeting()
+            int start = item[0];
+            int end = item[1];
+
+            Meeting meetingOpen = new Meeting(start, "open");
+            Meeting meetingEnd = new Meeting(end, "end");
+
+            meetings.add(meetingOpen);
+            meetings.add(meetingEnd);
+        }
+
+        // sort as ascending order, e.g. [1,4,2] -> [1,2,4]
+        meetings.sort((x,y) -> {
+            if (x.getTime() < y.getTime()){
+                return -1;
+            }
+            if (x.getTime() > y.getTime()){
+                return 1;
+            }
+            return 0;
+        });
+
+
+        int cnt = 0;
+        int curCnt = 0;
+
+        for (Meeting meeting : meetings){
+            if (meeting.getStatus().equals("open")){
+                curCnt += 1;
+            }else{
+                curCnt -= 1;
+            }
+            cnt = Math.max(cnt, curCnt);
+        }
+
+        return cnt;
+    }
+
 }
 
 
