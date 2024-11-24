@@ -3670,6 +3670,79 @@ public class workspace5 {
         return cnt;
     }
 
+    // LC 153
+    // 5.07 PM - 5.20 PM
+    /**
+     *
+     *  Input : [4,5,6,7,0,1,2]
+     *
+     *  Case 1)
+     *
+     *    right is ascending
+     *     - the target val is bigger / smaller than cur
+     *
+     *  Case 2)
+     *
+     *    left is ascending
+     *      - the target val is bigger / smaller than cur
+     */
+    public int findMin(int[] nums) {
+
+        if (nums.length == 1){
+            return nums[0];
+        }
+
+        if (nums[0] < nums[nums.length-1]){
+            return nums[0];
+        }
+
+        // binary search
+        int left = 0;
+        int right = nums.length-1;
+
+        while (left >= right){
+
+            int mid =  (left + right) / 2;
+
+            System.out.println(">>> mid = " + mid + ", left = " + left + ", right = " + right);
+
+            // turning point (???
+            if (nums[mid] > nums[mid+1]){
+                return nums[mid+1];
+            // turning point (????
+            }else if (nums[mid] < nums[mid-1]){
+                return nums[mid];
+             // norming ordering, compare mid and
+            }else if (nums[mid] > nums[left]){
+                //right = mid;
+                left = mid + 1;
+            }else{
+                //left = mid + 1;
+                right = mid-1;
+            }
+
+//            // right is ascending
+//            if (nums[mid] < nums[mid+1]){
+//                if (nums[mid] > nums[mid-1]){
+//                    right = mid;
+//                }else{
+//                    left = mid + 1;
+//                }
+//
+//            }
+//            // left is ascending
+//            else{
+//                if (nums[mid] < nums[mid+1]){
+//                    right = mid;
+//                }else{
+//                    left = mid + 1;
+//                }
+//            }
+        }
+
+        return nums[left];
+    }
+
 }
 
 
