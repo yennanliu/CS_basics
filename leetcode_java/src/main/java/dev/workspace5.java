@@ -3686,62 +3686,111 @@ public class workspace5 {
      *    left is ascending
      *      - the target val is bigger / smaller than cur
      */
-    public int findMin(int[] nums) {
+    public int findMin(int[] nums){
 
+        // edge case 1): if len == 1
         if (nums.length == 1){
             return nums[0];
         }
 
-        if (nums[0] < nums[nums.length-1]){
+        // edge case 1): array already in ascending order
+        int left = 0;
+        int right = nums.length - 1;
+        if (nums[right] > nums[0]){
             return nums[0];
         }
 
         // binary search
-        int left = 0;
-        int right = nums.length-1;
-
-        while (left >= right){
-
-            int mid =  (left + right) / 2;
-
-            System.out.println(">>> mid = " + mid + ", left = " + left + ", right = " + right);
-
-            // turning point (???
+        while (right >= left){
+            int mid = (left + right) / 2;
+            // turning point case 1
             if (nums[mid] > nums[mid+1]){
-                return nums[mid+1];
-            // turning point (????
-            }else if (nums[mid] < nums[mid-1]){
-                return nums[mid];
-             // norming ordering, compare mid and
-            }else if (nums[mid] > nums[left]){
-                //right = mid;
-                left = mid + 1;
-            }else{
-                //left = mid + 1;
-                right = mid-1;
+                return nums[mid + 1];
             }
-
-//            // right is ascending
-//            if (nums[mid] < nums[mid+1]){
-//                if (nums[mid] > nums[mid-1]){
-//                    right = mid;
-//                }else{
-//                    left = mid + 1;
-//                }
-//
-//            }
-//            // left is ascending
-//            else{
-//                if (nums[mid] < nums[mid+1]){
-//                    right = mid;
-//                }else{
-//                    left = mid + 1;
-//                }
-//            }
+            // TODO : check why below
+            // turning point case 2
+            // if (nums[mid] > nums[mid-1]){
+            //     return nums[mid - 1];
+            // }
+            if (nums[mid - 1] > nums[mid]) {
+                return nums[mid];
+            }
+            // left sub array is ascending
+            if (nums[mid] > nums[0]){
+                left = mid + 1;
+            }
+            // right sub array is ascending
+            else{
+                right = mid - 1;
+            }
         }
 
-        return nums[left];
+        return -1;
     }
+    /**
+     *
+     *  [4,5,6,7,0,1,2]
+     *
+     *  [7,0,1,2,4,5,6]
+     *
+     *
+     */
+//    public int findMin(int[] nums) {
+//
+//        if (nums.length == 1){
+//            return nums[0];
+//        }
+//
+//        if (nums[0] < nums[nums.length-1]){
+//            return nums[0];
+//        }
+//
+//        // binary search
+//        int left = 0;
+//        int right = nums.length-1;
+//
+//        while (left >= right){
+//
+//            int mid =  (left + right) / 2;
+//
+//            System.out.println(">>> mid = " + mid + ", left = " + left + ", right = " + right);
+//
+//            // turning point (???
+//            if (nums[mid] > nums[mid+1]){
+//                return nums[mid+1];
+//            // turning point (????
+//            }else if (nums[mid] < nums[mid-1]){
+//                return nums[mid];
+//             // norming ordering, compare mid and
+//            }else if (nums[mid] > nums[left]){
+//                //right = mid;
+//                left = mid + 1;
+//            }else{
+//                //left = mid + 1;
+//                right = mid-1;
+//            }
+//
+////            // right is ascending
+////            if (nums[mid] < nums[mid+1]){
+////                if (nums[mid] > nums[mid-1]){
+////                    right = mid;
+////                }else{
+////                    left = mid + 1;
+////                }
+////
+////            }
+////            // left is ascending
+////            else{
+////                if (nums[mid] < nums[mid+1]){
+////                    right = mid;
+////                }else{
+////                    left = mid + 1;
+////                }
+////            }
+//        }
+//
+//        return nums[left];
+//    }
 
 }
 
