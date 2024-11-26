@@ -3794,7 +3794,7 @@ public class workspace5 {
 
     // LC 33
     // 7.42 pm - 8.10 pm
-    public int search(int[] nums, int target) {
+    public int search_(int[] nums, int target) {
         if (nums.length == 1){
             return nums[0] == target ? 0 : -1;
         }
@@ -3833,6 +3833,104 @@ public class workspace5 {
         }
 
         return -1;
+    }
+
+//    public int search(int[] nums, int target) {
+//
+//        if (nums.length == 1){
+//            return nums[0] == target ? 0 : -1;
+//        }
+//
+//        // binary search
+//        int left = 0;
+//        int right = nums.length-1;
+//        while (right >= left){
+//            int mid = (left + right) / 2;
+//            if (nums[mid] == target){
+//                return mid;
+//            }
+//            // if right sub array is ascending
+//            if (nums[mid] < nums[right]){
+//                // if  mid < target <= right
+//                if (target > nums[mid] && target <= nums[right]){
+//                    left = mid + 1;
+//                }
+//                // else
+//                else{
+//                    right = mid - 1;
+//                }
+//            }
+//            // if left sub array is ascending
+//            else{
+//                // if mid > target > left
+//                if (target >= nums[left] && target < nums[mid]){
+//                    right = mid - 1;
+//                }
+//                // else
+//                else{
+//                    left = mid + 1;
+//                }
+//
+//            }
+//
+//        }
+//
+//        return -1;
+//    }
+
+    // LC 81
+    // https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
+    // 8.07 pm - 8.20 pm
+    public boolean search(int[] nums, int target) {
+
+        if (nums.length == 1){
+            return nums[0] == target;
+        }
+        Set<Integer> set = new HashSet<>();
+        List<Integer> nonDuplicatedNums = new ArrayList<>();
+
+        for (int x : nums){
+            if (!set.contains(x)){
+                set.add(x);
+                nonDuplicatedNums.add(x);
+            }
+        }
+
+        // binary search
+        int left = 0;
+        int right = nonDuplicatedNums.size() - 1;
+        while (right >= left){
+            int mid = (left + right) / 2;
+            if (nonDuplicatedNums.get(mid) == target){
+                return true;
+            }
+            // if right sub array is ascending
+            if (nonDuplicatedNums.get(mid) < nonDuplicatedNums.get(right)){
+                // if  mid < target <= right
+                if (target > nonDuplicatedNums.get(mid) && target <= nonDuplicatedNums.get(right)){
+                    left = mid + 1;
+                }
+                // else
+                else{
+                    right = mid - 1;
+                }
+            }
+            // if left sub array is ascending
+            else{
+                // if mid > target > left
+                if (target >= nonDuplicatedNums.get(left) && target < nonDuplicatedNums.get(mid)){
+                    right = mid - 1;
+                }
+                // else
+                else{
+                   left = mid + 1;
+                }
+
+            }
+
+        }
+
+        return false;
     }
 
 }
