@@ -3792,6 +3792,49 @@ public class workspace5 {
 //        return nums[left];
 //    }
 
+    // LC 33
+    // 7.42 pm - 8.10 pm
+    public int search(int[] nums, int target) {
+        if (nums.length == 1){
+            return nums[0] == target ? 0 : -1;
+        }
+
+        // binary search
+        int left = 0;
+        int right = nums.length - 1;
+        while (right >= left){
+            int mid = (left + right) / 2;
+            System.out.println(">>> left = " + left + ", right = " + right + ", mid = " + mid);
+            if (nums[mid] == target){
+                return mid;
+            }
+            // right sub array is ascending
+            if (nums[mid] < nums[right]){
+                // case 1-1)  mid < target < right
+                if (target <= nums[right] && target > nums[mid]){
+                    left = mid + 1;
+                }
+                // case 1-2) target > mid
+                else{
+                    right = mid - 1;
+                }
+            }
+            // case 2) left sub array is ascending
+            else{
+                // case 2-1) mid > target > left
+                if (nums[left] <= target && target < nums[mid]){
+                    right = mid - 1;
+                }
+                // case 2-1) target > mid
+                else{
+                    left = mid + 1;
+                }
+            }
+        }
+
+        return -1;
+    }
+
 }
 
 
