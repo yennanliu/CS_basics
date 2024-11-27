@@ -2277,57 +2277,111 @@ public class workspace5 {
     }
 
     // LC 802
-    // 6.15 pm - 6.30
+    // 8.36 pm - 8.50 pm
     // https://leetcode.com/problems/find-eventual-safe-states/
-    // dfs
-    List<String> states = new ArrayList<>();
+    // topological sort
+
+    List<Integer> states = new ArrayList<>();
 
     public List<Integer> eventualSafeNodes(int[][] graph) {
 
-        for (int i = 0; i < graph.length; i++){
-            states.add("UNKNOWN");
-        }
+        return null;
+    }
 
-        if (graph.length==0){
-            return null;
-        }
+    private List<Integer> topoSort_2(int size, int[][] graph){
 
-        List<Integer> res = new ArrayList<>();
+        // init
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        int[] degree = new int[graph.length]; // ??
 
-        for (int i = 0; i < graph.length; i++){
-            if (isSafe(i, graph)){
-                res.add(i);
+        for (int[] x : graph){
+            int prev = x[1];
+            int next = x[0];
+            if(!map.containsKey(prev)){
+                degree[prev] = 0;
+                map.put(prev, new ArrayList<>());
+            }else{
+                degree[prev] += 1; // ??
+                List<Integer> curList = map.get(prev);
+                curList.add(next);
+                map.put(prev, curList);
             }
         }
 
-        return res;
+        Queue<Integer> queue = new LinkedList<>();
+        for(int y : degree){
+            if(y == 0){
+                queue.add(y);
+            }
+        }
+
+        while(!queue.isEmpty()){
+            int curVal = queue.poll();
+            states.add(curVal); // ??
+            for(Integer x : map.get(curVal)){
+                degree[x] -= 1;
+                if (degree[x] == 0){
+                    queue.add(x);
+                }
+            }
+        }
+
+        if (states.size() != size){
+            throw new RuntimeException("Input can't be sorted by topological sorting");
+        }
+
+        return states;
     }
 
-    // 4 states : UNKNOWN, VISITING, SAFE, UNSAFE
-    private boolean isSafe(int idx, int[][] graph){
-        String curState = states.get(idx);
-        if (curState.equals("SAFE")){
-            return true;
-        }
-        if (curState.equals("VISITING")){
-            return false;
-        }
-        // TODO : check
-//        if (!curState.equals("UNKNOWN")){
-//            return curState.equals("SAFE"); // ??
+
+//    List<String> states = new ArrayList<>();
+//
+//    public List<Integer> eventualSafeNodes(int[][] graph) {
+//
+//        for (int i = 0; i < graph.length; i++){
+//            states.add("UNKNOWN");
 //        }
-
-        curState = "VISITING";
-
-        for (int j = 0; j < graph.length; j++){
-            if (!this.isSafe(j, graph)){
-                return false;
-            }
-        }
-
-        //curState =
-        return true; // ??? curState.equals("SAFE"); // ??
-    }
+//
+//        if (graph.length==0){
+//            return null;
+//        }
+//
+//        List<Integer> res = new ArrayList<>();
+//
+//        for (int i = 0; i < graph.length; i++){
+//            if (isSafe(i, graph)){
+//                res.add(i);
+//            }
+//        }
+//
+//        return res;
+//    }
+//
+//    // 4 states : UNKNOWN, VISITING, SAFE, UNSAFE
+//    private boolean isSafe(int idx, int[][] graph){
+//        String curState = states.get(idx);
+//        if (curState.equals("SAFE")){
+//            return true;
+//        }
+//        if (curState.equals("VISITING")){
+//            return false;
+//        }
+//        // TODO : check
+////        if (!curState.equals("UNKNOWN")){
+////            return curState.equals("SAFE"); // ??
+////        }
+//
+//        curState = "VISITING";
+//
+//        for (int j = 0; j < graph.length; j++){
+//            if (!this.isSafe(j, graph)){
+//                return false;
+//            }
+//        }
+//
+//        //curState =
+//        return true; // ??? curState.equals("SAFE"); // ??
+//    }
 
     // LC 1197
     // https://leetcode.ca/all/1197.html
