@@ -3966,6 +3966,44 @@ public class workspace5 {
         return false;
     }
 
+    // LC 722
+    // https://leetcode.com/problems/remove-comments/
+    // 7.41 pm - 8.15 pm
+    /**
+     *  Idea 1) string op
+     *      a tmp array that collect "Not comment" element,
+     *      then merge filtered elements as final result
+     */
+    public List<String> removeComments(String[] source) {
+
+        if (source.length == 0){
+            return new ArrayList<>();
+        }
+
+        List<String> tmp = new ArrayList<>();
+        //StringBuilder sb = new StringBuilder();
+        boolean isMuitLineComment = false;
+        for (String x : source){
+            System.out.println(">>> x = " + x);
+            if (x.contains("/*") && x.contains("*/")){
+                tmp.add(x.split("/*")[0]);
+                //tmp.add(x.split("*/\")[1]);
+                continue;
+            }
+            if (x.contains("/*")){
+                isMuitLineComment = true;
+            }else if (x.contains("*/")){
+                isMuitLineComment = false;
+            }
+            if (!x.contains("//") && !isMuitLineComment){
+                //sb.append(x);
+                tmp.add(x);
+            }
+        }
+
+        return tmp;
+    }
+
 }
 
 
