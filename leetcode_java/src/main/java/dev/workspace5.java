@@ -4004,6 +4004,52 @@ public class workspace5 {
         return tmp;
     }
 
+    // LC 380
+    // https://leetcode.com/problems/insert-delete-getrandom-o1/
+    // 8.08 - 8.25 PM
+    class RandomizedSet {
+
+        //List<Integer> list;
+        Map<Integer, Integer> map;
+        int count;
+        Random random;
+
+        public RandomizedSet() {
+            //this.list = new ArrayList<>();
+            this.map = new HashMap<>();
+            this.count = 0;
+            this.random = new Random();
+        }
+
+        public boolean insert(int val) {
+            if (!this.map.containsKey(val)){
+                this.map.put(val, 1);
+                this.count += 1;
+                return true;
+            }
+            return false;
+        }
+
+        public boolean remove(int val) {
+            if (this.map.containsKey(val)){
+                this.map.remove(val);
+                this.count -= 1;
+                return true;
+            }
+            return false;
+        }
+
+        public int getRandom() {
+            //this.random = new Random();
+            int randomIdx = random.nextInt(this.count);
+            // TODO : check below
+            //int x = this.map.values().toArray().;
+            //new Arrays.
+            Integer[] keyArray = this.map.keySet().toArray(new Integer[this.map.keySet().size()]);
+            return keyArray[randomIdx];
+        }
+    }
+
 }
 
 
