@@ -3,6 +3,7 @@ package dev;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class workspace5 {
 
@@ -4181,6 +4182,61 @@ public class workspace5 {
         res[1] = end;
 
         return res;
+    }
+
+    // LC 767
+    // 3.52 - 4.20 pm
+    /**
+     *  Idea 1) hashmap
+     *
+     *  exp 1: s = "aab"
+     *
+     *  -> map = {a: 2, b: 1}
+     *  -> so,
+     *  -> a b a
+     *
+     *  exp 2 s = "aaab"
+     *
+     *  -> map = {a: 3, b: 1}
+     *  -> a
+     *  -> ""
+     */
+    public String reorganizeString(String s) {
+
+        if (s.length() == 1){
+            return s;
+        }
+
+        //ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+        TreeMap<String, Integer> map = new TreeMap<>();
+        for (String x : s.split("")){
+            map.put(x, map.getOrDefault(x, 0)+1);
+        }
+
+        System.out.println(">>> map = " + map);
+        StringBuilder sb = new StringBuilder();
+        String prev = null;
+        //String res = "";
+
+        while(!map.isEmpty()){
+            // map.descendingKeySet() ?? get key with count in descending ordering ???
+            for(String k : map.descendingKeySet()){
+                System.out.println(">>> k = " + k + ", keySet = " + map.keySet() + ", prev = " + prev);
+                if (prev != null && prev.equals(k)){
+                    return "";
+                }
+                sb.append(k);
+                prev = k;
+                if (map.get(k) - 1 == 0){
+                    map.remove(k);
+                }else{
+                    map.put(k, map.get(k)-1);
+                }
+            }
+        }
+
+
+        return sb.toString();
     }
 
 }
