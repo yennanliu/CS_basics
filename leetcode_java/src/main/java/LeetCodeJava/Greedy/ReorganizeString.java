@@ -38,6 +38,80 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ReorganizeString {
 
     // V0
+    // IDEA : HASHMAP + HEAP
+    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/reorganize-string.py#L35
+    public String reorganizeString(String S) {
+        // Step 1: Count the frequency of each character
+        Map<Character, Integer> charCountMap = new HashMap<>();
+        for (char c : S.toCharArray()) {
+            charCountMap.put(c, charCountMap.getOrDefault(c, 0) + 1);
+        }
+
+        // Step 2: Use a priority queue (max heap) to keep characters sorted by
+        // frequency
+        /** NOTE !!!
+         *
+         *  we use PQ to track the characters count sorted in order
+         */
+        PriorityQueue<Map.Entry<Character, Integer>> maxHeap = new PriorityQueue<>(
+                (a, b) -> b.getValue() - a.getValue());
+        maxHeap.addAll(charCountMap.entrySet());
+
+        // Step 3: Initialize a StringBuilder with a placeholder to avoid indexing
+        // errors
+        StringBuilder result = new StringBuilder("#");
+
+        // Step 4: While the heap is not empty, try to append characters
+        while (!maxHeap.isEmpty()) {
+            boolean stop = true;
+
+            // Iterate over the heap to find the most common character that isn't the last
+            // character in the result
+            List<Map.Entry<Character, Integer>> tempList = new ArrayList<>();
+            while (!maxHeap.isEmpty()) {
+                Map.Entry<Character, Integer> entry = maxHeap.poll();
+                char currentChar = entry.getKey();
+                int count = entry.getValue();
+
+                // If the current character is not the same as the last character in the result
+                /**
+                 *  NOTE !!!
+                 *
+                 *   we get last element of stringBuilder via
+                 *
+                 *   sb.charAt(sb.length() - 1)
+                 */
+                if (currentChar != result.charAt(result.length() - 1)) {
+                    stop = false;
+                    result.append(currentChar);
+
+                    // Decrease the count and add it back to the heap if it's still > 0
+                    if (count - 1 > 0) {
+                        entry.setValue(count - 1);
+                        tempList.add(entry);
+                    }
+                    break;
+                } else {
+                    tempList.add(entry);
+                }
+            }
+
+            // Add back all remaining entries to the heap
+            maxHeap.addAll(tempList);
+
+            // If no valid character was found, break the loop
+            if (stop) {
+                break;
+            }
+        }
+
+        // Step 5: Return the result or an empty string if reorganization is not
+        // possible
+        String reorganizedString = result.substring(1); // Remove the placeholder
+        return reorganizedString.length() == S.length() ? reorganizedString : "";
+    }
+
+    // V0'
     // IDEA : HASHMAP
     // TODO : fix below
 //    public String reorganizeString(String s) {
