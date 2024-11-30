@@ -253,7 +253,6 @@ Arrays.sort(x_array);
 String x_str  = new String(x_array);
 ```
 
-
 ### 1-0-5) Access elements in a String
 ```java
 // java (via .split(""))
@@ -328,6 +327,23 @@ private boolean canForm(String x, String s){
      */
     return j == x.length();
 }
+```
+
+### 1-0-7) Access element in StringBuilder
+
+```java
+// java
+// LC 767
+
+// ...
+
+ StringBuilder sb = new StringBuilder("#");
+
+
+if (currentChar != sb.charAt(sb.length() - 1)) {
+    // ...
+}
+// ...
 ```
 
 ### 1-1) Swap elements in char array
@@ -1061,4 +1077,32 @@ Random random = new Random();
 System.out.println(random.nextInt(10));
 System.out.println(random.nextInt(10));
 System.out.println(random.nextInt(100));
+```
+
+
+### 2-9) HashMap - Track element count in order
+
+```java
+// java
+// LC 767
+
+// ...
+
+// Step 1: Count the frequency of each character
+Map<Character, Integer> charCountMap = new HashMap<>();
+for (char c : S.toCharArray()) {
+    charCountMap.put(c, charCountMap.getOrDefault(c, 0) + 1);
+}
+
+// Step 2: Use a priority queue (max heap) to keep characters sorted by
+// frequency
+/** NOTE !!!
+ *
+ *  we use PQ to track the characters count sorted in order
+ */
+PriorityQueue<Map.Entry<Character, Integer>> maxHeap = new PriorityQueue<>(
+        (a, b) -> b.getValue() - a.getValue());
+maxHeap.addAll(charCountMap.entrySet());
+
+// ...
 ```
