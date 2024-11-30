@@ -215,8 +215,57 @@ public class ReorganizeString {
     }
 
     // V2
+    // IDEA : HASHMAP + array + 26 alphabet consideration (gpt)
+    public String reorganizeString_2(String S) {
+        // Step 1: Count the frequency of each character using an array
+        int[] charCounts = new int[26];
+        for (char c : S.toCharArray()) {
+            charCounts[c - 'a']++;
+        }
+
+        // Step 2: Find the most frequent character
+        int maxCount = 0, maxCharIndex = -1;
+        for (int i = 0; i < 26; i++) {
+            if (charCounts[i] > maxCount) {
+                maxCount = charCounts[i];
+                maxCharIndex = i;
+            }
+        }
+
+        // Step 3: If the most frequent character is more than half the string length, return ""
+        if (maxCount > (S.length() + 1) / 2) {
+            return "";
+        }
+
+        // Step 4: Arrange characters
+        char[] result = new char[S.length()];
+        int index = 0;
+
+        // Fill the most frequent character first
+        while (charCounts[maxCharIndex] > 0) {
+            result[index] = (char) (maxCharIndex + 'a');
+            index += 2; // Fill at even indices first
+            charCounts[maxCharIndex]--;
+        }
+
+        // Fill the remaining characters
+        for (int i = 0; i < 26; i++) {
+            while (charCounts[i] > 0) {
+                if (index >= S.length()) {
+                    index = 1; // Switch to odd indices
+                }
+                result[index] = (char) (i + 'a');
+                index += 2;
+                charCounts[i]--;
+            }
+        }
+
+        return new String(result);
+    }
+
+    // V3
     // https://leetcode.com/problems/reorganize-string/solutions/3948228/100-fast-priorityqueue-with-explanation-c-java-python-c/
-    public String reorganizeString_2(String s) {
+    public String reorganizeString_3(String s) {
         int[] f = new int[26];
         int n = s.length();
 
@@ -266,9 +315,9 @@ public class ReorganizeString {
     }
 
 
-    // V3
+    // V4
     // https://leetcode.com/problems/reorganize-string/solutions/3948110/easy-solution-python3-c-c-java-python-with-image/
-    public String reorganizeString_3(String s) {
+    public String reorganizeString_4(String s) {
         Map<Character, Integer> count = new HashMap<>();
         for (char c : s.toCharArray()) {
             count.put(c, count.getOrDefault(c, 0) + 1);
@@ -355,5 +404,5 @@ public class ReorganizeString {
         }
     }
 
-    // V3
+    // V5
 }
