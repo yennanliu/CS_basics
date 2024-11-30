@@ -61,6 +61,12 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         int end = nums.length - 1;
         while (start <= end) {
             int mid = (start + end) / 2;
+
+            /** NOTE !!!
+             *
+             * 1) nums[mid] >= target (find right boundary)
+             * 2) we put equals condition below  (nums[mid] == target)
+             */
             if (nums[mid] >= target) {
                 end = mid - 1;
             } else {
@@ -78,6 +84,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         int end = nums.length - 1;
         while (start <= end) {
             int mid = (start + end) / 2;
+            /** NOTE !!!
+             *
+             * 1) nums[mid] <= target (find left boundary)
+             * 2) we put equals condition below  (nums[mid] == target)
+             */
             if (nums[mid] <= target) {
                 start = mid + 1;
             } else {
@@ -155,4 +166,47 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
         return idx;
     }
+
+    // V4
+    // IDEA : binary Search (gpt)
+    public int[] searchRange_4(int[] nums, int target) {
+        if (nums == null || nums.length == 0) {
+            return new int[]{-1, -1};
+        }
+
+        int start = findBoundary(nums, target, true);  // Find the left boundary
+        if (start == -1) {
+            return new int[]{-1, -1}; // Target not found
+        }
+
+        int end = findBoundary(nums, target, false); // Find the right boundary
+
+        return new int[]{start, end};
+    }
+
+    private int findBoundary(int[] nums, int target, boolean findStart) {
+        int left = 0;
+        int right = nums.length - 1;
+        int boundary = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target) {
+                boundary = mid;
+                if (findStart) {
+                    right = mid - 1; // Narrow down to the left side
+                } else {
+                    left = mid + 1; // Narrow down to the right side
+                }
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return boundary;
+    }
+
 }
