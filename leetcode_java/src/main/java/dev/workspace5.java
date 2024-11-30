@@ -3537,6 +3537,7 @@ public class workspace5 {
     // IDEA : DFS
     TreeNode leftTree = new TreeNode();
     TreeNode rightTree = new TreeNode();
+
     public TreeNode[] splitBST(TreeNode root, int target) {
         TreeNode[] res = new TreeNode[2];
 
@@ -3563,7 +3564,7 @@ public class workspace5 {
             leftTree.left = root.left;
             buildTreeDfs(leftTree, target);
         }
-       return null;
+        return null;
     }
 
 //    public TreeNode[] splitBST(TreeNode root, int target) {
@@ -3612,6 +3613,7 @@ public class workspace5 {
     // LC 31
     // https://leetcode.com/problems/next-permutation/description/
     // 5.39 pm - 6.15 pm
+
     /**
      *
      *   exp 1) [1,2,3] -> [1,3,2]
@@ -3666,6 +3668,7 @@ public class workspace5 {
     // LC 253
     // https://leetcode.ca/all/253.html
     // 4.57 pm - 5.10 pm
+
     /**
      * [[s1,e1],[s2,e2],...]
      *
@@ -3711,6 +3714,7 @@ public class workspace5 {
             return status;
         }
     }
+
     public int minMeetingRooms(int[][] intervals) {
         if (intervals.length <= 1){
             return intervals.length;
@@ -3759,6 +3763,7 @@ public class workspace5 {
 
     // LC 153
     // 5.07 PM - 5.20 PM
+
     /**
      *
      *  Input : [4,5,6,7,0,1,2]
@@ -3814,6 +3819,7 @@ public class workspace5 {
 
         return -1;
     }
+
     /**
      *
      *  [4,5,6,7,0,1,2]
@@ -4010,7 +4016,7 @@ public class workspace5 {
                 }
                 // else
                 else{
-                   left = mid + 1;
+                    left = mid + 1;
                 }
 
             }
@@ -4023,6 +4029,7 @@ public class workspace5 {
     // LC 722
     // https://leetcode.com/problems/remove-comments/
     // 7.41 pm - 8.15 pm
+
     /**
      *  Idea 1) string op
      *      a tmp array that collect "Not comment" element,
@@ -4102,6 +4109,78 @@ public class workspace5 {
             Integer[] keyArray = this.map.keySet().toArray(new Integer[this.map.keySet().size()]);
             return keyArray[randomIdx];
         }
+    }
+
+    // LC 34
+    // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+    // 3.10 - 3.20 pm
+
+    /**
+     * Idea 1) : // binary search
+     * <p>
+     * -> find mid == target
+     * -> then check start, end idx
+     */
+
+    public int[] searchRange(int[] nums, int target) {
+
+        if (nums.length == 0) {
+            return new int[]{-1, -1};
+        }
+
+        if (nums.length == 1) {
+            if (nums[0] == target) {
+                return new int[]{0, 0};
+            }
+            return new int[]{-1, -1};
+        }
+
+        // binary search
+        int left = 0;
+        int right = nums.length - 1;
+        int mid = -1;
+        while (right >= left) {
+            mid = (left + right) / 2;
+            if (nums[mid] == target) {
+                break;
+            }
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        if (nums[mid] != target) {
+            //mid = -1;
+            return new int[]{-1, -1};
+        }
+        System.out.println(">>> mid = " + mid);
+
+        // check start, end idx
+        int[] res = new int[2];
+        int start = mid;
+        int end = mid;
+        while (start >= 0 && nums[start] == target) {
+            start -= 1;
+        }
+
+        while (end < nums.length - 1 && nums[end] == target) {
+            end += 1;
+        }
+
+        // todo : optimize
+        if(nums[start] != target){
+            start += 1;
+        }
+        if (nums[end] != target){
+            end -= 1;
+        }
+
+        res[0] = start;
+        res[1] = end;
+
+        return res;
     }
 
 }
