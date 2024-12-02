@@ -5,11 +5,91 @@ package LeetCodeJava.HashTable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * 347. Top K Frequent Elements
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [1,1,1,2,2,3], k = 2
+ * Output: [1,2]
+ * Example 2:
+ *
+ * Input: nums = [1], k = 1
+ * Output: [1]
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= nums.length <= 105
+ * -104 <= nums[i] <= 104
+ * k is in the range [1, the number of unique elements in the array].
+ * It is guaranteed that the answer is unique.
+ *
+ *
+ * Follow up: Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+ *
+ */
 public class TopKFrequentElements {
 
     // V0
-    // IDEA : HASHMAP + ARRAY ORDERING
+    // IDEA : HASHMAP + CUSTOM ORDER PQ
     public int[] topKFrequent(int[] nums, int k) {
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (Integer x : nums) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *   we set PQ as Integer type, (PriorityQueue<Integer>)
+         *   and order PQ by map value (descending order) (x, y) -> map.get(x) - map.get(y)
+         *
+         *
+         *
+         *  below is wrong (no need to put Map.Entry into PQ)
+         *
+         *  //        PriorityQueue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>(
+         * //                (x, y) -> map.get(x) - map.get(y)
+         * //        );
+         *
+         */
+        // PQ with custom logic
+        PriorityQueue<Integer> pq = new PriorityQueue<>(
+                (x, y) -> map.get(x) - map.get(y)
+        );
+
+        // NOTE !!! add map element to PQ
+        for (Integer key : map.keySet()){
+            pq.add(key);
+            // pop element is size > k
+            if (pq.size() > k){
+                pq.poll();
+            }
+        }
+
+        // pop elements from PQ
+        int tmp = 0;
+        int[] res = new int[k];
+        while (tmp < k) {
+            res[tmp] = pq.poll();
+            tmp += 1;
+        }
+
+        return res;
+    }
+
+    // V0-1
+    // IDEA : HASHMAP + ARRAY ORDERING
+    public int[] topKFrequent_0_1(int[] nums, int k) {
 
         if (nums.equals(null) || nums.length == 0){
             return null;
@@ -54,9 +134,9 @@ public class TopKFrequentElements {
         return res;
     }
 
-    // V0'
+    // V0-2
     // IDEA : PQ (priority queue)
-    public int[] topKFrequent_0(int[] nums, int k) {
+    public int[] topKFrequent_0_2(int[] nums, int k) {
 
         // O(1) time
         if (k == nums.length) {
@@ -120,9 +200,9 @@ public class TopKFrequentElements {
         return top;
     }
 
-    // V0''
+    // V0-3
     // IDEA : HASH MAP + PQ (by GPT)
-    public int[] topKFrequent_0_1(int[] nums, int k) {
+    public int[] topKFrequent_0_3(int[] nums, int k) {
 
         // Step 1. Count the frequency of each element
         Map<Integer, Integer> countMap = new HashMap<>();
@@ -153,9 +233,9 @@ public class TopKFrequentElements {
         return topK;
     }
 
-    // V0'''
+    // V0-4
     // IDEA : PQ + MAP
-    public int[] topKFrequent_0_2(int[] nums, int k) {
+    public int[] topKFrequent_0_4(int[] nums, int k) {
 
         if (nums.length == 1){
             return nums;
