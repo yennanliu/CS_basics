@@ -50,6 +50,8 @@ public class TopKFrequentElements {
         /**
          *  NOTE !!!
          *
+         *  Set PQ with map count in ASCENDING order (e.g. smaller count -> bigger count)
+         *
          *   we set PQ as Integer type, (PriorityQueue<Integer>)
          *   and order PQ by map value (descending order) (x, y) -> map.get(x) - map.get(y)
          *
@@ -62,7 +64,9 @@ public class TopKFrequentElements {
          * //        );
          *
          */
-        // PQ with custom logic
+        // PQ with custom logic (increasing order, e.g. order with smaller count val -> bigger count val
+        // or, we can sort with decreasing order, then we don't need to remove element when pq size > k
+        // (check below example)
         PriorityQueue<Integer> pq = new PriorityQueue<>(
                 (x, y) -> map.get(x) - map.get(y)
         );
@@ -74,6 +78,47 @@ public class TopKFrequentElements {
             if (pq.size() > k){
                 pq.poll();
             }
+        }
+
+        // pop elements from PQ
+        int tmp = 0;
+        int[] res = new int[k];
+        while (tmp < k) {
+            res[tmp] = pq.poll();
+            tmp += 1;
+        }
+
+        return res;
+    }
+
+    // V0-0-1
+    public int[] topKFrequent_0_1_1(int[] nums, int k) {
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (Integer x : nums) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *  Set PQ with map count in DECREASING order (e.g. bigger count -> smaller count)
+         *
+         */
+        // PQ with custom logic
+        PriorityQueue<Integer> pq = new PriorityQueue<>(
+                (x, y) -> map.get(y) - map.get(x) // NOTE here
+        );
+
+        // NOTE !!! add map element to PQ
+        for (Integer key : map.keySet()){
+            pq.add(key);
+            /**
+             *  NOTE !!! if PQ sort in decreasing order, NO NEED to drop PQ element when size > k
+             */
+            // if (pq.size() > k){
+            //     pq.poll();
+            // }
         }
 
         // pop elements from PQ
