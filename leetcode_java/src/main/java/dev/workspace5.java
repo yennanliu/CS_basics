@@ -3,7 +3,6 @@ package dev;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class workspace5 {
 
@@ -29,13 +28,15 @@ public class workspace5 {
         public Node prev;
         public Node next;
         public Node child;
-    };
+    }
+
+    ;
 
     public Node flatten(Node head) {
-        if(head == null){
+        if (head == null) {
             return head;
         }
-        if (head.next == null && head.child == null){
+        if (head.next == null && head.child == null) {
             return head;
         }
         Node node = new Node();
@@ -49,7 +50,7 @@ public class workspace5 {
          *  -> so we deal with child node via dfs (recursive)
          *  -> and deal with next node via while loop (iteration)
          */
-        while(cur != null){
+        while (cur != null) {
 
             Node _next = cur.next;
             cur.next = cur.child; // NOTE !!! need to flatten
@@ -59,7 +60,7 @@ public class workspace5 {
 
             _child.next = _next;
 
-            if (_next != null){
+            if (_next != null) {
                 _next.prev = _child;
             }
 
@@ -83,11 +84,11 @@ public class workspace5 {
         return ans;
     }
 
-    private Node dfs(Node head){
-        if (head == null){
+    private Node dfs(Node head) {
+        if (head == null) {
             return null;
         }
-        while (head.child != null){
+        while (head.child != null) {
             Node _child = head.child;
             head.child = this.dfs(head);
             head = _child;
@@ -142,14 +143,14 @@ public class workspace5 {
     // 8.23 pm - 8.40 pm
     public int shipWithinDays(int[] weights, int days) {
 
-        if (weights.length==1){
+        if (weights.length == 1) {
             return weights[0] / days;
         }
 
         List<Integer> weightsList = new ArrayList<>();
         int maxWeight = 0;
         int totalWeight = 0;
-        for (int w : weights){
+        for (int w : weights) {
             weightsList.add(w);
             maxWeight = Math.max(maxWeight, w);
             totalWeight += w;
@@ -158,33 +159,33 @@ public class workspace5 {
         int left = maxWeight;
         int right = totalWeight;
         // binary search
-        while(right > left){
+        while (right > left) {
             int mid = (left + right) / 2;
             int calculatedDays = getDays(weightsList, mid);
-            System.out.println(">>> mid = " + mid  + ", maxWeight = " + maxWeight + ", totalWeight = " + totalWeight);
+            System.out.println(">>> mid = " + mid + ", maxWeight = " + maxWeight + ", totalWeight = " + totalWeight);
             // need to return max possible speed within D days
-            if (calculatedDays <= days){
+            if (calculatedDays <= days) {
                 right = mid;
-            }else{
-                left = mid+1;
+            } else {
+                left = mid + 1;
             }
         }
 
         return left; // ??? or return mid
     }
 
-    private int getDays(List<Integer> weightsList, int speed){
+    private int getDays(List<Integer> weightsList, int speed) {
         int cur = 0;
         int days = 0;
-        for (Integer w :weightsList){
-            if (cur + w <= speed){
+        for (Integer w : weightsList) {
+            if (cur + w <= speed) {
                 cur += w;
-            }else{
+            } else {
                 days += 1;
                 cur = w;
             }
         }
-        if (cur > 0){
+        if (cur > 0) {
             days += 1;
         }
         System.out.println(">>> speed = " + speed + ", days = " + days);
@@ -195,31 +196,30 @@ public class workspace5 {
     // 7.41 - 8.10 pm
 
     /**
-     *  NOTE !!!
-     *
-     *   Return the minimum area of a rectangle ...
-     *
-     *
-     *   exp 1:
-     *
-     *   Input: points = [[1,1],[1,3],[3,1],[3,3],[2,2]]
-     *   Output: 4
-     *
-     *
-     *
-     *   idea  1:
-     *     get min "x len"
-     *     and get min "y len"
-     *     then ans = x_len * y_len
-     *
-     *  idea 2 :
-     *
-     *    hash map
-     *
-     *    {"x": [y1, y2,,,],
-     *    "y" : [x1, x2,,,,]
-     *    }
-     *
+     * NOTE !!!
+     * <p>
+     * Return the minimum area of a rectangle ...
+     * <p>
+     * <p>
+     * exp 1:
+     * <p>
+     * Input: points = [[1,1],[1,3],[3,1],[3,3],[2,2]]
+     * Output: 4
+     * <p>
+     * <p>
+     * <p>
+     * idea  1:
+     * get min "x len"
+     * and get min "y len"
+     * then ans = x_len * y_len
+     * <p>
+     * idea 2 :
+     * <p>
+     * hash map
+     * <p>
+     * {"x": [y1, y2,,,],
+     * "y" : [x1, x2,,,,]
+     * }
      */
     // 2,53 -> 3.05
     public int minAreaRect(int[][] points) {
@@ -228,13 +228,13 @@ public class workspace5 {
         Map<Integer, Set<Integer>> mapX = new HashMap<>();
         //Map<Integer, List<Integer>> mapY = new HashMap<>();
 
-        for (int[] point : points){
+        for (int[] point : points) {
 
             int x = point[0];
             //int y = point[1];
 
             // xList : list of "y coordination" with given x
-            Set<Integer> xList =  mapX.getOrDefault(x, new HashSet<>());
+            Set<Integer> xList = mapX.getOrDefault(x, new HashSet<>());
             //List<Integer> yList =  mapY.getOrDefault(x, new ArrayList<>());
 
 //            if(!xList.contains(y)){
@@ -249,10 +249,10 @@ public class workspace5 {
 
         int res = Integer.MAX_VALUE;
 
-        for (int i = 0; i < points.length; i++){
+        for (int i = 0; i < points.length; i++) {
             // NOTE !! int j = i+1; j <points.length; j++
             // not j = 0
-            for (int j = i+1; j <points.length; j++){
+            for (int j = i + 1; j < points.length; j++) {
                 int x1 = points[i][0];
                 int y1 = points[i][1];
                 int x2 = points[j][0];
@@ -262,8 +262,8 @@ public class workspace5 {
                 // !mapX.get(x1).equals(y1) ; the y coordination is not (x1, y1) (not itself)
                 //boolean canFormRectangle = (x1 != x2 && y1 != y2 && mapX.containsKey(x1) && mapX.containsKey(x2) && !mapX.get(x1).equals(y1) && !mapX.get(x2).equals(y2));
                 boolean canFormRectangle = mapX.get(x1).contains(y2) && mapX.get(x2).contains(y1);
-                if (x1 != x2 && y1 != y2){
-                    if (canFormRectangle){
+                if (x1 != x2 && y1 != y2) {
+                    if (canFormRectangle) {
                         int area = Math.abs(x2 - x1) * Math.abs(y2 - y1);
                         res = Math.min(res, area);
                     }
@@ -297,7 +297,7 @@ public class workspace5 {
     List<String> collected = new ArrayList<>();
 
     public String[] expand(String s) {
-        if (s.length() < 3){
+        if (s.length() < 3) {
             return new String[]{s};
         }
 
@@ -308,22 +308,22 @@ public class workspace5 {
         return null;
     }
 
-    private List<String> getCandidates(String s){
+    private List<String> getCandidates(String s) {
         return null;
     }
 
-    private void backtrack(int startIdx, List<String> candidates, List<String> cur){
-        if (cur.size() == candidates.size()){
+    private void backtrack(int startIdx, List<String> candidates, List<String> cur) {
+        if (cur.size() == candidates.size()) {
             StringBuilder sb = new StringBuilder();
-            for (String x : cur){
+            for (String x : cur) {
                 sb.append(x);
             }
             String str = sb.toString();
-            if (!this.collected.contains(str)){
+            if (!this.collected.contains(str)) {
                 this.collected.add(str);
             }
         }
-        if (cur.size() > candidates.size()){
+        if (cur.size() > candidates.size()) {
             return;
         }
         // ??? check
@@ -423,32 +423,30 @@ public class workspace5 {
      *
      */
     /**
-     *
-     *  exp 1:
-     *
-     *  input : "foo", "bar", 1
-     *
-     *  {"foo" :  ["bar", 1]}
-     *
-     *  {"foo" :  ["bar", [1]]}
-     *
-     *  {"foo" :  {"bar" : [1]} }
-     *
-     *  {"foo" :  ["bar" : [1]] }
-     *
-     *  {"foo" : ["bar-1", "bar2-4", ...]}
-     *
-     *   map : {"foo" : ["bar", "bar2", ...]}
-     *   time_array : [ 1,4,...]
-     *
-     *   {"foo" : [1,4,...]}
-     *
-     *
-     *   input : "foo", "zee", 2
-     *
-     *
-     *   {"foo" : {"bar":1, "bar2" : 4, ....}}
-     *
+     * exp 1:
+     * <p>
+     * input : "foo", "bar", 1
+     * <p>
+     * {"foo" :  ["bar", 1]}
+     * <p>
+     * {"foo" :  ["bar", [1]]}
+     * <p>
+     * {"foo" :  {"bar" : [1]} }
+     * <p>
+     * {"foo" :  ["bar" : [1]] }
+     * <p>
+     * {"foo" : ["bar-1", "bar2-4", ...]}
+     * <p>
+     * map : {"foo" : ["bar", "bar2", ...]}
+     * time_array : [ 1,4,...]
+     * <p>
+     * {"foo" : [1,4,...]}
+     * <p>
+     * <p>
+     * input : "foo", "zee", 2
+     * <p>
+     * <p>
+     * {"foo" : {"bar":1, "bar2" : 4, ....}}
      */
     // 5.57 PM - 6.20 pm
 
@@ -478,7 +476,7 @@ public class workspace5 {
         }
 
         public String get(String key, int timestamp) {
-            if (!this.keyValueMap.containsKey(key)){
+            if (!this.keyValueMap.containsKey(key)) {
                 return "";
             }
             // linear search
@@ -496,18 +494,18 @@ public class workspace5 {
             return idx >= 0 ? this.keyValueMap.get(key).get(idx) : "";
         }
 
-        private int binaryGetLatestTime(int timestamp, List<Integer> times){
+        private int binaryGetLatestTime(int timestamp, List<Integer> times) {
             int left = 0;
             int right = times.size() - 1;
-            while (right >= left){
+            while (right >= left) {
                 int mid = (left + right) / 2;
                 Integer val = times.get(mid);
-                if (val.equals(timestamp)){
+                if (val.equals(timestamp)) {
                     return mid;
                 }
-                if (val > timestamp){
+                if (val > timestamp) {
                     right = mid - 1;
-                }else{
+                } else {
                     left = mid + 1;
                 }
             }
@@ -646,16 +644,14 @@ public class workspace5 {
      *     If it is impossible for all the n nodes to receive the signal, return -1.
      */
     /**
-     *  idea :
-     *
-     *
+     * idea :
      */
     public int networkDelayTime(int[][] times, int n, int k) {
         Set<Integer> nodes = new HashSet<>();
-        for (int[] x :times){
+        for (int[] x : times) {
             nodes.add(x[0]);
         }
-        if(!nodes.contains(k)){
+        if (!nodes.contains(k)) {
             return -1; // not possible to visit "k" node
         }
         int time = 0;
@@ -663,7 +659,7 @@ public class workspace5 {
         // build graph
         Map<Integer, Set<Integer>> map = new HashMap<>();
 
-        for (int[] x :times){
+        for (int[] x : times) {
             Set<Integer> neighbors = map.getOrDefault(x[0], new HashSet<>());
             neighbors.add(x[1]);
             map.put(x[0], neighbors);
@@ -673,21 +669,21 @@ public class workspace5 {
         Set<Integer> visited = new HashSet<>();
         Queue<Integer> queue = new LinkedList<>();
         queue.add(k);
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             int cur = queue.poll();
-            if (map.containsKey(cur) && !visited.contains(cur)){
+            if (map.containsKey(cur) && !visited.contains(cur)) {
                 visited.add(cur);
                 Set<Integer> neighbors = map.get(cur);
                 //time += map.g
-                for (Integer node : neighbors){
-                    if(!visited.contains(cur)){ // check ?
+                for (Integer node : neighbors) {
+                    if (!visited.contains(cur)) { // check ?
                         queue.add(node);
                     }
                 }
             }
         }
 
-        if (visited.size() < k){
+        if (visited.size() < k) {
             return -1;
         }
         return time;
@@ -700,34 +696,33 @@ public class workspace5 {
     /**
      * preorder  :  root -> left -> right
      * postorder : left -> right -> root
-     *
+     * <p>
      * idea 1:
-     *   1. preorder : get root
-     *   2. postorder : split left, right sub tree and root
-     *   3. preorder : get next root
-     *
-     *   4. 1st element in left sub tree in pre-order
-     *      is the LAST element of  left sub tree in post-order (???)
-     *
-     *
-     *  idea 2 :
-     *
-     *
-     *  1. 2nd element (idx=1) in pre-order is
-     *     lest element of sub left tree (e.g. sub left tree root) in post-order
-     *
-     *  2. we then can know "tree width" via above
-     *     -> distance between left and root
-     *
+     * 1. preorder : get root
+     * 2. postorder : split left, right sub tree and root
+     * 3. preorder : get next root
+     * <p>
+     * 4. 1st element in left sub tree in pre-order
+     * is the LAST element of  left sub tree in post-order (???)
+     * <p>
+     * <p>
+     * idea 2 :
+     * <p>
+     * <p>
+     * 1. 2nd element (idx=1) in pre-order is
+     * lest element of sub left tree (e.g. sub left tree root) in post-order
+     * <p>
+     * 2. we then can know "tree width" via above
+     * -> distance between left and root
      */
     public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
 
         // edge case
-        if(preorder == null || postorder == null || preorder.length == 0 || postorder.length == 0){
+        if (preorder == null || postorder == null || preorder.length == 0 || postorder.length == 0) {
             return null;
         }
 
-        if (preorder.length == 1){
+        if (preorder.length == 1) {
             return new TreeNode(postorder[0]);
         }
 
@@ -735,8 +730,8 @@ public class workspace5 {
         int mid = 0;
 
         // find mid
-        for (int i = 0; i < postorder.length; i++){
-            if (postorder[i] == preorder[0]){
+        for (int i = 0; i < postorder.length; i++) {
+            if (postorder[i] == preorder[0]) {
                 mid = i;
                 break;
             }
@@ -744,7 +739,7 @@ public class workspace5 {
 
         // recursive build tree
 
-        root.left = this.constructFromPrePost(Arrays.copyOfRange(preorder, 1, mid-1), Arrays.copyOfRange(postorder, 1, mid-1));
+        root.left = this.constructFromPrePost(Arrays.copyOfRange(preorder, 1, mid - 1), Arrays.copyOfRange(postorder, 1, mid - 1));
         root.right = this.constructFromPrePost(preorder, postorder);
 
         return root;
@@ -756,51 +751,50 @@ public class workspace5 {
 
     /**
      * NOTE !!!
-     *
-     *  return the longest string in the dictionary
-     *  that can be formed by deleting some of the
-     *  given string characters.
-     *
-     *  If there is more than one possible result,
-     *  -> return the 1) longest word with 2) the smallest lexicographical order.
-     *
-     *  If there is no possible result, return the empty string.
-     *
-     *
-     *  lexicographical : 字母序 (?)
-     *
-     *
-     *  idea 1)
-     *
-     *   1. loop over dict
-     *      maintain a res string
-     *   2. check if can "delete some element" in s,
-     *      -> check via compare dict element
-     *      so can be same as dict
-     *      if ok, save value
-     *
-     *      e.g. :
-     *         s = {a:2, b:1, p:2, c:1, l:1, e:1}
-     *         so, for ale, it is {a:1, l:1, e:1} OK, ale
-     *             for apple, it is {a:1, p:2, l:1, e: 1}, OK, apple
-     *         ...
-     *         collected = [ale, apple, plea],
-     *         apple is apple, so return apple as ans
-     *
-     *
-     *
-     *      e.g:
-     *        s = {a:2, b:1, p:2, c:1, l:e, e:1}
-     *        ...
-     *        collected = [a,b,c]
-     *        return a as ans
-     *
-     *
-     *   3. check longest and return ans
-     *
+     * <p>
+     * return the longest string in the dictionary
+     * that can be formed by deleting some of the
+     * given string characters.
+     * <p>
+     * If there is more than one possible result,
+     * -> return the 1) longest word with 2) the smallest lexicographical order.
+     * <p>
+     * If there is no possible result, return the empty string.
+     * <p>
+     * <p>
+     * lexicographical : 字母序 (?)
+     * <p>
+     * <p>
+     * idea 1)
+     * <p>
+     * 1. loop over dict
+     * maintain a res string
+     * 2. check if can "delete some element" in s,
+     * -> check via compare dict element
+     * so can be same as dict
+     * if ok, save value
+     * <p>
+     * e.g. :
+     * s = {a:2, b:1, p:2, c:1, l:1, e:1}
+     * so, for ale, it is {a:1, l:1, e:1} OK, ale
+     * for apple, it is {a:1, p:2, l:1, e: 1}, OK, apple
+     * ...
+     * collected = [ale, apple, plea],
+     * apple is apple, so return apple as ans
+     * <p>
+     * <p>
+     * <p>
+     * e.g:
+     * s = {a:2, b:1, p:2, c:1, l:e, e:1}
+     * ...
+     * collected = [a,b,c]
+     * return a as ans
+     * <p>
+     * <p>
+     * 3. check longest and return ans
      */
     public String findLongestWord(String s, List<String> dictionary) {
-        if (dictionary.size() == 0 && s != null){
+        if (dictionary.size() == 0 && s != null) {
             return "";
         }
 
@@ -809,16 +803,16 @@ public class workspace5 {
 
         List<String> collected = new ArrayList<>();
         // check
-        for (String item : dictionary){
+        for (String item : dictionary) {
             //Map<String, Integer> curMap = this.getElementCount(item);
-            if (canForm(item, s)){
+            if (canForm(item, s)) {
                 collected.add(item);
             }
         }
 
         System.out.println(">>> collected = " + collected);
 
-        if (collected.size()==0){
+        if (collected.size() == 0) {
             return "";
         }
 
@@ -840,17 +834,17 @@ public class workspace5 {
         return collected.get(0);
     }
 
-    private Map<String, Integer> getElementCount(String s){
+    private Map<String, Integer> getElementCount(String s) {
         Map<String, Integer> map = new HashMap<>();
-        for(String x : s.split("")){
+        for (String x : s.split("")) {
             int cnt = map.getOrDefault(x, 0);
-            map.put(x, cnt+1);
+            map.put(x, cnt + 1);
         }
         return map;
     }
 
     // isSubsequence_3(str, s)
-    private boolean canForm(String x, String y){
+    private boolean canForm(String x, String y) {
 //        Map<String, Integer> sMap = this.getElementCount(s);
 //        Map<String, Integer> curMap = this.getElementCount(item);
 //        for (String k: curMap.keySet()){
@@ -889,31 +883,30 @@ public class workspace5 {
     // 3.38 pm - 3.48
 
     /**
-     *  find the largest square containing only 1's and return its area.
-     *
-     *
-     *  idea 1)
-     *
-     *  1
-     *
-     *  11
-     *  1?
-     *
-     *  111
-     *  111
-     *  11?
-     *
-     *
-     *  dp[0][0] = 1 or 0
-     *
-     *  dp[i][j] = if (dp[i-1]dp[j]==1 && dp[i]dp[j-1]==1), then 1
-     *             else 0
-     *
-     *  ...
-     *
+     * find the largest square containing only 1's and return its area.
+     * <p>
+     * <p>
+     * idea 1)
+     * <p>
+     * 1
+     * <p>
+     * 11
+     * 1?
+     * <p>
+     * 111
+     * 111
+     * 11?
+     * <p>
+     * <p>
+     * dp[0][0] = 1 or 0
+     * <p>
+     * dp[i][j] = if (dp[i-1]dp[j]==1 && dp[i]dp[j-1]==1), then 1
+     * else 0
+     * <p>
+     * ...
      */
     public int maximalSquare(char[][] matrix) {
-        if (matrix.length == 1 && matrix[0].length == 1){
+        if (matrix.length == 1 && matrix[0].length == 1) {
             return matrix[0][0];
         }
 
@@ -928,48 +921,47 @@ public class workspace5 {
 //    int nodeCnt = 0;
 
     /**
-     *  idea 1
-     *
-     *   1. if player1 color at root
-     *       - player 2 can color at one of left sub tree
-     *       - player 2 can color at one of right sub tree
-     *
-     *   2. if player1 color at one of left sub tree
-     *      - player 2 can color at root
-     *      - player 2 can color at one of left sub tree
-     *      - player 2 can color at one of right sub tree
-     *
-     *   3. if player1 color at one of right sub tree
-     *      - player 2 can color at root
-     *      - player 2 can color at one of left sub tree
-     *      - player 2 can color at one of right sub tree
-     *
-     *
-     *  -> finally, compare player1 color VS total color
-     *  e.g.  (n - player1_color) > 2 / n ?
-     *
+     * idea 1
+     * <p>
+     * 1. if player1 color at root
+     * - player 2 can color at one of left sub tree
+     * - player 2 can color at one of right sub tree
+     * <p>
+     * 2. if player1 color at one of left sub tree
+     * - player 2 can color at root
+     * - player 2 can color at one of left sub tree
+     * - player 2 can color at one of right sub tree
+     * <p>
+     * 3. if player1 color at one of right sub tree
+     * - player 2 can color at root
+     * - player 2 can color at one of left sub tree
+     * - player 2 can color at one of right sub tree
+     * <p>
+     * <p>
+     * -> finally, compare player1 color VS total color
+     * e.g.  (n - player1_color) > 2 / n ?
      */
     public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
 
-        if (root.left==null && root.right==null){
+        if (root.left == null && root.right == null) {
             return false;
         }
 
         // case 1: player color "root"
-        if (x == root.val){
+        if (x == root.val) {
             return btreeGameWinningMove(root.left, n, x)
                     || btreeGameWinningMove(root.right, n, x);
         }
 
         // case 2: player color "sub left tree"
-        if (root.left != null && x == root.left.val){
+        if (root.left != null && x == root.left.val) {
             return btreeGameWinningMove(root, n, x)
                     || btreeGameWinningMove(root.left, n, x)
                     || btreeGameWinningMove(root.right, n, x);
         }
 
         // case 3: player color "sub right tree"
-        if (root.right != null && x == root.right.val){
+        if (root.right != null && x == root.right.val) {
             return btreeGameWinningMove(root, n, x)
                     || btreeGameWinningMove(root.left, n, x)
                     || btreeGameWinningMove(root.right, n, x);
@@ -978,12 +970,12 @@ public class workspace5 {
         return false;
     }
 
-    private TreeNode findNode(TreeNode root, int x){
+    private TreeNode findNode(TreeNode root, int x) {
         // ??
-        if (root == null){
+        if (root == null) {
             return null;
         }
-        if (root.val == x){
+        if (root.val == x) {
             return root;
         }
         root.left = findNode(root.left, x);
@@ -992,9 +984,9 @@ public class workspace5 {
         return root;
     }
 
-    private int getColorCountAtX(TreeNode root, int x){
+    private int getColorCountAtX(TreeNode root, int x) {
         // ???
-        if (root == null){
+        if (root == null) {
             return 0;
         }
         TreeNode node = this.findNode(root, x);
@@ -1005,11 +997,11 @@ public class workspace5 {
 
     public boolean btreeGameWinningMove_1(TreeNode root, int n, int x) {
 
-        if (root.left==null && root.right==null){
+        if (root.left == null && root.right == null) {
             return false;
         }
 
-        if (root.left==null || root.right==null){
+        if (root.left == null || root.right == null) {
             return false;
         }
 
@@ -1031,25 +1023,25 @@ public class workspace5 {
         return player1Cnt < n / 2;
     }
 
-    private int getSubNodeCountWithStartPoint(TreeNode root, int cnt, int x, boolean flag){
+    private int getSubNodeCountWithStartPoint(TreeNode root, int cnt, int x, boolean flag) {
 
-        if (root == null){
+        if (root == null) {
             return cnt;
         }
         // if "found" the start point
-        if (root.val == x){
+        if (root.val == x) {
             flag = true;
         }
         // once start point is found, all the following nodes need to be count
-        if (flag){
+        if (flag) {
             cnt += 1;
         }
         return this.getSubNodeCountWithStartPoint(root.left, cnt, x, flag) +
                 this.getSubNodeCountWithStartPoint(root.right, cnt, x, flag);
     }
 
-    private int getAllNodeCount(TreeNode root, int cnt){
-        if (root == null){
+    private int getAllNodeCount(TreeNode root, int cnt) {
+        if (root == null) {
             return cnt;
         }
         return 1 + this.getAllNodeCount(root.left, cnt) +
@@ -1065,7 +1057,7 @@ public class workspace5 {
 
         // dfs
         // edge case
-        if (grid.length == 1 && grid[0].length == 1){
+        if (grid.length == 1 && grid[0].length == 1) {
             return grid[0][0];
         }
 
@@ -1074,9 +1066,9 @@ public class workspace5 {
 
         // collect "start point" candidate
         List<List<Integer>> startCandidates = new ArrayList<>();
-        for (int i = 0; i < l; i++){
-            for (int j = 0; j < w; j++){
-                if (grid[i][j] > 0){
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                if (grid[i][j] > 0) {
                     //int[][] cur = new int[][]{{i,j}};
                     List<Integer> cur = new ArrayList<>();
                     cur.add(i);
@@ -1087,9 +1079,9 @@ public class workspace5 {
         }
 
         // dfs + backtrack
-        for (int i = 0; i < l; i++){
-            for (int j = 0; j < w; j++){
-                if (grid[i][j] > 0){
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                if (grid[i][j] > 0) {
                     Boolean[][] visited = new Boolean[l][w];
                     int val = 0;
                     int goldValue = this.getGold(j, i, val, grid, visited);
@@ -1106,9 +1098,9 @@ public class workspace5 {
         return maxGold;
     }
 
-    private int getGold(int x, int y, int val, int[][] grid, Boolean[][] visited){
+    private int getGold(int x, int y, int val, int[][] grid, Boolean[][] visited) {
 
-        int[][] moves = new int[][]{{0,1}, {0,-1}, {1,0}, {-1,0}};
+        int[][] moves = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
         int l = grid.length;
         int w = grid[0].length;
@@ -1117,10 +1109,10 @@ public class workspace5 {
 //            return 0;
 //        }
         val += grid[y][x];
-        for (int[] move : moves){
+        for (int[] move : moves) {
             int x_ = x + move[0];
             int y_ = y + move[1];
-            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && !visited[y_][x_]){
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && !visited[y_][x_]) {
                 visited[y_][x_] = true;
                 val += grid[y_][x_];
                 this.getGold(x_, y_, val, grid, visited);
@@ -1139,16 +1131,13 @@ public class workspace5 {
     // idea : presum array + binary search (?
 
     /**
-     *  ep 1:
-     *
-     *   w = [1, 3]
-     *   -> preSum = [0,1,4]
-     *   -> so
-     *       sum(0) = preSum(1) - preSum(0) = 1
-     *       sum(1) = preSum(2) - preSum(0) = 4
-     *
-     *
-     *
+     * ep 1:
+     * <p>
+     * w = [1, 3]
+     * -> preSum = [0,1,4]
+     * -> so
+     * sum(0) = preSum(1) - preSum(0) = 1
+     * sum(1) = preSum(2) - preSum(0) = 4
      */
     class Solution {
 
@@ -1158,20 +1147,20 @@ public class workspace5 {
         public Solution(int[] w) {
 
             this.w = w;
-            this.preSumArray = new int[w.length+1];
+            this.preSumArray = new int[w.length + 1];
             preSumArray[0] = 0;
 
             // build preSumArray
             int preSum = 0;
-            for (int i = 0; i < w.length; i++){
+            for (int i = 0; i < w.length; i++) {
                 int cur = w[i];
                 preSum += cur;
-                preSumArray[i+1] = preSum;
+                preSumArray[i + 1] = preSum;
             }
         }
 
         public int pickIndex() {
-            if (this.w.length==1){
+            if (this.w.length == 1) {
                 return 0;
             }
 
@@ -1180,16 +1169,17 @@ public class workspace5 {
             int x = random.nextInt();
             int l = 0;
             int r = preSumArray.length;
-            while (r >= l){
-                int mid = (l+r) / 2;
+            while (r >= l) {
+                int mid = (l + r) / 2;
                 // ???? TODO : fix
-                if (mid == x){
-                    int curSum = preSumArray[mid+1] - preSumArray[0];
-                    int total = preSumArray[preSumArray.length-1];
+                if (mid == x) {
+                    int curSum = preSumArray[mid + 1] - preSumArray[0];
+                    int total = preSumArray[preSumArray.length - 1];
                     return curSum / total;
-                }if (mid > x){
-                    r = mid-1;
-                }else{
+                }
+                if (mid > x) {
+                    r = mid - 1;
+                } else {
                     l = mid + 1;
                 }
             }
@@ -1222,12 +1212,10 @@ public class workspace5 {
     // 0720 - 0730
 
     /**
-     *
      * Given an integer array nums,
      * return true if there exists a triple of indices (i, j, k)
      * such that i < j < k and nums[i] < nums[j] < nums[k].
      * If no such indices exists, return false.
-     *
      */
     public boolean increasingTriplet(int[] nums) {
 
@@ -1235,14 +1223,14 @@ public class workspace5 {
         Integer biggest_2 = Integer.MAX_VALUE;
         //Integer biggest_3 = Integer.MAX_VALUE;
 
-        for (int x : nums){
-            if (biggest_1 >= x){
+        for (int x : nums) {
+            if (biggest_1 >= x) {
                 biggest_1 = x;
             }
             // else if (biggest_2 >= x){
-            else if (x > biggest_1){
+            else if (x > biggest_1) {
                 biggest_2 = x;
-            }else{
+            } else {
                 //biggest_3 = x;
                 return true;
             }
@@ -1296,7 +1284,7 @@ public class workspace5 {
 
         public int move(String direction) {
 
-            if (this.m == 0 && this.n == 0){
+            if (this.m == 0 && this.n == 0) {
                 return -1;
             }
 
@@ -1309,22 +1297,22 @@ public class workspace5 {
             return this.score;
         }
 
-        private int[][] getMove(String direction){
-            if (direction == null){
+        private int[][] getMove(String direction) {
+            if (direction == null) {
                 //return new int[][]{{-1,-1}};
                 throw new RuntimeException("invalid direction");
             }
-            switch (direction){
+            switch (direction) {
                 case "R":
-                    return new int[][]{{0,1}};
+                    return new int[][]{{0, 1}};
                 case "L":
-                    return new int[][]{{0,-1}};
+                    return new int[][]{{0, -1}};
                 case "D":
-                    return new int[][]{{1,0}};
+                    return new int[][]{{1, 0}};
                 case "U":
-                    return new int[][]{{-1,0}};
+                    return new int[][]{{-1, 0}};
                 default:
-                    return new int[][]{{-1,-1}};
+                    return new int[][]{{-1, -1}};
             }
         }
 
@@ -1338,29 +1326,28 @@ public class workspace5 {
      * Given two strings a and b,
      * return the minimum number of times you should repeat
      * string a so that string b is a substring of it.
-     *
+     * <p>
      * Notice: string "abc" repeated 0 times is "",
      * repeated 1 time is "abc"
      * and repeated 2 times is "abcabc".
-     *
-     *  exp 1:
-     *
-     *   Input: a = "abcd", b = "cdabcdab"
-     *
-     *   -> return 3
-     *
-     *   abcdabcdabcd
-     *     x      x
-     *
-     *
-     *  exp 2:
-     *
-     *  Input: a = "a", b = "aa"
-     *  -> Output: 2
-     *
-     *
-     *  idea 1:
-     *
+     * <p>
+     * exp 1:
+     * <p>
+     * Input: a = "abcd", b = "cdabcdab"
+     * <p>
+     * -> return 3
+     * <p>
+     * abcdabcdabcd
+     * x      x
+     * <p>
+     * <p>
+     * exp 2:
+     * <p>
+     * Input: a = "a", b = "aa"
+     * -> Output: 2
+     * <p>
+     * <p>
+     * idea 1:
      */
     public int repeatedStringMatch(String a, String b) {
 
@@ -1372,7 +1359,7 @@ public class workspace5 {
 //            return -1;
 //        }
 
-        if (a.contains(b)){
+        if (a.contains(b)) {
             return 1;
         }
 
@@ -1381,7 +1368,7 @@ public class workspace5 {
         sb.append(a);
         // TODO : check ??
         // 1 <= a.length, b.length <= 10^4
-        while (sb.toString().length() <= 10000){
+        while (sb.toString().length() <= 10000) {
             if (sb.toString().contains(b)) {
                 return cnt;
             }
@@ -1398,75 +1385,72 @@ public class workspace5 {
     // 5.59 pm - 6.10 pm
 
     /**
-     *  1) NOT transitive:
-     *
-     *  great, fine -> s
-     *  fine, good -> s
-     *
-     *  but great, good -> NOT necessary s
-     *
-     *  2) Symmetric:
-     *
-     *  great, fine -> s
-     *
-     *  -> fine, great -> s
-     *
-     *  3) Also, a word is always similar with itself.:
-     *
-     *   e.g.
-     *  -> great, great -> s
-     *
-     *
-     *  4)  sentences can only be similar if they have the same number of words.
-     *
-     *  ->  words1 = ["great"] can never be similar to words2 = ["doubleplus","good"].
-     *  (different # of word)
-     *
-     *
-     *  Given two sentences words1, words2 (each represented
-     *  as an array of strings),
-     *  and a list of similar word pairs pairs,
-     *  determine if two sentences are similar.
-     *
-     *  exp 2:
-     *
+     * 1) NOT transitive:
+     * <p>
+     * great, fine -> s
+     * fine, good -> s
+     * <p>
+     * but great, good -> NOT necessary s
+     * <p>
+     * 2) Symmetric:
+     * <p>
+     * great, fine -> s
+     * <p>
+     * -> fine, great -> s
+     * <p>
+     * 3) Also, a word is always similar with itself.:
+     * <p>
+     * e.g.
+     * -> great, great -> s
+     * <p>
+     * <p>
+     * 4)  sentences can only be similar if they have the same number of words.
+     * <p>
+     * ->  words1 = ["great"] can never be similar to words2 = ["doubleplus","good"].
+     * (different # of word)
+     * <p>
+     * <p>
+     * Given two sentences words1, words2 (each represented
+     * as an array of strings),
+     * and a list of similar word pairs pairs,
+     * determine if two sentences are similar.
+     * <p>
+     * exp 2:
+     * <p>
      * Input: sentence1 = ["great","acting","skills"]
      * sentence2 = ["fine","drama","talent"]
-     *
+     * <p>
      * similarPairs = [["great","fine"],["drama","acting"],["skills","talent"]]
      * Output: true
-     *
+     * <p>
      * Explanation: The two sentences have the same length and each word i of sentence1 is also similar to the corresponding word in sentence2.
-     *
-     *
-     *  -> idea 1
-     *   a hashmap record "similar" relation"
-     *   {great: fine,
-     *    fine: great,
-     *   }
-     *
-     *
-     *
+     * <p>
+     * <p>
+     * -> idea 1
+     * a hashmap record "similar" relation"
+     * {great: fine,
+     * fine: great,
+     * }
      */
     public boolean areSentencesSimilar(
             String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
-        if (sentence1.length != sentence2.length){
+        if (sentence1.length != sentence2.length) {
             return false;
         }
         Map<String, String> map = new HashMap<>();
-        for(int i = 0; i < similarPairs.size(); i++){
+        for (int i = 0; i < similarPairs.size(); i++) {
             List<String> cur = similarPairs.get(i);
             map.putIfAbsent(cur.get(0), cur.get(1));
             //map.putIfAbsent(cur.get(1), cur.get(0));
         }
 
-        for (int j = 0; j < sentence1.length; j++){
+        for (int j = 0; j < sentence1.length; j++) {
             String s_1 = sentence1[j];
             String s_2 = sentence2[j];
-            if (!map.containsKey(s_1) && !map.containsKey(s_2)){
+            if (!map.containsKey(s_1) && !map.containsKey(s_2)) {
                 return false;
             }
-            if (!map.get(s_1).equals(s_2) && !map.get(s_2).equals(s_1)){
+            if (!map.get(s_1).equals(s_2) && !map.get(s_2).equals(s_1)) {
                 return false;
             }
         }
@@ -1476,7 +1460,7 @@ public class workspace5 {
 
     // LC 737
     // https://leetcode.ca/all/737.html
-    public boolean areSentencesSimilarTwo(){
+    public boolean areSentencesSimilarTwo() {
         return false;
     }
 
@@ -1530,7 +1514,7 @@ public class workspace5 {
         }
 
         public int get(int index, int snap_id) {
-            if (this.map.containsKey(snap_id)){
+            if (this.map.containsKey(snap_id)) {
                 //int key = this.map.floorKey(index);
                 //List<List<Integer>> updatedValues = this.map.get(key);
                 for (List<Integer> value : updatedValues) {
@@ -1624,31 +1608,30 @@ public class workspace5 {
     /**
      * A consecutive sequence path is a
      * path where the values increase by one along the path.
-     *
+     * <p>
      * -> start from each nodes, get longest path
      * -> compare with current longest path
      * -> return final ans
-     *
      */
     int longestCnt = 0;
 
     public int longestConsecutive_1_1(TreeNode root) {
-        if (root.left == null && root.right == null){
+        if (root.left == null && root.right == null) {
             return 0;
         }
 
         // bfs
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);
-        while (!q.isEmpty()){
+        while (!q.isEmpty()) {
             TreeNode node = q.poll();
             // dfs
             int length = dfsCount(node);
             longestCnt = Math.max(longestCnt, length);
-            if (node.left != null){
+            if (node.left != null) {
                 q.add(node.left);
             }
-            if (node.right != null){
+            if (node.right != null) {
                 q.add(node.right);
             }
         }
@@ -1656,17 +1639,17 @@ public class workspace5 {
         return longestCnt;
     }
 
-    private int dfsCount(TreeNode root){
+    private int dfsCount(TreeNode root) {
 
-        if (root == null){
+        if (root == null) {
             return 0;
         }
 
-        if (root.left != null && root.val + 1 == root.left.val){
+        if (root.left != null && root.val + 1 == root.left.val) {
             return this.dfsCount(root.left) + 1;
         }
 
-        if (root.right != null && root.val + 1 == root.right.val){
+        if (root.right != null && root.val + 1 == root.right.val) {
             return this.dfsCount(root.right) + 1;
         }
 
@@ -1683,35 +1666,33 @@ public class workspace5 {
     // 3.11 pm - 3.30 pm
 
     /**
-     *
      * -> We can add a new event if adding the event
      * will not cause a double booking.
-     *
-     *
+     * <p>
+     * <p>
      * -> A double booking happens when two events have
      * some non-empty intersection
      * (i.e., some moment is common to both events.).
-     *
-     *
+     * <p>
+     * <p>
      * -> boolean book(int start, int end)
      * Returns true if the event can be added to
      * the calendar successfully without
      * causing a double booking. Otherwise,
      * return false and do not add the event to the calendar.
-     *
-     *  exp 1
-     *
-     *  Input
-     *   ["MyCalendar", "book", "book", "book"]
-     *   [[], [10, 20], [15, 25], [20, 30]]
-     *   Output
-     *   [null, true, false, true]
-     *
-     *
-     *   10   20           -> true
-     *      15    25       -> false
-     *        20     30    -> true
-     *
+     * <p>
+     * exp 1
+     * <p>
+     * Input
+     * ["MyCalendar", "book", "book", "book"]
+     * [[], [10, 20], [15, 25], [20, 30]]
+     * Output
+     * [null, true, false, true]
+     * <p>
+     * <p>
+     * 10   20           -> true
+     * 15    25       -> false
+     * 20     30    -> true
      */
     // https://leetcode.com/problems/my-calendar-i/
     // 4.37 pm - 5.00 pm
@@ -1724,7 +1705,7 @@ public class workspace5 {
         }
 
         public boolean book(int start, int end) {
-            if (this.bookings.size()==0){
+            if (this.bookings.size() == 0) {
                 List<Integer> newBooking = new ArrayList<>();
                 newBooking.add(start);
                 newBooking.add(end);
@@ -1750,8 +1731,8 @@ public class workspace5 {
              *  |-------------|  new
              *
              */
-            for (List<Integer> booking: bookings){
-                if (booking.get(1) > start && booking.get(0) < end){
+            for (List<Integer> booking : bookings) {
+                if (booking.get(1) > start && booking.get(0) < end) {
                     return false;
                 }
             }
@@ -1845,29 +1826,29 @@ public class workspace5 {
     // 3.51 pm - 4.20 pm
 
     /**
-     *  Given a sorted integer array nums, where the range of
-     *  elements are in the inclusive range [lower, upper],
-     *  return its missing ranges.
-     *
-     *
-     *  exp 1:
-     *  Input: nums = [0, 1, 3, 50, 75], lower = 0 and upper = 99,
-     *  Output: ["2", "4->49", "51->74", "76->99"]
-     *
-     *  -> idea 1
-     *
-     *  0,1, [2] 3, [50], [75]
-     *
-     *  -> "2",  "4,49",  "51,74", "76,99"
-     *
-     *
-     *  -> loop over elements, compare prev, and current element
-     *  -> if any missing, then collect, then add to result array
-     *  -> then finally check upper bound and last element
-     *  -> add to result accordingly if there is a missing element
+     * Given a sorted integer array nums, where the range of
+     * elements are in the inclusive range [lower, upper],
+     * return its missing ranges.
+     * <p>
+     * <p>
+     * exp 1:
+     * Input: nums = [0, 1, 3, 50, 75], lower = 0 and upper = 99,
+     * Output: ["2", "4->49", "51->74", "76->99"]
+     * <p>
+     * -> idea 1
+     * <p>
+     * 0,1, [2] 3, [50], [75]
+     * <p>
+     * -> "2",  "4,49",  "51,74", "76,99"
+     * <p>
+     * <p>
+     * -> loop over elements, compare prev, and current element
+     * -> if any missing, then collect, then add to result array
+     * -> then finally check upper bound and last element
+     * -> add to result accordingly if there is a missing element
      */
     public List<List<Integer>> findMissingRanges(int[] nums, int lower, int upper) {
-        if (nums.length == 0){
+        if (nums.length == 0) {
             return null;
         }
 
@@ -1885,26 +1866,26 @@ public class workspace5 {
          *                                res = [[2], [4,49], [51,74], [76,99]]
          */
         List<List<Integer>> res = new ArrayList<>();
-        for (int i = 1; i < nums.length; i++){
+        for (int i = 1; i < nums.length; i++) {
             // case 1:  nums = [1, 3]
-            if (nums[i] == nums[i-1]+2){
+            if (nums[i] == nums[i - 1] + 2) {
                 List<Integer> missingPeriod = new ArrayList<>();
-                missingPeriod.add(nums[i-1]+1);
+                missingPeriod.add(nums[i - 1] + 1);
                 res.add(missingPeriod);
             }
             // case 2 : nums = [3, 50]
-            else if (nums[i] != nums[i-1]){
+            else if (nums[i] != nums[i - 1]) {
                 List<Integer> missingPeriod = new ArrayList<>();
-                missingPeriod.add(nums[i-1]+1);
-                missingPeriod.add(nums[i]-1);
+                missingPeriod.add(nums[i - 1] + 1);
+                missingPeriod.add(nums[i] - 1);
                 res.add(missingPeriod);
             }
         }
 
         // finally, check last element and upper bound
-        if (upper != nums[nums.length-1]){
+        if (upper != nums[nums.length - 1]) {
             List<Integer> missingPeriod = new ArrayList<>();
-            missingPeriod.add(nums[nums.length-1] + 1);
+            missingPeriod.add(nums[nums.length - 1] + 1);
             missingPeriod.add(upper);
             res.add(missingPeriod);
         }
@@ -1958,7 +1939,7 @@ public class workspace5 {
         return (isSameTree(root1.left, root2.right)
                 && isSameTree(root1.right, root2.left))
                 || (isSameTree(root1.right, root2.left)
-                && isSameTree(root1.right, root2.left)) ;
+                && isSameTree(root1.right, root2.left));
         //&& isSameTree(root1, root2); // ?? needed ?
     }
 
@@ -1987,8 +1968,8 @@ public class workspace5 {
         }
 
         Map<String, Integer> map = new HashMap<>();
-        for (String x : s.split("")){
-            map.put(x, map.getOrDefault(x, 0)+1);
+        for (String x : s.split("")) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
         }
 
         // 2 pointers approach
@@ -2076,11 +2057,9 @@ public class workspace5 {
     // https://leetcode.com/problems/beautiful-array/
 
     /**
-     *
      * For every 0 <= i < j < n,
      * there is no index k with i < k < j
      * where 2 * nums[k] == nums[i] + nums[j].
-     *
      */
     public int[] beautifulArray(int n) {
 
@@ -2103,14 +2082,13 @@ public class workspace5 {
      *
      */
     /**
-     *   if no one in room -> seat at idx 0
-     *   if someone in the room -> seat max distance from it
-     *
-     *   a heap to track "all distance", so can pop max val from heap
-     *
-     *
-     *   [0,x,0,0,x]  dis = 1,4
-     *
+     * if no one in room -> seat at idx 0
+     * if someone in the room -> seat max distance from it
+     * <p>
+     * a heap to track "all distance", so can pop max val from heap
+     * <p>
+     * <p>
+     * [0,x,0,0,x]  dis = 1,4
      */
     class ExamRoom {
 
@@ -2124,7 +2102,7 @@ public class workspace5 {
 
         public int seat() {
             //return 0;
-            if (seated == 0){
+            if (seated == 0) {
                 seats[0] = 1;
                 seated += 1;
                 return 0;
@@ -2132,10 +2110,10 @@ public class workspace5 {
 
             // get "to compare" seat
             int idx = -1;
-            for (int j = 0; j < seats.length; j++){
+            for (int j = 0; j < seats.length; j++) {
                 // get distance
                 //int dis = 1;
-                if (seats[j] == 0){
+                if (seats[j] == 0) {
                     idx = j;
                     break;
                 }
@@ -2143,8 +2121,8 @@ public class workspace5 {
 
             int toPutIdx = -1;
             // find "maximizes the distance to the closest person"
-            for (int i = seats.length; i > 0; i--){
-                if (seats[i] != 0){
+            for (int i = seats.length; i > 0; i--) {
+                if (seats[i] != 0) {
                     toPutIdx = i;
                     break;
                 }
@@ -2191,43 +2169,41 @@ public class workspace5 {
     // 5.29 pm - 5.45 pm
 
     /**
-     *  input 1:
-     *
-     *  [1,2,3,6,2,3,4,7,8]
-     *
-     *  -> sort
-     *
-     *  [1,2,2,3,3,4,6,7,8]
-     *
-     *  [1,2,3]
-     *  [2,3,4]
-     *  [6,7,8]
-     *
-     *
-     *  idea 1:
-     *
-     *  step 1. sort array
-     *  step 2. find min val
-     *      construct sub array
-     *
-     *
+     * input 1:
+     * <p>
+     * [1,2,3,6,2,3,4,7,8]
+     * <p>
+     * -> sort
+     * <p>
+     * [1,2,2,3,3,4,6,7,8]
+     * <p>
+     * [1,2,3]
+     * [2,3,4]
+     * [6,7,8]
+     * <p>
+     * <p>
+     * idea 1:
+     * <p>
+     * step 1. sort array
+     * step 2. find min val
+     * construct sub array
      */
     public boolean isNStraightHand(int[] hand, int groupSize) {
 
-        if (hand.length % groupSize != 0){
+        if (hand.length % groupSize != 0) {
             return false;
         }
 
-        if (groupSize==1){
+        if (groupSize == 1) {
             return true;
         }
 
-        if (hand.length == groupSize){
+        if (hand.length == groupSize) {
             // sort
             Arrays.sort(hand);
             //int min = hand[0];
-            for (int k = 0; k < hand.length-1; k++){
-                if (hand[k]+1 != hand[k+1]){
+            for (int k = 0; k < hand.length - 1; k++) {
+                if (hand[k] + 1 != hand[k + 1]) {
                     return false;
                 }
             }
@@ -2237,7 +2213,7 @@ public class workspace5 {
 
         // PQ (max heap???)
         PriorityQueue<Integer> pq = new PriorityQueue();
-        for (int i = 0; i < hand.length; i++){
+        for (int i = 0; i < hand.length; i++) {
             // NOTE !! we put "-1 * i"
             // so can create a "small" PQ
             pq.add(-1 * hand[i]);
@@ -2246,28 +2222,28 @@ public class workspace5 {
         System.out.println(">>> pq = " + pq);
 
         // check
-        while (!pq.isEmpty()){
+        while (!pq.isEmpty()) {
             // get cur min element
             int cnt = 0;
             int min = pq.poll();
             Queue<Integer> tmpQ = new LinkedList<>();
-            if (!pq.contains(min+1) || !pq.contains(min+2)){
+            if (!pq.contains(min + 1) || !pq.contains(min + 2)) {
                 return false;
             }
             // till collect groupSize count of element
-            for (int j = 0; j < groupSize && !pq.isEmpty(); j++){
+            for (int j = 0; j < groupSize && !pq.isEmpty(); j++) {
                 int cur = pq.poll();
                 // found consecutive element
-                if (cur == min+1){
+                if (cur == min + 1) {
                     min += 1;
                     // if not found, add to tmp queue
-                }else{
+                } else {
                     tmpQ.add(cur);
                 }
             }
 
             // put tmp element back to pq
-            while (!tmpQ.isEmpty()){
+            while (!tmpQ.isEmpty()) {
                 pq.add(tmpQ.poll());
             }
 
@@ -2289,19 +2265,19 @@ public class workspace5 {
         return null;
     }
 
-    private List<Integer> topoSort_2(int size, int[][] graph){
+    private List<Integer> topoSort_2(int size, int[][] graph) {
 
         // init
         Map<Integer, List<Integer>> map = new HashMap<>();
         int[] degree = new int[graph.length]; // ??
 
-        for (int[] x : graph){
+        for (int[] x : graph) {
             int prev = x[1];
             int next = x[0];
-            if(!map.containsKey(prev)){
+            if (!map.containsKey(prev)) {
                 degree[prev] = 0;
                 map.put(prev, new ArrayList<>());
-            }else{
+            } else {
                 degree[prev] += 1; // ??
                 List<Integer> curList = map.get(prev);
                 curList.add(next);
@@ -2310,24 +2286,24 @@ public class workspace5 {
         }
 
         Queue<Integer> queue = new LinkedList<>();
-        for(int y : degree){
-            if(y == 0){
+        for (int y : degree) {
+            if (y == 0) {
                 queue.add(y);
             }
         }
 
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             int curVal = queue.poll();
             states.add(curVal); // ??
-            for(Integer x : map.get(curVal)){
+            for (Integer x : map.get(curVal)) {
                 degree[x] -= 1;
-                if (degree[x] == 0){
+                if (degree[x] == 0) {
                     queue.add(x);
                 }
             }
         }
 
-        if (states.size() != size){
+        if (states.size() != size) {
             throw new RuntimeException("Input can't be sorted by topological sorting");
         }
 
@@ -2390,12 +2366,12 @@ public class workspace5 {
     // bfs
     public int minKnightMoves(int x, int y) {
 
-        if (x==0 && y==0){
+        if (x == 0 && y == 0) {
             return 0;
         }
 
         // init
-        int[][] moves = new int[][]{ {1,2}, {2,1}, {2,-1}, {1,-2}, {-1,-2}, {-2,-1}, {-2,1}, {-1,2} };
+        int[][] moves = new int[][]{{1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
         // queue : FIFO
         Queue<List<Integer>> q = new LinkedList<>(); // Queue([x, y, step])
         List<Integer> tmp = new ArrayList<>();
@@ -2404,15 +2380,15 @@ public class workspace5 {
         tmp.add(0); // step
         q.add(tmp);
 
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
             List<Integer> cur = q.poll();
             int cur_x = cur.get(0);
             int cur_y = cur.get(1);
             int cur_step = cur.get(2);
-            if (cur_x == x && cur_y == y){
+            if (cur_x == x && cur_y == y) {
                 return cur_step;
             }
-            for (int[] move : moves){
+            for (int[] move : moves) {
                 List<Integer> newCoor = new ArrayList<>();
                 newCoor.add(cur_x + move[0]);
                 newCoor.add(cur_y + move[1]);
@@ -2429,60 +2405,59 @@ public class workspace5 {
     // 8.31 am - 8.40 am
 
     /**
-     *  exp 1
-     *
-     *  nums = [1,1,2]
-     *
-     *  [1,1,2]
-     *   s f
-     *
-     *  [1,2, 1]     if nums[f] != nums[s], move s, then swap f, s
-     *   s s  f
-     *
-     *
-     *   exp 2
-     *
-     *   nums = [0,0,1,1,1,2,2,3,3,4]
-     *
-     *   [0,0,1,1,1,2,2,3,3,4]
-     *    s f
-     *
-     *   [0,1,0,1,1,2,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
-     *    s s f
-     *
-     *   [0,1,0,1,1,2,2,3,3,4]
-     *      s   f
-     *
-     *   [0,1,0,1,1,2,2,3,3,4]
-     *      s     f
-     *
-     *   [0,1,2,1,1,0,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
-     *      s s     f
-     *
-     *   [0,1,2,1,1,0,2,3,3,4]
-     *        s       f
-     *
-     *   [0,1,2,3,1,0,2,1,3,4]  if nums[f] != nums[s], move s, then swap f, s
-     *        s s       f
-     *
-     *   [0,1,2,3,1,0,2,1,3,4]
-     *          s         f
-     *
-     *   [0,1,2,3,4,0,2,1,3,1]   if nums[f] != nums[s], move s, then swap f, s
-     *          s s         f
-     *
+     * exp 1
+     * <p>
+     * nums = [1,1,2]
+     * <p>
+     * [1,1,2]
+     * s f
+     * <p>
+     * [1,2, 1]     if nums[f] != nums[s], move s, then swap f, s
+     * s s  f
+     * <p>
+     * <p>
+     * exp 2
+     * <p>
+     * nums = [0,0,1,1,1,2,2,3,3,4]
+     * <p>
+     * [0,0,1,1,1,2,2,3,3,4]
+     * s f
+     * <p>
+     * [0,1,0,1,1,2,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
+     * s s f
+     * <p>
+     * [0,1,0,1,1,2,2,3,3,4]
+     * s   f
+     * <p>
+     * [0,1,0,1,1,2,2,3,3,4]
+     * s     f
+     * <p>
+     * [0,1,2,1,1,0,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
+     * s s     f
+     * <p>
+     * [0,1,2,1,1,0,2,3,3,4]
+     * s       f
+     * <p>
+     * [0,1,2,3,1,0,2,1,3,4]  if nums[f] != nums[s], move s, then swap f, s
+     * s s       f
+     * <p>
+     * [0,1,2,3,1,0,2,1,3,4]
+     * s         f
+     * <p>
+     * [0,1,2,3,4,0,2,1,3,1]   if nums[f] != nums[s], move s, then swap f, s
+     * s s         f
      */
     public int removeDuplicates(int[] nums) {
         int s = 0;
-        for (int f = 1; f < nums.length; f++){
-            if (nums[s] != nums[f]){
+        for (int f = 1; f < nums.length; f++) {
+            if (nums[s] != nums[f]) {
                 s += 1;
                 int tmp = nums[f];
                 nums[f] = nums[s];
                 nums[s] = tmp;
             }
         }
-        return s+1;
+        return s + 1;
     }
     // 2 pointers
 //    public int removeDuplicates(int[] nums) {
@@ -2614,68 +2589,68 @@ public class workspace5 {
      *
      */
     /**
-     *  exp 1
-     *
-     *  nums = [3,2,2,3], val = 3
-     *
-     *  [3,2,2,3]
-     *   s
-     *   f
-     *
-     *  [2,3,2,3]    if nums[f] != val, swap, move s
-     *   s s
-     *     f
-     *
-     *  [2,2,3,3]   if nums[f] != val, swap, move s
-     *     s s
-     *       f
-     *
+     * exp 1
+     * <p>
+     * nums = [3,2,2,3], val = 3
+     * <p>
+     * [3,2,2,3]
+     * s
+     * f
+     * <p>
+     * [2,3,2,3]    if nums[f] != val, swap, move s
+     * s s
+     * f
+     * <p>
+     * [2,2,3,3]   if nums[f] != val, swap, move s
+     * s s
+     * f
+     * <p>
      * [2,2,3,3]
-     *      s
-     *        f
-     *
-     *
-     *  exp 2
-     *
-     *  nums = [0,1,2,2,3,0,4,2], val = 2
-     *
-     *
-     *  [0,1,2,2,3,0,4,2]   if nums[f] != val, swap, move s
-     *   s s
-     *   f
-     *
-     *  [0,1,2,2,3,0,4,2]     if nums[f] != val, swap, move s
-     *     s s
-     *     f
-     *
-     *  [0,1,2,2,3,0,4,2]
-     *       s
-     *       f
-     *
+     * s
+     * f
+     * <p>
+     * <p>
+     * exp 2
+     * <p>
+     * nums = [0,1,2,2,3,0,4,2], val = 2
+     * <p>
+     * <p>
+     * [0,1,2,2,3,0,4,2]   if nums[f] != val, swap, move s
+     * s s
+     * f
+     * <p>
+     * [0,1,2,2,3,0,4,2]     if nums[f] != val, swap, move s
+     * s s
+     * f
+     * <p>
      * [0,1,2,2,3,0,4,2]
-     *      s
-     *        f
-     *
+     * s
+     * f
+     * <p>
+     * [0,1,2,2,3,0,4,2]
+     * s
+     * f
+     * <p>
      * [0,1,3,2,2,0,4,2]   if nums[f] != val, swap, move s
-     *      s s
-     *          f
-     *
+     * s s
+     * f
+     * <p>
      * [0,1,3,0,2,2,4,2]   if nums[f] != val, swap, move s
-     *        s s
-     *            f
-     *
+     * s s
+     * f
+     * <p>
      * [0,1,3,0,4,2,2,2]    if nums[f] != val, swap, move s
-     *          s s
-     *              f
-     *
-     *  [0,1,3,0,4,2,2,2]
-     *             s
-     *                 f
+     * s s
+     * f
+     * <p>
+     * [0,1,3,0,4,2,2,2]
+     * s
+     * f
      */
     public int removeElement(int[] nums, int val) {
         int s = 0;
-        for (int f = 0; f < nums.length; f++){
-            if (nums[f] != val){
+        for (int f = 0; f < nums.length; f++) {
+            if (nums[f] != val) {
                 //int tmp = nums[f];
                 nums[s] = nums[f];
                 s += 1;
@@ -2744,14 +2719,14 @@ public class workspace5 {
         }
 
         public void enqueue(int element) throws InterruptedException {
-            while(this.queue.size() == this.capacity){
+            while (this.queue.size() == this.capacity) {
                 // wait till not full
             }
             this.queue.add(element);
         }
 
         public int dequeue() throws InterruptedException {
-            while(this.queue.size() == 0){
+            while (this.queue.size() == 0) {
                 // wait till not empty
             }
             int curElement = this.queue.poll();
@@ -2768,16 +2743,16 @@ public class workspace5 {
     // https://leetcode.com/problems/surrounded-regions/description/
     // 7.53 - 8.15 PM
     public void solve(char[][] board) {
-        if (board.length == 1 && board[0].length == 1){
+        if (board.length == 1 && board[0].length == 1) {
             return;
         }
         // get all "0"
         List<List<Integer>> collected = new ArrayList<>();
         int l = board.length;
         int w = board[0].length;
-        for (int y = 0; y < l; y++){
-            for (int x = 0; x < w; x++){
-                if (String.valueOf(board[y][x]).equals("O")){
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (String.valueOf(board[y][x]).equals("O")) {
                     List<Integer> tmp = new ArrayList<>();
                     tmp.add(x);
                     tmp.add(y);
@@ -2787,28 +2762,28 @@ public class workspace5 {
         }
 
         // dfs
-        for (List<Integer> element : collected){
+        for (List<Integer> element : collected) {
             dfsUpdate(element.get(0), element.get(1), board);
         }
     }
 
-    private void dfsUpdate(int x, int y, char[][] board){
+    private void dfsUpdate(int x, int y, char[][] board) {
 
         int l = board.length;
         int w = board[0].length;
 
-        if (String.valueOf(board[y][x]).equals("X")){
+        if (String.valueOf(board[y][x]).equals("X")) {
             return;
         }
 
         // update as "X"
         //board[y][x] = new Character("X"); //??
 
-        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
-        for (int[] move : moves){
+        int[][] moves = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        for (int[] move : moves) {
             int x_ = x + move[0];
             int y_ = y + move[1];
-            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l  && !String.valueOf(board[y_][x_]).equals("X")){
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && !String.valueOf(board[y_][x_]).equals("X")) {
                 dfsUpdate(x_, y_, board);
             }
         }
@@ -2820,10 +2795,8 @@ public class workspace5 {
     // 5.18 pm - 5.35 pm
 
     /**
-     *  step 1) build seq
-     *  step 2) check if there is only 1 way ???
-     *
-     *
+     * step 1) build seq
+     * step 2) check if there is only 1 way ???
      */
     public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences) {
 
@@ -2833,11 +2806,11 @@ public class workspace5 {
     // LC 207
     // https://leetcode.com/problems/course-schedule/
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        if (prerequisites.length==0){
+        if (prerequisites.length == 0) {
             return true;
         }
 
-        if (TopologicalSort(numCourses, prerequisites) == null){
+        if (TopologicalSort(numCourses, prerequisites) == null) {
             return false;
         }
 
@@ -2915,8 +2888,7 @@ public class workspace5 {
 
 
     /**
-     *  int[][] prerequisites: [1, 2], so 1 is 2's prerequisite
-     *
+     * int[][] prerequisites: [1, 2], so 1 is 2's prerequisite
      */
 //    private List<Integer> topoSort(int numCourses, int[][] prerequisites){
 //
@@ -3044,7 +3016,7 @@ public class workspace5 {
         //return topoOrdering(numCourses, prerequisites);
         List<Integer> ordering = topologicalSort(numCourses, prerequisites);
         System.out.println(">>> ordering = " + ordering);
-        if (ordering.equals(null)){
+        if (ordering.equals(null)) {
             return new int[]{};
         }
         int[] res = new int[numCourses];
@@ -3126,7 +3098,7 @@ public class workspace5 {
         return topologicalOrder;
     }
 
-    private int[] topoOrdering(int numCourses, int[][] prerequisites){
+    private int[] topoOrdering(int numCourses, int[][] prerequisites) {
         //int[] res = new int[]{numCourses}; // ?? check
         List<Integer> res = new ArrayList<>();
 
@@ -3141,14 +3113,14 @@ public class workspace5 {
 //        }
 
         // init preList
-        for (int[] x : prerequisites){
+        for (int[] x : prerequisites) {
             int pre = x[0];
             int following = x[1];
             //degrees[following] = degrees[following] + 1; // ??? check
             degrees[following] += 1;
-            if (!preList.containsKey(x)){
+            if (!preList.containsKey(x)) {
                 preList.put(pre, new ArrayList<>());
-            }else{
+            } else {
                 List<Integer> tmp = preList.get(pre);
                 tmp.add(following);
                 preList.put(pre, tmp);
@@ -3159,20 +3131,20 @@ public class workspace5 {
         Queue<Integer> queue = new LinkedList<>();
 
         // add all node with degree=0 to queue
-        for (Integer x : degrees){
-            if (x.equals(0)){
+        for (Integer x : degrees) {
+            if (x.equals(0)) {
                 queue.add(x);
             }
         }
 
-        while (!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             int x = queue.poll();
             res.add(x);
-            if (preList.containsKey(x)){
+            if (preList.containsKey(x)) {
                 // NOTE!!!!
                 degrees[x] -= 1;
-                for (Integer sub : preList.get(x)){
-                    if (degrees[sub] == 0){
+                for (Integer sub : preList.get(x)) {
+                    if (degrees[sub] == 0) {
                         queue.add(sub);
                     }
                 }
@@ -3182,7 +3154,7 @@ public class workspace5 {
         System.out.println(">>> res = " + res);
 
         int[] finalRes = new int[numCourses];
-        for (int k = 0; k < res.size(); k++){
+        for (int k = 0; k < res.size(); k++) {
             finalRes[k] = res.get(k);
         }
         return finalRes;
@@ -3194,35 +3166,34 @@ public class workspace5 {
     // A subarray is a contiguous non-empty sequence of elements within an array.
 
     /**
-     *   IDEA :
-     *
-     *    "pre-sum" array
-     *
-     *    -> so sum(i) =  pre-sum(i+1) - pre-sum(i)
-     *
-     *    -> sum(0) = presum(1) - presum(0)
-     *    -> sum(1) = presum(2) - presum(0)
-     *    -> sum(2) = presum(2) - presum(0)
-     *
-     *
-     *    exp 0:
-     *     nums = [1,2,3,4,5]
-     *     -> pre-sum = [0,1,3,6,10,15]
-     *
-     *     -> sum(0,1) = presum(1) -  presum(0)
-     *     -> sum(1,2) = presum(3) -  presum(1)
-     *     -> sum(3,4) = presum(5) - presum(3) = 15 - 6 = 9
-     *     ..
-     *     -> sum(i, j) = presum(j+1) - presum(i)
-     *
-     *    exp 1:
-     *      nums = [-2,1,-3,4,-1,2,1,-5,4]
-     *
-     *      -> pre-sum = [0, -2, -1, -4, 0, -1, 1, 2, -3, 1]
-     *
+     * IDEA :
+     * <p>
+     * "pre-sum" array
+     * <p>
+     * -> so sum(i) =  pre-sum(i+1) - pre-sum(i)
+     * <p>
+     * -> sum(0) = presum(1) - presum(0)
+     * -> sum(1) = presum(2) - presum(0)
+     * -> sum(2) = presum(2) - presum(0)
+     * <p>
+     * <p>
+     * exp 0:
+     * nums = [1,2,3,4,5]
+     * -> pre-sum = [0,1,3,6,10,15]
+     * <p>
+     * -> sum(0,1) = presum(1) -  presum(0)
+     * -> sum(1,2) = presum(3) -  presum(1)
+     * -> sum(3,4) = presum(5) - presum(3) = 15 - 6 = 9
+     * ..
+     * -> sum(i, j) = presum(j+1) - presum(i)
+     * <p>
+     * exp 1:
+     * nums = [-2,1,-3,4,-1,2,1,-5,4]
+     * <p>
+     * -> pre-sum = [0, -2, -1, -4, 0, -1, 1, 2, -3, 1]
      */
     public int maxSubArray_2(int[] nums) {
-        if (nums.length == 1){
+        if (nums.length == 1) {
             return nums[0];
         }
 
@@ -3230,19 +3201,19 @@ public class workspace5 {
         //  -> sum(i, j) = presum(j+1) - presum(i)
         List<Integer> presum = new ArrayList<>();
         presum.add(0);
-        for (int i = 0; i < nums.length; i++){
-            presum.add(nums[i] + presum.get(i-1));
+        for (int i = 0; i < nums.length; i++) {
+            presum.add(nums[i] + presum.get(i - 1));
         }
         System.out.println(">>> presum = " + presum);
         int localMin = Integer.MAX_VALUE;
         int localMax = -1 * Integer.MAX_VALUE;
         int maxSum = 0;
         // get "minimal" val and "biggest" val after it
-        for (int j = 0; j < presum.size(); j++){
+        for (int j = 0; j < presum.size(); j++) {
             int cur = presum.get(j);
-            if (cur > localMin){
+            if (cur > localMin) {
                 localMin = Math.min(cur, localMin);
-            }else{
+            } else {
 
             }
         }
@@ -3251,22 +3222,21 @@ public class workspace5 {
     }
 
     /**
-     *  exp 1:
-     *
-     *  nums = [-2,1,-3,4,-1,2,1,-5,4]
-     *
-     *  -> [-2,1,-3,4,-1,2,1,-5,4]
-     *      i  j
-     *
-     *  -> [-2,1,-3,4,-1,2,1,-5,4]
-     *         i
-     *         j
-     *
+     * exp 1:
+     * <p>
+     * nums = [-2,1,-3,4,-1,2,1,-5,4]
+     * <p>
+     * -> [-2,1,-3,4,-1,2,1,-5,4]
+     * i  j
+     * <p>
+     * -> [-2,1,-3,4,-1,2,1,-5,4]
+     * i
+     * j
      */
 
     public int maxSubArray(int[] nums) {
 
-        if (nums.length == 1){
+        if (nums.length == 1) {
             return nums[0];
         }
 
@@ -3277,10 +3247,10 @@ public class workspace5 {
 
         // 2 pointers
         int finalSum = -1 * Integer.MAX_VALUE;
-        for (int i = 0; i < nums.length; i++){
+        for (int i = 0; i < nums.length; i++) {
             int tmpSum = 0;
             int j = i;
-            while (j < nums.length && tmpSum >= 0){
+            while (j < nums.length && tmpSum >= 0) {
                 tmpSum += nums[j];
                 finalSum = Math.max(tmpSum, finalSum);
                 //System.out.println(">>> i = " + i + ", j = " + j + ", tmpSum = " + tmpSum + ", finalSum= " + finalSum);
@@ -3302,11 +3272,11 @@ public class workspace5 {
         String[] sArray = s.split("");
 
         // collect all validated replacement
-        for (int i = 0; i < sources.length; i++){
+        for (int i = 0; i < sources.length; i++) {
             String target = targets[i];
             String source = sources[i];
             //  public boolean startsWith(String prefix, int toffset) {}
-            if (s.startsWith(source, indices[i])){
+            if (s.startsWith(source, indices[i])) {
                 //map.put(indices[i], target);
                 map.put(indices[i], target);
             }
@@ -3316,12 +3286,12 @@ public class workspace5 {
 
         // update string
         StringBuilder sb = new StringBuilder();
-        for (int j = 0; j < sArray.length;){
-            if (map.containsKey(j)){
+        for (int j = 0; j < sArray.length; ) {
+            if (map.containsKey(j)) {
                 sb.append(map.get(j));
                 // NOTE !!!
                 j += sources[j].length();
-            }else{
+            } else {
                 sb.append(sArray[j]);
                 //j = j + sArray[j].length();
                 j += 1;
@@ -3362,7 +3332,7 @@ public class workspace5 {
 //        return sArray.toString(); // ?
 //    }
 
-    private boolean isOverlap(String s, int[] indices){
+    private boolean isOverlap(String s, int[] indices) {
         return false;
     }
 
@@ -3383,36 +3353,32 @@ public class workspace5 {
      *
      */
     /**
-     *  Idea 1)
-     *
-     *   deck = [17,13,11,2,3,5,7]
-     *
-     *   step 1) sort
-     *     -> [2,3,5,7,11,13,17]
-     *
-     *   step 2)
-     *     queue simulation flip op
-     *     -> [3,5,7,11,13,17], queue = [2]
-     *
-     *
-     *    -> [5,7,11,13,17], queue = [2,      3]
-     *
-     *    -> [7,11,13,17], queue = [5, 2,      3]
-     *
-     *    -> [11,13,17], queue = [5, 2,      ,7,3]
-     *
-     *    -> [13,17], queue = [5, 2, 11,     ,7,3]
-     *
-     *
-     *
-     *
+     * Idea 1)
+     * <p>
+     * deck = [17,13,11,2,3,5,7]
+     * <p>
+     * step 1) sort
+     * -> [2,3,5,7,11,13,17]
+     * <p>
+     * step 2)
+     * queue simulation flip op
+     * -> [3,5,7,11,13,17], queue = [2]
+     * <p>
+     * <p>
+     * -> [5,7,11,13,17], queue = [2,      3]
+     * <p>
+     * -> [7,11,13,17], queue = [5, 2,      3]
+     * <p>
+     * -> [11,13,17], queue = [5, 2,      ,7,3]
+     * <p>
+     * -> [13,17], queue = [5, 2, 11,     ,7,3]
      */
     public int[] deckRevealedIncreasing(int[] deck) {
         //List<Integer> list = new ArrayList<>();
-        if (deck.length == 0){
+        if (deck.length == 0) {
             return null; // ?
         }
-        if (deck.length == 1){
+        if (deck.length == 1) {
             return deck; // ?
         }
 
@@ -3426,7 +3392,7 @@ public class workspace5 {
 
         int[] res = new int[deck.length];
         int j = 0;
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             res[j] = queue.poll();
             j += 1;
         }
@@ -3529,10 +3495,10 @@ public class workspace5 {
     // https://leetcode.ca/all/776.html
     // 8.37 PM - 8.50 PM
     /**
-     *   Idea : split tree
-     *
-     *   -> split tree into smaller, bigger array
-     *   -> then build BST again from 2 arrays above
+     * Idea : split tree
+     * <p>
+     * -> split tree into smaller, bigger array
+     * -> then build BST again from 2 arrays above
      */
 
     // IDEA : DFS
@@ -3549,8 +3515,8 @@ public class workspace5 {
         return res;
     }
 
-    private TreeNode[] buildTreeDfs(TreeNode root, int target){
-        if (root == null){
+    private TreeNode[] buildTreeDfs(TreeNode root, int target) {
+        if (root == null) {
             return null;
         }
 //        if (root.val <= target){
@@ -3560,7 +3526,7 @@ public class workspace5 {
 //            // ?? or return
 //            this.buildTreeDfs(rightTree, target);
 //        }
-        if (root.left != null && root.left.val <= target){
+        if (root.left != null && root.left.val <= target) {
 
             leftTree.left = root.left;
             buildTreeDfs(leftTree, target);
@@ -3607,7 +3573,7 @@ public class workspace5 {
 //        return res;
 //    }
 
-    private TreeNode buildTree(List<Integer> input){
+    private TreeNode buildTree(List<Integer> input) {
         return null;
     }
 
@@ -3616,51 +3582,50 @@ public class workspace5 {
     // 5.39 pm - 6.15 pm
 
     /**
-     *
-     *   exp 1) [1,2,3] -> [1,3,2]
-     *
-     *
-     *   exp 2) [2,3,1] -> [3,1,2]
-     *
-     *  Idea 1)
-     *
-     *   from right -> left, find if there is a bigger val
-     *   if yes, then find right most place (idx) and swap
-     *   the bigger val with the value at idx
-     *
-     *
-     *   find max val, mo
-     *
-     *   ================================
-     *
-     *  Idea 2)
-     *
-     *   1) from right -> left, find 1st "pivot"
-     *     -> if there is a val bigger than its left
-     *     (if no pivot, means input array already sorted, return directly
-     *
-     *
-     *   2) from left -> right, find 1st element that smaller than pivot,
-     *      if found, swap (pivot <---> element)
-     *
-     *   3) reorder (small -> big ?? ) all val on the right-hand side of element
-     *
-     *
-     *
-     *   demo
-     *
-     *  input : [1,2,3]
-     *
-     *   -> [1,2,3] , so pivot is 3
-     *           i
-     *
-     *   -> [1,2,3]   1 < 3, cur = 3
-     *       j
-     *
-     *   -> [1,2,3]  2 < 3, cur = 2
-     *         i
-     *
-     *   -> so, swap 2 and 3 -> [1,3,2]
+     * exp 1) [1,2,3] -> [1,3,2]
+     * <p>
+     * <p>
+     * exp 2) [2,3,1] -> [3,1,2]
+     * <p>
+     * Idea 1)
+     * <p>
+     * from right -> left, find if there is a bigger val
+     * if yes, then find right most place (idx) and swap
+     * the bigger val with the value at idx
+     * <p>
+     * <p>
+     * find max val, mo
+     * <p>
+     * ================================
+     * <p>
+     * Idea 2)
+     * <p>
+     * 1) from right -> left, find 1st "pivot"
+     * -> if there is a val bigger than its left
+     * (if no pivot, means input array already sorted, return directly
+     * <p>
+     * <p>
+     * 2) from left -> right, find 1st element that smaller than pivot,
+     * if found, swap (pivot <---> element)
+     * <p>
+     * 3) reorder (small -> big ?? ) all val on the right-hand side of element
+     * <p>
+     * <p>
+     * <p>
+     * demo
+     * <p>
+     * input : [1,2,3]
+     * <p>
+     * -> [1,2,3] , so pivot is 3
+     * i
+     * <p>
+     * -> [1,2,3]   1 < 3, cur = 3
+     * j
+     * <p>
+     * -> [1,2,3]  2 < 3, cur = 2
+     * i
+     * <p>
+     * -> so, swap 2 and 3 -> [1,3,2]
      */
     public void nextPermutation(int[] nums) {
 
@@ -3672,37 +3637,37 @@ public class workspace5 {
 
     /**
      * [[s1,e1],[s2,e2],...]
-     *
-     *  s : start, e : end
-     *
-     *  Idea 1) sorting + scanning line
-     *
-     *   -> sort by s, e
-     *   -> get the "max" concurrent room count as res
-     *   -> return res
-     *
-     *
-     *  |------------------------|
-     *  0                        30
-     *       |-------|
-     *       5      10
-     *                  |-----|
-     *                 15     20
-     *
-     *
-     *  [0,5,10,15,20,30]
-     *   o o  c  o  c  c
+     * <p>
+     * s : start, e : end
+     * <p>
+     * Idea 1) sorting + scanning line
+     * <p>
+     * -> sort by s, e
+     * -> get the "max" concurrent room count as res
+     * -> return res
+     * <p>
+     * <p>
+     * |------------------------|
+     * 0                        30
+     * |-------|
+     * 5      10
+     * |-----|
+     * 15     20
+     * <p>
+     * <p>
+     * [0,5,10,15,20,30]
+     * o o  c  o  c  c
      */
 
-    class Meeting{
+    class Meeting {
         int time;
         String status;
 
-        Meeting(){
+        Meeting() {
 
         }
 
-        Meeting(int time, String status){
+        Meeting(int time, String status) {
             this.time = time;
             this.status = status;
         }
@@ -3717,13 +3682,13 @@ public class workspace5 {
     }
 
     public int minMeetingRooms(int[][] intervals) {
-        if (intervals.length <= 1){
+        if (intervals.length <= 1) {
             return intervals.length;
         }
 
         List<Meeting> meetings = new ArrayList<>();
 
-        for (int[] item : intervals){
+        for (int[] item : intervals) {
             //Meeting meeting = new Meeting()
             int start = item[0];
             int end = item[1];
@@ -3736,11 +3701,11 @@ public class workspace5 {
         }
 
         // sort as ascending order, e.g. [1,4,2] -> [1,2,4]
-        meetings.sort((x,y) -> {
-            if (x.getTime() < y.getTime()){
+        meetings.sort((x, y) -> {
+            if (x.getTime() < y.getTime()) {
                 return -1;
             }
-            if (x.getTime() > y.getTime()){
+            if (x.getTime() > y.getTime()) {
                 return 1;
             }
             return 0;
@@ -3750,10 +3715,10 @@ public class workspace5 {
         int cnt = 0;
         int curCnt = 0;
 
-        for (Meeting meeting : meetings){
-            if (meeting.getStatus().equals("open")){
+        for (Meeting meeting : meetings) {
+            if (meeting.getStatus().equals("open")) {
                 curCnt += 1;
-            }else{
+            } else {
                 curCnt -= 1;
             }
             cnt = Math.max(cnt, curCnt);
@@ -3766,38 +3731,37 @@ public class workspace5 {
     // 5.07 PM - 5.20 PM
 
     /**
-     *
-     *  Input : [4,5,6,7,0,1,2]
-     *
-     *  Case 1)
-     *
-     *    right is ascending
-     *     - the target val is bigger / smaller than cur
-     *
-     *  Case 2)
-     *
-     *    left is ascending
-     *      - the target val is bigger / smaller than cur
+     * Input : [4,5,6,7,0,1,2]
+     * <p>
+     * Case 1)
+     * <p>
+     * right is ascending
+     * - the target val is bigger / smaller than cur
+     * <p>
+     * Case 2)
+     * <p>
+     * left is ascending
+     * - the target val is bigger / smaller than cur
      */
-    public int findMin(int[] nums){
+    public int findMin(int[] nums) {
 
         // edge case 1): if len == 1
-        if (nums.length == 1){
+        if (nums.length == 1) {
             return nums[0];
         }
 
         // edge case 1): array already in ascending order
         int left = 0;
         int right = nums.length - 1;
-        if (nums[right] > nums[0]){
+        if (nums[right] > nums[0]) {
             return nums[0];
         }
 
         // binary search
-        while (right >= left){
+        while (right >= left) {
             int mid = (left + right) / 2;
             // turning point case 1
-            if (nums[mid] > nums[mid+1]){
+            if (nums[mid] > nums[mid + 1]) {
                 return nums[mid + 1];
             }
             // TODO : check why below
@@ -3809,11 +3773,11 @@ public class workspace5 {
                 return nums[mid];
             }
             // left sub array is ascending
-            if (nums[mid] > nums[0]){
+            if (nums[mid] > nums[0]) {
                 left = mid + 1;
             }
             // right sub array is ascending
-            else{
+            else {
                 right = mid - 1;
             }
         }
@@ -3822,12 +3786,9 @@ public class workspace5 {
     }
 
     /**
-     *
-     *  [4,5,6,7,0,1,2]
-     *
-     *  [7,0,1,2,4,5,6]
-     *
-     *
+     * [4,5,6,7,0,1,2]
+     * <p>
+     * [7,0,1,2,4,5,6]
      */
 //    public int findMin(int[] nums) {
 //
@@ -3889,38 +3850,38 @@ public class workspace5 {
     // LC 33
     // 7.42 pm - 8.10 pm
     public int search_(int[] nums, int target) {
-        if (nums.length == 1){
+        if (nums.length == 1) {
             return nums[0] == target ? 0 : -1;
         }
 
         // binary search
         int left = 0;
         int right = nums.length - 1;
-        while (right >= left){
+        while (right >= left) {
             int mid = (left + right) / 2;
             System.out.println(">>> left = " + left + ", right = " + right + ", mid = " + mid);
-            if (nums[mid] == target){
+            if (nums[mid] == target) {
                 return mid;
             }
             // right sub array is ascending
-            if (nums[mid] < nums[right]){
+            if (nums[mid] < nums[right]) {
                 // case 1-1)  mid < target < right
-                if (target <= nums[right] && target > nums[mid]){
+                if (target <= nums[right] && target > nums[mid]) {
                     left = mid + 1;
                 }
                 // case 1-2) target > mid
-                else{
+                else {
                     right = mid - 1;
                 }
             }
             // case 2) left sub array is ascending
-            else{
+            else {
                 // case 2-1) mid > target > left
-                if (nums[left] <= target && target < nums[mid]){
+                if (nums[left] <= target && target < nums[mid]) {
                     right = mid - 1;
                 }
                 // case 2-1) target > mid
-                else{
+                else {
                     left = mid + 1;
                 }
             }
@@ -3977,14 +3938,14 @@ public class workspace5 {
     // 8.07 pm - 8.20 pm
     public boolean search(int[] nums, int target) {
 
-        if (nums.length == 1){
+        if (nums.length == 1) {
             return nums[0] == target;
         }
         Set<Integer> set = new HashSet<>();
         List<Integer> nonDuplicatedNums = new ArrayList<>();
 
-        for (int x : nums){
-            if (!set.contains(x)){
+        for (int x : nums) {
+            if (!set.contains(x)) {
                 set.add(x);
                 nonDuplicatedNums.add(x);
             }
@@ -3993,30 +3954,30 @@ public class workspace5 {
         // binary search
         int left = 0;
         int right = nonDuplicatedNums.size() - 1;
-        while (right >= left){
+        while (right >= left) {
             int mid = (left + right) / 2;
-            if (nonDuplicatedNums.get(mid) == target){
+            if (nonDuplicatedNums.get(mid) == target) {
                 return true;
             }
             // if right sub array is ascending
-            if (nonDuplicatedNums.get(mid) < nonDuplicatedNums.get(right)){
+            if (nonDuplicatedNums.get(mid) < nonDuplicatedNums.get(right)) {
                 // if  mid < target <= right
-                if (target > nonDuplicatedNums.get(mid) && target <= nonDuplicatedNums.get(right)){
+                if (target > nonDuplicatedNums.get(mid) && target <= nonDuplicatedNums.get(right)) {
                     left = mid + 1;
                 }
                 // else
-                else{
+                else {
                     right = mid - 1;
                 }
             }
             // if left sub array is ascending
-            else{
+            else {
                 // if mid > target > left
-                if (target >= nonDuplicatedNums.get(left) && target < nonDuplicatedNums.get(mid)){
+                if (target >= nonDuplicatedNums.get(left) && target < nonDuplicatedNums.get(mid)) {
                     right = mid - 1;
                 }
                 // else
-                else{
+                else {
                     left = mid + 1;
                 }
 
@@ -4032,32 +3993,32 @@ public class workspace5 {
     // 7.41 pm - 8.15 pm
 
     /**
-     *  Idea 1) string op
-     *      a tmp array that collect "Not comment" element,
-     *      then merge filtered elements as final result
+     * Idea 1) string op
+     * a tmp array that collect "Not comment" element,
+     * then merge filtered elements as final result
      */
     public List<String> removeComments(String[] source) {
 
-        if (source.length == 0){
+        if (source.length == 0) {
             return new ArrayList<>();
         }
 
         List<String> tmp = new ArrayList<>();
         //StringBuilder sb = new StringBuilder();
         boolean isMuitLineComment = false;
-        for (String x : source){
+        for (String x : source) {
             System.out.println(">>> x = " + x);
-            if (x.contains("/*") && x.contains("*/")){
+            if (x.contains("/*") && x.contains("*/")) {
                 tmp.add(x.split("/*")[0]);
                 //tmp.add(x.split("*/\")[1]);
                 continue;
             }
-            if (x.contains("/*")){
+            if (x.contains("/*")) {
                 isMuitLineComment = true;
-            }else if (x.contains("*/")){
+            } else if (x.contains("*/")) {
                 isMuitLineComment = false;
             }
-            if (!x.contains("//") && !isMuitLineComment){
+            if (!x.contains("//") && !isMuitLineComment) {
                 //sb.append(x);
                 tmp.add(x);
             }
@@ -4084,7 +4045,7 @@ public class workspace5 {
         }
 
         public boolean insert(int val) {
-            if (!this.map.containsKey(val)){
+            if (!this.map.containsKey(val)) {
                 this.map.put(val, 1);
                 this.count += 1;
                 return true;
@@ -4093,7 +4054,7 @@ public class workspace5 {
         }
 
         public boolean remove(int val) {
-            if (this.map.containsKey(val)){
+            if (this.map.containsKey(val)) {
                 this.map.remove(val);
                 this.count -= 1;
                 return true;
@@ -4171,10 +4132,10 @@ public class workspace5 {
         }
 
         // todo : optimize
-        if(nums[start] != target){
+        if (nums[start] != target) {
             start += 1;
         }
-        if (nums[end] != target){
+        if (nums[end] != target) {
             end -= 1;
         }
 
@@ -4186,31 +4147,32 @@ public class workspace5 {
 
     // LC 767
     // 3.52 - 4.20 pm
+
     /**
-     *  Idea 1) hashmap
-     *
-     *  exp 1: s = "aab"
-     *
-     *  -> map = {a: 2, b: 1}
-     *  -> so,
-     *  -> a b a
-     *
-     *  exp 2 s = "aaab"
-     *
-     *  -> map = {a: 3, b: 1}
-     *  -> a
-     *  -> ""
+     * Idea 1) hashmap
+     * <p>
+     * exp 1: s = "aab"
+     * <p>
+     * -> map = {a: 2, b: 1}
+     * -> so,
+     * -> a b a
+     * <p>
+     * exp 2 s = "aaab"
+     * <p>
+     * -> map = {a: 3, b: 1}
+     * -> a
+     * -> ""
      */
     public String reorganizeString(String s) {
 
-        if (s.length() == 1){
+        if (s.length() == 1) {
             return s;
         }
 
         //ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
         TreeMap<String, Integer> map = new TreeMap<>();
-        for (String x : s.split("")){
-            map.put(x, map.getOrDefault(x, 0)+1);
+        for (String x : s.split("")) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
         }
 
         System.out.println(">>> map = " + map);
@@ -4218,19 +4180,19 @@ public class workspace5 {
         String prev = null;
         //String res = "";
 
-        while(!map.isEmpty()){
+        while (!map.isEmpty()) {
             // map.descendingKeySet() ?? get key with count in descending ordering ???
-            for(String k : map.descendingKeySet()){
+            for (String k : map.descendingKeySet()) {
                 System.out.println(">>> k = " + k + ", keySet = " + map.keySet() + ", prev = " + prev);
-                if (prev != null && prev.equals(k)){
+                if (prev != null && prev.equals(k)) {
                     return "";
                 }
                 sb.append(k);
                 prev = k;
-                if (map.get(k) - 1 == 0){
+                if (map.get(k) - 1 == 0) {
                     map.remove(k);
-                }else{
-                    map.put(k, map.get(k)-1);
+                } else {
+                    map.put(k, map.get(k) - 1);
                 }
             }
         }
@@ -4238,6 +4200,58 @@ public class workspace5 {
 
         return sb.toString();
     }
+
+    // LC 347
+    // https://leetcode.com/problems/top-k-frequent-elements/description/
+
+    /**
+     * IDEA :
+     * <p>
+     * hash map + PQ (custom logic)
+     */
+    public int[] topKFrequent(int[] nums, int k) {
+
+        if (nums.length == 1) {
+            return new int[]{nums[0]}; // ???
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (Integer x : nums) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        // PQ with custom logic
+//        PriorityQueue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>(
+//                (x, y) -> map.get(x) - map.get(y)
+//        );
+        PriorityQueue<Integer> pq = new PriorityQueue<>(
+                (x, y) -> map.get(x) - map.get(y)
+        );
+
+        // NOTE !!! add map element to PQ
+        for (Integer key : map.keySet()){
+            pq.add(key);
+            if (pq.size() > k){
+                pq.poll();
+            }
+        }
+
+        //pq.add(Map.Entry);
+
+        System.out.println(">>> map = " + map);
+        System.out.println(">>> pq = " + pq);
+
+        // pop elements from PQ
+        int tmp = 0;
+        int[] res = new int[k];
+        while (tmp < k) {
+            res[tmp] = pq.poll();
+            tmp += 1;
+        }
+
+        return res;
+    }
+
 
 }
 
