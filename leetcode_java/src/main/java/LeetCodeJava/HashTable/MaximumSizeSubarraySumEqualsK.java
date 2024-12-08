@@ -41,6 +41,107 @@ public class MaximumSizeSubarraySumEqualsK {
     // V0
     // TODO : implement
 
+    // V0-1
+    // IDEA : HASHMAP (gpt)
+    /**
+     *  Examples:
+     *
+     * int[] nums = {1, 2, -1, 3};
+     * int k = 3;
+     *
+     *
+     *  1.	Initialization:
+     * 	    •	preSumMap: Initially {0: -1} (to handle subarrays starting at index 0).
+     *
+     * 	2.	Iteration:
+     * 	    •	Index 0:
+     * 	        •	curSum = 1
+     * 	        •	curSum - k = 1 - 3 = -2 (not in map)
+     * 	        •	Update map: {0: -1, 1: 0}
+     *
+     * 	    •	Index 1:
+     * 	        •	curSum = 3
+     * 	        •	curSum - k = 3 - 3 = 0 (in map at index -1)
+     * 	        •	Subarray [0, 1] has sum 3, so maxSize = max(0, 1 - (-1)) = 2
+     * 	        •	Update map: {0: -1, 1: 0, 3: 1}
+     *
+     *
+     * 	    •	Index 2:
+     * 	        •	curSum = 2
+     * 	        •	curSum - k = 2 - 3 = -1 (not in map)
+     * 	        •	Update map: {0: -1, 1: 0, 3: 1, 2: 2}
+     *
+     *
+     * 	    •	Index 3:
+     * 	        •	curSum = 5
+     * 	        •	curSum - k = 5 - 3 = 2 (in map at index 2)
+     * 	        •	Subarray [3, 3] has sum 3, so maxSize = max(2, 3 - 2) = 2
+     * 	        •	Update map: {0: -1, 1: 0, 3: 1, 2: 2, 5: 3}
+     */
+    public int maxSubArrayLen_0_1(int[] nums, int k) {
+        // Map to store (prefixSum, index)
+        Map<Integer, Integer> preSumMap = new HashMap<>();
+        preSumMap.put(0, -1); // Initialize for subarrays starting from index 0
+
+        int curSum = 0;
+        int maxSize = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            curSum += nums[i];
+
+            // Check if there's a prefix sum such that curSum - prefixSum = k
+            /**
+             *  Prefix sum
+             *
+             *
+             * The prefix sum approach works because any subarray sum can be expressed in terms of two prefix sums:
+             *
+             *
+             * sum of subarray[i,j] = prefixSum[j] - prefixSum[i-1]
+             *
+             *
+             * Where:
+             * 	•	prefixSum[j] is the cumulative sum of the array up to index j.
+             * 	•	prefixSum[i-1] is the cumulative sum of the array up to index i-1.
+             *
+             * Rewriting this:
+             *
+             * -> prefixSum[j] - prefixSum[i-1] = k
+             *
+             * -> prefixSum[i-1] = prefixSum[j] - k
+             *
+             *
+             * Thus, the task is to find a previous prefix
+             * sum (prefixSum[i-1]) such that the
+             * difference between the current
+             * prefix sum (prefixSum[j]) and that value equals k.
+             *
+             *
+             *
+             *  How the Code Works
+             *
+             * 	1.	Tracking Prefix Sums:
+             * 	    •	curSum is the cumulative prefix sum up to the current index i.
+             * 	    •	The map preSumMap stores previously seen prefix sums as keys, with their earliest index as the value.
+             * 	2.	Checking for Subarrays:
+             * 	    •	At any index i, the condition curSum - k checks if there exists a previously seen prefix sum that, when subtracted from the current cumulative sum, gives the desired subarray sum k.
+             *
+             * 	3.	Why It Covers All Possible Subarrays******:
+             * 	    •	The map contains all prefix sums seen so far, so it inherently includes all potential starting points of subarrays.
+             * 	    •	If a subarray [start, i] has a sum equal to k, the difference curSum - k corresponds to the prefix sum at start - 1. Since the map stores all previously seen prefix sums, this difference is guaranteed to be checked.
+             *
+             */
+            if (preSumMap.containsKey(curSum - k)) {
+                maxSize = Math.max(maxSize, i - preSumMap.get(curSum - k));
+            }
+
+            // Add current prefix sum to the map if not already present
+            preSumMap.putIfAbsent(curSum, i);
+        }
+
+        return maxSize;
+    }
+
     // V1
     // https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/solutions/1017059/java-prefix-sums/
     public int maxSubArrayLen(int[] nums, int k) {

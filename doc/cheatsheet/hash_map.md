@@ -917,3 +917,73 @@ class Solution(object):
                 count = max(count, _counter[cum_sum])
         return len(wall) - count
 ```
+
+### 2-13) Maximum Size Subarray Sum Equals k
+
+```java
+// java
+// LC 325
+    public int maxSubArrayLen_0_1(int[] nums, int k) {
+        // Map to store (prefixSum, index)
+        Map<Integer, Integer> preSumMap = new HashMap<>();
+        preSumMap.put(0, -1); // Initialize for subarrays starting from index 0
+
+        int curSum = 0;
+        int maxSize = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            curSum += nums[i];
+
+            // Check if there's a prefix sum such that curSum - prefixSum = k
+            /**
+             *  Prefix sum
+             *
+             *
+             * The prefix sum approach works because any subarray sum can be expressed in terms of two prefix sums:
+             *
+             *
+             * sum of subarray[i,j] = prefixSum[j] - prefixSum[i-1]
+             *
+             *
+             * Where:
+             *  •   prefixSum[j] is the cumulative sum of the array up to index j.
+             *  •   prefixSum[i-1] is the cumulative sum of the array up to index i-1.
+             *
+             * Rewriting this:
+             *
+             * -> prefixSum[j] - prefixSum[i-1] = k
+             *
+             * -> prefixSum[i-1] = prefixSum[j] - k
+             *
+             *
+             * Thus, the task is to find a previous prefix
+             * sum (prefixSum[i-1]) such that the
+             * difference between the current
+             * prefix sum (prefixSum[j]) and that value equals k.
+             *
+             *
+             *
+             *  How the Code Works
+             *
+             *  1.  Tracking Prefix Sums:
+             *      •   curSum is the cumulative prefix sum up to the current index i.
+             *      •   The map preSumMap stores previously seen prefix sums as keys, with their earliest index as the value.
+             *  2.  Checking for Subarrays:
+             *      •   At any index i, the condition curSum - k checks if there exists a previously seen prefix sum that, when subtracted from the current cumulative sum, gives the desired subarray sum k.
+             *
+             *  3.  Why It Covers All Possible Subarrays******:
+             *      •   The map contains all prefix sums seen so far, so it inherently includes all potential starting points of subarrays.
+             *      •   If a subarray [start, i] has a sum equal to k, the difference curSum - k corresponds to the prefix sum at start - 1. Since the map stores all previously seen prefix sums, this difference is guaranteed to be checked.
+             *
+             */
+            if (preSumMap.containsKey(curSum - k)) {
+                maxSize = Math.max(maxSize, i - preSumMap.get(curSum - k));
+            }
+
+            // Add current prefix sum to the map if not already present
+            preSumMap.putIfAbsent(curSum, i);
+        }
+
+        return maxSize;
+    }
+```
