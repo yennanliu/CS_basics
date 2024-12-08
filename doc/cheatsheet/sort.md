@@ -383,3 +383,84 @@ public String sort(String s) {
     return new String(t);
 } 
 ```
+
+### 2-7) Car Fleet
+
+```java
+// java
+
+// LC 853. Car Fleet
+
+    // V0
+    // IDEA: pair position and speed, sorting (gpt)
+    /**
+     * IDEA :
+     *
+     * The approach involves sorting the cars by their starting positions
+     * (from farthest to nearest to the target)
+     * and computing their time to reach the target.
+     * We then iterate through these times to count the number of distinct fleets.
+     *
+     *
+     *
+     * Steps in the Code:
+     *  1.  Pair Cars with Their Speeds:
+     *      •   Combine position and speed into a 2D array cars for easier sorting and access.
+     *  2.  Sort Cars by Position Descending:
+     *      •   Use Arrays.sort with a custom comparator to sort cars from farthest to nearest relative to the target.
+     *  3.  Calculate Arrival Times:
+     *      •   Compute the time each car takes to reach the target using the formula:
+     *
+     *  time = (target - position) / speed
+     *
+     *  4.  Count Fleets:
+     *      •   Iterate through the times array:
+     *      •   If the current car’s arrival time is greater than the lastTime (time of the last fleet), it forms a new fleet.
+     *      •   Update lastTime to the current car’s time.
+     *  5.  Return Fleet Count:
+     *      •   The number of distinct times that exceed lastTime corresponds to the number of fleets.
+     *
+     */
+    public int carFleet(int target, int[] position, int[] speed) {
+        int n = position.length;
+        // Pair positions with speeds and `sort by position in descending order`
+        // cars : [position][speed]
+        int[][] cars = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            cars[i][0] = position[i];
+            cars[i][1] = speed[i];
+        }
+
+        /**
+         * NOTE !!!
+         *
+         *  Sort by position descending (simulate the "car arriving" process
+         */
+        Arrays.sort(cars, (a, b) -> b[0] - a[0]); // Sort by position descending
+
+        // Calculate arrival times
+        double[] times = new double[n];
+        for (int i = 0; i < n; i++) {
+            times[i] = (double) (target - cars[i][0]) / cars[i][1];
+        }
+
+        // Count fleets
+        int fleets = 0;
+        double lastTime = 0;
+        for (double time : times) {
+            /**
+             *  4.  Count Fleets:
+             *  •   Iterate through the times array:
+             *  •   If the current car’s arrival time is greater than the lastTime (time of the last fleet), it forms a new fleet.
+             *  •   Update lastTime to the current car’s time.
+             */
+            // If current car's time is greater than the last fleet's time, it forms a new fleet
+            if (time > lastTime) {
+                fleets++;
+                lastTime = time;
+            }
+        }
+
+        return fleets;
+    }
+```
