@@ -4272,6 +4272,72 @@ public class workspace5 {
         }
     }
 
+    // LC 853
+    // 3.22 pm - 3.40 pm
+    /**
+     * You are given two integer array position and speed,
+     * both of length n, where position[i] is the starting mile
+     * of the ith car
+     * and speed[i] is the speed of the ith car in miles per hour.
+     *
+     *
+     * A car cannot pass another car, but it can catch up and
+     * then travel next to it at the speed of the slower car.
+     *
+     * A car fleet is a car or cars driving next to each other.
+     * The speed of the car fleet is the `minimum` speed of any car in the fleet.
+     */
+    /**
+     *
+     * Example 1) target = 12, position = [10,8,0,5,3], speed = [2,4,1,1,3], fleet = 0
+     *
+     *  find if there is any overlap "when time = t"
+     *
+     *  -> t = 1, position = [12,12,1,6,6], so fleet = 2
+     *  -> t = 2, position = [x,x,2,x,x], so fleet = 3
+     *
+     *
+     * Example 2) target = 100, position = [0,2,4], speed = [4,2,1],  fleet = 0
+     *
+     *   -> t = 1,  position = [4, 4, 5], fleet = 1
+     *   -> t = 2, position = [6,6,5], fleet = 1
+     *
+     *
+     *  Idea : stack (FILO)
+     */
+    public int carFleet(int target, int[] position, int[] speed){
+
+        // edge case
+        if (position.length == 1){
+            return 1;
+        }
+
+        // map record car (position) and its speed
+        Map<Integer, Integer> map = new HashMap<>();
+        int fleet = 0;
+        Stack<Integer> stack = new Stack<>();
+        //stack.add()
+        for (int idx = 0; idx < position.length; idx++){
+            map.putIfAbsent(position[idx], speed[idx]);
+            stack.add(position[idx]);
+        }
+
+        while(!stack.isEmpty()){
+            int curP = stack.pop();
+            curP += map.get(curP);
+            if (!stack.contains(curP) && curP < target){
+                stack.add(curP);
+            }else{
+
+            }
+        }
+
+
+        System.out.println(">>> stack = " + stack);
+
+        return stack.size();
+    }
+
 
 }
 
