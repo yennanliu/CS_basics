@@ -44,6 +44,17 @@
             - `TODO : note this as pattern!!!`
         - LC 325: Maximum Size Subarray Sum Equals k
             - `prefix sum` + hashmap
+        ```
+       subarray[i,j] = prefixSum[j] - prefixSum[i-1]
+
+       so, to find a subarray equals k
+
+       -> prefixSum[j] - prefixSum[i-1] = k
+
+       -> prefixSum[j]  - k = prefixSum[i-1]
+
+       -> so all need to do is : check if "prefixSum[j]  - k" is in map
+        ```
 - Any problems with below:
     - need to cache
     - avoid double loop
