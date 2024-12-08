@@ -42,6 +42,8 @@
     - Sub array sum
         - LC 560 : Subarray Sum Equals K
             - `TODO : note this as pattern!!!`
+        - LC 325: Maximum Size Subarray Sum Equals k
+            - `prefix sum` + hashmap
 - Any problems with below:
     - need to cache
     - avoid double loop
