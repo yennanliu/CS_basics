@@ -4338,6 +4338,72 @@ public class workspace5 {
         return stack.size();
     }
 
+    // LC 325
+    // https://leetcode.ca/all/325.html
+    // https://leetcode.ca/2016-10-20-325-Maximum-Size-Subarray-Sum-Equals-k/
+    // 4.22 - 4.45 pm
+    /**
+     * Given an array nums and a target value k,
+     * find the maximum length of a subarray that sums to k.
+     * If there isn't one, return 0 instead.
+     *
+     *
+     * Idea : hashmap, presum array
+     *
+     *  exp 1)
+     *   nums = [1, -1, 5, -2, 3], k = 3
+     *
+     *   -> presum = [0,1,0,5,3,6]   !!!!!
+     *   -> sum(i,j) = presum[j+1] - presum[i]
+     *   -> sum(0,3) = presum[4] = presum[0] = 3 - 0 = 3
+     */
+    public int maxSubArrayLen(int[] nums, int k) {
+
+        // V1: presum array
+//        Integer[] preSumArray = new Integer[nums.length+1];
+//        int curSum = 0;
+//        preSumArray[0] = 0;
+//        for(int i = 1; i < nums.length; i++){
+//            curSum += nums[i];
+//            preSumArray[i] = curSum;
+//        }
+
+        // V2 : hash map
+        // map : (preSum, idx)
+        Map<Integer, Integer> preSumMap = new HashMap<>();
+        int curSum_ = 0;
+        for(int i = 1; i < nums.length; i++){
+            curSum_ += nums[i];
+            //preSumMap.putIfAbsent(nums[i], curSum_);
+            preSumMap.putIfAbsent(curSum_, i);
+        }
+
+
+        int maxSize = 0;
+        // TODO : optimize double loop
+//        for(int i = 0; i < preSumArray.length-1; i++){
+//            for (int j = i+1; j < preSumArray.length; j++){
+//                int subArraySum = preSumArray[j+1] - preSumArray[i];
+//                if (subArraySum == k){
+//                    maxSize = Math.max(maxSize, j-i+1);
+//                }
+//            }
+//        }
+
+        // Optimized : use hashmap, check if "k-x" is in hashmap (similar as "2 sum")
+        for (int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            // x + nums[i] = k
+            // -> x = k - nums[i]
+            if (preSumMap.containsKey(k - val)){
+                maxSize = Math.max(maxSize, (preSumMap.get(k-val) - i + 1));
+            }
+        }
+
+        return maxSize;
+    }
+
+
 
 }
 
