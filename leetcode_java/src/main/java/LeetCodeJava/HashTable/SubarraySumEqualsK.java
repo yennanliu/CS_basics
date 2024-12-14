@@ -66,12 +66,26 @@ public class SubarraySumEqualsK {
      * 	    •	Removed unnecessary index-based conditions (map.get(presum - k) == i + 1) which were incorrect and not required for this problem.
      */
     public int subarraySum(int[] nums, int k) {
-        // Map to store prefix sum and its count
+        /**
+         * NOTE !!!
+         *
+         *   use Map to store prefix sum and its count
+         *
+         *   map : {prefixSum: count}
+         *
+         *
+         *   -> since "same preSum may have multiple combination" within hashMap,
+         *      so it's needed to track preSum COUNT, instead of its index
+         */
         Map<Integer, Integer> map = new HashMap<>();
         int presum = 0;
         int count = 0;
 
-        // Initialize the map with prefix sum 0 (to handle subarrays starting at index 0)
+        /**
+         *  NOTE !!!
+         *
+         *  Initialize the map with prefix sum 0 (to handle subarrays starting at index 0)
+         */
         map.put(0, 1);
 
         for (int num : nums) {

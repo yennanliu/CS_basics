@@ -28,6 +28,7 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
     - LC 370
 - sub array
     - sum array sum == k
+        - pre sum count
         - LC 560
     - Maximum Size Subarray Sum Equals k
         - LC 325
@@ -225,7 +226,51 @@ class Solution(object):
         return result
 ```
 
-### 2-5) Continuous Subarray Sum
+### 2-5) Subarray Sum Equals K
+
+```java
+// java
+// LC 560
+public int subarraySum(int[] nums, int k) {
+    /**
+     * NOTE !!!
+     *
+     *   use Map to store prefix sum and its count
+     *
+     *   map : {prefixSum: count}
+     *
+     *
+     *   -> since "same preSum may have multiple combination" within hashMap,
+     *      so it's needed to track preSum COUNT, instead of its index
+     */
+    Map<Integer, Integer> map = new HashMap<>();
+    int presum = 0;
+    int count = 0;
+
+    /** 
+     *  NOTE !!!
+     *
+     *  Initialize the map with prefix sum 0 (to handle subarrays starting at index 0)
+     */
+    map.put(0, 1);
+
+    for (int num : nums) {
+        presum += num;
+
+        // Check if there's a prefix sum such that presum - k exists
+        if (map.containsKey(presum - k)) {
+            count += map.get(presum - k);
+        }
+
+        // Update the map with the current prefix sum
+        map.put(presum, map.getOrDefault(presum, 0) + 1);
+    }
+
+    return count;
+}
+```
+
+### 2-6) Continuous Subarray Sum
 
 ```java
 // java
