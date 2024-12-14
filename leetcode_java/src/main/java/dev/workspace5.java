@@ -4403,6 +4403,52 @@ public class workspace5 {
         return maxSize;
     }
 
+    // LC 523
+    // https://leetcode.com/problems/continuous-subarray-sum/
+    // 9.24 am - 9.40 am
+    /**
+     *
+     * Given an integer array nums and an integer k,
+     * return true if nums has a good subarray or false otherwise.
+     *
+     * A good subarray is a subarray where:
+     *
+     * its length is at least two, and
+     * the sum of the elements of the subarray is a multiple of k.
+     *
+     */
+    public boolean checkSubarraySum(int[] nums, int k) {
+        if (nums.length < 2){
+            return false;
+        }
+        // hash map
+        // record presum and idx
+        // map(presum: idx)
+        Map<Integer, Integer> map = new HashMap<>();
+        int presum = 0;
+        for (int i = 0; i < nums.length; i++){
+            int cur = nums[i];
+            // if there is any element equals 0, return true directly
+//            if (cur == 0){
+//                return true;
+//            }
+            presum += cur;
+            map.putIfAbsent(presum, i);
+            /**
+             *  sum(i,j) = presum(j+1) - presum(i)
+             *
+             *  k = presum(j+1) - presum(i)
+             *  -> presum(i) = presum(j+1) - k
+             */
+            if (map.containsKey(presum - k) || presum % k == 0){
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
 
 
 }
