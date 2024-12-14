@@ -96,6 +96,7 @@ public class ContinuousSubarraySum {
     // V1
     // IDEA : HASHMAP
     // https://leetcode.com/problems/continuous-subarray-sum/editorial/
+    // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/presum_mod.png
     public boolean checkSubarraySum_1(int[] nums, int k) {
         int prefixMod = 0;
         HashMap<Integer, Integer> modSeen = new HashMap<>();

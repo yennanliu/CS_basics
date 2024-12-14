@@ -33,7 +33,8 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
         - LC 325
     - Count Number of Nice Subarrays
         - LC 1248
-    - Continuous Subarray Sum
+    - Continuous Subarray Sum (preSum with mod)
+        - https://github.com/yennanliu/CS_basics/blob/master/doc/pic/presum_mod.png
         - LC 523
     - Number of Sub-arrays of Size K and Average Greater than or Equal to Threshold
         - LC 1343
@@ -222,4 +223,39 @@ class Solution(object):
             if acc - k in dic:
                 result = max(result, i - dic[acc-k])
         return result
+```
+
+### 2-5) Continuous Subarray Sum
+
+```java
+// java
+// LC 523
+// V1
+// IDEA : HASHMAP
+// https://leetcode.com/problems/continuous-subarray-sum/editorial/
+// https://github.com/yennanliu/CS_basics/blob/master/doc/pic/presum_mod.png
+public boolean checkSubarraySum_1(int[] nums, int k) {
+    int prefixMod = 0;
+    HashMap<Integer, Integer> modSeen = new HashMap<>();
+    modSeen.put(0, -1);
+
+    for (int i = 0; i < nums.length; i++) {
+        /**
+         * NOTE !!! we get `mod of prefixSum`, instead of get prefixSum
+         */
+        prefixMod = (prefixMod + nums[i]) % k;
+
+        if (modSeen.containsKey(prefixMod)) {
+            // ensures that the size of subarray is at least 2
+            if (i - modSeen.get(prefixMod) > 1) {
+                return true;
+            }
+        } else {
+            // mark the value of prefixMod with the current index.
+            modSeen.put(prefixMod, i);
+        }
+    }
+
+    return false;
+}
 ```
