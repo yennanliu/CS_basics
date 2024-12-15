@@ -128,7 +128,7 @@ public class ContinuousSubarraySum {
              *
              *  -> idea 1) (presum + cur) % k - (presum) = 0, so it's  k multiple
              *
-             *  
+             *
              */
             presum = (presum + cur) % k;
             // NOTE !!! below

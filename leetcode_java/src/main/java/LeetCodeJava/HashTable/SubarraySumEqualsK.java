@@ -85,6 +85,22 @@ public class SubarraySumEqualsK {
          *  NOTE !!!
          *
          *  Initialize the map with prefix sum 0 (to handle subarrays starting at index 0)
+         *
+         *
+         *
+         *  Purpose of map.put(0, 1);
+         *  
+         * 	1.	Handle the Initial Case:
+         * 	    •	The prefix sum presum starts at 0 before any elements of the array are processed.
+         * 	    •	Adding map.put(0, 1) ensures that if a subarray’s prefix sum equals k (e.g., the subarray itself equals  k ), it is counted correctly.
+         *
+         * 	2.	Account for Subarrays Starting at Index 0:
+         * 	    •	Consider the case where the cumulative sum of elements up to a certain index  j  equals  k : presum[j] = k
+         * 	    •	The subarray from index 0 to  j  should count as a valid subarray.
+         * 	    •	To check this condition, the code calculates presum - k and looks for it in the map. For subarrays starting at index 0, presum - k equals 0. Adding map.put(0, 1) ensures this case is handled properly.
+         *
+         * 	3.	Count Prefix Sums:
+         * 	    •	The value 1 in map.put(0, 1) represents the fact that there is one prefix sum of 0 initially (before processing any elements). This allows the algorithm to correctly count subarrays that sum to  k  as the prefix sum progresses.
          */
         map.put(0, 1);
 
@@ -101,6 +117,58 @@ public class SubarraySumEqualsK {
         }
 
         return count;
+    }
+
+    // V0-1
+    // IDEA : HASH MAP (fixed by gpt)
+    public int subarraySum_0_1(int[] nums, int k) {
+
+        if (nums.length == 1){
+            if (nums[0] == k){
+                return 1;
+            }
+            return 0;
+        }
+
+        // map : {presum : count}
+        Map<Integer, Integer> map = new HashMap<>();
+        /** NOTE !!!
+         *
+         *  init map as below
+         *
+         *  Initialize the map with prefix sum 0 (to handle subarrays starting at index 0)
+         */
+        map.put(0,1);
+        int preusm = 0;
+        int cnt = 0;
+        for (int i = 0; i < nums.length; i++){
+            int cur = nums[i];
+            preusm += cur;
+            /**
+             *  Reason why update map after `count` update (e.g. map.put(preusm, map.getOrDefault(preusm, 0) + 1) after if condition)
+             *
+             * 	1.	Avoid Overcounting:
+             * 	    •	When checking if (map.containsKey(preusm - k)), you are looking for how many previous subarrays have a prefix sum of preusm - k.
+             * 	    •	If you update the map before this check (i.e., increment the count for the current preusm), you might mistakenly count the current subarray itself in this operation, leading to incorrect results.
+             *
+             * 	2.	Logical Order of Operations:
+             * 	    •	The purpose of the map is to store the counts of previous prefix sums seen so far.
+             * 	    •	When you calculate cnt += map.get(preusm - k), you are determining how many times the subarray sum  k  has been encountered up to this point.
+             * 	    •	Only after this check should you update the map to include the current preusm for subsequent iterations.
+             *
+             * 	3.	Current Subarray Shouldn’t Influence Itself:
+             * 	    •	In the current iteration, the subarray being evaluated shouldn’t count itself as contributing to the result. By updating the map after the check, you ensure the current prefix sum becomes available only for future iterations.
+             *
+             */
+            //map.put(preusm, map.getOrDefault(preusm, 0) + 1);
+            if (map.containsKey(preusm - k)){
+                cnt += map.get(preusm - k);
+            }
+            // NOTE !! update map after `if condition`
+            map.put(preusm, map.getOrDefault(preusm, 0) + 1);
+        }
+
+        return cnt;
     }
 
     // V1

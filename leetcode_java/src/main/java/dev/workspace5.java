@@ -4516,33 +4516,82 @@ public class workspace5 {
      */
     public int subarraySum(int[] nums, int k) {
 
-        if(nums.length==1){
-            return nums[0] == k ? 1 : 0;
+        if (nums.length == 1){
+            if (nums[0] == k){
+                return 1;
+            }
+            return 0;
         }
 
-        // map : {presum : idx}
+        // map : {presum : count}
         Map<Integer, Integer> map = new HashMap<>();
-        int presum = 0;
+        /** NOTE !!!
+         *
+         *  init map as below
+         */
+        map.put(0,1); // TODO : check
+        int preusm = 0;
         int cnt = 0;
-        map.put(0, -1); // TODO : check if necessary
         for (int i = 0; i < nums.length; i++){
             int cur = nums[i];
-            presum += cur;
-            map.putIfAbsent(presum, i); // ???
+            preusm += cur;
             /**
-             *  sum(i,j) = presum(j+1) - presum(i)
+             *  Reason why update map after `count` update (e.g. map.put(preusm, map.getOrDefault(preusm, 0) + 1) after if condition)
              *
-             *  k = presum(j+1) - presum(i)
-             *  -> presum(i) = presum(j+1) - k
+             * 	1.	Avoid Overcounting:
+             * 	    •	When checking if (map.containsKey(preusm - k)), you are looking for how many previous subarrays have a prefix sum of preusm - k.
+             * 	    •	If you update the map before this check (i.e., increment the count for the current preusm), you might mistakenly count the current subarray itself in this operation, leading to incorrect results.
+             *
+             * 	2.	Logical Order of Operations:
+             * 	    •	The purpose of the map is to store the counts of previous prefix sums seen so far.
+             * 	    •	When you calculate cnt += map.get(preusm - k), you are determining how many times the subarray sum  k  has been encountered up to this point.
+             * 	    •	Only after this check should you update the map to include the current preusm for subsequent iterations.
+             *
+             * 	3.	Current Subarray Shouldn’t Influence Itself:
+             * 	    •	In the current iteration, the subarray being evaluated shouldn’t count itself as contributing to the result. By updating the map after the check, you ensure the current prefix sum becomes available only for future iterations.
+             *
              */
-            if (map.containsKey(presum - k) && map.get(presum - k) == i+1){
-                cnt += 1;
+            //map.put(preusm, map.getOrDefault(preusm, 0) + 1);
+            if (map.containsKey(preusm - k)){
+                cnt += map.get(preusm - k);
             }
-            //map.putIfAbsent(presum, i);
+            // NOTE !! update map after `if condition`
+            map.put(preusm, map.getOrDefault(preusm, 0) + 1);
         }
 
         return cnt;
     }
+
+
+//    public int subarraySum(int[] nums, int k) {
+//
+//        if(nums.length==1){
+//            return nums[0] == k ? 1 : 0;
+//        }
+//
+//        // map : {presum : idx}
+//        Map<Integer, Integer> map = new HashMap<>();
+//        int presum = 0;
+//        int cnt = 0;
+//        map.put(0, -1); // TODO : check if necessary
+//        for (int i = 0; i < nums.length; i++){
+//            int cur = nums[i];
+//            presum += cur;
+//            map.putIfAbsent(presum, i); // ???
+//            /**
+//             *  sum(i,j) = presum(j+1) - presum(i)
+//             *
+//             *  k = presum(j+1) - presum(i)
+//             *  -> presum(i) = presum(j+1) - k
+//             */
+//            if (map.containsKey(presum - k) && map.get(presum - k) == i+1){
+//                cnt += 1;
+//            }
+//            //map.putIfAbsent(presum, i);
+//        }
+//
+//        return cnt;
+//    }
 
     // LC 1109
     // https://leetcode.com/problems/corporate-flight-bookings/
