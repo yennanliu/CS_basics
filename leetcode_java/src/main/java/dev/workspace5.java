@@ -4417,37 +4417,92 @@ public class workspace5 {
      * the sum of the elements of the subarray is a multiple of k.
      *
      */
+    // 8,30 am - 8.40 am
     public boolean checkSubarraySum(int[] nums, int k) {
+
         if (nums.length < 2){
             return false;
         }
-        // hash map
-        // record presum and idx
-        // map(presum: idx)
+
+        // map : {preSum: idx}
         Map<Integer, Integer> map = new HashMap<>();
+
+        // init the value with init status
+        map.put(0,-1);
         int presum = 0;
+
         for (int i = 0; i < nums.length; i++){
             int cur = nums[i];
-            // if there is any element equals 0, return true directly
-//            if (cur == 0){
-//                return true;
-//            }
-            presum += cur;
-            map.putIfAbsent(presum, i);
             /**
+             *
              *  sum(i,j) = presum(j+1) - presum(i)
              *
-             *  k = presum(j+1) - presum(i)
-             *  -> presum(i) = presum(j+1) - k
+             *
+             *  remainder : presum = (presum + cur) % k
+             *
+             *  so if map has "key" with remainder value (AKA (presum + cur) % k)
+             *  -> we found a sub-array sum that is multiple of k
+             *
              */
-            if (map.containsKey(presum - k) || presum % k == 0){
-                return true;
+            presum = (presum + cur) % k; // TODO : double check
+            if (map.containsKey(presum)){
+                if (i - map.get(presum) > 1){ // check is sub array length >= 2
+                    return true;
+                }
             }
+            map.putIfAbsent(presum, i);
 
+
+            // BELOW is wrong !!!
+//            map.putIfAbsent(presum, i);
+//            /**
+//             *  sum(i,j) = presum(j+1) - presum(i)
+//             *
+//             *  ->  presum(j+1) - presum(i) = k
+//             *  -> so, presum(i) = presum(j+1) - k
+//             *
+//             *  similar idea for "presum mod"
+//             */
+//            if(map.containsKey(presum - k) && map.get(presum - k) - i >= 2){
+//                return true;
+//            }
         }
 
         return false;
     }
+
+
+//    public boolean checkSubarraySum(int[] nums, int k) {
+//        if (nums.length < 2){
+//            return false;
+//        }
+//        // hash map
+//        // record presum and idx
+//        // map(presum: idx)
+//        Map<Integer, Integer> map = new HashMap<>();
+//        int presum = 0;
+//        for (int i = 0; i < nums.length; i++){
+//            int cur = nums[i];
+//            // if there is any element equals 0, return true directly
+////            if (cur == 0){
+////                return true;
+////            }
+//            presum += cur;
+//            map.putIfAbsent(presum, i);
+//            /**
+//             *  sum(i,j) = presum(j+1) - presum(i)
+//             *
+//             *  k = presum(j+1) - presum(i)
+//             *  -> presum(i) = presum(j+1) - k
+//             */
+//            if (map.containsKey(presum - k) || presum % k == 0){
+//                return true;
+//            }
+//
+//        }
+//
+//        return false;
+//    }
 
     // LC 560
     // https://leetcode.com/problems/subarray-sum-equals-k/
@@ -4487,6 +4542,13 @@ public class workspace5 {
         }
 
         return cnt;
+    }
+
+    // LC 1109
+    // https://leetcode.com/problems/corporate-flight-bookings/
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+
+        return null;
     }
 
 
