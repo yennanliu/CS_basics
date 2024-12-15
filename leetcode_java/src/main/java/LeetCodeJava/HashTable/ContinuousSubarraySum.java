@@ -93,6 +93,72 @@ public class ContinuousSubarraySum {
         return false;
     }
 
+    // V0-1
+    public boolean checkSubarraySum_0_1(int[] nums, int k) {
+
+        if (nums.length < 2){
+            return false;
+        }
+
+        // map : {preSum: idx}
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // init the value with init status
+        map.put(0,-1);
+        int presum = 0;
+
+        for (int i = 0; i < nums.length; i++){
+            int cur = nums[i];
+            /**
+             *
+             *  NOTE !!!!!
+             *
+             *
+             *  sum(i,j) = presum(j+1) - presum(i)
+             *
+             *
+             *  remainder : presum = (presum + cur) % k
+             *
+             *  so if map has "key" with remainder value (AKA (presum + cur) % k)
+             *  -> we found a sub-array sum that is multiple of k
+             *
+             *
+             *  e.g. if remainder = (presum + cur) % k
+             *  -> we can find a subarray with k multiple
+             *
+             *  -> idea 1) (presum + cur) % k - (presum) = 0, so it's  k multiple
+             *
+             *  
+             */
+            presum = (presum + cur) % k;
+            // NOTE !!! below
+            if (map.containsKey(presum)){
+                if (i - map.get(presum) > 1){ // check is sub array length >= 2
+                    return true;
+                }
+            }
+            map.putIfAbsent(presum, i);
+
+
+            // BELOW is wrong !!!
+//            map.putIfAbsent(presum, i);
+//            /**
+//             *  sum(i,j) = presum(j+1) - presum(i)
+//             *
+//             *  ->  presum(j+1) - presum(i) = k
+//             *  -> so, presum(i) = presum(j+1) - k
+//             *
+//             *  similar idea for "presum mod"
+//             */
+//            if(map.containsKey(presum - k) && map.get(presum - k) - i >= 2){
+//                return true;
+//            }
+        }
+
+        return false;
+    }
+
+
     // V1
     // IDEA : HASHMAP
     // https://leetcode.com/problems/continuous-subarray-sum/editorial/
