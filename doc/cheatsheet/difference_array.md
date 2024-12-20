@@ -116,6 +116,7 @@ class Solution {
 // java
 // LC 1109
 
+// V1
 class Solution {
     public int[] corpFlightBookings(int[][] bookings, int n) {
         // nums 初始化为全 0
@@ -135,6 +136,30 @@ class Solution {
         return df.result();
     }
 }
+```
+
+```java
+// java
+
+// V2
+  public int[] corpFlightBookings_2(int[][] bookings, int n) {
+      int[] ans = new int[n];
+      for (int[] booking : bookings) {
+          int i = booking[0] - 1;
+          int j = booking[1];
+          int seats = booking[2];
+          ans[i] += seats;
+          if (j != n)
+              ans[j] -= seats;
+      }
+
+      int count = 0;
+      for (int i = 0; i < ans.length; i++) {
+          ans[i] += count;
+          count = ans[i];
+      }
+      return ans;
+  }
 ```
 
 
