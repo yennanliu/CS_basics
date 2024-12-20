@@ -99,6 +99,11 @@ public class BusRoutes {
         }
         HashMap<Integer, ArrayList<Integer>> adjList = new HashMap<>();
         // Create a map from the bus stop to all the routes that include this stop.
+        /**
+         * NOTE !!!
+         *
+         *  the `key` of map is the `route` index
+         */
         for (int r = 0; r < routes.length; r++) {
             for (int stop : routes[r]) {
                 // Add all the routes that have this stop.
@@ -150,9 +155,7 @@ public class BusRoutes {
     // V2
     // IDEA : Breadth-First Search (BFS) with Routes as Nodes (test OK)
     // https://leetcode.com/problems/bus-routes/editorial/
-
     List<List<Integer>> adjList = new ArrayList();
-
     // Iterate over each pair of routes and add an edge between them if there's a
     // common stop.
     void createGraph(int[][] routes) {
