@@ -171,4 +171,56 @@ public class workspace6 {
         return -1;
     }
 
+    // LC 593
+    // https://leetcode.com/problems/valid-square/
+    // 2.05 pm - 2.20 pm
+    /**
+     *  Idea 1)  math
+     *
+     *   A----B
+     *   |     |
+     *   C----D
+     *
+     *
+     *  -> so, dist(A,B) ==  dist(C,D)
+     *
+     *  step 1) create a check func
+     *   1) check if same dist
+     *   2) check if "90 degree"
+     *
+     *  step 2) go through each point, and check "if at least 2 combinations"
+     *          fit the check logic, if any violation, return false directly
+     *
+     *  step 3) return true
+     *
+     */
+    public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+
+        List<int[]> list = new ArrayList<>();
+        list.add(p1);
+        list.add(p2);
+        list.add(p3);
+        list.add(p4);
+
+        for (int i = 0; i < list.size(); i++){
+            int violationCnt = 0;
+            for (int j = 0; j < list.size(); j++){
+                if (i != j){
+                    if (!canBuildSqaure(list.get(i), list.get(j))){
+                        violationCnt += 1;
+                    }
+                }
+                if (violationCnt > 1){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean canBuildSqaure(int[] x1, int[] x2){
+
+        return true;
+    }
+
 }
