@@ -1,5 +1,6 @@
 package dev;
 
+import javax.print.DocFlavor;
 import java.util.*;
 
 public class workspace6 {
@@ -221,6 +222,102 @@ public class workspace6 {
     private boolean canBuildSqaure(int[] x1, int[] x2){
 
         return true;
+    }
+
+  // LC 1109
+  // https://leetcode.com/problems/corporate-flight-bookings/
+  // 2.49 pm - 3.10 pm
+  /**
+   *  示例 1：
+   *
+   * 输入：bookings = [[1,2,10],[2,3,20],[2,5,25]], n = 5
+   * 输出：[10,55,45,25,25]
+   * 解释：
+   * 航班编号        1   2   3   4   5
+   * 预订记录 1 ：   10  10
+   * 预订记录 2 ：       20  20
+   * 预订记录 3 ：       25  25  25  25
+   * 总座位数：      10  55  45  25  25 <-----------
+   * 因此，answer = [10,55,45,25,25]
+   *
+   *
+   * 示例 2：
+   *
+   * 输入：bookings = [[1,2,10],[2,2,15]], n = 2
+   * 输出：[10,25]
+   * 解释：
+   * 航班编号        1   2
+   * 预订记录 1 ：   10  10
+   * 预订记录 2 ：       15
+   * 总座位数：      10  25  <-----------
+   * 因此，answer = [10,25]
+   *
+   */
+  /**
+   *  Idea : array op (presum ??)
+   *
+   *  Exp 1: bookings = [[1,2,10],[2,3,20],[2,5,25]], n = 5
+   *
+   *  (idx start from 1)
+   *
+   *
+   *    * 输入：bookings = [[1,2,10],[2,3,20],[2,5,25]], n = 5
+   *    * 输出：[10,55,45,25,25]
+   *    * 解释：
+   *    * 航班编号        1   2   3   4   5
+   *    * 预订记录 1 ：   10  10
+   *    * 预订记录 2 ：       20  20
+   *    * 预订记录 3 ：       25  25  25  25
+   *    * 总座位数：      10  55  45  25  25 <-----------
+   *    * 因此，answer = [10,55,45,25,25]
+   *
+   *
+   *  -> arr1 = [10,10,0,0,0], presum1 = [10,20,20,20,20]
+   *  -> arr2 = [0,20,20,0,0], presum2 = [0,20,40,40,40]
+   *  -> arr3 = [0,25,25,25,25], presum = [0,25,50,75,100]
+   *  ...
+   *
+   *
+   */
+  public int[] corpFlightBookings(int[][] bookings, int n) {
+        int[] res = new int[n];
+        List<Integer[]> preSumList = new ArrayList<>();
+        for (int[] x : bookings){
+           Integer[] preSumArr = createPreSumArr(x, n);
+           System.out.println(">>> preSumArr = " + Arrays.asList(preSumArr));
+            preSumList.add(createPreSumArr(x, n));
+        }
+
+        // merge presum array to a single array
+        List<Integer> mergedPreSum = new ArrayList<>();
+        // TODO : optimize double loop ??
+        for (Integer[] list : preSumList){{
+            int cur = 0;
+            for (int i = 0; i < list.length; i++){
+                cur = mergedPreSum.get(i); // ???
+                cur += list[i];
+               // mergedPresum.add(cur);
+            }
+            mergedPreSum.add(cur);
+        }}
+
+        // add result to res
+        for (int j = 0; j < mergedPreSum.size(); j++){
+            res[j] = mergedPreSum.get(j+1) - mergedPreSum.get(j);
+        }
+        return res;
+    }
+
+
+    private Integer[] createPreSumArr(int[] input, int n){
+      int presum = 0;
+      Integer[] res = new Integer[n+1];
+      res[0] = 0;
+      for (int i = 0; i < input.length; i++){
+          presum += input[i];
+          res[i+1] = presum;
+      }
+      return res;
     }
 
 }
