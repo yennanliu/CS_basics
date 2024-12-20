@@ -81,6 +81,7 @@ import java.util.Arrays;
 public class CorporateFlightBookings {
 
   // V0
+  // https://labuladong.online/algo/data-structure/diff-array/#%E7%AE%97%E6%B3%95%E5%AE%9E%E8%B7%B5
   // TODO : implement
   //    public int[] corpFlightBookings(int[][] bookings, int n) {
   //
