@@ -89,7 +89,7 @@ public class SubarraySumEqualsK {
          *
          *
          *  Purpose of map.put(0, 1);
-         *  
+         *
          * 	1.	Handle the Initial Case:
          * 	    •	The prefix sum presum starts at 0 before any elements of the array are processed.
          * 	    •	Adding map.put(0, 1) ensures that if a subarray’s prefix sum equals k (e.g., the subarray itself equals  k ), it is counted correctly.
