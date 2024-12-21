@@ -226,7 +226,7 @@ public class workspace6 {
 
   // LC 1109
   // https://leetcode.com/problems/corporate-flight-bookings/
-  // 2.49 pm - 3.10 pm
+  // 3.56 pm - 4.15 pm
   /**
    *  示例 1：
    *
@@ -279,46 +279,74 @@ public class workspace6 {
    *
    *
    */
+  /**
+   *  IDEA : presum + `difference` array
+   *
+   *
+   */
   public int[] corpFlightBookings(int[][] bookings, int n) {
-        int[] res = new int[n];
-        List<Integer[]> preSumList = new ArrayList<>();
-        for (int[] x : bookings){
-           Integer[] preSumArr = createPreSumArr(x, n);
-           System.out.println(">>> preSumArr = " + Arrays.asList(preSumArr));
-            preSumList.add(createPreSumArr(x, n));
-        }
+      //int presum = 0;
+      //int[] tmpArray = new int[n+1]; // size = n + 1 ??
+      int[] tmpArray = new int[n]; // size = n + 1 ??
+      for (int[] booking: bookings){
+          int start = booking[0];
+          int end = booking[1];
+          int seat = booking[2];
 
-        // merge presum array to a single array
-        List<Integer> mergedPreSum = new ArrayList<>();
-        // TODO : optimize double loop ??
-        for (Integer[] list : preSumList){{
-            int cur = 0;
-            for (int i = 0; i < list.length; i++){
-                cur = mergedPreSum.get(i); // ???
-                cur += list[i];
-               // mergedPresum.add(cur);
-            }
-            mergedPreSum.add(cur);
-        }}
-
-        // add result to res
-        for (int j = 0; j < mergedPreSum.size(); j++){
-            res[j] = mergedPreSum.get(j+1) - mergedPreSum.get(j);
-        }
-        return res;
-    }
-
-
-    private Integer[] createPreSumArr(int[] input, int n){
-      int presum = 0;
-      Integer[] res = new Integer[n+1];
-      res[0] = 0;
-      for (int i = 0; i < input.length; i++){
-          presum += input[i];
-          res[i+1] = presum;
+          //presum += seat;
+          //int presum = seat;
+          // append all "seat" between start, end index
+          // will `adjust` the overhead adding in the following code
+          for (int i = start-1; i < end; i++){
+              tmpArray[i] = seat; // ???
+          }
       }
-      return res;
-    }
+
+      // adjust
+
+      return tmpArray; // ???
+  }
+
+//  public int[] corpFlightBookings(int[][] bookings, int n) {
+//        int[] res = new int[n];
+//        List<Integer[]> preSumList = new ArrayList<>();
+//        for (int[] x : bookings){
+//           Integer[] preSumArr = createPreSumArr(x, n);
+//           System.out.println(">>> preSumArr = " + Arrays.asList(preSumArr));
+//            preSumList.add(createPreSumArr(x, n));
+//        }
+//
+//        // merge presum array to a single array
+//        List<Integer> mergedPreSum = new ArrayList<>();
+//        // TODO : optimize double loop ??
+//        for (Integer[] list : preSumList){{
+//            int cur = 0;
+//            for (int i = 0; i < list.length; i++){
+//                cur = mergedPreSum.get(i); // ???
+//                cur += list[i];
+//               // mergedPresum.add(cur);
+//            }
+//            mergedPreSum.add(cur);
+//        }}
+//
+//        // add result to res
+//        for (int j = 0; j < mergedPreSum.size(); j++){
+//            res[j] = mergedPreSum.get(j+1) - mergedPreSum.get(j);
+//        }
+//        return res;
+//    }
+//
+//
+//    private Integer[] createPreSumArr(int[] input, int n){
+//      int presum = 0;
+//      Integer[] res = new Integer[n+1];
+//      res[0] = 0;
+//      for (int i = 0; i < input.length; i++){
+//          presum += input[i];
+//          res[i+1] = presum;
+//      }
+//      return res;
+//    }
 
     // LC 523
     // https://leetcode.com/problems/continuous-subarray-sum/
