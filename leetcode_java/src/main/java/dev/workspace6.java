@@ -360,4 +360,54 @@ public class workspace6 {
       return false;
     }
 
+  // LC 560
+  // https://leetcode.com/problems/subarray-sum-equals-k/description/
+  // 3.37 - 3.47 pm
+  /**
+   * Given an array of integers nums and an integer k,
+   * return the total number of subarrays whose sum equals to k.
+   *
+   * A subarray is a contiguous non-empty
+   * sequence of elements within an array.
+   *
+   * IDEA : presum + hashmap
+   */
+  public int subarraySum(int[] nums, int k) {
+
+      if (nums.length == 1){
+          if (nums[0] == k){
+              return 1;
+          }
+          return 0;
+      }
+
+      int presum = 0;
+      int cnt = 0;
+      /**
+       *  map{ presum : cnt}
+       */
+      Map<Integer, Integer> map = new HashMap<>();
+      // init map as below
+      map.put(0,1);
+
+      for (int i = 0; i < nums.length; i++){
+          int cur = nums[i];
+          presum += cur;
+          /**
+           *  sum(i,j) = presum(j+1) - presum(i)
+           *
+           *  -> presum(j+1) - presum(i) = k
+           *  -> presum(i) =   presum(j+1) - k
+           */
+          if (map.containsKey(presum - k)){
+              cnt += map.get(presum - k);
+          }
+
+          map.put(presum, map.getOrDefault(presum, 0)+1);
+      }
+
+      return cnt;
+    }
+
+
 }
