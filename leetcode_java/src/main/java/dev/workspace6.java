@@ -437,5 +437,48 @@ public class workspace6 {
       return cnt;
     }
 
+  // LC 370
+  // 5.03 pm - 5.20 pm
+  // https://leetcode.ca/2016-12-04-370-Range-Addition/
+  /**
+   * IDEA : DIFF ARRAY
+   *
+   * EXP 1)
+   * Input: length = 5, updates = [[1,3,2],[2,4,3],[0,2,-2]]
+   * Output: [-2,0,3,5,3]
+   *
+   *  -> arrays =
+   *   [0,2,2,2,0]
+   *   [0,0,3,3,3]
+   *   [-2,-2,-2,0,0]
+   *
+   *  -> sum over all arrays
+   *  -> [-2,0,3,5,3]
+   *
+   */
+  public int[] getModifiedArray(int length, int[][] updates) {
+
+      int[] tmp = new int[length+1]; // ?
+      for (int[] x : updates){
+          int start = x[0];
+          int end = x[1];
+          int amount = x[2];
+
+          // add
+          tmp[start] += amount;
+
+          // subtract (remove the "adding affect" on "NEXT" element)
+          if (end + 1 < length){ // ??
+              tmp[end] -= amount;
+          }
+      }
+
+      // prepare final result
+      for(int i = 1; i < tmp.length; i++){
+          tmp[i] += tmp[i-1];
+      }
+
+      return Arrays.copyOfRange(tmp, 0, length); // ????
+    }
 
 }
