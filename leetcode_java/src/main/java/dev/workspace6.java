@@ -320,4 +320,44 @@ public class workspace6 {
       return res;
     }
 
+    // LC 523
+    // https://leetcode.com/problems/continuous-subarray-sum/
+    // 3.11 pm - 3.20 pm
+    /**
+     *  idea : presum + hashmap
+     *
+     */
+    public boolean checkSubarraySum(int[] nums, int k) {
+
+      if (nums.length < 2){
+          return false;
+      }
+
+      Map<Integer, Integer> map = new HashMap<>();
+      // NOTE!! init as below
+      map.put(0, -1);
+
+      int preSum = 0;
+      for(int i = 0; i < nums.length; i++){
+          int cur = nums[i];
+          //  int remainder = (k != 0) ? presum % k : presum;
+          preSum = k != 0 ? (preSum + cur) % k : preSum; // edge case : if k = 0
+          /**
+           *  sum(i,j) = presum(j+1) - presum(i)
+           *
+           *  -> sum(i,j) = a * k + r  - b * k + r
+           *  ->
+           *
+           */
+          if (map.containsKey(preSum)){ // TODO : double check
+              if (i - map.get(preSum) >= 2){
+                  return true;
+              }
+          }
+          map.put(preSum, i);
+      }
+
+      return false;
+    }
+
 }
