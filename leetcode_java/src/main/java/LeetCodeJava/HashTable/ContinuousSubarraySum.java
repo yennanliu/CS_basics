@@ -76,6 +76,10 @@ public class ContinuousSubarraySum {
             presum += nums[i];
 
             // Calculate remainder
+            /**
+             * NOTE:
+             *  handle edge case : if k = 0
+             */
             int remainder = (k != 0) ? presum % k : presum;
 
             // If the remainder already exists in the map
@@ -155,6 +159,37 @@ public class ContinuousSubarraySum {
 //            }
         }
 
+        return false;
+    }
+
+    // V0-2
+    // IDEA : presum + hashmap
+    public boolean checkSubarraySum_0_2(int[] nums, int k) {
+
+        if (nums.length < 2) {
+            return false;
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        // NOTE!! init as below
+        map.put(0, -1);
+
+        int preSum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int cur = nums[i];
+            /**
+             * NOTE:
+             *  handle edge case : if k = 0
+             */
+            preSum = k != 0 ? (preSum + cur) % k : preSum;
+            if (map.containsKey(preSum)) {
+                if (i - map.get(preSum) >= 2) {
+                    return true;
+                }
+            } else {
+                map.put(preSum, i);
+            }
+        }
         return false;
     }
 
