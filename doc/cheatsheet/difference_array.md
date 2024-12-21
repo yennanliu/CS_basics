@@ -131,36 +131,11 @@ return Arrays.copyOfRange(tmp, 1, n+1);
 
 ```java
 // java
-// LC 370 
-class Solution {
-    public int[] getModifiedArray(int length, int[][] updates) {
-        // nums 初始化为全 0
-        int[] nums = new int[length];
-        // 构造差分解法
-        Difference df = new Difference(nums);
-        
-        for (int[] update : updates) {
-            int i = update[0];
-            int j = update[1];
-            int val = update[2];
-            df.increment(i, j, val);
-        }
-        
-        return df.result();
-    }
-}
-```
+// LC 370
 
-### Corporate Flight Bookings
-
-```java
-// java
-// LC 1109
 
 // V0
 // IDEA : DIFFERENCE ARRAY
-// LC 1109
-// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/CorporateFlightBookings.java
 public static int[] getModifiedArray(int length, int[][] updates) {
 
 int[] tmp = new int[length + 1]; // or new int[length]; both works
@@ -190,6 +165,32 @@ for (int i = 1; i < tmp.length; i++) {
 
 return Arrays.copyOfRange(tmp, 0, length); // return the sub array between 0, lengh index
 }
+
+// V1
+class Solution {
+    public int[] getModifiedArray(int length, int[][] updates) {
+        // nums 初始化为全 0
+        int[] nums = new int[length];
+        // 构造差分解法
+        Difference df = new Difference(nums);
+        
+        for (int[] update : updates) {
+            int i = update[0];
+            int j = update[1];
+            int val = update[2];
+            df.increment(i, j, val);
+        }
+        
+        return df.result();
+    }
+}
+```
+
+### Corporate Flight Bookings
+
+```java
+// java
+// LC 1109
 
 // V1
 class Solution {
