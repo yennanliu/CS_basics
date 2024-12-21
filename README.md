@@ -199,7 +199,7 @@
 ||Priority Queue (`unsorted`) | [Java](./algorithm/java/UnorderedMaxPQ.java) || | | AGAIN| 
 ||LRU cache | [Python](./algorithm/python/lru_cache.py) || LC 146 | | | AGAIN| 
 ||LFU Cache | [Python](./algorithm/python/lfu_cache.py) || LC 460 | | | AGAIN| 
-
+||DifferenceArray | [Java](./algorithm/java/DifferenceArray.java) || LC 1109, 370 | | | AGAIN| 
 
 ## Array
 
