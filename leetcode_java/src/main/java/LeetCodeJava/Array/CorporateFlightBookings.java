@@ -88,7 +88,23 @@ public class CorporateFlightBookings {
   //    }
 
   // V1
-  // IDEA : difference ARRAY (gpt)
+  // IDEA : DIFFERENCE ARRAY (gpt)
+  // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/difference_array.md
+  /**
+   *  IDEA : DIFFERENCE ARRAY  + presum
+   *
+   *  -> Step 1) for loop over bookings
+   *    we add `seats` to res[start] to record the "starting point" of seats
+   *    and subtract `seats`  (res[end + 1] -= seats;) to "remove" the "seats addition" so
+   *    it NOT affects the following operation
+   *
+   *  -> Step 2) add up presum  ( for (int i = 1; i <= n; i++) {  res[i] += res[i - 1]; } )
+   *     we add "added seats" within ranges, (DON'T need to worry about `end` index, since we already disable its effect in step 1)
+   *     then we get the presum of seats per different start, end idx from different array
+   *
+   *  -> Step 3) copy the needed range of array as final result
+   *
+   */
   public int[] corpFlightBookings_1(int[][] bookings, int n) {
       int[] res = new int[n + 1]; // Use n+1 to handle range updates easily with a difference array.
 
@@ -99,7 +115,25 @@ public class CorporateFlightBookings {
           int seats = booking[2]; // Seats to add
 
           res[start] += seats; // Add seats at the start
-          if (end + 1 <= n) { // Subtract seats after the end
+      /**
+       * NOTE !!!
+       *
+       *  why `if (end + 1 <= n) {res[end + 1] -= seats;}`; ?
+       *
+       *  ->
+       *
+       *  - 1) The diffArray[end] -= seats;
+       *    statement marks the end of the booking range.
+       *    It ensures that any flight after end will
+       *    not be affected by this booking.
+       *
+       *
+       *  - 2) The condition if (end < n) prevents going out of bounds.
+       *    This is necessary because the end + 1 index might not exist
+       *    if end is the last flight.
+       *
+       */
+      if (end + 1 <= n) { // Subtract seats after the end
               res[end + 1] -= seats;
           }
       }
