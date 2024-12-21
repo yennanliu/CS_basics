@@ -6,9 +6,9 @@
 - [fucking algorithm - Difference Array](https://labuladong.online/algo/data-structure/diff-array/)
 
 ### 0-1) Types
-	- LC 1109
-	- LC 370
-	- LC 1094
+- LC 1109
+- LC 370
+- LC 1094
 
 ### 0-2) Pattern
 
@@ -46,6 +46,7 @@ class PrefixSum {
 // https://labuladong.online/algo/data-structure/diff-array/
 
 // 差分数组工具类
+// V1
 class Difference {
     // 差分数组
     private int[] diff;
@@ -79,6 +80,46 @@ class Difference {
         }
         return res;
     }
+}
+```
+
+```java
+// V2
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/DifferenceArray.java
+
+
+// method
+public int[] getDifferenceArray(int[][] input, int n) {
+
+/** LC 1109. Corporate Flight Bookings input : [start, end, seats]
+ *
+ *  NOTE !!!
+ *
+ *   in java, index start from 0;
+ *   but in LC 1109, index start from 1
+ *
+ */
+int[] tmp = new int[n + 1];
+for (int[] x : input) {
+  int start = x[0];
+  int end = x[1];
+  int seats = x[2];
+
+  // add
+  tmp[start] += seats;
+
+  // subtract
+  if (end + 1 <= n) {
+    tmp[end + 1] -= seats;
+  }
+}
+
+for (int i = 1; i < tmp.length; i++) {
+  //tmp[i] = tmp[i - 1] + tmp[i];
+    tmp[i] += tmp[i - 1];
+}
+
+return Arrays.copyOfRange(tmp, 1, n+1);
 }
 ```
 
@@ -116,6 +157,40 @@ class Solution {
 // java
 // LC 1109
 
+// V0
+// IDEA : DIFFERENCE ARRAY
+// LC 1109
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/CorporateFlightBookings.java
+public static int[] getModifiedArray(int length, int[][] updates) {
+
+int[] tmp = new int[length + 1]; // or new int[length]; both works
+for (int[] x : updates) {
+  int start = x[0];
+  int end = x[1];
+  int amount = x[2];
+
+  // add
+  tmp[start] += amount;
+
+  // subtract (remove the "adding affect" on "NEXT" element)
+  /**
+   * NOTE !!!
+   *
+   * <p>we remove the "adding affect" on NEXT element (e.g. end + 1)
+   */
+  if (end + 1 < length) { // NOTE !!! use `end + 1`
+    tmp[end + 1] -= amount;
+  }
+}
+
+// prepare final result
+for (int i = 1; i < tmp.length; i++) {
+  tmp[i] += tmp[i - 1];
+}
+
+return Arrays.copyOfRange(tmp, 0, length); // return the sub array between 0, lengh index
+}
+
 // V1
 class Solution {
     public int[] corpFlightBookings(int[][] bookings, int n) {
@@ -137,31 +212,6 @@ class Solution {
     }
 }
 ```
-
-```java
-// java
-
-// V2
-  public int[] corpFlightBookings_2(int[][] bookings, int n) {
-      int[] ans = new int[n];
-      for (int[] booking : bookings) {
-          int i = booking[0] - 1;
-          int j = booking[1];
-          int seats = booking[2];
-          ans[i] += seats;
-          if (j != n)
-              ans[j] -= seats;
-      }
-
-      int count = 0;
-      for (int i = 0; i < ans.length; i++) {
-          ans[i] += count;
-          count = ans[i];
-      }
-      return ans;
-  }
-```
-
 
 ### Car Pooling
 
