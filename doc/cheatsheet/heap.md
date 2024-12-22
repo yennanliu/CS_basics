@@ -4,8 +4,8 @@
 
 - Intro
     - https://leetcode.com/explore/learn/card/heap/
-    - In many CS applications, we only need to `access the largest or smallest element` in the dataset. We DO NOT care about `the order of other data in the data set`. How do we efficiently access the largest or smallest element in the current dataset? The answer would be `Heap`.
-    - heap is a "complete binary tree"
+    - In many CS applications, we only need to `access the largest or smallest element` in the dataset. We DO NOT care about `the order of other data in the data set`. How do we efficiently access the largest or smallest element in the current dataset? -> The answer would be `Heap`.
+    - `Heap` is a "complete binary tree"
 
     - Priority Queue (PQ)
         - Priority queue is one of the implementations of heap
@@ -23,12 +23,12 @@
         - The maximum/minimum value in the Heap can be obtained with `O(1)` time complexity.
     <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/type_of_heap.png" ></p>
 
-    - Definition : if P parent node, C is child node -> P always `<=` or `>=` C.
+    - Definition : if P is parent node, C is child node -> P always `<=` or `>=` C.
     - Types
-        - min heap
+        - `min` heap
             - if P parent node, C is child node -> P always <= C
             - 父節點總是 <= 子節點的值 (不需 右子節點 <= 父節點 <= 左子節點)
-        - max heap
+        - `max` heap
             - if P parent node, C is child node -> P always >= C
             - 父節點總是 >= 子節點的值 (不需 右子節點 <= 父節點 <= 左子節點)
 - was invented for `heap sort`
