@@ -1331,3 +1331,55 @@ class Solution:
             head = n1
         return dummy.next
 ```
+
+### 2-10) Plus One Linked List
+```java
+// java
+// LC 369
+// V1
+// IDEA : LINKED LIST OP (gpt)
+/**
+*  Step 1) reverse linked list
+*  Step 2) plus 1, bring `carry` to next digit if curSum > 9, ... repeat for all nodes
+*  Step 3) reverse linked list again
+*/
+public ListNode plusOne_1(ListNode head) {
+if (head == null) return new ListNode(1); // Handle edge case
+
+// Reverse the linked list
+head = reverseList(head);
+
+// Add one to the reversed list
+ListNode current = head;
+int carry = 1; // Start with adding one
+
+while (current != null && carry > 0) {
+  int sum = current.val + carry;
+  current.val = sum % 10; // Update the current node value
+  carry = sum / 10; // Calculate carry for the next node
+  if (current.next == null && carry > 0) {
+    current.next = new ListNode(carry); // Add a new node for carry
+    carry = 0; // No more carry after this
+  }
+  current = current.next;
+}
+
+// Reverse the list back to original order
+return reverseList(head);
+}
+
+// Utility to reverse a linked list
+private ListNode reverseList(ListNode head) {
+ListNode prev = null;
+ListNode current = head;
+
+while (current != null) {
+  ListNode next = current.next; // Save the next node
+  current.next = prev; // Reverse the link
+  prev = current; // Move prev forward
+  current = next; // Move current forward
+}
+
+return prev;
+}
+```

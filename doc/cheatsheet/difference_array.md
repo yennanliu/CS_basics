@@ -127,7 +127,7 @@ return Arrays.copyOfRange(tmp, 1, n+1);
 
 ## 2) LC Example
 
-## Range Addition
+### 2-1) Range Addition
 
 ```java
 // java
@@ -186,7 +186,7 @@ class Solution {
 }
 ```
 
-### Corporate Flight Bookings
+### 2-2) Corporate Flight Bookings
 
 ```java
 // java
@@ -214,7 +214,7 @@ class Solution {
 }
 ```
 
-### Car Pooling
+### 2-3) Car Pooling
 
 ```java
 // java
