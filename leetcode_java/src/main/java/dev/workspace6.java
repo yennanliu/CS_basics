@@ -515,32 +515,89 @@ public class workspace6 {
         return null;
     }
 
-    // v1
-//    public ListNode plusOne_1(ListNode head) {
-//      if (head == null){
-//          return new ListNode(1); // ??
-//      }
-//      List<Integer> list = new ArrayList<>();
-//      while(head != null){
-//          list.add(head.val);
-//          head = head.next;
-//      }
-//      // ???
-//      int cur = 0;
-//      for (int j = list.size(); j >= 0; j--){
-//          cur += (10 ^ j) * list.get(j);
-//      }
-//      cur += 1;
-//      ListNode res = new ListNode();
-//      String string = String.valueOf(cur);
-//      for (String x : string.split("")){
-//          ListNode tmp = new ListNode();
-//          tmp.val = Integer.parseInt(x);
-//          res.next = tmp;
-//          res = res.next;
-//      }
-//
-//      return res;
-//    }
+  // v1
+  //    public ListNode plusOne_1(ListNode head) {
+  //      if (head == null){
+  //          return new ListNode(1); // ??
+  //      }
+  //      List<Integer> list = new ArrayList<>();
+  //      while(head != null){
+  //          list.add(head.val);
+  //          head = head.next;
+  //      }
+  //      // ???
+  //      int cur = 0;
+  //      for (int j = list.size(); j >= 0; j--){
+  //          cur += (10 ^ j) * list.get(j);
+  //      }
+  //      cur += 1;
+  //      ListNode res = new ListNode();
+  //      String string = String.valueOf(cur);
+  //      for (String x : string.split("")){
+  //          ListNode tmp = new ListNode();
+  //          tmp.val = Integer.parseInt(x);
+  //          res.next = tmp;
+  //          res = res.next;
+  //      }
+  //
+  //      return res;
+  //    }
+
+  // LC 311
+  // https://leetcode.ca/2016-10-06-311-Sparse-Matrix-Multiplication/
+  // 4.39 - 4.50 pm
+  /**
+   * IDEA 1: ARRAY OP (brute force)
+   *
+   *  Input:
+   *
+   * A = [
+   *   [ 1, 0, 0],
+   *   [-1, 0, 3]
+   * ]
+   *
+   * B = [
+   *   [ 7, 0, 0 ],
+   *   [ 0, 0, 0 ],
+   *   [ 0, 0, 1 ]
+   * ]
+   *
+   * Output:
+   *
+   *      |  1 0 0 |   | 7 0 0 |   |  7 0 0 |
+   * AB = | -1 0 3 | x | 0 0 0 | = | -7 0 3 |
+   *                   | 0 0 1 |
+   *
+   */
+  public int[][] multiply(int[][] mat1, int[][] mat2) {
+
+      // edge case
+      if (mat1.length == 1 && mat1[0].length == 1 && mat2.length == 1 && mat2[0].length == 1){
+          int[][] res = new int[][]{};
+          res[0][0] = mat1[0][0] * mat2[0][0];
+          return res;
+      }
+
+      int l_1 = mat1.length;
+      int w_1 = mat1[0].length;
+
+      int l_2 = mat2.length;
+      int w_2 = mat2[0].length;
+
+      int[][] res = new int[l_1][w_2]; // ???
+
+      for(int i = 0; i < l_1; i++){
+          int tmp = 0;
+          for (int j = 0; j < w_2; j++){
+              System.out.println(">>> i = " + i + ", j = " + j + ", tmp = " + tmp);
+              tmp += (mat1[i][j] * mat2[j][i]);
+              res[i][j] = tmp;
+          }
+          //res[i][j] = tmp; // ?
+      }
+
+      return res;
+    }
+
 
 }
