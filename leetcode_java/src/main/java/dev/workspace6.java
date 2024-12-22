@@ -1,5 +1,8 @@
 package dev;
 
+
+import LeetCodeJava.DataStructure.ListNode;
+
 import javax.print.DocFlavor;
 import java.util.*;
 
@@ -480,5 +483,64 @@ public class workspace6 {
 
       return Arrays.copyOfRange(tmp, 0, length); // ????
     }
+
+    // LC 369
+    // https://leetcode.ca/all/369.html
+    // 3.42 PM - 4.00 pm
+    /**
+     *  IDEA 1 : linked list -> int, +1, transform back to linked list
+     *
+     *  Idea 2: do in linked list directly
+     *       -> reverse
+     *       -> add 1, if > 9, move to next digit
+     *       -> reverse again
+     *
+     */
+    // v2
+    public ListNode plusOne(ListNode head) {
+        if (head == null){
+            return new ListNode(1); // ??
+        }
+        ListNode tmp = new ListNode();
+//        // reverse
+//        while(head != null){
+//            ListNode _next = head.next;
+//            ListNode _prev = tmp; // ??
+//            head.next = _prev;
+//            head = _next;
+//        }
+//        tmp.val += 1;  // ??
+
+
+        return null;
+    }
+
+    // v1
+//    public ListNode plusOne_1(ListNode head) {
+//      if (head == null){
+//          return new ListNode(1); // ??
+//      }
+//      List<Integer> list = new ArrayList<>();
+//      while(head != null){
+//          list.add(head.val);
+//          head = head.next;
+//      }
+//      // ???
+//      int cur = 0;
+//      for (int j = list.size(); j >= 0; j--){
+//          cur += (10 ^ j) * list.get(j);
+//      }
+//      cur += 1;
+//      ListNode res = new ListNode();
+//      String string = String.valueOf(cur);
+//      for (String x : string.split("")){
+//          ListNode tmp = new ListNode();
+//          tmp.val = Integer.parseInt(x);
+//          res.next = tmp;
+//          res = res.next;
+//      }
+//
+//      return res;
+//    }
 
 }

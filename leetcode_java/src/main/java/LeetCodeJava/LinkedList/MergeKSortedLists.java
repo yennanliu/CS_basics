@@ -2,18 +2,20 @@ package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/merge-k-sorted-lists/
 
+import LeetCodeJava.DataStructure.ListNode;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 
-class ListNode {
-      int val;
-      ListNode next;
-      ListNode() {}
-      ListNode(int val) { this.val = val; }
-      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-  }
+//public class ListNode {
+//      int val;
+//      ListNode next;
+//      ListNode() {}
+//      ListNode(int val) { this.val = val; }
+//      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+//  }
 
 public class MergeKSortedLists {
 

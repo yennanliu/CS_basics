@@ -3,6 +3,8 @@ package LeetCodeJava.LinkedList;
 // https://leetcode.com/problems/reverse-nodes-in-k-group/description/
 // https://neetcode.io/problems/reverse-nodes-in-k-group
 
+import LeetCodeJava.DataStructure.ListNode;
+
 public class ReverseNodesInKGroup {
 
     // V0
