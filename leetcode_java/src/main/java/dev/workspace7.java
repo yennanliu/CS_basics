@@ -1,6 +1,8 @@
 package dev;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class workspace7 {
   public static void main(String[] args) {
@@ -16,15 +18,27 @@ public class workspace7 {
 //    }
 
     // ------------------- TEST 2
-    int[][] mat1 = new int[][]{ {1,0,0}, {-1,0,3} };
-    int[][] mat2 = new int[][]{ {7,0,0}, {0,0,0}, {0,0,1} };
-    int[][] res = multiply(mat1, mat2);
-    System.out.println(">>> res = ");
-    for (int i = 0; i < res.length; i++){
-      for (int j = 0; j < res[0].length; j++){
-        System.out.println(res[i][j]);
-      }
-    }
+//    int[][] mat1 = new int[][]{ {1,0,0}, {-1,0,3} };
+//    int[][] mat2 = new int[][]{ {7,0,0}, {0,0,0}, {0,0,1} };
+//    int[][] res = multiply(mat1, mat2);
+//    System.out.println(">>> res = ");
+//    for (int i = 0; i < res.length; i++){
+//      for (int j = 0; j < res[0].length; j++){
+//        System.out.println(res[i][j]);
+//      }
+//    }
+
+    // ------------------- TEST 3
+//    String a = "a";
+//    String b = "b";
+//    a += b;
+//    System.out.println(">> a = " + a);
+
+    // ------------------- TEST 4
+    List<String> x = new ArrayList<>();
+    x.add("a");
+    x.add("b");
+    System.out.println(x.toString());
   }
 
 

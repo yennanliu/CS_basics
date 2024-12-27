@@ -599,5 +599,62 @@ public class workspace6 {
       return res;
     }
 
+    // LC 079
+    // https://leetcode.com/problems/word-search/
+    // 2.31 pm - 2.45 pm
+    public boolean exist(char[][] board, String word) {
+
+      if (board.length == 1 && board[0].length == 1){
+          return String.valueOf(board[0][0]).equals(word);
+      }
+
+      // backtrack
+      Set<List<Integer>> visited = new HashSet<>();
+      int l = board.length;
+      int w = board[0].length;
+      for(int i = 0; i < l; i++){
+          for(int j = 0; j < w; j++){
+              StringBuilder sb = new StringBuilder();
+              if(canFind(board, word, j, i, sb, visited)){
+                  return true;
+              }
+          }
+      }
+
+      return false;
+    }
+
+    private boolean canFind(char[][] board, String word, int x, int y, StringBuilder cur, Set<List<Integer>> visited){
+      int l = board.length;
+      int w = board[0].length;
+      int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+      if (cur.toString().length() == word.length() && cur.toString().equals(word)){
+          return true;
+      }
+      if (cur.toString().length()  > word.length()){
+          return false; // ??
+      }
+
+      for (int[] move: moves){
+          int x_ = x + move[0];
+          int y_ = y + move[1];
+          List<Integer> tmp = new ArrayList<>();
+          tmp.add(x);
+          tmp.add(y);
+          String tmpVal = String.valueOf(board[y_][x_]);
+          if (x_ >= 0 && x_ < w && y_ >= 0 &&
+                  y_ < l && !visited.contains(tmp) &&
+                  tmpVal.equals(word.charAt(cur.length()+1))){
+              visited.add(tmp);
+              cur.append(board[y][x]); // ???
+              canFind(board, word, x_, y_, cur, visited);
+              // undo
+              cur.deleteCharAt(cur.toString().length() - 1);
+              visited.remove(tmp); // ??
+          }
+      }
+
+      return false;
+    }
 
 }
