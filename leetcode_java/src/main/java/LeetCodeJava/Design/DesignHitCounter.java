@@ -55,6 +55,44 @@ import java.util.Map;
 public class DesignHitCounter {
 
     // V0
+    // TODO: validate
+    class HitCounter {
+
+        /**  counter : {timestamp : cnt }
+         */
+        private Map<Integer, Integer> counter;
+
+        /** Initialize your data structure here. */
+        public HitCounter() {
+            counter = new HashMap<>(); // ?? check
+        }
+
+        /**
+         Record a hit.
+         @param timestamp - The current timestamp (in seconds granularity).
+         */
+        public void hit(int timestamp) {
+            // counter.put(timestamp, counter.getOrDefault(timestamp, 0) + 1);
+            int curCnt = counter.getOrDefault(counter,0);
+            //counter.putIfAbsent(timestamp, curCnt+1);
+            counter.put(timestamp, curCnt+1);
+        }
+
+        /**
+         Return the number of hits in the past 5 minutes.
+         @param timestamp - The current timestamp (in seconds granularity).
+         */
+        public int getHits(int timestamp) {
+            int val = 0;
+            for(Integer key : counter.keySet()){
+                if (key >= 0 && key <= timestamp - 60 * 5){
+                    //val += 1; // ??
+                    val += counter.get(key);
+                }
+            }
+            return val;
+        }
+    }
 
     // V1-1
     // https://leetcode.ca/2016-11-26-362-Design-Hit-Counter/
