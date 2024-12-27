@@ -8,37 +8,52 @@ public class workspace7 {
   public static void main(String[] args) {
 
     // ------------------- TEST 1
-//    int len = 5;
-//    int[][] updates ={ {1,3,2}, {2,4,3}, {0,2,-2} };
-//    int[] res = getModifiedArray(len, updates);
-//    System.out.println(">>> res = ");
-//    for (int x : res){
-//      // [-2,0,3,5,3]
-//      System.out.println(x);
-//    }
+    //    int len = 5;
+    //    int[][] updates ={ {1,3,2}, {2,4,3}, {0,2,-2} };
+    //    int[] res = getModifiedArray(len, updates);
+    //    System.out.println(">>> res = ");
+    //    for (int x : res){
+    //      // [-2,0,3,5,3]
+    //      System.out.println(x);
+    //    }
 
     // ------------------- TEST 2
-//    int[][] mat1 = new int[][]{ {1,0,0}, {-1,0,3} };
-//    int[][] mat2 = new int[][]{ {7,0,0}, {0,0,0}, {0,0,1} };
-//    int[][] res = multiply(mat1, mat2);
-//    System.out.println(">>> res = ");
-//    for (int i = 0; i < res.length; i++){
-//      for (int j = 0; j < res[0].length; j++){
-//        System.out.println(res[i][j]);
-//      }
-//    }
+    //    int[][] mat1 = new int[][]{ {1,0,0}, {-1,0,3} };
+    //    int[][] mat2 = new int[][]{ {7,0,0}, {0,0,0}, {0,0,1} };
+    //    int[][] res = multiply(mat1, mat2);
+    //    System.out.println(">>> res = ");
+    //    for (int i = 0; i < res.length; i++){
+    //      for (int j = 0; j < res[0].length; j++){
+    //        System.out.println(res[i][j]);
+    //      }
+    //    }
 
     // ------------------- TEST 3
-//    String a = "a";
-//    String b = "b";
-//    a += b;
-//    System.out.println(">> a = " + a);
+    //    String a = "a";
+    //    String b = "b";
+    //    a += b;
+    //    System.out.println(">> a = " + a);
 
     // ------------------- TEST 4
-    List<String> x = new ArrayList<>();
-    x.add("a");
-    x.add("b");
-    System.out.println(x.toString());
+    //    List<String> x = new ArrayList<>();
+    //    x.add("a");
+    //    x.add("b");
+    //    System.out.println(x.toString());
+
+    // ------------------- TEST 5
+    // ++i -> It increments i after the current iteration’s execution.
+    /**
+     * Key Points:
+     * 	•	Prefix (++i) vs. Postfix (i++):
+     * 	•	Prefix increments the value before use.
+     * 	•	Postfix increments the value after use.
+     * 	•	In a for loop, this distinction doesn’t matter since the increment happens at the end of each iteration.
+     * 	•	Variable Name:
+     * 	•	Ensure the loop variable is consistently referenced. Mixing i and I results in a compilation error due to case sensitivity in Java.
+     */
+    for (int i = 0; i < 5; ++i) {
+      System.out.println(i);
+    }
   }
 
 
