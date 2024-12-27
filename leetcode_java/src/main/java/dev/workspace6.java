@@ -756,4 +756,44 @@ public class workspace6 {
       return distances.get(distances.size()-1) / 2; // ??
     }
 
+    // LC 855
+    // https://leetcode.com/problems/exam-room/description/
+    // 5.31 PM - 5.50 pm
+    /**
+     * Your ExamRoom object will be instantiated and called as such:
+     * ExamRoom obj = new ExamRoom(n);
+     * int param_1 = obj.seat();
+     * obj.leave(p);
+     */
+    /**
+     *  IDEA:
+     *
+     *
+     */
+    class ExamRoom {
+
+        int seated;
+        List<Integer> seats;
+
+        public ExamRoom(int n) {
+            this.seated = 0;
+            this.seats = new ArrayList<>();
+            // ?? optimize
+            for(int i = 0; i < n; i++){
+                this.seats.add(0);
+            }
+        }
+
+        public int seat() {
+            if (this.seated == 0){
+                //this.seats. = 1;
+            }
+            return 0;
+        }
+
+        public void leave(int p) {
+
+        }
+    }
+
 }
