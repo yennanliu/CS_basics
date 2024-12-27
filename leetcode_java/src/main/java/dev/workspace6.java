@@ -700,4 +700,60 @@ public class workspace6 {
         }
     }
 
+  // LC 849
+  // https://leetcode.com/problems/maximize-distance-to-closest-person/
+  // 4.10 pm - 4.20 pm
+  /**
+   *
+   * Alex wants to sit in the seat such that the
+   * distance between him and the closest person
+   * to him is maximized.
+   *
+   * Return that maximum distance to the closest person.
+   *
+   */
+  /**
+   *
+   * Idea :
+   *
+   *  array collect cur distances ? (dist between "1", and "1") ???
+   *  sorting the distance
+   *  select the "max" distance
+   *
+   *
+   * Exp 1:
+   *
+   * Input: seats = [1,0,0,0,1,0,1]
+   * Output: 2
+   *
+   * ->
+   *
+   *
+   */
+  public int maxDistToClosest(int[] seats) {
+
+      List<Integer> distances = new ArrayList<>();
+      int lastIdx = -1;
+      for(int i = seats.length - 1; i >= 0; i--){
+          if (seats[i] == 1){
+              if (lastIdx != -1){
+                  int diff = Math.abs(i - lastIdx);
+                  distances.add(diff);
+              }
+              lastIdx = i;
+          }
+      }
+
+      System.out.println(">>> (before sort) distances = " + distances);
+      distances.sort(Integer::compareTo);
+      System.out.println(">>> (after sort) distances = " + distances);
+
+      // edge case : if only one "1"
+      if (distances.isEmpty()){
+          return seats.length-1;
+      }
+      // return the max dist
+      return distances.get(distances.size()-1) / 2; // ??
+    }
+
 }
