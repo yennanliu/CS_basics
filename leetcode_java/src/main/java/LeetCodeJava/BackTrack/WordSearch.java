@@ -130,28 +130,89 @@ public class WordSearch {
         visited[y][x] = true;
 
         int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-        /**
-         *  NOTE !!!
-         *
-         *   instead of below structure:
-         *
-         *       boolean didFindNextCharacter =
-         *                 dfs2(row + 1, col, word, lvl + 1, visited, board) ||
-         *                 dfs2(row - 1, col, word, lvl + 1, visited, board) ||
-         *                 dfs2(row, col + 1, word, lvl + 1, visited, board) ||
-         *                 dfs2(row, col - 1, word, lvl + 1, visited, board);
-         *
-         *   we can use below logic as well:
-         *
-         *          for (int[] dir : dirs) {
-         *             if (dfs_(board, y + dir[0], x + dir[1], idx + 1, word, visited)) {
-         *                 return true;
-         *             }
-         *         }
-         *
-         */
-        for (int[] dir : dirs) {
+    /**
+     *  NOTE !!!
+     *
+     *   instead of below structure:
+     *
+     *       boolean didFindNextCharacter =
+     *                 dfs2(row + 1, col, word, lvl + 1, visited, board) ||
+     *                 dfs2(row - 1, col, word, lvl + 1, visited, board) ||
+     *                 dfs2(row, col + 1, word, lvl + 1, visited, board) ||
+     *                 dfs2(row, col - 1, word, lvl + 1, visited, board);
+     *
+     *   we can use below logic as well:
+     *
+     *          for (int[] dir : dirs) {
+     *             if (dfs_(board, y + dir[0], x + dir[1], idx + 1, word, visited)) {
+     *                 return true;
+     *             }
+     *         }
+     */
+    /**
+     * 1) Detailed Explanation:
+     *
+     *  Role of return true in the Loop
+     *
+     * 	1.	Backtracking Recursion:
+     * 	    •	The function backtrack is called recursively to explore possible paths in the grid.
+     * 	    •	Each recursive call either returns true if the word can be constructed from the current path or false if it cannot.
+     *
+     * 	2.	Returning Early:
+     * 	    •	As soon as one of the recursive calls returns true (indicating the word has been found), there is no need to continue exploring other directions. The word has already been successfully constructed.
+     *
+     * 	3.	Efficiency:
+     * 	    •	Exiting the loop early saves computation by avoiding exploration of unnecessary paths.
+     *
+     *
+     *  2) What Happens Without return true?
+     *
+     *  -> If the return true is omitted, the function will:
+     * 	    1.	Continue to check all remaining directions in the directions array, even after finding a valid path.
+     * 	    2.	Complete all recursive calls, backtrack, and ultimately return false for the current recursion level, even if a valid path exists deeper in the recursion tree.
+     *
+     *  -> This would result in the algorithm failing to detect that the word is present in the grid.
+     *
+     *
+     *  3) Example:
+     *      Let’s consider a small grid:
+     *
+     *   board = [
+     *      ['A', 'B'],
+     *      ['C', 'D']
+     *      ];
+     *   word = "AB";
+     *
+     *
+     *  Start at (0, 0) (value A), matching the first character.
+     * 	    •	Check neighbors:
+     * 	    •	Move right to (0, 1) (value B), matching the second character. At this point, the word is found, so we return true.
+     *
+     *  With return true:
+     *  	•	When the recursive call to (0, 1) returns true, the loop exits immediately, and the function propagates true all the way up.
+     *
+     *  Without return true:
+     * 	    •	Even after (0, 1) finds the word, the function continues checking other directions (down, left, up), wasting computation. Eventually, it backtracks, losing the valid result.
+     *
+     *
+     *
+     *
+     *
+     * 4) Conclusion
+     *
+     * Returning true immediately when a valid path is found is
+     * both correct and efficient. It skips redundant exploration
+     * and ensures that the recursion terminates as soon as the word is found.
+     * Other recursive logic is unaffected since the backtracking process
+     * stops as soon as we achieve the goal.
+     *
+     */
+    for (int[] dir : dirs) {
             if (dfs_(board, y + dir[0], x + dir[1], idx + 1, word, visited)) {
+                /** NOTE !!!
+                 *
+                 *  need to return true IMMEDIATELY if a true solution is found
+                 */
                 return true;
             }
         }
