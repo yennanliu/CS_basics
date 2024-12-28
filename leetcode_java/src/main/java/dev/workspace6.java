@@ -2,8 +2,6 @@ package dev;
 
 
 import LeetCodeJava.DataStructure.ListNode;
-
-import javax.print.DocFlavor;
 import java.util.*;
 
 public class workspace6 {
@@ -795,5 +793,65 @@ public class workspace6 {
 
         }
     }
+
+  // LC 379
+  // https://leetcode.ca/all/379.html
+  // 4.27 PM - 4.40 PM
+  /**
+   *  IDEA : HASHMAP
+   *
+   */
+  class PhoneDirectory {
+
+      // attr
+      //int assignedCnt;
+      /**
+       * assignedPhone : {assigned_number: 1}
+       *
+       */
+      Map<Integer, Integer> assignedPhone;
+      int maxNumbers;
+      //Random random;
+
+      /** Initialize your data structure here
+       @param maxNumbers - The maximum numbers that can be stored in the phone directory. */
+      public PhoneDirectory(int maxNumbers) {
+          //this.assignedCnt = 0;
+          this.assignedPhone = new HashMap<>();
+          this.maxNumbers = maxNumbers;
+          //this.random = new Random();
+      }
+
+      /** Provide a number which is not assigned to anyone.
+       @return - Return an available number. Return -1 if none is available. */
+      public int get() {
+          if(this.assignedPhone.isEmpty()){
+              return -1;
+          }
+          int key = -1;
+          for (int i = 0; i < this.maxNumbers; i++){
+              if(!this.assignedPhone.containsKey(i)){
+                  key = i;
+                  break;
+              }
+          }
+          if(key != -1){
+              this.assignedPhone.put(key, 1);
+          }
+          return key;
+      }
+
+      /** Check if a number is available or not. */
+      public boolean check(int number) {
+          return this.assignedPhone.containsKey(number);
+      }
+
+      /** Recycle or release a number. */
+      public void release(int number) {
+          if(this.assignedPhone.containsKey(number)){
+              this.assignedPhone.remove(number);
+          }
+      }
+  }
 
 }
