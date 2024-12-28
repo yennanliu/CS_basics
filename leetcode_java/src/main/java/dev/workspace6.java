@@ -730,31 +730,93 @@ public class workspace6 {
    *
    *
    */
+  // 5.45 pm - 6.00 pm
+  /**
+   *  IDEA : 2 pointers
+   *
+   *    2 cases
+   *   -> seat between "1"
+   *      -> dist = dist(1,1) / 2
+   *   -> set is NOT between "1"
+   *      -> dist = dist(1, array_len)
+   *
+   *    and maintain the max dist within the looping
+   *
+   *
+   *    Exp :
+   *
+   *    1001001
+   *
+   *    100100100
+   *
+   *    1000
+   *
+   *    1000010
+   *
+   *    10100000
+   *
+   */
   public int maxDistToClosest(int[] seats) {
 
-      List<Integer> distances = new ArrayList<>();
+      if (seats.length == 2){
+          return 1; // ?? check
+      }
+
+      int maxDist = 0;
+     // int seatedCnt = 0;
       int lastIdx = -1;
-      for(int i = seats.length - 1; i >= 0; i--){
+      //int closed = -1; // ???
+
+      for(int i = 0; i < seats.length; i++){
+//          if (seats[i] == 1){
+//              //seatedCnt += 1;
+//              //closed = closed * closed;
+//          }
           if (seats[i] == 1){
-              if (lastIdx != -1){
-                  int diff = Math.abs(i - lastIdx);
-                  distances.add(diff);
-              }
-              lastIdx = i;
+              if (lastIdx == -1){
+                  lastIdx = i;
+              }else{
+                  int dist = (i - lastIdx) / 2;
+                  maxDist = Math.max(maxDist, (dist));
+                  }
           }
       }
 
-      System.out.println(">>> (before sort) distances = " + distances);
-      distances.sort(Integer::compareTo);
-      System.out.println(">>> (after sort) distances = " + distances);
-
-      // edge case : if only one "1"
-      if (distances.isEmpty()){
-          return seats.length-1;
+      // NOTE !!! ONLY need to check if the "last 0s" is NOT encclosed by "1"
+      // -> then we NEED to treat it as 2) case
+      // -> e.g. calculate dist from `last seen 1` to `last 0`
+      if (seats[seats.length-1] == 0){
+          //return seats.length - lastIdx;
+          maxDist = Math.max(maxDist, (seats.length - lastIdx));
       }
-      // return the max dist
-      return distances.get(distances.size()-1) / 2; // ??
-    }
+
+      return maxDist;
+  }
+//  public int maxDistToClosest(int[] seats) {
+//
+//      List<Integer> distances = new ArrayList<>();
+//      int lastIdx = -1;
+//      for(int i = seats.length - 1; i >= 0; i--){
+//          if (seats[i] == 1){
+//              if (lastIdx != -1){
+//                  int diff = Math.abs(i - lastIdx);
+//                  distances.add(diff);
+//              }
+//              lastIdx = i;
+//          }
+//      }
+//
+//      System.out.println(">>> (before sort) distances = " + distances);
+//      distances.sort(Integer::compareTo);
+//      System.out.println(">>> (after sort) distances = " + distances);
+//
+//      // edge case : if only one "1"
+//      if (distances.isEmpty()){
+//          return seats.length-1;
+//      }
+//      // return the max dist
+//      return distances.get(distances.size()-1) / 2; // ??
+//    }
 
     // LC 855
     // https://leetcode.com/problems/exam-room/description/

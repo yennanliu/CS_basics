@@ -116,6 +116,14 @@ public class MaximizeDistanceToClosestPerson {
    *  output:  2
    *
    */
+  /**
+   *  Cases
+   *
+   *  Case 1)  0001  ( all "0" till meat first "1")
+   *  Case 2)  1001001 (all "0" are enclosed by "1")
+   *  Case 3)  1001000 (there are "0" that NOT enclosed by "1" on the right hand side)
+   *
+   */
   public int maxDistToClosest_0_1(int[] seats) {
         int maxDistance = 0;
         int lastOccupied = -1;
@@ -126,6 +134,17 @@ public class MaximizeDistanceToClosestPerson {
             if (seats[i] == 1) {
                 if (lastOccupied == -1) {
                     // Handle the case where the `first` occupied seat is found
+                    /**
+                     * NOTE !!!
+                     *
+                     *  for handling below case:
+                     *
+                     *    e.g. :  0001
+                     *
+                     *  (so, elements are all "0" till first visit "1")
+                     *  in this case, we still can get put a person to seat, and get distance
+                     *
+                     */
                     maxDistance = i; // Distance from the start to the first occupied seat
                 } else {
                     // Calculate the distance to the closest person for the middle segment
@@ -137,6 +156,18 @@ public class MaximizeDistanceToClosestPerson {
         }
 
         // Handle the case where the last segment is empty
+       /**
+        *  NOTE !!!
+        *
+        *   the condition is actually quite straightforward,
+        *   just need to check if the last element in array is "0"
+        *   if is "0", means the array is NOT enclosed by "1"
+        *   then we need to handle such case
+        *   (example as below)
+        *
+        *   e.g.  100010000
+        *
+        */
         if (seats[seats.length - 1] == 0) {
             maxDistance = Math.max(maxDistance, seats.length - 1 - lastOccupied);
         }
