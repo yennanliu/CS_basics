@@ -156,18 +156,18 @@
 ||Stack| [Py](./data_structure/python/stack.py), [JS (linkedlist)](./data_structure/js/stack_linkedlist.js), [JS (array)](./data_structure/js/stack_array.js) | | | OK|
 ||Hash table| [Py](./data_structure/python/hash_table.py), [JS](./data_structure/js/hash_table.js) | usually for improving `time complexity B(O)` via extra space complexity (time-space tradeoff)|`good basic`| AGAIN****|
 ||`Linear, Pointer`| | | | |
-||LinkedList| [Py](./data_structure/python/linkedList.py), [JS](./data_structure/js/linkedlist.js), [Java](./data_structure/java/LinkedinList.java) | | | OK**|
+||LinkedList| [Py](./data_structure/python/linkedList.py), [JS](./data_structure/js/linkedlist.js), [Java](./leetcode_java/src/main/java/DataStructure/ListNode.java) | | | OK**|
 ||Doubly LinkedList| [Python](./data_structure/python/doublylinkedlist.py), [JS](./data_structure/js/doublylinkedList.js) | | | AGAIN|
 ||`Non Linear, Pointer`| | | | |
 ||Tree| [Py](./data_structure/python/tree.py) | | | AGAIN**|
-||Binary search Tree (BST)| [Python](./data_structure/python/binary_search_tree.py), [JS](./data_structure/js/binary_search_tree.js), [Scala](./data_structure/scala/binarySearch.scala), [Java](./data_structure/java/BST.java) | | | AGAIN|
+||Binary search Tree (BST)| [Python](./data_structure/python/binary_search_tree.py), [JS](./data_structure/js/binary_search_tree.js), [Java](leetcode_java/src/main/java/DataStructure/BST.java) | | | AGAIN|
 ||Binary Tree| [Py](./data_structure/python/binary_tree.py) | | | AGAIN**|
 ||Trie| [Py](./data_structure/python/trie.py) | | | AGAIN|
-||Heap| [heap.py](./data_structure/python/heap.py), [MinHeap.py](./data_structure/python/MinHeap.py), [MaxHeap.py](./data_structure/python/MaxHeap.py), [MinHeap.java](./leetcode_java/src/main/java/AlgorithmJava/MinHeap.java), [MaxHeap.java](./leetcode_java/src/main/java/AlgorithmJava/MaxHeap.java) | | | AGAIN|
+||Heap| [heap.py](./data_structure/python/heap.py), [MinHeap.py](./data_structure/python/MinHeap.py), [MaxHeap.py](./data_structure/python/MaxHeap.py), [MinHeap.java](leetcode_java/src/main/java/DataStructure/MinHeap.java), [MaxHeap.java](leetcode_java/src/main/java/DataStructure/MaxHeap.java) | | | AGAIN|
 ||Priority Queue (PQ)| [Py 1](./data_structure/python/pq_1.py), [Py 2](./data_structure/python/pq_2.py), [Py 3](./data_structure/python/pq_3.py) | | | AGAIN|
 ||`Graph`| | | | |
 ||Graph| [Py](./data_structure/python/graph.py), [JS](./data_structure/js/graph.js). [Java1](./algorithm/java/Graph.java), [Java2](./algorithm/java/GraphClient.java) | | | OK***|
-||DirectedEdge|  [Java](./data_structure/java/DirectedEdge.java) | | | AGAIN|
+||DirectedEdge|  [Java](leetcode_java/src/main/java/DataStructure/DirectedEdge.java) | | | AGAIN|
 
 
 ## Algorithm
