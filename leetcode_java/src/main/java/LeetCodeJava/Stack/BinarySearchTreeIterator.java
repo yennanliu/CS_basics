@@ -131,6 +131,7 @@ public class BinarySearchTreeIterator {
     // V1
     // IDEA: STACK
     // https://leetcode.com/problems/binary-search-tree-iterator/solutions/52647/nice-comparison-and-short-solution-by-st-jcmg/
+    // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/bst.md
     public class BSTIterator_1 {
 
         private TreeNode visit;
@@ -145,13 +146,44 @@ public class BinarySearchTreeIterator {
             return visit != null || !stack.empty();
         }
 
+        /**
+         * NOTE !!! next() method logic
+         */
         public int next() {
-            while (visit != null) {
+      /**
+       * NOTE !!!
+       *
+       *  since BST property is as below:
+       *
+       *  - For each node
+       *     - `left sub node < than current node`
+       *     - `right sub node > than current node`
+       *
+       *  so, within the loop over `left node`, we keep finding
+       *  the `smaller` node, and find the `relative smallest` node when the while loop ended
+       *  -> so the `relative smallest` node is the final element we put into stack
+       *  -> so it's also the 1st element pop from stack
+       *  -> which is the `next small` node
+       */
+      while (visit != null) {
                 stack.push(visit);
                 visit = visit.left;
             }
+            // Stack: LIFO (last in, first out)
+            /**
+             * NOTE !!! we pop the `next small` node from stack
+             */
             TreeNode next = stack.pop();
+            /**
+             * NOTE !!!  and set the `next small` node's right node as next node
+             */
             visit = next.right;
+            /**
+             * NOTE !!! we return the `next small` node's right node val
+             *          because of the requirement
+             *
+             *         e.g. : int next() Moves the pointer to the right, then returns the number at the pointer.
+             */
             return next.val;
         }
     }
