@@ -2,6 +2,8 @@ package dev;
 
 
 import LeetCodeJava.DataStructure.ListNode;
+import LeetCodeJava.DataStructure.TreeNode;
+
 import java.util.*;
 
 public class workspace6 {
@@ -850,6 +852,57 @@ public class workspace6 {
       public void release(int number) {
           if(this.assignedPhone.containsKey(number)){
               this.assignedPhone.remove(number);
+          }
+      }
+  }
+
+  // LC 173
+  // https://leetcode.com/problems/binary-search-tree-iterator/
+  // 4.58 - 5.20 pm
+  /**
+   * In a binary search tree ordered such that in each node the
+   * key is greater than all keys in its left subtree and
+   * less than all keys in its right subtree,
+   *
+   * -> in-order traversal retrieves the keys in ascending sorted order.
+   *
+   */
+  class BSTIterator {
+
+      // attr
+      TreeNode treeNode;
+      List<Integer> cache;
+
+      public BSTIterator(TreeNode root) {
+          this.treeNode = root;
+          this.cache = new ArrayList<>();
+          this.getValues(root);
+          // ordering (ascending order)
+          this.cache.sort(Integer::compareTo); // ???
+      }
+
+      public int next() {
+          int tmp = this.cache.get(0);
+          this.cache.remove(0);
+          return tmp;
+      }
+
+      public boolean hasNext() {
+          return !this.cache.isEmpty();
+      }
+
+      private void getValues(TreeNode root){
+          if (root == null){
+              return; // ?
+          }
+          // pre-order traversal (root -> left -> right)
+          this.cache.add(root.val);
+
+          if (root.left != null){
+              this.getValues(root.left);
+          }
+          if (root.right != null){
+              this.getValues(root.right);
           }
       }
   }
