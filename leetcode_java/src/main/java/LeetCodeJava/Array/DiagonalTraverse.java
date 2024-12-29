@@ -44,6 +44,40 @@ public class DiagonalTraverse {
 //
 //    }
 
+    // V0-1
+    // IDEA : matrix op (gpt)
+    public int[] findDiagonalOrder_0_1(int[][] mat) {
+        // Edge case: empty matrix
+        if (mat == null || mat.length == 0 || mat[0].length == 0) {
+            return new int[0];
+        }
+
+        int rows = mat.length, cols = mat[0].length;
+        int[] result = new int[rows * cols];
+        int index = 0;
+
+        // Loop through all possible diagonals (0 to rows + cols - 2)
+        for (int d = 0; d < rows + cols - 1; d++) {
+            // Determine starting point for this diagonal
+            int r = (d % 2 == 0) ? Math.min(d, rows - 1) : Math.max(0, d - cols + 1);
+            int c = (d % 2 == 0) ? Math.max(0, d - rows + 1) : Math.min(d, cols - 1);
+
+            // Traverse the diagonal
+            while (r >= 0 && r < rows && c >= 0 && c < cols) {
+                result[index++] = mat[r][c];
+                if (d % 2 == 0) { // Upward diagonal
+                    r--;
+                    c++;
+                } else { // Downward diagonal
+                    r++;
+                    c--;
+                }
+            }
+        }
+
+        return result;
+    }
+
     // V1-1
     // https://leetcode.com/problems/diagonal-traverse/editorial/
     // IDEA: Diagonal Iteration and Reversal
