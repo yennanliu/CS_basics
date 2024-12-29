@@ -1020,4 +1020,115 @@ public class workspace6 {
       return res;
   }
 
+  // LC 934
+  // https://leetcode.com/problems/shortest-bridge/
+  // 5.04 - 5.20 PM
+  /**
+   *
+   *  An island is a 4-directionally connected group of 1's
+   *  not connected to any other 1's.
+   *  `There are exactly two islands in grid.`
+   *
+   *
+   * Return the smallest number
+   * of 0's you must flip to connect the two islands.
+   *
+   *
+   *  1 represents land and 0 represents water.
+   *
+   *
+   *  Exp 1
+   *
+   *  Input: grid = [[0,1],
+   *                 [1,0]]
+   *  Output: 1
+   *
+   *
+   *  EXP 2
+   *
+   *  Input: grid = [[0,1,0],
+   *                [0,0,0],
+   *                [0,0,1]]
+   *
+   *
+   *  Output: 2
+   *
+   *
+   *  EXP 3
+   *
+   *
+   *  Input: grid = [[1,1,1,1,1],
+   *                [1,0,0,0,1],
+   *                [1,0,1,0,1],
+   *                [1,0,0,0,1],
+   *                [1,1,1,1,1]]
+   *
+   *  Output: 1
+   */
+  /**
+   *  IDEA: BFS (??
+   *
+   *
+   *  step 1) get the coordination of 2 islands ("1" collections split by "0")
+   *  step 2) start from "smaller" island, find the min dist (get the "flip cnt" as well) between it and the other island (??
+   *
+   */
+  public int shortestBridge(int[][] grid) {
+
+      // edge
+      if(grid.length == 2 && grid[0].length == 2){
+          return 1;
+      }
+
+      // get small, big island coordination
+      List<List<Integer>> smallIsland = new ArrayList<>();
+      List<List<Integer>> bigIsland = new ArrayList<>();
+
+      Set<List<Integer>> visited = new HashSet<>();
+
+      int l = grid.length;
+      int w = grid[0].length;
+
+      for(int i = 0; i < l; i++){
+          for(int j = 0; j < w; j++){
+              getIsland(grid, j, i, smallIsland, visited);
+          }
+      }
+
+      // bfs
+
+      return 0;
+    }
+
+    private List<List<Integer>> getIsland(int[][] grid, int x, int y, List<List<Integer>> cur, Set<List<Integer>> visited){
+      if(grid.length == 0 || grid[0].length == 0){
+          return null;
+      }
+      int l = grid.length;
+      int w = grid[0].length;
+
+      int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+      if(grid[y][w] == 1){
+          List<Integer> tmp = new ArrayList<>();
+          tmp.add(x);
+          tmp.add(y);
+          cur.add(tmp);
+      }
+
+      for(int[] move: moves){
+          int x_ = x + move[0];
+          int y_ = y + move[1];
+          List<Integer> tmp2 = new ArrayList<>();
+          tmp2.add(x_);
+          tmp2.add(y_);
+          if(x_ >= 0 && x_ <= w && y_ >= 0 && y_ <= l && !visited.contains(tmp2)){
+              visited.add(tmp2);
+              getIsland(grid, x_, y_, cur, visited);
+          }
+      }
+
+      return cur; // ?
+    }
+
 }
