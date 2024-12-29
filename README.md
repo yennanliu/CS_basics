@@ -251,7 +251,7 @@
 422| [Valid Word Square](https://leetcode.com/problems/valid-word-square/) | [Python](./leetcode_python/Array/valid-word-square.py)  | _O(m * n)_ |  _O(1)_ | Easy |🔒, `basic`, `matrix`| AGAIN*
 442| [Find All Duplicates in an Array](https://leetcode.com/problems/find-all-duplicates-in-an-array/) | [Python](./leetcode_python/Array/find-all-duplicates-in-an-array.py) | _O(n)_ |  _O(1)_ | Medium || OK*
 448| [Find All Numbers Disappeared in an Array](https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/) | [Python](./leetcode_python/Array/find-all-numbers-disappeared-in-an-array.py)| _O(n)_ |  _O(1)_ | Easy || OK 
-498 | [Diagonal Traverse](https://leetcode.com/problems/diagonal-traverse/) | [Python](./leetcode_python/Array/diagonal_traverse.py) | _O(n)_ | _O(1)_  | Medium |`matrix`,`google`,`fb`| AGAIN*** (3) (not start)
+498 | [Diagonal Traverse](https://leetcode.com/problems/diagonal-traverse/) | [Python](./leetcode_python/Array/diagonal_traverse.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/DiagonalTraverse.java) | _O(n)_ | _O(1)_  | Medium |`matrix`,`google`,`fb`| AGAIN*** (4)
 531 | [Lonely Pixel I](https://leetcode.com/problems/lonely-pixel-i/) |  [Python](./leetcode_python/Array/lonely-pixel-i.py) | _O(m * n)_ | _O(m + n)_ | Medium | 🔒, `matrix`, `basic`| AGAIN*
 533 | [Lonely Pixel II](https://leetcode.com/problems/lonely-pixel-ii/) | [Python](./leetcode_python/Array/lonely-pixel-ii.py)  | _O(m * n)_ | _O(m * n)_ | Medium  |🔒| AGAIN (not start*)
 565 | [Array Nesting](https://leetcode.com/problems/array-nesting/) | [Python](./leetcode_python/Array/array-nesting.py) | _O(n)_ | _O(1)_ | Medium  |`union find`,`dfs`,`apple`| AGAIN**** (1)
