@@ -16,6 +16,8 @@
         - LC 59
     - Sparse matrix product
         - LC 311
+    - Diagonal Traverse
+        - LC 498
 
 - Algorithm
     - [fucking algorithm : 二维数组的花式遍历技巧](https://labuladong.github.io/algo/2/20/26/)
