@@ -969,4 +969,55 @@ public class workspace6 {
       }
   }
 
+  // LC 498
+  // https://leetcode.com/problems/diagonal-traverse/
+  // 4.26 pm - 4,40 pm
+  /**
+   *
+   * Given an m x n matrix mat,
+   * return an array of all the elements of the array
+   * in a diagonal order.
+   *
+   * Exp 1
+   * Input: mat = [[1,2,3],[4,5,6],[7,8,9]]
+   * Output: [1,2,4,7,5,3,6,8,9]
+   *
+   *
+   * Exp 2
+   * Input: mat = [[1,2],[3,4]]
+   * Output: [1,2,3,4]
+   *
+   */
+  /**
+   *  IDEA : ARRAY OP
+   *
+   *  Input: mat = [[1,2,3],[4,5,6],[7,8,9]]
+   *
+   *  -> (0,0) -> (1,0) -> (0,1) -> (2,0) -> (1,1) -> (2,0)
+   *  -> (2,1)
+   *
+   *  ↖ ↘
+   *
+   *
+   *  ->, ↙.
+   *
+   */
+  public int[] findDiagonalOrder(int[][] mat) {
+      // edge
+      if(mat.length == 1 && mat[0].length == 1){
+          return new int[]{mat[0][0]};
+      }
+
+      int l = mat.length;
+      int w = mat[0].length;
+
+      int[] res = new int[l * w];
+
+      int[][] rightUpMove = new int[][]{{1,1}};
+      int[][] leftDownMove = new int[][]{{-1,1}};
+
+
+      return res;
+  }
+
 }
