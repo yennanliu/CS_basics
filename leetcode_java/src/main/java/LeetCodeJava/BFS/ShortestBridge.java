@@ -132,6 +132,13 @@ public class ShortestBridge {
 
         // bfsQueue for BFS on land cells of island A; secondBfsQueue for BFS on water
         // cells.
+        /**
+         *  NOTE !!!
+         *
+         *   -> bfsQueue for BFS on land cells of island A
+         *
+         *   -> secondBfsQueue for BFS on water cell
+         */
         List<int[]> bfsQueue = new ArrayList<>();
         List<int[]> secondBfsQueue = new ArrayList<>();
         bfsQueue.add(new int[] { firstX, firstY });
