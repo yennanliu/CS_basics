@@ -1,4 +1,4 @@
-https://www.facebook.com/photo?fbid=787938986701653&set=a.620391230123097# Tree
+# Tree
 
 > Tree data structure and algorithm/LC relative to it
 
