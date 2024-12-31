@@ -1383,3 +1383,39 @@ while (current != null) {
 return prev;
 }
 ```
+
+### 2-11) Linked List Components
+
+```java
+// java
+// LC 817
+    // V1
+    // IDEA: set, linkedlist (gpt)
+    public int numComponents_1(ListNode head, int[] nums) {
+        // Convert nums array to a HashSet for O(1) lookups
+        Set<Integer> numsSet = new HashSet<>();
+        for (int num : nums) {
+            numsSet.add(num);
+        }
+
+        int count = 0;
+        boolean inComponent = false;
+
+        // Traverse the linked list
+        while (head != null) {
+            if (numsSet.contains(head.val)) {
+                // Start a new component if not already in one
+                if (!inComponent) {
+                    count++;
+                    inComponent = true;
+                }
+            } else {
+                // End the current component
+                inComponent = false;
+            }
+            head = head.next;
+        }
+
+        return count;
+    }
+```
