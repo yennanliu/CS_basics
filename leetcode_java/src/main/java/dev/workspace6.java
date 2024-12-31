@@ -1131,4 +1131,82 @@ public class workspace6 {
       return cur; // ?
     }
 
+    // LC 769
+    // https://leetcode.com/problems/max-chunks-to-make-sorted/
+    // 3.02 pm - 3.20 pm
+    /**
+     *
+     * We split arr into some number of chunks (i.e., partitions),
+     * and individually sort each chunk. After concatenating them,
+     * the result should equal the sorted array.
+     *
+     *
+     * Return the largest number of chunks we can make to sort the array.
+     *
+     */
+    /**
+     *  IDEA 1) 2 POINTERS ?
+     *
+     *
+     *  exp 1: arr = [4,3,2,1,0] -> res = 1
+     *
+     *  -> sorted arr = [0,1,2,3,4]
+     *
+     *  -> compare before VS after
+     *  ->  [4,3,2,1,0] VS [0,1,2,3,4]
+     *
+     *  -> [4,3,2,1,0]
+     *      i j j j j
+     *
+     *
+     *  exp 2: arr = [1,0,2,3,4] -> res = 4
+     *
+     *  -> sorted arr = [0,1,2,3,4]
+     *
+     *  -> compare before VS after
+     *
+     *  -> [1,0,2,3,4]
+     *      i j
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+    public int maxChunksToSorted(int[] arr) {
+
+      // edge
+      if (arr.length == 1) {
+          return 1;
+      }
+
+      // copy
+      int[] arr_before = arr; // ??
+      Arrays.sort(arr);
+
+      // 2 pointers
+      int res = 1;
+      List<Integer> tmp = new ArrayList<>();
+      for (int i = 0; i < arr.length-1; i++){
+          for(int j = i+1; j < arr_before.length; j++){
+              tmp.add(arr[j]);
+              // copy
+              List<Integer> tmp_copy = tmp; // ???
+              // sort
+              tmp_copy.sort(Integer::compareTo);
+//              if(tmp_copy  == tmp_copy){
+//
+//              }
+          }
+      }
+
+      String x = "abc";
+      String[] x_ = x.split("");
+
+
+
+      return res;
+    }
+
 }
