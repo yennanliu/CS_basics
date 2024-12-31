@@ -1209,4 +1209,59 @@ public class workspace6 {
       return res;
     }
 
+    // LC 817
+    // https://leetcode.com/problems/linked-list-components/
+    // 4,15 pm - 4.40 pm
+    public int numComponents(ListNode head, int[] nums) {
+
+        // edge
+        if (head.next == null && nums.length == 1){
+            if(head.val == nums[0]){
+                return 1;
+            }
+            return 0;
+        }
+
+        // ListNode -> list
+        List<Integer> head_list = new ArrayList<>();
+        List<Integer> nums_list = new ArrayList<>();
+
+        for(int i = 0; i < nums.length; i++){
+            nums_list.add(nums[i]);
+        }
+
+        // sort nums_list
+        nums_list.sort(Integer::compareTo);
+
+        while(head != null){
+            head_list.add(head.val);
+            head = head.next;
+        }
+
+        System.out.println(">>> nums_list = " + nums_list);
+        System.out.println(">>> head_list = " + head_list);
+
+        int cnt = 0;
+        boolean prevInNums = false;
+        // 2 pointers
+        for(int i = 0; i < head_list.size()-1; i++){
+            List<Integer> tmp = new ArrayList<>();
+            for(int j = i; j < head_list.size(); j++){
+                tmp.add(head_list.get(j));
+                if(!nums_list.contains(tmp)){
+                    if (!tmp.isEmpty()){
+                        cnt += 1;
+                    }
+                    break;
+                }
+            }
+        }
+
+        if(prevInNums){
+            cnt += 1;
+        }
+
+        return cnt;
+    }
+
 }
