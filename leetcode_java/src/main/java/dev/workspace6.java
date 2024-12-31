@@ -820,7 +820,7 @@ public class workspace6 {
 
     // LC 855
     // https://leetcode.com/problems/exam-room/description/
-    // 5.31 PM - 5.50 pm
+    // 5.21 - 5.40 pm
     /**
      * Your ExamRoom object will be instantiated and called as such:
      * ExamRoom obj = new ExamRoom(n);
@@ -828,35 +828,67 @@ public class workspace6 {
      * obj.leave(p);
      */
     /**
-     *  IDEA:
+     *  IDEA: PQ (min queue)
      *
      *
      */
     class ExamRoom {
 
+        PriorityQueue<Integer> pq;
         int seated;
-        List<Integer> seats;
 
         public ExamRoom(int n) {
-            this.seated = 0;
-            this.seats = new ArrayList<>();
-            // ?? optimize
-            for(int i = 0; i < n; i++){
-                this.seats.add(0);
-            }
+            pq = new PriorityQueue<>(); // ??
+            seated = 0;
         }
 
         public int seat() {
-            if (this.seated == 0){
-                //this.seats. = 1;
+            if(this.seated == 0){
+                this.pq.add(0);
+                return 0;
             }
-            return 0;
+            //pq.poll();
+            return pq.peek(); // ???
         }
 
         public void leave(int p) {
-
+            List<Integer> tmp = new ArrayList<>();
+            while (this.pq.peek() != p){
+                this.pq.poll();
+            }
+            //return this.pq.poll();
+            this.pq.poll();
+            // add element back to PQ
+            for(int x : tmp){
+                this.pq.add(x);
+            }
         }
     }
+//    class ExamRoom {
+//
+//        int seated;
+//        List<Integer> seats;
+//
+//        public ExamRoom(int n) {
+//            this.seated = 0;
+//            this.seats = new ArrayList<>();
+//            // ?? optimize
+//            for(int i = 0; i < n; i++){
+//                this.seats.add(0);
+//            }
+//        }
+//
+//        public int seat() {
+//            if (this.seated == 0){
+//                //this.seats. = 1;
+//            }
+//            return 0;
+//        }
+//
+//        public void leave(int p) {
+//
+//        }
+//    }
 
   // LC 379
   // https://leetcode.ca/all/379.html
