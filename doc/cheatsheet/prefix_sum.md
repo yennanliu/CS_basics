@@ -43,6 +43,8 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
         - LC 974
 - get count of overlap intervals
     LC 253
+- Max Chunks To Make Sorted
+    - LC 769
 
 ### 0-2) Pattern
 
@@ -302,5 +304,65 @@ public boolean checkSubarraySum_1(int[] nums, int k) {
     }
 
     return false;
+}
+```
+
+### 2-7) Max Chunks To Make Sorted
+
+```java
+// java
+// LC 769
+// V1-1
+// https://leetcode.com/problems/max-chunks-to-make-sorted/editorial/
+// IDEA: Prefix Sums
+/**
+ *  IDEA:
+ *
+ *  An important observation is that a segment of the
+ *  array can form a valid chunk if, when sorted,
+ *  it matches the corresponding segment
+ *  in the fully sorted version of the array.
+ *
+ * Since the numbers in arr belong to the range [0, n - 1], we can simplify the problem by using the property of sums. Specifically, for any index, it suffices to check whether the sum of the elements in arr up to that index is equal to the sum of the elements in the corresponding prefix of the sorted array.
+ *
+ * If these sums are equal, it guarantees that the elements in the current segment of arr match the elements in the corresponding segment of the sorted array (possibly in a different order). When this condition is satisfied, we can form a new chunk — either starting from the beginning of the array or the end of the previous chunk.
+ *
+ * For example, consider arr = [1, 2, 0, 3, 4] and the sorted version sortedArr = [0, 1, 2, 3, 4]. We find the valid segments as follows:
+ *
+ * Segment [0, 0] is not valid, since sum = 1 and sortedSum = 0.
+ * Segment [0, 1] is not valid, since sum = 1 + 2 = 3 and sortedSum = 0 + 1 = 1.
+ * Segment [0, 2] is valid, since sum = 1 + 2 + 0 = 3 and sortedSum = 0 + 1 + 2 = 3.
+ * Segment [3, 3] is valid, because sum = 1 + 2 + 0 + 3 = 6 and sortedSum = 0 + 1 + 2 + 3 = 6.
+ * Segment [4, 4] is valid, because sum = 1 + 2 + 0 + 3 + 4 = 10 and sortedSum = 0 + 1 + 2 + 3 + 4 = 10.
+ * Therefore, the answer here is 3.
+ *
+ * Algorithm
+ * - Initialize n to the size of the arr array.
+ * - Initialize chunks, prefixSum, and sortedPrefixSum to 0.
+ * - Iterate over arr with i from 0 to n - 1:
+ *    - Increment prefixSum by arr[i].
+ *    - Increment sortedPrefixSum by i.
+ *    - Check if prefixSum == sortedPrefixSum:
+ *        - If so, increment chunks by 1.
+ * - Return chunks.
+ *
+ */
+public int maxChunksToSorted_1_1(int[] arr) {
+    int n = arr.length;
+    int chunks = 0, prefixSum = 0, sortedPrefixSum = 0;
+
+    // Iterate over the array
+    for (int i = 0; i < n; i++) {
+        // Update prefix sum of `arr`
+        prefixSum += arr[i];
+        // Update prefix sum of the sorted array
+        sortedPrefixSum += i;
+
+        // If the two sums are equal, the two prefixes contain the same elements; a chunk can be formed
+        if (prefixSum == sortedPrefixSum) {
+            chunks++;
+        }
+    }
+    return chunks;
 }
 ```
