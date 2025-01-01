@@ -1,9 +1,23 @@
-# Scanning Line 
+# Scanning Line  (AKA `Line Sweep`)
 
 ## 0) Concept  
-1. Find the "max" overlap in intervals
+
+> Find the "max" overlap in intervals
+
+- https://web.ntnu.edu.tw/~algo/Point2.html
+- https://hackmd.io/@meyr543/SkrRZCwfj
 
 ### 0-1) Types
+
+- Meeting room
+    - LC 253
+    - LC 759
+    - LC 2021
+- Calendar
+    - LC 731
+- Others
+    - LC 1851
+    - LC 218
 
 ### 0-2) Pattern
 ```python
