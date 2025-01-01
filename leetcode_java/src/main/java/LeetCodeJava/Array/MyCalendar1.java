@@ -106,8 +106,8 @@ public class MyCalendar1 {
              *
              *  case 1)
              *
-             *    |-----| old       new[1] > old[0] && new[0] < old[1]
-             * |----|     new
+             *      |-----| old       new[1] > old[0] && new[0] < old[1]
+             * |-------|     new
              *
              *
              * case 2)
@@ -116,8 +116,8 @@ public class MyCalendar1 {
              *
              * case 3)
              *
-             *    |------|       old    new[1] > old[0] && new[0] < old[1]
-             *  |-------------|  new
+             *         |------|     old    new[1] > old[0] && new[0] < old[1]
+             *  |----------------|  new
              *
              *
              *  -> so, all overlap cases
@@ -165,18 +165,18 @@ public class MyCalendar1 {
                  *  3 OVERLAP CASES
                  *
                  *
-                 * |----| (new)
+                 *      |----| (new)
                  * |------| (old)
                  *
                  * or
                  *
                  * |-----| (new)
-                 * |----| (old)
+                 *     |----| (old)
                  *
                  * or
                  *
-                 * |---| (new)
-                 * |----------| (old)
+                 *      |---| (new)
+                 * |------------| (old)
                  *
                  *
                  */
