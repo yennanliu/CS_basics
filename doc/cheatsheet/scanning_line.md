@@ -193,3 +193,84 @@ class Solution:
                 res = left
         return res
 ```
+
+### 2-2) My Calendar II
+
+```java
+// java
+// LC 731 My Calendar II
+  // V1-1
+  // https://leetcode.com/problems/my-calendar-ii/editorial/
+  // IDEA:  Line Sweep (Scanning line)
+  /**
+   *  IDEA:
+   *
+   *
+   *  1) Class `MyCalendarTwo` will have two data members,
+   *     `maxOverlappedBooking` which is the maximum number of
+   *     concurrent bookings possible at a time,
+   *     and `bookingCount` which is a map from integer to integer
+   *     with the time point as the key and number of bookings as the value.
+   *
+   *
+   *  2) Initialize `maxOverlappedBooking` as 2, as we need to check for triple booking.
+   *
+   *  3) Define the function book(start, end) as:
+   *
+   *    - Increase the number of bookings for the time start and decrease
+   *      the number of bookings for end by 1 in the map bookingCount.
+   *
+   *    - Iterate over each key-value pair in the map
+   *      in ascending order of keys to find the prefix sum.
+   *      Add the value in the map to the count overlappedBooking.
+   *
+   *    - If overlappedBooking is more than two, it implies that this
+   *      is triple booking. Hence, we should return false.
+   *      Also, we need to revert the changes in the map as this booking shouldn't be added.
+   *
+   *    - If we reach here, it implies no triple booking and hence returns true.
+   *
+   */
+  class MyCalendarTwo_1_1 {
+
+
+
+        private TreeMap<Integer, Integer> bookingCount;
+        private int maxOverlappedBooking;
+
+        public MyCalendarTwo_1_1() {
+            bookingCount = new TreeMap<>();
+            maxOverlappedBooking = 2;
+        }
+
+        public boolean book(int start, int end) {
+            // Increase the booking count at 'start' and decrease at 'end'.
+            bookingCount.put(start, bookingCount.getOrDefault(start, 0) + 1);
+            bookingCount.put(end, bookingCount.getOrDefault(end, 0) - 1);
+
+            int overlappedBooking = 0;
+
+            // Calculate the prefix sum of bookings.
+            for (Map.Entry<Integer, Integer> entry : bookingCount.entrySet()) {
+                overlappedBooking += entry.getValue();
+
+                // If the number of overlaps exceeds the allowed limit, rollback and
+                // return false.
+                if (overlappedBooking > maxOverlappedBooking) {
+                    // Rollback changes.
+                    bookingCount.put(start, bookingCount.get(start) - 1);
+                    bookingCount.put(end, bookingCount.get(end) + 1);
+
+                    // Clean up if the count becomes zero to maintain the map clean.
+                    if (bookingCount.get(start) == 0) {
+                        bookingCount.remove(start);
+                    }
+
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+```
