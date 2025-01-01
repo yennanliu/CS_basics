@@ -46,9 +46,42 @@ import java.util.Stack;
 public class MaxChunksToMakeSorted {
 
   // V0
-  //    public int maxChunksToSorted(int[] arr) {
-  //
-  //    }
+  // IDEA: prefix + problem understanding
+  /**
+   *  IDEA:
+   *
+   *    since this problem wants to find the MAX value of sub array with sort op
+   *    and concatenate can same as the SORTED ORIGINAL ARRAY
+   *
+   *    -> so all we need to do within looping is:
+   *        maintain
+   *            1) sorted prefixSum (sort all array and its prefix sum)
+   *            2) prefixSum (current array's prefix sum)
+   *
+   *    -> so, for `sorted prefixSum`, it's sortedPrefixSum + i, ... (since the array is the permutation of element within [0, n - 1])
+   *           for `prefixSum`, it's prefixSum + i ,....
+   *
+   */
+  public int maxChunksToSorted(int[] arr) {
+
+      int n = arr.length;
+      int chunks = 0, prefixSum = 0, sortedPrefixSum = 0;
+
+      // Iterate over the array
+      for (int i = 0; i < n; i++) {
+          // Update prefix sum of `arr`
+          prefixSum += arr[i];
+          // Update prefix sum of the sorted array
+          sortedPrefixSum += i;
+
+          // If the two sums are equal, the two prefixes contain the same elements; a
+          // chunk can be formed
+          if (prefixSum == sortedPrefixSum) {
+              chunks++;
+          }
+      }
+      return chunks;
+  }
 
     // V1-1
     // https://leetcode.com/problems/max-chunks-to-make-sorted/editorial/
@@ -163,7 +196,7 @@ public class MaxChunksToMakeSorted {
     // V1-3
     // https://leetcode.com/problems/max-chunks-to-make-sorted/editorial/
     // IDEA:  Monotonic Increasing Stack
-    public int maxChunksToSorted(int[] arr) {
+    public int maxChunksToSorted_1_3(int[] arr) {
         int n = arr.length;
         // Stack to store the maximum elements of each chunk
         Stack<Integer> monotonicStack = new Stack<>();

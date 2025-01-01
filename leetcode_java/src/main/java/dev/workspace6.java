@@ -1165,7 +1165,7 @@ public class workspace6 {
 
     // LC 769
     // https://leetcode.com/problems/max-chunks-to-make-sorted/
-    // 3.02 pm - 3.20 pm
+    // 1.24 pm - 1.35 pm
     /**
      *
      * We split arr into some number of chunks (i.e., partitions),
@@ -1206,6 +1206,36 @@ public class workspace6 {
      *
      *
      */
+    /**
+     *  IDEA V2: pre-fix sum
+     *
+     *  -> to check if the array can be split into sub array and sorted,
+     *     then finally can concatenate and as same as the original array
+     *
+     *   Exp 1: arr = [4,3,2,1,0] -> res = 1
+     *
+     *   -> sorted arr = [0,1,2,3,4]
+     *
+     *   -> arrList = [4,3,2,1,0]
+     *   -> preFixSum = [4,7,9,10,10]
+     *
+     *
+     *
+     *   Exp 2:
+     *
+     *    arr = [1,0,2,3,4] -> res = 4
+     *
+     *    -> sorted arr = [0,1,2,3,4]
+     *
+     *    [1,0,2,3,4]
+     *
+     *  ->  arrList =   [1,0,2,3,4]
+     *  ->  preFixSum = [1,0,3,6,10]
+     *
+     *
+     *
+     *
+     */
     public int maxChunksToSorted(int[] arr) {
 
       // edge
@@ -1213,33 +1243,64 @@ public class workspace6 {
           return 1;
       }
 
-      // copy
-      int[] arr_before = arr; // ??
-      Arrays.sort(arr);
+      List<Integer> preFixSortedSum = new ArrayList<>();
+      List<Integer> arrList = new ArrayList<>(); // ??
 
-      // 2 pointers
-      int res = 1;
-      List<Integer> tmp = new ArrayList<>();
-      for (int i = 0; i < arr.length-1; i++){
-          for(int j = i+1; j < arr_before.length; j++){
-              tmp.add(arr[j]);
-              // copy
-              List<Integer> tmp_copy = tmp; // ???
-              // sort
-              tmp_copy.sort(Integer::compareTo);
-//              if(tmp_copy  == tmp_copy){
-//
-//              }
+      int preSortedSum = 0;
+      int preSum = 0;
+
+      // prefix sum
+      int cnt = 0;
+      for(int i = 0; i < arr.length; i++){
+          preSum += i;
+          preSortedSum += arr[i];
+
+          if(preSum != preSortedSum){
+              cnt += 1;
+          }else{
+              arrList.add(arr[i]);
+              preFixSortedSum.add(preSum);
           }
       }
 
-      String x = "abc";
-      String[] x_ = x.split("");
-
-
-
-      return res;
+      return cnt;
     }
+
+
+//    public int maxChunksToSorted(int[] arr) {
+//
+//      // edge
+//      if (arr.length == 1) {
+//          return 1;
+//      }
+//
+//      // copy
+//      int[] arr_before = arr; // ??
+//      Arrays.sort(arr);
+//
+//      // 2 pointers
+//      int res = 1;
+//      List<Integer> tmp = new ArrayList<>();
+//      for (int i = 0; i < arr.length-1; i++){
+//          for(int j = i+1; j < arr_before.length; j++){
+//              tmp.add(arr[j]);
+//              // copy
+//              List<Integer> tmp_copy = tmp; // ???
+//              // sort
+//              tmp_copy.sort(Integer::compareTo);
+////              if(tmp_copy  == tmp_copy){
+////
+////              }
+//          }
+//      }
+//
+//      String x = "abc";
+//      String[] x_ = x.split("");
+//
+//
+//
+//      return res;
+//    }
 
     // LC 817
     // https://leetcode.com/problems/linked-list-components/
