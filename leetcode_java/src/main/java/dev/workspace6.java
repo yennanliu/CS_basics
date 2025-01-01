@@ -1393,4 +1393,103 @@ public class workspace6 {
 //        return cnt;
 //    }
 
+    // LC 729
+    // https://leetcode.com/problems/my-calendar-i/
+    // 2.04 PM - 2.24 PM
+    /**
+     * The event can be represented as a pair of integers startTime and endTime that represents
+     * a booking on the half-open interval [startTime, endTime),
+     * the range of real numbers x such that startTime <= x < endTime.
+     *
+     *
+     *  IDEA 1:
+     *
+     *    use a linear data structure that can save SORTED
+     *    intervals ([startTime, endTime)),
+     *    so it enable to check if the new interval overlap with
+     *    the existing intervals or not
+     *
+     *
+     *  IDEA 2: use an array, sort everytime when a new interval is added
+     *
+     *
+     *
+     */
+    class MyCalendar {
+
+        List<List<Integer>> booked;
+
+        public MyCalendar() {
+            this.booked = new ArrayList<>();
+        }
+
+        public boolean book(int startTime, int endTime) {
+
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(startTime);
+            tmp.add(endTime);
+
+            if(this.booked.isEmpty()){
+                this.booked.add(tmp);
+                // ??? TODO : check
+               // sort(this.booked);
+                return true;
+            }
+
+            for(List<Integer> x: booked){
+                int existingStart = x.get(0);
+                int existingEnd = x.get(1);
+                /**
+                 *   |----|
+                 *     |------| (old)
+                 *
+                 *     or
+                 *
+                 *    |-----|
+                 *  |----|  (old)
+                 *
+                 *    or
+                 *
+                 *    |---|
+                 *  |----------|  (old)
+                 *
+                 *
+                 *
+                 */
+//                if ( endTime > existingStart || startTime < existingEnd ){
+//                    return false;
+//                }
+                if (startTime < existingEnd && existingStart < endTime) {
+                    return false; // Overlapping interval found
+                }
+            }
+
+            this.booked.add(tmp);
+            //sort(this.booked);
+
+            return true;
+        }
+
+        private void sort(List<List<Integer>> bookedDays){
+            // descending sorting on 1) 1st element, if same, sort on 2nd element
+            bookedDays.sort((x,y) -> {
+                if(x.get(0) < y.get(0)){
+                    return 1;
+                }else if(x.get(0) > y.get(0)){
+                    return -1;
+                }else if (x.get(0) == y.get(0)){
+                   if(x.get(1) < y.get(1)){
+                       return 1;
+                   }else if (x.get(1) > y.get(1)){
+                       return -1;
+                   }
+                   return 0; // ???
+                }
+                return 0;
+            });
+        }
+
+    }
+
+
 }
