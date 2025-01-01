@@ -1454,7 +1454,6 @@ public class workspace6 {
                  *  |----------|  (old)
                  *
                  *
-                 *
                  */
 //                if ( endTime > existingStart || startTime < existingEnd ){
 //                    return false;
@@ -1489,6 +1488,84 @@ public class workspace6 {
             });
         }
 
+    }
+
+    // LC 731
+    // https://leetcode.com/problems/my-calendar-ii/
+    // 2.53 - 3.30 PM
+    class MyCalendarTwo {
+
+        List<List<Integer>> booked;
+        Map<List<Integer>, Integer> overlapCnt;
+
+        public MyCalendarTwo() {
+            this.booked = new ArrayList<>();
+            this.overlapCnt = new HashMap<>();
+        }
+
+        public boolean book(int startTime, int endTime) {
+
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(startTime);
+            tmp.add(endTime);
+
+            // case 1) booked is empty
+            if(this.booked.isEmpty()){
+                this.booked.add(tmp);
+                return true;
+            }
+
+            boolean lessEqualsThreeOverlap = false;
+
+
+            for(List<Integer> x: this.booked){
+                /**
+                 *   |----|
+                 *     |------| (old)
+                 *
+                 *     or
+                 *
+                 *    |-----|
+                 *  |----|  (old)
+                 *
+                 *    or
+                 *
+                 *    |---|
+                 *  |----------|  (old)
+                 *
+                 *
+                 */
+                int existingStart = x.get(0);
+                int existingEnd = x.get(1);
+
+                if (startTime < existingEnd && existingStart < endTime) {
+                    // case 2) has overlap, but `overlap count` <= 3
+                    List<Integer> tmpExisting = new ArrayList<>();
+                    tmpExisting.add(existingStart);
+                    tmpExisting.add(existingEnd);
+                    if(this.overlapCnt.get(tmpExisting) <= 3){
+                        // update existing start, end
+                        existingStart = Math.min(existingStart, startTime);
+                        existingEnd  = Math.max(existingEnd, endTime);
+                        List<Integer> tmp2 = new ArrayList<>();
+                        tmp2.add(existingStart);
+                        tmp2.add(existingEnd);
+                        this.overlapCnt.put(tmp2, this.overlapCnt.get(tmpExisting)+1); // update overlap cnt
+                        this.overlapCnt.remove(tmpExisting);
+                        return true;
+                    }else{
+                        // case 3) has overlap, and `overlap count` > 3
+                        return false;
+                    }
+                }
+
+            }
+
+            // case 4) no overlap
+            this.booked.add(tmp);
+            this.overlapCnt.put(tmp, 1); // update overlap cnt
+            return true;
+        }
     }
 
 
