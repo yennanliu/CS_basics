@@ -137,6 +137,59 @@ public class MyCalendar1 {
         }
     }
 
+    // V0-2
+    class MyCalendar_0_2 {
+
+        List<List<Integer>> booked;
+
+        public MyCalendar_0_2() {
+            this.booked = new ArrayList<>();
+        }
+
+        public boolean book(int startTime, int endTime) {
+
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(startTime);
+            tmp.add(endTime);
+
+            if (this.booked.isEmpty()) {
+                this.booked.add(tmp);
+                return true;
+            }
+
+            for (List<Integer> x : booked) {
+                int existingStart = x.get(0);
+                int existingEnd = x.get(1);
+                /**
+                 *
+                 *  3 OVERLAP CASES
+                 *
+                 *
+                 * |----| (new)
+                 * |------| (old)
+                 *
+                 * or
+                 *
+                 * |-----| (new)
+                 * |----| (old)
+                 *
+                 * or
+                 *
+                 * |---| (new)
+                 * |----------| (old)
+                 *
+                 *
+                 */
+                if (startTime < existingEnd && existingStart < endTime) {
+                    return false; // Overlapping interval found
+                }
+            }
+
+            this.booked.add(tmp);
+            return true;
+        }
+    }
+
     // V1-1
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/my-calendar-i/editorial/
