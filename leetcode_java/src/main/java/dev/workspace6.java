@@ -486,7 +486,7 @@ public class workspace6 {
 
     // LC 369
     // https://leetcode.ca/all/369.html
-    // 3.42 PM - 4.00 pm
+    // 5.35 - 5.50 pm
     /**
      *  IDEA 1 : linked list -> int, +1, transform back to linked list
      *
@@ -494,26 +494,79 @@ public class workspace6 {
      *       -> reverse
      *       -> add 1, if > 9, move to next digit
      *       -> reverse again
-     *
      */
-    // v2
+    /**
+     *  IDEA 3:
+     *
+     *   step 1) reverse
+     *   step 2) `add 1` op
+     *   step 3) reverse
+
+     */
+    // V3
     public ListNode plusOne(ListNode head) {
+        // edge case
         if (head == null){
-            return new ListNode(1); // ??
+            return new ListNode(1);
         }
-        ListNode tmp = new ListNode();
-//        // reverse
-//        while(head != null){
-//            ListNode _next = head.next;
-//            ListNode _prev = tmp; // ??
-//            head.next = _prev;
-//            head = _next;
-//        }
-//        tmp.val += 1;  // ??
 
+        ListNode reversedHead = reverseNode(head);
 
-        return null;
+        int extra = 0;
+
+        while(reversedHead != null){
+            int val = reversedHead.val;
+            val += (1 + extra);
+            // if val <= 9, no need to handle "carry", end the while loop
+            if (val <= 9){
+                break;
+            }
+            extra = val - 10;
+
+            reversedHead = reversedHead.next;
+        }
+
+        // if extra != 0, need to carry to next digit
+        if(extra > 0){
+            reversedHead.next = new ListNode(extra);
+        }
+
+        ListNode res = reverseNode(reversedHead);
+        return res;
     }
+
+    private ListNode reverseNode(ListNode node){
+        ListNode _prev = null;
+        ListNode cur = node;
+
+        while(cur != null){
+            ListNode _next = cur.next;
+            cur.next = _prev;
+            _prev = cur;
+            cur = _next; // NOTE this !!!
+        }
+        return _prev; // NOTE this !!!
+    }
+
+
+    // v2
+//    public ListNode plusOne(ListNode head) {
+//        if (head == null){
+//            return new ListNode(1); // ??
+//        }
+//        ListNode tmp = new ListNode();
+////        // reverse
+////        while(head != null){
+////            ListNode _next = head.next;
+////            ListNode _prev = tmp; // ??
+////            head.next = _prev;
+////            head = _next;
+////        }
+////        tmp.val += 1;  // ??
+//
+//
+//        return null;
+//    }
 
   // v1
   //    public ListNode plusOne_1(ListNode head) {
