@@ -32,6 +32,12 @@ public class PlusOneLinkedList {
 
   // V0
   // TODO : validate
+  // IDEA: reverse linked list + `add 1` op
+  /**
+   *  Step 1) reverse linked list
+   *  Step 2) plus 1, bring `carry` to next digit if curSum > 9, ... repeat for all nodes
+   *  Step 3) reverse linked list again
+   */
   public ListNode plusOne(ListNode head) {
 
     // edge case
