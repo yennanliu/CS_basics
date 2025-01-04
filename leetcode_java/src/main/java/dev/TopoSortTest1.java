@@ -75,6 +75,7 @@ public class TopoSortTest1 {
         for(Integer x: degrees){
             if(x==0){
                 this.queue.add(x);
+                this.queue.offer(x);
             }
         }
 

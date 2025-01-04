@@ -933,6 +933,33 @@ PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>(
 // ...
 ```
 
+### 1-19-2) Queue `add` VS `offer`
+
+- `add(E e)` Method
+    - Behavior:
+        - Adds the specified element to the queue.
+        - If the queue has a capacity restriction and it is full, add() throws an exception (IllegalStateException).
+    - If the queue allows unlimited elements (like LinkedList), add() behaves similarly to offer() and does not throw an exception.
+    - Usage:
+        - Use add() when you want to enforce that the addition must succeed and you want an exception if it fails.
+    - Return Type:
+        - Returns true if the element was successfully added.
+    - Exception Handling:
+    - Throws an exception if the operation fails due to capacity limits.
+
+
+- `offer(E e)` Method
+    - Behavior:
+        - Adds the specified element to the queue.
+        - If the queue has a capacity restriction and it is full, offer() returns false instead of throwing an exception.
+        - It is a more graceful way of adding elements to a queue when capacity may be a concern.
+    - Usage:
+        - Use offer() when you want to handle the addition failure more gracefully without relying on exceptions.
+    - Return Type:
+        - Returns true if the element was added successfully, and false otherwise.
+    - Exception Handling:
+        - Does not throw an exception if the operation fails; returns false instead.
+
 ### 1-20) Hashmap return defalut val
 ```java
 
