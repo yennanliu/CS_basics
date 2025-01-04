@@ -31,10 +31,50 @@ public class PlusOneLinkedList {
    */
 
   // V0
-  // TODO : implement
-//  public ListNode plusOne(ListNode head) {
-//  }
+  // TODO : validate
+  public ListNode plusOne(ListNode head) {
 
+    // edge case
+    if (head == null){
+      return new ListNode(1);
+    }
+
+    ListNode reversedHead = reverseNode(head);
+    int extra = 0;
+
+    while(reversedHead != null){
+      int val = reversedHead.val;
+      val += (1 + extra);
+      // if val <= 9, no need to handle "carry", end the while loop
+      if (val <= 9){
+        break;
+      }
+      extra = val - 10;
+
+      reversedHead = reversedHead.next;
+    }
+
+    // if extra != 0, need to carry to next digit
+    if(extra > 0){
+      reversedHead.next = new ListNode(extra);
+    }
+
+    ListNode res = reverseNode(reversedHead);
+    return res;
+  }
+
+  private ListNode reverseNode(ListNode node){
+    ListNode _prev = null;
+    ListNode cur = node;
+
+    while(cur != null){
+      ListNode _next = cur.next;
+      cur.next = _prev;
+      _prev = cur;
+      cur = _next; // NOTE this !!!
+    }
+    return _prev; // NOTE this !!!
+  }
 
   // V1
   // IDEA : LINKED LIST OP (gpt)
