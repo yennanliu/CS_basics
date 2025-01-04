@@ -32,6 +32,8 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
         - LC 560
     - Maximum Size Subarray Sum Equals k
         - LC 325
+    - Maximum Sum of Two Non-Overlapping Subarrays
+        - LC 1031
     - Count Number of Nice Subarrays
         - LC 1248
     - Continuous Subarray Sum (preSum with mod)
@@ -364,5 +366,35 @@ public int maxChunksToSorted_1_1(int[] arr) {
         }
     }
     return chunks;
+}
+```
+
+### 2-8) Maximum Sum of Two Non-Overlapping Subarrays
+
+```java
+// java
+// LC 1031
+
+// V1
+// https://leetcode.ca/2018-09-26-1031-Maximum-Sum-of-Two-Non-Overlapping-Subarrays/
+// IDEA: PREFIX SUM
+public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
+    int n = nums.length;
+    int[] s = new int[n + 1];
+    for (int i = 0; i < n; ++i) {
+        s[i + 1] = s[i] + nums[i];
+    }
+    int ans = 0;
+    // case 1)  check `firstLen`, then `secondLen`
+    for (int i = firstLen, t = 0; i + secondLen - 1 < n; ++i) {
+        t = Math.max(t, s[i] - s[i - firstLen]);
+        ans = Math.max(ans, t + s[i + secondLen] - s[i]);
+    }
+    // case 2)  check  `secondLen`, then `firstLen`
+    for (int i = secondLen, t = 0; i + firstLen - 1 < n; ++i) {
+        t = Math.max(t, s[i] - s[i - secondLen]);
+        ans = Math.max(ans, t + s[i + firstLen] - s[i]);
+    }
+    return ans;
 }
 ```
