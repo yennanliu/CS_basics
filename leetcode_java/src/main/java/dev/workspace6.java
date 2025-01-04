@@ -1568,5 +1568,91 @@ public class workspace6 {
         }
     }
 
+    // LC 1031
+    // https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/
+    // 4.21 - 4.40 pm
+    /**
+     * return the maximum sum of elements in two non-overlapping
+     * subarrays with lengths firstLen and secondLen.
+     *
+     * The array with length firstLen could occur before or after
+     * the array with length secondLen,
+     * but they have to be non-overlapping.
+     *
+     *
+     * A subarray is a contiguous part of an array.
+     *
+     *
+     * IDEA:  PREFIX SUM
+     *
+     * exp 1)
+     *
+     * Input: nums = [3,8,1,3,2,1,8,9,0], firstLen = 3, secondLen = 2
+     *
+     * -> prefix sum = [3,11,12,15,17,18,26,37,0]
+     *
+     * Sum(i,j)  = preSum(j+1) - preSum(i)
+     *
+     * -> pre(15) - pre(3)  = 12
+     *
+     */
+    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+
+        // edge
+        if(nums.length == 3){
+            return firstLen + secondLen;
+        }
+
+        // prefix Sum
+        List<Integer> prefixSum = new ArrayList<>();
+        prefixSum.add(0);
+        int curSum = 0;
+        for(int i = 0; i < nums.length; i++){
+            curSum += nums[i];
+            prefixSum.add(curSum);
+        }
+
+        int longerLen = 0;
+        int len = 0;
+        if(firstLen > secondLen){
+            longerLen = firstLen;
+            len = secondLen;
+        }else{
+            len = firstLen;
+            longerLen = secondLen;
+        }
+
+        int firstLenVal = 0;
+        int secondLenVal = 0;
+
+       // Set<Integer> seletectedIdx = new HashSet<>();
+        int seletectedIdx = -1;
+
+        // get "max" val of firstLen
+        for(int i = firstLen; i < nums.length - firstLen; i++){ // ???
+            int cur = prefixSum.get(i+1) - prefixSum.get(i - firstLen);
+            if (firstLenVal == 0){
+                seletectedIdx = i;
+                firstLenVal = cur;
+            }else if (cur > firstLenVal){
+                seletectedIdx = i;
+                firstLenVal = cur;
+            }
+        }
+
+        // get "max" val of secondLen
+        for(int i = secondLen; i < nums.length - secondLen; i++){ // ???
+            if (i != seletectedIdx){
+                int cur = prefixSum.get(i+1) - prefixSum.get(i - secondLen);
+                secondLenVal = Math.max(secondLenVal, cur);
+            }
+        }
+
+        System.out.println(">>> firstLenVal = " + firstLenVal);
+        System.out.println(">>> secondLenVal = " + secondLenVal);
+
+        return firstLenVal + secondLenVal;
+    }
+
 
 }
