@@ -3,6 +3,8 @@ package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
+import jdk.javadoc.internal.doclets.toolkit.util.Utils;
+
 import java.util.*;
 
 public class workspace6 {
@@ -1804,5 +1806,117 @@ public class workspace6 {
         return firstLenVal + secondLenVal;
     }
 
+  // LC 399
+  // https://leetcode.com/problems/evaluate-division/
+  // 6.34 - 6.50
+  /**
+   *
+   * Exp 1)
+   *
+   *
+   * Input: equations = [["a","b"],["b","c"]],
+   * values = [2.0,3.0],
+   * queries = [["a","c"],["b","a"],["a","e"],["a","a"],["x","x"]]
+   *
+   *
+   * Output: [6.00000,0.50000,-1.00000,1.00000,-1.00000]
+   * Explanation:
+   * Given: a / b = 2.0, b / c = 3.0
+   * queries are: a / c = ?, b / a = ?, a / e = ?, a / a = ?, x / x = ?
+   * return: [6.0, 0.5, -1.0, 1.0, -1.0 ]
+   * note: x is undefined => -1.0
+   *
+   *
+   */
+  /**
+   *  IDEA: DFS
+   *
+   *  ->
+   *   step 0) define custom class to store below relation
+   *   step 1) build relation
+   *        -> {a: [b, 2], b:[c, 3], c:[b, 1/3] }
+   *   step 2) check if every input in relation,
+   *          if not, return -1
+   *          if yes, do the op, return res
+   */
+  private class EquationRes{
+      // attr
+      String variable;
+      Double result;
+
+      public Double getResult() {
+          return result;
+      }
+
+      public String getVariable() {
+          return variable;
+      }
+
+      // constructor
+      EquationRes(String variable, Double result){
+          this.variable = variable;
+          this.result = result;
+      }
+  }
+
+    // init relation
+    Map<String, List<EquationRes>> relations = new HashMap();
+    //double[] res = new double[];
+
+  public double[] calcEquation(
+
+    List<List<String>> equations, double[] values, List<List<String>> queries) {
+
+      // build
+      buildRelation(equations, values);
+      // get
+      double[] res = new double[queries.size()];
+      for(int i = 0; i < queries.size(); i++){
+          res[i] = getResult(queries.get(i), 1);
+      }
+
+      System.out.println(">>> res = " + res);
+
+      return res;
+    }
+
+    // dfs
+    private double getResult(List<String> queries, double res){
+      // check if in list
+      String firstVal = queries.get(0);
+      String secondVal = queries.get(1);
+      if (!this.relations.containsKey(firstVal) || !this.relations.containsKey(secondVal)){
+          return -1.0;
+      }
+
+      //double res = 1;
+      //List<EquationRes> x = this.relations.get(firstVal);
+      for(EquationRes equationRes: this.relations.get(firstVal)){
+          res = res * equationRes.result;
+
+
+      }
+
+      return res;
+    }
+
+    // build relation
+    private void buildRelation(List<List<String>> equations, double[] values){
+      for(int i = 0; i < equations.size(); i++){
+          List<String> equation = equations.get(i);
+          String firstVal = equation.get(0);
+          String secondVal = equation.get(1);
+
+          EquationRes equationRes = new EquationRes(secondVal, values[i]);
+
+          List<EquationRes> equationAndRes = new ArrayList<>();
+          if (this.relations.containsKey(firstVal)){
+              equationAndRes =  this.relations.get(firstVal);
+          }
+
+          this.relations.put(firstVal, equationAndRes);
+      }
+
+    }
 
 }
