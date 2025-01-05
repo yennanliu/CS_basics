@@ -2,6 +2,8 @@ package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/evaluate-division/description/
 
+import dev.workspace6;
+
 import java.util.*;
 
 /**
@@ -57,19 +59,138 @@ import java.util.*;
  */
 public class EvaluateDivision {
     // V0
-    // TODO: implement
-//    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    // TODO: fix below
+//    private class EquationRes{
+//        // attr
+//        String variable;
+//        Double result;
+//
+//        public Double getResult() {
+//            return result;
+//        }
+//
+//        public String getVariable() {
+//            return variable;
+//        }
+//
+//        // constructor
+//        EquationRes(String variable, Double result){
+//            this.variable = variable;
+//            this.result = result;
+//        }
+//    }
+//
+//    // init relation
+//    Map<String, List<workspace6.EquationRes>> relations = new HashMap();
+//    //double[] res = new double[];
+//
+//    public double[] calcEquation(
+//
+//            List<List<String>> equations, double[] values, List<List<String>> queries) {
+//
+//        // build
+//        buildRelation(equations, values);
+//        // get
+//        double[] res = new double[queries.size()];
+//        for(int i = 0; i < queries.size(); i++){
+//            res[i] = getResult(queries.get(i), 1);
+//        }
+//
+//        System.out.println(">>> res = " + res);
+//
+//        return res;
+//    }
+//
+//    // dfs
+//    private double getResult(List<String> queries, double res){
+//        // check if in list
+//        String firstVal = queries.get(0);
+//        String secondVal = queries.get(1);
+//        if (!this.relations.containsKey(firstVal) || !this.relations.containsKey(secondVal)){
+//            return -1.0;
+//        }
+//
+//        //double res = 1;
+//        //List<EquationRes> x = this.relations.get(firstVal);
+//        for(workspace6.EquationRes equationRes: this.relations.get(firstVal)){
+//            res = res * equationRes.result;
+//
+//
+//        }
+//
+//        return res;
+//    }
+//
+//    // build relation
+//    private void buildRelation(List<List<String>> equations, double[] values){
+//        for(int i = 0; i < equations.size(); i++){
+//            List<String> equation = equations.get(i);
+//            String firstVal = equation.get(0);
+//            String secondVal = equation.get(1);
+//
+//            workspace6.EquationRes equationRes = new workspace6.EquationRes(secondVal, values[i]);
+//
+//            List<workspace6.EquationRes> equationAndRes = new ArrayList<>();
+//            if (this.relations.containsKey(firstVal)){
+//                equationAndRes =  this.relations.get(firstVal);
+//            }
+//
+//            this.relations.put(firstVal, equationAndRes);
+//        }
 //
 //    }
 
-
     // V1
-
-    // V2
     // IDEA: DFS
     // https://leetcode.com/problems/evaluate-division/solutions/3543256/image-explanation-easiest-concise-comple-okpu/
+    public double[] calcEquation_1(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        HashMap<String, HashMap<String, Double>> gr = buildGraph(equations, values);
+        double[] finalAns = new double[queries.size()];
+
+        for (int i = 0; i < queries.size(); i++) {
+            String dividend = queries.get(i).get(0);
+            String divisor = queries.get(i).get(1);
+
+            /** NOTE !!!
+             *
+             *  either dividend nor divisor NOT in graph, return -1.0 directly
+             */
+            if (!gr.containsKey(dividend) || !gr.containsKey(divisor)) {
+                finalAns[i] = -1.0;
+            } else {
+
+                /** NOTE !!!
+                 *
+                 *  we use `vis` to check if element already visited
+                 *  (to avoid repeat accessing)
+                 *  `vis` init again in every loop
+                 */
+
+                HashSet<String> vis = new HashSet<>();
+                /**
+                 *  NOTE !!!
+                 *
+                 *   we init `ans` and pass it to dfs method
+                 *   (but dfs method return NOTHING)
+                 *   -> `ans` is init, and pass into dfs,
+                 *   -> so `ans` value is updated during dfs recursion run
+                 *   -> and after dfs run completed, we get the result `ans` value
+                 */
+                double[] ans = { -1.0 };
+                double temp = 1.0;
+                dfs(dividend, divisor, gr, vis, ans, temp);
+                finalAns[i] = ans[0];
+            }
+        }
+
+        return finalAns;
+    }
+
+    /** NOTE !!! below dfs method */
     public void dfs(String node, String dest, HashMap<String, HashMap<String, Double>> gr, HashSet<String> vis,
                     double[] ans, double temp) {
+
+        /** NOTE !!! we use `vis` to check if element already visited */
         if (vis.contains(node))
             return;
 
@@ -82,6 +203,7 @@ public class EvaluateDivision {
         for (Map.Entry<String, Double> entry : gr.get(node).entrySet()) {
             String ne = entry.getKey();
             double val = entry.getValue();
+            /** NOTE !!! update temp as `temp * val` */
             dfs(ne, dest, gr, vis, ans, temp * val);
         }
     }
@@ -104,26 +226,71 @@ public class EvaluateDivision {
         return gr;
     }
 
+    // V2
+    // IDEA: DFS (gpt)
     public double[] calcEquation_2(List<List<String>> equations, double[] values, List<List<String>> queries) {
-        HashMap<String, HashMap<String, Double>> gr = buildGraph(equations, values);
-        double[] finalAns = new double[queries.size()];
+        // Build the graph
+        Map<String, Map<String, Double>> graph = new HashMap<>();
+        for (int i = 0; i < equations.size(); i++) {
+            String a = equations.get(i).get(0);
+            String b = equations.get(i).get(1);
+            double value = values[i];
 
+            graph.putIfAbsent(a, new HashMap<>());
+            graph.putIfAbsent(b, new HashMap<>());
+
+            graph.get(a).put(b, value);
+            graph.get(b).put(a, 1.0 / value);
+        }
+
+        // Process each query
+        double[] results = new double[queries.size()];
         for (int i = 0; i < queries.size(); i++) {
-            String dividend = queries.get(i).get(0);
-            String divisor = queries.get(i).get(1);
+            String c = queries.get(i).get(0);
+            String d = queries.get(i).get(1);
 
-            if (!gr.containsKey(dividend) || !gr.containsKey(divisor)) {
-                finalAns[i] = -1.0;
+            // If either node is not in the graph, result is -1.0
+            if (!graph.containsKey(c) || !graph.containsKey(d)) {
+                results[i] = -1.0;
+            } else if (c.equals(d)) {
+                // If nodes are the same, result is 1.0
+                results[i] = 1.0;
             } else {
-                HashSet<String> vis = new HashSet<>();
-                double[] ans = { -1.0 };
-                double temp = 1.0;
-                dfs(dividend, divisor, gr, vis, ans, temp);
-                finalAns[i] = ans[0];
+                // Use DFS to find the result
+                Set<String> visited = new HashSet<>();
+                results[i] = dfs(graph, c, d, 1.0, visited);
             }
         }
 
-        return finalAns;
+        return results;
+    }
+
+    private double dfs(Map<String, Map<String, Double>> graph, String current, String target, double value,
+                       Set<String> visited) {
+        // If we reach the target, return the current value
+        if (current.equals(target)) {
+            return value;
+        }
+
+        // Mark the current node as visited
+        visited.add(current);
+
+        // Explore neighbors
+        for (Map.Entry<String, Double> neighbor : graph.get(current).entrySet()) {
+            String nextNode = neighbor.getKey();
+            double weight = neighbor.getValue();
+
+            if (!visited.contains(nextNode)) {
+                double result = dfs(graph, nextNode, target, value * weight, visited);
+                if (result != -1.0) {
+                    return result;
+                }
+            }
+        }
+
+        // Backtrack
+        visited.remove(current);
+        return -1.0;
     }
 
     // V3
@@ -262,4 +429,5 @@ public class EvaluateDivision {
 //
 //        return -1.0;
 //    }
+
 }

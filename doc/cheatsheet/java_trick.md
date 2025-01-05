@@ -88,6 +88,28 @@ Integer [] arr2 = list2.toArray(new Integer[list2.size()]); // NOTE here !!!
 
 - https://javaguide.cn/java/collection/java-collection-precautions-for-use.html#%E6%95%B0%E7%BB%84%E8%BD%AC%E9%9B%86%E5%90%88
 
+
+### 0-0-2) HashMap append to value if key existed/Not existed
+
+```java
+// java
+// LC 399
+
+HashMap<String, HashMap<String, Double>> gr = new HashMap<>();
+
+for (int i = 0; i < equations.size(); i++) {
+    String dividend = equations.get(i).get(0);
+    String divisor = equations.get(i).get(1);
+    double value = values[i];
+
+    gr.putIfAbsent(dividend, new HashMap<>());
+    gr.putIfAbsent(divisor, new HashMap<>());
+
+    gr.get(dividend).put(divisor, value);
+    gr.get(divisor).put(dividend, 1.0 / value);
+}
+```
+
 ### 1-0) String to Char array
 ```java
 // java
