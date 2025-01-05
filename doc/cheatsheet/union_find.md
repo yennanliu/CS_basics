@@ -20,6 +20,9 @@
 
 ### 0-1) Types
 
+- Equation calculation
+    - LC 399
+
 ### 0-2) Pattern
 
 ## 1) General form
@@ -405,8 +408,87 @@ class Solution:
 ```
 
 ### 2-4) Evaluate Division
-```python
-# LC 399 Evaluate Division
+
+```java
+// java
+// LC 399
+
+// V4
+// IDEA: UNION FIND (gpt)
+class UnionFind {
+    private Map<String, String> parent;
+    private Map<String, Double> ratio;
+
+    public UnionFind() {
+        this.parent = new HashMap<>();
+        this.ratio = new HashMap<>();
+    }
+
+    // Finds the root of a node and applies path compression
+    public String find(String x) {
+        if (!parent.containsKey(x)) {
+            parent.put(x, x);
+            ratio.put(x, 1.0);
+        }
+
+        if (!x.equals(parent.get(x))) {
+            String originalParent = parent.get(x);
+            parent.put(x, find(originalParent));
+            ratio.put(x, ratio.get(x) * ratio.get(originalParent));
+        }
+
+        return parent.get(x);
+    }
+
+    // Union two nodes with the given value
+    public void union(String x, String y, double value) {
+        String rootX = find(x);
+        String rootY = find(y);
+
+        if (!rootX.equals(rootY)) {
+            parent.put(rootX, rootY);
+            ratio.put(rootX, value * ratio.get(y) / ratio.get(x));
+        }
+    }
+
+    // Get the ratio between two nodes if they are connected
+    public double isConnected(String x, String y) {
+        if (!parent.containsKey(x) || !parent.containsKey(y)) {
+            return -1.0;
+        }
+
+        String rootX = find(x);
+        String rootY = find(y);
+
+        if (!rootX.equals(rootY)) {
+            return -1.0;
+        }
+
+        return ratio.get(x) / ratio.get(y);
+    }
+}
+
+public double[] calcEquation_4(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    UnionFind uf = new UnionFind();
+
+    // Build the union-find structure
+    for (int i = 0; i < equations.size(); i++) {
+        String a = equations.get(i).get(0);
+        String b = equations.get(i).get(1);
+        double value = values[i];
+        uf.union(a, b, value);
+    }
+
+    // Process the queries
+    double[] results = new double[queries.size()];
+    for (int i = 0; i < queries.size(); i++) {
+        String c = queries.get(i).get(0);
+        String d = queries.get(i).get(1);
+        results[i] = uf.isConnected(c, d);
+    }
+
+    return results;
+}
 ```
 
 ### 2-5) Friend Circles

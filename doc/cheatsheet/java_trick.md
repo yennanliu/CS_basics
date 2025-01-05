@@ -110,6 +110,8 @@ for (int i = 0; i < equations.size(); i++) {
 }
 ```
 
+- NOTE: can use nested map structure (e.g. `HashMap<String, HashMap<String, Double>>`) to store `keyA - valB - resC` info
+
 ### 1-0) String to Char array
 ```java
 // java
