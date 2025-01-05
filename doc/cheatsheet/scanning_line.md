@@ -198,79 +198,89 @@ class Solution:
 
 ```java
 // java
-// LC 731 My Calendar II
-  // V1-1
-  // https://leetcode.com/problems/my-calendar-ii/editorial/
-  // IDEA:  Line Sweep (Scanning line)
+// LC 731
+// V0
+// IDEA: SCANNING LINE + CUSTOM SORTING (fixed by gpt)
+class MyCalendarTwo {
+
+  // Attributes
   /**
-   *  IDEA:
+   * NOTE !!!
    *
    *
-   *  1) Class `MyCalendarTwo` will have two data members,
-   *     `maxOverlappedBooking` which is the maximum number of
-   *     concurrent bookings possible at a time,
-   *     and `bookingCount` which is a map from integer to integer
-   *     with the time point as the key and number of bookings as the value.
-   *
-   *
-   *  2) Initialize `maxOverlappedBooking` as 2, as we need to check for triple booking.
-   *
-   *  3) Define the function book(start, end) as:
-   *
-   *    - Increase the number of bookings for the time start and decrease
-   *      the number of bookings for end by 1 in the map bookingCount.
-   *
-   *    - Iterate over each key-value pair in the map
-   *      in ascending order of keys to find the prefix sum.
-   *      Add the value in the map to the count overlappedBooking.
-   *
-   *    - If overlappedBooking is more than two, it implies that this
-   *      is triple booking. Hence, we should return false.
-   *      Also, we need to revert the changes in the map as this booking shouldn't be added.
-   *
-   *    - If we reach here, it implies no triple booking and hence returns true.
-   *
+   * statusList: {time, status, curBooked}
+   * time: start time or end time
+   * status: 1 for start, -1 for end
    */
-  class MyCalendarTwo_1_1 {
+  List<Integer[]> statusList;
 
+  // Constructor
+  public MyCalendarTwo() {
+      this.statusList = new ArrayList<>();
+  }
 
+  public boolean book(int startTime, int endTime) {
 
-        private TreeMap<Integer, Integer> bookingCount;
-        private int maxOverlappedBooking;
+      // Create intervals
+      /**
+       * NOTE !!!
+       *
+       * 1) we can init array at once as `new Inteter[] {a,b,c};
+       * 2) we init curStart, curEnd array at first
+       */
+      Integer[] curStart = new Integer[] { startTime, 1, 0 }; // {time, status, placeholder}
+      Integer[] curEnd = new Integer[] { endTime, -1, 0 }; // {time, status, placeholder}
 
-        public MyCalendarTwo_1_1() {
-            bookingCount = new TreeMap<>();
-            maxOverlappedBooking = 2;
-        }
+      // Temporarily add them to the list for simulation
+      /**
+       * NOTE !!!
+       *
+       * -> we add curStart, curEnd to statusList directly
+       * -> if new time is `over 2 times overlap`, we can REMOVE them
+       *    from statusList and return `false` in this method,
+       *    and we can keep this method running and validate the
+       *    other input (startTime, endTime)
+       */
+      statusList.add(curStart);
+      statusList.add(curEnd);
 
-        public boolean book(int start, int end) {
-            // Increase the booking count at 'start' and decrease at 'end'.
-            bookingCount.put(start, bookingCount.getOrDefault(start, 0) + 1);
-            bookingCount.put(end, bookingCount.getOrDefault(end, 0) - 1);
+      // Sort by time, then by status (start before end)
+      /**
+       * NOTE !!!
+       *
+       *  custom sorting
+       *
+       *  -> so, sort time first,
+       *  if time are equal, then sort on `status` (0 or 1),
+       *  `open` goes first, `close` goes next
+       */
+      statusList.sort((x, y) -> {
+          if (!x[0].equals(y[0])) {
+              return x[0] - y[0];
+          }
+          return x[1] - y[1]; // start (+1) comes before end (-1)
+      });
 
-            int overlappedBooking = 0;
+      // Scanning line to check overlaps
+      int curBooked = 0;
+      for (Integer[] interval : statusList) {
+          curBooked += interval[1];
+          if (curBooked >= 3) {
+              // Remove the temporary intervals
+              /**
+               * NOTE !!!
+               *
+               *  if overlap > 2, we just remove the new added times,
+               *  and return false as method response
+               */
+              statusList.remove(curStart);
+              statusList.remove(curEnd);
+              return false; // Booking not allowed
+          }
+      }
 
-            // Calculate the prefix sum of bookings.
-            for (Map.Entry<Integer, Integer> entry : bookingCount.entrySet()) {
-                overlappedBooking += entry.getValue();
-
-                // If the number of overlaps exceeds the allowed limit, rollback and
-                // return false.
-                if (overlappedBooking > maxOverlappedBooking) {
-                    // Rollback changes.
-                    bookingCount.put(start, bookingCount.get(start) - 1);
-                    bookingCount.put(end, bookingCount.get(end) + 1);
-
-                    // Clean up if the count becomes zero to maintain the map clean.
-                    if (bookingCount.get(start) == 0) {
-                        bookingCount.remove(start);
-                    }
-
-                    return false;
-                }
-            }
-
-            return true;
-        }
-    }
+      // Booking is valid, keep the intervals
+      return true;
+  }
+}
 ```

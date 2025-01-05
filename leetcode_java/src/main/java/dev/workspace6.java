@@ -3,7 +3,6 @@ package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
-
 import java.util.*;
 
 public class workspace6 {
@@ -1543,113 +1542,211 @@ public class workspace6 {
 
     }
 
-    // LC 731
-    // https://leetcode.com/problems/my-calendar-ii/
-    // 2.53 - 3.30 PM
-    class MyCalendarTwo {
+  // LC 731
+  // https://leetcode.com/problems/my-calendar-ii/
+  // 5.20 - 6.35 pm
+  /**
+   * A triple booking happens when three events have some
+   * non-empty intersection (i.e., some moment
+   * is common to all the three events.).
+   *
+   * <p>The event can be represented as a pair of integers startTime and endTime that represents a
+   * booking on the half-open interval [startTime, endTime), the range of real numbers x such that
+   * startTime <= x < endTime.
+   *
+   * <p>IDEA: SCANNING LINE
+   */
+  class MyCalendarTwo {
 
-        List<List<Integer>> booked;
-        Map<List<Integer>, Integer> overlapCnt;
-
-        public MyCalendarTwo() {
-            this.booked = new ArrayList<>();
-            this.overlapCnt = new HashMap<>();
-        }
-
-        public boolean book(int startTime, int endTime) {
-
-            List<Integer> tmp = new ArrayList<>();
-            tmp.add(startTime);
-            tmp.add(endTime);
-
-            // case 1) booked is empty
-            if(this.booked.isEmpty()){
-                this.booked.add(tmp);
-                return true;
-            }
-
-            boolean lessEqualsThreeOverlap = false;
-
-
-            for(List<Integer> x: this.booked){
-                /**
-                 *   |----|
-                 *     |------| (old)
-                 *
-                 *     or
-                 *
-                 *    |-----|
-                 *  |----|  (old)
-                 *
-                 *    or
-                 *
-                 *    |---|
-                 *  |----------|  (old)
-                 *
-                 *
-                 */
-                int existingStart = x.get(0);
-                int existingEnd = x.get(1);
-
-                if (startTime < existingEnd && existingStart < endTime) {
-                    // case 2) has overlap, but `overlap count` <= 3
-                    List<Integer> tmpExisting = new ArrayList<>();
-                    tmpExisting.add(existingStart);
-                    tmpExisting.add(existingEnd);
-                    if(this.overlapCnt.get(tmpExisting) <= 3){
-                        // update existing start, end
-                        existingStart = Math.min(existingStart, startTime);
-                        existingEnd  = Math.max(existingEnd, endTime);
-                        List<Integer> tmp2 = new ArrayList<>();
-                        tmp2.add(existingStart);
-                        tmp2.add(existingEnd);
-                        this.overlapCnt.put(tmp2, this.overlapCnt.get(tmpExisting)+1); // update overlap cnt
-                        this.overlapCnt.remove(tmpExisting);
-                        return true;
-                    }else{
-                        // case 3) has overlap, and `overlap count` > 3
-                        return false;
-                    }
-                }
-
-            }
-
-            // case 4) no overlap
-            this.booked.add(tmp);
-            this.overlapCnt.put(tmp, 1); // update overlap cnt
-            return true;
-        }
-    }
-
-    // LC 1031
-    // https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/
-    // 4.21 - 4.40 pm
+    // attr
+    // int curBooked;
     /**
-     * return the maximum sum of elements in two non-overlapping
-     * subarrays with lengths firstLen and secondLen.
-     *
-     * The array with length firstLen could occur before or after
-     * the array with length secondLen,
-     * but they have to be non-overlapping.
-     *
-     *
-     * A subarray is a contiguous part of an array.
-     *
-     *
-     * IDEA:  PREFIX SUM
-     *
-     * exp 1)
-     *
-     * Input: nums = [3,8,1,3,2,1,8,9,0], firstLen = 3, secondLen = 2
-     *
-     * -> prefix sum = [3,11,12,15,17,18,26,37,0]
-     *
-     * Sum(i,j)  = preSum(j+1) - preSum(i)
-     *
-     * -> pre(15) - pre(3)  = 12
-     *
+     * statusList : { time, status, curBooked}
+     *  time: starttime or endtime
+     *  status: 0: not booked, 1: booked
+     *  curBooked: 1,2,3 ...
      */
-    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+    List<Integer[]> statusList;
+
+      //List<Integer> cntList;
+
+      // constructore
+      public MyCalendarTwo() {
+          // this.curBooked = 0;
+          this.statusList = new ArrayList<>();
+          //this.cntList = new ArrayList<>();
+      }
+
+      public boolean book(int startTime, int endTime) {
+
+          Integer[] cur1 = new Integer[3];
+          cur1[0] = startTime;
+          cur1[1] = 1;
+          //cur1[2] = 1;
+
+          Integer[] cur2 = new Integer[3];
+          cur2[0] = endTime;
+          cur2[1] = 0;
+          //cur2[2] = 1;
+
+          if (this.statusList.isEmpty()) {
+
+              cur1[2] = 1;
+              cur2[2] = 1;
+
+              this.statusList.add(cur1);
+              this.statusList.add(cur2);
+              return true;
+          }
+
+          // scanning line
+          // re-order
+          System.out.println(">>> before sort : " + this.statusList);
+          for(Integer[] x : this.statusList){
+              System.out.println(">>> time = " + x[0] + ", open/close = " + x[1] + ", cnt = " + x[2]);
+          }
+
+          this.statusList.sort((x, y) -> {
+              if (x[0] > y[0]) {
+                  return 1;
+              } else if (x[0] < y[0]) {
+                  return -1;
+              }
+              return 0;
+          });
+
+          System.out.println(">>> after sort : " + this.statusList);
+          for(Integer[] x : this.statusList){
+              System.out.println(">>> time = " + x[0] + ", open/close = " + x[1] + ", cnt = " + x[2]);
+          }
+
+          //int curCnt = 0;
+          for (Integer[] x : this.statusList) {
+              int time = x[0];
+              int openClose = x[1];
+              int cnt = x[2];
+              //int timeCnt = this.cntList.get(time);
+              if (openClose == 0) {
+                  cnt -= 1;
+                  cur2[2] = cnt;
+              } else {
+                  cnt += 1;
+                  cur1[2] = cnt;
+                  if (cnt >= 3) {
+                      return false;
+                  }
+              }
+
+
+              this.statusList.add(cur1);
+              this.statusList.add(cur2);
+          }
+
+          return true;
+      }
+  }
+
+  //    class MyCalendarTwo {
+  //
+  //        List<List<Integer>> booked;
+  //        Map<List<Integer>, Integer> overlapCnt;
+  //
+  //        public MyCalendarTwo() {
+  //            this.booked = new ArrayList<>();
+  //            this.overlapCnt = new HashMap<>();
+  //        }
+  //
+  //        public boolean book(int startTime, int endTime) {
+  //
+  //            List<Integer> tmp = new ArrayList<>();
+  //            tmp.add(startTime);
+  //            tmp.add(endTime);
+  //
+  //            // case 1) booked is empty
+  //            if(this.booked.isEmpty()){
+  //                this.booked.add(tmp);
+  //                return true;
+  //            }
+  //
+  //            boolean lessEqualsThreeOverlap = false;
+  //
+  //
+  //            for(List<Integer> x: this.booked){
+  //                /**
+  //                 *   |----|
+  //                 *     |------| (old)
+  //                 *
+  //                 *     or
+  //                 *
+  //                 *    |-----|
+  //                 *  |----|  (old)
+  //                 *
+  //                 *    or
+  //                 *
+  //                 *    |---|
+  //                 *  |----------|  (old)
+  //                 *
+  //                 *
+  //                 */
+  //                int existingStart = x.get(0);
+  //                int existingEnd = x.get(1);
+  //
+  //                if (startTime < existingEnd && existingStart < endTime) {
+  //                    // case 2) has overlap, but `overlap count` <= 3
+  //                    List<Integer> tmpExisting = new ArrayList<>();
+  //                    tmpExisting.add(existingStart);
+  //                    tmpExisting.add(existingEnd);
+  //                    if(this.overlapCnt.get(tmpExisting) <= 3){
+  //                        // update existing start, end
+  //                        existingStart = Math.min(existingStart, startTime);
+  //                        existingEnd  = Math.max(existingEnd, endTime);
+  //                        List<Integer> tmp2 = new ArrayList<>();
+  //                        tmp2.add(existingStart);
+  //                        tmp2.add(existingEnd);
+  //                        this.overlapCnt.put(tmp2, this.overlapCnt.get(tmpExisting)+1); // update
+  // overlap cnt
+  //                        this.overlapCnt.remove(tmpExisting);
+  //                        return true;
+  //                    }else{
+  //                        // case 3) has overlap, and `overlap count` > 3
+  //                        return false;
+  //                    }
+  //                }
+  //
+  //            }
+  //
+  //            // case 4) no overlap
+  //            this.booked.add(tmp);
+  //            this.overlapCnt.put(tmp, 1); // update overlap cnt
+  //            return true;
+  //        }
+  //    }
+
+  // LC 1031
+  // https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/
+  // 4.21 - 4.40 pm
+  /**
+   * return the maximum sum of elements in two non-overlapping subarrays with lengths firstLen and
+   * secondLen.
+   *
+   * <p>The array with length firstLen could occur before or after the array with length secondLen,
+   * but they have to be non-overlapping.
+   *
+   * <p>A subarray is a contiguous part of an array.
+   *
+   * <p>IDEA: PREFIX SUM
+   *
+   * <p>exp 1)
+   *
+   * <p>Input: nums = [3,8,1,3,2,1,8,9,0], firstLen = 3, secondLen = 2
+   *
+   * <p>-> prefix sum = [3,11,12,15,17,18,26,37,0]
+   *
+   * <p>Sum(i,j) = preSum(j+1) - preSum(i)
+   *
+   * <p>-> pre(15) - pre(3) = 12
+   */
+  public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
 
         // edge
         if(nums.length == 3){

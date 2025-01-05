@@ -64,81 +64,89 @@ public class MyCalendar2 {
    */
 
   // V0
-  // TODO: fix below
-//  class MyCalendarTwo {
-//
-//      List<List<Integer>> booked;
-//      Map<List<Integer>, Integer> overlapCnt;
-//
-//      public MyCalendarTwo() {
-//          this.booked = new ArrayList<>();
-//          this.overlapCnt = new HashMap<>();
-//      }
-//
-//      public boolean book(int startTime, int endTime) {
-//
-//          List<Integer> tmp = new ArrayList<>();
-//          tmp.add(startTime);
-//          tmp.add(endTime);
-//
-//          // case 1) booked is empty
-//          if(this.booked.isEmpty()){
-//              this.booked.add(tmp);
-//              return true;
-//          }
-//
-//          boolean lessEqualsThreeOverlap = false;
-//
-//
-//          for(List<Integer> x: this.booked){
-//              /**
-//               *   |----|
-//               *     |------| (old)
-//               *
-//               *     or
-//               *
-//               *    |-----|
-//               *  |----|  (old)
-//               *
-//               *    or
-//               *
-//               *    |---|
-//               *  |----------|  (old)
-//               *
-//               *
-//               */
-//              int existingStart = x.get(0);
-//              int existingEnd = x.get(1);
-//
-//              if (startTime < existingEnd && existingStart < endTime) {
-//                  // case 2) has overlap, but `overlap count` <= 3
-//                  List<Integer> tmpExisting = new ArrayList<>();
-//                  tmpExisting.add(existingStart);
-//                  tmpExisting.add(existingEnd);
-//                  if(this.overlapCnt.get(tmpExisting) <= 3){
-//                      // update existing start, end
-//                      existingStart = Math.min(existingStart, startTime);
-//                      existingEnd  = Math.max(existingEnd, endTime);
-//                      List<Integer> tmp2 = new ArrayList<>();
-//                      tmp2.add(existingStart);
-//                      tmp2.add(existingEnd);
-//                      this.overlapCnt.put(tmp2, this.overlapCnt.get(tmpExisting)+1); // update overlap cnt
-//                      this.overlapCnt.remove(tmpExisting);
-//                      return true;
-//                  }else{
-//                      // case 3) has overlap, and `overlap count` > 3
-//                      return false;
-//                  }
-//              }
-//
-//          }
-//
-//          // case 4) no overlap
-//          this.booked.add(tmp);
-//          this.overlapCnt.put(tmp, 1); // update overlap cnt
-//          return true;
-//      }
-//  }
+  // IDEA: SCANNING LINE + CUSTOM SORTING (fixed by gpt)
+  class MyCalendarTwo {
+
+      // Attributes
+      /**
+       * NOTE !!!
+       *
+       *
+       * statusList: {time, status, curBooked}
+       * time: start time or end time
+       * status: 1 for start, -1 for end
+       */
+      List<Integer[]> statusList;
+
+      // Constructor
+      public MyCalendarTwo() {
+          this.statusList = new ArrayList<>();
+      }
+
+      public boolean book(int startTime, int endTime) {
+
+          // Create intervals
+          /**
+           * NOTE !!!
+           *
+           * 1) we can init array at once as `new Inteter[] {a,b,c};
+           * 2) we init curStart, curEnd array at first
+           */
+          Integer[] curStart = new Integer[] { startTime, 1, 0 }; // {time, status, placeholder}
+          Integer[] curEnd = new Integer[] { endTime, -1, 0 }; // {time, status, placeholder}
+
+          // Temporarily add them to the list for simulation
+          /**
+           * NOTE !!!
+           *
+           * -> we add curStart, curEnd to statusList directly
+           * -> if new time is `over 2 times overlap`, we can REMOVE them
+           *    from statusList and return `false` in this method,
+           *    and we can keep this method running and validate the
+           *    other input (startTime, endTime)
+           */
+          statusList.add(curStart);
+          statusList.add(curEnd);
+
+          // Sort by time, then by status (start before end)
+          /**
+           * NOTE !!!
+           *
+           *  custom sorting
+           *
+           *  -> so, sort time first,
+           *  if time are equal, then sort on `status` (0 or 1),
+           *  `open` goes first, `close` goes next
+           */
+          statusList.sort((x, y) -> {
+              if (!x[0].equals(y[0])) {
+                  return x[0] - y[0];
+              }
+              return x[1] - y[1]; // start (+1) comes before end (-1)
+          });
+
+          // Scanning line to check overlaps
+          int curBooked = 0;
+          for (Integer[] interval : statusList) {
+              curBooked += interval[1];
+              if (curBooked >= 3) {
+                  // Remove the temporary intervals
+                  /**
+                   * NOTE !!!
+                   *
+                   *  if overlap > 2, we just remove the new added times,
+                   *  and return false as method response
+                   */
+                  statusList.remove(curStart);
+                  statusList.remove(curEnd);
+                  return false; // Booking not allowed
+              }
+          }
+
+          // Booking is valid, keep the intervals
+          return true;
+      }
+  }
 
   // V1-1
   // https://leetcode.com/problems/my-calendar-ii/editorial/
