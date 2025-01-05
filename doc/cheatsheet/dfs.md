@@ -744,6 +744,95 @@ class Solution:
         return -1.0
 ```
 
+```java
+// java
+// V1
+// IDEA: DFS
+// https://leetcode.com/problems/evaluate-division/solutions/3543256/image-explanation-easiest-concise-comple-okpu/
+public double[] calcEquation_1(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    HashMap<String, HashMap<String, Double>> gr = buildGraph(equations, values);
+    double[] finalAns = new double[queries.size()];
+
+    for (int i = 0; i < queries.size(); i++) {
+        String dividend = queries.get(i).get(0);
+        String divisor = queries.get(i).get(1);
+
+        /** NOTE !!!
+         *
+         *  either dividend nor divisor NOT in graph, return -1.0 directly
+         */
+        if (!gr.containsKey(dividend) || !gr.containsKey(divisor)) {
+            finalAns[i] = -1.0;
+        } else {
+
+            /** NOTE !!!
+             *
+             *  we use `vis` to check if element already visited
+             *  (to avoid repeat accessing)
+             *  `vis` init again in every loop
+             */
+
+            HashSet<String> vis = new HashSet<>();
+            /**
+             *  NOTE !!!
+             *
+             *   we init `ans` and pass it to dfs method
+             *   (but dfs method return NOTHING)
+             *   -> `ans` is init, and pass into dfs,
+             *   -> so `ans` value is updated during dfs recursion run
+             *   -> and after dfs run completed, we get the result `ans` value
+             */
+            double[] ans = { -1.0 };
+            double temp = 1.0;
+            dfs(dividend, divisor, gr, vis, ans, temp);
+            finalAns[i] = ans[0];
+        }
+    }
+
+    return finalAns;
+}
+
+/** NOTE !!! below dfs method */
+public void dfs(String node, String dest, HashMap<String, HashMap<String, Double>> gr, HashSet<String> vis,
+                double[] ans, double temp) {
+
+    /** NOTE !!! we use `vis` to check if element already visited */
+    if (vis.contains(node))
+        return;
+
+    vis.add(node);
+    if (node.equals(dest)) {
+        ans[0] = temp;
+        return;
+    }
+
+    for (Map.Entry<String, Double> entry : gr.get(node).entrySet()) {
+        String ne = entry.getKey();
+        double val = entry.getValue();
+        /** NOTE !!! update temp as `temp * val` */
+        dfs(ne, dest, gr, vis, ans, temp * val);
+    }
+}
+
+public HashMap<String, HashMap<String, Double>> buildGraph(List<List<String>> equations, double[] values) {
+    HashMap<String, HashMap<String, Double>> gr = new HashMap<>();
+
+    for (int i = 0; i < equations.size(); i++) {
+        String dividend = equations.get(i).get(0);
+        String divisor = equations.get(i).get(1);
+        double value = values[i];
+
+        gr.putIfAbsent(dividend, new HashMap<>());
+        gr.putIfAbsent(divisor, new HashMap<>());
+
+        gr.get(dividend).put(divisor, value);
+        gr.get(divisor).put(dividend, 1.0 / value);
+    }
+
+    return gr;
+}
+```
+
 ### 2-10) Most Frequent Subtree Sum
 ```python
 # LC 508 Most Frequent Subtree Sum
