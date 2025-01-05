@@ -571,6 +571,16 @@ _list2 = _list2.stream()
 // System.out.println(_list2);
 
 
+// V3
+// LC 731
+List<Integer[]> statusList;
+
+statusList.sort((x, y) -> {
+  if (!x[0].equals(y[0])) {
+      return x[0] - y[0];
+  }
+  return x[1] - y[1]; // start (+1) comes before end (-1)
+});            
 
 
 
