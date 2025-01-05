@@ -58,6 +58,7 @@ import java.util.*;
  *
  */
 public class EvaluateDivision {
+
     // V0
     // TODO: fix below
 //    private class EquationRes{
@@ -360,6 +361,172 @@ public class EvaluateDivision {
         }
         return -1.0;
     }
+
+    // V4
+    // IDEA: UNION FIND (gpt)
+    class UnionFind {
+        private Map<String, String> parent;
+        private Map<String, Double> ratio;
+
+        public UnionFind() {
+            this.parent = new HashMap<>();
+            this.ratio = new HashMap<>();
+        }
+
+        // Finds the root of a node and applies path compression
+        public String find(String x) {
+            if (!parent.containsKey(x)) {
+                parent.put(x, x);
+                ratio.put(x, 1.0);
+            }
+
+            if (!x.equals(parent.get(x))) {
+                String originalParent = parent.get(x);
+                parent.put(x, find(originalParent));
+                ratio.put(x, ratio.get(x) * ratio.get(originalParent));
+            }
+
+            return parent.get(x);
+        }
+
+        // Union two nodes with the given value
+        public void union(String x, String y, double value) {
+            String rootX = find(x);
+            String rootY = find(y);
+
+            if (!rootX.equals(rootY)) {
+                parent.put(rootX, rootY);
+                ratio.put(rootX, value * ratio.get(y) / ratio.get(x));
+            }
+        }
+
+        // Get the ratio between two nodes if they are connected
+        public double isConnected(String x, String y) {
+            if (!parent.containsKey(x) || !parent.containsKey(y)) {
+                return -1.0;
+            }
+
+            String rootX = find(x);
+            String rootY = find(y);
+
+            if (!rootX.equals(rootY)) {
+                return -1.0;
+            }
+
+            return ratio.get(x) / ratio.get(y);
+        }
+    }
+
+    public double[] calcEquation_4(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        UnionFind uf = new UnionFind();
+
+        // Build the union-find structure
+        for (int i = 0; i < equations.size(); i++) {
+            String a = equations.get(i).get(0);
+            String b = equations.get(i).get(1);
+            double value = values[i];
+            uf.union(a, b, value);
+        }
+
+        // Process the queries
+        double[] results = new double[queries.size()];
+        for (int i = 0; i < queries.size(); i++) {
+            String c = queries.get(i).get(0);
+            String d = queries.get(i).get(1);
+            results[i] = uf.isConnected(c, d);
+        }
+
+        return results;
+    }
+
+    // V5
+    // IDEA: UNION FIND
+    // https://leetcode.com/problems/evaluate-division/submissions/1498458088/
+//    private Map<String, Pair<String, Double>> parents = new HashMap<>();
+//
+//    public double[] calcEquation(List<List<String>> equations, double[] values,
+//                                 List<List<String>> queries) {
+//        // Step 1: build union groups
+//        for (int i = 0; i < equations.size(); i++) {
+//            List<String> equation = equations.get(i);
+//
+//            String u = equation.get(0), v = equation.get(1);
+//            double w = values[i];
+//
+//            union(u, v, w);
+//        }
+//
+//        // Step 2. try to make the query
+//        double[] res = new double[queries.size()];
+//        for (int i = 0; i < queries.size(); i++) {
+//            List<String> query = queries.get(i);
+//            String u = query.get(0), v = query.get(1);
+//
+//            // case 1: u or v never appear before
+//            if (!parents.containsKey(u) || !parents.containsKey(v)) {
+//                res[i] = -1.0;
+//                continue;
+//            }
+//
+//            Pair<String, Double> uPair = find(u);
+//            Pair<String, Double> vPair = find(v);
+//
+//            String uParent = uPair.getKey();
+//            double uWeight = uPair.getValue();
+//
+//            String vParent = vPair.getKey();
+//            double vWeight = vPair.getValue();
+//
+//            if (!uParent.equals(vParent))
+//                // case 2: u & v NOT belong to the same group
+//                res[i] = -1.0;
+//            else
+//                /*
+//                 * case 3: u & v belong to the same group <==> uPar == vPar
+//                 * Then we want to query u / v:
+//                 *
+//                 * Assuming we have:
+//                 * 1. u = uPar * uWei
+//                 * 2. v = vPar * vWei = uPar * vWei
+//                 *
+//                 * Thus u / v = uWei / vWei
+//                 */
+//                res[i] = uWeight / vWeight;
+//
+//        }
+//        return res;
+//    }
+//
+//    private Pair<String, Double> find(String u) {
+//        if (!parents.containsKey(u)) {
+//            parents.put(u, new Pair(u, 1.0));
+//            return parents.get(u);
+//        }
+//
+//        if (!parents.get(u).getKey().equals(u)) {
+//            Pair<String, Double> uParentPair = parents.get(u);
+//            Pair<String, Double> uGrandParentPair = find(uParentPair.getKey());
+//
+//            parents.put(u, new Pair(uGrandParentPair.getKey(),
+//                    uParentPair.getValue() * uGrandParentPair.getValue()));
+//        }
+//        return parents.get(u);
+//    }
+//
+//    private void union(String u, String v, Double w) {
+//        Pair<String, Double> uPair = find(u);
+//        Pair<String, Double> vPair = find(v);
+//
+//        String uParent = uPair.getKey();
+//        double uWeight = uPair.getValue();
+//
+//        String vParent = vPair.getKey();
+//        double vWeight = vPair.getValue();
+//
+//        if (!uParent.equals(vParent)) {
+//            parents.put(uParent, new Pair(vParent, vWeight / uWeight * w));
+//        }
+//    }
 
     // V4
     // IDEA: BFS
