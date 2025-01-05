@@ -1919,4 +1919,92 @@ public class workspace6 {
 
     }
 
+  // LC 1091
+  // 8.06 - 8.30 pm
+  // https://leetcode.com/problems/shortest-path-in-binary-matrix/
+  /**
+   * Given an n x n binary matrix grid,
+   * return the length of the `shortest clear` path in the matrix.
+   *
+   * If there is no clear path, return -1.
+   *
+   * A clear path in a binary matrix is a path from the
+   * top-left cell (i.e., (0, 0)) to the bottom-right cell (i.e., (n - 1, n - 1))
+   *
+   * such that:
+   *
+   * All the visited cells of the path are 0.
+   * All the adjacent cells of the path are 8-directionally connected (i.e., they are different and they share an edge or a corner).
+   * The length of a clear path is the number of visited cells of this path.
+   *
+   *
+   */
+  /**
+   *  IDEA: BFS
+   *
+   *
+   *
+   */
+  public int shortestPathBinaryMatrix(int[][] grid) {
+
+      int l = grid.length;
+      int w = grid[0].length;
+
+      // edge
+      if (l == 1 && w == 1){
+          return 1;
+      }
+
+      // bfs
+      int res = 0;
+      int[][] dirs = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0}, {-1,-1}, {-1,1} , {1,1}, {1,-1} };
+      /**
+       *  Queue : {x, y, path_len}
+       */
+      Queue<List<Integer>> queue = new LinkedList<>();
+      //int[] tmp = new int[]{0};
+      //int[][] tmp = new int[][]{ {0}, {0} };
+      List<Integer> tmp = new ArrayList<>();
+      tmp.add(0);
+      tmp.add(0);
+      tmp.add(0); // path len
+
+      Set<List<Integer>> visited = new HashSet<>();
+
+      //queue
+      queue.add(tmp);
+
+      int curLen = 0;
+
+      while(!queue.isEmpty()){
+          List<Integer> cur = queue.poll();
+          int x = cur.get(0);
+          int y = cur.get(1);
+          int dist = cur.get(2);
+          for (int[] dir: dirs){
+              int x_ = x + dir[0];
+              int y_ = y + dir[1];
+              List<Integer> tmp2 = new ArrayList<>();
+              tmp2.add(x_);
+              tmp2.add(y_);
+
+              if (x_ == w-1 && y_ == l-1){
+                  curLen = dist;
+                  break;
+              }
+
+
+              if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l &&  !visited.contains(tmp2) && grid[y_][x_] == 0){
+                  dist += 1;
+                  tmp2.add(2, dist);
+                  queue.add(tmp2);
+                  visited.add(tmp2);
+              }
+          }
+      }
+
+
+      return curLen != 0 ? res : -1;
+    }
+
 }
