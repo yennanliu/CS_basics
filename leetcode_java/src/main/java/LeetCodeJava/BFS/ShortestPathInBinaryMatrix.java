@@ -100,6 +100,67 @@ public class ShortestPathInBinaryMatrix {
         return -1;
     }
 
+    // V0-1
+    // IDEA: BFS (fixed by gpt)
+    public int shortestPathBinaryMatrix_0_1(int[][] grid) {
+        int n = grid.length;
+
+        // Edge case: Start or end cell is blocked
+        if (grid[0][0] != 0 || grid[n - 1][n - 1] != 0) {
+            return -1;
+        }
+
+        // Directions for 8-connected neighbors
+        int[][] directions = {
+                { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 },
+                { -1, -1 }, { -1, 1 }, { 1, 1 }, { 1, -1 }
+        };
+
+        // BFS queue: {x, y, pathLength}
+        Queue<int[]> queue = new LinkedList<>();
+
+        /** NOTE !!! init visisted as boolean array */
+        boolean[][] visited = new boolean[n][n];
+
+        // Initialize BFS
+        /**
+         * Queue : {x, y, path_len}
+         */
+        queue.add(new int[] { 0, 0, 1 });
+        visited[0][0] = true;
+
+        // BFS
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int x = current[0];
+            int y = current[1];
+            int pathLength = current[2];
+
+            // Check if we've reached the destination
+            /** NOTE !!!  return res directly if it can reach `final status` */
+            if (x == n - 1 && y == n - 1) {
+                return pathLength;
+            }
+
+            // Explore all neighbors
+            for (int[] dir : directions) {
+                int newX = x + dir[0];
+                int newY = y + dir[1];
+
+                // Check if the neighbor is valid
+                if (newX >= 0 && newX < n && newY >= 0 && newY < n
+                        && grid[newX][newY] == 0 && !visited[newX][newY]) {
+                    queue.add(new int[] { newX, newY, pathLength + 1 });
+                    /** NOTE !!!  update seen status */
+                    visited[newX][newY] = true;
+                }
+            }
+        }
+
+        // If no path is found
+        return -1;
+    }
+
     // V1
     // https://leetcode.com/problems/shortest-path-in-binary-matrix/solutions/2043319/why-use-bfs-search-every-possible-path-v-aaov/
     // IDEA: BFS

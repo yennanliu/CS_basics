@@ -1920,7 +1920,7 @@ public class workspace6 {
     }
 
   // LC 1091
-  // 8.06 - 8.30 pm
+  // 7.09 am - 7.15 am
   // https://leetcode.com/problems/shortest-path-in-binary-matrix/
   /**
    * Given an n x n binary matrix grid,
@@ -1946,65 +1946,139 @@ public class workspace6 {
    *
    */
   public int shortestPathBinaryMatrix(int[][] grid) {
+      // edge
+      if (grid.length == 1 && grid[0].length == 1) {
+          if (grid[0][0] == 0) {
+              return 1;
+          }
+          return -1;
+      }
 
+      //int res = -1;
+
+      int[][] dirs = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, 1 },
+              { 1, -1 } };
+      /**
+       * Queue : {x, y, path_len}
+       */
+      Queue<List<Integer>> queue = new LinkedList<>();
+      Set<List<Integer>> seen = new HashSet<>();
       int l = grid.length;
       int w = grid[0].length;
 
-      // edge
-      if (l == 1 && w == 1){
-          return 1;
-      }
+      // init
+      queue.add(Arrays.asList(0, 0, 1));
+      seen.add(Arrays.asList(0, 0));
+
+      List<Integer> candidate = new ArrayList<>();
 
       // bfs
-      int res = 0;
-      int[][] dirs = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0}, {-1,-1}, {-1,1} , {1,1}, {1,-1} };
-      /**
-       *  Queue : {x, y, path_len}
-       */
-      Queue<List<Integer>> queue = new LinkedList<>();
-      //int[] tmp = new int[]{0};
-      //int[][] tmp = new int[][]{ {0}, {0} };
-      List<Integer> tmp = new ArrayList<>();
-      tmp.add(0);
-      tmp.add(0);
-      tmp.add(0); // path len
-
-      Set<List<Integer>> visited = new HashSet<>();
-
-      //queue
-      queue.add(tmp);
-
-      int curLen = 0;
-
-      while(!queue.isEmpty()){
-          List<Integer> cur = queue.poll();
-          int x = cur.get(0);
-          int y = cur.get(1);
-          int dist = cur.get(2);
-          for (int[] dir: dirs){
+      while (!queue.isEmpty()) {
+          List<Integer> tmp = queue.poll();
+          int x = tmp.get(0);
+          int y = tmp.get(1);
+          int pathLen = tmp.get(2);
+          // res = pathLen;
+          for (int[] dir : dirs) {
               int x_ = x + dir[0];
               int y_ = y + dir[1];
-              List<Integer> tmp2 = new ArrayList<>();
-              tmp2.add(x_);
-              tmp2.add(y_);
 
-              if (x_ == w-1 && y_ == l-1){
-                  curLen = dist;
+              if (x_ == w - 1 && y_ == l - 1) {
+                  candidate.add(pathLen+1);
                   break;
               }
 
+              List<Integer> tmp2 = Arrays.asList(x_, y_);
+              seen.add(tmp2);
 
-              if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l &&  !visited.contains(tmp2) && grid[y_][x_] == 0){
-                  dist += 1;
-                  tmp2.add(2, dist);
-                  queue.add(tmp2);
-                  visited.add(tmp2);
+              System.out.println(">>> x_ = " + x_ + ", y_ = " + y_);
+
+              if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && !seen.contains(tmp2) && grid[y_][x_] == 0) {
+                  queue.add(Arrays.asList(x_, y_, pathLen+1));
+              }else{
+                  // undo add
+                  seen.remove(tmp2);
               }
+
           }
       }
 
+      System.out.println(">>> candidate = " + candidate);
+      System.out.println(">>> candidate.isEmpty() = " + candidate.isEmpty());
 
-      return curLen != 0 ? res : -1;
-    }
+      if(candidate.isEmpty()){
+          return -1;
+      }
+
+      int res = Integer.MAX_VALUE;
+      if (candidate.size() > 1) {
+          for(int x: candidate){
+              res = Math.min(res, x);
+          }
+      }
+      return res;
+  }
+
+//  public int shortestPathBinaryMatrix(int[][] grid) {
+//
+//      int l = grid.length;
+//      int w = grid[0].length;
+//
+//      // edge
+//      if (l == 1 && w == 1){
+//          return 1;
+//      }
+//
+//      // bfs
+//      int res = 0;
+//      int[][] dirs = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0}, {-1,-1}, {-1,1} , {1,1}, {1,-1} };
+//      /**
+//       *  Queue : {x, y, path_len}
+//       */
+//      Queue<List<Integer>> queue = new LinkedList<>();
+//      //int[] tmp = new int[]{0};
+//      //int[][] tmp = new int[][]{ {0}, {0} };
+//      List<Integer> tmp = new ArrayList<>();
+//      tmp.add(0);
+//      tmp.add(0);
+//      tmp.add(0); // path len
+//
+//      Set<List<Integer>> visited = new HashSet<>();
+//
+//      //queue
+//      queue.add(tmp);
+//
+//      int curLen = 0;
+//
+//      while(!queue.isEmpty()){
+//          List<Integer> cur = queue.poll();
+//          int x = cur.get(0);
+//          int y = cur.get(1);
+//          int dist = cur.get(2);
+//          for (int[] dir: dirs){
+//              int x_ = x + dir[0];
+//              int y_ = y + dir[1];
+//              List<Integer> tmp2 = new ArrayList<>();
+//              tmp2.add(x_);
+//              tmp2.add(y_);
+//
+//              if (x_ == w-1 && y_ == l-1){
+//                  curLen = dist;
+//                  break;
+//              }
+//
+//
+//              if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l &&  !visited.contains(tmp2) && grid[y_][x_] == 0){
+//                  dist += 1;
+//                  tmp2.add(2, dist);
+//                  queue.add(tmp2);
+//                  visited.add(tmp2);
+//              }
+//          }
+//      }
+//
+//
+//      return curLen != 0 ? res : -1;
+//    }
 
 }
