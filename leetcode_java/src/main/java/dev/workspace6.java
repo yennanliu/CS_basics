@@ -1839,85 +1839,165 @@ public class workspace6 {
    *          if not, return -1
    *          if yes, do the op, return res
    */
-  private class EquationRes{
-      // attr
-      String variable;
-      Double result;
 
-      public Double getResult() {
-          return result;
+  public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+
+      // edge
+      if(equations.isEmpty() || values.length == 0){
+          return null;
       }
 
-      public String getVariable() {
-          return variable;
-      }
+      double[] res = new double[queries.size()]; // ?
 
-      // constructor
-      EquationRes(String variable, Double result){
-          this.variable = variable;
-          this.result = result;
-      }
-  }
-
-    // init relation
-    Map<String, List<EquationRes>> relations = new HashMap();
-    //double[] res = new double[];
-
-  public double[] calcEquation(
-
-    List<List<String>> equations, double[] values, List<List<String>> queries) {
-
-      // build
-      buildRelation(equations, values);
-      // get
-      double[] res = new double[queries.size()];
-      for(int i = 0; i < queries.size(); i++){
-          res[i] = getResult(queries.get(i), 1);
-      }
-
-      System.out.println(">>> res = " + res);
-
-      return res;
-    }
-
-    // dfs
-    private double getResult(List<String> queries, double res){
-      // check if in list
-      String firstVal = queries.get(0);
-      String secondVal = queries.get(1);
-      if (!this.relations.containsKey(firstVal) || !this.relations.containsKey(secondVal)){
-          return -1.0;
-      }
-
-      //double res = 1;
-      //List<EquationRes> x = this.relations.get(firstVal);
-      for(EquationRes equationRes: this.relations.get(firstVal)){
-          res = res * equationRes.result;
-
-
-      }
-
-      return res;
-    }
-
-    // build relation
-    private void buildRelation(List<List<String>> equations, double[] values){
+      //  HashMap<String, HashMap<String, Double>> !!!!
+      // Map<String, List<Map<String, Double>>> graph = new HashMap<>();
+      Map<String, Map<String, Double>> graph = new HashMap<>();
       for(int i = 0; i < equations.size(); i++){
-          List<String> equation = equations.get(i);
-          String firstVal = equation.get(0);
-          String secondVal = equation.get(1);
+          List<String> eq =  equations.get(i);
+          String firstVal = eq.get(0);
+          String secondVal = eq.get(1);
 
-          EquationRes equationRes = new EquationRes(secondVal, values[i]);
+          graph.putIfAbsent(firstVal, new HashMap<>());
+          graph.putIfAbsent(secondVal, new HashMap<>());
 
-          List<EquationRes> equationAndRes = new ArrayList<>();
-          if (this.relations.containsKey(firstVal)){
-              equationAndRes =  this.relations.get(firstVal);
+
+          Map<String, Double> cur = graph.get(firstVal);
+          cur.put(secondVal, values[i]);
+
+          Map<String, Double> cur2 = graph.get(firstVal);
+          cur2.put(secondVal, 1 / values[i]); // ???
+
+          graph.get(firstVal).put(firstVal, values[i]); // ??
+          graph.get(secondVal).put(secondVal, 1 / values[i]); // ??
+
+          //graph.get(1).put(1, 2);
+      }
+
+      // check if element in graph
+      for(int i = 0; i < equations.size(); i++){
+          List<String> q =  equations.get(i);
+          String firstVal = q.get(0);
+          String secondVal = q.get(1);
+          if (!graph.containsKey(firstVal) || !graph.containsKey(secondVal)){
+              res[i] = -1.0;
+          }else if (firstVal.equals(secondVal)){
+              res[i] = 1.0; // ??
+          }
+          else{
+              // dfs call
+              double cur = 1.0;
+              Set<String> visited = new HashSet<>();
+              res[i] = cur;
           }
 
-          this.relations.put(firstVal, equationAndRes);
       }
 
-    }
+      return res;
+  }
+
+  private double dfsCal(Map<String, Map<String, Double>> graph, List<String> query, double cur, Set<String> visited){
+
+      String firstVal = query.get(0);
+      String secondVal = query.get(1);
+
+      if (firstVal.equals(secondVal)){
+          return 1.0;
+      }
+
+      if(graph.containsKey(firstVal) && graph.get(firstVal).containsKey(secondVal)){
+          cur = cur * graph.get(firstVal).get(secondVal);
+          //this.dfsCal(graph, query, cur, visited);
+          return cur;
+      }
+
+      if (graph.containsKey(firstVal) && !graph.get(firstVal).containsKey(secondVal)){
+//          for (String x: graph.get(firstVal)){
+//
+//          }
+      }
+
+      return cur;
+  }
+
+//  private class EquationRes{
+//      // attr
+//      String variable;
+//      Double result;
+//
+//      public Double getResult() {
+//          return result;
+//      }
+//
+//      public String getVariable() {
+//          return variable;
+//      }
+//
+//      // constructor
+//      EquationRes(String variable, Double result){
+//          this.variable = variable;
+//          this.result = result;
+//      }
+//  }
+//
+//    // init relation
+//    Map<String, List<EquationRes>> relations = new HashMap();
+//    //double[] res = new double[];
+//
+//  public double[] calcEquation(
+//
+//    List<List<String>> equations, double[] values, List<List<String>> queries) {
+//
+//      // build
+//      buildRelation(equations, values);
+//      // get
+//      double[] res = new double[queries.size()];
+//      for(int i = 0; i < queries.size(); i++){
+//          res[i] = getResult(queries.get(i), 1);
+//      }
+//
+//      System.out.println(">>> res = " + res);
+//
+//      return res;
+//    }
+//
+//    // dfs
+//    private double getResult(List<String> queries, double res){
+//      // check if in list
+//      String firstVal = queries.get(0);
+//      String secondVal = queries.get(1);
+//      if (!this.relations.containsKey(firstVal) || !this.relations.containsKey(secondVal)){
+//          return -1.0;
+//      }
+//
+//      //double res = 1;
+//      //List<EquationRes> x = this.relations.get(firstVal);
+//      for(EquationRes equationRes: this.relations.get(firstVal)){
+//          res = res * equationRes.result;
+//
+//
+//      }
+//
+//      return res;
+//    }
+//
+//    // build relation
+//    private void buildRelation(List<List<String>> equations, double[] values){
+//      for(int i = 0; i < equations.size(); i++){
+//          List<String> equation = equations.get(i);
+//          String firstVal = equation.get(0);
+//          String secondVal = equation.get(1);
+//
+//          EquationRes equationRes = new EquationRes(secondVal, values[i]);
+//
+//          List<EquationRes> equationAndRes = new ArrayList<>();
+//          if (this.relations.containsKey(firstVal)){
+//              equationAndRes =  this.relations.get(firstVal);
+//          }
+//
+//          this.relations.put(firstVal, equationAndRes);
+//      }
+//
+//    }
 
   // LC 1091
   // 7.09 am - 7.15 am

@@ -150,6 +150,14 @@ class Solution:
         
         while True:
             # NOTE !!! : we GO THROUGH left sub tree to the end first, and form our stack on the same time, then do in-order transversal
+            """
+            Why the Left Traversal is Necessary ?
+
+            To process nodes in in-order (left -> root -> right), you need to traverse the left subtree of every node before processing the node itself. This is a characteristic of in-order traversal—without traversing left first, you can't get the correct order.
+
+            In summary, the `hile root: stack.append(root); root = root.left part is critical for simulating the recursive left-first behavior in an iterative manner. There’s no way to completely skip this step if you want an in-order traversal (using an iterative approach), but alternatives like Morris traversal exist to avoid using a stack and still traverse efficiently.
+
+            """
             while root:
                 stack.append(root)
                 root = root.left
