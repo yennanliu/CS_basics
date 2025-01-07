@@ -2244,4 +2244,76 @@ public class workspace6 {
         return true;
     }
 
+    // LC 852
+    // https://leetcode.com/problems/peak-index-in-a-mountain-array/
+    /**
+     *
+     *
+     *  Example 1:
+     *
+     * Input: arr = [0,1,0]
+     *
+     * Output: 1
+     *
+     * Example 2:
+     *
+     * Input: arr = [0,2,1,0]
+     *
+     * Output: 1
+     *
+     * Example 3:
+     *
+     * Input: arr = [0,10,5,2]
+     *
+     * Output: 1
+     *
+     * Exp 1 : [0,3,2,1,0] -> 1
+     *
+     * IDEA: BINARY SEARCH
+     *
+     * -> if there is a peak at index i
+     * then 0 - i-1 MUST be increasing
+     *
+     */
+    public int peakIndexInMountainArray(int[] arr) {
+
+        // edge
+        int maxIdx = -1;
+        int maxVal = -1;
+        if (arr.length == 3){
+            for(int i = 0; i < arr.length; i++){
+                if(arr[i] > maxVal){
+                    maxVal = arr[i];
+                    maxIdx = i;
+                }
+            }
+            return maxIdx;
+        }
+
+        // binary search
+        int l = 0;
+        int r = arr.length - 1;
+        while (r >= l){
+            int mid = (l + r) / 2;
+
+            // case 1)  cur > left and cur > right (find peak)
+            if (arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1]){
+                return mid;
+            }
+            // Exp 1 : [0,0,0, 3,2,1,0] -> 1
+            // case 2) cur < left && cur > left most
+            else if (arr[mid] < arr[mid-1] && arr[mid] >= arr[l]){
+                l = mid + 1;
+            }
+            // case 3) cur < right and cur > right most
+            else if  (arr[mid] < arr[mid-1] && arr[mid] >= arr[r]){
+                r = mid - 1;
+        }
+
+        return 0;
+    }
+
+        return -1;
+    }
+
 }
