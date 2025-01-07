@@ -2161,4 +2161,87 @@ public class workspace6 {
 //      return curLen != 0 ? res : -1;
 //    }
 
+    // LC 247
+    // https://leetcode.ca/2016-08-03-247-Strobogrammatic-Number-II/
+    // 9.57 pm - 10:15 pm
+    /**
+     *  strobogrammatic number is a number that looks the same when rotated 180 degrees (looked at upside down).
+     *
+     *  ->  Find all strobogrammatic numbers that are of `length = n.`
+     *
+     *  -> exp 1: n=2, ["11","69","88","96"]
+     *  -> exp 2: n=1, ["0","1","8"]
+     *  -> exp 3: n=3, ["101","111","181","609","619","689","808","818","888","906","916","986"]
+     *  -> exp 4 : n=4, ["1001","1111","1691","1881","1961","6009","6119","6699","6889","6969","8008","8118","8698","8888","8968","9006","9116","9696","9886","9966"]
+     *  ...
+     *
+     */
+    /**
+     *  IDEA 1) DFS
+     *
+     *  -> for n = n
+     *   -> check 0 -> 9, if is strobogrammatic number, add to list
+     *   -> repeat ...
+     *
+     *
+     */
+    List<String> res = new ArrayList<>();
+
+    public List<String> findStrobogrammatic_1_1(int n) {
+        for(int i = 0; i < n; i++){
+            HashSet<String> cache = new HashSet<>();
+            StringBuilder sb = new StringBuilder();
+            findNumbers(n, sb, cache);
+        }
+        return res;
+    }
+
+    private void findNumbers(int n, StringBuilder sb, Set<String> cache){
+
+        String[] digits = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        String str = sb.toString();
+        if (str.length() == n){
+            if (isStrobogrammatic(str)){
+                if(!cache.contains(str)){
+                    cache.add(str);
+                    res.add(str);
+                }
+            }
+            return;
+        }
+
+        if (str.length() > n){
+            return;
+        }
+
+        for (String x: digits){
+            findNumbers(n, sb.append(x), cache);
+        }
+    }
+
+    private boolean isStrobogrammatic(String x){
+        Map<String, String> symmertricMapping = new HashMap<>();
+        symmertricMapping.put("0", "0");
+        symmertricMapping.put("1", "1");
+        symmertricMapping.put("8", "8");
+        symmertricMapping.put("6", "9");
+        symmertricMapping.put("9", "6");
+        int l = 0;
+        int r = x.length() - 1;
+        while (r > l){
+//            if (x.charAt(l) != x.charAt(r)){
+//                return false;
+//            }
+            String left = String.valueOf(x.charAt(l));
+            String right = String.valueOf(x.charAt(r));
+            if (!symmertricMapping.get(left).equals(right)){
+                return false;
+            }
+            r -= 1;
+            l += 1;
+        }
+
+        return true;
+    }
+
 }
