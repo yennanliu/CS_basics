@@ -2247,6 +2247,16 @@ public class workspace6 {
     // LC 852
     // https://leetcode.com/problems/peak-index-in-a-mountain-array/
     /**
+     * You are given an integer mountain array arr
+     * of length n where the values increase to a peak element and then decrease.
+     *
+     * Return the index of the peak element.
+     *
+     * Your task is to solve it in O(log(n)) time complexity.
+     *
+     *
+     */
+    /**
      *
      *
      *  Example 1:
@@ -2293,27 +2303,27 @@ public class workspace6 {
         // binary search
         int l = 0;
         int r = arr.length - 1;
-        while (r >= l){
-            int mid = (l + r) / 2;
+        int mid = (l + r) / 2;
+        while (r >= l && r >= 0){
+
+            mid = (l + r) / 2;
 
             // case 1)  cur > left and cur > right (find peak)
             if (arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1]){
                 return mid;
             }
             // Exp 1 : [0,0,0, 3,2,1,0] -> 1
-            // case 2) cur < left && cur > left most
-            else if (arr[mid] < arr[mid-1] && arr[mid] >= arr[l]){
+            // case 2) cur < left && cur < left most (left is increasing order)
+            else if (arr[mid] >= arr[mid-1] && arr[mid] >= arr[l]){
                 l = mid + 1;
             }
-            // case 3) cur < right and cur > right most
-            else if  (arr[mid] < arr[mid-1] && arr[mid] >= arr[r]){
+            // case 3) cur < right and cur > right most (right is decreasing order ?)
+            else if  (arr[mid] >= arr[mid+1] && arr[mid] >= arr[r]){
                 r = mid - 1;
         }
-
-        return 0;
     }
 
-        return -1;
+        return mid;
     }
 
 }

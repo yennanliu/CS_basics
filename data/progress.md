@@ -2,6 +2,7 @@
 
 # 2025-01-08
 - https://github.com/yennanliu/CS_basics/blob/master/doc/Leetcode_company_frequency-master/Google%206months-%20LeetCode.pdf
+- TODO: go through `neetcode`, note/summary knowledges (by topic) at cheatsheet
 
 # 2025-01-07
 - https://github.com/yennanliu/CS_basics/blob/master/doc/Leetcode_company_frequency-master/Google%206months-%20LeetCode.pdf
