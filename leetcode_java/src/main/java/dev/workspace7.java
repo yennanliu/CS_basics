@@ -54,17 +54,52 @@ public class workspace7 {
 //    }
 
     // ------------------- TEST 6 : map put, get
+//    Map<String, Integer> map = new HashMap<>();
+//    map.put("a", 1);
+//    map.put("b", 2);
+//    map.put("c", 3);
+//
+//    System.out.println(">>> (before) map = " + map);
+//    map.put("a", 10);
+//    //map.put("c", 4);
+//
+//    System.out.println(">>> (after) map = " + map);
+
+
+    // ------------------- TEST 6 : sort map on val, key len
     Map<String, Integer> map = new HashMap<>();
-    map.put("a", 1);
-    map.put("b", 2);
-    map.put("c", 3);
+    map.put("apple", 3);
+    map.put("banana", 2);
+    map.put("lem", 3);
+    map.put("kiwi", 5);
+    map.put("peachhh", 3);
 
-    System.out.println(">>> (before) map = " + map);
-    map.put("a", 10);
-    //map.put("c", 4);
+    System.out.println("Original map: " + map);
 
-    System.out.println(">>> (after) map = " + map);
+    //Map<String, Integer> sortedMap = sortMapByValueAndKeyLength(map);
+    //Set<Map.Entry<String, Integer>> entrySet = map.entrySet();
+    //   List<Map.Entry<String, Integer>> entryList = new ArrayList<>(map.entrySet());
+    //List<Set<Map.Entry<String, Integer>>> entryList = Arrays.asList(map.entrySet());
+    List<Map.Entry<String, Integer>> entryList = new ArrayList<>(map.entrySet());
 
+    // sort map
+    Collections.sort(entryList, (Comparator<Map.Entry<String, Integer>>) (entry1, entry2) -> {
+     // if(o1.)
+     int valueCompare = entry2.getValue().compareTo(entry1.getValue());
+     if(valueCompare == 0) {
+       return entry1.getKey().length() - entry2.getKey().length();
+     }
+      return valueCompare;
+    });
+
+
+    // NOTE !!! use `LinkedHashMap` keep ordering in map
+    Map<String, Integer> sortedMap = new LinkedHashMap<>();
+    for (Map.Entry<String, Integer> entry : entryList) {
+      sortedMap.put(entry.getKey(), entry.getValue());
+    }
+
+    System.out.println("Sorted map: " + sortedMap);
   }
 
 
