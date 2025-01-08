@@ -1,8 +1,6 @@
 package dev;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class workspace7 {
   public static void main(String[] args) {
@@ -51,9 +49,22 @@ public class workspace7 {
      * 	•	Variable Name:
      * 	•	Ensure the loop variable is consistently referenced. Mixing i and I results in a compilation error due to case sensitivity in Java.
      */
-    for (int i = 0; i < 5; ++i) {
-      System.out.println(i);
-    }
+//    for (int i = 0; i < 5; ++i) {
+//      System.out.println(i);
+//    }
+
+    // ------------------- TEST 6 : map put, get
+    Map<String, Integer> map = new HashMap<>();
+    map.put("a", 1);
+    map.put("b", 2);
+    map.put("c", 3);
+
+    System.out.println(">>> (before) map = " + map);
+    map.put("a", 10);
+    //map.put("c", 4);
+
+    System.out.println(">>> (after) map = " + map);
+
   }
 
 
