@@ -136,7 +136,66 @@ public class PeakIndexInAMountainArray {
         // mountain array)
     }
 
-    // V1
+    // V1-1
+    // https://leetcode.com/problems/peak-index-in-a-mountain-array/editorial/
+    // IDEA : LINEAR SCAN
+    public int peakIndexInMountainArray_1_1(int[] arr) {
+        int i = 0;
+        while (arr[i] < arr[i + 1]) {
+            i++;
+        }
+        return i;
+    }
+
+    // V1-2
+    // https://leetcode.com/problems/peak-index-in-a-mountain-array/editorial/
+    // IDEA : Binary Search
+    public int peakIndexInMountainArray_1_2(int[] arr) {
+        int l = 0, r = arr.length - 1, mid;
+        while (l < r) {
+            mid = (l + r) / 2;
+            if (arr[mid] < arr[mid + 1])
+                l = mid + 1;
+            else
+                r = mid;
+        }
+        return l;
+    }
 
     // V2
+    // https://leetcode.com/problems/peak-index-in-a-mountain-array/solutions/6237785/binary-search-by-retr0sec-si97/
+    // IDEA: BINARY SEARCH
+    public int peakIndexInMountainArray_2(int[] arr) {
+
+        int left = 0;
+        int right = arr.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (mid >= 1 && mid <= arr.length - 1 && arr[mid] < arr[mid - 1]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return right;
+    }
+
+    // V3
+    // https://leetcode.com/problems/peak-index-in-a-mountain-array/solutions/6235886/check-out-this-solution-if-you-want-most-si4s/
+    // IDEA: BINARY SEARCH
+    public int peakIndexInMountainArray(int[] arr) {
+        int start = 0;
+        int end = arr.length - 1;
+        while (start != end) {
+            int mid = start + (end - start) / 2;
+            if (arr[mid] < arr[mid + 1]) {
+                start = mid + 1;
+            } else if (arr[mid] > arr[mid + 1]) {
+                end = mid;
+            }
+        }
+        return start;
+    }
+
 }
