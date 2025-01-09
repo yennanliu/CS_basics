@@ -464,3 +464,48 @@ public String sort(String s) {
         return fleets;
     }
 ```
+
+
+### 2-7)  TopK Frequent Words
+
+```java
+// java
+// LC 692
+
+// V0-1
+// IDEA: Sort on map key set
+public List<String> topKFrequent_0_1(String[] words, int k) {
+
+    // IDEA: map sorting
+    HashMap<String, Integer> freq = new HashMap<>();
+    for (int i = 0; i < words.length; i++) {
+        freq.put(words[i], freq.getOrDefault(words[i], 0) + 1);
+    }
+    List<String> res = new ArrayList(freq.keySet());
+
+    /**
+     * NOTE !!!
+     *
+     *  we directly sort over map's keySet
+     *  (with the data val, key that read from map)
+     *
+     *
+     *  example:
+     *
+     *          Collections.sort(res,
+     *                 (w1, w2) -> freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : freq.get(w2) - freq.get(w1));
+     */
+    Collections.sort(res, (x, y) -> {
+        int valDiff = freq.get(y) - freq.get(x); // sort on `value` bigger number first (decreasing order)
+        if (valDiff == 0){
+            // Sort on `key ` with `lexicographically` order (increasing order)
+            //return y.length() - x.length(); // ?
+            return x.compareTo(y);
+        }
+        return valDiff;
+    });
+
+    // get top K result
+    return res.subList(0, k);
+}
+```
