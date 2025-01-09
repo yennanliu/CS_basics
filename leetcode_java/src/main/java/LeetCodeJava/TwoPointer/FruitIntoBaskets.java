@@ -50,9 +50,81 @@ import java.util.Map;
 public class FruitIntoBaskets {
 
     // V0
+    // TODO: fix below
 //    public int totalFruit(int[] fruits) {
 //
+//        if(fruits.length==0){
+//            return 0;
+//        }
+//
+//        int res = 0;
+//        // 2 pointers
+//        /**
+//         *
+//         *      *   -> step 1) l = 0, r = 0
+//         *      *   -> step 2) move r, if set(l, r) <= 2, keep moving r (update res)
+//         *      *   -> step 3) if set(l, r) > 2, MOVE l to r-1 (update res)
+//         *      *   -> step 4) keep moving r, till meets the end
+//         *
+//         */
+//        int l = 0;
+//        int r = 0;
+//        //Set<Integer> set = new HashSet<>();
+//        Map<Integer, Integer> map = new HashMap<>();
+//        //int cur = 1;
+//        while (r < fruits.length){
+//
+//            map.put(fruits[r], map.getOrDefault(fruits[r],0)+1);
+//
+//            while (map.keySet().size() > 2) {
+//                // update map
+//                map.put(l, map.get(l)-1);
+//                if (map.get(l) == 0){
+//                    map.remove(l);
+//                }
+//                // move l
+//                l += 1;
+//            }
+//
+//            r += 1;
+//            res = Math.max(res, r-l+1);
+//        }
+//
+//        return res;
 //    }
+
+    // V0-1
+    // IDEA: 2 POINTERS (gpt)
+    public int totalFruit_0_1(int[] fruits) {
+        if (fruits.length == 0) {
+            return 0;
+        }
+
+        int res = 0;
+        int l = 0; // left pointer
+        Map<Integer, Integer> fruitCount = new HashMap<>();
+
+        // Iterate with the right pointer
+        for (int r = 0; r < fruits.length; r++) {
+            // Add current fruit to the map and increment its count
+            fruitCount.put(fruits[r], fruitCount.getOrDefault(fruits[r], 0) + 1);
+
+            // If we have more than 2 types of fruits, move the left pointer
+            while (fruitCount.size() > 2) {
+                fruitCount.put(fruits[l], fruitCount.get(fruits[l]) - 1);
+                if (fruitCount.get(fruits[l]) == 0) {
+                    fruitCount.remove(fruits[l]);
+                }
+                l++; // Move the left pointer
+            }
+
+            // Update the result (window size)
+            res = Math.max(res, r - l + 1);
+        }
+
+        return res;
+    }
+
 
     // V1
     // https://leetcode.com/problems/fruit-into-baskets/solutions/3153809/clean-codes-full-explanation-hashtable-c-dd57/
