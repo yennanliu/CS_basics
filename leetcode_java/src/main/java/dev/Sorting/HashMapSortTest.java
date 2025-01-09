@@ -69,7 +69,7 @@ public class HashMapSortTest {
          * - The lambda expression is shorthand for an anonymous inner class that implements the compare method directly.
          *
          */
-        
+
 
         /** V1 : lambda expression  */
 //        Collections.sort(keyList, (x,y) -> {
