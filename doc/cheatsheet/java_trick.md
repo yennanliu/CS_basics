@@ -554,6 +554,13 @@ int[][] intervals = new int[][]{ {15,20}, {0,30}, {5,10} };
 
 
 ### 1-4-3) Sort List VS Array
+
+#### In Summary !!!!
+
+- `Arrays.sort` for array sorting
+- `Collections.sort` for list, HashMap .. sorting
+
+
 ```java
 // java
 // LC 214
