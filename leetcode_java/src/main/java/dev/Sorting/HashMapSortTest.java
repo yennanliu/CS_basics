@@ -50,14 +50,49 @@ public class HashMapSortTest {
         ArrayList<String> keyList = new ArrayList<>(map.keySet());
         System.out.println(">>> (before sort) keyList = " + keyList);
 
-        Collections.sort(keyList, (x,y) -> {
-            // compare val, bigger first (decreasing order)
-            int valDiff = map.get(y) - map.get(x);
-            if (valDiff == 0){
-                // compare key len, shorter first (increasing order)
-                return x.length() - y.length();
+
+
+        /**
+         *  NOTE !!!
+         *
+         *  Why we can use `lambda expression` for above Comparator's compare method ?
+         *
+         *  -> The reason we can use a lambda expression
+         *  in this case is that the Comparator interface in Java is a functional interface,
+         *  which means it has exactly one abstract method. The method signature is:
+         *
+         *
+         *  To summarize:
+         *
+         * - The Comparator interface has a single abstract method (compare(T o1, T o2)).
+         * - This allows Java to use lambda expressions to provide an implementation for that method.
+         * - The lambda expression is shorthand for an anonymous inner class that implements the compare method directly.
+         *
+         */
+        
+
+        /** V1 : lambda expression  */
+//        Collections.sort(keyList, (x,y) -> {
+//            // compare val, bigger first (decreasing order)
+//            int valDiff = map.get(y) - map.get(x);
+//            if (valDiff == 0){
+//                // compare key len, shorter first (increasing order)
+//                return x.length() - y.length();
+//            }
+//            return valDiff;
+//        });
+
+        /** V2 : regular way (use Comparator, then override `compare` method)  */
+        Collections.sort(keyList, new Comparator<String>() {
+            @Override
+            public int compare(String x, String y) {
+                int valDiff = map.get(y) - map.get(x);
+                if (valDiff == 0){
+                    // compare key len, shorter first (increasing order)
+                    return x.length() - y.length();
+                }
+                return valDiff;
             }
-            return valDiff;
         });
 
         System.out.println(">>> (after sort) keyList = " + keyList);
