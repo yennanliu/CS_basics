@@ -2484,4 +2484,112 @@ public class workspace6 {
 //        return res;
 //    }
 
+    // LC 752
+    /**
+     * Given a target representing the value of the wheels that will unlock the lock,
+     *
+     *
+     *  You are given a list of deadends dead ends,
+     *  meaning if the lock displays any of these codes, the wheels of
+     *  the lock will stop turning and you will be unable to open it.
+     *
+     * -> return the minimum total number of turns required to open the lock, or -1 if it is impossible.
+     *
+     *
+     *  IDEA: BFS
+     *
+     *   -> 1) for every idx, move its `digit` one by one via BFS
+     *         if any combination in deadends, jump out that idx's BFS call,
+     *         move the next idx
+     *
+     *   -> 2) check if the `least move` exists, if not, return -1
+     *
+     */
+    public class Move{
+        // attr
+        int move;
+        String state;
+
+        // constructor
+        public Move(String state, int move){
+            this.move = move;
+            this.state = state;
+        }
+
+        // getter, setter
+        public int getMove() {
+            return move;
+        }
+
+        public void setMove(int move) {
+            this.move = move;
+        }
+
+        public String getState() {
+            return state;
+        }
+
+        public void setState(String state) {
+            this.state = state;
+        }
+    }
+    public int openLock(String[] deadends, String target) {
+
+        // edge
+        List<String> deadendsList = Arrays.asList(deadends);
+        if(deadendsList.contains("0000")){
+            return -1;
+        }
+
+        if (deadends.length == 1){
+            if (deadends[0].equals("0000")){
+                return -1;
+            }
+            if (target.equals("0000")){
+                return 0;
+            }
+            // other cases will be processed below
+        }
+
+        //List<String> deadendsList = Arrays.asList(deadends);
+
+        String[] moves = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        //Map<String, List<String>> moves = new HashMap<>();
+       // moves.put("0", new ArrayList<>("1", "9"));
+        Queue<Move> queue = new LinkedList<>();
+        String initState = "0000";
+        Set<String> visited = new HashSet<>();
+        queue.add(new Move(initState, 0));
+
+        while(!queue.isEmpty()){
+            Move cur = queue.poll();
+            int move = cur.getMove();
+            String curState = cur.getState();
+            // if found, return directly, since we use BFS, it should be `shortest` move
+            if (curState.equals(target)){
+                return move;
+            }
+
+            // ??? need to loop over idx ??? or we add "4 moved idx string" to queue at first
+            for(int i = 0; i < initState.length(); i++){
+                for (String x: moves){
+                    String curNew = updateStringWithIdx(curState, x, i);
+                    //boolean isEqaulOnIdx = curNew.charAt(i) == target.charAt(i);
+                    if (!deadendsList.contains(curNew) && !visited.contains(curNew)){
+                        // add to queue
+                        visited.add(curNew);
+                        queue.add(new Move(curNew, move+1));
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private String updateStringWithIdx(String input, String newStr, int idx){
+        StringBuilder sb = new StringBuilder(input);
+        return sb.replace(idx, idx+1, newStr).toString();
+    }
+
 }
