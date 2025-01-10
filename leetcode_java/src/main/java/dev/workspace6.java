@@ -2773,6 +2773,61 @@ public class workspace6 {
       return null;
     }
 
+  // LC 714
+  // 7.17 pm - 7.30 pm
+  // https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/description/
+  /**
+   *
+   *
+   *  IDEA: DP
+   *
+   *
+   *  1. transaction fee need to be paid at EVERY sale
+   *  2.
+   *
+   *
+   *  Exp 1)
+   *
+   *  Input: prices = [1,3,2,8,4,9], fee = 2
+   *  -> Output: 8
+   *
+   *
+   *  [1,3,2,8,4,9], fee = 2
+   *   b s         (rev = (3-1-2) = 0)
+   *   b    s      (rev = (8-1-2) = 5
+   *
+   */
+  public int maxProfit(int[] prices, int fee) {
+
+      int res = 0;
+      // edge
+      if (prices.length == 1){
+          return 0;
+      }
+      if(prices.length == 2){
+          if(prices[1] > prices[0]){
+              return  Math.max(0, prices[1] - prices[0] - fee);
+          }
+      }
+
+      // dp
+      int[] dp = new int[prices.length+1];
+      // fill dp with 0
+      Arrays.fill(dp, 0); // ??
+      // init state
+      dp[0] = 0;
+     if(prices[1] > prices[0]){
+         dp[1] = Math.max(0, prices[1] - prices[0] - fee);
+     }
+
+     // 2 option:
+     // if not buy: buy or not buy
+     // if already buy: sale or hold
+
+
+      return res;
+    }
+
 
 
 }
