@@ -2702,6 +2702,77 @@ public class workspace6 {
         }
     }
 
+  // LC 43
+  // https://leetcode.com/problems/multiply-strings/
+  // 6.46 pm - 7.20 pm
+  /**
+   * Example 1:
+   *
+   * Input: num1 = "2", num2 = "3"
+   * Output: "6"
+   * Example 2:
+   *
+   * Input: num1 = "123", num2 = "456"
+   * Output: "56088"
+   *
+   * -> actual op:
+   *    123
+   *  x 456
+   *  ---------
+   *
+   *
+   *  -> (100 * 1 + 10 * 2 + 1 * 3) * (100 * 4 + 10 * 5 + 1 * 6)
+   *
+   *  ->
+   *
+   *
+   * IDEA: STRING OP
+   *
+   *
+   */
+  public String multiply(String num1, String num2) {
+
+      // edge
+      if (num1.equals("0") || num2.equals("0")){
+          return "0";
+      }
+
+      if (num1.equals("1") || num2.equals("1")){
+          if (num1.equals("1")){
+              return num2;
+          }
+          return num1;
+      }
+
+      if (num1.length() == 1 && num2.length() == 1){
+          // ???
+          return String.valueOf((num1.charAt(0) - '0') * (num2.charAt(0) - '0'));
+      }
+
+      // loop over `digits`
+      StringBuilder sb = new StringBuilder();
+      String longer = null;
+      String shorter = null;
+      if(num1.length() > num2.length()){
+          longer = num1;
+          shorter = num2;
+      }else{
+          longer = num2;
+          shorter = num1;
+      }
+
+
+//      // double loop ??
+//      for(int i = 0; i < longer.length(); i++){
+//          for(int j = 0; j < shorter.length(); j++){
+//              in
+//          }
+//      }
+
+
+      return null;
+    }
+
 
 
 }
