@@ -3,6 +3,7 @@ package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
+import LeetCodeJava.Recursion.PopulatingNextRightPointersInEachNode2;
 //import jdk.javadoc.internal.doclets.toolkit.util.Utils;
 
 import java.util.*;
@@ -2591,5 +2592,116 @@ public class workspace6 {
         StringBuilder sb = new StringBuilder(input);
         return sb.replace(idx, idx+1, newStr).toString();
     }
+
+    // LC 116
+    /**
+     * You are given a perfect binary tree where all leaves are on the same level,
+     * and every parent has two children. The binary tree has the following definition:
+     *
+     *
+     *
+     * Populate each next pointer to point to its next right node.
+     * If there is no next right node, the next pointer should be set to NULL.
+     *
+     * Initially, all next pointers are set to NULL.
+     *
+     *
+     * Exp 1)
+     *
+     * Input: {"$id":"1",
+     *      "left":{"$id":"2","left":{"$id":"3","left":null,"next":null,
+     *      "right":null,"val":4},"next":null,
+     *      "right":{"$id":"4","left":null,"next":null,"right":null,"val":5},"val":2},
+     *      "next":null,"right":{"$id":"5","left":{"$id":"6","left":null,"next":null,"right":null,"val":6},"next":null,"right":{"$id":"7","left":null,"next":null,"right":null,"val":7},"val":3},"val":1}
+     *
+     * Output: {"$id":"1","left":{"$id":"2","left":{"$id":"3","left":null,"next":{"$id":"4","left":null,"next":{"$id":"5","left":null,"next":{"$id":"6","left":null,"next":null,"right":null,"val":7},"right":null,"val":6},"right":null,"val":5},"right":null,"val":4},"next":{"$id":"7","left":{"$ref":"5"},"next":null,"right":{"$ref":"6"},"val":3},"right":{"$ref":"4"},"val":2},"next":null,"right":{"$ref":"7"},"val":1}
+     *
+     * Explanation: Given the above perfect binary tree (Figure A), your function should populate each next pointer to point to its next right node, just like in Figure B.
+     *
+     *
+     * IDEA: RECURSION (?
+     *
+     *
+     */
+//    class Node {
+//        public int val;
+//        public workspace6.Node left;
+//        public workspace6.Node right;
+//        public workspace6.Node next;
+//
+//        public Node() {}
+//
+//        public Node(int _val) {
+//            val = _val;
+//        }
+//
+//        public Node(int _val, workspace6.Node _left, workspace6.Node _right, workspace6.Node _next) {
+//            val = _val;
+//            left = _left;
+//            right = _right;
+//            next = _next;
+//        }
+//    };
+//    public Node connect(Node root) {
+//
+//        return null;
+//    }
+
+    class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node next;
+
+        public Node() {}
+
+        public Node(int _val) {
+            val = _val;
+        }
+
+        public Node(int _val, Node _left, Node _right, Node _next) {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
+    }
+
+    public class Solution {
+        public Node connect(Node root) {
+            if (root == null) {
+                return null;
+            }
+
+            // Start with the root node
+            Node currentLevel = root;
+
+            while (currentLevel != null) {
+                // Traverse through the current level
+                Node temp = currentLevel;
+                while (temp != null) {
+                    if (temp.left != null) {
+                        // Connect the left child to the right child
+                        temp.left.next = temp.right;
+                    }
+
+                    if (temp.right != null && temp.next != null) {
+                        // Connect the right child to the next node's left child
+                        temp.right.next = temp.next.left;
+                    }
+
+                    // Move to the next node in the current level
+                    temp = temp.next;
+                }
+
+                // Move to the next level (leftmost node of the next level)
+                currentLevel = currentLevel.left;
+            }
+
+            return root;
+        }
+    }
+
+
 
 }
