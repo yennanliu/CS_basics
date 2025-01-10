@@ -146,7 +146,7 @@ public class PopulatingNextRightPointersInEachNode2 {
     // https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/solutions/2033511/3-approaches-bfs-bfs-linkedlist-recursio-0q68/
 
     // V2-2
-    // IDEA: BFS + LINKEDLIST
+    // IDEA: BFS + LINKED LIST
     // https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/solutions/2033511/3-approaches-bfs-bfs-linkedlist-recursio-0q68/
 
     // V2-3
