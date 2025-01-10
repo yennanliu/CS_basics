@@ -11,6 +11,8 @@ problems by combining the solutions to subproblems
     - https://predoc.dlc.ntu.edu.tw/viewer?embedded=true&url=https%3A%2F%2Fcool.ntu.edu.tw%2Fcourses%2F8583%2Ffiles%2F1165602%2Fdownload%3Fverifier%3DnlJ3s1a9TTmgYQzbJgj9vnrGlKKZB4w0wUZyEKgm 
 
 ### 0-1) Types
+- 2 DP state:   
+ - LC 714
 
 ### 0-2) Pattern
 
@@ -185,4 +187,98 @@ private int findMin(int a, int b, int c){
         return c;
     }
 }
+```
+
+### 2-3) Best Time to Buy and Sell Stock with Transaction Fee
+
+```java
+// java
+// LC 714
+
+  // V0-1
+  // IDEA: DP (gpt)
+  /**
+   * Solution Explanation:
+   *
+   *
+   *  -  Use two variables to represent the state:
+   *      1. hold: The maximum profit achievable
+   *               while holding a stock at day i.
+   *
+   *      2. cash: The maximum profit achievable
+   *               while not holding a stock at day i.
+   *
+   *  - Transition equations:
+   *    - If holding a stock:
+   *       hold = max(hold, cash - price[i])
+   *
+   *       NOTE: 2 cases we hold th stock: 1) already hold from previous day 2) buy a new stock today
+   *       (`hold`: You already held the stock from a previous day -> If you decided not to make any changes today, then the profit remains the same as the previous hold.)
+   *       (`cash - price[i]`: You buy the stock today -> To buy the stock today, you need to spend money, reducing your profit. The cost to buy the stock is prices[i]. However, the amount of money you can spend is the maximum profit you had when you were not holding a stock previously (cash).)
+   *
+   * (You either keep holding or buy a new stock.)
+   *    - If not holding a stock:
+   *       cash = max(cash, hold + price[i] - fee)
+   *
+   *
+   * (You either keep not holding or sell the stock and pay the fee.)
+   *    - Initialize:
+   *       - hold = -prices[0] (If you buy the stock on the first day).
+   *       -  cash = 0 (You haven’t made any transactions yet).
+   *
+   */
+  /**
+   *  Example Walkthrough:
+   *
+   * Input:
+   *    •   Prices: [1, 3, 2, 8, 4, 9]
+   *    •   Fee: 2
+   *
+   * Steps:
+   *    1.  Day 0:
+   *    •   hold = -1 (Buy the stock at price 1).
+   *    •   cash = 0.
+   *    2.  Day 1:
+   *    •   cash = max(0, -1 + 3 - 2) = 0 (No selling since profit is 0).
+   *    •   hold = max(-1, 0 - 3) = -1 (No buying since it’s already better to hold).
+   *    3.  Day 2:
+   *    •   cash = max(0, -1 + 2 - 2) = 0.
+   *    •   hold = max(-1, 0 - 2) = -1.
+   *    4.  Day 3:
+   *    •   cash = max(0, -1 + 8 - 2) = 5 (Sell at price 8).
+   *    •   hold = max(-1, 5 - 8) = -1.
+   *    5.  Day 4:
+   *    •   cash = max(5, -1 + 4 - 2) = 5.
+   *    •   hold = max(-1, 5 - 4) = 1.
+   *    6.  Day 5:
+   *    •   cash = max(5, 1 + 9 - 2) = 8 (Sell at price 9).
+   *    •   hold = max(1, 5 - 9) = 1.
+   *
+   * Output:
+   *    •   cash = 8 (Max profit).
+   *
+   */
+  public int maxProfit_0_1(int[] prices, int fee) {
+        // Edge case
+        if (prices == null || prices.length == 0) {
+            return 0;
+        }
+
+        // Initialize states
+        int hold = -prices[0]; // Maximum profit when holding a stock
+        int cash = 0; // Maximum profit when not holding a stock
+
+        // Iterate through prices
+        for (int i = 1; i < prices.length; i++) {
+            /**
+             *  NOTE !!! there are 2 dp equations (e.g. cash, hold)
+             */
+            // Update cash and hold states
+            cash = Math.max(cash, hold + prices[i] - fee); // Sell the stock
+            hold = Math.max(hold, cash - prices[i]); // Buy the stock
+        }
+
+        // The maximum profit at the end is when not holding any stock
+        return cash;
+    }
 ```
