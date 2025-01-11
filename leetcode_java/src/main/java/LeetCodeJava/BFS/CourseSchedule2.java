@@ -56,8 +56,96 @@ public class CourseSchedule2 {
 
     // V0
     // IDEA : TOPOLOGICAL SORT (fixed by gpt)
-    // ref : https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSortV2.java
     public int[] findOrder(int numCourses, int[][] prerequisites) {
+        // Edge case: no prerequisites
+        if (prerequisites == null || prerequisites.length == 0) {
+            int[] result = new int[numCourses];
+            for (int i = 0; i < numCourses; i++) {
+                result[i] = i;
+            }
+            return result;
+        }
+
+        // Initialize in-degrees and graph
+        int[] inDegree = new int[numCourses];
+        /**
+         * NOTE !!!
+         *
+         *  graph : {prev: [next_1, next_2,,,,]
+         *
+         *  -> so we use prev as key,
+         *     array as value that collect all `prev`'s next courses
+         *
+         */
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+
+        for (int[] prereq : prerequisites) {
+            int next = prereq[0];
+            int prev = prereq[1];
+
+            // Build the graph
+            graph.putIfAbsent(prev, new ArrayList<>());
+            graph.get(prev).add(next);
+
+            // Update in-degree for the next course
+            /**
+             * NOTE !!!
+             *
+             *  update `NEXT` course's degree,
+             *  since every time when meet a prev-next
+             *  means before take that next course, we need to take prev first
+             *  so its (next course) degree increase by 1
+             */
+            inDegree[next] += 1;
+        }
+
+        // Initialize queue with courses having in-degree 0
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) {
+                queue.add(i);
+            }
+        }
+
+        // Perform BFS (Kahn's algorithm for topological sorting)
+        int[] result = new int[numCourses];
+        int idx = 0;
+
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            result[idx++] = course;
+
+            // Process all neighbors of the current course
+            if (graph.containsKey(course)) {
+                for (int next : graph.get(course)) {
+                    /**
+                     * NOTE !!!
+                     *
+                     *  update `NEXT` degree (decrease by 1)
+                     *  since its `prev` course just took,
+                     */
+                    inDegree[next] -= 1; // Decrease in-degree
+                    if (inDegree[next] == 0) { // Add to queue if in-degree becomes 0
+                        queue.add(next);
+                    }
+                }
+            }
+        }
+
+        // If all courses are processed, return the result
+        if (idx == numCourses) {
+            return result;
+        }
+
+        // Otherwise, return an empty array (cycle detected)
+        return new int[0];
+    }
+
+
+    // V0-1
+    // IDEA : TOPOLOGICAL SORT (fixed by gpt)
+    // ref : https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSortV2.java
+    public int[] findOrder_0_1(int numCourses, int[][] prerequisites) {
         if (numCourses == 1) {
             return new int[]{0};
         }
@@ -146,6 +234,7 @@ public class CourseSchedule2 {
         Collections.reverse(topologicalOrder);
         return topologicalOrder;
     }
+
 
     // V1
 
