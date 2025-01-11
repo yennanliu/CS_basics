@@ -103,11 +103,29 @@ public class workspace7 {
 
 
 
-        // ------------------- TEST 7: replace idx in string
-        String myStr = "amazon";
-        System.out.println(myStr);
-        System.out.println(updateStringWithIdx(myStr, "xxxx", 1));
-        System.out.println(updateStringWithIdx(myStr, "xxxx", 0));
+//        // ------------------- TEST 7: replace idx in string
+//        String myStr = "amazon";
+//        System.out.println(myStr);
+//        System.out.println(updateStringWithIdx(myStr, "xxxx", 1));
+//        System.out.println(updateStringWithIdx(myStr, "xxxx", 0));
+
+        // ------------------- TEST 8: array add val to element
+        int[] arr = new int[3];
+        arr[0] = 0;
+        arr[1] = 1;
+        arr[2] = 2;
+        System.out.println("(before) arr = ");
+        for(int x: arr){
+            System.out.println(x);
+        }
+
+        arr[0] = arr[0]+1;
+
+        System.out.println("(after) arr = " + Arrays.asList(arr));
+        for(int x: arr){
+            System.out.println(x);
+        }
+
     }
 
 

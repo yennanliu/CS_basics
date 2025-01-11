@@ -2919,6 +2919,102 @@ public class workspace6 {
     return res;
     }
 
+  // LC 210
+  // https://leetcode.com/problems/course-schedule-ii/
+  // 4.07 - 4.20 pm
+  /**
+   *  prerequisites[i] = [ai, bi]
+   *  indicates that you must
+   *  take course bi first if you want to take course ai.
+   *
+   *  -> [ai, bi] -> prev: bi, next: ai
+   *
+   *
+   *  IDEA:  TOPOLOGICAL SORT
+   *
+   *  1) build graph, orders, queue
+   *  2)
+   *
+   *   init orders (all 0)
+   *   init queue
+   *   add all `order = 0` to queue
+   *
+   *  3)
+   *
+   *
+   */
+  public int[] findOrder(int numCourses, int[][] prerequisites) {
+
+      // edge
+      if(prerequisites.length==0){
+          int[] res = new int[1];
+          res[0] = 0;
+          return res;
+      }
+
+      if(numCourses == 2 && prerequisites.length == 1){
+          int[] res = new int[2];
+          res[0] = prerequisites[0][1];
+          res[1] = prerequisites[0][0];
+          return res;
+      }
+
+      // init orders
+      int[] orders = new int[numCourses];
+      // fill all with 0
+      Arrays.fill(orders, 0);
+      // init graph
+      // {next : [prev1, prev2, ...] }
+      Map<Integer, List<Integer>> graph = new HashMap<>();
+      for(int i = 0; i < prerequisites.length; i++){
+          int[] x = prerequisites[i];
+          int prev = x[1];
+          int next = x[0];
+          System.out.println(">> i = " + i + ", prev = " + prev);
+
+          //List<Integer> nextList = graph.getOrDefault(prev, new ArrayList<>());
+          List<Integer> preList = graph.getOrDefault(next, new ArrayList<>());
+          preList.add(prev);
+          graph.put(next, preList);
+
+          // update orders
+          orders[prev] += 1; // ???
+      }
+
+      System.out.println(">>> graph = " + graph);
+
+      Queue<Integer> queue = new LinkedList<>();
+      // add all `order=0` to queue
+      for(int x: orders){
+          if(x == 0){
+              queue.add(x);
+          }
+      }
+
+    //List<Integer> cache = new ArrayList<>();
+    int[] res = new int[numCourses];
+    int idx = 0;
+    System.out.println(">>> queue = " + queue);
+    while (!queue.isEmpty()){
+       int cur = queue.poll();
+       System.out.println(">>> cur = " + cur);
+       //cache.add(cur);
+       res[idx] = cur;
+       idx += 1;
+       for(Integer prev: graph.get(cur)){
+           //graph.put(cur, graph.get(cur)-1);
+           // update order
+           orders[prev] = orders[prev] - 1; // ??
+           // NOTE !!! if order == 0, add to queue
+           if (orders[prev] == 0){
+               queue.add(prev);
+           }
+       }
+    }
+
+    return res;
+  }
+
 
 
 }
