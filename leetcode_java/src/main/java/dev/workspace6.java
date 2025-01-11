@@ -3,6 +3,7 @@ package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
+import LeetCodeJava.LinkedList.InsertIntoACyclicSortedList;
 import LeetCodeJava.Recursion.PopulatingNextRightPointersInEachNode2;
 //import jdk.javadoc.internal.doclets.toolkit.util.Utils;
 
@@ -2826,6 +2827,96 @@ public class workspace6 {
 
 
       return res;
+    }
+
+    // LC 708
+    // 3.09 pm - 3.25 pm
+    /**
+     *  IDEA:
+     *
+     *   1) get all elements (existing + new)
+     *   2) sort
+     *   3) loop over existing linked list, if new node not existed,
+     *      add it to linked list
+     */
+
+
+//    class Node {
+//        public int val;
+//        public Node next;
+//
+//        public Node() {}
+//
+//        public Node(int _val) {
+//            val = _val;
+//        }
+//
+//        public Node(int _val, Node _next) {
+//            val = _val;
+//            next = _next;
+//        }
+//    };
+
+    public Node insert(Node head, int insertVal) {
+
+      // edge
+      if(head == null){
+          return new Node(insertVal);
+      }
+
+      // get all elements
+      List<Integer> list = new ArrayList<>();
+      Node head2 = head;
+      while(head2 != null){
+          list.add(head2.val);
+          head2 = head2.next;
+      }
+
+    // sort (assume the ordering is `same` as the order we tranverse linked list)
+    Collections.sort(list);
+
+    // edge case 2) if new element < all elements in list or > all elements list
+    if (insertVal < list.get(0)){
+        Node res = new Node(insertVal);
+        res.next = head;
+        return res;
+    }
+
+    if (insertVal > list.get(list.size()-1)){
+        while(head != null){
+            head = head.next;
+        }
+        head.next = new Node(insertVal);
+        return head; // ?? or need to define a `res` object ?
+    }
+
+    // create `double length` list
+//    List<Integer> doubleList = new ArrayList<>();
+//    for(int i = 0; i < 2; i++){
+//        for(int x: list){
+//            doubleList.add(x);
+//        }
+//    }
+
+    // find `entry point`
+    Node res = head;
+    int idx = 0;
+    while(head != null){
+        int x = list.get(idx);
+        if (head.next.val != x){
+            Node _new = new Node(x);
+            Node _next = head.next;
+            Node _cur = head;
+            head.next = _new;
+            _new.next = _next;
+            //head = head.next;
+            break;
+        }
+        head = head.next;
+        idx += 1;
+    }
+
+    return res;
     }
 
 
