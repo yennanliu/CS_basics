@@ -56,66 +56,78 @@ public class InsertIntoACyclicSortedList {
         }
     };
 
-    // V0
-    // TODO: fix below
-//    public Node insert(Node head, int insertVal) {
-//
-//        // edge
-//        if(head == null){
-//            return new Node(insertVal);
-//        }
-//
-//        // get all elements
-//        List<Integer> list = new ArrayList<>();
-//        Node head2 = head;
-//        while(head2 != null){
-//            list.add(head2.val);
-//            head2 = head2.next;
-//        }
-//
-//        // sort (assume the ordering is `same` as the order we tranverse linked list)
-//        Collections.sort(list);
-//
-//        // edge case 2) if new element < all elements in list or > all elements list
-//        if (insertVal < list.get(0)){
-//            Node res = new Node(insertVal);
-//            res.next = head;
-//            return res;
-//        }
-//
-//        if (insertVal > list.get(list.size()-1)){
-//            while(head != null){
-//                head = head.next;
-//            }
-//            head.next = new Node(insertVal);
-//            return head; // ?? or need to define a `res` object ?
-//        }
-//
-//        Node res = head;
-//        int idx = 0;
-//        while(head != null){
-//            int x = list.get(idx);
-//            if (head.next.val != x){
-//                Node _new = new Node(x);
-//                Node _next = head.next;
-//                Node _cur = head;
-//                head.next = _new;
-//                _new.next = _next;
-//                //head = head.next;
-//                break;
-//            }
-//            head = head.next;
-//            idx += 1;
-//        }
-//
-//        return res;
-//    }
+  // V0
+  // TODO: fix below
+  //    public Node insert(Node head, int insertVal) {
+  //
+  //        // edge
+  //        if(head == null){
+  //            return new Node(insertVal);
+  //        }
+  //
+  //        // get all elements
+  //        List<Integer> list = new ArrayList<>();
+  //        Node head2 = head;
+  //        while(head2 != null){
+  //            list.add(head2.val);
+  //            head2 = head2.next;
+  //        }
+  //
+  //        // sort (assume the ordering is `same` as the order we tranverse linked list)
+  //        Collections.sort(list);
+  //
+  //        // edge case 2) if new element < all elements in list or > all elements list
+  //        if (insertVal < list.get(0)){
+  //            Node res = new Node(insertVal);
+  //            res.next = head;
+  //            return res;
+  //        }
+  //
+  //        if (insertVal > list.get(list.size()-1)){
+  //            while(head != null){
+  //                head = head.next;
+  //            }
+  //            head.next = new Node(insertVal);
+  //            return head; // ?? or need to define a `res` object ?
+  //        }
+  //
+  //        Node res = head;
+  //        int idx = 0;
+  //        while(head != null){
+  //            int x = list.get(idx);
+  //            if (head.next.val != x){
+  //                Node _new = new Node(x);
+  //                Node _next = head.next;
+  //                Node _cur = head;
+  //                head.next = _new;
+  //                _new.next = _next;
+  //                //head = head.next;
+  //                break;
+  //            }
+  //            head = head.next;
+  //            idx += 1;
+  //        }
+  //
+  //        return res;
+  //    }
 
-
-    // V1
-    // https://leetcode.ca/2017-11-07-708-Insert-into-a-Sorted-Circular-Linked-List/
-    // IDEA: LINKED LIST
-    public Node insert_1(Node head, int insertVal) {
+  // V1
+  // https://leetcode.ca/2017-11-07-708-Insert-into-a-Sorted-Circular-Linked-List/
+  // IDEA: LINKED LIST
+  /**
+   *  Key Notes About the Code
+   *
+   * 	•	Cyclic Nature Handling:
+   * 	    •	The loop ensures traversal through all nodes by checking curr != head. If it reaches back to the head, it stops, ensuring we don’t loop indefinitely.
+   * 	    •	Robust Conditions:
+   *
+   * 	•	The combination of conditions handles:
+   * 	    1.	Insertion in the middle of the sorted list.
+   * 	    2.	Insertion at the end-to-start transition point.
+   * 	    3.	Insertion when all nodes have the same value (handled implicitly since the loop eventually exits, and the new node is inserted anywhere).
+   *
+   */
+  public Node insert_1(Node head, int insertVal) {
         Node node = new Node(insertVal);
         if (head == null) {
             node.next = node;
@@ -123,18 +135,27 @@ public class InsertIntoACyclicSortedList {
         }
         Node prev = head, curr = head.next;
         while (curr != head) {
-            /**
-             * NOTE !!!
-             *
-             * below conditions:
-             *
-             *    - prev.val <= insertVal && insertVal <= curr.val
-             *    or
-             *    - prev.val > curr.val && (insertVal >= prev.val || insertVal <= curr.val))
-             *
-             */
-            if ((prev.val <= insertVal && insertVal <= curr.val)
-                    || (prev.val > curr.val && (insertVal >= prev.val || insertVal <= curr.val))) {
+      /**
+       * NOTE !!!
+       *
+       * below conditions:
+       *
+       *    - prev.val <= insertVal && insertVal <= curr.val
+       *       -> The value fits between two consecutive nodes in ascending order.
+       *    or
+       *    - prev.val > curr.val && (insertVal >= prev.val || insertVal <= curr.val))
+       *      ->
+       *         - The prev.val > curr.val condition identifies the “end-to-start”
+       *           transition point in the cyclic list
+       *           (i.e., the largest node is followed by the smallest node).
+       *
+       * 	     - If insertVal is greater than or equal to the largest value (prev.val)
+       * 	       or less than or equal to the smallest value (curr.val),
+       * 	       it should be inserted here.
+       *
+       */
+      if ((prev.val <= insertVal && insertVal <= curr.val)
+          || (prev.val > curr.val && (insertVal >= prev.val || insertVal <= curr.val))) {
                 break;
             }
             prev = curr;
