@@ -47,6 +47,106 @@ public class IntervalListIntersections {
 //
 //    }
 
+    // V0-1
+    // IDEA: SCANNING LINE (fixed by gpt)
+    /**
+     *
+     * The scanning line approach involves:
+     *  - 1. Creating Events:
+     *        For each interval in firstList and secondList,
+     *        create events for start and end.
+     *
+     *  - 2. Sorting Events:
+     *       Sort the events by position.
+     *       If positions are the same, process start before end.
+     *
+     *  - 3. Tracking Overlap:
+     *       Use a counter to track overlapping
+     *       intervals as you process each event.
+     *       If two intervals overlap, calculate and add their intersection.
+     *
+     */
+    public int[][] intervalIntersection_0_1(int[][] firstList, int[][] secondList) {
+        List<int[]> events = new ArrayList<>();
+        List<int[]> result = new ArrayList<>();
+
+        // Create events for firstList
+        for (int[] interval : firstList) {
+            events.add(new int[]{interval[0], 1}); // Start of interval
+            /** NOTE !!! `interval[1] + 1` for exclusive */
+            events.add(new int[]{interval[1] + 1, -1}); // End of interval (exclusive)
+        }
+
+        // Create events for secondList
+        for (int[] interval : secondList) {
+            events.add(new int[]{interval[0], 1}); // Start of interval
+            /** NOTE !!! `interval[1] + 1` for exclusive */
+            events.add(new int[]{interval[1] + 1, -1}); // End of interval (exclusive)
+        }
+
+        // Sort events: First by position, then by type (-1 before 1 if same position)
+        events.sort((a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+
+        int active = 0; // Number of active overlapping intervals
+        Integer prev = null; // Previous event position
+
+        // Process events
+        for (int[] event : events) {
+            int pos = event[0];
+            int type = event[1];
+
+      /**
+       * NOTE !!!!  below logic
+       *
+       *
+       *
+       * 1) Key Variables
+       * 	1.	prev:
+       * 	  - Tracks the start of the current active interval range being processed.
+       * 	  - This helps in determining where an intersection starts or ends.
+       * 	2.	active:
+       * 	  - A counter that tracks the number of overlapping intervals at the current position.
+       * 	  - When active == 2, it indicates two intervals are overlapping, and an intersection exists.
+       * 	3.	pos:
+       * 	  - The current position (from the sorted events list) where an event is being processed.
+       * 	  - Events can represent the start or end of an interval.
+       *
+       *
+       *  2) Further explanation:
+       *
+       *  1. Condition Check: prev != null && active == 2
+       * 	•	Purpose: Ensure there is an overlap (active == 2) and a valid prev position exists.
+       * 	•	Reason:
+       * 	   - When two intervals overlap, active will equal 2 during the overlap.
+       * 	   - If the previous position (prev) is not null, it means we can form an intersection range starting from prev up to pos - 1.
+       *
+       */
+      if (prev != null && active == 2) {
+           // Add an intersection for overlapping intervals
+           result.add(new int[]{prev, pos - 1});
+      }
+
+      // Update active intervals and previous position
+      /**
+       * 3. Update active and prev
+       * 	- active += type;
+       * 	  - Updates the overlap count.
+       * 	  - type is either +1 (for interval start) or -1 (for interval end).
+       * 	      - Example:
+       * 	          - If an interval starts, active increases.
+       * 	          - If an interval ends, active decreases.
+       * 	- prev = pos;
+       * 	    - Moves the prev pointer to the current position (pos).
+       * 	    - Ensures prev always reflects the start of the next potential intersection.
+       *
+       */
+      active += type; // NOTE !!! type could be 1 or -1 (start of interval or end of interval)
+      prev = pos;
+     }
+
+        return result.toArray(new int[result.size()][2]);
+    }
+
     // V1
     // https://leetcode.com/problems/interval-list-intersections/solutions/1593579/java-two-pointers-most-intutive-by-chait-8cfr/
     // IDEA: 2 POINTERS
