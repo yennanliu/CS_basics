@@ -3079,6 +3079,14 @@ public class workspace6 {
    return res;
   }
 
+  // LC 986
+  // https://leetcode.com/problems/interval-list-intersections/
+  // 7.06 - 7.26 pm
+  public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+
+      return null;
+  }
+
 
 
 }
