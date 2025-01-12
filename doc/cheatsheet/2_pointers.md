@@ -830,3 +830,74 @@ class Solution(object):
         # if there're still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])
         nums1[:q+1] = nums2[:q+1]
 ```
+
+### 2-12) Interval List Intersections
+
+```java
+// java
+// LC 986
+    public int[][] intervalIntersection_1(int[][] firstList, int[][] secondList) {
+        if (firstList.length == 0 || secondList.length == 0)
+            return new int[0][0];
+    /**
+     *  NOTE !!!!
+     *   - i and j are pointers used to iterate through
+     *      `firstList` and `secondList` respectively.
+     *
+     *   - `startMax` and `endMin` are used to compute
+     *     the `intersection` of the current intervals
+     *     from firstList and secondList.
+     *
+     *   - ans is a list to store the resulting intersection intervals.
+     */
+        int i = 0;
+        int j = 0;
+        int startMax = 0, endMin = 0;
+        List<int[]> ans = new ArrayList<>();
+
+    /**
+     *
+     *   - The loop continues as long as
+     *      there are intervals remaining in `BOTH lists`.
+     *
+     *   - `startMax` is the maximum of the `START points` of the two
+     *     intervals (firstList[i] and secondList[j]).
+     *       -> This ensures the intersection starts no earlier than both intervals.
+     *
+     *   - `endMin` is the minimum of the `END points` of the two intervals.
+     *
+     *   - This ensures the intersection ends no later than the earlier of
+     *     the two intervals.
+     *
+     */
+    while (i < firstList.length && j < secondList.length) {
+      startMax = Math.max(firstList[i][0], secondList[j][0]);
+      endMin = Math.min(firstList[i][1], secondList[j][1]);
+
+      // you have end greater than start and you already know that this interval is
+      // surrounded with startMin and endMax so this must be the intersection
+      /**
+       *
+       *  - If endMin >= startMax, it means there is an intersection between the two intervals.
+       *    ->  Add the intersection [startMax, endMin] to the result list.
+       */
+      if (endMin >= startMax) {
+        ans.add(new int[] {startMax, endMin});
+      }
+
+      // the interval with min end has been covered completely and have no chance to
+      // intersect with any other interval so move that list's pointer
+      /**
+       * - Since the intervals are sorted and disjoint:
+       *    - If the interval from firstList ends first (or at the same time), increment i.
+       *    - If the interval from secondList ends first (or at the same time), increment j.
+       *    -> This ensures that the interval which has been fully processed is skipped, moving to the next potential candidate for intersection.
+       *
+       */
+      if (endMin == firstList[i][1]) i++;
+      if (endMin == secondList[j][1]) j++;
+        }
+
+        return ans.toArray(new int[ans.size()][2]);
+    }
+```

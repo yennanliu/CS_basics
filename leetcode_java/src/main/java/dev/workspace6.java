@@ -3154,7 +3154,6 @@ public class workspace6 {
 
       List<List<Integer>> cache = new ArrayList<>();
 
-
       for(IntervalStatus intervalStatus: statusList){
 
       }
