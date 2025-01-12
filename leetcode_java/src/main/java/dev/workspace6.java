@@ -3015,6 +3015,70 @@ public class workspace6 {
     return res;
   }
 
+  // LC 241
+  // https://leetcode.com/problems/different-ways-to-add-parentheses/
+  // 6.27 pm - 6.40 pm
+  /**
+   *
+   *  You may return the answer in any order.
+   *
+   *
+   *  EXP 1)
+   *
+   * Input: expression = "2-1-1"
+   * Output: [0,2]
+   * Explanation:
+   * ((2-1)-1) = 0
+   * (2-(1-1)) = 2
+   *
+   * EXP 2)
+   *
+   * Input: expression = "2*3-4*5"
+   * Output: [-34,-14,-10,-10,10]
+   * Explanation:
+   * (2*(3-(4*5))) = -34
+   * ((2*3)-(4*5)) = -14
+   * ((2*(3-4))*5) = -10
+   * (2*((3-4)*5)) = -10
+   * (((2*3)-4)*5) = 10
+   *
+   *
+   * IDEA: RECURSION
+   *  (all combination, validate "computation, collect result)
+   *
+   *  EXP 1) -> expression = "2-1-1"
+   *     2 -1 -1, so we can have 3-1 -1  = 1 brackets e.g. ()
+   *     and 2 "-"
+   *     -> so we need to get all combination of
+   *     [2,1,1, -, -, (, )]
+   *     -> could be
+   *       ((2 -1 -1 ))
+   *      ( 2 - (1-1) )
+   *
+   *
+   *  EXP 2) -> expression = "2*3-4*5"
+   *     4 - 1 - 1 = 2 brackets, e.g. (), ()
+   *     and 1 "-" and 2 "*"
+   *     -> so we need to get all combination of
+   *     [2,3,4,5,-,*,*,(,(,),)]
+   *
+   *
+   *
+   *
+   */
+  public List<Integer> diffWaysToCompute(String expression) {
+
+   // edge
+   if (expression == null || expression.isEmpty()){
+       return new ArrayList<>();
+   }
+
+   List<Integer> res = new ArrayList<>();
+   // recursion call
+
+   return res;
+  }
+
 
 
 }
