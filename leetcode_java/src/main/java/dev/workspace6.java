@@ -3081,8 +3081,84 @@ public class workspace6 {
 
   // LC 986
   // https://leetcode.com/problems/interval-list-intersections/
-  // 7.06 - 7.26 pm
+  // 7.06 - 7.36 pm
+  /**
+   * firstList[i] = [starti, endi] and
+   *
+   * secondList[j] = [startj, endj].
+   *
+   * -> Return the intersection of these two interval lists.
+   *
+   *
+   * The intersection of two closed intervals is a set
+   * of real numbers that are either empty or
+   * represented as a closed interval.
+   * For example, the intersection of [1, 3] and [2, 4] is [2, 3].
+   *
+   *
+   *  IDEA 1: 2 POINTERS
+   *
+   *  IDEA 2: Scanning line ??
+   *
+   */
+  public class IntervalStatus{
+      int idx;
+      String status;
+
+      public int getIdx() {
+          return idx;
+      }
+
+      public void setIdx(int idx) {
+          this.idx = idx;
+      }
+
+      public String getStatus() {
+          return status;
+      }
+
+      public void setStatus(String status) {
+          this.status = status;
+      }
+
+      public IntervalStatus(int idx, String status){
+          this.idx = idx;
+          this.status = status;
+      }
+  }
   public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+
+      // edge
+      if (firstList == null || secondList == null){
+          if (firstList == null){
+              return new int[][]{};
+          }
+          return new int[][]{};
+      }
+
+      // prepare to-scan list
+      List<IntervalStatus> statusList = new ArrayList<>();
+      for(int[] x: firstList){
+          int open = x[0];
+          int close = x[1];
+          statusList.add(new IntervalStatus(open, "open-1"));
+          statusList.add(new IntervalStatus(close, "close-1"));
+      }
+
+      for(int[] x: secondList){
+          int open = x[0];
+          int close = x[1];
+          statusList.add(new IntervalStatus(open, "open-2"));
+          statusList.add(new IntervalStatus(close, "close-2"));
+      }
+
+      List<List<Integer>> cache = new ArrayList<>();
+
+
+      for(IntervalStatus intervalStatus: statusList){
+
+      }
+
 
       return null;
   }
