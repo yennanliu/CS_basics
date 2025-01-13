@@ -140,10 +140,10 @@ public class InsertIntoACyclicSortedList {
        *
        * below conditions:
        *
-       *    - prev.val <= insertVal && insertVal <= curr.val
+       *    - Case 1) prev.val <= insertVal && insertVal <= curr.val
        *       -> The value fits between two consecutive nodes in ascending order.
        *    or
-       *    - prev.val > curr.val && (insertVal >= prev.val || insertVal <= curr.val))
+       *    - Case 2) prev.val > curr.val && (insertVal >= prev.val || insertVal <= curr.val))
        *      ->
        *         - The prev.val > curr.val condition identifies the “end-to-start”
        *           transition point in the cyclic list
@@ -161,8 +161,13 @@ public class InsertIntoACyclicSortedList {
             prev = curr;
             curr = curr.next;
         }
+
+
+        // NOTE !!! below OP is out of while loop
+        // NOTE !!! node is the new node with insertVal val ( Node node = new Node(insertVal);)
         prev.next = node;
         node.next = curr;
+
         return head;
     }
 
