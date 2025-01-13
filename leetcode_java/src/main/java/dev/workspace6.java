@@ -3102,8 +3102,92 @@ public class workspace6 {
    *
    */
 
+  // IDEA: SCANNING LINE
+  public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+      // edge
+      if(firstList.length == 0 || secondList.length == 0){
+          return new int[][]{};
+      }
+      // prepare list
+      // [ val, status ], status: 1 (start), -1 (end)
+      List<List<Integer>> statusList = new ArrayList<>();
+      //
+      for(int[] x: firstList){
+          List<Integer> tmp1 = new ArrayList<>();
+          tmp1.add(x[0]);
+          tmp1.add(1);
 
-  // IDEA: 2 POINTERS
+          List<Integer> tmp2 = new ArrayList<>();
+          tmp2.add(x[1]);
+          tmp2.add(-1);
+
+          statusList.add(tmp1);
+          statusList.add(tmp2);
+      }
+
+      for(int[] x: secondList){
+          List<Integer> tmp1 = new ArrayList<>();
+          tmp1.add(x[0]);
+          tmp1.add(1);
+
+          List<Integer> tmp2 = new ArrayList<>();
+          tmp2.add(x[1]);
+          tmp2.add(-1);
+
+          statusList.add(tmp1);
+          statusList.add(tmp2);
+      }
+
+      System.out.println(">>> (before) statusList = " + statusList);
+
+      // sort
+      Collections.sort(statusList, new Comparator<List<Integer>>(){
+          @Override
+          public int compare(List<Integer> a, List<Integer> b){
+              // 1) compare on idx (small first) 2) compare on status (start (1) first)
+              int res = a.get(0) - b.get(0);
+              if(res == 0){
+                  return b.get(1) - a.get(1);
+              }
+              return res;
+          }
+      });
+
+      System.out.println(">>> (after) statusList = " + statusList);
+
+      int prev = -1; // ???
+      int cnt = 0;
+      List<List<Integer>> preRes = new ArrayList<>();
+      for(List<Integer> x: statusList){
+          // ????
+          if (cnt == 2 && prev != -1){
+              List<Integer> tmp2 = new ArrayList<>();
+              // ???
+              tmp2.add(prev);
+              tmp2.add(x.get(1)); // ?????
+              preRes.add(tmp2);
+              cnt = 0; // ???
+          }
+
+          if (x.get(1) == 1){
+              cnt += 1;
+          }
+
+          prev = x.get(0); // ??
+      }
+
+      int[][] res = new int[preRes.size()][2];
+
+      for(int k = 0; k < preRes.size(); k++){
+          res[k] = new int[]{preRes.get(k).get(0), preRes.get(k).get(1)}; // ??? TODO: check !!!!
+      }
+
+      System.out.println(">>> res = " + res);
+
+      return res;
+  }
+
+      // IDEA: 2 POINTERS
     // 10.01 - 10.30 am
   /**
    *
@@ -3115,65 +3199,65 @@ public class workspace6 {
    *
    *
    */
-  public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
-
-      // edge
-      if(firstList.length == 0 || secondList.length == 0){
-          return new int[][]{};
-      }
-
-      // 2 pointers
-      // define 2 pointers, one for firstList, the other for secondList
-      int i = 0;
-      int j = 0;
-      List<List<Integer>> collected = new ArrayList<>();
-      // ONLY loop while i < firstList len and j < secondList
-      while(i < firstList.length && j < secondList.length){
-          int[] firstVal = firstList[i];
-          int[] secondVal = secondList[j];
-          int maxStart = Math.max(firstVal[0], secondVal[0]);
-          int minEnd = Math.min(firstVal[1], secondVal[1]);
-          // check if there is an overlap
-          if (maxStart <= minEnd){
-              List<Integer> cur = new ArrayList<>();
-              // start idx
-              cur.add(maxStart);
-              // end idx
-              cur.add(minEnd);
-              collected.add(cur);
-          }
-
-          // NOTE !!! move idx in list if it NOT possible to make any new overlap
-          //          per current idx
-          // ??? check ????
-//          if (maxStart > firstVal[1]){
-//              i += 1;
+//  public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+//
+//      // edge
+//      if(firstList.length == 0 || secondList.length == 0){
+//          return new int[][]{};
+//      }
+//
+//      // 2 pointers
+//      // define 2 pointers, one for firstList, the other for secondList
+//      int i = 0;
+//      int j = 0;
+//      List<List<Integer>> collected = new ArrayList<>();
+//      // ONLY loop while i < firstList len and j < secondList
+//      while(i < firstList.length && j < secondList.length){
+//          int[] firstVal = firstList[i];
+//          int[] secondVal = secondList[j];
+//          int maxStart = Math.max(firstVal[0], secondVal[0]);
+//          int minEnd = Math.min(firstVal[1], secondVal[1]);
+//          // check if there is an overlap
+//          if (maxStart <= minEnd){
+//              List<Integer> cur = new ArrayList<>();
+//              // start idx
+//              cur.add(maxStart);
+//              // end idx
+//              cur.add(minEnd);
+//              collected.add(cur);
 //          }
-//          if (maxStart > secondVal[1]){
-//              j += 1;
+//
+//          // NOTE !!! move idx in list if it NOT possible to make any new overlap
+//          //          per current idx
+//          // ??? check ????
+////          if (maxStart > firstVal[1]){
+////              i += 1;
+////          }
+////          if (maxStart > secondVal[1]){
+////              j += 1;
+////          }
+//          // Move the pointer for the interval that ends first
+//          if (firstVal[1] < secondVal[1]) {
+//              i++;
+//          } else {
+//              j++;
 //          }
-          // Move the pointer for the interval that ends first
-          if (firstVal[1] < secondVal[1]) {
-              i++;
-          } else {
-              j++;
-          }
-      }
-
-      System.out.println(">>> collected = " + collected);
-
-      //int[][] res = new int[collected.size()][collected.size()];
-      int[][] res = new int[collected.size()][2];
-      for(int k = 0; k < collected.size(); k++){
-          //res[i] = new int[][]{ { collected[0], collected[1] } };
-          //res[k] = new int[]{ 1,2 };
-          res[k] = new int[]{collected.get(k).get(0), collected.get(k).get(1)}; // ??? TODO: check !!!!
-      }
-
-      System.out.println(">>> res = " + res);
-
-      return res;
-  }
+//      }
+//
+//      System.out.println(">>> collected = " + collected);
+//
+//      //int[][] res = new int[collected.size()][collected.size()];
+//      int[][] res = new int[collected.size()][2];
+//      for(int k = 0; k < collected.size(); k++){
+//          //res[i] = new int[][]{ { collected[0], collected[1] } };
+//          //res[k] = new int[]{ 1,2 };
+//          res[k] = new int[]{collected.get(k).get(0), collected.get(k).get(1)}; // ??? TODO: check !!!!
+//      }
+//
+//      System.out.println(">>> res = " + res);
+//
+//      return res;
+//  }
 
 //  public class IntervalStatus{
 //      int idx;
