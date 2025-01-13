@@ -43,9 +43,101 @@ import java.util.List;
 public class IntervalListIntersections {
 
     // V0
-//    public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
-//
-//    }
+    // IDEA: 2 POINTER (on 2 arrays) + boundary check (fixed by gpt)
+    class Solution {
+        public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+
+            // edge
+            if (firstList.length == 0 || secondList.length == 0) {
+                return new int[][] {};
+            }
+
+            // 2 pointers
+            // define 2 pointers, one for firstList, the other for secondList
+            int i = 0;
+            int j = 0;
+            List<List<Integer>> collected = new ArrayList<>();
+            // ONLY loop while i < firstList len and j < secondList
+            while (i < firstList.length && j < secondList.length) {
+                int[] firstVal = firstList[i];
+                int[] secondVal = secondList[j];
+                int maxStart = Math.max(firstVal[0], secondVal[0]);
+                int minEnd = Math.min(firstVal[1], secondVal[1]);
+                // check if there is an overlap
+                if (maxStart <= minEnd) {
+                    List<Integer> cur = new ArrayList<>();
+                    // start idx
+                    cur.add(maxStart);
+                    // end idx
+                    cur.add(minEnd);
+                    collected.add(cur);
+                }
+
+                // NOTE !!! below is WRONG
+                // NOTE !!! move idx in list if it NOT possible to make any new overlap
+                // per current idx
+                // if (maxStart > firstVal[1]){
+                // i += 1;
+                // }
+                // if (maxStart > secondVal[1]){
+                // j += 1;
+                // }
+
+                // Move the pointer for the interval that ends first
+                // NOTE !!! use below logic instead
+                /**
+                 *  NOTE !!! we only move `1 idx` at once
+                 *
+                 *
+                 * The logic for moving the pointers is based on the
+                 * idea of always advancing to the next potential overlap in
+                 * the list that ends first. Here's the reasoning behind it:
+                 *
+                 *
+                 * Given two intervals:
+                 *
+                 * firstVal = [start1, end1] from firstList
+                 * secondVal = [start2, end2] from secondList
+                 *
+                 *
+                 * -> We compare end1 and end2 (the end times of both intervals):
+                 *
+                 * -> If end1 < end2:
+                 *     This means that the interval in firstList ends earlier
+                 *     than the interval in secondList. So, we increment
+                 *     the pointer i to move to the next interval in firstList
+                 *     because the current interval from firstList is finished,
+                 *     and no further intersections with the current interval from secondList can happen.
+                 *
+                 * -> If end1 >= end2:
+                 *     This means that the interval in secondList ends earlier
+                 *     (or at the same time as the firstList interval).
+                 *     Therefore, we increment the pointer j to move to the next interval in secondList,
+                 *     because the current interval from secondList is finished,
+                 *     and no further intersections with the current interval from firstList can happen.
+                 *
+                 */
+                if (firstVal[1] < secondVal[1]) {
+                    i++;
+                } else {
+                    j++;
+                }
+            }
+
+           // System.out.println(">>> collected = " + collected);
+
+            // NOTE !!! init res with (list.size(), 2) dimension
+            int[][] res = new int[collected.size()][2];
+            for (int k = 0; k < collected.size(); k++) {
+                res[k] = new int[] { collected.get(k).get(0), collected.get(k).get(1) }; // ??? TODO: check !!!!
+            }
+
+            //System.out.println(">>> res = " + res);
+
+            return res;
+        }
+
+    }
 
     // V0-1
     // IDEA: SCANNING LINE (fixed by gpt)
