@@ -105,4 +105,26 @@ public class ArraySortTest {
 
         System.out.println(">>> (after) arr = " + Arrays.asList(arr));
     }
+
+    @Test
+    public void testSort2DArray_1(){
+        // [1, 1], [6, -1], [10, 1], [16, -1], [1, 1], [4, -1], [5, 1], [11, -1]
+        int[][] events = new int[][]{ {1,1}, {1,-1}, {2,1}, {3,1}, {5,-1}, {3,-1} };
+        //events.sort((a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+
+        System.out.println(">>> (before) events = " + Arrays.deepToString(events));
+        Arrays.sort(events, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                if (diff == 0){
+                    return o1[1] - o2[1];
+                }
+                return diff;
+            }
+        });
+
+        System.out.println(">>> (after) events = " + Arrays.deepToString(events));
+
+    }
 }
