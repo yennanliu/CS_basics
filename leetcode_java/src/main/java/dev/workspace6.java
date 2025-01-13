@@ -2841,6 +2841,7 @@ public class workspace6 {
      */
 
 
+
 //    class Node {
 //        public int val;
 //        public Node next;
@@ -2856,8 +2857,69 @@ public class workspace6 {
 //            next = _next;
 //        }
 //    };
-
+//
+    /**
+     *  IDEA: LIST NODE OP
+     *
+     *  loop over node (head)
+     *  if   heed.next < insertVal < head.prev
+     *     -> insert (via node op)
+     *
+     *  if insertVal < `end node` && insertVal > `start node`
+     *    -> insert (via node op)
+     *     -> use a hashSet track visited node
+     *     -> if "already visited node" is reached
+     *     -> means `reach the end of node`
+     *
+     */
     public Node insert(Node head, int insertVal) {
+        // edge
+        if (head == null){
+            return new Node(insertVal);
+        }
+        if (head.next == null){
+            head.next = new Node(insertVal);
+            return head; // ??
+        }
+        Set<Integer> visited = new HashSet<>();
+        // ???
+        //int prev = -1; // ???
+        Node _prev = null;
+        // ??? DOUBLE check end condition
+        while (true){
+            int val = head.val;
+            visited.add(val);
+
+            Node _next = head.next;
+            //Node _prev = new
+            Node _new = new Node(insertVal);
+
+            // case 1) found "to-insert" within node loop
+            if(_prev != null && insertVal >= _prev.val && insertVal <= _next.val){
+                Node _cur = head;
+                //Node _new = new Node(insertVal);
+                _prev.next = _new;
+                _new.next = _next;
+                break; // already inserted, quit loop
+            }
+
+            // case 2) if insertVal < `end node` && insertVal > `start node`
+            if (visited.contains(head.val)){
+                _prev.next = _new;
+                _new.next = head;
+                // ???
+                break;
+            }
+
+            _prev = head;
+            head = head.next;
+        }
+
+        return null;
+    }
+
+
+    public Node insert_1(Node head, int insertVal) {
 
       // edge
       if(head == null){
