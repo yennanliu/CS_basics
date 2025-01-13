@@ -3101,66 +3101,140 @@ public class workspace6 {
    *  IDEA 2: Scanning line ??
    *
    */
-  public class IntervalStatus{
-      int idx;
-      String status;
 
-      public int getIdx() {
-          return idx;
-      }
 
-      public void setIdx(int idx) {
-          this.idx = idx;
-      }
-
-      public String getStatus() {
-          return status;
-      }
-
-      public void setStatus(String status) {
-          this.status = status;
-      }
-
-      public IntervalStatus(int idx, String status){
-          this.idx = idx;
-          this.status = status;
-      }
-  }
+  // IDEA: 2 POINTERS
+    // 10.01 - 10.30 am
+  /**
+   *
+   * Input: A = [[0,2],[5,10],[13,23],[24,25]], B = [[1,5],[8,12],[15,24],[25,26]]
+   * Output: [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]
+   * Reminder: The inputs and the desired output are lists of Interval objects, and not arrays or lists.
+   *
+   *
+   *
+   *
+   */
   public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
 
       // edge
-      if (firstList == null || secondList == null){
-          if (firstList == null){
-              return new int[][]{};
-          }
+      if(firstList.length == 0 || secondList.length == 0){
           return new int[][]{};
       }
 
-      // prepare to-scan list
-      List<IntervalStatus> statusList = new ArrayList<>();
-      for(int[] x: firstList){
-          int open = x[0];
-          int close = x[1];
-          statusList.add(new IntervalStatus(open, "open-1"));
-          statusList.add(new IntervalStatus(close, "close-1"));
+      // 2 pointers
+      // define 2 pointers, one for firstList, the other for secondList
+      int i = 0;
+      int j = 0;
+      List<List<Integer>> collected = new ArrayList<>();
+      // ONLY loop while i < firstList len and j < secondList
+      while(i < firstList.length && j < secondList.length){
+          int[] firstVal = firstList[i];
+          int[] secondVal = secondList[j];
+          int maxStart = Math.max(firstVal[0], secondVal[0]);
+          int minEnd = Math.min(firstVal[1], secondVal[1]);
+          // check if there is an overlap
+          if (maxStart <= minEnd){
+              List<Integer> cur = new ArrayList<>();
+              // start idx
+              cur.add(maxStart);
+              // end idx
+              cur.add(minEnd);
+              collected.add(cur);
+          }
+
+          // NOTE !!! move idx in list if it NOT possible to make any new overlap
+          //          per current idx
+          // ??? check ????
+//          if (maxStart > firstVal[1]){
+//              i += 1;
+//          }
+//          if (maxStart > secondVal[1]){
+//              j += 1;
+//          }
+          // Move the pointer for the interval that ends first
+          if (firstVal[1] < secondVal[1]) {
+              i++;
+          } else {
+              j++;
+          }
       }
 
-      for(int[] x: secondList){
-          int open = x[0];
-          int close = x[1];
-          statusList.add(new IntervalStatus(open, "open-2"));
-          statusList.add(new IntervalStatus(close, "close-2"));
+      System.out.println(">>> collected = " + collected);
+
+      //int[][] res = new int[collected.size()][collected.size()];
+      int[][] res = new int[collected.size()][2];
+      for(int k = 0; k < collected.size(); k++){
+          //res[i] = new int[][]{ { collected[0], collected[1] } };
+          //res[k] = new int[]{ 1,2 };
+          res[k] = new int[]{collected.get(k).get(0), collected.get(k).get(1)}; // ??? TODO: check !!!!
       }
 
-      List<List<Integer>> cache = new ArrayList<>();
+      System.out.println(">>> res = " + res);
 
-      for(IntervalStatus intervalStatus: statusList){
-
-      }
-
-
-      return null;
+      return res;
   }
+
+//  public class IntervalStatus{
+//      int idx;
+//      String status;
+//
+//      public int getIdx() {
+//          return idx;
+//      }
+//
+//      public void setIdx(int idx) {
+//          this.idx = idx;
+//      }
+//
+//      public String getStatus() {
+//          return status;
+//      }
+//
+//      public void setStatus(String status) {
+//          this.status = status;
+//      }
+//
+//      public IntervalStatus(int idx, String status){
+//          this.idx = idx;
+//          this.status = status;
+//      }
+//  }
+//  public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+//
+//      // edge
+//      if (firstList == null || secondList == null){
+//          if (firstList == null){
+//              return new int[][]{};
+//          }
+//          return new int[][]{};
+//      }
+//
+//      // prepare to-scan list
+//      List<IntervalStatus> statusList = new ArrayList<>();
+//      for(int[] x: firstList){
+//          int open = x[0];
+//          int close = x[1];
+//          statusList.add(new IntervalStatus(open, "open-1"));
+//          statusList.add(new IntervalStatus(close, "close-1"));
+//      }
+//
+//      for(int[] x: secondList){
+//          int open = x[0];
+//          int close = x[1];
+//          statusList.add(new IntervalStatus(open, "open-2"));
+//          statusList.add(new IntervalStatus(close, "close-2"));
+//      }
+//
+//      List<List<Integer>> cache = new ArrayList<>();
+//
+//      for(IntervalStatus intervalStatus: statusList){
+//
+//      }
+//
+//
+//      return null;
+//  }
 
 
 
