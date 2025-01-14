@@ -2359,41 +2359,96 @@ public class workspace6 {
      *  -> use IDEA 2) first
      */
 
-
+    // IDEA: sort on map key and val
     public List<String> topKFrequent(String[] words, int k) {
-
-        // IDEA: map sorting
-        HashMap<String, Integer> freq = new HashMap<>();
-        for (int i = 0; i < words.length; i++) {
-            freq.put(words[i], freq.getOrDefault(words[i], 0) + 1);
+        // edge
+        if (words == null || words.length == 0){
+            return new ArrayList<>();
         }
-        List<String> res = new ArrayList(freq.keySet());
+        if (words.length == 1 && k == 1){
+            List<String> res = new ArrayList<>();
+            res.add(words[0]);
+            return res;
+        }
 
-        /**
-         * NOTE !!!
+        // get map
+        Map<String, Integer> map = new HashMap<>();
+        for(String x: words){
+            int cur = map.getOrDefault(x, 0);
+            map.put(x, cur+1);
+        }
+
+        // get keys
+        List<String> keyList = new ArrayList<>(map.keySet());
+
+        /** sort map
          *
-         *  we directly sort over map's keySet
-         *  (with the data val, key that read from map)
-         *
-         *
-         *  example:
-         *
-         *          Collections.sort(res,
-         *                 (w1, w2) -> freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : freq.get(w2) - freq.get(w1));
+         *   1) sort on val (decreasing order)
+         *   2) if same val, sort on key (lexicographical order)
          */
-        Collections.sort(res, (x, y) -> {
-            int valDiff = freq.get(y) - freq.get(x); // sort on `value` bigger number first (decreasing order)
-            if (valDiff == 0){
-                // Sort on `key length` short key first (increasing order)
-                //return y.length() - x.length(); // ?
-                return x.compareTo(y);
+
+//        Collections.sort(keyList, new Comparator<List<String>>(){
+//
+//            @Override
+//            public int compare(List<String> o1, List<String> o2) {
+//                return 0;
+//            }
+//        })
+
+        Collections.sort(keyList, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = map.get(o2) - map.get(o1);
+                if (diff == 0){
+                   // return o1.length() - o2.length(); ???
+                   return o1.compareTo(o2);
+                }
+                return diff;
             }
-            return valDiff;
         });
 
-        // get top K result
-        return res.subList(0, k);
+
+      List<String> res = new ArrayList<>();
+//      while (k >= 0){
+//          res.add();
+//      }
+      return null;
     }
+
+//    public List<String> topKFrequent(String[] words, int k) {
+//
+//        // IDEA: map sorting
+//        HashMap<String, Integer> freq = new HashMap<>();
+//        for (int i = 0; i < words.length; i++) {
+//            freq.put(words[i], freq.getOrDefault(words[i], 0) + 1);
+//        }
+//        List<String> res = new ArrayList(freq.keySet());
+//
+//        /**
+//         * NOTE !!!
+//         *
+//         *  we directly sort over map's keySet
+//         *  (with the data val, key that read from map)
+//         *
+//         *
+//         *  example:
+//         *
+//         *          Collections.sort(res,
+//         *                 (w1, w2) -> freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : freq.get(w2) - freq.get(w1));
+//         */
+//        Collections.sort(res, (x, y) -> {
+//            int valDiff = freq.get(y) - freq.get(x); // sort on `value` bigger number first (decreasing order)
+//            if (valDiff == 0){
+//                // Sort on `key length` short key first (increasing order)
+//                //return y.length() - x.length(); // ?
+//                return x.compareTo(y);
+//            }
+//            return valDiff;
+//        });
+//
+//        // get top K result
+//        return res.subList(0, k);
+//    }
 
 
 //    public List<String> topKFrequent(String[] words, int k) {
