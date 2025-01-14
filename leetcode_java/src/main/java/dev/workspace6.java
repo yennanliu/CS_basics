@@ -3462,4 +3462,80 @@ public class workspace6 {
      * int param_2 = obj.sumRange(left,right);
      */
 
+    // LC 332
+    // ReconstructItinerary
+    /**
+     *  332. Reconstruct Itinerary
+     *
+     *
+     * Given a list of airline tickets represented by pairs
+     * of departure and arrival airports [from, to],
+     *
+     * -----> `reconstruct the itinerary in order.`
+     *
+     * All of the tickets belong to a man who departs from JFK.
+     * Thus, the itinerary must begin with JFK.
+     *
+     * ----> the itinerary must begin with JFK.
+     *
+     * Note:
+     *
+     * If there are multiple valid itineraries, you should
+     * return the itinerary that has the smallest lexical order
+     * when read as a single string. For example,
+     * the itinerary ["JFK", "LGA"] has a smaller lexical order than ["JFK", "LGB"].
+     * All airports are represented by three capital letters (IATA code).
+     * You may assume all tickets form at least one valid itinerary.
+     * Example 1:
+     *
+     * Input: [["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]
+     * Output: ["JFK", "MUC", "LHR", "SFO", "SJC"]
+     * Example 2:
+     *
+     * Input: [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
+     * Output: ["JFK","ATL","JFK","SFO","ATL","SFO"]
+     * Explanation: Another possible reconstruction is ["JFK","SFO","ATL","JFK","ATL","SFO"].
+     *              But it is larger in lexical order.
+     *
+     *
+     *
+     *
+     * NOTE !!!
+     *
+     *  1) [from, to]
+     *
+     *  2) If there are multiple valid itineraries,
+     *    you should return the itinerary that has the smallest lexical order
+     *
+     *
+     *  EXP 1)
+     *
+     *  Input: [["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]
+     *
+     *  -> Output: ["JFK", "MUC", "LHR", "SFO", "SJC"]]
+     *
+     *
+     *  EXP 2)
+     *
+     *  Input: [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
+     *
+     *  -> Output: ["JFK","ATL","JFK","SFO","ATL","SFO"]
+     *
+     * Explanation: Another possible reconstruction is ["JFK","SFO","ATL","JFK","ATL","SFO"].
+     *              But it is larger in lexical order.
+     *
+     *
+     *
+     *  10.50 AM
+     *
+     *  IDEA 1) TOPOLOGICAL SORT -> accept `duplicated` element ????
+     *
+     *
+     *  IDEA 2) DFS
+     */
+    public List<String> findItinerary(List<List<String>> tickets) {
+
+        return null;
+    }
+
 }
