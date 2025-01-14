@@ -110,21 +110,42 @@ public class workspace7 {
 //        System.out.println(updateStringWithIdx(myStr, "xxxx", 0));
 
         // ------------------- TEST 8: array add val to element
-        int[] arr = new int[3];
-        arr[0] = 0;
-        arr[1] = 1;
-        arr[2] = 2;
-        System.out.println("(before) arr = ");
-        for(int x: arr){
-            System.out.println(x);
+//        int[] arr = new int[3];
+//        arr[0] = 0;
+//        arr[1] = 1;
+//        arr[2] = 2;
+//        System.out.println("(before) arr = ");
+//        for(int x: arr){
+//            System.out.println(x);
+//        }
+//
+//        arr[0] = arr[0]+1;
+//
+//        System.out.println("(after) arr = " + Arrays.asList(arr));
+//        for(int x: arr){
+//            System.out.println(x);
+//        }
+
+        // ------------------- TEST 9 TEST PRESUM
+        List<Integer> preSum = new ArrayList<>();
+        List<Integer> data = new ArrayList<>();
+        data.add(1);
+        data.add(2);
+        data.add(3);
+        data.add(4);
+
+        int cur = 0;
+        preSum.add(cur);
+        for(int i = 0; i < data.size(); i++){
+            cur += data.get(i);
+            preSum.add(cur);
         }
 
-        arr[0] = arr[0]+1;
+        System.out.println(">>> data = " + data);
+        System.out.println(">>> preSum = " + preSum);
 
-        System.out.println("(after) arr = " + Arrays.asList(arr));
-        for(int x: arr){
-            System.out.println(x);
-        }
+
+        System.out.println(">>> sum(1,2) = " + (preSum.get(3) - preSum.get(1)));
 
     }
 

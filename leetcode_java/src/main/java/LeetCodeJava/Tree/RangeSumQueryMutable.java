@@ -1,6 +1,10 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/range-sum-query-mutable/description/
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 307. Range Sum Query - Mutable
  * Medium
@@ -58,6 +62,46 @@ public class RangeSumQueryMutable {
 //        public int sumRange(int left, int right) {
 //
 //        }
+//    }
+
+    // V0-1
+    // TLE, TODO: optimize & fix
+//    class NumArray {
+//
+//        List<Integer> preSum;
+//        int[] nums;
+//
+//        public NumArray(int[] nums) {
+//            this.nums = nums;
+//            // pre-sum array
+//            this.getPreSumArray(nums);
+//        }
+//
+//        public void update(int index, int val) {
+//            this.nums[index] = val;
+//            // update preSum
+//            this.getPreSumArray(nums);
+//        }
+//
+//        public int sumRange(int left, int right) {
+//
+//            if (right < left) {
+//                return -1; // or throw exception
+//            }
+//
+//            return this.preSum.get(right + 1) - this.preSum.get(left);
+//        }
+//
+//        private void getPreSumArray(int[] nums) {
+//            this.preSum = new ArrayList<>();
+//            this.preSum.add(0);
+//            int cur = 0;
+//            for (int i = 0; i < nums.length; i++) {
+//                cur += nums[i];
+//                this.preSum.add(cur);
+//            }
+//        }
+//
 //    }
 
 
