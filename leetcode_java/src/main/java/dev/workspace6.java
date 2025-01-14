@@ -3383,5 +3383,83 @@ public class workspace6 {
 //  }
 
 
+  // LC 307
+  /**
+   *  307. Range Sum Query - Mutable
+   * Given an integer array nums,
+   * find the sum of the elements between indices i and j (i ≤ j), inclusive.
+   *
+   * The update(i, val) function modifies nums by updating the element at index i to val.
+   *
+   * Example:
+   *
+   * Given nums = [1, 3, 5]
+   *
+   * sumRange(0, 2) -> 9
+   * update(1, 2)
+   * sumRange(0, 2) -> 8
+   * Note:
+   *
+   * The array is only modifiable by the update function.
+   * You may assume the number of calls to update and sumRange function is distributed evenly.
+   * Difficulty:
+   *
+   *
+   *
+   *  IDEA 1) brute force
+   *        -> maintain an array, keep updating element per idx,
+   *        -> once there is a query, get sub-array sum at a time
+   *
+   *  IDEA 2) brute force with pre-sum array
+   *       -> maintain an array, keep updating element per idx,
+   *       -> update presum array accordingly (per above)
+   *       -> then the sub-array sum can be obtained via
+   *           - sum(i,j) = preSum(j+1) - preSum(i)
+   *
+   */
+  class NumArray {
+
+      List<Integer> preSum;
+      int[] nums;
+
+      public NumArray(int[] nums) {
+          this.nums = nums;
+          // pre-sum array
+          this.getPreSumArray(nums);
+      }
+
+      public void update(int index, int val) {
+          this.nums[index] = val;
+          // update preSum
+          this.getPreSumArray(nums);
+      }
+
+      public int sumRange(int left, int right) {
+
+          if (right < left){
+              return -1; // or throw exception
+          }
+
+          return this.preSum.get(right+1) - this.preSum.get(left);
+      }
+
+      private void getPreSumArray(int[] nums){
+          this.preSum = new ArrayList<>();
+          this.preSum.add(0);
+          int cur = 0;
+          for(int i = 0; i < nums.length; i++){
+              cur += nums[i];
+              this.preSum.add(cur);
+          }
+      }
+
+  }
+
+    /**
+     * Your NumArray object will be instantiated and called as such:
+     * NumArray obj = new NumArray(nums);
+     * obj.update(index,val);
+     * int param_2 = obj.sumRange(left,right);
+     */
 
 }
