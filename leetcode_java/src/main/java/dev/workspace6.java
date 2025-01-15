@@ -3750,6 +3750,18 @@ public class workspace6 {
      * -> find the maximum length of a subarray that sums to k.
      *
      *
+     *  TODO: check if `preSum == k` already happended before (within loop over nunms)
+     *
+     *  -> if preSum == k existed
+     *     (let's say current idx = j, and a previous idx = i, can make sum(i, j) == k)
+     *     -> preSum(j) - preSum(i) = k
+     *     -> preSum(j) if what we have  (preSum)
+     *     -> so need to check if `preSum(j) - k` exists in map
+     *
+     *
+     *
+     *
+     *
      *
      *  IDEA 1) HASH HAP
      *
