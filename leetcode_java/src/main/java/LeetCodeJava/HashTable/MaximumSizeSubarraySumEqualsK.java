@@ -131,6 +131,16 @@ public class MaximumSizeSubarraySumEqualsK {
              * 	    •	If a subarray [start, i] has a sum equal to k, the difference curSum - k corresponds to the prefix sum at start - 1. Since the map stores all previously seen prefix sums, this difference is guaranteed to be checked.
              *
              */
+            /**
+             *
+             *   TODO: check if `preSum == k` already existed before (within loop over nunms)
+             *
+             *    -> if preSum == k existed
+             *    -> (let's say current idx = j, and a previous idx = i, can make sum(i, j) == k)
+             *    -> `preSum(j) - preSum(i) = k`  !!!!
+             *      -> preSum(j) if what we have  (preSum)
+             *      ----> so need to check if `preSum(j) - k` exists in map  !!!
+             */
             if (preSumMap.containsKey(curSum - k)) {
                 maxSize = Math.max(maxSize, i - preSumMap.get(curSum - k));
             }
@@ -143,7 +153,7 @@ public class MaximumSizeSubarraySumEqualsK {
     }
 
     // V0-2
-    // IDEA: Hash MAP + PRESUM
+    // IDEA: Hash MAP + PRE-SUM ARRAY
     // TODO: validate
     public int maxSubArrayLen_0_2(int[] nums, int k) {
         // Edge case
@@ -163,6 +173,16 @@ public class MaximumSizeSubarraySumEqualsK {
             sum += nums[i]; // Update the cumulative sum
 
             // Check if there is a previous cumulative sum such that the difference is k
+            /**
+             *
+             *   TODO: check if `preSum == k` already existed before (within loop over nunms)
+             *
+             *    -> if preSum == k existed
+             *    -> (let's say current idx = j, and a previous idx = i, can make sum(i, j) == k)
+             *    -> `preSum(j) - preSum(i) = k`  !!!!
+             *      -> preSum(j) if what we have  (preSum)
+             *      ----> so need to check if `preSum(j) - k` exists in map  !!!
+             */
             if (map.containsKey(sum - k)) {
                 // The length of the subarray is the difference between the current index and the first occurrence of (sum - k)
                 res = Math.max(res, i - map.get(sum - k));
