@@ -142,6 +142,42 @@ public class MaximumSizeSubarraySumEqualsK {
         return maxSize;
     }
 
+    // V0-2
+    // IDEA: Hash MAP + PRESUM
+    // TODO: validate
+    public int maxSubArrayLen_0_2(int[] nums, int k) {
+        // Edge case
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int res = 0;
+        int sum = 0;
+
+        // Build map: {cumulative sum: first occurrence index}
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1); // To handle the case where the subarray starts from index 0
+
+        // Loop through the nums array
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i]; // Update the cumulative sum
+
+            // Check if there is a previous cumulative sum such that the difference is k
+            if (map.containsKey(sum - k)) {
+                // The length of the subarray is the difference between the current index and the first occurrence of (sum - k)
+                res = Math.max(res, i - map.get(sum - k));
+            }
+
+            // If the cumulative sum hasn't been seen before, store it with the current index
+            if (!map.containsKey(sum)) {
+                map.put(sum, i);
+            }
+        }
+
+        return res;
+    }
+
+
     // V1
     // https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/solutions/1017059/java-prefix-sums/
     public int maxSubArrayLen(int[] nums, int k) {

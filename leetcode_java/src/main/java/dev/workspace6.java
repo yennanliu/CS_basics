@@ -5,6 +5,7 @@ import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.LinkedList.InsertIntoACyclicSortedList;
 import LeetCodeJava.Recursion.PopulatingNextRightPointersInEachNode2;
+import LeetCodeJava.Recursion.SumOfLeftLeaves;
 //import jdk.javadoc.internal.doclets.toolkit.util.Utils;
 
 import java.util.*;
@@ -3712,6 +3713,148 @@ public class workspace6 {
         System.out.println(">>> (before) keys = " + keys);
 
         return wall.size() - keys.get(0);
+    }
+
+    // LC 325
+    /**
+     *  325. Maximum Size Subarray Sum Equals k
+     *
+     *
+     * Given an array nums and a target value k,
+     * find the maximum length of a subarray that sums to k.
+     * If there isn't one, return 0 instead.
+     *
+     * Note:
+     * The sum of the entire nums array is guaranteed to fit
+     * within the 32-bit signed integer range.  ???
+     *
+     * Example 1:
+     *
+     * Input: nums = [1, -1, 5, -2, 3], k = 3
+     * Output: 4
+     * Explanation: The subarray [1, -1, 5, -2] sums to 3 and is the longest.
+     *
+     *
+     * Example 2:
+     *
+     * Input: nums = [-2, -1, 2, 1], k = 1
+     * Output: 2
+     * Explanation: The subarray [-1, 2] sums to 1 and is the longest.
+     *
+     *
+     * Follow Up:
+     * Can you do it in O(n) time?
+     *
+     *
+     *
+     * -> find the maximum length of a subarray that sums to k.
+     *
+     *
+     *
+     *  IDEA 1) HASH HAP
+     *
+     *   -> step 1) build map and record `pre sum` and its index
+     *       { preSum : idx } ???
+     *
+     *   -> step 2) loop over nums
+     *       since  x + preSUm = k  ( x is current nums val)
+     *       -> then preSum = k - x
+     *
+     *       presum + x  = k
+     *
+     *       -> x = presum - k (x is the val in map)
+     *
+     *
+     *       sum - k = x
+     *
+     *       -> k = sum - x
+     *
+     *
+     *       -> so need to check if `k-x` is in map
+     *       -> if yes, get its distance ( curIdx - (idx of `k-x` in map)
+     *       -> maintain the `longest distance`
+     *
+     *    -> step 3) return result
+     *
+
+     *   Exp 1)
+     *
+     *   Input: nums = [1, -1, 5, -2, 3], k = 3
+     *
+     *   -> preSum = [1, 0, 5, 3, 6]
+     *
+     *    { preSum : idx } ???
+     *    map = {0:0} // init state ?????
+     *
+     *   -> map = {0:0, 1:0, 0:1, 5:2, 3:3, 6: 5}
+     *
+     *   -> loop over nums
+     *     -> num = 1, k-x = 2, 2 not in map
+     *     -> num = -1, k - x = 4, not in map
+     *     -> num = 5, k - x = -2, not in map
+     *     -> num = -2, k - x = 5, in map, -> dist = abs(2 - 3 + 1) = 2
+     *     -> num = 3, k - x = 0, in map -> dist = abs(4 - 1 + 1) = 4
+     *
+     *     -> so max dist = 3, -> res = 4
+     *
+     *
+     *
+     *
+     *  EXP 2)
+     *
+     *  Input: nums = [-2, -1, 2, 1], k = 1
+     *
+     *  -> preSum = [-2, -3, -1, 0]
+     *
+     *  {preSum, idx}
+     *  -> map = {0:0, -2:0, -3:1, -1:2, 0:3}
+     *
+     *  -> loop over nums
+     *
+     *  -> num = -2, k-x = 3, not in map
+     *  -> num = -1, k - x = 2, not in map
+     *  -> num = 2, k - x = -1, in map, dist = abs(2-2+1) = 1
+     *
+     *
+     *  -> num = 1, k - x = 0, in map, dist = abs(3-0+1) = 4
+     *
+     *
+     *
+     *
+     */
+    public int maxSubArrayLen(int[] nums, int k) {
+        // edge
+        if (nums == null || nums.length == 0){
+            return 0;
+        }
+
+        int res = 0;
+
+        // build map
+        // {preSum: idx}
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0,0); // init state ????
+
+        int preSum = 0;
+
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            preSum += val;
+            int cnt = map.getOrDefault(preSum, 0);
+            map.put(preSum, cnt);
+        }
+        System.out.println(">>> map = " + map);
+
+        // loop over nums
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            if(map.containsKey(k - val)){
+                res = Math.max(res, Math.abs(i - map.get(k-val) + 1));
+            }
+        }
+
+        return res;
+
     }
 
 }
