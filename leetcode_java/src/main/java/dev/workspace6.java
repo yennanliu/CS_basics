@@ -3593,4 +3593,125 @@ public class workspace6 {
         return null;
     }
 
+    // LC 554
+    // 9.51 am - 10.30 am
+    /**
+     * 554. Brick Wall
+     * There is a brick wall in front of you.
+     * The wall is rectangular and has several rows of bricks.
+     * The bricks have the same height but different width.
+     * You want to draw a vertical line from the top to the bottom and cross the least bricks.
+     *
+     * The brick wall is represented by a list of rows.
+     * Each row is a list of integers representing the width of
+     * each brick in this row from left to right.
+     *
+     * If your line go through the edge of a brick, then the
+     * brick is not considered as crossed. You need to find
+     * out how to draw the line to cross the least bricks
+     * and return the number of crossed bricks.
+     *
+     * You cannot draw a line just along one of the two vertical
+     * edges of the wall, in which case the line will obviously cross no bricks.
+     *
+     *
+     *
+     * Example:
+     *
+     * Input: [[1,2,2,1],
+     *         [3,1,2],
+     *         [1,3,2],
+     *         [2,4],
+     *         [3,1,2],
+     *         [1,3,1,1]]
+     *
+     * Output: 2
+     *
+     * Explanation:
+     *
+     *
+     *
+     * Note:
+     *
+     * The width sum of bricks in different rows are the same and won't exceed INT_MAX.
+     * The number of bricks in each row is in range [1,10,000].
+     * The height of wall is in range [1,10,000].
+     * Total number of bricks of the wall won't exceed 20,000.
+     *
+     *
+     * ->  you want to draw a vertical line from the top
+     *     to the bottom and cross the least bricks.
+     *
+     *
+     *
+     *  IDEA:  COUNTER + SCANNING LINE ???
+     *
+     *
+     *
+     *
+     *  EXP 1)
+     *
+     *      * Input: [[1,2,2,1],
+     *      *         [3,1,2],
+     *      *         [1,3,2],
+     *      *         [2,4],
+     *      *         [3,1,2],
+     *      *         [1,3,1,1]]
+     *      *
+     *
+     *
+     *      -> cnt = {1:1, 3: 1, 5: 1, 6:1}
+     *      -> cnt = {1:1, 3: 2, 4:1, 5: 1, 6:2}
+     *      -> cnt = {1:2, 3: 2, 4:2, 5: 1, 6:3}
+     *      -> cnt = {1:2, 2:1, 3: 2, 4:2, 5: 1, 6:4}
+     *      -> cnt = {1:2, 2:1, 3: 2, 4:3, 5: 1, 6:5}
+     *
+     *
+     *
+     *      -> cnt = {1:3, 2:1, 3: 2, 4:4, 5: 2, 6:6}
+     *
+     **/
+    public int leastBricks(List<List<Integer>> wall) {
+
+        // edge
+        if (wall.isEmpty()){
+            return 0;
+        }
+
+        int res = 0;
+        Map<Integer, Integer> cnt = new HashMap<>();
+        // build counter map
+        // TODO: optimize double loop
+        for(List<Integer> w: wall){
+            int cumSum = 0;
+            for(Integer x: w){
+                cumSum += x;
+                int val = cnt.getOrDefault(x, 0);
+                cnt.put(cumSum, val+1);
+            }
+        }
+
+        // sort on val
+        List<Integer> keys = new ArrayList<>(cnt.keySet());
+
+        // edge case : wall are all the same
+        if(keys.size() == 1){
+            return wall.size();
+        }
+
+        System.out.println(">>> (before) keys = " + keys);
+
+        Collections.sort(keys, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                // sort on val, decreasing order
+                return cnt.get(o2) - cnt.get(o1);
+            }
+        });
+
+        System.out.println(">>> (before) keys = " + keys);
+
+        return wall.size() - keys.get(0);
+    }
+
 }
