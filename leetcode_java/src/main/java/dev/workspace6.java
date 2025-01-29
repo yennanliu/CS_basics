@@ -3869,4 +3869,113 @@ public class workspace6 {
 
     }
 
+    // LC 310
+    // https://leetcode.com/problems/minimum-height-trees/
+    // 3.10 pm - 3.30 pm
+    /**
+     *
+     *
+     *  in the tree,
+     *  you can choose any node of the tree as the root.
+     *  When you select a node x as the root,
+     *  the result tree has height h.
+     *
+     *  -> those with minimum height (i.e. min(h))
+     *  are called minimum height trees (MHTs).
+     *
+     *  minimum height trees (MHTs).
+     *
+     *  The `height` of a rooted tree is the number of edges on
+     *  the longest downward path between the root and a leaf.
+     *
+     *  (dist : root -> leaf)
+     *
+     *
+     */
+    /**
+     *  IDEA : BFS
+     *
+     *  step 1) get all nodes (as set)
+     *  step 2) go through nodes, set each node as root
+     *          , get and save dist between root and other nodes
+     *  step 3) get the min dist, return the node have same dist as result
+     *
+     */
+    class NodeDist{
+        Integer root;
+        Integer node;
+        Integer dist;
+
+        public Integer getDist() {
+            return dist;
+        }
+
+        public void setDist(Integer dist) {
+            this.dist = dist;
+        }
+
+        public Integer getNode() {
+            return node;
+        }
+
+        public void setNode(Integer node) {
+            this.node = node;
+        }
+
+        public Integer getRoot() {
+            return root;
+        }
+
+        public void setRoot(Integer root) {
+            this.root = root;
+        }
+
+        NodeDist(Integer root, Integer node, Integer dist){
+            this.root = root;
+            this.node = node;
+            this.dist = dist;
+        }
+    }
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+
+        // edge
+        if (n == 0){
+            return new ArrayList<>();
+        }
+
+        // get node set
+        Set<Integer> set = new HashSet<>();
+        for(int i = 0; i < n; i++){
+            set.add(i);
+        }
+
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int[] e: edges){
+            List<Integer> tmp = map.getOrDefault(e[0], new ArrayList<>());
+            tmp.add(e[1]);
+            map.put(e[0], tmp);
+        }
+
+        // init result
+        List<Integer> res = new ArrayList<>();
+
+
+        // init queue
+        Queue<NodeDist> queue = new LinkedList<>();
+        queue.add(new NodeDist(0, 0, 0)); // default add `root` to queue
+        while(!queue.isEmpty()){
+            NodeDist nodeDist = queue.poll();
+            Integer dist = nodeDist.dist;
+            //Integer node = nodeDist.node;
+            Integer root = nodeDist.root;
+            if(map.containsKey(root)){
+                for(int x : map.get(root)){
+                    queue.add(new NodeDist(root, x, dist+1));
+                }
+            }
+        }
+
+        return res;
+    }
+
 }
