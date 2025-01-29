@@ -8,6 +8,7 @@ import LeetCodeJava.Recursion.PopulatingNextRightPointersInEachNode2;
 import LeetCodeJava.Recursion.SumOfLeftLeaves;
 //import jdk.javadoc.internal.doclets.toolkit.util.Utils;
 
+import java.awt.image.VolatileImage;
 import java.util.*;
 
 public class workspace6 {
@@ -3976,6 +3977,89 @@ public class workspace6 {
         }
 
         return res;
+    }
+
+    // LC 529
+    // https://leetcode.com/problems/minesweeper/
+    // 4.44 pm - 5.10 pm
+    /**
+     *
+     *  IDEA : BFS
+     *
+     */
+    public char[][] updateBoard(char[][] board, int[] click) {
+
+        // edge
+        if (board.length == 1 && board[0].length == 1){
+            if(board[0][0] == 'M'){
+                board[0][0] = 'X';
+            }
+            return board;
+        }
+
+        Set<List<Integer>> set = new HashSet(); // ?
+        int l = board.length;
+        int w = board[0].length;
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                char cur = board[i][j];
+                if (cur == 'M'){
+                    List<Integer> tmp = new ArrayList<>();
+                    tmp.add(j);
+                    tmp.add(i);
+                    set.add(tmp);
+                }
+            }
+        }
+
+        if (set.isEmpty()){
+            return null;
+        }
+
+        // update `mine` neighbor
+        Set<List<Integer>> visited = new HashSet<>();
+//        for(List<Integer> coord: set){
+//            // update board
+//            updateMineNeighborVal(coord, visited, board);
+//        }
+
+        // case 1) if "click" 'X'
+        List<Integer> clickPosition = new ArrayList<>();
+        clickPosition.add(click[0]);
+        clickPosition.add(click[1]);
+        if (set.contains(clickPosition)){
+            board[click[0]][click[1]] = 'X';
+            updateMineNeighborVal(clickPosition, visited, board);
+        }
+
+        // case 2) if NOT "click" 'X'
+        return board;
+    }
+
+    public void updateMineNeighborVal(List<Integer> coord, Set<List<Integer>> visited, char[][] board){
+        int x = coord.get(0);
+        int y = coord.get(1);
+
+        int l = board.length;
+        int w = board[0].length;
+
+        int[][] dirs = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+        Queue<List<Integer>> q = new LinkedList<>();
+
+        // update 'X' ????
+        for(int[] dir: dirs){
+            int x_ = x + dir[0];
+            int y_ = y + dir[1];
+            List<Integer> newPosition = new ArrayList<>();
+            newPosition.add(x_);
+            newPosition.add(y_);
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ <= l && !visited.contains(newPosition) && board[y_][x_] == 'M'){
+                visited.add(newPosition);
+                //board[y_][x_] = In + 1;
+                board[y_][x_] = 'X';
+                q.add(newPosition);
+            }
+        }
     }
 
 }
