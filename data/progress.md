@@ -3,6 +3,29 @@
 # 2025-01-29
 - https://github.com/yennanliu/CS_basics/blob/master/doc/Leetcode_company_frequency-master/Google%206months-%20LeetCode.pdf
 - TODO: go through `neetcode`, note/summary knowledges (by topic) at cheatsheet
+	- neetcode
+		- all
+			- https://neetcode.io/practice
+			- easy : 152
+			- mid : 351
+			- hard: 81
+		- blind 75
+			- https://neetcode.io/practice?tab=blind75
+		- needcode 150
+			- https://neetcode.io/practice?tab=neetcode150
+		- needcode 250
+			- https://neetcode.io/practice?tab=neetcode250
+		- neetcode all
+			- https://neetcode.io/practice?tab=allNC
+	- grind 169
+		- https://www.techinterviewhandbook.org/grind75/?weeks=28&hours=6
+		- mid only (102)
+			- https://www.techinterviewhandbook.org/grind75/?weeks=28&hours=6&difficulty=Medium
+	- plan
+		- blind 75
+			- https://neetcode.io/practice?tab=blind75
+			- 5 / day ->  15 days to finish
+
 
 # 2025-01-12
 - https://github.com/yennanliu/CS_basics/blob/master/doc/Leetcode_company_frequency-master/Google%206months-%20LeetCode.pdf
