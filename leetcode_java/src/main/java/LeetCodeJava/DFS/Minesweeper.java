@@ -96,8 +96,45 @@ public class Minesweeper {
         int rows = board.length;
         int cols = board[0].length;
 
-        // Boundary check and already revealed check
-        if (x < 0 || x >= rows || y < 0 || y >= cols || board[x][y] != 'E') {
+    // Boundary check and already revealed check
+    /** NOTE !!!
+     *
+     *  - 1) 'E' represents an unrevealed empty square,
+     *
+     *  - 2) board[x][y] != 'E'
+     *      -> ensures that we only process unrevealed empty cells ('E')
+     *         and avoid unnecessary recursion.
+     *
+     * 	 - 3) board[x][y] != 'E'
+     * 	 •	Avoids re-processing non-‘E’ cells
+     * 	 •	The board can have:
+     * 	    •	'M' → Mine (already handled separately)
+     * 	    •	'X' → Clicked mine (game over case)
+     *  	•	'B' → Blank (already processed)
+     * 	    •	'1' to '8' → Number (already processed)
+     * 	•	If a cell is not 'E', it means:
+     * 	    •	It has already been processed
+     * 	    •	It does not need further expansion
+     * 	•	This prevents infinite loops and redundant checks.
+     *
+     *
+     * 	- 4) example:
+     *
+     * 	   input:
+     * 	        E E E
+     *          E M E
+     *          E E E
+     *
+     *   Click at (0,0)
+     * 	    1.	We call reveal(board, 0, 0), which:
+     * 	        •	Counts 1 mine nearby → Updates board[0][0] = '1'
+     * 	        •	Does NOT recurse further, avoiding unnecessary work.
+     *
+     *      What If We Didn’t Check board[x][y] != 'E'?
+     * 	        •	It might try to expand into already processed cells, leading to redundant computations or infinite recursion.
+     *
+     */
+    if (x < 0 || x >= rows || y < 0 || y >= cols || board[x][y] != 'E') {
             return;
         }
 

@@ -1545,3 +1545,116 @@ private void dfs(int[][] heights, boolean[][] reachable, int y, int x) {
     }
 }  
 ```
+
+### 2-12) Minesweeper
+
+```java
+// java
+// LC 529
+
+// (there is also BFS solution)
+
+// V1
+// IDEA: DFS + ARRAY OP (GPT)
+public char[][] updateBoard_1(char[][] board, int[] click) {
+    int rows = board.length;
+    int cols = board[0].length;
+
+    int x = click[0], y = click[1];
+
+    // Edge case: 1x1 grid
+    if (rows == 1 && cols == 1) {
+        if (board[0][0] == 'M') {
+            board[0][0] = 'X';
+        } else {
+            board[0][0] = 'B'; // Fix: properly set 'B' if it's 'E'
+        }
+        return board;
+    }
+
+    // If a mine is clicked, mark as 'X'
+    if (board[x][y] == 'M') {
+        board[x][y] = 'X';
+        return board;
+    }
+
+    // Otherwise, reveal cells recursively
+    reveal_1(board, x, y);
+    return board;
+}
+
+private void reveal_1(char[][] board, int x, int y) {
+    int rows = board.length;
+    int cols = board[0].length;
+
+// Boundary check and already revealed check
+/** NOTE !!!
+ *
+ *  - 1) 'E' represents an unrevealed empty square,
+ *
+ *  - 2) board[x][y] != 'E'
+ *      -> ensures that we only process unrevealed empty cells ('E')
+ *         and avoid unnecessary recursion.
+ *
+ *   - 3) board[x][y] != 'E'
+ *   •  Avoids re-processing non-‘E’ cells
+ *   •  The board can have:
+ *      •   'M' → Mine (already handled separately)
+ *      •   'X' → Clicked mine (game over case)
+ *      •   'B' → Blank (already processed)
+ *      •   '1' to '8' → Number (already processed)
+ *  •   If a cell is not 'E', it means:
+ *      •   It has already been processed
+ *      •   It does not need further expansion
+ *  •   This prevents infinite loops and redundant checks.
+ *
+ *
+ *  - 4) example:
+ *
+ *     input:
+ *          E E E
+ *          E M E
+ *          E E E
+ *
+ *   Click at (0,0)
+ *      1.  We call reveal(board, 0, 0), which:
+ *          •   Counts 1 mine nearby → Updates board[0][0] = '1'
+ *          •   Does NOT recurse further, avoiding unnecessary work.
+ *
+ *      What If We Didn’t Check board[x][y] != 'E'?
+ *          •   It might try to expand into already processed cells, leading to redundant computations or infinite recursion.
+ *
+ */
+if (x < 0 || x >= rows || y < 0 || y >= cols || board[x][y] != 'E') {
+        return;
+    }
+
+    // Directions for 8 neighbors
+    int[][] directions = {
+            { -1, -1 }, { -1, 0 }, { -1, 1 },
+            { 0, -1 }, { 0, 1 },
+            { 1, -1 }, { 1, 0 }, { 1, 1 }
+    };
+
+    // Count adjacent mines
+    int mineCount = 0;
+    for (int[] dir : directions) {
+        int newX = x + dir[0];
+        int newY = y + dir[1];
+        if (newX >= 0 && newX < rows && newY >= 0 && newY < cols && board[newX][newY] == 'M') {
+            mineCount++;
+        }
+    }
+
+    // If there are adjacent mines, show count
+    if (mineCount > 0) {
+        board[x][y] = (char) ('0' + mineCount);
+    } else {
+        // Otherwise, reveal this cell and recurse on neighbors
+        board[x][y] = 'B';
+        for (int[] dir : directions) {
+            reveal_1(board, x + dir[0], y + dir[1]);
+        }
+    }
+}
+```
