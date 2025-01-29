@@ -64,6 +64,71 @@ public class Minesweeper {
 //    }
 
     // V1
+    // IDEA: DFS + ARRAY OP (GPT)
+    public char[][] updateBoard_1(char[][] board, int[] click) {
+        int rows = board.length;
+        int cols = board[0].length;
+
+        int x = click[0], y = click[1];
+
+        // Edge case: 1x1 grid
+        if (rows == 1 && cols == 1) {
+            if (board[0][0] == 'M') {
+                board[0][0] = 'X';
+            } else {
+                board[0][0] = 'B'; // Fix: properly set 'B' if it's 'E'
+            }
+            return board;
+        }
+
+        // If a mine is clicked, mark as 'X'
+        if (board[x][y] == 'M') {
+            board[x][y] = 'X';
+            return board;
+        }
+
+        // Otherwise, reveal cells recursively
+        reveal_1(board, x, y);
+        return board;
+    }
+
+    private void reveal_1(char[][] board, int x, int y) {
+        int rows = board.length;
+        int cols = board[0].length;
+
+        // Boundary check and already revealed check
+        if (x < 0 || x >= rows || y < 0 || y >= cols || board[x][y] != 'E') {
+            return;
+        }
+
+        // Directions for 8 neighbors
+        int[][] directions = {
+                { -1, -1 }, { -1, 0 }, { -1, 1 },
+                { 0, -1 }, { 0, 1 },
+                { 1, -1 }, { 1, 0 }, { 1, 1 }
+        };
+
+        // Count adjacent mines
+        int mineCount = 0;
+        for (int[] dir : directions) {
+            int newX = x + dir[0];
+            int newY = y + dir[1];
+            if (newX >= 0 && newX < rows && newY >= 0 && newY < cols && board[newX][newY] == 'M') {
+                mineCount++;
+            }
+        }
+
+        // If there are adjacent mines, show count
+        if (mineCount > 0) {
+            board[x][y] = (char) ('0' + mineCount);
+        } else {
+            // Otherwise, reveal this cell and recurse on neighbors
+            board[x][y] = 'B';
+            for (int[] dir : directions) {
+                reveal_1(board, x + dir[0], y + dir[1]);
+            }
+        }
+    }
 
     // V2
     // IDEA: DFS
