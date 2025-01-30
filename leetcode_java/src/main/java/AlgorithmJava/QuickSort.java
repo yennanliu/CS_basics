@@ -1,7 +1,10 @@
 package AlgorithmJava;
 
-// https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2870/
-
+/**
+ *  Quick Sort implementation V1
+ *
+ *  https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2870/
+ */
 public class QuickSort {
 
     public void quickSort(int [] lst) {

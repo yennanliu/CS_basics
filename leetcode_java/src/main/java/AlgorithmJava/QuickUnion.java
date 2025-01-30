@@ -1,6 +1,9 @@
 package AlgorithmJava;
 
 /**
+   Quick Union implementation V1
+
+
      (Created by GPT)
 
      Quick Union with Path Compression Example

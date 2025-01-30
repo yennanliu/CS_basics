@@ -1,10 +1,9 @@
 package AlgorithmJava;
 
-/** UnionFind implemented in java
+/** UnionFind implementation V1
  *
  *  (algorithm book (labu) p.418)
  */
-
 public class UnionFind {
     // attr
 
