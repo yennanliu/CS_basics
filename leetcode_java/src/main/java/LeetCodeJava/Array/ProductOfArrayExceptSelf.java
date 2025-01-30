@@ -5,7 +5,7 @@ package LeetCodeJava.Array;
 public class ProductOfArrayExceptSelf {
 
     // VO
-    // IDEA : ARRAY PRODCUT
+    // IDEA : ARRAY PRODUCT
     public int[] productExceptSelf(int[] nums) {
 
         if (nums.length == 0 || nums.equals(null)){
@@ -43,6 +43,44 @@ public class ProductOfArrayExceptSelf {
             product = product * i;
         }
         return product;
+    }
+
+    // V0-1
+    // LC 238
+    public int[] productExceptSelf_0_1(int[] nums) {
+
+        // edge
+        if(nums == null || nums.length == 0){
+            return new int[]{};
+        }
+
+        int[] res = new int[nums.length];
+        // get all product
+        int product = 1;
+        for(int x: nums){
+            product = product * x;
+        }
+
+        for(int i = 0; i < nums.length; i++){
+            if (nums[i] != 0){
+                res[i] = product / nums[i];
+            }else{
+                res[i] = getProductExceptIdx(nums, i);
+            }
+        }
+
+        return res;
+    }
+
+    private int getProductExceptIdx(int[] nums, int idx){
+        int res = 1;
+        for(int i = 0; i < nums.length; i++){
+            if(i != idx){
+                res = res * nums[i];
+            }
+        }
+
+        return res;
     }
 
     // V1

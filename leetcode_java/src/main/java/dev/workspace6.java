@@ -4263,4 +4263,81 @@ public class workspace6 {
         return keyList.get(0);
     }
 
+    // LC 271
+    // https://leetcode.ca/2016-08-27-271-Encode-and-Decode-Strings/
+    // 4.33 - 4.50 pm
+    public class Codec {
+
+        // Encodes a list of strings to a single string.
+        public String encode(List<String> strs) {
+            // edge
+            if(strs == null || strs.isEmpty()){
+                return "";
+            }
+            StringBuilder sb = new StringBuilder();
+            for(String x: strs){
+                sb.append(x);
+                sb.append(",");
+            }
+            return sb.toString();
+        }
+
+        // Decodes a single string to a list of strings.
+        public List<String> decode(String s) {
+            // edge
+            if(s == null || s.isEmpty()){
+                return new ArrayList<>();
+            }
+
+            List<String> res = new ArrayList<>();
+
+            String[] tmp = s.split(",");
+            for(String x: tmp){
+                if(x != null && !x.isEmpty()){
+                    res.add(x);
+                }
+            }
+
+            return res;
+        }
+    }
+
+    // LC 238
+    public int[] productExceptSelf(int[] nums) {
+
+        // edge
+        if(nums == null || nums.length == 0){
+            return new int[]{};
+        }
+
+        int[] res = new int[nums.length];
+        // get all product
+        int product = 1;
+        for(int x: nums){
+            product = product * x;
+        }
+
+        for(int i = 0; i < nums.length; i++){
+            if (nums[i] != 0){
+                res[i] = product / nums[i];
+            }else{
+                res[i] = getProductExceptIdx(nums, i);
+            }
+        }
+
+        return res;
+    }
+
+    private int getProductExceptIdx(int[] nums, int idx){
+        int res = 1;
+        for(int i = 0; i < nums.length; i++){
+            if(i != idx){
+                res = res * nums[i];
+            }
+        }
+
+        return res;
+    }
+
+
 }
