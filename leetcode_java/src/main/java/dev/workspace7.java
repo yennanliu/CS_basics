@@ -127,25 +127,35 @@ public class workspace7 {
 //        }
 
         // ------------------- TEST 9 TEST PRESUM
-        List<Integer> preSum = new ArrayList<>();
-        List<Integer> data = new ArrayList<>();
-        data.add(1);
-        data.add(2);
-        data.add(3);
-        data.add(4);
+//        List<Integer> preSum = new ArrayList<>();
+//        List<Integer> data = new ArrayList<>();
+//        data.add(1);
+//        data.add(2);
+//        data.add(3);
+//        data.add(4);
+//
+//        int cur = 0;
+//        preSum.add(cur);
+//        for(int i = 0; i < data.size(); i++){
+//            cur += data.get(i);
+//            preSum.add(cur);
+//        }
+//
+//        System.out.println(">>> data = " + data);
+//        System.out.println(">>> preSum = " + preSum);
+//
+//
+//        System.out.println(">>> sum(1,2) = " + (preSum.get(3) - preSum.get(1)));
 
-        int cur = 0;
-        preSum.add(cur);
-        for(int i = 0; i < data.size(); i++){
-            cur += data.get(i);
-            preSum.add(cur);
-        }
-
-        System.out.println(">>> data = " + data);
-        System.out.println(">>> preSum = " + preSum);
 
 
-        System.out.println(">>> sum(1,2) = " + (preSum.get(3) - preSum.get(1)));
+        // ------------------- TEST 10 TEST ARRAY SORT
+       int[] nums = new int[]{0,3,7,2,5,8,4,6,0,1};
+       Arrays.sort(nums);
+       //System.out.println(Arrays.asList(nums));
+       for(int x: nums){
+           System.out.println(x);
+       }
 
     }
 

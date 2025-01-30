@@ -4339,5 +4339,112 @@ public class workspace6 {
         return res;
     }
 
+  // LC 128
+  // 4.59 - 5.20 pm
+  /**
+   * Given an unsorted array of integers nums,
+   * return the length of the longest consecutive elements sequence.
+   *
+   * You must write an algorithm that runs in O(n) time.
+   *
+   *
+   *
+   *  exp 1
+   *
+   *  nums = [100,4,200,1,3,2]
+   *
+   *  -> sorted = [1,2,3,4,100,200]
+   *  -> so, 4 ([1,2,3,4])
+   *
+   *
+   *  exp 2
+   *
+   *  nums = [0,3,7,2,5,8,4,6,0,1]
+   *  -> sorted = [0,0,1,2,3,4,5,6,7,8]
+   *
+   *
+   *  -> IDEA: SORT + 2 POINTERS
+   *
+   *  exp 1)
+   *
+   *  step 1) sort:
+   *   nums = [100,4,200,1,3,2]
+   *   -> sorted = [1,2,3,4,100,200]
+   *
+   *
+   * step 2) 2 pointers
+   *   [1,2,3,4,100,200]
+   *    i j            len = 1
+   *    i   j          len = 2
+   *    i    j         len = 3
+   *    i      j       len = 4
+   *            ij     len = 1
+   *                ji len = 4
+   *                   len = 4
+   *
+   *  exp 2)
+   *
+   *   step 1)
+   *   nums = [0,3,7,2,5,8,4,6,0,1]
+   *    -> sorted = [0,0,1,2,3,4,5,6,7,8]
+   *
+   *   step 2) 2 pointers
+   *
+   *
+   *   [0,0,1,2,3,4,5,6,7,8]
+   *   i  j                  len=1
+   *      i j                len=2
+   *      i   j              len=3
+   *      i     j            len=4
+   *      i      j           len=5
+   *      i        j
+   *      ....
+   *
+   *      i              j  len=9
+   *
+   *  exp 3)
+   *
+   *  nums = [1,2,0,1]
+   *
+   *  -> sorted :  [0,1,1,2]
+   *
+   */
+  public int longestConsecutive(int[] nums) {
+
+      // edge
+      if(nums == null || nums.length == 0){
+          return 0;
+      }
+
+      // use set, to only collect `non-duplicated` elements
+      Set<Integer> set = new HashSet<>();
+      for(int x: nums){
+          set.add(x);
+      }
+
+      List<Integer> numList = new ArrayList<>();
+      for(int x: set){
+          numList.add(x);
+      }
+
+      // sort
+      //Arrays.sort(nums);
+      Collections.sort(numList);
+      int res = 1;
+      int i = 0;
+      int j = 1;
+
+      while(j < numList.size()){
+          if(numList.get(j) == numList.get(j-1)+1){
+              res = Math.max(res, j-i+1);
+          }else{
+              i = j;
+          }
+          j += 1;
+      }
+
+     return res;
+  }
+
 
 }
