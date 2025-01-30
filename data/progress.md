@@ -1,5 +1,11 @@
 # Progress
 
+
+# 2025-01-30
+- blind 75
+	- https://neetcode.io/practice?tab=blind75
+	- 5 / day ->  15 days to finish
+
 # 2025-01-29
 - https://github.com/yennanliu/CS_basics/blob/master/doc/Leetcode_company_frequency-master/Google%206months-%20LeetCode.pdf
 - TODO: go through `neetcode`, note/summary knowledges (by topic) at cheatsheet
