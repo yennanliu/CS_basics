@@ -8,8 +8,10 @@ import LeetCodeJava.Recursion.PopulatingNextRightPointersInEachNode2;
 import LeetCodeJava.Recursion.SumOfLeftLeaves;
 //import jdk.javadoc.internal.doclets.toolkit.util.Utils;
 
+import java.awt.*;
 import java.awt.image.VolatileImage;
 import java.util.*;
+import java.util.List;
 
 public class workspace6 {
     public static void main(String[] args) {
@@ -4060,6 +4062,205 @@ public class workspace6 {
                 q.add(newPosition);
             }
         }
+    }
+
+    // LC 217
+    public boolean containsDuplicate(int[] nums) {
+
+        // edge
+        if (nums == null || nums.length == 0){
+            return false;
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for(int x: nums){
+            if(set.contains(x)){
+                return false;
+            }
+            set.add(x);
+        }
+
+        return true;
+    }
+
+    // LC 242
+    public boolean isAnagram(String s, String t) {
+        // edge
+        if (s == null || t == null){
+            return false;
+        }
+        if (s.equals(t)){
+            return false;
+        }
+        Map<String, Integer> map_s = new HashMap<>();
+        for(String x: s.split("")){
+            int cnt = map_s.getOrDefault(x,0);
+            map_s.put(x, cnt+1);
+        }
+
+        Map<String, Integer> map_t = new HashMap<>();
+        for(String x: t.split("")){
+            int cnt = map_t.getOrDefault(x,0);
+            map_t.put(x, cnt+1);
+        }
+
+        for(String k: map_s.keySet()){
+            if(!map_t.containsKey(k) || !map_t.get(k).equals(map_s.get(k))){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // LC 001
+    public int[] twoSum(int[] nums, int target) {
+        // map
+        // {val: idx}
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < nums.length; i++){
+            map.put(nums[i], i);
+        }
+
+        for(int i = 0; i < nums.length; i++){
+            // x + y = target
+            // -> y = target - x
+           if(map.containsKey(target - nums[i]) && map.get(target - nums[i]) != i){
+               return new int[]{i,map.get(target - nums[i])};
+           }
+        }
+
+        // if not found, return {-1,-1}
+        //int[] res = new int[]{-1,-1};
+        return new int[]{-1,-1};
+    }
+
+    // LC 49
+    public List<List<String>> groupAnagrams(String[] strs) {
+
+        // edge
+        if (strs == null || strs.length == 0){
+            return null; // ?
+        }
+
+        Map<String, List<String>> map = new HashMap<>();
+        for(String x: strs){
+            // copy and reorder
+            String[] x_Array = x.split("");
+            Arrays.sort(x_Array);
+            String sortedStr = Arrays.toString(x_Array);
+            List<String> tmp = new ArrayList<>();
+            if(map.containsKey(sortedStr)){
+                tmp = map.get(sortedStr);
+//                tmp.add(x);
+//                map.put(sortedStr, tmp);
+            }
+            tmp.add(x);
+            map.put(sortedStr, tmp);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        List<List<String>> res = new ArrayList<>();
+        /** NOTE !!! below */
+        for(String val: map.keySet()){
+            res.add(map.get(val));
+        }
+        return res;
+    }
+
+    // LC 374
+    // idea: custom sorting on map value
+    public int[] topKFrequent(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return new int[]{};
+        }
+        // map
+        // {val: cnt}
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: nums){
+            int cnt = map.getOrDefault(x, 0);
+            map.put(x, cnt+1);
+        }
+
+        //Set<Integer> keys = map.keySet();
+        //List<Set<Integer>> x = Arrays.asList(map.keySet());
+        ArrayList<Integer> keyList = new ArrayList<>(map.keySet());
+
+        System.out.println(">>> before sort, keyList = " + keyList);
+
+        // sort on value (decreasing order, e.g. big -> small)
+        Collections.sort(keyList, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff =  map.get(o2) - map.get(o1);
+                return diff; // ??
+            }
+        });
+
+        System.out.println(">>> after sort, keyList = " + keyList);
+
+        int[] res = new int[k];
+
+        int w = 0;
+        while(w < k){
+            res[w] = keyList.get(w); // ??
+            w += 1;
+        }
+
+        return res;
+    }
+
+    // LC 2284
+    // https://leetcode.com/problems/sender-with-largest-word-count/
+    // 3.57 pm - 4.15 pm
+    // idea: map custom sorting ( with val and key lex)
+    public String largestWordCount(String[] messages, String[] senders) {
+        // edge
+        if(messages.length == 0 || senders.length == 0){
+            return null;
+        }
+
+        // map: {sender, word_cnt}
+        Map<String, Integer> map = new HashMap<>();
+//        for(int i = 0; i < messages.length; i++){
+//            String sender = senders[i];
+//            String msg = messages[i];
+//            Integer tmp = map.getOrDefault(sender, 0);
+//            map.put(sender, tmp + msg.split("").length);
+//        }
+
+        for (int i = 0; i < messages.length; i++) {
+            String sender = senders[i];
+            int wordCount = messages[i].split("\\s+").length; // Fix: Correct word split
+            map.put(sender, map.getOrDefault(sender, 0) + wordCount);
+        }
+
+
+        // get key list
+        List<String> keyList = new ArrayList<>(map.keySet());
+
+        System.out.println(">>> before sort keyList = " + keyList);
+
+        // sort
+        Collections.sort(keyList, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = map.get(o2) - map.get(o1);
+//                if (lengthComparison == 0) {
+//                    return o1.compareTo(o2); // lexicographical order
+//                }
+                if(diff == 0){
+                    return o1.compareTo(o2);
+                }
+                return diff;
+            }
+        });
+
+        System.out.println(">>> after sort keyList = " + keyList);
+
+        return keyList.get(0);
     }
 
 }
