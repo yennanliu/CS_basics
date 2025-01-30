@@ -1,7 +1,11 @@
 package AlgorithmJava;
 
-// https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2868/
-
+/**
+ *  MergeSort Top Down V1
+ *
+ *
+ *   https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2868/
+ */
 import java.util.Arrays;
 
 public class MergeSortTopDown {

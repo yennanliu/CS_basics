@@ -4446,5 +4446,75 @@ public class workspace6 {
      return res;
   }
 
+  // quick sort
+  /**
+   *  ALGO:
+   *
+   *  input: [1,3,2,5,4]
+   *
+   *  step 1) find `pivot`, can be random select
+   *   -> choose `middle` element (3) as pivot
+   *
+   *  step 2) move `smaller than pivot` element to pivot left,
+   *          move `bigger than pivot` element to pivot right,
+   *          -> [1,2,   3,   5,4,7]
+   *
+   *  step 3) for each sub set, repeat step 1) - step 2)
+   *         [ 1,2, 3,  4,5,7]
+   *
+   *  step 4) merge sorted sub set as final result
+   *
+   *        -> [ 1,2, 3, 4,5,7]
+   *
+   *
+   *
+   *  exp 1)
+   *
+   *  input: [1,3,3,5,4,99,100]
+   *
+   *  -> pivot = 5
+   *
+   *  -> [ 1,3,3,4,  5,  99,100]
+   *
+   *  -> [ 1,3,3,4,5,99,100]
+   *
+   *
+   *
+   *  exp 2)
+   *
+   *  input = [5,4,3,2,1]
+   *
+   *  -> [ 3,2,1,  4,  5]
+   *  -> [1,2,3, 4, 5]
+   *  -> [1,2,3,4,5]
+   */
+    public List<Integer> quickSort(Integer[] input){
+        // edge
+        if (input == null || input.length == 0){
+            return new ArrayList<>();
+        }
+
+        // find pivot
+        int l = 0;
+        int r = input.length;
+        int mid = (l + r) / 2;
+        int pivot = input[mid];
+
+        //Object x = Arrays.copyOfRange(input, 0, pivot);
+        List<Integer> left = quickSort(Arrays.copyOfRange(input, 0, pivot));
+        List<Integer> right = quickSort(Arrays.copyOfRange(input, pivot, input.length-1));
+
+        // ????
+        List<Integer> res = new ArrayList<>();
+        for(Integer val: left){
+            res.add(val);
+        }
+
+        for(Integer val: right){
+            res.add(val);
+        }
+
+        return res; // ????
+    }
 
 }

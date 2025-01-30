@@ -1,6 +1,10 @@
 package AlgorithmJava;
 
-// https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/difference_array.md
+/**
+ *  DifferenceArray implementation V1
+ *
+ *  https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/difference_array.md
+ */
 
 import java.util.Arrays;
 
