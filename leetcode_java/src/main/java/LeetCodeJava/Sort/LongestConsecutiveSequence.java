@@ -1,14 +1,120 @@
 package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/longest-consecutive-sequence/
-
+/**
+ *  128. Longest Consecutive Sequence
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
+ *
+ * You must write an algorithm that runs in O(n) time.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [100,4,200,1,3,2]
+ * Output: 4
+ * Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+ * Example 2:
+ *
+ * Input: nums = [0,3,7,2,5,8,4,6,0,1]
+ * Output: 9
+ *
+ *
+ * Constraints:
+ *
+ * 0 <= nums.length <= 105
+ * -109 <= nums[i] <= 109
+ */
 import java.util.*;
 
 public class LongestConsecutiveSequence {
 
     // V0
-    // IDEA : SET + SORT + 2 POINTERS
+    // IDEA: SET + LIST SORT + 2 POINTERS
+    /**
+     *  DEMO
+     *
+     *  EXP 1)
+     *
+     *  step 1) sort:
+     *     nums = [100,4,200,1,3,2]
+     *     -> sorted = [1,2,3,4,100,200]
+     *
+     *
+     *  step 2) 2 pointers
+     *
+     *    [1,2,3,4,100,200]
+     *    i j            len = 1
+     *    i   j          len = 2
+     *    i    j         len = 3
+     *    i      j       len = 4
+     *            ij     len = 1
+     *                ji len = 4
+     *                   len = 4
+     *
+     *  EXP 2)
+     *
+     *   step 1)
+     *    nums = [0,3,7,2,5,8,4,6,0,1]
+     *    -> sorted = [0,0,1,2,3,4,5,6,7,8]
+     *
+     *   step 2) 2 pointers
+     *
+     *   [0,0,1,2,3,4,5,6,7,8]
+     *   i  j                  len=1
+     *      i j                len=2
+     *      i   j              len=3
+     *      i     j            len=4
+     *      i      j           len=5
+     *      i        j
+     *      ....
+     *
+     *      i              j  len=9
+     *
+     */
     public int longestConsecutive(int[] nums) {
+
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        // use set, to only collect `non-duplicated` elements
+        Set<Integer> set = new HashSet<>();
+        for (int x : nums) {
+            set.add(x);
+        }
+
+        List<Integer> numList = new ArrayList<>();
+        for (int x : set) {
+            numList.add(x);
+        }
+
+        // sort
+        Collections.sort(numList);
+        int res = 1;
+        int i = 0;
+        int j = 1;
+
+        while (j < numList.size()) {
+            if (numList.get(j) == numList.get(j - 1) + 1) {
+                res = Math.max(res, j - i + 1);
+            } else {
+                i = j;
+            }
+            j += 1;
+        }
+
+        return res;
+    }
+
+    // V0-1
+    // IDEA : SET + SORT + 2 POINTERS
+    public int longestConsecutive_0_1(int[] nums) {
 
         if (nums.length <= 1){
             return nums.length;
@@ -48,10 +154,10 @@ public class LongestConsecutiveSequence {
         return res;
     }
 
-    // V0
+    // V0-2
     // IDEA : SORT + SLIDING WINDOW (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/longest-consecutive-sequence.py#L32
-    public int longestConsecutive_0_1(int[] nums) {
+    public int longestConsecutive_0_2(int[] nums) {
 
         // Edge case
         if (nums.length == 0) {
@@ -137,12 +243,12 @@ public class LongestConsecutiveSequence {
         return res > 1 ? res : 1;
     }
 
-    // V0'
+    // V0-3
     // IDEA : SET + SORT + for loop
     // step 1) set : only collect unique element
     // step 2) sort, so element is in ascending ordering
     // step 3) loop over final list, and maintain a max len of sequence
-    public int longestConsecutive_0_2(int[] nums) {
+    public int longestConsecutive_0_3(int[] nums) {
 
         if (nums.length == 0 || nums.equals(null)){
             return 0;
@@ -181,14 +287,14 @@ public class LongestConsecutiveSequence {
         return ans+1;
     }
 
-    // V0''
+    // V0-4
     // IDEA : SET + SORT + SHIFT ARRAY
     // Step 1) we get unique array as new one, since we get possible longest array from it
     // Step 2) we sort unique array from above
     // Step 3) we shift to with 1 index from above unique array as shift array
     // Step 4) we loop over unique array, shift array and calculate max length when diff = 1
     // Step 5) return amx length from above
-    public int longestConsecutive_0_3(int[] nums) {
+    public int longestConsecutive_0_4(int[] nums) {
 
         if (nums.length == 0 || nums.equals(null)){
             return 0;
