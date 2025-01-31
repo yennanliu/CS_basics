@@ -1,11 +1,122 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-
+/**
+ * 121. Best Time to Buy and Sell Stock
+ * Solved
+ * Easy
+ * Topics
+ * Companies
+ * You are given an array prices where prices[i] is the price of a given stock on the ith day.
+ *
+ * You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+ *
+ * Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: prices = [7,1,5,3,6,4]
+ * Output: 5
+ * Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+ * Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+ * Example 2:
+ *
+ * Input: prices = [7,6,4,3,1]
+ * Output: 0
+ * Explanation: In this case, no transactions are done and the max profit = 0.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= prices.length <= 105
+ * 0 <= prices[i] <= 104
+ */
 public class BestTimeToBuyAndSellStock {
 
     // V0
+    // IDEA: 2 POINTERS
+    /**
+     *  IDEA: 2 POINTERS
+     *  maintain local min, max, and global max
+     *  (global max as result)
+     *
+     *
+     *  EXP 1)
+     *
+     *  Input: prices = [7,1,5,3,6,4]
+     *  -> Output: 5
+     *
+     *
+     *  prices = [7,1,5,3,6,4]
+     *            x
+     *           l_min = 7
+     *
+     *
+     *  prices = [7,1,5,3,6,4]
+     *              x
+     *              l_min = 1
+     *
+     *
+     *   prices = [7,1,5,3,6,4]
+     *                 x
+     *                 l_min = 1
+     *                 l_max = 5
+     *                 profit = 4
+     *                 g_profit = 4
+     *
+     *   prices = [7,1,5,3,6,4]
+     *                   x
+     *                   l_min = 1
+     *                   l_max = 3
+     *                   profit = 2
+     *                   g_profit = 4
+     *
+     *
+     *  prices = [7,1,5,3,6,4]
+     *                    x
+     *                    l_min = 1
+     *                    l_max = 6
+     *                    profit = 5
+     *                    g_profit = 5
+     *
+     *   prices = [7,1,5,3,6,4]
+     *                       x
+     *                       l_min = 1
+     *                       l_max = 4
+     *                       profit = 3
+     *                       g_profit = 5
+     *
+     *  -> res = 5
+     */
     public int maxProfit(int[] prices) {
+
+        // edge
+        if (prices == null || prices.length <= 1) {
+            return 0;
+        }
+
+        int globalProfit = 0;
+        int localMin = -1;
+        int localMax = -1;
+        for (int x : prices) {
+            if (localMin == -1) {
+                localMin = x;
+            } else if (x < localMin) {
+                localMin = x;
+            } else {
+                localMax = x;
+                int profit = localMax - localMin;
+                globalProfit = Math.max(globalProfit, profit);
+            }
+        }
+
+        return globalProfit;
+    }
+
+    // V0-1
+    public int maxProfit_0_1(int[] prices) {
 
         if (prices.length == 1){
             return 0;
@@ -32,8 +143,8 @@ public class BestTimeToBuyAndSellStock {
         return profit;
     }
 
-    // V0'
-    public int maxProfit_0_1(int[] prices) {
+    // V0-2
+    public int maxProfit_0_2(int[] prices) {
 
         if (prices.length == 0){
             return 0;
@@ -70,8 +181,8 @@ public class BestTimeToBuyAndSellStock {
         return res;
     }
 
-    // V0''
-    public int maxProfit_0_2(int[] prices) {
+    // V0-3
+    public int maxProfit_0_3(int[] prices) {
 
         int minVal = (int) Math.pow(10, 4);
         int maxVal = 0;
