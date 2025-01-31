@@ -1,5 +1,9 @@
 # Progress
 
+# 2025-01-31
+- blind 75
+	- https://neetcode.io/practice?tab=blind75
+	- 5 / day ->  15 days to finish
 
 # 2025-01-30
 - blind 75

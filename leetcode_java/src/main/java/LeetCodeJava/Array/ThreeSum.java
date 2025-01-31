@@ -37,9 +37,55 @@ public class ThreeSum {
     }
 
     // V2
+    // IDEA : 2 POINTERS (GPT)
+    public List<List<Integer>> threeSum_2(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        // Edge case
+        if (nums == null || nums.length < 3) {
+            return res;
+        }
+
+        // Sort array
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            // Avoid duplicates for `i`
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            int left = i + 1, right = nums.length - 1;
+            int target = -nums[i];
+
+            while (left < right) {
+                int sum = nums[left] + nums[right];
+
+                if (sum == target) {
+                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+
+                    // Skip duplicates for `left` and `right`
+                    while (left < right && nums[left] == nums[left + 1])
+                        left++;
+                    while (left < right && nums[right] == nums[right - 1])
+                        right--;
+
+                    left++;
+                    right--;
+                } else if (sum < target) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+        return res;
+    }
+
+    // V3
     // IDEA: HASH SET
     // https://leetcode.com/problems/3sum/editorial/
-    public List<List<Integer>> threeSum_2(int[] nums) {
+    public List<List<Integer>> threeSum_3(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
         for (int i = 0; i < nums.length && nums[i] <= 0; ++i)
@@ -61,10 +107,10 @@ public class ThreeSum {
         }
     }
 
-    // V3
+    // V4
     // IDEA : "No-Sort"
     // https://leetcode.com/problems/3sum/editorial/
-    public List<List<Integer>> threeSum_3(int[] nums) {
+    public List<List<Integer>> threeSum_4(int[] nums) {
         Set<List<Integer>> res = new HashSet<>();
         Set<Integer> dups = new HashSet<>();
         Map<Integer, Integer> seen = new HashMap<>();
