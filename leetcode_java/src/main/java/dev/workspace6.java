@@ -4717,5 +4717,73 @@ public class workspace6 {
         return globalProfit;
     }
 
+    // LC 121
+    /**
+     *  IDEA: HASH MAP + 2 POINTERS
+     *
+     *
+     *  EXP 1)
+     *
+     *  Input: s = "abcabcbb"
+     *  -> Output: 3
+     *
+     *
+     *  "abcabcbb"
+     *   s
+     *   f      l = 1
+     *
+     *   "abcabcbb"
+     *    sf      l = 2
+     *
+     *
+     *   "abcabcbb"
+     *    s f      l = 3
+     *
+     *  "abcabcbb"
+     *      sf      l = 3
+     *
+     *  "abcabcbb"
+     *      s f      l = 3
+     *
+     *  "abcabcbb"
+     *         sf    l = 3
+     *
+     *
+     *
+     *
+     */
+    public int lengthOfLongestSubstring(String s) {
 
+        // edge
+        if (s == null || s.isEmpty()){
+            return 0;
+        }
+
+        // hash map
+        // {val: idx}
+        Map<String, Integer> map = new HashMap<>();
+        // 2 pointers
+        // check, update map if there is duplicated val, and update max length
+        // if duplicated val, update start pointer
+        int res = 0;
+        int slow = 0; // slow pointer
+        int fast = 0; // fast pointer
+        while(fast < s.length()){
+            String cur = String.valueOf(s.charAt(fast));
+            System.out.println(">>> cur = " + cur + " fast = " + fast + " slow = " + slow + " map = " + map);
+            if (map.containsKey(cur)){
+                slow = fast;
+                // reset map
+                map = new HashMap<>(); // ???
+            }else{
+                res = Math.max(res, fast - slow+1);
+                map.put(cur, fast);
+            }
+            fast += 1;
+        }
+
+        return res;
+    }
 }
+
+
