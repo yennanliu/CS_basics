@@ -4598,5 +4598,42 @@ public class workspace6 {
         return res;
     }
 
+    // LC 11
+    /**
+     *  IDEA: 2 POINTERS
+     *
+     *  Step 0) init left, right pointer
+     *  Step 1) get cur area, then move the `smaller val` pointer
+     *  Step 2) repeat above steps, and maintain the `biggest` area
+     *  Step 3) return the biggest area as result
+     *
+     */
+    public int maxArea(int[] height) {
+        // edge
+        if (height == null || height.length == 0){
+            return 0;
+        }
+        if (height.length == 1){
+            return Math.abs(height[1] - height[0]);
+        }
+
+        // 2 pointers
+        int res = 0;
+        int l = 0;
+        int r = height.length - 1;
+        while(r > l){
+            int h = Math.min(height[l], height[r]);
+            int w = r - l;
+            res = Math.max(res, h * w);
+            if(height[l] < height[r]){
+                l += 1;
+            }else{
+                r -= 1;
+            }
+        }
+
+        return res;
+    }
+
 
 }
