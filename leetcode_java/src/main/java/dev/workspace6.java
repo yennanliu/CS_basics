@@ -4517,4 +4517,86 @@ public class workspace6 {
         return res; // ????
     }
 
+    // LC 125
+    // https://leetcode.com/problems/valid-palindrome/description/
+    public boolean isPalindrome(String s) {
+
+        String s_ = s
+                .replace(" ", "")
+                .replace(",", "")
+                .replace(".", "")
+                .replace(":", "");
+        if(s_ == null || s_.isEmpty()){
+            return true;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(String x: s_.split("")){
+            sb.append(x.toLowerCase());
+        }
+
+
+        String str = sb.toString();
+        String str_rev = sb.reverse().toString();
+
+        System.out.println(">>> str = " + str);
+        System.out.println(">>> str_rev = " + str_rev);
+
+        return str_rev.equals(str);
+    }
+
+    // LC 15
+    // idea : for loop + 2 sums
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        // edge
+        if (nums == null || nums.length == 0 || nums.length < 3){
+            return new ArrayList<>();
+        }
+
+        if (nums.length == 3){
+            if(nums[0] + nums[1] + nums[2] == 0){
+                List<List<Integer>> res = new ArrayList<>();
+                List<Integer> tmp = new ArrayList<>();
+                tmp.add(nums[0]);
+                tmp.add(nums[1]);
+                tmp.add(nums[2]);
+                res.add(tmp);
+                return res;
+            }
+            return new ArrayList<>();
+        }
+
+        // loop over 2 sums
+        // {val: idx}
+        // if x + y + z = 0
+        // -> x + y = -z
+        // -> so, all we need to do is to find if `-(x+y)` exists in map
+        Map<Integer, Integer> map = new HashMap<>();
+        List<List<Integer>> res = new ArrayList<>();
+
+        for(int i = 0; i < nums.length; i++){
+            int cur = nums[i];
+            // 2 sum
+            for(int j = i+1; j < nums.length; j++){
+                List<Integer> tmp = new ArrayList<>();
+                // x + y + z = 0
+                // -> x + y = -z
+                int x = nums[j];
+                int target = -cur - x;
+                if(map.containsKey(target) && map.get(target) != j){
+                    tmp.add(cur);
+                    tmp.add(x);
+                    tmp.add(target);
+                    res.add(tmp);
+                }
+                map.put(x, j);
+            }
+
+        }
+
+        return res;
+    }
+
+
 }
