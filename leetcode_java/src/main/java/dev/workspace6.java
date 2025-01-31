@@ -4635,5 +4635,87 @@ public class workspace6 {
         return res;
     }
 
+    // LC 121
+    /**
+     *  IDEA: 2 POINTERS
+     *  maintain local min, max, and global max
+     *  (global max as result)
+     *
+     *
+     *  EXP 1)
+     *
+     *  Input: prices = [7,1,5,3,6,4]
+     *  Output: 5
+     *
+     *
+     *  prices = [7,1,5,3,6,4]
+     *            x
+     *           l_min = 7
+     *
+     *
+     *  prices = [7,1,5,3,6,4]
+     *              x
+     *              l_min = 1
+     *
+     *
+     *   prices = [7,1,5,3,6,4]
+     *                 x
+     *                 l_min = 1
+     *                 l_max = 5
+     *                 profit = 4
+     *                 g_profit = 4
+     *
+     *   prices = [7,1,5,3,6,4]
+     *                   x
+     *                   l_min = 1
+     *                   l_max = 3
+     *                   profit = 2
+     *                   g_profit = 4
+     *
+     *
+     *  prices = [7,1,5,3,6,4]
+     *                    x
+     *                    l_min = 1
+     *                    l_max = 6
+     *                    profit = 5
+     *                    g_profit = 5
+     *
+     *   prices = [7,1,5,3,6,4]
+     *                       x
+     *                       l_min = 1
+     *                       l_max = 4
+     *                       profit = 3
+     *                       g_profit = 5
+     *
+     *
+     *
+     *  -> res = 5
+     *
+     */
+    public int maxProfit(int[] prices) {
+
+        // edge
+        if(prices == null || prices.length <= 1){
+            return 0;
+        }
+
+        int globalProfit = 0;
+        int localMin = -1;
+        int localMax = -1;
+        for(int x: prices){
+            if(localMin == -1){
+                localMin = x;
+            } else if (x < localMin){
+                localMin = x;
+            }else{
+                localMax = x;
+                int profit = localMax - localMin;
+                globalProfit = Math.max(globalProfit, profit);
+            }
+        }
+
+        return globalProfit;
+    }
+
 
 }
