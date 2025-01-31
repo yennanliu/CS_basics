@@ -1,7 +1,44 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/longest-substring-without-repeating-characters/
-
+/**
+ *  3. Longest Substring Without Repeating Characters
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Hint
+ * Given a string s, find the length of the longest
+ * substring
+ *  without repeating characters.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: s = "abcabcbb"
+ * Output: 3
+ * Explanation: The answer is "abc", with the length of 3.
+ * Example 2:
+ *
+ * Input: s = "bbbbb"
+ * Output: 1
+ * Explanation: The answer is "b", with the length of 1.
+ * Example 3:
+ *
+ * Input: s = "pwwkew"
+ * Output: 3
+ * Explanation: The answer is "wke", with the length of 3.
+ * Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+ *
+ *
+ * Constraints:
+ *
+ * 0 <= s.length <= 5 * 104
+ * s consists of English letters, digits, symbols and spaces.
+ *
+ *
+ */
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -12,6 +49,49 @@ public class LongestSubstringWithoutRepeatingCharacters {
     // V0
     // IDEA : HASHMAP + SLIDING WINDOW
     public int lengthOfLongestSubstring(String s) {
+        // Edge case
+        if (s == null || s.isEmpty()) {
+            return 0;
+        }
+
+        // Map to store the last index of characters
+        // (key: character, value: last index of character)
+        Map<Character, Integer> map = new HashMap<>();
+        int res = 0;
+        int slow = 0;
+
+        for (int fast = 0; fast < s.length(); fast++) {
+            char cur = s.charAt(fast);
+            if (map.containsKey(cur)) {
+                // Move `slow` pointer past the last occurrence of cur
+                /** NOTE !!!
+                 *
+                 *  instead of move slow pointer to fast idx,
+                 *  we MOVE slow pointer to the `last seen same element` index + 1
+                 *  (but slow idx could be`bigger` than ` map.get(cur) + 1`, so we need to get the `bigger` idx)
+                 *  (e.g. Math.max(slow, map.get(cur) + 1))
+                 */
+                slow = Math.max(slow, map.get(cur) + 1);
+            }
+
+            // Store/update the last seen index of cur
+            /**
+             * NOTE !!!
+             *
+             *  we either `add` or `update` the last seen index of cur
+             */
+            map.put(cur, fast);
+
+            // Calculate max length
+            res = Math.max(res, fast - slow + 1);
+        }
+
+        return res;
+    }
+
+    // V0-1
+    // IDEA : HASHMAP + SLIDING WINDOW
+    public int lengthOfLongestSubstring_0_1(String s) {
 
         /**
          *  key : element
@@ -64,9 +144,9 @@ public class LongestSubstringWithoutRepeatingCharacters {
         return res;
     }
 
-    // V0'
+    // V0-2
     // IDEA : SLIDING WINDOW + HASH SET
-    public int lengthOfLongestSubstring_(String s) {
+    public int lengthOfLongestSubstring_0_2(String s) {
 
         if (s.equals("")){
             return 0;
@@ -104,7 +184,7 @@ public class LongestSubstringWithoutRepeatingCharacters {
     // V1
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/longest-substring-without-repeating-characters/editorial/
-    public int lengthOfLongestSubstring_2(String s) {
+    public int lengthOfLongestSubstring_1(String s) {
         int n = s.length();
 
         int res = 0;
@@ -136,7 +216,7 @@ public class LongestSubstringWithoutRepeatingCharacters {
     // V2
     // IDEA : SLIDING WINDOW
     // https://leetcode.com/problems/longest-substring-without-repeating-characters/editorial/
-    public int lengthOfLongestSubstring_3(String s) {
+    public int lengthOfLongestSubstring_2(String s) {
         Map<Character, Integer> chars = new HashMap();
 
         int left = 0;
