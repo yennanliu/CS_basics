@@ -4784,6 +4784,115 @@ public class workspace6 {
 
         return res;
     }
+
+  // LC 424
+  // https://leetcode.com/problems/longest-repeating-character-replacement/
+  // 4.08-4.23 pm
+  /**
+   *  IDEA: 2 POINTERS + HASHMAP ??
+   *
+   *  EXP 1)
+   *
+   *  Input: s = "ABAB", k = 2
+   *  -> Output: 4
+   *
+   *
+   *  s = "AAAB", k = 2
+   *       ij      l = 2
+   *
+   *  s = "AAAB",
+   *       i j   l = 3
+   *
+   *   s = "AAAA",
+   *        i  j   l = 4
+   *
+   *  -> res = 4
+   *
+   *
+   *  EXP 2)
+   *
+   *  Input: s = "AABABBA", k = 1
+   *  -> Output: 4
+   *
+   *
+   *  s = "AABABBA"
+   *       ij       l = 2
+   *
+   * s = "AAAABBA"
+   *      i j       l = 3
+   *
+   * s = "AAAABBA"
+   *      i  j      l  = 4
+   *
+   * s = "AAAABBA"
+   *      i   j     l = 4
+   *
+   *  (move i to `last different element idx`, and reset string)
+   *
+   *  s = "AABBBBA",
+   *         ij     l 2
+   *
+   *  s = "AABBBBA",
+   *         i j     l = 3
+   *
+   *  s = "AABBBBA",
+   *         i  j     l = 4
+   *
+   *  s = "AABBBBA",
+   *         i   j    l = 4, terminate program, since fast pointer reach the end
+   *
+   */
+  public int characterReplacement(String s, int k) {
+
+      int kCopy = k;
+
+      // edge
+      if (s.isEmpty()){
+          return 0;
+      }
+
+      if(s.length() == 1){
+          return 1;
+      }
+
+      if (k > s.length()){
+          return s.length();
+      }
+
+      int res = 1;
+      // queue that record last `different element` idx (FIFO)
+      Queue<Integer> q = new LinkedList<>();
+
+      // 2 pointers
+      int slow = 0;
+      for(int fast = 1; fast < s.length(); fast++){
+          //int tmp = 1;
+          String prev = String.valueOf(s.charAt(fast-1));
+          String cur = String.valueOf(s.charAt(fast));
+          System.out.println(">>> fast = " + fast + ", slow = " + slow + ", cur = " + cur +  ", prev = " + prev + " res = " + res + " k = " + k);
+
+          if(prev.equals(cur)){
+              //tmp += 1;
+              res = Math.max(fast - slow + 1, res);
+          }else{
+              // record last `different element` idx
+              q.add(fast);
+              k -= 1;
+              // if `k` still > 0
+              if (k >= 0){
+                  res = Math.max(fast - slow + 1, res);
+              }// if `k` <= 0, reset string, and restart from last `different element` idx
+              else{
+                  slow = q.poll();
+                  fast = slow + 1;
+                  k = kCopy; // reset k
+              }
+          }
+      }
+
+        return res;
+    }
+
 }
 
 

@@ -6,6 +6,39 @@ import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  424. Longest Repeating Character Replacement
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times.
+ *
+ * Return the length of the longest substring containing the same letter you can get after performing the above operations.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: s = "ABAB", k = 2
+ * Output: 4
+ * Explanation: Replace the two 'A's with two 'B's or vice versa.
+ * Example 2:
+ *
+ * Input: s = "AABABBA", k = 1
+ * Output: 4
+ * Explanation: Replace the one 'A' in the middle with 'B' and form "AABBBBA".
+ * The substring "BBBB" has the longest repeating letters, which is 4.
+ * There may exists other ways to achieve this answer too.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= s.length <= 105
+ * s consists of only uppercase English letters.
+ * 0 <= k <= s.length
+ *
+ */
 public class LongestRepeatingCharacterReplacement {
 
     // V0
@@ -16,10 +49,32 @@ public class LongestRepeatingCharacterReplacement {
         int res = 0;
         int p1 = 0;
 
+        /**
+         *  NOTE !!!
+         *
+         *   slow pointer: p1
+         *   fast pointer: p2
+         */
         for (int p2 = 0; p2 < s.length(); p2++) {
             char c = s.charAt(p2);
             table.put(c, table.getOrDefault(c, 0) + 1);
-
+            /**
+             *  NOTE !!!
+             *   instead of tracking `last different element freq`,
+             *   we track MOST frequent element in window (elements between slow, fast pointer)
+             *
+             *   -> so we use a hashMap approach above
+             *   -> in the while loop, keep check if max `different element count` is still < k
+             *   (e.g.  (p2 - p1 + 1) - getMaxValue(table) > k)
+             *
+             *   -> update hashMap when new element is reached on the same time
+             *   (e.g.  table.put(c1, table.get(c1) - 1);)
+             *
+             *
+             *   NOTE !!!
+             *   no need to modify `k`
+             *   we count different element via `(p2 - p1 + 1) - getMaxValue(table)`
+             */
             while ( (p2 - p1 + 1) - getMaxValue(table) > k) {
                 char c1 = s.charAt(p1);
                 table.put(c1, table.get(c1) - 1);
