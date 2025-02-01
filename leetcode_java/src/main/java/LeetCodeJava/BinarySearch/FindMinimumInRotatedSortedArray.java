@@ -1,7 +1,7 @@
 package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
-
+// https://youtu.be/nIVW4P8b1VA?si=AMhTJOUhDziBz-CV
 /**
  * 153. Find Minimum in Rotated Sorted Array
  * Solved
@@ -51,7 +51,52 @@ public class FindMinimumInRotatedSortedArray {
 
     // V0
     // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
+    // https://youtu.be/nIVW4P8b1VA?si=AMhTJOUhDziBz-CV
+    /**
+     *  NOTE !!!
+     *
+     *  key : check current `mid point` is at  `left part` or `right part`
+     *  if `at left part`
+     *   -> nums[l] ~ nums[mid] is in INCREASING order
+     *   -> need to search `RIGHT part`, since right part is ALWAYS SMALLER then left part
+     *
+     *  else, `at right part`
+     *   -> need to search `LEFT part`
+     */
     public int findMin(int[] nums) {
+        int l = 0;
+        int r = nums.length - 1;
+        int res = nums[0];
+
+        /** NOTE !!! closed boundary */
+        while (l <= r) {
+
+            // edge case : is array already in increasing order (e.g. [1,2,3,4,5])
+            if (nums[l] < nums[r]) {
+                res = Math.min(res, nums[l]);
+                break;
+            }
+
+            int m = l + (r - l) / 2;
+            res = Math.min(res, nums[m]);
+
+            // case 1) mid point is at `LEFT part`
+            // e.g. [3,4,5,1,2]
+            if (nums[m] >= nums[l]) {
+                l = m + 1;
+            }
+            // case 2) mid point is at `RIGHT part`
+            // e.g. [5,1,2,3,4]
+            else {
+                r = m - 1;
+            }
+        }
+        return res;
+    }
+
+    // V0_1
+    // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
+    public int findMin_0_1(int[] nums) {
 
         // edge case 1): if len == 1
         if (nums.length == 1) {
@@ -93,7 +138,7 @@ public class FindMinimumInRotatedSortedArray {
         return -1;
     }
 
-    // V0''
+    // V0-2
     // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
 
     /**
@@ -103,7 +148,7 @@ public class FindMinimumInRotatedSortedArray {
      * case 1) check turing point
      * case 2) check if left / right sub array is in Ascending order
      */
-    public int findMin_0_1(int[] nums) {
+    public int findMin_0_2(int[] nums) {
 
         if (nums.length == 0 || nums.equals(null)) {
             return 0;
@@ -161,9 +206,9 @@ public class FindMinimumInRotatedSortedArray {
         return nums[l];
     }
 
-    // V0''
+    // V0-3
     // IDEA : BINARY SEARCH (OPEN BOUNDARY)
-    public int findMin_2(int[] nums) {
+    public int findMin_0_3(int[] nums) {
 
         if (nums.length == 0 || nums.equals(null)) {
             return 0;
@@ -193,9 +238,35 @@ public class FindMinimumInRotatedSortedArray {
     }
 
     // V1
+    // https://youtu.be/nIVW4P8b1VA?si=AMhTJOUhDziBz-CV
+    // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
+    // https://neetcode.io/solutions/find-minimum-in-rotated-sorted-array
+    public int findMin_1(int[] nums) {
+        int l = 0;
+        int r = nums.length - 1;
+        int res = nums[0];
+
+        while (l <= r) {
+            if (nums[l] < nums[r]) {
+                res = Math.min(res, nums[l]);
+                break;
+            }
+
+            int m = l + (r - l) / 2;
+            res = Math.min(res, nums[m]);
+            if (nums[m] >= nums[l]) {
+                l = m + 1;
+            } else {
+                r = m - 1;
+            }
+        }
+        return res;
+    }
+
+    // V2
     // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
     // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/editorial/
-    public int findMin_3(int[] nums) {
+    public int findMin_2(int[] nums) {
         // If the list has just one element then return that element.
         if (nums.length == 1) {
             return nums[0];
