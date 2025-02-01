@@ -41,6 +41,9 @@
     - string
 
 ### 0-2) Pattern
+
+#### 0-2-1) Basic
+
 ```python
 # python
 #-------------------------
@@ -116,6 +119,35 @@ for (int right; right < s.length() ; right++) {
         window.remove(s[left]);
         left++;
     }
+}
+```
+
+#### 0-2-1) gat max different characters
+
+```java
+// LC 424 : Longest Repeating Character Replacement
+
+int slow = 0;
+Map<String, List<Integer>> map = new HashMap();
+// ...
+for (int fast = 0; fast < s.length(); fast++){
+
+    // String cur = String.valueOf(s.charAt(fast));
+    // map.put(cur, map.getOrDefault(cur, 0)+1);
+
+    // NOTE !!! below
+    while ((fast - slow + 1) - getMaxVal(map) > k){
+        // ...
+    }
+}
+
+// ...
+private int getMaxVal(Map<String, List<Integer>> map){
+    int res = 0;
+    for (int x : map.values()){
+        res = Math.max(res, x);
+    }
+    return res;
 }
 ```
 
