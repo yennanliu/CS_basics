@@ -5,6 +5,7 @@
 	- https://neetcode.io/practice?tab=blind75
 	- 5 / day ->  15 days to finish
 	- again: 153, 424
+	- todo: 154,1004,2004
 
 # 2025-01-31
 - blind 75
