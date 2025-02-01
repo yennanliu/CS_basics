@@ -4893,6 +4893,149 @@ public class workspace6 {
         return res;
     }
 
+    // LC 20
+    public boolean isValid(String s) {
+
+      // edge
+      if(s.isEmpty()){
+          return true;
+      }
+
+      Map<String, String> map = new HashMap<>();
+      map.put("(", ")");
+      map.put("[", "]");
+      map.put("{", "}");
+
+      // stack: FIL0
+      Stack<String> stack = new Stack<>();
+
+      for(String x: s.split("")){
+          if(stack.isEmpty() && ! map.containsKey(x)){
+              return false;
+          }
+          if(map.containsKey(x)){
+              stack.add(x);
+          }
+          else{
+              String prev = stack.pop();
+              if(!map.get(prev).equals(x)){
+                  return false;
+              }
+          }
+      }
+
+      if(!stack.isEmpty()){
+          return false;
+      }
+
+      return true;
+    }
+
+  // LC 153
+  // 5.19 - 5.30 pm
+  /**
+   *  Suppose an array of length n sorted in `ascending`
+   *  order is rotated between 1 and n times.
+   *
+   *
+   *  For example,
+   *  the array nums = [0,1,2,4,5,6,7] might become:
+   *
+   * [4,5,6,7,0,1,2] if it was rotated 4 times.
+   * [0,1,2,4,5,6,7] if it was rotated 7 times.
+   *
+   *
+   *  -> array is in `ascending` order originally
+   *
+   *
+   * Given the sorted rotated array nums of unique elements,
+   *
+   * -> return the `minimum` element of this array.
+   *
+   * You must write an algorithm that runs in `O(log n)` time.
+   *
+   */
+  /**
+   *  IDEA : binary search
+   *
+   *  -> key : check `which part` of array is `ascending` (sorted)
+   *
+   *
+   *  EXP 1)
+   *
+   *   [4,5,6,7,0,1,2]
+   *    l     m     r      num(l) < nums(m), so left is ascending, so we know left part smallest is 4
+   *
+   *
+   *
+   *  EXP 2)
+   *
+   *  [2,4,5,6,7,0,1]   num(l) < nums(m), so left is ascending, and we can check if l is smaller than r or not
+   *   l     m     r
+   *
+   *
+   *  EXP 3)
+   *
+   *   nums = [3,4,5,1,2]
+   *           l   m   r  `left` is sorted
+   *
+   *
+   * EXP 4)
+   *
+   *   nums = [4,5,6,7,0,1,2]
+   *           l     m     r
+   */
+  public int findMin(int[] nums) {
+
+      // edge
+      if(nums == null || nums.length == 0){
+          return -1; //?
+      }
+
+      if (nums.length <= 3){
+          int res = 0;
+          for(int x : nums){
+              res = Math.min(x, res);
+          }
+          return res;
+      }
+
+      // 2 pointers
+      int res = Integer.MAX_VALUE; // ???
+      int l = 0;
+      int r = nums.length-1;
+      while (r > l){
+          int mid = (l + r) / 2;
+          // left part is sorted
+          // [4,5,6,7,0,1,2]
+          // [7,0,1,2,4,5,6]
+          //  l     m     r
+          //if (nums[mid] > nums[l]){
+          if (nums[mid] > nums[0]){ // NOTE !!! nums[0]
+              // if `r` is smaller than 1st element in left
+              //nums = [3,4,5,1,2]
+              if(nums[r] < nums[l]){
+                  l = mid + 1;
+              }else{
+                  r = mid - 1; // ???
+              }
+              //l = mid + 1;
+          }
+          // right part is sorted
+          else{
+             // r = mid-1;
+              // nums = [4,0,1,2,3]
+              if(nums[mid] > nums[l]){
+                  r = mid - 1; // ???
+              }else{
+                  l = mid + 1;
+              }
+          }
+      }
+
+      return res;
+    }
+
 }
 
 
