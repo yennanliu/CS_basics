@@ -60,6 +60,7 @@ public class LongestRepeatingCharacterReplacement {
             table.put(c, table.getOrDefault(c, 0) + 1);
             /**
              *  NOTE !!!
+
              *   instead of tracking `last different element freq`,
              *   we track MOST frequent element in window (elements between slow, fast pointer)
              *
