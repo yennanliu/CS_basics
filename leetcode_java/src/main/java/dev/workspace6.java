@@ -5110,46 +5110,74 @@ public class workspace6 {
    *
    * IDEA 2): loop over node, if reach `left` then start doing reverse,
    *          STOP reverse op when reach `right` node
+   *
+   *  IDEA 3): go till left node, do reverse in [0, r-l] loop, then end the program
    */
-  public ListNode reverseBetween(ListNode head, int left, int right) {
+  ListNode reverseBetween(ListNode head, int left, int right){
 
       // edge
-      if (head == null || head.next == null){
-          return head;
+
+      for(int i = 0; i < left; i++){
+          head = head.next;
       }
 
-      if (right < left){
-          return head;
-      }
 
-      // IDEA 2):
-      ListNode _prev = null;
-      Boolean shouldReverse = false;
+      // 1 ->   2 -> 3 -> 4   -> 5, left = 2, right = 4,
+      // so now head = 2
+      // 1 ->   2 -> 3 -> 4   -> 5,
+      //
+      //ListNode _cur = head;
+      //ListNode _next = head.next;
 
-      while(head != null){
+      for(int i = 0; i < right - left; i++){
           ListNode _next = head.next;
-      if (head.equals(new ListNode(left))){
-              shouldReverse = true;
-          }
-          if (head.equals(new ListNode(right))){
-              shouldReverse = false;
-              _prev.next = head; // ????
-              break;
-          }
-          // ONLY do reverse if left is reached
-          if(shouldReverse){
-              head.next = _prev;
-              _prev = head;
-          }
-          if(!shouldReverse){
-              //_prev.next = head;
-              _prev = head; // ???
-          }
+          ListNode _next_next = head.next.next;
+          _next.next = head;
           head = _next;
+          _next =_next_next; // ????
       }
 
-        return _prev;
-    }
+      return head; // ???
+  }
+//  public ListNode reverseBetween(ListNode head, int left, int right) {
+//
+//      // edge
+//      if (head == null || head.next == null){
+//          return head;
+//      }
+//
+//      if (right < left){
+//          return head;
+//      }
+//
+//      // IDEA 2):
+//      ListNode _prev = null;
+//      Boolean shouldReverse = false;
+//
+//      while(head != null){
+//          ListNode _next = head.next;
+//      if (head.equals(new ListNode(left))){
+//              shouldReverse = true;
+//          }
+//          if (head.equals(new ListNode(right))){
+//              shouldReverse = false;
+//              _prev.next = head; // ????
+//              break;
+//          }
+//          // ONLY do reverse if left is reached
+//          if(shouldReverse){
+//              head.next = _prev;
+//              _prev = head;
+//          }
+//          if(!shouldReverse){
+//              //_prev.next = head;
+//              _prev = head; // ???
+//          }
+//          head = _next;
+//      }
+//
+//        return _prev;
+//    }
 
 }
 

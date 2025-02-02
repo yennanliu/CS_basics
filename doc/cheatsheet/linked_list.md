@@ -83,6 +83,7 @@ node2.next = node3;
 - problem types
     - reverse
         - reverse linked list
+            - LC 206, 92
         - reverse part of linked list
         - reverse k set of linked list
     - merge
@@ -829,6 +830,39 @@ class Solution(object):
 ```
 
 ### 2-4) Reverse Linked List II
+
+```java
+// java
+
+  // V0-1
+  // IDEA: LINKED LIST OP (iteration 1)
+  // https://neetcode.io/solutions/reverse-linked-list-ii
+  // https://youtu.be/RF_M9tX4Eag?si=vTfAtfbmGwzsmtpi
+  public ListNode reverseBetween_0_1(ListNode head, int left, int right) {
+      ListNode dummy = new ListNode(0);
+      dummy.next = head;
+      ListNode leftPrev = dummy, cur = head;
+
+      for (int i = 0; i < left - 1; i++) {
+          leftPrev = cur;
+          cur = cur.next;
+      }
+
+      ListNode prev = null;
+      for (int i = 0; i < right - left + 1; i++) {
+          ListNode tmpNext = cur.next;
+          cur.next = prev;
+          prev = cur;
+          cur = tmpNext;
+      }
+
+      leftPrev.next.next = cur;
+      leftPrev.next = prev;
+
+      return dummy.next;
+  }
+```
+
 ```python
 # LC 92 Reverse Linked List II
 # V1
