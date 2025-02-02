@@ -1,7 +1,50 @@
 package LeetCodeJava.TwoPointer;
 
 // https://leetcode.com/problems/linked-list-cycle/
-
+/**
+ *  141. Linked List Cycle
+ * Solved
+ * Easy
+ * Topics
+ * Companies
+ * Given head, the head of a linked list, determine if the linked list has a cycle in it.
+ *
+ * There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+ *
+ * Return true if there is a cycle in the linked list. Otherwise, return false.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: head = [3,2,0,-4], pos = 1
+ * Output: true
+ * Explanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed).
+ * Example 2:
+ *
+ *
+ * Input: head = [1,2], pos = 0
+ * Output: true
+ * Explanation: There is a cycle in the linked list, where the tail connects to the 0th node.
+ * Example 3:
+ *
+ *
+ * Input: head = [1], pos = -1
+ * Output: false
+ * Explanation: There is no cycle in the linked list.
+ *
+ *
+ * Constraints:
+ *
+ * The number of the nodes in the list is in the range [0, 104].
+ * -105 <= Node.val <= 105
+ * pos is -1 or a valid index in the linked-list.
+ *
+ *
+ * Follow up: Can you solve it using O(1) (i.e. constant) memory?
+ *
+ */
 import LeetCodeJava.DataStructure.ListNode;
 
 import java.util.HashSet;
@@ -10,8 +53,39 @@ import java.util.Set;
 public class LinkedListCycle {
 
     // V0
-    // IDEA : HASHSET
+    // IDEA: HASHSET
     public boolean hasCycle(ListNode head) {
+        // edge
+        if(head == null || head.next == null){
+            return false;
+        }
+
+        /**
+         * hashset needs to save ListNode, INSTEAD of its value
+         * since we need to check if the node already visited
+         * via checking its `object instance` in hashset
+         *
+         * e.g.
+         *
+         *  -> use HashSet<ListNode> set
+         *  (but NOT HashSet<Integer>
+         *
+         */
+        HashSet<ListNode> set = new HashSet<>();
+        while(head != null){
+            if(set.contains(head)){
+                return true;
+            }
+            set.add(head);
+            head = head.next;
+        }
+
+        return false;
+    }
+
+    // V0-1
+    // IDEA : HASHSET
+    public boolean hasCycle_0_1(ListNode head) {
 
         if (head == null){
             return false;
@@ -32,10 +106,10 @@ public class LinkedListCycle {
         return false;
     }
 
-    // V0'
+    // V0-2
     // IDEA : Hash table
     // https://leetcode.com/problems/linked-list-cycle/editorial/
-    public boolean hasCycle_0_1(ListNode head) {
+    public boolean hasCycle_0_2(ListNode head) {
         Set<ListNode> nodesSeen = new HashSet<>();
         while (head != null) {
             if (nodesSeen.contains(head)) {
@@ -47,10 +121,10 @@ public class LinkedListCycle {
         return false;
     }
 
-    // V0''
+    // V0-3
     // IDEA : 2 POINTERS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/linked-list-cycle.py#L49
-    public boolean hasCycle_0_2(ListNode head) {
+    public boolean hasCycle_0_3(ListNode head) {
 
         if (head == null || head.next == null || head.next.next == null){
             return false;
@@ -96,10 +170,10 @@ public class LinkedListCycle {
         return false;
     }
 
-    // V2
+    // V1
     // IDEA :  Floyd's Cycle Finding Algorithm (fast, slow pointer)
     // https://leetcode.com/problems/linked-list-cycle/editorial/
-    public boolean hasCycle_3(ListNode head) {
+    public boolean hasCycle_1(ListNode head) {
         if (head == null) {
             return false;
         }
