@@ -5365,6 +5365,73 @@ public class workspace6 {
       return _prev; // ??
   }
 
+  // LC 19
+  /**
+   *  IDEA: fast, slow pointer
+   *
+   *  EXP 1)
+   *
+   *  Input: head = [1,2,3,4,5], n = 2
+   *  -> Output: [1,2,3,5]
+   *
+   *  n = 2 (from end)
+   *  -> so we need to iterate head.size - 2 = 5 - 2 = 3
+   *
+   *  [1,2,3,4,5]
+   *       i
+   *
+   *  then reconeect nodes
+   *
+   */
+  public ListNode removeNthFromEnd(ListNode head, int n) {
+
+      // edge
+      if(head == null){
+          return head;
+      }
+
+      if(head.next == null){
+          //return new ListNode();
+          return null;
+    }
+
+      ListNode cur = new ListNode();
+      cur.next = head;
+      ListNode tmp = head;
+
+      // get node len
+      int len = 0;
+      while(tmp != null){
+          len += 1;
+          tmp = tmp.next;
+      }
+
+      // edge case 2
+      // if n == len
+      if (n == len){
+          head = head.next;
+          cur.next = head;
+          cur = cur.next;
+      }
+
+      int idx = len - n; // NOTE !!! we need to visit `previous` node,
+
+      System.out.println(">>> len = " + len + ", idx = " + idx);
+
+      for(int i = 0; i < idx; i++){
+          head = head.next;
+          //idx -= 1;
+      }
+
+      if(head.next != null){
+          ListNode _nextOfNext = head.next.next;
+          head.next = _nextOfNext;
+          head = _nextOfNext;
+      }
+
+      return cur.next; // ???
+  }
+
 }
 
 
