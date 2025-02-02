@@ -70,6 +70,18 @@ public class ReorderList {
         /** NOTE !!!
          *
          *  reverse on `slow.next` node
+         *
+         *  since for L0 -> L1 -> ... Ln
+         *
+         *  what we need to get is
+         *
+         *  L0 -> L1 -> ... Ln/2
+         *  and
+         *  Ln/2+1 -> .... Ln
+         *
+         *  and `Ln/2+1 -> .... Ln` we need to get via reverse method (reverseNode_)
+         *  -> NOTE that Ln/2+1 is the `next` node of `mid` node (Ln/2)
+         *
          */
         ListNode secondHalf = reverseNode_(slow.next);
         /** NOTE !!!
