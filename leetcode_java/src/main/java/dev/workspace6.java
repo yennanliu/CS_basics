@@ -5091,6 +5091,66 @@ public class workspace6 {
         return _prev; // ??
     }
 
+  // LC 92
+  // 3.18 - 3.30 pm
+  /**
+   * Given the head of a singly linked list and two integers left and right
+   * where left <= right,
+   * reverse the nodes of the list from position left to position right,
+   * and return the reversed list.
+   *
+   * EXP 1)
+   *
+   * Input: head = [1,2,3,4,5], left = 2, right = 4
+   *  -> Output: [1,4,3,2,5]
+   *  (reverse nodes within left and right ONLY)
+   *
+   *
+   * IDEA 1): find left, right node, then do reverse linked list op
+   *
+   * IDEA 2): loop over node, if reach `left` then start doing reverse,
+   *          STOP reverse op when reach `right` node
+   */
+  public ListNode reverseBetween(ListNode head, int left, int right) {
+
+      // edge
+      if (head == null || head.next == null){
+          return head;
+      }
+
+      if (right < left){
+          return head;
+      }
+
+      // IDEA 2):
+      ListNode _prev = null;
+      Boolean shouldReverse = false;
+
+      while(head != null){
+          ListNode _next = head.next;
+      if (head.equals(new ListNode(left))){
+              shouldReverse = true;
+          }
+          if (head.equals(new ListNode(right))){
+              shouldReverse = false;
+              _prev.next = head; // ????
+              break;
+          }
+          // ONLY do reverse if left is reached
+          if(shouldReverse){
+              head.next = _prev;
+              _prev = head;
+          }
+          if(!shouldReverse){
+              //_prev.next = head;
+              _prev = head; // ???
+          }
+          head = _next;
+      }
+
+        return _prev;
+    }
+
 }
 
 
