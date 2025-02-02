@@ -65,29 +65,66 @@ public class RemoveNthNodeFromEndOfList {
         // NOTE here
         ListNode fast = dummy;
         ListNode slow = dummy;
-        /**
-         *  Explanation V1:
-         *
-         *   -> So we have fast, and slow pointer,
-         *   if we move fast N steps first,
-         *   then slow starts to move
-         *      -> fast, slow has N step difference
-         *      -> what's more, when fast reach the end,
-         *      -> fast, slow STILL has N step difference
-         *      -> and slow has N step difference with the end,
-         *      -> so we can remove N th pointer accordingly
-         *
-         *  Explanation V2:
-         *
-         *
-         *   // NOTE !!! we let fast pointer move N+1 step first
-         *   // so before fast pointers reach the end,  fast, and slow pointers move together
-         *   // we are sure that slow pointer is at N-1 node
-         *   // so All we need to do is :
-         *   // point slow.next to slow.next.next
-         *   // then we remove N node from linked list
-         */
-        for (int i = 1; i <= n+1; i++){
+    /**
+     *  Explanation V1:
+     *
+     *   -> So we have fast, and slow pointer,
+     *   if we move fast N steps first,
+     *   then slow starts to move
+     *      -> fast, slow has N step difference
+     *      -> what's more, when fast reach the end,
+     *      -> fast, slow STILL has N step difference
+     *      -> and slow has N step difference with the end,
+     *      -> so we can remove N th pointer accordingly
+     *
+     *  Explanation V2:
+     *
+     *
+     *   // NOTE !!! we let fast pointer move N+1 step first
+     *   // so before fast pointers reach the end,  fast, and slow pointers move together
+     *   // we are sure that slow pointer is at N-1 node
+     *   // so All we need to do is :
+     *   // point slow.next to slow.next.next
+     *   // then we remove N node from linked list
+     */
+    /**
+     *  DEMO
+     *
+     *  head = 1 -> 2 -> 3 -> 4 -> 5, n = 1
+     *
+     *  ->  n = 1 (4 need to be removed)
+     *
+     *
+     *  1 -> 2 -> 3 -> 4 -> 5
+     *                 x
+     *
+     *  so, ops as below:
+     *
+     * 1 -> 2 -> 3 -> 4 -> 5
+     * f
+     *
+     *
+     * // fast move n+1 (1+1=2) steps
+     * 1 -> 2 -> 3 -> 4 -> 5
+     *           f
+     *
+     * // then move slow, fast on the same time, and STOP while fast reach the end
+     * 1 -> 2 -> 3 -> 4 -> 5
+     * s         f
+     *
+     * 1 -> 2 -> 3 -> 4 -> 5
+     *      s         f
+     *
+     * 1 -> 2 -> 3 -> 4 -> 5
+     *           s         f
+     *
+     *
+     * // repoint slow node to `next next` node
+     * 1 -> 2 -> 3 -> 4 -> 5
+     *           s  ------> 5
+     *
+     */
+    for (int i = 1; i <= n + 1; i++) {
             //System.out.println("i = " + i);
             fast = fast.next;
         }
