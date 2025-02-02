@@ -5222,6 +5222,25 @@ public class workspace6 {
       return head.next; // ?
     }
 
+    // LC 141
+    public boolean hasCycle(ListNode head) {
+      // edge
+      if(head == null || head.next == null){
+          return false;
+      }
+
+      HashSet<ListNode> set = new HashSet<>();
+      while(head != null){
+          if(set.contains(head)){
+              return true;
+          }
+          set.add(head);
+          head = head.next;
+      }
+
+      return false;
+    }
+
 }
 
 
