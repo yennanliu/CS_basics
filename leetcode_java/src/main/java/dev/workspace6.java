@@ -5036,6 +5036,61 @@ public class workspace6 {
       return res;
     }
 
+    // LC 206
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    /**
+     * IDEA : LINKED LIST
+     *
+     *  define prev, next node
+     *  point cur to prev,
+     *  move prev to cur
+     *  move cur to next
+     *
+     */
+    public ListNode reverseList(ListNode head) {
+        // edge
+        if (head == null || head.next == null){
+            return head;
+        }
+
+        /**
+         *  NOTE !!!!
+         *
+         *   4 operations
+         *
+         *    Step 0) set _prev as null
+         *    step 1) cache next
+         *    step 2) point cur to prev
+         *    step 3) move prev to cur  (NOTE !!! the step)
+         *    step 4) move cur to next
+         */
+
+        // 2 pointers
+        // 1 -> 2 -> 3
+        // prev  1 -> 2 -> 3
+        // so,  prev <- 1
+        // move prev to cur
+        ListNode cur = head;
+        ListNode _prev = null;
+        while(cur != null){
+            ListNode _next = cur.next;
+            cur.next = _prev;
+            _prev = cur;
+            cur = _next; // ????
+        }
+
+        return _prev; // ??
+    }
+
 }
 
 
