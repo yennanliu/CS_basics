@@ -1229,6 +1229,66 @@ class Solution(object):
 ```
 
 ### 2-8) Reorder List
+
+```java
+// java
+    public void reorderList(ListNode head) {
+        // Edge case: empty or single node list
+        if (head == null || head.next == null) {
+            return;
+        }
+
+        // Step 1: Find the middle node
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Step 2: Reverse the second half of the list
+        /** NOTE !!!
+         *
+         *  reverse on `slow.next` node
+         */
+        ListNode secondHalf = reverseNode_(slow.next);
+        /** NOTE !!!
+         *
+         *  `cut off` slow node's next nodes via point it to null node
+         *  (if not cut off, then in merge step, we will merge duplicated nodes
+         */
+        slow.next = null; // Break the list into two halves
+
+        // Step 3: Merge two halves
+        ListNode firstHalf = head;
+        while (secondHalf != null) {
+
+            // NOTE !!! cache `next node` before any op
+            ListNode _nextFirstHalf = firstHalf.next;
+            ListNode _nextSecondHalf = secondHalf.next;
+
+            // NOTE !!! point first node to second node, then point second node to first node's next node
+            firstHalf.next = secondHalf;
+            secondHalf.next = _nextFirstHalf;
+
+            // NOTE !!! move both node to `next` node
+            firstHalf = _nextFirstHalf;
+            secondHalf = _nextSecondHalf;
+        }
+    }
+
+    // Helper function to reverse a linked list
+    private ListNode reverseNode_(ListNode head) {
+        ListNode prev = null;
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = prev;
+            prev = head;
+            head = next;
+        }
+        return prev;
+    }
+```
+
 ```python
 # LC 143. Reorder List
 # V0
