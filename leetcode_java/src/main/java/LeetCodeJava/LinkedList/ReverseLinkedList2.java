@@ -55,6 +55,74 @@ public class ReverseLinkedList2 {
   //
   //    }
 
+  // V0-1
+  // IDEA: LINKED LIST OP (iteration 1)
+  // https://neetcode.io/solutions/reverse-linked-list-ii
+  // https://youtu.be/RF_M9tX4Eag?si=vTfAtfbmGwzsmtpi
+  public ListNode reverseBetween_0_1(ListNode head, int left, int right) {
+      ListNode dummy = new ListNode(0);
+      dummy.next = head;
+      ListNode leftPrev = dummy, cur = head;
+
+      for (int i = 0; i < left - 1; i++) {
+          leftPrev = cur;
+          cur = cur.next;
+      }
+
+      ListNode prev = null;
+      for (int i = 0; i < right - left + 1; i++) {
+          ListNode tmpNext = cur.next;
+          cur.next = prev;
+          prev = cur;
+          cur = tmpNext;
+      }
+
+      leftPrev.next.next = cur;
+      leftPrev.next = prev;
+
+      return dummy.next;
+  }
+
+  // V0-2
+  // IDEA: LINKED LIST OP (iteration 2)
+  // https://neetcode.io/solutions/reverse-linked-list-ii
+  // https://youtu.be/RF_M9tX4Eag?si=vTfAtfbmGwzsmtpi
+  public ListNode reverseBetween_0_2(ListNode head, int left, int right) {
+      ListNode dummy = new ListNode(0);
+      dummy.next = head;
+      ListNode prev = dummy;
+
+      for (int i = 0; i < left - 1; i++) {
+          prev = prev.next;
+      }
+
+      ListNode sublistHead = prev.next;
+      ListNode sublistTail = sublistHead;
+      for (int i = 0; i < right - left; i++) {
+          sublistTail = sublistTail.next;
+      }
+
+      ListNode nextNode = sublistTail.next;
+      sublistTail.next = null;
+      prev.next = reverseList(sublistHead);
+      sublistHead.next = nextNode;
+
+      return dummy.next;
+  }
+
+    private ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+
+        while (curr != null) {
+            ListNode temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev;
+    }
+
   // V1
   // IDEA: LINKED LIST (GPT)
   /**
