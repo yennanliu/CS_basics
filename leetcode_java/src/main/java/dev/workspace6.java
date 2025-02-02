@@ -5241,6 +5241,130 @@ public class workspace6 {
       return false;
     }
 
+  // LC 143
+  // 5.20 - 5.40 pm
+  /**
+   *
+   * You are given the head of a singly linked-list.
+   *
+   * The list can be represented as:
+   *
+   * L0 → L1 → … → Ln - 1 → Ln
+   * Reorder the list to be on the following form:
+   *
+   * L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+   * You may not modify the values in the list's nodes.
+   * Only nodes themselves may be changed.
+   *
+   *
+   *
+   * -> e.g.:
+   *
+   *   L0 -> Ln -> L1 -> Ln-1 -> L2 -> Ln-2 -> ....
+   *
+   *
+   *   step 1) find `mid` point (slow, fast pointer)
+   *
+   *    L0 -> L1 -> ... Ln/2-> ..... Ln
+   *
+   *   step 2)  reverse  Ln/2-> ..... Ln sub node
+   *
+   *   step 3) go over L0 -> ... Ln/2, Ln/2-> ..... Ln
+   *           and reconnect nodes as below:
+   *           L0 -> Ln -> L1 -> Ln-1 -> ....
+   *
+   *
+   *  EXP 1)
+   *
+   *  Input: head = [1,2,3,4]
+   *  -> Output: [1,4,2,3]
+   *
+   *
+   *
+   *  EXP 2)
+   *
+   *  Input: head = [1,2,3,4,5]
+   *  -> Output: [1,5,2,4,3]
+   *
+   */
+  public void reorderList(ListNode head) {
+      // edge ??
+      if(head == null || head.next == null){
+          //return head;
+          return;
+      }
+
+      // step 1) find `mid` node
+      ListNode slow = head;
+      ListNode fast = head;
+      while(fast != null && fast.next != null){
+          fast = fast.next.next;
+          slow = slow.next;
+      }
+
+      // so, now `slow` is `mid` node
+
+      // step 2) reverse node
+      ListNode reverseSlow = reverseNode_(slow);
+
+      // step 3) reconnect
+      //ListNode res = new ListNode();
+      ListNode head_ = head;
+      //res.next = head_;
+
+      /**
+       *
+       *   L0 -> L1 -> ... Ln/2
+       *
+       *   Ln/2+1 -> .... Ln
+       *
+       *
+       */
+      ListNode firstHalf = head_;
+      ListNode secondHalf = reverseSlow;
+
+      // while(head_ != slow && reverseSlow != null){
+      while(secondHalf != null){
+
+//          ListNode _headNext = head.next;
+//          ListNode _reverseFastNext = secondHalf.next;
+//
+//          head_.next = secondHalf;
+//          head_ = secondHalf;
+//
+//          secondHalf.next = _headNext; // ??
+//          secondHalf = _headNext; // ???
+
+          ListNode _firstHalfNext = firstHalf.next;
+          ListNode _secondHalfNext = secondHalf.next;
+
+
+          firstHalf.next = secondHalf;
+          firstHalf = _firstHalfNext; // ?
+
+
+//          secondHalf.next = _firstHalfNext;
+//          secondHalf = _secondHalfNext; // ?
+
+          firstHalf = _firstHalfNext;
+          secondHalf = _secondHalfNext;
+      }
+
+  }
+
+  private ListNode reverseNode_(ListNode node){
+      //ListNode res = new ListNode();
+      //res.next = node;
+      ListNode _prev = new ListNode();
+      while(node != null){
+          ListNode _next = node.next;
+          node.next = _prev;
+          _prev = node;
+          node = _next;
+      }
+      return _prev; // ??
+  }
+
 }
 
 
