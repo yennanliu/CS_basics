@@ -173,6 +173,13 @@ public class InvertBinaryTree {
     // https://leetcode.com/problems/invert-binary-tree/editorial/
     public TreeNode invertTree_1_1(TreeNode root) {
         if (root == null) return null;
+        /**
+         * NOTE !!!
+         *
+         * Queue is the common tricks that we transform recursive code to iterative
+         * -> so via FIFO properties, we're sure that the `earlier reached` code is
+         *    executed first, then the `following code`,... and so on
+         */
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
         queue.add(root);
         while (!queue.isEmpty()) {

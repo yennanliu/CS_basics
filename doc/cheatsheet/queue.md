@@ -8,6 +8,8 @@
 - first in first out (FIFO)
 - [Java Queue](https://juejin.cn/post/7032838878696308766)
     - Low level : Linked list or Array
+- Used when transfer `recursive` code to `iterative`
+    - via FIFO properties, we're sure that the `earlier reached` code is executed first, then the `following code`,... and so on
 
 ### 0-1) Types
 - Queue
