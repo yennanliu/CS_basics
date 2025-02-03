@@ -4985,56 +4985,56 @@ public class workspace6 {
    *   nums = [4,5,6,7,0,1,2]
    *           l     m     r
    */
-  public int findMin(int[] nums) {
-
-      // edge
-      if(nums == null || nums.length == 0){
-          return -1; //?
-      }
-
-      if (nums.length <= 3){
-          int res = 0;
-          for(int x : nums){
-              res = Math.min(x, res);
-          }
-          return res;
-      }
-
-      // 2 pointers
-      int res = Integer.MAX_VALUE; // ???
-      int l = 0;
-      int r = nums.length-1;
-      while (r > l){
-          int mid = (l + r) / 2;
-          // left part is sorted
-          // [4,5,6,7,0,1,2]
-          // [7,0,1,2,4,5,6]
-          //  l     m     r
-          //if (nums[mid] > nums[l]){
-          if (nums[mid] > nums[0]){ // NOTE !!! nums[0]
-              // if `r` is smaller than 1st element in left
-              //nums = [3,4,5,1,2]
-              if(nums[r] < nums[l]){
-                  l = mid + 1;
-              }else{
-                  r = mid - 1; // ???
-              }
-              //l = mid + 1;
-          }
-          // right part is sorted
-          else{
-             // r = mid-1;
-              // nums = [4,0,1,2,3]
-              if(nums[mid] > nums[l]){
-                  r = mid - 1; // ???
-              }else{
-                  l = mid + 1;
-              }
-          }
-      }
-
-      return res;
-    }
+//  public int findMin(int[] nums) {
+//
+//      // edge
+//      if(nums == null || nums.length == 0){
+//          return -1; //?
+//      }
+//
+//      if (nums.length <= 3){
+//          int res = 0;
+//          for(int x : nums){
+//              res = Math.min(x, res);
+//          }
+//          return res;
+//      }
+//
+//      // 2 pointers
+//      int res = Integer.MAX_VALUE; // ???
+//      int l = 0;
+//      int r = nums.length-1;
+//      while (r > l){
+//          int mid = (l + r) / 2;
+//          // left part is sorted
+//          // [4,5,6,7,0,1,2]
+//          // [7,0,1,2,4,5,6]
+//          //  l     m     r
+//          //if (nums[mid] > nums[l]){
+//          if (nums[mid] > nums[0]){ // NOTE !!! nums[0]
+//              // if `r` is smaller than 1st element in left
+//              //nums = [3,4,5,1,2]
+//              if(nums[r] < nums[l]){
+//                  l = mid + 1;
+//              }else{
+//                  r = mid - 1; // ???
+//              }
+//              //l = mid + 1;
+//          }
+//          // right part is sorted
+//          else{
+//             // r = mid-1;
+//              // nums = [4,0,1,2,3]
+//              if(nums[mid] > nums[l]){
+//                  r = mid - 1; // ???
+//              }else{
+//                  l = mid + 1;
+//              }
+//          }
+//      }
+//
+//      return res;
+//    }
 
     // LC 206
     /**
@@ -5576,6 +5576,123 @@ public class workspace6 {
            return false;
        }
        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+
+    // LC 33
+    /**
+     *  33. Search in Rotated Sorted Array
+     * Solved
+     * Medium
+     * Topics
+     * Companies
+     * There is an integer array nums sorted in ascending order (with distinct values).
+     *
+     * Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2].
+     *
+     * Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.
+     *
+     * You must write an algorithm with O(log n) runtime complexity.
+     *
+     *
+     *
+     * Example 1:
+     *
+     * Input: nums = [4,5,6,7,0,1,2], target = 0
+     * Output: 4
+     * Example 2:
+     *
+     * Input: nums = [4,5,6,7,0,1,2], target = 3
+     * Output: -1
+     * Example 3:
+     *
+     * Input: nums = [1], target = 0
+     * Output: -1
+     *
+     *
+     * Constraints:
+     *
+     * 1 <= nums.length <= 5000
+     * -104 <= nums[i] <= 104
+     * All values of nums are unique.
+     * nums is an ascending array that is possibly rotated.
+     * -104 <= target <= 104
+     */
+    /**
+     *  IDEA: BINARY SEARCH
+     *
+     */
+    public int search(int[] nums, int target) {
+      // edge
+      if(nums == null || nums.length == 0){
+          return -1;
+      }
+      if(nums.length == 1){
+          if(nums[0] == target){
+              return 0;
+          }
+          return -1;
+      }
+      // binary search
+      int res = -1;
+      int l = 0;
+      int r = nums.length -1;
+      while(r >= l){
+          int mid = (l + r) / 2;
+          // case 1) if `mid` is part of `left sub array`
+          // case 2) if `mid is part of `right sub array`
+
+      }
+
+
+      return res;
+    }
+
+    // LC 153
+    public int findMin(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+        // edge : already in ascending order or all elements are the same
+        // [1,2,3,4,5]
+        if(nums[nums.length - 1] >= nums[0]){
+            return nums[0];
+        }
+        // binary search
+        int res = nums[0]; //Integer.MAX_VALUE;
+        int l = 0;
+        int r = nums.length -1;
+        while(r >= l){
+            int mid = (l + r) / 2;
+            int cur = nums[mid];
+
+
+            // ?????
+            // edge case : is array already in increasing order (e.g. [1,2,3,4,5])
+//            if (nums[l] < nums[r]) {
+//                res = Math.min(res, nums[l]);
+//                break;
+//            }
+
+            res = Math.min(res, Math.min(cur, nums[l]));
+
+            // case 1) if `mid` is part of `left sub array`
+            // search  right ->
+            // [3,4,5,1,2], mid = 5
+            if(cur >= nums[l]){
+                l = mid + 1;
+            }else{
+                // case 2) if `mid is part of `right sub array`
+                // search left <-
+                // [5,1,2,3,4], mid = 2
+                r = mid - 1; // ??
+            }
+        }
+
+        return res;
     }
 
 

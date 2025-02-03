@@ -71,6 +71,14 @@ public class FindMinimumInRotatedSortedArray {
         /** NOTE !!! closed boundary */
         while (l <= r) {
 
+            /** NOTE !!!
+             *
+             *  below edge case check is necessary
+             *
+             *  NOTE !!! -> compare min between LEFT boundary (nums[l]) and res
+             *
+             *  and jump out while loop directly if the condition (nums[l] < nums[r]) is met
+             */
             // edge case : is array already in increasing order (e.g. [1,2,3,4,5])
             if (nums[l] < nums[r]) {
                 res = Math.min(res, nums[l]);
