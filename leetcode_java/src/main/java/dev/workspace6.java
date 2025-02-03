@@ -5510,6 +5510,37 @@ public class workspace6 {
 //  }
 
 
+    // LC 100
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+      // edge
+//      if (p != null || q != null){
+//          return false;
+//      }
+        if ((p == null && q != null) || (p != null && q == null)){
+            return false;
+        }
+
+        // dfs
+      return isSame(p, q);
+    }
+
+    private boolean isSame(TreeNode p, TreeNode q){
+        if ((p == null && q != null) || (p != null && q == null)){
+            return false;
+        }
+        if(p.val != q.val){
+            return false;
+        }
+        if(( p.left != null && q.left == null) ||
+                ( p.left == null && q.left != null) ||
+                ( p.right != null && q.right == null) ||
+                ( p.right == null && q.right != null)
+        ){
+            return false;
+        }
+        return (isSame(p.left, q.left)) && (isSame(p.right, q.right));
+    }
+
 
 }
 
