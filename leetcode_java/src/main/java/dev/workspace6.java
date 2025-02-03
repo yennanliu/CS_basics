@@ -5482,6 +5482,35 @@ public class workspace6 {
       return root;
   }
 
+  // LC 104
+//  public int maxDepth(TreeNode root) {
+//      // edge
+//      if (root == null){
+//          return 0;
+//      }
+//      // dfs
+//      int res = getMaxDepth(root, 1);
+//      System.out.println(">>> res = " + res);
+//      return res;
+//  }
+//
+//  private TreeNode getMaxDepth(TreeNode root, int depth){
+//      if (root == null){
+//          return null;
+//      }
+//      if(root.left != null){
+//          root.left =  getMaxDepth(root.left, depth+1);
+//      }
+//      if(root.right != null){
+//          root.right =  getMaxDepth(root.right, depth+1);
+//      }
+//
+//      //int leftMax = getMaxDepth(root.left)
+//      //return Math.max(getMaxDepth(root.left), getMaxDepth(root.right));
+//  }
+
+
+
 }
 
 
