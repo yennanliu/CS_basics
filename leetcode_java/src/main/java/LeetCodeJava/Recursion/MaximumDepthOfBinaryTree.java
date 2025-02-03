@@ -1,6 +1,36 @@
 package LeetCodeJava.Recursion;
 
 // https://leetcode.com/problems/maximum-depth-of-binary-tree/
+/**
+ *  104. Maximum Depth of Binary Tree
+ * Solved
+ * Easy
+ * Topics
+ * Companies
+ * Given the root of a binary tree, return its maximum depth.
+ *
+ * A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: root = [3,9,20,null,null,15,7]
+ * Output: 3
+ * Example 2:
+ *
+ * Input: root = [1,null,2]
+ * Output: 2
+ *
+ *
+ * Constraints:
+ *
+ * The number of nodes in the tree is in the range [0, 104].
+ * -100 <= Node.val <= 100
+ *
+ *
+ */
 
 import LeetCodeJava.DataStructure.TreeNode;
 import java.util.LinkedList;
@@ -15,12 +45,17 @@ public class MaximumDepthOfBinaryTree {
             return 0;
         }
 
-        // NOTE : below conditon is optional (have or not use is OK)
+        // NOTE : below condition is optional (have or not use is OK)
 //        if (root.left == null && root.right == null){
 //            return 1;
 //        }
 
-        /** NOTE !!! we get max left, right depth first, then return bigger one as final answer */
+        /** NOTE !!!
+         *
+         *  we get max left, right depth first, then return bigger one as final answer
+         *
+         *  -> ONlY need to track/return `depth`, no need to track node itself
+         */
         int leftD = maxDepth(root.left) + 1;
         int rightD = maxDepth(root.right) + 1;
 
@@ -47,20 +82,20 @@ public class MaximumDepthOfBinaryTree {
 //    }
 
 
-    // V0''
+    // V0-1
     // IDEA : RECURSIVE
-    public int maxDepth_1(TreeNode root) {
+    public int maxDepth_0_1(TreeNode root) {
 
         if (root == null){
             return 0;
         }
-        return Math.max(maxDepth_1(root.left) + 1, maxDepth_1(root.right) + 1);
+        return Math.max(maxDepth_0_1(root.left) + 1, maxDepth_0_1(root.right) + 1);
     }
 
 
-    // V0''
+    // V0-2
     // IDEA : DFS (RECURSION)
-    public int maxDepth__(TreeNode root) {
+    public int maxDepth_0_2(TreeNode root) {
 
         if (root == null){
             return 0;
@@ -77,16 +112,41 @@ public class MaximumDepthOfBinaryTree {
         return Math.max(dfs(root.left, cur+1, depth), dfs(root.right, cur+1, depth));
     }
 
+    // V0-3
+    // IDEA: RECURSIVE (GPT)
+    public int maxDept0_3(TreeNode root) {
+        // edge case: if the root is null, the depth is 0
+        if (root == null) {
+            return 0;
+        }
+        // dfs: calculate the maximum depth starting from root
+        return getMaxDepth(root, 1);
+    }
+
+    private int getMaxDepth(TreeNode root, int depth) {
+        // base case: if the current node is null, return the current depth
+        if (root == null) {
+            return depth - 1; // subtract 1 because depth starts from 1
+        }
+
+        // recursively calculate the depth for left and right subtrees
+        int leftDepth = getMaxDepth(root.left, depth + 1);
+        int rightDepth = getMaxDepth(root.right, depth + 1);
+
+        // return the maximum depth of the left or right subtree
+        return Math.max(leftDepth, rightDepth);
+    }
+
 
     // V1
     // IDEA : RECURSION
     // https://leetcode.com/problems/maximum-depth-of-binary-tree/editorial/
-    public int maxDepth_2(TreeNode root) {
+    public int maxDepth_1(TreeNode root) {
         if (root == null) {
             return 0;
         } else {
-            int left_height = maxDepth_2(root.left);
-            int right_height = maxDepth_2(root.right);
+            int left_height = maxDepth_1(root.left);
+            int right_height = maxDepth_1(root.right);
             return java.lang.Math.max(left_height, right_height) + 1;
         }
     }
