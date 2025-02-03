@@ -233,6 +233,30 @@ private int processSubtree_2(TreeNode subtree, boolean isLeft) {
 }
 ```
 
+### 1-5) `any` true status in recursion call
+
+```java
+// LC 572
+// java
+    public boolean isSubtree_0_1(TreeNode s, TreeNode t) {
+        // ...
+        /**
+         * NOTE !!! isSameTree and isSubtree with sub left, sub right tree
+         *
+         * e.g.
+         *   isSubtree(s.left, t)
+         *   isSubtree(s.right, t)
+         *
+         *   -> only take sub tree on s (root), but use the same t (sub root)
+         *
+         *
+         *  NOTE !!!
+         *   -> use "OR", so any `true` status can be found and return
+         */
+        return isSameTree(s, t) || isSubtree_0_1(s.left, t) || isSubtree_0_1(s.right, t);
+    }
+```
+
 ## 2) LC Example
 
 ### 2-1) Symmetric Tree
