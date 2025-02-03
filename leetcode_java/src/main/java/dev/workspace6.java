@@ -5432,6 +5432,56 @@ public class workspace6 {
       return cur.next; // ???
   }
 
+  // LC 226
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+   /**
+    *  IDEA: DFS
+    *
+    *
+    *
+    *
+    *
+    */
+  public TreeNode invertTree(TreeNode root) {
+
+      //edge
+      if(root == null || (root.left == null && root.right == null)){
+          return root;
+      }
+      //dfs
+      TreeNode reversedRoot = reverseTree(root);
+      System.out.println(">>> reversedRoot = " + reversedRoot);
+
+      return reversedRoot;
+  }
+
+  private TreeNode reverseTree(TreeNode root){
+      if(root == null){
+          return root;
+      }
+
+      // cache `reversed right tree`, so this object remains unchanged, and can be used in following code
+      TreeNode tmpRight = reverseTree(root.right);
+      root.right = reverseTree(root.left);
+      root.left = tmpRight;
+
+      return root;
+  }
+
 }
 
 
