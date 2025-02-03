@@ -5511,7 +5511,7 @@ public class workspace6 {
 
 
     // LC 100
-    public boolean isSameTree(TreeNode p, TreeNode q) {
+    public boolean isSameTree_(TreeNode p, TreeNode q) {
       // edge
 //      if (p != null || q != null){
 //          return false;
@@ -5539,6 +5539,43 @@ public class workspace6 {
             return false;
         }
         return (isSame(p.left, q.left)) && (isSame(p.right, q.right));
+    }
+
+    // LC 572
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+      // edge
+      if(root == null && subRoot == null){
+          return true;
+      }
+      // bfs // ???
+      Queue<TreeNode> q = new LinkedList<>();
+      q.add(root);
+      while(!q.isEmpty()){
+          TreeNode cur = q.poll();
+          if(isSameTree(cur, subRoot)){
+              return true;
+          }
+          if(cur.left != null){
+              q.add(cur.left);
+          }
+          if(cur.right != null){
+              q.add(cur.right);
+          }
+      }
+      return false;
+    }
+
+    private boolean isSameTree(TreeNode p, TreeNode q){
+        if(p == null && q == null){
+            return true;
+        }
+       if (p == null || q == null){
+           return false;
+       }
+       if(p.val != q.val){
+           return false;
+       }
+       return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
     }
 
 

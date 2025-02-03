@@ -1,18 +1,99 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/subtree-of-another-tree/
-
+/**
+ *  572. Subtree of Another Tree
+ * Solved
+ * Easy
+ * Topics
+ * Companies
+ * Hint
+ * Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure and node values of subRoot and false otherwise.
+ *
+ * A subtree of a binary tree tree is a tree that consists of a node in tree and all of this node's descendants. The tree tree could also be considered as a subtree of itself.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: root = [3,4,5,1,2], subRoot = [4,1,2]
+ * Output: true
+ * Example 2:
+ *
+ *
+ * Input: root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2]
+ * Output: false
+ *
+ *
+ * Constraints:
+ *
+ * The number of nodes in the root tree is in the range [1, 2000].
+ * The number of nodes in the subRoot tree is in the range [1, 1000].
+ * -104 <= root.val <= 104
+ * -104 <= subRoot.val <= 104
+ *
+ *
+ */
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class SubtreeOfAnotherTree {
 
     // V0
+    // IDEA: BFS + `isSameTree` (LC 100)
+    /**
+     *  IDEA
+     *   step 1) bfs traverse all nodes in root
+     *   step 2) check if `each node` (visited in step 1)) as SAME TREE as subRoot
+     *           if any match, return true directly
+     *   step 3) return false, since no sub tree is found
+     */
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        // edge
+        if (root == null && subRoot == null) {
+            return true;
+        }
+        // bfs // ???
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            TreeNode cur = q.poll();
+            if (isSameTree_0(cur, subRoot)) {
+                return true;
+            }
+            if (cur.left != null) {
+                q.add(cur.left);
+            }
+            if (cur.right != null) {
+                q.add(cur.right);
+            }
+        }
+        return false;
+    }
+
+    // same tree : LC 100
+    private boolean isSameTree_0(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        }
+        if (p == null || q == null) {
+            return false;
+        }
+        if (p.val != q.val) {
+            return false;
+        }
+        return isSameTree_0(p.left, q.left) && isSameTree_0(p.right, q.right);
+    }
+
+    // V0-1
     // IDEA : DFS + DFS (modified by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/subtree-of-another-tree.py#L110
-    public boolean isSubtree(TreeNode s, TreeNode t) {
+    public boolean isSubtree_0_1(TreeNode s, TreeNode t) {
         if (s == null && t == null) {
             return true;
         }
@@ -30,9 +111,9 @@ public class SubtreeOfAnotherTree {
          *
          *
          *  NOTE !!!
-         *   -> below is "or" logic
+         *   -> use "OR", so any `true` status can be found and return
          */
-        return isSameTree(s, t) || isSubtree(s.left, t) || isSubtree(s.right, t);
+        return isSameTree(s, t) || isSubtree_0_1(s.left, t) || isSubtree_0_1(s.right, t);
     }
 
     /** NOTE !!!
