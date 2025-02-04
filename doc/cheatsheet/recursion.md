@@ -19,8 +19,21 @@ Then, in the function F(X), we will:
         - https://leetcode.com/explore/learn/card/recursion-i/253/conclusion/1650/
 - Ref
     - https://medium.com/appworks-school/%E9%80%B2%E5%85%A5%E9%81%9E%E8%BF%B4-recursion-%E7%9A%84%E4%B8%96%E7%95%8C-%E4%B8%80-59fa4b394ef6
-
     - https://labuladong.online/algo/practice-in-action/two-views-of-backtrack/#%E6%9A%B4%E5%8A%9B%E7%A9%B7%E4%B8%BE%E6%80%9D%E7%BB%B4%E6%96%B9%E6%B3%95-%E7%90%83%E7%9B%92%E6%A8%A1%E5%9E%8B
+
+- Time complexity
+    - think as `tree` structure
+```
+        fib(5)
+       /      \
+    fib(4)    fib(3)
+    /    \     /    \
+fib(3)  fib(2) fib(2) fib(1)
+ /   \    /  \   /  \
+fib(2) fib(1) fib(1) fib(0)
+ /   \
+fib(1) fib(0)
+```
 
 ## 0) Concept
 
