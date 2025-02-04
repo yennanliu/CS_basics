@@ -5992,6 +5992,75 @@ public class workspace6 {
         return res2;
     }
 
+    // LC 235
+    // 3.21 pm - 3.35 pm
+    /**
+     *  if both go right -> find right sub root
+     *  if both go left -> find left sub root
+     *  if one goes left, one goes right, root is the LCA
+     *
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+      // edge
+      if(root == null){
+          return root; // ?
+      }
+      if(p == q){
+          return root; // ???
+      }
+      // ???
+//      if(q.val == root.val || p.val == root.val){
+//          return root; // ???
+//      }
+
+        // if root equals p or q, return root as LCA
+        if (root.equals(p) || root.equals(q)) {
+            return root;
+        }
+
+      // /??
+      return findLCA(root, root, p, q); // ancestor ???
+    }
+
+    private TreeNode findLCA(TreeNode root, TreeNode ancestor, TreeNode p, TreeNode q){
+        // edge /??
+        if(root == null){
+            return ancestor; // ?
+        }
+//        if(q.val == root.val || p.val == root.val){
+//            return ancestor; // ???
+//        }
+        // if root equals p or q, return root as LCA
+        if (root.equals(p) || root.equals(q)) {
+            return root;
+        }
+
+        // case 1) p, q at the `different side` of root
+        // e.g.  [left, right] or [right, left]
+        if((root.val > p.val && root.val < q.val)
+         || (root.val < p.val && root.val > q.val) ){
+            return ancestor;
+        }
+
+        // case 2) both p, and q < root.val
+        // -> root is too big
+        // -> move to `left` sub tree
+        if(root.val > p.val && root.val > q.val){
+            //findLCA(root.left, ancestor, p, q);
+            return findLCA(root.left, ancestor, p, q);
+        }
+
+        // case 2) both p, and q > root.val
+        // -> root is too small
+        // -> move to `right` sub tree
+        if(root.val < p.val && root.val < q.val){
+           // findLCA(root.right, ancestor, p, q);
+            return findLCA(root.right, ancestor, p, q);
+        }
+
+        return ancestor;
+    }
+
 }
 
 
