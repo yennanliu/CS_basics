@@ -1,7 +1,45 @@
 package LeetCodeJava.BinarySearchTree;
 
 // https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
-
+/**
+ *  235. Lowest Common Ancestor of a Binary Search Tree
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given a binary search tree (BST), find the lowest common ancestor (LCA) node of two given nodes in the BST.
+ *
+ * According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+ * Output: 6
+ * Explanation: The LCA of nodes 2 and 8 is 6.
+ * Example 2:
+ *
+ *
+ * Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
+ * Output: 2
+ * Explanation: The LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.
+ * Example 3:
+ *
+ * Input: root = [2,1], p = 2, q = 1
+ * Output: 2
+ *
+ *
+ * Constraints:
+ *
+ * The number of nodes in the tree is in the range [2, 105].
+ * -109 <= Node.val <= 109
+ * All Node.val are unique.
+ * p != q
+ * p and q will exist in the BST.
+ *
+ */
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
@@ -32,8 +70,6 @@ import LeetCodeJava.DataStructure.TreeNode;
 
 public class LowestCommonAncestorOfABinarySearchTree {
 
-    class Solution {
-
         // V0
         // IDEA : RECURSIVE + BST PROPERTY
         public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
@@ -53,13 +89,19 @@ public class LowestCommonAncestorOfABinarySearchTree {
                 return this.lowestCommonAncestor(root.left, p, q);
             }
 
-            // p, q are in different side (sub tree), then return root as LCA directly
+            /**
+             * NOTE !!!
+             *
+             *  if can reach below
+             *  -> p, q are in different side (sub tree)
+             *  -> then return root as LCA directly
+             */
             return root;
         }
 
-        // V0'
+        // V0-1
         // IDEA : RECURSIVE + BST PROPERTY
-        public TreeNode lowestCommonAncestor_0(TreeNode root, TreeNode p, TreeNode q) {
+        public TreeNode lowestCommonAncestor_0_1(TreeNode root, TreeNode p, TreeNode q) {
 
             // below logic is optional
             if (root == null || root == p || root == q){
@@ -72,17 +114,47 @@ public class LowestCommonAncestorOfABinarySearchTree {
                  *
                  *   -> e.g. return lowestCommonAncestor(root.right, p, q) instead of lowestCommonAncestor(root.right, p, q)
                  */
-                return lowestCommonAncestor_0(root.right, p, q);
+                return lowestCommonAncestor_0_1(root.right, p, q);
             // BST property : left child always < root val
             }else if (root.val > p.val && root.val > q.val) {
                 /** NOTE !!! we need to return recursive call below
                  *
                  *   -> e.g. return lowestCommonAncestor(root.right, p, q) instead of lowestCommonAncestor(root.right, p, q)
                  */
-                return lowestCommonAncestor_0(root.left, p, q);
+                return lowestCommonAncestor_0_1(root.left, p, q);
             }else{
                 return root;
             }
+        }
+
+        // V0-2
+        // IDEA: RECURSIVE + BST property (GPT)
+        public TreeNode lowestCommonAncestor_0_2(TreeNode root, TreeNode p, TreeNode q) {
+            // Base case: if root is null, return null
+            if (root == null) {
+                return null;
+            }
+
+            // If root matches either p or q, root is the LCA
+            if (root.val == p.val || root.val == q.val) {
+                return root;
+            }
+
+            // Recursively search in left and right subtrees
+            /** NOTE !!!
+             *
+             *  get sub left node's LCA, and sub right node's LCA
+             */
+            TreeNode left = lowestCommonAncestor_0_2(root.left, p, q);
+            TreeNode right = lowestCommonAncestor_0_2(root.right, p, q);
+
+            // If p and q are on different sides of root, root is the LCA
+            if (left != null && right != null) {
+                return root;
+            }
+
+            // If one side is null, return the non-null side
+            return (left != null) ? left : right;
         }
 
         // V1
@@ -145,7 +217,5 @@ public class LowestCommonAncestorOfABinarySearchTree {
             }
             return null;
         }
-
-    }
 
 }
