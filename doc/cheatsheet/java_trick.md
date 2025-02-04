@@ -212,6 +212,34 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 }
 ```
 
+```java
+// java
+// ...
+
+
+/**
+*  NOTE !!!
+*
+*   via below, we can retrieve List val by idx,
+*   append new val to the val (with the same idx)
+*
+*
+*   code breakdown:
+*
+*    •   res is a List<List<Integer>>, where each inner list represents a level of the tree.
+*    •   res.get(depth) retrieves the list at the given depth.
+*    •   .add(curRoot.val) adds the current node’s value to the corresponding depth level.
+*
+*/
+
+List<List<Integer>> res = new ArrayList<>();
+
+
+// insert curRoot.val to current val in list at `depth` index
+res.get(depth).add(curRoot.val);
+// ...
+```
+
 ### 1-0-3) Reverse List
 ```java
 // java
