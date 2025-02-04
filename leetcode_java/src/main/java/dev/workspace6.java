@@ -5695,6 +5695,39 @@ public class workspace6 {
         return res;
     }
 
+    // LC 230
+    List<Integer> treeVal = new ArrayList<>();
+    public int kthSmallest(TreeNode root, int k) {
+
+        //edge
+        if(root == null){
+            return -1; // ?
+        }
+        if(root.left == null &&  root.right == null){
+            return root.val;
+        }
+
+        System.out.println(">>> (before) treeVal = " + treeVal);
+        // get all tree
+        //List<Integer> treeVal = new ArrayList<>();
+        getTreeVal(root);
+        System.out.println(">>> (after) treeVal = " + treeVal);
+
+        // reorder (decreasing order)
+        Collections.sort(treeVal);
+
+        return treeVal.get(k-1);
+    }
+
+    private void getTreeVal(TreeNode root){
+        if(root == null){
+            return; // ??
+        }
+        // pre-order traversal
+        treeVal.add(root.val);
+        getTreeVal(root.left);
+        getTreeVal(root.right);
+    }
 
 }
 
