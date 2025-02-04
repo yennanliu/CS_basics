@@ -5824,6 +5824,85 @@ public class workspace6 {
         return leftRes && rightRes; // ???
     }
 
+    // LC 102
+    // IDEA: BFS
+    public class MyTreeLayer{
+      // attr
+      int layer;
+      TreeNode root;
+      // constructor
+      MyTreeLayer(int layer, TreeNode root){
+            this.layer = layer;
+            this.root = root;
+        }
+      // getter, setter
+        public int getLayer() {
+            return layer;
+        }
+
+        public void setLayer(int layer) {
+            this.layer = layer;
+        }
+
+        public TreeNode getRoot() {
+            return root;
+        }
+
+        public void setRoot(TreeNode root) {
+            this.root = root;
+        }
+    }
+    public List<List<Integer>> levelOrder(TreeNode root) {
+      // edge
+      if(root == null){
+          return new ArrayList<>();
+      }
+      if (root.left == null && root.right == null){
+          List<Integer> tmp = new ArrayList<>();
+          tmp.add(root.val);
+          List<List<Integer>> res = new ArrayList<>();
+          res.add(tmp);
+          return res;
+      }
+
+     List<List<Integer>> res = new ArrayList<>();
+      // bfs
+      Queue<MyTreeLayer> q = new LinkedList<>();
+      q.add(new MyTreeLayer(0, root));
+      while(!q.isEmpty()){
+
+          MyTreeLayer myTreeLayer = q.poll();
+          int depth = myTreeLayer.getLayer();
+          TreeNode curRoot = myTreeLayer.getRoot();
+
+          if(res.size() < depth+1){
+              res.add(new ArrayList<>());
+          }
+
+         // List<Integer> tmp = new ArrayList<>();
+         //tmp.add(root.val);
+
+//          List<Integer> tmp = res.get(depth);
+//          tmp.add(curRoot.val);
+//          res.add(depth, tmp); // /??
+
+          //   res.get(layer).add(cur.val);
+          res.get(depth).add(curRoot.val); // ???
+
+          if(curRoot.left != null){
+              q.add(new MyTreeLayer(depth+1, curRoot.left));
+          }
+          if(curRoot.right != null){
+              q.add(new MyTreeLayer(depth+1, curRoot.right));
+          }
+
+      }
+
+      System.out.println(">>> res = " + res);
+
+      return res;
+    }
+
 }
 
 
