@@ -5729,6 +5729,101 @@ public class workspace6 {
         getTreeVal(root.right);
     }
 
+  // LC 98
+  // 2.05 pm - 2.25 pm
+  /**
+   * IDEA: DFS
+   *
+   * -> keep checking nodes if left <= root <= right
+   *    and its sub tree, if any violation, return false directly
+   *    otherwise, return true
+   *
+   *  EXP 1)
+   *
+   *  Input: root = [2,1,3]
+   *  -> Output: true
+   *
+   *        2
+   *      1   3
+   *
+   *   -> for 2, 1 <= 2 <= 3
+   *   -> for 1, no sub root
+   *   -> for 3, no sub root
+   *   -> return true
+   *
+   *
+   *  EXP 2)
+   *
+   *  Input: root = [5,1,4,null,null,3,6]
+   *  -> Output: false
+   *
+   *       5
+   *    1   4
+   *      3   6
+   *
+   *
+   *   for 5,  1 <= 5 !<= 4 -> return fasle
+   *   -> since one node breaks BST, no need to traverse more
+   *   -> return false directly
+   *
+   *
+   *  -> key !!!
+   *  -> maintain `biggest` left sub node
+   *            and `smallest` right sub node
+   *  -> so we're sure if current node is BST and its sub nodes are BST
+   *  -> via    if  biggest_left_sub.val  <= root.val <= smallest_sub_right.val
+   *
+   */
+  public boolean isValidBST(TreeNode root) {
+        // edge
+        if(root == null || (root.left == null && root.right == null)){
+            return true;
+        }
+
+        //return false;
+        long smallest_val = Long.MIN_VALUE;
+        long biggest_val = Long.MAX_VALUE;
+        return isValidateBST(root, biggest_val, smallest_val); // ????
+    }
+
+    private boolean isValidateBST(TreeNode root, long biggestLeftNode, long smallestLeftNode){
+
+      // ???
+        if(root == null){
+            return true; // ??
+        }
+//        if(root.val >= smallestLeftNode || root.val <= biggestLeftNode){
+//            return false;
+//        }
+        if(root.val <= smallestLeftNode || root.val >= biggestLeftNode){
+            return false;
+        }
+
+        boolean leftRes = false;
+        boolean rightRes = false;
+
+        if(root.left != null){
+//            leftRes = isValidateBST(root.left,
+//                    Math.max(root.left.val, biggestLeftNode), smallestLeftNode
+//            );
+            leftRes = isValidateBST(root.left,
+                    Math.max(root.left.val, biggestLeftNode), root.val
+            );
+        }
+
+        if(root.right != null){
+//            rightRes = isValidateBST(root.right,
+//                    biggestLeftNode, Math.min(root.right.val, smallestLeftNode)
+//            );
+            rightRes = isValidateBST(root.right,
+                    biggestLeftNode, Math.min(root.right.val, smallestLeftNode)
+            );
+        }
+
+        // ONLY `ALL` node and their sub nodes are BST, then can return ture
+        return leftRes && rightRes; // ???
+    }
+
 }
 
 
