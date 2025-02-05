@@ -1,7 +1,39 @@
 package LeetCodeJava.Recursion;
 
 // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+/**
+ *
+ 105. Construct Binary Tree from Preorder and Inorder Traversal
+ Solved
+ Medium
+ Topics
+ Companies
+ Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.
 
+
+
+ Example 1:
+
+
+ Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+ Output: [3,9,20,null,null,15,7]
+ Example 2:
+
+ Input: preorder = [-1], inorder = [-1]
+ Output: [-1]
+
+
+ Constraints:
+
+ 1 <= preorder.length <= 3000
+ inorder.length == preorder.length
+ -3000 <= preorder[i], inorder[i] <= 3000
+ preorder and inorder consist of unique values.
+ Each value of inorder also appears in preorder.
+ preorder is guaranteed to be the preorder traversal of the tree.
+ inorder is guaranteed to be the inorder traversal of the tree.
+ *
+ */
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
@@ -22,6 +54,11 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
         }
 
         // setup root
+        /** NOTE !!!
+         *
+         *  we init root as below (within the recursion call),
+         *  so we can keep `binding` (e.g. root.left = ..., root.right = ...) to their sub tree
+         */
         TreeNode root = new TreeNode(preorder[0]);
         // get root idx
         int root_idx = 0;
@@ -63,10 +100,10 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
         return root;
     }
 
-    // V0'
+    // V0-1
     // IDEA : RECURSION (DFS) (transform below py code to java by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/construct-binary-tree-from-preorder-and-inorder-traversal.py#L36
-    public TreeNode buildTree_0(int[] preorder, int[] inorder) {
+    public TreeNode buildTree_0_1(int[] preorder, int[] inorder) {
         if (preorder.length == 0) {
             return null;
         }
@@ -81,10 +118,48 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
                 break;
             }
         }
-        root.left = buildTree_0(Arrays.copyOfRange(preorder, 1, index + 1), Arrays.copyOfRange(inorder, 0, index));
+        root.left = buildTree_0_1(Arrays.copyOfRange(preorder, 1, index + 1), Arrays.copyOfRange(inorder, 0, index));
         // (below recursion parameter) both preorder, inorder are "start from" idx+1, and "end at" the length of tree array
-        root.right = buildTree_0(Arrays.copyOfRange(preorder, index + 1, preorder.length), Arrays.copyOfRange(inorder, index + 1, inorder.length));
+        root.right = buildTree_0_1(Arrays.copyOfRange(preorder, index + 1, preorder.length), Arrays.copyOfRange(inorder, index + 1, inorder.length));
         return root;
+    }
+
+    // V0-2
+    // IDEA: RECURSION (GPT)
+    public TreeNode buildTree_0_2(int[] preorder, int[] inorder) {
+        if (preorder.length == 0 || inorder.length == 0) {
+            return null;
+        }
+        return buildT(preorder, inorder, 0, 0, inorder.length - 1);
+    }
+
+    private TreeNode buildT(int[] preorder, int[] inorder, int preStart, int inStart, int inEnd) {
+        // Base case: no elements to build the tree
+        if (preStart > preorder.length - 1 || inStart > inEnd) {
+            return null;
+        }
+
+        // The first element of preorder is the root
+        int rootVal = preorder[preStart];
+        TreeNode root = new TreeNode(rootVal);
+
+        // Find the root in inorder array
+        int rootIdxInorder = getValIdx(inorder, rootVal, inStart, inEnd);
+
+        // Recursively build the left and right subtrees
+        root.left = buildT(preorder, inorder, preStart + 1, inStart, rootIdxInorder - 1);
+        root.right = buildT(preorder, inorder, preStart + rootIdxInorder - inStart + 1, rootIdxInorder + 1, inEnd);
+
+        return root;
+    }
+
+    private int getValIdx(int[] inorder, int val, int start, int end) {
+        for (int i = start; i <= end; i++) {
+            if (inorder[i] == val) {
+                return i;
+            }
+        }
+        return -1; // This should never happen if the input is valid
     }
 
     // V1
