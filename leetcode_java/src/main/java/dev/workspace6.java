@@ -6061,6 +6061,88 @@ public class workspace6 {
         return ancestor;
     }
 
+    // LC 39
+    // IDEA: BACKTRACK
+    /**
+     *
+     *  Example 1:
+     *
+     * Input: candidates = [2,3,6,7], target = 7
+     * Output: [[2,2,3],[7]]
+     * Explanation:
+     * 2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
+     * 7 is a candidate, and 7 = 7.
+     * These are the only two combinations.
+     * Example 2:
+     *
+     * Input: candidates = [2,3,5], target = 8
+     * Output: [[2,2,2,2],[2,3,3],[3,5]]
+     * Example 3:
+     *
+     * Input: candidates = [2], target = 1
+     * Output: []
+     *
+     *
+     */
+
+    List<List<Integer>> comSumRes = new ArrayList<>();
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+
+        // edge
+        if(candidates == null || candidates.length == 0){
+            return new ArrayList<>();
+        }
+
+        if(candidates.length == 1 && candidates[0] > target){
+            return new ArrayList<>();
+        }
+
+        // backtrack
+        System.out.println(">>> (before) comSumRes = " + comSumRes);
+        //List<Integer> tmp = new ArrayList<>();
+        backTrack(candidates, target, new ArrayList<>(), 0);
+        System.out.println(">>> (after) comSumRes = " + comSumRes);
+        return comSumRes;
+    }
+
+    private void backTrack(int[] candidates, int target, List<Integer> cache, int idx){
+        if(candidates == null || candidates.length == 0){
+            return;
+        }
+        // == or equals
+        if(getSum(cache) == target){
+            // sort
+            Collections.sort(cache);
+            if(!comSumRes.contains(cache)){
+                comSumRes.add(new ArrayList<>(cache));
+                //cache = new ArrayList<>(); // ???
+                return;
+            }
+        }
+        if(getSum(cache) > target){
+            //cache = new ArrayList<>(); // ???
+            return;
+        }
+
+        // loop
+        for(int i = 0; i < candidates.length; i++){
+            cache.add(candidates[i]);
+            if(getSum(cache) <= target){
+                backTrack(candidates, target, cache, i); // set i so can reuse current element (idx)
+            }
+            // undo
+            cache.remove(cache.size()-1); // ?? remove last element
+        }
+    }
+
+    private int getSum(List<Integer> cache){
+        int res = 0;
+        for(int x : cache){
+            res += x;
+        }
+        return res;
+    }
+
 }
 
 
