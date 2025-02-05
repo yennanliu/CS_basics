@@ -1,78 +1,169 @@
 package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/combination-sum-ii/
-
+/**
+ * 40. Combination Sum II
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
+ *
+ * Each number in candidates may only be used once in the combination.
+ *
+ * Note: The solution set must not contain duplicate combinations.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: candidates = [10,1,2,7,6,1,5], target = 8
+ * Output:
+ * [
+ * [1,1,6],
+ * [1,2,5],
+ * [1,7],
+ * [2,6]
+ * ]
+ * Example 2:
+ *
+ * Input: candidates = [2,5,2,1,2], target = 5
+ * Output:
+ * [
+ * [1,2,2],
+ * [5]
+ * ]
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= candidates.length <= 100
+ * 1 <= candidates[i] <= 50
+ * 1 <= target <= 30
+ *
+ *
+ */
 import java.util.*;
 
 public class CombinationSum2 {
 
     // V0
     // IDEA : BACKTRACK
-    // TODO : fix with hashmap avoid duplicates
-//    List<List<Integer>> ans = new ArrayList<>();
-//    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+    // TODO : fix below TLE error
+//    List<List<Integer>> comSumRes = new ArrayList<>();
 //
-//        if (candidates.length == 0 || Arrays.stream(candidates).sum() <  target){
-//            //ans.add(new ArrayList<>());
-//            return ans;
+//    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+//        // Edge case check for empty array or null input
+//        if (candidates == null || candidates.length == 0) {
+//            return new ArrayList<>();
 //        }
 //
+//        // Sort candidates to handle duplicates efficiently
 //        Arrays.sort(candidates);
 //
-//        HashMap<Integer, Integer> counter = new HashMap<>();
-//        for (int candidate : candidates) {
-//            if (counter.containsKey(candidate))
-//                counter.put(candidate, counter.get(candidate) + 1);
-//            else
-//                counter.put(candidate, 1);
-//        }
-//
-//        ArrayList<Integer> cur = new ArrayList<>();
-//        int[] _candidates = candidates;
-//        _help(candidates, target, cur, 0, counter);
-//        return this.ans;
+//        HashSet<Integer> usedIdx = new HashSet<>();
+//        // Backtracking step
+//        backTrack(candidates, target, new ArrayList<>(), 0, usedIdx);
+//        return comSumRes;
 //    }
 //
-//    private void _help(int[] candidates, int target, ArrayList cur, int idx, HashMap counter){
+//    private void backTrack(int[] candidates, int target, List<Integer> cache, int startIdx, HashSet<Integer> usedIdx) {
+//        int sum = getSum(cache);
 //
-//        int _sum = _getSum(cur);
-//
-//        if (cur.size() > candidates.length ||_sum > target){
+//        // If the sum of the current combination equals target, add it to the result
+//        if (sum == target) {
+//            // ???
+//            Collections.sort(cache);
+//            if(!comSumRes.contains(cache)){
+//                comSumRes.add(new ArrayList<>(cache)); // Store a copy to avoid reference issues
+//            }
 //            return;
 //        }
 //
-//        if (_sum == target){
-//            Collections.sort(cur);
-//            if(!this.ans.contains(cur)){
-//                this.ans.add(new ArrayList<>(cur));
-//                return;
-//            }
+//        // If the sum exceeds target, stop the recursion
+//        if (sum > target) {
+//            return;
 //        }
 //
-//        for (int i = idx; i < candidates.length; i++){
-//            int val = candidates[i];
-//            if (val > target){
-//                return;
-//            }
-//            cur.add(val);
-//            int _cnt = (int) counter.get(val);
-//            counter.put(val, _cnt - 1);
-//            // recursive
-//            _help(candidates, target, cur, idx+1, counter);
-//            // undo
-//            counter.put(val, _cnt + 1);
-//            cur.remove(cur.size()-1);
-//        }
+//        // Loop over the candidates starting from the current index
+//        for (int i = startIdx; i < candidates.length; i++) {
+//            // Skip duplicates: if the current element is the same as the previous, skip it
+////            if (i > startIdx && candidates[i] == candidates[i - 1]) {
+////                continue;
+////            }
 //
+//            if (usedIdx.contains(i)) {
+//                continue;
+//            }
+//
+//            usedIdx.add(i);
+//            cache.add(candidates[i]); // Choose current candidate
+//            backTrack(candidates, target, cache, i + 1, usedIdx); // Move to the next index (no repetition of the same element)
+//            usedIdx.remove(i);
+//            cache.remove(cache.size() - 1); // Undo the choice (backtrack)
+//        }
 //    }
 //
-//    private int _getSum(ArrayList<Integer> cur){
+//    private int getSum(List<Integer> cache) {
 //        int res = 0;
-//        for(int x : cur){
+//        for (int x : cache) {
 //            res += x;
 //        }
 //        return res;
 //    }
+
+    // V0-1
+    // IDEA: LC 39 + check duplicated (GPT)
+    List<List<Integer>> comSumRes = new ArrayList<>();
+
+    public List<List<Integer>> combinationSum2_0_1(int[] candidates, int target) {
+        // Edge case check for empty array or null input
+        if (candidates == null || candidates.length == 0) {
+            return new ArrayList<>();
+        }
+
+        // Sort candidates to handle duplicates efficiently
+        Arrays.sort(candidates);
+
+        // Backtracking step
+        backTrack(candidates, target, new ArrayList<>(), 0);
+        return comSumRes;
+    }
+
+    private void backTrack(int[] candidates, int target, List<Integer> cache, int startIdx) {
+        int sum = getSum(cache);
+
+        // If the sum of the current combination equals target, add it to the result
+        if (sum == target) {
+            comSumRes.add(new ArrayList<>(cache)); // Store a copy to avoid reference issues
+            return;
+        }
+
+        // If the sum exceeds target, stop the recursion
+        if (sum > target) {
+            return;
+        }
+
+        // Loop over the candidates starting from the current index
+        for (int i = startIdx; i < candidates.length; i++) {
+            // Skip duplicates: if the current element is the same as the previous, skip it
+            if (i > startIdx && candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+
+            cache.add(candidates[i]); // Choose current candidate
+            backTrack(candidates, target, cache, i + 1); // Move to the next index (no repetition of the same element)
+            cache.remove(cache.size() - 1); // Undo the choice (backtrack)
+        }
+    }
+
+    private int getSum(List<Integer> cache) {
+        int res = 0;
+        for (int x : cache) {
+            res += x;
+        }
+        return res;
+    }
 
     // V1
     // IDEA : Backtracking with Counters
