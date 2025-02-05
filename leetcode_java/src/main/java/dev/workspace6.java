@@ -6354,6 +6354,102 @@ public class workspace6 {
         return -1;
     }
 
+    // LC 124
+    // 10.36 - 10.50 pm
+    /**
+     *  The path sum of a path is the sum of the node's values in the path.
+     *
+     *  Given the root of a binary tree, return the maximum path sum of any non-empty path.
+     *
+     *
+     *  IDEA: RECURSION ??
+     *  -> record `sub tree` for each node, so can get path sum, and we can get global max path sum
+     *
+     */
+    public class NodeAndPath{
+        // attr
+        TreeNode node;
+        List<Integer> path;
+        // constructor
+        NodeAndPath(TreeNode node, List<Integer> path){
+            this.node = node;
+            this.path = path;
+        }
+        // getter, setter
+        public TreeNode getNode() {
+            return node;
+        }
+
+        public void setNode(TreeNode node) {
+            this.node = node;
+        }
+
+        public List<Integer> getPath() {
+            return path;
+        }
+
+        public void setPath(List<Integer> path) {
+            this.path = path;
+        }
+    }
+    public int maxPathSum(TreeNode root) {
+
+        // edge
+        if(root == null || (root.left == null && root.right == null)){
+            return root.val;
+        }
+
+        Map<TreeNode, List<Integer>> map = new HashMap<>();
+
+        // bfs
+        Queue<NodeAndPath> q = new LinkedList<>();
+        q.add(new NodeAndPath(root, new ArrayList<>()));
+        while(!q.isEmpty()){
+
+            NodeAndPath nodeAndPath = q.poll();
+            TreeNode node = nodeAndPath.getNode();
+//            List<Integer> path = map.getOrDefault(node, new ArrayList<>());
+//            path.add(node.val);
+//            map.put(node, path);
+
+            if(node.left != null){
+//                List<TreeNode> tmp = new ArrayList<>(nodeAndPath.getPath());
+//                tmp.add(node.left);
+                List<Integer> path = map.getOrDefault(node, new ArrayList<>());
+                path.add(node.val);
+                map.put(node, path);
+                q.add(new NodeAndPath(node.left, path));
+            }
+            if(node.right != null){
+//                List<TreeNode> tmp = new ArrayList<>(nodeAndPath.getPath());
+//                tmp.add(node.left);
+                List<Integer> path = map.getOrDefault(node, new ArrayList<>());
+                path.add(node.val);
+                map.put(node, path);
+                q.add(new NodeAndPath(node.right, path));
+            }
+        }
+
+        System.out.println(">>> map = " + map);
+        // sort map on path sum (decreasing order)
+        int res = -1 * Integer.MAX_VALUE;
+        for(List<Integer> x: map.values()){
+            res = Math.max(res, getListSum(x));
+        }
+
+        return res;
+    }
+
+    private int getListSum(List<Integer> cache) {
+        int res = 0;
+        for (int x : cache) {
+            res += x;
+        }
+        return res;
+    }
+
+
+
 }
 
 
