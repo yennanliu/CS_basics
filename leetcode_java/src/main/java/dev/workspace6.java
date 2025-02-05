@@ -6261,6 +6261,98 @@ public class workspace6 {
     }
 
 
+    // LC 1057
+    // 7.06 - 7.26 pm
+    /**
+     *  EXP 1)
+     *
+     *   Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+     *   Output: [3,9,20,null,null,15,7]
+     *
+     *  EXP 2)
+     *   Input: preorder = [-1], inorder = [-1]
+     *   Output: [-1]
+     *
+     *          3
+     *      9      20
+     *           15   7
+     *
+     *
+     *  IDEA: RECURSION + Preorder and Inorder Traversal property
+     *
+     *   -> preorder: root -> left -> right
+     *   -> so we know root is the 1st element
+     *
+     *   -> inOrder: left -> root -> left
+     *   -> so we can split the tree via root val index
+     *
+     *   -> and the `width` = root - left
+     *
+     *   -> so we can recursion call buildTree and
+     *     define the following
+     *
+     *     for left subtree:
+     *        preorder = [1, root_idx] ??
+     *        inorder = [0, root_idx]
+     *
+     *    for right subtree:
+     *         preorder = [root_idx+1, len-1] ??
+     *         inorder = [root_idx+1, len-1] ??
+     *
+     *
+     */
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+
+        // edge
+        if(preorder.length == 0 || inorder.length ==0){
+            return null;
+        }
+        if(preorder.length == 1 && inorder.length ==1){
+            return new TreeNode(preorder[0]);
+        }
+
+        // recursion
+        TreeNode res = new TreeNode(preorder[0]);
+        // ???
+        res = buildT(preorder, inorder, res);
+        System.out.println(">>> res = " + res);
+        return res;
+    }
+
+    private TreeNode buildT(int[] preorder, int[] inorder, TreeNode res){
+        if(preorder.length == 0 && inorder.length ==0){
+            return null;
+        }
+        if(preorder.length == 1 && inorder.length ==1){
+            return new TreeNode(preorder[0]);
+        }
+
+        int root = preorder[0];
+        int rootIdxInorder = getValIdx(inorder, root);
+        System.out.println(">>> rootIdxInorder = " + rootIdxInorder);
+
+        res.left = buildT(
+                Arrays.copyOfRange(preorder, 1, rootIdxInorder+1),
+                Arrays.copyOfRange(inorder, 0, rootIdxInorder),
+                res
+        );
+        res.right = buildT(
+                Arrays.copyOfRange(preorder, rootIdxInorder+1, preorder.length),
+                Arrays.copyOfRange(inorder, rootIdxInorder+1, inorder.length),
+                res
+        );
+
+        return res; // ???
+    }
+
+    private int getValIdx(int[] values, int val){
+        for(int i = 0; i < values.length; i++){
+            if (values[i] == val){
+                return i;
+            }
+        }
+        return -1;
+    }
 
 }
 
