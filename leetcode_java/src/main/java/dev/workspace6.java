@@ -8,6 +8,7 @@ import LeetCodeJava.Recursion.PopulatingNextRightPointersInEachNode2;
 import LeetCodeJava.Recursion.SumOfLeftLeaves;
 //import jdk.javadoc.internal.doclets.toolkit.util.Utils;
 
+import javax.print.DocFlavor;
 import java.awt.*;
 import java.awt.image.VolatileImage;
 import java.util.*;
@@ -6085,63 +6086,181 @@ public class workspace6 {
      *
      */
 
+//    List<List<Integer>> comSumRes = new ArrayList<>();
+//    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+//
+//        // edge
+//        if(candidates == null || candidates.length == 0){
+//            return new ArrayList<>();
+//        }
+//
+//        if(candidates.length == 1 && candidates[0] > target){
+//            return new ArrayList<>();
+//        }
+//
+//        // backtrack
+//        System.out.println(">>> (before) comSumRes = " + comSumRes);
+//        //List<Integer> tmp = new ArrayList<>();
+//        backTrack(candidates, target, new ArrayList<>(), 0);
+//        System.out.println(">>> (after) comSumRes = " + comSumRes);
+//        return comSumRes;
+//    }
+//
+//    private void backTrack(int[] candidates, int target, List<Integer> cache, int idx){
+//        if(candidates == null || candidates.length == 0){
+//            return;
+//        }
+//        // == or equals
+//        if(getSum(cache) == target){
+//            // sort
+//            Collections.sort(cache);
+//            if(!comSumRes.contains(cache)){
+//                comSumRes.add(new ArrayList<>(cache));
+//                //cache = new ArrayList<>(); // ???
+//                return;
+//            }
+//        }
+//        if(getSum(cache) > target){
+//            //cache = new ArrayList<>(); // ???
+//            return;
+//        }
+//
+//        // loop
+//        for(int i = 0; i < candidates.length; i++){
+//            cache.add(candidates[i]);
+//            if(getSum(cache) <= target){
+//                backTrack(candidates, target, cache, i); // set i so can reuse current element (idx)
+//            }
+//            // undo
+//            cache.remove(cache.size()-1); // ?? remove last element
+//        }
+//    }
+//
+//    private int getSum(List<Integer> cache){
+//        int res = 0;
+//        for(int x : cache){
+//            res += x;
+//        }
+//        return res;
+//    }
+
+    // LC 40
+//    List<List<Integer>> comSumRes = new ArrayList<>();
+//    //HashSet<Integer> usedIdx = new HashSet<>();
+//    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+//
+//        // Edge case check for empty array or null input
+//        if (candidates == null || candidates.length == 0) {
+//            return new ArrayList<>();
+//        }
+//
+//        HashSet<Integer> usedIdx = new HashSet<>();
+//
+//        // Backtracking step
+//        backTrack(candidates, target, new ArrayList<>(), 0, usedIdx);
+//        return comSumRes;
+//
+//    }
+//
+//    private void backTrack(int[] candidates, int target, List<Integer> cache, int startIdx, HashSet<Integer> usedIdx) {
+//        int sum = getSum(cache);
+//
+//        // If the sum of the current combination equals target, add it to the result
+//        if (sum == target) {
+//            comSumRes.add(new ArrayList<>(cache)); // Store a copy to avoid reference issues
+//            return;
+//        }
+//
+//        // If the sum exceeds target, stop the recursion
+//        if (sum > target) {
+//            return;
+//        }
+//
+//        // Loop over the candidates starting from the current index to avoid duplicates
+//        for (int i = startIdx; i < candidates.length; i++) {
+//            // element can only be used ONCE
+//            if(!usedIdx.contains(i)){
+//                usedIdx.add(i);
+//                cache.add(candidates[i]); // Choose current candidate
+//                backTrack(candidates, target, cache, i, usedIdx); // Recurse with the same index to allow repetition
+//                usedIdx.remove(i); // ???
+//                cache.remove(cache.size() - 1); // Undo the choice
+//            }
+//        }
+//    }
+//
+//    private int getSum(List<Integer> cache) {
+//        int res = 0;
+//        for (int x : cache) {
+//            res += x;
+//        }
+//        return res;
+//    }
+
+
     List<List<Integer>> comSumRes = new ArrayList<>();
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
 
-        // edge
-        if(candidates == null || candidates.length == 0){
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        // Edge case check for empty array or null input
+        if (candidates == null || candidates.length == 0) {
             return new ArrayList<>();
         }
 
-        if(candidates.length == 1 && candidates[0] > target){
-            return new ArrayList<>();
-        }
+        // Sort candidates to handle duplicates efficiently
+        Arrays.sort(candidates);
 
-        // backtrack
-        System.out.println(">>> (before) comSumRes = " + comSumRes);
-        //List<Integer> tmp = new ArrayList<>();
-        backTrack(candidates, target, new ArrayList<>(), 0);
-        System.out.println(">>> (after) comSumRes = " + comSumRes);
+        HashSet<Integer> usedIdx = new HashSet<>();
+        // Backtracking step
+        backTrack(candidates, target, new ArrayList<>(), 0, usedIdx);
         return comSumRes;
     }
 
-    private void backTrack(int[] candidates, int target, List<Integer> cache, int idx){
-        if(candidates == null || candidates.length == 0){
-            return;
-        }
-        // == or equals
-        if(getSum(cache) == target){
-            // sort
+    private void backTrack(int[] candidates, int target, List<Integer> cache, int startIdx, HashSet<Integer> usedIdx) {
+        int sum = getSum(cache);
+
+        // If the sum of the current combination equals target, add it to the result
+        if (sum == target) {
+            // ???
             Collections.sort(cache);
             if(!comSumRes.contains(cache)){
-                comSumRes.add(new ArrayList<>(cache));
-                //cache = new ArrayList<>(); // ???
-                return;
+                comSumRes.add(new ArrayList<>(cache)); // Store a copy to avoid reference issues
             }
-        }
-        if(getSum(cache) > target){
-            //cache = new ArrayList<>(); // ???
             return;
         }
 
-        // loop
-        for(int i = 0; i < candidates.length; i++){
-            cache.add(candidates[i]);
-            if(getSum(cache) <= target){
-                backTrack(candidates, target, cache, i); // set i so can reuse current element (idx)
+        // If the sum exceeds target, stop the recursion
+        if (sum > target) {
+            return;
+        }
+
+        // Loop over the candidates starting from the current index
+        for (int i = startIdx; i < candidates.length; i++) {
+            // Skip duplicates: if the current element is the same as the previous, skip it
+//            if (i > startIdx && candidates[i] == candidates[i - 1]) {
+//                continue;
+//            }
+
+            if (usedIdx.contains(i)) {
+                continue;
             }
-            // undo
-            cache.remove(cache.size()-1); // ?? remove last element
+
+            usedIdx.add(i);
+            cache.add(candidates[i]); // Choose current candidate
+            backTrack(candidates, target, cache, i + 1, usedIdx); // Move to the next index (no repetition of the same element)
+            usedIdx.remove(i);
+            cache.remove(cache.size() - 1); // Undo the choice (backtrack)
         }
     }
 
-    private int getSum(List<Integer> cache){
+    private int getSum(List<Integer> cache) {
         int res = 0;
-        for(int x : cache){
+        for (int x : cache) {
             res += x;
         }
         return res;
     }
+
+
 
 }
 
