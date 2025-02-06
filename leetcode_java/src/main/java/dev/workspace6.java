@@ -6527,6 +6527,67 @@ public class workspace6 {
     }
 
 
+
+    // LC 208
+    // 8.08-8.20 pm
+    class TreeNode_{
+        // attr
+        Map<String, TreeNode_> children;
+        boolean isEnd;
+
+        public TreeNode_(){
+            this.children = new HashMap<>();
+            this.isEnd = false; // ?
+        }
+    }
+    class Trie {
+
+        // attr
+        TreeNode_ root;
+
+        public Trie(){
+            this.root = new TreeNode_(); // root is `null` treeNode
+        }
+
+        public void insert(String word) {
+//            for(String x: word.split("")){
+//                if(!this.trie.children.containsKey(x)){
+//                    this.trie.children.put(x, new Trie(trie, new HashMap<>(), false)); // ???
+//                }
+//            }
+            for(String x: word.split("")){
+                this.root.children.putIfAbsent(x, new TreeNode_());
+                this.root = this.root.children.get(x);
+               // this.root.isEnd = false; // needed ???
+            }
+            this.root.isEnd = true;
+        }
+
+        public boolean search(String word) {
+            for(String x: word.split("")){
+                if(this.root.children.containsKey(x)){
+                    this.root = this.root.children.get(x);
+                }else{
+                    return false; // ?
+                }
+            }
+            return this.root.isEnd;
+        }
+
+        public boolean startsWith(String prefix) {
+            for(String x: prefix.split("")){
+                if(this.root.children.containsKey(x)){
+                    this.root = this.root.children.get(x);
+                }else{
+                    return false; // ?
+                }
+            }
+
+            return true;
+        }
+    }
+
+
 }
 
 
