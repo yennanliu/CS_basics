@@ -6610,6 +6610,99 @@ public class workspace6 {
         }
     }
 
+    // LC 200
+    // IDEA: DFS
+//    // 10.01 - 10.12 PM
+//    public int numIslands(char[][] grid) {
+//        // edge
+//        if(grid == null || grid.length == 0 || grid[0].length == 0){
+//            return 0;
+//        }
+//
+//        int cnt = 0;
+//        int l = grid.length;
+//        int w = grid[0].length;
+//        //boolean[][] visited = new boolean[l][w]; // ??? default is false ??
+//
+//        for(int i = 0; i < w; i++){
+//            for(int j = 0; j < l; j++){
+//                if(grid[j][i] == '1'){
+//                    cnt += 1;
+//                    bfsVisit(grid, i, j);
+//                }
+//            }
+//        }
+//
+//        return cnt;
+//    }
+//
+//    private void bfsVisit(char[][] grid, int x, int y){
+//        int l = grid.length;
+//        int w = grid[0].length;
+//        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+//        // NOTE !!! mark current (x,y) as `visited` before move & recursive call
+//        grid[y][x] = 'x';
+//        // Boundary and land check
+//        if (x < 0 || x >= w || y < 0 || y >= l || grid[x][y] != '1') {
+//            return;
+//        }
+//
+//        for (int[] m: moves){
+//            int x_ = x + m[0];
+//            int y_ = y + m[1];
+////            if (x_ < 0 || x_ >= w || y_ <= 0 || y_ >= l || grid[y_][x_] != '1'){
+////                return;
+////            }
+////            // mark as `visited`
+////            grid[y_][x_] = 'x';
+//            bfsVisit(grid, x_, y_);
+//        }
+//    }
+    public int numIslands(char[][] grid) {
+        // Edge case
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int count = 0;
+
+        // Iterate over each cell in the grid
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == '1') { // Found land
+                    count++; // One new island found
+                    dfs(grid, i, j);
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private void dfs(char[][] grid, int x, int y) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        // Boundary and land check
+//        if (x < 0 || x >= rows || y < 0 || y >= cols || grid[x][y] != '1') {
+//            return;
+//        }
+
+        // Mark the current cell as visited by changing it to '0'
+        grid[x][y] = '0';
+
+        // Possible movements: up, down, left, right
+        int[][] moves = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+        for (int[] move : moves) {
+            if (x + move[0] < 0 || x + move[0] >= rows || y + move[1] < 0 || y + move[1] >= cols || grid[x + move[0]][y + move[1]] != '1') {
+                return;
+            }
+            dfs(grid, x + move[0], y + move[1]);
+        }
+    }
+
 
 }
 
