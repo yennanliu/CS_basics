@@ -90,9 +90,65 @@ public class WordSearch {
         return false;
     }
 
-    // V0'
+    // V0-1
+    // IDEA: DFS + BACKTRACK (GPT)
+    public boolean exist_0_1(char[][] board, String word) {
+        // Edge case: empty board
+        if (board.length == 0 || board[0].length == 0) {
+            return false;
+        }
+
+        int rows = board.length;
+        int cols = board[0].length;
+        boolean[][] visited = new boolean[rows][cols];
+
+        // Try starting DFS from each cell
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == word.charAt(0) && dfs_0_1(board, word, i, j, 0, visited)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean dfs_0_1(char[][] board, String word, int x, int y, int idx, boolean[][] visited) {
+        // If all characters are found
+        if (idx == word.length()) {
+            return true;
+        }
+
+        // Boundary and character check
+        if (x < 0 || x >= board.length || y < 0 || y >= board[0].length || visited[x][y] || board[x][y] != word.charAt(idx)) {
+            return false;
+        }
+
+        // Mark as visited
+        visited[x][y] = true;
+
+        // Explore all four directions
+        int[][] moves = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+        for (int[] move : moves) {
+            /** NOTE !!!
+             *
+             *  if below recursive is true, return true directly
+             */
+            if (dfs_0_1(board, word, x + move[0], y + move[1], idx + 1, visited)) {
+                return true;
+            }
+        }
+
+        // Backtrack
+        visited[x][y] = false;
+
+        return false;
+    }
+
+    // V0-2
     // IDEA : DFS + BACKTRACK (modified by GPT)
-    public boolean exist_0(char[][] board, String word) {
+    public boolean exist_0_2(char[][] board, String word) {
         if (board == null || board.length == 0) {
             return false;
         }
@@ -196,8 +252,6 @@ public class WordSearch {
      *
      *
      *
-     *
-     *
      * 4) Conclusion
      *
      * Returning true immediately when a valid path is found is
@@ -223,9 +277,9 @@ public class WordSearch {
         return false;
     }
 
-    // V0''
+    // V0-3
     // IDEA : modified version of v0' (gpt)
-    public boolean exist_0_1(char[][] board, String word) {
+    public boolean exist_0_3(char[][] board, String word) {
         if (board == null || board.length == 0) {
             return false;
         }
