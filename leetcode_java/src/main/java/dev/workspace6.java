@@ -663,27 +663,27 @@ public class workspace6 {
     // LC 079
     // https://leetcode.com/problems/word-search/
     // 2.31 pm - 2.45 pm
-    public boolean exist(char[][] board, String word) {
-
-      if (board.length == 1 && board[0].length == 1){
-          return String.valueOf(board[0][0]).equals(word);
-      }
-
-      // backtrack
-      Set<List<Integer>> visited = new HashSet<>();
-      int l = board.length;
-      int w = board[0].length;
-      for(int i = 0; i < l; i++){
-          for(int j = 0; j < w; j++){
-              StringBuilder sb = new StringBuilder();
-              if(canFind(board, word, j, i, sb, visited)){
-                  return true;
-              }
-          }
-      }
-
-      return false;
-    }
+//    public boolean exist(char[][] board, String word) {
+//
+//      if (board.length == 1 && board[0].length == 1){
+//          return String.valueOf(board[0][0]).equals(word);
+//      }
+//
+//      // backtrack
+//      Set<List<Integer>> visited = new HashSet<>();
+//      int l = board.length;
+//      int w = board[0].length;
+//      for(int i = 0; i < l; i++){
+//          for(int j = 0; j < w; j++){
+//              StringBuilder sb = new StringBuilder();
+//              if(canFind(board, word, j, i, sb, visited)){
+//                  return true;
+//              }
+//          }
+//      }
+//
+//      return false;
+//    }
 
     private boolean canFind(char[][] board, String word, int x, int y, StringBuilder cur, Set<List<Integer>> visited){
       int l = board.length;
@@ -6448,6 +6448,83 @@ public class workspace6 {
         return res;
     }
 
+    // LC 79
+    // 7.30 - 7.50 pm
+    /**
+     *  IDEA: DFS + BACKTRACK ???
+     *
+     */
+    //List<Boolean> results = new ArrayList<>(); // ???
+    public boolean exist(char[][] board, String word) {
+
+        // edge
+        if(board.length == 0 || board[0].length == 0){
+            return false;
+        }
+
+        if(board.length == 1 && board[0].length == 1){
+            return String.valueOf(board[0]).equals(word); // ??
+        }
+
+        int l = board.length;
+        int w = board[0].length;
+
+        // dfs + backtrack
+        for (int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                if(containWords(board, word, new StringBuilder(), j, i, new HashSet<>(), 0)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean containWords(char[][] board, String word, StringBuilder cache, int x, int y, HashSet<List<Integer>> visited, int idx){
+
+        int l = board.length;
+        int w = board[0].length;
+
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        String curStr = cache.toString();
+
+        if(curStr.length() == word.length() && curStr.equals(word)){
+            //return true; // found, return true directly
+            //results.add(true);
+            return true;
+        }
+
+        if(cache.length() > word.length()){
+            //return false; // ?
+            //return;
+            return false;
+        }
+
+        if(board[y][x] != word.charAt(idx)){
+            return false;
+        }
+
+        for(int[] move: moves){
+            int x_ = x + move[0];
+            int y_ = y + move[1];
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(x_);
+            tmp.add(y_);
+            String val = String.valueOf(board[y_][x_]);
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y < l && !visited.contains(tmp) && val.equals(String.valueOf(word.charAt(idx)))){
+                cache.append(val);
+                visited.add(tmp);
+                containWords(board, word, cache, x_, y_, visited,idx+1);
+                // undo
+                cache.deleteCharAt(cache.length()-1); // ???
+                visited.remove(tmp); // ???
+            }
+        }
+
+        return false; // ??
+    }
 
 
 }
