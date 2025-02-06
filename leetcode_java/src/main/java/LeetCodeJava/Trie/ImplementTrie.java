@@ -58,6 +58,13 @@ public class ImplementTrie {
     // V0
     // IDEA : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py#L49
     // modified by GPT
+    /**
+     * NOTE !!!
+     *
+     *   - define TrieNode (or TreeNode) first (2 attrs: Map<String, TrieNode> children, boolean isWord)
+     *   - then define Trie (ONLY 1 attr: TrieNode root;)
+     *
+     */
     class TrieNode {
 
         /** NOTE !!!!
