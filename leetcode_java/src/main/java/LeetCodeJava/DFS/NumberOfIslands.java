@@ -1,16 +1,140 @@
 package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/number-of-islands/
-
+/**
+ *  200. Number of Islands
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+ *
+ * An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: grid = [
+ *   ["1","1","1","1","0"],
+ *   ["1","1","0","1","0"],
+ *   ["1","1","0","0","0"],
+ *   ["0","0","0","0","0"]
+ * ]
+ * Output: 1
+ * Example 2:
+ *
+ * Input: grid = [
+ *   ["1","1","0","0","0"],
+ *   ["1","1","0","0","0"],
+ *   ["0","0","1","0","0"],
+ *   ["0","0","0","1","1"]
+ * ]
+ * Output: 3
+ *
+ *
+ * Constraints:
+ *
+ * m == grid.length
+ * n == grid[i].length
+ * 1 <= m, n <= 300
+ * grid[i][j] is '0' or '1'.
+ *
+ *
+ */
 import java.util.*;
 
 public class NumberOfIslands {
 
     // V0
+    // V0-1
+    // IDEA: DFS (with looping)
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+        int res = 0;
+
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                /**
+                 *  NOTE !!!
+                 *
+                 *   if grid[i][j] == '1', no need to collect the coordinate (x,y),
+                 *   -> just add res with 1,
+                 *   -> and call dfs function
+                 */
+                if (grid[i][j] == '1') {
+                    res += 1;
+                    dfs(grid, i, j);
+                }
+            }
+        }
+
+        return res;
+    }
+
+    /** NOTE !!!
+     *
+     *   NO NEED to return boolean val on this helper function (dfs),
+     *   since we mark point as "visited" in place with traversing,
+     *   so no response (void) is OK
+     */
+    private void dfs(char[][] grid, int y, int x) {
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+    /**
+     * NOTE !!!
+     *
+     *  1) we do below checking before for loop & dfs call
+     *   -> reason :
+     *
+     *       You cannot move the checking logic inside the for loop
+     *       because it would return too early and stop exploring
+     *       other valid directions. Let’s break it down step by step.
+     *
+     *
+     *  2) Why the return inside the for loop is incorrect ?
+     *
+     *   -> Consider this incorrect version:
+     *
+     *   int[][] moves = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+     *   for (int[] move : moves) {
+     *     if (x + move[0] < 0 || x + move[0] >= rows || y + move[1] < 0 || y + move[1] >= cols || grid[x + move[0]][y + move[1]] != '1') {
+     *         return; // ❌ WRONG! Stops checking other directions!
+     *     }
+     *     dfs(grid, x + move[0], y + move[1]);
+     * }
+     *
+     *  -> Issue: `One invalid move causes an early exit` !!!!!
+     * 	    •	If any of the four moves is out of bounds or lands on water ('0'), the function returns immediately.
+     * 	    •	This prevents it from checking other valid moves.
+     *
+     */
+    if (y < 0 || y >= l || x < 0 || x >= w || grid[y][x] != '1') {
+            return;
+        }
+
+        grid[y][x] = '#'; // Mark the cell as visited
+
+        int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        for (int[] dir : dirs) {
+            int newY = y + dir[0];
+            int newX = x + dir[1];
+            dfs(grid, newY, newX);
+        }
+    }
+
+    // V0-1
     // IDEA : DFS
     int num_island = 0;
     boolean[][] _seen;
-    public int numIslands(char[][] grid) {
+    public int numIslands_0_1(char[][] grid) {
 
         if (grid.length == 1 && grid[0].length == 1){
             if (grid[0][0] == '1'){
@@ -61,67 +185,12 @@ public class NumberOfIslands {
         return true;
     }
 
-    // V0'
-    // IDEA: DFS (with looping)
-    public int numIslands_0(char[][] grid) {
-        if (grid == null || grid.length == 0 || grid[0].length == 0) {
-            return 0;
-        }
-
-        int l = grid.length;
-        int w = grid[0].length;
-        int res = 0;
-
-        for (int i = 0; i < l; i++) {
-            for (int j = 0; j < w; j++) {
-                /**
-                 *  NOTE !!!
-                 *
-                 *   if grid[i][j] == '1', no need to collect the coordinate (x,y),
-                 *   -> just add res with 1,
-                 *   -> and call dfs function
-                 */
-                if (grid[i][j] == '1') {
-                    res += 1;
-                    dfs(grid, i, j);
-                }
-            }
-        }
-
-        return res;
-    }
-
-    /** NOTE !!!
-     *
-     *   NO NEED to return boolean val on this helper function (dfs),
-     *   since we mark point as "visited" in place with traversing,
-     *   so no response (void) is OK
-     */
-    private void dfs(char[][] grid, int y, int x) {
-        
-        int l = grid.length;
-        int w = grid[0].length;
-
-        if (y < 0 || y >= l || x < 0 || x >= w || grid[y][x] != '1') {
-            return;
-        }
-
-        grid[y][x] = '#'; // Mark the cell as visited
-
-        int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-        for (int[] dir : dirs) {
-            int newY = y + dir[0];
-            int newX = x + dir[1];
-            dfs(grid, newY, newX);
-        }
-    }
-
-    // V0'
+    // V0-2
     // IDEA : DFS (with looping) (modified by GPT)
     int num_island_2 = 0;
     boolean[][] _seen_2;
 
-    public int numIslands_0_1(char[][] grid) {
+    public int numIslands_0_2(char[][] grid) {
         if (grid.length == 1 && grid[0].length == 1) {
             return grid[0][0] == '1' ? 1 : 0;
         }
