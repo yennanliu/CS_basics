@@ -47,7 +47,6 @@ import java.util.*;
 public class NumberOfIslands {
 
     // V0
-    // V0-1
     // IDEA: DFS (with looping)
     public int numIslands(char[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
