@@ -1,7 +1,28 @@
 package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/graph-valid-tree/description/?envType=list&envId=xoqag3yj
-
+// https://leetcode.ca/all/261.html
+/**
+ * 261. Graph Valid Tree
+ * Given n nodes labeled from 0 to n-1 and a list of undirected edges (each edge is a pair of nodes), write a function to check whether these edges make up a valid tree.
+ *
+ * Example 1:
+ *
+ * Input: n = 5, and edges = [[0,1], [0,2], [0,3], [1,4]]
+ * Output: true
+ * Example 2:
+ *
+ * Input: n = 5, and edges = [[0,1], [1,2], [2,3], [1,3], [1,4]]
+ * Output: false
+ * Note: you can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0,1] is the same as [1,0] and thus will not appear together in edges.
+ *
+ * Difficulty:
+ * Medium
+ * Lock:
+ * Prime
+ * Company:
+ * Adobe Amazon Facebook Google LinkedIn Pinterest Salesforce Zenefits
+ */
 import java.util.*;
 
 public class GraphValidTree {
@@ -10,9 +31,9 @@ public class GraphValidTree {
     // TODO : implement it
     // https://www.youtube.com/watch?v=bXsUuownnoQ
 
-    // V0'
+    // V0-1
     // IDEA : QUICK FIND (gpt)
-    public boolean validTree_0(int n, int[][] edges) {
+    public boolean validTree_0_1(int n, int[][] edges) {
         if (n == 0) {
             return false;
         }
@@ -73,12 +94,62 @@ public class GraphValidTree {
         }
     }
 
-    // V0'
+    // V0-2
+    // IDEA: UNION FIND V2 (GPT)
+    // TODO: validate if correct
+//    public boolean validTree_0_3(int n, int[][] edges) {
+//        // A tree must have exactly n - 1 edges
+//        if (edges.length != n - 1) {
+//            return false;
+//        }
+//
+//        UnionFind uf = new UnionFind(n);
+//
+//        for (int[] e : edges) {
+//            if (!uf.union(e[0], e[1])) { // If union fails, there's a cycle
+//                return false;
+//            }
+//        }
+//
+//        return true; // If we processed all edges without cycle, it's a valid tree
+//    }
+//
+//    class UnionFind {
+//        int[] parent;
+//
+//        public UnionFind(int n) {
+//            parent = new int[n];
+//            for (int i = 0; i < n; i++) {
+//                parent[i] = i;
+//            }
+//        }
+//
+//        public int find(int x) {
+//            if (parent[x] != x) {
+//                parent[x] = find(parent[x]); // Path compression
+//            }
+//            return parent[x];
+//        }
+//
+//        public boolean union(int x, int y) {
+//            int rootX = find(x);
+//            int rootY = find(y);
+//
+//            if (rootX == rootY) {
+//                return false; // Cycle detected
+//            }
+//
+//            parent[rootX] = rootY; // Merge sets
+//            return true;
+//        }
+//    }
+
+    // V0-3
     // IDEA : DFS + GRAPH
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0261-graph-valid-tree.java
     private Map<Integer, List<Integer>> adjacencyList = new HashMap<>();
 
-    public boolean validTree_0_1(int n, int[][] edges) {
+    public boolean validTree_0_3(int n, int[][] edges) {
         if (n == 0 || n == 1) return true;
 
         if (edges.length == 0) return false;

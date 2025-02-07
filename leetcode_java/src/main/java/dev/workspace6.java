@@ -6915,7 +6915,53 @@ public class workspace6 {
     // LC 211
 
 
+    // LC 261
+    // 9.10 - 9.25 pm
+    /**
+     *  TODO: check if there is a `cycle` in tree
+     *
+     *  IDEA: UNION FIND
+     *
+     *
+     */
+    private int[] p;
 
+    public boolean validTree(int n, int[][] edges) {
+        UnionFind uf = new UnionFind(n);
+        for(int[] e: edges){
+            int x = uf.find(e[0]);
+            int y = uf.find(e[1]);
+            if(x == y){
+                return false;
+            }
+            uf.union(x, y);
+        }
+        return true;
+    }
+
+    public class UnionFind{
+        // attr
+        int[] p;
+
+        // constructor
+        public UnionFind(int n){
+            this.p = new int[n];
+            for(int i = 0; i < n; i++){
+                p[i] = i;
+            }
+        }
+
+        public void union(int x, int y){
+            p[find(x)] = find(y);
+        }
+
+        public int find(int x){
+            if(p[x] != x){
+                p[x] = find(p[x]);
+            }
+            return p[x];
+        }
+    }
 
 }
 
