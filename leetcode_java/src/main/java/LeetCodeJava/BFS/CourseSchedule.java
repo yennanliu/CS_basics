@@ -1,7 +1,7 @@
 package LeetCodeJava.BFS;
 
 //  https://leetcode.com/problems/course-schedule/
-/** 
+/**
  * 207. Course Schedule
  * Solved
  * Medium
