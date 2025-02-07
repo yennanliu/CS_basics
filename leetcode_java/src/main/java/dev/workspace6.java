@@ -6924,43 +6924,126 @@ public class workspace6 {
      *
      *
      */
-    private int[] p;
+//    private int[] p;
+//
+//    public boolean validTree(int n, int[][] edges) {
+//        UnionFind uf = new UnionFind(n);
+//        for(int[] e: edges){
+//            int x = uf.find(e[0]);
+//            int y = uf.find(e[1]);
+//            if(x == y){
+//                return false;
+//            }
+//            uf.union(x, y);
+//        }
+//        return true;
+//    }
+//
+//    public class UnionFind{
+//        // attr
+//        int[] p;
+//
+//        // constructor
+//        public UnionFind(int n){
+//            this.p = new int[n];
+//            for(int i = 0; i < n; i++){
+//                p[i] = i;
+//            }
+//        }
+//
+//        public void union(int x, int y){
+//            p[find(x)] = find(y);
+//        }
+//
+//        public int find(int x){
+//            if(p[x] != x){
+//                p[x] = find(p[x]);
+//            }
+//            return p[x];
+//        }
+//    }
 
-    public boolean validTree(int n, int[][] edges) {
-        UnionFind uf = new UnionFind(n);
-        for(int[] e: edges){
-            int x = uf.find(e[0]);
-            int y = uf.find(e[1]);
-            if(x == y){
-                return false;
-            }
-            uf.union(x, y);
-        }
-        return true;
+    // LC 207
+    // 9.40 - 10.00 pm
+    /**
+     *
+     *  where prerequisites[i] = [ai, bi]
+     *  -> indicates that you must take course bi first if you want to take course ai.
+     *
+     *  so [ai, bi] -> bi first, then ai
+     *
+     *
+     *
+     *  IDEA 1) DFS
+     *
+     *  IDEA 2) TOPOLOGICAL SORT
+     *  -> check if input (with prerequisites) can form a ordering
+     *     without conflicts
+     *
+     *
+     *      so [ai, bi] -> bi first, then ai
+     *
+     */
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+
+//        if( topoSort(numCourses, prerequisites) != null){
+//            List<Integer> res = topoSort(numCourses, prerequisites);
+//            System.out.println(">>> res  = " + res);
+//            return true;
+//        }
+
+        List<Integer> res = topoSort(numCourses, prerequisites);
+        System.out.println(">>> res  = " + res);
+        return res.size() == numCourses; // ???
     }
 
-    public class UnionFind{
-        // attr
-        int[] p;
+    private List<Integer> topoSort(int numCourses, int[][] prerequisites){
+        // build `degree`
+        int[] degrees = new int[numCourses]; // ?
+        for(int i = 0; i < numCourses; i++){
+            degrees[i] = 0;
+        }
+        // build graph
+        // { cur: [prev_1, prev_2, ...] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int[] p: prerequisites){
+            int prev = p[1];
+            int cur = p[0];
+            List<Integer> prevList = map.getOrDefault(cur, new ArrayList<>());
+            prevList.add(prev);
+            map.put(cur, prevList); // ???
+            // update degree
+            //degrees[cur] += 1;
+            degrees[cur] += 1;
+        }
 
-        // constructor
-        public UnionFind(int n){
-            this.p = new int[n];
-            for(int i = 0; i < n; i++){
-                p[i] = i;
+        Queue<Integer> q = new LinkedList<>();
+        // ONLY add `degree=0` idx to queue
+        for(int j = 0; j < numCourses; j++){
+            if(degrees[j] == 0){
+                q.add(j);
             }
         }
 
-        public void union(int x, int y){
-            p[find(x)] = find(y);
+        List<Integer> res = new ArrayList<>();
+
+        // BFS
+        while(!q.isEmpty()){
+            Integer cur = q.poll();
+            // ??? add to res
+            res.add(cur);
+
+            if(map.containsKey(cur)){
+                for(Integer x: map.get(cur)){
+                    degrees[x] -= 1;
+                    if(degrees[x] == 0){
+                        q.add(x);
+                    }
+                }
+            }
         }
 
-        public int find(int x){
-            if(p[x] != x){
-                p[x] = find(p[x]);
-            }
-            return p[x];
-        }
+        return res;
     }
 
 }
