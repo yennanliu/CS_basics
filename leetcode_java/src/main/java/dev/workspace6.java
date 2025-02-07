@@ -664,6 +664,12 @@ public class workspace6 {
     // https://leetcode.com/problems/word-search/
     // 2.31 pm - 2.45 pm
 //    public boolean exist(char[][] board, String word) {
+//      return false;
+//    }
+//
+
+
+//    public boolean exist(char[][] board, String word) {
 //
 //      if (board.length == 1 && board[0].length == 1){
 //          return String.valueOf(board[0][0]).equals(word);
@@ -685,38 +691,38 @@ public class workspace6 {
 //      return false;
 //    }
 
-    private boolean canFind(char[][] board, String word, int x, int y, StringBuilder cur, Set<List<Integer>> visited){
-      int l = board.length;
-      int w = board[0].length;
-      int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
-      if (cur.toString().length() == word.length() && cur.toString().equals(word)){
-          return true;
-      }
-      if (cur.toString().length()  > word.length()){
-          return false; // ??
-      }
-
-      for (int[] move: moves){
-          int x_ = x + move[0];
-          int y_ = y + move[1];
-          List<Integer> tmp = new ArrayList<>();
-          tmp.add(x);
-          tmp.add(y);
-          String tmpVal = String.valueOf(board[y_][x_]);
-          if (x_ >= 0 && x_ < w && y_ >= 0 &&
-                  y_ < l && !visited.contains(tmp) &&
-                  tmpVal.equals(word.charAt(cur.length()+1))){
-              visited.add(tmp);
-              cur.append(board[y][x]); // ???
-              canFind(board, word, x_, y_, cur, visited);
-              // undo
-              cur.deleteCharAt(cur.toString().length() - 1);
-              visited.remove(tmp); // ??
-          }
-      }
-
-      return false;
-    }
+//    private boolean canFind(char[][] board, String word, int x, int y, StringBuilder cur, Set<List<Integer>> visited){
+//      int l = board.length;
+//      int w = board[0].length;
+//      int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+//      if (cur.toString().length() == word.length() && cur.toString().equals(word)){
+//          return true;
+//      }
+//      if (cur.toString().length()  > word.length()){
+//          return false; // ??
+//      }
+//
+//      for (int[] move: moves){
+//          int x_ = x + move[0];
+//          int y_ = y + move[1];
+//          List<Integer> tmp = new ArrayList<>();
+//          tmp.add(x);
+//          tmp.add(y);
+//          String tmpVal = String.valueOf(board[y_][x_]);
+//          if (x_ >= 0 && x_ < w && y_ >= 0 &&
+//                  y_ < l && !visited.contains(tmp) &&
+//                  tmpVal.equals(word.charAt(cur.length()+1))){
+//              visited.add(tmp);
+//              cur.append(board[y][x]); // ???
+//              canFind(board, word, x_, y_, cur, visited);
+//              // undo
+//              cur.deleteCharAt(cur.toString().length() - 1);
+//              visited.remove(tmp); // ??
+//          }
+//      }
+//
+//      return false;
+//    }
 
 
     // LC 362
@@ -6450,13 +6456,7 @@ public class workspace6 {
 
     // LC 79
     // 7.30 - 7.50 pm
-    /**
-     *  IDEA: DFS + BACKTRACK ???
-     *
-     */
-    //List<Boolean> results = new ArrayList<>(); // ???
     public boolean exist(char[][] board, String word) {
-
         // edge
         if(board.length == 0 || board[0].length == 0){
             return false;
@@ -6469,123 +6469,286 @@ public class workspace6 {
         int l = board.length;
         int w = board[0].length;
 
-        // dfs + backtrack
-        for (int i = 0; i < l; i++){
-            for(int j = 0; j < w; j++){
-                if(containWords(board, word, new StringBuilder(), j, i, new HashSet<>(), 0)){
+        boolean[][] visited = new boolean[l][w];
+
+        for(int i = 0; i < w; i++){
+            for(int j = 0; j < l; j++){
+                // new boolean[l][w] ???
+                if( board[j][i] == word.charAt(0) && canFind(board, word, i, j, 0, visited)){
                     return true;
-                }
+                };
             }
         }
 
         return false;
     }
 
-    private boolean containWords(char[][] board, String word, StringBuilder cache, int x, int y, HashSet<List<Integer>> visited, int idx){
+    private boolean canFind(char[][] board, String word, int x, int y, int idx, boolean[][] visited){
+
+        // NOTE !!! check idx == word len at beginning
+        // ?? put here or before above check ??
+        if(idx == word.length()){
+            return true;
+        }
+
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
 
         int l = board.length;
         int w = board[0].length;
 
-        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
-
-        String curStr = cache.toString();
-
-        if(curStr.length() == word.length() && curStr.equals(word)){
-            //return true; // found, return true directly
-            //results.add(true);
-            return true;
-        }
-
-        if(cache.length() > word.length()){
-            //return false; // ?
-            //return;
+        // NOTE !!! validate first
+        if(x < 0 || x >= w || y < 0 || y >= l || board[y][x] != word.charAt(idx) || visited[y][x]){
             return false;
         }
 
-        if(board[y][x] != word.charAt(idx)){
-            return false;
-        }
+//        // ?? put here or before above check ??
+//        if(idx == word.length()){
+//            return true;
+//        }
 
-        for(int[] move: moves){
-            int x_ = x + move[0];
-            int y_ = y + move[1];
-            List<Integer> tmp = new ArrayList<>();
-            tmp.add(x_);
-            tmp.add(y_);
-            String val = String.valueOf(board[y_][x_]);
-            if (x_ >= 0 && x_ < w && y_ >= 0 && y < l && !visited.contains(tmp) && val.equals(String.valueOf(word.charAt(idx)))){
-                cache.append(val);
-                visited.add(tmp);
-                containWords(board, word, cache, x_, y_, visited,idx+1);
-                // undo
-                cache.deleteCharAt(cache.length()-1); // ???
-                visited.remove(tmp); // ???
+        // NOTE !!! mark as `visited` after validaiton
+        visited[y][x] = true;
+
+        // move over 4 dirs
+        for(int[] m: moves){
+            int x_ = x + m[0];
+            int y_ = y + m[1];
+            //visited[y_][x_] = true; // ???
+            if(canFind(board, word, x_, y_, idx+=1, visited)){
+                return true;
             }
+            // undo
+            //visited[y_][x_] = false;
+            idx -=1;
         }
 
-        return false; // ??
+        visited[y][x] = false;
+
+        return true;
     }
 
+
+    /**
+     *  IDEA: DFS + BACKTRACK ???
+     *
+     */
+    //List<Boolean> results = new ArrayList<>(); // ???
+//    public boolean exist(char[][] board, String word) {
+//
+//        // edge
+//        if(board.length == 0 || board[0].length == 0){
+//            return false;
+//        }
+//
+//        if(board.length == 1 && board[0].length == 1){
+//            return String.valueOf(board[0]).equals(word); // ??
+//        }
+//
+//        int l = board.length;
+//        int w = board[0].length;
+//
+//        // dfs + backtrack
+//        for (int i = 0; i < l; i++){
+//            for(int j = 0; j < w; j++){
+//                if(containWords(board, word, new StringBuilder(), j, i, new HashSet<>(), 0)){
+//                    return true;
+//                }
+//            }
+//        }
+//
+//        return false;
+//    }
+
+//    private boolean containWords(char[][] board, String word, StringBuilder cache, int x, int y, HashSet<List<Integer>> visited, int idx){
+//
+//        int l = board.length;
+//        int w = board[0].length;
+//
+//        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+//
+//        String curStr = cache.toString();
+//
+//        if(curStr.length() == word.length() && curStr.equals(word)){
+//            //return true; // found, return true directly
+//            //results.add(true);
+//            return true;
+//        }
+//
+//        if(cache.length() > word.length()){
+//            //return false; // ?
+//            //return;
+//            return false;
+//        }
+//
+//        if(board[y][x] != word.charAt(idx)){
+//            return false;
+//        }
+//
+//        for(int[] move: moves){
+//            int x_ = x + move[0];
+//            int y_ = y + move[1];
+//            List<Integer> tmp = new ArrayList<>();
+//            tmp.add(x_);
+//            tmp.add(y_);
+//            String val = String.valueOf(board[y_][x_]);
+//            if (x_ >= 0 && x_ < w && y_ >= 0 && y < l && !visited.contains(tmp) && val.equals(String.valueOf(word.charAt(idx)))){
+//                cache.append(val);
+//                visited.add(tmp);
+//                containWords(board, word, cache, x_, y_, visited,idx+1);
+//                // undo
+//                cache.deleteCharAt(cache.length()-1); // ???
+//                visited.remove(tmp); // ???
+//            }
+//        }
+//
+//        return false; // ??
+//    }
+//
 
 
     // LC 208
     // 8.08-8.20 pm
-    class TreeNode_{
+    class MyNode{
+
         // attr
-        Map<String, TreeNode_> children;
+        //MyNode myNode;
+        Map<String, MyNode> children; // ?
         boolean isEnd;
 
-        public TreeNode_(){
+        // constructor
+        public MyNode(){
+            //this.myNode = new MyNode();
             this.children = new HashMap<>();
-            this.isEnd = false; // ?
+            this.isEnd = false;
         }
+
+        public MyNode(Map<String, MyNode> children){
+            //this.myNode = myNode;
+            this.children = children;
+        }
+
     }
+
     class Trie {
 
         // attr
-        TreeNode_ root;
+//        MyNode node;
+//        Boolean isEnd;
+//
+//        Trie trie;
 
+        MyNode node;
+
+        // constructor
         public Trie(){
-            this.root = new TreeNode_(); // root is `null` treeNode
+            this.node = new MyNode();
+//            this.isEnd = false; // ?
+//            this.trie = new Trie();
         }
 
         public void insert(String word) {
-//            for(String x: word.split("")){
-//                if(!this.trie.children.containsKey(x)){
-//                    this.trie.children.put(x, new Trie(trie, new HashMap<>(), false)); // ???
-//                }
-//            }
+            //MyNode node = this.node;
+            //Trie trie = this.node;
+            // init a new trie ???
+//            Trie trie = new Trie();
+//            MyNode myNode = trie.node;
+            MyNode node = this.node;
             for(String x: word.split("")){
-                this.root.children.putIfAbsent(x, new TreeNode_());
-                this.root = this.root.children.get(x);
-               // this.root.isEnd = false; // needed ???
+                node.children.putIfAbsent(x, new MyNode());
+                // move node
+                node = node.children.get(x);
             }
-            this.root.isEnd = true;
         }
 
         public boolean search(String word) {
+            // init a new trie ???
+//            Trie trie = new Trie();
+//            MyNode myNode = trie.node;
+            MyNode node = this.node;
             for(String x: word.split("")){
-                if(this.root.children.containsKey(x)){
-                    this.root = this.root.children.get(x);
-                }else{
-                    return false; // ?
+                if(!node.children.containsKey(x)){
+                    return false;
                 }
+                // move node
+                node = node.children.get(x);
             }
-            return this.root.isEnd;
+            return node.isEnd; // ??
         }
 
         public boolean startsWith(String prefix) {
+            // init a new trie ???
+//            Trie trie = new Trie();
+//            MyNode myNode = trie.node;
+            MyNode node = this.node;
             for(String x: prefix.split("")){
-                if(this.root.children.containsKey(x)){
-                    this.root = this.root.children.get(x);
-                }else{
-                    return false; // ?
+                if(!node.children.containsKey(x)){
+                    return false;
                 }
+                // move node
+                node = node.children.get(x);
             }
-
+            //return !node.isEnd; // ??
             return true;
         }
+
     }
+
+//    class TreeNode_{
+//        // attr
+//        Map<String, TreeNode_> children;
+//        boolean isEnd;
+//
+//        public TreeNode_(){
+//            this.children = new HashMap<>();
+//            this.isEnd = false; // ?
+//        }
+//    }
+//    class Trie {
+//
+//        // attr
+//        TreeNode_ root;
+//
+//        public Trie(){
+//            this.root = new TreeNode_(); // root is `null` treeNode
+//        }
+//
+//        public void insert(String word) {
+////            for(String x: word.split("")){
+////                if(!this.trie.children.containsKey(x)){
+////                    this.trie.children.put(x, new Trie(trie, new HashMap<>(), false)); // ???
+////                }
+////            }
+//            for(String x: word.split("")){
+//                this.root.children.putIfAbsent(x, new TreeNode_());
+//                this.root = this.root.children.get(x);
+//               // this.root.isEnd = false; // needed ???
+//            }
+//            this.root.isEnd = true;
+//        }
+//
+//        public boolean search(String word) {
+//            for(String x: word.split("")){
+//                if(this.root.children.containsKey(x)){
+//                    this.root = this.root.children.get(x);
+//                }else{
+//                    return false; // ?
+//                }
+//            }
+//            return this.root.isEnd;
+//        }
+//
+//        public boolean startsWith(String prefix) {
+//            for(String x: prefix.split("")){
+//                if(this.root.children.containsKey(x)){
+//                    this.root = this.root.children.get(x);
+//                }else{
+//                    return false; // ?
+//                }
+//            }
+//
+//            return true;
+//        }
+//    }
 
     /**
      * Your WordDictionary object will be instantiated and called as such:
@@ -6659,19 +6822,64 @@ public class workspace6 {
 //            bfsVisit(grid, x_, y_);
 //        }
 //    }
-    public int numIslands(char[][] grid) {
+//    public int numIslands(char[][] grid) {
+//        // Edge case
+//        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+//            return 0;
+//        }
+//
+//        int rows = grid.length;
+//        int cols = grid[0].length;
+//        int count = 0;
+//
+//        // Iterate over each cell in the grid
+//        for (int i = 0; i < rows; i++) {
+//            for (int j = 0; j < cols; j++) {
+//                if (grid[i][j] == '1') { // Found land
+//                    count++; // One new island found
+//                    dfs(grid, i, j);
+//                }
+//            }
+//        }
+//
+//        return count;
+//    }
+
+//    private void dfs(char[][] grid, int x, int y) {
+//        int rows = grid.length;
+//        int cols = grid[0].length;
+//
+//        // Boundary and land check
+////        if (x < 0 || x >= rows || y < 0 || y >= cols || grid[x][y] != '1') {
+////            return;
+////        }
+//
+//        // Mark the current cell as visited by changing it to '0'
+//        grid[x][y] = '0';
+//
+//        // Possible movements: up, down, left, right
+//        int[][] moves = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+//        for (int[] move : moves) {
+//            if (x + move[0] < 0 || x + move[0] >= rows || y + move[1] < 0 || y + move[1] >= cols || grid[x + move[0]][y + move[1]] != '1') {
+//                return;
+//            }
+//            dfs(grid, x + move[0], y + move[1]);
+//        }
+//    }
+
+        public int numIslands(char[][] grid) {
         // Edge case
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
         }
 
-        int rows = grid.length;
-        int cols = grid[0].length;
-        int count = 0;
+            int l = grid.length;
+            int w = grid[0].length;
+            int count = 0;
 
-        // Iterate over each cell in the grid
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+//        // Iterate over each cell in the grid
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
                 if (grid[i][j] == '1') { // Found land
                     count++; // One new island found
                     dfs(grid, i, j);
@@ -6682,27 +6890,27 @@ public class workspace6 {
         return count;
     }
 
-    private void dfs(char[][] grid, int x, int y) {
-        int rows = grid.length;
-        int cols = grid[0].length;
+    private void dfs(char[][] grid, int x, int y){
 
-        // Boundary and land check
-//        if (x < 0 || x >= rows || y < 0 || y >= cols || grid[x][y] != '1') {
-//            return;
-//        }
+        int l = grid.length;
+        int w = grid[0].length;
 
-        // Mark the current cell as visited by changing it to '0'
-        grid[x][y] = '0';
-
-        // Possible movements: up, down, left, right
         int[][] moves = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
-        for (int[] move : moves) {
-            if (x + move[0] < 0 || x + move[0] >= rows || y + move[1] < 0 || y + move[1] >= cols || grid[x + move[0]][y + move[1]] != '1') {
-                return;
-            }
-            dfs(grid, x + move[0], y + move[1]);
+
+        // NOTE !!! we validate x,y before for loop and recursion call
+        if(x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != '1'){
+            return;
+        }
+
+        // mark as `visited`
+        grid[y][x] = '#';
+
+        // dfs
+        for(int[] m: moves){
+            dfs(grid, x + m[0], y + m[1]);
         }
     }
+
 
     // LC 211
 
