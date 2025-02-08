@@ -3,7 +3,39 @@ package LeetCodeJava.Graph;
 // https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/description/?envType=list&envId=xoqag3yj
 // https://leetcode.ca/all/323.html
 // https://leetcode.ca/2016-10-18-323-Number-of-Connected-Components-in-an-Undirected-Graph/
-
+/**
+ * 323. Number of Connected Components in an Undirected Graph
+ * Given n nodes labeled from 0 to n - 1 and a list of undirected edges (each edge is a pair of nodes), write a function to find the number of connected components in an undirected graph.
+ *
+ * Example 1:
+ *
+ * Input: n = 5 and edges = [[0, 1], [1, 2], [3, 4]]
+ *
+ *      0          3
+ *      |          |
+ *      1 --- 2    4
+ *
+ * Output: 2
+ * Example 2:
+ *
+ * Input: n = 5 and edges = [[0, 1], [1, 2], [2, 3], [3, 4]]
+ *
+ *      0           4
+ *      |           |
+ *      1 --- 2 --- 3
+ *
+ * Output:  1
+ * Note:
+ * You can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.
+ *
+ * Difficulty:
+ * Medium
+ * Lock:
+ * Prime
+ * Company:
+ * Amazon Facebook Google LinkedIn Microsoft Twitter
+ *
+ */
 import java.util.*;
 
 public class NumberOfConnectedComponentsUndirectedGraph {
@@ -16,8 +48,164 @@ public class NumberOfConnectedComponentsUndirectedGraph {
 //        return 0;
 //    }
 
+    // V0-1
+    // IDEA: UNION FIND (without RANK) (gpt)
+    // TODO: validate
+    // private int[] p_;
+
+    public int countComponents_0_2(int n, int[][] edges) {
+        UnionFind2 uf2 = new UnionFind2(n, edges);
+        // union
+        for(int[] e: edges){
+            int start = e[0];
+            int end = e[1];
+            uf2.union(start, end);
+        }
+
+        return uf2.indCnt;
+    }
+
+    public class UnionFind2 {
+        // Attributes
+        int n;
+        int indCnt;
+        int[] parents;
+
+        // Constructor
+        public UnionFind2(int n, int[][] edges) {
+            this.n = n;
+            this.indCnt = n;
+            this.parents = new int[n];
+
+            // Initialize each node as its own parent
+            for (int i = 0; i < this.n; i++) {
+                this.parents[i] = i;
+            }
+        }
+
+        // Union method to merge two components
+        public void union(int x, int y) {
+            int rootX = find(x);
+            int rootY = find(y);
+
+            // If they are already in the same component, do nothing
+            if (rootX == rootY) {
+                return;
+            }
+
+            // Union without using rank or size - just connect one tree to the other
+            parents[rootY] = rootX;  // or parents[rootX] = rootY, both will work
+
+            // Decrease the component count since x and y are now connected
+            indCnt--;
+        }
+
+        // Find the root of the component containing x
+        public int find(int x) {
+            if (x != parents[x]) {
+                parents[x] = find(parents[x]); // Path compression
+            }
+            return parents[x];
+        }
+
+        // Check if x and y are connected
+        public boolean isConnected(int x, int y) {
+            return find(x) == find(y);
+        }
+    }
+
+    // V0-2
+    // IDEA: UNION FIND (with RANK) (gpt)
+    // TODO : validate
+    static class UnionFind_0_2 {
+        private int[] root;
+        private int[] rank;
+
+        public UnionFind_0_2(int size) {
+            root = new int[size];
+            rank = new int[size];
+            for (int i = 0; i < size; i++) {
+                root[i] = i;
+                rank[i] = 1;
+            }
+        }
+
+        public int find(int x) {
+            if (root[x] == x) {
+                return x;
+            }
+            root[x] = find(root[x]); // Path compression
+            return root[x];
+        }
+
+        public boolean union(int x, int y) {
+            int rootX = find(x);
+            int rootY = find(y);
+
+            /**
+             *  NOTE !!!
+             *
+             *   -> RANK is NOT necessary
+             *   -> it's a technics optimize efficience
+             *
+             *   1) Great question! Technically, you don't need the rank array to implement a working
+             *   Union-Find (or Disjoint Set Union, DSU) structure. The union by rank technique is an optimization that
+             *   helps keep the tree shallow by attaching the smaller tree (based on its rank or size) under the larger one. This results
+             *   in more efficient operations, especially for large datasets.
+             *
+             *
+             *   2) Can you go without the rank?
+             *   Yes, you can, but the downside is that, without the rank
+             *   (or an equivalent method like union by size), the tree structures can become deeper,
+             *   and the performance of the find operation can degrade from nearly
+             *   constant time to linear time in the worst case
+             *   (i.e., the tree could become a straight line). This would lead to slower operations as the tree grows.
+             *
+             *   3) What would happen if you removed the rank?
+             *   If you remove the rank array and union by rank, the union operation could
+             *   simply link one root to the other directly without considering which tree is larger.
+             *   For example, you could always set parents[rootY] = rootX without checking the rank.
+             *   This would still work but result in potentially deeper trees, causing slower find operations.
+             *
+             *
+             */
+            if (rootX != rootY) {
+                // Union by rank
+                if (rank[rootX] > rank[rootY]) {
+                    root[rootY] = rootX;
+                } else if (rank[rootX] < rank[rootY]) {
+                    root[rootX] = rootY;
+                } else {
+                    root[rootY] = rootX;
+                    rank[rootX] += 1;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public int getCount() {
+            Set<Integer> uniqueRoots = new HashSet<>();
+            for (int i = 0; i < root.length; i++) {
+                uniqueRoots.add(find(i));
+            }
+            return uniqueRoots.size();
+        }
+    }
+
+    public int countComponents_1_1(int n, int[][] edges) {
+        UnionFind_0_2 uf = new UnionFind_0_2(n);
+
+        for (int[] edge : edges) {
+            uf.union(edge[0], edge[1]);
+        }
+
+        return uf.getCount();
+    }
+
+
     // V1
-    // IDEA : UNION FIND
+    // IDEA : UNION FIND (with RANK)
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0323-number-of-connected-components-in-an-undirected-graph.java
     // https://www.youtube.com/watch?v=8f1XPm4WOUc
     private int[] parent;
@@ -71,69 +259,6 @@ public class NumberOfConnectedComponentsUndirectedGraph {
 
         return 1;
     }
-
-    // V1
-    // IDEA : UNION FIND (gpt)
-    // TODO : validate
-    static class UnionFind {
-        private int[] root;
-        private int[] rank;
-
-        public UnionFind(int size) {
-            root = new int[size];
-            rank = new int[size];
-            for (int i = 0; i < size; i++) {
-                root[i] = i;
-                rank[i] = 1;
-            }
-        }
-
-        public int find(int x) {
-            if (root[x] == x) {
-                return x;
-            }
-            root[x] = find(root[x]); // Path compression
-            return root[x];
-        }
-
-        public boolean union(int x, int y) {
-            int rootX = find(x);
-            int rootY = find(y);
-
-            if (rootX != rootY) {
-                // Union by rank
-                if (rank[rootX] > rank[rootY]) {
-                    root[rootY] = rootX;
-                } else if (rank[rootX] < rank[rootY]) {
-                    root[rootX] = rootY;
-                } else {
-                    root[rootY] = rootX;
-                    rank[rootX] += 1;
-                }
-                return true;
-            }
-            return false;
-        }
-
-        public int getCount() {
-            Set<Integer> uniqueRoots = new HashSet<>();
-            for (int i = 0; i < root.length; i++) {
-                uniqueRoots.add(find(i));
-            }
-            return uniqueRoots.size();
-        }
-    }
-
-    public int countComponents_1_1(int n, int[][] edges) {
-        UnionFind uf = new UnionFind(n);
-
-        for (int[] edge : edges) {
-            uf.union(edge[0], edge[1]);
-        }
-
-        return uf.getCount();
-    }
-
 
     // V2
     // IDEA : UNION FIND

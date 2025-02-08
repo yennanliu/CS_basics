@@ -7046,6 +7046,83 @@ public class workspace6 {
         return res;
     }
 
+    // LC 323
+    // 9.37 PM - 9.55 PM
+    // IDEA: UNION FIND
+    private int[] p;
+
+    public int countComponents(int n, int[][] edges) {
+        //UnionFind2 uf2 = new UnionFind2(n, edges);
+        UnionFind2 uf2 = new UnionFind2(n);
+        // union
+        for(int[] e: edges){
+            int start = e[0];
+            int end = e[1];
+            uf2.union(start, end);
+        }
+
+        return uf2.indCnt;
+    }
+
+    public class UnionFind2{
+        // attr
+        int n;
+        int indCnt;
+        int[][] edges;
+        int[] parents;
+
+        // constructor
+//        public UnionFind2(int n, int[][] edges){
+//            this.n = n;
+//            this.edges = edges;
+//            this.indCnt = n;
+//            this.parents = new int[n]; // ?
+//            for(int i = 0; i < this.n; i++){
+//                // init each node is its parent
+//                this.parents[i] = i;
+//            }
+//        }
+
+        public UnionFind2(int n){
+            this.n = n;
+            //this.edges = edges;
+            this.indCnt = n;
+            this.parents = new int[n]; // ?
+            for(int i = 0; i < this.n; i++){
+                // init each node is its parent
+                this.parents[i] = i;
+            }
+        }
+
+        // method
+        public void union(int x, int y){
+            // ?
+            if(x == y) {
+                return;
+            }
+            // NOTE !!! we get parent via `find` method
+            int rootX = this.find(x);
+            int rootY = this.find(y);
+            // should be y or this.parents[y] ????
+            if(rootX != rootY){
+                this.indCnt -= 1;
+                this.parents[rootX] = rootY; // ???
+            }
+        }
+
+        public int find(int x){
+            if(x == this.parents[x]) {
+                return x;
+            }
+           return find(this.parents[x]); // ???
+        }
+
+        public boolean isConnected(int x, int y){
+            return find(x) == find(y);
+        }
+
+    }
+
 }
 
 
