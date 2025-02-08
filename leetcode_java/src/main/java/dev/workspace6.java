@@ -7183,7 +7183,50 @@ public class workspace6 {
             // bfs
             return null;
         }
+    }
 
+    // LC 70
+    // 11.26 - 11. 40 am
+    /**
+     *  IDEA: DP (bottom up)
+     *
+     *  -> so,
+     *  -> f(0) = 1 -> 1 way to climb
+     *  -> f(1) = 1 -> 1 way ..
+     *  -> f(2) = 2 -> 2 way ... (1 +1  or 2)
+     *          = max( f(2-2) + 1, f(2-1) + 1 )
+     *  -> f(3) = f(2) + 1 st climb or f(2) + 1 st NOT climb
+     *          = max( f(3-2), f(3-1) + 1)
+     *          = max( f(1), f(2) + 1)
+     *          = max(1, 3) = 3
+     *
+     *
+     *  -> ...
+     *
+     *  -> f(K) = Math.max(f(k-2), f(k-1) + 1)
+     *
+     *
+     */
+    public int climbStairs(int n) {
+
+        // edge
+        if(n <= 2){
+            return n;
+        }
+        // dp
+        // base
+        int[] dp = new int[n+1];
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        System.out.println(">>> dp (before) = " + dp);
+        for(int i = 2; i <= n; i++){
+            //dp[n] = Math.max(dp[n-2], dp[n-1]+1);
+            dp[n] = dp[n-2]+ dp[n-1];
+        }
+
+        System.out.println(">>> dp (after) = " + new ArrayList<>(Collections.singleton(dp)));
+        return dp[dp.length-1]; // ???
     }
 
 }
