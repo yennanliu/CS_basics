@@ -1,6 +1,38 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/longest-palindromic-substring/
+/**
+ *  5. Longest Palindromic Substring
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Hint
+ * Given a string s, return the longest
+ * palindromic
+ *
+ * substring
+ *  in s.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: s = "babad"
+ * Output: "bab"
+ * Explanation: "aba" is also a valid answer.
+ * Example 2:
+ *
+ * Input: s = "cbbd"
+ * Output: "bb"
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= s.length <= 1000
+ * s consist of only digits and English letters.
+ *
+ */
 
 import java.util.ArrayList;
 
@@ -8,6 +40,7 @@ public class LongestPalindromicSubstring {
 
     // V0
     // IDEA : SLIDING WINDOW : for - while
+    // Time complexity : O(n^2), Space complexity: O(n)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py
     public String longestPalindrome(String s) {
 
@@ -60,7 +93,7 @@ public class LongestPalindromicSubstring {
     // V1
     // IDEA : BRUTE FORCE + isPalindrome check
     // https://leetcode.com/problems/longest-palindromic-substring/solutions/4212564/beats-96-49-5-different-approaches-brute-force-eac-dp-ma-recursion/
-    public String longestPalindrome_2(String s) {
+    public String longestPalindrome_1(String s) {
         if (s.length() <= 1) {
             return s;
         }
@@ -100,7 +133,7 @@ public class LongestPalindromicSubstring {
     // https://leetcode.com/problems/longest-palindromic-substring/solutions/3401644/detailed-recursive-explaination-with-pictures-in-c-java-python-dp-two-pointers/
     int maxLen = 0;
     int lo = 0;
-    public String longestPalindrome_3(String s) {
+    public String longestPalindrome_2(String s) {
         char[] input = s.toCharArray();
         if(s.length() < 2) {
             return s;
@@ -122,6 +155,36 @@ public class LongestPalindromicSubstring {
             maxLen = k - j - 1;
             lo = j+1;
         }
+    }
+
+    // V3
+    // IDEA: DP
+    // https://leetcode.com/problems/longest-palindromic-substring/solutions/4212564/beats-9649-5-different-approaches-brute-u46gf/
+    public String longestPalindrome_3(String s) {
+        if (s.length() <= 1) {
+            return s;
+        }
+
+        int maxLen = 1;
+        int start = 0;
+        int end = 0;
+        boolean[][] dp = new boolean[s.length()][s.length()];
+
+        for (int i = 0; i < s.length(); ++i) {
+            dp[i][i] = true;
+            for (int j = 0; j < i; ++j) {
+                if (s.charAt(j) == s.charAt(i) && (i - j <= 2 || dp[j + 1][i - 1])) {
+                    dp[j][i] = true;
+                    if (i - j + 1 > maxLen) {
+                        maxLen = i - j + 1;
+                        start = j;
+                        end = i;
+                    }
+                }
+            }
+        }
+
+        return s.substring(start, end + 1);
     }
 
 }
