@@ -7229,6 +7229,62 @@ public class workspace6 {
         return dp[dp.length-1]; // ???
     }
 
+    // LC 198
+    // 11.57 - 12.10
+    /**
+     *  IDEA: DP
+     *
+     *  -> f(1
+     *
+     *
+     *  EXP 1)
+     *
+     *  Input: nums = [1,2,3,1]
+     *  -> 4
+     *
+     *  -> [1,2,3,1]
+     *      x   x
+     *
+     *  -> [1,2,3,1]
+     *        x   x
+     *
+     *  -> [1,2,3,1]
+     *          x
+     *
+     *  -> [1,2,3,1]
+     *            x
+     *
+     *
+     */
+    public int rob(int[] nums) {
+
+        // edge
+        if(nums.length == 0){
+            return 0;
+        }
+
+        if(nums.length == 1){
+            return nums[0];
+        }
+
+        if(nums.length == 2){
+            return Math.max(nums[0], nums[1]);
+        }
+
+        // dp
+        int[] dp = new int[nums.length + 1];
+        // init
+        dp[0] = 0; // ?
+        dp[1] = nums[0];
+        dp[2] = Math.max(dp[1], dp[2]);
+
+        for(int i = 0; i < nums.length; i++){
+            dp[i] = Math.max(dp[i-2], dp[i-1]);
+        }
+
+        return dp[dp.length-1]; // ???
+    }
+
 }
 
 
