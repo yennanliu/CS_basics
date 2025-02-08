@@ -7286,6 +7286,39 @@ public class workspace6 {
         return dp[dp.length-1]; // ???
     }
 
+    // LC 213
+    // 4.01 - 4.11 pm
+    public int rob_(int[] nums) {
+        // Edge cases
+        if (nums.length == 0)
+            return 0;
+        if (nums.length == 1)
+            return nums[0];
+        if (nums.length == 2)
+            return Math.max(nums[0], nums[1]);
+
+        // DP array
+        int[] dp = new int[nums.length];
+
+        // Base cases
+        dp[0] = nums[0]; // First house
+        dp[1] = Math.max(nums[0], nums[1]); // Pick max of first two houses
+        dp[2] = Math.max(Math.max(nums[0], nums[1]), nums[2]);
+
+        /**
+         * since now house is in `cycle`
+         *  -> dp needs to be updated
+         *  ->
+         *
+         */
+        // DP transition
+        for (int i = 2; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+        }
+
+        return dp[nums.length - 1]; // Return the last computed value
+    }
+
 }
 
 
