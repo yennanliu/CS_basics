@@ -7319,6 +7319,20 @@ public class workspace6 {
         return dp[nums.length - 1]; // Return the last computed value
     }
 
+    // LC 005
+    /**
+     *  IDEA 1) BRUTE FORCE (double loop)
+     *
+     *  IDEA 2) dp ???
+     *
+     *  IDEA 3) 2 pointers ???
+     *
+     */
+    public String longestPalindrome(String s) {
+
+        return null;
+    }
+
 }
 
 
