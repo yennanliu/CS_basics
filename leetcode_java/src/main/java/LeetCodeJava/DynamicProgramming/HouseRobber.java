@@ -65,9 +65,35 @@ public class HouseRobber {
         return nums[nums.length-1];
     }
 
-    // V0'
+    // V0-1
+    // IDEA: DP (GPT)
+    public int rob_0_1(int[] nums) {
+        // Edge cases
+        if (nums.length == 0)
+            return 0;
+        if (nums.length == 1)
+            return nums[0];
+        if (nums.length == 2)
+            return Math.max(nums[0], nums[1]);
+
+        // DP array
+        int[] dp = new int[nums.length];
+
+        // Base cases
+        dp[0] = nums[0]; // First house
+        dp[1] = Math.max(nums[0], nums[1]); // Pick max of first two houses
+
+        // DP transition
+        for (int i = 2; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+        }
+
+        return dp[nums.length - 1]; // Return the last computed value
+    }
+
+    // V0-2
     // IDEA : DP
-    public int rob_(int[] nums) {
+    public int rob_2(int[] nums) {
 
         if (nums.length <= 3){
 
