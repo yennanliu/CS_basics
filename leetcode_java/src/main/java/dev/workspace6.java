@@ -7123,6 +7123,69 @@ public class workspace6 {
 
     }
 
+    // LC 269
+    // IDEA: TOPO SORT
+
+    public String alienOrder(String[] words){
+        return null;
+    }
+
+    public class TopoSort3{
+        // attr
+        String[] words;
+        Map<String, List<String>> graph;
+        int[] degrees;
+        public TopoSort3(String[] words){
+           this.words = words;
+
+           int wordCnt = 0;
+           HashSet<String> set = new HashSet<>();
+           // ??
+           for(String x: words){
+               for(String y: x.split("")){
+                   if(!set.contains(y)){
+                       set.add(y);
+                       wordCnt += 1;
+                   }
+               }
+           }
+           this.degrees = new int[wordCnt];
+
+           // ???
+           this.graph = new HashMap<>();
+            for (Iterator<String> it = set.iterator(); it.hasNext(); ) {
+                String k = it.next();
+                this.graph.put(k, new ArrayList<>());
+            }
+        }
+
+        public String sort(String[][] deps){
+            // update degree
+            for(String[] x: deps){
+                String prev = x[0];
+                String next = x[1];
+                // NOTE !!! update prev,
+                // since it needs finish `prev` first, then be able do `next`
+                // ??? this.degrees[prev] += 1;
+            }
+
+            // update graph
+            for(String[] x: deps){
+                String prev = x[0];
+                String next = x[1];
+
+                List<String> cur1 = this.graph.getOrDefault(prev, new ArrayList<>());
+                cur1.add(next);
+                this.graph.put(prev, cur1);
+
+            }
+
+            // bfs
+            return null;
+        }
+
+    }
+
 }
 
 
