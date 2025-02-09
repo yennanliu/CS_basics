@@ -7391,6 +7391,51 @@ public class workspace6 {
         return true;
     }
 
+  // LC 91
+  // 12.47 - 1.10 pm
+  /**
+   * Given a string s containing only digits,
+   * -> return the number of ways to decode it.
+   * If the entire string cannot be decoded in any valid way,
+   * return 0.
+   *
+   *  IDEA : DP
+   *
+   *  EXP 1)
+   *    s = "12"
+   *    -> [1,2], [12]
+   *    -> 2
+   *
+   *  EXP 2)
+   *    s = "226"
+   *    -> [2,26], [22,6], [226]
+   *
+   *  EXP 3)
+   *    s = "06"
+   *    -> 0 (not valid input)
+   *
+   *
+   *
+   *
+   */
+  public int numDecodings(String s) {
+
+      // edge
+      if(s == null || s.length() == 0){
+          return 0;
+      }
+      // not valid input
+      if(s.charAt(0) == '0'){
+          return 0;
+      }
+
+      // dp
+
+
+      return 0;
+    }
+
+
 }
 
 
