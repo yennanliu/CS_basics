@@ -1,7 +1,38 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/maximum-product-subarray/description/
-
+/**
+ * 152. Maximum Product Subarray
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given an integer array nums, find a
+ * subarray
+ *  that has the largest product, and return the product.
+ *
+ * The test cases are generated so that the answer will fit in a 32-bit integer.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [2,3,-2,4]
+ * Output: 6
+ * Explanation: [2,3] has the largest product 6.
+ * Example 2:
+ *
+ * Input: nums = [-2,0,-1]
+ * Output: 0
+ * Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= nums.length <= 2 * 104
+ * -10 <= nums[i] <= 10
+ * The product of any subarray of nums is guaranteed to fit in a 32-bit integer.
+ */
 public class MaximumProductSubarray {
 
     // V0
@@ -73,6 +104,68 @@ public class MaximumProductSubarray {
         }else{
             return c;
         }
+    }
+
+    // V0-1
+    // IDEA: BRUTE FORCE (2 pointers) + boundary handling
+    public int maxProduct_0_1(int[] nums) {
+
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        if (nums.length == 2) {
+            return Math.max(Math.max(nums[0], nums[1]), nums[0] * nums[1]);
+        }
+
+        // 2 pointers
+        int res = Integer.MIN_VALUE; //0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            int prod = nums[i];
+            res = Math.max(res, nums[i]);
+            for (int j = i + 1; j < nums.length; j++) {
+                prod = prod * nums[j];
+                res = Math.max(prod, res);
+            }
+        }
+
+        // handling last element
+        res = Math.max(res, nums[nums.length - 1]);
+
+        return res;
+    }
+
+    // V0-2
+    // IDEA: Kadane’s Algorithm for Maximum Product Subarray (GPT)
+    public int maxProduct_0_2(int[] nums) {
+        // Edge case
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+    /**
+     * 	•	maxProd: Tracks the maximum product up to the current index.
+     * 	•	minProd: Tracks the minimum product up to the current index
+     * 	             (needed because multiplying by a negative can turn a small value into a large one).
+     */
+    int maxProd = nums[0];
+        int minProd = nums[0];
+        int result = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            int temp = maxProd; // Store maxProd before updating
+
+            maxProd = Math.max(nums[i], Math.max(nums[i] * maxProd, nums[i] * minProd));
+            minProd = Math.min(nums[i], Math.min(nums[i] * temp, nums[i] * minProd));
+
+            result = Math.max(result, maxProd);
+        }
+
+        return result;
     }
 
     // V1

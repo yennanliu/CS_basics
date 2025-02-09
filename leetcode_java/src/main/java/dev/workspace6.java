@@ -7538,6 +7538,68 @@ public class workspace6 {
         return -1; // can't find any solution
     }
 
+  // LC 152
+  // 1.46 - 2.06 pm
+  /**
+   * Given an integer array nums, find a `subarray`
+   * that has the largest product, and return the product.
+   *  The test cases are generated so that the answer
+   *  will fit in a 32-bit integer.
+   *
+   *  -> A subarray is a contiguous non-empty sequence
+   *     of elements within an array.
+   *
+   *  EXP 1)
+   *    nums = [2,3,-2,4]
+   *    -> [2,3], so 2 * 3 = 6
+   *    -> 6
+   *
+   *   [2,3,-2,4]
+   *    i j        6
+   *    i   j     -12
+   *    i      j  - 48
+   *      i  j     -6
+   *      i     j   -24
+   *         i  j  -8
+   *
+   *
+   *  IDEA 1) BRUTE FORCE + 2 pinters
+   *
+   *  IDEA 2) DP ???
+   *
+   *
+   */
+  public int maxProduct(int[] nums) {
+
+      // edge
+      if(nums == null || nums.length == 0){
+          return 0;
+      }
+      if(nums.length == 1){
+          return nums[0];
+      }
+
+      if(nums.length == 2){
+          return Math.max(Math.max(nums[0], nums[1]), nums[0] * nums[1]);
+      }
+
+      // 2 pointers
+      int res = 0;
+      for(int i = 0; i < nums.length-1; i++){
+          int prod = nums[i];
+          res = Math.max(res, nums[i]);
+          for(int j = i+1; j < nums.length; j++){
+              prod = prod * nums[j];
+              res = Math.max(prod, res);
+          }
+      }
+
+      // handling last element
+      res = Math.max(res, nums[nums.length-1]);
+
+      return res;
+    }
+
 }
 
 
