@@ -7431,10 +7431,112 @@ public class workspace6 {
 
       // dp
 
-
       return 0;
     }
 
+    // LC 322
+    // 1.01 - 1.20 pm
+    /**
+     *  Return the `fewest` number of coins that you need to make up that amount.
+     *  If that amount of money cannot be made up by any combination
+     *  of the coins, return -1.
+     *
+     *
+     *  IDEA 1) BACK TRACK
+     *  IDEA 2) BFS (shortest path)
+     *  IDEA 3) DP ???
+     *
+     *  EXP 1)
+     *
+     *   coins = [1,2,5], amount = 11
+     *   -> 3
+     *   -> 11 = 5+5+1
+     *
+     *     1   2       5
+     *             1  2   5
+     *          ...      1
+     *
+     *
+     */
+    public class CoinStatus{
+        // attr
+        Integer coin;
+        Integer curSum;
+        List<Integer> coins;
+        // constructor
+        public CoinStatus(Integer coin, Integer curSum, List<Integer> coins){
+            this.coin = coin;
+            this.curSum = curSum;
+            this.coins = coins;
+        }
+    }
+    public int coinChange(int[] coins, int amount) {
+        // edge
+        if(amount == 0){
+            return 0;
+        }
+
+        int min = -1 * Integer.MAX_VALUE;
+        for(int x: coins){
+            min = Math.min(min, x);
+        }
+        if(amount < min){
+            return -1;
+        }
+
+        // bfs
+        Queue<CoinStatus> q = new LinkedList<>();
+        // init ?? so we start from `all coins` as init status
+        // sort coins first, `big` first
+//        Arrays.sort(coins, new Comparator<>() {
+//            @Override
+//            public int compare(Object o1, Object o2) {
+//                return 0;
+//            }
+//
+//            @Override
+//            public boolean equals(Object obj) {
+//                return false;
+//            }
+//        });
+
+        // Arrays.sort(array, Collections.reverseOrder());
+        Integer[] coins_ = new Integer[coins.length];
+        for(int i = 0; i < coins.length; i++){
+            coins_[i] = coins[i];
+        }
+
+        System.out.println(">>> (before) coins_ = " + coins_);
+
+        Arrays.sort(coins_, Collections.reverseOrder());
+
+        System.out.println(">>> (after) coins_ = " + coins_);
+
+
+        for(int c: coins_){
+            q.add(new CoinStatus(c, 0, new ArrayList<>()));
+        }
+
+        while(!q.isEmpty()){
+            CoinStatus coinStatus = q.poll();
+            int curSum = coinStatus.curSum;
+            List<Integer> coinList = coinStatus.coins;
+            if(curSum == amount){
+                System.out.println(">>>  coinStatus.coins.size() = " +  coinList.size());
+                return coinList.size();
+            }
+            for(int c: coins_){
+                int curSum_ = curSum + c;
+                if (curSum_ <= amount){
+                    coinList.add(c);
+                    q.add(new CoinStatus(c, curSum_,coinList));
+                }
+                //q.add(new CoinStatus(c, 0, new ArrayList<>()));
+            }
+
+        }
+        return -1; // can't find any solution
+    }
 
 }
 
