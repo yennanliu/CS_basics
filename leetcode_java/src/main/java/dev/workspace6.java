@@ -7600,6 +7600,64 @@ public class workspace6 {
       return res;
     }
 
+    // LC 152
+    // 2.26 - 2.36 pm
+    /**
+     *  IDEA 1) BFS ??
+     *  IDEA 2) DP ???
+     *  ...
+     *
+     */
+    public class WordStatuds{
+        // attr
+        String cur;
+        Integer idx;
+        public WordStatuds(String cur, Integer idx){
+            this.cur = cur;
+            this.idx = idx;
+        }
+    }
+    public boolean wordBreak(String s, List<String> wordDict) {
+        // edge
+        if(s == null || s.length() == 0){
+            return true;
+        }
+        for(String x: wordDict){
+            if(s.equals(x)){
+                return true;
+            }
+        }
+
+        // bfs
+        // NOTE !!! use hashmap to avoid `duplicated` visit
+        Map<String, Integer> visited = new HashMap<>();
+        Queue<WordStatuds> q = new LinkedList<>();
+        q.add(new WordStatuds("", 0)); // ??? init `cur` as null string ???
+        while(!q.isEmpty()){
+            WordStatuds wordStatuds = q.poll();
+            String cur = wordStatuds.cur;
+            Integer idx = wordStatuds.idx;
+            if(cur.length() == s.length() && cur.equals(s)){
+                return true;
+            }
+            // add candidates to queue
+            for(String x: wordDict){
+                String cur_ = cur + x;
+                boolean shouldProceed = (!visited.containsKey(cur_)
+                        && cur_.length() <= s.length()
+                        && cur_.equals(s.substring(idx, idx+cur_.length()))
+                );
+                if(shouldProceed){
+                    visited.put(cur_, 1);
+                    q.add(new WordStatuds(cur_, idx+1));
+                }
+            }
+        }
+
+        return false;
+    }
+
+
 }
 
 

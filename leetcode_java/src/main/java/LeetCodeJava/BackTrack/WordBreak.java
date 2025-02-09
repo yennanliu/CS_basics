@@ -1,41 +1,101 @@
 package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/word-break/description/
-
+/**
+ * 139. Word Break
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.
+ *
+ * Note that the same word in the dictionary may be reused multiple times in the segmentation.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: s = "leetcode", wordDict = ["leet","code"]
+ * Output: true
+ * Explanation: Return true because "leetcode" can be segmented as "leet code".
+ * Example 2:
+ *
+ * Input: s = "applepenapple", wordDict = ["apple","pen"]
+ * Output: true
+ * Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+ * Note that you are allowed to reuse a dictionary word.
+ * Example 3:
+ *
+ * Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+ * Output: false
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= s.length <= 300
+ * 1 <= wordDict.length <= 1000
+ * 1 <= wordDict[i].length <= 20
+ * s and wordDict[i] consist of only lowercase English letters.
+ * All the strings of wordDict are unique.
+ */
 import java.util.*;
 
 public class WordBreak {
 
     // V0
-    // IDEA : BACKTRACK
-    // TODO: fix below
-//    public boolean wordBreak(String s, List<String> wordDict) {
-//        String cur = "";
-//        return this.check(s, wordDict, cur, 0);
-//    }
-//
-//    private Boolean check(String s, List<String> wordDict, String cur, int idx){
-//        if (cur == s){
-//            return true;
-//        }
-//        if (cur.length() > s.length()){
-//            return false;
-//        }
-//        for (int i = idx; i < wordDict.size(); i++){
-//            Integer curLen = cur.length();
-//            String word = wordDict.get(i);
-//            cur += word;
-//            this.check(s, wordDict, cur, i);
-//            // undo
-//            cur = cur.substring(0, curLen-1);
-//        }
-//        return false;
-//    }
+    // IDEA : BFS (fixed by GPT)
+    public boolean wordBreak(String s, List<String> wordDict) {
+        // Convert wordDict to a HashSet for O(1) lookups
+        Set<String> wordSet = new HashSet<>(wordDict);
 
-    // V0
+        // BFS queue (stores indices where words end)
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(0); // Start from index 0
+
+        // Track visited indices to avoid reprocessing
+        /** NOTE !!!
+         *
+         * we use `visited` to avoid duplicated visiting
+         */
+        Set<Integer> visited = new HashSet<>();
+
+        while (!queue.isEmpty()) {
+            int start = queue.poll();
+            
+            /** NOTE !!!
+             *
+             * Skip if already visited
+             */
+            if (visited.contains(start)) {
+                continue;
+            }
+            visited.add(start);
+
+            // Try all words in the dictionary
+            for (String word : wordSet) {
+                int end = start + word.length();
+                /** NOTE !!!
+                 *
+                 *  `s.substring(start, end).equals(word)` condition
+                 *   -> can avoid `not valid word` added to queue
+                 *      , so avoid no-needed visit in while loop
+                 *      , so BFS efficiency is improved
+                 */
+                if (end <= s.length() && s.substring(start, end).equals(word)) {
+                    if (end == s.length()) {
+                        return true; // Successfully segmented
+                    }
+                    queue.add(end); // Add new starting index
+                }
+            }
+        }
+        return false;
+    }
+
+    // V0-1
     // IDEA : BFS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/word-break.py
-    public boolean wordBreak(String s, List<String> wordDict) {
+    public boolean wordBreak_0_1(String s, List<String> wordDict) {
         if (s == null || s.length() == 0 || wordDict == null || wordDict.size() == 0) {
             return false;
         }
@@ -62,9 +122,9 @@ public class WordBreak {
         return false;
     }
 
-    // V0
+    // V0-2
     // IDEA : BACKTRACK (modified via GPT)
-    public boolean wordBreak_(String s, List<String> wordDict) {
+    public boolean wordBreak_0_2(String s, List<String> wordDict) {
         return check(s, new HashSet<>(wordDict), 0, new Boolean[s.length()]);
     }
 
@@ -84,11 +144,11 @@ public class WordBreak {
         return memo[start] = false;
     }
 
-    // V0''
+    // V0-3
     // IDEA : BACKTRACK
     Boolean[] memo_;
 
-    public boolean wordBreak_0(String s, List<String> wordDict) {
+    public boolean wordBreak_0_3(String s, List<String> wordDict) {
         memo_ = new Boolean[s.length()];
         return help(s, wordDict, 0);
     }
@@ -110,7 +170,7 @@ public class WordBreak {
         return false;
     }
 
-    // V0''''
+    // V0-4
     // IDEA : BACKTRACK + MEMORIZATION (improve efficiency) (gpt)
     /**
      *
@@ -140,7 +200,7 @@ public class WordBreak {
      */
     private Map<String, Boolean> memo = new HashMap<>();
 
-    public boolean wordBreak_0_2(String s, List<String> wordDict) {
+    public boolean wordBreak_0_4(String s, List<String> wordDict) {
         return canBuild(s, wordDict);
     }
 
@@ -168,7 +228,7 @@ public class WordBreak {
     }
 
 
-    // V0''''
+    // V0-5
     // IDEA : DP (modified by GPT)
     /**
      *
@@ -182,7 +242,7 @@ public class WordBreak {
      * Here is the improved version using dynamic programming:
      *
      */
-    public boolean wordBreak_0_3(String s, List<String> wordDict) {
+    public boolean wordBreak_0_5(String s, List<String> wordDict) {
         Set<String> wordSet = new HashSet<>(wordDict);
         boolean[] dp = new boolean[s.length() + 1];
         dp[0] = true; // empty string is always breakable
