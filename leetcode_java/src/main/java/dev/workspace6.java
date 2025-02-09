@@ -7333,6 +7333,64 @@ public class workspace6 {
         return null;
     }
 
+    // LC 647
+    // 12.33 - 12.45 pm
+    public int countSubstrings(String s) {
+        // edge
+        if(s == null || s.length() == 0){
+            return 0;
+        }
+        if(s.length() == 1){
+            return 1;
+        }
+        if(s.length() == 2){
+            // if true, return 1, else 0
+            return s.charAt(0) == s.charAt(1) ? 1 : 0;
+        }
+
+        int res = 0;
+
+        // IDEA 1)
+        // brute force
+        for(int i = 0; i < s.length(); i++){
+            for(int j = i; j < s.length(); j++){
+                if(isPalindromic(s, i, j)){
+                    res += 1;
+                }
+            }
+        }
+
+        // IDEA 2)
+        // 2 pointers
+//        int res = 0;
+//        for(int i = 0; i < s.length(); i++){
+//            int l = i;
+//            int r = s.length();
+//            while(r > l){
+//                if(s.charAt(l) == s.charAt(r)){
+//                    r -= 1;
+//                    l += 1;
+//                    res += 1;
+//                }
+//            }
+//        }
+
+        return res;
+    }
+
+    private boolean isPalindromic(String str, int l, int r){
+//        int l = 0;
+//        int r = str.length() -1;
+        while(r > l){
+            if(str.charAt(l) != str.charAt(r)){
+                return false;
+            }
+            r -= 1;
+            l += 1;
+        }
+        return true;
+    }
+
 }
 
 
