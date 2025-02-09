@@ -139,9 +139,30 @@ public class MaximumProductSubarray {
         return res;
     }
 
-    // V0-2
-    // IDEA: Kadane’s Algorithm for Maximum Product Subarray (GPT)
-    public int maxProduct_0_2(int[] nums) {
+  // V0-2
+  // IDEA: Kadane’s Algorithm for Maximum Product Subarray (GPT)
+  /**
+   * 1) Kadane’s Algorithm is a dynamic programming approach used to find:
+   * 	1.	Maximum sum subarray → Standard Kadane’s Algorithm
+   * 	2.	Maximum product subarray → A modified version of Kadane’s Algorithm
+   *
+   *   -> It works in O(n) time complexity, making it much faster than brute-force approaches (O(n²) or O(n³)).
+   *
+   *
+   * 2_ Kadane’s Algorithm for Maximum Sum Subarray
+   *
+   *   - Problem Statement:
+   * 	Given an array of integers, find the contiguous subarray
+   * 	(containing at least one number) that has the largest sum.
+   *
+   *   - Kadane’s Approach
+   * 	•	We iterate through the array while maintaining:
+   * 	•	maxSum → Stores the maximum subarray sum found so far.
+   * 	•	curSum → Stores the current subarray sum.
+   * 	•	If curSum ever becomes negative, reset it to 0 (since a negative sum will only decrease the next sum).
+   *
+   */
+  public int maxProduct_0_2(int[] nums) {
         // Edge case
         if (nums == null || nums.length == 0) {
             return 0;
