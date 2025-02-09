@@ -1,7 +1,42 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/coin-change/description/
-
+/**
+ * 322. Coin Change
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+ *
+ * Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+ *
+ * You may assume that you have an infinite number of each kind of coin.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: coins = [1,2,5], amount = 11
+ * Output: 3
+ * Explanation: 11 = 5 + 5 + 1
+ * Example 2:
+ *
+ * Input: coins = [2], amount = 3
+ * Output: -1
+ * Example 3:
+ *
+ * Input: coins = [1], amount = 0
+ * Output: 0
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= coins.length <= 12
+ * 1 <= coins[i] <= 231 - 1
+ * 0 <= amount <= 104
+ *
+ */
 import java.util.*;
 
 public class CoinChange {
@@ -13,65 +48,14 @@ public class CoinChange {
 //        return 0;
 //    }
 
-    // V1
-    // IDEA : DFS
-    // TODO : fix below
-//    List<List<Integer>> cache = new ArrayList<>();
-//    int minCnt = -1;
-//    public int coinChange(int[] coins, int amount) {
-//
-//        if (coins.length == 1) {
-//            if (amount % coins[0] == 0){
-//                return  amount / coins[0];
-//            }
-//            return -1;
-//        }
-//
-//        if (coins.length == 0){
-//            return -1;
-//        }
-//
-//
-//        List<Integer> cur = new ArrayList<>();
-//        this._backtrack(coins, amount, cur);
-//
-//        return this.minCnt;
-//    }
-//
-//    public void _backtrack(int[] coins, int amount, List<Integer> cur){
-//
-//        System.out.println("_backtrack START");
-//
-//        // TODO : double check
-//        int curSum = cur.stream().mapToInt(Integer::intValue).sum();
-//
-//        if (curSum == amount){
-//            this.cache.add(cur);
-//            if (this.minCnt > 0){
-//                this.minCnt = Math.min(minCnt, cur.size());
-//            }else{
-//                this.minCnt = cur.size();
-//            }
-//            return;
-//        }
-//
-//        if (curSum > amount){
-//            return;
-//        }
-//
-//        for (int i = 0; i < coins.length; i++){
-//            if (coins[i] <= amount){
-//                cur.add(coins[i]);
-//                this._backtrack(coins, amount, cur);
-//                cur.remove(cur.size()-1);
-//            }
-//        }
-//    }
-
-
-    // V0
+    // V0-1
     // IDEA : BFS (modified by GPT)
-    public int coinChange_0(int[] coins, int amount) {
+    public int coinChange_0_1(int[] coins, int amount) {
+        /**
+         * NOTE !!!
+         *
+         *  we use `steps` (hash map) to avoid duplicated computation
+         */
         Map<Integer, Integer> steps = new HashMap<>();
         steps.put(0, 0);
         Queue<Integer> queue = new LinkedList<>();
@@ -95,6 +79,73 @@ public class CoinChange {
         }
 
         return -1;
+    }
+
+    // V0-2
+    // IDEA: BFS (fix by GPT)
+    public static class CoinStatus {
+        int curSum;
+        int numCoins;
+
+        public CoinStatus(int curSum, int numCoins) {
+            this.curSum = curSum;
+            this.numCoins = numCoins;
+        }
+    }
+
+    public int coinChange_0_2(int[] coins, int amount) {
+        // Edge case
+        if (amount == 0) {
+            return 0;
+        }
+
+        // Convert to Integer array for sorting
+        Integer[] coins_ = Arrays.stream(coins).boxed().toArray(Integer[]::new);
+        /** NOTE !!! sort is not necessary*/
+        // Arrays.sort(coins_, Collections.reverseOrder()); // Sort coins in descending order
+
+        // BFS Initialization
+        Queue<CoinStatus> queue = new LinkedList<>();
+        /**
+         * NOTE !!!
+         *
+         *  we use visited to avoid duplicated computation,
+         *  can also use `Hash Map` approach (see solution V-0)
+         */
+        Set<Integer> visited = new HashSet<>();
+
+        /**
+         *  NOTE !!!
+         *
+         *   at BFS init, we ONLY add `0` coin as its init state,
+         *   (but NOT add all coin in coins to it)
+         */
+        queue.add(new CoinStatus(0, 0)); // Start from sum = 0, numCoins = 0
+        /**
+         * NOTE !!!
+         *
+         *  we use visited to avoid duplicated computation
+         */
+        visited.add(0);
+
+        while (!queue.isEmpty()) {
+            CoinStatus curr = queue.poll();
+
+            for (int coin : coins_) {
+                int newSum = curr.curSum + coin;
+
+                if (newSum == amount) {
+                    return curr.numCoins + 1; // Found the answer
+                }
+
+                if (newSum < amount && !visited.contains(newSum)) {
+                    queue.add(new CoinStatus(newSum, curr.numCoins + 1));
+                    visited.add(newSum); // Avoid duplicate states
+                }
+            }
+        }
+
+        return -1; // No solution found
     }
 
     // V1

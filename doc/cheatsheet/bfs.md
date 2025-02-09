@@ -772,6 +772,42 @@ class Solution:
 ```
 
 ### 2-14) Coin Change
+
+```java
+// java
+// LC 322
+    public int coinChange_0_1(int[] coins, int amount) {
+        /**
+         * NOTE !!!
+         *
+         *  we use `steps` (hash map) to avoid duplicated computation
+         */
+        Map<Integer, Integer> steps = new HashMap<>();
+        steps.put(0, 0);
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(0);
+
+        while (!queue.isEmpty()) {
+            int tmp = queue.poll();
+            int level = steps.get(tmp);
+            if (tmp == amount) {
+                return level;
+            }
+            for (int c : coins) {
+                if (tmp + c > amount) {
+                    continue;
+                }
+                if (!steps.containsKey(tmp + c)) {
+                    queue.offer(tmp + c);
+                    steps.put(tmp + c, level + 1);
+                }
+            }
+        }
+
+        return -1;
+    }
+```
+
 ```python
 # LC 322 Coin Change
 # NOTE : there is also DFS, DP approach
