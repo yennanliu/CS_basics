@@ -1,7 +1,40 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/palindromic-substrings/
-
+/**
+ * 647. Palindromic Substrings
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Hint
+ * Given a string s, return the number of palindromic substrings in it.
+ *
+ * A string is a palindrome when it reads the same backward as forward.
+ *
+ * A substring is a contiguous sequence of characters within the string.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: s = "abc"
+ * Output: 3
+ * Explanation: Three palindromic strings: "a", "b", "c".
+ * Example 2:
+ *
+ * Input: s = "aaa"
+ * Output: 6
+ * Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= s.length <= 1000
+ * s consists of lowercase English letters.
+ *
+ *
+ */
 public class PalindromicSubstrings {
 
     // V0
@@ -29,10 +62,10 @@ public class PalindromicSubstrings {
     }
 
 
-    // V0'
+    // V0-1
     // IDEA : BRUTE FORCE
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/palindromic-substrings.py
-    public int countSubstrings_0(String s) {
+    public int countSubstrings_0_1(String s) {
         int cnt = 0;
         if (s == null || s.length() == 0){
             return cnt;
@@ -72,9 +105,9 @@ public class PalindromicSubstrings {
         return true;
     }
 
-    // V0'''
+    // V0-2
     // IDEA : 2 pointers with all cases covered (gpt)
-    public int countSubstrings_0_1(String s) {
+    public int countSubstrings_0_2(String s) {
         int n = s.length();
         int res = 0;
 
@@ -90,6 +123,63 @@ public class PalindromicSubstrings {
         }
 
         return res;
+    }
+
+    // V0-3
+    // IDEA: BRUTE FORCE
+    public int countSubstrings_0_3(String s) {
+        // edge
+        if(s == null || s.length() == 0){
+            return 0;
+        }
+        if(s.length() == 1){
+            return 1;
+        }
+        if(s.length() == 2){
+            // if true, return 1, else 0
+            return s.charAt(0) == s.charAt(1) ? 3 : 2;
+        }
+
+        int res = 0;
+
+        // IDEA 1)
+        // brute force
+        for(int i = 0; i < s.length(); i++){
+            for(int j = i; j < s.length(); j++){
+                if(isPalindromic(s, i, j)){
+                    res += 1;
+                }
+            }
+        }
+
+        // IDEA 2)
+        // 2 pointers
+        // TODO: finish and complete below
+//        int res = 0;
+//        for(int i = 0; i < s.length(); i++){
+//            int l = i;
+//            int r = s.length();
+//            while(r > l){
+//                if(s.charAt(l) == s.charAt(r)){
+//                    r -= 1;
+//                    l += 1;
+//                    res += 1;
+//                }
+//            }
+//        }
+
+        return res;
+    }
+
+    private boolean isPalindromic(String str, int l, int r){
+        while(r > l){
+            if(str.charAt(l) != str.charAt(r)){
+                return false;
+            }
+            r -= 1;
+            l += 1;
+        }
+        return true;
     }
 
     // V1
