@@ -61,7 +61,7 @@ public class WordBreak {
 
         while (!queue.isEmpty()) {
             int start = queue.poll();
-            
+
             /** NOTE !!!
              *
              * Skip if already visited

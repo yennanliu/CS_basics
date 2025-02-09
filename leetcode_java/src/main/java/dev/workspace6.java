@@ -7608,55 +7608,121 @@ public class workspace6 {
      *  ...
      *
      */
-    public class WordStatuds{
+//    public class WordStatuds{
+//        // attr
+//        String cur;
+//        Integer idx;
+//        public WordStatuds(String cur, Integer idx){
+//            this.cur = cur;
+//            this.idx = idx;
+//        }
+//    }
+//    public boolean wordBreak(String s, List<String> wordDict) {
+//        // edge
+//        if(s == null || s.length() == 0){
+//            return true;
+//        }
+//        for(String x: wordDict){
+//            if(s.equals(x)){
+//                return true;
+//            }
+//        }
+//
+//        // bfs
+//        // NOTE !!! use hashmap to avoid `duplicated` visit
+//        Map<String, Integer> visited = new HashMap<>();
+//        Queue<WordStatuds> q = new LinkedList<>();
+//        q.add(new WordStatuds("", 0)); // ??? init `cur` as null string ???
+//        while(!q.isEmpty()){
+//            WordStatuds wordStatuds = q.poll();
+//            String cur = wordStatuds.cur;
+//            Integer idx = wordStatuds.idx;
+//            if(cur.length() == s.length() && cur.equals(s)){
+//                return true;
+//            }
+//            // add candidates to queue
+//            for(String x: wordDict){
+//                String cur_ = cur + x;
+//                boolean shouldProceed = (!visited.containsKey(cur_)
+//                        && cur_.length() <= s.length()
+//                        && cur_.equals(s.substring(idx, idx+cur_.length()))
+//                );
+//                if(shouldProceed){
+//                    visited.put(cur_, 1);
+//                    q.add(new WordStatuds(cur_, idx+1));
+//                }
+//            }
+//        }
+//
+//        return false;
+//    }
+
+    // LC 140
+        public class WordStatus{
         // attr
         String cur;
         Integer idx;
-        public WordStatuds(String cur, Integer idx){
+        List<String> words;
+        public WordStatus(String cur, Integer idx, List<String> words){
             this.cur = cur;
             this.idx = idx;
+            this.words = words;
         }
     }
-    public boolean wordBreak(String s, List<String> wordDict) {
-        // edge
-        if(s == null || s.length() == 0){
-            return true;
-        }
-        for(String x: wordDict){
-            if(s.equals(x)){
-                return true;
-            }
-        }
+    public List<String> wordBreak(String s, List<String> wordDict) {
 
-        // bfs
-        // NOTE !!! use hashmap to avoid `duplicated` visit
-        Map<String, Integer> visited = new HashMap<>();
-        Queue<WordStatuds> q = new LinkedList<>();
-        q.add(new WordStatuds("", 0)); // ??? init `cur` as null string ???
-        while(!q.isEmpty()){
-            WordStatuds wordStatuds = q.poll();
-            String cur = wordStatuds.cur;
-            Integer idx = wordStatuds.idx;
-            if(cur.length() == s.length() && cur.equals(s)){
-                return true;
+        // Convert wordDict to a HashSet for O(1) lookups
+        Set<String> wordSet = new HashSet<>(wordDict);
+
+        // BFS queue (stores indices where words end)
+        Queue<WordStatus> queue = new LinkedList<>();
+        queue.add(new WordStatus("", 0, new ArrayList<>())); // Start from index 0
+
+        // Track visited indices to avoid reprocessing
+        /** NOTE !!!
+         *
+         * we use `visited` to avoid duplicated visiting
+         */
+        Set<Integer> visited = new HashSet<>();
+
+        List<String> res = new ArrayList<>();
+
+        while (!queue.isEmpty()) {
+            //int start = queue.poll();
+            WordStatus wordStatus = queue.poll();
+            int start = wordStatus.idx;
+
+            /** NOTE !!!
+             *
+             * Skip if already visited
+             */
+            if (visited.contains(start)) {
+                continue;
             }
-            // add candidates to queue
-            for(String x: wordDict){
-                String cur_ = cur + x;
-                boolean shouldProceed = (!visited.containsKey(cur_)
-                        && cur_.length() <= s.length()
-                        && cur_.equals(s.substring(idx, idx+cur_.length()))
-                );
-                if(shouldProceed){
-                    visited.put(cur_, 1);
-                    q.add(new WordStatuds(cur_, idx+1));
+            visited.add(start);
+
+            // Try all words in the dictionary
+            for (String word : wordSet) {
+                int end = start + word.length();
+                /** NOTE !!!
+                 *
+                 *  `s.substring(start, end).equals(word)` condition
+                 *   -> can avoid `not valid word` added to queue
+                 *      , so avoid no-needed visit in while loop
+                 *      , so BFS efficiency is improved
+                 */
+                if (end <= s.length() && s.substring(start, end).equals(word)) {
+                    if (end == s.length()) {
+                        //return true; // Successfully segmented
+                        res.add(s);
+                    }
+                    //queue.add(new WordStatus(end, end, new ArrayList<>())); // Add new starting index
                 }
             }
         }
 
-        return false;
+        return res;
     }
-
 
 }
 
