@@ -7808,6 +7808,74 @@ public class workspace6 {
        return res;
     }
 
+    // LC 62
+    // 10.31 - 10.40 am
+    /**
+     * A robot is located at the top-left corner of a m x n grid
+     * (marked 'Start' in the diagram below).
+     *
+     * The robot can only move either down or right at any point in time.
+     * The robot is trying to reach the bottom-right corner of the grid
+     * marked 'Finish' in the diagram below).
+     *
+     * How many possible unique paths are there?
+     *
+     *
+     *
+     * EXP 1)
+     *
+     * Input: m = 3, n = 2
+     * Output: 3
+     * Explanation:
+     * From the top-left corner, there are a total of 3 ways to reach the bottom-right corner:
+     *
+     * 1. Right -> Right -> Down
+     * 2. Right -> Down -> Right
+     * 3. Down -> Right -> Right
+     *
+     *
+     * EXP 2)
+     *
+     * Input: m = 7, n = 3
+     * Output: 28
+     *
+     *
+     *
+     *  IDEA 1) MATH
+     *  IDEA 2) DP ??
+     *  IDEA 3) BFS OR DFS ??
+     */
+    public int uniquePaths(int m, int n) {
+        // edge
+        if(m == 0 || n == 0){
+            return 0;
+        }
+        if(m == 0 && n == 0){
+            return 0;
+        }
+        if(m == 1 || n == 1){
+            return 1;
+        }
+       // int res
+       int m_ = m - 1;
+       int n_ = n - 1;
+
+        Long a = getFactorial(m_ + n_);
+        Long b = getFactorial(m_) * getFactorial(n_);
+
+       System.out.println(">>> a = " + a + ", b = " + b);
+
+        return  Integer.parseInt(String.valueOf(a / b));
+    }
+
+    private Long getFactorial(int i){
+        Long res = 1L;
+        for(int j = 1; j < i+1; j++){
+            res = (res * j);
+        }
+        return res;
+    }
+
 }
 
 
