@@ -86,9 +86,9 @@ public class MaximumSubarray {
         return maxSum;
     }
 
-    // V0'-1
+    // V0-1
     // IDEA : PRE-SUM ARRAY (fixed by gpt)
-    public int maxSubArray_0_1_1(int[] nums) {
+    public int maxSubArray_0_1(int[] nums) {
         if (nums == null || nums.length == 0) {
             throw new IllegalArgumentException("Input array cannot be null or empty");
         }
@@ -114,10 +114,10 @@ public class MaximumSubarray {
     }
 
 
-    // V0'
+    // V0-2
     // IDEA : BRUTE FORCE
     // https://www.bilibili.com/video/BV1aY4y1Z7ya/?share_source=copy_web&vd_source=49348a1975630e1327042905e52f488a
-    public int maxSubArray_(int[] nums) {
+    public int maxSubArray_0_2(int[] nums) {
 
         if (nums.length == 0 || nums == null){
             return 0;
@@ -157,9 +157,9 @@ public class MaximumSubarray {
         return ans;
     }
 
-    // V0''
+    // V0-3
     // IDEA : BRUTE FORCE (by GPT)
-    public int maxSubArray_0(int[] nums) {
+    public int maxSubArray_0_3(int[] nums) {
         // If there is only one element, the maximum subarray is the element itself
         if (nums.length == 1) {
             return nums[0];
@@ -181,9 +181,9 @@ public class MaximumSubarray {
         return res;
     }
 
-    // V0'''
+    // V0-4
     // IDEA : GREEDY (modified by GPT)
-    public int maxSubArray_0_1(int[] nums) {
+    public int maxSubArray_0_4(int[] nums) {
 
         if (nums.length == 1) {
             return nums[0];
@@ -211,6 +211,44 @@ public class MaximumSubarray {
         }
 
         return res;
+    }
+
+    // V0-5
+    // IDEA: Kadane's algo (GPT)
+    /**
+     * Kadane's Algorithm:
+     *  -> This is an efficient algorithm for finding the maximum sum of a contiguous subarray.
+     *     It maintains two variables:
+     *
+     * - currentSum: Keeps track of the sum of the current subarray.
+     * - maxSum: Tracks the maximum sum encountered so far.
+     * - Key Idea: For each element nums[i], we either:
+     *
+     * Start a new subarray with nums[i] (if currentSum + nums[i] is worse than just nums[i]).
+     * Extend the current subarray by adding nums[i] (if extending it improves the sum).
+     *
+     * - Time Complexity: This solution runs in O(n) time, where n is the length of the array.
+     */
+    public int maxSubArray_0_5(int[] nums) {
+        // Edge case: if nums is empty, return 0
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        // Initialize the max sum and current sum
+        int maxSum = nums[0];
+        int currentSum = nums[0];
+
+        // Iterate through the array starting from the second element
+        for (int i = 1; i < nums.length; i++) {
+            // Update the current sum: either extend the subarray or start a new subarray
+            currentSum = Math.max(nums[i], currentSum + nums[i]);
+
+            // Update the max sum found so far
+            maxSum = Math.max(maxSum, currentSum);
+        }
+
+        return maxSum;
     }
 
 
