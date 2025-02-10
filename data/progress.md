@@ -5,7 +5,7 @@
 	- https://neetcode.io/practice?tab=blind75
 	- 5 / day ->  15 days to finish
 		- greedy
-	- again: 300
+	- again: 300,1143
 	- todo:
 
 # 2025-02-09
