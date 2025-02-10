@@ -15,6 +15,11 @@ Kadane's Algorithm is a popular dynamic programming technique used to find the m
 6. 122. Best Time to Buy and Sell Stock II
 
 
+## Ref
+- https://www.flydean.com/interview/arithmetic/arithmetic-Kadane/
+- https://zh.wikipedia.org/zh-tw/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E5%88%97%E9%97%AE%E9%A2%98
+- https://leetcode.com/discuss/study-guide/1308617/Dynamic-Programming-Patterns
+
 ## Pattern
 
 ```java
