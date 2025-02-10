@@ -7964,6 +7964,114 @@ public class workspace6 {
 
     }
 
+    // LC 53
+    // 11.22 - 11.35 AM
+    /**
+     * Given an integer array nums, find the contiguous subarray (containing at
+     * least one number) which has the largest sum and return its sum.
+     *
+     * Example:
+     *
+     * Input: [-2,1,-3,4,-1,2,1,-5,4],
+     * Output: 6
+     * Explanation: [4,-1,2,1] has the largest sum = 6.
+     * Follow up:
+     *
+     * If you have figured out the O(n) solution, try coding
+     * another solution using the divide and conquer approach, which is more subtle.
+     *
+     *
+     *
+     * NOTE !!!
+     *  -> A subarray is a `contiguous` non-empty sequence of elements within an array.
+     *
+     *
+     *  IDEA 1) 2 POINTERS + SLIDE WINDOW + presum ??
+     *
+     *  -> step 0) prepare preSum array -> so we can get sub array (i, j) sum in O(1) time complexity
+     *
+     *  -> step 1) set i, j, get curSum in window,
+     *      if curSum < 0, move i to i+1 ????, keep looping
+     *      else, keep moving j, and maintain the global longest len
+     *
+     *  -> step 3) return the final result (global longest len)
+     *
+     *
+     *    Input: [-2,1,-3,4,-1,2,1,-5,4],
+     *            i  j                    presum= -1, move i
+     *               i  j                 presum = -2, move i
+     *                  i j               presum = 1, res = 1
+     *                  i    j            presum = 0, res = 1
+     *                  i      j          presum = 2, res = 2
+     *                  i        j        presum = 3, res = 3
+     *                  i          j      presum = -2, move i
+     *                    i  j            presum = 3
+     *                    i    j          presum = 5, res = 5
+     *                    i      j        presum = 6, res = 6
+     *                    i        j      presum = 1, res = 6
+     *                    i          j    presum = 5, res = 6
+     *                     ....
+     *
+     *                     ??? need to loop from i+1 ... when j reach the end, while i is not ?
+     *
+     *
+     *    -> res = 3
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+    public int maxSubArray(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return 1;
+        }
+        if(nums.length == 2){
+            if(nums[1] >  nums[0]){
+                return 2;
+            }
+            return 1;
+        }
+
+        // presum array
+        Integer[] preSum = new Integer[nums.length+1];
+        preSum[0] = 0; // ??
+        int curSum = 0;
+        for(int i = 0; i < nums.length; i++){
+            curSum += nums[i];
+            preSum[i] = curSum;
+        }
+
+        /**
+         *
+         *  2 pointers + slide window
+         *
+         *  left pointer : i
+         *  right : j
+         *
+         */
+        int res = 1;
+        int i = 0;
+        int j = 1;
+        while(i < nums.length && j < nums.length){
+            int tmp = 1;
+            if(tmp + nums[j] >= 0){
+                tmp += 1;
+                res = Math.max(res, tmp);
+            }else{
+                i += 1;
+            }
+            j += 1;
+        }
+
+        return res;
+    }
+
 }
 
 
