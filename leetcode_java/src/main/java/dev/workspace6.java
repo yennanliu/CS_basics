@@ -7724,6 +7724,90 @@ public class workspace6 {
         return res;
     }
 
+    // LC 300
+    // 9.44 - 10.00 am
+    /**
+     *
+     *  A subsequence is an array that can be derived
+     *  from another array by deleting some
+     *  or no elements without changing the order of the remaining elements.
+     *
+     *
+     *
+     *  Example 1:
+     *
+     * Input: nums = [10,9,2,5,3,7,101,18]
+     * Output: 4
+     * Explanation: The longest increasing subsequence is
+     * [2,3,7,101], therefore the length is 4.
+     *
+     * Example 2:
+     *
+     * Input: nums = [0,1,0,3,2,3]
+     * Output: 4
+     *
+     * Example 3:
+     *
+     * Input: nums = [7,7,7,7,7,7,7]
+     * Output: 1
+     *
+     */
+    public int lengthOfLIS(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return 1;
+        }
+        // if all elements are the same
+        HashSet<Integer> set = new HashSet<>();
+        for(int x: nums){
+            if(!set.contains(x)){
+                set.add(x);
+            }
+        }
+        if(set.size() == 1){
+            return 1;
+        }
+
+        // 2 pointers + sliding window ??
+        int res = 1;
+//        int l = 0;
+//        int r = nums.length - 1;
+        /**
+         *  Dry run 1)
+         *
+         *   Input: nums = [10,9,2,5,3,7,101,18]
+         *                  i  j                      res =1
+         *                  i   j
+         *                  ..
+         *                  i            j          tmp=2 res = 2
+         *                     i j                  tmp=1 res=2
+         *                     ..
+         *                     i        j           tmp=2 res=2
+         *                       i j                tmp=2 res=2
+         *                       i  j
+         *
+         *
+         *
+         *
+         */
+        for(int i = 0; i < nums.length - 1; i++){
+            int tmp = 1;
+            int j = i+1;
+            while (j < nums.length){
+                if(nums[j] > nums[i]){
+                    tmp += 1;
+                    res = Math.max(res, tmp);
+                }
+                j += 1;
+            }
+        }
+
+       return res;
+    }
+
 }
 
 
