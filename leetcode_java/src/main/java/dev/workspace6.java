@@ -8218,6 +8218,105 @@ public class workspace6 {
         return nums.length-1; // ???
     }
 
+    // LC 57
+    // 5.39 - 5.50 pm
+    /**
+     * Example 1:
+     *
+     * Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
+     * Output: [[1,5],[6,9]]
+     *
+     * ->  Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
+     *    [ [1,3]]
+     *    [ [2,5]]
+     *
+     *    -> [ [2,5] ]
+     *
+     *
+     * Example 2:
+     *
+     * Input: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+     * Output: [[1,2],[3,10],[12,16]]
+     * Explanation: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
+     *
+     *
+     * ->  [[1,2],[3,5],[6,7],[8,10],[12,16]],
+     *   [[1,2]]
+     *   [[1,2], [4,5]]
+     *  [[1,2], [3,5], [6,7]]
+     *  [[1,2], [3,5], [6,7]]
+     *
+     *
+     * IDEA: ARRAY OP
+     *
+     *  -> loop over intervals,
+     *
+     *    step 1) check overlap compare prev and cur
+     *    step 2) get new interval as [ max(prev_start, cur_start), min(prev_end, cur_end)]
+     *    step 3) if not overlap, append to res
+     */
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        // edge
+        if(intervals == null || intervals.length == 0){
+            //int[][] res = new int[][]{{}}; // ???
+//            int[][] res = new int[][]{newInterval};
+//            return res; // ???
+            return new int[][]{newInterval};
+        }
+//        if(newInterval[0] > intervals[intervals.length-1][0]){
+//
+//        }
+
+        // queue: FIFO
+        Queue<int[]> q = new LinkedList<>();
+        List<int[]> cache = new ArrayList<>();
+        q.add(intervals[0]);
+        for(int i = 0; i < intervals.length; i++){
+            int[] interval = intervals[i];
+            int start = interval[0];
+            int end = interval[1];
+            /**
+             *
+             *   OVERLAP CASES
+             *
+             *   case 1)
+             *      |--------|
+             *         |-----------|
+             *
+             *   case 2)
+             *      |----------|
+             *  |------|
+             *
+             *  case 3)
+             *      |-------|
+             *        |---|
+             *
+             *  case 4)
+             *
+             *     |---|
+             *   |----------|
+             *
+             */
+           while(newInterval[1] > start || newInterval[0] < end){
+               int[] cur = q.poll();
+               int newStart = Math.min(start, cur[0]);
+               int newEnd = Math.max(end, cur[1]);
+               int[] new_ = new int[]{newStart, newEnd};
+               q.add(new_);
+           }
+           q.add(interval);
+        }
+
+        int[][] res = new int[q.size()][]; // ?
+        int j = 0;
+        while(!q.isEmpty()){
+            res[j] = q.poll();
+            j += 1;
+        }
+
+        return res;
+    }
+
 
 }
 
