@@ -8154,14 +8154,70 @@ public class workspace6 {
          *
          */
         int len = nums.length;
+        int cur = 0;
         for(int i = 0; i < nums.length - 1; i++){
             if(i + nums[i] >= len - 1){
                 return true;
             }
+            if(cur < i){
+                return false;
+            }
+            cur = Math.max(cur, nums[i] + i);
         }
 
         return false;
     }
+
+
+    // LC 45
+    /**
+     *  45. Jump Game II
+     * Given an array of non-negative integers, you are initially positioned at the first index of the array.
+     *
+     * Each element in the array represents your maximum jump length at that position.
+     *
+     * Your goal is to reach the last index in the minimum number of jumps.
+     *
+     * Example:
+     *
+     * Input: [2,3,1,1,4]
+     * Output: 2
+     * Explanation: The minimum number of jumps to reach the last index is 2.
+     *     Jump 1 step from index 0 to 1, then 3 steps to the last index.
+     * Note:
+     *
+     * You can assume that you can always reach the last index.
+     *
+     *
+     *
+     *  -> Your goal is to reach the last index in the minimum number of jumps.
+     */
+    public int jump(int[] nums) {
+        // edge
+        if(nums == null || nums.length <= 1){
+            return 0;
+        }
+
+        int cur = 0;
+        int res = 0;
+        for(int i = 0; i < nums.length; i++){
+            if(cur < i){
+                return -1; // false
+            }
+
+            int oldCur = cur;
+            cur = Math.max(cur, nums[i] + i);
+            if(cur > oldCur){
+                res += 1;
+            }
+
+            if(cur >= nums.length-1){
+                return res;
+            }
+        }
+        return nums.length-1; // ???
+    }
+
 
 }
 

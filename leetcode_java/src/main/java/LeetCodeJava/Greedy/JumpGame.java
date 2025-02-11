@@ -162,6 +162,36 @@ public class JumpGame {
         return false;
     }
 
+    // V0-3
+    // IDEA: GREEDY (GPT)
+    public boolean canJump_0_3(int[] nums) {
+        // edge case
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+
+        int furthestReachable = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            // If current index is beyond the furthest reachable point, return false
+            if (i > furthestReachable) {
+                return false;
+            }
+
+            // Update the furthest reachable point from the current index
+            furthestReachable = Math.max(furthestReachable, i + nums[i]);
+
+            // NOTE !!! we can end looping earlier with below checking
+            // If we can reach or surpass the last index, return true
+            if (furthestReachable >= nums.length - 1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
 
     // V1
     // IDEA : Backtracking
