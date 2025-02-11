@@ -8072,6 +8072,97 @@ public class workspace6 {
         return res;
     }
 
+    // LC 55
+    // 9.53 - 10 AM
+    /**
+     * Given an array of non-negative integers, you are initially positioned at the first index of the array.
+     *
+     * Each element in the array represents your maximum jump length at that position.
+     *
+     * Determine if you are able to reach the last index.
+     *
+     *
+     * Example 1:
+     *
+     * Input: [2,3,1,1,4]
+     * Output: true
+     * Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.
+     *
+     * -> loop over val in nums
+     * -> check if `cur idx + val` can >= the end
+     * ->   if yes, return true directly
+     * ->   if not, keep loop till the end, if still can't find a solition -> return false
+     *
+     *
+     *
+     *
+     *
+     * Example 2:
+     *
+     * Input: [3,2,1,0,4]
+     * Output: false
+     * Explanation: You will always arrive at index 3 no matter what. Its maximum
+     *              jump length is 0, which makes it impossible to reach the last index.
+     * Difficulty:
+     *
+     *
+     *
+     * IDEA 1: DP
+     *
+     * IDEA 2: BRUTE FORCE
+     *
+     *
+     */
+    public boolean canJump(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0 || nums.length == 1){
+            return true;
+        }
+        if(nums[0] == 0){
+            return false;
+        }
+        /**
+         *  Dry run 1)
+         *
+         *  Input: [2,3,1,1,4]
+         *
+         *  [2,3,1,1,4]
+         *   i          i + nums[i] = 2 < 4
+         *     i        i + nums[i] = 4 <= 4 -> true
+         *
+         *
+         *  Dry run 2)
+         *
+         *  Input: [3,2,1,0,4]
+         *
+         *  [3,2,1,0,4]
+         *   i            i + nums[i] = 3 < 4
+         *     i          i + nums[i] = 3 < 4
+         *       i        i + nums[i] = 3 < 4
+         *         i      i + nums[i] = 3 < 4
+         *
+         *  Dry run 3)
+         *
+         *  input = [0,2,3]
+         *
+         *  Dry run 4)
+         *
+         *  input = [1,0,1,0]
+         *
+         *
+         *
+         *
+         */
+        int len = nums.length;
+        for(int i = 0; i < nums.length - 1; i++){
+            if(i + nums[i] >= len - 1){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
 
 
