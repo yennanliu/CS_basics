@@ -8379,6 +8379,92 @@ public class workspace6 {
         //return null;
     }
 
+    // LC 435
+    // 11.06 - 11.16 pm
+    /**
+     *  IDEA : ARRAY OP + scanning line
+     *
+     *  step 1) sort (small -> big)
+     *  step 2) loop over elements
+     *     scanning line ??
+     *     -> find the max overlap
+     *  step 3) return res
+     *
+     *
+     *  EXP 1)
+     *
+     *  Input: intervals = [[1,2],[2,3],[3,4],[1,3]]
+     * Output: 1
+     *  Explanation: [1,3] can be removed and the rest of the intervals are non-overlapping.
+     *
+     *  ->  sort [[1,2],[1,3],[2,3],[3,4]]
+     *
+     *  ->  [[1,3],[1,2],[2,3],[3,4]]
+     *        x                        res = 0
+     *
+     *     [[1,3],[1,2],[2,3],[3,4]]
+     *              x                 res = 1
+     *
+     *  EXP 2)
+     *  Input: intervals = [[1,2],[1,2],[1,2]]
+     *  Output: 2
+     *
+     *   -> sort : [[1,2],[1,2],[1,2]]
+     *
+     */
+    public int eraseOverlapIntervals(int[][] intervals) {
+
+        // edge
+        if (intervals == null || intervals.length == 0){
+            return 0;
+        }
+        if(intervals.length == 1){
+            return 0;
+        }
+        if(intervals.length == 2){
+            if(intervals[1][0] >= intervals[0][1]){
+                return 0;
+            }
+            return 1; // ??
+        }
+
+        // sort
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                // 1st element : small -> big
+
+                int diff = o1[0] - o2[0];
+                if(diff == 0){
+                    // 2nd element: big -> small ??
+                    return o2[1] - o1[1];
+                }
+                return diff;
+            }
+        });
+
+        // loop over element, compare
+        int res = 0;
+        List<int[]> cache = new ArrayList<>();
+        for(int[] x: intervals){
+            int start = x[0];
+            int end = x[1];
+            // case 1) cache is empty or NO overlap
+            if(cache.isEmpty() || start > cache.get(cache.size()-1)[0]){
+                cache.add(x);
+            }else{
+                res += 1;
+                // remove the `bigger interval`, add the `smaller interval` back to cache
+                // or no need to check above, since we already sort intervals array ????
+                cache.remove(cache.size()-1);
+                cache.add(x);
+            }
+
+        }
+
+        return res;
+    }
+
 
 
 }
