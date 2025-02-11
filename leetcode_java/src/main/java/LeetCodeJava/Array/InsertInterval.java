@@ -108,9 +108,9 @@ public class InsertInterval {
         return merged.toArray(new int[merged.size()][]);
     }
 
-    // V0'
+    // V0-1
     // IDEA : ARRAY + BOUNDARY OP (by GPT)
-    public int[][] insert_0(int[][] intervals, int[] newInterval) {
+    public int[][] insert_0_1(int[][] intervals, int[] newInterval) {
 
         // Convert the intervals array to a list for easier manipulation
         List<int[]> intervalList = new ArrayList<>(Arrays.asList(intervals));
@@ -137,6 +137,41 @@ public class InsertInterval {
         // Convert the merged list back to an array and return
         /** NOTE !!! transform list to array */
         return merged.toArray(new int[merged.size()][]);
+    }
+
+    // V0-2
+    // IDEA: ARRAY OP (GPT)
+    public int[][] insert_0_2(int[][] intervals, int[] newInterval) {
+        // Edge case: if intervals are empty, just return the newInterval
+        if (intervals == null || intervals.length == 0) {
+            return new int[][] { newInterval };
+        }
+
+        List<int[]> result = new ArrayList<>();
+        int i = 0;
+
+        // Add all intervals that end before the newInterval starts
+        while (i < intervals.length && intervals[i][1] < newInterval[0]) {
+            result.add(intervals[i]);
+            i++;
+        }
+
+        // Merge overlapping intervals
+        while (i < intervals.length && intervals[i][0] <= newInterval[1]) {
+            newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+            newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+            i++;
+        }
+        result.add(newInterval); // Add the merged interval
+
+        // Add all intervals that start after the newInterval ends
+        while (i < intervals.length) {
+            result.add(intervals[i]);
+            i++;
+        }
+
+        // Convert List to 2D array and return the result
+        return result.toArray(new int[result.size()][]);
     }
 
 }
