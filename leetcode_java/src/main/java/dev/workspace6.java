@@ -8317,6 +8317,69 @@ public class workspace6 {
         return res;
     }
 
+    // LC 56
+    /**
+     * Given a collection of intervals, merge all overlapping intervals.
+     *
+     * Example 1:
+     *
+     * Input: [[1,3],[2,6],[8,10],[15,18]]
+     * Output: [[1,6],[8,10],[15,18]]
+     * Explanation: Since intervals [1,3] and [2,6] overlaps, merge them into [1,6].
+     *
+     * Example 2:
+     *
+     * Input: [[1,4],[4,5]]
+     * Output: [[1,5]]
+     * Explanation: Intervals [1,4] and [4,5] are considered overlapping.
+     * NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
+     *
+     */
+    public int[][] merge(int[][] intervals) {
+        // array op
+        // edge
+        if(intervals == null || intervals.length == 0){
+            return new int[][]{}; // ??
+        }
+        if(intervals.length == 1){
+            return new int[][]{intervals[0]}; // ??
+        }
+
+        // sorting
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                if (diff == 0){
+                    return o1[1] - o2[1];
+                }
+                return diff; // ??
+            }
+        });
+
+        List<int[]> cache = new ArrayList<>();
+        for(int i = 0; i < intervals.length; i++){
+            // case 1) cache is empty or NO overlap
+            // NO OVERLAP :  new[0] > old[1]
+            if(cache.isEmpty() || cache.get(cache.size()-1)[1] < intervals[i][0]){
+                cache.add(new int[]{intervals[i][0], intervals[i][1]}); // ???
+            }// case 2) overlap
+            else{
+                // ???
+                int newStart = Math.min(intervals[i][0], cache.get(cache.size()-1)[0]);
+                int newEnd = Math.max(intervals[i][1], cache.get(cache.size()-1)[1]);
+            }
+        }
+
+        //int[][] res = new int[][];
+        //int[][] res = new int[][]{Arrays.asList(cache)};
+
+        // NOTE !!! below op
+        return res.toArray(new int[res.size()][]);
+        //return null;
+    }
+
+
 
 }
 

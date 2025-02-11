@@ -1,7 +1,35 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/merge-intervals/
-
+/**
+ * 56. Merge Intervals
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+ * Output: [[1,6],[8,10],[15,18]]
+ * Explanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
+ * Example 2:
+ *
+ * Input: intervals = [[1,4],[4,5]]
+ * Output: [[1,5]]
+ * Explanation: Intervals [1,4] and [4,5] are considered overlapping.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= intervals.length <= 104
+ * intervals[i].length == 2
+ * 0 <= starti <= endi <= 104
+ *
+ */
 import java.util.*;
 
 public class MergeIntervals {
@@ -65,9 +93,9 @@ public class MergeIntervals {
         return res.toArray(new int[res.size()][]);
     }
 
-    // V0'
+    // V0-1
     // IDEA: SORT + ARRAY OP + BOUNDARY HANDLING
-    public int[][] merge_0(int[][] intervals) {
+    public int[][] merge_0_1(int[][] intervals) {
 
         if (intervals.length <= 1){
             return intervals;
@@ -99,6 +127,46 @@ public class MergeIntervals {
 
         /** NOTE !!! list -> array */
         return tmp.toArray(new int[tmp.size()][]);
+    }
+
+    // V0-2
+    // IDEA: ARRAY OP (GPT)
+    public int[][] merge_0_2(int[][] intervals) {
+        // Edge case: If intervals is null or empty, return an empty array
+        if (intervals == null || intervals.length == 0) {
+            return new int[][] {}; // Return empty 2D array
+        }
+
+        // Edge case: If only one interval, return the same interval
+        if (intervals.length == 1) {
+            return new int[][] { intervals[0] };
+        }
+
+        // Sorting the intervals based on the start of the intervals
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return Integer.compare(o1[0], o2[0]); // Compare based on the start time
+            }
+        });
+
+        List<int[]> cache = new ArrayList<>();
+
+        // Iterate through the sorted intervals and merge them if necessary
+        for (int i = 0; i < intervals.length; i++) {
+            // If the cache is empty or no overlap with the last interval
+            if (cache.isEmpty() || cache.get(cache.size() - 1)[1] < intervals[i][0]) {
+                cache.add(new int[] { intervals[i][0], intervals[i][1] });
+            } else {
+                // Overlapping intervals: merge them
+                int[] last = cache.get(cache.size() - 1);
+                last[1] = Math.max(last[1], intervals[i][1]); // Merge the intervals by updating the end time
+            }
+        }
+
+        // Convert the List<int[]> to a 2D array and return the result
+        /** NOTE !!! below op */
+        return cache.toArray(new int[cache.size()][]);
     }
 
     // V1
