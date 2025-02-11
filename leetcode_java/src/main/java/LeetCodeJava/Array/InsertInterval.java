@@ -6,6 +6,44 @@ import java.util.Comparator;
 import java.util.List;
 
 // https://leetcode.com/problems/insert-interval/description/
+/**
+ * 57. Insert Interval
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Hint
+ * You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] represent the start and the end of the ith interval and intervals is sorted in ascending order by starti. You are also given an interval newInterval = [start, end] that represents the start and end of another interval.
+ *
+ * Insert newInterval into intervals such that intervals is still sorted in ascending order by starti and intervals still does not have any overlapping intervals (merge overlapping intervals if necessary).
+ *
+ * Return intervals after the insertion.
+ *
+ * Note that you don't need to modify intervals in-place. You can make a new array and return it.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
+ * Output: [[1,5],[6,9]]
+ * Example 2:
+ *
+ * Input: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+ * Output: [[1,2],[3,10],[12,16]]
+ * Explanation: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
+ *
+ *
+ * Constraints:
+ *
+ * 0 <= intervals.length <= 104
+ * intervals[i].length == 2
+ * 0 <= starti <= endi <= 105
+ * intervals is sorted by starti in ascending order.
+ * newInterval.length == 2
+ * 0 <= start <= end <= 105
+ *
+ */
 public class InsertInterval {
 
     // V0
@@ -22,18 +60,33 @@ public class InsertInterval {
         /** NOTE !!!  create list from array */
         List<int[]> intervalList = new ArrayList<>(Arrays.asList(intervals));
 
-        /** NOTE !!! add newInterval first, then sort */
+        /** NOTE !!!
+         *
+         * 1) add newInterval to array
+         */
         intervalList.add(newInterval);
 
-        /** NOTE !!! need to SORT list first */
+        /** NOTE !!!
+         *
+         * SORT list (ascending order)
+         */
         intervalList.sort(Comparator.comparingInt(a -> a[0]));
 
         /** NOTE !!! setup result list */
         List<int[]> merged = new ArrayList<>();
 
         for (int[] x : intervalList){
-            // case 1) : if merged is empty, nothing to remove, add new item to merged directly
-            // & case 2) : if no overlap, add new item to merged directly
+            /**
+             *  case 1) : if merged is empty, nothing to remove, add new item to merged directly
+             *  case 2) : if no overlap, add new item to merged directly
+             *               -> NOTE !!!
+             *                   since array already sorted, so THE ONLY possible NON-OVERLAP case is as below:
+             *                     |----|          (old)
+             *                            |-----|  (new)
+             *                   -> so ALL we need to check is:
+             *                          `new[0] > old[1]` or not
+             *
+             */
             if (merged.isEmpty() || merged.get(merged.size()-1)[1] < x[0]){
                 merged.add(x);
             }
@@ -44,9 +97,9 @@ public class InsertInterval {
                  *   last : |-----|
                  *   x :      |------|
                  */
-                // NOTE : we set 0 idx as smaller val from merged last element (0 idx), input
+                // NOTE : we set 0 idx as SMALLER val from merged last element (0 idx), input
                 merged.get(merged.size()-1)[0] = Math.min(merged.get(merged.size()-1)[0], x[0]);
-                // NOTE : we set 1 idx as bigger val from merged last element (1 idx), input
+                // NOTE : we set 1 idx as BIGGER val from merged last element (1 idx), input
                 merged.get(merged.size()-1)[1] = Math.max(merged.get(merged.size()-1)[1], x[1]);
             }
         }
