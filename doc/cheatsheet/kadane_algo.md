@@ -7,7 +7,7 @@ Kadane's Algorithm is a popular dynamic programming technique used to find the m
 
 ## LC problems that can be solved via Kadane's algo:
 
-- 53. Maximum Subarray
+- 53:  Maximum Subarray
 - 152. Maximum Product Subarray
 - 918. Maximum Sum Circular Subarray
 - 1836. Remove Duplicates from an Unsorted Linked List
