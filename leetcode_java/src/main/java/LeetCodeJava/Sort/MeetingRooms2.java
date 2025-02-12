@@ -30,9 +30,50 @@ import java.util.*;
 public class MeetingRooms2 {
 
     // V0
+    // IDEA: SCANNING LINE (gpt)
+    // TODO: validate
+    public int minMeetingRooms(int[][] intervals) {
+
+        // Edge cases
+        if (intervals == null || intervals.length == 0) {
+            return 0;
+        }
+
+        // Create an event list with start and end times marked
+        List<int[]> events = new ArrayList<>();
+        for (int[] interval : intervals) {
+            // Add the start time with a flag of 1 (open)
+            events.add(new int[]{interval[0], 1});
+            // Add the end time with a flag of 0 (close)
+            events.add(new int[]{interval[1], 0});
+        }
+
+        // Sort the events by time. If times are equal, prioritize closing (0) before opening (1)
+        Collections.sort(events, (a, b) -> {
+            if (a[0] == b[0]) {
+                return a[1] - b[1]; // Close (0) should come before open (1)
+            }
+            return a[0] - b[0]; // Otherwise, sort by time
+        });
+
+        int cnt = 0;
+        for (int[] event : events) {
+            if (event[1] == 1) {
+                // A new meeting starts
+                cnt++;
+            } else {
+                // A meeting ends
+                cnt--;
+            }
+        }
+
+        return cnt;
+    }
+
+    // V0-1
     // IDEA : ARRAY SORT + BOUNDARY OP
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms-ii.py#L90
-    public int minMeetingRooms(int[][] intervals) {
+    public int minMeetingRooms_0_1(int[][] intervals) {
 
         final int n = intervals.length;
         int ans = 0;
@@ -57,7 +98,7 @@ public class MeetingRooms2 {
         return ans;
     }
 
-    // V0'
+    // V0-2
     // TODO : validate
     // IDEA : SCANNING LINE
     // ref code : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms-ii.py#L90
@@ -79,7 +120,7 @@ public class MeetingRooms2 {
         }
     }
 
-    public class MeetingRooms_0_1 {
+    public class MeetingRooms_0_2 {
         public int minMeetingRooms(int[][] intervals) {
             if (intervals.length <= 1) {
                 return intervals.length;
