@@ -8719,7 +8719,87 @@ public class workspace6 {
         return null;
     }
 
+    // LC 73
+    /**
+     * 73. Set Matrix Zeroes
+     *
+     * Given a m x n matrix, if an element is 0,
+     * set its entire row and column to 0. Do it in-place.
+     *
+     * Example 1:
+     *
+     * Input:
+     * [
+     *   [1,1,1],
+     *   [1,0,1],
+     *   [1,1,1]
+     * ]
+     * Output:
+     * [
+     *   [1,0,1],
+     *   [0,0,0],
+     *   [1,0,1]
+     * ]
+     * Example 2:
+     *
+     * Input:
+     * [
+     *   [0,1,2,0],
+     *   [3,4,5,2],
+     *   [1,3,1,5]
+     * ]
+     * Output:
+     * [
+     *   [0,0,0,0],
+     *   [0,4,5,0],
+     *   [0,3,1,0]
+     * ]
+     * Follow up:
+     *
+     * A straight forward solution using O(mn) space is probably a bad idea.
+     * A simple improvement uses O(m + n) space, but still not the best solution.
+     * Could you devise a constant space solution?
+     *
+     */
+    public void setZeroes(int[][] matrix) {
+        // edge
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            return;
+        }
+        if (matrix.length == 1 && matrix[0].length == 1) {
+            return;
+        }
+        // find all `0` index
+        int l = matrix.length;
+        int w = matrix[0].length;
 
+        List<int[]> cache = new ArrayList<>();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    int[] tmp = new int[2];
+                    tmp[0] = j;
+                    tmp[1] = i;
+                    cache.add(tmp);
+                }
+            }
+            // make 0 in place
+            for (int[] x: cache){
+                // make elements with same `x` coordination as 0
+                for(int i_ = 0; i_ < matrix.length; i_++){
+                    matrix[i_][x[0]] = 0;
+                }
+                // make elements with same `y` coordination as 0
+                for(int j_ = 0; j_ < matrix[0].length; j_++){
+                    matrix[x[1]][j_] = 0;
+                }
+            }
+
+            return;
+        }
+
+
+    }
 }
 
 
