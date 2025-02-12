@@ -200,6 +200,7 @@
 ||LRU cache | [Python](./algorithm/python/lru_cache.py) || LC 146 | | | AGAIN| 
 ||LFU Cache | [Python](./algorithm/python/lfu_cache.py) || LC 460 | | | AGAIN| 
 ||DifferenceArray | [Java](./leetcode_java/src/main/java/AlgorithmJava/DifferenceArray.java) || LC 1109, 370 | | | AGAIN| 
+||Kadane Algo | [Java](./leetcode_java/src/main/java/AlgorithmJava/KadaneAlgo.java) || LC 53, 152,918 | | | AGAIN| 
 
 ## Array
 

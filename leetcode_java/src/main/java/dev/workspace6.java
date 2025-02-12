@@ -8897,9 +8897,38 @@ public class workspace6 {
 
             return;
         }
-
-
     }
+
+    /**
+     *
+     *  input = [1,-2,3,-1,3,5]
+     *
+     *  max sub array = ?
+     *    -> [3,-1,3,5]
+     *
+     *    -> local max, global max
+     *    -> loop over nums
+     *    -> compare local and global max ???
+     *
+     */
+    public class KadaneAlgorithm{
+        public int maxSubArray(int[] input){
+            int localMax = input[0]; // ???
+            int globalMax = input[0];
+            for(int i = 1; i < input.length; i++){
+
+//                if(input[i] + input[i-1] >= 0){
+//                    localMax += input[i];
+//                }else{
+//                    globalMax = Math.max(globalMax, localMax);
+//                }
+
+                // choice: whether 1) add curSum with new val or 2) reset curSum, use new val directly
+                localMax = Math.max(localMax+ input[i], input[i]);
+                globalMax = Math.max(localMax, globalMax); // ??
+            }
+            return globalMax;
+        }
+    }
+
 }
-
-
