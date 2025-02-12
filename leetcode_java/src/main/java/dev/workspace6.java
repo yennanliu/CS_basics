@@ -8547,6 +8547,112 @@ public class workspace6 {
         return true;
     }
 
+    // LC 48
+    // 10.19-10.29 AM
+    /**
+     * 48. Rotate Image
+     * Solved
+     * Medium
+     * Topics
+     * Companies
+     * You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).
+     *
+     * You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.
+     *
+     *
+     *
+     * Example 1:
+     *
+     *
+     * Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+     * Output: [[7,4,1],[8,5,2],[9,6,3]]
+     * Example 2:
+     *
+     *
+     * Input: matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+     * Output: [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
+     *
+     *
+     * Constraints:
+     *
+     * n == matrix.length == matrix[i].length
+     * 1 <= n <= 20
+     * -1000 <= matrix[i][j] <= 1000
+     *
+     *
+     * Given input matrix =
+     * [
+     *   [1,2,3],
+     *   [4,5,6],
+     *   [7,8,9]
+     * ],
+     *
+     * rotate the input matrix in-place such that it becomes:
+     * [
+     *   [7,4,1],
+     *   [8,5,2],
+     *   [9,6,3]
+     * ]
+     *
+     *
+     *  IDEA 1) ARRAY OP
+     *
+     *   (i,j) -> (j,i) ??
+     *
+     *   [1 4 7]
+     *   [2 5 8]
+     *   [3 6 9]
+     *
+     *   -> inverse ??
+     *
+     *   [ 7 4 1]
+     *   [ 8 5 2 ]
+     *   [ 9 6 3]
+     *
+     */
+    public void rotate(int[][] matrix){
+
+        System.out.println(">>> matrix = " + matrix);
+
+        // edge
+        if(matrix.length == 0 || matrix[0].length == 0){
+            return;
+        }
+        if(matrix.length == 1 || matrix[0].length == 1){
+            return;
+        }
+
+        // step 1) i,j -> j,i
+        int l = matrix.length;
+        int w = matrix[0].length;
+        // NOTE !!! ONLY LOOP `HALF OF THE MATRIX` (right upper part)
+        // TODO: validate ????
+        for(int i = 0; i < l/ 2; i++){
+            for(int j = 0; j < w/2; j++){
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = tmp;
+            }
+        }
+        // step 2) reverse
+        for(int i = 0; i < l; i++){
+            // reverse
+            reverse(matrix[i]);
+        }
+
+        System.out.println(">>> (after op) matrix = " + matrix);
+        return;
+    }
+
+    private Integer[] reverse(int[] input){
+        List<Integer> cache = new ArrayList<>();
+        for(int x: input){
+            cache.add(x);
+        }
+        Collections.reverse(cache);
+        // Integer [] arr2 = list2.toArray(new Integer[list2.size()]);
+        return cache.toArray(new Integer[cache.size()]);
+    }
 
 
 }
