@@ -8654,6 +8654,71 @@ public class workspace6 {
         return cache.toArray(new Integer[cache.size()]);
     }
 
+    // LC 54
+    // 10.58 - 11.05 am
+    /**
+     * Given a matrix of m x n elements (m rows, n columns),
+     * return all elements of the matrix in spiral order.
+     *
+     * Example 1:
+     *
+     * Input:
+     * [
+     *  [ 1, 2, 3 ],
+     *  [ 4, 5, 6 ],
+     *  [ 7, 8, 9 ]
+     * ]
+     * Output: [1,2,3,6,9,8,7,4,5]
+     * Example 2:
+     *
+     * Input:
+     * [
+     *   [1, 2, 3, 4],
+     *   [5, 6, 7, 8],
+     *   [9,10,11,12]
+     * ]
+     * Output: [1,2,3,4,8,12,11,10,9,5,6,7]
+     *
+     *
+     *  IDEA : ARRAY OP
+     *
+     *  -> dirs ALWAYS LIKE THIS (in cycle)
+     *    -> down <-- up, -> down <-- up, ....
+     *    so, we simply repeat above cycle, and collect the reached val
+     *    when need to `change` dir ? -> when `reach the bounrary`
+     *
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        // edge
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0){
+            return null;
+        }
+        if (matrix.length == 1 || matrix[0].length == 1){
+            List<Integer> res = new ArrayList<>();
+            // [1,2,3...]
+            if(matrix.length == 1){
+                for(int x: matrix[0]){
+                    res.add(x);
+                }
+                return res;
+            }
+            /**
+             * [1,
+             *  2,
+             *  3,
+             *  ...
+             *  ]
+             *
+             */
+            for(int i = 0; i < matrix.length; i++){
+                res.add(matrix[i][0]);
+            }
+            return res;
+        }
+
+        return null;
+    }
+
 
 }
 
