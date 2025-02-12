@@ -50,11 +50,38 @@ public class NonOverlappingIntervals {
 
         /** NOTE !!!
          *
-         *   sort on 2nd element
-         *
-         *   -> Ascending order (small -> big)
+         *   sort on 2nd element in Ascending order (small -> big)
          *
          *   same as this op: `Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));`
+         *
+         *
+         *
+         *   1) Why Not Sort by Start Time ?
+         *
+         *    -> If we sorted by the start time (intervals[i][0]),
+         *       it would not necessarily minimize the number of intervals to
+         *       remove because we wouldn't have the benefit of always selecting the
+         *       interval that finishes the earliest, which is crucial for maximizing
+         *       the number of non-overlapping intervals.
+         *
+         *    -> In conclusion, sorting by end time provides the correct and
+         *       optimal solution for this problem.
+         *
+         *
+         *  2)  Key Concept:
+         *     -> The goal of the problem is to remove the minimum number of intervals to
+         *        ensure that no two intervals overlap. To solve this optimally,
+         *        sorting by the end time is the preferred approach. This is because:
+         *
+         *     -> Once you have sorted intervals by their `end time`,
+         *        you can greedily choose the intervals that end earliest,
+         *        leaving more room for subsequent intervals. This helps you avoid
+         *        overlap and minimize the number of intervals you need to remove.
+         *
+         *
+         *  3) Why Sorting by Start Time is Problematic:
+         *     -> If you sort by the start time instead of the end time,
+         *        you might end up with overlapping intervals that are harder to manage.
          */
         Arrays.sort(intervals, Comparator.comparingInt(a -> a[1]));
 
