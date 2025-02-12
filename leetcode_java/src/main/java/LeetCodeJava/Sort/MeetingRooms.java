@@ -1,8 +1,33 @@
 package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/meeting-rooms/
-
+/**
+ * 252. Meeting Rooms
+ * Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), determine if a person could attend all meetings.
+ *
+ * Example 1:
+ *
+ * Input: [[0,30],[5,10],[15,20]]
+ * Output: false
+ * Example 2:
+ *
+ * Input: [[7,10],[2,4]]
+ * Output: true
+ * NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
+ *
+ * Difficulty:
+ * Easy
+ * Lock:
+ * Prime
+ * Company:
+ * Amazon Bloomberg Facebook Google Microsoft Twitter
+ *
+ *
+ */
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class MeetingRooms {
 
@@ -20,6 +45,62 @@ public class MeetingRooms {
         }
         return true;
     }
+
+    // V0-1
+    // IDEA: SCANNING LINE (GPT) (same idea as Meeting room II, LC 253)
+    // TODO: validate
+    public boolean canAttendMeetings_0_1(int[][] intervals) {
+        // Edge cases
+        if (intervals == null || intervals.length == 0) {
+            return true;
+        }
+
+        // Create an event list with start and end times marked
+        List<int[]> events = new ArrayList<>();
+        for (int[] interval : intervals) {
+            // Add the start time with a flag of 1 (open)
+            events.add(new int[]{interval[0], 1});
+            // Add the end time with a flag of 0 (close)
+            events.add(new int[]{interval[1], 0});
+        }
+
+        // Sort the events by time. If times are equal, prioritize closing (0) before opening (1)
+        /**
+         * NOTE !!!
+         *
+         *  we sort 1) on val, if val are the same, 2) then sort on open / close status
+         *
+         */
+        Collections.sort(events, (a, b) -> {
+            if (a[0] == b[0]) {
+                return a[1] - b[1]; // Close (0) should come before open (1)
+            }
+            return a[0] - b[0]; // Otherwise, sort by time
+        });
+
+        int cnt = 0;
+        for (int[] event : events) {
+            if (event[1] == 1) {
+                // A new meeting starts
+                cnt++;
+                /** NOTE !!!
+                 *
+                 * if any cnt > 1, means meeting conflicts, then we CAN'T finish all meeting at once
+                 * -> return false directly
+                 */
+                if (cnt > 1) {
+                    return false; // More than one meeting at the same time
+                }
+            } else {
+                // A meeting ends
+                cnt--;
+            }
+        }
+
+        return true;
+    }
+
+
 
     // V1
     // IDEA : SORT
