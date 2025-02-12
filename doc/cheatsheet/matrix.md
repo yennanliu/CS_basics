@@ -47,6 +47,9 @@
             - For each square on a given anti-diagonal, the sum of the row and column indexes (row + col) will be constant. If you were to start at the highest square in an anti-diagonal and move downwards, the row index increments by 1 (row + 1), and the column index decrements by 1 (col - 1).
             - <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/anti-diagonal.png" ></p>
 
+
+##### 1-1-1-1) Init Matrix
+
 ```python
 # 1) init matrix 
 # LC 73
@@ -54,6 +57,39 @@
 # -> for matrix[i][j]:
 #    -> y is FIRST element  (i)
 #    -> x is SECOND element (j)
+```
+
+
+##### 1-1-1-2) Rotate Matrix
+
+```java
+//-----------------------------
+// ROTATE (LC 48)
+//-----------------------------
+
+// Step 1) : mirror ([i, j] -> [j, i])
+    /**
+     *  Example :
+     *
+     *  matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+     *
+     *  so, below double loop will visit :
+     *
+     *  (0,1), (0,2), (0,3)
+     *  (1,2), (1,3)
+     *  (2,3
+     *
+     */
+    /** NOTE !!!
+     *
+     * for (int i = 0; i < len; i++)
+     *   for (int j = i+1; j < width; j++)
+     *
+     * (j start from i+1)
+     */
+
+
+ // Step 2) : reverse ([1,2,3] -> [3,2,1])
 ```
 
 ```python
@@ -122,6 +158,9 @@ class Solution:
             matrix[i].reverse()
         return matrix
 ```
+
+
+##### 1-1-1-3) Get avg value of Matrix
 
 ```python
 #----------------------
