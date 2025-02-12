@@ -8465,6 +8465,88 @@ public class workspace6 {
         return res;
     }
 
+    // LC 252
+    // 9.54 am - 10.10 am
+    /**
+     * Given an array of meeting time intervals consisting of start and end times
+     * [[s1,e1],[s2,e2],...] (si < ei), determine if a person could attend all meetings.
+     *
+     * Example 1:
+     *
+     * Input: [[0,30],[5,10],[15,20]]
+     * Output: false
+     *
+     * Example 2:
+     *
+     * Input: [[7,10],[2,4]]
+     * Output: true
+     *
+     *
+     *  IDEA 1) SORT
+     *
+     *  Input: [[0,30],[5,10],[15,20]]
+     *
+     *  -> sort:
+     *
+     *  IDEA 1) SCANNING LINE
+     *  -> if any `cnt` >1`, return false dircetly
+     *
+     * NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
+     *
+     *
+     */
+    public boolean canAttendMeetings(int[][] intervals) {
+        // edge
+        if(intervals == null || intervals.length == 0){
+            return true;
+        }
+        if(intervals.length == 1){
+            return true;
+        }
+        // scanning line
+        // [ [val, open_close] ], open : 1, close : 0
+        List<List<Integer>> cache = new ArrayList<>();
+        for(int[] x: intervals){
+            // TODO: optimize it
+            List<Integer> tmp1 = new ArrayList<>();
+            List<Integer> tmp2 = new ArrayList<>();
+            int open = x[0];
+            int close = x[1];
+            tmp1.add(open);
+            tmp1.add(1);
+            tmp2.add(close);
+            tmp2.add(0);
+            cache.add(tmp1);
+            cache.add(tmp2);
+        }
+
+        // sort on val
+        System.out.println(">>> before sort, cache = " + cache);
+        Collections.sort(cache, new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> o1, List<Integer> o2) {
+                return o1.get(0) - o2.get(0);
+            }
+        });
+        System.out.println(">>> after sort, cache = " + cache);
+
+        int cnt = 0;
+        for(List<Integer> x: cache){
+            if(cnt > 1){
+                return false;
+            }
+            if(x.get(1) == 1){
+                cnt += 1;
+            }
+            else if(x.get(1) == 0){
+                cnt -= 1;
+            }
+
+        }
+
+        return true;
+    }
+
 
 
 }
