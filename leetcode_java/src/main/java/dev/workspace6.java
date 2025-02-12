@@ -8255,67 +8255,149 @@ public class workspace6 {
      *    step 2) get new interval as [ max(prev_start, cur_start), min(prev_end, cur_end)]
      *    step 3) if not overlap, append to res
      */
+    /**
+     *
+     * Given a set of non-overlapping intervals,
+     * insert a new interval into the intervals (merge if necessary) !!!
+     *
+     *
+     * Example 1:
+     *
+     * Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
+     * Output: [[1,5],[6,9]]
+     *
+     * Example 2:
+     *
+     * Input: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+     * Output: [[1,2],[3,10],[12,16]]
+     * Explanation: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
+     * NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
+     *
+     *
+     */
+    // 11.33 - 11.40 am
+
     public int[][] insert(int[][] intervals, int[] newInterval) {
         // edge
-        if(intervals == null || intervals.length == 0){
-            //int[][] res = new int[][]{{}}; // ???
-//            int[][] res = new int[][]{newInterval};
-//            return res; // ???
-            return new int[][]{newInterval};
+        if(intervals.length == 0 || newInterval.length == 0){
+            int[][] res = new int[1][]; // ???
+            if(intervals.length == 0){
+                res[0] = newInterval;
+                return res; // ??
+            }
+            if(newInterval.length == 0){
+                return intervals;
+            }
         }
-//        if(newInterval[0] > intervals[intervals.length-1][0]){
-//
-//        }
-
-        // queue: FIFO
-        Queue<int[]> q = new LinkedList<>();
+        // merge newInterval to intervals
         List<int[]> cache = new ArrayList<>();
-        q.add(intervals[0]);
-        for(int i = 0; i < intervals.length; i++){
-            int[] interval = intervals[i];
-            int start = interval[0];
-            int end = interval[1];
-            /**
-             *
-             *   OVERLAP CASES
-             *
-             *   case 1)
-             *      |--------|
-             *         |-----------|
-             *
-             *   case 2)
-             *      |----------|
-             *  |------|
-             *
-             *  case 3)
-             *      |-------|
-             *        |---|
-             *
-             *  case 4)
-             *
-             *     |---|
-             *   |----------|
-             *
-             */
-           while(newInterval[1] > start || newInterval[0] < end){
-               int[] cur = q.poll();
-               int newStart = Math.min(start, cur[0]);
-               int newEnd = Math.max(end, cur[1]);
-               int[] new_ = new int[]{newStart, newEnd};
-               q.add(new_);
-           }
-           q.add(interval);
+        for(int[] x: intervals){
+            cache.add(x);
+        }
+        cache.add(newInterval);
+        // sort: sort on 2nd ELEMENT (ascending order, small -> big)
+        Collections.sort(cache, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                /**
+                 *  TODO:
+                 *
+                 *  compare / check when to sort on 1st or 2nd element
+                 *
+                 */
+                //return o2[1] - o1[1]; // ??? validate
+                return o2[0] - o1[0]; // ??? validate
+            }
+        });
+
+        List<int[]> res = new ArrayList<>();
+        for(int i = 0; i < cache.size(); i++){
+            //case 1) res is empty or NO OVERLAP
+            if(res.isEmpty() || res.get(res.size()-1)[1] < cache.get(0)[0]){
+                res.add(cache.get(i));
+            }else{
+                // case 2) OVERLAP
+                int newStart = Math.min(res.get(res.size()-1)[0], cache.get(i)[0]);
+                int newEnd = Math.max(res.get(res.size()-1)[1], cache.get(i)[1]);
+                int[] tmp = new int[2];
+                tmp[0] = newStart;
+                tmp[1] = newEnd;
+                res.add(tmp);
+            }
         }
 
-        int[][] res = new int[q.size()][]; // ?
-        int j = 0;
-        while(!q.isEmpty()){
-            res[j] = q.poll();
-            j += 1;
-        }
+//        int[][] finalRes = new int[res.size()][2]; // ?
+//        int j_ = 0;
+//        for(int[] x: res){
+//            finalRes[j_] = x;
+//            j_ += 1;
+//        }
+//        return finalRes;
 
-        return res;
+        return res.toArray(new int[res.size()][]);
     }
+
+//    public int[][] insert(int[][] intervals, int[] newInterval) {
+//        // edge
+//        if(intervals == null || intervals.length == 0){
+//            //int[][] res = new int[][]{{}}; // ???
+////            int[][] res = new int[][]{newInterval};
+////            return res; // ???
+//            return new int[][]{newInterval};
+//        }
+////        if(newInterval[0] > intervals[intervals.length-1][0]){
+////
+////        }
+//
+//        // queue: FIFO
+//        Queue<int[]> q = new LinkedList<>();
+//        List<int[]> cache = new ArrayList<>();
+//        q.add(intervals[0]);
+//        for(int i = 0; i < intervals.length; i++){
+//            int[] interval = intervals[i];
+//            int start = interval[0];
+//            int end = interval[1];
+//            /**
+//             *
+//             *   OVERLAP CASES
+//             *
+//             *   case 1)
+//             *      |--------|
+//             *         |-----------|
+//             *
+//             *   case 2)
+//             *      |----------|
+//             *  |------|
+//             *
+//             *  case 3)
+//             *      |-------|
+//             *        |---|
+//             *
+//             *  case 4)
+//             *
+//             *     |---|
+//             *   |----------|
+//             *
+//             */
+//           while(newInterval[1] > start || newInterval[0] < end){
+//               int[] cur = q.poll();
+//               int newStart = Math.min(start, cur[0]);
+//               int newEnd = Math.max(end, cur[1]);
+//               int[] new_ = new int[]{newStart, newEnd};
+//               q.add(new_);
+//           }
+//           q.add(interval);
+//        }
+//
+//        int[][] res = new int[q.size()][]; // ?
+//        int j = 0;
+//        while(!q.isEmpty()){
+//            res[j] = q.poll();
+//            j += 1;
+//        }
+//
+//        return res;
+//    }
 
     // LC 56
     /**
@@ -8336,48 +8418,66 @@ public class workspace6 {
      *
      */
     public int[][] merge(int[][] intervals) {
-        // array op
         // edge
-        if(intervals == null || intervals.length == 0){
-            return new int[][]{}; // ??
-        }
-        if(intervals.length == 1){
-            return new int[][]{intervals[0]}; // ??
-        }
-
-        // sorting
+        // sort
         Arrays.sort(intervals, new Comparator<int[]>() {
             @Override
             public int compare(int[] o1, int[] o2) {
-                int diff = o1[0] - o2[0];
-                if (diff == 0){
-                    return o1[1] - o2[1];
-                }
-                return diff; // ??
+                // sort on 1st element !!! (small -> big)
+                return o1[0] - o2[0];
             }
         });
 
+
         List<int[]> cache = new ArrayList<>();
-        for(int i = 0; i < intervals.length; i++){
-            // case 1) cache is empty or NO overlap
-            // NO OVERLAP :  new[0] > old[1]
-            if(cache.isEmpty() || cache.get(cache.size()-1)[1] < intervals[i][0]){
-                cache.add(new int[]{intervals[i][0], intervals[i][1]}); // ???
-            }// case 2) overlap
-            else{
-                // ???
-                int newStart = Math.min(intervals[i][0], cache.get(cache.size()-1)[0]);
-                int newEnd = Math.max(intervals[i][1], cache.get(cache.size()-1)[1]);
-            }
-        }
+        List<int[]> res = new ArrayList<>();
+        //for(int i = )
 
-        //int[][] res = new int[][];
-        //int[][] res = new int[][]{Arrays.asList(cache)};
-
-        // NOTE !!! below op
-        return res.toArray(new int[res.size()][]);
-        //return null;
+        return res.toArray(new int[res.size()][]); // ???
     }
+//    public int[][] merge(int[][] intervals) {
+//        // array op
+//        // edge
+//        if(intervals == null || intervals.length == 0){
+//            return new int[][]{}; // ??
+//        }
+//        if(intervals.length == 1){
+//            return new int[][]{intervals[0]}; // ??
+//        }
+//
+//        // sorting
+//        Arrays.sort(intervals, new Comparator<int[]>() {
+//            @Override
+//            public int compare(int[] o1, int[] o2) {
+//                int diff = o1[0] - o2[0];
+//                if (diff == 0){
+//                    return o1[1] - o2[1];
+//                }
+//                return diff; // ??
+//            }
+//        });
+//
+//        List<int[]> cache = new ArrayList<>();
+//        for(int i = 0; i < intervals.length; i++){
+//            // case 1) cache is empty or NO overlap
+//            // NO OVERLAP :  new[0] > old[1]
+//            if(cache.isEmpty() || cache.get(cache.size()-1)[1] < intervals[i][0]){
+//                cache.add(new int[]{intervals[i][0], intervals[i][1]}); // ???
+//            }// case 2) overlap
+//            else{
+//                // ???
+//                int newStart = Math.min(intervals[i][0], cache.get(cache.size()-1)[0]);
+//                int newEnd = Math.max(intervals[i][1], cache.get(cache.size()-1)[1]);
+//            }
+//        }
+//
+//        //int[][] res = new int[][];
+//        //int[][] res = new int[][]{Arrays.asList(cache)};
+//
+//        // NOTE !!! below op
+//        return res.toArray(new int[res.size()][]);
+//        //return null;
+//    }
 
     // LC 435
     // 11.06 - 11.16 pm

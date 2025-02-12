@@ -1,4 +1,5 @@
 # Intervals
+
 - [fucking algorithm : interval merge](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md)
 - [fucking algorithm : interval overlap](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E4%BA%A4%E9%9B%86%E9%97%AE%E9%A2%98.md)
 - [Visualization explaination](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array_overlap_explaination.md
@@ -12,8 +13,10 @@
 - Types
     - Merge intervals
         - LC 56
+        - sort on `1st element`
     - Insert intervala
-        - LC 057
+        - LC 57
+        - sort on `1st element`
     - Overlap intervals
     - Non-overlap intervals
         - LC 435
@@ -37,6 +40,9 @@
 
 ### 0-2) Pattern
 
+- Step 1) sort on elements
+- Step 2) loop over sorted elements, check if `overlap`, updated val (1st, 2nd element)
+- Step 3  append updated window to array
 
 
 #### 0-2-1) Check if 2 intervals are overlap
@@ -115,6 +121,23 @@ def intervalsPattern(intervals):
 ## 1) General form
 
 ### 1-1) Basic OP
+
+#### 1-1-1) `List` -> `Array`
+
+```java
+// java
+
+// LC 56, 57
+
+List<int[]> myList = new ArrayList();
+int[][] myArr = myList.toArray(new int[myList.size()][]);
+
+
+// example
+LinkedList<int[]> res = new LinkedList<>();
+// ...
+int[][] ans = res.toArray(new int[res.size()][]);
+```
 
 ## 2) LC Example
 
