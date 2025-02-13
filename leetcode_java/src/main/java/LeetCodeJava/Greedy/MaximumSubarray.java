@@ -86,6 +86,27 @@ public class MaximumSubarray {
         return maxSum;
     }
 
+    // V0-0-1
+    // IDEA: KADANE ALGO
+    // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/kadane_algo.md
+    public int maxSubArray_0_0_1(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+        // kadane algo
+        int globalMax = nums[0];
+        int localMax = nums[0];
+        for(int i = 1; i < nums.length; i++){
+            localMax = Math.max(localMax + nums[i], nums[i]);
+            globalMax = Math.max(globalMax, localMax);
+        }
+        return globalMax;
+    }
+
     // V0-1
     // IDEA : PRE-SUM ARRAY (fixed by gpt)
     public int maxSubArray_0_1(int[] nums) {
@@ -112,7 +133,6 @@ public class MaximumSubarray {
 
         return maxSum;
     }
-
 
     // V0-2
     // IDEA : BRUTE FORCE
