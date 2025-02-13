@@ -9073,7 +9073,117 @@ public class workspace6 {
 //        return globalMax;
 //    }
 
+    // LC 251
+    // 11.41 am - 12.00 pm
+    /**
+     * 261. Graph Valid Tree
+     * Given n nodes labeled from 0 to n-1 and a list of
+     * undirected edges (each edge is a pair of nodes), write a
+     * function to check whether these edges make up a valid tree.
+     *
+     * Example 1:
+     *
+     * Input: n = 5, and edges = [[0,1], [0,2], [0,3], [1,4]]
+     * Output: true
+     *
+     *
+     * Example 2:
+     *
+     * Input: n = 5, and edges = [[0,1], [1,2], [2,3], [1,3], [1,4]]
+     * Output: false
+     *
+     * Note: you can assume that no duplicate edges will appear in edges.
+     * Since all edges are undirected, [0,1] is the same as [1,0] and thus will not appear together in edges.
+     */
+    /**
+     *  IDEA: UNION FIND
+     *
+     *  -> check if there is a `cycle` in the graph
+     *  -> if yes, return false (CAN NOT form a tree)
+     *  -> ; otherwise, return true
+     */
+    public boolean validTree_0_1(int n, int[][] edges) {
+        // edge
+        if(n == 0){
+            return false;
+        }
+        MyUF myUF = new MyUF(n, edges);
+        // union
+        for(int[] x: edges){
+            if(!myUF.union(x[0], x[1])){
+                return false;
+            }
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *  FINAL CHECK
+         *
+         *   based on math,
+         *   n nodes, should ONLY has `n-1` edges
+         *   -> so there is NO cycle in graph
+         *   -> so can form a valid tree
+         *
+         *
+         *   -> Check if the number of edges is exactly n - 1
+         */
+        return n - 1 == edges.length;
+    }
+
+    public class MyUF{
+        // attr
+        int n;
+        int cnt; // `cluster cnt`
+        int[][] edges;
+        int[] parents; // records node's parent
+        // constructor
+        public MyUF(int n, int[][] edges){
+            this.n = n;
+            this.cnt = n;
+            this.edges = edges;
+            this.parents = new int[n]; // ???
+            for(int i = 0; i < n; i++){
+                this.parents[i] = i;
+            }
+        }
+        // method
+        // union
+        public boolean union(int a, int b){
+            if(a == b){
+                return true;
+            }
+            int aParent = this.find(a);
+            int bParent = this.find(b);
+            /**
+             * NOTE !!!
+             *
+             *  is a node's parent == b node's parent
+             *  -> there must be a CYCLE,
+             *  -> CAN'T form a valid tree -> return false directly
+             */
+            if(aParent == bParent){
+                return false;
+            }
+            // this.parents[bParent] = APartent;  // equivalent as below
+            this.parents[aParent] = bParent;
+            this.cnt -= 1;
+            return true;
+        }
+        // find a node's parent
+        public int find(int a){
+            if(a == this.parents[a]){
+                return a;
+            }
+            this.parents[a] = this.find(a);
+            return this.parents[a];
+        }
+
+        // get `cluster cnt`
+        public int getCnt(){
+            return this.cnt;
+        }
+    }
 
 
-
-}
+    }
