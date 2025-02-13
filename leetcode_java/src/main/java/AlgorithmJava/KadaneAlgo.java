@@ -12,6 +12,7 @@ package AlgorithmJava;
  */
 public class KadaneAlgo {
 
+    // LC 53
     public int maxSubArray(int[] nums) {
         // Edge case: if nums is empty, return 0
         if (nums == null || nums.length == 0) {
@@ -44,6 +45,41 @@ public class KadaneAlgo {
         }
 
         return maxSum;
+    }
+
+    // LC 152
+    public int maxProduct(int[] nums) {
+        // Edge case
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        /**
+         * 	•	maxProd: Tracks the maximum product up to the current index.
+         * 	•	minProd: Tracks the minimum product up to the current index
+         * 	             (needed because multiplying by a negative can turn a small value into a large one).
+         */
+        int maxProd = nums[0];
+        int minProd = nums[0];
+        int result = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            int temp = maxProd; // Store maxProd before updating
+
+            /**
+             * NOTE !!!
+             *
+             *  1) we cache maxProd
+             *  2) we re-compute maxProd, minProd per below logic
+             *  3) we get `global max` (result) as well within each iteration
+             */
+            maxProd = Math.max(nums[i], Math.max(nums[i] * maxProd, nums[i] * minProd));
+            minProd = Math.min(nums[i], Math.min(nums[i] * temp, nums[i] * minProd));
+
+            result = Math.max(result, maxProd);
+        }
+
+        return result;
     }
 
 }
