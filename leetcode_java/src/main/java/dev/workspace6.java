@@ -8016,12 +8016,12 @@ public class workspace6 {
      *
      *
      *    -> res = 3
+     */
+    // 10.06 - 10.16 AM
+    /**
+     *  IDEA: KADANE ALGO
      *
-     *
-     *
-     *
-     *
-     *
+     *  -> since this is a `max sub array` problem
      */
     public int maxSubArray(int[] nums) {
         // edge
@@ -8029,48 +8029,65 @@ public class workspace6 {
             return 0;
         }
         if(nums.length == 1){
-            return 1;
+            return nums[0];
         }
-        if(nums.length == 2){
-            if(nums[1] >  nums[0]){
-                return 2;
-            }
-            return 1;
+        // kadane algo
+        int globalMax = nums[0];
+        int localMax = nums[0];
+        for(int i = 1; i < nums.length; i++){
+            localMax = Math.max(localMax + nums[i], nums[i]);
+            globalMax = Math.max(globalMax, localMax);
         }
-
-        // presum array
-        Integer[] preSum = new Integer[nums.length+1];
-        preSum[0] = 0; // ??
-        int curSum = 0;
-        for(int i = 0; i < nums.length; i++){
-            curSum += nums[i];
-            preSum[i] = curSum;
-        }
-
-        /**
-         *
-         *  2 pointers + slide window
-         *
-         *  left pointer : i
-         *  right : j
-         *
-         */
-        int res = 1;
-        int i = 0;
-        int j = 1;
-        while(i < nums.length && j < nums.length){
-            int tmp = 1;
-            if(tmp + nums[j] >= 0){
-                tmp += 1;
-                res = Math.max(res, tmp);
-            }else{
-                i += 1;
-            }
-            j += 1;
-        }
-
-        return res;
+        return globalMax;
     }
+//    public int maxSubArray(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0;
+//        }
+//        if(nums.length == 1){
+//            return 1;
+//        }
+//        if(nums.length == 2){
+//            if(nums[1] >  nums[0]){
+//                return 2;
+//            }
+//            return 1;
+//        }
+//
+//        // presum array
+//        Integer[] preSum = new Integer[nums.length+1];
+//        preSum[0] = 0; // ??
+//        int curSum = 0;
+//        for(int i = 0; i < nums.length; i++){
+//            curSum += nums[i];
+//            preSum[i] = curSum;
+//        }
+//
+//        /**
+//         *
+//         *  2 pointers + slide window
+//         *
+//         *  left pointer : i
+//         *  right : j
+//         *
+//         */
+//        int res = 1;
+//        int i = 0;
+//        int j = 1;
+//        while(i < nums.length && j < nums.length){
+//            int tmp = 1;
+//            if(tmp + nums[j] >= 0){
+//                tmp += 1;
+//                res = Math.max(res, tmp);
+//            }else{
+//                i += 1;
+//            }
+//            j += 1;
+//        }
+//
+//        return res;
+//    }
 
     // LC 55
     // 9.53 - 10 AM
