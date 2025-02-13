@@ -8991,41 +8991,87 @@ public class workspace6 {
      *
      */
     public int maxSubarraySumCircular(int[] nums) {
-        // edge
-        if(nums == null || nums.length == 0){
+        // Edge cases
+        if (nums == null || nums.length == 0) {
             return 0;
         }
-        if(nums.length == 1){
+        if (nums.length == 1) {
             return nums[0];
         }
-        // double array -> to simulate `circular` array
-        List<Integer> tmp = new ArrayList<>();
-//        for(int i = 0; i < 2; i++){
-//            for(int j = 0; j < nums.length; j++){
-//                tmp.add(nums[j]);
-//            }
-//        }
-        for(int i = 0; i < nums.length; i++){
-            tmp.add(nums[i]);
+
+        // Step 1: Find the normal max subarray sum using Kadane's algorithm
+        int maxNormal = kadane(nums);
+
+        // Step 2: Find the min subarray sum
+        int totalSum = 0;
+        int minLocalMax = nums[0];
+        int minGlobalMax = nums[0];
+        for (int i = 0; i < nums.length; i++) {
+            totalSum += nums[i];
+            minLocalMax = Math.min(nums[i], minLocalMax + nums[i]);
+            minGlobalMax = Math.min(minGlobalMax, minLocalMax);
         }
-        // NOTE !!! also append `last` element in nums
-        tmp.add(nums[nums.length - 1]);
-        // list to array
-        Integer[] nums_ = tmp.toArray(new Integer[tmp.size()]);
 
+        // The max sum for the circular case is totalSum minus minGlobalMax,
+        // but it should not be the case where the entire array is included
+        int maxCircular = totalSum - minGlobalMax;
 
-        System.out.println(">>> nums_ = " + nums_);
+        // If maxCircular equals totalSum, then all elements are negative
+        // In such case, maxCircular will be incorrect, so return maxNormal
+        if (maxCircular == 0) {
+            return maxNormal;
+        }
 
-        // kadane algo
+        // Step 3: The result is the max of maxNormal and maxCircular
+        return Math.max(maxNormal, maxCircular);
+    }
+
+    // Function to apply Kadane's algorithm to find the max subarray sum
+    private  int kadane(int[] nums_) {
         int localMax = nums_[0];
         int globalMax = nums_[0];
-        for(int i = 0; i < nums_.length; i++){
+        for (int i = 1; i < nums_.length; i++) {
             localMax = Math.max(nums_[i], localMax + nums_[i]);
             globalMax = Math.max(globalMax, localMax);
         }
-
         return globalMax;
     }
+//    public int maxSubarraySumCircular(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0;
+//        }
+//        if(nums.length == 1){
+//            return nums[0];
+//        }
+//        // double array -> to simulate `circular` array
+//        List<Integer> tmp = new ArrayList<>();
+////        for(int i = 0; i < 2; i++){
+////            for(int j = 0; j < nums.length; j++){
+////                tmp.add(nums[j]);
+////            }
+////        }
+//        for(int i = 0; i < nums.length; i++){
+//            tmp.add(nums[i]);
+//        }
+//        // NOTE !!! also append `last` element in nums
+//        tmp.add(nums[nums.length - 1]);
+//        // list to array
+//        Integer[] nums_ = tmp.toArray(new Integer[tmp.size()]);
+//
+//
+//        System.out.println(">>> nums_ = " + nums_);
+//
+//        // kadane algo
+//        int localMax = nums_[0];
+//        int globalMax = nums_[0];
+//        for(int i = 0; i < nums_.length; i++){
+//            localMax = Math.max(nums_[i], localMax + nums_[i]);
+//            globalMax = Math.max(globalMax, localMax);
+//        }
+//
+//        return globalMax;
+//    }
 
 
 

@@ -86,6 +86,61 @@ public class maxSubarraySumCircular {
 //        return globalMax;
 //    }
 
+    // V0-1
+    // IDEA: (GEMINI)
+    /**
+     *
+     * Explanation of Changes:
+     *
+     * 1) Removed Redundant Code:
+     *
+     * The commented-out code for doubling the array was unnecessary and incorrect for handling circular subarrays.
+     *
+     * 2_ Optimized Calculation:
+     *
+     * The code now calculates both the maximum subarray sum (max_sum) and the minimum subarray sum (min_sum) in a single pass through the array.
+     * This is more efficient than creating a new array and running Kadane's algorithm twice.
+     *
+     * 3) Circular Sum Handling:
+     *
+     * - The code correctly handles the circular sum by checking if max_sum is greater than 0.
+     * If max_sum is greater than 0, it means there is a non-circular subarray with a positive sum.
+     * - In this case, we need to consider the possibility of a circular subarray that includes the end and beginning of the original array.
+     * - The sum of the circular subarray can be calculated as total_sum - min_sum.
+     * Finally, the code returns the maximum of max_sum and total_sum - min_sum.
+     *
+     *
+     * Key Points:
+     *
+     * This improved solution effectively calculates the maximum sum of a subarray in a circular array.
+     * It is more efficient and concise than the original code.
+     *
+     */
+    public int maxSubarraySumCircular_0_1(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int n = nums.length;
+        int max_sum = Integer.MIN_VALUE;
+        int min_sum = Integer.MAX_VALUE;
+        int total_sum = 0;
+        int curr_max = 0;
+        int curr_min = 0;
+
+        for (int i = 0; i < n; i++) {
+            total_sum += nums[i];
+            curr_max = Math.max(nums[i], curr_max + nums[i]);
+            max_sum = Math.max(max_sum, curr_max);
+
+            curr_min = Math.min(nums[i], curr_min + nums[i]);
+            min_sum = Math.min(min_sum, curr_min);
+        }
+
+        return max_sum > 0 ? Math.max(max_sum, total_sum - min_sum) : max_sum;
+    }
+
+
 
     // V1
 
