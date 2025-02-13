@@ -7567,10 +7567,17 @@ public class workspace6 {
    *
    *  IDEA 2) DP ???
    *
+   *  IDEA 3) kadane ALGO
+   *
+   *
+   * EXP 1) nums =  [-2,3,-4]
+   * Output : 3
+   * Expected: 24
+   *
    *
    */
+  // 10.31 - 10.35
   public int maxProduct(int[] nums) {
-
       // edge
       if(nums == null || nums.length == 0){
           return 0;
@@ -7578,27 +7585,50 @@ public class workspace6 {
       if(nums.length == 1){
           return nums[0];
       }
-
-      if(nums.length == 2){
-          return Math.max(Math.max(nums[0], nums[1]), nums[0] * nums[1]);
+      // kadane algo
+      int minSoFar = nums[0];
+      int maxSoFar = nums[0];
+      int globalMax = nums[0];
+      for(int i = 1; i < nums.length; i++){
+//          localMax = Math.max(localMax * nums[i], nums[i]);
+//          globalMax = Math.max(localMax, globalMax);
+          minSoFar = Math.min(minSoFar, minSoFar * nums[i]);
+          maxSoFar = Math.max(maxSoFar, nums[i]);
+          globalMax = Math.max(globalMax, Math.max(maxSoFar, minSoFar)); // ???
       }
 
-      // 2 pointers
-      int res = 0;
-      for(int i = 0; i < nums.length-1; i++){
-          int prod = nums[i];
-          res = Math.max(res, nums[i]);
-          for(int j = i+1; j < nums.length; j++){
-              prod = prod * nums[j];
-              res = Math.max(prod, res);
-          }
-      }
-
-      // handling last element
-      res = Math.max(res, nums[nums.length-1]);
-
-      return res;
-    }
+      return globalMax;
+  }
+//  public int maxProduct(int[] nums) {
+//
+//      // edge
+//      if(nums == null || nums.length == 0){
+//          return 0;
+//      }
+//      if(nums.length == 1){
+//          return nums[0];
+//      }
+//
+//      if(nums.length == 2){
+//          return Math.max(Math.max(nums[0], nums[1]), nums[0] * nums[1]);
+//      }
+//
+//      // 2 pointers
+//      int res = 0;
+//      for(int i = 0; i < nums.length-1; i++){
+//          int prod = nums[i];
+//          res = Math.max(res, nums[i]);
+//          for(int j = i+1; j < nums.length; j++){
+//              prod = prod * nums[j];
+//              res = Math.max(prod, res);
+//          }
+//      }
+//
+//      // handling last element
+//      res = Math.max(res, nums[nums.length-1]);
+//
+//      return res;
+//    }
 
     // LC 152
     // 2.26 - 2.36 pm

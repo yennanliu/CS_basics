@@ -58,7 +58,9 @@ Kadane's Algorithm is a popular dynamic programming technique used to find the m
  * 
  */
 
-public class KadaneAlgorithm {
+public class KadaneAlgo {
+
+    // LC 53
     public int maxSubArray(int[] nums) {
         // Edge case: if nums is empty, return 0
         if (nums == null || nums.length == 0) {
@@ -70,9 +72,14 @@ public class KadaneAlgorithm {
         int maxSum = nums[0];      // Keep track of the maximum sum found
 
         // Iterate over the array starting from the second element
+        /**
+         *  NOTE !!!
+         *
+         *   we start from idx = 1, since we init local, global max as nums[0]
+         */
         for (int i = 1; i < nums.length; i++) {
             // Update current sum: either extend the existing subarray or start a new one
-             /**
+            /**
              *  NOTE !!!
              *
              *   we compare `nums[i]` and `nums[i] + currentSum`,
@@ -88,10 +95,40 @@ public class KadaneAlgorithm {
         return maxSum;
     }
 
-    public static void main(String[] args) {
-        KadaneAlgorithm solution = new KadaneAlgorithm();
-        int[] nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
-        System.out.println("Maximum Subarray Sum: " + solution.maxSubArray(nums)); // Output: 6 (subarray: [4, -1, 2, 1])
+    // LC 152
+    public int maxProduct(int[] nums) {
+        // Edge case
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        /**
+         * 	•	maxProd: Tracks the maximum product up to the current index.
+         * 	•	minProd: Tracks the minimum product up to the current index
+         * 	             (needed because multiplying by a negative can turn a small value into a large one).
+         */
+        int maxProd = nums[0];
+        int minProd = nums[0];
+        int result = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            int temp = maxProd; // Store maxProd before updating
+
+            /**
+             * NOTE !!!
+             *
+             *  1) we cache maxProd
+             *  2) we re-compute maxProd, minProd per below logic
+             *  3) we get `global max` (result) as well within each iteration
+             */
+            maxProd = Math.max(nums[i], Math.max(nums[i] * maxProd, nums[i] * minProd));
+            minProd = Math.min(nums[i], Math.min(nums[i] * temp, nums[i] * minProd));
+
+            result = Math.max(result, maxProd);
+        }
+
+        return result;
     }
+
 }
 ```
