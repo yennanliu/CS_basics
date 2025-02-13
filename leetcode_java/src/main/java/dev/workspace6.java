@@ -6458,74 +6458,135 @@ public class workspace6 {
     // 7.30 - 7.50 pm
     public boolean exist(char[][] board, String word) {
         // edge
-        if(board.length == 0 || board[0].length == 0){
+        if((board.length == 0 || board[0].length == 0) && word.length() > 0){
             return false;
         }
-
-        if(board.length == 1 && board[0].length == 1){
-            return String.valueOf(board[0]).equals(word); // ??
-        }
-
+        // DFS
         int l = board.length;
         int w = board[0].length;
-
-        boolean[][] visited = new boolean[l][w];
-
-        for(int i = 0; i < w; i++){
-            for(int j = 0; j < l; j++){
-                // new boolean[l][w] ???
-                if( board[j][i] == word.charAt(0) && canFind(board, word, i, j, 0, visited)){
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                boolean[][] visited = new boolean[l][w];
+                if(board[i][j] == word.charAt(0) && canFind(board, word, j, i, visited, 0)){
                     return true;
-                };
+                }
             }
         }
 
         return false;
     }
 
-    private boolean canFind(char[][] board, String word, int x, int y, int idx, boolean[][] visited){
-
-        // NOTE !!! check idx == word len at beginning
-        // ?? put here or before above check ??
-        if(idx == word.length()){
-            return true;
-        }
-
-        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
-
+    private boolean canFind(char[][] board, String word, int x, int y, boolean[][] visited, int idx){
         int l = board.length;
         int w = board[0].length;
 
-        // NOTE !!! validate first
-        if(x < 0 || x >= w || y < 0 || y >= l || board[y][x] != word.charAt(idx) || visited[y][x]){
+        if(idx == word.length() - 1){
+            return true;
+        }
+
+        if(idx >= word.length()){
             return false;
         }
 
+        // check if not valid
+        if(x < 0 || x >= w || y < 0 || y >= l || visited[y][x] || board[y][x] != word.charAt(idx)){
+            return false;
+        }
+
+        visited[y][x] = true;
+
+        int[][] dirs = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+//        for(int[] dir: dirs){
+//            int x_ = x + dir[0];
+//            int y_ = y + dir[1];
+//            return canFind(board, word, x_, y_, visited, idx+1);
+//        }
+
+        if (canFind(board, word, x+1, y, visited, idx+1) ||
+                canFind(board, word, x-1, y, visited, idx+1) ||
+                canFind(board, word, x, y+1, visited, idx+1) ||
+                canFind(board, word, x, y-1, visited, idx+1)){
+            return true;
+        }
+
+        // backtrack
+        visited[y][x] = false;
+
+        return false;
+    }
+
+
+//    public boolean exist(char[][] board, String word) {
+//        // edge
+//        if(board.length == 0 || board[0].length == 0){
+//            return false;
+//        }
+//
+//        if(board.length == 1 && board[0].length == 1){
+//            return String.valueOf(board[0]).equals(word); // ??
+//        }
+//
+//        int l = board.length;
+//        int w = board[0].length;
+//
+//        boolean[][] visited = new boolean[l][w];
+//
+//        for(int i = 0; i < w; i++){
+//            for(int j = 0; j < l; j++){
+//                // new boolean[l][w] ???
+//                if( board[j][i] == word.charAt(0) && canFind(board, word, i, j, 0, visited)){
+//                    return true;
+//                };
+//            }
+//        }
+//
+//        return false;
+//    }
+//
+//    private boolean canFind(char[][] board, String word, int x, int y, int idx, boolean[][] visited){
+//
+//        // NOTE !!! check idx == word len at beginning
 //        // ?? put here or before above check ??
 //        if(idx == word.length()){
 //            return true;
 //        }
-
-        // NOTE !!! mark as `visited` after validaiton
-        visited[y][x] = true;
-
-        // move over 4 dirs
-        for(int[] m: moves){
-            int x_ = x + m[0];
-            int y_ = y + m[1];
-            //visited[y_][x_] = true; // ???
-            if(canFind(board, word, x_, y_, idx+=1, visited)){
-                return true;
-            }
-            // undo
-            //visited[y_][x_] = false;
-            idx -=1;
-        }
-
-        visited[y][x] = false;
-
-        return true;
-    }
+//
+//        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+//
+//        int l = board.length;
+//        int w = board[0].length;
+//
+//        // NOTE !!! validate first
+//        if(x < 0 || x >= w || y < 0 || y >= l || board[y][x] != word.charAt(idx) || visited[y][x]){
+//            return false;
+//        }
+//
+////        // ?? put here or before above check ??
+////        if(idx == word.length()){
+////            return true;
+////        }
+//
+//        // NOTE !!! mark as `visited` after validaiton
+//        visited[y][x] = true;
+//
+//        // move over 4 dirs
+//        for(int[] m: moves){
+//            int x_ = x + m[0];
+//            int y_ = y + m[1];
+//            //visited[y_][x_] = true; // ???
+//            if(canFind(board, word, x_, y_, idx+=1, visited)){
+//                return true;
+//            }
+//            // undo
+//            //visited[y_][x_] = false;
+//            idx -=1;
+//        }
+//
+//        visited[y][x] = false;
+//
+//        return true;
+//    }
 
 
     /**

@@ -67,6 +67,47 @@ public class WordSearch {
         int n = board.length;
         int m = board[0].length;
 
+        /**
+         * NOTE !!!
+         *
+         *   we use `idx == word.length()` to validate if a matched result is found
+         *   -> since the actual checking code is after `idx == word.length()`,
+         *   so when idx == word.length() - 1, we DON'T KNOW YET is current idx can match the word.
+         *   However, when `idx == word.length()`, we're sure that prev recursion (e.g. idx == word.length() - 1 can find the expected word),
+         *   -> we're sure that word is matched, then can return true
+         *
+         *  1)  Why idx == word.length():
+         *   - idx represents the index of the current character you're trying to match in the word.
+         *   - If idx reaches the length of the word (word.length()), it means you've successfully matched all characters in the word.
+         *   - Remember that in a zero-based index system, the last character in a string has an index of word.length() - 1, so when idx is equal to word.length(), it means you've finished matching all characters.
+         *
+         *  2) Why not idx == word.length() - 1:
+         *   - If you only checked if (idx == word.length() - 1),
+         *    you would return true only when you've
+         *    matched the `second-to-last` character in the word.
+         *    This would result in a false positive — you'd think you've found the word just
+         *    before you've actually matched the entire word.
+         *
+         *
+         *  3) Correct Behavior:
+         * - idx == word.length() ensures that you’ve matched the entire word.
+         *
+         * - For example, let’s walk through the process:
+         *
+         * - Starting at idx = 0, you check the first character ('A').
+         * - Then at idx = 1, you check the second character ('B').
+         * - Finally, at idx = 2, you check the last character ('C').
+         * - -> Once idx == word.length(), i.e., idx == 3,
+         *      you know the entire word has been matched,
+         *      and you return true.
+         *
+         *
+         * 4)  Conclusion:
+         *   To summarize, checking if (idx == word.length()) ensures that the DFS continues
+         *   until the entire word is matched, whereas if (idx == word.length() - 1) would
+         *   incorrectly return true prematurely, right before the final character is matched.
+         *
+         */
         if(lvl == word.length()){
             return true;
         }
