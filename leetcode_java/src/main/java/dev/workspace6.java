@@ -8978,4 +8978,56 @@ public class workspace6 {
         }
     }
 
+    // LC 918
+    // 11.08 am - 11.18 am
+    /**
+     *  EXP 1)
+     *   [5,-3,5]
+     *
+     *   -> exp : 10
+     *   -> output: 19
+     *
+     *   -> [5,-3,5,5,-3,5]
+     *
+     */
+    public int maxSubarraySumCircular(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+        // double array -> to simulate `circular` array
+        List<Integer> tmp = new ArrayList<>();
+//        for(int i = 0; i < 2; i++){
+//            for(int j = 0; j < nums.length; j++){
+//                tmp.add(nums[j]);
+//            }
+//        }
+        for(int i = 0; i < nums.length; i++){
+            tmp.add(nums[i]);
+        }
+        // NOTE !!! also append `last` element in nums
+        tmp.add(nums[nums.length - 1]);
+        // list to array
+        Integer[] nums_ = tmp.toArray(new Integer[tmp.size()]);
+
+
+        System.out.println(">>> nums_ = " + nums_);
+
+        // kadane algo
+        int localMax = nums_[0];
+        int globalMax = nums_[0];
+        for(int i = 0; i < nums_.length; i++){
+            localMax = Math.max(nums_[i], localMax + nums_[i]);
+            globalMax = Math.max(globalMax, localMax);
+        }
+
+        return globalMax;
+    }
+
+
+
+
 }
