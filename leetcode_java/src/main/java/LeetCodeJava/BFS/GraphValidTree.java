@@ -23,6 +23,8 @@ package LeetCodeJava.BFS;
  * Company:
  * Adobe Amazon Facebook Google LinkedIn Pinterest Salesforce Zenefits
  */
+import dev.workspace6;
+
 import java.util.*;
 
 public class GraphValidTree {
@@ -71,7 +73,12 @@ public class GraphValidTree {
 
             // If the roots are the same, there's a cycle
             if (root1 == root2) {
-                /** NOTE !!!  if a cycle, return false directly */
+                /** NOTE !!!
+                 *
+                 *  KEY OF THE ALGO
+                 *
+                 *  ->  if a cycle, return false directly
+                 */
                 return false;
             } else {
                 // Union the sets
@@ -80,7 +87,10 @@ public class GraphValidTree {
             }
         }
 
-        /** Check if the number of edges is exactly n - 1 */
+        /** NOTE !!!
+         *
+         * Check if the number of edges is exactly n - 1
+         */
         return edges.length == n - 1; // NOTE !!! this check
     }
 
@@ -95,6 +105,93 @@ public class GraphValidTree {
     }
 
     // V0-2
+    // IDEA: UNION FIND
+    // TODO: validate
+    public boolean validTree_0_2(int n, int[][] edges) {
+        // edge
+        if(n == 0){
+            return false;
+        }
+        MyUF myUF = new MyUF(n, edges);
+        // union
+        for(int[] x: edges){
+            /** NOTE !!! below checks */
+            if(!myUF.union(x[0], x[1])){
+                return false;
+            }
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *  FINAL CHECK
+         *
+         *   based on math,
+         *   n nodes, should ONLY has `n-1` edges
+         *   -> so there is NO cycle in graph
+         *   -> so can form a valid tree
+         *
+         *
+         *   -> Check if the number of edges is exactly n - 1
+         */
+        return n - 1 == edges.length;
+    }
+
+    public class MyUF{
+        // attr
+        int n;
+        int cnt; // `cluster cnt`
+        int[][] edges;
+        int[] parents; // records node's parent
+        // constructor
+        public MyUF(int n, int[][] edges){
+            this.n = n;
+            this.cnt = n;
+            this.edges = edges;
+            this.parents = new int[n]; // ???
+            for(int i = 0; i < n; i++){
+                this.parents[i] = i;
+            }
+        }
+        // method
+        // union
+        public boolean union(int a, int b){
+            if(a == b){
+                return true;
+            }
+            int aParent = this.find(a);
+            int bParent = this.find(b);
+            /**
+             * NOTE !!!
+             *
+             *  is a node's parent == b node's parent
+             *  -> there must be a CYCLE,
+             *  -> CAN'T form a valid tree -> return false directly
+             */
+            if(aParent == bParent){
+                return false;
+            }
+            // this.parents[bParent] = APartent;  // equivalent as below
+            this.parents[aParent] = bParent;
+            this.cnt -= 1;
+            return true;
+        }
+        // find a node's parent
+        public int find(int a){
+            if(a == this.parents[a]){
+                return a;
+            }
+            this.parents[a] = this.find(a);
+            return this.parents[a];
+        }
+
+        // get `cluster cnt`
+        public int getCnt(){
+            return this.cnt;
+        }
+    }
+
+    // V0-3
     // IDEA: UNION FIND V2 (GPT)
     // TODO: validate if correct
 //    public boolean validTree_0_3(int n, int[][] edges) {
@@ -144,12 +241,12 @@ public class GraphValidTree {
 //        }
 //    }
 
-    // V0-3
+    // V0-4
     // IDEA : DFS + GRAPH
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0261-graph-valid-tree.java
     private Map<Integer, List<Integer>> adjacencyList = new HashMap<>();
 
-    public boolean validTree_0_3(int n, int[][] edges) {
+    public boolean validTree_0_4(int n, int[][] edges) {
         if (n == 0 || n == 1) return true;
 
         if (edges.length == 0) return false;
