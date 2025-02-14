@@ -4121,26 +4121,26 @@ public class workspace6 {
     }
 
     // LC 001
-    public int[] twoSum(int[] nums, int target) {
-        // map
-        // {val: idx}
-        Map<Integer, Integer> map = new HashMap<>();
-        for(int i = 0; i < nums.length; i++){
-            map.put(nums[i], i);
-        }
-
-        for(int i = 0; i < nums.length; i++){
-            // x + y = target
-            // -> y = target - x
-           if(map.containsKey(target - nums[i]) && map.get(target - nums[i]) != i){
-               return new int[]{i,map.get(target - nums[i])};
-           }
-        }
-
-        // if not found, return {-1,-1}
-        //int[] res = new int[]{-1,-1};
-        return new int[]{-1,-1};
-    }
+//    public int[] twoSum(int[] nums, int target) {
+//        // map
+//        // {val: idx}
+//        Map<Integer, Integer> map = new HashMap<>();
+//        for(int i = 0; i < nums.length; i++){
+//            map.put(nums[i], i);
+//        }
+//
+//        for(int i = 0; i < nums.length; i++){
+//            // x + y = target
+//            // -> y = target - x
+//           if(map.containsKey(target - nums[i]) && map.get(target - nums[i]) != i){
+//               return new int[]{i,map.get(target - nums[i])};
+//           }
+//        }
+//
+//        // if not found, return {-1,-1}
+//        //int[] res = new int[]{-1,-1};
+//        return new int[]{-1,-1};
+//    }
 
     // LC 49
     public List<List<String>> groupAnagrams(String[] strs) {
@@ -9298,5 +9298,51 @@ public class workspace6 {
         return true;
     }
 
+    // LC 167
+    // 10.24 - 10.34 am
+    // V1: HAHSMAP
+//    public int[] twoSum(int[] numbers, int target) {
+//        // { val: idx}
+//        HashMap<Integer, Integer> map = new HashMap<>();
+//        for (int i = 0; i < numbers.length; i++) {
+//            // a + b = target
+//            // -> a = target - b
+//            int diff = target - numbers[i];
+//            if (map.containsKey(diff) && map.get(diff) != i) {
+//                return new int[] { map.get(diff) + 1, i + 1 };
+//            }
+//            // if not found, update map
+//            map.put(numbers[i], i);
+//        }
+//
+//        return new int[] { -1, -1 }; // if not found
+//
+//    }
+
+    // IDEA: BINARY SEARCH
+    public int[] twoSum(int[] numbers, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int l = 0;
+        int r = numbers.length - 1;
+        // since array already sorted (ascending order)
+        while (r >= l){
+            int mid = (l + r) / 2;
+            // a + b (mid val) = target
+            // a = target - b (mid val)
+            int diff = target - numbers[mid];
+            if (map.containsKey(diff) && map.get(diff) != mid){
+                return new int[] { map.get(diff) + 1, mid + 1 };
+            }
+            map.put(numbers[mid], mid);
+            // mid is too big
+            if (diff < 0){
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+        return new int[] { -1, -1 }; // if not found
+    }
 
 }
