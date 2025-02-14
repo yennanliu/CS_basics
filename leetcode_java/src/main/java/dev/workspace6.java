@@ -9345,4 +9345,52 @@ public class workspace6 {
         return new int[] { -1, -1 }; // if not found
     }
 
+    // LC 42
+    // 11 am - 11.15 am
+    /**
+     *  step 1) loop over heights
+     *   -> record 1st meet height as l_height
+     *      -> collect `current rain amount` within loop
+     *      -> cur_area = (l_height - cur_height) * 1
+     *      -> cache_area.append(cur_area)
+     *   -> once there is a `higher height`, set it as r_right
+     *   -> add `rain` amount to res
+     *     -> for area in cur_area:
+     *     -> res_area += area
+     */
+    public int trap(int[] height) {
+
+        // edge
+        if (height == null || height.length == 0){
+            return 0;
+        }
+        if (height.length == 1){
+            return 0;
+        }
+        int l_height = 0;
+        int r_height = 0;
+        int resArea = 0;
+        for(int i = 0; i < height.length; i++){
+            int cur_height = height[i];
+            List<Integer> cacheArea = new ArrayList<>();
+            if(l_height == 0){
+                l_height = cur_height;
+            } else if (l_height != 0 && cur_height > l_height){
+                r_height = cur_height;
+                // update res area
+                for(Integer a: cacheArea){
+                    resArea += a;
+                }
+                // reset cache area
+                cacheArea = new ArrayList<>();
+                l_height = cur_height;
+            }else{ // keep get cur area
+                int curArea = ( l_height - cur_height) * 1;
+                cacheArea.add(curArea);
+            }
+        }
+
+        return resArea;
+    }
+
 }
