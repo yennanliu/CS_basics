@@ -1,73 +1,131 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/valid-sudoku/
+/**
+ *
+ Code
+ Testcase
+ Test Result
+ Test Result
+ 36. Valid Sudoku
+ Solved
+ Medium
+ Topics
+ Companies
+ Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
 
+ Each row must contain the digits 1-9 without repetition.
+ Each column must contain the digits 1-9 without repetition.
+ Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+ Note:
+
+ A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+ Only the filled cells need to be validated according to the mentioned rules.
+
+
+ Example 1:
+
+
+ Input: board =
+ [["5","3",".",".","7",".",".",".","."]
+ ,["6",".",".","1","9","5",".",".","."]
+ ,[".","9","8",".",".",".",".","6","."]
+ ,["8",".",".",".","6",".",".",".","3"]
+ ,["4",".",".","8",".","3",".",".","1"]
+ ,["7",".",".",".","2",".",".",".","6"]
+ ,[".","6",".",".",".",".","2","8","."]
+ ,[".",".",".","4","1","9",".",".","5"]
+ ,[".",".",".",".","8",".",".","7","9"]]
+ Output: true
+ Example 2:
+
+ Input: board =
+ [["8","3",".",".","7",".",".",".","."]
+ ,["6",".",".","1","9","5",".",".","."]
+ ,[".","9","8",".",".",".",".","6","."]
+ ,["8",".",".",".","6",".",".",".","3"]
+ ,["4",".",".","8",".","3",".",".","1"]
+ ,["7",".",".",".","2",".",".",".","6"]
+ ,[".","6",".",".",".",".","2","8","."]
+ ,[".",".",".","4","1","9",".",".","5"]
+ ,[".",".",".",".","8",".",".","7","9"]]
+ Output: false
+ Explanation: Same as Example 1, except with the 5 in the top left corner being modified to 8. Since there are two 8's in the top left 3x3 sub-box, it is invalid.
+
+
+ Constraints:
+
+ board.length == 9
+ board[i].length == 9
+ board[i][j] is a digit 1-9 or '.'.
+
+
+ */
 import java.util.HashSet;
 import java.util.Set;
 
 public class ValidSudoku {
 
-//    public boolean isValidSudoku(char[][] board) {
-//
-//        // TODO : check how to get matrix width, length
-//        if (board.equals(null) || (board.length == 0 && board[0].length == 0)){
-//            return true;
-//        }
-//
-//        int length = board.length;
-//        int width = board[0].length;
-//
-//        /** check row */
-//        for (int i = 0; i < length; i ++){
-//            char[] row = board[i];
-//            if (! check(row)){
-//                return false;
-//            }
-//        }
-//
-//        /** check col */
-//        for (int i = 0; i < width; i ++){
-//            char[] curRow = new char[length];
-//            for (int j = 0; j < length; j++){
-//               curRow[j] = board[j][i];
-//            }
-//            if (! check(curRow)){
-//                return false;
-//            }
-//        }
-//
-//        /** check 3 x 3 sub matrix */
-//        for (int i = 0; i < length - 2; i++){
-//            for (int j = 0; j < width - 2; j ++){
-//                char[] subArray = new char[9];
-//                subArray[]
-//            }
-//        }
-//
-//        return true;
-//    }
-//
-//    private Boolean check(char[] input){
-//
-//        if (input.length == 0){
-//            return true;
-//        }
-//
-//        Set<Integer> set = new HashSet<Integer>();
-//
-//        for (char val : input){
-//            if (!set.contains((int) val)){
-//                set.add((int) val);
-//            }else{
-//                if (String.valueOf(val) == "."){
-//                    return false;
-//                }
-//            }
-//        }
-//        return true;
-//    }
+    // V0
+    // IDEA: SET, MATRIX OP (fixed by GPT)
+    public boolean isValidSudoku(char[][] board) {
+        // edge case: if board is empty, return true (no validation needed)
+        if (board.length == 0 || board[0].length == 0) {
+            return true;
+        }
 
-    // V0'
+        int l = board.length;
+        int w = board[0].length;
+
+        // check rows (x-axis)
+        for (int y = 0; y < l; y++) {
+            HashSet<Character> set = new HashSet<>();
+            for (int x = 0; x < w; x++) {
+                // check if the cell is not empty
+                if (board[y][x] != '.') {
+                    if (set.contains(board[y][x])) {
+                        return false; // found a duplicate
+                    }
+                    set.add(board[y][x]);
+                }
+            }
+        }
+
+        // check columns (y-axis)
+        for (int x = 0; x < w; x++) {
+            HashSet<Character> set = new HashSet<>();
+            for (int y = 0; y < l; y++) {
+                // check if the cell is not empty
+                if (board[y][x] != '.') {
+                    if (set.contains(board[y][x])) {
+                        return false; // found a duplicate
+                    }
+                    set.add(board[y][x]);
+                }
+            }
+        }
+
+        // check 3x3 subgrids
+        for (int i = 0; i < l; i += 3) { // iterate every 3 rows
+            for (int j = 0; j < w; j += 3) { // iterate every 3 columns
+                HashSet<Character> set = new HashSet<>();
+                for (int x = i; x < i + 3; x++) {
+                    for (int y = j; y < j + 3; y++) {
+                        if (x < l && y < w && board[x][y] != '.') { // ensure within bounds
+                            if (set.contains(board[x][y])) {
+                                return false; // found a duplicate in the 3x3 subgrid
+                            }
+                            set.add(board[x][y]);
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    // V0-1
     // IDEA : SET
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0036-valid-sudoku.java
     public boolean isValidSudoku_0_1(char[][] board) {
@@ -144,7 +202,7 @@ public class ValidSudoku {
     // V1
     // IDEA : HASH SET
     // https://leetcode.com/problems/valid-sudoku/editorial/
-    public boolean isValidSudoku_2(char[][] board) {
+    public boolean isValidSudoku_1(char[][] board) {
         int N = 9;
 
         // Use hash set to record the status
@@ -193,7 +251,7 @@ public class ValidSudoku {
     // V2
     // IDEA : Array of Fixed Length
     // https://leetcode.com/problems/valid-sudoku/editorial/
-    public boolean isValidSudoku_3(char[][] board) {
+    public boolean isValidSudoku_2(char[][] board) {
         int N = 9;
 
         // Use an array to record the status
@@ -235,7 +293,7 @@ public class ValidSudoku {
     // V3
     // IDEA : Bitmasking
     // https://leetcode.com/problems/valid-sudoku/editorial/
-    public boolean isValidSudoku_4(char[][] board) {
+    public boolean isValidSudoku_3(char[][] board) {
         int N = 9;
 
         // Use a binary number to record previous occurrence

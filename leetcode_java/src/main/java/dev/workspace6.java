@@ -9247,4 +9247,56 @@ public class workspace6 {
     }
 
 
+    // LC 36
+    // 9.31 - 9.50 am
+    public boolean isValidSudoku(char[][] board) {
+        // edge
+        if(board.length == 0 || board[0].length == 0){
+            return true; // ??
+        }
+//        if(board.length == 1 || board[0].length == 1){
+//            return true; // ??
+//        }
+        int l = board.length;
+        int w = board[0].length;
+
+        // check x-axis
+        for(int y = 0; y < l; y++){
+            HashSet<Character> set = new HashSet<>();
+            for(int i = 0; i < w; i++){
+                // ??
+                if(!String.valueOf(board[y][i]).equals("")){
+                    if(set.contains(board[y][i])){
+                        return false;
+                    }
+                    set.add(board[y][i]);
+                }
+            }
+        }
+
+        // check y-axis
+        for(int x = 0; x < w; x++){
+            HashSet<Character> set = new HashSet<>();
+            for(int i = 0; i < l; i++){
+                // ??
+                if(!String.valueOf(board[l][x]).equals("")){
+                    if(set.contains(board[l][x])){
+                        return false;
+                    }
+                    set.add(board[l][x]);
+                }
+            }
+        }
+
+        // check `3x3` small matrix
+        for(int i = 0; i < l; i += 2){ // ??
+            for(int j = 0; j < w; j += 2){ // ??
+                HashSet<Character> set = new HashSet<>();
+            }
+        }
+
+        return true;
     }
+
+
+}
