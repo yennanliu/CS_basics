@@ -199,65 +199,89 @@ public class workspace8 {
       return false;
   }
 
-//  public boolean checkInclusion(String s1, String s2) {
-//      // edge
-//      if(s1.equals(s2)){
-//          return true;
-//      }
-//      if(s2.contains(s1) || s2.isEmpty()){
-//          return true;
-//      }
-//      if(s1.isEmpty() && !s2.isEmpty()){
-//          return false;
-//      }
-//      // ??
-//      if(s1.length() > s2.length()){
-//          return false;
-//      }
-//
-//      // map: {val, cnt}
-//      Map<String, Integer> map_s1 = new HashMap<>();
-//      Map<String, Integer> map = new HashMap<>();
-//
-//      for(String x: s1.split("")){
-//          map_s1.put(x, map_s1.getOrDefault(x, 0) + 1);
-//      }
-//      System.out.println(">>> map_s1 = " + map_s1);
-//
-//      int s_1_idx = 0;
-//      int s_2_r_idx = 0;
-//      int s_2_l_idx = 0;
-//      String cache = "";
-//      while (s_2_r_idx < s2.length() && s_1_idx < s1.length()){
-//          String s2Val = String.valueOf(s2.charAt(s_2_r_idx));
-//          if(!map_s1.containsKey(s2Val)){
-//              cache = "";
-//              map = new HashMap<>();
-//              //s_1_idx = s_2_idx;
-//              s_2_l_idx += 1;
-//              s_2_r_idx = s_2_l_idx;
-//          }else{
-//              map.put(s2Val, map.getOrDefault(s2Val, 0) + 1);
-//              if(map.get(s2Val) <= map_s1.get(s2Val)){
-//                  cache += s2Val;
-//                  if(cache.length() == s1.length()){
-//                      return true;
-//                  }
-//                  s_1_idx += 1;
-//              }else{
-//                  cache = "";
-//                  map = new HashMap<>();
-//              }
-//          }
-//          s_2_r_idx += 1;
-//      }
-//
-//      return false;
-//    }
+  //  public boolean checkInclusion(String s1, String s2) {
+  //      // edge
+  //      if(s1.equals(s2)){
+  //          return true;
+  //      }
+  //      if(s2.contains(s1) || s2.isEmpty()){
+  //          return true;
+  //      }
+  //      if(s1.isEmpty() && !s2.isEmpty()){
+  //          return false;
+  //      }
+  //      // ??
+  //      if(s1.length() > s2.length()){
+  //          return false;
+  //      }
+  //
+  //      // map: {val, cnt}
+  //      Map<String, Integer> map_s1 = new HashMap<>();
+  //      Map<String, Integer> map = new HashMap<>();
+  //
+  //      for(String x: s1.split("")){
+  //          map_s1.put(x, map_s1.getOrDefault(x, 0) + 1);
+  //      }
+  //      System.out.println(">>> map_s1 = " + map_s1);
+  //
+  //      int s_1_idx = 0;
+  //      int s_2_r_idx = 0;
+  //      int s_2_l_idx = 0;
+  //      String cache = "";
+  //      while (s_2_r_idx < s2.length() && s_1_idx < s1.length()){
+  //          String s2Val = String.valueOf(s2.charAt(s_2_r_idx));
+  //          if(!map_s1.containsKey(s2Val)){
+  //              cache = "";
+  //              map = new HashMap<>();
+  //              //s_1_idx = s_2_idx;
+  //              s_2_l_idx += 1;
+  //              s_2_r_idx = s_2_l_idx;
+  //          }else{
+  //              map.put(s2Val, map.getOrDefault(s2Val, 0) + 1);
+  //              if(map.get(s2Val) <= map_s1.get(s2Val)){
+  //                  cache += s2Val;
+  //                  if(cache.length() == s1.length()){
+  //                      return true;
+  //                  }
+  //                  s_1_idx += 1;
+  //              }else{
+  //                  cache = "";
+  //                  map = new HashMap<>();
+  //              }
+  //          }
+  //          s_2_r_idx += 1;
+  //      }
+  //
+  //      return false;
+  //    }
 
-    // LC 76
-    // 5.07 - 5.22 pm
-    public String minWindow(String s, String t) {
+  // LC 76
+  // 5.25 - 5.35 pm
+  /**
+   * Given two strings s and t of lengths m and n respectively,
+   * return the minimum window substring
+   * of s such that every character in t
+   * (including duplicates) is included in the window.
+   * If there is no such substring, return the empty string "".
+   *
+   * The testcases will be generated such that the answer is unique.
+   *
+   *
+   * A substring ->
+   * is a contiguous non-empty sequence of characters within a string.
+   *
+   *
+   *
+   * IDEA : 2 POINTERS
+   *
+   * -> l, r
+   * -> once l `reach 1st char in t`, then we stop l,
+   * -> then we start r, till `all sub str` covers char in t, record the len
+   * -> then we move l to `next char in t in s`, move r
+   * -> ... repeat above steps, and get min len
+   * -> return min len
+   */
+  public String minWindow(String s, String t) {
 
       return null;
     }
