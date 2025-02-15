@@ -94,8 +94,39 @@ public class LongestRepeatingCharacterReplacement {
         return max;
     }
 
-    // V0'
+    // V0-1
+    // IDEA: HASHMAP + 2 POINTERS (fixed by gpt)
     public int characterReplacement_0_1(String s, int k) {
+        if (s == null || s.length() == 0)
+            return 0;
+        if (s.length() == 1)
+            return 1;
+
+        Map<Character, Integer> map = new HashMap<>();
+        int l = 0, res = 0, maxFreq = 0;
+
+        for (int r = 0; r < s.length(); r++) {
+            char key = s.charAt(r);
+            /** NOTE !!! we update map first, then do `different val cnt` check */
+            map.put(key, map.getOrDefault(key, 0) + 1);
+            maxFreq = Math.max(maxFreq, map.get(key)); // Update max frequency
+
+            // If window size - maxFreq > k, shrink window from left
+            /** NOTE !!! via below, we do `different val cnt` check */
+            while ((r - l + 1) - maxFreq > k) {
+                char leftChar = s.charAt(l);
+                map.put(leftChar, map.get(leftChar) - 1);
+                l++; // Move left pointer
+            }
+
+            res = Math.max(res, r - l + 1); // Update result
+        }
+
+        return res;
+    }
+
+    // V0_2
+    public int characterReplacement_0_2(String s, int k) {
 
         if (s.length() < k){
             return 0;
@@ -149,10 +180,10 @@ public class LongestRepeatingCharacterReplacement {
         return max;
     }
 
-    // V0''
+    // V0_3
     // IDEA : TWO POINTER + HASHMAP (modified by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/longest-repeating-character-replacement.py
-    public int characterReplacement_0(String s, int k) {
+    public int characterReplacement_0_3(String s, int k) {
         Map<Character, Integer> table = new HashMap<>();
         int res = 0;
         int p1 = 0, p2 = 0;
