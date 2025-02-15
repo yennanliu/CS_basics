@@ -1,7 +1,38 @@
 package LeetCodeJava.TwoPointer;
 
 // https://leetcode.com/problems/permutation-in-string/
-
+/**
+ * 567. Permutation in String
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Hint
+ * Given two strings s1 and s2, return true if s2 contains a
+ * permutation
+ *  of s1, or false otherwise.
+ *
+ * In other words, return true if one of s1's permutations is the substring of s2.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: s1 = "ab", s2 = "eidbaooo"
+ * Output: true
+ * Explanation: s2 contains one permutation of s1 ("ba").
+ * Example 2:
+ *
+ * Input: s1 = "ab", s2 = "eidboaoo"
+ * Output: false
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= s1.length, s2.length <= 104
+ * s1 and s2 consist of lowercase English letters.
+ *
+ */
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +43,7 @@ public class PermutationInString {
     // TODO implement
 
     // V0'
-    // IDEA : COUNTER : count element in string (gpt)
+    // IDEA : hashMap + 2 pointers (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/permutation-in-string.py
     public boolean checkInclusion_0(String s1, String s2) {
         if (s1.length() > s2.length()) {
@@ -27,6 +58,12 @@ public class PermutationInString {
             mapS1.put(c, mapS1.getOrDefault(c, 0) + 1);
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *   left, right are 2 pointers in s2,
+         *   for checking if can find a permutation sub str in s2 compared to s1
+         */
         int left = 0;
         for (int right = 0; right < s2.length(); right++) {
             char rightChar = s2.charAt(right);
@@ -34,15 +71,25 @@ public class PermutationInString {
 
             /** NOTE !!!
              *
-             *  we simply check permutation with below trick
-             *  -> e.g. if 2 map are equal
+             *  we use below trick to
+             *
+             *  -> 1) check if `new reached s2 val` is in s1 map
+             *  -> 2) check if 2 map are equal
+             *
+             *  -> so we have more simple code, and clean logic
              */
             // Check if the current window matches the frequency map of s1
             if (mapS1.equals(mapS2)) {
                 return true;
             }
 
-            // If the window size exceeds the size of s1, move the left pointer
+            /**
+             *  NOTE !!!
+             *
+             *  If the window size exceeds the size of s1, move the left pointer
+             *  -> means the `permutation str in s2 of s1` IS NOT FOUND YET,
+             *  -> in this case, we need to move s2 left pointer, and update tracking map
+             */
             if (right - left + 1 >= s1.length()) {
                 char leftChar = s2.charAt(left);
                 mapS2.put(leftChar, mapS2.get(leftChar) - 1);
