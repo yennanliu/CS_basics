@@ -160,59 +160,99 @@ public class workspace8 {
    *
    */
   public boolean checkInclusion(String s1, String s2) {
-      // edge
+      if(!s1.isEmpty() && s2.isEmpty()){
+          return false;
+      }
       if(s1.equals(s2)){
           return true;
       }
-      if(s2.contains(s1) || s2.isEmpty()){
-          return true;
-      }
-      if(s1.isEmpty() && !s2.isEmpty()){
-          return false;
-      }
-      // ??
-      if(s1.length() > s2.length()){
-          return false;
-      }
-
-      // map: {val, cnt}
-      Map<String, Integer> map_s1 = new HashMap<>();
-      Map<String, Integer> map = new HashMap<>();
-
+      Map<String, Integer> map1 = new HashMap<>();
+      Map<String, Integer> map2 = new HashMap<>();
       for(String x: s1.split("")){
-          map_s1.put(x, map_s1.getOrDefault(x, 0) + 1);
+          String k = String.valueOf(x);
+          map1.put(x, map1.getOrDefault(k, 0 ) + 1);
       }
-      System.out.println(">>> map_s1 = " + map_s1);
 
-      int s_1_idx = 0;
-      int s_2_r_idx = 0;
-      int s_2_l_idx = 0;
-      String cache = "";
-      while (s_2_r_idx < s2.length() && s_1_idx < s1.length()){
-          String s2Val = String.valueOf(s2.charAt(s_2_r_idx));
-          if(!map_s1.containsKey(s2Val)){
-              cache = "";
-              map = new HashMap<>();
-              //s_1_idx = s_2_idx;
-              s_2_l_idx += 1;
-              s_2_r_idx = s_2_l_idx;
-          }else{
-              map.put(s2Val, map.getOrDefault(s2Val, 0) + 1);
-              if(map.get(s2Val) <= map_s1.get(s2Val)){
-                  cache += s2Val;
-                  if(cache.length() == s1.length()){
-                      return true;
-                  }
-                  s_1_idx += 1;
-              }else{
-                  cache = "";
-                  map = new HashMap<>();
+      // 2 pointers (for s2)
+      int l = 0;
+      //int r = 0;
+      for(int r = 0; r < s2.length(); r++){
+          String val = String.valueOf(s2.charAt(r));
+          map2.put(val, map2.getOrDefault(val, 0) + 1);
+
+          // NOTE !!! below trick
+          if(map2.equals(map1)){
+              return true;
+          }
+          // NOTE !!! if reach below, means a permutation string is NOT FOUND YET
+          if( (r - l + 1) >= s1.length() ){
+              // update map
+              String leftVal = String.valueOf(s2.charAt(l));
+              map2.put(leftVal, map2.get(leftVal) - 1);
+              l += 1; // ?
+              if(map2.get(leftVal) == 0){
+                  map2.remove(leftVal);
               }
           }
-          s_2_r_idx += 1;
       }
 
       return false;
-    }
+  }
+
+//  public boolean checkInclusion(String s1, String s2) {
+//      // edge
+//      if(s1.equals(s2)){
+//          return true;
+//      }
+//      if(s2.contains(s1) || s2.isEmpty()){
+//          return true;
+//      }
+//      if(s1.isEmpty() && !s2.isEmpty()){
+//          return false;
+//      }
+//      // ??
+//      if(s1.length() > s2.length()){
+//          return false;
+//      }
+//
+//      // map: {val, cnt}
+//      Map<String, Integer> map_s1 = new HashMap<>();
+//      Map<String, Integer> map = new HashMap<>();
+//
+//      for(String x: s1.split("")){
+//          map_s1.put(x, map_s1.getOrDefault(x, 0) + 1);
+//      }
+//      System.out.println(">>> map_s1 = " + map_s1);
+//
+//      int s_1_idx = 0;
+//      int s_2_r_idx = 0;
+//      int s_2_l_idx = 0;
+//      String cache = "";
+//      while (s_2_r_idx < s2.length() && s_1_idx < s1.length()){
+//          String s2Val = String.valueOf(s2.charAt(s_2_r_idx));
+//          if(!map_s1.containsKey(s2Val)){
+//              cache = "";
+//              map = new HashMap<>();
+//              //s_1_idx = s_2_idx;
+//              s_2_l_idx += 1;
+//              s_2_r_idx = s_2_l_idx;
+//          }else{
+//              map.put(s2Val, map.getOrDefault(s2Val, 0) + 1);
+//              if(map.get(s2Val) <= map_s1.get(s2Val)){
+//                  cache += s2Val;
+//                  if(cache.length() == s1.length()){
+//                      return true;
+//                  }
+//                  s_1_idx += 1;
+//              }else{
+//                  cache = "";
+//                  map = new HashMap<>();
+//              }
+//          }
+//          s_2_r_idx += 1;
+//      }
+//
+//      return false;
+//    }
 
 }

@@ -40,12 +40,80 @@ import java.util.Map;
 public class PermutationInString {
 
     // V0
-    // TODO implement
+    // IDEA: HASHMAP + SLIDING WINDOW (fixed by gpt)
+    public boolean checkInclusion(String s1, String s2) {
+        if (!s1.isEmpty() && s2.isEmpty()) {
+            return false;
+        }
+        if (s1.equals(s2)) {
+            return true;
+        }
+        /** NOTE !!!
+         *
+         *  we init 2 map, one for s1 counter, the other one as track `s2 sub str counter`
+         */
+        Map<String, Integer> map1 = new HashMap<>();
+        Map<String, Integer> map2 = new HashMap<>();
+        for (String x : s1.split("")) {
+            String k = String.valueOf(x);
+            map1.put(x, map1.getOrDefault(k, 0) + 1);
+        }
 
-    // V0'
+        // 2 pointers (for s2)
+        /** NOTE !!!
+         *
+         *  we have 2 pointers (for s2) that can track character cnt in s2 within l, r pointers
+         */
+        int l = 0;
+        for (int r = 0; r < s2.length(); r++) {
+            String val = String.valueOf(s2.charAt(r));
+            map2.put(val, map2.getOrDefault(val, 0) + 1);
+
+            /** NOTE !!!
+             *
+             *  we use below trick to
+             *
+             *  -> 1) check if `new reached s2 val` is in s1 map
+             *  -> 2) check if 2 map are equal
+             *
+             *  -> so we have more simple code, and clean logic
+             */
+            if (map2.equals(map1)) {
+                return true;
+            }
+
+            /**
+             *  NOTE !!!
+             *
+             *  If the window size exceeds the size of s1, move the left pointer
+             *  -> means the `permutation str in s2 of s1` IS NOT FOUND YET,
+             *  -> in this case, we need to move s2 left pointer, and update tracking map
+             */
+            if ((r - l + 1) >= s1.length()) {
+                // update map
+                String leftVal = String.valueOf(s2.charAt(l));
+                map2.put(leftVal, map2.get(leftVal) - 1);
+                /**
+                 * NOTE !!!
+                 *
+                 *  if can't find permutation at current window ([l,r]),
+                 *  then we move left pointer 1 idx (e.g. l += 1)
+                 *  for moving and checking next window
+                 */
+                l += 1;
+                if (map2.get(leftVal) == 0) {
+                    map2.remove(leftVal);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // V0-1
     // IDEA : hashMap + 2 pointers (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/permutation-in-string.py
-    public boolean checkInclusion_0(String s1, String s2) {
+    public boolean checkInclusion_0_1(String s1, String s2) {
         if (s1.length() > s2.length()) {
             return false;
         }
@@ -108,7 +176,7 @@ public class PermutationInString {
     // https://leetcode.com/problems/permutation-in-string/editorial/
     boolean flag = false;
 
-    public boolean checkInclusion_2(String s1, String s2) {
+    public boolean checkInclusion_1(String s1, String s2) {
         permute(s1, s2, 0);
         return flag;
     }
@@ -138,7 +206,7 @@ public class PermutationInString {
     // V2
     // IDEA : SORTING
     // https://leetcode.com/problems/permutation-in-string/editorial/
-    public boolean checkInclusion_3(String s1, String s2) {
+    public boolean checkInclusion_2(String s1, String s2) {
         s1 = sort(s1);
         for (int i = 0; i <= s2.length() - s1.length(); i++) {
             if (s1.equals(sort(s2.substring(i, i + s1.length()))))
@@ -156,7 +224,7 @@ public class PermutationInString {
     // V3
     // IDEA : Hashmap
     // https://leetcode.com/problems/permutation-in-string/editorial/
-    public boolean checkInclusion_4(String s1, String s2) {
+    public boolean checkInclusion_3(String s1, String s2) {
         if (s1.length() > s2.length())
             return false;
         HashMap<Character, Integer> s1map = new HashMap<>();
@@ -186,7 +254,7 @@ public class PermutationInString {
     // V4
     // IDEA : Array
     // https://leetcode.com/problems/permutation-in-string/editorial/
-    public boolean checkInclusion_5(String s1, String s2) {
+    public boolean checkInclusion_4(String s1, String s2) {
         if (s1.length() > s2.length())
             return false;
         int[] s1map = new int[26];
@@ -214,7 +282,7 @@ public class PermutationInString {
     // V5
     // IDEA : Sliding Window
     // https://leetcode.com/problems/permutation-in-string/editorial/
-    public boolean checkInclusion_6(String s1, String s2) {
+    public boolean checkInclusion_5(String s1, String s2) {
         if (s1.length() > s2.length())
             return false;
         int[] s1map = new int[26];
@@ -243,7 +311,7 @@ public class PermutationInString {
     // V6
     // IDEA : OPTIMIZED SLIDING WINDOW
     // https://leetcode.com/problems/permutation-in-string/editorial/
-    public boolean checkInclusion_7(String s1, String s2) {
+    public boolean checkInclusion_6(String s1, String s2) {
         if (s1.length() > s2.length())
             return false;
         int[] s1map = new int[26];
@@ -280,9 +348,9 @@ public class PermutationInString {
     }
 
 
-    // V5
+    // V7
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0567-permutation-in-string.java
-    public boolean checkInclusion_8(String s1, String s2) {
+    public boolean checkInclusion_7(String s1, String s2) {
         int n = s1.length();
         int[] freq = new int[26];
         int m = s2.length();
