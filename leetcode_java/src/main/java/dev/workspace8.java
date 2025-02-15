@@ -1,7 +1,8 @@
 package dev;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 public class workspace8 {
 
@@ -52,6 +53,54 @@ public class workspace8 {
       }
 
       return res;
+    }
+
+    // LC 424
+    // IDEA: HASHMAP + 2 POINTERS
+    public int characterReplacement(String s, int k) {
+      // edge
+      if(s == null || s.length() == 0){
+          return 0;
+      }
+      if(s.length() == 1){
+         return 1;
+      }
+      // map: {val, cnt}
+      Map<String, Integer> map = new HashMap<>();
+      int res = 0;
+      int l = 0;
+      for(int r = 0; r < s.length(); r++){
+          String key = s.split("")[r];
+          String prev = s.split("")[r];
+          map.put(key, map.getOrDefault(key, 1)+1);
+          if(map.keySet().size() > 1 && getMapSecondCnt(map) > k){
+              // if most cnt > move l
+              //l = Math.max(map.get(key), r);
+              l = r;
+              // reset map
+              map = new HashMap<>();
+          }
+          res = Math.max(res, r - l + 1);
+      }
+      return res;
+    }
+
+    private int getMapSecondCnt(Map<String, Integer> map){
+        List<Integer> values = new ArrayList<>();
+        for(Integer x: map.values()){
+            values.add(x);
+        }
+
+        System.out.println(">>> (before)  values = " + values);
+        Collections.sort(values, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2 - o1;
+            }
+        });
+
+        System.out.println(">>> (after)  values = " + values);
+        return values.get(1); // get 2nd biggest
     }
 
 }
