@@ -2,10 +2,11 @@
 
 ### 1) Mysql Lock
 
+
 #### 全局鎖
 
  - Use cases : DB backup
- - All tables in DB become "read only" status
+ - All tables in DB become `read only` status
 
 ```sql
 # sql
@@ -33,9 +34,9 @@ unlock tables
 
 - Types
 	- 表鎖
-	- 元数据锁（MDL)
-	- 意向锁
-	- AUTO-INC 锁
+	- 元數據鎖（MDL)
+	- 意向鎖
+	- AUTO-INC 鎖
 
 - 讀讀分享、讀寫互斥、寫寫互斥
 
