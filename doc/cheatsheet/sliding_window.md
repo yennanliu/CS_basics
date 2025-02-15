@@ -17,11 +17,39 @@
 - Types
     - Permutation(排列)
         - LC 567: check if a permutation existed in the other string
+        ```java
+        // java
+        int l = 0;
+        for (int r = 0; r < s2.length(); r++){
+            
+            /** NOTE !!! below */
+            if (map2.equals(map1)){
+                return true;
+            }
+            // ...
+            if (conditon){
+                // do sth
+            }
+        }
+        ```
     - Anagrams
         - LC 438: Find All Anagrams (字謎詞) in a String
     - Substring
         - LC 003 : Longest Substring Without Repeating Characters
         - LC 424 : Longest Repeating Character Replacement
+        ```java
+        // java
+        int l = 0;
+        for (int r = 0; r < s.length(); r ++){
+            // ...
+
+            /** NOTE !!! below */
+            while (condition){
+                // some op
+                // do sth
+            }
+        }
+        ```
     - SubArray
         - LC 713 : Subarray Product Less Than K
         - LC 209 : Minimum Size Subarray Sum
