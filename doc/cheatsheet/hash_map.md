@@ -55,6 +55,25 @@
 
        -> so all need to do is : check if "prefixSum[j]  - k" is in map
         ```
+    - check `permutaion sub string`
+        - LC 567
+        ```java
+        // LC 567
+        // ...
+             /** NOTE !!!
+             *
+             *  we use below trick to
+             *
+             *  -> 1) check if `new reached s2 val` is in s1 map
+             *  -> 2) check if 2 map are equal
+             *
+             *  -> so we have more simple code, and clean logic
+             */
+            if (map2.equals(map1)) {
+                return true;
+            }
+        // ...
+        ```
 - Any problems with below:
     - need to cache
     - avoid double loop

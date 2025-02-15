@@ -6,7 +6,9 @@
 	- 5 / day ->  15 days to finish
 		- Sliding Window
 	- again: 3,424,567
-	- todo: re-do all previous `again` problems, similar problems, make notes
+	- todo: 
+		- re-do all previous `again` problems, similar problems, make notes
+		- refine [sliding_window.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
 
 # 2025-02-14
 - neetcode 150

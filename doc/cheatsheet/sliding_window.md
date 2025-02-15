@@ -159,6 +159,82 @@ private int getMaxVal(Map<String, List<Integer>> map){
 
 ### 2-1) Permutation in String
 
+
+```java
+// java
+// LC 567
+    // V0
+    // IDEA: HASHMAP + SLIDING WINDOW (fixed by gpt)
+    public boolean checkInclusion(String s1, String s2) {
+        if (!s1.isEmpty() && s2.isEmpty()) {
+            return false;
+        }
+        if (s1.equals(s2)) {
+            return true;
+        }
+        /** NOTE !!!
+         *
+         *  we init 2 map, one for s1 counter, the other one as track `s2 sub str counter`
+         */
+        Map<String, Integer> map1 = new HashMap<>();
+        Map<String, Integer> map2 = new HashMap<>();
+        for (String x : s1.split("")) {
+            String k = String.valueOf(x);
+            map1.put(x, map1.getOrDefault(k, 0) + 1);
+        }
+
+        // 2 pointers (for s2)
+        /** NOTE !!!
+         *
+         *  we have 2 pointers (for s2) that can track character cnt in s2 within l, r pointers
+         */
+        int l = 0;
+        for (int r = 0; r < s2.length(); r++) {
+            String val = String.valueOf(s2.charAt(r));
+            map2.put(val, map2.getOrDefault(val, 0) + 1);
+
+            /** NOTE !!!
+             *
+             *  we use below trick to
+             *
+             *  -> 1) check if `new reached s2 val` is in s1 map
+             *  -> 2) check if 2 map are equal
+             *
+             *  -> so we have more simple code, and clean logic
+             */
+            if (map2.equals(map1)) {
+                return true;
+            }
+
+            /**
+             *  NOTE !!!
+             *
+             *  If the window size exceeds the size of s1, move the left pointer
+             *  -> means the `permutation str in s2 of s1` IS NOT FOUND YET,
+             *  -> in this case, we need to move s2 left pointer, and update tracking map
+             */
+            if ((r - l + 1) >= s1.length()) {
+                // update map
+                String leftVal = String.valueOf(s2.charAt(l));
+                map2.put(leftVal, map2.get(leftVal) - 1);
+                /**
+                 * NOTE !!!
+                 *
+                 *  if can't find permutation at current window ([l,r]),
+                 *  then we move left pointer 1 idx (e.g. l += 1)
+                 *  for moving and checking next window
+                 */
+                l += 1;
+                if (map2.get(leftVal) == 0) {
+                    map2.remove(leftVal);
+                }
+            }
+        }
+
+        return false;
+    }
+```
+
 ```python
 # LC 567 Permutation in String
 # V0 
