@@ -71,6 +71,12 @@ public class LongestSubstringWithoutRepeatingCharacters {
                  *  (but slow idx could be`bigger` than ` map.get(cur) + 1`, so we need to get the `bigger` idx)
                  *  (e.g. Math.max(slow, map.get(cur) + 1))
                  */
+                /**
+                 * NOTE !!!
+                 *
+                 *  instead of move slow pointer to `last seen max idx`,
+                 *  -> we move it to `last seen max idx` + 1 (aka map.get(k) + 1)
+                 */
                 slow = Math.max(slow, map.get(cur) + 1);
             }
 
@@ -179,6 +185,39 @@ public class LongestSubstringWithoutRepeatingCharacters {
         }
 
         return ans;
+    }
+
+    // V0-3
+    // IDEA: HASHMAP + SLIDING WINDOW (GPT)
+    public int lengthOfLongestSubstring_0_3(String s) {
+        // Edge cases
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+
+        Map<Character, Integer> map = new HashMap<>();
+        int res = 0;
+        int l = 0;
+
+        for (int r = 0; r < s.length(); r++) {
+            char k = s.charAt(r);
+
+            if (map.containsKey(k)) {
+                // Move left pointer to the max of the current left and (last occurrence + 1)
+                /**
+                 * NOTE !!!
+                 *
+                 *  instead of move slow pointer to `last seen max idx`,
+                 *  -> we move it to `last seen max idx` + 1 (aka map.get(k) + 1)
+                 */
+                l = Math.max(l, map.get(k) + 1);
+            }
+
+            map.put(k, r);  // Update the latest occurrence of the character
+            res = Math.max(res, r - l + 1);
+        }
+
+        return res;
     }
 
     // V1
