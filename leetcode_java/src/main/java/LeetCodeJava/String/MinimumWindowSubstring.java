@@ -1,6 +1,7 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/minimum-window-substring/description/?envType=list&envId=xoqag3yj
+// https://leetcode.cn/problems/minimum-window-substring/
 /**
  * 76. Minimum Window Substring
  * Solved
@@ -53,15 +54,100 @@ public class MinimumWindowSubstring {
 
     // V0
     // TODO : implement
-    public String minWindow(String s, String t) {
+//    public String minWindow(String s, String t) {
+//
+//        return null;
+//    }
 
-        return null;
+    // V1-1
+    // IDEA: BRUTE FORCE (TLE)
+    // https://youtu.be/jSto0O4AJbM?si=pASTto2TTl1MOI_S
+    // https://neetcode.io/problems/minimum-window-with-characters
+    public String minWindow_1_1(String s, String t) {
+        if (t.isEmpty()) return "";
+
+        Map<Character, Integer> countT = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            countT.put(c, countT.getOrDefault(c, 0) + 1);
+        }
+
+        int[] res = {-1, -1};
+        int resLen = Integer.MAX_VALUE;
+
+        for (int i = 0; i < s.length(); i++) {
+            Map<Character, Integer> countS = new HashMap<>();
+            for (int j = i; j < s.length(); j++) {
+                countS.put(s.charAt(j), countS.getOrDefault(s.charAt(j), 0) + 1);
+
+                boolean flag = true;
+                for (char c : countT.keySet()) {
+                    if (countS.getOrDefault(c, 0) < countT.get(c)) {
+                        flag = false;
+                        break;
+                    }
+                }
+
+                if (flag && (j - i + 1) < resLen) {
+                    resLen = j - i + 1;
+                    res[0] = i;
+                    res[1] = j;
+                }
+            }
+        }
+
+        return resLen == Integer.MAX_VALUE ? "" : s.substring(res[0], res[1] + 1);
     }
 
-    // V1
+    // V1-2
+    // IDEA: SLIDING WINDOW
+    // https://youtu.be/jSto0O4AJbM?si=pASTto2TTl1MOI_S
+    // https://neetcode.io/problems/minimum-window-with-characters
+    public String minWindow_1_2(String s, String t) {
+        if (t.isEmpty())
+            return "";
+
+        Map<Character, Integer> countT = new HashMap<>();
+        Map<Character, Integer> window = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            countT.put(c, countT.getOrDefault(c, 0) + 1);
+        }
+
+        int have = 0, need = countT.size();
+        int[] res = { -1, -1 };
+        int resLen = Integer.MAX_VALUE;
+        int l = 0;
+
+        for (int r = 0; r < s.length(); r++) {
+            char c = s.charAt(r);
+            window.put(c, window.getOrDefault(c, 0) + 1);
+
+            if (countT.containsKey(c) && window.get(c).equals(countT.get(c))) {
+                have++;
+            }
+
+            while (have == need) {
+                if ((r - l + 1) < resLen) {
+                    resLen = r - l + 1;
+                    res[0] = l;
+                    res[1] = r;
+                }
+
+                char leftChar = s.charAt(l);
+                window.put(leftChar, window.get(leftChar) - 1);
+                if (countT.containsKey(leftChar) && window.get(leftChar) < countT.get(leftChar)) {
+                    have--;
+                }
+                l++;
+            }
+        }
+
+        return resLen == Integer.MAX_VALUE ? "" : s.substring(res[0], res[1] + 1);
+    }
+
+    // V2
     // IDEA: SLIDING WINDOW
     // https://leetcode.com/problems/minimum-window-substring/solutions/4674237/easy-explanation-solution/?envType=list&envId=xoqag3yj
-    public String minWindow_1(String s, String t) {
+    public String minWindow_2(String s, String t) {
         Map<Character, Integer> targetFreq = new HashMap<>();
         Map<Character, Integer> windowFreq = new HashMap<>();
 
@@ -106,9 +192,9 @@ public class MinimumWindowSubstring {
         return s.substring(minLeft, minLeft + minLength);
     }
 
-    // V2
+    // V3
     // https://leetcode.com/problems/minimum-window-substring/solutions/4673541/beats-100-explained-any-language-by-prodonik/?envType=list&envId=xoqag3yj
-    public String minWindow_2(String s, String t) {
+    public String minWindow_3(String s, String t) {
         if (s == null || t == null || s.length() == 0 || t.length() == 0 ||
                 s.length() < t.length()) {
             return new String();
