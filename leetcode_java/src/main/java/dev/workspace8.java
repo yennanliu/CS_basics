@@ -286,4 +286,105 @@ public class workspace8 {
       return null;
     }
 
+  // LC 239
+  // 2.39 - 2.49 PM
+  /**
+   * You are given an array of integers nums,
+   * there is a sliding window of size k which is moving
+   * from the very left of the array to the very right.
+   * You can only see the `k numbers in the window.`
+   * Each time the sliding window moves right by `one position`.
+   *
+   * ->  Return the `max sliding window`.
+   *
+   *  EXP 1)
+   *
+   *  Input: nums = [1,3,-1,-3,5,3,6,7], k = 3
+   *  -> Output: [3,3,5,5,6,7]
+   *
+   *
+   *  -> w (window) = [1,3,-1]  -> 3
+   *    [3,-1,-3] -> 3
+   *    [-1,-3,5] -> 5
+   *    [-3,5,3] -> 5
+   *    [5,3,6] -> 6
+   *    [3,6,7] -> 7
+   *
+   *
+   *  EXP 2)
+   *
+   *  Input: nums = [1], k = 1
+   *  Output: [1]
+   *
+   *  -> 1
+   *
+   *
+   *  IDEA: QUEUE (FIFO)
+   *
+   *  -> maintain a size = k queue,
+   *     collect the max in each iteration,
+   *     then, insert new, and pop oldest
+   *     ... till reach the end of nums
+   *
+   */
+  public int[] maxSlidingWindow(int[] nums, int k) {
+
+      // edge
+      if (nums == null || nums.length == 0){
+          return new int[]{};
+      }
+      if(nums.length <= k){
+          int res = 0;
+          for(int x: nums){
+              res = Math.max(res, x);
+          }
+          return new int[]{res};
+      }
+
+      List<Integer> collected = new ArrayList<>();
+
+      // queue
+      Queue<Integer> q = new LinkedList<>();
+      // big heap ?? (PQ) default is small queue ??? in java ???
+      PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+
+      // init (firstly, add k element to queue)
+      for(int i = 0; i < k; i++){
+          int cur = nums[i];
+          q.add(cur);
+          pq.add(cur); // for using `big heap`, we use this trick
+      }
+
+     // int curMax = nums[0];
+      for(int i = k; i < nums.length; i++){
+          int cur = nums[i];
+          q.add(cur);
+          pq.add(cur); // for using `big heap`, we use this trick
+          //curMax = Math.max(curMax, cur);
+          System.out.println(">>> i = " + i + ", cur = " + cur + ", q = " + q + ", pq = " + pq);
+          // if q size > k, pop the oldest element
+          if(q.size() >= k){
+              q.poll();
+              pq.poll();
+          }
+          //collected.add(curMax);
+          collected.add(pq.peek()); // via this trick, we can get the top element at PQ (biggest element)
+      }
+
+      System.out.println(">>> collected = " + collected);
+
+      // ???? optimize ?
+      int[] res = new int[collected.size()];
+      int j = 0;
+      for (int x: collected){
+          res[j] = x;
+          j += 1;
+      }
+
+      return res;
+    }
+
+
+
+
 }
