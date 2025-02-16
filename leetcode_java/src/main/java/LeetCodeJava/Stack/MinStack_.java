@@ -1,63 +1,155 @@
 package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/min-stack/
+/**
+ * 155. Min Stack
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Hint
+ * Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+ *
+ * Implement the MinStack class:
+ *
+ * MinStack() initializes the stack object.
+ * void push(int val) pushes the element val onto the stack.
+ * void pop() removes the element on the top of the stack.
+ * int top() gets the top element of the stack.
+ * int getMin() retrieves the minimum element in the stack.
+ * You must implement a solution with O(1) time complexity for each function.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input
+ * ["MinStack","push","push","push","getMin","pop","top","getMin"]
+ * [[],[-2],[0],[-3],[],[],[],[]]
+ *
+ * Output
+ * [null,null,null,null,-3,null,0,-2]
+ *
+ * Explanation
+ * MinStack minStack = new MinStack();
+ * minStack.push(-2);
+ * minStack.push(0);
+ * minStack.push(-3);
+ * minStack.getMin(); // return -3
+ * minStack.pop();
+ * minStack.top();    // return 0
+ * minStack.getMin(); // return -2
+ *
+ *
+ * Constraints:
+ *
+ * -231 <= val <= 231 - 1
+ * Methods pop, top and getMin operations will always be called on non-empty stacks.
+ * At most 3 * 104 calls will be made to push, pop, top, and getMin.
+ *
+ */
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.Stack;
+import java.util.*;
 
 public class MinStack_ {
 
-    // TODO: try if can use PriorityQueue
-//    class MinStack {
-//
-//        private PriorityQueue<Integer> queue = new PriorityQueue<Integer>(new Comparator<Integer>() {
-//            @Override
-//            public int compare(Integer o1, Integer o2) {
-//                // small queue
-//                // https://blog.csdn.net/shinef/article/details/105935038
-//                return o2- o1; //o1 - o2;
-//            }
-//        });
-//
-//        public MinStack() {
-//
-//        }
-//
-//        public void push(int val) {
-//            this.queue.add(val);
-//            Object[] array = this.queue.toArray();
-//            System.out.println("--> push : array = " + Arrays.toString(array));
-//        }
-//
-//        public void pop() {
-//            Object[] array = this.queue.toArray();
-//            System.out.println("--> pop : array = " + Arrays.toString(array));
-//            this.queue.poll();
-//        }
-//
-//        public int top() {
-//            Object[] array = this.queue.toArray();
-//            System.out.println("--> top : array = " + Arrays.toString(array));
-//            int ans = this.queue.peek();
-//            return ans;
-//        }
-//
-//        public int getMin() {
-//            Object[] array = this.queue.toArray();
-//            System.out.println("--> getMin : array = " + Arrays.toString(array));
-//            return (int) array[array.length-1];
-//        }
-//    }
+    // V0
+    // TODO; implement
+
+    // V0-1
+    // IDEA: LIST (gpt) (not efficient)
+    class MinStack_0_1 {
+        private List<Integer> list; // Storage list
+
+        public MinStack_0_1() {
+            this.list = new ArrayList<>();
+        }
+
+        public void push(int val) {
+            list.add(val); // Add to the end
+        }
+
+        public void pop() {
+            if (!list.isEmpty()) {
+                list.remove(list.size() - 1); // Remove last element
+            }
+        }
+
+        public int top() {
+            if (!list.isEmpty()) {
+                return list.get(list.size() - 1); // Return last element
+            }
+            throw new EmptyStackException(); // Proper error handling
+        }
+
+        public int getMin() {
+            if (list.isEmpty()) {
+                throw new EmptyStackException(); // Prevent access on empty list
+            }
+
+            // Create a copy to avoid modifying original list
+            List<Integer> tmp = new ArrayList<>(list);
+
+            // Sort to get the minimum
+            Collections.sort(tmp);
+
+            return tmp.get(0); // Smallest element
+        }
+
+    }
+
+    // V0-2
+    // IDEA: stack + min stack (gpt)
+    class MinStack_0_2 {
+        private Stack<Integer> stack; // Stores all elements
+        private Stack<Integer> minStack; // Stores min values
+
+        public MinStack_0_2() {
+            this.stack = new Stack<>();
+            this.minStack = new Stack<>();
+        }
+
+        public void push(int val) {
+            stack.push(val);
+            // Push to minStack only if it's the first element or smaller than current min
+            if (minStack.isEmpty() || val <= minStack.peek()) {
+                minStack.push(val);
+            }
+        }
+
+        public void pop() {
+            if (stack.isEmpty())
+                return;
+            int removed = stack.pop();
+            if (removed == minStack.peek()) {
+                minStack.pop();
+            }
+        }
+
+        public int top() {
+            if (stack.isEmpty()) {
+                System.out.println("Stack is empty");
+                return -1;
+            }
+            return stack.peek();
+        }
+
+        public int getMin() {
+            if (minStack.isEmpty()) {
+                System.out.println("Stack is empty");
+                return -1;
+            }
+            return minStack.peek();
+        }
+    }
 
     // V1
     // IDEA : PRIORITY QUEUE (for getMin) + STACK (for "top")
     // https://leetcode.com/problems/min-stack/solutions/1611233/java-stack-priorityqueue/
-    class MinStack {
+    class MinStack_1 {
         Stack<Integer> st;
         PriorityQueue<Integer> pq;
-        public MinStack() {
+        public MinStack_1() {
             this.st = new Stack<>();
             this.pq = new PriorityQueue<Integer>();
         }
@@ -80,7 +172,7 @@ public class MinStack_ {
         }
     }
 
-    // V1'
+    // V1-1
     // IDEA : PRIORITY QUEUE
     // https://leetcode.com/problems/min-stack/solutions/1874692/simple-java-priorityqueue/
     class MinStack_1_1 {
@@ -110,7 +202,7 @@ public class MinStack_ {
         }
     }
 
-    // V1
+    // V2
     // IDEA : Stack of Value/ Minimum Pairs
     // https://leetcode.com/problems/min-stack/editorial/
     class MinStack_2 {
@@ -149,7 +241,7 @@ public class MinStack_ {
         }
     }
 
-    // V2
+    // V3
     // IDEA : Two Stacks
     // https://leetcode.com/problems/min-stack/editorial/
     class MinStack_3 {
@@ -187,7 +279,7 @@ public class MinStack_ {
         }
     }
 
-    // V3
+    // V4
     // IDEA :  Improved Two Stacks
     // https://leetcode.com/problems/min-stack/editorial/
     class MinStack_4 {

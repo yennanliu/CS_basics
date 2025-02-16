@@ -384,7 +384,58 @@ public class workspace8 {
       return res;
     }
 
+    // LC 155
+    // 3.41 - 4.10 PM
+    /**
+     *
+     * Design a stack that supports push, pop, top,
+     * and retrieving the minimum element in constant time.
+     *
+     * -> stack : FILO (first in, last out)
+     *
+     *   IDEA 1) queue ?
+     *   IDEA 2) ARRAY ?
+     *   IDEA 3) double queue ?
+     */
+    class MinStack {
 
+        List<Integer> list;
+
+        public MinStack() {
+            this.list = new ArrayList<>();
+        }
+
+        public void push(int val) {
+            this.list.add(val);
+        }
+
+        public void pop() {
+            if (!list.isEmpty()) {
+                list.remove(list.size() - 1); // Remove last element
+            }
+        }
+
+        public int top() {
+            if (!list.isEmpty()) {
+                return list.get(list.size() - 1); // Return last element
+            }
+            throw new EmptyStackException(); // Proper error handling
+        }
+
+        public int getMin() {
+            if (list.isEmpty()) {
+                throw new EmptyStackException(); // Prevent access on empty list
+            }
+
+            // Create a copy to avoid modifying original list
+            List<Integer> tmp = new ArrayList<>(list);
+
+            // Sort to get the minimum
+            Collections.sort(tmp);
+
+            return tmp.get(0); // Smallest element
+        }
+    }
 
 
 }
