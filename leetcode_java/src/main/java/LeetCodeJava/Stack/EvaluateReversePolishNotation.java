@@ -63,6 +63,11 @@ public class EvaluateReversePolishNotation {
             return 0;
         }
         int ans = 0;
+        /**
+         * NOTE !!!
+         *
+         *  should use `Stack`, instead of `Queue`
+         */
         Stack<Integer> st1 = new Stack<>();
         Stack<String> st2 = new Stack<>();
 
@@ -109,6 +114,52 @@ public class EvaluateReversePolishNotation {
             }
         }
         return  i2 / i1;
+    }
+
+    // V0-1
+    // IDEA: STACK (fixed by gpt)
+    public int evalRPN_0_1(String[] tokens) {
+        if (tokens == null || tokens.length == 0) {
+            return 0;
+        }
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (String t : tokens) {
+            if (isNumber(t)) {
+                stack.push(Integer.parseInt(t));
+            } else {
+                int b = stack.pop(); // Last inserted number
+                int a = stack.pop(); // Second last inserted number
+                stack.push(calculate(a, b, t)); // Compute and push result
+            }
+        }
+
+        return stack.pop();
+    }
+
+    private boolean isNumber(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private int calculate(int a, int b, String operator) {
+        switch (operator) {
+            case "+":
+                return a + b;
+            case "-":
+                return a - b;
+            case "*":
+                return a * b;
+            case "/":
+                return a / b;
+            default:
+                throw new IllegalArgumentException("Invalid operator: " + operator);
+        }
     }
 
     // V1
@@ -203,5 +254,5 @@ public class EvaluateReversePolishNotation {
 
         return stack.pop();
     }
-    
+
 }
