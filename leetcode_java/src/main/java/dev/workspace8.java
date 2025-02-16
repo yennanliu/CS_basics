@@ -1,6 +1,5 @@
 package dev;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -434,6 +433,104 @@ public class workspace8 {
             Collections.sort(tmp);
 
             return tmp.get(0); // Smallest element
+        }
+    }
+
+  // LC 150
+  // 4.11 - 4.21 PM
+  /**
+   * You are given an array of strings tokens that
+   * represents an arithmetic expression in a Reverse Polish Notation.
+   *
+   * Evaluate the expression. Return an integer
+   * that represents the value of the expression.
+   *
+   *
+   *  -> QUEUE ???
+   *
+   *  -> 2 Q
+   *  -> one save numerical val
+   *  -> the other save `operator`
+   *  -> once meet operator, pop last 2 element from numerical q
+   *     -> calculate, save back to numerical queue
+   *  -> ... repeat above steps
+   *
+   *
+   *
+   *  EXP 1)
+   *
+   *  ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
+   *
+   *  -> 10, n_q = [10], op_q = [], res = 0
+   *  -> 6, n_q = [10,6], op_q = [], res = 0
+   *  -> 9, n_q = [10,6,9], op_q = [], res = 0
+   *  -> 3, n_q = [10,6,9,3], op_q = [], res = 0
+   *  -> "+", n_q = [1,6]  , op_q = [], res = 0
+   *       -> 9+3 = 12 -> n_q = [1,6,12]
+   *   -> -11, n_q = [1,6,12,-11] , op_q = [], res = 0
+   *   -> "*",  n_q = [1,6] , op_q = [], res = 0
+   *       -> 12 * -11 = -132, n_q = [1,6,-132]
+   *   -> "/",  n_q = [1], op_q = [], res = 0
+   *       -> 6 / -132 = 0, n_q = [1,0]
+   *   -> "*" ,  n_q = [], op_q = [], res = 0
+   *       -> 1 * 0 = 0, n_q = [0]
+   *   -> 17, n_q = [0, 17]
+   *   -> "+", n_q = [17]
+   *   -> 5,  n_q = [17,5]
+   *   -> "+", n_q = []
+   *       -> 17+5 = 22, n_q = [22]
+   *
+   *   -> res = 22
+   *
+   */
+  public int evalRPN(String[] tokens) {
+      String[] numArr = new String[]{"1","2","3","4","5","6","7","8","9","0"};
+      List<String> numList = Arrays.asList(numArr);
+      // edge
+      if(tokens == null || tokens.length == 0){
+          return 0;
+      }
+      if(tokens.length == 1){
+          if(numList.contains(tokens[0])){
+              return Integer.parseInt(tokens[0]);
+          }
+      }
+
+      // init num q
+      Queue<Integer> q = new LinkedList<>();
+
+      int res = 0;
+      for(String t: tokens){
+          if(numList.contains(t)){
+              q.add(Integer.parseInt(t));
+          }else{
+              int lastSec = q.poll();
+              int lastFirst = q.poll();
+              int tmpRes = calculate(lastFirst, lastSec, t);
+              q.add(tmpRes);
+
+          }
+      }
+
+      res = q.poll();
+      return res;
+    }
+
+    private int calculate(int a, int b, String operator){
+       if (operator.equals("+")){
+           return a + b;
+       }
+       if (operator.equals("-")){
+            return a - b;
+        }
+        if (operator.equals("*")){
+            return a * b;
+        }
+        else{
+            if (b == 0){
+                return 0;
+            }
+            return a / b;
         }
     }
 
