@@ -150,12 +150,18 @@ public class workspace7 {
 
 
         // ------------------- TEST 10 TEST ARRAY SORT
-       int[] nums = new int[]{0,3,7,2,5,8,4,6,0,1};
-       Arrays.sort(nums);
-       //System.out.println(Arrays.asList(nums));
-       for(int x: nums){
-           System.out.println(x);
-       }
+//       int[] nums = new int[]{0,3,7,2,5,8,4,6,0,1};
+//       Arrays.sort(nums);
+//       //System.out.println(Arrays.asList(nums));
+//       for(int x: nums){
+//           System.out.println(x);
+//       }
+
+        // ------------------- TEST 11 list to str
+        List<String> my_str_10 = new ArrayList<>();
+        my_str_10.add("(");
+        my_str_10.add(")");
+        System.out.println(String.valueOf(my_str_10));
 
     }
 
