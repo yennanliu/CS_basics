@@ -1,7 +1,31 @@
 package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/generate-parentheses/
-
+/**
+ * 22. Generate Parentheses
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: n = 3
+ * Output: ["((()))","(()())","(())()","()(())","()()()"]
+ * Example 2:
+ *
+ * Input: n = 1
+ * Output: ["()"]
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= n <= 8
+ *
+ */
 import java.util.*;
 
 public class GenerateParentheses {
@@ -42,7 +66,7 @@ public class GenerateParentheses {
         }
     }
 
-    // V0'
+    // V0-1
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0022-generate-parentheses.java
     // https://www.youtube.com/watch?v=s9fokUqJ76A
     // IDEA : BACKTRACK
@@ -75,7 +99,7 @@ public class GenerateParentheses {
         }
     }
 
-    // V0'
+    // V0-2
     // IDEA : backtrack + valid parentheses (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/generate-parentheses.py#L27
     // Method to generate all combinations of well-formed parentheses
@@ -126,6 +150,65 @@ public class GenerateParentheses {
             }
         }
         return q.isEmpty();
+    }
+
+    // V0-3
+    // IDEA: BACKTRACK (fixed by gpt)
+    List<String> resParenthesis = new ArrayList<>();
+    public List<String> generateParenthesis_0_3(int n) {
+        // List<String> res = new ArrayList<>();
+        // edge
+        if (n == 0) {
+            return resParenthesis;
+        }
+        if (n == 1) {
+            resParenthesis.add("()");
+            return resParenthesis;
+        }
+
+        // backtrack
+        backtrack(n, new StringBuilder(), 0);
+        System.out.println(">>> resParenthesis = " + resParenthesis);
+        return resParenthesis;
+    }
+
+    private void backtrack(int n, StringBuilder cur, int idx) {
+        String[] word = new String[] { "(", ")" };
+        String curStr = cur.toString();
+        if (curStr.length() == n * 2) {
+            // validate
+            if (isValidParenthesis(curStr)) {
+                resParenthesis.add(curStr);
+            }
+            return;
+        }
+        if (curStr.length() > n * 2) {
+            return;
+        }
+        for (int i = 0; i < word.length; i++) {
+            String w = word[i];
+            // cur.add(w);
+            cur.append(w);
+            backtrack(n, cur, idx + 1);
+            // undo
+            idx -= 1;
+            cur.deleteCharAt(cur.length() - 1);
+        }
+    }
+
+    private boolean isValidParenthesis(String s) {
+        int balance = 0;
+        for (char ch : s.toCharArray()) {
+            if (ch == '(') {
+                balance++;
+            } else if (ch == ')') {
+                balance--;
+            }
+            if (balance < 0) {
+                return false; // If balance goes negative, it's invalid
+            }
+        }
+        return balance == 0; // Valid if balance ends up being 0
     }
 
     // V1

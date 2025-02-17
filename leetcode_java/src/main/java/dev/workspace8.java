@@ -534,5 +534,127 @@ public class workspace8 {
         }
     }
 
+    // LC 22
+    // 10.04 - 10.19 am
+    /**
+     * Given n pairs of parentheses, write a
+     * function to generate all combinations of well-formed parentheses.
+     *
+     * Example 1:
+     *
+     * Input: n = 3
+     * Output: ["((()))","(()())","(())()","()(())","()()()"]
+     * Example 2:
+     *
+     * Input: n = 1
+     * Output: ["()"]
+     *
+     *
+     * Constraints:
+     *
+     * 1 <= n <= 8
+     *
+     *
+     *  n = 3 -> must be 3 "(", 3 ")"
+     *
+     *
+     *  IDEA 1) BACKTRACK ???
+     *
+     *
+     *  n = 3 -> must be 3 "(", 3 ")"
+     *
+     *                   (                                  )
+     *            ((            ()
+     *      (((     (()      ()(   ())
+     *    ((()    (()(  (())
+     *
+     *  ....
+     *
+     */
+    List<String> resParenthesis = new ArrayList<>();
+    public List<String> generateParenthesis(int n) {
+        //List<String> res = new ArrayList<>();
+        // edge
+        if(n == 0) {
+            return resParenthesis;
+        }
+        if(n == 1){
+            resParenthesis.add("()");
+            return resParenthesis;
+        }
+
+        // backtrack
+        backtrack(n, new StringBuilder(), 0);
+        System.out.println(">>> resParenthesis = " + resParenthesis);
+        return resParenthesis;
+    }
+
+    private void backtrack(int n, StringBuilder cur, int idx){
+        String[] word = new String[]{"(", ")"};
+        String curStr = cur.toString();
+        if(curStr.length() == n * 2){
+            // validate
+            //String curStr = cur.toString(); // ???
+            if(isValidParenthesis(curStr)){
+                resParenthesis.add(curStr);
+            }
+            return;
+        }
+        if(curStr.length() > n * 2){
+            return;
+        }
+        for(int i = 0; i < word.length; i++){
+            String w = word[i];
+            //cur.add(w);
+            cur.append(w);
+            backtrack(n, cur, idx+1);
+            // undo
+            idx -= 1;
+            //cur.remove(cur.size()-1);
+            cur.deleteCharAt(cur.length()-1);
+        }
+    }
+
+    private boolean isValidParenthesis(String s) {
+        int balance = 0;
+        for (char ch : s.toCharArray()) {
+            if (ch == '(') {
+                balance++;
+            } else if (ch == ')') {
+                balance--;
+            }
+            if (balance < 0) {
+                return false;  // If balance goes negative, it's invalid
+            }
+        }
+        return balance == 0;  // Valid if balance ends up being 0
+    }
+
+
+
+//    private boolean isValidParenthesis(String x){
+//        if(x == null || x.length() == 0){
+//            return true;
+//        }
+//        if(x.length() == 1){
+//            return false;
+//        }
+//        Queue<String> q = new LinkedList<>();
+//        Map<String, String> map = new HashMap<>();
+//        map.put("(", ")");
+//        for(String val: x.split("")){
+//            if(map.isEmpty() && val.equals(")")){
+//                return false;
+//            }
+//            if(val.equals("(")){
+//                q.add(val);
+//            }else{
+//                String tmp = q.poll();
+//            }
+//        }
+//
+//        return true;
+//    }
+
 
 }
