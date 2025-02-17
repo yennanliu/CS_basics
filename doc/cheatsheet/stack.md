@@ -24,6 +24,7 @@
          - LC 1209
     - monotonic stack
         - LC 2104
+        - LC 239
 
 ## 0) Concept
 - [Java Stack](https://blog.csdn.net/oChangWen/article/details/72859556)
@@ -69,6 +70,12 @@ for i, val in enumerate(len(tmp)):
                 nextGreater[st.peek().get(1)] = j - st.peek().get(1);
                 st.pop();
             }
+```
+
+- monotonic stack
+
+```java
+// LC 239
 ```
 
 ## 1) General form
