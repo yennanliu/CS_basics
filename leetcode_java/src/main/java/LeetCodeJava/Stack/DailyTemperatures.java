@@ -49,6 +49,12 @@ public class DailyTemperatures {
          *
          *   -> cache elements (temperature) that DOESN'T have (NOT found) next warmer temperature yet
          *   -> structure : stack ([temperature, idx])
+         *
+         *
+         *   NOTE !!!
+         *
+         *   Stack val is as `[temperature, idx]` structure
+         *   -> so we can track temperature and idx at once
          */
         Stack<List<Integer>> st = new Stack<>(); // element, idx
         /** NOTE !!!
@@ -93,7 +99,7 @@ public class DailyTemperatures {
         return nextGreater;
     }
 
-    // V0'
+    // V0-1
     // IDEA : STACK (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/daily-temperatures.py#L34
     public int[] dailyTemperatures_0_1(int[] temperatures) {
@@ -138,7 +144,7 @@ public class DailyTemperatures {
     }
 
 
-    // VO''
+    // VO-2
     // IDEA : INCREASING STACK
     // https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj
     /**  NOTE !!! WE USE "INCREASING"  STACK HERE
@@ -198,10 +204,39 @@ public class DailyTemperatures {
         return res;
     }
 
+    // V0-3
+    // IDEA: MONOTONIC STACK (gpt)
+    public int[] dailyTemperatures_0_3(int[] temperatures) {
+        // edge case
+        if (temperatures == null || temperatures.length == 0) {
+            return new int[] {};
+        }
+
+        // result array to store the number of days to wait for a warmer temperature
+        int[] res = new int[temperatures.length];
+
+        // stack to store the indices of the temperatures
+        Stack<Integer> st = new Stack<>();
+
+        // iterate through the temperatures
+        for (int i = 0; i < temperatures.length; i++) {
+            // while stack is not empty and the current temperature is greater than the
+            // temperature at the index of the top element of the stack
+            while (!st.isEmpty() && temperatures[i] > temperatures[st.peek()]) {
+                int idx = st.pop(); // get the index of the previous temperature
+                res[idx] = i - idx; // calculate the number of days to wait
+            }
+            st.push(i); // push the current index onto the stack
+        }
+
+        // return the result array
+        return res;
+    }
+
     // V1
     // IDEA : Monotonic Stack
     // https://leetcode.com/problems/daily-temperatures/editorial/
-    public int[] dailyTemperatures_2(int[] temperatures) {
+    public int[] dailyTemperatures_1(int[] temperatures) {
         int n = temperatures.length;
         int[] answer = new int[n];
         Deque<Integer> stack = new ArrayDeque<>();
@@ -223,7 +258,7 @@ public class DailyTemperatures {
     // V2
     // IDEA : Array, Optimized Space
     // https://leetcode.com/problems/daily-temperatures/editorial/
-    public int[] dailyTemperatures_3(int[] temperatures) {
+    public int[] dailyTemperatures_2(int[] temperatures) {
         int n = temperatures.length;
         int hottest = 0;
         int answer[] = new int[n];

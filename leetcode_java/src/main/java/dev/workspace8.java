@@ -722,9 +722,99 @@ public class workspace8 {
      *
      */
     public int[] dailyTemperatures(int[] temperatures) {
+        // edge
+        if (temperatures == null || temperatures.length == 0) {
+            return new int[] {};
+        }
 
-        return null;
+        // init res
+        int[] res = new int[temperatures.length];
+        for (int i = 0; i < temperatures.length; i++) {
+            res[i] = 0; // init res as 0
+
+            // update map: {val: idx}
+            int cur = temperatures[i];
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        System.out.println(">>> map = " + map);
+
+        // stack: FILO
+        Stack<Integer> st = new Stack<>();
+        for (int i = 0; i < temperatures.length; i++) {
+            int cur = temperatures[i];
+            // System.out.println(">>> cur = " + cur + ", st = " + st);
+            // use map record val and its idx
+            map.put(cur, i);
+            System.out.println(">>> cur = " + cur + ", st = " + st + ", res = " + res);
+            if (st.isEmpty()) {
+                st.add(cur);
+            } else {
+                while (!st.isEmpty() && cur > st.peek()) {
+                    int tmp = st.pop();
+                    // update res
+                    res[map.get(tmp)] = i - map.get(tmp);
+                }
+                st.add(cur);
+            }
+        }
+
+        System.out.println(">>> res = " + res);
+
+        return res;
     }
+
+//    public int[] dailyTemperatures(int[] temperatures) {
+//        // edge
+//        if(temperatures == null || temperatures.length == 0){
+//            return new int[]{};
+//        }
+//
+//        Map<Integer, Queue<Integer>> map = new HashMap<>();
+//
+//        // init res
+//        int[] res = new int[temperatures.length];
+//        for(int i = 0; i < temperatures.length; i++){
+//            res[i] = 0; // init res as 0
+//
+//            // update map: {val: idx}
+//            int cur = temperatures[i];
+//            // use map record val and its idx
+//            //map.put(cur, i);
+//            Queue<Integer> tmpList = map.getOrDefault(cur, new LinkedList<>());
+//            tmpList.add(i);
+//            map.put(cur, tmpList);
+//        }
+//
+//        System.out.println(">>> map = " + map);
+//
+//        // stack: FILO
+//        Stack<Integer> st = new Stack<>();
+//        for(int i = 0; i < temperatures.length; i++){
+//            int cur = temperatures[i];
+//            System.out.println(">>> cur = " + cur + ", st = " + st + ", res = " + res);
+//            if(st.isEmpty()){
+//                st.add(cur);
+//            }else{
+//                while(!st.isEmpty() && cur > st.peek()){
+//                    int tmp = st.pop();
+//                    // update res
+//                    Queue<Integer> tmpList = map.get(tmp);
+//                    int idx = tmpList.poll();
+//
+//                    res[idx] = i - idx;
+//
+//                    // update map
+//                    map.put(cur, tmpList);
+//                }
+//                st.add(cur);
+//            }
+//        }
+//
+//        System.out.println(">>> res = " + res);
+//
+//        return res;
+//    }
 
 
 }
