@@ -918,5 +918,19 @@ public class workspace8 {
         return res;
     }
 
+    // LC 84
+    // 10.32 - 10.47 am
+    /**
+     *  IDEA 1) HASHMAP + 2 POINTERS
+     *
+     *  ->
+     *
+     *
+     */
+    public int largestRectangleArea(int[] heights) {
+
+        return 0;
+    }
+
 
 }
