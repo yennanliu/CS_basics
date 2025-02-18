@@ -65,9 +65,10 @@
     - `Recursive` binary search
         - Garena/test1.py
     - Search in Rotated Sorted Array
-        - LC 033
+        - LC 33
             - // CASE 1) sub array left is sorted
             - // CASE 2) sub array right is sorted
+            - (or mid is belong to `left` sub array or `right` sub array) (LC 153)
         ```java
         // java
         while (r >= l){
