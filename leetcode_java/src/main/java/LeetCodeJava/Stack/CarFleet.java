@@ -80,6 +80,9 @@ public class CarFleet {
      * and computing their time to reach the target.
      * We then iterate through these times to count the number of distinct fleets.
      *
+     *   NOTE !!! concept of `arrived time` (time = (target - position) / speed)
+     *   NOTE !!! how we append new fleet
+     *
      *
      *
      * Steps in the Code:
@@ -148,9 +151,19 @@ public class CarFleet {
     /**
      *  Step 1) calculate all arriving time for all cars and save as map
      *  Step 2) sort distance array
-     *      - Sorting ensures that cars are processed in the order they reach the target, making it easier to determine fleet formation.
-     *  Step 3) compare previous arrive time and cur arrive time, if can't form a "fleet" then append to fleet
+     *      - Sorting ensures that cars are processed in the order they reach the target,
+     *        making it easier to determine fleet formation.
+     *  Step 3) compare previous arrive time and cur arrive time,
+     *          `if can't form a "fleet" then append to fleet`
      *  Step 4) return fleet size
+     *
+     *
+     *  NOTE !!! Step 3)
+     *
+     *  -> via compare prev arrived time, we can know whether
+     *     append new fleet or not
+     *
+     *  NOTE !!! concept of `arrived time`
      *
      */
     public int carFleet_0_1(int target, int[] position, int[] speed) {
