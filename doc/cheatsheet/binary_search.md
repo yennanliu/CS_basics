@@ -104,6 +104,7 @@
     - Find min in Rotation array
         - LC 153
             - check if `mid` point is at `left` or `right` sub array
+                - then search on left or right sub array 
             - Compare mid with left, right
 
 - Algorithm
