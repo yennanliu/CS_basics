@@ -1199,5 +1199,120 @@ public class workspace8 {
         return res;
     }
 
+  // LC 153
+  // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+  // 7.54 - 8.10 pm
+  /**
+   *  IDEA 1) BINARY SEARCH
+   *
+   *  -> KEY:
+   *    - array is in ascending at beginning
+   *    - array is sorted after k steps
+   *       -> so if any `right element` > `left element`
+   *          -> the sub array in that MUST in ascending
+   *          -> then we can find min based on above conditon
+   *
+   *
+   *  EXP 1)
+   *
+   *  Input: nums = [3,4,5,1,2]
+   *  Output: 1
+   *  Explanation: The original array was [1,2,3,4,5] rotated 3 times.
+   *
+   *  [3,4,5,1,2]
+   *   l   m   r
+   *
+   *   -> 3 < 5, so we know left sub array is in ascending order
+   *   -> its min is 3, however num[r] = 2
+   *   -> so we search on right
+   *
+   * [3,4,5,1,2]
+   *      l m  r
+   *
+   *   -> res = 1, and  num[m] < num[r] && num[l] > num[m]
+   *   -> return res = 1
+   *
+   *
+   *  EXP 2)
+   *
+   *  Input: nums = [4,5,6,7,0,1,2]
+   *  res = 0
+   *
+   *  [4,5,6,7,0,1,2]
+   *   l     m     r
+   *
+   *   -> left part is in ascending order
+   *   -> nums[l] < nums[r]
+   *      -> search right sub array
+   *
+   *  [4,5,6,7,0,1,2]
+   *           l    r
+   *
+   *   -> res = 1, but nums[mid] > nums[r], we return nums[l]
+   *
+   *
+   *  EXP 3)
+   *
+   *  Input: nums = [11,13,15,17]
+   *  -> res = 11
+   *
+   *   [11,13,15,17]
+   *    l   m     r
+   *
+   *    -> left sub array is sorted
+   *    -> we return the nums[l] directly
+   *
+   *
+   *
+   *
+   *
+   */
+  public int findMin(int[] nums) {
+      // edge
+      if(nums == null || nums.length == 0){
+          return 0; // ?
+      }
+
+      int res = Integer.MAX_VALUE;
+
+      if(nums.length <= 3){
+          for(int x: nums){
+              res = Math.min(x, res);
+          }
+          return res;
+      }
+      // if array already in ascending order
+      if(nums[nums.length - 1] > nums[0]){
+          return nums[0];
+      }
+
+      // binary search + check which part of sub array is in `ascending ordering`
+      int l = 0;
+      int r = nums.length - 1;
+
+      while( r >= l ){
+          int mid = (l + r) / 2;
+          // if left sub array is ascending order
+          if(nums[mid] > nums[0]){
+              int leftVal = nums[0];
+              res = Math.min(res, leftVal);
+              if(nums[r] < leftVal){
+                  l = mid + 1;
+                  res = Math.min(res, nums[r]);
+              }else{
+                  r = mid - 1;
+              }
+          }else{
+              if(nums[mid] < nums[l]){
+                  //res = Math.min(res, nums[mid]); // ?
+                  return Math.min(res, nums[mid]);
+              }
+              res = Math.min(res, nums[mid]); // ?
+          }
+      }
+
+      return res;
+    }
+
 
 }
