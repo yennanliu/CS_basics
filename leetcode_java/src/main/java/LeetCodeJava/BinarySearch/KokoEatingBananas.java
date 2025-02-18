@@ -46,6 +46,33 @@ public class KokoEatingBananas {
 
     // V0
     // IDEA : BINARY SEARCH (close boundary)
+    /**
+     * Example Walkthrough:
+     *
+     * Let's say the piles are [3, 6, 7, 11] and h = 8.
+     *
+     * - Initially, l = 1 and r = 11 (largest pile).
+     *
+     * - After checking mid = 6, we find that it's
+     *   valid to finish the piles in 8 hours, so we reduce r = mid - 1 = 5.
+     *
+     * - Next, mid = 3 results in needing more than 8 hours,
+     *   so we increase l = mid + 1 = 4.
+     *
+     * - Eventually, when l = 4 and r = 4,
+     *   we find that 4 is the minimum valid eating speed.
+     *
+     *
+     * -> The binary search narrows down the possibilities, and at the end, l holds the smallest valid speed.
+     *
+     *
+     *
+     * In Summary:
+     *
+     * The binary search finds the smallest valid eating speed that satisfies the condition.
+     * After the search completes, l holds the minimum eating speed, so we return l.
+     *
+     */
     public int minEatingSpeed(int[] piles, int h) {
 
         if (piles.length == 0 || piles.equals(null)){
@@ -58,6 +85,13 @@ public class KokoEatingBananas {
         while (r >= l){
             int mid = (l + r) / 2;
             int _hour = getCompleteTime_(piles, mid);
+            /**
+             *  Return the minimum integer k such that she can eat all the bananas within h hours.
+             *
+             *  -> NOTE !!! so any speed make hr <= h hours could work
+             *
+             *  -> NOTE !!! ONLY  when _hour <= h, we update r
+             */
             if (_hour <= h){
                 r = mid - 1;
             }else{
