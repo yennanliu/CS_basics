@@ -1082,5 +1082,122 @@ public class workspace8 {
         return false;
     }
 
+    // LC 875
+    // 12.23 pm - 12.33 pm
+    /**
+     * Koko loves to eat bananas.  There are N piles of bananas,
+     *
+     * the i-th pile has piles[i] bananas.  The guards have gone and will come back in H hours.
+     *
+     * Koko can decide her bananas-per-hour eating speed of K.  Each hour,
+     *
+     * she chooses some pile of bananas, and eats K bananas from that pile.
+     *
+     * If the pile has less than K bananas, she eats all of them instead,
+     *
+     * and won't eat any more bananas during this hour.
+     *
+     * Koko likes to eat slowly, but still wants to finish eating all the bananas
+     *
+     * before the guards come back.
+     *
+     *
+     * -> Return the `minimum integer K` (aka SPEED)
+     *    such that she can eat `all` the bananas `within H hours.`
+     *
+     *
+     *
+     * -> bananas-per-hour eating speed of K.
+     * -> chooses some pile of bananas, and eats K bananas from that pile.Each hour,
+     *
+     *
+     *
+     * Example 1:
+     *
+     * Input: piles = [3,6,7,11], H = 8
+     * Output: 4
+     *
+     *
+     * Example 2:
+     *
+     * Input: piles = [30,11,23,4,20], H = 5
+     * Output: 30
+     *
+     *
+     * Example 3:
+     *
+     * Input: piles = [30,11,23,4,20], H = 6
+     * Output: 23
+     *
+     *
+     *  IDEA 1) BINARY SEARCH
+     *
+     *  -> we setup max, min speed
+     *   -> max speed : biggest pile in piles ???
+     *   -> min speed: 1 (or smallest ... ???
+     *
+     *
+     *   -> so, num_of_banana / speed = hr
+     *   -> speed = num_of_banana / hr
+     *
+     */
+    public int minEatingSpeed(int[] piles, int h) {
+        // edge
+        if(piles == null || piles.length == 0){
+            return -1; // ???
+        }
+        if(piles.length == 1){
+           // return piles[0] / h; // ???
+            int quotient = piles[0] / h;
+            int remainder = piles[0] % h;
+            if(remainder > 0){
+                quotient += 1;
+            }
+            return quotient;
+        }
+
+        // init speed
+        int minS = 1; // ??
+        int maxS = piles[0];
+        for(int p: piles){
+            maxS = Math.max(p, maxS);
+        }
+
+
+        int res = Integer.MAX_VALUE; // ???
+
+        // binary search
+        while(maxS >= minS){
+            int midSpeed = (minS + maxS) / 2;
+            int curHr = getTotalHr(piles, midSpeed);
+            if(curHr == h){
+                //return midSpeed; // /????
+                res = Math.min(res, midSpeed);
+            }
+            // eat too slow
+            else if (curHr > h){
+                minS = midSpeed + 1;
+            } // eat too fast
+            else{
+               maxS = midSpeed - 1;
+            }
+        }
+
+        return res; //-1; // if not found ????
+    }
+
+    private int getTotalHr(int[] piles, int speed){
+        int res = 0;
+        for(int p: piles){
+            int quotient = p / speed;
+            int remainder = p % speed;
+            res += quotient;
+            if(remainder > 0){
+                res += 1;
+            }
+        }
+        return res;
+    }
+
 
 }

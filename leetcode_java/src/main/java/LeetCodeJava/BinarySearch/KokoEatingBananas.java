@@ -1,7 +1,45 @@
 package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/koko-eating-bananas/
-
+/**
+ *
+ * 875. Koko Eating Bananas
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.
+ *
+ * Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.
+ *
+ * Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
+ *
+ * Return the minimum integer k such that she can eat all the bananas within h hours.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: piles = [3,6,7,11], h = 8
+ * Output: 4
+ * Example 2:
+ *
+ * Input: piles = [30,11,23,4,20], h = 5
+ * Output: 30
+ * Example 3:
+ *
+ * Input: piles = [30,11,23,4,20], h = 6
+ * Output: 23
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= piles.length <= 104
+ * piles.length <= h <= 109
+ * 1 <= piles[i] <= 109
+ *
+ *
+ */
 import java.util.Arrays;
 
 public class KokoEatingBananas {
@@ -19,7 +57,7 @@ public class KokoEatingBananas {
 
         while (r >= l){
             int mid = (l + r) / 2;
-            int _hour = getCompleteTime(piles, mid);
+            int _hour = getCompleteTime_(piles, mid);
             if (_hour <= h){
                 r = mid - 1;
             }else{
@@ -30,9 +68,20 @@ public class KokoEatingBananas {
         return l;
     }
 
-    // V0
+
+    private int getCompleteTime_(int[] piles, int speed) {
+
+        int _hour = 0;
+        for (int pile : piles) {
+            _hour += Math.ceil((double) pile / speed);
+        }
+
+        return _hour;
+    }
+
+    // V0-1
     // IDEA : BINARY SEARCH (open boundary)
-    public int minEatingSpeed_2(int[] piles, int h) {
+    public int minEatingSpeed_0_1(int[] piles, int h) {
 
         if (piles.length == 0 || piles.equals(null)){
             return 0;
@@ -69,7 +118,7 @@ public class KokoEatingBananas {
     // V1
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/koko-eating-bananas/editorial/
-    public int minEatingSpeed_3(int[] piles, int h) {
+    public int minEatingSpeed_1(int[] piles, int h) {
         // Start at an eating speed of 1.
         int speed = 1;
 
@@ -101,7 +150,7 @@ public class KokoEatingBananas {
     // V2
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/koko-eating-bananas/editorial/
-    public int minEatingSpeed_4(int[] piles, int h) {
+    public int minEatingSpeed_2(int[] piles, int h) {
         // Initialize the left and right boundaries
         int left = 1, right = 1;
         for (int pile : piles) {
