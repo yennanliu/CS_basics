@@ -46,14 +46,90 @@ public class LargestRectangleInHistogram {
 //    }
 
     // V0-1
-    // IDEA : STACK
+    // IDEA : STACK (monotonic stack)
     // https://leetcode.com/problems/largest-rectangle-in-histogram/editorial/
+    /**
+     *
+     * 1) Example Walkthrough:
+     *  Let’s say heights = [2, 1, 5, 6, 2, 3]:
+     *
+     * - Start with an empty stack and iterate over the bars.
+     * - At each step, check if the current bar is shorter than the one at the top of the stack. If so, pop from the stack, calculate the area of the rectangle that can be formed, and update maxArea.
+     * - Once the entire array is processed, clean up the stack by popping any remaining bars and calculating the area they form.
+     *
+     *
+     * 2) Time Complexity:
+     * Time Complexity: O(n), where n is the number of bars in the histogram.
+     *
+     * Each index is pushed and popped from the stack once, so the overall time complexity is linear.
+     *
+     * 3) Space Complexity: O(n), where n is the number of bars in the histogram.
+     *
+     * The stack stores at most n indices during the iteration.
+     *
+     *
+     * 4) Key Concepts:
+     * Monotonic Stack:
+     *    - The stack is maintained in a way that the heights of
+     *      the bars indexed in the stack are in increasing order.
+     *
+     *
+     * Area Calculation:
+     *    - Every time we pop an element from the stack,
+     *     we calculate the area of the rectangle that the popped bar forms.
+     */
     public int largestRectangleArea_1(int[] heights) {
+
+        /**
+         *
+         *  NOTE:
+         *
+         *
+         *  - We initialize a stack to keep track of the
+         *    `indices` of the bars in the histogram.
+         *
+         * - The stack will help us maintain a `monotonic increasing order`of bar heights.
+         *   This means, from the bottom to the top of the stack,
+         *   the bars will have heights in increasing order.
+         *
+         * - We push -1 to the stack initially, which acts as a sentinel value
+         *   (a marker for when the stack becomes empty or at the base of the histogram).
+         */
         Deque<Integer> stack = new ArrayDeque<>();
         stack.push(-1);
+
+        /**
+         *  - We iterate over the array heights using the index i.
+         *  - maxArea keeps track of the maximum area encountered so far.
+         */
         int length = heights.length;
         int maxArea = 0;
+
         for (int i = 0; i < length; i++) {
+
+            /**
+             *  NOTE:
+             *
+             *  - For each i, we check the height of the bar at the index i (heights[i])
+             *    against the height of the bar at the index stored at the top of the stack
+             *    (heights[stack.peek()]).
+             *
+             * - If the current bar is shorter than the bar at the top of the stack,
+             *    we start popping from the stack.
+             *     - Each time we pop, the bar at the top of the stack represents the
+             *       height of a potential rectangle.
+             *     - The width of the rectangle is the difference between the current
+             *        index i and the index of the new top of the stack (after popping), minus 1
+             *        (since the stack contains the index of the last bar that was taller).
+             *
+             * - After calculating the area of the rectangle formed by the popped bar,
+             *   we update maxArea to store the maximum area found.
+             *
+             *
+             * - Once we've processed all the bars that are taller than the current one,
+             *   we push the current index i onto the stack.
+             *
+             */
             while ((stack.peek() != -1)
                     && (heights[stack.peek()] >= heights[i])) {
                 int currentHeight = heights[stack.pop()];
@@ -62,11 +138,27 @@ public class LargestRectangleInHistogram {
             }
             stack.push(i);
         }
+
+
+        /**
+         *  - After iterating through the entire array,
+         *    there may still be some indices left in the stack.
+         *
+         * - These indices represent bars that could form rectangles extending
+         *   to the end of the histogram.
+         *
+         * - We continue popping from the stack and calculating the area as we did earlier,
+         *   but now the width extends from the popped index
+         *   to the very end of the histogram (index length - 1).
+         *
+         */
         while (stack.peek() != -1) {
             int currentHeight = heights[stack.pop()];
             int currentWidth = length - stack.peek() - 1;
             maxArea = Math.max(maxArea, currentHeight * currentWidth);
         }
+
+
         return maxArea;
     }
 
