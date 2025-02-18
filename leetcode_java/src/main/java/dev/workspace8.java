@@ -924,12 +924,162 @@ public class workspace8 {
      *  IDEA 1) HASHMAP + 2 POINTERS
      *
      *  ->
-     *
-     *
      */
     public int largestRectangleArea(int[] heights) {
 
         return 0;
+    }
+
+    // LC 704
+    // https://leetcode.com/problems/binary-search/
+    public int search(int[] nums, int target) {
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+        while(r >= l){
+            int mid = ( l + r ) / 2;
+            if(nums[mid] == target){
+                return mid;
+            } else if (nums[mid] > target) {
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+        // not found
+        return -1;
+    }
+
+    // LC 74
+    // 11.57 am - 12.10 pm
+    /**
+     * 74. Search a 2D Matrix
+     *
+     * Write an efficient algorithm that searches for a value
+     * in an m x n matrix. This matrix has the following properties:
+     *
+     * Integers in each row are sorted from left to right.
+     * The first integer of each row is greater than the last integer of the previous row.
+     *
+     *
+     *  -> NOTE !!!
+     *
+     *       [small -> big]
+     *       [bigger_than_big -> bigggg]
+     *       ....
+     *
+     *
+     * Example 1:
+     *
+     * Input:
+     * matrix = [
+     *   [1,   3,  5,  7],
+     *   [10, 11, 16, 20],
+     *   [23, 30, 34, 50]
+     * ]
+     * target = 3
+     * Output: true
+     *
+     * Example 2:
+     *
+     * Input:
+     * matrix = [
+     *   [1,   3,  5,  7],
+     *   [10, 11, 16, 20],
+     *   [23, 30, 34, 50]
+     * ]
+     * target = 13
+     * Output: false
+     *
+     *
+     *  IDEA: BINARY SEARCH
+     *
+     *  -> EXP 1)
+     *
+     * matrix = [
+     *   [1,   3,  5,  7],
+     *   [10, 11, 16, 20],
+     *   [23, 30, 34, 50]
+     * ]
+     *    target = 3
+     *    Output: true
+     *
+     *    ->  check if 3 is in  1st row [1,3,5,7], yes -> find 1st row with binary search
+     *
+     *
+     * -> EXP 2)
+     *
+     * matrix = [
+     *   [1,   3,  5,  7],
+     *   [10, 11, 16, 20],
+     *   [23, 30, 34, 50]
+     * ]
+     * target = 13
+     * Output: false
+     *
+     *  -> 13 not in 1st row, move next
+     *  -> 13 could be in 2nd row, binary search, not found, move to 3rd row
+     *  -> 13 not in 3rd row
+     *  -> return false
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        // edge
+        if(matrix.length == 0 || matrix[0].length == 0){
+            return false;
+        }
+        if(matrix.length == 1 || matrix[0].length == 1){
+
+            if(matrix.length == 1){
+                for(int x: matrix[0]){
+                    if(x == target){
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            if( matrix[0].length == 1){
+                for(int i = 0; i < l; i++){
+                    if(matrix[i][0] == target){
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        boolean isFound = false;
+
+        // binary search
+        for(int i = 0; i < l; i++){
+            int[] curArray = matrix[i];
+            int left = 0;
+            int right = curArray.length - 1;
+            // do binary search
+            if(target >= curArray[left] && target <= curArray[right]){
+                while(right >= left){
+                    int mid = ( left + right ) / 2;
+                    if(curArray[mid] == target){
+                        return true;
+                    } else if (curArray[mid] > target) {
+                        right = mid - 1;
+                    }else{
+                        left = mid + 1;
+                    }
+                }
+            }
+
+        }
+
+        return false;
     }
 
 
