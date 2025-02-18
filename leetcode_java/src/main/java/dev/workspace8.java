@@ -932,7 +932,7 @@ public class workspace8 {
 
     // LC 704
     // https://leetcode.com/problems/binary-search/
-    public int search(int[] nums, int target) {
+    public int search_(int[] nums, int target) {
         if(nums == null || nums.length == 0){
             return 0;
         }
@@ -1312,6 +1312,84 @@ public class workspace8 {
       }
 
       return res;
+    }
+
+    // LC 33
+    // 8.19 - 8.29 pm
+    public int search(int[] nums, int target) {
+
+      // edge
+      if(nums == null || nums.length == 0){
+            return -1; // ?
+        }
+      if(nums.length == 1){
+          return nums[0] == target ? 0 : - 1;
+      }
+      // edge case: array already in ascending ordrr
+      // regular binary search
+      int l = 0;
+      int r = nums.length - 1;
+      if(nums[r] >= nums[l]){
+          while(r >= l){
+              int mid = (l + r) / 2;
+              if(nums[mid] == target){
+                  return mid;
+              }
+              if(nums[mid] > target){
+                  r = mid - 1;
+              }else{
+                  l = mid + 1;
+              }
+          }
+          return -1; // can't find a solution
+      }
+
+      /**
+       *  check if `mid` is left or right part
+       *  -> if mid is in `left part` ( max in left sub array)
+       *      -> if mid_val == target -> return mid as res
+       *      ->  if  mid_val < target
+       *          - search left sub array
+       *      -> if mid_val > target
+       *          - search right sub array
+       *
+       *  -> if mid is in `right part` (min in right sub array)
+       *      -> if mid_val == target -> return mid as res
+       *      ->  if  mid_val > target
+       *            - search left sub array
+       *       - if  mid_val < target
+       *            - search right sub array ??
+       *
+       */
+
+      while (r >= l){
+          int mid = (l + r) / 2;
+          if(nums[mid] == target){
+              return mid;
+          }
+          // case 1) if mid is in `left part` (max in left sub array)
+          if(nums[mid] >= nums[l]){
+              //  search left sub array
+              if(nums[mid] > target && target >= nums[l]){
+                  r = mid - 1;
+              }else{
+                  // search right sub array
+                  l = mid + 1;
+              }
+          }
+          // case 2) if mid is in `right part` (min in right sub array)
+          else{
+              // search left sub array
+              if(nums[mid] < target && target <= nums[r]){
+                  l = mid + 1;
+              }else{
+                  // search right sub array ??
+                  r = mid - 1;
+              }
+          }
+      }
+
+        return -1;
     }
 
 
