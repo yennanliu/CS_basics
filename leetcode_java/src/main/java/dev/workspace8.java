@@ -816,5 +816,107 @@ public class workspace8 {
 //        return res;
 //    }
 
+    // LC 853
+    // 9.48 am - 10.10 am
+    /**
+     *  1. car at `same idx` will be merged
+     *    -> speed will be updated as `slowest` speed after merge
+     *  2. count the `number of fleet` when arrive destination
+     *    -> fleet: collection of car
+     *
+     *
+     *
+     *  EXP 1)
+     *
+     *  Input: target = 12, position = [10,8,0,5,3], speed = [2,4,1,1,3]
+     *  -> Output: 3
+     *
+     *  [10,8,0,5,3], t = 12
+     *
+     *  [12,12,1,6,6], t = 12
+     *    -> merge, [12,1,6], speed = [2,1,1]
+     *    -> 12 reach t, [1,6], speed = [1,1], res = 1
+     *
+     *  [2,7], speed = [1,1]
+     *
+     *  [3,8], speed = [1,1]
+     *
+     *  [4,9], speed = [1,1]
+     *
+     *  ...
+     *
+     *  [7,12], speed = [1,1]
+     *   -> [7], res = 2
+     *
+     *   ...
+     *
+     *   -> [], res = 3
+     *
+     *
+     *   IDEA 1) QUEUE (FIFO)
+     *
+     */
+    public int carFleet(int target, int[] position, int[] speed) {
+        if(position == null || position.length == 0){
+            return 0;
+        }
+        if(position.length == 1){
+            return 1;
+        }
+
+        // sorting ???
+//        Map<Integer, Integer> posSpeedMap = new HashMap<>();
+//        // {position : speed}
+//        for(int i = 0; i < position.length; i++){
+//            posSpeedMap.put(position[i], speed[i]);
+//        }
+
+
+        int res = 0;
+        // IDEA: queue ???
+        // init a hashmap that record car speed
+        // { idx: speed }
+        Map<Integer, Integer> speedMap = new HashMap<>();
+        for(int i = 0; i < speed.length; i++){
+            speedMap.put(i, speed[i]);
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        for(int p: position){
+            q.add(p);
+        }
+
+        boolean isArrived = false;
+
+        while (!q.isEmpty()){
+            // ??
+            for(int i = 0; i < q.size(); i++){
+                int cur = q.poll();
+                cur += speed[i]; // update idx
+                q.add(cur);
+            }
+            // check if there is `car reach target`
+            for(int i = 0; i < q.size(); i++){
+                int cur = q.poll();
+                if(cur == target){
+                    isArrived = true;
+                    // if reach target, NOT append back to queue,
+                    // and need to remove this car from speedMap
+                    speedMap.remove(i);
+                }else{
+                    q.add(cur);
+                }
+            }
+
+            if(isArrived){
+                res += 1;
+            }
+
+            isArrived = false;
+        }
+
+        return res;
+    }
+
 
 }
