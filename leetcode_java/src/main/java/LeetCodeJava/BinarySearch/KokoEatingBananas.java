@@ -65,6 +65,40 @@ public class KokoEatingBananas {
             }
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *
+         *  Why Return l?
+         *
+         *  - After the binary search, l will be the smallest speed
+         *    that can finish all piles in h hours.
+         *
+         *
+         *  - When r < l, it means the smallest valid eating speed is l. Here's why:
+         *
+         *      - When r becomes less than l, it means the search has narrowed down
+         *        to the smallest valid speed, which is l.
+         *
+         *      - In the binary search, the left pointer l is adjusted when
+         *        the current speed (mid) is found to be valid (i.e., we can complete
+         *        the piles in h hours). So, by the end of the search,
+         *        l will have the smallest possible speed that allows us to
+         *        complete the piles within the given time h.
+         *
+         *
+         *  Why Not Return r?
+         *
+         *    - Returning r would return the largest speed that was valid during the search,
+         *      but we want the smallest speed that is still valid. In the binary search,
+         *      when the loop terminates, l will be the smallest speed that fulfills the condition,
+         *      and r will have passed below l.
+         *
+         *    - At the point where r < l, the smallest valid speed will be l, not r,
+         *      because r will be one step behind l.
+         *
+         */
+
         return l;
     }
 
