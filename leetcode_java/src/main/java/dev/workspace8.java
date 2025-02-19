@@ -1757,6 +1757,84 @@ public class workspace8 {
         return res.next;
     }
 
+    // LC 143
+    // 11.51 - 12.10 pm
+    /**
+     * 143. Reorder List
+     * Given a singly linked list L: L0→L1→…→Ln-1→Ln,
+     * reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+     *
+     * You may not modify the values in the
+     * list's nodes, only nodes itself may be changed.
+     *
+     * Example 1:
+     *
+     * Given 1->2->3->4, reorder it to 1->4->2->3.
+     *
+     * Example 2:
+     *
+     * Given 1->2->3->4->5, reorder it to 1->5->2->4->3.
+     */
+    /**
+     *  IDEA: LINKED LIST OP
+     *
+     *  step 1) split (half), get left, right sub linked list
+     *  step 2) reverse right sub linked list
+     *  step 3) merge: merge left, updated sub linked list in order
+     *
+     */
+    public void reorderList(ListNode head) {
+        // edge
+        if(head == null || head.next == null){
+            //return head;
+            return;
+        }
 
+        // get linked list len
+        int len = 0;
+        ListNode head_1 = head;
+        while(head_1 != null){
+            len += 1;
+            head_1 = head_1.next;
+        }
+
+        // step 1) split (half), get left, right sub linked list
+        ListNode head_2 = head;
+        //ListNode head_2_copy = head_2;
+        for(int i = 0; i < len / 2; i++){
+            head_2 = head_2.next;
+        }
+
+        // step 2) reverse right sub linked list
+        ListNode _prev = null;
+        while(head_2 != null){
+            ListNode _next = head_2.next;
+            head_2.next = _prev;
+            _prev = head_2;
+            head_2 = head_2.next;
+        }
+
+        // step 3) merge: merge left, updated sub linked list in order
+        ListNode leftNode = null; // ??
+        ListNode rightNode = _prev; // ??
+
+        ListNode res = null;
+
+        while(leftNode != null && rightNode != null){
+            res.next = leftNode;
+            leftNode = leftNode.next;
+            res = res.next; // ???
+            res.next = rightNode;
+            rightNode = rightNode.next;
+        }
+
+        if(leftNode != null){
+            res.next = leftNode;
+        }else{
+            res.next = rightNode;
+        }
+
+        // ??
+    }
 
 }
