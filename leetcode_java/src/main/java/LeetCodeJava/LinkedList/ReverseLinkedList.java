@@ -40,8 +40,6 @@ import LeetCodeJava.DataStructure.ListNode;
 
 public class ReverseLinkedList {
 
-    class Solution {
-
         // V0
         // IDEA : iteration
         public ListNode reverseList(ListNode head) {
@@ -50,6 +48,11 @@ public class ReverseLinkedList {
                 return null;
             }
 
+            /**
+             * NOTE !!!
+             *
+             *  init _prev as null (but NOT `new ListNode()`, (or the result will be wrong))
+             */
             ListNode _prev = null;
 
             while (head != null) {
@@ -87,9 +90,9 @@ public class ReverseLinkedList {
 
         }
 
-        // V0'
+        // V0-1
         // IDEA : iteration
-        public ListNode reverseList_0(ListNode head) {
+        public ListNode reverseList_0_1(ListNode head) {
 
             if (head == null){
                 return head;
@@ -142,7 +145,7 @@ public class ReverseLinkedList {
         // V1
         // IDEA : iteration
         // https://leetcode.com/problems/reverse-linked-list/editorial/
-        public ListNode reverseList_2(ListNode head) {
+        public ListNode reverseList_1(ListNode head) {
             ListNode prev = null;
             ListNode curr = head;
             while (curr != null) {
@@ -157,15 +160,14 @@ public class ReverseLinkedList {
         // V2
         // IDEA : Recursive
         // https://leetcode.com/problems/reverse-linked-list/editorial/
-        public ListNode reverseList_3(ListNode head) {
+        public ListNode reverseList_2(ListNode head) {
             if (head == null || head.next == null) {
                 return head;
             }
-            ListNode p = reverseList_3(head.next);
+            ListNode p = reverseList_2(head.next);
             head.next.next = head;
             head.next = null;
             return p;
         }
 
-    }
 }

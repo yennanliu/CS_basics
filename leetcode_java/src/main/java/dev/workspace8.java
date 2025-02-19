@@ -1,5 +1,7 @@
 package dev;
 
+import LeetCodeJava.DataStructure.ListNode;
+
 import java.util.*;
 import java.util.List;
 
@@ -1670,5 +1672,34 @@ public class workspace8 {
         return nums2[mid - len1]; // ???
     }
 
+    // LC 206
+    // 10.52 - 11.10 am
+    public ListNode reverseList(ListNode head) {
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+
+        ListNode prev = null; // NOTE !!! init prev as null, but NOT new ListNode()
+        while(head != null){
+            ListNode _next = head.next;
+            ListNode _cur = head;
+            /**
+             *  4 steps
+             *
+             *  1) cache prev (as null)
+             *  2) cache next
+             *  3) cache current
+             *  4) point cur to prev
+             *  5) move prev to cur
+             *  6) move cur to next
+             */
+            head.next = prev;
+            prev = _cur;
+            head = _next;
+        }
+
+        return prev; // ??
+    }
 
 }
