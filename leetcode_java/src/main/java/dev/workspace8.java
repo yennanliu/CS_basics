@@ -1702,4 +1702,61 @@ public class workspace8 {
         return prev; // ??
     }
 
+    // LC 92
+    // 11.10 am - 11.20 am
+    /**
+     * 92. Reverse Linked List II
+     *
+     * Reverse a linked list from position m to n. Do it in one-pass.
+     *
+     * Note: 1 ≤ m ≤ n ≤ length of list.
+     *
+     * Example:
+     *
+     * Input: 1->2->3->4->5->NULL, m = 2, n = 4
+     * Output: 1->4->3->2->5->NULL
+     *
+     */
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+        if(right < left){
+            return head;
+        }
+
+        ListNode res = null;
+        res.next = head;
+
+        // move to `left` idx
+        int i = 0;
+        while (i < left){
+            head = head.next;
+            i += 1;
+        }
+
+        ListNode tmp = head; // ???
+
+        // reverse linked list
+        int j = 0;
+        ListNode _pvev = tmp;
+
+        while(head != null && j < (right - left)){
+            ListNode _next = head.next;
+            //ListNode _cur  = head;
+            head.next = _pvev;
+            _pvev = head;
+            head = _next; //head.next;
+            j += 1;
+        }
+
+        //tmp.next = _pvev;  // ???
+
+        return res.next;
+    }
+
+
+
 }

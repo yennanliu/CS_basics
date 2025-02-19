@@ -60,15 +60,33 @@ public class ReverseLinkedList2 {
   // https://neetcode.io/solutions/reverse-linked-list-ii
   // https://youtu.be/RF_M9tX4Eag?si=vTfAtfbmGwzsmtpi
   public ListNode reverseBetween_0_1(ListNode head, int left, int right) {
+
+      /**
+       * NOTE !!!
+       *
+       *  we init dummy, and point it to head
+       */
       ListNode dummy = new ListNode(0);
       dummy.next = head;
       ListNode leftPrev = dummy, cur = head;
 
+      /**
+       * NOTE !!!
+       *
+       *  we move to `left - 1 ` idx (instead of `left`)
+       *  -> for simpler operation (less edge cases)
+       */
       for (int i = 0; i < left - 1; i++) {
           leftPrev = cur;
           cur = cur.next;
       }
 
+      /**
+       * NOTE !!!
+       *
+       *  1) we init prev as null
+       *  2) we move i to `right - left + 1` idx,  (instead of `right - left`)
+       */
       ListNode prev = null;
       for (int i = 0; i < right - left + 1; i++) {
           ListNode tmpNext = cur.next;
@@ -77,6 +95,13 @@ public class ReverseLinkedList2 {
           cur = tmpNext;
       }
 
+      /**
+       * NOTE !!!
+       *
+       *  1) we point  leftPrev.next to `prev`, which is the head of `reverse linked list`
+       *  2) we point  leftPrev.next.next to `cur`, since we still need the remaining linked list which is NOT reversed
+       *          (e.g. linked list with idx > r)
+       */
       leftPrev.next.next = cur;
       leftPrev.next = prev;
 
