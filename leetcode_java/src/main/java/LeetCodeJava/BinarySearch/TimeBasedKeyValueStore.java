@@ -52,7 +52,12 @@ public class TimeBasedKeyValueStore {
     class TimeMap {
 
         // attr
+        /** keyValueMap : {k: v} */
         Map<String, List<String>> keyValueMap;
+        /**
+         * NOTE !!!
+         *   InsertTimeMap : {v: [t1, t2, ...]}
+         */
         Map<String, List<Integer>> InsertTimeMap;
 
         public TimeMap() {
@@ -102,14 +107,34 @@ public class TimeBasedKeyValueStore {
             while (right >= left){
                 int mid = (left + right) / 2;
                 Integer val = times.get(mid);
+                /**
+                 *  NOTE !!!
+                 *
+                 *   Returns a value such that set(key, value, timestamp_prev) was called previously, with timestamp_prev <= timestamp.
+                 *   If there are multiple such values, it returns the one with the largest timestamp_prev.
+                 *
+                 *
+                 *   -> so what we want is `the biggest time`  that <= input timestamp
+                 *   -> so if `val.equals(timestamp)`, it's the affordable solution
+                 */
                 if (val.equals(timestamp)){
                     return mid;
                 }
                 if (val > timestamp){
-                    // NOTE !!! right  = mid - 1;
+                    /**
+                     * NOTE !!!
+                     *
+                     *  (binary search pattern)
+                     *  right  = mid - 1;
+                     */
                     right = mid - 1;
                 }else{
-                    // NOTE !!! left = mid + 1;
+                    /**
+                     * NOTE !!!
+                     *
+                     *  (binary search pattern)
+                     *  left = mid + 1;
+                     */
                     left = mid + 1;
                 }
             }

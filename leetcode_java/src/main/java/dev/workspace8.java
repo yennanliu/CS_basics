@@ -1392,5 +1392,109 @@ public class workspace8 {
         return -1;
     }
 
+    // LC 981
+    // 9.50 - 10.10 AM
+    /**
+     * Your TimeMap object will be instantiated and called as such:
+     * TimeMap obj = new TimeMap();
+     * obj.set(key,value,timestamp);
+     * String param_2 = obj.get(key,timestamp);
+     */
+    /**
+     * Create a timebased key-value store class TimeMap, that supports two operations.
+     *
+     * 1. set(string key, string value, int timestamp)
+     *
+     * Stores the key and value, along with the given timestamp.
+     * 2. get(string key, int timestamp)
+     *
+     * Returns a value such that set(key, value, timestamp_prev) was called previously,
+     * with timestamp_prev <= timestamp.
+     * If there are multiple such values, it returns the one with the largest timestamp_prev.
+     * If there are no values, it returns the empty string ("").
+     *
+     *
+     * Example 1:
+     *
+     * Input: inputs = ["TimeMap","set","get","get","set","get","get"], inputs = [[],["foo","bar",1],["foo",1],["foo",3],["foo","bar2",4],["foo",4],["foo",5]]
+     * Output: [null,null,"bar","bar",null,"bar2","bar2"]
+     * Explanation:
+     *
+     * TimeMap kv;
+     * kv.set("foo", "bar", 1); // store the key "foo" and value "bar" along with timestamp = 1
+     * kv.get("foo", 1);  // output "bar"
+     * kv.get("foo", 3); // output "bar" since there is no value corresponding to foo at timestamp 3 and timestamp 2, then the only value is at timestamp 1 ie "bar"
+     * kv.set("foo", "bar2", 4);
+     * kv.get("foo", 4); // output "bar2"
+     * kv.get("foo", 5); //output "bar2"
+     *
+     * Example 2:
+     *
+     * Input: inputs = ["TimeMap","set","set","get","get","get","get","get"], inputs = [[],["love","high",10],["love","low",20],["love",5],["love",10],["love",15],["love",20],["love",25]]
+     * Output: [null,null,null,"","high","high","low","low"]
+     *
+     *
+     *
+     * -> need to store k-v and its timestamp
+     * -> when call get(key, timesatmp), need to k-v that is `latest previous` timestamp, return null if can't find one
+     *
+     *
+     *  IDEA 1) HASHMAP
+     *
+     *   {k: [v, timestamp]}
+     *      -> easy, but hard to get `latest prev` time
+     *
+     *  IDEA 2) HASHMAP + PQ ??
+     *
+     *   -> {k: v}
+     *   -> pq(t1, t2,...)
+     *
+     *   IDEA 3) HASHMAP V2
+     *
+     *   {k: [v, [t1, t2, ....]]}
+     *
+     *   -> so when a k is called, we know all its prev values (with t)
+     *      and we can sort, can check if there is the `latest prev` one
+     *
+     */
+    class TimeMap {
+
+        // idea 3
+        // attr
+        // {k: {v: [t1, t2, ....]}}
+        Map<String, Map<String, List<Integer>>> map;
+
+        public TimeMap() {
+            this.map = new HashMap<>();
+        }
+
+        public void set(String key, String value, int timestamp) {
+            Map<String, List<Integer>> valTimestamps = this.map.getOrDefault(key, new HashMap<>());
+            List<Integer> timestamps = valTimestamps.getOrDefault(value, new ArrayList<>());
+            timestamps.add(timestamp);
+            valTimestamps.put(value, timestamps);
+            this.map.put(key, valTimestamps);
+        }
+
+        public String get(String key, int timestamp) {
+            if(!this.map.containsKey(key)){
+                return null;
+            }
+            Map<String, List<Integer>> valTimestamps = this.map.get(key);
+            //List<Integer> timestamps = valTimestamps.values()[0]; // ??
+            // sort on ist<Integer>, decreasing order (big -> small)
+            List<String> keys = new ArrayList<>(valTimestamps.keySet()); // ??
+//            Collections.sort(keys, new Comparator<String>() {
+//                @Override
+//                public int compare(String o1, String o2) {
+//                    int diff = valTimestamps.get(o2) - valTimestamps.get(o1);
+//                    return 0;
+//                }
+//            });
+
+            return null;
+        }
+    }
+
 
 }
