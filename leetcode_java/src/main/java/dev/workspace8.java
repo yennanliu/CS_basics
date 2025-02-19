@@ -1459,41 +1459,215 @@ public class workspace8 {
      */
     class TimeMap {
 
-        // idea 3
         // attr
-        // {k: {v: [t1, t2, ....]}}
-        Map<String, Map<String, List<Integer>>> map;
+        /** keyValueMap : {k: v} */
+        Map<String, List<String>> keyValueMap;
+        /**
+         * NOTE !!!
+         *   InsertTimeMap : {v: [t1, t2, ...]}
+         */
+        Map<String, List<Integer>> InsertTimeMap;
 
         public TimeMap() {
-            this.map = new HashMap<>();
+            this.keyValueMap = new HashMap<>();
+            this.InsertTimeMap = new HashMap<>();
         }
 
         public void set(String key, String value, int timestamp) {
-            Map<String, List<Integer>> valTimestamps = this.map.getOrDefault(key, new HashMap<>());
-            List<Integer> timestamps = valTimestamps.getOrDefault(value, new ArrayList<>());
-            timestamps.add(timestamp);
-            valTimestamps.put(value, timestamps);
-            this.map.put(key, valTimestamps);
+
+            // update keyValueMap
+            List<String> values = this.keyValueMap.getOrDefault(key, new ArrayList<>());
+            //values = this.keyValueMap.get(key);
+            values.add(value);
+            this.keyValueMap.put(key, values);
+
+            // update InsertTimeMap
+            List<Integer> times = this.InsertTimeMap.getOrDefault(key, new ArrayList<>());
+            times.add(timestamp);
+            this.InsertTimeMap.put(key, times);
         }
 
         public String get(String key, int timestamp) {
-            if(!this.map.containsKey(key)){
-                return null;
+            if (!this.keyValueMap.containsKey(key)){
+                return "";
             }
-            Map<String, List<Integer>> valTimestamps = this.map.get(key);
-            //List<Integer> timestamps = valTimestamps.values()[0]; // ??
-            // sort on ist<Integer>, decreasing order (big -> small)
-            List<String> keys = new ArrayList<>(valTimestamps.keySet()); // ??
-//            Collections.sort(keys, new Comparator<String>() {
-//                @Override
-//                public int compare(String o1, String o2) {
-//                    int diff = valTimestamps.get(o2) - valTimestamps.get(o1);
-//                    return 0;
-//                }
-//            });
 
-            return null;
+            // V1 : linear search (TLE)
+            List<Integer> times = this.InsertTimeMap.get(key);
+//            while (timestamp >= 0){
+//                if (times.contains(timestamp)){
+//                    int idx = times.indexOf(timestamp);
+//                    return this.keyValueMap.get(key).get(idx);
+//                }
+//                timestamp -= 1;
+//            }
+
+            // V2 : binary search (OK)
+            int idx = this.sortGetLatestTime(timestamp, times);
+
+            return idx >= 0 ? this.keyValueMap.get(key).get(idx) : "";
         }
+
+        private int sortGetLatestTime(int timestamp, List<Integer> times){
+            Collections.sort(times, new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    int diff = o2 - o1;
+                    return diff;
+                }
+            });
+
+            for(int i = 0; i < times.size(); i++){
+                if (times.get(i) <= timestamp){
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+    }
+
+//        private int binaryGetLatestTime(int timestamp, List<Integer> times){
+//            int left = 0;
+//            int right = times.size() - 1;
+//            // NOTE !!!! right >= left
+//            while (right >= left){
+//                int mid = (left + right) / 2;
+//                Integer val = times.get(mid);
+//                /**
+//                 *  NOTE !!!
+//                 *
+//                 *   Returns a value such that set(key, value, timestamp_prev) was called previously, with timestamp_prev <= timestamp.
+//                 *   If there are multiple such values, it returns the one with the largest timestamp_prev.
+//                 *
+//                 *
+//                 *   -> so what we want is `the biggest time`  that <= input timestamp
+//                 *   -> so if `val.equals(timestamp)`, it's the affordable solution
+//                 */
+//                if (val.equals(timestamp)){
+//                    return mid;
+//                }
+//                if (val > timestamp){
+//                    /**
+//                     * NOTE !!!
+//                     *
+//                     *  (binary search pattern)
+//                     *  right  = mid - 1;
+//                     */
+//                    right = mid - 1;
+//                }else{
+//                    /**
+//                     * NOTE !!!
+//                     *
+//                     *  (binary search pattern)
+//                     *  left = mid + 1;
+//                     */
+//                    left = mid + 1;
+//                }
+//            }
+//
+//            //return right <= timestamp ? right : -1;
+//            //return -1;
+//            /**
+//             * NOTE !!!!
+//             *
+//             *  need to have below handling logic:
+//             *  if right is a valid idx (>=0), then return it
+//             *  as binary search result, otherwise return -1
+//             */
+//            return right >= 0 ? right : -1;
+//        }
+//    }
+//    class TimeMap {
+//
+//        // idea 3
+//        // attr
+//        // {k: {v: [t1, t2, ....]}}
+//        Map<String, Map<String, List<Integer>>> map;
+//
+//        public TimeMap() {
+//            this.map = new HashMap<>();
+//        }
+//
+//        public void set(String key, String value, int timestamp) {
+//            Map<String, List<Integer>> valTimestamps = this.map.getOrDefault(key, new HashMap<>());
+//            List<Integer> timestamps = valTimestamps.getOrDefault(value, new ArrayList<>());
+//            timestamps.add(timestamp);
+//            valTimestamps.put(value, timestamps);
+//            this.map.put(key, valTimestamps);
+//        }
+//
+//        public String get(String key, int timestamp) {
+//            if(!this.map.containsKey(key)){
+//                return null;
+//            }
+//            Map<String, List<Integer>> valTimestamps = this.map.get(key);
+//            //List<Integer> timestamps = valTimestamps.values()[0]; // ??
+//            // sort on ist<Integer>, decreasing order (big -> small)
+//            List<String> keys = new ArrayList<>(valTimestamps.keySet()); // ??
+////            Collections.sort(keys, new Comparator<String>() {
+////                @Override
+////                public int compare(String o1, String o2) {
+////                    int diff = valTimestamps.get(o2) - valTimestamps.get(o1);
+////                    return 0;
+////                }
+////            });
+//
+//            return null;
+//        }
+//    }
+
+    // LC 004
+    // 10.37 - 10.47 am
+    /**
+     * 4. Median of Two Sorted Arrays
+     * There are two sorted arrays nums1 and nums2 of size m and n respectively.
+     *
+     * Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+     *
+     * You may assume nums1 and nums2 cannot be both empty.
+     *
+     * Example 1:
+     *
+     * nums1 = [1, 3]
+     * nums2 = [2]
+     *
+     * The median is 2.0
+     * Example 2:
+     *
+     * nums1 = [1, 2]
+     * nums2 = [3, 4]
+     *
+     * The median is (2 + 3)/2 = 2.5
+     *
+     */
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+
+        // edge
+        if(nums1 == null || nums2 == null){
+            if(nums1 == null){
+                int mid = (0 + nums2.length - 1) / 2;
+                return nums2[mid]; // ???
+            }else{
+                int mid = (0 + nums1.length - 1) / 2;
+                return nums1[mid]; // ???
+            }
+        }
+
+        // if nums1 len equals nums2 len
+        if(nums1.length == nums2.length){
+            return ( nums1[nums1.length-1] + nums2[0] ) / 2.0 ; // ???
+        }
+
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+
+        int len = len1 + len2;
+        int mid = len / 2;
+        if(mid < nums1.length){
+            return nums1[mid];
+        }
+        return nums2[mid - len1]; // ???
     }
 
 
