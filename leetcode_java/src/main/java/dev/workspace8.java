@@ -3,6 +3,7 @@ package dev;
 import LeetCodeJava.DataStructure.ListNode;
 //import LeetCodeJava.DataStructure.Node;
 
+import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 
@@ -2021,8 +2022,103 @@ public class workspace8 {
         return -1;
     }
 
+    // LC 146
+    // 11.29 - 11.40 am
+    /**
+     *
+     *Design and implement a data structure for Least Recently Used (LRU) cache.
+     *
+     * It should support the following operations: get and put.
+     *
+     * get(key) - Get the value (will always be positive) of the key
+     * if the key exists in the cache, otherwise return -1.
+     *
+     * put(key, value) - Set or insert the value if the key is
+     * not already present. When the cache reached its capacity,
+     *
+     * it should invalidate the least recently used item before inserting a new item.
+     *
+     * The cache is initialized with a positive capacity.
+     *
+     * Follow up:
+     * Could you do both operations in O(1) time complexity?
+     *
+     * Example:
+     *
+     *
+     * ->  Least Recently Used (LRU) cache.
+     *
+     *
+     *
+     *  IDEA:
+     *      STACK (FILO) + HASHMAP (record k-v)
+     *      or DEQUEUE + HASHMAP ??
+     *
+     *
+     */
+    class LRUCache {
 
+        // attr
+        int capacity;
+        //Stack<Integer> leastUsed;
+        // dqeueue : [ key1, key2, .... ]
+        Deque<Integer> leastUsed;
+        Map<Integer, Integer> map;
 
+        public LRUCache(int capacity) {
+            this.capacity = capacity;
+            //this.leastUsed = new Stack<>();
+            this.leastUsed = new LinkedList<>(); // ???
+            this.map = new HashMap<>();
+        }
 
+        public int get(int key) {
+            if(this.map.isEmpty()){
+                return -1;
+            }
+            if(!this.map.containsKey(key)){
+                return -1;
+            }
+
+            int toAdd = -1;
+            // update `least usage`
+            for(int i = 0; i < this.leastUsed.size(); i++){
+                Integer tmp = this.leastUsed.pop();
+                if(tmp == key){
+                    //this.leastUsed.add(tmp);
+                    // NOT change `ordering` of other elements in stack
+                    //break;
+                    toAdd = tmp;
+                    continue;
+                }
+                this.leastUsed.add(tmp);
+            }
+
+            this.leastUsed.add(toAdd);
+
+            return this.map.get(key);
+        }
+
+        public void put(int key, int value) {
+            if(this.leastUsed.size() >= this.capacity){
+                // need to remove element
+                this.map.remove(key);
+                // update `least usage`
+                for(int i = 0; i < this.leastUsed.size(); i++){
+                    Integer tmp = this.leastUsed.pop();
+                    if(tmp == key){
+                        break;
+                    }
+                    this.leastUsed.add(tmp);
+                }
+            }else{
+
+            }
+            // add `least usage`
+            this.leastUsed.add(key); // ???
+            // insert to map
+            this.map.put(key, value);
+        }
+    }
 
 }
