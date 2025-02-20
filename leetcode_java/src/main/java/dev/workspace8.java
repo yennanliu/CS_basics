@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
+//import LeetCodeJava.DataStructure.Node;
 
 import java.util.*;
 import java.util.List;
@@ -1836,5 +1837,81 @@ public class workspace8 {
 
         // ??
     }
+
+    // LC 138
+    // 10.30 - 10.40 AM
+    /*
+    // Definition for a Node.
+    class Node {
+        int val;
+        Node next;
+        Node random;
+
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+    }
+    */
+    class Node {
+        int val;
+        Node next;
+        Node random;
+
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+    }
+    /**
+     *
+     *  A linked list is given such that each node contains an additional
+     *  random pointer which could point to any node in the list or null.
+     *
+     * Return a deep copy of the list.
+     *
+     *
+     *
+     *  IDEA : LINKED LIST OP
+     *
+     *  -> go through linked list, copy node, and its next node ???
+     *
+     *
+     */
+    public Node copyRandomList(Node head) {
+
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+
+        List<Integer> nodeValList = new ArrayList<>();
+        Node head2 = head;
+        while(head2 != null){
+            nodeValList.add(head2.val);
+            head2 = head2.next;
+        }
+
+
+        Node res = null;
+        res.next = head;
+        while(head != null){
+            //res = head;
+            //Node copied = new Node(head.val, null, new Node(getRandom(nodeValList)));
+            res = res.next; // ???
+            head = head.next;
+        }
+
+        return res.next;
+    }
+
+    private int getRandom(List<Integer> nodeValList){
+        Random random = new Random();
+        int idx = random.nextInt(0, nodeValList.size()-1);
+        return nodeValList.get(idx);
+    }
+
 
 }
