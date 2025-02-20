@@ -27,6 +27,9 @@ class ListNode(object):
 
 ```java
 // java
+
+// Single Linkedlist
+
 public class ListNode{
 
     // attr
@@ -60,6 +63,29 @@ node1.val = 0;
 // connect nodes
 node1.next = node2;
 node2.next = node3;
+```
+
+
+```java
+// java
+
+// Double linked list
+
+// LC 146
+
+public class Node {
+    int key;
+    int val;
+    Node prev;
+    Node next;
+
+    public Node(int key, int val) {
+        this.key = key;
+        this.val = val;
+        this.prev = null;
+        this.next = null;
+    }
+}
 ```
 
 ### 0-1) Types
