@@ -91,13 +91,13 @@ public class LRUCache_ {
 //    }
 
 
-    // V0'
+    // V0-1
     // IDEA : LinkedHashMap (OrderedDict) (gpt)
-    class LRUCache {
+    class LRUCache_0_1 {
         private int capacity;
         private LinkedHashMap<Integer, Integer> lruCache;
 
-        public LRUCache(int capacity) {
+        public LRUCache_0_1(int capacity) {
 
             this.capacity = capacity;
 
@@ -112,7 +112,7 @@ public class LRUCache_ {
              */
             this.lruCache = new LinkedHashMap<Integer, Integer>(capacity, 0.75f, true) {
                 protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
-                    return size() > LRUCache.this.capacity;
+                    return size() > LRUCache_0_1.this.capacity;
                 }
             };
         }
@@ -130,10 +130,10 @@ public class LRUCache_ {
         }
     }
 
-    // V0''
+    // V0-2
     // IDEA : DOUBLE LINKED LIST (gpt)
 
-    class LRUCache0_ {
+    class LRUCache0_2 {
         private class Node {
             int key;
             int value;
@@ -151,7 +151,7 @@ public class LRUCache_ {
         private Node head;
         private Node tail;
 
-        public LRUCache0_(int capacity) {
+        public LRUCache0_2(int capacity) {
             this.capacity = capacity;
             this.cache = new HashMap<>(capacity);
             this.head = new Node(-1, -1);
@@ -202,9 +202,149 @@ public class LRUCache_ {
 
     // V1-1
     // https://youtu.be/7ABFKPK2hD4?feature=shared
+    // https://neetcode.io/problems/lru-cache
+    // IDEA: BRUTE FORCE
+    public class LRUCache_1_1 {
 
+        private ArrayList<int[]> cache;
+        private int capacity;
 
-    // V1
+        public LRUCache_1_1(int capacity) {
+            this.cache = new ArrayList<>();
+            this.capacity = capacity;
+        }
+
+        public int get(int key) {
+            for (int i = 0; i < cache.size(); i++) {
+                if (cache.get(i)[0] == key) {
+                    int[] tmp = cache.remove(i);
+                    cache.add(tmp);
+                    return tmp[1];
+                }
+            }
+            return -1;
+        }
+
+        public void put(int key, int value) {
+            for (int i = 0; i < cache.size(); i++) {
+                if (cache.get(i)[0] == key) {
+                    int[] tmp = cache.remove(i);
+                    tmp[1] = value;
+                    cache.add(tmp);
+                    return;
+                }
+            }
+
+            if (capacity == cache.size()) {
+                cache.remove(0);
+            }
+
+            cache.add(new int[]{key, value});
+        }
+    }
+
+    // V1-2
+    // https://youtu.be/7ABFKPK2hD4?feature=shared
+    // https://neetcode.io/problems/lru-cache
+    // IDEA:  Doubly Linked List
+    public class Node {
+        int key;
+        int val;
+        Node prev;
+        Node next;
+
+        public Node(int key, int val) {
+            this.key = key;
+            this.val = val;
+            this.prev = null;
+            this.next = null;
+        }
+    }
+
+    public class LRUCache_1_2 {
+
+        private int cap;
+        private HashMap<Integer, Node> cache;
+        private Node left;
+        private Node right;
+
+        public LRUCache_1_2(int capacity) {
+            this.cap = capacity;
+            this.cache = new HashMap<>();
+            this.left = new Node(0, 0);
+            this.right = new Node(0, 0);
+            this.left.next = this.right;
+            this.right.prev = this.left;
+        }
+
+        private void remove(Node node) {
+            Node prev = node.prev;
+            Node nxt = node.next;
+            prev.next = nxt;
+            nxt.prev = prev;
+        }
+
+        private void insert(Node node) {
+            Node prev = this.right.prev;
+            prev.next = node;
+            node.prev = prev;
+            node.next = this.right;
+            this.right.prev = node;
+        }
+
+        public int get(int key) {
+            if (cache.containsKey(key)) {
+                Node node = cache.get(key);
+                remove(node);
+                insert(node);
+                return node.val;
+            }
+            return -1;
+        }
+
+        public void put(int key, int value) {
+            if (cache.containsKey(key)) {
+                remove(cache.get(key));
+            }
+            Node newNode = new Node(key, value);
+            cache.put(key, newNode);
+            insert(newNode);
+
+            if (cache.size() > cap) {
+                Node lru = this.left.next;
+                remove(lru);
+                cache.remove(lru.key);
+            }
+        }
+    }
+
+    // V1-3
+    // https://youtu.be/7ABFKPK2hD4?feature=shared
+    // https://neetcode.io/problems/lru-cache
+    // IDEA:   Built-In Data Structure
+//    public class LRUCache_1_3 {
+//        private final Map<Integer, Integer> cache;
+//        private final int capacity;
+//
+//        public LRUCache_1_3(int capacity) {
+//            this.capacity = capacity;
+//            this.cache = new LinkedHashMap<>(capacity, 0.75f, true) {
+//                protected boolean removeEldestEntry(Map.Entry eldest) {
+//                    return size() > LRUCache_1_3.this.capacity;
+//                }
+//            };
+//        }
+//
+//        public int get(int key) {
+//            return cache.getOrDefault(key, -1);
+//        }
+//
+//        public void put(int key, int value) {
+//            cache.put(key, value);
+//        }
+//    }
+
+    // V2
     // IDEA :  DOUBLE LINKED LIST
     // https://leetcode.com/problems/lru-cache/editorial/
     class LRUCache_2 {
@@ -265,7 +405,7 @@ public class LRUCache_ {
     }
 
 
-    // V2
+    // V3
     // IDEA : BUILD IN FUNC
     // https://leetcode.com/problems/lru-cache/editorial/
     class LRUCache_3 {
