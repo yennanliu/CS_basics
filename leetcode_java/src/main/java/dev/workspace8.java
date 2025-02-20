@@ -1913,5 +1913,73 @@ public class workspace8 {
         return nodeValList.get(idx);
     }
 
+    // LC 002
+    // 11.01 - 11.11 am
+    /**
+     * 2. Add Two Numbers
+     * You are given two non-empty linked lists
+     * representing two non-negative integers.
+     * The digits are stored in reverse order and each
+     * of their nodes contain a single digit.
+     * Add the two numbers and return it as a linked list.
+     *
+     * You may assume the two numbers do not contain
+     * any leading zero, except the number 0 itself.
+     *
+     * Example:
+     *
+     * Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+     * Output: 7 -> 0 -> 8
+     * Explanation: 342 + 465 = 807.
+     *
+     */
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+
+        while(l1 != null){
+            sb1.append(l1.val);
+            l1 = l1.next;
+        }
+
+        while(l2 != null){
+            sb2.append(l2.val);
+            l2 = l2.next;
+        }
+
+        System.out.println(">>> sb1 str = " + sb1.toString());
+        System.out.println(">>> sb2 str = " + sb2.toString());
+
+        int i1 = Integer.parseInt(sb1.reverse().toString());
+        int i2 = Integer.parseInt(sb2.reverse().toString());
+
+        int intSum = i1 + i2;
+        String resStr = String.valueOf(intSum);
+        String[] resList = resStr.split("");
+
+        ListNode res = null;
+
+        for(int i = resList.length -1; i > 0; i--){
+            ListNode newNode = new ListNode(Integer.parseInt(resList[i]));
+            res.next = newNode;
+            res = newNode;
+        }
+
+        //return i1 + i2;
+        return res.next;
+    }
+
+
 
 }
