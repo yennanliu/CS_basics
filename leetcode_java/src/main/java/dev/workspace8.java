@@ -2312,7 +2312,49 @@ public class workspace8 {
         }
     }
 
+    // LC 110
+    // https://leetcode.com/problems/balanced-binary-tree/description/
+    // 12.00 pm - 12.15 pm
+    /**
+     *
+     *
+     *  Given a binary tree, determine if it is `height-balanced`
+     * .
+     * -> height-balanced:
+     *  A height-balanced binary tree is a binary tree in
+     *  which the depth of the two subtrees of every node
+     *  `never` differs by more than one.
+     *
+     *
+     *  IDEA 1) DFS -> check sub tree depth ??
+     *          -> then compare if any diff(depth) > 1 ??
+     *
+     *
+     *
+     */
+    public boolean isBalanced(TreeNode root) {
+        // edge
+        if(root == null){
+            return true;
+        }
+        if(root.left == null && root.right == null){
+            return true;
+        }
 
+        // dfs ??
+        return dfsCheckBalanced(root, 0);
+    }
+
+    private boolean dfsCheckBalanced(TreeNode root, int depth){
+        if(root == null){
+            return true;
+        }
+
+//        int leftDepth =  this.dfsCheckBalanced(root.left, depth+1);
+//        this.dfsCheckBalanced(root.right, depth+1);
+
+        return false;
+    }
 
 
 }

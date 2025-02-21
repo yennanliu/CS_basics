@@ -131,7 +131,7 @@ public class DiameterOfBinaryTree {
         return mp.get(root)[1];
     }
 
-    
+
     // V2
     // IDEA : DFS
     // https://leetcode.com/problems/diameter-of-binary-tree/editorial/
