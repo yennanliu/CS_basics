@@ -52,7 +52,6 @@ package LeetCodeJava.DFS;
  *
  */
 import LeetCodeJava.DataStructure.TreeNode;
-
 import java.util.*;
 
 public class BinaryTreeRightSideView {
@@ -131,9 +130,53 @@ public class BinaryTreeRightSideView {
         return res;
     }
 
-    // VO-1
-    // IDEA : BFS + LC 102
+    // V0-1
+    // IDEA: BFS + `right node collect`
     public List<Integer> rightSideView_0_1(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+
+        while (!q.isEmpty()) {
+            TreeNode rightSide = null;
+            int qLen = q.size();
+
+            /**
+             *  NOTE !!!
+             *
+             *   1) via for loop, we can get `most right node` (since the order is root -> left -> right)
+             *   2) via `TreeNode rightSide = null;`, we can get the `most right node` object
+             *      - rightSide could be `right sub tree` or `left sub tree`
+             *
+             *      e.g.
+             *      
+             *         1
+             *       2   3
+             *
+             *
+             *       1
+             *     2   3
+             *   4
+             *
+             */
+            for (int i = 0; i < qLen; i++) {
+                TreeNode node = q.poll();
+                if (node != null) {
+                    rightSide = node;
+                    q.offer(node.left);
+                    q.offer(node.right);
+                }
+            }
+            if (rightSide != null) {
+                res.add(rightSide.val);
+            }
+        }
+        return res;
+    }
+
+    // V0-2
+    // IDEA : BFS + LC 102
+    public List<Integer> rightSideView_0_2(TreeNode root) {
 
         List<Integer> res = new ArrayList<>();
 
@@ -186,34 +229,10 @@ public class BinaryTreeRightSideView {
     }
 
 
-    // 0-2
-    // https://neetcode.io/problems/binary-tree-right-side-view
-    // IDEA: DFS
-    List<Integer> res = new ArrayList<>();
-
-    public List<Integer> rightSideView_0_2(TreeNode root) {
-        dfs(root, 0);
-        return res;
-    }
-
-    private void dfs(TreeNode node, int depth) {
-        if (node == null) {
-            return;
-        }
-
-        if (res.size() == depth) {
-            res.add(node.val);
-        }
-
-        dfs(node.right, depth + 1);
-        dfs(node.left, depth + 1);
-    }
-
-
-    // 0-3
+    // V1-1
     // https://neetcode.io/problems/binary-tree-right-side-view
     // IDEA: BFS
-    public List<Integer> rightSideView_0_3(TreeNode root) {
+    public List<Integer> rightSideView_1_1(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         Queue<TreeNode> q = new LinkedList<>();
         q.offer(root);
@@ -237,10 +256,33 @@ public class BinaryTreeRightSideView {
         return res;
     }
 
-    // V1
+    // 1-2
+    // https://neetcode.io/problems/binary-tree-right-side-view
+    // IDEA: DFS
+    List<Integer> res = new ArrayList<>();
+
+    public List<Integer> rightSideView_1_2(TreeNode root) {
+        dfs(root, 0);
+        return res;
+    }
+
+    private void dfs(TreeNode node, int depth) {
+        if (node == null) {
+            return;
+        }
+
+        if (res.size() == depth) {
+            res.add(node.val);
+        }
+
+        dfs(node.right, depth + 1);
+        dfs(node.left, depth + 1);
+    }
+
+    // V2
     // IDEA: BFS: Two Queues
     // https://leetcode.com/problems/binary-tree-right-side-view/editorial/
-    public List<Integer> rightSideView_1(TreeNode root) {
+    public List<Integer> rightSideView_2(TreeNode root) {
         if (root == null) return new ArrayList<Integer>();
 
         ArrayDeque<TreeNode> nextLevel = new ArrayDeque() {{ offer(root); }};
@@ -272,10 +314,10 @@ public class BinaryTreeRightSideView {
         return rightside;
     }
 
-    // V2
+    // V3
     // IDEA:  BFS: One Queue + Sentinel
     // https://leetcode.com/problems/binary-tree-right-side-view/editorial/
-    public List<Integer> rightSideView_2(TreeNode root) {
+    public List<Integer> rightSideView_3(TreeNode root) {
         if (root == null) return new ArrayList<Integer>();
 
         Queue<TreeNode> queue = new LinkedList(){{ offer(root); offer(null); }};
@@ -310,10 +352,10 @@ public class BinaryTreeRightSideView {
         return rightside;
     }
 
-    // V3
+    // V4
     // IDEA: BFS: One Queue + Level Size Measurements
     // https://leetcode.com/problems/binary-tree-right-side-view/editorial/
-    public List<Integer> rightSideView_3(TreeNode root) {
+    public List<Integer> rightSideView_4(TreeNode root) {
         if (root == null) return new ArrayList<Integer>();
 
         ArrayDeque<TreeNode> queue = new ArrayDeque(){{ offer(root); }};
@@ -341,7 +383,7 @@ public class BinaryTreeRightSideView {
         return rightside;
     }
     
-    // V4
+    // V5
     // IDEA: Recursive DFS
     // https://leetcode.com/problems/binary-tree-right-side-view/editorial/
     List<Integer> rightside = new ArrayList();
@@ -355,7 +397,7 @@ public class BinaryTreeRightSideView {
             helper(node.left, level + 1);
     }
 
-    public List<Integer> rightSideView_4(TreeNode root) {
+    public List<Integer> rightSideView_5(TreeNode root) {
         if (root == null) return rightside;
 
         helper(root, 0);
