@@ -2121,4 +2121,68 @@ public class workspace8 {
         }
     }
 
+    // LC 25
+    // 9.16 - 9.26 AM
+    /**
+     *   IDEA 1) Linked list op
+     *     -> find head_len / k,
+     *     -> then for each sub array (len = head_len / k), reverse it
+     *     -> keep remaining the same
+     *     -> return result
+     *
+     *
+     */
+    public ListNode reverseKGroup(ListNode head, int k) {
+        // edge
+        if(head == null || head.next == null){
+            return null;
+        }
+        int len = 0;
+        ListNode head2 = head;
+        while(head2 != null){
+            len += 1;
+            head2 = head2.next;
+        }
+        if(k > len){
+            return head;
+        }
+
+        int subNodeLen = len / k;
+        if(subNodeLen <= 0){
+            return head;
+        }
+        // ??? optimize below
+        List<ListNode> nodeList = new ArrayList<>();
+        ListNode head3 = head;
+        int j = 0;
+        ListNode tmp = null;
+        while(head3 != null &&  j < k){
+            tmp.next = head3;
+            tmp = tmp.next;
+
+            j += 1;
+            head3 = head3.next;
+        }
+
+
+
+        return null;
+    }
+
+    private ListNode reverseNode(ListNode node){
+        if(node == null || node.next == null){
+            return null;
+        }
+        ListNode _prev = null;
+        while(node != null){
+            ListNode _next = node.next;
+            _prev.next = node;
+            _prev = node;
+            node = _next;
+        }
+
+        return _prev.next;
+    }
+
+
 }

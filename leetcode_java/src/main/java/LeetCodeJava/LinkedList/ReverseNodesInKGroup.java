@@ -2,18 +2,134 @@ package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/reverse-nodes-in-k-group/description/
 // https://neetcode.io/problems/reverse-nodes-in-k-group
+/**
+ * 25. Reverse Nodes in k-Group
+ * Solved
+ * Hard
+ * Topics
+ * Companies
+ * Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+ *
+ * k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
+ *
+ * You may not alter the values in the list's nodes, only nodes themselves may be changed.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: head = [1,2,3,4,5], k = 2
+ * Output: [2,1,4,3,5]
+ * Example 2:
+ *
+ *
+ * Input: head = [1,2,3,4,5], k = 3
+ * Output: [3,2,1,4,5]
+ *
+ *
+ * Constraints:
+ *
+ * The number of nodes in the list is n.
+ * 1 <= k <= n <= 5000
+ * 0 <= Node.val <= 1000
+ *
+ *
+ * Follow-up: Can you solve the problem in O(1) extra memory space?
+ *
+ */
 
 import LeetCodeJava.DataStructure.ListNode;
 
 public class ReverseNodesInKGroup {
 
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+
     // V0
     // TODO : implement
+//    public ListNode reverseKGroup(ListNode head, int k) {
+//
+//    }
 
-    // V1
+    // V1-1
+    // https://www.youtube.com/watch?v=1UOPsfP85V4
+    // https://neetcode.io/problems/reverse-nodes-in-k-group
+    // IDEA: RECURSION
+    public ListNode reverseKGroup_1_1(ListNode head, int k) {
+        ListNode cur = head;
+        int group = 0;
+        while (cur != null && group < k) {
+            cur = cur.next;
+            group++;
+        }
+
+        if (group == k) {
+            cur = reverseKGroup_1_1(cur, k);
+            while (group-- > 0) {
+                ListNode tmp = head.next;
+                head.next = cur;
+                cur = head;
+                head = tmp;
+            }
+            head = cur;
+        }
+        return head;
+    }
+
+
+    // V1-2
+    // https://www.youtube.com/watch?v=1UOPsfP85V4
+    // https://neetcode.io/problems/reverse-nodes-in-k-group
+    // IDEA: Iteration
+    public ListNode reverseKGroup_1_2(ListNode head, int k) {
+        ListNode dummy = new ListNode(0, head);
+        ListNode groupPrev = dummy;
+
+        while (true) {
+            ListNode kth = getKth(groupPrev, k);
+            if (kth == null) {
+                break;
+            }
+            ListNode groupNext = kth.next;
+
+            ListNode prev = kth.next;
+            ListNode curr = groupPrev.next;
+            while (curr != groupNext) {
+                ListNode tmp = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = tmp;
+            }
+
+            ListNode tmp = groupPrev.next;
+            groupPrev.next = kth;
+            groupPrev = tmp;
+        }
+        return dummy.next;
+    }
+
+    private ListNode getKth(ListNode curr, int k) {
+        while (curr != null && k > 0) {
+            curr = curr.next;
+            k--;
+        }
+        return curr;
+    }
+
+
+    // V2
     // IDEA : LINKED LIST OP + RECURSIVE
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0025-reverse-nodes-in-k-group.java
-    public ListNode reverseKGroup_1(ListNode head, int k) {
+    public ListNode reverseKGroup_2(ListNode head, int k) {
         ListNode cur = head;
         int count = 0;
         while (cur != null && count != k) {
@@ -21,7 +137,7 @@ public class ReverseNodesInKGroup {
             count++;
         }
         if (count == k) {
-            cur = reverseKGroup_1(cur, k);
+            cur = reverseKGroup_2(cur, k);
             while (count-- > 0) { // TODO : check code meaning (if count-- is bigger than 0)
                 ListNode temp = head.next;
                 head.next = cur;
@@ -33,10 +149,10 @@ public class ReverseNodesInKGroup {
         return head;
     }
 
-    // V1'
+    // V3
     // IDEA : LINKED LIST OP + ITERATION
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0025-reverse-nodes-in-k-group.java
-    public ListNode reverseKGroup_1_1(ListNode head, int k) {
+    public ListNode reverseKGroup_3(ListNode head, int k) {
         ListNode dummy = new ListNode(0, head);
         ListNode curr = head;
         ListNode prev = dummy;
