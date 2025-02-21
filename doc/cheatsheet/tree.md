@@ -256,6 +256,49 @@ s = 3
 root = TreeNode(int(s))
 ```
 
+### 1-1-1-2) Tree `Right Side` View
+
+```java
+// java
+
+// LC 199
+List<Integer> res = new ArrayList<>();
+Queue<TreeNode> q = new LinkedList<>();
+while (!q.isEmpty()) {
+    TreeNode rightSide = null;
+    int qLen = q.size();
+
+    /**
+     *  NOTE !!!
+     *
+     *   1) via for loop, we can get `most right node` (since the order is root -> left -> right)
+     *   2) via `TreeNode rightSide = null;`, we can get the `most right node` object
+     *      - rightSide could be `right sub tree` or `left sub tree`
+     *
+     *      e.g.
+     *         1
+     *       2   3
+     *       
+     *       
+     *       1
+     *     2   3
+     *   4
+     *
+     */
+    for (int i = 0; i < qLen; i++) {
+        TreeNode node = q.poll();
+        if (node != null) {
+            rightSide = node;
+            q.offer(node.left);
+            q.offer(node.right);
+        }
+    }
+    if (rightSide != null) {
+        res.add(rightSide.val);
+    }
+}
+```
+
 #### 1-1-2) Get node counts
 ```java
 // get nodes count of binary tree
