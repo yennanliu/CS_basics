@@ -2357,6 +2357,73 @@ public class workspace8 {
     }
 
     // LC 199
+    // 6.17 - 6.27 pm
+    /**
+     *  IDEA: BFS
+     *
+     *  `in-order` traversal
+     *   e.g. left -> root -> right
+     *
+     *  so we know the tree node in order in each layer
+     *  so can collect `right view nodes` as result
+     *
+     */
+    public class NodeLayer{
+        TreeNode node;
+        int layer;
+
+        public NodeLayer(TreeNode node, int layer){
+            this.node = node;
+            this.layer = layer;
+        }
+    }
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(root == null){
+            return res;
+        }
+        if(root.left == null && root.right == null){
+            res.add(root.val);
+            return res;
+        }
+
+        List<List<Integer>> cache = new ArrayList<>();
+        cache.add(new ArrayList<>());
+
+        // bfs
+        Queue<NodeLayer> q = new LinkedList<>();
+        NodeLayer nodeLayer = new NodeLayer(root, 0);
+        q.add(nodeLayer);
+
+        while(!q.isEmpty()){
+            NodeLayer curNodeLayer = q.poll();
+            TreeNode node = curNodeLayer.node;
+            int layer = curNodeLayer.layer;
+
+            if(cache.size() < layer - 1){
+                cache.add(new ArrayList<>());
+            }
+
+            System.out.println(">>> cache size = " + cache.size() + ", layer = " + layer);
+
+            cache.get(layer).add(node.val);
+
+            if(node.left != null){
+                q.add(new NodeLayer(node.left, layer+1));
+            }
+            if(node.right != null){
+                q.add(new NodeLayer(node.right, layer+1));
+            }
+        }
+
+        System.out.println(">>> cache = " + cache);
+        for(List<Integer> x: cache){
+            res.add(x.get(x.size()-1));
+        }
+
+        return res;
+    }
 
 
 

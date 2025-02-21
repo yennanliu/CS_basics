@@ -74,61 +74,62 @@ public class BinaryTreeRightSideView {
      * }
      */
     // VO
-    // IDEA : BFS
-//    public List<Integer> rightSideView(TreeNode root) {
-//
-//        List<Integer> res = new ArrayList<>();
-//
-//        if (root == null){
-//            return res;
-//        }
-//
-//        Queue<TreeNode> queue = new LinkedList<>();
-//        queue.add(root);
-//
-//        List<List<Integer>> cache = new ArrayList<>();
-//
-//        while (!queue.isEmpty()){
-//
-//            int layer = 0;
-//            int size = queue.size();
-//            for (int i = 0; i < size; i++){
-//
-//                System.out.println("size = " + size);
-//
-//                TreeNode node = queue.remove();
-//                if (node.equals(null)){
-//                    break;
-//                }
-//
-//                //res.add(node.val);
-//                cache.get(layer).add(node.val);
-//
-//                if (node.right != null){
-//                    queue.add(node.right);
-//                }
-//                if (node.left != null){
-//                    queue.add(node.left);
-//                }
-//            }
-//
-//            layer += 1;
-//        }
-//
-//        System.out.println(">>>");
-//        for (List<Integer> x : cache){
-//            x.stream().forEach(System.out::println);
-//        }
-//        System.out.println(">>>");
-//
-//        for (List<Integer> x : cache){
-//            int toAdd = x.get(0);
-//            res.add(toAdd);
-//        }
-//
-//        return res;
-//    }
+    // IDEA : BFS + custom class
+    public class NodeLayer {
+        TreeNode node;
+        int layer;
 
+        public NodeLayer(TreeNode node, int layer) {
+            this.node = node;
+            this.layer = layer;
+        }
+    }
+
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if (root == null) {
+            return res;
+        }
+        if (root.left == null && root.right == null) {
+            res.add(root.val);
+            return res;
+        }
+
+        List<List<Integer>> cache = new ArrayList<>();
+        cache.add(new ArrayList<>());
+
+        // bfs
+        Queue<NodeLayer> q = new LinkedList<>();
+        NodeLayer nodeLayer = new NodeLayer(root, 0);
+        q.add(nodeLayer);
+        while (!q.isEmpty()) {
+            NodeLayer curNodeLayer = q.poll();
+            TreeNode node = curNodeLayer.node;
+            int layer = curNodeLayer.layer;
+
+            if (cache.size() <= layer) {
+                cache.add(new ArrayList<>());
+            }
+
+           //System.out.println(">>> cache size = " + cache.size() + ", layer = " + layer);
+            cache.get(layer).add(node.val);
+
+            if (node.left != null) {
+                q.add(new NodeLayer(node.left, layer + 1));
+            }
+            if (node.right != null) {
+                q.add(new NodeLayer(node.right, layer + 1));
+            }
+        }
+
+        //System.out.println(">>> cache = " + cache);
+        for (List<Integer> x : cache) {
+            res.add(x.get(x.size() - 1));
+        }
+
+        return res;
+    }
 
     // VO-1
     // IDEA : BFS + LC 102
@@ -170,7 +171,6 @@ public class BinaryTreeRightSideView {
             }
 
             layer += 1;
-
         }
 
 //        System.out.println(">>>");
@@ -182,6 +182,58 @@ public class BinaryTreeRightSideView {
             res.add(toAdd);
         }
 
+        return res;
+    }
+
+
+    // 0-2
+    // https://neetcode.io/problems/binary-tree-right-side-view
+    // IDEA: DFS
+    List<Integer> res = new ArrayList<>();
+
+    public List<Integer> rightSideView_0_2(TreeNode root) {
+        dfs(root, 0);
+        return res;
+    }
+
+    private void dfs(TreeNode node, int depth) {
+        if (node == null) {
+            return;
+        }
+
+        if (res.size() == depth) {
+            res.add(node.val);
+        }
+
+        dfs(node.right, depth + 1);
+        dfs(node.left, depth + 1);
+    }
+
+
+    // 0-3
+    // https://neetcode.io/problems/binary-tree-right-side-view
+    // IDEA: BFS
+    public List<Integer> rightSideView_0_3(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+
+        while (!q.isEmpty()) {
+            TreeNode rightSide = null;
+            int qLen = q.size();
+
+            for (int i = 0; i < qLen; i++) {
+                TreeNode node = q.poll();
+                if (node != null) {
+                    rightSide = node;
+                    q.offer(node.left);
+                    q.offer(node.right);
+                }
+            }
+            if (rightSide != null) {
+                res.add(rightSide.val);
+            }
+        }
         return res;
     }
 
