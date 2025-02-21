@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
+import LeetCodeJava.DataStructure.TreeNode;
 //import LeetCodeJava.DataStructure.Node;
 
 import java.nio.file.Path;
@@ -2183,6 +2184,135 @@ public class workspace8 {
 
         return _prev.next;
     }
+
+    // LC 543
+    // https://leetcode.com/problems/diameter-of-binary-tree/
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    // 10.50 am - 11.05 am
+    /**
+     *
+     *  NOTE !!!
+     *
+     *  The diameter of a binary tree is the length
+     *  of the longest path between  `any two nodes in a tree. `
+     *
+     *  IDEA 1) DFS ??
+     *
+     *  can we use BFS ??
+     *
+     *
+     *
+     */
+    public class NodeAndIdx{
+        TreeNode node;
+        int idx;
+        public NodeAndIdx(TreeNode node, int idx){
+            this.node = node;
+            this.idx = idx;
+        }
+
+        @Override
+        public String toString() {
+            return "NodeAndIdx{" +
+                    "node=" + node +
+                    ", idx=" + idx +
+                    '}';
+        }
+    }
+
+    List<NodeAndIdx> collected = new ArrayList<>();
+    public int diameterOfBinaryTree(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 0;
+        }
+
+        // dfs
+        NodeAndIdx nodeAndIdx = new NodeAndIdx(root, 0);
+        getNodeAndIdx(nodeAndIdx);
+
+        System.out.println(">>> before sort, collected = " + collected);
+        // sort (decreasing order) (big -> small)
+        Collections.sort(collected, new Comparator<NodeAndIdx>() {
+            @Override
+            public int compare(NodeAndIdx o1, NodeAndIdx o2) {
+                int diff = o2.idx - o1.idx;
+                return diff;
+            }
+        });
+
+        System.out.println(">>> after sort, collected = " + collected);
+
+        return collected.get(0).idx - collected.get(collected.size()-1).idx;
+    }
+
+    private NodeAndIdx getNodeAndIdx(NodeAndIdx nodeAndIdx){
+        if(nodeAndIdx.node == null){
+            //return 0;
+            return null;
+            //return;
+        }
+        // add to cache
+        collected.add(nodeAndIdx);
+
+        TreeNode curNode = nodeAndIdx.node;
+        int curIdx = nodeAndIdx.idx;
+        NodeAndIdx leftNode = new NodeAndIdx(curNode.left, curIdx-1);
+        NodeAndIdx rightNode = new NodeAndIdx(curNode.right, curIdx+1);
+
+        return nodeAndIdx; // ?
+        //return; // ?
+    }
+
+
+
+    public class Solution {
+        public class TreeNode2 {
+            int val;
+            TreeNode2 left;
+            TreeNode2 right;
+            TreeNode2(int x) { val = x; }
+        }
+
+        private int maxDiameter = 0;
+
+        public int diameterOfBinaryTree(TreeNode2 root) {
+            if (root == null) {
+                return 0;
+            }
+            dfs(root);
+            return maxDiameter;
+        }
+
+        private int dfs(TreeNode2 node) {
+            if (node == null) {
+                return 0;
+            }
+            int leftHeight = dfs(node.left);
+            int rightHeight = dfs(node.right);
+            maxDiameter = Math.max(maxDiameter, leftHeight + rightHeight);
+            return Math.max(leftHeight, rightHeight) + 1;
+        }
+    }
+
+
 
 
 }
