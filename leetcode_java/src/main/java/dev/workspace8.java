@@ -2626,5 +2626,71 @@ public class workspace8 {
         return 0;
     }
 
+    // LC 106
+    // 4.51 pm - 5.10 pm
+    /**
+     *  IDEA: BINARY TREE property
+     *
+     *  ->  inorder: left -> root -> right
+     *  ->  postorder: left -> right -> root
+     *
+     *  -> step 1) find root via preorder[0]
+     *  -> step 2) get `radius` via distance(left, root) in inorder
+     *  -> step 3) build root.left, root.right via sub array at inorder, postorder
+     *
+     */
+    public TreeNode buildTree_(int[] inorder, int[] postorder) {
+
+        // edge
+        if(inorder.length == 0){
+            return new TreeNode();
+        }
+        if(inorder.length == 1){
+            return new TreeNode(inorder[0]);
+        }
+
+        return dfsBuildTree2(inorder, postorder);
+    }
+
+  private TreeNode dfsBuildTree2(int[] postorder, int[] inorder) {
+
+//      // edge
+//      if(inorder.length == 0){
+//          return new TreeNode();
+//      }
+//      if(inorder.length == 1){
+//          return new TreeNode(inorder[0]);
+//      }
+
+        int root = postorder[postorder.length-1];
+        int radius = findRoot2(inorder, root);
+
+        // ??
+        TreeNode node = new TreeNode(root);
+
+        // get sub left, sub right tree
+        node.left = this.dfsBuildTree2(
+                Arrays.copyOfRange(postorder, 0, radius),
+                Arrays.copyOfRange(inorder, 0, radius)
+        );
+
+        node.right = this.dfsBuildTree2(
+                Arrays.copyOfRange(postorder, 1 + radius, postorder.length - 1),
+                Arrays.copyOfRange(inorder, 1 + radius, inorder.length)
+        );
+
+        return node;
+    }
+
+    private int findRoot2(int[] arr, int x){
+        for(int i = 0; i < arr.length; i++){
+            if(arr[i] == x){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+
 
 }
