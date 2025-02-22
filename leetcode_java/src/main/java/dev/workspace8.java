@@ -2555,6 +2555,76 @@ public class workspace8 {
         return res;
     }
 
+    // LC 105
+    // 4.02 PM - 4.15 PM
+    /**
+     *  IDEA 1) BINARY TREE property
+     *
+     *   preorder : root -> left -> right
+     *   inorder: left -> root -> right
+     *
+     *  -> step 1) find root via preorder[0]
+     *  -> step 2) get `radius` via distance(left, root) in inorder
+     *  -> step 3) build root.left, root.right via sub array at preorder, inorder
+     *
+     *
+     */
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        // edge
+        if(preorder.length == 0){
+            return new TreeNode();
+        }
+        if(preorder.length == 1){
+            return new TreeNode(preorder[0]);
+        }
+        // ??? can merge to below code ?
+//        if(preorder.length == 2){
+//            TreeNode node = new TreeNode(preorder[0]);
+//            node.left = new TreeNode(preorder[1]);
+//            return node;
+//        }
+
+        return dfsBuildTree(preorder, inorder);
+    }
+
+    private TreeNode dfsBuildTree(int[] preorder, int[] inorder){
+
+        // edge
+        if(preorder.length == 0){
+            return new TreeNode();
+        }
+        if(preorder.length == 1){
+            return new TreeNode(preorder[0]);
+        }
+
+        int root = preorder[0];
+        int radius = findRoot(inorder, root);
+
+        // ??
+        TreeNode node = new TreeNode(root);
+
+        // get sub left, sub right tree
+        node.left = this.dfsBuildTree(
+                Arrays.copyOfRange(preorder, 1, 1 + radius),
+                Arrays.copyOfRange(inorder, 0, radius)
+        );
+
+        node.right = this.dfsBuildTree(
+                Arrays.copyOfRange(preorder, 1 + radius, preorder.length),
+                Arrays.copyOfRange(inorder, 1 + radius, inorder.length)
+        );
+
+        return node;
+    }
+
+    private int findRoot(int[] arr, int x){
+        for(int i = 0; i < arr.length; i++){
+            if(arr[i] == x){
+                return i;
+            }
+        }
+        return 0;
+    }
 
 
 }
