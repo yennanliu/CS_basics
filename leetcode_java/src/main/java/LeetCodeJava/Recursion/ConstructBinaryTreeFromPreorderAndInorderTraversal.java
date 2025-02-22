@@ -2,36 +2,35 @@ package LeetCodeJava.Recursion;
 
 // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
 /**
+ * 105. Construct Binary Tree from Preorder and Inorder Traversal
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.
  *
- 105. Construct Binary Tree from Preorder and Inorder Traversal
- Solved
- Medium
- Topics
- Companies
- Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.
-
-
-
- Example 1:
-
-
- Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
- Output: [3,9,20,null,null,15,7]
- Example 2:
-
- Input: preorder = [-1], inorder = [-1]
- Output: [-1]
-
-
- Constraints:
-
- 1 <= preorder.length <= 3000
- inorder.length == preorder.length
- -3000 <= preorder[i], inorder[i] <= 3000
- preorder and inorder consist of unique values.
- Each value of inorder also appears in preorder.
- preorder is guaranteed to be the preorder traversal of the tree.
- inorder is guaranteed to be the inorder traversal of the tree.
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+ * Output: [3,9,20,null,null,15,7]
+ * Example 2:
+ *
+ * Input: preorder = [-1], inorder = [-1]
+ * Output: [-1]
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= preorder.length <= 3000
+ * inorder.length == preorder.length
+ * -3000 <= preorder[i], inorder[i] <= 3000
+ * preorder and inorder consist of unique values.
+ * Each value of inorder also appears in preorder.
+ * preorder is guaranteed to be the preorder traversal of the tree.
+ * inorder is guaranteed to be the inorder traversal of the tree.
  *
  */
 import LeetCodeJava.DataStructure.TreeNode;
@@ -167,7 +166,7 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
     // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/editorial/
     int preorderIndex;
     Map<Integer, Integer> inorderIndexMap;
-    public TreeNode buildTree_2(int[] preorder, int[] inorder) {
+    public TreeNode buildTree_1(int[] preorder, int[] inorder) {
         preorderIndex = 0;
         // build a hashmap to store value -> its index relations
         inorderIndexMap = new HashMap<>();
@@ -196,7 +195,7 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
     // V2
     // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/solutions/34541/5ms-java-clean-solution-with-caching/
-    public TreeNode buildTree_3(int[] preorder, int[] inorder) {
+    public TreeNode buildTree_2(int[] preorder, int[] inorder) {
         Map<Integer, Integer> inMap = new HashMap<Integer, Integer>();
 
         for(int i = 0; i < inorder.length; i++) {
@@ -222,7 +221,7 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
     // V3
     // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/solutions/1258712/js-python-java-c-easy-recursive-solution-w-explanation/
-    public TreeNode buildTree_4(int[] P, int[] I) {
+    public TreeNode buildTree_3(int[] P, int[] I) {
         Map<Integer, Integer> M = new HashMap<>();
         for (int i = 0; i < I.length; i++)
             M.put(I[i], i);
