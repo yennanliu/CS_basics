@@ -40,7 +40,7 @@ import java.util.HashMap;
 public class ConstructBinaryTreeFromInorderAndPostorderTraversal {
 
     // V0
-    // IDEA : DFS
+    // IDEA : DFS, LC 105
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/construct-binary-tree-from-inorder-and-postorder-traversal.py
     public TreeNode buildTree(int[] inorder, int[] postorder) {
 
@@ -59,6 +59,12 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversal {
 
         // NOTE !!! : get root from postorder
         TreeNode root = new TreeNode(postorder[postorder.length - 1]);
+        /**
+         *  NOTE !!!
+         *
+         *  root_idx is actually `radius`
+         *
+         */
         int root_idx = -1;
         for (int i = 0; i < inorder.length; i++) {
 
@@ -71,10 +77,30 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversal {
         }
 
         root.left = this.buildTree(
+                /**
+                 *  NOTE !!! below
+                 *
+                 *  root_idx is actually radius
+                 *
+                 *  1) inorder part is as same as LC 105
+                 *
+                 *  2) since postorder is  left -> right -> root
+                 *   -> so, sub left root should within [0, radius]
+                 */
                 Arrays.copyOfRange(inorder, 0, root_idx),
                 Arrays.copyOfRange(postorder, 0, root_idx)
         );
         root.right = this.buildTree(
+                /**
+                 *  NOTE !!! below
+                 *
+                 *  root_idx is actually radius
+                 *
+                 *  1) inorder part is as same as LC 105
+                 *
+                 *  2) since postorder is  left -> right -> root
+                 *   -> so, sub right root should within [radius, postorder.len - 1]
+                 */
                 Arrays.copyOfRange(inorder, root_idx+1, inorder.length),
                 Arrays.copyOfRange(postorder, root_idx, postorder.length-1)
         );
