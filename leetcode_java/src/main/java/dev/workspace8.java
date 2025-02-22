@@ -4,6 +4,7 @@ import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 //import LeetCodeJava.DataStructure.Node;
 
+import java.lang.annotation.Target;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
@@ -2422,6 +2423,135 @@ public class workspace8 {
             res.add(x.get(x.size()-1));
         }
 
+        return res;
+    }
+
+  // LC 1448
+  // 2.51 - 3.12 pm
+  /**
+   * Given a binary tree root,
+   * a node X in the tree is named good if
+   * in the path from root to X there are no
+   * nodes with a value greater than X.
+   *
+   * Return the number of good nodes in the binary tree.
+   *
+   * -> `good` if in the path from root to X
+   *   there are no nodes with a value greater than X.
+   *
+   */
+  /**
+   *  IDEA: DFS ??
+   *
+   */
+//  int res = 1;
+//  public int goodNodes(TreeNode root) {
+//
+//      // edge
+//      if(root == null){
+//          return 0;
+//      }
+//      if(root.left == null && root.right == null){
+//          return 1;
+//      }
+//
+//      // dfs
+//      dfsCheckGoodNode(root, new ArrayList<>());
+//      System.out.println(">>> res = " + res);
+//
+//      return res;
+//    }
+//
+//    private TreeNode dfsCheckGoodNode(TreeNode root, List<TreeNode> visited){
+//       if(root == null){
+//           return null;
+//       }
+//
+//       // ???
+//       if(!isGood(visited, root)){
+//           return null;
+//        }
+//
+//        if(isGood(visited, root)){
+//            res += 1;
+//            return null;
+//        }
+//
+//       visited.add(root);
+//
+//       root.left = dfsCheckGoodNode(root, visited);
+//       root.right = dfsCheckGoodNode(root, visited);
+//
+//       return root;
+//    }
+//
+//    private boolean isGood(List<TreeNode> visited, TreeNode root){
+//      boolean res = true;
+//      for(TreeNode x: visited){
+//          if(root.val <= x.val){
+//              return false;
+//          }
+//      }
+//      return res;
+//    }
+
+
+    int res = 1;
+    public class NodeAndPath{
+        TreeNode node;
+        List<TreeNode> path;
+
+        public NodeAndPath(TreeNode node, List<TreeNode> path){
+            this.node = node;
+            this.path = path;
+        }
+    }
+    public int goodNodes(TreeNode root) {
+
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+
+        NodeAndPath nodeAndPath = new NodeAndPath(root, new ArrayList<>());
+
+        checkGoodNode(nodeAndPath);
+        return res;
+    }
+
+    private NodeAndPath checkGoodNode(NodeAndPath nodeAndPath){
+        if(nodeAndPath.node == null){
+            return null;
+        }
+        if(isGood(nodeAndPath.path, nodeAndPath.node)){
+            res += 1;
+        }
+
+        TreeNode node = nodeAndPath.node;
+        List<TreeNode> path = nodeAndPath.path;
+
+        path.add(node);
+        NodeAndPath leftNodeAndPath = new NodeAndPath(node.left, path);
+        NodeAndPath rightNodeAndPath = new NodeAndPath(node.right, path);
+
+        NodeAndPath nodeAndPath1 = new NodeAndPath(nodeAndPath.node, new ArrayList<>());
+        //return null; // ???
+        return nodeAndPath1;
+    }
+
+    private boolean isGood(List<TreeNode> visited, TreeNode root){
+        if(visited.isEmpty()){
+            return true;
+        }
+        boolean res = true;
+        for(TreeNode x: visited){
+            if(root.val <= x.val){
+                return false;
+            }
+        }
         return res;
     }
 
