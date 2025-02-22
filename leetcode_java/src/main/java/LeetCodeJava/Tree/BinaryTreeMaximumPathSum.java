@@ -91,39 +91,87 @@ public class BinaryTreeMaximumPathSum {
         return node.val + Math.max(leftMax, rightMax);
     }
 
+    // V1-1
+    // https://neetcode.io/problems/binary-tree-maximum-path-sum
+    // IDEA: DFS
+    int res = Integer.MIN_VALUE;
 
-    // V1
+    public int maxPathSum_1_1(TreeNode root) {
+        dfs_1(root);
+        return res;
+    }
+
+    private int getMax(TreeNode root) {
+        if (root == null) return 0;
+        int left = getMax(root.left);
+        int right = getMax(root.right);
+        int path = root.val + Math.max(left, right);
+        return Math.max(0, path);
+    }
+
+    private void dfs_1(TreeNode root) {
+        if (root == null) return;
+        int left = getMax(root.left);
+        int right = getMax(root.right);
+        res = Math.max(res, root.val + left + right);
+        dfs_1(root.left);
+        dfs_1(root.right);
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/binary-tree-maximum-path-sum
+    // IDEA: DFS (OPTIMAL)
+
+    public int maxPathSum_1_2(TreeNode root) {
+        int[] res = new int[]{root.val};
+        dfs_1_2(root, res);
+        return res[0];
+    }
+
+    private int dfs_1_2(TreeNode root, int[] res) {
+        if (root == null) {
+            return 0;
+        }
+
+        int leftMax = Math.max(dfs_1_2(root.left, res), 0);
+        int rightMax = Math.max(dfs_1_2(root.right, res), 0);
+
+        res[0] = Math.max(res[0], root.val + leftMax + rightMax);
+        return root.val + Math.max(leftMax, rightMax);
+    }
+
+    // V2
     // IDEA : DFS
     // https://leetcode.com/problems/binary-tree-maximum-path-sum/solutions/4586190/beat-100-1/
     int max = Integer.MIN_VALUE;
 
-    public int maxPath_1(TreeNode root) {
+    public int maxPath_2(TreeNode root) {
 
         if(root == null) return 0;
 
         int value = root.val;
 
-        int left_sum = Math.max(maxPath_1(root.left),0);
-        int right_sum = Math.max(maxPath_1(root.right),0);
+        int left_sum = Math.max(maxPath_2(root.left),0);
+        int right_sum = Math.max(maxPath_2(root.right),0);
 
         max = Math.max(max, left_sum + right_sum + value);
 
         return Math.max(left_sum, right_sum) + value;
     }
 
-    public int maxPathSum_1(TreeNode root) {
+    public int maxPathSum_2(TreeNode root) {
 
-        maxPath_1(root);
+        maxPath_2(root);
         return max;
     }
 
-    // V2
+    // V3
     // IDEA : DFS
     // https://leetcode.com/problems/binary-tree-maximum-path-sum/solutions/4538150/simple-java-solution-dfs/
     class INT {
         int val;
     }
-    public int maxPathSum_2(TreeNode root) {
+    public int maxPathSum_3(TreeNode root) {
         INT maxPathLen = new INT();
         maxPathLen.val = Integer.MIN_VALUE;
         dfs_2(root, maxPathLen);

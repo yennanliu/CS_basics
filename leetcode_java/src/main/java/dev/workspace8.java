@@ -2691,6 +2691,24 @@ public class workspace8 {
         return 0;
     }
 
+    // LC 124
+    // 5.07 - 5.20 pm
+    /**
+     *  IDEA 1) DFS
+     *
+     *  -> step 1) visit the end of node first,
+     *  -> step 2) init an array, and cumsum, maxSum
+     *  -> step 3) keep append new val to array, update cumsum as well
+     *      -> and update maxSum
+     *
+     *  return maxSum
+     *
+     */
+    public int maxPathSum(TreeNode root) {
+
+        return 0;
+    }
+
 
 
 }
