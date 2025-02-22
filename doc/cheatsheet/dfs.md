@@ -522,6 +522,28 @@ private int longestPath(TreeNode node){
 }
 ```
 
+#### 1-1-10) Compare node val with path
+
+```java
+// java
+// LC 1448
+
+private void dfsCheckGoodNode(TreeNode node, int maxSoFar) {
+    if (node == null)
+        return;
+
+    // Check if the current node is good
+    if (node.val >= maxSoFar) {
+        res++;
+        maxSoFar = node.val; // Update max value seen so far
+    }
+
+    // Recur for left and right children
+    dfsCheckGoodNode(node.left, maxSoFar);
+    dfsCheckGoodNode(node.right, maxSoFar);
+}
+```
+
 ## 2) LC Example
 
 ### 2-1) Validate Binary Search Tree
