@@ -75,6 +75,15 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
          *  2) root_idx will be used as "length" (root - sub left tree)
          *  3) root_idx will be used on both "preorder" and "inorder"
          *
+         *  NOTE !!!
+         *
+         *   root_idx is a `radius` of tree actually
+         *   e.g.
+         *            8
+         *        1        9
+         *        <--->
+         *       root_idx
+         *
          *  4) for "preorder",
          *
          *      left sub tree : Arrays.copyOfRange(preorder, 1, root_idx + 1)
@@ -235,6 +244,42 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
             root.left = splitTree(P, M, pix+1, ileft, imid-1);
         if (imid < iright)
             root.right = splitTree(P, M, pix+imid-ileft+1, imid+1, iright);
+        return root;
+    }
+
+    // V4
+    private Map<Integer, Integer> inorderIndexMap_;
+    private int preorderIndex_;
+
+    public TreeNode buildTree_4(int[] preorder, int[] inorder) {
+        if (preorder == null || preorder.length == 0)
+            return null;
+
+        // Build a HashMap for quick index lookup
+        inorderIndexMap = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            inorderIndexMap.put(inorder[i], i);
+        }
+
+        preorderIndex_ = 0;
+        return dfsBuildTree(preorder, 0, inorder.length - 1);
+    }
+
+    private TreeNode dfsBuildTree(int[] preorder, int left, int right) {
+        if (left > right)
+            return null;
+
+        // Pick the current root from preorder
+        int rootValue = preorder[preorderIndex_++];
+        TreeNode root = new TreeNode(rootValue);
+
+        // Find the root index in inorder using HashMap (O(1) lookup)
+        int inorderIndex = inorderIndexMap.get(rootValue);
+
+        // Build left and right subtrees
+        root.left = dfsBuildTree(preorder, left, inorderIndex - 1);
+        root.right = dfsBuildTree(preorder, inorderIndex + 1, right);
+
         return root;
     }
 
