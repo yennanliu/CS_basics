@@ -2839,6 +2839,92 @@ public class workspace8 {
         }
     }
 
+    // LC 703
+    // 3.19 - 3.29 PM
+    /**
+     *  More specifically,
+     *  -> we are looking for the kth highest score
+     *     in the sorted list of all scores.
+     *
+     *
+     *   int add(int val) Adds a new test score
+     *   val to the stream and returns the element representing
+     *   the kth largest element in the pool of test scores so far.
+     *
+     *
+     *   IDEA 1) PQ
+     *
+     *   -> init a `big PQ`, e.g. big -> small (decreasing order)
+     *
+     */
+//    class KthLargest {
+//
+//        PriorityQueue<Integer> pq;
+//        int k;
+//        int[] nums;
+//
+//        public KthLargest(int k, int[] nums) {
+//            // ??? use Comparator.reverseOrder() to get `big PQ` ??
+//            //this.pq = new PriorityQueue<>(Comparator.reverseOrder());
+//            /**
+//             *  -> we use `small PQ`, (small -> big)
+//             *  -> since then we know the first element is
+//             *  the k th element
+//             *
+//             */
+//            //this.pq = new PriorityQueue<>();
+//            this.pq = new PriorityQueue<>(Comparator.reverseOrder());
+//            this.k = k;
+//            this.nums = nums;
+//        }
+//
+//        public int add(int val) {
+//            pq.add(val);
+//            /**
+//             *  -> while PQ size > k,
+//             *  -> we remove the `no needed` eleemnts
+//             */
+//            while(this.pq.size() > k){
+//                pq.poll();
+//            }
+//            if(!pq.isEmpty()){
+//                return pq.peek();
+//            }
+//            return -1; // should not happen
+//        }
+//    }
 
+    class KthLargest {
+        int k;
+        int[] nums;
+        PriorityQueue<Integer> pq;
+
+        public KthLargest(int k, int[] nums) {
+            this.k = k;
+            this.nums = nums; // ???
+            /**
+             * // NOTE !!! we use small PQ
+             * -> small -> big (increasing order)
+             *
+             */
+            this.pq = new PriorityQueue<>();
+            // NOTE !!! we also need to add eleemnts to PQ
+            for(int x: nums){
+                pq.add(x);
+            }
+        }
+
+        public int add(int val) {
+            this.pq.add(val);
+            // NOTE !!! need to remove elements when PQ size > k
+            while(this.pq.size() > k){
+                this.pq.poll();
+            }
+            if(!this.pq.isEmpty()){
+                return this.pq.peek();
+            }
+            return -1;
+        }
+    }
 
 }
