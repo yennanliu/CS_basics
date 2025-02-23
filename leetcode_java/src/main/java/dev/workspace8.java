@@ -2709,6 +2709,136 @@ public class workspace8 {
         return 0;
     }
 
+    // LC 297
+    // 2.33 pm - 2.43 pm
+//    public class Codec {
+//
+//        // attr
+//        StringBuilder sb;
+//        TreeNode resRoot;
+//
+//        // Encodes a tree to a single string.
+//        public String serialize(TreeNode root) {
+//            this.sb = new StringBuilder();
+//            // edge
+//            if(root == null){
+//                return "";
+//            }
+//            if(root.left == null && root.right == null){
+//                this.sb.append(root.val);
+//                return this.sb.toString();
+//            }
+//
+//            // dfs go through node vals
+//            this.nodeToString(root);
+//            return sb.toString();
+//        }
+//
+//        // Decodes your encoded data to tree.
+//        public TreeNode deserialize(String data) {
+//            // edge
+//            if(data == null){
+//                return new TreeNode();
+//            }
+//            if(!data.contains(",")){
+//                return new TreeNode(Integer.parseInt(data));
+//            }
+//
+//            // string to node
+//            return this.resRoot; // ?
+//        }
+//
+//        // ????
+//        private TreeNode nodeToString(TreeNode root){
+//            if(root == null){
+//                return null;
+//            }
+//            // preorder: root -> left -> right
+//            //this.sb.toString();
+//            this.sb.append(root.val);
+//            this.sb.append(",");
+//
+//            // ????
+////            TreeNode leftRoot = this.nodeToString(root.left);
+////            TreeNode rightRoot = this.nodeToString(root.right);
+//
+//            this.nodeToString(root.left);
+//            this.nodeToString(root.right);
+//
+//            return root;
+//        }
+//
+//        // ???
+//        private String stringToNode(String str){
+//            if(str == null){
+//                return null;
+//            }
+//            String[] strArray = str.split(",");
+//            String rootNode = strArray[0];
+//            this.resRoot = new TreeNode(Integer.parseInt(rootNode));
+//            //this.resRoot.left =;
+//            return null;
+//        }
+//    }
+
+    public class Codec{
+        public String serialize(TreeNode root) {
+
+            /** NOTE !!!
+             *
+             *     if root == null, return "#"
+             */
+            if (root == null){
+                return "#";
+            }
+
+            /** NOTE !!! return result via pre-order, split with "," */
+            //return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+            serialize(root.left);
+            serialize(root.right);
+
+            return String.valueOf(root.val);
+        }
+
+        public TreeNode deserialize(String data) {
+
+            /** NOTE !!!
+             *
+             *   1) init queue and append serialize output
+             *   2) even use queue, but helper func still using DFS
+             */
+            Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
+            return helper(queue);
+        }
+
+        private TreeNode helper(Queue<String> queue) {
+
+            // get val from queue first
+            String s = queue.poll();
+
+            if (s.equals("#")){
+                return null;
+            }
+            /** NOTE !!! init current node  */
+            TreeNode root = new TreeNode(Integer.valueOf(s));
+            /** NOTE !!!
+             *
+             *    since serialize is "pre-order",
+             *    deserialize we use "pre-order" as well
+             *    e.g. root -> left sub tree -> right sub tree
+             *    -> so we get sub tree via below :
+             *
+             *       root.left = helper(queue);
+             *       root.right = helper(queue);
+             *
+             */
+            root.left = helper(queue);
+            root.right = helper(queue);
+            /** NOTE !!! don't forget to return final deserialize result  */
+            return root;
+        }
+    }
+
 
 
 }
