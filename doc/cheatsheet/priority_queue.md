@@ -67,3 +67,46 @@ while (!bigPQ.isEmpty()) {
 // LC 1046
 ```
 
+### 2-3)  Kth Largest Element in a Stream
+
+```java
+// java
+// LC 703
+// V0-1
+// IDEA: SMALL PQ (fixed by gpt)
+class KthLargest_0_1 {
+    int k;
+    int[] nums;
+    PriorityQueue<Integer> pq;
+
+    public KthLargest_0_1(int k, int[] nums) {
+        this.k = k;
+        this.nums = nums; // ???
+        /**
+         * // NOTE !!! we use small PQ
+         * e.g. : small -> big (increasing order)
+         *
+         * -> so, we pop elements when PQ size  > k
+         * -> and we're sure that the top element is the `k th biggest element
+         * -> e.g. (k-big, k-1 big, k-2 big, ...., 2 big, 1 big)
+         */
+        this.pq = new PriorityQueue<>();
+        // NOTE !!! we also need to add eleemnts to PQ
+        for (int x : nums) {
+            pq.add(x);
+        }
+    }
+
+    public int add(int val) {
+        this.pq.add(val);
+        // NOTE !!! need to remove elements when PQ size > k
+        while (this.pq.size() > k) {
+            this.pq.poll();
+        }
+        if (!this.pq.isEmpty()) {
+            return this.pq.peek();
+        }
+        return -1;
+    }
+}
+```
