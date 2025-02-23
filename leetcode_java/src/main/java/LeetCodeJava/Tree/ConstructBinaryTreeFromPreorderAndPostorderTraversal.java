@@ -96,7 +96,10 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
 
         /**
          * The left subtree is constructed recursively using:
-         * 	•	The preorder subarray from index 1 to 1 + mid + 1 (this includes the elements belonging to the left subtree).
+         *
+         * 	•	The preorder subarray from index 1 to 1 + mid + 1
+         * 	     - (this includes the elements belonging to the left subtree).
+         *
          * 	•	The postorder subarray from index 0 to mid + 1.
          */
         root.left = constructFromPrePost(
@@ -105,7 +108,10 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
 
         /**
          *  The right subtree is constructed recursively using:
-         * 	•	The preorder subarray from index 1 + mid + 1 to the end (the elements belonging to the right subtree).
+         *
+         * 	•	The preorder subarray from index `1 + mid + 1` to the end
+         * 	    - (the elements belonging to the right subtree).
+         *
          * 	•	The postorder subarray from mid + 1 to postorder.length - 1.
          */
         root.right = constructFromPrePost(

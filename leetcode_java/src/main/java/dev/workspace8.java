@@ -2927,4 +2927,105 @@ public class workspace8 {
         }
     }
 
+    // LC 889
+    // 3.57 - 4.10 pm
+    /**
+     *  IDEA : binary tree property + dfs
+     *
+     *  preorder: root -> left -> right
+     *
+     *  postorder: left -> right -> root
+     *
+     *
+     *  step 1) get root
+     *  step 2) get `radius` via postorder
+     *    -> d = distance(0, len_of_postorder)
+     *    -> r = d / 2  ???
+     *
+     *
+     */
+//    TreeNode resNode = new TreeNode();
+//    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+//
+//        this.helper(preorder, postorder);
+//        return resNode;
+//    }
+//
+//    private TreeNode helper(int[] preorder, int[] postorder){
+//
+//        int rootVal = preorder[0];
+//        int radius = postorder.length / 2; // ???
+//
+//        resNode.left = this.helper(
+//               Arrays.copyOfRange(preorder, 1, 1+ radius),
+//                //Arrays.copyOfRange(preorder, 0,  radius),
+//                Arrays.copyOfRange(postorder, 0, radius) // ????
+//        );
+//        resNode.right = this.helper(
+//                Arrays.copyOfRange(preorder, 1 + radius, preorder.length),
+//                Arrays.copyOfRange(postorder, radius, postorder.length - 1) // ????
+//        );
+//
+//        return resNode;
+//    }
+
+
+
+    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+
+        // O(n) time | O(h) space
+
+        // base case : 	If the input arrays are null or empty, return null. This is the base case for recursion.
+        if(preorder == null || postorder == null || preorder.length == 0 || postorder.length == 0){
+            return null;
+        }
+
+        TreeNode root = new TreeNode(preorder[0]);
+        int mid = 0;
+
+        // Check if there’s only one node:
+        if(preorder.length == 1){
+            return root;
+        }
+
+        /** NOTE : 	Finding the Midpoint:
+         *
+         *	•	The second element of the preorder array is the root of the left subtree. We find this element in the postorder array.
+         * 	•	The index mid represents the boundary between the left and right subtrees in both the preorder and postorder arrays.
+         */
+        // update mid
+        for(int i = 0; i < postorder.length; i++){
+            if(preorder[1] == postorder[i]){
+                mid = i;
+                break;
+            }
+        }
+
+        // recursive Construction of Left and Right Subtrees:
+
+        /**
+         * The left subtree is constructed recursively using:
+         * 	•	The preorder subarray from index 1 to 1 + mid + 1 (this includes the elements belonging to the left subtree).
+         * 	•	The postorder subarray from index 0 to mid + 1.
+         */
+        root.left = constructFromPrePost(
+                //Arrays.copyOfRange(preorder, 1, 1 + mid + 1),
+                Arrays.copyOfRange(preorder, 1, mid + 1),
+                Arrays.copyOfRange(postorder, 0, mid + 1));
+
+        /**
+         *  The right subtree is constructed recursively using:
+         * 	•	The preorder subarray from index 1 + mid + 1 to the end (the elements belonging to the right subtree).
+         * 	•	The postorder subarray from mid + 1 to postorder.length - 1.
+         */
+        root.right = constructFromPrePost(
+                //Arrays.copyOfRange(preorder, 1 + mid + 1, preorder.length),
+                Arrays.copyOfRange(preorder, mid + 1, preorder.length),
+                Arrays.copyOfRange(postorder, mid + 1, postorder.length - 1));
+
+        // After recursively constructing the left and right subtrees, the root node (with its left and right children) is returned.
+        return root;
+    }
+
+
 }
