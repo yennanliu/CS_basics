@@ -3027,5 +3027,30 @@ public class workspace8 {
         return root;
     }
 
+    // LC 1046
+    // 4.34 - 4.44 pm
+    // IDEA: PQ (big queue, big -> small)
+    public int lastStoneWeight(int[] stones) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        for(int x: stones){
+            pq.add(x);
+            if(pq.size() >= 2){
+                int tmp1 = pq.poll();
+                int tmp2 = pq.poll();
+                int calRes = 0;
+                if(tmp1 == tmp2){
+                    continue;
+                }else{
+                    calRes = Math.abs(tmp1 - tmp2);
+                }
+                pq.add(calRes);
+            }
+        }
+        if(!pq.isEmpty()){
+            return pq.peek();
+        }
+        return -1; // should not reach this point
+    }
+
 
 }
