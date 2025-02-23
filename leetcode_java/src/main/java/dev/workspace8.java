@@ -2427,7 +2427,7 @@ public class workspace8 {
     }
 
   // LC 1448
-  // 2.51 - 3.12 pm
+  // 4.49 - 5.20 pm
   /**
    * Given a binary tree root,
    * a node X in the tree is named good if
@@ -2441,9 +2441,65 @@ public class workspace8 {
    *
    */
   /**
-   *  IDEA: DFS ??
+   *  IDEA:  BOTTOM UP DFS
+   *
+   *
+   *  --> a node X in the tree is named `good` if
+   *  in the `path` from root to X there are no nodes with a value greater than X.
+   *
+   *
+   *   NOTE !!!
+   *   -> if a node is `good node`, its sub node MUST are all good nodes
+   *
+   *    -> step 1) check sub tree, if each of them is `good node`
+   *    -> step 2) then we know sub tree good node list
+   *    -> step 3) check its parent, if it's good node
+   *    -> step 4) repeat above steps,,, update res as well
+   *
+   *    return res as result
    *
    */
+  int goodNodeCnt = 1;
+  public int goodNodes(TreeNode root) {
+      // edge
+      if(root == null){
+          return 0;
+      }
+      if(root.left == null && root.right == null){
+          return 1;
+      }
+      // dfs
+      this.checkGoodNode(root, root.val);
+      return goodNodeCnt;
+  }
+
+  private void checkGoodNode(TreeNode root, int maxSoFar){
+      if(root == null){
+          //return null;
+          return;
+      }
+      if(root.val > maxSoFar){
+          goodNodeCnt += 1;
+      }
+
+      if(root.left != null){
+          this.checkGoodNode(
+                  root.left,
+                  Math.max(root.left.val, maxSoFar)
+          );
+      }
+
+      if(root.right != null){
+          this.checkGoodNode(
+                  root.right,
+                  Math.max(root.right.val, maxSoFar)
+          );
+      }
+
+      //return root; // /??
+  }
+
+
 //  int res = 1;
 //  public int goodNodes(TreeNode root) {
 //
@@ -2496,64 +2552,64 @@ public class workspace8 {
 //    }
 
 
-    int res = 1;
-    public class NodeAndPath{
-        TreeNode node;
-        List<TreeNode> path;
-
-        public NodeAndPath(TreeNode node, List<TreeNode> path){
-            this.node = node;
-            this.path = path;
-        }
-    }
-    public int goodNodes(TreeNode root) {
-
-        // edge
-        if(root == null){
-            return 0;
-        }
-        if(root.left == null && root.right == null){
-            return 1;
-        }
-
-        NodeAndPath nodeAndPath = new NodeAndPath(root, new ArrayList<>());
-
-        checkGoodNode(nodeAndPath);
-        return res;
-    }
-
-    private NodeAndPath checkGoodNode(NodeAndPath nodeAndPath){
-        if(nodeAndPath.node == null){
-            return null;
-        }
-        if(isGood(nodeAndPath.path, nodeAndPath.node)){
-            res += 1;
-        }
-
-        TreeNode node = nodeAndPath.node;
-        List<TreeNode> path = nodeAndPath.path;
-
-        path.add(node);
-        NodeAndPath leftNodeAndPath = new NodeAndPath(node.left, path);
-        NodeAndPath rightNodeAndPath = new NodeAndPath(node.right, path);
-
-        NodeAndPath nodeAndPath1 = new NodeAndPath(nodeAndPath.node, new ArrayList<>());
-        //return null; // ???
-        return nodeAndPath1;
-    }
-
-    private boolean isGood(List<TreeNode> visited, TreeNode root){
-        if(visited.isEmpty()){
-            return true;
-        }
-        boolean res = true;
-        for(TreeNode x: visited){
-            if(root.val <= x.val){
-                return false;
-            }
-        }
-        return res;
-    }
+//    int res = 1;
+//    public class NodeAndPath{
+//        TreeNode node;
+//        List<TreeNode> path;
+//
+//        public NodeAndPath(TreeNode node, List<TreeNode> path){
+//            this.node = node;
+//            this.path = path;
+//        }
+//    }
+//    public int goodNodes(TreeNode root) {
+//
+//        // edge
+//        if(root == null){
+//            return 0;
+//        }
+//        if(root.left == null && root.right == null){
+//            return 1;
+//        }
+//
+//        NodeAndPath nodeAndPath = new NodeAndPath(root, new ArrayList<>());
+//
+//        checkGoodNode(nodeAndPath);
+//        return res;
+//    }
+//
+//    private NodeAndPath checkGoodNode(NodeAndPath nodeAndPath){
+//        if(nodeAndPath.node == null){
+//            return null;
+//        }
+//        if(isGood(nodeAndPath.path, nodeAndPath.node)){
+//            res += 1;
+//        }
+//
+//        TreeNode node = nodeAndPath.node;
+//        List<TreeNode> path = nodeAndPath.path;
+//
+//        path.add(node);
+//        NodeAndPath leftNodeAndPath = new NodeAndPath(node.left, path);
+//        NodeAndPath rightNodeAndPath = new NodeAndPath(node.right, path);
+//
+//        NodeAndPath nodeAndPath1 = new NodeAndPath(nodeAndPath.node, new ArrayList<>());
+//        //return null; // ???
+//        return nodeAndPath1;
+//    }
+//
+//    private boolean isGood(List<TreeNode> visited, TreeNode root){
+//        if(visited.isEmpty()){
+//            return true;
+//        }
+//        boolean res = true;
+//        for(TreeNode x: visited){
+//            if(root.val <= x.val){
+//                return false;
+//            }
+//        }
+//        return res;
+//    }
 
     // LC 105
     // 4.02 PM - 4.15 PM
