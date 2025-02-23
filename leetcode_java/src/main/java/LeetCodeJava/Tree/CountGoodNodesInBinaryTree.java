@@ -68,8 +68,16 @@ public class CountGoodNodesInBinaryTree {
      */
     // V0
     // IDEA : DFS + maintain min value
+    /**
+     *  NOTE !!!
+     *
+     *   `good node` is there is NO node val GREATER than such node
+     *    BETWEEN ROOT and NODE
+     *
+     *
+     *    > is  good if in the path from root to X there are no nodes with a value greater than X.
+     */
     private int numGoodNodes = 0;
-
     public int goodNodes(TreeNode root) {
         //dfs(root, Integer.MIN_VALUE);
         findGoodNode(root, root.val); // can use root.val as well
@@ -136,6 +144,53 @@ public class CountGoodNodesInBinaryTree {
         // Recur for left and right children
         dfsCheckGoodNode(node.left, maxSoFar);
         dfsCheckGoodNode(node.right, maxSoFar);
+    }
+
+    // V0-2
+    // IDEA: DFS + MAINTAIN `big so far` value
+    /**
+     *  NOTE !!!
+     *
+     *   `good node` is there is NO node val GREATER than such node
+     *    BETWEEN ROOT and NODE
+     *
+     *
+     *    > is  good if in the path from root to X there are no nodes with a value greater than X.
+     */
+    int goodNodeCnt = 0;
+    public int goodNodes_0_2(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
+        // dfs
+        this.checkGoodNode(root, root.val);
+        return goodNodeCnt;
+    }
+
+    /** NOTE !!! below helper func NOT return anything */
+    private void checkGoodNode(TreeNode root, int maxSoFar) {
+        if (root == null) {
+            return;
+        }
+        if (root.val >= maxSoFar) {
+            goodNodeCnt += 1;
+        }
+
+        if (root.left != null) {
+            this.checkGoodNode(
+                    root.left,
+                    Math.max(root.val, maxSoFar));
+        }
+
+        if (root.right != null) {
+            this.checkGoodNode(
+                    root.right,
+                    Math.max(root.val, maxSoFar));
+        }
     }
 
 
