@@ -2315,20 +2315,22 @@ public class workspace8 {
 
     // LC 110
     // https://leetcode.com/problems/balanced-binary-tree/description/
-    // 12.00 pm - 12.15 pm
+    // 5.24 - 5.34 pm
     /**
      *
      *
      *  Given a binary tree, determine if it is `height-balanced`
      * .
      * -> height-balanced:
+     *
      *  A height-balanced binary tree is a binary tree in
      *  which the depth of the two subtrees of every node
      *  `never` differs by more than one.
      *
+     *  -> e.g. dist(sub_left, sub_right) <= 1
      *
-     *  IDEA 1) DFS -> check sub tree depth ??
-     *          -> then compare if any diff(depth) > 1 ??
+     *  IDEA 1) DFS
+     *   ->
      *
      *
      *
@@ -2341,21 +2343,50 @@ public class workspace8 {
         if(root.left == null && root.right == null){
             return true;
         }
-
-        // dfs ??
-        return dfsCheckBalanced(root, 0);
-    }
-
-    private boolean dfsCheckBalanced(TreeNode root, int depth){
-        if(root == null){
-            return true;
+        if(root.left == null || root.right == null){
+            return false;
         }
 
-//        int leftDepth =  this.dfsCheckBalanced(root.left, depth+1);
-//        this.dfsCheckBalanced(root.right, depth+1);
-
         return false;
+       // return balanceHelper(root);
     }
+
+    private boolean balanceHelper(TreeNode root, int height){
+
+        if(root == null){
+            return true; //?
+        }
+
+        balanceHelper(root.left, height+1);
+        balanceHelper(root.right, height+1);
+
+        return true;
+    }
+
+
+//    public boolean isBalanced(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return true;
+//        }
+//        if(root.left == null && root.right == null){
+//            return true;
+//        }
+//
+//        // dfs ??
+//        return dfsCheckBalanced(root, 0);
+//    }
+//
+//    private boolean dfsCheckBalanced(TreeNode root, int depth){
+//        if(root == null){
+//            return true;
+//        }
+//
+////        int leftDepth =  this.dfsCheckBalanced(root.left, depth+1);
+////        this.dfsCheckBalanced(root.right, depth+1);
+//
+//        return false;
+//    }
 
     // LC 199
     // 6.17 - 6.27 pm
