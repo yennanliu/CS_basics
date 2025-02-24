@@ -200,6 +200,7 @@ public class SerializeAndDeserializeBinaryTree {
 
     // V1-1
     // https://neetcode.io/problems/serialize-and-deserialize-binary-tree
+    // https://youtu.be/u4JAi2JJhI8?si=_bd33xap_9uRTI9E
     // IDEA: DFS
     public class Codec_1_1 {
 
@@ -242,6 +243,7 @@ public class SerializeAndDeserializeBinaryTree {
 
     // V1-2
     // https://neetcode.io/problems/serialize-and-deserialize-binary-tree
+    // https://youtu.be/u4JAi2JJhI8?si=_bd33xap_9uRTI9E
     // IDEA: BFS
     public class Codec_1_2 {
 
