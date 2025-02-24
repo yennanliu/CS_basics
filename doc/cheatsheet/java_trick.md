@@ -53,6 +53,41 @@ PriorityQueue<Integer> heap = new PriorityQueue<>(Comperator.reverseOrder());
 - `new ArrayList` : implement "add", "remove" and "modify" methods, not affect original array -> `preferable`
 
 
+### 0-0-0-1) Init an array
+
+```java
+// java
+
+// LC 973
+
+/** NOTE !!!
+ *  
+ *  below init an array with (k length, 2 width) (aka k x 2 dimension)
+ * 
+ */
+int[][] ans = new int[k][2];
+
+
+
+int k = 4;
+int[][] x = new int[k][2];
+System.out.println(">>> before " + Arrays.deepToString(x));
+
+x[0] = new int[]{0,1};
+x[1] = new int[]{0,2};
+
+System.out.println(">>> after " + Arrays.deepToString(x));
+
+int[] x2 = new int[]{1, 2, 3};
+System.out.println(Arrays.toString(x2));  // Output: [1, 2, 3]
+
+
+// how to print context in 2D array ?
+
+System.out.println(">>> before " + Arrays.deepToString(x));
+```
+
+
 ### 0-0-1) Array <--> List
 
 ```java
