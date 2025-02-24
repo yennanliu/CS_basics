@@ -3,7 +3,10 @@ package LeetCodeJava.Design;
 // https://leetcode.com/problems/design-twitter/
 /**
  * 355. Design Twitter
- * Design a simplified version of Twitter where users can post tweets, follow/unfollow another user and is able to see the 10 most recent tweets in the user's news feed. Your design should support the following methods:
+ * Design a simplified version of Twitter where
+ * users can post tweets, follow/unfollow another
+ * user and is able to see the 10 most recent tweets
+ * in the user's news feed. Your design should support the following methods:
  *
  *
  * postTweet(userId, tweetId): Compose a new tweet.
@@ -56,6 +59,81 @@ public class DesignTwitter {
     // V0
     // TODO : implement
 
+    // V0-1
+    // IDEA: HASHMAP + PQ (gpt)
+    class Twitter_0_1 {
+
+        private HashMap<Integer, Set<Integer>> followers; // followerId -> set of followeeIds
+        private HashMap<Integer, List<Tweet>> userTweets; // userId -> list of tweets
+        private int timestamp;
+
+        private class Tweet {
+            int tweetId;
+            int timestamp;
+
+            public Tweet(int tweetId, int timestamp) {
+                this.tweetId = tweetId;
+                this.timestamp = timestamp;
+            }
+        }
+
+        /** Initialize your data structure here. */
+        public Twitter_0_1() {
+            this.followers = new HashMap<>();
+            this.userTweets = new HashMap<>();
+            this.timestamp = 0;
+        }
+
+        /** Compose a new tweet. */
+        public void postTweet(int userId, int tweetId) {
+            userTweets.putIfAbsent(userId, new ArrayList<>());
+            userTweets.get(userId).add(0, new Tweet(tweetId, timestamp++)); // Add to the front for recent tweets
+        }
+
+        /**
+         * Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed
+         * must be posted by users who the user followed or by the user herself. Tweets must be ordered
+         * from most recent to least recent.
+         */
+        public List<Integer> getNewsFeed(int userId) {
+            PriorityQueue<Tweet> maxHeap = new PriorityQueue<>((a, b) -> b.timestamp - a.timestamp); // Max heap based on timestamp
+            Set<Integer> followedUsers = new HashSet<>();
+            followedUsers.add(userId); // Include the user's own tweets
+            if (followers.containsKey(userId)) {
+                followedUsers.addAll(followers.get(userId));
+            }
+
+            for (int followedUserId : followedUsers) {
+                if (userTweets.containsKey(followedUserId)) {
+                    maxHeap.addAll(userTweets.get(followedUserId));
+                }
+            }
+
+            List<Integer> newsFeed = new ArrayList<>();
+            int count = 0;
+            while (!maxHeap.isEmpty() && count < 10) {
+                newsFeed.add(maxHeap.poll().tweetId);
+                count++;
+            }
+            return newsFeed;
+        }
+
+        /** Follower follows a followee. If the operation is invalid, it should be a no-op. */
+        public void follow(int followerId, int followeeId) {
+            if (followerId == followeeId) {
+                return; // Cannot follow self
+            }
+            followers.putIfAbsent(followerId, new HashSet<>());
+            followers.get(followerId).add(followeeId);
+        }
+
+        /** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
+        public void unfollow(int followerId, int followeeId) {
+            if (followers.containsKey(followerId)) {
+                followers.get(followerId).remove(followeeId);
+            }
+        }
+    }
 
     // V1
     // https://leetcode.com/problems/design-twitter/solutions/2720611/java-simple-hashmap-stack/
