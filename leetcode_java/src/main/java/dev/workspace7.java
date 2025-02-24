@@ -158,10 +158,24 @@ public class workspace7 {
 //       }
 
         // ------------------- TEST 11 list to str
-        List<String> my_str_10 = new ArrayList<>();
-        my_str_10.add("(");
-        my_str_10.add(")");
-        System.out.println(String.valueOf(my_str_10));
+//        List<String> my_str_10 = new ArrayList<>();
+//        my_str_10.add("(");
+//        my_str_10.add(")");
+//        System.out.println(String.valueOf(my_str_10));
+
+
+        // ------------------- TEST 12  init array
+        int k = 4;
+        int[][] x = new int[k][2];
+        System.out.println(">>> before " + Arrays.deepToString(x));
+
+        x[0] = new int[]{0,1};
+        x[1] = new int[]{0,2};
+
+        System.out.println(">>> after " + Arrays.deepToString(x));
+
+        int[] x2 = new int[]{1, 2, 3};
+        System.out.println(Arrays.toString(x2));  // Output: [1, 2, 3]
 
     }
 

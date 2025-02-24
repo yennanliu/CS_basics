@@ -1910,11 +1910,11 @@ public class workspace8 {
         return res.next;
     }
 
-    private int getRandom(List<Integer> nodeValList){
-        Random random = new Random();
-        int idx = random.nextInt(0, nodeValList.size()-1);
-        return nodeValList.get(idx);
-    }
+//    private int getRandom(List<Integer> nodeValList){
+//        Random random = new Random();
+//        int idx = random.nextInt(0, nodeValList.size()-1);
+//        return nodeValList.get(idx);
+//    }
 
     // LC 002
     // 11.01 - 11.11 am
@@ -3139,5 +3139,104 @@ public class workspace8 {
         return -1; // should not reach this point
     }
 
+
+    // LC 973
+    // 10.17 - 10.27 AM
+    /**
+     *  973. K Closest Points to Origin
+     *
+     *
+     * We have a list of points on the plane.
+     *
+     * -> Find the `K closest points` to the origin (0, 0).
+     *
+     * (Here, the distance between two points on a plane is the Euclidean distance.)
+     *
+     * You may return the answer in any order.
+     * The answer is guaranteed to be unique (except for the order that it is in.)
+     *
+     *
+     *
+     * Example 1:
+     *
+     * Input: points = [[1,3],[-2,2]], K = 1
+     * Output: [[-2,2]]
+     * Explanation:
+     * The distance between (1, 3) and the origin is sqrt(10).
+     * The distance between (-2, 2) and the origin is sqrt(8).
+     * Since sqrt(8) < sqrt(10), (-2, 2) is closer to the origin.
+     * We only want the closest K = 1 points from the origin, so the answer is just [[-2,2]].
+     *
+     *
+     * Example 2:
+     *
+     * Input: points = [[3,3],[5,-1],[-2,4]], K = 2
+     * Output: [[3,3],[-2,4]]
+     * (The answer [[-2,4],[3,3]] would also be accepted.)
+     *
+     *
+     * Note:
+     *
+     * 1 <= K <= points.length <= 10000
+     * -10000 < points[i][0] < 10000
+     * -10000 < points[i][1] < 10000
+     *
+     *
+     *
+     *  IDEA 1) : HAHSMAP or (PQ )??
+     *  -> {point: distance}
+     *  -> so we can get the k `small` point via sorting
+     *
+     *
+     */
+    public int[][] kClosest(int[][] points, int k) {
+        int[][] res = new int[][]{};
+        // edge
+        if(points == null || points.length == 0){
+            return null; //?
+        }
+        if(points.length == 1){
+            res = points;
+            return res; // ???
+        }
+        // build map
+        Map<List<Integer>, Integer> map = new HashMap<>();
+        for(int[] p: points){
+            int dis = (int) getDistance(p); // ???
+            List<Integer> key = new ArrayList<>();
+            key.add(p[0]);
+            key.add(p[1]);
+            map.put(key, dis);
+        }
+
+        // sorting
+        //List<Set<Integer[]>> keys = Arrays.asList(map.keySet());
+        //Object[] k = map.keySet().toArray();
+        // List<String> res = new ArrayList(freq.keySet());
+        //List<Set<List<Integer>>> keys = Arrays.asList(map.keySet());
+        ArrayList<List<Integer>> keys = new ArrayList<>(map.keySet());
+
+        System.out.println(">>> (before sort) keys = " + keys);
+        Collections.sort(keys, new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> o1, List<Integer> o2) {
+                return map.get(o1) - map.get(o2);
+            }
+        });
+
+        System.out.println(">>> (after sort) keys = " + keys);
+        //Set<List<Integer>> tmp = keys.get(k - 1);
+        List<Integer> tmp = keys.get(k - 1);
+
+        //List<List<Integer>> res2 =
+
+        return new int[][] { {tmp.get(0), tmp.get(1)} };
+    }
+
+    private double getDistance(int[] point){
+        int x = point[0];
+        int y = point[1];
+        return  Math.sqrt(x + y);
+    }
 
 }
