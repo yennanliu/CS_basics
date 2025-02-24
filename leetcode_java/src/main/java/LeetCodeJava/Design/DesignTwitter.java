@@ -1,19 +1,64 @@
-//package LeetCodeJava.Design;
-//
-//// https://leetcode.com/problems/design-twitter/
-//
+package LeetCodeJava.Design;
+
+// https://leetcode.com/problems/design-twitter/
+/**
+ * 355. Design Twitter
+ * Design a simplified version of Twitter where users can post tweets, follow/unfollow another user and is able to see the 10 most recent tweets in the user's news feed. Your design should support the following methods:
+ *
+ *
+ * postTweet(userId, tweetId): Compose a new tweet.
+ * getNewsFeed(userId): Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent.
+ * follow(followerId, followeeId): Follower follows a followee.
+ * unfollow(followerId, followeeId): Follower unfollows a followee.
+ * Example:
+ *
+ * Twitter twitter = new Twitter();
+ *
+ * // User 1 posts a new tweet (id = 5).
+ * twitter.postTweet(1, 5);
+ *
+ * // User 1's news feed should return a list with 1 tweet id -> [5].
+ * twitter.getNewsFeed(1);
+ *
+ * // User 1 follows user 2.
+ * twitter.follow(1, 2);
+ *
+ * // User 2 posts a new tweet (id = 6).
+ * twitter.postTweet(2, 6);
+ *
+ * // User 1's news feed should return a list with 2 tweet ids -> [6, 5].
+ * // Tweet id 6 should precede tweet id 5 because it is posted after tweet id 5.
+ * twitter.getNewsFeed(1);
+ *
+ * // User 1 unfollows user 2.
+ * twitter.unfollow(1, 2);
+ *
+ * // User 1's news feed should return a list with 1 tweet id -> [5],
+ * // since user 1 is no longer following user 2.
+ * twitter.getNewsFeed(1);
+ * Difficulty:
+ * Medium
+ * Lock:
+ * Normal
+ * Company:
+ * Amazon DoorDash Twitter Yelp
+ * Problem Solution
+ * 355-Design-Twitter
+ *
+ */
+
 //import javafx.util.Pair;
-//
-//import java.util.*;
-//
-//public class DesignTwitter {
-//
-//    // V0
-//    // TODO : implement
-//
-//
-//    // V1
-//    // https://leetcode.com/problems/design-twitter/solutions/2720611/java-simple-hashmap-stack/
+
+import java.util.*;
+
+public class DesignTwitter {
+
+    // V0
+    // TODO : implement
+
+
+    // V1
+    // https://leetcode.com/problems/design-twitter/solutions/2720611/java-simple-hashmap-stack/
 //    class Twitter_1 {
 //        Stack<Pair<Integer,Integer>> tweets;
 //        HashMap<Integer, Set<Integer>> network;
@@ -55,78 +100,78 @@
 //            network.put(followerId, following);
 //        }
 //    }
-//
-//
-//    // V1_1
-//    // https://leetcode.com/problems/design-twitter/solutions/3869194/beats-100-8ms-java/
-//    class Twitter_1_1 {
-//
-//        ArrayList<Tweet> tweets;
-//        HashMap<Integer, User> users;
-//
-//        public Twitter_1_1() {
-//            tweets = new ArrayList<>();
-//            users = new HashMap<>();
-//        }
-//
-//        public void postTweet(int userId, int tweetId) {
-//            if(!users.containsKey(userId))
-//                users.put(userId, new User(userId));
-//            tweets.add(new Tweet(tweetId, userId));
-//        }
-//
-//        public List<Integer> getNewsFeed(int userId) {
-//            if(!users.containsKey(userId))
-//                users.put(userId, new User(userId));
-//            List<Integer> ans = new ArrayList<Integer>();
-//            int i = tweets.size()-1;
-//            while(ans.size()<10 && i>=0) {
-//                if(tweets.get(i).userId==userId || users.get(userId).follows.contains(tweets.get(i).userId))
-//                    ans.add(tweets.get(i).tweetId);
-//                i--;
-//            }
-//            return ans;
-//        }
-//
-//        public void follow(int followerId, int followeeId) {
-//            if(!users.containsKey(followerId))
-//                users.put(followerId, new User(followerId));
-//            if(!users.containsKey(followeeId))
-//                users.put(followeeId, new User(followeeId));
-//            User user = users.get(followerId);
-//            user.follows.add(followeeId);
-//        }
-//
-//        public void unfollow(int followerId, int followeeId) {
-//            if(!users.containsKey(followerId))
-//                users.put(followerId, new User(followerId));
-//            if(!users.containsKey(followeeId))
-//                users.put(followeeId, new User(followeeId));
-//            User user = users.get(followerId);
-//            user.follows.remove(followeeId);
-//        }
-//    }
-//
-//    class Tweet {
-//        int tweetId;
-//        int userId;
-//        Tweet(int t, int u) {
-//            tweetId = t;
-//            userId = u;
-//        }
-//    }
-//
-//    class User {
-//        int userId;
-//        HashSet<Integer> follows;
-//        User(int u) {
-//            userId = u;
-//            follows = new HashSet<>();
-//        }
-//    }
-//
-//    // V2
-//    // https://leetcode.com/problems/design-twitter/solutions/3400455/simple-solution-for-beginners-with-step-by-step-explanation/
+
+
+    // V1_1
+    // https://leetcode.com/problems/design-twitter/solutions/3869194/beats-100-8ms-java/
+    class Twitter_1_1 {
+
+        ArrayList<Tweet> tweets;
+        HashMap<Integer, User> users;
+
+        public Twitter_1_1() {
+            tweets = new ArrayList<>();
+            users = new HashMap<>();
+        }
+
+        public void postTweet(int userId, int tweetId) {
+            if(!users.containsKey(userId))
+                users.put(userId, new User(userId));
+            tweets.add(new Tweet(tweetId, userId));
+        }
+
+        public List<Integer> getNewsFeed(int userId) {
+            if(!users.containsKey(userId))
+                users.put(userId, new User(userId));
+            List<Integer> ans = new ArrayList<Integer>();
+            int i = tweets.size()-1;
+            while(ans.size()<10 && i>=0) {
+                if(tweets.get(i).userId==userId || users.get(userId).follows.contains(tweets.get(i).userId))
+                    ans.add(tweets.get(i).tweetId);
+                i--;
+            }
+            return ans;
+        }
+
+        public void follow(int followerId, int followeeId) {
+            if(!users.containsKey(followerId))
+                users.put(followerId, new User(followerId));
+            if(!users.containsKey(followeeId))
+                users.put(followeeId, new User(followeeId));
+            User user = users.get(followerId);
+            user.follows.add(followeeId);
+        }
+
+        public void unfollow(int followerId, int followeeId) {
+            if(!users.containsKey(followerId))
+                users.put(followerId, new User(followerId));
+            if(!users.containsKey(followeeId))
+                users.put(followeeId, new User(followeeId));
+            User user = users.get(followerId);
+            user.follows.remove(followeeId);
+        }
+    }
+
+    class Tweet {
+        int tweetId;
+        int userId;
+        Tweet(int t, int u) {
+            tweetId = t;
+            userId = u;
+        }
+    }
+
+    class User {
+        int userId;
+        HashSet<Integer> follows;
+        User(int u) {
+            userId = u;
+            follows = new HashSet<>();
+        }
+    }
+
+    // V2
+    // https://leetcode.com/problems/design-twitter/solutions/3400455/simple-solution-for-beginners-with-step-by-step-explanation/
 //    class Twitter_3 {
 //
 //        HashMap<Integer,ArrayList<Pair<Integer,Integer>>> posttweet ; // map<userid, < tweetId, time>>
@@ -185,5 +230,5 @@
 //            followers.put(followerId,set);
 //        }
 //    }
-//
-//}
+
+}
