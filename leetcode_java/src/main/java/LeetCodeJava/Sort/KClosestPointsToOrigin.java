@@ -79,6 +79,31 @@ public class KClosestPointsToOrigin {
 //        return null;
 //    }
 
+    // V0-1
+    // IDEA: PriorityQueue (gpt)
+    public int[][] kClosest_0_1(int[][] points, int k) {
+        if (points == null || points.length == 0 || k <= 0) {
+            return new int[0][0];
+        }
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(this::getDistanceSquared));
+
+        for (int[] point : points) {
+            pq.offer(point);
+        }
+
+        int[][] result = new int[k][2];
+        for (int i = 0; i < k; i++) {
+            result[i] = pq.poll();
+        }
+
+        return result;
+    }
+
+    private int getDistanceSquared(int[] point) {
+        return point[0] * point[0] + point[1] * point[1];
+    }
+
     // V1
     // IDEA : SORTING
     // https://leetcode.com/problems/k-closest-points-to-origin/editorial/
