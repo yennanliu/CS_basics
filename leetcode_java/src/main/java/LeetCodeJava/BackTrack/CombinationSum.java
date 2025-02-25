@@ -101,6 +101,17 @@ public class CombinationSum {
              *
              *   ONLY 全排列 (Permutations) can go without "start" idx
              */
+            /**
+             *  NOTE !!!
+             *
+             *   at LC 39 Combination Sum,
+             *   we use `i` directly
+             *
+             *   (while at LC 78, we use `i+1`)
+             *
+             *
+             *   e.g. next start_idx is ` i`
+             */
             backTrack(candidates, target, tmp, res, i);
             // undo
             tmp.remove(tmp.size()-1);
