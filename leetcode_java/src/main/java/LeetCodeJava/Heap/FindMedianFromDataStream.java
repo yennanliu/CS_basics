@@ -2,10 +2,7 @@ package LeetCodeJava.Heap;
 
 // https://leetcode.com/problems/find-median-from-data-stream/?envType=list&envId=xoqag3yj
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * 295. Find Median from Data Stream
@@ -73,6 +70,57 @@ public class FindMedianFromDataStream {
 //            return 0.0;
 //        }
 //    }
+
+    // V0-1
+    // IDEA: SORTING (TLE)
+    class MedianFinder_0_1 {
+
+        // attr
+        List<Integer> collected;
+        int cnt;
+
+        public MedianFinder_0_1() {
+            this.cnt = 0;
+            this.collected = new ArrayList<>();
+        }
+
+        public void addNum(int num) {
+            this.collected.add(num);
+            // sort (increasing) (small -> big)
+            Collections.sort(this.collected, new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    int diff = o1 - o2;
+                    return diff;
+                }
+            });
+            this.cnt += 1;
+        }
+
+        public double findMedian() {
+            if (this.cnt == 0 || this.collected == null) {
+                return 0;
+            }
+            if (this.cnt == 1) {
+                return this.collected.get(0);
+            }
+
+            /**
+             * if cnt is odd, [1,2,3]
+             * if cnt is even, [1,2,3,4]
+             */
+            // System.out.println(">>> this.cnt= " + this.cnt + ", this.collected = " +
+            // this.collected);
+            int midIdx = -1;
+            if (this.cnt % 2 == 0) {
+                midIdx = this.cnt / 2;
+                return (this.collected.get(midIdx) + this.collected.get(midIdx - 1)) / 2.0;
+            } else {
+                // midIdx = this.cnt / 2;
+                return this.collected.get(this.cnt / 2);
+            }
+        }
+    }
 
     // V1-1
     // https://neetcode.io/problems/find-median-in-a-data-stream

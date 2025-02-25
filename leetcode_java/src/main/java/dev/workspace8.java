@@ -3414,4 +3414,117 @@ public class workspace8 {
         }
     }
 
+    // LC 295
+    // 9.46 - 10.00 AM
+
+    /**
+     * The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value, and the median is the mean of the two middle values.
+     *
+     * For example, for arr = [2,3,4], the median is 3.
+     * For example, for arr = [2,3], the median is (2 + 3) / 2 = 2.5.
+     * Implement the MedianFinder class:
+     *
+     * MedianFinder() initializes the MedianFinder object.
+     * void addNum(int num) adds the integer num from the data stream to the data structure.
+     * double findMedian() returns the median of all elements so far. Answers within 10-5 of the actual answer will be accepted.
+     *
+     *
+     * Example 1:
+     *
+     * Input
+     * ["MedianFinder", "addNum", "addNum", "findMedian", "addNum", "findMedian"]
+     * [[], [1], [2], [], [3], []]
+     * Output
+     * [null, null, null, 1.5, null, 2.0]
+     *
+     * Explanation
+     * MedianFinder medianFinder = new MedianFinder();
+     * medianFinder.addNum(1);    // arr = [1]
+     * medianFinder.addNum(2);    // arr = [1, 2]
+     * medianFinder.findMedian(); // return 1.5 (i.e., (1 + 2) / 2)
+     * medianFinder.addNum(3);    // arr[1, 2, 3]
+     * medianFinder.findMedian(); // return 2.0
+     *
+     *
+     * Constraints:
+     *
+     * -105 <= num <= 105
+     * There will be at least one element in the data structure before calling findMedian.
+     * At most 5 * 104 calls will be made to addNum and findMedian.
+     *
+     *
+     * Follow up:
+     *
+     * If all integer numbers from the stream are in the range [0, 100], how would you optimize your solution?
+     * If 99% of all integer numbers from the stream are in the range [0, 100], how would you optimize your solution?
+     *
+     *
+     */
+    /**
+     *  IDEA 1) SMALL, BIG PQ
+     *
+     *  -> [s1, s2, ..sn]
+     *  -> [b1, b2,.. bn]
+     *
+     *  -> so sn is biggest element in small PQ
+     *  -> b1 is smallest element in big PQ
+     *  ->  if number of element is even
+     *     -> median = ( sn + b1 ) / 2
+     *  ->  if number of element is odd
+     *     -> ??
+     *
+     *  IDEA 2) sorting ???
+     *
+     */
+    class MedianFinder {
+
+        // attr
+        List<Integer> collected;
+        int cnt;
+
+        public MedianFinder() {
+            this.cnt = 0;
+            this.collected = new ArrayList<>();
+        }
+
+        public void addNum(int num) {
+            this.collected.add(num);
+            // sort (increasing) (small -> big)
+            Collections.sort(this.collected, new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    int diff = o1 - o2;
+                    return diff;
+                }
+            });
+            this.cnt += 1;
+        }
+
+        public double findMedian() {
+            if(this.cnt == 0 || this.collected == null){
+                return 0;
+            }
+            if(this.cnt == 1){
+                return this.collected.get(0);
+            }
+
+            /**
+             *  if cnt is odd, [1,2,3]
+             *  if cnt is even, [1,2,3,4]
+             */
+            System.out.println(">>> this.cnt= " + this.cnt + ", this.collected = " + this.collected);
+            int midIdx = -1;
+            // size is even
+            if(this.cnt % 2 == 0){
+                midIdx = this.cnt / 2;
+                return (this.collected.get(midIdx) + this.collected.get(midIdx -1)) / 2.0;
+            }
+            // size is odd
+            else{
+                //midIdx = this.cnt / 2;
+                return this.collected.get(midIdx);
+            }
+        }
+    }
+
 }
