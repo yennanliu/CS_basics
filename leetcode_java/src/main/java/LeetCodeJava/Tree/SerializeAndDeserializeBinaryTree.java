@@ -112,13 +112,13 @@ public class SerializeAndDeserializeBinaryTree {
     // V0-1
     // IDEA: DFS (GPT)
 
-// class TreeNode {
-//     int val;
-//     TreeNode left, right;
-//     TreeNode(int val) {
-//         this.val = val;
-//     }
-// }
+    // class TreeNode {
+    //     int val;
+    //     TreeNode left, right;
+    //     TreeNode(int val) {
+    //         this.val = val;
+    //     }
+    // }
     public class Codec_0_1 {
 
         // Encodes a tree to a single string.
@@ -233,6 +233,30 @@ public class SerializeAndDeserializeBinaryTree {
                 i[0]++;
                 return null;
             }
+            /**
+             *  NOTE !!!
+             *
+             *  1)  since we know val array and idx,
+             *      so it's NO NEEDED use a for loop accessing element.
+             *      Instead, we can simply use, and update idx,
+             *      then we can get new val when build tree
+             *
+             *  e.g.
+             *   TreeNode node = new TreeNode(Integer.parseInt(vals[i[0]]));
+             *   i[0] ++
+             *
+             *
+             *  2) return type is `TreeNode` for this build tree helper func
+             *     and we need to point sub left, right tree to current node
+             *     e.g.
+             *       - node.left = dfsDeserialize(vals, i);
+             *       - node.right = dfsDeserialize(vals, i);
+             *
+             * 3) Don't forget to retunn built tree as final result
+             *
+             *    e.g.
+             *        return node
+             */
             TreeNode node = new TreeNode(Integer.parseInt(vals[i[0]]));
             i[0]++;
             node.left = dfsDeserialize(vals, i);
