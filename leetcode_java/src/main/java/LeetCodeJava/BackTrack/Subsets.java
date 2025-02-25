@@ -77,6 +77,18 @@ public class Subsets {
              */
             if (!cur.contains(nums[i])){
                 cur.add(nums[i]);
+                /**
+                 *  NOTE !!!
+                 *
+                 *   at LC 78 subset, we need to use `i+1` idx
+                 *   in recursive call
+                 *
+                 *   while at LC 39 Combination Sum,
+                 *   we use `i` directly
+                 *
+                 *
+                 *   e.g. next start_idx is ` i+1`
+                 */
                 this.getSubSet(i+1, nums, cur, res);
                 // undo
                 cur.remove(cur.size()-1);

@@ -3613,5 +3613,71 @@ public class workspace8 {
         }
     }
 
+    // LC 39
+    /**
+     * 39. Combination Sum
+     * Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+     *
+     * The same repeated number may be chosen from candidates unlimited number of times.
+     *
+     * Note:
+     *
+     * All numbers (including target) will be positive integers.
+     * The solution set must not contain duplicate combinations.
+     * Example 1:
+     *
+     * Input: candidates = [2,3,6,7], target = 7,
+     * A solution set is:
+     * [
+     *   [7],
+     *   [2,2,3]
+     * ]
+     * Example 2:
+     *
+     * Input: candidates = [2,3,5], target = 8,
+     * A solution set is:
+     * [
+     *   [2,2,2,2],
+     *   [2,3,3],
+     *   [3,5]
+     * ]
+     *
+     */
+
+    List<List<Integer>> combinationSumRes = new ArrayList<>();
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        // edge
+        // backtrack
+        this.combinationSumHelper(candidates, target, new ArrayList<>());
+        return combinationSumRes;
+    }
+
+    private void combinationSumHelper(int[] candidates, int target, List<Integer> cur){
+        if(this.getSum(cur) > target){
+            return;
+        }
+        if(this.getSum(cur) == target){
+            Collections.sort(cur);
+            if(!this.combinationSumRes.contains(cur)){
+                this.combinationSumRes.add(new ArrayList<>(cur));
+            }
+        }
+        for(int i = 0; i < candidates.length; i++){
+            int curVal = candidates[i];
+            cur.add(curVal);
+            this.combinationSumHelper(candidates, target, cur);
+            // undo
+            cur.remove(cur.size()-1);
+        }
+    }
+
+    private int getSum(List<Integer> input){
+        int res = 0;
+        for(int x: input){
+            res += x;
+        }
+        return res;
+    }
+
 
 }
