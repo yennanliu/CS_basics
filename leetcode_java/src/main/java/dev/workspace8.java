@@ -3547,4 +3547,71 @@ public class workspace8 {
 //        }
 //    }
 
+    /**
+     * 78. Subsets
+     * Solved
+     * Medium
+     * Topics
+     * Companies
+     * Given an integer array nums of unique elements, return all possible subsets (the power set).
+     *
+     * The solution set must not contain duplicate subsets. Return the solution in any order.
+     *
+     *
+     *
+     * Example 1:
+     *
+     * Input: nums = [1,2,3]
+     * Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+     * Example 2:
+     *
+     * Input: nums = [0]
+     * Output: [[],[0]]
+     *
+     *
+     * Constraints:
+     *
+     * 1 <= nums.length <= 10
+     * -10 <= nums[i] <= 10
+     * All the numbers of nums are unique.
+     *
+     */
+    // LC 78
+    // 10.18 - 10.28 am
+    // backtrack
+    List<List<Integer>> res = new ArrayList<>();
+    HashSet<Integer> visited = new HashSet<>();
+    public List<List<Integer>> subsets(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return res;
+        }
+
+        // backtrack
+        subSetHelper(nums, 0, new ArrayList<>(), this.visited);
+        return res;
+    }
+
+    private void subSetHelper(int[] nums, int idx, List<Integer> cur, HashSet<Integer> visited){
+        if(cur.size() > nums.length){
+            return;
+        }
+
+        Collections.sort(cur);
+        if(!visited.contains(cur)){
+            this.res.add(new ArrayList<>(cur)); // ???
+            //visited.add(cur);
+        }
+        for(int i = 0; i < nums.length; i++){
+            if(!cur.contains(nums[i])){
+                cur.add(nums[i]);
+                this.subSetHelper(nums, idx+1, cur, visited);
+                // undo
+                idx -= 1; // ?
+                cur.remove(cur.size()-1);
+            }
+        }
+    }
+
+
 }
