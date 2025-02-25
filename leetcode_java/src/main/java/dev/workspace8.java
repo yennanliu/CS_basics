@@ -3679,5 +3679,57 @@ public class workspace8 {
         return res;
     }
 
+    // LC 46
+    // 11.18 - 11.28 am
+    /**
+     * Given a collection of distinct integers,
+     * return all possible permutations.
+     *
+     * Example:
+     *
+     * Input: [1,2,3]
+     * Output:
+     * [
+     *   [1,2,3],
+     *   [1,3,2],
+     *   [2,1,3],
+     *   [2,3,1],
+     *   [3,1,2],
+     *   [3,2,1]
+     * ]
+     *
+     *
+     *  IDEA) BACKTRACK (without idx)
+     *
+     */
+    List<List<Integer>> permuteRes = new ArrayList<>();
+    public List<List<Integer>> permute(int[] nums) {
+
+        // edge
+        // backtrack
+        this.permuteHelper(nums, new ArrayList<>());
+        return permuteRes;
+    }
+
+    private void permuteHelper(int[] nums, List<Integer> cur){
+        if(nums.length == cur.size()){
+            if(!this.permuteRes.contains(cur)){
+                this.permuteRes.add(new ArrayList<>(cur));
+            }
+        }
+        if(nums.length > cur.size()){
+            return;
+        }
+        for(int i = 0; i < cur.size(); i++){
+            int curVal = nums[i];
+            if(!cur.contains(nums[i])){
+                cur.add(curVal);
+                this.permuteHelper(nums, cur);
+                // undo
+                cur.remove(cur.size() - 1);
+            }
+        }
+    }
+
 
 }
