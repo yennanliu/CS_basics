@@ -150,23 +150,52 @@ public class FindMedianFromDataStream {
     // V1-2
     // https://neetcode.io/problems/find-median-in-a-data-stream
     // IDEA: HEAP
+    /**
+     * Time Complexity:
+     *  - addNum(int num):
+     *      The time complexity of adding an element is O(log N)
+     *      due to the heap operations (insert and balance).
+     *
+     *  - findMedian():
+     *   The time complexity is O(1) because the median is
+     *   always the root of one or both heaps, which can be accessed in constant time.
+     *
+     */
     public class MedianFinder_1_2 {
 
-        private Queue<Integer> smallHeap; //small elements - maxHeap
-        private Queue<Integer> largeHeap; //large elements - minHeap
+        private Queue<Integer> smallHeap; // small elements - maxHeap
+        private Queue<Integer> largeHeap; // large elements - minHeap
 
         public MedianFinder_1_2() {
             smallHeap = new PriorityQueue<>((a, b) -> b - a);
             largeHeap = new PriorityQueue<>((a, b) -> a - b);
         }
 
+        /**
+         *  Steps
+         *
+         *  step 1) First, the number is added to the smallHeap (max-heap).
+         *
+         *  step 2) Then, the method checks if the size of smallHeap exceeds
+         *          the size of largeHeap by more than 1, or if the root of
+         *          smallHeap (the largest element in the smaller half) is greater than
+         *          the root of largeHeap (the smallest element in the larger half).
+         *          If either condition is true, the root of smallHeap is moved to largeHeap.
+         *
+         *  step 3) If the size of largeHeap exceeds the size of smallHeap by more than 1,
+         *          the root of largeHeap (the smallest element
+         *          in the larger half) is moved to smallHeap.
+         *
+         *
+         *  step 4) This balancing ensures that the two heaps are either of
+         *          the same size or smallHeap has one extra element than largeHeap.
+         *
+         */
         public void addNum(int num) {
             smallHeap.add(num);
-            if (
-                    smallHeap.size() - largeHeap.size() > 1 ||
-                            !largeHeap.isEmpty() &&
-                                    smallHeap.peek() > largeHeap.peek()
-            ) {
+            if (smallHeap.size() - largeHeap.size() > 1 ||
+                    !largeHeap.isEmpty() &&
+                            smallHeap.peek() > largeHeap.peek()) {
                 largeHeap.add(smallHeap.poll());
             }
             if (largeHeap.size() - smallHeap.size() > 1) {
@@ -174,6 +203,24 @@ public class FindMedianFromDataStream {
             }
         }
 
+        /**
+         *  Steps
+         *
+         *   This method returns the median of all the elements in the data structure.
+         *
+         * step 1) If both heaps are of the same size, the median
+         *         is the average of the roots of both heaps
+         *         (since the heaps are balanced).
+         *
+         * step 2) If smallHeap has more elements than largeHeap
+         *         (i.e., smallHeap has one extra element),
+         *         the median is the root of smallHeap.
+         *
+         * step 3) If largeHeap has more elements
+         *        (which can happen, but it shouldn't happen frequently due to balancing),
+         *        the median is the root of largeHeap.
+         *
+         */
         public double findMedian() {
             if (smallHeap.size() == largeHeap.size()) {
                 return (double) (largeHeap.peek() + smallHeap.peek()) / 2;
