@@ -2868,63 +2868,113 @@ public class workspace8 {
 //        }
 //    }
 
+    // 11.36 am - 11.46 am
     public class Codec{
-        public String serialize(TreeNode root) {
 
-            /** NOTE !!!
-             *
-             *     if root == null, return "#"
-             */
-            if (root == null){
-                return "#";
+        String nodeStr;
+        TreeNode node;
+
+        public void serialize(TreeNode root) {
+            // edge
+            if(root == null){
+               // return ""; // ?
+               this.nodeStr += "#"; // ???
+               this.nodeStr += ",";
+               return;
             }
+            // tree -> string (pre-order) (root -> left -> right)
+            this.nodeStr += root.val;
+            this.nodeStr += ",";
 
-            /** NOTE !!! return result via pre-order, split with "," */
-            //return root.val + "," + serialize(root.left) + "," + serialize(root.right);
-            serialize(root.left);
-            serialize(root.right);
-
-            return String.valueOf(root.val);
+            this.serialize(root.left);
+            this.serialize(root.right);
+            return ; // ????
         }
 
         public TreeNode deserialize(String data) {
-
-            /** NOTE !!!
-             *
-             *   1) init queue and append serialize output
-             *   2) even use queue, but helper func still using DFS
-             */
-            Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
-            return helper(queue);
-        }
-
-        private TreeNode helper(Queue<String> queue) {
-
-            // get val from queue first
-            String s = queue.poll();
-
-            if (s.equals("#")){
-                return null;
+            if(data == null || data.length() == 0){
+                return this.node;
             }
-            /** NOTE !!! init current node  */
-            TreeNode root = new TreeNode(Integer.valueOf(s));
-            /** NOTE !!!
-             *
-             *    since serialize is "pre-order",
-             *    deserialize we use "pre-order" as well
-             *    e.g. root -> left sub tree -> right sub tree
-             *    -> so we get sub tree via below :
-             *
-             *       root.left = helper(queue);
-             *       root.right = helper(queue);
-             *
-             */
-            root.left = helper(queue);
-            root.right = helper(queue);
-            /** NOTE !!! don't forget to return final deserialize result  */
-            return root;
+            // split str, and build tree in pre-order (root -> left -> right)
+            this.buildTreeHelper(data, 0);
+            return this.node;
         }
+
+        private TreeNode buildTreeHelper(String data, int idx){
+            if(data == null || data.length() == 0 || data.equals("#")){
+                return null; // ???
+            }
+            String[] dataArr = data.split(",");
+            for(int i = 0; i < dataArr.length; i++){
+                if(this.node != null){
+                    this.node.left = new TreeNode(Integer.parseInt(dataArr[i]));
+                    this.node.right = new TreeNode(Integer.parseInt(dataArr[i]));
+                }
+            }
+
+            return this.node;
+        }
+
     }
+
+
+//    public class Codec{
+//        public String serialize(TreeNode root) {
+//
+//            /** NOTE !!!
+//             *
+//             *     if root == null, return "#"
+//             */
+//            if (root == null){
+//                return "#";
+//            }
+//
+//            /** NOTE !!! return result via pre-order, split with "," */
+//            //return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+//            serialize(root.left);
+//            serialize(root.right);
+//
+//            return String.valueOf(root.val);
+//        }
+//
+//        public TreeNode deserialize(String data) {
+//
+//            /** NOTE !!!
+//             *
+//             *   1) init queue and append serialize output
+//             *   2) even use queue, but helper func still using DFS
+//             */
+//            Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
+//            return helper(queue);
+//        }
+//
+//        private TreeNode helper(Queue<String> queue) {
+//
+//            // get val from queue first
+//            String s = queue.poll();
+//
+//            if (s.equals("#")){
+//                return null;
+//            }
+//            /** NOTE !!! init current node  */
+//            TreeNode root = new TreeNode(Integer.valueOf(s));
+//            /** NOTE !!!
+//             *
+//             *    since serialize is "pre-order",
+//             *    deserialize we use "pre-order" as well
+//             *    e.g. root -> left sub tree -> right sub tree
+//             *    -> so we get sub tree via below :
+//             *
+//             *       root.left = helper(queue);
+//             *       root.right = helper(queue);
+//             *
+//             */
+//            root.left = helper(queue);
+//            root.right = helper(queue);
+//            /** NOTE !!! don't forget to return final deserialize result  */
+//            return root;
+//        }
+//    }
 
     // LC 703
     // 3.19 - 3.29 PM
@@ -3730,6 +3780,5 @@ public class workspace8 {
             }
         }
     }
-
 
 }
