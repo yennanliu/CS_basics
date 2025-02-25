@@ -3466,6 +3466,11 @@ public class workspace8 {
      *  -> [s1, s2, ..sn]
      *  -> [b1, b2,.. bn]
      *
+     *   -> set sn is `current median val` ????
+     *   -> so we can update small, big PQ accordingly when new element is inserted
+     *
+     *
+     *
      *  -> so sn is biggest element in small PQ
      *  -> b1 is smallest element in big PQ
      *  ->  if number of element is even
@@ -3476,55 +3481,70 @@ public class workspace8 {
      *  IDEA 2) sorting ???
      *
      */
-    class MedianFinder {
-
-        // attr
-        List<Integer> collected;
-        int cnt;
+        class MedianFinder {
 
         public MedianFinder() {
-            this.cnt = 0;
-            this.collected = new ArrayList<>();
+
         }
 
         public void addNum(int num) {
-            this.collected.add(num);
-            // sort (increasing) (small -> big)
-            Collections.sort(this.collected, new Comparator<Integer>() {
-                @Override
-                public int compare(Integer o1, Integer o2) {
-                    int diff = o1 - o2;
-                    return diff;
-                }
-            });
-            this.cnt += 1;
+
         }
 
         public double findMedian() {
-            if(this.cnt == 0 || this.collected == null){
-                return 0;
-            }
-            if(this.cnt == 1){
-                return this.collected.get(0);
-            }
-
-            /**
-             *  if cnt is odd, [1,2,3]
-             *  if cnt is even, [1,2,3,4]
-             */
-            System.out.println(">>> this.cnt= " + this.cnt + ", this.collected = " + this.collected);
-            int midIdx = -1;
-            // size is even
-            if(this.cnt % 2 == 0){
-                midIdx = this.cnt / 2;
-                return (this.collected.get(midIdx) + this.collected.get(midIdx -1)) / 2.0;
-            }
-            // size is odd
-            else{
-                //midIdx = this.cnt / 2;
-                return this.collected.get(midIdx);
-            }
+            return 0.0;
         }
     }
+
+//    class MedianFinder {
+//
+//        // attr
+//        List<Integer> collected;
+//        int cnt;
+//
+//        public MedianFinder() {
+//            this.cnt = 0;
+//            this.collected = new ArrayList<>();
+//        }
+//
+//        public void addNum(int num) {
+//            this.collected.add(num);
+//            // sort (increasing) (small -> big)
+//            Collections.sort(this.collected, new Comparator<Integer>() {
+//                @Override
+//                public int compare(Integer o1, Integer o2) {
+//                    int diff = o1 - o2;
+//                    return diff;
+//                }
+//            });
+//            this.cnt += 1;
+//        }
+//
+//        public double findMedian() {
+//            if(this.cnt == 0 || this.collected == null){
+//                return 0;
+//            }
+//            if(this.cnt == 1){
+//                return this.collected.get(0);
+//            }
+//
+//            /**
+//             *  if cnt is odd, [1,2,3]
+//             *  if cnt is even, [1,2,3,4]
+//             */
+//            System.out.println(">>> this.cnt= " + this.cnt + ", this.collected = " + this.collected);
+//            int midIdx = -1;
+//            // size is even
+//            if(this.cnt % 2 == 0){
+//                midIdx = this.cnt / 2;
+//                return (this.collected.get(midIdx) + this.collected.get(midIdx -1)) / 2.0;
+//            }
+//            // size is odd
+//            else{
+//                //midIdx = this.cnt / 2;
+//                return this.collected.get(midIdx);
+//            }
+//        }
+//    }
 
 }
