@@ -132,10 +132,87 @@ public class LetterCombinationsOfAPhoneNumber {
         }
     }
 
+    /**
+     *  NOTE !!!
+     *
+     *   below approach is WRONG
+     *   -> we CAN'T `loop over digit value` inside the backtrack call
+     *
+     *
+     *   1) Reason:
+     *
+     *   1. Recursive Nature of Backtracking:
+     *       Backtracking works by exploring one possibility at a time,
+     *       progressively building a solution. At each step,
+     *       you pick one choice (a letter in this case),
+     *       move on to the next step (next digit), and explore the next possibility.
+     *
+     *       -> If you loop over all digits inside the backtrack method,
+     *          you will break this structure by making multiple recursive
+     *          calls in one iteration, which would mix up the exploration process.
+     *          You want the recursion to handle the exploration one step at a time.
+     *
+     *   2. Index (idx) Ensures You Stay on Track:
+     *      The idx variable tells the backtrack method
+     *      which digit you are currently working on.
+     *      By passing the index and incrementing it for each recursive call,
+     *      you ensure that the recursion goes down one path at a time,
+     *      and the algorithm processes one digit at a time in order.
+     *
+     *      -> Without the idx, if you looped over the digits inside backtrack,
+     *         you'd be calling backtrack recursively on the same level (same idx),
+     *         which means you'd repeatedly explore the same digit and its letters
+     *         without properly progressing through the string.
+     *
+     *   3. Preventing Redundancy:
+     *      By passing idx and not looping over digits, you avoid unnecessary redundancy.
+     *      For example, if you looped over all digits inside the backtrack function,
+     *      you would re-explore the same digits multiple times, which is inefficient.
+     *
+     *
+     *  2) Why below is Incorrect:
+     *
+     *    - Redundant Exploration:
+     *       You are looping over all digits, meaning for each recursion, you would be picking multiple characters for each position in the final combination (e.g., picking multiple characters for the first digit of the combination at the same time).
+     *       You'd end up recursively exploring the same combinations multiple times, leading to redundant and incorrect results.
+     *
+     *
+     *   - Infinite Loop Potential:
+     *        This would mean that you're not progressing through the digits in the correct order. Instead of processing one digit and moving forward, you're processing the same digits repeatedly, leading to wrong results or even infinite recursion.
+     *
+     *
+     *  3)  Summary:
+     *   To summarize, passing idx to track the current position is essential
+     *   for the recursive backtracking approach. It ensures that each digit
+     *   is processed in the correct order and that the recursion explores each
+     *   possibility one step at a time. Without idx,
+     *   you'd end up re-exploring the same digits in the wrong order,
+     *   leading to inefficiency and incorrect results.
+     *
+     */
+//    private void backtrack(String digits, StringBuilder current, List<String> letterRes, HashMap<Character, String> letters) {
+//        // Base case: if the current combination length matches the digits length, add to result
+//        if (current.length() == digits.length()) {
+//            letterRes.add(current.toString());
+//            return;
+//        }
+//
+//        // Looping over all digits for the current position
+//        for (int i = 0; i < digits.length(); i++) {  // This loops over all digits!
+//            char digit = digits.charAt(i);
+//            String possibleLetters = letters.get(digit);
+//
+//            for (char letter : possibleLetters.toCharArray()) {
+//                current.append(letter); // Choose the letter
+//                backtrack(digits, current, letterRes, letters); // Recurse without progressing through the digits!
+//                current.deleteCharAt(current.length() - 1); // Backtrack, undo the choice
+//            }
+//        }
+//    }
 
+            
     // V1
     private Map<Character, String> digitToChar = new HashMap<>();
-
     public List<String> letterCombinations_1(String digits) {
         if (digits.length() == 0) {
             return new ArrayList();
