@@ -40,6 +40,12 @@ public class subsets2 {
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
+        /**
+         *  NOTE !!!
+         *
+         *   in order to skip duplicates via `compare cur and prev val`,
+         *   we need to sort array first
+         */
         Arrays.sort(nums);
         backtrack(list, new ArrayList<>(), nums, 0);
         return list;
@@ -48,7 +54,16 @@ public class subsets2 {
     private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int start){
         list.add(new ArrayList<>(tempList));
         for(int i = start; i < nums.length; i++){
-            if(i > start && nums[i] == nums[i-1]) continue; // skip duplicates
+            // skip duplicates
+            /**
+             *  NOTE !!!
+             *
+             *   below is the key shows how to simply skip duplicates
+             *   (instead of using hashmap counter)
+             */
+            if(i > start && nums[i] == nums[i-1]){
+                continue;
+            }
             tempList.add(nums[i]);
             backtrack(list, tempList, nums, i + 1);
             tempList.remove(tempList.size() - 1);
@@ -59,6 +74,13 @@ public class subsets2 {
     // IDEA : Backtracking
     // https://leetcode.com/problems/subsets-ii/editorial/
     public List<List<Integer>> subsetsWithDup_0_1(int[] nums) {
+
+        /**
+         *  NOTE !!!
+         *
+         *   in order to skip duplicates via `compare cur and prev val`,
+         *   we need to sort array first
+         */
         Arrays.sort(nums);
         List<List<Integer>> subsets = new ArrayList<>();
         List<Integer> currentSubset = new ArrayList<>();
@@ -72,7 +94,14 @@ public class subsets2 {
         subsets.add(new ArrayList<>(currentSubset));
 
         for (int i = index; i < nums.length; i++) {
+            
             // If the current element is a duplicate, ignore.
+            /**
+             *  NOTE !!!
+             *
+             *   below is the key shows how to simply skip duplicates
+             *   (instead of using hashmap counter)
+             */
             if (i != index && nums[i] == nums[i - 1]) {
                 continue;
             }
