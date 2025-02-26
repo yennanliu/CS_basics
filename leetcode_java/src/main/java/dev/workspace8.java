@@ -3940,6 +3940,109 @@ public class workspace8 {
         return false;  // NOTE !!! we return false,
     }
 
+    // LC 212
+    // 11.08 - 11.18 AM
+    public List<String> findWords(char[][] board, String[] words) {
+
+        // edge
+        if (board.length == 0 || board[0].length == 0) {
+            //return false;
+            return null;
+        }
+        if (words == null || words.length == 0) {
+            //return true; // ???
+            return null;
+        }
+
+        int l = board.length;
+        int w = board[0].length;
+
+//        Boolean[][] visited = new Boolean[l][w]; // ??? init val = false
+//        for (int i = 0; i < l; i++) {
+//            for (int j = 0; j < w; j++) {
+//                visited[i][j] = false;
+//            }
+//        }
+
+
+        List<String> finalRes = new ArrayList<>();
+
+        // dfs
+        // TODO: optimize this O(N ^ 3) time complexity ???
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                for(String word: words){
+                    boolean[][] visited = new boolean[l][w];
+                    System.out.println(">>> word " + word);
+                    if (board[i][j] == word.charAt(0)) {
+                        if (canBuild(board, word, j, i, visited, 0)) {
+                            if(!finalRes.contains(word)){
+                                finalRes.add(word);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return finalRes;
+    }
+
+    private boolean canBuild(char[][] board, String word, int x, int y, boolean[][] visited, int idx) {
+
+        int l = board.length;
+        int w = board[0].length;
+
+        if (idx == word.length()) {
+            return true;
+        }
+
+        if (idx > word.length()) {
+            return false;
+        }
+
+        // NOTE !!! we validate condition before go into `for loop and recursive call`
+        if (x < 0 || x >= w || y < 0 || y >= l || visited[y][x] || board[y][x] != word.charAt(idx)) {
+            return false;
+        }
+
+        //int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+        visited[y][x] = true;
+
+        /**
+         *  NOTE !!!
+         *
+         *   1) we use below structure
+         *      if ( recursive_call_1 or recursive_call_2 ..) {
+         *              return true
+         *      }
+         *
+         *   2) since we need to `undo` visited record
+         *      so after above logic, we modify visited[y][x] back to false (e.g. non-visited)
+         *
+         *   3) RETURN `false` at the final of recursive call
+         *      -> since it can reach this point,
+         *      -> means NOT POSSIBLE to find a solution
+         *      -> return false
+         */
+
+        if (canBuild(board, word, x + 1, y, visited, idx + 1) ||
+                canBuild(board, word, x - 1, y, visited, idx + 1) ||
+                canBuild(board, word, x, y + 1, visited, idx + 1) ||
+                canBuild(board, word, x, y - 1, visited, idx + 1)) {
+            return true;
+        }
+
+        // undo
+        visited[y][x] = false;
+
+        /**
+         * 3) RETURN `false` at the final of recursive call
+         */
+        return false;
+    }
+
+
 
 
 
