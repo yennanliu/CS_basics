@@ -383,6 +383,95 @@ public class WordSearch {
         return found;
     }
 
+    // V0-4
+    // IDEA: DFS + BACKTRACK (fixed by gpt)
+    public boolean exist_0_4(char[][] board, String word) {
+        // edge
+        if (board.length == 0 || board[0].length == 0) {
+            return false;
+        }
+        if (word == null || word.length() == 0) {
+            return true; // ???
+        }
+
+        int l = board.length;
+        int w = board[0].length;
+
+        Boolean[][] visited = new Boolean[l][w]; // ??? init val = false
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                visited[i][j] = false;
+            }
+        }
+
+        // dfs
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                if (board[i][j] == word.charAt(0)) {
+                    if (canFind(board, word, j, i, visited, 0)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean canFind(char[][] board, String word, int x, int y, Boolean[][] visited, int idx) {
+
+        int l = board.length;
+        int w = board[0].length;
+
+        if (idx == word.length()) {
+            return true;
+        }
+
+        if (idx > word.length()) {
+            return false;
+        }
+
+        // NOTE !!! we validate condition before go into `for loop and recursive call`
+        if (x < 0 || x >= w || y < 0 || y >= l || visited[y][x] || board[y][x] != word.charAt(idx)) {
+            return false;
+        }
+
+        //int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+        visited[y][x] = true;
+
+        /**
+         *  NOTE !!!
+         *
+         *   1) we use below structure
+         *      if ( recursive_call_1 or recursive_call_2 ..) {
+         *              return true
+         *      }
+         *
+         *   2) since we need to `undo` visited record
+         *      so after above logic, we modify visited[y][x] back to false (e.g. non-visited)
+         *
+         *   3) RETURN `false` at the final of recursive call
+         *      -> since it can reach this point,
+         *      -> means NOT POSSIBLE to find a solution
+         *      -> return false
+         */
+
+        if (canFind(board, word, x + 1, y, visited, idx + 1) ||
+                canFind(board, word, x - 1, y, visited, idx + 1) ||
+                canFind(board, word, x, y + 1, visited, idx + 1) ||
+                canFind(board, word, x, y - 1, visited, idx + 1)) {
+            return true;
+        }
+
+        // undo
+        visited[y][x] = false;
+
+        /**
+         * 3) RETURN `false` at the final of recursive call
+         */
+        return false;
+    }
+
 
     // V1
     // IDEA : DFS + BACKTRACK

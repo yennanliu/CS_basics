@@ -94,7 +94,7 @@ public class subsets2 {
         subsets.add(new ArrayList<>(currentSubset));
 
         for (int i = index; i < nums.length; i++) {
-            
+
             // If the current element is a duplicate, ignore.
             /**
              *  NOTE !!!
