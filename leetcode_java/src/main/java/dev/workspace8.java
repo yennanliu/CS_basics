@@ -4042,7 +4042,50 @@ public class workspace8 {
         return false;
     }
 
+    // LC 131
+    // 11.30 - 11.55 am
+    /**
+     *  IDEA 1) BACKTRACK
+     *
+     *  -> split all possible sub str
+     *     -> loop over idx
+     *       ->
+     *
+     *  -> check if each sub str is palindrome
+     *     -> if true, append to result
+     *
+     *
+     *     aab
+     *
+     *     -> aab
+     *     -> a, ab
+     *     -> aa, b
+     *
+     *  IDEA 2) 2 pointers
+     *
+     *      aab  -> aab
+     *      i
+     *
+     *      aab   -> a, ab
+     *       i
+     *
+     *      aab   -> aa, b
+     *        i
+     *
+     *
+     *     aabb
+     *
+     *            a
+     *        a        ab     abb
+     *
+     *     b  bb      b
+     *
+     *
+     */
+    public List<List<String>> partition(String s) {
+        return null;
 
+    }
 
 
 
