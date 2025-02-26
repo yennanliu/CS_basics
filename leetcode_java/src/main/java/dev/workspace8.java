@@ -4087,6 +4087,84 @@ public class workspace8 {
 
     }
 
+    // LC 17
+    // 12.09 - 12.20 pm
+    /**
+     * Example:
+     *
+     * Input: "23"
+     * Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+     *
+     *
+     *
+     * IDEA 1) BACKTRACK
+     *
+     *
+     *
+     */
+    List<String> letterRes = new ArrayList<>();
+    public List<String> letterCombinations(String digits) {
+
+        HashMap<String,String> letters = new HashMap<>();
+        letters.put("3", "def");
+        letters.put("4", "ghi");
+        letters.put("5", "jkl");
+        letters.put("6", "mno");
+        letters.put("7", "pqrs");
+        letters.put("8", "tuv");
+        letters.put("9", "wxyz");
+
+        // edge
+        if(digits == null || digits.length() == 0){
+            return null;
+        }
+        if(digits.length() == 1){
+            String val = letters.get(String.valueOf(digits.charAt(0)));
+            for(String x: val.split("")){
+                letterRes.add(x);
+            }
+            return letterRes;
+        }
+
+        // backtrack
+        buildLetter(digits, letters, new ArrayList<>(), 0);
+        return letterRes;
+    }
+
+    private void buildLetter(String digits, HashMap<String,String> letters, List<String> cur, int idx){
+
+        if(cur.size() == digits.length()){
+            if(!letterRes.contains(cur)){
+                //letterRes.add(cur); // ???
+            }
+        }
+
+        if(cur.size() > digits.length()){
+            return;
+        }
+
+        // TODO: validate if `correct cur`
+
+        for(int i = 0; i < digits.length(); i++){
+            // d is input, e.g. 23
+            String d = String.valueOf(digits.charAt(i));
+
+            System.out.println(">>> d = " + d + ", i = " + i);
+
+            // x is `phone number alphabet val got via key = d
+            // e.g. abc, del (from {2: abc, 3: def, ...}
+            for(String x: letters.get(d).split("")){
+                if(!cur.contains(x)){
+                    cur.add(x);
+                    buildLetter(digits, letters, cur, idx+1); // ????
+
+                    // undo
+                    cur.remove(cur.size() - 1);
+                    // idx -= 1; // ???
+                }
+            }
+        }
+    }
 
 
 }
