@@ -3781,4 +3781,82 @@ public class workspace8 {
         }
     }
 
+    // LC 90
+    // 9.51 -10.10 AM
+
+//    List<List<Integer>> subSet2Res = new ArrayList<>();
+//    HashSet<Integer> _set = new HashSet<>();
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length == 0){
+            return res;
+        }
+        // backtrack
+        int start_idx = 0;
+        List<Integer> cur = new ArrayList<>();
+        Map<Integer, Integer> numsCnt = new HashMap<>();
+        Map<Integer, Integer> curValCnt = new HashMap<>();
+
+        for(int n: nums){
+            numsCnt.put(n, numsCnt.getOrDefault(n, 0) + 1);
+        }
+
+        //System.out.println("(before) res = " + res);
+        this.getSubSet(start_idx, nums, cur, res, numsCnt, curValCnt);
+        //System.out.println("(after) res = " + res);
+        return res;
+    }
+
+    public void getSubSet(int start_idx, int[] nums, List<Integer> cur, List<List<Integer>> res, Map<Integer, Integer> numsCnt, Map<Integer, Integer> curValCnt){
+
+        Collections.sort(cur);
+        if (!res.contains(cur)){
+            // NOTE !!! init new list via below
+            //curValCnt = new HashMap<>(); // ?? necessary
+            res.add(new ArrayList<>(cur));
+        }
+
+        if (cur.size() > nums.length){
+            //curValCnt = new HashMap<>(); // ?? necessary
+            return;
+        }
+
+        for (int i = start_idx; i < nums.length; i++){
+            /**
+             * NOTE !!!
+             *
+             *  for subset,
+             *  we need "!cur.contains(nums[i])"
+             *  -> to NOT add duplicated element
+             */
+            int curVal = nums[i];
+            boolean shouldProceed = ( !curValCnt.containsKey(curVal)|| curValCnt.get(curVal) < numsCnt.get(curVal) );
+            if ( shouldProceed ){
+                cur.add(curVal);
+                curValCnt.put(curVal, curValCnt.getOrDefault(curVal, 0) + 1);
+                /**
+                 *  NOTE !!!
+                 *
+                 *   at LC 78 subset, we need to use `i+1` idx
+                 *   in recursive call
+                 *
+                 *   while at LC 39 Combination Sum,
+                 *   we use `i` directly
+                 *
+                 *
+                 *   e.g. next start_idx is ` i+1`
+                 */
+                this.getSubSet(i+1, nums, cur, res, numsCnt, curValCnt);
+                // undo
+                curValCnt.put(curVal, curValCnt.getOrDefault(curVal, 0) - 1);
+                if(curValCnt.get(curVal) <= 0){
+                    curValCnt.remove(curVal);
+                }
+                cur.remove(cur.size()-1);
+            }
+        }
+    }
+
+
+
 }
