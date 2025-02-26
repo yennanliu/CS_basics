@@ -1,6 +1,35 @@
 package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/subsets-ii/
+/**
+ * 90. Subsets II
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given an integer array nums that may contain duplicates, return all possible subsets (the power set).
+ *
+ * The solution set must not contain duplicate subsets. Return the solution in any order.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [1,2,2]
+ * Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
+ * Example 2:
+ *
+ * Input: nums = [0]
+ * Output: [[],[0]]
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= nums.length <= 10
+ * -10 <= nums[i] <= 10
+ *
+ *
+ */
 
 import java.util.*;
 
@@ -26,10 +55,10 @@ public class subsets2 {
         }
     }
 
-    // V0
+    // V0-1
     // IDEA : Backtracking
     // https://leetcode.com/problems/subsets-ii/editorial/
-    public List<List<Integer>> subsetsWithDup_(int[] nums) {
+    public List<List<Integer>> subsetsWithDup_0_1(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> subsets = new ArrayList<>();
         List<Integer> currentSubset = new ArrayList<>();
@@ -52,6 +81,43 @@ public class subsets2 {
             currentSubset.remove(currentSubset.size() - 1);
         }
     }
+
+    // V0-2
+    public List<List<Integer>> subsetsWithDup_0_2(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length == 0) {
+            return res;
+        }
+
+        // Sort the array to handle duplicates effectively
+        Arrays.sort(nums);
+
+        // Backtrack
+        List<Integer> cur = new ArrayList<>();
+        this.getSubSet(0, nums, cur, res);
+        return res;
+    }
+
+    public void getSubSet(int start_idx, int[] nums, List<Integer> cur, List<List<Integer>> res) {
+        // Add current subset to the result list (deep copy to avoid reference issues)
+        res.add(new ArrayList<>(cur));
+
+        // Backtracking loop
+        for (int i = start_idx; i < nums.length; i++) {
+            // Skip duplicates: only include the number if it is the first occurrence at
+            // this level
+            if (i > start_idx && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            cur.add(nums[i]);
+            // Recursively call to explore the next element, moving start index forward
+            this.getSubSet(i + 1, nums, cur, res);
+            // Backtrack (remove the last element added)
+            cur.remove(cur.size() - 1);
+        }
+    }
+
 
 
 //    // V0'
