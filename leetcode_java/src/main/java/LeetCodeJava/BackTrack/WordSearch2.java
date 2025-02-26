@@ -2,8 +2,7 @@ package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/word-search-ii/description/?envType=list&envId=xoqag3yj
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 212. Word Search II
@@ -144,6 +143,88 @@ public class WordSearch2 {
          */
         return false;
     }
+
+    // V0-2
+    // IDEA: TRIE + DFS + BACKTRACK + MAP (gpt)
+    // Trie Node Class
+//    class TrieNode {
+//        Map<Character, TrieNode> children = new HashMap<>();
+//        boolean isWord = false;
+//    }
+//
+//    public List<String> findWords(char[][] board, String[] words) {
+//        // Edge case: if the board is empty or no words to search for
+//        if (board.length == 0 || board[0].length == 0 || words == null || words.length == 0) {
+//            return new ArrayList<>();
+//        }
+//
+//        int l = board.length;
+//        int w = board[0].length;
+//
+//        // Step 1: Build the Trie
+//        TrieNode root = buildTrie(words);
+//
+//        Set<String> result = new HashSet<>();
+//        boolean[][] visited = new boolean[l][w];
+//
+//        // Step 2: DFS to search for words in the board
+//        for (int i = 0; i < l; i++) {
+//            for (int j = 0; j < w; j++) {
+//                if (root.children.containsKey(board[i][j])) {
+//                    dfs(board, i, j, root, visited, "", result);
+//                }
+//            }
+//        }
+//
+//        return new ArrayList<>(result);
+//    }
+//
+//    // Build Trie from the list of words
+//    private TrieNode buildTrie(String[] words) {
+//        TrieNode root = new TrieNode();
+//        for (String word : words) {
+//            TrieNode node = root;
+//            for (char c : word.toCharArray()) {
+//                node = node.children.computeIfAbsent(c, k -> new TrieNode());
+//            }
+//            node.isWord = true;
+//        }
+//        return root;
+//    }
+//
+//    // Depth-First Search (DFS) to explore all possible paths
+//    private void dfs(char[][] board, int i, int j, TrieNode node, boolean[][] visited, String currentWord, Set<String> result) {
+//        // Check if out of bounds or already visited
+//        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || visited[i][j]) {
+//            return;
+//        }
+//
+//        char c = board[i][j];
+//        TrieNode nextNode = node.children.get(c);
+//
+//        // If the character is not in the Trie, stop
+//        if (nextNode == null) {
+//            return;
+//        }
+//
+//        // Build the current word
+//        currentWord += c;
+//
+//        // If we found a valid word, add it to the result
+//        if (nextNode.isWord) {
+//            result.add(currentWord);
+//        }
+//
+//        // Mark as visited and explore the four possible directions (up, down, left, right)
+//        visited[i][j] = true;
+//        dfs(board, i + 1, j, nextNode, visited, currentWord, result);
+//        dfs(board, i - 1, j, nextNode, visited, currentWord, result);
+//        dfs(board, i, j + 1, nextNode, visited, currentWord, result);
+//        dfs(board, i, j - 1, nextNode, visited, currentWord, result);
+//
+//        // Backtrack, mark the cell as unvisited
+//        visited[i][j] = false;
+//    }
 
     // V1
     // IDEA : BACKTRACK + TRIE
