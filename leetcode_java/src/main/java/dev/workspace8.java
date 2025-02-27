@@ -4166,5 +4166,44 @@ public class workspace8 {
         }
     }
 
+    // LC 51
+    // 9.22 - 9.32 am
+    /**
+     *  The n-queens puzzle is the problem of placing
+     *  n queens on an n x n chessboard such that no two
+     *  queens attack each other.
+     *
+     *
+     *  -> Given an integer n, return all distinct solutions to the n-queens puzzle.
+     *     You may return the answer in any order.
+     *
+     *
+     *  -> how to define is `queens can attach each other` ?
+     *
+     *  IDEA 1) BACKTRACK
+     *
+     *
+     *
+     */
+    public List<List<String>> solveNQueens(int n) {
+
+        List<List<String>> res = new ArrayList<>();
+
+        // edge
+        if(n == 0){
+            return null;
+        }
+        if(n == 1){
+            List<String> cur = new ArrayList<>();
+            cur.add("Q");
+            res.add(cur);
+            return res;
+        }
+
+        // backtrack
+
+        return null;
+    }
+
 
 }
