@@ -61,9 +61,15 @@ public class ImplementTrie {
     /**
      * NOTE !!!
      *
-     *   - define TrieNode (or TreeNode) first (2 attrs: Map<String, TrieNode> children, boolean isWord)
+     *   - define TrieNode (or TreeNode) first
+     *       - (2 attrs: Map<String, TrieNode> children, boolean isWord)
+     *
      *   - then define Trie (ONLY 1 attr: TrieNode root;)
      *
+     *
+     *   -> and in fact, we MAINLY use `TrieNode` (in below methods)
+     *      `Trie` is more like a nominal class
+     *         -> we define it, but NOT use it directly
      */
     class TrieNode {
 
