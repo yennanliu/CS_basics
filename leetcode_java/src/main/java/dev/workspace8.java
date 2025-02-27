@@ -4205,5 +4205,62 @@ public class workspace8 {
         return null;
     }
 
+    // LC 208
+    // 9.53 - 10.17
+    class MyTreeNode{
+        // attr
+        //String val;
+        //MyTreeNode child;
+        Map<MyTreeNode, List<MyTreeNode>> children; // ???
+        Boolean isEnd;
+
+        // constructor
+        public MyTreeNode(){
+           // this.val = val;
+            this.children = new HashMap<>(); // new MyTreeNode(null); // ??
+            this.isEnd = true;
+        }
+    }
+    class Trie {
+
+        // attr
+        MyTreeNode node;
+       // Boolean isEnd;
+        public Trie(Integer val) {
+            this.node = new MyTreeNode();
+           // this.children = new HashMap<>();
+           // this.isEnd = true;
+        }
+
+        public void insert(String word) {
+            // get current node
+            MyTreeNode node = this.node;
+            //Trie trie = this.node;
+            if(word == null){
+                return;
+            }
+            for(String x: word.split("")){
+                MyTreeNode nextNode = new MyTreeNode();
+                if(!node.children.containsKey(x)){
+                    List<MyTreeNode> list = new ArrayList<>();
+                    list.add(nextNode);
+                    node.children.put(node, list);
+                    node = nextNode; // ??? move to next node
+                }
+            }
+            //this.node.
+            this.node.isEnd = true;
+        }
+
+        public boolean search(String word) {
+            return false;
+        }
+
+        public boolean startsWith(String prefix) {
+            return false;
+        }
+    }
+
+
 
 }
