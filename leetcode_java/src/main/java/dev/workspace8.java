@@ -4259,6 +4259,115 @@ public class workspace8 {
         public boolean startsWith(String prefix) {
             return false;
         }
+
+        // LC 211
+        // 10.35 - 10.45 AM
+        class MyTreeNode2{
+            // attr
+            Map<MyTreeNode2, List<MyTreeNode2>> children;
+            boolean isEnd;
+
+            public MyTreeNode2(){
+                this.children = new HashMap<>();
+                this.isEnd = false;
+            }
+        }
+        class Trie2{
+            MyTreeNode2 node;
+
+            public Trie2(){
+                this.node = new MyTreeNode2();
+            }
+
+        }
+        class WordDictionary {
+
+            Trie2 trie2;
+
+            public WordDictionary() {
+                this.trie2 = new Trie2();
+            }
+
+            public void addWord(String word) {
+                if(word == null || word.length() == 0){
+                    return;
+                }
+                // get current node
+                Trie2 trie = this.trie2;
+                MyTreeNode2 node = trie.node;
+                for(String x: word.split("")){
+                    MyTreeNode2 newNode = new MyTreeNode2();
+                    if(!node.children.containsKey(x)){
+                      List<MyTreeNode2> list = new ArrayList<>();
+                      node.children.put(newNode, list);
+                      node = newNode;
+                    }
+                }
+                node.isEnd = true;
+            }
+
+            public boolean search(String word) {
+                if(word == null || word.length() == 0){
+                    return false; // ??
+                }
+                // get current node
+                Trie2 trie = this.trie2;
+                MyTreeNode2 node = trie.node;
+
+//                // case 1) not "."
+//                for(String x: word.split("")){
+//                    MyTreeNode2 newNode = new MyTreeNode2();
+//                    if(!x.equals(".") && !node.children.containsKey(x)){
+//                        return false;
+//                    }
+//                }
+//
+//                // case 2) "." (can map to ANY character)
+                return false;
+            }
+
+            private boolean searchHelper(String word,  MyTreeNode2 node, int idx, String cur){
+
+                if (idx == word.length()){
+                    if(node.isEnd){
+                        return true;
+                    }
+                    return false;
+                }
+                if(idx > word.length()){
+                    return false;
+                }
+
+                for(int i = 0; i < word.length(); i++){
+                    MyTreeNode2 newNode = new MyTreeNode2();
+                    String curChar = String.valueOf(word.charAt(i));
+                    // case 1) not "."
+                    if(!curChar.equals(".")){
+                        if( !node.children.containsKey(curChar) ){
+                            return false;
+                        }
+                        // go to next loop
+                        this.searchHelper(word, node, idx+1, cur);
+
+                     // case 2) "." (can map to ANY character)
+                    }else{
+                        // search all children
+                        for(List<MyTreeNode2> n: node.children.values()){
+                            // ????
+                            for(MyTreeNode2 x: n){
+                                this.searchHelper(word, node, idx+1, cur);
+                            }
+                        }
+                    }
+                }
+
+                return true; // ???
+            }
+
+        }
+
+
+
     }
 
 
