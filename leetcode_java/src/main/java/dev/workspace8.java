@@ -4488,4 +4488,92 @@ public class workspace8 {
 //
 //
 
+    // LC 133
+    /*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+    public Node() {
+        val = 0;
+        neighbors = new ArrayList<Node>();
+    }
+    public Node(int _val) {
+        val = _val;
+        neighbors = new ArrayList<Node>();
+    }
+    public Node(int _val, ArrayList<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+}
+*/
+
+    // LC 133
+    // 5.16 - 5.26 PM
+    // IDEA: DFS
+
+    class Node2 {
+
+        public int val;
+        public List<Node2> neighbors;
+
+        public Node2() {
+            val = 0;
+            neighbors = new ArrayList<Node2>();
+        }
+        public Node2(int _val) {
+            val = _val;
+            neighbors = new ArrayList<Node2>();
+        }
+        public Node2(int _val, ArrayList<Node2> _neighbors) {
+            val = _val;
+            neighbors = _neighbors;
+        }
+    }
+
+    //Node2 copiedNode = null;
+    public Node2 cloneGraph(Node2 node) {
+        // edge
+        if(node == null){
+            return null;
+        }
+        if(node.neighbors == null || node.neighbors.isEmpty()){
+            return node;
+        }
+
+        //dfs
+        //copiedNode.val = node.val;
+        Node2 copiedNode = new Node2(node.val);
+
+        cloneHelper(node, copiedNode); // ???
+
+        return copiedNode;
+    }
+
+    private Node2 cloneHelper(Node2 node, Node2 copiedNode){
+        // edge
+        if(node == null){
+            return null;
+        }
+        if(node.neighbors == null || node.neighbors.isEmpty()){
+            return node;
+        }
+
+        for(Node2 n: node.neighbors){
+            List<Node2> curNeighbors = copiedNode.neighbors;
+            if(!curNeighbors.contains(n)){
+                curNeighbors.add(n);
+            }
+
+            copiedNode.neighbors = curNeighbors;
+            //Node2 nextNode = n;
+
+            cloneHelper(node, n); // ???
+        }
+
+        return copiedNode;
+    }
+
+
 }
