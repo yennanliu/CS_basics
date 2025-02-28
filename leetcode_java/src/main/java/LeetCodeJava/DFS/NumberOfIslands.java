@@ -68,7 +68,7 @@ public class NumberOfIslands {
                  *
                  *   2) if grid[i][j] == '1', we do `res += 1` directly,
                  *   then use dfs update grid values
-                 *   
+                 *
                  */
                 if (grid[i][j] == '1') {
                     res += 1;

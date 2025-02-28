@@ -4432,5 +4432,60 @@ public class workspace8 {
         //return true; // ???
     }
 
+    // LC 695
+    // 4.25 - 4.35 PM
+    /**
+     *  IDEA: DFS
+     */
+//    int maxArea = 0;
+//    public int maxAreaOfIsland(int[][] grid) {
+//
+//        // edge
+//        if(grid.length == 0 || grid[0].length == 0){
+//            return 0;
+//        }
+//
+//        if(grid.length == 1 && grid[0].length == 1){
+//            return grid[0][0];
+//        }
+//
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        // x: i, y: j
+//        for(int i = 0; i < w; i++){
+//            for (int j = 0; j < l; j++){
+//                if(grid[j][i] == 1){
+//                    findMaxArea(grid, i, j, 0);
+//                }
+//            }
+//        }
+//
+//        return maxArea;
+//    }
+//
+//    private void findMaxArea(int[][] grid, int x, int y, int curArea){
+//
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        if(x < 0 || x >= w || y < 0 || y > l || grid[y][x] != 1){
+//            return;
+//        }
+//
+//        maxArea = Math.max(maxArea, curArea+1);
+//
+//        grid[y][x] = -1;
+//
+//        int[][] dirs = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+//        for (int[] d: dirs){
+//            int x_ = x + d[0];
+//            int y_ = y + d[1];
+//            findMaxArea(grid, x_, y_, curArea);
+//        }
+//
+//    }
+//
+//
 
 }
