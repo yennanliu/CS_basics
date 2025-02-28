@@ -4365,11 +4365,72 @@ public class workspace8 {
             }
 
         }
-
-
-
     }
 
+    // LC 200
+    // 3.57 PM - 4.07 PM
+    /**
+     * IDEA : DFS
+     *
+     */
+    int islandCnt = 0;
+    public int numIslands(char[][] grid) {
+
+        // edge
+        if(grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+
+        int l = 0;
+        int w = 0;
+
+        // init visited
+       // boolean[][] visited = new boolean[l][w]; // ???
+
+        for(int i = 0; i < l; i++){
+            for (int j = 0; j < w; j++){
+                if(grid[i][j] == '1'){
+                    islandCnt += 1;
+                    findIslands(grid, j, i);
+                }
+            }
+        }
+
+        return islandCnt;
+    }
+
+    private void findIslands(char[][] grid, int x, int y){
+
+        int l = 0;
+        int w = 0;
+
+        if(x < 0 || x >= w ||  y < 0 || y >= l || grid[y][x] != '1'){
+           // return false;
+            return;
+        }
+
+        //visited[y][x] = '#';
+        grid[y][x] = '#';
+
+        int[][] dirs = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+        for (int[] d: dirs){
+            int x_ = x + d[0];
+            int y_ = y + d[1];
+            findIslands(grid, x_, y_);
+        }
+
+//        if(findIslands(grid, x+1, y) ||
+//           findIslands(grid, x-1, y) ||
+//           findIslands(grid, x, y-1) ||
+//           findIslands(grid, x, y+1)){
+//            return true;
+//        }
+
+        // undo
+       // visited[y][x] = false;
+
+        //return true; // ???
+    }
 
 
 }
