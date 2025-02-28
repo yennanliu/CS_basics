@@ -198,6 +198,7 @@ public class WallsAndGates {
         Queue<int[]> q = new LinkedList<>();
         q.add(new int[]{r, c});
         boolean[][] visit = new boolean[ROWS][COLS];
+        /** NOTE !!! we use visit to avoid duplicated visiting */
         visit[r][c] = true;
         int steps = 0;
 
@@ -209,6 +210,14 @@ public class WallsAndGates {
                 if (grid[row][col] == 0) return steps;
                 for (int[] dir : directions) {
                     int nr = row + dir[0], nc = col + dir[1];
+                    /** NOTE !!!
+                     *
+                     *  one of the not-stop condition is `grid[nr][nc] != -1`
+                     *  -> e.g. if NOT wall (e.g. grid[y][x] == -1), we can move over it
+                     *
+                     *
+                     *  -1 - A wall or an obstacle.
+                     */
                     if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS &&
                             !visit[nr][nc] && grid[nr][nc] != -1) {
                         visit[nr][nc] = true;
@@ -237,7 +246,7 @@ public class WallsAndGates {
 
     // V-1-3
     // https://neetcode.io/problems/islands-and-treasure
-    // IEAD: Multi Source BFS
+    // IDEA: Multi Source BFS
     public void islandsAndTreasure_1_3(int[][] grid) {
         Queue<int[]> q = new LinkedList<>();
         int m = grid.length;
