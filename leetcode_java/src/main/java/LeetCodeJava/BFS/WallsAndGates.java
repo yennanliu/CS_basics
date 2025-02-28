@@ -1,7 +1,38 @@
 package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/walls-and-gates/description/
-
+// https://leetcode.ca/all/286.html
+/**
+ * 286. Walls and Gates
+ * You are given a m x n 2D grid initialized with these three possible values.
+ *
+ * -1 - A wall or an obstacle.
+ * 0 - A gate.
+ * INF - Infinity means an empty room. We use the value 231 - 1 = 2147483647 to represent INF as you may assume that the distance to a gate is less than 2147483647.
+ * Fill each empty room with the distance to its nearest gate. If it is impossible to reach a gate, it should be filled with INF.
+ *
+ * Example:
+ *
+ * Given the 2D grid:
+ *
+ * INF  -1  0  INF
+ * INF INF INF  -1
+ * INF  -1 INF  -1
+ *   0  -1 INF INF
+ * After running your function, the 2D grid should be:
+ *
+ *   3  -1   0   1
+ *   2   2   1  -1
+ *   1  -1   2  -1
+ *   0  -1   3   4
+ * Difficulty:
+ * Medium
+ * Lock:
+ * Prime
+ * Company:
+ * Amazon Bloomberg ByteDance Facebook Google Microsoft Uber
+ *
+ */
 import java.util.*;
 
 public class WallsAndGates {
@@ -111,7 +142,136 @@ public class WallsAndGates {
         }
     }
 
-    // V1
+    // V-1-1
+    // https://neetcode.io/problems/islands-and-treasure
+    // IDEA: Brute Force (Backtracking)
+    private int[][] directions = {{1, 0}, {-1, 0},
+            {0, 1}, {0, -1}};
+    private int INF = 2147483647;
+    private boolean[][] visit;
+    private int ROWS, COLS;
+
+    private int dfs(int[][] grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= ROWS ||
+                c >= COLS || grid[r][c] == -1 || visit[r][c]) {
+            return INF;
+        }
+        if (grid[r][c] == 0) {
+            return 0;
+        }
+        visit[r][c] = true;
+        int res = INF;
+        for (int[] dir : directions) {
+            int cur = dfs(grid, r + dir[0], c + dir[1]);
+            if (cur != INF) {
+                res = Math.min(res, 1 + cur);
+            }
+        }
+        visit[r][c] = false;
+        return res;
+    }
+
+    public void islandsAndTreasure_1_1(int[][] grid) {
+        ROWS = grid.length;
+        COLS = grid[0].length;
+        visit = new boolean[ROWS][COLS];
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == INF) {
+                    grid[r][c] = dfs(grid, r, c);
+                }
+            }
+        }
+    }
+
+
+    // V-1-2
+    // https://neetcode.io/problems/islands-and-treasure
+    // IDEA: BFS
+//    private int[][] directions = {{1, 0}, {-1, 0},
+//            {0, 1}, {0, -1}};
+//    private int INF = 2147483647;
+//    private int ROWS, COLS;
+
+    private int bfs(int[][] grid, int r, int c) {
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{r, c});
+        boolean[][] visit = new boolean[ROWS][COLS];
+        visit[r][c] = true;
+        int steps = 0;
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                int[] curr = q.poll();
+                int row = curr[0], col = curr[1];
+                if (grid[row][col] == 0) return steps;
+                for (int[] dir : directions) {
+                    int nr = row + dir[0], nc = col + dir[1];
+                    if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS &&
+                            !visit[nr][nc] && grid[nr][nc] != -1) {
+                        visit[nr][nc] = true;
+                        q.add(new int[]{nr, nc});
+                    }
+                }
+            }
+            steps++;
+        }
+        return INF;
+    }
+
+    public void islandsAndTreasure_1_2(int[][] grid) {
+        ROWS = grid.length;
+        COLS = grid[0].length;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == INF) {
+                    grid[r][c] = bfs(grid, r, c);
+                }
+            }
+        }
+    }
+
+
+    // V-1-3
+    // https://neetcode.io/problems/islands-and-treasure
+    // IEAD: Multi Source BFS
+    public void islandsAndTreasure_1_3(int[][] grid) {
+        Queue<int[]> q = new LinkedList<>();
+        int m = grid.length;
+        int n = grid[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 0) {
+                    q.add(new int[] { i, j });
+                }
+            }
+        }
+        if (q.size() == 0) return;
+
+        int[][] dirs = { { -1, 0 }, { 0, -1 },
+                { 1, 0 }, { 0, 1 } };
+        while (!q.isEmpty()) {
+            int[] node = q.poll();
+            int row = node[0];
+            int col = node[1];
+            for (int[] dir : dirs) {
+                int r = row + dir[0];
+                int c = col + dir[1];
+                if (r >= m || c >= n || r < 0 ||
+                        c < 0 || grid[r][c] != Integer.MAX_VALUE) {
+                    continue;
+                }
+                q.add(new int[] { r, c });
+
+                grid[r][c] = grid[row][col] + 1;
+            }
+        }
+    }
+
+    // V2
     // IDEA BFS
     // https://leetcode.com/problems/walls-and-gates/editorial/
     private static final int EMPTY = Integer.MAX_VALUE;
@@ -123,7 +283,7 @@ public class WallsAndGates {
             new int[]{0, -1}
     );
 
-    public void wallsAndGates_1(int[][] rooms) {
+    public void wallsAndGates_2(int[][] rooms) {
         int m = rooms.length;
         if (m == 0) return;
         int n = rooms[0].length;

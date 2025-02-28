@@ -4575,5 +4575,125 @@ class Node {
         return copiedNode;
     }
 
+    // LC 286
+    // 5.46 - 6.00 PM
+    /**
+     *
+     * -> Fill each empty room with the distance to
+     *    its nearest gate. If it is impossible to reach a gate,
+     *    it should be filled with INF.
+     *
+     *
+     *  IDEA 1) DFS
+     */
+    public class RoomCoor{
+        int init_x;
+        int init_y;
+        int x;
+        int y;
+        int dist;
+
+        public RoomCoor(int x, int y){
+            this.init_x = x;
+            this.init_y = y;
+            this.x = init_x;
+            this.y = init_y;
+            this.dist = 0;
+        }
+
+        public int getDist() {
+            return dist;
+        }
+
+        public int getInit_x() {
+            return init_x;
+        }
+
+        public int getInit_y() {
+            return init_y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public void setDist(int dist) {
+            this.dist = dist;
+        }
+
+        public void setInit_x(int init_x) {
+            this.init_x = init_x;
+        }
+
+        public void setInit_y(int init_y) {
+            this.init_y = init_y;
+        }
+
+        public void setX(int x) {
+            this.x = x;
+        }
+
+        public void setY(int y) {
+            this.y = y;
+        }
+    }
+    public void wallsAndGates(int[][] rooms) {
+
+        // edge
+        if(rooms.length == 0 || rooms[0].length == 0){
+            return;
+        }
+
+        if(rooms.length == 1 || rooms[0].length == 1){
+            return;
+        }
+
+        int l = rooms.length;
+        int w = rooms[0].length;
+
+        // bfs ????
+        Queue<RoomCoor> q = new LinkedList<>();
+
+        // collect all `INF`
+        for(int i = 0; i < w; i++){
+            for(int j = 0; j < l; j++){
+                // Integer.MAX_VALUE ???
+                if(rooms[j][i] == Integer.MAX_VALUE){
+                    //List<RoomCoor> tmp = new ArrayList<>();
+//                    tmp.add(i);
+//                    tmp.add(j);
+                    RoomCoor roomCoor = new RoomCoor(i, j);
+                    //tmp.add(roomCoor);
+                    q.add(roomCoor);
+                }
+            }
+        }
+
+        // bfs
+        while(!q.isEmpty()){
+            RoomCoor roomCoor = q.poll();
+            int[][] moves = new int[][] { {1,0}, {-1,0}, {0,1}, {0,-1} };
+            int x = roomCoor.x;
+            int y = roomCoor.y;
+
+
+            for(int[] m: moves){
+                int x_ = x + m[0];
+                int y_ = y + m[1];
+//                if(x_ >= 0 && x_ < w && y_  0 || y_ >= l || rooms[y_][x_] == 1){
+//
+//                }
+
+            }
+        }
+
+        return;
+    }
+
+
 
 }
