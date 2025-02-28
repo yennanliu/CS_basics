@@ -4,6 +4,16 @@
 - neetcode 150
 	- https://neetcode.io/practice?tab=neetcode150
 	- 5 / day ->  15 days to finish
+		- graphs
+	- again:
+	- todo: 
+		- re-do all previous `again` problems, similar problems, make notes
+		- refine [sliding_window.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
+
+# 2025-02-27
+- neetcode 150
+	- https://neetcode.io/practice?tab=neetcode150
+	- 5 / day ->  15 days to finish
 		- backtrack
 	- again: 212,208,211
 	- todo: 
