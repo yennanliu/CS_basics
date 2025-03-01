@@ -1,7 +1,47 @@
 package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/rotting-oranges/
-
+/**
+ * 994. Rotting Oranges
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * You are given an m x n grid where each cell can have one of three values:
+ *
+ * 0 representing an empty cell,
+ * 1 representing a fresh orange, or
+ * 2 representing a rotten orange.
+ * Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
+ *
+ * Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: grid = [[2,1,1],[1,1,0],[0,1,1]]
+ * Output: 4
+ * Example 2:
+ *
+ * Input: grid = [[2,1,1],[0,1,1],[1,0,1]]
+ * Output: -1
+ * Explanation: The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.
+ * Example 3:
+ *
+ * Input: grid = [[0,2]]
+ * Output: 0
+ * Explanation: Since there are already no fresh oranges at minute 0, the answer is just 0.
+ *
+ *
+ * Constraints:
+ *
+ * m == grid.length
+ * n == grid[i].length
+ * 1 <= m, n <= 10
+ * grid[i][j] is 0, 1, or 2.
+ */
 import java.util.*;
 
 public class RottingOranges {
@@ -187,7 +227,99 @@ public class RottingOranges {
 //        return fresh == 0 ? 0 : -1;
 //    }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/rotting-fruit
+    // IDEA: BFS
+    public int orangesRotting_1_1(int[][] grid) {
+        Queue<int[]> q = new ArrayDeque<>();
+        int fresh = 0;
+        int time = 0;
+
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                if (grid[r][c] == 1) {
+                    fresh++;
+                }
+                if (grid[r][c] == 2) {
+                    q.offer(new int[]{r, c});
+                }
+            }
+        }
+
+        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        while (fresh > 0 && !q.isEmpty()) {
+            int length = q.size();
+            for (int i = 0; i < length; i++) {
+                int[] curr = q.poll();
+                int r = curr[0];
+                int c = curr[1];
+
+                for (int[] dir : directions) {
+                    int row = r + dir[0];
+                    int col = c + dir[1];
+                    if (row >= 0 && row < grid.length &&
+                            col >= 0 && col < grid[0].length &&
+                            grid[row][col] == 1) {
+                        grid[row][col] = 2;
+                        q.offer(new int[]{row, col});
+                        fresh--;
+                    }
+                }
+            }
+            time++;
+        }
+        return fresh == 0 ? time : -1;
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/rotting-fruit
+    // IDEA: BFS (No Queue)
+    public int orangesRotting_1_2(int[][] grid) {
+        int ROWS = grid.length, COLS = grid[0].length;
+        int fresh = 0, time = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == 1) fresh++;
+            }
+        }
+
+        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+        while (fresh > 0) {
+            boolean flag = false;
+            for (int r = 0; r < ROWS; r++) {
+                for (int c = 0; c < COLS; c++) {
+                    if (grid[r][c] == 2) {
+                        for (int[] d : directions) {
+                            int row = r + d[0], col = c + d[1];
+                            if (row >= 0 && col >= 0 &&
+                                    row < ROWS && col < COLS &&
+                                    grid[row][col] == 1) {
+                                grid[row][col] = 3;
+                                fresh--;
+                                flag = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!flag) return -1;
+
+            for (int r = 0; r < ROWS; r++) {
+                for (int c = 0; c < COLS; c++) {
+                    if (grid[r][c] == 3) grid[r][c] = 2;
+                }
+            }
+
+            time++;
+        }
+
+        return time;
+    }
+
+    // V2
     // IDEA : BFS
     // https://leetcode.com/problems/rotting-oranges/editorial/
     class Pair<U, V> {
@@ -210,7 +342,7 @@ public class RottingOranges {
 
     }
 
-    public int orangesRotting_1(int[][] grid) {
+    public int orangesRotting_2(int[][] grid) {
         Queue<Pair<Integer, Integer>> queue = new ArrayDeque();
 
         // Step 1). build the initial set of rotten oranges
@@ -265,7 +397,7 @@ public class RottingOranges {
         return freshOranges == 0 ? minutesElapsed : -1;
     }
 
-    // V2
+    // V3
     // IDEA : in place BFS
     // https://leetcode.com/problems/rotting-oranges/editorial/
     // run the rotting process, by marking the rotten oranges with the timestamp
@@ -289,7 +421,7 @@ public class RottingOranges {
         return toBeContinued;
     }
 
-    public int orangesRotting_2(int[][] grid) {
+    public int orangesRotting_3(int[][] grid) {
         int ROWS = grid.length, COLS = grid[0].length;
         int timestamp = 2;
         while (runRottingProcess(timestamp, grid, ROWS, COLS))
