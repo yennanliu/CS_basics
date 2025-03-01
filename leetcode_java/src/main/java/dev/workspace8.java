@@ -4694,6 +4694,108 @@ class Node {
         return;
     }
 
+  // LC 994
+  // 4.36 - 4.46 pm
+  /**
+   * Return the minimum number of minutes that must
+   * elapse until no cell has a fresh orange.
+   * If this is impossible, return -1.
+   *
+   *    0 representing an empty cell,
+   *    1 representing a fresh orange, or
+   *    2 representing a rotten orange.
+   *
+   *
+   *
+   *   2 1 1
+   *   0 1 1
+   *   1 0 1
+   *
+   *
+   *   IDEA : BFS
+   *
+   */
+  public int orangesRotting(int[][] grid) {
+
+      // edge
+      if(grid.length == 0 || grid[0].length == 0){
+          return 0;
+      }
+
+      if(grid.length == 1 && grid[0].length == 1){
+          if(grid[0][0] == 2){
+              return -1;
+          }
+          return 0; // ??
+      }
+
+      int l = grid.length;
+      int w = grid[0].length;
+
+      int freshCnt = 0;
+      int rottenCnt = 0;
+
+      List<List<Integer>> rottenList = new ArrayList<>();
+
+      // get cnt of `fresh` orange
+      for(int i = 0; i < l; i++){
+          for(int j = 0; j < w; j++){
+              if(grid[i][j] == 1){
+                  freshCnt += 1;
+              }else if (grid[i][j] == 2){
+                  rottenCnt += 1;
+                  List<Integer> tmp = new ArrayList<>();
+                  tmp.add(j);
+                  tmp.add(i);
+                  rottenList.add(tmp);
+              }
+          }
+      }
+
+      if(freshCnt == 0){
+          return 0;
+      }
+
+      int minutes = 0;
+
+      Queue<List<Integer>> q = new LinkedList<>();
+      for(List<Integer> x: rottenList){
+          q.add(x);
+      }
+
+      while(!q.isEmpty() || freshCnt <= 0){
+          List<Integer> cur = q.poll();
+          int x = cur.get(0);
+          int y = cur.get(1);
+
+          //grid[y][x] = 2; // make as `rotten`
+
+          int[][] dirs = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+          for(int[] d: dirs){
+              int x_ = x + d[0];
+              int y_ = y + d[1];
+              if(x_ < 0 || x_ >= w || y < 0 || y_ >= l || grid[y_][x_] == 0){
+                  continue;
+              }
+              List<Integer> cur2 = new ArrayList<>();
+              cur2.add(x_);
+              cur2.add(y_);
+
+              q.add(cur2);
+
+              if(grid[y_][x_] == 1){
+                  grid[y_][x_] = 2; // make as `rotten`
+                  freshCnt -= 1;
+              }
+          }
+
+          minutes += 1;
+      }
+
+      return minutes;
+    }
+
 
 
 }
