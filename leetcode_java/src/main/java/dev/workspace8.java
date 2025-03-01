@@ -4818,6 +4818,68 @@ class Node {
       return null;
     }
 
+    // LC 130
+    // 5.39 - 5.49 pm
+    /**
+     *  IDE: BFS
+     *
+     *
+     *
+     */
+    public void solve(char[][] board) {
+        // edge
+        if(board.length == 0 || board[0].length == 0){
+            return;
+        }
+
+        int l = board.length;
+        int w = board[0].length;
+
+        // get '0' list
+        List<Integer[]> zeroList = new ArrayList<>();
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                if(board[i][j] == '0'){
+                    Integer[] tmp = new Integer[2];
+                    tmp[0] = j;
+                    tmp[1] = i;
+                    zeroList.add(tmp);
+                }
+            }
+        }
+
+
+        int[][] dirs = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        // bfs
+        Queue<Integer[]> q = new LinkedList<>();
+        for(Integer[] x: zeroList){
+            q.add(x);
+        }
+
+        while(!q.isEmpty()){
+            Integer[] tmp = q.poll();
+            int x = tmp[0];
+            int y = tmp[1];
+            for (int[] d: dirs){
+                int x_ = x + d[0];
+                int y_ = y + d[1];
+                if (x_ < 0 || x_ > w || y_ < 0 || y_ > l || board[y_][x_] == 'X'){
+                    continue; // ??
+                }
+
+                board[y_][x_] = 'O';
+
+                Integer[] tmp2 = new Integer[2];
+                tmp2[0] = x_;
+                tmp2[1] = y_;
+                q.add(tmp2);
+            }
+        }
+
+        return;
+    }
+
 
 
 }

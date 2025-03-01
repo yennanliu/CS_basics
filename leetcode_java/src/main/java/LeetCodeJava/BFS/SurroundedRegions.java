@@ -1,9 +1,51 @@
 package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/surrounded-regions/
-
+/**
+ * 130. Surrounded Regions
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * You are given an m x n matrix board containing letters 'X' and 'O', capture regions that are surrounded:
+ *
+ * Connect: A cell is connected to adjacent cells horizontally or vertically.
+ * Region: To form a region connect every 'O' cell.
+ * Surround: The region is surrounded with 'X' cells if you can connect the region with 'X' cells and none of the region cells are on the edge of the board.
+ * To capture a surrounded region, replace all 'O's with 'X's in-place within the original board. You do not need to return anything.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: board = [["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]
+ *
+ * Output: [["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]
+ *
+ * Explanation:
+ *
+ *
+ * In the above diagram, the bottom region is not captured because it is on the edge of the board and cannot be surrounded.
+ *
+ * Example 2:
+ *
+ * Input: board = [["X"]]
+ *
+ * Output: [["X"]]
+ *
+ *
+ *
+ * Constraints:
+ *
+ * m == board.length
+ * n == board[i].length
+ * 1 <= m, n <= 200
+ * board[i][j] is 'X' or 'O'.
+ *
+ */
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class SurroundedRegions {
 
@@ -71,9 +113,117 @@ public class SurroundedRegions {
 //        }
 //    }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/surrounded-regions
+    // IDEA: DFS
+    private int ROWS, COLS;
+
+    public void solve_1_1(char[][] board) {
+        ROWS = board.length;
+        COLS = board[0].length;
+
+        for (int r = 0; r < ROWS; r++) {
+            if (board[r][0] == 'O') {
+                capture(board, r, 0);
+            }
+            if (board[r][COLS - 1] == 'O') {
+                capture(board, r, COLS - 1);
+            }
+        }
+
+        for (int c = 0; c < COLS; c++) {
+            if (board[0][c] == 'O') {
+                capture(board, 0, c);
+            }
+            if (board[ROWS - 1][c] == 'O') {
+                capture(board, ROWS - 1, c);
+            }
+        }
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'X';
+                } else if (board[r][c] == 'T') {
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+
+    private void capture(char[][] board, int r, int c) {
+        if (r < 0 || c < 0 || r >= ROWS ||
+                c >= COLS || board[r][c] != 'O') {
+            return;
+        }
+        board[r][c] = 'T';
+        capture(board, r + 1, c);
+        capture(board, r - 1, c);
+        capture(board, r, c + 1);
+        capture(board, r, c - 1);
+    }
+
+
+    // V1-2
+    // https://neetcode.io/problems/surrounded-regions
+    // IDEA: BFS
+    //private int ROWS, COLS;
+    private int[][] directions = new int[][]{
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1}
+    };
+
+    public void solve_1_2(char[][] board) {
+        ROWS = board.length;
+        COLS = board[0].length;
+
+        capture(board);
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'X';
+                } else if (board[r][c] == 'T') {
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+
+    private void capture(char[][] board) {
+        Queue<int[]> q = new LinkedList<>();
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (r == 0 || r == ROWS - 1 ||
+                        c == 0 || c == COLS - 1 &&
+                        board[r][c] == 'O') {
+                    q.offer(new int[]{r, c});
+                }
+            }
+        }
+        while (!q.isEmpty()) {
+            int[] cell = q.poll();
+            int r = cell[0], c = cell[1];
+            if (board[r][c] == 'O') {
+                board[r][c] = 'T';
+                for (int[] direction : directions) {
+                    int nr = r + direction[0], nc = c + direction[1];
+                    if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) {
+                        q.offer(new int[]{nr, nc});
+                    }
+                }
+            }
+        }
+    }
+
+
+    // V1-3
+    // https://neetcode.io/problems/surrounded-regions
+    // IDEA: Disjoint Set Union
+
+
+    // V2
     // IDEA : DFS (fixed by gpt)
-    public void solve_1(char[][] board) {
+    public void solve_2(char[][] board) {
         if (board == null || board.length == 0 || board[0].length == 0) {
             return;
         }
@@ -152,7 +302,7 @@ public class SurroundedRegions {
         }
     }
 
-    // V1_1
+    // V3
     // IDEA : DFS
     // https://leetcode.com/problems/surrounded-regions/editorial/
 
@@ -166,10 +316,10 @@ public class SurroundedRegions {
         }
     }
 
-    protected Integer ROWS = 0;
-    protected Integer COLS = 0;
+//    protected Integer ROWS = 0;
+//    protected Integer COLS = 0;
 
-    public void solve_1_1(char[][] board) {
+    public void solve_3(char[][] board) {
         if (board == null || board.length == 0) {
             return;
         }
@@ -225,7 +375,7 @@ public class SurroundedRegions {
     }
 
 
-    // V2
+    // V4
     // IDEA : BFS
     // https://leetcode.com/problems/surrounded-regions/editorial/
     class Pair2<U, V> {
@@ -242,7 +392,7 @@ public class SurroundedRegions {
     protected Integer ROWS2 = 0;
     protected Integer COLS2 = 0;
 
-    public void solve_2(char[][] board) {
+    public void solve_4(char[][] board) {
         if (board == null || board.length == 0) {
             return;
         }
@@ -298,10 +448,10 @@ public class SurroundedRegions {
             }
         }
 
-    // V3
+    // V5
     // IDEA : DFS
     // https://leetcode.com/problems/surrounded-regions/solutions/3805983/java-100-faster-step-by-step-explained/
-    public void solve(char[][] board) {
+    public void solve_5(char[][] board) {
         int rows = board.length;
         int cols = board[0].length;
 
