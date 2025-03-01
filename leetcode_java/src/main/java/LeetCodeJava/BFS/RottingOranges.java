@@ -48,184 +48,150 @@ public class RottingOranges {
 
     // TODO : fix below
     // VO
-    // IDRA : BFS
-//    public int orangesRotting(int[][] grid) {
-//
-//        class Pair<U, V> {
-//            U key;
-//            V value;
-//
-//            Pair(U key, V value) {
-//                this.key = key;
-//                this.value = value;
-//            }
-//
-//            U getKey() {
-//                return this.key;
-//            }
-//
-//            V getValue() {
-//                return this.value;
-//            }
-//
-//        }
-//
-//        int len = grid.length;
-//        int width = grid[0].length;
-//
-//        int ans = 0;
-//        int fresh_cnt = 0;
-//
-//        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-//        Queue<Pair> q = new LinkedList<>();
-//
-//        // collect rotting orange
-//        for (int i = 0; i < width; i++) {
-//            for (int j = 0; j < len; j++) {
-//                if (grid[j][i] == 2) {
-//                    q.add(new Pair(i, j));
-//                } else if (grid[j][i] == 1) {
-//                    fresh_cnt += 1;
-//                }
-//            }
-//        }
-//
-//        if (fresh_cnt == 0) {
-//            return 0; // ?
-//        }
-//
-//        // bfs
-//        while (!q.isEmpty()) {
-//
-//            Pair p = q.poll();
-//            int x = (int) p.getKey();
-//            int y = (int) p.getValue();
-//
-//            boolean finish_cycle = false;
-//
-//            for (int[] dir : dirs) {
-//
-//                int dx = dir[0];
-//                int dy = dir[1];
-//
-//                int new_x = x + dx;
-//                int new_y = y + dy;
-//
-//                if (new_x >= 0 && new_x < width && new_y >= 0 && new_y < len) {
-//                    if (grid[new_y][new_x] == 1) {
-//                        q.add(new Pair(new_x, new_y));
-//                        grid[new_y][new_x] = 2; // become rotting orange
-//                        fresh_cnt -= 1;
-//
-//                    }
-//                }
-//
-//                if (fresh_cnt == 0) {
-//                    return ans;
-//                }
-//
-//                finish_cycle = true;
-//            }
-//
-//            if (finish_cycle) {
-//                ans += 1;
-//            }
-//        }
-//
-//        System.out.println("fresh_cnt = " + fresh_cnt + " ans = " + ans);
-//        return fresh_cnt == 0 ? ans : -1;
-//    }
-
-    // TODO : fix below
-    // V0
     // IDEA : BFS
-    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/rotting-oranges.py
 //    public int orangesRotting(int[][] grid) {
 //
-//        class Pair<U, V, W> {
-//
-//            U key;
-//            V value;
-//            W value2;
-//
-//            Pair(U key, V value, W value2) {
-//                this.key = key;
-//                this.value = value;
-//                this.value2 = value2;
-//            }
-//
-//            public U getKey() {
-//                return this.key;
-//            }
-//
-//            public V getValue() {
-//                return this.value;
-//            }
-//
-//            public W getValue2() {
-//                return this.value2;
-//            }
-//
-//        }
-//
-//        // Queue<Pair<Integer, Integer>> queue = new ArrayDeque();
-//        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-//        int fresh = 0;
-//        Queue<Pair<Integer, Integer, Integer>> rotting = new LinkedList<>();
-//        HashSet<String> set = new HashSet<>();
-//
-//        int _len = grid.length;
-//        int _width = grid[0].length;
-//
-//        for (int i = 0; i < _width; i++) {
-//            for (int j = 0; j < _len; j++) {
-//                if (grid[j][i] == 2) {
-//                    // TODO : check difference : offer VS add
-//                    //rotting.offer(new Pair<>(i, j));
-//                    rotting.add(new Pair<>(i, j, 0));
-//                }
-//                if (grid[j][i] == 1) {
-//                    fresh += 1;
-//                }
-//            }
-//        }
-//
-//        if (fresh == 0) {
+//        // edge
+//        if(grid.length == 0 || grid[0].length == 0){
 //            return 0;
 //        }
 //
-//        // bfs
-//        while (!rotting.isEmpty()) {
+//        if(grid.length == 1 && grid[0].length == 1){
+//            if(grid[0][0] == 2){
+//                return -1;
+//            }
+//            return 0; // ??
+//        }
 //
-//            Pair<Integer, Integer, Integer> _cur = rotting.poll();
-//            int x = _cur.getKey();
-//            int y = _cur.getValue();
-//            int _time = _cur.getValue2();
+//        int l = grid.length;
+//        int w = grid[0].length;
 //
-//            // go 4 directions
-//            for (int[] dir : dirs) {
-//                int dx = dir[0];
-//                int dy = dir[1];
-//                int _x = x + dx;
-//                int _y = y + dy;
-//                String idx = String.valueOf(x) + "-" + String.valueOf(y); // to avoid redo op (fresh -= 1, rotting.add) "visited" points
-//                if (_x >= 0 && x < _width - 1 && _y >= 0 && _y < _len - 1) {
-//                    if (grid[_y][_x] == 1 && !set.contains(idx)){
-//                        grid[_y][_x] = 2;
-//                        fresh -= 1;
-//                        set.add(idx);
-//                        System.out.println(">>> fresh = " + fresh + " idx = " + idx);
-//                        if (fresh == 0) {
-//                            return _time+1;
-//                        }
-//                        rotting.add(new Pair<>(_x, _y, _time+1));
-//                    }
+//        int freshCnt = 0;
+//        int rottenCnt = 0;
+//
+//        List<List<Integer>> rottenList = new ArrayList<>();
+//
+//        // get cnt of `fresh` orange
+//        for(int i = 0; i < l; i++){
+//            for(int j = 0; j < w; j++){
+//                if(grid[i][j] == 1){
+//                    freshCnt += 1;
+//                }else if (grid[i][j] == 2){
+//                    rottenCnt += 1;
+//                    List<Integer> tmp = new ArrayList<>();
+//                    tmp.add(j);
+//                    tmp.add(i);
+//                    rottenList.add(tmp);
 //                }
 //            }
 //        }
 //
-//        return fresh == 0 ? 0 : -1;
+//        if(freshCnt == 0){
+//            return 0;
+//        }
+//
+//        int minutes = 0;
+//
+//        Queue<List<Integer>> q = new LinkedList<>();
+//        for(List<Integer> x: rottenList){
+//            q.add(x);
+//        }
+//
+//        while(!q.isEmpty() || freshCnt <= 0){
+//            List<Integer> cur = q.poll();
+//            int x = cur.get(0);
+//            int y = cur.get(1);
+//
+//            //grid[y][x] = 2; // make as `rotten`
+//
+//            int[][] dirs = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+//
+//            for(int[] d: dirs){
+//                int x_ = x + d[0];
+//                int y_ = y + d[1];
+//                if(x_ < 0 || x_ >= w || y < 0 || y_ >= l || grid[y_][x_] == 0){
+//                    continue;
+//                }
+//                List<Integer> cur2 = new ArrayList<>();
+//                cur2.add(x_);
+//                cur2.add(y_);
+//
+//                q.add(cur2);
+//
+//                if(grid[y_][x_] == 1){
+//                    grid[y_][x_] = 2; // make as `rotten`
+//                    freshCnt -= 1;
+//                }
+//            }
+//
+//            minutes += 1;
+//        }
+//
+//        return minutes;
 //    }
+
+    // TODO : fix below
+    // V0-1
+    // IDEA : BFS (fixed by gpt)
+    public int orangesRotting_0_1(int[][] grid) {
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int freshCnt = 0;
+        Queue<int[]> queue = new LinkedList<>();
+
+        // Initialize queue with all initially rotten oranges and count fresh oranges
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == 2) {
+                    queue.offer(new int[] { i, j });
+                } else if (grid[i][j] == 1) {
+                    freshCnt++;
+                }
+            }
+        }
+
+        // If no fresh oranges exist, return 0
+        if (freshCnt == 0) {
+            return 0;
+        }
+
+        int time = 0;
+        int[][] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        // Perform BFS
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            boolean anyRotten = false;
+
+            for (int i = 0; i < size; i++) {
+                int[] cell = queue.poll();
+                int x = cell[0];
+                int y = cell[1];
+
+                for (int[] dir : directions) {
+                    int newX = x + dir[0];
+                    int newY = y + dir[1];
+
+                    if (newX >= 0 && newX < rows && newY >= 0 && newY < cols && grid[newX][newY] == 1) {
+                        grid[newX][newY] = 2; // Mark as rotten
+                        queue.offer(new int[] { newX, newY });
+                        freshCnt--;
+                        anyRotten = true;
+                    }
+                }
+            }
+
+            if (anyRotten) {
+                time++;
+            }
+        }
+
+        return freshCnt == 0 ? time : -1; // If fresh oranges remain, return -1
+    }
 
     // V1-1
     // https://neetcode.io/problems/rotting-fruit
