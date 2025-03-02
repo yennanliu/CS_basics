@@ -1,5 +1,16 @@
 # Progress
 
+# 2025-03-02
+- neetcode 150
+	- https://neetcode.io/practice?tab=neetcode150
+	- 5 / day ->  15 days to finish
+		- graphs
+	- again:
+		- similar:
+	- todo: 
+		- re-do all previous `again` problems, similar problems, make notes
+		- refine [sliding_window.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
+
 # 2025-03-01
 - neetcode 150
 	- https://neetcode.io/practice?tab=neetcode150
