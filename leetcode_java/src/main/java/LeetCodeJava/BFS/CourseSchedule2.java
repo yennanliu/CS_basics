@@ -236,7 +236,141 @@ public class CourseSchedule2 {
     }
 
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/course-schedule-ii
+    // IDEA:  Cycle Detection (DFS)
+    public int[] findOrder_1_1(int numCourses, int[][] prerequisites) {
+        Map<Integer, List<Integer>> prereq = new HashMap<>();
+        for (int[] pair : prerequisites) {
+            prereq.computeIfAbsent(pair[0],
+                    k -> new ArrayList<>()).add(pair[1]);
+        }
+
+        List<Integer> output = new ArrayList<>();
+        Set<Integer> visit = new HashSet<>();
+        Set<Integer> cycle = new HashSet<>();
+
+        for (int course = 0; course < numCourses; course++) {
+            if (!dfs(course, prereq, visit, cycle, output)) {
+                return new int[0];
+            }
+        }
+
+        int[] result = new int[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            result[i] = output.get(i);
+        }
+        return result;
+    }
+
+    private boolean dfs(int course, Map<Integer, List<Integer>> prereq,
+                        Set<Integer> visit, Set<Integer> cycle,
+                        List<Integer> output) {
+
+        if (cycle.contains(course)) {
+            return false;
+        }
+        if (visit.contains(course)) {
+            return true;
+        }
+
+        cycle.add(course);
+        for (int pre : prereq.getOrDefault(course, Collections.emptyList())) {
+            if (!dfs(pre, prereq, visit, cycle, output)) {
+                return false;
+            }
+        }
+        cycle.remove(course);
+        visit.add(course);
+        output.add(course);
+        return true;
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/course-schedule-ii
+    // IDEA:  Topological Sort (Kahn's Algorithm)
+    public int[] findOrder_1_2(int numCourses, int[][] prerequisites) {
+        int[] indegree = new int[numCourses];
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int[] pre : prerequisites) {
+            indegree[pre[1]]++;
+            adj.get(pre[0]).add(pre[1]);
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                q.add(i);
+            }
+        }
+
+        int finish = 0;
+        int[] output = new int[numCourses];
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            output[numCourses - finish - 1] = node;
+            finish++;
+            for (int nei : adj.get(node)) {
+                indegree[nei]--;
+                if (indegree[nei] == 0) {
+                    q.add(nei);
+                }
+            }
+        }
+
+        if (finish != numCourses) {
+            return new int[0];
+        }
+        return output;
+    }
+
+
+    // V1-3
+    // https://neetcode.io/problems/course-schedule-ii
+    // IDEA: Topological Sort (DFS)
+    private List<Integer> output = new ArrayList<>();
+    private int[] indegree;
+    private List<List<Integer>> adj;
+
+    private void dfs(int node) {
+        output.add(node);
+        indegree[node]--;
+        for (int nei : adj.get(node)) {
+            indegree[nei]--;
+            if (indegree[nei] == 0) {
+                dfs(nei);
+            }
+        }
+    }
+
+    public int[] findOrder_1_3(int numCourses, int[][] prerequisites) {
+        adj = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+        indegree = new int[numCourses];
+        for (int[] pre : prerequisites) {
+            indegree[pre[0]]++;
+            adj.get(pre[1]).add(pre[0]);
+        }
+
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                dfs(i);
+            }
+        }
+
+        if (output.size() != numCourses) return new int[0];
+        int[] res = new int[output.size()];
+        for (int i = 0; i < output.size(); i++) {
+            res[i] = output.get(i);
+        }
+        return res;
+    }
+
 
     // V2
 }

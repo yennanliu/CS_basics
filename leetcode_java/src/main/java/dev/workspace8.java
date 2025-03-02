@@ -4,6 +4,7 @@ import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 //import LeetCodeJava.DataStructure.Node;
 
+import javax.print.DocFlavor;
 import java.lang.annotation.Target;
 import java.nio.file.Path;
 import java.util.*;
@@ -4970,6 +4971,130 @@ class Node {
         }
 
         // reverse
+        Collections.reverse(topologicalOrder);
+        return topologicalOrder;
+    }
+
+    // LC 210
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        // edge
+        if(numCourses == 0){
+            return null;
+        }
+        if(numCourses == 1){
+            int[] res = new int[1];
+            res[0] = 0;
+            return res;  // ???
+        }
+
+        List<Integer> topoSortRes = TopologicalSort_(numCourses, prerequisites);
+
+        if(topoSortRes == null || topoSortRes.isEmpty()){
+            return new int[]{};
+        }
+
+        //int[] x = new int[numCourses]{Arrays.asList(topoSortRes.toArray())};
+        int[] res = new int[numCourses];
+        for(int j = 0; j < topoSortRes.size(); j++){
+            res[j] = topoSortRes.get(j);
+        }
+
+        return res;
+    }
+
+    public List<Integer> TopologicalSort_(int numNodes, int[][] edges) {
+        // Step 1: Build the graph and calculate in-degrees
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        int[] inDegree = new int[numNodes];
+
+        for (int i = 0; i < numNodes; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+
+        for (int[] edge : edges) {
+            /**
+             *  NOTE !!!
+             *
+             *  given [ai, bi],
+             *  -> means NEED take bi first, then can take ai
+             *
+             *
+             *  prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+             */
+            int cur = edge[0];
+            int prev = edge[1];
+            graph.get(cur).add(prev);
+            // Update in-degree for the next course
+            /**
+             * NOTE !!!
+             *
+             *  update `prev` course's degree,
+             *  since every time when meet a prev-
+             *  means before take that cur course, we need to take `prev` course first
+             *  so its (next course) degree increase by 1
+             */
+            inDegree[prev] += 1;
+        }
+
+        // Step 2: Initialize a queue with nodes that have in-degree 0
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numNodes; i++) {
+            /**
+             * NOTE !!!
+             *
+             *  we add ALL nodes with degree = 0 to queue at init step
+             */
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        List<Integer> topologicalOrder = new ArrayList<>();
+
+        // Step 3: Process the nodes in topological order
+        while (!queue.isEmpty()) {
+            /**
+             * NOTE !!!
+             *
+             *  ONLY "degree = 0"  nodes CAN be added to queue
+             *
+             *  -> so we can add whatever node from queue to final result (topologicalOrder)
+             */
+            int current = queue.poll();
+            topologicalOrder.add(current);
+
+            for (int neighbor : graph.get(current)) {
+                inDegree[neighbor] -= 1;
+                /**
+                 * NOTE !!!
+                 *
+                 *  if a node "degree = 0"  means this node can be ACCESSED now,
+                 *
+                 *  -> so we need to add it to the queue
+                 *    (for adding to topologicalOrder in the following while loop iteration)
+                 */
+                if (inDegree[neighbor] == 0) {
+                    queue.offer(neighbor);
+                }
+            }
+        }
+
+
+        /**
+         * If topologicalOrder does not contain all nodes,
+         * there was a cycle in the graph
+         *
+         *  NOTE !!!
+         *
+         *   we use `topologicalOrder.size() != numNodes`
+         *   to check if above happened
+         */
+        if (topologicalOrder.size() != numNodes) {
+            //throw new IllegalArgumentException("The graph has a cycle, so topological sort is not possible.");
+            return null;
+        }
+
+        /** NOTE !!! reverse ordering */
         Collections.reverse(topologicalOrder);
         return topologicalOrder;
     }
