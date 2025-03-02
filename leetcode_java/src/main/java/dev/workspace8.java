@@ -5099,4 +5099,113 @@ class Node {
         return topologicalOrder;
     }
 
+    // LC 261
+    // 4.50 - 5.05 pm
+    /**
+     * Given n nodes labeled from 0 to n-1 and a list
+     * of undirected edges (each edge is a pair of nodes),
+     * write a function to check whether these edges make up a valid tree.
+     *
+     *
+     * IDEA: UNION FIND
+     *
+     *
+     *
+     *  exp 1)
+     *
+     *  Input: n = 5, and edges = [[0,1], [0,2], [0,3], [1,4]]
+     *
+     *   3 - 0 - 1 -4
+     *      |
+     *      2
+     *
+     *   -> true
+     *
+     *
+     *  exp 2)
+     *
+     *   n = 5, and edges = [[0,1], [1,2], [2,3], [1,3], [1,4]]
+     *
+     *           4
+     *           |
+     *       0 - 1 - 2 -3
+     *           | -----|
+     *
+     *  -> false
+     *
+     *
+     *
+     */
+    public boolean validTree(int n, int[][] edges) {
+        // build UF
+        UF uf = new UF(n, edges);
+        // union
+        for(int[] e: edges){
+            int x = e[0];
+            int y = e[1];
+            uf.union(x, y);
+        }
+
+        // check -> if `parent` size == 1 -> NOT `cycle` ???
+        //int parentCnt = 0;
+        HashSet<Integer> set = new HashSet<>();
+        for(int i = 0; i < n; i++){
+            int parent = uf.findParent(i);
+            set.add(parent);
+        }
+        return set.size() == 1; // ????
+    }
+
+    public class UF{
+        // attr
+        int n;
+        int[][] edges;
+        int[] parents;
+
+        // constructor
+        public UF(int n, int[][] edges){
+            this.n = n;
+            this.edges = edges; //new int[n][2]; // ???
+            // init parents
+            parents = new int[n];
+            for(int i = 0; i < n; i++){
+                parents[i] = i; // init node's parent as itself
+            }
+        }
+
+        // method
+        public boolean union(int x, int y){
+//            if(x == y){
+//                return true;
+//            }
+//            int x_ = this.findParent(x);
+//            int y_ = this.findParent(y);
+//            if(x_ == y_){
+//                return;
+//            }
+//            this.parents[x_] = y_; // ???
+            return false; // ????
+        }
+
+        public int findParent(int x){
+            if(x == this.parents[x]){
+                return x;
+            }
+            //int x_ = this.findParent(x);
+            return this.findParent(x); // ???
+        }
+
+        private boolean isConnected(int x, int y){
+            if(x == y){
+                return true;
+            }
+            int x_ = this.findParent(x);
+            int y_ = this.findParent(y);
+            if(x_ == y_){
+                return true;
+            }
+            return false;
+        }
+    }
+
 }

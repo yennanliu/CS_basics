@@ -32,6 +32,8 @@ public class GraphValidTree {
     // V0
     // TODO : implement it
     // https://www.youtube.com/watch?v=bXsUuownnoQ
+//    public boolean validTree(int n, int[][] edges) {
+//    }
 
     // V0-1
     // IDEA : QUICK FIND (gpt)
@@ -285,10 +287,154 @@ public class GraphValidTree {
         return true;
     }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/valid-tree
+    // IDEA:  Cycle Detection (DFS)
+    public boolean validTree_1_1(int n, int[][] edges) {
+        if (edges.length > n - 1) {
+            return false;
+        }
+
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        for (int[] edge : edges) {
+            adj.get(edge[0]).add(edge[1]);
+            adj.get(edge[1]).add(edge[0]);
+        }
+
+        Set<Integer> visit = new HashSet<>();
+        if (!dfs(0, -1, visit, adj)) {
+            return false;
+        }
+
+        return visit.size() == n;
+    }
+
+    private boolean dfs(int node, int parent, Set<Integer> visit,
+                        List<List<Integer>> adj) {
+        if (visit.contains(node)) {
+            return false;
+        }
+
+        visit.add(node);
+        for (int nei : adj.get(node)) {
+            if (nei == parent) {
+                continue;
+            }
+            if (!dfs(nei, node, visit, adj)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/valid-tree
+    // IDEA:  BFS
+    public boolean validTree_1_2(int n, int[][] edges) {
+        if (edges.length > n - 1) {
+            return false;
+        }
+
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        for (int[] edge : edges) {
+            adj.get(edge[0]).add(edge[1]);
+            adj.get(edge[1]).add(edge[0]);
+        }
+
+        Set<Integer> visit = new HashSet<>();
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{0, -1});  // {current node, parent node}
+        visit.add(0);
+
+        while (!q.isEmpty()) {
+            int[] pair = q.poll();
+            int node = pair[0], parent = pair[1];
+            for (int nei : adj.get(node)) {
+                if (nei == parent) {
+                    continue;
+                }
+                if (visit.contains(nei)) {
+                    return false;
+                }
+                visit.add(nei);
+                q.offer(new int[]{nei, node});
+            }
+        }
+
+        return visit.size() == n;
+    }
+
+
+    // V1-3
+    // https://neetcode.io/problems/valid-tree
+    // IDEA:  Disjoint Set Union
+    public class DSU {
+        int[] Parent, Size;
+        int comps;
+
+        public DSU(int n) {
+            comps = n;
+            Parent = new int[n + 1];
+            Size = new int[n + 1];
+            for (int i = 0; i <= n; i++) {
+                Parent[i] = i;
+                Size[i] = 1;
+            }
+        }
+
+        public int find(int node) {
+            if (Parent[node] != node) {
+                Parent[node] = find(Parent[node]);
+            }
+            return Parent[node];
+        }
+
+        public boolean union(int u, int v) {
+            int pu = find(u), pv = find(v);
+            if (pu == pv) return false;
+            if (Size[pu] < Size[pv]) {
+                int temp = pu;
+                pu = pv;
+                pv = temp;
+            }
+            comps--;
+            Size[pu] += Size[pv];
+            Parent[pv] = pu;
+            return true;
+        }
+
+        public int components() {
+            return comps;
+        }
+    }
+
+    public boolean validTree_1_3(int n, int[][] edges) {
+        if (edges.length > n - 1) {
+            return false;
+        }
+
+        DSU dsu = new DSU(n);
+        for (int[] edge : edges) {
+            if (!dsu.union(edge[0], edge[1])) {
+                return false;
+            }
+        }
+        return dsu.components() == 1;
+    }
+
+    
+    // V2
     // IDEA : BFS
     // https://protegejj.gitbook.io/algorithm-practice/leetcode/graph/261-graph-valid-tree
-    public boolean validTree_1(int n, int[][] edges) {
+    public boolean validTree_2(int n, int[][] edges) {
 
         // NOTE here !!! List<Set<Integer>> as List type
         List<Set<Integer>> adjList = new ArrayList<>();
@@ -339,12 +485,12 @@ public class GraphValidTree {
         return true;
     }
 
-    // V2
+    // V3
     // IDEA : UNION FIND
     // https://leetcode.ca/2016-08-17-261-Graph-Valid-Tree/
     private int[] p;
 
-    public boolean validTree_2(int n, int[][] edges) {
+    public boolean validTree_3(int n, int[][] edges) {
         p = new int[n];
         for (int i = 0; i < n; ++i) {
             p[i] = i;
@@ -367,10 +513,10 @@ public class GraphValidTree {
         return p[x];
     }
 
-    // V3
+    // V4
     // IDEA : DFS
     // https://protegejj.gitbook.io/algorithm-practice/leetcode/graph/261-graph-valid-tree
-    public boolean validTree_3(int n, int[][] edges) {
+    public boolean validTree_4(int n, int[][] edges) {
         List<Set<Integer>> adjList = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
@@ -411,10 +557,10 @@ public class GraphValidTree {
         return false;
     }
 
-    // V4
+    // V5
     // IDEA : UNION FIND
     // https://protegejj.gitbook.io/algorithm-practice/leetcode/graph/261-graph-valid-tree
-    public boolean validTree_4(int n, int[][] edges) {
+    public boolean validTree_5(int n, int[][] edges) {
         UnionFind uf = new UnionFind(n);
 
         for (int[] edge : edges) {
