@@ -188,7 +188,7 @@
 ||Selection sort| [Python](./algorithm/python/selection_sort.py), [JS](./algorithm/js/selection_sort.js) | | | | |  AGAIN| 
 ||Topological sort| [Python](./algorithm/python/topological_sort.py), [Java](./leetcode_java/src/main/java/AlgorithmJava/TopologicalSort.java), [Java V2](./leetcode_java/src/main/java/AlgorithmJava/TopologicalSortV2.java)  | | Topological Sort is a algorithm can find "ordering" on an "order dependency" graph | | | AGAIN| 
 ||md5 | [Python](./algorithm/python/md5.py) | | | | | AGAIN| 
-||Union Find | [Python 1](./algorithm/python/union_find.py), [Python 2](./algorithm/python/union_find_if_cyclic.py), [Java 1](./leetcode_java/src/main/java/AlgorithmJava/UnionFind.java) | | | AGAIN| 
+||Union Find | [Python 1](./algorithm/python/union_find.py), [Python 2](./algorithm/python/union_find_if_cyclic.py), [Java 1](./leetcode_java/src/main/java/AlgorithmJava/UnionFind.java), [Java 2](./leetcode_java/src/main/java/AlgorithmJava/UnionFind2.java), [Java 3](./leetcode_java/src/main/java/AlgorithmJava/UnionFind3.java) | | | AGAIN| 
 ||Dynamic programming|[JS 1](./algorithm/js/dp_demo_1.js), [fibonacci_dp JS](./algorithm/js/fibonacci_dp.js) | | | | | AGAIN|
 ||Dijkstra|[Python](./algorithm/python/dijkstra.py),[Java](./algorithm/java/DijkstraSP.java)||| AGAIN***|
 ||Floyd-Warshall|[Python](./algorithm/python/floyd_warshall.py)||| | | not start

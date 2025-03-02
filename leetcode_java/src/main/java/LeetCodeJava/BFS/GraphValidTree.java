@@ -30,10 +30,139 @@ import java.util.*;
 public class GraphValidTree {
 
     // V0
-    // TODO : implement it
+    // TODO : validate below
+    // IDEA: UNION FIND (fixed by gpt)
     // https://www.youtube.com/watch?v=bXsUuownnoQ
-//    public boolean validTree(int n, int[][] edges) {
-//    }
+    public boolean validTree(int n, int[][] edges) {
+        // edge case
+        /**
+         *  NOTE !!!
+         *
+         *   A tree must have exactly `n - 1` edges
+         */
+        if (edges.length != n - 1) {
+            return false;
+        }
+
+        // init union find object
+        UF uf = new UF(n);
+
+        // Union-Find to check cycles
+        for (int[] edge : edges) {
+            if (!uf.union(edge[0], edge[1])) {
+                return false; // Cycle detected
+            }
+        }
+
+        // If no cycles and exactly `n - 1` edges, it's a valid tree
+        return true;
+    }
+
+    class UF {
+        int[] parents; // Parent array
+
+        public UF(int n) {
+            this.parents = new int[n];
+            for (int i = 0; i < n; i++) {
+                this.parents[i] = i; // Each node is its own parent initially
+            }
+        }
+
+        // Union operation
+        public boolean union(int a, int b) {
+            int aParent = find(a);
+            int bParent = find(b);
+
+      /**
+       *  NOTE !!!
+       *
+       *   If find(a) == find(b), it means they are already `CONNECTED`,
+       *   -> `and adding the edge` would form a `CYCLE` (e.g. if we do `parents[aParent] = bParent`)
+       *   -> so return `false` to prevent it.
+       *
+       *   -> e.g.  if `aParent == bParent`
+       *   -> means node a, b ALREADY connected each other
+       *   -> if we still go ahead and connect them in the other way
+       *   -> will form a CYCLE, which is NOT a VALID TREE
+       *
+       *    e.g.
+       *
+       *   before
+       *        a - c - b
+       *
+       *
+       *  after
+       *       a - c - b
+       *       | ----- |      (will form a cycle)
+       *
+       */
+      /**
+       *  Example
+       *
+       *   # Detecting a Cycle in a Graph
+       *
+       * ## Example: Cycle Detection
+       *
+       * Given a graph with `n = 5` nodes and the following edges:
+       *
+       * ```
+       * edges = [[0,1], [1,2], [2,3], [1,3]]
+       * ```
+       *
+       * ### Step-by-Step Process
+       *
+       * 1. **Initial State**
+       *    - Every node is its own parent:
+       *    ```
+       *    parents = [0, 1, 2, 3, 4]
+       *    ```
+       *
+       * 2. **Processing Edges**
+       *
+       *    - **Edge [0,1]**
+       *      - `find(0) = 0`, `find(1) = 1` → Different sets, merge:
+       *      ```
+       *      parents = [1, 1, 2, 3, 4]
+       *      ```
+       *
+       *    - **Edge [1,2]**
+       *      - `find(1) = 1`, `find(2) = 2` → Merge
+       *      ```
+       *      parents = [1, 2, 2, 3, 4]
+       *      ```
+       *
+       *    - **Edge [2,3]**
+       *      - `find(2) = 2`, `find(3) = 3` → Merge
+       *      ```
+       *      parents = [1, 2, 3, 3, 4]
+       *      ```
+       *
+       *    - **Edge [1,3]**
+       *      - `find(1) = 3`, `find(3) = 3` → Same parent (Cycle detected!)
+       *      ```
+       *      Cycle detected! Returning false.
+       *      ```
+       *
+       *  ### **Result**
+       *    A **cycle is detected** in the graph, so the function returns **false**.
+       */
+      if (aParent == bParent) {
+                return false; // Cycle detected
+            }
+
+            // Simple union without rank
+            parents[aParent] = bParent;
+            return true;
+        }
+
+        // Find with path compression
+        public int find(int a) {
+            if (parents[a] != a) {
+                parents[a] = find(parents[a]); // Path compression
+            }
+            return parents[a];
+        }
+    }
 
     // V0-1
     // IDEA : QUICK FIND (gpt)
@@ -430,7 +559,7 @@ public class GraphValidTree {
         return dsu.components() == 1;
     }
 
-    
+
     // V2
     // IDEA : BFS
     // https://protegejj.gitbook.io/algorithm-practice/leetcode/graph/261-graph-valid-tree
