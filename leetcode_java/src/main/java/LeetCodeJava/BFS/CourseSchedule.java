@@ -50,6 +50,11 @@ public class CourseSchedule {
             return true;
         }
 
+        /** NOTE !!!
+         *
+         *  if CAN'T build a topo sort, the method will return `null`,
+         *  so it's the condition that we check if the courses can be finished
+         */
         if (TopologicalSort(numCourses, prerequisites) == null){
             return false;
         }
@@ -67,10 +72,28 @@ public class CourseSchedule {
         }
 
         for (int[] edge : edges) {
-            int from = edge[0];
-            int to = edge[1];
-            graph.get(from).add(to);
-            inDegree[to]++;
+            /**
+             *  NOTE !!!
+             *
+             *  given [ai, bi],
+             *  -> means NEED take bi first, then can take ai
+             *
+             *
+             *  prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+             */
+            int cur = edge[0];
+            int prev = edge[1];
+            graph.get(cur).add(prev);
+            // Update in-degree for the next course
+            /**
+             * NOTE !!!
+             *
+             *  update `prev` course's degree,
+             *  since every time when meet a prev-
+             *  means before take that cur course, we need to take `prev` course first
+             *  so its (next course) degree increase by 1
+             */
+            inDegree[prev] += 1;
         }
 
         // Step 2: Initialize a queue with nodes that have in-degree 0
@@ -107,7 +130,8 @@ public class CourseSchedule {
                  *
                  *  if a node "degree = 0"  means this node can be ACCESSED now,
                  *
-                 *  -> so we need to add it to the queue (for adding to topologicalOrder in the following while loop iteration)
+                 *  -> so we need to add it to the queue
+                 *    (for adding to topologicalOrder in the following while loop iteration)
                  */
                 if (inDegree[neighbor] == 0) {
                     queue.offer(neighbor);
@@ -115,7 +139,16 @@ public class CourseSchedule {
             }
         }
 
-        // If topologicalOrder does not contain all nodes, there was a cycle in the graph
+
+        /**
+         * If topologicalOrder does not contain all nodes,
+         * there was a cycle in the graph
+         *
+         *  NOTE !!!
+         *
+         *   we use `topologicalOrder.size() != numNodes`
+         *   to check if above happened
+         */
         if (topologicalOrder.size() != numNodes) {
             //throw new IllegalArgumentException("The graph has a cycle, so topological sort is not possible.");
             return null;
@@ -126,13 +159,13 @@ public class CourseSchedule {
         return topologicalOrder;
     }
 
-    // V0'
+    // V0-1
     // IDEA : DFS (fix by gpt)
     // NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach
     //      -> e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,
     //      -> means "cyclic", so return false directly
     // https://www.youtube.com/watch?v=EgI5nU9etnU
-    public boolean canFinish_0_0(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_0_1(int numCourses, int[][] prerequisites) {
         // Initialize adjacency list for storing prerequisites
         /**
          *  NOTE !!!
@@ -222,15 +255,11 @@ public class CourseSchedule {
         return true;
     }
 
-    // VO'
-    // IDEA : TOPOLOGICAL SORT
-    // TODO : implement
-
-    // V0''
+    // V0-2
     // IDEA : DFS
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0207-course-schedule.java
     // https://www.youtube.com/watch?v=EgI5nU9etnU
-    public boolean canFinish_0_1(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_0_2(int numCourses, int[][] prerequisites) {
         List<List<Integer>> adj = new ArrayList<>();
         for (int i = 0; i < numCourses; i++) {
             adj.add(new ArrayList<>());
@@ -268,10 +297,10 @@ public class CourseSchedule {
         return false;
     }
 
-    // V0''
+    // V0-3
     // IDEA : DFS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule.py
-    public boolean canFinish_0_2(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_0_3(int numCourses, int[][] prerequisites) {
         Map<Integer, List<Integer>> graph = new HashMap<>();
         for (int[] prerequisite : prerequisites) {
             graph.computeIfAbsent(prerequisite[0], k -> new ArrayList<>()).add(prerequisite[1]);
@@ -366,10 +395,10 @@ public class CourseSchedule {
         return true;
     }
 
-    // V0'''
+    // V0-4
     // IDEA : BFS
     // NOTE !!! we have 3 loop : numCourses, prerequisites, numCourses
-    public boolean canFinish_(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_0_4(int numCourses, int[][] prerequisites) {
 
         // save course - prerequisites info
         Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
@@ -447,7 +476,7 @@ public class CourseSchedule {
     // V1
     // IDEA : BFS
     // https://leetcode.com/problems/course-schedule/solutions/58775/my-java-bfs-solution/
-    public boolean canFinish_0_3(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_1(int numCourses, int[][] prerequisites) {
         Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
         int[] indegree = new int[numCourses];
         Queue<Integer> queue = new LinkedList<Integer>();

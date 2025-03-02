@@ -4880,6 +4880,98 @@ class Node {
         return;
     }
 
+    // LC 207
+    // 3.47 pm - 4.57 pm
+    /**
+     *
+     *   prerequisites[i] = [ai, bi]
+     *   ->  take course bi first then ai.
+     *   e.g.
+     *   [ai, bi]
+     *   -> bi first, ai
+     *
+     *   -> Return true if you can finish all courses.
+     *      Otherwise, return false.
+     *
+     *
+     *   IDEA 1) TOPOLOGICAL SORT
+     *   -> find a `global sorting` based on prerequisites
+     *   -> ; if cant' build one, return false directly
+     *   -> else return true
+     */
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
 
+        // edge
+        if(numCourses == 0){
+            return true;
+        }
+
+        if(numCourses == 1 && prerequisites.length == 1){
+            return true;
+        }
+
+        if(TopologicalSort(numCourses, prerequisites) == null){
+            return false;
+        }
+
+        return true;
+    }
+
+    public List<Integer> TopologicalSort(int numNodes, int[][] edges) {
+
+        // Step 1: Build the graph and calculate in-degrees
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        int[] inDegree = new int[numNodes];
+
+        for (int i = 0; i < numNodes; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+
+        for (int[] edge : edges) {
+            int cur = edge[0];
+            int pre = edge[1];
+            graph.get(cur).add(pre);
+           // inDegree[cur] += 1;
+            inDegree[pre] += 1;
+        }
+
+        // Step 2: Initialize a queue with nodes that have in-degree 0
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numNodes; i++) {
+            /**
+             * NOTE !!!
+             *
+             *  we add ALL nodes with degree = 0 to queue at init step
+             */
+            if (inDegree[i] == 0) {
+                q.add(i);
+            }
+        }
+
+        List<Integer> topologicalOrder = new ArrayList<>();
+
+        while(!q.isEmpty()){
+
+            int cur = q.poll();
+            topologicalOrder.add(cur);
+
+            for(int pre: graph.get(cur)){
+                inDegree[pre] -= 1;
+
+                if(inDegree[pre] == 0){
+                    q.add(pre);
+                }
+            }
+        }
+
+        // NOTE !!! below
+        if(topologicalOrder.size() != numNodes){
+            return null;
+        }
+
+        // reverse
+        Collections.reverse(topologicalOrder);
+        return topologicalOrder;
+    }
 
 }
