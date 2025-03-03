@@ -5208,4 +5208,178 @@ class Node {
         }
     }
 
+    // LC 323
+    /**
+     * 323. Number of Connected Components in an Undirected Graph
+     * Given n nodes labeled from 0 to n - 1 and a
+     * list of undirected edges (each edge is a pair of nodes),
+     * write a function to find the number of connected components in an undirected graph.
+     *
+     * Example 1:
+     *
+     * Input: n = 5 and edges = [[0, 1], [1, 2], [3, 4]]
+     *
+     *      0          3
+     *      |          |
+     *      1 --- 2    4
+     *
+     * Output: 2
+     *
+     * Example 2:
+     *
+     * Input: n = 5 and edges = [[0, 1], [1, 2], [2, 3], [3, 4]]
+     *
+     *      0           4
+     *      |           |
+     *      1 --- 2 --- 3
+     *
+     * Output:  1
+     *
+     * Note:
+     * You can assume that no duplicate edges will appear in edges.
+     * Since all edges are undirected, [0, 1] is the same as [1, 0]
+     * and thus will not appear together in edges.
+     *
+     *
+     *
+     *  IDEA: UNION FIND -> check conn count
+     *
+     */
+//    public int countComponents(int n, int[][] edges) {
+//        // edge
+////        // can't form a valis
+////        if(n != edges.length - 1){
+////            return 0;
+////        }
+//        myUF2 myUF2 = new myUF2(n, edges);
+//        for(int[] e: edges){
+//            int x = e[0];
+//            int y = e[1];
+//            // cyclic graph
+//            if(!myUF2.union(x, y)){
+//                return 0;
+//            };
+//
+//           // myUF2.union(x, y);
+//        }
+//
+//        return myUF2.clusterCnt;
+//    }
+
+//    public class myUF2{
+//        // attr
+//        int n;
+//        int[][] edges;
+//        int[] parents;
+//        int clusterCnt;
+//
+//        public myUF2(int n, int[][] edges){
+//            this.n = n;
+//            this.edges = edges;
+//            this.parents = new int[n];
+//            for(int i = 0; i < n; i++){
+//                this.parents[i] = i;
+//            }
+//            this.clusterCnt = n;
+//        }
+//
+//        public boolean union(int x, int y){
+//            if(x == y){
+//                return true;
+//            }
+//            int x_ = this.findParent(x);
+//            int y_ = this.findParent(y);
+//            // NOTE !!! below
+//            if(x_ == y_){
+//                return false; // will cause CYCLE graph
+//            }
+//            this.parents[x_] = y_;
+//            this.clusterCnt -= 1;
+//            return true;
+//        }
+//
+//        public int findParent(int x){
+//            if(this.parents[x] != x){
+//                this.parents[x] = this.findParent(x);
+//            }
+//            //return this.findParent(x);
+//            return this.parents[x];
+//        }
+//
+//        public int getClusterCnt(int x){
+//            return this.clusterCnt;
+//        }
+//    }
+//
+//
+//    public int countComponents(int n, int[][] edges) {
+//        myUF2 myUF2 = new myUF2(n, edges);
+//        for (int[] e : edges) {
+//            int x = e[0];
+//            int y = e[1];
+//            // If union returns false, it means we encountered a cycle
+//            if (!myUF2.union(x, y)) {
+//                // If you want to return 0 when a cycle is detected, keep this line
+//                // But if you only want the number of components, you can remove it
+//                return 0; // Optionally remove if you don't want cycle detection
+//            }
+//        }
+//
+//      //  return myUF2.getClusterCnt(); // Return the final count of clusters
+//    }
+//
+//    public class myUF2_ {
+//        // Attributes
+//        int n;
+//        int[] parents;
+//        //int[] rank;
+//        int clusterCnt;
+//
+//        public myUF2_(int n, int[][] edges) {
+//            this.n = n;
+//            this.parents = new int[n];
+//            //this.rank = new int[n];  // Union by rank to improve efficiency
+//            for (int i = 0; i < n; i++) {
+//                this.parents[i] = i;
+//                //this.rank[i] = 1; // Initialize rank
+//            }
+//            this.clusterCnt = n;
+//        }
+//
+//        public boolean union(int x, int y) {
+//            int xRoot = findParent(x);
+//            int yRoot = findParent(y);
+//
+//            if (xRoot == yRoot) {
+//                return false; // Cycle detected if both have the same root
+//            }
+//
+//            // (optional) Union by rank: attach the smaller tree under the larger one
+////            if (rank[xRoot] > rank[yRoot]) {
+////                parents[yRoot] = xRoot;
+////            } else if (rank[xRoot] < rank[yRoot]) {
+////                parents[xRoot] = yRoot;
+////            } else {
+////                parents[yRoot] = xRoot;
+////                rank[xRoot]++; // Increment rank if both roots are of the same rank
+////            }
+//
+//            clusterCnt -= 1; // Decrease cluster count when two components are merged
+//            return true;
+//        }
+//
+//        public int findParent(int x) {
+//            if (parents[x] != x) {
+//                // Path compression: directly link nodes to their root
+//                parents[x] = findParent(parents[x]);
+//            }
+//            return parents[x];
+//        }
+//
+//        public int getClusterCnt() {
+//            return clusterCnt;
+//        }
+//    }
+
+
 }
