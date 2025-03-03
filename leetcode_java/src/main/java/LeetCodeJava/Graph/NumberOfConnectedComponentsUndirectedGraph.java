@@ -36,17 +36,84 @@ package LeetCodeJava.Graph;
  * Amazon Facebook Google LinkedIn Microsoft Twitter
  *
  */
+import dev.workspace8;
+
 import java.util.*;
 
 public class NumberOfConnectedComponentsUndirectedGraph {
 
     // V0
     // IDEA : UNION FIND
-    // TODO : implement it
+    // TODO : validate below
     // https://www.youtube.com/watch?v=8f1XPm4WOUc
-//    public int countComponents(int n, int[][] edges) {
-//        return 0;
-//    }
+    public int countComponents(int n, int[][] edges) {
+        myUF2_ myUF2 = new myUF2_(n, edges);
+        for (int[] e : edges) {
+            int x = e[0];
+            int y = e[1];
+            // If union returns false, it means we encountered a cycle
+            if (!myUF2.union(x, y)) {
+                // If you want to return 0 when a cycle is detected, keep this line
+                // But if you only want the number of components, you can remove it
+                return 0; // Optionally remove if you don't want cycle detection
+            }
+        }
+
+        return myUF2.getClusterCnt(); // Return the final count of clusters
+    }
+
+    public class myUF2_ {
+        // Attributes
+        int n;
+        int[] parents;
+        //int[] rank;
+        int clusterCnt;
+
+        public myUF2_(int n, int[][] edges) {
+            this.n = n;
+            this.parents = new int[n];
+            //this.rank = new int[n];  // Union by rank to improve efficiency
+            for (int i = 0; i < n; i++) {
+                this.parents[i] = i;
+                //this.rank[i] = 1; // Initialize rank
+            }
+            this.clusterCnt = n;
+        }
+
+        public boolean union(int x, int y) {
+            int xRoot = findParent(x);
+            int yRoot = findParent(y);
+
+            if (xRoot == yRoot) {
+                return false; // Cycle detected if both have the same root
+            }
+
+            // (optional) Union by rank: attach the smaller tree under the larger one
+//            if (rank[xRoot] > rank[yRoot]) {
+//                parents[yRoot] = xRoot;
+//            } else if (rank[xRoot] < rank[yRoot]) {
+//                parents[xRoot] = yRoot;
+//            } else {
+//                parents[yRoot] = xRoot;
+//                rank[xRoot]++; // Increment rank if both roots are of the same rank
+//            }
+
+            clusterCnt -= 1; // Decrease cluster count when two components are merged
+            return true;
+        }
+
+        public int findParent(int x) {
+            if (parents[x] != x) {
+                // Path compression: directly link nodes to their root
+                parents[x] = findParent(parents[x]);
+            }
+            return parents[x];
+        }
+
+        public int getClusterCnt() {
+            return clusterCnt;
+        }
+    }
 
     // V0-1
     // IDEA: UNION FIND (without RANK) (gpt)

@@ -162,6 +162,34 @@ public class GraphValidTree {
             }
             return parents[a];
         }
+
+        /** NOTE !!!
+         *
+         *  below is WRONG !!!
+         *
+         *  reason
+         *
+         *   1) What it does:
+         *     - This method simply checks if the node x is its own parent
+         *       (i.e., if it is the root). If it is the root, it returns x.
+         *       However, there's a critical issue: if x is not its own parent,
+         *       the method calls itself recursively without any change to the state.
+         *       This will result in infinite recursion because there's no modification to the
+         *       structure of the parents array,
+         *       which means x will never reach the base case where this.parents[x] == x.
+         *
+         *   2) Key issue:
+         *    - There's no path compression (which optimizes future findParent
+         *       calls by directly linking nodes to their root),
+         *      and the recursion is incorrect due to infinite loops.
+         */
+//        public int findParent(int x){
+//            if(this.parents[x] == x){
+//                return x;
+//            }
+//            return this.findParent(x);
+//        }
+
     }
 
     // V0-1
