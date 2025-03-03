@@ -5400,4 +5400,144 @@ class Node {
         return null;
     }
 
+    // LC 127
+    // 11.13 - 11.23 AM
+    /**
+     *
+     * Given two words (beginWord and endWord), and a dictionary's word list,
+     * find the length of shortest transformation sequence from beginWord to endWord,
+     *
+     * such that:
+     *    - Only one letter can be changed at a time.
+     *    - Each transformed word must exist in the word list.
+     *      Note that beginWord is not a transformed word.
+     *
+     *  -> find the length of shortest transformation sequence
+     *     from beginWord to endWord, such that:
+     *
+     *  NOTE:
+     *
+     *   Return 0 if there is no such transformation sequence.
+     *   All words have the same length.
+     *   All words contain only lowercase alphabetic characters.
+     *   You may assume no duplicates in the word list.
+     *   You may assume beginWord and endWord are non-empty and are not the same.
+     *
+     *
+     *   Example 1)
+     *
+     * Input:
+     * beginWord = "hit",
+     * endWord = "cog",
+     * wordList = ["hot","dot","dog","lot","log","cog"]
+     *
+     * Output: 5
+     *
+     * Explanation: As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+     * return its length 5.
+     *
+     *
+     *   IDEA 1) BFS ???
+     *
+     *    -> for each idx, change and see if it's possible to move forward
+     *
+     *  exp 1)
+     *     input: `hit`
+     *     wordList = ["hot","dot","dog","lot","log","cog"]
+     *     endWord = "cog",
+     *
+     *     1)
+     *     -> hit, change idx=0 (a-z) -> NO VALID word in wordlist
+     *        x
+     *
+     *     -> hit, change idx=1 (a-z) -> hot, add to queue
+     *         x
+     *
+     *     -> hit, change idx=2 (a-z) -> NO VALID word in wordlist
+     *          x
+     *
+     *
+     *    2)
+     *      -> hot, change idx=0 (a-z), dot, lot, add to queue
+     *         x
+     *
+     *      -> hot, change idx=0 (a-z), NO VALID word in wordlist
+     *          x
+     *
+     *     -> hot, change idx=0 (a-z), NO VALID word in wordlist
+     *          x
+     *
+     *    3)
+     *
+     *     -> dot  change idx=0 (a-z) (hot visited, pass), lot in the list as well
+     *        x
+     *
+     *     -> ...  dog
+     *
+     *     ...
+     *
+     *   4)
+     *   ..
+     *
+     *    -> dog, change idx=0 (a-z), cog, the expect ans, return pathCnt directly
+     *
+     *
+     *
+     *
+     *
+     *     return pathCnt
+     *
+     *
+     *
+     *  IDEA 1) BFS
+     *
+     */
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+
+        // edge
+        if(!wordList.contains(endWord)){
+            return 0;
+        }
+        if(wordList == null || wordList.isEmpty() || wordList.size() == 0){
+            return 0;
+        }
+        if(beginWord.equals(endWord)){
+            return 0;
+        }
+
+        int pathLen = 0;
+        StringBuilder sb = new StringBuilder();
+        sb.append(beginWord);
+
+        Queue<StringBuilder> q = new LinkedList<>();
+        q.add(sb);
+
+        HashSet<String> visited = new HashSet<>();
+
+        while(!q.isEmpty()){
+
+            StringBuilder curSb = q.poll();
+            if(curSb.toString().equals(endWord)){
+                return pathLen;
+            }
+
+            visited.add(curSb.toString());
+
+            // `moves`
+            String moves = "abcdefghijklmnopqrstuvwxyz";
+            for(String m: moves.split("")){
+                StringBuilder updatedSb = curSb.append(m);
+                // validate
+                boolean shouldProceed = updatedSb.toString().length() < endWord.length() && !visited.contains(updatedSb.toString()) && wordList.contains(updatedSb.toString());
+                if(shouldProceed){
+                    q.add(updatedSb);
+                }
+            }
+
+            pathLen += 1;
+        }
+
+        return pathLen;
+    }
+
 }
