@@ -5381,5 +5381,23 @@ class Node {
 //        }
 //    }
 
+    // LC 684
+    // 10.48 - 11.00 am
+    /**
+     *
+     *   -> Return an edge that can be removed so that the resulting graph
+     *     is a tree of N nodes. If there are multiple answers,
+     *     return the answer that occurs last in the given 2D-array.
+     *     The answer edge [u, v] should be in the same format, with u < v.
+     *
+     *
+     *
+     *   IDEA 1) remove each `edge` and check if it becomes `NOT CYCLIC` ???
+     *
+     */
+    public int[] findRedundantConnection(int[][] edges) {
+
+        return null;
+    }
 
 }
