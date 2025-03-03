@@ -3,6 +3,8 @@
 
 ## Intro
 
+Kadane's algorithm is an elegant method of calculating the maximum sum subarray ending at a given position in an array, all in a single pass.
+
 Kadane's Algorithm is a popular dynamic programming technique used to find the maximum sum of a contiguous subarray within a given array. It is primarily used for problems related to subarray sums. 
 
 ## LC problems that can be solved via Kadane's algo:
@@ -13,12 +15,21 @@ Kadane's Algorithm is a popular dynamic programming technique used to find the m
 - 1836: Remove Duplicates from an Unsorted Linked List
 - 134: Gas Station
 - 122: Best Time to Buy and Sell Stock II
-
+- Longest Turbulent Array
 
 ## Ref
 - https://www.flydean.com/interview/arithmetic/arithmetic-Kadane/
 - https://zh.wikipedia.org/zh-tw/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E5%88%97%E9%97%AE%E9%A2%98
 - https://leetcode.com/discuss/study-guide/1308617/Dynamic-Programming-Patterns
+
+## Implementation
+
+1. Start by setting the maxSum to the first value in the array and the curSum to 0.
+2. Loop through the array and at each iteration, reset curSum to 0 if it's negative. 
+3. Increment curSum by adding the current value in our array to it.
+4. Update the maxSum at every iteration.
+5. Finally, return the maxSum.
+
 
 ## Pattern
 
