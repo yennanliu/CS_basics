@@ -1,11 +1,55 @@
 # Dijkstra
+
 > Algorithm get `minimum path` (for given point to any other points)
 
+
+Dijkstra's algorithm is a famous algorithm used to solve the single-source shortest path problem for a graph with non-negative edge weights. It finds the shortest path from a starting node (source) to all other nodes in the graph. The algorithm ensures that once a node’s shortest distance is finalized, it will not change, which makes it very efficient for many graph-related problems.
+
+
 - "importance" can only >= 0
+
+
+- Key Concepts:
+    - Graph: A collection of vertices (nodes) connected by edges (links), where
+        each edge has a weight (cost, distance, etc.).
+
+    - Non-negative weights: Dijkstra’s algorithm only works with graphs where
+        the edge weights are `non-negative` (i.e., no negative weights).
+
+    - Single-Source Shortest Path: The goal is to find the shortest path from a
+         starting node to all other nodes in the graph.
+
+- How Dijkstra's Algorithm Works:
+
+1. Initialization:
+
+    - Mark the distance to the source node as 0 (since the distance from the source to itself is zero).
+    - Mark the distance to all other nodes as infinity (since they are initially unreachable).
+    - Keep track of the visited nodes and nodes that still need to be processed.
+
+2. Processing the Node with the Smallest Tentative Distance:
+
+    - Start at the source node, and for each node, calculate the tentative distance to its neighbors through the current node.
+    - If a shorter path to a neighboring node is found, update its tentative distance.
+    - Mark the current node as "visited" and never revisit it again.
+
+3. Repeat:
+
+    - Select the unvisited node with the smallest tentative distance and mark it as visited.
+    - Update the distances to its neighboring nodes.
+
+4. Termination:
+
+    - Repeat this process until all nodes have been visited, meaning the shortest distance to every node has been found.
+
+
+
 
 ## 0) Concept  
 
 ### 0-1) Types
+ - LC 743
+ - LC 787
 
 ### 0-2) Pattern
 
@@ -16,6 +60,7 @@
 ## 2) LC Example
 
 ### 2-1) Network Delay Time
+
 ```python
 # LC 743 Network Delay Time
 # V0 
