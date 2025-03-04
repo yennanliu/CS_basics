@@ -5395,10 +5395,94 @@ class Node {
      *   IDEA 1) remove each `edge` and check if it becomes `NOT CYCLIC` ???
      *
      */
+    // 11.45 - 12.00 PM
+    // IDEA: UNION FIND -> return directly if meet a `cycle`
     public int[] findRedundantConnection(int[][] edges) {
+
+        // get n
+        HashSet<Integer> set = new HashSet<>();
+        for(int[] x: edges){
+            set.add(x[0]);
+            set.add(x[1]);
+        }
+        // edge
+        if(edges.length == set.size() - 1){
+            return null; // already NOT a cyclic graph
+        }
+        if(edges == null || edges.length == 0){
+            return null;
+        }
+
+        // union find
+        MyUF3 uf = new MyUF3(edges);
+        // union
+        for(int[] e: edges){
+            int x = e[0];
+            int y = e[1];
+            if(!uf.union(x, y)){
+                int[] res = new int[2];
+                res[0] = x;
+                res[1] = y;
+                return res;
+            }
+        }
 
         return null;
     }
+
+    public class MyUF3{
+        // attr
+        int[][] edges;
+        int[] parents;
+        int n; // ??
+
+        // constructor
+        public MyUF3(int[][] edges){
+            this.edges = edges;
+
+            //this.n = 0;
+            HashSet<Integer> set = new HashSet<>();
+            for(int[] x: edges){
+                set.add(x[0]);
+                set.add(x[1]);
+            }
+            this.n = set.size();
+
+            this.parents = new int[n];
+            for(int i = 0; i < n; i++){
+                // init node as its parent
+                this.parents[i] = i;
+            }
+        }
+
+        // method
+        public boolean union(int x, int y){
+            if(x == y){
+                return true;
+            }
+            int x_ = this.getParent(x);
+            int y_ = this.getParent(y);
+            // NOTE !!! below
+            // x != y, but x, y are already connected (same parent)
+            // if we union them AGAIN, will cause `CYCLIC` graph
+            if(x_ == y_){
+                return false;
+            }
+            this.parents[x_] = y_;
+            return true;
+        }
+
+        // NOTE !!! below
+        public int getParent(int x){
+            if(x != this.parents[x]){
+                // note !! update val to x's parent
+                this.parents[x] = this.getParent(x);
+            }
+            return this.parents[x];
+        }
+
+    }
+
 
     // LC 127
     // 11.13 - 11.23 AM
