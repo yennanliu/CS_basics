@@ -148,7 +148,7 @@ public class ReconstructItinerary {
 
         return res;
     }
-    
+
 
     // V2
     // https://leetcode.com/problems/reconstruct-itinerary/solutions/4041944/9576-dfs-recursive-iterative-by-vanamsen-62uy/

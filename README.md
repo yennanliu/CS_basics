@@ -1165,6 +1165,7 @@
 323| [Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/) | [Python ](./leetcode_python/Graph/number-of-connected-components-in-an-undirected-graph.py),  [Java ](./leetcode_java/src/main/java/LeetCodeJava/Graph/NumberOfConnectedComponentsUndirectedGraph.java) | _O(n)_ | _O(n)_| Medium  | Curated Top 75, LC 547, 🔒 , dfs, Union Find, `graph`, `linkedin`, `amazon`, fb, google, m$, linkedin|  AGAIN************** (5) (MUST)
 959 | [Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/)  | [Python](./leetcode_python/Graph/regions-cut-by-slashes.py) | _O(n^2)_| _O(n^2)_| Medium | Union Find | 
 1135 | [Connecting Cities With Minimum Cost](https://leetcode.com/problems/connecting-cities-with-minimum-cost/)  | [Python](./leetcode_python/Graph/connecting-cities-with-minimum-cost.py) | _O(n^2)_| _O(n^2)_| Medium | union find, Kruskal, prime, graph, amazon | AGAIN (not start)
+1584 | [Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/MinCostToConnectAllPoints.java)| _O(n^2)_| _O(n^2)_| Medium || AGAIN (not start)
 
 
 ## Geometry
