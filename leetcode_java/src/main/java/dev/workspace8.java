@@ -5540,4 +5540,109 @@ class Node {
         return pathLen;
     }
 
+    // LC 743
+    // 9.50 - 10.00 am
+    /**
+     *
+     *  743. Network Delay Time
+     * There are N network nodes, labelled 1 to N.
+     *
+     * Given times, a list of travel times as directed edges times[i] = (u, v, w),
+     *
+     * where u is the source node, v is the target node, and w is the time it takes
+     *
+     * for a signal to travel from source to target.
+     *
+     * Now, we send a signal from a certain node K. How long will it take for
+     *
+     * all nodes to receive the signal? If it is impossible, return -1.
+     *
+     *
+     * -> Now, we send a signal from a certain node K. `How long will it take` for all nodes to
+     *    receive the signal? If it is impossible, return -1.
+     *
+     *
+     *
+     * Example 1:
+     *
+     *
+     *
+     * Input: times = [[2,1,1],[2,3,1],[3,4,1]], N = 4, K = 2
+     * Output: 2
+     *
+     *
+     * Note:
+     *
+     * N will be in the range [1, 100].
+     * K will be in the range [1, N].
+     * The length of times will be in the range [1, 6000].
+     * All edges times[i] = (u, v, w) will have 1 <= u, v <= N and 0 <= w <= 100.
+     *
+     *
+     *  IDEA 1) BFS ???
+     *
+     *   step 1)  maintain a visited hashset, once all node are visited
+     *       return elapsed time
+     *
+     *   step 2) build the graph,
+     *    -> {node: [next_node_1, next_node_2, ...]}
+     *    -> visit all nodes via bfs
+     *
+     */
+//    public class MyNode{
+//        // attr
+//        int start;
+//        int end;
+//        int time;
+//        public MyNode(int start, int end, int time){
+//            this.start = start;
+//            this.end = end;
+//            this.time = time;
+//        }
+//    }
+//    public int networkDelayTime(int[][] times, int n, int k) {
+//        // edge
+//        if(times == null || times.length == 0){
+//            return 0;
+//        }
+//        if(n == 1){
+//            return 1;
+//        }
+//        // build graph
+//        Map<Integer, List<MyNode>> graph = new HashMap<>();
+//
+//        HashSet<Integer> visited = new HashSet<>();
+//
+//        for(int[] t: times){
+//            int start = t[0];
+//            int end = t[1];
+//            int timeCost = t[2];
+//            List<MyNode> nextNodes = graph.getOrDefault(start, new ArrayList<>());
+//            MyNode node = new MyNode(start, end, timeCost);
+//            nextNodes.add(node);
+//            graph.put(start, nextNodes);
+//        }
+//
+//        // bfs
+//        Queue<MyNode> q = new LinkedList<>();
+//        MyNode node = new MyNode(start, end, timeCost);
+//        q.add(k); // entry point (node)
+//
+//        visited.add(k);
+//
+//        // edge
+//        if(!graph.containsKey(k)){
+//            return 0;
+//        }
+//
+//        int res = 0;
+//
+//        while(!q.isEmpty()){
+//            MyNode curNode = q.poll();
+//
+//        }
+//
+//        return res;
+//    }
+
 }

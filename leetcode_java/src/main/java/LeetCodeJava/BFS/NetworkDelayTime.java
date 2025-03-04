@@ -49,7 +49,162 @@ public class NetworkDelayTime {
 //
 //    }
 
-    // V1
+
+    // V1-1
+    // https://neetcode.io/problems/network-delay-time
+    // IDEA: DFS
+    public int networkDelayTime_1_1(int[][] times, int n, int k) {
+        Map<Integer, List<int[]>> adj = new HashMap<>();
+        for (int[] time : times) {
+            adj.computeIfAbsent(time[0],
+                    x -> new ArrayList<>()).add(new int[]{time[1], time[2]});
+        }
+
+        Map<Integer, Integer> dist = new HashMap<>();
+        for (int i = 1; i <= n; i++) dist.put(i, Integer.MAX_VALUE);
+
+        dfs(k, 0, adj, dist);
+        int res = Collections.max(dist.values());
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
+
+    private void dfs(int node, int time,
+                     Map<Integer, List<int[]>> adj,
+                     Map<Integer, Integer> dist) {
+        if (time >= dist.get(node)) return;
+        dist.put(node, time);
+        if (!adj.containsKey(node)) return;
+        for (int[] edge : adj.get(node)) {
+            dfs(edge[0], time + edge[1], adj, dist);
+        }
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/network-delay-time
+    // IDEA: Floyd Warshall Algorithm
+    public int networkDelayTime_1_2(int[][] times, int n, int k) {
+        int inf = Integer.MAX_VALUE / 2;
+        int[][] dist = new int[n][n];
+
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dist[i], inf);
+            dist[i][i] = 0;
+        }
+
+        for (int[] time : times) {
+            int u = time[0] - 1, v = time[1] - 1, w = time[2];
+            dist[u][v] = w;
+        }
+
+        for (int mid = 0; mid < n; mid++)
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    dist[i][j] = Math.min(dist[i][j],
+                            dist[i][mid] + dist[mid][j]);
+
+        int res = Arrays.stream(dist[k-1]).max().getAsInt();
+        return res == inf ? -1 : res;
+    }
+
+
+    // V1-3
+    // https://neetcode.io/problems/network-delay-time
+    // IDEA:  Bellman Ford Algorithm
+    public int networkDelayTime_1_3(int[][] times, int n, int k) {
+        int[] dist = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[k - 1] = 0;
+
+        for (int i = 0; i < n - 1; i++) {
+            for (int[] time : times) {
+                int u = time[0] - 1, v = time[1] - 1, w = time[2];
+                if (dist[u] != Integer.MAX_VALUE && dist[u] + w < dist[v]) {
+                    dist[v] = dist[u] + w;
+                }
+            }
+        }
+
+        int maxDist = Arrays.stream(dist).max().getAsInt();
+        return maxDist == Integer.MAX_VALUE ? -1 : maxDist;
+    }
+
+
+    // V1-4
+    // https://neetcode.io/problems/network-delay-time
+    // IDEA:  Shortest Path Faster Algorithm
+    public int networkDelayTime_1_4(int[][] times, int n, int k) {
+        Map<Integer, List<int[]>> adj = new HashMap<>();
+        for (int i = 1; i <= n; i++) adj.put(i, new ArrayList<>());
+        for (int[] time : times) {
+            adj.get(time[0]).add(new int[] {time[1], time[2]});
+        }
+        Map<Integer, Integer> dist = new HashMap<>();
+        for (int i = 1; i <= n; i++) dist.put(i, Integer.MAX_VALUE);
+        dist.put(k, 0);
+
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[] {k, 0});
+
+        while (!q.isEmpty()) {
+            int[] curr = q.poll();
+            int node = curr[0], time = curr[1];
+            if (dist.get(node) < time) {
+                continue;
+            }
+            for (int[] nei : adj.get(node)) {
+                int nextNode = nei[0], weight = nei[1];
+                if (time + weight < dist.get(nextNode)) {
+                    dist.put(nextNode, time + weight);
+                    q.offer(new int[] {nextNode, time + weight});
+                }
+            }
+        }
+
+        int res = Collections.max(dist.values());
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
+
+
+    // V1-5
+    // https://neetcode.io/problems/network-delay-time
+    // IDEA: Dijkstra's Algorithm
+    public int networkDelayTime_1_5(int[][] times, int n, int k) {
+        Map<Integer, List<int[]>> edges = new HashMap<>();
+        for (int[] time : times) {
+            edges.computeIfAbsent(time[0],
+                    key -> new ArrayList<>()).add(new int[]{time[1], time[2]});
+        }
+
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+                Comparator.comparingInt(a -> a[0]));
+        minHeap.offer(new int[]{0, k});
+
+        Set<Integer> visited = new HashSet<>();
+        int t = 0;
+        while (!minHeap.isEmpty()) {
+            int[] curr = minHeap.poll();
+            int w1 = curr[0], n1 = curr[1];
+            if (visited.contains(n1)) {
+                continue;
+            }
+            visited.add(n1);
+            t = w1;
+
+            if (edges.containsKey(n1)) {
+                for (int[] next : edges.get(n1)) {
+                    int n2 = next[0], w2 = next[1];
+                    if (!visited.contains(n2)) {
+                        minHeap.offer(new int[]{w1 + w2, n2});
+                    }
+                }
+            }
+        }
+
+        return visited.size() == n ? t : -1;
+    }
+
+
+    // V2
     // IDEA : Dijlstra's Algorithm
     // https://leetcode.com/problems/network-delay-time/solutions/2310813/dijkstra-s-algorithm-template-list-of-problems/
     /*
@@ -68,7 +223,7 @@ public class NetworkDelayTime {
     Step 4: find the maximum value from result array:
 
     */
-    public int networkDelayTime_1(int[][] times, int n, int k) {
+    public int networkDelayTime_2(int[][] times, int n, int k) {
 
         //Step 1
         Map<Integer, Map<Integer, Integer>> map = new HashMap<>();
@@ -117,7 +272,7 @@ public class NetworkDelayTime {
         return res == Integer.MAX_VALUE ? -1 : res;
     }
 
-    // V2
+    // V3
     // IDEA : ADOPT BFS (with PQ, wright, already very close to Dijlstra) (modified by gpt)
     /**
      *
@@ -163,7 +318,7 @@ public class NetworkDelayTime {
      * because it doesn’t account for edge weights,
      * which are crucial in this problem. Dijkstra is the better approach here.
      */
-    public int networkDelayTime_2(int[][] times, int n, int k) {
+    public int networkDelayTime_3(int[][] times, int n, int k) {
         // Step 1: Build graph (adjacency list)
         Map<Integer, List<int[]>> graph = new HashMap<>();
         for (int[] time : times) {
@@ -216,19 +371,19 @@ public class NetworkDelayTime {
     }
 
 
-    // V3_1
+    // V4_1
     // IDEA : Dijlstra's Algorithm V1
     // https://leetcode.com/problems/network-delay-time/submissions/1409037231/
 
 
-    // V3_2
+    // V4_2
     // IDEA : Dijlstra's Algorithm V2
     // https://leetcode.com/problems/network-delay-time/submissions/1409037231/
 
-    // V4
+    // V5
     // IDEA : Dijlstra
     // https://leetcode.com/problems/network-delay-time/submissions/1409038407/
-    public int networkDelayTime_4(int[][] times, int n, int K) {
+    public int networkDelayTime_5(int[][] times, int n, int K) {
         int[][] graph = new int[n][n];
         for(int i = 0; i < n ; i++) Arrays.fill(graph[i], Integer.MAX_VALUE);
         for( int[] rows : times) graph[rows[0] - 1][rows[1] - 1] =  rows[2];
