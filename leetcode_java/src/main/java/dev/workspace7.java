@@ -165,17 +165,50 @@ public class workspace7 {
 
 
         // ------------------- TEST 12  init array
-        int k = 4;
-        int[][] x = new int[k][2];
-        System.out.println(">>> before " + Arrays.deepToString(x));
+//        int k = 4;
+//        int[][] x = new int[k][2];
+//        System.out.println(">>> before " + Arrays.deepToString(x));
+//
+//        x[0] = new int[]{0,1};
+//        x[1] = new int[]{0,2};
+//
+//        System.out.println(">>> after " + Arrays.deepToString(x));
+//
+//        int[] x2 = new int[]{1, 2, 3};
+//        System.out.println(Arrays.toString(x2));  // Output: [1, 2, 3]
 
-        x[0] = new int[]{0,1};
-        x[1] = new int[]{0,2};
+        // LC 127
+        // SUB STRING
+        // ------------------- TEST 13  SUB STRING
+        String x = "abcd";
+        System.out.println(x.substring(0,1)); // a
+        System.out.println(x.substring(0,2)); // ab
+        System.out.println(x.substring(2,3)); // c
+        System.out.println(x.substring(2,4)); // cd
+        //System.out.println(x.substring(2,10)); // `StringIndexOutOfBoundsException`
 
-        System.out.println(">>> after " + Arrays.deepToString(x));
+        String y = "apple";
+        List<String> replaces = new ArrayList<>();
+        replaces.add("1");
+        replaces.add("2");
+        replaces.add("3");
+        replaces.add("4");
+        replaces.add("5");
 
-        int[] x2 = new int[]{1, 2, 3};
-        System.out.println(Arrays.toString(x2));  // Output: [1, 2, 3]
+        for(int i = 0; i < y.length(); i++){
+            String y_ = y.substring(0,i) + replaces.get(i) + y.substring(i+1, y.length());
+            System.out.println("y_ = " + y_);
+            /**
+             *  result:
+             *
+             * y_ = 1pple
+             * y_ = a2ple
+             * y_ = ap3le
+             * y_ = app4e
+             * y_ = appl5
+             *
+             */
+        }
 
     }
 

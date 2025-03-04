@@ -5493,52 +5493,122 @@ class Node {
      *
      */
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-
         // edge
         if(!wordList.contains(endWord)){
             return 0;
         }
-        if(wordList == null || wordList.isEmpty() || wordList.size() == 0){
+        if(wordList == null || wordList.size() == 0){
             return 0;
         }
         if(beginWord.equals(endWord)){
-            return 0;
+            return 1; // ???
         }
 
-        int pathLen = 0;
-        StringBuilder sb = new StringBuilder();
-        sb.append(beginWord);
-
-        Queue<StringBuilder> q = new LinkedList<>();
-        q.add(sb);
-
+        // use hashset to NOT visit again
         HashSet<String> visited = new HashSet<>();
+        visited.add(beginWord);
+//        for(String x: wordList){
+//            set.add(x);
+//        }
+
+        // bfs
+        Queue<String> q = new LinkedList<>();
+        int res = 0;
+        q.add(beginWord);
 
         while(!q.isEmpty()){
 
-            StringBuilder curSb = q.poll();
-            if(curSb.toString().equals(endWord)){
-                return pathLen;
-            }
+            for(int j = 0; j < q.size(); j++){
 
-            visited.add(curSb.toString());
+                String cur = q.poll();
+                if(cur.equals(endWord)){
+                    return res;
+                }
+                if(cur.length() > endWord.length()){
+                    continue; // ?
+                }
 
-            // `moves`
-            String moves = "abcdefghijklmnopqrstuvwxyz";
-            for(String m: moves.split("")){
-                StringBuilder updatedSb = curSb.append(m);
-                // validate
-                boolean shouldProceed = updatedSb.toString().length() < endWord.length() && !visited.contains(updatedSb.toString()) && wordList.contains(updatedSb.toString());
-                if(shouldProceed){
-                    q.add(updatedSb);
+                String moves = "abcdefghijklmnopqrstuvwxyz";
+                // 2 loop
+                // 1) go over idx
+                // 2) go over moves
+                for(int i = 0; i < cur.length(); i++){
+                    for(String x: moves.split("")){
+                        // ??? get new word that replace alphabet at index i
+
+                        // String nextWord = currentWord.substring(0, j) + c + currentWord.substring(j + 1);
+//                    String newWord = String.copyValueOf(cur.toCharArray(), i, i-1)
+//                            + x + String.copyValueOf(cur.toCharArray(), i+1, cur.length());
+                        String newWord = cur.substring(0, i) + x + cur.substring(i+1, cur.length());
+
+                        if(newWord.equals(endWord)){
+                            return res + 1;
+                        }
+
+                        // ???
+                        boolean shouldProceed = !visited.contains(newWord) && wordList.equals(newWord);
+                        if(shouldProceed){
+                            q.add(newWord);
+                            visited.add(newWord);
+                        }
+                    }
                 }
             }
 
-            pathLen += 1;
+            res += 1;
         }
 
-        return pathLen;
+        return res;
     }
+
+
+//    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+//
+//        // edge
+//        if(!wordList.contains(endWord)){
+//            return 0;
+//        }
+//        if(wordList == null || wordList.isEmpty() || wordList.size() == 0){
+//            return 0;
+//        }
+//        if(beginWord.equals(endWord)){
+//            return 0;
+//        }
+//
+//        int pathLen = 0;
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(beginWord);
+//
+//        Queue<StringBuilder> q = new LinkedList<>();
+//        q.add(sb);
+//
+//        HashSet<String> visited = new HashSet<>();
+//
+//        while(!q.isEmpty()){
+//
+//            StringBuilder curSb = q.poll();
+//            if(curSb.toString().equals(endWord)){
+//                return pathLen;
+//            }
+//
+//            visited.add(curSb.toString());
+//
+//            // `moves`
+//            String moves = "abcdefghijklmnopqrstuvwxyz";
+//            for(String m: moves.split("")){
+//                StringBuilder updatedSb = curSb.append(m);
+//                // validate
+//                boolean shouldProceed = updatedSb.toString().length() < endWord.length() && !visited.contains(updatedSb.toString()) && wordList.contains(updatedSb.toString());
+//                if(shouldProceed){
+//                    q.add(updatedSb);
+//                }
+//            }
+//
+//            pathLen += 1;
+//        }
+//
+//        return pathLen;
+//    }
 
     // LC 743
     // 9.50 - 10.00 am
