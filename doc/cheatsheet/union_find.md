@@ -31,59 +31,77 @@
 ## 1) General form
 ```java
 // java
-//---------------------------------------------------
-// UnionFind implemented in java (basic) (V1)
-// (algorithm book (labu) p.412)
-//---------------------------------------------------
-public class UnionFind {
-    // attr
-    // connect count
-    private int count;
-    // save each node's parent node
-    private int[] parent;
-    // record tree's "weight"
-    private int[] size;
 
-    // constructor
-    public UnionFind(int n){
-        this.count = n;
-        parent = new int[n];
-        size = new int[n];
-        for (int i = 0; i < n; i++){
-            parent[i] = i;
-            size[i] = 1;
-        }
+// LC 684
+public class UnionFind3 {
+  // Union-find data structure
+  int[] parents;
+  int[] size;
+  int n;
+
+  // Constructor to initialize the union-find data structure
+  public UnionFind3(int[][] edges) {
+    HashSet<Integer> set = new HashSet<>();
+    for (int[] x : edges) {
+      set.add(x[0]);
+      set.add(x[1]);
+    }
+    this.n = set.size();
+
+    // Initialize parent and size arrays
+    this.parents = new int[n + 1]; // Using 1-based indexing
+    this.size = new int[n + 1];
+    for (int i = 1; i <= n; i++) {
+      this.parents[i] = i;
+      this.size[i] = 1;
+    }
+  }
+
+  // Find the root of the set containing 'x' with path compression
+  public int getParent(int x) {
+    /**
+     * NOTE !!!
+     *
+     *  we use `!=` logic below to simplify code
+     */
+    if (x != this.parents[x]) {
+      // Path compression: recursively find the parent and update the current node's
+      // parent
+      /**
+       *  NOTE !!!
+       *
+       *  we should update parent as `getParent(this.parents[x])`,
+       *  e.g. -> use `this.parents[x]` as parameter, send into getParent method,
+       *       -> then assign result to this.parents[x]
+       *
+       */
+      this.parents[x] = getParent(this.parents[x]);
+    }
+    return this.parents[x];
+  }
+
+  // Union the sets containing x and y, return false if they are already connected
+  public boolean union(int x, int y) {
+    int rootX = getParent(x);
+    int rootY = getParent(y);
+
+    // If they are already in the same set, a cycle is detected
+    if (rootX == rootY) {
+      return false;
     }
 
-    // method
-    public void union(int p, int q){
-        int rootP = find(p);
-        int rootQ = find(q);
-        if (rootP == rootQ){
-            return;
-        }
-        //parent[rootQ] = rootP is OK as well
-        parent[rootP] = rootQ
-        count --;
+    // Union by size: attach the smaller tree to the root of the larger tree
+    if (size[rootX] < size[rootY]) {
+      parents[rootX] = rootY;
+      size[rootY] += size[rootX];
+    } else {
+      parents[rootY] = rootX;
+      size[rootX] += size[rootY];
     }
-
-    public boolean connected(int p , int q){
-        int rootP = find(p);
-        int rootQ = find(q);
-        return rootP == rootQ;
-    }
-
-    public int find(int x){
-        while (parent[x] != x){
-            x = parent[x];
-        }
-        return x;
-    }
-
-    public int count(){
-        return count;
-    }
+    return true;
+  }
 }
+
 ```
 
 ```java
