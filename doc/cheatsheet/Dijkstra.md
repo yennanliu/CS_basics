@@ -44,6 +44,22 @@ Dijkstra's algorithm is a famous algorithm used to solve the single-source short
 
 
 
+- Algorithm Steps:
+    1. Start at the source node. Initialize the tentative distance of the source to 0 and all other nodes to infinity.
+    
+    2. Visit the node with the smallest tentative distance (starting with the source).
+    
+    3. For each unvisited neighbor of this node:
+        - Calculate the tentative distance to that neighbor (current node’s distance + weight of the edge).
+        - If this tentative distance is smaller than the current stored distance, update the distance.
+    
+    4. Once all neighbors of the current node have been processed, mark the node as visited.
+    
+    5. Repeat the process with the node that has the smallest tentative distance among the unvisited nodes.
+    
+    6. When all nodes have been visited, the algorithm ends, and the shortest distances to all nodes from the source are finalized.
+
+
 
 ## 0) Concept  
 
