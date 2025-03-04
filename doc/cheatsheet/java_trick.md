@@ -319,7 +319,53 @@ return builder.toString();
 } 
 ```
 
-### 1-0-4-1) Sort String
+### 1-0-4-0) get sub string
+
+```java
+// java
+// LC 127
+
+String x = "abcd";
+System.out.println(x.substring(0,1)); // a
+System.out.println(x.substring(0,2)); // ab
+System.out.println(x.substring(2,3)); // c
+System.out.println(x.substring(2,4)); // cd
+//System.out.println(x.substring(2,10)); // `StringIndexOutOfBoundsException`
+```
+
+
+### 1-0-4-1) replace `index = k` element at String
+
+```java
+// java
+// LC 127
+
+String y = "apple";
+List<String> replaces = new ArrayList<>();
+replaces.add("1");
+replaces.add("2");
+replaces.add("3");
+replaces.add("4");
+replaces.add("5");
+
+for(int i = 0; i < y.length(); i++){
+    String y_ = y.substring(0,i) + replaces.get(i) + y.substring(i+1, y.length());
+    System.out.println("y_ = " + y_);
+    /**
+     *  result:
+     *
+     * y_ = 1pple
+     * y_ = a2ple
+     * y_ = ap3le
+     * y_ = app4e
+     * y_ = appl5
+     *
+     */
+}
+```
+
+
+### 1-0-4-2) Sort String
 
 ```java
 // java
