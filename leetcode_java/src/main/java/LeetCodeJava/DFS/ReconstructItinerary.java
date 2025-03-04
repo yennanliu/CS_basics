@@ -48,10 +48,112 @@ public class ReconstructItinerary {
 //
 //    }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/reconstruct-flight-path
+    // IDEA: DFS
+    public List<String> findItinerary_1_1(List<List<String>> tickets) {
+        Map<String, List<String>> adj = new HashMap<>();
+        for (List<String> ticket : tickets) {
+            adj.putIfAbsent(ticket.get(0), new ArrayList<>());
+        }
+
+        tickets.sort((a, b) -> a.get(1).compareTo(b.get(1)));
+        for (List<String> ticket : tickets) {
+            adj.get(ticket.get(0)).add(ticket.get(1));
+        }
+
+        List<String> res = new ArrayList<>();
+        res.add("JFK");
+
+        if (dfs("JFK", res, adj, tickets.size() + 1)) {
+            return res;
+        }
+        return new ArrayList<>();
+    }
+
+    private boolean dfs(String src, List<String> res,
+                        Map<String, List<String>> adj, int targetLen) {
+        if (res.size() == targetLen) {
+            return true;
+        }
+
+        if (!adj.containsKey(src)) {
+            return false;
+        }
+
+        List<String> temp = new ArrayList<>(adj.get(src));
+        for (int i = 0; i < temp.size(); i++) {
+            String v = temp.get(i);
+            adj.get(src).remove(i);
+            res.add(v);
+            if (dfs(v, res, adj, targetLen)) return true;
+            adj.get(src).add(i, v);
+            res.remove(res.size() - 1);
+        }
+        return false;
+    }
+
+
+    // V1-2
+    // https://neetcode.io/problems/reconstruct-flight-path
+    // IDEA: Hierholzer's Algorithm (Recursion)
+    public List<String> findItinerary_1_2(List<List<String>> tickets) {
+        Map<String, PriorityQueue<String>> adj = new HashMap<>();
+        for (List<String> ticket : tickets) {
+            String src = ticket.get(0);
+            String dst = ticket.get(1);
+            adj.computeIfAbsent(src, k -> new PriorityQueue<>()).offer(dst);
+        }
+
+        List<String> res = new ArrayList<>();
+        dfs(adj, "JFK", res);
+
+        Collections.reverse(res);
+        return res;
+    }
+
+    private void dfs(Map<String, PriorityQueue<String>> adj,
+                     String src, List<String> res) {
+        PriorityQueue<String> queue = adj.get(src);
+        while (queue != null && !queue.isEmpty()) {
+            String dst = queue.poll();
+            dfs(adj, dst, res);
+        }
+        res.add(src);
+    }
+
+
+    // V1-3
+    // https://neetcode.io/problems/reconstruct-flight-path
+    // IDEA: Hierholzer's Algorithm (Iteration)
+    public List<String> findItinerary_1_3(List<List<String>> tickets) {
+        Map<String, PriorityQueue<String>> adj = new HashMap<>();
+        for (List<String> ticket : tickets) {
+            adj.computeIfAbsent(ticket.get(0),
+                    k -> new PriorityQueue<>()).add(ticket.get(1));
+        }
+
+        LinkedList<String> res = new LinkedList<>();
+        Stack<String> stack = new Stack<>();
+        stack.push("JFK");
+
+        while (!stack.isEmpty()) {
+            String curr = stack.peek();
+            if (!adj.containsKey(curr) || adj.get(curr).isEmpty()) {
+                res.addFirst(stack.pop());
+            } else {
+                stack.push(adj.get(curr).poll());
+            }
+        }
+
+        return res;
+    }
+    
+
+    // V2
     // https://leetcode.com/problems/reconstruct-itinerary/solutions/4041944/9576-dfs-recursive-iterative-by-vanamsen-62uy/
     // IDEA : DFS
-    public List<String> findItinerary_1(List<List<String>> tickets) {
+    public List<String> findItinerary_2(List<List<String>> tickets) {
         Map<String, PriorityQueue<String>> graph = new HashMap<>();
 
         for (List<String> ticket : tickets) {
@@ -72,10 +174,10 @@ public class ReconstructItinerary {
         return itinerary;
     }
 
-    // V2
+    // V3
     // IDEA : DFS
     // https://leetcode.com/problems/reconstruct-itinerary/solutions/6113294/simple-solution-with-diagrams-in-video-j-67os/
-    public List<String> findItinerary(List<List<String>> tickets) {
+    public List<String> findItinerary_3(List<List<String>> tickets) {
         Map<String, List<String>> flightMap = new HashMap<>();
         List<String> result = new LinkedList<>();
 
@@ -113,8 +215,9 @@ public class ReconstructItinerary {
         result.add(0, current);
     }
 
-    // V3
+    // V4
     // https://leetcode.com/problems/reconstruct-itinerary/solutions/78768/short-ruby-python-java-c-by-stefanpochma-forx/
 
-    // V4
+    // V5
+
 }
