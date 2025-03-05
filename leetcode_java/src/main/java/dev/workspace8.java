@@ -6110,4 +6110,10 @@ class Node {
         return 0;
     }
 
+    // LC 269
+    // 11.28 - 11.38 AM
+    public String alienOrder(String[] words){
+        return null;
+    }
+
 }

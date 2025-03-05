@@ -63,11 +63,135 @@ public class AlienDictionary {
 //        return null;
 //    }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/foreign-dictionary
+    // IDEA: DFS
+    private Map<Character, Set<Character>> adj;
+    private Map<Character, Boolean> visited;
+    private List<Character> result;
+
+    public String foreignDictionary_1_1(String[] words) {
+        adj = new HashMap<>();
+        for (String word : words) {
+            for (char c : word.toCharArray()) {
+                adj.putIfAbsent(c, new HashSet<>());
+            }
+        }
+
+        for (int i = 0; i < words.length - 1; i++) {
+            String w1 = words[i], w2 = words[i + 1];
+            int minLen = Math.min(w1.length(), w2.length());
+            if (w1.length() > w2.length() &&
+                    w1.substring(0, minLen).equals(w2.substring(0, minLen))) {
+                return "";
+            }
+            for (int j = 0; j < minLen; j++) {
+                if (w1.charAt(j) != w2.charAt(j)) {
+                    adj.get(w1.charAt(j)).add(w2.charAt(j));
+                    break;
+                }
+            }
+        }
+
+        visited = new HashMap<>();
+        result = new ArrayList<>();
+        for (char c : adj.keySet()) {
+            if (dfs(c)) {
+                return "";
+            }
+        }
+
+        Collections.reverse(result);
+        StringBuilder sb = new StringBuilder();
+        for (char c : result) {
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    private boolean dfs(char ch) {
+        if (visited.containsKey(ch)) {
+            return visited.get(ch);
+        }
+
+        visited.put(ch, true);
+        for (char next : adj.get(ch)) {
+            if (dfs(next)) {
+                return true;
+            }
+        }
+        visited.put(ch, false);
+        result.add(ch);
+        return false;
+    }
+
+
+    // V1-2
+    // https://neetcode.io/problems/foreign-dictionary
+    // IDEA:  Topological Sort (Kahn's Algorithm)
+    public String foreignDictionary_1_2(String[] words) {
+        Map<Character, Set<Character>> adj = new HashMap<>();
+        Map<Character, Integer> indegree = new HashMap<>();
+
+        for (String word : words) {
+            for (char c : word.toCharArray()) {
+                adj.putIfAbsent(c, new HashSet<>());
+                indegree.putIfAbsent(c, 0);
+            }
+        }
+
+        for (int i = 0; i < words.length - 1; i++) {
+            String w1 = words[i];
+            String w2 = words[i + 1];
+            int minLen = Math.min(w1.length(), w2.length());
+            if (w1.length() > w2.length() &&
+                    w1.substring(0, minLen).equals(w2.substring(0, minLen))) {
+                return "";
+            }
+            for (int j = 0; j < minLen; j++) {
+                if (w1.charAt(j) != w2.charAt(j)) {
+                    if (!adj.get(w1.charAt(j)).contains(w2.charAt(j))) {
+                        adj.get(w1.charAt(j)).add(w2.charAt(j));
+                        indegree.put(w2.charAt(j),
+                                indegree.get(w2.charAt(j)) + 1);
+                    }
+                    break;
+                }
+            }
+        }
+
+        Queue<Character> q = new LinkedList<>();
+        for (char c : indegree.keySet()) {
+            if (indegree.get(c) == 0) {
+                q.offer(c);
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+        while (!q.isEmpty()) {
+            char char_ = q.poll();
+            res.append(char_);
+            for (char neighbor : adj.get(char_)) {
+                indegree.put(neighbor, indegree.get(neighbor) - 1);
+                if (indegree.get(neighbor) == 0) {
+                    q.offer(neighbor);
+                }
+            }
+        }
+
+        if (res.length() != indegree.size()) {
+            return "";
+        }
+
+        return res.toString();
+    }
+
+
+    // V2
     // IDEA : topological sorting
     // https://leetcode.ca/all/269.html
     // dfs
-    public String alienOrder_1(String[] words) {
+    public String alienOrder_2(String[] words) {
 
         // Step 1: build the graph
         Map<Character, Set<Character>> graph = new HashMap<>();
@@ -152,9 +276,9 @@ public class AlienDictionary {
         return true;
      }
 
-     // V2
+     // V3
      // https://github.com/Cee/Leetcode/blob/master/269%20-%20Alien%20Dictionary.java
-     public String alienOrder_2(String[] words) {
+     public String alienOrder_3(String[] words) {
          Map<Character, Set<Character>> map = new HashMap<>();
          Map<Character, Integer> degree = new HashMap<>();
          String result = "";
