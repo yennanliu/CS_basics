@@ -5398,23 +5398,23 @@ class Node {
      */
     // 11.45 - 12.00 PM
     // IDEA: UNION FIND -> return directly if meet a `cycle`
-    public int[] findRedundantConnection(int[][] edges) {
-
-        // Initialize union-find data structure
-        RedundantConnection.MyUF3 uf = new RedundantConnection.MyUF3(edges);
-
-        // Union operation for each edge
-        for (int[] e : edges) {
-            int x = e[0];
-            int y = e[1];
-            // If they are already connected, we found the redundant edge
-            if (!uf.union(x, y)) {
-                return e; // The redundant edge is the one that causes the cycle
-            }
-        }
-
-        return null; // No redundant edge found
-    }
+//    public int[] findRedundantConnection(int[][] edges) {
+//
+//        // Initialize union-find data structure
+////        RedundantConnection.MyUF3 uf = new RedundantConnection.MyUF3(edges);
+////
+////        // Union operation for each edge
+////        for (int[] e : edges) {
+////            int x = e[0];
+////            int y = e[1];
+////            // If they are already connected, we found the redundant edge
+////            if (!uf.union(x, y)) {
+////                return e; // The redundant edge is the one that causes the cycle
+////            }
+////        }
+////
+////        return null; // No redundant edge found
+//    }
 
     public class MyUF3 {
         // Union-find data structure
