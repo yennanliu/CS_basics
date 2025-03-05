@@ -66,6 +66,7 @@ Dijkstra's algorithm is a famous algorithm used to solve the single-source short
 ### 0-1) Types
  - LC 743
  - LC 787
+ - Lc 778
 
 ### 0-2) Pattern
 
