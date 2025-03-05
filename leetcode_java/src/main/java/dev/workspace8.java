@@ -5834,6 +5834,138 @@ class Node {
      *    -> visit all nodes via bfs
      *
      */
+    // 10.18 - 10.28 am
+    /**
+     *  IDEA 1) Dijkstra
+     *
+     *
+     *              * Given times, a list of travel times as directed edges
+     *              * times[i] = (u, v, w),
+     *              *  where u is the source node,
+     *              *  v is the target node, and
+     *              *  w is the time it takes for a signal to travel from source to target.
+     *              *
+     *
+     *
+     *
+     *
+     */
+    public int networkDelayTime(int[][] times, int n, int k) {
+
+        // edge
+        if(times == null || times.length == 0){
+            return -1;
+        }
+        if(n == 0){
+            return -1;
+        }
+        if(n == 1){
+            return 0; // ???
+        }
+
+        Dijkstra dijkstra = new Dijkstra(times, n);
+        int res = dijkstra.getShortestPath(k);
+        return res;
+    }
+
+    public class Dijkstra{
+        // attr
+        int[][] times;
+        int n;
+        //int k;
+        // node: { [neighbor_1, weigh_1],  [neighbor_2, weigh_2],.... }
+        Map<Integer, List<List<Integer>>> graph;
+
+        // constructor
+        public Dijkstra(int[][] times, int n){
+            this.times = times;
+            this.n = n;
+            //this.k = k;
+
+            // build the graph
+            this.graph = new HashMap<>();
+            for(int[] t: times){
+                int source = t[0];
+                int target = t[1];
+                int time_ = t[2];
+                List<Integer> tmp = new ArrayList<>();
+                tmp.add(target);
+                tmp.add(time_);
+                List<List<Integer>> tmp_ = new ArrayList<>();
+                tmp_.add(tmp);
+                this.graph.put(source, tmp_);
+            }
+        }
+
+        // method
+        public int getShortestPath(int k){
+
+            // init PQ (small PQ)
+            // pq : [ target, travel_time_so_far]
+            // NOTE !!! we sort on `travel_time_so_far` (small -> big)
+            PriorityQueue<List<Integer>> pq = new PriorityQueue<>(new Comparator<List<Integer>>() {
+                @Override
+                public int compare(List<Integer> o1, List<Integer> o2) {
+                    int diff = o1.get(1) - o2.get(1);
+                    if(diff != 0){
+                        return diff;
+                    }
+                    return o1.get(0) - o2.get(0); // should not reach this code theoretically
+                }
+            });
+
+            List<Integer> _list = new ArrayList<>();
+            _list.add(k);
+            _list.add(0); // init travel time is 0
+            pq.add(_list);
+
+            int shortestTime = 0;
+            HashSet<Integer> visited = new HashSet<>();
+
+            // BFS
+            while(!pq.isEmpty()){
+
+                List<Integer> cur = pq.poll();
+                int target_ = cur.get(0);
+                int time_ = cur.get(1);
+
+                // NOTE !!! NOT visit SAME node AGAIN
+                if(visited.contains(target_)){
+                    continue;
+                }
+
+                visited.add(target_);
+                shortestTime = time_; // ???
+
+                if(this.graph.containsKey(target_)){
+
+                    for(List<Integer> x: this.graph.get(target_)){
+                        int new_target = x.get(0);
+                        int new_time = x.get(1);
+
+                        if(!visited.contains(new_target)){
+
+                            if(new_target == k){
+                                return time_ + new_time; // means we found a solution !!
+                            }
+
+                            List<Integer> toAdd = new ArrayList<>();
+                            toAdd.add(new_target);
+                            toAdd.add(time_ + new_time);
+                            pq.add(toAdd);
+
+                        }
+                    }
+
+                }
+
+            }
+
+            return visited.size() == n ? shortestTime : -1;
+        }
+
+    }
+
 //    public class MyNode{
 //        // attr
 //        int start;
