@@ -179,9 +179,13 @@ public class workspace7 {
 
         // LC 127
         // SUB STRING
-        // 1st idx start from 0
-        // 2nd ind start from 1
-        // [e.g. 1st_idx, 2nd_idx]
+        /**
+         *  1st idx start from 0
+         *  2nd ind start from 1
+         *
+         *   -> e.g.  [1st_idx, 2nd_idx]
+         *
+         */
         // ------------------- TEST 13  SUB STRING
         String x = "abcd";
         //
@@ -217,13 +221,23 @@ public class workspace7 {
              */
         }
 
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                int diff = o1 - o2;
-                return diff;
-            }
-        });
+        // ------------------- TEST 14  list -> array
+
+        List<Integer> list2 = new ArrayList<>();
+        list2.add(1);
+        list2.add(2);
+        list2.add(3);
+        // <T> T[] toArray(T[] a);
+        Integer[] arr = list2.toArray(new Integer[list2.size()]);
+
+
+//        PriorityQueue<Integer> minHeap = new PriorityQueue<>(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                int diff = o1 - o2;
+//                return diff;
+//            }
+//        });
 
     }
 
