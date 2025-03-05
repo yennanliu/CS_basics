@@ -920,11 +920,13 @@ System.out.println(b.toString());
 // LC 853
 // V1
 HashMap<Integer, Integer> map = new HashMap<>();
+
 for (int i = 0; i < position.length; i++){
-int p = -1 * position[i]; // for inverse sorting
-int s = speed[i];
-map.put(p, s);
+    int p = -1 * position[i]; // for inverse sorting
+    int s = speed[i];
+    map.put(p, s);
 }
+
 // order by map key
 Map<Integer, Integer> tree_map = new TreeMap(map);
 ```
