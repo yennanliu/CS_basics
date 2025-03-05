@@ -545,19 +545,25 @@ void swap(char[] chars, int x, int y) {
 // LC 347
 // NOTE !! we define size when init int[]
 int[] top = new int[k];
-for(int i = k - 1; i >= 0; --i) {
-// assign val to int[] via below
-top[i] = heap.poll();
-}
 
+for(int i = k - 1; i >= 0; --i) {
+    // assign val to int[] via below
+    top[i] = heap.poll();
+}
 ```
 
-### 1-1-2) Init M X N boolean matrix
+### 1-1-2) Init a `M x N` boolean matrix
 ```java
 // java
 // LC 695
 // LC 200
 public static void main(String[] args) {
+
+
+/** 
+ *  if use `boolean[][]`, the default val is `false`
+ *  if use `Boolean[][]`, the default val is `null`
+ */
 
 // ex1
 Boolean[][] x = new Boolean[3][4];
@@ -585,9 +591,14 @@ boolean visit = boolean[y][x];
 // java
 // LC 345
 // https://leetcode.com/problems/reverse-vowels-of-a-string/description/
+
+// string -> char array
 String s ="abcd";
-char[] list=s.toCharArray();
+char[] list = s.toCharArray();
 System.out.println(list);
+
+
+// char array -> string
 char[] y = list;
 String.valueOf(list);     
 ```  
@@ -619,6 +630,8 @@ Stack<Character> ans = new Stack();
 ans.push("a");
 ans.push("b");
 ans.push("c");
+
+
 String.valueOf(ans);
 ```  
 
@@ -710,10 +723,13 @@ int[][] intervals = new int[][]{ {15,20}, {0,30}, {5,10} };
 
 ### 1-4-3) Sort List VS Array
 
-#### In Summary !!!!
+#### Summary !!!!
 
-- `Arrays.sort` for array sorting
-- `Collections.sort` for list, HashMap .. sorting
+- `Arrays.sort`
+    - `array` sorting (Primitive Types 基本數據類型)
+
+- `Collections.sort`  (Reference Types 引用類型）
+    - `list, HashMap` .. sorting
 
 
 ```java
