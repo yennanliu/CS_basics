@@ -6,9 +6,10 @@
 
 # 0) Basic data structures
 
-- Heap:
+- Heap
+    - heap (PQ) is `min-heap` default in `java`
 
-- Default : min-heap
+- Min-heap
     - LC 703
 ```java
 // java
@@ -29,7 +30,7 @@ PriorityQueue<Integer> minHeap = new PriorityQueue<>(new Comparator<Integer>() {
 });
 ```
 
-- Define max-heap
+- Max-heap
     - LC 1046
 ```java
 // java
@@ -48,8 +49,8 @@ PriorityQueue<Integer> maxHeap = new PriorityQueue<>(new Comparator<Integer>() {
 ```       
 
 - Character
-- https://www.runoob.com/java/java-character.html
-- https://www.runoob.com/java/java-string-charat.html
+    - https://www.runoob.com/java/java-character.html
+    - https://www.runoob.com/java/java-string-charat.html
     - `charAt() ` offer a method a access String element with idx
     ```java
     // java
