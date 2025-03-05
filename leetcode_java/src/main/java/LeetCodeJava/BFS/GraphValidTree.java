@@ -73,86 +73,86 @@ public class GraphValidTree {
             int aParent = find(a);
             int bParent = find(b);
 
-      /**
-       *  NOTE !!!
-       *
-       *   If find(a) == find(b), it means they are already `CONNECTED`,
-       *   -> `and adding the edge` would form a `CYCLE` (e.g. if we do `parents[aParent] = bParent`)
-       *   -> so return `false` to prevent it.
-       *
-       *   -> e.g.  if `aParent == bParent`
-       *   -> means node a, b ALREADY connected each other
-       *   -> if we still go ahead and connect them in the other way
-       *   -> will form a CYCLE, which is NOT a VALID TREE
-       *
-       *    e.g.
-       *
-       *   before
-       *        a - c - b
-       *
-       *
-       *  after
-       *       a - c - b
-       *       | ----- |      (will form a cycle)
-       *
-       */
-      /**
-       *  Example
-       *
-       *   # Detecting a Cycle in a Graph
-       *
-       * ## Example: Cycle Detection
-       *
-       * Given a graph with `n = 5` nodes and the following edges:
-       *
-       * ```
-       * edges = [[0,1], [1,2], [2,3], [1,3]]
-       * ```
-       *
-       * ### Step-by-Step Process
-       *
-       * 1. **Initial State**
-       *    - Every node is its own parent:
-       *    ```
-       *    parents = [0, 1, 2, 3, 4]
-       *    ```
-       *
-       * 2. **Processing Edges**
-       *
-       *    - **Edge [0,1]**
-       *      - `find(0) = 0`, `find(1) = 1` → Different sets, merge:
-       *      ```
-       *      parents = [1, 1, 2, 3, 4]
-       *      ```
-       *
-       *    - **Edge [1,2]**
-       *      - `find(1) = 1`, `find(2) = 2` → Merge
-       *      ```
-       *      parents = [1, 2, 2, 3, 4]
-       *      ```
-       *
-       *    - **Edge [2,3]**
-       *      - `find(2) = 2`, `find(3) = 3` → Merge
-       *      ```
-       *      parents = [1, 2, 3, 3, 4]
-       *      ```
-       *
-       *    - **Edge [1,3]**
-       *      - `find(1) = 3`, `find(3) = 3` → Same parent (Cycle detected!)
-       *      ```
-       *      Cycle detected! Returning false.
-       *      ```
-       *
-       *  ### **Result**
-       *    A **cycle is detected** in the graph, so the function returns **false**.
-       */
-      if (aParent == bParent) {
-                return false; // Cycle detected
-            }
+            /**
+             *  NOTE !!!
+             *
+             *   If find(a) == find(b), it means they are already `CONNECTED`,
+             *   -> `and adding the edge` would form a `CYCLE` (e.g. if we do `parents[aParent] = bParent`)
+             *   -> so return `false` to prevent it.
+             *
+             *   -> e.g.  if `aParent == bParent`
+             *   -> means node a, b ALREADY connected each other
+             *   -> if we still go ahead and connect them in the other way
+             *   -> will form a CYCLE, which is NOT a VALID TREE
+             *
+             *    e.g.
+             *
+             *   before
+             *        a - c - b
+             *
+             *
+             *  after
+             *       a - c - b
+             *       | ----- |      (will form a cycle)
+             *
+             */
+            /**
+             *  Example
+             *
+             *   # Detecting a Cycle in a Graph
+             *
+             * ## Example: Cycle Detection
+             *
+             * Given a graph with `n = 5` nodes and the following edges:
+             *
+             * ```
+             * edges = [[0,1], [1,2], [2,3], [1,3]]
+             * ```
+             *
+             * ### Step-by-Step Process
+             *
+             * 1. **Initial State**
+             *    - Every node is its own parent:
+             *    ```
+             *    parents = [0, 1, 2, 3, 4]
+             *    ```
+             *
+             * 2. **Processing Edges**
+             *
+             *    - **Edge [0,1]**
+             *      - `find(0) = 0`, `find(1) = 1` → Different sets, merge:
+             *      ```
+             *      parents = [1, 1, 2, 3, 4]
+             *      ```
+             *
+             *    - **Edge [1,2]**
+             *      - `find(1) = 1`, `find(2) = 2` → Merge
+             *      ```
+             *      parents = [1, 2, 2, 3, 4]
+             *      ```
+             *
+             *    - **Edge [2,3]**
+             *      - `find(2) = 2`, `find(3) = 3` → Merge
+             *      ```
+             *      parents = [1, 2, 3, 3, 4]
+             *      ```
+             *
+             *    - **Edge [1,3]**
+             *      - `find(1) = 3`, `find(3) = 3` → Same parent (Cycle detected!)
+             *      ```
+             *      Cycle detected! Returning false.
+             *      ```
+             *
+             *  ### **Result**
+             *    A **cycle is detected** in the graph, so the function returns **false**.
+             */
+            if (aParent == bParent) {
+                    return false; // Cycle detected
+                }
 
-            // Simple union without rank
-            parents[aParent] = bParent;
-            return true;
+                // Simple union without rank
+                parents[aParent] = bParent;
+                return true;
         }
 
         // Find with path compression

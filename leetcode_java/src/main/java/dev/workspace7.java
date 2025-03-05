@@ -179,8 +179,12 @@ public class workspace7 {
 
         // LC 127
         // SUB STRING
+        // 1st idx start from 0
+        // 2nd ind start from 1
+        // [e.g. 1st_idx, 2nd_idx]
         // ------------------- TEST 13  SUB STRING
         String x = "abcd";
+        //
         System.out.println(x.substring(0,1)); // a
         System.out.println(x.substring(0,2)); // ab
         System.out.println(x.substring(2,3)); // c
@@ -196,6 +200,9 @@ public class workspace7 {
         replaces.add("5");
 
         for(int i = 0; i < y.length(); i++){
+
+            String z = y.substring(0, i) + "?" + y.substring(i+1, y.length());
+
             String y_ = y.substring(0,i) + replaces.get(i) + y.substring(i+1, y.length());
             System.out.println("y_ = " + y_);
             /**
@@ -209,6 +216,14 @@ public class workspace7 {
              *
              */
         }
+
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
 
     }
 
