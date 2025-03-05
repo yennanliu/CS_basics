@@ -3,6 +3,8 @@ package AlgorithmJava;
 /**
  *  Dijkstra V1 (gpt)
  *
+ *   Min Heap + BFS
+ *
  */
 
 import java.util.*;

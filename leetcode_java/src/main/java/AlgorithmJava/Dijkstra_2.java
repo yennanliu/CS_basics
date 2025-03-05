@@ -7,6 +7,8 @@ import java.util.*;
  *
  *  // LC 743
  *
+ *   Min Heap + BFS
+ *
  */
 
 public class Dijkstra_2 {
