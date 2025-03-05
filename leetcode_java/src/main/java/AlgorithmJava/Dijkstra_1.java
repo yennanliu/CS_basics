@@ -1,17 +1,17 @@
 package AlgorithmJava;
 
 /**
- *  DijkstraSP V1 (gpt)
+ *  Dijkstra V1 (gpt)
  *
  */
 
 import java.util.*;
 
-class DijkstraSP {
+class Dijkstra_1 {
     private int vertices;
     private List<List<Node>> adjList;
 
-    public DijkstraSP(int vertices) {
+    public Dijkstra_1(int vertices) {
         this.vertices = vertices;
         adjList = new ArrayList<>();
         for (int i = 0; i < vertices; i++) {
@@ -75,7 +75,7 @@ class DijkstraSP {
     }
 
     public static void main(String[] args) {
-        DijkstraSP graph = new DijkstraSP(9);
+        Dijkstra_1 graph = new Dijkstra_1(9);
 
         graph.addEdge(0, 1, 4);
         graph.addEdge(0, 7, 8);
