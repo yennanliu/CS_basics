@@ -6112,7 +6112,61 @@ class Node {
 
     // LC 269
     // 11.28 - 11.38 AM
+    /**
+     *  IDEA 1) TOPO SORT
+     *
+     *   1. init:
+     *     - ordering []
+     *     - map { node: [sub_node_1, sub_node_2, ..] }
+     *     - queue ???
+     *
+     *   2. BFS
+     *     -> visit sub node with key
+     *       -> order -= 1, update back to map
+     *     -> add node to queue if its `ordering` == 0
+     *
+     *
+     *   3. return res
+     *
+     */
     public String alienOrder(String[] words){
+        // edge
+        if(words == null || words.length == 0){
+            return null;
+        }
+
+        // Topological sort
+        HashSet<String> set = new HashSet<>();
+        for(String w: words){
+            for(String x: w.split("")){
+                set.add(x);
+            }
+        }
+
+        // NOTE !!! instead of using array, use map to track val VS degree
+        //int[] degrees = new int[set.size()];
+        Map<String, Integer> indegree = new HashMap<>();
+
+        // { word: [sub_word_1, sub_word_2, ...] }
+        Map<String, List<String>> map = new HashMap<>();
+
+        for(String w: words){
+            for(String x: w.split("")){
+
+                // update indegree
+                indegree.put(x, indegree.getOrDefault(x, 0) + 1);
+
+                // update map
+                List<String> subList = map.getOrDefault(x, new ArrayList<>());
+                //subList.add()
+                map.put(x, map.getOrDefault(x, new ArrayList<>()));
+
+            }
+        }
+
+
+
+
         return null;
     }
 

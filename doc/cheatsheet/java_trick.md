@@ -6,20 +6,45 @@
 
 # 0) Basic data structures
 
-- heap:
+- Heap:
 
 - Default : min-heap
     - LC 703
 ```java
 // java
-PriorityQueue<Integer> heap = new PriorityQueue<>();
+
+// V1
+// - This creates a min-heap using the natural ordering of Integer objects (i.e., integers will be ordered in ascending order by default).
+// - No custom comparator is provided, so Java uses the default comparison of integers, which is already based on their numerical value.
+PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+// V2
+// - This also creates a min-heap, but it uses a custom comparator.
+PriorityQueue<Integer> minHeap = new PriorityQueue<>(new Comparator<Integer>() {
+    @Override
+    public int compare(Integer o1, Integer o2) {
+        int diff = o1 - o2;
+        return diff;
+    }
+});
 ```
 
 - Define max-heap
     - LC 1046
 ```java
 // java
-PriorityQueue<Integer> heap = new PriorityQueue<>(Comperator.reverseOrder());
+
+// V1
+PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comperator.reverseOrder());
+
+// V2
+PriorityQueue<Integer> maxHeap = new PriorityQueue<>(new Comparator<Integer>() {
+    @Override
+    public int compare(Integer o1, Integer o2) {
+        int diff = o2 - o1;
+        return diff;
+    }
+});
 ```       
 
 - Character
