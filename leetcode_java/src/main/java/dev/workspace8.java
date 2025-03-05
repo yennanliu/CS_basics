@@ -1,5 +1,6 @@
 package dev;
 
+import LeetCodeJava.BFS.NetworkDelayTime;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.Tree.RedundantConnection;
@@ -5852,119 +5853,90 @@ class Node {
      */
     public int networkDelayTime(int[][] times, int n, int k) {
 
-        // edge
-        if(times == null || times.length == 0){
+        // Edge case: If no nodes exist
+        if (times == null || times.length == 0 || n == 0) {
             return -1;
         }
-        if(n == 0){
-            return -1;
-        }
-        if(n == 1){
-            return 0; // ???
+        if (n == 1) {
+            return 0; // If there's only one node, no travel time is needed.
         }
 
-        Dijkstra dijkstra = new Dijkstra(times, n);
-        int res = dijkstra.getShortestPath(k);
-        return res;
+        Dijkstra_2 dijkstra = new Dijkstra_2(times, n);
+        return dijkstra.getShortestPath(k);
     }
 
-    public class Dijkstra{
-        // attr
+    public class Dijkstra_2 {
+        // Attributes
         int[][] times;
         int n;
-        //int k;
-        // node: { [neighbor_1, weigh_1],  [neighbor_2, weigh_2],.... }
-        Map<Integer, List<List<Integer>>> graph;
 
-        // constructor
-        public Dijkstra(int[][] times, int n){
+        // Constructor
+        public Dijkstra_2(int[][] times, int n) {
             this.times = times;
             this.n = n;
-            //this.k = k;
-
-            // build the graph
-            this.graph = new HashMap<>();
-            for(int[] t: times){
-                int source = t[0];
-                int target = t[1];
-                int time_ = t[2];
-                List<Integer> tmp = new ArrayList<>();
-                tmp.add(target);
-                tmp.add(time_);
-                List<List<Integer>> tmp_ = new ArrayList<>();
-                tmp_.add(tmp);
-                this.graph.put(source, tmp_);
-            }
         }
 
-        // method
-        public int getShortestPath(int k){
+        // Method to find the shortest path using Dijkstra's algorithm
+        public int getShortestPath(int k) {
+            // Step 1: Build the graph
+            Map<Integer, List<int[]>> edges = new HashMap<>();
+            for (int[] time : times) {
+               // edges.computeIfAbsent(time[0], key -> new ArrayList<>()).add(new int[] { time[1], time[2] });
+                int[] tmp = new int[2];
+                tmp[0]= time[1];
+                tmp[1] = time[2];
+                List<int[]> list = new ArrayList<>();
+                list.add(tmp);
+                edges.put(time[0], list);
+            }
 
-            // init PQ (small PQ)
-            // pq : [ target, travel_time_so_far]
-            // NOTE !!! we sort on `travel_time_so_far` (small -> big)
-            PriorityQueue<List<Integer>> pq = new PriorityQueue<>(new Comparator<List<Integer>>() {
+            // Step 2: Initialize the min-heap priority queue (min distance first)
+            //PriorityQueue<int[]> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+            PriorityQueue<int[]> minHeap = new PriorityQueue<>(new Comparator<int[]>() {
                 @Override
-                public int compare(List<Integer> o1, List<Integer> o2) {
-                    int diff = o1.get(1) - o2.get(1);
-                    if(diff != 0){
-                        return diff;
-                    }
-                    return o1.get(0) - o2.get(0); // should not reach this code theoretically
+                public int compare(int[] o1, int[] o2) {
+                    return o1[0] - o2[0];
                 }
             });
 
-            List<Integer> _list = new ArrayList<>();
-            _list.add(k);
-            _list.add(0); // init travel time is 0
-            pq.add(_list);
+            minHeap.add(new int[] { 0, k }); // {travel time, node}
 
-            int shortestTime = 0;
-            HashSet<Integer> visited = new HashSet<>();
+            // Step 3: Track visited nodes and the last time value
+            Set<Integer> visited = new HashSet<>();
+            int t = 0; // The current time to reach the last processed node
 
-            // BFS
-            while(!pq.isEmpty()){
+            // Step 4: Process the priority queue
+            while (!minHeap.isEmpty()) {
 
-                List<Integer> cur = pq.poll();
-                int target_ = cur.get(0);
-                int time_ = cur.get(1);
+                int[] curr = minHeap.poll();
+                int w1 = curr[0];
+                int n1 = curr[1]; // w1 = current travel time, n1 = node
 
-                // NOTE !!! NOT visit SAME node AGAIN
-                if(visited.contains(target_)){
+                // If the node has been visited, skip it
+                if (visited.contains(n1)) {
                     continue;
                 }
 
-                visited.add(target_);
-                shortestTime = time_; // ???
+                // Mark the node as visited
+                visited.add(n1);
+                t = w1; // Update the last travel time
 
-                if(this.graph.containsKey(target_)){
-
-                    for(List<Integer> x: this.graph.get(target_)){
-                        int new_target = x.get(0);
-                        int new_time = x.get(1);
-
-                        if(!visited.contains(new_target)){
-
-                            if(new_target == k){
-                                return time_ + new_time; // means we found a solution !!
-                            }
-
-                            List<Integer> toAdd = new ArrayList<>();
-                            toAdd.add(new_target);
-                            toAdd.add(time_ + new_time);
-                            pq.add(toAdd);
-
+                // Step 5: Process all neighbors of the current node
+                if (edges.containsKey(n1)) {
+                    for (int[] next : edges.get(n1)) {
+                        int n2 = next[0], w2 = next[1]; // n2 = neighbor node, w2 = travel time to neighbor
+                        if (!visited.contains(n2)) {
+                            minHeap.add(new int[] { w1 + w2, n2 }); // Add neighbor to queue
                         }
                     }
-
                 }
-
             }
 
-            return visited.size() == n ? shortestTime : -1;
+            // Step 6: Check if all nodes are visited, and return the result
+            return visited.size() == n ? t : -1; // Return the last time or -1 if not all nodes were visited
         }
-
     }
+
 
 //    public class MyNode{
 //        // attr
