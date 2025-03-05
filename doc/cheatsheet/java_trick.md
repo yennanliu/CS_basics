@@ -143,7 +143,12 @@ list2.add(1);
 list2.add(2);
 list2.add(3);
 
-/** list2.toArray with size */
+/** 
+ *  NOTE !!! `toArray`
+ *    
+ *  list2.toArray with size
+ * 
+ */
 Integer [] arr2 = list2.toArray(new Integer[list2.size()]); // NOTE here !!!
 ```
 
@@ -228,8 +233,11 @@ public static void main(String[] args) {
 
 // init a list with 2D content
 // LC 406
+
+// example 1
 List<List<Integer>> commonCells = new ArrayList<>();
 
+// example 2
 List<int[]> result = new ArrayList<>(); //return value
 ```
 
@@ -240,18 +248,19 @@ List<int[]> result = new ArrayList<>(); //return value
 
 List<List<Integer>> commonCells = new ArrayList<>();
 for (int i = 0; i < numRows; i++) {
-for (int j = 0; j < numCols; j++) {
-    if (pacificReachable[i][j] && atlanticReachable[i][j]) {
+    for (int j = 0; j < numCols; j++) {
 
-        // NOTE code here
-         commonCells.add(Arrays.asList(i, j));
+        if (pacificReachable[i][j] && atlanticReachable[i][j]) {
+
+            // NOTE code here
+             commonCells.add(Arrays.asList(i, j));
+        }
     }
-}
 }
 ```
 
 
-### 1-0-3) Paste value to List with index
+### 1-0-3) Paste value to List with `index`
 ```java
 // java
 // LC 102
@@ -282,7 +291,7 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 *  NOTE !!!
 *
 *   via below, we can retrieve List val by idx,
-*   append new val to the val (with the same idx)
+*   append new val to the existing array (with same idx)
 *
 *
 *   code breakdown:
@@ -297,7 +306,10 @@ List<List<Integer>> res = new ArrayList<>();
 
 
 // insert curRoot.val to current val in list at `depth` index
+// NOTE !!! below
 res.get(depth).add(curRoot.val);
+
+
 // ...
 ```
 
@@ -352,6 +364,14 @@ return builder.toString();
 // LC 127
 
 String x = "abcd";
+/** 
+ *  1st idx start from 0
+ *  2nd ind start from 1
+ *  
+ *   -> e.g.  [1st_idx, 2nd_idx]
+ * 
+ */
+
 System.out.println(x.substring(0,1)); // a
 System.out.println(x.substring(0,2)); // ab
 System.out.println(x.substring(2,3)); // c
