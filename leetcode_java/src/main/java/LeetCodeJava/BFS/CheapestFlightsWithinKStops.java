@@ -59,8 +59,14 @@ import java.util.*;
 public class CheapestFlightsWithinKStops {
 
     // V0
+    // TODO: implement again
+//    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+//
+//    }
+
+    // V0-1
     // IDEA: Dijkstra (fixed by gpt)
-    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+    public int findCheapestPrice_0_1(int n, int[][] flights, int src, int dst, int k) {
         // Edge case: no flights or invalid input
         if (n == 0 || flights == null || flights.length == 0) {
             return -1;
@@ -100,6 +106,24 @@ public class CheapestFlightsWithinKStops {
             minHeap.offer(new int[] { 0, src, 0 }); // {cost, node, stops}
 
             // Step 3: Track the minimum cost for each node with up to k stops
+            /**
+             * k + 2 (Number of stops):
+             *
+             * -  The second dimension, k + 2, is used to represent the number of stops allowed
+             *    to reach a particular node.
+             *
+             *   -> Why k + 2?
+             *
+             *        - The +1 is for the actual stops, i.e., up to k stops.
+             *
+             *        - The +1 is to account for the 0-th stop — meaning the "starting" position
+             *          (where we haven't yet made any stops).
+             *
+             *        -  The extra +1 is added because if you can make k stops,
+             *           you can still consider arriving at a node with k + 1 stops,
+             *           where k + 1 is the maximum number of stops allowed in this problem.
+             *
+             */
             int[][] dist = new int[n][k + 2]; // dist[node][stops] -> minimum cost to reach node with 'stops' stops
             for (int[] row : dist) {
                 Arrays.fill(row, Integer.MAX_VALUE);
