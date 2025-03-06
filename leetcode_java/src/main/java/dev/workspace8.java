@@ -6384,4 +6384,48 @@ class Node {
 //        }
 //    }
 
+    // LC 746
+    // 11.40 am
+    /**
+     *   -> either climb one or two steps
+     *
+     *  ->  you can either start from the step with index 0,
+     *      or the step with index 1.
+     *
+     *
+     *
+     *
+     *  IDEA 1) : DP  (bottom up)
+     *
+     *   -> get dp[0], dp[1] first
+     *   -> recursively, we get dp[2], dp[3], .... dp[k]
+     *
+     *
+     */
+    public int minCostClimbingStairs(int[] cost) {
+        // edge
+        if(cost == null || cost.length == 0){
+            return 0;
+        }
+
+       int[] dp = new int[cost.length+1];
+        //int[] dp = new int[cost.length];
+//        dp[0] = cost[0];
+//        dp[1] = cost[1]; // ??
+
+        dp[0] = 0;
+        dp[1] = 1; // ???
+
+        for(int i = 2; i < cost.length+1 ; i++){
+            // do 1 jump or 2 jump
+            dp[i] = Math.min( dp[i-2] + dp[i], dp[i-1] );
+        }
+
+        System.out.println(">>> dp = " + Arrays.asList(dp));
+
+       // return dp[dp.length-1]; // ???
+       return Math.min(dp[dp.length-1], dp[dp.length-2]);
+    }
+
+
 }
