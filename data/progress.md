@@ -7,7 +7,8 @@
 		- advance graphs
 	- again: 787,746
 		- similar:
-	- todo: 
+	- todo:
+		- add neetcode algo linkedin post
 		- re-do all previous `again` problems, similar problems, make notes
 		- refine [sliding_window.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
 
