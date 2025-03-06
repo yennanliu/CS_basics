@@ -6164,10 +6164,224 @@ class Node {
             }
         }
 
-
-
-
         return null;
     }
+
+    // LC 787
+    // 10.10 am - 10.20 am
+    /**
+     *
+     * There are n cities connected by m flights.
+     *
+     * Each fight starts from city u and arrives at v with a price w.
+     *
+     * Now given all the cities and flights,
+     *
+     * together with starting city src and the destination dst,
+     *
+     * your task is to find the cheapest price from src to dst with up to k stops.
+     *
+     * If there is no such route, output -1.
+     *
+     *
+     *
+     *  ->  city u and arrives at v with a price w.
+     *
+     */
+    /**  IDEA 1) Dijkstra
+     *
+     *   -> use PQ + BFS, check `min cost` within path from start to end point
+     *   -> if stops < k, then return cost as res
+     *   -> else, return -1 ( can't make it)
+     *
+     */
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+
+        // edge
+        if(n == 0 || k == 0){ // ???
+            return -1;
+        }
+        // make cycle ???
+        if(flights.length > n - 1){
+            return -1;
+        }
+        if(src == dst){
+            return 0;
+        }
+
+        // Dijkstra
+        Dijkstra_3 dijkstra = new Dijkstra_3(flights, n);
+
+        return dijkstra.getShortestPath(src, dst, k);
+    }
+
+
+    public class Dijkstra_3 {
+        // Attributes
+        int[][] times;
+        int n;
+
+        // Constructor
+        public Dijkstra_3(int[][] times, int n) {
+            this.times = times;
+            this.n = n;
+        }
+
+        // Method to find the shortest path using Dijkstra's algorithm
+        public int getShortestPath(int src, int dst, int k) {
+            // Step 1: Build the graph
+            Map<Integer, List<int[]>> edges = new HashMap<>();
+            for (int[] time : times) {
+                edges.computeIfAbsent(time[0], key -> new ArrayList<>()).add(new int[] { time[1], time[2] });
+            }
+
+            // Step 2: Initialize the min-heap priority queue (min distance first)
+            PriorityQueue<int[]> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+            minHeap.offer(new int[] { 0, src }); // {travel time, node}
+
+            // Step 3: Track visited nodes and the last time value
+            Set<Integer> visited = new HashSet<>();
+            int t = 0; // The current time to reach the last processed node
+
+            int cnt = 0;
+
+            // Step 4: Process the priority queue
+            while (!minHeap.isEmpty()) {
+                int[] curr = minHeap.poll();
+                int w1 = curr[0], n1 = curr[1]; // w1 = current travel time, n1 = node
+
+                // If the node has been visited, skip it
+                if (visited.contains(n1)) {
+                    continue;
+                }
+
+                if(n1 == dst){
+                    if(cnt <= k){
+                        return t;
+                    }
+                    return -1; // ???
+                }
+
+                // Mark the node as visited
+                visited.add(n1);
+                t = w1; // Update the last travel time
+
+                // Step 5: Process all neighbors of the current node
+                if (edges.containsKey(n1)) {
+                    for (int[] next : edges.get(n1)) {
+                        int n2 = next[0], w2 = next[1]; // n2 = neighbor node, w2 = travel time to neighbor
+                        if (!visited.contains(n2)) {
+                            minHeap.offer(new int[] { w1 + w2, n2 }); // Add neighbor to queue
+                        }
+                    }
+                }
+
+                cnt += 1;
+            }
+
+            // Step 6: Check if all nodes are visited, and return the result
+            //return visited.size() == k ? t : -1; // Return the last time or -1 if not all nodes were visited
+            return cnt <= k ? t : -1;
+        }
+    }
+
+//    public class MyDijkstra{
+//        // attr
+//        int n;
+//        int[][] flights;
+//
+//        // { src:  [ [ dest, cost ], [ dest, cost ], ... ]
+//        Map<Integer, List<Integer[]>> graph; //????
+//
+//        // constructor
+//        public MyDijkstra(int n, int[][] flights){
+//            this.n = n;
+//            this.flights = flights;
+//            this.graph = new HashMap<>();
+//
+//            // build graph
+//            for(int[] f: flights){
+//                int src = f[0];
+//                int dest = f[1];
+//                int cost = f[2];
+//                List<Integer[]> newList = this.graph.getOrDefault(src, new ArrayList<>());
+//                Integer[] newVal = new Integer[2];
+//                newVal[0] = dest;
+//                newVal[1] = cost;
+//                newList.add(newVal);
+//                this.graph.put(src, newList);
+//            }
+//        }
+//
+//        // method
+//        public int getShortestPath(int src, int dst, int k){
+//
+//
+//            // min PQ
+//            // PQ:  {dest, cost}  -> NO NEED to record SRC,
+//            PriorityQueue<Integer[]> minPQ = new PriorityQueue<>(new Comparator<Integer[]>() {
+//                @Override
+//                public int compare(Integer[] o1, Integer[] o2) {
+//                    return o1[2] - o2[2]; // compare on cost (small -> big)
+//                }
+//            });
+//
+//            int res = 0;
+//            HashSet<Integer> visited = new HashSet<>();
+//
+//            //minPQ.add(new Integer[]{src, dst, Integer.MAX_VALUE}); // ????
+//            minPQ.add(new Integer[]{src, 0}); // ???? since at beginning src == dst, so cost = 0
+//
+//            int cnt = 0;
+//
+//            while(!minPQ.isEmpty()){
+//
+//                Integer[] cur = minPQ.poll();
+//                //int _src = cur[0];
+//                int _dst = cur[0];
+//                int _cost = cur[1];
+//                //visited.add(cur);
+//
+//                if(visited.contains(_dst)){
+//                    continue;
+//                }
+//
+//                visited.add(src);
+//
+////                if(cnt == 0){
+////                    res = _cost; // ???
+////                }
+//
+//                if(_dst == dst){
+//                    if (cnt <= k){
+//                        return res;
+//                    }
+//                    return -1;
+//                }
+//
+//                // NOTE !!! below
+//                if(this.graph.containsKey(_dst)){
+//                    for(Integer[] sub: this.graph.get(_dst)){
+//
+//                        //int new_src = cur[0];
+//                        int new_dst = cur[0];
+//                        int new_cost = cur[1];
+//
+//                        res = new_cost;
+//
+//                        if(!visited.contains(new_dst)){
+//                            minPQ.add( new Integer[]{new_dst, new_cost + res} );
+//                        }
+//                    }
+//                }
+//
+//
+//                cnt += 1;
+//            }
+//
+//
+//            return res;
+//        }
+//    }
 
 }
