@@ -6427,5 +6427,83 @@ class Node {
        return Math.min(dp[dp.length-1], dp[dp.length-2]);
     }
 
+    // LC 005
+    // 12.22 - 12.32 pm
+    /**
+     *  IDEA 1) greedy
+     *        step 1) loop over idx
+     *               `start from idx`, check the max longest Palindromic
+     *                maintain the longest Palindromic sub str at the same time
+     *
+     */
+    public String longestPalindrome(String s) {
+
+        // edge
+        if(s == null || s.length() == 0){
+            return null;
+        }
+        if(s.length() == 1){
+            return s;
+        }
+        if(s.length() == 2){
+            return s.charAt(0) == s.charAt(1) ? s : null;
+        }
+
+        String res = String.valueOf(s.charAt(0)); // init as 1st val
+
+        // 2 pointers
+        for(int i = 0; i < s.length(); i++){
+            String oddSubStr = getOddPalindromic(s, i);
+            String evenSubStr = getEvenPalindromic(s, i);
+            if(oddSubStr.length() < evenSubStr.length()){
+               if(evenSubStr.length() > res.length()){
+                   res = evenSubStr;
+               }
+            }else{
+                if(oddSubStr.length() > res.length()){
+                    res = oddSubStr;
+                }
+            }
+        }
+
+        return res; // ???
+    }
+
+    public String getOddPalindromic(String s, int start){
+
+        int left = start;
+        int right = start;
+
+        StringBuilder sb = new StringBuilder();
+
+        // ???
+        while(s.charAt(left) == s.charAt(right) && left > 0 && right < s.length() - 1){
+            left -= 1;
+            right += 1;
+            sb.append(String.valueOf(s.charAt(start)));
+            sb.append(String.valueOf(s.charAt(right)));
+        }
+
+        return sb.toString(); // ???
+    }
+
+
+    public String getEvenPalindromic(String s, int start){
+
+        int left = start - 1;
+        int right = start + 1;
+
+        StringBuilder sb = new StringBuilder();
+
+        // ???
+        while(s.charAt(left) == s.charAt(right) && left > 0 && right < s.length() - 1){
+            left -= 1;
+            right += 1;
+            sb.append(String.valueOf(s.charAt(left)));
+            sb.append(String.valueOf(s.charAt(right)));
+        }
+
+        return sb.toString(); // ???
+    }
 
 }

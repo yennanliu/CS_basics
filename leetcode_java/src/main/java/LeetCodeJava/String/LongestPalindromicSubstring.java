@@ -90,6 +90,71 @@ public class LongestPalindromicSubstring {
         return res;
     }
 
+    // V0-1
+    // IDEA: 2 POINTERS + Palindrome check (fixed by gpt)
+    public String longestPalindrome_0_1(String s) {
+
+        // edge case: empty string or null input
+        if (s == null || s.length() == 0) {
+            return null;
+        }
+        if (s.length() == 1) {
+            return s;
+        }
+
+        String res = String.valueOf(s.charAt(0)); // Initialize with the first character
+
+        // 2 pointers to expand around each character
+        for (int i = 0; i < s.length(); i++) {
+            // Get the longest odd-length palindrome centered at i
+            String oddSubStr = getOddPalindromic(s, i);
+            // Get the longest even-length palindrome centered at i
+            String evenSubStr = getEvenPalindromic(s, i);
+
+            // Update the result with the longer palindrome
+            if (oddSubStr.length() > res.length()) {
+                res = oddSubStr;
+            }
+            if (evenSubStr.length() > res.length()) {
+                res = evenSubStr;
+            }
+        }
+
+        return res;
+    }
+
+    // Function to find the longest odd-length palindrome centered at `start`
+    public String getOddPalindromic(String s, int start) {
+        int left = start;
+        int right = start;
+
+        // Expand around the center for odd-length palindrome
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+
+        // Return the palindrome substring found
+        return s.substring(left + 1, right);
+    }
+
+    // Function to find the longest even-length palindrome centered between
+    // `start-1` and `start`
+    public String getEvenPalindromic(String s, int start) {
+        int left = start - 1;
+        int right = start;
+
+        // Expand around the center for even-length palindrome
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+
+        // Return the palindrome substring found
+        return s.substring(left + 1, right);
+    }
+
+
     // V1
     // IDEA : BRUTE FORCE + isPalindrome check
     // https://leetcode.com/problems/longest-palindromic-substring/solutions/4212564/beats-96-49-5-different-approaches-brute-force-eac-dp-ma-recursion/
