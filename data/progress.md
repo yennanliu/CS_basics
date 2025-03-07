@@ -6,7 +6,7 @@
 	- 5 / day ->  15 days to finish
 		- 1 d DP
 	- again: 91,152
-		- similar:
+		- similar: 53 (Kadane Algorithm)
 	- todo:
 		- add neetcode algo linkedin post
 		- re-do all previous `again` problems, similar problems, make notes
