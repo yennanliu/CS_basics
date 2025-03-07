@@ -9,6 +9,8 @@ package AlgorithmJava;
  *
  * - https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/kadane_algo.md
  *
+ *   // LC 53, LC 152
+ *
  */
 public class KadaneAlgo {
 
