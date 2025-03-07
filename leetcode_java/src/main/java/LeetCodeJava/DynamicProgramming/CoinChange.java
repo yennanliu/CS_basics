@@ -54,7 +54,9 @@ public class CoinChange {
         /**
          * NOTE !!!
          *
-         *  we use `steps` (hash map) to avoid duplicated computation
+         *   1) we use `steps` (hash map) to avoid duplicated computation
+         *   2) we use `step` to record `count of steps` at the moment
+         *        -> so once cur_sum == amount, we can return above as result directly
          */
         Map<Integer, Integer> steps = new HashMap<>();
         steps.put(0, 0);
@@ -64,6 +66,17 @@ public class CoinChange {
         while (!queue.isEmpty()) {
             int tmp = queue.poll();
             int level = steps.get(tmp);
+            /**
+             *  NOTE !!!
+             *
+             *   since we want to fine the `minimum` ,
+             *   so via BFS, when the first solution is found,
+             *   we just return it, as it's the `minimum` solution
+             *
+             *
+             *   Return the fewest number of coins that you need to make up that amount.
+             *
+             */
             if (tmp == amount) {
                 return level;
             }
@@ -71,6 +84,13 @@ public class CoinChange {
                 if (tmp + c > amount) {
                     continue;
                 }
+                /**
+                 *  NOTE !!!
+                 *
+                 *   below, ONLY when current `tmp` (cur_sum) is NOT visited yet,
+                 *   we go further on this option
+                 *
+                 */
                 if (!steps.containsKey(tmp + c)) {
                     queue.offer(tmp + c);
                     steps.put(tmp + c, level + 1);
@@ -101,7 +121,7 @@ public class CoinChange {
 
         // Convert to Integer array for sorting
         Integer[] coins_ = Arrays.stream(coins).boxed().toArray(Integer[]::new);
-        /** NOTE !!! sort is not necessary*/
+        /** NOTE !!! sort is not necessary */
         // Arrays.sort(coins_, Collections.reverseOrder()); // Sort coins in descending order
 
         // BFS Initialization
@@ -148,10 +168,160 @@ public class CoinChange {
         return -1; // No solution found
     }
 
-    // V1
+    // V0-3
+    // IDEA: BFS (fixed by gpt)
+    public int coinChange_0_3(int[] coins, int amount) {
+        // edge case: if amount is 0, no coins are needed
+        if (amount == 0) {
+            return 0;
+        }
+
+        // edge case: if no coins are provided
+        if (coins == null || coins.length == 0) {
+            return -1;
+        }
+
+        // BFS initialization
+        Queue<Integer> q = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+        q.offer(0); // start with sum 0
+        visited.add(0);
+
+        int res = 0;
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            res++;
+
+            for (int i = 0; i < size; i++) {
+                int curSum = q.poll();
+
+                // Try each coin and check if we can reach the amount
+                for (int coin : coins) {
+                    int newSum = curSum + coin;
+
+                    // If new sum equals the amount, we have found the solution
+                    if (newSum == amount) {
+                        return res;
+                    }
+
+                    // If new sum is less than the amount and not visited yet, add to the queue
+                    if (newSum < amount && !visited.contains(newSum)) {
+                        visited.add(newSum);
+                        q.offer(newSum);
+                    }
+                }
+            }
+        }
+
+        return -1; // If no solution is found
+    }
+
+    // V1-1
+    // https://neetcode.io/problems/coin-change
+    // IDEA: RECURSION
+    public int dfs(int[] coins, int amount) {
+        if (amount == 0) return 0;
+
+        int res = (int) 1e9;
+        for (int coin : coins) {
+            if (amount - coin >= 0) {
+                res = Math.min(res,
+                        1 + dfs(coins, amount - coin));
+            }
+        }
+        return res;
+    }
+
+    public int coinChange_1_1(int[] coins, int amount) {
+        int minCoins = dfs(coins, amount);
+        return (minCoins >= 1e9) ? -1 : minCoins;
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/coin-change
+    // IDEA: Dynamic Programming (Top-Down)
+    HashMap<Integer, Integer> memo = new HashMap<>();
+
+    public int dfs(int amount, int[] coins) {
+        if (amount == 0) return 0;
+        if (memo.containsKey(amount))
+            return memo.get(amount);
+
+        int res = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            if (amount - coin >= 0) {
+                int result = dfs(amount - coin, coins);
+                if (result != Integer.MAX_VALUE) {
+                    res = Math.min(res, 1 + result);
+                }
+            }
+        }
+
+        memo.put(amount, res);
+        return res;
+    }
+
+    public int coinChange_1_2(int[] coins, int amount) {
+        int minCoins = dfs(amount, coins);
+        return minCoins == Integer.MAX_VALUE ? -1 : minCoins;
+    }
+
+
+    // V1-3
+    // https://neetcode.io/problems/coin-change
+    // IDEA: Dynamic Programming (Bottom-Up)
+    public int coinChange_1_3(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 0; j < coins.length; j++) {
+                if (coins[j] <= i) {
+                    dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1);
+                }
+            }
+        }
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+
+    // V1-4
+    // https://neetcode.io/problems/coin-change
+    // IDEA: BFS
+    public int coinChange_1_4(int[] coins, int amount) {
+        if (amount == 0) return 0;
+
+        Queue<Integer> q = new LinkedList<>();
+        q.add(0);
+        boolean[] seen = new boolean[amount + 1];
+        seen[0] = true;
+        int res = 0;
+
+        while (!q.isEmpty()) {
+            res++;
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                int cur = q.poll();
+                for (int coin : coins) {
+                    int nxt = cur + coin;
+                    if (nxt == amount) return res;
+                    if (nxt > amount || seen[nxt]) continue;
+                    seen[nxt] = true;
+                    q.add(nxt);
+                }
+            }
+        }
+
+        return -1;
+    }
+
+
+
+    // V2
     // IDEA : DFS
     // https://leetcode.com/problems/coin-change/solutions/4564988/pretty-intuitive-approach-with-recursion-memoization/
-    public int coinChange_1(int[] coins, int amount) {
+    public int coinChange_2(int[] coins, int amount) {
         if(amount == 0){
             return 0;
         }
@@ -182,7 +352,7 @@ public class CoinChange {
         return ans;
     }
 
-    // V2
+    // V3
     // IDEA : DP
     // https://leetcode.com/problems/coin-change/solutions/4638602/java/
     public int find( int i,int tar,int[] arr, Integer[][] dp ) {
@@ -202,7 +372,7 @@ public class CoinChange {
         return dp[i][tar] = Math.min(take,ntake);
     }
 
-    public int coinChange_2(int[] coins, int amount) {
+    public int coinChange_3(int[] coins, int amount) {
         int n = coins.length;
 
         Integer[][] dp = new Integer[n][amount+1];
@@ -215,10 +385,10 @@ public class CoinChange {
 
     }
 
-    // V3
+    // V4
     // IDEA : DP
     // https://leetcode.com/problems/coin-change/solutions/4649450/easy-to-understand-java-code-aditya-verma-approach/
-    public int coinChange_3(int[] coins, int amount) {
+    public int coinChange_4(int[] coins, int amount) {
         int n = coins.length;
         int[][] t = new int[n + 1][amount + 1];
 
