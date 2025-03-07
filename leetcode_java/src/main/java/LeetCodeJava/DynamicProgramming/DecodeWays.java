@@ -3,6 +3,8 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/decode-ways/description/
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *  91. Decode Ways
@@ -80,11 +82,84 @@ public class DecodeWays {
     // V0
     // IDEA : DP
     // TODO : implement
+//    public int numDecodings(String encodedString) {
+//
+//    }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/decode-ways
+    // IDEA: RECURSION
+    private int dfs(int i, String s) {
+        if (i == s.length()) return 1;
+        if (s.charAt(i) == '0') return 0;
+
+        int res = dfs(i + 1, s);
+        if (i < s.length() - 1) {
+            if (s.charAt(i) == '1' ||
+                    (s.charAt(i) == '2' && s.charAt(i + 1) < '7')) {
+                res += dfs(i + 2, s);
+            }
+        }
+        return res;
+    }
+
+    public int numDecodings_1_1(String s) {
+        return dfs(0, s);
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/decode-ways
+    // IDEA: Dynamic Programming (Top-Down)
+    public int numDecodings_1_2(String s) {
+        Map<Integer, Integer> dp = new HashMap<>();
+        dp.put(s.length(), 1);
+
+        return dfs(s, 0, dp);
+    }
+
+    private int dfs(String s, int i, Map<Integer, Integer> dp) {
+        if (dp.containsKey(i)) {
+            return dp.get(i);
+        }
+        if (s.charAt(i) == '0') {
+            return 0;
+        }
+
+        int res = dfs(s, i + 1, dp);
+        if (i + 1 < s.length() && (s.charAt(i) == '1' ||
+                s.charAt(i) == '2' && s.charAt(i + 1) < '7')) {
+            res += dfs(s, i + 2, dp);
+        }
+        dp.put(i, res);
+        return res;
+    }
+
+
+    // V1-3
+    // https://neetcode.io/problems/decode-ways
+    // IDEA: Dynamic Programming (Bottom-Up)
+    public int numDecodings_1_3(String s) {
+        int[] dp = new int[s.length() + 1];
+        dp[s.length()] = 1;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == '0') {
+                dp[i] = 0;
+            } else {
+                dp[i] = dp[i + 1];
+                if (i + 1 < s.length() && (s.charAt(i) == '1' ||
+                        s.charAt(i) == '2' && s.charAt(i + 1) < '7')) {
+                    dp[i] += dp[i + 2];
+                }
+            }
+        }
+        return dp[0];
+    }
+    
+
+    // V2
     // IDEA : DP
     // https://leetcode.com/problems/decode-ways/solutions/4456554/character-state-machine-video-solution-java-c/
-    public int numDecodings(String encodedString) {
+    public int numDecodings_2(String encodedString) {
         char s[] = encodedString.toCharArray();
         if(s[0] == '0')return 0;
         int sz = s.length;
@@ -110,10 +185,10 @@ public class DecodeWays {
         return noWaysAtIndx[sz - 1];
     }
 
-    // V2
+    // V3
     // IDEA : DP
     // https://leetcode.com/problems/decode-ways/solutions/4454539/decode-ways-java/
-    public int numDecodings_1(String s) {
+    public int numDecodings_3(String s) {
         int n = s.length();
         int[] dp = new int[n + 1];
         if(n == 0 || s.charAt(0) == '0') return 0;
@@ -130,14 +205,14 @@ public class DecodeWays {
         return dp[n];
     }
 
-    // V3-0
+    // V4-0
     // IDEA: RECURSION (TLE)
     // https://leetcode.com/problems/decode-ways/solutions/4454173/recursive-top-down-bottom-up-clean-and-c-hqge/
 
-    // V3-1
+    // V4-1
     // IDEA: DP (TOP DOWN)
     // https://leetcode.com/problems/decode-ways/solutions/4454173/recursive-top-down-bottom-up-clean-and-c-hqge/
-    public int numDecodings_3_1(String s) {
+    public int numDecodings_4_1(String s) {
         int[] memo = new int[s.length()];
         Arrays.fill(memo, -1);
         return topDownDecode(s, 0, memo);
@@ -173,10 +248,10 @@ public class DecodeWays {
         return ways;
     }
 
-    // V3-2
+    // V4-2
     // IDEA: DP (BOTTOM UP)
     // https://leetcode.com/problems/decode-ways/solutions/4454173/recursive-top-down-bottom-up-clean-and-c-hqge/
-    public int numDecodings_3_2(String s) {
+    public int numDecodings_4_2(String s) {
         int n = s.length();
         if (n == 0) {
             return 0;

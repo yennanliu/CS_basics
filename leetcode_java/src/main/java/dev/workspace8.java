@@ -6506,4 +6506,52 @@ class Node {
         return sb.toString(); // ???
     }
 
+    // LC 91
+    // 9.35 - 9.45 am
+    /**
+     *
+     *
+        -> Given a string s containing only digits,
+           return `the number of ways` to decode it.
+          If the entire string cannot be decoded in any valid way, return 0.
+
+      IDEA 1) DP
+
+      IDEA 2) backtrack
+
+       exp 1)
+
+            s = "12" -> [1, 12] -> 2
+
+
+           1
+       2
+
+
+      exp 2)  s = "226"   -> [2,2,6], [2,26], [226]
+
+          2               226
+        2  26
+       6
+
+     exp 3) s = "06" -> invalid -> 0
+
+     */
+    public int numDecodings(String encodedString) {
+
+        //edge
+        if(encodedString == null || encodedString.length() == 0){
+            return 0; // ??
+        }
+
+        if(encodedString.charAt(0) == '0'){
+            return 0; // ??? 06, 01.. are invalid input
+        }
+
+        // DP
+
+
+        return 0;
+    }
+
 }
