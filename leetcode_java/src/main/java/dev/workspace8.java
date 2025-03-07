@@ -6634,4 +6634,153 @@ class Node {
         return res;
     }
 
+    // LC 152
+    // 11.02 - 11.15 am
+    /**
+     *
+     *  IDEA 0) brute force
+     *
+     *  IDEA 1) SLIDING WINDOW ??
+     *
+     *   exp 1)
+     *
+     *     Input: nums = [2,3,-2,4]
+     *     Output: 6
+     *
+     *    -> [2,3,-2,4]  res = 2
+     *        l
+     *        r
+     *
+     *   -> [2,3,-2,4]  res = 6
+     *       l r
+     *
+     *   -> [2,3,-2,4]  res = 6
+     *       l    r
+     *
+     *   -> [2,3,-2,4]  res = 6
+     *       l      r
+     *
+     *  exp 2)
+     *
+     *     Input: nums = [-2,0,-1]
+     *     Output: 0
+     *
+     *
+     *   ->  [-2,0,-1], res = -2 ??
+     *        l
+     *        r
+     *
+     *   ->  [-2,0,-1], res = 0
+     *        l  r
+     *
+     *   ->  [-2,0,-1], res = 0
+     *        l     r
+     *
+     *
+     *
+     *
+     *
+     * IDEA 2) k*** algo   ???
+     *   -> algo for getting max / min val from sub array
+     *
+     *   -> A subarray is a contiguous non-empty sequence
+     *      of elements within an array.
+     *
+     *
+     *
+     */
+//    public int maxProduct(int[] nums) {
+//
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0; // ?
+//        }
+//        if(nums.length == 1){
+//            return nums[0];
+//        }
+//        if(nums.length == 2){
+//            if (nums[0] * nums[1] > 0){
+//                return nums[0] * nums[1];
+//            }
+//            return Math.max(nums[0], nums[1]);
+//        }
+//
+//        // sliding window
+//        int res = Integer.MAX_VALUE; // ??
+//        for(int n: nums){
+//            res = Math.min(res, n);
+//        }
+//
+//        // ???
+//        for(int i = 0; i < nums.length - 1; i++){
+//            int cur = 1;
+//            for(int j = i; j < nums.length; j++){
+//                cur = cur * nums[j];
+//                // get max from cur, res, nums[j]
+//                res = Math.max(nums[j], Math.max(res, cur));
+//            }
+//        }
+//
+//        return res;
+//    }
+
+    // V2:
+    // IDEA: Kadane’s Algorithm for Maximum Product Subarray (GPT)
+    public int maxProduct(int[] nums) {
+
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0; // ?
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+        if(nums.length == 2){
+            if (nums[0] * nums[1] > 0){
+                return nums[0] * nums[1];
+            }
+            return Math.max(nums[0], nums[1]);
+        }
+
+        int res = Integer.MAX_VALUE; // ??
+        for(int n: nums){
+            res = Math.min(res, n);
+        }
+
+        /**
+         * Kadane algo
+         *
+         *  -> is DP algo actually
+         *
+         *  -> maintain
+         *     - local min, max
+         *     - global max
+         *
+         *     -> so, within the iteration, we can still
+         *     -> get possible max val via local_min * cur
+         *     -> on the same time, we calculate local_max (local_max * cur) as well
+         *     -> and update the global max global_max = max(local_min, local_max)
+         */
+
+        // init // ???
+        int global_max = nums[0];
+        int local_max = nums[0];
+        int local_min = nums[0];
+
+        for(int i = 1; i < nums.length - 1; i++){
+            //for(int j = 0)
+            if(nums[i] < 0){
+                local_min = local_min * nums[i];
+                local_max = 1; // ???
+            }else{
+                local_max = local_max * nums[i]; // ??
+            }
+            global_max = Math.max(global_max, Math.max(local_max, local_min));
+        }
+
+        return global_max;
+    }
+
+
+
 }

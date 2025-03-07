@@ -1,6 +1,10 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/maximum-product-subarray/description/
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 152. Maximum Product Subarray
  * Solved
@@ -35,14 +39,66 @@ package LeetCodeJava.DynamicProgramming;
  */
 public class MaximumProductSubarray {
 
+
     // V0
+    // IDEA: Kadane’s Algorithm for Maximum Product Subarray (GPT)
+    /**
+     * 1) Kadane’s Algorithm is a dynamic programming approach used to find:
+     *
+     * 	  1.	Maximum sum subarray → Standard Kadane’s Algorithm
+     * 	  2.	Maximum product subarray → A modified version of Kadane’s Algorithm
+     *
+     *   -> It works in O(n) time complexity, making it much faster than brute-force approaches (O(n²) or O(n³)).
+     *
+     *
+     * 2_ Kadane’s Algorithm for Maximum Sum Subarray
+     *
+     *   - Problem Statement:
+     * 	Given an array of integers, find the contiguous subarray
+     * 	(containing at least one number) that has the largest sum.
+     *
+     *   - Kadane’s Approach
+     * 	•	We iterate through the array while maintaining:
+     * 	•	maxSum → Stores the maximum subarray sum found so far.
+     * 	•	curSum → Stores the current subarray sum.
+     * 	•	If curSum ever becomes negative, reset it to 0 (since a negative sum will only decrease the next sum).
+     *
+     */
+    public int maxProduct_0(int[] nums) {
+        // Edge case
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        /**
+         * 	•	maxProd: Tracks the maximum product up to the current index.
+         * 	•	minProd: Tracks the minimum product up to the current index
+         * 	             (needed because multiplying by a negative can turn a small value into a large one).
+         */
+        int maxProd = nums[0];
+        int minProd = nums[0];
+        int result = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            int temp = maxProd; // Store maxProd before updating
+
+            maxProd = Math.max(nums[i], Math.max(nums[i] * maxProd, nums[i] * minProd));
+            minProd = Math.min(nums[i], Math.min(nums[i] * temp, nums[i] * minProd));
+
+            result = Math.max(result, maxProd);
+        }
+
+        return result;
+    }
+
+    // V0_1
     // IDEA : DP
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/maximum-product-subarray.py#L69
     // IDEA : cur max = max (cur, cur * dp[k-1])
     //        But, also needs to consider "minus number"
     //        -> e.g.  (-1) * (-3) = 3
     //        -> so we NEED to track maxSoFar, and minSoFar
-    public int maxProduct(int[] nums) {
+    public int maxProduct_0_1(int[] nums) {
 
         // null check
         if (nums.length == 0){
@@ -106,9 +162,9 @@ public class MaximumProductSubarray {
         }
     }
 
-    // V0-1
+    // V0-2
     // IDEA: BRUTE FORCE (2 pointers) + boundary handling
-    public int maxProduct_0_1(int[] nums) {
+    public int maxProduct_0_2(int[] nums) {
 
         // edge
         if (nums == null || nums.length == 0) {
@@ -139,61 +195,107 @@ public class MaximumProductSubarray {
         return res;
     }
 
-  // V0-2
-  // IDEA: Kadane’s Algorithm for Maximum Product Subarray (GPT)
-  /**
-   * 1) Kadane’s Algorithm is a dynamic programming approach used to find:
-   * 	1.	Maximum sum subarray → Standard Kadane’s Algorithm
-   * 	2.	Maximum product subarray → A modified version of Kadane’s Algorithm
-   *
-   *   -> It works in O(n) time complexity, making it much faster than brute-force approaches (O(n²) or O(n³)).
-   *
-   *
-   * 2_ Kadane’s Algorithm for Maximum Sum Subarray
-   *
-   *   - Problem Statement:
-   * 	Given an array of integers, find the contiguous subarray
-   * 	(containing at least one number) that has the largest sum.
-   *
-   *   - Kadane’s Approach
-   * 	•	We iterate through the array while maintaining:
-   * 	•	maxSum → Stores the maximum subarray sum found so far.
-   * 	•	curSum → Stores the current subarray sum.
-   * 	•	If curSum ever becomes negative, reset it to 0 (since a negative sum will only decrease the next sum).
-   *
-   */
-  public int maxProduct_0_2(int[] nums) {
-        // Edge case
-        if (nums == null || nums.length == 0) {
-            return 0;
+
+    // V1-1
+    // https://neetcode.io/problems/maximum-product-subarray
+    // IDEA: BRUTE FORCE
+    public int maxProduct_1_1(int[] nums) {
+        int res = nums[0];
+
+        for (int i = 0; i < nums.length; i++) {
+            int cur = nums[i];
+            res = Math.max(res, cur);
+            for (int j = i + 1; j < nums.length; j++) {
+                cur *= nums[j];
+                res = Math.max(res, cur);
+            }
         }
 
-    /**
-     * 	•	maxProd: Tracks the maximum product up to the current index.
-     * 	•	minProd: Tracks the minimum product up to the current index
-     * 	             (needed because multiplying by a negative can turn a small value into a large one).
-     */
-    int maxProd = nums[0];
-        int minProd = nums[0];
-        int result = nums[0];
-
-        for (int i = 1; i < nums.length; i++) {
-            int temp = maxProd; // Store maxProd before updating
-
-            maxProd = Math.max(nums[i], Math.max(nums[i] * maxProd, nums[i] * minProd));
-            minProd = Math.min(nums[i], Math.min(nums[i] * temp, nums[i] * minProd));
-
-            result = Math.max(result, maxProd);
-        }
-
-        return result;
+        return res;
     }
 
-    // V1
+    // V1-2
+    // https://neetcode.io/problems/maximum-product-subarray
+    // IDEA: Sliding Window
+    public int maxProduct_1_2(int[] nums) {
+        List<List<Integer>> A = new ArrayList<>();
+        List<Integer> cur = new ArrayList<>();
+        int res = Integer.MIN_VALUE;
+
+        for (int num : nums) {
+            res = Math.max(res, num);
+            if (num == 0) {
+                if (!cur.isEmpty()) A.add(cur);
+                cur = new ArrayList<>();
+            } else cur.add(num);
+        }
+        if (!cur.isEmpty()) A.add(cur);
+
+        for (List<Integer> sub : A) {
+            int negs = 0;
+            for (int i : sub) {
+                if (i < 0) negs++;
+            }
+
+            int prod = 1;
+            int need = (negs % 2 == 0) ? negs : (negs - 1);
+            negs = 0;
+            for (int i = 0, j = 0; i < sub.size(); i++) {
+                prod *= sub.get(i);
+                if (sub.get(i) < 0) {
+                    negs++;
+                    while (negs > need) {
+                        prod /= sub.get(j);
+                        if (sub.get(j) < 0) negs--;
+                        j++;
+                    }
+                }
+                if (j <= i) res = Math.max(res, prod);
+            }
+        }
+        return res;
+    }
+
+
+    // V1-3
+    // https://neetcode.io/problems/maximum-product-subarray
+    // IDEA: Kadane's Algorithm ***
+    public int maxProduct_1_3(int[] nums) {
+        int res = nums[0];
+        int curMin = 1, curMax = 1;
+
+        for (int num : nums) {
+            int tmp = curMax * num;
+            curMax = Math.max(Math.max(num * curMax, num * curMin), num);
+            curMin = Math.min(Math.min(tmp, num * curMin), num);
+            res = Math.max(res, curMax);
+        }
+        return res;
+    }
+
+
+    // V1-4
+    // https://neetcode.io/problems/maximum-product-subarray
+    // IDEA: PREFIX + SUFFIX
+    public int maxProduct_1_4(int[] nums) {
+        int n = nums.length;
+        int res = nums[0];
+        int prefix = 0, suffix = 0;
+
+        for (int i = 0; i < n; i++) {
+            prefix = nums[i] * (prefix == 0 ? 1 : prefix);
+            suffix = nums[n - 1 - i] * (suffix == 0 ? 1 : suffix);
+            res = Math.max(res, Math.max(prefix, suffix));
+        }
+        return res;
+    }
+
+
+    // V2
     // IDEA : For each index i keep updating the max and min. We are also keeping min because on multiplying with any negative number your min will become max and max will become min. So for every index i we will take max of (i-th element, prevMax * i-th element, prevMin * i-th element).
     // -> max of (i-th element, prevMax * i-th element, prevMin * i-th element)
     // https://leetcode.com/problems/maximum-product-subarray/solutions/1608862/java-3-solutions-detailed-explanation-using-image/
-    public int maxProduct_1(int[] nums) {
+    public int maxProduct_2(int[] nums) {
 
         int max = nums[0], min = nums[0], ans = nums[0];
 
@@ -212,10 +314,10 @@ public class MaximumProductSubarray {
         return ans;
     }
 
-    // V2
+    // V3
     // IDEA : Just the slight modification of previous approach.As we know that on multiplying with negative number max will become min and min will become max, so why not as soon as we encounter negative element, we swap the max and min already.
     // https://leetcode.com/problems/maximum-product-subarray/solutions/1608862/java-3-solutions-detailed-explanation-using-image/
-    public int maxProduct_2(int[] nums) {
+    public int maxProduct_3(int[] nums) {
 
         int max = nums[0], min = nums[0], ans = nums[0];
         int n = nums.length;
@@ -238,10 +340,10 @@ public class MaximumProductSubarray {
         return ans;
     }
 
-    // V3
+    // V4
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/maximum-product-subarray/solutions/1608862/java-3-solutions-detailed-explanation-using-image/
-    public int maxProduct_3(int[] nums) {
+    public int maxProduct_4(int[] nums) {
 
         int n = nums.length;
         int l=1,r=1;
