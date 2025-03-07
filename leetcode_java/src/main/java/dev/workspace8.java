@@ -6554,4 +6554,84 @@ class Node {
         return 0;
     }
 
+    // LC 322
+    // 10.08 AM - 10.20 AM
+    /**
+     *  IDEA 1) BFS
+     *  IDES 2) DFS
+     *  IDEA 3) DP ???
+     *
+     */
+    public int coinChange(int[] coins, int amount) {
+        // edge
+        if(coins == null || coins.length == 0){
+            return -1;
+        }
+//        boolean isSmaller = true;
+//        for(int c: coins){
+//            if(c > amount){
+//                isSmaller = false;
+//            }
+//        }
+//        if(isSmaller){
+//            return -1;
+//        }
+
+        HashSet<Integer> set = new HashSet<>();
+        for(int c: coins){
+            set.add(c);
+        }
+
+        // sort (decreasing) (big -> small)
+        //Arrays.sort(Collections.reverseOrder()); // ??
+
+        HashSet<List<Integer>> visited = new HashSet<>();
+
+        // bfs
+        Queue<List<Integer>> q = new LinkedList<>();
+        // init by add `all unique coin`
+        for(int s: set){
+            List<Integer> list = new ArrayList<>();
+            list.add(s);
+            q.add(list);
+        }
+
+        //int res = 0;
+        while(!q.isEmpty()){
+
+            List<Integer> cur = q.poll();
+            int curSum = getListSum(cur);
+            if(curSum == amount){
+                //Collections.sort(cur);
+                if(!visited.contains(cur)){
+                   // res += 1;
+                   // visited.add(cur);
+                   return cur.size();
+                }
+            }
+
+            if(curSum > amount){
+                continue;
+            }
+
+            // NOTE !!! below
+            for(int c: coins){
+                if(curSum + c <= amount){
+                    cur.add(c);
+                    q.add(cur);
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    public int getListSum(List<Integer> input){
+        int res = 0;
+        for(int x: input){
+            res += x;
+        }
+        return res;
+    }
+
 }
