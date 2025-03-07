@@ -46,12 +46,13 @@ public class MaximumProductSubarray {
      * 1) Kadane’s Algorithm is a dynamic programming approach used to find:
      *
      * 	  1.	Maximum sum subarray → Standard Kadane’s Algorithm
-     * 	  2.	Maximum product subarray → A modified version of Kadane’s Algorithm
+     * 	  2.	Maximum product subarray → A  `modified` version of Kadane’s Algorithm
      *
-     *   -> It works in O(n) time complexity, making it much faster than brute-force approaches (O(n²) or O(n³)).
+     *   -> It works in O(n) time complexity,
+     *      making it much faster than brute-force approaches (O(n²) or O(n³)).
      *
      *
-     * 2_ Kadane’s Algorithm for Maximum Sum Subarray
+     * 2) Kadane’s Algorithm for Maximum Sum Subarray
      *
      *   - Problem Statement:
      * 	Given an array of integers, find the contiguous subarray
@@ -61,7 +62,8 @@ public class MaximumProductSubarray {
      * 	•	We iterate through the array while maintaining:
      * 	•	maxSum → Stores the maximum subarray sum found so far.
      * 	•	curSum → Stores the current subarray sum.
-     * 	•	If curSum ever becomes negative, reset it to 0 (since a negative sum will only decrease the next sum).
+     * 	•	If curSum ever becomes negative, reset it to 0
+     * 	    (since a negative sum will only decrease the next sum).
      *
      */
     public int maxProduct_0(int[] nums) {
@@ -72,6 +74,7 @@ public class MaximumProductSubarray {
 
         /**
          * 	•	maxProd: Tracks the maximum product up to the current index.
+         *
          * 	•	minProd: Tracks the minimum product up to the current index
          * 	             (needed because multiplying by a negative can turn a small value into a large one).
          */
@@ -80,10 +83,17 @@ public class MaximumProductSubarray {
         int result = nums[0];
 
         for (int i = 1; i < nums.length; i++) {
+
+            // NOTE !!! we cache maxProd as `temp` before updating
             int temp = maxProd; // Store maxProd before updating
 
-            maxProd = Math.max(nums[i], Math.max(nums[i] * maxProd, nums[i] * minProd));
-            minProd = Math.min(nums[i], Math.min(nums[i] * temp, nums[i] * minProd));
+            maxProd = Math.max(nums[i],
+                    Math.max(nums[i] * maxProd, nums[i] * minProd)
+            );
+
+            minProd = Math.min(nums[i],
+                    Math.min(nums[i] * temp, nums[i] * minProd)
+            );
 
             result = Math.max(result, maxProd);
         }
