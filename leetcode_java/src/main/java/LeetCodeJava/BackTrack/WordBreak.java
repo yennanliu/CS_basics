@@ -43,7 +43,7 @@ import java.util.*;
 public class WordBreak {
 
     // V0
-    // IDEA : BFS (fixed by GPT)
+    // IDEA : BFS (Queue<Integer> queue) (fixed by GPT)
     public boolean wordBreak(String s, List<String> wordDict) {
         // Convert wordDict to a HashSet for O(1) lookups
         Set<String> wordSet = new HashSet<>(wordDict);
@@ -257,6 +257,69 @@ public class WordBreak {
         }
 
         return dp[s.length()];
+    }
+
+    // V0-6
+    // IDEA: BFS (Queue<String> q ) (fixed by gpt)
+    public boolean wordBreak_0_6(String s, List<String> wordDict) {
+        if (s == null || s.isEmpty())
+            return true;
+        if (wordDict.contains(s))
+            return true;
+        if (wordDict.isEmpty())
+            return false;
+
+        Queue<String> q = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        Set<String> wordSet = new HashSet<>(wordDict); // O(1) lookup
+
+        q.add(""); // Start with an empty string
+
+        while (!q.isEmpty()) {
+            String cur = q.poll();
+
+            if (cur.equals(s))
+                return true; // Found valid segmentation
+
+            for (String w : wordSet) {
+        /**
+         *   NOTE !!! instead of `cur += w`,
+         *       -> we create a new string (String newStr = cur + w;)
+         *
+         *
+         *  Reason :
+         *
+         *    You should not use cur = cur + w;
+         *    directly inside the loop
+         *    -> because it modifies cur incorrectly for `future iterations`.
+         *
+         *
+         *   ❌ Why cur = cur + w; is Wrong?
+         *
+         * 	1.	Modifies cur Instead of Creating a New Substring
+         * 	    •	cur is the base substring that is expanded.
+         * 	        If modified directly,
+         * 	        future iterations will operate on an incorrect version.
+         *
+         * 	2.	Causes Incorrect Substring Expansions
+         * 	    •	The queue (q) should always store valid prefixes,
+         * 	        but modifying cur leads to unintended values.
+         *
+         * 	3.	Breaks BFS Iteration
+         * 	    •	BFS should explore all possible words from
+         * 	        the current prefix. But if cur is modified, subsequent iterations use the wrong string.
+         *
+         */
+        String newStr = cur + w; // Form a new substring
+
+        if (s.startsWith(newStr) && !visited.contains(newStr)) {
+                    visited.add(newStr);
+                    q.add(newStr);
+                }
+            }
+        }
+
+        return false;
     }
 
     // V1
