@@ -662,24 +662,53 @@ public class workspace7 {
 //    }
 
     // IDEA 2) BRUTE FORCE + BINARY SEARCH ???
-  public int lengthOfLIS(int[] nums) {
-      // edge
-      if(nums == null || nums.length == 0){
-          return 0;
-      }
-      if(nums.length == 1){
-          return 1;
-      }
-      if(nums.length == 2){
-          if(nums[1] > nums[0]){
-              return 2;
-          }
-          return 1;
-      }
+//  public int lengthOfLIS(int[] nums) {
+//      // edge
+//      if(nums == null || nums.length == 0){
+//          return 0;
+//      }
+//      if(nums.length == 1){
+//          return 1;
+//      }
+//      if(nums.length == 2){
+//          if(nums[1] > nums[0]){
+//              return 2;
+//          }
+//          return 1;
+//      }
+//
+//
+//
+//      return 1;
+//  }
 
-
-
-      return 1;
+  int maxSubLen = 1;
+  // recursion
+  public int lengthOfLIS_1_1(int[] nums) {
+      dfs(nums, 0, -1);
+      return maxSubLen;
   }
+
+   // 5.32 - 5.37
+    private void dfs(int[] nums, int i, int j) {
+
+        if(nums[j] > nums[i]){
+            maxSubLen += 1;
+        }
+
+        for(int i_ = 0; i_ < nums.length; i_++){
+//            if(nums[j] > nums[i]){
+//                maxSubLen += 1;
+//            }
+        }
+
+      return;
+    }
+
+    // LC 416
+    public boolean canPartition(int[] nums) {
+
+      return false;
+    }
 
 }
