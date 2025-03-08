@@ -38,6 +38,8 @@ import java.util.Set;
 public class PartitionEqualSubsetSum {
 
     // V0
+    // TODO: implement with below idea (optimized brute force)
+    // https://youtu.be/IsvocB5BJhw?si=evPYANn0pPicVwu6
 //    public boolean canPartition(int[] nums) {
 //
 //    }

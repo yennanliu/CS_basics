@@ -706,6 +706,34 @@ public class workspace7 {
     }
 
     // LC 416
+    // idea dp ???
+    // 5.50 - 6 pm
+    /**
+     *
+     *   1. get total sum of nums
+     *   2. [ 1,5, 11, 5]
+     *     -> each element can be selected or NOT selected
+     *     -> we keep track each option and get the cur_sum
+     *     -> then check if there is an option that its cur_sum == sum / 2
+     *
+     *
+     *  exp 1)
+     *
+     *  ->  [ 1,5, 11, 5] -> sum = 22
+     *  -> sum / 2 = 11
+     *  -> so if any option sum == 11, we found a solution
+     *
+     *    [1], [1,5],  [1,11], [1,5]
+     *        [1,5,11]
+     *        [1,5,5] -> ok
+     *
+     *
+     *  exp 2)
+     *   Input: nums = [1,2,3,5] -> sum = 11
+     *   -> sum / 2 = 5.5
+     *   -> NOT possible to get a sub array equals to 5.5
+     *
+     */
     public boolean canPartition(int[] nums) {
 
       return false;
