@@ -528,4 +528,66 @@ public class workspace7 {
         return 1;
     }
 
+    // LC 139
+    // 4.26 pm - 4.36 pm
+    /**
+     *  IDEA 1) BFS
+     *  IDES 2) DFS ???
+     *  IDEA 3) DP ???
+     *
+     */
+    public boolean wordBreak(String s, List<String> wordDict) {
+
+        // edge
+        if(s == null || s.length() == 0){
+            return true;
+        }
+        if(wordDict.contains(s)){
+            return true;
+        }
+        if(s != null && wordDict.isEmpty()){
+            return false;
+        }
+
+        Queue<String> q = new LinkedList<>();
+        // init by adding words has same `prefix`
+//        for(String w: wordDict){
+//            if(s.contains(w)){
+//                q.add(w);
+//            }
+//        }
+        q.add(""); // ???
+
+        while(!q.isEmpty()){
+            String cur = q.poll();
+            int idx = cur.length();
+            if(cur.equals(s)){
+                return true;
+            }
+            if(cur.length() > s.length()){
+                continue;
+            }
+
+            for(String w: wordDict){
+
+                // ???
+                if(idx + w.length() <= s.length()){
+                    if(s.substring(idx, idx + w.length()).equals(w)){
+
+                        if(cur.equals(s)){
+                            return true;
+                        }
+
+                        cur += w;
+                        q.add(cur);
+                    }
+                }
+
+            }
+
+        }
+
+        return false;
+    }
+
 }
