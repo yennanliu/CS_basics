@@ -42,7 +42,7 @@ public class LongestIncreasingSubsequence {
 
     // V0
     // IDEA : DP
-    // TODO : check & implment again
+    // TODO : check & implement again
     public int lengthOfLIS(int[] nums) {
 
         if(nums == null || nums.length == 0){
@@ -151,11 +151,170 @@ public class LongestIncreasingSubsequence {
         return tails.size();
     }
 
+    // V1-1
+    // https://neetcode.io/problems/longest-increasing-subsequence
+    // IDEA: RECURSION
+    public int lengthOfLIS_1_1(int[] nums) {
+        return dfs(nums, 0, -1);
+    }
 
-    // V1
+    private int dfs(int[] nums, int i, int j) {
+        if (i == nums.length) {
+            return 0;
+        }
+
+        int LIS = dfs(nums, i + 1, j); // not include
+
+        if (j == -1 || nums[j] < nums[i]) {
+            LIS = Math.max(LIS, 1 + dfs(nums, i + 1, i)); // include
+        }
+
+        return LIS;
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/longest-increasing-subsequence
+    // IDEA: Dynamic Programming (Top-Down)
+    private int[][] memo;
+
+    private int dfs(int i, int j, int[] nums) {
+        if (i == nums.length) {
+            return 0;
+        }
+        if (memo[i][j + 1] != -1) {
+            return memo[i][j + 1];
+        }
+
+        int LIS = dfs(i + 1, j, nums);
+
+        if (j == -1 || nums[j] < nums[i]) {
+            LIS = Math.max(LIS, 1 + dfs(i + 1, i, nums));
+        }
+
+        memo[i][j + 1] = LIS;
+        return LIS;
+    }
+
+    public int lengthOfLIS_1_2(int[] nums) {
+        int n = nums.length;
+        memo = new int[n][n + 1];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+        return dfs(0, -1, nums);
+    }
+
+    // V1-3
+    // https://neetcode.io/problems/longest-increasing-subsequence
+    // IDEA: Dynamic Programming (Bottom-Up)
+    public int lengthOfLIS_1_3(int[] nums) {
+        int[] LIS = new int[nums.length];
+        Arrays.fill(LIS, 1);
+
+        for (int i = nums.length - 1; i >= 0; i--) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] < nums[j]) {
+                    LIS[i] = Math.max(LIS[i], 1 + LIS[j]);
+                }
+            }
+        }
+        return Arrays.stream(LIS).max().getAsInt();
+    }
+
+    // V1-4
+    // https://neetcode.io/problems/longest-increasing-subsequence
+    // IDEA:  Segment Tree
+    public class SegmentTree {
+        int n;
+        int[] tree;
+
+        public SegmentTree(int N) {
+            n = N;
+            while ((n & (n - 1)) != 0) {
+                n++;
+            }
+            tree = new int[2 * n];
+        }
+
+        void update(int i, int val) {
+            tree[n + i] = val;
+            int j = (n + i) >> 1;
+            while (j >= 1) {
+                tree[j] = Math.max(tree[j << 1], tree[j << 1 | 1]);
+                j >>= 1;
+            }
+        }
+
+        int query(int l, int r) {
+            if (l > r) {
+                return 0;
+            }
+            int res = Integer.MIN_VALUE;
+            l += n;
+            r += n + 1;
+            while (l < r) {
+                if ((l & 1) != 0) {
+                    res = Math.max(res, tree[l]);
+                    l++;
+                }
+                if ((r & 1) != 0) {
+                    r--;
+                    res = Math.max(res, tree[r]);
+                }
+                l >>= 1;
+                r >>= 1;
+            }
+            return res;
+        }
+    }
+
+    public int lengthOfLIS_1_4(int[] nums) {
+        int[] sortedArr = Arrays.stream(nums).distinct().sorted().toArray();
+        int[] order = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            order[i] = Arrays.binarySearch(sortedArr, nums[i]);
+        }
+        int n = sortedArr.length;
+        SegmentTree segTree = new SegmentTree(n);
+
+        int LIS = 0;
+        for (int num : order) {
+            int curLIS = segTree.query(0, num - 1) + 1;
+            segTree.update(num, curLIS);
+            LIS = Math.max(LIS, curLIS);
+        }
+        return LIS;
+    }
+
+
+    // V1-5
+    // https://neetcode.io/problems/longest-increasing-subsequence
+    // IDEA: Binary Search
+    public int lengthOfLIS_1_5(int[] nums) {
+        List<Integer> dp = new ArrayList<>();
+        dp.add(nums[0]);
+
+        int LIS = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (dp.get(dp.size() - 1) < nums[i]) {
+                dp.add(nums[i]);
+                LIS++;
+                continue;
+            }
+
+            int idx = Collections.binarySearch(dp, nums[i]);
+            if (idx < 0) idx = -idx - 1;
+            dp.set(idx, nums[i]);
+        }
+
+        return LIS;
+    }
+
+
+    // V2
     // IDEA : DP
     // https://leetcode.com/problems/longest-increasing-subsequence/solutions/4509493/300/
-    public int lengthOfLIS_1(int[] nums) {
+    public int lengthOfLIS_2(int[] nums) {
         if(nums == null || nums.length == 0)return 0;
         int n=nums.length;
         int[] dp=new int[n];
@@ -174,10 +333,10 @@ public class LongestIncreasingSubsequence {
         return maxi;
     }
 
-    // V2
+    // V3
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/longest-increasing-subsequence/solutions/4509303/beats-100-binary-search-explained-with-video-c-java-python-js/
-    public int lengthOfLIS_2(int[] nums) {
+    public int lengthOfLIS_3(int[] nums) {
         int[] tails = new int[nums.length];
         int size = 0;
         for (int x : nums) {
@@ -195,10 +354,10 @@ public class LongestIncreasingSubsequence {
         return size;
     }
 
-    // V3
+    // V4
     // IDEA : DP
     // https://leetcode.com/problems/longest-increasing-subsequence/solutions/4510776/java-solution-explained-in-hindi/
-    public int lengthOfLIS_3(int[] nums) {
+    public int lengthOfLIS_4(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
         }

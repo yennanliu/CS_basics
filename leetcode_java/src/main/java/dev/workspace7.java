@@ -1,5 +1,7 @@
 package dev;
 
+import sun.awt.PeerEvent;
+
 import java.util.*;
 
 public class workspace7 {
@@ -589,5 +591,95 @@ public class workspace7 {
 
         return false;
     }
+
+  // LC 300
+  // 5.04 pm - 5.15 pm
+  /**
+   * Given an integer array nums,
+   * return the length of the
+   * longest strictly increasing subsequence.
+   *
+   *   -> A subsequence is an array that can be derived
+   *      from another array by deleting some or no
+   *      elements without changing the order of the remaining elements.
+   *
+   *
+   *  exp 1)
+   *  Input: nums = [10,9,2,5,3,7,101,18]
+   *  Output: 4
+   *
+   *  -> [2,3,7,101], so ans = 4
+   *
+   *  exp 2)
+   *
+   *  Input: nums = [0,1,0,3,2,3]
+   *  Output: 4
+   *
+   *  -> [0,1,2,3]
+   *
+   *  exp 3)
+   *
+   *  Input: nums = [7,7,7,7,7,7,7]
+   *  Output: 1
+   *
+   *  -> [7], ans = 1
+   *
+   *
+   *  IDEA 1) SLIDING WINDOW
+   *
+   */
+//  public int lengthOfLIS(int[] nums) {
+//      // edge
+//      if(nums == null || nums.length == 0){
+//          return 0;
+//      }
+//      if(nums.length == 1){
+//          return 1;
+//      }
+//      if(nums.length == 2){
+//          if(nums[1] > nums[0]){
+//              return 2;
+//          }
+//          return 1;
+//      }
+//
+//      HashSet<Integer> set = new HashSet<>();
+//      for(int n: nums){
+//          set.add(n);
+//      }
+//      if(set.size() == 1){
+//          return 1;
+//      }
+//
+//      // map : record latest element idx ???
+//
+//      // sliding window
+//      int res = 1;
+//
+//
+//
+//      return 1;
+//    }
+
+    // IDEA 2) BRUTE FORCE + BINARY SEARCH ???
+  public int lengthOfLIS(int[] nums) {
+      // edge
+      if(nums == null || nums.length == 0){
+          return 0;
+      }
+      if(nums.length == 1){
+          return 1;
+      }
+      if(nums.length == 2){
+          if(nums[1] > nums[0]){
+              return 2;
+          }
+          return 1;
+      }
+
+
+
+      return 1;
+  }
 
 }
