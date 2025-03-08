@@ -44,6 +44,10 @@ public class PartitionEqualSubsetSum {
 //
 //    }
 
+    // V0-1
+    // IDEA: DP
+    // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc/lc_416_1.png
+
     // V1-1
     // https://neetcode.io/problems/partition-equal-subset-sum
     // IDEA: RECURSION

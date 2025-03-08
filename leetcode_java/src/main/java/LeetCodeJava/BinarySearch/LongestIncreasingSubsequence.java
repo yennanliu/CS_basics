@@ -91,36 +91,39 @@ public class LongestIncreasingSubsequence {
         return res;
     }
 
-    // V0-1
-    // IDEA: BRUTE FORCE + BINARY SEARCH (GPT)
-    /**
-     *  Explanation:
-     *
-     *  - Tails List: This list will store the smallest possible tail value for
-     *          increasing subsequences of different lengths.
-     *
-     *  - Binary Search: For each element in nums, we use binary search to find the
-     *                   correct position in the tails list where the element should go.
-     *
-     *  - Update or Append: If the element is larger than all elements in tails,
-     *                      we append it. Otherwise, we replace the element in the list at the
-     *                      found position to maintain the smallest possible tail value for subsequences.
-     *
-     *  - Final Result: The length of the tails list at the end is the length of the longest
-     *                  increasing subsequence.
-     *
-     * Time Complexity:
-     *  Binary Search: For each element in the array, we perform binary search on the tails list,
-     *  which takes O(log n) time.
-     *
-     * Overall Complexity:
-     *   Since we perform this for all n elements in nums, the total time complexity is O(n log n).
-     *   This is a much more efficient solution than the classic dynamic programming approach
-     *   with O(n^2) time complexity.
-     *
-     *
-     */
-    public int lengthOfLIS_0_1(int[] nums) {
+  // V0-0-1
+  // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc/lc_300_1.png
+
+  // V0-1
+  // IDEA: BRUTE FORCE + BINARY SEARCH (GPT)
+  /**
+   *  Explanation:
+   *
+   *  - Tails List: This list will store the smallest possible tail value for
+   *          increasing subsequences of different lengths.
+   *
+   *  - Binary Search: For each element in nums, we use binary search to find the
+   *                   correct position in the tails list where the element should go.
+   *
+   *  - Update or Append: If the element is larger than all elements in tails,
+   *                      we append it. Otherwise, we replace the element in the list at the
+   *                      found position to maintain the smallest possible tail value for subsequences.
+   *
+   *  - Final Result: The length of the tails list at the end is the length of the longest
+   *                  increasing subsequence.
+   *
+   * Time Complexity:
+   *  Binary Search: For each element in the array, we perform binary search on the tails list,
+   *  which takes O(log n) time.
+   *
+   * Overall Complexity:
+   *   Since we perform this for all n elements in nums, the total time complexity is O(n log n).
+   *   This is a much more efficient solution than the classic dynamic programming approach
+   *   with O(n^2) time complexity.
+   *
+   *
+   */
+  public int lengthOfLIS_0_1(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
         }
