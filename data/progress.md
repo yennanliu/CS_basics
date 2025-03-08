@@ -5,8 +5,8 @@
 	- https://neetcode.io/practice?tab=neetcode150
 	- 5 / day ->  15 days to finish
 		- 2 d DP
-	- again:
-		- similar: 53 (Kadane Algorithm)
+	- again: 300
+		- similar:
 	- todo:
 		- add neetcode algo linkedin post
 		- re-do all previous `again` problems, similar problems, make notes
