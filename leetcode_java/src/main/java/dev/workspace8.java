@@ -6813,8 +6813,37 @@ class Node {
         return 0;
     }
 
-    // LC 309
-    public int maxProfit(int[] prices) {
+  // LC 309
+  // 5.25 - 5.35 pm
+  /**
+   *
+   *  NOTE !
+   *
+   *  After you sell your stock,
+   *  you cannot buy stock on the next day
+   *  (i.e., cooldown one day).
+   *
+   *
+   *
+   * -> Find the maximum profit you can achieve.
+   *
+   * DP eq:
+   *
+   *
+   *  exp 1)
+   *
+   *  Input: prices = [1,2,3,0,2]
+   *  Output: 3
+   *
+   *  -> dp[0] -> buy or no buy max(0, -1)
+   *  -> dp[1] -> buy or sell or not buy
+   *
+   *
+   *
+   *
+   *
+   */
+  public int maxProfit(int[] prices) {
         return 0;
     }
 
