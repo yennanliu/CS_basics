@@ -41,14 +41,68 @@ import java.util.Arrays;
 
 public class UniquePaths {
 
-    // VO
+    // V0
+    // IDEA: 1-D DP (fixed by gpt)
+    public int uniquePaths(int m, int n) {
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1); // Initialize all to 1 (first row)
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                /**
+                 *  dp equation: dp[i][j] = dp[i-1][j] + dp[i][j-1]
+                 */
+                dp[j] += dp[j - 1];
+            }
+        }
+
+        return dp[n - 1];
+    }
+
+    // V0-1
+    // IDEA: 2-D DP (bottom-up)
+    /**
+     *  IDEA:
+     *
+     *  This code calculates the number of unique paths from the
+     *  top-left corner (0,0) to the bottom-right corner (m-1, n-1) of an m x n grid,
+     *  allowing only right and down movements.
+     *
+     */
+    public int uniquePaths_0_1(int m, int n) {
+        int[][] dp = new int[m + 1][n + 1];
+        dp[m - 1][n - 1] = 1;
+
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+        /**
+         *  NOTE !!!
+         *
+         * - Each dp[i][j] is computed as:
+         *   -> `dp[i][j] = dp[i+1][j] + dp[i][j+1]`
+         *
+         *
+         *   reason:
+         *    - dp[i+1][j] → paths from the cell below (going down).
+         * 	  - dp[i][j+1] → paths from the cell to the right (going right).
+         *
+         *
+         */
+        dp[i][j] += dp[i + 1][j] + dp[i][j + 1];
+            }
+        }
+
+        return dp[0][0];
+    }
+
+    // VO-2
     // IDEA : MATH
     // -> the UNIQUE combination of x "a", and y "b"
     // -> e.g. [a, a,....a] and [b,b...,,,,b]
     //         <- x count ->    <- y count ->
     // -> so the combination count is
     //        (x+y)! / (x! * y!)
-    public int uniquePaths(int m, int n) {
+    public int uniquePaths_0_2(int m, int n) {
         if (m == 0 || n == 0) {
             return 0;
         }
