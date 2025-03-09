@@ -739,4 +739,12 @@ public class workspace7 {
       return false;
     }
 
+    // LC 62
+    // 4.14 - 4.24 pm
+    // idea: math
+    public int uniquePaths(int m, int n) {
+
+        return 0;
+    }
+
 }
