@@ -6782,7 +6782,7 @@ class Node {
     }
 
     // LC 1143
-    // 5.03 - 5.13 pm
+    // 5.03 - 5.20 pm
     /**
      *  -> , return the `length of their longest common subsequence. `
      *      If there is no common subsequence, return 0.
@@ -6793,10 +6793,22 @@ class Node {
      *
      *
      *   IDEA 1) SLIDING WINDOW
-     *   IDEA 2) DP ???
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *    -> double loop
+     *    -> compare the `longest subsequence` within t1, t2
+     *
+     *
+     *   IDEA 3) DP ???
+     *
+     *
+     *
+     *
      *
      */
     public int longestCommonSubsequence(String text1, String text2) {
+        // edge
 
         return 0;
     }
