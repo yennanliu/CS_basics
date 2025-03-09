@@ -6781,6 +6781,26 @@ class Node {
         return global_max;
     }
 
+    // LC 1143
+    // 5.03 - 5.13 pm
+    /**
+     *  -> , return the `length of their longest common subsequence. `
+     *      If there is no common subsequence, return 0.
+     *
+     *   A subsequence of a string is a new string generated from
+     *   the original string with some characters (can be none)
+     *   deleted without changing the relative order of the remaining characters.
+     *
+     *
+     *   IDEA 1) SLIDING WINDOW
+     *   IDEA 2) DP ???
+     *
+     */
+    public int longestCommonSubsequence(String text1, String text2) {
+
+        return 0;
+    }
+
 
 
 }
