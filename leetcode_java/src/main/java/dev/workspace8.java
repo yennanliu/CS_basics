@@ -6813,6 +6813,10 @@ class Node {
         return 0;
     }
 
+    // LC 309
+    public int maxProfit(int[] prices) {
+        return 0;
+    }
 
 
 }
