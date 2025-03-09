@@ -740,11 +740,48 @@ public class workspace7 {
     }
 
     // LC 62
-    // 4.14 - 4.24 pm
-    // idea: math
+    // 4.24 - 4.34 pm
+    // idea: DP (2D)
+    /**
+     *   idea 1) DP (2D)
+     *
+     *   - can -> or down
+     *   - the total count of "->" and "down" are fixed
+     *      - e.g. we just need to count their count of combination
+     *
+     *
+     *          ->
+     *         ->      d
+     *       ->    d   ->  d
+     *     ->  d  -> d   ...
+     *
+     *
+     *     d[n,n] = max(d[n-1, n] + 1, d[n, n-1] + 1)
+     *
+     *
+     */
     public int uniquePaths(int m, int n) {
 
-        return 0;
+        // init val as 0 ??
+        // m : y-axis
+        // n: x-axis
+        int[][]dp = new int[m][n]; // ??
+        // init
+//        dp[1][0] = 1;
+//        dp[0][1] = 1;
+        dp[m-1][n-1] = 1; // NOTE !!!
+
+
+        for(int i = m-1; i >= 0; i--){
+            for (int j = n-1; j >= 0 ; j--){
+                //dp[i][j] = Math.max(dp[i-1][j]+1, dp[i][j-1]+1);
+                dp[i][j] += (dp[i + 1][j] + dp[i][j + 1]);
+            }
+        }
+
+        System.out.println(">>> dp = " + dp);
+
+        return dp[0][0];
     }
 
 }
