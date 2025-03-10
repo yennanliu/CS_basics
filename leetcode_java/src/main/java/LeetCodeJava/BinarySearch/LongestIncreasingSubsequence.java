@@ -91,10 +91,50 @@ public class LongestIncreasingSubsequence {
         return res;
     }
 
-  // V0-0-1
+  // V0-1
+  // IDEA: DP (fixed by gpt)
+  public int lengthOfLIS_0_1(int[] nums) {
+      // edge case: if the input array is null or has no elements
+      if (nums == null || nums.length == 0) {
+          return 0;
+      }
+
+      // Initialize dp array with 1, because the minimum length of LIS for any element is 1
+      int[] dp = new int[nums.length];
+      Arrays.fill(dp, 1);
+
+      // Traverse the array
+      /**
+       * NOTE !!!
+       *
+       *  1. we use double loop
+       *  2. first loop (i) start from idx = `nums.length`
+       *     2nd loop (j) start from idx = 0 and END at j = i
+       *     -> then we KEEP comparing nums[i] and nums[j]
+       *
+       */
+      for (int i = 1; i < nums.length; i++) {
+          for (int j = 0; j < i; j++) {
+              if (nums[i] > nums[j]) {
+                  dp[i] = Math.max(dp[i], dp[j] + 1);
+              }
+          }
+      }
+
+      // The answer is the maximum value in the dp array
+      // below we get the max val from dp
+      int maxLength = 0;
+      for (int i = 0; i < dp.length; i++) {
+          maxLength = Math.max(maxLength, dp[i]);
+      }
+
+      return maxLength;
+  }
+
+  // V0-2
   // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc/lc_300_1.png
 
-  // V0-1
+  // V0-3
   // IDEA: BRUTE FORCE + BINARY SEARCH (GPT)
   /**
    *  Explanation:
@@ -123,7 +163,7 @@ public class LongestIncreasingSubsequence {
    *
    *
    */
-  public int lengthOfLIS_0_1(int[] nums) {
+  public int lengthOfLIS_0_3(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
         }

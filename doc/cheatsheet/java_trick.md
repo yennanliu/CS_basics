@@ -241,6 +241,33 @@ List<List<Integer>> commonCells = new ArrayList<>();
 List<int[]> result = new ArrayList<>(); //return value
 ```
 
+#### 1-0-0-1) `Reverse` loop over a list
+
+```java
+// java
+
+List<Integer> list = new ArrayList<>();
+list.add(1);
+list.add(2);
+list.add(3);
+
+
+/** 
+ *  NOTE !!!
+ * 
+ *  for reverse loop,
+ * 
+ *  we start from size - 1,
+ *     end at >= 0
+ * 
+ */
+for(int i = list.size() - 1; i >= 0; i--){
+    System.out.println(list.get(i));
+}
+
+```
+
+
 ### 1-0-2) append value to a 2D list
 ```java
 // java
