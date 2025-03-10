@@ -6849,11 +6849,103 @@ class Node {
 
 
   // LC 518
+  // 10.09 - 10.19 am
+  /**
+   *  IDEA 1) BACKTRACK ???
+   *
+   *  IDEA 2) DP ??
+   *
+   *
+   * exp 1)
+   *   Input: amount = 5, coins = [1, 2, 5]
+   *   -> Output: 4
+   *
+   *   so, for each element, we hv 2 choices, select or NOT select
+   *   -> brute force, we have 2^n time complexity
+   *
+   *   -> think as a `decision tree`
+   *
+   *      1    2   5
+   *
+   *    1    2   5
+   *  1 125  125  125 ...
+   *  1
+   *
+   *
+   *
+   *  -> we start from `last element`, backward calculate
+   *     the possible amount of combinations
+   *
+   *
+   *     coins = [1, 2, 5]
+   *
+   *   dp[2] = 1  (if coins[2] % amount == 0)
+   *   dp[1] = math.max(dp[1], dp[2])
+   *
+   *
+   */
   public int change(int amount, int[] coins) {
 
 
       return 0;
   }
+
+  // LC 300
+  // IDEA: DP
+  // 10.30 - 10.40 am
+  /**
+   *
+   *  exp 1)
+   *
+   *  Input: [10,9,2,5,3,7,101,18]
+   *  Output: 4
+   *  Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+   *
+   *   dp[7] = 1
+   *   dp[6] = 1  if dp[7] > dp[6]
+   *                    dp[6] = max(dp[6], dp[7] + 1)
+   *              else:
+   *                  dp[6] = dp[7]
+   *
+   *  dp[5] = 2   if dp[6] > dp[5]
+   *                    dp[5] = dp[6] + 1
+   *             else:
+   *                   dp[5] = dp[6]
+   *
+   * ...
+   *
+   */
+  public int lengthOfLIS(int[] nums) {
+
+      // edge
+      if(nums == null || nums.length == 0){
+          return 0;
+      }
+
+      if(nums.length == 1){
+          return 1;
+      }
+
+      int[] dp = new int[nums.length + 1];
+      Arrays.fill(dp, 1); // ???
+//      // init all val as 1
+//      for(int i = 0; i < dp.length; i++){
+//          dp[i] = 1;
+//      }
+
+      // inverse traversal
+      // i start from idx = len - 1 to idx = 1
+      for(int i =  nums.length - 1; i > 0; i--){
+          if(nums[i] > nums[i-1]){
+              dp[i-1] = Math.max(dp[i] + 1, dp[i-1]);
+          }else{
+              dp[i-1] = dp[i];
+          }
+      }
+
+      return dp[0]; // ???
+  }
+
 
 
 }

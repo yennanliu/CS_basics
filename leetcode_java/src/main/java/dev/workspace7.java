@@ -1,7 +1,5 @@
 package dev;
 
-import sun.awt.PeerEvent;
-
 import java.util.*;
 
 public class workspace7 {
@@ -225,12 +223,22 @@ public class workspace7 {
 
         // ------------------- TEST 14  list -> array
 
-        List<Integer> list2 = new ArrayList<>();
-        list2.add(1);
-        list2.add(2);
-        list2.add(3);
-        // <T> T[] toArray(T[] a);
-        Integer[] arr = list2.toArray(new Integer[list2.size()]);
+//        List<Integer> list2 = new ArrayList<>();
+//        list2.add(1);
+//        list2.add(2);
+//        list2.add(3);
+//        // <T> T[] toArray(T[] a);
+//        Integer[] arr = list2.toArray(new Integer[list2.size()]);
+
+
+        // ------------------- TEST 15  reverse for loop
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        for(int i = list.size() - 1; i >= 0; i--){
+            System.out.println(list.get(i));
+        }
 
 
 //        PriorityQueue<Integer> minHeap = new PriorityQueue<>(new Comparator<Integer>() {
