@@ -6946,6 +6946,13 @@ class Node {
       return dp[0]; // ???
   }
 
+  // LC 494
+  // 11.08 - 11.18 am
+  public int findTargetSumWays(int[] nums, int target) {
+
+      return 0;
+  }
+
 
 
 }
