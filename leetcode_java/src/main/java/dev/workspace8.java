@@ -6210,10 +6210,128 @@ class Node {
         }
 
         // Dijkstra
-        Dijkstra_3 dijkstra = new Dijkstra_3(flights, n);
-
-        return dijkstra.getShortestPath(src, dst, k);
+        Dijkstra_4 dijkstra = new Dijkstra_4(n, flights);
+        return dijkstra.getCheapestPrice(src, dst, k);
     }
+    public class Dijkstra_4{
+
+        // attr
+        int n;
+        int[][] flights; // ??
+
+        Map<Integer, List<Integer[]>> graph;
+
+        // constructor
+        public Dijkstra_4(int n, int[][] flights){
+            this.n = n;
+            this.flights = flights;
+
+            this.graph = new HashMap<>();
+            for(int[] f: flights){
+                int start = f[0];
+                int end = f[1];
+                int price = f[2];
+                List<Integer[]> subList =  this.graph.getOrDefault(start, new ArrayList<>());
+                Integer[] sub = new Integer[2];
+                sub[0] = end;
+                sub[1] = price;
+                subList.add(sub);
+                this.graph.put(start, subList);
+            }
+
+        }
+
+        // method
+        public int getCheapestPrice(int src, int dst, int k){
+            // edge
+            if(src == dst){
+                return 0;
+            }
+
+            int price = 0;
+            /**
+             *  Init
+             *
+             *  1) PQ (small PQ) -> java default PQ is small PQ ???
+             *  2) queue ???
+             *  3) hashmap ??
+             *
+             */
+            //PriorityQueue<Integer> smallPQ = new PriorityQueue<>(Comparator.reverseOrder()); // ??
+            // should sort over `price`
+            // PQ should have 2 elements : 1) end 2) price
+            PriorityQueue<Integer[]> smallPQ = new PriorityQueue<>(new Comparator<Integer[]>() {
+                @Override
+                public int compare(Integer[] o1, Integer[] o2) {
+                    int diff = o1[2] - o1[1];
+                    return diff; // ??
+                }
+            }); // ??
+
+            HashSet<Integer> visited = new HashSet<>();
+            //Queue<Integer> q = new LinkedList<>();
+
+            Integer[] tmp = new Integer[2];
+            tmp[0] = src;
+            tmp[1] = 0;
+
+            smallPQ.add(tmp);
+
+            int cnt = 0;
+
+           // Map<Integer, Integer> graph = new HashMap<>();
+            while(!smallPQ.isEmpty()){  // ???
+                Integer[] cur = smallPQ.poll();
+                int curEnd = cur[0];
+                int curPrice = cur[1];
+                if(cnt == k){
+                    return price;
+                }
+                if (cnt > k){
+                    continue; // ??? should NOT happen
+                }
+
+                if(this.graph.containsKey(curEnd)){
+                    for(Integer[] x: this.graph.get(curEnd)){
+                        int newEnd = x[0];
+                        int newPrice = x[1];
+                        if(!visited.contains(newEnd)){
+
+                            Integer[] newSub = new Integer[2];
+                            newSub[0] = newEnd;
+                            newSub[1] = (price + newPrice);
+                            smallPQ.add(newSub); // ???
+                            visited.add(newEnd);
+                        }
+                    }
+                }
+
+            }
+
+            return price;
+        }
+
+    }
+
+//    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+//
+//        // edge
+//        if(n == 0 || k == 0){ // ???
+//            return -1;
+//        }
+//        // make cycle ???
+//        if(flights.length > n - 1){
+//            return -1;
+//        }
+//        if(src == dst){
+//            return 0;
+//        }
+//
+//        // Dijkstra
+//        Dijkstra_3 dijkstra = new Dijkstra_3(flights, n);
+//
+//        return dijkstra.getShortestPath(src, dst, k);
+//    }
 
 
     public class Dijkstra_3 {
