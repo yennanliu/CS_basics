@@ -6689,6 +6689,59 @@ class Node {
      *
      *
      */
+    // LC 152
+    // IDEA: Kadane algo
+    /**
+     *   Kadane algo
+     *
+     *   -> maintain
+     *     global max
+     *     local max
+     *     local min
+     *
+     *  -> keep compute above within loop, then return global max as final result
+     *
+     */
+    public int maxProduct(int[] nums) {
+
+        // Edge case
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        // init
+        int global_max = nums[0];
+        int local_max = nums[0];
+        int local_min = nums[0];
+
+        for(int i = 1; i < nums.length; i++){
+
+            int n = nums[i];
+
+            // cache local_max
+            int cache = local_max;
+
+            local_max = Math.max(
+                    local_min * n,
+                    Math.max(local_max * n, n)
+            );
+
+            local_min = Math.min(
+                    n * cache,
+                    Math.min(local_min * n, n)
+            );
+
+            global_max = Math.max(
+                    global_max,
+                    Math.max(local_max, local_min)
+            );
+        }
+
+        return global_max;
+    }
+
+
+
 //    public int maxProduct(int[] nums) {
 //
 //        // edge
@@ -6726,60 +6779,60 @@ class Node {
 
     // V2:
     // IDEA: Kadane’s Algorithm for Maximum Product Subarray (GPT)
-    public int maxProduct(int[] nums) {
-
-        // edge
-        if(nums == null || nums.length == 0){
-            return 0; // ?
-        }
-        if(nums.length == 1){
-            return nums[0];
-        }
-        if(nums.length == 2){
-            if (nums[0] * nums[1] > 0){
-                return nums[0] * nums[1];
-            }
-            return Math.max(nums[0], nums[1]);
-        }
-
-        int res = Integer.MAX_VALUE; // ??
-        for(int n: nums){
-            res = Math.min(res, n);
-        }
-
-        /**
-         * Kadane algo
-         *
-         *  -> is DP algo actually
-         *
-         *  -> maintain
-         *     - local min, max
-         *     - global max
-         *
-         *     -> so, within the iteration, we can still
-         *     -> get possible max val via local_min * cur
-         *     -> on the same time, we calculate local_max (local_max * cur) as well
-         *     -> and update the global max global_max = max(local_min, local_max)
-         */
-
-        // init // ???
-        int global_max = nums[0];
-        int local_max = nums[0];
-        int local_min = nums[0];
-
-        for(int i = 1; i < nums.length - 1; i++){
-            //for(int j = 0)
-            if(nums[i] < 0){
-                local_min = local_min * nums[i];
-                local_max = 1; // ???
-            }else{
-                local_max = local_max * nums[i]; // ??
-            }
-            global_max = Math.max(global_max, Math.max(local_max, local_min));
-        }
-
-        return global_max;
-    }
+//    public int maxProduct(int[] nums) {
+//
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0; // ?
+//        }
+//        if(nums.length == 1){
+//            return nums[0];
+//        }
+//        if(nums.length == 2){
+//            if (nums[0] * nums[1] > 0){
+//                return nums[0] * nums[1];
+//            }
+//            return Math.max(nums[0], nums[1]);
+//        }
+//
+//        int res = Integer.MAX_VALUE; // ??
+//        for(int n: nums){
+//            res = Math.min(res, n);
+//        }
+//
+//        /**
+//         * Kadane algo
+//         *
+//         *  -> is DP algo actually
+//         *
+//         *  -> maintain
+//         *     - local min, max
+//         *     - global max
+//         *
+//         *     -> so, within the iteration, we can still
+//         *     -> get possible max val via local_min * cur
+//         *     -> on the same time, we calculate local_max (local_max * cur) as well
+//         *     -> and update the global max global_max = max(local_min, local_max)
+//         */
+//
+//        // init // ???
+//        int global_max = nums[0];
+//        int local_max = nums[0];
+//        int local_min = nums[0];
+//
+//        for(int i = 1; i < nums.length - 1; i++){
+//            //for(int j = 0)
+//            if(nums[i] < 0){
+//                local_min = local_min * nums[i];
+//                local_max = 1; // ???
+//            }else{
+//                local_max = local_max * nums[i]; // ??
+//            }
+//            global_max = Math.max(global_max, Math.max(local_max, local_min));
+//        }
+//
+//        return global_max;
+//    }
 
     // LC 1143
     // 5.03 - 5.20 pm
@@ -7016,5 +7069,85 @@ class Node {
     public int minDistance(String word1, String word2) {
         return 0;
     }
+
+    // LC 139
+    public boolean wordBreak(String s, List<String> wordDict) {
+        // edge
+
+        Set<String> wordSet = new HashSet<>();
+        for(String w: wordDict){
+            wordSet.add(w);
+        }
+
+        // NOTE !!! below
+        Set<Integer> visited = new HashSet<>();
+
+        // bfs
+        Queue<Integer> q = new LinkedList<>();
+        q.add(0); // ??? // Start from index 0
+
+        while(!q.isEmpty()){
+
+            Integer start = q.poll(); // cur `idx`
+
+            visited.add(start);
+
+            for(String w: wordSet){
+                int end = start + w.length();
+                // if visited
+                if(visited.contains(end)){
+                    continue;
+                }
+                if(end <= s.length() && s.substring(start, end).equals(w)){
+                    // NOTE !!! below
+                    if(end == s.length()){
+                        return true;
+                    }
+                    q.add(end);
+                    // add as visited
+                    //visited.add(end);
+                }
+            }
+        }
+
+        return false;
+    }
+
+//    public boolean wordBreak(String s, List<String> wordDict) {
+//        // edge
+//
+//        Set<String> visited = new HashSet<>();
+//
+//        // bfs
+//        Queue<String> q = new LinkedList<>();
+//        q.add(""); // ?
+//
+//        while(!q.isEmpty()){
+//
+//            String cur = q.poll();
+//            int len = cur.length();
+//
+//            for(String w: wordDict){
+//
+//                if(w.equals(s.substring(len, len + w.length()))){
+//
+//                    if(cur.equals(s)){
+//                        return true;
+//                    }
+//
+//                    // note below
+//                    String newStr = (cur + w);
+//                    if(newStr.length() > s.length() || visited.contains(newStr)){
+//                        continue;
+//                    }
+//
+//                    q.add(newStr);
+//                }
+//            }
+//        }
+//
+//        return false;
+//    }
+
 
 }

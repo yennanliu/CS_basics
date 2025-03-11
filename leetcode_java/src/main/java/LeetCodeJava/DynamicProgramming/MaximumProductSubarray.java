@@ -66,7 +66,7 @@ public class MaximumProductSubarray {
      * 	    (since a negative sum will only decrease the next sum).
      *
      */
-    public int maxProduct_0(int[] nums) {
+    public int maxProduct(int[] nums) {
         // Edge case
         if (nums == null || nums.length == 0) {
             return 0;
@@ -101,14 +101,85 @@ public class MaximumProductSubarray {
         return result;
     }
 
-    // V0_1
+    // V0-1
+    // IDEA: Kadane’s Algorithm
+    public int maxProduct_0_1(int[] nums) {
+
+        // Edge case
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        // NOTE !!! we init val as below
+        int global_max = nums[0];
+        int local_max = nums[0];
+        int local_min = nums[0];
+
+        // NOTE !!! we start from idx = 1 (NOT 0)
+        for (int i = 1; i < nums.length; i++) {
+
+            int n = nums[i];
+
+            /** NOTE !!!
+             *
+             *  cache local_max below (for local_min)
+             */
+            int cache = local_max;
+
+            /** NOTE !!!
+             *
+             *  for local_max,
+             *
+             *  we get from:
+             *
+             *    1. n
+             *    2. local_max * n
+             *    3. local_min * n
+             */
+            local_max = Math.max(
+                    local_min * n,
+                    Math.max(local_max * n, n));
+
+            /** NOTE !!!
+             *
+             *  for local_min,
+             *
+             *  we get from:
+             *
+             *    1. n
+             *    2. cache * n  (NOTE: cache if local_max cache)
+             *    3. local_min * n
+             */
+            local_min = Math.min(
+                    n * cache,
+                    Math.min(local_min * n, n));
+
+            /** NOTE !!!
+             *
+             *  for global_max,
+             *
+             *  we get  global_max from
+             *
+             *    1. global_max
+             *    2. local_max
+             *    3. local_min
+             */
+            global_max = Math.max(
+                    global_max,
+                    Math.max(local_max, local_min));
+        }
+
+        return global_max;
+    }
+
+    // V0-2
     // IDEA : DP
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/maximum-product-subarray.py#L69
     // IDEA : cur max = max (cur, cur * dp[k-1])
     //        But, also needs to consider "minus number"
     //        -> e.g.  (-1) * (-3) = 3
     //        -> so we NEED to track maxSoFar, and minSoFar
-    public int maxProduct_0_1(int[] nums) {
+    public int maxProduct_0_2(int[] nums) {
 
         // null check
         if (nums.length == 0){
@@ -172,9 +243,9 @@ public class MaximumProductSubarray {
         }
     }
 
-    // V0-2
+    // V0-3
     // IDEA: BRUTE FORCE (2 pointers) + boundary handling
-    public int maxProduct_0_2(int[] nums) {
+    public int maxProduct_0_3(int[] nums) {
 
         // edge
         if (nums == null || nums.length == 0) {
