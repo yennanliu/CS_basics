@@ -6968,8 +6968,15 @@ class Node {
   }
 
   // LC 97
+  // 11.37 - 11.47 am
   public boolean isInterleave(String s1, String s2, String s3) {
       return false;
+  }
+
+  // LC 329
+  public int longestIncreasingPath(int[][] matrix) {
+
+      return 0;
   }
 
 }
