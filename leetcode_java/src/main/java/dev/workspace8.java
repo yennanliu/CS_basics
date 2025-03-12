@@ -7268,9 +7268,99 @@ class Node {
 //    }
 
     // LC 10
+    // 10.16 - 10.20 am
     public boolean isMatch(String s, String p) {
 
         return false;
+    }
+
+
+    // LC 53
+    // 10.27 - 10.37 am
+    // IDEA 1)  k*** algo
+    // IDEA 2) SLIDING WINDOW
+    // IDEA 3) ???
+    /**
+     * Given an integer array nums, find the subarray
+     *
+     * with the largest sum, and return its sum.
+     *
+     *
+     * -> A subarray is a `contiguous` non-empty
+     *   sequence of elements within an array.
+     *
+     *  Example 1:
+     *
+     * Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+     * Output: 6
+     * Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+     *
+     *
+     * Example 2:
+     *
+     * Input: nums = [1]
+     * Output: 1
+     * Explanation: The subarray [1] has the largest sum 1.
+     *
+     *
+     * Example 3:
+     *
+     * Input: nums = [5,4,-1,7,8]
+     * Output: 23
+     * Explanation: The subarray [5,4,-1,7,8] has the largest sum 23.
+     *
+     *
+     */
+    public int maxSubArray(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+        if(nums.length == 2){
+            if(nums[0] >= 0 && nums[1] >= 0){
+                return nums[0] + nums[1];
+            }
+            return Math.max(nums[0], nums[1]);
+        }
+
+        // k*** algo
+        /**
+         *  define
+         *   - local_min
+         *   - local_max
+         *   - global_max
+         *
+         */
+        //int res = nums[0]; // ??
+        int local_max = nums[0];
+       // int local_min = nums[0];
+        int global_max = nums[0];
+
+        for(int i = 1; i < nums.length; i++){
+
+            int cur = nums[i];
+
+            // cache local_max ???
+            //int cache = local_max;
+
+            if(local_max + cur < 0){
+                local_max = cur;
+            }else{
+                local_max  += cur;
+            }
+
+
+            global_max = Math.max(local_max, global_max);
+
+            System.out.println(">>> cur = " + cur + ", local_max = " + local_max
+                    + ", global_max = " + global_max);
+        }
+
+
+        return global_max;
     }
 
 
