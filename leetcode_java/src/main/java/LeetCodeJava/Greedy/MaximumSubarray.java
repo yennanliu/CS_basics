@@ -297,9 +297,29 @@ public class MaximumSubarray {
             int temp = local_max;
 
             // Update local_max
+            /**
+             *  NOTE !!!
+             *
+             *   we compare
+             *
+             *   - local_max + cur
+             *   - cur
+             *   - local_min + cur
+             *
+             */
             local_max = Math.max(Math.max(local_max + cur, cur), local_min + cur);
 
             // Update local_min
+            /**
+             *  NOTE !!!
+             *
+             *   we compare
+             *
+             *   - local_min + cur
+             *   - cur
+             *   - temp + cur (local_max cache)
+             *
+             */
             local_min = Math.min(Math.min(local_min + cur, cur), temp + cur);
 
             // Update global_max
