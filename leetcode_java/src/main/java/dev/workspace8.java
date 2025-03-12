@@ -7364,4 +7364,67 @@ class Node {
     }
 
 
+    // LC 55
+    // 11.13 - 11.23 AM
+    // IDEA: GREEDY
+    /**
+     *  Given an array of `non-negative` integers,
+     *
+     *  you are initially positioned at `the first index` of the array.
+     *
+     *  Each element in the array represents your maximum jump length at that position.
+     *
+     *  ->  Determine if you are able to reach the last index.
+     *
+     *
+     */
+    // IDEA 2) LOOP FORM RIGHT TO LEFT (<----)
+    public boolean canJump(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return false; // ??
+        }
+        if(nums.length == 1){
+            return true;
+        }
+
+        // <---
+        //int cur = nums[nums.length - 1];
+        int lastIdx = nums.length - 1;
+
+        for(int i = nums.length - 1; i >= 0; i--){
+            //cur = (cur - nums[i-1]);
+            if(i + nums[i] >= lastIdx){
+                lastIdx = i;
+            }
+        }
+
+        //return cur <= 0; // ????
+        return lastIdx == 0; // ???
+    }
+
+//    public boolean canJump(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return false; // ??
+//        }
+//        if(nums.length == 1){
+//            return true;
+//        }
+//
+//        int curMax = 0;
+//
+//        for(int i = 0; i < nums.length; i++){
+//
+//            //curMax = Math.max(nums[i], curMax); // ???
+//
+//            if(i + nums[i] >= nums.length - 1){
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
+
+
 }
