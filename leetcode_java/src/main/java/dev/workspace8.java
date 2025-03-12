@@ -7267,5 +7267,11 @@ class Node {
 //        return false;
 //    }
 
+    // LC 10
+    public boolean isMatch(String s, String p) {
+
+        return false;
+    }
+
 
 }
