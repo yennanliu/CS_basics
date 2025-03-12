@@ -236,6 +236,39 @@ public class RemoveNthNodeFromEndOfList {
         return dummy.next; // Return new head
     }
 
+    // V0-3
+    // IDEA: 2 POINTERS (fixed by gpt)
+    public ListNode removeNthFromEnd_0_3(ListNode head, int n) {
+        // Edge case: if the list is empty or only has one node
+        if (head == null) {
+            return null;
+        }
+
+        // Initialize a dummy node to handle edge cases where we need to remove the head
+        // node
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode fast = dummy;
+        ListNode slow = dummy;
+
+        // Move fast pointer n+1 steps ahead so that the gap between fast and slow is n
+        for (int i = 0; i <= n; i++) {
+            fast = fast.next;
+        }
+
+        // Move fast to the end, maintaining the gap
+        while (fast != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        // Remove the nth node from the end
+        slow.next = slow.next.next;
+
+        // Return the new head, which might be different if the head node was removed
+        return dummy.next;
+    }
+
     // V1
     // IDEA :  Two pass algorithm
     // https://leetcode.com/problems/remove-nth-node-from-end-of-list/editorial/
