@@ -7426,5 +7426,40 @@ class Node {
 //        return false;
 //    }
 
+    // LC 45
+    // 11.52 - 12.10 pm
+    // IDEA:  GREEDY
+    public int jump_2(int[] nums) {
+
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1; // ??
+        }
+        if(nums.length == 1){
+            return 0;
+        }
+
+        int step = 0;
+        int cur = -1;
+        for(int i = 0; i < nums.length; i++){
+
+            if(cur < 0){
+                cur = nums[i] + i;
+            }
+            // if need to update `cur`
+            else if (nums[i] + i > cur) {
+                cur = nums[i] + i; // ???
+            }
+
+            if(cur >= nums.length - 1){
+                return step;
+            }
+
+            step += 1;
+        }
+
+        return step;
+    }
+
 
 }

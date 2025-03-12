@@ -120,6 +120,41 @@ public class JumpGame2 {
         return res; // This will not be reached unless the input is valid.
     }
 
+    // V0-3
+    // IDEA: GREEDY (fixed by gpt)
+    public int jump_0_3(int[] nums) {
+
+        // Edge case: if the array is null or has length 1, no jump is needed
+        if (nums == null || nums.length <= 1) {
+            return 0;
+        }
+
+        int steps = 0;
+        int curEnd = 0; // The farthest index we can reach with the current jump
+        int curFarthest = 0; // The farthest index we can reach with the next jump
+
+        for (int i = 0; i < nums.length; i++) {
+            // Update the farthest index we can reach from index `i`
+            curFarthest = Math.max(curFarthest, i + nums[i]);
+
+            // If we've reached the end of the current jump range
+            if (i == curEnd) {
+                steps++; // We need to make a new jump
+
+                // Update the end of the current jump range
+                curEnd = curFarthest;
+
+                // If we can reach or surpass the last index, we're done
+                if (curEnd >= nums.length - 1) {
+                    return steps;
+                }
+            }
+        }
+
+        return steps;
+    }
+
+
     // V1
     // IDEA : GREEDY
     // https://leetcode.com/problems/jump-game-ii/editorial/
