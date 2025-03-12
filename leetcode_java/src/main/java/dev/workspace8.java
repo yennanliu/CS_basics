@@ -7468,5 +7468,80 @@ class Node {
         return step;
     }
 
+    // LC 19
+    // 12.38 - 12.48 pm
+    /**
+     *  IDEA: 2 POINTERS
+     *
+     *  -> fast, slow
+     *  -> fast move `n` steps
+     *  -> then, slow, fast move together
+     *       -> till fast reach the end
+     *
+     *  1->2->3->4->5   (n=2)
+     *  f  f  f
+     *
+     *        f  f  f
+     *  s s   s
+     *
+     *  1->2->3->4->5   (n=2)
+     *
+     *
+     *
+     *  expect res:
+     *    1 -> 2 -> 3 -> 5
+     *
+     *
+     */
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        // edge
+        if(head == null || head.next == null){
+            return null; // ???
+        }
+        // get len
+        int len = 0;
+        ListNode head2 = head;
+        while(head2 != null){
+            head2 = head2.next;
+            len += 1;
+        }
+
+        if(n > len){
+            return null; // ??? NOT possible to remove a node by idx
+        }
+        if(n == len-1){
+            return head.next; // ???
+        }
+
+        // if n is `at beginning or the end of idx`
+
+        // fast, slow pointer
+        ListNode fast = head;
+        ListNode slow = head;
+
+        // init dummy, point to slow, for returning answer
+        ListNode dummy = new ListNode(); // ?
+        dummy.next = slow; // ???
+
+        // move fast ONLY by `n` steps
+        while(n+1 > 0){
+            fast = fast.next;
+            n -= 1;
+        }
+
+        // move fast, slow together
+        while(fast != null){
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        // reach the point
+        ListNode _next2 = slow.next.next;
+        slow.next = _next2;
+
+        return dummy.next;
+    }
+
+
 
 }
