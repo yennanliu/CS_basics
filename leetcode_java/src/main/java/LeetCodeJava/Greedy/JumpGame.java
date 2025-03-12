@@ -63,7 +63,7 @@ public class JumpGame {
      *
      */
 
-    // (below is wrong)
+    // (below is WRONG)
 //    public boolean canJump(int[] nums) {
 //
 //        if (nums == null || nums.length == 0){
@@ -119,17 +119,64 @@ public class JumpGame {
     // V0-1
     // IDEA : GREEDY
     public boolean canJump_0_1(int[] nums) {
-        int lastPos = nums.length - 1;
+
+       int lastPos = nums.length - 1;
+
         /**
          * NOTE :
          *
-         *   loop from right to left (<-----)
+         *   loop from RIGHT to LEFT (<-----)
+         */
+        /**
+         * for (int i = nums.length - 1; i >= 0; i--) ...
+         *
+         * - This loop iterates over the array starting from
+         *   the last index (rightmost) and goes backwards
+         *   to the first index (leftmost).
+         *
+         * - For each index i, the code checks if it's possible
+         *   to jump from index i to lastPos or beyond.
+         *   If it's possible,` we update lastPos to i, `
+         *   -> meaning that `the new target position is now index i.`
+         *
          */
         for (int i = nums.length - 1; i >= 0; i--) {
+
+            /**
+             *  if (i + nums[i] >= lastPos) ..
+             *
+             *  - For each index i, nums[i] represents
+             *    the `maximum jump length` from `that index. `
+             *    If the current index i can reach or surpass the position lastPos,
+             *    the lastPos is updated to i. Essentially, this is saying,
+             *    "Can we reach the position lastPos from i?"
+             *
+             *
+             *  - If the answer is yes, we update lastPos to i
+             *    because we can now consider position i
+             *    as the new "reachable position."
+             *
+             */
             if (i + nums[i] >= lastPos) {
                 lastPos = i;
             }
         }
+
+        /**
+         *   return lastPos == 0 ...
+         *
+         *   - After the loop, lastPos will be the first index
+         *     that can be reached from the last position.
+         *
+         *   - If lastPos == 0, it means that it's possible to
+         *     reach the first position from the last position
+         *     (in other words, we can jump all the way back to the first index).
+         *
+         *   - If lastPos != 0, it means there's no way to
+         *     jump from the first index to the last, so we return false.
+         *
+         *
+         */
         return lastPos == 0;
     }
 
