@@ -1,6 +1,11 @@
 package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/jump-game-ii/
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 45. Jump Game II
  * Solved
@@ -47,6 +52,17 @@ public class JumpGame2 {
             return 0;
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *   need to introduce a new val: `farthest`
+         *
+         *   valuables we need:
+         *
+         *   - jumps
+         *   - current_jump_end
+         *   - farthest
+         */
         int jumps = 0;
         int current_jump_end = 0;
         int fartheset = 0;
@@ -96,6 +112,18 @@ public class JumpGame2 {
             return 0;
         }
 
+
+        /**
+         *  NOTE !!!
+         *
+         *   need to introduce a new val: `endOfCurrentJump`
+         *
+         *   valuables we need:
+         *
+         *   - cur
+         *   - res
+         *   - endOfCurrentJump
+         */
         int cur = 0; // The farthest index that can be reached with the current number of jumps.
         int res = 0; // The number of jumps.
         int endOfCurrentJump = 0; // The end of the range that can be reached with the current jump.
@@ -129,6 +157,18 @@ public class JumpGame2 {
             return 0;
         }
 
+
+        /**
+         *  NOTE !!!
+         *
+         *   need to introduce a new val: `curFarthest`
+         *
+         *   valuables we need:
+         *
+         *   - steps
+         *   - curEnd
+         *   - curFarthest
+         */
         int steps = 0;
         int curEnd = 0; // The farthest index we can reach with the current jump
         int curFarthest = 0; // The farthest index we can reach with the next jump
@@ -154,8 +194,94 @@ public class JumpGame2 {
         return steps;
     }
 
+    // V1-1
+    // https://neetcode.io/problems/jump-game-ii
+    // IDEA: RECURSION
+    public int jump_1_1(int[] nums) {
+        return dfs(nums, 0);
+    }
 
-    // V1
+    private int dfs(int[] nums, int i) {
+        if (i == nums.length - 1) {
+            return 0;
+        }
+        if (nums[i] == 0) {
+            return 1000000;
+        }
+        int res = 1000000;
+        int end = Math.min(nums.length - 1, i + nums[i]);
+        for (int j = i + 1; j <= end; j++) {
+            res = Math.min(res, 1 + dfs(nums, j));
+        }
+        return res;
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/jump-game-ii
+    // IDEA: DP (TOP DOWN)
+    public int jump_1_2(int[] nums) {
+        Map<Integer, Integer> memo = new HashMap<>();
+        return dfs(nums, 0, memo);
+    }
+
+    private int dfs(int[] nums, int i, Map<Integer, Integer> memo) {
+        if (memo.containsKey(i)) {
+            return memo.get(i);
+        }
+        if (i == nums.length - 1) {
+            return 0;
+        }
+        if (nums[i] == 0) {
+            return 1000000;
+        }
+
+        int res = 1000000;
+        int end = Math.min(nums.length, i + nums[i] + 1);
+        for (int j = i + 1; j < end; j++) {
+            res = Math.min(res, 1 + dfs(nums, j, memo));
+        }
+        memo.put(i, res);
+        return res;
+    }
+
+    // V1-3
+    // https://neetcode.io/problems/jump-game-ii
+    // IDEA: DP (BOTTOM UP)
+    public int jump_1_3(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1000000);
+        dp[n - 1] = 0;
+
+        for (int i = n - 2; i >= 0; i--) {
+            int end = Math.min(nums.length, i + nums[i] + 1);
+            for (int j = i + 1; j < end; j++) {
+                dp[i] = Math.min(dp[i], 1 + dp[j]);
+            }
+        }
+        return dp[0];
+    }
+
+    // V1-4
+    // https://neetcode.io/problems/jump-game-ii
+    // IDEA: BFS (GREEDY)
+    public int jump_1_4(int[] nums) {
+        int res = 0, l = 0, r = 0;
+
+        while (r < nums.length - 1) {
+            int farthest = 0;
+            for (int i = l; i <= r; i++) {
+                farthest = Math.max(farthest, i + nums[i]);
+            }
+            l = r + 1;
+            r = farthest;
+            res++;
+        }
+        return res;
+    }
+
+
+    // V2
     // IDEA : GREEDY
     // https://leetcode.com/problems/jump-game-ii/editorial/
     public int jump_2(int[] nums) {

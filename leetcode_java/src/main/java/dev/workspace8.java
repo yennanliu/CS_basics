@@ -7441,21 +7441,28 @@ class Node {
 
         int step = 0;
         int cur = -1;
+        int farthestReach = 0;
         for(int i = 0; i < nums.length; i++){
 
-            if(cur < 0){
-                cur = nums[i] + i;
-            }
-            // if need to update `cur`
-            else if (nums[i] + i > cur) {
-                cur = nums[i] + i; // ???
+//            if(cur < 0){
+//                cur = nums[i] + i;
+//            }
+//            // if need to update `cur`
+//            else if (nums[i] + i > cur) {
+//                cur = nums[i] + i; // ???
+//            }
+
+            cur = Math.max(cur, nums[i] + i);
+            if(i == farthestReach){
+                step += 1;
+                farthestReach = cur;
             }
 
-            if(cur >= nums.length - 1){
+            if(farthestReach >= nums.length - 1){
                 return step;
             }
 
-            step += 1;
+            //step += 1;
         }
 
         return step;
