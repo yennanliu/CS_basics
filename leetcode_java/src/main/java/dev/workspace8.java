@@ -7631,6 +7631,79 @@ class Node {
     }
 
 
+    public boolean isNStraightHand_1_1(int[] hand, int groupSize) {
+        if (hand.length % groupSize != 0) return false;
+        Map<Integer, Integer> count = new HashMap<>();
+        for (int num : hand) {
+            count.put(num, count.getOrDefault(num, 0) + 1);
+        }
+        /**
+         *
+         *  map : {1: 1, 2: 2, 3:2, 4:1, 6:1, 7:1, 8:1}
+         *
+         */
+        Arrays.sort(hand);
+        // [1,2,2,3,3,4,6,7,8]
+        for (int num : hand) {
+            if (count.get(num) > 0) {
+                for (int i = num; i < num + groupSize; i++) {
+                    if (count.getOrDefault(i, 0) == 0) return false;
+                    count.put(i, count.get(i) - 1);
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+    // LC 1899
+    // 11.02 - 11.12 am
+    /**
+     *  IDEA 1) GREEDY
+     *
+     *
+     *  exp 1)
+     *   输入：triplets = [[2,5,3],[1,8,4],[1,7,5]], target = [2,7,5]
+     *    输出：true
+     *
+     *  step 1)  loop over src, loop over target,
+     *           check if element in `target` exist in
+     *           current element
+     *           e.g. if target = [2,7,5]
+     *           loop over triplets,
+     *           check if
+     *            - 2 exist
+     *            - 7 exist
+     *            - 5 exist
+     *         choose 2 arr, do max op,
+     *          replace existing arr with new arr
+     *
+     *
+     *  exp 2)
+     *
+     *   输入：triplets = [[2,5,3],[2,3,4],[1,2,5],[5,2,3]],
+     *     target = [5,5,5]
+     *
+     *
+     *  IDEA 1) GREEDY
+     *
+     *   - use hashmap record `different idx`
+     *      - map = {idx: [diff_idx_1, diff_idx_2, ....] }
+     *      - map = {0: [0,2], 1: [0,1,2], 2: [0,1], 3: [1,2] }
+     *
+     *   - loop over triplets, start from the key that has `least diff idx`
+     *       - pick idx = 0, 2 from triplets
+     *
+     *   - update triplets, map accordingly
+     *   - if there is a key has NO diff, then return true
+     *   - otherwise, return false
+     *
+     */
+    public boolean mergeTriplets(int[][] triplets, int[] target) {
+
+        return false;
+    }
 
 
 }

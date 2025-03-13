@@ -220,7 +220,7 @@ public class HandOfStraights {
         }
         return true;
     }
-    
+
 
     // V2-1
     // IDEA: TreeMap (gpt)
