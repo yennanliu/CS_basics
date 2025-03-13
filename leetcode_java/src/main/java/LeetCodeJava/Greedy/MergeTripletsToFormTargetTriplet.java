@@ -1,0 +1,128 @@
+package LeetCodeJava.Greedy;
+
+// https://leetcode.com/problems/merge-triplets-to-form-target-triplet/description/
+// https://leetcode.cn/problems/merge-triplets-to-form-target-triplet/
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * 1899. Merge Triplets to Form Target Triplet
+ * Medium
+ * Topics
+ * Companies
+ * Hint
+ * A triplet is an array of three integers. You are given a 2D integer array triplets, where triplets[i] = [ai, bi, ci] describes the ith triplet. You are also given an integer array target = [x, y, z] that describes the triplet you want to obtain.
+ *
+ * To obtain target, you may apply the following operation on triplets any number of times (possibly zero):
+ *
+ * Choose two indices (0-indexed) i and j (i != j) and update triplets[j] to become [max(ai, aj), max(bi, bj), max(ci, cj)].
+ * For example, if triplets[i] = [2, 5, 3] and triplets[j] = [1, 7, 5], triplets[j] will be updated to [max(2, 1), max(5, 7), max(3, 5)] = [2, 7, 5].
+ * Return true if it is possible to obtain the target triplet [x, y, z] as an element of triplets, or false otherwise.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: triplets = [[2,5,3],[1,8,4],[1,7,5]], target = [2,7,5]
+ * Output: true
+ * Explanation: Perform the following operations:
+ * - Choose the first and last triplets [[2,5,3],[1,8,4],[1,7,5]]. Update the last triplet to be [max(2,1), max(5,7), max(3,5)] = [2,7,5]. triplets = [[2,5,3],[1,8,4],[2,7,5]]
+ * The target triplet [2,7,5] is now an element of triplets.
+ * Example 2:
+ *
+ * Input: triplets = [[3,4,5],[4,5,6]], target = [3,2,5]
+ * Output: false
+ * Explanation: It is impossible to have [3,2,5] as an element because there is no 2 in any of the triplets.
+ * Example 3:
+ *
+ * Input: triplets = [[2,5,3],[2,3,4],[1,2,5],[5,2,3]], target = [5,5,5]
+ * Output: true
+ * Explanation: Perform the following operations:
+ * - Choose the first and third triplets [[2,5,3],[2,3,4],[1,2,5],[5,2,3]]. Update the third triplet to be [max(2,1), max(5,2), max(3,5)] = [2,5,5]. triplets = [[2,5,3],[2,3,4],[2,5,5],[5,2,3]].
+ * - Choose the third and fourth triplets [[2,5,3],[2,3,4],[2,5,5],[5,2,3]]. Update the fourth triplet to be [max(2,5), max(5,2), max(5,3)] = [5,5,5]. triplets = [[2,5,3],[2,3,4],[2,5,5],[5,5,5]].
+ * The target triplet [5,5,5] is now an element of triplets.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= triplets.length <= 105
+ * triplets[i].length == target.length == 3
+ * 1 <= ai, bi, ci, x, y, z <= 1000
+ *
+ */
+public class MergeTripletsToFormTargetTriplet {
+
+    // V0
+//    public boolean mergeTriplets(int[][] triplets, int[] target) {
+//
+//    }
+
+    // V1-1
+    // https://neetcode.io/problems/merge-triplets-to-form-target
+    // IDEA: GREEDY
+    public boolean mergeTriplets_1_1(int[][] triplets, int[] target) {
+        Set<Integer> good = new HashSet<>();
+
+        for (int[] t : triplets) {
+            if (t[0] > target[0] || t[1] > target[1] || t[2] > target[2]) {
+                continue;
+            }
+            for (int i = 0; i < t.length; i++) {
+                if (t[i] == target[i]) {
+                    good.add(i);
+                }
+            }
+        }
+        return good.size() == 3;
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/merge-triplets-to-form-target
+    // IDEA: GREEDY (OPTIMAL)
+    public boolean mergeTriplets_1_2(int[][] triplets, int[] target) {
+        boolean x = false, y = false, z = false;
+        for (int[] t : triplets) {
+            x |= (t[0] == target[0] && t[1] <= target[1] && t[2] <= target[2]);
+            y |= (t[0] <= target[0] && t[1] == target[1] && t[2] <= target[2]);
+            z |= (t[0] <= target[0] && t[1] <= target[1] && t[2] == target[2]);
+            if (x && y && z) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    // V2-1
+    // https://leetcode.ca/2021-07-27-1899-Merge-Triplets-to-Form-Target-Triplet/
+    public boolean mergeTriplets_2_1(int[][] triplets, int[] target) {
+        int[] merged = new int[3];
+        for (int[] triplet : triplets) {
+            if (triplet[0] <= target[0] && triplet[1] <= target[1] && triplet[2] <= target[2]) {
+                merged[0] = Math.max(merged[0], triplet[0]);
+                merged[1] = Math.max(merged[1], triplet[1]);
+                merged[2] = Math.max(merged[2], triplet[2]);
+            }
+        }
+        return Arrays.equals(merged, target);
+    }
+
+
+    // V2-2
+    // https://leetcode.ca/2021-07-27-1899-Merge-Triplets-to-Form-Target-Triplet/
+    public boolean mergeTriplets_2_2(int[][] triplets, int[] target) {
+        int maxA = 0, maxB = 0, maxC = 0;
+        for (int[] triplet : triplets) {
+            int a = triplet[0], b = triplet[1], c = triplet[2];
+            if (a <= target[0] && b <= target[1] && c <= target[2]) {
+                maxA = Math.max(maxA, a);
+                maxB = Math.max(maxB, b);
+                maxC = Math.max(maxC, c);
+            }
+        }
+        return maxA == target[0] && maxB == target[1] && maxC == target[2];
+    }
+
+}
