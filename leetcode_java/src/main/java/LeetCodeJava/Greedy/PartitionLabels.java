@@ -46,9 +46,50 @@ import java.util.Map;
 public class PartitionLabels {
 
     // V0
-//    public List<Integer> partitionLabels(String s) {
-//
-//    }
+    // IDEA: HASHMAP + 2 POINTERS (fixed by gpt)
+    public List<Integer> partitionLabels(String s) {
+        List<Integer> res = new ArrayList<>();
+
+        // Edge case: if string is null or empty, return an empty list
+        if (s == null || s.length() == 0) {
+            return res;
+        }
+
+        // Map to store the last index of each character
+        Map<Character, Integer> lastIndexMap = new HashMap<>();
+
+        // Build the last index map
+        for (int i = 0; i < s.length(); i++) {
+            lastIndexMap.put(s.charAt(i), i);
+        }
+
+        int start = 0; // Start pointer for the partition
+        int end = 0; // End pointer for the partition
+
+        for (int i = 0; i < s.length(); i++) {
+            /**
+             *  NOTE !!!  below
+             *
+             *    1.  Update the end pointer to the maximum of current end and the last index of
+             *        the current character
+             */
+            end = Math.max(end, lastIndexMap.get(s.charAt(i)));
+
+            // If the current position is the end of the partition
+            /**
+             *  NOTE !!!  below
+             *
+             *    1.  If the current position is the end of the partition
+             */
+            if (i == end) {
+                // Add the size of the partition
+                res.add(i - start + 1);
+                start = i + 1; // Move the start to the next character
+            }
+        }
+
+        return res;
+    }
 
     // V1-1
     // https://neetcode.io/problems/partition-labels

@@ -7706,9 +7706,108 @@ class Node {
     }
 
     // LC 763
+    // 11.45 am - 12.10 PM
+    /**
+     *
+
+     A string S of lowercase letters is given.
+
+
+     We want to partition this string into as many parts as possible so that each letter appears in at most one part, and return a list of integers representing the size of these parts.
+
+
+     Example 1:
+
+     Input: S = "ababcbacadefegdehijhklij"
+     Output: [9,7,8]
+     Explanation:
+     The partition is "ababcbaca", "defegde", "hijhklij".
+     This is a partition so that each letter appears in at most one part.
+     A partition like "ababcbacadefegde", "hijhklij" is incorrect, because it splits S into less parts.
+     Note:
+
+     S will have length in range [1, 500].
+     S will consist of lowercase letters ('a' to 'z') only.
+     Difficulty:
+
+     *
+     *
+     *
+     * IDEA 1) 2 POINTERS + HASHMAP ???
+     *
+     *   -> use hashmap get cnt,
+     *      -> map = {a: 3, b:3 ,....}
+     *
+     *   -> use 2 pointers, loop over s,
+     *      once all elements cnt (in map) reached,
+     *      we `cut off` the sub str, restart the new pointers
+     *
+     *   -> repeat above process, and return res
+     *
+     *
+     *
+     */
     public List<Integer> partitionLabels(String s) {
 
-        return null;
+        List<Integer> res = new ArrayList<>();
+
+        // edge
+        if(s == null || s.length() == 0){
+            return null;
+        }
+        if(s.length() == 1){
+            res.add(1);
+            return res;
+        }
+
+        // build map
+        // { val: cnt}
+        Map<String, Integer> map = new HashMap<>();
+        for(String x: s.split("")){
+            map.put(x, map.getOrDefault(x, 0)+1);
+        }
+
+        int slow = 0;
+        int fast = 0;
+
+        while(slow < s.length() - 1){
+            //if(map.g)
+            //Map<String, Integer> tmp = new HashMap<>();
+            List<String> tmp = new ArrayList<>();
+
+            //int fast = i; // ?
+            while (fast < s.length()){
+                // if `current window` has all same elements
+                // -> reset 2 pointers, build the next sub str
+                if(hasAllElementsInWindow(map, tmp)){
+                    res.add(tmp.size());
+                    slow = fast + 1;
+                    //fast = fast;
+                    continue;
+                }
+                String curVal = String.valueOf(s.charAt(fast));
+                tmp.add(curVal);
+                fast += 1;
+            }
+
+            slow += 1;
+        }
+
+        return res;
+    }
+
+    public boolean hasAllElementsInWindow(Map<String, Integer> map, List<String> tmp){
+        Map<String, Integer> tmpMap = new HashMap<>();
+        for(String x: tmp){
+            tmpMap.put(x, tmpMap.getOrDefault(x, 0)+1);
+        }
+        for(String k: tmpMap.keySet()){
+            if(tmpMap.get(k) != map.get(k)){
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
