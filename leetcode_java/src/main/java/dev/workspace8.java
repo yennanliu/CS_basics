@@ -7543,5 +7543,94 @@ class Node {
     }
 
 
+    // LC 846
+    // 10.05 AM - 10.15 AM
+    /**
+     * Alice has a hand of cards,
+     *
+     * given as an array of integers.
+     *
+     * Now she wants to rearrange
+     *
+     * the cards into groups so that `each group is size W, `
+     *
+     * `and consists of W consecutive cards.`
+     *
+     *  Return true if and only if she can.
+     *
+     *
+     *  Example 1:
+     *
+     * Input: hand = [1,2,3,6,2,3,4,7,8], W = 3
+     * Output: true
+     * Explanation: Alice's hand can be
+     * rearranged as [1,2,3],[2,3,4],[6,7,8].
+     *
+     *
+     * Example 2:
+     *
+     * Input: hand = [1,2,3,4,5], W = 4
+     * Output: false
+     * Explanation: Alice's hand
+     * can't be rearranged into groups of 4.
+     *
+     *
+     *  IDEA 1)
+     *
+     *
+     *  exp 1)
+     *
+     *    hand = [1,2,3,6,2,3,4,7,8], W = 3
+     *
+     *    -> each  sub-array len = 9 / 3 = 3
+     *    -> so sub_arr_len = 3, 3 sub_array
+     *
+     *   -> re-order: [1,2,2,3,3,4,6,7,8]
+     *
+     *      1, 2, 3
+     *      2, 3, 4
+     *
+     *
+     *
+     *
+     *      -> consecutive cards. each diff = 1.
+     *
+     *
+     *
+     */
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        // edge
+        if(hand == null || hand.length == 0){
+            return false;
+        }
+        if(groupSize == 0){
+            return false;
+        }
+        if(groupSize == 1){
+            return true;
+        }
+
+        int len = hand.length;
+        if(len % groupSize != 0){
+            return false;
+        }
+        int subLen = len / groupSize;
+
+        System.out.println(">>> before sort, hand = " + hand);
+        // reorder
+        Arrays.sort(hand);
+        System.out.println(">>> after sort, hand = " + hand);
+
+        //List<Integer[]> collected = new ArrayList<>();
+        Map<Integer, List<Integer>> collected = new HashMap<>();
+//        for(int x: hand){
+//            if(map.)
+//        }
+
+        return true;
+    }
+
+
+
 
 }
