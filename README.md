@@ -1159,7 +1159,7 @@
 1375 | [Bulb Switcher III](https://zxi.mytechroad.com/blog/algorithms/array/leetcode-1375-bulb-switcher-iii/) | [Python](./leetcode_python/Greedy/bulb-switcher-iii.py) | | | Medium | queue, array, `gra*` | AGAIN*** (1)
 1648 | [Sell Diminishing-Valued Colored Balls](https://leetcode.com/problems/sell-diminishing-valued-colored-balls/) | [Python](./leetcode_python/Greedy/sell-diminishing-valued-colored-balls.py) | | | Medium | trick, sorting, heapq, binary search, greedy, `amazon` | AGAIN*** (2) (not start)
 1710 | [Maximum Units on a Truck](https://leetcode.com/problems/maximum-units-on-a-truck/) | [Python](./leetcode_python/Greedy/maximum-units-on-a-truck.py) | | | Easy |sort, greedy, `amazon` | AGAIN******** (3) (MUST)
-1899 | [Merge Triplets to Form Target Triplet](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/ | [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MergeTripletsToFormTargetTriplet.java) | | | Medium |sort, greedy, `amazon` | AGAIN(1) (not srart)
+1899 | [Merge Triplets to Form Target Triplet](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MergeTripletsToFormTargetTriplet.java) | | | Medium |sort, greedy, `amazon` | AGAIN(1) (not srart)
 
 
 ## Graph
