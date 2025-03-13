@@ -7705,5 +7705,11 @@ class Node {
         return false;
     }
 
+    // LC 763
+    public List<Integer> partitionLabels(String s) {
+
+        return null;
+    }
+
 
 }
