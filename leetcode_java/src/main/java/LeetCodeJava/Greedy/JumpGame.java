@@ -34,6 +34,53 @@ package LeetCodeJava.Greedy;
 public class JumpGame {
 
     // V0
+    // IDEA: GREEDY ( <---- RIGHT to LEST visit)
+    public boolean canJump(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return true;
+        }
+        if (nums.length == 1) {
+            return true;
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *   - init `rightBoundary` as nums.len - 1
+         *
+         *   - rightBoundary is `the current destination`
+         */
+        int rightBoundary = nums.length - 1;
+
+        /**
+         *  NOTE !!!
+         *
+         *   we end at `i >= 0` idx
+         */
+        for (int i = nums.length - 1; i >= 0; i--) {
+
+            //System.out.println(">>> i = " + i + ", nums[i] = " + nums[i] + ", rightBoundary = " + rightBoundary);
+            /**
+             *   if current position can reach the `current destination`
+             *        -> we update the `current destination` to the current idx
+             */
+            if (i + nums[i] >= rightBoundary) {
+                rightBoundary = i;
+            }
+
+        }
+
+        /**
+         *   NOTE !!!
+         *
+         *     check if we can reach the staring point (idx=0)
+         */
+        return rightBoundary == 0;
+    }
+
+
+    // V0-0
     // IDEA : GREEDY
     // NOTE !!! :  goal is reaching last index
     // Return true if you can reach the last index, or false otherwise.
@@ -82,7 +129,7 @@ public class JumpGame {
 //        return false;
 //    }
 
-        public boolean canJump(int[] nums) {
+        public boolean canJump_0_0(int[] nums) {
 
         if (nums == null || nums.length <= 1){
             return true;
@@ -155,6 +202,7 @@ public class JumpGame {
              *  - If the answer is yes, we update lastPos to i
              *    because we can now consider position i
              *    as the new "reachable position."
+             *
              *
              */
             if (i + nums[i] >= lastPos) {
