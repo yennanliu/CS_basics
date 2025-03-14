@@ -213,5 +213,84 @@ public class ValidParenthesisString {
 
 
     // V2
+    // IDEA: GREEDY (fixed by gpt)
+    /**
+     *  We can approach the solution with a greedy method that counts the number of open parentheses ( and ensures that the number of * can balance the parentheses. We'll perform two passes:
+     *
+     *  1) Left-to-right pass:
+     *      Count ( and * to ensure that we don't have more )
+     *      than we can potentially balance.
+     *
+     *  2) Right-to-left pass:
+     *     Count ) and * to ensure that we don't have more
+     *     ( than we can balance with *.
+     *
+     *
+     *  Explanation:
+     *
+     *  1) Left-to-right pass:
+     *      We check if the number of ) ever exceeds (.
+     *      If it does, we attempt to use a * as an opening parenthesis.
+     *
+     *
+     *
+     *  2) Right-to-left pass: Similarly, we check
+     *       if the number of ( exceeds ) and use * as a closing
+     *       parenthesis if needed.
+     *
+     */
+    public boolean checkValidString_2(String s) {
+        // Left to right pass
+        int leftBalance = 0;
+        int starCount = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (c == '(') {
+                leftBalance++;
+            } else if (c == ')') {
+                leftBalance--;
+            } else { // c == '*'
+                starCount++;
+            }
+
+            // If at any point we have more ')' than '(', then it's invalid
+            if (leftBalance < 0) {
+                if (starCount > 0) {
+                    leftBalance++; // Treat a '*' as an open parenthesis '('
+                    starCount--; // Use one star as '('
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        // Right to left pass
+        int rightBalance = 0;
+        starCount = 0; // Reset star count for the second pass
+        for (int i = s.length() - 1; i >= 0; i--) {
+            char c = s.charAt(i);
+
+            if (c == ')') {
+                rightBalance++;
+            } else if (c == '(') {
+                rightBalance--;
+            } else { // c == '*'
+                starCount++;
+            }
+
+            // If at any point we have more '(' than ')', then it's invalid
+            if (rightBalance < 0) {
+                if (starCount > 0) {
+                    rightBalance++; // Treat a '*' as a closing parenthesis ')'
+                    starCount--; // Use one star as ')'
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return true; // If we passed both passes, the string is valid
+    }
 
 }
