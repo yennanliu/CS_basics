@@ -7884,6 +7884,114 @@ class Node {
         return q1.isEmpty();
     }
 
+    // LC 57
+    // IDEA: array op
+    // 10.53 - 11.00 am
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        // edge
+        if(intervals == null || intervals.length == 0){
+            return null;
+        }
+        if(newInterval == null || newInterval.length == 0){
+            return intervals;
+        }
+
+       //Queue<List<Integer>> q = new LinkedList<>(); // FIFO
+        Stack<List<Integer>> st = new Stack<>(); // FILO
+        List<List<Integer>> cached = new ArrayList<>();
+        List<List<Integer>> collected = new ArrayList<>();
+
+        for(int[] x: intervals){
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(x[0]);
+            tmp.add(x[1]);
+            cached.add(tmp);
+          //  Integer[][] tmp = new Integer[][]{{x[0], x[1]}};
+        }
+
+        List<Integer> tmp2 = new ArrayList<>();
+        tmp2.add(newInterval[0]);
+        tmp2.add(newInterval[1]);
+        cached.add(tmp2);
+
+        // sorting
+        Collections.sort(cached, new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> o1, List<Integer> o2) {
+                // sort 1) 1st element (small -> big)
+                //      2) 2nd element ??? (samll -> big)
+                int diff = o1.get(0) - o2.get(0); //
+                if(diff == 0){
+                    return o1.get(1) - o2.get(1);
+                }
+                return diff;
+            }
+        });
+
+        for(List<Integer> x: cached){
+            if(st.isEmpty()){
+                st.add(x);
+            }else{
+                //while()
+                //while(q.peek().get(1) < x.get(0)){
+                List<Integer> last = st.pop(); // ??
+                /**
+                 *   3 types of overlap
+                 *
+                 *   1)
+                 *       |----------|   old
+                 *         |---------------|  new
+                 *
+                 *  2)
+                 *          |------|  old
+                 *       |-----|      new
+                 *
+                 *
+                 * 3)
+                 *     |--------------|   old
+                 *        |-----|        new
+                 *
+                 *
+                 *  NON OVERLAP
+                 *
+                 *    |----|  old
+                 *            |--------|  new
+                 *
+                 *
+                 */
+                List<Integer> newList = new ArrayList<>();
+
+                if(  ( last.get(1) > x.get(0) && last.get(1) < x.get(1) )  &&
+                     ( last.get(0) < x.get(1) && last.get(1) > x.get(1) ) &&
+                     ( last.get(1) > x.get(1) && last.get(0) < x.get(0) ) ){
+
+                    newList.add(Math.min(last.get(0), x.get(0)));
+                    newList.add(Math.max(last.get(1), x.get(1)));
+
+                }else{
+
+                    newList.add(x.get(0));
+                    newList.add(x.get(0));
+                }
+
+                st.add(newList);
+            }
+        }
+
+        int[][] res = new int[st.size()][2];
+
+        int cnt = 0;
+        while(!st.isEmpty()){
+            int[] tmp3 = new int[2];
+            List<Integer> x = st.pop();
+            tmp3[0] = x.get(0);
+            tmp3[1] = x.get(1);
+            cnt += 1;
+        }
+
+        return res;
+    }
+
 
 
 }
