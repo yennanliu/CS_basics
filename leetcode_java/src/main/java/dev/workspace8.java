@@ -7810,5 +7810,79 @@ class Node {
         return true;
     }
 
+    // LC 678
+    // 9.40 - 9.50 am
+    /**
+     *  IDEA 1) QUEUE ??
+     *
+     *
+     *
+     *  exp 1)
+     *     s = "()"
+     *     -> true
+     *
+     *   (, q = [ "(" ]
+     *   ), q = [],
+     *
+     *
+     *   exp 2)
+     *
+     *     s = "(*)"
+     *     (, q = ["("]
+     *     *, q = ["("], q2 = ["*"]
+     *     ), q = [], q2 = ["*"]
+     *
+     *  exp 3)
+     *
+     *     s = "(*))"
+     *     (, q = ["("]
+     *     *, q = ["("], q2 = ["*"]
+     *     ), q = [], q2 = ["*"]
+     *     ), q = [], q2 = [],
+     *
+     *
+     *
+     */
+    public boolean checkValidString(String s) {
+        // edge
+        if(s == null || s.length() == 0){
+            return true; // ??
+        }
+        if(s.length() == 1){
+            if(s.equals("*")){  // ???
+                return true;
+            }
+            return false;
+        }
+
+        // queue
+        Queue<String> q1 = new LinkedList<>();
+        Queue<String> q2 = new LinkedList<>();
+        for(String x: s.split("")){
+            // case 1): "("
+            if(x.equals("(")){
+                q1.add(x);
+            }
+            // case 2): "*"
+            else if (x.equals("*")) {
+                q2.add(x);
+            }
+            // case 3):  ")"
+            else{
+                if(!q1.isEmpty()){
+                    q1.poll();
+                } else if (!q2.isEmpty()) {
+                    q2.poll();
+                }else{
+                    return false;
+                }
+            }
+        }
+
+        System.out.println(">>> q1 = " + q1);
+        System.out.println(">>> q2 = " + q2);
+        return q1.isEmpty();
+    }
+
 
 }
