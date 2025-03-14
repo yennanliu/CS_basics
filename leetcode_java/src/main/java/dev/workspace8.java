@@ -7378,30 +7378,66 @@ class Node {
      *
      *
      */
-    // IDEA 2) LOOP FORM RIGHT TO LEFT (<----)
+    // 11.35 - 11.45 am
+    /**
+     *   IDEA: LOOP FROM RIGHT (<----)
+     *
+     *
+     *
+     *
+     */
     public boolean canJump(int[] nums) {
         // edge
         if(nums == null || nums.length == 0){
-            return false; // ??
+            return true;
         }
         if(nums.length == 1){
             return true;
         }
 
-        // <---
-        //int cur = nums[nums.length - 1];
-        int lastIdx = nums.length - 1;
+        //int farestReach = 0; // ??
+        int rightBoundary = nums.length - 1;
 
         for(int i = nums.length - 1; i >= 0; i--){
-            //cur = (cur - nums[i-1]);
-            if(i + nums[i] >= lastIdx){
-                lastIdx = i;
+
+            System.out.println(">>> i = " + i + ", nums[i] = " + nums[i] + ", rightBoundary = " + rightBoundary);
+
+            // if current position can reach the `current destination`
+            // -> we update the `current destination` to the current idx
+            if(i + nums[i] >= rightBoundary){
+               // return false; // ???
+                rightBoundary = i;
             }
+
         }
 
-        //return cur <= 0; // ????
-        return lastIdx == 0; // ???
+        return rightBoundary == 0; // check if we can reach the 0 idx
     }
+
+    // IDEA 2) LOOP FORM RIGHT TO LEFT (<----)
+//    public boolean canJump(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return false; // ??
+//        }
+//        if(nums.length == 1){
+//            return true;
+//        }
+//
+//        // <---
+//        //int cur = nums[nums.length - 1];
+//        int lastIdx = nums.length - 1;
+//
+//        for(int i = nums.length - 1; i >= 0; i--){
+//            //cur = (cur - nums[i-1]);
+//            if(i + nums[i] >= lastIdx){
+//                lastIdx = i;
+//            }
+//        }
+//
+//        //return cur <= 0; // ????
+//        return lastIdx == 0; // ???
+//    }
 
 //    public boolean canJump(int[] nums) {
 //        // edge
