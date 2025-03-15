@@ -8028,6 +8028,74 @@ class Node {
         return res;
     }
 
+    // LC 56
+    // 3.35 - 3.45 pm
+    // IDEA : STACK (LIFO)
+    public int[][] merge(int[][] intervals) {
+        // edge
+        if(intervals == null || intervals.length == 0){
+            return null;
+        }
+
+        // sort
+        // 1st element : small -> big
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                return diff;
+            }
+        });
+
+        Stack<int[]> st = new Stack<>();
+        List<int[]> collected = new ArrayList<>();
+        for(int[] x: intervals){
+            // case 1) stack is empty
+            if(st.isEmpty()){
+                st.add(x);
+            }else{
+                /**
+                 *  since we already sorted intervals on
+                 *  1st element as increasing order (small -> big)
+                 *  the ONLY non overlap case is as below:
+                 *
+                 *    |----|  old
+                 *            |------| new
+                 */
+                int[] prev = st.pop();
+                // case 2) if NOT overlap
+                if(prev[1] < x[0]){
+                    st.add(prev);
+                    st.add(x);
+                }
+                // case 3) OVERLAP
+                else{
+                    st.add(new int[]{ Math.min(prev[0], x[0]), Math.max(prev[1], x[1]) });
+                }
+            }
+        }
+
+        // stack -> list
+//        while(!st.isEmpty()){
+//            collected.add(st.pop());
+//        }
+
+        System.out.println(">>> st = ");
+        for(int i = 0; i < st.size(); i++){
+            System.out.println("st val = " + st.get(i));
+        }
+
+
+        for(int i = 0; i < st.size(); i++){
+            collected.add(st.get(i)); // ???
+        }
+
+        //int[][] res = collected.toArray(new int[collected.size()][]);
+
+        // ???
+        return collected.toArray(new int[collected.size()][]);
+    }
+
 
 
 }

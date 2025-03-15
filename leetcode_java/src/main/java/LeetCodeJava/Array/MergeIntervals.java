@@ -94,8 +94,64 @@ public class MergeIntervals {
     }
 
     // V0-1
-    // IDEA: SORT + ARRAY OP + BOUNDARY HANDLING
+    // IDEA: SORTING + BOUNDARY OP
     public int[][] merge_0_1(int[][] intervals) {
+        // edge
+        if(intervals == null || intervals.length == 0){
+            return null;
+        }
+
+        // sort
+        // 1st element : small -> big
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                return diff;
+            }
+        });
+
+        Stack<int[]> st = new Stack<>();
+        List<int[]> collected = new ArrayList<>();
+        for(int[] x: intervals){
+            // case 1) stack is empty
+            if(st.isEmpty()){
+                st.add(x);
+            }else{
+                /**
+                 *  LC 57
+                 *
+                 *  since we already sorted intervals on
+                 *  1st element as increasing order (small -> big)
+                 *  the ONLY non overlap case is as below:
+                 *
+                 *    |----|  old
+                 *            |------| new
+                 */
+                int[] prev = st.pop();
+                // case 2) if NOT overlap
+                if(prev[1] < x[0]){
+                    st.add(prev);
+                    st.add(x);
+                }
+                // case 3) OVERLAP
+                else{
+                    st.add(new int[]{ Math.min(prev[0], x[0]), Math.max(prev[1], x[1]) });
+                }
+            }
+        }
+
+        for(int i = 0; i < st.size(); i++){
+            collected.add(st.get(i));
+        }
+
+        /** NOTE !!! below */
+        return collected.toArray(new int[collected.size()][]);
+    }
+
+    // V0-2
+    // IDEA: SORT + ARRAY OP + BOUNDARY HANDLING
+    public int[][] merge_0_2(int[][] intervals) {
 
         if (intervals.length <= 1){
             return intervals;
@@ -129,9 +185,9 @@ public class MergeIntervals {
         return tmp.toArray(new int[tmp.size()][]);
     }
 
-    // V0-2
+    // V0-3
     // IDEA: ARRAY OP (GPT)
-    public int[][] merge_0_2(int[][] intervals) {
+    public int[][] merge_0_3(int[][] intervals) {
         // Edge case: If intervals is null or empty, return an empty array
         if (intervals == null || intervals.length == 0) {
             return new int[][] {}; // Return empty 2D array
