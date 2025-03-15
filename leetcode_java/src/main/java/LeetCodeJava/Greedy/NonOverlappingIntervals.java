@@ -93,6 +93,14 @@ public class NonOverlappingIntervals {
             if (intervals[i][0] < last[1]) {
                 cnt++;
             } else {
+                /**
+                 *  NOTE !!!
+                 *
+                 *  if NOT overlap, need to use `bigger` val as 2nd element in last element
+                 *
+                 *  e.g.
+                 *  // No overlap, update the lastEndTime
+                 */
                 last[1] = Math.max(intervals[i][1], last[1]);
             }
         }
