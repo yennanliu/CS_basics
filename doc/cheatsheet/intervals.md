@@ -53,6 +53,7 @@
 
 
 - *Conclusion*:
+
 if `start < date.get(1) and end > date.get(0)`
 -> then intervals are OVERLAP
 
@@ -80,43 +81,64 @@ Existing:   |-----|
 -> All of cases above are with `start < date.get(1) and end > date.get(0)` condition
 ```
 
-```python
-# python
 
-#-----------
-# V1
-#-----------
-# LC 435, 646
-intervals = [[1,2],[2,3],[3,4],[1,3]]
-last = intervals[0]
-intervals.sort(key = lambda x : x[1])
-cnt = 0
-for i in range(len(intervals)):
-    if some_condition:
-        # do sth
-    else:
-        # do sth
+- `NO OVERLAP` case
 
-#-----------
-# V2
-#-----------
-def intervalsPattern(intervals):
-    if not points: return 0
+-> or, we can use `NO OVERLAP` perspectives
+-> if we first sort array on `1st element`,
+   then the ONLY `overlap` case is as below
+   e.g. `old[1] < new[0]`, we can use this as condition
+   - LC 56, LC 57
 
-    # do some update on intervals, depends, e.g. : intervals.append(newInterval)
+```
+|------| old
+             
+             |------| new
+```
 
-    #### NOTE we need to SORT first
-    intervals.sort(key = lambda x : x[1]) # or points.sort(key = lambda x : x[0])...depends
-    
-    curr_pos = points[0][1]
-    ans = 1
-    for i in range(len(intervals)):
+```java
+// java
+// LC 57
 
-        if some_condition:
-            # do sth
-        else:
-            # do sth
-    return ans
+// ...
+Arrays.sort(intervals, new Comparator<int[]>() {
+    @Override
+    public int compare(int[] o1, int[] o2) {
+        int diff = o1[0] - o2[0];
+        return diff;
+    }
+});
+
+// ...
+
+for(int[] x: intervals){
+    // case 1) stack is empty
+    if(st.isEmpty()){
+        st.add(x);
+    }else{
+        /**
+         *  LC 57
+         *
+         *  since we already sorted intervals on
+         *  1st element as increasing order (small -> big)
+         *  the ONLY non overlap case is as below:
+         *
+         *    |----|  old
+         *            |------| new
+         */
+        int[] prev = st.pop();
+        // case 2) if NOT overlap
+        if(prev[1] < x[0]){
+            st.add(prev);
+            st.add(x);
+        }
+        // case 3) OVERLAP
+        else{
+            st.add(new int[]{ Math.min(prev[0], x[0]), Math.max(prev[1], x[1]) });
+        }
+    }
+}
+
 ```
 
 ## 1) General form
