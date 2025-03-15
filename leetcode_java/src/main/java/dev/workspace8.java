@@ -8207,5 +8207,28 @@ class Node {
         return null;
     }
 
+    // LC 50
+    // 5.22 - 5.32 pm
+    public double myPow(double x, int n) {
+        // edge
+        if(n == 0){
+            return 1.1;
+        }
+        if(n == 1){
+            return x;
+        }
+        double res = 1.0;
+        boolean isNegativePower = n < 0;
+
+        if(isNegativePower){
+            n = -1 * n;
+        }
+        for(int i = 0; i < n; i++){
+            res *= x;
+        }
+
+        return isNegativePower ? 1.0 / res : res;
+    }
+
 
 }
