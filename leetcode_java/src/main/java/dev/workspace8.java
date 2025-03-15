@@ -8096,6 +8096,111 @@ class Node {
         return collected.toArray(new int[collected.size()][]);
     }
 
+    // LC 435
+    // 4.07 - 4.20 pm
+    // IDEA: ARRAY OP
+    /**
+     *   step 1) sort on 2nd element ???
+     *         -> big -> small (decreasing order)
+     *
+     *
+     *   exp 1)
+     *    intervals = [[1,2],[2,3],[3,4],[1,3]]
+     *    -> res = 1
+     *
+     *    |---|
+     *    1   2
+     *        |----|
+     *        2    3
+     *             |---|
+     *             3   4
+     *   |---------|
+     *   1         3
+     *
+     *
+     *   exp 2)
+     *
+     *   intervals = [[1,2],[2,3]]
+     *   -> res = 0
+     *
+     *   |---|
+     *   1   2
+     *       |----|
+     *       2    3
+     *
+     *
+     *  exp 3)
+     *
+     *    |--------------------|
+     *    1                   100
+     *    |------|
+     *    1      11
+     *       |------|
+     *       2      12
+     *          |--------|
+     *          11       22
+     *
+     *
+     *
+     *
+     */
+    public int eraseOverlapIntervals(int[][] intervals) {
+        // edge
+        if(intervals == null || intervals.length == 0){
+            return 0;
+        }
+
+        int res = 0;
+        /**
+         *  SORT (in below order)
+         *
+         *  1) 1st element (small -> big)
+         *  2) 2nd element (big -> small)
+         */
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o2[1] - o1[1];
+//                if(diff == 0){
+//                    return o2[1] - o1[1];
+//                }
+                return diff;
+            }
+        });
+
+        System.out.println(">>> (after sort) intervals = " );
+        for(int[] x: intervals){
+            System.out.println(">>> x[0] = " + x[0] + ", x[1] = " + x[1] );
+        }
+
+        Stack<int[]> st = new Stack<>();
+        for(int[] x: intervals){
+            //  case 1) st is empty
+            if(st.isEmpty()){
+                st.add(x);
+            } else{
+                // case 2) NOT overlap
+                /**
+                 *  |----| old
+                 *           |----| new
+                 *
+                 */
+                int[] prev = st.pop();
+                if(prev[1] <= x[0]){
+                    //st.add(x);
+                    st.add(new int[] { Math.min(prev[0], x[0]), Math.max(prev[1], x[1]) } );
+                }
+                // case 3) OVERLAP, add `merge` interval
+                else{
+                    res += 1;
+                    //st.add(new int[] { Math.min(prev[0], x[0]), Math.max(prev[1], x[1]) } );
+                }
+            }
+        }
+
+        return res;
+    }
+
 
 
 }
