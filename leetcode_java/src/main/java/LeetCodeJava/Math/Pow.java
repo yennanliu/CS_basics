@@ -1,7 +1,40 @@
 package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/powx-n/description/
-
+/**
+ * 50. Pow(x, n)
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: x = 2.00000, n = 10
+ * Output: 1024.00000
+ * Example 2:
+ *
+ * Input: x = 2.10000, n = 3
+ * Output: 9.26100
+ * Example 3:
+ *
+ * Input: x = 2.00000, n = -2
+ * Output: 0.25000
+ * Explanation: 2-2 = 1/22 = 1/4 = 0.25
+ *
+ *
+ * Constraints:
+ *
+ * -100.0 < x < 100.0
+ * -231 <= n <= 231-1
+ * n is an integer.
+ * Either x is not zero or n > 0.
+ * -104 <= xn <= 104
+ *
+ */
 public class Pow {
 
     // V0
@@ -35,9 +68,73 @@ public class Pow {
 //        return res;
 //    }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/pow-x-n
+    // IDEA: BRUTE FORCE
+    public double myPow_1_1(double x, int n) {
+        if (x == 0) {
+            return 0;
+        }
+        if (n == 0) {
+            return 1;
+        }
+
+        double res = 1;
+        for (int i = 0; i < Math.abs(n); i++) {
+            res *= x;
+        }
+        return n >= 0 ? res : 1 / res;
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/pow-x-n
+    // IDEA: Binary Exponentiation (Recursive)
+    public double myPow_1_2(double x, int n) {
+        if (x == 0) {
+            return 0;
+        }
+        if (n == 0) {
+            return 1;
+        }
+
+        double res = helper(x, Math.abs((long) n));
+        return (n >= 0) ? res : 1 / res;
+    }
+
+    private double helper(double x, long n) {
+        if (n == 0) {
+            return 1;
+        }
+        double half = helper(x, n / 2);
+        return (n % 2 == 0) ? half * half : x * half * half;
+    }
+
+
+    // V1-3
+    // https://neetcode.io/problems/pow-x-n
+    // IDEA: Binary Exponentiation (Iterative)
+    public double myPow_1_3(double x, int n) {
+        if (x == 0) return 0;
+        if (n == 0) return 1;
+
+        double res = 1;
+        long power = Math.abs((long)n);
+
+        while (power > 0) {
+            if ((power & 1) == 1) {
+                res *= x;
+            }
+            x *= x;
+            power >>= 1;
+        }
+
+        return n >= 0 ? res : 1 / res;
+    }
+
+
+    // V2
     // https://leetcode.com/problems/powx-n/solutions/4919918/beats-100-00-of-users-with-java-simple-easy-well-explained-solution-using-loop/
-    public double myPow_1(double x, int n) {
+    public double myPow_2(double x, int n) {
         double ans=1;
         long n_temp = n;
         if(n_temp<0){
@@ -58,10 +155,10 @@ public class Pow {
         return ans;
     }
 
-    // V2
+    // V3
     // IDEA : BIT OP
     // https://leetcode.com/problems/powx-n/
-    public double myPow_2(double x, int n) {
+    public double myPow_3(double x, int n) {
 
         if(n < 0){
             n = -n;
