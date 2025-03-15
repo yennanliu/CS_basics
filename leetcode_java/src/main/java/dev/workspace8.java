@@ -8201,6 +8201,11 @@ class Node {
         return res;
     }
 
+    // LC 1851
+    // 4.59 - 5.06 pm
+    public int[] minInterval(int[][] intervals, int[] queries) {
+        return null;
+    }
 
 
 }
