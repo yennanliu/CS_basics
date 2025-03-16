@@ -40,15 +40,54 @@ package LeetCodeJava.BinarySearch;
 public class FindFirstAndLastPositionOfElementInSortedArray {
 
     // V0
-    // TODO : implement
-//    public int[] searchRange(int[] nums, int target) {
-//
-//    }
+    // IDEA: BINARY SEARCH (fixed by gpt)
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[]{-1, -1}; // Default result
 
-    // V1
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+
+        // Find the first occurrence of target
+        int left = findBound(nums, target, true);
+        if (left == -1) {
+            return res; // Target not found
+        }
+
+        // Find the last occurrence of target
+        int right = findBound(nums, target, false);
+
+        return new int[]{left, right};
+    }
+
+    private int findBound(int[] nums, int target, boolean isFirst) {
+        int l = 0, r = nums.length - 1;
+        int bound = -1;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (nums[mid] == target) {
+                bound = mid;
+                if (isFirst) {
+                    r = mid - 1; // Keep searching left
+                } else {
+                    l = mid + 1; // Keep searching right
+                }
+            } else if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+
+        return bound;
+    }
+
+    // V2
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/14734/easy-java-o-logn-solution/
-    public int[] searchRange_1(int[] nums, int target) {
+    public int[] searchRange_2(int[] nums, int target) {
         int[] result = new int[2];
         result[0] = findFirst(nums, target);
         result[1] = findLast(nums, target);
@@ -100,10 +139,10 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         return idx;
     }
 
-    // V2
+    // V3
     // IDEA : Binary Tree
     // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/14701/a-very-simple-java-solution-with-only-one-binary-search-algorithm/
-    public int[] searchRange_2(int[] A, int target) {
+    public int[] searchRange_3(int[] A, int target) {
         int start = firstGreaterEqual(A, target);
         if (start == A.length || A[start] != target) {
             return new int[]{-1, -1};
@@ -130,10 +169,10 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         return low;
     }
 
-    // V3
+    // V4
     // IDEA : binary Search
     // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/5378191/video-binary-search-solution/
-    public int[] searchRange_3(int[] nums, int target) {
+    public int[] searchRange_4(int[] nums, int target) {
         int[] result = { -1, -1 };
         int left = binarySearch(nums, target, true);
         int right = binarySearch(nums, target, false);
@@ -167,9 +206,9 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         return idx;
     }
 
-    // V4
+    // V5
     // IDEA : binary Search (gpt)
-    public int[] searchRange_4(int[] nums, int target) {
+    public int[] searchRange_5(int[] nums, int target) {
         if (nums == null || nums.length == 0) {
             return new int[]{-1, -1};
         }

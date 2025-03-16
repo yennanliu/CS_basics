@@ -8459,5 +8459,89 @@ class Node {
 //        return false;
 //    }
 
+    // LC 34
+    // 2.54 - 3.10 pm
+    /**
+     *  IDEA 1) BRUTE FORCE + HASHMAP
+     *   -> loop over nums, use hashmap,
+     *      record indexes as val,
+     *      then return min, max of it
+     *
+     *
+     *  IDEA 2) binary search ???
+     *
+     *  -> since the array is `Sorted Array`
+     *    ( ascending) (e.g. small -> big)
+     *
+     *
+     */
+    public int[] searchRange(int[] nums, int target) {
+
+        int[] res = new int[]{-1, -1}; // default res
+
+        // edge
+        if(nums == null || nums.length == 0){
+            return res;
+        }
+        if(nums.length == 1){
+            if(nums[0] != target){
+                return res;
+            }
+        }
+        if(nums.length == 2){
+            if(nums[0] != target &&  nums[1] != target){
+                return res;
+            }
+            if(nums[0] == target &&  nums[1] == target){
+                return new int[]{0,1};
+            }
+            else{
+                if(nums[0] == target){
+                    return new int[]{0,0};
+                }else{
+                    return new int[]{1,1};
+                }
+            }
+        }
+
+        // binary search ???
+        int l = 0;
+        int r = nums.length - 1;
+        int mid = -1;
+        boolean found = false;
+        while(r >= l){
+            mid = (l + r) / 2;
+            if(nums[mid] == target){
+                found = true;
+                break; // if found a candidate, leave the while loop
+            }
+            if(nums[mid] > target){
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+        // if found a `candidate`, we found the interval via below
+        int subLeft = mid;
+        int subRight = mid;
+
+        if(!found){
+            return res;
+        }
+
+        System.out.println(">>> mid = " + mid);
+
+        while(subLeft > 0 && nums[subLeft] == target){
+            subLeft -= 1;
+        }
+
+        while(subRight < nums.length - 1 && nums[subRight] == target){
+            subRight += 1;
+        }
+
+        return new int[]{subLeft, subRight};
+    }
+
 
 }
