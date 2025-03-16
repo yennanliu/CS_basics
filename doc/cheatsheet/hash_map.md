@@ -1,5 +1,9 @@
 # Hash Map
 
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/hash_op_101.png"></p>
+
+
+
 ## 0) Concept
 
 - [Java HashMap](https://bbs.huaweicloud.com/blogs/276884?utm_source=juejin&utm_medium=bbs-ex&utm_campaign=other&utm_content=content)
