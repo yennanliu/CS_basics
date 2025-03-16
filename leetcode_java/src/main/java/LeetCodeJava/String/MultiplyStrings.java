@@ -86,8 +86,14 @@ public class MultiplyStrings {
         String res = "";
         int zero = 0;
         for (int i = num2.length() - 1; i >= 0; i--) {
+
+            // NOTE !!! we define `mul` helper func
             String cur = mul(num1, num2.charAt(i), zero);
+
+            // NOTE !!! we define `add` helper func
             res = add(res, cur);
+
+            // NOTE !!! we increase zero by 1 (zero += 1)
             zero++;
         }
 
@@ -109,7 +115,8 @@ public class MultiplyStrings {
 
         // fix below for JDK 8
         //return cur.reverse().toString() + "0".repeat(zero);
-        return cur.reverse().toString() + String.join("", Collections.nCopies(zero, "0"));
+        return cur.reverse().toString() +
+                String.join("", Collections.nCopies(zero, "0"));
     }
 
     private String add(String num1, String num2) {

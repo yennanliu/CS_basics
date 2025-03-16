@@ -8543,5 +8543,26 @@ class Node {
         return new int[]{subLeft, subRight};
     }
 
+    // LC 43
+    // 3.48 - 3.58 pm
+    /**
+     *  IDEA 1) STRING OP
+     *
+     *   -> abc * def
+     *   = (a * 100) * (def) + (b * 10) * (def) + (c * 1) * def
+     *   = 100 * (a) * (def) +  10 * (b) * (def) +  1 * (c) * (def)
+     *
+     *   -> so we create a `single val * val` helper func
+     *   -> then use above, build our solution
+     *
+     *
+     *
+     */
+    public String multiply(String num1, String num2) {
+
+        return null;
+    }
+
+
 
 }
