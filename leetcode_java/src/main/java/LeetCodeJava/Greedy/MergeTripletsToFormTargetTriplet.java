@@ -3,9 +3,7 @@ package LeetCodeJava.Greedy;
 // https://leetcode.com/problems/merge-triplets-to-form-target-triplet/description/
 // https://leetcode.cn/problems/merge-triplets-to-form-target-triplet/
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 1899. Merge Triplets to Form Target Triplet
@@ -55,9 +53,51 @@ import java.util.Set;
 public class MergeTripletsToFormTargetTriplet {
 
     // V0
-//    public boolean mergeTriplets(int[][] triplets, int[] target) {
-//
-//    }
+    // IDEA: GREEDY + set
+    // https://neetcode.io/problems/merge-triplets-to-form-target
+    public boolean mergeTriplets(int[][] triplets, int[] target) {
+        // edge
+        if(triplets == null || triplets.length == 0){
+            return false;
+        }
+        // step 1) remove `not qualified` element
+        List<int[]> collected = new ArrayList<>();
+        for(int[] t: triplets){
+            /**
+             *  NOTE !!! below can be optimized as
+             *
+             *  if( t[0] > target[0] || t[1] > target[1] || t[2] > target[2] ){
+             *       continue;
+             *  }
+             *
+             */
+            boolean isValid = true;
+            for(int i = 0; i < t.length; i++){
+                if(t[i] > target[i]){
+                    isValid = false;
+                    break; // ??
+                }
+            }
+            if(isValid){
+                collected.add(t);
+            }
+        }
+        
+        // step 2) init set
+        HashSet<Integer> set = new HashSet<>();
+        // step 3) compare if there is a `val with idx` that as same as val in target with same idx
+        for(int[] c: collected){
+            for(int i = 0; i < c.length; i++){
+                //System.out.println(">>> c[i]  = " + c[i] + ",  target[i] = " +  target[i]);
+                if(c[i] == target[i]){
+                    set.add(i);
+                }
+            }
+        }
+
+        //System.out.println(">>> set = " + set);
+        return set.size() == target.length;
+    }
 
     // V1-1
     // https://neetcode.io/problems/merge-triplets-to-form-target

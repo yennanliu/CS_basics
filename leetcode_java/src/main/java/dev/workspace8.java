@@ -7820,8 +7820,43 @@ class Node {
      *
      */
     public boolean mergeTriplets(int[][] triplets, int[] target) {
+        // edge
+        if(triplets == null || triplets.length == 0){
+            return false; // ?
+        }
+        // step 1) remove `not qualified` element
+        List<int[]> collected = new ArrayList<>();
+        //boolean isValid = true;
+        for(int[] t: triplets){
+            boolean isValid = true;
+            for(int i = 0; i < t.length; i++){
+                if(t[i] > target[i]){
+                    isValid = false;
+                    break; // ??
+                }
+            }
+            if(isValid){
+                collected.add(t);
+            }
+        }
 
-        return false;
+        System.out.println(">>> collected = " + collected);
+
+        //int[] cache = new int[triplets.length];
+        //List<Integer> cache = new ArrayList<>();
+        HashSet<Integer> set = new HashSet<>();
+        for(int[] c: collected){
+            for(int i = 0; i < c.length; i++){
+                System.out.println(">>> c[i]  = " + c[i] + ",  target[i] = " +  target[i]);
+                if(c[i] == target[i]){
+                    set.add(i);
+                }
+            }
+        }
+
+        System.out.println(">>> set = " + set);
+
+        return set.size() == target.length; // ??
     }
 
     // LC 763
@@ -8417,6 +8452,12 @@ class Node {
 
         return isNegativePower ? 1.0 / res : res;
     }
+
+    // LC 1899
+//    public boolean mergeTriplets(int[][] triplets, int[] target) {
+//
+//        return false;
+//    }
 
 
 }
