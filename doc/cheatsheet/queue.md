@@ -2,6 +2,11 @@
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/queue2.png"></p>
 - first in first out (FIFO)
 
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack_vs_queue.png"></p>
+
+
+
 ## 0) Concept  
 - An ordering linear data structure
 - can be implemented by either `array` or `linkedlist`

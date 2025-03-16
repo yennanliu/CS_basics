@@ -2061,70 +2061,101 @@ public class workspace8 {
      *
      *
      */
+    /**
+     *
+     *   least recently used key.
+     *
+     *  IDEA 1) QUEUE ???
+     *   (FIFO)
+     *
+     *   map_cnt : { val: used_cnt } // record element, and count it has been used
+     *   map : { val : val } // k-v, record key and its value
+     *   element_cnt : record total elements count
+     *   PQ : (small Queue) // record `cnt`, so if `element size > capacity`
+     *                      // we can pop the `least used time` and remove the corresponding element
+     *   PQ<Inter[]>, ([val: cnt]), sort on 2nd element
+     *
+     */
     class LRUCache {
 
-        // attr
-        int capacity;
-        //Stack<Integer> leastUsed;
-        // dqeueue : [ key1, key2, .... ]
-        Deque<Integer> leastUsed;
-        Map<Integer, Integer> map;
-
         public LRUCache(int capacity) {
-            this.capacity = capacity;
-            //this.leastUsed = new Stack<>();
-            this.leastUsed = new LinkedList<>(); // ???
-            this.map = new HashMap<>();
+
         }
 
         public int get(int key) {
-            if(this.map.isEmpty()){
-                return -1;
-            }
-            if(!this.map.containsKey(key)){
-                return -1;
-            }
-
-            int toAdd = -1;
-            // update `least usage`
-            for(int i = 0; i < this.leastUsed.size(); i++){
-                Integer tmp = this.leastUsed.pop();
-                if(tmp == key){
-                    //this.leastUsed.add(tmp);
-                    // NOT change `ordering` of other elements in stack
-                    //break;
-                    toAdd = tmp;
-                    continue;
-                }
-                this.leastUsed.add(tmp);
-            }
-
-            this.leastUsed.add(toAdd);
-
-            return this.map.get(key);
+            return 0;
         }
 
         public void put(int key, int value) {
-            if(this.leastUsed.size() >= this.capacity){
-                // need to remove element
-                this.map.remove(key);
-                // update `least usage`
-                for(int i = 0; i < this.leastUsed.size(); i++){
-                    Integer tmp = this.leastUsed.pop();
-                    if(tmp == key){
-                        break;
-                    }
-                    this.leastUsed.add(tmp);
-                }
-            }else{
 
-            }
-            // add `least usage`
-            this.leastUsed.add(key); // ???
-            // insert to map
-            this.map.put(key, value);
         }
     }
+
+
+//    class LRUCache {
+//
+//        // attr
+//        int capacity;
+//        //Stack<Integer> leastUsed;
+//        // dqeueue : [ key1, key2, .... ]
+//        Deque<Integer> leastUsed;
+//        Map<Integer, Integer> map;
+//
+//        public LRUCache(int capacity) {
+//            this.capacity = capacity;
+//            //this.leastUsed = new Stack<>();
+//            this.leastUsed = new LinkedList<>(); // ???
+//            this.map = new HashMap<>();
+//        }
+//
+//        public int get(int key) {
+//            if(this.map.isEmpty()){
+//                return -1;
+//            }
+//            if(!this.map.containsKey(key)){
+//                return -1;
+//            }
+//
+//            int toAdd = -1;
+//            // update `least usage`
+//            for(int i = 0; i < this.leastUsed.size(); i++){
+//                Integer tmp = this.leastUsed.pop();
+//                if(tmp == key){
+//                    //this.leastUsed.add(tmp);
+//                    // NOT change `ordering` of other elements in stack
+//                    //break;
+//                    toAdd = tmp;
+//                    continue;
+//                }
+//                this.leastUsed.add(tmp);
+//            }
+//
+//            this.leastUsed.add(toAdd);
+//
+//            return this.map.get(key);
+//        }
+//
+//        public void put(int key, int value) {
+//            if(this.leastUsed.size() >= this.capacity){
+//                // need to remove element
+//                this.map.remove(key);
+//                // update `least usage`
+//                for(int i = 0; i < this.leastUsed.size(); i++){
+//                    Integer tmp = this.leastUsed.pop();
+//                    if(tmp == key){
+//                        break;
+//                    }
+//                    this.leastUsed.add(tmp);
+//                }
+//            }else{
+//
+//            }
+//            // add `least usage`
+//            this.leastUsed.add(key); // ???
+//            // insert to map
+//            this.map.put(key, value);
+//        }
+//    }
 
     // LC 25
     // 9.16 - 9.26 AM
@@ -2135,59 +2166,111 @@ public class workspace8 {
      *     -> keep remaining the same
      *     -> return result
      *
-     *
      */
-    public ListNode reverseKGroup(ListNode head, int k) {
-        // edge
-        if(head == null || head.next == null){
-            return null;
-        }
-        int len = 0;
-        ListNode head2 = head;
-        while(head2 != null){
-            len += 1;
-            head2 = head2.next;
-        }
-        if(k > len){
-            return head;
-        }
+     public ListNode reverseKGroup(ListNode head, int k) {
 
-        int subNodeLen = len / k;
-        if(subNodeLen <= 0){
-            return head;
-        }
-        // ??? optimize below
-        List<ListNode> nodeList = new ArrayList<>();
-        ListNode head3 = head;
-        int j = 0;
-        ListNode tmp = null;
-        while(head3 != null &&  j < k){
-            tmp.next = head3;
-            tmp = tmp.next;
+         // edge
+         if(head == null || head.next == null){
+             return head; // ??
+         }
 
-            j += 1;
-            head3 = head3.next;
-        }
+         // get all node val as list
+         List<Integer> nodeValList = new ArrayList<>();
+         while(head != null){
+             nodeValList.add(head.val);
+             head = head.next;
+         }
 
+         // get len
+         int len = nodeValList.size(); // to fix
+         int subStrLen = len / k;
 
+         // iteration reverse
+         ListNode dummy = new ListNode();
+         ListNode dummy2 = dummy;
 
-        return null;
+         for(int i = 0; i < len; i += subStrLen){
+             List<Integer> subList =  null; // ??nodeValList.copyOf(1,2);
+             ListNode reversedNode = reverseNode(subList, subStrLen);
+            // reversedNode = reversedNode.e
+             dummy.next = reversedNode;
+             dummy = reversedNode;
+         }
+
+        return dummy2.next; // ??
     }
 
-    private ListNode reverseNode(ListNode node){
-        if(node == null || node.next == null){
-            return null;
-        }
-        ListNode _prev = null;
-        while(node != null){
-            ListNode _next = node.next;
-            _prev.next = node;
-            _prev = node;
-            node = _next;
+    public ListNode reverseNode(List<Integer> input, int len){
+
+         ListNode _dummy = new ListNode();
+        ListNode _dummy2 = _dummy;
+         //for(int i = 0)
+        List<Integer> subInPut = input.subList(0, len);
+        // reverse
+        Collections.sort(subInPut, Collections.reverseOrder()); // ?
+        for(Integer x: subInPut){
+            ListNode _newNode = new ListNode(x);
+            _dummy.next = _newNode;
+            _dummy = _newNode;
         }
 
-        return _prev.next;
+         return _dummy2.next;
     }
+
+
+
+
+//    public ListNode reverseKGroup(ListNode head, int k) {
+//        // edge
+//        if(head == null || head.next == null){
+//            return null;
+//        }
+//        int len = 0;
+//        ListNode head2 = head;
+//        while(head2 != null){
+//            len += 1;
+//            head2 = head2.next;
+//        }
+//        if(k > len){
+//            return head;
+//        }
+//
+//        int subNodeLen = len / k;
+//        if(subNodeLen <= 0){
+//            return head;
+//        }
+//        // ??? optimize below
+//        List<ListNode> nodeList = new ArrayList<>();
+//        ListNode head3 = head;
+//        int j = 0;
+//        ListNode tmp = null;
+//        while(head3 != null &&  j < k){
+//            tmp.next = head3;
+//            tmp = tmp.next;
+//
+//            j += 1;
+//            head3 = head3.next;
+//        }
+//
+//
+//
+//        return null;
+//    }
+//
+//    private ListNode reverseNode(ListNode node){
+//        if(node == null || node.next == null){
+//            return null;
+//        }
+//        ListNode _prev = null;
+//        while(node != null){
+//            ListNode _next = node.next;
+//            _prev.next = node;
+//            _prev = node;
+//            node = _next;
+//        }
+//
+//        return _prev.next;
+//    }
 
     // LC 543
     // https://leetcode.com/problems/diameter-of-binary-tree/

@@ -1,5 +1,10 @@
 # Sort
 
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/sort_cheatsheet.png"></p>
+
+
+- [Neetcode Sort cheatsheet](https://neetcode.io/courses/lessons/sorting-algorithms)
+
 ## 0) Concept  
 
 ### 0-1) Types
