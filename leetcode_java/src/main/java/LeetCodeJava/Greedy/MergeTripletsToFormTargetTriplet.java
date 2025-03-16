@@ -82,7 +82,7 @@ public class MergeTripletsToFormTargetTriplet {
                 collected.add(t);
             }
         }
-        
+
         // step 2) init set
         HashSet<Integer> set = new HashSet<>();
         // step 3) compare if there is a `val with idx` that as same as val in target with same idx
