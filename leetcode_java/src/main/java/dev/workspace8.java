@@ -8008,46 +8008,105 @@ class Node {
      *
      *
      */
+    // 2.04 PM - 2.14 PM
+    /**
+     *  IDEA 1) GREEDY
+     *
+     *  step 1) maintain 2 var
+     *        - minParenCnt
+     *        - bigParenCnt
+     *
+     *  step 2) within loop
+     *     - if "(",  minParenCnt += 1, bigParenCnt += 1
+     *     - if ")",  minParenCnt -= 1, bigParenCnt -= 1
+     *     - if "*", `wild card`
+     *         - minParenCnt -= 1
+     *         - bigParenCnt += 1
+     *     - NOTE !!
+     *         - if minParenCnt < 0, we reset it as 0
+     *         - if bigParenCnt < 0, return false directly
+     *
+     *    step 3) check if 0 in [minParenCnt, bigParenCnt] ???
+     *
+     */
     public boolean checkValidString(String s) {
         // edge
-        if(s == null || s.length() == 0){
-            return true; // ??
+        if(s == null || s.isEmpty()){
+            return true; // ?
         }
         if(s.length() == 1){
-            if(s.equals("*")){  // ???
-                return true;
-            }
-            return false;
+            return s.equals("*"); // only "*", return true, otherwise return false
         }
 
-        // queue
-        Queue<String> q1 = new LinkedList<>();
-        Queue<String> q2 = new LinkedList<>();
+        int minParenCnt = 0;
+        int maxParenCnt = 0;
+
         for(String x: s.split("")){
-            // case 1): "("
             if(x.equals("(")){
-                q1.add(x);
+                minParenCnt += 1;
+                maxParenCnt += 1;
             }
-            // case 2): "*"
-            else if (x.equals("*")) {
-                q2.add(x);
+            else if(x.equals(")")){
+                minParenCnt -= 1;
+                maxParenCnt -= 1;
+            }else{
+                minParenCnt -= 1;
+                maxParenCnt += 1;
             }
-            // case 3):  ")"
-            else{
-                if(!q1.isEmpty()){
-                    q1.poll();
-                } else if (!q2.isEmpty()) {
-                    q2.poll();
-                }else{
-                    return false;
-                }
+
+            // NOTE !!! below
+            if(minParenCnt < 0){
+                minParenCnt = 0;
+            }
+            if(maxParenCnt < 0){
+                return false;
             }
         }
 
-        System.out.println(">>> q1 = " + q1);
-        System.out.println(">>> q2 = " + q2);
-        return q1.isEmpty();
+        return minParenCnt == 0; // ???
     }
+
+
+//    public boolean checkValidString(String s) {
+//        // edge
+//        if(s == null || s.length() == 0){
+//            return true; // ??
+//        }
+//        if(s.length() == 1){
+//            if(s.equals("*")){  // ???
+//                return true;
+//            }
+//            return false;
+//        }
+//
+//        // queue
+//        Queue<String> q1 = new LinkedList<>();
+//        Queue<String> q2 = new LinkedList<>();
+//        for(String x: s.split("")){
+//            // case 1): "("
+//            if(x.equals("(")){
+//                q1.add(x);
+//            }
+//            // case 2): "*"
+//            else if (x.equals("*")) {
+//                q2.add(x);
+//            }
+//            // case 3):  ")"
+//            else{
+//                if(!q1.isEmpty()){
+//                    q1.poll();
+//                } else if (!q2.isEmpty()) {
+//                    q2.poll();
+//                }else{
+//                    return false;
+//                }
+//            }
+//        }
+//
+//        System.out.println(">>> q1 = " + q1);
+//        System.out.println(">>> q2 = " + q2);
+//        return q1.isEmpty();
+//    }
 
     // LC 57
     // IDEA: array op
