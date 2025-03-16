@@ -1,9 +1,17 @@
 # Prefix Sum (累積和)
 
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/prefix_sum.png"></p>
+
+
+
 ## 0) Concept
+
 ```
 We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if S[i] == '1', else A[i] = 0. We can calculate P in linear time.
 ```
+
+- Query sub array sum in O(1) time
+
 - Get sub array sum in linear time (O(N))
 - Get `sub array` with `some conditions`
 - Cases we don't want double loop, but want a `single loop` instead
@@ -23,6 +31,11 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
     - [LC problem set I](https://leetcode.com/discuss/general-discussion/563022/prefix-sum-problems)
 
 ### 0-1) Types
+
+- Prefix sum
+    - LC 238 Product Of Array Except Self
+    - LC 560 Subarray Sum Equals K
+
 - Flip string
 - Range addition
     - LC 370

@@ -2,6 +2,10 @@
 
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap_space_time_complexity.png" ></p>
 
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap_op_101.png"></p>
+
+
+
 - Intro
     - https://leetcode.com/explore/learn/card/heap/
     - In many CS applications, we only need to `access the largest or smallest element` in the dataset. We DO NOT care about `the order of other data in the data set`. How do we efficiently access the largest or smallest element in the current dataset? -> The answer would be `Heap`.
