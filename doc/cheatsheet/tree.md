@@ -2,6 +2,8 @@
 
 > Tree data structure and algorithm/LC relative to it
 
+- [Neetcode - type of Tree](https://www.linkedin.com/posts/neetcodeio_must-know-tree-structures-in-coding-interviews-activity-7301790861690892288-_0ni?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAA6fzw4BpOSBO1YeSrJwPZ-dNBhjC3jXTDE)
+
 ## 0) Concept  
 
 - Tree in Array representation

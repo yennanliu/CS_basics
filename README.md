@@ -14,6 +14,8 @@
 
 <p align="center"><img src ="./doc/pic/data_structure_2.png" ></p>
 
+<p align="center"><img src ="./doc/pic/common_ds.png" ></p>
+
 <p align="center"><img src ="./doc/pic/needcode_roadmap.png" ></p>
 
 [![Star History Chart](https://api.star-history.com/svg?repos=yennanliu/CS_basics&type=Date)](https://star-history.com/#yennanliu/CS_basics&Date)

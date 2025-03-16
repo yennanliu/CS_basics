@@ -9,6 +9,10 @@
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_2.png"></p>
 
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_vs_bfs.png"></p>
+
+
 ## 0) Concept
 
 ### 0-1) Types
