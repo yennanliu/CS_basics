@@ -43,9 +43,82 @@ import java.util.Stack;
 public class ValidParenthesisString {
 
     // V0
-//    public boolean checkValidString(String s) {
-//
-//    }
+    // IDEA: GREEDY
+    // https://neetcode.io/problems/valid-parenthesis-string
+    /**
+     *  IDEA 1) GREEDY
+     *
+     *  step 1) maintain 2 var
+     *        - minParenCnt
+     *        - bigParenCnt
+     *
+     *  step 2) within loop
+     *     - if "(",  minParenCnt += 1, bigParenCnt += 1
+     *     - if ")",  minParenCnt -= 1, bigParenCnt -= 1
+     *     - if "*", `wild card`
+     *         - minParenCnt -= 1
+     *         - bigParenCnt += 1
+     *     - NOTE !!
+     *         - if minParenCnt < 0, we reset it as 0
+     *         - if bigParenCnt < 0, return false directly
+     *
+     *    step 3) check if 0 == minParenCnt
+     *
+     */
+    public boolean checkValidString(String s) {
+        // edge
+        if(s == null || s.isEmpty()){
+            return true;
+        }
+        if(s.length() == 1){
+            return s.equals("*"); // only "*", return true, otherwise return false
+        }
+
+        /** NOTE !!!
+         *
+         *  we init, maintain 2 var:
+         *
+         *  (consider there are 3 possible cases of `wild card` "*"
+         *  -> e.g. "*" can be either ")" or "(" or ""
+         *
+         *   - minParenCnt
+         *   - maxParenCnt
+         */
+        int minParenCnt = 0;
+        int maxParenCnt = 0;
+
+        for(String x: s.split("")){
+            if(x.equals("(")){
+                minParenCnt += 1;
+                maxParenCnt += 1;
+            }
+            else if(x.equals(")")){
+                minParenCnt -= 1;
+                maxParenCnt -= 1;
+            }else{
+                minParenCnt -= 1;
+                maxParenCnt += 1;
+            }
+
+            // NOTE !!! below
+            /** NOTE !!!
+             *
+             *  1) if minParenCnt < 0, reset it as 0,
+             *     since it's possible to `keep 0 for minParenCnt`
+             *
+             *  2) if maxParenCnt < 0, reset false directly,
+             *     since it does NOT make sense to use negative val as maxParenCnt
+             */
+            if(minParenCnt < 0){
+                minParenCnt = 0;
+            }
+            if(maxParenCnt < 0){
+                return false;
+            }
+        }
+
+        return minParenCnt == 0; // ???
+    }
 
     // V1-1
     // https://neetcode.io/problems/valid-parenthesis-string
