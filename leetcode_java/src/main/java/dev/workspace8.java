@@ -7866,12 +7866,19 @@ class Node {
      *
      *
      */
+    // 1.38 pm - 1.48 pm
+    /**
+     *  IDEA 1) HASH MAP
+     *  -> map records the `latest idx` of an element existed
+     *  -> loop over the string, till `reach the latest idx`, then append cur len to res array
+     *  -> reset len, repeat above steps, till reach the end of input string
+     */
     public List<Integer> partitionLabels(String s) {
 
         List<Integer> res = new ArrayList<>();
 
         // edge
-        if(s == null || s.length() == 0){
+        if(s == null || s.isEmpty()){
             return null;
         }
         if(s.length() == 1){
@@ -7879,55 +7886,94 @@ class Node {
             return res;
         }
 
-        // build map
-        // { val: cnt}
         Map<String, Integer> map = new HashMap<>();
-        for(String x: s.split("")){
-            map.put(x, map.getOrDefault(x, 0)+1);
+        String[] s_arr = s.split("");
+        System.out.println(">>> s_arr = " + s_arr);
+
+        for(int i = 0; i < s_arr.length; i++){
+            map.put(s_arr[i], i);
         }
 
-        int slow = 0;
-        int fast = 0;
+        System.out.println(">>> map = " + map);
 
-        while(slow < s.length() - 1){
-            //if(map.g)
-            //Map<String, Integer> tmp = new HashMap<>();
-            List<String> tmp = new ArrayList<>();
-
-            //int fast = i; // ?
-            while (fast < s.length()){
-                // if `current window` has all same elements
-                // -> reset 2 pointers, build the next sub str
-                if(hasAllElementsInWindow(map, tmp)){
-                    res.add(tmp.size());
-                    slow = fast + 1;
-                    //fast = fast;
-                    continue;
-                }
-                String curVal = String.valueOf(s.charAt(fast));
-                tmp.add(curVal);
-                fast += 1;
+        int cur_len = 0;
+        int cur_max_idx = 0;
+        for(int i = 0; i < s_arr.length; i++){
+            cur_max_idx = Math.max(cur_max_idx, map.get(s_arr[i]));
+            if(cur_max_idx == i){
+                res.add(cur_len);
+                cur_len = 0;
+                //cur_max_idx =
+            }else{
+                cur_len += 1;
             }
-
-            slow += 1;
         }
 
         return res;
     }
 
-    public boolean hasAllElementsInWindow(Map<String, Integer> map, List<String> tmp){
-        Map<String, Integer> tmpMap = new HashMap<>();
-        for(String x: tmp){
-            tmpMap.put(x, tmpMap.getOrDefault(x, 0)+1);
-        }
-        for(String k: tmpMap.keySet()){
-            if(tmpMap.get(k) != map.get(k)){
-                return false;
-            }
-        }
-
-        return true;
-    }
+//    public List<Integer> partitionLabels(String s) {
+//
+//        List<Integer> res = new ArrayList<>();
+//
+//        // edge
+//        if(s == null || s.length() == 0){
+//            return null;
+//        }
+//        if(s.length() == 1){
+//            res.add(1);
+//            return res;
+//        }
+//
+//        // build map
+//        // { val: cnt}
+//        Map<String, Integer> map = new HashMap<>();
+//        for(String x: s.split("")){
+//            map.put(x, map.getOrDefault(x, 0)+1);
+//        }
+//
+//        int slow = 0;
+//        int fast = 0;
+//
+//        while(slow < s.length() - 1){
+//            //if(map.g)
+//            //Map<String, Integer> tmp = new HashMap<>();
+//            List<String> tmp = new ArrayList<>();
+//
+//            //int fast = i; // ?
+//            while (fast < s.length()){
+//                // if `current window` has all same elements
+//                // -> reset 2 pointers, build the next sub str
+//                if(hasAllElementsInWindow(map, tmp)){
+//                    res.add(tmp.size());
+//                    slow = fast + 1;
+//                    //fast = fast;
+//                    continue;
+//                }
+//                String curVal = String.valueOf(s.charAt(fast));
+//                tmp.add(curVal);
+//                fast += 1;
+//            }
+//
+//            slow += 1;
+//        }
+//
+//        return res;
+//    }
+//
+//    public boolean hasAllElementsInWindow(Map<String, Integer> map, List<String> tmp){
+//        Map<String, Integer> tmpMap = new HashMap<>();
+//        for(String x: tmp){
+//            tmpMap.put(x, tmpMap.getOrDefault(x, 0)+1);
+//        }
+//        for(String k: tmpMap.keySet()){
+//            if(tmpMap.get(k) != map.get(k)){
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
     // LC 678
     // 9.40 - 9.50 am

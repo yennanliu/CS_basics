@@ -46,8 +46,60 @@ import java.util.Map;
 public class PartitionLabels {
 
     // V0
-    // IDEA: HASHMAP + 2 POINTERS (fixed by gpt)
+    // IDEA: HASH MAP (latest idx) + array op
+    // https://neetcode.io/problems/partition-labels
     public List<Integer> partitionLabels(String s) {
+
+        List<Integer> res = new ArrayList<>();
+
+        // edge
+        if (s == null || s.isEmpty()) {
+            return null;
+        }
+        if (s.length() == 1) {
+            res.add(1);
+            return res;
+        }
+
+        Map<String, Integer> map = new HashMap<>();
+        String[] s_arr = s.split("");
+        //System.out.println(">>> s_arr = " + s_arr);
+
+        for (int i = 0; i < s_arr.length; i++) {
+            map.put(s_arr[i], i);
+        }
+
+        //System.out.println(">>> map = " + map);
+
+        int cur_len = 1;
+        int cur_max_idx = 0;
+
+        /**
+         *  NOTE !!!
+         *
+         *   step 1) use map record `element latest idx`
+         *   step 2) within loop, we maintain the `max latest idx` of visited elements
+         *   step 3) once `max latest idx` == i, we know that `the SAME elements are all reached`
+         *      -> so we can append `current sub array len` to result
+         *   step 4) we repeat above steps till reach the end of input string
+         *
+         */
+        for (int i = 0; i < s_arr.length; i++) {
+            cur_max_idx = Math.max(cur_max_idx, map.get(s_arr[i]));
+            if (cur_max_idx == i) {
+                res.add(cur_len);
+                cur_len = 1;
+            } else {
+                cur_len += 1;
+            }
+        }
+
+        return res;
+    }
+
+    // V0-0-1
+    // IDEA: HASHMAP + 2 POINTERS (fixed by gpt)
+    public List<Integer> partitionLabels_0_0_1(String s) {
         List<Integer> res = new ArrayList<>();
 
         // Edge case: if string is null or empty, return an empty list
