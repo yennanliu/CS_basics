@@ -30,8 +30,10 @@
     - [prefix_sum.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/prefix_sum.md)
 
 ### 0-1) Types
+
 - N sum:
     - [n_sum.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md)
+    
 - Prefix problems
     - [prefix_sum.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/prefix_sum.md)
     - Continous sum
@@ -74,7 +76,11 @@
             }
         // ...
         ```
-- Any problems with below:
+
+- Check with `letest existed idx`
+    - LC 763 Partition Labels 
+
+- Any problems with below
     - need to cache
     - avoid double loop
 
