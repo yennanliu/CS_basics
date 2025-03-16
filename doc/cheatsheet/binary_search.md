@@ -25,8 +25,39 @@
 
 - Types
     - Basic binary search
+
     - Find start, end idx with target
         - LC 34
+        ```java
+        // java
+        // ...
+        int mid = (l + r) / 2;
+        while (r >= l){
+            if (nums[mid] == target){
+                /** 
+                 *  NOTE !!! below
+                 * 
+                 *  instead of quit while loop directly,
+                 *  we 
+                 *    1) keep finding `left idx` if want to find first idx
+                 *    2) keep finding `right idx` if want to find last idx
+                 * 
+                 */
+                if(findFirst){
+                    r = mid - 1;
+                }else{
+                    l = mid + 1;
+                }
+            }else if (nums[mid] < target){
+                l = mid + 1;
+            }else{
+                r = mid - 1;
+            }
+        }
+
+        // ...
+        ```
+
     - Find `LEFT` boundary
         - LC 367 Valid Perfect Square
         - LC 875 Koko Eating Bananas
@@ -867,6 +898,56 @@ class Solution:
             return [lo, hi]
                 
         return [-1, -1]
+```
+
+```java
+// java
+// LC 34
+
+// V0
+// IDEA: BINARY SEARCH (fixed by gpt)
+public int[] searchRange(int[] nums, int target) {
+    int[] res = new int[]{-1, -1}; // Default result
+
+    if (nums == null || nums.length == 0) {
+        return res;
+    }
+
+    // Find the first occurrence of target
+    int left = findBound(nums, target, true);
+    if (left == -1) {
+        return res; // Target not found
+    }
+
+    // Find the last occurrence of target
+    int right = findBound(nums, target, false);
+
+    return new int[]{left, right};
+}
+
+private int findBound(int[] nums, int target, boolean isFirst) {
+    int l = 0, r = nums.length - 1;
+    int bound = -1;
+
+    while (l <= r) {
+        int mid = l + (r - l) / 2;
+
+        if (nums[mid] == target) {
+            bound = mid;
+            if (isFirst) {
+                r = mid - 1; // Keep searching left
+            } else {
+                l = mid + 1; // Keep searching right
+            }
+        } else if (nums[mid] < target) {
+            l = mid + 1;
+        } else {
+            r = mid - 1;
+        }
+    }
+
+    return bound;
+}
 ```
 
 ### 2-13) Search a 2D Matrix

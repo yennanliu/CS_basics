@@ -89,7 +89,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
     // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/14734/easy-java-o-logn-solution/
     public int[] searchRange_2(int[] nums, int target) {
         int[] result = new int[2];
+
+        // NOTE !!! use `findFirst` for 1st element
         result[0] = findFirst(nums, target);
+
+        // NOTE !!! use `findLast` for 2nd element
         result[1] = findLast(nums, target);
         return result;
     }
