@@ -8563,6 +8563,30 @@ class Node {
         return null;
     }
 
+    // LC 2013
+    // 10.10 - 10.20 am
+    class DetectSquares {
+
+        public DetectSquares() {
+
+        }
+
+        public void add(int[] point) {
+
+        }
+
+        public int count(int[] point) {
+            return 0;
+        }
+    }
+
+    /**
+     * Your DetectSquares object will be instantiated and called as such:
+     * DetectSquares obj = new DetectSquares();
+     * obj.add(point);
+     * int param_2 = obj.count(point);
+     */
+
 
 
 }
