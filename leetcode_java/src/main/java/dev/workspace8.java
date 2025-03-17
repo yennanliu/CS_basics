@@ -8785,4 +8785,20 @@ class Node {
         return 0;
     }
 
+    // LC 1094
+    /**
+     *
+     * trip[i] = [num_passengers, start_location, end_location]
+     *
+     *
+     * ->  Return true if and only if it is possible
+     *     to pick up and drop off all passengers
+     *     for all the given trips.
+     *
+     */
+    public boolean carPooling(int[][] trips, int capacity) {
+
+        return false;
+    }
+
 }
