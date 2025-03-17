@@ -81,11 +81,57 @@ import java.util.Arrays;
 public class CorporateFlightBookings {
 
   // V0
+  // IDEA: PREFIX SUM
   // https://labuladong.online/algo/data-structure/diff-array/#%E7%AE%97%E6%B3%95%E5%AE%9E%E8%B7%B5
-  // TODO : implement
-  //    public int[] corpFlightBookings(int[][] bookings, int n) {
-  //
-  //    }
+    /**
+     *
+     *  -> [i, j, k] :  k seats, from i -> j
+     *
+     *    exp 1)
+     *
+     *    输入：bookings = [[1,2,10],[2,3,20],[2,5,25]], n = 5
+     *    输出：[10,55,45,25,25]
+     *
+     *    -> presum =
+     *          [10,10,0,0,0]
+     *          [10,30,20,0,0]
+     *          [10,55,45,25,25]  <--- ans
+     *
+     *   exp 2)
+     *
+     *   输入：bookings = [[1,2,10],[2,2,15]], n = 2
+     *   输出：[10,25]
+     *
+      *    -> presum =
+     *           [10,10]
+     *           [10,25] <--- ans
+     *
+     *    -> sum interval =
+     *        [ 10, 25 ]
+     *
+     */
+  public int[] corpFlightBookings(int[][] bookings, int n) {
+      // edge
+      if(bookings == null || bookings.length == 0){
+          return null;
+      }
+      if(n == 0){
+          return new int[]{0}; // ??
+      }
+      // IDEA: prefix sum
+      int[] preSum = new int[n];
+
+      for(int[] b: bookings){
+          int start = b[0];
+          int end = b[1];
+          int amount = b[2];
+          for(int i = start-1; i < end; i++){
+              preSum[i] += amount;
+          }
+      }
+
+      return preSum;
+  }
 
   // V1
   // IDEA : DIFFERENCE ARRAY (gpt)
