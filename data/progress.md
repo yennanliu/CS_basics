@@ -5,7 +5,7 @@
 	- https://neetcode.io/practice?tab=neetcode150
 	- 5 / day ->  15 days to finish
 		- Math & Geometry (pass `bit op`)
-	- again: 43,763,678,1899
+	- again: 2013
 		- similar:
 	- todo:
 		- add neetcode algo linkedin post

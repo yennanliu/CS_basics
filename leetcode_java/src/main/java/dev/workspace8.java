@@ -8565,6 +8565,32 @@ class Node {
 
     // LC 2013
     // 10.10 - 10.20 am
+    // 10.39 - 10.45 am
+    /**
+     *  - Given a query point, counts the number
+     *    of ways to choose three points from the data structure
+     *    such that the three points and the
+     *    query point form an axis-aligned square with positive area.
+     *
+     *
+     *    An axis-aligned square is a square whose edges
+     *    are all the same length and are either parallel
+     *    or perpendicular to the x-axis and y-axis.
+     *
+     *
+     */
+    /**
+     *   IDEA 1) HASH MAP
+     *   -> use map records below info:
+     *
+     *      {
+     *          x :  [ [x_1, y_1], [x_2, y_2], ... ] ,
+     *          y :  [ [x_1, y_1], [x_2, y_2], ... ]
+     *
+     *      }
+     *
+     *
+     */
     class DetectSquares {
 
         public DetectSquares() {
@@ -8586,7 +8612,6 @@ class Node {
      * obj.add(point);
      * int param_2 = obj.count(point);
      */
-
 
 
 }

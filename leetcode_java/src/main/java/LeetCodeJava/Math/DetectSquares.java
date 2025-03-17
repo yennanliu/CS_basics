@@ -4,6 +4,7 @@ import java.util.*;
 
 
 // https://leetcode.com/problems/detect-squares/description/
+// https://leetcode.cn/problems/detect-squares/
 /**
  * 2013. Detect Squares
  * Solved
@@ -313,5 +314,36 @@ public class DetectSquares {
             return sum;
         }
     }
+
+    // V4
+    // https://leetcode.ca/2021-09-27-2013-Detect-Squares/
+//    class DetectSquares_4 {
+//        unordered_map<int, int> cnt;
+//        unordered_set<int> xs;
+//        inline int key(int x, int y) {
+//            return 10000 * x + y;
+//        }
+//        inline int count(int x, int y) {
+//            int k = key(x, y);
+//            return cnt.count(k) ? cnt[k] : 0;
+//        }
+//        public:
+//        DetectSquares_4() {}
+//        void add(vector<int> p) {
+//            cnt[key(p[0], p[1])]++;
+//            xs.insert(p[0]);
+//        }
+//        int count(vector<int> p) {
+//            int x = p[0], y = p[1], ans = 0;
+//            for (int x1 : xs) {
+//                if (x1 == x) continue;
+//                int c = count(x1, y), d = Math.abs(x - x1), y1 = y - d, y2 = y + d;
+//                if (c == 0) continue;
+//                ans += c * (count(x, y1) * count(x1, y1) + count(x, y2) * count(x1, y2));
+//            }
+//            return ans;
+//        }
+//    };
+
 
 }
