@@ -718,7 +718,7 @@
 573 | [Squirrel Simulation](https://leetcode.com/problems/squirrel-simulation/) | [Python](./leetcode_python/Math/squirrel-simulation.py) | _O(n)_ | _O(1)_ | Medium |🔒| AGAIN (not start)
 592 | [Fraction Addition and Subtraction](https://leetcode.com/problems/fraction-addition-and-subtraction/) | [Python](./leetcode_python/Math/fraction-addition-and-subtraction.py)| _O(nlogx)_ | _O(n)_ | Medium || AGAIN 
 593 | [Valid Square](https://leetcode.com/problems/valid-square/) | [Python](./leetcode_python/Math/valid-square.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/ValidSquare.java)| _O(1)_ | _O(1)_ | Medium |google, math| AGAIN 
-598 | [Range Addition II](https://leetcode.com/problems/range-addition-ii/) | [Python](./leetcode_python/Math/range-addition-ii.py) | _O(p)_ | _O(1)_ | Easy || AGAIN 
+598 | [Range Addition II](https://leetcode.com/problems/range-addition-ii/) | [Python](./leetcode_python/Math/range-addition-ii.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/RangeAddition2.java) | _O(p)_ | _O(1)_ | Easy || AGAIN 
 625 | [Minimum Factorization](https://leetcode.com/problems/minimum-factorization/) | [Python](./leetcode_python/Math/minimum-factorization.py) | _O(loga)_ | _O(1)_ | Medium |🔒| OK*
 628| [Maximum Product of Three Numbers](https://leetcode.com/problems/maximum-product-of-three-numbers/) | [Python](./leetcode_python/Math/maximum-product-of-three-numbers.py)  | _O(n)_ | _O(1)_ | Easy |`amazon`| OK (2) 
 633| [Sum of Square Numbers](https://leetcode.com/problems/sum-of-square-numbers/) | [Python](./leetcode_python/Math/sum-of-square-numbers.py)  | _O(sqrt(c) * logc)_ | _O(1)_ | Easy || OK* 
