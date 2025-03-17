@@ -29,11 +29,17 @@ import java.util.Arrays;
 public class RangeAddition {
 
   // V0
-  // IDEA : DIFFERENCE ARRAY
+  // IDEA : DIFFERENCE ARRAY + prefix sum
   // LC 1109
   // https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/CorporateFlightBookings.java
   public static int[] getModifiedArray(int length, int[][] updates) {
 
+    /**
+     *
+     * We initialize an auxiliary array tmp with size length + 1 (one extra element).
+     * -> The reason for this extra element (e.g. length + 1) is to help handle the boundary
+     *    when applying the "subtract" operation later in the process.
+     */
     int[] tmp = new int[length + 1]; // or new int[length]; both works
     for (int[] x : updates) {
       int start = x[0];
@@ -41,26 +47,134 @@ public class RangeAddition {
       int amount = x[2];
 
       // add
+      /** NOTE !!! below
+       *
+       * -> we add value at `start` idx ONLY
+       */
       tmp[start] += amount;
 
       // subtract (remove the "adding affect" on "NEXT" element)
       /**
        * NOTE !!!
        *
-       * <p>we remove the "adding affect" on NEXT element (e.g. end + 1)
+       *  we remove the "adding side effect"
+       *  at NEXT idx (e.g. end + 1)
+       *
+       *
+       *  Subtracting the amount at end + 1:
+       *
+       *   -  After the update is applied to the range [start, end],
+       *      we need to "undo" the effect just after the range ends.
+       *
+       *   - We subtract the amount from tmp[end + 1], which effectively
+       *     removes the effect of the update from the next index,
+       *     ensuring that only the range [start, end] gets the update.
+       *
+       *
+       *  Why end + 1?
+       *
+       *   - The reason we subtract from tmp[end + 1] instead of
+       *     tmp[end] is because we want the effect to be removed
+       *     after the end index (inclusive). For example, if end = 3,
+       *     the update should apply until index 3, but not beyond.
+       *     By subtracting from end + 1,
+       *     we ensure that the effect stops exactly at index end.
+       *
        */
       if (end + 1 < length) { // NOTE !!! use `end + 1`
         tmp[end + 1] -= amount;
       }
     }
 
-    // prepare final result
+    /**
+     * NOTE !!!
+     *
+     *  prepare the final result via below:
+     *
+     *
+     *  - After applying all the updates,
+     *    tmp contains the difference values
+     *    (i.e., the change at each index),
+     *    but we need to convert it into the actual modified values in the array.
+     *
+     *
+     * - We accumulate the values in tmp by iterating from index 1 to tmp.length - 1,
+     *   adding the value of the previous index to the current index.
+     *   This gives us the final values for each index in the array, considering all the updates.
+     *   The prefix sum is the key technique here: for any index i,
+     *   tmp[i] will represent the total sum of all the updates that
+     *   should be applied to that index.
+     *
+     */
     for (int i = 1; i < tmp.length; i++) {
       tmp[i] += tmp[i - 1];
     }
 
     return Arrays.copyOfRange(tmp, 0, length); // return the sub array between 0, lengh index
   }
+
+  // V0-1
+  // IDEA: BRUTE FORCE
+  // TODO: validate below
+//  public static int[] getModifiedArray_0_1(int length, int[][] updates) {
+//    // edge
+//    if(length == 0){
+//      return null;
+//    }
+//    if(updates == null || updates.length == 0){
+//      return new int[length]; // ???
+//    }
+//    // prefix sum
+//    int[] preSum = new int[length];
+//    for(int[] u: updates){
+//      int start = u[0];
+//      int end = u[1];
+//      int amount = u[2];
+//      for(int i = start; i < end; i++){
+//        preSum[i] += amount;
+//      }
+//    }
+//
+//    return preSum;
+//  }
+
+
+  // V0-2
+  // IDEA: PREFIX SUM (fixed by gpt)
+  public static int[] getModifiedArray_0_2(int length, int[][] updates) {
+    // Edge case: if the length is 0, return an empty array.
+    if (length == 0) {
+      return new int[0];
+    }
+
+    // Edge case: if no updates are provided, return an array of zeroes.
+    if (updates == null || updates.length == 0) {
+      return new int[length];
+    }
+
+    // Step 1: Initialize the preSum array.
+    int[] preSum = new int[length];
+
+    // Step 2: Apply the updates to the preSum array using the prefix sum technique.
+    for (int[] u : updates) {
+      int start = u[0];
+      int end = u[1];
+      int amount = u[2];
+
+      preSum[start] += amount; // Add amount at the start index.
+      if (end + 1 < length) {
+        preSum[end + 1] -= amount; // Subtract amount just after the end index.
+      }
+    }
+
+    // Step 3: Apply the prefix sum to get the final array values.
+    for (int i = 1; i < length; i++) {
+      preSum[i] += preSum[i - 1];
+    }
+
+    return preSum; // Return the modified array.
+  }
+
 
   // V1
   // https://leetcode.ca/2016-12-04-370-Range-Addition/
@@ -80,4 +194,5 @@ public class RangeAddition {
   }
 
   // V2
+
 }
