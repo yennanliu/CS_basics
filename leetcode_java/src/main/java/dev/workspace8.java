@@ -8614,4 +8614,119 @@ class Node {
      */
 
 
+    // LC 1100
+    /**
+     * 1109. Corporate Flight Bookings
+     *
+     * There are n flights, and they are labeled from 1 to n.
+     *
+     * We have a list of flight bookings.  The i-th booking
+     *
+     * bookings[i] = [i, j, k] means that we booked k seats from
+     *
+     * flights labeled i to j inclusive.
+     *
+     * Return an array answer of length n, representing the number
+     *
+     * of seats booked on each flight in order of their label.
+     *
+     *
+     *
+     * Example 1:
+     *
+     * Input: bookings = [[1,2,10],[2,3,20],[2,5,25]], n = 5
+     * Output: [10,55,45,25,25]
+     *
+     *
+     * Constraints:
+     *
+     * 1 <= bookings.length <= 20000
+     * 1 <= bookings[i][0] <= bookings[i][1] <= n <= 20000
+     * 1 <= bookings[i][2] <= 10000
+     *
+     */
+    /**
+     *
+     * * bookings[i] = [i, j, k] means that we booked k seats from
+     * * flights labeled i to j inclusive.
+     *
+     *   -> [i, j, k] :  k seats, from i -> j
+     *
+     *
+     *   -> * Return an array answer of length n, representing the number
+     *      * of seats booked on each flight in order of their label.
+     *
+     *
+     *
+     *
+     *    IDEA: prefix sum
+     *
+     *
+     *    exp 1)
+     *
+     *    输入：bookings = [[1,2,10],[2,3,20],[2,5,25]], n = 5
+     *    输出：[10,55,45,25,25]
+     *
+     *    -> presum =
+     *          [10,10,0,0,0]
+     *          [10,30,20,0,0]
+     *          [10,55,45,25,25]
+     *
+     *
+     *     so, for interval sum,
+     *
+     *     因此，answer = [10,55,45,25,25]
+     *
+     *
+     *   exp 2)
+     *
+     *   输入：bookings = [[1,2,10],[2,2,15]], n = 2
+     *   输出：[10,25]
+     *
+     *
+     *    (for each iteration add presum and element)
+     *    -> presum =
+     *           [10,20]
+     *           [10,35]
+     *
+     *
+     *           [10,10]
+     *           [10,25]
+     *
+     *   ( then, we get val[i] = presum[i] - presum[i-1]
+     *    -> sum interval =
+     *        [ 10, 25 ]
+     *
+     *
+     *
+     *
+     */
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+        // edge
+        if(bookings == null || bookings.length == 0){
+            return null;
+        }
+        if(n == 0){
+           return new int[]{0}; // ??
+        }
+        // IDEA: prefix sum
+        //List<Integer> prefixSum = new ArrayList<>();
+        int[] preSum = new int[n];
+
+        for(int[] b: bookings){
+            //for(int i = 0;)
+            int start = b[0];
+            int end = b[1];
+            int amount = b[2];
+            for(int i = start-1; i < end; i++){
+                preSum[i] += amount;
+            }
+        }
+
+        System.out.println(">>> preSum = " + preSum);
+
+        return preSum;
+    }
+
+
 }
