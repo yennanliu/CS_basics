@@ -8795,10 +8795,57 @@ class Node {
      *     to pick up and drop off all passengers
      *     for all the given trips.
      *
+     *
+     *  IDEA 1)  `presum array`
+     *
+     *   -> keep mantaining  `pre sum of customer cnt`, and check if it exceeds capacity
+     *      within the trip, if exceeds, return false directly
+     *      till reach the `end`, return true
+     *
      */
+    // 10.52 - 11.10 am
     public boolean carPooling(int[][] trips, int capacity) {
+        // edge
+        if(trips == null || trips.length == 0){
+            return true; // ?
+        }
+        if(trips.length == 1){
+            if(trips[0][0] > capacity){
+                return false;
+            }
+            return true;
+        }
 
-        return false;
+        int tripLen = 0;
+        for(int[] t: trips){
+            tripLen = Math.max(tripLen, t[2]);
+        }
+
+        //int preSum = 0;
+        int[] pickUp = new int[tripLen];
+        int[] dropOff = new int[tripLen];
+
+        for(int i = 0; i < trips.length; i++){
+            for(int j = trips[i][1]; j < trips[i][2]; j++){
+                // pickUp
+                pickUp[j] += trips[i][0];
+            }
+            // takeOff
+            //takeOff[i] -= t[0];
+            dropOff[trips[i][2]] -= trips[i][0];
+        }
+
+        System.out.println(">>> pickUp = " + pickUp);
+        System.out.println(">>> dropOff = " + dropOff);
+
+        // loop over `pickup`, `dropoff`
+        for(int i = 0; i < pickUp.length; i++){
+            if(pickUp[i] - dropOff[i] > capacity){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // LC 912
@@ -8892,6 +8939,19 @@ class Node {
 
         return;
     }
+
+    // LC 304
+        class NumMatrix {
+
+        public NumMatrix(int[][] matrix) {
+
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            return 0;
+        }
+    }
+
 
 
 }
