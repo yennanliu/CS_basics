@@ -8591,19 +8591,80 @@ class Node {
      *
      *
      */
+    // 11.52 - 12.10 pm
+    /**
+     *  IDEA 1)
+     *
+     *   hash map + math + list
+     *
+     *
+     *   -> use hashmap to maintain the x axis and its y coordinations
+     *      { [x_1, y_1] : cnt_1, [x_2, y_2] : cnt_2, ....}
+     *
+     *   -> use list to the collected points ??
+     *     -> [ [x_1, y_1], [x_2, y_2], .....  ]
+     *
+     *   -> and via math, we can know if the query (point)
+     *      can form a validated square.
+     *      -> `diagonal` points should have same lengh (in x, y direction)
+     *      -> e.g.   dist(x1,x2) == dist(y1,y2) ???
+     *
+     *
+     *      *----*  (x1,y1)
+     *      |    |
+     *      *----*
+     *  (x2,y2)
+     *
+     *
+     *
+     */
     class DetectSquares {
 
-        public DetectSquares() {
+        // attr
+        Map<Integer[], Integer> pointCnt;
+        List<Integer[]> points; // ?
 
+        public DetectSquares() {
+            this.pointCnt = new HashMap<>();
+            this.points = new ArrayList<>();
         }
 
         public void add(int[] point) {
+            Integer[] key = new Integer[]{point[0], point[1]};
+            this.pointCnt.put(key, this.pointCnt.getOrDefault(key, 0) + 1);
 
+            points.add(key);
         }
 
         public int count(int[] point) {
-            return 0;
+            int cnt = 0;
+            // check
+            int p_x = point[0];
+            int p_y = point[1];
+            //if(p_x )
+            // case 1) invalid query point
+            if(this.points.contains(point)){
+                return 0; // ??
+            }
+
+            for(Integer[] key: this.pointCnt.keySet()){
+                int x1 = key[0];
+                int y1 = key[1];
+
+                Integer[] coord1 = new Integer[]{x1, p_y};
+                Integer[] coord2 = new Integer[]{p_x, y1};
+
+                boolean condition1 = Math.abs(x1 - p_x) == Math.abs(y1 - p_y);
+                boolean condition2 = this.pointCnt.containsKey(coord1) &&
+                        this.pointCnt.containsKey(coord2);
+                if(condition1 && condition2){
+                    return this.pointCnt.get(coord1) * this.pointCnt.get(coord2);
+                }
+            }
+
+            return cnt;
         }
+
     }
 
     /**

@@ -100,6 +100,60 @@ public class DetectSquares {
 //
 //    }
 
+    // V0-1
+    // IDEA: HASHMAP + list + math (fixed by gpt)
+    class DetectSquares_0_1 {
+
+        // attr
+        Map<String, Integer> pointCnt;
+        Set<String> points; // To check the existence of points quickly
+
+        public DetectSquares_0_1() {
+            this.pointCnt = new HashMap<>();
+            this.points = new HashSet<>();
+        }
+
+        public void add(int[] point) {
+            String key = point[0] + "," + point[1]; // Use a string to represent the point
+            this.pointCnt.put(key, this.pointCnt.getOrDefault(key, 0) + 1);
+            this.points.add(key); // Add the point to the set
+        }
+
+        public int count(int[] point) {
+            int cnt = 0;
+            int p_x = point[0];
+            int p_y = point[1];
+
+            // Check all potential squares that can be formed with the given point
+            for (String key : this.pointCnt.keySet()) {
+                String[] parts = key.split(",");
+                int x1 = Integer.parseInt(parts[0]);
+                int y1 = Integer.parseInt(parts[1]);
+
+                // Ensure the point we're comparing with is not the same as the input point
+                if (x1 == p_x && y1 == p_y)
+                    continue;
+
+                // Check if a square can be formed by having another point at (p_x, y1) and (x1,
+                // p_y)
+                if (Math.abs(x1 - p_x) == Math.abs(y1 - p_y)) {
+                    // Form the potential other two points in the square
+                    String coord1 = p_x + "," + y1; // Point (p_x, y1)
+                    String coord2 = x1 + "," + p_y; // Point (x1, p_y)
+
+                    // If both of these points exist, a square is formed
+                    if (this.points.contains(coord1) && this.points.contains(coord2)) {
+                        // Multiply the counts of the points involved in forming a square
+                        cnt += this.pointCnt.get(key) * this.pointCnt.get(coord1) * this.pointCnt.get(coord2);
+                    }
+                }
+            }
+
+            return cnt;
+        }
+    }
+
+
     // V1-1
     // https://neetcode.io/problems/count-squares
     // IDEA: HASHMAP -1
