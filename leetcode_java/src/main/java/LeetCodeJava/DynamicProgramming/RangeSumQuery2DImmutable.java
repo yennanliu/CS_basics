@@ -66,14 +66,43 @@ public class RangeSumQuery2DImmutable {
 //        }
 //    }
 
-    // V1
+    // V1-1
+    // https://www.youtube.com/watch?v=KE8MQuwE2yA
+    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0304-range-sum-query-2d-immutable.java
+    int[][] preSum;
+    class NumMatrix_1_1 {
+       // int[][] preSum;
+
+        public NumMatrix_1_1(int[][] matrix) {
+            int m = matrix.length;
+            int n = matrix[0].length;
+            preSum = new int[m + 1][n + 1];
+
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    preSum[i + 1][j + 1] = preSum[i + 1][j] + preSum[i][j + 1] - preSum[i][j] + matrix[i][j];
+                }
+            }
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            return preSum[row2 + 1][col2 + 1] - preSum[row2 + 1][col1] - preSum[row1][col2 + 1] + preSum[row1][col1];
+        }
+    }
+
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        return preSum[row2 + 1][col2 + 1] - preSum[row2 + 1][col1] - preSum[row1][col2 + 1] + preSum[row1][col1];
+    }
+
+
+    // V2
     // IDEA : DP
     // https://zxi.mytechroad.com/blog/dynamic-programming/leetcode-304-range-sum-query-2d-immutable/
     // https://www.youtube.com/watch?v=MSNSqU3BnXk
-    class NumMatrix_1 {
+    class NumMatrix_2 {
         private int[][] sums;
 
-        public NumMatrix_1(int[][] matrix) {
+        public NumMatrix_2(int[][] matrix) {
             if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
                 return;
             }
@@ -101,13 +130,13 @@ public class RangeSumQuery2DImmutable {
         }
     }
 
-    // V2
+    // V3
     // IDEA : DP
     // https://leetcode.com/problems/range-sum-query-2d-immutable/solutions/2104317/dp-visualised-interview-tips/
-    class NumMatrix_2 {
+    class NumMatrix_3 {
         private int[][] sums;
 
-        public NumMatrix_2(int[][] matrix) {
+        public NumMatrix_3(int[][] matrix) {
             int n = matrix.length;
             int m = matrix[0].length;
             sums = new int[n+1][m+1];
@@ -124,13 +153,13 @@ public class RangeSumQuery2DImmutable {
         }
     }
 
-    // V3
+    // V4
     // IDEA : DP
     // https://leetcode.com/problems/range-sum-query-2d-immutable/solutions/1204168/js-python-java-c-easy-4-rectangles-dp-solution-w-explanation/
-    class NumMatrix_3 {
+    class NumMatrix_4 {
         long[][] dp;
 
-        public NumMatrix_3(int[][] M) {
+        public NumMatrix_4(int[][] M) {
             int ylen = M.length + 1, xlen = M[0].length + 1;
             dp = new long[ylen][xlen];
             for (int i = 1; i < ylen; i++)
