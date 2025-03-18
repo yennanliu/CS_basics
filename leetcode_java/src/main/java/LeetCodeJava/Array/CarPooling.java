@@ -45,8 +45,58 @@ public class CarPooling {
 //    }
 
     // V0-1
-    // IDEA: PREFIX SUM (gpt)
+    // IDEA: PREFIX SUM
+    /**
+     *  NOTE !!!
+     *
+     *   via
+     *     - lengthOfTrip[trip[1]] += trip[0];
+     *     - lengthOfTrip[trip[2]] -= trip[0];
+     *
+     *    and
+     *
+     *      - carLoad += lengthOfTrip[i];
+     *
+     *
+     *  -> we can SIMULATE the `pickup` and `dropOff` scenario
+     *
+     */
     public boolean carPooling_0_1(int[][] trips, int capacity) {
+        // Because from and to is between 0 and 1000. Idea is to store counts in an array of size 1001.
+        int lengthOfTrip[] = new int[1001];
+        for (int trip[] : trips){
+            /**
+             *
+             *  For each trip:
+             *
+             *  - We increment the value at lengthOfTrip[trip[1]] by trip[0].
+             *    This indicates that the given number of passengers (from trip[0])
+             *    board the vehicle at the pick-up location (trip[1]).
+             *
+             *
+             *  - We decrement the value at lengthOfTrip[trip[2]] by trip[0].
+             *    This indicates that the same number of passengers (from trip[0])
+             *    leave the vehicle at the drop-off location (trip[2]).
+             *
+             */
+            lengthOfTrip[trip[1]] += trip[0]; // Increment when passenger is on board
+            lengthOfTrip[trip[2]] -= trip[0]; // decrement when they depart
+        }
+        // Count total passenger for each bus top
+        int carLoad = 0;
+        // we have the count array, we perform a line sweep from 0 to 1000 and track its total
+        for (int i = 0; i < 1001; i++){
+            carLoad += lengthOfTrip[i];
+            // Reject when the car is overloaded somewhere
+            if(carLoad > capacity) return false;
+        }
+
+        return true; // Accept only if all trip is safe
+    }
+
+    // V0-2
+    // IDEA: PREFIX SUM (gpt)
+    public boolean carPooling_0_2(int[][] trips, int capacity) {
         // Edge case: if there are no trips, the vehicle is never needed
         if (trips == null || trips.length == 0) {
             return true;
@@ -93,6 +143,20 @@ public class CarPooling {
         // Because from and to is between 0 and 1000. Idea is to store counts in an array of size 1001.
         int lengthOfTrip[] = new int[1001];
         for (int trip[] : trips){
+            /**
+             *
+             *  For each trip:
+             *
+             *  - We increment the value at lengthOfTrip[trip[1]] by trip[0].
+             *    This indicates that the given number of passengers (from trip[0])
+             *    board the vehicle at the pick-up location (trip[1]).
+             *
+             *
+             *  - We decrement the value at lengthOfTrip[trip[2]] by trip[0].
+             *    This indicates that the same number of passengers (from trip[0])
+             *    leave the vehicle at the drop-off location (trip[2]).
+             *
+             */
             lengthOfTrip[trip[1]] += trip[0]; // Increment when passenger is on board
             lengthOfTrip[trip[2]] -= trip[0]; // decrement when they depart
         }
@@ -100,6 +164,30 @@ public class CarPooling {
         int carLoad = 0;
         // we have the count array, we perform a line sweep from 0 to 1000 and track its total
         for (int i = 0; i < 1001; i++){
+            /**
+             *  Sweeping Through the Stops:
+             *
+             *
+             *  -  After processing all trips, we now have the "net change in passengers"
+             *     at each stop (location).
+             *
+             *  - We loop through the lengthOfTrip[] array from index 0 to 1000 to
+             *    simulate the journey and track the total number of passengers in
+             *    the vehicle at each stop.
+             *
+             *  - We maintain a variable carLoad which starts at 0 and keeps a running
+             *    total of passengers in the vehicle at each stop.
+             *
+             *  - At each location i, we add lengthOfTrip[i] to carLoad to account for
+             *    the passengers boarding or leaving at that stop.
+             *
+             *  - If at any point carLoad exceeds the vehicle's capacity,
+             *    it means the car is overloaded, so we immediately return false.
+             *
+             *  - If we successfully go through all stops without exceeding the capacity,
+             *    we return true.
+             *
+             */
             carLoad += lengthOfTrip[i];
             // Reject when the car is overloaded somewhere
             if(carLoad > capacity) return false;
