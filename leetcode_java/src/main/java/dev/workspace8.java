@@ -8801,4 +8801,67 @@ class Node {
         return false;
     }
 
+    // LC 912
+    /**
+     *  912. Sort an Array
+     * Given an array of integers nums, sort the array in ascending order.
+     *
+     *
+     *
+     * Example 1:
+     *
+     * Input: [5,2,3,1]
+     * Output: [1,2,3,5]
+     * Example 2:
+     *
+     * Input: [5,1,1,2,0,0]
+     * Output: [0,0,1,1,2,5]
+     *
+     *
+     * Note:
+     *
+     * 1 <= A.length <= 10000
+     * -50000 <= A[i] <= 50000
+     *
+     *
+     **/
+    public int[] sortArray(int[] nums) {
+
+
+        Integer[] nums_ = new Integer[nums.length];
+        for(int i = 0; i < nums.length; i++){
+            nums_[i] = nums[i];
+        }
+
+        // NOTE !!! below
+        /**
+         *  NOTE !!!
+         *
+         *
+         *  In Java, you cannot directly use a Comparator with primitive
+         *  types like int[] because Comparator works only with objects,
+         *  not primitives. However, you can convert the int[] to an Integer[]
+         *  and then use a comparator.
+         *
+         * Here's an example of how to sort an int[] using a
+         * Comparator by converting it to Integer[]:
+         *
+         *
+         *
+         */
+        Arrays.sort(nums_, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer a, Integer b) {
+                return a - b;  // This will sort in descending order
+            }
+        });
+
+        for(int i = 0; i < nums_.length; i++){
+            nums[i] = nums_[i];  // ???
+        }
+
+        return nums;
+    }
+
+
 }
