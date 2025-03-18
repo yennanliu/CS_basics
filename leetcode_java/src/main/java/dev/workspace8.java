@@ -8863,5 +8863,35 @@ class Node {
         return nums;
     }
 
+    // LC 75
+    // 10.28 - 10.38 am
+    public void sortColors(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return;
+        }
+
+        Integer[] nums2 = new Integer[nums.length];
+        for(int i = 0; i < nums.length; i++){
+            nums2[i] = nums[i];
+        }
+
+        // sort on nums2
+        Arrays.sort(nums2, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+
+        for(int i = 0; i < nums2.length; i++){
+            nums[i] = nums2[i];
+        }
+
+        return;
+    }
+
 
 }
