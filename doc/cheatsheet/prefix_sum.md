@@ -35,6 +35,8 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
 - Prefix sum
     - LC 238 Product Of Array Except Self
     - LC 560 Subarray Sum Equals K
+- 2D prefix sum
+    - LC 304
 
 - Flip string
 - Range addition
