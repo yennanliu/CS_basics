@@ -66,6 +66,71 @@ public class RangeSumQuery2DImmutable {
 //        }
 //    }
 
+    // V0-1
+    // IDEA: 2-D Prefix sum (gpt)
+    class NumMatrix_0_1 {
+
+        // Attributes
+        int[][] matrix;
+        int[][] preSumMatrix;
+
+        public NumMatrix_0_1(int[][] matrix) {
+            // Initialize matrix and prefix sum matrix
+            this.matrix = matrix;
+            int l = matrix.length;
+            int w = matrix[0].length;
+
+            // Create a prefix sum matrix with dimensions (l+1) x (w+1)
+            this.preSumMatrix = new int[l + 1][w + 1];
+
+            // Populate the prefix sum matrix
+            for (int i = 1; i <= l; i++) {
+                for (int j = 1; j <= w; j++) {
+                    /**
+                     *  NOTE !!! below
+                     *
+                     *
+                     *  1) The preSumMatrix[i][j] at each position (i, j) is calculated using the formula
+                     *    ->  preSumMatrix[i][j] = matrix[i-1][j-1] + preSumMatrix[i-1][j] + preSumMatrix[i][j-1] - preSumMatrix[i-1][j-1];
+                     *
+                     *    -> This formula adds the current element matrix[i-1][j-1]
+                     *       and all the sums from the left and above, and subtracts the overlap
+                     *       from the top-left corner to avoid double counting.
+                     *
+                     *
+                     */
+                    preSumMatrix[i][j] = matrix[i - 1][j - 1]
+                            + preSumMatrix[i - 1][j]
+                            + preSumMatrix[i][j - 1]
+                            - preSumMatrix[i - 1][j - 1];
+                }
+            }
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            // Calculate the sum of the region using the inclusion-exclusion principle
+            /**
+             *  NOTE !!! below
+             *
+             * - preSumMatrix[row2+1][col2+1] gives the sum of
+             *   all elements from the top-left corner to (row2, col2).
+             *
+             * - We subtract the areas above (preSumMatrix[row1][col2+1])
+             *   and to the left (preSumMatrix[row2+1][col1]).
+             *
+             * - We add back the overlap area (preSumMatrix[row1][col1]),
+             *   which was subtracted twice.
+             *
+             */
+
+            return preSumMatrix[row2 + 1][col2 + 1]
+                    - preSumMatrix[row1][col2 + 1]
+                    - preSumMatrix[row2 + 1][col1]
+                    + preSumMatrix[row1][col1];
+        }
+    }
+
+
     // V1-1
     // https://www.youtube.com/watch?v=KE8MQuwE2yA
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0304-range-sum-query-2d-immutable.java
@@ -188,5 +253,5 @@ public class RangeSumQuery2DImmutable {
             return s[row2 + 1][col2 + 1] - s[row2 + 1][col1] - s[row1][col2 + 1] + s[row1][col1];
         }
     }
-    
+
 }
