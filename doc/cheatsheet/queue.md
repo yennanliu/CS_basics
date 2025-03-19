@@ -7,7 +7,8 @@
 
 
 
-## 0) Concept  
+## 0) Concept
+
 - An ordering linear data structure
 - can be implemented by either `array` or `linkedlist`
 - first in first out (FIFO)
@@ -17,8 +18,9 @@
     - via FIFO properties, we're sure that the `earlier reached` code is executed first, then the `following code`,... and so on
 
 ### 0-1) Types
+
 - Queue
-- Priority queue
+- Priority queue (PQ)
 - Monotonic queue
     - LC 239
 - double-ended queue (deque)
@@ -96,10 +98,11 @@ class Queue(object):
 
 ```java
 // ----------------
-// monotonic Queue
+// Monotonic Queue
 // ----------------
 // java
 // algorithm book (labu) p. 278, p.281
+// LC 239
 class MonotonicQueue{
 
     // init queue
@@ -208,6 +211,7 @@ deque(['b', 'c', 'd', 'e', 'f'])
 ## 2) LC Example
 
 ### 2-1) Sliding Window Maximum
+
 ```python
 # LC 239 Sliding Window Maximum (hard)
 # V1
@@ -289,11 +293,15 @@ int[] maxSlidingWindow([int] nums, int k){
 ```
 
 ### 2-2) Design Circular Queue
+
 ```python
 # LC 622. Design Circular Queue
 # V0 
 # IDEA : ARRAY
 # https://leetcode.com/problems/design-circular-queue/solution/
+
+# NOTE !!! when `circular`, -> think about `fixed_idx = idx % len`
+
 class MyCircularQueue:
 
     def __init__(self, k):
