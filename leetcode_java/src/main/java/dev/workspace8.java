@@ -9013,6 +9013,106 @@ class Node {
         }
     }
 
+    // LC 128
+    /**
+     *   IDEA 1) SORT + SLIDING WINDOW
+     *
+     *
+     */
+    // 10.30 - 10.40 am
+    public int longestConsecutive(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return 1;
+        }
+        HashSet<Integer> set = new HashSet<>();
+        List<Integer> nums2 = new ArrayList<>();
+
+        for(int i = 0; i < nums.length; i++){
+            if(!set.contains(nums[i])){
+                set.add(nums[i]);
+                nums2.add(nums[i]);
+            }
+        }
+
+        // sort (ascending) (small -> big)
+        Collections.sort(nums2, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        System.out.println(">>> nums2 = " + nums2);
+        for(int x: nums2){
+            System.out.println(" x= " + x);
+        }
+
+        int res = 1;
+        int l = 0;
+        int r = 1;
+        //int prev = -1;
+        while (r < nums2.size() && l < nums2.size() ){
+            //prev = nums[l];
+            System.out.println(">>> l = " + l + ", r = " + r + ", res = " + res);
+            if(nums2.get(r) == nums2.get(r-1) + 1){
+                res = Math.max(res, r  - l  + 1);
+            }else{
+                // move l to r
+                l = r;
+            }
+            r += 1;
+        }
+
+        return res;
+    }
+
+    // LC 122
+    // 11.04 - 11.20 am
+    /**
+     *
+     *  -> Design an algorithm to find the maximum profit.
+     *  You may complete as many transactions as you like
+     *  (i.e., buy one and sell one share of the stock multiple times).
+     *
+     *
+     *
+     *    IDEA 1) : GREEDY
+     *
+     *    IDEA 1) : dp ???
+     *
+     *
+     *  exp 1)
+     *    Input: [7,1,5,3,6,4]
+     *    Output: 7
+     *   Explanation: Buy on day 2 (price = 1)
+     *               and sell on day 3 (price = 5), profit = 5-1 = 4.
+     *              Then buy on day 4 (price = 3)
+     *              and sell on day 5 (price = 6), profit = 6-3 = 3.
+     *
+     *
+     *     [7,1,5,3,6,4]
+     *      x
+     *
+     *             1
+     *           5  3   6  4
+     *         6    6
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+    public int maxProfit_(int[] prices) {
+
+        return 0;
+    }
+
 
 
 }
