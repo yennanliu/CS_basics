@@ -90,10 +90,6 @@ public class RangeSumQuery2DImmutable {
         }
     }
 
-    public int sumRegion(int row1, int col1, int row2, int col2) {
-        return preSum[row2 + 1][col2 + 1] - preSum[row2 + 1][col1] - preSum[row1][col2 + 1] + preSum[row1][col1];
-    }
-
 
     // V2
     // IDEA : DP
@@ -171,4 +167,26 @@ public class RangeSumQuery2DImmutable {
             return (int)(dp[R2+1][C2+1] - dp[R2+1][C1] - dp[R1][C2+1] + dp[R1][C1]);
         }
     }
+
+    // V5-1
+    // IDEA: Two-dimensional Prefix Sum
+    // https://leetcode.ca/2016-09-29-304-Range-Sum-Query-2D-Immutable/
+    class NumMatrix_5_1 {
+        private int[][] s;
+
+        public NumMatrix_5_1(int[][] matrix) {
+            int m = matrix.length, n = matrix[0].length;
+            s = new int[m + 1][n + 1];
+            for (int i = 0; i < m; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    s[i + 1][j + 1] = s[i + 1][j] + s[i][j + 1] - s[i][j] + matrix[i][j];
+                }
+            }
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            return s[row2 + 1][col2 + 1] - s[row2 + 1][col1] - s[row1][col2 + 1] + s[row1][col1];
+        }
+    }
+    
 }
