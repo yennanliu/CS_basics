@@ -9002,15 +9002,71 @@ class Node {
     }
 
     // LC 304
-        class NumMatrix {
+    // 11.44 - 12.10 pm
+    /**
+     *  -> Given a 2D matrix matrix, find the sum of the
+     *  elements inside the rectangle defined by its upper
+     *  left corner (row1, col1) and lower right corner (row2, col2).
+     *
+     *  -> get sum of matrix from `left corner` to `right corner`
+     *     -> preSum within (row1, col1) and (row2, col2)
+     *
+     *
+     *  -> IDEA 1) GREEDY + PRESUM
+     *    -> get pre sum and subtract the no needed `corner`
+     *
+     *
+     */
+    class NumMatrix {
+
+        // attr
+        int[][] matrix;
+        //List<List<Integer>> preSumMatrix; // ??
+        int[][] preSumMatrix;
+        int preSum;
 
         public NumMatrix(int[][] matrix) {
+
+            this.matrix = matrix;
+            this.preSumMatrix = new int[matrix.length + 1][matrix[0].length + 1];
+            this.preSum = 0;
+
+            // get Prefix sum
+            int l = matrix.length;
+            int w = matrix[0].length;
+            // note below ????
+
+            for(int i = 0; i < l+1; i++){
+                for(int j = 0; j < w+1; j++){
+                    if(i > l || j > w){
+                        this.preSumMatrix[i][j] = 0; // ???
+                    }else{
+                        this.preSum += this.matrix[i][j];
+                        this.preSumMatrix[i][j] = this.preSum;
+                    }
+                }
+            }
 
         }
 
         public int sumRegion(int row1, int col1, int row2, int col2) {
-            return 0;
+
+            /**
+             *  left corner (row1, col1)
+             *        X----*
+             *        |    |
+             *        *----X
+             *          right corner (row2, col2).
+             *
+             */
+
+            int res = this.preSumMatrix[row2][col2] - this.preSumMatrix[row1][col1];
+            // add the `over subtracted` val back
+            //res += this
+
+            return res;
         }
+
     }
 
     // LC 128
