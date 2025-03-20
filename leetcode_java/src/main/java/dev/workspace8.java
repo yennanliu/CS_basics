@@ -9169,6 +9169,36 @@ class Node {
         return 0;
     }
 
+    // LC 229
+    // 10.09 - 10.19 am
+    public List<Integer> majorityElement(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(nums == null || nums.length == 0){
+            return null;
+        }
+        if(nums.length == 1){
+            res.add(nums[0]);
+            return res;
+        }
+        // hashmap
+        Map<Integer, Integer> map = new HashMap<>();
+        int cnt = 0;
+        for(int n: nums){
+            cnt += 1;
+            map.put(n, map.getOrDefault(n, 0)+1);
+        }
+
+        System.out.println(">>> map = " + map + ", cnt = " + cnt + " cnt / 3  = " + cnt / 3);
+
+        for(int k: map.keySet()){
+            if(map.get(k) > cnt / 3){
+                res.add(k);
+            }
+        }
+
+        return res;
+    }
 
 
 }
