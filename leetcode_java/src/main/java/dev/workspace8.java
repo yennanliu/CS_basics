@@ -9333,5 +9333,64 @@ class Node {
         return start; // ??
     }
 
+    // LC 76
+    // 11.49 - 12.10 PM
+    /**
+     *  IDEA 1) HASHMAP + SLIDING WINDOW
+     *
+     *     - 2 hashmap; s_cur_map, t_map
+     *     - `t_map` key cnt
+     *     - `s_cur_map` key cnt
+     *
+     *     - then within sliding window
+     *        - we keep checking
+     *           if s_cur_map == t_map
+     *              if yes, appdend res
+     *              and use `while` loop
+     *                 - keep moving `left pointer` till s_cur_map != t_map
+     *           else:
+     *              move `right pointer`
+     *
+     */
+    public String minWindow_(String s, String t) {
+        // edge
+        if(s == null && t == null){
+            return null;
+        }
+
+        // init 2 map
+        Map<String, Integer> t_map = new HashMap<>();
+        Map<String, Integer> s_tmp_map = new HashMap<>();
+
+        // init cnt
+        int t_key_cnt = t_map.keySet().size();
+        int s_key_cnt = 0;
+
+        // init cache
+        List<String> cache = new ArrayList<>();
+
+        // update map
+        for(String x: t.split("")){
+            t_map.put(x, t_map.getOrDefault(x, 0) + 1);
+        }
+
+        String[] s_arr = s.split("");
+        StringBuilder sb = new StringBuilder();
+        int l = 0;
+        for(int r = 0; r < s_arr.length; r++){
+
+            if(t_key_cnt == s_key_cnt){
+
+                cache.add(sb.toString());
+                // move left pointer, till it `CAN'T` meet the requirement
+
+               // while ()
+            }
+
+        }
+
+        return null;
+    }
+
 
 }
