@@ -34,7 +34,7 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
 
 - Prefix sum
     - LC 238 Product Of Array Except Self
-    - LC 560 Subarray Sum Equals K
+    - LC 560 Subarray Sum Equals K --- MUST !!!
 - 2D prefix sum
     - LC 304
 
@@ -64,6 +64,37 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
     - LC 769
 
 ### 0-2) Pattern
+
+#### 0-2-1) Get count of `continuous sub array equals to K`
+
+```java
+// java
+// LC 560
+
+// ..
+Map<Integer, Integer> map = new HashMap<>();
+
+// ..
+
+for (int num : nums) {
+    presum += num;
+
+    // Check if there's a prefix sum such that presum - k exists
+    // NOTE !!! below
+    if (map.containsKey(presum - k)) {
+        count += map.get(presum - k);
+    }
+
+    // Update the map with the current prefix sum
+    map.put(presum, map.getOrDefault(presum, 0) + 1);
+}
+
+// ..
+
+```
+
+
+
 
 ## 1) General form
 
