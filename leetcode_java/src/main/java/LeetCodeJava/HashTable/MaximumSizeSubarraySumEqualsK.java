@@ -1,40 +1,35 @@
 package LeetCodeJava.HashTable;
 
-// https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
-// A subarray is a contiguous sequence of elements within an array.
-// prefix sum
 
 import java.util.HashMap;
 import java.util.Map;
 
+// https://leetcode.ca/2016-10-20-325-Maximum-Size-Subarray-Sum-Equals-k/
 /**
- * 560. Subarray Sum Equals K
- * Solved
- * Medium
- * Topics
- * Companies
- * Hint
- * Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
- *
- * A subarray is a contiguous non-empty sequence of elements within an array.
+ * 325. Maximum Size Subarray Sum Equals k
+ * Description
+ * Given an integer array nums and an integer k, return the maximum length of a subarray that sums to k. If there is not one, return 0 instead.
  *
  *
  *
  * Example 1:
  *
- * Input: nums = [1,1,1], k = 2
- * Output: 2
+ * Input: nums = [1,-1,5,-2,3], k = 3
+ * Output: 4
+ * Explanation: The subarray [1, -1, 5, -2] sums to 3 and is the longest.
  * Example 2:
  *
- * Input: nums = [1,2,3], k = 3
+ * Input: nums = [-2,-1,2,1], k = 1
  * Output: 2
+ * Explanation: The subarray [-1, 2] sums to 1 and is the longest.
  *
  *
  * Constraints:
  *
- * 1 <= nums.length <= 2 * 104
- * -1000 <= nums[i] <= 1000
- * -107 <= k <= 107
+ * 1 <= nums.length <= 2 * 105
+ * -104 <= nums[i] <= 104
+ * -109 <= k <= 109
+ *
  *
  *
  */
@@ -42,7 +37,7 @@ public class MaximumSizeSubarraySumEqualsK {
 
     // V0
     // TODO : implement
-//    public int subarraySum(int[] nums, int k) {
+//    public int maxSubArrayLen_0_1(int[] nums, int k) {
 //
 //    }
 
@@ -288,35 +283,5 @@ public class MaximumSizeSubarraySumEqualsK {
         return ans;
     }
 
-    // V6
-    // IDEA: SILDING WINDOW (gpt)
-    public int subarraySum_6(int[] nums, int k) {
-        // Edge case handling for null or empty array
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
-
-        int cnt = 0;
-        int currentSum = 0;
-        int l = 0;
-
-        // HashMap to store the cumulative sum frequencies
-        HashMap<Integer, Integer> sumFreq = new HashMap<>();
-        sumFreq.put(0, 1); // To handle the case when the sum itself equals `k` directly
-
-        for (int r = 0; r < nums.length; r++) {
-            currentSum += nums[r]; // Add the current element to the running sum
-
-            // Check if there is a subarray with sum equal to `k`
-            if (sumFreq.containsKey(currentSum - k)) {
-                cnt += sumFreq.get(currentSum - k);
-            }
-
-            // Update the frequency of the current running sum
-            sumFreq.put(currentSum, sumFreq.getOrDefault(currentSum, 0) + 1);
-        }
-
-        return cnt;
-    }
 
 }

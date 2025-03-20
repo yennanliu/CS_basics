@@ -270,4 +270,35 @@ public class SubarraySumEqualsK {
         return count;
     }
 
+    // V4
+    // IDEA:  SLIDING WINDOW + HASHMAP
+    public int subarraySum_4(int[] nums, int k) {
+        // Edge case handling for null or empty array
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int cnt = 0;
+        int currentSum = 0;
+        int l = 0;
+
+        // HashMap to store the cumulative sum frequencies
+        HashMap<Integer, Integer> sumFreq = new HashMap<>();
+        sumFreq.put(0, 1); // To handle the case when the sum itself equals `k` directly
+
+        for (int r = 0; r < nums.length; r++) {
+            currentSum += nums[r]; // Add the current element to the running sum
+
+            // Check if there is a subarray with sum equal to `k`
+            if (sumFreq.containsKey(currentSum - k)) {
+                cnt += sumFreq.get(currentSum - k);
+            }
+
+            // Update the frequency of the current running sum
+            sumFreq.put(currentSum, sumFreq.getOrDefault(currentSum, 0) + 1);
+        }
+
+        return cnt;
+    }
+
 }
