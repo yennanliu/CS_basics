@@ -9293,5 +9293,45 @@ class Node {
         return sum;
     }
 
+    // LC 41
+    // 11.18 - 11.28 am
+    /**
+     *  IDEA 1) ARRAY OP
+     *
+     */
+    public int firstMissingPositive(int[] nums) {
+
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+
+        // {key : cnt}
+        int maxVal = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int n: nums){
+            maxVal = Math.max(maxVal, n);
+            map.put(n, map.getOrDefault(n,0) + 1);
+        }
+
+
+        /**
+         *  exp 1)
+         *     Input: [1,2,0]
+         *     Output: 3
+         *
+         *
+         */
+        int start = 1;
+        while(start <= maxVal){
+            if(!map.containsKey(start)){
+                return start;
+            }
+            start += 1;
+        }
+
+        return start; // ??
+    }
+
 
 }
