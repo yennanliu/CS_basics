@@ -9200,5 +9200,98 @@ class Node {
         return res;
     }
 
+    // LC 560
+    // 10.19 - 10.29 am
+    /**
+     *  560. Subarray Sum Equals K
+     * Description
+     * Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+     *
+     * A subarray is a contiguous non-empty sequence of elements within an array.
+     *
+     *
+     *
+     * Example 1:
+     *
+     * Input: nums = [1,1,1], k = 2
+     * Output: 2
+     * Example 2:
+     *
+     * Input: nums = [1,2,3], k = 3
+     * Output: 2
+     *
+     *
+     * Constraints:
+     *
+     * 1 <= nums.length <= 2 * 104
+     * -1000 <= nums[i] <= 1000
+     * -107 <= k <= 107
+     *
+     *
+     *
+     */
+    /**
+     *  IDEA 1) SLIDING WINDOW + HASHMAP ??
+     *
+     *
+     */
+
+    public int subarraySum(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            if(k != 0){
+                return -1; // ?
+            }
+            if(k == 0){
+                return 0;
+            }
+        }
+        if(nums.length == 1){
+            if(nums[0] == k){
+                return 1;
+            }
+            return -1; // ??
+        }
+
+        int cnt = 0;
+        // sliding window
+        int l = 0;
+        int r = 0;
+        // ???
+        while( r < nums.length ){
+            // cur
+            int[] tmp = Arrays.copyOfRange(nums, l, r);
+            //int tmpSum = getSum(tmp);
+
+            System.out.println(">>> l = " + l + ", r = " + r + " tmp = " + tmp);
+
+            // case 1) > k
+            while (getSum(tmp) > k){
+                l += 1;
+            }
+
+            // case 2)  == k
+            if(getSum(tmp) == k){
+                cnt += 1;
+                r += 1;
+            }
+            // case 3) < k
+            else{
+                r += 1;
+            }
+
+        }
+
+        return cnt;
+    }
+
+     private int getSum(int[] input){
+        int sum = 0;
+        for(int x: input){
+            sum += x;
+        }
+        return sum;
+    }
+
 
 }
