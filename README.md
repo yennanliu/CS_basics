@@ -819,6 +819,7 @@
 986 | [Interval List Intersections](https://leetcode.com/problems/squares-of-a-sorted-array/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/TwoPointer/IntervalListIntersections.java) | _O(n)_ | _O(1)_ | Medium |2 pointer, scanning line, good basic, google| AGAIN********* (1) (MUST)
 1055| [Shortest Way to Form String](https://leetcode.ca/2018-10-20-1055-Shortest-Way-to-Form-String/) |[Python](./leetcode_python/Two_Pointers/shortest_way_to_form_string.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/TwoPointer/ShortestWayToFormString.java) | _O(n)_| _O(h)_ | Medium|2 pointer, `google`| again
 1151 | [Minimum Swaps to Group All 1's Together](https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/) | [Python](./leetcode_python/Two_Pointers/minimum-swaps-to-group-all-1s-together.py) | _O(n)_ | _O(1)_ | Medium |good basic, 2 pointers, Deque (Double-ended Queue), `amazon`| AGAIN***** (not start )
+1768| [Merge Strings Alternately]( https://leetcode.com/problems/merge-strings-alternately) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Recursion/MergeStringsAlternately.java) | _O(n)_| _O(h)_ | Easy|tree,recursion,google| OK
 1963| [Minimum Number of Swaps to Make the String Balanced](https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/) |[Python](./leetcode_python/Two_Pointers/minimum-number-of-swaps-to-make-the-string-balanced.py) | _O(n)_| _O(h)_ | Medium|good basic, greedy, stack, 2 pointers, amazon, fb, m$| AGAIN******** (2)
 2104 | [Sum of Subarray Ranges](https://leetcode.com/problems/sum-of-subarray-ranges/) | [Python](./leetcode_python/Two_Pointers/sum-of-subarray-ranges.py) | _O(n)_ | _O(1)_ | Medium |LC 907,  monotonic stack, brute force, 2 pointers, dp, `amazon`| AGAIN******* (3)
 3191| [Minimum Operations to Make Binary Array Elements Equal to One I](https://leetcode.com/problems/minimum-operations-to-make-binary-array-elements-equal-to-one-i/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/TwoPointer/minimumOperationsToMakeBinaryArrayElementsEqualToOneI.java) | _O(n)_  | _O(h)_ | Medium|2 pointers| Again* (2)
@@ -857,6 +858,7 @@
 671| [Second Minimum Node In a Binary Tree](https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/) |[Python](./leetcode_python/Recursion/second-minimum-node-in-a-binary-tree.py) | _O(n)_          | _O(h)_ | Easy|dfs,tree| OK* (2)
 753| [Cracking the Safes](https://leetcode.com/problems/cracking-the-safe/description/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Recursion/CrackingTheSafes.java) | _O(n)_| _O(h)_ | Hard|dfs,recursion,google| AGAIN (not start)
 1145| [Binary Tree Coloring Game](https://leetcode.com/problems/binary-tree-coloring-game/description/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Recursion/BinaryTreeColoringGame.java) | _O(n)_| _O(h)_ | Medium|tree,recursion,google| AGAIN (not start)
+
 
 ## Binary Search
 

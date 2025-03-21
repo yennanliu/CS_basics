@@ -9433,5 +9433,42 @@ class Node {
         return res;
     }
 
+    // LC 1769
+    public String mergeAlternately(String word1, String word2) {
+        // edge
+        if(word1 == null && word2 == null){
+            return null;
+        }
+        if(word1 == null || word2 == null){
+            if(word1 == null){
+                return word2;
+            }
+            return word1;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        while (i < word1.length() && i < word2.length()){
+            sb.append(word1.charAt(i));
+            sb.append(word2.charAt(i));
+
+            i += 1;
+        }
+
+        if(i < word1.length()){
+            for(int j = i; j < word1.length(); j++){
+                sb.append(word1.charAt(j));
+            }
+        }
+
+        if(i < word2.length()){
+            for(int j = i; j < word2.length(); j++){
+                sb.append(word2.charAt(j));
+            }
+        }
+
+        return sb.toString();
+    }
+
 
 }

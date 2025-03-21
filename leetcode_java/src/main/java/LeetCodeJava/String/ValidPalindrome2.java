@@ -87,7 +87,7 @@ public class ValidPalindrome2 {
 
         while (left < right) {
             if (s.charAt(left) != s.charAt(right)) {
-                return isPalindrome_1(s, left + 1, right) || isPalindrome(s, left, right - 1);
+                return isPalindrome_1(s, left + 1, right) || isPalindrome_1(s, left, right - 1);
             }
             left++;
             right--;
