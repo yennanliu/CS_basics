@@ -9392,5 +9392,46 @@ class Node {
         return null;
     }
 
+    // LC 680
+    // 9.42 - 9.52 am
+    public boolean validPalindrome(String s) {
+        // edge
+        if(s == null || s.length() == 0){
+            return true;
+        }
+        for(int i = 0; i < s.length(); i++){
+            if(isPalindrome(s, i)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isPalindrome(String input, int i){
+        StringBuilder sb = new StringBuilder();
+        for(int j = 0; j < input.split("").length; j++){
+            if(j != i){
+                sb.append(input.charAt(j));
+            }
+        }
+        String x = sb.toString();
+        System.out.println(">>> i = " + i + ", input = " + input + ", x = " + x);
+
+
+        int l = 0;
+        int r = x.length() -1;
+        boolean res = true;
+        while(r > l){
+            if (x.charAt(l) != x.charAt(r)){
+                return false;
+            }
+            r -= 1;
+            l += 1;
+        }
+
+        return res;
+    }
+
 
 }
