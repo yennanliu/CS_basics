@@ -9497,4 +9497,39 @@ class Node {
 
     }
 
+    // Lc 189
+    // 11.05 - 11.15 am
+    public void rotate(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return;
+        }
+
+        // ?? can use below ??
+        Deque<Integer> dq = new LinkedList<>();
+       // List<Integer> list = new ArrayList<>();
+        for(int n: nums){
+          //  list.add(n);
+            dq.add(n);
+        }
+
+        int i = 0;
+        for(i = 0; i < k; i++){
+           // int last = nums[nums.length - 1];
+//           int last = list.get(list.size()-1);
+//           list.remove(list.size()-1);
+//           list.add(0, last);
+
+          dq.addFirst(dq.pollLast()); // ???
+        }
+
+        System.out.println(">>> dq = " + dq);
+
+        int j = 0;
+        while(!dq.isEmpty()){
+            nums[j] = dq.pollFirst();
+            j += 1;
+        }
+    }
+
 }
