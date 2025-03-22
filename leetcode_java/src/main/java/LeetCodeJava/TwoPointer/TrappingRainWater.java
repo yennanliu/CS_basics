@@ -1,6 +1,7 @@
 package LeetCodeJava.TwoPointer;
 
 // https://leetcode.com/problems/trapping-rain-water/description/
+// https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_42_1.png
 
 import java.util.Stack;
 
@@ -40,6 +41,17 @@ public class TrappingRainWater {
 //    public int trap(int[] height) {
 //
 //    }
+
+    // V0-1
+    // TODO : implement
+    // IDEA: 2 POINTER
+    /**
+     *  NOTE !!!
+     *
+     *    amount_of_water =  min(L,R) - h[i]
+     *
+     */
+    // https://youtu.be/ZI2z5pq0TqA?si=rAMqW6nXeqnoxNKo
 
     // V1-1
     // https://neetcode.io/problems/trapping-rain-water
