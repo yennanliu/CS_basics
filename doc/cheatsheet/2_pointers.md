@@ -8,8 +8,10 @@
 ### 0-1) Types
 
 - Pointer types
+
     - `Fast - Slow pointers`
         - fast, slow pointers from `same start point`
+
     - `Left- Right pointers`
         - left, right pointers from `idx = 0, idx = len(n) - 1` respectively
         - Usually set
@@ -29,6 +31,9 @@
 
 - Minimum Swaps to Group All 1's Together
     - LC 1151 (check [sliding_window.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md))
+
+- Boats to Save People
+    - LC 881
 
 - Algorithm
     - binary search
