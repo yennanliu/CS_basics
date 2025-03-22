@@ -9628,23 +9628,76 @@ class Node {
     // LC 42
     // 5.27 pm - 5.37 pm
     /**
-     *  IDEA 1) GREEDY + 2 POINTERS ?
+     *  IDEA 2) 2 POINTERS + leftMax + rightMax
      *
-     *  slow, fast pointer
+     *  -> amount_of_water = min(left, right) - height[i]
      *
-     *   exp 1)
-     *    [0,1,0,2,1,0,1,3,2,1,2,1]
-     *     s f
+     *  -> maintain 3 arrays:
      *
-     *    [0,1,0,2,1,0,1,3,2,1,2,1]
+     *    [left_max, ...]
+     *    [right_max, ...]
+     *    [min(left_max, right_max), ...]
+     *
+     *    and get 4 th array:
+     *
+     *    [ min(left_max, right_max) - height[i], ...]
      *
      *
-     *
-     *
+     *  -> NOTE : if min(left_max, right_max) - height[i] < 0, we make it as 0
+     *         -> then res will be sum over [ min(left_max, right_max) - height[i], ...] array
      *
      */
+    // 6.15 - 6.30 pm
     public int trap(int[] height) {
-        return 0;
+        // edge
+        if(height == null || height.length == 0){
+            return 0;
+        }
+        if(height.length == 1){
+            return 0; // ?
+        }
+        // get 3 array
+        int[] max_at_left = new int[height.length];
+        int[] max_at_right = new int[height.length];
+        int[] min_left_right = new int[height.length];
+
+        int leftMaxTillNow = 0;
+        for(int i = 1; i < height.length; i++){
+            max_at_left[i] = leftMaxTillNow;
+            leftMaxTillNow = Math.max(leftMaxTillNow, height[i]);
+        }
+
+        int rightMaxTillNow = height[height.length-1];
+        // ??
+        for(int i = height.length-2; i > 0; i--){
+            max_at_right[i] = rightMaxTillNow;
+            rightMaxTillNow = Math.max(rightMaxTillNow, height[i]);
+        }
+
+        for(int i = 0; i < height.length; i++){
+            min_left_right[i] = Math.min(max_at_left[i], max_at_right[i]);
+        }
+
+        // get 4th array
+        int[] min_left_right_height_diff = new int[height.length];
+        for(int i = 0; i < height.length; i++){
+            int diff = min_left_right[i] - height[i];
+            if (diff > 0){
+                min_left_right_height_diff[i] = diff;
+            }
+        }
+
+        System.out.println("max_at_left = " + Arrays.toString(max_at_left));
+        System.out.println("max_at_right = " + Arrays.toString(max_at_right));
+        System.out.println("min_left_right = " + Arrays.toString(min_left_right));
+        System.out.println("min_left_right_height_diff = " + Arrays.toString(min_left_right_height_diff));
+
+        int res = 0;
+        for(int i = 0; i < height.length; i++){
+            res += min_left_right_height_diff[i];
+        }
+
+        return res;
     }
 
 }

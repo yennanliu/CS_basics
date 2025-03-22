@@ -3,6 +3,7 @@ package LeetCodeJava.TwoPointer;
 // https://leetcode.com/problems/trapping-rain-water/description/
 // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_42_1.png
 
+import java.util.Arrays;
 import java.util.Stack;
 
 /**
@@ -43,15 +44,83 @@ public class TrappingRainWater {
 //    }
 
     // V0-1
-    // TODO : implement
-    // IDEA: 2 POINTER
+    // IDEA: 2 POINTER + left_till_array + max_till_array
     /**
      *  NOTE !!!
      *
      *    amount_of_water =  min(L,R) - h[i]
      *
+     *    so ALL we need to do is:
+     *
+     *     1) get `max_at_left` array that get `max till from LEFT direction`
+     *     2) get `max_at_right` array that get `max till from RIGHT direction`
+     *     3) get `min_left_right` array that get min of above 2 array per idx
+     *     4) get `min_left_right_height_diff` till  `min_left_right - height[i]`
+     *          - NOTE that if diff < 0, we use 0 instead
+     *
+     *    finally, we sum over val in min_left_right_height_diff as result
      */
     // https://youtu.be/ZI2z5pq0TqA?si=rAMqW6nXeqnoxNKo
+    public int trap_0_1(int[] height) {
+        // edge
+        if (height == null || height.length <= 2) {
+            return 0;
+        }
+
+        int[] max_at_left = new int[height.length];
+        int[] max_at_right = new int[height.length];
+        int[] min_left_right = new int[height.length];
+        int[] min_left_right_height_diff = new int[height.length];
+
+        // compute left max
+        /** NOTE !!!
+         *
+         *  we init leftMaxTillNow as `first element` val
+         */
+        int leftMaxTillNow = height[0];
+        for (int i = 1; i < height.length; i++) {
+            leftMaxTillNow = Math.max(leftMaxTillNow, height[i]);
+            max_at_left[i] = leftMaxTillNow;
+        }
+
+        // compute right max
+        /** NOTE !!!
+         *
+         *  we init rightMaxTillNow as `last element` val
+         */
+        int rightMaxTillNow = height[height.length - 1];
+        for (int i = height.length - 2; i >= 0; i--) {
+            rightMaxTillNow = Math.max(rightMaxTillNow, height[i]);
+            max_at_right[i] = rightMaxTillNow;
+        }
+
+        // compute min of left and right max arrays
+        for (int i = 0; i < height.length; i++) {
+            min_left_right[i] = Math.min(max_at_left[i], max_at_right[i]);
+        }
+
+        // water trapped at each index
+        for (int i = 0; i < height.length; i++) {
+            int diff = min_left_right[i] - height[i];
+            if (diff > 0) {
+                min_left_right_height_diff[i] = diff;
+            }
+        }
+
+        // Optional debug
+//        System.out.println("max_at_left = " + Arrays.toString(max_at_left));
+//        System.out.println("max_at_right = " + Arrays.toString(max_at_right));
+//        System.out.println("min_left_right = " + Arrays.toString(min_left_right));
+//        System.out.println("min_left_right_height_diff = " + Arrays.toString(min_left_right_height_diff));
+
+        // sum up all trapped water
+        int res = 0;
+        for (int val : min_left_right_height_diff) {
+            res += val;
+        }
+
+        return res;
+    }
 
     // V1-1
     // https://neetcode.io/problems/trapping-rain-water
