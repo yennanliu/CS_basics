@@ -9626,6 +9626,23 @@ class Node {
     }
 
     // LC 42
+    // 5.27 pm - 5.37 pm
+    /**
+     *  IDEA 1) GREEDY + 2 POINTERS ?
+     *
+     *  slow, fast pointer
+     *
+     *   exp 1)
+     *    [0,1,0,2,1,0,1,3,2,1,2,1]
+     *     s f
+     *
+     *    [0,1,0,2,1,0,1,3,2,1,2,1]
+     *
+     *
+     *
+     *
+     *
+     */
     public int trap(int[] height) {
         return 0;
     }
