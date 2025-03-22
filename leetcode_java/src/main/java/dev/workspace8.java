@@ -9625,4 +9625,9 @@ class Node {
         return res;
     }
 
+    // LC 42
+    public int trap(int[] height) {
+        return 0;
+    }
+
 }
