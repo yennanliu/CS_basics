@@ -46,6 +46,45 @@ public class BoatsToSavePeople {
 //
 //    }
 
+    // V0-1
+    // IDEA: 2 POINTERS (gpt)
+    public int numRescueBoats_0_1(int[] people, int limit) {
+        if (people == null || people.length == 0) {
+            return 0;
+        }
+
+        Arrays.sort(people);
+        int left = 0;
+        int right = people.length - 1;
+        int res = 0;
+
+        while (left <= right) {
+      /**
+       *  NOTE !!!!
+       *
+       *  1) If people[left] + people[right] <= limit, move both pointers inward.
+       * 	 Otherwise, just move right inward.
+       *
+       * 	 -> so that's why in code below, we move `right` idx anyway
+       * 	    e.g. whether `people[left] + people[right] <= limit` condition is met, we move `right` idx
+       *
+       *
+       *
+       *  2) from problem description, `1 <= people[i] <= limit <= 3 * 104`
+       *    -> means people weight (e.g. people[i]) MUST <= limit
+       *    -> so, we are sure that at least the boat can take the heaviest person during the process
+       *
+       */
+      if (people[left] + people[right] <= limit) {
+                left++; // Can fit both
+            }
+            right--; // The heaviest person goes anyway
+            res++; // One boat used
+        }
+
+        return res;
+    }
+
     // V1
     // https://youtu.be/XbaxWuHIWUs?si=xUbPJSoZXiLNk6LZ
 
