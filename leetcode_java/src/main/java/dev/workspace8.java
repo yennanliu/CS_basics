@@ -9532,4 +9532,97 @@ class Node {
         }
     }
 
+    // LC 881
+    // 4.32 - 4.50 pm
+    /**
+     *   1. people[i] is the weight of the ith person
+     *
+     *   2. `infinite` number of boats
+     *        where each boat can
+     *        carry a maximum weight of limit
+     *
+     *   3. Each boat carries at most two people
+     *      at the same time, provided the sum
+     *      of the weight of those people is at most limit
+     *
+     *  -> Return the minimum number of
+     *     boats to carry every given person.
+     *
+     *
+     *   -> hashmap ??
+     *
+     *   -> {val : cnt}
+     *
+     *  exp 1)
+     *     map = {1: 1, 2: 1}
+     *     limit = 3
+     *     -> res = 1
+     *
+     *  exp 2)
+     *    map = {3: 1, 2:2, 1: 1}
+     *    limit = 3
+     *      map = {2:2, 1: 1}, res =1
+     *      map = {2:1}, res = 2
+     *      map = {}, res = 3
+     *
+     *
+     *  exp 3)
+     *     map = {3:2, 4: 1, 5:1}
+     *     limit = 5
+     *
+     *       map = {3:1, 4: 1, 5:1}, res = 1
+     *       map = {4: 1, 5:1}, res = 2
+     *       map = {5:1}, res = 3
+     *       map = ,  res = 4
+     *
+     *
+     */
+    public int numRescueBoats(int[] people, int limit) {
+        // edge
+        if(limit == 0){
+            return -1; // ?? should NOT happen
+        }
+        if(people == null || people.length == 0){
+            return 0; // ?
+        }
+        if(people.length == 1){
+            if (limit >= people[0]){
+                return 1;
+            }
+            return (limit / people[0]) + 1; // ?
+        }
+
+        // init map: {val: cnt}
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int p: people){
+            map.put(p, map.getOrDefault(p, 0) + 1);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        int res = 0;
+
+        while(!map.isEmpty()){
+            Set<Integer> set = map.keySet();
+            int tmp = 0;
+            for(int k: set){
+                System.out.println(">>> tmp = " + tmp + ", res = " + res + ", map = " + map);
+                tmp += k;
+                // ???
+                if(k > limit){
+                    tmp = 0;
+                    res += 1;
+                    continue;
+                }
+                // ??
+                map.put(k, map.get(k) - 1);
+                if(map.get(k) == 0){
+                    map.remove(k);
+                }
+            }
+        }
+
+        return res;
+    }
+
 }
