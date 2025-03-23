@@ -9743,6 +9743,74 @@ class Node {
         return false;
     }
 
+    // LC 424
+    // 12.54 pm - 1.10 pm
+    /**
+     *
+     *  You are given a string s and an integer k.
+     *    You can choose any character of the string
+     *    and change it to any other uppercase English character.
+     *    You can perform this operation at most k times
+     *
+     *  -> Return the length of the longest substring containing
+     *     the same letter you can get after performing the above operations.
+     *
+     *
+     *   IDEA 1) HASHMAP + 2 pointers
+     *    -> use map track the val, and its idx,
+     *    -> calculate the `different element that with MOST count`
+     *    -> so can get the `longest substring` at the moment
+     *    -> maintain the `global longest substring` and return it as final res
+     *
+     */
+    public int characterReplacement_1(String s, int k) {
+        // edge
+        if(s == null || s.length() == 0){
+            return 0; // ?
+        }
+        if(s.length() == 1){
+            return 1; // ?
+        }
+        if(s.length() < k){
+            return s.length(); // ?
+        }
 
+        int res = 1;
+        // map: {val: cnt}
+        Map<Character, Integer> map = new HashMap<>();
+        for(int l = 0; l < s.length(); l++){
+            for(int r = l; r <  s.length(); r++){
+                if(getMapSecondMaxVal(map) > k){
+                    break; // ??
+                }
+                Character val = s.charAt(r);
+                map.put(s.charAt(r), map.getOrDefault(val, 0) + 1);
+                res = Math.max(res, r - l + 1);
+            }
+        }
+
+        return res;
+    }
+
+    public int getMapSecondMaxVal(Map<Character, Integer> map){
+        if(map.isEmpty()){
+            return 0;
+        }
+        List<Integer> cache = new ArrayList<>();
+        for(Integer val: map.values()){
+            cache.add(val);
+        }
+        Collections.sort(cache, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+        if (cache.size() < 2){
+            return cache.get(cache.size()-1); // ?
+        }
+        return cache.get(1); // 2nd biggest val
+    }
 
 }
