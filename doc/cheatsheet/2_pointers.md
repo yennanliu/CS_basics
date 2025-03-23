@@ -35,6 +35,9 @@
 - Boats to Save People
     - LC 881
 
+- move `right pointer first`, then move `left point` per condition
+    - LC 567
+
 - Algorithm
     - binary search
     - sliding window
@@ -231,6 +234,28 @@ for i in range(lens(s)):
         left -= 1
         right += 1
 # ...
+```
+
+#### 0-2-4) Move `right pointer`, then move `left point`
+
+```java
+// java
+// LC 567
+
+int l = 0;
+for (int r = 0; r < s2.length(); r++){
+    // ...
+
+    if(some_condition){
+
+        // ...
+        // update map and move left pointer
+        l += 1;
+    }
+}
+
+
+// ...
 ```
 
 ## 1) General form

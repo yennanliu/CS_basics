@@ -208,6 +208,44 @@ public class PermutationInString {
         return false;
     }
 
+    // V0-3
+    // IDEA: MAP + DOUBLE LOOP (l, r idx) (fixed by gpt)
+    public boolean checkInclusion_0_3(String s1, String s2) {
+        if (s1 == null || s2 == null || s1.length() > s2.length()) {
+            return false;
+        }
+        if (s1.equals(s2)) {
+            return true;
+        }
+
+        // map: {val: cnt} for s1
+        Map<Character, Integer> s1_map = new HashMap<>();
+        for (char c : s1.toCharArray()) {
+            s1_map.put(c, s1_map.getOrDefault(c, 0) + 1);
+        }
+
+        int windowSize = s1.length();
+        for (int l = 0; l <= s2.length() - windowSize; l++) {
+            Map<Character, Integer> window_map = new HashMap<>();
+            // build map for current window
+            /**
+             *  NOTE !!!
+             *
+             *   for r looping, we start from l and end at `l + windowSize` (NOT s2.len)
+             *   -> since the sub str length should be equal to s1
+             */
+            for (int r = l; r < l + windowSize; r++) {
+                char c = s2.charAt(r);
+                window_map.put(c, window_map.getOrDefault(c, 0) + 1);
+            }
+            if (window_map.equals(s1_map)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // V1
     // IDEA: BRUTE FORCE
     // https://leetcode.com/problems/permutation-in-string/editorial/
