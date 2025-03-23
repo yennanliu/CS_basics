@@ -9700,4 +9700,49 @@ class Node {
         return res;
     }
 
+    // LC 219
+    // 12.30 - 12.40 pm
+    /**
+     * -> return true if there are two distinct indices
+     *    i and j in the array such that
+     *    nums[i] == nums[j] and abs(i - j) <= k.
+     *
+     * IDEA 1) HASH TABLE
+     */
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return false; // ??
+        }
+        if(nums.length == 1){
+            return false;
+        }
+        // init
+        // {val: [idx1, idx2, ...]
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 0; i < nums.length; i++){
+            List<Integer> cur = map.getOrDefault(nums[i], new ArrayList<>());
+            cur.add(i);
+            map.put(nums[i], cur);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            if(map.containsKey(val)){
+                // TODO: optimize below
+                for(int x: map.get(val)){
+                    if(Math.abs(x - i) <= k && x != i){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+
 }
