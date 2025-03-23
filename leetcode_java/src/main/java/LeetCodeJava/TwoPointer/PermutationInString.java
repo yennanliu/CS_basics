@@ -74,7 +74,7 @@ public class PermutationInString {
              *  we use below trick to
              *
              *  -> 1) check if `new reached s2 val` is in s1 map
-             *  -> 2) check if 2 map are equal
+             *  -> 2) check if two map (map1, map2) are equal
              *
              *  -> so we have more simple code, and clean logic
              */
@@ -165,6 +165,33 @@ public class PermutationInString {
                     mapS2.remove(leftChar);
                 }
                 left++;
+            }
+        }
+
+        return false;
+    }
+
+    // V0-2
+    // IDEA: String op (gpt)
+    public boolean checkInclusion_0_2(String s1, String s2) {
+        if (s1 == null || s2 == null || s1.length() > s2.length()) {
+            return false;
+        }
+
+        int[] s1_count = new int[26];
+        int[] window_count = new int[26];
+        for (char c : s1.toCharArray()) {
+            s1_count[c - 'a']++;
+        }
+
+        int windowSize = s1.length();
+        for (int i = 0; i < s2.length(); i++) {
+            window_count[s2.charAt(i) - 'a']++;
+            if (i >= windowSize) {
+                window_count[s2.charAt(i - windowSize) - 'a']--;
+            }
+            if (Arrays.equals(s1_count, window_count)) {
+                return true;
             }
         }
 
