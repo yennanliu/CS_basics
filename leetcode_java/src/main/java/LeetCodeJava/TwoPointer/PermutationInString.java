@@ -62,10 +62,16 @@ public class PermutationInString {
         // 2 pointers (for s2)
         /** NOTE !!!
          *
-         *  we have 2 pointers (for s2) that can track character cnt in s2 within l, r pointers
+         *  1) we have 2 pointers (for s2) that can track character cnt in
+         *     s2 within l, r pointers
+         *
+         *  2) we move r (right idx), and ONLY move l (left idx) if (r - l + 1 >= s1.len)
          */
         int l = 0;
         for (int r = 0; r < s2.length(); r++) {
+            /**
+             *  NOTE !!! val below is from `right idx` (s2.charAt(r))
+             */
             String val = String.valueOf(s2.charAt(r));
             map2.put(val, map2.getOrDefault(val, 0) + 1);
 
@@ -90,7 +96,11 @@ public class PermutationInString {
              *  -> in this case, we need to move s2 left pointer, and update tracking map
              */
             if ((r - l + 1) >= s1.length()) {
-                // update map
+
+                // update map (with left idx)
+                /**
+                 *  NOTE !!! leftVal below is from `left idx` (s2.charAt(l))
+                 */
                 String leftVal = String.valueOf(s2.charAt(l));
                 map2.put(leftVal, map2.get(leftVal) - 1);
                 /**

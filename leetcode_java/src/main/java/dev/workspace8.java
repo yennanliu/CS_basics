@@ -9851,30 +9851,88 @@ class Node {
         Map<String, Integer> s2_tmp_map = new HashMap<>();
 
         for(String x: s1.split("")){
-            s1_map.put(x, s1_map.getOrDefault(x, 0)+1);
+            s1_map.put(x, s1_map.getOrDefault(x, 0) + 1);
         }
 
         // 2 pointers
-        for(int l = 0; l < s2.length(); l++){
+        // NOTE !!! we move r (right pointer), and ONLY move left pointer if the `condition` is NOT met)
+        int l = 0;
+        for(int r = 0; r < s2.length(); r++){
 
-            int r = l; /// ??
-            String val = String.valueOf(s2.charAt(l));
-            while(r - l + 1 <= s1.length() && s1.contains(String.valueOf(s2.charAt(l)))){
-                // ??
-                if(s1_map.equals(s2_tmp_map) || isContain(s1_map, s2_tmp_map)){
-                    return true;
-                }
-                s2_tmp_map.put(val, s2_tmp_map.getOrDefault(val, 0)+1);
-                if(s2_tmp_map.get(val) > s1_map.get(val)){
-                    break; // ??
+            // NOTE !!! val below is from `right` idx
+            String val = String.valueOf(s2.charAt(r));
+            s2_tmp_map.put(val, s2_tmp_map.getOrDefault(val, 0) + 1);
+
+            if(s1_map.equals(s2_tmp_map)){
+                return true;
+            }
+
+            // NOTE !!! below
+            if(r - l + 1 >= s1.length()){
+
+                // UPDATE MAP
+                // || !s1_map.containsKey(val)
+                //s2_tmp_map.put(val, s2_tmp_map.get(val)-1)
+
+                String leftVal = String.valueOf(s2.charAt(l));
+                s2_tmp_map.put(leftVal, s2_tmp_map.get(leftVal)-1);
+
+                if(s2_tmp_map.get(leftVal) == 0){
+                    s2_tmp_map.remove(leftVal);
                 }
 
-                r += 1;
+                l += 1; // ??
             }
         }
 
         return false;
     }
+
+
+//    public boolean checkInclusion_1(String s1, String s2) {
+//        // edge
+//        if(s1 == null && s2 == null){
+//            return true;
+//        }
+//        if(s1 == null || s2 == null){
+//            if(s2 == null){
+//                return false;
+//            }
+//            return true;
+//        }
+//        if(s1.equals(s2)){
+//            return true;
+//        }
+//
+//        // map : {val: cnt}
+//        Map<String, Integer> s1_map = new HashMap<>();
+//        Map<String, Integer> s2_tmp_map = new HashMap<>();
+//
+//        for(String x: s1.split("")){
+//            s1_map.put(x, s1_map.getOrDefault(x, 0)+1);
+//        }
+//
+//        // 2 pointers
+//        for(int l = 0; l < s2.length(); l++){
+//
+//            int r = l; /// ??
+//            String val = String.valueOf(s2.charAt(l));
+//            while(r - l + 1 <= s1.length() && s1.contains(String.valueOf(s2.charAt(l)))){
+//                // ??
+//                if(s1_map.equals(s2_tmp_map) || isContain(s1_map, s2_tmp_map)){
+//                    return true;
+//                }
+//                s2_tmp_map.put(val, s2_tmp_map.getOrDefault(val, 0)+1);
+//                if(s2_tmp_map.get(val) > s1_map.get(val)){
+//                    break; // ??
+//                }
+//
+//                r += 1;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     public boolean isContain(Map<String, Integer> s1_map , Map<String, Integer> s2_tmp_map){
 
