@@ -9813,4 +9813,82 @@ class Node {
         return cache.get(1); // 2nd biggest val
     }
 
+    // LC 567
+    // 1.37 - 1.47 pm
+    /**
+     *
+     *  -> A permutation is a rearrangement
+     *     of all the characters of a string.
+     *
+     *
+     *   IDEA 1) HASHMAP + SLIDING WINDOW
+     *
+     *    1. create 2 map : s1_map, s2_tmp_map
+     *       (val: cnt)
+     *       add val, cnt to s1_map
+     *    2. use sliding window (l, r)
+     *       check if `s2_tmp_map` `can contain s1_map` (key same, s1_cnt >= s2_cnt)
+     *          - if found, return true directly
+     *    3. return false
+     */
+    public boolean checkInclusion_1(String s1, String s2) {
+        // edge
+        if(s1 == null && s2 == null){
+            return true;
+        }
+        if(s1 == null || s2 == null){
+            if(s2 == null){
+                return false;
+            }
+            return true;
+        }
+        if(s1.equals(s2)){
+            return true;
+        }
+
+        // map : {val: cnt}
+        Map<String, Integer> s1_map = new HashMap<>();
+        Map<String, Integer> s2_tmp_map = new HashMap<>();
+
+        for(String x: s1.split("")){
+            s1_map.put(x, s1_map.getOrDefault(x, 0)+1);
+        }
+
+        // 2 pointers
+        for(int l = 0; l < s2.length(); l++){
+
+            int r = l; /// ??
+            String val = String.valueOf(s2.charAt(l));
+            while(r - l + 1 <= s1.length() && s1.contains(String.valueOf(s2.charAt(l)))){
+                // ??
+                if(s1_map.equals(s2_tmp_map) || isContain(s1_map, s2_tmp_map)){
+                    return true;
+                }
+                s2_tmp_map.put(val, s2_tmp_map.getOrDefault(val, 0)+1);
+                if(s2_tmp_map.get(val) > s1_map.get(val)){
+                    break; // ??
+                }
+
+                r += 1;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isContain(Map<String, Integer> s1_map , Map<String, Integer> s2_tmp_map){
+
+        if(s1_map.isEmpty()){
+            return false;
+        }
+
+        for(String k: s1_map.keySet()){
+            if(s1_map.get(k) > s2_tmp_map.getOrDefault(k, 0)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }
