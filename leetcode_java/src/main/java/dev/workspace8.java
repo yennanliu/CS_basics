@@ -10032,4 +10032,78 @@ class Node {
         return res == Integer.MAX_VALUE ? 0 : res;
     }
 
+    // LC 658
+    // 11.00 am - 11.20 am
+    /**
+     *
+     * Given a sorted array,
+     * two integers k and x,
+     *
+     * -> find the k closest elements to x in the array.
+     *
+     * `k closest elements`  to x
+     *
+     *
+     *   IDEA 1) LINEAR / BINARY SEARCH + sliding window
+     *
+     *    -> 1. find the `closest` element
+     *       2. sliding window (and collect elements) till `k` is reached
+     *       3. return res
+     *
+     */
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(arr == null || arr.length == 0){
+            return null; // ?
+        }
+        if(arr.length == 1){
+            res.add(arr[0]);
+            return res; // ??
+        }
+
+        int closest = Integer.MAX_VALUE; // ??
+        int closestIdx = -1; // ??
+        for(int i = 0; i < arr.length; i++){
+            int a = arr[i];
+            int diff1 = Math.abs(closest - x);
+            int diff2 = Math.abs(a - x);
+            if(diff2 < diff1){
+                closest = a;
+                closestIdx = i;
+            }
+        }
+
+        System.out.println(">>> closest = " + closest + ", closestIdx = " + closestIdx);
+
+        //if(arr.c)
+
+        int l = closestIdx - 1;
+        int r = closestIdx + 1;
+        //System.out.println(">>> l = " + l + ", r = " + r);
+
+        while(res.size() < k && l > 0 && r < arr.length){
+            System.out.println(">>> l = " + l + ", r = " + r + ", res = " + res);
+            res.add(arr[l]);
+            // ???
+            if(res.size() == k){
+                break;
+            }
+            res.add(arr[r]);
+            l -= 1;
+            r += 1;
+        }
+
+        // re-order (small -> big)
+        Collections.sort(res, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        return res;
+    }
+
 }
