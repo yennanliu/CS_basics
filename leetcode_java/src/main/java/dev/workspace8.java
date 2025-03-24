@@ -9949,4 +9949,85 @@ class Node {
         return true;
     }
 
+    // LC 209
+    // 10.09 - 10.19 am
+    /**
+     *  IDEA 1) SLIDING WINDOW
+     *
+     *   exp 1)  s = 7, nums = [2,3,1,2,4,3]
+     *
+     *   nums = [2,3,1,2,4,3]
+     *           l r r r        res = 4
+     *
+     *  nums = [2,3,1,2,4,3]
+     *          l l l   r     res = 3
+     *
+     *  nums = [2,3,1,2,4,3]  res = 2
+     *                l r r
+     *                  l
+     */
+
+    public int minSubArrayLen(int target, int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            if(target == 0){
+                return 0; // ??
+            }
+            return -1; // should not happen ??
+        }
+        if(nums.length == 1){
+            if(nums[0] == target){
+                return 1;
+            }
+            return -1; // ??
+        }
+
+        // sliding window
+        int res = Integer.MAX_VALUE; //Integer.MAX_VALUE; // ???
+        int l = 0;
+        int curSum = 0;
+
+        /**
+         *   s = 7, nums = [2,3,1,2,4,3]
+         *
+         *  [2,3,1,2,4,3]
+         *   l                 cumsum = 2, res = 0
+         *   r
+         *
+         *   [2,3,1,2,4,3]
+         *    l r           cumsum = 5, res = 0
+         *
+         *   [2,3,1,2,4,3]
+         *    l   r        cumsum = 6, res = 0
+         *
+         *  [2,3,1,2,4,3]
+         *   l l   r     cumsum = 8, res = 0, cumsum = 6, res = 0
+         *
+         *
+         *  [2,3,1,2,4,3]
+         *     l l   r     cumsum = 7, res = 3
+         *
+         *  [2,3,1,2,4,3]
+         *       l l l r    cumsum = 10, res = 3, cumsum = 9, res = 3, cumsum = 7, res = 2
+         *
+         */
+
+        for(int r = 0; r < nums.length; r++){
+            //int curSum = 0;
+            //int l = r;
+            curSum += nums[r];
+
+            while(curSum > target && l < r){
+                curSum -= nums[l];
+                l += 1;
+            }
+            if(curSum == target){
+                res = Math.min(res, r - l + 1);
+            }
+
+        }
+
+        return res == Integer.MAX_VALUE ? 0 : res;
+    }
+
 }
