@@ -49,6 +49,45 @@ public class FindKClosestElements {
 //
 //    }
 
+    // V0-1
+    // IDEA: 2 POINTERS (fixed by gpt)
+    public List<Integer> findClosestElements_0_1(int[] arr, int k, int x) {
+        List<Integer> res = new ArrayList<>();
+
+        // Edge case: if the input array is empty or null, return an empty list
+        if (arr == null || arr.length == 0) {
+            return res; // return empty list
+        }
+
+        // Find the index of the element closest to x
+        int closestIdx = 0;
+        for (int i = 1; i < arr.length; i++) {
+            if (Math.abs(arr[i] - x) < Math.abs(arr[closestIdx] - x)) {
+                closestIdx = i;
+            }
+        }
+
+        // Two pointers, one at the left of closestIdx, one at the right
+        int l = closestIdx - 1;
+        int r = closestIdx + 1;
+
+        // Add the closest element first
+        res.add(arr[closestIdx]);
+
+        // Expand to both sides, adding elements to the result
+        while (res.size() < k) {
+            // Decide which pointer to move based on which side is closer to x
+            if (l >= 0 && (r >= arr.length || Math.abs(arr[l] - x) <= Math.abs(arr[r] - x))) {
+                res.add(0, arr[l--]); // Add to the front (left side)
+            } else if (r < arr.length) {
+                res.add(arr[r++]); // Add to the end (right side)
+            }
+        }
+
+        // The list should already be sorted, so no need to call Collections.sort
+        return res;
+    }
+
     // V1
 
     // V2
