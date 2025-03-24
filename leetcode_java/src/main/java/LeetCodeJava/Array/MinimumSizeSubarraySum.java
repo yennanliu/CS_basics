@@ -50,11 +50,29 @@ public class MinimumSizeSubarraySum {
         int l = 0; // Left pointer of the sliding window
         int curSum = 0; // Current sum of the sliding window
 
+        /**
+         * NOTE !!!
+         *
+         *   we move RIGHT pointer first, then move LEFT pointer (sliding window)
+         *   when the `condition` (curSum >= target) is met
+         */
         for (int r = 0; r < nums.length; r++) {
             curSum += nums[r]; // Add current element to the window sum
 
             // Shrink the window from the left as long as the current sum is >= target
+            /**
+             * NOTE !!!  below condition
+             *
+             *   -> while (curSum >= target)
+             */
             while (curSum >= target) {
+                /**
+                 * NOTE !!!
+                 *
+                 *   within EVERY while loop, we get res updated again
+                 *   e.g. res = Math.min(res, r - l + 1);
+                 *
+                 */
                 res = Math.min(res, r - l + 1); // Update result with the minimum subarray length
                 curSum -= nums[l]; // Subtract the element at the left pointer
                 l++; // Move the left pointer to the right
