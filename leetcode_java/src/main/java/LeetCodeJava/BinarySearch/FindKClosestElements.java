@@ -50,8 +50,32 @@ public class FindKClosestElements {
 //    }
 
     // V0-1
-    // IDEA: 2 POINTERS (fixed by gpt)
+    // IDEA: 2 POINTERS
     public List<Integer> findClosestElements_0_1(int[] arr, int k, int x) {
+        int l = 0, r = arr.length - 1; // left and right pointers
+
+        while (r - l >= k) { // Check if the window is within range
+            if (Math.abs(arr[l] - x) > Math.abs(arr[r] - x))
+                l++; // eliminate the left if the right side is closer
+            else
+                r--; // else, eliminate the right
+        }
+
+        //List<Integer> list = new ArrayList<>(); // result list
+        List<Integer> list = new ArrayList<>(); // result list
+
+        for (int i = l; i <= r; i++)
+            list.add(arr[i]); // add the array elements
+
+        return list; // return list
+    }
+
+    // V0-2
+    // IDEA: PQ
+
+    // V0-3
+    // IDEA: 2 POINTERS (fixed by gpt)
+    public List<Integer> findClosestElements_0_3(int[] arr, int k, int x) {
         List<Integer> res = new ArrayList<>();
 
         // Edge case: if the input array is empty or null, return an empty list
@@ -94,6 +118,7 @@ public class FindKClosestElements {
 
     // V3
     // https://leetcode.com/problems/find-k-closest-elements/solutions/6550496/optimized-solution-two-pointer-approach-p2wfl/
+    // IDEA: 2 POINTERS
     public List<Integer> findClosestElements_3(int[] arr, int k, int x) {
         int l = 0, r = arr.length - 1; // left and right pointers
 
@@ -151,9 +176,23 @@ public class FindKClosestElements {
     // Approach:
     // Using binary search and a sliding window, find the midpoint where,
     // the integers between midpoint and midpoint + k is the k closest integers to x
+    /**
+     * The solution utilizes a binary search approach to determine the
+     * best starting point for this window efficiently,
+     * leveraging the fact that the array is already sorted.
+     */
     public List<Integer> findClosestElements_4_2(int[] arr, int k, int x) {
 
         // The sliding window is between 'mid' and 'mid' + k.
+        /**
+         *
+         * - We initialize left to 0 and right to `arr.length - k`.
+         *   This means we're setting up a sliding window of size k,
+         *   starting from left and ending at left + k - 1.
+         *
+         * - The goal is to find the range [left, left + k]
+         *   where the k closest elements to x should be.
+         */
         int left = 0, right = arr.length - k;
         while (left < right) {
             int midpoint = left + (right - left) / 2; // same as (left + right) / 2
@@ -164,6 +203,22 @@ public class FindKClosestElements {
             // Rather than using Math.abs(), we need the direction keep the x within the
             // sliding window.
             // If the window is too far left, we shift the window to the right.
+            /**
+             * - Logic: The binary search aims to narrow down the position
+             *   of the window to the best place where the k closest elements to x can be found.
+             *
+             *
+             * - The decision-making is based on the difference between x and two elements:
+             *
+             *    - x - arr[midpoint]: The difference between x and the element at midpoint.
+             *    - arr[midpoint + k] - x: The difference between x and the element at midpoint + k.
+             *
+             * - The idea is to compare the distances:
+             *
+             *   -  If x - arr[midpoint] (the distance from x to the left edge of the current window) is greater than arr[midpoint + k] - x (the distance from x to the right edge of the current window), it means the window is too far left and we should shift it to the right. So, we set left = midpoint + 1.
+             *   - Otherwise, we shift the window to the left by setting right = midpoint.
+             *
+             */
             if (x - arr[midpoint] > arr[midpoint + k] - x) {
                 left = midpoint + 1;
             }
