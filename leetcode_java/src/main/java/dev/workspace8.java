@@ -10017,13 +10017,15 @@ class Node {
             //int l = r;
             curSum += nums[r];
 
-            while(curSum > target && l < r){
+            while(curSum >= target && l < r){
+                //curSum -= nums[l];
+                res = Math.min(res, r - l + 1);
                 curSum -= nums[l];
                 l += 1;
             }
-            if(curSum == target){
-                res = Math.min(res, r - l + 1);
-            }
+//            if(curSum == target){
+//                res = Math.min(res, r - l + 1);
+//            }
 
         }
 
