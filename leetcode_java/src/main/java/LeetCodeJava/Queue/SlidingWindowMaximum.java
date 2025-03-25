@@ -52,24 +52,84 @@ public class SlidingWindowMaximum {
             return new int[0];
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *  deque is used to store indices of elements in
+         *  the current sliding window, with the goal of
+         *  ensuring that the largest element in the window is
+         *  always at the front of the deque.
+         *
+         *  -> e.g. deque : [idx_1, idx_2,...]
+         *
+         */
         Deque<Integer> deque = new LinkedList<>();
+        /**
+         *  NOTE !!! below trick
+         *
+         *  e.g. if nums.size = 5, k = 3
+         *   -> we will have (5-3) + 1 = 3 windows
+         */
         int[] result = new int[nums.length - k + 1];
         int index = 0;
 
         for (int i = 0; i < nums.length; i++) {
             // Remove elements from the front of the deque if they are out of the current
             // window
+            /**
+             *  NOTE !!!
+             *
+             *  - Removing Out-of-Window Elements:
+             *
+             *     - The first condition checks if the element at the
+             *        front of the deque is out of the current window.
+             *
+             *     -  If the index at the front of the deque (deque.peekFirst())
+             *        is less than i - k + 1, it means that index is no longer
+             *        in the window (it's too old), so we remove it from
+             *        the deque using deque.pollFirst().
+             *
+             *
+             *    -> so via `deque.peekFirst() < i - k + 1`
+             *       -> we can check if `An element is OUTSIDE of window`
+             */
             if (!deque.isEmpty() && deque.peekFirst() < i - k + 1) {
                 deque.pollFirst();
             }
 
             // Remove all elements smaller than the current element from the back of the
             // deque
+            /**
+             *  NOTE !!!
+             *
+             *  -> maintain dequeue in `DECREASING` order
+             *
+             *
+             *  - This while loop ensures that the deque always maintains
+             *    elements in `descending` order of their values (from front to back).
+             *
+             *     - If the current element nums[i] is greater than the element
+             *       at the index of the last element in the deque (nums[deque.peekLast()]),
+             *       we remove the last element from the deque using deque.pollLast().
+             *       This is because the smaller elements are less likely
+             *       to be the maximum when the current element is larger.
+             *
+             *    -  By maintaining this order, the largest element of the current window
+             *       will always be at the front of the deque.
+             *
+             */
             while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
                 deque.pollLast();
             }
 
-            // Add the current element's index to the deque
+            /**
+             *  Add the current element's index to the deque
+             *
+             *
+             * The index i of the current element is added to the
+             * back of the deque using deque.offerLast(i).
+             *
+             */
             deque.offerLast(i);
 
             // If the window has reached size k, add the max to the result
