@@ -10106,4 +10106,76 @@ class Node {
         return res;
     }
 
+    // LC 76
+    // 10.22 - 10.32 am
+    /**
+     *  IDEA 1) HASHMAP + SLIDING WINDOW
+     *
+     */
+    public String minWindow_1(String s, String t) {
+        // edge
+        if(s == null && t == null){
+            return null;
+        }
+        if(t == null){
+            return null;
+        }
+        if(s.equals(t)){
+            return t; // ???
+        }
+
+        // map
+        // { val : cnt}
+        Map<Character, Integer> t_map = new HashMap<>();
+        Map<Character, Integer> s_cur_map = new HashMap<>();
+
+        for(int i = 0; i < t.length(); i++){
+            t_map.put(t.charAt(i), t_map.getOrDefault(t.charAt(i), 0) + 1);
+        }
+
+        String res = "";
+        int resLen = Integer.MAX_VALUE;
+
+        // sliding window
+        int l = 0;
+        for(int r = 0; r < s.length(); r++){
+
+           // String tmp_str = "";
+            StringBuilder tmp_sb = new StringBuilder();
+            tmp_sb.append(s.charAt(r));
+            s_cur_map.put(s.charAt(r), s_cur_map.getOrDefault(s.charAt(r), 0) + 1);
+
+            // check if map is equal or `overhead`
+            while(isValidWindow(t_map, s_cur_map)){
+                // move left pointer to `make sub str smaller`
+                if(tmp_sb.toString().length() < res.length()){
+                    res = tmp_sb.toString();
+                }
+
+                tmp_sb.deleteCharAt(0);
+                l += 1;
+                s_cur_map.put(s.charAt(l), s_cur_map.get(s.charAt(l)) - 1);
+                // necessary ??
+                if(s_cur_map.get(s.charAt(l)) == 0){
+                    s_cur_map.remove(s.charAt(l));
+                }
+
+            }
+        }
+
+        return res;
+    }
+
+    public boolean isValidWindow(Map<Character, Integer> t_map, Map<Character, Integer> s_cur_map){
+        if(s_cur_map.isEmpty()){
+            return false;
+        }
+        for(Character k: t_map.keySet()){
+            if(s_cur_map.get(k) < t_map.get(k)){
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
