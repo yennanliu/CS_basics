@@ -335,7 +335,7 @@ public class workspace8 {
    *     ... till reach the end of nums
    *
    */
-  public int[] maxSlidingWindow(int[] nums, int k) {
+  public int[] maxSlidingWindow_1(int[] nums, int k) {
 
       // edge
       if (nums == null || nums.length == 0){
@@ -10176,6 +10176,69 @@ class Node {
             }
         }
         return true;
+    }
+
+    // LC 239
+    // 11.02 - 11.20 am
+    /**
+     *   IDEA 1) BRUTE FORCE
+     *   IDEA 2) PQ
+     *   IDEA 3) deque + monopoly queue (increasing)
+     *
+     */
+    // IDEA 2) PQ
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return null; // ??
+        }
+        if(nums.length == k){
+            int res = 0;
+            for(int x: nums){
+                res = Math.max(x, res);
+            }
+            return new int[]{res};
+        }
+
+        // BIG PQ (big -> small)
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        int curMax = -1 * Integer.MAX_VALUE;
+        List<Integer> collected = new ArrayList<>();
+        // init
+        for(int i = 0; i < k; i++){
+            curMax = Math.max(curMax, nums[i]);
+            pq.add(nums[i]);
+        }
+        collected.add(curMax);
+
+        int l = 0;
+        // ???
+        for(int r = k; r < nums.length - k; r++){
+            pq.add(nums[r]);
+            //pq.re
+            for(int i = 0; i < pq.size(); i++){
+                int tmp = pq.poll();
+                if(tmp != nums[l]){
+                    pq.add(nums[r]);
+                }
+            }
+
+            l += 1;
+        }
+
+        int[] res = new int[collected.size()];
+        for(int i = 0; i < collected.size(); i++){
+            res[i] = collected.get(i);
+        }
+
+        return res;
     }
 
 }

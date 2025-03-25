@@ -1,6 +1,6 @@
 package LeetCodeJava.Queue;
 
-// https://leetcode.com/problems/sliding-window-maximum/description/
+// https://leetcode.com/problems/sliding-window-maximum/
 
 import java.util.*;
 
@@ -45,9 +45,41 @@ import java.util.*;
 public class SlidingWindowMaximum {
 
     // V0
-//    public int[] maxSlidingWindow(int[] nums, int k) {
-//
-//    }
+    // IDEA: PQ + SLIDING WINDOW (fixed by gpt)
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        // Edge case: empty array or k is zero
+        if (nums == null || nums.length == 0 || k == 0) {
+            return new int[0];
+        }
+
+        Deque<Integer> deque = new LinkedList<>();
+        int[] result = new int[nums.length - k + 1];
+        int index = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            // Remove elements from the front of the deque if they are out of the current
+            // window
+            if (!deque.isEmpty() && deque.peekFirst() < i - k + 1) {
+                deque.pollFirst();
+            }
+
+            // Remove all elements smaller than the current element from the back of the
+            // deque
+            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
+                deque.pollLast();
+            }
+
+            // Add the current element's index to the deque
+            deque.offerLast(i);
+
+            // If the window has reached size k, add the max to the result
+            if (i >= k - 1) {
+                result[index++] = nums[deque.peekFirst()];
+            }
+        }
+
+        return result;
+    }
 
     // V1-1
     // IDEA: HASHMAP + PQ (GPT)
