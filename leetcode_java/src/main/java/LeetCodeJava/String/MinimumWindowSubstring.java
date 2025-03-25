@@ -1,6 +1,6 @@
 package LeetCodeJava.String;
 
-// https://leetcode.com/problems/minimum-window-substring/description/?envType=list&envId=xoqag3yj
+// https://leetcode.com/problems/minimum-window-substring/
 // https://leetcode.cn/problems/minimum-window-substring/
 /**
  * 76. Minimum Window Substring
@@ -53,11 +53,64 @@ import java.util.Map;
 public class MinimumWindowSubstring {
 
     // V0
-    // TODO : implement
-//    public String minWindow(String s, String t) {
-//
-//        return null;
-//    }
+    // IDEA: MAP + SLIDING WINDOW (fixed by gpt)
+    public String minWindow(String s, String t) {
+        // Edge cases
+        if (s == null || t == null || s.length() < t.length()) {
+            return "";
+        }
+
+        // Map to store character frequencies in t
+        Map<Character, Integer> t_map = new HashMap<>();
+        Map<Character, Integer> s_cur_map = new HashMap<>();
+
+        // Build frequency map for string t
+        for (int i = 0; i < t.length(); i++) {
+            t_map.put(t.charAt(i), t_map.getOrDefault(t.charAt(i), 0) + 1);
+        }
+
+        int left = 0, right = 0, minLength = Integer.MAX_VALUE, minLeft = 0;
+
+        int required = t_map.size(); // Number of unique characters in t
+        int formed = 0; // To track how many unique characters from t are in the current window
+
+        // Sliding window
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            s_cur_map.put(c, s_cur_map.getOrDefault(c, 0) + 1);
+
+            // If the current character is part of t and its count in the window matches the
+            // count in t
+            if (t_map.containsKey(c) && s_cur_map.get(c).intValue() == t_map.get(c).intValue()) {
+                formed++;
+            }
+
+            // Try to contract the window until it no longer satisfies the condition
+            while (left <= right && formed == required) {
+                char leftChar = s.charAt(left);
+
+                // Save the smallest window and update the result
+                if (right - left + 1 < minLength) {
+                    minLength = right - left + 1;
+                    minLeft = left;
+                }
+
+                // Remove the leftmost character from the window
+                s_cur_map.put(leftChar, s_cur_map.get(leftChar) - 1);
+                if (t_map.containsKey(leftChar)
+                        && s_cur_map.get(leftChar).intValue() < t_map.get(leftChar).intValue()) {
+                    formed--;
+                }
+                left++;
+            }
+
+            // Expand the window by moving right
+            right++;
+        }
+
+        // If no valid window was found
+        return minLength == Integer.MAX_VALUE ? "" : s.substring(minLeft, minLeft + minLength);
+    }
 
     // V1-1
     // IDEA: BRUTE FORCE (TLE)
