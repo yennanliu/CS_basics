@@ -46,6 +46,7 @@ public class BoatsToSavePeople {
 //
 //    }
 
+
     // V0-1
     // IDEA: 2 POINTERS (gpt)
     public int numRescueBoats_0_1(int[] people, int limit) {
@@ -85,8 +86,29 @@ public class BoatsToSavePeople {
         return res;
     }
 
-    // V1
+    // V1-1
+    // TODO: verify below
     // https://youtu.be/XbaxWuHIWUs?si=xUbPJSoZXiLNk6LZ
+    // IDEA: 2 POINTERS (neetcode)
+    // https://github.com/ensonfun/leetcode-neetcode/blob/main/c%2F881-Boats-To-Save-People.c
+    public int numRescueBoats_1_1(int[] people, int limit) {
+        Arrays.sort(people);
+        int res = 0;
+        int l = 0, r = people.length - 1;
+
+        while (l <= r) {
+            int remain = limit - people[r];
+            r--;
+            res++;
+
+            if (l <= r && remain >= people[l]) {
+                l++;
+            }
+        }
+
+        return res;
+    }
+
 
     // V2
     // https://leetcode.com/problems/boats-to-save-people/solutions/1877945/javac-a-very-easy-explanation-trust-me-b-pfrk/
