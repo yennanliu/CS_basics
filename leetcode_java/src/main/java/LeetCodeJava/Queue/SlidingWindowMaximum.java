@@ -45,7 +45,7 @@ import java.util.*;
 public class SlidingWindowMaximum {
 
     // V0
-    // IDEA: PQ + SLIDING WINDOW (fixed by gpt)
+    // IDEA: DEQUE + SLIDING WINDOW (fixed by gpt)
     public int[] maxSlidingWindow(int[] nums, int k) {
         // Edge case: empty array or k is zero
         if (nums == null || nums.length == 0 || k == 0) {
@@ -253,12 +253,49 @@ public class SlidingWindowMaximum {
     // https://neetcode.io/problems/sliding-window-maximum
     // IDEA: HEAP
     public int[] maxSlidingWindow_2_3(int[] nums, int k) {
+
+        /**
+         *  NOTE !!!
+         *
+         *  heap is a max-heap (PQ) that stores pairs [value, index]
+         *
+         *  -> 1st val : value
+         *  -> 2nd val : index
+         */
         PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> b[0] - a[0]);
         int[] output = new int[nums.length - k + 1];
         int idx = 0;
         for (int i = 0; i < nums.length; i++) {
+            /**
+             * In each iteration, we add the current element nums[i]
+             * along with its index i as a pair into the priority queue (heap).
+             * The heap will ensure that the largest element is at the
+             * top based on the value of nums[i].
+             */
             heap.offer(new int[]{nums[i], i});
+            /**
+             * Once the window reaches size k (i.e., i >= k - 1),
+             * we need to maintain the sliding window and ensure
+             * that elements outside the window are removed from the heap:
+             */
             if (i >= k - 1) {
+                /**
+                 *  NOTE !!!! below
+                 *
+                 *  1) Here, heap.peek() gives us the `element at the top of the heap`,
+                 *  which is the maximum value in the heap.
+                 *  We check the index of that element (heap.peek()[1])
+                 *  and if it's outside the current window
+                 *  (i.e., it’s older than i - k),
+                 *  we remove it from the heap using heap.poll().
+                 *  This ensures that the heap only contains elements within the current window of size k.
+                 *
+                 *
+                 *  2) heap.peek()[1] is `index` of a value
+                 *
+                 *  3)  `heap.peek()[1] <= i - k`
+                 *      -> to check if it's outside the current window (i.e., it’s older than i - k),
+                 */
                 while (heap.peek()[1] <= i - k) {
                     heap.poll();
                 }
@@ -267,7 +304,6 @@ public class SlidingWindowMaximum {
         }
         return output;
     }
-
 
 
     // V2-4
