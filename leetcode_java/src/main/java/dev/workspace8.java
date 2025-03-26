@@ -9077,57 +9077,60 @@ class Node {
      *
      *
      */
-    // 10.30 - 10.40 am
+    // 1.11 pm - 1.20 pm
     public int longestConsecutive(int[] nums) {
-        // edge
-        if(nums == null || nums.length == 0){
-            return 0;
-        }
-        if(nums.length == 1){
-            return 1;
-        }
-        HashSet<Integer> set = new HashSet<>();
-        List<Integer> nums2 = new ArrayList<>();
-
-        for(int i = 0; i < nums.length; i++){
-            if(!set.contains(nums[i])){
-                set.add(nums[i]);
-                nums2.add(nums[i]);
-            }
-        }
-
-        // sort (ascending) (small -> big)
-        Collections.sort(nums2, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                int diff = o1 - o2;
-                return diff;
-            }
-        });
-
-        System.out.println(">>> nums2 = " + nums2);
-        for(int x: nums2){
-            System.out.println(" x= " + x);
-        }
-
-        int res = 1;
-        int l = 0;
-        int r = 1;
-        //int prev = -1;
-        while (r < nums2.size() && l < nums2.size() ){
-            //prev = nums[l];
-            System.out.println(">>> l = " + l + ", r = " + r + ", res = " + res);
-            if(nums2.get(r) == nums2.get(r-1) + 1){
-                res = Math.max(res, r  - l  + 1);
-            }else{
-                // move l to r
-                l = r;
-            }
-            r += 1;
-        }
-
-        return res;
+        return 0;
     }
+//    public int longestConsecutive(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0;
+//        }
+//        if(nums.length == 1){
+//            return 1;
+//        }
+//        HashSet<Integer> set = new HashSet<>();
+//        List<Integer> nums2 = new ArrayList<>();
+//
+//        for(int i = 0; i < nums.length; i++){
+//            if(!set.contains(nums[i])){
+//                set.add(nums[i]);
+//                nums2.add(nums[i]);
+//            }
+//        }
+//
+//        // sort (ascending) (small -> big)
+//        Collections.sort(nums2, new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                int diff = o1 - o2;
+//                return diff;
+//            }
+//        });
+//
+//        System.out.println(">>> nums2 = " + nums2);
+//        for(int x: nums2){
+//            System.out.println(" x= " + x);
+//        }
+//
+//        int res = 1;
+//        int l = 0;
+//        int r = 1;
+//        //int prev = -1;
+//        while (r < nums2.size() && l < nums2.size() ){
+//            //prev = nums[l];
+//            System.out.println(">>> l = " + l + ", r = " + r + ", res = " + res);
+//            if(nums2.get(r) == nums2.get(r-1) + 1){
+//                res = Math.max(res, r  - l  + 1);
+//            }else{
+//                // move l to r
+//                l = r;
+//            }
+//            r += 1;
+//        }
+//
+//        return res;
+//    }
 
     // LC 122
     // 11.04 - 11.20 am
