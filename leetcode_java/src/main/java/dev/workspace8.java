@@ -10283,4 +10283,57 @@ class Node {
         }
     }
 
+    // LC 232
+    // 10.48 - 10.58 am
+    /**
+     * Implement Queue using Stacks
+     *
+     * queue: FIFO
+     *
+     * stack : LIFO
+     *
+     */
+    class MyQueue {
+
+        // attr
+        Stack<Integer> st;
+
+        public MyQueue() {
+            this.st = new Stack<>();
+        }
+
+        public void push(int x) {
+            if(!this.st.isEmpty()){
+                List<Integer> cache = new ArrayList<>();
+                for(int i = 0; i < this.st.size(); i++){
+                    cache.add(this.st.pop());
+                }
+
+                // reverse add back to st
+                for(int i = cache.size() - 1; i >= 0; i--){
+                    this.st.add(cache.get(i));
+                }
+            }
+        }
+
+        public int pop() {
+            if(!this.st.isEmpty()){
+                return this.st.pop(); // if the ordering is in `queue` style
+            }
+            return 0;
+        }
+
+        public int peek() {
+            if(!this.st.isEmpty()){
+                return this.st.peek(); // if the ordering is in `queue` style
+            }
+            return 0;
+        }
+
+        public boolean empty() {
+            return this.st.isEmpty();
+        }
+    }
+
+
 }
