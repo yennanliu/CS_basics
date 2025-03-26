@@ -95,10 +95,8 @@
 
 ## Blogs
 
-
-  - Blog
-    - [highscalability.com](http://highscalability.com/blog/2013/4/15/scaling-pinterest-from-0-to-10s-of-billions-of-page-views-a.html?fbclid=IwAR1BmfEGV_3crHrW1xi5VMQnl_XgI-f8yMCZilnWStjj_3RQvGw-RXKPQxw)
-    - [Le Cloud Blog](https://www.lecloud.net/tagged/scalability/chrono?fbclid=IwAR22Mgs-Abmn5a5BuQD1GMY70_NOW8OpeGRVP5dS1bvZLbdYcmZ1gCg-ErA)
-    - [Irrational Exuberance](https://lethain.com/introduction-to-architecting-systems-for-scale/?fbclid=IwAR2S4jmyL7qvTVO519x2JpH-Rr4MxMNcx1ee1d5bPK81Kc5dYUROnzZJOEA#platform_layer)
-    - [Crack the system design interview](https://tianpan.co/notes/2016-02-13-crack-the-system-design-interview?fbclid=IwAR2S4jmyL7qvTVO519x2JpH-Rr4MxMNcx1ee1d5bPK81Kc5dYUROnzZJOEA)
+  - [highscalability.com](http://highscalability.com/blog/2013/4/15/scaling-pinterest-from-0-to-10s-of-billions-of-page-views-a.html?fbclid=IwAR1BmfEGV_3crHrW1xi5VMQnl_XgI-f8yMCZilnWStjj_3RQvGw-RXKPQxw)
+  - [Le Cloud Blog](https://www.lecloud.net/tagged/scalability/chrono?fbclid=IwAR22Mgs-Abmn5a5BuQD1GMY70_NOW8OpeGRVP5dS1bvZLbdYcmZ1gCg-ErA)
+  - [Irrational Exuberance](https://lethain.com/introduction-to-architecting-systems-for-scale/?fbclid=IwAR2S4jmyL7qvTVO519x2JpH-Rr4MxMNcx1ee1d5bPK81Kc5dYUROnzZJOEA#platform_layer)
+  - [Crack the system design interview](https://tianpan.co/notes/2016-02-13-crack-the-system-design-interview?fbclid=IwAR2S4jmyL7qvTVO519x2JpH-Rr4MxMNcx1ee1d5bPK81Kc5dYUROnzZJOEA)
 
