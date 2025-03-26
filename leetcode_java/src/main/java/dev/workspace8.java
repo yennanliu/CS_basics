@@ -10356,6 +10356,10 @@ class Node {
         Deque<Integer> dq;
 
         public MinStack() {
+
+            Queue<Integer> q = new LinkedList<>();
+            q.remove(1);
+
             // min queue
             this.pq = new PriorityQueue<>(new Comparator<Integer>() {
                 @Override

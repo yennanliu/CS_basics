@@ -1238,6 +1238,70 @@ PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>(
     - Exception Handling:
         - Does not throw an exception if the operation fails; returns false instead.
 
+
+
+### 1-19-2) Queue `remove` method
+
+```java
+// java
+
+// In Java, the remove() method is commonly used with various types of collections such as Queue, List, and Set. When used with a Queue, the remove() method is used to remove and return the front element of the queue.
+
+/*
+
+ boolean remove(Object o);
+
+
+
+- Purpose:
+    - Removes the first occurrence of the specified element from the queue. If the element exists in the queue, it is removed. If it doesn't exist, the queue remains unchanged.
+
+- Return Type:
+    - Returns true if the element was successfully removed.
+
+    - Returns false if the element was not found in the queue (i.e., the queue remains unchanged).
+
+- Throws:
+    - It may throw a NullPointerException if you pass null as an argument and the queue does not permit null elements (this depends on the specific implementation of Queue).
+
+
+*/
+
+
+// Create a Queue (LinkedList implements Queue)
+Queue<Integer> queue = new LinkedList<>();
+
+// Add elements to the Queue
+queue.add(10);
+queue.add(20);
+queue.add(30);
+queue.add(7);  // Adding element 7
+queue.add(40);
+
+System.out.println("Original queue: " + queue);
+
+// Remove element 7 from the queue
+boolean removed = queue.remove(7);  // Removes the first occurrence of 7
+
+// Print the result of removal
+System.out.println("Was element 7 removed? " + removed);  // true
+
+// Print the modified queue
+System.out.println("Queue after removal of 7: " + queue);
+
+// Try to remove element 7 again
+removed = queue.remove(7);  // Element 7 no longer exists in the queue
+
+// Print the result of trying to remove 7 again
+System.out.println("Was element 7 removed again? " + removed);  // false
+
+System.out.println("queue: " + queue); // queue: [10, 20, 30, 40]
+
+queue.remove();
+System.out.println("queue: " + queue); // queue: [20, 30, 40]
+```
+
+
 ### 1-20) Hashmap return defalut val
 ```java
 

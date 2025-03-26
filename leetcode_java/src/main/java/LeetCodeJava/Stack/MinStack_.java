@@ -54,29 +54,47 @@ import java.util.*;
 public class MinStack_ {
 
     // V0
-    // TODO; implement below
-//    class MinStack {
-//
-//        public MinStack() {
-//
-//        }
-//
-//        public void push(int val) {
-//
-//        }
-//
-//        public void pop() {
-//
-//        }
-//
-//        public int top() {
-//
-//        }
-//
-//        public int getMin() {
-//
-//        }
-//    }
+    // IDEA: PQ + STACK
+    class MinStack {
+        Stack<Integer> st;
+        PriorityQueue<Integer> pq;
+        public MinStack() {
+            this.st = new Stack<>();
+            this.pq = new PriorityQueue<Integer>();
+        }
+
+        public void push(int val) {
+            this.st.push(val);
+            this.pq.add(val);
+        }
+
+        /**
+         *   NOTE !!!
+         *
+         *
+         *  1) The remove() method of the priority queue removes the specific
+         *     element passed to it, which is the element popped from the stack.
+         *     This operation ensures that the priority queue is in sync with the stack.
+         *
+         *  2) It's important to note that the remove() method takes O(n) time because it
+         *     needs to search through the queue to find and remove the element.
+         *
+         *
+         *  -> so `pq.remove(element)` will iterate elements in pq,
+         *     and remove the specific element (with its value)
+         */
+        public void pop() {
+            this.pq.remove(this.st.pop());
+        }
+
+        public int top() {
+            return this.st.peek();
+        }
+
+        public int getMin() {
+            return this.pq.peek();
+        }
+    }
 
     // V0-1
     // IDEA: LIST (gpt) (not efficient)
