@@ -19,7 +19,8 @@
 
 ### 0-1) Types
 
-- Queue
+- Queue basic op
+    - LC 225 (note: `1 is the head` of queue [1,2,3])
 - Priority queue (PQ)
 - Monotonic queue
     - LC 239
@@ -30,6 +31,7 @@
 ### 0-2) Pattern
 
 ## 1) General form
+
 ```python
 # python
 #------------------
@@ -135,6 +137,87 @@ class MonotonicQueue{
 - pop
 - popleft
 - isEmpty
+
+
+```java
+// java
+// LC 225
+class MyStack_2 {
+
+    private Queue<Integer> queue = new LinkedList<>();
+
+    public void push(int x) {
+
+        /**
+         *  NOTE !!!
+         *
+         *   we still add element to queue first
+         *
+         */
+        queue.add(x);
+        /**
+         *  NOTE !!!
+         *
+         *  below op:
+         *
+         *   Step 2: Reordering to simulate stack behavior
+         *
+         *     - After adding the new element, we want the new element to
+         *       become the first element in the queue
+         *       (because it should be the last one to be popped).
+         *
+         *     -  The for-loop begins by iterating over all elements
+         *        except the one just added (i = 1 to i < queue.size()).
+         *
+         *     - Inside the loop, queue.remove() removes the front
+         *       element of the queue (this is the oldest element in the queue),
+         *       and queue.add() adds it back to the back of the queue.
+         *
+         *     - By repeating this process for all the elements in the queue
+         *       (except the last added one), we effectively "rotate"
+         *       the queue such that the most recently added element is moved
+         *       to the front of the queue.
+         *
+         *
+         *
+         *   Example:
+         *
+         *
+         *  Suppose you have the queue: [1, 2, 3] and you call push(4).
+         *
+         *  (NOTE !!! 1 is the head of queue, per [1,2,3] example )
+         *
+         * Initially, the queue will look like: [1, 2, 3, 4].
+         *
+         * After the for-loop runs:
+         *
+         * First, 1 is moved to the back, resulting in: [2, 3, 4, 1].
+         *
+         * Then, 2 is moved to the back, resulting in: [3, 4, 1, 2].
+         *
+         * Then, 3 is moved to the back, resulting in: [4, 1, 2, 3].
+         *
+         * Now, the most recent element (4) is at the front of the queue, simulating the stack behavior (LIFO).
+         *
+         *
+         */
+        for (int i=1; i < queue.size(); i++)
+            queue.add(queue.remove());
+    }
+
+    public void pop() {
+        queue.remove();
+    }
+
+    public int top() {
+        return queue.peek();
+    }
+
+    public boolean empty() {
+        return queue.isEmpty();
+    }
+}
+```
 
 ### 1-2) Queue
 
