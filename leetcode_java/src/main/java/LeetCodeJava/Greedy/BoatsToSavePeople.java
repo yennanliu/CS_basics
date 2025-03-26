@@ -3,6 +3,7 @@ package LeetCodeJava.Greedy;
 // https://leetcode.com/problems/boats-to-save-people/description/
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * 881. Boats to Save People
@@ -42,10 +43,53 @@ import java.util.Arrays;
 public class BoatsToSavePeople {
 
     // V0
-//    public int numRescueBoats(int[] people, int limit) {
-//
-//    }
+    // IDEA: SORT + 2 POINTERS
+    // https://youtu.be/XbaxWuHIWUs?si=xUbPJSoZXiLNk6LZ
+    public int numRescueBoats(int[] people, int limit) {
+        // edge
+        if (people == null || people.length == 0) {
+            return 0;
+        }
+        if (people.length == 1) {
+            return 1;
+        }
 
+        // sorting (small -> big)
+        Integer[] people2 = new Integer[people.length];
+        for (int i = 0; i < people.length; i++) {
+            people2[i] = people[i];
+        }
+        Arrays.sort(people2, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        int cnt = 0;
+        // 2 pointers
+        int l = 0;
+        int r = people2.length - 1;
+        while (r >= l) {
+            int remaining = limit - people2[r];
+            cnt += 1;
+            r -= 1;
+            /**
+             *  NOTE !!!
+             *
+             *   below:
+             *
+             *   1) if `remaining` still has capacity for `left` person, we get him/her
+             *   2) `r >= l` is for edge case handling, to avoid pointers move overhead
+             */
+            if (remaining >= people2[l] && r >= l) {
+                l += 1;
+            }
+        }
+
+        return cnt;
+    }
 
     // V0-1
     // IDEA: 2 POINTERS (gpt)
@@ -87,9 +131,8 @@ public class BoatsToSavePeople {
     }
 
     // V1-1
-    // TODO: verify below
-    // https://youtu.be/XbaxWuHIWUs?si=xUbPJSoZXiLNk6LZ
     // IDEA: 2 POINTERS (neetcode)
+    // https://youtu.be/XbaxWuHIWUs?si=xUbPJSoZXiLNk6LZ
     // https://github.com/ensonfun/leetcode-neetcode/blob/main/c%2F881-Boats-To-Save-People.c
     public int numRescueBoats_1_1(int[] people, int limit) {
         Arrays.sort(people);

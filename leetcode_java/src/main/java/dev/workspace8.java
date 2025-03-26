@@ -9579,53 +9579,106 @@ class Node {
      *
      *
      */
+    // LC 881
+    // 12.53 PM - 1.10 PM
+    /**
+     *  IDEA 1) 2 POINTERS,  get `heaviest` person first, if still has `capacity` then
+     *         get `most light` person, move pointers, repeat the op ...
+     */
     public int numRescueBoats(int[] people, int limit) {
+
         // edge
-        if(limit == 0){
-            return -1; // ?? should NOT happen
-        }
         if(people == null || people.length == 0){
-            return 0; // ?
+            return 0;
         }
         if(people.length == 1){
-            if (limit >= people[0]){
-                return 1;
-            }
-            return (limit / people[0]) + 1; // ?
+//            if( people[0]  / limit == 0){
+//                return 1;
+//            }
+            return 1; // ???
         }
 
-        // init map: {val: cnt}
-        Map<Integer, Integer> map = new HashMap<>();
-        for(int p: people){
-            map.put(p, map.getOrDefault(p, 0) + 1);
+        // sorting (small -> big)
+        Integer[] people2 = new Integer[people.length];
+        for(int i = 0; i < people.length; i++){
+            people2[i] = people[i];
         }
+       Arrays.sort(people2, new Comparator<Integer>() {
+           @Override
+           public int compare(Integer o1, Integer o2) {
+               int diff = o1 - o2;
+               return diff;
+           }
+       });
 
-        System.out.println(">>> map = " + map);
+      int cnt = 0;
+      // 2 pointers
+      int l = 0;
+      int r = people2.length - 1;
+      while (r >= l){
+          int remaining = limit - people2[r];
+          cnt += 1;
+          r -= 1;
+          // ??? check below conditon ???
+          if(remaining >= people2[l] && r >= l){
+              cnt += 1;
+              l += 1;
+          }
+      }
 
-        int res = 0;
-
-        while(!map.isEmpty()){
-            Set<Integer> set = map.keySet();
-            int tmp = 0;
-            for(int k: set){
-                System.out.println(">>> tmp = " + tmp + ", res = " + res + ", map = " + map);
-                tmp += k;
-                // ???
-                if(k > limit){
-                    tmp = 0;
-                    res += 1;
-                    continue;
-                }
-                // ??
-                map.put(k, map.get(k) - 1);
-                if(map.get(k) == 0){
-                    map.remove(k);
-                }
-            }
-        }
-
-        return res;
+      return cnt;
     }
+
+
+
+
+//    public int numRescueBoats(int[] people, int limit) {
+//        // edge
+//        if(limit == 0){
+//            return -1; // ?? should NOT happen
+//        }
+//        if(people == null || people.length == 0){
+//            return 0; // ?
+//        }
+//        if(people.length == 1){
+//            if (limit >= people[0]){
+//                return 1;
+//            }
+//            return (limit / people[0]) + 1; // ?
+//        }
+//
+//        // init map: {val: cnt}
+//        Map<Integer, Integer> map = new HashMap<>();
+//        for(int p: people){
+//            map.put(p, map.getOrDefault(p, 0) + 1);
+//        }
+//
+//        System.out.println(">>> map = " + map);
+//
+//        int res = 0;
+//
+//        while(!map.isEmpty()){
+//            Set<Integer> set = map.keySet();
+//            int tmp = 0;
+//            for(int k: set){
+//                System.out.println(">>> tmp = " + tmp + ", res = " + res + ", map = " + map);
+//                tmp += k;
+//                // ???
+//                if(k > limit){
+//                    tmp = 0;
+//                    res += 1;
+//                    continue;
+//                }
+//                // ??
+//                map.put(k, map.get(k) - 1);
+//                if(map.get(k) == 0){
+//                    map.remove(k);
+//                }
+//            }
+//        }
+//
+//        return res;
+//    }
 
     // LC 42
     // 5.27 pm - 5.37 pm
