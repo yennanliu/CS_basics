@@ -10241,4 +10241,46 @@ class Node {
         return res;
     }
 
+    // LC 225
+    // 10.11 - 10.21 am
+    /**
+     *  LC 225  Implement Stack using Queues
+     *
+     *
+     *  stack : FILO
+     *
+     *
+     */
+    class MyStack {
+
+        // attr
+        Deque<Integer> q;
+        int size;
+
+        public MyStack() {
+            this.q = new LinkedList<>();
+            //this.size = 0;
+        }
+
+        public void push(int x) {
+            this.q.addFirst(x);
+            //this.size += 1;
+        }
+
+        public int pop() {
+            if(!this.q.isEmpty()){
+                return this.q.pollFirst();
+            }
+            return 0; // ???
+        }
+
+        public int top() {
+            return this.q.peekFirst();
+        }
+
+        public boolean empty() {
+            return this.q.isEmpty();
+        }
+    }
+
 }
