@@ -54,7 +54,29 @@ import java.util.*;
 public class MinStack_ {
 
     // V0
-    // TODO; implement
+    // TODO; implement below
+//    class MinStack {
+//
+//        public MinStack() {
+//
+//        }
+//
+//        public void push(int val) {
+//
+//        }
+//
+//        public void pop() {
+//
+//        }
+//
+//        public int top() {
+//
+//        }
+//
+//        public int getMin() {
+//
+//        }
+//    }
 
     // V0-1
     // IDEA: LIST (gpt) (not efficient)
@@ -100,6 +122,15 @@ public class MinStack_ {
 
     // V0-2
     // IDEA: stack + min stack (gpt)
+    /**
+     *  NOTE !!!
+     *
+     *   1) all element are still saved in `stack
+     *   2) the `min stack` is just a redundant support stack
+     *      e.g. -> it help to save minimum elements in order (small -> big)
+     *      whenever we call getMin(), we get current smallest element from `min stack`
+     *
+     */
     class MinStack_0_2 {
         private Stack<Integer> stack; // Stores all elements
         private Stack<Integer> minStack; // Stores min values
@@ -109,6 +140,16 @@ public class MinStack_ {
             this.minStack = new Stack<>();
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *   1) we still push element to stack
+         *   2) ONLY when current val is smaller than `top` element in `min stack`,
+         *      then we add (push) the new element to `min stack`
+         *      -> `min stack` : [smallest_1, smallest_2, ...] (small -> big)
+         *      ->  e.g. `min stack` has `the smallest element at its top,
+         *                then `less smallest element`... and so on
+         */
         public void push(int val) {
             stack.push(val);
             // Push to minStack only if it's the first element or smaller than current min
@@ -117,6 +158,14 @@ public class MinStack_ {
             }
         }
 
+
+        /**
+         *  NOTE !!!
+         *
+         *   1) since stack saved all elements, so if stack is empty, there is nothing to pop
+         *   2) if stack is NOT empty, then we need to pop it, and check if the `current pop element`
+         *      is also the `top element` at `min stack`
+         */
         public void pop() {
             if (stack.isEmpty())
                 return;

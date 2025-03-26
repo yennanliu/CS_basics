@@ -405,6 +405,7 @@ public class workspace8 {
      *   IDEA 2) ARRAY ?
      *   IDEA 3) double queue ?
      */
+/*
     class MinStack {
 
         List<Integer> list;
@@ -444,6 +445,7 @@ public class workspace8 {
             return tmp.get(0); // Smallest element
         }
     }
+*/
 
   // LC 150
   // 4.11 - 4.21 PM
@@ -10332,6 +10334,67 @@ class Node {
 
         public boolean empty() {
             return this.st.isEmpty();
+        }
+    }
+
+    // LC 155
+    // 11.53 - 12.00 pm
+    /**
+     *
+     *  -> Design a stack that supports
+     *    push, pop, top, and retrieving the `minimum element`
+     *    in constant time.
+     *
+     *  IDEA 1) PQ + dequeue ???
+     *
+     */
+    class MinStack {
+
+        // attr
+        PriorityQueue<Integer> pq;
+        //Stack<Integer> st;
+        Deque<Integer> dq;
+
+        public MinStack() {
+            // min queue
+            this.pq = new PriorityQueue<>(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    int diff = o1 - o2;
+                    return diff;
+                }
+            });
+            this.dq = new LinkedList<>();
+        }
+
+        public void push(int val) {
+            this.dq.addLast(val);
+            this.pq.add(val);
+        }
+
+        public void pop() {
+            int val = this.pq.poll();
+            // remove element in stack
+            for(int i = 0; i < this.dq.size(); i++){
+                int tmp = this.dq.pollLast();
+                if(tmp != val){
+                    this.pq.add(tmp); // ???
+                }
+            }
+        }
+
+        public int top() {
+            if(!this.pq.isEmpty()){
+                return this.dq.getLast();
+            }
+            return -1;
+        }
+
+        public int getMin() {
+            if(!this.pq.isEmpty()){
+                return this.pq.peek();
+            }
+            return -1; // ??
         }
     }
 
