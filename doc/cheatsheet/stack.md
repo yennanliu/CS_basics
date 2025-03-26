@@ -35,11 +35,14 @@
     - Low level : Array
 
 ### 0-1) Types
+
 - Single stack
 - Build queue via stack
+     - LC 232 (use `2 stack`)
 - Build stack via queue
 
 ### 0-2) Pattern
+
 ```python
 # python
 # LC 739, LC 503 - Find next `big number`
@@ -80,6 +83,81 @@ for i, val in enumerate(len(tmp)):
 
 ```java
 // LC 239
+// LC 496
+// ...
+
+// Traverse the array from right to left
+for (int i = 0; i < n; i++) {
+    // Maintain a decreasing monotonic stack
+    while (!stack.isEmpty() && nums[stack.peek()] <= nums[i]) {
+        stack.pop();  // Pop elements from the stack that are smaller or equal to the current element
+    }
+    
+    // If stack is not empty, the next greater element is at the top of the stack
+    if (!stack.isEmpty()) {
+        result[i] = nums[stack.peek()];
+    }
+    
+    // Push the current element's index onto the stack
+    stack.push(i);
+}
+
+// ...
+```
+
+- Implement Queue using Stacks
+
+```java
+// java
+
+// LC 232
+// V3
+// https://leetcode.com/problems/implement-queue-using-stacks/solutions/6579732/video-simple-solution-by-niits-sqaw/
+// IDEA: 2 stack
+class MyQueue_3{
+    private Stack<Integer> input;
+    private Stack<Integer> output;
+
+    public MyQueue_3() {
+        input = new Stack<>();
+        output = new Stack<>();
+    }
+
+    public void push(int x) {
+        input.push(x);
+    }
+
+    public int pop() {
+        /**
+         *  NOTE !!!
+         *
+         *  1)  before calling pop() directly,
+         *      we firstly call `peak()`
+         *      purpose:
+         *        reset / reassign elements at `output` stack,
+         *        so we can have the element in `queue ordering` in `output` stack
+         *
+         *  2) peak() return an integer, but it DOES NOT terminate the pop() execution
+         *     since the `peek()` method is called and NOT assign its result to any object,
+         *     then the `output.pop();` code is executed and return as result
+         */
+        peek();
+        return output.pop();
+    }
+
+    public int peek() {
+        if (output.isEmpty()) {
+            while (!input.isEmpty()) {
+                output.push(input.pop());
+            }
+        }
+        return output.peek();
+    }
+
+    public boolean empty() {
+        return input.isEmpty() && output.isEmpty();
+    }
+}
 ```
 
 ## 1) General form

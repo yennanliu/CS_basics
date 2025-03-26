@@ -89,7 +89,7 @@ public class ImplementQueueUsingStacks {
 
     // V3
     // https://leetcode.com/problems/implement-queue-using-stacks/solutions/6579732/video-simple-solution-by-niits-sqaw/
-    // IDEA: 2 QUEUE
+    // IDEA: 2 stack
     class MyQueue_3{
         private Stack<Integer> input;
         private Stack<Integer> output;
@@ -104,6 +104,19 @@ public class ImplementQueueUsingStacks {
         }
 
         public int pop() {
+            /**
+             *  NOTE !!!
+             *
+             *  1)  before calling pop() directly,
+             *      we firstly call `peak()`
+             *      purpose:
+             *        reset / reassign elements at `output` stack,
+             *        so we can have the element in `queue ordering` in `output` stack
+             *
+             *  2) peak() return an integer, but it DOES NOT terminate the pop() execution
+             *     since the `peek()` method is called and NOT assign its result to any object,
+             *     then the `output.pop();` code is executed and return as result
+             */
             peek();
             return output.pop();
         }
@@ -124,7 +137,7 @@ public class ImplementQueueUsingStacks {
 
     // V4
     // https://leetcode.com/problems/implement-queue-using-stacks/solutions/6558280/best-simple-one-with-100-by-srihitha684-tvu2/
-    // IDEA: 2 QUEUE
+    // IDEA: 2 stack
     class MyQueue_4{
         Stack<Integer> st1;
         Stack<Integer> st2;
