@@ -208,9 +208,37 @@ public class workspace9 {
 
     // LC 2104
     // 11.41 - 11.51 am
-    public long subArrayRanges(int[] nums) {
+    /**
+     *  IDEA 1) 2 for loop ??
+     *  IDEA 2) MONO STACK ???
+     *
+     *
+     */
 
-        return 0L;
+    //IDEA 1) 2 for loop ??
+    public long subArrayRanges(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+        if(nums.length == 2){
+            return nums[0] + nums[1] + (nums[0] + nums[1]);
+        }
+        // 2 for loop
+        long res = 0L;
+        for(int i = 0; i < nums.length; i++){
+            int cur = 0;
+            for(int j = i; j < nums.length; j++){
+               // System.out.println(">>> i = " + i + ", j = " + j + ", cur = " + cur + ", res = " + res);
+                cur += nums[j];
+                res += cur;
+            }
+        }
+
+        return res;
     }
 
 
