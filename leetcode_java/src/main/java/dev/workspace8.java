@@ -582,64 +582,67 @@ public class workspace8 {
      *  ....
      *
      */
-    List<String> resParenthesis = new ArrayList<>();
-    public List<String> generateParenthesis(int n) {
-        //List<String> res = new ArrayList<>();
-        // edge
-        if(n == 0) {
-            return resParenthesis;
-        }
-        if(n == 1){
-            resParenthesis.add("()");
-            return resParenthesis;
-        }
 
-        // backtrack
-        backtrack(n, new StringBuilder(), 0);
-        System.out.println(">>> resParenthesis = " + resParenthesis);
-        return resParenthesis;
-    }
 
-    private void backtrack(int n, StringBuilder cur, int idx){
-        String[] word = new String[]{"(", ")"};
-        String curStr = cur.toString();
-        if(curStr.length() == n * 2){
-            // validate
-            //String curStr = cur.toString(); // ???
-            if(isValidParenthesis(curStr)){
-                resParenthesis.add(curStr);
-            }
-            return;
-        }
-        if(curStr.length() > n * 2){
-            return;
-        }
-        for(int i = 0; i < word.length; i++){
-            String w = word[i];
-            //cur.add(w);
-            cur.append(w);
-            backtrack(n, cur, idx+1);
-            // undo
-            idx -= 1;
-            //cur.remove(cur.size()-1);
-            cur.deleteCharAt(cur.length()-1);
-        }
-    }
 
-    private boolean isValidParenthesis(String s) {
-        int balance = 0;
-        for (char ch : s.toCharArray()) {
-            if (ch == '(') {
-                balance++;
-            } else if (ch == ')') {
-                balance--;
-            }
-            if (balance < 0) {
-                return false;  // If balance goes negative, it's invalid
-            }
-        }
-        return balance == 0;  // Valid if balance ends up being 0
-    }
+//    List<String> resParenthesis = new ArrayList<>();
+//    public List<String> generateParenthesis(int n) {
+//        //List<String> res = new ArrayList<>();
+//        // edge
+//        if(n == 0) {
+//            return resParenthesis;
+//        }
+//        if(n == 1){
+//            resParenthesis.add("()");
+//            return resParenthesis;
+//        }
+//
+//        // backtrack
+//        backtrack(n, new StringBuilder(), 0);
+//        System.out.println(">>> resParenthesis = " + resParenthesis);
+//        return resParenthesis;
+//    }
+//
+//    private void backtrack(int n, StringBuilder cur, int idx){
+//        String[] word = new String[]{"(", ")"};
+//        String curStr = cur.toString();
+//        if(curStr.length() == n * 2){
+//            // validate
+//            //String curStr = cur.toString(); // ???
+//            if(isValidParenthesis(curStr)){
+//                resParenthesis.add(curStr);
+//            }
+//            return;
+//        }
+//        if(curStr.length() > n * 2){
+//            return;
+//        }
+//        for(int i = 0; i < word.length; i++){
+//            String w = word[i];
+//            //cur.add(w);
+//            cur.append(w);
+//            backtrack(n, cur, idx+1);
+//            // undo
+//            idx -= 1;
+//            //cur.remove(cur.size()-1);
+//            cur.deleteCharAt(cur.length()-1);
+//        }
+//    }
+//
+//    private boolean isValidParenthesis(String s) {
+//        int balance = 0;
+//        for (char ch : s.toCharArray()) {
+//            if (ch == '(') {
+//                balance++;
+//            } else if (ch == ')') {
+//                balance--;
+//            }
+//            if (balance < 0) {
+//                return false;  // If balance goes negative, it's invalid
+//            }
+//        }
+//        return balance == 0;  // Valid if balance ends up being 0
+//    }
 
 
 
