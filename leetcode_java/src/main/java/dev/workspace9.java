@@ -151,6 +151,67 @@ public class workspace9 {
         return balance == 0; // Valid if balance ends up being 0
     }
 
+    // LC 739
+    // 11.05 - 11.15 am
+    /**
+     *  IDEA 1) MONOPOLY STACK (??
+     *       (increasing stack)
+     *
+     *   1. maintain an `increasing stack` that
+     *      save element from smallest to biggest (small -> big)
+     *
+     *   2. iterate elements, pop, and record the `diff` to res
+     *      - while the current temp is bigger than `top temp` in stack,
+     *        we keep `popping` top stack element, and record the `date diff`
+     *      - then save current temp to stack
+     *
+     *
+     *   3. return res
+     *
+     *
+     */
+    public int[] dailyTemperatures(int[] temperatures) {
+        // edge
+        if(temperatures == null || temperatures.length == 0){
+            return null; // ?
+        }
+        if(temperatures.length == 1){
+            return new int[]{0}; // ?
+        }
+        // init
+        // res init value should be all 0 ???
+        int[] res = new int[temperatures.length];
+
+        // stack : [ [val_1, idx_1], [val_x, idx_2], ... ]
+        Stack<Integer[]> st = new Stack<>();
+
+        for(int i = 0; i < temperatures.length; i++){
+
+            int curTemp = temperatures[i];
+            System.out.println(">>> stack = " + String.valueOf(st) + ", curTemp = " + curTemp + ", res = " + res);
+
+            while(!st.isEmpty() && curTemp > st.peek()[0]){
+                Integer[] tmp =  st.pop();
+                int prevTemp = tmp[0];
+                int prevTempIdx = tmp[1];
+                //temperatures
+                res[prevTempIdx] = i - prevTempIdx;
+            }
+
+            st.add(new Integer[]{curTemp, i});
+
+        }
+
+        return res;
+    }
+
+
+    // LC 2104
+    // 11.41 - 11.51 am
+    public long subArrayRanges(int[] nums) {
+
+        return 0L;
+    }
 
 
 }
