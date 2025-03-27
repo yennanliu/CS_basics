@@ -47,6 +47,7 @@ public class SearchInRotatedSortedArray {
     // CASE 1) sub array left is sorted
     // CASE 2) sub array right is sorted
     // https://www.youtube.com/watch?v=U8XENwh8Oy8
+    // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_33.png
     public int search(int[] nums, int target) {
 
         if (nums.length == 0 || nums.equals(null)){
