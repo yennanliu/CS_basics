@@ -33,6 +33,7 @@ public class GenerateParentheses {
     // V0
     // IDEA: BACKTRACK (fixed by gpt)
     List<String> resParenthesis = new ArrayList<>();
+
     public List<String> generateParenthesis(int n) {
         // List<String> res = new ArrayList<>();
         // edge
@@ -45,12 +46,18 @@ public class GenerateParentheses {
         }
 
         // backtrack
-        backtrack(n, new StringBuilder(), 0);
+        backtrack(n, new StringBuilder());
         System.out.println(">>> resParenthesis = " + resParenthesis);
         return resParenthesis;
     }
 
-    private void backtrack(int n, StringBuilder cur, int idx) {
+    /** NOTE  !!!
+     *
+     *   we DON'T need idx parameter in below method
+     *
+     *   e.g. (private void backtrack(int n, StringBuilder cur, int idx) is WRONG
+     */
+    private void backtrack(int n, StringBuilder cur) {
         String[] word = new String[] { "(", ")" };
         String curStr = cur.toString();
         if (curStr.length() == n * 2) {
@@ -67,9 +74,9 @@ public class GenerateParentheses {
             String w = word[i];
             // cur.add(w);
             cur.append(w);
-            backtrack(n, cur, idx + 1);
+            backtrack(n, cur);
             // undo
-            idx -= 1;
+            // idx -= 1;
             cur.deleteCharAt(cur.length() - 1);
         }
     }
@@ -88,6 +95,7 @@ public class GenerateParentheses {
         }
         return balance == 0; // Valid if balance ends up being 0
     }
+
 
     // V0-1
     // IDEA : BACKTRACK (fix by gpt)
