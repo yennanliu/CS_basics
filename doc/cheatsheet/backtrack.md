@@ -53,6 +53,14 @@ def backtrack(路徑, 選擇清單):
 
 ### 0-1) Types
 
+- Conclusion:
+    - ONLY 全排列 (Permutations) `NOT` NEED `start idx` !!!!
+        - Type II : Permutations (排列組合)
+
+    - "subset" need `start idx`
+        - Type I : Subsets (子集)
+        - Type III : Combinations (組成)
+
 - Problems types
 
     - Type 1) : `Subsets` (子集)
@@ -477,13 +485,6 @@ def backtrack(路徑, 選擇清單):
         } 
         ```
 
-    - Conclusion:
-        - ONLY 全排列 (Permutations) NO NEED "start idx". *********
-            - Type II : Permutations (排列組合)
-
-        - "subset" need "start idx"
-            - Type I : Subsets (子集)
-            - Type III : Combinations (組成)
 
 ### 0-2) Pattern
 
