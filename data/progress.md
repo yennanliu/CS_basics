@@ -5,7 +5,7 @@
 	- https://neetcode.io/practice?tab=neetcode250
 	- 5 / day ->  15 days to finish
 		- stack
-	- again: 128,84
+	- again: 128,84,22
 		- similar: `Monotonic stack` problems
 	- todo:
 		- add neetcode algo linkedin post
