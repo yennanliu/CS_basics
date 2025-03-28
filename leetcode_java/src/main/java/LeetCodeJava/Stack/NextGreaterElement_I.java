@@ -129,7 +129,7 @@ public class NextGreaterElement_I {
              *   -> found "next greater element", so update map
              *
              *
-             *   -> so, map is `the next big element for nums2 element in nums2) !!!! 
+             *   -> so, map is `the next big element for nums2 element in nums2) !!!!
              */
             while(!st.isEmpty() && st.peek() < x){
                 int cur = st.pop();

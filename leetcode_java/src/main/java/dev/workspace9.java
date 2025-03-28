@@ -291,4 +291,51 @@ public class workspace9 {
         return res;
     }
 
+    // LC 503
+    // 11.46 - 11.56 am
+    /**
+     *  IDEA 1) `2 nums` + monotonic stack
+     */
+    public int[] nextGreaterElements(int[] nums) {
+        if(nums == null || nums.length == 0){
+            return null;
+        }
+        // `duplicate` nums
+        int k = 0;
+
+        int[] res = new int[nums.length];
+        Arrays.fill(res, -1);
+
+        List<Integer> keys = new ArrayList<>();
+        for(int j = 0; j < 2; j++){
+            for(int i = 0; i < nums.length; i++){
+                int val = nums[i];
+                keys.add(val);
+            }
+        }
+
+        //System.out.println(">>> nums2 = " + nums2);
+        System.out.println(">>> keys = " + keys);
+        System.out.println(">>> res (before) = " + res);
+
+        Stack<Integer> st = new Stack<>();
+        // ???
+        for(int i = 0; i < nums.length; i++){
+            for(int j = i+1; j < keys.size(); j++){
+                int k_ = keys.get(j);
+                if(k_ > nums[i]){
+                    res[i] = k_;
+                    break;
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+
+
+
+
 }
