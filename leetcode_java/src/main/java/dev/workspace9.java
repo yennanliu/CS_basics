@@ -334,6 +334,18 @@ public class workspace9 {
     }
 
 
+    // Lc 901
+    // 12.51 - 1.10 pm
+    class StockSpanner {
+
+        public StockSpanner() {
+
+        }
+
+        public int next(int price) {
+            return 0;
+        }
+    }
 
 
 
