@@ -241,5 +241,54 @@ public class workspace9 {
         return res;
     }
 
+    // LC 496
+    // 9.42 - 9.52 am
+    /**
+     *
+     *  find the index j such that nums1[i] == nums2[j]
+     *  and determine the next `greater` element of nums2[j] in nums2.
+     *  If there is no next greater element, then the answer for this query is -1.
+     *
+     *
+     *  IDEA 1) 2 LOOP
+     *
+     *  IDEA 2) 1 LOOP + SORTING (sort nums2)
+     *
+     *  IDEA 3)  1 LOOP + SORTING (sort nums2) + BINARY SEARCH
+     *
+     *  IDEA 4) MONO INCREASING STACK ???
+     *
+     *
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        // edge
+        if(nums1 == null || nums1.length == 0){
+            return null;
+        }
+        if(nums1.length == 1){
+            for(int x: nums2){
+                if(x > nums1[0]){
+                    return new int[]{x};
+                }
+            }
+        }
+
+        int[] res = new int[nums1.length];
+        Arrays.fill(res, -1); // ??
+        System.out.println(">>> res (before) = " + res);
+
+        for(int i = 0; i < nums1.length; i++){
+            for(int j = i; j < nums2.length; j++){
+                System.out.println(">>> i = " + i + ", j = " + j + ", nums2[j] = " + nums2[j] + ",  nums1[i] = " +  nums1[i]);
+                if(nums2[j] > nums1[i]){
+                    res[i] = nums2[j];
+                    break;
+                }
+            }
+        }
+
+        System.out.println(">>> res (after) = " + res);
+        return res;
+    }
 
 }

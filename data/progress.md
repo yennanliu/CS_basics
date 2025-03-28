@@ -5,8 +5,8 @@
 	- https://neetcode.io/practice?tab=neetcode250
 	- 5 / day ->  15 days to finish
 		- stack
-	- again:
-		- similar: `Monotonic stack` problems
+	- again: 496
+		- similar: 556,2281,2454
 	- todo:
 		- add neetcode algo linkedin post
 		- re-do all previous `again` problems, similar problems, make notes

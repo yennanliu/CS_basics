@@ -2,7 +2,50 @@ package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/next-greater-element-i/
 // https://github.com/yennanliu/JavaHelloWorld/blob/main/src/main/java/Basics/Array1D.java#L14
-
+/**
+ * 496. Next Greater Element I
+ * Solved
+ * Easy
+ * Topics
+ * Companies
+ * The next greater element of some element x in an array is the first greater element that is to the right of x in the same array.
+ *
+ * You are given two distinct 0-indexed integer arrays nums1 and nums2, where nums1 is a subset of nums2.
+ *
+ * For each 0 <= i < nums1.length, find the index j such that nums1[i] == nums2[j] and determine the next greater element of nums2[j] in nums2. If there is no next greater element, then the answer for this query is -1.
+ *
+ * Return an array ans of length nums1.length such that ans[i] is the next greater element as described above.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums1 = [4,1,2], nums2 = [1,3,4,2]
+ * Output: [-1,3,-1]
+ * Explanation: The next greater element for each value of nums1 is as follows:
+ * - 4 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+ * - 1 is underlined in nums2 = [1,3,4,2]. The next greater element is 3.
+ * - 2 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+ * Example 2:
+ *
+ * Input: nums1 = [2,4], nums2 = [1,2,3,4]
+ * Output: [3,-1]
+ * Explanation: The next greater element for each value of nums1 is as follows:
+ * - 2 is underlined in nums2 = [1,2,3,4]. The next greater element is 3.
+ * - 4 is underlined in nums2 = [1,2,3,4]. There is no next greater element, so the answer is -1.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= nums1.length <= nums2.length <= 1000
+ * 0 <= nums1[i], nums2[i] <= 104
+ * All integers in nums1 and nums2 are unique.
+ * All the integers of nums1 also appear in nums2.
+ *
+ *
+ * Follow up: Could you find an O(nums1.length + nums2.length) solution?
+ *
+ */
 import java.util.*;
 
 public class NextGreaterElement_I {
@@ -102,7 +145,7 @@ public class NextGreaterElement_I {
     }
 
 
-    // V0'
+    // V0-1
     // IDEA : BRUTE FORCE
     // https://www.youtube.com/watch?v=68a1Dc_qVq4
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0496-next-greater-element-i.java
@@ -130,7 +173,7 @@ public class NextGreaterElement_I {
         return -1;
     }
 
-    // V0'
+    // V0-2
     public int[] nextGreaterElement_0_2(int[] nums1, int[] nums2) {
 
         if (nums1.equals(null) && nums2.equals(null)) {
@@ -167,6 +210,39 @@ public class NextGreaterElement_I {
             }
         }
         return ans;
+    }
+
+    // V0-3
+    // IDEA: BRUTE FORCE
+    public int[] nextGreaterElement_0_3(int[] nums1, int[] nums2) {
+        // Edge case: If nums1 is empty or null, return an empty array.
+        if (nums1 == null || nums1.length == 0) {
+            return new int[0];
+        }
+
+        int[] res = new int[nums1.length];
+        Arrays.fill(res, -1); // Initialize the result array with -1
+
+        // Traverse each element of nums1 and find its next greater element in nums2
+        for (int i = 0; i < nums1.length; i++) {
+          //  boolean foundGreater = false;
+            for (int j = 0; j < nums2.length; j++) {
+                if (nums2[j] == nums1[i]) {
+                    // Once we find the element in nums2, look for the next greater element
+                    for (int k = j + 1; k < nums2.length; k++) {
+                        if (nums2[k] > nums1[i]) {
+                            res[i] = nums2[k];
+                           // foundGreater = true;
+                            break;
+                        }
+                    }
+                    // If no greater element is found, res[i] remains -1
+                    break;
+                }
+            }
+        }
+
+        return res;
     }
 
     // V1
