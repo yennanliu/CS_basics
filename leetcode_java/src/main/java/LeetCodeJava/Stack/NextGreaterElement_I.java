@@ -55,11 +55,14 @@ public class NextGreaterElement_I {
     // https://www.youtube.com/watch?v=68a1Dc_qVq4
     /** NOTE !!!
      *
-     *  nums1 is "sub set" of nums2,
-     *  so all elements in nums1 are in nums2 as well
-     *  and in order to find next greater element in nums1 reference nums2
-     *  -> ACTUALLY we only need to check nums2
-     *  -> then append result per element in nums1
+     *  nums1 is a "sub set" of nums2,
+     *  -> so all elements in nums1 are in nums2 as well
+     *  -> in order to find next greater element in nums1 reference nums2
+     *    -> ACTUALLY we only need to check `nums2`
+     *    -> then append result per element in nums1
+     *
+     *
+     *  -> so, map is `the next big element for nums2 element in nums2) !!!!
      */
     /**
      *
@@ -97,7 +100,7 @@ public class NextGreaterElement_I {
      *  ..
      *
      *  st = [6,5,4,3,2,1], map = {}
-     *  st = [], map = {6:7, 5:7,4:7,3:7,2:7,1:7}
+     *  st = [], map = {6:7,5:7,4:7,3:7,2:7,1:7}
      *
      */
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
@@ -108,8 +111,10 @@ public class NextGreaterElement_I {
 
         /**
          *  NOTE !!!
-         *  we use map " collect next greater element"
+         *  we use map " collect next greater element" (nums2)
          *  map definition :  {element, next-greater-element}
+         *
+         *  -> so, map is `the next big element for nums2 element in nums2) !!!!
          */
         Map<Integer, Integer> map = new HashMap<>();
         Stack<Integer> st = new Stack<>();
@@ -118,9 +123,13 @@ public class NextGreaterElement_I {
             /**
              *  NOTE !!!
              *   1) use while loop
-             *   2) while stack is NOT null and stack "top" element is smaller than current element (x) is nums2
+             *   2) while stack is NOT null and stack "top"
+             *      element is smaller than current element (x) is nums2
              *
              *   -> found "next greater element", so update map
+             *
+             *
+             *   -> so, map is `the next big element for nums2 element in nums2) !!!! 
              */
             while(!st.isEmpty() && st.peek() < x){
                 int cur = st.pop();
@@ -134,6 +143,7 @@ public class NextGreaterElement_I {
         int[] res = new int[nums1.length];
         // fill with -1 for element without next greater element
         Arrays.fill(res, -1);
+
         for (int j = 0; j < nums1.length; j++){
             if(map.containsKey(nums1[j])){
                 res[j] = map.get(nums1[j]);
@@ -155,7 +165,8 @@ public class NextGreaterElement_I {
         int counter=0;
 
         for(int i: nums1){
-            res[counter++]=ans(i, nums2);
+            // NOTE ans is helper func (as below)
+            res[counter++]= ans(i, nums2);
         }
 
         return res;
@@ -227,6 +238,12 @@ public class NextGreaterElement_I {
         for (int i = 0; i < nums1.length; i++) {
           //  boolean foundGreater = false;
             for (int j = 0; j < nums2.length; j++) {
+                /**
+                 *  NOTE !!!
+                 *
+                 *  ONLY when nums1, nums2 element are equal (e.g. nums2[j] == nums1[i]),
+                 *  then we find its next big element
+                 */
                 if (nums2[j] == nums1[i]) {
                     // Once we find the element in nums2, look for the next greater element
                     for (int k = j + 1; k < nums2.length; k++) {
