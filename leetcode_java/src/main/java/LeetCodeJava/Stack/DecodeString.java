@@ -87,6 +87,7 @@ public class DecodeString {
 
 
     // V1
+    // https://youtu.be/qB0zZpBJlh8?si=ZZBP6BrcHvIIfup9
     // https://leetcode.ca/2016-12-28-394-Decode-String/
     public String decodeString_1(String s) {
         Deque<Integer> s1 = new ArrayDeque<>();
