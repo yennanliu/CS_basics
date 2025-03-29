@@ -434,6 +434,12 @@ public class workspace9 {
       return true;
     }
 
+    // LC 71
+    // 5.34 - 5.44 pm
+    public String simplifyPath(String path) {
+
+      return null;
+    }
 
 
 }
