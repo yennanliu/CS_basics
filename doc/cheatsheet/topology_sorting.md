@@ -2,7 +2,7 @@
 
 ## 0) Concept
 
-- Topological Sort is a algorithm can find `ordering` based on `order dependency` graph
+- Topological Sort is an algorithm can find `ordering` based on `order dependency` graph
 
 - Concept
 	- [techbridge : topological-sort](https://blog.techbridge.cc/2020/05/10/leetcode-topological-sort/)
@@ -12,6 +12,7 @@
     - [TopologicalSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSort.java)
 
 ### 0-1) Types
+
 - Courses
     - LC 207, LC 210
 - Sequence
@@ -22,6 +23,7 @@
     - LC 666, 802
 
 ### 0-2) Pattern
+
 ```
 # pseudo code
 # https://leetcode.com/problems/course-schedule/solution/
