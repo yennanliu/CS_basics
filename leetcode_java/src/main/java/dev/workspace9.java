@@ -347,6 +347,93 @@ public class workspace9 {
         }
     }
 
-    
+  // LC 853
+  // 4.45 - 5.05 pm
+  /**
+   *  Exp 1)
+   *
+   *  Input: target = 12,
+   *  position = [10,8,0,5,3], speed = [2,4,1,1,3]
+   *
+   *  -> map : {position, speed}
+   *     stack, pop while (cur_pos + cur_speed <= last_post + last_speed)
+   *     if stack update, update map as well
+   *  -> return res
+   *
+   *  -> 12-10 = 2, 2 / 2 = 1
+   *     12-8 = 4, 4 / 4 = 1
+   *
+   *     12-0 = 12, 12 / 1 = 12
+   *
+   *     12-5 = 7, 7 / 1 = 7
+   *     12-3 = 9, 9 / 3 = 3
+   *
+   *  -> [10,8], [0], [5,3]
+   *
+   *  -> Output: 3
+   *
+   *
+   *  Exp 2)
+   *
+   *  Input: target = 10, position = [3], speed = [3]
+   *
+   *  -> [3]
+   *
+   *  -> Output: 1
+   *
+   * Exp 3)
+   *
+   *  Input: target = 100, position = [0,2,4], speed = [4,2,1]
+   *
+   *  [0,2], [4]
+   *
+   * -> Output: 1
+   *
+   *
+   *
+   *
+   */
+  public int carFleet(int target, int[] position, int[] speed) {
+      // edge
+      if(position == null || position.length == 0){
+          return 0;
+      }
+      if(position.length == 1){
+          return 1;
+      }
+      // map
+      Map<Integer, Integer> map = new HashMap<>();
+      for(int i = 0; i < position.length; i++){
+          map.put(position[i], speed[i]);
+      }
+
+      // stack
+      Stack<Integer> st = new Stack<>();
+      // init // ???
+      for(int p: position){
+          st.add(p);
+      }
+
+      //boolean terminated = false;
+      int prev = -1;
+      while(!isReached(position, target)){
+          if(prev == -1){
+            //  prev =
+          }
+      }
+
+      return st.size(); // ??
+    }
+
+    public boolean isReached(int[] position, int target){
+      for(int p: position){
+          if (p < target){
+              return false;
+          }
+      }
+      return true;
+    }
+
+
 
 }

@@ -191,7 +191,54 @@ public class CarFleet {
         return fleet.size();
     }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/car-fleet
+    // IDEA:  STACK
+    public int carFleet_1_1(int target, int[] position, int[] speed) {
+        int[][] pair = new int[position.length][2];
+        for (int i = 0; i < position.length; i++) {
+            pair[i][0] = position[i];
+            pair[i][1] = speed[i];
+        }
+        Arrays.sort(pair, (a, b) -> Integer.compare(b[0], a[0]));
+        Stack<Double> stack = new Stack<>();
+        for (int[] p : pair) {
+            stack.push((double) (target - p[0]) / p[1]);
+            if (stack.size() >= 2 &&
+                    stack.peek() <= stack.get(stack.size() - 2))
+            {
+                stack.pop();
+            }
+        }
+        return stack.size();
+    }
+
+
+    // V1-2
+    // https://neetcode.io/problems/car-fleet
+    // IDEA: Iteration
+    public int carFleet_1_2(int target, int[] position, int[] speed) {
+        int n = position.length;
+        int[][] pair = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            pair[i][0] = position[i];
+            pair[i][1] = speed[i];
+        }
+        Arrays.sort(pair, (a, b) -> Integer.compare(b[0], a[0]));
+
+        int fleets = 1;
+        double prevTime = (double)(target - pair[0][0]) / pair[0][1];
+        for (int i = 1; i < n; i++) {
+            double currTime = (double)(target - pair[i][0]) / pair[i][1];
+            if (currTime > prevTime) {
+                fleets++;
+                prevTime = currTime;
+            }
+        }
+        return fleets;
+    }
+    
+    // V2
     // https://leetcode.com/problems/car-fleet/solutions/2013259/java-simple-solution-100-faster/
     public int carFleet_2(int target, int[] position, int[] speed) {
 
@@ -215,7 +262,7 @@ public class CarFleet {
 
     }
 
-    // V2
+    // V3
     // https://leetcode.com/problems/car-fleet/solutions/411641/java-easy-understand-fast-solution/
     // IDEA :
     // calculate distance left for each car
@@ -244,7 +291,7 @@ public class CarFleet {
         return rTimeL.size();
     }
 
-    // V3
+    // V4
     // https://leetcode.com/problems/car-fleet/solutions/3224677/fast-100-16ms-space-efficient-99-511-mb-and-compact/
     public int carFleet_4(int target, int[] position, int[] speed) {
         float arraytime[] = new float[target+1],max=0;
