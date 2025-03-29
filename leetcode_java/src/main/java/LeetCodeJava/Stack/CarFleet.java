@@ -124,6 +124,10 @@ public class CarFleet {
          * NOTE !!!
          *
          *  Sort by position descending (simulate the "car arriving" process
+         *
+         *
+         *  -> NOTE !!! we sort place (big -> small)
+         *  -> so, we START deal with `farthest` car
          */
         Arrays.sort(cars, (a, b) -> b[0] - a[0]); // Sort by POSITION in DECREASING order (far -> closed)
 
