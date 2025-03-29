@@ -105,24 +105,32 @@ public class CarFleet {
      */
     public int carFleet(int target, int[] position, int[] speed) {
         int n = position.length;
-        // Pair positions with speeds and `sort by position in descending order`
-        // cars : [position][speed]
-        int[][] cars = new int[n][2];
-        for (int i = 0; i < n; i++) {
+    /**
+     *  NOTE !!!
+     *
+     *  we create a new data structure that records car position and its speed
+     *
+     *  cars : [position][speed]
+     *
+     *  -> Pair positions with speeds and `SORT by POSITION in descending order`
+     */
+    int[][] cars = new int[n][2];
+    for (int i = 0; i < n; i++) {
             cars[i][0] = position[i];
             cars[i][1] = speed[i];
-        }
+    }
 
         /**
          * NOTE !!!
          *
          *  Sort by position descending (simulate the "car arriving" process
          */
-        Arrays.sort(cars, (a, b) -> b[0] - a[0]); // Sort by position descending
+        Arrays.sort(cars, (a, b) -> b[0] - a[0]); // Sort by POSITION in DECREASING order (far -> closed)
 
         // Calculate arrival times
         double[] times = new double[n];
         for (int i = 0; i < n; i++) {
+            // NOTE !!! we use double type
             times[i] = (double) (target - cars[i][0]) / cars[i][1];
         }
 
@@ -132,14 +140,16 @@ public class CarFleet {
         for (double time : times) {
             /**
              * 	4.	Count Fleets:
+             *
              * 	•	Iterate through the times array:
-             * 	•	If the current car’s arrival time is greater than the lastTime (time of the last fleet), it forms a new fleet.
+             * 	•	If the CURRENT car’s arrival time is GREATER than the LAST Time (time of the last fleet)
+             * 	      -> it `forms a NEW FLEET`.
              * 	•	Update lastTime to the current car’s time.
              */
             // If current car's time is greater than the last fleet's time, it forms a new fleet
             if (time > lastTime) {
                 fleets++;
-                lastTime = time;
+                lastTime = time; // NOTE !!! we use `last time` as time, since we use `LOWER` speed when `merge car to fleet`
             }
         }
 
@@ -161,15 +171,22 @@ public class CarFleet {
      *  NOTE !!! Step 3)
      *
      *  -> via compare prev arrived time, we can know whether
-     *     append new fleet or not
+     *     append a `new fleet` or not
      *
      *  NOTE !!! concept of `arrived time`
+     *          -> time = (target - position) / speed
      *
      */
     public int carFleet_0_1(int target, int[] position, int[] speed) {
 
         int[] dist = new int[position.length];
         double[] arrived_time = new double[position.length];
+
+        /**
+         *  NOTE !!!
+         *
+         *  map : {distance_to_target, arrived_time}
+         */
         HashMap<Integer, Double> map = new HashMap<>();
         for (int i = 0; i < position.length; i++){
             int _position = position[i];
@@ -178,11 +195,14 @@ public class CarFleet {
             arrived_time[i] = (double) dist[i] / (double) speed[i];
             map.put(target - _position, (double) dist[i] / (double) speed[i]);
         }
+        // NOTE !!! we sort dist
         Arrays.sort(dist);
+        // NOTE !!! we init fleet
         List<Double> fleet = new ArrayList<Double>();
         for (int j = 0; j < dist.length; j++){
             int _size = fleet.size();
             double _time = map.get(dist[j]);
+            // NOTE !!! we ONLY `append` fleet when last current `arrived_time` is LONGER than `last arrived_time`
             if (_size == 0 || _time > fleet.get(_size-1)){
                 fleet.add(_time);
             }
@@ -237,7 +257,7 @@ public class CarFleet {
         }
         return fleets;
     }
-    
+
     // V2
     // https://leetcode.com/problems/car-fleet/solutions/2013259/java-simple-solution-100-faster/
     public int carFleet_2(int target, int[] position, int[] speed) {
