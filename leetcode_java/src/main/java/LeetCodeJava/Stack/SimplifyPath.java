@@ -1,6 +1,7 @@
 package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/simplify-path/
+// https://leetcode.cn/problems/simplify-path/
 
 import java.util.*;
 
@@ -95,6 +96,7 @@ public class SimplifyPath {
 //    }
 
     // V1
+    // (needcode)
     // https://www.youtube.com/watch?v=qYlHrAKJfyA
 
     // V2
