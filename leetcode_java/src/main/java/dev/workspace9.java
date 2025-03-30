@@ -292,46 +292,97 @@ public class workspace9 {
     }
 
     // LC 503
-    // 11.46 - 11.56 am
+    //  1.30 - 1.40 pm
     /**
-     *  IDEA 1) `2 nums` + monotonic stack
+     *  IDEA 1) `duplicated stack` +  `remainder` op ( x % y = z)
+     *
+     *
      */
     public int[] nextGreaterElements(int[] nums) {
+        // edge
         if(nums == null || nums.length == 0){
             return null;
         }
-        // `duplicate` nums
+
+        int[] cache = new int[2 * nums.length];
         int k = 0;
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < nums.length; j++){
+                cache[k] = nums[j];
+                k += 1;
+            }
+        }
 
         int[] res = new int[nums.length];
-        Arrays.fill(res, -1);
+        Arrays.fill(res, -1); // ??
 
-        List<Integer> keys = new ArrayList<>();
-        for(int j = 0; j < 2; j++){
-            for(int i = 0; i < nums.length; i++){
-                int val = nums[i];
-                keys.add(val);
+        // stack: [ [idx_1, next_big_1], .... ]
+        Stack<Integer[]> st = new Stack<>();
+
+        for(int i = 0; i < cache.length; i++){
+//            if(st.isEmpty()){
+//                // NOTE !!!
+//                // `adjusted idx` is `i % nums.length`
+//                st.add(new Integer[]{ i % nums.length, cache[i % nums.length] });
+//                continue;
+//            }
+
+            while(!st.isEmpty() && st.peek()[1] <= cache[i]){
+                Integer[] tmp = st.pop();
+                //res[tmp[0]] = tmp[1];
             }
+
+            st.add(new Integer[]{ (i % nums.length) - 1, cache[i % nums.length] });
         }
 
-        //System.out.println(">>> nums2 = " + nums2);
-        System.out.println(">>> keys = " + keys);
-        System.out.println(">>> res (before) = " + res);
-
-        Stack<Integer> st = new Stack<>();
-        // ???
-        for(int i = 0; i < nums.length; i++){
-            for(int j = i+1; j < keys.size(); j++){
-                int k_ = keys.get(j);
-                if(k_ > nums[i]){
-                    res[i] = k_;
-                    break;
-                }
-            }
-        }
+        // backfill val to res // /?? needed ?
+//        while(!st.isEmpty()){
+//            Integer[] tmp = st.pop();
+//            res[tmp[0]] = tmp[1];
+//         }
 
         return res;
     }
+
+    /**
+     *  IDEA 1) `2 nums` + monotonic stack
+     */
+//    public int[] nextGreaterElements(int[] nums) {
+//        if(nums == null || nums.length == 0){
+//            return null;
+//        }
+//        // `duplicate` nums
+//        int k = 0;
+//
+//        int[] res = new int[nums.length];
+//        Arrays.fill(res, -1);
+//
+//        List<Integer> keys = new ArrayList<>();
+//        for(int j = 0; j < 2; j++){
+//            for(int i = 0; i < nums.length; i++){
+//                int val = nums[i];
+//                keys.add(val);
+//            }
+//        }
+//
+//        //System.out.println(">>> nums2 = " + nums2);
+//        System.out.println(">>> keys = " + keys);
+//        System.out.println(">>> res (before) = " + res);
+//
+//        Stack<Integer> st = new Stack<>();
+//        // ???
+//        for(int i = 0; i < nums.length; i++){
+//            for(int j = i+1; j < keys.size(); j++){
+//                int k_ = keys.get(j);
+//                if(k_ > nums[i]){
+//                    res[i] = k_;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        return res;
+//    }
 
 
     // Lc 901

@@ -47,8 +47,62 @@ public class NextGreaterElement_II {
 //    }
 
     // V0-1
-    // IDEA: BRUTE FORCE + DOUBLE STACK
+    // IDEA: STACK + `circular array` simulation + op ( x % y = z )
     public int[] nextGreaterElements_0_1(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return new int[0]; // Return empty array instead of null
+        }
+
+        int n = nums.length;
+        int[] res = new int[n];
+        Arrays.fill(res, -1); // Default to -1 (no greater element)
+
+        /**
+         *  NOTE !!!
+         *
+         *  Stack : [idx_1, idx_2,...]
+         *
+         *  -> ONLY need to storage idx in stack,
+         *     since we can get its value from nums[idx]
+         */
+        Stack<Integer> stack = new Stack<>(); // Store indices
+
+        /**
+         *  NOTE !!!
+         *
+         *  Iterate twice (simulate `circular` behavior)
+         */
+        for (int i = 0; i < 2 * n; i++) {
+            /**
+             *  NOTE !!!
+             *
+             *  below condition
+             *
+             *   1) stack is NOT empty
+             *   2) nums[stack.peek()] < nums[i % n]
+             *      - while `top` stack element is smaller than cur element, pop it from stack
+             */
+            while (!stack.isEmpty() && nums[stack.peek()] < nums[i % n]) {
+                /**
+                 *  NOTE !!!
+                 *
+                 *  we update res, since the `1st bigger num` is found
+                 */
+                res[stack.pop()] = nums[i % n]; // Assign next greater element
+            }
+            if (i < n) { // Only push first `n` elements
+                stack.push(i);
+            }
+            
+        }
+
+        return res;
+    }
+
+    // V0-2
+    // IDEA: BRUTE FORCE + DOUBLE STACK
+    public int[] nextGreaterElements_0_2(int[] nums) {
         if (nums == null || nums.length == 0) {
             return null;
         }
