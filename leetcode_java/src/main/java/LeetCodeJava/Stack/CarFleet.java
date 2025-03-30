@@ -215,6 +215,74 @@ public class CarFleet {
         return fleet.size();
     }
 
+    // V0-2
+    public int carFleet_0_2(int target, int[] position, int[] speed) {
+        // edge
+        if (position == null || position.length == 0) {
+            return 0;
+        }
+        if (position.length == 1) {
+            return 1;
+        }
+        /** NOTE !!!
+         *
+         *  map, {position : arrived_time}
+         */
+        Map<Integer, Double> map = new HashMap<>();
+        for (int i = 0; i < position.length; i++) {
+            Double arrived_time = (double) (target - position[i]) / speed[i];
+            map.put(position[i], arrived_time);
+        }
+
+        /**
+         * NOTE !!!!
+         *
+         * sort on `position` (DECREASING order) (big -> small)
+         */
+        Integer[] position2 = new Integer[position.length];
+        for (int i = 0; i < position.length; i++) {
+            position2[i] = position[i];
+        }
+        Arrays.sort(position2, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        Stack<Double> st = new Stack<>();
+        Double prev_arrived_time = -1.0; // ??
+        // loop over position,
+        // and check if `cur arrived_time > prev arrived_time`
+        // if `yes`, -> a  new fleet is created,
+        // (prev car can `catchup` with cur car at some point)
+        // stack, prev_arrived_time needs to be updated,
+        for (int i = 0; i < position2.length; i++) {
+            Double cur_arrived_time = map.get(position2[i]);
+            if (prev_arrived_time.equals(-1.0)) {
+                prev_arrived_time = cur_arrived_time;
+                st.add(prev_arrived_time);
+            } else {
+                // if can form a `new fleet cluster`
+                /**
+                 *  NOTE !!!
+                 *
+                 *  when `prev_arrived_time < cur_arrived_time` is met
+                 *
+                 *  1) we update prev_arrived_time
+                 *  2) we append (prev_arrived_time) to stack
+                 */
+                if (prev_arrived_time < cur_arrived_time) {
+                    prev_arrived_time = cur_arrived_time;
+                    st.add(prev_arrived_time);
+                }
+            }
+        }
+
+        return st.size();
+    }
+
     // V1-1
     // https://neetcode.io/problems/car-fleet
     // IDEA:  STACK

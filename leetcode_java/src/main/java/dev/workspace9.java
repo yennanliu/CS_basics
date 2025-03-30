@@ -393,6 +393,15 @@ public class workspace9 {
    *
    *
    */
+  // LC 853
+  // 12.46 - 12.56 PM
+  /**
+   *  IDEA 1) SORT + MAP + FOR LOOP
+   *   arrived_time = (target - position) / speed
+   *
+   *
+   *
+   */
   public int carFleet(int target, int[] position, int[] speed) {
       // edge
       if(position == null || position.length == 0){
@@ -401,38 +410,96 @@ public class workspace9 {
       if(position.length == 1){
           return 1;
       }
-      // map
-      Map<Integer, Integer> map = new HashMap<>();
+      // map, {position : arrived_time} // ???
+      Map<Integer, Double> map = new HashMap<>();
       for(int i = 0; i < position.length; i++){
-          map.put(position[i], speed[i]);
+          Double arrived_time = (double) (target - position[i]) / speed[i];
+          map.put(position[i], arrived_time);
       }
 
-      // stack
-      Stack<Integer> st = new Stack<>();
-      // init // ???
-      for(int p: position){
-          st.add(p);
+      // sort on `position` (decreasing order) (big -> small)
+      Integer[] position2 = new Integer[position.length];
+      for(int i = 0; i < position.length; i++){
+          position2[i] = position[i];
       }
+      Arrays.sort(position2, new Comparator<Integer>() {
+          @Override
+          public int compare(Integer o1, Integer o2) {
+              int diff = o2 - o1;
+              return diff;
+          }
+      });
 
-      //boolean terminated = false;
-      int prev = -1;
-      while(!isReached(position, target)){
-          if(prev == -1){
-            //  prev =
+      Stack<Double> st = new Stack<>();
+      Double prev_arrived_time = -1.0; // ??
+      // loop over position,
+      // and check if `cur arrived_time > prev arrived_time`
+      // if `yes`, -> a  new fleet is created,
+      // stack, prev_arrived_time needs to be updated,
+
+      System.out.println(">>> map = " + map);
+      System.out.println(">>> position2 = " + position2);
+
+      for(int i = 0; i < position2.length; i++){
+          Double cur_arrived_time = map.get(position2[i]);
+          System.out.println(">>> prev_arrived_time = " + prev_arrived_time  + ", cur_arrived_time = "
+                  + cur_arrived_time + ", stack = " + st);
+          // ??
+          if(prev_arrived_time.equals(-1.0)){
+              prev_arrived_time = cur_arrived_time;
+              st.add(prev_arrived_time);
+          }else{
+              // if can form a `new fleet cluster`
+              if(prev_arrived_time < cur_arrived_time){
+                  prev_arrived_time = cur_arrived_time;
+                  st.add(prev_arrived_time);
+              }
           }
       }
 
-      return st.size(); // ??
-    }
+      return st.size();
+  }
 
-    public boolean isReached(int[] position, int target){
-      for(int p: position){
-          if (p < target){
-              return false;
-          }
-      }
-      return true;
-    }
+//  public int carFleet_1(int target, int[] position, int[] speed) {
+//      // edge
+//      if(position == null || position.length == 0){
+//          return 0;
+//      }
+//      if(position.length == 1){
+//          return 1;
+//      }
+//      // map
+//      Map<Integer, Integer> map = new HashMap<>();
+//      for(int i = 0; i < position.length; i++){
+//          map.put(position[i], speed[i]);
+//      }
+//
+//      // stack
+//      Stack<Integer> st = new Stack<>();
+//      // init // ???
+//      for(int p: position){
+//          st.add(p);
+//      }
+//
+//      //boolean terminated = false;
+//      int prev = -1;
+//      while(!isReached(position, target)){
+//          if(prev == -1){
+//            //  prev =
+//          }
+//      }
+//
+//      return st.size(); // ??
+//    }
+//
+//    public boolean isReached(int[] position, int target){
+//      for(int p: position){
+//          if (p < target){
+//              return false;
+//          }
+//      }
+//      return true;
+//    }
 
     // LC 71
     // 5.34 - 5.44 pm
@@ -440,6 +507,5 @@ public class workspace9 {
 
       return null;
     }
-
 
 }

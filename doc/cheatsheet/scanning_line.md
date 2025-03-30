@@ -2,7 +2,7 @@
 
 ## 0) Concept  
 
-> Find the "max" overlap in intervals
+> Find the `max` overlap in intervals
 
 - https://web.ntnu.edu.tw/~algo/Point2.html
 - https://hackmd.io/@meyr543/SkrRZCwfj
