@@ -559,4 +559,117 @@ public class workspace9 {
       return null;
     }
 
+  // LC 394
+  // 2.06 pm - 2.15 pm
+  /**
+   *  IDEA 1) STACK ??
+   *
+   *   -> if `num`, append to num_stack
+   *      if [, append to num_stack
+   *      if ], pop all elements in num_stack, till reach `[' (save as cache)
+   *         -> and do the `multiply op`, e.g. k * cache, append to res
+   *
+   *   -> repeat above steps..
+   *
+   *
+   * Example 1:
+   *
+   * Input: s = "3[a]2[bc]"
+   * Output: "aaabcbc"
+   *
+   *  -> 3[a]2[bc],  n_s = [3]
+   *     x
+   *
+   *    3[a]2[bc],  n_s = [3, '[' ]
+   *     x
+   *
+   *    3[a]2[bc],  n_s = [3, '[' , a]
+   *      x
+   *
+   *   3[a]2[bc],  n_s = [3, '[' , a]  -> cache =  3 * a = aaa, res = aaa
+   *      x
+   *
+   *   3[a]2[bc],  n_s = [2]
+   *       x
+   *
+   *   3[a]2[bc],  n_s = [2, '[']
+   *        x
+   *
+   *   3[a]2[bc],  n_s = [2, '[', b]
+   *         x
+   *
+   *   3[a]2[bc],  n_s = [2, '[', b, c]
+   *          x
+   *
+   *  3[a]2[bc],  n_s = [2, '[', b, c], cache = 2 * bc = bcbc, res = aaabcbc
+   *          x
+   *
+   *
+   * Example 2:
+   *
+   * Input: s = "3[a2[c]]"
+   * Output: "accaccacc"
+   *
+   *
+   * Example 3:
+   *
+   * Input: s = "2[abc]3[cd]ef"
+   * Output: "abcabccdcdcdef"
+   *
+   *
+   */
+  public String decodeString(String s) {
+      // edge
+      if(s == null || s.length() == 0){
+          return null;
+      }
+      if(s.length() == 1){
+          return s;
+      }
+      StringBuilder sb = new StringBuilder();
+      Stack<String> st = new Stack<>();
+      Stack<Integer> num_st = new Stack<>();
+      for(int i = 0; i < s.length(); i++){
+          String cur = String.valueOf(s.charAt(i));
+          // case 1) cur is `numerical` element, e.g. 1,2,3,...
+          if("123456789".contains(cur)){
+              num_st.add(Integer.parseInt(cur));
+          }
+          // case 2) cur is `]`, need to pop all elements in stack, and do `getMutiply op`
+          else if(cur.equals("]")){
+              String cache = "";
+              while(!st.isEmpty()){
+                  String tmp = st.pop();
+                  if(!tmp.equals("[")){
+                      cache += tmp;
+                  }
+              }
+              sb.append(getMutiply(cache, num_st.pop()));
+          }
+          // case 3) cur is alphabet element (e.g. a,b,c...)
+          else{
+              st.add(cur);
+          }
+      }
+
+      // deal with `remaining element in stack`
+      StringBuilder sb2 = new StringBuilder();
+      while(!st.isEmpty()){
+          sb2.append(st.pop());
+      }
+
+      sb.append(sb2.reverse().toString());
+
+      return sb.toString();
+    }
+
+    public String getMutiply(String input, int cnt){
+      StringBuilder sb = new StringBuilder();
+      for(int i = 0; i < cnt; i++){
+          sb.append(input);
+      }
+      return sb.reverse().toString(); // since stack if `FILO`
+    }
+
+
 }

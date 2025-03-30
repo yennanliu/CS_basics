@@ -94,7 +94,7 @@ public class NextGreaterElement_II {
             if (i < n) { // Only push first `n` elements
                 stack.push(i);
             }
-            
+
         }
 
         return res;
