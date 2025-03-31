@@ -671,5 +671,23 @@ public class workspace9 {
       return sb.reverse().toString(); // since stack if `FILO`
     }
 
+    // LC 895
+    class FreqStack {
+
+        public FreqStack() {
+
+        }
+
+        public void push(int val) {
+
+        }
+
+        public int pop() {
+            return 0;
+
+        }
+    }
+
+
 
 }
