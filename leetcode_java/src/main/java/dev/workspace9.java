@@ -672,17 +672,59 @@ public class workspace9 {
     }
 
     // LC 895
+    // 10.10 am - 10.20 am
+    /**
+     *  IDEA 1)  HASHMAP (record cnt) + stack (record `top` element) ??
+     *
+     *
+     */
     class FreqStack {
 
-        public FreqStack() {
+        // attr
+        // map : {val : cnt}
+        Map<Integer, Integer> map;
+        //Stack<Integer> st;
+       // Deque<Integer> dq;
+        List<Integer> dq;
+        int maxCnt;
 
+        public FreqStack() {
+            this.map = new HashMap<>();
+            //this.st = new Stack<>();
+            this.dq = new ArrayList<>(); //new LinkedList<>();
+            this.maxCnt = 0;
         }
 
         public void push(int val) {
-
+            this.map.put(val, this.map.getOrDefault(val, 0) + 1);
+            //this.st.push(val);
+            this.dq.add(val);
+            this.maxCnt = Math.max(this.maxCnt, map.get(val));
         }
 
         public int pop() {
+            if(this.dq.isEmpty()){
+               // return 0; // ???
+                throw new RuntimeException("empty stack");
+            }
+
+            // get most freq one
+            List<Integer> list = new ArrayList<>();
+            for(Integer k: map.keySet()){
+                if(map.get(k) == this.maxCnt){
+                    list.add(k);
+                }
+            }
+
+//            List<Integer> x = new ArrayList<>();
+//            x.remove()
+
+            for(int i = this.dq.size(); i > 0; i--){
+                if(this.dq.get(i) == this.maxCnt){
+                    this.dq.remove(i);
+                    return this.maxCnt;
+                }
+            }
             return 0;
 
         }
