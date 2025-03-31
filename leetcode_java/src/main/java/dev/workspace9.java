@@ -730,6 +730,51 @@ public class workspace9 {
         }
     }
 
+    // LC 84
+    // 10.48 - 10.58 am
+    public int largestRectangleArea(int[] heights) {
+        return 0;
+    }
+
+    // LC 35
+    /**
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) BINARY SEARCH
+     *
+     *
+     *
+     */
+    public int searchInsert(int[] nums, int target) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1; //???
+        }
+        if(nums.length <= 1){
+            return nums.length;
+        }
+        if(target > nums[nums.length - 1]){
+            return nums.length;
+        }
+        if(nums.length == 2){
+            if(target > nums[0] && target < nums[1]){
+                return 1;
+            }
+        }
+
+        int res = 0;
+        for(int i = 1; i < nums.length - 1; i++){
+            if(nums[i] == target){
+                return i;
+            }
+            if(target > nums[i-1] && target < nums[i]){
+                return i;
+            }
+        }
+
+        return res;
+    }
+
 
 
 }
