@@ -74,6 +74,55 @@ public class MaximumFrequencyStack {
 //        }
 //    }
 
+    // V0-1
+    class FreqStack_0_1 {
+
+        // attr
+        // map : {val : cnt} -> frequency map
+        private Map<Integer, Integer> map;
+        // stack of values
+        private Map<Integer, Stack<Integer>> freqMap;
+        private int maxFreq;
+
+        public FreqStack_0_1() {
+            this.map = new HashMap<>();
+            this.freqMap = new HashMap<>();
+            this.maxFreq = 0;
+        }
+
+        public void push(int val) {
+            // Update the frequency count of the value
+            int freq = map.getOrDefault(val, 0) + 1;
+            map.put(val, freq);
+
+            // Update maxFreq
+            maxFreq = Math.max(maxFreq, freq);
+
+            // Push the value onto the appropriate stack for its frequency
+            freqMap.putIfAbsent(freq, new Stack<>());
+            freqMap.get(freq).push(val);
+        }
+
+        public int pop() {
+            if (maxFreq == 0) {
+                throw new RuntimeException("Empty stack");
+            }
+
+            // Get the most frequent element
+            Stack<Integer> stack = freqMap.get(maxFreq);
+            int val = stack.pop();
+
+            // Decrease frequency of that value
+            map.put(val, map.get(val) - 1);
+
+            // If no more elements at the current maxFreq, decrease maxFreq
+            if (stack.isEmpty()) {
+                maxFreq--;
+            }
+
+            return val;
+        }
+    }
 
     // V1
     // https://www.youtube.com/watch?v=Z6idIicFDOE
