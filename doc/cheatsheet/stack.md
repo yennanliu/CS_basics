@@ -59,29 +59,30 @@ for i, val in enumerate(len(tmp)):
 ```java
 // java
 // LC 739
-        for (int j = 0; j < temperatures.length; j++){
-            int x = temperatures[j];
-            /**
-             *  NOTE !!!
-             *   1) while loop
-             *   2) stack is NOT empty
-             *   3) cache temperature smaller than current temperature
-             *
-             *   st.peek().get(0) is cached temperature
-             */
-            while (!st.isEmpty() && st.peek().get(0) < x){
-                /**
-                 *  st.peek().get(1) is idx
-                 *
-                 */
-                nextGreater[st.peek().get(1)] = j - st.peek().get(1);
-                st.pop();
-            }
+for (int j = 0; j < temperatures.length; j++){
+    int x = temperatures[j];
+    /**
+     *  NOTE !!!
+     *   1) while loop
+     *   2) stack is NOT empty
+     *   3) cache temperature smaller than current temperature
+     *
+     *   st.peek().get(0) is cached temperature
+     */
+    while (!st.isEmpty() && st.peek().get(0) < x){
+        /**
+         *  st.peek().get(1) is idx
+         *
+         */
+        nextGreater[st.peek().get(1)] = j - st.peek().get(1);
+        st.pop();
+    }
 ```
 
-- monotonic stack
+- monotonic stack (`increasing`)
 
 ```java
+// java
 // LC 239
 // LC 496
 // ...
@@ -89,6 +90,7 @@ for i, val in enumerate(len(tmp)):
 // Traverse the array from right to left
 for (int i = 0; i < n; i++) {
     // Maintain a decreasing monotonic stack
+    /** NOTE !!! below */
     while (!stack.isEmpty() && nums[stack.peek()] <= nums[i]) {
         stack.pop();  // Pop elements from the stack that are smaller or equal to the current element
     }
@@ -103,6 +105,37 @@ for (int i = 0; i < n; i++) {
 }
 
 // ...
+```
+
+
+- monotonic stack (decreasing)
+
+```java
+
+// java
+for (int j = 0; j < temperatures.length; j++) {
+    int x = temperatures[j];
+    /**
+     *  NOTE !!!
+     *   1) while loop
+     *   2) stack is NOT empty
+     *   3) cache temperature greater than current temperature
+     *
+     *   st.peek().get(0) is cached temperature
+     */
+     /** NOTE !!! below */
+    while (!st.isEmpty() && st.peek().get(0) > x) {
+        /**
+         *  st.peek().get(1) is idx
+         *
+         */
+        nextGreater[st.peek().get(1)] = j - st.peek().get(1);
+        st.pop();
+    }
+    
+    // Push the current temperature and its index to the stack
+    st.push(new Pair<>(x, j));
+}
 ```
 
 - Implement Queue using Stacks
