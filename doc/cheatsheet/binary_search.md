@@ -62,6 +62,7 @@
         - LC 367 Valid Perfect Square
         - LC 875 Koko Eating Bananas
         - the condition are nearly the same, ONLY difference :  `mid == target`, final check
+
         ```python
         # python
         while r >= l:
@@ -75,6 +76,20 @@
         if l >= nums.length or nums[l] != target: # check if l is out of boundary
             return -1
         return l
+        ```
+
+        ```java
+        // java
+        // ...
+        while (r >= l){
+            mid = (l + r) / 2;
+            if (mid <= some_value){
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+        // ...
         ```
 
     - Find `RIGHT` boundary
@@ -726,56 +741,6 @@ class Solution(object):
 ```
 
 ### 2-9) Koko Eating Bananas
-```python
-# LC 875. Koko Eating Bananas
-# V1
-# IDEA : BINARY SEARCH
-# https://leetcode.com/problems/koko-eating-bananas/solution/
-class Solution:
-    def minEatingSpeed(self, piles, h):  
-        # Initalize the left and right boundaries     
-        left = 1
-        right = max(piles)
-        
-        while left < right:
-            # Get the middle index between left and right boundary indexes.
-            # hour_spent stands for the total hour Koko spends.
-            middle = (left + right) // 2            
-            hour_spent = 0
-            
-            # Iterate over the piles and calculate hour_spent.
-            # We increase the hour_spent by ceil(pile / middle)
-            for pile in piles:
-                # python ceil : https://www.runoob.com/python/func-number-ceil.html
-                hour_spent += math.ceil(pile / middle)
-            
-            # Check if middle is a workable speed, and cut the search space by half.
-            if hour_spent <= h:
-                right = middle
-            else:
-                left = middle + 1
-        
-        # Once the left and right boundaries coincide, we find the target value,
-        # that is, the minimum workable eating speed.
-        return right
-
-# V1' 
-# https://blog.csdn.net/fuxuemingzhu/article/details/82716042
-# IDEA : BINARY SEARCH 
-class Solution:
-    def minEatingSpeed(self, piles, H):
-        minSpeed, maxSpeed = 1, max(piles)
-        while minSpeed <= maxSpeed:
-            speed = minSpeed + (maxSpeed - minSpeed) // 2
-            hour = 0
-            for pile in piles:
-                hour += math.ceil(pile / speed)
-            if hour <= H:
-                maxSpeed = speed - 1
-            else:
-                minSpeed = speed + 1
-        return minSpeed
-```
 
 ```java
 // java
@@ -783,6 +748,12 @@ class Solution:
 
 // V0
 // IDEA : BINARY SEARCH (close boundary)
+/**
+ *  KEY !!!!
+ *
+ *   -> When r < l, it means the `smallest` valid eating speed is l
+ *
+ */
 public int minEatingSpeed(int[] piles, int h) {
 
     if (piles.length == 0 || piles.equals(null)){
