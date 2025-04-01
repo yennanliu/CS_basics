@@ -928,6 +928,56 @@ public class workspace9 {
         return _hour;
     }
 
+    // LC 1011
+    // 11.24 - 11.34 am
+    /**
+     *  IDEA 1) BINARY SEARCH
+     *
+     *
+     */
+    public int numRescueBoats(int[] people, int limit) {
+        int maxWeight = 0;
+        for (int p: people){
+            maxWeight = Math.max(maxWeight, p);
+        }
+        // ???
+        int l = 1;
+        int r = maxWeight;
+        while (r >= l){
+            int mid = ( l + r ) / 2;
+            int days = getShipDays(people, mid);
+            // too fast
+            if(days <= limit){
+                r = mid -1;
+            }
+            // too slow
+            else{
+                l = mid + 1;
+            }
+        }
+
+        // similar as LC 875
+        return l;
+    }
+
+    public int getShipDays(int[] people, int capacity){
+        int days = 0;
+        int tmpSum = 0;
+        for(int p: people){
+            tmpSum += p;
+            if(tmpSum >= capacity){
+                tmpSum = p;
+                days += 1;
+            }
+        }
+
+        // handle remaining
+        if(tmpSum > 0){
+            days += 1;
+        }
+        return days;
+    }
+
 
 
 
