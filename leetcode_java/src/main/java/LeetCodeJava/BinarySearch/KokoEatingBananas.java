@@ -108,6 +108,12 @@ public class KokoEatingBananas {
         int l = 1; //Arrays.stream(piles).min().getAsInt();
         int r = Arrays.stream(piles).max().getAsInt();
 
+        /**
+         *  KEY !!!!
+         *
+         *   -> When r < l, it means the `smallest` valid eating speed is l
+         *
+         */
         while (r >= l){
             //System.out.println(">>> l = " + l + ", r = " + r);
             int mid = (l + r) / 2;
