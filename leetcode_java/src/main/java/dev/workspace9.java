@@ -775,6 +775,38 @@ public class workspace9 {
         return res;
     }
 
+    // LC 374
+    public int guessNumber(int n) {
+        int l = 0;
+        int r = n - 1;
+        int[] n_array = new int[n];
+        for(int i = 0; i < n; i++){
+            n_array[i] = i;
+        }
+        while (r >= l){
+            int mid = ( l + r ) / 2;
+            int resp = guess(n);
+            if(resp == 0){
+                // return mid;
+                return n_array[mid];
+            }
+            return resp;
+//            else if (resp == 1){
+//                r = mid -1;
+//            }else{
+//                l = mid + 1;
+//            }
+        }
+
+        return -1; // should NOT happen
+    }
+
+    public int guess(int num){
+        return 0;
+    }
+
+
+
 
 
 }
