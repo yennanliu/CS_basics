@@ -184,9 +184,12 @@ public class CapacityToShipPackagesWithinDDays {
     }
 
     // V1
+    // https://youtu.be/ER_oLmdc-nw?si=waZLYIcl1wqDjmj6
+
+    // V2
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/solutions/3216547/day-53-binary-search-easiest-beginner-friendly-sol/
-    public int shipWithinDays_1(int[] weights, int days) {
+    public int shipWithinDays_2(int[] weights, int days) {
         int maxWeight = -1, totalWeight = 0;
         for (int weight : weights) {
             maxWeight = Math.max(maxWeight, weight);
@@ -212,10 +215,10 @@ public class CapacityToShipPackagesWithinDDays {
         return left;
     }
 
-    // V2
+    // V3
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/solutions/256756/java-simple-java-solution-with-explanation/
-    public int shipWithinDays_2(int[] weights, int D) {
+    public int shipWithinDays_3(int[] weights, int D) {
         /*
          * Find the least possible capacity of ship. It will be maximum of -> the
          * largest item or the weight on one ship if the weight is evenly distributed on
@@ -249,10 +252,10 @@ public class CapacityToShipPackagesWithinDDays {
         return 0;
     }
 
-    // V3
+    // V4
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/solutions/3216643/clean-codes-full-explanation-binary-search-c-java-python3/
-    public int shipWithinDays_3(int[] weights, int days) {
+    public int shipWithinDays_4(int[] weights, int days) {
         int l = Arrays.stream(weights).max().getAsInt();
         int r = Arrays.stream(weights).sum();
 
