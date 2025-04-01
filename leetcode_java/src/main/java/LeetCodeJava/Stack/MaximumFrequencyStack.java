@@ -126,6 +126,7 @@ public class MaximumFrequencyStack {
 
     // V1
     // https://www.youtube.com/watch?v=Z6idIicFDOE
+    // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_895.png
 
     // V2
     // https://leetcode.com/problems/maximum-frequency-stack/solutions/1086543/js-python-java-c-frequency-map-stack-sol-o8kz/
