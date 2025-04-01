@@ -73,6 +73,32 @@ public class KokoEatingBananas {
      * After the search completes, l holds the minimum eating speed, so we return l.
      *
      */
+    /**
+     *  Demo run:
+     *
+     *  exp 1)
+     *
+     *   piles =  [3,6,7,11], h = 8
+     *
+     *
+     *   >>> l = 1, r = 11
+     *   >>> l = 1, r = 5
+     *   >>> l = 4, r = 5
+     *   >>> FINAL l = 4, r = 3
+     *
+     *
+     *  exp 2)
+     *
+     *  piles = [30,11,23,4,20]
+     *  h = 5
+     *
+     * >>> l = 1, r = 30
+     * >>> l = 16, r = 30
+     * >>> l = 24, r = 30
+     * >>> l = 28, r = 30
+     * >>> l = 30, r = 30
+     * >>> FINAL l = 30, r = 29
+     */
     public int minEatingSpeed(int[] piles, int h) {
 
         if (piles.length == 0 || piles.equals(null)){
@@ -83,6 +109,7 @@ public class KokoEatingBananas {
         int r = Arrays.stream(piles).max().getAsInt();
 
         while (r >= l){
+            //System.out.println(">>> l = " + l + ", r = " + r);
             int mid = (l + r) / 2;
             int _hour = getCompleteTime_(piles, mid);
             /**
@@ -91,6 +118,9 @@ public class KokoEatingBananas {
              *  -> NOTE !!! so any speed make hr <= h hours could work
              *
              *  -> NOTE !!! ONLY  when _hour <= h, we update r
+             *
+             *
+             *  NOTE !!! there is no `_hour == h` condition at below
              */
             if (_hour <= h){
                 r = mid - 1;
@@ -133,6 +163,7 @@ public class KokoEatingBananas {
          *
          */
 
+        //System.out.println(">>> FINAL l = " + l + ", r = " + r);
         return l;
     }
 

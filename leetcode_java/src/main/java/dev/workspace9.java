@@ -806,6 +806,128 @@ public class workspace9 {
     }
 
 
+    // LC 875
+    /**
+     *
+     *  ->  Return the minimum integer k such that she can eat
+     *      all the bananas within h hours.
+     *
+     *
+     *
+     *   binary search find the `speed` that
+     *   can eat ALL banana on time
+     *
+     */
+    // 10.26 - 10.36 am
+    public int minEatingSpeed_(int[] piles, int h) {
+
+        // edge
+        if(piles == null || piles.length == 0){
+            return 0;
+        }
+        if(piles.length == 1){
+            int times = piles[0]/ h;
+            int remain = piles[0] % h;
+            if (remain != 0){
+                times += 1;
+            }
+            return times;
+        }
+
+        Integer[] piles2 = new Integer[piles.length];
+        for(int i = 0; i < piles.length; i++){
+            piles2[i] = piles[i];
+        }
+        // sort piles (small -> big)
+        Arrays.sort(piles2, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - 02;
+                return diff;
+            }
+        });
+
+        int minSpeed = 0;
+        // binary search
+        // ???
+        int l = piles2[0]; // 0;
+        int r = piles2[piles2.length - 1]; //piles.length - 1;
+        while(r >= l){
+            int mid = (l + r) / 2;
+            int hours = getTotalHour(piles2, mid);
+            if(hours == h){
+                minSpeed = mid;
+             // speed is too slow
+            }else if (hours > h){
+                l = mid + 1;
+            // speed is too fast
+            }else{
+                r = mid - 1;
+            }
+
+        }
+
+        return minSpeed;
+    }
+
+    public int getTotalHour(Integer[] piles2, int speed){
+        int res = 0;
+        for (Integer p: piles2){
+            int times = p / speed;
+            int remain = p % speed;
+            if(remain != 0){
+                times += 1;
+            }
+            res += times;
+        }
+
+        return res;
+    }
+
+
+    public int minEatingSpeed(int[] piles, int h) {
+
+        if (piles.length == 0 || piles.equals(null)){
+            return 0;
+        }
+
+        int l = 1; //Arrays.stream(piles).min().getAsInt();
+        int r = Arrays.stream(piles).max().getAsInt();
+
+        while (r >= l){
+            System.out.println(">>> l = " + l + ", r = " + r);
+            int mid = (l + r) / 2;
+            int _hour = getCompleteTime_(piles, mid);
+            /**
+             *  Return the minimum integer k such that she can eat all the bananas within h hours.
+             *
+             *  -> NOTE !!! so any speed make hr <= h hours could work
+             *
+             *  -> NOTE !!! ONLY  when _hour <= h, we update r
+             */
+            if (_hour <= h){
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+
+        System.out.println(">>> FINAL l = " + l + ", r = " + r);
+        return l;
+    }
+
+
+    private int getCompleteTime_(int[] piles, int speed) {
+
+        int _hour = 0;
+        for (int pile : piles) {
+            _hour += Math.ceil((double) pile / speed);
+        }
+
+        return _hour;
+    }
+
 
 
 
