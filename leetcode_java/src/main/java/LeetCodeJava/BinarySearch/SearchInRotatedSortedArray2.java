@@ -100,6 +100,61 @@ public class SearchInRotatedSortedArray2 {
         return false;
     }
 
+    // V0-1
+    // IDEA: BINARY SEARCH + `DEDUP` + LC 33
+    public boolean search_0_1(int[] nums, int target) {
+
+        if (nums.length == 0 || nums.equals(null)){
+            return false;
+        }
+
+        List<Integer> collected = new ArrayList<>();
+        for(int n: nums){
+            if(!collected.contains(n)){
+                collected.add(n);
+            }
+        }
+
+        int l = 0;
+        int r = collected.size() - 1;
+
+        while (r >= l){
+
+            int mid = (l + r) / 2;
+            int cur = collected.get(mid);
+            if (cur == target){
+                return true;
+            }
+            // Case 1: `left + mid` is in ascending order
+            /** NOTE !!! we compare mid with left, instead of 0 idx element */
+            else if (collected.get(mid) >= collected.get(l)) {
+                // case 1-1)  target < mid && target > l
+                if (target >= collected.get(l) && target < collected.get(mid)) {
+                    r = mid - 1;
+                }
+                // case 2-2)
+                else {
+                    l = mid + 1;
+                }
+            }
+
+            // Case 2:  `right + mid` is in ascending order
+            else {
+                // case 2-1)  target > min && target <= r
+                if (target <= collected.get(r) && target >collected.get(mid)) {
+                    l = mid + 1;
+                }
+                // case 2-2)
+                else {
+                    r = mid - 1;
+                }
+            }
+
+        }
+
+        return false;
+    }
+
     // V1
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/search-in-rotated-sorted-array-ii/solutions/3888242/100-binary-search-video-with-rotation-handling-optimal/
@@ -161,4 +216,5 @@ public class SearchInRotatedSortedArray2 {
         }
         return false;
     }
+
 }
