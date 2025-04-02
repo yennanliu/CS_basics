@@ -979,6 +979,131 @@ public class workspace9 {
     }
 
 
+    // LC 153
+    // 10.18 - 10.28 am
+    /**
+     *  IDEA 1) BINARY SEARCH
+     *
+     *   case 0) all arr is in `ascending order`
+     *
+     *     -> return arr[0] directly
+     *
+     *
+     *  case 1) left is in `ascending order`
+     *      if left < right
+     *         -> move right
+     *      else
+     *         -> move left
+     *
+     *
+     *   case 2)  right is in `ascending order`
+     *
+     *       if right < left
+     *          move right
+     *       else
+     *          move left
+     *
+     *
+     *
+     *
+     *   exp 1)
+     *
+     *   Input: [3,4,5,1,2]
+     *   Output: 1
+     *
+     *   [3,4,5,1,2]
+     *        m
+     *
+     *
+     *  exp 2)
+     *    Input: [4,5,6,7,0,1,2]
+     *    Output: 0
+     *
+     *
+     *     [4,5,6,7,0,1,2]
+     *            m
+     *
+     */
+    public int findMin(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1; // ??
+        }
+        int res = Integer.MAX_VALUE;
+        int l = 0;
+        int r = nums.length - 1;
+        while(r >= l){
+
+            int mid = (l + r) / 2;
+            // if arr already in `ascending` order
+            if(nums[r] > nums[l]){
+                return nums[0];
+            }
+
+            // NOTE !!! update res
+            res = Math.min(res, nums[mid]);
+
+            // case 1) mid + left is ascending
+            // e.g. [3,4,5,1,2]
+            if(nums[mid] < nums[r]){
+                l = mid + 1;
+            }
+            // case 2) mid + right is ascending
+            // [7,1,2,3,4,5,6]
+            else{
+                r = mid - 1;
+            }
+        }
+        return res;
+    }
 
 
-}
+//    public int findMin(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return -1; // ??
+//        }
+//        // if arr already in `ascending` order
+//        if(nums[nums.length-1] > nums[0]){
+//            return nums[0];
+//        }
+//
+//        int l = 0;
+//        int r = nums.length - 1;
+//        int res = -1;
+//
+//        while(r >= l){
+//            int mid = (l + r) / 2;
+//            res = Math.min(res, nums[mid]);
+//            // case 1) mid + right is in `ascending order`
+//            if(nums[nums.length - 1] > nums[mid+1]){
+//                // case 1-1) mid > mid-1
+//                if(nums[mid-1] < nums[mid]) {
+//                    r = mid - 1;
+//                // case 1-2)
+//                }else{
+//                   l = mid + 1;
+//                }
+//
+//            }
+//            // case 2)  mid + left is in `ascending order`
+//            else{
+//                // case 2-1) left > mid+1
+//                if(nums[l] > nums[r]){
+//                    l = mid+1;
+//                }
+//                // case 2-2) left < mid + 1
+//                else{
+//                    r = mid - 1;
+//                }
+//            }
+//        }
+//
+//        return res;
+//    }
+
+
+
+
+
+    }
