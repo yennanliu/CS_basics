@@ -82,7 +82,8 @@ public class FindMinimumInRotatedSortedArray {
             // edge case : is array already in increasing order (e.g. [1,2,3,4,5])
             if (nums[l] < nums[r]) {
                 res = Math.min(res, nums[l]);
-                break;
+                //break;
+                return res;
             }
 
             int m = l + (r - l) / 2;
