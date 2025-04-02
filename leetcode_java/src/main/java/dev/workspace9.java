@@ -677,58 +677,120 @@ public class workspace9 {
      *  IDEA 1)  HASHMAP (record cnt) + stack (record `top` element) ??
      *
      *
+     *  IDEA 2) map<cnt: Stack[val_1, val_2, .....] )
+     *     so we `group` the val itself and its count
+     *     e.g.  for [3,4,4,5,5,2]
+     *     -> our group is like below:
+     *        { 1: [3,2, 4,5], 2: [4,5]  }
+     *
+     *     -> after building above data structure, we know
+     *        which val to pop, and are able to maintain the `most freq` val
      */
-    class FreqStack {
-
-        // attr
-        // map : {val : cnt}
-        Map<Integer, Integer> map;
-        //Stack<Integer> st;
-       // Deque<Integer> dq;
-        List<Integer> dq;
-        int maxCnt;
+        class FreqStack {
+            int maxCnt;
+            Map<Integer, Stack<Integer>> freqMap;
+            Map<Integer, Integer> cntMap ;
 
         public FreqStack() {
-            this.map = new HashMap<>();
-            //this.st = new Stack<>();
-            this.dq = new ArrayList<>(); //new LinkedList<>();
             this.maxCnt = 0;
+            this.freqMap = new HashMap<>();
+            this.cntMap = new HashMap<>();
         }
 
         public void push(int val) {
-            this.map.put(val, this.map.getOrDefault(val, 0) + 1);
-            //this.st.push(val);
-            this.dq.add(val);
-            this.maxCnt = Math.max(this.maxCnt, map.get(val));
+            // update freqMap
+            Stack<Integer> st = freqMap.getOrDefault(val, new Stack<>());
+            st.add(val);
+            this.freqMap.put(val, st);
+
+            // update cntMap
+            this.cntMap.put(val, this.cntMap.getOrDefault(val, 0) + 1);
+
+            // update maxCnt
+            this.maxCnt = Math.max(this.maxCnt + 1, this.cntMap.get(val));
         }
 
         public int pop() {
-            if(this.dq.isEmpty()){
-               // return 0; // ???
-                throw new RuntimeException("empty stack");
+            if(this.freqMap.isEmpty()){
+                throw new RuntimeException("no element to pop");
+            }
+            // get most freq val
+            Stack<Integer> st = this.freqMap.get(this.maxCnt);
+            if(st.isEmpty()){
+                return 0;
+            }
+            int val = st.pop();
+
+            // update cntMap
+            this.cntMap.put(val, this.cntMap.getOrDefault(val, 0) - 1);
+            if(this.cntMap.get(val) == 0){
+                this.cntMap.remove(val);
             }
 
-            // get most freq one
-            List<Integer> list = new ArrayList<>();
-            for(Integer k: map.keySet()){
-                if(map.get(k) == this.maxCnt){
-                    list.add(k);
+            // update max val
+            if(st.isEmpty()){
+                this.freqMap.remove(val);
+                for(Integer k: this.cntMap.keySet()){
+                    this.maxCnt = Math.max(k, this.maxCnt);
                 }
             }
 
-//            List<Integer> x = new ArrayList<>();
-//            x.remove()
-
-            for(int i = this.dq.size(); i > 0; i--){
-                if(this.dq.get(i) == this.maxCnt){
-                    this.dq.remove(i);
-                    return this.maxCnt;
-                }
-            }
-            return 0;
-
+            return val;
         }
+
     }
+
+//    class FreqStack {
+//
+//        // attr
+//        // map : {val : cnt}
+//        Map<Integer, Integer> map;
+//        //Stack<Integer> st;
+//       // Deque<Integer> dq;
+//        List<Integer> dq;
+//        int maxCnt;
+//
+//        public FreqStack() {
+//            this.map = new HashMap<>();
+//            //this.st = new Stack<>();
+//            this.dq = new ArrayList<>(); //new LinkedList<>();
+//            this.maxCnt = 0;
+//        }
+//
+//        public void push(int val) {
+//            this.map.put(val, this.map.getOrDefault(val, 0) + 1);
+//            //this.st.push(val);
+//            this.dq.add(val);
+//            this.maxCnt = Math.max(this.maxCnt, map.get(val));
+//        }
+//
+//        public int pop() {
+//            if(this.dq.isEmpty()){
+//               // return 0; // ???
+//                throw new RuntimeException("empty stack");
+//            }
+//
+//            // get most freq one
+//            List<Integer> list = new ArrayList<>();
+//            for(Integer k: map.keySet()){
+//                if(map.get(k) == this.maxCnt){
+//                    list.add(k);
+//                }
+//            }
+//
+////            List<Integer> x = new ArrayList<>();
+////            x.remove()
+//
+//            for(int i = this.dq.size(); i > 0; i--){
+//                if(this.dq.get(i) == this.maxCnt){
+//                    this.dq.remove(i);
+//                    return this.maxCnt;
+//                }
+//            }
+//            return 0;
+//
+//        }
+//    }
 
     // LC 84
     // 10.48 - 10.58 am
