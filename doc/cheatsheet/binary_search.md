@@ -24,7 +24,97 @@
 ### 0-1) Types
 
 - Types
+
     - Basic binary search
+
+    - Search in `rotate` array
+        - Find Minimum in Rotated Sorted Array
+            - LC 153
+            ```java
+            // java
+
+            // ...
+            while(r >= l){
+            int mid = (l + r) / 2;
+            // case 1) if `left subarray + mid` is ascending
+            if(nums[mid] >= nums[l]){
+                l = mid + 1;
+            }
+            // case 2) if `right subarray + mid` is ascending
+            else{
+                r = mid - 1;
+            }
+            // ...
+            ```
+        - Search in Rotated Sorted Array
+            - LC 33, LC 81
+            ```java
+            // java
+            // ...
+            while (r >= l){
+                int mid = (l + r) / 2;
+                int cur = nums[mid];
+                if (cur == target){
+                    return mid;
+                }
+                // Case 1: `left + mid` is in ascending order
+                /** NOTE !!! we compare mid with left, instead of 0 idx element */
+                else if (nums[mid] >= nums[l]) {
+                    /** NOTE !!!
+                     *
+                     *   1) ">="
+                     *   2)  since `if nums[mid] == target`, we should already FOUND a solution
+                     *       within code above, so here, we use target < nums[mid],
+                     *       but for left boundary, we use ">=". e.g. target >= nums[l]
+                     */
+                    // case 1-1)  target < mid && target > l
+                    if (target >= nums[l] && target < nums[mid]) {
+                        r = mid - 1;
+                    }
+                    // case 2-2)
+                    else {
+                        l = mid + 1;
+                    }
+                }
+
+                // Case 2:  `right + mid` is in ascending order
+                else {
+                    /** NOTE !!!
+                     *
+                     *   1) "<="
+                     *   2)  since `if nums[mid] == target`, we should already FOUND a solution
+                     *       within code above, so here, we use target > nums[mid],
+                     *       but for right boundary, we use "<=". e.g. target <= nums[r]
+                     */
+                    // case 2-1)  target > min && target <= r
+                    if (target <= nums[r] && target > nums[mid]) {
+                        l = mid + 1;
+                    }
+                    // case 2-2)
+                    else {
+                        r = mid - 1;
+                    }
+                }
+
+             }
+
+        // ...
+        ```
+        - Difference:
+            - LC 153 is finding `min`, so ONLY `1` if-else is enough
+            - LC 33, 81 is finding `target`, so need `2` if-else logic
+
+    - `Recursive` binary search
+        - Garena/test1.py
+
+    - Search in 2D array
+        - LC 74
+
+    - Find min in Rotation array
+        - LC 153
+            - check if `mid` point is at `left` or `right` sub array
+                - then search on left or right sub array 
+            - Compare mid with left, right
 
     - Find start, end idx with target
         - LC 34
@@ -59,8 +149,7 @@
         ```
 
     - Find `LEFT` boundary
-        - LC 367 Valid Perfect Square
-        - LC 875 Koko Eating Bananas
+        - LC 367, 875
         - the condition are nearly the same, ONLY difference :  `mid == target`, final check
 
         ```python
@@ -108,51 +197,6 @@
             return -1
         return r
         ```
-    - `Recursive` binary search
-        - Garena/test1.py
-    - Search in Rotated Sorted Array
-        - LC 33
-            - // CASE 1) sub array left is sorted
-            - // CASE 2) sub array right is sorted
-            - (or mid is belong to `left` sub array or `right` sub array) (LC 153)
-        ```java
-        // java
-        while (r >= l){
-            int mid = (l + r) / 2;
-            int cur = nums[mid];
-
-            // Case 0: found
-            if (cur == target){
-                return mid;
-            }
-            // Case 1: subarray on mid's left is sorted
-            /** NOTE !!! we compare mid with left, instead of 0 idx element */
-            else if (nums[mid] >= nums[l]) {
-                if (target >= nums[l] && target < nums[mid]) {
-                    r = mid - 1;
-                } else {
-                    l = mid + 1;
-                }
-            }
-
-            // Case 2: subarray on mid's right is sorted
-            else {
-                if (target <= nums[r] && target > nums[mid]) {
-                    l = mid + 1;
-                } else {
-                    r = mid - 1;
-                }
-            }
-
-        }
-        ```
-    - Search in 2D array
-        - LC 74
-    - Find min in Rotation array
-        - LC 153
-            - check if `mid` point is at `left` or `right` sub array
-                - then search on left or right sub array 
-            - Compare mid with left, right
 
 - Algorithm
     - binary search
