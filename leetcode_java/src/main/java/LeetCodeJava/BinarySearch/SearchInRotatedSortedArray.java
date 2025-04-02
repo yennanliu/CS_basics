@@ -58,6 +58,7 @@ public class SearchInRotatedSortedArray {
         int r = nums.length - 1;
 
         while (r >= l){
+
             int mid = (l + r) / 2;
             int cur = nums[mid];
             if (cur == target){
@@ -90,23 +91,41 @@ public class SearchInRotatedSortedArray {
              *          - target > nums[r] || target < nums[mid]
              *
              */
-            // Case 1: subarray on mid's left is sorted
+            // Case 1: `left + mid` is in ascending order
             /** NOTE !!! we compare mid with left, instead of 0 idx element */
             else if (nums[mid] >= nums[l]) {
-                /** NOTE !!!  ">=" */
+                /** NOTE !!!
+                 *
+                 *   1) ">="
+                 *   2)  since `if nums[mid] == target`, we should already FOUND a solution
+                 *       within code above, so here, we use target < nums[mid],
+                 *       but for left boundary, we use ">=". e.g. target >= nums[l]
+                 */
+                // case 1-1)  target < mid && target > l
                 if (target >= nums[l] && target < nums[mid]) {
                     r = mid - 1;
-                } else {
+                }
+                // case 2-2)
+                else {
                     l = mid + 1;
                 }
             }
 
-            // Case 2: subarray on mid's right is sorted
+            // Case 2:  `right + mid` is in ascending order
             else {
-                /** NOTE !!!  "<=" */
+                /** NOTE !!!
+                 *
+                 *   1) "<="
+                 *   2)  since `if nums[mid] == target`, we should already FOUND a solution
+                 *       within code above, so here, we use target > nums[mid],
+                 *       but for right boundary, we use "<=". e.g. target <= nums[r]
+                 */
+                // case 2-1)  target > min && target <= r
                 if (target <= nums[r] && target > nums[mid]) {
                     l = mid + 1;
-                } else {
+                }
+                // case 2-2)
+                else {
                     r = mid - 1;
                 }
             }
