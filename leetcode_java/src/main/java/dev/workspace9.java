@@ -1348,5 +1348,30 @@ public class workspace9 {
         }
     }
 
+  // LC 410
+  // 5.31 - 5.41 pm
+  /**
+   *
+   *
+   *
+   *  exp 1)
+   *
+   *  Input: nums = [7,2,5,10,8], k = 2
+   *  Output: 18
+   *
+   *  -> sort, nums = [2,5,7,8,10]
+   *
+   *
+   *  exp 2)
+   *
+   *  Input: nums = [1,2,3,4,5], k = 2
+   *  Output: 9
+   *
+   *
+   */
+  public int splitArray(int[] nums, int k) {
+
+        return 0;
+    }
 
 }
