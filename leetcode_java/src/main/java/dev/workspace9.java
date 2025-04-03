@@ -1278,5 +1278,75 @@ public class workspace9 {
         return false;
     }
 
+    /**
+     * Your TimeMap object will be instantiated and called as such:
+     * TimeMap obj = new TimeMap();
+     * obj.set(key,value,timestamp);
+     * String param_2 = obj.get(key,timestamp);
+     */
+    // LC 981
+    // 4.44 -4.54 pm
+    /**
+     *  IDEA 1)
+     *
+     *  map1 : { k : v }
+     *  map2 : { k : [t_1, t_2, ...] }
+     *  map3 : {k_1_t_1 : v_1, k_2_t_2 : v_2, ...}
+     *
+     *
+     *
+     */
+    class TimeMap {
+
+        // attr
+        /** keyValueMap : { k: [v_1, v_2, ...] } */
+        Map<String, List<String>> keyValueMap;
+
+        /** valueTimeMap : { v: [t_1, t_2, ...] } */
+        Map<String, List<Integer>> insertTimeMap;
+
+
+        public TimeMap() {
+            this.keyValueMap = new HashMap<>();
+            this.insertTimeMap = new HashMap<>();
+        }
+
+        public void set(String key, String value, int timestamp) {
+            // update keyValueMap
+            List<String> valList =  this.keyValueMap.getOrDefault(key, new ArrayList<>());
+            valList.add(value);
+            this.keyValueMap.put(key, valList);
+
+            // update insertTimeMap
+            List<Integer> timeList = this.insertTimeMap.getOrDefault(value, new ArrayList<>());
+            timeList.add(timestamp);
+            this.insertTimeMap.put(value, timeList);
+        }
+
+        public String get(String key, int timestamp) {
+            if(!this.keyValueMap.containsKey(key)){
+                return ""; //null;
+            }
+
+            List<String> vals = this.keyValueMap.get(key);
+            //List<String> valCollected = new ArrayList<>();
+            String res = null;
+            int tmpTime = 0;
+
+            for(String v : vals){
+                for(Integer t: this.insertTimeMap.get(v)){
+                    // get the `latest` timestamp and its val
+                    if(t <= timestamp && t > tmpTime){
+                        tmpTime = t;
+                        res = v;
+                    }
+                }
+            }
+
+            // get min
+            return res;
+        }
+    }
+
 
 }
