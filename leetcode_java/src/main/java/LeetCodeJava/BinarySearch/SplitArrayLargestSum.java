@@ -1,7 +1,51 @@
 package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/split-array-largest-sum/description/
-
+/**
+ * 410. Split Array Largest Sum
+ * Solved
+ * Hard
+ * Topics
+ * Companies
+ * Given an integer array nums and an integer k, split nums into k non-empty subarrays such that the largest sum of any subarray is minimized.
+ *
+ * Return the minimized largest sum of the split.
+ *
+ * A subarray is a contiguous part of the array.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [7,2,5,10,8], k = 2
+ * Output: 18
+ * Explanation: There are four ways to split nums into two subarrays.
+ * The best way is to split it into [7,2,5] and [10,8], where the largest sum among the two subarrays is only 18.
+ * Example 2:
+ *
+ * Input: nums = [1,2,3,4,5], k = 2
+ * Output: 9
+ * Explanation: There are four ways to split nums into two subarrays.
+ * The best way is to split it into [1,2,3] and [4,5], where the largest sum among the two subarrays is only 9.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= nums.length <= 1000
+ * 0 <= nums[i] <= 106
+ * 1 <= k <= min(50, nums.length)
+ * Seen this question in a real interview before?
+ * 1/5
+ * Yes
+ * No
+ * Accepted
+ * 452.8K
+ * Submissions
+ * 786.6K
+ * Acceptance Rate
+ * 57.6%
+ *
+ */
 import java.util.Arrays;
 
 public class SplitArrayLargestSum {
@@ -12,10 +56,47 @@ public class SplitArrayLargestSum {
 //
 //    }
 
-    // V1
+    // V1-1
+    // https://www.youtube.com/watch?v=YUF3_eBdzsk
+    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0410-split-array-largest-sum.java
+    public int splitArray_1_1(int[] nums, int k) {
+        int start = 0;
+        int end = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            start = Math.max(start, nums[i]);
+            end += nums[i];
+        }
+
+        while (start < end) {
+            int mid = start + (end - start) / 2;
+
+            // calculate how many pieces you can divide this in with this max sum
+            int sum = 0;
+            int pieces = 1;
+            for(int num : nums) {
+                if (sum + num > mid) {
+                    sum = num;
+                    pieces++;
+                } else {
+                    sum += num;
+                }
+            }
+
+            if (pieces > k) {
+                start = mid + 1;
+            } else {
+                end = mid;
+            }
+
+        }
+        return end; // here start == end
+    }
+
+    // V2
     // https://leetcode.com/problems/split-array-largest-sum/solutions/1899033/java-simple-and-easy-solution-beats-100/
     int[] nums;
-    public int splitArray_1(int[] nums, int m) {
+    public int splitArray_2(int[] nums, int m) {
         this.nums = nums;
         int low = 0, high = 0, min = Integer.MAX_VALUE;
         for(int i=0;i<nums.length;i++){
@@ -45,10 +126,10 @@ public class SplitArrayLargestSum {
         return chunks <= m;
     }
 
-    // V2
+    // V3
     // IDEA : Top-down recursion + memoization
     // https://leetcode.com/problems/split-array-largest-sum/solutions/1084798/java-top-down-recursion-memoization-o-n-2-m-time/
-    public int splitArray_2(int[] nums, int m) {
+    public int splitArray_3(int[] nums, int m) {
         int[][] memo = new int[nums.length][m+1];
 
         for (int i = 0; i < memo.length; i++) {
@@ -96,10 +177,10 @@ public class SplitArrayLargestSum {
         return ret;
     }
 
-    // V3
+    // V4
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/split-array-largest-sum/solutions/1904499/java-0ms-100-clean-simplest-solution-with-comments/
-    public int splitArray(int[] nums, int m) {
+    public int splitArray_4(int[] nums, int m) {
 
         if (nums == null || nums.length == 0 || m == 0 ) {
             return 0;
