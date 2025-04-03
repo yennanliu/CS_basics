@@ -1374,10 +1374,92 @@ public class workspace9 {
         return 0;
     }
 
+  // LC 004
+  // 6.12 - 6.22 pm
+  /**
+   *  -> NOTE !!!
+   *     nums1, nums2 are sorted
+   *
+   *  IDEA 0)  BRUTE FORCE
+   *
+   *  IDEA 1) 2 stack : small, big
+   *    - small_st : vals < median
+   *    - big_st:  vals >= median
+   *
+   *
+   *
+   *  exp 1)
+   *   Input: nums1 = [1,3], nums2 = [2]
+   *   Output: 2.00000
+   *
+   *   ->
+   *     nums1 = [1,3]     small_st = [1]
+   *              x
+   *
+   *     nums2 = [2]
+   *
+   *
+   *
+   */
+  public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+      // edge
+      if(nums1.length == 0 && nums2.length == 0){
+          return 0.0; // ?
+      }
+      if(nums1.length == 0 || nums2.length == 0){
+          if(nums1.length == 0){
+              //return nums2[(nums2.length - 1) / 2]; // ?
+              return getMedian(nums2);
+          }
+         // return nums1[(nums1.length - 1) / 2]; // ?
+          return getMedian(nums1);
+      }
 
-    // LC 004
-    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-      return 0.0;
+      //Integer[] nums_merge = new Integer[nums1.length + nums2.length];
+      List<Integer> cache = new ArrayList<>();
+      for(int i = 0; i < nums1.length; i++){
+          cache.add(nums1[i]);
+      }
+
+      for(int i = 0; i < nums2.length; i++){
+          cache.add(nums2[i]);
+      }
+
+      System.out.println(">>> (before sort) cache = " + cache);
+
+      // sort (small -> big)
+      Collections.sort(cache, new Comparator<Integer>() {
+          @Override
+          public int compare(Integer o1, Integer o2) {
+              int diff = o1 - o2;
+              return diff;
+          }
+      });
+
+      System.out.println(">>> (after sort) cache = " + cache);
+      // size is even
+      if(cache.size() % 2 == 0){
+          double val1 = cache.get( ( cache.size() / 2 ));
+          double val2 = cache.get( ( cache.size() / 2 ) - 1);
+
+          System.out.println(">>> val1 = " + val1 + ", val2 = " + val2);
+
+          // [1,2,3,4]
+          // [1,2,3,4,5,6]
+          return  (val1 + val2) / 2;
+      }
+      // size is odd
+      return  cache.get(cache.size() / 2);
+    }
+
+    public double getMedian(int[] num){
+       int size = num.length;
+       if(size % 2 == 0){
+           double val1 = num[num.length / 2];
+           double val2 = num[(num.length / 2) - 1];
+           return (val1 + val2) / 2;
+       }
+       return num[(num.length / 2)];
     }
 
 }
