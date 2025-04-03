@@ -49,20 +49,34 @@ public class TimeBasedKeyValueStore {
 
     // V0
     // IDEA : HASHMAP + BINARY SEARCH
+    /**
+     *  KEY POINT:
+     *
+     *  1) define 2 helper maps:
+     *
+     *     - keyValueMap : { key : [v_1, v_2,...] }
+     *     - insertTimeMap : { key : [t_1, t_2, ... ] }
+     * 
+     */
     class TimeMap {
 
         // attr
-        /** keyValueMap : {k: v} */
+        /**
+         *  NOTE !!!
+         *
+         * keyValueMap : { key : [v_1, v_2, ...] }
+         */
         Map<String, List<String>> keyValueMap;
         /**
          * NOTE !!!
-         *   InsertTimeMap : {v: [t1, t2, ...]}
+         *
+         *   InsertTimeMap : { key : [t1, t2, ...] }
          */
-        Map<String, List<Integer>> InsertTimeMap;
+        Map<String, List<Integer>> insertTimeMap;
 
         public TimeMap() {
             this.keyValueMap = new HashMap<>();
-            this.InsertTimeMap = new HashMap<>();
+            this.insertTimeMap = new HashMap<>();
         }
 
         public void set(String key, String value, int timestamp) {
@@ -74,9 +88,9 @@ public class TimeBasedKeyValueStore {
             this.keyValueMap.put(key, values);
 
             // update InsertTimeMap
-            List<Integer> times = this.InsertTimeMap.getOrDefault(key, new ArrayList<>());
+            List<Integer> times = this.insertTimeMap.getOrDefault(key, new ArrayList<>());
             times.add(timestamp);
-            this.InsertTimeMap.put(key, times);
+            this.insertTimeMap.put(key, times);
         }
 
         public String get(String key, int timestamp) {
@@ -85,7 +99,7 @@ public class TimeBasedKeyValueStore {
             }
 
             // V1 : linear search (TLE)
-            List<Integer> times = this.InsertTimeMap.get(key);
+            List<Integer> times = this.insertTimeMap.get(key);
 //            while (timestamp >= 0){
 //                if (times.contains(timestamp)){
 //                    int idx = times.indexOf(timestamp);
