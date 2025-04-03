@@ -2,7 +2,7 @@ package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/median-of-two-sorted-arrays/description/
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * 4. Median of Two Sorted Arrays
@@ -44,6 +44,68 @@ public class MedianOfTwoSortedArrays {
 //    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 //
 //    }
+
+    // V0-1
+    // IDEA: BRUTE FORCE (sort + even/odd size median number)
+    public double findMedianSortedArrays_0_1(int[] nums1, int[] nums2) {
+        // edge
+        if (nums1.length == 0 && nums2.length == 0) {
+            return 0.0; // ?
+        }
+        if (nums1.length == 0 || nums2.length == 0) {
+            if (nums1.length == 0) {
+                return getMedian(nums2);
+            }
+            return getMedian(nums1);
+        }
+
+        List<Integer> cache = new ArrayList<>();
+        for (int i = 0; i < nums1.length; i++) {
+            cache.add(nums1[i]);
+        }
+
+        for (int i = 0; i < nums2.length; i++) {
+            cache.add(nums2[i]);
+        }
+
+        // sort (small -> big)
+        Collections.sort(cache, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        // size is even
+        /**
+         *  NOTE !!!
+         *
+         *   if array size is even
+         *
+         *   -> median = ( array[ array.size() / 2 ] + array[ (array.size() / 2) - 1 ] ) / 2
+         *
+         */
+        if (cache.size() % 2 == 0) {
+            double val1 = cache.get((cache.size() / 2));
+            double val2 = cache.get((cache.size() / 2) - 1);
+            // [1,2,3,4]
+            // [1,2,3,4,5,6]
+            return (val1 + val2) / 2;
+        }
+        // size is odd
+        return cache.get(cache.size() / 2);
+    }
+
+    public double getMedian(int[] num) {
+        int size = num.length;
+        if (size % 2 == 0) {
+            double val1 = num[num.length / 2];
+            double val2 = num[(num.length / 2) - 1];
+            return (val1 + val2) / 2;
+        }
+        return num[(num.length / 2)];
+    }
 
     // V1-1
     // https://neetcode.io/problems/median-of-two-sorted-arrays
