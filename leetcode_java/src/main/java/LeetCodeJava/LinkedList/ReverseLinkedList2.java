@@ -4,6 +4,9 @@ package LeetCodeJava.LinkedList;
 
 import LeetCodeJava.DataStructure.ListNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 92. Reverse Linked List II
  * Solved
@@ -51,9 +54,63 @@ public class ReverseLinkedList2 {
    */
 
   // V0
-  //    public ListNode reverseBetween(ListNode head, int left, int right) {
-  //
-  //    }
+  // IDEA: reverse ListNode within start, end idx
+  // TODO: fix below
+//  public ListNode reverseBetween(ListNode head, int left, int right) {
+//      // edge
+//      if(head == null || head.next == null){
+//          return head;
+//      }
+//      // ??
+//      if(right == left){
+//          return head;
+//      }
+//      if(right < left){
+//          throw new RuntimeException("invalid left, right val");
+//      }
+//
+//      /**
+//       *  ListNode : reverse nodes withon start, end idx
+//       */
+//      ListNode dummy = null;
+//      dummy.next = head;
+//      ListNode _prev = null;
+//
+//      boolean shouldReverse = false;
+//      int idx = 0;
+//
+//      while(head != null){
+//          if(idx < left || idx > right){
+//              shouldReverse = false;
+//          }
+//          else{
+//              shouldReverse = true;
+//          }
+//
+//          // get `prev` node before reverse
+//          if(idx == left - 1){
+//              _prev = head;
+//          }
+//          // start `reverse`
+//          if(shouldReverse){
+//              ListNode _next = head.next;
+//              head.next = _prev;
+//              _prev = head;
+//              head = _next;
+//              //continue; // /?
+//          }
+//
+//          _prev.next = head; // ???
+//          // end reverse
+//          if(!shouldReverse){
+//              head = head.next;
+//          }
+//          //head = _next;
+//          idx += 1;
+//      }
+//
+//      return dummy.next; // ???
+//  }
 
   // V0-1
   // IDEA: LINKED LIST OP (iteration 1)
@@ -147,6 +204,88 @@ public class ReverseLinkedList2 {
         }
         return prev;
     }
+
+  // V0-3
+  // IDEA: ARRAY (fixed by gpt)
+  public ListNode reverseBetween_0_3(ListNode head, int left, int right) {
+      if (head == null || head.next == null || left == right) {
+          return head;
+      }
+
+      List<Integer> values = new ArrayList<>();
+      ListNode current = head;
+
+      // Store all node values in an ArrayList
+      while (current != null) {
+          values.add(current.val);
+          current = current.next;
+      }
+
+      /**
+       *  NOTE !!!  below trick
+       *
+       *  -> we can simply reverse the sub array
+       *     via `SWAP` the element at left, right pointers
+       */
+      // Reverse the segment from index (left-1) to (right-1)
+      int startIdx = left - 1;
+      int endIdx = right - 1;
+      while (startIdx < endIdx) {
+          int temp = values.get(startIdx);
+          values.set(startIdx, values.get(endIdx));
+          values.set(endIdx, temp);
+          startIdx++;
+          endIdx--;
+      }
+
+      // Reconstruct the linked list with modified values
+      ListNode dummy = new ListNode(0);
+      ListNode newHead = dummy;
+      for (int val : values) {
+          newHead.next = new ListNode(val);
+          newHead = newHead.next;
+      }
+
+      return dummy.next;
+  }
+
+  // V0-4
+  // IDEA: reverse in start, end idx (fixed by gpt)
+  public ListNode reverseBetween_0_4(ListNode head, int left, int right) {
+      if (head == null || head.next == null || left == right) {
+          return head;
+      }
+      if (right < left) {
+          throw new RuntimeException("Invalid left, right values");
+      }
+
+      ListNode dummy = new ListNode(0);
+      dummy.next = head;
+      ListNode prev = dummy;
+
+      // Move `prev` to the node before `left`
+      for (int i = 0; i < left - 1; i++) {
+          prev = prev.next;
+      }
+
+      // Start reversing
+      ListNode curr = prev.next;
+      ListNode next = null;
+      ListNode prevRev = null;
+
+      for (int i = left; i <= right; i++) {
+          next = curr.next;
+          curr.next = prevRev;
+          prevRev = curr;
+          curr = next;
+      }
+
+      // Reconnect reversed part with original list
+      prev.next.next = curr;
+      prev.next = prevRev;
+
+      return dummy.next;
+  }
 
   // V1
   // IDEA: LINKED LIST (GPT)

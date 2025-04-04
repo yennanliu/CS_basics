@@ -1526,6 +1526,137 @@ public class workspace9 {
     }
 
     // LC 92
+    // 4.03 - 4.16 pm
+    /**
+     *  IDEA 1) list -> reverse -> listNode
+     *
+     *
+     */
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+        // ??
+        if(right == left){
+            return head;
+        }
+        if(right < left){
+            throw new RuntimeException("invalid left, right val");
+        }
+
+        /**
+         *  ListNode : reverse nodes withon start, end idx
+         */
+        ListNode dummy = null;
+        dummy.next = head;
+        ListNode _prev = null;
+
+        boolean shouldReverse = false;
+        int idx = 0;
+
+        while(head != null){
+            if(idx < left || idx > right){
+                shouldReverse = false;
+            }
+            else{
+                shouldReverse = true;
+            }
+
+            // get `prev` node before reverse
+            if(idx == left - 1){
+                _prev = head;
+            }
+            // start `reverse`
+            if(shouldReverse){
+                ListNode _next = head.next;
+                head.next = _prev;
+                _prev = head;
+                head = _next;
+                //continue; // /?
+            }
+
+            _prev.next = head; // ???
+            // end reverse
+            if(!shouldReverse){
+                head = head.next;
+            }
+            //head = _next;
+            idx += 1;
+        }
+
+        return dummy.next; // ???
+    }
+
+//   public ListNode reverseBetween(ListNode head, int left, int right) {
+//      // edge
+//      if(head == null || head.next == null){
+//          return head;
+//      }
+//      // ??
+//      if(right == left){
+//          return head;
+//      }
+//      if(right < left){
+//          throw new RuntimeException("invalid left, right val");
+//      }
+//
+//      List<Integer> cache = new ArrayList<>();
+//      int startIdx = -1;
+//      int endIdx = -1;
+//      int idx = 0;
+//
+//      ListNode head2 = head;
+//
+//      while(head2 != null){
+//          if(head2.val == left){
+//              startIdx = idx;
+//          }
+//          if(head2.val == right){
+//              endIdx = idx;
+//          }
+//          cache.add(head2.val);
+//          head2 = head2.next;
+//          idx += 1;
+//      }
+//
+//       List<Integer> leftSub = new ArrayList<>();
+//       List<Integer> rightSub = new ArrayList<>();
+//       List<Integer> toReverse = new ArrayList<>();
+//
+//       // 0,1,2
+//      for(int i = 0; i < cache.size(); i++){
+//          if(i < startIdx){
+//              leftSub.add(cache.get(i));
+//          }else if (i > startIdx && i < endIdx){
+//              toReverse.add(cache.get(i));
+//          }else{
+//              rightSub.add(cache.get(i));
+//          }
+//      }
+//
+//      // reverse
+//      Collections.reverse(toReverse);
+//
+//      List<Integer> finalCache = new ArrayList<>();
+//      for(int i = 0; i < leftSub.size(); i++){
+//          finalCache.add(leftSub.get(i));
+//      }
+//       for(int i = 0; i < toReverse.size(); i++){
+//           finalCache.add(toReverse.get(i));
+//       }
+//       for(int i = 0; i < rightSub.size(); i++){
+//           finalCache.add(rightSub.get(i));
+//       }
+//
+//      ListNode dummy = null;
+//      for(Integer x: finalCache){
+//          dummy.next = new ListNode(x);
+//          dummy = dummy.next;
+//      }
+//
+//      return dummy.next;
+//   }
 
 
 }
