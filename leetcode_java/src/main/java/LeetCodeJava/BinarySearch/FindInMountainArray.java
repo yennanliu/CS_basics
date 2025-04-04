@@ -79,7 +79,7 @@ public class FindInMountainArray {
         // Save the length of the mountain array
         int length = mountainArr.length();
 
-        // 1. Find the index of the peak element
+        // 1. Find the index of the `peak` element
         int low = 1;
         int high = length - 2;
         while (low != high) {
@@ -225,5 +225,112 @@ public class FindInMountainArray {
         return -1;
     }
 
+    // V3
+    // https://leetcode.com/problems/find-in-mountain-array/solutions/4159000/100-binary-search-explained-intuition-by-1gun/
+    public int findInMountainArray_3(int target, MountainArray mountainArr) {
+        int length = mountainArr.length();
 
+        // Find the index of the peak element in the mountain array.
+        int peakIndex = findPeakIndex(1, length - 2, mountainArr);
+
+        // Binary search for the target in the increasing part of the mountain array.
+        int increasingIndex = binarySearch(0, peakIndex, target, mountainArr, false);
+        if (mountainArr.get(increasingIndex) == target)
+            return increasingIndex; // Target found in the increasing part.
+
+        // Binary search for the target in the decreasing part of the mountain array.
+        int decreasingIndex = binarySearch(peakIndex + 1, length - 1, target, mountainArr, true);
+        if (mountainArr.get(decreasingIndex) == target)
+            return decreasingIndex; // Target found in the decreasing part.
+
+        return -1; // Target not found in the mountain array.
+    }
+
+    private int findPeakIndex(int low, int high, MountainArray mountainArr) {
+        while (low != high) {
+            int mid = low + (high - low) / 2;
+            if (mountainArr.get(mid) < mountainArr.get(mid + 1)) {
+                low = mid + 1; // Move to the right side (increasing slope).
+            } else {
+                high = mid; // Move to the left side (decreasing slope).
+            }
+        }
+        return low; // Return the index of the peak element.
+    }
+
+    private int binarySearch(int low, int high, int target, MountainArray mountainArr, boolean reversed) {
+        while (low != high) {
+            int mid = low + (high - low) / 2;
+            if (reversed) {
+                if (mountainArr.get(mid) > target)
+                    low = mid + 1; // Move to the right side for a decreasing slope.
+                else
+                    high = mid; // Move to the left side for an increasing slope.
+            } else {
+                if (mountainArr.get(mid) < target)
+                    low = mid + 1; // Move to the right side for an increasing slope.
+                else
+                    high = mid; // Move to the left side for a decreasing slope.
+            }
+        }
+        return low; // Return the index where the target should be or would be inserted.
+    }
+
+    // V4
+    // https://leetcode.com/problems/find-in-mountain-array/solutions/4159293/video-give-me-10-minutes-how-we-think-ab-b582/
+    public int findInMountainArray_4(int target, MountainArray mountainArr) {
+        int length = mountainArr.length();
+        int peakIndex = findPeak(mountainArr, length);
+
+        int result = findTarget(mountainArr, 0, peakIndex, target, true);
+        if (result != -1) {
+            return result;
+        }
+
+        return findTarget(mountainArr, peakIndex + 1, length - 1, target, false);
+    }
+
+    private int findTarget(MountainArray mountainArr, int left, int right, int target, boolean isUpside) {
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            int midVal = mountainArr.get(mid);
+
+            if (midVal == target) {
+                return mid;
+            }
+
+            if (isUpside) {
+                if (target > midVal) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            } else {
+                if (target > midVal) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private int findPeak(MountainArray mountainArr, int length) {
+        int left = 0;
+        int right = length - 1;
+
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (mountainArr.get(mid) < mountainArr.get(mid + 1)) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        return left;
+    }
+    
 }
