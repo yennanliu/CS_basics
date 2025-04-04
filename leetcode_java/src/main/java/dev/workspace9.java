@@ -1467,9 +1467,35 @@ public class workspace9 {
        public int length() {return 0;}
     }
 
-    // LC 1095
-    public int findInMountainArray(int target, MountainArray mountainArr) {
-
+  // LC 1095
+  // 3.22 - 3.32 pm
+  /**
+   *  IDEA 1) BINARY SEARCH
+   *
+   *   1. via get, check below cases
+   *
+   *    *    case 1) `mid + left` is in ascending order
+   *    *    case 2) `mid + right` is in ascending order
+   *
+   *
+   *   2. if can't find a solution,return -1
+   *
+   *
+   *   exp 1)
+   *
+   *   Input: mountainArr = [1,2,3,4,5,3,1], target = 3
+   *   Output: 2
+   *
+   *    case 1) `mid + left` is in ascending order
+   *    case 2) `mid + right` is in ascending order
+   *
+   *   [1,2,3,4,5,3,1]
+   *
+   *   [1,2,3,7,5]
+   *
+   */
+  public int findInMountainArray(int target, MountainArray mountainArr) {
+      return 0;
     }
 
 
