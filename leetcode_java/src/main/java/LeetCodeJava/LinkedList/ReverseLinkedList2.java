@@ -133,6 +133,9 @@ public class ReverseLinkedList2 {
        *
        *  we move to `left - 1 ` idx (instead of `left`)
        *  -> for simpler operation (less edge cases)
+       *
+       *
+       *  NOTE `i < left - 1` idx
        */
       for (int i = 0; i < left - 1; i++) {
           leftPrev = cur;
@@ -153,17 +156,66 @@ public class ReverseLinkedList2 {
           cur = tmpNext;
       }
 
-      /**
-       * NOTE !!!
-       *
-       *  1) we point  leftPrev.next to `prev`, which is the head of `reverse linked list`
-       *  2) we point  leftPrev.next.next to `cur`, since we still need the remaining linked list which is NOT reversed
-       *          (e.g. linked list with idx > r)
-       */
-      leftPrev.next.next = cur;
-      leftPrev.next = prev;
+    /**
+     * NOTE !!!
+     *
+     *  1) we point  leftPrev.next to `prev`,
+     *    which is the head of `reverse linked list`
+     *
+     *  2) we point  leftPrev.next.next to `cur`,
+     *     since we still need the `remaining` linked list
+     *     which is NOT reversed
+     *     (e.g. linked list with idx > r)
+     *
+     *
+     *  Example 1)
+     *
+     *     listNode = 1 → 2 → 3 → 4 → 5
+     *
+     *     -> reverse the portion between `left = 2 and right = 4`:
+     *
+     *            2 → 3 → 4  → becomes →  4 → 3 → 2
+     *
+     *    -> Key Pointers in the Process
+     * 	         -  leftPrev → Node before the left position (1)
+     * 	         -  cur → First node after the reversed sublist (5)
+     * 	         -  prev → New head of the reversed sublist (4 after reversal)
+     *
+     * 	 step 1)  Before Reconnection
+     *
+     * 	      At this point, after reversing 2 → 3 → 4, we have:
+     *
+     * 	      1 → [ 4 → 3 → 2 ]  5
+     *       leftPrev          prev  cur
+     *
+     *       	•	prev is the head of the reversed sublist (4).
+     *      	•	cur is the first node after the reversed section (5).
+     *
+     *  Step 2)  Executing leftPrev.next.next = cur;
+     *
+     *        This reconnects the end of the reversed list (2) to cur (5).
+     *
+     *
+     *        1 → [ 4 → 3 → 2 ] → 5
+     *       leftPrev          prev   cur
+     *                  last node of reversed list
+     *
+     *       Now, 2.next = 5, so 2 (last node of the reversed sublist) correctly points to 5.
+     *
+     *  Step 3) Executing leftPrev.next = prev;
+     *
+     *         - This connects leftPrev.next (1.next) to the new
+     *           head of the reversed sublist (4).
+     *
+     *
+     *          1 → 4 → 3 → 2 → 5
+     *         leftPrev   prev   cur
+     *
+     */
+    leftPrev.next.next = cur; // Connects the end of the reversed sublist to the rest of the list.
+    leftPrev.next = prev; //  Connects the node before the reversed section to the new head of the reversed sublist.
 
-      return dummy.next;
+    return dummy.next;
   }
 
   // V0-2
