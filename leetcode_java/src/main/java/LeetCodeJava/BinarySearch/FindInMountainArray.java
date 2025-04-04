@@ -332,5 +332,5 @@ public class FindInMountainArray {
 
         return left;
     }
-    
+
 }

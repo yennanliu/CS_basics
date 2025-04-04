@@ -1,5 +1,7 @@
 package dev;
 
+import LeetCodeJava.DataStructure.ListNode;
+
 import java.util.*;
 
 public class workspace9 {
@@ -1497,6 +1499,33 @@ public class workspace9 {
   public int findInMountainArray(int target, MountainArray mountainArr) {
       return 0;
     }
+
+    // LC 206
+    public ListNode reverseList(ListNode head) {
+      // edge
+      if(head == null || head.next == null){
+          return head;
+      }
+      /**
+       *  4 steps
+       *
+       */
+//      ListNode dummy = new ListNode();
+//      dummy.next = head;
+      ListNode _prev = null; //new ListNode();
+
+      while(head != null){
+          ListNode _next = head.next;
+          head.next = _prev;
+         // _prev.next = head;
+          _prev = head;
+          head = _next;
+      }
+
+      return _prev;
+    }
+
+    // LC 92
 
 
 }

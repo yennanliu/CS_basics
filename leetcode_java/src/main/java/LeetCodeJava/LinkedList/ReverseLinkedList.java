@@ -51,9 +51,14 @@ public class ReverseLinkedList {
             /**
              * NOTE !!!
              *
-             *  init _prev as null (but NOT `new ListNode()`, (or the result will be wrong))
+             *  init _prev as null (but NOT `new ListNode()`
+             *  -> (or the result is wrong) (`new ListNode()` default val is 1, instead of null)
+             *
+             *
+             *  e.g. below is WRONG !!!
+             *   ListNode _prev = new ListNode();
              */
-            ListNode _prev = null;
+            ListNode _prev = null; // NOTE !!! this
 
             while (head != null) {
                 /**
