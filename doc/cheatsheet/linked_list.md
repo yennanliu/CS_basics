@@ -109,7 +109,9 @@ public class Node {
 - problem types
     - reverse
         - reverse linked list
-            - LC 206, 92
+            - LC 206
+        -  reverse linked list within start, end point
+            - LC 92, LC 25
         - reverse part of linked list
         - reverse k set of linked list
     - merge
