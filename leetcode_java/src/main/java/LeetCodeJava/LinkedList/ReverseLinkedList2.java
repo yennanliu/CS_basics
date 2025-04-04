@@ -125,7 +125,8 @@ public class ReverseLinkedList2 {
        */
       ListNode dummy = new ListNode(0);
       dummy.next = head;
-      ListNode leftPrev = dummy, cur = head;
+      ListNode leftPrev = dummy;
+      ListNode cur = head;
 
       /**
        * NOTE !!!
@@ -268,21 +269,34 @@ public class ReverseLinkedList2 {
           prev = prev.next;
       }
 
-      // Start reversing
-      ListNode curr = prev.next;
-      ListNode next = null;
-      ListNode prevRev = null;
+    // Start reversing
+    /**
+     *   NOTE !!!
+     *
+     *   - curr: Tracks the current node in the reversal process
+     *
+     *
+     *   - next: Temporarily stores the `next node` `BEFORE` modifying curr.next
+     *           . -> for `next pointer` within while loop (reverse op)
+     *
+     *   - prevRev: Tracks the `previous node` in the `REVERSED` section
+     *             . -> so via `prevRev`, we know which `prev` node to point to
+     *              within while loop (reverse op)
+     */
+    ListNode _curr = prev.next;
+    ListNode _next = null;
+    ListNode _prevRev = null;
 
       for (int i = left; i <= right; i++) {
-          next = curr.next;
-          curr.next = prevRev;
-          prevRev = curr;
-          curr = next;
+          _next = _curr.next;
+          _curr.next = _prevRev;
+          _prevRev = _curr;
+          _curr = _next;
       }
 
       // Reconnect reversed part with original list
-      prev.next.next = curr;
-      prev.next = prevRev;
+      prev.next.next = _curr;
+      prev.next = _prevRev;
 
       return dummy.next;
   }
