@@ -1462,4 +1462,15 @@ public class workspace9 {
        return num[(num.length / 2)];
     }
 
+    class MountainArray {
+       public int get(int index) {return 0;}
+       public int length() {return 0;}
+    }
+
+    // LC 1095
+    public int findInMountainArray(int target, MountainArray mountainArr) {
+
+    }
+
+
 }
