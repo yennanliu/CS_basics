@@ -37,6 +37,38 @@
 
 #### 0-2-1) General form
 
+```java
+// java
+// crack code p.136
+
+// 1) Preorder traversal
+public TreeNode PreOrderTraversal(TreeNode root){
+    if(root != null){
+        System.out.println(root);
+        PreOrderTraversal(root.left);
+        PreOrderTraversal(root.right);
+    }
+}
+
+// 2) Postorder traversal
+public TreeNode PostOrderTraversal(TreeNode root){
+    if(root != null){
+        PostOrderTraversal(root.left);
+        PostOrderTraversal(root.right);
+        System.out.println(root);
+    }
+}
+
+// 3) Inorder traversal
+public TreeNode InOrderTraversal(TreeNode root){
+    if(root != null){
+        InOrderTraversal(root.left);
+        System.out.println(root);
+        InOrderTraversal(root.right);
+    }
+}
+```
+
 ```python
 # form I
 def dfs(root):
