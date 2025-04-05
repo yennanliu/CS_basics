@@ -1848,6 +1848,60 @@ public class workspace9 {
         
     }
 
+    // LC 225
+    // 7.28 - 7.38 pm
+    /**
+     *  IDEA 1) 2 QUEUE
+     *
+     *    q1 : accept new val
+     *    q2 : simulate stack (for peek, pop op)
+     *
+     */
+    class MyStack {
+
+        Queue<Integer> q1;
+        Queue<Integer> q2;
+
+        public MyStack() {
+            this.q1 = new LinkedList<>();
+            this.q2 = new LinkedList<>();
+        }
+
+        public void push(int x) {
+            this.q1.add(x);
+        }
+
+        public int pop() {
+            if(this.empty()){
+                throw new RuntimeException("stack is empty");
+            }
+            if(!this.q2.isEmpty()){
+                return this.q2.poll();
+            }
+            this.rebalance();
+            return this.q2.poll();
+        }
+
+        public int top() {
+            if(this.empty()){
+                throw new RuntimeException("stack is empty");
+            }
+            this.rebalance();
+            return this.q2.peek();
+        }
+
+        public boolean empty() {
+            return this.q1.isEmpty() && this.q2.isEmpty();
+        }
+
+        private void rebalance(){
+            while(!this.q1.isEmpty()){
+                this.q2.add(this.q1.poll());
+            }
+        }
+
+    }
+
 
 
 }
