@@ -1723,4 +1723,73 @@ public class workspace9 {
     }
 
 
+    // LC 642
+    // 6.48 - 6.58 pm
+    /**
+     *  IDEA 1) `CIRCULAR` LINKED LIST + OP
+     *
+     *  IDEA 2) DEQUEUE ???
+     *
+     *  IDEA 3) use `queue` + `stack`
+     *       -> queue for `first element`
+     *       -> stack for `last element`
+     *
+     */
+    class MyCircularQueue {
+
+        // attr
+        //ListNode node;
+        Stack<Integer> st;
+        Queue<Integer> q;
+        int capacity;
+        int elementCnt;
+
+        public MyCircularQueue(int k) {
+            //this.node = null;
+            this.st = new Stack<>();
+            this.q = new LinkedList<>();
+            this.capacity = k;
+            this.elementCnt = 0;
+        }
+
+        public boolean enQueue(int value) {
+            this.st.add(value);
+            this.q.add(value);
+            this.elementCnt += 1;
+            return true;
+        }
+
+        public boolean deQueue() {
+            this.q.poll();
+            this.st.pop();
+            return true; // ???
+        }
+
+        public int Front() {
+            //return this.node.next.val; // ???
+            if(this.q.isEmpty()){
+                return -1;
+            }
+            return this.q.peek();
+        }
+
+        public int Rear() {
+            if(this.st.isEmpty()){
+                return -1;
+            }
+            return this.st.peek();
+        }
+
+        public boolean isEmpty() {
+            return this.elementCnt > 0;
+        }
+
+        public boolean isFull() {
+            return this.elementCnt == this.capacity;
+        }
+
+    }
+
+
+
 }
