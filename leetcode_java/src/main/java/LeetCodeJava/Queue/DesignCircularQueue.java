@@ -149,7 +149,7 @@ public class DesignCircularQueue {
 
     // V2-2
     // https://leetcode.com/problems/design-circular-queue/solutions/1141876/js-python-java-c-simple-array-solution-w-fbum/
-    // IDEA: LISTNODE
+    // IDEA: ListNode
     class ListNode {
         int val;
         ListNode next;
@@ -209,6 +209,7 @@ public class DesignCircularQueue {
 
     // V3
     // https://leetcode.com/problems/design-circular-queue/solutions/2620288/leetcode-the-hard-way-explained-line-by-93bil/
+    // IDEA: ARRAY
     // Time Complexity: O(1)
     // Space Complexity: O(N)
     class MyCircularQueue_3 {
@@ -292,6 +293,7 @@ public class DesignCircularQueue {
 
     // V4
     // https://leetcode.com/problems/design-circular-queue/submissions/1597388031/
+    // IDEA: ARRAY
     class MyCircularQueue_4 {
 
         private int front;
