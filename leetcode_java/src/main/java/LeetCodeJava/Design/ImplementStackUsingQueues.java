@@ -90,6 +90,52 @@ public class ImplementStackUsingQueues {
         }
     }
 
+    // V0-1
+    // IDEA: 2 STACK (fixed by gpt)
+    class MyStack_0_1 {
+
+        Queue<Integer> q1;
+        Queue<Integer> q2;
+
+        public MyStack_0_1() {
+            this.q1 = new LinkedList<>();
+            this.q2 = new LinkedList<>();
+        }
+
+        public void push(int x) {
+            // Push into q2 first
+            q2.add(x);
+
+            // Then push everything from q1 to q2 (new element goes to front)
+            while (!q1.isEmpty()) {
+                q2.add(q1.poll());
+            }
+
+            // Swap q1 and q2
+            Queue<Integer> temp = q1;
+            q1 = q2;
+            q2 = temp;
+        }
+
+        public int pop() {
+            if (empty()) {
+                throw new RuntimeException("Stack is empty");
+            }
+            return q1.poll();
+        }
+
+        public int top() {
+            if (empty()) {
+                throw new RuntimeException("Stack is empty");
+            }
+            return q1.peek();
+        }
+
+        public boolean empty() {
+            return q1.isEmpty();
+        }
+    }
+
     // V1
     // https://leetcode.com/problems/implement-stack-using-queues/solutions/62516/concise-1-queue-java-c-python/
     class MyStack_2 {
