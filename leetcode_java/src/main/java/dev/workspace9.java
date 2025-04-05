@@ -1790,6 +1790,64 @@ public class workspace9 {
 
     }
 
+    // LC 232
+    // 7.16 PM - 7.26 PM
+    /**
+     *  IDEA 1) 2 STACK
+     *   st1 : collect `push` element
+     *   st2 : `reversely` save element pop from st1, so can simulate queue
+     *
+     */
+    class MyQueue {
+
+        Stack<Integer> st1;
+        Stack<Integer> st2;
+       // int elementCnt;
+
+        public MyQueue() {
+            st1 = new Stack<>();
+            st2 = new Stack<>();
+        }
+
+        public void push(int x) {
+            this.st1.push(x);
+        }
+
+        public int pop() {
+            if(this.empty()){
+                throw new RuntimeException("queue is empty");
+            }
+            if(!this.st2.isEmpty()){
+                return this.st2.pop();
+            }
+            this.rebalance();
+            return this.st2.pop();
+        }
+
+        public int peek() {
+            if(this.empty()){
+                throw new RuntimeException("queue is empty");
+            }
+            if(!this.st2.isEmpty()){
+                return this.st2.peek();
+            }
+            this.rebalance();
+            return this.st2.peek();
+        }
+
+        public boolean empty() {
+            return this.st1.isEmpty() && this.st2.isEmpty();
+        }
+        
+        private void rebalance(){
+            // push element to st2
+            while(!this.st1.isEmpty()){
+                this.st2.add(this.st1.pop());
+            }
+        }
+        
+    }
+
 
 
 }

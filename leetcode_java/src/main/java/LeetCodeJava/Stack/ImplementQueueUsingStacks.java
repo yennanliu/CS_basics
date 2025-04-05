@@ -54,28 +54,104 @@ import java.util.Stack;
 public class ImplementQueueUsingStacks {
 
     // V0
-//    class MyQueue {
-//
-//        public MyQueue() {
-//
-//        }
-//
-//        public void push(int x) {
-//
-//        }
-//
-//        public int pop() {
-//
-//        }
-//
-//        public int peek() {
-//
-//        }
-//
-//        public boolean empty() {
-//
-//        }
-//    }
+    // IDEA: 2 STACK (st1 for accepting new element, st2 `simulate` `queue`, for pop, peek op)
+    class MyQueue {
+
+        Stack<Integer> st1;
+        Stack<Integer> st2;
+
+        public MyQueue() {
+            st1 = new Stack<>();
+            st2 = new Stack<>();
+        }
+
+        public void push(int x) {
+            this.st1.push(x);
+        }
+
+        public int pop() {
+            if (this.empty()) {
+                throw new RuntimeException("queue is empty");
+            }
+            if (!this.st2.isEmpty()) {
+                return this.st2.pop();
+            }
+            this.rebalance();
+            return this.st2.pop();
+        }
+
+        public int peek() {
+            if (this.empty()) {
+                throw new RuntimeException("queue is empty");
+            }
+            if (!this.st2.isEmpty()) {
+                return this.st2.peek();
+            }
+            this.rebalance();
+            return this.st2.peek();
+        }
+
+        public boolean empty() {
+            return this.st1.isEmpty() && this.st2.isEmpty();
+        }
+
+        private void rebalance() {
+            // push element to st2
+            while (!this.st1.isEmpty()) {
+                this.st2.add(this.st1.pop());
+            }
+        }
+
+    }
+
+    // V0-1
+    // IDEA: 2 STACK (st1 for accepting new element, st2 `simulate` `queue`, for pop, peek op)
+    class MyQueue_0_1{
+
+        Stack<Integer> st1;
+        Stack<Integer> st2;
+
+        public MyQueue_0_1() {
+            st1 = new Stack<>();
+            st2 = new Stack<>();
+        }
+
+        public void push(int x) {
+            this.st1.push(x);
+        }
+
+        public int pop() {
+            if (this.empty()) {
+                throw new RuntimeException("queue is empty");
+            }
+            if (!this.st2.isEmpty()) {
+                return this.st2.pop();
+            }
+            // push element to st2
+            while (!this.st1.isEmpty()) {
+                this.st2.add(this.st1.pop());
+            }
+            return this.st2.pop();
+        }
+
+        public int peek() {
+            if (this.empty()) {
+                throw new RuntimeException("queue is empty");
+            }
+            if (!this.st2.isEmpty()) {
+                return this.st2.peek();
+            }
+            // push element to st2
+            while (!this.st1.isEmpty()) {
+                this.st2.add(this.st1.pop());
+            }
+            return this.st2.peek();
+        }
+
+        public boolean empty() {
+            return this.st1.isEmpty() && this.st2.isEmpty();
+        }
+    }
 
     // V1
 
