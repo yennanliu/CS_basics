@@ -1658,5 +1658,69 @@ public class workspace9 {
 //      return dummy.next;
 //   }
 
+    // LC 141
+    // 6.12 - 6.22 pm
+    public boolean hasCycle(ListNode head) {
+        // edge
+        if(head == null || head.next == null){
+            return false;
+        }
+        HashSet<ListNode> set = new HashSet<>();
+        while(head != null){
+            if(set.contains(head)){
+                return true;
+            }
+            set.add(head);
+            head = head.next;
+        }
+
+        return false;
+    }
+
+    // LC 42
+    // 6.21 - 6.31 pm
+    public ListNode detectCycle(ListNode head) {
+        // edge
+        if(head == null || head.next == null){
+            return null;
+        }
+        // use map record idx
+        // map : {ListNode: idx}
+        //Map<ListNode, Integer> map = new HashMap<>();
+
+        // check if there is a `cycle`
+        ListNode head2 = head;
+        HashSet<ListNode> set = new HashSet<>();
+        boolean foundCycle = false;
+        int idx = 0;
+        int cycleIdx = -1;
+        ListNode circuleNode = null;
+
+        while(head2 != null){
+
+            if(set.contains(head2)){
+                // there is a cycle
+                circuleNode = head2;
+                cycleIdx = idx;
+                foundCycle = true;
+                break;
+            }
+
+            set.add(head2);
+            //map.put(head2, idx);
+
+            head2 = head2.next;
+            idx += 1;
+        }
+        if(!foundCycle){
+            return null;
+        }
+
+        System.out.println(">>> circuleNode val = " + circuleNode.val);
+        System.out.println(">>> circuleNode next = " + circuleNode.next);
+        //return map.get(cycleIdx); // ???
+        return circuleNode.next;
+    }
+
 
 }
