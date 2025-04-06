@@ -75,15 +75,15 @@
 ```
 Preorder :
         
-            root ---- left - right
+            root ---- left ---- right
                  <-->     <-->
                   idx      idx
 
 
 Inorder :
         
-            left ---- root - right
-                 <-->     <-->
+            left ---- root ---- right
+                 <-->      <-->
                   idx      idx
 ``` 
 
