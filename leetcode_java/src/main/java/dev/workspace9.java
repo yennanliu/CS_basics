@@ -1735,53 +1735,70 @@ public class workspace9 {
      *       -> stack for `last element`
      *
      */
+    // 3.30 - 3.50 pm
+    // IDEA : ARRAY + ` x % y = z ` op
     class MyCircularQueue {
-
-        // attr
-        //ListNode node;
-        Stack<Integer> st;
-        Queue<Integer> q;
-        int capacity;
+        int[] arr;
         int elementCnt;
+        int capacity;
+        int head;
+        int tail;
 
         public MyCircularQueue(int k) {
-            //this.node = null;
-            this.st = new Stack<>();
-            this.q = new LinkedList<>();
-            this.capacity = k;
+            this.arr = new int[k];
             this.elementCnt = 0;
+            this.capacity = k;
+            this.head = 0;
+            // ???
+            this.tail = -1; //0;
         }
 
         public boolean enQueue(int value) {
-            this.st.add(value);
-            this.q.add(value);
+            // ???
+            if(this.isFull()){
+                return false;
+            }
+            this.tail = (this.tail + 1) % this.capacity;
+            //this.tail += 1;
+            this.arr[this.tail] = value;
             this.elementCnt += 1;
             return true;
         }
 
         public boolean deQueue() {
-            this.q.poll();
-            this.st.pop();
-            return true; // ???
+            // ???
+            if(this.isEmpty()){
+                return false;
+            }
+            if(this.head == this.tail){
+                this.head = 0;
+                this.tail = -1;
+            }else{
+                this.head = (this.head - 1) % this.capacity;
+            }
+//            this.head = (this.head + 1) % this.capacity;
+//            this.arr[this.head] = 0; // ???
+            //this.head += 1;
+            this.elementCnt -= 1;
+            return true;
         }
 
         public int Front() {
-            //return this.node.next.val; // ???
-            if(this.q.isEmpty()){
+            if(this.isEmpty()){
                 return -1;
             }
-            return this.q.peek();
+            return this.arr[this.head]; // ??
         }
 
         public int Rear() {
-            if(this.st.isEmpty()){
+            if(this.isEmpty()){
                 return -1;
             }
-            return this.st.peek();
+            return this.arr[this.tail]; // ??
         }
 
         public boolean isEmpty() {
-            return this.elementCnt > 0;
+            return this.elementCnt == 0;
         }
 
         public boolean isFull() {
@@ -1789,6 +1806,62 @@ public class workspace9 {
         }
 
     }
+
+
+//    class MyCircularQueue {
+//
+//        // attr
+//        //ListNode node;
+//        Stack<Integer> st;
+//        Queue<Integer> q;
+//        int capacity;
+//        int elementCnt;
+//
+//        public MyCircularQueue(int k) {
+//            //this.node = null;
+//            this.st = new Stack<>();
+//            this.q = new LinkedList<>();
+//            this.capacity = k;
+//            this.elementCnt = 0;
+//        }
+//
+//        public boolean enQueue(int value) {
+//            this.st.add(value);
+//            this.q.add(value);
+//            this.elementCnt += 1;
+//            return true;
+//        }
+//
+//        public boolean deQueue() {
+//            this.q.poll();
+//            this.st.pop();
+//            return true; // ???
+//        }
+//
+//        public int Front() {
+//            //return this.node.next.val; // ???
+//            if(this.q.isEmpty()){
+//                return -1;
+//            }
+//            return this.q.peek();
+//        }
+//
+//        public int Rear() {
+//            if(this.st.isEmpty()){
+//                return -1;
+//            }
+//            return this.st.peek();
+//        }
+//
+//        public boolean isEmpty() {
+//            return this.elementCnt > 0;
+//        }
+//
+//        public boolean isFull() {
+//            return this.elementCnt == this.capacity;
+//        }
+//
+//    }
 
     // LC 232
     // 7.16 PM - 7.26 PM
