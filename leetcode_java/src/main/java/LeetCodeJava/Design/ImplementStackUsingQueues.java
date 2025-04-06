@@ -136,6 +136,79 @@ public class ImplementStackUsingQueues {
         }
     }
 
+    // V0-2
+    // IDEA: ARRAY + head, tail pointer (fixed by gpt)
+    class MyCircularQueue_0_2 {
+        int[] arr;
+        int elementCnt;
+        int capacity;
+        int head;
+        int tail;
+
+        public MyCircularQueue_0_2(int k) {
+            this.arr = new int[k];
+            this.capacity = k;
+            this.elementCnt = 0;
+            this.head = 0;
+            this.tail = 0;
+        }
+
+        public boolean enQueue(int value) {
+            if (this.isFull()) {
+                return false;
+            }
+            arr[tail] = value;
+            /** NOTE !!!
+             *
+             *   below
+             */
+            tail = (tail + 1) % capacity;
+            elementCnt++;
+            return true;
+        }
+
+        public boolean deQueue() {
+            if (this.isEmpty()) {
+                return false;
+            }
+            /** NOTE !!!
+             *
+             *   below
+             */
+            head = (head + 1) % capacity;
+            elementCnt--;
+            return true;
+        }
+
+        public int Front() {
+            if (this.isEmpty()) {
+                return -1;
+            }
+            return arr[head];
+        }
+
+        public int Rear() {
+            if (this.isEmpty()) {
+                return -1;
+            }
+            /** NOTE !!!
+             *
+             *   below
+             */
+            int rearIndex = (tail - 1 + capacity) % capacity;
+            return arr[rearIndex];
+        }
+
+        public boolean isEmpty() {
+            return elementCnt == 0;
+        }
+
+        public boolean isFull() {
+            return elementCnt == capacity;
+        }
+    }
+
+
     // V1
     // https://leetcode.com/problems/implement-stack-using-queues/solutions/62516/concise-1-queue-java-c-python/
     class MyStack_2 {
