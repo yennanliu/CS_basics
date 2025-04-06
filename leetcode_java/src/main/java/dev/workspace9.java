@@ -1545,48 +1545,108 @@ public class workspace9 {
             throw new RuntimeException("invalid left, right val");
         }
 
-        /**
-         *  ListNode : reverse nodes withon start, end idx
-         */
+        // step 1) find idx `prev` than left
         ListNode dummy = null;
         dummy.next = head;
-        ListNode _prev = null;
-
-        boolean shouldReverse = false;
-        int idx = 0;
-
-        while(head != null){
-            if(idx < left || idx > right){
-                shouldReverse = false;
-            }
-            else{
-                shouldReverse = true;
-            }
-
-            // get `prev` node before reverse
-            if(idx == left - 1){
-                _prev = head;
-            }
-            // start `reverse`
-            if(shouldReverse){
-                ListNode _next = head.next;
-                head.next = _prev;
-                _prev = head;
-                head = _next;
-                //continue; // /?
-            }
-
-            _prev.next = head; // ???
-            // end reverse
-            if(!shouldReverse){
-                head = head.next;
-            }
-            //head = _next;
-            idx += 1;
+        ListNode head2 = head;
+        for(int i = 0; i < left; i++){
+            head2 = head2.next;
         }
+
+        // init !!!
+        ListNode _leftPrev = head2; // ???
+        ListNode _left = head2.next;
+        ListNode _prev = null;
+        //ListNode _next = null;
+
+        //          -> setup prev, leftPrev, ...
+        // step 2) reverse from left to right
+        for(int i = left; i < right; i++){
+            //ListNode _ = head2.next;
+            ListNode _next = _left.next;
+            //_prev.next = head2;
+            _left.next = _prev;
+            _prev = head2;
+            _left = _next;
+        }
+
+        /**
+         *   exp 1)
+         *
+         *    input: 1->2->3->4->5, left = 1, right = 3
+         *             |------|
+         *
+         *    output: 1-> 4 -> 3 -> 2 -> 5
+         *
+         *
+         *   -> input: 1->2->3->4->5
+         *             x
+         *
+         */
+
+        // step 3) reconnect prev, leftPrev, to right pointer
+        // ???
+        _leftPrev.next = _left; //head2;
+        _leftPrev.next.next = _prev;
 
         return dummy.next; // ???
     }
+
+//    public ListNode reverseBetween(ListNode head, int left, int right) {
+//        // edge
+//        if(head == null || head.next == null){
+//            return head;
+//        }
+//        // ??
+//        if(right == left){
+//            return head;
+//        }
+//        if(right < left){
+//            throw new RuntimeException("invalid left, right val");
+//        }
+//
+//        /**
+//         *  ListNode : reverse nodes withon start, end idx
+//         */
+//        ListNode dummy = null;
+//        dummy.next = head;
+//        ListNode _prev = null;
+//
+//        boolean shouldReverse = false;
+//        int idx = 0;
+//
+//        while(head != null){
+//            if(idx < left || idx > right){
+//                shouldReverse = false;
+//            }
+//            else{
+//                shouldReverse = true;
+//            }
+//
+//            // get `prev` node before reverse
+//            if(idx == left - 1){
+//                _prev = head;
+//            }
+//            // start `reverse`
+//            if(shouldReverse){
+//                ListNode _next = head.next;
+//                head.next = _prev;
+//                _prev = head;
+//                head = _next;
+//                //continue; // /?
+//            }
+//
+//            _prev.next = head; // ???
+//            // end reverse
+//            if(!shouldReverse){
+//                head = head.next;
+//            }
+//            //head = _next;
+//            idx += 1;
+//        }
+//
+//        return dummy.next; // ???
+//    }
 
 //   public ListNode reverseBetween(ListNode head, int left, int right) {
 //      // edge
