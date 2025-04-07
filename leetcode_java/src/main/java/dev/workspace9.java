@@ -2082,6 +2082,54 @@ public class workspace9 {
 
     }
 
+    // LC 460
+    // 10.36 - 10.46 am
+    /**
+     *  IDEA 1) HASHMAP + DEQUEUE
+     */
+    class LFUCache {
+        int capacity;
+        Map<Integer, Integer> kvMap;
+        Map<Integer, Integer> kFreqMap;
+        //Deque<Integer> dq;
+
+        public LFUCache(int capacity) {
+            this.capacity = capacity;
+            this.kvMap = new HashMap<>();
+            this.kFreqMap = new HashMap<>();
+           // this.dq = new LinkedList<>();
+        }
+
+        public int get(int key) {
+            if(!this.kvMap.containsKey(key)){
+                return -1;
+            }
+            int val = this.kvMap.get(key);
+            this.kFreqMap.put(key, this.kFreqMap.getOrDefault(key, 0) + 1);
+            return val;
+        }
+
+        public void put(int key, int value) {
+            if(this.kvMap.keySet().size() >= this.capacity){
+                // remove `least freq used` element
+                int k = this.getLeastFreqUsed();
+                this.kvMap.remove(k);
+                this.kFreqMap.remove(k);
+            }
+            this.kFreqMap.put(key, this.kFreqMap.getOrDefault(key, 0) + 1);
+        }
+
+        private int getLeastFreqUsed(){
+            //int key = -1;
+            int val = Integer.MAX_VALUE;
+            for(int k : this.kFreqMap.keySet()){
+                val = Math.min(val, this.kFreqMap.get(k));
+            }
+
+            return val;
+        }
+    }
+
 
 
 }
