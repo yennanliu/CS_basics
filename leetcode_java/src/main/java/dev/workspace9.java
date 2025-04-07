@@ -1526,7 +1526,7 @@ public class workspace9 {
     }
 
     // LC 92
-    // 4.03 - 4.16 pm
+    // 1.04 - 1.14 pm
     /**
      *  IDEA 1) list -> reverse -> listNode
      *
@@ -1549,7 +1549,7 @@ public class workspace9 {
         ListNode dummy = null;
         dummy.next = head;
         ListNode head2 = head;
-        for(int i = 0; i < left; i++){
+        for(int i = 0; i < left - 1; i++){
             head2 = head2.next;
         }
 
@@ -1559,16 +1559,18 @@ public class workspace9 {
         ListNode _prev = null;
         //ListNode _next = null;
 
-        //          -> setup prev, leftPrev, ...
+        // -> setup prev, leftPrev, ...
         // step 2) reverse from left to right
-        for(int i = left; i < right; i++){
+        for(int i = left; i < right - 1; i++){
             //ListNode _ = head2.next;
             ListNode _next = _left.next;
             //_prev.next = head2;
             _left.next = _prev;
-            _prev = head2;
+            _prev = _left;
             _left = _next;
         }
+
+        ListNode _right = _left.next;
 
         /**
          *   exp 1)
@@ -1587,10 +1589,12 @@ public class workspace9 {
         // step 3) reconnect prev, leftPrev, to right pointer
         // ???
         _leftPrev.next = _left; //head2;
-        _leftPrev.next.next = _prev;
+        _leftPrev.next.next = _right;
 
         return dummy.next; // ???
     }
+
+
 
 //    public ListNode reverseBetween(ListNode head, int left, int right) {
 //        // edge
