@@ -74,21 +74,51 @@ class ListNode {
 public class LRUCache_ {
 
     // V0
-    // TODO : implement
-//    class LRUCache {
-//
-//        public LRUCache(int capacity) {
-//
-//        }
-//
-//        public int get(int key) {
-//
-//        }
-//
-//        public void put(int key, int value) {
-//
-//        }
-//    }
+    // IDEA: HASHMAP + DEQUE (fixed by gpt)
+    class LRUCache {
+        int capacity;
+        Map<Integer, Integer> map;
+        Deque<Integer> dq;
+
+        public LRUCache(int capacity) {
+            this.capacity = capacity;
+            this.map = new HashMap<>();
+            this.dq = new LinkedList<>();
+        }
+
+        public int get(int key) {
+            if (!this.map.containsKey(key)) {
+                return -1;
+            }
+            // Get the value from the map
+            int val = this.map.get(key);
+
+            // Update the deque: remove and add the key to mark it as recently used
+            this.dq.remove(key);
+            this.dq.addLast(key);
+
+            return val;
+        }
+
+        public void put(int key, int value) {
+            if (this.map.containsKey(key)) {
+                // If the key exists, update the value and move the key to the end
+                this.map.put(key, value);
+                // Remove the old key and re-add it as the most recently used
+                this.dq.remove(key);
+                this.dq.addLast(key);
+            } else {
+                // If the cache is full, remove the least recently used key
+                if (this.dq.size() >= this.capacity) {
+                    int leastUsedKey = this.dq.pollFirst();
+                    this.map.remove(leastUsedKey);
+                }
+                // Add the new key-value pair
+                this.map.put(key, value);
+                this.dq.addLast(key);
+            }
+        }
+    }
 
 
     // V0-1
@@ -132,7 +162,6 @@ public class LRUCache_ {
 
     // V0-2
     // IDEA : DOUBLE LINKED LIST (gpt)
-
     class LRUCache0_2 {
         private class Node {
             int key;

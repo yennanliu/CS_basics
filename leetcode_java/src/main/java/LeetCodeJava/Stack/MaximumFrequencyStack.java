@@ -266,5 +266,5 @@ public class MaximumFrequencyStack {
             }
         }
     }
-    
+
 }
