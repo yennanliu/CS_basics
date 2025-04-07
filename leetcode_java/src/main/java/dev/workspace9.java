@@ -1795,19 +1795,21 @@ public class workspace9 {
      *       -> stack for `last element`
      *
      */
-    // 11.56 - 12.06 pm
+    // 11.56 - 12.21 pm
     // IDEA : ARRAY + ` x % y = z ` op
     class MyCircularQueue {
         int head;
         int tail; // ??
         int capacity;
-        Deque<Integer> dq;
+        //Deque<Integer> dq;
+        Integer[] arr;
 
         public MyCircularQueue(int k) {
             this.capacity = k;
             this.head = 0;
             this.tail = 0; // ???
-            this.dq = new LinkedList<>(); // ???
+            //this.dq = new LinkedList<>(); // ???
+            this.arr = new Integer[this.capacity];
         }
 
         public boolean enQueue(int value) {
@@ -1815,9 +1817,10 @@ public class workspace9 {
                 return false;
             }
             // ???
-            //this.dq.add
-            //int adjustedIdx =
-            this.dq.addLast(value);
+//            int adjustedIdx = (this.head + 1) % this.capacity;
+//            this.arr[adjustedIdx] = value; // ???
+            this.tail = (this.tail + 1) % this.capacity;
+            this.arr[this.tail] = value;
             return true;
 
         }
@@ -1826,8 +1829,14 @@ public class workspace9 {
             if(this.isEmpty()){
                 return false;
             }
+
             // ???
-            this.dq.pollFirst();
+            if(this.head == this.tail){
+                this.head = 0;
+                this.tail = -1;
+            }else{
+                this.head = (this.head + 1) % this.capacity;
+            }
             return true;
         }
 
@@ -1835,27 +1844,92 @@ public class workspace9 {
             if(this.isEmpty()){
                 return -1;
             }
-            return this.dq.getFirst(); // Queue: FIFO
+           // return this.dq.getFirst(); // Queue: FIFO
+            return this.arr[this.head]; // ???
         }
 
         public int Rear() {
             if(this.isEmpty()){
                 return -1;
             }
-            return this.dq.getLast(); // Queue: FIFO
+            //return this.dq.getLast(); // Queue: FIFO
+            return this.arr[this.tail]; // ???
         }
 
         public boolean isEmpty() {
 
-            return this.dq.isEmpty();
+            return this.head == this.tail; // ???? //this.dq.isEmpty();
         }
 
         public boolean isFull() {
 
-            return this.dq.size() == this.capacity;
+            //return this.dq.size() == this.capacity;
+            return (this.tail - this.head) + 1 == this.capacity; // ???
         }
 
     }
+
+
+    // IDEA: DQEUEU
+//    class MyCircularQueue {
+//        int head;
+//        int tail; // ??
+//        int capacity;
+//        Deque<Integer> dq;
+//
+//        public MyCircularQueue(int k) {
+//            this.capacity = k;
+//            this.head = 0;
+//            this.tail = 0; // ???
+//            this.dq = new LinkedList<>(); // ???
+//        }
+//
+//        public boolean enQueue(int value) {
+//            if(this.isFull()){
+//                return false;
+//            }
+//            // ???
+//            //this.dq.add
+//            //int adjustedIdx =
+//            this.dq.addLast(value);
+//            return true;
+//
+//        }
+//
+//        public boolean deQueue() {
+//            if(this.isEmpty()){
+//                return false;
+//            }
+//            // ???
+//            this.dq.pollFirst();
+//            return true;
+//        }
+//
+//        public int Front() {
+//            if(this.isEmpty()){
+//                return -1;
+//            }
+//            return this.dq.getFirst(); // Queue: FIFO
+//        }
+//
+//        public int Rear() {
+//            if(this.isEmpty()){
+//                return -1;
+//            }
+//            return this.dq.getLast(); // Queue: FIFO
+//        }
+//
+//        public boolean isEmpty() {
+//
+//            return this.dq.isEmpty();
+//        }
+//
+//        public boolean isFull() {
+//
+//            return this.dq.size() == this.capacity;
+//        }
+//
+//    }
 
 //    class MyCircularQueue {
 //        int[] arr;

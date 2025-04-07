@@ -159,7 +159,20 @@ public class DesignCircularQueue {
     // https://leetcode.com/problems/design-circular-queue/solutions/1141876/js-python-java-c-simple-array-solution-w-fbum/
     // IDEA: ARRAY
     class MyCircularQueue_2_1 {
-        int maxSize, head = 0, tail = -1;
+        /**
+         *
+         * maxSize: The maximum capacity of the circular queue (the size of the underlying array).
+         *
+         * head: The index of the `front` element in the queue.
+         *
+         * tail: The index of the `last` element in the queue.
+         *
+         * data: An array that holds the elements of the queue.
+         *
+         */
+        int maxSize = 0;
+        int head = 0;
+        int tail = -1; // NOTE !!! we init tail as -1
         int[] data;
 
         public MyCircularQueue_2_1(int k) {
@@ -168,33 +181,89 @@ public class DesignCircularQueue {
         }
 
         public boolean enQueue(int val) {
-            if (isFull())
-                return false;
-            tail = (tail + 1) % maxSize;
-            data[tail] = val;
-            return true;
+            if (isFull())  // Check if the queue is full.
+                return false;  // If the queue is full, return false.
+            /**
+             *  NOTE !!!  below op
+             *
+             *  1)  we do `tail + 1` first,
+             *     then adjust the idx (per circular setting)
+             *     -> e.g. (tail + 1) % maxSize
+             *
+             *
+             *  2) Update the tail index: The tail index is incremented
+             *    in a circular fashion using the formula (tail + 1) % maxSize.
+             *    This ensures that when tail reaches the end of the array,
+             *    it wraps back around to the beginning.
+             *
+             */
+            tail = (tail + 1) % maxSize;  // Increment the tail index in a circular manner.
+            data[tail] = val;  // Place the value at the tail position.
+            return true;  // Successfully added the value.
         }
 
         public boolean deQueue() {
-            if (isEmpty())
-                return false;
-            if (head == tail) {
-                head = 0;
+            if (isEmpty())  // Check if the queue is empty.
+                return false;  // If the queue is empty, return false.
+            /**
+             *  NOTE !!! below
+             *
+             *    if `ONLY 1 element in queue` -> after deque, there is NO element in queue
+             *     -> so we reset head, tail to their init value (head=0, tail=-1)
+             *
+             *
+             *  1) `head == tail` :  If there is only one element in the queue.
+             *
+             *
+             *  2) Handle single element case: If head == tail,
+             *     it means there is only one element in the queue. In this case,
+             *     both head and tail are reset to 0 and -1 respectively to indicate that
+             *     the queue is now empty.
+             *
+             */
+            if (head == tail) {  // If there is only one element in the queue.
+                head = 0;  // Reset head and tail to indicate an empty queue.
                 tail = -1;
-            } else
-                head = (head + 1) % maxSize;
-            return true;
+            } else {
+                /**
+                 *  NOTE !!!
+                 *
+                 *  Update head:
+                 *     If there are multiple elements,
+                 *    -> the head index is incremented in a circular manner
+                 *    -> using (head + 1) % maxSize.
+                 */
+                head = (head + 1) % maxSize;  // Increment head in a circular manner.
+            }
+            return true;  // Successfully removed the element.
         }
 
         public int Front() {
+            /**
+             * If the queue is empty (isEmpty() returns true), return -1 (to indicate no elements).
+             *
+             * Otherwise, return the element at the head index of the data array.
+             *
+             */
             return isEmpty() ? -1 : data[head];
         }
 
         public int Rear() {
+            /**
+             * If the queue is empty (isEmpty() returns true), return -1 (to indicate no elements).
+             *
+             * Otherwise, return the element at the tail index of the data array.
+             *
+             */
             return isEmpty() ? -1 : data[tail];
         }
 
         public boolean isEmpty() {
+            /**
+             * Action: Returns true if the queue is empty, otherwise false.
+             *
+             * Condition: The queue is considered empty when tail == -1, which happens when the queue is newly initialized or when all elements have been dequeued.
+             */
             return tail == -1;
         }
 
