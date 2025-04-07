@@ -75,6 +75,16 @@ public class LRUCache_ {
 
     // V0
     // IDEA: HASHMAP + DEQUE (fixed by gpt)
+    /**
+     *  NOTE !!!
+     *
+     *   1) for dequeue, the `most RECENT` used element is at the `END`
+     *       -> this.dq.addLast()
+     *
+     *   2) for dequeue, the `least` used element is at the `HEAD`
+     *      -> this.dq.pollFirst()
+     *
+     */
     class LRUCache {
         int capacity;
         Map<Integer, Integer> map;
@@ -95,6 +105,7 @@ public class LRUCache_ {
 
             // Update the deque: remove and add the key to mark it as recently used
             this.dq.remove(key);
+            // 1) for dequeue, the `most RECENT` used element is at the `END`
             this.dq.addLast(key);
 
             return val;
@@ -106,20 +117,23 @@ public class LRUCache_ {
                 this.map.put(key, value);
                 // Remove the old key and re-add it as the most recently used
                 this.dq.remove(key);
+                // 1) for dequeue, the `most RECENT` used element is at the `END`
                 this.dq.addLast(key);
             } else {
                 // If the cache is full, remove the least recently used key
                 if (this.dq.size() >= this.capacity) {
+                    //2) for dequeue, the `least` used element is at the `HEAD`
                     int leastUsedKey = this.dq.pollFirst();
                     this.map.remove(leastUsedKey);
                 }
                 // Add the new key-value pair
                 this.map.put(key, value);
+                // 1) for dequeue, the `most RECENT` used element is at the `END`
                 this.dq.addLast(key);
             }
         }
     }
-
+    
 
     // V0-1
     // IDEA : LinkedHashMap (OrderedDict) (gpt)
