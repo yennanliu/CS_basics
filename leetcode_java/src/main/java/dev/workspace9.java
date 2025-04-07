@@ -2032,6 +2032,53 @@ public class workspace9 {
                 this.q2.add(this.q1.poll());
             }
         }
+    }
+
+    // LC 146
+    // 9.54 - 10.04 am
+    class LRUCache {
+        int capacity;
+        // map : { key : val }
+        Map<Integer, Integer> map;
+        // `double direction` queue
+        Deque<Integer> dq;
+
+        public LRUCache(int capacity) {
+            this.capacity = capacity;
+            this.map = new HashMap<>();
+            this.dq = new LinkedList<>();
+        }
+
+        public int get(int key) {
+            if(!this.map.containsKey(key)){
+                return -1;
+            }
+            int val = this.map.get(key);
+            // update `recent used element`
+            // ???
+            this.dq.remove(key);
+            this.dq.addLast(key);
+            return val;
+        }
+
+        public void put(int key, int value) {
+            // only do the put op if key is NOT existed yet
+            if(this.map.containsKey(key)){
+                return;
+            }
+            //  ??
+            while(!this.dq.isEmpty() && this.dq.size() >= this.capacity){
+                // if size >= capacity
+                // keep removing `last element` (least used)
+                int k = this.dq.pollLast();
+                if(this.map.containsKey(k)){
+                    this.map.remove(k);
+                }
+            }
+
+            this.dq.addLast(key);
+            this.map.put(key, value);
+        }
 
     }
 
