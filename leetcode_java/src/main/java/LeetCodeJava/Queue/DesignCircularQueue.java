@@ -1,6 +1,10 @@
 package LeetCodeJava.Queue;
 
 // https://leetcode.com/problems/design-circular-queue/description/
+
+import java.util.Deque;
+import java.util.LinkedList;
+
 /**
  * 622. Design Circular Queue
  * Medium
@@ -95,6 +99,58 @@ public class DesignCircularQueue {
 //        }
 //    }
 
+    // V0-1
+    // IDEA: DEQUEUE
+    class MyCircularQueue {
+        int capacity;
+        Deque<Integer> dq;
+
+        public MyCircularQueue(int k) {
+            this.capacity = k;
+            this.dq = new LinkedList<>(); // ???
+        }
+
+        public boolean enQueue(int value) {
+            if (this.isFull()) {
+                return false;
+            }
+            this.dq.addLast(value);
+            return true;
+
+        }
+
+        public boolean deQueue() {
+            if (this.isEmpty()) {
+                return false;
+            }
+            // ???
+            this.dq.pollFirst();
+            return true;
+        }
+
+        public int Front() {
+            if (this.isEmpty()) {
+                return -1;
+            }
+            return this.dq.getFirst(); // Queue: FIFO
+        }
+
+        public int Rear() {
+            if (this.isEmpty()) {
+                return -1;
+            }
+            return this.dq.getLast(); // Queue: FIFO
+        }
+
+        public boolean isEmpty() {
+            return this.dq.isEmpty();
+        }
+
+        public boolean isFull() {
+            return this.dq.size() == this.capacity;
+        }
+
+    }
 
     // V1
     // https://youtu.be/aBbsfn863oA?si=zekB_25Mq5KHIxJl
