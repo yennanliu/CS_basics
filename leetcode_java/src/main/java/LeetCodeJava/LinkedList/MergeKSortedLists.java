@@ -63,8 +63,49 @@ import java.util.*;
 public class MergeKSortedLists {
 
     // V0
-    // IDEA : to array -> sort -> add to new linked list
+    // IDEA: LINKED LIST -> ARRAY -> SORT -> LINKED LIST
     public ListNode mergeKLists(ListNode[] lists) {
+        // edge
+        if(lists == null || lists.length == 0){
+            return null; // ??
+        }
+        if(lists.length == 1){
+            return lists[0];
+        }
+        // TODO: optimize below
+        List<Integer> list = new ArrayList<>();
+        for(ListNode node: lists){
+            while(node != null){
+                list.add(node.val);
+                node = node.next;
+            }
+
+        }
+
+        // sort (small -> big)
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        ListNode dummy = new ListNode();
+        ListNode dummy2 = dummy; // ???
+
+        for(Integer x: list){
+            ListNode _node = new ListNode(x);
+            dummy.next = _node;
+            dummy = _node;
+        }
+
+        return dummy2.next;
+    }
+
+    // V0-1
+    // IDEA : to array -> sort -> add to new linked list
+    public ListNode mergeKLists_0_1(ListNode[] lists) {
 
         if (lists == null || lists.length == 0) {
             // NOTE !! need to return null below
