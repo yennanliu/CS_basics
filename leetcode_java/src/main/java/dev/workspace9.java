@@ -2130,6 +2130,11 @@ public class workspace9 {
         }
     }
 
+    // LC 23
+    public ListNode mergeKLists(ListNode[] lists) {
+
+        return null;
+    }
 
 
 }
