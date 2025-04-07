@@ -124,6 +124,20 @@ public class LFUCache_ {
 
             // Increment the frequency of the key and add it to the new frequency set
             kFreqMap.put(key, freq + 1);
+            /**
+             *   1) computeIfAbsent(1, k -> new LinkedHashSet<>()):
+             *
+             *   -> This method checks whether the map already contains the key 1.
+             *     If it doesn't, it computes a new value for this key using the provided lambda
+             *     expression (k -> new LinkedHashSet<>()), which creates a new empty LinkedHashSet.
+             *
+             *   -> If the key 1 is not already present, it inserts a new LinkedHashSet
+             *      as the value for this key.
+             *
+             *   -> If the key 1 already exists, it simply returns the existing value for
+             *      that key (the LinkedHashSet associated with 1).
+             *
+             */
             freqMap.computeIfAbsent(freq + 1, k -> new LinkedHashSet<>()).add(key);
 
             return val;
@@ -291,6 +305,7 @@ public class LFUCache_ {
 
     // V4
     // https://leetcode.com/problems/lfu-cache/solutions/3111462/95-faster-java-code-by-coding_menance-gli3/
+    // IDEA: DoublyLinkedList
     class Node {
         int key;
         int val;
