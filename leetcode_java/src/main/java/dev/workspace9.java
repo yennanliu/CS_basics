@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
+import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
 
@@ -2368,6 +2369,64 @@ public class workspace9 {
         return dummy.next; // ????
     }
 
+    // LC 94
+//    List<Integer> res = new ArrayList<>();
+//    public List<Integer> inorderTraversal(TreeNode root) {
+//        //List<Integer> res = new ArrayList<>();
+//        // edge
+//        if(root == null){
+//            return res;
+//        }
+//        if(root.left == null && root.right == null){
+//            res.add(root.val);
+//            return res;
+//        }
+//
+//        inorderDfs(root);
+//        return res;
+//    }
+//
+//    public void inorderDfs(TreeNode root){
+//        if(root == null){
+//            return;
+//        }
+//        // inorder : left -> root -> right
+//        inorderDfs(root.left);
+//        res.add(root.val);
+//        inorderDfs(root.right);
+//    }
+
+    // IDEA: BFS
+    public List<Integer> inorderTraversal(TreeNode root) {
+
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(root == null){
+            return res;
+        }
+        if(root.left == null && root.right == null){
+            res.add(root.val);
+            return res;
+        }
+
+        // QUEUE
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+
+        while(!q.isEmpty()){
+            TreeNode _root = q.poll();
+            // inorder : left -> root -> right
+            if(_root.left != null){
+                q.add(_root.left);
+            }
+            res.add(root.val);
+            if(_root.right != null){
+                q.add(_root.right);
+            }
+        }
+
+        return res;
+    }
 
 
 }
