@@ -2428,5 +2428,31 @@ public class workspace9 {
         return res;
     }
 
+    // LC 144
+    List<Integer> res = new ArrayList<>();
+    public List<Integer> preorderTraversal(TreeNode root) {
+        // edge
+        if(root == null){
+            return res;
+        }
+        if(root.left == null && root.right == null){
+            res.add(root.val);
+            return res;
+        }
+
+        preOrderDfs(root);
+        return res;
+    }
+
+    public void preOrderDfs(TreeNode root){
+        if(root == null){
+            return;
+        }
+        // preorder : root -> left  -> right
+        res.add(root.val);
+        preOrderDfs(root.left);
+        preOrderDfs(root.right);
+    }
+
 
 }
