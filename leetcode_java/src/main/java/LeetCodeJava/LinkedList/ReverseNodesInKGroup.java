@@ -60,6 +60,64 @@ public class ReverseNodesInKGroup {
 //
 //    }
 
+    // V0-1
+    // IDEA : reverse in iteration (fixed by gpt)
+    public ListNode reverseKGroup_0_1(ListNode head, int k) {
+        // edge case
+        if (head == null || k <= 1) {
+            return head;
+        }
+
+        // get the length of the list
+        int len = 0;
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        ListNode current = head;
+
+        while (current != null) {
+            len += 1;
+            current = current.next;
+        }
+
+        // reverse groups of k nodes
+        ListNode prevGroupEnd = dummy;
+        current = head;
+        while (len >= k) {
+            ListNode groupStart = current;
+            ListNode groupEnd = current;
+            // Move groupEnd to the k-th node
+            for (int i = 1; i < k; i++) {
+                groupEnd = groupEnd.next;
+            }
+            ListNode nextGroupStart = groupEnd.next;
+
+            // Reverse the k nodes
+            groupEnd.next = null;
+            prevGroupEnd.next = reverseLinkedList(groupStart, k);
+            groupStart.next = nextGroupStart;
+
+            // Move to the next group
+            prevGroupEnd = groupStart;
+            current = nextGroupStart;
+            len -= k;
+        }
+
+        return dummy.next;
+    }
+
+    public ListNode reverseLinkedList(ListNode head, int k) {
+        ListNode prev = null;
+        ListNode current = head;
+        while (k > 0) {
+            ListNode nextNode = current.next;
+            current.next = prev;
+            prev = current;
+            current = nextNode;
+            k--;
+        }
+        return prev; // Return the new head of the reversed segment
+    }
+
     // V1-1
     // https://www.youtube.com/watch?v=1UOPsfP85V4
     // https://neetcode.io/problems/reverse-nodes-in-k-group

@@ -2316,5 +2316,58 @@ public class workspace9 {
         return dummy2.next;
     }
 
+    // LC 25
+    // 9.48 - 9.58 am
+    /**
+     *  IDEA 1)  reverse in iteration
+     *  IDEA 2) reverse in recursion
+     *  IDEA 3) linked list -> list -> reverse -> linked list
+     *
+     */
+    public ListNode reverseKGroup(ListNode head, int k) {
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+
+        // get len
+        int len = 0;
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        ListNode head2 = head;
+        ListNode head3 = head;
+
+        while(head2 != null){
+            len += 1;
+            head2 = head2.next;
+        }
+
+        // reverse linked list
+        ListNode _prev = null;
+        int cnt = len / k;
+        for(int i = 0; i < cnt; i++){
+            ListNode reversed = reverseLinkedList(head3, k);
+            _prev.next = reversed;
+            _prev = reversed;
+        }
+        return _prev.next;
+    }
+
+
+    public ListNode reverseLinkedList(ListNode input, int k){
+        ListNode dummy = new ListNode();
+        dummy.next = input;
+        ListNode _prev = null;
+        while(k >= 0){
+            ListNode _next = input.next;
+            input.next = _prev;
+            _prev = input;
+            input = _next;
+        }
+
+        return dummy.next; // ????
+    }
+
+
 
 }
