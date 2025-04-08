@@ -2454,5 +2454,31 @@ public class workspace9 {
         preOrderDfs(root.right);
     }
 
+    // LC 145
+    List<Integer> res2 = new ArrayList<>();
+    public List<Integer> postorderTraversal(TreeNode root) {
+            // edge
+            if(root == null){
+                return res2;
+            }
+            if(root.left == null && root.right == null){
+                res2.add(root.val);
+                return res2;
+            }
+
+            postOrderDfs(root);
+            return res2;
+    }
+
+    public void postOrderDfs(TreeNode root){
+        if(root == null){
+            return;
+        }
+        // postorder :  left  -> right -> root
+        postOrderDfs(root.left);
+        postOrderDfs(root.right);
+        res2.add(root.val);
+    }
+
 
 }
