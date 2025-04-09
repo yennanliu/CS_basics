@@ -1,6 +1,12 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/binary-tree-postorder-traversal/
+
+import LeetCodeJava.DataStructure.TreeNode;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *  145. Binary Tree Postorder Traversal
  * Easy
@@ -58,6 +64,35 @@ package LeetCodeJava.Tree;
 public class BinaryTreePostorderTraversal {
 
     // V0
+    // IDEA: DFS
+    // TODO: validate it
+    List<Integer> res2 = new ArrayList<>();
+    public List<Integer> postorderTraversal(TreeNode root) {
+        // edge
+        if(root == null){
+            return res2;
+        }
+        if(root.left == null && root.right == null){
+            res2.add(root.val);
+            return res2;
+        }
+
+        postOrderDfs(root);
+        return res2;
+    }
+
+    public void postOrderDfs(TreeNode root){
+        if(root == null){
+            return;
+        }
+        // postorder :  left  -> right -> root
+        postOrderDfs(root.left);
+        postOrderDfs(root.right);
+        res2.add(root.val);
+    }
+
+    // V0-1
+    // IDEA: BFS
 
     // V1
 
