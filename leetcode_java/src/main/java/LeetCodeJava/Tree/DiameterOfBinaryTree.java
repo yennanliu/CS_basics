@@ -51,6 +51,82 @@ public class DiameterOfBinaryTree {
 
     // V0-1
     // IDEA: DFS (gpt)
+    /**
+     *  NOTE !!!
+     *
+     *    the `diameter` is the `SUM Of DEPTHS` of sub left and sub right tree
+     *
+     *
+     *  IDEA:
+     *
+     *  1) Path Characteristics:
+     *
+     *     The longest path in a tree typically
+     *     goes through some node, and that node is either an ancestor
+     *     or a descendant of the two nodes. Thus
+     *     -> `the diameter will involve the sum of the "depths"
+     *     of the left and right subtrees for a particular node`.
+     *
+     *  2) DFS Approach:
+     *
+     *    We can use a Depth-First Search (DFS) approach where:
+     *
+     *     - For each node, we calculate the height of the left and right subtrees.
+     *
+     *     - The potential `diameter` for each node is
+     *       "the sum of the heights of its left and right subtrees".
+     *
+     *     - We keep track of the maximum diameter encountered during the
+     *       DFS traversal.
+     *
+     *
+     *  Approach:
+     *
+     *    - For each node:
+     *
+     *        - Calculate the depth of the left and right subtrees.
+     *
+     *        - The diameter through that node is the sum of these two depths.
+     *
+     *        - The result is the maximum of the current diameter and the
+     *          previously calculated diameters.
+     */
+    /**
+     *  Example:
+     *
+     *    For the input tree:
+     *
+     *         1
+     *        / \
+     *       2   3
+     *      / \
+     *     4   5
+     *
+     *
+     *
+     *   - Step 1) Starting at node 1:
+     *
+     *      - Left subtree height: maxDepth(2) → returns 2 (from node 4 to node 2).
+     *      - Right subtree height: maxDepth(3) → returns 1 (node 3).
+     *      - The potential diameter at node 1 is 2 + 1 = 3. We update the maxDiameter to 3.
+     *
+     *   - Step 2) At node 2:
+     *
+     *    - Left subtree height: maxDepth(4) → returns 0 (no children).
+     *    - Right subtree height: maxDepth(5) → returns 0 (no children).
+     *    - The potential diameter at node 2 is 0 + 0 = 0, but the maxDiameter remains 3.
+     *
+     *   - Step 3) At node 3:
+     *
+     *    - Both left and right subtrees are null, so the height is 0.
+     *    - The potential diameter at node 3 is 0 + 0 = 0, so the maxDiameter remains 3.
+     *
+     *
+     *  -> The final output is 3, which is the diameter of the tree.
+     *
+     *
+     */
+    // maxDiameter Variable: This is a class-level variable that keeps track of the maximum diameter encountered so far during the DFS traversal.
     private int maxDiameter = 0;
 
     public int diameterOfBinaryTree_0_1(TreeNode root) {
@@ -60,6 +136,20 @@ public class DiameterOfBinaryTree {
     }
 
     // DFS helper function to calculate height and update the diameter
+    /**
+     *  - For each node, the function `recursively`
+     *    computes the heights of the left and right subtrees.
+     *
+     * - The diameter at the current node is the sum of the
+     *   heights of the left and right subtrees (leftHeight + rightHeight).
+     *
+     * - The function keeps track of the maximum diameter
+     *    found during the DFS traversal.
+     *
+     * - The function returns the height of the current node,
+     *    which is the maximum of the left and right subtree heights plus 1.
+     *
+     */
     private int dfs_0_1(TreeNode node) {
         // Base case: if the node is null, return a height of 0
         if (node == null) {
