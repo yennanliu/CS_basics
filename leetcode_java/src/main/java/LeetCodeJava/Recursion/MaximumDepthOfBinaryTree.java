@@ -137,6 +137,30 @@ public class MaximumDepthOfBinaryTree {
         return Math.max(leftDepth, rightDepth);
     }
 
+    // V0-4
+    // IDEA: RECURSIVE (fixed by gpt)
+    public int maxDepth_0_4(TreeNode root) {
+        // Edge case: if the tree is empty, return 0
+        if (root == null) {
+            return 0;
+        }
+        // Start the DFS to calculate the maximum depth
+        return getMaxDepthDfs(root);
+    }
+
+    public int getMaxDepthDfs(TreeNode root) {
+        // Base case: if the node is null, return 0 (no depth)
+        if (root == null) {
+            return 0;
+        }
+
+        // Recursively find the maximum depth of the left and right subtrees
+        int leftDepth = getMaxDepthDfs(root.left);
+        int rightDepth = getMaxDepthDfs(root.right);
+
+        // Return the maximum of the two depths plus 1 (for the current node)
+        return Math.max(leftDepth, rightDepth) + 1;
+    }
 
     // V1
     // IDEA : RECURSION

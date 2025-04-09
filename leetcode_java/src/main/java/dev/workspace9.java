@@ -2480,5 +2480,97 @@ public class workspace9 {
         res2.add(root.val);
     }
 
+    // LC 226
+    // 10.19 - 10.29 am
+    /**
+     *  IDEA 1) DFS
+     *  IDEA 2) BFS
+     *
+     */
+    public TreeNode invertTree(TreeNode root) {
+        // edge
+        if( root == null || (root.left == null && root.right == null) ){
+            return root;
+        }
+
+        // dfs
+        TreeNode reversedRoot = reverseDfs(root);
+        return reversedRoot;
+    }
+
+    public TreeNode reverseDfs(TreeNode root){
+        if(root == null || (root.left == null && root.right == null)){
+            return root;
+        }
+        TreeNode cacheLeft = root.left; //reverseDfs(root.left); //root.left;
+        root.left = reverseDfs(root.right);
+        root.right = reverseDfs(cacheLeft);
+
+        return root;
+    }
+
+    // IDEA: BFS
+    public TreeNode invertTree_1(TreeNode root) {
+        // edge
+        if( root == null || (root.left == null && root.right == null) ){
+            return root;
+        }
+
+        TreeNode res = null; // ???
+
+        // bfs
+        Stack<TreeNode> st = new Stack<>();
+        st.add(root);
+        while(!st.isEmpty()){
+            //TreeNode left = roo
+            TreeNode cur = st.pop();
+            res = cur; // /???
+
+            TreeNode leftCache = cur.left;
+            res.left = cur.right;
+            res.right = leftCache;
+
+            if(cur.left != null){
+                st.add(cur.left);
+            }
+            if(cur.right != null){
+                st.add(cur.right);
+            }
+        }
+
+        return res;
+    }
+
+    // LC 104
+    // 10.52 - 11.02 am
+    int maxDepth = 0;
+    public int maxDepth(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+
+        //int maxDepth = 1;
+//        return Math.max(Math.max(getMaxDepthDfs(root, maxDepth), getMaxDepthDfs(root.left, maxDepth)),
+//                getMaxDepthDfs(root.right, maxDepth)
+//        );
+        return getMaxDepthDfs(root);
+    }
+
+    public int getMaxDepthDfs(TreeNode root){
+        if(root == null){
+            return 0; // ???
+        }
+
+        return Math.max(
+                Math.max(getMaxDepthDfs(root), (getMaxDepthDfs(root.left) + 1)),
+                (getMaxDepthDfs(root.right) + 1)
+        );
+
+    }
+
 
 }
