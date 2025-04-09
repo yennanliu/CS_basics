@@ -2572,5 +2572,32 @@ public class workspace9 {
 
     }
 
+    // LC 543
+    // 11.18 - 11.35 am
+    /**
+     *
+     *  * The diameter of a binary tree is the length of the
+     *   `longest` path between any two nodes in a tree.
+     *   This path may or may not pass through the root.
+     *
+     *
+     *  IDEA 1) DFS
+     */
+    public int diameterOfBinaryTree(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 0;
+        }
+
+        // ???
+        int leftMaxDiaMeter = diameterOfBinaryTree(root.left) + 1;
+        int rightMaxDiaMeter = diameterOfBinaryTree(root.left) + 1;
+
+        return Math.max(leftMaxDiaMeter, rightMaxDiaMeter);
+    }
+
 
 }

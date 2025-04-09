@@ -49,6 +49,34 @@ public class DiameterOfBinaryTree {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (gpt)
+    private int maxDiameter = 0;
+
+    public int diameterOfBinaryTree_0_1(TreeNode root) {
+        // Start DFS from the root to calculate the maximum diameter
+        dfs_0_1(root);
+        return maxDiameter;
+    }
+
+    // DFS helper function to calculate height and update the diameter
+    private int dfs_0_1(TreeNode node) {
+        // Base case: if the node is null, return a height of 0
+        if (node == null) {
+            return 0;
+        }
+
+        // Recursively find the height of the left and right subtrees
+        int leftHeight = dfs_0_1(node.left);
+        int rightHeight = dfs_0_1(node.right);
+
+        // Update the maximum diameter if the path through this node is larger
+        maxDiameter = Math.max(maxDiameter, leftHeight + rightHeight);
+
+        // Return the height of the current node, which is the max of the left and right subtree heights plus 1
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
     // V1-1
     // https://youtu.be/bkxqA8Rfv04?feature=shared
     // https://neetcode.io/problems/binary-tree-diameter
