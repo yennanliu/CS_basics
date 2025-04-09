@@ -102,6 +102,9 @@ public class DiameterOfBinaryTree {
      *      / \
      *     4   5
      *
+     *   NOTE !!!
+     *    A binary tree's maximum `depth` is the number of NODES (NOTE this !!!)
+     *    along the longest path from the root node down to the farthest leaf node.
      *
      *
      *   - Step 1) Starting at node 1:
