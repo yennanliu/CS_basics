@@ -28,7 +28,7 @@
     - Basic binary search
 
     - Search in `rotate` array
-        - Find Minimum in Rotated Sorted Array
+        - Find `Minimum` in Rotated Sorted Array
             - LC 153
             ```java
             // java
@@ -109,6 +109,7 @@
 
     - Search in 2D array
         - LC 74
+        - `flatten` array with `x % y = z` handling, or visit row by row via binary search
 
     - Find min in Rotation array
         - LC 153
