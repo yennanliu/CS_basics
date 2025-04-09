@@ -45,6 +45,8 @@ public class DiameterOfBinaryTree {
     // V0
     // IDEA : DFS
     // TODO: implement
+    // https://youtu.be/K81C31ytOZE?si=J87ADf5azss_tAjN
+    // NOTE !!! return val from helper func is different from the final result
 //    public int diameterOfBinaryTree(TreeNode root) {
 //
 //    }
