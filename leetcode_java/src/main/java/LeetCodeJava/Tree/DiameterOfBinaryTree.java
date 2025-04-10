@@ -46,7 +46,6 @@ public class DiameterOfBinaryTree {
     // IDEA : DFS
     // TODO: implement
     // https://youtu.be/K81C31ytOZE?si=J87ADf5azss_tAjN
-    // NOTE !!! return val from helper func is different from the final result
 //    public int diameterOfBinaryTree(TreeNode root) {
 //
 //    }
@@ -166,10 +165,50 @@ public class DiameterOfBinaryTree {
         int rightHeight = dfs_0_1(node.right);
 
         // Update the maximum diameter if the path through this node is larger
+        /** NOTE !!!  return val from helper func is different from the final result */
         maxDiameter = Math.max(maxDiameter, leftHeight + rightHeight);
 
         // Return the height of the current node, which is the max of the left and right subtree heights plus 1
         return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    // V0-2
+    // IDEA: get Max depth + `diameter + sub left depth + sub right depth + DFS
+    // NOTE !!! we define below global var
+    int maxDiameter_ = 0;
+    public int diameterOfBinaryTree_0_2(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null && root.right == null) {
+            return 0;
+        }
+
+        getMaxDiameter(root);
+        return maxDiameter_;
+    }
+
+    // NOTE !!! diameter = `left sub tree depth` + `right sub tree depth`
+    public int getMaxDiameter(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        //int
+        int leftDepth = getDepth(root.left);
+        int rightDepth = getDepth(root.right);
+
+        /** NOTE !!!  return val from helper func is different from the final result */
+        maxDiameter_ = Math.max(maxDiameter_, leftDepth + rightDepth);
+
+        return Math.max(getMaxDiameter(root.left), getMaxDiameter(root.right)); // ???
+    }
+
+    public int getDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return Math.max(getDepth(root.left), getDepth(root.right)) + 1;
     }
 
     // V1-1

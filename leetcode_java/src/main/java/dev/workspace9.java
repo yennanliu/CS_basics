@@ -2604,34 +2604,43 @@ public class workspace9 {
 
     // LC 104
     // 10.52 - 11.02 am
-    int maxDepth = 0;
     public int maxDepth(TreeNode root) {
         // edge
         if(root == null){
             return 0;
         }
-        if(root.left == null && root.right == null){
-            return 1;
-        }
+
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+   }
+
+//    int maxDepth = 0;
+//    public int maxDepth(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return 0;
+//        }
+//        if(root.left == null && root.right == null){
+//            return 1;
+//        }
 
         //int maxDepth = 1;
 //        return Math.max(Math.max(getMaxDepthDfs(root, maxDepth), getMaxDepthDfs(root.left, maxDepth)),
 //                getMaxDepthDfs(root.right, maxDepth)
 //        );
-        return getMaxDepthDfs(root);
-    }
+//        return getMaxDepthDfs(root);
+//    }
 
-    public int getMaxDepthDfs(TreeNode root){
-        if(root == null){
-            return 0; // ???
-        }
-
-        return Math.max(
-                Math.max(getMaxDepthDfs(root), (getMaxDepthDfs(root.left) + 1)),
-                (getMaxDepthDfs(root.right) + 1)
-        );
-
-    }
+//    public int getMaxDepthDfs(TreeNode root){
+//        if(root == null){
+//            return 0; // ???
+//        }
+//
+//        return Math.max(
+//                Math.max(getMaxDepthDfs(root), (getMaxDepthDfs(root.left) + 1)),
+//                (getMaxDepthDfs(root.right) + 1)
+//        );
+//
+//    }
 
     // LC 543
     // 11.18 - 11.35 am
@@ -2644,6 +2653,8 @@ public class workspace9 {
      *
      *  IDEA 1) DFS
      */
+    // 4.20 - 4.30 pm
+    int maxDiameter = 0;
     public int diameterOfBinaryTree(TreeNode root) {
         // edge
         if(root == null){
@@ -2653,12 +2664,48 @@ public class workspace9 {
             return 0;
         }
 
-        // ???
-        int leftMaxDiaMeter = diameterOfBinaryTree(root.left) + 1;
-        int rightMaxDiaMeter = diameterOfBinaryTree(root.left) + 1;
-
-        return Math.max(leftMaxDiaMeter, rightMaxDiaMeter);
+        getMaxDiameter(root);
+        return maxDiameter; // ??
     }
+
+    // NOTE !!! diameter = `left sub tree depth` + `right sub tree depth`
+    public int getMaxDiameter(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        //int
+        int leftDepth = getDepth(root.left);
+        int rightDepth = getDepth(root.right);
+
+        // ????
+        maxDiameter = Math.max(maxDiameter, leftDepth + rightDepth);
+
+        return Math.max(getMaxDiameter(root.left), getMaxDiameter(root.right)); // ???
+    }
+
+    public int getDepth(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        return Math.max(getDepth(root.left), getDepth(root.right)) + 1;
+    }
+
+
+//    public int diameterOfBinaryTree(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return 0;
+//        }
+//        if(root.left == null && root.right == null){
+//            return 0;
+//        }
+//
+//        // ???
+//        int leftMaxDiaMeter = diameterOfBinaryTree(root.left) + 1;
+//        int rightMaxDiaMeter = diameterOfBinaryTree(root.left) + 1;
+//
+//        return Math.max(leftMaxDiaMeter, rightMaxDiaMeter);
+//    }
 
   // LC 110
   // 3.00 - 3.10 pm
