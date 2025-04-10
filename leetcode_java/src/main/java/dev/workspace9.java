@@ -2783,5 +2783,70 @@ public class workspace9 {
         return Math.min(getMiniDepth(root.left), getMiniDepth(root.right)) + 1;
     }
 
+    // LC 100
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        // edge
+        if(p == null && q == null){
+            return true;
+        }
+        if (p == null || q == null) {
+            return false;
+        }
+        if (p.val != q.val) {
+            return false;
+        }
+
+        return isSameTree(p.left, q.left) &&
+                isSameTree(p.right, q.right);
+    }
+
+    // LC 572
+    // 5.18 pm - 5.28 pm
+    /**
+     *  IDEA 1) DFS
+     *
+     */
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        if(root == null && subRoot == null){
+            return true;
+        }
+        if(root == null || subRoot == null){
+            return true;
+        }
+
+        // bfs : QUEUE !!! (FIFO)
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            TreeNode cur = q.poll();
+            if(isSameTree_(cur, subRoot)){
+                return true;
+            }
+            if(cur.left != null){
+                q.add(cur.left);
+            }
+            if(cur.right != null){
+                q.add(cur.right);
+            }
+        }
+        return false;
+    }
+
+    public boolean isSameTree_(TreeNode p, TreeNode q){
+        // edge
+        if(p == null && q == null){
+            return true;
+        }
+        if (p == null || q == null) {
+            return false;
+        }
+        if (p.val != q.val) {
+            return false;
+        }
+
+        return isSameTree_(p.left, q.left) &&
+                isSameTree_(p.right, q.right);
+    }
+
 
 }
