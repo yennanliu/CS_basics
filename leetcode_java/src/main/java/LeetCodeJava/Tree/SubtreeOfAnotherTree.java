@@ -51,14 +51,14 @@ public class SubtreeOfAnotherTree {
      *   step 1) bfs traverse all nodes in root
      *   step 2) check if `each node` (visited in step 1)) as SAME TREE as subRoot
      *           if any match, return true directly
-     *   step 3) return false, since no sub tree is found
+     *   step 3) otherwise, return false, since no `match` is found
      */
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
         // edge
         if (root == null && subRoot == null) {
             return true;
         }
-        // bfs // ???
+        // BFS : use `QUEUE` (FIFO)
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);
         while (!q.isEmpty()) {
@@ -134,6 +134,49 @@ public class SubtreeOfAnotherTree {
          *   -> below is "and" logic
          */
         return s.val == t.val && isSameTree(s.left, t.left) && isSameTree(s.right, t.right);
+    }
+
+    // V0-2
+    public boolean isSubtree_0_2(TreeNode root, TreeNode subRoot) {
+        if (root == null && subRoot == null) {
+            return true;
+        }
+        if (root == null || subRoot == null) {
+            return true;
+        }
+
+        // bfs : QUEUE !!! (FIFO)
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            TreeNode cur = q.poll();
+            if (isSameTree_(cur, subRoot)) {
+                return true;
+            }
+            if (cur.left != null) {
+                q.add(cur.left);
+            }
+            if (cur.right != null) {
+                q.add(cur.right);
+            }
+        }
+        return false;
+    }
+
+    public boolean isSameTree_(TreeNode p, TreeNode q) {
+        // edge
+        if (p == null && q == null) {
+            return true;
+        }
+        if (p == null || q == null) {
+            return false;
+        }
+        if (p.val != q.val) {
+            return false;
+        }
+
+        return isSameTree_(p.left, q.left) &&
+                isSameTree_(p.right, q.right);
     }
 
     // V1
