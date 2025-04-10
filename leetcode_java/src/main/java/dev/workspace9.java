@@ -2235,18 +2235,30 @@ public class workspace9 {
     }
 
     // LC 146
-    // 9.54 - 10.04 am
+    // 6.03 - 6.13 am
+    /**
+     * Design a data structure that
+     * follows the constraints of a
+     * Least Recently Used (LRU) cache.
+     *
+     *  `Least Recently Used (LRU)`
+     *
+     *
+     * IDEA :  MAP + dq
+     *   1) k-v map
+     *   2) dq : save `recent used val`
+     *
+     */
     class LRUCache {
         int capacity;
-        // map : { key : val }
         Map<Integer, Integer> map;
-        // `double direction` queue
         Deque<Integer> dq;
 
         public LRUCache(int capacity) {
             this.capacity = capacity;
             this.map = new HashMap<>();
-            this.dq = new LinkedList<>();
+            // this.dq = new ArrayDeque<>(); // ??
+            this.dq = new LinkedList<>(); // ??
         }
 
         public int get(int key) {
@@ -2254,33 +2266,81 @@ public class workspace9 {
                 return -1;
             }
             int val = this.map.get(key);
-            // update `recent used element`
-            // ???
+            // update dq
+            //Deque<Integer> tmp = new ArrayDeque<>();
+//            for(Integer x: this.dq){
+//                //this.dq.re
+//                if(x == key){
+//                    this.dq.remove(x);
+//                }
+//            }
             this.dq.remove(key);
+            // `add val back`, but put as `tail` (as recent used)
             this.dq.addLast(key);
             return val;
         }
 
         public void put(int key, int value) {
-            // only do the put op if key is NOT existed yet
-            if(this.map.containsKey(key)){
-                return;
-            }
-            //  ??
-            while(!this.dq.isEmpty() && this.dq.size() >= this.capacity){
-                // if size >= capacity
-                // keep removing `last element` (least used)
-                int k = this.dq.pollLast();
-                if(this.map.containsKey(k)){
-                    this.map.remove(k);
-                }
+            if(this.map.keySet().size() >= this.capacity){
+                // remove `least recent used` element (e.g. Least Recently Used)
+                int toRemove = this.dq.removeFirst();
+                this.map.remove(toRemove);
             }
 
-            this.dq.addLast(key);
+            // remove `least recent used` element (e.g. Least Recently Used)
             this.map.put(key, value);
+            this.dq.addFirst(key);
         }
-
     }
+
+
+
+
+//    class LRUCache {
+//        int capacity;
+//        // map : { key : val }
+//        Map<Integer, Integer> map;
+//        // `double direction` queue
+//        Deque<Integer> dq;
+//
+//        public LRUCache(int capacity) {
+//            this.capacity = capacity;
+//            this.map = new HashMap<>();
+//            this.dq = new LinkedList<>();
+//        }
+//
+//        public int get(int key) {
+//            if(!this.map.containsKey(key)){
+//                return -1;
+//            }
+//            int val = this.map.get(key);
+//            // update `recent used element`
+//            // ???
+//            this.dq.remove(key);
+//            this.dq.addLast(key);
+//            return val;
+//        }
+//
+//        public void put(int key, int value) {
+//            // only do the put op if key is NOT existed yet
+//            if(this.map.containsKey(key)){
+//                return;
+//            }
+//            //  ??
+//            while(!this.dq.isEmpty() && this.dq.size() >= this.capacity){
+//                // if size >= capacity
+//                // keep removing `last element` (least used)
+//                int k = this.dq.pollLast();
+//                if(this.map.containsKey(k)){
+//                    this.map.remove(k);
+//                }
+//            }
+//
+//            this.dq.addLast(key);
+//            this.map.put(key, value);
+//        }
+//
+//    }
 
     // LC 460
     // 10.36 - 10.46 am
