@@ -2660,5 +2660,53 @@ public class workspace9 {
         return Math.max(leftMaxDiaMeter, rightMaxDiaMeter);
     }
 
+  // LC 110
+  // 3.00 - 3.10 pm
+  /**
+   * Given a binary tree, determine
+   * if it is height-balanced.
+   *
+   *
+   *  A height-balanced binary tree is a
+   *  binary tree in which the
+   *  depth of the two subtrees of every
+   *  node `NEVER differs by more than one`.
+   *
+   */
+  /**
+   *  IDEA 1) DFS
+   *
+   */
+  public boolean isBalanced(TreeNode root) {
+      // edge
+      if(root == null){
+          return true;
+      }
+      if(root.left == null && root.right == null){
+          return true;
+      }
+
+      //TreeNode left = root.left;
+      int leftDepth = getDepthDFS(root.left);
+      int rightDepth = getDepthDFS(root.right);
+
+      // check if `current` node is `balanced`
+      if(Math.abs(leftDepth - rightDepth) > 1){
+          return false;
+      }
+
+      // dfs call
+      // recursively check if `sub left node` and  `sub right node` are `balanced`
+      return isBalanced(root.left) && isBalanced(root.right);
+    }
+
+    public int getDepthDFS(TreeNode root){
+      if(root == null){
+          return 0;
+      }
+
+      return Math.max(getDepthDFS(root.left), getDepthDFS(root.right)) + 1;
+    }
+
 
 }

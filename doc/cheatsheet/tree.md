@@ -356,6 +356,7 @@ public int countNodes_2(TreeNode root) {
 ```
 
 #### 1-1-3 -1) Get Maximum depth
+
 - LC 104 : Maximum Depth of Binary Tree
 - LC 110 : Balanced Binary Tree
 
@@ -379,6 +380,15 @@ public int maxDepth(TreeNode root) {
 
     return Math.max(leftD, rightD);
 }
+
+// V1
+public int getDepthDFS(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+  return Math.max(getDepthDFS(root.left), getDepthDFS(root.right)) + 1;
+}  
 ```
 
 ```python
@@ -1776,6 +1786,41 @@ class Solution:
 ```java
 // java
 // LC 110
+
+
+// V0
+// IDEA : DFS
+// https://www.bilibili.com/video/BV1Ug411S7my/?share_source=copy_web
+public boolean isBalanced(TreeNode root) {
+    // edge
+    if (root == null) {
+        return true;
+    }
+    if (root.left == null && root.right == null) {
+        return true;
+    }
+
+    int leftDepth = getDepthDFS(root.left);
+    int rightDepth = getDepthDFS(root.right);
+
+    // check if `current` node is `balanced`
+    if (Math.abs(leftDepth - rightDepth) > 1) {
+        return false;
+    }
+
+    // dfs call
+    // recursively check if `sub left node` and  `sub right node` are `balanced`
+    return isBalanced(root.left) && isBalanced(root.right);
+}
+
+// LC 104
+public int getDepthDFS(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+  return Math.max(getDepthDFS(root.left), getDepthDFS(root.right)) + 1;
+}
 
 // V1
 // IDEA :  TOP DOWN RECURSION

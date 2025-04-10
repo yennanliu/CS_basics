@@ -38,38 +38,85 @@ import java.util.*;
 
 public class BalancedBinaryTree {
 
+    /** NOTE !!!
+     *
+     *  depth of tree is the distance from `root` to the node
+     */
+    // tree depth : https://github.com/yennanliu/CS_basics/blob/master/doc/pic/tree_depth_vs_height.jpeg
+
     // V0
-    // IDEA : POST TRAVERSE
+    // IDEA : DFS
     // https://www.bilibili.com/video/BV1Ug411S7my/?share_source=copy_web
-//    public boolean isBalanced(TreeNode root) {
-//
-//    }
+    public boolean isBalanced(TreeNode root) {
+        // edge
+        if (root == null) {
+            return true;
+        }
+        if (root.left == null && root.right == null) {
+            return true;
+        }
 
+        int leftDepth = getDepthDFS(root.left);
+        int rightDepth = getDepthDFS(root.right);
 
-    // V0'
-//    public boolean isBalanced(TreeNode root) {
-//
-//        List<Integer> cache = Arrays.asList();
-//
-//        return true;
-//    }
-//
-//    private int getDepth(TreeNode node){
-//
-//        if (node == null){
-//            return 0;
-//        }
-//
-//        if (node.left != null){
-//            return getDepth(node.left) + 1;
-//        }
-//
-//        if (node.right != null){
-//            return getDepth(node.right) + 1;
-//        }
-//
-//        return 0;
-//    }
+        // check if `current` node is `balanced`
+        if (Math.abs(leftDepth - rightDepth) > 1) {
+            return false;
+        }
+
+        // dfs call
+        // recursively check if `sub left node` and  `sub right node` are `balanced`
+        return isBalanced(root.left) && isBalanced(root.right);
+    }
+
+    // LC 104
+    public int getDepthDFS(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+      return Math.max(getDepthDFS(root.left), getDepthDFS(root.right)) + 1;
+    }
+
+    // V0-2
+    // IDEA: BFS (gpt)
+    public boolean isBalanced_0_2(TreeNode root) {
+        if (root == null)
+            return true;
+
+        Map<TreeNode, Integer> heightMap = new HashMap<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        // Post-order-like BFS
+        Stack<TreeNode> stack = new Stack<>();
+        Set<TreeNode> visited = new HashSet<>();
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            stack.push(node);
+
+            if (node.left != null)
+                queue.add(node.left);
+            if (node.right != null)
+                queue.add(node.right);
+        }
+
+        // Process in reverse (bottom-up)
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+
+            int leftHeight = node.left == null ? 0 : heightMap.get(node.left);
+            int rightHeight = node.right == null ? 0 : heightMap.get(node.right);
+
+            if (Math.abs(leftHeight - rightHeight) > 1)
+                return false;
+
+            heightMap.put(node, Math.max(leftHeight, rightHeight) + 1);
+        }
+
+        return true;
+    }
 
     // V1-1
     // https://neetcode.io/problems/balanced-binary-tree
