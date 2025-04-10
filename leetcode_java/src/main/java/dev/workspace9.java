@@ -2755,5 +2755,33 @@ public class workspace9 {
       return Math.max(getDepthDFS(root.left), getDepthDFS(root.right)) + 1;
     }
 
+    // LC 111
+    // 4.40 - 4.50 pm
+    int miniDepth = Integer.MAX_VALUE; // ????
+    public int minDepth(TreeNode root) {
+      // edge
+      if(root == null){
+          return 0;
+      }
+      if(root.left == null && root.right == null){
+          return 0;
+      }
+
+      // dfs call
+      //getMiniDepth(root);
+      return getMiniDepth(root); // ???
+    }
+
+    public int getMiniDepth(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 0;
+        }
+
+        return Math.min(getMiniDepth(root.left), getMiniDepth(root.right)) + 1;
+    }
+
 
 }
