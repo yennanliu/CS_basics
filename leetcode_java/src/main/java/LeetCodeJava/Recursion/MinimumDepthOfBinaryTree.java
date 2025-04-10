@@ -69,6 +69,14 @@ public class MinimumDepthOfBinaryTree {
             return 0;
 
         // If one of the children is null, don't take min with 0
+        /**
+         * 	NOTE !!!
+         *
+         * 	If either left or right is null,
+         * 	we must go down the non-null side — minDepth is
+         * 	defined as the depth to the nearest leaf,
+         * 	so null branches can’t be considered in the Math.min().
+         */
         if (root.left == null)
             return minDepth_0_1(root.right) + 1;
         if (root.right == null)
