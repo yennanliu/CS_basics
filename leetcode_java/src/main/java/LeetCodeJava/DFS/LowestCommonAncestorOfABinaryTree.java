@@ -89,10 +89,14 @@ public class LowestCommonAncestorOfABinaryTree {
 
         /** NOTE !!!
          *
-         *  if left is NOT null, retern left
-         *  else, return right
+         *  if left is NOT null, return left
+         *  otherwise, return right
          */
-        return (left != null && right == null) ? left : right;
+        if (left != null) {
+            return left;
+        }
+        return right;
+        // return (left != null && right == null) ? left : right;
     }
 
     // V1-1
@@ -130,7 +134,7 @@ public class LowestCommonAncestorOfABinaryTree {
         return null;
     }
 
-    
+
     // V2
     // https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solutions/65226/my-java-solution-which-is-easy-to-understand/
     public TreeNode lowestCommonAncestor_2(TreeNode root, TreeNode p, TreeNode q) {
