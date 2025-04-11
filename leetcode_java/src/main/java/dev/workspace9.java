@@ -2908,5 +2908,71 @@ public class workspace9 {
                 isSameTree_(p.right, q.right);
     }
 
+    // LC 235
+    // 9.37 - 9.47 am
+    /**
+     *  IDEA 1) DFS ??
+     *
+     *  -> to check if
+     *     1) p, q are in `left, right sub tree` separately,
+     *        is yes, ancestor is `current node`
+     *     2) if p, q are both in `left sub` tree,
+     *        keep searching on left sub tree
+     *     3) ... right...
+     *
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // edge
+        if(root == null){
+            return root; // ??
+        }
+        if(root.left  == null && root.right == null){
+            return root; // ???
+        }
+        if(root.left == null || root.right == null){
+            return root; // ??
+        }
+        // dfs call
+
+        return null;
+    }
+
+//    public boolean isSubtree_(TreeNode root, TreeNode subRoot) {
+//        // edge
+//        if (root == null && subRoot == null) {
+//            return true;
+//        }
+//        // BFS : use `QUEUE` (FIFO)
+//        Queue<TreeNode> q = new LinkedList<>();
+//        q.add(root);
+//        while (!q.isEmpty()) {
+//            TreeNode cur = q.poll();
+//            if (isSameTree_0(cur, subRoot)) {
+//                return true;
+//            }
+//            if (cur.left != null) {
+//                q.add(cur.left);
+//            }
+//            if (cur.right != null) {
+//                q.add(cur.right);
+//            }
+//        }
+//        return false;
+//    }
+//
+//    // same tree : LC 100
+//    private boolean isSameTree_0(TreeNode p, TreeNode q) {
+//        if (p == null && q == null) {
+//            return true;
+//        }
+//        if (p == null || q == null) {
+//            return false;
+//        }
+//        if (p.val != q.val) {
+//            return false;
+//        }
+//        return isSameTree_0(p.left, q.left) && isSameTree_0(p.right, q.right);
+//    }
+
 
 }
