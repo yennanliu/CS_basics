@@ -3038,9 +3038,48 @@ public class workspace9 {
 //    }
 
     // LC 450
+    // 11.38 - 11.55 am
     public TreeNode deleteNode(TreeNode root, int key) {
+        // edge
+        if(root == null){
+            return root;
+        }
+        if(root.left == null && root.right == null){
+            if(root.val == key){
+                return null;
+            }
+            return root;
+        }
+        // check if `val` is in BST
+        boolean isExisted = false;
+        checkIfExisted(root, key);
+        // ???
+        if(!isExisted){
+            return root;
+        }
 
-        return null;
+        deleteNodeHelper(root, key);
+
+        return root;
+    }
+
+    public void deleteNodeHelper(TreeNode root, int key){
+       // if(root.)
+        return;
+    }
+
+    public boolean checkIfExisted(TreeNode root, int key){
+        // edge
+        if(root.val == key){
+            return true; // ?
+        }
+        if(root.val > key){
+            return checkIfExisted(root.left, key);
+        }else if (root.val < key){
+            return checkIfExisted(root.right, key);
+        }
+
+        return false; // ONLY none of node's val equals to key, then this line of code is reached
     }
 
 
