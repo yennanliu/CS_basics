@@ -57,8 +57,38 @@ public class DeleteNodeInABST {
 //
 //    }
 
-    // V1
+    // V1-1
     // https://youtu.be/LFzAoJJt92M?feature=shared
+    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0450-delete-node-in-a-bst.java
+    public TreeNode minimumVal(TreeNode root) {
+        TreeNode curr = root;
+        while (curr != null && curr.left != null) {
+            curr = curr.left;
+        }
+        return curr;
+    }
+
+    public TreeNode deleteNode_1_1(TreeNode root, int key) {
+        if (root == null)
+            return null;
+
+        if (key > root.val) {
+            root.right = deleteNode_1_1(root.right, key);
+        } else if (key < root.val) {
+            root.left = deleteNode_1_1(root.left, key);
+        } else {
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            } else {
+                TreeNode minVal = minimumVal(root.right);
+                root.val = minVal.val;
+                root.right = deleteNode_1_1(root.right, minVal.val);
+            }
+        }
+        return root;
+    }
 
     // V2
     // https://leetcode.com/problems/delete-node-in-a-bst/solutions/6532656/simple-solution-in-java-baet-100-users-b-70nb/
