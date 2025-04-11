@@ -56,6 +56,23 @@ public class InsertIntoABinarySearchTree {
             return new TreeNode(val);
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *   via below, we can still `MODIFY root value`,
+         *   even it's not declared as a global variable
+         *
+         *   -> e.g. we have root as input,
+         *      within `insertNodeHelper` method,
+         *      we append `new sub tree` to root as its left, right sub tree
+         *
+         */
+        /**
+         * It works by modifying the tree in-place
+         * (i.e., directly changing the .left or .right
+         *  references of the existing nodes).
+         *
+         */
         insertNodeHelper(root, val); // helper modifies the tree in-place
         return root;
     }
@@ -65,6 +82,12 @@ public class InsertIntoABinarySearchTree {
             if (root.left == null) {
                 root.left = new TreeNode(val);
             } else {
+                /** NOTE !!!
+                 *
+                 *  no need to return val,
+                 *  since we `append sub tree` to root directly
+                 *  in the method (e.g. root.left == ..., root.right = ...)
+                 */
                 insertNodeHelper(root.left, val);
             }
         } else {

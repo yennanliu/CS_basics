@@ -3001,24 +3001,41 @@ public class workspace9 {
         }
 
         // ???
-        return insertNodeHelper(root, val);
-    }
-
-    public TreeNode insertNodeHelper(TreeNode root, int val){
-        // edge case
-        if(root == null){
-            return new TreeNode(val);
-        }
-        if(root.val < val){
-            // ??? with or without `return`
-            return insertIntoBST(root.right, val);
-        }
-        if(root.val > val){
-            return insertIntoBST(root.left, val);
-        }
-
+        insertNodeHelper(root, val);
         return root;
     }
+
+    public void insertNodeHelper(TreeNode root, int val) {
+        if (val < root.val) {
+            if (root.left == null) {
+                root.left = new TreeNode(val);
+            } else {
+                insertNodeHelper(root.left, val);
+            }
+        } else {
+            if (root.right == null) {
+                root.right = new TreeNode(val);
+            } else {
+                insertNodeHelper(root.right, val);
+            }
+        }
+    }
+
+//    public TreeNode insertNodeHelper(TreeNode root, int val){
+//        // edge case
+//        if(root == null){
+//            return new TreeNode(val);
+//        }
+//        if(root.val < val){
+//            // ??? with or without `return`
+//            return insertIntoBST(root.right, val);
+//        }
+//        if(root.val > val){
+//            return insertIntoBST(root.left, val);
+//        }
+//
+//        return root;
+//    }
 
 
 }
