@@ -2975,9 +2975,49 @@ public class workspace9 {
 //    }
 
     // LC 701
+    // 10.33 - 10.43 am
+    /**
+     *  BINARY SEARCH TREE (BST)
+     *
+     *       ->  node.val < node.right.val &&  node.val > node.left.val
+     *       ->  so we can leverage property above
+     *
+     *
+     *  IDEA 1) DFS (RECURSION)
+     *
+     */
     public TreeNode insertIntoBST(TreeNode root, int val) {
+        // edge case
+        if(root == null){
+            return new TreeNode(val);
+        }
+        if(root.left == null && root.right == null){
+            if(root.val < val){
+                root.right = new TreeNode(val);
+            }else{
+                root.left = new TreeNode(val);
+            }
+            return root;
+        }
 
-        return null;
+        // ???
+        return insertNodeHelper(root, val);
+    }
+
+    public TreeNode insertNodeHelper(TreeNode root, int val){
+        // edge case
+        if(root == null){
+            return new TreeNode(val);
+        }
+        if(root.val < val){
+            // ??? with or without `return`
+            return insertIntoBST(root.right, val);
+        }
+        if(root.val > val){
+            return insertIntoBST(root.left, val);
+        }
+
+        return root;
     }
 
 
