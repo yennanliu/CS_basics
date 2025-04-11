@@ -71,6 +71,16 @@ public class LowestCommonAncestorOfABinaryTree {
          *  -> we put "root == null" to avoid null pointer error
          *  -> if (root.equals(p) or (root.equals(q) : return root directly
          */
+        /**
+         * This is a base case for recursion:
+         *
+         * - If root is null, we return null (reached the end of a branch).
+         *
+         * - If root is either p or q, we return root because:
+         *
+         *    - That means we’ve found one of the nodes we’re looking for.
+         *    - The ancestor of a node can be the node itself.
+         */
         if ((root == null) || (root.equals(p) || root.equals(q))){
             return root;
         }
@@ -78,11 +88,31 @@ public class LowestCommonAncestorOfABinaryTree {
 
         /**
          *  NOTE !!! we assign sub-tree as left, right
-         *  -> in order to do value comparision below
+         *  -> in order to do `comparison` below
+         *
+         */
+        /**
+         *  - We recursively search for p and q in the
+         *    left and right subtrees.
+         *
+         *  - These calls will bubble up either null or
+         *    the node (if found in that subtree).
+         *
          */
         TreeNode left = this.lowestCommonAncestor(root.left, p, q);
         TreeNode right = this.lowestCommonAncestor(root.right, p, q);
 
+        /**
+         * If both left and right are not null, it means:
+         *
+         *   - p is found in one subtree
+         *   - q is found in the other subtree
+         *
+         *  -> Hence, the current root is their lowest common ancestor,
+         *     so we return it.
+         *
+         *
+         */
         if (left != null && right != null){
             return root;
         }
@@ -91,6 +121,14 @@ public class LowestCommonAncestorOfABinaryTree {
          *
          *  if left is NOT null, return left
          *  otherwise, return right
+         */
+        /**
+         *  - If only one side is non-null,
+         *     it means both nodes are located in the same subtree,
+         *     and that non-null result is potentially the LCA.
+         *
+         *
+         *   - So, return whichever side is not null.
          */
         if (left != null) {
             return left;
@@ -162,6 +200,27 @@ public class LowestCommonAncestorOfABinaryTree {
             return left;
         else
             return root;
+    }
+
+    // V4
+    // IDEA: DFS (GPT)
+    public TreeNode lowestCommonAncestor_4(TreeNode root, TreeNode p, TreeNode q) {
+        // Keep traversing the tree
+        while (root != null) {
+            // If both p and q are less than root, LCA must be in left subtree
+            if (p.val < root.val && q.val < root.val) {
+                root = root.left;
+            }
+            // If both p and q are greater than root, LCA must be in right subtree
+            else if (p.val > root.val && q.val > root.val) {
+                root = root.right;
+            }
+            // If p and q lie on either side of root, or one is the root, then root is LCA
+            else {
+                return root;
+            }
+        }
+        return null; // This should never be hit as per problem constraints
     }
 
 }
