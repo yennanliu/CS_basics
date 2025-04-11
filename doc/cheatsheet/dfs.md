@@ -1,4 +1,5 @@
 # DFS 
+
 - Deep-first search
 - search algorithm
 - Deep first, then breadth
@@ -101,7 +102,9 @@ def dfs(root):
 
 #### 0-2-2) Basic Tricks
 
-- Important !!!!
+
+- Assign sub tree to node, then return updated node at final stage (Important !!!!)
+
 ```java
 // java
 // LC 199
@@ -119,6 +122,35 @@ private TreeNode _dfs(TreeNode node){
     /** NOTE !!! we need to return root as final step */
     return root2;
 }
+```
+ 
+- Modify tree `in place`  (Important !!!!)
+
+```java
+// java
+// LC 701
+
+// ...
+public TreeNode insertIntoBST(TreeNode root, int val){
+    // ...
+
+    insertNodeHelper(root, val);
+    return root;
+}
+
+public void insertNodeHelper(TreeNode root, int val) {
+    // ...
+    if(...){
+        root.left = new TreeNode(val);
+    }else{
+        root.right = new TreeNode(val);
+    }
+
+    // ...
+    return root;
+}
+
+// ... 
 ```
 
 
@@ -599,6 +631,55 @@ class Solution(object):
 ```
 
 ### 2-2) Insert into a Binary Search Tree
+
+
+```java
+// java
+// LC 701
+
+public TreeNode insertIntoBST_0_1(TreeNode root, int val) {
+    if (root == null) {
+        return new TreeNode(val);
+    }
+
+    /** 
+     *  NOTE !!! 
+     *  
+     *   via below, we can still `MODIFY root value`,
+     *   even it's not declared as a global variable
+     *   
+     *   -> e.g. we have root as input,
+     *      within `insertNodeHelper` method,
+     *      we append `new sub tree` to root as its left, right sub tree
+     *
+     */
+    insertNodeHelper(root, val); // helper modifies the tree in-place
+    return root;
+}
+
+public void insertNodeHelper(TreeNode root, int val) {
+    if (val < root.val) {
+        if (root.left == null) {
+            root.left = new TreeNode(val);
+        } else {
+            /** NOTE !!!
+             * 
+             *  no need to return val,
+             *  since we `append sub tree` to root directly
+             *  in the method (e.g. root.left == ..., root.right = ...)
+             */
+            insertNodeHelper(root.left, val);
+        }
+    } else {
+        if (root.right == null) {
+            root.right = new TreeNode(val);
+        } else {
+            insertNodeHelper(root.right, val);
+        }
+    }
+}
+```
+
 ```python
 # 701 Insert into a Binary Search Tree
 
@@ -613,6 +694,7 @@ class Solution(object):
             root.left = self.insertIntoBST(root.left, val);
         return(root)
 ```
+`
 
 ### 2-3) Delete Node in a BST
 ```python
