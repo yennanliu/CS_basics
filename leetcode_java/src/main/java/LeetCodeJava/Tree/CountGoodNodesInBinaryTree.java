@@ -90,6 +90,26 @@ public class CountGoodNodesInBinaryTree {
             numGoodNodes += 1; // found a good node
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *   below structure can be modified as below (check `V0-3` solution below)
+         *
+         *   ```
+         *   if(root == null){
+         *       return null;
+         *   }
+         *
+         *    findGoodNode(node.right, Math.max(node.val, maxSoFar));
+         *    findGoodNode(node.left, Math.max(node.val, maxSoFar));
+         *
+         *   ```
+         *
+         *
+         *   -> so we have logic handle if `root is null` beforehand
+         *      then we can just call method recursively with node.left, root.right
+         *
+         */
         if (node.right != null) {
             /** NOTE !!!
              *
@@ -191,6 +211,34 @@ public class CountGoodNodesInBinaryTree {
                     root.right,
                     Math.max(root.val, maxSoFar));
         }
+    }
+
+    // V0-3
+    // IDEA: DFS + `max val so far` (fixed by gpt)
+    int goodNodeCnt_3 = 0;
+
+    public int goodNodes_0_3(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        getGoodCnt(root, root.val);
+        return goodNodeCnt_3;
+    }
+
+    public void getGoodCnt(TreeNode root, int maxValTillNow) {
+        if (root == null) {
+            return;
+        }
+
+        if (root.val >= maxValTillNow) {
+            goodNodeCnt_3++;
+        }
+
+        // Update max value seen so far
+        int newMax = Math.max(maxValTillNow, root.val);
+        getGoodCnt(root.left, newMax);
+        getGoodCnt(root.right, newMax);
     }
 
 
