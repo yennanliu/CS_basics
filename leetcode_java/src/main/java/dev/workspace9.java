@@ -3174,5 +3174,58 @@ public class workspace9 {
         return null;
     }
 
+    // LC 1448
+    // 4.53 - 5.03 pm
+    /**
+     * Given a binary tree root, a node X in the tree is named good if in
+     * the path from root to X there are `no nodes with a value greater than X`.
+     *
+     *
+     *
+     * in the path from root to X there are no nodes with a value greater than X.
+     *
+     *  IDEA 1) DFS
+     *
+     *  -> record `root val`, then recursively visiting all nodes
+     *     , on the same time, maintain the `till now MAX val`, and
+     *     compare with current node `node.val > max_till_now` then
+     *     count += 1
+     */
+    int goodNodeCnt = 1;
+    public int goodNodes(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+//        if(root.left == null && root.right == null){
+//            return 1;
+//        }
+        getGoodCnt(root, root.val);
+        return goodNodeCnt;
+    }
+
+    // ??? use void or TreeNode as return type ???
+    public void getGoodCnt(TreeNode root, int maxValTillNow){
+        // edge
+        if(root == null){
+            return;
+        }
+
+        // ???
+//        if(root.left == null && root.right == null){
+//            return;
+//        }
+
+        if(root.val >= maxValTillNow){
+            goodNodeCnt += 1;
+        }
+
+        // update maxValTillNow
+        maxValTillNow = Math.max(maxValTillNow, root.val);
+
+        getGoodCnt(root.left, maxValTillNow);
+        getGoodCnt(root.right, maxValTillNow);
+    }
+
 
 }
