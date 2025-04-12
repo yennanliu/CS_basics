@@ -52,15 +52,27 @@ import LeetCodeJava.DataStructure.TreeNode;
  */
 public class DeleteNodeInABST {
 
-    // V0
-//    public TreeNode deleteNode(TreeNode root, int key) {
-//
-//    }
+  // V0
+  //    public TreeNode deleteNode(TreeNode root, int key) {
+  //
+  //    }
 
-    // V1-1
-    // https://youtu.be/LFzAoJJt92M?feature=shared
-    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0450-delete-node-in-a-bst.java
-    public TreeNode deleteNode_1_1(TreeNode root, int key) {
+  // V1-1
+  // https://youtu.be/LFzAoJJt92M?feature=shared
+  // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0450-delete-node-in-a-bst.java
+  /**
+   *
+   *  Summary of Deletion Strategy:
+   *  
+   *
+   *  | Case         | Description        | What Happens                                  |
+   * |--------------|--------------------|-----------------------------------------------|
+   * | Leaf         | No children         | Return `null`                                 |
+   * | One Child    | One child           | Replace node with its child                   |
+   * | Two Children | Both children       | Replace with in-order successor, then delete the successor |
+   *
+   */
+  public TreeNode deleteNode_1_1(TreeNode root, int key) {
         // edge (base case)
         if (root == null)
             return null;
@@ -96,9 +108,20 @@ public class DeleteNodeInABST {
             // case 3-2) right sub node is null
             else if (root.right == null) {
                 return root.left;
-            }
-            // case 3-3) BOTH sub left, right sub node are NOT null
-            else {
+      }
+      // case 3-3) BOTH sub left, right sub node are NOT null
+      /**
+       *  	•	When a node has both children, we:
+       *
+       * 	  •	Find the in-order successor (the `smallest` node in the right subtree).
+       * 	  •	`Copy` its value to the `current node`.
+       * 	  •	`Recursively` DELETE that `successor` in the right subtree.
+       *
+       *   ->  This preserves the BST property because the in-order successor
+       *       is always the next-larger node.
+       *
+       */
+      else {
                 TreeNode minVal = minimumVal(root.right);
                 root.val = minVal.val;
                 root.right = deleteNode_1_1(root.right, minVal.val);
