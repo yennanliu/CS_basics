@@ -3038,11 +3038,29 @@ public class workspace9 {
 //    }
 
     // LC 450
-    // 11.38 - 11.55 am
+    // 6.03 - 6.13 pm
+    /**   IDEA 1) DFS
+     *
+     *  NOTE !!! we're NOT deleting a node,
+     *        instead, just `reconnect` to the `new node`
+     *        so it's equivalent to the tree deletion
+     *
+     *  ->
+     *    step 1) traverse over tree, till meet the node with `same key`
+     *    step 2) check if `left sub tree exist`
+     *           -> if no, simply reconnect to `right sub tree`
+     *               (since ALL right sub tree >= left sub tree,
+     *                so NOTHING to fix if reconnect to right sub tree)
+     *           -> if yes, `move over `sub left tree`, till the END.
+     *                      then reconnect
+     *                (fine the `minimum` node in left sub tree,
+     *                 then we reconnect, and we're sure that the `fixing step`
+     *                 is simplest)
+     */
     public TreeNode deleteNode(TreeNode root, int key) {
         // edge
         if(root == null){
-            return root;
+            return null;
         }
         if(root.left == null && root.right == null){
             if(root.val == key){
@@ -3050,23 +3068,69 @@ public class workspace9 {
             }
             return root;
         }
-        // check if `val` is in BST
-        boolean isExisted = false;
-        checkIfExisted(root, key);
-        // ???
-        if(!isExisted){
-            return root;
-        }
 
+        // dfs call
         deleteNodeHelper(root, key);
-
         return root;
     }
 
     public void deleteNodeHelper(TreeNode root, int key){
-       // if(root.)
-        return;
+        // edge
+        if(root == null){
+            //return null;
+            return;
+        }
+        // if found the `root`
+        if(root.val == key){
+            // case 1) root.left is null
+            if(root.left == null){
+                //root.
+                //return root
+                root = root.right; // ???
+            }
+            // case 2) root.left is NOT null
+            else{
+                // move till the end of sub left tree
+                while(root.left != null){
+                    root = root.left;
+                    // /??
+                   // root = root; // /??
+                }
+
+            }
+        }
+
+       // return null;
     }
+
+//    public TreeNode deleteNode(TreeNode root, int key) {
+//        // edge
+//        if(root == null){
+//            return root;
+//        }
+//        if(root.left == null && root.right == null){
+//            if(root.val == key){
+//                return null;
+//            }
+//            return root;
+//        }
+//        // check if `val` is in BST
+//        boolean isExisted = false;
+//        checkIfExisted(root, key);
+//        // ???
+//        if(!isExisted){
+//            return root;
+//        }
+//
+//        deleteNodeHelper(root, key);
+//
+//        return root;
+//    }
+//
+//    public void deleteNodeHelper(TreeNode root, int key){
+//       // if(root.)
+//        return;
+//    }
 
     public boolean checkIfExisted(TreeNode root, int key){
         // edge
@@ -3263,25 +3327,28 @@ public class workspace9 {
         if(node == null){
             return true;
         }
-        if(node.left != null && node.right != null){
-            if(node.val >= node.right.val){
-                return false;
-            }
-            // ???
-            if(node.val <= node.left.val){
-                return false;
-            }
-        }
-        if(node.left == null || node.right == null){
-            if(node.left != null){
-                if(node.left != null && node.val <= node.left.val){
-                    return false;
-                }
-            }else{
-                if(node.right != null && node.val >= node.right.val){
-                    return false;
-                }
-            }
+//        if(node.left != null && node.right != null){
+//            if(node.val >= node.right.val){
+//                return false;
+//            }
+//            // ???
+//            if(node.val <= node.left.val){
+//                return false;
+//            }
+//        }
+//        if(node.left == null || node.right == null){
+//            if(node.left != null){
+//                if(node.left != null && node.val <= node.left.val){
+//                    return false;
+//                }
+//            }else{
+//                if(node.right != null && node.val >= node.right.val){
+//                    return false;
+//                }
+//            }
+//        }
+        if(node.val >= maxTillNow || node.val <= smallTillNow){
+            return false;
         }
 
         return
