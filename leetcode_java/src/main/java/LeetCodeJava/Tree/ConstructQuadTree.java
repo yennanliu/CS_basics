@@ -1,8 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/construct-quad-tree/description/
-
-//import LeetCodeJava.DataStructure.Node;
+// https://leetcode.cn/problems/construct-quad-tree/solutions/
 
 /**
  * 427. Construct Quad Tree
