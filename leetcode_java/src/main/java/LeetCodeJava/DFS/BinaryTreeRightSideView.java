@@ -228,6 +228,41 @@ public class BinaryTreeRightSideView {
         return res;
     }
 
+    // V0-3
+    // IDEA:  BFS + `maintain the RIGHTMOST` element (fixed by gpt)
+    public List<Integer> rightSideView_0_3(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+
+        while (!q.isEmpty()) {
+            int levelSize = q.size();
+            TreeNode rightMost = null;
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode cur = q.poll();
+                rightMost = cur;  // last node processed in this level
+
+                if (cur.left != null) {
+                    q.add(cur.left);
+                }
+                if (cur.right != null) {
+                    q.add(cur.right);
+                }
+            }
+
+            if (rightMost != null) {
+                res.add(rightMost.val);
+            }
+        }
+
+        return res;
+    }
+    
 
     // V1-1
     // https://neetcode.io/problems/binary-tree-right-side-view

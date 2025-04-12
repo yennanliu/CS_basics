@@ -3082,5 +3082,53 @@ public class workspace9 {
         return false; // ONLY none of node's val equals to key, then this line of code is reached
     }
 
+    // LC 199
+    // 4.02 pm - 4.15 pm
+    // IDEA : BFS
+    public List<Integer> rightSideView(TreeNode root) {
+        // edge
+        if(root == null){
+            return new ArrayList<>();
+        }
+        if(root.left == null && root.right == null){
+            return new ArrayList<>(root.val); // ??
+        }
+
+        List<List<Integer>> cache = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+
+        int layer = 0;
+        q.add(root);
+
+        while(!q.isEmpty()){
+
+            if(layer >= cache.size()){
+                cache.add(new ArrayList<>());
+            }
+
+            // NOTE !! below, we need to get `right side of view`
+            TreeNode cur = q.poll();
+            cache.get(layer).add(cur.val);
+
+            if(cur.left != null){
+                q.add(cur.left);
+            }
+            if(cur.right != null){
+                q.add(cur.right);
+            }
+
+            layer += 1;
+        }
+
+        for(List<Integer> x: cache){
+            if(!x.isEmpty()){
+                res.add(x.get(x.size()-1));
+            }
+        }
+
+        return res;
+    }
+
 
 }
