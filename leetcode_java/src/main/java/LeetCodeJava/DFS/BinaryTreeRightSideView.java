@@ -262,7 +262,7 @@ public class BinaryTreeRightSideView {
 
         return res;
     }
-    
+
 
     // V1-1
     // https://neetcode.io/problems/binary-tree-right-side-view
