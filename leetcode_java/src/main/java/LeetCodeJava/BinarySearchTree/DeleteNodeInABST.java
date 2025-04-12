@@ -60,34 +60,62 @@ public class DeleteNodeInABST {
     // V1-1
     // https://youtu.be/LFzAoJJt92M?feature=shared
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0450-delete-node-in-a-bst.java
+    public TreeNode deleteNode_1_1(TreeNode root, int key) {
+        // edge (base case)
+        if (root == null)
+            return null;
+
+        // case 1) key > root.val
+        /** NOTE !!!
+         *
+         *  if `key > root.val`
+         *   -> move to `right` node, and keep running the `delete node op`
+         *   -> NEED to connect root.right to the recursive call result
+         *      e.g. root.right = deleteNode_1_1(..)
+         */
+        if (key > root.val) {
+            root.right = deleteNode_1_1(root.right, key);
+        }
+        // case 2) key < root.val
+        /** NOTE !!!
+         *
+         *  if `key < root.val`
+         *   -> move to `left` node, and keep running the `delete node op`
+         *   -> NEED to connect root.left to the recursive call result
+         *      e.g. root.left = deleteNode_1_1(..)
+         */
+        else if (key < root.val) {
+            root.left = deleteNode_1_1(root.left, key);
+        }
+        // case 3) key == root.val (the `to_delete` node is found)
+        else {
+            // case 3-1) left sub node is null
+            if (root.left == null) {
+                return root.right;
+            }
+            // case 3-2) right sub node is null
+            else if (root.right == null) {
+                return root.left;
+            }
+            // case 3-3) BOTH sub left, right sub node are NOT null
+            else {
+                TreeNode minVal = minimumVal(root.right);
+                root.val = minVal.val;
+                root.right = deleteNode_1_1(root.right, minVal.val);
+            }
+        }
+
+        /** NOTE !!! DON'T forget to return root as final result */
+        return root;
+    }
+
+    // helper func
     public TreeNode minimumVal(TreeNode root) {
         TreeNode curr = root;
         while (curr != null && curr.left != null) {
             curr = curr.left;
         }
         return curr;
-    }
-
-    public TreeNode deleteNode_1_1(TreeNode root, int key) {
-        if (root == null)
-            return null;
-
-        if (key > root.val) {
-            root.right = deleteNode_1_1(root.right, key);
-        } else if (key < root.val) {
-            root.left = deleteNode_1_1(root.left, key);
-        } else {
-            if (root.left == null) {
-                return root.right;
-            } else if (root.right == null) {
-                return root.left;
-            } else {
-                TreeNode minVal = minimumVal(root.right);
-                root.val = minVal.val;
-                root.right = deleteNode_1_1(root.right, minVal.val);
-            }
-        }
-        return root;
     }
 
     // V2
