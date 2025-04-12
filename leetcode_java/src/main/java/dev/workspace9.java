@@ -3227,5 +3227,67 @@ public class workspace9 {
         getGoodCnt(root.right, maxValTillNow);
     }
 
+  // LC 98
+  // 5.33 - 5.43 pm
+  /**
+   * Given the root of a binary tree,
+   *
+   * -> determine if it is a `valid` binary search tree (BST).
+   *
+   * A valid BST is defined as follows:
+   *
+   *  The left subtree of a node contains only nodes with keys less than the node's key.
+   *  The right subtree of a node contains only nodes with keys greater than the node's key.
+   *  Both the left and right subtrees must also be binary search trees.
+   *
+   *  -> e.g. a valid BST
+   *       -> root node and ALL of its sub node need to omit below
+   *       -> root.left.val < root.val < root.right.val
+   *
+   */
+  public boolean isValidBST(TreeNode root) {
+      // edge
+      if(root == null){
+          return true;
+      }
+      if(root.left == null && root.right == null){
+          return true;
+      }
+
+      // ???
+      return checkIsValidBst(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    public boolean checkIsValidBst(TreeNode node, int maxTillNow, int smallTillNow){
+        // edge
+        if(node == null){
+            return true;
+        }
+        if(node.left != null && node.right != null){
+            if(node.val >= node.right.val){
+                return false;
+            }
+            // ???
+            if(node.val <= node.left.val){
+                return false;
+            }
+        }
+        if(node.left == null || node.right == null){
+            if(node.left != null){
+                if(node.left != null && node.val <= node.left.val){
+                    return false;
+                }
+            }else{
+                if(node.right != null && node.val >= node.right.val){
+                    return false;
+                }
+            }
+        }
+
+        return
+               checkIsValidBst(node.left, node.val, smallTillNow) &&
+               checkIsValidBst(node.right, maxTillNow, node.val);
+    }
+
 
 }
