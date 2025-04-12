@@ -541,11 +541,14 @@ private boolean canForm(String x, String s){
 // java
 // LC 767
 
+// access element in sb vis `sb.charAt[idx]`
+
 // ...
 
  StringBuilder sb = new StringBuilder("#");
 
 
+/** NOTE !!! below */
 if (currentChar != sb.charAt(sb.length() - 1)) {
     // ...
 }
@@ -588,8 +591,10 @@ public static void main(String[] args) {
 
 
 /** 
- *  if use `boolean[][]`, the default val is `false`
- *  if use `Boolean[][]`, the default val is `null`
+ *  NOTE !!!
+ *   
+ *  if `boolean[][]`, the default val is `false`
+ *  if `Boolean[][]`, the default val is `null`
  */
 
 // ex1
@@ -613,6 +618,8 @@ boolean visit = boolean[y][x];
 ```
 
 ### 1-2) Char array to String
+
+- so can 1) access element 2) loop over it
 
 ```java
 // java
@@ -644,7 +651,7 @@ Arrays.toString(data);
 // LC 49
 char array [] = strs.toCharArray();
 Arrays.sort(array);
-return String.valueOf(array);
+String.valueOf(array);
 ```  
 
 ### 1-3) Stack to String
@@ -706,6 +713,7 @@ Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
 
 1) `Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]))`:
 
+- modify the `original` array in place directly (no new array created)
 - This sorts the array intervals `in place`.
 - The sorting is based on the first element of each sub-array (a[0] and b[0]).
 - The Integer.compare(a[0], b[0]) comparator ensures that the array is sorted in ascending order based on the first elements of the sub-arrays.
@@ -713,10 +721,12 @@ Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
 
 2) `Arrays.stream(intervals).sorted()`:
 
+- `NOT` modify the `original` array, but create the other `sorted` array
 - This creates a stream of the array intervals.
 - The .sorted() method sorts the stream in natural order.
 - However, this does `NOT` modify the `original` array intervals in place.
 - The result of this sorting is a sorted stream, but if you do not collect or process this sorted stream, the original array remains unchanged.
+
 
 
 
