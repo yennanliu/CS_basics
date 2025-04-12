@@ -125,6 +125,27 @@ public class ValidateBinarySearchTree {
         return isValidateBST(root.left, min, root.val) && isValidateBST(root.right, root.val, max);
     }
 
+    // V0-2
+    // IDEA: DFS + maintain `max till now`, `min till now` val (gpt)
+    public boolean isValidBST_0_2(TreeNode root) {
+        return checkIsValidBst(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    public boolean checkIsValidBst(TreeNode node, long min, long max) {
+        if (node == null) {
+            return true;
+        }
+
+        // node value must be in (min, max)
+        if (node.val <= min || node.val >= max) {
+            return false;
+        }
+
+        // check left and right subtree with updated bounds
+        return checkIsValidBst(node.left, min, node.val) &&
+                checkIsValidBst(node.right, node.val, max);
+    }
+
     // V1
     // IDEA : Recursive Traversal with Valid Range
     // https://leetcode.com/problems/validate-binary-search-tree/editorial/
