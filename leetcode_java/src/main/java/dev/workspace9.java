@@ -3402,5 +3402,12 @@ public class workspace9 {
       return root;
     }
 
+    // LC 337
+    public int rob(TreeNode root) {
+
+        return 0;
+    }
+
+
 
 }
