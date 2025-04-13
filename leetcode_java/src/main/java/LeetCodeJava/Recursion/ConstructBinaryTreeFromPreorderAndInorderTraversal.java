@@ -61,6 +61,12 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
         TreeNode root = new TreeNode(preorder[0]);
         // get root idx
         int root_idx = 0;
+        /**
+         *  NOTE !!!
+         *
+         *   we get `root_idx` (aka `width`)
+         *   via below
+         */
         for (int i = 0; i < inorder.length; i++) {
             if (inorder[i] == root.val) {
                 root_idx = i;
