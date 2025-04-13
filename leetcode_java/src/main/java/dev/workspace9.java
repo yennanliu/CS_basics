@@ -3424,9 +3424,76 @@ public class workspace9 {
     }
 
     // LC 1325
-    public TreeNode removeLeafNodes(TreeNode root, int target) {
+    // 4.48 - 4.58 pm
+    // IDEA : DFS
+//    public TreeNode removeLeafNodes(TreeNode root, int target) {
+//        // edge
+//        if(root == null){
+//            return null;
+//        }
+//        if(root.left == null && root.right == null){
+//            if(root.val == target){
+//                return null;
+//            }
+//            return root;
+//        }
+//        // dfs call
+//        deleteLeafHelper(root, target);
+//
+//        return root; // ???
+//    }
+//
+//    public void deleteLeafHelper(TreeNode root, int target){
+//        if(root == null){
+//            return;
+//        }
+//        // case 1) root == target
+//        if(root.val == target){
+//            // case 1-1) cur node's left, right sub node are all null
+//            if(root.left == null && root.right == null){
+//                return;
+//            }else{
+//                // need to do anything ???
+//            }
+//        }
+//
+//        // case 2) move left
+//        deleteNodeHelper(root.left, target);
+//
+//        // case 3) move right
+//        deleteNodeHelper(root.right, target);
+//
+//    }
+    ///
 
-        return null;
+    public TreeNode removeLeafNodes_0_1(TreeNode root, int target) {
+        deleteLeafHelper(root, target);
+        //return deleteLeafHelper(root, target);
+        return root;
+    }
+
+    private void deleteLeafHelper(TreeNode root, int target) {
+        if (root == null) {
+            //return null;
+            return;
+        }
+
+        // Recursively process left and right children
+//        root.left = deleteLeafHelper(root.left, target);
+//        root.right = deleteLeafHelper(root.right, target);
+
+        deleteLeafHelper(root.left, target);
+        deleteLeafHelper(root.right, target);
+
+
+        // After processing children, check if current node is a target leaf
+        if (root.left == null && root.right == null && root.val == target) {
+           // return null; // remove this leaf
+            return;
+        }
+
+        //return root; // keep current node
+        return;
     }
 
 

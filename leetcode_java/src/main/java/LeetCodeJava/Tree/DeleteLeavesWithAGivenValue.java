@@ -54,6 +54,29 @@ public class DeleteLeavesWithAGivenValue {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (fixed by gpt)
+    public TreeNode removeLeafNodes_0_1(TreeNode root, int target) {
+        return deleteLeafHelper(root, target);
+    }
+
+    private TreeNode deleteLeafHelper(TreeNode root, int target) {
+        if (root == null) {
+            return null;
+        }
+
+        // Recursively process left and right children
+        root.left = deleteLeafHelper(root.left, target);
+        root.right = deleteLeafHelper(root.right, target);
+
+        // After processing children, check if current node is a target leaf
+        if (root.left == null && root.right == null && root.val == target) {
+            return null; // remove this leaf
+        }
+
+        return root; // keep current node
+    }
+
     // V1
     // https://youtu.be/FqAoYAwbwV8?si=mOdW8Wgj3TJ4AyRL
 
