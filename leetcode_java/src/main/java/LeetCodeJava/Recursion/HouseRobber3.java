@@ -42,14 +42,68 @@ import java.util.Map;
  */
 public class HouseRobber3 {
 
-    // V0
-//    public int rob(TreeNode root) {
-//
-//    }
+  // V0
+  //    public int rob(TreeNode root) {
+  //
+  //    }
+
+  // V0-1
+  // IDEA : DFS + DP (gpt)
+  /**
+   *  At every node, we decide:
+   * 	•	If we rob this node, we cannot rob its children.
+   * 	•	If we don’t rob this node, we can rob its children.
+   *
+   * We’ll return two values for each subtree:
+   * 	•	res[0]: max money if we don’t rob this node
+   * 	•	res[1]: max money if we do rob this node
+   */
+  /**
+   *   Example:
+   *
+   *    For root = [3,2,3,null,3,null,1]:
+   *
+   *          3
+   *        / \
+   *       2   3
+   *        \    \
+   *         3    1
+   *
+   *   	•	Rob 3 (root) → Can’t rob 2 or 3 → Total = 3 + 3 + 1 = 7
+   * 	•	Don’t rob 3 (root) → Rob 2 and/or 3
+   *
+   *  -> The DP traversal picks the best at each level.
+   *
+   */
+  public int rob_0_1(TreeNode root) {
+        int[] result = dfs_0_1(root);
+        return Math.max(result[0], result[1]);
+    }
+
+    private int[] dfs_0_1(TreeNode node) {
+        if (node == null) {
+            return new int[] { 0, 0 }; // {notRobbed, robbed}
+        }
+
+        int[] left = dfs_0_1(node.left);
+        int[] right = dfs_0_1(node.right);
+
+        int notRobbed = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+        int robbed = node.val + left[0] + right[0];
+
+        return new int[] { notRobbed, robbed };
+    }
 
     // V1
     // https://youtu.be/nHR8ytpzz7c?si=7y46QM-wwMWAmn8b
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0337-house-robber-iii.java
+    public int rob_1(TreeNode root) {
+        // NOTE !!! we call helper func below
+        int[] ans = dfs(root);
+        return Math.max(ans[0], ans[1]);
+    }
+
+    // helper func
     public int[] dfs(TreeNode root){
         if(root == null) return new int[2];
 
@@ -62,10 +116,6 @@ public class HouseRobber3 {
         res[1] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]); //without Root
 
         return res;
-    }
-    public int rob_1(TreeNode root) {
-        int []ans = dfs(root);
-        return Math.max(ans[0], ans[1]);
     }
 
     // V2

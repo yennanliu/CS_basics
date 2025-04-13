@@ -3403,11 +3403,31 @@ public class workspace9 {
     }
 
     // LC 337
+    // 4.12 - 4.22 pm
+    /**
+     *  IDEA 1) DFS traverse over tree
+     *   -> get `array of node`
+     *   -> dp or greedy get the `max` amount that thief can get
+     *
+     *  IDEA 2) DFS with DP ???
+     *
+     *   EXP 1)
+     *         3
+     *      2    3
+     *       3     1
+     *
+     *
+     */
     public int rob(TreeNode root) {
 
         return 0;
     }
 
+    // LC 1325
+    public TreeNode removeLeafNodes(TreeNode root, int target) {
+
+        return null;
+    }
 
 
 }
