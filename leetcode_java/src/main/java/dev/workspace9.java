@@ -3356,5 +3356,51 @@ public class workspace9 {
                checkIsValidBst(node.right, maxTillNow, node.val);
     }
 
+    // LC 105
+    // 3.27 - 3.37 pm
+    /**
+     *  IDEA 1) RECURSIVE
+     *
+     *   preorder -> find `root`, then `width` is the dist between left and root
+     *   inorder -> can get the sub left, right node
+     *
+     *
+     *   repeat above ...
+     *
+     */
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+      // edge
+      if (preorder == null || preorder.length == 0){
+          return null;
+      }
+      if(preorder.length == 1){
+          return new TreeNode(preorder[0]);
+      }
+
+      int rootVal = preorder[0];
+      int width = 0;
+      for(int i = 0; i < inorder.length; i++){
+          if(inorder[i] == rootVal){
+              width = i;
+              break;
+          }
+      }
+
+      TreeNode root = new TreeNode(preorder[0]);
+      root.left = this.buildTree(
+              // root -> left -> right
+              Arrays.copyOfRange(preorder, 1,1 + width),
+              // left -> root -> right
+              Arrays.copyOfRange(inorder, 0, width)
+      );
+
+      root.right = this.buildTree(
+                Arrays.copyOfRange(preorder, width + 1,preorder.length),
+                Arrays.copyOfRange(inorder, width + 1,inorder.length)
+      );
+
+      return root;
+    }
+
 
 }
