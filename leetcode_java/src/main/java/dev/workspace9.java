@@ -3646,5 +3646,52 @@ public class workspace9 {
 
     }
 
+    // LC 703
+    // 12.15 - 12.25 pm
+    /**
+     *
+     * You are tasked to implement a class which, for a given integer k,
+     * maintains a stream of test scores and continuously
+     * returns the kth highest test score after a new score has been submitted.
+     *
+     * More specifically,
+     * we are looking for the kth highest score in the sorted list of all scores.
+     *
+     *
+     *  IDEA: PQ (small PQ) (small -> big)
+     */
+    class KthLargest {
+        int k;
+        PriorityQueue<Integer> pq;
+
+        public KthLargest(int k, int[] nums){
+            this.k = k; // ???
+            this.pq = new PriorityQueue<>(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    int diff = o1 - o2;
+                    return diff;
+                }
+            });
+
+            for(int x: nums){
+                this.pq.add(x);
+            }
+        }
+
+        public int add(int val) {
+
+            this.pq.add(val);
+
+            while(this.pq.size() > k){
+                this.pq.poll();
+            }
+            if(!this.pq.isEmpty()){
+                return this.pq.peek();
+            }
+            return -1; // ????
+        }
+
+    }
 
 }

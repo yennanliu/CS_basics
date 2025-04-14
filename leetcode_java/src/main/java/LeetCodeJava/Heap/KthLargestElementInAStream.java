@@ -155,6 +155,33 @@ public class KthLargestElementInAStream {
         }
     }
 
+    // V0-2
+    // IDEA: MIN PQ (fixed by gpt)
+    class KthLargest_0_2 {
+        int k;
+        PriorityQueue<Integer> pq;
+
+        public KthLargest_0_2(int k, int[] nums) {
+            this.k = k;
+            this.pq = new PriorityQueue<>(); // Default is min-heap
+
+            for (int num : nums) {
+                add(num); // Use add() to maintain heap size correctly
+            }
+        }
+
+        public int add(int val) {
+            pq.add(val);
+
+            if (pq.size() > k) {
+                pq.poll(); // Remove smallest to maintain k largest
+            }
+
+            return pq.peek(); // k-th largest is always the smallest in the heap
+        }
+    }
+
+
     // V1
     // IDEA : PRIORITY QUEUE
     // https://leetcode.com/problems/kth-largest-element-in-a-stream/editorial/
