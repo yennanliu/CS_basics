@@ -42,6 +42,7 @@
 
 
 ### 0-2) Pattern
+
 - Gat max, min element in path
     - LC 1448 : ONLY need to maintain cur max val in path, and compare cur node with it
 - Check sub tree (children)
@@ -455,6 +456,31 @@ private int getDepth(TreeNode root){
     return 1 + Math.min(getDepth(root.left), getDepth(root.right));
 }
 ```
+
+#### 1-1-3 -2) Get Max path
+
+- LC 124
+
+```java
+
+int maxPathSum = 0;
+// ...
+
+public int getMaxPathHelper(TreeNode node){
+    if(node == null){
+        return 0;
+    }
+    int leftMaxDepth = Math.max(getMaxPathHelper(root.left), 0);
+    int rightMaxDepth = Math.max(getMaxPathHelper(root.right), 0);
+
+    maxPathSum = Math.max(maxPathSum, root.val + leftMaxDepth + rightMaxDepth);
+
+    return root.val + Math.max(leftMaxDepth, rightMaxDepth);
+}
+
+//... 
+```
+
 
 #### 1-1-4) Get LCA (Lowest Common Ancestor) of a tree
 ```python
@@ -1605,6 +1631,72 @@ class Solution(object):
 ```
 
 ### 2-16) Binary Tree Maximum Path Sum
+
+```java
+// java
+// LC 124
+
+// V0-1
+// IDEA: DFS (GPT)
+private int maxSum = Integer.MIN_VALUE;
+
+public int maxPathSum_0_1(TreeNode root) {
+    if (root == null) {
+        return Integer.MIN_VALUE; // Handle null case
+    }
+
+    dfs(root);
+    return maxSum;
+}
+
+/** NOTE !!!
+ *
+ *  the response type of dfs is `integer`
+ *  e.g. the `max path sum` per input node
+ */
+private int dfs(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+
+    // Compute max path sum of left and right children, discard negative values
+    /**
+     *  NOTE !!!
+     *
+     *   we cache `leftMax` on current node
+     *   we cache `rightMax` on current node
+     *
+     *   so we can update global `max path sum` below
+     */
+    int leftMax = Math.max(dfs(node.left), 0);
+    int rightMax = Math.max(dfs(node.right), 0);
+
+    // Update global max sum with current node as the highest ancestor
+    /**
+     *  NOTE !!!
+     *
+     *  we update global `max path sum`,
+     *  but the `maxSum` is NOT return as method reponse,
+     *  we simply update the global variable `maxSum`
+     *
+     *  -> the method return val is local max path (node.val + Math.max(leftMax, rightMax))
+     */
+    maxSum = Math.max(maxSum, node.val + leftMax + rightMax);
+
+    // Return max sum path including this node (but only one subtree path)
+    /**
+     *  NOTE !!!
+     *
+     *
+     *  -> the method return val is local max path (node.val + Math.max(leftMax, rightMax)),
+     *     instead of `maxSum`
+     *
+     */
+    return node.val + Math.max(leftMax, rightMax);
+}
+
+```
+
 ```python
 # 124. Binary Tree Maximum Path Sum
 # V0
