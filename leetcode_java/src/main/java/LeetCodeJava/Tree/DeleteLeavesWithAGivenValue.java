@@ -50,9 +50,102 @@ import java.util.Stack;
 public class DeleteLeavesWithAGivenValue {
 
     // V0
-//    public TreeNode removeLeafNodes(TreeNode root, int target) {
-//
-//    }
+    // IDEA: DFS (fixed by gpt)
+    // https://youtu.be/FqAoYAwbwV8?si=mOdW8Wgj3TJ4AyRL
+    public TreeNode removeLeafNodes(TreeNode root, int target) {
+        // edge
+        if (root == null) {
+            return null;
+        }
+        if (root.left == null && root.right == null) {
+            if (root.val == target) {
+                return null;
+            }
+            return root;
+        }
+
+        // below is OK as well
+        //return deleteLeafHelper(root, target);
+
+        TreeNode res = deleteLeafHelper_0(root, target);
+        return res;
+    }
+
+    public TreeNode deleteLeafHelper_0(TreeNode root, int target) {
+        // edge
+        if (root == null) {
+            return null;
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         * We need to recurse into `the left and right children` first
+         * so we can determine if after deleting leaves in those subtrees,
+         * the current node becomes a new leaf.
+         * Only after we've processed children should we check if this node should be deleted.
+         *
+         * We'd only ever delete original leaves (nodes that were leaves before recursion),
+         * but we'd miss nodes that became leaves as a result of deleting their children.
+         *
+         */
+        /**
+         *  EXAMPLE :
+         *
+         *    input:
+         *
+         *         1
+         *       /
+         *      2
+         *    /
+         *   2
+         *
+         *
+         *
+         *  Step-by-step with correct order:
+         *
+         *   step 1) Call deleteLeafHelper(2) on the lowest 2:
+         *
+         *      - It's a leaf and equals target → delete → return null
+         *
+         *   step 2) Move to middle 2:
+         *
+         *      - After the recursive call, its left child is now null,
+         *         so it's a new leaf
+         *
+         *      - It equals target → delete → return null
+         *
+         *   step 3) Move to root 1:
+         *
+         *     - Its left child is now null, so nothing else to delete.
+         *
+         *
+         *
+         *  -> ❌ If you check the condition before recursion:
+         *     The middle 2 still had a left child when it was checked —
+         *     it wouldn't be considered a leaf at that point.
+         *     So it wouldn’t be deleted, even though it should’ve been.
+         */
+        root.left = deleteLeafHelper_0(root.left, target);
+        root.right = deleteLeafHelper_0(root.right, target);
+
+        if (root.val == target && root.left == null && root.right == null) {
+            return null;
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *  we need to put below logic (recursively traverse sub tree)
+         *  BEFORE `delete logic` (e.g.  `if (root.val == target && root.left == null && root.right == null) ..`)
+         *
+         *  (reason explained above)
+         */
+        //        root.left = deleteLeafHelper(root.left, target);
+        //        root.right = deleteLeafHelper(root.right, target);
+
+        return root;
+    }
 
     // V0-1
     // IDEA: DFS (fixed by gpt)
