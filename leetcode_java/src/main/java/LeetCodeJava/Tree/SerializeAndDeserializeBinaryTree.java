@@ -198,6 +198,52 @@ public class SerializeAndDeserializeBinaryTree {
 
     }
 
+    // V0-2
+    // IDEA: DFS (fixed by gpt)
+    public class Codec_0_2 {
+
+        // Encodes a tree to a single string using pre-order DFS.
+        public String serialize(TreeNode root) {
+            StringBuilder sb = new StringBuilder();
+            serializeHelper(root, sb);
+            return sb.toString();
+        }
+
+        private void serializeHelper(TreeNode node, StringBuilder sb) {
+            if (node == null) {
+                sb.append("null,");
+                return;
+            }
+            sb.append(node.val).append(",");
+            serializeHelper(node.left, sb);
+            serializeHelper(node.right, sb);
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+            if (data == null || data.isEmpty())
+                return null;
+            String[] nodes = data.split(",");
+            Queue<String> queue = new LinkedList<>(Arrays.asList(nodes));
+            return deserializeHelper(queue);
+        }
+
+        private TreeNode deserializeHelper(Queue<String> queue) {
+            if (queue.isEmpty())
+                return null;
+
+            String val = queue.poll();
+            if (val.equals("null"))
+                return null;
+
+            TreeNode node = new TreeNode(Integer.parseInt(val));
+            node.left = deserializeHelper(queue);
+            node.right = deserializeHelper(queue);
+            return node;
+        }
+    }
+
+    
     // V1-1
     // https://neetcode.io/problems/serialize-and-deserialize-binary-tree
     // https://youtu.be/u4JAi2JJhI8?si=_bd33xap_9uRTI9E
