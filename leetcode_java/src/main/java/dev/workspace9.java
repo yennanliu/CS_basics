@@ -3496,5 +3496,56 @@ public class workspace9 {
         return;
     }
 
+    // LC 124
+    // 10.08 - 10.18 am
+    /**
+     *  IDEA 1) DFS + MAP (record path sum)
+     *
+     *  IDEA 2) BFS  + MAP (record path sum) ????
+     *
+     */
+    //Map<Integer, Integer> pathMap = new HashMap();
+    int maxPathSum = Integer.MIN_VALUE; //0;
+    public int maxPathSum(TreeNode root) {
+        // edge
+        if(root == null){
+            return maxPathSum;
+        }
+        if(root.left == null && root.right == null){
+            return root.val;
+        }
+        // dfs
+        // get max path from pathMap
+        //int maxPathSum = 0;
+//        for(int val: pathMap.values()){
+//            maxPathSum = Math.max(val, maxPathSum);
+//        }
+        //getMaxPathSumHelper(root);
+        //return maxPathSum;
+        getMaxPathSumHelper(root);
+        return maxPathSum;
+    }
+
+    public int getMaxPathSumHelper(TreeNode root){
+        // edge
+        if(root == null){
+            //return 0;
+            return 0; // ???
+        }
+
+        int leftMaxDepth = getMaxPathSumHelper(root.left);
+        int rightMaxDepth = getMaxPathSumHelper(root.right);
+
+        maxPathSum = Math.max(maxPathSum,
+                root.val + leftMaxDepth + rightMaxDepth
+        );
+
+        // ???
+        return  root.val + Math.max(
+                getMaxPathSumHelper(root.left),
+                getMaxPathSumHelper(root.right)
+        );
+    }
+
 
 }

@@ -37,6 +37,9 @@ package LeetCodeJava.Tree;
  */
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class BinaryTreeMaximumPathSum {
 
@@ -75,20 +78,87 @@ public class BinaryTreeMaximumPathSum {
         return maxSum;
     }
 
+    /** NOTE !!!
+     *
+     *  the response type of dfs is `integer`
+     *  e.g. the `max path sum` per input node
+     */
     private int dfs(TreeNode node) {
         if (node == null) {
             return 0;
         }
 
         // Compute max path sum of left and right children, discard negative values
+        /**
+         *  NOTE !!!
+         *
+         *   we cache `leftMax` on current node
+         *   we cache `rightMax` on current node
+         *
+         *   so we can update global `max path sum` below
+         */
         int leftMax = Math.max(dfs(node.left), 0);
         int rightMax = Math.max(dfs(node.right), 0);
 
         // Update global max sum with current node as the highest ancestor
+        /**
+         *  NOTE !!!
+         *
+         *  we update global `max path sum`,
+         *  but the `maxSum` is NOT return as method reponse,
+         *  we simply update the global variable `maxSum`
+         *
+         *  -> the method return val is local max path (node.val + Math.max(leftMax, rightMax))
+         */
         maxSum = Math.max(maxSum, node.val + leftMax + rightMax);
 
         // Return max sum path including this node (but only one subtree path)
+        /**
+         *  NOTE !!!
+         *
+         *
+         *  -> the method return val is local max path (node.val + Math.max(leftMax, rightMax)),
+         *     instead of `maxSum`
+         *
+         */
         return node.val + Math.max(leftMax, rightMax);
+    }
+
+    // V0-2
+    // IDEA: DFS + HASHMAP (gpt) (NOT efficient)
+    Map<TreeNode, Integer> pathMap = new HashMap<>();
+    int maxSum_2 = Integer.MIN_VALUE;
+
+    public int maxPathSum_0_2(TreeNode root) {
+        if (root == null)
+            return 0;
+
+        getMaxPathSumHelper(root);
+
+        for (int val : pathMap.values()) {
+            maxSum_2 = Math.max(maxSum_2, val);
+        }
+
+        return maxSum_2;
+    }
+
+    private int getMaxPathSumHelper(TreeNode node) {
+        if (node == null)
+            return 0;
+
+        int left = Math.max(0, getMaxPathSumHelper(node.left));
+        int right = Math.max(0, getMaxPathSumHelper(node.right));
+
+        int maxAtNode = node.val + left + right;
+        int maxOneSide = node.val + Math.max(left, right);
+
+        // Store the max *one-sided* path for this node
+        pathMap.put(node, maxOneSide);
+
+        // Update global maxSum
+        maxSum_2 = Math.max(maxSum_2, maxAtNode);
+
+        return maxOneSide;
     }
 
     // V1-1
