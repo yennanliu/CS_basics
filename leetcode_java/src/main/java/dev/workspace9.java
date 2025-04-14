@@ -3424,8 +3424,47 @@ public class workspace9 {
     }
 
     // LC 1325
-    // 4.48 - 4.58 pm
+    // 12.51 - 1.01 pm
     // IDEA : DFS
+
+    public TreeNode removeLeafNodes(TreeNode root, int target) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            if(root.val == target){
+                return null;
+            }
+            return root;
+        }
+
+        //return deleteLeafHelper(root, target);
+        TreeNode res = deleteLeafHelper(root, target);
+        return res; // ??
+    }
+
+    public TreeNode deleteLeafHelper(TreeNode root, int target){
+        // edge
+        if(root == null){
+            return null;
+            //return;
+        }
+
+        root.left = deleteLeafHelper(root.left, target);
+        root.right = deleteLeafHelper(root.right, target);
+
+        if(root.val == target && root.left == null && root.right == null){
+            return null;
+        }
+
+//        root.left = deleteLeafHelper(root.left, target);
+//        root.right = deleteLeafHelper(root.right, target);
+
+        return root;
+    }
+
+
 //    public TreeNode removeLeafNodes(TreeNode root, int target) {
 //        // edge
 //        if(root == null){
@@ -3465,36 +3504,36 @@ public class workspace9 {
 //
 //    }
     ///
-
-    public TreeNode removeLeafNodes_0_1(TreeNode root, int target) {
-        deleteLeafHelper(root, target);
-        //return deleteLeafHelper(root, target);
-        return root;
-    }
-
-    private void deleteLeafHelper(TreeNode root, int target) {
-        if (root == null) {
-            //return null;
-            return;
-        }
-
-        // Recursively process left and right children
-//        root.left = deleteLeafHelper(root.left, target);
-//        root.right = deleteLeafHelper(root.right, target);
-
-        deleteLeafHelper(root.left, target);
-        deleteLeafHelper(root.right, target);
-
-
-        // After processing children, check if current node is a target leaf
-        if (root.left == null && root.right == null && root.val == target) {
-           // return null; // remove this leaf
-            return;
-        }
-
-        //return root; // keep current node
-        return;
-    }
+//
+//    public TreeNode removeLeafNodes_0_1(TreeNode root, int target) {
+//        deleteLeafHelper(root, target);
+//        //return deleteLeafHelper(root, target);
+//        return root;
+//    }
+//
+//    private void deleteLeafHelper(TreeNode root, int target) {
+//        if (root == null) {
+//            //return null;
+//            return;
+//        }
+//
+//        // Recursively process left and right children
+////        root.left = deleteLeafHelper(root.left, target);
+////        root.right = deleteLeafHelper(root.right, target);
+//
+//        deleteLeafHelper(root.left, target);
+//        deleteLeafHelper(root.right, target);
+//
+//
+//        // After processing children, check if current node is a target leaf
+//        if (root.left == null && root.right == null && root.val == target) {
+//           // return null; // remove this leaf
+//            return;
+//        }
+//
+//        //return root; // keep current node
+//        return;
+//    }
 
     // LC 124
     // 10.08 - 10.18 am
@@ -3686,10 +3725,11 @@ public class workspace9 {
             while(this.pq.size() > k){
                 this.pq.poll();
             }
-            if(!this.pq.isEmpty()){
-                return this.pq.peek();
-            }
-            return -1; // ????
+//            if(!this.pq.isEmpty()){
+//                return this.pq.peek();
+//            }
+//            return -1; // ????
+            return this.pq.peek();
         }
 
     }
