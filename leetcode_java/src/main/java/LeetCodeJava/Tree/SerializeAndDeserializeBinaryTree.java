@@ -81,6 +81,10 @@ public class SerializeAndDeserializeBinaryTree {
             return helper(queue);
         }
 
+        /** NOTE !!!!
+         *
+         * `Queue<String> queue` is the parameter for helper func
+         */
         private TreeNode helper(Queue<String> queue) {
 
             // get val from queue first
@@ -101,6 +105,13 @@ public class SerializeAndDeserializeBinaryTree {
              *       root.left = helper(queue);
              *       root.right = helper(queue);
              *
+             */
+            /**
+             *  NOTE !!!
+             *
+             *   since we already `pop` element from queue,
+             *   so it's OK to pass `updated queue` as parameter
+             *   to below recursive call for root.left, root.right
              */
             root.left = helper(queue);
             root.right = helper(queue);
