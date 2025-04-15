@@ -3734,4 +3734,99 @@ public class workspace9 {
 
     }
 
+    // LC 1046
+    // 10.59 - 11.10 am
+    /**
+     *  IDEA 1) PQ (max PQ)
+     *
+     */
+    public int lastStoneWeight(int[] stones) {
+        if(stones == null || stones.length == 0){
+            return 0;
+        }
+        if(stones.length == 1){
+            return stones[0];
+        }
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        for(int x: stones){
+            pq.add(x);
+        }
+
+        while(pq.size() > 1){
+            int big_1 = pq.poll();
+            int big_2 = pq.poll();
+            int diff = big_2 - big_1;
+            if(diff > 0){
+                pq.add(diff);
+            }
+        }
+
+        if(pq.isEmpty()){
+            return 0;
+        }
+
+        return pq.peek();
+    }
+
+    // LC 973
+    // 11.11 - 11.21 am
+    public int[][] kClosest(int[][] points, int k) {
+        // edge
+        if(points == null || points.length == 0){
+            return null; // ?
+        }
+        if(points.length <= k){
+            return points;
+        }
+
+        // map : {dist, coordination)
+        //Map<Double, List<int[]>> distMap = new HashMap<>();
+        Map<Double, int[]> distMap = new HashMap<>();
+
+        // small PQ ( small -> big )
+//        PriorityQueue<Double> pq = new PriorityQueue<>(new Comparator<Double>() {
+//            @Override
+//            public int compare(int[] o1, int[] o2) {
+//                int diff = (int) (o1 - o2);
+//                //int diff = (int) getDist(o1, o2);
+//                return diff;
+//            }
+//        });
+
+        PriorityQueue<Double> pq = new PriorityQueue<>();
+
+        for(int[] p: points){
+            double dist = getDist(p[0], p[1]);
+            pq.add(dist);
+            //List<int[]> cur =  distMap.getOrDefault(dist, new ArrayList<>());
+            //cur.add(p);
+            distMap.put(dist, p);
+        }
+
+        int[][] res = new int[k][2];
+        for(int i = 0; i < k; k++){
+            Double distKey = pq.poll();
+            res[i] = distMap.get(distKey);
+        }
+
+        return res;
+    }
+
+    public double getDist(int[] input){
+        return input[0] * input[0] + input[1] * input[1];
+    }
+
+    public double getDist(int x, int y){
+        return Math.sqrt(x * x  + y * y);
+    }
+
+
 }
+

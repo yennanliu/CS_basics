@@ -45,39 +45,39 @@ import java.util.concurrent.ThreadLocalRandom;
 public class KClosestPointsToOrigin {
 
     // V0
-    // TODO : fix below
-//    public int[][] kClosest(int[][] points, int k) {
-//
-//        //int[] ans = new int[]{};
-//        List<int[]> ans = new ArrayList<>();
-//
-//        if (points.length == 1){
-//            return points;
-//        }
-//
-//        // minimum PQ
-//        PriorityQueue<Integer> pq = new PriorityQueue<>();
-//        HashMap<Integer, Integer[]> map = new HashMap<>();
-//
-//        for (int[] x : points){
-//            Integer dist = x[0] * x[0] + x[1] * x[1];
-//            //map.put(dist, x);
-//            pq.add(dist);
-//        }
-//
-//        for (int i = 0; i < k; i++){
-//            int key = pq.remove();
-//            Integer[] val = map.get(key);
-//            ans.add(val);
-//        }
-//
-//        int[] ans2 = new int[ans.size()];
-//        for (int j = 0; j < ans.size(); j++){
-//            ans2[j] = ans.get(j);
-//        }
-//        //return (int[][]) ans.toArray();
-//        return null;
-//    }
+    // IDEA: MAX PQ + custom sorting (with function) (fixed by gpt)
+    public int[][] kClosest(int[][] points, int k) {
+        if (points == null || points.length == 0 || k <= 0) {
+            return new int[0][];
+        }
+
+        // Min-heap based on distance
+        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                double distA = getDist(a[0], a[1]);
+                double distB = getDist(b[0], b[1]);
+                return Double.compare(distA, distB); // compare properly
+            }
+        });
+
+        // Add all points to the heap
+        for (int[] point : points) {
+            pq.add(point);
+        }
+
+        // Extract k closest
+        int[][] res = new int[k][2];
+        for (int i = 0; i < k; i++) {
+            res[i] = pq.poll();
+        }
+
+        return res;
+    }
+
+    public double getDist(int x, int y) {
+        return Math.sqrt(x * x + y * y);
+    }
 
     // V0-1
     // IDEA: PriorityQueue (gpt)
@@ -103,6 +103,7 @@ public class KClosestPointsToOrigin {
     private int getDistanceSquared(int[] point) {
         return point[0] * point[0] + point[1] * point[1];
     }
+
 
     // V1
     // IDEA : SORTING

@@ -53,6 +53,40 @@ while (!bigPQ.isEmpty()) {
 } 
 ```
 
+
+#### 1-1-2) Custom `sorting` in PQ
+
+```java
+// java
+// LC 973
+
+// ...
+
+PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() {
+    @Override
+    public int compare(int[] a, int[] b) {
+        /** 
+         *  NOTE !!! below
+         * 
+         * -> we get custom val form method,
+         *    then sort PQ customly with such value
+         * 
+         */
+        double distA = getDist(a[0], a[1]);
+        double distB = getDist(b[0], b[1]);
+        return Double.compare(distA, distB); // compare properly
+    }
+});
+
+
+// custom func
+public double getDist(int x, int y) {
+return Math.sqrt(x * x + y * y);
+}
+
+// ...
+```
+
 ## 2) LC Example
 
 
