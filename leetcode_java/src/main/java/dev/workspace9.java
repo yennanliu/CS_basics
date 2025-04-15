@@ -3828,5 +3828,11 @@ public class workspace9 {
     }
 
 
+    // LC 621
+    // 11.51 - 12.05 pm
+    public int leastInterval(char[] tasks, int n) {
+        return 0;
+    }
+
 }
 
