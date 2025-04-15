@@ -3829,7 +3829,20 @@ public class workspace9 {
 
 
     // LC 621
-    // 11.51 - 12.05 pm
+    // 11.51 - 12.10 pm
+    /**
+     *  IDEA 1) PQ (big PQ)
+     *
+     *   - use the max PQ, track `cnt of element`
+     *   - everytime, pop the max val, update cnt, and add `wait`, update res
+     *   - return res (total length of op)
+     *
+     *
+     *   but there's a constraint: there has to be a gap of
+     *   at least `n` intervals between two tasks with the same label.
+     *
+     *
+     */
     public int leastInterval(char[] tasks, int n) {
         return 0;
     }
