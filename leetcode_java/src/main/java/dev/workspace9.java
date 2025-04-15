@@ -3596,6 +3596,53 @@ public class workspace9 {
      *     TreeNode(int x) { val = x; }
      * }
      */
+
+    // 12.36  - 12.46 pm
+    public class Codec {
+
+        StringBuilder sb = new StringBuilder(); // ?
+
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            if(root == null){
+                return "#"; // ?
+            }
+            sb.append(root.val + ","); // ???
+            serialize(root.left);
+            serialize(root.right);
+
+            return sb.toString();
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+
+            Queue<String> q = new LinkedList<>();
+            for(String x: data.split(",")){
+                q.add(x);
+            }
+
+            TreeNode res =  helper(q);
+            return res;
+        }
+
+        public TreeNode helper(Queue<String> q){
+            //TreeNode cur = q.poll();
+            String cur = q.poll();
+            if(cur == "#"){
+                return null; // ??
+            }
+            TreeNode root = new TreeNode(Integer.parseInt(cur));
+            root.left = helper(q);
+            root.right = helper(q);
+           // cur.left = helper(cur)
+           // return null;
+            return root;
+        }
+
+    }
+
+
     // 11.14 am - 11. 32 am
 //    public class Codec {
 //
@@ -3604,7 +3651,7 @@ public class workspace9 {
 //        StringBuilder sb;
 //        TreeNode decodeNode;
 //
-//        public Codec(){
+//        public Codec(){'
 //            this.sb = new StringBuilder();
 //            this.decodeNode = new TreeNode(); // ???
 //        }
@@ -3648,42 +3695,42 @@ public class workspace9 {
 //    }
 
 
-    public class Codec {
-
-        // IDEA 1) DFS 2) BFS
-        public String serialize(TreeNode root) {
-            // edge
-            if(root == null){
-                return "#";
-            }
-            return root.val + "," + serialize(root.left) + "," + serialize(root.right);
-        }
-
-        // Decodes your encoded data to tree.
-        // BFS ???
-        public TreeNode deserialize(String data) {
-            Queue<String> q = new LinkedList<>();
-            for(String x: data.split(",")){
-              q.add(x); // ???
-            }
-            return helper(q);
-           // return null;
-        }
-
-        public TreeNode helper(Queue<String> q){
-            String s = q.poll();
-            if(s.equals("#")){
-                return null;
-            }
-            TreeNode root = new TreeNode(Integer.valueOf(s));
-            //root.left = helper(q.)
-            root.left = helper(q);
-            root.right = helper(q);
-
-            return root;
-        }
-
-    }
+//    public class Codec {
+//
+//        // IDEA 1) DFS 2) BFS
+//        public String serialize(TreeNode root) {
+//            // edge
+//            if(root == null){
+//                return "#";
+//            }
+//            return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+//        }
+//
+//        // Decodes your encoded data to tree.
+//        // BFS ???
+//        public TreeNode deserialize(String data) {
+//            Queue<String> q = new LinkedList<>();
+//            for(String x: data.split(",")){
+//              q.add(x); // ???
+//            }
+//            return helper(q);
+//           // return null;
+//        }
+//
+//        public TreeNode helper(Queue<String> q){
+//            String s = q.poll();
+//            if(s.equals("#")){
+//                return null;
+//            }
+//            TreeNode root = new TreeNode(Integer.valueOf(s));
+//            //root.left = helper(q.)
+//            root.left = helper(q);
+//            root.right = helper(q);
+//
+//            return root;
+//        }
+//
+//    }
 
     // LC 703
     // 12.15 - 12.25 pm
