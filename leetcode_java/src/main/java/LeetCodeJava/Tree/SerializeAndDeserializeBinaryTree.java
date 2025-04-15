@@ -85,6 +85,275 @@ public class SerializeAndDeserializeBinaryTree {
          *
          * `Queue<String> queue` is the parameter for helper func
          */
+        /**
+         *  Example 1) V1 (gpt)
+         *
+         *  Absolutely! Let’s **visualize the `helper` function** in your `deserialize` method to see how it reconstructs the binary tree from the serialized string. It uses **pre-order traversal**, meaning it reads:
+         * **root → left → right**.
+         *
+         * ---
+         *
+         * ### Example to Visualize
+         *
+         * Let’s take a sample tree:
+         *
+         * ```
+         *       1
+         *      / \
+         *     2   3
+         *        / \
+         *       4   5
+         * ```
+         *
+         * The **serialized string** (via pre-order traversal) would be:
+         *
+         * ```
+         * "1,2,#,#,3,4,#,#,5,#,#"
+         * ```
+         *
+         * Split by comma → `["1", "2", "#", "#", "3", "4", "#", "#", "5", "#", "#"]`
+         *
+         * ---
+         *
+         * ### Visualization of `helper(queue)` Execution
+         *
+         * We’ll walk through what `helper(queue)` is doing step-by-step:
+         *
+         * ---
+         *
+         * #### **Step 1**
+         * - Queue: `["1", "2", "#", "#", "3", "4", "#", "#", "5", "#", "#"]`
+         * - `s = "1"` → new `TreeNode(1)`
+         * - Recurse left → `helper(queue)` for left child
+         *
+         * ---
+         *
+         * #### **Step 2**
+         * - Queue: `["2", "#", "#", "3", "4", "#", "#", "5", "#", "#"]`
+         * - `s = "2"` → new `TreeNode(2)`
+         * - Recurse left → `helper(queue)`
+         *
+         * ---
+         *
+         * #### **Step 3**
+         * - Queue: `["#", "#", "3", "4", "#", "#", "5", "#", "#"]`
+         * - `s = "#"` → left child is `null`
+         *
+         * ---
+         *
+         * #### **Step 4**
+         * - Queue: `["#", "3", "4", "#", "#", "5", "#", "#"]`
+         * - `s = "#"` → right child is `null`
+         *
+         * Now, TreeNode(2) is complete → `TreeNode(2, null, null)`
+         *
+         * Back to TreeNode(1), and recurse right → `helper(queue)`
+         *
+         * ---
+         *
+         * #### **Step 5**
+         * - Queue: `["3", "4", "#", "#", "5", "#", "#"]`
+         * - `s = "3"` → new `TreeNode(3)`
+         * - Recurse left → `helper(queue)`
+         *
+         * ---
+         *
+         * #### **Step 6**
+         * - Queue: `["4", "#", "#", "5", "#", "#"]`
+         * - `s = "4"` → new `TreeNode(4)`
+         * - Recurse left → `s = "#"`, return `null`
+         * - Recurse right → `s = "#"`, return `null`
+         * - Complete TreeNode(4)
+         *
+         * Back to TreeNode(3), now recurse right → `helper(queue)`
+         *
+         * ---
+         *
+         * #### **Step 7**
+         * - Queue: `["5", "#", "#"]`
+         * - `s = "5"` → new `TreeNode(5)`
+         * - Recurse left → `s = "#"`, return `null`
+         * - Recurse right → `s = "#"`, return `null`
+         *
+         * ---
+         *
+         * #### **Final Tree Structure Built:**
+         *
+         * ```
+         *       1
+         *      / \
+         *     2   3
+         *        / \
+         *       4   5
+         * ```
+         *
+         * ---
+         *
+         * ### Summary of `helper(queue)`:
+         * - Each call **creates a node or returns null**, based on the next string in the queue.
+         * - Uses recursion to rebuild the **left and right subtree** in pre-order.
+         * - It's elegant because it consumes the queue one element at a time and builds the tree recursively with minimal state.
+         *
+         *
+         */
+        /**
+         *  Example 1) V2 - with diagram (gpt)
+         *
+         *  Awesome! Let's **visualize the tree reconstruction** process from this serialized string:
+         *
+         * ```
+         * "1,2,#,#,3,4,#,#,5,#,#"
+         * ```
+         *
+         * This corresponds to the tree:
+         *
+         * ```
+         *       1
+         *      / \
+         *     2   3
+         *        / \
+         *       4   5
+         * ```
+         *
+         * Now let's walk through the recursive calls to `helper(queue)` using a **tree diagram with steps**.
+         *
+         * ---
+         *
+         * ### Step-by-Step Tree Building
+         *
+         * ---
+         *
+         * **Start** with this queue:
+         * ```
+         * ["1", "2", "#", "#", "3", "4", "#", "#", "5", "#", "#"]
+         * ```
+         *
+         * #### 1. `s = "1"` → Create `TreeNode(1)`
+         * ```
+         * Tree so far:
+         *    1
+         *   / \
+         *  ?   ?
+         * ```
+         * → Call `helper()` for left
+         *
+         * ---
+         *
+         * #### 2. `s = "2"` → Create `TreeNode(2)`
+         * ```
+         * Tree so far:
+         *    1
+         *   / \
+         *  2   ?
+         * ```
+         * → Call `helper()` for left of 2
+         *
+         * ---
+         *
+         * #### 3. `s = "#"` → Return `null`
+         * → Left of 2 is null
+         *
+         * #### 4. `s = "#"` → Return `null`
+         * → Right of 2 is null
+         *
+         * ```
+         * Tree so far:
+         *    1
+         *   / \
+         *  2   ?
+         *     / \
+         *  null null
+         * ```
+         *
+         * → Back to node 1, now call `helper()` for right
+         *
+         * ---
+         *
+         * #### 5. `s = "3"` → Create `TreeNode(3)`
+         * ```
+         * Tree so far:
+         *    1
+         *   / \
+         *  2   3
+         * ```
+         * → Call `helper()` for left of 3
+         *
+         * ---
+         *
+         * #### 6. `s = "4"` → Create `TreeNode(4)`
+         * ```
+         * Tree so far:
+         *    1
+         *   / \
+         *  2   3
+         *     /
+         *    4
+         * ```
+         * → Call `helper()` for left of 4
+         *
+         * ---
+         *
+         * #### 7. `s = "#"` → Return `null`
+         * → Left of 4 is null
+         *
+         * #### 8. `s = "#"` → Return `null`
+         * → Right of 4 is null
+         *
+         * ```
+         * Tree so far:
+         *    1
+         *   / \
+         *  2   3
+         *     / \
+         *    4   ?
+         *   / \
+         *  n   n
+         * ```
+         *
+         * → Back to 3, call `helper()` for right
+         *
+         * ---
+         *
+         * #### 9. `s = "5"` → Create `TreeNode(5)`
+         * ```
+         * Tree so far:
+         *    1
+         *   / \
+         *  2   3
+         *     / \
+         *    4   5
+         * ```
+         * → Call `helper()` for left of 5
+         *
+         * ---
+         *
+         * #### 10. `s = "#"` → Return `null`
+         * → Left of 5 is null
+         *
+         * #### 11. `s = "#"` → Return `null`
+         * → Right of 5 is null
+         *
+         * ---
+         *
+         * ### ✅ Final Tree:
+         * ```
+         *         1
+         *        / \
+         *       2   3
+         *          / \
+         *         4   5
+         * ```
+         *
+         * ---
+         *
+         * ### Recap
+         *
+         * Each recursive `helper(queue)` call:
+         * - Takes the next string from the queue.
+         * - If it's a value, creates a node and recurses left/right.
+         * - If it's `"#"`, returns `null`.
+         *
+         */
         private TreeNode helper(Queue<String> queue) {
 
             // get val from queue first
