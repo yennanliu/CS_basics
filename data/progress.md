@@ -1,5 +1,19 @@
 # Progress
 
+# 2025-04-15
+- neetcode 250
+	- https://neetcode.io/practice?tab=neetcode250
+	- 5 / day ->  15 days to finish
+		- Heap / Priority Queue
+	- again:
+		- similar:
+	- todo:
+		- re-do all previous `again` problems, similar problems, make notes
+		- refine [sliding_window.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
+		- refine java_trick cheatsheet
+- crack code book
+	- p.145
+
 # 2025-04-14
 - neetcode 250
 	- https://neetcode.io/practice?tab=neetcode250
