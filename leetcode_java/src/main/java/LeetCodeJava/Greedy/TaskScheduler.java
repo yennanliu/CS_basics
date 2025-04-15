@@ -103,7 +103,136 @@ public class TaskScheduler {
         return Math.max((most_freq_cnt - 1) * (1 + n) + num_most, tasks.length);
     }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/task-scheduling
+    // IDEA: BRUTE FORCE
+    public int leastInterval_1_1(char[] tasks, int n) {
+        int[] count = new int[26];
+        for (char task : tasks) {
+            count[task - 'A']++;
+        }
+
+        List<int[]> arr = new ArrayList<>();
+        for (int i = 0; i < 26; i++) {
+            if (count[i] > 0) {
+                arr.add(new int[]{count[i], i});
+            }
+        }
+
+        int time = 0;
+        List<Integer> processed = new ArrayList<>();
+        while (!arr.isEmpty()) {
+            int maxi = -1;
+            for (int i = 0; i < arr.size(); i++) {
+                boolean ok = true;
+                for (int j = Math.max(0, time - n); j < time; j++) {
+                    if (j < processed.size() && processed.get(j) == arr.get(i)[1]) {
+                        ok = false;
+                        break;
+                    }
+                }
+                if (!ok) continue;
+                if (maxi == -1 || arr.get(maxi)[0] < arr.get(i)[0]) {
+                    maxi = i;
+                }
+            }
+
+            time++;
+            int cur = -1;
+            if (maxi != -1) {
+                cur = arr.get(maxi)[1];
+                arr.get(maxi)[0]--;
+                if (arr.get(maxi)[0] == 0) {
+                    arr.remove(maxi);
+                }
+            }
+            processed.add(cur);
+        }
+        return time;
+    }
+
+
+    // V1-2
+    // https://neetcode.io/problems/task-scheduling
+    // IDEA: MAX HEAP
+    public int leastInterval_1_2(char[] tasks, int n) {
+        int[] count = new int[26];
+        for (char task : tasks) {
+            count[task - 'A']++;
+        }
+
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        for (int cnt : count) {
+            if (cnt > 0) {
+                maxHeap.add(cnt);
+            }
+        }
+
+        int time = 0;
+        Queue<int[]> q = new LinkedList<>();
+        while (!maxHeap.isEmpty() || !q.isEmpty()) {
+            time++;
+
+            if (maxHeap.isEmpty()) {
+                time = q.peek()[1];
+            } else {
+                int cnt = maxHeap.poll() - 1;
+                if (cnt > 0) {
+                    q.add(new int[]{cnt, time + n});
+                }
+            }
+
+            if (!q.isEmpty() && q.peek()[1] == time) {
+                maxHeap.add(q.poll()[0]);
+            }
+        }
+
+        return time;
+    }
+
+    // V1-3
+    // https://neetcode.io/problems/task-scheduling
+    // IDEA: GREEDY
+    public int leastInterval_1_3(char[] tasks, int n) {
+        int[] count = new int[26];
+        for (char task : tasks) {
+            count[task - 'A']++;
+        }
+
+        Arrays.sort(count);
+        int maxf = count[25];
+        int idle = (maxf - 1) * n;
+
+        for (int i = 24; i >= 0; i--) {
+            idle -= Math.min(maxf - 1, count[i]);
+        }
+        return Math.max(0, idle) + tasks.length;
+    }
+
+
+    // V1-4
+    // https://neetcode.io/problems/task-scheduling
+    // IDEA: MATH
+    public int leastInterval_1_4(char[] tasks, int n) {
+        int[] count = new int[26];
+        for (char task : tasks) {
+            count[task - 'A']++;
+        }
+
+        int maxf = Arrays.stream(count).max().getAsInt();
+        int maxCount = 0;
+        for (int i : count) {
+            if (i == maxf) {
+                maxCount++;
+            }
+        }
+
+        int time = (maxf - 1) * (n + 1) + maxCount;
+        return Math.max(tasks.length, time);
+    }
+
+
+    // V2
     // IDEA : MAX HEAP + DQUEUE
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0621-task-scheduler.java
     // https://www.youtube.com/watch?v=s8p8ukTyA2I
@@ -131,10 +260,10 @@ public class TaskScheduler {
 //        return time;
 //    }
 
-    // V1
+    // V3
     // IDEA : Greedy
     // https://leetcode.com/problems/task-scheduler/editorial/
-    public int leastInterval_2(char[] tasks, int n) {
+    public int leastInterval_3(char[] tasks, int n) {
         // frequencies of the tasks
         int[] frequencies = new int[26];
         for (int t : tasks) {
@@ -155,10 +284,10 @@ public class TaskScheduler {
         return idle_time + tasks.length;
     }
 
-    // V2
+    // V4
     // IDEA : MATH
     // https://leetcode.com/problems/task-scheduler/editorial/
-    public int leastInterval_3(char[] tasks, int n) {
+    public int leastInterval_4(char[] tasks, int n) {
         // frequencies of the tasks
         int[] frequencies = new int[26];
         for (int t : tasks) {
