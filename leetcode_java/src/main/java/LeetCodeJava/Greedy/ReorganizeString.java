@@ -150,9 +150,52 @@ public class ReorganizeString {
 //    }
 
     // V1
+    // https://www.youtube.com/watch?v=2g_b1aYTHeg
+    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0767-reorganize-string.java
+    public String reorganizeString_1(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+        }
+        PriorityQueue<Map.Entry<Character, Integer>> pq = new PriorityQueue<>(
+                (a, b) ->
+                        b.getValue() - a.getValue()
+        );
+        pq.addAll(map.entrySet());
+
+        StringBuilder sb = new StringBuilder();
+
+        while (!pq.isEmpty()) {
+            Map.Entry<Character, Integer> temp1 = pq.poll();
+            //if the character at sb's end is different from the max frequency character or the string is empty
+            if (
+                    sb.length() == 0 || sb.charAt(sb.length() - 1) != temp1.getKey()
+            ) {
+                sb.append(temp1.getKey());
+                //update the value
+                temp1.setValue(temp1.getValue() - 1);
+            } else { //the character is same
+                //hold the current character and look for the 2nd most frequent character
+                Map.Entry<Character, Integer> temp2 = pq.poll();
+                //if there is no temp2 i.e. the temp1 was the only character in the heap then there is no way to avoid adjacent duplicate values
+                if (temp2 == null) return "";
+                //else do the same thing as above
+                sb.append(temp2.getKey());
+                //update the value
+                temp2.setValue(temp2.getValue() - 1);
+                //if still has some value left add again to the heap
+                if (temp2.getValue() != 0) pq.offer(temp2);
+            }
+            if (temp1.getValue() != 0) pq.offer(temp1);
+        }
+        return sb.toString();
+    }
+
+
+    // V2
     // IDEA : HASHMAP + PriorityQueue
     // https://leetcode.com/problems/reorganize-string/solutions/943268/heap-fetch-2-at-once-with-very-detail-explanations/
-    public String reorganizeString_1(String S) {
+    public String reorganizeString_2(String S) {
 
         // step 1:
         // build a hashmap to store characters and its frequencies:
@@ -214,9 +257,9 @@ public class ReorganizeString {
         return sb.toString();
     }
 
-    // V2
+    // V3
     // IDEA : HASHMAP + array + 26 alphabet consideration (gpt)
-    public String reorganizeString_2(String S) {
+    public String reorganizeString_3(String S) {
         // Step 1: Count the frequency of each character using an array
         int[] charCounts = new int[26];
         for (char c : S.toCharArray()) {
@@ -263,9 +306,9 @@ public class ReorganizeString {
         return new String(result);
     }
 
-    // V3
+    // V4
     // https://leetcode.com/problems/reorganize-string/solutions/3948228/100-fast-priorityqueue-with-explanation-c-java-python-c/
-    public String reorganizeString_3(String s) {
+    public String reorganizeString_4(String s) {
         int[] f = new int[26];
         int n = s.length();
 
@@ -315,9 +358,9 @@ public class ReorganizeString {
     }
 
 
-    // V4
+    // V5
     // https://leetcode.com/problems/reorganize-string/solutions/3948110/easy-solution-python3-c-c-java-python-with-image/
-    public String reorganizeString_4(String s) {
+    public String reorganizeString_5(String s) {
         Map<Character, Integer> count = new HashMap<>();
         for (char c : s.toCharArray()) {
             count.put(c, count.getOrDefault(c, 0) + 1);
@@ -405,4 +448,5 @@ public class ReorganizeString {
     }
 
     // V5
+
 }
