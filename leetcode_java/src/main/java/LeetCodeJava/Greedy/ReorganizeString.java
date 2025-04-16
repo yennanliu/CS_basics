@@ -38,9 +38,53 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ReorganizeString {
 
     // V0
-    // IDEA : HASHMAP + HEAP
+    // IDEA: PQ (PriorityQueue<Character>) + HASHMAP (fixed by gpt)
+    public String reorganizeString(String s) {
+        // Edge cases
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        if (s.length() == 1) {
+            return s;
+        }
+
+        // Count the frequency of each character
+        Map<Character, Integer> charCount = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            charCount.put(c, charCount.getOrDefault(c, 0) + 1);
+        }
+
+        // Use a max-heap (PriorityQueue) to store characters based on their frequency
+        PriorityQueue<Character> maxHeap = new PriorityQueue<>(Comparator.comparingInt(charCount::get).reversed());
+
+        for (char c : charCount.keySet()) {
+            maxHeap.offer(c);
+        }
+
+        StringBuilder result = new StringBuilder();
+        Character prevChar = null;
+
+        while (!maxHeap.isEmpty()) {
+            Character currentChar = maxHeap.poll();
+            result.append(currentChar);
+            charCount.put(currentChar, charCount.get(currentChar) - 1);
+
+            if (prevChar != null && charCount.get(prevChar) > 0) {
+                maxHeap.offer(prevChar);
+            }
+            prevChar = currentChar;
+        }
+
+        // If the length of the reorganized string is not equal to the original length,
+        // it means it was not possible to reorganize the string according to the rules.
+        return result.length() == s.length() ? result.toString() : "";
+    }
+
+
+    // V0-1
+    // IDEA : HASHMAP + HEAP ( PriorityQueue<Map.Entry<Character, Integer>> )
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/reorganize-string.py#L35
-    public String reorganizeString(String S) {
+    public String reorganizeString_0_1(String S) {
         // Step 1: Count the frequency of each character
         Map<Character, Integer> charCountMap = new HashMap<>();
         for (char c : S.toCharArray()) {
@@ -111,9 +155,9 @@ public class ReorganizeString {
         return reorganizedString.length() == S.length() ? reorganizedString : "";
     }
 
-    // V0-1
+    // V0-2
     // IDEA: PQ + HASHMAP (fixed by gpt)
-    public String reorganizeString_0_1(String s) {
+    public String reorganizeString_0_2(String s) {
         // Edge cases
         if (s == null || s.length() == 0) {
             return "";
@@ -154,44 +198,6 @@ public class ReorganizeString {
         // it means it was not possible to reorganize the string according to the rules.
         return result.length() == s.length() ? result.toString() : "";
     }
-
-    // V0'
-    // IDEA : HASHMAP
-    // TODO : fix below
-//    public String reorganizeString(String s) {
-//
-//        if (s.length() == 1){
-//            return s;
-//        }
-//
-//        ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
-//        for (String x : s.split("")){
-//            map.put(x, map.getOrDefault(x, 0)+1);
-//        }
-//
-//        System.out.println(">>> map = " + map);
-//        StringBuilder sb = new StringBuilder();
-//        String prev = null;
-//        //String res = "";
-//
-//        while(!map.isEmpty()){
-//            for(String k : map.keySet()){
-//                System.out.println(">>> k = " + k + ", keySet = " + map.keySet() + ", prev = " + prev);
-//                if (prev != null && prev.equals(k)){
-//                    return "";
-//                }
-//                sb.append(k);
-//                prev = k;
-//                if (map.get(k) - 1 == 0){
-//                    map.remove(k);
-//                }else{
-//                    map.put(k, map.get(k)-1);
-//                }
-//            }
-//        }
-//
-//        return sb.toString();
-//    }
 
     // V1
     // https://www.youtube.com/watch?v=2g_b1aYTHeg
