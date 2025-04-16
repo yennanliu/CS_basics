@@ -111,6 +111,50 @@ public class ReorganizeString {
         return reorganizedString.length() == S.length() ? reorganizedString : "";
     }
 
+    // V0-1
+    // IDEA: PQ + HASHMAP (fixed by gpt)
+    public String reorganizeString_0_1(String s) {
+        // Edge cases
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        if (s.length() == 1) {
+            return s;
+        }
+
+        // Count the frequency of each character
+        Map<Character, Integer> charCount = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            charCount.put(c, charCount.getOrDefault(c, 0) + 1);
+        }
+
+        // Use a max-heap (PriorityQueue) to store characters based on their frequency
+        PriorityQueue<Map.Entry<Character, Integer>> maxHeap = new PriorityQueue<>(
+                (a, b) -> b.getValue() - a.getValue());
+
+        for (Map.Entry<Character, Integer> entry : charCount.entrySet()) {
+            maxHeap.offer(entry);
+        }
+
+        StringBuilder result = new StringBuilder();
+        Map.Entry<Character, Integer> prevEntry = null;
+
+        while (!maxHeap.isEmpty()) {
+            Map.Entry<Character, Integer> currentEntry = maxHeap.poll();
+            result.append(currentEntry.getKey());
+            currentEntry.setValue(currentEntry.getValue() - 1);
+
+            if (prevEntry != null && prevEntry.getValue() > 0) {
+                maxHeap.offer(prevEntry);
+            }
+            prevEntry = currentEntry;
+        }
+
+        // If the length of the reorganized string is not equal to the original length,
+        // it means it was not possible to reorganize the string according to the rules.
+        return result.length() == s.length() ? result.toString() : "";
+    }
+
     // V0'
     // IDEA : HASHMAP
     // TODO : fix below
