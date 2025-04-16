@@ -99,8 +99,11 @@ public class LongestHappyString {
     // https://leetcode.com/problems/longest-happy-string/editorial/
     // IDEA: PQ
     public String longestDiverseString_2_1(int a, int b, int c) {
+
         PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x, y) -> (y.count - x.count));
+
         // Add the counts of a, b and c in priority queue.
+        // NOTE !!! ONLY when count > 0, we add it to PQ
         if (a > 0) {
             pq.add(new Pair(a, 'a'));
         }
@@ -114,33 +117,47 @@ public class LongestHappyString {
         }
 
         StringBuilder ans = new StringBuilder();
+
         while (!pq.isEmpty()) {
+
             Pair p = pq.poll();
             int count = p.count;
             char character = p.character;
+
+            // case 1)
             // If three consecutive characters exists, pick the second most
             // frequent character.
+            /** NOTE !!! below condition */
             if (ans.length() >= 2 &&
                     ans.charAt(ans.length() - 1) == p.character &&
                     ans.charAt(ans.length() - 2) == p.character) {
-                if (pq.isEmpty())
+
+                if (pq.isEmpty()){
                     break;
+                }
 
                 Pair temp = pq.poll();
                 ans.append(temp.character);
+
                 if (temp.count - 1 > 0) {
                     pq.add(new Pair(temp.count - 1, temp.character));
                 }
-            } else {
+            }
+            // case 2)
+            else {
                 count--;
                 ans.append(character);
             }
 
+            // update PQ
             // If count is greater than zero, add it to priority queue.
             if (count > 0) {
                 pq.add(new Pair(count, character));
             }
+
         }
+
+
         return ans.toString();
     }
 
@@ -192,6 +209,8 @@ public class LongestHappyString {
                 currb = 0;
             }
         }
+
+
         return ans.toString();
     }
 
