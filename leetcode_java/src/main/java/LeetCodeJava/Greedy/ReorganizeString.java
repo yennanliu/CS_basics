@@ -55,7 +55,19 @@ public class ReorganizeString {
         }
 
         // Use a max-heap (PriorityQueue) to store characters based on their frequency
-        PriorityQueue<Character> maxHeap = new PriorityQueue<>(Comparator.comparingInt(charCount::get).reversed());
+        // V1
+        //PriorityQueue<Character> maxHeap = new PriorityQueue<>(Comparator.comparingInt(charCount::get).reversed());
+
+        // V2
+        PriorityQueue<Character> maxHeap = new PriorityQueue<>(new Comparator<Character>() {
+            private final Map<Character, Integer> counts = charCount; // Access the charCount map
+
+            @Override
+            public int compare(Character char1, Character char2) {
+                // Compare based on the frequencies from the charCount map (descending order)
+                return counts.get(char2) - counts.get(char1);
+            }
+        });
 
         for (char c : charCount.keySet()) {
             maxHeap.offer(c);
