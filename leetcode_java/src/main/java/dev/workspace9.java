@@ -3914,9 +3914,105 @@ public class workspace9 {
     }
 
     // LC 767
-    // 11.32 - 11.42 am
-    public String reorganizeString(String S) {
-        return null;
+    // 11.32 - 11.45 am
+    /**
+     *  IDEA 1) PQ + HASHMAP
+     *
+     *   1. use map record `element cnt`
+     *   2. use PQ pop `max cnt` element
+     *   3.
+     *
+     *
+     *   Exp 1) s = "aab"
+     *
+     *   -> map : {a: 2, b: 1}
+     *   -> pq = [2,1]
+     *
+     *   res = "a", map = {a:1, b:1}, pq =[1,1]
+     *   res "ab", map = {a:1}, pq = [1]
+     *   res = "aba", ...
+     *   -> true
+     *
+     *
+     *   Exp 2) s = "aaab"
+     *
+     *   -> map : {a: 3, b: 1}
+     *   -> pq = [3,1]
+     *   -> res = "a", {a:2, b:1}, pq = [2,1]
+     *   -> res = "ab", {a:2}, pq = [2]
+     *   -> false
+     *
+     *
+     */
+    public String reorganizeString(String s) {
+        // edge
+        if(s == null || s.length() == 0){
+            return null;
+        }
+        if(s.length() == 1){
+            return s;
+        }
+        if(s.length() == 2){
+            if(s.charAt(0) == s.charAt(1)){
+                return s;
+            }
+            return null;
+        }
+        // ???
+        // map : {k: cnt}
+        Map<String, Integer> cntMap = new HashMap<>();
+        // PQ : max PQ (big -> small)
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        for(String x: s.split("")){
+            cntMap.put(x, cntMap.getOrDefault(x, 0) + 1);
+        }
+
+        for(String k: cntMap.keySet()){
+            pq.add(cntMap.get(k));
+        }
+
+        System.out.println(">>> cntMap = " + cntMap);
+        System.out.println(">>> pq = " + pq);
+
+        StringBuilder sb = new StringBuilder();
+
+        //boolean isFound = false;
+        String prev = null;
+
+        while (!pq.isEmpty()){
+
+            int cnt = pq.poll();
+            boolean isFound = false;
+            //prev = s.charAt()
+
+            System.out.println(">>> cnt = " + cnt + ", res = " + res);
+
+            for(String k: cntMap.keySet()){
+                System.out.println(">>> k = " + k + ", prev = " + prev);
+                if(cntMap.get(k) == cnt && k != prev){
+                    //res += k;
+                    sb.append(k);
+                    prev = k;
+                    isFound = true;
+                    // update map, PQ
+                    cntMap.put(k, cntMap.get(k));
+                    pq.add(cnt-1); // ??
+                }
+            }
+
+            if(!isFound){
+                return null; // ???
+            }
+        }
+
+        return sb.toString().length() > 0 ? sb.toString() : null;
     }
 
 
