@@ -87,6 +87,38 @@ return Math.sqrt(x * x + y * y);
 // ...
 ```
 
+#### 1-1-2-1) Custom `sorting with external data structure` in PQ
+
+```java
+// java
+
+// LC 767
+
+// ...
+Map<Character, Integer> charCount = new HashMap<>();
+    for (char c : s.toCharArray()) {
+        charCount.put(c, charCount.getOrDefault(c, 0) + 1);
+    }
+
+
+// NOTE !!! below 
+PriorityQueue<Character> maxHeap = new PriorityQueue<>(new Comparator<Character>() {
+
+    // NOTE !!! below 
+    private final Map<Character, Integer> counts = charCount; // Access the charCount map
+
+    @Override
+    public int compare(Character char1, Character char2) {
+        // Compare based on the frequencies from the charCount map (descending order)
+        return counts.get(char2) - counts.get(char1);
+    }
+});
+
+// ...
+```
+
+
+
 ## 2) LC Example
 
 
