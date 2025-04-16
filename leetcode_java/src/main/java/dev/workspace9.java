@@ -3945,75 +3945,139 @@ public class workspace9 {
      *
      */
     public String reorganizeString(String s) {
-        // edge
-        if(s == null || s.length() == 0){
-            return null;
+        // Edge cases
+        if (s == null || s.length() == 0) {
+            return "";
         }
-        if(s.length() == 1){
+        if (s.length() == 1) {
             return s;
         }
-        if(s.length() == 2){
-            if(s.charAt(0) == s.charAt(1)){
-                return s;
-            }
-            return null;
+
+        // Count the frequency of each character
+        Map<Character, Integer> charCount = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            charCount.put(c, charCount.getOrDefault(c, 0) + 1);
         }
-        // ???
-        // map : {k: cnt}
-        Map<String, Integer> cntMap = new HashMap<>();
-        // PQ : max PQ (big -> small)
-        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+
+        // Use a max-heap (PriorityQueue) to store characters based on their frequency
+        // V1
+        //PriorityQueue<Character> maxHeap = new PriorityQueue<>(Comparator.comparingInt(charCount::get).reversed());
+
+        // V2
+        PriorityQueue<Character> maxHeap = new PriorityQueue<>(new Comparator<Character>() {
+            private final Map<Character, Integer> counts = charCount; // Access the charCount map
+
             @Override
-            public int compare(Integer o1, Integer o2) {
-                int diff = o2 - o1;
-                return diff;
+            public int compare(Character char1, Character char2) {
+                // Compare based on the frequencies from the charCount map (descending order)
+                return counts.get(char2) - counts.get(char1);
             }
         });
 
-        for(String x: s.split("")){
-            cntMap.put(x, cntMap.getOrDefault(x, 0) + 1);
+        for (char c : charCount.keySet()) {
+            maxHeap.offer(c);
         }
 
-        for(String k: cntMap.keySet()){
-            pq.add(cntMap.get(k));
-        }
+        StringBuilder result = new StringBuilder();
+        Character prevChar = null;
+        int idx = 0;
 
-        System.out.println(">>> cntMap = " + cntMap);
-        System.out.println(">>> pq = " + pq);
-
-        StringBuilder sb = new StringBuilder();
-
-        //boolean isFound = false;
-        String prev = null;
-
-        while (!pq.isEmpty()){
-
-            int cnt = pq.poll();
+        while (!maxHeap.isEmpty()) {
             boolean isFound = false;
-            //prev = s.charAt()
+            Character currentChar = maxHeap.poll();
+            result.append(currentChar);
+            charCount.put(currentChar, charCount.get(currentChar) - 1);
 
-            System.out.println(">>> cnt = " + cnt + ", res = " + res);
+            if (prevChar != null && charCount.get(prevChar) > 0) {
+                isFound = true;
+                maxHeap.offer(prevChar);
+            }
+            prevChar = currentChar;
 
-            for(String k: cntMap.keySet()){
-                System.out.println(">>> k = " + k + ", prev = " + prev);
-                if(cntMap.get(k) == cnt && k != prev){
-                    //res += k;
-                    sb.append(k);
-                    prev = k;
-                    isFound = true;
-                    // update map, PQ
-                    cntMap.put(k, cntMap.get(k));
-                    pq.add(cnt-1); // ??
-                }
+            // early terminated ??
+            if(!isFound && idx != 0){
+                return ""; // ??
             }
 
-            if(!isFound){
-                return null; // ???
-            }
+            idx += 1;
         }
 
-        return sb.toString().length() > 0 ? sb.toString() : null;
+        // If the length of the reorganized string is not equal to the original length,
+        // it means it was not possible to reorganize the string according to the rules.
+        return result.length() == s.length() ? result.toString() : "";
     }
+
+
+//    public String reorganizeString(String s) {
+//        // edge
+//        if(s == null || s.length() == 0){
+//            return null;
+//        }
+//        if(s.length() == 1){
+//            return s;
+//        }
+//        if(s.length() == 2){
+//            if(s.charAt(0) == s.charAt(1)){
+//                return s;
+//            }
+//            return null;
+//        }
+//        // ???
+//        // map : {k: cnt}
+//        Map<String, Integer> cntMap = new HashMap<>();
+//        // PQ : max PQ (big -> small)
+//        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                int diff = o2 - o1;
+//                return diff;
+//            }
+//        });
+//
+//        for(String x: s.split("")){
+//            cntMap.put(x, cntMap.getOrDefault(x, 0) + 1);
+//        }
+//
+//        for(String k: cntMap.keySet()){
+//            pq.add(cntMap.get(k));
+//        }
+//
+//        System.out.println(">>> cntMap = " + cntMap);
+//        System.out.println(">>> pq = " + pq);
+//
+//        StringBuilder sb = new StringBuilder();
+//
+//        //boolean isFound = false;
+//        String prev = null;
+//
+//        while (!pq.isEmpty()){
+//
+//            int cnt = pq.poll();
+//            boolean isFound = false;
+//            //prev = s.charAt()
+//
+//            System.out.println(">>> cnt = " + cnt + ", res = " + res);
+//
+//            for(String k: cntMap.keySet()){
+//                System.out.println(">>> k = " + k + ", prev = " + prev);
+//                if(cntMap.get(k) == cnt && k != prev){
+//                    //res += k;
+//                    sb.append(k);
+//                    prev = k;
+//                    isFound = true;
+//                    // update map, PQ
+//                    cntMap.put(k, cntMap.get(k));
+//                    pq.add(cnt-1); // ??
+//                }
+//            }
+//
+//            if(!isFound){
+//                return null; // ???
+//            }
+//        }
+//
+//        return sb.toString().length() > 0 ? sb.toString() : null;
+//    }
 
 
 
