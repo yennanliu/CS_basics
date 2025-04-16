@@ -4080,6 +4080,93 @@ public class workspace9 {
 //    }
 
     // LC 1405
+    // 1.09 - 1.19 pm
+    /**
+     *  IDEA 1) PQ + MAP
+     *  (similar as LC 737 ???)
+     *
+     *
+     *  PQ -> track element with most cnt
+     *
+     *  1. append to res, till reach `len=2`
+     *  2. update map, PQ accordingly
+     *  3. return res
+     *
+     */
+    public String longestDiverseString(int a, int b, int c) {
+
+        StringBuilder sb = new StringBuilder();
+
+        // edge
+        if(a == 0 && b == 0 && c == 0){
+            return null;
+        }
+        if(a < 3 && b < 3 && c < 3){
+            sb.append(getStrProduct(a, "a"));
+            sb.append(getStrProduct(b, "b"));
+            sb.append(getStrProduct(c, "c"));
+            return sb.toString();
+        }
+
+        Map<String, Integer> cntMap = new HashMap<>();
+        cntMap.put("a", a);
+        cntMap.put("b", b);
+        cntMap.put("c", c);
+
+        PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+
+            // NOTE !! below
+            private final Map<String, Integer> counts = cntMap;
+
+            @Override
+            public int compare(String o1, String o2) {
+                return counts.get(o2) - counts.get(o1);
+            }
+        });
+
+        StringBuilder sb2 = new StringBuilder();
+
+        while(!pq.isEmpty()){
+
+            String cur = pq.poll();
+            int len = sb2.toString().length();
+
+            if(len < 3){
+                sb.append(cur);
+                cntMap.put(cur, cntMap.get(cur) - 1);
+            }
+
+            else if(len >= 3){
+                String prev1 = String.valueOf(sb2.toString().charAt(len - 2));
+                String prev2 = String.valueOf(sb2.toString().charAt(len - 1));
+                // ???
+                // case 1) can append cur
+                if( ! ( (prev1 == prev2) && (prev2 == cur) ) ){
+                    sb.append(cur);
+                    // update map, PQ
+                    cntMap.put(cur, cntMap.get(cur) - 1);
+                    //pq.add(cur - 1);
+                }
+                // case 2) can't append cur (e.g. aa "a" , or bb "b"..)
+                else{
+
+                }
+            }
+
+        }
+
+
+        // ???
+        return sb2.toString().length() > 0 ? null : sb2.toString();
+    }
+
+    public String getStrProduct(int cnt, String x){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < cnt; i ++){
+            sb.append(x);
+        }
+        return sb.toString();
+    }
 
 
 
