@@ -3894,5 +3894,12 @@ public class workspace9 {
         return 0;
     }
 
+    // LC 1834
+    public int[] getOrder(int[][] tasks) {
+        return null;
+    }
+
+
+
 }
 
