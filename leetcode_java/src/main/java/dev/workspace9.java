@@ -4169,9 +4169,96 @@ public class workspace9 {
     }
 
     // LC 1094
+    // 10.21 - 10.31 am
+    /**
+     *  Given a list of trips,
+     *  trip[i] = [num_passengers, start_location, end_location]
+     *
+     *   -> num_passengers : the number of passengers that must be picked up,
+     *   -> start_location :  the locations to pick them up.
+     *   -> end_location :  the locations to drop them off.
+     *
+     *
+     *  -> Return `true` if and only if
+     *     it is possible to pick up and drop off
+     *     all passengers for all the given trips.
+     *
+     *
+     *   Constraints:
+     *
+     *  1 <= trips.length <= 1000
+     *  trips[i].length == 3
+     *  1 <= numPassengersi <= 100
+     *  0 <= fromi < toi <= 1000
+     *  1 <= capacity <= 105
+     *
+     *
+     *
+     */
+    /**  IDEA 1) PREFIX SUM ???
+     *
+     *  -> maintain a `cum-sum` passenger count
+     *  -> ans check if `capacity` can handle it ( >= )
+     *  -> if not, return false directly
+     *  -> otherwise, if can reach the end, return true
+     *
+     *
+     *   Exp 1)
+     *
+     *   Input: trips = [[2,1,5],[3,3,7]], capacity = 4
+     *   Output: false
+     *
+     *
+     *   prefix = [2
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     */
     public boolean carPooling(int[][] trips, int capacity) {
+        // edge
+        if(trips == null || trips.length == 0){
+            return true;
+        }
+        if(trips.length == 1){
+            return capacity > trips[0][0];
+        }
 
-        return false;
+        // init prefix sum
+        int[] prefixSum = new int[1001]; // ??
+      //  int cumsum = 0;
+        for(int[] t: trips){
+            int amount = t[0];
+            int start = t[1];
+            int end = t[2];
+           // cumsum += amount;
+            // ???
+//            for(int i = start; i < end; i++){
+//                prefixSum[i] += cumsum; // ???
+//            }
+
+            prefixSum[start] += amount;
+            prefixSum[end] -= amount;
+        }
+
+        // update `prefix sum` array
+        for(int i = 1; i < prefixSum.length; i++){
+            prefixSum[i] += prefixSum[i-1];
+        }
+
+        // check if `possible` to get all passenger
+        for (int j : prefixSum) {
+            if (capacity < j) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
