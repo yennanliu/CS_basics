@@ -55,19 +55,72 @@ public class IPO {
 //    }
 
     // V1
+    // IDEA: GREEDY + PQ
     // https://www.youtube.com/watch?app=desktop&v=1IUzNJ6TPEM
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0502-ipo.java
+    /**
+     *  IDEA :
+     *
+     *  This greedy approach works because:
+     *
+     *   - You always pick the most profitable project you can afford at each step.
+     *
+     *   - Efficiently maintains project choices using two heaps.
+     *
+     */
     public int findMaximizedCapital_1(int k, int w, int[] profits, int[] capital) {
         // Max-heap for profits of affordable projects
+        /**
+         *
+         * Why max heap?
+         *
+         * Because you want to
+         * always pick the most profitable project
+         * from the ones you can afford.
+         */
         Queue<Integer> maxProfit = new PriorityQueue<>(Comparator.reverseOrder());
 
         // Min-heap for (capital, profit) pairs
+        /**
+         *
+         *  -  This is a `MIN` heap that keeps all projects sorted
+         *     by their `required capital`.
+         *
+         *  -  Why? So you can efficiently find all projects that are now
+         *     affordable when your capital (w) increases.
+         *
+         *
+         *  -> minCapital  : [ capital_i, profit_i ]
+         *
+         *  -> `a[0]` is capital
+         */
         Queue<int[]> minCapital = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
 
+        /**
+         *
+         * Prepares the minCapital heap by storing every project
+         * as a pair: [required capital, profit].
+         */
         for (int i = 0; i < capital.length; i++) {
             minCapital.add(new int[] { capital[i], profits[i] });
         }
 
+        /**
+         *
+         *  - For each round:
+         *
+         *    1. Find all projects you can afford now (capital[i] <= w) →
+         *       move them from minCapital → maxProfit
+         *
+         *    2. If no projects are affordable (maxProfit is empty),
+         *       you're stuck — break early.
+         *
+         *    3. Else, pick the project with maximum profit,
+         *       and increase your capital by that profit.
+         *
+         *    4. Repeat.
+         *
+         */
         for (int i = 0; i < k; i++) {
             // Add all affordable projects to the maxProfit heap
             while (!minCapital.isEmpty() && minCapital.peek()[0] <= w) {
@@ -84,6 +137,10 @@ public class IPO {
             w += maxProfit.poll();
         }
 
+        /**
+         *
+         * After at most k projects, return the maximum capital you achieved.
+         */
         return w;
     }
 
