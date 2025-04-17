@@ -4261,6 +4261,11 @@ public class workspace9 {
         return true;
     }
 
+    // LC 502
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+
+        return 0;
+    }
 
 
 
