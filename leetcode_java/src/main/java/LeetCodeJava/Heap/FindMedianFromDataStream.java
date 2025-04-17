@@ -55,8 +55,26 @@ import java.util.*;
 public class FindMedianFromDataStream {
 
     // V0
-    // IDEA: SMALL, BIG PQ (fixed by gpt)
+    // IDEA: SMALL, BIG PQ (fixed by gpt) + `rebalance` PQ
     class MedianFinder {
+
+        /**
+         * - small_pq: A max-heap (stores the `smaller` half of the numbers).
+         *            The root will always be the largest number
+         *            in the smaller half.
+         *
+         * - big_pq: A min-heap (stores the `larger` half of the numbers).
+         *           The root will always be the smallest
+         *           number in the larger half.
+         *
+         *
+         *
+         *  -> NOTE !!!
+         *
+         *   small_pq : MAX PQ
+         *   big_pq : MIN PQ
+         *
+         */
 
         PriorityQueue<Integer> small_pq; // max-heap (stores smaller half)
         PriorityQueue<Integer> big_pq;   // min-heap (stores larger half)
@@ -77,6 +95,19 @@ public class FindMedianFromDataStream {
                 this.big_pq.add(num);
             }
 
+
+            /**
+             *  NOTE !!!
+             *
+             *   The crucial part is to maintain the `balance`
+             *   between the two heaps so that they
+             *   `have roughly the SAME NUMBER of elements.`
+             *
+             *
+             *   -> so in `rebalance` code below,
+             *   -> we try to keep `size difference` <= 1
+             *
+             */
             // Rebalance the heaps to maintain a size difference of at most 1
             if (this.small_pq.size() > this.big_pq.size() + 1) {
                 this.big_pq.add(this.small_pq.poll());
@@ -86,6 +117,19 @@ public class FindMedianFromDataStream {
         }
 
         public double findMedian() {
+
+            /**
+             *  to find the median:
+             *
+             * - If the total number of elements is `odd`,
+             *   the median is the root of the larger heap
+             *   (which will have one more element).
+             *
+             *
+             * - If the total number of elements is `even`,
+             *   the median is the average of the roots of both heaps.
+             *
+             */
             int size = this.small_pq.size() + this.big_pq.size();
 
             if (size % 2 == 1) {
