@@ -38,9 +38,58 @@ package LeetCodeJava.Array;
 public class CarPooling {
 
     // V0
-//    public boolean carPooling(int[][] trips, int capacity) {
-//
-//    }
+    // IDEA: PREFIX SUM + `prefix interval handling` (improve efficience)
+    public boolean carPooling(int[][] trips, int capacity) {
+        // edge
+        if (trips == null || trips.length == 0) {
+            return true;
+        }
+        if (trips.length == 1) {
+            return capacity > trips[0][0];
+        }
+
+        // init prefix sum
+        int[] prefixSum = new int[1001]; // the biggest array size given by problem
+        // `init pre prefix sum`
+        for (int[] t : trips) {
+            int amount = t[0];
+            int start = t[1];
+            int end = t[2];
+
+            /**
+             *  NOTE !!!!
+             *
+             *   via trick below, we can `efficiently` setup prefix sum
+             *   per start, end index
+             *
+             *   -> we ADD amount at start point (customer pickup up)
+             *   -> we MINUS amount at `end point` (customer drop off)
+             *
+             *   -> via above, we get the `adjusted` `init prefix sum`
+             *   -> so all we need to do next is :
+             *      -> loop over the `init prefix sum`
+             *      -> and keep adding `previous to current val`
+             *      -> e.g. prefixSum[i] = prefixSum[i-1] + prefixSum[i]
+             *
+             */
+            prefixSum[start] += amount;
+            prefixSum[end] -= amount;
+        }
+
+        // update `prefix sum` array
+        for (int i = 1; i < prefixSum.length; i++) {
+            prefixSum[i] += prefixSum[i - 1];
+        }
+
+        // check if it's `possible` to get all passenger
+        for (int j : prefixSum) {
+            if (capacity < j) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     // V0-1
     // IDEA: PREFIX SUM

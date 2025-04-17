@@ -39,8 +39,9 @@ We can use prefix sums. Say P[i+1] = A[0] + A[1] + ... + A[i], where A[i] = 1 if
     - LC 304
 
 - Flip string
-- Range addition
+- Range addition (within `start`, `end` point)
     - LC 370
+    - LC 1094
 - sub array
     - sum array sum == k
         - pre sum count
@@ -93,7 +94,52 @@ for (int num : nums) {
 
 ```
 
+#### 0-2-2) get prefix with `range addition` 
 
+```java
+// java
+
+// LC 1094
+
+// ...
+
+int[] prefixSum = new int[1001]; // the biggest array size given by problem
+
+// `init pre prefix sum`
+for (int[] t : trips) {
+    
+    int amount = t[0];
+    int start = t[1];
+    int end = t[2];
+
+    /**
+     *  NOTE !!!!
+     *
+     *   via trick below, we can `efficiently` setup prefix sum
+     *   per start, end index
+     *
+     *   -> we ADD amount at start point (customer pickup up)
+     *   -> we MINUS amount at `end point` (customer drop off)
+     *
+     *   -> via above, we get the `adjusted` `init prefix sum`
+     *   -> so all we need to do next is :
+     *      -> loop over the `init prefix sum`
+     *      -> and keep adding `previous to current val`
+     *      -> e.g. prefixSum[i] = prefixSum[i-1] + prefixSum[i]
+     *
+     */
+    prefixSum[start] += amount;
+    prefixSum[end] -= amount;
+}
+
+// update `prefix sum` array
+for (int i = 1; i < prefixSum.length; i++) {
+    prefixSum[i] += prefixSum[i - 1];
+}
+
+
+// ...
+```
 
 
 ## 1) General form
@@ -103,6 +149,7 @@ for (int num : nums) {
 ## 2) LC Example
 
 ### 2-1) Flip String to Monotone Increasing
+
 ```python
 # LC 926. Flip String to Monotone Increasing
 # NOTE : there is also dp approaches
