@@ -4262,6 +4262,41 @@ public class workspace9 {
     }
 
     // LC 502
+    // 11.17 - 11. 27 am
+    /**
+     * You are given several projects.
+     * For each project i, it has a pure profit Pi
+     * and a minimum capital of Ci is needed
+     * to start the corresponding project.
+     *
+     *
+     *
+     * Initially, you have `W` capital.
+     * When you finish a project,
+     * you will obtain its pure profit and the profit
+     * will be added to your total capital.
+     *
+     * ->
+     *
+     *  k : it can only finish at most k distinct projects before the IPO
+     *  w: Initially, you have `W` capital.
+     *  Profits : For each project i, it has a pure profit Pi
+     *  Capital : (continue above) a minimum capital of Ci is needed
+     *
+     *
+     *
+     */
+    /**
+     *  IDEA 1)  PQ (max PQ)
+     *
+     *   -> we use MAX PQ to track the `most profit`
+     *   -> 1) go through `Capital`, find the capital = 0, as start point, and get its profit
+     *      2) init a new PQ, collect capitals which <= current profit
+     *      3) pop from above PQ (as the new selected profit), repeat step 1) - step 3)
+     *      ...
+     *
+     *      return final profit as result
+     */
     public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
 
         return 0;
