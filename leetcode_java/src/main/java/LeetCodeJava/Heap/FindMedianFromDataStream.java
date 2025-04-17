@@ -55,21 +55,53 @@ import java.util.*;
 public class FindMedianFromDataStream {
 
     // V0
-    // TODO : implement
-//    class MedianFinder {
-//
-//        public MedianFinder() {
-//
-//        }
-//
-//        public void addNum(int num) {
-//
-//        }
-//
-//        public double findMedian() {
-//            return 0.0;
-//        }
-//    }
+    // IDEA: SMALL, BIG PQ (fixed by gpt)
+    class MedianFinder {
+
+        PriorityQueue<Integer> small_pq; // max-heap (stores smaller half)
+        PriorityQueue<Integer> big_pq;   // min-heap (stores larger half)
+
+        public MedianFinder() {
+            // Initialize small_pq as a max-heap
+            this.small_pq = new PriorityQueue<>(Comparator.reverseOrder());
+
+            // Initialize big_pq as a min-heap (default behavior)
+            this.big_pq = new PriorityQueue<>();
+        }
+
+        public void addNum(int num) {
+            // Add the new number to the appropriate heap
+            if (this.small_pq.isEmpty() || num <= this.small_pq.peek()) {
+                this.small_pq.add(num);
+            } else {
+                this.big_pq.add(num);
+            }
+
+            // Rebalance the heaps to maintain a size difference of at most 1
+            if (this.small_pq.size() > this.big_pq.size() + 1) {
+                this.big_pq.add(this.small_pq.poll());
+            } else if (this.big_pq.size() > this.small_pq.size() + 1) {
+                this.small_pq.add(this.big_pq.poll());
+            }
+        }
+
+        public double findMedian() {
+            int size = this.small_pq.size() + this.big_pq.size();
+
+            if (size % 2 == 1) {
+                // Odd number of elements, median is the top of the larger heap
+                if (this.small_pq.size() > this.big_pq.size()) {
+                    return this.small_pq.peek();
+                } else {
+                    return this.big_pq.peek();
+                }
+            } else {
+                // Even number of elements, median is the average of the top of both heaps
+                return (this.small_pq.peek() + this.big_pq.peek()) / 2.0;
+            }
+        }
+    }
+
 
     // V0-1
     // IDEA: SORTING (TLE)
@@ -111,6 +143,14 @@ public class FindMedianFromDataStream {
              */
             // System.out.println(">>> this.cnt= " + this.cnt + ", this.collected = " +
             // this.collected);
+            /**
+             *  NOTE !!!
+             *
+             *   be careful on which val we use:
+             *
+             *    this.cnt VS array's leftmost idx
+             *
+             */
             int midIdx = -1;
             if (this.cnt % 2 == 0) {
                 midIdx = this.cnt / 2;

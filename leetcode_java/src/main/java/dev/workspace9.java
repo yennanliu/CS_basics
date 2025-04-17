@@ -4302,6 +4302,130 @@ public class workspace9 {
         return 0;
     }
 
+    // LC 295
+    // Find Median from Data Stream
+    // IDEA 1) SORTING
+//    class MedianFinder {
+//
+//        //int size;
+//        List<Integer> collected;
+//
+//        public MedianFinder() {
+//           // this.size = 0;
+//            this.collected = new ArrayList<>();
+//        }
+//
+//        public void addNum(int num) {
+//           // this.size += 1;
+//            this.collected.add(num); // ??
+//            // sort again
+//            sorting();
+//        }
+//
+//        public double findMedian() {
+//            int size = this.collected.size();
+//            // edge
+//            if(size == 2){
+//                return (this.collected.get(0) + this.collected.get(1)) / 2.0;
+//            }
+//            if(size % 2 == 1){
+//                this.collected.get(size / 2); // ??
+//            }
+//            int idx1 = size / 2;
+//            int idx2 = (size / 2) - 1;
+//            //double val = ( this.collected.get(idx1) + this.collected.get(idx2) ) / 2.0;
+//            return ( this.collected.get(idx1) + this.collected.get(idx2) ) / 2.0;
+//        }
+//
+//        private void sorting(){
+//            Collections.sort(this.collected);
+//        }
+//    }
+
+    // IDEA 2) PQ
+    /**
+     *
+     *  IDEA : PQ
+     *
+     *  - init small, big PQ
+     *
+     *   - small PQ : maintain ALL element <= `medium val`
+     *   - big PQ :  maintain ALL element > `medium val`
+     *
+     *   -> so if `total size` % 2 == 0 -> medium = ( top_small_pq + top_big_pq ) / 2
+     *         if `total size` % 2 == 1 -> medium =  top_small_pq
+     *
+     *
+     */
+    class MedianFinder {
+
+        PriorityQueue<Integer> small_pq;
+        PriorityQueue<Integer> big_pq;
+
+        public MedianFinder() {
+
+            small_pq = new PriorityQueue<>(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    int diff = o1 - o2;
+                    return diff;
+                }
+            });
+
+            big_pq = new PriorityQueue<>(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    int diff = o2 - o1;
+                    return diff;
+                }
+            });
+
+        }
+
+        public void addNum(int num) {
+
+            if(this.small_pq.isEmpty()){
+                this.small_pq.add(num);
+            }else{
+                int smallest = this.small_pq.peek();
+                if(num < smallest){
+                    this.small_pq.add(num);
+                }else{
+                    this.big_pq.add(num);
+                }
+            }
+
+            // need to `rebalance` small, big PQ ???
+
+        }
+
+        public double findMedian() {
+
+            int size = this.small_pq.size() + this.big_pq.size();
+
+            if(size % 2 == 1){
+                if(!this.small_pq.isEmpty()){
+                    return this.small_pq.peek(); // ???
+                }
+                return -1; // handle null pointer here, but should NOT happen ???
+            }
+
+            int val1 = 0;
+            int val2 = 0;
+
+            if(!this.small_pq.isEmpty()){
+                val1 = this.small_pq.peek();
+            }
+
+            if(!this.big_pq.isEmpty()){
+                val2 = this.big_pq.peek();
+            }
+
+            return (val1 + val2) / 2.0; // ???
+        }
+
+    }
+
 
 
 }
