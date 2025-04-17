@@ -4168,6 +4168,12 @@ public class workspace9 {
         return sb.toString();
     }
 
+    // LC 1094
+    public boolean carPooling(int[][] trips, int capacity) {
+
+        return false;
+    }
+
 
 
 

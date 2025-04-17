@@ -3,8 +3,6 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/car-pooling/description/
 /**
  *
- Code
- Testcase
  1094. Car Pooling
  Medium
  Topics
@@ -138,8 +136,29 @@ public class CarPooling {
     }
 
     // V1
-    // https://leetcode.com/problems/car-pooling/solutions/1669644/well-explained-2-waysjava-cpythonjavascr-djso/
+    // https://youtu.be/08sn_w4LWEE?feature=shared
+    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F1094-car-pooling.java
     public boolean carPooling_1(int[][] trips, int capacity) {
+        int[] passChange = new int[1001];
+        for (int[] t : trips) {
+            passChange[t[1]] += t[0];
+            passChange[t[2]] -= t[0];
+        }
+        int curPass = 0;
+        for (int i = 0; i < 1001; i++) {
+            curPass += passChange[i];
+            if (curPass > capacity) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+    // V2
+    // https://leetcode.com/problems/car-pooling/solutions/1669644/well-explained-2-waysjava-cpythonjavascr-djso/
+    public boolean carPooling_2(int[][] trips, int capacity) {
         // Because from and to is between 0 and 1000. Idea is to store counts in an array of size 1001.
         int lengthOfTrip[] = new int[1001];
         for (int trip[] : trips){
@@ -196,9 +215,9 @@ public class CarPooling {
         return true; // Accept only if all trip is safe
     }
 
-    // V2
+    // V3
     // https://leetcode.com/problems/car-pooling/solutions/1670309/cjavapython-donot-sort-on-95-faster-imag-da8q/
-    public boolean carPooling(int[][] trips, int capacity) {
+    public boolean carPooling_3(int[][] trips, int capacity) {
         int in_car = 0;
         int[] increase = new int[1001];
         for (int i = 0; i < trips.length; i++) { // find out the number of the **net increase** passengers for each stop
