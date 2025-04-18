@@ -4470,6 +4470,46 @@ public class workspace9 {
     }
 
 
+    // LC 90
+    // 10.22 - 10.32 am
+//    public List<List<Integer>> subsetsWithDup(int[] nums) {
+//
+//        return null;
+//    }
+
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        /**
+         *  NOTE !!!
+         *
+         *   in order to skip duplicates via `compare cur and prev val`,
+         *   we need to sort array first
+         */
+        Arrays.sort(nums);
+        backtrack(list, new ArrayList<>(), nums, 0);
+        return list;
+    }
+
+    private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int start){
+        list.add(new ArrayList<>(tempList));
+        for(int i = start; i < nums.length; i++){
+            // skip duplicates
+            /**
+             *  NOTE !!!
+             *
+             *   below is the key shows how to simply skip duplicates
+             *   (instead of using hashmap counter)
+             */
+            if(i > start && nums[i] == nums[i-1]){
+                continue;
+            }
+            tempList.add(nums[i]);
+            backtrack(list, tempList, nums, i + 1);
+            tempList.remove(tempList.size() - 1);
+        }
+    }
+
+
 
 
 }
