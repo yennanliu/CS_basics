@@ -57,9 +57,10 @@ def backtrack(路徑, 選擇清單):
     - ONLY 全排列 (Permutations) `NOT` NEED `start idx` !!!!
         - Type II : Permutations (排列組合)
 
-    - "subset" need `start idx`
+    - subset, conbinationSum need `start idx`
         - Type I : Subsets (子集)
         - Type III : Combinations (組成)
+        - combinationSum (LC 39)
 
 - Problems types
 

@@ -4510,11 +4510,49 @@ public class workspace9 {
     }
 
     // LC 39
+    // 11.01 - 11.23 am
+    // IDEA: BACKTRACK (without start_idx !!!)
+    List<List<Integer>> combineSumRes = new ArrayList<>();
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        // edge
+        if(candidates == null || candidates.length == 0){
+            return null; // ??
+        }
 
-        return null;
+        List<Integer> cur =  new ArrayList<>();
+        getCombineSumHelper(candidates, target, 0, cur);
+        return combineSumRes;
     }
 
+    public void getCombineSumHelper(int[] candidates, int target, int start_idx, List<Integer> cur){
+        if(getArraySum(cur) > target){
+            return;
+        }
+
+        if(getArraySum(cur) == target){
+            // sort
+            Collections.sort(cur);
+            if(!combineSumRes.contains(cur)){
+                combineSumRes.add(new ArrayList<>(cur));
+            }
+        }
+
+        for(int i = start_idx; i < candidates.length; i++){
+            cur.add(candidates[i]);
+            getCombineSumHelper(candidates, target, start_idx + 1,cur);
+            // undo
+            cur.remove(cur.size() - 1);
+        }
+
+    }
+
+    public int getArraySum(List<Integer> input){
+        int res = 0;
+        for(int x: input){
+            res += x;
+        }
+        return res;
+    }
 
 }
 
