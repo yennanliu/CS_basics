@@ -75,13 +75,7 @@ def backtrack(路徑, 選擇清單):
         cur = []
         res = []
         def help(start_idx, cur):
-            _cur = "".join(cur[:])
-            if _cur == s:
-                res.append(cur[:])
-                return
-            if len(_cur) > len(s):
-                cur = []
-                return
+            # ....
             """
             NOTE !!! start_idx
 
@@ -99,15 +93,7 @@ def backtrack(路徑, 選擇清單):
         ```java
         // java
         public List<List<Integer>> subsets(int[] nums) {
-
-            List<List<Integer>> res = new ArrayList<>();
-            if (nums.length == 0){
-                return res;
-            }
-            // backtrack
-            int start_idx = 0;
-            List<Integer> cur = new ArrayList<>();
-            //System.out.println("(before) res = " + res);
+            // ...
             this.getSubSet(start_idx, nums, cur, res);
             //System.out.println("(after) res = " + res);
             return res;
@@ -157,55 +143,76 @@ def backtrack(路徑, 選擇清單):
     - `Subsets I`
         - LC 78
         - start idx + backtrack
-        ```python
-        # python
-        class Solution:
-            def subsets(self, nums):
-                result = []
-                path = []
-                self.backtracking(nums, 0, path, result)
-                return result
+        ```java
+        // java
+        // LC 78
+        public void getSubSet(int start_idx, int[] nums, List<Integer> cur, List<List<Integer>> res){
 
-            def backtracking(self, nums, startIndex, path, result):
-                result.append(path[:])  # NOTE here
-                if startIndex >= len(nums):  # optional
-                    return
-                for i in range(startIndex, len(nums)): # NOTE here : we start from startIndex every time
-                    path.append(nums[i])
-                    self.backtracking(nums, i + 1, path, result) # NOTE here
-                    path.pop(-1) # NOTE here
+                if (!res.contains(cur)){
+                    // NOTE !!! init new list via below
+                    res.add(new ArrayList<>(cur));
+                }
+
+                if (cur.size() > nums.length){
+                    return;
+                }
+
+                for (int i = start_idx; i < nums.length; i++){
+                    /**
+                     * NOTE !!!
+                     *
+                     *  for subset,
+                     *  we need "!cur.contains(nums[i])"
+                     *  -> to NOT add duplicated element
+                     */
+                    if (!cur.contains(nums[i])){
+                        cur.add(nums[i]);
+                        /**
+                         *  NOTE !!!
+                         *
+                         *   at LC 78 subset, we need to use `i+1` idx
+                         *   in recursive call
+                         *
+                         *   while at LC 39 Combination Sum,
+                         *   we use `i` directly
+                         *
+                         *
+                         *   e.g. next start_idx is ` i+1`
+                         */
+                        this.getSubSet(i+1, nums, cur, res);
+                        // undo
+                        cur.remove(cur.size()-1);
+                    }
+                }
+            }
+
         ```
 
     - `Subsets II`
         - LC 90
         - start idx + backtrack + dedup (seen)
         - dedup : can use dict counter or idx
-        ```python
-        # python
-        from collections import Counter
-        class Solution:
-            def subsetsWithDup(self, nums):
-                result = []
-                path = []
-                # sort nums, so same element are in neighbor
-                nums.sort()
-                # NOTE : we use _cnt for record how count of element and used element
-                _cnt = Counter(nums)
-                self.backtracking(nums, 0, path, result, _cnt)
-                return result
-
-            def backtracking(self, nums, startIndex, path, result, _cnt):
-                if path not in result: # this line is optional
-                    result.append(path[:])  # NOTE here
-                if startIndex >= len(nums):  # optional
-                    return
-                for i in range(startIndex, len(nums)): # NOTE here : we start from startIndex every time
-                    if _cnt[nums[i]] > 0:
-                        _cnt[nums[i]] -= 1
-                        path.append(nums[i])
-                        self.backtracking(nums, i + 1, path, result, _cnt) # NOTE here
-                        path.pop(-1) # NOTE here
-                        _cnt[nums[i]] += 1
+        ```java
+        // java
+        // LC 90
+        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int start){
+            list.add(new ArrayList<>(tempList));
+            for(int i = start; i < nums.length; i++){
+                // skip duplicates
+                /**
+                 *  NOTE !!!
+                 *
+                 *   below is the key shows how to simply skip duplicates
+                 *   (instead of using hashmap counter)
+                 */
+                if(i > start && nums[i] == nums[i-1]){
+                    continue;
+                }
+                tempList.add(nums[i]);
+                backtrack(list, tempList, nums, i + 1);
+                tempList.remove(tempList.size() - 1);
+            }
+        }
         ```
 
     - Type 2) : `Permutations (排列組合)` (全排列)
@@ -537,6 +544,10 @@ def backtrack(route, choice_list):
 ### 1-1) Basic OP
 
 ### 1-2) Trick
+
+
+#### 1-2-1) append to cache with idx
+
 ```python
 # LC 131. Palindrome Partitioning
 
@@ -553,6 +564,28 @@ def help(s, res, path):
             """
             help(s[i:], res, path + [s[:i]])
 # ...
+```
+
+#### 1-2-2) avoid add `duplicated` element
+
+```java
+// LC 90
+// java
+
+// ...
+for (int j = i; j < nums.length; j++) {
+    /** 
+     *  NOTE !!! below !!
+     * 
+     *  via below, we avoid add `duplicated` element
+     * 
+     */
+    if (j > i && nums[j] == nums[j - 1]) {
+        continue;
+    }
+    // ...
+}
+// ...
 ```
 
 ## 2) LC Example

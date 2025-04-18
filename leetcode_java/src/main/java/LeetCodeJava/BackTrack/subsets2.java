@@ -270,7 +270,7 @@ public class subsets2 {
             subset.remove(subset.size() - 1);
         }
     }
-    
+
 
     // V2
     // IDEA : Bitmasking
