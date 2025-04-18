@@ -18,7 +18,8 @@
 - <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/backtrack1.png" ></p>
 
 
-- Framework
+- pattern
+
 ```
 # pseudo code 
 
@@ -51,16 +52,89 @@ def backtrack(路徑, 選擇清單):
     - set
     - array
 
+
+### 0-0) `start_idx` — When & Why?
+
+## 
+
+`start_idx` (or `index`, or similar) is **used to control the search space** — to **avoid duplicates** and maintain order in the generated result.
+
+---
+
+### ✅ **Problems that NEED `start_idx`**
+
+These typically involve **combinations**, **subsets**, or **multi-use elements**, where:
+
+- Order doesn't matter (e.g., `[2,3]` is same as `[3,2]`)
+- You want to avoid revisiting earlier choices
+- You may reuse elements **or** pick each element **once**
+
+#### 🔹 Examples:
+| Problem | Use of `start_idx` | Why? |
+|--------|------------------|------|
+| `Subsets` (Leetcode 78) | ✅ Yes | To avoid duplicate subsets |
+| `Combination Sum` (Leetcode 39) | ✅ Yes | Reuse allowed, but in order |
+| `Combination Sum II` (Leetcode 40) | ✅ Yes | No reuse, skip duplicates |
+| `Combinations` (Leetcode 77) | ✅ Yes | Choose k out of n, in order |
+| `Palindrome Partitioning` | ✅ Yes | Explore substrings from `start` |
+
+#### 💡 General Rule:
+Use `start_idx` when:
+- You're generating **combinations/subsets**
+- You want to **avoid duplicates**
+- You want to **preserve order** of choices
+
+---
+
+### ❌ **Problems that DO NOT use `start_idx`**
+
+These are often **permutation problems**, where:
+
+- Order **does** matter
+- You want to try **all possible orders**
+- You **should revisit** earlier choices (sometimes)
+
+#### 🔹 Examples:
+| Problem | Use of `start_idx` | Why Not? |
+|--------|------------------|---------|
+| `Permutations` (Leetcode 46) | ❌ No | All orderings are valid |
+| `Permutations II` (Leetcode 47) | ❌ No | Just skip duplicates smartly |
+| `N-Queens` | ❌ No | One row per recursion depth |
+| `Word Break II` | ❌ No | Choices depend on substring matches |
+
+#### 💡 General Rule:
+Don’t use `start_idx` when:
+- You're generating **permutations**
+- You need **all orderings**
+- Choices are not sequential (e.g., trying all positions)
+
+---
+
+## 🧭 Summary Table
+
+| Problem Type      | Use `start_idx`? | Example Problem |
+|-------------------|------------------|-----------------|
+| Subsets           | ✅ Yes           | Leetcode 78     |
+| Combinations      | ✅ Yes           | Leetcode 77     |
+| Combination Sum   | ✅ Yes           | Leetcode 39     |
+| Permutations      | ❌ No            | Leetcode 46     |
+| N-Queens          | ❌ No            | Leetcode 51     |
+| Partitioning      | ✅ Yes           | Leetcode 131    |
+
+---
+
+
 ### 0-1) Types
 
 - Conclusion:
-    - ONLY 全排列 (Permutations) `NOT` NEED `start idx` !!!!
-        - Type II : Permutations (排列組合)
+    -  `NO` NEED `start idx` : 全排列 (`Permutations`)
+        - Permutations (排列組合)
 
-    - subset, conbinationSum need `start idx`
-        - Type I : Subsets (子集)
-        - Type III : Combinations (組成)
-        - combinationSum (LC 39)
+    - NEED `start idx` : other backtrack problems
+        - Subsets (子集)
+        - Combinations (組成)
+        - combination Sum (LC 39)
+        - partitioning
 
 - Problems types
 
