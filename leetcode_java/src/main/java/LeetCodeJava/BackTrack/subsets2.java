@@ -196,10 +196,86 @@ public class subsets2 {
 //        return output;
 //    }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/subsets-ii
+    // IDEA: BRUTE FOECE
+    Set<List<Integer>> res = new HashSet<>();
+
+    public List<List<Integer>> subsetsWithDup_1_1(int[] nums) {
+        Arrays.sort(nums);
+        backtrack(nums, 0, new ArrayList<>());
+        return new ArrayList<>(res);
+    }
+
+    private void backtrack(int[] nums, int i, List<Integer> subset) {
+        if (i == nums.length) {
+            res.add(new ArrayList<>(subset));
+            return;
+        }
+
+        subset.add(nums[i]);
+        backtrack(nums, i + 1, subset);
+        subset.remove(subset.size() - 1);
+        backtrack(nums, i + 1, subset);
+    }
+
+
+    // V1-2
+    // https://neetcode.io/problems/subsets-ii
+    // IDEA: BACKTRACK I
+    List<List<Integer>> res_1_2 = new ArrayList<>();
+
+    public List<List<Integer>> subsetsWithDup_1_2(int[] nums) {
+        Arrays.sort(nums);
+        backtrack(0, new ArrayList<>(), nums);
+        return res_1_2;
+    }
+
+    private void backtrack(int i, List<Integer> subset, int[] nums) {
+        if (i == nums.length) {
+            res_1_2.add(new ArrayList<>(subset));
+            return;
+        }
+
+        subset.add(nums[i]);
+        backtrack(i + 1, subset, nums);
+        subset.remove(subset.size() - 1);
+
+        while (i + 1 < nums.length && nums[i] == nums[i + 1]) {
+            i++;
+        }
+        backtrack(i + 1, subset, nums);
+    }
+
+
+    // V1-3
+    // https://neetcode.io/problems/subsets-ii
+    // IDEA: BACKTRACK II
+    List<List<Integer>> res_1_3 = new ArrayList<>();
+
+    public List<List<Integer>> subsetsWithDup_1_3(int[] nums) {
+        Arrays.sort(nums);
+        backtrack_1_3(0, new ArrayList<>(), nums);
+        return res_1_3;
+    }
+
+    private void backtrack_1_3(int i, List<Integer> subset, int[] nums) {
+        res_1_3.add(new ArrayList<>(subset));
+        for (int j = i; j < nums.length; j++) {
+            if (j > i && nums[j] == nums[j - 1]) {
+                continue;
+            }
+            subset.add(nums[j]);
+            backtrack_1_3(j + 1, subset, nums);
+            subset.remove(subset.size() - 1);
+        }
+    }
+    
+
+    // V2
     // IDEA : Bitmasking
     // https://leetcode.com/problems/subsets-ii/editorial/
-    public List<List<Integer>> subsetsWithDup_1(int[] nums) {
+    public List<List<Integer>> subsetsWithDup_2(int[] nums) {
         List<List<Integer>> subsets = new ArrayList();
         int n = nums.length;
 
@@ -235,10 +311,10 @@ public class subsets2 {
     }
 
 
-    // V2
+    // V3
     // IDEA : Cascading (Iterative)
     // https://leetcode.com/problems/subsets-ii/editorial/
-    public List<List<Integer>> subsetsWithDup_2(int[] nums) {
+    public List<List<Integer>> subsetsWithDup_3(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> subsets = new ArrayList<>();
         subsets.add(new ArrayList<Integer>());
@@ -258,10 +334,10 @@ public class subsets2 {
         return subsets;
     }
 
-    // V3
+    // V4
     // IDEA : Backtracking
     // https://leetcode.com/problems/subsets-ii/editorial/
-    public List<List<Integer>> subsetsWithDup_3(int[] nums) {
+    public List<List<Integer>> subsetsWithDup_4(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> subsets = new ArrayList<>();
         List<Integer> currentSubset = new ArrayList<>();
