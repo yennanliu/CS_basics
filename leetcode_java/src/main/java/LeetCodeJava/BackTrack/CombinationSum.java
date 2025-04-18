@@ -52,25 +52,25 @@ public class CombinationSum {
     HashSet<List<Integer>> set = new HashSet<>();
 
     // V0
-    // IDEA : BACKTRACK
+    // IDEA : BACKTRACK + START_IDX
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
 
         if (candidates == null || candidates.length == 0){
             return null;
         }
 
-        // NOTE !!! we sore here
+        // NOTE !!! NEED to sort here (or the result is WRONG)
         Arrays.sort(candidates);
 
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> tmp = new ArrayList<>();
-        int idx = 0;
+        int start_idx = 0;
 
-        backTrack(candidates, target, tmp, res, idx);
+        backTrack(candidates, target, tmp, res, start_idx);
         return res;
     }
 
-    private void backTrack(int[] candidates, int target, List<Integer> tmp, List<List<Integer>> res, int idx){
+    private void backTrack(int[] candidates, int target, List<Integer> tmp, List<List<Integer>> res, int start_idx){
 
         if (getSum(tmp) == target){
             tmp.sort(Comparator.comparing(x -> x));
@@ -85,8 +85,12 @@ public class CombinationSum {
         }
 
         // backtrack logic
-        // NOTE !!! have to start from "start" idx
-        for (int i = idx; i < candidates.length; i++){
+        /**
+         *
+         *  NOTE !!! have to start from "start" idx
+         *
+         */
+        for (int i = start_idx; i < candidates.length; i++){
             int cur = candidates[i];
             tmp.add(cur);
             /** NOTE !!!
@@ -112,6 +116,13 @@ public class CombinationSum {
              *
              *   e.g. next start_idx is ` i`
              */
+            /**
+             *
+             *  NOTE !!!  pass `i` as `next start_idx`
+             *  
+             *  (but NOT pass current `start_idx`)
+             *
+             */
             backTrack(candidates, target, tmp, res, i);
             // undo
             tmp.remove(tmp.size()-1);
@@ -133,7 +144,7 @@ public class CombinationSum {
     }
 
     // V0-1
-    // IDEA : BACKTRACK (GPT)
+    // IDEA : BACKTRACK + START_IDX (GPT)
     List<List<Integer>> res_0 = new ArrayList<>();
 
     public List<List<Integer>> combinationSum_0_1(int[] candidates, int target) {
@@ -177,7 +188,7 @@ public class CombinationSum {
     }
 
     // V0-2
-    // IDEA : BACKTRACK
+    // IDEA : BACKTRACK + START_IDX
     /**
      *  Example output :
      *   candidates = [2, 3, 5]
@@ -260,6 +271,57 @@ public class CombinationSum {
         return sum;
     }
 
+    // V0-4
+    // IDEA : BACKTRACK + START_IDX (fixed by gpt)
+    List<List<Integer>> combineSumRes = new ArrayList<>();
+
+    public List<List<Integer>> combinationSum_0_4(int[] candidates, int target) {
+        // edge
+        if (candidates == null || candidates.length == 0) {
+            return null;
+        }
+
+        /** NOTE !!! NEED to sort here */
+        Arrays.sort(candidates);
+
+        List<Integer> cur = new ArrayList<>();
+        getCombineSumHelper(candidates, target, 0, cur);
+        return combineSumRes;
+    }
+
+    /** NOTE !!! NEED start_idx */
+    public void getCombineSumHelper(int[] candidates, int target, int start_idx, List<Integer> cur) {
+        if (getArraySum(cur) > target) {
+            return;
+        }
+
+        if (getArraySum(cur) == target) {
+            // sort
+            Collections.sort(cur);
+            if (!combineSumRes.contains(cur)) {
+                combineSumRes.add(new ArrayList<>(cur));
+            }
+        }
+
+        /** NOTE !!! i START from start_idx */
+        for (int i = start_idx; i < candidates.length; i++) {
+            cur.add(candidates[i]);
+            /** NOTE !!! pass i as "next start_idx" in the recursive call */
+            getCombineSumHelper(candidates, target, i, cur);
+            // undo
+            cur.remove(cur.size() - 1);
+        }
+
+    }
+
+    public int getArraySum(List<Integer> input) {
+        int res = 0;
+        for (int x : input) {
+            res += x;
+        }
+        return res;
+    }
+
     // V1-1
     // https://neetcode.io/problems/combination-target-sum
     // IDEA: BACKTRACK
@@ -314,7 +376,7 @@ public class CombinationSum {
         }
     }
 
-    
+
     // V2
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
