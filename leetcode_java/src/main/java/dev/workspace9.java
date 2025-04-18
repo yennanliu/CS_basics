@@ -4427,8 +4427,46 @@ public class workspace9 {
     }
 
     // LC 78
+    // 9.41 - 9.51 am
+    // IDEA: BACKTRACK
+    List<List<Integer>> res_subsets = new ArrayList<>();
     public List<List<Integer>> subsets(int[] nums) {
-        return null;
+        // edge
+        if(nums == null || nums.length == 0){
+            return null;
+        }
+
+        // backtrack call
+        getSubSets(nums, new ArrayList<>(), 0);
+        return res_subsets;
+    }
+
+    public void getSubSets(int[] nums, List<Integer> cur, int start_idx){
+
+        if(cur.size() > nums.length){
+            return;
+        }
+
+        // sort
+        Collections.sort(cur);
+        if(!res_subsets.contains(cur)){
+            res_subsets.add(new ArrayList<>(cur));
+        }
+
+        // ??
+        for(int j = start_idx; j < nums.length; j++){
+//            if(!cur.contains(nums[j])){
+//                cur.add(nums[j]);
+//                getSubSets(nums, cur, start_idx + 1); //???
+//                // undo
+//                cur.remove(cur.size() - 1);
+//            }
+            cur.add(nums[j]);
+            getSubSets(nums, cur, start_idx + 1); //???
+            // undo
+            cur.remove(cur.size() - 1);
+        }
+
     }
 
 
