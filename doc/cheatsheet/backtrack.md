@@ -399,79 +399,10 @@ Don’t use `start_idx` when:
                 cur.pop(-1)
         # ...
         ```
+   
 
     - Combination sum
-        - LC 77
-        ```java
-        // java
-       public List<List<Integer>> combinationSum(int[] candidates, int target) {
 
-            if (candidates == null || candidates.length == 0){
-                return null;
-            }
-
-            // NOTE !!! we sore here
-            Arrays.sort(candidates);
-
-            List<List<Integer>> res = new ArrayList<>();
-            List<Integer> tmp = new ArrayList<>();
-            int idx = 0;
-
-            backTrack(candidates, target, tmp, res, idx);
-            return res;
-      }
-
-    private void backTrack(int[] candidates, int target, List<Integer> tmp, List<List<Integer>> res, int idx){
-
-        if (getSum(tmp) == target){
-            tmp.sort(Comparator.comparing(x -> x));
-            if (!res.contains(tmp)){
-                res.add(new ArrayList<>(tmp));
-            }
-            return;
-        }
-
-        if (getSum(tmp) > target){
-            return;
-        }
-
-        // backtrack logic
-        // NOTE !!! have to start from "start" idx
-        for (int i = idx; i < candidates.length; i++){
-            int cur = candidates[i];
-            tmp.add(cur);
-            /** NOTE !!!
-             *
-             *    use i, since we need to use start from current (i) index in recursion call
-             *    (reuse current index)
-             */
-            /** NOTE !!!
-             *
-             *   we have to set i starts from "start" idx
-             *   since we have to reuse same element in recursion call
-             *
-             *   ONLY 全排列 (Permutations) can go without "start" idx
-             */
-            /**
-             *  NOTE !!!
-             *
-             *   at LC 39 Combination Sum,
-             *   we use `i` directly
-             *
-             *   (while at LC 78, we use `i+1`)
-             *
-             *
-             *   e.g. next start_idx is ` i`
-             */
-            backTrack(candidates, target, tmp, res, i);
-            // undo
-            tmp.remove(tmp.size()-1);
-        }
-
-    }
-
-    // ...
-    ```
 
     - Type 3) : Others
     
