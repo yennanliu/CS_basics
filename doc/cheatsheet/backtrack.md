@@ -615,6 +615,18 @@ for (int j = i; j < nums.length; j++) {
 // ...
 ```
 
+```java
+// java
+// LC 47
+// ...
+
+// Skip duplicates in the same recursion layer
+if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
+    continue;
+            
+// ...
+```
+
 ## 2) LC Example
 
 ### 2-1) Letter Combinations of a Phone Number 
