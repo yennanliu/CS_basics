@@ -38,7 +38,7 @@ import java.util.List;
 public class Combinations {
 
     // V0
-    // IDEA : BACKTRACK (modified by gpt)
+    // IDEA: BACKTRACK + START_IDX (fixed by gpt)
     /**
      *  NOTE !!!
      *
@@ -71,13 +71,51 @@ public class Combinations {
 
         /** NOTE !!! i = start, and i <= n, since idx starts from 1 */
         for (int i = start_idx; i <= n; i++) {
+            /** NOTE !!!
+             *
+             *  NO NEED to maintain a `candidate` array,
+             *  since the `to add val` is simply a value between [1,n].
+             *  So, we can just loop over start_idx - n, then use idx as val
+             */
             cur.add(i);
             getCombine(n, k, i + 1, cur, res);
             cur.remove(cur.size() - 1); // undo the move
         }
     }
 
-    // V0'
+    // V0-1
+    // IDEA: BACKTRACK + START_IDX (fixed by gpt)
+    List<List<Integer>> combineRes = new ArrayList<>();
+
+    public List<List<Integer>> combine_0_1(int n, int k) {
+        combineRes.clear(); // Clear previous results
+        if (n == 0 || k == 0 || k > n)
+            return new ArrayList<>();
+        combineHelper(n, k, 1, new ArrayList<>());
+        return combineRes;
+    }
+
+    private void combineHelper(int n, int k, int start, List<Integer> cur) {
+        if (cur.size() == k) {
+            combineRes.add(new ArrayList<>(cur));
+            return;
+        }
+
+        // Optimization: loop only until n - (k - cur.size()) + 1
+        for (int i = start; i <= n - (k - cur.size()) + 1; i++) {
+            /** NOTE !!!
+             *
+             *  NO NEED to maintain a `candidate` array,
+             *  since the `to add val` is simply a value between [1,n].
+             *  So, we can just loop over start_idx - n, then use idx as val
+             */
+            cur.add(i);
+            combineHelper(n, k, i + 1, cur);
+            cur.remove(cur.size() - 1); // backtrack
+        }
+    }
+
+    // V0-2
     // IDEA : BACKTRACK
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/combinations.py
 

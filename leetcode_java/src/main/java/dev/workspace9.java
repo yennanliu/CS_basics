@@ -4650,7 +4650,65 @@ public class workspace9 {
     }
 
     // LC 77
+    // 3.21 - 3.31 pm
     // Combinations
+    /**
+     *  IDEA 1) : BACKTRACK
+     *
+     */
+    List<List<Integer>> combineRes = new ArrayList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        // edge
+        if(n == 0 || k == 0){
+            return new ArrayList<>();
+        }
+        if(n == 1){
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(1);
+            combineRes.add(tmp);
+            return combineRes;
+        }
+
+//        List<Integer> candidates = new ArrayList<>();
+//        for(int i = 1; i < n+1; i++){
+//            candidates.add(i);
+//        }
+
+        combineHelper(n, k, 1, new ArrayList<>());
+
+        return combineRes;
+    }
+
+    public void combineHelper(int n, int k, int start_idx, List<Integer> cur){
+
+        if(cur.size() > k){
+            return;
+        }
+
+        if(cur.size() == k){
+            // sort
+            //Collections.sort(cur);
+            if(!combineRes.contains(cur)){
+                combineRes.add(new ArrayList<>(cur));
+            }
+
+            return;  // ??
+        }
+
+        // NOTE !!! start_idx as `start idx`
+        for(int i = start_idx; i < n + 1; i++){
+            //int x = candidates.get(i);
+            int val =  i;
+            if(!cur.contains(val)){
+                cur.add(val);
+                combineHelper(n, k, i, cur);
+                // undo
+                cur.remove(cur.size() - 1);
+            }
+        }
+
+    }
+
 
 }
 
