@@ -4764,9 +4764,48 @@ public class workspace9 {
     }
 
     // LC 47
+    // 4.28 - 4. 38 pm
+    List<List<Integer>> permuteRes2 = new ArrayList<>();
     public List<List<Integer>> permuteUnique(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return new ArrayList<>();
+        }
+        if(nums.length == 1){
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(nums[0]);
+            permuteRes2.add(tmp);
+        }
 
-        return null;
+        permuteHelper2(nums, new ArrayList<>());
+        return permuteRes2;
+    }
+
+    public void permuteHelper2(int[] nums, List<Integer> cur){
+        if(cur.size() > nums.length){
+            return;
+        }
+        if(cur.size() == nums.length){
+            if(!permuteRes2.contains(cur)){
+                permuteRes2.add(new ArrayList<>(cur));
+            }
+        }
+
+        for(int i = 0; i < nums.length; i++){
+            // ?? needed
+            /**
+             *  NOTE !!! below trick (skip `duplicated element` in same layer)
+             *
+             *  condition ????
+             */
+            if(nums[i] != nums[i-1]){
+                cur.add(nums[i]);
+                permuteHelper2(nums, cur);
+                // undo
+                cur.remove(cur.size() - 1);
+            }
+        }
+
     }
 
 
