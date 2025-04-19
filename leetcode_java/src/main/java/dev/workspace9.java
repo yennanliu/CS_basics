@@ -4554,5 +4554,12 @@ public class workspace9 {
         return res;
     }
 
+    // LC 40
+    // 2.08 - 2.18 pm
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+
+        return null;
+    }
+
 }
 
