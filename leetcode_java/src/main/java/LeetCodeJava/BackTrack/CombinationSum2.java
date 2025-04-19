@@ -165,10 +165,141 @@ public class CombinationSum2 {
         return res;
     }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/combination-target-sum-ii
+    // IDEA: BRUTE FORCE
+    private Set<List<Integer>> res;
+
+    public List<List<Integer>> combinationSum2_1_1(int[] candidates, int target) {
+        res = new HashSet<>();
+        Arrays.sort(candidates);
+        generateSubsets(candidates, target, 0, new ArrayList<>(), 0);
+        return new ArrayList<>(res);
+    }
+
+    private void generateSubsets(int[] candidates, int target, int i, List<Integer> cur, int total) {
+        if (total == target) {
+            res.add(new ArrayList<>(cur));
+            return;
+        }
+        if (total > target || i == candidates.length) {
+            return;
+        }
+
+        cur.add(candidates[i]);
+        generateSubsets(candidates, target, i + 1, cur, total + candidates[i]);
+        cur.remove(cur.size() - 1);
+
+        generateSubsets(candidates, target, i + 1, cur, total);
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/combination-target-sum-ii
+    // IDEA: BACKTRACK
+    private List<List<Integer>> res_1_2;
+
+    public List<List<Integer>> combinationSum2_1_2(int[] candidates, int target) {
+        res_1_2 = new ArrayList<>();
+        Arrays.sort(candidates);
+        dfs(candidates, target, 0, new ArrayList<>(), 0);
+        return res_1_2;
+    }
+
+    private void dfs(int[] candidates, int target, int i, List<Integer> cur, int total) {
+        if (total == target) {
+            res_1_2.add(new ArrayList<>(cur));
+            return;
+        }
+        if (total > target || i == candidates.length) {
+            return;
+        }
+
+        cur.add(candidates[i]);
+        dfs(candidates, target, i + 1, cur, total + candidates[i]);
+        cur.remove(cur.size() - 1);
+
+        while (i + 1 < candidates.length && candidates[i] == candidates[i + 1]) {
+            i++;
+        }
+        dfs(candidates, target, i + 1, cur, total);
+    }
+
+    // V1-3
+    // https://neetcode.io/problems/combination-target-sum-ii
+    // IDEA: Backtracking (Hash Map)
+    List<List<Integer>> res_1_3 = new ArrayList<>();
+    Map<Integer, Integer> count = new HashMap<>();
+
+    public List<List<Integer>> combinationSum2_1_3(int[] nums, int target) {
+        List<Integer> cur = new ArrayList<>();
+        List<Integer> A = new ArrayList<>();
+
+        for (int num : nums) {
+            if (!count.containsKey(num)) {
+                A.add(num);
+            }
+            count.put(num, count.getOrDefault(num, 0) + 1);
+        }
+        backtrack(A, target, cur, 0);
+        return res_1_3;
+    }
+
+    private void backtrack(List<Integer> nums, int target, List<Integer> cur, int i) {
+        if (target == 0) {
+            res_1_3.add(new ArrayList<>(cur));
+            return;
+        }
+        if (target < 0 || i >= nums.size()) {
+            return;
+        }
+
+        if (count.get(nums.get(i)) > 0) {
+            cur.add(nums.get(i));
+            count.put(nums.get(i), count.get(nums.get(i)) - 1);
+            backtrack(nums, target - nums.get(i), cur, i);
+            count.put(nums.get(i), count.get(nums.get(i)) + 1);
+            cur.remove(cur.size() - 1);
+        }
+
+        backtrack(nums, target, cur, i + 1);
+    }
+
+    // V1-4
+    // https://neetcode.io/problems/combination-target-sum-ii
+    // IDEA: Backtracking (Optimal)
+    private static List<List<Integer>> res_1_4 = new ArrayList<>();
+
+    public List<List<Integer>> combinationSum2_1_4(int[] candidates, int target) {
+        res_1_4.clear();
+        Arrays.sort(candidates);
+        dfs(0, new ArrayList<>(), 0, candidates, target);
+        return res_1_4;
+    }
+
+    private static void dfs(int idx, List<Integer> path, int cur, int[] candidates, int target) {
+        if (cur == target) {
+            res_1_4.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = idx; i < candidates.length; i++) {
+            if (i > idx && candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+            if (cur + candidates[i] > target) {
+                break;
+            }
+
+            path.add(candidates[i]);
+            dfs(i + 1, path, cur + candidates[i], candidates, target);
+            path.remove(path.size() - 1);
+        }
+    }
+
+
+    // V2
     // IDEA : Backtracking with Counters
     // https://leetcode.com/problems/combination-sum-ii/editorial/
-    public List<List<Integer>> combinationSum2_1(int[] candidates, int target) {
+    public List<List<Integer>> combinationSum2_2(int[] candidates, int target) {
         // container to hold the final combinations
         List<List<Integer>> results = new ArrayList<>();
         LinkedList<Integer> comb = new LinkedList<>();
@@ -224,10 +355,10 @@ public class CombinationSum2 {
         }
     }
 
-    // V2
+    // V3
     // IDEA : Backtracking with Index
     // https://leetcode.com/problems/combination-sum-ii/editorial/
-    public List<List<Integer>> combinationSum2_2(int[] candidates, int target) {
+    public List<List<Integer>> combinationSum2_3(int[] candidates, int target) {
         List<List<Integer>> results = new ArrayList<>();
         LinkedList<Integer> comb = new LinkedList<>();
 
@@ -261,9 +392,9 @@ public class CombinationSum2 {
         }
     }
 
-    // V3
+    // V4
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-    public List<List<Integer>> combinationSum2_3(int[] nums, int target) {
+    public List<List<Integer>> combinationSum2_4(int[] nums, int target) {
         List<List<Integer>> list = new ArrayList<>();
         Arrays.sort(nums);
         backtrack(list, new ArrayList<>(), nums, target, 0);
@@ -284,10 +415,10 @@ public class CombinationSum2 {
         }
     }
 
-    // V4
+    // V5
     // https://www.youtube.com/watch?v=rSA3t6BDDwg
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0040-combination-sum-ii.java
-    public List<List<Integer>> combinationSum2_4(int[] candidates, int target) {
+    public List<List<Integer>> combinationSum2_5(int[] candidates, int target) {
         Arrays.sort(candidates);
         List<List<Integer>> ans = new ArrayList<List<Integer>>();
         List<Integer> ls = new ArrayList<Integer>();
