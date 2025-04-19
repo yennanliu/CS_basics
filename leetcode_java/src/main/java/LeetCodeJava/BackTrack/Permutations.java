@@ -96,7 +96,7 @@ public class Permutations {
 
     List<List<Integer>> ans = new ArrayList<>();
 
-    // V0'
+    // V0-1
     // IDEA : BACKTRACK
     public List<List<Integer>> permute_0_1(int[] nums) {
 
@@ -142,10 +142,134 @@ public class Permutations {
         }
     }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/permutations
+    // IDEA: RECURSION
+    public List<List<Integer>> permute_1_1(int[] nums) {
+        if (nums.length == 0) {
+            return Arrays.asList(new ArrayList<>());
+        }
+
+        List<List<Integer>> perms = permute_1_1(Arrays.copyOfRange(nums, 1, nums.length));
+        List<List<Integer>> res = new ArrayList<>();
+        for (List<Integer> p : perms) {
+            for (int i = 0; i <= p.size(); i++) {
+                List<Integer> p_copy = new ArrayList<>(p);
+                p_copy.add(i, nums[0]);
+                res.add(p_copy);
+            }
+        }
+        return res;
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/permutations
+    // IDEA: Iteration
+    public List<List<Integer>> permute_1_2(int[] nums) {
+        List<List<Integer>> perms = new ArrayList<>();
+        perms.add(new ArrayList<>());
+
+        for (int num : nums) {
+            List<List<Integer>> new_perms = new ArrayList<>();
+            for (List<Integer> p : perms) {
+                for (int i = 0; i <= p.size(); i++) {
+                    List<Integer> p_copy = new ArrayList<>(p);
+                    p_copy.add(i, num);
+                    new_perms.add(p_copy);
+                }
+            }
+            perms = new_perms;
+        }
+        return perms;
+    }
+
+    // V1-3
+    // https://neetcode.io/problems/permutations
+    // IDEA: Backtracking
+    List<List<Integer>> res_1_3;
+    public List<List<Integer>> permute_1_3(int[] nums) {
+        res_1_3 = new ArrayList<>();
+        backtrack(new ArrayList<>(), nums, new boolean[nums.length]);
+        return res_1_3;
+    }
+
+    public void backtrack(List<Integer> perm, int[] nums, boolean[] pick) {
+        if (perm.size() == nums.length) {
+            res_1_3.add(new ArrayList<>(perm));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (!pick[i]) {
+                perm.add(nums[i]);
+                pick[i] = true;
+                backtrack(perm, nums, pick);
+                perm.remove(perm.size() - 1);
+                pick[i] = false;
+            }
+        }
+    }
+
+
+    // V1-4
+    // https://neetcode.io/problems/permutations
+    // IDEA: Backtracking (Bit Mask)
+    List<List<Integer>> res_1_4 = new ArrayList<>();
+
+    public List<List<Integer>> permute_1_4(int[] nums) {
+        backtrack(new ArrayList<>(), nums, 0);
+        return res_1_4;
+    }
+
+    private void backtrack(List<Integer> perm, int[] nums, int mask) {
+        if (perm.size() == nums.length) {
+            res_1_4.add(new ArrayList<>(perm));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if ((mask & (1 << i)) == 0) {
+                perm.add(nums[i]);
+                backtrack(perm, nums, mask | (1 << i));
+                perm.remove(perm.size() - 1);
+            }
+        }
+    }
+
+
+    // V1-5
+    // https://neetcode.io/problems/permutations
+    // IDEA: Backtracking (Optimal)
+    List<List<Integer>> res_1_5;
+    public List<List<Integer>> permute_1_5(int[] nums) {
+        res_1_5 = new ArrayList<>();
+        backtrack(nums, 0);
+        return res_1_5;
+    }
+
+    public void backtrack(int[] nums, int idx) {
+        if (idx == nums.length) {
+            List<Integer> perm = new ArrayList<>();
+            for (int num : nums) perm.add(num);
+            res_1_5.add(perm);
+            return;
+        }
+        for (int i = idx; i < nums.length; i++) {
+            swap(nums, idx, i);
+            backtrack(nums, idx + 1);
+            swap(nums, idx, i);
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    
+    // V2
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-    public List<List<Integer>> permute_1(int[] nums) {
+    public List<List<Integer>> permute_2(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         // Arrays.sort(nums); // not necessary
         backtrack_(list, new ArrayList<>(), nums);
@@ -165,11 +289,10 @@ public class Permutations {
         }
     }
 
-
-    // V1
+    // V3
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/permutations/editorial/
-    public List<List<Integer>> permute_2(int[] nums) {
+    public List<List<Integer>> permute_3(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
         backtrack(new ArrayList<>(), ans, nums);
         return ans;
