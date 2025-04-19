@@ -1,7 +1,37 @@
 package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/combinations/description/
-
+/**
+ * 77. Combinations
+ * Solved
+ * Medium
+ * Topics
+ * Companies
+ * Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
+ *
+ * You may return the answer in any order.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: n = 4, k = 2
+ * Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
+ * Explanation: There are 4 choose 2 = 6 total combinations.
+ * Note that combinations are unordered, i.e., [1,2] and [2,1] are considered to be the same combination.
+ * Example 2:
+ *
+ * Input: n = 1, k = 1
+ * Output: [[1]]
+ * Explanation: There is 1 choose 1 = 1 total combination.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= n <= 20
+ * 1 <= k <= n
+ *
+ */
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,9 +82,32 @@ public class Combinations {
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/combinations.py
 
     // V1
+    // https://www.youtube.com/watch?v=q0s6m7AiM7o
+    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0077-combinations.java
+    List<List<Integer>> res_1;
+    public List<List<Integer>> combine_1(int n, int k) {
+        res_1 = new ArrayList<>();
+        backtrack(1, new ArrayList<Integer>(), n, k);
+        return res_1;
+    }
+
+    private void backtrack(int start, ArrayList<Integer> comb, int n, int k) {
+        if (comb.size() == k){
+            res_1.add(new ArrayList<>(comb));
+            return;
+        }
+
+        for (int i = start; i <= n; i++) {
+            comb.add(i);
+            backtrack(i+1, comb, n, k);
+            comb.remove((Integer) i);
+        }
+    }
+
+    // V2
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/combinations/submissions/1281420720/
-    public List<List<Integer>> combine_1(int n, int k) {
+    public List<List<Integer>> combine_2(int n, int k) {
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> comb = new ArrayList<>();
 
@@ -75,10 +128,10 @@ public class Combinations {
         }
     }
 
-    // V2
+    // V3
     // IDEA : BACKTRACK (interactive)
     // https://leetcode.com/problems/combinations/solutions/3845249/iterative-backtracking-video-100-efficient-combinatorial-generation/
-    public List<List<Integer>> combine_2_1(int n, int k) {
+    public List<List<Integer>> combine_3(int n, int k) {
         List<List<Integer>> result = new ArrayList<>();
         generateCombinations(1, n, k, new ArrayList<Integer>(), result);
         return result;
@@ -96,10 +149,10 @@ public class Combinations {
         }
     }
 
-    // V2
+    // V4
     // IDEA : BACKTRACK (recursive)
     // https://leetcode.com/problems/combinations/solutions/3845249/iterative-backtracking-video-100-efficient-combinatorial-generation/
-    public List<List<Integer>> combine_2_2(int n, int k) {
+    public List<List<Integer>> combine_4(int n, int k) {
         List<List<Integer>> result = new ArrayList<>();
         backtrack_2(n, k, 1, new ArrayList<>(), result);
         return result;
@@ -116,6 +169,5 @@ public class Combinations {
             combination.remove(combination.size() - 1);
         }
     }
-
 
 }
