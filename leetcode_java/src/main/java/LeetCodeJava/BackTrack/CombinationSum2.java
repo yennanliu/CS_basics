@@ -146,8 +146,76 @@ public class CombinationSum2 {
 
         // Loop over the candidates starting from the current index
         for (int i = startIdx; i < candidates.length; i++) {
-            // Skip duplicates: if the current element is the same as the previous, skip it
-            if (i > startIdx && candidates[i] == candidates[i - 1]) {
+      /**
+       *  NOTE !!!   skip a duplicate at the same recursive level.
+       *
+       *   -> Key idea of the duplicate-skipping logic
+       * 	   •	We do not skip all duplicates.
+       * 	   •	We only skip a duplicate at the same recursive level.
+       */
+      /**
+       *  Example :
+       *
+       *
+       *  That’s a fantastic follow-up — and exactly the kind of case that the duplicate-skipping logic is carefully crafted to handle.
+       *
+       * Let’s walk through why [1,1,6] is valid, even though we skip duplicates in:
+       *
+       * if (i > startIdx && candidates[i] == candidates[i - 1]) {
+       *     continue;
+       * }
+       *
+       *
+
+       * ✅ Input: [10, 1, 2, 7, 6, 1, 5], target = 8
+       *
+       * First step is to sort the array:
+       *
+       * [1, 1, 2, 5, 6, 7, 10]
+       *
+       * ⸻
+       *
+       * 🧠 Key idea of the duplicate-skipping logic
+       * 	•	We do not skip all duplicates.
+       * 	•	We only skip a duplicate at the same recursive level.
+       *
+       * ⸻
+       *
+       * 🔁 Let’s simulate the recursion that finds [1,1,6]
+       *
+       * Initial call: startIdx = 0, cache = []
+       *
+       * Level 0: i = 0
+       * 	•	pick 1, cache = [1], recurse with startIdx = 1
+       *
+       * Level 1: i = 1
+       * 	•	pick 1 (again), cache = [1, 1], recurse with startIdx = 2
+       *
+       * Level 2: i = 4
+       * 	•	pick 6, cache = [1, 1, 6], sum = 8 → ✅ add to result
+       *
+       * This is allowed because:
+       * 	•	Even though candidates[1] == candidates[0] == 1, we are at a different level of recursion (startIdx = 1 vs 0).
+       * 	•	At each level, the first occurrence of a duplicate is allowed, we only skip the second if it comes at the same level.
+       *
+       * ⸻
+       *
+       * 🛡️ That means:
+       *
+       * if (i > startIdx && candidates[i] == candidates[i - 1]) {
+       *     continue;
+       * }
+       *
+       * 	•	prevents picking the same value at the same level multiple times
+       * 	•	but allows using the same value in deeper recursive levels
+       *
+       *   ->
+       *      ✅ We can get [1,1,6] because the two 1s are picked in different recursive calls.
+       *      ❌ We prevent duplicate [1,2,5] combinations where the same 1 appears multiple times at the same level.
+       *
+       */
+      // Skip duplicates: if the current element is the same as the previous, skip it
+      if (i > startIdx && candidates[i] == candidates[i - 1]) {
                 continue;
             }
 
