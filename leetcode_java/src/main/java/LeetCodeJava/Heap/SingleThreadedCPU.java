@@ -8,12 +8,6 @@ import java.util.PriorityQueue;
 
 /**
  *
- * Code
- *
- *
- * Testcase
- * Test Result
- * Test Result
  * 1834. Single-Threaded CPU
  * Medium
  * Topics
@@ -70,9 +64,87 @@ import java.util.PriorityQueue;
 public class SingleThreadedCPU {
 
     // V0
-//    public int[] getOrder(int[][] tasks) {
-//
-//    }
+    // IDEA: PQ + sort (modified by gpt)
+    // https://www.youtube.com/watch?v=RR1n-d4oYqE
+    /**
+     *  we fine 2 data structure for this problem
+     *
+     *  1) taskWithIndex: array with info (idx, enqueueTime, processingTime)
+     *  2) minHeap: min PQ, sort on (enqueueTime, idx) (increasing order)
+     *
+     *  (optional)
+     *   3) Task class
+     *
+     */
+    public int[] getOrder(int[][] tasks) {
+        int n = tasks.length;
+
+        // Add original indices to tasks
+        int[][] taskWithIndex = new int[n][3];
+        for (int i = 0; i < n; i++) {
+            taskWithIndex[i][0] = tasks[i][0]; // enqueueTime
+            taskWithIndex[i][1] = tasks[i][1]; // processingTime
+            taskWithIndex[i][2] = i; // original index
+        }
+
+        /** NOTE !!! we sort task array with enqueue time */
+        // Sort by enqueue time
+        Arrays.sort(taskWithIndex, Comparator.comparingInt(a -> a[0]));
+
+        /** NOTE !!! use min PQ, (small -> big) (sort by processingTime, then index)  */
+        // Min-heap: sort by processingTime, then index
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> {
+            if (a[0] != b[0])
+                return a[0] - b[0]; // processingTime
+            return a[1] - b[1]; // index
+        });
+
+        int time = 0;
+        int i = 0;
+        int[] res = new int[n];
+        int idx = 0;
+
+        /**
+         *  NOTE !!!! below terminated condition
+         *
+         *  ->  either PQ is NOT empty or i < n
+         */
+        while (!minHeap.isEmpty() || i < n) {
+
+            /**
+             *  NOTE !!!! below condition
+             *
+             *  add ALL available tasks to PQ
+             */
+            // Add all available tasks to heap
+            while (i < n && taskWithIndex[i][0] <= time) {
+                minHeap.offer(new int[] { taskWithIndex[i][1], taskWithIndex[i][2] }); // [procTime, index]
+                i++;
+            }
+
+            /**
+             *  case 1) PQ is empty
+             *
+             *  -> `jump clock` to the next task enqueueTime
+             */
+            if (minHeap.isEmpty()) {
+                // CPU idle: jump to next task's enqueueTime
+                time = taskWithIndex[i][0];
+            }
+            /**
+             *  case 2) PQ is NOT empty
+             *
+             *  -> process task, update order, and update time
+             */
+            else {
+                int[] task = minHeap.poll();
+                time += task[0]; // advance time
+                res[idx++] = task[1]; // add original index to result
+            }
+        }
+
+        return res;
+    }
 
     // V1
     // https://youtu.be/RR1n-d4oYqE?feature=shared

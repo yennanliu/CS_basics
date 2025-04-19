@@ -540,7 +540,7 @@
 1353| [Maximum Number of Events That Can Be Attended](https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/)|[Python](./leetcode_python/Heap/maximum-number-of-events-that-can-be-attended.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/MaximumNumberOfEventsThatCanBeAttended.java) | | | Medium | LC 252, 253, good trick, meeting room, heap, PRIORITY QUEUE, fb, twitter, `amazon`| AGAIN********* (3) MUST
 1405| [Longest Happy String](https://leetcode.com/problems/longest-happy-string/)|[Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/LongestHappyString.java) | | | Medium | PQ| AGAIN (not start)
 1481| [Least Number of Unique Integers after K Removals](https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/)|[Python](./leetcode_python/Heap/least-number-of-unique-integers-after-k-removals.py) | | | Medium | good trick, greedy, Counter, dict, heap,`amazon`| AGAIN******** (3)
-1834| [Single-Threaded CPU](https://leetcode.com/problems/single-threaded-cpu)| [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/SingleThreadedCPU.java) | | | Medium |heap, pq| AGAIN (not start)
+1834| [Single-Threaded CPU](https://leetcode.com/problems/single-threaded-cpu)| [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/SingleThreadedCPU.java) | | | Medium |good trick, heap, pq| AGAIN***** (1)
 
 
 ## Bit Manipulation
