@@ -4711,9 +4711,56 @@ public class workspace9 {
 
     // LC 46
     // Permutations
+    // 4.04 - 4.14 pm
+    /**
+     *
+     * Given an array nums of distinct integers,
+     * return all the possible permutations.
+     * You can return the answer in any order.
+     *
+     *
+     * -> A permutation is a rearrangement of all the elements of an array.
+     *
+     *
+     *  IDEA: BACKTRACK (no need start_idx !!!)
+     *
+     */
+    List<List<Integer>> permuteRes = new ArrayList<>();
     public List<List<Integer>> permute(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return new ArrayList<>();
+        }
+        if(nums.length == 1){
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(nums[0]);
+            permuteRes.add(tmp);
+        }
 
-        return null;
+        permuteHelper(nums, new ArrayList<>());
+        return permuteRes;
+    }
+
+    public void permuteHelper(int[] nums, List<Integer> cur){
+        if(cur.size() > nums.length){
+            return;
+        }
+        if(cur.size() == nums.length){
+            if(!permuteRes.contains(cur)){
+                permuteRes.add(new ArrayList<>(cur));
+            }
+        }
+
+        for(int i = 0; i < nums.length; i++){
+            // ?? needed
+            if(!cur.contains(nums[i])){
+                cur.add(nums[i]);
+                permuteHelper(nums, cur);
+                // undo
+                cur.remove(cur.size() - 1);
+            }
+        }
+
     }
 
 
