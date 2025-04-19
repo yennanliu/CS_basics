@@ -4555,10 +4555,98 @@ public class workspace9 {
     }
 
     // LC 40
-    // 2.08 - 2.18 pm
+    // 2.08 - 2.24 pm
+    /**
+     *
+     *  -> Each number in candidates may only be used
+     *     `once` in the combination.
+     *
+     *  IDEA 1) BACKTRACK + start_idx
+     *
+     */
+    List<List<Integer>> comRes = new ArrayList<>();
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        // edge
+        if(candidates == null || candidates.length == 0){
+            return new ArrayList<>();
+        }
+        if(candidates.length == 1){
+            if(candidates[0] == target){
+                return new ArrayList<>(new ArrayList<>(candidates[0]));
+            }
+            return new ArrayList<>();
+        }
 
-        return null;
+        // NOTE !!! we sort array first
+        Arrays.sort(candidates);
+        System.out.println(">>> (sorted) candidates =  " + candidates);
+
+        combinationSum2Helper(candidates, target, 0, new ArrayList<>());
+
+        // check if `element counts are within candidates count`
+        Map<Integer, Integer> cntMap = new HashMap<>();
+        for(int c: candidates){
+            cntMap.put(c, cntMap.getOrDefault(c, 0) + 1);
+        }
+
+        List<List<Integer>> comRes2 = new ArrayList<>();
+        for(List<Integer> x : comRes){
+            if(isValid(cntMap, x)){
+                comRes2.add(x);
+            }
+        }
+
+        return comRes2;
+    }
+
+    public void combinationSum2Helper(int[] candidates, int target, int start_idx, List<Integer> cur){
+
+        int tmpSum = getArraySum2(cur);
+        if(tmpSum == target){
+            if(!comRes.contains(cur)){
+                comRes.add(new ArrayList<>(cur));
+            }
+        }
+
+        if(tmpSum > target){
+            //continue;
+            return; // ??
+        }
+
+        // NOTE !!!
+        //      -> i start from `start_idx`
+        //      -> use `i` in the recursive call
+        for(int i = start_idx; i < candidates.length; i++){
+            // NOTE !!! via below, we avoid use `duplicated
+            cur.add(candidates[i]);
+            combinationSum2Helper(candidates, target, i, cur);
+            // undo
+            cur.remove(cur.size() - 1);
+        }
+
+    }
+
+    public int getArraySum2(List<Integer> input){
+        int res = 0;
+        for(int x: input){
+            res += x;
+        }
+        return res;
+    }
+
+    public boolean isValid(Map<Integer, Integer> cntMap, List<Integer> arr){
+        Map<Integer, Integer> arrMap = new HashMap<>();
+        System.out.println(">>> arrMap = " + arrMap + ", cntMap = " + cntMap);
+        for(int c: arr){
+            arrMap.put(c, arrMap.getOrDefault(c, 0) + 1);
+        }
+        for(int k: arrMap.keySet()){
+            if(arrMap.get(k) > cntMap.get(k)){
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

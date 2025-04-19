@@ -572,7 +572,28 @@ def help(s, res, path):
 # ...
 ```
 
-#### 1-2-2) avoid add `duplicated` element
+#### 1-2-2) avoid add `duplicated` element in `same level` (same recursion call)
+
+
+```java
+// LC 40
+// java
+// ...
+
+/**
+*  NOTE !!!   skip a duplicate at the same recursive level.
+*
+*   -> Key idea of the duplicate-skipping logic
+*       •    We do not skip all duplicates.
+*       •    We only skip a duplicate at the same recursive level.
+*/
+
+if (i > startIdx && candidates[i] == candidates[i - 1]) {
+    continue;
+}
+
+// ...
+```
 
 ```java
 // LC 90
