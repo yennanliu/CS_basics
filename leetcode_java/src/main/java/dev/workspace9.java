@@ -2,6 +2,7 @@ package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
+import LeetCodeJava.Heap.SingleThreadedCPU;
 
 import java.util.*;
 
@@ -3895,7 +3896,7 @@ public class workspace9 {
     }
 
     // LC 1834
-    // 11.15 - 11.25 am
+    // 5.04 - 5.14 PM
     /**
      *  You are given n​​​​​​ tasks labeled
      *  from 0 to n - 1 represented by a 2D integer array tasks,
@@ -3905,12 +3906,111 @@ public class workspace9 {
      *  at enqueueTimei and will take processingTimei to finish processing.
      *
      *
-     *
-     *
      *  -> Return the order in which the CPU will process the tasks.
      */
+    /**
+     *  IDEA 1) PQ
+     *
+     *  tasks[i] = [enqueueTime_i, processingTime_i]
+     *
+     *  ->
+     *  1) use a `min PQ` that track the
+     *     `task with idx, enqueue, time, process time`
+     *
+     *  2) every time, we pop a task with `min process time`
+     *     add it to order, and update time.
+     *
+     *  3) .. repeat above steps
+     *
+     */
+    public class Task{
+        int idx;
+        int enqueueTime;
+        int processingTime;
+
+        public Task(int idx, int enqueueTime, int processingTime){
+            this.idx = idx;
+            this.enqueueTime = enqueueTime;
+            this.processingTime = processingTime;
+        }
+    }
     public int[] getOrder(int[][] tasks) {
-        return null;
+        // edge
+        if(tasks == null || tasks.length == 0){
+            return new int[]{};
+        }
+        if(tasks.length == 1){
+            return new int[]{0}; // ?
+        }
+
+        // PQ
+        PriorityQueue<Task> pq = new PriorityQueue<>(new Comparator<Task>() {
+            @Override
+            public int compare(Task o1, Task o2) {
+                // NOTE !!! we order small PQ
+                // via (process time, if same process time, compare idx) (small -> big)
+                int diff = o1.processingTime - o2.processingTime;
+                if(diff == 0){
+                    return o1.idx - o2.idx;
+                }
+                return diff;
+            }
+        });
+
+        for(int i = 0; i < tasks.length; i++){
+            int enTime = tasks[i][0];
+            int processTime = tasks[i][1];
+            pq.add(new Task(i, enTime, processTime));
+        }
+
+        // NOTE !!! we sort tasks (enqueue time, small -> big)
+        Arrays.sort(tasks, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                return diff;
+            }
+        });
+
+        // task array
+        int n = tasks.length;
+        Task[] arr = new Task[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = new Task(i, tasks[i][0], tasks[i][1]);
+        }
+
+        Arrays.sort(arr, (a, b) -> {
+            return Integer.compare(a.enqueueTime, b.enqueueTime);
+        });
+
+        int[] order = new int[tasks.length];
+        int time = 0;
+        int idx = 0;
+
+        while(idx < tasks.length){
+
+            // case 1) `push` tasks are OK to be processed (e.g. enqueueTime <= curTime)  )
+            //while()
+
+            if(pq.isEmpty()){
+                // move `time` to the next task enqueueTime
+                // and `push` task to PQ
+                // ...
+                //time = tasks
+                time = arr[idx].enqueueTime; /// ??
+            }else{
+                // `pop` the current task from PQ, add it to order
+                Task _task = pq.poll();
+                //time = _task.enqueueTime;
+                order[idx] = _task.idx;
+                // ??? need to update time ????
+                time += _task.processingTime;
+            }
+
+        }
+
+
+        return order;
     }
 
     // LC 767
