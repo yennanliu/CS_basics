@@ -42,6 +42,7 @@ import java.util.Map;
 public class LetterCombinationsOfAPhoneNumber {
 
     // V0
+    // IDEA: BACKTRACK + start_idx (on digit)
     List<String> _res = new ArrayList<String>();
     public List<String> letterCombinations(String _digits) {
 
@@ -63,23 +64,64 @@ public class LetterCombinationsOfAPhoneNumber {
         return this._res;
     }
 
-    private void _letter_builder(HashMap<String, String> map, int idx, String digits, StringBuilder builder){
+    private void _letter_builder(HashMap<String, String> map, int start_idx, String digits, StringBuilder builder){
 
+        /**
+         *  NOTE !!!
+         *
+         *   if builder (StringBuilder) length equals digits length,
+         *   -> means we first one of the `all digit visit`
+         *   -> we should add this cur to our result
+         */
         if (builder.length() == digits.length()){
             this._res.add(builder.toString()); // NOTE this
             return;
         }
 
-        String _digit = String.valueOf(digits.toCharArray()[idx]); // NOTE this
+        /**
+         *  NOTE !!!
+         *
+         *
+         *   1) the `start_idx`  is for `digits` .
+         *   e.g.
+         *
+         *    -> if digits = "23",
+         *       the start_idx is 0,
+         *       and could become 1, ...
+         *
+         *
+         *   2) via `start_idx` we can focus on specific digit (e.g. "2" only, from "23")
+         *      then we can loop over its `alphabet` in recursive call
+         *      e.g. "abc" for "2"
+         *
+         *      letters.put("2", "abc");
+         *
+         */
+        String _digit = String.valueOf(digits.toCharArray()[start_idx]); // NOTE this
         String _alphabets = map.get(_digit);
 
         // backtrack
+        /**
+         *  NOTE !!!
+         *
+         *   we loop over `_alphabets` (digit with idx),
+         *   (instead of digit)
+         *
+         *   -> so we can build our cur string accordingly
+         *
+         */
         for (char a : _alphabets.toCharArray()){
             builder.append(a);
-            _letter_builder(map, idx+1, digits, builder);
+            _letter_builder(map, start_idx + 1, digits, builder);
+
+
             // undo
             // builder.deleteCharAt(0); // NOTE !!! in backtrack, we remove LAST element (idx = len - 1), instead of first element
             builder.deleteCharAt(builder.toString().length() - 1);
+            // no need to `undo` start_idx, since it's primary type
+            // in java, it is copied as `new var` when pass the recursive call
+            // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/backtrack.md#1-2-3-not-do-undo-on-primary-variable
+            // start_idx -= 1; // this is WRONG!!!
         }
     }
 
@@ -261,7 +303,7 @@ public class LetterCombinationsOfAPhoneNumber {
         }
         return res;
     }
-    
+
 
     // V2
     private Map<Character, String> digitToChar = new HashMap<>();
