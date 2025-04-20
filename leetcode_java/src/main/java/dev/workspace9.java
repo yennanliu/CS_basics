@@ -4864,7 +4864,7 @@ public class workspace9 {
     }
 
     // LC 47
-    // 4.28 - 4. 38 pm
+    // 3.47 - 3.58 pm
     List<List<Integer>> permuteRes2 = new ArrayList<>();
     public List<List<Integer>> permuteUnique(int[] nums) {
         // edge
@@ -4906,6 +4906,96 @@ public class workspace9 {
             }
         }
 
+    }
+
+    // LC 79
+    // 3.50 - 4. 00 pm
+    // IDEA: BACKTRACK + DFS
+    public boolean exist(char[][] board, String word) {
+
+        // edge
+        if(board == null || board.length == 0){
+            return false;
+        }
+        if(word == null || word.length() == 0){
+            return true;
+        }
+
+        // dfs
+        int l = board.length;
+        int w = board[0].length;
+
+        // [ [x_1, y_1], [x_2, y_2], ... ]
+        List<int[]> startPoints = new ArrayList<>();
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                if(board[i][j] == word.charAt(0)){
+                    //List<Integer> tmp = new ArrayList<>();
+//                    int[] tmp = new int[2];
+////                    tmp[0] = j;
+////                    tmp[1] = i;
+                    //int[] tmp = new int[]{j, i};
+                    startPoints.add(new int[]{j, i});
+                }
+            }
+        }
+
+        // terminate early (if no start points)
+        if(startPoints.isEmpty()){
+            return false;
+        }
+
+        for(int[] point: startPoints){
+
+            int start_idx = 0;
+            boolean[][] visited = new boolean[l][w]; // default : false ... ??
+
+            if(dfsFind(board, word, point[0], point[1], visited, start_idx)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean dfsFind(char[][] board, String word, int x, int y, boolean[][] visited, int start_idx){
+
+        int l = board.length;
+        int w = board[0].length;
+
+        // NOTE !!! below condition
+        // found a solution (word)
+        if(start_idx == word.length()){
+            return true;
+        }
+        // should not visit below, but in case ...
+        if(start_idx > word.length()){
+            return false; // ??
+        }
+
+        // check if 1) out of boundary 2) idx not equals 3) NOT YET visited
+        if( x < 0 || x >= w || y < 0 || y >= l || word.charAt(start_idx) != board[y][x] || visited[y][x]){
+            return false; // ???
+        }
+
+        visited[y][x] = true;
+        //start_idx += 1;
+
+        // note !!! below trick
+        // if `ANY` of the recursive call (4 direction) found a word, true directly
+        if( dfsFind(board, word, x+1, y, visited, start_idx + 1) ||
+            dfsFind(board, word, x, y+1, visited, start_idx + 1) ||
+            dfsFind(board, word, x-1, y, visited, start_idx + 1 ) ||
+            dfsFind(board, word, x, y-1, visited, start_idx + 1)
+        ){
+            return true;
+        }
+
+        // undo
+        visited[y][x] = false;
+        start_idx -= 1; // ???
+
+        return false;
     }
 
 
