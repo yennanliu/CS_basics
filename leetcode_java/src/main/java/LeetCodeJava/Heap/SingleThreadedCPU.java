@@ -136,15 +136,121 @@ public class SingleThreadedCPU {
                 i++;
             }
 
-            /** NOTE !!! if PQ is NOT empty
-             *
-             *
-             *   NOTE !!!  don't use `while`, but use `if` condition
-             *
-             *
-             */
-            // case 1)  when PQ is NOT empty, process task, update res, and idx
-            if (!pq.isEmpty()) {
+      /** NOTE !!! if PQ is NOT empty
+       *
+       *
+       *   NOTE !!!  don't use `while`, but use `if` condition
+       *
+       *
+       *
+       *   🔍 Why not use while (!pq.isEmpty())?
+       *
+       * Using a while loop would mean you keep processing
+       * tasks from the priority queue as long as it’s not empty.
+       * That sounds okay at first,
+       * -> but it `breaks the logic of how the CPU simulation is supposed to work`.
+       *
+       * Let’s clarify what happens with each loop iteration:
+       *
+       * What `if` (!pq.isEmpty()) does:
+       * 	•	Processes one task from the heap.
+       * 	•	Then loops back to:
+       * 	•	Add newly available tasks.
+       * 	•	Choose the next best task.
+       *
+       * What ` while` (!pq.isEmpty()) would do:
+       * 	•	Processes all tasks currently in the heap.
+       * 	•	Without checking if a newer task (with better processingTime or idx)
+       *        should have been added after time has advanced.
+       *
+       *
+       *  -> e.g. use `while` may NOT able to get the task with `next min enqueueTime`
+       *        -> since we don't append new task to PQ,
+       *           then pop again
+       *
+       */
+      /**
+       *
+       * 🧪 Example to illustrate the problem
+       *
+       * Let’s say:
+       *
+       * int[][] tasks = {
+       *     {1, 3},  // Task 0
+       *     {2, 2},  // Task 1
+       *     {3, 1}   // Task 2
+       * };
+       *
+       * 	•	At time 1, only Task 0 is available → add to PQ → process it.
+       * 	•	After processing Task 0 (time = 4), now Task 1 and Task 2 are also available.
+       * 	•	PQ is rebuilt → Task 2 (shortest processing time) is selected next.
+       *
+       * If we used while (!pq.isEmpty()), the loop would:
+       * 	•	Process Task 0 (✅ correct)
+       * 	•	Then without checking for newly arrived tasks, keep polling from the heap, which still contains only Task 0.
+       *
+       */
+      /**
+       *  Dry run example:
+       * ⸻
+       *
+       * 🔢 Input
+       *
+       * int[][] tasks = {
+       *     {1, 2},  // Task 0: enqueueTime = 1, processingTime = 2
+       *     {2, 4},  // Task 1: enqueueTime = 2, processingTime = 4
+       *     {3, 2},  // Task 2: enqueueTime = 3, processingTime = 2
+       *     {4, 1}   // Task 3: enqueueTime = 4, processingTime = 1
+       * };
+       *
+       *
+       *
+       * ⸻
+       *
+       * 🧠 Step-by-Step Execution (with if (!pq.isEmpty()))
+       *
+       * We simulate the CPU:
+       *
+       * Time	Ready Tasks in PQ	Task Chosen	Result Order	Time After	Notes
+       * 0	none	-	[]	1	No task is available, move to t=1
+       * 1	Task 0 (1,2)	Task 0	[0]	3	Process Task 0
+       * 3	Task 1 (2,4), Task 2 (3,2)	Task 2	[0, 2]	5	Task 2 has lower processingTime
+       * 5	Task 1 (2,4), Task 3 (4,1)	Task 3	[0, 2, 3]	6	Task 3 is next fastest
+       * 6	Task 1 (2,4)	Task 1	[0, 2, 3, 1]	10	Only task left
+       *
+       * ✅ Final Order: [0, 2, 3, 1]
+       *
+       * ⸻
+       *
+       * 😵 What if we used while (!pq.isEmpty()) instead?
+       *
+       * Imagine the loop says:
+       *
+       * while (!pq.isEmpty()) {
+       *     Task task = pq.poll();
+       *     time += task.processingTime;
+       *     order[idx++] = task.idx;
+       * }
+       *
+       * Let’s simulate again…
+       *
+       * Time	PQ Initially	Tasks Processed (in loop)	Problem
+       * 1	Task 0	Task 0	Time = 3, good
+       * 3	Task 1 and Task 2	Both tasks processed	❌ Task 2 has lower processing time
+       * 		But order is [0, 1, 2]	Incorrect: should have chosen Task 2 first
+       *
+       * ⚠️ This breaks the task order because we skip the re-check after time updates!
+       *
+       * ⸻
+       *
+       * ✅ Summary
+       * 	•	Use if (!pq.isEmpty()) to process one task per cycle, and then re-check available tasks.
+       * 	•	This guarantees you always pick the best task available at that moment.
+       *
+       *
+       */
+      // case 1)  when PQ is NOT empty, process task, update res, and idx
+      if (!pq.isEmpty()) {
                 Task task = pq.poll();
                 time += task.processingTime;
                 order[idx++] = task.idx;
