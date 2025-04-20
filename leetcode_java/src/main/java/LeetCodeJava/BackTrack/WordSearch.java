@@ -128,6 +128,41 @@ public class WordSearch {
         /** NOTE !!! Backtrack : undo cur x, y as visited */
         visited[row][col] = false;  // Backtrack
 
+        /**
+         *
+         * NOTE  !!! don't need below undo (lvl -= 1;)
+         *
+         *
+         *  Reason:
+         *
+         *   - We don’t need start_idx -= 1;
+         *    because start_idx is passed by value, not by reference.
+         *    So modifying it in the recursive call
+         *    doesn’t affect the caller’s start_idx.
+         *    We’re already handling the correct index in
+         *    each recursive call by passing start_idx + 1.
+         *
+         *
+         *  In Java, primitive types like int are passed by value. This means when you do:
+         *
+         *
+         *  dfsFind(board, word, x+1, y, visited, start_idx + 1)
+         *
+         *  -> You’re passing a `copy` of start_idx + 1 to the recursive function.
+         *     So, inside the recursive call, start_idx is a `new variable`,
+         *     and changes to it won’t affect the start_idx in the calling function.
+         *
+         *
+         *  - Why does undo apply only to visited[y][x]?
+         *
+         *    -> Because visited is a 2D array (object in memory),
+         *       and arrays in Java are passed by reference.
+         *       So modifying visited[y][x] does affect the caller’s version
+         *       — that’s why we need to undo it when backtracking:
+         *
+         */
+        //lvl -= 1;
+
         return false;
     }
 
@@ -767,7 +802,7 @@ public class WordSearch {
             return true;
 
         /* Step 2). Check the boundaries. */
-        if (row < 0 || row == this.ROWS || col < 0 || col == this.COLS
+        if (row < 0 || row == this.ROWS2 || col < 0 || col == this.COLS2
                 || this.board[row][col] != word.charAt(index))
             return false;
 
