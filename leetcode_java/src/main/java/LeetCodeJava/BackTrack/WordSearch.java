@@ -472,11 +472,132 @@ public class WordSearch {
         return false;
     }
 
+    // V1-1
+    // https://neetcode.io/problems/search-for-word
+    // IDEA: Backtracking (Hash Set)
+//    private int ROWS, COLS;
+//    private Set<Pair<Integer, Integer>> path = new HashSet<>();
+//
+//    public boolean exist_1_1(char[][] board, String word) {
+//        ROWS = board.length;
+//        COLS = board[0].length;
+//
+//        for (int r = 0; r < ROWS; r++) {
+//            for (int c = 0; c < COLS; c++) {
+//                if (dfs(board, word, r, c, 0)) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private boolean dfs(char[][] board, String word, int r, int c, int i) {
+//        if (i == word.length()) {
+//            return true;
+//        }
+//
+//        if (r < 0 || c < 0 || r >= ROWS || c >= COLS ||
+//                board[r][c] != word.charAt(i) ||
+//                path.contains(new Pair<>(r, c))) {
+//            return false;
+//        }
+//
+//        path.add(new Pair<>(r, c));
+//        boolean res = dfs(board, word, r + 1, c, i + 1) ||
+//                dfs(board, word, r - 1, c, i + 1) ||
+//                dfs(board, word, r, c + 1, i + 1) ||
+//                dfs(board, word, r, c - 1, i + 1);
+//        path.remove(new Pair<>(r, c));
+//
+//        return res;
+//    }
 
-    // V1
+
+    // V1-2
+    // https://neetcode.io/problems/search-for-word
+    // IDEA: Backtracking (Visited Array)
+    private int ROWS_1_2, COLS_1_2;
+    private boolean[][] visited;
+
+    public boolean exist_1_2(char[][] board, String word) {
+        ROWS_1_2 = board.length;
+        COLS_1_2 = board[0].length;
+        visited = new boolean[ROWS_1_2][COLS_1_2];
+
+        for (int r = 0; r < ROWS_1_2; r++) {
+            for (int c = 0; c < COLS_1_2; c++) {
+                if (dfs(board, word, r, c, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean dfs(char[][] board, String word, int r, int c, int i) {
+        if (i == word.length()) {
+            return true;
+        }
+
+        if (r < 0 || c < 0 || r >= ROWS_1_2 || c >= COLS_1_2 ||
+                board[r][c] != word.charAt(i) || visited[r][c]) {
+            return false;
+        }
+
+        visited[r][c] = true;
+        boolean res = dfs(board, word, r + 1, c, i + 1) ||
+                dfs(board, word, r - 1, c, i + 1) ||
+                dfs(board, word, r, c + 1, i + 1) ||
+                dfs(board, word, r, c - 1, i + 1);
+        visited[r][c] = false;
+
+        return res;
+    }
+
+
+    // V1-3
+    // https://neetcode.io/problems/search-for-word
+    // IDEA: Backtracking (Optimal)
+    private int ROWS_1_3, COLS_1_3;
+
+    public boolean exist_1_3(char[][] board, String word) {
+        ROWS_1_3 = board.length;
+        COLS_1_3 = board[0].length;
+
+        for (int r = 0; r < ROWS_1_3; r++) {
+            for (int c = 0; c < COLS_1_3; c++) {
+                if (dfs_1_3(board, word, r, c, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean dfs_1_3(char[][] board, String word, int r, int c, int i) {
+        if (i == word.length()) {
+            return true;
+        }
+        if (r < 0 || c < 0 || r >= ROWS_1_3 || c >= COLS_1_3 ||
+                board[r][c] != word.charAt(i) || board[r][c] == '#') {
+            return false;
+        }
+
+        board[r][c] = '#';
+        boolean res = dfs_1_3(board, word, r + 1, c, i + 1) ||
+                dfs_1_3(board, word, r - 1, c, i + 1) ||
+                dfs_1_3(board, word, r, c + 1, i + 1) ||
+                dfs_1_3(board, word, r, c - 1, i + 1);
+        board[r][c] = word.charAt(i);
+        return res;
+    }
+
+
+    // V2
     // IDEA : DFS + BACKTRACK
     // https://leetcode.com/problems/word-search/solutions/4791515/java-easy-solution-dfs-backtracking/
-    public boolean exist2(char[][] board, String word) {
+    public boolean exist_2(char[][] board, String word) {
         int n = board.length;
         int m = board[0].length;
 
@@ -518,9 +639,9 @@ public class WordSearch {
         return didFindNextCharacter;
     }
 
-    // V1'
+    // V3
     // IDEA : V1 variation
-    public boolean exist_1(char[][] board, String word) {
+    public boolean exist_3(char[][] board, String word) {
         int n = board.length;
         int m = board[0].length;
 
@@ -574,20 +695,20 @@ public class WordSearch {
     }
 
     
-    // V1''
+    // V4
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/word-search/editorial/
     private char[][] board;
-    private int ROWS;
-    private int COLS;
+    private int ROWS_4;
+    private int COLS_4;
 
-    public boolean exist_1_(char[][] board, String word) {
+    public boolean exist_4(char[][] board, String word) {
         this.board = board;
-        this.ROWS = board.length;
-        this.COLS = board[0].length;
+        this.ROWS_4 = board.length;
+        this.COLS_4 = board[0].length;
 
-        for (int row = 0; row < this.ROWS; ++row)
-            for (int col = 0; col < this.COLS; ++col)
+        for (int row = 0; row < this.ROWS_4; ++row)
+            for (int col = 0; col < this.COLS_4; ++col)
                 if (this.backtrack(row, col, word, 0))
                     return true;
         return false;
@@ -599,7 +720,7 @@ public class WordSearch {
             return true;
 
         /* Step 2). Check the boundaries. */
-        if (row < 0 || row == this.ROWS || col < 0 || col == this.COLS
+        if (row < 0 || row == this.ROWS_4 || col < 0 || col == this.COLS_4
                 || this.board[row][col] != word.charAt(index))
             return false;
 
@@ -621,14 +742,14 @@ public class WordSearch {
         return ret;
     }
 
-    // V1-1
+    // V5
     // IDEA :
     // https://leetcode.com/problems/word-search/editorial/
     private char[][] board2;
     private int ROWS2;
     private int COLS2;
 
-    public boolean exist_1_2(char[][] board, String word) {
+    public boolean exist_5(char[][] board, String word) {
         this.board2 = board;
         this.ROWS2 = board.length;
         this.COLS2 = board[0].length;
