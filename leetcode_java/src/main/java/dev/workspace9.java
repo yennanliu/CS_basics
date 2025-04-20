@@ -3923,6 +3923,16 @@ public class workspace9 {
      *  3) .. repeat above steps
      *
      */
+    // 6.23 - 6.33 pm
+    /**
+     *  NOTE !!!
+     *
+     *   we need init below 2 data structure
+     *
+     *   1. an array (with Task class info)
+     *   2. min PQ (with Task class info)
+     *
+     */
     public class Task{
         int idx;
         int enqueueTime;
@@ -3943,6 +3953,22 @@ public class workspace9 {
             return new int[]{0}; // ?
         }
 
+        //taskWithIndex
+        List<Task> taskWithIndex = new ArrayList<>();
+        for(int i = 0; i < tasks.length; i ++){
+            Task task = new Task(i, tasks[i][0], tasks[i][1]);
+            taskWithIndex.add(task);
+        }
+
+        // sort `taskWithIndex` with `enqueueTime`
+        Collections.sort(taskWithIndex, new Comparator<Task>() {
+            @Override
+            public int compare(Task o1, Task o2) {
+                int diff = o1.enqueueTime - o2.enqueueTime;
+                return diff;
+            }
+        });
+
         // PQ
         PriorityQueue<Task> pq = new PriorityQueue<>(new Comparator<Task>() {
             @Override
@@ -3957,56 +3983,34 @@ public class workspace9 {
             }
         });
 
-        for(int i = 0; i < tasks.length; i++){
-            int enTime = tasks[i][0];
-            int processTime = tasks[i][1];
-            pq.add(new Task(i, enTime, processTime));
-        }
-
-        // NOTE !!! we sort tasks (enqueue time, small -> big)
-        Arrays.sort(tasks, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                int diff = o1[0] - o2[0];
-                return diff;
-            }
-        });
-
-        // task array
-        int n = tasks.length;
-        Task[] arr = new Task[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = new Task(i, tasks[i][0], tasks[i][1]);
-        }
-
-        Arrays.sort(arr, (a, b) -> {
-            return Integer.compare(a.enqueueTime, b.enqueueTime);
-        });
-
         int[] order = new int[tasks.length];
         int time = 0;
         int idx = 0;
 
+        // ???
         while(idx < tasks.length){
 
-            // case 1) `push` tasks are OK to be processed (e.g. enqueueTime <= curTime)  )
-            //while()
+            // ??? need to loop over taskWithIndex ???
+            for(int i = 0; i < taskWithIndex.size(); i++){
 
-            if(pq.isEmpty()){
-                // move `time` to the next task enqueueTime
-                // and `push` task to PQ
-                // ...
-                //time = tasks
-                time = arr[idx].enqueueTime; /// ??
-            }else{
-                // `pop` the current task from PQ, add it to order
-                Task _task = pq.poll();
-                //time = _task.enqueueTime;
-                order[idx] = _task.idx;
-                // ??? need to update time ????
-                time += _task.processingTime;
+                while(i < taskWithIndex.size() && taskWithIndex.get(i).enqueueTime < time){
+                    int enTime = tasks[i][0];
+                    int processTime = tasks[i][1];
+                    pq.add(new Task(i, enTime, processTime));
+                }
+
+                if(pq.isEmpty()){
+                    time = taskWithIndex.get(i).enqueueTime;
+                }else{
+                    Task _task = pq.poll();
+                    order[idx] = _task.idx;
+                    time += _task.processingTime;
+                    idx += 1; // ???
+                }
+
             }
 
+           // idx += 1;
         }
 
 
