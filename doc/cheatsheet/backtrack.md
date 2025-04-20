@@ -650,6 +650,95 @@ if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
 ## 2) LC Example
 
 ### 2-1) Letter Combinations of a Phone Number 
+
+```java
+// java
+// LC 17
+// V0
+// IDEA: BACKTRACK + start_idx (on digit)
+List<String> _res = new ArrayList<String>();
+public List<String> letterCombinations(String _digits) {
+
+    if (_digits.length() == 0){
+        return new ArrayList<>();
+    }
+
+    HashMap<java.lang.String, java.lang.String> letters = new HashMap<>();
+    letters.put("2", "abc");
+    letters.put("3", "def");
+    letters.put("4", "ghi");
+    letters.put("5", "jkl");
+    letters.put("6", "mno");
+    letters.put("7", "pqrs");
+    letters.put("8", "tuv");
+    letters.put("9", "wxyz");
+
+    _letter_builder(letters, 0, _digits, new StringBuilder());
+    return this._res;
+}
+
+private void _letter_builder(HashMap<String, String> map, int start_idx, String digits, StringBuilder builder){
+
+    /**
+     *  NOTE !!!
+     *
+     *   if builder (StringBuilder) length equals digits length,
+     *   -> means we first one of the `all digit visit`
+     *   -> we should add this cur to our result
+     */
+    if (builder.length() == digits.length()){
+        this._res.add(builder.toString()); // NOTE this
+        return;
+    }
+
+    /**
+     *  NOTE !!!
+     *
+     *
+     *   1) the `start_idx`  is for `digits` .
+     *   e.g.
+     *
+     *    -> if digits = "23",
+     *       the start_idx is 0,
+     *       and could become 1, ...
+     *
+     *
+     *   2) via `start_idx` we can focus on specific digit (e.g. "2" only, from "23")
+     *      then we can loop over its `alphabet` in recursive call
+     *      e.g. "abc" for "2"
+     *
+     *      letters.put("2", "abc");
+     *
+     */
+    String _digit = String.valueOf(digits.toCharArray()[start_idx]); // NOTE this
+    String _alphabets = map.get(_digit);
+
+    // backtrack
+    /**
+     *  NOTE !!!
+     *
+     *   we loop over `_alphabets` (digit with idx),
+     *   (instead of digit)
+     *
+     *   -> so we can build our cur string accordingly
+     *
+     */
+    for (char a : _alphabets.toCharArray()){
+        builder.append(a);
+        _letter_builder(map, start_idx + 1, digits, builder);
+
+
+        // undo
+        // builder.deleteCharAt(0); // NOTE !!! in backtrack, we remove LAST element (idx = len - 1), instead of first element
+        builder.deleteCharAt(builder.toString().length() - 1);
+        // no need to `undo` start_idx, since it's primary type
+        // in java, it is copied as `new var` when pass the recursive call
+        // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/backtrack.md#1-2-3-not-do-undo-on-primary-variable
+        // start_idx -= 1; // this is WRONG!!!
+    }
+}
+```
+
 ```python
 # 017   Letter Combinations of a Phone Number
 # V0

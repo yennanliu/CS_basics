@@ -5059,5 +5059,72 @@ public class workspace9 {
 //
 //    }
 
+    // LC 17
+    // 5.28 - 5.38 pm
+    // IDEA: BACKTRACK
+    List<String> letterRes = new ArrayList<>();
+    public List<String> letterCombinations(String digits) {
+
+        HashMap<String, String> letters = new HashMap<>();
+        letters.put("2", "abc");
+        letters.put("3", "def");
+        letters.put("4", "ghi");
+        letters.put("5", "jkl");
+        letters.put("6", "mno");
+        letters.put("7", "pqrs");
+        letters.put("8", "tuv");
+        letters.put("9", "wxyz");
+
+        // edge
+        if(digits == null || digits.isEmpty()){
+            return letterRes;
+        }
+        if(digits.length() == 1){
+            String val = letters.get(String.valueOf(digits.charAt(0)));
+            for(String x : val.split("")){
+                letterRes.add(x);
+            }
+            return letterRes;
+        }
+
+        // backtrack
+        letterResHelper(digits, letters, 0, new StringBuilder());
+        return letterRes;
+    }
+
+    public void letterResHelper(String digits, HashMap<String, String> letters, int start_idx , StringBuilder sb){
+        String str = sb.toString();
+        if (str.length() == digits.length()){
+            if(!letterRes.contains(str)){
+                letterRes.add(str); // ??
+            }
+        }
+        // ???
+        if (str.length() > digits.length()){
+            return; // ???
+        }
+
+        // ???
+        for(int i = 0; i < digits.length(); i ++){
+            String k = String.valueOf(digits.charAt(i));
+            for(String x: letters.get(k).split("")){
+                String _str = sb.toString();
+
+                boolean shouldProcced = _str.isEmpty() ||
+                        !_str.contains(x) ||
+                        (_str.length() > 0 && letters.get(_str.charAt(_str.length()-1)) != x);
+
+                if(shouldProcced){
+                    sb.append(x);
+                    letterResHelper(digits, letters, i, sb); // ???
+                    // undo
+                    sb.deleteCharAt(sb.length() - 1); // ??
+                }
+            }
+        }
+
+    }
+
+
 }
 
