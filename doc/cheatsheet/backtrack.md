@@ -627,6 +627,26 @@ if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
 // ...
 ```
 
+#### 1-2-3) NOT do `undo` on primary variable
+
+```java
+// java
+// LC 79
+
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BackTrack/WordSearch.java#L133
+
+
+// In Java, primitive types like int are passed by value. This means when you do:
+
+// dfsFind(board, word, x+1, y, visited, start_idx + 1)
+
+//  1) You’re passing a copy of start_idx + 1 to the recursive function. So, inside the recursive call, start_idx is a new variable, and changes to it won’t affect the start_idx in the calling function.
+
+
+// 2) We don’t need start_idx -= 1; because start_idx is passed by value, not by reference. So modifying it in the recursive call doesn’t affect the caller’s start_idx. We’re already handling the correct index in each recursive call by passing start_idx + 1.
+
+```
+
 ## 2) LC Example
 
 ### 2-1) Letter Combinations of a Phone Number 
