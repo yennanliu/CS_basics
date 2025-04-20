@@ -210,10 +210,62 @@ public class LetterCombinationsOfAPhoneNumber {
 //        }
 //    }
 
+    // V1-1
+    // https://neetcode.io/problems/combinations-of-a-phone-number
+    // IDEA: BACKTRACK
 
-    // V1
+    private List<String> res = new ArrayList<>();
+    private String[] digitToChar_1_1 = {
+            "", "", "abc", "def", "ghi", "jkl", "mno", "qprs", "tuv", "wxyz"
+    };
+
+    public List<String> letterCombinations_1_1(String digits) {
+        if (digits.isEmpty()) return res;
+        backtrack(0, "", digits);
+        return res;
+    }
+
+    private void backtrack(int i, String curStr, String digits) {
+        if (curStr.length() == digits.length()) {
+            res.add(curStr);
+            return;
+        }
+        String chars = digitToChar_1_1[digits.charAt(i) - '0'];
+        for (char c : chars.toCharArray()) {
+            backtrack(i + 1, curStr + c, digits);
+        }
+    }
+
+
+    // V1-2
+    // https://neetcode.io/problems/combinations-of-a-phone-number
+    // IDEA: Iteration
+    public List<String> letterCombinations_1_2(String digits) {
+        if (digits.isEmpty()) return new ArrayList<>();
+
+        List<String> res = new ArrayList<>();
+        res.add("");
+        String[] digitToChar = {
+                "", "", "abc", "def", "ghi", "jkl",
+                "mno", "qprs", "tuv", "wxyz"
+        };
+
+        for (char digit : digits.toCharArray()) {
+            List<String> tmp = new ArrayList<>();
+            for (String curStr : res) {
+                for (char c : digitToChar[digit - '0'].toCharArray()) {
+                    tmp.add(curStr + c);
+                }
+            }
+            res = tmp;
+        }
+        return res;
+    }
+    
+
+    // V2
     private Map<Character, String> digitToChar = new HashMap<>();
-    public List<String> letterCombinations_1(String digits) {
+    public List<String> letterCombinations_2(String digits) {
         if (digits.length() == 0) {
             return new ArrayList();
         }
@@ -243,13 +295,13 @@ public class LetterCombinationsOfAPhoneNumber {
         }
     }
 
-    // V2
+    // V3
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/letter-combinations-of-a-phone-number/editorial/
     private List<String> combinations = new ArrayList<>();
     private String phoneDigits;
 
-    public List<String> letterCombinations_2(String digits) {
+    public List<String> letterCombinations_3(String digits) {
         // If the input is empty, immediately return an empty answer array
         if (digits.length() == 0) {
             return combinations;
