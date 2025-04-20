@@ -2,9 +2,7 @@ package LeetCodeJava.Heap;
 
 // https://leetcode.com/problems/single-threaded-cpu/description/
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  *
@@ -65,6 +63,105 @@ public class SingleThreadedCPU {
 
     // V0
     // IDEA: PQ + sort (modified by gpt)
+    /**
+     *  we fine 2 data structure for this problem
+     *
+     *  1) taskWithIndex: array with info (idx, enqueueTime, processingTime)
+     *  2) minHeap: min PQ, sort on (enqueueTime, idx) (increasing order)
+     *
+     *  (optional)
+     *   3) Task class
+     *
+     *
+     *  Process steps
+     *
+     *   1)  while ( idx < n)
+     *   2)  `push` all ready tasks to PQ
+     *   3)  if PQ is `NOT empty`
+     *   4)  if PQ is `empty`
+     *
+     */
+    public class Task {
+        int idx;
+        int enqueueTime;
+        int processingTime;
+
+        public Task(int idx, int enqueueTime, int processingTime) {
+            this.idx = idx;
+            this.enqueueTime = enqueueTime;
+            this.processingTime = processingTime;
+        }
+    }
+
+    public int[] getOrder(int[][] tasks) {
+        if (tasks == null || tasks.length == 0)
+            return new int[] {};
+
+        int n = tasks.length;
+        int[] order = new int[n];
+
+        // Step 1: Preprocess tasks with index
+        List<Task> taskList = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            taskList.add(new Task(i, tasks[i][0], tasks[i][1]));
+        }
+
+        // Step 2: Sort by enqueueTime
+        taskList.sort((a, b) -> a.enqueueTime - b.enqueueTime);
+
+        // Step 3: Min-heap (PQ) for processing tasks
+        PriorityQueue<Task> pq = new PriorityQueue<>((a, b) -> {
+            if (a.processingTime != b.processingTime) {
+                return a.processingTime - b.processingTime;
+            } else {
+                return a.idx - b.idx;
+            }
+        });
+
+        int time = 0, i = 0, idx = 0;
+
+        // Step 4: Simulate CPU
+        /**
+         *  NOTE !!!
+         *
+         *   the while condition (idx < n)
+         *
+         */
+        while (idx < n) {
+
+            /** NOTE !!! add `ready task` to PQ first */
+            // Add all tasks that are ready (enqueueTime <= current time) to PQ
+            while (i < n && taskList.get(i).enqueueTime <= time) {
+                pq.offer(taskList.get(i));
+                i++;
+            }
+
+            /** NOTE !!! if PQ is NOT empty
+             *
+             *
+             *   NOTE !!!  don't use `while`, but use `if` condition
+             *
+             *
+             */
+            // case 1)  when PQ is NOT empty, process task, update res, and idx
+            if (!pq.isEmpty()) {
+                Task task = pq.poll();
+                time += task.processingTime;
+                order[idx++] = task.idx;
+            }
+            /** NOTE !!! if PQ is empty */
+            // case 2) if NO task is ready, we `move clock` to next  task's enqueueTime
+            else {
+                // If no tasks are ready, move time to the next task's enqueueTime
+                time = taskList.get(i).enqueueTime;
+            }
+        }
+
+        return order;
+    }
+
+    // V0-1
+    // IDEA: PQ + sort (modified by gpt)
     // https://www.youtube.com/watch?v=RR1n-d4oYqE
     /**
      *  we fine 2 data structure for this problem
@@ -75,8 +172,16 @@ public class SingleThreadedCPU {
      *  (optional)
      *   3) Task class
      *
+     *
+     *  Process steps
+     *
+     *   1)  while ( idx < n)
+     *   2)  `push` all ready tasks to PQ
+     *   3)  if PQ is `NOT empty`
+     *   4)  if PQ is `empty`
+     *
      */
-    public int[] getOrder(int[][] tasks) {
+    public int[] getOrder_0_1(int[][] tasks) {
         int n = tasks.length;
 
         // Add original indices to tasks
@@ -198,16 +303,16 @@ public class SingleThreadedCPU {
     // IDEA: PQ
     public int[] getOrder_2(int[][] tasks) {
         int n = tasks.length;
-        Task[] arr = new Task[n];
+        Task2[] arr = new Task2[n];
         for (int i = 0; i < n; i++) {
-            arr[i] = new Task(i, tasks[i][0], tasks[i][1]);
+            arr[i] = new Task2(i, tasks[i][0], tasks[i][1]);
         }
 
         Arrays.sort(arr, (a, b) -> {
             return Integer.compare(a.enqueueTime, b.enqueueTime);
         });
 
-        PriorityQueue<Task> p = new PriorityQueue<>((a, b) -> {
+        PriorityQueue<Task2> p = new PriorityQueue<>((a, b) -> {
             if (a.processingTime == b.processingTime) {
                 return Integer.compare(a.idx, b.idx);
             }
@@ -233,12 +338,12 @@ public class SingleThreadedCPU {
         return ans;
     }
 
-    class Task {
+    class Task2 {
         int idx;
         int enqueueTime;
         int processingTime;
 
-        Task(int idx, int en, int pro) {
+        Task2(int idx, int en, int pro) {
             this.idx = idx;
             this.enqueueTime = en;
             this.processingTime = pro;
