@@ -34,38 +34,85 @@ public class PalindromePartitioning {
 
     // V0
     // IDEA : BACKTRACK
-//    List<List<String>> ans = new ArrayList<>();
 //    public List<List<String>> partition(String s) {
 //
-//        if (s.length()==1){
-//            ArrayList<String> tmp = new ArrayList<>();
-//            tmp.add(s);
-//            this.ans.add(tmp);
-//        }
-//
-//        return this.ans;
 //    }
-//
-//    private void _help(String s, List<String> cur){
-//
-//    }
-//
-//    private boolean isPalindrome(List<String> input){
-//        int mid = -1;
-//        if (input.size() % 2 == 1){
-//            mid = input.size() / 2;
-//        }else{
-//            mid = input.size() / 2 - 1;
-//        }
-//
-//        for (int i = 0; i < mid; i++){
-//
-//            int left = input[i];
-//            int rig
-//
-//        }
-//        return true;
-//    }
+
+    // V0-1
+    // IDEA: BACKTRACK + start_idx (fixed by gpt)
+    List<List<String>> partitionRes = new ArrayList<>();
+
+    public List<List<String>> partition_0_1(String s) {
+        if (s == null || s.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        backtrack(s, 0, new ArrayList<>());
+        return partitionRes;
+    }
+
+    private void backtrack(String s, int start, List<String> currentList) {
+    /**
+     *
+     * 	•	This is the base case of the recursion.
+     *
+     * 	•	It means: “If we’ve reached the end of the string,
+     * 	     then the current list of substrings (currentList)
+     * 	     forms a valid full partition of s into palindromes.”
+     *
+     * 	•	-> So we add a copy of currentList into
+     * 	       the final result list partitionRes.
+     */
+    /**
+     *  - Why start == s.length()?
+     *
+     * 	•	Because start is the index from which
+     * 	    we’re currently trying to partition.
+     *
+     * 	•	If start == s.length(), it means we’ve
+     * 	     used up all characters in s, and currentList is now a full,
+     * 	     valid partition.
+     */
+    if (start == s.length()) {
+            partitionRes.add(new ArrayList<>(currentList));
+            return;
+        }
+
+   /**
+    *  NOTE !!!
+    *
+    *   1) we loop from `start + 1` to `s.length()`
+    *   2) get sub string via s.substring(a, b)
+    *   3) check if current sub string is Palindrome
+    *       - if yes,
+    *          - add sub string to current cache
+    *          - recursive call backtrack
+    *          - undo cache add
+    */
+   for (int end = start + 1; end <= s.length(); end++) {
+            String sub = s.substring(start, end);
+            if (isPalindrome(sub)) {
+                currentList.add(sub);
+                backtrack(s, end, currentList);
+                currentList.remove(currentList.size() - 1); // undo
+            }
+        }
+
+    }
+
+    // helper func check if a string is `Palindrome`
+    public boolean isPalindrome(String x) {
+        int l = 0;
+        int r = x.length() - 1;
+        while (r > l) {
+            if (x.charAt(l) != x.charAt(r)) {
+                return false;
+            }
+            r--;
+            l++;
+        }
+        return true;
+    }
 
     // V1-1
     // https://neetcode.io/problems/palindrome-partitioning

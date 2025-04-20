@@ -4998,9 +4998,66 @@ public class workspace9 {
         return false;
     }
 
+    // LC 131
+    // 4.37 - 4.47 pm
+    /**
+     *  IDEA 1) BACKTRACK + PALINDROME CHECK
+     *  IDEA 2) TWO POINTER (??
+     *  IDEA 3) DP ???
+     *
+     */
+    List<List<String>> partitionRes = new ArrayList<>();
+    public List<List<String>> partition(String s) {
+        // edge
+        if(s == null || s.isEmpty()){
+            return new ArrayList<>();
+        }
+        if(s.length() == 1){
+            List<String> tmp = new ArrayList<>();
+            tmp.add(s);
+            partitionRes.add(tmp);
+            return partitionRes;
+        }
 
+        // double loop ???
+        // ?? optimize way ???
+        for(int i = 0; i < s.length()-1; i++){
+            List<String> tmp = new ArrayList<>();
+            for(int j = i; j < s.length(); j++){
+                //List<String> tmp = new ArrayList<>();
+                if(j == i){
+                    tmp.add(String.valueOf(s.charAt(j)));
+                }
+                else if(isPalindrome(String.copyValueOf(s.toCharArray(), i, j))){
+                    // ???
+                    //String.copyValueOf(s.toCharArray(), i, j);
+                    tmp.add(String.copyValueOf(s.toCharArray(), i, j));
+                };
+            }
+            if(!tmp.isEmpty()){
+                partitionRes.add(tmp);
+            }
+        }
 
+        return partitionRes;
+    }
 
+    public boolean isPalindrome(String x){
+        int l = 0;
+        int r = x.length() - 1;
+        while(r > l){
+            if(x.charAt(l) != x.charAt(r)){
+                return false;
+            }
+            r -= 1;
+            l += 1;
+        }
+        return true;
+    }
+
+//    public void partitionHelper(String s, StringBuilder sb){
+//
+//    }
 
 }
 
