@@ -5130,7 +5130,37 @@ public class workspace9 {
     }
 
     // LC 473
-    // 10.11 - 10.21 am
+    // 10.11 - 10.28 am
+    /**
+     *  Step 1) check if `cnt == 4`
+     *   -> if yes, compare there are all equals directly
+     *   -> if no, get the `element cnt map`
+     *       -> and loop over the `least cnt val`
+     *          -> to see if it's possible to merge them, and form a  `square`
+     *
+     *
+     *
+     *   Exp 1)
+     *
+     *    input = [1,1,2,2,2]
+     *    cnt_map = {1: 2, 2: 3}
+     *
+     *
+     *    -> total len = 8
+     *     8 / 4 = 2
+     *
+     *
+     *  Exp 2)
+     *
+     *    input = [3,3,3,3,4]
+     *    cnt_map = {3:4, 4: 1}
+     *
+     *    -> total_len = 16
+     *    16 / 4 = 4
+     *
+     *
+     *
+     */
     public boolean makesquare(int[] matchsticks) {
 
         return false;

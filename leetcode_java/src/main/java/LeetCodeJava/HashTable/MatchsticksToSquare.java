@@ -64,9 +64,11 @@ public class MatchsticksToSquare {
     }
 
     boolean helper(int[] matchsticks, int targetSide, int currentSum, int index, int sides) {
+
         //if all the sides are matching the target side length then we found a solution
         if (sides == 0)
             return true;
+
         //Check if current side is equal to targetSide , that means we found another side
         if (currentSum == targetSide) {
             return helper(matchsticks, targetSide, 0, 0, sides - 1);
@@ -83,11 +85,69 @@ public class MatchsticksToSquare {
                 used[i] = false;
             }
         }
+
+
+        return false;
+    }
+
+    // V2
+    // IDEA: BACKTRACK (GEMINI)
+    public boolean makesquare_2(int[] matchsticks) {
+        if (matchsticks == null || matchsticks.length < 4) {
+            return false;
+        }
+
+        int sum = 0;
+        for (int len : matchsticks) {
+            sum += len;
+        }
+
+        if (sum % 4 != 0) {
+            return false;
+        }
+
+        int side = sum / 4;
+        Arrays.sort(matchsticks);
+
+        // Optimization: If the longest matchstick is greater than the side, it's impossible.
+        if (matchsticks[matchsticks.length - 1] > side) {
+            return false;
+        }
+
+        boolean[] used = new boolean[matchsticks.length];
+        return canFormSquare(matchsticks, used, 0, 0, side, 4);
+    }
+
+    private boolean canFormSquare(int[] matchsticks, boolean[] used, int index, int currentSideLength, int sideLength,
+                                  int sidesRemaining) {
+        if (sidesRemaining == 0) {
+            return true;
+        }
+
+        if (currentSideLength == sideLength) {
+            return canFormSquare(matchsticks, used, 0, 0, sideLength, sidesRemaining - 1);
+        }
+
+        if (index == matchsticks.length) {
+            return false;
+        }
+
+        for (int i = index; i < matchsticks.length; i++) {
+            if (!used[i] && currentSideLength + matchsticks[i] <= sideLength) {
+                used[i] = true;
+                if (canFormSquare(matchsticks, used, i + 1, currentSideLength + matchsticks[i], sideLength,
+                        sidesRemaining)) {
+                    return true;
+                }
+                used[i] = false; // Backtrack
+            }
+        }
+
         return false;
     }
 
 
-    // V2-1
+    // V4-1
     // https://leetcode.com/problems/matchsticks-to-square/editorial/
     // IDEA: DFS
     public List<Integer> nums;
@@ -119,7 +179,7 @@ public class MatchsticksToSquare {
         return false;
     }
 
-    public boolean makesquare_2_1(int[] nums) {
+    public boolean makesquare_4_1(int[] nums) {
         // Empty matchsticks.
         if (nums == null || nums.length == 0) {
             return false;
@@ -144,7 +204,7 @@ public class MatchsticksToSquare {
     }
 
 
-    // V2-2
+    // V4-2
     // https://leetcode.com/problems/matchsticks-to-square/editorial/
     // IDEA: DP
 //
@@ -231,7 +291,5 @@ public class MatchsticksToSquare {
 //        this.possibleSquareSide = possibleSquareSide;
 //        return this.recurse((1 << L) - 1, 0);
 //    }
-
-
 
 }
