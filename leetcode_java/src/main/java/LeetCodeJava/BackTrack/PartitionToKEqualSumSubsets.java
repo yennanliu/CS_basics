@@ -125,7 +125,7 @@ public class PartitionToKEqualSumSubsets {
         for(int n : nums){
             sum += n;
         }
-        if(sum%k != 0)
+        if(sum % k != 0)
             return false;
 
         target = sum / k;

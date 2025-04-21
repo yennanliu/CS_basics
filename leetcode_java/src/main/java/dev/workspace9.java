@@ -5223,5 +5223,12 @@ public class workspace9 {
         return true;
     }
 
+    // LC 51
+    // 11.46 - 11. 56 am
+    public List<List<String>> solveNQueens(int n) {
+
+        return null;
+    }
+
 }
 
