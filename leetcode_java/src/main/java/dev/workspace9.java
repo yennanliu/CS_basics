@@ -3,6 +3,7 @@ package dev;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.Heap.SingleThreadedCPU;
+import com.sun.org.apache.bcel.internal.generic.PUSH;
 
 import java.util.*;
 
@@ -5225,9 +5226,54 @@ public class workspace9 {
 
     // LC 51
     // 11.46 - 11. 56 am
+    List<List<String>> queenRes = new ArrayList<>();
     public List<List<String>> solveNQueens(int n) {
+        // edge
+        if(n == 0){
+            return queenRes;
+        }
+        if(n == 1){
+            List<String> tmp = new ArrayList<>();
+            tmp.add("Q");
+            queenRes.add(tmp);
+            return queenRes;
+        }
 
-        return null;
+        // backtrack
+
+        return queenRes;
+    }
+
+    public void queenHelper(int n, String[][] cur, int x, int y){
+
+        // if `reach the end`
+        if(x == n - 1 && y == n - 1){
+            if(!queenRes.contains(cur)){
+                queenRes.add(new ArrayList<>()); // ???
+            }
+        }
+
+        // check if `queen can attack each other`
+        if(canAttack(cur)){
+            return;
+        }
+
+        for(int i = 0; i < n; i ++){
+            for(int j = 0; j < n; j++){
+
+                // place new `queen`
+                cur[j][i] = "Q";
+                queenHelper(n, cur, x, y);
+                // undo
+                cur[j][i] = ".";
+            }
+        }
+
+    }
+
+
+    public boolean canAttack(String[][] cur){
+        return false;
     }
 
 }
