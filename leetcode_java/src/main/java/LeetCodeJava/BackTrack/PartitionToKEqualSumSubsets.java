@@ -2,9 +2,7 @@ package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/partition-to-k-equal-sum-subsets/
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 698. Partition to K Equal Sum Subsets
@@ -40,6 +38,82 @@ public class PartitionToKEqualSumSubsets {
 //    public boolean canPartitionKSubsets(int[] nums, int k) {
 //
 //    }
+
+    // V0-1
+    // IDEA: HASHMAP + BACKTRACK (fixed by gpt)
+    public boolean canPartitionKSubsets_0_1(int[] nums, int k) {
+        if (nums == null || nums.length == 0 || k <= 0)
+            return false;
+
+        int totalSum = 0;
+        for (int num : nums)
+            totalSum += num;
+
+        if (totalSum % k != 0)
+            return false;
+        int target = totalSum / k;
+
+        // Step 1: Count frequencies using HashMap
+        Map<Integer, Integer> cnt_map = new HashMap<>();
+        List<Integer> num_list = new ArrayList<>();
+        for (int num : nums) {
+            cnt_map.put(num, cnt_map.getOrDefault(num, 0) + 1);
+        }
+        // Fill num_list with unique values
+        num_list.addAll(cnt_map.keySet());
+
+        // Step 2: Sort in descending order for optimization
+        num_list.sort((a, b) -> b - a);
+
+        // Step 3: Use an array to track current sum of each subset
+        int[] buckets = new int[k];
+
+        return backtrack(0, num_list, cnt_map, buckets, target);
+    }
+
+    private boolean backtrack(int index, List<Integer> num_list, Map<Integer, Integer> cnt_map, int[] buckets,
+                              int target) {
+        if (index == num_list.size()) {
+            // All numbers placed, check all buckets
+            for (int b : buckets) {
+                if (b != target)
+                    return false;
+            }
+            return true;
+        }
+
+        int num = num_list.get(index);
+        int count = cnt_map.get(num);
+
+        // Try placing `num` (count times) into different buckets
+        return tryPlacing(num, count, buckets, 0, target, index, num_list, cnt_map);
+    }
+
+    private boolean tryPlacing(int num, int count, int[] buckets, int bucketIndex, int target,
+                               int numIndex, List<Integer> num_list, Map<Integer, Integer> cnt_map) {
+        if (count == 0) {
+            // Done placing this number, move to next
+            return backtrack(numIndex + 1, num_list, cnt_map, buckets, target);
+        }
+
+        for (int i = bucketIndex; i < buckets.length; i++) {
+            if (buckets[i] + num > target)
+                continue;
+
+            buckets[i] += num;
+
+            if (tryPlacing(num, count - 1, buckets, i, target, numIndex, num_list, cnt_map))
+                return true;
+
+            buckets[i] -= num;
+
+            // Optimization: if placing in an empty bucket didn't work, don't try other empty buckets
+            if (buckets[i] == 0)
+                break;
+        }
+
+        return false;
+    }
 
     // V1
     // https://www.youtube.com/watch?v=mBk4I0X46oI
