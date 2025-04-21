@@ -1,0 +1,247 @@
+package LeetCodeJava.BackTrack;
+
+// https://leetcode.com/problems/partition-to-k-equal-sum-subsets/
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * 698. Partition to K Equal Sum Subsets
+ * Medium
+ * Topics
+ * Companies
+ * Hint
+ * Given an integer array nums and an integer k, return true if it is possible to divide this array into k non-empty subsets whose sums are all equal.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [4,3,2,3,5,2,1], k = 4
+ * Output: true
+ * Explanation: It is possible to divide it into 4 subsets (5), (1, 4), (2,3), (2,3) with equal sums.
+ * Example 2:
+ *
+ * Input: nums = [1,2,3,4], k = 3
+ * Output: false
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= k <= nums.length <= 16
+ * 1 <= nums[i] <= 104
+ * The frequency of each element is in the range [1, 4].
+ *
+ */
+public class PartitionToKEqualSumSubsets {
+
+    // V0
+//    public boolean canPartitionKSubsets(int[] nums, int k) {
+//
+//    }
+
+    // V1
+    // https://www.youtube.com/watch?v=mBk4I0X46oI
+    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0698-partition-to-k-equal-sum-subsets.java
+    int target;
+
+    public boolean canPartitionKSubsets_1(int[] nums, int k) {
+        int sum = 0;
+        for(int n : nums){
+            sum += n;
+        }
+        if(sum%k != 0)
+            return false;
+
+        target = sum / k;
+        boolean[] used = new boolean[nums.length];
+        return backtrack(nums, 0, k, 0, used);
+    }
+
+    private boolean backtrack(int[] nums, int i, int k, int subsetSum, boolean[] used){
+        if(k == 0)
+            return true;
+        if(subsetSum == target)
+            return backtrack(nums, 0, k-1, 0, used);
+
+        for(int j = i; j < nums.length; j++){
+            if(j > 0 && !used[j-1] && nums[j] == nums[j-1])
+                continue;
+            if(used[j] || subsetSum + nums[j] > target)
+                continue;
+
+            used[j] = true;
+            if(backtrack(nums, j+1, k, subsetSum + nums[j], used))
+                return true;
+
+            used[j] = false;
+        }
+        return false;
+    }
+
+    // V2
+    // https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solutions/1772704/java-solution-with-comments-100-faster-1-3x14/
+    public boolean canPartitionKSubsets_2(int[] nums, int k) {
+        int sum = 0;
+        for (int i : nums) {
+            sum += i;
+        }
+
+        //sum%k must equal to 0 if not just return false
+        //if we have to to divide the array greater than array size retun false(we can't)
+        if (sum % k != 0 || nums.length < k)
+            return false;
+
+        //sort so we can take last element and start filling our bucket
+        Arrays.sort(nums);
+
+        //our target is sum/k and we have to find this in nums, k times then it is valid
+        return canPartitionKSubsets(nums, sum / k, nums.length - 1, new int[k]);
+
+    }
+
+    public boolean canPartitionKSubsets(int a[], int target, int i, int bucket[]) {
+
+        //we have taken all the elements
+        if (i == -1)
+            return true;
+
+        //start filling the buckets
+        for (int j = 0; j < bucket.length; j++) {
+
+            //can we take this ith element
+            if (bucket[j] + a[i] <= target) {
+
+                //if we take this element
+                bucket[j] += a[i];
+
+                //go to next element (in our case go to smallest ele bcz we sorted)
+                //if we can fill all buckets then return true
+                if (canPartitionKSubsets(a, target, i - 1, bucket))
+                    return true;
+
+                //means we can't fill other buckets if we take ith element so leave this element
+                bucket[j] -= a[i];
+
+            }
+
+            //if our bucket is empty means we have not taken any elements in the buckets
+            if (bucket[j] == 0)
+                break;
+
+        }
+
+        //all buckets are full but i is pointing to some element (elements still left)
+        //or our bucket is empty means we haven't take any element (not valid)
+        return false;
+
+    }
+
+    // V3-1
+    // https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solutions/5559337/crazy-best-problem-to-solve-must-solve-t-6ksg/
+    public boolean canPartitionKSubsets_3_1(int[] nums, int k) {
+        int sum = Arrays.stream(nums).sum();
+        if (sum % k != 0)
+            return false;
+
+        int targetSum = sum / k;
+        Arrays.sort(nums);
+        // add a reverse it helps!
+        return backtrack(nums.length - 1, nums, new int[k], targetSum);
+    }
+
+    private boolean backtrack(int index, int[] nums, int[] sums, int targetSum) {
+        if (index < 0)
+            return true;
+
+        for (int i = 0; i < sums.length; i++) {
+            if (sums[i] + nums[index] > targetSum)
+                continue;
+
+            sums[i] += nums[index];
+
+            if (backtrack(index - 1, nums, sums, targetSum)) {
+                return true;
+            }
+
+            sums[i] -= nums[index];
+
+            if (sums[i] == 0)
+                break;// why ? explanation given below
+        }
+
+        return false;
+    }
+
+    // V3-2
+    // https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solutions/5559337/crazy-best-problem-to-solve-must-solve-t-6ksg/
+    public boolean canPartitionKSubsets_3_2(int[] nums, int k) {
+        int sum = Arrays.stream(nums).sum();
+        if (sum % k != 0)
+            return false;
+
+        int targetSum = sum / k;
+        Arrays.sort(nums);
+        reverse(nums); // Reverse the array to have larger numbers first
+
+        List<List<Integer>> subsets = new ArrayList<>();
+        for (int i = 0; i < k; i++) {
+            subsets.add(new ArrayList<>());
+        }
+
+        boolean result = backtrack(0, nums, subsets, new int[k], targetSum);
+
+        if (result) {
+            System.out.println("Valid partition found:");
+            for (int i = 0; i < subsets.size(); i++) {
+                System.out.println("Subset " + (i + 1) + ": " + subsets.get(i));
+            }
+        } else {
+            System.out.println("No valid partition found.");
+        }
+
+        return result;
+    }
+
+    private boolean backtrack(int index, int[] nums, List<List<Integer>> subsets, int[] sums, int targetSum) {
+        if (index == nums.length) {
+            return true; // All numbers have been used
+        }
+
+        for (int i = 0; i < subsets.size(); i++) {
+            if (sums[i] + nums[index] > targetSum)
+                continue;
+            if (i > 0 && sums[i] == sums[i - 1])
+                continue;
+
+            subsets.get(i).add(nums[index]); // Add to subset
+            sums[i] += nums[index]; // Update sum
+
+            if (backtrack(index + 1, nums, subsets, sums, targetSum)) {
+                return true;
+            }
+
+            sums[i] -= nums[index]; // Revert sum
+            subsets.get(i).remove(subsets.get(i).size() - 1); // Remove from subset
+
+            if (sums[i] == 0)
+                break; // Optimization: no need to try empty subsets
+        }
+
+        return false;
+    }
+
+    private void reverse(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+            left++;
+            right--;
+        }
+    }
+
+
+}
