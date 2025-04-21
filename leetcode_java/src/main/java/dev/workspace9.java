@@ -5167,5 +5167,61 @@ public class workspace9 {
     }
 
 
+    // LC 698
+    // 10.58 - 11.08 AM
+    /**
+     *  IDEA 1) 2 POINTERS + HASHMAP (cnt_map)
+     *
+     *
+     */
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return false; // ???
+        }
+        // ???
+        if(k == 0){
+            return false;
+        }
+        if(k == 1){
+            return true; // ???
+        }
+
+        // can't divide by k
+        int _sum = 0;
+        for(int x: nums){
+            _sum += x;
+        }
+        if(_sum % k != 0){
+            return false;
+        }
+
+        // map : { k : cnt }
+        Map<Integer, Integer> cnt_map = new HashMap<>();
+        List<Integer> num_list = new ArrayList<>();
+
+        for(int x : nums){
+
+            cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
+
+            num_list.add(x);
+        }
+
+        // sort (small -> big)
+        Collections.sort(num_list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        int avg_val = _sum / k;
+        //for(i)
+
+
+        return true;
+    }
+
 }
 
