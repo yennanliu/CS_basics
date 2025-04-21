@@ -36,10 +36,103 @@ import java.util.*;
  */
 public class NQueens {
 
+    /**
+     *  NOTE !!!
+     *
+     *
+     * ### ✅ **Rules (When Queens Don't Attack Each Other):**
+     *
+     * A queen can move:
+     * - **Horizontally** (same row),
+     * - **Vertically** (same column),
+     * - **Diagonally** (both directions).
+     *
+     * So, for queens **not** to attack each other, no two queens can share:
+     * 1. **The same row**
+     * 2. **The same column**
+     * 3. **The same diagonal**
+     *
+     * ---
+     *
+     * ### 🔍 **How to detect diagonal conflicts?**
+     *
+     * If you place a queen at `(row1, col1)` and another at `(row2, col2)`, then:
+     * - They are on the **same diagonal** if:
+     *   `abs(row1 - row2) == abs(col1 - col2)`
+     *
+     * This captures **both** main diagonals:
+     * - Top-left to bottom-right (↘),
+     * - Top-right to bottom-left (↙).
+     *
+     * ---
+     *
+     * ### 🧠 Summary of the **No-Attack Conditions**:
+     * To safely place a queen at `(row, col)`, check that:
+     * - No other queen is in `col`
+     * - No other queen is on the diagonals:
+     *   - `row - col` (↘ diagonal)
+     *   - `row + col` (↙ diagonal)
+     *
+     * ---
+     *
+     *
+     */
     // V0
 //    public List<List<String>> solveNQueens(int n) {
 //
 //    }
+
+    // V0-1
+    // IDEA: BACKTRACK (gpt)
+    public List<List<String>> solveNQueens_0_1(int n) {
+        List<List<String>> result = new ArrayList<>();
+
+        char[][] board = new char[n][n];
+        for (char[] row : board)
+            Arrays.fill(row, '.');
+
+        boolean[] cols = new boolean[n]; // tracks columns
+        boolean[] diag1 = new boolean[2 * n - 1]; // tracks ↘ diagonals (row - col + n - 1)
+        boolean[] diag2 = new boolean[2 * n - 1]; // tracks ↙ diagonals (row + col)
+
+        backtrack(0, board, result, cols, diag1, diag2);
+        return result;
+    }
+
+    private void backtrack(int row, char[][] board, List<List<String>> result,
+                           boolean[] cols, boolean[] diag1, boolean[] diag2) {
+        int n = board.length;
+        if (row == n) {
+            result.add(constructBoard(board));
+            return;
+        }
+
+        for (int col = 0; col < n; col++) {
+            int d1 = row - col + n - 1; // ↘ diagonal index
+            int d2 = row + col; // ↙ diagonal index
+
+            if (cols[col] || diag1[d1] || diag2[d2])
+                continue;
+
+            // Place queen
+            board[row][col] = 'Q';
+            cols[col] = diag1[d1] = diag2[d2] = true;
+
+            backtrack(row + 1, board, result, cols, diag1, diag2);
+
+            // Backtrack
+            board[row][col] = '.';
+            cols[col] = diag1[d1] = diag2[d2] = false;
+        }
+    }
+
+    private List<String> constructBoard(char[][] board) {
+        List<String> res = new ArrayList<>();
+        for (char[] row : board) {
+            res.add(new String(row));
+        }
+        return res;
+    }
 
     // V1-1
     // https://neetcode.io/problems/n-queens
