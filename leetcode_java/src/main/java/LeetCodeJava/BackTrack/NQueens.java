@@ -134,6 +134,82 @@ public class NQueens {
         return res;
     }
 
+    // V0-2
+    // IDEA: BACKTRACK (fixed by gpt)
+    List<List<String>> queenRes = new ArrayList<>();
+
+    public List<List<String>> solveNQueens_0_2(int n) {
+        // Edge cases
+        if (n <= 0) {
+            return queenRes;
+        }
+        if (n == 1) {
+            List<String> solution = new ArrayList<>();
+            solution.add("Q");
+            queenRes.add(solution);
+            return queenRes;
+        }
+
+        // Backtrack
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(board[i], '.');
+        }
+        queenHelper(n, board, 0);
+        return queenRes;
+    }
+
+    public void queenHelper(int n, char[][] board, int row) {
+        // Base case: All queens are placed successfully
+        if (row == n) {
+            queenRes.add(constructSolution(board));
+            return;
+        }
+
+        // Try placing a queen in each column of the current row
+        for (int col = 0; col < n; col++) {
+            if (isSafe(board, row, col, n)) {
+                board[row][col] = 'Q';
+                queenHelper(n, board, row + 1); // Move to the next row
+                board[row][col] = '.'; // Backtrack: Remove the queen for the next try
+            }
+        }
+    }
+
+    public boolean isSafe(char[][] board, int row, int col, int n) {
+        // Check the current column for any existing queen in previous rows
+        for (int i = 0; i < row; i++) {
+            if (board[i][col] == 'Q') {
+                return false;
+            }
+        }
+
+        // Check the top-left diagonal
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q') {
+                return false;
+            }
+        }
+
+        // Check the top-right diagonal
+        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+            if (board[i][j] == 'Q') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public List<String> constructSolution(char[][] board) {
+        List<String> solution = new ArrayList<>();
+        for (char[] row : board) {
+            solution.add(new String(row));
+        }
+        return solution;
+    }
+
+    
     // V1-1
     // https://neetcode.io/problems/n-queens
     // IDEA: BACKTRACK
