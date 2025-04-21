@@ -209,7 +209,7 @@ public class NQueens {
         return solution;
     }
 
-    
+
     // V1-1
     // https://neetcode.io/problems/n-queens
     // IDEA: BACKTRACK
