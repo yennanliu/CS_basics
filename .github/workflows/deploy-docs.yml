@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main  # Or your default branch name
+      - dev-1-doc-to-website
     paths:
       - 'doc/**'  # Only trigger when files in doc directory change
 
