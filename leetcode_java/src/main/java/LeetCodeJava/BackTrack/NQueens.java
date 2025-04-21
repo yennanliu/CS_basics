@@ -47,7 +47,7 @@ public class NQueens {
      * - **Vertically** (same column),
      * - **Diagonally** (both directions).
      *
-     * So, for queens **not** to attack each other, no two queens can share:
+         * So, for queens **not** to attack each other, NO two queens can share:
      * 1. **The same row**
      * 2. **The same column**
      * 3. **The same diagonal**
