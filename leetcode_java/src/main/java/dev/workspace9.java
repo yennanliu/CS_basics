@@ -3,6 +3,7 @@ package dev;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.Heap.SingleThreadedCPU;
+import com.sun.org.apache.bcel.internal.generic.IINC;
 import com.sun.org.apache.bcel.internal.generic.PUSH;
 
 import java.util.*;
@@ -5169,15 +5170,21 @@ public class workspace9 {
 
 
     // LC 698
-    // 10.58 - 11.08 AM
+    // 12.07 - 12.26 pm
     /**
-     *  IDEA 1) 2 POINTERS + HASHMAP (cnt_map)
+     *  IDEA 1) BACKTRACK
+     *
+     *   -> a `decision tree` that everytime pick a solution...
+     *      if it is still `validated`, keep going (move further at tree)
+     *      .... if found a solution, return true directly;
+     *      Otherwise, return false at the end of the code
+     *      (means NO any solution is found)
      *
      *
      */
-    public boolean canPartitionKSubsets(int[] nums, int k) {
-        // edge
-        if(nums == null || nums.length == 0){
+     public boolean canPartitionKSubsets(int[] nums, int k) {
+         // edge
+         if(nums == null || nums.length == 0){
             return false; // ???
         }
         // ???
@@ -5197,32 +5204,138 @@ public class workspace9 {
             return false;
         }
 
-        // map : { k : cnt }
-        Map<Integer, Integer> cnt_map = new HashMap<>();
+        int sub_sum = _sum / k; // ???
+
+
         List<Integer> num_list = new ArrayList<>();
+        Map<Integer, Integer> cnt_map = new HashMap<>();
 
         for(int x : nums){
 
-            cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
-
             num_list.add(x);
+
+            cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
         }
 
-        // sort (small -> big)
-        Collections.sort(num_list, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                int diff = o1 - o2;
-                return diff;
-            }
-        });
-
-        int avg_val = _sum / k;
-        //for(i)
+        // sort list (big -> small), so we quit earlier (if element > target)
+         Collections.sort(num_list, new Comparator<Integer>() {
+             @Override
+             public int compare(Integer o1, Integer o2) {
+                 int diff = o2 - o1;
+                 return diff;
+             }
+         });
 
 
-        return true;
+        // backtrack
+        //return false;
+        return canPartitionKSubsetsHelper(nums, k, sub_sum, cnt_map, new ArrayList<>(), new ArrayList<>());
     }
+
+    public boolean canPartitionKSubsetsHelper(int[] nums, int k, int sub_sum, Map<Integer, Integer> cnt_map, List<List<Integer>> buckets, List<Integer> cur){
+
+         // if all elements are used ?????
+         if(cnt_map.isEmpty()){
+             if(isValidBuckets(sub_sum, buckets)){
+                 return true;
+             }
+             return false; // ???
+         }
+
+        int curSum = getListSum(cur);
+
+         for(Integer key: cnt_map.keySet()){
+             if(curSum + key > sub_sum){
+                 continue;
+             }
+
+             cur.add(key);
+             cnt_map.put(key, cnt_map.get(key) - 1);
+             if(cnt_map.get(key) == null){
+                 cnt_map.remove(key);
+             }
+
+             // undo
+             cur.remove(cur.size() - 1);
+             cnt_map.put(key, cnt_map.get(key) + 1); // ???
+
+         }
+
+         return false;
+    }
+
+    // ?? optimize ???
+    public boolean isValidBuckets(int sub_sum, List<List<Integer>> buckets){
+         for(List<Integer> b: buckets){
+             int sum = 0;
+             for(int x: b){
+                 sum += x;
+             }
+             if(sum != sub_sum){
+                 return false;
+             }
+         }
+
+         return true;
+    }
+
+    public int getListSum(List<Integer> list){
+         int res = 0;
+         for(int x: list){
+             res += x;
+         }
+         return res;
+    }
+
+
+//    public boolean canPartitionKSubsets(int[] nums, int k) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return false; // ???
+//        }
+//        // ???
+//        if(k == 0){
+//            return false;
+//        }
+//        if(k == 1){
+//            return true; // ???
+//        }
+//
+//        // can't divide by k
+//        int _sum = 0;
+//        for(int x: nums){
+//            _sum += x;
+//        }
+//        if(_sum % k != 0){
+//            return false;
+//        }
+//
+//        // map : { k : cnt }
+//        Map<Integer, Integer> cnt_map = new HashMap<>();
+//        List<Integer> num_list = new ArrayList<>();
+//
+//        for(int x : nums){
+//
+//            cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
+//
+//            num_list.add(x);
+//        }
+//
+//        // sort (small -> big)
+//        Collections.sort(num_list, new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                int diff = o1 - o2;
+//                return diff;
+//            }
+//        });
+//
+//        int avg_val = _sum / k;
+//        //for(i)
+//
+//
+//        return true;
+//    }
 
     // LC 51
     // 11.46 - 11. 56 am
