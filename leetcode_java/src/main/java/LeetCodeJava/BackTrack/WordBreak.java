@@ -322,6 +322,46 @@ public class WordBreak {
         return false;
     }
 
+    // V0-7
+    // IDEA: BACKTRACK (fixed by gpt) (TLE, not efficient)
+    public boolean wordBreak_0_7(String s, List<String> wordDict) {
+        // edge cases
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+        if (wordDict == null) {
+            return false;
+        }
+        if (wordDict.contains(s)) {
+            return true;
+        }
+
+        // Backtrack without modifying idx directly
+        return findWordHelper(s, wordDict, 0);
+    }
+
+    public boolean findWordHelper(String s, List<String> wordDict, int idx) {
+        // Found a solution
+        if (idx == s.length()) {
+            return true;
+        }
+
+        // Try every word in the dictionary
+        for (String word : wordDict) {
+            int end = idx + word.length();
+            // Make sure we don't go out of bounds and word matches
+            if (end <= s.length() && word.equals(s.substring(idx, end))) {
+                if (findWordHelper(s, wordDict, end)) {
+                    return true; // Found a valid path
+                }
+            }
+        }
+
+        // No valid word break found
+        return false;
+    }
+
+
     // V1
     // IDEA : DFS
     // https://leetcode.com/problems/word-break/
