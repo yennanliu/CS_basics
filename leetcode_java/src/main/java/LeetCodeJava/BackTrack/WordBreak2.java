@@ -48,6 +48,56 @@ public class WordBreak2 {
 //
 //    }
 
+    // V0-1
+    // IDEA: BFS (fixed by gpt)
+    public class WordInfo {
+        int start_idx;
+        StringBuilder sb;
+
+        public WordInfo(int start_idx, StringBuilder sb) {
+            this.start_idx = start_idx;
+            this.sb = new StringBuilder(sb); // avoid mutation
+        }
+    }
+
+    List<String> wordBreak2Res = new ArrayList<>();
+    Set<String> wordDictSet;
+
+    public List<String> wordBreak_0_1(String s, List<String> wordDict) {
+        if (s == null || s.length() == 0 || wordDict == null || wordDict.isEmpty()) {
+            return wordBreak2Res;
+        }
+
+        wordDictSet = new HashSet<>(wordDict);
+        Queue<WordInfo> q = new LinkedList<>();
+        q.offer(new WordInfo(0, new StringBuilder()));
+
+        while (!q.isEmpty()) {
+            WordInfo info = q.poll();
+            int start = info.start_idx;
+            StringBuilder currentSb = info.sb;
+
+            if (start == s.length()) {
+                wordBreak2Res.add(currentSb.toString().trim());
+                continue;
+            }
+
+            for (String word : wordDictSet) {
+                int end = start + word.length();
+                if (end <= s.length() && s.substring(start, end).equals(word)) {
+                    StringBuilder nextSb = new StringBuilder(currentSb);
+                    if (nextSb.length() > 0)
+                        nextSb.append(" ");
+                    nextSb.append(word);
+                    q.offer(new WordInfo(end, nextSb));
+                }
+            }
+        }
+
+        return wordBreak2Res;
+    }
+
+
     // V1
     // https://www.youtube.com/watch?v=QgLKdluDo08
 

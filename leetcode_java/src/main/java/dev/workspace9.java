@@ -5398,73 +5398,142 @@ public class workspace9 {
 
     // IDEA: BFS
     // 10.46 - 10.56 AM
-    public class WordInfo{
-        int start_idx;
-        String word;
+//    public class WordInfo{
+//        int start_idx;
+//        String word;
+//
+//        public WordInfo(int start_idx, String word){
+//            this.start_idx = start_idx;
+//            this.word = word;
+//        }
+//    }
+//
+//    public boolean wordBreak(String s, List<String> wordDict) {
+//        // edge
+//        if(s == null || s.length() == 0){
+//            return true;
+//        }
+//        if(s.length() == 1){
+//            return wordDict.contains(s);
+//        }
+//        if(wordDict == null){
+//            return false;
+//        }
+//        if(wordDict.contains(s)){
+//            return true;
+//        }
+//
+//        // BFS
+//        Queue<WordInfo> q = new LinkedList<>();
+//        for(String x: wordDict){
+//            // ???
+//            if(x.equals(s.substring(0, x.length()))){
+//                q.add(new WordInfo(x.length(), x));
+//            }
+//        }
+//
+//        while(!q.isEmpty()){
+//
+//            WordInfo word_info = q.poll();
+//            //int end_idx = word_info.start_idx + word_info.word.length();
+//            int start_idx = word_info.start_idx;
+//            // found a solution
+//            if(start_idx == s.length()){
+//                return true;
+//            }
+//            // ???
+//            if(start_idx > s.length()){
+//                continue;
+//            }
+//
+//            for(String x: wordDict){
+//                // ???
+//                if(x.equals(s.substring(start_idx, start_idx + x.length()))){
+//                   q.add(new WordInfo(start_idx + x.length(), x));
+//                }
+//            }
+//
+//        }
+//
+//
+//        return false;
+//    }
 
-        public WordInfo(int start_idx, String word){
+    // LC 140
+    // 10.21 - 11.15 am
+    /**
+     *
+     *  IDEA 1) BFS
+     *  IDEA 2) DFS (backtrack ???)
+     *  IDEA 3)  DP ????
+     *
+     */
+    // BFS
+        public class WordInfo{
+        int start_idx;
+        StringBuilder sb;
+
+        public WordInfo(int start_idx, StringBuilder sb){
             this.start_idx = start_idx;
-            this.word = word;
+            this.sb = sb;
         }
     }
+    List<String> wordBreak2Res = new ArrayList<>();
+    public List<String> wordBreak(String s, List<String> wordDict) {
 
-    public boolean wordBreak(String s, List<String> wordDict) {
         // edge
         if(s == null || s.length() == 0){
-            return true;
+            return wordBreak2Res;
         }
         if(s.length() == 1){
-            return wordDict.contains(s);
+            if(wordDict.contains(s)){
+                wordBreak2Res.add(s);
+            }
+            return wordBreak2Res;
         }
         if(wordDict == null){
-            return false;
+            return wordBreak2Res;
         }
         if(wordDict.contains(s)){
-            return true;
+            wordBreak2Res.add(s);
+            return wordBreak2Res;
         }
 
-        // BFS
+        // bfs
         Queue<WordInfo> q = new LinkedList<>();
-        for(String x: wordDict){
-            // ???
-            if(x.equals(s.substring(0, x.length()))){
-                q.add(new WordInfo(x.length(), x));
-            }
-        }
-
         while(!q.isEmpty()){
 
-            WordInfo word_info = q.poll();
-            //int end_idx = word_info.start_idx + word_info.word.length();
-            int start_idx = word_info.start_idx;
-            // found a solution
-            if(start_idx == s.length()){
-                return true;
+            WordInfo info = q.poll();
+            int start = info.start_idx;
+            StringBuilder _sb = info.sb;
+            String word = info.sb.toString();
+            if(start == s.length()){
+                if(!wordBreak2Res.contains(word)){
+                    wordBreak2Res.add(word);
+                }
             }
-            // ???
-            if(start_idx > s.length()){
-                continue;
+
+            if(info.start_idx > s.length()){
+                continue; // ???
             }
 
             for(String x: wordDict){
-                // ???
-                if(x.equals(s.substring(start_idx, start_idx + x.length()))){
-                   q.add(new WordInfo(start_idx + x.length(), x));
+                if(start + x.length() < s.length() && x.equals(s.substring(start, start + x.length()))){
+                    // NOTE !!! below
+//                    word += "";
+//                    word += x;
+                    _sb.append("");
+                    _sb.append(x);
+                    q.add(new WordInfo(start + x.length(), _sb));
+                    // undo
+                   // word.de
                 }
             }
 
         }
 
-
-        return false;
+        return wordBreak2Res; //???
     }
-
-    // LC 140
-    // 10.21 - 10.31 am
-//    public List<String> wordBreak(String s, List<String> wordDict) {
-//
-//        return null;
-//    }
 
 
 
