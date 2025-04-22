@@ -5342,12 +5342,129 @@ public class workspace9 {
         return res;
     }
 
+    // LC 139
+    // 10.23 - 10.33 am
+    // IDEA: BACKTRACK
+//    public boolean wordBreak(String s, List<String> wordDict) {
+//        // edge
+//        if(s == null || s.length() == 0){
+//            return true;
+//        }
+//        if(s.length() == 1){
+//            return wordDict.contains(s);
+//        }
+//        if(wordDict == null){
+//            return false;
+//        }
+//        if(wordDict.contains(s)){
+//            return true;
+//        }
+//
+//        // backtrack
+//        int start_idx = 0;
+//        return findWordHelper(s, wordDict, start_idx);
+//    }
+//
+//    public boolean findWordHelper(String s, List<String> wordDict, int start_idx){
+//        // found a solution
+//        if(start_idx == s.length() - 1){
+//            return true;
+//        }
+//        // should NOT visit this point ????
+//        if(start_idx > s.length() - 1){
+//            return false;
+//        }
+//
+//        // ???
+//        for(String x: wordDict){
+//            int start = start_idx;
+//            int end = start_idx + x.length();
+//            if(end < s.length() && x.equals(s.substring(start, end))){
+////                // move forward
+////                start_idx += x.length();
+////                findWordHelper(s, wordDict, start_idx);
+////                // undo
+////                start_idx -= x.length();
+//                // NOTE !!! below, return true if found a solution
+//                if(findWordHelper(s, wordDict, end)){
+//                    return true;
+//                }
+//            }
+//        }
+//
+//        return false;
+//    }
+
+
+    // IDEA: BFS
+    // 10.46 - 10.56 AM
+    public class WordInfo{
+        int start_idx;
+        String word;
+
+        public WordInfo(int start_idx, String word){
+            this.start_idx = start_idx;
+            this.word = word;
+        }
+    }
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        // edge
+        if(s == null || s.length() == 0){
+            return true;
+        }
+        if(s.length() == 1){
+            return wordDict.contains(s);
+        }
+        if(wordDict == null){
+            return false;
+        }
+        if(wordDict.contains(s)){
+            return true;
+        }
+
+        // BFS
+        Queue<WordInfo> q = new LinkedList<>();
+        for(String x: wordDict){
+            // ???
+            if(x.equals(s.substring(0, x.length()))){
+                q.add(new WordInfo(x.length(), x));
+            }
+        }
+
+        while(!q.isEmpty()){
+
+            WordInfo word_info = q.poll();
+            //int end_idx = word_info.start_idx + word_info.word.length();
+            int start_idx = word_info.start_idx;
+            // found a solution
+            if(start_idx == s.length()){
+                return true;
+            }
+            // ???
+            if(start_idx > s.length()){
+                continue;
+            }
+
+            for(String x: wordDict){
+                // ???
+                if(x.equals(s.substring(start_idx, start_idx + x.length()))){
+                   q.add(new WordInfo(start_idx + x.length(), x));
+                }
+            }
+
+        }
+
+
+        return false;
+    }
 
     // LC 140
-    public List<String> wordBreak(String s, List<String> wordDict) {
-
-        return null;
-    }
+    // 10.21 - 10.31 am
+//    public List<String> wordBreak(String s, List<String> wordDict) {
+//
+//        return null;
+//    }
 
 
 
