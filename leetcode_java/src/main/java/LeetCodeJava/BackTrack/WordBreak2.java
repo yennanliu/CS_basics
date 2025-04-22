@@ -86,8 +86,16 @@ public class WordBreak2 {
                 int end = start + word.length();
                 if (end <= s.length() && s.substring(start, end).equals(word)) {
                     StringBuilder nextSb = new StringBuilder(currentSb);
-                    if (nextSb.length() > 0)
+                    /**
+                     * is used to insert a space between words in the final sentence —
+                     * but only if it's not the first word.
+                     *
+                     * so, below logic make sure we ONLY add space
+                     * when the word is NOT the `first word`
+                     */
+                    if (nextSb.length() > 0){
                         nextSb.append(" ");
+                    }
                     nextSb.append(word);
                     q.offer(new WordInfo(end, nextSb));
                 }
