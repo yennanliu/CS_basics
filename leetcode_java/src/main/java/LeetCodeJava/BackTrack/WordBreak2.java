@@ -48,10 +48,14 @@ public class WordBreak2 {
 //
 //    }
 
-    // V1-1
+    // V1
+    // https://www.youtube.com/watch?v=QgLKdluDo08
+
+
+    // V2-1
     // IDEA: Backtracking
     // https://leetcode.com/problems/word-break-ii/editorial/
-    public List<String> wordBreak_1_1(String s, List<String> wordDict) {
+    public List<String> wordBreak_2_1(String s, List<String> wordDict) {
         // Convert wordDict to a set for O(1) lookups
         Set<String> wordSet = new HashSet<>(wordDict);
         List<String> results = new ArrayList<>();
@@ -92,11 +96,11 @@ public class WordBreak2 {
         }
     }
 
-    // V1-2
+    // V2-2
     // IDEA: Dynamic Programming - Memoization
     // https://leetcode.com/problems/word-break-ii/editorial/
     // Main function to break the string into words
-    public List<String> wordBreak_1_2(String s, List<String> wordDict) {
+    public List<String> wordBreak_2_2(String s, List<String> wordDict) {
         Set<String> wordSet = new HashSet<>(wordDict);
         Map<String, List<String>> memoization = new HashMap<>();
         return dfs(s, wordSet, memoization);
@@ -137,10 +141,10 @@ public class WordBreak2 {
         return results;
     }
 
-    // V1-3
+    // V2-3
     // IDEA: Dynamic Programming - Tabulation
     // https://leetcode.com/problems/word-break-ii/editorial/
-    public List<String> wordBreak_1_3(String s, List<String> wordDict) {
+    public List<String> wordBreak_2_3(String s, List<String> wordDict) {
         // Map to store results of subproblems
         Map<Integer, List<String>> dp = new HashMap<>();
 
@@ -183,7 +187,7 @@ public class WordBreak2 {
     }
 
 
-    // V1-4
+    // V2-4
     // IDEA: Trie Optimization
     // https://leetcode.com/problems/word-break-ii/editorial/
     class TrieNode {
@@ -217,7 +221,7 @@ public class WordBreak2 {
             node.isEnd = true;
         }
     }
-    public List<String> wordBreak_1_4(String s, List<String> wordDict) {
+    public List<String> wordBreak_2_4(String s, List<String> wordDict) {
         // Build the Trie from the word dictionary
         Trie trie = new Trie();
         for (String word : wordDict) {
@@ -275,6 +279,9 @@ public class WordBreak2 {
         return dp.getOrDefault(0, new ArrayList<>());
     }
 
-    // V2
+    // V3
+
+
+    // V4
     
 }
