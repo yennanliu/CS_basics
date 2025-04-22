@@ -42,6 +42,7 @@ public class PartitionToKEqualSumSubsets {
     // V0-1
     // IDEA: HASHMAP + BACKTRACK (fixed by gpt)
     public boolean canPartitionKSubsets_0_1(int[] nums, int k) {
+        // edge
         if (nums == null || nums.length == 0 || k <= 0)
             return false;
 
@@ -71,6 +72,15 @@ public class PartitionToKEqualSumSubsets {
         return backtrack(0, num_list, cnt_map, buckets, target);
     }
 
+    /**
+     *  NOTE !!!
+     *
+     *   we have 2 helper fumc for this problem
+     *
+     *   1. backtrack
+     *   2. tryPlacing
+     *
+     */
     private boolean backtrack(int index, List<Integer> num_list, Map<Integer, Integer> cnt_map, int[] buckets,
                               int target) {
         if (index == num_list.size()) {
@@ -96,23 +106,121 @@ public class PartitionToKEqualSumSubsets {
             return backtrack(numIndex + 1, num_list, cnt_map, buckets, target);
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *   we loop over `bucket`,
+         *   -> try every bucket, try to add new element (tryPlacing), validate result
+         *
+         *   (instead of loop over cnt_map)
+         *
+         */
         for (int i = bucketIndex; i < buckets.length; i++) {
+
             if (buckets[i] + num > target)
                 continue;
 
             buckets[i] += num;
 
-            if (tryPlacing(num, count - 1, buckets, i, target, numIndex, num_list, cnt_map))
+            /**
+             *  NOTE !!!!
+             *
+             *   if below tryPlacing recursive call work, return true directly
+             */
+            if (tryPlacing(num, count - 1, buckets, i, target, numIndex, num_list, cnt_map)){
                 return true;
+            }
 
+            // undo
             buckets[i] -= num;
 
             // Optimization: if placing in an empty bucket didn't work, don't try other empty buckets
-            if (buckets[i] == 0)
+            if (buckets[i] == 0){
                 break;
+            }
+
         }
 
         return false;
+    }
+
+    // V0-2
+    // IDEA: BACKTRACK (fixed by gpt)
+
+    public boolean canPartitionKSubsets_0_2(int[] nums, int k) {
+        if (nums == null || nums.length == 0 || k <= 0) {
+            return false;
+        }
+
+        // Sum of all elements in the array
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+
+        // If total sum cannot be divided by k, it's impossible to partition
+        if (sum % k != 0) {
+            return false;
+        }
+
+        // Target sum for each subset
+        int target = sum / k;
+
+        // Sort the array in descending order to optimize backtracking
+        Arrays.sort(nums);
+        reverse_0_2(nums);
+
+        // Create a bucket list to track the current sum of each subset
+        int[] buckets = new int[k];
+
+        // Backtracking to partition the array into k subsets
+        return backtrack_0_2(nums, 0, buckets, target);
+    }
+
+    private boolean backtrack_0_2(int[] nums, int index, int[] buckets, int target) {
+        if (index == nums.length) {
+            // If all numbers are used, check if all buckets have the target sum
+            for (int bucket : buckets) {
+                if (bucket != target) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        int num = nums[index];
+
+        // Try placing the current number in any bucket
+        for (int i = 0; i < buckets.length; i++) {
+            if (buckets[i] + num <= target) {
+                buckets[i] += num; // Choose this bucket
+
+                if (backtrack_0_2(nums, index + 1, buckets, target)) {
+                    return true;
+                }
+
+                buckets[i] -= num; // Undo the choice if it leads to a dead-end
+            }
+
+            // Optimization: If the bucket is empty or this number is already placed in a previous bucket, no need to try this bucket again
+            if (buckets[i] == 0) {
+                break;
+            }
+        }
+
+        return false;
+    }
+
+    // Helper method to reverse the array (sorting in descending order)
+    private void reverse_0_2(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+            left++;
+            right--;
+        }
     }
 
     // V1
