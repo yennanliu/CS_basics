@@ -5276,5 +5276,11 @@ public class workspace9 {
         return false;
     }
 
+    // LC 52
+    public int totalNQueens(int n) {
+
+        return 0;
+    }
+
 }
 
