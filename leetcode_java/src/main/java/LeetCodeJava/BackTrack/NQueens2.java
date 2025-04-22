@@ -2,9 +2,7 @@ package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/n-queens-ii/description/
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 52. N-Queens II
@@ -39,9 +37,63 @@ import java.util.Set;
 public class NQueens2 {
 
     // V0
-//    public int totalNQueens(int n) {
-//
-//    }
+    // IDEA: N QUEENS (LC 51) + unique cnt
+    public int totalNQueens(int n) {
+        // edge
+        if (n == 1 || n == 0) {
+            return n; // ???
+        }
+
+        // LC 51 N QUEENS
+        List<List<String>> result = new ArrayList<>();
+
+        char[][] board = new char[n][n];
+        for (char[] row : board)
+            Arrays.fill(row, '.');
+
+        boolean[] cols = new boolean[n]; // tracks columns
+        boolean[] diag1 = new boolean[2 * n - 1]; // tracks ↘ diagonals (row - col + n - 1)
+        boolean[] diag2 = new boolean[2 * n - 1]; // tracks ↙ diagonals (row + col)
+
+        nQueenBacktrack(0, board, result, cols, diag1, diag2);
+
+        return result.size();
+    }
+
+    private void nQueenBacktrack(int row, char[][] board, List<List<String>> result,
+                                 boolean[] cols, boolean[] diag1, boolean[] diag2) {
+        int n = board.length;
+        if (row == n) {
+            result.add(constructBoard(board));
+            return;
+        }
+
+        for (int col = 0; col < n; col++) {
+            int d1 = row - col + n - 1; // ↘ diagonal index
+            int d2 = row + col; // ↙ diagonal index
+
+            if (cols[col] || diag1[d1] || diag2[d2])
+                continue;
+
+            // Place queen
+            board[row][col] = 'Q';
+            cols[col] = diag1[d1] = diag2[d2] = true;
+
+            nQueenBacktrack(row + 1, board, result, cols, diag1, diag2);
+
+            // Backtrack
+            board[row][col] = '.';
+            cols[col] = diag1[d1] = diag2[d2] = false;
+        }
+    }
+
+    private List<String> constructBoard(char[][] board) {
+        List<String> res = new ArrayList<>();
+        for (char[] row : board) {
+            res.add(new String(row));
+        }
+        return res;
+    }
 
     // V1
     // https://www.youtube.com/watch?v=nalYyLZgvCY
