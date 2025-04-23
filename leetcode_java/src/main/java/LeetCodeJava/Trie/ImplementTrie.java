@@ -151,7 +151,107 @@ public class ImplementTrie {
         }
     }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/implement-prefix-tree
+    // IDEA: ARRAY
+//    public class TrieNode {
+//        TrieNode[] children = new TrieNode[26];
+//        boolean endOfWord = false;
+//    }
+//
+//    public class PrefixTree {
+//        private TrieNode root;
+//
+//        public PrefixTree() {
+//            root = new TrieNode();
+//        }
+//
+//        public void insert(String word) {
+//            TrieNode cur = root;
+//            for (char c : word.toCharArray()) {
+//                int i = c - 'a';
+//                if (cur.children[i] == null) {
+//                    cur.children[i] = new TrieNode();
+//                }
+//                cur = cur.children[i];
+//            }
+//            cur.endOfWord = true;
+//        }
+//
+//        public boolean search(String word) {
+//            TrieNode cur = root;
+//            for (char c : word.toCharArray()) {
+//                int i = c - 'a';
+//                if (cur.children[i] == null) {
+//                    return false;
+//                }
+//                cur = cur.children[i];
+//            }
+//            return cur.endOfWord;
+//        }
+//
+//        public boolean startsWith(String prefix) {
+//            TrieNode cur = root;
+//            for (char c : prefix.toCharArray()) {
+//                int i = c - 'a';
+//                if (cur.children[i] == null) {
+//                    return false;
+//                }
+//                cur = cur.children[i];
+//            }
+//            return true;
+//        }
+//    }
+
+
+    // V1-2
+    // https://neetcode.io/problems/implement-prefix-tree
+    // IDEA:
+//    public class TrieNode {
+//        HashMap<Character, TrieNode> children = new HashMap<>();
+//        boolean endOfWord = false;
+//    }
+//
+//    public class PrefixTree {
+//        private TrieNode root;
+//
+//        public PrefixTree() {
+//            root = new TrieNode();
+//        }
+//
+//        public void insert(String word) {
+//            TrieNode cur = root;
+//            for (char c : word.toCharArray()) {
+//                cur.children.putIfAbsent(c, new TrieNode());
+//                cur = cur.children.get(c);
+//            }
+//            cur.endOfWord = true;
+//        }
+//
+//        public boolean search(String word) {
+//            TrieNode cur = root;
+//            for (char c : word.toCharArray()) {
+//                if (!cur.children.containsKey(c)) {
+//                    return false;
+//                }
+//                cur = cur.children.get(c);
+//            }
+//            return cur.endOfWord;
+//        }
+//
+//        public boolean startsWith(String prefix) {
+//            TrieNode cur = root;
+//            for (char c : prefix.toCharArray()) {
+//                if (!cur.children.containsKey(c)) {
+//                    return false;
+//                }
+//                cur = cur.children.get(c);
+//            }
+//            return true;
+//        }
+//    }
+
+    // V2
     // https://leetcode.com/problems/implement-trie-prefix-tree/editorial/
     class TrieNode2 {
 
@@ -236,7 +336,7 @@ public class ImplementTrie {
     }
 
 
-    // V2
+    // V3
     // https://leetcode.com/problems/implement-trie-prefix-tree/solutions/3309950/java-easiest-solution/
     class TrieNode3 {
         boolean isWord;
@@ -292,7 +392,7 @@ public class ImplementTrie {
         }
     }
 
-    // V3
+    // V4
     // https://leetcode.com/problems/implement-trie-prefix-tree/solutions/3308019/simple-implementation-in-java/
     class Trie4 {
         // Trie Node class
