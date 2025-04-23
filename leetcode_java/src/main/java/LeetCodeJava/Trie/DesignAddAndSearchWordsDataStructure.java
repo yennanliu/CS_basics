@@ -235,6 +235,73 @@ public class DesignAddAndSearchWordsDataStructure {
 
     }
 
+    // V0-1
+    // IDEA: TRIE + DFS (gpt)
+    class MyTreeNode2 {
+        Map<Character, MyTreeNode2> children;
+        boolean isEnd;
+
+        public MyTreeNode2() {
+            this.children = new HashMap<>();
+            this.isEnd = false;
+        }
+    }
+
+    class WordDictionary_0_1 {
+        private final MyTreeNode2 root;
+
+        public WordDictionary_0_1() {
+            this.root = new MyTreeNode2();
+        }
+
+        /** Adds a word into the data structure. */
+        public void addWord(String word) {
+            if (word == null || word.isEmpty()) return;
+
+            MyTreeNode2 current = root;
+            for (char ch : word.toCharArray()) {
+                current.children.putIfAbsent(ch, new MyTreeNode2());
+                current = current.children.get(ch);
+            }
+            current.isEnd = true;
+        }
+
+        /** Returns if the word is in the data structure. */
+        public boolean search(String word) {
+            return dfs(word.toCharArray(), 0, root);
+        }
+
+        /**
+         * DFS helper for handling wildcards.
+         * @param word - character array of the input string
+         * @param index - current index in the word
+         * @param node - current trie node
+         * @return true if the word is matched
+         */
+        private boolean dfs(char[] word, int index, MyTreeNode2 node) {
+            if (index == word.length) {
+                return node.isEnd;
+            }
+
+            char ch = word[index];
+
+            if (ch == '.') {
+                // Try all possible children
+                for (MyTreeNode2 child : node.children.values()) {
+                    if (dfs(word, index + 1, child)) {
+                        return true;
+                    }
+                }
+                return false;
+            } else {
+                MyTreeNode2 next = node.children.get(ch);
+                if (next == null) return false;
+                return dfs(word, index + 1, next);
+            }
+        }
+    }
+
+
     // V1
     // IDEA : TRIE
     // https://leetcode.com/problems/design-add-and-search-words-data-structure/editorial/
