@@ -5649,24 +5649,106 @@ public class workspace9 {
     }
 
     // LC 208
-    // 10.21 - 10.31 pm
+    // 10.21 - 10.42 pm
+    // IDEA : TREENODE + TRIE
+//    class MyTreeNode{
+//
+//        String val;
+//        boolean isEnd;
+//
+//        Map<MyTreeNode, List<MyTreeNode>> children;
+//
+//        public MyTreeNode(String val, MyTreeNode child, boolean isEnd){
+//            this.val = val;
+//            this.isEnd = true; // ??
+//
+//            this.children = new HashMap<>(); // ??
+//            this.children.put(child, new ArrayList<>()); // ?
+//        }
+//
+//        public MyTreeNode(String val){
+//            this.val = val;
+//            this.isEnd = true; // ??
+//            this.children = new HashMap<>(); // ??
+//        }
+//
+//    }
+    class MyTreeNode{
+       // String val;
+        Map<String, MyTreeNode> children;
+        boolean isEnd;
+
+        public MyTreeNode(){
+            this.children = new HashMap<>();
+            this.isEnd = false;
+        }
+    }
     class Trie {
 
-        public Trie() {
+        MyTreeNode node;
+        //Map<MyTreeNode, List<MyTreeNode>> children;
 
+        public Trie() {
+            //this.node = new MyTreeNode(null);
+           // this.children = new HashMap<>(); // ??
+            this.node = new MyTreeNode();
         }
 
         public void insert(String word) {
+            //if(!this.)
+            if(word == null || word.length() == 0){
+                return;
+            }
 
+            MyTreeNode node = this.node; //??
+
+            for(String x: word.split("")){
+
+                if(!node.children.containsKey(x)){
+                    node.children.put(x, new MyTreeNode());
+                }
+
+                node = node.children.get(x); // ??
+            }
+
+            node.isEnd = true; // /??
         }
 
         public boolean search(String word) {
-            return false;
+
+            if(word == null || word.length() == 0){
+                return false;
+            }
+
+            MyTreeNode node = this.node;
+
+            for(String x: word.split("")){
+                if(!this.node.children.containsKey(x)){
+                    return false;
+                }
+                node = node.children.get(x);
+            }
+
+            return node.isEnd;
         }
 
         public boolean startsWith(String prefix) {
-            return false;
+            if(prefix == null || prefix.length() == 0){
+                return false;
+            }
+
+            MyTreeNode node = this.node;
+
+            for(String x: prefix.split("")){
+                if(!this.node.children.containsKey(x)){
+                    return false;
+                }
+                node = node.children.get(x);
+            }
+
+            return true;
         }
+
     }
 
 
