@@ -3,6 +3,9 @@ package LeetCodeJava.Trie;
 // https://leetcode.com/problems/extra-characters-in-a-string/
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  * 2707. Extra Characters in a String
@@ -69,6 +72,154 @@ public class ExtraCharactersInAString {
     }
 
 
-    // V2
+    // V2-1
+    // https://leetcode.com/problems/extra-characters-in-a-string/editorial/
+    // IDEA: Top Down Dynamic Programming with Substring Method
+    Integer[] memo;
+    HashSet<String> dictionarySet;
+
+    public int minExtraChar_2_1(String s, String[] dictionary) {
+        int n = s.length();
+        memo = new Integer[n];
+        dictionarySet = new HashSet<>(Arrays.asList(dictionary));
+        return dp(0, n, s);
+    }
+
+    private int dp(int start, int n, String s) {
+        if (start == n) {
+            return 0;
+        }
+        if (memo[start] != null) {
+            return memo[start];
+        }
+        // To count this character as a left over character
+        // move to index 'start + 1'
+        int ans = dp(start + 1, n, s) + 1;
+        for (int end = start; end < n; end++) {
+            String curr = s.substring(start, end + 1);
+            if (dictionarySet.contains(curr)) {
+                ans = Math.min(ans, dp(end + 1, n, s));
+            }
+        }
+
+        return memo[start] = ans;
+    }
+
+
+    // V2-2
+    // https://leetcode.com/problems/extra-characters-in-a-string/editorial/
+    // IDEA: Bottom Up Dynamic Programming with Substring Method
+    public int minExtraChar_2_2(String s, String[] dictionary) {
+        int n = s.length();
+        HashSet dictionarySet = new HashSet<>(Arrays.asList(dictionary));
+        int[] dp = new int[n + 1];
+
+        for (int start = n - 1; start >= 0; start--) {
+            dp[start] = dp[start + 1] + 1;
+            for (int end = start; end < n; end++) {
+                String curr = s.substring(start, end + 1);
+                if (dictionarySet.contains(curr)) {
+                    dp[start] = Math.min(dp[start], dp[end + 1]);
+                }
+            }
+        }
+
+        return dp[0];
+    }
+
+    // V2-3
+    // https://leetcode.com/problems/extra-characters-in-a-string/editorial/
+    // IDEA: Top Down Dynamic Programming with Trie
+    class TrieNode {
+        Map<Character, TrieNode> children = new HashMap();
+        boolean is_word = false;
+    }
+    TrieNode root;
+    Integer[] memo_2_3;
+    public int minExtraChar_2_3(String s, String[] dictionary) {
+        int n = s.length();
+        root = buildTrie(dictionary);
+        memo_2_3 = new Integer[n + 1];
+        return dp_2_3(0, n, s);
+    }
+
+    private int dp_2_3(int start, int n, String s) {
+        if (start == n) {
+            return 0;
+        }
+        if (memo_2_3[start] != null) {
+            return memo_2_3[start];
+        }
+
+        TrieNode node = root;
+        // To count this character as a left over character
+        // move to index 'start + 1'
+        int ans = dp_2_3(start + 1, n, s) + 1;
+        for (int end = start; end < n; end++) {
+            char c = s.charAt(end);
+            if (!node.children.containsKey(c)) {
+                break;
+            }
+            node = node.children.get(c);
+            if (node.is_word) {
+                ans = Math.min(ans, dp_2_3(end + 1, n, s));
+            }
+        }
+
+        return memo_2_3[start] = ans;
+    }
+
+    private TrieNode buildTrie(String[] dictionary) {
+        TrieNode root = new TrieNode();
+        for (String word : dictionary) {
+            TrieNode node = root;
+            for (char c : word.toCharArray()) {
+                node.children.putIfAbsent(c, new TrieNode());
+                node = node.children.get(c);
+            }
+            node.is_word = true;
+        }
+        return root;
+    }
+
+
+    // V2-4
+    // https://leetcode.com/problems/extra-characters-in-a-string/editorial/
+    // IDEA: : Bottom Up Dynamic Programming with Trie
+//    public int minExtraChar_2_4(String s, String[] dictionary) {
+//        int n = s.length();
+//        var root = buildTrie(dictionary);
+//        var dp = new int[n + 1];
+//
+//        for (int start = n - 1; start >= 0; start--) {
+//            dp[start] = dp[start + 1] + 1;
+//            var node = root;
+//            for (int end = start; end < n; end++) {
+//                if (!node.children.containsKey(s.charAt(end))) {
+//                    break;
+//                }
+//                node = node.children.get(s.charAt(end));
+//                if (node.isWord) {
+//                    dp[start] = Math.min(dp[start], dp[end + 1]);
+//                }
+//            }
+//        }
+//
+//        return dp[0];
+//    }
+//
+//    private TrieNode buildTrie(String[] dictionary) {
+//        var root = new TrieNode();
+//        for (var word : dictionary) {
+//            var node = root;
+//            for (var c : word.toCharArray()) {
+//                node.children.putIfAbsent(c, new TrieNode());
+//                node = node.children.get(c);
+//            }
+//            node.isWord = true;
+//        }
+//        return root;
+//    }
+
 
 }
