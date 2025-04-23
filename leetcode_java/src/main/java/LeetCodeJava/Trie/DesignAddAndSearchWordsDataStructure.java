@@ -55,7 +55,7 @@ import java.util.Set;
 public class DesignAddAndSearchWordsDataStructure {
 
     // V0
-    // IDEA : TRIE
+    // IDEA : TRIE (LC 208) + RECURSION + SUB STRING
     class TrieNode {
         Map<String, TrieNode> children = new HashMap<>();
         boolean isEnd = false;
@@ -88,6 +88,16 @@ public class DesignAddAndSearchWordsDataStructure {
         /** Returns if the word is in the node. */
         public boolean searchInNode(String word, TrieNode node) {
 
+            /**
+             *  NOTE !!!
+             *
+             *   we loop over `idx` of word
+             *
+             *   (instead of word)
+             *
+             *   -> then we know how to sub string the string (via idx)
+             *
+             */
             for (int i = 0; i < word.length(); ++i) {
                 char ch = word.charAt(i);
                 String key = String.valueOf(ch);
@@ -104,8 +114,100 @@ public class DesignAddAndSearchWordsDataStructure {
                              *  -> and check if any of them is valid
                              *  -> so we need to RECURSIVELY call searchInNode method with "i+1" sub string
                              */
-
                             /** if can find remain elements in word */
+                            /**
+                             *
+                             *  NOTE !!!!
+                             *
+                             *   Reason why can't use  if(!this.search(_word)){return false} ....
+                             *
+                             *
+                             * ```java
+                             * if (!this.search(_word)) {
+                             *     return false;
+                             * }
+                             * this.search(_word); // ???
+                             * ```
+                             *
+                             * …not functionally the same as just this:
+                             *
+                             * ```java
+                             * if (this.search(_word)) {
+                             *     return true;
+                             * }
+                             * ```
+                             *
+                             *   ### 🔍 What’s the actual difference?
+                             *
+                             * Let’s walk through it step-by-step:
+                             *
+                             * -------------------------------------------------
+                             * ## 🔁 Original block:
+                             * -------------------------------------------------
+                             *
+                             * ```java
+                             * if (!this.search(_word)) {
+                             *     return false;
+                             * }
+                             * this.search(_word); // ????
+                             * ```
+                             *
+                             *   ### What happens?
+                             *
+                             * - You call `this.search(_word)`.
+                             * - If it's **false**, you `return false` immediately.
+                             * - But if it’s **true**, you… call it again?
+                             *     ➤ That second call is **completely unnecessary**, and **does nothing** — it doesn’t store, return, or use the result.
+                             *
+                             * ### ❌ Problems:
+                             * - It repeats work.
+                             * - It adds cognitive overhead.
+                             * - It suggests a misunderstanding of how `if` statements + recursion should flow.
+                             *
+                             *
+                             *
+                             * -------------------------------------------------
+                             *  ## ✅ Correct logic (used in your current code):
+                             * -------------------------------------------------
+                             *
+                             *
+                             *   if (searchInNode(word.substring(i + 1), child)) {
+                             *                                 return true;
+                             *     }
+                             *
+                             * ### What happens?
+                             *
+                             * - You call `search(_word)`.
+                             * - If **any path** from the wildcard returns `true`, you short-circuit and return early.
+                             * - If **none** match, loop continues or returns `false` after the loop.
+                             *
+                             * This is the **correct backtracking pattern** for wildcard matching
+                             * like in regex or trie DFS.
+                             *
+                             *
+                             *  ### 💡 Summary Table:
+                             *
+                             * | Version | Behavior | Outcome |
+                             * |--------|----------|---------|
+                             * | `if (!search()) return false; search();` | Redundant extra call | Inefficient, unclear |
+                             * | `if (search()) return true;` | Early exit on match | ✅ Correct backtracking |
+                             * | `search();` alone | No effect unless used | ❌ Ineffective |
+                             *
+                             *
+                             *
+                             *
+                             * ### 🛠 Recommendation:
+                             *
+                             * Always **return early** inside wildcard DFS-style logic when a path matches.
+                             * Avoid calling `search()` multiple times on the same substring
+                             * unless you're branching or exploring alternative states.
+                             */
+                            /**
+                             *  NOTE !!!
+                             *
+                             *   we get sub string of word via `word.substring(i + 1)`
+                             *
+                             */
                             if (searchInNode(word.substring(i + 1), child)) {
                                 return true;
                             }
