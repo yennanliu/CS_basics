@@ -71,6 +71,17 @@ public class ImplementTrie {
      *      `Trie` is more like a nominal class
      *         -> we define it, but NOT use it directly
      */
+    /**
+     *  NOTE !!!  ONLY 2 attr for `custom node`
+     *
+     *   1. Map<String TrieNode> children;
+     *   2. boolean isEnd;
+     *
+     *
+     *  -> NO need to setup `value`, value already included in the `children` attr
+     *     e.g. `String` part of the `Map<String, TrieNode>`
+     *
+     */
     class TrieNode {
 
         /** NOTE !!!!
