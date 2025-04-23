@@ -520,7 +520,7 @@
 1339| [Maximum Product of Splitted Binary Tree](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/) |  [Python](./leetcode_python/Tree/maximum-product-of-splitted-binary-tree.py) ||| Medium |dfs, tree, amazon| AGAIN*** (1) (not start)
 1372| [Longest ZigZag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/) |  [Python](./leetcode_python/Tree/longest-zigzag-path-in-a-binary-tree.py) ||| Medium |dfs, bfs, post order, good trick, tree, amazon| AGAIN*** (1) (not start)
 1448| [Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/) |  [Python](./leetcode_python/Tree/count-good-nodes-in-binary-tree.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/CountGoodNodesInBinaryTree.java) ||| Medium |max in path, dfs, bfs, good trick, tree, needcode, google, amz, m$| AGAIN************* (3) (MUST)
-2707| [Extra Characters in a String](https://leetcode.com/problems/extra-characters-in-a-string/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/ExtraCharactersInAString.java) ||| Medium |Trie| AGAIN (not start)
+2707| [Extra Characters in a String](https://leetcode.com/problems/extra-characters-in-a-string/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Trie/ExtraCharactersInAString.java) ||| Medium |Trie| AGAIN (not start)
 
 
 ## Heap
