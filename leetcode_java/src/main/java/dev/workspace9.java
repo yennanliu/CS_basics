@@ -3,6 +3,7 @@ package dev;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.Heap.SingleThreadedCPU;
+import LeetCodeJava.Trie.DesignAddAndSearchWordsDataStructure;
 import com.sun.org.apache.bcel.internal.generic.IINC;
 import com.sun.org.apache.bcel.internal.generic.PUSH;
 
@@ -5744,6 +5745,117 @@ public class workspace9 {
                     return false;
                 }
                 node = node.children.get(x);
+            }
+
+            return true;
+        }
+
+    }
+
+    // LC 211
+    // IDEA: TRIE
+    // 11.20 - 11.30 am
+    class MyTreeNode2{
+        Map<String, MyTreeNode2> children;
+        boolean isEnd;
+
+        public MyTreeNode2(){
+            this.children = new HashMap<>(); // ?
+            this.isEnd = false;
+        }
+
+    }
+    class WordDictionary {
+
+        MyTreeNode2 node;
+
+        /** Initialize your data structure here. */
+        public WordDictionary() {
+            this.node = new MyTreeNode2();
+        }
+
+        /** Adds a word into the data structure. */
+        public void addWord(String word) {
+
+            if(word == null || word.length() == 0){
+                return;
+            }
+
+            MyTreeNode2 node = this.node; //??
+
+            for(String x: word.split("")){
+
+                if(!node.children.containsKey(x)){
+                    node.children.put(x, new MyTreeNode2());
+                }
+
+                node = node.children.get(x); // ??
+            }
+
+            node.isEnd = true; // /??
+        }
+
+        /** Returns if the word is in the node. */
+        // ????
+        public boolean searchInNode(String word, MyTreeNode2 node) {
+
+            MyTreeNode2 node2 = this.node; // ??
+            // ???
+            return this.search(word);
+        }
+
+        /** Returns if the word is in the data structure.
+         *  A word could contain the dot character '.'
+         *  to represent any one letter.
+         *
+         */
+        // helper func
+        public boolean search(String word) {
+
+            if(word == null || word.length() == 0){
+                return true;
+            }
+
+            MyTreeNode2 node = this.node;
+
+            for(int i = 0; i < word.length(); i++){
+
+                String x = String.valueOf(word.charAt(i));
+
+                // case 1) if `trie` has NO such key
+                if(!node.children.containsKey(x)){
+
+                    // case 1-1) x != '.'
+                    // NOTE !!! if x != '.' AND node has NO such children, return false directly
+                    if(x != "."){
+                        return false;
+                    }
+                    // case 1-2) x == '.'
+                    // -> loop over all `children, since '.' could by any string
+                    else{
+                        for(String k : node.children.keySet()){
+                            // NOTE !!! below recursive call and res
+                            // ?????
+                            // get sub string of word (remove current 1st element)
+                            //String _word = word.substring(1, word.length()-1);
+                            // NOTE !!! sub str should start from the next of current (idx + 1)
+                            String _word = word.substring(i+1);
+//                            if(! this.search(_word)){
+//                                return false;
+//                            }
+//                            this.search(_word); // ???
+                            if(this.search(_word)){
+                                return true;
+                            }
+                        }
+                    }
+
+                }
+                // case 2) if `trie` has such key
+                else{
+                    node = node.children.get(x);
+                }
+
             }
 
             return true;
