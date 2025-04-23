@@ -5648,6 +5648,27 @@ public class workspace9 {
         return wordBreak2Res; //???
     }
 
+    // LC 208
+    // 10.21 - 10.31 pm
+    class Trie {
+
+        public Trie() {
+
+        }
+
+        public void insert(String word) {
+
+        }
+
+        public boolean search(String word) {
+            return false;
+        }
+
+        public boolean startsWith(String prefix) {
+            return false;
+        }
+    }
+
 
 
 
