@@ -88,10 +88,10 @@ public class WordBreak2 {
                     StringBuilder nextSb = new StringBuilder(currentSb);
                     /**
                      * is used to insert a space between words in the final sentence —
-                     * but only if it's not the first word.
+                     * but only if it's NOT the first word. (nextSb.length() > 0)
                      *
-                     * so, below logic make sure we ONLY add space
-                     * when the word is NOT the `first word`
+                     * -> below logic make sure ONLY add space
+                     *    when `NOT first word`
                      */
                     if (nextSb.length() > 0){
                         nextSb.append(" ");

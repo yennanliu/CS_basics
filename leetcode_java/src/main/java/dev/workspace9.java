@@ -5886,12 +5886,24 @@ public class workspace9 {
         int l = board.length;
         int w = board[0].length;
 
-        for(String word: words){
+//        for(String word: words){
+//
+//            //boolean[][] visited = new boolean[l][w];
+//
+//            if(isFound(board, word, 0, 0, new boolean[l][w], 0)){
+//                word2Res.add(word);
+//            }
+//        }
 
-            //boolean[][] visited = new boolean[l][w];
-
-            if(isFound(board, word, 0, 0, new boolean[l][w], 0)){
-                word2Res.add(word);
+        // NOTE !!! we also need to loop over (x,y)
+        // e.g. try from different start points
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                for(String word: words){
+                    if(isFound(board, word, j, i, new boolean[l][w], 0)){
+                        word2Res.add(word);
+                    }
+                }
             }
         }
 
@@ -5926,7 +5938,7 @@ public class workspace9 {
                 isFound(board, word, x - 1, y, visited, idx+1) ||
                 isFound(board, word, x, y - 1, visited, idx+1) ||
                 isFound(board, word, x, y + 1, visited, idx+1)){
-            return false;
+            return true; // NOTE !!!!!
         }
 
         // undo
@@ -5934,6 +5946,8 @@ public class workspace9 {
 
         return false; // ???
     }
+
+    // IDEA 2) TRIE
 
 
 
