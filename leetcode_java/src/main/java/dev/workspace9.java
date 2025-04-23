@@ -5863,6 +5863,11 @@ public class workspace9 {
 
     }
 
+    // LC 2707
+    // 12.07 - 12.17 pm
+    public int minExtraChar(String s, String[] dictionary) {
+        return 0;
+    }
 
 
 
