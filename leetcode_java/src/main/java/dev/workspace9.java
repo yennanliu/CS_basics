@@ -5869,6 +5869,72 @@ public class workspace9 {
         return 0;
     }
 
+    // LC 212
+    // 12.13 PM - 12.23 PM
+    // IDEA: DFS + BACKTRACK
+    List<String> word2Res = new ArrayList<>();
+    public List<String> findWords(char[][] board, String[] words) {
+        // edge
+        if(words == null || words.length == 0){
+            return word2Res;
+        }
+        // word is NOT null, but board is null
+        if(board == null || board[0].length == 0){
+           return word2Res;
+        }
+
+        int l = board.length;
+        int w = board[0].length;
+
+        for(String word: words){
+
+            //boolean[][] visited = new boolean[l][w];
+
+            if(isFound(board, word, 0, 0, new boolean[l][w], 0)){
+                word2Res.add(word);
+            }
+        }
+
+        return word2Res;
+    }
+
+    public boolean isFound(char[][] board, String word, int x, int y, boolean[][] visited, int idx){
+
+        int l = board.length;
+        int w = board[0].length;
+
+        // if found a word
+        if(idx == word.length() - 1){
+            return true;
+        }
+        // ??
+        if(idx > word.length() - 1){
+            //return false
+            return false;
+        }
+
+        // NOTE !!! below, we validate first
+        if( x < 0 || x >= w || y < 0 || y >= l || visited[y][x] || board[y][x] != word.charAt(idx) ){
+            return false;
+        }
+
+        visited[y][x] = true;
+
+        // move 4 dirs at the same time
+        // ????
+        if( isFound(board, word, x + 1, y, visited, idx+1) ||
+                isFound(board, word, x - 1, y, visited, idx+1) ||
+                isFound(board, word, x, y - 1, visited, idx+1) ||
+                isFound(board, word, x, y + 1, visited, idx+1)){
+            return false;
+        }
+
+        // undo
+        visited[y][x] = false;
+
+        return false; // ???
+    }
+
 
 
 }
