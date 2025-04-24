@@ -51,7 +51,7 @@ public class VerifyingAnAlienDictionary {
 //    }
 
     // V0-1
-    // IDEA: BRUTE FORCE + COMPARE adjacent WORD (fixed by gpt)
+    // IDEA: HASHMAP + BRUTE FORCE + COMPARE adjacent WORD (fixed by gpt)
     public boolean isAlienSorted_0_1(String[] words, String order) {
         // Edge case
         if (words == null || words.length <= 1) {
@@ -75,6 +75,20 @@ public class VerifyingAnAlienDictionary {
     }
 
     private boolean isValidOrder(String prev, String cur, int[] charRank) {
+
+        /**
+         *  NOTE !!! below trick
+         *
+         *  -> we ONLY loop till `min length`
+         *  -> so no need to handle edge case (e.g. idx out of boundary..)
+         *
+         *  -> then we simply check below, to see if the order is valid
+         *     ( According to lexicographical rules "apple" > "app", because 'l' > '∅', where '∅' is defined as the blank character which is less than any other character)
+         *
+         *       `prev.length() <= cur.length()`
+         *
+         *
+         */
         int minLength = Math.min(prev.length(), cur.length());
 
         // Compare characters one by one
