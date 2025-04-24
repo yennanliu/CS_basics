@@ -6042,9 +6042,55 @@ public class workspace9 {
 
 
     // LC 953
+    // 11.11 am - 11.21 am
+    // IDEA: BRUTE FORCE
     public boolean isAlienSorted(String[] words, String order) {
 
-        return false;
+        // edge
+        if(words == null || words.length <= 1){
+            return true;
+        }
+
+        // loop over `word`, then compare every alphabet
+        // between prev and cur word
+        // if eny violated, return false directly
+        for(int i = 1; i < words.length; i++){
+            String prev = words[i-1];
+            String cur = words[i];
+            if(!isValidOrder(prev, cur, order)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean isValidOrder(String prev, String cur, String order){
+
+        int i = 0; // pointer for prev
+        int j = 0; // pointer for cur
+
+        while(i < prev.length() || j < cur.length()){
+
+            if(i == prev.length()){
+                if(j < cur.length()){
+                    return false;
+                }
+            }
+
+            int order1 = order.charAt(prev.charAt(i));
+            int order2 = order.charAt(cur.charAt(j));
+
+            if(order1 > order2){
+                return false;
+            }
+
+            // ???
+            i += 1;
+            j += 1;
+        }
+
+        return true;
     }
 
 

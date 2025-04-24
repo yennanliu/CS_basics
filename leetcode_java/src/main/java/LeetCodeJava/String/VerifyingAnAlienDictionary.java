@@ -1,6 +1,7 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/verifying-an-alien-dictionary/description/
+// https://leetcode.cn/problems/verifying-an-alien-dictionary/solutions/
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +49,50 @@ public class VerifyingAnAlienDictionary {
 //    public boolean isAlienSorted(String[] words, String order) {
 //
 //    }
+
+    // V0-1
+    // IDEA: BRUTE FORCE + COMPARE adjacent WORD (fixed by gpt)
+    public boolean isAlienSorted_0_1(String[] words, String order) {
+        // Edge case
+        if (words == null || words.length <= 1) {
+            return true;
+        }
+
+        // Build a rank map for the alien dictionary order
+        int[] charRank = new int[26];
+        for (int i = 0; i < order.length(); i++) {
+            charRank[order.charAt(i) - 'a'] = i;
+        }
+
+        // Compare each word with the next word
+        for (int i = 1; i < words.length; i++) {
+            if (!isValidOrder(words[i - 1], words[i], charRank)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isValidOrder(String prev, String cur, int[] charRank) {
+        int minLength = Math.min(prev.length(), cur.length());
+
+        // Compare characters one by one
+        for (int i = 0; i < minLength; i++) {
+            char charPrev = prev.charAt(i);
+            char charCur = cur.charAt(i);
+
+            if (charRank[charPrev - 'a'] < charRank[charCur - 'a']) {
+                return true; // Order is valid
+            } else if (charRank[charPrev - 'a'] > charRank[charCur - 'a']) {
+                return false; // Order is invalid
+            }
+        }
+
+        // Handle case where one word is a prefix of the other
+        return prev.length() <= cur.length();
+    }
+
 
     // V1
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0953-verifying-an-alien-dictionary.java
