@@ -2,10 +2,7 @@ package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/island-perimeter/description/
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 
 /**
@@ -51,9 +48,70 @@ import java.util.function.BiFunction;
 public class IslandPerimeter {
 
     // V0
-//    public int islandPerimeter(int[][] grid) {
-//
-//    }
+    // IDEA: BRUTE FORCE
+    int islandPerimeterVal = 0; // ??
+
+    public int islandPerimeter(int[][] grid) {
+
+        // edge
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+        if (grid[0].length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        List<int[]> isLands = new ArrayList<>();
+
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < l; j++) {
+                if (grid[j][i] == 1) {
+                    isLands.add(new int[] { i, j });
+                }
+            }
+        }
+
+        if (isLands.isEmpty()) {
+            return 0;
+        }
+
+        for (int[] x : isLands) {
+            islandPerimeterVal += getPerimeter(grid, x[0], x[1]);
+        }
+
+        return islandPerimeterVal;
+    }
+
+    public int getPerimeter(int[][] grid, int x, int y) {
+
+        int res = 0;
+        int[][] moves = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        for (int[] move : moves) {
+            int x_ = x + move[0];
+            int y_ = y + move[1];
+            if (isWaterOrBorder(grid, x_, y_)) {
+                res += 1;
+            }
+        }
+
+        return res;
+    }
+
+    public boolean isWaterOrBorder(int[][] grid, int x, int y) {
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        if (x < 0 || x >= w || y < 0 || y >= l) {
+            return true;
+        }
+
+        return grid[y][x] == 0;
+    }
 
     // V1
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0463-island-perimeter.java
