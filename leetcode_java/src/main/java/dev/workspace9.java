@@ -6094,10 +6094,63 @@ public class workspace9 {
     }
 
     // LC 997
+    // 11.53 - 12.03 pm
+    /**
+     *
+     *  -> n: there are n people labeled from 1 to n.
+     *
+     * -> [ai, bi] : trust[i] = [ai, bi] representing that the
+     *     person labeled ai trusts the person labeled bi.
+     *
+     * -> [ai, bi]
+     *     -> ai `trusts` bi
+     *
+     * ->  Return the label of the town judge
+     *   if the town judge exists and can be identified,
+     *    or return -1 otherwise.
+     *
+     */
+    /**
+     *  IDEA 1) DFS / GRAPH
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     */
     public int findJudge(int n, int[][] trust) {
 
-        return 0;
+        // edge
+        if(n == 0 || trust == null || trust.length == 0){
+            return -1;
+        }
+        if(trust.length == 1){
+            return trust[0][1];
+        }
 
+        //HashSet<Integer> candidates = new HashSet<>();
+        List<Integer> candidates = new ArrayList<>();
+        for(int[] x : trust){
+            if(!candidates.contains(x[0])){
+                candidates.add(x[0]);
+            }
+            if(!candidates.contains(x[1])){
+                candidates.add(x[1]);
+            }
+        }
+
+        for(int[] x: trust){
+            if(!candidates.isEmpty() && candidates.contains(x[0])){
+              //  candidates.re
+            }
+        }
+
+        System.out.println(">>> candidates = " + candidates);
+
+        if(candidates.isEmpty()){
+            return  -1;
+        }
+
+        // ???
+        return candidates.get(0);
     }
 
 

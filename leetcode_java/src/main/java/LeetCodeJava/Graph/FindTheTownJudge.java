@@ -51,6 +51,37 @@ public class FindTheTownJudge {
 //
 //    }
 
+    // V0-1
+    // IDEA: BRUTE FORCE (fixed by gpt)
+    public int findJudge_0_1(int n, int[][] trust) {
+        // Edge case: If there's only one person, they are the judge
+        if (n == 1) {
+            return 1;
+        }
+
+        // Initialize arrays to track in-degree and out-degree
+        int[] inDegree = new int[n + 1];
+        int[] outDegree = new int[n + 1];
+
+        // Process the trust relationships
+        for (int[] relation : trust) {
+            int truster = relation[0];
+            int trustee = relation[1];
+            outDegree[truster]++;
+            inDegree[trustee]++;
+        }
+
+        // Find the person who satisfies the judge condition
+        for (int i = 1; i <= n; i++) {
+            if (inDegree[i] == n - 1 && outDegree[i] == 0) {
+                return i;
+            }
+        }
+
+        // No judge found
+        return -1;
+    }
+
     // V1
     // https://www.youtube.com/watch?v=QiGaxdUINJ8
 
