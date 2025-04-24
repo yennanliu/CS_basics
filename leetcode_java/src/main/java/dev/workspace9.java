@@ -6041,6 +6041,12 @@ public class workspace9 {
 //    }
 
 
+    // LC 953
+    public boolean isAlienSorted(String[] words, String order) {
+
+        return false;
+    }
+
 
 }
 
