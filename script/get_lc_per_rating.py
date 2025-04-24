@@ -1,58 +1,73 @@
+import csv
 import random
 
-# Load ratings from ratings.txt
+# Load ratings from rating.txt
 def load_ratings(file_path):
     ratings = {}
-    with open(file_path, 'r') as file:
-        for line in file:
-            parts = line.strip().split(' - ')
-            if len(parts) == 2:
-                name, rating = parts
-                ratings[name] = int(rating)
-    return ratings
+    titles = {}
+    with open(file_path, 'r', encoding='utf-8') as file:
+        reader = csv.DictReader(file, delimiter='\t')
+        for row in reader:
+            slug = row['Title Slug']
+            title = row['Title']
+            rating = float(row['Rating'])
+            ratings[slug] = rating
+            titles[slug] = title
+    return ratings, titles
 
-# Load problem tags from CSV file
+# Load tags from tags.txt
 def load_tags(file_path):
     tags = {}
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         for line in file:
             parts = line.strip().split(',')
-            if len(parts) >= 2:
-                name, tag = parts[0], parts[1]
-                if name not in tags:
-                    tags[name] = []
-                tags[name].append(tag)
+            if len(parts) != 2:
+                continue
+            slug, tag = parts
+            if slug not in tags:
+                tags[slug] = []
+            tags[slug].append(tag.lower())
     return tags
 
-# Filter problems based on rating and exclude bit manipulation problems
+# Filter problems based on rating and exclude bit manipulation
 def filter_problems(ratings, tags, min_rating, max_rating):
-    filtered = [
-        name for name, rating in ratings.items()
-        if min_rating <= rating <= max_rating and 'Bit Manipulation' not in tags.get(name, [])
-    ]
+    filtered = []
+    for slug, rating in ratings.items():
+        if min_rating <= rating <= max_rating:
+            problem_tags = tags.get(slug, [])
+            if 'bit manipulation' not in problem_tags:
+                filtered.append(slug)
     return filtered
 
 # Randomly select a specified number of problems
 def select_random_problems(problems, num_problems):
+    if len(problems) < num_problems:
+        print(f"Only {len(problems)} problems found. Returning all.")
+        return problems
     return random.sample(problems, num_problems)
 
-# Main function
+# Main execution
 def main():
-    ratings_file = 'ratings.txt'  # Path to your ratings.txt file
-    tags_file = 'tags.csv'        # Path to your CSV file containing problem tags
+    ratings_file = 'rating.txt'
+    tags_file = 'tags.txt'
 
-    min_rating = int(input("Enter minimum rating: "))
-    max_rating = int(input("Enter maximum rating: "))
-    num_problems = int(input("Enter number of problems to select: "))
+    # min_rating = float(input("Enter minimum rating: "))
+    # max_rating = float(input("Enter maximum rating: "))
+    # num_problems = int(input("Enter number of problems to select: "))
 
-    ratings = load_ratings(ratings_file)
+    min_rating = 100
+    max_rating = 1000
+    num_problems = 10
+
+
+    ratings, titles = load_ratings(ratings_file)
     tags = load_tags(tags_file)
-    filtered_problems = filter_problems(ratings, tags, min_rating, max_rating)
-    selected_problems = select_random_problems(filtered_problems, num_problems)
+    filtered_slugs = filter_problems(ratings, tags, min_rating, max_rating)
+    selected_slugs = select_random_problems(filtered_slugs, num_problems)
 
-    print("\nSelected Problems:")
-    for problem in selected_problems:
-        print(f"- {problem} (Rating: {ratings[problem]})")
+    print("\n🎯 Selected Problems:")
+    for slug in selected_slugs:
+        print(f"- {titles[slug]} (Rating: {ratings[slug]}) - https://leetcode.com/problems/{slug}/")
 
 if __name__ == '__main__':
     main()
