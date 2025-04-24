@@ -57,7 +57,7 @@ public class FindTheTownJudge {
      * 3. **Simplified Logic:**
      *    - Used an `inDegree` and `outDegree` approach to efficiently determine the judge.
      *    - Avoided unnecessary `candidates` list manipulation, which was overly complicated.
-     * 
+     *
      */
     public int findJudge_0_1(int n, int[][] trust) {
         // Edge case: If there's only one person, they are the judge
