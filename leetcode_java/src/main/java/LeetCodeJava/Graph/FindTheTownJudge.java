@@ -53,6 +53,12 @@ public class FindTheTownJudge {
 
     // V0-1
     // IDEA: BRUTE FORCE (fixed by gpt)
+    /**
+     * 3. **Simplified Logic:**
+     *    - Used an `inDegree` and `outDegree` approach to efficiently determine the judge.
+     *    - Avoided unnecessary `candidates` list manipulation, which was overly complicated.
+     * 
+     */
     public int findJudge_0_1(int n, int[][] trust) {
         // Edge case: If there's only one person, they are the judge
         if (n == 1) {
@@ -60,6 +66,13 @@ public class FindTheTownJudge {
         }
 
         // Initialize arrays to track in-degree and out-degree
+        /**
+         *
+         * 2. **In-Degree and Out-Degree Arrays:**
+         *    - `inDegree[i]`: Tracks how many people trust person `i`.
+         *    - `outDegree[i]`: Tracks how many people person `i` trusts.
+         *
+         */
         int[] inDegree = new int[n + 1];
         int[] outDegree = new int[n + 1];
 
@@ -73,6 +86,14 @@ public class FindTheTownJudge {
 
         // Find the person who satisfies the judge condition
         for (int i = 1; i <= n; i++) {
+            /**
+             *
+             * 3. **Judge Condition:**
+             *    - A person `i` is the judge if:
+             *      - `inDegree[i] == n - 1` (trusted by everyone except themselves).
+             *      - `outDegree[i] == 0` (does not trust anyone).
+             *
+             */
             if (inDegree[i] == n - 1 && outDegree[i] == 0) {
                 return i;
             }
