@@ -5953,11 +5953,92 @@ public class workspace9 {
     // IDEA 2) TRIE
 
     // LC 463
+    // 10.22 - 10.32 am
+    /**
+     *  IDEA 1) DFS
+     *
+     *  -> count `Perimeter` via check `cell surroundings`
+     *    -> if at border or surrounded by `0` : + 1
+     *    -> else : do nothing
+     *
+     *    -> get cumsum, ... then return as final res
+     *
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     */
+    int islandPerimeterVal = 0; // ??
     public int islandPerimeter(int[][] grid) {
 
-        return 0;
+        int res = 0;
+
+        // edge
+        if(grid == null || grid.length == 0){
+            return 0;
+        }
+        if(grid[0].length == 0){
+            return 0;
+        }
+        // dfs // ???
+        int l = grid.length;
+        int w = grid[0].length;
+
+        List<int[]> isLands = new ArrayList<>();
+
+        for(int i = 0; i < w; i++){
+            for(int j = 0; j < l; j++){
+                if(grid[j][i] == 1){
+                    isLands.add(new int[]{i, j}); // ???
+                }
+            }
+        }
+
+        if(isLands.isEmpty()){
+            return 0; //??
+        }
+
+        for(int[] x: isLands){
+            islandPerimeterVal += getPerimeter(grid, x[0], x[1]);
+        }
+
+        return islandPerimeterVal;
     }
 
+    public int getPerimeter(int[][] grid, int x, int y){
+
+        int res = 0;
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        for(int[] move: moves){
+            int x_ = x + move[0];
+            int y_ = y + move[1];
+            if(isWaterOrBorder(grid, x_, y_)){
+                res += 1;
+            }
+        }
+
+        return res;
+    }
+
+    public boolean isWaterOrBorder(int[][] grid, int x, int y){
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        if(x < 0 || x >= w || y < 0 || y >= l){
+            return true;
+        }
+
+        return grid[y][x] == 0;
+    }
+
+
+
+//    public void getPerimeterHelper(int[][] grid, int x, int y, boolean[][] visited){
+//
+//        if
+//
+//    }
 
 
 
