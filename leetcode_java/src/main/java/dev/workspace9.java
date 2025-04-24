@@ -6093,6 +6093,13 @@ public class workspace9 {
         return true;
     }
 
+    // LC 997
+    public int findJudge(int n, int[][] trust) {
+
+        return 0;
+
+    }
+
 
 }
 
