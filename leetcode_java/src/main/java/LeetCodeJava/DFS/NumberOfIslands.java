@@ -123,6 +123,11 @@ public class NumberOfIslands {
             return;
         }
 
+        /** NOTE !!!
+         *
+         *  need to mark visited cell, to avoid repetitive visiting
+         *  or. can use `boolean visited[][] cache`
+         */
         grid[y][x] = '#'; // Mark the cell as visited
 
         int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
