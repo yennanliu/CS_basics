@@ -6116,42 +6116,97 @@ public class workspace9 {
      *  IDEA 2) BRUTE FORCE
      *
      */
+    // 12.12 pm - 12.22 pm
+    // IDEA: BRUTE FORCE
+    /**
+     *  NOTE !!!
+     *
+     *  -> trust[i] = [ai, bi]
+     *
+     *   ->   ai trusts the person labeled bi.
+     *
+     */
     public int findJudge(int n, int[][] trust) {
-
         // edge
-        if(n == 0 || trust == null || trust.length == 0){
-            return -1;
-        }
-        if(trust.length == 1){
-            return trust[0][1];
+//        if(n == 0 || trust == null || trust.length == 0){
+//            return -1;
+//        }
+//        if(trust.length == 1){
+//            return trust[0][1];
+//        }
+//        if(n == 1){
+//            return 1;
+//        }
+        if (n == 1) {
+            return 1;
         }
 
-        //HashSet<Integer> candidates = new HashSet<>();
-        List<Integer> candidates = new ArrayList<>();
-        for(int[] x : trust){
-            if(!candidates.contains(x[0])){
-                candidates.add(x[0]);
+        // people the person (idx) trusts
+        // e.g.  idx --- trust --> person
+        int[] toTrust = new int[n + 1];
+
+        // people who trusts the person (idx)
+        // e.g.  person --- trust --> idx
+        int[] trusted = new int[n + 1];
+
+        for(int[] t: trust){
+            // NOTE !!!
+            // [ai, bi]:  `ai` trusts `bi`
+            int ai = t[0];
+            int bi = t[1];
+
+            toTrust[ai] += 1;
+            trusted[bi] += 1;
+        }
+
+        System.out.println(">>> toTrust = " +  Arrays.toString(toTrust));
+        System.out.println(">>> trusted = " +  Arrays.toString(trusted));
+
+        for(int j = 0; j < toTrust.length; j++){
+            if(toTrust[j] == 0 && trusted[j] == n - 1){
+                return j;
             }
-            if(!candidates.contains(x[1])){
-                candidates.add(x[1]);
-            }
         }
 
-        for(int[] x: trust){
-            if(!candidates.isEmpty() && candidates.contains(x[0])){
-              //  candidates.re
-            }
-        }
-
-        System.out.println(">>> candidates = " + candidates);
-
-        if(candidates.isEmpty()){
-            return  -1;
-        }
-
-        // ???
-        return candidates.get(0);
+        return -1;
     }
+
+//    public int findJudge(int n, int[][] trust) {
+//
+//        // edge
+//        if(n == 0 || trust == null || trust.length == 0){
+//            return -1;
+//        }
+//        if(trust.length == 1){
+//            return trust[0][1];
+//        }
+//
+//        //HashSet<Integer> candidates = new HashSet<>();
+//        List<Integer> candidates = new ArrayList<>();
+//        for(int[] x : trust){
+//            if(!candidates.contains(x[0])){
+//                candidates.add(x[0]);
+//            }
+//            if(!candidates.contains(x[1])){
+//                candidates.add(x[1]);
+//            }
+//        }
+//
+//        for(int[] x: trust){
+//            if(!candidates.isEmpty() && candidates.contains(x[0])){
+//              //  candidates.re
+//            }
+//        }
+//
+//        System.out.println(">>> candidates = " + candidates);
+//
+//        if(candidates.isEmpty()){
+//            return  -1;
+//        }
+//
+//        // ???
+//        return candidates.get(0);
+//    }
 
     // LC 200
     // 9.40 - 9.50 am

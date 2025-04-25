@@ -922,12 +922,39 @@ int i = 2;
 int[] tmp = Arrays.copyOfRange(nums, i, i+3);
 ```
 
-### 1-6) Print elements in array
+### 1-6) Print `array` value 
+
+- `Arrays.toString(array)`
+
+
 ```java
 // java
-// LC 155
-Object[] array = this.queue.toArray();
-System.out.println("--> getMin : array = " + Arrays.toString(array));
+// LC 997
+
+/** 
+ *  NOTE !!!
+ * 
+ *   via `Arrays.toString()`,
+ *   we can print arrays value
+ * 
+ *  -> how to remember ?
+ * 
+ *  -> int[]  is `array`
+ *  -> and `Arrays` is the array Util in java
+ *  -> so it has toString method()
+ * 
+ * 
+ */
+
+// ...
+
+int[] toTrust = new int[n + 1];
+int[] trusted = new int[n + 1];
+
+System.out.println(">>> toTrust = " + Arrays.toString(toTrust));
+System.out.println(">>> trusted = " + Arrays.toString(trusted));
+
+// ...
 ```
 
 ### 1-7) Put array into stack
