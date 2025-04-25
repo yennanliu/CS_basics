@@ -236,11 +236,87 @@ public class NumberOfIslands {
     }
 
 
+    // V1-1
+    // https://neetcode.io/problems/count-number-of-islands
+    // IDEA: DFS
+    private static final int[][] directions = {{1, 0}, {-1, 0},
+            {0, 1}, {0, -1}};
 
-    // V1
+    public int numIslands_1_1(char[][] grid) {
+        int ROWS = grid.length, COLS = grid[0].length;
+        int islands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    dfs_1_1(grid, r, c);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+
+    private void dfs_1_1(char[][] grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= grid.length ||
+                c >= grid[0].length || grid[r][c] == '0') {
+            return;
+        }
+
+        grid[r][c] = '0';
+        for (int[] dir : directions) {
+            dfs_1_1(grid, r + dir[0], c + dir[1]);
+        }
+    }
+
+    // V1-2
+    // https://neetcode.io/problems/count-number-of-islands
+    // IDEA: BFS
+//    private static final int[][] directions = {{1, 0}, {-1, 0},
+//            {0, 1}, {0, -1}};
+
+    public int numIslands_1_2(char[][] grid) {
+        int ROWS = grid.length, COLS = grid[0].length;
+        int islands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    bfs(grid, r, c);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+
+    private void bfs(char[][] grid, int r, int c) {
+        Queue<int[]> q = new LinkedList<>();
+        grid[r][c] = '0';
+        q.add(new int[]{r, c});
+
+        while (!q.isEmpty()) {
+            int[] node = q.poll();
+            int row = node[0], col = node[1];
+
+            for (int[] dir : directions) {
+                int nr = row + dir[0], nc = col + dir[1];
+                if (nr >= 0 && nc >= 0 && nr < grid.length &&
+                        nc < grid[0].length && grid[nr][nc] == '1') {
+                    q.add(new int[]{nr, nc});
+                    grid[nr][nc] = '0';
+                }
+            }
+        }
+    }
+
+
+    // V2
     // IDEA : DFS
     // https://leetcode.com/problems/number-of-islands/editorial/
-    void dfs_1(char[][] grid, int r, int c) {
+    void dfs_2(char[][] grid, int r, int c) {
         int nr = grid.length;
         int nc = grid[0].length;
 
@@ -249,13 +325,13 @@ public class NumberOfIslands {
         }
 
         grid[r][c] = '0';
-        dfs_1(grid, r - 1, c);
-        dfs_1(grid, r + 1, c);
-        dfs_1(grid, r, c - 1);
-        dfs_1(grid, r, c + 1);
+        dfs_2(grid, r - 1, c);
+        dfs_2(grid, r + 1, c);
+        dfs_2(grid, r, c - 1);
+        dfs_2(grid, r, c + 1);
     }
 
-    public int numIslands_1(char[][] grid) {
+    public int numIslands_2(char[][] grid) {
         if (grid == null || grid.length == 0) {
             return 0;
         }
@@ -267,7 +343,7 @@ public class NumberOfIslands {
             for (int c = 0; c < nc; ++c) {
                 if (grid[r][c] == '1') {
                     ++num_islands;
-                    dfs_1(grid, r, c);
+                    dfs_2(grid, r, c);
                 }
             }
         }
@@ -275,10 +351,10 @@ public class NumberOfIslands {
         return num_islands;
     }
 
-    // V2
+    // V3
     // IDEA : BFS
     // https://leetcode.com/problems/number-of-islands/editorial/
-    public int numIslands_2(char[][] grid) {
+    public int numIslands_3(char[][] grid) {
         if (grid == null || grid.length == 0) {
             return 0;
         }

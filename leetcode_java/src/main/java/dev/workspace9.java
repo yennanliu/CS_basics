@@ -6153,6 +6153,17 @@ public class workspace9 {
         return candidates.get(0);
     }
 
+    // LC 200
+    // 9.40 - 9.50 am
+    // IDEA:
+    public int numIslands(char[][] grid) {
+
+        return 0;
+    }
+
+
+
+
 
 }
 
