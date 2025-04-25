@@ -1,6 +1,9 @@
 package LeetCodeJava.Graph;
 
 // https://leetcode.com/problems/find-the-town-judge/description/
+
+import java.util.Arrays;
+
 /**
  * 997. Find the Town Judge
  * Easy
@@ -47,10 +50,44 @@ package LeetCodeJava.Graph;
 public class FindTheTownJudge {
 
     // V0
-//    public int findJudge(int n, int[][] trust) {
-//
-//    }
+    // IDEA: 2 ARRAY (fixed by gpt)
+    public int findJudge(int n, int[][] trust) {
+        // edge
+        // NOTE !!! edge case below
+        if (n == 1) {
+            return 1;
+        }
 
+        // people the person (idx) trusts
+        // e.g.  idx --- trust --> person
+        int[] toTrust = new int[n + 1];
+
+        // people who trusts the person (idx)
+        // e.g.  person --- trust --> idx
+        int[] trusted = new int[n + 1];
+
+        for (int[] t : trust) {
+            // NOTE !!!
+            // [ai, bi]:  `ai` trusts `bi`
+            int ai = t[0];
+            int bi = t[1];
+
+            toTrust[ai] += 1;
+            trusted[bi] += 1;
+        }
+
+        // NOTE !!! via below, we can print `array value` in java
+        System.out.println(">>> toTrust = " + Arrays.toString(toTrust));
+        System.out.println(">>> trusted = " + Arrays.toString(trusted));
+
+        for (int j = 0; j < toTrust.length; j++) {
+            if (toTrust[j] == 0 && trusted[j] == n - 1) {
+                return j;
+            }
+        }
+
+        return -1;
+    }
     // V0-1
     // IDEA: BRUTE FORCE (fixed by gpt)
     /**
