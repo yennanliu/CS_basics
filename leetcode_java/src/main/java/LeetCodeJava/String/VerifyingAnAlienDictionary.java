@@ -103,6 +103,16 @@ public class VerifyingAnAlienDictionary {
          */
         int[] charRank = new int[26];
         for (int i = 0; i < order.length(); i++) {
+            /**
+             *
+             * A **classic Java trick** for mapping characters to array indices
+             *   — especially when working with the lowercase
+             *     English alphabet (`'a'` to `'z'`).
+             *
+             *
+             *  -> check more at `java_trick.md` cheatsheet
+             *
+             */
             charRank[order.charAt(i) - 'a'] = i;
         }
 

@@ -1546,3 +1546,88 @@ maxHeap.addAll(charCountMap.entrySet());
 
 }
 ```
+
+### 3-2) Map characters to idx
+
+A **classic Java trick** for mapping characters to array indices — especially when working with the lowercase English alphabet (`'a'` to `'z'`).
+
+---
+
+### 👇 Line in question:
+
+```java
+orderMap[order.charAt(i) - 'a'] = i;
+```
+
+---
+
+### 🔍 What's happening?
+
+Let’s say:
+```java
+order = "hlabcdefgijkmnopqrstuvwxyz";
+```
+
+So `order.charAt(i)` gets a character from the alien alphabet — for example:
+
+- `i = 0`: `order.charAt(0)` = `'h'`
+- `'h' - 'a'` → this subtracts ASCII/Unicode values:  
+  `'h' = 104`, `'a' = 97`  
+  ➜ `104 - 97 = 7`
+
+So:
+```java
+orderMap[7] = 0;
+```
+
+This tells us:
+> In the alien alphabet, `'h'` is at position `0`.
+
+---
+
+### 🧠 So what is `'c' - 'a'`?
+
+| Character | ASCII | `'char' - 'a'` |
+|-----------|-------|----------------|
+| `'a'`     | 97    | `0`            |
+| `'b'`     | 98    | `1`            |
+| `'c'`     | 99    | `2`            |
+| `'z'`     | 122   | `25`           |
+
+So `'c' - 'a' == 2'` — we use this to convert `'c'` to the index `2`.
+
+---
+
+### ✅ Why do we use this?
+
+Because we can now use a simple array of size 26:
+
+```java
+int[] orderMap = new int[26];
+```
+
+And **store the rank** of each character in constant time using:
+
+```java
+orderMap[c - 'a']
+```
+
+Which is way faster than repeatedly doing:
+
+```java
+order.indexOf(c)  // O(n) each time
+```
+
+---
+
+### ✅ TL;DR
+
+```java
+order.charAt(i) - 'a'
+```
+
+✔️ Converts a letter to a **0-based index** (e.g. `'a'` → 0, `'z'` → 25)  
+✔️ Works because characters are basically integers in Java (`char` uses UTF-16)  
+✔️ Super efficient for problems limited to lowercase letters
+
+---
