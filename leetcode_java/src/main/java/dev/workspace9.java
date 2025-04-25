@@ -6208,13 +6208,61 @@ public class workspace9 {
     }
 
     // LC 695
-    // 10.14 - 10.24 am
+    // 10.14 - 10.28 am
+    // IDEA: DFS
+    int maxArea = 0;
     public int maxAreaOfIsland(int[][] grid) {
-        return 0;
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+
+        if(grid.length == 1 && grid[0].length == 1){
+            if(grid[0][0] == '1'){
+                return 1;
+            }
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        for(int i = 0; i < w; i++){
+            for(int j = 0; j < l; j++){
+                if(grid[j][i] == '1'){
+                    //int tmpArea = 0;
+                    maxArea = Math.max(maxArea, getMaxArea(grid, i, j));
+                    //getMaxArea(grid, i, j);
+                }
+            }
+        }
+
+        return maxArea;
     }
 
 
 
+    public int getMaxArea(int[][] grid, int x, int y){
+
+        // NOTE !!! we validate below first
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // NOTE !!! we validate below first
+        if(x < 0 || x >= w || y < 0 || y >= l || grid[y][x] == '0'){
+            return 0;  // ???
+        }
+
+        // NOTE !!! mark visited cell as '#'
+        grid[y][x] = '#';
+        //area += 1; // ???
+
+        return 1 +
+                getMaxArea(grid, x + 1, y) +
+                getMaxArea(grid, x - 1, y) +
+                getMaxArea(grid, x, y + 1) +
+                getMaxArea(grid, x, y - 1);
+    }
 
 
 

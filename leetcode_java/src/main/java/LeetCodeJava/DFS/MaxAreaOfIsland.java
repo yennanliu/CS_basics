@@ -67,6 +67,33 @@ public class MaxAreaOfIsland {
         return biggestArea;
     }
 
+    /**
+     *  NOTE !!!!
+     *
+     *   DON'T pass `area` as parameter to the DFS func (getBiggestArea)
+     *
+     *   Reason:
+     *
+     *   1) in java, primitives pass by value.
+     *      `int` is one of the primitives
+     *
+     *   2) meaning when we pass `area` to dfs,
+     *      it actually sent as a new COPY everytime,
+     *      which makes us CAN'T track/persist the new area value
+     *
+     *   3) if still want to `pass area as param` can do below
+     *
+     *      3-1) use `int[] areas`
+     *          int[] area = new int[1];  // Mutable wrapper for int
+     *          ...
+     *          area[0] += 1;
+     *          ...
+     *
+     *      3-2) define a custom class
+     *
+     *         public class {int area = 0; }
+     *         ...
+     */
     public int getBiggestArea(int x, int y, int[][] grid) {
 
         int l = grid.length;
@@ -204,6 +231,50 @@ public class MaxAreaOfIsland {
                 + findMaxArea(grid, row - 1, col)
                 + findMaxArea(grid, row, col + 1)
                 + findMaxArea(grid, row, col - 1);
+    }
+
+    // V0-3
+    // IDEA: DFS (fixed by gpt)
+    public int maxAreaOfIsland_0_3(int[][] grid) {
+        if (grid == null || grid.length == 0)
+            return 0;
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int maxArea = 0;
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (grid[row][col] == 1) {
+                    int area = dfs_0_3(grid, row, col);
+                    maxArea = Math.max(maxArea, area);
+                }
+            }
+        }
+
+        return maxArea;
+    }
+
+    private int dfs_0_3(int[][] grid, int row, int col) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        // Boundary or water check
+        if (row < 0 || col < 0 || row >= rows || col >= cols || grid[row][col] == 0) {
+            return 0;
+        }
+
+        // Mark current cell as visited
+        grid[row][col] = 0;
+
+        int area = 1; // count current cell
+
+        area += dfs_0_3(grid, row + 1, col); // down
+        area += dfs_0_3(grid, row - 1, col); // up
+        area += dfs_0_3(grid, row, col + 1); // right
+        area += dfs_0_3(grid, row, col - 1); // left
+
+        return area;
     }
 
     // V1-1
