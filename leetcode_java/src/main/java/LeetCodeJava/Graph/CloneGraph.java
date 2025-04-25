@@ -132,6 +132,16 @@ public class CloneGraph {
             // NOTE !!! op here : we add new copied node to copiedNode.neighbors,
             //          (e.g. : copiedNode.neighbors.add)
             //          instead of return it directly
+            /**
+             *  NOTE !!!
+             *
+             *   we `point` neighbors (neighbors.add)
+             *   via the recursive call !!!
+             *   (instead of simply  `new Node()`...)
+             *
+             *   -> reason, `neighbors' neighbors` also has the `relationship` on each other
+             *   -> so via recursion, this can be automatically setup
+             */
             copiedNode.neighbors.add(_clone(visited, _node));
         }
 
@@ -163,10 +173,50 @@ public class CloneGraph {
 
         // Clone neighbors recursively
         for (Node neighbor : node.neighbors) {
+            /**
+             *  NOTE !!!
+             *
+             *   recursive call for setting up `neighbors`
+             */
             clone.neighbors.add(dfs(neighbor));
         }
 
         return clone;
+    }
+
+    // V0-2
+    // IDEA: DFS (fixed by gpt)
+    public Node cloneGraph_0_2(Node node) {
+        if (node == null)
+            return null;
+
+        // Map from original to cloned node
+        Map<Node, Node> map = new HashMap<>();
+        Node cloned = new Node(node.val);
+        map.put(node, cloned);
+
+        cloneHelper(node, cloned, map);
+        return cloned;
+    }
+
+    private void cloneHelper(Node node, Node cloned, Map<Node, Node> map) {
+
+        for (Node neighbor : node.neighbors) {
+
+            if (!map.containsKey(neighbor)) {
+                Node neighborClone = new Node(neighbor.val);
+                map.put(neighbor, neighborClone);
+                /**
+                 *  NOTE !!!
+                 *
+                 *   recursive call for setting up `neighbors`
+                 */
+                cloneHelper(neighbor, neighborClone, map);
+            }
+
+            // Add the cloned neighbor to the current cloned node's neighbor list
+            cloned.neighbors.add(map.get(neighbor));
+        }
     }
 
     // V1-1
