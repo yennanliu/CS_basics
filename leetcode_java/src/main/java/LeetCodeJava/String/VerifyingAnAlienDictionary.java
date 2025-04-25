@@ -46,9 +46,46 @@ import java.util.Map;
 public class VerifyingAnAlienDictionary {
 
     // V0
-//    public boolean isAlienSorted(String[] words, String order) {
-//
-//    }
+    // IDEA:  HASHMAP + string op (fixed by gpt)
+    public boolean isAlienSorted(String[] words, String order) {
+        if (words == null || words.length <= 1)
+            return true;
+        if (order == null || order.isEmpty())
+            return true;
+
+        // Build order map: character -> rank
+        int[] orderMap = new int[26];
+        for (int i = 0; i < order.length(); i++) {
+            orderMap[order.charAt(i) - 'a'] = i;
+        }
+
+        // Compare each pair of words
+        for (int i = 1; i < words.length; i++) {
+            if (!isInOrder(words[i - 1], words[i], orderMap)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isInOrder(String word1, String word2, int[] orderMap) {
+        int len1 = word1.length();
+        int len2 = word2.length();
+        int minLen = Math.min(len1, len2);
+
+        for (int i = 0; i < minLen; i++) {
+            char c1 = word1.charAt(i);
+            char c2 = word2.charAt(i);
+            if (c1 != c2) {
+                return orderMap[c1 - 'a'] < orderMap[c2 - 'a'];
+            }
+        }
+
+        // If all chars are equal up to min length, shorter word should come first
+        // NOTE !!! below condition
+        return len1 <= len2;
+    }
 
     // V0-1
     // IDEA: HASHMAP + BRUTE FORCE + COMPARE adjacent WORD (fixed by gpt)
@@ -59,6 +96,11 @@ public class VerifyingAnAlienDictionary {
         }
 
         // Build a rank map for the alien dictionary order
+        /**
+         *  NOTE !!!
+         *
+         *   we use `map` to speed up the idx lookup
+         */
         int[] charRank = new int[26];
         for (int i = 0; i < order.length(); i++) {
             charRank[order.charAt(i) - 'a'] = i;

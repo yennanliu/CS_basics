@@ -6042,56 +6042,114 @@ public class workspace9 {
 
 
     // LC 953
-    // 11.11 am - 11.21 am
+    // 1.01 - 1.11 pm
     // IDEA: BRUTE FORCE
     public boolean isAlienSorted(String[] words, String order) {
-
         // edge
         if(words == null || words.length <= 1){
             return true;
         }
+        if(order == null || order.isEmpty()){
+            return true; // ??
+        }
 
-        // loop over `word`, then compare every alphabet
-        // between prev and cur word
-        // if eny violated, return false directly
         for(int i = 1; i < words.length; i++){
             String prev = words[i-1];
             String cur = words[i];
-            if(!isValidOrder(prev, cur, order)){
+            if(!alienHelper(prev, cur, order)){
                 return false;
             }
         }
 
-        return true;
+        return true; // ???
     }
 
-    public boolean isValidOrder(String prev, String cur, String order){
+    // w1 : prev word
+    // w2 : current word
+    public boolean alienHelper(String prev, String cur, String order){
 
-        int i = 0; // pointer for prev
-        int j = 0; // pointer for cur
+        int minLen = Math.min(prev.length(), cur.length());
 
-        while(i < prev.length() || j < cur.length()){
+        // ??
+        for(int i = 0; i < minLen; i++){
+            int order_prev = order.indexOf(prev.indexOf(i));
+            int order_cur = order.indexOf(cur.indexOf(i));
 
-            if(i == prev.length()){
-                if(j < cur.length()){
-                    return false;
-                }
-            }
-
-            int order1 = order.charAt(prev.charAt(i));
-            int order2 = order.charAt(cur.charAt(j));
-
-            if(order1 > order2){
+            if(order_prev > order_cur){
                 return false;
             }
 
-            // ???
-            i += 1;
-            j += 1;
+            //i += 1;
         }
 
-        return true;
+        /**
+         *  IDEA:
+         *
+         *  words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
+         *
+         *  - According to lexicographical rules "apple" > "app",
+         *    because 'l' > '∅', where '∅' is defined as the
+         *    blank character which is less than any other character
+         *
+         *
+         *    -> so if such case happened, should return false
+         *
+         *    -> e.g.: check if `prev len` > minLen
+         *
+         */
+        return minLen >= prev.length(); // ??
     }
+
+
+
+//    public boolean isAlienSorted(String[] words, String order) {
+//
+//        // edge
+//        if(words == null || words.length <= 1){
+//            return true;
+//        }
+//
+//        // loop over `word`, then compare every alphabet
+//        // between prev and cur word
+//        // if eny violated, return false directly
+//        for(int i = 1; i < words.length; i++){
+//            String prev = words[i-1];
+//            String cur = words[i];
+//            if(!isValidOrder(prev, cur, order)){
+//                return false;
+//            }
+//        }
+//;
+//        return true;
+//    }
+//
+//    public boolean isValidOrder(String prev, String cur, String order){
+//
+//        int i = 0; // pointer for prev
+//        int j = 0; // pointer for cur
+//
+//        while(i < prev.length() || j < cur.length()){
+//
+//            if(i == prev.length()){
+//                if(j < cur.length()){
+//                    return false;
+//                }
+//            }
+//
+//            int order1 = order.charAt(prev.charAt(i));
+//            int order2 = order.charAt(cur.charAt(j));
+//
+//            if(order1 > order2){
+//                return false;
+//            }
+//
+//            // ???
+//            i += 1;
+//            j += 1;
+//        }
+//
+//        return true;
+//    }
 
     // LC 997
     // 11.53 - 12.03 pm
