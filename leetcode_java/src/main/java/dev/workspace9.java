@@ -6207,6 +6207,13 @@ public class workspace9 {
         islandCntHelper(grid, x, y - 1, visited);
     }
 
+    // LC 695
+    // 10.14 - 10.24 am
+    public int maxAreaOfIsland(int[][] grid) {
+        return 0;
+    }
+
+
 
 
 

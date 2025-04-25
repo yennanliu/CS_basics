@@ -35,6 +35,8 @@ package LeetCodeJava.DFS;
  * grid[i][j] is either 0 or 1.
  *
  */
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class MaxAreaOfIsland {
@@ -204,7 +206,88 @@ public class MaxAreaOfIsland {
                 + findMaxArea(grid, row, col - 1);
     }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/max-area-of-island
+    // IDEA:  DFS
+    private static final int[][] directions = {{1, 0}, {-1, 0},
+            {0, 1}, {0, -1}};
+
+    public int maxAreaOfIsland_1_1(int[][] grid) {
+        int ROWS = grid.length, COLS = grid[0].length;
+        int area = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == 1) {
+                    area = Math.max(area, dfs(grid, r, c));
+                }
+            }
+        }
+
+        return area;
+    }
+
+    private int dfs(int[][] grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= grid.length ||
+                c >= grid[0].length || grid[r][c] == 0) {
+            return 0;
+        }
+
+        grid[r][c] = 0;
+        int res = 1;
+        for (int[] dir : directions) {
+            res += dfs(grid, r + dir[0], c + dir[1]);
+        }
+        return res;
+    }
+
+
+    // V1-2
+    // https://neetcode.io/problems/max-area-of-island
+    // IDEA: BFS
+//    private static final int[][] directions = {{1, 0}, {-1, 0},
+//            {0, 1}, {0, -1}};
+
+    public int maxAreaOfIsland_1_2(int[][] grid) {
+        int ROWS = grid.length, COLS = grid[0].length;
+        int area = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == 1) {
+                    area = Math.max(area, bfs(grid, r, c));
+                }
+            }
+        }
+
+        return area;
+    }
+
+    private int bfs(int[][] grid, int r, int c) {
+        Queue<int[]> q = new LinkedList<>();
+        grid[r][c] = 0;
+        q.add(new int[]{r, c});
+        int res = 1;
+
+        while (!q.isEmpty()) {
+            int[] node = q.poll();
+            int row = node[0], col = node[1];
+
+            for (int[] dir : directions) {
+                int nr = row + dir[0], nc = col + dir[1];
+                if (nr >= 0 && nc >= 0 && nr < grid.length &&
+                        nc < grid[0].length && grid[nr][nc] == 1) {
+                    q.add(new int[]{nr, nc});
+                    grid[nr][nc] = 0;
+                    res++;
+                }
+            }
+        }
+        return res;
+    }
+
+
+    // V2
     // IDEA : DFS (recursive)
     // https://leetcode.com/problems/max-area-of-island/editorial/
     int[][] grid;
@@ -219,7 +302,7 @@ public class MaxAreaOfIsland {
                 + area(r, c-1) + area(r, c+1));
     }
 
-    public int maxAreaOfIsland_1(int[][] grid) {
+    public int maxAreaOfIsland_2(int[][] grid) {
         this.grid = grid;
         _seen = new boolean[grid.length][grid[0].length];
         int ans = 0;
@@ -231,10 +314,10 @@ public class MaxAreaOfIsland {
         return ans;
     }
 
-    // V2
+    // V3
     // IDEA : DFS (iterative)
     // https://leetcode.com/problems/max-area-of-island/editorial/
-    public int maxAreaOfIsland_2(int[][] grid) {
+    public int maxAreaOfIsland_3(int[][] grid) {
         boolean[][] seen = new boolean[grid.length][grid[0].length];
         int[] dr = new int[]{1, -1, 0, 0};
         int[] dc = new int[]{0, 0, 1, -1};
