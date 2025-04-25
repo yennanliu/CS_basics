@@ -1485,3 +1485,37 @@ maxHeap.addAll(charCountMap.entrySet());
 
 // ...
 ```
+
+### 3-1) Primitive type pass in func
+
+```java
+// java
+// LC 695
+
+/**
+ *  NOTE !!!!
+ *
+ *   DON'T pass `area` as parameter to the DFS func (getBiggestArea)
+ *
+ *   Reason:
+ *
+ *   1) in java, primitives pass by value.
+ *      `int` is one of the primitives
+ *
+ *   2) meaning when we pass `area` to dfs,
+ *      it actually sent as a new COPY everytime,
+ *      which makes us CAN'T track/persist the new area value
+ */
+
+// ...
+
+ private int _getArea(int[][] grid, boolean[][] seen, int x, int y){
+
+    // ...
+    return 1 + _getArea(grid, seen, x+1, y) +
+                _getArea(grid, seen, x-1, y) +
+                _getArea(grid, seen, x, y+1) +
+                _getArea(grid, seen, x, y-1);
+
+}
+```
