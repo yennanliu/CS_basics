@@ -6155,10 +6155,56 @@ public class workspace9 {
 
     // LC 200
     // 9.40 - 9.50 am
-    // IDEA:
+    // IDEA: DFS
     public int numIslands(char[][] grid) {
 
-        return 0;
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+
+        if(grid.length == 1 && grid[0].length == 1){
+            if(grid[0][0] == '1'){
+                return 1;
+            }
+            return 0;
+        }
+
+        int cnt = 0;
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        boolean[][] visited = new boolean[l][w];
+
+        for(int i = 0; i < w; i++){
+            for(int j = 0; j < l; j++){
+                if(grid[j][i] == '1' && !visited[j][i]){
+                    islandCntHelper(grid, i, j, visited);
+                    cnt += 1;
+                }
+            }
+        }
+
+        return cnt;
+    }
+
+    public void islandCntHelper(char[][] grid, int x, int y, boolean[][] visited){
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // NOTE !!! we validate below first
+        if(x < 0 || x >= w || y < 0 || y >= l || visited[y][x] || grid[y][x] == '0'){
+            return;  // ???
+        }
+
+        visited[y][x] = true;
+
+        islandCntHelper(grid, x + 1, y, visited);
+        islandCntHelper(grid, x - 1, y, visited);
+        islandCntHelper(grid, x, y + 1, visited);
+        islandCntHelper(grid, x, y - 1, visited);
     }
 
 
