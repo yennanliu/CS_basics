@@ -3200,47 +3200,47 @@ public class workspace9 {
 
     // LC 427
     // 4.36 - 4.46 pm
-    class Node {
-        public boolean val;
-        public boolean isLeaf;
-        public Node topLeft;
-        public Node topRight;
-        public Node bottomLeft;
-        public Node bottomRight;
-
-
-        public Node() {
-            this.val = false;
-            this.isLeaf = false;
-            this.topLeft = null;
-            this.topRight = null;
-            this.bottomLeft = null;
-            this.bottomRight = null;
-        }
-
-        public Node(boolean val, boolean isLeaf) {
-            this.val = val;
-            this.isLeaf = isLeaf;
-            this.topLeft = null;
-            this.topRight = null;
-            this.bottomLeft = null;
-            this.bottomRight = null;
-        }
-
-        public Node(boolean val, boolean isLeaf, Node topLeft, Node topRight, Node bottomLeft, Node bottomRight) {
-            this.val = val;
-            this.isLeaf = isLeaf;
-            this.topLeft = topLeft;
-            this.topRight = topRight;
-            this.bottomLeft = bottomLeft;
-            this.bottomRight = bottomRight;
-        }
-    }
-
-    public Node construct(int[][] grid) {
-
-        return null;
-    }
+//    class Node {
+//        public boolean val;
+//        public boolean isLeaf;
+//        public Node topLeft;
+//        public Node topRight;
+//        public Node bottomLeft;
+//        public Node bottomRight;
+//
+//
+//        public Node() {
+//            this.val = false;
+//            this.isLeaf = false;
+//            this.topLeft = null;
+//            this.topRight = null;
+//            this.bottomLeft = null;
+//            this.bottomRight = null;
+//        }
+//
+//        public Node(boolean val, boolean isLeaf) {
+//            this.val = val;
+//            this.isLeaf = isLeaf;
+//            this.topLeft = null;
+//            this.topRight = null;
+//            this.bottomLeft = null;
+//            this.bottomRight = null;
+//        }
+//
+//        public Node(boolean val, boolean isLeaf, Node topLeft, Node topRight, Node bottomLeft, Node bottomRight) {
+//            this.val = val;
+//            this.isLeaf = isLeaf;
+//            this.topLeft = topLeft;
+//            this.topRight = topRight;
+//            this.bottomLeft = bottomLeft;
+//            this.bottomRight = bottomRight;
+//        }
+//    }
+//
+//    public Node construct(int[][] grid) {
+//
+//        return null;
+//    }
 
     // LC 1448
     // 4.53 - 5.03 pm
@@ -6262,6 +6262,64 @@ public class workspace9 {
                 getMaxArea(grid, x - 1, y) +
                 getMaxArea(grid, x, y + 1) +
                 getMaxArea(grid, x, y - 1);
+    }
+
+    // LC 133
+    // 11.08 - 11. 32 am
+    class Node {
+        public int val;
+        public List<Node> neighbors;
+        public Node() {
+            val = 0;
+            neighbors = new ArrayList<Node>();
+        }
+        public Node(int _val) {
+            val = _val;
+            neighbors = new ArrayList<Node>();
+        }
+        public Node(int _val, ArrayList<Node> _neighbors) {
+            val = _val;
+            neighbors = _neighbors;
+        }
+    }
+
+    // IDEA: DFS
+    //Node cloned;
+    public Node cloneGraph(Node node) {
+        // edge
+        if(node == null){
+            return node;
+        }
+        if(node.neighbors == null || node.neighbors.isEmpty()){
+            return new Node(node.val);
+        }
+
+        Node cloned = new Node(node.val);
+
+        // dfs
+        cloneHelper(node, cloned, new HashSet<>()); // ??? cloned as param ???
+        return cloned; // ???
+    }
+
+    public void cloneHelper(Node node, Node cloned, HashSet<Node> visited){
+        // edge
+        if(node == null){
+            return;
+        }
+        if(visited.contains(node)){
+            return;
+        }
+
+        // mark as `visited`
+        visited.add(node);
+
+        for(Node n: node.neighbors){
+            Node newNode = new Node(n.val); // ?
+            cloned.neighbors.add(newNode);
+            cloned = newNode; //new Node(n.val); // ???
+            cloneHelper(node, cloned, visited);
+        }
+
     }
 
 

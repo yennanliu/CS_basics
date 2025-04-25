@@ -141,57 +141,33 @@ public class CloneGraph {
         return copiedNode;
     }
 
-    // V0'
-//    Node clonedNode = new Node();
-//    public Node cloneGraph(Node node) {
-//
-//        if (node == null){
-//            return node;
-//        }
-//
-//        // build map : {node_val : node_neighbors}
-//        Map<Integer, Set<Node>> map = new HashMap<>();
-//        for (Node x : node.neighbors){
-//            int _val = x.val;
-//            List<Node> _neighbors = x.neighbors;
-//            if (!map.containsKey(_val)){
-//                map.put(_val, new HashSet<>());
-//            }
-//            for (Node y : _neighbors){
-//                map.get(_val).add(y);
-//            }
-//        }
-//
-//        List<Integer> visited = new ArrayList<>();
-//        // (status) 0 : not visited, 1 : visiting, 2 : visited
-//        int status = 0;
-//        _help(node, visited, map, status);
-//        return this.clonedNode;
-//    }
-//
-//    private void _help(Node node, List<Integer> visited, Map<Integer, Set<Node>> map, int status){
-//
-//        // all nodes are visited
-//        if (visited.size() == map.keySet().size()){
-//            return;
-//        }
-//
-//        if (!visited.contains(node)){
-//            this.clonedNode = node;
-//            visited.add(node.val);
-//            if (map.get(node).isEmpty()){
-//                status = 2;
-//                map.remove(node.val);
-//            }
-//        }
-//
-//        for (Node _node : map.get(node)){
-//            // remove visiting node in map val
-//            map.get(_node.val).remove(_node);
-//            _help(_node, visited, map, 1);
-//        }
-//
-//    }
+    // V0-1
+    // IDEA: DFS (fixed by gpt)
+    Map<Node, Node> visited_0_1 = new HashMap<>();
+
+    public Node cloneGraph_0_1(Node node) {
+        if (node == null)
+            return null;
+        return dfs(node);
+    }
+
+    private Node dfs(Node node) {
+        // If already cloned
+        if (visited_0_1.containsKey(node)) {
+            return visited_0_1.get(node);
+        }
+
+        // Clone the node
+        Node clone = new Node(node.val);
+        visited_0_1.put(node, clone); // Mark this node as cloned
+
+        // Clone neighbors recursively
+        for (Node neighbor : node.neighbors) {
+            clone.neighbors.add(dfs(neighbor));
+        }
+
+        return clone;
+    }
 
     // V1-1
     // https://neetcode.io/problems/clone-graph
