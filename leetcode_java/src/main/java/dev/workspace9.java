@@ -5,6 +5,7 @@ import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.Heap.SingleThreadedCPU;
 import LeetCodeJava.Trie.DesignAddAndSearchWordsDataStructure;
 import com.sun.org.apache.bcel.internal.generic.IINC;
+import com.sun.org.apache.bcel.internal.generic.INEG;
 import com.sun.org.apache.bcel.internal.generic.PUSH;
 
 import java.util.*;
@@ -6433,6 +6434,94 @@ public class workspace9 {
             cloneHelper(node, cloned, visited);
         }
 
+    }
+
+    // LC 286
+    // 3.30 - 3.40 pm
+    /**
+     *
+     *  -> Fill each empty room with the distance to its nearest gate.
+     *   If it is impossible to reach a gate, it should be filled with INF.
+     *
+     *   -> 'IMF' to '0'
+     *
+     *    -1 - A wall or an obstacle.
+     *   0 - A gate.
+     *   INF - Infinity means an empty room.
+     *        We use the value 231 - 1 = 2147483647
+      *       to represent INF as you may assume
+     *        that the distance to a gate is less than 2147483647.
+     *
+     *   IDEA: BFS (distance to the nearest)
+     *
+     */
+    public void wallsAndGates(int[][] rooms) {
+        // edge
+        if(rooms == null || rooms.length == 0 || rooms[0].length == 0){
+            return;
+        }
+
+        int l = rooms.length;
+        int w = rooms[0].length;
+
+        for(int i = 0; i < w; i++){
+            for(int j = 0; j < l; j++){
+                // update rooms with nearest dist
+                if(rooms[j][i] == 0){
+                    // update
+                    // NOTE !!! visited matrix size
+                    boolean[][] visited = new boolean[l][w];
+                    distanceUpdater(rooms, i, j, visited);
+                }
+            }
+        }
+    }
+
+    // BFS
+    public void distanceUpdater(int[][] rooms, int x, int y, boolean[][] visited){
+
+        int l = rooms.length;
+        int w = rooms[0].length;
+
+        Queue<DistInfo> q = new LinkedList<>();
+        q.add(new DistInfo(x, y, 0));
+
+        while(!q.isEmpty()){
+
+            DistInfo info = q.poll();
+            int cur_x = info.x;
+            int cur_y = info.y;
+            int dist = info.dist;
+
+            // NOTE !!! we validate below
+            if(cur_x < 0 || cur_x >= w ||  cur_y < 0 || cur_y >= l || visited[cur_y][cur_x] ||  rooms[cur_y][cur_x] != Integer.MAX_VALUE ){
+                // NOTE !!! instead of return directly, we SHOULD use `continue`
+                //return;
+                continue;
+            }
+
+            rooms[cur_y][cur_x] = Math.min(dist,  rooms[cur_y][cur_x]); // ???
+
+            visited[cur_y][cur_x] = true;
+
+            q.add(new DistInfo(cur_x + 1, cur_y, dist + 1));
+            q.add(new DistInfo(cur_x - 1, cur_y, dist + 1));
+            q.add(new DistInfo(cur_x, cur_y + 1, dist + 1));
+            q.add(new DistInfo(cur_x, cur_y - 1, dist + 1));
+        }
+
+    }
+
+    public class DistInfo{
+        int x;
+        int y;
+        int dist;
+
+        public DistInfo(int x, int y, int dist){
+            this.x = x;
+            this.y = y;
+            this.dist = dist;
+        }
     }
 
 
