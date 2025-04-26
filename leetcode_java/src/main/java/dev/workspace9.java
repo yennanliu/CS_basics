@@ -6673,6 +6673,11 @@ public class workspace9 {
                 /**
                  *  NOTE !!!
                  *
+                 *  board[y][x],
+                 *
+                 *  so the first is Y-coordination
+                 *  and the second is X-coordination
+                 *
                  */
                 if(board[i][j] == 'O'){
                     board[i][j] = 'X';
@@ -6683,8 +6688,8 @@ public class workspace9 {
         // mark `all #` as `O`
         for(int i = 0; i < l; i++){
             for(int j = 0; j < w; j++){
-                if(board[j][i] == '#'){
-                    board[j][i] = 'O';
+                if(board[i][j] == '#'){
+                    board[i][j] = 'O';
                 }
             }
         }

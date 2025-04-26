@@ -50,8 +50,91 @@ import java.util.Queue;
 public class SurroundedRegions {
 
     // V0
-    // IDEA : DFS OR BFS
+    // IDEA : DFS (fixed by gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/surrounded-regions.py
+    /**
+     *  3 steps
+     *
+     *  step 1) mark all `0` but connected to `boundary cell as '#'
+     *
+     *  step 2) mark rest of the `0` as 'X`
+     *
+     *  step 3) mark all '#' as '0'
+     *
+     */
+    public void solve(char[][] board) {
+
+        // edge
+        if (board == null || board.length == 0 || board[0].length == 0) {
+            return;
+        }
+
+        if (board.length == 1 || board[0].length == 1) {
+            return;
+        }
+
+        int l = board.length;
+        int w = board[0].length;
+
+        // Step 1: Mark boundary-connected 'O's as '#'
+        // NOTE !!! we can merge y-direction, x-direction visiting
+        for (int i = 0; i < w; i++) {
+            markAsNotAffected(board, i, 0);
+            markAsNotAffected(board, i, l - 1);
+        }
+
+        for (int j = 0; j < l; j++) {
+            markAsNotAffected(board, 0, j);
+            markAsNotAffected(board, w - 1, j);
+        }
+
+        // Step 2: Flip the remaining 'O's to 'X'
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                /**
+                 *  NOTE !!!
+                 *
+                 *  board[y][x],
+                 *
+                 *  so the first is Y-coordination
+                 *  and the second is X-coordination
+                 *
+                 */
+                if (board[i][j] == 'O') {
+                    board[i][j] = 'X';
+                }
+            }
+        }
+
+        // mark `all #` as `O`
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                if (board[i][j] == '#') {
+                    board[i][j] = 'O';
+                }
+            }
+        }
+
+    }
+
+    public void markAsNotAffected(char[][] board, int x, int y) {
+
+        int l = board.length;
+        int w = board[0].length;
+
+        // NOTE !!! we validate below
+        if (x < 0 || x >= w || y < 0 || y >= l || board[y][x] != 'O') {
+            return;
+        }
+
+        // mark as visited
+        board[y][x] = '#';
+
+        markAsNotAffected(board, x + 1, y);
+        markAsNotAffected(board, x - 1, y);
+        markAsNotAffected(board, x, y + 1);
+        markAsNotAffected(board, x, y - 1);
+    }
 
     // V0-1
     // IDEA: DFS (fixed by gpt)
@@ -64,12 +147,12 @@ public class SurroundedRegions {
 
         // Step 1: Mark boundary-connected 'O's as '#'
         for (int i = 0; i < rows; i++) {
-            markAsNotAffected(board, i, 0);
-            markAsNotAffected(board, i, cols - 1);
+            markAsNotAffected_(board, i, 0);
+            markAsNotAffected_(board, i, cols - 1);
         }
         for (int j = 0; j < cols; j++) {
-            markAsNotAffected(board, 0, j);
-            markAsNotAffected(board, rows - 1, j);
+            markAsNotAffected_(board, 0, j);
+            markAsNotAffected_(board, rows - 1, j);
         }
 
         // Step 2: Flip the remaining 'O's to 'X'
@@ -91,7 +174,7 @@ public class SurroundedRegions {
         }
     }
 
-    private void markAsNotAffected(char[][] board, int row, int col) {
+    private void markAsNotAffected_(char[][] board, int row, int col) {
         int rows = board.length;
         int cols = board[0].length;
 
@@ -103,10 +186,10 @@ public class SurroundedRegions {
         board[row][col] = '#'; // mark as visited
 
         // Recurse in 4 directions
-        markAsNotAffected(board, row + 1, col);
-        markAsNotAffected(board, row - 1, col);
-        markAsNotAffected(board, row, col + 1);
-        markAsNotAffected(board, row, col - 1);
+        markAsNotAffected_(board, row + 1, col);
+        markAsNotAffected_(board, row - 1, col);
+        markAsNotAffected_(board, row, col + 1);
+        markAsNotAffected_(board, row, col - 1);
     }
 
     // V1-1
