@@ -75,11 +75,13 @@ public class PacificAtlanticWaterFlow {
          * of which cells in the matrix can reach the Pacific and Atlantic oceans, respectively.
          *
          *
-         * pacificReachable[i][j] will be true if water can flow from cell (i, j) to the Pacific Ocean.
-         * The Pacific Ocean is on the top and left edges of the matrix.
+         * - pacificReachable[i][j] will be true if water
+         *   can flow from cell (i, j) to the Pacific Ocean.
+         *   The Pacific Ocean is on the top and left edges of the matrix.
          *
-         * atlanticReachable[i][j] will be true if water can flow from cell (i, j) to the Atlantic Ocean.
-         * The Atlantic Ocean is on the bottom and right edges of the matrix.
+         * - atlanticReachable[i][j] will be true if water
+         *   can flow from cell (i, j) to the Atlantic Ocean.
+         *   The Atlantic Ocean is on the bottom and right edges of the matrix.
          *
          *
          * NOTE !!!!
@@ -87,7 +89,10 @@ public class PacificAtlanticWaterFlow {
          * The pacificReachable and atlanticReachable arrays serve a dual purpose:
          *
          * Tracking Reachability: They track whether each cell can reach the respective ocean.
-         * Tracking Visited Cells: They also help in tracking whether a cell has already been visited during the depth-first search (DFS) to prevent redundant work and infinite loops.
+         *
+         * Tracking Visited Cells: They also help in tracking whether a cell has already
+         *                         been visited during the depth-first search (DFS)
+         *                         to prevent redundant work and infinite loops.
          *
          */
         boolean[][] pacificReachable = new boolean[l][w];
