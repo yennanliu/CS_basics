@@ -617,6 +617,38 @@ boolean visit = boolean[y][x];
 }
 ```
 
+### 1-1-3) Access `M x N` boolean matrix
+
+```java
+// java
+// LC 130
+
+// ...
+
+int l = board.length;
+int w = board[0].length;
+
+for(int i = 0; i < l; i++){
+    for(int j = 0; j < w; j++){
+        // NOTE !!! below
+        /**
+         *  NOTE !!!
+         *
+         *  board[y][x],
+         *
+         *  so the first is Y-coordination
+         *  and the second is X-coordination
+         *
+         */
+        if(board[i][j] == k){
+            // do sth
+        }
+    }
+}
+
+// ...
+```
+
 ### 1-2) Char array to String
 
 - so can 1) access element 2) loop over it
