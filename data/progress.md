@@ -11,7 +11,7 @@
 		- re-do all previous `again` problems, similar problems, make notes
 		- refine java_trick cheatsheet
 - crack code book
-	- p.146
+	- p.167 (OOP design)
 - sys design book
 	- design google drive
 
