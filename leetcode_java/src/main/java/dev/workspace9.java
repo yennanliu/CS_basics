@@ -6525,6 +6525,102 @@ public class workspace9 {
     }
 
 
+    // LC 417
+    // 4.19 - 4.29 pm
+    /**
+     *
+     *  -> Return a 2D list of grid coordinates result
+     *     where result[i] = [ri, ci] denotes that rain
+     *     water can flow from cell (ri, ci) to
+     *     `both the Pacific and Atlantic oceans.`
+     *
+     *
+     *  water can flow to neighboring cells directly
+     *  north, south, east, and west
+     *  if the neighboring cell's height
+     *  is `less than or equal` to the current cell's height
+     *
+     *
+     *  IDEA 1) DFS
+     *    -> split result to 2 array
+     *      - canFlowToPacific
+     *      - canFlowToAtlantic
+     *    -> ONLY the overlap cells are collected as final result
+     *
+     *    -> NOTE !!! we `flow` from `ocean` to the `cell`,
+     *                like the `inverse way`
+     *
+     *  IDEA 2) BFS
+     *
+     */
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+
+       // List<List<Integer>> res = new ArrayList<>();
+        // edge
+        if(heights == null || heights.length == 0 || heights[0].length == 0){
+            return new ArrayList<>();
+        }
+
+        int l = heights.length;
+        int w = heights[0].length;
+
+        List<List<Integer>> canFlowToPacific = new ArrayList<>();
+        List<List<Integer>> canFlowToAtlantic = new ArrayList<>();
+
+        // dfs call
+
+
+        // find `overlap`
+        return getOverLap(canFlowToPacific, canFlowToAtlantic);
+    }
+
+    public List<List<Integer>> getCanFlowCell(int[][] heights, int x, int y, int last_x, int last_y, boolean[][] visited, List<List<Integer>> collected){
+
+        int l = heights.length;
+        int w = heights[0].length;
+
+        visited[y][x] = true;
+
+        // NOTE !!! we validate below
+        if(x < 0 || x >= w || y < 0 || y >= l || visited[y][x] || heights[last_y][last_x] >= heights[y][x]){
+            return null;
+        }
+
+        List<Integer> tmp = new ArrayList<>();
+        tmp.add(x);
+        tmp.add(y);
+        collected.add(tmp);
+
+        getCanFlowCell(heights, x + 1, y, x, y, visited, collected);
+        getCanFlowCell(heights, x - 1, y, x, y, visited, collected);
+        getCanFlowCell(heights, x, y + 1, x, y, visited, collected);
+        getCanFlowCell(heights, x, y - 1, x, y, visited, collected);
+
+        return collected; // ???
+    }
+
+
+    public List<List<Integer>> getOverLap(List<List<Integer>> arr_a, List<List<Integer>> arr_b){
+
+        List<List<Integer>> res = new ArrayList<>();
+        // assume arr_a has `longer` len
+        int max_len = Math.max(arr_a.size(), arr_b.size());
+        // swap arr_a, arr_b
+        if(max_len == arr_b.size()){
+            List<List<Integer>> cache = arr_a;
+            arr_a = arr_b;
+            arr_b = cache;
+        }
+
+        for(int i = 0; i < arr_a.size(); i++){
+            /// ???
+            if(arr_b.contains(arr_a.get(i))){
+                res.add(arr_a.get(i));
+            }
+        }
+
+        return res;
+    }
 
 }
 
