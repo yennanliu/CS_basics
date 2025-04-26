@@ -94,17 +94,33 @@ public class PacificAtlanticWaterFlow {
          *                         been visited during the depth-first search (DFS)
          *                         to prevent redundant work and infinite loops.
          *
+         *
+         *   NOTE !!!
+         *
+         *    we use `boolean[][]` to track if a cell is reachable
          */
         boolean[][] pacificReachable = new boolean[l][w];
         boolean[][] atlanticReachable = new boolean[l][w];
 
         // check on x-axis
+        /**
+         *  NOTE !!!
+         *
+         *   we loop EVERY `cell` at x-axis  ( (x_1, 0), (x_2, 0), .... (x_1, l - 1), (x_2, l - 1) ... )
+         *
+         */
         for (int x = 0; x < w; x++) {
             dfs(heights, pacificReachable, 0, x);
             dfs(heights, atlanticReachable, l - 1, x);
         }
 
         // check on y-axis
+        /**
+         *  NOTE !!!
+         *
+         *   we loop EVERY `cell` at y-axis  (  (0, y_1), (0, y_2), .... (w-1, y_1), (w-1, y_2), ... )
+         *
+         */
         for (int y = 0; y < l; y++) {
             dfs(heights, pacificReachable, y, 0);
             dfs(heights, atlanticReachable, y, w - 1);
@@ -121,6 +137,16 @@ public class PacificAtlanticWaterFlow {
         return commonCells;
     }
 
+    /**
+     *  NOTE !!!
+     *
+     *   this dfs func return NOTHING,
+     *   e.g. it updates the matrix value `in place`
+     *
+     *   example:  we pass `pacificReachable` as param to dfs,
+     *             it modifies values in pacificReachable in place,
+     *             but NOT return pacificReachable as response
+     */
     private void dfs(int[][] heights, boolean[][] reachable, int y, int x) {
 
         int l = heights.length;
