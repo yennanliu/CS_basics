@@ -53,65 +53,61 @@ public class SurroundedRegions {
     // IDEA : DFS OR BFS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/surrounded-regions.py
 
-    // TODO : fix below
-    // V0'
-//    int[][] points = new int[][]{};
-//    public void solve(char[][] board) {
-//
-//        if (board.length == 1 && board[0].length == 1){
-//            return;
-//        }
-//
-//        int len = board.length;
-//        int width = board[0].length;
-//
-//        // dfs
-//        // make points to "X"
-//        List<List<Integer>> tmp_points = _collect(board, 0, 0, new ArrayList<>());
-//        if (tmp_points != null && _is_border(tmp_points)){
-//            flip(tmp_points, board);
-//        }
-//        return;
-//    }
-//
-//    private List<List<Integer>> _collect(char[][] board, int x, int y, List<List<Integer>> points){
-//
-//        int len = board.length;
-//        int width = board[0].length;
-//
-//        if (x < 0 || x >= width || y < 0 || y >= len || board[y][x] == 'X'){
-//            return null;
-//        }
-//
-//        if (board[y][x] == 'O'){
-//            List<Integer> cur = new ArrayList<>();
-//            cur.add(x);
-//            cur.add(y);
-//            points.add(cur);
-//        }
-//
-//        _collect(board, x+1, y, points);
-//        _collect(board, x-1, y, points);
-//        _collect(board, x, y+1, points);
-//        _collect(board, x, y-1, points);
-//
-//        return points;
-//    }
-//
-//    private Boolean _is_border(List<List<Integer>> points){
-//        for (List<Integer> x : points){
-//            if (x.get(0) == 0 || x.get(1) == 0){
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-//
-//    private void flip(List<List<Integer>> points, char[][] board){
-//        for (List<Integer> x : points){
-//            board[x.get(0)][x.get(1)] = 'X';
-//        }
-//    }
+    // V0-1
+    // IDEA: DFS (fixed by gpt)
+    public void solve_0_1(char[][] board) {
+        if (board == null || board.length == 0 || board[0].length == 0)
+            return;
+
+        int rows = board.length;
+        int cols = board[0].length;
+
+        // Step 1: Mark boundary-connected 'O's as '#'
+        for (int i = 0; i < rows; i++) {
+            markAsNotAffected(board, i, 0);
+            markAsNotAffected(board, i, cols - 1);
+        }
+        for (int j = 0; j < cols; j++) {
+            markAsNotAffected(board, 0, j);
+            markAsNotAffected(board, rows - 1, j);
+        }
+
+        // Step 2: Flip the remaining 'O's to 'X'
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == 'O') {
+                    board[i][j] = 'X';
+                }
+            }
+        }
+
+        // Step 3: Convert '#' back to 'O'
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == '#') {
+                    board[i][j] = 'O';
+                }
+            }
+        }
+    }
+
+    private void markAsNotAffected(char[][] board, int row, int col) {
+        int rows = board.length;
+        int cols = board[0].length;
+
+        // Bounds check + base case
+        if (row < 0 || col < 0 || row >= rows || col >= cols || board[row][col] != 'O') {
+            return;
+        }
+
+        board[row][col] = '#'; // mark as visited
+
+        // Recurse in 4 directions
+        markAsNotAffected(board, row + 1, col);
+        markAsNotAffected(board, row - 1, col);
+        markAsNotAffected(board, row, col + 1);
+        markAsNotAffected(board, row, col - 1);
+    }
 
     // V1-1
     // https://neetcode.io/problems/surrounded-regions

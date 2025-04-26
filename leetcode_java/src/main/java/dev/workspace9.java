@@ -6622,5 +6622,94 @@ public class workspace9 {
         return res;
     }
 
+    // LC 130
+    // 4.58 - 5.08 pm
+    /**
+     *  IDEA 1) DFS
+     *
+     *  IDES 2) BFS
+     */
+    public void solve(char[][] board) {
+
+        // edge
+        if(board == null || board.length == 0 || board[0].length == 0){
+            return;
+        }
+
+        if(board.length == 1 || board[0].length == 1){
+            return;
+        }
+
+        int l = board.length;
+        int w = board[0].length;
+
+        /**
+         *  3 steps
+         *
+         *  step 1) mark all `0` but connected to `boundary cell as '#'
+         *
+         *  step 2) mark rest of the `0` as 'X`
+         *
+         *  step 3) mark all '#' as '0'
+         *
+         */
+
+        //boolean[][] visited = new boolean[l][w];
+
+        // Step 1: Mark boundary-connected 'O's as '#'
+        for(int i = 0; i < w; i++){
+            markAsNotAffected(board, i, 0);
+            markAsNotAffected(board, i, l - 1);
+        }
+
+        for(int j = 0; j < l; j++){
+            markAsNotAffected(board, 0, j);
+            markAsNotAffected(board, w - 1, j);
+        }
+
+        // Step 2: Flip the remaining 'O's to 'X'
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                /**
+                 *  NOTE !!!
+                 *
+                 */
+                if(board[i][j] == 'O'){
+                    board[i][j] = 'X';
+                }
+            }
+        }
+
+        // mark `all #` as `O`
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                if(board[j][i] == '#'){
+                    board[j][i] = 'O';
+                }
+            }
+        }
+
+    }
+
+    public void markAsNotAffected(char[][] board, int x, int y){
+
+        int l = board.length;
+        int w = board[0].length;
+
+        // NOTE !!! we validate below
+        if(x < 0 || x >= w || y < 0 || y >= l || board[y][x] != 'O'){
+            return;
+        }
+
+        // mark as visited
+        board[y][x] = '#';
+
+        markAsNotAffected(board, x + 1, y);
+        markAsNotAffected(board, x - 1, y);
+        markAsNotAffected(board, x, y + 1);
+        markAsNotAffected(board, x, y - 1);
+    }
+
+
 }
 
