@@ -1584,6 +1584,7 @@ class Codec:
 // LC 417
 // V0
 // IDEA : DFS (fixed by GPT)
+
 public List<List<Integer>> pacificAtlantic(int[][] heights) {
 
     if (heights == null || heights.length == 0 || heights[0].length == 0) {
@@ -1599,11 +1600,13 @@ public List<List<Integer>> pacificAtlantic(int[][] heights) {
      * of which cells in the matrix can reach the Pacific and Atlantic oceans, respectively.
      *
      *
-     * pacificReachable[i][j] will be true if water can flow from cell (i, j) to the Pacific Ocean.
-     * The Pacific Ocean is on the top and left edges of the matrix.
+     * - pacificReachable[i][j] will be true if water
+     *   can flow from cell (i, j) to the Pacific Ocean.
+     *   The Pacific Ocean is on the top and left edges of the matrix.
      *
-     * atlanticReachable[i][j] will be true if water can flow from cell (i, j) to the Atlantic Ocean.
-     * The Atlantic Ocean is on the bottom and right edges of the matrix.
+     * - atlanticReachable[i][j] will be true if water
+     *   can flow from cell (i, j) to the Atlantic Ocean.
+     *   The Atlantic Ocean is on the bottom and right edges of the matrix.
      *
      *
      * NOTE !!!!
@@ -1611,19 +1614,38 @@ public List<List<Integer>> pacificAtlantic(int[][] heights) {
      * The pacificReachable and atlanticReachable arrays serve a dual purpose:
      *
      * Tracking Reachability: They track whether each cell can reach the respective ocean.
-     * Tracking Visited Cells: They also help in tracking whether a cell has already been visited during the depth-first search (DFS) to prevent redundant work and infinite loops.
      *
+     * Tracking Visited Cells: They also help in tracking whether a cell has already
+     *                         been visited during the depth-first search (DFS)
+     *                         to prevent redundant work and infinite loops.
+     *
+     *
+     *   NOTE !!!
+     *
+     *    we use `boolean[][]` to track if a cell is reachable
      */
     boolean[][] pacificReachable = new boolean[l][w];
     boolean[][] atlanticReachable = new boolean[l][w];
 
-    // Move x-axis
+    // check on x-axis
+    /**
+     *  NOTE !!!
+     *
+     *   we loop EVERY `cell` at x-axis  ( (x_1, 0), (x_2, 0), .... (x_1, l - 1), (x_2, l - 1) ... )
+     *
+     */
     for (int x = 0; x < w; x++) {
         dfs(heights, pacificReachable, 0, x);
         dfs(heights, atlanticReachable, l - 1, x);
     }
 
-    // Move y-axis
+    // check on y-axis
+    /**
+     *  NOTE !!!
+     *
+     *   we loop EVERY `cell` at y-axis  (  (0, y_1), (0, y_2), .... (w-1, y_1), (w-1, y_2), ... )
+     *
+     */
     for (int y = 0; y < l; y++) {
         dfs(heights, pacificReachable, y, 0);
         dfs(heights, atlanticReachable, y, w - 1);
@@ -1640,6 +1662,16 @@ public List<List<Integer>> pacificAtlantic(int[][] heights) {
     return commonCells;
 }
 
+/**
+ *  NOTE !!!
+ *
+ *   this dfs func return NOTHING,
+ *   e.g. it updates the matrix value `in place`
+ *
+ *   example:  we pass `pacificReachable` as param to dfs,
+ *             it modifies values in pacificReachable in place,
+ *             but NOT return pacificReachable as response
+ */
 private void dfs(int[][] heights, boolean[][] reachable, int y, int x) {
 
     int l = heights.length;
@@ -1683,7 +1715,7 @@ private void dfs(int[][] heights, boolean[][] reachable, int y, int x) {
             dfs(heights, reachable, newY, newX);
         }
     }
-}  
+} 
 ```
 
 ### 2-12) Minesweeper
