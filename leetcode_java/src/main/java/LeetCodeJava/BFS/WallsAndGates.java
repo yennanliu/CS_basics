@@ -84,7 +84,21 @@ public class WallsAndGates {
         // get cnt
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < len; j++) {
-                if (rooms[j][i] == 0) {
+        /**
+         *  NOTE !!!
+         *
+         *  since the dist is `'IMF' to '0'`,
+         *  so we start from `0` (gate), and found closed `room` around it
+         *
+         *  (instead of start from `room` to gate)
+         *
+         *
+         *   1)  -1 - A wall or an obstacle.
+         *   2) 0 - A gate.
+         *   3) INF - Infinity means an empty room.
+         *
+         */
+        if (rooms[j][i] == 0) {
                     gete_cnt += 1;
                     // NOTE !!! we should do BFS with "gete" instead of space point
                     q.add(new Pair(i, j, -1));
@@ -139,6 +153,70 @@ public class WallsAndGates {
                 }
 
             }
+        }
+    }
+
+    // V0-1
+    // IDEA: BFS + custom class (fixed by gpt)
+    // TODO: validate below
+    public void wallsAndGates_0_1(int[][] rooms) {
+        // Edge case
+        if (rooms == null || rooms.length == 0 || rooms[0].length == 0) {
+            return;
+        }
+
+        int rows = rooms.length;
+        int cols = rooms[0].length;
+
+        // Initialize BFS queue
+        Queue<DistInfo> queue = new LinkedList<>();
+        boolean[][] visited = new boolean[rows][cols];
+
+        // Enqueue all gates
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (rooms[r][c] == 0) {
+                    queue.offer(new DistInfo(r, c, 0));
+                    visited[r][c] = true;
+                }
+            }
+        }
+
+        // Directions: up, down, left, right
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+        // BFS
+        while (!queue.isEmpty()) {
+            DistInfo info = queue.poll();
+            int row = info.row;
+            int col = info.col;
+            int dist = info.dist;
+
+            for (int[] dir : directions) {
+                int newRow = row + dir[0];
+                int newCol = col + dir[1];
+
+                // Check boundaries and if not visited and is an empty room
+                if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols
+                        && !visited[newRow][newCol] && rooms[newRow][newCol] == Integer.MAX_VALUE) {
+                    rooms[newRow][newCol] = dist + 1;
+                    visited[newRow][newCol] = true;
+                    queue.offer(new DistInfo(newRow, newCol, dist + 1));
+                }
+            }
+        }
+    }
+
+    // Helper class
+    public class DistInfo {
+        int row;
+        int col;
+        int dist;
+
+        public DistInfo(int row, int col, int dist) {
+            this.row = row;
+            this.col = col;
+            this.dist = dist;
         }
     }
 
@@ -253,6 +331,20 @@ public class WallsAndGates {
         int n = grid[0].length;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
+                /**
+                 *  NOTE !!!
+                 *
+                 *  since the dist is `'IMF' to '0'`,
+                 *  so we start from `0` (gate), and found closed `room` around it
+                 *
+                 *  (instead of start from `room` to gate)
+                 *
+                 *
+                 *   1)  -1 - A wall or an obstacle.
+                 *   2) 0 - A gate.
+                 *   3) INF - Infinity means an empty room.
+                 *
+                 */
                 if (grid[i][j] == 0) {
                     q.add(new int[] { i, j });
                 }
