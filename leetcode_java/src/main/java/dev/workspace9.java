@@ -6715,6 +6715,12 @@ public class workspace9 {
         markAsNotAffected(board, x, y - 1);
     }
 
+    // LC 752
+    public int openLock(String[] deadends, String target) {
+
+        return 0;
+    }
+
 
 }
 
