@@ -56,6 +56,7 @@ public class CourseSchedule2 {
 
     // V0
     // IDEA : TOPOLOGICAL SORT (fixed by gpt)
+    /** NOTE !!! we CAN'T use `quick union` for this problem */
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         // Edge case: no prerequisites
         if (prerequisites == null || prerequisites.length == 0) {
