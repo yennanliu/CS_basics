@@ -6716,10 +6716,113 @@ public class workspace9 {
     }
 
     // LC 752
-    public int openLock(String[] deadends, String target) {
+    // 3.34 - 3.44 pm
+    /**  IDEA : BFS
+     *
+     *   step 1) try all possible moves (for each `lock`)
+     *           if meat deadlock, `give up` such option
+     *   step 2) if reach any target, return cnt directly
+     *           otherwise, return -1
+     *
+     */
+    public class LockInfo{
+        String[] lock;
+        int moves;
 
-        return 0;
+        public LockInfo(String[] lock, int moves){
+            this.lock = lock;
+            this.moves = moves;
+        }
     }
+    public int openLock(String[] deadends, String target) {
+        // edge
+        if(target == "0000"){
+            return 0;
+        }
+
+        List<String> deadendList = new ArrayList<>();
+        for(String d: deadends){
+            deadendList.add(d);
+        }
+
+        // edge 2, init status is in deadends
+        if(deadendList.contains("0000")){
+            return -1;
+        }
+
+        Queue<LockInfo> q = new LinkedList<>();
+        q.add(new LockInfo("0000".split(""), 0));
+
+        // bfs
+        while(!q.isEmpty()){
+
+            LockInfo cur = q.poll();
+            String[] _lock = cur.lock;
+            int moves = cur.moves;
+
+            if(_lock.toString().equals(target)){
+                return moves;
+            }
+            // deadlock
+           if(deadendList.contains(Arrays.toString(_lock))){
+               continue;
+           }
+
+           // move
+           for(int i = 0; i < cur.lock.length; i++){
+               // update val at idx `i`
+               // case 1) move `clockwise`
+               String[] lock_1 = lockMover(_lock, i, true);
+
+               // case 2) move `anti clockwise`
+               String[] lock_2 = lockMover(_lock, i, false);
+
+               // add to queue
+               q.add(new LockInfo(lock_1, moves + 1));
+               q.add(new LockInfo(lock_2, moves + 1));
+           }
+
+        }
+
+        return -1;
+    }
+
+    public String[] lockMover(String[] lock, int idx, boolean clockwise){
+
+        int val = Integer.parseInt(lock[idx]);
+
+        if(val == 0){
+            if(clockwise){
+                val = 1;
+            }else{
+                val = 9;
+            }
+        }
+        else if(val == 9){
+            if(clockwise){
+                val = 0;
+            }else{
+                val = 8;
+            }
+        }else{
+            if(clockwise){
+                val += 1;
+            }else{
+                val -= 1;
+            }
+        }
+
+        lock[idx] = String.valueOf(val);
+
+        return lock;
+    }
+
+
+
+//    public int lockHelper(String[] deadends, String target, List<String> cur){
+//
+//        return 0;
+//    }
 
 
 }

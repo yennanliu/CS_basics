@@ -53,93 +53,80 @@ import java.util.*;
 public class OpenTheLock {
 
     // V0
-//    // TODO: fix below
-//    public class Move{
-//        // attr
-//        int move;
-//        String state;
-//
-//        // constructor
-//        public Move(String state, int move){
-//            this.move = move;
-//            this.state = state;
-//        }
-//
-//        // getter, setter
-//        public int getMove() {
-//            return move;
-//        }
-//
-//        public void setMove(int move) {
-//            this.move = move;
-//        }
-//
-//        public String getState() {
-//            return state;
-//        }
-//
-//        public void setState(String state) {
-//            this.state = state;
-//        }
-//    }
-//    public int openLock(String[] deadends, String target) {
-//
-//        // edge
-//        List<String> deadendsList = Arrays.asList(deadends);
-//        if(deadendsList.contains("0000")){
-//            return -1;
-//        }
-//
-//        if (deadends.length == 1){
-//            if (deadends[0].equals("0000")){
-//                return -1;
-//            }
-//            if (target.equals("0000")){
-//                return 0;
-//            }
-//            // other cases will be processed below
-//        }
-//
-//        //List<String> deadendsList = Arrays.asList(deadends);
-//
-//        String[] moves = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-//        //Map<String, List<String>> moves = new HashMap<>();
-//        // moves.put("0", new ArrayList<>("1", "9"));
-//        Queue<workspace6.Move> queue = new LinkedList<>();
-//        String initState = "0000";
-//        Set<String> visited = new HashSet<>();
-//        queue.add(new workspace6.Move(initState, 0));
-//
-//        while(!queue.isEmpty()){
-//            workspace6.Move cur = queue.poll();
-//            int move = cur.getMove();
-//            String curState = cur.getState();
-//            // if found, return directly, since we use BFS, it should be `shortest` move
-//            if (curState.equals(target)){
-//                return move;
-//            }
-//
-//            // ??? need to loop over idx ??? or we add "4 moved idx string" to queue at first
-//            for(int i = 0; i < initState.length(); i++){
-//                for (String x: moves){
-//                    String curNew = updateStringWithIdx(curState, x, i);
-//                    //boolean isEqaulOnIdx = curNew.charAt(i) == target.charAt(i);
-//                    if (!deadendsList.contains(curNew) && !visited.contains(curNew)){
-//                        // add to queue
-//                        visited.add(curNew);
-//                        queue.add(new workspace6.Move(curNew, move+1));
-//                    }
-//                }
-//            }
-//        }
-//
-//        return -1;
-//    }
-//
-//    private String updateStringWithIdx(String input, String newStr, int idx){
-//        StringBuilder sb = new StringBuilder(input);
-//        return sb.replace(idx, idx+1, newStr).toString();
-//    }
+    // IDEA: BFS + custom class (fixed by gpt)
+    public class LockInfo {
+        String lock;
+        int moves;
+
+        public LockInfo(String lock, int moves) {
+            this.lock = lock;
+            this.moves = moves;
+        }
+    }
+
+    public int openLock(String[] deadends, String target) {
+        // edge case
+        if (target.equals("0000")) {
+            return 0;
+        }
+
+        Set<String> deadendSet = new HashSet<>(Arrays.asList(deadends));
+        if (deadendSet.contains("0000"))
+            return -1;
+
+        Queue<LockInfo> q = new LinkedList<>();
+        /** NOTE !!! we use `visited to re-visit the locks */
+        Set<String> visited = new HashSet<>();
+
+        q.add(new LockInfo("0000", 0));
+        visited.add("0000");
+
+        while (!q.isEmpty()) {
+            LockInfo cur = q.poll();
+            String lock = cur.lock;
+            int moves = cur.moves;
+
+            if (lock.equals(target)) {
+                return moves;
+            }
+
+            // deadlock
+            if (deadendSet.contains(lock)) {
+                continue;
+            }
+
+            // move
+            for (int i = 0; i < 4; i++) {
+                String lock1 = lockMover(lock, i, true);
+                String lock2 = lockMover(lock, i, false);
+
+                /** NOTE !!! we use `visited to re-visit the locks */
+                if (!visited.contains(lock1) && !deadendSet.contains(lock1)) {
+                    q.add(new LockInfo(lock1, moves + 1));
+                    visited.add(lock1);
+                }
+
+                /** NOTE !!! we use `visited to re-visit the locks */
+                if (!visited.contains(lock2) && !deadendSet.contains(lock2)) {
+                    q.add(new LockInfo(lock2, moves + 1));
+                    visited.add(lock2);
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    /**  lockMover is a helper func for moving lock */
+    public String lockMover(String lock, int idx, boolean clockwise) {
+        char[] chars = lock.toCharArray();
+        if (clockwise) {
+            chars[idx] = chars[idx] == '9' ? '0' : (char) (chars[idx] + 1);
+        } else {
+            chars[idx] = chars[idx] == '0' ? '9' : (char) (chars[idx] - 1);
+        }
+        return new String(chars);
+    }
 
     // V1
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0752-open-the-lock.java
