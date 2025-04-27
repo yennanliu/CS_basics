@@ -473,10 +473,91 @@ public class CourseSchedule {
         return count == 0;
     }
 
-    // V1
+    // V1-1
+    // https://neetcode.io/problems/course-schedule
+    // IDEA: Cycle Detection (DFS)
+    // Map each course to its prerequisites
+    private Map<Integer, List<Integer>> preMap = new HashMap<>();
+    // Store all courses along the current DFS path
+    private Set<Integer> visiting = new HashSet<>();
+
+    public boolean canFinish_1_1(int numCourses, int[][] prerequisites) {
+        for (int i = 0; i < numCourses; i++) {
+            preMap.put(i, new ArrayList<>());
+        }
+        for (int[] prereq : prerequisites) {
+            preMap.get(prereq[0]).add(prereq[1]);
+        }
+
+        for (int c = 0; c < numCourses; c++) {
+            if (!dfs(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean dfs(int crs) {
+        if (visiting.contains(crs)) {
+            // Cycle detected
+            return false;
+        }
+        if (preMap.get(crs).isEmpty()) {
+            return true;
+        }
+
+        visiting.add(crs);
+        for (int pre : preMap.get(crs)) {
+            if (!dfs(pre)) {
+                return false;
+            }
+        }
+        visiting.remove(crs);
+        preMap.put(crs, new ArrayList<>());
+        return true;
+    }
+    
+    // V1-2
+    // https://neetcode.io/problems/course-schedule
+    // IDEA: Topological Sort (Kahn's Algorithm)
+    public boolean canFinish_1_2(int numCourses, int[][] prerequisites) {
+        int[] indegree = new int[numCourses];
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int[] pre : prerequisites) {
+            indegree[pre[1]]++;
+            adj.get(pre[0]).add(pre[1]);
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                q.add(i);
+            }
+        }
+
+        int finish = 0;
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            finish++;
+            for (int nei : adj.get(node)) {
+                indegree[nei]--;
+                if (indegree[nei] == 0) {
+                    q.add(nei);
+                }
+            }
+        }
+
+        return finish == numCourses;
+    }
+
+
+    // V2
     // IDEA : BFS
     // https://leetcode.com/problems/course-schedule/solutions/58775/my-java-bfs-solution/
-    public boolean canFinish_1(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_2(int numCourses, int[][] prerequisites) {
         Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
         int[] indegree = new int[numCourses];
         Queue<Integer> queue = new LinkedList<Integer>();
@@ -530,10 +611,10 @@ public class CourseSchedule {
         return count == 0;
     }
 
-    // V2
+    // V3
     // IDEA : BFS
     // https://leetcode.com/problems/course-schedule/solutions/58524/java-dfs-and-bfs-solution/
-    public boolean canFinish_2(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_3(int numCourses, int[][] prerequisites) {
         ArrayList[] graph = new ArrayList[numCourses];
         int[] degree = new int[numCourses];
         Queue queue = new LinkedList();
@@ -570,14 +651,14 @@ public class CourseSchedule {
             return false;
     }
 
-    // V3
+    // V4
     // IDEA :  TOPOLOGICAL SORT
     // https://leetcode.com/problems/course-schedule/solutions/447754/java-topological-sort-dfs-3ms/
     enum Status {
         NOT_VISITED, VISITED, VISITING;
     }
 
-    public boolean canFinish_3(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_4(int numCourses, int[][] prerequisites) {
         if(prerequisites == null || prerequisites.length == 0 || prerequisites[0].length == 0) return true;
         // building graph
         List<List<Integer>> list = new ArrayList<>(numCourses);
