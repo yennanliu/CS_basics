@@ -6817,12 +6817,11 @@ public class workspace9 {
         return lock;
     }
 
+    // LC 207
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
 
-
-//    public int lockHelper(String[] deadends, String target, List<String> cur){
-//
-//        return 0;
-//    }
+        return false;
+    }
 
 
 }
