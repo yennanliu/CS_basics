@@ -45,6 +45,8 @@ public class CourseSchedule {
     // V0
     // IDEA : TOPOLOGICAL SORT
     // LC 210
+    // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_207_1.png
+    // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_207_1.png
     /** NOTE !!! we CAN'T use `quick union` for this problem */
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         if (prerequisites.length == 0){
