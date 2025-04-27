@@ -6818,9 +6818,79 @@ public class workspace9 {
     }
 
     // LC 207
+    // 4.18 - 4.28 pm
+    /**
+     *
+     *  prerequisites[i] = [ai, bi]
+     *  ->  must take course bi first if you want to take course ai.
+     *
+     *  e.g.
+     *
+     *  [ai, bi] : bi -> ai (bi first)
+     *
+     *
+     *  IDEA 1) DFS (check if cycle)
+     *  IDEA 2) TOPOLOGICAL SORT
+     */
     public boolean canFinish(int numCourses, int[][] prerequisites) {
 
-        return false;
+        MyTopoSort myTopoSort = new MyTopoSort(numCourses, prerequisites);
+
+        // edge
+        for(int[] p: prerequisites){
+            // if any `cycle` happened, return false directly
+            if(!myTopoSort.union(p[0], p[1])){
+                return false;
+            }
+        }
+
+        // ???
+        return numCourses == myTopoSort.topoSortOrdering.size();
+    }
+
+    // helper class (TOPOLOGICAL SORT)
+    public class MyTopoSort{
+
+        int numCourses;
+        int[][] prerequisites;
+        int[] parents; // ??
+        List<Integer> topoSortOrdering;
+
+        public MyTopoSort(int numCourses, int[][] prerequisites){
+            this.numCourses = numCourses;
+            this.prerequisites = prerequisites;
+
+            int[] parents = new int[numCourses];
+//            for(int i = 0; i < orders.length; i++){
+//                orders[i] = 0;
+//            }
+
+            topoSortOrdering = new ArrayList<>();
+        }
+
+        public int getParent(int course){
+            if(this.parents[course] == course){
+               return course;
+            }
+
+            int parent = this.getParent(course);
+            this.parents[parent] = parent;
+            return this.parents[parent]; // ??
+        }
+
+        public boolean union(int course_1, int course_2){
+
+            int parent_1 = this.getParent(course_1);
+            int parent_2 = this.getParent(course_2);
+
+            if(parent_1 == parent_2){
+                return false;
+            }
+
+            this.parents[parent_2] = parent_1;
+            return true;
+        }
+
     }
 
 
