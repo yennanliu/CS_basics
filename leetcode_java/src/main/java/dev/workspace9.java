@@ -6832,66 +6832,153 @@ public class workspace9 {
      *  IDEA 1) DFS (check if cycle)
      *  IDEA 2) TOPOLOGICAL SORT
      */
+    // IDEA 2) TOPOLOGICAL SORT
+    // 5.11 - 5.31 pm
     public boolean canFinish(int numCourses, int[][] prerequisites) {
 
-        MyTopoSort myTopoSort = new MyTopoSort(numCourses, prerequisites);
-
-        // edge
-        for(int[] p: prerequisites){
-            // if any `cycle` happened, return false directly
-            if(!myTopoSort.union(p[0], p[1])){
-                return false;
-            }
-        }
-
-        // ???
-        return numCourses == myTopoSort.topoSortOrdering.size();
-    }
-
-    // helper class (TOPOLOGICAL SORT)
-    public class MyTopoSort{
-
-        int numCourses;
-        int[][] prerequisites;
-        int[] parents; // ??
-        List<Integer> topoSortOrdering;
-
-        public MyTopoSort(int numCourses, int[][] prerequisites){
-            this.numCourses = numCourses;
-            this.prerequisites = prerequisites;
-
-            int[] parents = new int[numCourses];
-//            for(int i = 0; i < orders.length; i++){
-//                orders[i] = 0;
-//            }
-
-            topoSortOrdering = new ArrayList<>();
-        }
-
-        public int getParent(int course){
-            if(this.parents[course] == course){
-               return course;
-            }
-
-            int parent = this.getParent(course);
-            this.parents[parent] = parent;
-            return this.parents[parent]; // ??
-        }
-
-        public boolean union(int course_1, int course_2){
-
-            int parent_1 = this.getParent(course_1);
-            int parent_2 = this.getParent(course_2);
-
-            if(parent_1 == parent_2){
-                return false;
-            }
-
-            this.parents[parent_2] = parent_1;
+        if (prerequisites.length <= 1){
             return true;
         }
 
+        List<Integer> res = topoSort(numCourses, prerequisites);
+        if(res == null){
+            return false;
+        }
+
+        return res.size() == numCourses; // ??
     }
+
+    public List<Integer> topoSort(int numCourses, int[][] prerequisites){
+        int[] orders = new int[numCourses];
+
+        // { v1 : [v2, v3, ...]}
+        // need to take v2, v3,, first, then be able to take v1
+        Map<Integer, List<Integer>> preMap = new HashMap<>();
+        for(int[] p: prerequisites){
+            /**
+             *
+             *  prerequisites[i] = [ai, bi]
+             *  ->  must take course bi first if you want to take course ai.
+             *
+             *  e.g.
+             *
+             *  [ai, bi] : bi -> ai (bi first)
+             */
+            int ai = p[0];
+            int bi = p[1];
+
+            // update map
+            List<Integer> preList = preMap.getOrDefault(ai, new ArrayList<>());
+            preList.add(bi);
+            preMap.put(ai, preList);
+
+            // update order
+            // meaning, there is new `pre-course` need to be taken, before we take ai
+            orders[ai] += 1;
+        }
+
+        List<Integer> collected = new ArrayList<>();
+
+        // init a queue
+        Queue<Integer> q = new LinkedList<>();
+        // add all `0 order` node to queue
+        for(int i = 0; i < orders.length; i++){
+            if(orders[i] == 0){
+                q.add(i);
+            }
+        }
+
+        while(!q.isEmpty()){
+
+            int cur = q.poll();
+            collected.add(cur);
+
+            if(preMap.containsKey(cur)){
+                for(int x : preMap.get(cur)){
+                    //q.add(x);
+                    orders[x] -= 1;
+                    // if `order == 0`, add to queue
+                    if(orders[x] == 0){
+                        q.add(x);
+                    }
+                }
+            }
+        }
+
+        // NOTE !!! we have below final check
+        //   -> to check if input is a valid one
+        //   -> e.g. if ALL courses can be completed per
+        //      num of courses and the prerequisites
+
+        if(collected.size() != numCourses){
+            return null;
+        }
+
+        // reverse `in place`
+        Collections.reverse(collected);
+        return collected;
+    }
+
+//    public boolean canFinish(int numCourses, int[][] prerequisites) {
+//
+//        MyTopoSort myTopoSort = new MyTopoSort(numCourses, prerequisites);
+//
+//        // edge
+//        for(int[] p: prerequisites){
+//            // if any `cycle` happened, return false directly
+//            if(!myTopoSort.union(p[0], p[1])){
+//                return false;
+//            }
+//        }
+//
+//        // ???
+//        return numCourses == myTopoSort.topoSortOrdering.size();
+//    }
+//
+//    // helper class (TOPOLOGICAL SORT)
+//    public class MyTopoSort{
+//
+//        int numCourses;
+//        int[][] prerequisites;
+//        int[] parents; // ??
+//        List<Integer> topoSortOrdering;
+//
+//        public MyTopoSort(int numCourses, int[][] prerequisites){
+//            this.numCourses = numCourses;
+//            this.prerequisites = prerequisites;
+//
+//            int[] parents = new int[numCourses];
+////            for(int i = 0; i < orders.length; i++){
+////                orders[i] = 0;
+////            }
+//
+//            topoSortOrdering = new ArrayList<>();
+//        }
+//
+//        public int getParent(int course){
+//            if(this.parents[course] == course){
+//               return course;
+//            }
+//
+//            int parent = this.getParent(course);
+//            this.parents[parent] = parent;
+//            return this.parents[parent]; // ??
+//        }
+//
+//        public boolean union(int course_1, int course_2){
+//
+//            int parent_1 = this.getParent(course_1);
+//            int parent_2 = this.getParent(course_2);
+//
+//            if(parent_1 == parent_2){
+//                return false;
+//            }
+//
+//            this.parents[parent_2] = parent_1;
+//            return true;
+//        }
+//
+//    }
 
 
 }
