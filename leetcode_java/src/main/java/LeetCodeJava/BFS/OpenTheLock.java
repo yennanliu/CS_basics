@@ -49,16 +49,6 @@ import java.util.*;
  * target.length == 4
  * target will not be in the list deadends.
  * target and deadends[i] consist of digits only.
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 341.9K
- * Submissions
- * 564.9K
- * Acceptance Rate
- * 60.5%
  */
 public class OpenTheLock {
 
@@ -152,9 +142,59 @@ public class OpenTheLock {
 //    }
 
     // V1
+    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0752-open-the-lock.java
+    // https://www.youtube.com/watch?v=Pzg3bCDY87w
+    public int openLock_1(String[] deadends, String target) {
+        Set<String> visited = new HashSet<>();
+        for (String deadend : deadends) {
+            if (deadend.equals("0000")) {
+                return -1;
+            }
+            visited.add(deadend);
+        }
+
+        Queue<String> queue = new LinkedList<>();
+        queue.offer("0000");
+        visited.add("0000");
+
+        int turns = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String lock = queue.poll();
+                if (lock.equals(target)) {
+                    return turns;
+                }
+                List<String> children = generateChildren(lock);
+                for (String child : children) {
+                    if (!visited.contains(child)) {
+                        visited.add(child);
+                        queue.offer(child);
+                    }
+                }
+            }
+            turns++;
+        }
+        return -1;
+    }
+
+    private List<String> generateChildren(String lock) {
+        List<String> children = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            char[] digits = lock.toCharArray();
+            digits[i] = (char) (((digits[i] - '0' + 1) % 10) + '0');
+            children.add(new String(digits));
+            digits[i] = (char) (((digits[i] - '0' - 2 + 10) % 10) + '0');
+            children.add(new String(digits));
+        }
+        return children;
+    }
+
+
+    // V2
     // https://leetcode.com/problems/open-the-lock/editorial/
     // IDEA: BFS
-    public int openLock_1(String[] deadends, String target) {
+    public int openLock_2(String[] deadends, String target) {
 
 //        // Map the next slot digit for each current slot digit.
 //        Map<Character, Character> nextSlot = Map.of(
@@ -269,9 +309,9 @@ public class OpenTheLock {
         return -1;
     }
 
-    // V2
+    // V3
     // https://leetcode.com/problems/open-the-lock/solutions/5057217/java-solution-by-archivebizzle-dawj/
-    public int openLock_2(String[] deadends, String target) {
+    public int openLock_3(String[] deadends, String target) {
         Set<String> seen = new HashSet<>(Arrays.asList(deadends));
         if (seen.contains("0000"))
             return -1;
