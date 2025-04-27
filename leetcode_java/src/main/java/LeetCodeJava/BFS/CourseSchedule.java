@@ -46,7 +46,7 @@ public class CourseSchedule {
     // IDEA : TOPOLOGICAL SORT
     // LC 210
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        if (prerequisites.length==0){
+        if (prerequisites.length == 0){
             return true;
         }
 
@@ -79,7 +79,12 @@ public class CourseSchedule {
              *  -> means NEED take bi first, then can take ai
              *
              *
-             *  prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+             *  prerequisites[i] = [ai, bi]
+             *  indicates that you must take course bi first if you want to take course ai.
+             *
+             *  e.g.
+             *
+             *  [ai, bi] : bi -> ai (take bi first)
              */
             int cur = edge[0];
             int prev = edge[1];
@@ -148,6 +153,11 @@ public class CourseSchedule {
          *
          *   we use `topologicalOrder.size() != numNodes`
          *   to check if above happened
+         *
+         *
+         *   -> so, we still run the `sorting` as above anyway,
+         *      but has below final validation, to check
+         *      whether the sorting is a valid one (topologicalOrder.size() != numNodes)
          */
         if (topologicalOrder.size() != numNodes) {
             //throw new IllegalArgumentException("The graph has a cycle, so topological sort is not possible.");
@@ -516,7 +526,7 @@ public class CourseSchedule {
         preMap.put(crs, new ArrayList<>());
         return true;
     }
-    
+
     // V1-2
     // https://neetcode.io/problems/course-schedule
     // IDEA: Topological Sort (Kahn's Algorithm)
