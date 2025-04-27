@@ -53,7 +53,7 @@ public class CourseSchedule {
 
         /** NOTE !!!
          *
-         *  if CAN'T build a topo sort, the method will return `null`,
+         *  if CAN'T build a topological sort, the method will return `null`,
          *  so it's the condition that we check if the courses can be finished
          */
         if (TopologicalSort(numCourses, prerequisites) == null){
@@ -65,6 +65,9 @@ public class CourseSchedule {
 
     public List<Integer> TopologicalSort(int numNodes, int[][] edges) {
         // Step 1: Build the graph and calculate in-degrees
+        /**
+         * graph : [course_i, [pre_course_1, pre_course_2, ...] }
+         */
         Map<Integer, List<Integer>> graph = new HashMap<>();
         int[] inDegree = new int[numNodes];
 
@@ -87,8 +90,11 @@ public class CourseSchedule {
              *
              *  [ai, bi] : bi -> ai (take bi first)
              */
-            int cur = edge[0];
-            int prev = edge[1];
+            int cur = edge[0]; // ai
+            int prev = edge[1]; // bi
+            /**
+             * graph : [course_i, [pre_course_1, pre_course_2, ...] }
+             */
             graph.get(cur).add(prev);
             // Update in-degree for the next course
             /**
@@ -482,6 +488,66 @@ public class CourseSchedule {
             count--;
         }
         return count == 0;
+    }
+
+    // V0-6
+    // IDEA: TOPOLOGICAL SORT (fixed by gpt)
+    public boolean canFinish_0_6(int numCourses, int[][] prerequisites) {
+        if (prerequisites.length == 0) {
+            return true;
+        }
+
+        List<Integer> res = topoSort(numCourses, prerequisites);
+        return res != null && res.size() == numCourses;
+    }
+
+    public List<Integer> topoSort(int numCourses, int[][] prerequisites) {
+        int[] orders = new int[numCourses];
+
+        // { prerequisite -> list of next courses }
+        Map<Integer, List<Integer>> preMap = new HashMap<>();
+        for (int[] p : prerequisites) {
+            int ai = p[0];
+            int bi = p[1];
+
+            // bi ➔ ai
+            List<Integer> nextList = preMap.getOrDefault(bi, new ArrayList<>());
+            nextList.add(ai);
+            preMap.put(bi, nextList);
+
+            // ai has one more prerequisite
+            orders[ai]++;
+        }
+
+        List<Integer> collected = new ArrayList<>();
+        Queue<Integer> q = new LinkedList<>();
+
+        // enqueue all nodes with no prerequisites
+        for (int i = 0; i < numCourses; i++) {
+            if (orders[i] == 0) {
+                q.add(i);
+            }
+        }
+
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            collected.add(cur);
+
+            if (preMap.containsKey(cur)) {
+                for (int next : preMap.get(cur)) {
+                    orders[next]--;
+                    if (orders[next] == 0) {
+                        q.add(next);
+                    }
+                }
+            }
+        }
+
+        if (collected.size() != numCourses) {
+            return null;
+        }
+
+        return collected;
     }
 
     // V1-1
