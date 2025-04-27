@@ -8,6 +8,7 @@
 	- again: 235,236,752,207
 		- similar: 1644,1650,1676
 	- todo:
+		- compare `quick union`, `topo sort`, ...
 		- re-do all previous `again` problems, similar problems, make notes
 		- refine java_trick cheatsheet
 - crack code book
