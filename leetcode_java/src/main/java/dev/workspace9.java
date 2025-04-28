@@ -6981,5 +6981,103 @@ public class workspace9 {
 //    }
 
 
+    // LC 210
+    /**
+     *
+     *  -> Some courses may have prerequisites, for example to take course 0 you have
+     *    to first take course 1, which is expressed as a pair: [0,1]
+     *
+     *
+     *  -> e.g. [0,1] : take 1 first, then can take 0
+     *        -> `1 -> 0`
+     *
+     *  IDEA 1) TOPO SORT
+     *
+     *
+     *  IDEA 2) DFS ???
+     *
+     *
+     */
+    // 11. 30 - 11.40 am
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        // edge
+        if(numCourses == 0){
+            return null;
+        }
+        if(numCourses == 1){
+            return new int[]{0}; // ??
+        }
+
+        // topo sort
+        int[] res = courseHelper(numCourses, prerequisites);
+        System.out.println(Arrays.toString(res));
+
+        return res == null ? new int[]{} : res;
+    }
+
+    public int[] courseHelper(int numCourses, int[][] prerequisites){
+        /**
+         *
+         *  map : {course_1 : [pre_course_1, pre_course_2, ...] }
+         *
+         */
+        Map<Integer, List<Integer>> preMap = new HashMap<>();
+        int[] degrees = new int[numCourses]; // init val as 0 ???
+
+        for(int[] p: prerequisites){
+            int cur = p[0];
+            int prev = p[1];
+
+            // update preMap
+            List<Integer> preList = preMap.getOrDefault(cur, new ArrayList<>());
+            preList.add(prev);
+            preMap.put(cur, preList);
+
+            // update orders
+            //orders[cur] += 1;
+            degrees[prev] += 1;
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        List<Integer> collected = new ArrayList<>();
+
+        // add all `0 order` to queue
+        for(int i = 0; i < degrees.length; i++){
+            if(degrees[i] == 0){
+                q.add(i);
+            }
+        }
+
+        while(!q.isEmpty()){
+
+            int cur = q.poll();
+            collected.add(cur); // NOTE !!! we add cur to tmp result right after pop from queue
+
+            if(preMap.containsKey(cur)){
+                for(int prev: preMap.get(cur)){
+                    degrees[prev] -= 1;
+                    if(degrees[prev] == 0){
+                        q.add(prev);
+                    }
+                }
+            }
+        }
+
+        // final validation !!! (see if input is validate)
+        if(collected.size() != numCourses){
+            return null;
+        }
+
+        // reverse
+        Collections.reverse(collected);
+
+        int[] res = new int[collected.size()];
+        for(int i = 0; i < collected.size(); i++){
+            res[i] = collected.get(i);
+        }
+
+        return res;
+    }
+
 }
 
