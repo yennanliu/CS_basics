@@ -12,6 +12,12 @@ public class UnionFind2 {
 
   private int find(int x) {
     if (parent[x] != x) {
+      /**
+       *
+       * NOTE !!! we put `parent[x]` into `find` func as parameter
+       *
+       *  (instead of `x`)
+       */
       parent[x] = find(parent[x]); // Path compression
     }
     return parent[x];
