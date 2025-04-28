@@ -1224,8 +1224,9 @@ public int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 // LC 300
 
 /** NOTE !!! ONLY work for 1 D (since array is 1 dimension) */
-// example 1
 int[] dp = new int[10];
+
+// fill op
 Arrays.fill(dp,1);
 ```
 
@@ -1248,14 +1249,19 @@ bigPQ.add(10);
 bigPQ.add(1);
 
 // Print elements from PQs
+
+// small PQ
 System.out.println("Small PQ (min-heap):");
+
 while (!smallPQ.isEmpty()) {
-System.out.println(smallPQ.poll());
+    System.out.println(smallPQ.poll());
 }
 
+// big PQ
 System.out.println("Big PQ (max-heap):");
+
 while (!bigPQ.isEmpty()) {
-System.out.println(bigPQ.poll());
+    System.out.println(bigPQ.poll());
 } 
 ```
 
@@ -1280,33 +1286,32 @@ PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>(
 // ...
 ```
 
-### 1-19-2) Queue `add` VS `offer`
+### 1-19-2) `add()` VS `offer()` in Queue
 
 - `add(E e)` Method
     - Behavior:
         - Adds the specified element to the queue.
-        - If the queue has a capacity restriction and it is full, add() throws an exception (IllegalStateException).
-    - If the queue allows unlimited elements (like LinkedList), add() behaves similarly to offer() and does not throw an exception.
+        - If the queue has a capacity restriction and it is `full`, add() throws an `exception` (IllegalStateException).
+    - If the queue allows `unlimited` elements (like LinkedList), add() behaves similarly to `offer()`` and does not throw an exception.
     - Usage:
         - Use add() when you want to enforce that the addition must succeed and you want an exception if it fails.
     - Return Type:
         - Returns true if the element was successfully added.
     - Exception Handling:
-    - Throws an exception if the operation fails due to capacity limits.
+        - Throws an exception if the operation fails due to capacity limits.
 
 
 - `offer(E e)` Method
     - Behavior:
         - Adds the specified element to the queue.
-        - If the queue has a capacity restriction and it is full, offer() returns false instead of throwing an exception.
+        - If the queue has a capacity restriction and it is `full`, `offer() returns false instead of throwing an exception`.
         - It is a more graceful way of adding elements to a queue when capacity may be a concern.
     - Usage:
         - Use offer() when you want to handle the addition failure more gracefully without relying on exceptions.
     - Return Type:
-        - Returns true if the element was added successfully, and false otherwise.
+        - Returns true if the element was added successfully, and false otherwise.s
     - Exception Handling:
         - Does not throw an exception if the operation fails; returns false instead.
-
 
 
 ### 1-19-2) Queue `remove` method
