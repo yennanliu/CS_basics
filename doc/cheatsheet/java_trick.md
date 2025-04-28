@@ -760,8 +760,6 @@ Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
 - The result of this sorting is a sorted stream, but if you do not collect or process this sorted stream, the original array remains unchanged.
 
 
-
-
 ```java
 // java
 // example code :
@@ -785,9 +783,7 @@ int[][] intervals = new int[][]{ {15,20}, {0,30}, {5,10} };
     for (int[] interval : intervals){
         System.out.println("1st = " + interval[0] + ", 2nd = " + interval[1]);
     }
-
 ```
-
 
 
 ### 1-4-3) Sort List VS Array
