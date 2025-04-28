@@ -7307,5 +7307,93 @@ public class workspace9 {
 //        return res;
 //    }
 
+    // LC 261
+    // 12.29 pm - 12.39 pm
+    // IDEA: UNION FIND
+    public boolean validTree(int n, int[][] edges) {
+        // edge
+        if(n <= 2){ // ???
+            return true;
+        }
+        if(edges.length <= 2){ // ???
+            return true;
+        }
+
+        // UF
+        UF uf = new UF(n, edges);
+        for(int[] e: edges){
+
+            int x = e[0];
+            int y = e[1];
+
+            if(!uf.union(x, y)){
+                return false;
+            }
+
+        }
+        //List<Integer> res = unionFind(n, edges);
+        //System.out.println(">>> res = " + res);
+        //return res == null;
+
+        return true;
+    }
+
+    public class UF{
+        int n;
+        int[][] edges;
+        int[] parents;
+
+        public UF(int n, int[][] edges){
+            this.n = n;
+            this.edges = edges;
+
+            // init parent as itself
+            this.parents = new int[n];
+            for(int i = 0; i < n; i++){
+                this.parents[i] = i;
+            }
+
+        }
+
+        public boolean union(int x, int y){
+
+            int parent_x = this.getParent(x);
+            int parent_y = this.getParent(y);
+
+            // if a `cycle` existed,
+            // since before we `union x, y`, there are ALREADY connected (same parent)
+            if(parent_x == parent_y){
+                //throw new RuntimeException("cycle detected !!!"); // ???
+                return false;
+            }
+
+            // NOT do `route compression for now` (e.g. `rank` op)
+            this.parents[parent_x] = parent_y;
+            return true; /// ?????
+        }
+
+
+        // ???
+        public int getParent(int x){
+
+//            int parent = this.parents[x];
+//            // ???
+//            if(parent == x){ // if the `parent` remain init state ???
+//                parent = this.getParent(parent);
+//            }
+//            // ???
+//            this.parents[x] = parent;
+//            return parent;
+
+            if(x != this.parents[x]){
+                parents[x] = this.getParent( parents[x] );
+            }
+
+            return parents[x];
+        }
+
+    }
+
+
 }
 
