@@ -1,5 +1,20 @@
 # Progress
 
+# 2025-04-28
+- neetcode 250
+	- https://neetcode.io/practice?tab=neetcode250
+	- 5 / day ->  15 days to finish
+		- Graphs
+	- again:
+		- similar:
+	- todo:
+		- re-do all previous `again` problems, similar problems, make notes
+		- refine java_trick cheatsheet
+- crack code book
+	- p.167 (OOP design)
+- sys design book
+	- TODO: Volume 2
+
 # 2025-04-27
 - neetcode 250
 	- https://neetcode.io/practice?tab=neetcode250
