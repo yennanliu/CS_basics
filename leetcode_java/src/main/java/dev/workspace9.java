@@ -6835,89 +6835,201 @@ public class workspace9 {
     // IDEA 2) TOPOLOGICAL SORT
     // 5.11 - 5.31 pm
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-
         if (prerequisites.length <= 1){
             return true;
         }
 
-        List<Integer> res = topoSort(numCourses, prerequisites);
+        int[] res = courseHelper2(numCourses, prerequisites);
         if(res == null){
             return false;
         }
 
-        return res.size() == numCourses; // ??
+        return res.length == numCourses; // ??
     }
 
-    public List<Integer> topoSort(int numCourses, int[][] prerequisites){
-        int[] orders = new int[numCourses];
-
-        // { v1 : [v2, v3, ...]}
-        // need to take v2, v3,, first, then be able to take v1
+    public int[] courseHelper2(int numCourses, int[][] prerequisites) {
+        /**
+         *
+         * NOTE !!!
+         *
+         *  we define preMap as below:
+         *
+         *  map : {course_1 : [pre_course_1, pre_course_2, ...] }
+         *
+         *  so,
+         *    - key is cur_course, and
+         *    - value is the list of `pre-course`,
+         *      which need to completed BEFORE taking cur course
+         *
+         */
         Map<Integer, List<Integer>> preMap = new HashMap<>();
-        for(int[] p: prerequisites){
+        int[] degrees = new int[numCourses]; // init val as 0 ???
+
+        for (int[] p : prerequisites) {
+            int cur = p[0];
+            int prev = p[1];
+
+            // update preMap
+            List<Integer> preList = preMap.getOrDefault(cur, new ArrayList<>());
+            preList.add(prev);
+            preMap.put(cur, preList);
+
+            // update orders
             /**
+             *  NOTE !!!
              *
-             *  prerequisites[i] = [ai, bi]
-             *  ->  must take course bi first if you want to take course ai.
+             *   if use `preMap`, we need to update `PREV` 's degree !!!!!
              *
-             *  e.g.
              *
-             *  [ai, bi] : bi -> ai (bi first)
+             *   (if use `followingMap), we update cur's degree instead, (check below other approaches)
+             *
              */
-            int ai = p[0];
-            int bi = p[1];
-
-            // update map
-            List<Integer> preList = preMap.getOrDefault(ai, new ArrayList<>());
-            preList.add(bi);
-            preMap.put(ai, preList);
-
-            // update order
-            // meaning, there is new `pre-course` need to be taken, before we take ai
-            orders[ai] += 1;
+            //orders[cur] += 1; // this one is WRONG !!!! (for `preMap`)
+            degrees[prev] += 1; // NOTE !!!! this
         }
 
+        Queue<Integer> q = new LinkedList<>();
         List<Integer> collected = new ArrayList<>();
 
-        // init a queue
-        Queue<Integer> q = new LinkedList<>();
-        // add all `0 order` node to queue
-        for(int i = 0; i < orders.length; i++){
-            if(orders[i] == 0){
+        // add all `0 order` to queue
+        for (int i = 0; i < degrees.length; i++) {
+            if (degrees[i] == 0) {
                 q.add(i);
             }
         }
 
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
 
             int cur = q.poll();
+            /**
+             * NOTE !!! we add cur to tmp result right after pop from queue
+             */
             collected.add(cur);
 
-            if(preMap.containsKey(cur)){
-                for(int x : preMap.get(cur)){
-                    //q.add(x);
-                    orders[x] -= 1;
-                    // if `order == 0`, add to queue
-                    if(orders[x] == 0){
-                        q.add(x);
+            if (preMap.containsKey(cur)) {
+                /**
+                 * NOTE !!! we loop over `prev` courses
+                 */
+                for (int prev : preMap.get(cur)) {
+                    /**
+                     * NOTE !!! we update `prev` order by `-= 1`
+                     */
+                    degrees[prev] -= 1;
+                    /**
+                     * NOTE !!! if `prev` course ordering == 0,
+                     *          we add it to queue
+                     */
+                    if (degrees[prev] == 0) {
+                        q.add(prev);
                     }
                 }
             }
         }
 
-        // NOTE !!! we have below final check
-        //   -> to check if input is a valid one
-        //   -> e.g. if ALL courses can be completed per
-        //      num of courses and the prerequisites
-
-        if(collected.size() != numCourses){
+        // final validation !!! (see if input is validate)
+        if (collected.size() != numCourses) {
             return null;
         }
 
-        // reverse `in place`
+        // reverse
+        /**
+         * NOTE !!!  we `reverse` collected, so the order is correct
+         *           for our final result
+         */
         Collections.reverse(collected);
-        return collected;
+
+        int[] res = new int[collected.size()];
+        for (int i = 0; i < collected.size(); i++) {
+            res[i] = collected.get(i);
+        }
+
+        return res;
     }
+
+//    public boolean canFinish(int numCourses, int[][] prerequisites) {
+//
+//        if (prerequisites.length <= 1){
+//            return true;
+//        }
+//
+//        List<Integer> res = topoSort(numCourses, prerequisites);
+//        if(res == null){
+//            return false;
+//        }
+//
+//        return res.size() == numCourses; // ??
+//    }
+
+//    public List<Integer> topoSort(int numCourses, int[][] prerequisites){
+//        int[] orders = new int[numCourses];
+//
+//        // { v1 : [v2, v3, ...]}
+//        // need to take v2, v3,, first, then be able to take v1
+//        Map<Integer, List<Integer>> preMap = new HashMap<>();
+//        for(int[] p: prerequisites){
+//            /**
+//             *
+//             *  prerequisites[i] = [ai, bi]
+//             *  ->  must take course bi first if you want to take course ai.
+//             *
+//             *  e.g.
+//             *
+//             *  [ai, bi] : bi -> ai (bi first)
+//             */
+//            int ai = p[0];
+//            int bi = p[1];
+//
+//            // update map
+//            List<Integer> preList = preMap.getOrDefault(ai, new ArrayList<>());
+//            preList.add(bi);
+//            preMap.put(ai, preList);
+//
+//            // update order
+//            // meaning, there is new `pre-course` need to be taken, before we take ai
+//            orders[ai] += 1;
+//        }
+//
+//        List<Integer> collected = new ArrayList<>();
+//
+//        // init a queue
+//        Queue<Integer> q = new LinkedList<>();
+//        // add all `0 order` node to queue
+//        for(int i = 0; i < orders.length; i++){
+//            if(orders[i] == 0){
+//                q.add(i);
+//            }
+//        }
+//
+//        while(!q.isEmpty()){
+//
+//            int cur = q.poll();
+//            collected.add(cur);
+//
+//            if(preMap.containsKey(cur)){
+//                for(int x : preMap.get(cur)){
+//                    //q.add(x);
+//                    orders[x] -= 1;
+//                    // if `order == 0`, add to queue
+//                    if(orders[x] == 0){
+//                        q.add(x);
+//                    }
+//                }
+//            }
+//        }
+//
+//        // NOTE !!! we have below final check
+//        //   -> to check if input is a valid one
+//        //   -> e.g. if ALL courses can be completed per
+//        //      num of courses and the prerequisites
+//
+//        if(collected.size() != numCourses){
+//            return null;
+//        }
+//
+//        // reverse `in place`
+//        Collections.reverse(collected);
+//        return collected;
+//    }
 
 //    public boolean canFinish(int numCourses, int[][] prerequisites) {
 //
@@ -7001,30 +7113,40 @@ public class workspace9 {
     // 11. 30 - 11.40 am
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         // edge
-        if(numCourses == 0){
+        if (numCourses == 0) {
             return null;
         }
-        if(numCourses == 1){
-            return new int[]{0}; // ??
+        if (numCourses == 1) {
+            return new int[] { 0 };
         }
 
         // topo sort
         int[] res = courseHelper(numCourses, prerequisites);
         System.out.println(Arrays.toString(res));
 
-        return res == null ? new int[]{} : res;
+        // if res is null, we should ` empty array`; otherwise, return res we got
+        return res == null ? new int[] {} : res;
     }
 
-    public int[] courseHelper(int numCourses, int[][] prerequisites){
+    public int[] courseHelper(int numCourses, int[][] prerequisites) {
         /**
          *
+         * NOTE !!!
+         *
+         *  we define preMap as below:
+         *
          *  map : {course_1 : [pre_course_1, pre_course_2, ...] }
+         *
+         *  so,
+         *    - key is cur_course, and
+         *    - value is the list of `pre-course`,
+         *      which need to completed BEFORE taking cur course
          *
          */
         Map<Integer, List<Integer>> preMap = new HashMap<>();
         int[] degrees = new int[numCourses]; // init val as 0 ???
 
-        for(int[] p: prerequisites){
+        for (int[] p : prerequisites) {
             int cur = p[0];
             int prev = p[1];
 
@@ -7034,29 +7156,51 @@ public class workspace9 {
             preMap.put(cur, preList);
 
             // update orders
-            //orders[cur] += 1;
-            degrees[prev] += 1;
+            /**
+             *  NOTE !!!
+             *
+             *   if use `preMap`, we need to update `PREV` 's degree !!!!!
+             *
+             *
+             *   (if use `followingMap), we update cur's degree instead, (check below other approaches)
+             *
+             */
+            //orders[cur] += 1; // this one is WRONG !!!! (for `preMap`)
+            degrees[prev] += 1; // NOTE !!!! this
         }
 
         Queue<Integer> q = new LinkedList<>();
         List<Integer> collected = new ArrayList<>();
 
         // add all `0 order` to queue
-        for(int i = 0; i < degrees.length; i++){
-            if(degrees[i] == 0){
+        for (int i = 0; i < degrees.length; i++) {
+            if (degrees[i] == 0) {
                 q.add(i);
             }
         }
 
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
 
             int cur = q.poll();
-            collected.add(cur); // NOTE !!! we add cur to tmp result right after pop from queue
+            /**
+             * NOTE !!! we add cur to tmp result right after pop from queue
+             */
+            collected.add(cur);
 
-            if(preMap.containsKey(cur)){
-                for(int prev: preMap.get(cur)){
+            if (preMap.containsKey(cur)) {
+                /**
+                 * NOTE !!! we loop over `prev` courses
+                 */
+                for (int prev : preMap.get(cur)) {
+                    /**
+                     * NOTE !!! we update `prev` order by `-= 1`
+                     */
                     degrees[prev] -= 1;
-                    if(degrees[prev] == 0){
+                    /**
+                     * NOTE !!! if `prev` course ordering == 0,
+                     *          we add it to queue
+                     */
+                    if (degrees[prev] == 0) {
                         q.add(prev);
                     }
                 }
@@ -7064,20 +7208,104 @@ public class workspace9 {
         }
 
         // final validation !!! (see if input is validate)
-        if(collected.size() != numCourses){
+        if (collected.size() != numCourses) {
             return null;
         }
 
         // reverse
+        /**
+         * NOTE !!!  we `reverse` collected, so the order is correct
+         *           for our final result
+         */
         Collections.reverse(collected);
 
         int[] res = new int[collected.size()];
-        for(int i = 0; i < collected.size(); i++){
+        for (int i = 0; i < collected.size(); i++) {
             res[i] = collected.get(i);
         }
 
         return res;
     }
+
+//    public int[] findOrder(int numCourses, int[][] prerequisites) {
+//        // edge
+//        if(numCourses == 0){
+//            return null;
+//        }
+//        if(numCourses == 1){
+//            return new int[]{0}; // ??
+//        }
+//
+//        // topo sort
+//        int[] res = courseHelper(numCourses, prerequisites);
+//        System.out.println(Arrays.toString(res));
+//
+//        return res == null ? new int[]{} : res;
+//    }
+//
+//    public int[] courseHelper(int numCourses, int[][] prerequisites){
+//        /**
+//         *
+//         *  map : {course_1 : [pre_course_1, pre_course_2, ...] }
+//         *
+//         */
+//        Map<Integer, List<Integer>> preMap = new HashMap<>();
+//        int[] degrees = new int[numCourses]; // init val as 0 ???
+//
+//        for(int[] p: prerequisites){
+//            int cur = p[0];
+//            int prev = p[1];
+//
+//            // update preMap
+//            List<Integer> preList = preMap.getOrDefault(cur, new ArrayList<>());
+//            preList.add(prev);
+//            preMap.put(cur, preList);
+//
+//            // update orders
+//            //orders[cur] += 1;
+//            degrees[prev] += 1;
+//        }
+//
+//        Queue<Integer> q = new LinkedList<>();
+//        List<Integer> collected = new ArrayList<>();
+//
+//        // add all `0 order` to queue
+//        for(int i = 0; i < degrees.length; i++){
+//            if(degrees[i] == 0){
+//                q.add(i);
+//            }
+//        }
+//
+//        while(!q.isEmpty()){
+//
+//            int cur = q.poll();
+//            collected.add(cur); // NOTE !!! we add cur to tmp result right after pop from queue
+//
+//            if(preMap.containsKey(cur)){
+//                for(int prev: preMap.get(cur)){
+//                    degrees[prev] -= 1;
+//                    if(degrees[prev] == 0){
+//                        q.add(prev);
+//                    }
+//                }
+//            }
+//        }
+//
+//        // final validation !!! (see if input is validate)
+//        if(collected.size() != numCourses){
+//            return null;
+//        }
+//
+//        // reverse
+//        Collections.reverse(collected);
+//
+//        int[] res = new int[collected.size()];
+//        for(int i = 0; i < collected.size(); i++){
+//            res[i] = collected.get(i);
+//        }
+//
+//        return res;
+//    }
 
 }
 

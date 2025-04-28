@@ -107,7 +107,7 @@ public class CourseSchedule {
              *  means before take that cur course, we need to take `prev` course first
              *  so its (next course) degree increase by 1
              */
-            inDegree[prev] += 1;
+            inDegree[prev] += 1; // NOTE !!!! for preMap, we update `prev` degree
         }
 
         // Step 2: Initialize a queue with nodes that have in-degree 0
@@ -179,12 +179,128 @@ public class CourseSchedule {
     }
 
     // V0-1
+    // LC 210 (NOTE !, we can use same approach for LC 207, LC 210)
+    // IDEA : TOPOLOGICAL SORT (cur - pre map) (fixed by gpt)
+    /** NOTE !!! we CAN'T use `quick union` for this problem */
+    public boolean canFinish_0_1(int numCourses, int[][] prerequisites) {
+        if (prerequisites.length <= 1) {
+            return true;
+        }
+
+        int[] res = courseHelper2(numCourses, prerequisites);
+        if (res == null) {
+            return false;
+        }
+
+        return res.length == numCourses; // ??
+    }
+
+    public int[] courseHelper2(int numCourses, int[][] prerequisites) {
+        /**
+         *
+         * NOTE !!!
+         *
+         *  we define preMap as below:
+         *
+         *  map : {course_1 : [pre_course_1, pre_course_2, ...] }
+         *
+         *  so,
+         *    - key is cur_course, and
+         *    - value is the list of `pre-course`,
+         *      which need to completed BEFORE taking cur course
+         *
+         */
+        Map<Integer, List<Integer>> preMap = new HashMap<>();
+        int[] degrees = new int[numCourses]; // init val as 0 ???
+
+        for (int[] p : prerequisites) {
+            int cur = p[0];
+            int prev = p[1];
+
+            // update preMap
+            List<Integer> preList = preMap.getOrDefault(cur, new ArrayList<>());
+            preList.add(prev);
+            preMap.put(cur, preList);
+
+            // update orders
+            /**
+             *  NOTE !!!
+             *
+             *   if use `preMap`, we need to update `PREV` 's degree !!!!!
+             *
+             *
+             *   (if use `followingMap), we update cur's degree instead, (check below other approaches)
+             *
+             */
+            //orders[cur] += 1; // this one is WRONG !!!! (for `preMap`)
+            degrees[prev] += 1; // NOTE !!!! this
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        List<Integer> collected = new ArrayList<>();
+
+        // add all `0 order` to queue
+        for (int i = 0; i < degrees.length; i++) {
+            if (degrees[i] == 0) {
+                q.add(i);
+            }
+        }
+
+        while (!q.isEmpty()) {
+
+            int cur = q.poll();
+            /**
+             * NOTE !!! we add cur to tmp result right after pop from queue
+             */
+            collected.add(cur);
+
+            if (preMap.containsKey(cur)) {
+                /**
+                 * NOTE !!! we loop over `prev` courses
+                 */
+                for (int prev : preMap.get(cur)) {
+                    /**
+                     * NOTE !!! we update `prev` order by `-= 1`
+                     */
+                    degrees[prev] -= 1;
+                    /**
+                     * NOTE !!! if `prev` course ordering == 0,
+                     *          we add it to queue
+                     */
+                    if (degrees[prev] == 0) {
+                        q.add(prev);
+                    }
+                }
+            }
+        }
+
+        // final validation !!! (see if input is validate)
+        if (collected.size() != numCourses) {
+            return null;
+        }
+
+        // reverse
+        /**
+         * NOTE !!!  we `reverse` collected, so the order is correct
+         *           for our final result
+         */
+        Collections.reverse(collected);
+
+        int[] res = new int[collected.size()];
+        for (int i = 0; i < collected.size(); i++) {
+            res[i] = collected.get(i);
+        }
+
+        return res;
+    }
+
+    // V0-1-1
     // IDEA : DFS (fix by gpt)
     // NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach
     //      -> e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,
     //      -> means "cyclic", so return false directly
     // https://www.youtube.com/watch?v=EgI5nU9etnU
-    public boolean canFinish_0_1(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_0_1_1(int numCourses, int[][] prerequisites) {
         // Initialize adjacency list for storing prerequisites
         /**
          *  NOTE !!!
