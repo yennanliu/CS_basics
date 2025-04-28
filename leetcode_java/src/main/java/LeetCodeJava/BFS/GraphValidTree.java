@@ -156,8 +156,26 @@ public class GraphValidTree {
         }
 
         // Find with path compression
+        // https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/UnionFind2.java#L13
         public int find(int a) {
+            /**
+             *  NOTE !!! below op
+             *
+             *
+             *    1.  if `parent[x] != x`
+             */
             if (parents[a] != a) {
+                /**
+                 *  NOTE !!! below op
+                 *
+                 *
+                 *    parents[a] = find( "parents[a] " )
+                 *
+                 *
+                 *    -> NOTE !!!
+                 *       we use "parents[a] "  as parameter (instead of `x`)
+                 *       -> so we `move upper to its parent`, but NOT keep using same node and cause infinite loop
+                 */
                 parents[a] = find(parents[a]); // Path compression
             }
             return parents[a];
