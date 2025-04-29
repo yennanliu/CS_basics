@@ -270,8 +270,56 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     }
 
     // V0-3
-    // IDEA: DFS
+    // IDEA: DFS (fixed by gpt)
     // TODO: validate below:
+    public int countComponents_0_3(int n, int[][] edges) {
+        if (n <= 1) return n;
+
+        // Build the undirected graph
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+
+        for (int[] edge : edges) {
+            graph.get(edge[0]).add(edge[1]);
+            graph.get(edge[1]).add(edge[0]); // Undirected!
+        }
+
+        Set<Integer> visited = new HashSet<>();
+        int componentCount = 0;
+
+        for (int i = 0; i < n; i++) {
+            /**
+             *  NOTE !!! below
+             *
+             *  instead of `collect every connected nodes`,
+             *  we can simplify mark visited node,
+             *  and update res (res += 1) after every dfs call
+             */
+            if (!visited.contains(i)) {
+                dfs(i, graph, visited);
+                componentCount++; // Each DFS from an unvisited node is a new component
+            }
+        }
+
+        return componentCount;
+    }
+
+    private void dfs(int node, Map<Integer, List<Integer>> graph, Set<Integer> visited) {
+        if (visited.contains(node)) return;
+
+        visited.add(node);
+        for (int neighbor : graph.get(node)) {
+            if (!visited.contains(neighbor)) {
+                dfs(neighbor, graph, visited);
+            }
+        }
+    }
+
+    // V0-4
+    // IDEA: DFS
+    // TODO: validate / fix below:
 //    List<List<Integer>> connectedNode = new ArrayList<>();
 //    public int countComponents(int n, int[][] edges) {
 //        // edge
@@ -344,6 +392,13 @@ public class NumberOfConnectedComponentsUndirectedGraph {
 
         int res = 0;
         for (int node = 0; node < n; node++) {
+            /**
+             *  NOTE !!! below
+             *
+             *  instead of `collect every connected nodes`,
+             *  we can simplify mark visited node,
+             *  and update res (res += 1) after every dfs call
+             */
             if (!visit[node]) {
                 dfs(adj, visit, node);
                 res++;
