@@ -7395,9 +7395,128 @@ public class workspace9 {
     }
 
     // LC 1462
+    // 10.12 - 10.22 am
+    /**
+     *  -> Some courses may have direct prerequisites, for example,
+     *     to take course 0 you have first to take course 1,
+     *     which is expressed as a pair: [1,0]
+     *
+     *  -> e.g. [1,0], 0 -> 1 (take 0 first, then 1)
+     *
+     *
+     * ->  You should answer for each queries[i] whether the course queries[i][0] is a prerequisite of the course queries[i][1] or not.
+     *
+     * -> e.g. queries[i, j] -> check if `i` is pre course of `j` or not
+     *
+     * -> Please note that if course a is a prerequisite of course b and course
+     *    b is a prerequisite of course c, then, course a is a prerequisite of course c.
+     *
+     *  -> a is pre of b, b is pre of c
+     *  -> then a is pre of c
+     *
+     *
+     *  IDEA: TOPOLOGICAL SORT
+     *
+     */
     public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
 
-        return null;
+        List<Boolean> res = new ArrayList<>();
+        // edge
+        if(numCourses <= 1){
+            return res;
+        }
+//        for(int i = 0; i < queries.length; i++){
+//            res.add(false);
+//        }
+        if(prerequisites == null || prerequisites.length == 0){
+            for(int i = 0; i < queries.length; i++){
+                res.add(false);
+            }
+            return res;
+        }
+
+        // get `topological order
+        List<Integer> topoOrder = myTopoSort2(numCourses, prerequisites);
+        if(topoOrder == null){
+            for(int i = 0; i < queries.length; i++){
+                res.add(false);
+            }
+            return res;
+        }
+
+        // order -> hashmap {val : idx}
+        Map<Integer, Integer> orderMap = new HashMap<>();
+        for(int i = 0; i < topoOrder.size(); i++){
+            orderMap.put(topoOrder.get(i), i);
+        }
+
+        // update result
+        for(int i = 0; i < queries.length; i++){
+            int[] query = queries[i];
+            int pre_idx = orderMap.getOrDefault(query[0], -1);
+            int cur_idx = orderMap.getOrDefault(query[1], -1);
+            //return pre_idx < cur_idx;
+            res.add(pre_idx < cur_idx);
+        }
+
+        return res;
+    }
+
+    public List<Integer> myTopoSort2(int numCourses, int[][] prerequisites){
+
+        // init degrees
+        int[] degrees = new int[numCourses]; // init val as 0 ????
+        // init preMap
+        Map<Integer, List<Integer>> preMap = new HashMap<>();
+
+        // update degrees, map
+        for(int[] p: prerequisites){
+            int cur = p[0];
+            int prev = p[1];
+
+            List<Integer> preList = preMap.getOrDefault(cur, new ArrayList<>());
+            preList.add(prev);
+            preMap.put(cur, preList);
+
+            // NOTE !!! for `preMap`, we update `prev`
+            degrees[prev] += 1;
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        // add all `0 degree` to queue
+        for(int i = 0; i < degrees.length; i++){
+            if(degrees[i] == 0){
+                q.add(i);
+            }
+        }
+
+        List<Integer> cache = new ArrayList<>();
+
+        while(!q.isEmpty()){
+            int cur = q.poll();
+            // add to cache
+            cache.add(cur);
+
+            if(preMap.containsKey(cur)){
+                for(int x: preMap.get(cur)){
+                    degrees[x] -= 1;
+                    if(degrees[x] == 0){
+                        // add to queue
+                        q.add(x);
+                    }
+                }
+            }
+        }
+
+        // final `validation` !!!
+        if(cache.size() != numCourses){
+            return null;
+        }
+
+        // reverse
+        Collections.reverse(cache);
+
+        return cache;
     }
 
 

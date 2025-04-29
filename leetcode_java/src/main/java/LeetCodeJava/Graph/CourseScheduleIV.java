@@ -63,6 +63,109 @@ public class CourseScheduleIV {
 //
 //    }
 
+    // V0-1
+    // IDEA: TOPOLOGICAL SORT (fixed by gpt)
+    public List<Boolean> checkIfPrerequisite_0_1(int numCourses, int[][] prerequisites, int[][] queries) {
+        List<Boolean> res = new ArrayList<>();
+
+        // Step 1: Build graph and indegree array
+        List<Integer>[] graph = new List[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        int[] indegree = new int[numCourses];
+        for (int[] pre : prerequisites) {
+            graph[pre[0]].add(pre[1]);
+            indegree[pre[1]]++;
+        }
+
+        // Step 2: Topological sort (Kahn's algorithm)
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0)
+                queue.offer(i);
+        }
+
+        // Step 3: Prerequisite sets
+        Set<Integer>[] prereqSets = new HashSet[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            prereqSets[i] = new HashSet<>();
+        }
+
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            for (int next : graph[course]) {
+                // Add current course and all its prerequisites to the next course
+                prereqSets[next].add(course);
+                prereqSets[next].addAll(prereqSets[course]);
+
+                // Decrease indegree and add to queue if it hits zero
+                if (--indegree[next] == 0) {
+                    queue.offer(next);
+                }
+            }
+        }
+
+        // Step 4: Answer queries
+        for (int[] q : queries) {
+            res.add(prereqSets[q[1]].contains(q[0]));
+        }
+
+        return res;
+    }
+
+    // V0-2
+    // IDEA: DFS (fixed by gpt)
+    public List<Boolean> checkIfPrerequisite_0_2(int numCourses, int[][] prerequisites, int[][] queries) {
+        List<Boolean> res = new ArrayList<>();
+
+        // Adjacency list
+        List<Integer>[] graph = new List[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        for (int[] pre : prerequisites) {
+            graph[pre[0]].add(pre[1]);
+        }
+
+        // Reachability set for each node
+        Set<Integer>[] reachable = new HashSet[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            reachable[i] = new HashSet<>();
+        }
+
+        // DFS to fill reachability
+        for (int i = 0; i < numCourses; i++) {
+            dfs(i, graph, reachable, new boolean[numCourses]);
+        }
+
+        // Answer queries
+        for (int[] q : queries) {
+            res.add(reachable[q[0]].contains(q[1]));
+        }
+
+        return res;
+    }
+
+    private void dfs(int course, List<Integer>[] graph, Set<Integer>[] reachable, boolean[] visited) {
+        if (!reachable[course].isEmpty())
+            return;
+
+        visited[course] = true;
+
+        for (int neighbor : graph[course]) {
+            if (!visited[neighbor]) {
+                dfs(neighbor, graph, reachable, visited);
+            }
+            reachable[course].add(neighbor);
+            reachable[course].addAll(reachable[neighbor]);
+        }
+
+        visited[course] = false;
+    }
+
+
     // V1
     // https://www.youtube.com/watch?v=cEW05ofxhn0
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F1462-course-schedule-iv.java
