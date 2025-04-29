@@ -7394,6 +7394,12 @@ public class workspace9 {
 
     }
 
+    // LC 1462
+    public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
+
+        return null;
+    }
+
 
 }
 

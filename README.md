@@ -1179,6 +1179,7 @@
 959 | [Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/)  | [Python](./leetcode_python/Graph/regions-cut-by-slashes.py) | _O(n^2)_| _O(n^2)_| Medium | Union Find | again
 997 | [Find the Town Judge](https://leetcode.com/problems/find-the-town-judge)  |   [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/FindTheTownJudge.java) | _O(n^2)_| _O(n^2)_| Easy | graph |  again
 1135 | [Connecting Cities With Minimum Cost](https://leetcode.com/problems/connecting-cities-with-minimum-cost/)  | [Python](./leetcode_python/Graph/connecting-cities-with-minimum-cost.py) | _O(n^2)_| _O(n^2)_| Medium | union find, Kruskal, prime, graph, amazon | AGAIN (not start)
+1462 | [Course Schedule IV](https://leetcode.com/problems/course-schedule-iv/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/CourseScheduleIV.java)| _O(n^2)_| _O(n^2)_| Medium || AGAIN (not start)
 1584 | [Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/MinCostToConnectAllPoints.java)| _O(n^2)_| _O(n^2)_| Medium || AGAIN (not start)
 
 
