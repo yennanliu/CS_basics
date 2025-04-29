@@ -7308,51 +7308,45 @@ public class workspace9 {
 //    }
 
     // LC 261
-    // 12.29 pm - 12.39 pm
+    // 12.03 - 12.13
     // IDEA: UNION FIND
     public boolean validTree(int n, int[][] edges) {
         // edge
         if(n <= 2){ // ???
             return true;
         }
-        if(edges.length <= 2){ // ???
-            return true;
+        // edge: NOTE !!! if `NOT cyclic tree`, edges size MUST equals n - 1
+//        if(n != edges.length - 1){
+//            return false;
+//        }
+        if(edges.length != n - 1){
+            return false;
         }
 
-        // UF
-        UF uf = new UF(n, edges);
-        for(int[] e: edges){
+        MyUF3 myUF3 = new MyUF3(n);
 
+        for(int[] e: edges){
             int x = e[0];
             int y = e[1];
-
-            if(!uf.union(x, y)){
+            if(!myUF3.union(x, y)){
                 return false;
             }
-
         }
-        //List<Integer> res = unionFind(n, edges);
-        //System.out.println(">>> res = " + res);
-        //return res == null;
 
         return true;
     }
 
-    public class UF{
+    public class MyUF3{
         int n;
-        int[][] edges;
         int[] parents;
 
-        public UF(int n, int[][] edges){
+        public MyUF3(int n){
             this.n = n;
-            this.edges = edges;
-
             // init parent as itself
             this.parents = new int[n];
             for(int i = 0; i < n; i++){
                 this.parents[i] = i;
             }
-
         }
 
         public boolean union(int x, int y){
@@ -7376,23 +7370,100 @@ public class workspace9 {
         // ???
         public int getParent(int x){
 
-//            int parent = this.parents[x];
-//            // ???
-//            if(parent == x){ // if the `parent` remain init state ???
-//                parent = this.getParent(parent);
-//            }
-//            // ???
-//            this.parents[x] = parent;
-//            return parent;
-
+            //int parent = this.getParent(x);
             if(x != this.parents[x]){
-                parents[x] = this.getParent( parents[x] );
+                this.parents[x] = this.getParent(this.parents[x]);
             }
-
-            return parents[x];
+            return this.parents[x];
         }
 
     }
+
+
+
+//    public boolean validTree(int n, int[][] edges) {
+//        // edge
+//        if(n <= 2){ // ???
+//            return true;
+//        }
+//        if(edges.length <= 2){ // ???
+//            return true;
+//        }
+//
+//        // UF
+//        UF uf = new UF(n, edges);
+//        for(int[] e: edges){
+//
+//            int x = e[0];
+//            int y = e[1];
+//
+//            if(!uf.union(x, y)){
+//                return false;
+//            }
+//
+//        }
+//        //List<Integer> res = unionFind(n, edges);
+//        //System.out.println(">>> res = " + res);
+//        //return res == null;
+//
+//        return true;
+//    }
+//
+//    public class UF{
+//        int n;
+//        int[][] edges;
+//        int[] parents;
+//
+//        public UF(int n, int[][] edges){
+//            this.n = n;
+//            this.edges = edges;
+//
+//            // init parent as itself
+//            this.parents = new int[n];
+//            for(int i = 0; i < n; i++){
+//                this.parents[i] = i;
+//            }
+//
+//        }
+//
+//        public boolean union(int x, int y){
+//
+//            int parent_x = this.getParent(x);
+//            int parent_y = this.getParent(y);
+//
+//            // if a `cycle` existed,
+//            // since before we `union x, y`, there are ALREADY connected (same parent)
+//            if(parent_x == parent_y){
+//                //throw new RuntimeException("cycle detected !!!"); // ???
+//                return false;
+//            }
+//
+//            // NOT do `route compression for now` (e.g. `rank` op)
+//            this.parents[parent_x] = parent_y;
+//            return true; /// ?????
+//        }
+//
+//
+//        // ???
+//        public int getParent(int x){
+//
+////            int parent = this.parents[x];
+////            // ???
+////            if(parent == x){ // if the `parent` remain init state ???
+////                parent = this.getParent(parent);
+////            }
+////            // ???
+////            this.parents[x] = parent;
+////            return parent;
+//
+//            if(x != this.parents[x]){
+//                parents[x] = this.getParent( parents[x] );
+//            }
+//
+//            return parents[x];
+//        }
+//
+//    }
 
     // LC 1462
     // 10.12 - 10.22 am
@@ -7599,6 +7670,26 @@ public class workspace9 {
 
         //connectedNode;
         return cur; // ???
+    }
+
+    // LC 684
+    // 11.55 - 12.05 pm
+    /**
+     *
+     *  Return an edge that can be removed so
+     *  that the resulting graph is a tree of n nodes.
+     *  If there are multiple answers, return the answer
+     *  that occurs last in the input.
+     *
+     */
+    public int[] findRedundantConnection(int[][] edges) {
+        // edge
+        if(edges == null || edges.length <= 1){
+            return null;
+        }
+
+
+        return null;
     }
 
 
