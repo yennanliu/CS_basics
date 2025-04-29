@@ -7520,6 +7520,86 @@ public class workspace9 {
     }
 
     // LC 323
+    // 11.04 - 11.14 am
+    /**
+     *  IDEA 1) UNION FIND ???
+     *
+     *   -> check if 2 elements are `connected` ???
+     *
+     *  IDEA 2) DFS ??
+     *
+     *  IDEA 3) BFS ???
+     *
+     *
+     */
+    /**
+     *  -> DFS
+     *
+     *  -> step 1) build `relation map` and `visited
+     *    map = {val : [neighbor_1, neighbor_2, ...]}
+     *    visited = [node_1, node_2, ...]
+     *
+     *  -> step 2) loop over edges, and update `visited`,
+     *             collect the `connected node` (arr)
+     *
+     *  -> step 3) return size of connected_node
+     *
+     */
+    List<List<Integer>> connectedNode = new ArrayList<>();
+    public int countComponents(int n, int[][] edges) {
+        // edge
+        if(n <= 1){
+            return n;
+        }
+        if(edges == null || edges.length == 0){
+            return 0; // ??
+        }
+
+        Map<Integer, List<Integer>> neighborMap = new HashMap<>();
+        for(int[] e: edges){
+
+            int from = e[0];
+            int to = e[1];
+
+            List<Integer> list_1 = neighborMap.getOrDefault(from, new ArrayList<>());
+            list_1.add(to);
+            neighborMap.put(from, list_1);
+
+            List<Integer> list_2 = neighborMap.getOrDefault(to, new ArrayList<>());
+            list_1.add(from);
+            neighborMap.put(to, list_2);
+        }
+
+        //List<List<Integer>> connectedNode = new ArrayList<>();
+        HashSet<Integer> visited = new HashSet<>();
+        // visit all nodes, and update visited, connectedNode
+        for(int i = 0; i < n; i++){
+            connectedNode.add(connectHelper(i, new ArrayList<>(), neighborMap, visited));
+        }
+
+        return connectedNode.size();
+    }
+
+    public List<Integer> connectHelper(int x, List<Integer> cur, Map<Integer, List<Integer>> neighborMap, HashSet<Integer> visited){
+        if(visited.contains(x) && neighborMap.containsKey(x)){
+            return null; // ??
+        }
+//        if(neighborMap.containsKey(x)){
+//            return null; // ??
+//        }
+
+        cur.add(x);
+        visited.add(x);
+
+        if(neighborMap.containsKey(x)){
+            for(int val: neighborMap.get(x)){
+                connectHelper(val, cur, neighborMap, visited);
+            }
+        }
+
+        //connectedNode;
+        return cur; // ???
+    }
 
 
 }
