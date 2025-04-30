@@ -87,4 +87,34 @@ public class workspace10 {
         return tmp;
     }
 
+    // LC 310
+    // 12.46 - 12.56 pm
+    /**
+     *  -> Given such a graph, write a function
+     *   to find all the `MHTs` and return a `list of their root labels`.
+     *
+     *
+     *   MHTs:  minimum height trees (MHTs)
+     *
+     *
+     *  IDEA 1) DFS ?? build tree recursively
+     *
+     *    -> choose `every node`, build the tree per edges
+     *    -> maintain the node and height
+     *    ...
+     *    -> return lowest height
+     *
+     *
+     *   IDEA 2) BFS ->
+     *           try every node, use node as root, and build graph, once reach the `end`, get cur height as MST,
+     *           then do next node....
+     *           maintain the `min height` at the same time
+     *
+     *           return min height as res
+     */
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+
+        return null;
+    }
+
 }
