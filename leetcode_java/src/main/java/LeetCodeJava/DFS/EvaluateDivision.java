@@ -142,9 +142,59 @@ public class EvaluateDivision {
 //    }
 
     // V1
+    // https://www.youtube.com/watch?v=Uei1fwDoyKk
+    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0399-evaluate-division.java
+//    public double[] calcEquation_1(List<List<String>> equations, double[] values, List<List<String>> queries) {
+//        Map<String, List<Pair<String, Double>>> adj = new HashMap<>();
+//        for (int i = 0; i < equations.size(); i++) {
+//            List<String> equation = equations.get(i);
+//            adj.computeIfAbsent(
+//                    equation.get(0), k -> new ArrayList<>()).add(
+//                    new Pair<>(equation.get(1), values[i]));
+//            adj.computeIfAbsent(
+//                    equation.get(1), k -> new ArrayList<>()).add(
+//                    new Pair<>(equation.get(0), 1 / values[i]));
+//        }
+//        double[] res = new double[queries.size()];
+//        for (int i = 0; i < queries.size(); i++) {
+//            List<String> query = queries.get(i);
+//            res[i] = bfs(adj, query.get(0), query.get(1));
+//        }
+//        return res;
+//    }
+//
+//    private double bfs(Map<String, List<Pair<String, Double>>> adj, String src, String target) {
+//        if (!adj.containsKey(src) || !adj.containsKey(target)) {
+//            return -1.0;
+//        }
+//        ArrayDeque<Pair<String, Double>> queue = new ArrayDeque<>();
+//        Set<String> visited = new HashSet<>();
+//        queue.addLast(new Pair<>(src, 1.0));
+//        visited.add(src);
+//        while (!queue.isEmpty()) {
+//            Pair<String, Double> item = queue.pollFirst();
+//            String node = item.getKey();
+//            Double curWeight = item.getValue();
+//            if (node.equals(target)) {
+//                return curWeight;
+//            }
+//            for (Pair<String, Double> neighbor : adj.get(node)) {
+//                String nextNode = neighbor.getKey();
+//                Double weight = neighbor.getValue();
+//                if (!visited.contains(nextNode)) {
+//                    queue.addLast(new Pair<>(nextNode, curWeight * weight));
+//                    visited.add(nextNode);
+//                }
+//            }
+//        }
+//        return -1.0;
+//    }
+//
+
+    // V2
     // IDEA: DFS
     // https://leetcode.com/problems/evaluate-division/solutions/3543256/image-explanation-easiest-concise-comple-okpu/
-    public double[] calcEquation_1(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    public double[] calcEquation_2(List<List<String>> equations, double[] values, List<List<String>> queries) {
         HashMap<String, HashMap<String, Double>> gr = buildGraph(equations, values);
         double[] finalAns = new double[queries.size()];
 
@@ -227,9 +277,9 @@ public class EvaluateDivision {
         return gr;
     }
 
-    // V2
+    // V3
     // IDEA: DFS (gpt)
-    public double[] calcEquation_2(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    public double[] calcEquation_3(List<List<String>> equations, double[] values, List<List<String>> queries) {
         // Build the graph
         Map<String, Map<String, Double>> graph = new HashMap<>();
         for (int i = 0; i < equations.size(); i++) {
@@ -294,7 +344,7 @@ public class EvaluateDivision {
         return -1.0;
     }
 
-    // V3
+    // V4
     // IDEA: DFS
     // https://leetcode.com/problems/evaluate-division/solutions/1992891/java-dfs-solution-with-comments-evaluate-6gmn/
     private Map<String, Map<String, Double>> makeGraph(List<List<String>> e, double[] values) {
@@ -318,7 +368,7 @@ public class EvaluateDivision {
         return graph;
     }
 
-    public double[] calcEquation_3(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    public double[] calcEquation_4(List<List<String>> equations, double[] values, List<List<String>> queries) {
         Map<String, Map<String, Double>> graph = makeGraph(equations, values);
 
         double[] ans = new double[queries.size()];
@@ -362,7 +412,7 @@ public class EvaluateDivision {
         return -1.0;
     }
 
-    // V4
+    // V5
     // IDEA: UNION FIND (gpt)
     class UnionFind {
         private Map<String, String> parent;
@@ -417,7 +467,7 @@ public class EvaluateDivision {
         }
     }
 
-    public double[] calcEquation_4(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    public double[] calcEquation_5(List<List<String>> equations, double[] values, List<List<String>> queries) {
         UnionFind uf = new UnionFind();
 
         // Build the union-find structure
