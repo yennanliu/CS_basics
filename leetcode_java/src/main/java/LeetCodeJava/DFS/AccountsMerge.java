@@ -201,11 +201,11 @@ class DSU {
     // V2-2
     // https://leetcode.com/problems/accounts-merge/editorial/
     // IDEA: Disjoint Set Union (DSU)
-    class DSU {
+    class DSU_2_2 {
         int representative[];
         int size[];
 
-        DSU(int sz) {
+        DSU_2_2(int sz) {
             representative = new int[sz];
             size = new int[sz];
 
@@ -251,7 +251,7 @@ class DSU {
 
     public List<List<String>> accountsMerge_2_2(List<List<String>> accountList) {
         int accountListSize = accountList.size();
-        DSU dsu = new DSU(accountListSize);
+        DSU_2_2 dsu = new DSU_2_2(accountListSize);
 
         // Maps email to their component index
         Map<String, Integer> emailGroup = new HashMap<>();
