@@ -63,7 +63,7 @@ public class EvaluateDivision {
 //    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
 //
 //    }
-    
+
     // V0-1
     // IDEA: DFS (fixed by gpt)
     /**
@@ -75,16 +75,20 @@ public class EvaluateDivision {
      *
      */
     public double[] calcEquation_0_1(List<List<String>> equations, double[] values, List<List<String>> queries) {
+
+        // NOTE !!! below
         Map<String, Map<String, Double>> graph = new HashMap<>();
 
         // Build the graph
         for (int i = 0; i < equations.size(); i++) {
+
             String a = equations.get(i).get(0);
             String b = equations.get(i).get(1);
             double val = values[i];
 
             graph.putIfAbsent(a, new HashMap<>());
             graph.putIfAbsent(b, new HashMap<>());
+
             graph.get(a).put(b, val);
             graph.get(b).put(a, 1.0 / val);
         }
@@ -92,21 +96,83 @@ public class EvaluateDivision {
         double[] res = new double[queries.size()];
 
         for (int i = 0; i < queries.size(); i++) {
+
             String start = queries.get(i).get(0);
             String end = queries.get(i).get(1);
+
             Set<String> visited = new HashSet<>();
+
+
             res[i] = dfs(start, end, graph, 1.0, visited);
         }
 
         return res;
     }
 
+    // curr : `start`, target : `end`
     private double dfs(String curr, String target, Map<String, Map<String, Double>> graph,
                        double accProduct, Set<String> visited) {
         if (!graph.containsKey(curr) || !graph.containsKey(target)) {
             return -1.0;
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *  when below condition is met, we can terminate the DFS call
+         *  (1start - end` calculation is completed)
+         *
+         *
+         *  Reason:
+         *
+         *
+         * ### 🔍 How it knows when it reaches the target:
+         *
+         * The check is here:
+         * ```java
+         * if (curr.equals(target)) {
+         *     return accProduct;
+         * }
+         * ```
+         *
+         * - Each recursive call explores a neighboring node.
+         * - If the current node (`curr`) is the target node (`target`), we return the current `accProduct`, which represents the **cumulative multiplication of edge weights** along the path.
+         * - If it never reaches the target, it returns `-1.0`.
+         *
+         * ### Example:
+         * Say you have equations like:
+         *
+         * ```
+         * a / b = 2.0
+         * b / c = 3.0
+         * ```
+         *
+         * Graph is:
+         *
+         * ```
+         * a --2.0--> b --3.0--> c
+         * a <--0.5-- b <--1/3-- c
+         * ```
+         *
+         * If the query is `a / c`, we call:
+         *
+         * ```java
+         * dfs("a", "c", graph, 1.0, visited)
+         * ```
+         *
+         * 1. `a != c`, explore `b` → edge weight is `2.0`
+         * 2. Recursive call: `dfs("b", "c", graph, 1.0 * 2.0, visited)` → `accProduct = 2.0`
+         * 3. `b != c`, explore `c` → edge weight is `3.0`
+         * 4. Recursive call: `dfs("c", "c", graph, 2.0 * 3.0, visited)` → `c == c`, return `6.0`
+         *
+         * ### ✅ Summary
+         *
+         * The base case `if (curr.equals(target))` is
+         * what terminates the recursion **when the path
+         * reaches the target node**,
+         * at which point we return the computed division result.
+         *
+         */
         if (curr.equals(target)) {
             return accProduct;
         }
@@ -114,9 +180,12 @@ public class EvaluateDivision {
         visited.add(curr);
 
         for (Map.Entry<String, Double> neighbor : graph.get(curr).entrySet()) {
+
             if (!visited.contains(neighbor.getKey())) {
+
                 double result = dfs(neighbor.getKey(), target, graph,
                         accProduct * neighbor.getValue(), visited);
+
                 if (result != -1.0) {
                     return result;
                 }
