@@ -60,136 +60,71 @@ import java.util.*;
 public class EvaluateDivision {
 
     // V0
-    // TODO: fix below
-//    private class EquationRes{
-//        // attr
-//        String variable;
-//        Double result;
-//
-//        public Double getResult() {
-//            return result;
-//        }
-//
-//        public String getVariable() {
-//            return variable;
-//        }
-//
-//        // constructor
-//        EquationRes(String variable, Double result){
-//            this.variable = variable;
-//            this.result = result;
-//        }
-//    }
-//
-//    // init relation
-//    Map<String, List<workspace6.EquationRes>> relations = new HashMap();
-//    //double[] res = new double[];
-//
-//    public double[] calcEquation(
-//
-//            List<List<String>> equations, double[] values, List<List<String>> queries) {
-//
-//        // build
-//        buildRelation(equations, values);
-//        // get
-//        double[] res = new double[queries.size()];
-//        for(int i = 0; i < queries.size(); i++){
-//            res[i] = getResult(queries.get(i), 1);
-//        }
-//
-//        System.out.println(">>> res = " + res);
-//
-//        return res;
-//    }
-//
-//    // dfs
-//    private double getResult(List<String> queries, double res){
-//        // check if in list
-//        String firstVal = queries.get(0);
-//        String secondVal = queries.get(1);
-//        if (!this.relations.containsKey(firstVal) || !this.relations.containsKey(secondVal)){
-//            return -1.0;
-//        }
-//
-//        //double res = 1;
-//        //List<EquationRes> x = this.relations.get(firstVal);
-//        for(workspace6.EquationRes equationRes: this.relations.get(firstVal)){
-//            res = res * equationRes.result;
-//
-//
-//        }
-//
-//        return res;
-//    }
-//
-//    // build relation
-//    private void buildRelation(List<List<String>> equations, double[] values){
-//        for(int i = 0; i < equations.size(); i++){
-//            List<String> equation = equations.get(i);
-//            String firstVal = equation.get(0);
-//            String secondVal = equation.get(1);
-//
-//            workspace6.EquationRes equationRes = new workspace6.EquationRes(secondVal, values[i]);
-//
-//            List<workspace6.EquationRes> equationAndRes = new ArrayList<>();
-//            if (this.relations.containsKey(firstVal)){
-//                equationAndRes =  this.relations.get(firstVal);
-//            }
-//
-//            this.relations.put(firstVal, equationAndRes);
-//        }
+//    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
 //
 //    }
+    
+    // V0-1
+    // IDEA: DFS (fixed by gpt)
+    /**
+     *  NOTE !!!
+     *
+     *  we define map as `Map<String, Map<String, double>>`
+     *
+     *  -> so can track `dividend, divisor, and result` relations
+     *
+     */
+    public double[] calcEquation_0_1(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        Map<String, Map<String, Double>> graph = new HashMap<>();
 
-    // V1
-    // https://www.youtube.com/watch?v=Uei1fwDoyKk
-    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0399-evaluate-division.java
-//    public double[] calcEquation_1(List<List<String>> equations, double[] values, List<List<String>> queries) {
-//        Map<String, List<Pair<String, Double>>> adj = new HashMap<>();
-//        for (int i = 0; i < equations.size(); i++) {
-//            List<String> equation = equations.get(i);
-//            adj.computeIfAbsent(
-//                    equation.get(0), k -> new ArrayList<>()).add(
-//                    new Pair<>(equation.get(1), values[i]));
-//            adj.computeIfAbsent(
-//                    equation.get(1), k -> new ArrayList<>()).add(
-//                    new Pair<>(equation.get(0), 1 / values[i]));
-//        }
-//        double[] res = new double[queries.size()];
-//        for (int i = 0; i < queries.size(); i++) {
-//            List<String> query = queries.get(i);
-//            res[i] = bfs(adj, query.get(0), query.get(1));
-//        }
-//        return res;
-//    }
-//
-//    private double bfs(Map<String, List<Pair<String, Double>>> adj, String src, String target) {
-//        if (!adj.containsKey(src) || !adj.containsKey(target)) {
-//            return -1.0;
-//        }
-//        ArrayDeque<Pair<String, Double>> queue = new ArrayDeque<>();
-//        Set<String> visited = new HashSet<>();
-//        queue.addLast(new Pair<>(src, 1.0));
-//        visited.add(src);
-//        while (!queue.isEmpty()) {
-//            Pair<String, Double> item = queue.pollFirst();
-//            String node = item.getKey();
-//            Double curWeight = item.getValue();
-//            if (node.equals(target)) {
-//                return curWeight;
-//            }
-//            for (Pair<String, Double> neighbor : adj.get(node)) {
-//                String nextNode = neighbor.getKey();
-//                Double weight = neighbor.getValue();
-//                if (!visited.contains(nextNode)) {
-//                    queue.addLast(new Pair<>(nextNode, curWeight * weight));
-//                    visited.add(nextNode);
-//                }
-//            }
-//        }
-//        return -1.0;
-//    }
-//
+        // Build the graph
+        for (int i = 0; i < equations.size(); i++) {
+            String a = equations.get(i).get(0);
+            String b = equations.get(i).get(1);
+            double val = values[i];
+
+            graph.putIfAbsent(a, new HashMap<>());
+            graph.putIfAbsent(b, new HashMap<>());
+            graph.get(a).put(b, val);
+            graph.get(b).put(a, 1.0 / val);
+        }
+
+        double[] res = new double[queries.size()];
+
+        for (int i = 0; i < queries.size(); i++) {
+            String start = queries.get(i).get(0);
+            String end = queries.get(i).get(1);
+            Set<String> visited = new HashSet<>();
+            res[i] = dfs(start, end, graph, 1.0, visited);
+        }
+
+        return res;
+    }
+
+    private double dfs(String curr, String target, Map<String, Map<String, Double>> graph,
+                       double accProduct, Set<String> visited) {
+        if (!graph.containsKey(curr) || !graph.containsKey(target)) {
+            return -1.0;
+        }
+
+        if (curr.equals(target)) {
+            return accProduct;
+        }
+
+        visited.add(curr);
+
+        for (Map.Entry<String, Double> neighbor : graph.get(curr).entrySet()) {
+            if (!visited.contains(neighbor.getKey())) {
+                double result = dfs(neighbor.getKey(), target, graph,
+                        accProduct * neighbor.getValue(), visited);
+                if (result != -1.0) {
+                    return result;
+                }
+            }
+        }
+
+        return -1.0;
+    }
 
     // V2
     // IDEA: DFS
