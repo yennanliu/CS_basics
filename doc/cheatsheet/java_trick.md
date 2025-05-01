@@ -555,6 +555,28 @@ if (currentChar != sb.charAt(sb.length() - 1)) {
 // ...
 ```
 
+
+### 1-0-8) Update val with idx in StringBuilder
+
+```java
+// java
+// LC 127
+
+// modify val with idx 
+
+// ...
+/** NOTE !!! below */
+
+StringBuilder sb = new StringBuilder(word);
+
+/** NOTE !!! StringBuilder can update val per idx */
+
+sb.setCharAt(idx, c);  // modify val to c per idx
+
+// ...
+```
+
+
 ### 1-1) Swap elements in char array
 
 ```java
