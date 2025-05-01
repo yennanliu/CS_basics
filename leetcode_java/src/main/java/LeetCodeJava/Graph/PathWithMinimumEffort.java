@@ -1,6 +1,7 @@
 package LeetCodeJava.Graph;
 
 // https://leetcode.com/problems/path-with-minimum-effort/description/
+// https://leetcode.cn/problems/path-with-minimum-effort/description/
 
 import java.util.*;
 
@@ -65,10 +66,17 @@ public class PathWithMinimumEffort {
 
     // V2
     // https://leetcode.com/problems/path-with-minimum-effort/solutions/4049557/9767-optimal-dijkstra-with-heap-by-vanam-1rxv/
+    // IDEA: MIN Heap (PQ)
     public int minimumEffortPath_2(int[][] heights) {
-        int rows = heights.length, cols = heights[0].length;
+
+        int rows = heights.length;
+        int cols = heights[0].length;
+
         int[][] dist = new int[rows][cols];
+
+        // NOTE !!! we define `min heap` below
         PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+        // add start point as initial state
         minHeap.add(new int[] { 0, 0, 0 });
 
         for (int i = 0; i < rows; i++) {
@@ -81,11 +89,16 @@ public class PathWithMinimumEffort {
         int[][] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
 
         while (!minHeap.isEmpty()) {
-            int[] top = minHeap.poll();
-            int effort = top[0], x = top[1], y = top[2];
 
-            if (effort > dist[x][y])
+            int[] top = minHeap.poll();
+
+            int effort = top[0];
+            int x = top[1];
+            int y = top[2];
+
+            if (effort > dist[x][y]){
                 continue;
+            }
 
             if (x == rows - 1 && y == cols - 1)
                 return effort;
