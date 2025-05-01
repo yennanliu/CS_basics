@@ -122,5 +122,77 @@ public class workspace10 {
 //
 //    }
 
+    // LC 127
+    // 3.46 - 3.56 pm
+    /**
+     *  ->  return the number of words in the shortest transformation
+     *      sequence from beginWord to endWord, or 0
+     *
+     *  -> return `lowest` cnt that transform start -> end word
+     *
+     *
+     * -> IDEA: BFS
+     *
+     */
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+         // edge
+        if(!wordList.contains(endWord)){
+            return 0;
+        }
+        if(beginWord.equals(endWord) && wordList.contains(endWord)){
+            return 0;
+        }
+
+        HashSet<String> visited = new HashSet<>();
+
+        Queue<WordState> q = new LinkedList<>();
+        StringBuilder _sb = new StringBuilder();
+        _sb.append(beginWord);
+        q.add(new WordState(0, _sb));
+
+        String alpha = "abcdefghijklmnopqrstuvwxyz";
+
+        // BFS
+        while(!q.isEmpty()){
+
+            WordState ws = q.poll();
+            StringBuilder _sb2 = ws.sb;
+            String word = _sb2.toString();
+            int cnt = ws.cnt;
+
+            if(word.equals(endWord)){
+                return cnt;
+            }
+            // NOTE !!! we validate below first
+            if(!wordList.contains(word) || visited.contains(word)){
+                continue;
+            }
+
+            visited.add(word);
+
+
+            // move on every idx, every 26 alphabet ???
+            for(int i = 0; i < word.length(); i++){
+                // update sb
+                for(String x: alpha.split("")){
+                    _sb2.replace(i, i + 1, x);
+                    q.add(new WordState(cnt + 1, _sb2));
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    public class WordState{
+        int cnt;
+        StringBuilder sb;
+
+        public WordState(int cnt, StringBuilder sb){
+            this.cnt = cnt;
+            this.sb = sb;
+        }
+    }
+
 
 }

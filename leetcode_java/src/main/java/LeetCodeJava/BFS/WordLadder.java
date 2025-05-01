@@ -116,7 +116,7 @@ public class WordLadder {
     }
 
     // V0-1
-    // IDEA : BFS (gpt)
+    // IDEA : BFS + pair (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/word-ladder.py#L42
     public int ladderLength_0_1(String beginWord, String endWord, List<String> wordList) {
         // Convert wordList to a set for O(1) lookups
@@ -164,6 +164,82 @@ public class WordLadder {
         Pair(String word, int length) {
             this.word = word;
             this.length = length;
+        }
+    }
+
+    // V0-2
+    // IDEA: BFS + CUSTOM CLASS (fixed by gpt)
+    public int ladderLength_0_2(String beginWord, String endWord, List<String> wordList) {
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (!wordSet.contains(endWord)) {
+            return 0;
+        }
+
+        Queue<WordState> q = new LinkedList<>();
+        q.offer(new WordState(beginWord, 1));
+        Set<String> visited = new HashSet<>();
+        visited.add(beginWord);
+
+        while (!q.isEmpty()) {
+            WordState current = q.poll();
+            String word = current.word;
+            int steps = current.steps;
+
+            if (word.equals(endWord)) {
+                return steps;
+            }
+
+            /**
+             *  NOTE !!
+             *
+             *  via char[], we can MODIFY string at idx
+             *
+             *  step 1) String -> char[]
+             *  step 2) modify at idx
+             *  step 3) char[] -> String
+             */
+            char[] wordChars = word.toCharArray();
+            for (int i = 0; i < wordChars.length; i++) {
+                char originalChar = wordChars[i];
+                for (char c = 'a'; c <= 'z'; c++) {
+                    // AVOID revisit same word at same idx
+                    if (c == originalChar){
+                        continue;
+                    }
+
+                    /**
+                     *  NOTE !!!
+                     *
+                     *  via below, we can update char[] val at idx
+                     *
+                     */
+                    wordChars[i] = c;
+                    String nextWord = new String(wordChars);
+                    /**
+                     *  NOTE !!! below condition
+                     */
+                    if (wordSet.contains(nextWord) && !visited.contains(nextWord)) {
+                        q.offer(new WordState(nextWord, steps + 1));
+                        visited.add(nextWord);
+                    }
+                }
+                /**
+                 *  NOTE !!! need to restore original character
+                 */
+                wordChars[i] = originalChar; // restore original character
+            }
+        }
+
+        return 0;
+    }
+
+    private static class WordState {
+        String word;
+        int steps;
+
+        public WordState(String word, int steps) {
+            this.word = word;
+            this.steps = steps;
         }
     }
 
