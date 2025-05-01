@@ -1,5 +1,7 @@
 package dev;
 
+import LeetCodeJava.BFS.WordLadder;
+
 import java.util.*;
 
 public class workspace10 {
@@ -191,6 +193,95 @@ public class workspace10 {
         public WordState(int cnt, StringBuilder sb){
             this.cnt = cnt;
             this.sb = sb;
+        }
+    }
+
+    // LC 126
+    // 4.39 pm - 4.49 pm
+    /**
+     * Given two words, beginWord and endWord, and a dictionary wordList,
+     * return `all` the `shortest` transformation sequences from beginWord to endWord,
+     * or an empty list if no such sequence exists. Each sequence
+     * should be returned as a list of the words [beginWord, s1, s2, ..., sk].
+     *
+     *
+     * -> return all `shortest` path of the start -> end transformation,
+     *   return null if can't find one
+     *
+     *
+     *   // IDEA: BFS
+     *
+     *   -> not `stop` when find a solution, keep finding
+     *      till all `path` are processed ???
+     *
+     *
+     */
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+
+        List<List<String>> res = new ArrayList<>();
+
+        // edge
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (!wordSet.contains(endWord)){
+             return res;
+        }
+
+        // LC 127
+        Queue<WordState_> q = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        q.add(new WordState_(beginWord, 1, new ArrayList<>()));
+        visited.add(beginWord);
+
+        while (!q.isEmpty()) {
+            WordState_ ws = q.poll();
+            String word = ws.word;
+            int cnt = ws.count;
+            List<String> history = ws.history;
+
+            history.add(beginWord);
+
+            if (word.equals(endWord)){
+                // update res
+                res.add(new ArrayList<>(history)); // ???
+                continue;
+            }
+
+            for (int i = 0; i < word.length(); i++) {
+                for (char c = 'a'; c <= 'z'; c++) {
+                    if (c == word.charAt(i)){
+                        continue;
+                    }
+
+                    /** NOTE !!! below */
+                    StringBuilder sb = new StringBuilder(word);
+                    /** NOTE !!! StringBuilder can update val per idx */
+                    sb.setCharAt(i, c);
+                    String nextWord = sb.toString();
+
+                    if (wordSet.contains(nextWord) && !visited.contains(nextWord)) {
+                        visited.add(nextWord);
+                        history.add(nextWord);
+                        q.add(new WordState_(nextWord, cnt + 1, history));
+                    }
+                }
+            }
+        }
+
+        // final check: ONLY get the `path` with shortest length
+
+        return res;
+    }
+
+
+    private static class WordState_ {
+        String word;
+        int count;
+        List<String> history;
+
+        WordState_(String word, int count, List<String> history) {
+            this.word = word;
+            this.count = count;
+            this.history = history;
         }
     }
 

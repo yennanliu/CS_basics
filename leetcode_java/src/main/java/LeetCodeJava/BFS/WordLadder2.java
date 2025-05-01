@@ -2,7 +2,7 @@ package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/word-ladder-ii/description/
 
-import java.util.List;
+import java.util.*;
 
 /**
  * 126. Word Ladder II
@@ -52,6 +52,71 @@ public class WordLadder2 {
 //    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
 //
 //    }
+
+    // V0-1
+    // IDEA: BFS, LC 127 (fixed by gpt) (TLE)
+    public List<List<String>> findLadders_0_1(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> res = new ArrayList<>();
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (!wordSet.contains(endWord))
+            return res;
+
+        Queue<WordState_> q = new LinkedList<>();
+        q.add(new WordState_(beginWord, new ArrayList<>(List.of(beginWord))));
+
+        Set<String> visited = new HashSet<>();
+        Set<String> currentLevelVisited = new HashSet<>();
+        boolean foundShortest = false;
+
+        while (!q.isEmpty() && !foundShortest) {
+            int size = q.size();
+            currentLevelVisited.clear();
+
+            for (int i = 0; i < size; i++) {
+                WordState_ ws = q.poll();
+                String word = ws.word;
+                List<String> history = ws.history;
+
+                if (word.equals(endWord)) {
+                    res.add(history);
+                    foundShortest = true;
+                    continue;
+                }
+
+                for (int j = 0; j < word.length(); j++) {
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        if (c == word.charAt(j))
+                            continue;
+
+                        StringBuilder sb = new StringBuilder(word);
+                        sb.setCharAt(j, c);
+                        String nextWord = sb.toString();
+
+                        if (wordSet.contains(nextWord) && !visited.contains(nextWord)) {
+                            List<String> newHistory = new ArrayList<>(history);
+                            newHistory.add(nextWord);
+                            q.add(new WordState_(nextWord, newHistory));
+                            currentLevelVisited.add(nextWord);
+                        }
+                    }
+                }
+            }
+
+            visited.addAll(currentLevelVisited);
+        }
+
+        return res;
+    }
+
+    private static class WordState_ {
+        String word;
+        List<String> history;
+
+        WordState_(String word, List<String> history) {
+            this.word = word;
+            this.history = history;
+        }
+    }
 
     // V1
     // https://www.youtube.com/watch?v=rWd4wScVYxc
