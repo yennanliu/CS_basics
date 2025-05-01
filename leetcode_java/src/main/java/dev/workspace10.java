@@ -286,6 +286,14 @@ public class workspace10 {
     }
 
     // LC 1631
+    // 5.28 - 5.38 pm
+    /**
+     *  IDEA 1) DFS
+     *  IDEA 2) BFS
+     *  IDEA 3) Dijkstra
+     *
+     *
+     */
     public int minimumEffortPath(int[][] heights) {
 
         return 0;
