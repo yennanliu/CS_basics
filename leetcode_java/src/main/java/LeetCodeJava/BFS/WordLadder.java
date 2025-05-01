@@ -45,10 +45,63 @@ import java.util.*;
 
 public class WordLadder {
 
+
     // V0
+    // IDEA: BFS + CUSTOM CLASS
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (!wordSet.contains(endWord))
+            return 0;
+
+        Queue<WordState_> q = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        q.add(new WordState_(beginWord, 1));
+        visited.add(beginWord);
+
+        while (!q.isEmpty()) {
+            WordState_ ws = q.poll();
+            String word = ws.word;
+            int cnt = ws.count;
+
+            if (word.equals(endWord))
+                return cnt;
+
+            for (int i = 0; i < word.length(); i++) {
+                for (char c = 'a'; c <= 'z'; c++) {
+                    if (c == word.charAt(i))
+                        continue;
+
+                    /** NOTE !!! below */
+                    StringBuilder sb = new StringBuilder(word);
+                    /** NOTE !!! StringBuilder can update val per idx */
+                    sb.setCharAt(i, c);
+                    String nextWord = sb.toString();
+
+                    if (wordSet.contains(nextWord) && !visited.contains(nextWord)) {
+                        visited.add(nextWord);
+                        q.add(new WordState_(nextWord, cnt + 1));
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    private static class WordState_ {
+        String word;
+        int count;
+
+        WordState_(String word, int count) {
+            this.word = word;
+            this.count = count;
+        }
+    }
+
+    // V0-1-1
     // IDEA: BFS (fixed by gpt) (TLE)
     // TODO: optimize
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+    public int ladderLength_0_1_1(String beginWord, String endWord, List<String> wordList) {
 
         // edge case: if the endWord is not in the wordList, return 0
         if (!wordList.contains(endWord)) {
@@ -225,6 +278,10 @@ public class WordLadder {
                 }
                 /**
                  *  NOTE !!! need to restore original character
+                 *
+                 *  -> if don't want to do `restore`,
+                 *     can use StringBuilder copy and create new string
+                 *     within every loop (check V0-3 below)
                  */
                 wordChars[i] = originalChar; // restore original character
             }
@@ -240,6 +297,58 @@ public class WordLadder {
         public WordState(String word, int steps) {
             this.word = word;
             this.steps = steps;
+        }
+    }
+
+    // V0-3
+    // IDEA: BFS + CUSTOM CLASS (gpt)
+    public int ladderLength_0_3(String beginWord, String endWord, List<String> wordList) {
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (!wordSet.contains(endWord))
+            return 0;
+
+        Queue<WordState2> q = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        q.add(new WordState2(beginWord, 1));
+        visited.add(beginWord);
+
+        while (!q.isEmpty()) {
+            WordState2 ws = q.poll();
+            String word = ws.word;
+            int cnt = ws.count;
+
+            if (word.equals(endWord))
+                return cnt;
+
+            for (int i = 0; i < word.length(); i++) {
+                for (char c = 'a'; c <= 'z'; c++) {
+                    if (c == word.charAt(i))
+                        continue;
+
+                    /** NOTE !!! below */
+                    StringBuilder sb = new StringBuilder(word);
+                    /** NOTE !!! StringBuilder can update val per idx */
+                    sb.setCharAt(i, c);
+                    String nextWord = sb.toString();
+
+                    if (wordSet.contains(nextWord) && !visited.contains(nextWord)) {
+                        visited.add(nextWord);
+                        q.add(new WordState2(nextWord, cnt + 1));
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    private static class WordState2 {
+        String word;
+        int count;
+
+        WordState2(String word, int count) {
+            this.word = word;
+            this.count = count;
         }
     }
 
