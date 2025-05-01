@@ -1181,6 +1181,8 @@
 1135 | [Connecting Cities With Minimum Cost](https://leetcode.com/problems/connecting-cities-with-minimum-cost/)  | [Python](./leetcode_python/Graph/connecting-cities-with-minimum-cost.py) | _O(n^2)_| _O(n^2)_| Medium | union find, Kruskal, prime, graph, amazon | AGAIN (not start)
 1462 | [Course Schedule IV](https://leetcode.com/problems/course-schedule-iv/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/CourseScheduleIV.java)| _O(n^2)_| _O(n^2)_| Medium || AGAIN (not start)
 1584 | [Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/MinCostToConnectAllPoints.java)| _O(n^2)_| _O(n^2)_| Medium || AGAIN (not start)
+1631 | [Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/PathWithMinimumEffort.java)| _O(n^2)_| _O(n^2)_| Hard |dfs, bfs, Dijkstra| AGAIN (not start)
+
 
 
 ## Geometry

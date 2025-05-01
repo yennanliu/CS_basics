@@ -285,5 +285,11 @@ public class workspace10 {
         }
     }
 
+    // LC 1631
+    public int minimumEffortPath(int[][] heights) {
+
+        return 0;
+    }
+
 
 }
