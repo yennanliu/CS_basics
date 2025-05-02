@@ -486,6 +486,73 @@ public class workspace10 {
         return null;
     }
 
+    // LC 502
+    // 11.56 - 12.16 pm
+    /**
+     *  1. max PQ on profit
+     *  2. collect all `profit` to queue
+     *     than can `afford` ( capital_i <= current money)
+     *
+     *  3. pop cur max profit, update res
+     *  4. loop above, return final res
+     *
+     *
+     *
+     *
+     */
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+
+        // edge
+        if(profits == null || profits.length == 0){
+            return 0;
+        }
+        // can't even get the 1st capital
+        boolean foundOne = false;
+        for(int c: capital){
+            if (c <= w){
+                foundOne = true;
+                break;
+            }
+        }
+        if(!foundOne){
+            return 0;
+        }
+
+        // PQ : { [profit, capital] }
+        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                int diff = b[0] - a[0];
+                return diff;
+            }
+        });
+
+        // record visited idx
+        HashSet<Integer> visited = new HashSet<>();
+
+        Queue<Integer> q = new LinkedList<>();
+        int curCaptital = w;
+
+        for(int i = 0; i < capital.length; i++){
+
+            if(!visited.contains(i)){
+                if(pq.isEmpty()){
+                    if(curCaptital >= capital[i]){
+                        q.add(profits[i]);
+                    }
+                }
+
+
+            }
+
+
+        }
+
+        int maxProfit = 0;
+
+
+        return maxProfit;
+    }
 
 
 }
