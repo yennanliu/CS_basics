@@ -89,7 +89,10 @@ public class NetworkDelayTime {
             // Step 4: Process the priority queue
             while (!minHeap.isEmpty()) {
                 int[] curr = minHeap.poll();
-                int w1 = curr[0], n1 = curr[1]; // w1 = current travel time, n1 = node
+                // w1 = current travel time
+                int w1 = curr[0];
+                // n1 = node
+                int n1 = curr[1];
 
                 // If the node has been visited, skip it
                 if (visited.contains(n1)) {
@@ -113,6 +116,72 @@ public class NetworkDelayTime {
 
             // Step 6: Check if all nodes are visited, and return the result
             return visited.size() == n ? t : -1; // Return the last time or -1 if not all nodes were visited
+        }
+    }
+
+    // V0-1
+    // IDEA: Dijkstra (fixed by gpt)
+    public int networkDelayTime_0_1(int[][] times, int n, int k) {
+        if (times == null || times.length == 0 || n == 0) {
+            return -1;
+        }
+        if (n == 1) {
+            return 0;
+        }
+
+        MyDijkstra dijkstra = new MyDijkstra(times, n);
+        return dijkstra.getShortestPath(k);
+    }
+
+    public class MyDijkstra {
+
+        Map<Integer, List<int[]>> graph = new HashMap<>();
+        int n;
+
+        public MyDijkstra(int[][] times, int n) {
+            this.n = n;
+
+            // Build graph with weights
+            for (int[] edge : times) {
+                int src = edge[0], dest = edge[1], weight = edge[2];
+                graph.computeIfAbsent(src, x -> new ArrayList<>()).add(new int[] { dest, weight });
+            }
+        }
+
+        public int getShortestPath(int k) {
+            // Min-heap of [time, node]
+            PriorityQueue<int[]> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+            minHeap.offer(new int[] { 0, k });
+
+            Map<Integer, Integer> dist = new HashMap<>();
+
+            while (!minHeap.isEmpty()) {
+                int[] current = minHeap.poll();
+                int time = current[0];
+                int node = current[1];
+
+                if (dist.containsKey(node))
+                    continue;
+                dist.put(node, time);
+
+                if (graph.containsKey(node)) {
+                    for (int[] neighbor : graph.get(node)) {
+                        int nextNode = neighbor[0], weight = neighbor[1];
+                        if (!dist.containsKey(nextNode)) {
+                            minHeap.offer(new int[] { time + weight, nextNode });
+                        }
+                    }
+                }
+            }
+
+            if (dist.size() != n)
+                return -1;
+
+            int maxTime = 0;
+            for (int t : dist.values()) {
+                maxTime = Math.max(maxTime, t);
+            }
+            return maxTime;
         }
     }
 
