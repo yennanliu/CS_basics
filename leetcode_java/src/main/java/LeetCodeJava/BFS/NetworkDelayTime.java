@@ -193,7 +193,7 @@ public class NetworkDelayTime {
        *
        * 	•	dist.get(node) tells you how long it takes for the signal
        *     	to reach node from k.
-       *     	
+       *
        * 	•	But since the signal spreads in parallel,
        *     	the network is considered to have received the signal
        *       	only when the last node gets it.

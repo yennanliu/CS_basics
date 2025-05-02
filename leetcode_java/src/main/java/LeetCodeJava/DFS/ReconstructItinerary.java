@@ -82,7 +82,75 @@ public class ReconstructItinerary {
         }
 
         List<String> temp = new ArrayList<>(adj.get(src));
-        for (int i = 0; i < temp.size(); i++) {
+    /**
+     *
+     *
+     * 🔁 DFS Method
+     *
+     * private boolean dfs(String src, List<String> res,
+     *                     Map<String, List<String>> adj, int targetLen)
+     *
+     * 📍 Base Case:
+     *
+     * if (res.size() == targetLen) return true;
+     *
+     * 	•	If we’ve used all tickets (res includes all nodes), return true.
+     *
+     * ⸻
+     *
+     * ⛔ Dead-end Check:
+     *
+     * if (!adj.containsKey(src)) return false;
+     *
+     * 	•	No more neighbors = invalid path
+     *
+     * ⸻
+     *
+     * 🔁 For each neighbor:
+     *
+     * List<String> temp = new ArrayList<>(adj.get(src));
+     *
+     * 	•	Iterate over a copy of the list (so we can backtrack safely).
+     *
+     * adj.get(src).remove(i);
+     * res.add(v);
+     * if (dfs(v, res, adj, targetLen)) return true;
+     * adj.get(src).add(i, v);
+     * res.remove(res.size() - 1);
+     *
+     * 	•	Try:
+     * 	1.	Take ticket src → v
+     * 	2.	Add to result path
+     * 	3.	Recurse deeper
+     * 	4.	If it fails, undo (backtrack)
+     *
+     * ⸻
+     *
+     * 🧪 Example:
+     *
+     * Input:
+     *
+     * tickets = [["MUC", "LHR"], ["JFK", "MUC"], ["LHR", "SFO"]]
+     *
+     * Sorted:
+     *
+     * JFK → MUC
+     * MUC → LHR
+     * LHR → SFO
+     *
+     * DFS builds:
+     * ["JFK", "MUC", "LHR", "SFO"]
+     *
+     * ⸻
+     *
+     * ✅ Why it works:
+     * 	•	Lexical sort ensures smallest path comes first.
+     * 	•	Backtracking guarantees every path is tried.
+     * 	•	Tickets used exactly once via in-place mutation + backtrack.
+
+     *
+     */
+    for (int i = 0; i < temp.size(); i++) {
             String v = temp.get(i);
             adj.get(src).remove(i);
             res.add(v);
