@@ -63,7 +63,8 @@ public class IPO {
      *
      *  This greedy approach works because:
      *
-     *   - You always pick the most profitable project you can afford at each step.
+     *   - You always pick the most profitable project you
+     *     can afford at each step.
      *
      *   - Efficiently maintains project choices using two heaps.
      *
