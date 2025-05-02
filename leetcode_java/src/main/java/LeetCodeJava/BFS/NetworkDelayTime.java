@@ -177,7 +177,56 @@ public class NetworkDelayTime {
             if (dist.size() != n)
                 return -1;
 
-            int maxTime = 0;
+      /**
+       * Great question.
+       *
+       * In the context of the Network Delay Time problem,
+       * the maxTime represents the total time it takes
+       * for the last node to receive the signal.
+       *
+       * ⸻
+       *
+       * 💡 Why do we take the max of all distances?
+       *
+       * Dijkstra’s algorithm gives us the shortest time to reach every node
+       * from the source node k. So:
+       *
+       * 	•	dist.get(node) tells you how long it takes for the signal
+       *     	to reach node from k.
+       *     	
+       * 	•	But since the signal spreads in parallel,
+       *     	the network is considered to have received the signal
+       *       	only when the last node gets it.
+       *
+       * 	•	So we need the maximum among all the shortest times.
+       *
+       * ⸻
+       *
+       * 📊 Example:
+       *
+       * Input:
+       * times = [[2,1,1],[2,3,1],[3,4,1]], n = 4, k = 2
+       *
+       * From node 2, we have:
+       * 	•	Node 1 gets the signal in 1 unit
+       * 	•	Node 3 gets it in 1 unit
+       * 	•	Node 4 gets it via node 3 in 2 units
+       *
+       * dist = {1: 1, 2: 0, 3: 1, 4: 2}
+       * (0 for node 2 because it’s the start node)
+       *
+       * The last node (node 4) receives the signal at 2 units, so we return max(dist.values()) = 2.
+       *
+       * ⸻
+       *
+       * ✅ Summary:
+       *
+       * We return maxTime because it answers the question:
+       *
+       * “How long until all nodes receive the signal?”
+       *
+       */
+      int maxTime = 0;
             for (int t : dist.values()) {
                 maxTime = Math.max(maxTime, t);
             }
