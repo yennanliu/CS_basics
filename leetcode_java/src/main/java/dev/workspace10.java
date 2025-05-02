@@ -1,5 +1,6 @@
 package dev;
 
+import LeetCodeJava.BFS.NetworkDelayTime;
 import LeetCodeJava.BFS.WordLadder;
 
 import java.util.*;
@@ -298,6 +299,186 @@ public class workspace10 {
 
         return 0;
     }
+
+    // LC 743
+    // 10.39 - 10.49 am
+    /**
+     *
+     * We will send a signal from a given node k. Return the minimum time it takes for all the n nodes to receive the signal.
+     * If it is impossible for all the n nodes to receive the signal, return -1.
+     *
+     *
+     *   times[i] = (ui, vi, wi), where ui is the source node, vi is the target node,
+     *   and wi is the time it takes for a signal
+     *   to travel from source to target.
+     *
+     *
+     *  -> n: total has n nodes ( 1 to n)
+     *  -> k: msg sent from `k` node
+     *
+     *  -> times[i] = (ui, vi, wi)
+     *     ui: src node
+     *     vi: target node
+     *     wi: processing time
+     *
+     * -> Return the `minimum` time it takes for all the n nodes,
+     *    if not possible, return -1
+     *
+     *
+     *  IDEA 1) Dijkstra algo
+     */
+    public int networkDelayTime(int[][] times, int n, int k) {
+
+        // Edge case: If no nodes exist
+        if (times == null || times.length == 0 || n == 0) {
+            return -1;
+        }
+        if (n == 1) {
+            return 0; // If there's only one node, no travel time is needed.
+        }
+
+        MyDijkstra dijkstra = new MyDijkstra(times, n);
+        return dijkstra.getShortestPath(k);
+    }
+
+    public class MyDijkstra{
+
+        int[][] times;
+        int n;
+        public MyDijkstra(int[][] times, int n){
+            this.n = n;
+            this.times = times;
+        }
+
+        // Dijkstra
+        public int getShortestPath(int k){
+
+            // build graph
+            // { val : {neighbor_1, neighbor_2, .... } }
+            Map<Integer, List<Integer>> pathMap = new HashMap<>();
+            for(int[] t: this.times){
+                int src = t[0];
+                int dest = t[1];
+                List<Integer> list = pathMap.getOrDefault(src, new ArrayList<>());
+                list.add(dest);
+            }
+
+            // min pq : {src, dest, process_time}
+            // sort on `process_time`
+            PriorityQueue<List<Integer>> minPQ = new PriorityQueue<>(new Comparator<List<Integer>>() {
+                @Override
+                public int compare(List<Integer> o1, List<Integer> o2) {
+                    int diff = o1.get(2) - o2.get(2);
+                    return diff;
+                }
+            });
+
+            // queue :  {src, dest, process_time}
+            Queue<List<Integer>> q = new LinkedList<>();
+            HashSet<Integer> visited = new HashSet<>();
+            int res = -1;
+
+            while(!q.isEmpty()){
+
+                List<Integer> cur = q.poll();
+                int _src = cur.get(0);
+                int _dest = cur.get(1);
+                int _process_time = cur.get(2);
+
+                if(visited.size() == n){
+                    return _process_time;
+                }
+
+                if(visited.contains(_src)){
+                    continue;
+                }
+
+                visited.add(_src);
+                // check node's neighbor and find the one same as min heap pop
+                // e.g. move to the `next node` that has `min process time`
+//                while(!pathMap.keySet().contains(minPQ.peek().get(0))){
+//                    minPQ.poll();
+//                }
+//                // if found one
+//                if(!minPQ.isEmpty()){
+//                    int nextNode = minPQ.poll().get(0);
+//                    q.add(pathMap.get(nextNode));
+//                }
+                for(Integer next: pathMap.get(_src)){
+                    if(next == (minPQ.peek().get(0))){
+                        q.add(pathMap.get(next));
+                    }
+                }
+
+                res = _process_time;
+            }
+
+            return visited.size() == n ? res : -1;
+        }
+    }
+
+//    public int networkDelayTime(int[][] times, int n, int k) {
+//        // edge
+//        if(times == null || times.length == 0){
+//            return -1;
+//        }
+//        if(times.length == 1){
+//            return times[0][2];
+//        }
+//
+//        // Dijkstra:
+//        // min heap + bfs
+//
+//        // min PQ: return the `min` processing time every time
+//        PriorityQueue<NodeInfo> minPQ = new PriorityQueue<>(new Comparator<NodeInfo>() {
+//            @Override
+//            public int compare(NodeInfo o1, NodeInfo o2) {
+//                int diff = o1.processTime - o2.processTime;
+//                return diff;
+//            }
+//        });
+//
+//        // bfs
+//        Queue<ProcessInfo> q = new LinkedList<>();
+//        q.add(new ProcessInfo(k, 0));
+//
+//        while(!q.isEmpty()){
+//            ProcessInfo info = q.poll();
+//            int totalProcessTime = info.totalProcessTime;
+//            int node = info.node;
+//
+//            // if `all nodes are visited`
+//            if(node == n){
+//                return totalProcessTime;
+//            }
+//        }
+//
+//
+//        return 0;
+//    }
+//
+//    public class ProcessInfo{
+//        int node;
+//        int totalProcessTime;
+//
+//        public ProcessInfo(int node, int totalProcessTime){
+//            this.node = node;
+//            this.totalProcessTime = totalProcessTime;
+//        }
+//    }
+//
+//    public class NodeInfo{
+//        int src;
+//        int dest;
+//        int processTime;
+//
+//        public NodeInfo(int src, int dest, int processTime){
+//            this.src = src;
+//            this.dest = dest;
+//            this.processTime = processTime;
+//        }
+//    }
+
 
 
 }
