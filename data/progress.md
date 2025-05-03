@@ -1,5 +1,21 @@
 # Progress
 
+# 2025-05-03
+- neetcode 250
+	- https://neetcode.io/practice?tab=neetcode250
+	- 5 / day ->  15 days to finish
+		- Advanced Graphs
+	- again:
+		- similar:
+	- todo:
+		- re-do all previous `again` problems, similar problems, make notes
+		- refine java_trick cheatsheet
+- crack code book
+	- p.176 (recursion & dp)
+- sys design book
+	- Volume 2
+		- p.236
+
 # 2025-05-02
 - neetcode 250
 	- https://neetcode.io/practice?tab=neetcode250
