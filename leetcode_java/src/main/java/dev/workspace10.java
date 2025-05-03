@@ -554,5 +554,24 @@ public class workspace10 {
         return maxProfit;
     }
 
+  // LC 1584
+  // 8.17 - 8.27 pm
+  /**
+   * The cost of connecting two points [xi, yi] and [xj, yj]
+   * is the manhattan distance between them: |xi - xj| + |yi - yj|,
+   * where |val| denotes the absolute value of val.
+   *
+   * -> Return the minimum cost to make all points connected.
+   * All points are connected if there is exactly
+   * one simple path between any two points.
+   *
+   *
+   *
+   */
+  public int minCostConnectPoints(int[][] points) {
+
+        return 0;
+    }
+
 
 }
