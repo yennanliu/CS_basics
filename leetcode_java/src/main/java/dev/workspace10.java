@@ -660,5 +660,23 @@ public class workspace10 {
       return res;
     }
 
+    // LC 269
+    // 9.32 - 9.42 pm
+    /**
+     *
+     *  IDEA 1) DFS
+     *
+     *  IDEA 2) TOPOLOGICAL SORT ???
+     *
+     */
+    // TOPOLOGICAL sort
+    public boolean isAlienSorted(String[] words, String order) {
+
+        // orders
+        //
+
+        return false;
+    }
+
 
 }
