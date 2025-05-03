@@ -56,6 +56,70 @@ public class SwimInRisingWater {
 //
 //    }
 
+    // V0-1
+    // IDEA:  Dijkstra's Algorithm (fixed by gpt)
+    /**
+     *
+     *  NOTE !!! we DON'T need a regular queue,
+     *
+     *   all we need is :  `min PQ + BFS`
+     *
+     *     (val pop from min PQ)
+     */
+    public int swimInWater_0_1(int[][] grid) {
+        int n = grid.length;
+
+    // Min-heap based on elevation
+    /**
+     *
+     * NOTE !!! we use minHeap below
+     * minHeap : [cost, x, y]
+     */
+    PriorityQueue<int[]> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+
+        // NOTE !!! we use visited to NOT visit same cell again
+        boolean[][] visited = new boolean[n][n];
+
+        // Start from (0, 0)
+        minHeap.offer(new int[] { grid[0][0], 0, 0 });
+        visited[0][0] = true;
+
+        int[][] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+        int res = 0;
+
+        while (!minHeap.isEmpty()) {
+            /**
+             *
+             * NOTE !!! we poll cur from `minHeap`
+             */
+            int[] cur = minHeap.poll();
+            int elevation = cur[0], x = cur[1], y = cur[2];
+
+            /**
+             *
+             * NOTE !!! we track the max of  res or next cost
+             */
+            res = Math.max(res, elevation); // Track max elevation
+
+            if (x == n - 1 && y == n - 1) {
+                return res; // Reached target
+            }
+
+            for (int[] d : directions) {
+                int nx = x + d[0];
+                int ny = y + d[1];
+                if (nx >= 0 && ny >= 0 && nx < n && ny < n && !visited[ny][nx]) {
+
+                    // NOTE !!! we update visited before adding it to PQ
+                    visited[ny][nx] = true;
+                    minHeap.offer(new int[] { grid[ny][nx], nx, ny });
+                }
+            }
+        }
+
+        return -1; // Unreachable (shouldn't happen with valid input)
+    }
+
     // V1-1
     // https://neetcode.io/problems/swim-in-rising-water
     // IDEA: BRUTE FORCE
@@ -199,6 +263,11 @@ public class SwimInRisingWater {
                         neiC < N && !visit[neiR][neiC]) {
                     visit[neiR][neiC] = true;
                     minHeap.offer(new int[]{
+                            // NOTE !!! we need to add the `max` value to min heap
+                            // since
+                            // 1) res could be bigger
+                            //  or
+                            // 2) grid[neiR][neiC] is bigger
                             Math.max(t, grid[neiR][neiC]),
                             neiR, neiC
                     });

@@ -573,5 +573,92 @@ public class workspace10 {
         return 0;
     }
 
+    // LC 778
+    // 8.24 - 8.34 pm
+    /**
+     *
+     *
+     * -> Return the least time until you can reach the bottom right square (n - 1, n - 1)
+     * if you start at the top left square (0, 0).
+     *
+     *
+     *  IDEA 1) BFS
+     *
+     *  IDEA 2) DFS
+     *
+     *
+     *  IDEA 3) Dijkstra
+     *
+     */
+    // Dijkstra algo
+    public int swimInWater(int[][] grid) {
+
+        // edge
+        if(grid == null || grid.length == 0){
+            return 0;
+        }
+
+        // MIN HEAP + BFS
+        // min_pq : [ cost, x, y ]
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                return diff;
+            }
+        });
+
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[] {0, 0, 0});
+
+        int res = 0;
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // visited : [x,y]
+        //HashSet<int[]> visited = new HashSet<>();
+        boolean[][] visited = new boolean[l-1][w-1];
+
+        while(!q.isEmpty()){
+
+            int[] cur = q.poll();
+            int cost = cur[0];
+            int x = cur[1];
+            int y = cur[2];
+
+            // update res
+            res += cost;
+
+            if(x == w - 1 && y == l - 1){
+                return res;
+            }
+
+            // NOTE !!! we do below validation
+            if (x < 0 || x >= w || y < 0 || y >= l || visited[y][x]){
+                continue;
+            }
+
+            // move on 4 directions and update t
+            int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+            for(int[] m : moves){
+                int x_ = x + m[0];
+                int y_ = y + m[1];
+                if (x_ < 0 || x_ >= w || y_ < 0 || y_ >= l || visited[y_][x_]){
+                    continue;
+                }
+                int cost_ = grid[x_][y_];
+                minHeap.add(new int[] {cost_, x_, y_});
+            }
+
+            // pop the `min` path
+            int[] next = minHeap.poll();
+            q.add(next);
+        }
+
+      return res;
+    }
+
 
 }
