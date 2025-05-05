@@ -770,7 +770,14 @@ public class workspace10 {
     }
 
     // LC 1489
+    // 11.11 - 11.21 AM
     public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] edges) {
+
+        return null;
+    }
+
+    // LC 2392
+    public int[][] buildMatrix(int k, int[][] rowConditions, int[][] colConditions) {
 
         return null;
     }

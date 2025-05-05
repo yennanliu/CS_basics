@@ -1,6 +1,7 @@
 package LeetCodeJava.Graph;
 
 // https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/description/
+// https://leetcode.cn/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/
 
 import java.util.ArrayList;
 import java.util.Arrays;

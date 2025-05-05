@@ -1183,7 +1183,7 @@
 1489 | [Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree](https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTree.java)| _O(n^2)_| _O(n^2)_| Hard |dfs, bfs, Dijkstra| AGAIN (not start)
 1584 | [Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/MinCostToConnectAllPoints.java)| _O(n^2)_| _O(n^2)_| Medium |Kruskal algo,  Prim algo, advanced graph| AGAIN (not start)
 1631 | [Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/PathWithMinimumEffort.java)| _O(n^2)_| _O(n^2)_| Hard |dfs, bfs, Dijkstra| AGAIN (not start)
-
+2392 | [Build a Matrix With Conditions](https://leetcode.com/problems/build-a-matrix-with-conditions)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/BuildAMatrixWithConditions.java)| _O(n^2)_| _O(n^2)_| Hard |dfs, bfs, Dijkstra| AGAIN (not start)
 
 
 ## Geometry
