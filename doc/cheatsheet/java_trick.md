@@ -1689,3 +1689,15 @@ order.charAt(i) - 'a'
 ✔️ Super efficient for problems limited to lowercase letters
 
 ---
+
+
+### 3-3) Loop over `abc...z` char
+
+```java
+// LC 127
+for (char c = 'a'; c <= 'z'; c++) {
+  System.out.println(c);
+  // output as below:
+  /** a b c d e f g h i j k l m n o p q r s t u v w x y z */
+}
+```

@@ -62,7 +62,8 @@ public class WordLadder2 {
             return res;
 
         Queue<WordState_> q = new LinkedList<>();
-        q.add(new WordState_(beginWord, new ArrayList<>(List.of(beginWord))));
+        //q.add(new WordState_(beginWord, new ArrayList<>(List.of(beginWord))));
+        q.add(new WordState_(beginWord, Arrays.asList(beginWord.split(""))));
 
         Set<String> visited = new HashSet<>();
         Set<String> currentLevelVisited = new HashSet<>();
