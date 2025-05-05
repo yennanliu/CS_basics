@@ -24,6 +24,14 @@
 
 ### 0-2) Pattern
 
+
+- V1
+    - 1. `degrees` : `array` or `hashmap` : record `ordering` of element
+    - 2. `map` : maintain relation between node and `next nodes`
+    - 3. BFS : the way access candidates
+
+- V2
+
 ```
 # pseudo code
 # https://leetcode.com/problems/course-schedule/solution/
@@ -566,7 +574,159 @@ class Solution:
 ```
 
 ### 2-3) alien-dictionary
+
+```java
+// java
+// LC 269
+
+ // V0
+    // IDEA: TOPOLOGICAL SORT (neetcode, comments created by gpt)
+    // TOPOLOGICAL SORT : `degrees`, map, BFS
+    public String foreignDictionary(String[] words) {
+        Map<Character, Set<Character>> adj = new HashMap<>();
+        // NOTE !!! we use `map` as degrees storage
+        Map<Character, Integer> indegree = new HashMap<>();
+
+        for (String word : words) {
+            for (char c : word.toCharArray()) {
+                adj.putIfAbsent(c, new HashSet<>());
+                indegree.putIfAbsent(c, 0);
+            }
+        }
+
+        /**
+         *   NOTE !!! below
+         *
+         *   -> build the character `ordering`
+         *
+         *  Loop Over Adjacent Word Pairs
+         *
+         *
+         *
+         * for (int i = 0; i < words.length - 1; i++) {
+         *     String w1 = words[i];
+         *     String w2 = words[i + 1];
+         *
+         * We are comparing each pair of consecutive
+         * words in the list (words[i] and words[i+1]).
+         *
+         * This is important because the alien language is
+         * sorted — and order relationships only exist between adjacent words.
+         *
+         */
+        for (int i = 0; i < words.length - 1; i++) {
+            String w1 = words[i];
+            String w2 = words[i + 1];
+
+            /**
+             *  NOTE !!! below
+             *
+             *
+             * int minLen = Math.min(w1.length(), w2.length());
+             * if (w1.length() > w2.length() &&
+             *     w1.substring(0, minLen).equals(w2.substring(0, minLen))) {
+             *     return "";
+             * }
+             *
+             *
+             * ->  This checks for a prefix violation:
+             * If w1 is longer than w2, and w2 is a prefix of w1, that’s `invalid`.
+             *
+             * Example:
+             *
+             *   words = ["apple", "app"]
+             *
+             *
+             * Here, app comes after apple,
+             * which is wrong because in a lexicographically sorted language,
+             * a shorter prefix should come before the longer word.
+             *
+             * -> Hence, we return "" to signal an invalid dictionary order.
+             *
+             */
+            int minLen = Math.min(w1.length(), w2.length());
+            // handle `ordering` edge case
+            // e.g. words = ["apple", "app"]
+            if (w1.length() > w2.length() &&
+                    w1.substring(0, minLen).equals(w2.substring(0, minLen))) {
+                return "";
+            }
+
+            /**
+             *  NOTE !!! below
+             *
+             *
+             *  This loop compares characters at each position j in w1 and w2.
+             *  The first place where they differ defines the ordering.
+             *
+             *
+             *  Example :
+             *
+             *    w1 = "wrt"
+             *    w2 = "wrf"
+             *
+             *
+             *
+             *  At index 2, 't' and 'f' differ → so we know:
+             * 't' < 'f' → Add a directed edge: t → f
+             *
+             * adj.get(w1.charAt(j)).add(w2.charAt(j)): Adds this edge in the adjacency list.
+             *
+             * indegree.put(...): Increments in-degree of the target node.
+             *
+             *
+             * NOTE !!!
+             *
+             * -> Then we break — we don’t look at further characters
+             *     -> because they don’t affect the order.
+             *
+             *
+             */
+            // compare the `first different character within w1, w2`
+            // The first place where they differ defines the ordering.
+            for (int j = 0; j < minLen; j++) {
+                if (w1.charAt(j) != w2.charAt(j)) {
+                    if (!adj.get(w1.charAt(j)).contains(w2.charAt(j))) {
+                        adj.get(w1.charAt(j)).add(w2.charAt(j));
+                        indegree.put(w2.charAt(j),
+                                indegree.get(w2.charAt(j)) + 1);
+                    }
+                    break;
+                }
+            }
+        }
+
+        Queue<Character> q = new LinkedList<>();
+        for (char c : indegree.keySet()) {
+            if (indegree.get(c) == 0) {
+                q.offer(c);
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+
+        while (!q.isEmpty()) {
+            char char_ = q.poll();
+            res.append(char_);
+            for (char neighbor : adj.get(char_)) {
+                indegree.put(neighbor, indegree.get(neighbor) - 1);
+                if (indegree.get(neighbor) == 0) {
+                    q.offer(neighbor);
+                }
+            }
+        }
+
+        if (res.length() != indegree.size()) {
+            return "";
+        }
+
+        return res.toString();
+    }
+
+```
+
 ```python
+# python
 # 269 alien-dictionary
 class Solution(object):
     def alienOrder(self, words):
