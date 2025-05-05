@@ -769,5 +769,10 @@ public class workspace10 {
         return -1; // /??
     }
 
+    // LC 1489
+    public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] edges) {
+
+        return null;
+    }
 
 }
