@@ -54,8 +54,90 @@ public class WordLadder2 {
 //    }
 
     // V0-1
-    // IDEA: BFS, LC 127 (fixed by gpt) (TLE)
+    // IDEA: BFS (fixed by gpt)
     public List<List<String>> findLadders_0_1(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> res = new ArrayList<>();
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (!wordSet.contains(endWord))
+            return res;
+
+        Map<String, List<String>> parents = new HashMap<>();
+        Queue<String> q = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        q.add(beginWord);
+        visited.add(beginWord);
+
+        boolean found = false;
+
+        while (!q.isEmpty() && !found) {
+            int size = q.size();
+            Set<String> levelVisited = new HashSet<>();
+
+            for (int i = 0; i < size; i++) {
+                String word = q.poll();
+                char[] chs = word.toCharArray();
+
+                for (int j = 0; j < chs.length; j++) {
+                    char old = chs[j];
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        if (c == old)
+                            continue;
+                        chs[j] = c;
+                        String next = new String(chs);
+
+                        if (!wordSet.contains(next))
+                            continue;
+
+                        if (!visited.contains(next)) {
+                            if (!parents.containsKey(next)) {
+                                parents.put(next, new ArrayList<>());
+                            }
+                            parents.get(next).add(word);
+
+                            if (!levelVisited.contains(next)) {
+                                levelVisited.add(next);
+                                q.add(next);
+                            }
+
+                            if (next.equals(endWord)) {
+                                found = true;
+                            }
+                        }
+                    }
+                    chs[j] = old;
+                }
+            }
+
+            visited.addAll(levelVisited);
+        }
+
+        if (found) {
+            LinkedList<String> path = new LinkedList<>();
+            dfs(endWord, beginWord, parents, path, res);
+        }
+
+        return res;
+    }
+
+    private void dfs(String word, String beginWord, Map<String, List<String>> parents,
+                     LinkedList<String> path, List<List<String>> res) {
+        path.addFirst(word);
+        if (word.equals(beginWord)) {
+            res.add(new ArrayList<>(path));
+        } else {
+            List<String> preds = parents.get(word);
+            if (preds != null) {
+                for (String prev : preds) {
+                    dfs(prev, beginWord, parents, path, res);
+                }
+            }
+        }
+        path.removeFirst();
+    }
+
+    // V0-2
+    // IDEA: BFS, LC 127 (fixed by gpt) (TLE)
+    public List<List<String>> findLadders_0_2(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();
         Set<String> wordSet = new HashSet<>(wordList);
         if (!wordSet.contains(endWord))
