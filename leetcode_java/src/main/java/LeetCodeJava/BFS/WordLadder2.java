@@ -63,7 +63,7 @@ public class WordLadder2 {
 
         Queue<WordState_> q = new LinkedList<>();
         //q.add(new WordState_(beginWord, new ArrayList<>(List.of(beginWord))));
-        q.add(new WordState_(beginWord, Arrays.asList(beginWord.split(""))));
+        q.add(new WordState_(beginWord, new ArrayList<>(Arrays.asList(beginWord)))); // fixed for java 8
 
         Set<String> visited = new HashSet<>();
         Set<String> currentLevelVisited = new HashSet<>();
@@ -79,19 +79,20 @@ public class WordLadder2 {
                 List<String> history = ws.history;
 
                 if (word.equals(endWord)) {
-                    res.add(history);
+                    res.add(new ArrayList<>(history)); // ✅ deep copy for safety
                     foundShortest = true;
                     continue;
                 }
 
                 for (int j = 0; j < word.length(); j++) {
+                    char[] wordChars = word.toCharArray();
+
                     for (char c = 'a'; c <= 'z'; c++) {
-                        if (c == word.charAt(j))
+                        if (c == wordChars[j])
                             continue;
 
-                        StringBuilder sb = new StringBuilder(word);
-                        sb.setCharAt(j, c);
-                        String nextWord = sb.toString();
+                        wordChars[j] = c;
+                        String nextWord = new String(wordChars);
 
                         if (wordSet.contains(nextWord) && !visited.contains(nextWord)) {
                             List<String> newHistory = new ArrayList<>(history);
