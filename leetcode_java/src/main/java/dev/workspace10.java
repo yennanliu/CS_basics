@@ -679,4 +679,95 @@ public class workspace10 {
     }
 
 
+    // LC 787
+    // 10.13 - 10.23 am
+    /**
+     *
+     * IDEA 1: Dijkstra
+     *
+     *  edges = [[0,1,100],[1,2,100],[0,2,500]]
+     *    [src, dest, cost]
+     *
+     */
+
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+
+        // edge
+        if(n == 0){
+            return 0;
+        }
+        if(flights == null || flights.length == 0){
+            return 0;
+        }
+        if(src == dst || k == 0){
+            return 0;
+        }
+
+        // Dijkstra : min heap + BFS
+
+        int res = 0;
+        int step = 0;
+
+        HashSet<Integer> visited = new HashSet<>();
+
+        // build `neighbor` map
+        // idx : idx in `flights` array
+        // { val : [idx_1, ...] }
+        Map<Integer, List<Integer>> neighborMap = new HashMap<>();
+        for(int i = 0; i < flights.length; i++){
+            int[] f = flights[i];
+            List<Integer> list = neighborMap.getOrDefault(f[0], new ArrayList<>());
+            list.add(i);
+            neighborMap.put(f[0], list);
+        }
+
+
+        // min PQ : sort on `cost`
+        //  pq : { [src, dest, cost], [], ... }
+        PriorityQueue<List<Integer>> min_pq = new PriorityQueue<>(new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> o1, List<Integer> o2) {
+                int diff = o1.get(2) - o2.get(2);
+                return diff;
+            }
+        });
+
+        //Queue<List<Integer>> q = new LinkedList<>();
+        while(!min_pq.isEmpty()){
+
+            List<Integer> cur = min_pq.poll(); // ???
+            int _src = cur.get(0);
+            int _dest = cur.get(1);
+            int _cost = cur.get(2);
+
+            if(step == k && _dest == dst){
+                return _cost;
+            }
+
+//            if(visited.contains(_src)){
+//                continue;
+//            }
+
+            if(neighborMap.containsKey(_src)){
+                for(Integer idx: neighborMap.get(_src)){
+                    int[] flight = flights[idx];
+                    List<Integer> _next = new ArrayList<>();
+//                    for(int j = 0; j < flight.length; j++){
+//                        _next.add(flight[j]);
+//                    }
+                    _next.add(flight[0]);
+                    _next.add(flight[1]);
+                    _next.add(flight[2] + _cost);
+
+                    min_pq.add(_next);
+                }
+            }
+
+            step += 1;
+        }
+
+        return -1; // /??
+    }
+
+
 }

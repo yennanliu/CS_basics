@@ -153,6 +153,65 @@ public class CheapestFlightsWithinKStops {
 
                         // Only add the new path if it's better (lower cost) and we haven't visited with
                         // the same number of stops
+                        // NOTE !!! below
+                        /**
+                         *
+                         *
+                         * ### 🔍 Focus Line
+                         *
+                         * ```java
+                         * // Only add the new path if it's better (lower cost) and we haven't visited with
+                         * // the same number of stops
+                         * if (newCost < dist[nextNode][stops + 1]) {
+                         *     dist[nextNode][stops + 1] = newCost;
+                         *     minHeap.offer(new int[] { newCost, nextNode, stops + 1 });
+                         * }
+                         * ```
+                         *
+                         * ---
+                         *
+                         * ### 💡 What's Happening Here?
+                         *
+                         * #### `dist[nextNode][stops + 1]`:
+                         *
+                         * This represents the **minimum cost found so far** to reach `nextNode` using exactly `stops + 1` stops.
+                         * We use a 2D array `dist[node][stopCount]` to **track the `best cost` for each node at each stop level**.
+                         *
+                         * #### `newCost < dist[nextNode][stops + 1]`:
+                         *
+                         * This checks:
+                         *
+                         * * *Have we already reached this node using the same number of stops (or fewer) with a lower cost?*
+                         * * If **yes** → no need to consider this new path.
+                         * * If **no** → it's a cheaper route with the same number of stops → **update and explore it.**
+                         *
+                         * #### `dist[nextNode][stops + 1] = newCost;`:
+                         *
+                         * Update the best known cost to reach `nextNode` using `stops + 1` stops.
+                         *
+                         * #### `minHeap.offer(...)`:
+                         *
+                         * We add this new path to the priority queue so it will be explored in the future.
+                         * Note that:
+                         *
+                         * * The priority queue is ordered by **total cost**, so cheaper paths get explored first.
+                         * * Stops are incremented, and we don’t revisit the same node with the same or worse cost and same number of stops.
+                         *
+                         * ---
+                         *
+                         * ### 🔄 Why Is This Important?
+                         *
+                         * Without tracking `stops` explicitly in `dist[][]`, you'd either:
+                         *
+                         * * Miss valid paths that have the same node but fewer stops (and could later lead to cheaper full paths).
+                         * * Or over-explore, leading to Time Limit Exceeded (TLE) due to redundant work.
+                         *
+                         * This structure ensures:
+                         *
+                         * * You don’t explore worse paths.
+                         * * You allow exploration of the **same node multiple times** if it's reached with different (and possibly better) stop counts.
+                         *
+                         */
                         if (newCost < dist[nextNode][stops + 1]) {
                             dist[nextNode][stops + 1] = newCost;
                             minHeap.offer(new int[] { newCost, nextNode, stops + 1 });
@@ -164,6 +223,42 @@ public class CheapestFlightsWithinKStops {
             // If no path is found with at most k stops
             return -1;
         }
+    }
+
+    // V0-2
+    // IDEA: Dijkstra (fixed by gpt) (TLE)
+    public int findCheapestPrice_0_2(int n, int[][] flights, int src, int dst, int k) {
+        // Graph: Map<source, List of [destination, cost]>
+        Map<Integer, List<int[]>> graph = new HashMap<>();
+        for (int[] flight : flights) {
+            graph.computeIfAbsent(flight[0], x -> new ArrayList<>()).add(new int[] { flight[1], flight[2] });
+        }
+
+        // Min-heap: [total cost so far, current city, stops so far]
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        pq.offer(new int[] { 0, src, 0 }); // cost, source, stops
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int cost = cur[0];
+            int city = cur[1];
+            int stops = cur[2];
+
+            if (city == dst) {
+                return cost;
+            }
+
+            if (stops <= k) {
+                List<int[]> neighbors = graph.getOrDefault(city, new ArrayList<>());
+                for (int[] neighbor : neighbors) {
+                    int nextCity = neighbor[0];
+                    int price = neighbor[1];
+                    pq.offer(new int[] { cost + price, nextCity, stops + 1 });
+                }
+            }
+        }
+
+        return -1;
     }
 
     // V1-1
