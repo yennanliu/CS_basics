@@ -54,6 +54,136 @@ public class IPO {
 //
 //    }
 
+    // V0-1
+    // IDEA: 2 PQ + GREEDY (fixed by gpt)
+    /**
+     *  NOTE !!!  we use 2 PQ for this problem
+     *
+     *  1. capital PQ : Min-heap ordered by capital
+     *
+     *     - structure : { [capital, profit] }  // <---- NOTE this !!!!
+     *
+     *  2. profit PQ: ax-heap ordered by profit
+     *
+     *     - structure : { profit }
+     *
+     *
+     */
+    public int findMaximizedCapital_0_1(int k, int w, int[] profits, int[] capital) {
+        if (k <= 0 || profits == null || capital == null ||
+                profits.length != capital.length || profits.length == 0) {
+            return w;
+        }
+
+        // Min-heap ordered by capital
+        //  - structure : { [capital, profit] }  // <---- NOTE this !!!!
+        PriorityQueue<int[]> capitalPQ = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+        // Max-heap ordered by profit
+        // - structure : { profit }
+        PriorityQueue<Integer> profitPQ = new PriorityQueue<>((a, b) -> b - a);
+
+        // NOTE !!! below !!! we fill all [capital, profit] to capitalPQ first
+        // Fill capitalPQ with [capital, profit] pairs
+        for (int i = 0; i < profits.length; i++) {
+            capitalPQ.offer(new int[] { capital[i], profits[i] });
+        }
+
+        // Perform up to k selections
+        for (int i = 0; i < k; i++) {
+
+            // NOTE !!! we use `while` loop to move all `affordable` profit to queue
+            // Move all projects that are affordable into profitPQ
+            /**
+             *  NOTE !!!
+             *
+             *   we use `while` but not `if` for below
+             *
+             *   Reason :
+             *
+             *
+             * > **No, you should not replace the `while` with an `if`** in this case,
+             *    unless you're okay with **missing valid profitable projects**.
+             *
+             * ---
+             *
+             * ### 🔍 Why `while` is necessary
+             *
+             * The `capitalPQ` contains **multiple projects**, sorted by the required capital.
+             * You're trying to **move all projects you can currently afford (capital ≤ `w`)**
+             * into the `profitPQ`.
+             *
+             * If you write:
+             *
+             * ```java
+             * if (!capitalPQ.isEmpty() && capitalPQ.peek()[0] <= w) {
+             *     profitPQ.offer(capitalPQ.poll()[1]);
+             * }
+             * ```
+             *
+             * ...then **only one** eligible project (the one at the top of the min-heap)
+             * is considered per iteration, even if **many** are affordable.
+             *
+             * ---
+             *
+             * ### ✅ Why `while` is correct
+             *
+             * The correct approach is:
+             *
+             * ```java
+             * while (!capitalPQ.isEmpty() && capitalPQ.peek()[0] <= w) {
+             *     profitPQ.offer(capitalPQ.poll()[1]);
+             * }
+             * ```
+             *
+             * This ensures **all** currently affordable projects
+             * are available for you to choose the **most profitable one** from (`profitPQ.poll()`).
+             *
+             * ---
+             *
+             * ### 🔧 Example to illustrate
+             *
+             * Imagine:
+             *
+             * * `capital = [0, 1, 2]`
+             * * `profits = [1, 2, 3]`
+             * * `w = 2`
+             * * `k = 1`
+             *
+             * Using `if`:
+             *
+             * * You only add the **first** eligible project (`capital = 0`) → profit = 1.
+             * * Miss out on better ones (`capital = 1 or 2`, profit = 2 or 3). !!!!! (NOTE THIS)
+             *
+             * Using `while`:
+             *
+             * * You add **all** (`capital ≤ 2`) → all profits (1, 2, 3) go into `profitPQ`.
+             * * You then pick the best (profit = 3).
+             *
+             * ---
+             *
+             * ### ✅ Summary
+             *
+             * Use `while` to **load all currently affordable options**, not just one.
+             * `if` would result in **suboptimal or incorrect results**.
+             *
+             *
+             */
+            while (!capitalPQ.isEmpty() && capitalPQ.peek()[0] <= w) {
+                profitPQ.offer(capitalPQ.poll()[1]);
+            }
+
+            // If no affordable projects, stop
+            if (profitPQ.isEmpty())
+                break;
+
+            // Choose the most profitable affordable project
+            w += profitPQ.poll();
+        }
+
+        return w;
+    }
+
     // V1
     // IDEA: GREEDY + PQ
     // https://www.youtube.com/watch?app=desktop&v=1IUzNJ6TPEM

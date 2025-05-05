@@ -500,59 +500,123 @@ public class workspace10 {
      *
      *
      */
+    /**
+     *  IDEA:  PQ
+     *
+     *  -> 2 PQ
+     *
+     *  -> 1. small PQ : small capital PQ
+     *  -> 2. big PQ : big profits PQ
+     *
+     *
+     */
     public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
-
         // edge
-        if(profits == null || profits.length == 0){
-            return 0;
-        }
-        // can't even get the 1st capital
-        boolean foundOne = false;
-        for(int c: capital){
-            if (c <= w){
-                foundOne = true;
-                break;
-            }
-        }
-        if(!foundOne){
+        if(k == 0 || profits == null || profits.length == 0 || capital == null || capital.length == 0){
             return 0;
         }
 
-        // PQ : { [profit, capital] }
-        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() {
+        // init PQ
+        // small PQ : PQ : { [capital, profit], .... }
+        // order by `capital` (small -> big)
+        PriorityQueue<int[]> capital_pq = new PriorityQueue<>(new Comparator<int[]>() {
             @Override
-            public int compare(int[] a, int[] b) {
-                int diff = b[0] - a[0];
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[1];
                 return diff;
             }
         });
 
-        // record visited idx
-        HashSet<Integer> visited = new HashSet<>();
-
-        Queue<Integer> q = new LinkedList<>();
-        int curCaptital = w;
-
-        for(int i = 0; i < capital.length; i++){
-
-            if(!visited.contains(i)){
-                if(pq.isEmpty()){
-                    if(curCaptital >= capital[i]){
-                        q.add(profits[i]);
-                    }
-                }
-
-
+        // big PQ : PQ : {profit_1, profit_2, ..}
+        // order by `profit` (big -> small)
+        PriorityQueue<Integer> profit_pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
             }
+        });
 
-
+        //int res = 0;
+        // NOTE !!! we all all capital - profit to capital_pq first
+        for(int i = 0; i < capital.length; i++){
+            capital_pq.add(new int[] { capital[i], profits[i] });
         }
 
-        int maxProfit = 0;
+        // NOTE !!! below, we ONLY operate `k` steps
+        for(int i = 0; i < k; i++){
 
+            // NOTE !!! below
+            if(!capital_pq.isEmpty() && capital_pq.peek()[0] <= w){
+                // add to profit PQ
+                profit_pq.add(capital_pq.poll()[1]);
+            }
 
-        return maxProfit;
+            // ???? if `profit_pq` is empty, early quit
+            if(profit_pq.isEmpty()){
+                break;
+            }
+
+            // ???
+            w += profit_pq.poll();
+        }
+
+        return w;
     }
+
+//    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+//
+//        // edge
+//        if(profits == null || profits.length == 0){
+//            return 0;
+//        }
+//        // can't even get the 1st capital
+//        boolean foundOne = false;
+//        for(int c: capital){
+//            if (c <= w){
+//                foundOne = true;
+//                break;
+//            }
+//        }
+//        if(!foundOne){
+//            return 0;
+//        }
+//
+//        // PQ : { [profit, capital] }
+//        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() {
+//            @Override
+//            public int compare(int[] a, int[] b) {
+//                int diff = b[0] - a[0];
+//                return diff;
+//            }
+//        });
+//
+//        // record visited idx
+//        HashSet<Integer> visited = new HashSet<>();
+//
+//        Queue<Integer> q = new LinkedList<>();
+//        int curCaptital = w;
+//
+//        for(int i = 0; i < capital.length; i++){
+//
+//            if(!visited.contains(i)){
+//                if(pq.isEmpty()){
+//                    if(curCaptital >= capital[i]){
+//                        q.add(profits[i]);
+//                    }
+//                }
+//
+//
+//            }
+//
+//
+//        }
+//
+//        int maxProfit = 0;
+//
+//
+//        return maxProfit;
+//    }
 
   // LC 1584
   // 8.17 - 8.27 pm
@@ -591,74 +655,84 @@ public class workspace10 {
      *
      */
     // Dijkstra algo
+    // 12.46 - 12.56 PM
+    /**
+     *
+     *
+     *
+     */
     public int swimInWater(int[][] grid) {
 
-        // edge
-        if(grid == null || grid.length == 0){
-            return 0;
-        }
-
-        // MIN HEAP + BFS
-        // min_pq : [ cost, x, y ]
-        PriorityQueue<int[]> minHeap = new PriorityQueue<>(new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                int diff = o1[0] - o2[0];
-                return diff;
-            }
-        });
-
-        Queue<int[]> q = new LinkedList<>();
-        q.add(new int[] {0, 0, 0});
-
-        int res = 0;
-
-        int l = grid.length;
-        int w = grid[0].length;
-
-        // visited : [x,y]
-        //HashSet<int[]> visited = new HashSet<>();
-        boolean[][] visited = new boolean[l-1][w-1];
-
-        while(!q.isEmpty()){
-
-            int[] cur = q.poll();
-            int cost = cur[0];
-            int x = cur[1];
-            int y = cur[2];
-
-            // update res
-            res += cost;
-
-            if(x == w - 1 && y == l - 1){
-                return res;
-            }
-
-            // NOTE !!! we do below validation
-            if (x < 0 || x >= w || y < 0 || y >= l || visited[y][x]){
-                continue;
-            }
-
-            // move on 4 directions and update t
-            int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
-
-            for(int[] m : moves){
-                int x_ = x + m[0];
-                int y_ = y + m[1];
-                if (x_ < 0 || x_ >= w || y_ < 0 || y_ >= l || visited[y_][x_]){
-                    continue;
-                }
-                int cost_ = grid[x_][y_];
-                minHeap.add(new int[] {cost_, x_, y_});
-            }
-
-            // pop the `min` path
-            int[] next = minHeap.poll();
-            q.add(next);
-        }
-
-      return res;
+        return 0;
     }
+//    public int swimInWater(int[][] grid) {
+//
+//        // edge
+//        if(grid == null || grid.length == 0){
+//            return 0;
+//        }
+//
+//        // MIN HEAP + BFS
+//        // min_pq : [ cost, x, y ]
+//        PriorityQueue<int[]> minHeap = new PriorityQueue<>(new Comparator<int[]>() {
+//            @Override
+//            public int compare(int[] o1, int[] o2) {
+//                int diff = o1[0] - o2[0];
+//                return diff;
+//            }
+//        });
+//
+//        Queue<int[]> q = new LinkedList<>();
+//        q.add(new int[] {0, 0, 0});
+//
+//        int res = 0;
+//
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        // visited : [x,y]
+//        //HashSet<int[]> visited = new HashSet<>();
+//        boolean[][] visited = new boolean[l-1][w-1];
+//
+//        while(!q.isEmpty()){
+//
+//            int[] cur = q.poll();
+//            int cost = cur[0];
+//            int x = cur[1];
+//            int y = cur[2];
+//
+//            // update res
+//            res += cost;
+//
+//            if(x == w - 1 && y == l - 1){
+//                return res;
+//            }
+//
+//            // NOTE !!! we do below validation
+//            if (x < 0 || x >= w || y < 0 || y >= l || visited[y][x]){
+//                continue;
+//            }
+//
+//            // move on 4 directions and update t
+//            int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+//
+//            for(int[] m : moves){
+//                int x_ = x + m[0];
+//                int y_ = y + m[1];
+//                if (x_ < 0 || x_ >= w || y_ < 0 || y_ >= l || visited[y_][x_]){
+//                    continue;
+//                }
+//                int cost_ = grid[x_][y_];
+//                minHeap.add(new int[] {cost_, x_, y_});
+//            }
+//
+//            // pop the `min` path
+//            int[] next = minHeap.poll();
+//            q.add(next);
+//        }
+//
+//      return res;
+//    }
 
     // LC 269
     // 11.43 - 11. 53 AM
