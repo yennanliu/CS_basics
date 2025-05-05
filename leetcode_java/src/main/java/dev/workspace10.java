@@ -115,9 +115,49 @@ public class workspace10 {
      *
      *           return min height as res
      */
+    /**
+     *  IDEA 1) BRUTE FORCE:
+     *     -> loop over every node,
+     *        build tree accordingly,
+     *        check the `min height`
+     *
+     *     -> NOT efficient, time complexity O(n * n) ????
+     *
+     *
+     *  IDEA 2)  `observation` -> `quick union`
+     *      -> find the nodes has `most connection`
+     *
+     *      -> the `min` depth happened
+     *        when choose a node as root
+     *        which has `most` connection to other nodes
+     *
+     *        -> so it `most unlikely` to form a `height`
+     *        -> so it has `lowest` height
+     *
+     *  IDEA 3)  topological sort
+     */
+    // 8.35 - 8.45 pm
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
 
+        // edge case
+        // topological sort
+        MyTopo6 myTopo6 = new MyTopo6(n, edges);
+        List<Integer> res = myTopo6.sort();
+
         return null;
+    }
+
+    public class MyTopo6{
+        int n;
+        int[][] edges;
+        public  MyTopo6(int n, int[][] edges){
+            this.n = n;
+            this.edges = edges;
+        }
+
+        public List<Integer> sort(){
+            return null;
+        }
     }
 
 //    // LC 310
