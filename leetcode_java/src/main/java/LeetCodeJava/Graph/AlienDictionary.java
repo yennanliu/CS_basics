@@ -63,6 +63,75 @@ public class AlienDictionary {
 //        return null;
 //    }
 
+    // V0-1
+    // IDEA: TOPOLOGICAL SORT (fixed by gpt)
+    // TODO: validate below
+    public String alienOrder_0_1(String[] words) {
+        if (words == null || words.length == 0) return "";
+
+        // Step 1: Initialize graph and in-degree map
+        Map<Character, Set<Character>> graph = new HashMap<>();
+        Map<Character, Integer> inDegree = new HashMap<>();
+
+        // Initialize all unique characters
+        for (String word : words) {
+            for (char c : word.toCharArray()) {
+                graph.putIfAbsent(c, new HashSet<>());
+                inDegree.putIfAbsent(c, 0);
+            }
+        }
+
+        // Step 2: Build graph by comparing adjacent words
+        for (int i = 0; i < words.length - 1; i++) {
+            String w1 = words[i];
+            String w2 = words[i + 1];
+
+            // Edge case: prefix problem
+            if (w1.length() > w2.length() && w1.startsWith(w2)) {
+                return "";
+            }
+
+            for (int j = 0; j < Math.min(w1.length(), w2.length()); j++) {
+                char c1 = w1.charAt(j);
+                char c2 = w2.charAt(j);
+                if (c1 != c2) {
+                    if (!graph.get(c1).contains(c2)) {
+                        graph.get(c1).add(c2);
+                        inDegree.put(c2, inDegree.get(c2) + 1);
+                    }
+                    break; // Only the first differing character defines the ordering
+                }
+            }
+        }
+
+        // Step 3: Topological Sort (BFS)
+        Queue<Character> queue = new LinkedList<>();
+        for (char c : inDegree.keySet()) {
+            if (inDegree.get(c) == 0) {
+                queue.offer(c);
+            }
+        }
+
+        StringBuilder result = new StringBuilder();
+
+        while (!queue.isEmpty()) {
+            char c = queue.poll();
+            result.append(c);
+            for (char neighbor : graph.get(c)) {
+                inDegree.put(neighbor, inDegree.get(neighbor) - 1);
+                if (inDegree.get(neighbor) == 0) {
+                    queue.offer(neighbor);
+                }
+            }
+        }
+
+        // Check if there was a cycle
+        if (result.length() != graph.size()) return "";
+
+        return result.toString();
+    }
+
+
     // V1-1
     // https://neetcode.io/problems/foreign-dictionary
     // IDEA: DFS
