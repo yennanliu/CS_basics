@@ -57,12 +57,109 @@ public class PathWithMinimumEffort {
 //
 //    }
 
+    // V0-1
+    // IDEA: Dijkstra's ALGO ( fixed by gpt) : min PQ + BFS
+    public int minimumEffortPath_0_1(int[][] heights) {
+        if (heights == null || heights.length == 0)
+            return 0;
+
+        int rows = heights.length;
+        int cols = heights[0].length;
+
+        // Min-heap: [effort, x, y]
+        PriorityQueue<int[]> minPQ = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        minPQ.offer(new int[] { 0, 0, 0 }); // effort, x, y
+
+        boolean[][] visited = new boolean[rows][cols];
+        int[][] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        while (!minPQ.isEmpty()) {
+            int[] cur = minPQ.poll();
+            int effort = cur[0], x = cur[1], y = cur[2];
+
+            if (x == rows - 1 && y == cols - 1) {
+                return effort;
+            }
+
+      /**  NOTE !!!  need `visited, to NOT revisited visited cells (`Dijkstra algo`)
+       *
+       *   Reason:
+       *
+       *
+       *   Great question — and you’re absolutely right to raise this.
+       *
+       * ✅ Short Answer:
+       *
+       * Yes, in Dijkstra’s algorithm for the “minimum effort path” problem,
+       * we still need a visited check — but only after the shortest
+       * effort to a cell has been finalized.
+       *
+       * That is:
+       * 	•	Once we’ve popped a cell (x, y) from the priority queue,
+       *     	the effort it took to reach it is `guaranteed` to be `minimal`,
+       *      	due to how the min-heap works.
+       *
+       * 	•	After that point, there’s `NO need` to `revisit` that cell —
+       *    	any future path that reaches (x, y) will have equal or greater effort,
+       *    	and can be safely ignored.
+       *
+       * This is different from classic BFS where all edges are equal weight —
+       * but in Dijkstra, this greedy behavior is valid and optimal.
+       *
+       * ⸻
+       *
+       * 🤔 Why Not Revisit?
+       *
+       * Let’s break it down:
+       *
+       * In Dijkstra:
+       * 	•	The min-heap (priority queue) guarantees that we always expand the least effort path so far.
+       * 	•	If a cell is reached for the first time, it’s the best effort you’ll ever see to reach it.
+       * 	•	If you allow revisiting, you’ll reprocess worse paths and slow down the algorithm.
+       *
+       * ⸻
+       *
+       * 📌 Exception:
+       *
+       * If you were doing plain BFS with no heap, or non-Dijkstra variants,
+       * you’d need to revisit when a better cost is found later (like in Bellman-Ford).
+       * But with Dijkstra and a correct min-heap structure,
+       * no revisits are necessary after finalization.
+       *
+       * ⸻
+       *
+       * ✅ Key Rule:
+       *
+       * In Dijkstra:
+       * Once you pop a node (x, y) from the min-heap and mark it visited,
+       * you do not need to revisit it — its shortest (or in this case, minimum effort) path is finalized.
+       *
+       */
+      if (visited[x][y]) {
+                continue;
+            }
+
+            visited[x][y] = true;
+
+            for (int[] dir : directions) {
+                int nx = x + dir[0];
+                int ny = y + dir[1];
+
+                if (nx >= 0 && ny >= 0 && nx < rows && ny < cols && !visited[nx][ny]) {
+                    int newEffort = Math.max(effort, Math.abs(heights[nx][ny] - heights[x][y]));
+                    minPQ.offer(new int[] { newEffort, nx, ny });
+                }
+            }
+        }
+
+        return -1; // Should never reach here if input is valid
+    }
+
     // V1
     // https://www.youtube.com/watch?v=XQlxCCx2vI4
     // https://github.com/neetcode-gh/leetcode/blob/main/python%2F1631-path-with-minimum-effort.py
     // https://github.com/neetcode-gh/leetcode/blob/main/kotlin%2F1631-path-with-minimum-effort.kt
     // python
-
 
     // V2
     // https://leetcode.com/problems/path-with-minimum-effort/solutions/4049557/9767-optimal-dijkstra-with-heap-by-vanam-1rxv/
