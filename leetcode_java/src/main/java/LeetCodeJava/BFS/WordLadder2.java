@@ -54,7 +54,7 @@ public class WordLadder2 {
 //    }
 
     // V0-1
-    // IDEA: BFS (fixed by gpt)
+    // IDEA: BFS + DFS (fixed by gpt)
     public List<List<String>> findLadders_0_1(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();
         Set<String> wordSet = new HashSet<>(wordList);
@@ -69,6 +69,7 @@ public class WordLadder2 {
 
         boolean found = false;
 
+        // NOTE !!! BFS below
         while (!q.isEmpty() && !found) {
             int size = q.size();
             Set<String> levelVisited = new HashSet<>();
@@ -113,6 +114,7 @@ public class WordLadder2 {
 
         if (found) {
             LinkedList<String> path = new LinkedList<>();
+            // NOTE !!! we call DFS below
             dfs(endWord, beginWord, parents, path, res);
         }
 
