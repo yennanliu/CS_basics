@@ -287,17 +287,78 @@ public class workspace10 {
     }
 
     // LC 1631
-    // 5.28 - 5.38 pm
+    // 7.40 - 7.50 pm
     /**
-     *  IDEA 1) DFS
-     *  IDEA 2) BFS
      *  IDEA 3) Dijkstra
      *
+     *  A route's effort is the `maximum absolute
+     *  difference` in heights between two consecutive cells of the route.
      *
+     *   effort = max ( abs(height_1 height_2 ) )
      */
+    // Dijkstra algo
     public int minimumEffortPath(int[][] heights) {
 
-        return 0;
+        // edge
+        if(heights == null || heights.length == 0){
+            return 0;
+        }
+
+        int l = heights.length;
+        int w = heights[0].length;
+
+        // Dijkstra : min PQ + BFS
+
+        // min PQ : { [ [ x, y, cost_till_now ] }
+        // sort on `cost_till_now` (small -> big)
+        PriorityQueue<int[]> min_pq = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[2] - o2[2];
+                return diff;
+            }
+        });
+
+        //HashSet<int[]> visited = new HashSet<>();
+        boolean[][] visited = new boolean[l][w];
+
+        // moves
+        int[][] dirs = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        while(!min_pq.isEmpty()){
+            int[] cur = min_pq.poll();
+            int x_ = cur[0];
+            int y_ = cur[1];
+            int cost_ = cur[2];
+
+            if(x_ == w - 1 && y_ == l - 1){
+                return cost_;
+            }
+
+            // NOTE !!! we validate below
+            if(x_ < 0 || x_ >= w || y_ <= 0 || y_ >= l || visited[y_][x_]){
+                continue;
+            }
+
+           // visited[y_][x_] = true;
+
+            for(int[] dir: dirs){
+
+                int x_new = x_ + dir[1];
+                int y_new = y_ + dir[1];
+
+                if(x_new < 0 || x_new >= w || y_new <= 0 || y_new >= l){
+                    continue;
+                }
+
+                int max_abs_diff = Math.max(cost_, Math.abs(  heights[y_new][x_new] -  heights[y_][x_] ));
+
+                min_pq.add(new int[] { x_new, y_new, max_abs_diff } );
+            }
+
+        }
+
+        return -1; // ?? if can't find a solution
     }
 
     // LC 743
