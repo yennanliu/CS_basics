@@ -661,7 +661,7 @@ public class workspace10 {
     }
 
     // LC 269
-    // 9.32 - 9.42 pm
+    // 11.43 - 11. 53 AM
     /**
      *
      *  IDEA 1) DFS
@@ -669,13 +669,83 @@ public class workspace10 {
      *  IDEA 2) TOPOLOGICAL SORT ???
      *
      */
-    // TOPOLOGICAL sort
-    public boolean isAlienSorted(String[] words, String order) {
+    // TOPOLOGICAL sort : `degrees`, next map, + BFS
+    public String alienOrder(String[] words){
 
-        // orders
-        //
+        // edge
+        if(words == null || words.length == 0){
+            return null;
+        }
 
-        return false;
+        //String res = "";
+        StringBuilder sb = new StringBuilder();
+
+        HashSet<String> set = new HashSet<>();
+        for(String w: words){
+            for(String x: w.split("")){
+                set.add(x);
+            }
+        }
+
+        // unique alphabet count
+        //int n = set.size();
+
+        // degrees
+        // NOTE !!! instead of using `array`, we use map
+        //int[] degrees = new int[n]; // init val as 0 ???
+        Map<String, Integer> degrees = new HashMap<>();
+
+        // nextMap : { val : [next_val_1, next_val_2, ...]}
+        Map<String, HashSet<String>> nextMap = new HashMap<>();
+        for(int i = 0; i < words.length; i++){
+            // String w: words
+            String w = words[i];
+            String k = String.valueOf(w.charAt(0));
+            HashSet<String> _list = nextMap.getOrDefault(k, new HashSet<>());
+
+            for(int j = 1; j < w.length(); j++){
+                //set.add(x);
+                _list.add(String.valueOf(w.charAt(j)));
+            }
+
+            nextMap.put(k, _list);
+
+            // update degrees
+            // since it's `next map`, so we need to update `prev` node
+            //degrees[i] += 1;
+            degrees.put(k, degrees.get(k) + 1);
+        }
+
+        Queue<String> q = new LinkedList<>();
+
+        // add `zero order` to queue
+        for(String k: degrees.keySet()){
+            if(degrees.get(k) == 0){
+                q.add(k);
+            }
+        }
+
+        while(!q.isEmpty()){
+
+            String cur = q.poll();
+            sb.append(cur);
+
+            // find its `next nodes`
+            if(nextMap.containsKey(cur)){
+                for(String _next : nextMap.get(cur)){
+                   //degrees[_next] -= 1; // ???
+                    degrees.put(_next, degrees.get(_next) - 1);
+                    // ???
+                    if(degrees.get(_next) == 0){
+                        q.add(_next);
+                    }
+                }
+            }
+
+        }
+
+        // reverse ????
+        return sb.reverse().toString();
     }
 
 
@@ -777,6 +847,7 @@ public class workspace10 {
     }
 
     // LC 2392
+    // 11.27 - 11.37 am
     public int[][] buildMatrix(int k, int[][] rowConditions, int[][] colConditions) {
 
         return null;
