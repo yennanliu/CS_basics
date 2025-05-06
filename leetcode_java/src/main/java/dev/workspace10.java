@@ -2,6 +2,7 @@ package dev;
 
 import LeetCodeJava.BFS.NetworkDelayTime;
 import LeetCodeJava.BFS.WordLadder;
+import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
 
@@ -1271,6 +1272,97 @@ public class workspace10 {
 
         return 0;
     }
+
+    // LC 450
+    // 12.14 - 12.24 pm
+    /**
+     *  NOTE !!! the tree is `BST`
+     *
+     *  so, root < right sub tree,  left sub tree < root
+     *
+     *   IDEA : DFS
+     *
+     *     case 1) root == key
+     *        -> if sub left == null && sub right == null
+     *        -> return null
+     *
+     *    case 2) root  == key
+     *       -> if sub left == null, sub right != null
+     *       -> replace `to delete node` with sub right node
+     *         return root as res
+     *
+     *
+     *   case 3) root == key
+     *      -> if sub left != null, sub right == null
+     *      -> move  to `left most`
+     *         replace the cur node (new noce) with root,
+     *          return root as res
+     *
+     *
+     *   case 4) root == key
+     *     -> if sub left != null, sub right != null
+     *      -> move `right`. then move `left` most,
+     *       replace the cur node (new noce) with root,
+     *        return root as res
+     *
+     *
+     */
+    public TreeNode deleteNode(TreeNode root, int key) {
+        // edge
+        if(root == null || ( root.left == null  && root.right == null ) ){
+            if(root.val == key){
+                return null;
+            }
+            return root;
+        }
+
+        // dfs call
+        //return null;
+        // ???
+        return deleteHelper(root, root, key);
+    }
+
+    public TreeNode deleteHelper(TreeNode prevNode, TreeNode node, int key){
+
+        if (node == null){
+            return null; // ???
+        }
+
+        if(node.left == null && node.right == null){
+            return node; // ???
+        }
+
+        if(node.val == key){
+
+            // case 0)
+            if(node.left != null && node.right != null){
+
+            }
+
+            // case 1)
+            if(node.left == null && node.right == null){
+                return null;
+            }
+
+            // case 2)
+            if(node.left == null && node.right != null){
+                //node = node.right;
+                node = deleteHelper(node, node.right, key); // ????
+                return node; // ???
+            }
+
+            // case 3)
+            if(node.left != null && node.right == null){
+                TreeNode newNode = deleteHelper(node, node.left, key); // ????
+                prevNode.left = newNode;
+                return node; // ???
+            }
+        }
+
+        return null;
+
+    }
+
 
 
 

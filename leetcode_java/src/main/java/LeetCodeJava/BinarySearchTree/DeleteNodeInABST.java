@@ -57,6 +57,43 @@ public class DeleteNodeInABST {
   //
   //    }
 
+  // V0-1
+  // IDEA: DFS + BST property
+  /**
+   *  // Case 1: No children
+   *
+   *  // Case 2: One child
+   *
+   *  // Case 3: Two children
+   *
+   */
+  public TreeNode deleteNode_0_1(TreeNode root, int key) {
+      if (root == null)
+          return root;
+
+      if (key < root.val)
+          root.left = deleteNode_0_1(root.left, key);
+      else if (key > root.val)
+          root.right = deleteNode_0_1(root.right, key);
+      else {
+          // Case 1: No children
+          if (root.left == null && root.right == null)
+              return null;
+
+          // Case 2: One child
+          if (root.left == null || root.right == null)
+              return (root.left != null) ? root.left : root.right;
+
+          // Case 3: Two children
+          TreeNode temp = root.left;
+          while (temp.right != null)
+              temp = temp.right;
+          root.val = temp.val;
+          root.left = deleteNode_0_1(root.left, temp.val);
+      }
+      return root;
+  }
+
   // V1-1
   // https://youtu.be/LFzAoJJt92M?feature=shared
   // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0450-delete-node-in-a-bst.java
