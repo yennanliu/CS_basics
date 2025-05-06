@@ -1240,5 +1240,38 @@ public class workspace10 {
         return true;
     }
 
+    // LC 91
+    // 11.47 - 11.57 am
+    /**
+     *
+     *  IDEA 1) DP ???
+     *
+     *  IDEA 2) RECURSION ???
+     *
+     */
+    public int numDecodings(String encodedString) {
+
+        // edge
+        if(encodedString.charAt(0) == '0'){
+            return 0;
+        }
+
+        // build `alphabet - code ` map
+        Map<Character, Integer> map = new HashMap<>();
+//        //for(Character x : )
+//        for(int i = 0; i < 3; i++){
+//
+//        }
+        // ????
+        for(char x = 'a'; x < 'z'; x++){
+            map.put(x, 'z' - x);
+        }
+
+        // recursion ???
+
+        return 0;
+    }
+
+
 
 }
