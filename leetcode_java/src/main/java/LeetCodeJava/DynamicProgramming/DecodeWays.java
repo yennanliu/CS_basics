@@ -93,7 +93,49 @@ public class DecodeWays {
         if (i == s.length()) return 1;
         if (s.charAt(i) == '0') return 0;
 
+        /**
+         * Try to decode a single character (e.g., '2' → 'B'),
+         * then move to the next index.
+         */
+        /**
+         *  Example:
+         *
+         *
+         *  Consider s = "12":
+         *
+         *   - At i = 0, s.charAt(0) = '1' → valid single-digit decode.
+         *
+         *   - So dfs(1, s) explores what happens if '1' is decoded on its own.
+         *
+         *   - Then inside dfs(1, s):
+         *
+         *       -  s.charAt(1) = '2' → also valid, leading to dfs(2, s) (which returns 1).
+         *
+         * This chain gives us:
+         *
+         *    - "1 2" → "A B"
+         *
+         */
         int res = dfs(i + 1, s);
+
+        /**
+         * Try to decode two characters together:
+         *
+         *  - '10' to '26' are valid two-digit decodings.
+         *
+         *  - '27' or '06' are invalid.
+         *
+         * So the check is:
+         *
+         *  - If current is '1' → any second digit makes a valid pair
+         *    '10' to '19'.
+         *
+         *  - If current is '2' and next digit is '0' to '6' →
+         *    valid '20' to '26'.
+         *
+         *
+         *
+         */
         if (i < s.length() - 1) {
             if (s.charAt(i) == '1' ||
                     (s.charAt(i) == '2' && s.charAt(i + 1) < '7')) {
