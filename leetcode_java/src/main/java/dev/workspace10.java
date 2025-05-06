@@ -1029,6 +1029,20 @@ public class workspace10 {
     }
 
     // LC 2709
+    // 9.58 - 10.08 am
+    /**
+     *
+     *   You are given a 0-indexed integer array nums, and you are allowed
+     *   to traverse between its indices. You can traverse
+     *   between index i and index j, i != j,
+     *   if and only if gcd(nums[i], nums[j]) > 1,
+     *   where gcd is the greatest common divisor.
+     *
+     *   -> Return true if it is possible to traverse between all such pairs of indices,
+     *   or false otherwise.
+     *
+     *
+     */
     public boolean canTraverseAllPairs(int[] nums) {
 
         return false;
