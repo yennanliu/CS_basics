@@ -1049,8 +1049,85 @@ public class workspace10 {
     }
 
     // LC 1137
-    //    public int tribonacci(int n) {
+    // 10.31 - 10.41 am
+    public int tribonacci(int n) {
+        if (n == 0)
+            return 0;
+        if (n == 1 || n == 2)
+            return 1;
+
+        // NOTE !!! below, array size is `n + 1`
+//        int[] dp = new int[n + 1];
+//        dp[0] = 0;
+//        dp[1] = 1;
+//        dp[2] = 1;
+        Map<Integer, Integer> cache = new HashMap<>();
+        cache.put(0, 0);
+        cache.put(1, 1);
+        cache.put(2, 1);
+
+        // NOTE !!! below, we loop from i = 3 to `i <= n`
+        for (int i = 3; i <= n; i++) {
+            int val = cache.get(i-1) + cache.get(i-2) + cache.get(i-3);
+            cache.put(i, val);
+        }
+
+        return cache.get(n);
+    }
+
+//    public int tribonacci(int n) {
+//        // edge
+//        if(n == 0){
+//            return 0;
+//        }
+//        if(n == 1){
+//            return 1;
+//        }
+//        if(n == 2){
+//            return 1;
+//        }
+//        if(n == 3){
+//            return 2;
+//        }
 //
+//        // dp
+//        int[] dp = new int[n+1];
+//        for(int i = 4; i < n; i++){
+//            dp[n] = dp[n-3] + dp[n-2] + dp[n-1];
+//        }
+//
+//        // Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0.
+//        //return tribonacci(n-3) + tribonacci(n-2) + tribonacci(n-1);
+//        return dp[n-1]; // ???
+//    }
+
+
+//    public int tribonacci(int n) {
+//        // edge
+//        if(n == 0){
+//            return 0;
+//        }
+//        if(n == 1){
+//            return 1;
+//        }
+//        if(n == 2){
+//            return 1;
+//        }
+//        if(n == 3){
+//            return 2;
+//        }
+//
+//        // cache
+//        // n : tribonacci res
+//        Map<Integer, Integer> cache = new HashMap<>();
+//        if(!cache.containsKey(n)){
+//            cache.put(n, tribonacci(n));
+//        }else{
+//            return cache.get(n);
+//        }
+//
+//        // Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0.
+//        return tribonacci(n-3) + tribonacci(n-2) + tribonacci(n-1);
 //    }
 
 

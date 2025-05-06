@@ -282,3 +282,32 @@ private int findMin(int a, int b, int c){
         return cash;
     }
 ```
+
+### 2-3) N-th Tribonacci Number
+
+```java
+// java
+// LC 1137. N-th Tribonacci Number
+
+// V0
+// IDEA: DP (fixed by gpt)
+public int tribonacci(int n) {
+    if (n == 0)
+        return 0;
+    if (n == 1 || n == 2)
+        return 1;
+
+    // NOTE !!! below, array size is `n + 1`
+    int[] dp = new int[n + 1];
+    dp[0] = 0;
+    dp[1] = 1;
+    dp[2] = 1;
+
+    // NOTE !!! below, we loop from i = 3 to `i <= n`
+    for (int i = 3; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];
+    }
+
+    return dp[n];
+}
+```
