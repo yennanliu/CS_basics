@@ -43,6 +43,9 @@ public class PalindromicSubstrings {
     public int countSubstrings(String s) {
         int ans = 0;
         for (int i = 0; i < s.length(); i++) {
+
+            // NOTE !!! below func return `Palindromic count`, instead of boolean val
+
             // odd
             ans += helper(s, i, i);
             // even
@@ -51,13 +54,18 @@ public class PalindromicSubstrings {
         return ans;
     }
 
+    // NOTE !!! below func return `Palindromic count`, instead of boolean val
     private int helper(String s, int l, int r) {
         int ans = 0;
         while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
             l--;
             r++;
+
+            // NOTE !!! below
             ans++;
         }
+
+        // NOTE !!! we return res as result
         return ans;
     }
 

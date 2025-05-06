@@ -1130,5 +1130,115 @@ public class workspace10 {
 //        return tribonacci(n-3) + tribonacci(n-2) + tribonacci(n-1);
 //    }
 
+    // LC 647
+    // 10.53 - 11.07 am
+    /**
+     *  IDEA 1) BACKTRACK + `Palindromic check`
+     *
+     *  IDEA 2) DP ???
+     *
+     *  IDEA 3) 2 pointers ???
+     *
+     *
+     *
+     * -> IDEA 3) 2 pointers ???
+     */
+    // time complexity : O(N ^ 2)
+//    public int countSubstrings(String s) {
+//        // edge
+//        if(s == null || s.length() == 0){
+//            return 0;
+//        }
+//        if(s.length() == 1){
+//            return 1;
+//        }
+//        if(s.length() == 2){
+//            if(s.charAt(0) == s.charAt(1)){
+//                return 3;
+//            }
+//            return 2;
+//        }
+//
+//        int res = 0;
+//
+//        for(int i = 0; i < s.length(); i++){
+//            for(int j = 0; j <= s.length(); j++){
+//                String sub = s.substring(i, j);
+//                if(isPalindromic(sub)){
+//                    res += 1;
+//                }
+//            }
+//        }
+//
+//        return res;
+//    }
+
+    public int countSubstrings(String s) {
+
+        // edge
+        if(s == null || s.length() == 0){
+            return 0;
+        }
+        if(s.length() == 1){
+            return 1;
+        }
+        if(s.length() == 2){
+            if(s.charAt(0) == s.charAt(1)){
+                return 3;
+            }
+            return 2;
+        }
+
+        int res = 0;
+
+        // handle odd, even length case
+        for(int i = 0; i < s.length(); i++){
+            int v1 = isPalindromic2(s, 0, i);
+            int v2 = isPalindromic2(s, 0, i);
+
+            res += (v1 + v2);
+        }
+
+        return res;
+    }
+
+    public int isPalindromic2(String input, int l, int r){
+        if(input == null || input.length() == 0){
+            return 0;
+        }
+//        int l = 0;
+//        int r = input.length() - 1;
+        int res = 0;
+        while(r > l){
+            if(input.charAt(r) == input.charAt(l)){
+                //return res ;
+                res += 1;
+            }
+
+            r -= 1;
+            l += 1;
+        }
+
+        return res;
+    }
+
+    public boolean isPalindromic(String input){
+        if(input == null || input.length() == 0){
+            return true;
+        }
+        int l = 0;
+        int r = input.length() - 1;
+        while(r > l){
+            if(input.charAt(r) != input.charAt(l)){
+                return false;
+            }
+
+            r -= 1;
+            l += 1;
+        }
+
+        return true;
+    }
+
 
 }
