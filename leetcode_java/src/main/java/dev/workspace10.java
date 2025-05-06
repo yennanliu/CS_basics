@@ -1316,52 +1316,115 @@ public class workspace10 {
             return root;
         }
 
-        // dfs call
-        //return null;
-        // ???
-        return deleteHelper(root, root, key);
-    }
-
-    public TreeNode deleteHelper(TreeNode prevNode, TreeNode node, int key){
-
-        if (node == null){
-            return null; // ???
+        if(root.val < key){
+            // NOTE !!!
+            root.right = deleteNode(root.right, key);
         }
-
-        if(node.left == null && node.right == null){
-            return node; // ???
+        else if (root.val > key){
+            root.left = deleteNode(root.left, key);
         }
+        else{
 
-        if(node.val == key){
-
-            // case 0)
-            if(node.left != null && node.right != null){
-
-            }
-
-            // case 1)
-            if(node.left == null && node.right == null){
+            // case 1) left & right are null
+            if(root.left == null && root.right == null){
                 return null;
             }
 
-            // case 2)
-            if(node.left == null && node.right != null){
-                //node = node.right;
-                node = deleteHelper(node, node.right, key); // ????
-                return node; // ???
+            // case 2) left is null
+            if(root.left == null){
+                //return deleteNode(root.right, key);
+                return root.right;
             }
 
-            // case 3)
-            if(node.left != null && node.right == null){
-                TreeNode newNode = deleteHelper(node, node.left, key); // ????
-                prevNode.left = newNode;
-                return node; // ???
+            // case 3) right is null
+            if(root.right == null){
+                //return deleteNode(root.left, key);
+                return root.left;
             }
+
+            else{
+                // case 4) left, right are NOT null
+                // cache cur node
+//                TreeNode cache = root;
+//                TreeNode right = root.right;
+//                while(right != null && right.left != null){
+//                    right = right.left;
+//                    cache = right;
+//                    right.left = deleteNode(root.left, key); // ?????
+//                }
+
+                TreeNode tmp = root.left;
+                while(tmp.right != null){
+                    tmp = tmp.right;
+                }
+                root.val = tmp.val;
+                root.left = deleteNode(root.left, tmp.val);
+            }
+
         }
 
-        return null;
-
+        // NOTE !!! DON'T forget return `root` as final result
+        return root;
     }
+
+
+
+
+//    public TreeNode deleteNode(TreeNode root, int key) {
+//        // edge
+//        if(root == null || ( root.left == null  && root.right == null ) ){
+//            if(root.val == key){
+//                return null;
+//            }
+//            return root;
+//        }
+//
+//        // dfs call
+//        //return null;
+//        // ???
+//        return deleteHelper(root, root, key);
+//    }
+//
+//    public TreeNode deleteHelper(TreeNode prevNode, TreeNode node, int key){
+//
+//        if (node == null){
+//            return null; // ???
+//        }
+//
+//        if(node.left == null && node.right == null){
+//            return node; // ???
+//        }
+//
+//        if(node.val == key){
+//
+//            // case 0)
+//            if(node.left != null && node.right != null){
+//
+//            }
+//
+//            // case 1)
+//            if(node.left == null && node.right == null){
+//                return null;
+//            }
+//
+//            // case 2)
+//            if(node.left == null && node.right != null){
+//                //node = node.right;
+//                node = deleteHelper(node, node.right, key); // ????
+//                return node; // ???
+//            }
+//
+//            // case 3)
+//            if(node.left != null && node.right == null){
+//                TreeNode newNode = deleteHelper(node, node.left, key); // ????
+//                prevNode.left = newNode;
+//                return node; // ???
+//            }
+//        }
+//
+//        return null;
+//
+//    }
 
 
 
