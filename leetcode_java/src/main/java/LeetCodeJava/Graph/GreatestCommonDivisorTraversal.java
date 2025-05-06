@@ -139,4 +139,8 @@ class DSU {
         size[fy] += size[fx];
     }
 
+    // V3
+    // https://leetcode.ca/2023-05-01-2709-Greatest-Common-Divisor-Traversal/
+
+
 }
