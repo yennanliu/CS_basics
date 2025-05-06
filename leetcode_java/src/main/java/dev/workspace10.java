@@ -1028,4 +1028,10 @@ public class workspace10 {
         return null;
     }
 
+    // LC 2709
+    public boolean canTraverseAllPairs(int[] nums) {
+
+        return false;
+    }
+
 }
