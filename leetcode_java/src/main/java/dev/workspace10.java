@@ -1308,6 +1308,25 @@ public class workspace10 {
      *
      *
      */
+    /**
+     * ======================================================
+     *
+     *
+     *  case 1) sub left, right are null
+     *
+     *  case 2) sub left is null
+     *   -> return sub right
+     *
+     *  case 3) sub right is null
+     *   -> return sub left
+     *
+     * case 4) BOTH sub left, right are NOT NULL
+     *   -> move `sub left` one step
+     *   -> keep moving to `sub right`, till reach the end
+     *   -> replace the `to delete node` with `cur node`
+     *
+     */
+    // 12.21 - 12.31 pm
     public TreeNode deleteNode(TreeNode root, int key) {
         // edge
         if(root == null || ( root.left == null  && root.right == null ) ){
@@ -1317,56 +1336,112 @@ public class workspace10 {
             return root;
         }
 
+        // if root.val is too small
         if(root.val < key){
-            // NOTE !!!
             root.right = deleteNode(root.right, key);
         }
+
+        // if root.val is too big
         else if (root.val > key){
             root.left = deleteNode(root.left, key);
         }
+        // if `found`
         else{
 
-            // case 1) left & right are null
+            // case 1) sub left, right are null
             if(root.left == null && root.right == null){
-                return null;
+                return null; // ??
             }
 
-            // case 2) left is null
+            // case 2) sub left is null
             if(root.left == null){
-                //return deleteNode(root.right, key);
-                return root.right;
+                // ???
+                return deleteNode(root.right, key);
             }
 
-            // case 3) right is null
+            // case 3) sub right is null
             if(root.right == null){
-                //return deleteNode(root.left, key);
-                return root.left;
+                return deleteNode(root.left, key);
             }
 
+            // case 4) BOTH sub left, right are NOT NULL
             else{
-                // case 4) left, right are NOT null
-                // cache cur node
-//                TreeNode cache = root;
-//                TreeNode right = root.right;
-//                while(right != null && right.left != null){
-//                    right = right.left;
-//                    cache = right;
-//                    right.left = deleteNode(root.left, key); // ?????
-//                }
-
-                TreeNode tmp = root.left;
-                while(tmp.right != null){
-                    tmp = tmp.right;
+                TreeNode left = root.left;
+                TreeNode right = left.right;
+                while(right.right != null){
+                    //TreeNode left = left.right;
+                    right = right.right;
                 }
-                root.val = tmp.val;
-                root.left = deleteNode(root.left, tmp.val);
+                root = right;
+                root.right = deleteNode(root.left, key); /// ?????
             }
 
         }
 
-        // NOTE !!! DON'T forget return `root` as final result
         return root;
     }
+
+
+
+//    public TreeNode deleteNode(TreeNode root, int key) {
+//        // edge
+//        if(root == null || ( root.left == null  && root.right == null ) ){
+//            if(root.val == key){
+//                return null;
+//            }
+//            return root;
+//        }
+//
+//        if(root.val < key){
+//            // NOTE !!!
+//            root.right = deleteNode(root.right, key);
+//        }
+//        else if (root.val > key){
+//            root.left = deleteNode(root.left, key);
+//        }
+//        else{
+//
+//            // case 1) left & right are null
+//            if(root.left == null && root.right == null){
+//                return null;
+//            }
+//
+//            // case 2) left is null
+//            if(root.left == null){
+//                //return deleteNode(root.right, key);
+//                return root.right;
+//            }
+//
+//            // case 3) right is null
+//            if(root.right == null){
+//                //return deleteNode(root.left, key);
+//                return root.left;
+//            }
+//
+//            else{
+//                // case 4) left, right are NOT null
+//                // cache cur node
+////                TreeNode cache = root;
+////                TreeNode right = root.right;
+////                while(right != null && right.left != null){
+////                    right = right.left;
+////                    cache = right;
+////                    right.left = deleteNode(root.left, key); // ?????
+////                }
+//
+//                TreeNode tmp = root.left;
+//                while(tmp.right != null){
+//                    tmp = tmp.right;
+//                }
+//                root.val = tmp.val;
+//                root.left = deleteNode(root.left, tmp.val);
+//            }
+//
+//        }
+//
+//        // NOTE !!! DON'T forget return `root` as final result
+//        return root;
+//    }
 
 
 
