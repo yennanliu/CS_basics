@@ -568,7 +568,9 @@ class Codec:
 // V1
 // IDEA : DFS
 // https://leetcode.com/problems/diameter-of-binary-tree/editorial/
-private int diameter;
+
+int diameter;
+
 public int diameterOfBinaryTree_2(TreeNode root) {
     diameter = 0;
     longestPath(root);
