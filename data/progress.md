@@ -7,6 +7,14 @@
 		- DP
 	- again: 152
 		- similar:
+		- Kadane algo
+			- 53:  Maximum Subarray
+			- 152: Maximum Product Subarray
+			- 918: Maximum Sum Circular Subarray
+			- 1836: Remove Duplicates from an Unsorted Linked List
+			- 134: Gas Station
+			- 122: Best Time to Buy and Sell Stock II
+			- Longest Turbulent Array
 	- todo:
 		- re-do all previous `again` problems, similar problems, make notes
 		- refine java_trick cheatsheet
