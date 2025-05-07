@@ -143,3 +143,291 @@ public class KadaneAlgo {
 
 }
 ```
+
+
+## LC examples
+
+### 2-1) Maximum Product Subarray
+
+```java
+// java
+
+// LC 152
+
+// V0
+// IDEA: Kadane’s Algorithm for Maximum Product Subarray (GPT)
+/**
+ * 1) Kadane’s Algorithm is a dynamic programming approach used to find:
+ *
+ *    1.    Maximum sum subarray → Standard Kadane’s Algorithm
+ *    2.    Maximum product subarray → A  `modified` version of Kadane’s Algorithm
+ *
+ *   -> It works in O(n) time complexity,
+ *      making it much faster than brute-force approaches (O(n²) or O(n³)).
+ *
+ *
+ * 2) Kadane’s Algorithm for Maximum Sum Subarray
+ *
+ *   - Problem Statement:
+ *  Given an array of integers, find the contiguous subarray
+ *  (containing at least one number) that has the largest sum.
+ *
+ *   - Kadane’s Approach
+ *  •   We iterate through the array while maintaining:
+ *  •   maxSum → Stores the maximum subarray sum found so far.
+ *  •   curSum → Stores the current subarray sum.
+ *  •   If curSum ever becomes negative, reset it to 0
+ *      (since a negative sum will only decrease the next sum).
+ *
+ */
+/**
+ *  Question: how Kadane algo work ?
+ *
+ *   can it track `all select, not select` options ?
+ *
+ *   -> check below:
+ *
+ * ## ✅ Problem Summary
+ *
+ * Given an integer array `nums`, **find the contiguous subarray (at least one number)** that has the **largest product**, in **O(n)** time.
+ *
+ * ---
+ *
+ * ## 🔄 Why We Track Both `maxProd` and `minProd`
+ *
+ * Multiplication introduces **nonlinear behavior**, especially when:
+ *
+ * * Negative × Negative = Positive
+ * * Negative × Positive = Negative
+ * * Zero resets the subarray
+ *
+ * So we **must track both the maximum and minimum product** ending at each position.
+ *
+ * ---
+ *
+ * ## 🔍 Step-by-Step Visualization
+ *
+ * Let’s walk through this input:
+ *
+ * ```java
+ * int[] nums = {2, 3, -2, 4};
+ * ```
+ *
+ * We initialize:
+ *
+ * ```java
+ * maxProd = nums[0] = 2
+ * minProd = nums[0] = 2
+ * result = 2
+ * ```
+ *
+ * ### i = 1 → nums\[1] = 3
+ *
+ * ```
+ * temp = maxProd = 2
+ *
+ * maxProd = max(3, 3×2=6, 3×2=6) → 6   (NOTE !!! this)
+ * minProd = min(3, 3×2=6, 3×2=6) → 3
+ * result = max(2, 6) = 6
+ * ```
+ *
+ * ### i = 2 → nums\[2] = -2
+ *
+ * ```
+ * temp = maxProd = 6
+ *
+ * maxProd = max(-2, -2×6=-12, -2×3=-6) → -2   (NOTE !!! this)
+ * minProd = min(-2, -2×6=-12, -2×3=-6) → -12
+ * result = max(6, -2) = 6
+ * ```
+ *
+ * ### i = 3 → nums\[3] = 4
+ *
+ * ```
+ * temp = maxProd = -2
+ *
+ * maxProd = max(4, 4×-2=-8, 4×-12=-48) → 4
+ * minProd = min(4, 4×-2=-8, 4×-12=-48) → -48
+ * result = max(6, 4) = 6
+ * ```
+ *
+ * ✅ Final Answer: `6`
+ *
+ * ---
+ *
+ * ## 🧠 How “Select / Not Select” Happens Internally
+ *
+ * Each step implicitly considers **3 choices** for the current `nums[i]`:
+ *
+ * 1. **Start new subarray** at `i` → just take `nums[i]`
+ * 2. **Extend previous max product subarray** → `nums[i] * maxProd`
+ * 3. **Extend previous min product subarray** → `nums[i] * minProd`
+ *
+ * We **don't need to explicitly track selection** — it’s captured by:
+ *
+ * ```java
+ * maxProd = max(nums[i], nums[i] * maxProd, nums[i] * minProd);
+ * ```
+ *
+ * This is the elegant part:
+ *
+ *  **all paths are considered through this max/min logic
+ *  without branching explicitly.**
+ *
+ * ---
+ *
+ * ## ✍️ Visual Diagram
+ *
+ * ```text
+ * Step-by-step (nums = {2, 3, -2, 4}):
+ *
+ * Index | nums[i] | maxProd     | minProd     | result
+ * -----------------------------------------------------
+ *   0   |    2    |     2       |     2       |   2
+ *   1   |    3    | max(3,6,6)=6| min(3,6,6)=3|   6
+ *   2   |   -2    | max(-2,-12,-6)=-2 | min(-2,-12,-6)=-12 | 6
+ *   3   |    4    | max(4,-8,-48)=4 | min(4,-8,-48)=-48 | 6
+ * ```
+ *
+ */
+public int maxProduct(int[] nums) {
+    // Edge case
+    if (nums == null || nums.length == 0) {
+        return 0;
+    }
+
+    /**
+     *  •   maxProd: Tracks the maximum product up to the current index.
+     *
+     *  •   minProd: Tracks the minimum product up to the current index
+     *               (needed because multiplying by a negative can turn a small value into a large one).
+     */
+    /**
+     *  key:
+     *
+     *       * ## 🧠 How “Select / Not Select” Happens Internally
+     *
+     *      * Each step implicitly considers **3 choices** for the current `nums[i]`:
+     *      *
+     *      * 1. **Start new subarray** at `i` → just take `nums[i]`
+     *      * 2. **Extend previous max product subarray** → `nums[i] * maxProd`
+     *      * 3. **Extend previous min product subarray** → `nums[i] * minProd`
+     */
+    int maxProd = nums[0];
+    int minProd = nums[0];
+    // NOTE !!! we init final result as well
+    int result = nums[0];
+    
+    
+    for (int i = 1; i < nums.length; i++) {
+
+        // NOTE !!! we cache maxProd as `temp` before updating
+        int temp = maxProd; // Store maxProd before updating
+
+        /**
+         *  NOTE !!! below
+         *
+         *   get max from
+         *
+         *    1. nums[i]
+         *    2. nums[i] * max_prod
+         *    2. nums[i] * min_prod
+         *
+         */
+        maxProd = Math.max(nums[i],
+                Math.max(nums[i] * maxProd, nums[i] * minProd)
+        );
+
+        /**
+         *  NOTE !!! below
+         *
+         *   get min from
+         *
+         *    1. nums[i]
+         *    2. nums[i] * max_prod
+         *    2. nums[i] * min_prod
+         *
+         */
+        minProd = Math.min(nums[i],
+                Math.min(nums[i] * temp, nums[i] * minProd)
+        );
+
+        // NOTE !!! update final result here
+        result = Math.max(result, maxProd);
+    }
+
+    return result;
+}
+
+// V0-1
+// IDEA: Kadane’s Algorithm
+public int maxProduct_0_1(int[] nums) {
+
+    // Edge case
+    if (nums == null || nums.length == 0) {
+        return 0;
+    }
+
+    // NOTE !!! we init val as below
+    int global_max = nums[0];
+    int local_max = nums[0];
+    int local_min = nums[0];
+
+    // NOTE !!! we start from idx = 1 (NOT 0)
+    for (int i = 1; i < nums.length; i++) {
+
+        int n = nums[i];
+
+        /** NOTE !!!
+         *
+         *  cache local_max below (for local_min)
+         */
+        int cache = local_max;
+
+        /** NOTE !!!
+         *
+         *  for local_max,
+         *
+         *  we get from:
+         *
+         *    1. n
+         *    2. local_max * n
+         *    3. local_min * n
+         */
+        local_max = Math.max(
+                local_min * n,
+                Math.max(local_max * n, n));
+
+        /** NOTE !!!
+         *
+         *  for local_min,
+         *
+         *  we get from:
+         *
+         *    1. n
+         *    2. cache * n  (NOTE: cache if local_max cache)
+         *    3. local_min * n
+         */
+        local_min = Math.min(
+                n * cache,
+                Math.min(local_min * n, n));
+
+        /** NOTE !!!
+         *
+         *  for global_max,
+         *
+         *  we get  global_max from
+         *
+         *    1. global_max
+         *    2. local_max
+         *    3. local_min
+         */
+        global_max = Math.max(
+                global_max,
+                Math.max(local_max, local_min));
+    }
+
+    return global_max;
+}
+
+```
