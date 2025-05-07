@@ -217,6 +217,109 @@ public class CoinChange {
         return -1; // If no solution is found
     }
 
+    // V0-4
+    // IDEA: BFS (TLE)
+    public int coinChange_0_4(int[] coins, int amount) {
+        // edge
+        if (coins == null || coins.length == 0) {
+            return -1;
+        }
+        if (amount == 0) {
+            return 0;
+        }
+        if (amount < 0) {
+            return -1;
+        }
+
+        // if all `coins` bigger than amount
+        boolean possible = false;
+        for (int c : coins) {
+            if (c <= amount) {
+                possible = true;
+                break;
+            }
+        }
+        if (!possible) {
+            return -1;
+        }
+
+        // sorting (big -> small)
+        List<Integer> coins_ = new ArrayList<>();
+        for (int c : coins) {
+            coins_.add(c);
+        }
+        Collections.sort(coins_, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        // q : [cur_val, cnt]
+        Queue<int[]> q = new LinkedList<>();
+        // add init val
+        q.add(new int[] { 0, 0 });
+
+        int res = 0;
+
+        // bfs
+        while (!q.isEmpty()) {
+
+            int[] cur = q.poll();
+            int cur_val = cur[0];
+            int cnt = cur[1];
+
+            if (cur_val == amount) {
+                return cnt;
+            }
+
+            if (cur_val > amount) {
+                continue;
+            }
+
+            // loop over coins
+            for (int c : coins) {
+                q.add(new int[] { cur_val + c, cnt + 1 });
+            }
+        }
+
+        return -1;
+    }
+
+    // V0-4-1 (fixed of V0-4)
+    // IDEA: BFS
+    public int coinChange_0_4_1(int[] coins, int amount) {
+        if (amount < 0) return -1;
+        if (amount == 0) return 0;
+
+        // Use a queue for BFS: [current sum, number of coins used]
+        Queue<int[]> queue = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+
+        queue.add(new int[]{0, 0});
+        visited.add(0);
+
+        while (!queue.isEmpty()) {
+            int[] state = queue.poll();
+            int currentSum = state[0];
+            int coinCount = state[1];
+
+            for (int coin : coins) {
+                int nextSum = currentSum + coin;
+
+                if (nextSum == amount) return coinCount + 1;
+                if (nextSum > amount || visited.contains(nextSum)) continue;
+
+                queue.add(new int[]{nextSum, coinCount + 1});
+                visited.add(nextSum);
+            }
+        }
+
+        return -1; // No solution found
+    }
+
+
     // V1-1
     // https://neetcode.io/problems/coin-change
     // IDEA: RECURSION

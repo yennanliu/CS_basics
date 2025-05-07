@@ -3,6 +3,7 @@ package dev;
 import LeetCodeJava.BFS.NetworkDelayTime;
 import LeetCodeJava.BFS.WordLadder;
 import LeetCodeJava.DataStructure.TreeNode;
+import LeetCodeJava.DynamicProgramming.CoinChange;
 
 import java.util.*;
 
@@ -1426,7 +1427,97 @@ public class workspace10 {
 //
 //    }
 
+    // LC 322
+    /**
+     *
+     *  ->  Return the `fewest` number of coins that you need to make up that amount.
+     *
+     *
+     *  IDEA 1) BACKTRACK + `check fewest number`
+     *  IDEA 2) DFS ??
+     *  IDEA 3) BFS
+     *
+     */
+    //  IDEA 3) BFS
+    public int coinChange(int[] coins, int amount) {
+        // edge
+        if(coins == null || coins.length == 0){
+            return -1;
+        }
+        if(amount == 0){
+            return 0;
+        }
+        if (amount < 0) {
+            return -1;
+        }
 
+        // if all `coins` bigger than amount
+        boolean possible = false;
+        for(int c: coins){
+            if(c <= amount){
+                possible = true;
+                break;
+            }
+        }
+        if(!possible){
+            return -1;
+        }
+
+        // sorting (big -> small)
+        List<Integer> coins_ = new ArrayList<>();
+        for(int c : coins){
+            coins_.add(c);
+        }
+        Collections.sort(coins_, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        // q : [cur_val, cnt]
+        Queue<int[]> q = new LinkedList<>();
+        // add init val
+        q.add(new int[] {0, 0});
+
+        int res = 0;
+
+        // optimize TLE: use cache
+        // if `already computed`, use the saved val directly
+        //HashSet<Integer> cache = new HashSet<>();
+        // { key : computed_result}
+        Map<Integer, Integer> cahce = new HashMap<>();
+
+        // bfs
+        while(!q.isEmpty()){
+
+            int[] cur = q.poll();
+            int cur_val = cur[0];
+            int cnt = cur[1];
+
+            if(cur_val == amount){
+                return cnt;
+            }
+
+            if(cur_val > amount){
+                continue;
+            }
+
+            if(!cahce.containsKey(cur_val)){
+                cahce.put(cur_val, cnt);
+            }
+
+            // loop over coins
+            for(int c: coins){
+                if(!cahce.containsKey(cur_val + c)){
+                    q.add(new int[] {cur_val + c, cnt + 1});
+                }
+            }
+        }
+
+        return -1;
+    }
 
 
 }
