@@ -80,6 +80,7 @@ public class MaximumProductSubarray {
          */
         int maxProd = nums[0];
         int minProd = nums[0];
+        // NOTE !!! we init final result as well
         int result = nums[0];
 
         for (int i = 1; i < nums.length; i++) {
@@ -87,14 +88,35 @@ public class MaximumProductSubarray {
             // NOTE !!! we cache maxProd as `temp` before updating
             int temp = maxProd; // Store maxProd before updating
 
+            /**
+             *  NOTE !!! below
+             *
+             *   get max from
+             *
+             *    1. nums[i]
+             *    2. nums[i] * max_prod
+             *    2. nums[i] * min_prod
+             *
+             */
             maxProd = Math.max(nums[i],
                     Math.max(nums[i] * maxProd, nums[i] * minProd)
             );
 
+            /**
+             *  NOTE !!! below
+             *
+             *   get min from
+             *
+             *    1. nums[i]
+             *    2. nums[i] * max_prod
+             *    2. nums[i] * min_prod
+             *
+             */
             minProd = Math.min(nums[i],
                     Math.min(nums[i] * temp, nums[i] * minProd)
             );
 
+            // NOTE !!! update final result here
             result = Math.max(result, maxProd);
         }
 
