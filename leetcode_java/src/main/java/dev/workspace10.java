@@ -1519,5 +1519,89 @@ public class workspace10 {
         return -1;
     }
 
+    // LC 152
+    // 10.31 - 10.41 am
+    /**
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) `Kadane` ALGO
+     *     -> see `max`, `sub array` ....
+     *
+     */
+    public int maxProduct(int[] nums) {
+
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+
+        // Kadane algo
+        /**
+         *  define 4 val ???
+         *
+         *   1. global max
+         *   3. local max
+         *   4. local min ????
+         *
+         */
+
+//        int global_max = 1;
+//        int local_min = 1;
+//        int local_max = 1;
+
+        int max_prod = nums[0];
+        int min_prod = nums[0];
+
+        //int[] product_arr = new int[nums.length + 1];
+        int val = 1;
+
+        /**
+         *
+         *  exp 1)
+         *
+         *   input = [1,2,3,4]
+         *
+         *     1 : local_min = 1, local_max = 1, global_max = 1
+         *     2:  local_min = 1, local_max = 2, global_max = 2
+         *     ...
+         *
+         *     4: local_min = 1, local_max = 24, global_max = 24
+         *
+         *
+         *
+         *  exp 2)
+         *
+         *  input = [1,-1,2,3]
+         *    1: local_min = 1, local_max = 1, global_max = 1
+         *    -1 : local_min = -1, local_max = 1, global_max = 1
+         *    2 : local_min = -2, local_max = 2, global_max = 2
+         *
+         *
+         *
+         */
+
+        for(int i = 0; i < nums.length; i++){
+
+            // cache max_prod
+            int cache = max_prod;
+
+            max_prod = Math.max(
+                    nums[i],
+                    Math.max(min_prod * nums[i], cache * nums[i])
+            );
+
+            min_prod = Math.min(
+                    nums[i],
+                    Math.min(cache * nums[i], min_prod * nums[i])
+            );
+
+
+
+            max_prod = Math.max(max_prod, min_prod);
+        }
+
+        return max_prod;
+    }
+
 
 }
