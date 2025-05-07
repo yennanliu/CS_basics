@@ -73,6 +73,10 @@ public class WordBreak {
 
             // Try all words in the dictionary
             for (String word : wordSet) {
+
+                // NOTE !!! end if `the actual length of `building string`
+                // (not idx, so below we check if already found a solution
+                // via `end = start + word.length()`
                 int end = start + word.length();
                 /** NOTE !!!
                  *
@@ -82,6 +86,7 @@ public class WordBreak {
                  *      , so BFS efficiency is improved
                  */
                 if (end <= s.length() && s.substring(start, end).equals(word)) {
+                    // NOTE !!! below
                     if (end == s.length()) {
                         return true; // Successfully segmented
                     }
