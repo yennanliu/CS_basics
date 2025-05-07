@@ -31,6 +31,24 @@ Kadane's Algorithm is a popular dynamic programming technique used to find the m
 5. Finally, return the maxSum.
 
 
+## Keys
+
+```
+// LC 152
+/**
+ *  key:
+ *
+ *       * ## 🧠 How “Select / Not Select” Happens Internally
+ *
+ *      * Each step implicitly considers **3 choices** for the current `nums[i]`:
+ *      *
+ *      * 1. **Start new subarray** at `i` → just take `nums[i]`
+ *      * 2. **Extend previous max product subarray** → `nums[i] * maxProd`
+ *      * 3. **Extend previous min product subarray** → `nums[i] * minProd`
+ */
+```
+
+
 ## Pattern
 
 ```java
