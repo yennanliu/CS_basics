@@ -1603,5 +1603,64 @@ public class workspace10 {
         return max_prod;
     }
 
+    // LC 139
+    // 11.32 - 11.42 am
+    // IDEA: BFS
+    public boolean wordBreak(String s, List<String> wordDict) {
+        // edge
+        if(s == null || s.length() == 0){
+            return true;
+        }
+        if(wordDict.isEmpty()){
+            return false;
+        }
+        //boolean found = false;
+        for(String x: wordDict){
+            if(x.equals(s)){
+                return true;
+            }
+        }
+
+        // bfs
+        // q : { idx_1, idx_2,, }
+        // record the `cur idx within string building`
+        Queue<Integer> q = new LinkedList<>();
+        // add init val
+        q.add(0);
+
+        while(!q.isEmpty()){
+
+            int idx = q.poll();
+
+            // can build the `s` string
+            if(idx == s.length() - 1){
+                return true;
+            }
+
+            if(idx >= s.length()){
+                continue;
+            }
+
+            // loop over dict
+            for(String x: wordDict){
+
+                //int start = idx;
+                int end = idx + x.length();
+                if(end >= s.length()){
+                    continue;
+                }
+                // sub string of s
+                String sub = s.substring(idx, end);
+                // only put into queue when equals
+                if(x.equals(sub)){
+                    q.add(idx + x.length());
+                }
+            }
+
+        }
+
+        return false;
+    }
+
 
 }
