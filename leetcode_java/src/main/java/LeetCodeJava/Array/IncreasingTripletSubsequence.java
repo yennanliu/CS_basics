@@ -2,6 +2,8 @@ package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/increasing-triplet-subsequence/description/
 
+import java.util.Arrays;
+
 /**
  * 334. Increasing Triplet Subsequence
  * Solved
@@ -55,6 +57,32 @@ public class IncreasingTripletSubsequence {
                 biggest_2 = x;
             }else{
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    // V0-1
+    // IDEA: DP (LC 300) (fixed by gpt) (TLE)
+    public boolean increasingTriplet_0_1(int[] nums) {
+        if (nums == null || nums.length < 3) {
+            return false;
+        }
+
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
+        int res = 1;
+
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                    res = Math.max(res, dp[i]);
+                    if (res >= 3) {
+                        return true;
+                    }
+                }
             }
         }
 

@@ -1827,5 +1827,76 @@ public class workspace10 {
         return res;
     }
 
+    // LC 334
+    // 10.50 -11.00 am
+    // IDEA 1) DP
+    public boolean increasingTriplet(int[] nums) {
+        // edge
+        if(nums == null || nums.length < 3){
+            return false;
+        }
+        if(nums.length == 3){
+            return nums[2] > nums[1] && nums[1] > nums[0];
+        }
+
+        int[] dp = new int[nums.length + 1];
+        Arrays.fill(dp, 1);
+
+        int res = 0;
+
+        // dp, return true directly if found a solution
+        // NOTE !!! we move `right boundary` first, then left
+        for(int i = 1; i < nums.length; i++){
+
+            // early quit
+            if(res >= 3){
+                return true;
+            }
+
+            //boolean foundFirst = false;
+            for(int j = 0; j < i; j++){
+                if(nums[i] > nums[i]){
+                    //dp[i] = Math.max(dp[i] + 1, dp[j]);
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                    res = Math.max(dp[i], res);
+                }
+            }
+        }
+
+        return res >= 3;
+    }
+
+    public boolean increasingTriplet_1(int[] nums) {
+        // edge
+        if(nums == null || nums.length < 3){
+            return false;
+        }
+        if(nums.length == 3){
+            return nums[2] > nums[1] && nums[1] > nums[0];
+        }
+
+        int[] dp = new int[nums.length + 1];
+
+        // dp, return true directly if found a solution
+        // NOTE !!! we move `right boundary` first, then left
+        // `i` starts from idx=2, since it's has length=3, and it's the base case
+        for(int i = 2; i < nums.length; i++){
+            // ???
+            // if found the `first` relation.
+            // e.g. for  nums[i] > nums[j] > nums[k], found `nums[i] > nums[j]`
+            boolean foundFirst = false;
+            for(int j = 0; j < i; j++){
+                if(nums[i] > nums[i]){
+                    if(foundFirst){
+                        return true;
+                    }
+                    foundFirst = true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 
 }
