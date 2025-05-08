@@ -1,4 +1,4 @@
-# Database isolation levels
+# DB isolation levels V1
 
 DB ACID : ACID(Atomicity, Consistency, Isolation, Durability)
 Here we discuss the level of Isolation.
