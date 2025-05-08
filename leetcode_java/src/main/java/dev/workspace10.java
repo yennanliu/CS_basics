@@ -1737,5 +1737,95 @@ public class workspace10 {
         return false;
     }
 
+    // LC 300
+    // 10.08 - 10.18 AN
+    /**
+     *  IDEA 1) DP ???
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *  IDEA 3) sliding window ?????
+     *
+     *
+     *
+     */
+    //  IDEA 1) DP
+    public int lengthOfLIS(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return 1;
+        }
+        HashSet<Integer> set = new HashSet<>();
+        for(int n: nums){
+            set.add(n);
+        }
+        if(set.size() == 1){
+            return 1;
+        }
+
+        int[] dp = new int[nums.length + 1];
+        // init all vals in dp as 1
+        Arrays.fill(dp, 1);
+
+        // dp equatioin
+        /**
+         *  dp[k] =  max( dp[k-1] + 1, dp[k] ) ???
+         *
+         */
+        dp[0] = 1;
+        dp[1] = dp[1] > dp[0] ? 2 : 1;
+        dp[2] = Math.max(dp[1] + 1, dp[2]);
+        dp[3] = Math.max(dp[2] + 1, dp[3]);
+        // if nums[i] > nums[i-1]
+
+        //for(int i = 0; i < nums)
+
+
+
+
+        return dp[nums.length - 1]; // ???
+    }
+
+
+
+
+    // IDEA 2) BRUTE FORCE
+    public int lengthOfLIS_1(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return 1;
+        }
+        HashSet<Integer> set = new HashSet<>();
+        for(int n: nums){
+            set.add(n);
+        }
+        if(set.size() == 1){
+            return 1;
+        }
+
+
+        int res = 0;
+        // brute force
+        for(int i = 0; i < nums.length; i++){
+            int tmp = 0;
+            int last = nums[i];
+            for(int j = i+1; j < nums.length; j++){
+                if(nums[j] > last){
+                    tmp += 1;
+                    last = nums[j];
+                }
+            }
+            res = Math.max(res, tmp);
+        }
+
+        return res;
+    }
+
 
 }
