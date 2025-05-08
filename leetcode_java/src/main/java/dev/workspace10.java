@@ -1899,4 +1899,145 @@ public class workspace10 {
     }
 
 
+    // LC 416
+    // 11.17 - 11.27 am
+    /**
+     *  IDEA 1) DP ???
+     *
+     *  IDEA 2) SORT + 2 POINTERS
+     *     -> we move 2 pointers from right, left boundary
+     *     -> and see if can find a solution
+     *
+     *
+     *
+     *  exp 1) nums = [1,5,11,5]
+     *
+     *  -> sort, [1,5,5,11]
+     *  -> half_val = 11
+     *  -> 2 pointers
+     *      [1, 5, 5, 11]
+     *       l        r
+     *
+     *   -> move l,
+     *
+     *   [1, 5, 5, 11]
+     *       l      r
+     *
+     *  [1, 5, 5, 11]
+     *         l   r
+     *
+     *  -> return true
+     *
+     *
+     *
+     *  exp 2) nums = [1,2,3,5]
+     *
+     *  -> sort, [1,2,3,5]
+     *  ->
+     *
+     */
+    //  IDEA 2) SORT + hash map
+    public boolean canPartition(int[] nums) {
+        // edge
+        if(nums == null || nums.length <= 1){
+            return false;
+        }
+        int sum = 0;
+        for(int n: nums){
+            sum += n;
+        }
+        if(sum % 2 == 1){
+            return false;
+        }
+
+        //int half_val = sum / 2;
+
+        List<Integer> nums_ = new ArrayList<>();
+        for(int n: nums){
+            nums_.add(n);
+        }
+        // sorting (small -> big)
+        Collections.sort(nums_, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        // hash map
+        // { k : sum_till_now }
+        Map<Integer, Integer> map = new HashMap<>();
+
+
+
+        return false;
+    }
+
+
+    //  IDEA 2) SORT + 2 POINTERS
+    public boolean canPartition_1(int[] nums) {
+        // edge
+        if(nums == null || nums.length <= 1){
+            return false;
+        }
+        int sum = 0;
+        for(int n: nums){
+            sum += n;
+        }
+        if(sum % 2 == 1){
+            return false;
+        }
+
+        //int half_val = sum / 2;
+
+        List<Integer> nums_ = new ArrayList<>();
+        for(int n: nums){
+            nums_.add(n);
+        }
+        // sorting (small -> big)
+        Collections.sort(nums_, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        // 2 pointers
+        int l = 0;
+        int r = nums_.size() - 1;
+        int tmp_sum = 0;
+
+        while (r > l){
+
+            tmp_sum += (nums[l] + nums[r]);
+
+            // case 1)
+            if(nums[l] == sum / 2 || nums[r] == sum / 2){
+                return true;
+            }
+
+            // case 2)
+            if(tmp_sum == sum / 2){
+                return true;
+            }
+
+            // case 3) tmp sum is too small
+            if(tmp_sum  < sum / 2){
+                l += 1;
+            }
+
+            // case 4) tmp sum is too big
+            else{
+                r += 1;
+            }
+
+        }
+
+
+        return false;
+    }
+
+
 }
