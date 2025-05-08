@@ -1326,8 +1326,9 @@ public class workspace10 {
      *   -> replace the `to delete node` with `cur node`
      *
      */
-    // 12.21 - 12.31 pm
+    // 12.06 - 12.16 pm
     public TreeNode deleteNode(TreeNode root, int key) {
+
         // edge
         if(root == null || ( root.left == null  && root.right == null ) ){
             if(root.val == key){
@@ -1336,50 +1337,108 @@ public class workspace10 {
             return root;
         }
 
-        // if root.val is too small
+        // if too small
         if(root.val < key){
             root.right = deleteNode(root.right, key);
         }
-
-        // if root.val is too big
-        else if (root.val > key){
+        else if(root.val > key){
             root.left = deleteNode(root.left, key);
         }
-        // if `found`
+
+        // if found the root
         else{
 
-            // case 1) sub left, right are null
+            // if sub left, right are null
             if(root.left == null && root.right == null){
-                return null; // ??
+                return null;
             }
 
-            // case 2) sub left is null
+            // if sub left null
             if(root.left == null){
-                // ???
-                return deleteNode(root.right, key);
+               // return deleteNode(root.right, key);
+                return root.right;
             }
 
-            // case 3) sub right is null
+            // if sub right null
             if(root.right == null){
-                return deleteNode(root.left, key);
+               // return deleteNode(root.right, key);
+                return root.left;
             }
 
-            // case 4) BOTH sub left, right are NOT NULL
-            else{
-                TreeNode left = root.left;
-                TreeNode right = left.right;
-                while(right.right != null){
-                    //TreeNode left = left.right;
-                    right = right.right;
-                }
-                root = right;
-                root.right = deleteNode(root.left, key); /// ?????
+            // if BOTH sub left, right are NOT null
+            TreeNode left = root.left;
+
+            // move `right most`
+            while(left.right != null){
+                left = left.right;
             }
 
+            // swap root and `left`
+            // update `right node` via recursive call
+            TreeNode tmp = left;
+            root.val = tmp.val;
+
+           // root.right = deleteNode(left, tmp.val); // ???
+            root.left = deleteNode(tmp, tmp.val); // ?????
         }
 
         return root;
     }
+
+
+//    public TreeNode deleteNode(TreeNode root, int key) {
+//        // edge
+//        if(root == null || ( root.left == null  && root.right == null ) ){
+//            if(root.val == key){
+//                return null;
+//            }
+//            return root;
+//        }
+//
+//        // if root.val is too small
+//        if(root.val < key){
+//            root.right = deleteNode(root.right, key);
+//        }
+//
+//        // if root.val is too big
+//        else if (root.val > key){
+//            root.left = deleteNode(root.left, key);
+//        }
+//        // if `found`
+//        else{
+//
+//            // case 1) sub left, right are null
+//            if(root.left == null && root.right == null){
+//                return null; // ??
+//            }
+//
+//            // case 2) sub left is null
+//            if(root.left == null){
+//                // ???
+//                return deleteNode(root.right, key);
+//            }
+//
+//            // case 3) sub right is null
+//            if(root.right == null){
+//                return deleteNode(root.left, key);
+//            }
+//
+//            // case 4) BOTH sub left, right are NOT NULL
+//            else{
+//                TreeNode left = root.left;
+//                TreeNode right = left.right;
+//                while(right.right != null){
+//                    //TreeNode left = left.right;
+//                    right = right.right;
+//                }
+//                root = right;
+//                root.right = deleteNode(root.left, key); /// ?????
+//            }
+//
+//        }
+//
+//        return root;
+//    }
 
 
 
@@ -1901,6 +1960,7 @@ public class workspace10 {
 
     // LC 416
     // 11.17 - 11.27 am
+    // or backtrack ????
     /**
      *  IDEA 1) DP ???
      *

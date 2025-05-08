@@ -85,10 +85,31 @@ public class DeleteNodeInABST {
               return (root.left != null) ? root.left : root.right;
 
           // Case 3: Two children
+          /**
+           *  NOTE !!!
+           *
+           *   step 1) move `1 step` to sub left
+           *   step 2) move `till the right most` (move to sub right till reach the `end`)
+           */
           TreeNode temp = root.left;
-          while (temp.right != null)
+          while (temp.right != null){
               temp = temp.right;
+          }
+          /**
+           *  NOTE !!!
+           *
+           *  re-assign root val as tmp.val
+           */
           root.val = temp.val;
+          /**
+           *  NOTE !!!!!!
+           *
+           *   for root.left,  we update it via recursion call
+           *
+           *   -> NOTE !!!  pass `root.left` as node parameter
+           *                pass `tmp.val` as `to-delete target` parameter
+           *
+           */
           root.left = deleteNode_0_1(root.left, temp.val);
       }
       return root;
