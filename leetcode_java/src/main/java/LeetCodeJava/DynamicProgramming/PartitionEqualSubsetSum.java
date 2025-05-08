@@ -48,6 +48,32 @@ public class PartitionEqualSubsetSum {
     // IDEA: DP
     // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc/lc_416_1.png
 
+    // V0-2
+    // IDEA: DP (fixed by gpt)
+    public boolean canPartition_0_2(int[] nums) {
+        if (nums == null || nums.length < 2)
+            return false;
+
+        int total = 0;
+        for (int n : nums)
+            total += n;
+
+        if (total % 2 != 0)
+            return false;
+
+        int target = total / 2;
+        boolean[] dp = new boolean[target + 1];
+        dp[0] = true;
+
+        for (int num : nums) {
+            for (int j = target; j >= num; j--) {
+                dp[j] = dp[j] || dp[j - num];
+            }
+        }
+
+        return dp[target];
+    }
+
     // V1-1
     // https://neetcode.io/problems/partition-equal-subset-sum
     // IDEA: RECURSION
