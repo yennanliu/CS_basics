@@ -75,12 +75,28 @@ public class LongestIncreasingSubsequence {
          *
          *  i start from 1, while j start from 0
          */
+        /**
+         * NOTE !!!
+         *
+         *  we move i first as RIGHT boundary, then move j as LEFT boundary
+         *  (different from `regular` double loop, here, we setup right boundary, then setup left boundary)
+         *
+         *  e.g.
+         *
+         *    |--------|
+         *    j        i
+         *
+         */
         for(int i=1; i<n; i++){
             for(int j=0; j<i; j++){
                 /**
                  * NOTE !!!
-                 *  `nums[i] > nums[j]` condition
-                 *  -> ONLY if `right element is bigger than left element`, new length is calculated and DP array is updated
+                 *
+                 *  `nums[i] > nums[j]` condition  !!!
+                 *
+                 *  -> ONLY if `right element is bigger than left element`,
+                 *     new length is calculated and DP array is updated
+                 *
                  */
                 if(nums[i] > nums[j]){
                     dp[i] = Math.max(dp[i],dp[j]+1);
@@ -193,6 +209,31 @@ public class LongestIncreasingSubsequence {
         }
 
         return tails.size();
+    }
+
+    // V0-4
+    // IDEA: BINARY SEATCH (gpt)
+    public int lengthOfLIS_0_4(int[] nums) {
+        List<Integer> sub = new ArrayList<>();
+        for (int num : nums) {
+            int left = 0, right = sub.size() - 1;
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                if (sub.get(mid) < num) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+
+            // left is the insertion point
+            if (left == sub.size()) {
+                sub.add(num);
+            } else {
+                sub.set(left, num);
+            }
+        }
+        return sub.size();
     }
 
     // V1-1
