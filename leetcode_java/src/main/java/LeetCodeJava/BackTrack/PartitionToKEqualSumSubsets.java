@@ -35,6 +35,19 @@ import java.util.*;
 public class PartitionToKEqualSumSubsets {
 
     // V0
+    // IDEA: BACKTRACK
+    /**
+     *
+     * target_: the required sum for each of the k subsets.
+     *
+     * used[]: boolean array to track which numbers have been a
+     *         ssigned to a subset already.
+     *
+     * subsetSum: running sum of the current subset being built.
+     *
+     * k: how many subsets still need to be built.
+     *
+     */
     int target_;
 
     public boolean canPartitionKSubsets(int[] nums, int k) {
@@ -51,6 +64,14 @@ public class PartitionToKEqualSumSubsets {
         return backtrack_(nums, 0, k, 0, used);
     }
 
+    /**
+     * If k == 0: All subsets have been formed — return true.
+     *
+     * If subsetSum == target_:
+     *       You’ve successfully built a subset
+     *     — `RECURSIVELY build` the next one by resetting sum and decrementing k.
+     *
+     */
     private boolean backtrack_(int[] nums, int i, int k, int subsetSum, boolean[] used) {
         if (k == 0){
             return true;
@@ -63,7 +84,24 @@ public class PartitionToKEqualSumSubsets {
             return backtrack_(nums, 0, k - 1, 0, used);
         }
 
+        /**
+         *
+         * Iteration:
+         *
+         * -  Loop from index i to the end:
+         *
+         *    - Skip duplicates to avoid redundant paths (nums[j] == nums[j-1]).
+         *    - Skip used numbers.
+         *    - Skip if adding nums[j] exceeds target.
+         *
+         * - If you find a number that fits, mark it as used, recurse deeper.
+         *
+         * - If recursion fails, backtrack by unmarking the number.
+         *
+         *
+         */
         for (int j = i; j < nums.length; j++) {
+            // NOTE !!! via `nums[j] == nums[j - 1]` we avoid duplicates path
             if (j > 0 && !used[j - 1] && nums[j] == nums[j - 1]){
                 continue;
             }
@@ -72,6 +110,8 @@ public class PartitionToKEqualSumSubsets {
             }
 
             used[j] = true;
+
+            // NOTE !!! early quit
             if (backtrack_(nums, j + 1, k, subsetSum + nums[j], used)){
                 return true;
             }
