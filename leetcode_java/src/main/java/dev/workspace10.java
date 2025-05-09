@@ -2099,5 +2099,103 @@ public class workspace10 {
         return false;
     }
 
+    // LC 698
+    // 9.28 - 9.38 am
+    /**
+     *
+     *  -> return true if it is possible to divide this array
+     *     into k non-empty subsets whose sums are all equal.
+     *
+     *
+     *   IDEA 1) DP
+     *    - LC 416 ???
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *   IDEA 3) BACKTRACK
+     *
+     *
+     */
+    //  IDEA 3) BACKTRACK
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return true;
+        }
+        if(k > nums.length){
+            return false;
+        }
+        // ???
+        if(k <= 1){
+            return true;
+        }
+        int _sum = 0;
+        for(int n: nums){
+            _sum += n;
+        }
+        if(_sum % k != 0){
+            return false;
+        }
+
+        List<Integer> nums_ = new ArrayList<>();
+        for(int n: nums){
+            nums_.add(n);
+        }
+
+        // sorting (small -> big)
+        Collections.sort(nums_, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        // backtrack
+
+        return false;
+    }
+
+    public boolean partitionSumHelper(List<Integer> input, int k, int start_idx, HashSet<Integer> visited, List<List<Integer>> cur, int subSum){
+
+        if(cur.size() == 4){
+            if(isValidFound(cur, subSum)){
+                return true;
+            }else{
+                return false; // ????
+            }
+        }
+
+        if(cur.size() > 4){
+            return false;
+        }
+
+        // ???
+        for(int i = start_idx; i < input.size(); i++){
+
+        }
+
+
+        return false;
+    }
+
+    public boolean isValidFound(List<List<Integer>> cur, int subSum){
+        if(cur.size() != 4){
+            return false;
+        }
+
+        for(List<Integer> x: cur){
+            int tmp_sum = 0;
+            for(int num: x){
+                tmp_sum += num;
+            }
+            if(tmp_sum != subSum){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
 }

@@ -35,9 +35,52 @@ import java.util.*;
 public class PartitionToKEqualSumSubsets {
 
     // V0
-//    public boolean canPartitionKSubsets(int[] nums, int k) {
-//
-//    }
+    int target_;
+
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        int sum = 0;
+        for (int n : nums) {
+            sum += n;
+        }
+        if (sum % k != 0){
+            return false;
+        }
+
+        target_ = sum / k;
+        boolean[] used = new boolean[nums.length];
+        return backtrack_(nums, 0, k, 0, used);
+    }
+
+    private boolean backtrack_(int[] nums, int i, int k, int subsetSum, boolean[] used) {
+        if (k == 0){
+            return true;
+        }
+
+        // NOTE !!! below
+        // if `cur sub set sum equals to target`, we MOVE to NEXT sub set
+        // (instead of return true directly)
+        if (subsetSum == target_){
+            return backtrack_(nums, 0, k - 1, 0, used);
+        }
+
+        for (int j = i; j < nums.length; j++) {
+            if (j > 0 && !used[j - 1] && nums[j] == nums[j - 1]){
+                continue;
+            }
+            if (used[j] || subsetSum + nums[j] > target_){
+                continue;
+            }
+
+            used[j] = true;
+            if (backtrack_(nums, j + 1, k, subsetSum + nums[j], used)){
+                return true;
+            }
+
+            used[j] = false;
+        }
+
+        return false;
+    }
 
     // V0-1
     // IDEA: HASHMAP + BACKTRACK (fixed by gpt)
@@ -146,7 +189,6 @@ public class PartitionToKEqualSumSubsets {
 
     // V0-2
     // IDEA: BACKTRACK (fixed by gpt)
-
     public boolean canPartitionKSubsets_0_2(int[] nums, int k) {
         if (nums == null || nums.length == 0 || k <= 0) {
             return false;
