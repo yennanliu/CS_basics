@@ -34,6 +34,10 @@ def backtrack(路徑, 選擇清單):
      做選擇
      backtrack(路徑, 選擇列表)
      撤銷選擇
+
+
+- start_idx
+- early quit
 ```
 
 ## 0) Concept  
@@ -649,6 +653,20 @@ if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
 
 // 2) We don’t need start_idx -= 1; because start_idx is passed by value, not by reference. So modifying it in the recursive call doesn’t affect the caller’s start_idx. We’re already handling the correct index in each recursive call by passing start_idx + 1.
 
+```
+
+### 1-3)  if `true`, return true right after recursive call
+
+```java
+// java
+// LC  698
+
+// ...
+if (backtrack_(nums, j + 1, k, subsetSum + nums[j], used)){
+            return true;
+        }
+
+// ...
 ```
 
 ## 2) LC Example

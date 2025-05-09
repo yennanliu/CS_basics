@@ -120,6 +120,72 @@ public class PartitionToKEqualSumSubsets {
              *  NOTE !!! next start_idx is `j + 1` (but NOT `j`)
              *
              */
+            /**
+             * Ah, got it — you're asking:
+             *
+             * > What happens if we **remove the `if (...) return true;` wrapper** and simply write:
+             * >
+             * > ```java
+             * > backtrack_(nums, j + 1, k, subsetSum + nums[j], used);
+             * > ```
+             *
+             * ### ✅ Short Answer:
+             *
+             * If you **remove the `if (...) return true;`
+             * and just call the function without checking its result**, then:
+             *
+             * 🔴 **Your code will continue exploring even after finding a valid solution.**
+             *
+             * This breaks the **early termination** logic, and in many cases, will lead to:
+             *
+             * * **Performance issues** (unnecessary recursive calls)
+             * * **Incorrect results** (e.g., function may return `false` even if a valid partition exists)
+             *
+             * ---
+             *
+             * ### ✅ Why You Need `if (...) return true;`
+             *
+             * This line is critical because once you've found **any valid way**
+             * to divide the array into `k` equal-sum subsets,
+             * you want to **stop immediately** and return `true`
+             * all the way up the recursion stack.
+             *
+             * Without it, you'd just keep exploring the remaining recursive paths,
+             * possibly backtracking out of a valid one — and end up returning `false`
+             * even when a solution was found.
+             *
+             * ---
+             *
+             * ### 🔁 Example Difference:
+             *
+             * **With:**
+             *
+             * ```java
+             * if (backtrack_(...)) {
+             *     return true; // found a valid partition early — stop here
+             * }
+             * ```
+             *
+             * **Without:**
+             *
+             * ```java
+             * backtrack_(...); // just call it — even if true, do nothing
+             * ```
+             *
+             * 🧨 The second version **ignores** the result of a successful path and continues the loop — **eventually returning `false`** even when a valid partition was found.
+             *
+             * ---
+             *
+             * ### ✅ Summary:
+             *
+             * | Code                                | Result                                                              |
+             * | ----------------------------------- | ------------------------------------------------------------------- |
+             * | `if (backtrack_(...)) return true;` | ✅ Correct. Early exit on success                                    |
+             * | `backtrack_(...)` only              | ❌ Wrong. Ignores result and continues, may return false incorrectly |
+             *
+             * ---
+             *
+             */
             if (backtrack_(nums, j + 1, k, subsetSum + nums[j], used)){
                 return true;
             }
