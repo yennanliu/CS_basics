@@ -2,7 +2,7 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/perfect-squares/description/
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * 279. Perfect Squares
@@ -36,9 +36,138 @@ import java.util.Arrays;
 public class PerfectSquares {
 
     // V0
-//    public int numSquares(int n) {
-//
-//    }
+    // IDEA: BFS (gpt)
+    public int numSquares(int n) {
+        Queue<Integer> queue = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+
+        queue.offer(n);
+        visited.add(n);
+
+        int level = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            level++; // Level in BFS = number of squares used so far
+
+            for (int i = 0; i < size; i++) {
+                int curr = queue.poll();
+
+                for (int j = 1; j * j <= curr; j++) {
+                    int next = curr - j * j;
+
+                    if (next == 0) {
+                        return level; // Found shortest path
+                    }
+
+                    if (!visited.contains(next)) {
+                        visited.add(next);
+                        queue.offer(next);
+                    }
+                }
+            }
+        }
+
+        return -1; // Should never reach here
+    }
+
+    // V0-1
+    // IDEA: BRUTE FORCE (gpt) (TLE)
+    public int numSquares_0_1(int n) {
+        if (n <= 0)
+            return 0;
+        return helper(n);
+    }
+
+    public int helper(int n) {
+        if (n == 0)
+            return 0;
+
+        int min = Integer.MAX_VALUE;
+
+        for (int i = 1; i * i <= n; i++) {
+            int square = i * i;
+            min = Math.min(min, 1 + helper(n - square));
+        }
+
+        return min;
+    }
+
+    // V0-2
+    // IDEA:  OPTIMIZED BRUTE FORCE (WITH MEMORY) (gpt)
+    public int numSquares_0_2(int n) {
+        int[] memo = new int[n + 1];
+        Arrays.fill(memo, -1);
+        return helper_0_2(n, memo);
+    }
+
+    public int helper_0_2(int n, int[] memo) {
+        if (n == 0)
+            return 0;
+        if (memo[n] != -1)
+            return memo[n];
+
+        int min = Integer.MAX_VALUE;
+
+        for (int i = 1; i * i <= n; i++) {
+            min = Math.min(min, 1 + helper_0_2(n - i * i, memo));
+        }
+
+        memo[n] = min;
+        return min;
+    }
+
+    // V0-3
+    // IDEA: DP (gpt)
+    public int numSquares_0_3(int n) {
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j * j <= i; j++) {
+                dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
+            }
+        }
+
+        return dp[n];
+    }
+
+    // V0-4
+    // IDEA: BFS (gpt)
+    public int numSquares_0_4(int n) {
+        Queue<Integer> queue = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+
+        queue.offer(n);
+        visited.add(n);
+
+        int level = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            level++; // Level in BFS = number of squares used so far
+
+            for (int i = 0; i < size; i++) {
+                int curr = queue.poll();
+
+                for (int j = 1; j * j <= curr; j++) {
+                    int next = curr - j * j;
+
+                    if (next == 0) {
+                        return level; // Found shortest path
+                    }
+
+                    if (!visited.contains(next)) {
+                        visited.add(next);
+                        queue.offer(next);
+                    }
+                }
+            }
+        }
+
+        return -1; // Should never reach here
+    }
 
     // V1
     // IDEA: DP

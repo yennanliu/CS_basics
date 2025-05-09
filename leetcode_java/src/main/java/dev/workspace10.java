@@ -2267,5 +2267,85 @@ public class workspace10 {
         return res;
     }
 
+    // LC 279
+    // 12.02 - 12.12 pm
+    /**
+     * Given an integer n,
+     * return the `least` number of perfect square
+     * numbers that sum to n.
+     *
+     *
+     *  IDEA 1) DP
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *   -> start from `biggest` perfect num
+     *      check if can build the input (n)
+     *      if not, find the next smaller perferct num,
+     *      ... repeat
+     *
+     *      if can't find one, return -1
+     *
+     */
+    // BRUTE FORCE
+    public int numSquares(int n) {
+        // edge
+        // ???
+        if(n < 0){
+            return -1;
+        }
+        if(n <= 1){
+            return n;
+        }
+
+        // brute force
+        int start = n;
+        while(start >= 1){
+
+//            if(isPerfect(start)){
+//                if(n % start == 0){
+//                    return n / start;
+//                }
+//            }
+
+//            if (numSquaresHelper(start, n - x)){
+//
+//            }
+
+            start -= 1;
+        }
+
+
+        return -1;
+    }
+
+    public boolean numSquaresHelper(int start, int n){
+
+        for(int x = start; x > 0; x--){
+
+            if(n == 0){
+                return true;
+            }
+
+            if(isPerfect(x)){
+                numSquaresHelper(start, n - x);
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isPerfect(int x){
+        if (x == 0){
+            return false; //??
+        }
+//        if(x == 1){
+//            return true;
+//        }
+        double sqrt = Math.sqrt(x);
+        return sqrt * sqrt == x; /// ?????
+    }
+
+
 
 }
