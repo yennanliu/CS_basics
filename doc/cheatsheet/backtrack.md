@@ -158,7 +158,9 @@ Don’t use `start_idx` when:
             """
             for i in range(start_idx, len(wordDict)):
                 cur.append(wordDict[i])
-                help(start_idx+1, cur)
+
+                # NOTE !!! `start_idx + 1`
+                help(start_idx + 1, cur)
                 """
                 NOTE !!! pop(-1)
                 """
@@ -484,6 +486,8 @@ Don’t use `start_idx` when:
               for(int i = start; i < s.length(); i++){
                  if(isPalindrome(s, start, i)){
                     tempList.add(s.substring(start, i + 1));
+
+                    // NOTE !!! `i+1`
                     backtrack(list, tempList, s, i + 1);
                     tempList.remove(tempList.size() - 1);
                  }

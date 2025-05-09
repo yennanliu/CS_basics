@@ -112,6 +112,14 @@ public class PartitionToKEqualSumSubsets {
             used[j] = true;
 
             // NOTE !!! early quit
+            // NOTE !!! next start_idx is `j+1` (not `j`)
+            /**
+             *
+             *  NOTE !!! if found a solution, need to return True IMEDIATELLY
+             *
+             *  NOTE !!! next start_idx is `j + 1` (but NOT `j`)
+             *
+             */
             if (backtrack_(nums, j + 1, k, subsetSum + nums[j], used)){
                 return true;
             }

@@ -171,7 +171,7 @@ public class PerfectSquares {
 
     // V1
     // IDEA: DP
-    // https://leetcode.com/problems/perfect-squares/solutions/4694883/beats-99-users-cjavapythonjavascript-exp-37yg/
+    // problems/perfect-squares/solutions/4694883/beats-99-users-cjavapythonjavascript-exp-37yg/
     public int numSquares_1(int n) {
         int[] dp = new int[n + 1];
         Arrays.fill(dp, Integer.MAX_VALUE);
