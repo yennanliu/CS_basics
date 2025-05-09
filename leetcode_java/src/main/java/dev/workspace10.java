@@ -2217,9 +2217,54 @@ public class workspace10 {
      *  IDEA 3) BRUTE FORCE ???
      *
      */
+    int cnt = 0;
     public int combinationSum4(int[] nums, int target) {
 
-        return 0;
+        // edge
+
+        // backtrack
+        combineHelper(nums, target, 0, new HashSet<>(), new ArrayList<>());
+
+        return cnt;
+    }
+
+    public void combineHelper(int[] nums, int target, int start_idx, HashSet<List<Integer>> visited, List<Integer> cur){
+
+        int sum_ = getSum(cur);
+
+        if(sum_ == target){
+            //Collections.sort(cur);
+            // need to avoid duplicated ??
+            if(!visited.contains(cur)){
+                visited.add(cur);
+                cnt += 1;
+            }
+        }
+
+        if(sum_ > target){
+            return;
+        }
+
+        for(int i = start_idx; i < nums.length; i++){
+            if(sum_ + nums[i] > target){
+                continue;
+            }
+
+            cur.add(nums[i]);
+            combineHelper(nums, target, i, visited, cur);
+
+            // undo
+            cur.remove(cur.size() - 1);
+        }
+
+    }
+
+    public int getSum(List<Integer> list){
+        int res = 0;
+        for(int x: list){
+            res += x;
+        }
+        return res;
     }
 
 
