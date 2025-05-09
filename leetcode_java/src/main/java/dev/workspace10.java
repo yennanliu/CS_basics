@@ -2198,6 +2198,25 @@ public class workspace10 {
     }
 
     // LC 377
+    // 10.19 - 10.29 am
+    /**
+     *
+     * Given an array of distinct integers nums
+     * and a target integer target,
+     * return the number of possible combinations
+     * that add up to target.
+     *
+     *
+     * -> count that combinations sum == target
+     *
+     *
+     *  IDEA 1) BACKTRACK ????
+     *
+     *  IDEA 2) DP
+     *
+     *  IDEA 3) BRUTE FORCE ???
+     *
+     */
     public int combinationSum4(int[] nums, int target) {
 
         return 0;

@@ -56,6 +56,69 @@ public class CombinationSumIV {
 //
 //    }
 
+    // V0-1
+    // IDEA: BACKTRACK (gpt) (TLE)
+    int count = 0;
+
+    public int combinationSum4_0_1(int[] nums, int target) {
+        backtrack(nums, target);
+        return count;
+    }
+
+    private void backtrack(int[] nums, int remain) {
+        if (remain == 0) {
+            count++;
+            return;
+        }
+
+        for (int num : nums) {
+            if (remain - num >= 0) {
+                backtrack(nums, remain - num);
+            }
+        }
+    }
+
+    // V0-2
+    // IDEA : Top-Down DP (with Memoization) (gpt)
+    public int combinationSum4_0_2(int[] nums, int target) {
+        Integer[] memo = new Integer[target + 1];
+        return dp(nums, target, memo);
+    }
+
+    private int dp(int[] nums, int remain, Integer[] memo) {
+        if (remain == 0)
+            return 1;
+        if (remain < 0)
+            return 0;
+        if (memo[remain] != null)
+            return memo[remain];
+
+        int count = 0;
+        for (int num : nums) {
+            count += dp(nums, remain - num, memo);
+        }
+
+        memo[remain] = count;
+        return count;
+    }
+
+    // V0-3
+    // IDEA:  Bottom-Up DP Version (Tabulation) (gpt)
+    public int combinationSum4_0_3(int[] nums, int target) {
+        int[] dp = new int[target + 1];
+        dp[0] = 1; // Base case
+
+        for (int i = 1; i <= target; i++) {
+            for (int num : nums) {
+                if (i - num >= 0) {
+                    dp[i] += dp[i - num];
+                }
+            }
+        }
+
+        return dp[target];
+    }
+
     // V1-1
     // https://www.youtube.com/watch?v=dw2nMCxG0ik
 
