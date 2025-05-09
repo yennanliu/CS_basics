@@ -2,7 +2,9 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/combination-sum-iv/description/
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -117,6 +119,30 @@ public class CombinationSumIV {
         }
 
         return dp[target];
+    }
+
+    // V0-4
+    // IDEA: BACKTRACK (gpt) (TLE)
+    int cnt = 0;
+
+    public int combinationSum4_0_4(int[] nums, int target) {
+        backtrack_0_4(nums, target, new ArrayList<>());
+        return cnt;
+    }
+
+    public void backtrack_0_4(int[] nums, int target, List<Integer> cur) {
+        if (target == 0) {
+            cnt++;
+            return;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] <= target) {
+                cur.add(nums[i]);
+                backtrack_0_4(nums, target - nums[i], cur);
+                cur.remove(cur.size() - 1); // backtrack
+            }
+        }
     }
 
     // V1-1
