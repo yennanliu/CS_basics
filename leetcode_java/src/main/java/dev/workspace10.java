@@ -2347,7 +2347,59 @@ public class workspace10 {
     }
 
     // LC 343
+    // 2.37 - 2.47 pm
+    /**
+     *  IDEA 1) GREEDY
+     *
+     *   n = 2,  2 = 1 + 1,
+     *           1 * 1 = 1
+     *
+     *
+     *   n = 3, 2 + 1,
+     *
+     *
+     *   n = 10, 10 = 1
+     *
+     *   .. ??
+     *
+     *
+     *  IDEA 2) MATH
+     *
+     *   (a + b) >= sqrt(a * b)
+     *
+     *   the `max` ( a * b ) happens
+     *   when a ~= b  ???
+     *
+     *
+     */
     public int integerBreak(int n) {
+        // edge
+        if(n <= 1){
+            return 0; // ???
+        }
+        if(n == 2){
+            return 1;
+        }
+        if(n == 3){
+            return 2;
+        }
+
+       // int val_1 =
+       int avgByThree = n / 3;  // ??
+       int left = avgByThree - 1;
+       int right = avgByThree + 1;
+
+       while(left > 0 && right < n){
+           int _sum = avgByThree + left + right;
+           if(_sum == n){
+               return avgByThree * left * right;
+           }
+           if (_sum < n){
+               right += 1;
+           }else{
+               left += 1;
+           }
+       }
 
         return 0;
     }
