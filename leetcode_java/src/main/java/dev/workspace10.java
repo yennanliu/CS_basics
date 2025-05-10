@@ -2346,6 +2346,12 @@ public class workspace10 {
         return sqrt * sqrt == x; /// ?????
     }
 
+    // LC 343
+    public int integerBreak(int n) {
+
+        return 0;
+    }
+
 
 
 }
