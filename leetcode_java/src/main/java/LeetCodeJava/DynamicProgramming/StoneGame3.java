@@ -1,6 +1,7 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/stone-game-iii/description/
+// https://leetcode.cn/problems/stone-game-iii/
 /**
  * 1406. Stone Game III
  * Hard
