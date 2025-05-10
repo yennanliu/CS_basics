@@ -41,10 +41,42 @@ package LeetCodeJava.DynamicProgramming;
  */
 public class IntegerBreak {
 
-    // V0
-//    public int integerBreak(int n) {
-//
-//    }
+  // V0
+  //    public int integerBreak(int n) {
+  //
+  //    }
+
+  // V0-1
+  // IDEA: GREEDY (fixed by gpt)
+  /**
+   *  Mathematical observation:
+   *
+   * 	•	The best strategy is to use as many 3s as possible.
+   *
+   * 	•	But if the remainder is 1,
+   *     	replace 3 + 1 with 2 + 2
+   *      	(since 3×1 = 3, but 2×2 = 4 is better).
+   *
+   */
+  public int integerBreak_0_1(int n) {
+        if (n == 2)
+            return 1;
+        if (n == 3)
+            return 2;
+
+        int product = 1;
+
+        // Use as many 3s as possible
+        while (n > 4) {
+            product *= 3;
+            n -= 3;
+        }
+
+        // Remaining n will be 2, 3, or 4 -> multiply at the end
+        product *= n;
+
+        return product;
+    }
 
     // V1
     // https://www.youtube.com/watch?v=in6QbUPMJ3I
