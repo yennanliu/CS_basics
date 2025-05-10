@@ -2404,6 +2404,12 @@ public class workspace10 {
         return 0;
     }
 
+    // LC 1406
+    public String stoneGameIII(int[] stoneValue) {
+
+        return null;
+    }
+
 
 
 }
