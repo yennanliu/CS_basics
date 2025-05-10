@@ -23,6 +23,49 @@ problems by combining the solutions to subproblems
 ## 2) LC Example
 
 ### 2-1) Unique Paths
+
+```java
+// java
+
+// LC 62
+// V0
+// IDEA: 2D DP (fixed by gpt)
+public int uniquePaths(int m, int n) {
+    if (m == 0 || n == 0)
+        return 0;
+
+    int[][] dp = new int[m][n];
+
+    /**  NOTE !!! init val as below
+     *
+     *  -> First row and first column = 1 path
+     *    (only one way to go right/down)
+     */
+    for (int i = 0; i < m; i++) {
+        dp[i][0] = 1;
+    }
+    for (int j = 0; j < n; j++) {
+        dp[0][j] = 1;
+    }
+
+    // Fill the rest of the DP table
+    // NOTE !!! i, j both start from 1
+    // `(0, y), (x, 0)` already been initialized
+    for (int i = 1; i < m; i++) {
+        for (int j = 1; j < n; j++) {
+            /**  DP equation
+             *
+             *   dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+             */
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+        }
+    }
+
+    return dp[m - 1][n - 1];
+}
+```
+
+
 ```python
 # 62. Unique Paths
 # V0
