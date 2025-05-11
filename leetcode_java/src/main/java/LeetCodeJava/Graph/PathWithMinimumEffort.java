@@ -52,6 +52,47 @@ import java.util.*;
  */
 public class PathWithMinimumEffort {
 
+    /**  NOTE !!!  LC 64 VS LC 1631
+     *
+     *
+     * ✅ Leetcode 64: Minimum Path Sum
+     *
+     * Key property:
+     * 	•	You can only move right or down.
+     * 	•	The cost is accumulative: you sum values along the path.
+     * 	•	Since you can’t revisit a cell from a different direction, you don’t need visited.
+     * 	•	DP is perfect here. Every cell is updated once with the best possible value from top or left.
+     *
+     * ✅ No visited needed:
+     * 	•	Each cell is filled once.
+     * 	•	You never have to worry about improving a previous path.
+     * 	•	No cycles. No need to guard against revisiting.
+     *
+     * ⸻
+     *
+     * 🔁 Leetcode 1631: Path With Minimum Effort
+     *
+     * Key property:
+     * 	•	You can move in all four directions (up/down/left/right).
+     * 	•	Cost is not additive, it’s based on the maximum absolute height difference between steps.
+     * 	•	You might find a better path to a cell after already visiting it.
+     * 	•	This is Dijkstra-style, but the edge weight is non-linear (max of step costs).
+     *
+     * ✅ visited is needed here:
+     * 	•	You must revisit nodes if a better path is found.
+     * 	•	To avoid processing worse paths, you mark nodes as visited once the minimum effort to reach them is finalized.
+     * 	•	Without visited, you could end up adding multiple paths for the same cell and wasting computation.
+     *
+     * ⸻
+     *
+     * 🔍 Summary:
+     *
+     * Problem	Move Directions	Cost Definition	Can revisit cells with better cost?	Needs visited?
+     * Minimum Path Sum (64)	Right + Down only	Sum of grid values	❌ No	❌ No
+     * Path With Minimum Effort (1631)	All 4 directions	Max of step differences	✅ Yes	✅ Yes
+     *
+     */
+
     // V0
 //    public int minimumEffortPath(int[][] heights) {
 //
