@@ -176,3 +176,97 @@ class KthLargest_0_1 {
     }
 }
 ```
+
+### 2-4) Minimum Path Sum
+
+```java
+// java
+// LC 64
+
+  /**  NOTE !!!  LC 64 VS LC 1631
+   *
+   *
+   * ✅ Leetcode 64: Minimum Path Sum
+   *
+   * Key property:
+   *    •   You can only move right or down.
+   *    •   The cost is accumulative: you sum values along the path.
+   *    •   Since you can’t revisit a cell from a different direction, you don’t need visited.
+   *    •   DP is perfect here. Every cell is updated once with the best possible value from top or left.
+   *
+   * ✅ No visited needed:
+   *    •   Each cell is filled once.
+   *    •   You never have to worry about improving a previous path.
+   *    •   No cycles. No need to guard against revisiting.
+   *
+   * ⸻
+   *
+   * 🔁 Leetcode 1631: Path With Minimum Effort
+   *
+   * Key property:
+   *    •   You can move in all four directions (up/down/left/right).
+   *    •   Cost is not additive, it’s based on the maximum absolute height difference between steps.
+   *    •   You might find a better path to a cell after already visiting it.
+   *    •   This is Dijkstra-style, but the edge weight is non-linear (max of step costs).
+   *
+   * ✅ visited is needed here:
+   *    •   You must revisit nodes if a better path is found.
+   *    •   To avoid processing worse paths, you mark nodes as visited once the minimum effort to reach them is finalized.
+   *    •   Without visited, you could end up adding multiple paths for the same cell and wasting computation.
+   *
+   * ⸻
+   *
+   * 🔍 Summary:
+   *
+   * Problem    Move Directions Cost Definition Can revisit cells with better cost? Needs visited?
+   * Minimum Path Sum (64)  Right + Down only   Sum of grid values  ❌ No    ❌ No
+   * Path With Minimum Effort (1631)    All 4 directions    Max of step differences ✅ Yes   ✅ Yes
+   *
+   */
+
+
+// V0-1
+// IDEA: MIN PQ + BFS (fixed by gpt)
+public int minPathSum_0_1(int[][] grid) {
+    if (grid == null || grid.length == 0 || grid[0].length == 0) {
+        return 0;
+    }
+
+    int m = grid.length;
+    int n = grid[0].length;
+
+    // Min-heap by cost
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
+    pq.offer(new int[] { 0, 0, grid[0][0] });
+
+    boolean[][] visited = new boolean[m][n];
+    int[][] dirs = new int[][] { { 0, 1 }, { 1, 0 } };
+
+    while (!pq.isEmpty()) {
+        int[] cur = pq.poll();
+        int row = cur[0];
+        int col = cur[1];
+        int cost = cur[2];
+
+        if (row == m - 1 && col == n - 1) {
+            return cost;
+        }
+
+        if (visited[row][col]) {
+            continue;
+        }
+        visited[row][col] = true;
+
+        for (int[] dir : dirs) {
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+
+            if (newRow < m && newCol < n) {
+                pq.offer(new int[] { newRow, newCol, cost + grid[newRow][newCol] });
+            }
+        }
+    }
+
+    return -1; // shouldn't reach here if input is valid
+}
+```
