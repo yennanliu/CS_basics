@@ -153,6 +153,11 @@ public class MinimumPathSum {
             return dp[m][n];
         }
         if (dp[m][n] != -1) return dp[m][n];
+        /**
+         *  DP equation:
+         *
+         *   grid[i][j] += Math.min(grid[i - 1][j], grid[i][j - 1]);
+         */
         dp[m][n] =
                 grid[m][n] +
                         Math.min(helper(grid, m, n - 1, dp), helper(grid, m - 1, n, dp));
@@ -175,6 +180,11 @@ public class MinimumPathSum {
 
         for (int i = 1; i < m; i++) {
             for (int j = 1; j < n; j++) {
+                /**
+                 *  DP equation:
+                 *
+                 *   grid[i][j] += Math.min(grid[i - 1][j], grid[i][j - 1]);
+                 */
                 grid[i][j] += Math.min(grid[i - 1][j], grid[i][j - 1]);
             }
         }
