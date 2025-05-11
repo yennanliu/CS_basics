@@ -1,6 +1,9 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/longest-common-subsequence/description/
+
+import java.util.Arrays;
+
 /**
  * 1143. Longest Common Subsequence
  * Medium
@@ -46,6 +49,49 @@ public class longestCommonSubsequence {
 //    public int longestCommonSubsequence(String text1, String text2) {
 //
 //    }
+
+    // V0-1
+    // IDEA: RECURSION (gpt) (TLE)
+    public int longestCommonSubsequence_0_1(String text1, String text2) {
+        return lcs(text1, text2, 0, 0);
+    }
+
+    private int lcs(String s1, String s2, int i, int j) {
+        if (i == s1.length() || j == s2.length())
+            return 0;
+
+        if (s1.charAt(i) == s2.charAt(j)) {
+            return 1 + lcs(s1, s2, i + 1, j + 1);
+        } else {
+            return Math.max(lcs(s1, s2, i + 1, j), lcs(s1, s2, i, j + 1));
+        }
+    }
+
+    // V0-2
+    // IDEA: TOP DOWN DP (gpt)
+    public int longestCommonSubsequence_0_2(String text1, String text2) {
+        int[][] memo = new int[text1.length()][text2.length()];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+        return dfs(text1, text2, 0, 0, memo);
+    }
+
+    private int dfs(String s1, String s2, int i, int j, int[][] memo) {
+        if (i == s1.length() || j == s2.length())
+            return 0;
+        if (memo[i][j] != -1)
+            return memo[i][j];
+
+        if (s1.charAt(i) == s2.charAt(j)) {
+            memo[i][j] = 1 + dfs(s1, s2, i + 1, j + 1, memo);
+        } else {
+            memo[i][j] = Math.max(
+                    dfs(s1, s2, i + 1, j, memo),
+                    dfs(s1, s2, i, j + 1, memo));
+        }
+        return memo[i][j];
+    }
 
     // V1-1
     // https://neetcode.io/problems/longest-common-subsequence
