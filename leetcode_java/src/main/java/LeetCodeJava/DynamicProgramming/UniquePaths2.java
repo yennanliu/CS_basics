@@ -44,9 +44,150 @@ package LeetCodeJava.DynamicProgramming;
 public class UniquePaths2 {
 
     // V0
-//    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-//
-//    }
+    // IDEA: DP, LC 62 (gpt)
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        int[][] dp = new int[m][n];
+
+        // If starting point has obstacle, no paths
+        if (obstacleGrid[0][0] == 1)
+            return 0;
+
+        dp[0][0] = 1; // start
+
+        // Fill first column
+        for (int i = 1; i < m; i++) {
+            dp[i][0] = (obstacleGrid[i][0] == 0 && dp[i - 1][0] == 1) ? 1 : 0;
+        }
+
+    // Fill first row
+    /**  NOTE !!!
+     *
+     *
+     * Yes — that loop is filling the first row of the DP table,
+     * which needs special handling because it only has access to cells from the left.
+     *
+     * Let me break it down and then show you the space-optimized version.
+     *
+     * ⸻
+     *
+     * 🔍 Why this line is needed:
+     *
+     * dp[0][j] = (obstacleGrid[0][j] == 0 && dp[0][j-1] == 1) ? 1 : 0;
+     *
+     * This means:
+     * 	•	If there’s no obstacle at obstacleGrid[0][j]
+     * 	•	AND the previous cell in the same row (dp[0][j-1]) has a valid path (i.e. 1)
+     * 	•	Then this cell also gets 1 (reachable)
+     *
+     * Once we hit an obstacle in that row, all cells to the right will be 0.
+     *
+     *
+     */
+    for (int j = 1; j < n; j++) {
+            dp[0][j] = (obstacleGrid[0][j] == 0 && dp[0][j - 1] == 1) ? 1 : 0;
+        }
+
+        // Fill rest of the grid
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                /**
+                 *  NOTE !!! below - obstacle handling
+                 *
+                 */
+                if (obstacleGrid[i][j] == 0) {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                } else {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+
+        return dp[m - 1][n - 1];
+    }
+
+    // V0-1
+    // IDEA: DFS (fixed by gpt) (TLE)
+    int pathCnt = 0;
+
+    public int uniquePathsWithObstacles_0_1(int[][] obstacleGrid) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        if (m == 0 || n == 0 || obstacleGrid[0][0] == 1)
+            return 0;
+
+        pathCnt = 0; // reset before each run
+        boolean[][] visited = new boolean[m][n];
+
+        uniquePathDFS(0, 0, obstacleGrid, visited);
+
+        return pathCnt;
+    }
+
+    public void uniquePathDFS(int x, int y, int[][] obstacleGrid, boolean[][] visited) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        // out of bounds or obstacle or already visited
+        if (x < 0 || x >= n || y < 0 || y >= m || visited[y][x] || obstacleGrid[y][x] == 1) {
+            return;
+        }
+
+        // reached the destination
+        if (x == n - 1 && y == m - 1) {
+            pathCnt += 1;
+            return;
+        }
+
+        visited[y][x] = true;
+
+        // Only move right or down
+        uniquePathDFS(x + 1, y, obstacleGrid, visited);
+        uniquePathDFS(x, y + 1, obstacleGrid, visited);
+
+        visited[y][x] = false; // backtrack
+    }
+
+    // V0-2
+    // IDEA: DP (gpt)
+    public int uniquePathsWithObstacles_0_2(int[][] obstacleGrid) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        int[][] dp = new int[m][n];
+
+        // If starting point has obstacle, no paths
+        if (obstacleGrid[0][0] == 1)
+            return 0;
+
+        dp[0][0] = 1; // start
+
+        // Fill first column
+        for (int i = 1; i < m; i++) {
+            dp[i][0] = (obstacleGrid[i][0] == 0 && dp[i - 1][0] == 1) ? 1 : 0;
+        }
+
+        // Fill first row
+        for (int j = 1; j < n; j++) {
+            dp[0][j] = (obstacleGrid[0][j] == 0 && dp[0][j - 1] == 1) ? 1 : 0;
+        }
+
+        // Fill rest of the grid
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (obstacleGrid[i][j] == 0) {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                } else {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+
+        return dp[m - 1][n - 1];
+    }
 
     // V1
     // https://www.youtube.com/watch?v=pGMsrvt0fpk
@@ -71,6 +212,14 @@ public class UniquePaths2 {
             return dp[i][j];
         }
         if (dp[i][j] != 0) return dp[i][j];
+        /**
+         *  NOTE !!! below
+         *
+         *  we get `right cnt` and `left cnt` via dfs first,
+         *  then current sum = left + right
+         *  ...
+         *  and so on
+         */
         int right = dfs(grid, i, j + 1, m, n, dp);
         int left = dfs(grid, i + 1, j, m, n, dp);
         dp[i][j] = right + left;
