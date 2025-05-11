@@ -2657,6 +2657,21 @@ public class workspace10 {
         return res;
     }
 
+    // LC 1143
+    // 3.56 - 4.06 pm
+    /**
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) DP ???
+     *
+     *  IDEA 3) RECURSION ???
+     *
+     */
+    public int longestCommonSubsequence(String text1, String text2) {
+
+        return 0;
+    }
+
 
 
 }
