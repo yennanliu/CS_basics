@@ -3,6 +3,7 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/minimum-path-sum/description/
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 /**
  * 64. Minimum Path Sum
@@ -41,6 +42,51 @@ public class MinimumPathSum {
 //    public int minPathSum(int[][] grid) {
 //
 //    }
+
+    // V0-1
+    // IDEA: MIN PQ + BFS (fixed by gpt)
+    public int minPathSum_0_1(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        // Min-heap by cost
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
+        pq.offer(new int[] { 0, 0, grid[0][0] });
+
+        boolean[][] visited = new boolean[m][n];
+        int[][] dirs = new int[][] { { 0, 1 }, { 1, 0 } };
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int row = cur[0];
+            int col = cur[1];
+            int cost = cur[2];
+
+            if (row == m - 1 && col == n - 1) {
+                return cost;
+            }
+
+            if (visited[row][col]) {
+                continue;
+            }
+            visited[row][col] = true;
+
+            for (int[] dir : dirs) {
+                int newRow = row + dir[0];
+                int newCol = col + dir[1];
+
+                if (newRow < m && newCol < n) {
+                    pq.offer(new int[] { newRow, newCol, cost + grid[newRow][newCol] });
+                }
+            }
+        }
+
+        return -1; // shouldn't reach here if input is valid
+    }
 
     // V1
     // https://www.youtube.com/watch?v=pGMsrvt0fpk
