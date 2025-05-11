@@ -2579,9 +2579,82 @@ public class workspace10 {
 
 
     // LC 64
+    // 3.07 - 3.17 pm
+    /**
+     *
+     *  Given a m x n grid filled with non-negative numbers,
+     *  -> find a path from `top left` to `bottom right`,
+     *  which minimizes the sum of all numbers along its path.
+     *
+     *
+     *
+     *  IDEA 1) min PQ + BFS ???
+     *
+     *  IDEA 2) DFS
+     *
+     *  IDEA 3) DP
+     *
+     */
     public int minPathSum(int[][] grid) {
 
-        return 0;
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+        if(grid.length == 1 || grid[0].length == 1){
+            return 1;
+        }
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        // min PQ
+        // PQ : { [x, y, cost_till_now] }
+        // sort by `cost_till_now` (small -> big)
+        PriorityQueue<int[]> small_pq = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[2] - o2[2];
+                return diff;
+            }
+        });
+
+        // add init val to PQ
+        small_pq.add(new int[] {0, 0, 0});
+        int res = 0;
+
+        int[][] dirs = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        while(!small_pq.isEmpty()){
+
+            int[] cur = small_pq.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int cost_till_now = cur[2];
+
+            if(x == n && y == m){
+                return cost_till_now;
+            }
+
+            // NOTE !!! validate below
+            if(x < 0 || x >= n || y < 0 || y >= m){
+                continue;
+            }
+
+            for(int[] dir: dirs){
+                int x_ = x + dir[0];
+                int y_ = y + dir[1];
+                if(x_ < 0 || x_ >= n || y_ < 0 || y_ >= m){
+                    continue;
+                }
+
+                small_pq.add(new int[] {x_, y_, cost_till_now + grid[y_][x_]});
+            }
+
+        }
+
+
+        return res;
     }
 
 
