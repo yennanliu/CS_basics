@@ -2451,10 +2451,133 @@ public class workspace10 {
     }
 
     // LC 63
+    // 2.25 - 2.35 pm
+    /**
+     *  IDEA 1) GREEDY
+     *
+     *  IDEA 2) DP (LC 64)
+     *
+     *  IDEA 3) DFS
+     *
+     *
+     *
+     */
+    // IDEA 3) DFS
+    int pathCnt;
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
 
-        return 0;
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        if (m == 0 || n == 0)
+            return 0;
+
+        //return 0;
+        //return uniquePathDFS(0, 0, new int[m][n]);
+        return pathCnt;
     }
+
+    public void uniquePathDFS(int x, int y, int[][] obstacleGrid, boolean[][] visited){
+
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        // if found one
+        if(x == n && y == m){
+            pathCnt += 1;
+            return;
+        }
+        if( x < 0  || x > n || y < 0 || y > m || visited[y][x] ){
+            return;
+        }
+
+        visited[y][x] = true;
+
+        uniquePathDFS(x+1, y, obstacleGrid, visited);
+        uniquePathDFS(x-1, y, obstacleGrid, visited);
+        uniquePathDFS(x, y+1, obstacleGrid, visited);
+        uniquePathDFS(x, y-1, obstacleGrid, visited);
+
+        return;
+    }
+
+
+
+    // IDEA 2) DP (LC 64)
+    public int uniquePathsWithObstacles_1(int[][] obstacleGrid) {
+
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        if (m == 0 || n == 0)
+            return 0;
+
+        int[][] dp = new int[m][n];
+
+        /**  NOTE !!! init val as below
+         *
+         *  -> First row and first column = 1 path
+         *    (only one way to go right/down)
+         */
+        for (int i = 0; i < m; i++) {
+            dp[i][0] = 1;
+        }
+        for (int j = 0; j < n; j++) {
+            dp[0][j] = 1;
+        }
+
+        // Fill the rest of the DP table
+        // NOTE !!! i, j both start from 1
+        // `(0, y), (x, 0)` already been initialized
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                /**  DP equation
+                 *
+                 *   dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                 */
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+
+        return dp[m - 1][n - 1];
+    }
+
+
+//    public int uniquePaths(int m, int n) {
+//        if (m == 0 || n == 0)
+//            return 0;
+//
+//        int[][] dp = new int[m][n];
+//
+//        /**  NOTE !!! init val as below
+//         *
+//         *  -> First row and first column = 1 path
+//         *    (only one way to go right/down)
+//         */
+//        for (int i = 0; i < m; i++) {
+//            dp[i][0] = 1;
+//        }
+//        for (int j = 0; j < n; j++) {
+//            dp[0][j] = 1;
+//        }
+//
+//        // Fill the rest of the DP table
+//        // NOTE !!! i, j both start from 1
+//        // `(0, y), (x, 0)` already been initialized
+//        for (int i = 1; i < m; i++) {
+//            for (int j = 1; j < n; j++) {
+//                /**  DP equation
+//                 *
+//                 *   dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+//                 */
+//                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+//            }
+//        }
+//
+//        return dp[m - 1][n - 1];
+//    }
+
+
 
 
 
