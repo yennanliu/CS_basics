@@ -58,8 +58,36 @@ public class CoinChange2 {
 //    }
 
     // V0-1
-    // IDEA: BACKTRACK (gpt) (TLE)
+    int combinationCnt_0_1 = 0;
+
     public int change_0_1(int amount, int[] coins) {
+        if (coins == null || coins.length == 0)
+            return 0;
+        if (amount == 0)
+            return 1;
+
+        backtrack_0_1(amount, coins, 0, 0);
+        return combinationCnt_0_1;
+    }
+
+    private void backtrack_0_1(int amount, int[] coins, int startIdx, int currentSum) {
+        if (currentSum == amount) {
+            combinationCnt_0_1++;
+            return;
+        }
+
+        if (currentSum > amount)
+            return;
+
+        // Single recursive call, loop handles all choices
+        for (int i = startIdx; i < coins.length; i++) {
+            backtrack_0_1(amount, coins, i, currentSum + coins[i]); // still i (not i + 1) because coins are infinite
+        }
+    }
+
+    // V0-2
+    // IDEA: BACKTRACK (gpt) (TLE)
+    public int change_0_2(int amount, int[] coins) {
         return backtrack(coins, 0, amount);
     }
 
@@ -76,9 +104,9 @@ public class CoinChange2 {
         return withCoin + withoutCoin;
     }
 
-    // V0-2
+    // V0-3
     // IDEA: Backtracking + Memoization (Top-Down DP)  (gpt)
-    public int change_0_2(int amount, int[] coins) {
+    public int change_0_3(int amount, int[] coins) {
         Integer[][] memo = new Integer[coins.length][amount + 1];
         return dfs(coins, 0, amount, memo);
     }
@@ -98,11 +126,11 @@ public class CoinChange2 {
         return memo[i][rem];
     }
 
-    // V0-3
+    // V0-4
     // IDEA: BACKTRACK (gpt) (TLE)
     int combinationCnt = 0;
 
-    public int change_0_3(int amount, int[] coins) {
+    public int change_0_4(int amount, int[] coins) {
         if (coins == null || coins.length == 0)
             return 0;
         if (amount == 0)
