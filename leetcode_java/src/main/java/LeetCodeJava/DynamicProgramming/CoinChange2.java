@@ -81,6 +81,112 @@ public class CoinChange2 {
 
         // Single recursive call, loop handles all choices
         for (int i = startIdx; i < coins.length; i++) {
+            /**
+             *  NOTE !!!!
+             *
+             *
+             *  -> // still i (not i + 1) because coins are infinite
+             *
+             *  e.g. if we are solving the  `use each coin at most once, not infinite supply` problem
+             *      -> then we need ` i + 1` as start_idx in next recursion call
+             */
+            /**
+             *  Question: Why do we not have `duplicate logic` in below code ?
+             *
+             *
+             * ## 🧠 The `Coin Change II` problem **does not require tracking permutations**
+             *
+             * Your code with:
+             *
+             * ```java
+             * for (int i = startIdx; i < coins.length; i++) {
+             *     backtrack(amount, coins, i, currentSum + coins[i]);
+             * }
+             * ```
+             *
+             * **does not generate duplicates**, as long as:
+             *
+             * * You always **start the loop at `startIdx`**
+             * * You do **not** allow backtracking to earlier indices
+             *
+             * ---
+             *
+             * ### ✅ Why This Works (No Need for Visited Set)
+             *
+             * This loop structure inherently avoids duplicate combinations:
+             *
+             * ```java
+             * coins = [1, 2, 5]
+             * amount = 5
+             * ```
+             *
+             * Valid recursive paths from this will include:
+             *
+             * * \[1,1,1,1,1]
+             * * \[1,1,1,2]
+             * * \[1,2,2]
+             * * \[5]
+             *
+             * But **not**:
+             *
+             * * \[2,1,1,1] — because 2 would appear *after* 1 in the loop, and we never go "backwards"
+             *
+             * So, each combination is **built in non-decreasing order**, and this:
+             *
+             * * Prevents permutation duplicates
+             * * Does **not** need a `visited` set
+             * * Matches exactly the required behavior for **unique combinations**
+             *
+             * ---
+             *
+             * ## 🧪 Test This in Practice
+             *
+             * Try printing combinations to see for yourself:
+             *
+             * ```java
+             * private void backtrack(int amount, int[] coins, int startIdx, int currentSum, List<Integer> path) {
+             *     if (currentSum == amount) {
+             *         System.out.println(path);
+             *         combinationCnt++;
+             *         return;
+             *     }
+             *
+             *     if (currentSum > amount) return;
+             *
+             *     for (int i = startIdx; i < coins.length; i++) {
+             *         path.add(coins[i]);
+             *         backtrack(amount, coins, i, currentSum + coins[i], path);
+             *         path.remove(path.size() - 1);
+             *     }
+             * }
+             * ```
+             *
+             * ---
+             *
+             * ### 🔁 What About 0/1 Knapsack (Use Each Coin Once)?
+             *
+             * If your goal is to solve the **0/1 version** (use each coin **at most once**, not infinite supply), then yes:
+             *
+             * * You must ensure you don’t reuse the same coin multiple times.
+             * * You do this by **advancing `i + 1` in recursion**:
+             *
+             * ```java
+             * backtrack(amount, coins, i + 1, currentSum + coins[i]); // move forward
+             * ```
+             *
+             * * In this case, **duplicate filtering may be needed** if combinations like `[1,2]` and `[2,1]` are treated the same and can both occur.
+             *
+             * ---
+             *
+             * ## ✅ Summary
+             *
+             * | Version                             | Coin Usage         | Requires Deduplication?                          |
+             * | ----------------------------------- | ------------------ | ------------------------------------------------ |
+             * | Unbounded Knapsack (Coin Change II) | Infinite coins     | ❌ No — loop from `startIdx` handles it           |
+             * | 0/1 Knapsack                        | Use each coin once | ✅ Yes — or use `i + 1` recursion to enforce once |
+             *
+             *
+             */
             backtrack_0_1(amount, coins, i, currentSum + coins[i]); // still i (not i + 1) because coins are infinite
         }
     }
