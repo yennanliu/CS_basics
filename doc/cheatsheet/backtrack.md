@@ -128,6 +128,158 @@ Don’t use `start_idx` when:
 ---
 
 
+### 0-1) `i+1` or `i` as start_idx in recursion call ?
+
+- LC 39, 78, 518
+
+
+Excellent question. The choice between using `i` or `i + 1` in recursive calls is central to solving **combinatorics / dynamic programming problems** correctly — especially those involving subsets, combinations, or permutations.
+
+Let's walk through it systematically by comparing well-known **Leetcode problems** where this pattern matters.
+
+---
+
+## 🧭 **Core Difference Between `i` and `i + 1` in Recursion**
+
+| Pattern | Meaning                       | Use Case                                |
+| ------- | ----------------------------- | --------------------------------------- |
+| `i`     | Reuse the **same item again** | **Unbounded Knapsack** (`infinite` items) |
+| `i + 1` | Use **each item once only**   | **0/1 Knapsack**, subsets               |
+
+---
+
+## 🔍 Problem Comparison by Recursion Pattern
+
+| Leetcode # | Problem                           | Recursion Index        | Coin Usage       | Explanation                                                 |
+| ---------- | --------------------------------- | ---------------------- | ---------------- | ----------------------------------------------------------- |
+| **518**    | Coin Change II                    | `i`                    | Infinite         | You can reuse coins unlimited times → use `i`               |
+| **377**    | Combination Sum IV                | `i`                    | Infinite         | Order matters → use all i, don't restrict reuse             |
+| **39**     | Combination Sum                   | `i`                    | Infinite         | Choose the same number again → `i`                          |
+| **40**     | Combination Sum II                | `i + 1`                | Once             | Each number can be used **once only**                       |
+| **46**     | Permutations                      | no index (`visited[]`) | Once             | Full permutations → can't reuse → use boolean visited array |
+| **47**     | Permutations II (with duplicates) | no index + dedup       | Once             | Same as 46 + dedup logic                                    |
+| **90**     | Subsets II                        | `i + 1`                | Once             | Use each number once, skip duplicates                       |
+| **78**     | Subsets                           | `i + 1`                | Once             | Classic 0/1 inclusion/exclusion                             |
+| **322**    | Coin Change (min # of coins)      | `i`                    | Infinite         | Optimization version of coin change                         |
+| **494**    | Target Sum                        | `i + 1`                | Once per element | Only one + or - per number                                  |
+
+---
+
+## 🎯 Rules of Thumb
+
+| Situation                       | Use `i` | Use `i + 1`          |
+| ------------------------------- | ------- | -------------------- |
+| Reuse allowed (infinite supply) | ✅       | ❌                    |
+| Use item only once              | ❌       | ✅                    |
+| Generating combinations         | ✅       | ✅ (depends)          |
+| Generating permutations         | ❌       | ✅ (with `visited[]`) |
+
+---
+
+## 🔧 Quick Example
+
+### Example 1: **Coin Change II** (518)
+
+```java
+// Unlimited coin usage
+for (int i = start; i < coins.length; i++) {
+    backtrack(i, currentSum + coins[i]); // use coin[i] again
+}
+```
+
+### Example 2: **Combination Sum II** (40)
+
+```java
+// Use each number at most once
+for (int i = start; i < candidates.length; i++) {
+    backtrack(i + 1, currentSum + candidates[i]); // can't reuse candidates[i]
+}
+```
+
+---
+
+## 🧠 Key Takeaway
+
+> **Use `i` when repetition is allowed (unbounded knapsack style)**
+> **Use `i + 1` when repetition is not allowed (0/1 knapsack, subset style)**
+
+
+---
+
+## 🧠 Visual Guide: Recursion Index Patterns in LeetCode Problems
+
+### 🔄 **Unbounded Knapsack (Reuse Items)**
+
+* **Recursion Pattern:** `i`
+* **Use Case:** Items can be used multiple times.
+* **Examples:**
+
+  * **518. Coin Change II**: ([AlgoMonster][1])
+  * **377. Combination Sum IV**
+  * **39. Combination Sum**
+  * **322. Coin Change (Minimum Coins)**
+
+### 🔒 **0/1 Knapsack (Use Each Item Once)**
+
+* **Recursion Pattern:** `i + 1`
+* **Use Case:** Each item can be used at most once.
+* **Examples:**
+
+  * **40. Combination Sum II**: ([AlgoMonster][2])
+  * **78. Subsets**
+  * **90. Subsets II**
+  * **46. Permutations**
+  * **47. Permutations II (with duplicates)**
+  * **494. Target Sum**
+
+---
+
+## 📊 Quick Reference Table
+
+| Problem # | Problem Name                      | Recursion Index | Coin Usage       | Notes                                          |
+| --------- | --------------------------------- | --------------- | ---------------- | ---------------------------------------------- |
+| 518       | Coin Change II                    | `i`             | Infinite         | Reuse coins; loop from `i`                     |
+| 377       | Combination Sum IV                | `i`             | Infinite         | Order matters; loop from `i`                   |
+| 39        | Combination Sum                   | `i`             | Infinite         | Reuse elements; loop from `i`                  |
+| 40        | Combination Sum II                | `i + 1`         | Once per element | Use each element once; loop from `i + 1`       |
+| 78        | Subsets                           | `i + 1`         | Once per element | Classic inclusion/exclusion; loop from `i + 1` |
+| 90        | Subsets II                        | `i + 1`         | Once per element | Handle duplicates; loop from `i + 1`           |
+| 46        | Permutations                      | `visited[]`     | Once per element | Full permutations; use visited array           |
+| 47        | Permutations II (with duplicates) | `visited[]`     | Once per element | Handle duplicates; use visited array           |
+| 494       | Target Sum                        | `i + 1`         | Once per element | Only one + or - per number; loop from `i + 1`  |
+
+---
+
+## 🧩 Visual Mind Map
+
+Here's a visual representation to help you quickly identify the appropriate recursion pattern:
+
+![Recursion Index Patterns Mind Map](https://example.com/recursion-patterns-mind-map.png)
+
+*Note: Replace the URL with the actual link to the image.*
+
+---
+
+## 🧭 Summary
+
+* **Use `i`** when:
+
+  * You can reuse items (unlimited supply).
+  * Order matters (e.g., combinations with repetition).
+
+* **Use `i + 1`** when:
+
+  * Each item can be used at most once.
+  * You're generating combinations or subsets without repetition.
+
+* **Use `visited[]`** when:
+
+  * Generating permutations.
+  * Handling duplicates within the input.
+
+---
+
+
 ### 0-1) Types
 
 - Conclusion:
