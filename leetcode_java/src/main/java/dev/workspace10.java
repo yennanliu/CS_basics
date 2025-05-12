@@ -2672,6 +2672,12 @@ public class workspace10 {
         return 0;
     }
 
+    // LC 1049
+    public int lastStoneWeightII(int[] stones) {
+
+        return 0;
+    }
+
 
 
 }
