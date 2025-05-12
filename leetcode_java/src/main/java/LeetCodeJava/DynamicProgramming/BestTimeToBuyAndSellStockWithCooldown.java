@@ -45,6 +45,121 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 
     // V0-1
     // IDEA: DP (gpt)
+    /**
+     * Absolutely — let’s break down the **DP solution**
+     * for **Leetcode 309 - Best Time to Buy and Sell Stock with Cooldown**.
+     *
+     * ---
+     *
+     * ## 🧩 Problem Recap:
+     *
+     * You're given an array `prices[]` representing stock prices on each day.
+     *
+     * * You can buy and sell **as many times as you want**.
+     * * **BUT**: after you **sell**, you must **cool down for 1 day** before buying again.
+     * * You **cannot hold multiple stocks** at once.
+     *
+     * ---
+     *
+     * ## ✅ Key Idea: Use 3 DP States
+     *
+     * We simulate the behavior across days by tracking 3 possible "states" you're in:
+     *
+     * | State  | Meaning                                                                   |
+     * | ------ | ------------------------------------------------------------------------- |
+     * | `hold` | You currently **own** a stock (i.e., you've bought it, haven't sold yet). |
+     * | `sold` | You **just sold** a stock today.                                          |
+     * | `rest` | You're in cooldown or doing nothing — **not holding any stock**.          |
+     *
+     * We use these to compute the **maximum profit** at each day.
+     *
+     * ---
+     *
+     * ## 📌 State Transitions (Core Logic):
+     *
+     * ### 1. **hold (on day i)**:
+     *
+     * You can arrive at `hold` by either:
+     *
+     * * Continuing to **hold** the stock from yesterday → `hold = hold`
+     * * Or you **buy today**, which means yesterday you must’ve been in `rest` → `hold = rest - price[i]`
+     *
+     * ```java
+     * hold = Math.max(prevHold, prevRest - prices[i]);
+     * ```
+     *
+     * ---
+     *
+     * ### 2. **sold (on day i)**:
+     *
+     * You can only arrive here by **selling today**, so:
+     *
+     * * You must’ve **held a stock** yesterday → `sold = hold + prices[i]`
+     *
+     * ```java
+     * sold = prevHold + prices[i];
+     * ```
+     *
+     * ---
+     *
+     * ### 3. **rest (on day i)**:
+     *
+     * You can be in `rest` by:
+     *
+     * * Resting again today → `rest = rest`
+     * * Or you just sold yesterday → `rest = sold`
+     *
+     * ```java
+     * rest = Math.max(prevRest, prevSold);
+     * ```
+     *
+     * ---
+     *
+     * ## 🧠 Initialization (Day 0):
+     *
+     * ```java
+     * hold = -prices[0]; // if you buy on day 0
+     * sold = 0;          // can't sell on day 0
+     * rest = 0;          // haven't done anything yet
+     * ```
+     *
+     * ---
+     *
+     * ## 🔁 Final Step:
+     *
+     * At the end, you return the **max profit where you're not holding** a stock:
+     *
+     * ```java
+     * return Math.max(sold, rest);
+     * ```
+     *
+     * You can’t return `hold` because that means you still have a stock you haven't sold.
+     *
+     * ---
+     *
+     * ## 🔢 Time and Space Complexity:
+     *
+     * * **Time**: O(n) — one pass through prices
+     * * **Space**: O(1) — we only store variables for `hold`, `sold`, and `rest`
+     *
+     * ---
+     *
+     * ## ✅ Example Walkthrough (prices = \[1,2,3,0,2]):
+     *
+     * | Day | Price | Hold | Sold | Rest |
+     * | --- | ----- | ---- | ---- | ---- |
+     * | 0   | 1     | -1   | 0    | 0    |
+     * | 1   | 2     | -1   | 1    | 0    |
+     * | 2   | 3     | -1   | 2    | 1    |
+     * | 3   | 0     | 1    | 2    | 2    |
+     * | 4   | 2     | 1    | 3    | 2    |
+     *
+     * ✔️ Final result = `max(sold, rest)` = `max(3, 2)` = **3**
+     *
+     * ---
+     *
+     *
+     */
     public int maxProfit_0_1(int[] prices) {
         if (prices == null || prices.length == 0)
             return 0;
