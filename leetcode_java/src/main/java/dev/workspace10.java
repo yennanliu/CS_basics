@@ -2745,7 +2745,7 @@ public class workspace10 {
     }
 
     // LC 518
-    // 11.18 - 11.28 am
+    // 11.18 - 11.49 am
     /**
      *
      * Return the number of combinations that make up that amount.
@@ -2763,9 +2763,76 @@ public class workspace10 {
      *
      *   IDEA 3) BRUTE FORCE ???
      */
+    //  IDEA 1) BACKTRACK
+    int combinationCnt;
+    List<List<Integer>> collected = new ArrayList<>();
     public int change(int amount, int[] coins) {
+        // edge
+        if(amount == 0){
+            return 0; // ??
+        }
+        if(coins == null || coins.length == 0){
+            return 0;
+        }
+        if(amount < 0){
+            return 0;
+        }
+        if(coins.length == 1){
+            return amount % coins[0] == 0 ? 1 : 0;
+        }
+//
+//        // dedup coins
+//        HashSet<Integer> set = new HashSet<>();
+//        for(int c:coins){
+//            set.add(c);
+//        }
+//
+//        int[] coins2 = new int[set.size()];
+//        for(int x : set.toArray().){
+//            set.
+//            coins2
+//        }
 
-        return 0;
+        // backtrack
+        coinHelpr(amount, coins, 0, new ArrayList<>());
+
+        return combinationCnt;
+    }
+
+    public void coinHelpr(int amount, int[] coins, int start_idx, List<Integer> cur){
+
+        int _sum = getListSum(cur);
+
+        if(_sum == amount){
+            //Collections.sort(cur);
+            if(!collected.contains(cur)){
+                collected.add(new ArrayList<>(cur));
+                combinationCnt += 1;
+            }
+        }
+
+        if(_sum > amount){
+            return;
+        }
+
+        // NOTE !!! make `i start from start_idx`
+        for(int i = start_idx; i < coins.length; i++){
+            if(_sum + coins[i] <= amount){
+                cur.add(coins[i]);
+                coinHelpr(amount, coins, i, cur);
+                // undo
+                cur.remove(cur.size() - 1);
+            }
+        }
+
+    }
+
+    public int getListSum(List<Integer> input){
+        int res = 0;
+        for(int x: input){
+            res += x;
+        }
+        return res;
     }
 
 

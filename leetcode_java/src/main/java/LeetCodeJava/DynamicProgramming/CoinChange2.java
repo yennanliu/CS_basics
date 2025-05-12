@@ -98,6 +98,37 @@ public class CoinChange2 {
         return memo[i][rem];
     }
 
+    // V0-3
+    // IDEA: BACKTRACK (gpt) (TLE)
+    int combinationCnt = 0;
+
+    public int change_0_3(int amount, int[] coins) {
+        if (coins == null || coins.length == 0)
+            return 0;
+        if (amount == 0)
+            return 1;
+
+        backtrack(amount, coins, 0, 0);
+        return combinationCnt;
+    }
+
+    private void backtrack(int amount, int[] coins, int idx, int currentSum) {
+        if (currentSum == amount) {
+            combinationCnt++;
+            return;
+        }
+
+        if (currentSum > amount || idx >= coins.length) {
+            return;
+        }
+
+        // Choose current coin (can reuse it)
+        backtrack(amount, coins, idx, currentSum + coins[idx]);
+
+        // Skip to next coin
+        backtrack(amount, coins, idx + 1, currentSum);
+    }
+
     // V1-1
     // https://neetcode.io/problems/coin-change-ii
     // IDEA: Recursion
