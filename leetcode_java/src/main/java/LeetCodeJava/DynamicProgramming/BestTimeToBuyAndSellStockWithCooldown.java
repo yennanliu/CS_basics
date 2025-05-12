@@ -43,6 +43,58 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 //
 //    }
 
+    // V0-1
+    // IDEA: DP (gpt)
+    public int maxProfit_0_1(int[] prices) {
+        if (prices == null || prices.length == 0)
+            return 0;
+
+        int n = prices.length;
+        int hold = -prices[0]; // Buying on day 0
+        int sold = 0;
+        int rest = 0;
+
+        for (int i = 1; i < n; i++) {
+            int prevSold = sold;
+
+            // If we sell today, we had to hold before
+            sold = hold + prices[i];
+
+            // If we hold today, we either continue holding, or buy today (after cooldown)
+            hold = Math.max(hold, rest - prices[i]);
+
+            // If we rest today, we take the max of resting or having sold yesterday
+            rest = Math.max(rest, prevSold);
+        }
+
+        // Final profit is max of sold or rest (not holding)
+        return Math.max(sold, rest);
+    }
+
+    // V0-2
+    // IDEA: RECURSIVE (gpt) (TLE)
+    public int maxProfit_0_2(int[] prices) {
+        return dfs(prices, 0, false);
+    }
+
+    private int dfs(int[] prices, int day, boolean holding) {
+        if (day >= prices.length)
+            return 0;
+
+        int doNothing = dfs(prices, day + 1, holding);
+        int doSomething = 0;
+
+        if (holding) {
+            // Option: sell today and cooldown tomorrow
+            doSomething = prices[day] + dfs(prices, day + 2, false);
+        } else {
+            // Option: buy today
+            doSomething = -prices[day] + dfs(prices, day + 1, true);
+        }
+
+        return Math.max(doNothing, doSomething);
+    }
+
     // V1-1
     // https://neetcode.io/problems/buy-and-sell-crypto-with-cooldown
     // IDEA:  RECURSION
