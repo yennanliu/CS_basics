@@ -2744,6 +2744,30 @@ public class workspace10 {
         return 0;
     }
 
+    // LC 518
+    // 11.18 - 11.28 am
+    /**
+     *
+     * Return the number of combinations that make up that amount.
+     *  If that amount of money
+     *   cannot be made up by any combination of the coins, return 0.
+     *
+     *
+     * -> Return the `number of combinations` that make up that amount.
+     *
+     *
+     *
+     *   IDEA 1) BACKTRACK
+     *
+     *   IDEA 2) DP
+     *
+     *   IDEA 3) BRUTE FORCE ???
+     */
+    public int change(int amount, int[] coins) {
+
+        return 0;
+    }
+
 
 
 }
