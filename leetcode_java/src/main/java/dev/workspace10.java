@@ -2726,6 +2726,24 @@ public class workspace10 {
         return max_pq.peek();
     }
 
+    // LC 309
+    // 10.46 - 10.56 am
+    /**
+     *  IDEA 1) DP
+     *
+     *    DP equation:
+     *
+     *        dp[i] = max( dp[i] - dp[i-2], dp[i] - dp[i-1] )
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *
+     */
+    public int maxProfit(int[] prices) {
+
+        return 0;
+    }
+
 
 
 }
