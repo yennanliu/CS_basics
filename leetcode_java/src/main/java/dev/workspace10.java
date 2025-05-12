@@ -2673,9 +2673,57 @@ public class workspace10 {
     }
 
     // LC 1049
+    // 10.16 - 10.26 am
+    /**
+     *
+     *
+     * Return the smallest possible weight of the left stone.
+     * If there are no stones left, return 0.
+     *
+     *
+     *   IDEA 1) MAX PQ ???
+     *   IDEA 2)  BRUTE FORCE ??
+     *   IDEA 3) DP ??
+     *
+     */
     public int lastStoneWeightII(int[] stones) {
+        // edge
+        if(stones == null || stones.length == 0){
+            return 0;
+        }
+        if(stones.length == 1){
+            return stones[0];
+        }
+        if(stones.length == 2){
+            if(stones[0] == stones[1]){
+                return 0;
+            }
+            return Math.abs(stones[0] - stones[1]);
+        }
 
-        return 0;
+        // MAX PQ
+        PriorityQueue<Integer> max_pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        // add to PQ
+        for(int s: stones){
+            max_pq.add(s);
+        }
+
+        while(max_pq.size() >= 2){
+            int s1 = max_pq.poll();
+            int s2 = max_pq.poll();
+            if(s1 != s2){
+                max_pq.add(Math.abs(s1 - s2));
+            }
+        }
+
+        return max_pq.peek();
     }
 
 
