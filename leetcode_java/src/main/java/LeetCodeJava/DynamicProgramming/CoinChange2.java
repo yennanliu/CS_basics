@@ -57,6 +57,47 @@ public class CoinChange2 {
 //
 //    }
 
+    // V0-1
+    // IDEA: BACKTRACK (gpt) (TLE)
+    public int change_0_1(int amount, int[] coins) {
+        return backtrack(coins, 0, amount);
+    }
+
+    private int backtrack(int[] coins, int index, int remaining) {
+        if (remaining == 0)
+            return 1; // valid combination
+        if (remaining < 0 || index == coins.length)
+            return 0; // invalid path
+
+        // Choose coin at `index` or skip to next coin
+        int withCoin = backtrack(coins, index, remaining - coins[index]);
+        int withoutCoin = backtrack(coins, index + 1, remaining);
+
+        return withCoin + withoutCoin;
+    }
+
+    // V0-2
+    // IDEA: Backtracking + Memoization (Top-Down DP)  (gpt)
+    public int change_0_2(int amount, int[] coins) {
+        Integer[][] memo = new Integer[coins.length][amount + 1];
+        return dfs(coins, 0, amount, memo);
+    }
+
+    private int dfs(int[] coins, int i, int rem, Integer[][] memo) {
+        if (rem == 0)
+            return 1;
+        if (rem < 0 || i == coins.length)
+            return 0;
+        if (memo[i][rem] != null)
+            return memo[i][rem];
+
+        int use = dfs(coins, i, rem - coins[i], memo); // take coin[i]
+        int skip = dfs(coins, i + 1, rem, memo); // skip coin[i]
+
+        memo[i][rem] = use + skip;
+        return memo[i][rem];
+    }
+
     // V1-1
     // https://neetcode.io/problems/coin-change-ii
     // IDEA: Recursion
