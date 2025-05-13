@@ -3000,11 +3000,22 @@ public class workspace10 {
         int l = matrix.length;
         int w = matrix[0].length;
 
+        int[][] memory = new int[l][w];
+        // init as `-1` value
+        Arrays.fill(memory, -1);
+
         int max_len = 1;
 
         for(int i = 0; i < l; i++){
             for(int j = 0; j < w; j++){
-                int cur_len = getMaxIncreaseLen(matrix, j, i, matrix[i][j], new boolean[l][w]);
+
+                int cur_len = 0;
+
+                if(memory[i][j] != -1){
+                    cur_len = memory[i][j];
+                }else{
+                    cur_len = getMaxIncreaseLen(matrix, j, i, matrix[i][j], new boolean[l][w], memory);
+                }
                 max_len = Math.max(max_len, cur_len);
             }
         }
@@ -3012,7 +3023,7 @@ public class workspace10 {
         return max_len;
     }
 
-    public int getMaxIncreaseLen(int[][] matrix, int x, int y, int last_val, boolean[][] visited){
+    public int getMaxIncreaseLen(int[][] matrix, int x, int y, int last_val, boolean[][] visited, int[][] memory){
 
         int l = matrix.length;
         int w = matrix[0].length;
@@ -3033,12 +3044,19 @@ public class workspace10 {
             int x_ =  x + dir[0];
             int y_ = y + dir[1];
 
-            res = Math.max(res, getMaxIncreaseLen(matrix, x_, y_, last_val, visited));
+//            if(memory[y_][x_] != -1){
+//                res = Math.max(res, memory[y_][x_]);
+//            }else{
+//                int val = getMaxIncreaseLen(matrix, x_, y_, last_val, visited, memory);
+//                memory[y_][x_] = val;
+//                res = Math.max(res, val);
+//            }
+
+            res = Math.max(res, getMaxIncreaseLen(matrix, x_, y_, last_val, visited, memory));
+
         }
 
-
         return res;
-
     }
 
     // IDEA: LOOP + DFS
