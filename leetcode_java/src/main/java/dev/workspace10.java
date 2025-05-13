@@ -3120,4 +3120,106 @@ public class workspace10 {
 //    }
 
 
+    // LC 115
+    // 11.26 - 11.36 am
+    /**
+     *
+     * Given two strings s and t, return the number of distinct
+     * subsequences of s which equals t.
+     *
+     */
+    public int numDistinct(String s, String t) {
+
+        // edge
+        if(t == null || t.length() == 0){
+            return 0;
+        }
+        if(t.equals(s)){
+            return 1;
+        }
+
+        // ???? should not happen ???
+        if(t.length() < s.length()){
+            return -1;
+        }
+
+        return 0;
+    }
+
+
+    // LC 53
+    // 11.54 - 12.06 pm
+    /**
+     *
+     *  * Given an integer array nums, find the subarray
+     *  *
+     *  with the `largest` sum, and return its sum.
+     *  *
+     *  *
+     *  *  -> A subarray is a contiguous non-empty sequence
+     *    of elements within an array.
+     *
+     *
+     *  -> return the max sum of the `contiguous` sub array
+     *
+     *
+     */
+    /**
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) K*** algo
+     *
+     *
+     *
+     *  exp 1)
+     *
+     *    Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+     *
+     *    -> [ -2, 1, -2
+     *
+     *
+     *
+     */
+    public int maxSubArray(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+
+        //int[] dp = new int[nums.length];
+        //int maxSum = 0;
+
+        int localMax = nums[0];
+        int globalMax = nums[0];
+
+        /**
+         *  NOTE !!!
+         *
+         *   below code has actually 2 options consideration
+         *
+         *
+         *   1. nums[i] : `give up` sum till now, init a new sub array
+         *   2. nums[i] + localMax : keep `sub array`, add the new val to it
+         *
+         */
+        for(int i = 1; i < nums.length; i++){
+
+            localMax = Math.max(
+                    nums[i],
+                    nums[i] + localMax
+            );
+
+            // we update the global max at every iteration
+            globalMax = Math.max(globalMax, localMax);
+        }
+
+
+        return globalMax;
+    }
+
+
 }
