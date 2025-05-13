@@ -46,8 +46,41 @@ package LeetCodeJava.Greedy;
 public class MaximumSubarray {
 
     // V0
-    // IDEA : BRUTE FORCE + SUB ARRAY
+    // IDEA: KADANE ALGO (fixed by gpt)
     public int maxSubArray(int[] nums) {
+        // Edge case
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        // NOTE !!! we set local, global max val via 1st element (e.g. nums[0)
+        int localMax = nums[0];  // Start with first element
+        int globalMax = nums[0];
+
+
+        // NOTE !!! we start from `i = 1`
+        for (int i = 1; i < nums.length; i++) {
+
+            /**
+             *  NOTE !!!
+             *
+             *   core of KADANE algo
+             *
+             */
+            // Either start new subarray at nums[i] or continue previous
+            localMax = Math.max(nums[i],
+                    nums[i] + localMax
+            );
+
+            globalMax = Math.max(globalMax, localMax);
+        }
+
+        return globalMax;
+    }
+
+    // V0_0_1
+    // IDEA : BRUTE FORCE + SUB ARRAY
+    public int maxSubArray_0_0_1(int[] nums) {
 
         if (nums == null || nums.length == 0){
             return 0;
@@ -89,10 +122,10 @@ public class MaximumSubarray {
         return maxSum;
     }
 
-    // V0-0-1
+    // V0-0-2
     // IDEA: KADANE ALGO
     // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/kadane_algo.md
-    public int maxSubArray_0_0_1(int[] nums) {
+    public int maxSubArray_0_0_2(int[] nums) {
         // edge
         if(nums == null || nums.length == 0){
             return 0;
@@ -327,6 +360,26 @@ public class MaximumSubarray {
         }
 
         return global_max;
+    }
+
+    // V0-7
+    // IDEA: Kadane's Algorithm (localMax, globalMax) (fixed by gpt)
+    public int maxSubArray_0_7(int[] nums) {
+        // Edge case
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int localMax = nums[0];  // Start with first element
+        int globalMax = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            // Either start new subarray at nums[i] or continue previous
+            localMax = Math.max(nums[i], nums[i] + localMax);
+            globalMax = Math.max(globalMax, localMax);
+        }
+
+        return globalMax;
     }
 
     // V1
