@@ -50,6 +50,82 @@ public class LongestIncreasingPathInAMatrix {
 //
 //    }
 
+    // V0-1
+    // IDEA:  (DFS + Memoization) (gpt)
+    private static final int[][] DIRECTIONS = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+    private int[][] memo;
+    private int rows, cols;
+
+    public int longestIncreasingPath_0_1(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0)
+            return 0;
+
+        rows = matrix.length;
+        cols = matrix[0].length;
+        memo = new int[rows][cols];
+
+        /**
+         *  NOTE !!!!
+         *
+         *   via below trick, we can get MAX val on every single `dir` choice
+         *   (e.g. move `left or right or up or down)
+         *
+         *   and compare with maxLen, so we can get maxLen path length
+         *   of the `initial cell`
+         *
+         */
+        int maxLen = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                maxLen = Math.max(maxLen, dfs_0_1(matrix, i, j, Integer.MIN_VALUE));
+            }
+        }
+
+        // NOTE !!! below is WRONG (which sum `all path len` per different dirs)
+        /**
+         *
+         * 1): Recursive sum of all paths (your version)
+         *
+         *
+         * return 1 + getMaxIncreaseLen(...) +
+         *            getMaxIncreaseLen(...) +
+         *            getMaxIncreaseLen(...) +
+         *            getMaxIncreaseLen(...);
+         *
+         *
+         *
+         *  -> This returns the sum of ALL increasing paths starting from
+         *     four directions.
+         *
+         *
+         */
+
+        return maxLen;
+    }
+
+    private int dfs_0_1(int[][] matrix, int row, int col, int prevVal) {
+        // Out of bounds or not increasing
+        if (row < 0 || col < 0 || row >= rows || col >= cols || matrix[row][col] <= prevVal) {
+            return 0;
+        }
+
+        // Already computed
+        if (memo[row][col] > 0) {
+            return memo[row][col];
+        }
+
+        int max = 0;
+        for (int[] dir : DIRECTIONS) {
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+            max = Math.max(max, dfs_0_1(matrix, newRow, newCol, matrix[row][col]));
+        }
+
+        memo[row][col] = 1 + max;
+        return memo[row][col];
+    }
+
+
     // V1-1
     // https://neetcode.io/problems/longest-increasing-path-in-matrix
     // IDEA: Recursion

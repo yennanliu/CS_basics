@@ -2942,6 +2942,164 @@ public class workspace10 {
 //        return res;
 //    }
 
+    // LC 97
+    // 10.30 - 10.40 am
+    public boolean isInterleave(String s1, String s2, String s3) {
+
+        return false;
+    }
+
+    // LC 329
+    // 10.33 - 10.43 am
+    /**
+     *
+     *  -> Given an m x n integers matrix,
+     *    return the `length` of the
+     *    `longest` `increasing` path in matrix.
+     *
+     *
+     *  IDEA 1) LOOP + DFS
+     *
+     *  IDEA 2) DP ???
+     *
+     *
+     *
+     *
+     *
+     *  exp 1)
+     *
+     *    [[9,9,4],
+     *     [6,6,8],
+     *     [2,1,1]
+     *     ]
+     *
+     *
+     *
+     *  exp 2)
+     *
+     *   [[3,4,5],
+     *   [3,2,6],
+     *   [2,2,1]
+     *   ]
+     *
+     *
+     *
+     *
+     */
+    // IDEA: DFS + MEMORIZATION
+    public int longestIncreasingPath(int[][] matrix) {
+
+        // edge
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0){
+            return 0;
+        }
+        if(matrix.length == 1 || matrix[0].length == 1){
+            return 1;
+        }
+
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        int max_len = 1;
+
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                int cur_len = getMaxIncreaseLen(matrix, j, i, matrix[i][j], new boolean[l][w]);
+                max_len = Math.max(max_len, cur_len);
+            }
+        }
+
+        return max_len;
+    }
+
+    public int getMaxIncreaseLen(int[][] matrix, int x, int y, int last_val, boolean[][] visited){
+
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        // NOTE !!! we validate below
+        if(x < 0 || x >= w || y < 0 || y >= l || visited[y][x] || matrix[y][x] <= last_val){
+            return 0;
+        }
+
+        last_val = matrix[y][x];
+        visited[y][x] = true;
+
+        // move 4 dirs
+        int[][] dirs = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+        int res = 0;
+
+        for(int[] dir: dirs){
+            int x_ =  x + dir[0];
+            int y_ = y + dir[1];
+
+            res = Math.max(res, getMaxIncreaseLen(matrix, x_, y_, last_val, visited));
+        }
+
+
+        return res;
+
+    }
+
+    // IDEA: LOOP + DFS
+//    public int longestIncreasingPath(int[][] matrix) {
+//
+//        // edge
+//        if(matrix == null || matrix.length == 0 || matrix[0].length == 0){
+//            return 0;
+//        }
+//        if(matrix.length == 1 || matrix[0].length == 1){
+//            return 1;
+//        }
+//
+//        int l = matrix.length;
+//        int w = matrix[0].length;
+//
+//        int max_len = 1;
+//
+//        for(int i = 0; i < l; i++){
+//            for(int j = 0; j < w; j++){
+//                int cur_len = getMaxIncreaseLen(matrix, j, i, matrix[i][j], new boolean[l][w]);
+//                max_len = Math.max(max_len, cur_len);
+//            }
+//        }
+//
+//        return max_len;
+//    }
+//
+//    public int getMaxIncreaseLen(int[][] matrix, int x, int y, int last_val, boolean[][] visited){
+//
+//        int l = matrix.length;
+//        int w = matrix[0].length;
+//
+//        // NOTE !!! we validate below
+//        if(x < 0 || x >= w || y < 0 || y >= l || visited[y][x] || matrix[y][x] <= last_val){
+//            return 0;
+//        }
+//
+//        last_val = matrix[y][x];
+//        visited[y][x] = true;
+//
+//        // move 4 dirs
+////        return 1 + getMaxIncreaseLen(matrix, x + 1, y, last_val, visited) +
+////                getMaxIncreaseLen(matrix, x - 1, y, last_val, visited) +
+////                getMaxIncreaseLen(matrix, x, y + 1, last_val, visited) +
+////                getMaxIncreaseLen(matrix, x, y - 1, last_val, visited);
+//
+//        int[][] dirs = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+//        int res = 0;
+//
+//        for(int[] dir: dirs){
+//            int x_ =  x + dir[0];
+//            int y_ = y + dir[1];
+//
+//            res = Math.max(res, getMaxIncreaseLen(matrix, x_, y_, last_val, visited));
+//        }
+//
+//
+//        return res;
+//
+//    }
 
 
 }
