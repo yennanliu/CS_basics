@@ -114,6 +114,18 @@ public class LongestIncreasingPathInAMatrix {
             return memo[row][col];
         }
 
+        /**
+         *  https://youtu.be/wCc_nd-GiEc?feature=shared&t=958
+         *
+         *
+         * NOTE !!!  below code is similar as :
+         *
+         *  max = Math.max(max, dfs_0_1(matrix, row + 1, col, matrix[row + 1][col]));
+         *  max = Math.max(max, dfs_0_1(matrix, row - 1, col, matrix[row - 1][col]));
+         *  max = Math.max(max, dfs_0_1(matrix, row, col + 1, matrix[row][col + 1]));
+         *  max = Math.max(max, dfs_0_1(matrix, row, col - 1, matrix[row + 1][col - 1]));
+         *
+         */
         int max = 0;
         for (int[] dir : DIRECTIONS) {
             int newRow = row + dir[0];

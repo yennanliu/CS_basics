@@ -1662,7 +1662,7 @@ public class workspace10 {
      *     -> see `max`, `sub array` ....
      *
      */
-    public int maxProduct(int[] nums) {
+    public int maxProduct_2(int[] nums) {
 
         // edge
         if(nums == null || nums.length == 0){
@@ -3219,6 +3219,63 @@ public class workspace10 {
 
 
         return globalMax;
+    }
+
+    // LC 152
+    // 12.21 - 12.31 pm
+    // IDEA : K*** algo
+    public int maxProduct(int[] nums) {
+        // edge
+        // ...
+
+        /**
+         *  NOTE !!!
+         *
+         *   we define 3 vars below:
+         *
+         *   1. globalMax
+         *   2. localMax
+         *   3. localMin ??
+         *
+         */
+        int globalMax = nums[0];
+        int localMax = nums[0];
+        int localMin = nums[0];
+
+        for(int i = 1; i < nums.length; i++){
+
+            // NOTE !!! we `cache` localMax first
+            int cache = localMax;
+
+            localMin = Math.min(nums[i] * localMin,
+                    Math.min(
+                            nums[i],
+                            nums[i] * localMax
+                    )
+            );
+
+            localMax = Math.max(nums[i] * cache,
+                    Math.max(
+                            nums[i],
+                            nums[i] * localMin
+                    )
+            );
+
+
+            globalMax = Math.max(
+                    Math.max(localMax, localMin),
+                    globalMax
+            );
+
+        }
+
+        return globalMax;
+    }
+
+    // LC 918
+    // 12.49 - 12.59 pm
+    public int maxSubarraySumCircular(int[] nums) {
+        return 0;
     }
 
 
