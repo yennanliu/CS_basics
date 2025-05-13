@@ -52,6 +52,28 @@ public class TargetSum {
 //
 //    }
 
+    // V0-1
+    // IDEA: RECURSION (gpt)
+    public int findTargetSumWays_0_1(int[] nums, int target) {
+        return calculateWays(nums, 0, 0, target);
+    }
+
+    private int calculateWays(int[] nums, int index, int currentSum, int target) {
+        // Base case: all numbers used
+        if (index == nums.length) {
+            return currentSum == target ? 1 : 0;
+        }
+
+        // Choose '+' for current number
+        int add = calculateWays(nums, index + 1, currentSum + nums[index], target);
+
+        // Choose '-' for current number
+        int subtract = calculateWays(nums, index + 1, currentSum - nums[index], target);
+
+        // Return total ways from both choices
+        return add + subtract;
+    }
+
     // V1-1
     // https://neetcode.io/problems/target-sum
     // IDEA: RECURSION

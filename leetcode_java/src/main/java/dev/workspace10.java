@@ -2835,6 +2835,113 @@ public class workspace10 {
         return res;
     }
 
+    // LC 494
+    // 10.04 - 10.14 am
+    /**
+     *  IDEA 1) BRUTE FORCE
+     *
+     *   -> double loop,
+     *      1st loop : + or -, move from idx
+     *      2nd loop : + or -, move from idx + 1
+     *
+     *
+     *
+     *  IDEA 2) DP ???
+     *
+     *
+     *  IDEA 3) RECURSION ???
+     *
+     *
+     *  exp 1)
+     *
+     *    input = [2,1]
+     *
+     *    + 2 - 1 = 1
+     *    - 2 + 1 = -1
+     *    + 2 + 1 = 3
+     *
+     *    ...
+     *
+     *
+     *  exp 2)
+     *
+     *    input = [1,1,1,1,1], target = 3
+     *
+     *     - 1 + 1 +
+     *
+     *     2
+     *
+     *
+     */
+    //  RECURSION
+    public int findTargetSumWays(int[] nums, int target) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            if(nums[0] == target || nums[0] == -1 * target){
+                return 1;
+            }
+            return 0;
+        }
+
+        return 0;
+    }
+
+    public class Solution {
+        public int findTargetSumWays(int[] nums, int target) {
+            return calculateWays(nums, 0, 0, target);
+        }
+
+        private int calculateWays(int[] nums, int index, int currentSum, int target) {
+            // Base case: all numbers used
+            if (index == nums.length) {
+                return currentSum == target ? 1 : 0;
+            }
+
+            // Choose '+' for current number
+            int add = calculateWays(nums, index + 1, currentSum + nums[index], target);
+
+            // Choose '-' for current number
+            int subtract = calculateWays(nums, index + 1, currentSum - nums[index], target);
+
+            // Return total ways from both choices
+            return add + subtract;
+        }
+    }
+
+
+
+    // BRUTE FORCE
+//    public int findTargetSumWays(int[] nums, int target) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0;
+//        }
+//        if(nums.length == 1){
+//            if(nums[0] == target || nums[0] == -1 * target){
+//                return 1;
+//            }
+//            return 0;
+//        }
+//
+////        Integer[] nums_ = new Integer[nums.length];
+////        for(int i = 0; i < nums.length; i++){
+////            nums_[i] = nums[i];
+////        }
+//
+//        int res = 0;
+//        // brute force
+//        for(int i = 0; i < nums.length; i++){
+//            for(int j = i+1; j < nums.length; j++){
+//                int[] sub_nums = Arrays.copyOfRange(nums, i,j);
+//            }
+//        }
+//
+//        return res;
+//    }
+
 
 
 }
