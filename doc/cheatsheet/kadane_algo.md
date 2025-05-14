@@ -449,3 +449,38 @@ public int maxProduct_0_1(int[] nums) {
 }
 
 ```
+
+
+### 2-2) Maximum Sum Circular Subarray
+
+```java
+// java
+// LC 918
+// https://leetcode.com/problems/maximum-sum-circular-subarray/editorial/
+// IDEA: Calculate the "Minimum Subarray"
+public int maxSubarraySumCircular_2_2(int[] nums) {
+    int curMax = 0;
+    int curMin = 0;
+    int maxSum = nums[0];
+    int minSum = nums[0];
+    int totalSum = 0;
+
+    for (int num : nums) {
+        // Normal Kadane's
+        curMax = Math.max(curMax, 0) + num;
+        maxSum = Math.max(maxSum, curMax);
+
+        // Kadane's but with min to find minimum subarray
+        curMin = Math.min(curMin, 0) + num;
+        minSum = Math.min(minSum, curMin);
+
+        totalSum += num;
+    }
+
+    if (totalSum == minSum) {
+        return maxSum;
+    }
+
+    return Math.max(maxSum, totalSum - minSum);
+}
+```
