@@ -3279,4 +3279,44 @@ public class workspace10 {
     }
 
 
+    // LC 72
+    // 10.07 - 10.17 am
+    /**
+     *
+     *
+     *  -> return the min ops that can
+     *     convert w1 to w2
+     *
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) DP ???
+     *
+     *
+     *
+     *
+     *  exp 1)
+     *
+     *   w1 = "horse", w2 = "ros"
+     *
+     *   -> res = 3
+     *
+     *   -> rorse
+     *   -> rose
+     *   -> ros
+     *
+     *
+     *
+     *  exp 2)
+     *
+     *
+     *
+     */
+    public int minDistance(String word1, String word2) {
+
+        return 0;
+    }
+
+
+
 }
