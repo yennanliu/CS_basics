@@ -3409,5 +3409,11 @@ public class workspace10 {
         return true;
     }
 
+    // LC 978
+    public int maxTurbulenceSize(int[] arr) {
+
+        return 0;
+    }
+
 
 }
