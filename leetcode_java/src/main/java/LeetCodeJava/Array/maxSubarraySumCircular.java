@@ -140,9 +140,107 @@ public class maxSubarraySumCircular {
         return max_sum > 0 ? Math.max(max_sum, total_sum - min_sum) : max_sum;
     }
 
+    // V0-2
+    // IDEA: Kadane algo (gpt)
+    public int maxSubarraySumCircular(int[] nums) {
+        int totalSum = 0;
+        int maxSum = nums[0], curMax = 0;
+        int minSum = nums[0], curMin = 0;
+
+        for (int num : nums) {
+            totalSum += num;
+
+            curMax = Math.max(curMax + num, num);
+            maxSum = Math.max(maxSum, curMax);
+
+            curMin = Math.min(curMin + num, num);
+            minSum = Math.min(minSum, curMin);
+        }
+
+        // Handle the case where all numbers are negative
+        if (maxSum < 0)
+            return maxSum;
+
+        return Math.max(maxSum, totalSum - minSum);
+    }
 
 
     // V1
+    // https://www.youtube.com/watch?v=fxT9KjakYPM
+    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0918-maximum-sum-circular-subarray.java
+    public int maxSubarraySumCircular_1(int[] nums) {
+        int curMax = 0, curMin = 0;
+        int globMax = nums[0], globMin = nums[0];
+        int total = 0;
+        for (int n : nums) {
+            curMax = Math.max(curMax + n, n);
+            curMin = Math.min(curMin + n, n);
+            total += n;
+            globMax = Math.max(curMax, globMax);
+            globMin = Math.min(curMin, globMin);
+        }
+        return globMax > 0 ? Math.max(globMax, total - globMin) : globMax;
+    }
 
-    // V2
+    // V2-1
+    // https://leetcode.com/problems/maximum-sum-circular-subarray/editorial/
+    // IDEA: Enumerate prefix and suffix sums
+    public int maxSubarraySumCircular_2_1(int[] nums) {
+        final int n = nums.length;
+        final int[] rightMax = new int[n];
+        rightMax[n - 1] = nums[n - 1];
+        int suffixSum = nums[n - 1];
+
+        for (int i = n - 2; i >= 0; --i) {
+            suffixSum += nums[i];
+            rightMax[i] = Math.max(rightMax[i + 1], suffixSum);
+        }
+
+        int maxSum = nums[0];
+        int specialSum = nums[0];
+        int curMax = 0;
+        for (int i = 0, prefixSum = 0; i < n; ++i) {
+            // This is Kadane's algorithm.
+            curMax = Math.max(curMax, 0) + nums[i];
+            maxSum = Math.max(maxSum, curMax);
+
+            prefixSum += nums[i];
+            if (i + 1 < n) {
+                specialSum = Math.max(specialSum, prefixSum + rightMax[i + 1]);
+            }
+        }
+
+        return Math.max(maxSum, specialSum);
+    }
+
+    // V2-2
+    // https://leetcode.com/problems/maximum-sum-circular-subarray/editorial/
+    // IDEA: Calculate the "Minimum Subarray"
+    public int maxSubarraySumCircular_2_2(int[] nums) {
+        int curMax = 0;
+        int curMin = 0;
+        int maxSum = nums[0];
+        int minSum = nums[0];
+        int totalSum = 0;
+
+        for (int num : nums) {
+            // Normal Kadane's
+            curMax = Math.max(curMax, 0) + num;
+            maxSum = Math.max(maxSum, curMax);
+
+            // Kadane's but with min to find minimum subarray
+            curMin = Math.min(curMin, 0) + num;
+            minSum = Math.min(minSum, curMin);
+
+            totalSum += num;
+        }
+
+        if (totalSum == minSum) {
+            return maxSum;
+        }
+
+        return Math.max(maxSum, totalSum - minSum);
+    }
+
+
 }
