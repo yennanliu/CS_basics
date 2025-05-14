@@ -3318,5 +3318,35 @@ public class workspace10 {
     }
 
 
+    // LC 312
+    // 10.26 - 10.36 am
+    /**
+     *
+     *  You are asked to burst all the balloons.
+     *
+     *
+     *   If you burst the ith balloon,
+     *      you will get nums[i - 1] * nums[i] * nums[i + 1] coins.
+     *
+     *   If i - 1 or i + 1 goes out of bounds of the array,
+     *      then treat it as if there is a balloon with a 1 painted on it.
+     *
+     *
+     *
+     *  -> Return the `maximum` coins
+     *     you can collect by bursting the balloons wisely.
+     *
+     *
+     *   IDEA 1) DP
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *
+     */
+    public int maxCoins(int[] nums) {
+
+        return 0;
+    }
+
 
 }

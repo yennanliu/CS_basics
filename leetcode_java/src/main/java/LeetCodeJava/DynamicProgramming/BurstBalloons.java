@@ -40,6 +40,46 @@ public class BurstBalloons {
 //
 //    }
 
+    // V0-1
+    // IDEA: DP (gpt)
+    public int maxCoins_0_1(int[] nums) {
+        int n = nums.length;
+
+        // Add 1 before and after to handle boundary cases easily
+        int[] balloons = new int[n + 2];
+        balloons[0] = balloons[n + 1] = 1;
+        for (int i = 0; i < n; i++) {
+            balloons[i + 1] = nums[i];
+        }
+
+        // Memoization table
+        int[][] dp = new int[n + 2][n + 2];
+
+        // Compute max coins from (left, right)
+        return burst(balloons, dp, 1, n);
+    }
+
+    private int burst(int[] balloons, int[][] dp, int left, int right) {
+        if (left > right)
+            return 0;
+        if (dp[left][right] > 0)
+            return dp[left][right];
+
+        int maxCoins = 0;
+
+        // Try bursting every balloon in the interval [left, right]
+        for (int i = left; i <= right; i++) {
+            int coins = balloons[left - 1] * balloons[i] * balloons[right + 1]; // current burst
+            int leftCoins = burst(balloons, dp, left, i - 1); // recursively burst left side
+            int rightCoins = burst(balloons, dp, i + 1, right); // recursively burst right side
+
+            maxCoins = Math.max(maxCoins, coins + leftCoins + rightCoins);
+        }
+
+        dp[left][right] = maxCoins;
+        return maxCoins;
+    }
+
     // V1-1
     // https://neetcode.io/problems/burst-balloons
     // IDEA:  Brute Force (Recursion)
