@@ -3410,10 +3410,98 @@ public class workspace10 {
     }
 
     // LC 978
+    // 11.18 - 11. 28 am
+    /**
+     *  -> return the length of a `maximum` size
+     *     turbulent subarray of arr.
+     *
+     *
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *
+     *   -> loop over idx,
+     *      check
+     *        - odd idx
+     *        - even idx
+     *        get the local, global max len
+     *
+     *   -> return global max len as res
+     *
+     *
+     *  IDEA 2) `diff` array
+     *
+     *  ->  arr = [9,4,2,10,7,8,8,1,9]
+     *      -> diff = [0, -5, -2, 8, -3, 1, 0, -7, 8]
+     *
+     *      ->
+     *
+     *
+     *
+     */
+    // SLIDING WINDOW
     public int maxTurbulenceSize(int[] arr) {
+        if(arr == null || arr.length == 0){
+            return 0;
+        }
+        if(arr.length == 1){
+            return 1;
+        }
+        int maxLen = 1;
 
-        return 0;
+        // double loop
+        for(int i = 0; i < arr.length; i++){
+            int cnt = 0;
+            int j = i+1;
+            while(j < arr.length){
+                if(cnt % 2 == 0){
+                    if(arr[i] > arr[j]){
+                        continue;
+                    }else{
+                        break;
+                    }
+                }else{
+                    if(arr[j] > arr[i]){
+                        continue;
+                    }else{
+                        break;
+                    }
+                }
+
+            }
+        }
+
+
+        return maxLen;
     }
+
+    // BRUTE FORCE
+//    public int maxTurbulenceSize(int[] arr) {
+//        if(arr == null || arr.length == 0){
+//            return 0;
+//        }
+//        if(arr.length == 1){
+//            return 1;
+//        }
+//        int maxLen = 1;
+//
+//        // double loop
+//        for(int i = 0; i < arr.length; i++){
+//            int cnt = 0;
+//            for(int j = i + 1; j < arr.length; j++){
+//                if(cnt % 1 == 0){
+//                    if(arr[i] > arr[j]){
+//                        continue;
+//                    }else{
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        return maxLen;
+//    }
 
 
 }
