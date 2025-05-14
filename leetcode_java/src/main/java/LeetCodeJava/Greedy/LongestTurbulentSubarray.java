@@ -49,6 +49,32 @@ public class LongestTurbulentSubarray {
 //
 //    }
 
+    // V0-1
+    // IDEA: SLIDING WINDOW (gpt)
+    public int maxTurbulenceSize_0_1(int[] arr) {
+        int n = arr.length;
+        if (n == 1)
+            return 1;
+
+        int maxLen = 1;
+        int start = 0;
+
+        for (int i = 1; i < n; i++) {
+            int cmp = Integer.compare(arr[i - 1], arr[i]);
+
+            if (cmp == 0) {
+                // Equal values: turbulence broken, reset window
+                start = i;
+            } else if (i == n - 1 || cmp * Integer.compare(arr[i], arr[i + 1]) != -1) {
+                // Turbulence breaks at next step — record max
+                maxLen = Math.max(maxLen, i - start + 1);
+                start = i;
+            }
+        }
+
+        return maxLen;
+    }
+
     // V1
     // https://www.youtube.com/watch?v=V_iHUhR8Dek
     // https://github.com/neetcode-gh/leetcode/blob/main/python%2F0978-longest-turbulent-subarray.py
