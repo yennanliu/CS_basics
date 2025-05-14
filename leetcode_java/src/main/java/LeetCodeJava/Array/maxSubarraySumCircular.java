@@ -3,6 +3,8 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/maximum-sum-circular-subarray/
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -46,6 +48,20 @@ import java.util.List;
  *
  */
 public class maxSubarraySumCircular {
+
+    /**
+     *  NOTE !!!
+     *
+     *  The double array + sliding window approach CAN'T solve this problem properly
+     *
+     * nums = [5, -3, 5] // Expected output: 10
+     * The core issue is that just using a sliding window over a
+     * doubled array cannot guarantee correct results,
+     * because we might miss wrapped subarrays that skip the minimum subarray in the middle.
+     * To solve this correctly using a doubled array approach,
+     * we must follow a more mathematically sound strategy.
+     *
+     */
 
     // V0
     // TODO: fix below
@@ -121,6 +137,20 @@ public class maxSubarraySumCircular {
             return 0;
         }
 
+        /**
+         *   NOTE !!!!
+         *
+         *    we use curMax, curMin, globMax, globMax
+         *    to catch all possible `max sub array` cases in circular array
+         *    (instead of `double array to simulate circular)
+         *
+         *
+         *             curMax = Math.max(curMax + n, n);
+         *             curMin = Math.min(curMin + n, n);
+         *             total += n;
+         *             globMax = Math.max(curMax, globMax);
+         *             globMax = Math.min(curMin, globMin);
+         */
         int n = nums.length;
         int max_sum = Integer.MIN_VALUE;
         int min_sum = Integer.MAX_VALUE;
@@ -162,6 +192,42 @@ public class maxSubarraySumCircular {
             return maxSum;
 
         return Math.max(maxSum, totalSum - minSum);
+    }
+
+    // V0-2
+    // IDEA: DEQUEUE + PREFIX SUM (gpt)
+    public int maxSubarraySumCircular_0_2(int[] nums) {
+        int n = nums.length;
+        int[] prefix = new int[2 * n + 1];
+
+        // Build prefix sum array
+        for (int i = 0; i < 2 * n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i % n];
+        }
+
+        int maxSum = nums[0];
+        Deque<Integer> deque = new LinkedList<>();
+
+        for (int j = 0; j <= 2 * n; j++) {
+            // Remove indices from the front if they are out of the allowed window size
+            if (!deque.isEmpty() && deque.peekFirst() < j - n) {
+                deque.pollFirst();
+            }
+
+            // Update maxSum
+            if (!deque.isEmpty()) {
+                maxSum = Math.max(maxSum, prefix[j] - prefix[deque.peekFirst()]);
+            }
+
+            // Maintain deque as a monotonic increasing queue of prefix values
+            while (!deque.isEmpty() && prefix[deque.peekLast()] >= prefix[j]) {
+                deque.pollLast();
+            }
+
+            deque.offerLast(j);
+        }
+
+        return maxSum;
     }
 
 
