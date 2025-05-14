@@ -3272,11 +3272,11 @@ public class workspace10 {
         return globalMax;
     }
 
-    // LC 918
-    // 12.49 - 12.59 pm
-    public int maxSubarraySumCircular(int[] nums) {
-        return 0;
-    }
+//    // LC 918
+//    // 12.49 - 12.59 pm
+//    public int maxSubarraySumCircular(int[] nums) {
+//        return 0;
+//    }
 
 
     // LC 72
@@ -3503,5 +3503,67 @@ public class workspace10 {
 //        return maxLen;
 //    }
 
+
+    // LC 918
+    // 12.18 - 12.28 pm
+    /**
+     *  A subarray may only include each element of the fixed buffer
+     *
+     *   nums at most once.
+     *
+     *  -> return the maximum possible sum of a
+     *     non-empty subarray of nums.
+     *
+     *
+     *  IDEA 1) K*** Algo + `circular` handling
+     *
+     */
+    public int maxSubarraySumCircular(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+
+        int globalMaxSum = nums[0];
+        int localMaxSum = nums[0];
+
+        // queue : {idx_1, idx_2, ...}
+        Queue<Integer> q = new LinkedList<>();
+        // double nums
+        //int[] nums_2 = new int[nums.length * 2];
+        List<Integer> nums_2 = new ArrayList<>();
+        for(int i = 0; i < 1; i++){
+            for(int j = 0; j < nums.length; j ++){
+                nums_2.add(nums[j]);
+            }
+        }
+
+        for(int i = 0; i < nums_2.size(); i++){
+
+            if(q.size() >= nums.length){
+                q.poll();
+            }
+
+            if(!q.contains(i % nums.length)){
+                localMaxSum = Math.max(
+                        nums_2.get(i),
+                        nums_2.get(i) + localMaxSum
+                );
+            }
+
+            globalMaxSum = Math.max(
+                    localMaxSum,
+                    globalMaxSum
+            );
+
+            // add `visited` idx to queue
+            q.add(i % nums.length);
+        }
+
+        return globalMaxSum;
+    }
 
 }
