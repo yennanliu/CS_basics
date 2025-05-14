@@ -49,6 +49,49 @@ public class RegularExpressionMatching {
 //
 //    }
 
+    // V0-1
+    // IDEA: 2D DP (gpt)
+    public boolean isMatch_0_1(String s, String p) {
+        int m = s.length();
+        int n = p.length();
+
+        // dp[i][j] = true if s[0..i-1] matches p[0..j-1]
+        boolean[][] dp = new boolean[m + 1][n + 1];
+
+        // Empty string matches empty pattern
+        dp[0][0] = true;
+
+        // Handle patterns like a*, a*b*, a*b*c* for empty string
+        for (int j = 2; j <= n; j++) {
+            if (p.charAt(j - 1) == '*' && dp[0][j - 2]) {
+                dp[0][j] = true;
+            }
+        }
+
+        // Fill DP table
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                char sc = s.charAt(i - 1);
+                char pc = p.charAt(j - 1);
+
+                if (pc == '.' || pc == sc) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else if (pc == '*') {
+                    char prevPattern = p.charAt(j - 2);
+                    // Zero occurrence of preceding char
+                    dp[i][j] = dp[i][j - 2];
+
+                    // One or more occurrence if char matches
+                    if (prevPattern == '.' || prevPattern == sc) {
+                        dp[i][j] |= dp[i - 1][j];
+                    }
+                }
+            }
+        }
+
+        return dp[m][n];
+    }
+
     // V1-1
     // https://neetcode.io/problems/regular-expression-matching
     // IDEA: RECURSION

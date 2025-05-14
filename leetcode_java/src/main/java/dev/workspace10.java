@@ -3348,5 +3348,66 @@ public class workspace10 {
         return 0;
     }
 
+    // LC 10
+    // 10.47 - 10.57 am
+    /**
+     *
+     *  implement `regular expression` matching with support for '.' and '*'
+     *
+     *    - '.' Matches any single character.
+     *    -  '*' Matches zero or more of the preceding element.
+     *
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) DP
+     *
+     *  IDEA 3) RECURSION ???
+     *
+     *
+     */
+    public boolean isMatch(String s, String p) {
+        // edge
+        if(s == null && p == null){
+            return true;
+        }
+        if(s == null || p == null){
+            return false;
+        }
+        if(s.equals(p)){
+            return true;
+        }
+
+        // case 1) no '*' and '.' in s
+        if(!p.contains("*") && !p.contains(".")){
+           // return s.equals(p);
+            return false;
+        }
+
+        // case 2) '.' in s
+        if(!p.contains("*") && p.contains(".")){
+            if(s.length() != p.length()){
+                return false;
+            }
+
+            for(int i = 0; i < s.length(); i++){
+                if(s.charAt(i) != p.charAt(i)){
+                    if(p.charAt(i) != '.'){
+                        return false;
+                    }
+                }
+            }
+
+        }
+
+        // case 3) '*' in s
+        if(p.contains("*") && !p.contains(".")){
+
+        }
+
+
+        return true;
+    }
+
 
 }
