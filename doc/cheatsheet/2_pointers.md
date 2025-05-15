@@ -26,6 +26,7 @@
     - LC 680
     - LC 647
     - LC 005
+
 - Merge Sorted Array
     - LC 88
 
@@ -210,6 +211,7 @@ class Solution {
 
 
 #### 0-2-3) for loop + "expand `left`, `right` from center"
+
 ```python
 # LC 005  Longest Palindromic Substring
 # LC 647 Palindromic Substrings
@@ -217,8 +219,15 @@ class Solution {
 # pseudo code
 # ...
 for i in range(lens(s)):
-    
+
+    # NOTE !!!
+    # NO NEED to have logic like `if i % 2 == 1`..
+    # we can just consider `odd, even len` cases directly
+
+    #--------------------------------------
     # if odd
+    # NOTE !!! if `odd`, left = right = i
+    #--------------------------------------
     left = right = i
     while left >= 0 and right < len(s) and s[left] == s[right]:
         if right+1-left > len(res):
@@ -226,7 +235,10 @@ for i in range(lens(s)):
         left -= 1
         right += 1
     
+    #--------------------------------------
     # if even
+    # NOTE !!! if `odd`, left = i - 1, right = i
+    #--------------------------------------
     left = i - 1
     right = i
     while left >= 0 and right < len(s) and s[left] == s[right]:
@@ -267,12 +279,16 @@ for (int r = 0; r < s2.length(); r++){
 ```java
 // java
 void reverse(int[] nums){
+
     int left = 0;
     int right = nums.length - 1
+
     while (left < right){
+
         int tmp = nums(left);
         nums(left) = nums(right)
         nums(right) = tmp;
+        
         left += 1;
         right -= 1;
     }
