@@ -2,6 +2,7 @@
 > Basic linear data structure
 
 ## 0) Concept
+
 - [Java Array](https://cloud.tencent.com/developer/article/1672332)
     - Low level : continuous blocks in memory space
 
@@ -22,6 +23,8 @@
     - [sliding window](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
     - [prefix sum](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/prefix_sum.md)
     - [difference array](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/diffence_array.md)
+    - [Kadane algo](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/kadane_algo.md)
+
 - Data structure
     - dict
     - set
