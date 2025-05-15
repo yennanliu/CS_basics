@@ -44,9 +44,48 @@ import java.util.Map;
 public class JumpGame2 {
 
     // V0
+    // IDEA: GREEDY (gpt)
+    public int jump(int[] nums) {
+
+        /**
+         *  NOTE !!!
+         *
+         *   we define 3 vars:
+         *
+         *    1. jumps : How many jumps we've made so far
+         *               to reach a certain part of the array.
+         *
+         *    2. currentEnd: the `end range` of current jump
+         *                  -> When you reach this point in the iteration,
+         *                    it means you need to make `another` jump.
+         *
+         *    3. farthest: The `farthest` index you
+         *                 can reach from the current range of positions.
+         *
+         *
+         */
+        int jumps = 0;
+        int currentEnd = 0;
+        int farthest = 0;
+
+        for (int i = 0; i < nums.length - 1; i++) {
+            farthest = Math.max(farthest, i + nums[i]);
+
+            // When we reach the end of the range of the current jump,
+            // we must jump again (extend range)
+            if (i == currentEnd) {
+                jumps++;
+                currentEnd = farthest;
+            }
+        }
+
+        return jumps;
+    }
+
+    // V0-0-1
     // IDEA : GREEDY
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/jump-game-ii.py#L45
-    public int jump(int[] nums) {
+    public int jump_0_0_1(int[] nums) {
 
         if (nums == null || nums.length <= 1){
             return 0;

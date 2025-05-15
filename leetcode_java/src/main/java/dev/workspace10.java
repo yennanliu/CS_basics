@@ -3584,29 +3584,110 @@ public class workspace10 {
      *   return true
      *
      */
-    public boolean canJump(int[] nums) {
+//    public boolean canJump(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return true;
+//        }
+//        if(nums.length == 1){
+//            return true;
+//        }
+//        //if(nums)
+//
+//        int rightMost = nums.length - 1; // ???
+//
+//        // loop `right -> left`
+//        for(int i = nums.length - 1; i >= 0; i--){
+//            if(nums[i-1] + (i-1) >= rightMost){
+//                //return false;
+//                rightMost = i;
+//            }
+//        }
+//
+//        //return true;
+//        return rightMost == 0;
+//    }
+
+
+    // LC 45
+    // 11.04 - 11.14 am
+    /**
+     *
+     *  -> Return the `minimum` number of jumps
+     *    to reach nums[n - 1].
+     *
+     *
+     *
+     *   IDEA 1) GREEDY
+     *
+     *   keep track `i + nums[i]` as max_dist
+     *   and if max_dist >= nums.len - 1, return such cnt
+     *
+     *
+     *   IDEA 2) DP ????
+     *
+     */
+    // IDEA: DP
+    public int jump(int[] nums) {
         // edge
         if(nums == null || nums.length == 0){
-            return true;
+            return 0;
         }
         if(nums.length == 1){
-            return true;
+            return 0;
         }
-        //if(nums)
 
-        int rightMost = nums.length - 1; // ???
+        // dp[i]: the `min jump` that can reach `i` ???
+        int[] dp = new int[nums.length + 1]; // ???
+        // init val
+        Arrays.fill(dp, -1);
+        /**
+         *  dp equation:
+         *
+         *   dp[i] = Math.min(dp[i-1], dp[i] +1)
+         *
+         *
+         */
+        dp[0] = 0;
+        if(nums[0] >= dp[1]){
+            dp[1] = 1;
+        }
+        int max_jump_so_far = nums[0];
+        int max_jump_so_far_idx = 0;
 
-        // loop `right -> left`
-        for(int i = nums.length - 1; i >= 0; i--){
-            if(nums[i-1] + (i-1) >= rightMost){
-                //return false;
-                rightMost = i;
+        for(int i = 1; i < nums.length -1; i++){
+            if(nums[i] + i > max_jump_so_far){
+                max_jump_so_far = nums[i] + i;
+                max_jump_so_far_idx = i;
             }
+
+            dp[i] = Math.min(dp[i-1], dp[max_jump_so_far_idx]);
         }
 
-        //return true;
-        return rightMost == 0;
+
+        return dp[nums.length - 1];
     }
 
+    // IDEA: GREEDY
+//    public int jump(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0;
+//        }
+//        if(nums.length == 1){
+//            return 0;
+//        }
+//
+//        int cnt = 0; // ????
+//        for(int i = 0; i < nums.length; i++){
+//            if(i + nums[i] >= nums.length - 1){
+//                return cnt;
+//            }
+//        }
+//
+//        // if can ONLY reach the end when visit the last element
+//        // means we need to jump `nums.len - 1` times
+//        return nums.length - 1; // ???
+//    }
 
 }
