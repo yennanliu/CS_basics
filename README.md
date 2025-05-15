@@ -91,7 +91,9 @@
 
 * System design
 
-	- https://github.com/yennanliu/CS_basics/blob/master/system_design/sys_design_resource.md
+	- [system_design readme](https://github.com/yennanliu/CS_basics/tree/master/system_design)
+	- [sys_design_resource](https://github.com/yennanliu/CS_basics/blob/master/system_design/sys_design_resource.md)
+
 * Tools
 	- https://coderpad.io/
 	- https://codeshare.io/
