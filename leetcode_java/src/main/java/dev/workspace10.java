@@ -3690,4 +3690,11 @@ public class workspace10 {
 //        return nums.length - 1; // ???
 //    }
 
+    // LC 1871
+    public boolean canReach(String s, int minJump, int maxJump) {
+
+        return false;
+    }
+
+
 }
