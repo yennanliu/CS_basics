@@ -99,8 +99,8 @@ These are often **permutation problems**, where:
 - You want to try **all possible orders**
 - You **should revisit** earlier choices (sometimes)
 
-#### 💡 General Rule:
-Don’t use `start_idx` when:
+
+-> Don’t use `start_idx` when:
 - You're generating **permutations**
 - You need **all orderings**
 - Choices are not sequential (e.g., trying all positions)
@@ -134,9 +134,6 @@ Don’t use `start_idx` when:
 
 - LC 39, 78, 518
 
-
-Excellent question. The choice between using `i` or `i + 1` in recursive calls is central to solving **combinatorics / dynamic programming problems** correctly — especially those involving subsets, combinations, or permutations.
-
 Let's walk through it systematically by comparing well-known **Leetcode problems** where this pattern matters.
 
 ---
@@ -159,7 +156,7 @@ Let's walk through it systematically by comparing well-known **Leetcode problems
 | **39**     | Combination Sum                   | `i`                    | Infinite         | Choose the same number again → `i`                          |
 | **40**     | Combination Sum II                | `i + 1`                | Once             | Each number can be used **once only**                       |
 | **46**     | Permutations                      | no index (`visited[]`) | Once             | Full permutations → can't reuse → use boolean visited array |
-| **47**     | Permutations II (with duplicates) | no index + dedup       | Once             | Same as 46 + dedup logic                                    |
+| **47**     | Permutations II (with duplicates) | no index + dedup       | Once             | Same as LC 46 + dedup logic                                    |
 | **90**     | Subsets II                        | `i + 1`                | Once             | Use each number once, skip duplicates                       |
 | **78**     | Subsets                           | `i + 1`                | Once             | Classic 0/1 inclusion/exclusion                             |
 | **322**    | Coin Change (min # of coins)      | `i`                    | Infinite         | Optimization version of coin change                         |
@@ -249,16 +246,6 @@ for (int i = start; i < candidates.length; i++) {
 | 46        | Permutations                      | `visited[]`     | Once per element | Full permutations; use visited array           |
 | 47        | Permutations II (with duplicates) | `visited[]`     | Once per element | Handle duplicates; use visited array           |
 | 494       | Target Sum                        | `i + 1`         | Once per element | Only one + or - per number; loop from `i + 1`  |
-
----
-
-## 🧩 Visual Mind Map
-
-Here's a visual representation to help you quickly identify the appropriate recursion pattern:
-
-![Recursion Index Patterns Mind Map](https://example.com/recursion-patterns-mind-map.png)
-
-*Note: Replace the URL with the actual link to the image.*
 
 ---
 
