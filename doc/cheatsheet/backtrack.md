@@ -63,6 +63,13 @@ def backtrack(路徑, 選擇清單):
 
 `start_idx` (or `index`, or similar) is **used to control the search space** — to **avoid duplicates** and maintain order in the generated result.
 
+-> Use `start_idx` when:
+
+- You're generating **combinations/subsets**
+- You want to **avoid duplicates**
+- You want to **preserve order** of choices
+
+
 ---
 
 ### ✅ **Problems that NEED `start_idx`**
@@ -82,12 +89,6 @@ These typically involve **combinations**, **subsets**, or **multi-use elements**
 | `Combinations` (Leetcode 77) | ✅ Yes | Choose k out of n, in order |
 | `Palindrome Partitioning` | ✅ Yes | Explore substrings from `start` |
 
-#### 💡 General Rule:
-Use `start_idx` when:
-- You're generating **combinations/subsets**
-- You want to **avoid duplicates**
-- You want to **preserve order** of choices
-
 ---
 
 ### ❌ **Problems that DO NOT use `start_idx`**
@@ -98,6 +99,12 @@ These are often **permutation problems**, where:
 - You want to try **all possible orders**
 - You **should revisit** earlier choices (sometimes)
 
+#### 💡 General Rule:
+Don’t use `start_idx` when:
+- You're generating **permutations**
+- You need **all orderings**
+- Choices are not sequential (e.g., trying all positions)
+
 #### 🔹 Examples:
 | Problem | Use of `start_idx` | Why Not? |
 |--------|------------------|---------|
@@ -106,11 +113,6 @@ These are often **permutation problems**, where:
 | `N-Queens` | ❌ No | One row per recursion depth |
 | `Word Break II` | ❌ No | Choices depend on substring matches |
 
-#### 💡 General Rule:
-Don’t use `start_idx` when:
-- You're generating **permutations**
-- You need **all orderings**
-- Choices are not sequential (e.g., trying all positions)
 
 ---
 
