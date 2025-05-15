@@ -3566,4 +3566,47 @@ public class workspace10 {
         return globalMaxSum;
     }
 
+    // LC 55
+    // 10.22 - 10.32 am
+    /**
+     *
+     *  -> Return true if you can reach the last index,
+     *    or false otherwise.
+     *
+     *
+     *  IDEA 1) GREEDY
+     *
+     *   -> loop `inversely` from right to left
+     *   -> check if `nums[i-1] + (i-1) >= i`
+     *   -> if above not true, return false directly
+     *   ...
+     *
+     *   return true
+     *
+     */
+    public boolean canJump(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return true;
+        }
+        if(nums.length == 1){
+            return true;
+        }
+        //if(nums)
+
+        int rightMost = nums.length - 1; // ???
+
+        // loop `right -> left`
+        for(int i = nums.length - 1; i >= 0; i--){
+            if(nums[i-1] + (i-1) >= rightMost){
+                //return false;
+                rightMost = i;
+            }
+        }
+
+        //return true;
+        return rightMost == 0;
+    }
+
+
 }

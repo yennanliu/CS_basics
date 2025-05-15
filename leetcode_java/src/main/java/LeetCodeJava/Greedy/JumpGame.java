@@ -286,6 +286,22 @@ public class JumpGame {
         return false;
     }
 
+    // V0-4
+    // IDEA: GREEDY (gpt)
+    public boolean canJump_0_4(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return false;
+
+        int lastGoodIndex = nums.length - 1;
+
+        for (int i = nums.length - 2; i >= 0; i--) {
+            if (i + nums[i] >= lastGoodIndex) {
+                lastGoodIndex = i;
+            }
+        }
+
+        return lastGoodIndex == 0;
+    }
 
 
     // V1
