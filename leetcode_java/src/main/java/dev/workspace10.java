@@ -3696,5 +3696,10 @@ public class workspace10 {
         return false;
     }
 
+    // LC 134
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        return 0;
+    }
+
 
 }
