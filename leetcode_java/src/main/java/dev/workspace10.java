@@ -3871,9 +3871,52 @@ public class workspace10 {
     }
 
     // LC 649
+    // 12.00 - 12.10 pm
+    /**
+     *  IDEA 1) QUEUE ??
+     *
+     *
+     *  exp 1)
+     *
+     *   input = "RD"
+     *    -> q = [r, d], cant_vote = []
+     *    ->  q = [d], cant_vote = [d]
+     *    -> q = [],
+     *
+     *
+     *
+     */
     public String predictPartyVictory(String senate) {
 
-        return null;
+        // edge
+        if(senate == null || senate.length() == 0){
+            return null; // ???
+        }
+        if(senate.length() == 1){
+            return String.valueOf(senate.charAt(0));
+        }
+
+        Queue<Integer> q_r = new LinkedList<>();
+        Queue<Integer> q_d = new LinkedList<>();
+
+        List<Integer> disable_list = new ArrayList<>();
+
+        for(int i = 0; i < senate.split("").length; i++){
+
+            String cur = senate.split("")[i];
+
+            if(!disable_list.contains(i)){
+                if(cur.equals("R")){
+                    q_r.add(i);
+                }else{
+                    q_d.add(i);
+                }
+            }
+
+        }
+
+
+        return q_r.size() > q_d.size() ? "Radiant" : "Dire";
     }
 
 
