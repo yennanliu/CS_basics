@@ -1,6 +1,7 @@
 package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/dota2-senate/description/
+// https://leetcode.cn/problems/dota2-senate/description/
 
 import java.util.LinkedList;
 import java.util.Queue;
