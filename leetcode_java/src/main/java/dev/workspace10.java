@@ -3870,4 +3870,11 @@ public class workspace10 {
         return true;
     }
 
+    // LC 649
+    public String predictPartyVictory(String senate) {
+
+        return null;
+    }
+
+
 }
