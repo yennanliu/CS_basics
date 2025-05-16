@@ -1,5 +1,28 @@
 # Progress
 
+# 2025-05-16
+- neetcode 250
+	- https://neetcode.io/practice?tab=neetcode250
+	- 5 / day ->  15 days to finish
+		- Greedy
+		- `LC cheatsheet` review
+	- again:
+		- similar:
+		- Kadane algo
+			- 918: Maximum Sum Circular Subarray
+			- 1836: Remove Duplicates from an Unsorted Linked List
+			- 134: Gas Station
+			- 122: Best Time to Buy and Sell Stock II
+			- Longest Turbulent Array
+	- todo:
+		- re-do all previous `again` problems, similar problems, make notes
+		- refine java_trick cheatsheet
+- crack code book
+	- p.177 (recursion & dp)
+- sys design book
+	- Volume 2
+		- p.315
+
 # 2025-05-15
 - neetcode 250
 	- https://neetcode.io/practice?tab=neetcode250
