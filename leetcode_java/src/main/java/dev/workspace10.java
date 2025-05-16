@@ -3697,8 +3697,67 @@ public class workspace10 {
     }
 
     // LC 134
+    // 9.52 - 10.02 am
+    /**
+     *
+     *
+     * ->  return the starting gas station's index
+     *  if you can travel around the circuit once
+     *  in the `clockwise` direction,
+     *  otherwise return -1
+     *
+     *
+     *  IDEA: GREEDY
+     *
+     *
+     *
+     *
+     */
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        return 0;
+        // edge
+        if(gas == null || gas.length == 0){
+            return 0;
+        }
+        if(gas.length == 1){
+            return 0;
+        }
+
+        // double array, to simulate `circular`
+        List<Integer> gas_ = new ArrayList<>();
+        List<Integer> cost_ = new ArrayList<>();
+
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < gas.length; j++){
+
+                gas_.add(gas[j]);
+                cost_.add(gas[j]);
+            }
+        }
+
+        for(int i = 0; i < gas.length; i++){
+
+            HashSet<Integer> visited = new HashSet<>();
+            int gas_val = gas[i];
+
+            for(int j = i+1; j < gas_.size(); j++){
+
+                gas_val = (gas_val - cost_.get(j) + gas_.get(i));
+
+                if(gas_val < 0){
+                    break;
+                }
+
+                int adjusted_idx = j % gas.length;
+
+                if(visited.contains(adjusted_idx)){
+                    return adjusted_idx;
+                }
+
+                visited.add(adjusted_idx);
+            }
+        }
+
+        return -1;
     }
 
 

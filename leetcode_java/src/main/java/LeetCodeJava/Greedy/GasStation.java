@@ -55,7 +55,7 @@ import java.util.List;
 public class GasStation {
 
     // VO
-    // IDEA: GREEDY
+    // IDEA: GREEDY + MATH
     // https://www.bilibili.com/video/BV1jA411r7WX/?share_source=copy_web&vd_source=49348a1975630e1327042905e52f488a
     /**
      *  total_gain = gain1 + gain2 + ....
@@ -64,7 +64,8 @@ public class GasStation {
      *
      *  then gain1 >= - (gain2 + gain3 + ...)
      *
-     *  -> means car start from such idx (gain1) is ENOUGH to visit all stops
+     *  -> so if `gain1 >= - (gain2 + gain3 + ...)`
+     *     -> means car start from such idx (gain1) is ENOUGH to visit all stops
      *
      */
     public int canCompleteCircuit(int[] gas, int[] cost) {
@@ -115,6 +116,29 @@ public class GasStation {
 //        }
 //        return -1;
 //    }
+
+    // V0-1
+    // IDEA: GREEDY (gpt)
+    public int canCompleteCircuit_0_1(int[] gas, int[] cost) {
+
+        int totalTank = 0;
+        int currTank = 0;
+        int startIndex = 0;
+
+        for (int i = 0; i < gas.length; i++) {
+            int gain = gas[i] - cost[i];
+            totalTank += gain;
+            currTank += gain;
+
+            if (currTank < 0) {
+                // can't reach station i+1 from current start
+                startIndex = i + 1;
+                currTank = 0;
+            }
+        }
+
+        return totalTank >= 0 ? startIndex : -1;
+    }
 
     // V1-1
     // https://neetcode.io/problems/gas-station
@@ -180,7 +204,7 @@ public class GasStation {
         return res;
     }
 
-    
+
     // V2
     // IDEA : ONE PASS
     // https://leetcode.com/problems/gas-station/editorial/
