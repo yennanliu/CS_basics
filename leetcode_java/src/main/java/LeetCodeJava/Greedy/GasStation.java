@@ -140,6 +140,40 @@ public class GasStation {
         return totalTank >= 0 ? startIndex : -1;
     }
 
+    // V0-2
+    // IDEA: GREEDY (gpt) (TLE)
+    public int canCompleteCircuit_0_2(int[] gas, int[] cost) {
+        if (gas == null || cost == null || gas.length == 0 || gas.length != cost.length) {
+            return -1;
+        }
+
+        int n = gas.length;
+
+        // Try each station as starting point
+        for (int start = 0; start < n; start++) {
+            int tank = 0;
+            boolean canComplete = true;
+
+            // Simulate the full trip around the circuit
+            for (int i = 0; i < n; i++) {
+                int idx = (start + i) % n;
+                tank += gas[idx] - cost[idx];
+
+                if (tank < 0) {
+                    canComplete = false;
+                    break;
+                }
+            }
+
+            if (canComplete) {
+                return start;
+            }
+        }
+
+        return -1;
+    }
+
+
     // V1-1
     // https://neetcode.io/problems/gas-station
     // IDEA:  BRUTE FORCE

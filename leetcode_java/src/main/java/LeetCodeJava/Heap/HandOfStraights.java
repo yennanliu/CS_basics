@@ -45,77 +45,30 @@ public class HandOfStraights {
 //
 //    }
 
-    // V0'
-    // TODO : fix below
-    // NOTE !!! PriorityQueue in Java by default is a min-heap (not a max-heap). So, the negation and handling logic need to be fixed.
-//    public boolean isNStraightHand(int[] hand, int groupSize) {
-//
-//        if (hand.length % groupSize != 0){
-//            return false;
-//        }
-//
-//        if (groupSize==1){
-//            return true;
-//        }
-//
-//        if (hand.length == groupSize){
-//            // sort
-//            Arrays.sort(hand);
-//            //int min = hand[0];
-//            for (int k = 0; k < hand.length-1; k++){
-//                if (hand[k]+1 != hand[k+1]){
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }
-//
-//
-//        // PQ (max heap???)
-//        PriorityQueue<Integer> pq = new PriorityQueue();
-//        for (int i = 0; i < hand.length; i++){
-//            // NOTE !! we put "-1 * i"
-//            // so can create a "small" PQ
-//            pq.add(-1 * hand[i]);
-//        }
-//
-//        System.out.println(">>> pq = " + pq);
-//
-//        // check
-//        while (!pq.isEmpty()){
-//            // get cur min element
-//            int cnt = 0;
-//            int min = pq.poll();
-//            Queue<Integer> tmpQ = new LinkedList<>();
-//            if (!pq.contains(min+1) || !pq.contains(min+2)){
-//                return false;
-//            }
-//            // till collect groupSize count of element
-//            for (int j = 0; j < groupSize && !pq.isEmpty(); j++){
-//                int cur = pq.poll();
-//                // found consecutive element
-//                if (cur == min+1){
-//                    min += 1;
-//                    // if not found, add to tmp queue
-//                }else{
-//                    tmpQ.add(cur);
-//                }
-//            }
-//
-//            // put tmp element back to pq
-//            while (!tmpQ.isEmpty()){
-//                pq.add(tmpQ.poll());
-//            }
-//
-//            // re-ordering PQ ??? needed ?
-//        }
-//
-//        return true;
-//    }
+    // V0-1
+    // IDEA: HASHMAP + SORTING
+    // NOTE !!! groupSize could be >= 2
+    public boolean isNStraightHand_0_1(int[] hand, int groupSize) {
+        if (hand.length % groupSize != 0) return false;
+        Map<Integer, Integer> count = new HashMap<>();
+        for (int num : hand) {
+            count.put(num, count.getOrDefault(num, 0) + 1);
+        }
+        Arrays.sort(hand);
+        for (int num : hand) {
+            if (count.get(num) > 0) {
+                for (int i = num; i < num + groupSize; i++) {
+                    if (count.getOrDefault(i, 0) == 0) return false;
+                    count.put(i, count.get(i) - 1);
+                }
+            }
+        }
+        return true;
+    }
 
     // V1-1
     // https://neetcode.io/problems/hand-of-straights
-    // IDEA: SORTING
+    // IDEA: HASHMAP + SORTING
     public boolean isNStraightHand_1_1(int[] hand, int groupSize) {
         if (hand.length % groupSize != 0) return false;
         Map<Integer, Integer> count = new HashMap<>();
