@@ -2,6 +2,8 @@ package LeetCodeJava.String;
 
 // https://leetcode.com/problems/valid-parenthesis-string/description/
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -120,9 +122,22 @@ public class ValidParenthesisString {
         return minParenCnt == 0; // ???
     }
 
-    // V0-1
-    // IDEA: GREEDY (fixed by gpt)
-    public boolean checkValidString_0_1(String s) {
+  // V0-1
+  // IDEA: GREEDY (fixed by gpt)
+  /**
+   *  IDEA:
+   *
+   *  🧠 Explanation:
+   * 	•	low = min number of unmatched '('
+   * 	•	high = max number of unmatched '('
+   * 	•	When you see a '*', it could be '(', ')', or nothing. So:
+   * 	   •	low decreases (optimistically assume it becomes ')')
+   * 	   •	high increases (assume it becomes '(')
+   * 	•	If high < 0 at any point → too many unmatched ')', return false
+   * 	•	If low == 0 at the end → valid string
+   *
+   */
+  public boolean checkValidString_0_1(String s) {
         int low = 0; // min possible open parens
         int high = 0; // max possible open parens
 
@@ -131,23 +146,66 @@ public class ValidParenthesisString {
                 low++;
                 high++;
             } else if (c == ')') {
-                if (low > 0)
-                    low--;
+                if (low > 0){
+                    low --;
+                }
                 high--;
             } else { // '*'
-                if (low > 0)
+                if (low > 0){
                     low--; // treat * as ')'
+                }
                 high++; // treat * as '('
             }
 
             // Too many closing parens
-            if (high < 0)
+            if (high < 0){
                 return false;
+            }
+
         }
 
         // low must be 0, meaning all '(' can be matched
         return low == 0;
     }
+
+    // TODO: fix below:
+//    public boolean checkValidString(String s) {
+//        // edge
+//        if(s == null || s.length() == 0){
+//            return true;
+//        }
+//        if(s.length() == 1){
+//            if(s != "*"){
+//                return false;
+//            }
+//        }
+//
+//        Queue<String> leftParen = new LinkedList<>();
+//        Queue<String> rightParen = new LinkedList<>();
+//        Queue<String> starParen = new LinkedList<>();
+//
+//        String[] s_arr = s.split("");
+//
+//        for(int i = 0; i < s_arr.length; i++){
+//            String cur = s_arr[i];
+//            if(cur.equals("(")){
+//                leftParen.add(cur);
+//            }else if (cur.equals(")")){
+//                if(!leftParen.isEmpty()){
+//                    leftParen.poll();
+//                }else if(!starParen.isEmpty()){
+//                    starParen.poll();
+//                }else{
+//                    return false;
+//                }
+//            }else{
+//                starParen.add(cur);
+//            }
+//        }
+//
+//        //return leftParen.isEmpty() && rightParen.isEmpty();
+//        return leftParen.isEmpty();
+//    }
 
     // V1-1
     // https://neetcode.io/problems/valid-parenthesis-string
