@@ -3919,5 +3919,46 @@ public class workspace10 {
         return q_r.size() > q_d.size() ? "Radiant" : "Dire";
     }
 
+    // LC 1899
+    // 3.45 - 3.55 pm
+    public boolean mergeTriplets(int[][] triplets, int[] target) {
+
+        // edge
+        if(triplets == null || triplets.length == 0){
+            return false;
+        }
+
+        List<int[]> collected = new ArrayList<>();
+
+        // only collect the `qualified` array
+        for(int[] x: triplets){
+            boolean qualified = true;
+            for(int i = 0; i < x.length; i++){
+                if(x[i] > target[i]){
+                    qualified = false;
+                    break;
+                }
+            }
+
+            if(qualified){
+                collected.add(x);
+            }
+        }
+
+        HashSet<Integer> set = new HashSet<>();
+
+        // check if `qualified` array can form target
+        for(int[] x: collected){
+            for(int i = 0; i < x.length; i++){
+                if(x[i] == target[i]){
+                    set.add(i);
+                }
+            }
+        }
+
+        return set.size() == target.length;
+    }
+
+
 
 }

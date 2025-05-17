@@ -90,6 +90,10 @@ public class MergeTripletsToFormTargetTriplet {
             for(int i = 0; i < c.length; i++){
                 //System.out.println(">>> c[i]  = " + c[i] + ",  target[i] = " +  target[i]);
                 if(c[i] == target[i]){
+
+                    // NOTE !!! we collect `idx`, instead of the actual value
+                    // since all we want to know is:
+                    // if the `combination of candidates can form target`
                     set.add(i);
                 }
             }
