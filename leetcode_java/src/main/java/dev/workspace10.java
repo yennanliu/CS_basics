@@ -4031,6 +4031,52 @@ public class workspace10 {
         return true;
     }
 
+    // LC 678
+    // 5.07 - 5.22 pm
+    /**
+     *  IDEA 1) GREEDY + QUEUE
+     *
+     *
+     *
+     *
+     */
+    public boolean checkValidString(String s) {
+        // edge
+        if(s == null || s.length() == 0){
+            return true;
+        }
+        if(s.length() == 1){
+            if(s != "*"){
+                return false;
+            }
+        }
+
+        Queue<String> leftParen = new LinkedList<>();
+        Queue<String> rightParen = new LinkedList<>();
+        Queue<String> starParen = new LinkedList<>();
+
+        String[] s_arr = s.split("");
+
+        for(int i = 0; i < s_arr.length; i++){
+            String cur = s_arr[i];
+            if(cur.equals("(")){
+                leftParen.add(cur);
+            }else if (cur.equals(")")){
+                if(!leftParen.isEmpty()){
+                    leftParen.poll();
+                }else if(!starParen.isEmpty()){
+                    starParen.poll();
+                }else{
+                    return false;
+                }
+            }else{
+                starParen.add(cur);
+            }
+        }
+
+        //return leftParen.isEmpty() && rightParen.isEmpty();
+        return leftParen.isEmpty();
+    }
 
 
 }

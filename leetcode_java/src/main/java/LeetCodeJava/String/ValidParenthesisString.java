@@ -120,6 +120,35 @@ public class ValidParenthesisString {
         return minParenCnt == 0; // ???
     }
 
+    // V0-1
+    // IDEA: GREEDY (fixed by gpt)
+    public boolean checkValidString_0_1(String s) {
+        int low = 0; // min possible open parens
+        int high = 0; // max possible open parens
+
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                low++;
+                high++;
+            } else if (c == ')') {
+                if (low > 0)
+                    low--;
+                high--;
+            } else { // '*'
+                if (low > 0)
+                    low--; // treat * as ')'
+                high++; // treat * as '('
+            }
+
+            // Too many closing parens
+            if (high < 0)
+                return false;
+        }
+
+        // low must be 0, meaning all '(' can be matched
+        return low == 0;
+    }
+
     // V1-1
     // https://neetcode.io/problems/valid-parenthesis-string
     // IDEA: RECURSION
