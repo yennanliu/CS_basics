@@ -3959,6 +3959,78 @@ public class workspace10 {
         return set.size() == target.length;
     }
 
+    // LC 763
+    // 4.14 - 4.24 pm
+    /**
+     *  IDEA 1) GREEDY + hashmap + sliding window
+     *
+     *  -> use `hash map` records
+     *  the `last exist idx`  for every element
+     *  loop over input str, start the other sub str
+     *  if `all last idx` is met for elements in current window
+     *
+     *
+     */
+    public List<Integer> partitionLabels(String s) {
+
+        List<Integer> res = new ArrayList<>();
+
+        // edge
+        if(s == null || s.length() == 0){
+            return res;
+        }
+        if(s.length() == 1){
+            res.add(1);
+            return res;
+        }
+
+        // hashmap
+        // {k : last_idx}
+        Map<String, Integer> map = new HashMap<>();
+        String[] s_arr = s.split("");
+
+
+        for(int i = 0; i < s_arr.length; i++){
+            //String cur = s.split("")[i];
+            map.put(s_arr[i], i);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        int l = 0;
+        int r = 0;
+
+        while(l < s.length() && r < s.length()){
+            Map<String, Integer> tmpMap = new HashMap<>();
+            if(canSplit(map, tmpMap)){
+                //res.add()
+                res.add(r - l + 1);
+                tmpMap = new HashMap<>();
+                l = r + 1;
+            }
+
+            tmpMap.put(s_arr[r], r);
+            r += 1;
+        }
+
+        return res;
+    }
+
+    public boolean canSplit(Map<String, Integer> map, Map<String, Integer> tmpMap){
+
+        for(String k: tmpMap.keySet()){
+            if(map.get(k) > tmpMap.get(k)){
+                return false;
+            }
+        }
+
+        if(tmpMap.isEmpty()){
+            return false;
+        }
+
+        return true;
+    }
+
 
 
 }
