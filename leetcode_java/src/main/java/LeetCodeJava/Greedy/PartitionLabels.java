@@ -143,6 +143,39 @@ public class PartitionLabels {
         return res;
     }
 
+    // V0-2
+    // IDEA: GREEDY + hashMap record last idx + sliding window (fixed by gpt)
+    public List<Integer> partitionLabels_0_2(String s) {
+        List<Integer> res = new ArrayList<>();
+
+        if (s == null || s.length() == 0) {
+            return res;
+        }
+
+        // Map each character to its last index
+        Map<Character, Integer> lastIndexMap = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            lastIndexMap.put(s.charAt(i), i);
+        }
+
+        int l = 0;
+        while (l < s.length()) {
+            int end = lastIndexMap.get(s.charAt(l));
+            int r = l;
+
+            // Expand the window to include all characters in the current segment
+            while (r < end) {
+                end = Math.max(end, lastIndexMap.get(s.charAt(r)));
+                r++;
+            }
+
+            res.add(end - l + 1);
+            l = end + 1;
+        }
+
+        return res;
+    }
+
     // V1-1
     // https://neetcode.io/problems/partition-labels
     // IDEA: 2 POINTERS
