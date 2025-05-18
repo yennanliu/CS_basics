@@ -4079,4 +4079,10 @@ public class workspace10 {
     }
 
 
+    // LC 135
+    // 3.05 - 3.15 pm
+    public int candy(int[] ratings) {
+        return 0;
+    }
+
 }

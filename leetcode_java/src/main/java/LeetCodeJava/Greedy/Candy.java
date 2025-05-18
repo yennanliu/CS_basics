@@ -48,6 +48,9 @@ public class Candy {
 
 
     // V1
+    // https://www.youtube.com/watch?v=1IzCRCcK17A
+
+    // V2
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/candy/editorial/
     public int candy_2(int[] ratings) {
@@ -74,7 +77,7 @@ public class Candy {
         return sum;
     }
 
-    // V2
+    // V3
     // IDEA :  Using two arrays
     // https://leetcode.com/problems/candy/editorial/
     public int candy_3(int[] ratings) {
@@ -99,7 +102,7 @@ public class Candy {
         return sum;
     }
 
-    // V3
+    // V4
     // IDEA : Using one array
     // https://leetcode.com/problems/candy/editorial/
     public int candy_4(int[] ratings) {
@@ -120,7 +123,7 @@ public class Candy {
         return sum;
     }
 
-    // V4
+    // V5
     // IDEA : Single Pass Approach with Constant Space
     // https://leetcode.com/problems/candy/editorial/
     public int count(int n) {
