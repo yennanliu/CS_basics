@@ -3793,78 +3793,82 @@ public class workspace10 {
      *
      *
      */
-    // greedy
+    // 4.40 - 4.50 pm
     public boolean isNStraightHand(int[] hand, int groupSize) {
-        // edge
-        if(hand == null){
-            return true;
-        }
-        if(hand.length == 0 && groupSize == 0){
-            return true;
-        }
-        if(hand.length == 0 && groupSize > 0){
-            return false;
-        }
-        if(hand.length % groupSize != 0){
-            return false;
-        }
-
-        // greedy
-
-        // map : {k : cnt}
-        Map<Integer, Integer> map = new HashMap<>();
-
-        Integer[] hand_ = new Integer[hand.length];
-        for(int i = 0; i < hand.length; i++){
-            hand_[i] = hand[i];
-
-            map.put(hand[i], map.getOrDefault(hand[i], 0) + 1);
-        }
-
-        // sort (small -> big)
-        Arrays.sort(hand_, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                int diff = o1 - o2;
-                return diff;
-            }
-        });
-
-        for(int i = 0; i < hand_.length; i++){
-
-            if(map.isEmpty()){
-                return true;
-            }
-
-            int cur = hand_[i];
-            // get next 2 val
-            int next_1 = cur + 1;
-            int next_2 = cur + 2;
-
-            System.out.println("cur = " + cur + ", next_1 = " + next_1 + ", !map.containsKey(next_1) || !map.containsKey(next_2) = " + (!map.containsKey(next_1) || !map.containsKey(next_2)));
-
-            if(!map.containsKey(next_1) || !map.containsKey(next_2)){
-                return false;
-            }
-
-            // update map
-            map.put(next_1, map.get(next_1) - 1);
-            map.put(next_2, map.get(next_2) - 1);
-
-            // remove key is cnt == 0
-            if(map.get(next_1) == 0){
-                map.remove(next_1);
-            }
-
-            if(map.get(next_2) == 0){
-                map.remove(next_2);
-            }
-
-        }
-
-
-        return true;
+        return false;
     }
+//    // greedy
+//    public boolean isNStraightHand(int[] hand, int groupSize) {
+//        // edge
+//        if(hand == null){
+//            return true;
+//        }
+//        if(hand.length == 0 && groupSize == 0){
+//            return true;
+//        }
+//        if(hand.length == 0 && groupSize > 0){
+//            return false;
+//        }
+//        if(hand.length % groupSize != 0){
+//            return false;
+//        }
+//
+//        // greedy
+//
+//        // map : {k : cnt}
+//        Map<Integer, Integer> map = new HashMap<>();
+//
+//        Integer[] hand_ = new Integer[hand.length];
+//        for(int i = 0; i < hand.length; i++){
+//            hand_[i] = hand[i];
+//
+//            map.put(hand[i], map.getOrDefault(hand[i], 0) + 1);
+//        }
+//
+//        // sort (small -> big)
+//        Arrays.sort(hand_, new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                int diff = o1 - o2;
+//                return diff;
+//            }
+//        });
+//
+//        for(int i = 0; i < hand_.length; i++){
+//
+//            if(map.isEmpty()){
+//                return true;
+//            }
+//
+//            int cur = hand_[i];
+//            // get next 2 val
+//            int next_1 = cur + 1;
+//            int next_2 = cur + 2;
+//
+//            System.out.println("cur = " + cur + ", next_1 = " + next_1 + ", !map.containsKey(next_1) || !map.containsKey(next_2) = " + (!map.containsKey(next_1) || !map.containsKey(next_2)));
+//
+//            if(!map.containsKey(next_1) || !map.containsKey(next_2)){
+//                return false;
+//            }
+//
+//            // update map
+//            map.put(next_1, map.get(next_1) - 1);
+//            map.put(next_2, map.get(next_2) - 1);
+//
+//            // remove key is cnt == 0
+//            if(map.get(next_1) == 0){
+//                map.remove(next_1);
+//            }
+//
+//            if(map.get(next_2) == 0){
+//                map.remove(next_2);
+//            }
+//
+//        }
+//
+//
+//        return true;
+//    }
 
     // LC 649
     // 12.00 - 12.10 pm
