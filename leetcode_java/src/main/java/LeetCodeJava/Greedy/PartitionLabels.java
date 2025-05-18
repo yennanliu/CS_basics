@@ -97,6 +97,44 @@ public class PartitionLabels {
         return res;
     }
 
+    // V0-1
+    // IDEA: HASHMAP record `max idx` + 2 POINTERS
+    public List<Integer> partitionLabels_0_1(String s) {
+
+        List<Integer> res = new ArrayList<>();
+
+        // edge
+        if (s == null || s.length() == 0) {
+            return res;
+        }
+        if (s.length() == 1) {
+            res.add(1);
+            return res;
+        }
+
+        Map<String, Integer> lastIdxMap = new HashMap<>();
+        String[] s_arr = s.split("");
+        for (int i = 0; i < s_arr.length; i++) {
+            lastIdxMap.put(s_arr[i], i);
+        }
+
+        int curMaxIdx = 0; // ???
+        int l = 0; // ??
+        for (int r = 0; r < s_arr.length; r++) {
+            //int r = i;
+            String val = s_arr[r];
+            curMaxIdx = Math.max(lastIdxMap.get(val), curMaxIdx);
+            if (curMaxIdx == r) {
+                res.add(r - l + 1);
+                // update l
+                l = r + 1; // ??
+            }
+
+        }
+
+        return res;
+    }
+
     // V0-0-1
     // IDEA: HASHMAP + 2 POINTERS (fixed by gpt)
     public List<Integer> partitionLabels_0_0_1(String s) {
@@ -219,5 +257,6 @@ public class PartitionLabels {
         }
         return ans;
     }
+    
 
 }

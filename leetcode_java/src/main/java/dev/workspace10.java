@@ -3980,52 +3980,90 @@ public class workspace10 {
             return res;
         }
 
-        // hashmap
-        // {k : last_idx}
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> lastIdxMap = new HashMap<>();
         String[] s_arr = s.split("");
-
-
         for(int i = 0; i < s_arr.length; i++){
-            //String cur = s.split("")[i];
-            map.put(s_arr[i], i);
+            lastIdxMap.put(s_arr[i], i);
         }
 
-        System.out.println(">>> map = " + map);
-
-        int l = 0;
-        int r = 0;
-
-        while(l < s.length() && r < s.length()){
-            Map<String, Integer> tmpMap = new HashMap<>();
-            if(canSplit(map, tmpMap)){
-                //res.add()
+        int curMaxIdx = 0; // ???
+        int l = 0; // ??
+        for(int r = 0; r < s_arr.length; r++){
+            //int r = i;
+            String val = s_arr[r];
+            curMaxIdx = Math.max(lastIdxMap.get(val), curMaxIdx);
+            if(curMaxIdx == r){
                 res.add(r - l + 1);
-                tmpMap = new HashMap<>();
-                l = r + 1;
+                // update l
+                l = r + 1; // ??
             }
 
-            tmpMap.put(s_arr[r], r);
-            r += 1;
         }
 
-        return res;
+        return  res;
     }
 
-    public boolean canSplit(Map<String, Integer> map, Map<String, Integer> tmpMap){
 
-        for(String k: tmpMap.keySet()){
-            if(map.get(k) > tmpMap.get(k)){
-                return false;
-            }
-        }
 
-        if(tmpMap.isEmpty()){
-            return false;
-        }
-
-        return true;
-    }
+//    public List<Integer> partitionLabels(String s) {
+//
+//        List<Integer> res = new ArrayList<>();
+//
+//        // edge
+//        if(s == null || s.length() == 0){
+//            return res;
+//        }
+//        if(s.length() == 1){
+//            res.add(1);
+//            return res;
+//        }
+//
+//        // hashmap
+//        // {k : last_idx}
+//        Map<String, Integer> map = new HashMap<>();
+//        String[] s_arr = s.split("");
+//
+//
+//        for(int i = 0; i < s_arr.length; i++){
+//            //String cur = s.split("")[i];
+//            map.put(s_arr[i], i);
+//        }
+//
+//        System.out.println(">>> map = " + map);
+//
+//        int l = 0;
+//        int r = 0;
+//
+//        while(l < s.length() && r < s.length()){
+//            Map<String, Integer> tmpMap = new HashMap<>();
+//            if(canSplit(map, tmpMap)){
+//                //res.add()
+//                res.add(r - l + 1);
+//                tmpMap = new HashMap<>();
+//                l = r + 1;
+//            }
+//
+//            tmpMap.put(s_arr[r], r);
+//            r += 1;
+//        }
+//
+//        return res;
+//    }
+//
+//    public boolean canSplit(Map<String, Integer> map, Map<String, Integer> tmpMap){
+//
+//        for(String k: tmpMap.keySet()){
+//            if(map.get(k) > tmpMap.get(k)){
+//                return false;
+//            }
+//        }
+//
+//        if(tmpMap.isEmpty()){
+//            return false;
+//        }
+//
+//        return true;
+//    }
 
     // LC 678
     // 5.07 - 5.22 pm
