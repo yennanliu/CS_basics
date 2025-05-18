@@ -4131,96 +4131,147 @@ public class workspace10 {
   // 3.23 - 3.33 pm
   public int[][] insert(int[][] intervals, int[] newInterval) {
 
-    // edge
-    if (intervals == null || intervals.length == 0) {
-      return new int[][] {newInterval};
-    }
-    if (newInterval == null || newInterval.length == 0) {
-      return intervals;
-    }
+      if (intervals.length == 0){
+          if (newInterval.length == 0){
+              return new int[][]{};
+          }
+          return new int[][]{newInterval};
+      }
 
-    // add newInterval to intervals
-    List<int[]> cache = new ArrayList<>();
-    cache.add(newInterval);
-    for(int[] x: intervals){
-        cache.add(x);
-    }
+      List<int[]> intervalList = new ArrayList<>(Arrays.asList(intervals));
+      intervalList.add(newInterval);
 
-    /**
-     *  Case of `overlap`
-     *
-     *  case 1)
-     *
-     *    |-----|  old
-     *      |--------| new
-     *
-     *  case 2)
-     *
-     *    |-------|  old
-     *      |--|     new
-     *
-     *  case 3)
-     *
-     *   ..???
-     */
-    /**
-     *  NOTE !!!
-     *
-     *  since the array ALREADY sorted in 1st element (small -> big)
-     *  there is ONLY 1 case that the intervals are NOT OVERLAPPED
-     *
-     *   e.g.
-     *
-     *      |------|  old
-     *               | ------- | new
-     *
-     *
-     */
-    // sort (`first element`) small -> big
-    Collections.sort(cache, new Comparator<int[]>() {
-        @Override
-        public int compare(int[] o1, int[] o2){
-            int diff = o1[0] - o2[0];
-            return diff;
-        }
-    });
+      // sort
+      Collections.sort(intervalList, new Comparator<int[]>() {
+          @Override
+          public int compare(int[] o1, int[] o2) {
+              int diff = o1[0] - o2[0];
+              return diff;
+          }
+      });
 
-    List<int[]> cache2 = new ArrayList<>();
+      List<int[]> collected = new ArrayList<>();
 
-    // merge
-    for(int i = 0; i < cache.size(); i++){
-        // if i = 0, append directly
-        if(i == 0){
-            cache2.add(cache.get(i));
-        }else{
-//            // if overlap, add the (min, max)
+      // loop over intervalList
+      for(int i = 0; i < intervals.length; i++){
+          // idx = 1 or NOT overlap
+          if(collected.isEmpty() || (collected.get(collected.size() - 1)[1] < intervalList.get(i)[0]) ){
+              collected.add(intervals[i]);
+          }
+          // overlap
+          else{
+              collected.get(collected.size() - 1)[0] = Math.min(collected.get(collected.size() - 1)[0], intervalList.get(i)[0]);
+              collected.get(collected.size() - 1)[1] = Math.max(collected.get(collected.size() - 1)[1], intervalList.get(i)[1]);
+          }
+      }
+
+      // list to array
+      //int[][] test = collected.toArray(new int[collected.size()][2]);
+
+      // ??
+      return collected.toArray(new int[collected.size()][]);
+  }
+
+
+//  public int[][] insert(int[][] intervals, int[] newInterval) {
+//
+//    // edge
+//    if (intervals == null || intervals.length == 0) {
+//      return new int[][] {newInterval};
+//    }
+//    if (newInterval == null || newInterval.length == 0) {
+//      return intervals;
+//    }
+//
+//    // add newInterval to intervals
+//    List<int[]> cache = new ArrayList<>();
+//    cache.add(newInterval);
+//    for(int[] x: intervals){
+//        cache.add(x);
+//    }
+//
+//    /**
+//     *  Case of `overlap`
+//     *
+//     *  case 1)
+//     *
+//     *    |-----|  old
+//     *      |--------| new
+//     *
+//     *  case 2)
+//     *
+//     *    |-------|  old
+//     *      |--|     new
+//     *
+//     *  case 3)
+//     *
+//     *   ..???
+//     */
+//    /**
+//     *  NOTE !!!
+//     *
+//     *  since the array ALREADY sorted in 1st element (small -> big)
+//     *  there is ONLY 1 case that the intervals are NOT OVERLAPPED
+//     *
+//     *   e.g.
+//     *
+//     *      |------|  old
+//     *               | ------- | new
+//     *
+//     *
+//     */
+//    // sort (`first element`) small -> big
+//    Collections.sort(cache, new Comparator<int[]>() {
+//        @Override
+//        public int compare(int[] o1, int[] o2){
+//            int diff = o1[0] - o2[0];
+//            return diff;
+//        }
+//    });
+//
+//    List<int[]> cache2 = new ArrayList<>();
+//
+//    // merge
+//    for(int i = 0; i < cache.size(); i++){
+//        // if i = 0, append directly
+//        if(i == 0){
+//            cache2.add(cache.get(i));
+//        }else{
+////            // if overlap, add the (min, max)
+////            int[] last = cache2.get(cache2.size() - 1);
+////            if( (last[1] > cache.get(i)[0] && last[1] < cache.get(i)[1]) || (last[1] < cache.get(i)[0] && last[1] > cache.get(i)[1])){
+////                cache2.remove(cache2.size() - 1);
+////                //cache2 (cache2.size() - 1 ) = new int[] {1,2};
+////                cache2.add(new int[] { Math.min( cache.get(i)[0], last[0]),  Math.max( cache.get(i)[1], last[1]) } );
+////            }else{
+////                cache2.add(cache.get(i));
+////            }
+//
+//            // if NOT overlap, append directly
 //            int[] last = cache2.get(cache2.size() - 1);
-//            if( (last[1] > cache.get(i)[0] && last[1] < cache.get(i)[1]) || (last[1] < cache.get(i)[0] && last[1] > cache.get(i)[1])){
-//                cache2.remove(cache2.size() - 1);
-//                //cache2 (cache2.size() - 1 ) = new int[] {1,2};
-//                cache2.add(new int[] { Math.min( cache.get(i)[0], last[0]),  Math.max( cache.get(i)[1], last[1]) } );
-//            }else{
+//            if(last[1] < cache.get(i)[0]){
 //                cache2.add(cache.get(i));
 //            }
+//            // if overlap
+//            else{
+//                cache2.add(new int[] { Math.min( cache.get(i)[0], last[0]),  Math.max( cache.get(i)[1], last[1]) } );
+//            }
+//        }
+//    }
+//
+//    int[][] res = new int[2][cache2.size()];
+//    for(int i = 0; i < cache2.size(); i++){
+//        res[i] = cache2.get(i);
+//    }
+//
+//    return res;
+//  }
 
-            // if NOT overlap, append directly
-            int[] last = cache2.get(cache2.size() - 1);
-            if(last[1] < cache.get(i)[0]){
-                cache2.add(cache.get(i));
-            }
-            // if overlap
-            else{
-                cache2.add(new int[] { Math.min( cache.get(i)[0], last[0]),  Math.max( cache.get(i)[1], last[1]) } );
-            }
-        }
-    }
+  // LC 56
+  // 3.56 - 4.07
+  public int[][] merge(int[][] intervals) {
 
-    int[][] res = new int[2][cache2.size()];
-    for(int i = 0; i < cache2.size(); i++){
-        res[i] = cache2.get(i);
-    }
-
-    return res;
+      return null;
   }
 
 }
