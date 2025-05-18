@@ -34,6 +34,67 @@ import java.util.*;
 
 public class MergeIntervals {
 
+    // V0
+    // IDEA: LC 57 + `interval op`
+    public int[][] merge(int[][] intervals) {
+
+        if (intervals == null || intervals.length == 0) {
+            return null;
+        }
+
+        List<int[]> intervalList = new ArrayList<>(Arrays.asList(intervals));
+
+        // sort
+        intervalList.sort(Comparator.comparingInt(a -> a[0]));
+
+        List<int[]> merged = new ArrayList<>();
+
+        for (int[] x : intervalList) {
+            /**
+             *  NOTE !!!
+             *
+             *   since we already added `new interval`, and sort array in increasing order (small order)
+             *
+             *   -> all `old` interval's left boundary should be SMALLER than `new`interval's  left boundary
+             *   -> e.g. old[0] < new[0]
+             *   -> so, when consider `NON OVERLAP` case,  ONLY 1 case could happen (as below)
+             *
+             *     |-----|      old
+             *             |-----------|  new
+             *
+             *
+             *
+             *
+             *  case 1) : if merged is empty, nothing to remove, add new item to merged directly
+             *  case 2) : if no overlap, add new item to merged directly
+             *               -> NOTE !!!
+             *                   since array already sorted, so THE ONLY possible NON-OVERLAP case is as below:
+             *                     |----|          (old)
+             *                            |-----|  (new)
+             *                   -> so ALL we need to check is:
+             *                          `new[0] > old[1]` or not
+             *
+             */
+            if (merged.isEmpty() || merged.get(merged.size() - 1)[1] < x[0]) {
+                merged.add(x);
+            }
+            // case 3) if overlapped, update boundary
+            else {
+                /**
+                 *  if overlap
+                 *   last : |-----|
+                 *   x :      |------|
+                 */
+                // NOTE : we set 0 idx as SMALLER val from merged last element (0 idx), input
+                merged.get(merged.size() - 1)[0] = Math.min(merged.get(merged.size() - 1)[0], x[0]);
+                // NOTE : we set 1 idx as BIGGER val from merged last element (1 idx), input
+                merged.get(merged.size() - 1)[1] = Math.max(merged.get(merged.size() - 1)[1], x[1]);
+            }
+        }
+
+        return merged.toArray(new int[merged.size()][]);
+    }
+
     /**
      *  Exp 1:
      *      input = [[1,3],[2,6],[8,10],[15,18]]
@@ -52,10 +113,9 @@ public class MergeIntervals {
      *
      *          [[1,6], [8,10], [15,18]]
      */
-
-    // V0
+    // V0-0-1
     // IDEA : ARRAY OP + BOUNDARY OP
-    public int[][] merge(int[][] intervals) {
+    public int[][] merge_0_0_1(int[][] intervals) {
         /**
          *
          *
@@ -322,7 +382,7 @@ public class MergeIntervals {
         return res;
     }
 
-    
+
     // V2
     // IDEA : Sorting
     // https://leetcode.com/problems/merge-intervals/editorial/

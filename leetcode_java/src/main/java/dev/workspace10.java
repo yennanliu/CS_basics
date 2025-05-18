@@ -4271,7 +4271,38 @@ public class workspace10 {
   // 3.56 - 4.07
   public int[][] merge(int[][] intervals) {
 
-      return null;
+      if (intervals == null || intervals.length == 0){
+          return null;
+      }
+
+      List<int[]> intervalList = new ArrayList<>(Arrays.asList(intervals));
+
+      // sort
+      intervalList.sort(Comparator.comparingInt(a -> a[0]));
+
+      List<int[]> merged = new ArrayList<>();
+
+      for (int[] x : intervalList){
+
+
+          if (merged.isEmpty() || merged.get(merged.size()-1)[1] < x[0]){
+              merged.add(x);
+          }
+          // case 3) if overlapped, update boundary
+          else{
+              /**
+               *  if overlap
+               *   last : |-----|
+               *   x :      |------|
+               */
+              // NOTE : we set 0 idx as SMALLER val from merged last element (0 idx), input
+              merged.get(merged.size()-1)[0] = Math.min(merged.get(merged.size()-1)[0], x[0]);
+              // NOTE : we set 1 idx as BIGGER val from merged last element (1 idx), input
+              merged.get(merged.size()-1)[1] = Math.max(merged.get(merged.size()-1)[1], x[1]);
+          }
+      }
+
+      return merged.toArray(new int[merged.size()][]);
   }
 
 }
