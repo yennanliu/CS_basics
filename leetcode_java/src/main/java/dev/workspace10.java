@@ -1,10 +1,6 @@
 package dev;
 
-import LeetCodeJava.BFS.NetworkDelayTime;
-import LeetCodeJava.BFS.WordLadder;
 import LeetCodeJava.DataStructure.TreeNode;
-import LeetCodeJava.DynamicProgramming.CoinChange;
-
 import java.util.*;
 
 public class workspace10 {
@@ -4078,11 +4074,153 @@ public class workspace10 {
         return leftParen.isEmpty();
     }
 
+  // LC 135
+  // 3.05 - 3.15 pm
+  /**
+   * 1. Each child must have at least one candy.
+   *
+   * <p>2. Children with a higher rating get more candies than their neighbors.
+   *
+   * <p>-> Return the `minimum` number of candies you need to have to distribute the candies to the
+   * children.
+   *
+   * <p>IDEA 1) GREEDY
+   *
+   * <p>1. init val as 1 2. loop from `right hand side`, compare current idx with its neighbor, - if
+   * same, do nothing - if bigger than neighbors, val += 1 -
+   */
+  public int candy(int[] ratings) {
 
-    // LC 135
-    // 3.05 - 3.15 pm
-    public int candy(int[] ratings) {
-        return 0;
+    // edge
+    if (ratings == null || ratings.length == 0) {
+      return 0;
     }
+    if (ratings.length == 1) {
+      return 1;
+    }
+
+    int[] arr = new int[ratings.length];
+    // init val as 1
+    Arrays.fill(arr, 1);
+
+    // update
+    for (int i = ratings.length; i >= 1; i--) {
+      if (ratings[i] == ratings[i - 1]) {
+        continue;
+      } else if (i < ratings.length - 1) {
+        if (ratings[i] < ratings[i + 1] && ratings[i] > ratings[i - 1]) {
+          continue;
+        } else {
+
+        }
+      }
+    }
+
+    return getSumFromArr(arr);
+    }
+
+  public int getSumFromArr(int[] input) {
+    int res = 0;
+    for (int x : input) {
+      res += x;
+    }
+    return res;
+  }
+
+  // LC 57
+  // 3.23 - 3.33 pm
+  public int[][] insert(int[][] intervals, int[] newInterval) {
+
+    // edge
+    if (intervals == null || intervals.length == 0) {
+      return new int[][] {newInterval};
+    }
+    if (newInterval == null || newInterval.length == 0) {
+      return intervals;
+    }
+
+    // add newInterval to intervals
+    List<int[]> cache = new ArrayList<>();
+    cache.add(newInterval);
+    for(int[] x: intervals){
+        cache.add(x);
+    }
+
+    /**
+     *  Case of `overlap`
+     *
+     *  case 1)
+     *
+     *    |-----|  old
+     *      |--------| new
+     *
+     *  case 2)
+     *
+     *    |-------|  old
+     *      |--|     new
+     *
+     *  case 3)
+     *
+     *   ..???
+     */
+    /**
+     *  NOTE !!!
+     *
+     *  since the array ALREADY sorted in 1st element (small -> big)
+     *  there is ONLY 1 case that the intervals are NOT OVERLAPPED
+     *
+     *   e.g.
+     *
+     *      |------|  old
+     *               | ------- | new
+     *
+     *
+     */
+    // sort (`first element`) small -> big
+    Collections.sort(cache, new Comparator<int[]>() {
+        @Override
+        public int compare(int[] o1, int[] o2){
+            int diff = o1[0] - o2[0];
+            return diff;
+        }
+    });
+
+    List<int[]> cache2 = new ArrayList<>();
+
+    // merge
+    for(int i = 0; i < cache.size(); i++){
+        // if i = 0, append directly
+        if(i == 0){
+            cache2.add(cache.get(i));
+        }else{
+//            // if overlap, add the (min, max)
+//            int[] last = cache2.get(cache2.size() - 1);
+//            if( (last[1] > cache.get(i)[0] && last[1] < cache.get(i)[1]) || (last[1] < cache.get(i)[0] && last[1] > cache.get(i)[1])){
+//                cache2.remove(cache2.size() - 1);
+//                //cache2 (cache2.size() - 1 ) = new int[] {1,2};
+//                cache2.add(new int[] { Math.min( cache.get(i)[0], last[0]),  Math.max( cache.get(i)[1], last[1]) } );
+//            }else{
+//                cache2.add(cache.get(i));
+//            }
+
+            // if NOT overlap, append directly
+            int[] last = cache2.get(cache2.size() - 1);
+            if(last[1] < cache.get(i)[0]){
+                cache2.add(cache.get(i));
+            }
+            // if overlap
+            else{
+                cache2.add(new int[] { Math.min( cache.get(i)[0], last[0]),  Math.max( cache.get(i)[1], last[1]) } );
+            }
+        }
+    }
+
+    int[][] res = new int[2][cache2.size()];
+    for(int i = 0; i < cache2.size(); i++){
+        res[i] = cache2.get(i);
+    }
+
+    return res;
+  }
 
 }
