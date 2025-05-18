@@ -1,12 +1,12 @@
 # Progress
 
-# 2025-05-17
+# 2025-05-18
 - neetcode 250
 	- https://neetcode.io/practice?tab=neetcode250
 	- 5 / day ->  15 days to finish
 		- Intervals
-		- `LC cheatsheet` review
-	- again: 1899,763,678
+		- review prev LC problems !!!
+	- again:
 		- similar:
 		- Kadane algo
 			- 918: Maximum Sum Circular Subarray
@@ -21,7 +21,8 @@
 	- p.177 (recursion & dp)
 - sys design book
 	- Volume 2
-		- p.315
+		- p.323
+
 
 # 2025-05-16
 - neetcode 250
