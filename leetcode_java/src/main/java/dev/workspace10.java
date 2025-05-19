@@ -4492,6 +4492,16 @@ public class workspace10 {
   }
 
   // LC 2402
+  // 11.25 - 11.35 am
+  /**
+   *
+   * -> Return the number of the room that held
+   *   the `most meetings.`
+   *
+   *  -> If there are multiple rooms,
+   *   return the room with the lowest number.
+   *
+   */
   public int mostBooked(int n, int[][] meetings) {
 
       return 0;
