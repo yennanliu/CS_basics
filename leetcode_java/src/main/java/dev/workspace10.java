@@ -3920,37 +3920,44 @@ public class workspace10 {
     }
 
     // LC 1899
-    // 3.45 - 3.55 pm
+    // 12.04 - 12.14 pm
+    /**
+     *
+     * Return true if it is possible to obtain the
+     * target triplet [x, y, z]
+     * as an element of triplets, or false otherwise.
+     */
     public boolean mergeTriplets(int[][] triplets, int[] target) {
-
         // edge
         if(triplets == null || triplets.length == 0){
             return false;
         }
 
-        List<int[]> collected = new ArrayList<>();
+        List<int[]> candidates = new ArrayList<>();
 
-        // only collect the `qualified` array
+        // filer out the `not valid arr`
         for(int[] x: triplets){
-            boolean qualified = true;
+            boolean canAdd = true;
             for(int i = 0; i < x.length; i++){
                 if(x[i] > target[i]){
-                    qualified = false;
+                    canAdd = false;
                     break;
                 }
             }
-
-            if(qualified){
-                collected.add(x);
+            if(canAdd){
+                candidates.add(x);
             }
         }
 
+        // check if we can get the amount of elements that has same size as target
+        // (hashset size)
+        // NOTE : set {idx of val} ( to deal with `same val but different idx`)
         HashSet<Integer> set = new HashSet<>();
 
-        // check if `qualified` array can form target
-        for(int[] x: collected){
+        for(int[] x: candidates){
             for(int i = 0; i < x.length; i++){
                 if(x[i] == target[i]){
+                    //set.add(x[i]);
                     set.add(i);
                 }
             }
@@ -3958,6 +3965,45 @@ public class workspace10 {
 
         return set.size() == target.length;
     }
+
+
+//    public boolean mergeTriplets(int[][] triplets, int[] target) {
+//
+//        // edge
+//        if(triplets == null || triplets.length == 0){
+//            return false;
+//        }
+//
+//        List<int[]> collected = new ArrayList<>();
+//
+//        // only collect the `qualified` array
+//        for(int[] x: triplets){
+//            boolean qualified = true;
+//            for(int i = 0; i < x.length; i++){
+//                if(x[i] > target[i]){
+//                    qualified = false;
+//                    break;
+//                }
+//            }
+//
+//            if(qualified){
+//                collected.add(x);
+//            }
+//        }
+//
+//        HashSet<Integer> set = new HashSet<>();
+//
+//        // check if `qualified` array can form target
+//        for(int[] x: collected){
+//            for(int i = 0; i < x.length; i++){
+//                if(x[i] == target[i]){
+//                    set.add(i);
+//                }
+//            }
+//        }
+//
+//        return set.size() == target.length;
+//    }
 
     // LC 763
     // 4.14 - 4.24 pm
@@ -4170,9 +4216,9 @@ public class workspace10 {
   }
 
   // LC 57
-  // 3.23 - 3.33 pm
+  // 11.50 - 12.00 pm
   public int[][] insert(int[][] intervals, int[] newInterval) {
-
+      // edge
       if (intervals.length == 0){
           if (newInterval.length == 0){
               return new int[][]{};
@@ -4180,11 +4226,14 @@ public class workspace10 {
           return new int[][]{newInterval};
       }
 
-      List<int[]> intervalList = new ArrayList<>(Arrays.asList(intervals));
-      intervalList.add(newInterval);
+      List<int[]> intervals_ = new ArrayList<>();
+      for(int[] x: intervals){
+          intervals_.add(x);
+      }
 
       // sort
-      Collections.sort(intervalList, new Comparator<int[]>() {
+      // 1st element (small -> big)
+      Collections.sort(intervals_, new Comparator<int[]>() {
           @Override
           public int compare(int[] o1, int[] o2) {
               int diff = o1[0] - o2[0];
@@ -4194,25 +4243,73 @@ public class workspace10 {
 
       List<int[]> collected = new ArrayList<>();
 
-      // loop over intervalList
-      for(int i = 0; i < intervals.length; i++){
-          // idx = 1 or NOT overlap
-          if(collected.isEmpty() || (collected.get(collected.size() - 1)[1] < intervalList.get(i)[0]) ){
-              collected.add(intervals[i]);
+      /**
+       *
+       *  NON OVERLAP case:
+       *
+       *   |-----| old
+       *            |------| new
+       *
+       */
+      for(int i = 0; i < intervals_.size(); i++){
+          // case 1) idx = 0 or NOT overlap
+          if(collected.isEmpty() || collected.get(collected.size() - 1)[1] < intervals_.get(i)[0]){
+              collected.add(intervals_.get(i));
           }
-          // overlap
+          // case 2) overlap
           else{
-              collected.get(collected.size() - 1)[0] = Math.min(collected.get(collected.size() - 1)[0], intervalList.get(i)[0]);
-              collected.get(collected.size() - 1)[1] = Math.max(collected.get(collected.size() - 1)[1], intervalList.get(i)[1]);
+              collected.get(collected.size() - 1)[0] = Math.min( collected.get(collected.size() - 1)[0],  intervals_.get(i)[0]);
+              collected.get(collected.size() - 1)[1] = Math.max( collected.get(collected.size() - 1)[1],  intervals_.get(i)[1]);
           }
       }
 
-      // list to array
-      //int[][] test = collected.toArray(new int[collected.size()][2]);
 
-      // ??
       return collected.toArray(new int[collected.size()][]);
   }
+
+
+//  public int[][] insert(int[][] intervals, int[] newInterval) {
+//
+//      if (intervals.length == 0){
+//          if (newInterval.length == 0){
+//              return new int[][]{};
+//          }
+//          return new int[][]{newInterval};
+//      }
+//
+//      List<int[]> intervalList = new ArrayList<>(Arrays.asList(intervals));
+//      intervalList.add(newInterval);
+//
+//      // sort
+//      Collections.sort(intervalList, new Comparator<int[]>() {
+//          @Override
+//          public int compare(int[] o1, int[] o2) {
+//              int diff = o1[0] - o2[0];
+//              return diff;
+//          }
+//      });
+//
+//      List<int[]> collected = new ArrayList<>();
+//
+//      // loop over intervalList
+//      for(int i = 0; i < intervals.length; i++){
+//          // idx = 1 or NOT overlap
+//          if(collected.isEmpty() || (collected.get(collected.size() - 1)[1] < intervalList.get(i)[0]) ){
+//              collected.add(intervals[i]);
+//          }
+//          // overlap
+//          else{
+//              collected.get(collected.size() - 1)[0] = Math.min(collected.get(collected.size() - 1)[0], intervalList.get(i)[0]);
+//              collected.get(collected.size() - 1)[1] = Math.max(collected.get(collected.size() - 1)[1], intervalList.get(i)[1]);
+//          }
+//      }
+//
+//      // list to array
+//      //int[][] test = collected.toArray(new int[collected.size()][2]);
+//
+//      // ??
+//      return collected.toArray(new int[collected.size()][]);
+//  }
 
 
 //  public int[][] insert(int[][] intervals, int[] newInterval) {

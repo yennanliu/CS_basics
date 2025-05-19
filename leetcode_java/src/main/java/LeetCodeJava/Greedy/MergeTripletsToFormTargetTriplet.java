@@ -75,7 +75,8 @@ public class MergeTripletsToFormTargetTriplet {
             for(int i = 0; i < t.length; i++){
                 if(t[i] > target[i]){
                     isValid = false;
-                    break; // ??
+                    // early break, NOTE !!! even break, it will still run the code in first `for loop`, so that's why we need the boolean
+                    break;
                 }
             }
             if(isValid){
@@ -100,6 +101,53 @@ public class MergeTripletsToFormTargetTriplet {
         }
 
         //System.out.println(">>> set = " + set);
+        return set.size() == target.length;
+    }
+
+    // V0-1
+    public boolean mergeTriplets_0_1(int[][] triplets, int[] target) {
+        // edge
+        if(triplets == null || triplets.length == 0){
+            return false;
+        }
+
+        List<int[]> candidates = new ArrayList<>();
+
+        // filer out the `not valid arr`
+        for(int[] x: triplets){
+            /** NOTE !!!
+             *
+             * we need `canAdd` boolean
+             * so can decide whether add current array to candidates or not
+             */
+            boolean canAdd = true;
+            for(int i = 0; i < x.length; i++){
+                if(x[i] > target[i]){
+                    canAdd = false;
+                    // early break, NOTE !!! even break, it will still run the code in first `for loop`, so that's why we need the boolean
+                    break; // early break
+                }
+            }
+            if(canAdd){
+                candidates.add(x);
+            }
+        }
+
+        // check if we can get the amount of elements that has same size as target
+        // (hashset size)
+        // NOTE : set {idx of val} ( to deal with `same val but different idx`)
+        HashSet<Integer> set = new HashSet<>();
+
+        for(int[] x: candidates){
+            for(int i = 0; i < x.length; i++){
+                if(x[i] == target[i]){
+                    // NOTE !!! we add `idx` to set, instead of val
+                    //set.add(x[i]);
+                    set.add(i);
+                }
+            }
+        }
+
         return set.size() == target.length;
     }
 
