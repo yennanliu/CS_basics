@@ -11,22 +11,30 @@
 ### 0-1) Types
 
 - Types
+
     - Merge intervals
         - LC 56
         - sort on `1st element`
+
     - Insert intervala
         - LC 57
         - sort on `1st element`
+
     - Overlap intervals
+
     - Non-overlap intervals
         - LC 435
         - sort on `2nd element`
+
     - Max length of pair chain
         - LC 646
+
     - Courses problems
         - LC 207, 210
+
     - Meeting room problems
         - LC 252, 253
+
     - Check if overlap existed
         - LC 729
 
@@ -57,7 +65,22 @@
 if `start < date.get(1) and end > date.get(0)`
 -> then intervals are OVERLAP
 
-- Overlap cases
+
+##### `NON OVERLAP` case (sort on 1st element first)
+
+-> or, we can also use `NO OVERLAP` perspectives
+-> if we first sort array on `1st element`,
+   then the ONLY `overlap` case is as below
+   e.g. `old[1] < new[0]`, we can use this as condition
+   - LC 56, LC 57
+
+```
+|------| old
+             
+             |------| new
+```
+
+##### Overlap cases
 
 ```
 # case 1
@@ -81,20 +104,6 @@ Existing:   |-----|
 -> All of cases above are with `start < date.get(1) and end > date.get(0)` condition
 ```
 
-
-- `NO OVERLAP` case
-
--> or, we can use `NO OVERLAP` perspectives
--> if we first sort array on `1st element`,
-   then the ONLY `overlap` case is as below
-   e.g. `old[1] < new[0]`, we can use this as condition
-   - LC 56, LC 57
-
-```
-|------| old
-             
-             |------| new
-```
 
 ```java
 // java
@@ -162,9 +171,55 @@ LinkedList<int[]> res = new LinkedList<>();
 int[][] ans = res.toArray(new int[res.size()][]);
 ```
 
+
+#### 1-2-0) merge intervals
+
+```java
+// java
+// LC 56, LC 57
+
+// ...
+// sort
+intervalList.sort(Comparator.comparingInt(a -> a[0]));
+// ...
+
+List<int[]> merged = new ArrayList<>();
+
+// ...
+
+for (int[] x : intervalList) {
+       if (merged.isEmpty() || merged.get(merged.size() - 1)[1] < x[0]) {
+                merged.add(x);
+            }
+        else{
+            // NOTE : we set 0 idx as SMALLER val from merged last element (0 idx), input
+            merged.get(merged.size() - 1)[0] = Math.min(merged.get(merged.size() - 1)[0], x[0]);
+            // NOTE : we set 1 idx as BIGGER val from merged last element (1 idx), input
+            merged.get(merged.size() - 1)[1] = Math.max(merged.get(merged.size() - 1)[1], x[1]);
+        }
+}
+
+// ...
+```
+
+
+#### 1-3-0) Non overlapping intervals
+
+```java
+// java
+// LC 435
+
+// ...
+ Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
+
+// ...
+```
+
+
 ## 2) LC Example
 
 ### 2-1) Merge Intervals
+
 - TODO : move it to "interval merge cheatsheet"
 - [fucking-algorithm - intervals](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md)
 
@@ -202,63 +257,41 @@ class Solution:
 ```
 
 ### 2-2) Non-overlapping-intervals
-```python
-# LC 435 Non-overlapping Intervals
-# V0
-# IDEA : 2 POINTERS + sorting + intervals
-# TODO : make it general : (sort by x[0] or x[1] and the op)
-class Solution(object):
-    def eraseOverlapIntervals(self, intervals):
-        ### NOTE THIS !!!
-        intervals.sort(key = lambda x : x[1])
-        #print ("intervals = " + str(intervals))
-        res = []
-        cnt = 0
-        last = intervals[0]
-        # edge case
-        if not intervals:
-            return 0
-        ### NOTE : start from idx = 1
-        for i in range(1, len(intervals)):
-            # case 1
-            if intervals[i][0] < last[1]:
-                cnt += 1
-            # case 2
-            else:
-                last = intervals[i]
-                last[1] = max(intervals[i][1], last[1])
-        return cnt
 
-# V0'
-# IDEA : 2 POINTERS + sorting + intervals
-class Solution(object):
-    def eraseOverlapIntervals(self, intervals):
-        if not intervals: return 0
-        ### NOTE THIS !!!
-        intervals.sort(key = lambda x : x[0])
-        #intervals.sort(key = lambda x : [x[0],x[1]])  # this one is OK as well
-        """
-        ### NOTE : last is the "idx" of last element
-                 -> we'll leverage it for overlap intervals removal
-        """
-        last = 0
-        res = 0
-        for i in range(1, len(intervals)):
-            if intervals[last][1] > intervals[i][0]:
-                """
-                ### NOTE : if "last" element's "second" element > intervals[i] 's  "second" element
-                         -> we need to use intervals[i] 's index as last index
-                """
-                if intervals[i][1] < intervals[last][1]:
-                    last = i
-                res += 1
-            else:
-                last = i
-        return res
+```java
+// java
+// LC 435
+
+// V0-3
+// IDEA: GREEDY + SORTING (gpt)
+public int eraseOverlapIntervals_0_3(int[][] intervals) {
+    // Edge case: empty or single interval, nothing to remove
+    if (intervals == null || intervals.length <= 1) {
+        return 0;
+    }
+
+    // Sort intervals by end time (ascending) — Greedy strategy
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
+
+    int count = 0;
+    int prevEnd = intervals[0][1];
+
+    for (int i = 1; i < intervals.length; i++) {
+        if (intervals[i][0] < prevEnd) {
+            // Overlapping: remove current interval
+            count++;
+        } else {
+            // Non-overlapping: update end marker
+            prevEnd = intervals[i][1];
+        }
+    }
+
+    return count;
+}
 ```
 
-
 ### 2-3) Insert Interval
+
 ```python
 # LC 57 Insert Interval
 # V0
@@ -287,6 +320,7 @@ class Solution:
 ```
 
 ### 2-4) Maximum Length of Pair Chain
+
 ```python
 # LC 646 Maximum Length of Pair Chain
 # V0 
@@ -321,6 +355,7 @@ class Solution(object):
 ```
 
 ### 2-5) Minimum Number of Arrows to Burst Balloons
+
 ```python
 # 452 Minimum Number of Arrows to Burst Balloons
 # https://blog.csdn.net/MebiuW/article/details/53096708
