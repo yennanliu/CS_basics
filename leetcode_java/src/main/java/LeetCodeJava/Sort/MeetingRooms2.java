@@ -49,6 +49,14 @@ public class MeetingRooms2 {
         }
 
         // Sort the events by time. If times are equal, prioritize closing (0) before opening (1)
+        /**
+         * NOTE !!!
+         *
+         *  we sort 1) on val,
+         *    if val are the same,
+         *    2) then sort on open / close status
+         *
+         */
         Collections.sort(events, (a, b) -> {
             if (a[0] == b[0]) {
                 return a[1] - b[1]; // Close (0) should come before open (1)
