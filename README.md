@@ -789,7 +789,7 @@
 1152| [Analyze User Website Visit Pattern](https://leetcode.com/problems/analyze-user-website-visit-pattern/) | [Python](./leetcode_python/Sort/analyze-user-website-visit-pattern.py) | _O(nlogn)_ | _O(1)_  | Medium | itertools.combinations, sort, brute force, set, `amazon`| AGAIN***** (2) (not start)
 2021| [Brightest Position on Street](https://leetcode.com/problems/brightest-position-on-street/) | [Python](./leetcode_python/Sort/brightest-position-on-street.py) | _O(nlogn)_ | _O(1)_  | Medium | LC 253 meeting room II, priority queue (min-heap), scanning line, trick, `amazon`| AGAIN*********** (3) (MUST)
 2284| [Sender With Largest Word Count](https://leetcode.com/problems/sender-with-largest-word-count/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/SenderWithLargestWordCount.java)| _O(1)_  | Medium | LC 347, map sorting| | OK
-
+2402| [Meeting Rooms III](https://leetcode.com/problems/meeting-rooms-iii) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Sort/MeetingRooms3.java)| _O(nlogn)_ | _O(n)_ | Hard   || AGAIN (not start)
 
 
 ## Two Pointers

@@ -4491,5 +4491,11 @@ public class workspace10 {
       return maxRoomCnt <= 1;
   }
 
+  // LC 2402
+  public int mostBooked(int n, int[][] meetings) {
+
+      return 0;
+  }
+
 
 }
