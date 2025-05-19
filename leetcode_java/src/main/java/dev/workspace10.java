@@ -3793,10 +3793,64 @@ public class workspace10 {
      *
      *
      */
-    // 4.40 - 4.50 pm
+    // 12.34 - 12.44 PM
+    // IDEA: HASHSET + PQ + MAP
+
     public boolean isNStraightHand(int[] hand, int groupSize) {
-        return false;
+        // edge
+        if (hand.length % groupSize != 0){
+            return false;
+        }
+
+        HashSet<Integer> set = new HashSet<>();
+
+        // get element cnt
+        Map<Integer, Integer> cnt_map = new HashMap<>();
+        for(int x: hand){
+
+            cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
+
+            set.add(x);
+        }
+
+        // small PQ
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for(int x: set){
+            pq.add(x);
+        }
+
+        while(!pq.isEmpty()){
+
+            int val = pq.peek();
+
+            for(int i = 0; i < groupSize; i++){
+                int new_val = val + i;
+                if(!cnt_map.containsKey(new_val) || cnt_map.get(new_val) <= 0){
+                    return false;
+                }
+
+                cnt_map.put(cnt_map.get(new_val), cnt_map.get(new_val) - 1);
+
+                if(cnt_map.get(new_val) == 0){
+                    cnt_map.remove(new_val);
+                }
+
+                if(cnt_map.get(val) == 0){
+                    pq.poll();
+                }
+
+            }
+        }
+
+
+        return true;
     }
+
+
+
+//   // public boolean isNStraightHand(int[] hand, int groupSize) {
+//        return false;
+//    }
 //    // greedy
 //    public boolean isNStraightHand(int[] hand, int groupSize) {
 //        // edge
