@@ -4434,5 +4434,62 @@ public class workspace10 {
 
   }
 
+  // LC 252
+  // 10.46 - 10.56 am
+  // IDEA: SORT + GREEDY
+  // IDEA: SORT + SCANNING LINE
+  public boolean canAttendMeetings(int[][] intervals) {
+      // edge
+      if(intervals == null || intervals.length == 0){
+          return true;
+      }
+      if(intervals.length == 1){
+          return true;
+      }
+
+      /**
+       * intervals_ : [time, status]
+       *
+       *  time: `the meeting room timestamp`
+       *        start, end timestamp are included
+       *
+       *  status : 1 (open)
+       *         : -1 (closed)
+       *
+       */
+      List<int[]> intervals_ = new ArrayList<>();
+      for(int[] x: intervals){
+          intervals_.add(new int[]{x[0], 1});
+          intervals_.add(new int[]{x[1], -1});
+      }
+
+      // sort : 1st element (small -> big)
+      Collections.sort(intervals_, new Comparator<int[]>() {
+          @Override
+          public int compare(int[] o1, int[] o2) {
+              int diff = o1[0] - o2[0];
+              if(diff == 0){
+                  return o1[1] - o2[1];
+              }
+              return diff;
+          }
+      });
+
+      int curRoomCnt = 0;
+      int maxRoomCnt = 0;
+
+      // scanning line
+      for(int[] x: intervals_){
+          if(x[1] == 1){
+              curRoomCnt += 1;
+          }else{
+              curRoomCnt -= 1;
+          }
+          maxRoomCnt = Math.max(maxRoomCnt, curRoomCnt);
+      }
+
+      return maxRoomCnt <= 1;
+  }
+
 
 }

@@ -47,9 +47,51 @@ public class MeetingRooms {
     }
 
     // V0-1
+    // IDEA: LC 235 (SCANNING LINE) (fixed by gpt)
+    public boolean canAttendMeetings_0_1(int[][] intervals) {
+        if (intervals == null || intervals.length <= 1) {
+            return true;
+        }
+
+        List<int[]> events = new ArrayList<>();
+
+        for (int[] interval : intervals) {
+            events.add(new int[]{interval[0], 1});   // start
+            events.add(new int[]{interval[1], -1});  // end
+        }
+
+        // Sort: by time ASC, then type DESC (end before start if same time)
+        /**
+         *  NOTE !!!
+         *
+         *   step 1) sort on 1st element (time) (small -> big)
+         *   step 2) sort on 2nd element (status) (close -> open)
+         *
+         */
+        Collections.sort(events, (a, b) -> {
+            if (a[0] != b[0]) {
+                return Integer.compare(a[0], b[0]);
+            }
+            return Integer.compare(a[1], b[1]);  // end (-1) before start (1)
+        });
+
+        int activeMeetings = 0;
+
+        for (int[] event : events) {
+            activeMeetings += event[1];
+            if (activeMeetings > 1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    // V0-2
     // IDEA: SCANNING LINE (GPT) (same idea as Meeting room II, LC 253)
     // TODO: validate
-    public boolean canAttendMeetings_0_1(int[][] intervals) {
+    public boolean canAttendMeetings_0_2(int[][] intervals) {
         // Edge cases
         if (intervals == null || intervals.length == 0) {
             return true;
@@ -68,7 +110,9 @@ public class MeetingRooms {
         /**
          * NOTE !!!
          *
-         *  we sort 1) on val, if val are the same, 2) then sort on open / close status
+         *  we sort 1) on val,
+         *    if val are the same,
+         *    2) then sort on open / close status
          *
          */
         Collections.sort(events, (a, b) -> {
@@ -99,8 +143,6 @@ public class MeetingRooms {
 
         return true;
     }
-
-
 
     // V1
     // IDEA : SORT
