@@ -54,9 +54,24 @@ public class HandOfStraights {
         for (int num : hand) {
             count.put(num, count.getOrDefault(num, 0) + 1);
         }
+
+        /**
+         *
+         * NOTE !!! we sort (small -> big) on the input array
+         */
         Arrays.sort(hand);
+
+        // NOTE !!! we loop over sorted array (aka `hand`)
         for (int num : hand) {
+            /**
+             *
+             * NOTE !!! we firstly check whether `current val` (aka `num`) cnt > 0
+             */
             if (count.get(num) > 0) {
+                /**
+                 *
+                 * NOTE !!! we then check whether `all following val in group size` cnt > 0
+                 */
                 for (int i = num; i < num + groupSize; i++) {
                     if (count.getOrDefault(i, 0) == 0) return false;
                     count.put(i, count.get(i) - 1);
