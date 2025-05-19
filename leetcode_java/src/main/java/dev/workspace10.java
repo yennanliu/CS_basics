@@ -4347,4 +4347,92 @@ public class workspace10 {
       return merged.toArray(new int[merged.size()][]);
   }
 
+
+  // LC 435
+  // 10.03 - 10.13 am
+  /**
+   *
+   *  ->
+   *    return the `minimum` number of intervals
+   *    you need to remove to make the rest
+   *       of the intervals non-overlapping.
+   *
+   *
+   *  IDEA 1) INTERVAL OP
+   *
+   *
+   *
+   *
+   * exp 1)
+   *
+   *  intervals = [[1,2],[2,3],[3,4],[1,3]]
+   *
+   *
+   *  -> sort ( 1st element : small -> big), then (2nd element : big -> small)
+   *
+   */
+  public int eraseOverlapIntervals(int[][] intervals) {
+      // edge
+      if(intervals == null || intervals.length == 0){
+          return 0;
+      }
+      if(intervals.length == 1){
+          return 0;
+      }
+
+      List<int[]> intervals2 = new ArrayList<>();
+      for(int[] x : intervals){
+          intervals2.add(x);
+      }
+
+      int cnt = 0;
+
+      // sort
+      //  -> sort ( 1st element : small -> big), then (2nd element : big -> small)
+      Collections.sort(intervals2, new Comparator<int[]>() {
+          @Override
+          public int compare(int[] o1, int[] o2) {
+              int diff = o1[0] - o2[0];
+              if(diff == 0){
+                  return o2[1] - o1[1];
+              }
+              return diff;
+          }
+      });
+
+      /**
+       *  since we already sort on `first element small -> big`
+       *                        and `2nd element big -> small`
+       *
+       *  -> the ONLY possible OVERLAP case is as below:
+       *
+       *     |----------|   old
+       *     1          3
+       *
+       *    |------|        new
+       *    1      2
+       *
+       */
+
+      List<int[]> collected = new ArrayList<>();
+
+      for(int i = 0; i < intervals2.size(); i++){
+          // case 1) idx = 0 or NOT overlap
+          if(i == 0  || collected.get(collected.size() - 1)[1] >= intervals2.get(i)[1]){
+              collected.add(intervals2.get(i));
+          }
+          // case 2) overlap
+          else{
+              cnt += 1;
+              // append the interval with `smaller window` back to collected
+              collected.get(collected.size()-1)[0] = intervals2.get(i)[0];
+              collected.get(collected.size()-1)[1] = intervals2.get(i)[1];
+          }
+      }
+
+      return cnt;
+
+  }
+
+
 }

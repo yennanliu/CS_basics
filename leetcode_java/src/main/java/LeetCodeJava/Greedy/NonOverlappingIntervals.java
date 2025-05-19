@@ -46,6 +46,105 @@ public class NonOverlappingIntervals {
     // V0
     // IDEA : sorting + intervals (modified by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/non-overlapping-intervals.py
+    /**
+     *
+     *   Consider examples:
+     *
+     *   exp 1)
+     *
+     *    A: [1, 3]
+     *    B: [2, 5]
+     *
+     *
+     *  exp 2)
+     *
+     *    intervals = [[1, 100], [2, 3], [3, 4], [4, 5]]
+     *
+     */
+    /**
+     *  NOTE !!!
+     *
+     * > why NOT sort `1st element (small -> big), then 2nd element (big -> small) ?
+     * ---
+     *
+     * ### ✅ Short Answer:
+     *
+     * We sort **by end time only** because:
+     *
+     * > 👉 **To keep the maximum number of non-overlapping intervals,
+     *    we always want to keep the interval that ends the earliest.**
+      *
+     * -> e.g. sort on `2nd element (small -> big) allow us to have
+     *         GLOBAL maximum on the `most space` in the future
+     *
+     * This leaves **the most "space"** for future intervals —
+     * a **greedy strategy** that is **provably optimal** for this problem.
+     *
+     * ---
+     *
+     * ### 🔍 Let’s break it down step by step:
+     *
+     * #### 🎯 **Your Goal:**
+     *
+     * Minimize the number of intervals to remove → i.e.,
+     * **maximize** the number of non-overlapping intervals to keep.
+     *
+     * ---
+     *
+     * ### 🧠 The Greedy Insight:
+     *
+     * Let’s look at two intervals:
+     *
+     * ```
+     * A: [1, 3]
+     * B: [2, 5]
+     * ```
+     *
+     * Both overlap. Which one should we keep?
+     *
+     * * If you **keep A** (ends earlier), you’re more likely to fit more intervals after it.
+     * * If you **keep B** (ends later), it blocks future intervals.
+     *
+     * ✅ So: **prefer intervals that end earlier** → more room for what's next.
+     *
+     * ---
+     *
+     * ### 💡 Why Not Sort by Start Time?
+     *
+     * If we sort by start time (like your original logic), you might make **locally suboptimal decisions**.
+     *
+     * Example:
+     *
+     * ```java
+     * intervals = [[1, 100], [2, 3], [3, 4], [4, 5]]
+     * ```
+     *
+     * If you sort by **start time**, you process `[1, 100]` first and remove the rest.
+     *
+     * But if you sort by **end time**, you process `[2, 3]`, `[3, 4]`, `[4, 5]` — and only remove `[1, 100]`.
+     *
+     * ✅ **Result: 3 kept vs. 1 kept** — greedy on end time is clearly better.
+     *
+     * ---
+     *
+     * ### 📊 Formal Reason (from Algorithm Theory):
+     *
+     * This problem is a variation of the **Activity Selection Problem** (Interval Scheduling Maximization), where:
+     *
+     * > Sorting by end time allows a greedy approach to select the maximal number of non-overlapping activities.
+     *
+     * It's a **well-known optimal greedy strategy** for interval problems in algorithm literature.
+     *
+     * ---
+     *
+     * ### ✍️ Summary Table:
+     *
+     * | Sort By          | Behavior                                  | Result                               |
+     * | ---------------- | ----------------------------------------- | ------------------------------------ |
+     * | Start Time (ASC) | Prioritizes early-starting intervals      | Not optimal — may block better ones  |
+     * | End Time (ASC) ✅ | Prioritizes short, early-ending intervals | ✅ Optimal — maximizes future options |
+     *
+     */
     public int eraseOverlapIntervals(int[][] intervals) {
 
         /** NOTE !!!
@@ -176,6 +275,33 @@ public class NonOverlappingIntervals {
         }
 
         return count; // Number of intervals removed
+    }
+
+    // V0-3
+    // IDEA: GREEDY + SORTING (gpt)
+    public int eraseOverlapIntervals_0_3(int[][] intervals) {
+        // Edge case: empty or single interval, nothing to remove
+        if (intervals == null || intervals.length <= 1) {
+            return 0;
+        }
+
+        // Sort intervals by end time (ascending) — Greedy strategy
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
+
+        int count = 0;
+        int prevEnd = intervals[0][1];
+
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] < prevEnd) {
+                // Overlapping: remove current interval
+                count++;
+            } else {
+                // Non-overlapping: update end marker
+                prevEnd = intervals[i][1];
+            }
+        }
+
+        return count;
     }
 
 
