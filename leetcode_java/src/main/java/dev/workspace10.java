@@ -1,5 +1,6 @@
 package dev;
 
+import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 import java.util.*;
 
@@ -4700,6 +4701,12 @@ public class workspace10 {
 
   // LC 1071
   public String gcdOfStrings(String str1, String str2) {
+
+      return null;
+  }
+
+  // LC 2807
+  public ListNode insertGreatestCommonDivisors(ListNode head) {
 
       return null;
   }
