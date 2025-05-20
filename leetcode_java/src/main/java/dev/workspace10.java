@@ -4698,4 +4698,11 @@ public class workspace10 {
   }
 
 
+  // LC 1071
+  public String gcdOfStrings(String str1, String str2) {
+
+      return null;
+  }
+
+
 }
