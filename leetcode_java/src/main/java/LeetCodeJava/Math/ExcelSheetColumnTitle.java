@@ -68,6 +68,19 @@ public class ExcelSheetColumnTitle {
         StringBuilder res = new StringBuilder();
 
         while (columnNumber > 0) {
+            /**
+             *  NOTE !!!
+             *
+             * The key to understanding columnNumber - 1 in:
+             *
+             * int r = (columnNumber - 1) % 26;
+             *
+             *
+             * is realizing how Excel column naming works
+             * versus how a zero-based numerical system
+             * (like in programming) works.
+             *
+             */
             int r = (columnNumber - 1) % 26;
             res.insert(0, map.get(r + 1));
             columnNumber = (columnNumber - 1) / 26;
