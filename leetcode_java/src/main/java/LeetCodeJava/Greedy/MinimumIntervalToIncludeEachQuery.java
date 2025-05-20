@@ -55,6 +55,9 @@ public class MinimumIntervalToIncludeEachQuery {
 //
 //    }
 
+    // V0-0-1
+    // https://www.youtube.com/watch?v=5hQ5WWW5awQ
+
     // V1-1
     // https://neetcode.io/problems/minimum-interval-including-query
     // IDEA: BRUTE FORCE

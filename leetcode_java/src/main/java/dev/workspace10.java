@@ -4658,5 +4658,21 @@ public class workspace10 {
       return 0;
   }
 
+  // LC 1851
+  // 10.04 - 10.14 am
+  /**
+   *
+   * The answer to the jth query
+   *  is the size of the smallest interval i such that
+   *   lefti <= queries[j] <= righti.
+   *  If no such interval exists, the answer is -1.
+   *
+   *
+   *
+   */
+  public int[] minInterval(int[][] intervals, int[] queries) {
+      return null;
+  }
+
 
 }
