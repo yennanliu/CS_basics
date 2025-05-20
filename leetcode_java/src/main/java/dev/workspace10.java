@@ -4674,5 +4674,28 @@ public class workspace10 {
       return null;
   }
 
+  // LC 168
+  // 10.21-10.26 am
+  public String convertToTitle(int columnNumber) {
+      // edge
+      if(columnNumber == 0){
+          return null; // ??
+      }
+      /**
+       * transform columnNumber to
+       *
+       *  26 ^ k + 26 ^ (k-1) + ... 26
+       *
+       *  and find the val
+       *
+       */
+      List<Integer> cache = new ArrayList<>();
+      while(columnNumber >= 26){
+         // columnNumber = columnNumber /
+      }
+      return null;
+
+  }
+
 
 }
