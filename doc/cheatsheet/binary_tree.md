@@ -53,8 +53,8 @@ Relationships:
 * Node at index 2 (15)
 
   * Parent: 2 / 2 = 1 → 10
-  * Left child: 2 \* 2 = 4 → 30
-  * Right child: 2 \* 2 + 1 = 5 → 40
+  * Left child: 2 * 2 = 4 → 30
+  * Right child: 2 * 2 + 1 = 5 → 40
 
 ---
 
