@@ -115,7 +115,7 @@ public class InsertGreatestCommonDivisorsInLinkedList {
     }
 
     // V0-1
-    // IDEA: LINKED LIST OP + MATH (fixed by gpt)
+    // IDEA: LINKED LIST OP + MATH (gpt)
     public ListNode insertGreatestCommonDivisors_0_1(ListNode head) {
         if (head == null || head.next == null) {
             return head;
@@ -135,6 +135,39 @@ public class InsertGreatestCommonDivisorsInLinkedList {
     }
 
     private int getGCD_0_1(int a, int b) {
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+
+    // V0-2
+    // IDEA: LINKED LIST OP + MATH (fixed by gpt)
+    public ListNode insertGreatestCommonDivisors_0_2(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode curr = head;
+
+        while (curr != null && curr.next != null) {
+            int gcd = getGCD_0_2(curr.val, curr.next.val);
+            ListNode gcdNode = new ListNode(gcd);
+
+            // Insert gcdNode between curr and curr.next
+            gcdNode.next = curr.next;
+            curr.next = gcdNode;
+
+            // Move curr two steps forward (skip the inserted gcd node)
+            curr = gcdNode.next;
+        }
+
+        return head; // return original head, not head.next
+    }
+
+    private int getGCD_0_2(int a, int b) {
         while (b != 0) {
             int temp = b;
             b = a % b;

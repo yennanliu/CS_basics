@@ -2,6 +2,8 @@ package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
+
+import javax.swing.*;
 import java.util.*;
 
 public class workspace10 {
@@ -4715,36 +4717,103 @@ public class workspace10 {
    *
    */
   // IDEA 1)
+//  public ListNode insertGreatestCommonDivisors_1(ListNode head) {
+//      // edge
+//      if(head == null || head.next == null){
+//          return head;
+//      }
+//
+//      // ListNode -> list
+//      List<Integer> list = new ArrayList<>();
+//      while(head != null){
+//          list.add(head.val);
+//          head = head.next;
+//      }
+//
+//      List<Integer> cache = new ArrayList<>();
+//
+//      // add `gcd`
+//      for(int i = 0; i < list.size() - 1; i++){
+//          cache.add(list.get(i));
+//          //int gcd = getGCD(list.get(i), list.get(i+1));
+//          cache.add(getGCD(list.get(i), list.get(i+1)));
+//      }
+//
+//      cache.add(list.get(list.size() - 1));
+//
+//      ListNode node = new ListNode();
+//      ListNode res = node;
+//
+//      for(int x: cache){
+//          node.next = new ListNode(x);
+//          node = node.next;
+//      }
+//
+//      return res.next;
+//  }
+
   public ListNode insertGreatestCommonDivisors(ListNode head) {
       // edge
       if(head == null || head.next == null){
           return head;
       }
 
-      // ListNode -> list
-      List<Integer> list = new ArrayList<>();
-      while(head != null){
-          list.add(head.val);
-          head = head.next;
-      }
+//      // ListNode -> list
+//      List<Integer> list = new ArrayList<>();
+//      while(head != null){
+//          list.add(head.val);
+//          head = head.next;
+//      }
+//
+//      List<Integer> cache = new ArrayList<>();
+//
+//      // add `gcd`
+//      for(int i = 0; i < list.size() - 1; i++){
+//          cache.add(list.get(i));
+//          //int gcd = getGCD(list.get(i), list.get(i+1));
+//          cache.add(getGCD(list.get(i), list.get(i+1)));
+//      }
+//
+//      cache.add(list.get(list.size() - 1));
 
-      List<Integer> cache = new ArrayList<>();
+      //ListNode node = new ListNode();
+      ListNode head2 = head;
+      ListNode res = new ListNode();
+      res = head2;
+//
+//      for(int x: cache){
+//          node.next = new ListNode(x);
+//          node = node.next;
+//      }
 
-      // add `gcd`
-      for(int i = 0; i < list.size() - 1; i++){
-          cache.add(list.get(i));
-          //int gcd = getGCD(list.get(i), list.get(i+1));
-          cache.add(getGCD(list.get(i), list.get(i+1)));
-      }
+      while(head2 != null && head2.next != null){
 
-      cache.add(list.get(list.size() - 1));
+          // get gcd
+          int gcd = getGCD(head2.val, head2.next.val);
 
-      ListNode node = new ListNode();
-      ListNode res = node;
-
-      for(int x: cache){
-          node.next = new ListNode(x);
-          node = node.next;
+          /**
+           *  before:
+           *
+           *     2 -> 8 -> 9
+           *
+           *
+           *  after:
+           *
+           *    2 -> `2` -> 8 -> 9
+           *
+           *    so, we need to
+           *     1) cache `next` node (aka 8)
+           *     2) re-connect 2 to `2` node
+           *     3) connect `2` node to 8 node
+           *     4) move `2` node to 8 node
+           */
+          // cache original `next`
+          ListNode _next = head2.next;
+          // reconnect to gcd
+          ListNode gcdNode = new ListNode(gcd);
+          head2.next = gcdNode;
+          gcdNode.next = _next;
+          head2 = _next; // ???
       }
 
       return res.next;
