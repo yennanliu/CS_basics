@@ -2,6 +2,8 @@
 
 > Algorithm get `minimum path` (for given point to any other points)
 
+> `Priority Queue` + `BFS`
+
 
 Dijkstra's algorithm is a famous algorithm used to solve the single-source shortest path problem for a graph with non-negative edge weights. It finds the shortest path from a starting node (source) to all other nodes in the graph. The algorithm ensures that once a node’s shortest distance is finalized, it will not change, which makes it very efficient for many graph-related problems.
 
@@ -102,6 +104,7 @@ class Solution:
 ```
 
 ### 2-2) Cheapest Flights Within K Stops
+
 ```python
 # LC 787 Cheapest Flights Within K Stops
 # V1
