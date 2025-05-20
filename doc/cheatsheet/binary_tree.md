@@ -7,25 +7,57 @@
     - [wiki](https://en.wikipedia.org/wiki/Binary_tree)
     - [Binary Tree - 演算法筆記](https://web.ntnu.edu.tw/~algo/BinaryTree.html)
 
-- Complete Tree to Array
-    -  Note if we use an `array` to represent the `complete binary tree`,and `store the root node at index 1`
-        - so, index of the `parent` node of any node is `[index of the node / 2]`
-        - so, index of the `left child` node is `[index of the node * 2]`
-        - so, index of the `right child` node is `[index of the node * 2 + 1]`
-        - https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/MinHeap.py#L36-L40
-        - [video](https://leetcode.com/explore/learn/card/heap/643/heap/4017/) : very good explanation!!!
-        - properties
-            - how to store ? 
-                - via Array and index
-            - how to find the parent node ?
-                - n / 2
-                - NOTE : `n is "index"`
-            - how to find the left and right children ?
-                - left children : n * 2
-                - right children : n * 2 + 1
-            - how to check if a node is leaf node ?
-                - check if i > (# of nodes) / 2
-            - <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/complete_tree_to_array.png" ></p>
+#### Completed Tree to Array
+
+-  Note if we use an `array` to represent the `complete binary tree`,and `store the root node at index 1`
+    - so, index of the `parent` node of any node is `[index of the node / 2]`
+    - so, index of the `left child` node is `[index of the node * 2]`
+    - so, index of the `right child` node is `[index of the node * 2 + 1]`
+    - https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/MinHeap.py#L36-L40
+    - [video](https://leetcode.com/explore/learn/card/heap/643/heap/4017/) : very good explanation!!!
+    - properties
+        - how to store ? 
+            - via Array and index
+        - how to find the parent node ?
+            - n / 2
+            - NOTE : `n is "index"`
+        - how to find the left and right children ?
+            - left children : n * 2
+            - right children : n * 2 + 1
+        - how to check if a node is leaf node ?
+            - check if i > (# of nodes) / 2
+        - <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/complete_tree_to_array.png" ></p>
+
+
+#### Example:
+
+Let's say you have a complete binary tree like this:
+
+```
+        10
+       /  \
+     15    20
+    / \    /
+   30 40  50
+```
+
+This tree as an **array (1-based)** would be:
+
+```
+Index:   1   2   3   4   5   6
+Value: [10, 15, 20, 30, 40, 50]
+```
+
+Relationships:
+
+* Node at index 2 (15)
+
+  * Parent: 2 / 2 = 1 → 10
+  * Left child: 2 \* 2 = 4 → 30
+  * Right child: 2 \* 2 + 1 = 5 → 40
+
+---
+
 
 - Array to Complete Tree
     - dev
