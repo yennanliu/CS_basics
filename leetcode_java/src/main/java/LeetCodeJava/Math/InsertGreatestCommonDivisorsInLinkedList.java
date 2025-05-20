@@ -1,8 +1,12 @@
 package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/insert-greatest-common-divisors-in-linked-list/description/
+// https://leetcode.cn/problems/insert-greatest-common-divisors-in-linked-list/
 
 import LeetCodeJava.DataStructure.ListNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 2807. Insert Greatest Common Divisors in Linked List
@@ -58,9 +62,86 @@ public class InsertGreatestCommonDivisorsInLinkedList {
      */
 
     // V0
-//    public ListNode insertGreatestCommonDivisors(ListNode head) {
-//
-//    }
+    // IDEA: LINKED LIST -> LIST + MATH
+    public ListNode insertGreatestCommonDivisors(ListNode head) {
+        // edge
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        // ListNode -> list
+        List<Integer> list = new ArrayList<>();
+        while (head != null) {
+            list.add(head.val);
+            head = head.next;
+        }
+
+        List<Integer> cache = new ArrayList<>();
+
+        // add `gcd`
+        for (int i = 0; i < list.size() - 1; i++) {
+            cache.add(list.get(i));
+            //int gcd = getGCD(list.get(i), list.get(i+1));
+            cache.add(getGCD(list.get(i), list.get(i + 1)));
+        }
+
+        cache.add(list.get(list.size() - 1));
+
+        ListNode node = new ListNode();
+        ListNode res = node;
+
+        for (int x : cache) {
+            node.next = new ListNode(x);
+            node = node.next;
+        }
+
+        return res.next;
+    }
+
+    public int getGCD(int x, int y) {
+        if (x == y) {
+            return x;
+        }
+        int res = 1;
+        int end = Math.min(x, y);
+        // NOTE: `i <= end`
+        for (int i = 1; i <= end; i++) {
+            if (x % i == 0 && y % i == 0) {
+                res = Math.max(res, i);
+            }
+        }
+
+        return res;
+    }
+
+    // V0-1
+    // IDEA: LINKED LIST OP + MATH (fixed by gpt)
+    public ListNode insertGreatestCommonDivisors_0_1(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode curr = head;
+
+        while (curr != null && curr.next != null) {
+            int gcd = getGCD_0_1(curr.val, curr.next.val);
+            ListNode gcdNode = new ListNode(gcd);
+            gcdNode.next = curr.next;
+            curr.next = gcdNode;
+            curr = gcdNode.next; // move to the next original node
+        }
+
+        return head;
+    }
+
+    private int getGCD_0_1(int a, int b) {
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
 
     // V1
     // https://www.youtube.com/watch?v=SS_IlBrocYQ

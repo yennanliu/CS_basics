@@ -4706,9 +4706,64 @@ public class workspace10 {
   }
 
   // LC 2807
+  // 7.56 - 8.06 pm
+  /**
+   *  IDEA 1) listNode -> list, add `gcd`, then list -> listNode
+   *
+   *  IDEA 2) listNode, add `gcd` in place
+   *
+   *
+   */
+  // IDEA 1)
   public ListNode insertGreatestCommonDivisors(ListNode head) {
+      // edge
+      if(head == null || head.next == null){
+          return head;
+      }
 
-      return null;
+      // ListNode -> list
+      List<Integer> list = new ArrayList<>();
+      while(head != null){
+          list.add(head.val);
+          head = head.next;
+      }
+
+      List<Integer> cache = new ArrayList<>();
+
+      // add `gcd`
+      for(int i = 0; i < list.size() - 1; i++){
+          cache.add(list.get(i));
+          //int gcd = getGCD(list.get(i), list.get(i+1));
+          cache.add(getGCD(list.get(i), list.get(i+1)));
+      }
+
+      cache.add(list.get(list.size() - 1));
+
+      ListNode node = new ListNode();
+      ListNode res = node;
+
+      for(int x: cache){
+          node.next = new ListNode(x);
+          node = node.next;
+      }
+
+      return res.next;
+  }
+
+  public int getGCD(int x, int y){
+      if (x == y){
+          return x;
+      }
+      int res = 1;
+      int end = Math.min(x, y);
+      //while()
+      for(int i = 1; i <= end; i++){
+          if(x % i == 0 && y % i == 0){
+              res = Math.max(res, i);
+          }
+      }
+
+      return res;
   }
 
 
