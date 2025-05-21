@@ -4931,10 +4931,89 @@ public class workspace10 {
 //  }
 
     // LC 13
+    // 11.48 - 58 am
+    /**
+     *  -> Given a roman numeral, convert it to an integer.
+     *
+     *
+     *  IDEA 1) MATH
+     *
+     *   -> key : how to `split` the input string
+     *
+     *   -> loop `inverse` and `split` the string
+     *      if num(i-1) > num(i)
+     *
+     *   -> caclute the corresponding int val
+     *   -> sum all of above as res
+     *
+     */
     public int romanToInt(String s) {
 
-      return 0;
+        HashMap<Character, Integer> map = new HashMap();
+        map.put('I', 1);
+        map.put('V' ,5);
+        map.put('X' ,10);
+        map.put('L' ,50);
+        map.put('C' ,100);
+        map.put('D' ,500);
+        map.put('M' ,1000);
+
+        Stack<String> st = new Stack<>();
+        for(String x: s.split("")){
+            st.add(x);
+        }
+
+        List<String> cache = new ArrayList<>();
+
+        int cnt = 0;
+
+        while(!st.isEmpty()){
+            if(cnt == 0){
+                cache.add(st.pop());
+            }
+            // if `i-1` < `i`
+            String prev = cache.get(cache.size()-1);
+            if(map.get(st.peek()) < map.get(prev)){
+                cache.remove(cache.size()- 1);
+                cache.add( (prev + st.pop()));
+            }else{
+                cache.add( st.pop());
+            }
+        }
+
+        int res = 0;
+
+        // cache -> int
+        for(String x: cache){
+
+        }
+
+        return res;
     }
 
+    public int romanHelper(String x){
+
+        int res = 0;
+
+        HashMap<Character, Integer> map = new HashMap();
+        map.put('I', 1);
+        map.put('V' ,5);
+        map.put('X' ,10);
+        map.put('L' ,50);
+        map.put('C' ,100);
+        map.put('D' ,500);
+        map.put('M' ,1000);
+
+        String[] x_arr = x.split("");
+
+        for(int i = 0; i < x_arr.length - 1; i++){
+            if(map.get(x_arr[i]) < map.get(x_arr[i+1])){
+              //  res += (-1 * x_arr[i]);
+            }
+        }
+
+
+        return 0;
+    }
 
 }
