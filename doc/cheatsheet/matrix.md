@@ -18,6 +18,11 @@
         - LC 311
     - Diagonal Traverse
         - LC 498
+    - Rotate Image
+        - LC 48
+        - (compare LC 867 VS LC 48)
+    - Transpose Matrix
+        - LC 867
 
 - Algorithm
     - [fucking algorithm : 二维数组的花式遍历技巧](https://labuladong.github.io/algo/2/20/26/)
@@ -506,5 +511,34 @@ public static int[][] multiply(int[][] mat1, int[][] mat2) {
     }
 
     return res;
+}
+```
+
+
+### 2-8) Transpose Matrix
+
+```java
+// java
+// LC 867
+
+// V0-1
+// IDEA: MATH + ARRAY OP (fixed by gpt)
+public int[][] transpose_0_1(int[][] matrix) {
+    if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+        return new int[0][0];
+    }
+
+    int rows = matrix.length;
+    int cols = matrix[0].length;
+
+    int[][] result = new int[cols][rows]; // Transposed dimensions
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[j][i] = matrix[i][j];
+        }
+    }
+
+    return result;
 }
 ```

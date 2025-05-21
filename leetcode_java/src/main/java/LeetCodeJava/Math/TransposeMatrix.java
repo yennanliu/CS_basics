@@ -37,6 +37,16 @@ import java.util.Arrays;
  */
 public class TransposeMatrix {
 
+    /**  NOTE !!!
+     *
+     *  since the length, width of matrix could be different (e.g. m x n matrix, but NOT always n x n)
+     *  so we CAN'T use the same approach as ` 48. Rotate Image`
+     *  instead, we need to use `copy directly` way
+     *
+     *
+     *   Compare LC 867 VS LC 48
+     */
+
     // V0
 //    public int[][] transpose(int[][] matrix) {
 //
