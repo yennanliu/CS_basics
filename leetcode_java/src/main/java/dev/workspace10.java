@@ -4835,5 +4835,31 @@ public class workspace10 {
       return res;
   }
 
+  // LC 867
+  // 10.20 - 10.30 am
+  public int[][] transpose(int[][] matrix) {
+      // edge
+      if(matrix == null || matrix.length == 0 || matrix[0].length == 0){
+          return null;
+      }
+      int l = matrix.length;
+      int w = matrix[0].length;
+
+      System.out.println(">>> before op : " + matrix);
+
+      // NOTE !!! go `half` to the idx + double loop
+      for(int i = 1; i < l; i++){
+          for(int j = 0; j <= w / 2; j++){
+              int cache = matrix[i][j];
+              matrix[i][j] = matrix[j][i];
+              matrix[j][i] = cache;
+          }
+      }
+
+      System.out.println(">>> after op : " + matrix);
+
+      return matrix;
+  }
+
 
 }
