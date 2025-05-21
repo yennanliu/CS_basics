@@ -4862,4 +4862,11 @@ public class workspace10 {
   }
 
 
+  // LC 66
+  public int[] plusOne(int[] digits) {
+
+      return null;
+  }
+
+
 }
