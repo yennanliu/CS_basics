@@ -4,6 +4,7 @@ import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import javax.swing.*;
+import java.math.BigInteger;
 import java.util.*;
 
 public class workspace10 {
@@ -4864,8 +4865,29 @@ public class workspace10 {
 
   // LC 66
   public int[] plusOne(int[] digits) {
+      // edge
+      if(digits == null || digits.length == 0){
+          return new int[]{1};
+      }
+      StringBuilder sb = new StringBuilder();
+      for(int x: digits){
+          sb.append(x);
+      }
 
-      return null;
+      // to int
+      Long val = Long.parseLong(sb.toString());
+     // int val = sb.length();
+
+      val += 1L;
+      String val_str = String.valueOf(val);
+      String[] val_arr = val_str.split("");
+
+      int[] res = new int[val_arr.length];
+      for(int i = 0; i < val_str.length(); i++){
+          res[i] = Integer.parseInt(val_arr[i]);
+      }
+
+      return res;
   }
 
 

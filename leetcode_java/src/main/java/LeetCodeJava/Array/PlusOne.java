@@ -54,6 +54,57 @@ public class PlusOne {
 //
 //    }
 
+    // V0-1
+    // IDEA: MATH ( add per digit, then transform result) (fixed by gpt)
+    public int[] plusOne_0_1(int[] digits) {
+        if (digits == null || digits.length == 0) {
+            return new int[] { 1 };
+        }
+
+        for (int i = digits.length - 1; i >= 0; i--) {
+            if (digits[i] < 9) {
+                digits[i] += 1;
+                return digits;
+            }
+            digits[i] = 0;
+        }
+
+        // If all digits were 9, we need a new array (e.g., 999 + 1 = 1000)
+        int[] result = new int[digits.length + 1];
+        result[0] = 1; // all others default to 0
+        return result;
+    }
+
+
+    // V0-3
+    // TODO: fix below (java.lang.NumberFormatException: For input string: "728509129536673284379577474947011174006")
+//    public int[] plusOne(int[] digits) {
+//        // edge
+//        if (digits == null || digits.length == 0) {
+//            return new int[] { 1 };
+//        }
+//        StringBuilder sb = new StringBuilder();
+//        for (int x : digits) {
+//            sb.append(x);
+//        }
+//
+//        // to int
+//        Long val = Long.parseLong(sb.toString());
+//        // int val = sb.length();
+//
+//        val += 1L;
+//        String val_str = String.valueOf(val);
+//        String[] val_arr = val_str.split("");
+//
+//        int[] res = new int[val_arr.length];
+//        for (int i = 0; i < val_str.length(); i++) {
+//            res[i] = Integer.parseInt(val_arr[i]);
+//        }
+//
+//        return res;
+//    }
+
+
     // V1-1
     // https://neetcode.io/problems/plus-one
     // IDEA:  RECURSION
