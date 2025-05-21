@@ -34,6 +34,12 @@ package LeetCodeJava.Array;
 
 public class RotateImage {
 
+    /**  NOTE !!!
+     *
+     *   Compare LC 867 VS LC 48
+     */
+
+
     /**
      *  Exp 1:
      *
