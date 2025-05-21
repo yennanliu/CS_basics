@@ -4679,27 +4679,46 @@ public class workspace10 {
   }
 
   // LC 168
-  // 10.21-10.26 am
-  public String convertToTitle(int columnNumber) {
-      // edge
-      if(columnNumber == 0){
-          return null; // ??
-      }
-      /**
-       * transform columnNumber to
-       *
-       *  26 ^ k + 26 ^ (k-1) + ... 26
-       *
-       *  and find the val
-       *
-       */
-      List<Integer> cache = new ArrayList<>();
-      while(columnNumber >= 26){
-         // columnNumber = columnNumber /
-      }
-      return null;
+  // 12.26 - 12.36 pm
+//  public String convertToTitle(int columnNumber) {
+//
+//      String res = "";
+//      columnNumber -= 1;
+//
+//      // ???
+//      int cnt = 0;
+//      while(columnNumber / 26 > 26){
+//
+//          columnNumber = (columnNumber % 26);
+//
+//
+//      }
+//
+//      return res;
+//    }
 
-  }
+
+
+//  public String convertToTitle(int columnNumber) {
+//      // edge
+//      if(columnNumber == 0){
+//          return null; // ??
+//      }
+//      /**
+//       * transform columnNumber to
+//       *
+//       *  26 ^ k + 26 ^ (k-1) + ... 26
+//       *
+//       *  and find the val
+//       *
+//       */
+//      List<Integer> cache = new ArrayList<>();
+//      while(columnNumber >= 26){
+//         // columnNumber = columnNumber /
+//      }
+//      return null;
+//
+//  }
 
 
   // LC 1071
