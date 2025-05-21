@@ -214,6 +214,7 @@ int countPrimes(int n){
 ## 2) LC Example
 
 ### 2-1) Excel Sheet Column Title
+
 ```python
 # 168 Excel Sheet Column Title
 # https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation
@@ -258,6 +259,7 @@ class Solution:
 ```
 
 ### 2-2) Solve the Equation
+
 ```python
 # LC 640. Solve the Equation
 # V0
@@ -274,4 +276,53 @@ class Solution(object):
         # print ("z = " + str(z))
         a, x = z.real, -z.imag
         return 'x=%d' % (a / x) if x else 'No solution' if a else 'Infinite solutions'
+```
+
+### 2-3) Roman to Integer
+
+```java
+// java
+// LC 13
+
+// V0-1
+// IDEA: MAP + STR OP (fixed by gpt)
+public int romanToInt_0_1(String s) {
+    if (s == null || s.isEmpty()) {
+        return 0;
+    }
+
+    Map<Character, Integer> map = new HashMap<>();
+    map.put('I', 1);
+    map.put('V', 5);
+    map.put('X', 10);
+    map.put('L', 50);
+    map.put('C', 100);
+    map.put('D', 500);
+    map.put('M', 1000);
+
+    int total = 0;
+    int prev = 0;
+
+    /**
+     * NOTE !!!
+     *
+     * loop reversely (from  idx = s.len() - 1)
+     */
+    for (int i = s.length() - 1; i >= 0; i--) {
+        int curr = map.get(s.charAt(i));
+        if (curr < prev) {
+            total -= curr;
+        } else {
+            total += curr;
+        }
+        /**
+         * NOTE !!!
+         *
+         *  set `prev` as curr
+         */
+        prev = curr;
+    }
+
+    return total;
+}
 ```

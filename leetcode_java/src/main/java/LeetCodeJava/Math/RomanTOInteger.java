@@ -84,6 +84,11 @@ public class RomanTOInteger {
         int total = 0;
         int prev = 0;
 
+        /**
+         * NOTE !!!
+         *
+         * loop reversely (from  idx = s.len() - 1)
+         */
         for (int i = s.length() - 1; i >= 0; i--) {
             int curr = map.get(s.charAt(i));
             if (curr < prev) {
@@ -91,6 +96,11 @@ public class RomanTOInteger {
             } else {
                 total += curr;
             }
+            /**
+             * NOTE !!!
+             *
+             *  set `prev` as curr
+             */
             prev = curr;
         }
 
