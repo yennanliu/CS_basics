@@ -4869,26 +4869,66 @@ public class workspace10 {
       if(digits == null || digits.length == 0){
           return new int[]{1};
       }
-      StringBuilder sb = new StringBuilder();
-      for(int x: digits){
-          sb.append(x);
+
+      List<Integer> cache = new ArrayList<>();
+      int plus = 0;
+      for(int i = digits.length - 1; i >= 0; i--){
+          int val = digits[i];
+          if(i == digits.length - 1){
+              val += 1;
+          }
+          val += plus;
+          if(val > 9){
+              val -= 10;
+              plus = 1;
+          }else{
+              plus = 0;
+          }
+          cache.add(val);
       }
 
-      // to int
-      Long val = Long.parseLong(sb.toString());
-     // int val = sb.length();
+      // handle `last plus one`
+      if(plus > 0){
+          cache.add(plus);
+      }
 
-      val += 1L;
-      String val_str = String.valueOf(val);
-      String[] val_arr = val_str.split("");
+      // reverse
+      Collections.reverse(cache);
 
-      int[] res = new int[val_arr.length];
-      for(int i = 0; i < val_str.length(); i++){
-          res[i] = Integer.parseInt(val_arr[i]);
+      int[] res = new int[cache.size()];
+      for(int i = 0; i < cache.size(); i++){
+          res[i] = cache.get(i);
       }
 
       return res;
   }
+
+
+//  public int[] plusOne(int[] digits) {
+//      // edge
+//      if(digits == null || digits.length == 0){
+//          return new int[]{1};
+//      }
+//      StringBuilder sb = new StringBuilder();
+//      for(int x: digits){
+//          sb.append(x);
+//      }
+//
+//      // to int
+//      Long val = Long.parseLong(sb.toString());
+//     // int val = sb.length();
+//
+//      val += 1L;
+//      String val_str = String.valueOf(val);
+//      String[] val_arr = val_str.split("");
+//
+//      int[] res = new int[val_arr.length];
+//      for(int i = 0; i < val_str.length(); i++){
+//          res[i] = Integer.parseInt(val_arr[i]);
+//      }
+//
+//      return res;
+//  }
 
 
 }
