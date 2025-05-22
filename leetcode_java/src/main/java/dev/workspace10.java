@@ -5154,13 +5154,26 @@ public class workspace10 {
 
         for(int x: nums){
 
+            curMax = Math.max(curMax + x, x);
+            curMin = Math.min(curMin + x, x);
+
+            // ????
+//            maxSum = Math.max(maxSum, maxSum + curMax);
+//            minSum = Math.min(minSum, minSum + curMin);
+
+            maxSum = Math.max(maxSum, curMax);
+            minSum = Math.min(minSum, curMin);
+        }
+
+        if(maxSum < 0){
+            return maxSum;
         }
 
         return 0;
     }
 
 
-    
+
 //    public int maxSubarraySumCircular(int[] nums) {
 //        // edge
 //        if(nums == null || nums.length == 0){
