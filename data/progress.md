@@ -6,10 +6,9 @@
 	- 5 / day ->  15 days to finish
 		- Math
 		- review prev LC problems !!!
-	- again: 2013
+	- again: 2013,918
 		- similar:
 		- Kadane algo
-			- 918: Maximum Sum Circular Subarray
 			- 1836: Remove Duplicates from an Unsorted Linked List
 			- 134: Gas Station
 			- 122: Best Time to Buy and Sell Stock II
