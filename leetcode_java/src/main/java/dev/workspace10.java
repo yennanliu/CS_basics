@@ -2,6 +2,7 @@ package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
+import com.sun.org.apache.bcel.internal.generic.IINC;
 
 import javax.swing.*;
 import java.math.BigInteger;
@@ -5034,5 +5035,99 @@ public class workspace10 {
 
         return 0;
     }
+
+
+    // LC 43
+    // 10.10 - 10.20 am
+    /**
+     *  IDEA 1) str -> int
+     *   -> sum them up
+     *
+     *  IDEA 2) bit op ???
+     *
+     */
+    public String multiply(String num1, String num2) {
+
+        return null;
+    }
+
+    // LC 2013
+    // 10.25 - 10.35 am
+
+    /**
+     * Your DetectSquares object will be instantiated and called as such:
+     * DetectSquares obj = new DetectSquares();
+     * obj.add(point);
+     * int param_2 = obj.count(point);
+     */
+    class DetectSquares {
+
+        // attr
+        //List<int[]> collected;
+        HashSet<int[]> collected;
+        int cnt;
+        // { x1-y1 : 1, x1-y2 : 2, x2-y1: 2, ....}
+        Map<String, Integer> coorCnt;
+
+        public DetectSquares() {
+            this.collected = new HashSet<>(); //new ArrayList<>();
+            this.cnt = 0;
+            coorCnt = new HashMap<>();
+        }
+
+        public void add(int[] point) {
+
+            this.collected.add(point);
+
+            String key =  point[0] + "-" + point[1];
+
+//            coorCnt.put(point[0], coorCnt.getOrDefault(point[0], 0) + 1);
+//            coorCnt.put(point[1], coorCnt.getOrDefault(point[1], 1) + 1);
+
+            coorCnt.put(key, coorCnt.getOrDefault(key, 0) + 1);
+        }
+
+        public int count(int[] point) {
+
+            // edge
+            if(this.collected.size() < 3){
+                return 0;
+            }
+
+            for(String k: coorCnt.keySet()){
+                String[] tmp = k.split("-");
+                int x = Integer.parseInt(tmp[0]);
+                int y = Integer.parseInt(tmp[1]);
+
+                // avoid `compare same point`
+                if(point[0] == x && point[1] == y){
+                    continue;
+                }
+
+                int input_x = point[0];
+                int input_y = point[1];
+
+                // check if `same distance`
+                if(Math.abs(input_x - x) == Math.abs(input_y - y)){
+                    // get the `possible square cnt`
+                    String key_1 = x + "-" + input_y;
+                    String key_2 = input_x + "-" + y;
+                    //int newCnt = this.coorCnt.get(key_1) * this.coorCnt.get(key_2);
+                    if(this.coorCnt.containsKey(key_1) && this.coorCnt.containsKey(key_2)){
+                        this.cnt += this.coorCnt.get(key_1) * this.coorCnt.get(key_2);
+                    }
+
+                }
+
+            }
+
+            return this.cnt;
+        }
+
+
+    }
+
+
+
 
 }
