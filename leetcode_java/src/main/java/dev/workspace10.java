@@ -3,6 +3,7 @@ package dev;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 import com.sun.org.apache.bcel.internal.generic.IINC;
+import jdk.vm.ci.amd64.AMD64;
 
 import javax.swing.*;
 import java.math.BigInteger;
@@ -3519,7 +3520,7 @@ public class workspace10 {
      *  IDEA 1) K*** Algo + `circular` handling
      *
      */
-    public int maxSubarraySumCircular(int[] nums) {
+    public int maxSubarraySumCircular___(int[] nums) {
         // edge
         if(nums == null || nums.length == 0){
             return 0;
@@ -5126,6 +5127,62 @@ public class workspace10 {
 
 
     }
+
+    // LC 918
+    // 11.12 - 11. 22 am
+    /**
+     *  IDEA 1) BRUTE FORCE + maintain a `max_till_now` val
+     *
+     *
+     */
+    public int maxSubarraySumCircular(int[] nums) {
+
+        /**
+         *  NOTE !!!  define 4 var
+         *
+         *   cur_max
+         *   cur_min
+         *   max_sum
+         *   min_sum
+         *
+         */
+        int totalSum = 0;
+        int maxSum = nums[0];
+        int minSum = nums[0];
+        int curMax = 0;
+        int curMin = 0;
+
+        for(int x: nums){
+
+        }
+
+        return 0;
+    }
+
+
+    
+//    public int maxSubarraySumCircular(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0;
+//        }
+//        if(nums.length == 1){
+//            return nums[0];
+//        }
+//
+//        int max_till_now = nums[0];
+//        int global_max = nums[0];
+//
+//        for(int i = 1; i < nums.length; i++){
+//
+//            int x = nums[i];
+//            max_till_now = Math.max(max_till_now + x, max_till_now);
+//
+//            global_max = Math.max(Math.max(x, max_till_now), global_max);
+//        }
+//
+//        return global_max;
+//    }
 
 
 
