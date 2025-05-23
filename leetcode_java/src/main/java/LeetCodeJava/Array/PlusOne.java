@@ -56,6 +56,7 @@ public class PlusOne {
 
     // V0
     // IDEA: reverse loop, `plus one` at iex=len-1, reverse, assign val to array
+    // time: O(N), space: O(N)
     public int[] plusOne(int[] digits) {
         // edge
         if (digits == null || digits.length == 0) {
@@ -97,6 +98,7 @@ public class PlusOne {
 
     // V0-1
     // IDEA: MATH ( add per digit, then transform result) (fixed by gpt)
+    // time: O(N), space: O(1)
     public int[] plusOne_0_1(int[] digits) {
         if (digits == null || digits.length == 0) {
             return new int[] { 1 };
@@ -149,6 +151,7 @@ public class PlusOne {
     // V1-1
     // https://neetcode.io/problems/plus-one
     // IDEA:  RECURSION
+    // time: O(N), space: O(N)
     public int[] plusOne_1_1(int[] digits) {
         if (digits.length == 0)
             return new int[]{1};
@@ -170,6 +173,7 @@ public class PlusOne {
     // V1-2
     // https://neetcode.io/problems/plus-one
     // IDEA: ITERATION - I
+    // time: O(N), space: O(1)
     public int[] plusOne_1_2(int[] digits) {
         int one = 1;
         int i = 0;
@@ -197,6 +201,7 @@ public class PlusOne {
     // V1-3
     // https://neetcode.io/problems/plus-one
     // IDEA: ITERATION - II
+    // time: O(N), space: O(1)
     public int[] plusOne_1_3(int[] digits) {
         int n = digits.length;
         for (int i = n - 1; i >= 0; i--) {
@@ -214,6 +219,7 @@ public class PlusOne {
 
     // V2
     // https://leetcode.com/problems/plus-one/editorial/
+    // time: O(N), space: O(1)
     public int[] plusOne_2(int[] digits) {
         int n = digits.length;
 
@@ -239,6 +245,7 @@ public class PlusOne {
 
     // V3
     // https://leetcode.com/problems/plus-one/solutions/2706861/java-fastest-0ms-runtime-easy-and-elegant-solution/
+    // time: O(N), space: O(1)
     public int[] plusOne_3(int[] digits){
         for (int i = digits.length - 1; i >= 0; i--) {
             if (digits[i] < 9) {
