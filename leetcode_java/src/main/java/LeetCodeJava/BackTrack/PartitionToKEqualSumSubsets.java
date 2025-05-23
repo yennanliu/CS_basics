@@ -37,6 +37,18 @@ public class PartitionToKEqualSumSubsets {
     // V0
     // IDEA: BACKTRACK
     // time: O(K * 2^N), space: O(N)
+    /**
+     *
+     * target_: the required sum for each of the k subsets.
+     *
+     * used[]: boolean array to track which numbers have been a
+     *         ssigned to a subset already.
+     *
+     * subsetSum: running sum of the current subset being built.
+     *
+     * k: how many subsets still need to be built.
+     *
+     */
     int target_;
 
     public boolean canPartitionKSubsets(int[] nums, int k) {
