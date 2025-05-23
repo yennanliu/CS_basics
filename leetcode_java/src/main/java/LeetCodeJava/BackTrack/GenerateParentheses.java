@@ -32,6 +32,7 @@ public class GenerateParentheses {
 
     // V0
     // IDEA: BACKTRACK (fixed by gpt)
+    // time: O(4^N / sqrt(N)), space: O(4^N / sqrt(N))
     List<String> resParenthesis = new ArrayList<>();
 
     public List<String> generateParenthesis(int n) {
@@ -101,6 +102,7 @@ public class GenerateParentheses {
     // IDEA : BACKTRACK (fix by gpt)
     // https://www.youtube.com/watch?v=s9fokUqJ76A
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0022-generate-parentheses.java
+    // time: O(4^N / sqrt(N)), space: O(4^N / sqrt(N))
     List<String> res_ = new ArrayList<>();
     public List<String> generateParenthesis_0_1(int n) {
         if (n == 0) {
@@ -137,6 +139,7 @@ public class GenerateParentheses {
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0022-generate-parentheses.java
     // https://www.youtube.com/watch?v=s9fokUqJ76A
     // IDEA : BACKTRACK
+    // time: O(4^N / sqrt(N)), space: O(4^N / sqrt(N))
     Stack<Character> stack = new Stack<>();
     List<String> res = new ArrayList<>();
 
@@ -169,7 +172,7 @@ public class GenerateParentheses {
     // V0-3
     // IDEA : backtrack + valid parentheses (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/generate-parentheses.py#L27
-    // Method to generate all combinations of well-formed parentheses
+    // time: O(4^N / sqrt(N)), space: O(4^N / sqrt(N))
     public List<String> generateParenthesis_0_3(int n) {
         List<String> res = new ArrayList<>();
         //List<String> _list = List.of("(", ")");
@@ -238,6 +241,10 @@ public class GenerateParentheses {
         return leftCount == 0;
     }
 
+    // V2
+    // IDEA :  Backtracking, Keep Candidate Valid
+    // https://leetcode.com/problems/generate-parentheses/editorial/
+    // time: O(4^N / sqrt(N)), space: O(4^N / sqrt(N))
     public List<String> generateParenthesis_2(int n) {
         List<String> answer = new ArrayList<>();
         Queue<String> queue = new LinkedList<>(Arrays.asList(""));
@@ -264,6 +271,7 @@ public class GenerateParentheses {
     // V2
     // IDEA :  Backtracking, Keep Candidate Valid
     // https://leetcode.com/problems/generate-parentheses/editorial/
+    // time: O(4^N / sqrt(N)), space: O(4^N / sqrt(N))
     public List<String> generateParenthesis_3(int n) {
         List<String> answer = new ArrayList<>();
         backtracking(answer, new StringBuilder(), 0, 0, n);
@@ -291,6 +299,7 @@ public class GenerateParentheses {
     // V3
     // IDEA: Divide and Conquer
     // https://leetcode.com/problems/generate-parentheses/editorial/
+    // time: O(4^N / sqrt(N)), space: O(4^N / sqrt(N))
     public List<String> generateParenthesis_4(int n) {
         if (n == 0) {
             return new ArrayList(Arrays.asList(""));

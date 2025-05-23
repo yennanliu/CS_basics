@@ -43,6 +43,7 @@ public class LetterCombinationsOfAPhoneNumber {
 
     // V0
     // IDEA: BACKTRACK + start_idx (on digit)
+    // time: O(3^N * 4^M), space: O(3^N * 4^M)
     List<String> _res = new ArrayList<String>();
     public List<String> letterCombinations(String _digits) {
 
@@ -127,6 +128,7 @@ public class LetterCombinationsOfAPhoneNumber {
 
     // V0-1
     // IDEA: BACKTRACK (fixed by gpt)
+    // time: O(3^N * 4^M), space: O(3^N * 4^M)
     public List<String> letterCombinations_0_1(String digits) {
         // Mapping of digit to letters
         HashMap<Character, String> letters = new HashMap<>();
@@ -255,7 +257,7 @@ public class LetterCombinationsOfAPhoneNumber {
     // V1-1
     // https://neetcode.io/problems/combinations-of-a-phone-number
     // IDEA: BACKTRACK
-
+    // time: O(3^N * 4^M), space: O(3^N * 4^M)
     private List<String> res = new ArrayList<>();
     private String[] digitToChar_1_1 = {
             "", "", "abc", "def", "ghi", "jkl", "mno", "qprs", "tuv", "wxyz"
@@ -282,6 +284,7 @@ public class LetterCombinationsOfAPhoneNumber {
     // V1-2
     // https://neetcode.io/problems/combinations-of-a-phone-number
     // IDEA: Iteration
+    // time: O(3^N * 4^M), space: O(3^N * 4^M)
     public List<String> letterCombinations_1_2(String digits) {
         if (digits.isEmpty()) return new ArrayList<>();
 
@@ -307,6 +310,7 @@ public class LetterCombinationsOfAPhoneNumber {
 
     // V2
     private Map<Character, String> digitToChar = new HashMap<>();
+    // time: O(3^N * 4^M), space: O(3^N * 4^M)
     public List<String> letterCombinations_2(String digits) {
         if (digits.length() == 0) {
             return new ArrayList();
@@ -342,7 +346,7 @@ public class LetterCombinationsOfAPhoneNumber {
     // https://leetcode.com/problems/letter-combinations-of-a-phone-number/editorial/
     private List<String> combinations = new ArrayList<>();
     private String phoneDigits;
-
+    // time: O(3^N * 4^M), space: O(3^N * 4^M)
     public List<String> letterCombinations_3(String digits) {
         // If the input is empty, immediately return an empty answer array
         if (digits.length() == 0) {

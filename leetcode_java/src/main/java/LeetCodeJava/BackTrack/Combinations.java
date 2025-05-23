@@ -45,6 +45,7 @@ public class Combinations {
      *   -> for combine, we need "start_idx"
      *
      */
+    // time: O(C(N,K) * K), space: O(C(N,K) * K)
     public List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> res = new ArrayList<>();
 
@@ -85,6 +86,7 @@ public class Combinations {
 
     // V0-1
     // IDEA: BACKTRACK + START_IDX (fixed by gpt)
+    // time: O(C(N,K) * K), space: O(C(N,K) * K)
     List<List<Integer>> combineRes = new ArrayList<>();
 
     public List<List<Integer>> combine_0_1(int n, int k) {
@@ -122,6 +124,7 @@ public class Combinations {
     // V1
     // https://www.youtube.com/watch?v=q0s6m7AiM7o
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0077-combinations.java
+    // time: O(C(N,K) * K), space: O(C(N,K) * K)
     List<List<Integer>> res_1;
     public List<List<Integer>> combine_1(int n, int k) {
         res_1 = new ArrayList<>();
@@ -145,6 +148,7 @@ public class Combinations {
     // V2
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/combinations/submissions/1281420720/
+    // time: O(C(N,K) * K), space: O(C(N,K) * K)
     public List<List<Integer>> combine_2(int n, int k) {
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> comb = new ArrayList<>();
@@ -169,6 +173,7 @@ public class Combinations {
     // V3
     // IDEA : BACKTRACK (interactive)
     // https://leetcode.com/problems/combinations/solutions/3845249/iterative-backtracking-video-100-efficient-combinatorial-generation/
+    // time: O(C(N,K) * K), space: O(C(N,K) * K)
     public List<List<Integer>> combine_3(int n, int k) {
         List<List<Integer>> result = new ArrayList<>();
         generateCombinations(1, n, k, new ArrayList<Integer>(), result);
@@ -190,6 +195,7 @@ public class Combinations {
     // V4
     // IDEA : BACKTRACK (recursive)
     // https://leetcode.com/problems/combinations/solutions/3845249/iterative-backtracking-video-100-efficient-combinatorial-generation/
+    // time: O(C(N,K) * K), space: O(C(N,K) * K)
     public List<List<Integer>> combine_4(int n, int k) {
         List<List<Integer>> result = new ArrayList<>();
         backtrack_2(n, k, 1, new ArrayList<>(), result);
