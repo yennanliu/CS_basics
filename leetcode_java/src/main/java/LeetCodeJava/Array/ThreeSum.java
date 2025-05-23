@@ -11,6 +11,7 @@ public class ThreeSum {
     // V1
     // IDEA : Two Pointers
     // https://leetcode.com/problems/3sum/editorial/
+    // time: O(N^2), space: O(1)
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
@@ -38,6 +39,7 @@ public class ThreeSum {
 
     // V2
     // IDEA : 2 POINTERS (GPT)
+    // time: O(N^2), space: O(1)
     public List<List<Integer>> threeSum_2(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
 
@@ -85,6 +87,7 @@ public class ThreeSum {
     // V3
     // IDEA: HASH SET
     // https://leetcode.com/problems/3sum/editorial/
+    // time: O(N^2), space: O(N)
     public List<List<Integer>> threeSum_3(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
@@ -110,6 +113,7 @@ public class ThreeSum {
     // V4
     // IDEA : "No-Sort"
     // https://leetcode.com/problems/3sum/editorial/
+    // time: O(N^2), space: O(N)
     public List<List<Integer>> threeSum_4(int[] nums) {
         Set<List<Integer>> res = new HashSet<>();
         Set<Integer> dups = new HashSet<>();

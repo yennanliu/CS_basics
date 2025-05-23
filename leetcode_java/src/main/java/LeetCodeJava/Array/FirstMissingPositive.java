@@ -46,6 +46,7 @@ public class FirstMissingPositive {
 
     // V0
     // IDEA: HASHMAP + MATH
+    // time: O(N), space: O(N)
     public int firstMissingPositive(int[] nums) {
 
         // edge
