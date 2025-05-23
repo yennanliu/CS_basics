@@ -44,6 +44,7 @@ public class WordBreak {
 
     // V0
     // IDEA : BFS (Queue<Integer> queue) (fixed by GPT)
+    // time: O(N^2 * M), space: O(N)
     public boolean wordBreak(String s, List<String> wordDict) {
         // Convert wordDict to a HashSet for O(1) lookups
         Set<String> wordSet = new HashSet<>(wordDict);
@@ -100,6 +101,7 @@ public class WordBreak {
     // V0-1
     // IDEA : BFS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/word-break.py
+    // time: O(N^2 * M), space: O(N)
     public boolean wordBreak_0_1(String s, List<String> wordDict) {
         if (s == null || s.length() == 0 || wordDict == null || wordDict.size() == 0) {
             return false;
@@ -129,6 +131,7 @@ public class WordBreak {
 
     // V0-2
     // IDEA : BACKTRACK (modified via GPT)
+    // time: O(N^2 * M), space: O(N)
     public boolean wordBreak_0_2(String s, List<String> wordDict) {
         return check(s, new HashSet<>(wordDict), 0, new Boolean[s.length()]);
     }
@@ -151,6 +154,7 @@ public class WordBreak {
 
     // V0-3
     // IDEA : BACKTRACK
+    // time: O(N^2 * M), space: O(N)
     Boolean[] memo_;
 
     public boolean wordBreak_0_3(String s, List<String> wordDict) {
@@ -177,6 +181,7 @@ public class WordBreak {
 
     // V0-4
     // IDEA : BACKTRACK + MEMORIZATION (improve efficiency) (gpt)
+    // time: O(N^2 * M), space: O(N * M)
     /**
      *
      * 1) Memoization:
@@ -235,6 +240,7 @@ public class WordBreak {
 
     // V0-5
     // IDEA : DP (modified by GPT)
+    // time: O(N^2 * M), space: O(N)
     /**
      *
      * To improve the efficiency of your wordBreak implementation,
@@ -266,6 +272,7 @@ public class WordBreak {
 
     // V0-6
     // IDEA: BFS (Queue<String> q ) (fixed by gpt)
+    // time: O(N^3), space: O(N)
     public boolean wordBreak_0_6(String s, List<String> wordDict) {
         if (s == null || s.isEmpty())
             return true;
@@ -329,6 +336,7 @@ public class WordBreak {
 
     // V0-7
     // IDEA: BACKTRACK (fixed by gpt) (TLE, not efficient)
+    // time: O(N^2 * M), space: O(N)
     public boolean wordBreak_0_7(String s, List<String> wordDict) {
         // edge cases
         if (s == null || s.length() == 0) {
@@ -370,6 +378,7 @@ public class WordBreak {
     // V1
     // IDEA : DFS
     // https://leetcode.com/problems/word-break/
+    // time: O(N^2 * M), space: O(N * M)
     public boolean wordBreak_1(String s, List<String> wordDict) {
         Map<String, Boolean> memo = new HashMap<>();
         Set<String> wordSet = new HashSet<>(wordDict);
@@ -416,6 +425,7 @@ public class WordBreak {
     // V3
     // IDEA : Tabulation
     // https://leetcode.com/problems/word-break/solutions/3687504/recursion-memoization-tabulation/
+    // time: O(N^3), space: O(N)
     public boolean wordBreak_3(String s, List<String> wordDict) {
         boolean[] dp=new boolean[s.length()+1];
         dp[dp.length-1]=true;

@@ -51,6 +51,7 @@ public class WordSearch2 {
 
     // V0-1
     // IDEA:  for loop + LC 79 (TLE)
+    // time: O(M * N * W * 4^L), space: O(L)
     public List<String> findWords_0_1(char[][] board, String[] words) {
 
         // edge
@@ -229,6 +230,7 @@ public class WordSearch2 {
     // V1
     // IDEA : BACKTRACK + TRIE
     // https://leetcode.com/problems/word-search-ii/solutions/59780/java-15ms-easiest-solution-100-00/
+    // time: O(M * N * 4^L + W * L), space: O(W * L)
     public List<String> findWords2(char[][] board, String[] words) {
         List<String> res = new ArrayList<>();
         TrieNode root = buildTrie(words);
@@ -279,6 +281,7 @@ public class WordSearch2 {
     // V2
     // IDEA : TRIE + BACKTRACK
     // https://leetcode.com/problems/word-search-ii/solutions/4707890/backtracking-solution-using-trie-explained/
+    // time: O(M * N * 4^L + W * L), space: O(W * L)
     class TrieNode2 {
         private TrieNode2[] links;
         private final int LENGTH = 26;

@@ -53,6 +53,7 @@ public class CombinationSum {
 
     // V0
     // IDEA : BACKTRACK + START_IDX
+    // time: O(N^(T/M)), space: O(T/M)
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
 
         if (candidates == null || candidates.length == 0){
@@ -145,6 +146,7 @@ public class CombinationSum {
 
     // V0-1
     // IDEA : BACKTRACK + START_IDX (GPT)
+    // time: O(N^(T/M)), space: O(T/M)
     List<List<Integer>> res_0 = new ArrayList<>();
 
     public List<List<Integer>> combinationSum_0_1(int[] candidates, int target) {
@@ -189,6 +191,7 @@ public class CombinationSum {
 
     // V0-2
     // IDEA : BACKTRACK + START_IDX
+    // time: O(N^(T/M)), space: O(T/M)
     /**
      *  Example output :
      *   candidates = [2, 3, 5]
@@ -273,6 +276,7 @@ public class CombinationSum {
 
     // V0-4
     // IDEA : BACKTRACK + START_IDX (fixed by gpt)
+    // time: O(N^(T/M)), space: O(T/M)
     List<List<Integer>> combineSumRes = new ArrayList<>();
 
     public List<List<Integer>> combinationSum_0_4(int[] candidates, int target) {
@@ -325,6 +329,7 @@ public class CombinationSum {
     // V1-1
     // https://neetcode.io/problems/combination-target-sum
     // IDEA: BACKTRACK
+    // time: O(N^(T/M)), space: O(T/M)
     List<List<Integer>> res_1_1;
     public List<List<Integer>> combinationSum_1_1(int[] nums, int target) {
         res_1_1 = new ArrayList<List<Integer>>();
@@ -351,6 +356,7 @@ public class CombinationSum {
     // V1-2
     // https://neetcode.io/problems/combination-target-sum
     // IDEA: Backtracking (Optimal)
+    // time: O(N^(T/M)), space: O(T/M)
     List<List<Integer>> res_1_2;
     public List<List<Integer>> combinationSum_1_2(int[] nums, int target) {
         res_1_2 = new ArrayList<>();
@@ -380,6 +386,7 @@ public class CombinationSum {
     // V2
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+    // time: O(N^(T/M)), space: O(T/M)
     public List<List<Integer>> combinationSum_2(int[] nums, int target) {
         List<List<Integer>> list = new ArrayList<>();
         Arrays.sort(nums);
@@ -402,6 +409,7 @@ public class CombinationSum {
     // V3
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/combination-sum/editorial/
+    // time: O(N^(T/M)), space: O(T/M)
     protected void backtrack(
             int remain,
             LinkedList<Integer> comb,
@@ -437,6 +445,7 @@ public class CombinationSum {
     // V4
     // https://www.youtube.com/watch?v=GBKI9VSKdGg
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0039-combination-sum.java
+    // time: O(N^(T/M)), space: O(T/M)
     public List<List<Integer>> combinationSum_4(int[] candidates, int target) {
         List<List<Integer>> ans = new ArrayList<List<Integer>>();
         List<Integer> cur = new ArrayList();
@@ -466,6 +475,7 @@ public class CombinationSum {
 
     // V5
     // https://leetcode.com/problems/combination-sum/solutions/3804814/java-easy-solution-using-backtracking/
+    // time: O(N^(T/M)), space: O(T/M)
     public List<List<Integer>> combinationSum_5(int[] candidates, int target) {
         List<List<Integer>> list = new ArrayList<>();
         Arrays.sort(candidates);

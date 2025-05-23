@@ -38,6 +38,7 @@ public class NQueens2 {
 
     // V0
     // IDEA: N QUEENS (LC 51) + unique cnt
+    // time: O(N!), space: O(N^2)
     public int totalNQueens(int n) {
         // edge
         if (n == 1 || n == 0) {
@@ -98,6 +99,7 @@ public class NQueens2 {
     // V1
     // https://www.youtube.com/watch?v=nalYyLZgvCY
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0052-n-queens-ii.java
+    // time: O(N!), space: O(N)
     int count = 0;
 
     public int totalNQueens_1(int n) {
@@ -138,6 +140,7 @@ public class NQueens2 {
 
     // V2
     // https://leetcode.com/problems/n-queens-ii/solutions/6667257/java-solution-by-_aman_varma-u29o/
+    // time: O(N!), space: O(N^2)
     public boolean isSafe(int row, int col, int[] arr1, int[] arr2, int[] leftRow, int n) {
         return arr1[row + col] == 0 && arr2[(n - 1 - row) + col] == 0 && leftRow[row] == 0;
 
@@ -185,6 +188,7 @@ public class NQueens2 {
     // V3
     // https://leetcode.com/problems/n-queens-ii/solutions/6626336/n-queens-ii-count-valid-queen-placements-t9f6/
     // 🛡️ Check if it's safe to place a queen at (row, col)
+    // time: O(N!), space: O(N^2)
     private boolean isSafe(int row, int col, int n, char[][] board) {
         // ⬅️ Check row
         for (int c = 0; c < col; c++)
@@ -205,6 +209,7 @@ public class NQueens2 {
     }
 
     // 🔁 Try placing queens column by column
+    // time: O(N!), space: O(N^2)
     private void backtrack(int col, int n, char[][] board, int[] count) {
         if (col == n) {
             count[0]++; // 🎉 Found a valid way!

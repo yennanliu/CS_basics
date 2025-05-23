@@ -36,6 +36,7 @@ public class PartitionToKEqualSumSubsets {
 
     // V0
     // IDEA: BACKTRACK
+    // time: O(K * 2^N), space: O(N)
     /**
      *
      * target_: the required sum for each of the k subsets.
@@ -68,7 +69,7 @@ public class PartitionToKEqualSumSubsets {
      * If k == 0: All subsets have been formed — return true.
      *
      * If subsetSum == target_:
-     *       You’ve successfully built a subset
+     *       You've successfully built a subset
      *     — `RECURSIVELY build` the next one by resetting sum and decrementing k.
      *
      */
@@ -198,6 +199,7 @@ public class PartitionToKEqualSumSubsets {
 
     // V0-1
     // IDEA: HASHMAP + BACKTRACK (fixed by gpt)
+    // time: O(K * 2^N), space: O(N)
     public boolean canPartitionKSubsets_0_1(int[] nums, int k) {
         // edge
         if (nums == null || nums.length == 0 || k <= 0)
@@ -303,6 +305,7 @@ public class PartitionToKEqualSumSubsets {
 
     // V0-2
     // IDEA: BACKTRACK (fixed by gpt)
+    // time: O(K * 2^N), space: O(N)
     public boolean canPartitionKSubsets_0_2(int[] nums, int k) {
         if (nums == null || nums.length == 0 || k <= 0) {
             return false;
@@ -382,6 +385,7 @@ public class PartitionToKEqualSumSubsets {
     // V1
     // https://www.youtube.com/watch?v=mBk4I0X46oI
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0698-partition-to-k-equal-sum-subsets.java
+    // time: O(K * 2^N), space: O(N)
     int target;
 
     public boolean canPartitionKSubsets_1(int[] nums, int k) {
@@ -420,6 +424,7 @@ public class PartitionToKEqualSumSubsets {
 
     // V2
     // https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solutions/1772704/java-solution-with-comments-100-faster-1-3x14/
+    // time: O(K * 2^N), space: O(N)
     public boolean canPartitionKSubsets_2(int[] nums, int k) {
         int sum = 0;
         for (int i : nums) {
@@ -478,6 +483,7 @@ public class PartitionToKEqualSumSubsets {
 
     // V3-1
     // https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solutions/5559337/crazy-best-problem-to-solve-must-solve-t-6ksg/
+    // time: O(K * 2^N), space: O(N)
     public boolean canPartitionKSubsets_3_1(int[] nums, int k) {
         int sum = Arrays.stream(nums).sum();
         if (sum % k != 0)
@@ -514,6 +520,7 @@ public class PartitionToKEqualSumSubsets {
 
     // V3-2
     // https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solutions/5559337/crazy-best-problem-to-solve-must-solve-t-6ksg/
+    // time: O(K * 2^N), space: O(N)
     public boolean canPartitionKSubsets_3_2(int[] nums, int k) {
         int sum = Arrays.stream(nums).sum();
         if (sum % k != 0)
