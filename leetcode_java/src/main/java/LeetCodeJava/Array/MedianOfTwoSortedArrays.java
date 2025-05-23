@@ -47,6 +47,7 @@ public class MedianOfTwoSortedArrays {
 
     // V0-1
     // IDEA: BRUTE FORCE (sort + even/odd size median number)
+    // time: O((M+N) log(M+N)), space: O(M+N)
     public double findMedianSortedArrays_0_1(int[] nums1, int[] nums2) {
         // edge
         if (nums1.length == 0 && nums2.length == 0) {
@@ -110,6 +111,7 @@ public class MedianOfTwoSortedArrays {
     // V1-1
     // https://neetcode.io/problems/median-of-two-sorted-arrays
     // IDEA: BRUTE FORCE
+    // time: O((M+N) log(M+N)), space: O(M+N)
     public double findMedianSortedArrays_1_1(int[] nums1, int[] nums2) {
         int len1 = nums1.length, len2 = nums2.length;
         int[] merged = new int[len1 + len2];
@@ -128,6 +130,7 @@ public class MedianOfTwoSortedArrays {
     // V1-2
     // https://neetcode.io/problems/median-of-two-sorted-arrays
     // IDEA: 2 POINTERS
+    // time: O(M+N), space: O(1)
     public double findMedianSortedArrays_1_2(int[] nums1, int[] nums2) {
         int len1 = nums1.length, len2 = nums2.length;
         int i = 0, j = 0;
@@ -162,6 +165,7 @@ public class MedianOfTwoSortedArrays {
     // V1-3
     // https://neetcode.io/problems/median-of-two-sorted-arrays
     // IDEA: Binary Search
+    // time: O(log(min(M,N))), space: O(log(min(M,N)))
     public double findMedianSortedArrays_1_3(int[] nums1, int[] nums2) {
         int left = (nums1.length + nums2.length + 1) / 2;
         int right = (nums1.length + nums2.length + 2) / 2;
@@ -193,6 +197,7 @@ public class MedianOfTwoSortedArrays {
     // V1-4
     // https://neetcode.io/problems/median-of-two-sorted-arrays
     // IDEA: Binary Search (Optimal)
+    // time: O(log(min(M,N))), space: O(1)
     public double findMedianSortedArrays_1_4(int[] nums1, int[] nums2) {
         int[] A = nums1;
         int[] B = nums2;
@@ -238,6 +243,7 @@ public class MedianOfTwoSortedArrays {
     // https://leetcode.com/problems/median-of-two-sorted-arrays/solutions/6401742/1ms-100-beats-single-loop-beginner-frien-6bqd/
 
     // V4
+    // time: O(log(min(M,N))), space: O(1)
     public double findMedianSortedArrays_4(int[] nums1, int[] nums2) {
         if (nums1.length > nums2.length) {
             return findMedianSortedArrays_4(nums2, nums1); // Ensure nums1 is the smaller array

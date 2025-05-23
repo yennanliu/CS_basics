@@ -39,6 +39,7 @@ public class CarPooling {
 
     // V0
     // IDEA: PREFIX SUM + `prefix interval handling` (improve efficience)
+    // time: O(N + M), space: O(M)
     public boolean carPooling(int[][] trips, int capacity) {
         // edge
         if (trips == null || trips.length == 0) {
@@ -93,6 +94,7 @@ public class CarPooling {
 
     // V0-1
     // IDEA: PREFIX SUM
+    // time: O(N + M), space: O(M)
     /**
      *  NOTE !!!
      *
@@ -143,6 +145,7 @@ public class CarPooling {
 
     // V0-2
     // IDEA: PREFIX SUM (gpt)
+    // time: O(N + M), space: O(M)
     public boolean carPooling_0_2(int[][] trips, int capacity) {
         // Edge case: if there are no trips, the vehicle is never needed
         if (trips == null || trips.length == 0) {
@@ -187,6 +190,7 @@ public class CarPooling {
     // V1
     // https://youtu.be/08sn_w4LWEE?feature=shared
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F1094-car-pooling.java
+    // time: O(N + M), space: O(M)
     public boolean carPooling_1(int[][] trips, int capacity) {
         int[] passChange = new int[1001];
         for (int[] t : trips) {
@@ -207,6 +211,7 @@ public class CarPooling {
 
     // V2
     // https://leetcode.com/problems/car-pooling/solutions/1669644/well-explained-2-waysjava-cpythonjavascr-djso/
+    // time: O(N log N), space: O(N)
     public boolean carPooling_2(int[][] trips, int capacity) {
         // Because from and to is between 0 and 1000. Idea is to store counts in an array of size 1001.
         int lengthOfTrip[] = new int[1001];
@@ -266,6 +271,7 @@ public class CarPooling {
 
     // V3
     // https://leetcode.com/problems/car-pooling/solutions/1670309/cjavapython-donot-sort-on-95-faster-imag-da8q/
+    // time: O(N log N), space: O(N)
     public boolean carPooling_3(int[][] trips, int capacity) {
         int in_car = 0;
         int[] increase = new int[1001];
