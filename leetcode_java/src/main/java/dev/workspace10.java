@@ -5194,6 +5194,63 @@ public class workspace10 {
 //    }
 
 
+    // LC 14
+    // 12.05 - 12.15 pm
+    // IDEA: STRING OP
+    public String longestCommonPrefix(String[] strs) {
+        // edge
+        if(strs == null || strs.length == 0){
+            return null;
+        }
+        if(strs.length == 1){
+            return strs[0];
+        }
+
+        StringBuilder sb = new StringBuilder();
+        //StringBuilder sb;
+        // start with the str with `shortest` length
+
+        List<String> list = new ArrayList<>();
+        for(String x: strs){
+            list.add(x);
+        }
+
+        // sort on str lenght (small -> big)
+        Collections.sort(list, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = o1.length() - o2.length();
+                return diff;
+            }
+        });
+
+        String first = list.get(0);
+        int len = first.length();
+
+        System.out.println(">>> first = "  + first);
+
+        for(int i = 0; i < first.length(); i++){
+            String tmp = String.copyValueOf(first.toCharArray(), 0, i);
+            boolean isValid = true;
+            System.out.println(">>> tmp = " + tmp);
+            for(int j = 1; j < list.size(); j++){
+                if(!list.get(j).startsWith(tmp)){
+                    isValid = false;
+                    break;
+                }
+            }
+            // only append to res if `all` string has such prefix
+            if(isValid){
+                sb = new StringBuilder();
+                sb.append(tmp);
+            }
+        }
+
+
+        return sb.toString();
+    }
+
+
 
 
 }
