@@ -182,6 +182,32 @@ public class WordBreak {
     // V0-4
     // IDEA : BACKTRACK + MEMORIZATION (improve efficiency) (gpt)
     // time: O(N^2 * M), space: O(N * M)
+    /**
+     *
+     * 1) Memoization:
+     *
+     *  Use a Map<String, Boolean> called memo to store whether a given substring can be segmented using the word dictionary.
+     *  This avoids re-computation for the same substring multiple times.
+     *
+     * 2) Base Case:
+     *
+     *  If the string s is empty, return true because an empty string is considered to be fully segmented.
+     *
+     * 3) Check Memo:
+     *
+     *  Before performing any computations, check if the result for the current substring s is already computed and stored in memo.
+     *
+     * 4) Iterate Through Word Dictionary:
+     *
+     *  For each word in the dictionary, check if the current substring s starts with that word.
+     *  If it does, recursively call canBuild on the remaining substring (suffix).
+     *  If the recursive call returns true, store the result in memo and return true.
+     *  Store False in Memo:
+     *
+     * If none of the words match or lead to a solution, store false in memo for the current substring s.
+     * This approach enhances the efficiency of the backtracking algorithm by ensuring that each substring is processed only once, reducing the overall time complexity significantly.
+     *
+     */
     private Map<String, Boolean> memo = new HashMap<>();
 
     public boolean wordBreak_0_4(String s, List<String> wordDict) {
