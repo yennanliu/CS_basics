@@ -84,6 +84,7 @@ public class NQueens {
 
     // V0-1
     // IDEA: BACKTRACK (gpt)
+    // time: O(N!), space: O(N^2)
     public List<List<String>> solveNQueens_0_1(int n) {
         List<List<String>> result = new ArrayList<>();
 
@@ -136,6 +137,7 @@ public class NQueens {
 
     // V0-2
     // IDEA: BACKTRACK (fixed by gpt)
+    // time: O(N!), space: O(N^2)
     List<List<String>> queenRes = new ArrayList<>();
 
     public List<List<String>> solveNQueens_0_2(int n) {
@@ -213,6 +215,7 @@ public class NQueens {
     // V1-1
     // https://neetcode.io/problems/n-queens
     // IDEA: BACKTRACK
+    // time: O(N!), space: O(N^2)
     public List<List<String>> solveNQueens_1_1(int n) {
         List<List<String>> res = new ArrayList<>();
         char[][] board = new char[n][n];
@@ -259,6 +262,7 @@ public class NQueens {
     // V1-2
     // https://neetcode.io/problems/n-queens
     // IDEA: BACKTRACK (HASHSET)
+    // time: O(N!), space: O(N)
     Set<Integer> col = new HashSet<>();
     Set<Integer> posDiag = new HashSet<>();
     Set<Integer> negDiag = new HashSet<>();
@@ -307,6 +311,7 @@ public class NQueens {
     // V1-3
     // https://neetcode.io/problems/n-queens
     // IDEA: BACKTRACK  (Visited Array)
+    // time: O(N!), space: O(N)
     boolean[] col_1_3, posDiag_1_3, negDiag_1_3;
     List<List<String>> res_1_3;
     char[][] board;
@@ -404,6 +409,7 @@ public class NQueens {
 
     // V2
     // https://leetcode.com/problems/n-queens/solutions/6463038/easy-backtracking-stepwise-with-explanat-4exf/
+    // time: O(N!), space: O(N^2)
     public List<List<String>> solveNQueens_2(int n) {
         List<List<String>> ans = new ArrayList<>();
         char[][] board = new char[n][n];
@@ -531,6 +537,7 @@ public class NQueens {
     }
 
     // Main function to solve N-Queens problem
+    // time: O(N!), space: O(N^2)
     public List<List<String>> solveNQueens_3(int n) {
         List<List<String>> output = new ArrayList<>(); // Stores all valid solutions
         char[][] nQueens = new char[n][n]; // Initialize empty board

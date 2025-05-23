@@ -38,6 +38,7 @@ public class Permutations2 {
     // V0
     // IDEA: BACKTRACK + `not visit duplicated val in same layer` (fixed by gpt) + `visited` array
     // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/backtrack.md#1-2-2-avoid-add-duplicated-element-in-same-level-same-recursion-call
+    // time: O(N! * N), space: O(N! * N)
     List<List<Integer>> permuteRes2 = new ArrayList<>();
 
     public List<List<Integer>> permuteUnique(int[] nums) {
@@ -68,8 +69,8 @@ public class Permutations2 {
        *
        *  - If nums[i] is the same as the previous value nums[i - 1]…
        *
-       *  - And we haven’t used nums[i - 1] in this recursive path
-       *    (i.e., we’ve already branched on it in this level)…
+       *  - And we haven't used nums[i - 1] in this recursive path
+       *    (i.e., we've already branched on it in this level)…
        *
        *  - Then skip nums[i] to avoid generating the same permutation again.
        *
@@ -79,13 +80,13 @@ public class Permutations2 {
        *  if the first one (previous index) was not used in this path.
        *
        *  Because:
-       * 	•	If we don’t use the first 1, but try to use the second 1,
+       * 	•	If we don't use the first 1, but try to use the second 1,
        *      	it leads to the `same` permutation as using the first.
        *
        * 	•	So we skip the second in this path to avoid duplication.
        *
        *
-       *   But if the first 1 was used, then using the second one now is a valid, different position, and we’re good to proceed.
+       *   But if the first 1 was used, then using the second one now is a valid, different position, and we're good to proceed.
        *
        */
       /**  Example:
@@ -115,21 +116,21 @@ public class Permutations2 {
        *
        * nums[1] == nums[0] && !used[0]
        *
-       * This means we’re in a situation like:
+       * This means we're in a situation like:
        *
-       * “Hey, the value is the same as previous, but we didn’t use the previous one — so using this would duplicate the earlier case.”
+       * "Hey, the value is the same as previous, but we didn't use the previous one — so using this would duplicate the earlier case."
        *
        * 🔁 This condition:
        *
        * if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) continue;
        *
-       * ==> “Skip duplicate values that haven’t had their first occurrence used yet in this recursion layer.”
+       * ==> "Skip duplicate values that haven't had their first occurrence used yet in this recursion layer."
        *
        * ⸻
        *
        * 🧠 Intuition in simpler terms:
        *
-       * If two values are equal, and you didn’t use the first one yet — don’t start with the second one.
+       * If two values are equal, and you didn't use the first one yet — don't start with the second one.
        * Only use a duplicate after the earlier copy has been used.
        *
        */
@@ -152,6 +153,7 @@ public class Permutations2 {
     // IDEA: BACKTRACK + `VISITED ARRAY` (NO NEED start_idx)
     // https://www.youtube.com/watch?v=qhBVWf0YafA
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0047-permutations-ii.java
+    // time: O(N! * N), space: O(N! * N)
     public List<List<Integer>> permuteUnique_1_1(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
@@ -187,6 +189,7 @@ public class Permutations2 {
     // V2-1
     // https://leetcode.com/problems/permutations-ii/editorial/
     // IDEA: Backtracking with Groups of Numbers (counter)
+    // time: O(N! * N), space: O(N! * N)
     public List<List<Integer>> permuteUnique_2_1(int[] nums) {
         List<List<Integer>> results = new ArrayList<>();
 
@@ -236,6 +239,7 @@ public class Permutations2 {
 
     // V3
     // https://leetcode.com/problems/permutations-ii/solutions/18601/short-iterative-java-solution-by-shpolsk-r4tm/
+    // time: O(N! * N), space: O(N! * N)
     public List<List<Integer>> permuteUnique_3(int[] num) {
         LinkedList<List<Integer>> res = new LinkedList<>();
         res.add(new ArrayList<>());

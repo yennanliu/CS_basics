@@ -45,6 +45,7 @@ public class Permutations {
      *  1) NO NEED "start_idx" since CAN'T get duplicated element
      *  2) via "!cur.contains(nums[i])" to NOT use duplicated element in recursive call within for loop
      */
+    // time: O(N! * N), space: O(N! * N)
     public List<List<Integer>> permute(int[] nums) {
 
         List<List<Integer>> res = new ArrayList<>();
@@ -98,6 +99,7 @@ public class Permutations {
 
     // V0-1
     // IDEA : BACKTRACK
+    // time: O(N! * N), space: O(N! * N)
     public List<List<Integer>> permute_0_1(int[] nums) {
 
         if (nums.length == 1){
@@ -145,6 +147,7 @@ public class Permutations {
     // V1-1
     // https://neetcode.io/problems/permutations
     // IDEA: RECURSION
+    // time: O(N! * N), space: O(N! * N)
     public List<List<Integer>> permute_1_1(int[] nums) {
         if (nums.length == 0) {
             return Arrays.asList(new ArrayList<>());
@@ -165,6 +168,7 @@ public class Permutations {
     // V1-2
     // https://neetcode.io/problems/permutations
     // IDEA: Iteration
+    // time: O(N! * N), space: O(N! * N)
     public List<List<Integer>> permute_1_2(int[] nums) {
         List<List<Integer>> perms = new ArrayList<>();
         perms.add(new ArrayList<>());
@@ -186,6 +190,7 @@ public class Permutations {
     // V1-3
     // https://neetcode.io/problems/permutations
     // IDEA: Backtracking
+    // time: O(N! * N), space: O(N! * N)
     List<List<Integer>> res_1_3;
     public List<List<Integer>> permute_1_3(int[] nums) {
         res_1_3 = new ArrayList<>();
@@ -213,6 +218,7 @@ public class Permutations {
     // V1-4
     // https://neetcode.io/problems/permutations
     // IDEA: Backtracking (Bit Mask)
+    // time: O(N! * N), space: O(N! * N)
     List<List<Integer>> res_1_4 = new ArrayList<>();
 
     public List<List<Integer>> permute_1_4(int[] nums) {
@@ -238,6 +244,7 @@ public class Permutations {
     // V1-5
     // https://neetcode.io/problems/permutations
     // IDEA: Backtracking (Optimal)
+    // time: O(N! * N), space: O(N! * N)
     List<List<Integer>> res_1_5;
     public List<List<Integer>> permute_1_5(int[] nums) {
         res_1_5 = new ArrayList<>();
@@ -269,6 +276,7 @@ public class Permutations {
     // V2
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+    // time: O(N! * N), space: O(N! * N)
     public List<List<Integer>> permute_2(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         // Arrays.sort(nums); // not necessary
@@ -292,6 +300,7 @@ public class Permutations {
     // V3
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/permutations/editorial/
+    // time: O(N! * N), space: O(N! * N)
     public List<List<Integer>> permute_3(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
         backtrack(new ArrayList<>(), ans, nums);

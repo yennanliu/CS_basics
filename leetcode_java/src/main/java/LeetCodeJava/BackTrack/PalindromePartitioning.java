@@ -40,6 +40,7 @@ public class PalindromePartitioning {
 
     // V0-1
     // IDEA: BACKTRACK + start_idx (fixed by gpt)
+    // time: O(N * 2^N), space: O(N * 2^N)
     List<List<String>> partitionRes = new ArrayList<>();
 
     public List<List<String>> partition_0_1(String s) {
@@ -56,9 +57,9 @@ public class PalindromePartitioning {
      *
      * 	•	This is the base case of the recursion.
      *
-     * 	•	It means: “If we’ve reached the end of the string,
+     * 	•	It means: "If we've reached the end of the string,
      * 	     then the current list of substrings (currentList)
-     * 	     forms a valid full partition of s into palindromes.”
+     * 	     forms a valid full partition of s into palindromes."
      *
      * 	•	-> So we add a copy of currentList into
      * 	       the final result list partitionRes.
@@ -67,9 +68,9 @@ public class PalindromePartitioning {
      *  - Why start == s.length()?
      *
      * 	•	Because start is the index from which
-     * 	    we’re currently trying to partition.
+     * 	    we're currently trying to partition.
      *
-     * 	•	If start == s.length(), it means we’ve
+     * 	•	If start == s.length(), it means we've
      * 	     used up all characters in s, and currentList is now a full,
      * 	     valid partition.
      */
@@ -117,6 +118,7 @@ public class PalindromePartitioning {
     // V1-1
     // https://neetcode.io/problems/palindrome-partitioning
     // IDEA: Backtracking (Pick / Not Pick)
+    // time: O(N * 2^N), space: O(N * 2^N)
     private List<List<String>> res = new ArrayList<>();
     private List<String> part = new ArrayList<>();
 
@@ -157,6 +159,7 @@ public class PalindromePartitioning {
     // V1-2
     // https://neetcode.io/problems/palindrome-partitioning
     // IDEA: Backtracking
+    // time: O(N * 2^N), space: O(N * 2^N)
     public List<List<String>> partition_1_2(String s) {
         List<List<String>> res = new ArrayList<>();
         List<String> part = new ArrayList<>();
@@ -193,6 +196,7 @@ public class PalindromePartitioning {
     // V1-3
     // https://neetcode.io/problems/palindrome-partitioning
     // IDEA: Backtracking (DP)
+    // time: O(N^2 + N * 2^N), space: O(N^2 + N * 2^N)
     boolean[][] dp;
     public List<List<String>> partition_1_3(String s) {
         int n = s.length();
@@ -228,6 +232,7 @@ public class PalindromePartitioning {
     // V4
     // IDEA: BACKTRACK
     // https://leetcode.com/problems/palindrome-partitioning/editorial/
+    // time: O(N * 2^N), space: O(N * 2^N)
     public List<List<String>> partition_4(String s) {
         /** NOTE : we can init result, pass it to method, modify it, and return as ans */
         List<List<String>> result = new ArrayList<List<String>>();
@@ -258,6 +263,7 @@ public class PalindromePartitioning {
     // V5
     // IDEA: BACKTRACK + DP
     // https://leetcode.com/problems/palindrome-partitioning/editorial/
+    // time: O(N^2 + N * 2^N), space: O(N^2 + N * 2^N)
     public List<List<String>> partition_5(String s) {
         int len = s.length();
         boolean[][] dp = new boolean[len][len];
