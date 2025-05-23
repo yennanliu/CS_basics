@@ -4,10 +4,8 @@
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 25/66
-	- 5 / day ->  15 days to finish
-		- Math
 		- review prev LC problems !!!
-	- again:
+	- again: 14
 		- similar:
 		- Kadane algo
 			- 1836: Remove Duplicates from an Unsorted Linked List
