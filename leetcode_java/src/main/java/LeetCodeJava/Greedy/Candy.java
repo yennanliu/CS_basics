@@ -1,7 +1,41 @@
 package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/candy/
-
+/**
+ * 135. Candy
+ * Solved
+ * Hard
+ * Topics
+ * Companies
+ * There are n children standing in a line. Each child is assigned a rating value given in the integer array ratings.
+ *
+ * You are giving candies to these children subjected to the following requirements:
+ *
+ * Each child must have at least one candy.
+ * Children with a higher rating get more candies than their neighbors.
+ * Return the minimum number of candies you need to have to distribute the candies to the children.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: ratings = [1,0,2]
+ * Output: 5
+ * Explanation: You can allocate to the first, second and third child with 2, 1, 2 candies respectively.
+ * Example 2:
+ *
+ * Input: ratings = [1,2,2]
+ * Output: 4
+ * Explanation: You can allocate to the first, second and third child with 1, 2, 1 candies respectively.
+ * The third child gets 1 candy because it satisfies the above two conditions.
+ *
+ *
+ * Constraints:
+ *
+ * n == ratings.length
+ * 1 <= n <= 2 * 104
+ * 0 <= ratings[i] <= 2 * 104
+ */
 import java.util.Arrays;
 
 public class Candy {
@@ -9,42 +43,54 @@ public class Candy {
     // V0
     // IDEA : GREEDY
     // https://www.bilibili.com/video/BV1ev4y1r7wN/?share_source=copy_web&vd_source=49348a1975630e1327042905e52f488a
-    // TODO : fix it
-//    public int candy(int[] ratings) {
-//
-//        if (ratings == null || ratings.length == 0){
-//            return 0;
-//        }
-//
-//        int ans = 0;
-//        int[] tmp = new int[]{};
-//        for (int i = 0; i < ratings.length; i++){
-//            tmp[i] = 1;
-//        }
-//
-//        /** TIPS : DEAL WITH 1 DIRECTION AT ONCE */
-//
-//        // step 1) loop from left (compare element left)
-//        for (int j = 1; j < ratings.length-1; j++){
-//            if (ratings[j] > ratings[j-1]){
-//                tmp[j] += 1;
-//            }
-//        }
-//
-//        // step 2) loop from right
-//        for (int k = ratings.length-2; k >= 0; k--){
-//            if (ratings[k] > ratings[k+1]){
-//                tmp[k] += 1;
-//            }
-//        }
-//
-//        // step 3) get sum
-//        for (int z=0; z < tmp.length; z ++){
-//            ans += tmp[z];
-//        }
-//
-//        return ans;
-//    }
+    //public int candy(int[] ratings) {}
+
+    // V0-1
+    // IDEA: GREEDY (loop 2 times over 2 direction) (fixed by gpt)
+    // https://www.youtube.com/watch?v=1IzCRCcK17A
+    public int candy_0_1(int[] ratings) {
+        // edge cases
+        if (ratings == null || ratings.length == 0) {
+            return 0;
+        }
+        if (ratings.length == 1) {
+            return 1;
+        }
+
+        int n = ratings.length;
+        int[] cache = new int[n];
+        Arrays.fill(cache, 1); // every child gets at least one candy
+
+        // Step 1: left to right
+        // (left -> right) (check left) (start_idx = 1)
+        for (int i = 1; i < n; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                /**
+                 *  NOTE !!! below
+                 */
+                cache[i] = cache[i - 1] + 1;
+            }
+        }
+
+        // Step 2: right to left
+        // (right -> left) (check right) (start_idx = ratings.len -2)
+        for (int i = n - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                /**
+                 *  NOTE !!! below
+                 */
+                cache[i] = Math.max(cache[i], cache[i + 1] + 1);
+            }
+        }
+
+        // Sum up the result
+        int res = 0;
+        for (int x : cache) {
+            res += x;
+        }
+
+        return res;
+    }
 
 
     // V1

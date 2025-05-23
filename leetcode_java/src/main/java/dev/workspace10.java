@@ -4233,7 +4233,7 @@ public class workspace10 {
    * <p>1. init val as 1 2. loop from `right hand side`, compare current idx with its neighbor, - if
    * same, do nothing - if bigger than neighbors, val += 1 -
    */
-  public int candy(int[] ratings) {
+  public int candy__(int[] ratings) {
 
     // edge
     if (ratings == null || ratings.length == 0) {
@@ -5255,6 +5255,84 @@ public class workspace10 {
     public int longestArithSeqLength(int[] nums) {
 
         return 0;
+    }
+
+    // LC 135
+    // 7.27 - 7.37 pm
+    /**
+     *  IDEA: GREEDY
+     *
+     *  exp 1) [1,0,2]
+     *
+     *  -> init : [1,1,1]
+     *
+     *  -> (left -> right) (check left) (start_idx = 1)
+     *
+     *   [1, 1, 2]
+     *
+     *  -> (right -> left) (check right) (start_idx = ratings.len -2)
+     *
+     *  [2,1,2]
+     *
+     *
+     *  exp 2) [1,2,2]
+     *
+     *  -> init : [1,1,1]
+     *
+     *  -> (left -> right) (check left) (start_idx = 1)
+     *
+     *  [1,2,1]
+     *
+     *  -> (right -> left) (check right) (start_idx = ratings.len -2)
+     *
+     *  [1,2,1]
+     *
+     *
+     */
+    public int candy(int[] ratings) {
+        // edge
+        if(ratings == null || ratings.length == 0){
+            return 0;
+        }
+        if(ratings.length == 1){
+            return 1;
+        }
+
+        // greedy
+        int res = 0;
+
+        int[] cache = new int[ratings.length];
+        // init val as 1
+        Arrays.fill(cache, 1);
+
+        // step 1)  (left -> right) (check left) (start_idx = 1)
+        for(int i = 1; i < ratings.length; i++){
+            if(ratings[i] > ratings[i-1]){
+                /**
+                 *  NOTE !!! below
+                 */
+               // cache[i] += (cache[i] + 1);
+                cache[i] = cache[i - 1] + 1;
+            }
+        }
+
+        // step 2) (right -> left) (check right) (start_idx = ratings.len -2)
+        for(int i = ratings.length -2; i >= 0; i--){
+            if(ratings[i] > ratings[i+1]){
+                // NOTE !!! below
+                // ???
+                int val = Math.max(cache[i], cache[i+1] + 1);
+                cache[i] = val;
+            }
+        }
+
+
+        // sum `cache` val
+        for(int x: cache){
+            res += x;
+        }
+
+        return res;
     }
 
 
