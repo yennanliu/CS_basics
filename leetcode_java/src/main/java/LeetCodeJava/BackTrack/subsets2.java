@@ -38,6 +38,7 @@ public class subsets2 {
     // V0
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+    // time: O(N * 2^N), space: O(N * 2^N)
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         /**
@@ -73,6 +74,7 @@ public class subsets2 {
     // V0-1
     // IDEA : Backtracking
     // https://leetcode.com/problems/subsets-ii/editorial/
+    // time: O(N * 2^N), space: O(N * 2^N)
     public List<List<Integer>> subsetsWithDup_0_1(int[] nums) {
 
         /**
@@ -112,6 +114,7 @@ public class subsets2 {
     }
 
     // V0-2
+    // time: O(N * 2^N), space: O(N * 2^N)
     public List<List<Integer>> subsetsWithDup_0_2(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         if (nums.length == 0) {
@@ -199,6 +202,7 @@ public class subsets2 {
     // V1-1
     // https://neetcode.io/problems/subsets-ii
     // IDEA: BRUTE FOECE
+    // time: O(N * 2^N), space: O(N * 2^N)
     Set<List<Integer>> res = new HashSet<>();
 
     public List<List<Integer>> subsetsWithDup_1_1(int[] nums) {
@@ -223,6 +227,7 @@ public class subsets2 {
     // V1-2
     // https://neetcode.io/problems/subsets-ii
     // IDEA: BACKTRACK I
+    // time: O(N * 2^N), space: O(N * 2^N)
     List<List<Integer>> res_1_2 = new ArrayList<>();
 
     public List<List<Integer>> subsetsWithDup_1_2(int[] nums) {
@@ -251,6 +256,7 @@ public class subsets2 {
     // V1-3
     // https://neetcode.io/problems/subsets-ii
     // IDEA: BACKTRACK II
+    // time: O(N * 2^N), space: O(N * 2^N)
     List<List<Integer>> res_1_3 = new ArrayList<>();
 
     public List<List<Integer>> subsetsWithDup_1_3(int[] nums) {
@@ -275,6 +281,7 @@ public class subsets2 {
     // V2
     // IDEA : Bitmasking
     // https://leetcode.com/problems/subsets-ii/editorial/
+    // time: O(N * 2^N), space: O(N * 2^N)
     public List<List<Integer>> subsetsWithDup_2(int[] nums) {
         List<List<Integer>> subsets = new ArrayList();
         int n = nums.length;
@@ -314,6 +321,7 @@ public class subsets2 {
     // V3
     // IDEA : Cascading (Iterative)
     // https://leetcode.com/problems/subsets-ii/editorial/
+    // time: O(N * 2^N), space: O(N * 2^N)
     public List<List<Integer>> subsetsWithDup_3(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> subsets = new ArrayList<>();
@@ -337,6 +345,7 @@ public class subsets2 {
     // V4
     // IDEA : Backtracking
     // https://leetcode.com/problems/subsets-ii/editorial/
+    // time: O(N * 2^N), space: O(N * 2^N)
     public List<List<Integer>> subsetsWithDup_4(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> subsets = new ArrayList<>();

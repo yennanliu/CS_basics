@@ -54,6 +54,7 @@ public class PathWithMaximumGold {
 
     // V0
     // IDEA : DFS + BACKTRACK
+    // time: O(M * N * 4^K), space: O(K)
     private final int[] DIRECTIONS = new int[]{0, 1, 0, -1, 0};
 
     public int getMaximumGold(int[][] grid) {
@@ -140,6 +141,7 @@ public class PathWithMaximumGold {
     // V1-1
     // IDEA : DFS + BACKTRACK
     //https://leetcode.com/problems/path-with-maximum-gold/editorial/
+    // time: O(M * N * 4^K), space: O(K)
     private final int[] DIRECTIONS2 = new int[]{0, 1, 0, -1, 0};
 
     public int getMaximumGold_1_1(int[][] grid) {
