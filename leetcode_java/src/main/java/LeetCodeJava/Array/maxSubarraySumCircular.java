@@ -104,6 +104,7 @@ public class maxSubarraySumCircular {
 
     // V0-1
     // IDEA: (GEMINI)
+    // time: O(N), space: O(1)
     /**
      *
      * Explanation of Changes:
@@ -172,6 +173,7 @@ public class maxSubarraySumCircular {
 
     // V0-2
     // IDEA: Kadane algo (gpt)
+    // time: O(N), space: O(1)
     public int maxSubarraySumCircular(int[] nums) {
         int totalSum = 0;
         int maxSum = nums[0], curMax = 0;
@@ -196,6 +198,7 @@ public class maxSubarraySumCircular {
 
     // V0-2
     // IDEA: DEQUEUE + PREFIX SUM (gpt)
+    // time: O(N), space: O(N)
     public int maxSubarraySumCircular_0_2(int[] nums) {
         int n = nums.length;
         int[] prefix = new int[2 * n + 1];
@@ -232,8 +235,7 @@ public class maxSubarraySumCircular {
 
 
     // V1
-    // https://www.youtube.com/watch?v=fxT9KjakYPM
-    // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0918-maximum-sum-circular-subarray.java
+    // time: O(N), space: O(1)
     public int maxSubarraySumCircular_1(int[] nums) {
         int curMax = 0, curMin = 0;
         int globMax = nums[0], globMin = nums[0];
@@ -249,6 +251,7 @@ public class maxSubarraySumCircular {
     }
 
     // V2-1
+    // time: O(N), space: O(1)
     // https://leetcode.com/problems/maximum-sum-circular-subarray/editorial/
     // IDEA: Enumerate prefix and suffix sums
     public int maxSubarraySumCircular_2_1(int[] nums) {
@@ -280,6 +283,7 @@ public class maxSubarraySumCircular {
     }
 
     // V2-2
+    // time: O(N), space: O(1)
     // https://leetcode.com/problems/maximum-sum-circular-subarray/editorial/
     // IDEA: Calculate the "Minimum Subarray"
     public int maxSubarraySumCircular_2_2(int[] nums) {
