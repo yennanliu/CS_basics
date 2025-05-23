@@ -5251,6 +5251,12 @@ public class workspace10 {
     }
 
 
+    // LC 1027
+    public int longestArithSeqLength(int[] nums) {
+
+        return 0;
+    }
+
 
 
 }
