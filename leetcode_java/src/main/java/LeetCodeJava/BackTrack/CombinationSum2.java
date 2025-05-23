@@ -114,6 +114,7 @@ public class CombinationSum2 {
 
     // V0-1
     // IDEA: LC 39 + check duplicated (GPT)
+    // time: O(2^N), space: O(2^N)
     List<List<Integer>> comSumRes = new ArrayList<>();
 
     public List<List<Integer>> combinationSum2_0_1(int[] candidates, int target) {
@@ -157,9 +158,9 @@ public class CombinationSum2 {
        *  Example :
        *
        *
-       *  That’s a fantastic follow-up — and exactly the kind of case that the duplicate-skipping logic is carefully crafted to handle.
+       *  That's a fantastic follow-up — and exactly the kind of case that the duplicate-skipping logic is carefully crafted to handle.
        *
-       * Let’s walk through why [1,1,6] is valid, even though we skip duplicates in:
+       * Let's walk through why [1,1,6] is valid, even though we skip duplicates in:
        *
        * if (i > startIdx && candidates[i] == candidates[i - 1]) {
        *     continue;
@@ -181,7 +182,7 @@ public class CombinationSum2 {
        *
        * ⸻
        *
-       * 🔁 Let’s simulate the recursion that finds [1,1,6]
+       * 🔁 Let's simulate the recursion that finds [1,1,6]
        *
        * Initial call: startIdx = 0, cache = []
        *
@@ -236,6 +237,7 @@ public class CombinationSum2 {
     // V1-1
     // https://neetcode.io/problems/combination-target-sum-ii
     // IDEA: BRUTE FORCE
+    // time: O(2^N), space: O(2^N)
     private Set<List<Integer>> res;
 
     public List<List<Integer>> combinationSum2_1_1(int[] candidates, int target) {
@@ -264,6 +266,7 @@ public class CombinationSum2 {
     // V1-2
     // https://neetcode.io/problems/combination-target-sum-ii
     // IDEA: BACKTRACK
+    // time: O(2^N), space: O(2^N)
     private List<List<Integer>> res_1_2;
 
     public List<List<Integer>> combinationSum2_1_2(int[] candidates, int target) {
@@ -295,6 +298,7 @@ public class CombinationSum2 {
     // V1-3
     // https://neetcode.io/problems/combination-target-sum-ii
     // IDEA: Backtracking (Hash Map)
+    // time: O(2^N), space: O(2^N)
     List<List<Integer>> res_1_3 = new ArrayList<>();
     Map<Integer, Integer> count = new HashMap<>();
 
@@ -335,6 +339,7 @@ public class CombinationSum2 {
     // V1-4
     // https://neetcode.io/problems/combination-target-sum-ii
     // IDEA: Backtracking (Optimal)
+    // time: O(2^N), space: O(2^N)
     private static List<List<Integer>> res_1_4 = new ArrayList<>();
 
     public List<List<Integer>> combinationSum2_1_4(int[] candidates, int target) {
@@ -367,6 +372,7 @@ public class CombinationSum2 {
     // V2
     // IDEA : Backtracking with Counters
     // https://leetcode.com/problems/combination-sum-ii/editorial/
+    // time: O(2^N), space: O(2^N)
     public List<List<Integer>> combinationSum2_2(int[] candidates, int target) {
         // container to hold the final combinations
         List<List<Integer>> results = new ArrayList<>();
@@ -426,6 +432,7 @@ public class CombinationSum2 {
     // V3
     // IDEA : Backtracking with Index
     // https://leetcode.com/problems/combination-sum-ii/editorial/
+    // time: O(2^N), space: O(2^N)
     public List<List<Integer>> combinationSum2_3(int[] candidates, int target) {
         List<List<Integer>> results = new ArrayList<>();
         LinkedList<Integer> comb = new LinkedList<>();
@@ -462,6 +469,7 @@ public class CombinationSum2 {
 
     // V4
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+    // time: O(2^N), space: O(2^N)
     public List<List<Integer>> combinationSum2_4(int[] nums, int target) {
         List<List<Integer>> list = new ArrayList<>();
         Arrays.sort(nums);
@@ -486,6 +494,7 @@ public class CombinationSum2 {
     // V5
     // https://www.youtube.com/watch?v=rSA3t6BDDwg
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0040-combination-sum-ii.java
+    // time: O(2^N), space: O(2^N)
     public List<List<Integer>> combinationSum2_5(int[] candidates, int target) {
         Arrays.sort(candidates);
         List<List<Integer>> ans = new ArrayList<List<Integer>>();
