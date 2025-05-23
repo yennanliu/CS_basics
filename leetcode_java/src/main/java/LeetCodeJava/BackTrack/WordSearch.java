@@ -42,6 +42,7 @@ public class WordSearch {
 
     // V0
     // IDEA : DFS + BACKTRACK
+    // time: O(M * N * 4^L), space: O(L)
     public boolean exist(char[][] board, String word) {
 
         int n = board.length;
@@ -90,9 +91,9 @@ public class WordSearch {
          *
          *
          *  3) Correct Behavior:
-         * - idx == word.length() ensures that you’ve matched the entire word.
+         * - idx == word.length() ensures that you've matched the entire word.
          *
-         * - For example, let’s walk through the process:
+         * - For example, let's walk through the process:
          *
          * - Starting at idx = 0, you check the first character ('A').
          * - Then at idx = 1, you check the second character ('B').
@@ -135,11 +136,11 @@ public class WordSearch {
          *
          *  Reason:
          *
-         *   - We don’t need start_idx -= 1;
+         *   - We don't need start_idx -= 1;
          *    because start_idx is passed by value, not by reference.
          *    So modifying it in the recursive call
-         *    doesn’t affect the caller’s start_idx.
-         *    We’re already handling the correct index in
+         *    doesn't affect the caller's start_idx.
+         *    We're already handling the correct index in
          *    each recursive call by passing start_idx + 1.
          *
          *
@@ -148,17 +149,17 @@ public class WordSearch {
          *
          *  dfsFind(board, word, x+1, y, visited, start_idx + 1)
          *
-         *  -> You’re passing a `copy` of start_idx + 1 to the recursive function.
+         *  -> You're passing a `copy` of start_idx + 1 to the recursive function.
          *     So, inside the recursive call, start_idx is a `new variable`,
-         *     and changes to it won’t affect the start_idx in the calling function.
+         *     and changes to it won't affect the start_idx in the calling function.
          *
          *
          *  - Why does undo apply only to visited[y][x]?
          *
          *    -> Because visited is a 2D array (object in memory),
          *       and arrays in Java are passed by reference.
-         *       So modifying visited[y][x] does affect the caller’s version
-         *       — that’s why we need to undo it when backtracking:
+         *       So modifying visited[y][x] does affect the caller's version
+         *       — that's why we need to undo it when backtracking:
          *
          */
         //lvl -= 1;
@@ -168,6 +169,7 @@ public class WordSearch {
 
     // V0-1
     // IDEA: DFS + BACKTRACK (GPT)
+    // time: O(M * N * 4^L), space: O(L)
     public boolean exist_0_1(char[][] board, String word) {
         // Edge case: empty board
         if (board.length == 0 || board[0].length == 0) {
@@ -224,6 +226,7 @@ public class WordSearch {
 
     // V0-2
     // IDEA : DFS + BACKTRACK (modified by GPT)
+    // time: O(M * N * 4^L), space: O(L)
     public boolean exist_0_2(char[][] board, String word) {
         if (board == null || board.length == 0) {
             return false;
@@ -307,7 +310,7 @@ public class WordSearch {
      *
      *
      *  3) Example:
-     *      Let’s consider a small grid:
+     *      Let's consider a small grid:
      *
      *   board = [
      *      ['A', 'B'],
@@ -355,6 +358,7 @@ public class WordSearch {
 
     // V0-3
     // IDEA : modified version of v0' (gpt)
+    // time: O(M * N * 4^L), space: O(L)
     public boolean exist_0_3(char[][] board, String word) {
         if (board == null || board.length == 0) {
             return false;
@@ -420,6 +424,7 @@ public class WordSearch {
 
     // V0-4
     // IDEA: DFS + BACKTRACK (fixed by gpt)
+    // time: O(M * N * 4^L), space: O(L)
     public boolean exist_0_4(char[][] board, String word) {
         // edge
         if (board.length == 0 || board[0].length == 0) {
@@ -552,6 +557,7 @@ public class WordSearch {
     // V1-2
     // https://neetcode.io/problems/search-for-word
     // IDEA: Backtracking (Visited Array)
+    // time: O(M * N * 4^L), space: O(L)
     private int ROWS_1_2, COLS_1_2;
     private boolean[][] visited;
 
@@ -594,6 +600,7 @@ public class WordSearch {
     // V1-3
     // https://neetcode.io/problems/search-for-word
     // IDEA: Backtracking (Optimal)
+    // time: O(M * N * 4^L), space: O(L)
     private int ROWS_1_3, COLS_1_3;
 
     public boolean exist_1_3(char[][] board, String word) {
@@ -632,6 +639,7 @@ public class WordSearch {
     // V2
     // IDEA : DFS + BACKTRACK
     // https://leetcode.com/problems/word-search/solutions/4791515/java-easy-solution-dfs-backtracking/
+    // time: O(M * N * 4^L), space: O(L)
     public boolean exist_2(char[][] board, String word) {
         int n = board.length;
         int m = board[0].length;
@@ -676,6 +684,7 @@ public class WordSearch {
 
     // V3
     // IDEA : V1 variation
+    // time: O(M * N * 4^L), space: O(L)
     public boolean exist_3(char[][] board, String word) {
         int n = board.length;
         int m = board[0].length;
@@ -733,6 +742,7 @@ public class WordSearch {
     // V4
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/word-search/editorial/
+    // time: O(M * N * 4^L), space: O(L)
     private char[][] board;
     private int ROWS_4;
     private int COLS_4;
@@ -780,6 +790,7 @@ public class WordSearch {
     // V5
     // IDEA :
     // https://leetcode.com/problems/word-search/editorial/
+    // time: O(M * N * 4^L), space: O(L)
     private char[][] board2;
     private int ROWS2;
     private int COLS2;
