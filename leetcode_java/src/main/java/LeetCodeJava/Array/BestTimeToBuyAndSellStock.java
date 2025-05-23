@@ -37,6 +37,7 @@ public class BestTimeToBuyAndSellStock {
 
     // V0
     // IDEA: 2 POINTERS
+    // time: O(N), space: O(1)
     /**
      *  IDEA: 2 POINTERS
      *  maintain local min, max, and global max
@@ -116,6 +117,7 @@ public class BestTimeToBuyAndSellStock {
     }
 
     // V0-1
+    // time: O(N), space: O(1)
     public int maxProfit_0_1(int[] prices) {
 
         if (prices.length == 1){
@@ -144,6 +146,7 @@ public class BestTimeToBuyAndSellStock {
     }
 
     // V0-2
+    // time: O(N), space: O(1)
     public int maxProfit_0_2(int[] prices) {
 
         if (prices.length == 0){
@@ -182,6 +185,7 @@ public class BestTimeToBuyAndSellStock {
     }
 
     // V0-3
+    // time: O(N), space: O(1)
     public int maxProfit_0_3(int[] prices) {
 
         int minVal = (int) Math.pow(10, 4);
@@ -203,6 +207,7 @@ public class BestTimeToBuyAndSellStock {
 
     // V1
     // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/solutions/1735493/java-c-best-ever-explanation-could-possible/
+    // time: O(N), space: O(1)
     public int maxProfit_2(int[] prices) {
         int lsf = Integer.MAX_VALUE;
         int op = 0;

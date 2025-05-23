@@ -11,6 +11,7 @@ public class SummaryRanges {
 
     // V1
     // https://leetcode.com/problems/summary-ranges/solutions/1805391/concise-solution-in-0-n-with-approach-explained-in-detail/
+    // time: O(N), space: O(1)
     public List<String> summaryRanges(int[] nums) {
         ArrayList<String> al = new ArrayList<>();
 
@@ -32,6 +33,7 @@ public class SummaryRanges {
 
     // V2
     // https://leetcode.com/problems/summary-ranges/solutions/2813052/java-100-faster-solution/
+    // time: O(N), space: O(1)
     public List<String> summaryRanges_2(int[] nums) {
         List<String> list = new ArrayList<>();
         if (nums.length == 0) return list;

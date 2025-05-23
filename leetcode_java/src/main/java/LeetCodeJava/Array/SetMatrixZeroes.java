@@ -48,6 +48,7 @@ public class SetMatrixZeroes {
     // V0
     // IDEA : ARRAY OP
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/set-matrix-zeroes.py
+    // time: O(M*N), space: O(M*N)
     public void setZeroes(int[][] matrix) {
 
         if (matrix.length == 0 && matrix[0].length == 0){
@@ -89,6 +90,7 @@ public class SetMatrixZeroes {
     }
 
     // V1
+    // time: O(M*N), space: O(1)
     public void setZeroes_1(int[][] matrix) {
         boolean fr = false,fc = false;
         for(int i = 0; i < matrix.length; i++) {
@@ -121,6 +123,7 @@ public class SetMatrixZeroes {
 
     // V2
     // https://leetcode.com/problems/set-matrix-zeroes/solutions/4800467/using-2-d-boolean-array/
+    // time: O(M*N^2), space: O(M*N)
     public void setZeroes_2(int[][] matrix) {
         int rows = matrix.length;
         int cols = matrix[0].length;

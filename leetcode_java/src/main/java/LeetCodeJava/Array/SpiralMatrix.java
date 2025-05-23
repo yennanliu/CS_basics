@@ -48,6 +48,7 @@ public class SpiralMatrix {
 
     // V0-1
     // IDEA : array + index op
+    // time: O(M*N), space: O(1)
     public List<Integer> spiralOrder_0_1(int[][] matrix) {
 
         int row = matrix.length;
@@ -90,6 +91,7 @@ public class SpiralMatrix {
 
     // V1
     // https://leetcode.com/problems/spiral-matrix/solutions/4700215/easy-solution/
+    // time: O(M*N), space: O(1)
     public List<Integer> spiralOrder_1(int[][] m) {
         int l=0,r=m[0].length-1,u=0,d=m.length-1;
         List<Integer> ll=new ArrayList<>();
@@ -124,6 +126,7 @@ public class SpiralMatrix {
 
     // V2
     // https://leetcode.com/problems/spiral-matrix/solutions/3503095/java-runtime-0-ms-beats-100-memory-40-8-mb-beats-46-17/
+    // time: O(M*N), space: O(1)
     public List<Integer> spiralOrder_2(int[][] matrix) {
         int row = matrix.length;
         List<Integer> ans = new ArrayList<>();
