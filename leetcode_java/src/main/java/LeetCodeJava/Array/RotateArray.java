@@ -53,6 +53,7 @@ public class RotateArray {
 
     // V0
     // IDEA: DEQEUE
+    // time: O(N + K), space: O(N)
     public void rotate(int[] nums, int k) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -86,6 +87,7 @@ public class RotateArray {
 
     // V0-1
     // IDEA: ARRAY OP (TLE)
+    // time: O(N*K), space: O(N)
     public void rotate_0_1(int[] nums, int k) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -112,6 +114,7 @@ public class RotateArray {
 
     // V1
     // IDEA: rotate ( `%` op)  (gpt)
+    // time: O(N), space: O(1)
     public void rotate_1(int[] nums, int k) {
         // Edge case
         if (nums == null || nums.length == 0) {

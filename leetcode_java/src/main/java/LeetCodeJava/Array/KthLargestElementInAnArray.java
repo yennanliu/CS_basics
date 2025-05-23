@@ -8,6 +8,7 @@ public class KthLargestElementInAnArray {
 
     // V0
     // IDEA : PQ (priority queue)
+    // time: O(N log N), space: O(N)
     public int findKthLargest(int[] nums, int k) {
         if (nums.length == 1){
             if (k == 1){
@@ -34,6 +35,7 @@ public class KthLargestElementInAnArray {
 
     // V0
     // IDEA : ARRAY + SORTING
+    // time: O(N log N), space: O(N)
     public int findKthLargest_0_1(int[] nums, int k) {
 
         if (nums.length == 1 && k == 1){
@@ -61,6 +63,7 @@ public class KthLargestElementInAnArray {
     // V1
     // IDEA : SORT
     // https://leetcode.com/problems/kth-largest-element-in-an-array/editorial/
+    // time: O(N log N), space: O(1)
     public int findKthLargest_2(int[] nums, int k) {
         Arrays.sort(nums);
         // Can't sort int[] in descending order in Java;
@@ -71,6 +74,7 @@ public class KthLargestElementInAnArray {
     // V2
     // IDEA : Min-Heap
     // https://leetcode.com/problems/kth-largest-element-in-an-array/editorial/
+    // time: O(N log K), space: O(K)
     public int findKthLargest_3(int[] nums, int k) {
         PriorityQueue<Integer> heap = new PriorityQueue<>();
         for (int num: nums) {
@@ -86,6 +90,7 @@ public class KthLargestElementInAnArray {
     // V3
     // IDEA : Quickselect
     // https://leetcode.com/problems/kth-largest-element-in-an-array/editorial/
+    // time: O(N) average, O(N^2) worst, space: O(N)
     public int findKthLargest_4(int[] nums, int k) {
         List<Integer> list = new ArrayList<>();
         for (int num: nums) {
@@ -127,6 +132,7 @@ public class KthLargestElementInAnArray {
     // V4
     // IDEA : Counting Sort
     // https://leetcode.com/problems/kth-largest-element-in-an-array/editorial/
+    // time: O(N + R), space: O(R)
     public int findKthLargest_5(int[] nums, int k) {
         int minValue = Integer.MAX_VALUE;
         int maxValue = Integer.MIN_VALUE;
