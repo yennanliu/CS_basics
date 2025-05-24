@@ -5335,6 +5335,10 @@ public class workspace10 {
         return res;
     }
 
+  // LC 316
+  public String removeDuplicateLetters(String s) {
 
+        return null;
+  }
 
 }
