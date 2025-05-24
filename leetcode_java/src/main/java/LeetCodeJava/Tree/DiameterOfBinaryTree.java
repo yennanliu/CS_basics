@@ -165,7 +165,10 @@ public class DiameterOfBinaryTree {
         int rightHeight = dfs_0_1(node.right);
 
         // Update the maximum diameter if the path through this node is larger
-        /** NOTE !!!  return val from helper func is different from the final result */
+        /** NOTE !!!
+         *
+         * return val from helper func is different from the final result
+         */
         maxDiameter = Math.max(maxDiameter, leftHeight + rightHeight);
 
         // Return the height of the current node, which is the max of the left and right subtree heights plus 1
@@ -209,6 +212,30 @@ public class DiameterOfBinaryTree {
             return 0;
         }
         return Math.max(getDepth(root.left), getDepth(root.right)) + 1;
+    }
+
+    // V0-3
+    // IDEA: DFS (fixed by gpt)
+    private int maxDiameter_0_3 = 0;
+
+    public int diameterOfBinaryTree_0_3(TreeNode root) {
+        dfs(root);
+        return maxDiameter_0_3;
+    }
+
+    private int dfs_0_3(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        int left = dfs_0_3(node.left);
+        int right = dfs_0_3(node.right);
+
+        // update max diameter at this node
+        maxDiameter_0_3 = Math.max(maxDiameter_0_3, left + right);
+
+        // return height of this subtree
+        return 1 + Math.max(left, right);
     }
 
     // V1-1
