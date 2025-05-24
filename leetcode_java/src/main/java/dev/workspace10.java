@@ -5336,9 +5336,72 @@ public class workspace10 {
     }
 
   // LC 316
+  // 1.47 - 1.57 pm
+    /**
+     *  NOTE
+     *
+     *  Lexicographically Smaller
+     *
+     * A string a is lexicographically smaller than a
+     * string b if in the first position where a and b differ,
+     * string a has a letter that appears earlier in the alphabet
+     * than the corresponding letter in b.
+     * If the first min(a.length, b.length) characters do not differ,
+     * then the shorter string is the lexicographically smaller one.
+     *
+     */
+  /**
+   * -> Given a string s,
+   * remove duplicate letters so that every letter appears once and only once.
+   *
+   *  (You must make sure your result Lexicographically Smaller)
+   *
+   *
+   *  IDEA 1) GREEDY
+   *
+   *  IDEA 2) STACK
+   *
+   *   -> step 1) have a `smallest Lexicographically order` array
+   *   -> step 2) map collect the element count
+   *   -> step 3) loop over the ``smallest Lexicographically` array`
+   *             maintain a res str
+   *             if meet the element in str, then add it to res
+   *             ...
+   *
+   *
+   *   -> maintain a PQ (stack)
+   *      that with
+   *
+   *
+   */
+  // IDEA: STACK
   public String removeDuplicateLetters(String s) {
 
-        return null;
+      // edge
+      if(s == null || s.length() == 0){
+          return null;
+      }
+      if(s.length() == 1){
+          return s;
+      }
+
+      // get `smallest Lexicographically order` array
+      List<String> lexi_list = new ArrayList<>();
+      // TODO: implement above
+
+      StringBuilder sb = new StringBuilder();
+
+      // loop over lexi_list, and compare with s
+      // ????
+      int last_idx = -1;
+      for(String x: lexi_list){
+          if(s.contains(x)){
+              //last_idx = s.
+              sb.append(x);
+          }
+      }
+
+      return sb.toString();
   }
 
 }
