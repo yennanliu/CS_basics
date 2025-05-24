@@ -51,11 +51,13 @@ public class DiameterOfBinaryTree {
 //    }
 
     // V0-1
-    // IDEA: DFS (gpt)
+    // IDEA: DFS (gpt) (bottom up)
     /**
      *  NOTE !!!
      *
      *    the `diameter` is the `SUM Of DEPTHS` of sub left and sub right tree
+     *
+     *    ( This path may or may not pass through the root.)
      *
      *
      *  IDEA:
@@ -176,7 +178,7 @@ public class DiameterOfBinaryTree {
     }
 
     // V0-2
-    // IDEA: get Max depth + `diameter + sub left depth + sub right depth + DFS
+    // IDEA: get Max depth + `diameter + sub left depth + sub right depth + DFS  (bottom up)
     // NOTE !!! we define below global var
     int maxDiameter_ = 0;
     public int diameterOfBinaryTree_0_2(TreeNode root) {
