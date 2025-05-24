@@ -95,6 +95,9 @@ public class RemoveDuplicateLetters {
     /**
      * 	•	Tracks which characters have already been added to the result.
      * 	•	This ensures we only include each character once.
+     *
+     *
+     * 	NOTE !!! sean is a `boolean` array
      */
     boolean[] seen = new boolean[26]; // whether character is in stack/result
 
@@ -128,7 +131,7 @@ public class RemoveDuplicateLetters {
        *
        * Now we’re checking:
        *
-       * 	•	Is the stack not empty?
+       * 	•	Is the stack NOT empty?
        *
        * 	•	Is the current character c lexicographically
        *      	smaller than the character at the top of the stack?
@@ -159,7 +162,7 @@ public class RemoveDuplicateLetters {
        * 	•	And mark it as seen (i.e., already in the result).
        */
       stack.push(c);
-          seen[c - 'a'] = true;
+      seen[c - 'a'] = true;
       }
 
       // build result from stack
