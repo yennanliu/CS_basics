@@ -2,7 +2,6 @@ package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
-
 import java.util.*;
 
 public class workspace10 {
@@ -5402,6 +5401,42 @@ public class workspace10 {
       }
 
       return sb.toString();
+  }
+
+  // LC 543
+  // 2.24 - 2.40 pm
+  // IDEA: DFS
+  public int diameterOfBinaryTree(TreeNode root) {
+      // edge
+      if(root == null){
+          return 0;
+      }
+      if(root.left == null || root.right == null){
+          return 0;
+      }
+
+      // dfs (one move `all left move`, the other move `all right move`)
+      // then add 2 dist as final res
+      int leftDist = diameterHelper(root.left, "left");
+      int rightDist = diameterHelper(root.right, "right");
+
+      return leftDist + rightDist;
+  }
+
+  public int  diameterHelper(TreeNode root, String dir){
+      // edge
+      if(root == null){
+          return 0;
+      }
+      if(root.left == null || root.right == null){
+          return 0;
+      }
+
+      //return 1 + diameterHelper(root.left) + diameterHelper(root.right);
+      if(dir == "left"){
+          return 1 + diameterHelper(root.left, dir);
+      }
+      return 1 + diameterHelper(root.right, dir);
   }
 
 }
