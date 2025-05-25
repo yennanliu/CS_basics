@@ -5440,8 +5440,57 @@ public class workspace10 {
   }
 
   // LC 356
+  // 3.29 - 3.39 pm
+  /**
+   * Given n points on a 2D plane,
+   *
+   * -> find if there is such
+   * a line parallel to the y-axis
+   * that reflects the given points symmetrically.
+   *
+   *
+   * -> NOTE !!! the line needs to be parallel to y-axis
+   *
+   *
+   * IDEA 1) HASHSET,
+   *
+   *  collect all points, and split by (x > 0, x < 0)
+   *  -> check if all x > 0, x < 0 are `symmetric`
+   *  -> symmetric : (x, y) VS (-x, y)
+   *
+   *
+   */
   public boolean isReflected(int[][] points) {
-      return false;
+      // edge
+      if(points == null || points.length == 0){
+          return true; // ??
+      }
+      if(points.length == 1){
+          return false;
+      }
+
+      HashSet<int[]> left_set = new HashSet<>();
+      HashSet<int[]> right_set = new HashSet<>();
+      for(int[] p: points){
+          if(p[0] > 0){
+              right_set.add(p);
+          }else{
+              left_set.add(p);
+          }
+      }
+
+      if(right_set.size() != left_set.size()){
+          return false;
+      }
+
+      for(int[] x: left_set){
+          int[] reflect_cell = new int[]{-1 * x[0], x[1]};
+          if(!right_set.contains(reflect_cell)){
+              return false;
+          }
+      }
+
+      return true;
   }
 
 }
