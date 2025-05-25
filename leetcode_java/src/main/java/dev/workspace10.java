@@ -5375,8 +5375,95 @@ public class workspace10 {
    *
    *
    */
+  // 4.48 - 4.58 pm
   // IDEA: STACK
+  /**
+   *  IDEA 1) STACK
+   *
+   *  1. hashmap record `element cnt`
+   *  2. boolean arr record `visited or not`
+   *  3. PQ (heap) maintain the `smallest lexicographically` order
+   *
+   *  -> loop over s
+   *  -> if 1) pq is NOT empty
+   *        2) `top element` is `smaller` then current element
+   *        3) `top element` cnt > 0  ????
+   *
+   *        -> if true, pop the element from PQ
+   *    else
+   *       append element (from s) to res
+   *       update visited, cnt
+   *
+   */
   public String removeDuplicateLetters(String s) {
+      // edge
+      if(s == null || s.isEmpty()){
+          return null;
+      }
+      if(s.length() == 1){
+          return s;
+      }
+
+
+      // ???
+      int[] freq = new int[26];
+      for(char c: s.toCharArray()){
+          // ???
+          freq[c - 'a'] += 1;
+      }
+
+      // ???
+      boolean[] sean = new boolean[26];
+
+      // ???
+      Stack<Character> stack = new Stack<>();
+
+
+
+      Map<Character, Integer> cnt_map = new HashMap<>();
+      boolean[] visited = new boolean[s.length()]; // ???
+
+      for(Character c: s.toCharArray()){
+          cnt_map.put(c, cnt_map.getOrDefault(c, 0) + 1);
+      }
+
+      // PQ, order in `smallest lexicographically` ???
+      PriorityQueue<Character> pq = new PriorityQueue<>(new Comparator<Character>() {
+          @Override
+          public int compare(Character o1, Character o2) {
+              int diff = o1 - o2;
+              return diff;
+          }
+      });
+
+      StringBuilder sb = new StringBuilder();
+
+      String[] s_arr = s.split("");
+
+      for(int i = 0; i < s_arr.length; i++){
+          Character c = s.charAt(i);  // ??
+
+          //if(visited)
+
+          // ???
+          while(!pq.isEmpty() &&  c < pq.peek() && cnt_map.get(c) > 0){
+              Character tmp =  pq.peek();
+              //cnt_map.put(c, )
+              cnt_map.put(tmp, cnt_map.get(tmp) + 1);
+          }
+
+          sb.append(c);
+          cnt_map.put(c, cnt_map.get(c) - 1);
+          visited[i] = true;
+      }
+
+      return sb.toString();
+  }
+
+
+
+
+/*  public String removeDuplicateLetters(String s) {
 
       // edge
       if(s == null || s.length() == 0){
@@ -5403,7 +5490,7 @@ public class workspace10 {
       }
 
       return sb.toString();
-  }
+  }*/
 
   // LC 543
   // 4.11 - 4.21 pm
