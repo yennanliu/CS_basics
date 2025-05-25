@@ -22,19 +22,77 @@ import java.util.Set;
  * Output: false
  * Difficulty:
  * Medium
- * Lock:
- * Prime
- * Company:
- * Amazon Google
- * Problem Solution
- * 356-Line-Reflection
- *
  */
 public class LineReflection {
 
     // V0
 //    public boolean isReflected(int[][] points) {
 //    }
+
+    // V0-1
+    // TODO: validate & fix
+//    public boolean isReflected(int[][] points) {
+//        // edge
+//        if(points == null || points.length == 0){
+//            return true; // ??
+//        }
+//        if(points.length == 1){
+//            return false;
+//        }
+//
+//        HashSet<int[]> left_set = new HashSet<>();
+//        HashSet<int[]> right_set = new HashSet<>();
+//        for(int[] p: points){
+//            if(p[0] > 0){
+//                right_set.add(p);
+//            }else{
+//                left_set.add(p);
+//            }
+//        }
+//
+//        if(right_set.size() != left_set.size()){
+//            return false;
+//        }
+//
+//        for(int[] x: left_set){
+//            int[] reflect_cell = new int[]{-1 * x[0], x[1]};
+//            if(!right_set.contains(reflect_cell)){
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
+
+    // V0-2
+    // IDEA: HASHSET (fixed by gpt)
+    public boolean isReflected_0_2(int[][] points) {
+        if (points == null || points.length == 0) return true;
+
+        Set<String> pointSet = new HashSet<>();
+        int minX = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE;
+
+        // Build set and find min/max x
+        for (int[] p : points) {
+            minX = Math.min(minX, p[0]);
+            maxX = Math.max(maxX, p[0]);
+            pointSet.add(p[0] + "#" + p[1]); // Use string as key
+        }
+
+        // NOTE !!! the `mirror` may NOT exists at `x=0` line
+        double mirror = (minX + maxX) / 2.0;
+
+        // Check reflection
+        for (int[] p : points) {
+            double reflectedX = 2 * mirror - p[0];
+            String reflectedPoint = (int)reflectedX + "#" + p[1];
+            if (!pointSet.contains(reflectedPoint)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     // V1
     // https://leetcode.ca/2016-11-20-356-Line-Reflection/
