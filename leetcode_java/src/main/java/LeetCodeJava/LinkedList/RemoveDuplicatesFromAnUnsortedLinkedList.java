@@ -3,7 +3,10 @@ package LeetCodeJava.LinkedList;
 // https://leetcode.com/problems/remove-duplicates-from-an-unsorted-linked-list/
 // https://leetcode.ca/all/1836.html
 
+import dev.workspace10;
+
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -59,6 +62,64 @@ public class RemoveDuplicatesFromAnUnsortedLinkedList {
 //    public ListNode deleteDuplicatesUnsorted(ListNode head) {
 //
 //    }
+
+    // V0-0-1
+    // TODO: validate & fix below
+//    public workspace10.ListNode2 deleteDuplicatesUnsorted(workspace10.ListNode2 head) {
+//
+//        // edge
+//        if(head == null){
+//            return null;
+//        }
+//        /// ??
+//        if(head.next == null){
+//            return head;
+//        }
+//
+//        HashSet<Integer> set = new HashSet<>();
+//        while(head != null){
+//            set.add(head.val);
+//            head = head.next;
+//        }
+//
+//        workspace10.ListNode2 node = new workspace10.ListNode2();
+//        workspace10.ListNode2 res = node;
+//
+//        while(set.iterator().hasNext()){
+//            res = new workspace10.ListNode2(set.iterator().next());
+//            res = res.next;
+//        }
+//
+//        return res.next;
+//    }
+
+    // V0-1
+    // IDEA: LIST NODE (fixed by gpt)
+    // TODO: validate below
+    public ListNode deleteDuplicatesUnsorted_0_1(ListNode head) {
+        // Step 1: Count frequencies of each value
+        Map<Integer, Integer> freq = new HashMap<>();
+        ListNode curr = head;
+        while (curr != null) {
+            freq.put(curr.val, freq.getOrDefault(curr.val, 0) + 1);
+            curr = curr.next;
+        }
+
+        // Step 2: Build a new list with only values that appear once
+        ListNode dummy = new ListNode(0); // dummy head for result
+        ListNode tail = dummy;
+
+        curr = head;
+        while (curr != null) {
+            if (freq.get(curr.val) == 1) {
+                tail.next = new ListNode(curr.val);
+                tail = tail.next;
+            }
+            curr = curr.next;
+        }
+
+        return dummy.next;
+    }
 
     // V1
 
