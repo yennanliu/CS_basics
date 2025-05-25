@@ -5498,17 +5498,48 @@ public class workspace10 {
   // LC 1836
   // 3.51 - 4.10 pm
   // NOTE !!! below is our custom listNode for this problem
-//  public class ListNode {
-//      int val;
-//      RemoveDuplicatesFromAnUnsortedLinkedList.ListNode next;
-//      ListNode() {}
-//      ListNode(int val) { this.val = val; }
-//      ListNode(int val, RemoveDuplicatesFromAnUnsortedLinkedList.ListNode next) { this.val = val; this.next = next; }
-//  }
+  public class ListNode2 {
+      int val;
+      ListNode2 next;
+      ListNode2() {}
+      ListNode2(int val) { this.val = val; }
+      ListNode2(int val, ListNode2 next) { this.val = val; this.next = next; }
+  }
+  /**
+   *
+   *  -> Given the head of a linked list,
+   *  find all the values that `appear more than once` in the list
+   *  and delete the nodes that have any of those values.
+   *
+   *
+   *  Linked list -> hash set
+   */
+  public ListNode2 deleteDuplicatesUnsorted(ListNode2 head) {
 
-  public ListNode deleteDuplicatesUnsorted(RemoveDuplicatesFromAnUnsortedLinkedList.ListNode head) {
+      // edge
+      if(head == null){
+          return null;
+      }
+      /// ??
+      if(head.next == null){
+          return head;
+      }
 
-      return null;
+      HashSet<Integer> set = new HashSet<>();
+      while(head != null){
+          set.add(head.val);
+          head = head.next;
+      }
+
+      ListNode2 node = new ListNode2();
+      ListNode2 res = node;
+
+      while(set.iterator().hasNext()){
+          res = new ListNode2(set.iterator().next());
+          res = res.next;
+      }
+
+      return res.next;
   }
 
 }
