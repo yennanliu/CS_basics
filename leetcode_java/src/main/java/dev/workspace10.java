@@ -2,6 +2,8 @@ package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
+import LeetCodeJava.LinkedList.RemoveDuplicatesFromAnUnsortedLinkedList;
+
 import java.util.*;
 
 public class workspace10 {
@@ -5491,6 +5493,22 @@ public class workspace10 {
       }
 
       return true;
+  }
+
+  // LC 1836
+  // 3.51 - 4.10 pm
+  // NOTE !!! below is our custom listNode for this problem
+//  public class ListNode {
+//      int val;
+//      RemoveDuplicatesFromAnUnsortedLinkedList.ListNode next;
+//      ListNode() {}
+//      ListNode(int val) { this.val = val; }
+//      ListNode(int val, RemoveDuplicatesFromAnUnsortedLinkedList.ListNode next) { this.val = val; this.next = next; }
+//  }
+
+  public ListNode deleteDuplicatesUnsorted(RemoveDuplicatesFromAnUnsortedLinkedList.ListNode head) {
+
+      return null;
   }
 
 }
