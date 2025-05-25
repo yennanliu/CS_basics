@@ -5439,4 +5439,9 @@ public class workspace10 {
       return 1 + diameterHelper(root.right, dir);
   }
 
+  // LC 356
+  public boolean isReflected(int[][] points) {
+      return false;
+  }
+
 }
