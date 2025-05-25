@@ -5406,8 +5406,43 @@ public class workspace10 {
   }
 
   // LC 543
-  // 2.24 - 2.40 pm
+  // 4.11 - 4.21 pm
   // IDEA: DFS
+  /**
+   *      *  NOTE !!!
+   *      *
+   *      *    the `diameter` is the `SUM Of DEPTHS` of sub left and sub right tree
+   *      *
+   *      *    ( This path may or may not pass through the root.)
+   *
+   *
+   *   IDEA 1) DFS (bottom up)
+   *
+   *   -> we get `diameter` from bottom, then move up, get the `max diameter` in each layer
+   *   -> repeat above ... till read the `root`
+   *   -> then we know the `global biggest diameter` of the whole tree
+   *
+   *
+   *
+   *   exp 1)
+   *         1
+   *      2    3
+   *    4   5
+   *
+   *
+   *   max_dia = 0
+   *
+   *  -> dia(4) = 1
+   *     dia(5) = 1
+   *
+   *     dia(2) = max(max_dia, left_h + right_h + 1) = 2 // ????
+   *     dia(3) = 1
+   *
+   *     dia(1) = max(max_dia, left_h + right_h + 1)  = 2 + 1 = 3
+   *
+   */
+  int maxDiameter = 0;
+
   public int diameterOfBinaryTree(TreeNode root) {
       // edge
       if(root == null){
@@ -5417,29 +5452,65 @@ public class workspace10 {
           return 0;
       }
 
-      // dfs (one move `all left move`, the other move `all right move`)
-      // then add 2 dist as final res
-      int leftDist = diameterHelper(root.left, "left");
-      int rightDist = diameterHelper(root.right, "right");
+      // dfs call
+      diameterHelper(root);
 
-      return leftDist + rightDist;
+      return maxDiameter;
   }
 
-  public int  diameterHelper(TreeNode root, String dir){
-      // edge
-      if(root == null){
-          return 0;
-      }
-      if(root.left == null || root.right == null){
-          return 0;
-      }
+ public int diameterHelper(TreeNode root){
+   if(root == null){
+       return 0;
+   }
 
-      //return 1 + diameterHelper(root.left) + diameterHelper(root.right);
-      if(dir == "left"){
-          return 1 + diameterHelper(root.left, dir);
-      }
-      return 1 + diameterHelper(root.right, dir);
-  }
+//   TreeNode left = diameterHelper(root.left);
+//   TreeNode right = diameterHelper(root.right);
+
+   // NOTE !!! we get max diameter at below step
+   //maxDiameter = Math.max(maxDiameter, right)
+
+   int left_height = diameterHelper(root.left);
+   int right_height = diameterHelper(root.right);
+
+   maxDiameter = Math.max(maxDiameter, left_height + right_height);
+
+   // NOTE !!! below
+   return Math.max(left_height, right_height) + 1;
+ }
+
+
+//  public int diameterOfBinaryTree(TreeNode root) {
+//      // edge
+//      if(root == null){
+//          return 0;
+//      }
+//      if(root.left == null || root.right == null){
+//          return 0;
+//      }
+//
+//      // dfs (one move `all left move`, the other move `all right move`)
+//      // then add 2 dist as final res
+//      int leftDist = diameterHelper(root.left, "left");
+//      int rightDist = diameterHelper(root.right, "right");
+//
+//      return leftDist + rightDist;
+//  }
+//
+//  public int  diameterHelper(TreeNode root, String dir){
+//      // edge
+//      if(root == null){
+//          return 0;
+//      }
+//      if(root.left == null || root.right == null){
+//          return 0;
+//      }
+//
+//      //return 1 + diameterHelper(root.left) + diameterHelper(root.right);
+//      if(dir == "left"){
+//          return 1 + diameterHelper(root.left, dir);
+//      }
+//      return 1 + diameterHelper(root.right, dir);
+//  }
 
   // LC 356
   // 3.29 - 3.39 pm

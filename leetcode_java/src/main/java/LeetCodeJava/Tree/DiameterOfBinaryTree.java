@@ -55,7 +55,7 @@ public class DiameterOfBinaryTree {
     /**
      *  NOTE !!!
      *
-     *    the `diameter` is the `SUM Of DEPTHS` of sub left and sub right tree
+     *    the `diameter` is the `SUM OF DEPTHS` of sub left and sub right tree
      *
      *    ( This path may or may not pass through the root.)
      *
