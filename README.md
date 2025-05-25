@@ -423,6 +423,7 @@
 430 | [Flatten a Multilevel Doubly Linked List](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/) | [Python](./leetcode_python/Linked_list/flatten_a_multilevel_doubly_linked_list.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/LinkedList/FlattenMultilevelDoublyLinkedList.java)   |  || Medium |`good trick`,`doubly linked list`,`AGAIN`,`dfs`, `fb`, google|  AGAIN********* (4)
 707| [Design Linked List](https://leetcode.com/problems/design-linked-list/) |  [Python](./leetcode_python/Linked_list/design_linked_list.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/LinkedList/DesignLinkedList.java) | _O(n)_ | _O(h)_ | Medium|linked list basic OP| AGAIN (1)
 708| [Insert into a Cyclic Sorted List](https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list) |  [Python](./leetcode_python/Linked_list/insert_into_a_cyclic_sorted_sorted_linked_list.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/LinkedList/InsertIntoACyclicSortedList.java)  | _O(n)_ | _O(h)_ | Medium|`AGAIN`,`cyclic linked list`,`good trick`, `google`, `amazon`, `fb` , google|  AGAIN******** (4)
+1836| [Remove Duplicates From an Unsorted Linked List](https://leetcode.com/problems/remove-duplicates-from-an-unsorted-linked-list/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/LinkedList/RemoveDuplicatesFromAnUnsortedLinkedList.java) | _O(n)_ | _O(h)_ | Medium|linked list|  AGAIN (not start)
 
 
 ## Stack
