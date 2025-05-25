@@ -110,6 +110,12 @@ public class RemoveDuplicateLetters {
      * 	•	We’ll maintain characters in order and manipulate
      * 	    the top to maintain lexicographical order.
      */
+    /**
+     *  NOTE !!!
+     *
+     *   use `STACK`, but NOT use `PQ`
+     *
+     */
     Stack<Character> stack = new Stack<>();
 
     /**
@@ -166,6 +172,52 @@ public class RemoveDuplicateLetters {
       }
 
       // build result from stack
+      StringBuilder sb = new StringBuilder();
+      for (char c : stack) {
+          sb.append(c);
+      }
+
+      return sb.toString();
+  }
+
+  // V0-2
+  // IDEA: STACK + char array + `visited` (fixed by gpt)
+  public String removeDuplicateLetters_0_2(String s) {
+      // Edge case
+      if (s == null || s.length() == 0) {
+          return "";
+      }
+
+      // Step 1: Frequency count of each character
+      int[] count = new int[26];
+      for (char c : s.toCharArray()) {
+          count[c - 'a']++;
+      }
+
+      // Step 2: Visited set to track characters already in the result
+      boolean[] visited = new boolean[26];
+
+      // Step 3: Use a stack to build the result
+      Stack<Character> stack = new Stack<>();
+
+      for (char c : s.toCharArray()) {
+          count[c - 'a']--; // One less occurrence left
+
+          if (visited[c - 'a']) {
+              continue; // Skip if already in stack
+          }
+
+          // Ensure lexicographical order and remove larger characters that will appear again
+          while (!stack.isEmpty() && c < stack.peek() && count[stack.peek() - 'a'] > 0) {
+              char removed = stack.pop();
+              visited[removed - 'a'] = false;
+          }
+
+          stack.push(c);
+          visited[c - 'a'] = true;
+      }
+
+      // Build final result
       StringBuilder sb = new StringBuilder();
       for (char c : stack) {
           sb.append(c);
