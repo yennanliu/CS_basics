@@ -5,10 +5,9 @@
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 25/66
 		- review prev LC problems !!!
-	- again:
+	- again: 543
 		- similar:
 		- Kadane algo
-			- 1836: Remove Duplicates from an Unsorted Linked List
 			- 134: Gas Station
 			- 122: Best Time to Buy and Sell Stock II
 			- Longest Turbulent Array
