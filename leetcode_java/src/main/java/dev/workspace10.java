@@ -4718,8 +4718,11 @@ public class workspace10 {
   }
 
   // LC 2402
-  // 11.25 - 11.35 am
+  //  12.31 - 12.41 pm
   /**
+   *
+   * You are given an integer n.
+   * There are n rooms numbered from 0 to n - 1.
    *
    * -> Return the number of the room that held
    *   the `most meetings.`
@@ -4727,11 +4730,143 @@ public class workspace10 {
    *  -> If there are multiple rooms,
    *   return the room with the lowest number.
    *
+   *
+   *
+   *  IDEA 1) PQ   +  hast_map (meeting hold cnt)
+   *
+   *   1st PQ : ready_to_use_pq : [ [ room_idx, meeting_end_time ] ],  storage the rooms are ready to be used
+   *   2nd PQ : busy_pq ?? :  [ [ room_idx, meeting_end_time ]  ],  rooms are being used now
+   *   3nd queue : to_hold_meeting :  [ meet_start_time, meet_end_time], the `to hold` meeting at the timestamp
+   *
+   *
+   *   exp 1) Input: n = 2, meetings = [[0,10],[1,5],[2,7],[3,4]]
+   *
+   *    rooms : [0, 1]
+   *
+   *
+   *   -> res = 0 (room 0 hold MOST meetings)
+   *
+   *    t = 0, room = 0 is used, ready_to_use_pq = [1], busy_pq = [ [0, 10] ]
+   *    t = 1, room = 0 is still used, room = 1 is used, ready_to_use_pq = [], busy_pq = [ [0,10], [1, 6] ]
+   *    t = 2, both room are busy, to_hold_meeting = [ [2,7] ]
+   *    t = 3, both room are busy, to_hold_meeting = [ [2,7], [3,4] ]
+   *    ...
+   *
+   *    t = 6, room = 0 is still used, room=1 is free, ready_to_use_pq  = [1], busy_pq = [ [0,10]]
+   *                                  room=1 hold a new meeting, to_hold_meeting = [ [3,4] ], busy_pq = [ [0,10], [1, 11] ]
+   *
+   *
+   *   ...
+   *
+   *   t=10, room=0 is free, room=1 still busy
+   *                         room=0 hold a new meeting, to_hold_meeting = [], busy_pq = [ [0,11], [1, 11] ]
+   *
+   *
+   *
+   *
+   *
    */
   public int mostBooked(int n, int[][] meetings) {
 
-      return 0;
+      // edge
+      if(meetings == null || meetings.length == 0){
+          return 0;
+      }
+      if(n == 0){
+          return 0;
+      }
+
+      // init
+      // cnt_map : room hold meeting cnt : { room_idx: hold_meeting_cnt }
+      Map<Integer, Integer> cnt_map = new HashMap<>();
+
+      // to_hold_meet_queue :  queue, the list of meetings to be hold
+      // [ [meet_start_time, meet_end_time]  ]
+      Queue<int[]> to_hold_meet_queue = new LinkedList<>();
+
+      // ready_to_use_pq
+      // [ [room_idx] ]
+      PriorityQueue<Integer> ready_to_use_pq = new PriorityQueue<>(
+              new Comparator<Integer>() {
+                  @Override
+                  public int compare(Integer o1, Integer o2) {
+                      int diff = o1 - o2;
+                      return diff;
+                  }
+              }
+      );
+
+      // busy PQ
+      PriorityQueue<Integer[]> busy_pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+          /**
+           *  sort
+           *
+           *  1) sort on end time (small -> big)ready_to_use_pq
+           *  2) room_idx (small -> big)
+           */
+          @Override
+          public int compare(Integer[] o1, Integer[] o2) {
+              int diff = o1[1] - o2[1];
+              if(diff == 0){
+                  return o1[0] - o2[0];
+              }
+              return diff;
+          }
+      });
+
+      for(int i = 0; i < n; i++){
+          cnt_map.put(i, 0);
+      }
+
+      int t = 0;
+
+      for(int[] m: meetings){
+
+          int cur_start = m[0];
+          int cur_end = m[1];
+
+          // check if there is a meeting finished
+          while (t >= busy_pq.peek()[1]){
+              Integer[] room = busy_pq.poll();
+              ready_to_use_pq.add(room[0]);
+          }
+
+          // if the meeting reach the `start time`
+          if(t > cur_start){
+              to_hold_meet_queue.add(m);
+          }
+
+          while (!ready_to_use_pq.isEmpty()){
+              // ???
+              // move `time faster`, till the next meeting start time
+              t += to_hold_meet_queue.peek()[0];
+          }
+
+          // hold new meeting with a room
+          //int[]
+
+          int[] new_meeting = to_hold_meet_queue.poll();
+          int new_room = ready_to_use_pq.poll();
+          busy_pq.add(new Integer[]{new_room, t + new_meeting[1]});
+          cnt_map.put(new_room, cnt_map.getOrDefault(new_room, 0) + 1);
+
+      }
+
+      int cnt = 0;
+      int res = 0;
+      for(int k : cnt_map.keySet()){
+          if(cnt_map.get(k) > cnt){
+              cnt = cnt_map.get(k);
+              res = k;
+          }
+      }
+
+      return res;
   }
+
+
+
+
 
   // LC 1851
   // 10.04 - 10.14 am
@@ -4741,7 +4876,6 @@ public class workspace10 {
    *  is the size of the smallest interval i such that
    *   lefti <= queries[j] <= righti.
    *  If no such interval exists, the answer is -1.
-   *
    *
    *
    */
