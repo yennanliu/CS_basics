@@ -78,6 +78,53 @@ public class DiagonalTraverse {
         return result;
     }
 
+    // V0-2
+    // IDEA: ARRAY OP (fixed by gpt)
+    public int[] findDiagonalOrder_0_2(int[][] mat) {
+        if (mat == null || mat.length == 0 || mat[0].length == 0) {
+            return new int[0];
+        }
+
+        int rows = mat.length;
+        int cols = mat[0].length;
+        int[] result = new int[rows * cols];
+        int row = 0, col = 0;
+        boolean goingUp = true;
+
+        for (int i = 0; i < result.length; i++) {
+            result[i] = mat[row][col];
+
+            if (goingUp) {
+                // Move up-right
+                if (col == cols - 1) {
+                    row++;
+                    goingUp = false;
+                } else if (row == 0) {
+                    col++;
+                    goingUp = false;
+                } else {
+                    row--;
+                    col++;
+                }
+            } else {
+                // Move down-left
+                if (row == rows - 1) {
+                    col++;
+                    goingUp = true;
+                } else if (col == 0) {
+                    row++;
+                    goingUp = true;
+                } else {
+                    row++;
+                    col--;
+                }
+            }
+        }
+
+        return result;
+    }
+
+
     // V1-1
     // https://leetcode.com/problems/diagonal-traverse/editorial/
     // IDEA: Diagonal Iteration and Reversal

@@ -5700,4 +5700,73 @@ public class workspace10 {
       return res.next;
   }
 
+  // LC 498
+  // 10.06 - 10.22 am
+  /**  IDEA : MATRIX OP
+   *
+   *  -> (0,0) -> (0, 1) -> (1,1)
+   *
+   *   start -> move right 1 idx -> move (+1, +1) till reach the boundary
+   *   -> move down 1 idx -> move (+1, -1) till reach the boundary
+   *
+   *   -> repeat above ...
+   *
+   */
+  public int[] findDiagonalOrder(int[][] mat) {
+      // edge
+      if(mat == null || mat.length == 0 || mat[0].length == 0){
+          return null;
+      }
+
+      int l = mat.length;
+      int w = mat[0].length;
+
+      int[] res = new int[l * w];
+
+      int cnt = 0;
+
+      // move
+      int x = 0;
+      int y = 0;
+      while(cnt < l * w){
+
+          // step 1) append `start` cell
+          res[cnt] = mat[y][x];
+
+          // step 2) move right 1 idx
+          x += 1;
+          cnt += 1;
+          res[cnt] = mat[y][x];
+
+          // step 3) move (1, -1) dir till reach the boundary
+          while (x > 0){
+              x -= 1;
+              y += 1;
+              cnt += 1;
+              res[cnt] = mat[y][x];
+          }
+
+          // step 4) move down 1 idx
+          y += 1;
+          cnt += 1;
+          res[cnt] = mat[y][x];
+
+          // step 5) move (1,-1) dir till reach the boundary
+          while(y > 0){
+              x += 1;
+              y -= 1;
+              cnt += 1;
+              res[cnt] = mat[y][x];
+          }
+
+         // cnt += 1;
+      }
+
+      return res;
+  }
+
+
+
+
+
 }
