@@ -79,7 +79,8 @@ public class ReverseLinkedList {
                  *  -> have to assign _prev val to head first,
                  *     then assign head val to _next,
                  *     since if we assign head val to _next first,
-                 *     then head is changed (become "_next" node), then we will assign _prev to _next node,
+                 *     then head is changed (become "_next" node),
+                 *     then we will assign _prev to _next node,
                  *     which is WRONG
                  */
                 _prev = head;
