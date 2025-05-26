@@ -5838,39 +5838,67 @@ public class workspace10 {
   }
 
   // LC 206
-  // 11. 28 - 11. 38 am
+  // 11.55 - 12.05 pm
+  // IDEA: RECURSION + LIST NODE OP
   public ListNode reverseList(ListNode head) {
       // edge
       if(head == null || head.next == null){
           return head;
       }
 
-      /**
-       *  4 steps
-       *
-       *  1. define prev
-       *  2. define next
-       *  3.  point cur to prev
-       *  4. move prev to cur
-       *  5. cur = cur.next
-       *
-       */
+      ListNode _prev = null;
 
-//      ListNode res = new ListNode();
-//      //ListNode node = res;
-//      res.next  = head;
+      reverseHelper(head, _prev);
 
-      ListNode _prev = new ListNode();
-      while(head != null){
-          ListNode _next = head.next;
-          head.next = _prev;
-          _prev = head;
-          head = _next;
-      }
 
-      //return res.next;
+      return _prev; // ???
+  }
+
+  public ListNode reverseHelper(ListNode head, ListNode _prev){
+
+      ListNode _next = head.next;
+      _prev.next = head;
+      _prev = head;
+      head = _next;
+
+      reverseHelper(head, _prev);
+
       return _prev;
   }
+
+    // IDEA: ITERATION + LIST NODE OP
+//  public ListNode reverseList(ListNode head) {
+//      // edge
+//      if(head == null || head.next == null){
+//          return head;
+//      }
+//
+//      /**
+//       *  4 steps
+//       *
+//       *  1. define prev
+//       *  2. define next
+//       *  3.  point cur to prev
+//       *  4. move prev to cur
+//       *  5. cur = cur.next
+//       *
+//       */
+//
+////      ListNode res = new ListNode();
+////      //ListNode node = res;
+////      res.next  = head;
+//
+//      ListNode _prev = new ListNode();
+//      while(head != null){
+//          ListNode _next = head.next;
+//          head.next = _prev;
+//          _prev = head;
+//          head = _next;
+//      }
+//
+//      //return res.next;
+//      return _prev;
+//  }
 
 
 
