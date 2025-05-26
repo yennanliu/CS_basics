@@ -43,6 +43,15 @@ public class MaximumProductSubarray {
     // V0
     // IDEA: Kadane’s Algorithm for Maximum Product Subarray (GPT)
     /**
+     *   NOTE !!!
+     *
+     *    we define 3 vars:
+     *
+     *    1. max_prod
+     *    2. min_prod
+     *    3. res
+     */
+    /**
      * 1) Kadane’s Algorithm is a dynamic programming approach used to find:
      *
      * 	  1.	Maximum sum subarray → Standard Kadane’s Algorithm
@@ -247,6 +256,15 @@ public class MaximumProductSubarray {
 
     // V0-1
     // IDEA: Kadane’s Algorithm
+    /**
+     *   NOTE !!!
+     *
+     *    we define 3 vars:
+     *
+     *    1. max_prod
+     *    2. min_prod
+     *    3. res
+     */
     public int maxProduct_0_1(int[] nums) {
 
         // Edge case
