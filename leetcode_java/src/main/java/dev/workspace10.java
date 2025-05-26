@@ -1661,80 +1661,152 @@ public class workspace10 {
      *     -> see `max`, `sub array` ....
      *
      */
-    public int maxProduct_2(int[] nums) {
-
+    // 10.38 - 11.07 am
+    /**
+     *  IDEA 1) Kadane ALGO
+     *
+     *  1. define 4 var
+     *
+     *   - global_max
+     *   - global_min
+     *   - local_max
+     *   - local_min
+     *
+     *
+     *
+     */
+    public int maxProduct(int[] nums) {
         // edge
         if(nums == null || nums.length == 0){
             return 0;
         }
+        if(nums.length == 1){
+            return nums[0];
+        }
 
-        // Kadane algo
-        /**
-         *  define 4 val ???
-         *
-         *   1. global max
-         *   3. local max
-         *   4. local min ????
-         *
-         */
-
-//        int global_max = 1;
-//        int local_min = 1;
-//        int local_max = 1;
+//        int global_max = nums[0];
+//        int global_min = nums[0];
+//        int local_max = nums[0];
+//        int local_min = nums[0];
 
         int max_prod = nums[0];
         int min_prod = nums[0];
+        int res = nums[0];
 
-        //int[] product_arr = new int[nums.length + 1];
-        int val = 1;
 
-        /**
-         *
-         *  exp 1)
-         *
-         *   input = [1,2,3,4]
-         *
-         *     1 : local_min = 1, local_max = 1, global_max = 1
-         *     2:  local_min = 1, local_max = 2, global_max = 2
-         *     ...
-         *
-         *     4: local_min = 1, local_max = 24, global_max = 24
-         *
-         *
-         *
-         *  exp 2)
-         *
-         *  input = [1,-1,2,3]
-         *    1: local_min = 1, local_max = 1, global_max = 1
-         *    -1 : local_min = -1, local_max = 1, global_max = 1
-         *    2 : local_min = -2, local_max = 2, global_max = 2
-         *
-         *
-         *
-         */
+        for(int i = 1; i < nums.length; i++){
 
-        for(int i = 0; i < nums.length; i++){
+            int x = nums[i];
 
-            // cache max_prod
             int cache = max_prod;
 
             max_prod = Math.max(
-                    nums[i],
-                    Math.max(min_prod * nums[i], cache * nums[i])
+                    min_prod * x,
+                    Math.max(x, x * cache)
             );
 
             min_prod = Math.min(
-                    nums[i],
-                    Math.min(cache * nums[i], min_prod * nums[i])
+                    min_prod * x,
+                    Math.min(x, x * cache)
             );
 
+//            local_max = Math.max(x, x * local_max);
+//            local_min = Math.min(x, x * local_min);
+//
+//            int cache = local_max;
+//
+//            global_min = Math.min(
+//                    local_min,
+//                    global_min
+//            );
+//
+//            global_max = Math.max(
+//                    global_max,
+//                    local_max
+//            );
 
+            res = Math.max(max_prod, res);
 
-            max_prod = Math.max(max_prod, min_prod);
         }
 
-        return max_prod;
+        return res;
     }
+
+
+//    public int maxProduct_2(int[] nums) {
+//
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0;
+//        }
+//
+//        // Kadane algo
+//        /**
+//         *  define 4 val ???
+//         *
+//         *   1. global max
+//         *   3. local max
+//         *   4. local min ????
+//         *
+//         */
+//
+////        int global_max = 1;
+////        int local_min = 1;
+////        int local_max = 1;
+//
+//        int max_prod = nums[0];
+//        int min_prod = nums[0];
+//
+//        //int[] product_arr = new int[nums.length + 1];
+//        int val = 1;
+//
+//        /**
+//         *
+//         *  exp 1)
+//         *
+//         *   input = [1,2,3,4]
+//         *
+//         *     1 : local_min = 1, local_max = 1, global_max = 1
+//         *     2:  local_min = 1, local_max = 2, global_max = 2
+//         *     ...
+//         *
+//         *     4: local_min = 1, local_max = 24, global_max = 24
+//         *
+//         *
+//         *
+//         *  exp 2)
+//         *
+//         *  input = [1,-1,2,3]
+//         *    1: local_min = 1, local_max = 1, global_max = 1
+//         *    -1 : local_min = -1, local_max = 1, global_max = 1
+//         *    2 : local_min = -2, local_max = 2, global_max = 2
+//         *
+//         *
+//         *
+//         */
+//
+//        for(int i = 0; i < nums.length; i++){
+//
+//            // cache max_prod
+//            int cache = max_prod;
+//
+//            max_prod = Math.max(
+//                    nums[i],
+//                    Math.max(min_prod * nums[i], cache * nums[i])
+//            );
+//
+//            min_prod = Math.min(
+//                    nums[i],
+//                    Math.min(cache * nums[i], min_prod * nums[i])
+//            );
+//
+//
+//
+//            max_prod = Math.max(max_prod, min_prod);
+//        }
+//
+//        return max_prod;
+//    }
 
     // LC 139
     // 11.32 - 11.42 am
@@ -3223,53 +3295,53 @@ public class workspace10 {
     // LC 152
     // 12.21 - 12.31 pm
     // IDEA : K*** algo
-    public int maxProduct(int[] nums) {
-        // edge
-        // ...
-
-        /**
-         *  NOTE !!!
-         *
-         *   we define 3 vars below:
-         *
-         *   1. globalMax
-         *   2. localMax
-         *   3. localMin ??
-         *
-         */
-        int globalMax = nums[0];
-        int localMax = nums[0];
-        int localMin = nums[0];
-
-        for(int i = 1; i < nums.length; i++){
-
-            // NOTE !!! we `cache` localMax first
-            int cache = localMax;
-
-            localMin = Math.min(nums[i] * localMin,
-                    Math.min(
-                            nums[i],
-                            nums[i] * localMax
-                    )
-            );
-
-            localMax = Math.max(nums[i] * cache,
-                    Math.max(
-                            nums[i],
-                            nums[i] * localMin
-                    )
-            );
-
-
-            globalMax = Math.max(
-                    Math.max(localMax, localMin),
-                    globalMax
-            );
-
-        }
-
-        return globalMax;
-    }
+//    public int maxProduct(int[] nums) {
+//        // edge
+//        // ...
+//
+//        /**
+//         *  NOTE !!!
+//         *
+//         *   we define 3 vars below:
+//         *
+//         *   1. globalMax
+//         *   2. localMax
+//         *   3. localMin ??
+//         *
+//         */
+//        int globalMax = nums[0];
+//        int localMax = nums[0];
+//        int localMin = nums[0];
+//
+//        for(int i = 1; i < nums.length; i++){
+//
+//            // NOTE !!! we `cache` localMax first
+//            int cache = localMax;
+//
+//            localMin = Math.min(nums[i] * localMin,
+//                    Math.min(
+//                            nums[i],
+//                            nums[i] * localMax
+//                    )
+//            );
+//
+//            localMax = Math.max(nums[i] * cache,
+//                    Math.max(
+//                            nums[i],
+//                            nums[i] * localMin
+//                    )
+//            );
+//
+//
+//            globalMax = Math.max(
+//                    Math.max(localMax, localMin),
+//                    globalMax
+//            );
+//
+//        }
+//
+//        return globalMax;
+//    }
 
 //    // LC 918
 //    // 12.49 - 12.59 pm
