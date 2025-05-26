@@ -154,6 +154,14 @@ public class ReverseLinkedList {
             return reverseHelper(head, null);
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *   for reverseHelper method
+         *
+         *   the 1st param is `current`
+         *       2nd param is `prev`
+         */
         private ListNode reverseHelper(ListNode current, ListNode prev) {
             // Base case: end of the list
             if (current == null) {
@@ -162,6 +170,26 @@ public class ReverseLinkedList {
 
             ListNode next = current.next;
             current.next = prev;
+
+            /**
+             *  NOTE !!!
+             *
+             *   below we pass `next` as `current`
+             *           and `current` as `prev`
+             *        to the reverseHelper recursion call
+             *
+             *  -> so, in the next recursive call
+             *        current is next
+             *        and
+             *        prev is current
+             *
+             *   -> which is same as the logic we have in iteration version code
+             *      e.g.
+             *                 prev = head;
+             *                 head = next;
+             *
+             *
+             */
             return reverseHelper(next, current);
         }
 
