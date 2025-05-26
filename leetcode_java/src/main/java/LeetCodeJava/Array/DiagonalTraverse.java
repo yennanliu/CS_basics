@@ -80,6 +80,30 @@ public class DiagonalTraverse {
 
     // V0-2
     // IDEA: ARRAY OP (fixed by gpt)
+    /**
+     *  IDEA: (4 cases to move per `boundary` conditions)
+     *
+     *  Explanation:
+     *
+     *  Direction Switching: goingUp flag tells whether
+     *  we're moving up-right or down-left.
+     *
+     * Boundary Conditions:
+     *
+     * If at top row and going up → move right.
+     *
+     * If at right column and going up → move down.
+     *
+     * If at bottom row and going down → move right.
+     *
+     * If at left column and going down → move down.
+     *
+     *
+     * Each cell is visited exactly once,
+     * and bounds are always checked before accessing the matrix.
+     *
+     *
+     */
     public int[] findDiagonalOrder_0_2(int[][] mat) {
         if (mat == null || mat.length == 0 || mat[0].length == 0) {
             return new int[0];
