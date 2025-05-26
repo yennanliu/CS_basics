@@ -149,7 +149,7 @@ public class ReverseLinkedList {
         }
 
         // V0-2
-        // IDEA: RECURSION (fixed by gpt)
+        // IDEA: RECURSION  (Tail-Recursive Style) (fixed by gpt)
         public ListNode reverseList_0_2(ListNode head) {
             return reverseHelper(head, null);
         }
@@ -164,7 +164,21 @@ public class ReverseLinkedList {
             current.next = prev;
             return reverseHelper(next, current);
         }
-        
+
+        // V0-3
+        // IDEA: RECURSION (Backtracking Style Instead) (gpt)
+        public ListNode reverseList_0_3(ListNode head) {
+            if (head == null || head.next == null) {
+                return head;
+            }
+
+            ListNode newHead = reverseList_0_3(head.next);
+            head.next.next = head;
+            head.next = null;
+
+            return newHead;
+        }
+
         // V1
         // IDEA : iteration
         // https://leetcode.com/problems/reverse-linked-list/editorial/

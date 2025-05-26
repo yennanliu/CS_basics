@@ -5856,6 +5856,11 @@ public class workspace10 {
 
   public ListNode reverseHelper(ListNode head, ListNode _prev){
 
+      // edge
+      if(head == null || head.next == null){
+          return _prev;
+      }
+
       ListNode _next = head.next;
       _prev.next = head;
       _prev = head;
