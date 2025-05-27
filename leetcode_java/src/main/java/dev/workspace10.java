@@ -6201,7 +6201,20 @@ public class workspace10 {
     }
 
     // LC 1121
+    // 11.23 - 11.33 am
     public boolean canDivideIntoSubsequences_2(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length < k){
+            return false;
+        }
+        // ???
+        // e.g. : Input: nums = [5,6,6,7,8], K = 3
+        if(nums.length / k < 2){
+            return false;
+        }
+
+
+
         return false;
     }
 
