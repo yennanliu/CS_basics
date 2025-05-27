@@ -5646,6 +5646,10 @@ public class workspace10 {
    *       update visited, cnt
    *
    */
+  // 12.12 - 12. 22 pm
+  /**  IDEA 1) HASHMAP + PQ + SET ???
+   *
+   */
   public String removeDuplicateLetters(String s) {
       // edge
       if(s == null || s.isEmpty()){
@@ -5656,32 +5660,17 @@ public class workspace10 {
       }
 
 
-      // ???
-      int[] freq = new int[26];
-      for(char c: s.toCharArray()){
-          // ???
-          freq[c - 'a'] += 1;
-      }
-
-      // ???
-      boolean[] sean = new boolean[26];
-
-      // ???
-      Stack<Character> stack = new Stack<>();
-
-
-
-      Map<Character, Integer> cnt_map = new HashMap<>();
-      boolean[] visited = new boolean[s.length()]; // ???
-
+      Map<Integer, Integer> map = new HashMap<>();
       for(Character c: s.toCharArray()){
-          cnt_map.put(c, cnt_map.getOrDefault(c, 0) + 1);
+          // ???
+          int k = c - 'a';
+          map.put(k, map.getOrDefault(k, 0) + 1);
       }
 
-      // PQ, order in `smallest lexicographically` ???
-      PriorityQueue<Character> pq = new PriorityQueue<>(new Comparator<Character>() {
+      // small PQ, (small -> big)
+      PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
           @Override
-          public int compare(Character o1, Character o2) {
+          public int compare(Integer o1, Integer o2) {
               int diff = o1 - o2;
               return diff;
           }
@@ -5689,27 +5678,95 @@ public class workspace10 {
 
       StringBuilder sb = new StringBuilder();
 
-      String[] s_arr = s.split("");
-
-      for(int i = 0; i < s_arr.length; i++){
-          Character c = s.charAt(i);  // ??
-
-          //if(visited)
-
-          // ???
-          while(!pq.isEmpty() &&  c < pq.peek() && cnt_map.get(c) > 0){
-              Character tmp =  pq.peek();
-              //cnt_map.put(c, )
-              cnt_map.put(tmp, cnt_map.get(tmp) + 1);
+      for(Character c: s.toCharArray()){
+          int new_key = c - 'a';
+          // case 1) if PQ NOT empty and new element has `smaller ordering` than PQ peak element and `peak element` has cnt > 1
+          while(!pq.isEmpty() && new_key < pq.peek() && map.get(pq.peek()) > 1){
+              int k = pq.poll();
+              // update map
+              map.put(k, map.get(k) + 1);
           }
 
-          sb.append(c);
-          cnt_map.put(c, cnt_map.get(c) - 1);
-          visited[i] = true;
+          // case 2) if new element has `bigger ordering` than PQ peak element
+          pq.add(new_key);
+          map.put(new_key, map.get(new_key) - 1);
+      }
+
+      // collect PQ element as result
+      while(!pq.isEmpty()){
+          sb.append(pq.poll());
       }
 
       return sb.toString();
   }
+
+
+
+
+//  public String removeDuplicateLetters(String s) {
+//      // edge
+//      if(s == null || s.isEmpty()){
+//          return null;
+//      }
+//      if(s.length() == 1){
+//          return s;
+//      }
+//
+//
+//      // ???
+//      int[] freq = new int[26];
+//      for(char c: s.toCharArray()){
+//          // ???
+//          freq[c - 'a'] += 1;
+//      }
+//
+//      // ???
+//      boolean[] sean = new boolean[26];
+//
+//      // ???
+//      Stack<Character> stack = new Stack<>();
+//
+//
+//
+//      Map<Character, Integer> cnt_map = new HashMap<>();
+//      boolean[] visited = new boolean[s.length()]; // ???
+//
+//      for(Character c: s.toCharArray()){
+//          cnt_map.put(c, cnt_map.getOrDefault(c, 0) + 1);
+//      }
+//
+//      // PQ, order in `smallest lexicographically` ???
+//      PriorityQueue<Character> pq = new PriorityQueue<>(new Comparator<Character>() {
+//          @Override
+//          public int compare(Character o1, Character o2) {
+//              int diff = o1 - o2;
+//              return diff;
+//          }
+//      });
+//
+//      StringBuilder sb = new StringBuilder();
+//
+//      String[] s_arr = s.split("");
+//
+//      for(int i = 0; i < s_arr.length; i++){
+//          Character c = s.charAt(i);  // ??
+//
+//          //if(visited)
+//
+//          // ???
+//          while(!pq.isEmpty() &&  c < pq.peek() && cnt_map.get(c) > 0){
+//              Character tmp =  pq.peek();
+//              //cnt_map.put(c, )
+//              cnt_map.put(tmp, cnt_map.get(tmp) + 1);
+//          }
+//
+//          sb.append(c);
+//          cnt_map.put(c, cnt_map.get(c) - 1);
+//          visited[i] = true;
+//      }
+//
+//      return sb.toString();
+//  }
 
 
 
