@@ -50,6 +50,16 @@ public class FindKPairsWithSmallestSums {
 
     // V0-1
     // IDEA: PQ (fixed by gpt)
+    /**
+     *  IDEA:
+     *
+     *  ✅ Use a min-heap (priority queue) to:
+     *
+     *  - Always retrieve the next smallest sum pair
+     *
+     *  - Efficiently keep track of candidates
+     *
+     */
     public List<List<Integer>> kSmallestPairs_0_1(int[] nums1, int[] nums2, int k) {
         List<List<Integer>> res = new ArrayList<>();
 
@@ -58,20 +68,68 @@ public class FindKPairsWithSmallestSums {
         }
 
         // Min-heap to store [sum, index in nums1, index in nums2]
+        /**
+         *  NOTE !!!
+         *
+         *  min PQ structure:
+         *
+         *   [ sum, nums_1_idx, nums_2_idx ]
+         *
+         *
+         *   - Heap stores: int[] {sum, index in nums1, index in nums2}
+         *
+         *   - It's sorted by sum = nums1[i] + nums2[j]
+         *
+         */
         PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
 
         // Add the first k pairs (nums1[0] + nums2[0...k])
+        /**  NOTE !!!
+         *
+         *  we init PQ as below:
+         *
+         *  - We insert first k pairs: (nums1[i], nums2[0])
+         *
+         *   - Why nums2[0]?
+         *     -> Because nums2 is sorted,
+         *       so (nums1[i], nums2[0]) is the smallest possible for that row.
+         *
+         *
+         *   -> so, we insert `nums_1[i] + nums_2[0]`  to PQ for now
+         *
+         *
+         */
         for (int i = 0; i < nums1.length && i < k; i++) {
             minHeap.offer(new int[] { nums1[i] + nums2[0], i, 0 });
         }
 
+        /** NOTE !!!   Pop from Heap and Expand
+         *
+         * - Poll the `smallest` sum pair (i, j) and add it to result.
+         *
+         * - You now consider the next element in that row, which is (i, j + 1).
+         *
+         */
         while (k > 0 && !minHeap.isEmpty()) {
+
+            // current smallest val from PQ
             int[] current = minHeap.poll();
             int i = current[1]; // index in nums1
             int j = current[2]; // index in nums2
 
             res.add(Arrays.asList(nums1[i], nums2[j]));
 
+            /**
+             *  NOTE !!! Push the Next Pair in the Same Row
+             *
+             *  - This ensures you're exploring pairs in increasing sum order:
+             *
+             *      - From (i, 0) → (i, 1) → (i, 2) ...
+             *
+             * - Since the arrays are sorted, this gives increasing sums
+             *
+             *
+             */
             if (j + 1 < nums2.length) {
                 minHeap.offer(new int[] { nums1[i] + nums2[j + 1], i, j + 1 });
             }
