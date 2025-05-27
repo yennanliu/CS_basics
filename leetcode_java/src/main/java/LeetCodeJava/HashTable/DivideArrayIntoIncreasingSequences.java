@@ -58,4 +58,7 @@ public class DivideArrayIntoIncreasingSequences {
         return mx * k <= nums.length;
     }
 
+    // V3
+    // https://blog.csdn.net/qq_21201267/article/details/107575232
+
 }
