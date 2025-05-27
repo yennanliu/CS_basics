@@ -61,47 +61,34 @@ package LeetCodeJava.BinarySearch;
 public class PeakIndexInAMountainArray {
 
     // V0
-    // TODO: fix below:
-//    public int peakIndexInMountainArray(int[] arr) {
-//
-//        // edge
-//        int maxIdx = -1;
-//        int maxVal = -1;
-//        if (arr.length == 3){
-//            for(int i = 0; i < arr.length; i++){
-//                if(arr[i] > maxVal){
-//                    maxVal = arr[i];
-//                    maxIdx = i;
-//                }
-//            }
-//            return maxIdx;
-//        }
-//
-//        // binary search
-//        int l = 0;
-//        int r = arr.length - 1;
-//        int mid = (l + r) / 2;
-//        while (r >= l && r >= 0){
-//
-//            mid = (l + r) / 2;
-//
-//            // case 1)  cur > left and cur > right (find peak)
-//            if (arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1]){
-//                return mid;
-//            }
-//            // Exp 1 : [0,0,0, 3,2,1,0] -> 1
-//            // case 2) cur < left && cur < left most (left is increasing order)
-//            else if (arr[mid] >= arr[mid-1] && arr[mid] >= arr[l]){
-//                l = mid + 1;
-//            }
-//            // case 3) cur < right and cur > right most (right is decreasing order ?)
-//            else if  (arr[mid] >= arr[mid+1] && arr[mid] >= arr[r]){
-//                r = mid - 1;
-//            }
-//        }
-//
-//        return mid;
-//    }
+    public int peakIndexInMountainArray(int[] arr) {
+        if (arr == null || arr.length < 3) {
+            return -1; // Return -1 if the array length is less than 3
+        }
+
+        // Binary search
+        int l = 1; // Start from 1 to avoid checking arr[-1]
+        int r = arr.length - 2; // End at length - 2 to avoid checking arr[arr.length]
+
+        while (r >= l) {
+            int mid = l + (r - l) / 2;
+
+            // Check if mid is the peak
+            if (arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1]) {
+                return mid;
+            }
+            // If the element at mid is smaller than the next element, peak is on the right
+            else if (arr[mid] < arr[mid + 1]) {
+                l = mid + 1;
+            }
+            // Otherwise, peak is on the left
+            else {
+                r = mid - 1;
+            }
+        }
+
+        return -1; // Shouldn't happen in a valid mountain array
+    }
 
     // V0-1
     // IDEA: BINARY SEARCH
@@ -115,6 +102,7 @@ public class PeakIndexInAMountainArray {
         // Binary search
         int l = 0;
         int r = arr.length - 1;
+        //int r = arr.length - 2;
 
         while (r >= l) {
             int mid = l + (r - l) / 2;
@@ -134,6 +122,68 @@ public class PeakIndexInAMountainArray {
         }
         return -1; // Return -1 if no peak is found (though this case shouldn't happen with a valid
         // mountain array)
+    }
+
+    // V0-2
+    // IDEA: BINARY SEARCH + `increasing array`, `decreasing array` (fixed by gpt)
+    public int peakIndexInMountainArray_0_2(int[] arr) {
+        if (arr == null || arr.length < 3) {
+            throw new IllegalArgumentException("Input must be a valid mountain array with length >= 3");
+        }
+
+        int l = 0;
+        int r = arr.length - 1;
+
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+
+            if (arr[mid] < arr[mid + 1]) {
+                // Peak is to the right
+                l = mid + 1;
+            } else {
+                // Peak is at mid or to the left
+                r = mid;
+            }
+        }
+
+        return l; // or return r; since l == r
+    }
+
+    // V0-3
+    // IDEA: BINARY SEARCH + `increasing array`, `decreasing array` (fixed by gpt)
+    public int peakIndexInMountainArray_0_3(int[] arr) {
+        if (arr == null || arr.length < 3) {
+            throw new IllegalArgumentException("Input must be a valid mountain array with length >= 3");
+        }
+
+        int l = 0;
+        int r = arr.length - 1;
+
+        while (r >= l) {
+            int mid = l + (r - l) / 2;
+
+            // Edge case safety: mid > 0 and mid < arr.length - 1
+            if (mid > 0 && mid < arr.length - 1) {
+                if (arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1]) {
+                    return mid;
+                } else if (arr[mid] > arr[mid - 1]) {
+                    // Ascending — move right
+                    l = mid + 1;
+                } else {
+                    // Descending — move left
+                    r = mid - 1;
+                }
+            } else if (mid == 0) {
+                // In a valid mountain array, peak can't be at index 0
+                l = mid + 1;
+            } else if (mid == arr.length - 1) {
+                // In a valid mountain array, peak can't be at last index
+                r = mid - 1;
+            }
+        }
+
+        // Should not reach here in a valid mountain array
+        return -1;
     }
 
     // V1-1
@@ -184,7 +234,7 @@ public class PeakIndexInAMountainArray {
     // V3
     // https://leetcode.com/problems/peak-index-in-a-mountain-array/solutions/6235886/check-out-this-solution-if-you-want-most-si4s/
     // IDEA: BINARY SEARCH
-    public int peakIndexInMountainArray(int[] arr) {
+    public int peakIndexInMountainArray_3(int[] arr) {
         int start = 0;
         int end = arr.length - 1;
         while (start != end) {

@@ -6040,6 +6040,59 @@ public class workspace10 {
 //  }
 
 
+    // LC 852
+    // 9.57 - 10.07 am
+    /**  IDEA 1) BINARY SEARCH
+     *
+     *
+     *  find the element k such that
+     *
+     *     nums[k] > nums[k-1]
+     *      and
+     *     nums[k] > nums[k+1]
+     *
+     *
+     *   case 1) `mid` is in `increasing array`
+     *
+     *
+     *   case 2) `mid` is in `decreasing array`
+     *
+     *
+     */
+    public int peakIndexInMountainArray(int[] arr) {
+        // edge
+        if(arr == null || arr.length < 3){
+            return -1; // ???
+        }
+        // binary search
+        int l = 0;
+        int r = arr.length - 1;
+        // ??
+        int mid = -1;
+        while (r >= l){
+            mid = (l + r) / 2;
+            // case 1)  `mid` is the peak, (peak is found)
+            if(arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1]){
+                return mid;
+            }
+            // case 2) `mid` is in increasing array
+            if(arr[mid] < arr[mid-1]){
+                // move right
+                l = mid + 1;
+            }
+            // case 3) `mid` is in decreasing array
+            else{
+                // move left
+                r = mid - 1;
+
+            }
+
+        }
+
+        // ????
+       return mid;
+    }
+
 
 
 
