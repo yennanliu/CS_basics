@@ -170,10 +170,23 @@ public class DiameterOfBinaryTree {
         /** NOTE !!!
          *
          * return val from helper func is different from the final result
+         *
+         *
+         *  -> diameter =  (left_depth + right_depth)
+         *     ( the `diameter` is the `SUM Of DEPTHS` of sub left and sub right tree )
+         *
+         *  -> so we get the `updated max diameter` via below
+         *
          */
         maxDiameter = Math.max(maxDiameter, leftHeight + rightHeight);
 
         // Return the height of the current node, which is the max of the left and right subtree heights plus 1
+        /**
+         *  NOTE !!!
+         *
+         *   we return the max (leftHeight, rightHeight) as the `upper level node` 's diameter base
+         *   and `+1` is because we move `1 upper layer`, so the possible diameter increase by 1
+         */
         return Math.max(leftHeight, rightHeight) + 1;
     }
 
