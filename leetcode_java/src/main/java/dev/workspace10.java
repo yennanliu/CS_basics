@@ -6123,9 +6123,81 @@ public class workspace10 {
     }
 
     // LC 373
+    // 10.29 - 10.46 am
+    /**
+     *
+     *  pair (u, v) which consists of one
+     *  element from the first array and one element
+     *  from the second array.
+     *
+     * -> Return the k pairs (u1, v1), (u2, v2), ..., (uk, vk)
+     *     with the smallest sums.
+     *
+     *
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) HEAP (SMALL PQ)
+     *
+     *
+     */
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
 
-        return null;
+        // edge
+        if(nums1 == null && nums2 == null){
+            return null;
+        }
+        if(nums1 == null || nums2 == null){
+            return null;
+        }
+
+        // small PQ
+        PriorityQueue<Integer> pq_1 = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        PriorityQueue<Integer> pq_2 = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        // add val to PQ
+        for(int x: nums1){
+            pq_1.add(x);
+        }
+
+        for(int x: nums2){
+            pq_2.add(x);
+        }
+
+        List<List<Integer>> res = new ArrayList<>();
+
+        // pop and prepare res
+        for(int i = 0; i < k; i++){
+            int val_1 = pq_1.peek();
+            int val_2 = pq_2.peek();
+
+            // ???
+            if(val_2 > val_1){
+                pq_2.poll();
+            }else{
+                pq_1.poll();
+            }
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(val_1);
+            tmp.add(val_2);
+
+            res.add(tmp);
+        }
+
+        return res;
     }
 
 
