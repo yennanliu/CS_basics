@@ -6122,6 +6122,11 @@ public class workspace10 {
         return -1; // Shouldn't happen in a valid mountain array
     }
 
+    // LC 373
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+
+        return null;
+    }
 
 
 }
