@@ -6200,5 +6200,13 @@ public class workspace10 {
         return res;
     }
 
+    // LC 1121
+    public boolean canDivideIntoSubsequences_2(int[] nums, int k) {
+        return false;
+    }
+
+
+
+
 
 }
