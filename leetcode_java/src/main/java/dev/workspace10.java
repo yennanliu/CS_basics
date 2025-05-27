@@ -1675,7 +1675,19 @@ public class workspace10 {
      *
      *
      */
+    /**
+     *  IDEA 1) K*** algo
+     *
+     *  define 3 var
+     *
+     *  1. max_prod
+     *  2. min_prod
+     *  3. res
+     *
+     *
+     */
     public int maxProduct(int[] nums) {
+
         // edge
         if(nums == null || nums.length == 0){
             return 0;
@@ -1684,15 +1696,9 @@ public class workspace10 {
             return nums[0];
         }
 
-//        int global_max = nums[0];
-//        int global_min = nums[0];
-//        int local_max = nums[0];
-//        int local_min = nums[0];
-
         int max_prod = nums[0];
         int min_prod = nums[0];
         int res = nums[0];
-
 
         for(int i = 1; i < nums.length; i++){
 
@@ -1700,37 +1706,76 @@ public class workspace10 {
 
             int cache = max_prod;
 
-            max_prod = Math.max(
-                    min_prod * x,
-                    Math.max(x, x * cache)
-            );
+            max_prod = Math.max(Math.max(x, max_prod * x),
+                    min_prod * x);
 
-            min_prod = Math.min(
-                    min_prod * x,
-                    Math.min(x, x * cache)
-            );
+            min_prod = Math.min(Math.min(x, cache * x),
+                    min_prod * x);
 
-//            local_max = Math.max(x, x * local_max);
-//            local_min = Math.min(x, x * local_min);
-//
-//            int cache = local_max;
-//
-//            global_min = Math.min(
-//                    local_min,
-//                    global_min
-//            );
-//
-//            global_max = Math.max(
-//                    global_max,
-//                    local_max
-//            );
-
-            res = Math.max(max_prod, res);
-
+            res = Math.max(res, max_prod);
         }
 
         return res;
     }
+
+
+
+//    public int maxProduct(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0;
+//        }
+//        if(nums.length == 1){
+//            return nums[0];
+//        }
+//
+////        int global_max = nums[0];
+////        int global_min = nums[0];
+////        int local_max = nums[0];
+////        int local_min = nums[0];
+//
+//        int max_prod = nums[0];
+//        int min_prod = nums[0];
+//        int res = nums[0];
+//
+//
+//        for(int i = 1; i < nums.length; i++){
+//
+//            int x = nums[i];
+//
+//            int cache = max_prod;
+//
+//            max_prod = Math.max(
+//                    min_prod * x,
+//                    Math.max(x, x * cache)
+//            );
+//
+//            min_prod = Math.min(
+//                    min_prod * x,
+//                    Math.min(x, x * cache)
+//            );
+//
+////            local_max = Math.max(x, x * local_max);
+////            local_min = Math.min(x, x * local_min);
+////
+////            int cache = local_max;
+////
+////            global_min = Math.min(
+////                    local_min,
+////                    global_min
+////            );
+////
+////            global_max = Math.max(
+////                    global_max,
+////                    local_max
+////            );
+//
+//            res = Math.max(max_prod, res);
+//
+//        }
+//
+//        return res;
+//    }
 
 
 //    public int maxProduct_2(int[] nums) {
@@ -5734,8 +5779,52 @@ public class workspace10 {
    *     dia(1) = max(max_dia, left_h + right_h + 1)  = 2 + 1 = 3
    *
    */
-  int maxDiameter = 0;
-
+  /**
+   *
+   *    *      *  NOTE !!!
+   *    *      *
+   *    *      *    the `diameter` is the `SUM Of DEPTHS` of sub left and sub right tree
+   *    *      *
+   *    *      *    ( This path may or may not pass through the root.)
+   *
+   *
+   *     exp 1)
+   *    *         1
+   *    *      2    3
+   *    *    4   5
+   *    *
+   *
+   *
+   *        1
+   *      2   3
+   *    4   5
+   *
+   *
+   *
+   *
+   *   IDEA 1) DFS ( BOTTOM UP)
+   *
+   *      -> so we get max diameter from `bottom sub tree`
+   *         then we get max diameter from `their parent`
+   *         (maintain the max_diameter on the same time)
+   *
+   *         ... repeat above
+   *
+   *         return the max_diameter as ans
+   *
+   *     diameter =  (left_depth + right_depth)
+   *     ( the `diameter` is the `SUM Of DEPTHS` of sub left and sub right tree )
+   *
+   *
+   *     max_diameter = max( max_diameter, diameter )
+   *
+   *
+   *
+   *
+   *
+   */
+  // 12.00 - 12.05 pm
+  int max_d = 0;
   public int diameterOfBinaryTree(TreeNode root) {
       // edge
       if(root == null){
@@ -5745,31 +5834,65 @@ public class workspace10 {
           return 0;
       }
 
-      // dfs call
       diameterHelper(root);
 
-      return maxDiameter;
+      return max_d;
   }
 
- public int diameterHelper(TreeNode root){
-   if(root == null){
-       return 0;
-   }
+  public int diameterHelper(TreeNode root){
+      // edge
+      if(root == null){
+          return 0;
+      }
 
-//   TreeNode left = diameterHelper(root.left);
-//   TreeNode right = diameterHelper(root.right);
+      int leftDepth = diameterHelper(root.left);
+      int rightDepth = diameterHelper(root.right);
 
-   // NOTE !!! we get max diameter at below step
-   //maxDiameter = Math.max(maxDiameter, right)
+      // ???
+      // ????
+      max_d = Math.max(max_d, leftDepth + rightDepth) ;
 
-   int left_height = diameterHelper(root.left);
-   int right_height = diameterHelper(root.right);
+      return leftDepth + rightDepth + 1;
+  }
 
-   maxDiameter = Math.max(maxDiameter, left_height + right_height);
 
-   // NOTE !!! below
-   return Math.max(left_height, right_height) + 1;
- }
+
+//  int maxDiameter = 0;
+//
+//  public int diameterOfBinaryTree(TreeNode root) {
+//      // edge
+//      if(root == null){
+//          return 0;
+//      }
+//      if(root.left == null || root.right == null){
+//          return 0;
+//      }
+//
+//      // dfs call
+//      diameterHelper(root);
+//
+//      return maxDiameter;
+//  }
+//
+// public int diameterHelper(TreeNode root){
+//   if(root == null){
+//       return 0;
+//   }
+//
+////   TreeNode left = diameterHelper(root.left);
+////   TreeNode right = diameterHelper(root.right);
+//
+//   // NOTE !!! we get max diameter at below step
+//   //maxDiameter = Math.max(maxDiameter, right)
+//
+//   int left_height = diameterHelper(root.left);
+//   int right_height = diameterHelper(root.right);
+//
+//   maxDiameter = Math.max(maxDiameter, left_height + right_height);
+//
+//   // NOTE !!! below
+//   return Math.max(left_height, right_height) + 1;
+// }
 
 
 //  public int diameterOfBinaryTree(TreeNode root) {
@@ -6217,6 +6340,8 @@ public class workspace10 {
 
         return false;
     }
+
+
 
 
 
