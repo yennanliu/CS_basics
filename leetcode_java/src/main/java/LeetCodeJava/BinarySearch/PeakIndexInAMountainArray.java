@@ -41,26 +41,13 @@ package LeetCodeJava.BinarySearch;
  * 3 <= arr.length <= 105
  * 0 <= arr[i] <= 106
  * arr is guaranteed to be a mountain array.
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 928.3K
- * Submissions
- * 1.4M
- * Acceptance Rate
- * 67.9%
- * Topics
- * Companies
- * Similar Questions
- * Discussion (183)
- *
  *
  */
 public class PeakIndexInAMountainArray {
 
     // V0
+    // IDEA: BINARY SEARCH
+    // NOTE !!! `int r = arr.length - 2; // End at length - 2 to avoid checking arr[arr.length]`
     public int peakIndexInMountainArray(int[] arr) {
         if (arr == null || arr.length < 3) {
             return -1; // Return -1 if the array length is less than 3
@@ -68,6 +55,13 @@ public class PeakIndexInAMountainArray {
 
         // Binary search
         int l = 1; // Start from 1 to avoid checking arr[-1]
+        /**
+         *  NOTE !!!
+         *
+         *   int r = arr.length - 2;
+         *    -> so can avoid `out of boundary`
+         *
+         */
         int r = arr.length - 2; // End at length - 2 to avoid checking arr[arr.length]
 
         while (r >= l) {
@@ -89,6 +83,46 @@ public class PeakIndexInAMountainArray {
 
         return -1; // Shouldn't happen in a valid mountain array
     }
+
+    // V0-0-1
+    // IDEA: BINARY SEARCH
+    // NOTE !!! `r = arr.length - 1;`
+    public int peakIndexInMountainArray_0_0_1(int[] arr) {
+        if (arr == null || arr.length < 3) {
+            return -1; // Return -1 if the array length is less than 3
+        }
+
+        // Binary search
+        int l = 1; // Start from 1 to avoid checking arr[-1]
+        int r = arr.length - 1;
+
+        while (r >= l) {
+            int mid = l + (r - l) / 2;
+
+            // Check if mid is the peak
+            /**
+             *  NOTE !!!
+             *
+             *   mid < arr.length-1
+             *    -> so can avoid `out of boundary`
+             *
+             */
+            if (mid < arr.length-1 && arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1]) {
+                return mid;
+            }
+            // If the element at mid is smaller than the next element, peak is on the right
+            else if (arr[mid] < arr[mid + 1]) {
+                l = mid + 1;
+            }
+            // Otherwise, peak is on the left
+            else {
+                r = mid - 1;
+            }
+        }
+
+        return -1; // Shouldn't happen in a valid mountain array
+    }
+
 
     // V0-1
     // IDEA: BINARY SEARCH

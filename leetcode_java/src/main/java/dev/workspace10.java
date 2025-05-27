@@ -6059,40 +6059,68 @@ public class workspace10 {
      *
      *
      */
+//    public int peakIndexInMountainArray(int[] arr) {
+//        // edge
+//        if(arr == null || arr.length < 3){
+//            return -1; // ???
+//        }
+//        // binary search
+//        int l = 0;
+//        int r = arr.length - 1;
+//        // ??
+//        int mid = -1;
+//        while (r >= l){
+//            mid = (l + r) / 2;
+//            // case 1)  `mid` is the peak, (peak is found)
+//            if(arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1]){
+//                return mid;
+//            }
+//            // case 2) `mid` is in increasing array
+//            if(arr[mid] < arr[mid-1]){
+//                // move right
+//                l = mid + 1;
+//            }
+//            // case 3) `mid` is in decreasing array
+//            else{
+//                // move left
+//                r = mid - 1;
+//
+//            }
+//
+//        }
+//
+//        // ????
+//       return mid;
+//    }
+
     public int peakIndexInMountainArray(int[] arr) {
-        // edge
-        if(arr == null || arr.length < 3){
-            return -1; // ???
+        if (arr == null || arr.length < 3) {
+            return -1; // Return -1 if the array length is less than 3
         }
-        // binary search
-        int l = 0;
-        int r = arr.length - 1;
-        // ??
-        int mid = -1;
-        while (r >= l){
-            mid = (l + r) / 2;
-            // case 1)  `mid` is the peak, (peak is found)
-            if(arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1]){
+
+        // Binary search
+        int l = 1; // Start from 1 to avoid checking arr[-1]
+        int r = arr.length - 1; // End at length - 2 to avoid checking arr[arr.length]
+
+        while (r >= l) {
+            int mid = l + (r - l) / 2;
+
+            // Check if mid is the peak
+            if (mid < arr.length-1 && arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1]) {
                 return mid;
             }
-            // case 2) `mid` is in increasing array
-            if(arr[mid] < arr[mid-1]){
-                // move right
+            // If the element at mid is smaller than the next element, peak is on the right
+            else if (arr[mid] < arr[mid + 1]) {
                 l = mid + 1;
             }
-            // case 3) `mid` is in decreasing array
-            else{
-                // move left
+            // Otherwise, peak is on the left
+            else {
                 r = mid - 1;
-
             }
-
         }
 
-        // ????
-       return mid;
+        return -1; // Shouldn't happen in a valid mountain array
     }
-
 
 
 
