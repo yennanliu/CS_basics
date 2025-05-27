@@ -1129,6 +1129,7 @@ class Solution:
 ```
 
 ### 2-11) Largest Rectangle in Histogram
+
 ```python
 # LC 84. Largest Rectangle in Histogram
 # python
@@ -1151,4 +1152,149 @@ class Solution:
             current_width = len(heights) - stack[-1] - 1
             max_area = max(max_area, current_height * current_width)
         return max_area
+```
+
+### 2-12) Remove Duplicate Letters
+
+```java
+// java
+// LC 316
+
+/**
+*  NOTE
+*
+*  Lexicographically Smaller
+*
+* A string a is lexicographically smaller than a
+* string b if in the first position where a and b differ,
+* string a has a letter that appears earlier in the alphabet
+* than the corresponding letter in b.
+* If the first min(a.length, b.length) characters do not differ,
+* then the shorter string is the lexicographically smaller one.
+*
+*/
+
+// V0-1
+// IDEA: STACK (fixed by gpt)
+// Time: O(n) — one pass over the string and each character is pushed/popped at most once.
+// Space: O(1) — constant space for 26 characters (seen, freq, stack)
+/**
+* 📌 Example Walkthrough
+*
+* Input: "cbacdcbc"
+*    1.  'c' → Stack: ["c"]
+*    2.  'b' < 'c' and 'c' still appears → pop 'c', push 'b'
+*    3.  'a' < 'b' → pop 'b', push 'a'
+*    4.  'c' > 'a' → push 'c'
+*    5.  'd' > 'c' → push 'd'
+*    6.  'c' already seen → skip
+*    7.  'b' > 'd' → push 'b'
+*    8.  'c' > 'b' → push 'c'
+*
+* Final stack: ['a', 'c', 'd', 'b']
+* Lexicographically smallest valid string: "acdb"
+*
+*/
+public String removeDuplicateLetters_0_1(String s) {
+  if (s == null || s.length() == 0) {
+      return "";
+  }
+
+/**
+ *  •   freq: array to count how many times each letter appears in s.
+ *  •   We use c - 'a' to map each character to index 0–25 ('a' to 'z').
+ *  •   This helps us later determine if we can remove a character and see it again later.
+ */
+int[] freq = new int[26]; // frequency of each character
+  for (char c : s.toCharArray()) {
+      freq[c - 'a']++;
+  }
+
+/**
+ *  •   Tracks which characters have already been added to the result.
+ *  •   This ensures we only include each character once.
+ *
+ *
+ *  NOTE !!! sean is a `boolean` array
+ */
+boolean[] seen = new boolean[26]; // whether character is in stack/result
+
+/** NOTE !!!
+ *
+ *  we init stack here
+ *
+ *
+ *  •   This stack is used to build the final result.
+ *  •   We’ll maintain characters in order and manipulate
+ *      the top to maintain lexicographical order.
+ */
+/**
+ *  NOTE !!!
+ *
+ *   use `STACK`, but NOT use `PQ`
+ *
+ */
+Stack<Character> stack = new Stack<>();
+
+/**
+ *  •   Iterate through the string one character at a time.
+ *  •   Since we’ve now processed c, decrement its frequency count.
+ */
+for (char c : s.toCharArray()) {
+      freq[c - 'a']--; // reduce frequency, since we're processing this char
+
+    /**
+     *  •   If we’ve already added this character to the result,
+     *      skip it — we only want one occurrence of each letter.
+     */
+      if (seen[c - 'a']) {
+          continue; // already added, skip
+      }
+
+  /** NOTE !!!
+   *
+   * Now we’re checking:
+   *
+   *    •   Is the stack NOT empty?
+   *
+   *    •   Is the current character c lexicographically
+   *        smaller than the character at the top of the stack?
+   *
+   *    •   Does the character at the top of the stack still
+   *        appear later (i.e., its freq > 0)?
+   *
+   * If yes to all, we can:
+   *
+   *    •   pop it from the result,
+   *
+   *    •   and add it later again in a better
+   *        position (lexicographically smaller order).
+   */
+  // remove characters that are bigger than current AND appear later again
+  while (!stack.isEmpty() && c < stack.peek() && freq[stack.peek() - 'a'] > 0) {
+          /**
+           *
+           *    Remove the character from the stack,
+           *    and mark it as not seen so it can be added again later.
+           */
+          char removed = stack.pop();
+          seen[removed - 'a'] = false;
+      }
+
+  /**
+   *    •   Push the current character c to the stack,
+   *    •   And mark it as seen (i.e., already in the result).
+   */
+  stack.push(c);
+  seen[c - 'a'] = true;
+  }
+
+  // build result from stack
+  StringBuilder sb = new StringBuilder();
+  for (char c : stack) {
+      sb.append(c);
+  }
+
+  return sb.toString();
+}
 ```
