@@ -6440,6 +6440,11 @@ public class workspace10 {
       return ans;
     }
 
+    // LC 542
+    public int[][] updateMatrix(int[][] mat) {
+
+      return null;
+    }
 
 
 
