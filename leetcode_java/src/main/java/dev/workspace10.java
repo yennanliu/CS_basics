@@ -6420,8 +6420,24 @@ public class workspace10 {
 
     // LC 540
     public int singleNonDuplicate(int[] nums) {
+     // edge
+     if(nums == null || nums.length == 0){
+         return -1; // /??
+     }
+     //HashSet<Integer> set
+     Map<Integer, Integer> map = new HashMap<>();
+     for(int n: nums){
+         map.put(n, map.getOrDefault(n, 0) + 1);
+     }
 
-      return 0;
+     int ans = -1;
+     for(int k: map.keySet()){
+         if(map.get(k) == 1){
+             return k;
+         }
+     }
+
+      return ans;
     }
 
 

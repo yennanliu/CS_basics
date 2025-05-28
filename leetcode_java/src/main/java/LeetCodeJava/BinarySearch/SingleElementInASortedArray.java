@@ -1,6 +1,10 @@
 package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/single-element-in-a-sorted-array/description/
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 540. Single Element in a Sorted Array
  * Medium
@@ -35,9 +39,26 @@ package LeetCodeJava.BinarySearch;
 public class SingleElementInASortedArray {
 
     // V0
-//    public int singleNonDuplicate(int[] nums) {
-//
-//    }
+    // IDEA: HASHMAP
+    public int singleNonDuplicate(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return -1; // /??
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int n : nums) {
+            map.put(n, map.getOrDefault(n, 0) + 1);
+        }
+
+        int ans = -1;
+        for (int k : map.keySet()) {
+            if (map.get(k) == 1) {
+                return k;
+            }
+        }
+
+        return ans;
+    }
 
     // V1
 
@@ -61,7 +82,7 @@ public class SingleElementInASortedArray {
 
     // V3
     // https://leetcode.com/problems/single-element-in-a-sorted-array/solutions/627921/java-c-python3-easy-explanation-ologn-o1-71nt/
-    public int singleNonDuplicate(int[] nums) {
+    public int singleNonDuplicate_3(int[] nums) {
         int left = 0, right = nums.length - 1;
         while (left < right) {
             int mid = (left + right) / 2;
