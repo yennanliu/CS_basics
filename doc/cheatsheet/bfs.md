@@ -978,3 +978,103 @@ class Solution(object):
                 level += 1
             return level-1
 ```
+
+### 2-19) 01 Matrix
+
+```java
+// java
+// LC 542
+
+// V0-1
+// IDEA:  multi-source BFS (fixed by gpt)
+public int[][] updateMatrix_0_1(int[][] mat) {
+    if (mat == null || mat.length == 0 || mat[0].length == 0) {
+        return new int[0][0];
+    }
+
+    int rows = mat.length;
+    int cols = mat[0].length;
+    int[][] res = new int[rows][cols];
+    boolean[][] visited = new boolean[rows][cols];
+    Queue<int[]> queue = new LinkedList<>();
+
+    // 1️⃣ Add all 0s to the queue, set 1s as INF
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            /**
+             *  NOTE !!! below
+             *
+             *  - We use multi-source BFS starting from all 0s
+             *    to compute the minimum distance to a 0 for each 1.
+             *
+             */
+            /**
+             * ## ❓ Why Does the Fixed Code Add All `0`s to the Queue (Not `1`s)?
+             *
+             * ---
+             *
+             * ## 🧠 Let's Think About the Goal
+             *
+             * The problem asks:
+             *
+             * > For each cell with a `1`, find the distance to the **nearest `0`**.
+             *
+             * There are **two basic ways** to approach this:
+             *
+             * ---
+             *
+             * ### ❌ Option A (your original code):
+             *
+             * **Start BFS from every `1`**, searching for the nearest `0`.
+             *
+             * #### Problem:
+             *
+             * * You perform a **BFS for every 1** in the matrix.
+             * * In worst case, you scan the whole matrix **once per 1**.
+             * * That’s **O(N × M × (N + M))** — very slow for large inputs.
+             *
+             * ---
+             *
+             * ### ✅ Option B (optimized):
+             *
+             * **Start BFS from every `0`**, and compute distance as you expand.
+             *
+             * #### Why this works:
+             *
+             * * You flip the problem: instead of asking *“how far is this 1 from a 0?”*, you ask *“how far can each 0 reach a 1?”*
+             * * When you expand from all 0s **at the same time**, you ensure that **each 1 gets the shortest path to a 0**, because BFS guarantees minimum-distance traversal.
+             * * Time complexity is **O(N × M)** — each cell is visited only once.
+             *
+             */
+            if (mat[i][j] == 0) {
+                queue.offer(new int[] { i, j });
+                visited[i][j] = true;
+            } else {
+                res[i][j] = Integer.MAX_VALUE;
+            }
+        }
+    }
+
+    int[][] dirs = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+
+    // 2️⃣ BFS from all 0s
+    while (!queue.isEmpty()) {
+        int[] curr = queue.poll();
+        int row = curr[0];
+        int col = curr[1];
+
+        for (int[] d : dirs) {
+            int newRow = row + d[0];
+            int newCol = col + d[1];
+
+            if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && !visited[newRow][newCol]) {
+                res[newRow][newCol] = res[row][col] + 1;
+                queue.offer(new int[] { newRow, newCol });
+                visited[newRow][newCol] = true;
+            }
+        }
+    }
+
+    return res;
+}
+```
