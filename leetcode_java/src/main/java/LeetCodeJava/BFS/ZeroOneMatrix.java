@@ -2,9 +2,7 @@ package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/01-matrix/description/
 
-import java.util.ArrayDeque;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /**
  *
@@ -48,9 +46,113 @@ import java.util.Queue;
 public class ZeroOneMatrix {
 
     // V0
+    // IDEA: BFS
+    // TODO : fix below
 //    public int[][] updateMatrix(int[][] mat) {
+//        // edge
+//        if(mat == null || mat.length == 0 || mat[0].length == 0){
+//            return null;
+//        }
 //
+//        int l = mat.length;
+//        int w = mat[0].length;
+//
+//        int[][] res = mat;
+//
+//        List<int[]> candidates = new ArrayList<>();
+//        for(int i = 0; i < l; i++){
+//            for(int j = 0; j < w; j++){
+//                if(mat[i][j] == 1){
+//                    candidates.add(new int[] {i, j});
+//                }
+//            }
+//        }
+//
+//
+//        // Queue : [x, y, steps]
+//        Queue<int[]> q = new LinkedList<>();
+//        boolean[][] visited = new boolean[l][w];
+//
+//        for(int[] c: candidates){
+//            q.add(new int[] {c[0], c[1], 0});
+//        }
+//
+//        int[][] dirs = new int[][] { {1,0}, {-1,0}, {0,1}, {0,-1} };
+//
+//        while (!q.isEmpty()){
+//            int[] cur = q.poll();
+//            int x = cur[0];
+//            int y = cur[1];
+//            int steps = cur[2];
+//            visited[y][x] = true;
+//            res[y][x] = steps;
+//
+//            for(int[] d: dirs){
+//                int x_ = x + d[0];
+//                int y_ = y + d[1];
+//
+//                if(x_ < 0 || x_ >= w || y_ < 0 || y >= l || visited[y_][x_] || mat[y_][x_] != 0){
+//                    continue;
+//                }
+//
+//                //res[y_][x_ ] = steps;
+//                // add to queue
+//                q.add(new int[] {x_, y_, steps + 1});
+//            }
+//
+//        }
+//
+//
+//        return res;
 //    }
+
+    // V0-1
+    // IDEA: BFS (fixed by gpt)
+    public int[][] updateMatrix_0_1(int[][] mat) {
+        if (mat == null || mat.length == 0 || mat[0].length == 0) {
+            return new int[0][0];
+        }
+
+        int rows = mat.length;
+        int cols = mat[0].length;
+        int[][] res = new int[rows][cols];
+        boolean[][] visited = new boolean[rows][cols];
+        Queue<int[]> queue = new LinkedList<>();
+
+        // 1️⃣ Add all 0s to the queue, set 1s as INF
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (mat[i][j] == 0) {
+                    queue.offer(new int[] { i, j });
+                    visited[i][j] = true;
+                } else {
+                    res[i][j] = Integer.MAX_VALUE;
+                }
+            }
+        }
+
+        int[][] dirs = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+
+        // 2️⃣ BFS from all 0s
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int row = curr[0];
+            int col = curr[1];
+
+            for (int[] d : dirs) {
+                int newRow = row + d[0];
+                int newCol = col + d[1];
+
+                if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && !visited[newRow][newCol]) {
+                    res[newRow][newCol] = res[row][col] + 1;
+                    queue.offer(new int[] { newRow, newCol });
+                    visited[newRow][newCol] = true;
+                }
+            }
+        }
+
+        return res;
+    }
 
     // V1
 
