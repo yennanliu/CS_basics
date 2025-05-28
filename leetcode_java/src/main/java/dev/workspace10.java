@@ -6441,9 +6441,70 @@ public class workspace10 {
     }
 
     // LC 542
+    // 15.55 - 16.05 pm
+    /**
+     *  -> return the distance of the nearest 0 for each cell.
+     *
+     *
+     *   IDEA 1) BFS
+     *
+     */
     public int[][] updateMatrix(int[][] mat) {
+        // edge
+        if(mat == null || mat.length == 0 || mat[0].length == 0){
+            return null;
+        }
 
-      return null;
+        int l = mat.length;
+        int w = mat[0].length;
+
+        int[][] res = mat;
+
+        List<int[]> candidates = new ArrayList<>();
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                if(mat[i][j] == 1){
+                    candidates.add(new int[] {i, j});
+                }
+            }
+        }
+
+
+        // Queue : [x, y, steps]
+        Queue<int[]> q = new LinkedList<>();
+        boolean[][] visited = new boolean[l][w];
+
+        for(int[] c: candidates){
+            q.add(new int[] {c[0], c[1], 0});
+        }
+
+        int[][] dirs = new int[][] { {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        while (!q.isEmpty()){
+            int[] cur = q.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int steps = cur[2];
+            visited[y][x] = true;
+            res[y][x] = steps;
+
+            for(int[] d: dirs){
+                int x_ = x + d[0];
+                int y_ = y + d[1];
+
+                if(x_ < 0 || x_ >= w || y_ < 0 || y >= l || visited[y_][x_] || mat[y_][x_] != 0){
+                    continue;
+                }
+
+               //res[y_][x_ ] = steps;
+                // add to queue
+                q.add(new int[] {x_, y_, steps + 1});
+            }
+
+        }
+
+
+      return res;
     }
 
 
