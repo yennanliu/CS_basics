@@ -6399,10 +6399,30 @@ public class workspace10 {
     }
 
  // LC 1316
+ // 15.15 - 15.30 pm
+ /**
+  *  IDEA 1) 2 POINTERS ??
+  *
+  *   i, j
+  *
+  *
+  *
+  */
  public int distinctEchoSubstrings(String text) {
 
         return 0;
  }
+
+// // LC 658
+// public List<Integer> findClosestElements(int[] arr, int k, int x) {
+//     return null;
+// }
+
+    // LC 540
+    public int singleNonDuplicate(int[] nums) {
+
+      return 0;
+    }
 
 
 
