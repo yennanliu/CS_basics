@@ -6398,6 +6398,12 @@ public class workspace10 {
         return false;
     }
 
+ // LC 1316
+ public int distinctEchoSubstrings(String text) {
+
+        return 0;
+ }
+
 
 
 

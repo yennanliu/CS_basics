@@ -329,6 +329,8 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note           | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 2357 | [Make Array Zero by Subtracting Equal Amounts](https://leetcode.com/problems/make-array-zero-by-subtracting-equal-amounts/description/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Set/makeArrayZeroBySubtractingEqualAmounts.java)| _O(n^2)_ | _O(1)_  | Medium    | set| Again (1)
+1316 | [Distinct Echo Substrings](https://leetcode.com/problems/distinct-echo-substrings) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Set/DistinctEchoSubstrings.java)| _O(n^2)_ | _O(1)_  | Hard | set| Again (not start)
+
 
 ## Hash Table
 
