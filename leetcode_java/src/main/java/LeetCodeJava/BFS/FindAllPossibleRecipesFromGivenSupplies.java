@@ -1,6 +1,7 @@
 package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/description/
+// https://leetcode.cn/problems/find-all-possible-recipes-from-given-supplies/description/
 
 import java.util.*;
 
