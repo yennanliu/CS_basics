@@ -6515,11 +6515,82 @@ public class workspace10 {
     }
 
     // LC 564
+    // 10.25 - 10.35 am
+    /**
+     *  IDEA 1) STRING OP + BRUTE FORCE ???
+     *
+     *  IDEA 2) BINARY SEARCH ???
+     *
+     *
+     *
+     *
+     */
     public String nearestPalindromic(String n) {
+        if(n == null || n.length() == 0){
+            return "0"; //??
+        }
+        if(n.equals("1")){
+            return "0";
+        }
 
-        return null;
+        int n_int = Integer.parseInt(n);
+
+        // binary search ???
+        int l = 0;
+        int r = Integer.valueOf(n);
+
+        int res = Integer.MAX_VALUE;
+
+        while( r >= l ){
+            int mid = (l + r) / 2;
+            String mid_str = String.valueOf(mid);
+            if(isPalindrom(mid_str)){
+                //res = Math.min(res, mid);
+                if(getDistance(n_int, res) < getDistance(n_int, mid)){
+                    res = mid;
+                }
+            }
+        }
+
+
+        return String.valueOf(res);
     }
 
+    public int getDistance(int x, int y){
+        return Math.abs(x - y);
+    }
+
+    public boolean isPalindrom(String input){
+        if(input == null || input.length() == 0){
+            return true;
+        }
+        int l = 0;
+        int r = input.length() - 1;
+        while(r > l){
+            if(input.charAt(l) != input.charAt(r)){
+                return false;
+            }
+            l += 1;
+            r -= 1;
+        }
+
+        return true;
+    }
+
+    // LC 251
+    class Vector2D{
+        public Vector2D(int[][] vec) {
+        }
+
+        public int next() {
+        }
+
+        public boolean hasNext() {
+        }
+
+        private void forward() {
+        }
+    }
 
 
 
