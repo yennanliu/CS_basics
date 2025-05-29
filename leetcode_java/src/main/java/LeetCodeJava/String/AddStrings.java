@@ -39,9 +39,107 @@ package LeetCodeJava.String;
 public class AddStrings {
 
     // V0
-//    public String addStrings(String num1, String num2) {
-//
-//    }
+    // IDEA: string op (fixed by gpt)
+    public String addStrings(String num1, String num2) {
+        if (num1 == null || num2 == null) {
+            if (num1 == null) {
+                return num2;
+            }
+            return num1;
+        }
+        if (num1.equals("0") && num2.equals("0")) {
+            return "0";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        int plus = 0;
+        int idx_1 = num1.length() - 1;
+        int idx_2 = num2.length() - 1;
+
+        /** NOTE !!!
+         *
+         *  1. while loop
+         *  2. idx_1 >= 0 or idx_2 >= 0
+         */
+        while (idx_1 >= 0 || idx_2 >= 0) {
+
+            int v1 = 0;
+            int v2 = 0;
+
+            int new_val = 0;
+
+            /** NOTE !!!
+             *
+             *  if idx_1 >= 0, then get val from it
+             */
+            if (idx_1 >= 0) {
+                v1 = Integer.parseInt(String.valueOf(num1.charAt(idx_1)));
+                idx_1 -= 1;
+            }
+
+            /** NOTE !!!
+             *
+             *  if idx_1 >= 0, then get val from it
+             */
+            if (idx_2 >= 0) {
+                v2 = Integer.parseInt(String.valueOf(num2.charAt(idx_2)));
+                idx_2 -= 1;
+            }
+
+            new_val = (new_val + v1 + v2 + plus);
+
+            /** NOTE !!!
+             *
+             *  if new_vla > 9,
+             *  we should `subtract 10` (instead of 9)
+             */
+            if (new_val > 9) {
+                plus = 1;
+                new_val -= 10;
+            } else {
+                plus = 0;
+            }
+
+            sb.append(new_val);
+        }
+
+        /** NOTE !!!
+         *
+         *  need to add the `remaining plus` to res
+         *  if there is it
+         */
+        if (plus > 0) {
+            sb.append(plus);
+        }
+
+        // reverse
+        return sb.reverse().toString();
+    }
+
+    // V0-1
+    // IDEA: string op (fixed by gpt)
+    public String addStrings_0_1(String num1, String num2) {
+        StringBuilder sb = new StringBuilder();
+
+        int i = num1.length() - 1;
+        int j = num2.length() - 1;
+        int carry = 0;
+
+        while (i >= 0 || j >= 0 || carry != 0) {
+            int digit1 = i >= 0 ? num1.charAt(i) - '0' : 0;
+            int digit2 = j >= 0 ? num2.charAt(j) - '0' : 0;
+
+            int sum = digit1 + digit2 + carry;
+            carry = sum / 10;
+            sb.append(sum % 10);
+
+            i--;
+            j--;
+        }
+
+        return sb.reverse().toString();
+    }
 
     // V1
     // https://leetcode.com/problems/add-strings/solutions/6789491/simple-java-code-by-vikrant_heer-64g6/
