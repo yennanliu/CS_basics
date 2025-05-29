@@ -6677,9 +6677,43 @@ public class workspace10 {
 
 
     // LC 1060
+    // 12.53 - 13.23 pm
+    /**
+     *  1. BRUTE FORCE
+     *
+     *    *   - loop over over nums, collect the `missing` val
+     *      *     then return the one accordingly
+     *
+     *  2. BINARY SEARCH
+     *
+     */
     public int missingElement(int[] nums, int k) {
+        if(nums == null || nums.length == 0){
+            return -1; // ???
+        }
 
-        return 0;
+        HashSet<Integer> set = new HashSet<>();
+        for(int x: nums){
+            set.add(x);
+        }
+
+        //int x = 0;
+
+        List<Integer> missing_list = new ArrayList<>();
+        int cnt = 0;
+        for(int i = 0; i < nums[nums.length - 1]; i++){
+            if(cnt == k){
+                if(!set.contains(nums[i])){
+                    return i;
+                }
+            }
+            if(!set.contains(nums[i])){
+                cnt += 1;
+            }
+
+        }
+
+        return -1;
     }
 
 
