@@ -6579,17 +6579,45 @@ public class workspace10 {
 
     // LC 251
     class Vector2D{
+
+        List<Integer> collected;
+        int layer;
+        int pointer;
+
         public Vector2D(int[][] vec) {
+            collected = new ArrayList<>();
+            layer = 0;
+            pointer = 0;
+
+
+            // flatten op
+            for(int i = 0; i < vec.length; i++){
+                for(int x: vec[i]){
+                    this.collected.add(x);
+                }
+            }
+
         }
 
         public int next() {
+            if(this.collected.isEmpty()){
+                return -1;
+            }
+            if(pointer > this.collected.size()){
+                return -1;
+            }
+            pointer += 1;
+            return this.collected.get(pointer - 1);
         }
 
         public boolean hasNext() {
+
+            return this.pointer < this.collected.size();
         }
 
         private void forward() {
         }
+
     }
 
 
