@@ -6676,6 +6676,11 @@ public class workspace10 {
     }
 
 
+    // LC 1060
+    public int missingElement(int[] nums, int k) {
+
+        return 0;
+    }
 
 
 }
