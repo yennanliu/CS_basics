@@ -6514,6 +6514,12 @@ public class workspace10 {
         return null;
     }
 
+    // LC 564
+    public String nearestPalindromic(String n) {
+
+        return null;
+    }
+
 
 
 
