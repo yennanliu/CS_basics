@@ -174,7 +174,7 @@ public class Flatten2DVector {
         }
     }
 
-    
+
     // V1
     // https://leetcode.ca/2016-08-07-251-Flatten-2D-Vector/
     class Vector2D_1 {
