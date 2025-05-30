@@ -6766,4 +6766,10 @@ public class workspace10 {
         return res;
     }
 
+    // LC 321
+    public int[] maxNumber(int[] nums1, int[] nums2, int k) {
+
+        return null;
+    }
+
 }
