@@ -6718,9 +6718,52 @@ public class workspace10 {
 
 
     // LC 256
+    // 6.18 - 6.28 pm
+    /**
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) DP
+     *
+     *   DP equation:
+     *      i !=
+     *     dp[i] = min( dp[i-1] + min[costs[i]  )
+     *
+     *
+     *
+     *  exp 1)
+     *
+     *   costs = [
+     *     [17,2,17],
+     *     [16,16,5],
+     *     [14,3,19]
+     *     ]
+     *
+     *
+     */
     public int minCost_1(int[][] costs) {
+        // edge
+        if(costs == null || costs[0].length == 0){
+            return -1; // ???
+        }
 
-        return 0;
+        int l = costs.length;
+        int w = costs[0].length;
+
+        // init dp
+        int[] dp = new int[l];
+
+        // update dp
+//        for(int i = 0; i < l; i++ ){
+//            for(int )
+//            dp[i] =
+//        }
+
+        int res = 0;
+        for(int x: dp){
+            res += x;
+        }
+
+        return res;
     }
 
 }
