@@ -6717,4 +6717,10 @@ public class workspace10 {
     }
 
 
+    // LC 256
+    public int minCost_1(int[][] costs) {
+
+        return 0;
+    }
+
 }
