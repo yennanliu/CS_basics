@@ -6767,6 +6767,7 @@ public class workspace10 {
     }
 
     // LC 321
+    // 6.52 - 7.02 pm
     public int[] maxNumber(int[] nums1, int[] nums2, int k) {
 
         return null;

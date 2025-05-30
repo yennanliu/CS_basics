@@ -1,6 +1,7 @@
 package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/create-maximum-number/description/
+// https://leetcode.cn/problems/create-maximum-number/description/
 
 import java.util.Stack;
 
