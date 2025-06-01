@@ -6774,9 +6774,77 @@ public class workspace10 {
     }
 
     // LC 335
+    // 3.17 - 3.27 pm
+    /**
+     *
+     *  -> Return true if your path crosses
+     *     itself or false if it does not.
+     *
+     *
+     *  IDEA 1) BRUTE FORCE + HASH SET
+     *
+     *   -> record visiting path,
+     *      and use hashset to check if pass the
+     *      `visited` path
+     *
+     *
+     */
     public boolean isSelfCrossing(int[] distance) {
 
+        // edge
+        if(distance == null || distance.length == 0){
+            return false; // ??
+        }
+        if(distance.length < 4){
+            return false; // ???
+        }
+
+        // set : [ 'x-y' ]
+        HashSet<String> set = new HashSet<>();
+
+        // init val
+        int x = 0;
+        int y = 0;
+
+        set.add(prepareVal(x,y));
+
+        // north move
+        for(int i = 0; i < distance[0]; i++){
+            y += 1;
+            set.add(prepareVal(x,y));
+        }
+
+        // west move
+        for(int i = 0; i < distance[1]; i++){
+            x -= 1;
+            set.add(prepareVal(x,y));
+        }
+
+        // south move
+        for(int i = 0; i < distance[2]; i++){
+            y -= 1;
+            if(set.contains(prepareVal(x,y))){
+                return false;
+            }
+            set.add(prepareVal(x,y));
+        }
+
+        // east move
+        for(int i = 0; i < distance[3]; i++){
+            x += 1;
+            if(set.contains(prepareVal(x,y))){
+                return false;
+            }
+            set.add(prepareVal(x,y));
+        }
+
+
+
         return false;
+    }
+
+    public String prepareVal(int x, int y){
+        return x + "-" + y;
     }
 
 }
