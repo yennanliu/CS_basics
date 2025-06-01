@@ -120,11 +120,13 @@ public class SelfCrossing {
 
         for (int i = 3; i < distance.length; i++) {
             // Case 1: current line crosses the line 3 steps ahead of it
+            // Case 1: Basic “spiral inward” crossing.
             if (distance[i] >= distance[i - 2] && distance[i - 1] <= distance[i - 3]) {
                 return true;
             }
 
             // Case 2: current line overlaps the line 4 steps ahead of it
+            // Case 2: When the 4th line overlays the first.
             if (i >= 4) {
                 if (distance[i - 1] == distance[i - 3] &&
                         distance[i] + distance[i - 4] >= distance[i - 2]) {
@@ -133,6 +135,7 @@ public class SelfCrossing {
             }
 
             // Case 3: current line crosses the line 5 steps ahead of it
+            // Case 3: Complex inward spiral with a twist back.
             if (i >= 5) {
                 if (distance[i - 2] >= distance[i - 4] &&
                         distance[i] >= distance[i - 2] - distance[i - 4] &&
