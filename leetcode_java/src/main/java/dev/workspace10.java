@@ -6859,7 +6859,50 @@ public class workspace10 {
 
     public Node flatten(Node head) {
 
-        return null;
+        Node dummy = new Node();
+        Node res = dummy;
+        //dummy.next = head; // ???
+
+        // edge
+        if(head == null){
+            return null;
+        }
+        if(head.next == null && head.child == null){
+            return head;
+        }
+        if(head.next == null){
+            while(head.child != null){
+                dummy.next = head;
+                head = head.child;
+            }
+            return res.next; // ??
+        }
+        if(head.child == null){
+            return res.next; // ??
+        }
+
+        // flatten
+        while(head.next != null){
+            //head = head.child;
+            if(head.child != null){
+                Node _flatten_child = flattenChild(head);
+                head.next = _flatten_child;
+            }
+            dummy.next = head;
+            head = head.next;
+        }
+
+        return res.next; // ??
+    }
+
+    public Node flattenChild(Node inputNode){
+        Node _head = new Node();
+        Node _res = _head;
+        while(inputNode != null){
+            _head.next = inputNode;
+            inputNode = inputNode.next;
+        }
+        return _res.next;
     }
 
 }
