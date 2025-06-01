@@ -102,6 +102,51 @@ public class FlattenMultilevelDoublyLinkedList {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS + LINKED LIST OP (fixed by gpt)
+    public Node flatten_0_1(Node head) {
+        if (head == null)
+            return null;
+        flattenDFS(head);
+        return head;
+    }
+
+    // Returns the tail of the flattened list
+    private Node flattenDFS(Node node) {
+        Node curr = node;
+        Node last = null;
+
+        while (curr != null) {
+            Node next = curr.next;
+
+            // If the current node has a child, we flatten it
+            if (curr.child != null) {
+                Node childTail = flattenDFS(curr.child);
+
+                // Connect current node to child
+                curr.next = curr.child;
+                curr.child.prev = curr;
+
+                // Connect child's tail to next
+                if (next != null) {
+                    childTail.next = next;
+                    next.prev = childTail;
+                }
+
+                // Null out the child pointer
+                curr.child = null;
+
+                last = childTail;
+            } else {
+                last = curr;
+            }
+
+            curr = next;
+        }
+
+        return last;
+    }
+
     // V1
     // IDEA : LINKED LIST OP + one off
     // https://zihengcat.github.io/2019/09/02/leetcode-430-flatten-a-multilevel-doubly-linked-list/
