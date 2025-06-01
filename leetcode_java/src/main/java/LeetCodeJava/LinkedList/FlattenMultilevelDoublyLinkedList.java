@@ -5,6 +5,7 @@ package LeetCodeJava.LinkedList;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  * 430. Flatten a Multilevel Doubly Linked List
@@ -103,8 +104,44 @@ public class FlattenMultilevelDoublyLinkedList {
 //    }
 
     // V0-1
-    // IDEA: DFS + LINKED LIST OP (fixed by gpt)
+    // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
     public Node flatten_0_1(Node head) {
+        if (head == null)
+            return null;
+
+        Stack<Node> stack = new Stack<>();
+        Node curr = head;
+
+        while (curr != null) {
+            // If the current node has a child
+            if (curr.child != null) {
+                // If there's a next node, push it to the stack to revisit later
+                if (curr.next != null) {
+                    stack.push(curr.next);
+                }
+
+                // Rewire pointers to insert child list
+                curr.next = curr.child;
+                curr.child.prev = curr;
+                curr.child = null;
+            }
+
+            // If we've reached the end and there's something in the stack
+            if (curr.next == null && !stack.isEmpty()) {
+                Node node = stack.pop();
+                curr.next = node;
+                node.prev = curr;
+            }
+
+            curr = curr.next;
+        }
+
+        return head;
+    }
+
+    // V0-2
+    // IDEA: DFS + LINKED LIST OP (fixed by gpt)
+    public Node flatten_0_2(Node head) {
         if (head == null)
             return null;
         flattenDFS(head);
@@ -124,12 +161,36 @@ public class FlattenMultilevelDoublyLinkedList {
                 Node childTail = flattenDFS(curr.child);
 
                 // Connect current node to child
+                /**
+                 *  NOTE !!!
+                 *
+                 *   we simply connect to `child`
+                 *   (via curr.next = curr.child)
+                 *
+                 *   (NOT using `child flatten result` here)
+                 *
+                 */
                 curr.next = curr.child;
+                /**
+                 *  NOTE !!!
+                 *
+                 *  NOTE !!! we need to connect `prev` to current
+                 */
                 curr.child.prev = curr;
 
                 // Connect child's tail to next
+                /**
+                 *  NOTE !!!
+                 *
+                 *   need to connect `child tail` to next node
+                 */
                 if (next != null) {
                     childTail.next = next;
+                    /**
+                     *  NOTE !!!
+                     *
+                     *  NOTE !!! we need to connect `prev` to childTail
+                     */
                     next.prev = childTail;
                 }
 
@@ -148,7 +209,7 @@ public class FlattenMultilevelDoublyLinkedList {
     }
 
     // V1
-    // IDEA : LINKED LIST OP + one off
+    // IDEA : LINKED LIST OP + one off + iterative
     // https://zihengcat.github.io/2019/09/02/leetcode-430-flatten-a-multilevel-doubly-linked-list/
     public Node flatten_1(Node head) {
         if (head == null) {
