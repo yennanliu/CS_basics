@@ -97,42 +97,85 @@ public class FlattenMultilevelDoublyLinkedList {
         public Node child;
     };
 
-    // V0
-    // TODO : implement
-//    public Node flatten(Node head) {
-//
-//    }
+  // V0
+  // TODO : implement
+  //    public Node flatten(Node head) {
+  //
+  //    }
 
-    // V0-1
-    // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
-    public Node flatten_0_1(Node head) {
+  // V0-1
+  // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
+  // 	•	Time Complexity: O(n) — each node is visited once.
+  //	•	Space Complexity: O(d) — where d is the maximum depth of nesting (due to stack usage).
+  public Node flatten_0_1(Node head) {
         if (head == null)
             return null;
 
-        Stack<Node> stack = new Stack<>();
-        Node curr = head;
+    /**  NOTE !!!
+     *
+     * 	- Initialize a stack to keep track
+     * 	  of nodes we need to revisit
+     * 	  (i.e., the next nodes that are interrupted by child lists).
+     *
+     * 	- curr is a pointer used to walk through the list.
+     */
+    Stack<Node> stack = new Stack<>();
+    Node curr = head;
 
-        while (curr != null) {
-            // If the current node has a child
-            if (curr.child != null) {
+    while (curr != null) {
+      // If the current node has a child
+      /**
+       * - If there’s a child, we:
+       *
+       * 	1.	Save the current next node to revisit later
+       *    	by pushing it onto the stack.
+       *
+       * 	2.	Update curr.next to point to the child node.
+       *
+       * 	3.	Set the child’s prev to the current node.
+       *
+       * 	4.	Clear curr.child because we’ve moved it into the main list.
+       *
+       */
+      if (curr.child != null) {
                 // If there's a next node, push it to the stack to revisit later
                 if (curr.next != null) {
                     stack.push(curr.next);
                 }
 
-                // Rewire pointers to insert child list
+              // Rewire pointers to insert child list
+              /**
+               *  NOTE !!!
+               *
+               *   we simply connect to `child`
+               *   (via curr.next = curr.child)
+               *
+               *   (NOT using `child flatten result` here)
+               *
+               */
                 curr.next = curr.child;
                 curr.child.prev = curr;
+                // NOTE !!! Clear curr.child because we’ve moved it into the main list.
                 curr.child = null;
             }
 
-            // If we've reached the end and there's something in the stack
-            if (curr.next == null && !stack.isEmpty()) {
+      // If we've reached the end and there's something in the stack
+      //  If end of current list and we saved nodes:
+      /**
+       * 	- If we reach the end of a level and the stack is not empty:
+       *
+       * 	   - Pop a saved node from the stack
+       * 	     (which was the original next before a child was inserted).
+       *
+       * 	   - Reconnect it to the current node.
+       */
+      if (curr.next == null && !stack.isEmpty()) {
                 Node node = stack.pop();
                 curr.next = node;
                 node.prev = curr;
-            }
+      }
 
+            // 	Continue traversing through the list.
             curr = curr.next;
         }
 
