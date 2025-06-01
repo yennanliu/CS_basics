@@ -6847,4 +6847,19 @@ public class workspace10 {
         return x + "-" + y;
     }
 
+
+    // LC 430
+    // 3.40 - 3.50 pm
+    class Node {
+        public int val;
+        public Node prev;
+        public Node next;
+        public Node child;
+    };
+
+    public Node flatten(Node head) {
+
+        return null;
+    }
+
 }
