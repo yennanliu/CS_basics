@@ -6773,4 +6773,10 @@ public class workspace10 {
         return null;
     }
 
+    // LC 335
+    public boolean isSelfCrossing(int[] distance) {
+
+        return false;
+    }
+
 }
