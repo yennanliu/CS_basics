@@ -1,6 +1,9 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/self-crossing/description/
+
+import java.util.HashSet;
+
 /**
  * 335. Self Crossing
  * Hard
@@ -48,6 +51,100 @@ public class SelfCrossing {
 //    public boolean isSelfCrossing(int[] distance) {
 //
 //    }
+
+    // V0-0-1
+    // TODO: fix below
+//    public boolean isSelfCrossing_0_0_1(int[] distance) {
+//
+//        // edge
+//        if(distance == null || distance.length == 0){
+//            return false; // ??
+//        }
+//        if(distance.length < 4){
+//            return false; // ???
+//        }
+//
+//        // set : [ 'x-y' ]
+//        HashSet<String> set = new HashSet<>();
+//
+//        // init val
+//        int x = 0;
+//        int y = 0;
+//
+//        set.add(prepareVal(x,y));
+//
+//        // north move
+//        for(int i = 0; i < distance[0]; i++){
+//            y += 1;
+//            set.add(prepareVal(x,y));
+//        }
+//
+//        // west move
+//        for(int i = 0; i < distance[1]; i++){
+//            x -= 1;
+//            set.add(prepareVal(x,y));
+//        }
+//
+//        // south move
+//        for(int i = 0; i < distance[2]; i++){
+//            y -= 1;
+//            if(set.contains(prepareVal(x,y))){
+//                return false;
+//            }
+//            set.add(prepareVal(x,y));
+//        }
+//
+//        // east move
+//        for(int i = 0; i < distance[3]; i++){
+//            x += 1;
+//            if(set.contains(prepareVal(x,y))){
+//                return false;
+//            }
+//            set.add(prepareVal(x,y));
+//        }
+//
+//
+//
+//        return false;
+//    }
+//
+//    public String prepareVal(int x, int y){
+//        return x + "-" + y;
+//    }
+
+    // V0-1
+    // IDEA: ARRAY OP (fixed by gpt)
+    public boolean isSelfCrossing_0_1(int[] distance) {
+        if (distance == null || distance.length < 4)
+            return false;
+
+        for (int i = 3; i < distance.length; i++) {
+            // Case 1: current line crosses the line 3 steps ahead of it
+            if (distance[i] >= distance[i - 2] && distance[i - 1] <= distance[i - 3]) {
+                return true;
+            }
+
+            // Case 2: current line overlaps the line 4 steps ahead of it
+            if (i >= 4) {
+                if (distance[i - 1] == distance[i - 3] &&
+                        distance[i] + distance[i - 4] >= distance[i - 2]) {
+                    return true;
+                }
+            }
+
+            // Case 3: current line crosses the line 5 steps ahead of it
+            if (i >= 5) {
+                if (distance[i - 2] >= distance[i - 4] &&
+                        distance[i] >= distance[i - 2] - distance[i - 4] &&
+                        distance[i - 1] >= distance[i - 3] - distance[i - 5] &&
+                        distance[i - 1] <= distance[i - 3]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     // V1
 
