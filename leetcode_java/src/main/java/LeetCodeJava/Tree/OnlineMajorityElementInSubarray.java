@@ -2,7 +2,7 @@ package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/online-majority-element-in-subarray/description/
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * 1157. Online Majority Element In Subarray
@@ -60,6 +60,74 @@ public class OnlineMajorityElementInSubarray {
 //
 //        }
 //    }
+
+    // V0-1
+    // IDEA: HASHMAP + LIST (fixed by gpt)
+    class MajorityChecker_0_1 {
+        private int[] arr;
+        private Map<Integer, List<Integer>> idxMap;
+        private Random rand;
+
+        public MajorityChecker_0_1(int[] arr) {
+            this.arr = arr;
+            this.idxMap = new HashMap<>();
+            this.rand = new Random();
+
+            // Build the index map: number -> list of positions
+            for (int i = 0; i < arr.length; i++) {
+                idxMap.computeIfAbsent(arr[i], x -> new ArrayList<>()).add(i);
+            }
+        }
+
+        public int query(int left, int right, int threshold) {
+            int length = right - left + 1;
+
+            // Try up to 20 random samples (statistically enough)
+            for (int i = 0; i < 20; i++) {
+                int randIdx = left + rand.nextInt(length);
+                int candidate = arr[randIdx];
+
+                List<Integer> indices = idxMap.get(candidate);
+                int freq = countInRange(indices, left, right);
+
+                if (freq >= threshold)
+                    return candidate;
+            }
+
+            return -1;
+        }
+
+        // Binary search for lower and upper bounds in the list of positions
+        private int countInRange(List<Integer> indices, int left, int right) {
+            int start = lowerBound(indices, left);
+            int end = upperBound(indices, right);
+            return end - start;
+        }
+
+        private int lowerBound(List<Integer> list, int target) {
+            int lo = 0, hi = list.size();
+            while (lo < hi) {
+                int mid = (lo + hi) / 2;
+                if (list.get(mid) >= target)
+                    hi = mid;
+                else
+                    lo = mid + 1;
+            }
+            return lo;
+        }
+
+        private int upperBound(List<Integer> list, int target) {
+            int lo = 0, hi = list.size();
+            while (lo < hi) {
+                int mid = (lo + hi) / 2;
+                if (list.get(mid) > target)
+                    hi = mid;
+                else
+                    lo = mid + 1;
+            }
+            return lo;
+        }
+    }
 
     // V1
     // https://leetcode.com/problems/online-majority-element-in-subarray/solutions/617295/java-ologn-for-each-query-with-bit-manip-bpuu/

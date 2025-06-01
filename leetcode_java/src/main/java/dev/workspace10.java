@@ -6905,8 +6905,28 @@ public class workspace10 {
         return _res.next;
     }
 
-    // LC 1157
-    class MajorityChecker {
+  // LC 1157
+  // 4.52 - 5.10 pm
+  /**
+   *  IDEA 1) HASH MAP that can record element cnt
+   *         ` in each idx` (?
+   *
+   *
+   *  exp 1) Input
+   *    ["MajorityChecker", "query", "query", "query"]
+   *    [[[1, 1, 2, 2, 1, 1]], [0, 5, 4], [0, 3, 3], [2, 3, 2]]
+   *    Output
+   *    [null, 1, -1, 2]
+   *
+   *
+   *    arr = [1, 1, 2, 2, 1, 1]
+   *
+   *
+   *
+   *
+   *
+   */
+  class MajorityChecker {
 
         public MajorityChecker(int[] arr) {
 
