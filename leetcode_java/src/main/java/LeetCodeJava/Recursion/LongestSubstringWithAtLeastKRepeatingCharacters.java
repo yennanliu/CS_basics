@@ -44,6 +44,36 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
 //
 //    }
 
+    // V0-2
+    // IDEA: DIVIDE AND CONQUER (gpt)
+    public int longestSubstring_0_2(String s, int k) {
+        return longestSubstringHelper(s, 0, s.length(), k);
+    }
+
+    private int longestSubstringHelper(String s, int start, int end, int k) {
+        if (end - start < k)
+            return 0;
+
+        // Count frequency of each character in the substring
+        int[] count = new int[26];
+        for (int i = start; i < end; i++) {
+            count[s.charAt(i) - 'a']++;
+        }
+
+        // Find split point: character with freq > 0 but less than k
+        for (int i = start; i < end; i++) {
+            char ch = s.charAt(i);
+            if (count[ch - 'a'] > 0 && count[ch - 'a'] < k) {
+                int left = longestSubstringHelper(s, start, i, k);
+                int right = longestSubstringHelper(s, i + 1, end, k);
+                return Math.max(left, right);
+            }
+        }
+
+        // All characters in this range occur at least k times
+        return end - start;
+    }
+
     // V1-1
     // https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/editorial/
     // IDEA: BRUTE FORCE
