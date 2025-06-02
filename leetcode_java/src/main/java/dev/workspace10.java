@@ -6857,12 +6857,9 @@ public class workspace10 {
         public Node child;
     };
 
+    // 11.20 - 11.30 am
+    // IDEA 1) ITERATIVE + LINKED LIST OP + STACK
     public Node flatten(Node head) {
-
-        Node dummy = new Node();
-        Node res = dummy;
-        //dummy.next = head; // ???
-
         // edge
         if(head == null){
             return null;
@@ -6870,40 +6867,157 @@ public class workspace10 {
         if(head.next == null && head.child == null){
             return head;
         }
-        if(head.next == null){
-            while(head.child != null){
-                dummy.next = head;
-                head = head.child;
+
+//        Node dummy = new Node();
+//        dummy.next = head; // ??
+
+        Node cur = head;
+
+        Stack<Node> st = new Stack<>();
+
+
+        while(cur != null){
+
+            // NOTE !!! put `next` to stack, since
+            // the Node could be in `nested structure`
+            if(cur.next != null){
+                Node _next = cur.next;
+                st.add(_next);
             }
-            return res.next; // ??
-        }
-        if(head.child == null){
-            return res.next; // ??
+
+            // deal with `child`
+            cur.next = cur.child;
+            cur.child.prev = cur; // ???
+            // NOTE !!! connect `child` to null, since now child already been `merged` to next
+            cur.child = null;
+
+            /**
+             *  NOTE !!!
+             *
+             *   if we've reached the `end` of node (node.next)
+             *   and there are saved nodes in stack,
+             *   we NEED to pop the saved node,
+             *   and reconnect that with cur node
+             */
+            // pop `next` from stack
+            if(cur.next == null && !st.isEmpty()){
+                Node _next_node = st.pop();
+                cur.next = _next_node;
+                _next_node.prev = cur; // ??
+
+            }
+
+            cur = cur.next;
         }
 
-        // flatten
-        while(head.next != null){
-            //head = head.child;
-            if(head.child != null){
-                Node _flatten_child = flattenChild(head);
-                head.next = _flatten_child;
-            }
-            dummy.next = head;
-            head = head.next;
-        }
-
-        return res.next; // ??
+        return head;
     }
 
-    public Node flattenChild(Node inputNode){
-        Node _head = new Node();
-        Node _res = _head;
-        while(inputNode != null){
-            _head.next = inputNode;
-            inputNode = inputNode.next;
-        }
-        return _res.next;
-    }
+
+
+//    public Node flatten(Node head) {
+//
+//        // edge
+//        if(head == null){
+//            return null;
+//        }
+//        if(head.next == null && head.child == null){
+//            return head;
+//        }
+//
+//        Node dummy = new Node(); // ??
+//        dummy.next = head;
+//
+//
+//        while(head != null){
+//
+//            boolean hasChild = false;
+//
+//            // cache next
+//            Node _next = head.next;
+//
+//            // if has child, go to `the end of child`
+//            if(head.child != null){
+//
+//                hasChild = true;
+//
+//                // connect `next` to child
+//                // ????
+//                head.next = head.child;
+//            }
+//
+//            Node child = null;
+//
+//            // if has child, go to `the end of child`
+//            if(hasChild){
+//                child = head.child;
+//                while(child != null){
+//                    child = child.next;
+//                }
+//            }
+//
+//            // reconnect `end child` (bi-direction)
+//            // prev
+//            //child.prev = head;
+//
+//            // next
+//            child.next = _next;
+//
+//            head = _next; // ???
+//        }
+//
+//
+//        return dummy.next; // ???
+//    }
+
+
+//    public Node flatten(Node head) {
+//
+//        Node dummy = new Node();
+//        Node res = dummy;
+//        //dummy.next = head; // ???
+//
+//        // edge
+//        if(head == null){
+//            return null;
+//        }
+//        if(head.next == null && head.child == null){
+//            return head;
+//        }
+//        if(head.next == null){
+//            while(head.child != null){
+//                dummy.next = head;
+//                head = head.child;
+//            }
+//            return res.next; // ??
+//        }
+//        if(head.child == null){
+//            return res.next; // ??
+//        }
+//
+//        // flatten
+//        while(head.next != null){
+//            //head = head.child;
+//            if(head.child != null){
+//                Node _flatten_child = flattenChild(head);
+//                head.next = _flatten_child;
+//            }
+//            dummy.next = head;
+//            head = head.next;
+//        }
+//
+//        return res.next; // ??
+//    }
+//
+//    public Node flattenChild(Node inputNode){
+//        Node _head = new Node();
+//        Node _res = _head;
+//        while(inputNode != null){
+//            _head.next = inputNode;
+//            inputNode = inputNode.next;
+//        }
+//        return _res.next;
+//    }
 
   // LC 1157
   // 4.52 - 5.10 pm
