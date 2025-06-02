@@ -98,10 +98,41 @@ public class FlattenMultilevelDoublyLinkedList {
     };
 
   // V0
-  // TODO : implement
-  //    public Node flatten(Node head) {
-  //
-  //    }
+  // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
+  public Node flatten(Node head) {
+      if (head == null){
+          return null;
+      }
+
+      Node cur = head;
+      Stack<Node> stack = new Stack<>();
+
+      while (cur != null) {
+          // If there is a child
+          if (cur.child != null) {
+              // If there is a next, push it to stack to process later
+              if (cur.next != null) {
+                  stack.push(cur.next);
+              }
+
+              // Reconnect child as next
+              cur.next = cur.child;
+              cur.child.prev = cur;
+              cur.child = null;
+          }
+
+          // If at the end of current level and there's saved nodes
+          if (cur.next == null && !stack.isEmpty()) {
+              Node nextFromStack = stack.pop();
+              cur.next = nextFromStack;
+              nextFromStack.prev = cur;
+          }
+
+          cur = cur.next;
+      }
+
+      return head;
+  }
 
   // V0-1
   // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
@@ -249,6 +280,42 @@ public class FlattenMultilevelDoublyLinkedList {
         }
 
         return last;
+    }
+
+    // V0-3
+    // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
+    public Node flatten_0_3(Node head) {
+        if (head == null)
+            return null;
+
+        Stack<Node> stack = new Stack<>();
+        Node current = head;
+
+        while (current != null) {
+            // If the current node has a child
+            if (current.child != null) {
+                // If there's a next node, push it to the stack to reconnect later
+                if (current.next != null) {
+                    stack.push(current.next);
+                }
+
+                // Connect current to child
+                current.next = current.child;
+                current.child.prev = current;
+                current.child = null;
+            }
+
+            // If at the end of a level and stack is not empty, pop and reconnect
+            if (current.next == null && !stack.isEmpty()) {
+                Node nextFromStack = stack.pop();
+                current.next = nextFromStack;
+                nextFromStack.prev = current;
+            }
+
+            current = current.next;
+        }
+
+        return head;
     }
 
     // V1
