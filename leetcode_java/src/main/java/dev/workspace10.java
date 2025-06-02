@@ -6939,9 +6939,75 @@ public class workspace10 {
     }
 
     // LC 395
+    // 10.08 - 10.18 am
+    /**
+     *  IDEA 1) slinding window+ HASHMAP + 2 POINTERS (?
+     *
+     *
+     *
+     *  exp 1)  Input: s = "aaabb", k = 3
+     *     -> output = 5
+     *
+     *   aaabb
+     *   i              ... map
+     *   j
+     *
+     *
+     *   exp 2)  Input: s = "ababbc", k = 2, Output: 5
+     *
+     *   Explanation: The longest substring is "ababb",
+     *   as 'a' is repeated 2 times and 'b' is repeated 3 times.
+     *
+     *
+     *
+     *
+     */
     public int longestSubstring(String s, int k) {
+      // edge
+      if(s == null || s.length() == 0){
+          return 0;
+      }
+      if(s.length() == 1){
+          return 1;
+      }
+      if(k > s.length()){
+          return -1; // ??
+      }
 
-      return 0;
+      // map : {val : cnt}
+      Map<Character, Integer> map = new HashMap<>();
+
+      for(int i = 0; i < s.length(); i++){
+          int cnt  = 0;
+          Character key = s.charAt(i);
+          for(int j = i; j < s.length(); j++){
+            System.out.println(">>> i = " + i + ", j = " + j + ", map = " + map + ", cnt = " + cnt);
+             if(key == s.charAt(j)){
+                 cnt += 1;
+             }else{
+                 if(map.containsKey(key)){
+                     map.put(s.charAt(i), Math.max(cnt, map.get(key)));
+                 }else{
+                     map.put(s.charAt(i), cnt);
+                 }
+                 break;
+             }
+         }
+      }
+
+      System.out.println(">>> map = " + map);
+
+      int res = 0;
+      for(Character c: map.keySet()){
+          if(map.get(c) >= k){
+              res += map.get(c);
+          }
+      }
+
+
+
+      return res;
+
     }
 
 
