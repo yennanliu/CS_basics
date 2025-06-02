@@ -3,6 +3,8 @@ package LeetCodeJava.Recursion;
 // https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/description/
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 395. Longest Substring with At Least K Repeating Characters
@@ -43,6 +45,42 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
 //    public int longestSubstring(String s, int k) {
 //
 //    }
+
+    // V0-1
+    // IDEA: BRUTE FORCE + HASHMAP
+    public int longestSubstring_0_1(String s, int k) {
+
+        // edge
+        if (s == null || s.isEmpty() || k > s.length()) {
+            return 0;
+        }
+
+        //Map<Character, Integer> map = new HashMap<>();
+        int res = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            // reset map
+            Map<Character, Integer> map = new HashMap<>();
+            for (int j = i; j < s.length(); j++) {
+                //Character c = m
+                map.put(s.charAt(j), map.getOrDefault(s.charAt(j), 0) + 1);
+                if (isVaid(map, k)) {
+                    res = Math.max(res, j - i + 1);
+                }
+            }
+        }
+
+        return res;
+    }
+
+    public boolean isVaid(Map<Character, Integer> map, int k) {
+        for (Character c : map.keySet()) {
+            if (map.get(c) < k) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     // V0-2
     // IDEA: DIVIDE AND CONQUER (gpt)

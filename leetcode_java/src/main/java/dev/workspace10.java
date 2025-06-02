@@ -6962,7 +6962,53 @@ public class workspace10 {
      *
      *
      */
+
+    // IDEA: BRUTE FORCE : hash map + 2 pointer
     public int longestSubstring(String s, int k) {
+
+        // edge
+        if(s == null || s.length() == 0){
+            return 0;
+        }
+        if(s.length() == 1){
+            return 1;
+        }
+        if(k > s.length()){
+            return -1; // ??
+        }
+
+        //Map<Character, Integer> map = new HashMap<>();
+        int res = 0;
+
+        for(int i = 0; i < s.length(); i++){
+            // reset map
+            Map<Character, Integer> map = new HashMap<>();
+            for(int j = i; j < s.length(); j++){
+                //Character c = m
+                map.put(s.charAt(j), map.getOrDefault(s.charAt(j), 0) + 1);
+                if(isVaid(map, k)){
+                    res = Math.max(res, j - i + 1);
+                }
+            }
+        }
+
+
+        return res;
+    }
+
+
+    public boolean isVaid(Map<Character, Integer> map, int k){
+        for(Character c: map.keySet()){
+            if(map.get(c) < k){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //---------------------
+
+    public int longestSubstring_1(String s, int k) {
       // edge
       if(s == null || s.length() == 0){
           return 0;
