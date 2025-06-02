@@ -6938,5 +6938,12 @@ public class workspace10 {
         }
     }
 
+    // LC 395
+    public int longestSubstring(String s, int k) {
+
+      return 0;
+    }
+
+
 
 }
