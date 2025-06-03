@@ -7125,17 +7125,69 @@ public class workspace10 {
    *
    *
    */
+  // 12.02 - 12.12 PM
+  /**
+   *
+   *  int query(int left, int right, int threshold)
+   *    returns the element in the subarray
+   *    arr[left...right] that occurs at least threshold times,
+   *    or -1 if no such element exists.
+   *
+   *
+   *  IDEA 1) SLIDE WINDOW + HASHMAP
+   *
+   *
+   *
+   */
   class MajorityChecker {
 
+       // attr
+       Map<Integer, Integer> map;
+       int[] arr;
+
         public MajorityChecker(int[] arr) {
+            this.arr = arr;
+            map = new HashMap<>();
+            for(int x: arr){
+                map.put(x, map.getOrDefault(x, 0) + 1);
+            }
 
         }
 
         public int query(int left, int right, int threshold) {
 
-            return 0;
+            // use `2 pointers update map`
+            // and check if there is a val satifies threshold
+
+            // copy map as tmp map
+            Map<Integer, Integer> tmp_map = this.map;
+
+            // update `left part`
+            for(int i = 0; i < left; i++){
+                int val = this.arr[i];
+                tmp_map.put(val, tmp_map.get(val) - 1);
+            }
+
+            // update `right part`
+            for(int i = this.arr.length -1; i > right; i--){
+                int val = this.arr[i];
+                tmp_map.put(val, tmp_map.get(val) - 1);
+            }
+
+            for(Integer k: tmp_map.keySet()){
+                if(tmp_map.get(k) >= threshold){
+                    return k;
+                }
+            }
+
+            return -1;
         }
+
     }
+
+
+
+
 
     // LC 395
     // 10.08 - 10.18 am
