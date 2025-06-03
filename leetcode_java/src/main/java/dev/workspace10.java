@@ -6857,8 +6857,9 @@ public class workspace10 {
         public Node child;
     };
 
-    // 11.20 - 11.30 am
+    // 11.15 - 11.25 am
     // IDEA 1) ITERATIVE + LINKED LIST OP + STACK
+
     public Node flatten(Node head) {
         // edge
         if(head == null){
@@ -6868,50 +6869,134 @@ public class workspace10 {
             return head;
         }
 
-//        Node dummy = new Node();
-//        dummy.next = head; // ??
+        // copy current node to a new one
+        // do op (break, reconnect) on the new one
+        // since they are using the same reference
+        // so we can still return head as res
+        Node head_2 = head;
 
-        Node cur = head;
-
+        // queue
+        //Queue<Node> q = new LinkedList<>();
         Stack<Node> st = new Stack<>();
 
+        while(head_2 != null){
 
-        while(cur != null){
+            // handle child
+            if(head_2.child != null){
 
-            // NOTE !!! put `next` to stack, since
-            // the Node could be in `nested structure`
-            if(cur.next != null){
-                Node _next = cur.next;
-                st.add(_next);
+                // ???? push `next` to queue
+                // at this stage
+                if(head_2.next != null){
+                    st.add(head_2.next);
+                }
+
+                // reconnect `child` as `next`
+                head_2.next = head_2.child;
+                // connect `prev`
+                head_2.child.prev = head_2; // ??
+                // since reconnect child as next,
+                // the original pointer (child) should be null
+                head_2.child = null; // ???
             }
 
-            // deal with `child`
-            cur.next = cur.child;
-            cur.child.prev = cur; // ???
-            // NOTE !!! connect `child` to null, since now child already been `merged` to next
-            cur.child = null;
+            //--------------------
 
-            /**
-             *  NOTE !!!
-             *
-             *   if we've reached the `end` of node (node.next)
-             *   and there are saved nodes in stack,
-             *   we NEED to pop the saved node,
-             *   and reconnect that with cur node
-             */
-            // pop `next` from stack
-            if(cur.next == null && !st.isEmpty()){
+//            Node _child = head_2.child;
+//            //Node _last_child = null;
+//            while(_child != null){
+//                _child = _child.next;
+//            }
+//
+//            // handle next, pop `last added next node` from queue
+//            if(!st.isEmpty()){
+//                // ???
+//                Node _next_node = st.pop();
+//                // ???
+//                _child.next = _next_node;
+//                _next_node.prev = _child;
+//            }
+
+            //--------------------
+
+            if(!st.isEmpty() && head_2.next == null){
+                // pop from stack
                 Node _next_node = st.pop();
-                cur.next = _next_node;
-                _next_node.prev = cur; // ??
-
+                head_2.next = _next_node;
+                _next_node.prev = head_2;
+                //head_2 = _next_node;  // ???
             }
 
-            cur = cur.next;
+
+            // add `next` to queue
+//            if(head_2.next != null){
+//                q.add(head_2.next);
+//            }
+
+            // move the `next` node
+            head_2 = head_2.next;
         }
 
-        return head;
+
+        return head.next; // ??
     }
+
+
+
+    // 11.20 - 11.30 am
+    // IDEA 1) ITERATIVE + LINKED LIST OP + STACK
+//    public Node flatten(Node head) {
+//        // edge
+//        if(head == null){
+//            return null;
+//        }
+//        if(head.next == null && head.child == null){
+//            return head;
+//        }
+//
+////        Node dummy = new Node();
+////        dummy.next = head; // ??
+//
+//        Node cur = head;
+//
+//        Stack<Node> st = new Stack<>();
+//
+//
+//        while(cur != null){
+//
+//            // NOTE !!! put `next` to stack, since
+//            // the Node could be in `nested structure`
+//            if(cur.next != null){
+//                Node _next = cur.next;
+//                st.add(_next);
+//            }
+//
+//            // deal with `child`
+//            cur.next = cur.child;
+//            cur.child.prev = cur; // ???
+//            // NOTE !!! connect `child` to null, since now child already been `merged` to next
+//            cur.child = null;
+//
+//            /**
+//             *  NOTE !!!
+//             *
+//             *   if we've reached the `end` of node (node.next)
+//             *   and there are saved nodes in stack,
+//             *   we NEED to pop the saved node,
+//             *   and reconnect that with cur node
+//             */
+//            // pop `next` from stack
+//            if(cur.next == null && !st.isEmpty()){
+//                Node _next_node = st.pop();
+//                cur.next = _next_node;
+//                _next_node.prev = cur; // ??
+//
+//            }
+//
+//            cur = cur.next;
+//        }
+//
+//        return head;
+//    }
 
 
 

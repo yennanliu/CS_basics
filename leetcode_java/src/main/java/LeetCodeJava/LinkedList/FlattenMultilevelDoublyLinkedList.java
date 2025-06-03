@@ -97,9 +97,116 @@ public class FlattenMultilevelDoublyLinkedList {
         public Node child;
     };
 
-  // V0
+
+    // V0
+    // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
+    public Node flatten(Node head) {
+        // edge
+        if (head == null) {
+            return null;
+        }
+        if (head.next == null && head.child == null) {
+            return head;
+        }
+
+        // copy current node to a new one
+        // do op (break, reconnect) on the new one
+        // since they are using the same reference
+        // so we can still return head as res
+        Node head_2 = head;
+
+        /**
+         *  NOTE !!!
+         *
+         *  should use `stack` (FILO) (NOT queue)
+         *  since we need to `append` the `latest added next node`
+         */
+        // queue
+        //Queue<Node> q = new LinkedList<>();
+        Stack<Node> st = new Stack<>();
+
+        while (head_2 != null) {
+
+            // handle child
+            if (head_2.child != null) {
+
+                /**
+                 *  NOTE !!!
+                 *
+                 *   we push `next` to queue at this stage
+                 *   since it there is a `child`
+                 *   we will `reconnect child` as `next`
+                 *   so we need to `cache` the `original next` first
+                 *   and the way we cache it is via `stack`
+                 */
+                if (head_2.next != null) {
+                    st.add(head_2.next);
+                }
+
+                // reconnect `child` as `next`
+                head_2.next = head_2.child;
+                // connect `prev`
+                head_2.child.prev = head_2; // ??
+                // since reconnect child as next,
+                // the original pointer (child) should be null
+                head_2.child = null;
+            }
+
+            // NOTE !!! below is WRONG
+            //--------------------
+            //            Node _child = head_2.child;
+            //            //Node _last_child = null;
+            //            while(_child != null){
+            //                _child = _child.next;
+            //            }
+            //
+            //            // handle next, pop `last added next node` from queue
+            //            if(!st.isEmpty()){
+            //                // ???
+            //                Node _next_node = st.pop();
+            //                // ???
+            //                _child.next = _next_node;
+            //                _next_node.prev = _child;
+            //            }
+            //--------------------
+
+            if (!st.isEmpty() && head_2.next == null) {
+                // pop from stack
+                Node _next_node = st.pop();
+                head_2.next = _next_node;
+                _next_node.prev = head_2;
+                /**
+                 *  NOTE !!!
+                 *
+                 *   we DON'T need below,
+                 *   since we will move head_2 to `next`
+                 *   in below code anyway
+                 */
+                //head_2 = _next_node;  // ???
+            }
+
+            /**
+             *  NOTE !!!
+             *
+             *   we CAN'T add `next` to stack at below,
+             *   we need to do right after if head_2 has child node
+             *   (e.g. head_2.child != null)
+             */
+            // add `next` to queue
+            //            if(head_2.next != null){
+            //                q.add(head_2.next);
+            //            }
+
+            // move the `next` node
+            head_2 = head_2.next;
+        }
+
+        return head; // NOTE !!! return head (instead of head.next)
+    }
+
+  // V0-0-1
   // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
-  public Node flatten(Node head) {
+  public Node flatten_0_0_1(Node head) {
       if (head == null){
           return null;
       }
@@ -543,5 +650,7 @@ public class FlattenMultilevelDoublyLinkedList {
         }
         return head;
     }
+
+
 
 }
