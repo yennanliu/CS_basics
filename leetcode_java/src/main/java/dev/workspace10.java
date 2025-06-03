@@ -7170,6 +7170,12 @@ public class workspace10 {
 
     }
 
+    // LC 1564
+    public int maxBoxesInWarehouse(int[] boxes, int[] warehouse) {
+
+        return 0;
+    }
+
 
 
 }
