@@ -61,6 +61,34 @@ public class OnlineMajorityElementInSubarray {
 //        }
 //    }
 
+    // V0-0-1
+    // IDEA: HASHMAP + 2 POINTERS (fixed by gpt) (TLE)
+    class MajorityChecker_0_0_1 {
+
+        int[] arr;
+
+        public MajorityChecker_0_0_1(int[] arr) {
+            this.arr = arr;
+        }
+
+        public int query(int left, int right, int threshold) {
+            // Count frequency in [left, right]
+            Map<Integer, Integer> freq = new HashMap<>();
+
+            for (int i = left; i <= right; i++) {
+                int val = arr[i];
+                freq.put(val, freq.getOrDefault(val, 0) + 1);
+
+                // If frequency reaches threshold, return immediately
+                if (freq.get(val) >= threshold) {
+                    return val;
+                }
+            }
+
+            return -1;
+        }
+    }
+
     // V0-1
     // IDEA: HASHMAP + LIST (fixed by gpt)
     class MajorityChecker_0_1 {
