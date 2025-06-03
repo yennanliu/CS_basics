@@ -7234,9 +7234,56 @@ public class workspace10 {
     }
 
     // LC 187
+    // 10.50 - 11.00 am
+    /**
+     *  -> Given a string s that represents a DNA sequence,
+     *   return all the 10-letter-long sequences (substrings)
+     *   that occur more than once in a DNA molecule.
+     *   You may return the answer in any order.
+     *
+     *
+     *   IDEA 1) 2 POINTERS + HASHMAP ???
+     *
+     *
+     */
     public List<String> findRepeatedDnaSequences(String s) {
+        List<String> res = new ArrayList<>();
 
-        return null;
+        // edge
+        if(s == null || s.length() == 0){
+            return res;
+        }
+        if(s.length() <= 10){
+            return res;
+        }
+
+        HashMap<String, Integer> map = new HashMap<>();
+
+        // 2 pointers
+        int i = 0;
+        for(int j = 9; j < s.length(); j++){
+
+            String str = s.substring(i, j+1);
+
+            //System.out.println(">>> i = " + i + ", j = " + j + ", str = " + str + ", map = " + map);
+
+            if(str.length() == 10){
+                map.put(str, map.getOrDefault(str, 0) + 1);
+            }
+
+            // move i
+            i += 1;
+        }
+
+        System.out.println(">>> final map = " + map);
+        // get cnt > 1
+        for(String k: map.keySet()){
+            if(map.get(k) > 1){
+                res.add(k);
+            }
+        }
+
+        return res;
     }
 
 
