@@ -38,9 +38,74 @@ import java.util.*;
 public class RepeatedDNASequences {
 
     // V0
-//    public List<String> findRepeatedDnaSequences(String s) {
-//
-//    }
+    // IDEA: 2 POINTERS + HASH MAP
+    public List<String> findRepeatedDnaSequences(String s) {
+        List<String> res = new ArrayList<>();
+
+        // edge
+        if (s == null || s.length() == 0) {
+            return res;
+        }
+        if (s.length() <= 10) {
+            return res;
+        }
+
+        HashMap<String, Integer> map = new HashMap<>();
+
+        // 2 pointers
+        int i = 0;
+        for (int j = 9; j < s.length(); j++) {
+
+            String str = s.substring(i, j + 1);
+            //System.out.println(">>> i = " + i + ", j = " + j + ", str = " + str + ", map = " + map);
+            if (str.length() == 10) {
+                map.put(str, map.getOrDefault(str, 0) + 1);
+            }
+
+            // move i
+            i += 1;
+        }
+
+        //System.out.println(">>> final map = " + map);
+        // get cnt > 1
+        for (String k : map.keySet()) {
+            if (map.get(k) > 1) {
+                res.add(k);
+            }
+        }
+
+        return res;
+    }
+
+    // V0-1
+    // IDEA: 2 POINTERS + HASH MAP (gpt)
+    public List<String> findRepeatedDnaSequences_0_1(String s) {
+        List<String> res = new ArrayList<>();
+
+        // Edge case: If the string is null or too short to contain any 10-length sequences
+        if (s == null || s.length() <= 10) {
+            return res; // Return empty list instead of null
+        }
+
+        // A map to store the count of 10-character substrings
+        HashMap<String, Integer> map = new HashMap<>();
+
+        // Loop over the string to extract substrings of length 10
+        for (int i = 0; i <= s.length() - 10; i++) {
+            String str = s.substring(i, i + 10);
+            map.put(str, map.getOrDefault(str, 0) + 1);
+        }
+
+        // Collect sequences that have a count greater than 1
+        for (String seq : map.keySet()) {
+            if (map.get(seq) > 1) {
+                res.add(seq);
+            }
+        }
+
+        return res;
+    }
+
 
     // V1
     // https://leetcode.com/problems/repeated-dna-sequences/solutions/6738307/sliding-window-hashmap-by-pratham_18-0wj0/
