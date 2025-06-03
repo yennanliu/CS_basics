@@ -7233,6 +7233,11 @@ public class workspace10 {
         return collected.size();
     }
 
+    // LC 187
+    public List<String> findRepeatedDnaSequences(String s) {
+
+        return null;
+    }
 
 
 }
