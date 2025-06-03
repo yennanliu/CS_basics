@@ -3,7 +3,7 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/put-boxes-into-the-warehouse-i/
 // https://leetcode.ca/all/1564.html
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * 1564. Put Boxes Into the Warehouse I
@@ -71,6 +71,91 @@ public class PutBoxesIntoTheWarehouseI {
 //    public int maxBoxesInWarehouse(int[] boxes, int[] warehouse) {
 //
 //    }
+
+    // V0-1
+    // IDEA: STACK, PQ
+    // TODO: validate below:
+//    public int maxBoxesInWarehouse_0_1(int[] boxes, int[] warehouse) {
+//        // edge
+//        if(boxes == null || warehouse == null){
+//            return 0;
+//        }
+//
+//        // stack (FILO)
+//        Stack<Integer> st = new Stack<>();
+//        for(int x: warehouse){
+//            st.add(x);
+//        }
+//
+//        // small PQ
+//        PriorityQueue<Integer> b_pq = new PriorityQueue<>(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                int diff = o1 - o2;
+//                return diff;
+//            }
+//        });
+//
+//        for(int x: boxes){
+//            b_pq.add(x);
+//        }
+//
+//        List<Integer> collected = new ArrayList<>();
+//
+//        // try to `move box into warehouse`
+//        while(!st.isEmpty()){
+//            // leave earlier
+//            if(b_pq.isEmpty()){
+//                break;
+//            }
+//            Integer w = st.peek();
+//            while (!b_pq.isEmpty() && b_pq.peek() > w){
+//                b_pq.poll();
+//            }
+//            st.pop();
+//            collected.add(b_pq.poll());
+//        }
+//
+//        return collected.size();
+//    }
+
+
+    // V0-2
+    // IDEA: PQ, QUEUE (gpt)
+    // TODO: validate below:
+    public int maxBoxesInWarehouse_0_2(int[] boxes, int[] warehouse) {
+        // Edge case: check for null or empty arrays
+        if (boxes == null || warehouse == null || boxes.length == 0 || warehouse.length == 0) {
+            return 0;
+        }
+
+        // Sort the boxes (ascending order) to try placing the smallest boxes first
+        Arrays.sort(boxes);
+
+        // Sort the warehouse heights (ascending order)
+        int n = warehouse.length;
+        int[] sortedWarehouse = new int[n];
+        for (int i = 0; i < n; i++) {
+            sortedWarehouse[i] = warehouse[i];
+        }
+        Arrays.sort(sortedWarehouse);
+
+        int boxIndex = 0;
+        int warehouseIndex = 0;
+        int boxCount = 0;
+
+        // Greedily place boxes into the warehouse
+        while (boxIndex < boxes.length && warehouseIndex < n) {
+            if (boxes[boxIndex] <= sortedWarehouse[warehouseIndex]) {
+                boxCount++;
+                boxIndex++;
+            }
+            warehouseIndex++;
+        }
+
+        return boxCount;
+    }
+
 
     // V1
     // https://leetcode.ca/2020-03-12-1564-Put-Boxes-Into-the-Warehouse-I/

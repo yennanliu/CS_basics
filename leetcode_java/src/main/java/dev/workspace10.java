@@ -7171,9 +7171,66 @@ public class workspace10 {
     }
 
     // LC 1564
+    // 10.00 - 10.10 am
+    /**
+     *  -> Return the maximum number of boxes
+     *    you can put into the warehouse.
+     *
+     *
+     *
+     *  IDEA 1) PQ
+     *
+     *   -
+     *
+     */
     public int maxBoxesInWarehouse(int[] boxes, int[] warehouse) {
+        // edge
+        if(boxes == null || warehouse == null){
+            return 0;
+        }
 
-        return 0;
+//        // queue (FIFO)
+//        Queue<Integer> w_q = new LinkedList<>();
+//        for(int x: warehouse){
+//            w_q.add(x);
+//        }
+
+        // stack (FILO)
+        Stack<Integer> st = new Stack<>();
+        for(int x: warehouse){
+            st.add(x);
+        }
+
+        // small PQ
+        PriorityQueue<Integer> b_pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        for(int x: boxes){
+            b_pq.add(x);
+        }
+
+        List<Integer> collected = new ArrayList<>();
+
+        // try to `move box into warehouse`
+       while(!st.isEmpty()){
+           // leave earlier
+           if(b_pq.isEmpty()){
+               break;
+           }
+           Integer w = st.peek();
+           while (!b_pq.isEmpty() && b_pq.peek() > w){
+               b_pq.poll();
+           }
+           st.pop();
+           collected.add(b_pq.poll());
+       }
+
+        return collected.size();
     }
 
 
