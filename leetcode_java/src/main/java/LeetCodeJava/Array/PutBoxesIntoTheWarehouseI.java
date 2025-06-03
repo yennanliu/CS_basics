@@ -121,7 +121,7 @@ public class PutBoxesIntoTheWarehouseI {
 
 
     // V0-2
-    // IDEA: PQ, QUEUE (gpt)
+    // IDEA: ARRAY, SORTING (gpt)
     // TODO: validate below:
     public int maxBoxesInWarehouse_0_2(int[] boxes, int[] warehouse) {
         // Edge case: check for null or empty arrays
