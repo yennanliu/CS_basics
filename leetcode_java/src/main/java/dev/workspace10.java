@@ -5134,43 +5134,49 @@ public class workspace10 {
 
   // LC 66
   public int[] plusOne(int[] digits) {
-      // edge
-      if(digits == null || digits.length == 0){
-          return new int[]{1};
-      }
-
-      List<Integer> cache = new ArrayList<>();
-      int plus = 0;
-      for(int i = digits.length - 1; i >= 0; i--){
-          int val = digits[i];
-          if(i == digits.length - 1){
-              val += 1;
-          }
-          val += plus;
-          if(val > 9){
-              val -= 10;
-              plus = 1;
-          }else{
-              plus = 0;
-          }
-          cache.add(val);
-      }
-
-      // handle `last plus one`
-      if(plus > 0){
-          cache.add(plus);
-      }
-
-      // reverse
-      Collections.reverse(cache);
-
-      int[] res = new int[cache.size()];
-      for(int i = 0; i < cache.size(); i++){
-          res[i] = cache.get(i);
-      }
-
-      return res;
+      return null;
   }
+
+
+
+//  public int[] plusOne(int[] digits) {
+//      // edge
+//      if(digits == null || digits.length == 0){
+//          return new int[]{1};
+//      }
+//
+//      List<Integer> cache = new ArrayList<>();
+//      int plus = 0;
+//      for(int i = digits.length - 1; i >= 0; i--){
+//          int val = digits[i];
+//          if(i == digits.length - 1){
+//              val += 1;
+//          }
+//          val += plus;
+//          if(val > 9){
+//              val -= 10;
+//              plus = 1;
+//          }else{
+//              plus = 0;
+//          }
+//          cache.add(val);
+//      }
+//
+//      // handle `last plus one`
+//      if(plus > 0){
+//          cache.add(plus);
+//      }
+//
+//      // reverse
+//      Collections.reverse(cache);
+//
+//      int[] res = new int[cache.size()];
+//      for(int i = 0; i < cache.size(); i++){
+//          res[i] = cache.get(i);
+//      }
+//
+//      return res;
+//  }
 
 
 //  public int[] plusOne(int[] digits) {
