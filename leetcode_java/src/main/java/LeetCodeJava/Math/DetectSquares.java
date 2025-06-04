@@ -60,14 +60,113 @@ import java.util.*;
 public class DetectSquares {
 
     // V0
+    // IDEA: MATH (fixed by gpt)
+    class DetectSquares_0 {
+
+        // attr
+        // map : { "x-y" : count }
+        Map<String, Integer> map;
+        // NOTE !!! use set to quick check if a point existed
+        Set<String> points;
+
+        public DetectSquares_0() {
+            this.map = new HashMap<>();
+            this.points = new HashSet<>();
+        }
+
+        public void add(int[] point) {
+            String val = getValue(point);
+            this.map.put(val, this.map.getOrDefault(val, 0) + 1);
+
+            this.points.add(val);
+        }
+
+        public int count(int[] point) {
+
+            // check `square cnt`
+            if (this.map.isEmpty()) {
+                return 0;
+            }
+            int point_cnt = 0;
+            for (String k : map.keySet()) {
+                point_cnt += map.get(k);
+            }
+            if (point_cnt < 3) {
+                return 0;
+            }
+
+            int input_x = point[0];
+            int input_y = point[1];
+
+            int res = 0;
+
+            // loop over saved points
+            for (String x : this.map.keySet()) {
+                String[] str_arr = x.split("-");
+                int _x = Integer.parseInt(str_arr[0]);
+                int _y = Integer.parseInt(str_arr[1]);
+
+                // Ensure the point we're comparing with is not the same as the input point
+                if (_x == input_x && _y == input_y) {
+                    continue;
+                }
+
+                /**  NOTE !!! key of this solution
+                 *
+                 *   // NOTE !!!  via the `diagonal element distance` check,
+                 *   // we can decide whether should proceed further point existing check
+                 *
+                 */
+                boolean shouldProceed = Math.abs(input_y - _y) == Math.abs(input_x - _x);
+
+                String coord_0 = getValue(new int[] { _x, _y });
+
+                if (shouldProceed) {
+
+                    String coord_1 = getValue(new int[] { _x, input_y });
+                    String coord_2 = getValue(new int[] { input_x, _y });
+                    /**
+                     * / NOTE !!!
+                     * // via the set, we can quickly check if the point exists in list
+                     *
+                     */
+                    boolean existed = this.points.contains(coord_1) &&
+                            this.points.contains(coord_2);
+
+                    // NOTE !!!
+                    // via hashmap, we can know the count of existing point
+                    if (existed) {
+                        /**  NOTE !!!
+                         *
+                         *  the `combination cnt` is from 3 points
+                         *  e.g. (_x, input_y), (input_x, _y), (_x, _y)
+                         *  so we need multiply 3 terms above as our result
+                         * 
+                         */
+                        res += this.map.get(coord_1) * this.map.get(coord_2) * this.map.get(coord_0);
+                    }
+                }
+
+            }
+
+            return res;
+        }
+
+        private String getValue(int[] point) {
+            return point[0] + "-" + point[1];
+        }
+
+    }
+
+    // V0_0_1
     // IDEA : MATH
-    class DetectSquares_0{
+    class DetectSquares_0_0_1{
 
         // attr
         Map<String, Integer> pointCnt;
         Set<String> points; // To check the existence of points quickly
 
-        public DetectSquares_0() {
+        public DetectSquares_0_0_1() {
             this.pointCnt = new HashMap<>();
             this.points = new HashSet<>();
         }
