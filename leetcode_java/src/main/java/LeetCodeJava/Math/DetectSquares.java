@@ -141,7 +141,7 @@ public class DetectSquares {
                          *  the `combination cnt` is from 3 points
                          *  e.g. (_x, input_y), (input_x, _y), (_x, _y)
                          *  so we need multiply 3 terms above as our result
-                         * 
+                         *
                          */
                         res += this.map.get(coord_1) * this.map.get(coord_2) * this.map.get(coord_0);
                     }

@@ -64,6 +64,62 @@ public class maxSubarraySumCircular {
      */
 
     // V0
+    // IDEA: Kadane algo (fixed by gpt)
+    /**
+     * NOTE !!! we define 5 variables:
+     *
+     *  1. total_sum
+     *  2. local_max
+     *  3. local_min
+     *  4. global_max
+     *  5. global_min
+     */
+    public int maxSubarraySumCircular(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1; // or 0 depending on how you want to handle empty input
+        }
+
+        /**
+         * NOTE !!! we define 5 variables:
+         *
+         *  1. total_sum
+         *  2. local_max
+         *  3. local_min
+         *  4. global_max
+         *  5. global_min
+         */
+        int total_sum = nums[0];
+        int local_max = nums[0], global_max = nums[0];
+        int local_min = nums[0], global_min = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            int val = nums[i];
+
+            total_sum += val;
+
+            local_max = Math.max(val, local_max + val);
+            global_max = Math.max(global_max, local_max);
+
+            local_min = Math.min(val, local_min + val);
+            global_min = Math.min(global_min, local_min);
+        }
+
+        // If all numbers are negative, return the max element (no wrap allowed)
+        if (global_max < 0) {
+            return global_max;
+        }
+
+        // Else, return max of non-wrap and wraparound case
+        /**
+         *  NOTE !!!
+         *
+         *  there is also a possibility that `total_sum - global_min` is the max sub array sum
+         *
+         */
+        return Math.max(global_max, total_sum - global_min);
+    }
+
+    // V0
     // TODO: fix below
 //    public int maxSubarraySumCircular(int[] nums) {
 //        // edge
@@ -174,7 +230,7 @@ public class maxSubarraySumCircular {
     // V0-2
     // IDEA: Kadane algo (gpt)
     // time: O(N), space: O(1)
-    public int maxSubarraySumCircular(int[] nums) {
+    public int maxSubarraySumCircular_0_2(int[] nums) {
         int totalSum = 0;
         int maxSum = nums[0], curMax = 0;
         int minSum = nums[0], curMin = 0;
@@ -196,10 +252,10 @@ public class maxSubarraySumCircular {
         return Math.max(maxSum, totalSum - minSum);
     }
 
-    // V0-2
+    // V0-3
     // IDEA: DEQUEUE + PREFIX SUM (gpt)
     // time: O(N), space: O(N)
-    public int maxSubarraySumCircular_0_2(int[] nums) {
+    public int maxSubarraySumCircular_0_3(int[] nums) {
         int n = nums.length;
         int[] prefix = new int[2 * n + 1];
 
