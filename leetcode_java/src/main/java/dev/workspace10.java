@@ -5309,72 +5309,164 @@ public class workspace10 {
      * obj.add(point);
      * int param_2 = obj.count(point);
      */
+
+    // 10.12 - 10.22 am
     class DetectSquares {
 
         // attr
-        //List<int[]> collected;
-        HashSet<int[]> collected;
-        int cnt;
-        // { x1-y1 : 1, x1-y2 : 2, x2-y1: 2, ....}
-        Map<String, Integer> coorCnt;
+        // map : { "x-y" : count }
+        Map<String, Integer> map;
+        Set<String> points;
 
         public DetectSquares() {
-            this.collected = new HashSet<>(); //new ArrayList<>();
-            this.cnt = 0;
-            coorCnt = new HashMap<>();
+            this.map = new HashMap<>();
+            this.points = new HashSet<>();
         }
 
         public void add(int[] point) {
+            String val = getValue(point);
+            this.map.put(val, this.map.getOrDefault(val, 0) + 1 );
 
-            this.collected.add(point);
-
-            String key =  point[0] + "-" + point[1];
-
-//            coorCnt.put(point[0], coorCnt.getOrDefault(point[0], 0) + 1);
-//            coorCnt.put(point[1], coorCnt.getOrDefault(point[1], 1) + 1);
-
-            coorCnt.put(key, coorCnt.getOrDefault(key, 0) + 1);
+            this.points.add(val);
         }
 
         public int count(int[] point) {
 
-            // edge
-            if(this.collected.size() < 3){
+            // check `square cnt`
+            if(this.map.isEmpty()){
+                return 0;
+            }
+            int point_cnt = 0;
+            for(String k: map.keySet()){
+                point_cnt += map.get(k);
+            }
+            if(point_cnt < 3){
                 return 0;
             }
 
-            for(String k: coorCnt.keySet()){
-                String[] tmp = k.split("-");
-                int x = Integer.parseInt(tmp[0]);
-                int y = Integer.parseInt(tmp[1]);
+            int input_x = point[0];
+            int input_y = point[1];
 
-                // avoid `compare same point`
-                if(point[0] == x && point[1] == y){
+            int res = 0;
+
+            // loop over saved points
+            for(String x: this.map.keySet()){
+                String[] str_arr = x.split("-");
+                int _x = Integer.parseInt(str_arr[0]);
+                int _y = Integer.parseInt(str_arr[1]);
+
+                // Ensure the point we're comparing with is not the same as the input point
+                if (_x == input_x && _y == input_y){
                     continue;
                 }
 
-                int input_x = point[0];
-                int input_y = point[1];
+                // NOTE !!!  via the `diagonal element distance` check,
+                // we can decide whether should proceed further point existing check
+                boolean shouldProceed = Math.abs(input_y - _y) == Math.abs(input_x - _x);
 
-                // check if `same distance`
-                if(Math.abs(input_x - x) == Math.abs(input_y - y)){
-                    // get the `possible square cnt`
-                    String key_1 = x + "-" + input_y;
-                    String key_2 = input_x + "-" + y;
-                    //int newCnt = this.coorCnt.get(key_1) * this.coorCnt.get(key_2);
-                    if(this.coorCnt.containsKey(key_1) && this.coorCnt.containsKey(key_2)){
-                        this.cnt += this.coorCnt.get(key_1) * this.coorCnt.get(key_2);
+                String coord_0 = getValue(new int[]{_x, _y});
+
+                if(shouldProceed){
+                    // NOTE !!!
+                    // via the set, we can quickly check if the point exists in list
+                    String coord_1 = getValue(new int[]{_x, input_y});
+                    String coord_2 = getValue(new int[]{input_x, _y});
+
+
+                    boolean existed = this.points.contains(coord_1) &&
+                            this.points.contains(coord_2);
+
+                    // NOTE !!!
+                    // via hashmap, we can know the count of existing point
+                    if(existed){
+                        res += this.map.get(coord_1) * this.map.get(coord_2) * this.map.get(coord_0);
                     }
-
                 }
 
             }
 
-            return this.cnt;
+            return res;
         }
 
+        private String getValue(int[] point){
+            return point[0] + "-" + point[1];
+        }
 
     }
+
+/**
+ * Your DetectSquares object will be instantiated and called as such:
+ * DetectSquares obj = new DetectSquares();
+ * obj.add(point);
+ * int param_2 = obj.count(point);
+ */
+
+//    class DetectSquares {
+//
+//        // attr
+//        //List<int[]> collected;
+//        HashSet<int[]> collected;
+//        int cnt;
+//        // { x1-y1 : 1, x1-y2 : 2, x2-y1: 2, ....}
+//        Map<String, Integer> coorCnt;
+//
+//        public DetectSquares() {
+//            this.collected = new HashSet<>(); //new ArrayList<>();
+//            this.cnt = 0;
+//            coorCnt = new HashMap<>();
+//        }
+//
+//        public void add(int[] point) {
+//
+//            this.collected.add(point);
+//
+//            String key =  point[0] + "-" + point[1];
+//
+////            coorCnt.put(point[0], coorCnt.getOrDefault(point[0], 0) + 1);
+////            coorCnt.put(point[1], coorCnt.getOrDefault(point[1], 1) + 1);
+//
+//            coorCnt.put(key, coorCnt.getOrDefault(key, 0) + 1);
+//        }
+//
+//        public int count(int[] point) {
+//
+//            // edge
+//            if(this.collected.size() < 3){
+//                return 0;
+//            }
+//
+//            for(String k: coorCnt.keySet()){
+//                String[] tmp = k.split("-");
+//                int x = Integer.parseInt(tmp[0]);
+//                int y = Integer.parseInt(tmp[1]);
+//
+//                // avoid `compare same point`
+//                if(point[0] == x && point[1] == y){
+//                    continue;
+//                }
+//
+//                int input_x = point[0];
+//                int input_y = point[1];
+//
+//                // check if `same distance`
+//                if(Math.abs(input_x - x) == Math.abs(input_y - y)){
+//                    // get the `possible square cnt`
+//                    String key_1 = x + "-" + input_y;
+//                    String key_2 = input_x + "-" + y;
+//                    //int newCnt = this.coorCnt.get(key_1) * this.coorCnt.get(key_2);
+//                    if(this.coorCnt.containsKey(key_1) && this.coorCnt.containsKey(key_2)){
+//                        this.cnt += this.coorCnt.get(key_1) * this.coorCnt.get(key_2);
+//                    }
+//
+//                }
+//
+//            }
+//
+//            return this.cnt;
+//        }
+//
+//
+//    }
 
     // LC 918
     // 11.12 - 11. 22 am
