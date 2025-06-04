@@ -5469,48 +5469,109 @@ public class workspace10 {
 //    }
 
     // LC 918
-    // 11.12 - 11. 22 am
+    // 11.01 - 11.11 am
     /**
      *  IDEA 1) BRUTE FORCE + maintain a `max_till_now` val
      *
      *
      */
+    // 11.08 - 11.18 am
+    /**
+     * -> Given a circular integer array nums of length n,
+     *   return the maximum possible sum of a non-empty subarray of nums.
+     *
+     *
+     *
+     *  IDEA  1) K*** algo ???
+     *
+     *  define 4 var
+     *
+     *   global_max
+     *   global_min
+     *   local_max
+     *   local_min
+     *
+     *   res
+     *
+     */
     public int maxSubarraySumCircular(int[] nums) {
 
-        /**
-         *  NOTE !!!  define 4 var
-         *
-         *   cur_max
-         *   cur_min
-         *   max_sum
-         *   min_sum
-         *
-         */
-        int totalSum = 0;
-        int maxSum = nums[0];
-        int minSum = nums[0];
-        int curMax = 0;
-        int curMin = 0;
-
-        for(int x: nums){
-
-            curMax = Math.max(curMax + x, x);
-            curMin = Math.min(curMin + x, x);
-
-            // ????
-//            maxSum = Math.max(maxSum, maxSum + curMax);
-//            minSum = Math.min(minSum, minSum + curMin);
-
-            maxSum = Math.max(maxSum, curMax);
-            minSum = Math.min(minSum, curMin);
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1; // ??
+        }
+        if(nums.length == 1){
+            return nums[0];
         }
 
-        if(maxSum < 0){
-            return maxSum;
+        int global_max = nums[0];
+        int global_min = nums[0];
+        int local_max = nums[0];
+        int local_min = nums[0];
+
+        int total_sum = nums[0];
+
+        for(int i = 1; i < nums.length; i++){
+            int val = nums[i];
+
+            total_sum += val;
+
+            local_min = Math.min(val, val + local_min);
+            local_max = Math.max(val, val + local_max);
+
+            global_min = Math.min(local_min, global_min);
+
+            // return max_sum > 0 ? Math.max(max_sum, total_sum - min_sum) : max_sum;
+            // ???
+            global_max = Math.max(global_max,
+                    Math.max(global_min,
+                            Math.max(local_max, local_min)
+                    )
+            );
+
         }
 
-        return 0;
+        return global_max > 0 ? Math.max(global_max, total_sum - local_min) : global_max;
     }
+
+
+
+//    public int maxSubarraySumCircular(int[] nums) {
+//
+//        /**
+//         *  NOTE !!!  define 4 var
+//         *
+//         *   cur_max
+//         *   cur_min
+//         *   max_sum
+//         *   min_sum
+//         *
+//         */
+//        int totalSum = 0;
+//        int maxSum = nums[0];
+//        int minSum = nums[0];
+//        int curMax = 0;
+//        int curMin = 0;
+//
+//        for(int x: nums){
+//
+//            curMax = Math.max(curMax + x, x);
+//            curMin = Math.min(curMin + x, x);
+//
+//            // ????
+////            maxSum = Math.max(maxSum, maxSum + curMax);
+////            minSum = Math.min(minSum, minSum + curMin);
+//
+//            maxSum = Math.max(maxSum, curMax);
+//            minSum = Math.min(minSum, curMin);
+//        }
+//
+//        if(maxSum < 0){
+//            return maxSum;
+//        }
+//
+//        return 0;
+//    }
 
 
 
