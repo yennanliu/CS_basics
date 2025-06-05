@@ -49,10 +49,64 @@ public class JumpGame7 {
 //
 //    }
 
-    // V1
+    // V1-1
     // https://www.youtube.com/watch?v=v1HpZUnQ4Yo
     // https://github.com/neetcode-gh/leetcode/blob/main/kotlin%2F1871-jump-game-vii.kt
-    // Kotlin
+    // IDEA: BFS (modified by gpt)
+    public boolean canReach_1_1(String s, int minJump, int maxJump) {
+        if (s.charAt(s.length() - 1) != '0')
+            return false;
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(0);
+        int farthest = 0;
+
+        while (!queue.isEmpty()) {
+            int i = queue.poll();
+            int start = Math.max(i + minJump, farthest + 1);
+            int end = Math.min(i + maxJump + 1, s.length());
+
+            for (int j = start; j < end; j++) {
+                if (s.charAt(j) == '0') {
+                    if (j == s.length() - 1) {
+                        return true;
+                    }
+                    queue.offer(j);
+                }
+            }
+
+            farthest = i + maxJump;
+        }
+
+        return false;
+    }
+
+    // V1-2
+    // https://www.youtube.com/watch?v=v1HpZUnQ4Yo
+    // https://github.com/neetcode-gh/leetcode/blob/main/kotlin%2F1871-jump-game-vii.kt
+    // IDEA: DP (modified by gpt)
+    public boolean canReach_1_2(String s, int minJump, int maxJump) {
+        int n = s.length();
+        if (s.charAt(n - 1) != '0')
+            return false;
+
+        boolean[] dp = new boolean[n];
+        dp[0] = true;
+        int countOfPos = 0;
+
+        for (int i = 1; i < n; i++) {
+            if (i - minJump >= 0 && dp[i - minJump]) {
+                countOfPos++;
+            }
+            if (i - maxJump - 1 >= 0 && dp[i - maxJump - 1]) {
+                countOfPos--;
+            }
+            dp[i] = countOfPos > 0 && s.charAt(i) == '0';
+        }
+
+        return dp[n - 1];
+    }
+
 
     // V2-1
     // https://leetcode.com/problems/jump-game-vii/solutions/1236272/java-bfs-detailed-analysis-on-bfs-soluti-fnqg/

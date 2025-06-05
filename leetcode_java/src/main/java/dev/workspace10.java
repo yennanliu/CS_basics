@@ -3806,11 +3806,59 @@ public class workspace10 {
 //        return nums.length - 1; // ???
 //    }
 
+
+
+
     // LC 1871
+    // 11.15 - 11.25 am
+    /**
+     *  -> Return true if you can reach
+     *     index s.length - 1 in s, or false otherwise.
+     *
+     *  -> can move from `i` to `j` if
+     *      - 1) i + minJump <= j <= min(i + maxJump, s.length - 1),
+     *      and
+     *      - 2) s[j] == '0'
+     *
+     *
+     *
+     *  IDEA 1) GREEDY
+     *
+     *
+     *  * Example 1:
+     *  *
+     *  * Input: s = "011010", minJump = 2, maxJump = 3
+     *  * Output: true
+     *  * Explanation:
+     *  * In the first step, move from index 0 to index 3.
+     *  * In the second step, move from index 3 to index 5.
+     *
+     *   011010
+     *   i
+     *
+     *   011010
+     *      i
+     *
+     *  011010
+     *       i
+     *
+     *   -> so, res = true
+     *
+     */
     public boolean canReach(String s, int minJump, int maxJump) {
+        // edge
+        if(s == null || s.length() == 0){
+            return true; // ??
+        }
+
+
 
         return false;
     }
+
+
+
+
 
     // LC 134
     // 9.52 - 10.02 am
