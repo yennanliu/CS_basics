@@ -4972,9 +4972,31 @@ public class workspace10 {
    *
    *
    */
+  // 11.40 - 11.50 am
+  /**
+   *  intervals[i] = [lefti, righti] :
+   *     the ith interval starting at lefti and ending at righti (inclusive).
+   *
+   *
+   * You are also given an integer array queries.
+   * The answer to the jth query is the size of the smallest interval i
+   * such that lefti <= queries[j] <= righti. If no such interval exists, the answer is -1.
+   *
+   *  -> Return an array containing the answers to the queries.
+   *
+   *
+   *
+   *
+   *
+   */
   public int[] minInterval(int[][] intervals, int[] queries) {
+
       return null;
   }
+
+
+
+
 
   // LC 168
   // 12.26 - 12.36 pm
