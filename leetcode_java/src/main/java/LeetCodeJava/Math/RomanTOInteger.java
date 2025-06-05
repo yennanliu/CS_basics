@@ -60,10 +60,65 @@ import java.util.Map;
  */
 public class RomanTOInteger {
 
+
     // V0
-//    public int romanToInt(String s) {
-//
-//    }
+    // IDEA: MAP + STR OP (fixed by gpt)
+    public int romanToInt(String s) {
+
+        // edge
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+
+        int res = 0;
+        int i = s.length() - 1;
+
+        /**
+         *  NOTE !!!
+         *
+         *   instead of `for loop` and check `whether should sum up i and i - 1 or i`
+         *   -> we use `while loop`
+         *    -> compare `i-1` and `i`
+         *      -> if prev (i-1)  < curr (i)
+         *         -> we add (curr - prev)
+         *      -> else
+         *         -> we add (curr) ONLY
+         *
+         */
+        while (i > 0) {
+            int curr = map.get(s.charAt(i));
+            int prev = map.get(s.charAt(i - 1));
+
+            if (prev < curr) {
+                res += (curr - prev);
+                i -= 2;
+            } else {
+                res += curr;
+                i -= 1;
+            }
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *   below `odd length` handling
+         */
+        // If one char left unprocessed (e.g. odd length)
+        if (i == 0) {
+            res += map.get(s.charAt(0));
+        }
+
+        return res;
+    }
 
     // V0-1
     // IDEA: MAP + STR OP (fixed by gpt)
