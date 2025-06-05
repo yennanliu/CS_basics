@@ -53,6 +53,23 @@ public class JumpGame7 {
     // https://www.youtube.com/watch?v=v1HpZUnQ4Yo
     // https://github.com/neetcode-gh/leetcode/blob/main/kotlin%2F1871-jump-game-vii.kt
     // IDEA: BFS (modified by gpt)
+    /**
+     * Why BFS Works Here
+     *
+     * You're trying to reach the end by exploring multiple paths
+     * where each move is constrained by jump distances and '0' positions.
+     *
+     * Think of this as a graph traversal:
+     *
+     *  - Each index in the string is a node.
+     *
+     *  - There is a directed edge from i to j if j is within the jump range and s[j] == '0'.
+     *
+     * -> BFS is optimal for shortest path search in unweighted graphs,
+     *    and here you want to check reachability from node 0 to n - 1.
+     *
+     *
+     */
     public boolean canReach_1_1(String s, int minJump, int maxJump) {
         if (s.charAt(s.length() - 1) != '0')
             return false;
