@@ -5133,9 +5133,59 @@ public class workspace10 {
 
 
   // LC 66
+  // 10.14 - 10.24 am
   public int[] plusOne(int[] digits) {
-      return null;
+      // edge
+      if(digits == null || digits.length == 0){
+          return new int[]{1};
+      }
+      if(digits.length == 1){
+          int val = digits[0] + 1;
+          if(val < 10){
+              return new int[]{digits[0] + 1};
+          }
+          return new int[]{1,0};
+      }
+
+      //StringBuilder sb = new StringBuilder();
+      List<Integer> collected = new ArrayList<>();
+      int plus = 0;
+
+      for(int i = digits.length - 1; i >= 0; i--){
+          int val = 0;
+
+          if(i == digits.length - 1){
+              val = (plus + digits[i] + 1);
+          }else{
+              val = (plus + digits[i]);
+          }
+
+          if (val > 9){
+              val -= 10;
+              plus = 1;
+          }else{
+              plus = 0;
+          }
+          collected.add(val);
+      }
+
+      // handle `remaining` plus
+      if(plus > 0){
+          collected.add(1); // ???
+      }
+
+      // reverse
+      Collections.reverse(collected);
+
+      int[] res = new int[collected.size()];
+      for(int i = 0; i < collected.size(); i++){
+          res[i] = collected.get(i);
+      }
+
+      return res;
   }
+
+
 
 
 
@@ -5222,8 +5272,31 @@ public class workspace10 {
      *   -> sum all of above as res
      *
      */
-    public int romanToInt(String s) {
 
+    // 10.32 - 10.42 am
+    /**
+     *  IDEA 1) REVERSE LOOP + check `2 elements as once` and `compare i & i - 1`
+     *
+     *
+     *
+     *   * Symbol       Value
+     *  * I             1
+     *  * V             5
+     *  * X             10
+     *  * L             50
+     *  * C             100
+     *  * D             500
+     *  * M             1000
+     *
+     *
+     */
+    public int romanToInt(String s) {
+        // edge
+        if(s == null || s.length() == 0){
+            return 0; // ???
+        }
+
+        // init map
         HashMap<Character, Integer> map = new HashMap();
         map.put('I', 1);
         map.put('V' ,5);
@@ -5232,64 +5305,111 @@ public class workspace10 {
         map.put('C' ,100);
         map.put('D' ,500);
         map.put('M' ,1000);
+        map.put('O' ,0);
 
-        Stack<String> st = new Stack<>();
-        for(String x: s.split("")){
-            st.add(x);
+
+        // check if len is odd or even
+        if(s.length() % 2 == 1){
+            s = "O" + s;
         }
 
-        List<String> cache = new ArrayList<>();
+        char[] s_arr = s.toCharArray();
 
-        int cnt = 0;
-
-        while(!st.isEmpty()){
-            if(cnt == 0){
-                cache.add(st.pop());
-            }
-            // if `i-1` < `i`
-            String prev = cache.get(cache.size()-1);
-            if(map.get(st.peek()) < map.get(prev)){
-                cache.remove(cache.size()- 1);
-                cache.add( (prev + st.pop()));
-            }else{
-                cache.add( st.pop());
-            }
-        }
-
+        List<Integer> cache = new ArrayList<>();
         int res = 0;
 
-        // cache -> int
-        for(String x: cache){
+        // ????
+        for(int i = s_arr.length - 1; i > 0; i -= 2){
 
+
+
+            // [val_2, val_1], consider this as an `integer`
+            int val_1 = map.get(s_arr[i]);
+            int val_2 = map.get(s_arr[i-1]);
+
+            if(val_1 > val_2){
+                cache.add(val_1 - val_2);
+            }else{
+                cache.add(val_1 + val_2);
+            }
+        }
+
+        for(int x: cache){
+            res += x;
         }
 
         return res;
     }
 
-    public int romanHelper(String x){
 
-        int res = 0;
-
-        HashMap<Character, Integer> map = new HashMap();
-        map.put('I', 1);
-        map.put('V' ,5);
-        map.put('X' ,10);
-        map.put('L' ,50);
-        map.put('C' ,100);
-        map.put('D' ,500);
-        map.put('M' ,1000);
-
-        String[] x_arr = x.split("");
-
-        for(int i = 0; i < x_arr.length - 1; i++){
-            if(map.get(x_arr[i]) < map.get(x_arr[i+1])){
-              //  res += (-1 * x_arr[i]);
-            }
-        }
-
-
-        return 0;
-    }
+//    public int romanToInt(String s) {
+//
+//        HashMap<Character, Integer> map = new HashMap();
+//        map.put('I', 1);
+//        map.put('V' ,5);
+//        map.put('X' ,10);
+//        map.put('L' ,50);
+//        map.put('C' ,100);
+//        map.put('D' ,500);
+//        map.put('M' ,1000);
+//
+//        Stack<String> st = new Stack<>();
+//        for(String x: s.split("")){
+//            st.add(x);
+//        }
+//
+//        List<String> cache = new ArrayList<>();
+//
+//        int cnt = 0;
+//
+//        while(!st.isEmpty()){
+//            if(cnt == 0){
+//                cache.add(st.pop());
+//            }
+//            // if `i-1` < `i`
+//            String prev = cache.get(cache.size()-1);
+//            if(map.get(st.peek()) < map.get(prev)){
+//                cache.remove(cache.size()- 1);
+//                cache.add( (prev + st.pop()));
+//            }else{
+//                cache.add( st.pop());
+//            }
+//        }
+//
+//        int res = 0;
+//
+//        // cache -> int
+//        for(String x: cache){
+//
+//        }
+//
+//        return res;
+//    }
+//
+//    public int romanHelper(String x){
+//
+//        int res = 0;
+//
+//        HashMap<Character, Integer> map = new HashMap();
+//        map.put('I', 1);
+//        map.put('V' ,5);
+//        map.put('X' ,10);
+//        map.put('L' ,50);
+//        map.put('C' ,100);
+//        map.put('D' ,500);
+//        map.put('M' ,1000);
+//
+//        String[] x_arr = x.split("");
+//
+//        for(int i = 0; i < x_arr.length - 1; i++){
+//            if(map.get(x_arr[i]) < map.get(x_arr[i+1])){
+//              //  res += (-1 * x_arr[i]);
+//            }
+//        }
+//
+//
+//        return 0;
+//    }
 
 
     // LC 43
