@@ -48,6 +48,14 @@ public class NonOverlappingIntervals {
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/non-overlapping-intervals.py
     /**
      *
+     *  NOTE !!!
+     *
+     *   1. sort on 2nd element in Ascending order (small -> big)
+     *   2. No need to use queue
+     *
+     */
+    /**
+     *
      *   Consider examples:
      *
      *   exp 1)
