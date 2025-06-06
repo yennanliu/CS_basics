@@ -84,6 +84,17 @@ public class JumpGame7 {
          *   work and overlapping jump ranges.
          *
          */
+        /**
+         *  NOTE !!!
+         *
+         *  ✅ Each element in the queue is an `index` (int)
+         *  that we have already reached and from
+         *  which we want to explore further jumps.
+         *
+         *
+         *
+         *  e.g.: we're using the queue to store the indices of the string s that are reachable
+         */
         Queue<Integer> queue = new LinkedList<>();
         queue.add(0);
         int farthest = 0;
@@ -107,6 +118,11 @@ public class JumpGame7 {
              *      - End at i + maxJump + 1 (exclusive range), or s.length()
              *        if the jump goes out of bounds.
              *
+             *
+             *  NOTE !!!
+             *
+             *   - we use `max` to get `start`
+             *   - we use `min` to get `end`
              */
             int start = Math.max(i + minJump, farthest + 1);
             int end = Math.min(i + maxJump + 1, s.length());
