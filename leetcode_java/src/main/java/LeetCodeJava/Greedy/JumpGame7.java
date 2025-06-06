@@ -99,10 +99,41 @@ public class JumpGame7 {
     }
 
     // V1-2
+    // IDEA: BFS (fixed by gpt)
+    public boolean canReach_1_2(String s, int minJump, int maxJump) {
+        int n = s.length();
+        if (s.charAt(0) != '0' || s.charAt(n - 1) != '0')
+            return false;
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(0);
+        int farthest = 0;
+
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+
+            // Explore all reachable positions from current + minJump to current + maxJump
+            for (int next = Math.max(current + minJump, farthest + 1); next <= Math.min(current + maxJump,
+                    n - 1); next++) {
+                if (s.charAt(next) == '0') {
+                    if (next == n - 1)
+                        return true;
+                    queue.offer(next);
+                }
+            }
+
+            // Update farthest to mark progress
+            farthest = Math.min(n - 1, current + maxJump);
+        }
+
+        return false;
+    }
+
+    // V1-3
     // https://www.youtube.com/watch?v=v1HpZUnQ4Yo
     // https://github.com/neetcode-gh/leetcode/blob/main/kotlin%2F1871-jump-game-vii.kt
     // IDEA: DP (modified by gpt)
-    public boolean canReach_1_2(String s, int minJump, int maxJump) {
+    public boolean canReach_1_3(String s, int minJump, int maxJump) {
         int n = s.length();
         if (s.charAt(n - 1) != '0')
             return false;
