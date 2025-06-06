@@ -53,6 +53,8 @@ public class JumpGame7 {
     // https://www.youtube.com/watch?v=v1HpZUnQ4Yo
     // https://github.com/neetcode-gh/leetcode/blob/main/kotlin%2F1871-jump-game-vii.kt
     // IDEA: BFS (modified by gpt)
+    //Time Complexity: O(n) — each index is visited at most once.
+    //Space Complexity: O(n) — queue can grow up to size n in the worst case.
     /**
      * Why BFS Works Here
      *
@@ -74,15 +76,50 @@ public class JumpGame7 {
         if (s.charAt(s.length() - 1) != '0')
             return false;
 
+        /**
+         * - Initialize a queue for BFS — start at index 0.
+         *
+         *  - farthest tracks the rightmost index
+         *   we've already processed to avoid redundant
+         *   work and overlapping jump ranges.
+         *
+         */
         Queue<Integer> queue = new LinkedList<>();
         queue.add(0);
         int farthest = 0;
 
         while (!queue.isEmpty()) {
+
             int i = queue.poll();
+
+            /**
+             *  - This is key:
+             *
+             *      - You're calculating the range of valid next
+             *        indices you can jump to from index i.
+             *
+             *      - Start from the maximum of:
+             *
+             *         - i + minJump (minimum legal jump)
+             *         and
+             *        - farthest + 1 (to avoid reprocessing)
+             *
+             *      - End at i + maxJump + 1 (exclusive range), or s.length()
+             *        if the jump goes out of bounds.
+             *
+             */
             int start = Math.max(i + minJump, farthest + 1);
             int end = Math.min(i + maxJump + 1, s.length());
 
+            /**
+             *  -  For each index j in the computed jump range:
+             *
+             *     - If s[j] == '0', it's a valid jump.
+             *
+             *     - If j is the last index, return true.
+             *
+             *     - Otherwise, add j to the queue to explore its jumps later.
+             */
             for (int j = start; j < end; j++) {
                 if (s.charAt(j) == '0') {
                     if (j == s.length() - 1) {
@@ -92,6 +129,11 @@ public class JumpGame7 {
                 }
             }
 
+            /**
+             * After exploring all jumps from i,
+             * we update farthest so that in the next iterations,
+             * we don’t re-check already processed indices.
+             */
             farthest = i + maxJump;
         }
 
