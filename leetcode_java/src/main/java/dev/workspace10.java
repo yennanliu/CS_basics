@@ -4690,6 +4690,15 @@ public class workspace10 {
    *  -> sort ( 1st element : small -> big), then (2nd element : big -> small)
    *
    */
+  // 9.39 - 9.49 am
+  /**
+   *  -> return the `minimum` number
+   *  of intervals you need to remove to make the rest of the intervals non-overlapping.
+   *
+   *
+   *   IDEA 1) SORT + INTERVAL OP
+   *
+   */
   public int eraseOverlapIntervals(int[][] intervals) {
       // edge
       if(intervals == null || intervals.length == 0){
@@ -4704,54 +4713,119 @@ public class workspace10 {
           intervals2.add(x);
       }
 
-      int cnt = 0;
-
-      // sort
-      //  -> sort ( 1st element : small -> big), then (2nd element : big -> small)
+      // sorting
+      // sort on `1st element` (small -> big ) ???
       Collections.sort(intervals2, new Comparator<int[]>() {
           @Override
           public int compare(int[] o1, int[] o2) {
-              int diff = o1[0] - o2[0];
-              if(diff == 0){
-                  return o2[1] - o1[1];
-              }
+             // int diff = o1[0] - o2[0];
+              int diff = o1[1] - o2[1];
               return diff;
           }
       });
 
-      /**
-       *  since we already sort on `first element small -> big`
-       *                        and `2nd element big -> small`
-       *
-       *  -> the ONLY possible OVERLAP case is as below:
-       *
-       *     |----------|   old
-       *     1          3
-       *
-       *    |------|        new
-       *    1      2
-       *
-       */
-
-      List<int[]> collected = new ArrayList<>();
-
-      for(int i = 0; i < intervals2.size(); i++){
-          // case 1) idx = 0 or NOT overlap
-          if(i == 0  || collected.get(collected.size() - 1)[1] >= intervals2.get(i)[1]){
-              collected.add(intervals2.get(i));
-          }
-          // case 2) overlap
-          else{
-              cnt += 1;
-              // append the interval with `smaller window` back to collected
-              collected.get(collected.size()-1)[0] = intervals2.get(i)[0];
-              collected.get(collected.size()-1)[1] = intervals2.get(i)[1];
+      int cnt = 0;
+      Queue<int[]> q = new LinkedList<>();
+      for(int[] x: intervals2){
+          if(q.isEmpty()){
+              q.add(x);
+          }else{
+              int[] last = q.peek();
+              /**
+               *  NOTE !!!
+               *
+               *   since we've already sort on `1st element` (small -> big)
+               *   so the ONLY NON OVERLAP case is as below:
+               *
+               *    |------|   old
+               *              |----------------| new
+               *
+               */
+              // NOT overlap
+              if(x[0] >= last[1]){
+                  q.add(x);
+              }
+              // overlap
+              else{
+                  // pop the `prev` and add the interval with
+                  // `smaller 2nd element` to queue
+                  // ???
+//                  if(last[1] < x[1]){
+//
+//                  }
+                  cnt += 1;
+              }
           }
       }
 
       return cnt;
-
   }
+
+
+
+
+//  public int eraseOverlapIntervals(int[][] intervals) {
+//      // edge
+//      if(intervals == null || intervals.length == 0){
+//          return 0;
+//      }
+//      if(intervals.length == 1){
+//          return 0;
+//      }
+//
+//      List<int[]> intervals2 = new ArrayList<>();
+//      for(int[] x : intervals){
+//          intervals2.add(x);
+//      }
+//
+//      int cnt = 0;
+//
+//      // sort
+//      //  -> sort ( 1st element : small -> big), then (2nd element : big -> small)
+//      Collections.sort(intervals2, new Comparator<int[]>() {
+//          @Override
+//          public int compare(int[] o1, int[] o2) {
+//              int diff = o1[0] - o2[0];
+//              if(diff == 0){
+//                  return o2[1] - o1[1];
+//              }
+//              return diff;
+//          }
+//      });
+//
+//      /**
+//       *  since we already sort on `first element small -> big`
+//       *                        and `2nd element big -> small`
+//       *
+//       *  -> the ONLY possible OVERLAP case is as below:
+//       *
+//       *     |----------|   old
+//       *     1          3
+//       *
+//       *    |------|        new
+//       *    1      2
+//       *
+//       */
+//
+//      List<int[]> collected = new ArrayList<>();
+//
+//      for(int i = 0; i < intervals2.size(); i++){
+//          // case 1) idx = 0 or NOT overlap
+//          if(i == 0  || collected.get(collected.size() - 1)[1] >= intervals2.get(i)[1]){
+//              collected.add(intervals2.get(i));
+//          }
+//          // case 2) overlap
+//          else{
+//              cnt += 1;
+//              // append the interval with `smaller window` back to collected
+//              collected.get(collected.size()-1)[0] = intervals2.get(i)[0];
+//              collected.get(collected.size()-1)[1] = intervals2.get(i)[1];
+//          }
+//      }
+//
+//      return cnt;
+//
+//  }
 
   // LC 252
   // 10.46 - 10.56 am
