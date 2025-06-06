@@ -3845,16 +3845,77 @@ public class workspace10 {
      *   -> so, res = true
      *
      */
+
+    // 10.17 - 10.27 am
+    /**
+     *  IDEA 1) BFS
+     *
+     *
+     */
     public boolean canReach(String s, int minJump, int maxJump) {
+
         // edge
         if(s == null || s.length() == 0){
             return true; // ??
         }
+        if(s.charAt(s.length() - 1) == '1'){
+            return false;
+        }
+
+        // queue : [min_can_reach, max_can_reach]
+        Queue<int[]> q = new LinkedList<>();
+        // add init val
+        q.add(new int[] {minJump, maxJump}); // ???
+
+        while(!q.isEmpty()){
+
+            int[] cur = q.poll();
+            int len = s.length() - 1;
+            // can simplify below ????
+            if(cur[0] == len || cur[1] == len || (len >= cur[0] && len <= cur[1])){
+                return true;
+            }
+
+            int new_min_step = Integer.MAX_VALUE; // ???
+            int new_max_step = Integer.MIN_VALUE; // ???
+
+            // loop over `possible steps`
+            for(int i = minJump; i <= maxJump; i++){
+                // boundary check
+                if(i < 0 || i >= s.length() || s.charAt(i) == '1'){
+                    continue;
+                }
+
+                // add to queue
+                new_min_step = Math.min(new_min_step, i);
+                new_max_step = Math.max(new_max_step, i);
+
+                /// ??
+            }
+            // add to queue
+            q.add(new int[] {new_min_step, new_max_step});
+
+        }
 
 
-
+        // if can't find any solution
         return false;
     }
+
+
+
+
+
+//    public boolean canReach(String s, int minJump, int maxJump) {
+//        // edge
+//        if(s == null || s.length() == 0){
+//            return true; // ??
+//        }
+//
+//
+//
+//        return false;
+//    }
 
 
 
