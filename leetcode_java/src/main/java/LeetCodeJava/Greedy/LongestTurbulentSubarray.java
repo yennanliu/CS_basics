@@ -44,14 +44,125 @@ package LeetCodeJava.Greedy;
  */
 public class LongestTurbulentSubarray {
 
-    // V0
-//    public int maxTurbulenceSize(int[] arr) {
-//
-//    }
+  /**
+   * NOTE !!!
+   *
+   *  🌀 Turbulent Definition:
+   *
+   * A subarray is turbulent if the comparison signs between adjacent elements alternate:
+   *
+   *  e.g.:
+   *
+   * 	•	arr[i-1] < arr[i] > arr[i+1]
+   *    or
+   * 	•	arr[i-1] > arr[i] < arr[i+1].
+   */
 
-    // V0-1
-    // IDEA: SLIDING WINDOW (gpt)
-    public int maxTurbulenceSize_0_1(int[] arr) {
+  // V0
+  // IDEA: `Turbulent` definition + Integer.compare (fixed by gpt)
+  public int maxTurbulenceSize(int[] arr) {
+      int n = arr.length;
+      if (n == 1)
+          return 1;
+
+      /**
+       * maxLen:
+       *    stores the maximum turbulent subarray length found so far.
+       *    Starts at 1 (any element alone is trivially turbulent).
+       *
+       * start: the start index of the current turbulent window.
+       *
+       */
+      int maxLen = 1;
+      int start = 0;
+
+      /**
+       * Start from the second element.
+       *
+       * We’re comparing arr[i - 1] and arr[i], so i starts at 1.
+       *
+       */
+      for (int i = 1; i < n; i++) {
+
+          /**
+           * Compares adjacent elements and stores the result in cmp:
+           *
+           *   - Returns -1 if arr[i - 1] < arr[i]
+           *
+           *   - Returns 0 if arr[i - 1] == arr[i]
+           *
+           *   - Returns 1 if arr[i - 1] > arr[i]
+           *
+           *
+           *  -> This is how we capture the direction of change.
+           *
+           */
+          int cmp = Integer.compare(arr[i - 1], arr[i]);
+
+          /**
+           * If two adjacent elements are equal, the turbulence breaks.
+           *
+           * We reset the start of our current window to i.
+           *
+           */
+          if (cmp == 0) {
+              // Equal values: turbulence broken, reset window
+              // NOTE !!! we `reset` window below
+              start = i;
+          }
+          /**
+           *  NOTE !!!
+           *
+           *  We check two things:
+           *
+           * 1) i == n - 1:
+           *         if we’re at the `last` element,
+           *         we can’t compare with the next one,
+           *         so we treat this as the END of the window.
+           *
+           *
+           * 2) cmp * Integer.compare(arr[i], arr[i + 1]) != -1:
+           *
+           *    - NOTE !!
+           *      - cmp : `direction` between the i and i-1 element
+           *      - Integer.compare(arr[i], arr[i + 1]): `direction` between the i and i+1 element
+           *      - the reason we don't use `Integer.compare(arr[i], arr[i+1])`
+           *         -> is that i could equal arr.len -1, so it use above could cause out of boundary error
+           *
+           *   - Checks whether the comparison direction `flips`.
+           *
+           *   - If cmp = 1 (descending), the next should be ascending -1 → product = -1
+           *
+           *   - If cmp = -1, the next should be descending 1 → product = -1
+           *
+           *  -  Anything else (1*1, -1*-1, or 0) → turbulence is broken
+           *
+           */
+          else if (i == n - 1 || cmp * Integer.compare(arr[i], arr[i + 1]) != -1) {
+              // Turbulence breaks at next step — record max
+              /**
+               *
+               *  NOTE !!!  if `Turbulence` breaks
+               *
+               *
+               *  - Update the maxLen if the current turbulent
+               *    sub-array is longer.
+               *
+               * -  Reset start to begin a new window from i.
+               *
+               */
+              maxLen = Math.max(maxLen, i - start + 1);
+              start = i;
+          }
+      }
+
+      // Return the maximum turbulent window size found.
+      return maxLen;
+  }
+
+  // V0-1
+  // IDEA: SLIDING WINDOW (gpt)
+  public int maxTurbulenceSize_0_1(int[] arr) {
         int n = arr.length;
         if (n == 1)
             return 1;
@@ -109,12 +220,18 @@ public class LongestTurbulentSubarray {
              * 1) i == n - 1:
              *         if we’re at the `last` element,
              *         we can’t compare with the next one,
-             *         so we treat this as the END of a window.
+             *         so we treat this as the END of the window.
              *
              *
              * 2) cmp * Integer.compare(arr[i], arr[i + 1]) != -1:
              *
-             *   - Checks whether the comparison direction flips.
+             *    - NOTE !!
+             *      - cmp : `direction` between the i and i-1 element
+             *      - Integer.compare(arr[i], arr[i + 1]): `direction` between the i and i+1 element
+             *      - the reason we don't use `Integer.compare(arr[i], arr[i+1])`
+             *         -> is that i could equal arr.len -1, so it use above could cause out of boundary error
+             *
+             *   - Checks whether the comparison direction `flips`.
              *
              *   - If cmp = 1 (descending), the next should be ascending -1 → product = -1
              *
@@ -131,7 +248,7 @@ public class LongestTurbulentSubarray {
                  *
                  *
                  *  - Update the maxLen if the current turbulent
-                 *    subarray is longer.
+                 *    sub-array is longer.
                  *
                  * -  Reset start to begin a new window from i.
                  *
