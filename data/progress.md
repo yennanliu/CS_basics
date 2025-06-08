@@ -9,7 +9,6 @@
 		- similar:
 		- Kadane algo
 			- 134: Gas Station
-			- 122: Best Time to Buy and Sell Stock II
 			- Longest Turbulent Array
 	- todo:
 		- re-do all previous `again` problems, similar problems, make notes
