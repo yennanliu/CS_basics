@@ -5,11 +5,11 @@
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
 		- review prev LC problems !!!
-	- again: 168,2402
+	- again: 168,2402,   2013,918,678,846,649,72,329,1049,309
 		- similar:
 		- Kadane algo
 			- 134: Gas Station
-			- Longest Turbulent Array
+			- 978: Longest Turbulent Array
 	- todo:
 		- re-do all previous `again` problems, similar problems, make notes
 		- refine java_trick cheatsheet
