@@ -45,21 +45,90 @@ package LeetCodeJava.Greedy;
 public class BestTimeToBuyAndSellStock2 {
 
     // V0
-//    public int maxProfit(int[] prices) {
-//
-//    }
+    // IDEA: GREEDY
+    public int maxProfit(int[] prices) {
+
+        int prev_price = prices[0];
+        int profit = 0;
+
+        /** NOTE !!! we start from idx = 1 */
+        for(int i = 1; i<prices.length; i++){
+
+            /** NOTE !!!
+             *
+             *  case 1) cur price < prev price
+             */
+            if(prices[i] < prev_price){
+                prev_price = prices[i];
+            }
+            /** NOTE !!!
+             *
+             *  case 2) cur price >= prev price
+             */
+            else{
+                profit += prices[i] - prev_price;
+                /**
+                 *  NOTE !!! below
+                 *
+                 *  -> we assign prev value as prices[i]
+                 *
+                 */
+                prev_price = prices[i];
+            }
+        }
+        return profit;
+    }
+
+    // V0-1
+    // IDEA: GREEDY (fixed by gpt)
+    public int maxProfit_0_1(int[] prices) {
+        // edge case
+        if (prices == null || prices.length < 2) {
+            return 0;
+        }
+
+        int profit = 0;
+
+        // greedy: accumulate profit from every ascending pair
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > prices[i - 1]) {
+                profit += (prices[i] - prices[i - 1]);
+            }
+        }
+
+        return profit;
+    }
 
     // V1-1
     // IDEA: GREEDY
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0122-best-time-to-buy-and-sell-stock-II.java
     public int maxProfit_1_1(int[] prices) {
+
         int oldStockPrice = prices[0];
         int profit = 0;
+
+        /** NOTE !!! we start from idx = 1 */
         for(int i = 1; i<prices.length; i++){
-            if(prices[i]<oldStockPrice){
+
+            /** NOTE !!!
+             *
+             *  case 1) cur price < prev price
+             */
+            if(prices[i] < oldStockPrice){
                 oldStockPrice = prices[i];
-            }else{
-                profit+=prices[i]-oldStockPrice;
+            }
+            /** NOTE !!!
+             *
+             *  case 2) cur price >= prev price
+             */
+            else{
+                profit += prices[i] - oldStockPrice;
+                /**
+                 *  NOTE !!! below
+                 *
+                 *  -> we assign prev value as prices[i]
+                 *
+                 */
                 oldStockPrice = prices[i];
             }
         }
