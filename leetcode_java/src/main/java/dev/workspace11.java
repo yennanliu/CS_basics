@@ -328,9 +328,53 @@ public class workspace11 {
 
             return cnt;
         }
+    }
 
+    // LC 918
+    // 11.50 - 12,00 pm
+    /**
+     *  define 4 var
+     *
+     *  1. local_max
+     *  2. local_min
+     *  3. global_max
+     *  4. global_min
+     *
+     *
+     */
+    public int maxSubarraySumCircular(int[] nums) {
+
+        int res = nums[0];
+        int local_max = nums[0];
+        int local_min = nums[0];
+
+        int max_val = nums[0];
+
+
+      // edge
+      for(int i = 1; i < nums.length; i++){
+
+          int val = nums[i];
+
+          local_max = Math.max(val, local_max + val);
+          local_min = Math.min(val, local_min + val);
+
+          max_val = Math.max(max_val, val);
+
+
+          res = Math.max(local_max, local_min);
+      }
+
+      //res = Math.max(res, r)
+
+      // ???
+      return res > 0 ? Math.max(res, res - local_min) : max_val;
 
     }
+
+
+
+
 
 
 }

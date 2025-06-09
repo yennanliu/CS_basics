@@ -5,7 +5,7 @@
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
 		- review prev LC problems !!!
-	- again: 168,2402,   918,678,846,649,72,329,1049,309
+	- again: 168,2402,   678,846,649,72,329,1049,309
 		- similar:
 		- Kadane algo
 			- 134: Gas Station
