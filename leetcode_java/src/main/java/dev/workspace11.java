@@ -1,5 +1,9 @@
 package dev;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
 public class workspace11 {
 
   // LC 122
@@ -237,6 +241,96 @@ public class workspace11 {
 //        // Return the maximum turbulent window size found.
 //        return maxLen;
 //    }
+
+    // LC 2013
+    // 10.06 - 10.16 am
+    class DetectSquares {
+
+        // hash set : track if existed
+        HashSet<String> set;
+
+        // map: check `point` count
+        // { "x-y": cnt }
+        Map<String, Integer> map;
+
+
+        public DetectSquares() {
+            this.set = new HashSet<>();
+            this.map = new HashMap<>();
+        }
+
+        public void add(int[] point) {
+            String key  = point[0] + "-" + point[1];
+            this.set.add(key);
+
+            this.map.put(key, this.map.getOrDefault(key, 0) + 1);
+        }
+
+        public int count(int[] point) {
+
+            // edge case
+            if(this.set.isEmpty()){
+                return 0;
+            }
+            // not possible to make a `square`
+            if(this.map.keySet().size() < 3){
+                return 0;
+            }
+
+            int cnt = 0;
+
+            int input_x = point[0];
+            int input_y = point[1];
+            String input_val = input_x + "-" + input_y;
+
+//            // edge case : if the point is same as one of the saved points
+//            // ???
+//            if(this.map.containsKey(input_val)){
+//                return 0; // ???
+//            }
+
+            // loop over saved points
+            for(String k: this.map.keySet()){
+
+                String[] k_arr = k.split("-");
+                int _x = Integer.parseInt(k_arr[0]);
+                int _y = Integer.parseInt(k_arr[1]);
+
+                // NOTE !!! make sure we are NOT check the `same point` as the input one
+                if(_x == input_x && _y == input_y){
+                    continue;
+                }
+
+
+                String key_1 = _x + "-" + input_y;
+                String key_2 = input_x + "-" + _y;
+
+                String key_3 = _x + "-" + _y;
+
+                boolean shouldProceed = Math.abs(_x - input_x) == Math.abs(_y - input_y);
+
+
+//                boolean shouldProceed = this.map.containsKey(key_1) &&
+//                        this.map.containsKey(key_2) && this.map.containsKey(key_3);
+
+                if(shouldProceed){
+
+                    boolean existed = this.map.containsKey(key_1) &&
+                      this.map.containsKey(key_2) && this.map.containsKey(key_3);
+
+                    if(existed){
+                        cnt += (this.map.get(key_1) * this.map.get(key_2) * this.map.get(key_3));
+                    }
+
+                }
+
+            }
+
+            return cnt;
+        }
+
+
+    }
 
 
 }

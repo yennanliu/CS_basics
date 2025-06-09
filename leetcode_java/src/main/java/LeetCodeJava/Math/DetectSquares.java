@@ -61,6 +61,16 @@ public class DetectSquares {
 
     // V0
     // IDEA: MATH (fixed by gpt)
+    /**
+     *  NOTE !!!
+     *
+     *   we have `shouldProceed` and `existed` nested logic as `should go forward validation`
+     *
+     *
+     *    - shouldProceed : if the dist are the same
+     *    - existed : if the expected points existed in storage set
+     *
+     */
     class DetectSquares_0 {
 
         // attr
