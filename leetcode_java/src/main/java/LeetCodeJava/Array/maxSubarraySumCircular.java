@@ -73,6 +73,11 @@ public class maxSubarraySumCircular {
      *  3. local_min
      *  4. global_max
      *  5. global_min
+     *
+     *
+     *  -> NOTE !!! `total_sum`, and `local_min`
+     *              are for the case that `we sum up all val, and ONLY remove the min val`
+     *              (since we have a circular array now)
      */
     public int maxSubarraySumCircular(int[] nums) {
         if (nums == null || nums.length == 0) {
