@@ -372,8 +372,117 @@ public class workspace11 {
 
     }
 
+    // LC 678
+    // 12.57 - 1.07 pm
+    /**
+     *
+     *   IDEA 1) GREEDY + MIN, MAX left, right parenthesis
+     *
+     *
+     *   exp 1)
+     *
+     *   s = "(  )"
+     *        x
+     *   left  = 1
+     *
+     *    (  )
+     *       x
+     *
+     *       min_right = 1
+     *       max_right = 1
+     *
+     *
+     *  exp 2)
+     *
+     *    s =  "( * )"
+     *
+     *    ( * )
+     *    x
+     *    left = 1
+     *
+     *
+     *    ( * )
+     *      x
+     *      min_right = 0
+     *      max_right = 1
+     *      left = 1
+     *
+     *    ( * )
+     *        x
+     *        min_right = 1
+     *        max_right = 2
+     *        left = 1
+     *
+     *
+     *  exp 3)  s = "(*))"
+     *
+     *    ( * ) )
+     *    x
+     *    left = 1
+     *
+     *
+     *    ( * ) )
+     *      x
+     *      left = 1
+     *      min_right = 0
+     *      max_right = 1
+     *
+     *    ( * ) )
+     *        x
+     *        left = 1
+     *        min_right = 0
+     *        max_right = 2
+     *
+     *   ( * ) )
+     *         x
+     *         left =1
+     *         min_right = 0
+     *         max_right = 3
+     *
+     *
+     *
+     */
+    public boolean checkValidString(String s) {
+        // edge
+        if(s == null || s.length() == 0){
+            return true;
+        }
+        if(s.length() == 1){
+            if(!s.equals("*")){
+                return false;
+            }
+        }
 
+        int left_paren = 0;
+        int min_right_paren = 0;
+        int max_right_paren = 0;
 
+        for(String x: s.split("")){
+
+            System.out.println(">>> x = " + x + ", left_paren = " + left_paren
+                    + ", min_right_paren = " + min_right_paren
+                    + ", max_right_paren = " + max_right_paren);
+
+            if(x.equals("(")){
+                left_paren += 1;
+            }else{
+                min_right_paren += 1;
+                max_right_paren += 1;
+            }
+
+            // `adjust` the `< 0` min_right_paren
+            if(min_right_paren < 0){
+                min_right_paren = 0;
+            }
+
+            // NOTE !!! validate if `still possible to form a valid parenthesis`
+            if((max_right_paren < left_paren  && left_paren < min_right_paren)|| max_right_paren < 0){
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 
 

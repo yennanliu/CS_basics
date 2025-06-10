@@ -50,6 +50,11 @@ public class ValidParenthesisString {
     /**
      *  IDEA 1) GREEDY
      *
+     *   NOTE !!!
+     *
+     *   - minParenCnt: The minimum possible number of `unmatched` open parens seen so far.
+     *   - bigParenCnt: The maximum possible number of `unmatched` open parens seen so far.
+     *
      *  step 1) maintain 2 var
      *        - minParenCnt
      *        - bigParenCnt
@@ -86,18 +91,21 @@ public class ValidParenthesisString {
          *   - minParenCnt
          *   - maxParenCnt
          */
-        int minParenCnt = 0;
-        int maxParenCnt = 0;
+        int minParenCnt = 0; // minimum possible number of `unmatched` open parens seen so far.
+        int maxParenCnt = 0; // max possible number of `unmatched` open parens seen so far.
 
         for(String x: s.split("")){
+            // case 1) "("
             if(x.equals("(")){
                 minParenCnt += 1;
                 maxParenCnt += 1;
             }
+            // case 2) ")"
             else if(x.equals(")")){
                 minParenCnt -= 1;
                 maxParenCnt -= 1;
             }else{
+                // case 3) "*" (wildcard)
                 minParenCnt -= 1;
                 maxParenCnt += 1;
             }
