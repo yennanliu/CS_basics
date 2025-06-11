@@ -1939,3 +1939,54 @@ public boolean isBalanced(TreeNode root) {
             && isBalanced(root.right);
 }
 ```
+
+### 2-20) Reverse Odd Levels of Binary Tree
+
+```java
+// java
+// LC 2415
+
+// V0-1
+// IDEA: DFS + `left, right, layer as helper func parameter` (fixed by gpt)
+public TreeNode reverseOddLevels_0_1(TreeNode root) {
+    if (root == null)
+        return null;
+
+    reverseHelper(root.left, root.right, 1);
+    return root;
+}
+
+/**
+ *  NOTE !!!
+ *
+ *   we NEED to setup 3 parameter in the helper func
+ *
+ *   1. left node
+ *   2. right node
+ *   3. layer
+ *
+ *
+ *  NOTE !!!
+ *
+ *   the helper func return NOTHING !!! (e.g. void)
+ */
+private void reverseHelper(TreeNode left, TreeNode right, int level) {
+    if (left == null || right == null)
+        return;
+
+    // Swap values if we're at an odd level
+    if (level % 2 == 1) {
+        int temp = left.val;
+        left.val = right.val;
+        right.val = temp;
+    }
+
+    /**  NOTE !!! below
+     *
+     *
+     */
+    // Recurse into symmetric children
+    reverseHelper(left.left, right.right, level + 1);
+    reverseHelper(left.right, right.left, level + 1);
+}
+```
