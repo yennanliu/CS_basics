@@ -86,6 +86,10 @@ public class ReverseOddLevelsOfBinaryTree {
      *   2. right node
      *   3. layer
      *
+     *
+     *  NOTE !!!
+     *
+     *   the helper func return NOTHING !!! (e.g. void)
      */
     private void reverseHelper(TreeNode left, TreeNode right, int level) {
         if (left == null || right == null)
@@ -126,6 +130,10 @@ public class ReverseOddLevelsOfBinaryTree {
      *   2. right node
      *   3. layer
      *
+     *
+     *  NOTE !!!
+     *
+     *   the helper func return NOTHING !!! (e.g. void)
      */
     private void traverseDFS(
             TreeNode leftChild,
