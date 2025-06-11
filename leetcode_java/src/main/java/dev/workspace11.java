@@ -484,6 +484,12 @@ public class workspace11 {
         return true;
     }
 
+    // LC 846
+    // 13.28 - 13.38 pm
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+
+        return false;
+    }
 
 
 }
