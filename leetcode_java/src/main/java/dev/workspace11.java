@@ -734,6 +734,64 @@ public class workspace11 {
         return root;
     }
 
+    // LC 104
+    // 12.08 - 12.18 pm
+    /**
+     *  * Given the root of a binary tree, return its maximum depth.
+     *  *
+     *  * A binary tree's maximum depth is the number
+     *   of nodes along the longest path from the root
+     *   node down to the farthest leaf node.
+     *  *
+     *
+     *
+     *   -> depth: `dist from root to farthest leaf node`
+     */
+   // int max_depth = 0;
+
+    public int maxDepth(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+
+        // call helper func
+        depthHelper(root);
+
+        //return max_depth + 1;
+        return depthHelper(root);
+    }
+
+    public int depthHelper(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+
+        //        TreeNode _left =  depthHelper(root.left);
+        //        TreeNode _right =  depthHelper(root.right);
+
+        // ????
+        int left_depth = depthHelper(root.left) + 1;
+        int right_depth = depthHelper(root.right) + 1;
+
+        // get bigger one
+//        int depth = Math.max(left_depth, right_depth);
+
+        // ????
+//        max_depth = Math.max(
+//                max_depth,
+//                depth);
+//
+//        //return root;
+
+        return Math.max(
+                left_depth,
+                right_depth);
+    }
 
 
 
