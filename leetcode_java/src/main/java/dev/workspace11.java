@@ -656,9 +656,85 @@ public class workspace11 {
 
 
     // LC 2415
+    // 11.31 - 11.41 am
+    /**
+     *  -> Given the root of a perfect binary tree,
+     *    reverse the node values at each  `odd` level of the tree.
+     *
+     *
+     *  IDEA 1) DFS + `layer controller` that only implement swap on `odd` layer
+     *
+     */
+//    public TreeNode reverseOddLevels(TreeNode root) {
+//
+//        // edge
+//        if (root == null || (root.left == null && root.right == null)) {
+//            return root;
+//        }
+//
+//        // call helper func
+//        int layer = 0;
+//        TreeNode reversedNode = inverseHelper_(root, layer);
+//        return reversedNode;
+//    }
+//
+//    public TreeNode inverseHelper_(TreeNode root, int layer) {
+//        // edge
+//        if (root == null) {
+//            return root;
+//        }
+//
+//        layer += 1;
+//
+//        TreeNode _right = inverseHelper_(root.right, layer + 1);
+//        TreeNode _left = inverseHelper_(root.left, layer + 1);
+//
+//        // ????
+//        if (layer % 2 == 1) {
+//            root.left = _right;
+//            root.right = _left;
+//
+//        }
+//
+//        return root;
+//    }
+
+
     public TreeNode reverseOddLevels(TreeNode root) {
 
-        return null;
+        // edge
+        if (root == null || (root.left == null && root.right == null)) {
+            return root;
+        }
+
+        // call helper func
+        int layer = 0;
+        TreeNode reversedNode = inverseHelper_(root, layer);
+        return reversedNode;
     }
+
+    public TreeNode inverseHelper_(TreeNode root, int layer) {
+        // edge
+        if (root == null) {
+            return root;
+        }
+
+        layer += 1;
+
+        TreeNode _right = inverseHelper_(root.right, layer + 1);
+        TreeNode _left = inverseHelper_(root.left, layer + 1);
+
+        // ????
+        if (layer % 2 == 1) {
+            root.left = _right;
+            root.right = _left;
+
+        }
+
+        return root;
+    }
+
+
+
 
 }
