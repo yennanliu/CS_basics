@@ -154,6 +154,34 @@ public class InvertBinaryTree {
         return root;
     }
 
+    // V0-4
+    // IDEA: DFS + cache
+    public TreeNode invertTree_0_4(TreeNode root) {
+        // edge
+        if (root == null || (root.left == null && root.right == null)) {
+            return root;
+        }
+
+        TreeNode reversedNode = inverseHelper(root);
+
+        return reversedNode;
+    }
+
+    public TreeNode inverseHelper(TreeNode root) {
+        // edge
+        if (root == null) {
+            return root;
+        }
+
+        TreeNode _right = inverseHelper(root.right);
+        TreeNode _left = inverseHelper(root.left);
+
+        root.left = _right;
+        root.right = _left;
+
+        return root;
+    }
+
     // V1
     // IDEA: Recursive
     // https://leetcode.com/problems/invert-binary-tree/editorial/

@@ -1,5 +1,7 @@
 package dev;
 
+import LeetCodeJava.DataStructure.TreeNode;
+
 import java.util.*;
 
 public class workspace11 {
@@ -562,6 +564,53 @@ public class workspace11 {
         }
 
         return true;
+    }
+
+    // LC 226
+    // 10.50 - 11.00 am
+    /**
+     *
+     * -> Given the root of a binary tree,
+     *   invert the tree, and return its root.
+     */
+    // IDEA: DFS
+    public TreeNode invertTree(TreeNode root) {
+        // edge
+        if(root == null || (root.left == null && root.right == null)){
+            return root;
+        }
+        if(root.left == null || root.right == null){
+            TreeNode _left = root.left;
+            root.left = root.right;
+            root.right = _left;
+        }
+
+        // call helper func
+//        root.left = inverseHelper(root.right);
+//        root.right = inverseHelper(root.left);
+        TreeNode reversedNode = inverseHelper(root); // ???
+
+        return reversedNode;
+    }
+
+    // ???
+    public TreeNode inverseHelper(TreeNode root){
+        // edge
+        if(root == null){
+            return root;
+        }
+
+//        TreeNode _left = root.left;
+//        TreeNode _right = root.right;
+
+        // ???
+        TreeNode _right = inverseHelper(root.right);
+        TreeNode _left = inverseHelper(root.left);
+
+        root.left = _right; //???
+        root.right = _left; // ???
+
+        return root;
     }
 
 
