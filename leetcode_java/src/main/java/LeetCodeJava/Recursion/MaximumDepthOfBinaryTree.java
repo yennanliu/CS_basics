@@ -62,6 +62,54 @@ public class MaximumDepthOfBinaryTree {
         return Math.max(leftD, rightD);
     }
 
+    // V0-0-1
+    // IDEA: DFS (fixed by gpt)
+    // NOTE !!! NOT need to setup `max_depth` in below code
+    public int maxDepth_0_0_1(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
+
+        // call helper func
+        depthHelper(root);
+
+        return depthHelper(root);
+    }
+
+    public int depthHelper(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *   we recursively get `left depth`, `right depth`
+         *   via the helper function call
+         *
+         *   Don't forget to `plus 1` when calling
+         *
+         */
+        int left_depth = depthHelper(root.left) + 1;
+        int right_depth = depthHelper(root.right) + 1;
+
+        /**
+         *  NOTE !!!
+         *
+         *   we get max from `sub left depth` and `sub right depth`
+         *
+         */
+        return Math.max(
+                left_depth,
+                right_depth);
+    }
+
+
     // V0'
     // NOTE !!! below is wrong, we should get max left, right depth first, then compare them
 //    public int maxDepth(TreeNode root) {
