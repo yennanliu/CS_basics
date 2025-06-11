@@ -1,8 +1,6 @@
 package dev;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public class workspace11 {
 
@@ -485,10 +483,85 @@ public class workspace11 {
     }
 
     // LC 846
-    // 13.28 - 13.38 pm
+    // 10.26 - 10.36 am
+    /**
+     *  IDEA 1) SORTING + MAP + PQ ??
+     *
+     *   -> sort, and collect the `non distinect val` to small PQ
+     *   -> loop and collect `group size count` of element from PQ,
+     *      update hashmap cnt on the same time.
+     *      if any violated, return false directly
+     *
+     *    -> keep above
+     *    -> return ture
+     *
+     *
+     */
     public boolean isNStraightHand(int[] hand, int groupSize) {
 
-        return false;
+        int len = hand.length;
+
+        // edge
+        if(hand == null || len == 0){
+            return groupSize == 0; // ??
+        }
+        if(len % groupSize != 0){
+            return false;
+        }
+
+        // map : {val : cnt}
+        Map<Integer, Integer> cnt_map = new HashMap<>();
+
+        // small PQ
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        for(int x: hand){
+
+            cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
+
+            if(!pq.contains(x)){
+                pq.add(x);
+            }
+        }
+
+        // try to form the `sub array with group-size`
+        //int cnt = hand.length;
+
+        //System.out.println(">>> cnt_map = " + cnt_map + ", PQ = " + pq);
+
+        // ???
+        while(!cnt_map.isEmpty()){
+
+            int val = pq.peek();
+            for(int j = 0; j < groupSize; j++){
+
+//                System.out.println(">>> j = " + j + ", val = " + val
+//                        + ", cnt_map = " + cnt_map + ", PQ = " + pq);
+
+                if(!cnt_map.containsKey(val)){
+                    return false;
+                }
+
+                cnt_map.put(val, cnt_map.get(val) - 1);
+
+                // if `cnt = 0`,  pop from PQ
+                if(cnt_map.get(val) == 0){
+                    pq.poll();
+
+                    cnt_map.remove(val);
+                }
+
+                val += 1;
+            }
+        }
+
+        return true;
     }
 
 

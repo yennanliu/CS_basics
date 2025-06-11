@@ -41,9 +41,38 @@ import java.util.*;
 public class HandOfStraights {
 
     // V0
-//    public boolean isNStraightHand(int[] hand, int groupSize) {
-//
-//    }
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        if (hand.length % groupSize != 0) return false;
+        Map<Integer, Integer> count = new HashMap<>();
+        for (int num : hand) {
+            count.put(num, count.getOrDefault(num, 0) + 1);
+        }
+
+        /**
+         *
+         * NOTE !!! we sort (small -> big) on the input array
+         */
+        Arrays.sort(hand);
+
+        // NOTE !!! we loop over sorted array (aka `hand`)
+        for (int num : hand) {
+            /**
+             *
+             * NOTE !!! we firstly check whether `current val` (aka `num`) cnt > 0
+             */
+            if (count.get(num) > 0) {
+                /**
+                 *
+                 * NOTE !!! we then check whether `all following val in group size` cnt > 0
+                 */
+                for (int i = num; i < num + groupSize; i++) {
+                    if (count.getOrDefault(i, 0) == 0) return false;
+                    count.put(i, count.get(i) - 1);
+                }
+            }
+        }
+        return true;
+    }
 
     // V0-1
     // IDEA: HASHMAP + SORTING
@@ -78,6 +107,71 @@ public class HandOfStraights {
                 }
             }
         }
+        return true;
+    }
+
+    // V0-2
+    // IDEA: HASHMAP + SORTING + small PQ
+    public boolean isNStraightHand_0_2(int[] hand, int groupSize) {
+
+        int len = hand.length;
+
+        // edge
+        if(hand == null || len == 0){
+            return groupSize == 0;
+        }
+        if(len % groupSize != 0){
+            return false;
+        }
+
+        // map : {val : cnt}
+        Map<Integer, Integer> cnt_map = new HashMap<>();
+
+        // small PQ
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        for(int x: hand){
+
+            cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
+
+            if(!pq.contains(x)){
+                pq.add(x);
+            }
+        }
+
+        // try to form the `sub array with group-size`
+        //System.out.println(">>> cnt_map = " + cnt_map + ", PQ = " + pq);
+        while(!cnt_map.isEmpty()){
+
+            int val = pq.peek();
+            for(int j = 0; j < groupSize; j++){
+
+//                System.out.println(">>> j = " + j + ", val = " + val
+//                        + ", cnt_map = " + cnt_map + ", PQ = " + pq);
+
+                if(!cnt_map.containsKey(val)){
+                    return false;
+                }
+
+                cnt_map.put(val, cnt_map.get(val) - 1);
+
+                // if `cnt = 0`,  pop from PQ
+                if(cnt_map.get(val) == 0){
+                    pq.poll();
+
+                    cnt_map.remove(val);
+                }
+
+                val += 1;
+            }
+        }
+
         return true;
     }
 
