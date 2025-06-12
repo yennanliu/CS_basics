@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
+import LeetCodeJava.Tree.DiameterOfNAryTree;
 
 import java.util.*;
 
@@ -860,7 +861,97 @@ public class workspace11 {
         return Math.max(_left_depth, _right_depth) + 1;
     }
 
+
+
     // LC 1522
+    // 11.04 - 11.14 am
+    /**
+     * -> Given a root of an N-ary tree,
+     *    you need to compute the length of the diameter of the tree.
+     *
+     *
+     *
+     *   IDEA 1) DFS
+     *
+     *
+     *
+     */
+
+    class Node {
+        public int val;
+        public List<Node> children;
+
+
+        public Node() {
+            children = new ArrayList<Node>();
+        }
+
+        public Node(int _val) {
+            val = _val;
+            children = new ArrayList<Node>();
+        }
+
+        public Node(int _val,ArrayList<Node> _children) {
+            val = _val;
+            children = _children;
+        }
+    };
+
+    int max_diameter = 0;
+
+    public int diameter(Node root) {
+
+        // edge
+        if(root == null){
+            return 0; // ??
+        }
+        if(root.children == null || root.children.size() == 0){
+            return 0;
+        }
+
+        // dfs
+        nDiaHelper(root);
+
+        return max_diameter;
+    }
+
+    public int nDiaHelper(Node root){
+        // edge
+        if(root == null){
+            return 0; // ??
+        }
+
+        List<Integer> cur_depth_list = new ArrayList<>();
+        // ??
+        for(Node x: root.children){
+            cur_depth_list.add(nDiaHelper(x));
+        }
+
+        // sort, and get the `top 2 max` val as the cur `left, right depth` ???
+        Collections.sort(cur_depth_list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        int _left_depth = 0;
+        int _right_depth = 0;
+
+        // ???
+        if(cur_depth_list.size() < 2){
+            if(cur_depth_list.size() == 1){
+                _left_depth = cur_depth_list.get(0);
+            }
+        }
+
+        // get max from `all possible pairs` from cur_depth_list
+        max_diameter = Math.max(max_diameter, _left_depth + _right_depth); // ???
+
+        // NOTE !!! (for upper layer, we need to return val as below)
+        return Math.max(_left_depth, _right_depth) + 1;
+    }
 
 
 
