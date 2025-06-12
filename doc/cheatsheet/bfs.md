@@ -1,5 +1,5 @@
-# BFS
-- Breadth-first search
+# BFS (Breadth-first search)
+
 - search algorithm
 - Find `Shortest path`
     - LC 127
@@ -33,6 +33,7 @@
     - array
 
 ### 0-2) Pattern
+
 ```python
 # python
 import colllections 
@@ -52,6 +53,7 @@ while len(queue) > 0:
 ```
 
 ## 1) General form
+
 ```python
 # V0 : via python default
 def bfs(root):
