@@ -118,6 +118,67 @@ public class BalancedBinaryTree {
         return true;
     }
 
+    // V0-3
+    // IDEA: DFS + LC 104
+    public boolean isBalanced_0_3(TreeNode root) {
+
+        // edge
+        if (root == null) {
+            return true;
+        }
+        if (root.left == null && root.right == null) {
+            return true;
+        }
+
+        // dfs
+        return isBalanceHelper(root);
+    }
+
+    public boolean isBalanceHelper(TreeNode root) {
+
+        // edge
+        if (root == null) {
+            return true;
+        }
+        if (root.left == null && root.right == null) {
+            return true;
+        }
+
+        int _left_depth = getDepthHelper(root.left);
+        int _right_depth = getDepthHelper(root.right);
+
+        if (Math.abs(_left_depth - _right_depth) > 1) {
+            return false;
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *  NO NEED to check `isBalanceHelper(root)` again
+         *
+         *  e.g. we don't need below:
+         *
+         *   isBalanceHelper(root) && isBalanceHelper(root.left) && isBalanceHelper(root.right)
+         *
+         */
+        return isBalanceHelper(root.left)
+                && isBalanceHelper(root.right);
+    }
+
+    // LC 104
+    // NOTE !!! we need this `get max depth` helper func
+    public int getDepthHelper(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+
+        int _left_depth = getDepthHelper(root.left);
+        int _right_depth = getDepthHelper(root.right);
+
+        return Math.max(_left_depth, _right_depth) + 1;
+    }
+
     // V1-1
     // https://neetcode.io/problems/balanced-binary-tree
     // IDEA: BRUTE FORCE
