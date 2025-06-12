@@ -92,6 +92,19 @@ public class BalancedBinaryTree {
         Stack<TreeNode> stack = new Stack<>();
         Set<TreeNode> visited = new HashSet<>();
 
+        /**
+         *  NOTE !!!
+         *
+         *   we firstly push ALL nodes to queue
+         *   , in the `post order`. -> so the
+         *   first element pop from queue is `lowest` child
+         *   , then its parent (1 upper layer), ... and so on
+         *
+         *
+         *   -> e.g. the way we do BFS is `the POST order` traverse
+         *   -> ordering: left -> right -> root
+         *
+         */
         while (!queue.isEmpty()) {
             TreeNode node = queue.poll();
             stack.push(node);
