@@ -187,6 +187,12 @@ public class DiameterOfBinaryTree {
          *   we return the max (leftHeight, rightHeight) as the `upper level node` 's diameter base
          *   and `+1` is because we move `1 upper layer`, so the possible diameter increase by 1
          */
+        /**
+         *
+         * NOTE !!!
+         *
+         *   -> return `Math.max(leftHeight, rightHeight) + 1`
+         */
         return Math.max(leftHeight, rightHeight) + 1;
     }
 

@@ -794,5 +794,71 @@ public class workspace11 {
     }
 
 
+    // LC 543
+    // 10.31 - 10.41 am
+    /**
+     *  -> return the length of the diameter of the tree.
+     *
+     *   (The length of a path between two nodes is represented
+     *  by the number of edges between them.)
+     *
+     *
+     *            1
+     *          / \
+     *         2   3
+     *        / \
+     *       4   5
+     *
+     * Return 3, which is the length of the
+     * path [4,2,1,3] or [5,2,1,3].
+     *
+     *
+     *
+     *   IDEA 1) DFS  (post transverse )???
+     *
+     *
+     *
+     */
+    int diameter = 0;
+    public int diameterOfBinaryTree(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0; // ??
+        }
+        if(root.left == null && root.right == null){
+            return 0;
+        }
+
+        // dfs
+        diaHelper(root);
+
+        return diameter;
+    }
+
+    public int diaHelper(TreeNode root){
+        if(root == null){
+            //return root; // ??
+            return 0;
+        }
+        // ???
+//        if(root.left == null && root.right == null){
+//            //return root; // ??
+//            return 0;
+//        }
+
+        int _left_depth = diaHelper(root.left);
+        int _right_depth = diaHelper(root.right);
+
+
+        diameter = Math.max(
+                diameter,
+                _left_depth + _right_depth
+        );
+
+        //return diameter; // ???
+        //return _left_depth + _right_depth + 1; // ???
+        return Math.max(_left_depth, _right_depth) + 1;
+    }
+
 
 }
