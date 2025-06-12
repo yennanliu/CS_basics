@@ -860,5 +860,8 @@ public class workspace11 {
         return Math.max(_left_depth, _right_depth) + 1;
     }
 
+    // LC 1522
+
+
 
 }
