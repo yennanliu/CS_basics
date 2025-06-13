@@ -6,7 +6,7 @@
 		- 27/66
 		- review prev LC problems !!!
 	- again: 168,2402,   649,72,329,1049,309,   226
-		- similar: 1522, 2246, 3319, 3340
+		- similar: 1522, 2246, 3319, 3340,  1257,1644,1650
 		- Kadane algo
 			- 134: Gas Station
 	- todo:

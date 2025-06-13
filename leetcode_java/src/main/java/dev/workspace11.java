@@ -1016,4 +1016,80 @@ public class workspace11 {
     }
 
 
+    // LC 235
+    // 9.17 - 9.33 am
+    /**
+     *
+     * -> Given a binary search tree (BST),
+     *   find the lowest common ancestor (LCA) node of two given nodes in the BST.
+     *
+     *
+     *  What's LCA ?
+     *
+     *  -> “The lowest common ancestor is defined between two nodes p and q as the
+     *     lowest node in T that has both p and q as descendants
+     *    (where we allow a node to be a descendant of itself).”
+     *
+     *
+     *
+     *   // IDEA 1) DFS
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            return null;
+        }
+        // ??
+        if(p == q){
+            return p;
+        }
+//        if(p == null || q == null){
+//            return null; // ???
+//        }
+
+        // dfs
+        return lcaHelper(root, p, q); // ???
+    }
+
+    public TreeNode lcaHelper(TreeNode root, TreeNode p, TreeNode q){
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            return null;
+        }
+        if(p == null && q == null){
+            return root;
+        }
+        if(p == null || q == null){
+            return root; // ???
+        }
+
+        // BST property
+
+        // case 1) root val > p, q
+        if(root.val > p.val && root.val > q.val){
+            return lcaHelper(root.left, p, q);
+        }
+        // case 2) root val < p, q
+        if(root.val < p.val && root.val < q.val){
+            return lcaHelper(root.right, p, q);
+        }
+        // case 3) q < roo val < p or p < roo val < q
+//        else{
+//            return root;
+//        }
+        return root; // ??
+
+        //return null;
+    }
+
+
+
+
+
 }
