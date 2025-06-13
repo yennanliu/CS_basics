@@ -52,11 +52,54 @@ import LeetCodeJava.DataStructure.TreeNode;
  * LinkedIn Microsoft
  *
  */
-public class LowestCommonAncestorOfABinarySearchTree2 {
+public class LowestCommonAncestorOfABinaryTree2 {
+
+    /**
+     *  NOTE !!!
+     *
+     *   tree in this problem is `Binary Tree` (LC 1644),
+     *   but NOT `Binary Search Tree` (LC 235),
+     *   so we CAN NOT reuse LC 235 code logic in this problem
+     */
 
     // V0
 //    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 //    }
+
+    // V0-1
+    // IDEA: DFS (gpt)
+    // TODO: validate
+    private boolean foundP = false;
+    private boolean foundQ = false;
+
+    public TreeNode lowestCommonAncestor_0_1(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode lca = findLCA(root, p, q);
+        return (foundP && foundQ) ? lca : null;
+    }
+
+    private TreeNode findLCA(TreeNode node, TreeNode p, TreeNode q) {
+        if (node == null) return null;
+
+        TreeNode left = findLCA(node.left, p, q);
+        TreeNode right = findLCA(node.right, p, q);
+
+        if (node == p) {
+            foundP = true;
+            return node;
+        }
+
+        if (node == q) {
+            foundQ = true;
+            return node;
+        }
+
+        if (left != null && right != null) {
+            return node;
+        }
+
+        return left != null ? left : right;
+    }
+
 
     // V1
     // https://leetcode.ca/2020-05-31-1644-Lowest-Common-Ancestor-of-a-Binary-Tree-II/

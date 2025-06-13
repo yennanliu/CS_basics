@@ -1091,8 +1091,53 @@ public class workspace11 {
 
 
     // LC 1644
+    // 9.49 - 9.59 am
+    /**
+     *
+     * -> Given the root of a binary tree, return the lowest common ancestor (LCA)
+     * of two given nodes, p and q.
+     * If either node p or q does not exist in the tree,
+     * return `null` !!!
+     * All values of the nodes in the tree are unique.
+     *
+     *
+     *  IDEA 1) DFS + LC 235 + BST property
+     *
+     *  -> NOTE !!!  p or q could NOT exist, if this is the case, return `null` as LCA
+     *
+     */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        return null;
+
+        // LC 235
+
+        /** handle cases if p or q DOES NOT exist */
+        if(p == null || q == null){
+            return null; // ???
+        }
+
+        // if root equals p or q, return root as LCA
+        if (root.equals(p) || root.equals(q)) {
+            return root;
+        }
+
+        /** NOTE !!! BST property : right > root > left */
+        // search on right sub tree
+        if (p.val > root.val && q.val > root.val){
+            return this.lowestCommonAncestor(root.right, p, q);
+        }
+        // search on left sub tree
+        if (p.val < root.val && q.val < root.val){
+            return this.lowestCommonAncestor(root.left, p, q);
+        }
+
+        /**
+         * NOTE !!!
+         *
+         *  if can reach below
+         *  -> p, q are in different side (sub tree)
+         *  -> then return root as LCA directly
+         */
+        return root;
     }
 
 
