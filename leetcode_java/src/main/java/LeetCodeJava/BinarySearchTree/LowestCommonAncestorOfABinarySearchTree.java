@@ -157,6 +157,28 @@ public class LowestCommonAncestorOfABinarySearchTree {
             return (left != null) ? left : right;
         }
 
+        // V0-3
+        // IDEA: DFS (gpt)
+        public TreeNode lowestCommonAncestor_0_3(TreeNode root, TreeNode p, TreeNode q) {
+            // Base case
+            if (root == null)
+                return null;
+
+            // If both p and q are smaller than root, LCA is in left subtree
+            if (p.val < root.val && q.val < root.val) {
+                return lowestCommonAncestor_0_3(root.left, p, q);
+            }
+
+            // If both p and q are greater than root, LCA is in right subtree
+            if (p.val > root.val && q.val > root.val) {
+                return lowestCommonAncestor_0_3(root.right, p, q);
+            }
+
+            // Else, root is the split point => LCA
+            return root;
+        }
+
+
         // V1
         // IDEA : Recursive Approach
         // https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/editorial/
