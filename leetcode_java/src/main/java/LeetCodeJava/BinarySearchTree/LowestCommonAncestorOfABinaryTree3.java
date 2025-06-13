@@ -69,19 +69,67 @@ public class LowestCommonAncestorOfABinaryTree3 {
     };
 
     // V0
+//    public Node lowestCommonAncestor(Node p, Node q) {
+//
+//    }
+
+    // V0-1
+    // IDEA: 2 POINTERS (gpt)
+    public Node lowestCommonAncestor_0_1(Node p, Node q) {
+        Node a = p;
+        Node b = q;
+
+        // Loop until both pointers meet
+        while (a != b) {
+            // Move a to its parent, or switch to q if null
+            a = (a == null) ? q : a.parent;
+
+            // Move b to its parent, or switch to p if null
+            b = (b == null) ? p : b.parent;
+        }
+
+        // Either both are null or both are at LCA
+        return a;
+    }
 
     // V1-1
     // https://leetcode.ca/2020-06-06-1650-Lowest-Common-Ancestor-of-a-Binary-Tree-III/
     // IDEA: SET
+    /** NOTE !!
+     *
+     *   -> NO recursive call in below approach
+     */
     public Node lowestCommonAncestor_1_1(Node p, Node q) {
+
+        // NOTE !!! we init set
         Set<Node> set = new HashSet<Node>();
+
+        /**  NOTE !!!
+         *
+         *  we start from `p` node, and keep finding its parent,
+         *  and save node to set as well
+         */
         Node temp = p;
         while (temp != null) {
             set.add(temp);
             temp = temp.parent;
         }
+
+
+        /**  NOTE !!!
+         *
+         *  we start from `q` node, and keep finding its parent,
+         *  and save node to set as well
+         */
         temp = q;
         while (temp != null) {
+            /**  NOTE !!!
+             *
+             *
+             *    if `set` already contain current node,
+             *    -> means we already found a LCA,
+             *    -> break the while loop directly, and return current node as answer
+             */
             if (set.contains(temp))
                 break;
             else
