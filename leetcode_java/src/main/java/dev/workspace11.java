@@ -1,5 +1,6 @@
 package dev;
 
+import LeetCodeJava.BinarySearchTree.LowestCommonAncestorOfABinaryTree3;
 import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.Tree.DiameterOfNAryTree;
 
@@ -1138,6 +1139,73 @@ public class workspace11 {
          *  -> then return root as LCA directly
          */
         return root;
+    }
+
+
+    // LC 1650
+    // 10.27 - 10.37 am
+
+    class Node_3 {
+        public int val;
+        public Node_3 left;
+        public Node_3 right;
+        public Node_3 parent;
+    };
+
+    /**
+     *  IDEA 1) HASH SET
+     *
+     */
+    Set<Node_3> set = new HashSet<>();
+    public Node_3 lowestCommonAncestor(Node_3 p, Node_3 q) {
+        // edge
+        if(p == null && q == null){
+            return null;
+        }
+        if(p == null || q == null){
+            return null; // ???
+        }
+        if(p.equals(q)){
+            return p; // ???
+        }
+
+
+        // dfs
+        Node_3 lca = lcaHelper3(p, q);
+
+        return lca; // ???
+    }
+
+    public Node_3 lcaHelper3(Node_3 p, Node_3 q){
+        // edge
+        if(p == null && q == null){
+            return null;
+        }
+        if(p == null || q == null){
+            return null; // ???
+        }
+        if(p.equals(q)){
+            return p; // ???
+        }
+
+
+        // ???
+        if(set.contains(p) && set.contains(q)){
+            return p.parent; // ??
+        }
+
+        // ???
+        set.add(p);
+        set.add(q);
+
+        // recursive call
+        lcaHelper3(p.left, q.left);
+        lcaHelper3(p.right, q.right);
+
+
+        //if(!set.contains(p))
+
+        return null;
     }
 
 
