@@ -1034,59 +1034,67 @@ public class workspace11 {
      *
      *   // IDEA 1) DFS
      */
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        // edge
-        if(root == null){
-            return null;
-        }
-        if(root.left == null && root.right == null){
-            return null;
-        }
-        // ??
-        if(p == q){
-            return p;
-        }
-//        if(p == null || q == null){
-//            return null; // ???
+//    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+//        // edge
+//        if(root == null){
+//            return null;
 //        }
-
-        // dfs
-        return lcaHelper(root, p, q); // ???
-    }
-
-    public TreeNode lcaHelper(TreeNode root, TreeNode p, TreeNode q){
-        // edge
-        if(root == null){
-            return null;
-        }
-        if(root.left == null && root.right == null){
-            return null;
-        }
-        if(p == null && q == null){
-            return root;
-        }
-        if(p == null || q == null){
-            return root; // ???
-        }
-
-        // BST property
-
-        // case 1) root val > p, q
-        if(root.val > p.val && root.val > q.val){
-            return lcaHelper(root.left, p, q);
-        }
-        // case 2) root val < p, q
-        if(root.val < p.val && root.val < q.val){
-            return lcaHelper(root.right, p, q);
-        }
-        // case 3) q < roo val < p or p < roo val < q
-//        else{
+//        if(root.left == null && root.right == null){
+//            return null;
+//        }
+//        // ??
+//        if(p == q){
+//            return p;
+//        }
+////        if(p == null || q == null){
+////            return null; // ???
+////        }
+//
+//        // dfs
+//        return lcaHelper(root, p, q); // ???
+//    }
+//
+//    public TreeNode lcaHelper(TreeNode root, TreeNode p, TreeNode q){
+//        // edge
+//        if(root == null){
+//            return null;
+//        }
+//        if(root.left == null && root.right == null){
+//            return null;
+//        }
+//        if(p == null && q == null){
 //            return root;
 //        }
-        return root; // ??
+//        if(p == null || q == null){
+//            return root; // ???
+//        }
+//
+//        // BST property
+//
+//        // case 1) root val > p, q
+//        if(root.val > p.val && root.val > q.val){
+//            return lcaHelper(root.left, p, q);
+//        }
+//        // case 2) root val < p, q
+//        if(root.val < p.val && root.val < q.val){
+//            return lcaHelper(root.right, p, q);
+//        }
+//        // case 3) q < roo val < p or p < roo val < q
+////        else{
+////            return root;
+////        }
+//        return root; // ??
+//
+//        //return null;
+//    }
 
-        //return null;
+
+
+    // LC 1644
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        return null;
     }
+
 
 
 
