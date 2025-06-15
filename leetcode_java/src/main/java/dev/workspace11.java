@@ -1212,9 +1212,58 @@ public class workspace11 {
 
     // LC 1257
     // 3.02 - 3.12 pm
+    /**
+     * -> Given two regions `region1, region2, `
+     *    find out the `smallest` region that contains `both` of them.
+     *
+     *
+     *   You are given some lists of regions where the `first` region
+     *   of each list includes all other regions in that list.
+     *
+     *
+     *   IDEA 1) HASHMAP ???
+     *
+     *   IDEA 2) BRUTE FORCE ???
+     *
+     */
+
+    // IDEA 1) HASHMAP
     public String findSmallestRegion_1(List<List<String>> regions, String region1, String region2) {
 
-        return null;
+        // edge
+        if(regions == null || regions.isEmpty()){
+            return null;
+        }
+
+        // build map
+        Map<String, List<String>> parentMap = new HashMap<>();
+        for(List<String> r: regions){
+            List<String> sub = r.subList(1, r.size() - 1);
+            parentMap.put(r.get(0), sub); // ???
+        }
+
+        // edge: region1 == region2
+        if(region1 == region2){
+            for(String k: parentMap.keySet()){
+                if(parentMap.get(k).contains(region1)){
+                    return k;
+                }
+            }
+        }
+
+        String min_parent = null;
+
+        // if region1 != region2
+        //List<String> parent_list_1 = new ArrayList<>();
+        for(String k: parentMap.keySet()){
+            if(parentMap.get(k).contains(region1)){
+                if(parentMap.get(k).contains(region2)){
+                    return k;
+                }
+            }
+        }
+
+        return min_parent;
     }
 
 

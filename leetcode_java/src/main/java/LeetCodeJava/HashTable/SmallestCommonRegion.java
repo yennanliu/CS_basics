@@ -55,6 +55,35 @@ public class SmallestCommonRegion {
 //
 //    }
 
+    // V0-1
+    // IDEA: HASHMAP (fixed by gpt)
+    // TODO: validate
+    public String findSmallestRegion_0_1(List<List<String>> regions, String region1, String region2) {
+        // Map each region to its parent
+        Map<String, String> parentMap = new HashMap<>();
+
+        for (List<String> regionList : regions) {
+            String parent = regionList.get(0);
+            for (int i = 1; i < regionList.size(); i++) {
+                parentMap.put(regionList.get(i), parent);
+            }
+        }
+
+        // Track ancestors of region1
+        Set<String> ancestors = new HashSet<>();
+        while (region1 != null) {
+            ancestors.add(region1);
+            region1 = parentMap.get(region1);
+        }
+
+        // Traverse region2’s ancestors until we find one in region1’s ancestor set
+        while (!ancestors.contains(region2)) {
+            region2 = parentMap.get(region2);
+        }
+
+        return region2;
+    }
+
     // V1
     // https://leetcode.ca/2019-05-10-1257-Smallest-Common-Region/
     public String findSmallestRegion_1(List<List<String>> regions, String region1, String region2) {
