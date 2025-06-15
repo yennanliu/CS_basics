@@ -1832,3 +1832,101 @@ if (x < 0 || x >= rows || y < 0 || y >= cols || board[x][y] != 'E') {
     }
 }
 ```
+
+### 2-13) K-th Largest Perfect Subtree Size in Binary Tree
+
+```java
+// java
+// LC 3319
+
+// V0-1
+// IDEA: DFS (fixed by gpt)
+//  Time Complexity: O(N log N)
+//  Space Complexity: O(N)
+/**
+*  Objective recap:
+*
+*   We want to:
+*    •   Find all perfect binary subtrees in the given tree.
+*    •   A perfect binary tree is one where:
+*        •   Every node has 0 or 2 children (i.e., full),
+*        •   All leaf nodes are at the `same depth`.
+*    •   Return the k-th largest size among these perfect subtrees.
+*    •   If there are fewer than k perfect subtrees, return -1.
+*
+*/
+// This is a class-level list that stores the sizes of all perfect subtrees we discover during traversal.
+List<Integer> perfectSizes = new ArrayList<>();
+
+public int kthLargestPerfectSubtree_0_1(TreeNode root, int k) {
+    dfs(root);
+    if (perfectSizes.size() < k)
+        return -1;
+
+    Collections.sort(perfectSizes, Collections.reverseOrder());
+    return perfectSizes.get(k - 1);
+}
+
+// Helper class to store information about each subtree
+/**
+*
+* It returns a helper object SubtreeInfo, which contains:
+*    •   height: depth of the subtree rooted at node.
+*    •   size: number of nodes in the subtree.
+*    •   isPerfect: boolean indicating whether this subtree is perfect.
+*
+*/
+private static class SubtreeInfo {
+    int height;
+    int size;
+    boolean isPerfect;
+
+    SubtreeInfo(int height, int size, boolean isPerfect) {
+        this.height = height;
+        this.size = size;
+        this.isPerfect = isPerfect;
+    }
+}
+
+/**
+* Inside dfs():
+*    1.  Base case:
+*        •   If node == null, we return a SubtreeInfo with height 0, size 0, and isPerfect = true.
+*    2.  Recurse on left and right children.
+*    3.  Check if the subtree rooted at this node is perfect:
+*
+*/
+private SubtreeInfo dfs(TreeNode node) {
+    if (node == null) {
+        return new SubtreeInfo(0, 0, true);
+    }
+
+    SubtreeInfo left = dfs(node.left);
+    SubtreeInfo right = dfs(node.right);
+
+/**  NOTE !!!  below logic:
+ *
+ * This ensures:
+ *  •   Both left and right subtrees are perfect.
+ *  •   Their `heights` are the same → leaves are at the `same level`.
+ */
+boolean isPerfect = left.isPerfect && right.isPerfect
+        && (left.height == right.height);
+
+
+    int size = left.size + right.size + 1;
+    int height = Math.max(left.height, right.height) + 1;
+
+    /**
+     *  NOTE !!!
+     *
+     *  If the current subtree is perfect, we record its size:
+     *
+     */
+    if (isPerfect) {
+        perfectSizes.add(size);
+    }
+
+    return new SubtreeInfo(height, size, isPerfect);
+}
+```

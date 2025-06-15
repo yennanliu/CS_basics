@@ -71,30 +71,45 @@ import java.util.List;
  *
  */
 public class KthLargestPerfectSubtreeSizeInBinaryTree {
-    /**
-     * Definition for a binary tree node.
-     * public class TreeNode {
-     *     int val;
-     *     TreeNode left;
-     *     TreeNode right;
-     *     TreeNode() {}
-     *     TreeNode(int val) { this.val = val; }
-     *     TreeNode(int val, TreeNode left, TreeNode right) {
-     *         this.val = val;
-     *         this.left = left;
-     *         this.right = right;
-     *     }
-     * }
-     */
+  /**
+   * Definition for a binary tree node.
+   * public class TreeNode {
+   *     int val;
+   *     TreeNode left;
+   *     TreeNode right;
+   *     TreeNode() {}
+   *     TreeNode(int val) { this.val = val; }
+   *     TreeNode(int val, TreeNode left, TreeNode right) {
+   *         this.val = val;
+   *         this.left = left;
+   *         this.right = right;
+   *     }
+   * }
+   */
 
-    // V0
-//    public int kthLargestPerfectSubtree(TreeNode root, int k) {
-//
-//    }
+  // V0
+  //    public int kthLargestPerfectSubtree(TreeNode root, int k) {
+  //
+  //    }
 
-    // V0-1
-    // IDEA: DFS (fixed by gpt)
-    private List<Integer> perfectSizes = new ArrayList<>();
+  // V0-1
+  // IDEA: DFS (fixed by gpt)
+  //  Time Complexity: O(N log N)
+  //  Space Complexity: O(N)
+  /**
+   *  Objective recap:
+   *
+   *   We want to:
+   * 	•	Find all perfect binary subtrees in the given tree.
+   * 	•	A perfect binary tree is one where:
+   * 	    •	Every node has 0 or 2 children (i.e., full),
+   * 	    •	All leaf nodes are at the `same depth`.
+   * 	•	Return the k-th largest size among these perfect subtrees.
+   * 	•	If there are fewer than k perfect subtrees, return -1.
+   *
+   */
+  // This is a class-level list that stores the sizes of all perfect subtrees we discover during traversal.
+  private List<Integer> perfectSizes = new ArrayList<>();
 
     public int kthLargestPerfectSubtree_0_1(TreeNode root, int k) {
         dfs(root);
@@ -105,8 +120,16 @@ public class KthLargestPerfectSubtreeSizeInBinaryTree {
         return perfectSizes.get(k - 1);
     }
 
-    // Helper class to store information about each subtree
-    private static class SubtreeInfo {
+  // Helper class to store information about each subtree
+  /**
+   *
+   * It returns a helper object SubtreeInfo, which contains:
+   * 	•	height: depth of the subtree rooted at node.
+   * 	•	size: number of nodes in the subtree.
+   * 	•	isPerfect: boolean indicating whether this subtree is perfect.
+   *
+   */
+  private static class SubtreeInfo {
         int height;
         int size;
         boolean isPerfect;
@@ -118,7 +141,15 @@ public class KthLargestPerfectSubtreeSizeInBinaryTree {
         }
     }
 
-    private SubtreeInfo dfs(TreeNode node) {
+  /**
+   * Inside dfs():
+   * 	1.	Base case:
+   * 	    •	If node == null, we return a SubtreeInfo with height 0, size 0, and isPerfect = true.
+   * 	2.	Recurse on left and right children.
+   * 	3.	Check if the subtree rooted at this node is perfect:
+   *
+   */
+  private SubtreeInfo dfs(TreeNode node) {
         if (node == null) {
             return new SubtreeInfo(0, 0, true);
         }
@@ -126,16 +157,36 @@ public class KthLargestPerfectSubtreeSizeInBinaryTree {
         SubtreeInfo left = dfs(node.left);
         SubtreeInfo right = dfs(node.right);
 
-        boolean isPerfect = left.isPerfect && right.isPerfect && (left.height == right.height);
+    /**  NOTE !!!  below logic:
+     *
+     * This ensures:
+     * 	•	Both left and right subtrees are perfect.
+     * 	•	Their `heights` are the same → leaves are at the `same level`.
+     */
+    boolean isPerfect = left.isPerfect && right.isPerfect
+            && (left.height == right.height);
+
+
         int size = left.size + right.size + 1;
         int height = Math.max(left.height, right.height) + 1;
 
+        /**
+         *  NOTE !!!
+         *
+         *  If the current subtree is perfect, we record its size:
+         *
+         */
         if (isPerfect) {
             perfectSizes.add(size);
         }
 
         return new SubtreeInfo(height, size, isPerfect);
     }
+
+
+    // V0-2
+    // IDEA: MIN HEAP (gpt)
+
 
     // V1
 
