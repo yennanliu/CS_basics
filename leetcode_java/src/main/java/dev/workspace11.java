@@ -1210,6 +1210,12 @@ public class workspace11 {
 
 
 
+    // LC 1257
+    // 3.02 - 3.12 pm
+    public String findSmallestRegion_1(List<List<String>> regions, String region1, String region2) {
+
+        return null;
+    }
 
 
 
