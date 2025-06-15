@@ -59,7 +59,16 @@ public class SmallestCommonRegion {
     // IDEA: HASHMAP (fixed by gpt)
     // TODO: validate
     public String findSmallestRegion_0_1(List<List<String>> regions, String region1, String region2) {
+
         // Map each region to its parent
+        /**
+         *  NOTE !!!
+         *
+         *   map : {child : parent}
+         *
+         *   -> so the key is child, and the value is its parent
+         *
+         */
         Map<String, String> parentMap = new HashMap<>();
 
         for (List<String> regionList : regions) {
@@ -70,6 +79,13 @@ public class SmallestCommonRegion {
         }
 
         // Track ancestors of region1
+        /**  NOTE !!!
+         *
+         *  we use `set` to track `parents` (ancestors)
+         *  if exists, add it to set,
+         *  and set `current region` as its `parent`
+         *
+         */
         Set<String> ancestors = new HashSet<>();
         while (region1 != null) {
             ancestors.add(region1);

@@ -398,7 +398,7 @@
 1121| [Divide Array Into Increasing Sequences](https://leetcode.com/problems/divide-array-into-increasing-sequences)|  [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/DivideArrayIntoIncreasingSequences.java)||| Hard |dict, google| Again (not start)
 1131| [Rank Transform of an Array](https://leetcode.com/problems/rank-transform-of-an-array/)|[Python ](./leetcode_python/Hash_table/rank-transform-of-an-array.py) ||| Easy |dict, array, `amazon`| OK* (1)
 1170| [Compare Strings by Frequency of the Smallest Character](https://leetcode.com/problems/compare-strings-by-frequency-of-the-smallest-character/description/)|[Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/CompareStringsByFrequencyOfTheSmallestCharacter.java) ||| Medium |hashmap, binary search, `google`| AGAIN*** (1)s
-1257| [Smallest Common Region](https://leetcode.com/problems/smallest-common-region)|[Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/SmallestCommonRegion.java) ||| Medium |hashmap| AGAIN (not start)
+1257| [Smallest Common Region](https://leetcode.com/problems/smallest-common-region)|[Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/SmallestCommonRegion.java) ||| Medium |hashmap, good trick| AGAIN (not start)
 1296| [Divide Array in Sets of K Consecutive Numbers](https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/)|[Python ](./leetcode_python/Hash_table/divide-array-in-sets-of-k-consecutive-numbers.py) ||| Medium |LC 846, dict, `google`| AGAIN (not start)
 1923| [Longest Common Subpath](https://leetcode.com/problems/longest-common-subpath/) |  [Python](./leetcode_python/Hash_table/longest-common-subpath.py)  | _O(n)_ | _O(h)_ | Hard|hash, bit,  `amazon`|  AGAIN (not start)
 

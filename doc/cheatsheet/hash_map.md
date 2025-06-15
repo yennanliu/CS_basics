@@ -1039,3 +1039,55 @@ class Solution(object):
         return maxSize;
     }
 ```
+
+### 2-14)  Smallest Common Region
+
+```java
+// java
+// LC 1257
+
+// V0-1
+// IDEA: HASHMAP (fixed by gpt)
+// TODO: validate
+public String findSmallestRegion_0_1(List<List<String>> regions, String region1, String region2) {
+
+    // Map each region to its parent
+    /**
+     *  NOTE !!!
+     *
+     *   map : {child : parent}
+     *
+     *   -> so the key is child, and the value is its parent
+     *
+     */
+    Map<String, String> parentMap = new HashMap<>();
+
+    for (List<String> regionList : regions) {
+        String parent = regionList.get(0);
+        for (int i = 1; i < regionList.size(); i++) {
+            parentMap.put(regionList.get(i), parent);
+        }
+    }
+
+    // Track ancestors of region1
+    /**  NOTE !!!
+     *
+     *  we use `set` to track `parents` (ancestors)
+     *  if exists, add it to set,
+     *  and set `current region` as its `parent`
+     *
+     */
+    Set<String> ancestors = new HashSet<>();
+    while (region1 != null) {
+        ancestors.add(region1);
+        region1 = parentMap.get(region1);
+    }
+
+    // Traverse region2’s ancestors until we find one in region1’s ancestor set
+    while (!ancestors.contains(region2)) {
+        region2 = parentMap.get(region2);
+    }
+
+    return region2;
+}
+```
