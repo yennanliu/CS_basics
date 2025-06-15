@@ -92,6 +92,51 @@ public class KthLargestPerfectSubtreeSizeInBinaryTree {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (fixed by gpt)
+    private List<Integer> perfectSizes = new ArrayList<>();
+
+    public int kthLargestPerfectSubtree_0_1(TreeNode root, int k) {
+        dfs(root);
+        if (perfectSizes.size() < k)
+            return -1;
+
+        Collections.sort(perfectSizes, Collections.reverseOrder());
+        return perfectSizes.get(k - 1);
+    }
+
+    // Helper class to store information about each subtree
+    private static class SubtreeInfo {
+        int height;
+        int size;
+        boolean isPerfect;
+
+        SubtreeInfo(int height, int size, boolean isPerfect) {
+            this.height = height;
+            this.size = size;
+            this.isPerfect = isPerfect;
+        }
+    }
+
+    private SubtreeInfo dfs(TreeNode node) {
+        if (node == null) {
+            return new SubtreeInfo(0, 0, true);
+        }
+
+        SubtreeInfo left = dfs(node.left);
+        SubtreeInfo right = dfs(node.right);
+
+        boolean isPerfect = left.isPerfect && right.isPerfect && (left.height == right.height);
+        int size = left.size + right.size + 1;
+        int height = Math.max(left.height, right.height) + 1;
+
+        if (isPerfect) {
+            perfectSizes.add(size);
+        }
+
+        return new SubtreeInfo(height, size, isPerfect);
+    }
+
     // V1
 
 
@@ -122,6 +167,17 @@ public class KthLargestPerfectSubtreeSizeInBinaryTree {
     // V3
     // https://leetcode.com/problems/k-th-largest-perfect-subtree-size-in-binary-tree/solutions/5913315/python3-10-lines-dfs-ts-82-77-by-spauldi-mfov/
     // IDEA: DFS
+    public int kthLargestPerfectSubtree_3(TreeNode root, int k) {
+        List<Integer> ans = new ArrayList<>();
+        dfs_3(root, ans);
+
+        if (ans.size() < k)
+            return -1;
+
+        Collections.sort(ans, Collections.reverseOrder());
+        return ans.get(k - 1);
+    }
+
     private int dfs_3(TreeNode node, List<Integer> ans) {
 
         if (node == null)
@@ -136,18 +192,6 @@ public class KthLargestPerfectSubtreeSizeInBinaryTree {
         ans.add(left + right + 1);
         return left + right + 1;
     }
-
-    public int kthLargestPerfectSubtree_3(TreeNode root, int k) {
-        List<Integer> ans = new ArrayList<>();
-        dfs_3(root, ans);
-
-        if (ans.size() < k)
-            return -1;
-
-        Collections.sort(ans, Collections.reverseOrder());
-        return ans.get(k - 1);
-    }
-
 
     // V4
     // IDEA: DFS

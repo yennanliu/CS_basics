@@ -1266,11 +1266,81 @@ public class workspace11 {
         return min_parent;
     }
 
+  // LC 3319
+  // 3.52 - 4.10 pm
+  /**
+   *
+   * -> Return an` integer` denoting the `size` of the
+   *    `kth` `largest` perfect binary subtree,
+   *    or -1 if it doesn't exist.
+   *
+   *
+   *   (A perfect binary tree is a tree where all leaves
+   *   are on the same level, and every parent has two children)
+   *
+   *
+   *
+   *   IDEA 1) DFS
+   *
+   */
+  List<List<Integer>> collected = new ArrayList<>();
+  public int kthLargestPerfectSubtree(TreeNode root, int k) {
 
-    // LC 3319
-    public int kthLargestPerfectSubtree(TreeNode root, int k) {
+      // edge
+      if(root == null){
+          return -1;
+      }
+      if(root.left == null && root.right == null){
+         //if(roo)
+          return root.val; // ???
+      }
 
-        return 0;
+
+      // dfs
+
+      // edge
+      if(collected == null || collected.isEmpty() || collected.size() < k){
+          return -1;
+      }
+
+     // for(int i = 0)
+     // sort on len (max -> small)
+     Collections.sort(collected, new Comparator<List<Integer>>() {
+         @Override
+         public int compare(List<Integer> o1, List<Integer> o2) {
+             int diff = o2.size() - o1.size();
+             return diff;
+         }
+     });
+
+      return collected.get(k).size(); // ??
     }
+
+    public TreeNode perfectSubTreeHelper(TreeNode root){
+      // edge
+        if(root == null){
+           // return -1;
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            //if(roo)
+           // return root.val; // ???
+           if(!collected.contains(root)){
+               List<Integer> cur = new ArrayList<>();
+               cur.add(root.val);
+              collected.add(cur); // ???
+           }
+        }
+
+        TreeNode _left = perfectSubTreeHelper(root.left);
+        TreeNode _right = perfectSubTreeHelper(root.right);
+
+
+
+        return null;
+    }
+
+
+
 
 }
