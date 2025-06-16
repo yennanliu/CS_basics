@@ -1481,6 +1481,61 @@ public class workspace11 {
 //        return res;
 //    }
 
+    // LC 503
+    // 11.05 - 11.15 am
+    /**
+     *  IDEA 1) mono stack + ` % len` handling
+     *
+     *
+     *
+     *
+     */
+    public int[] nextGreaterElements(int[] nums) {
+
+        int[] res = new int[nums.length];
+        Arrays.fill(res, -1);
+
+        // edge
+        if(nums == null || nums.length == 0){
+            return null; // ??
+        }
+
+        // map : {val : idx}
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // stack : mono increase stack (idx)
+        Stack<Integer> st = new Stack<>();
+
+        for(int i = 0; i < nums.length; i++){
+            map.put(nums[i], i);
+        }
+
+//        for(int i = 0; i < nums.length * 2; i++){
+//            int val = nums[i];
+//            while(!st.isEmpty() && st.peek() < val){
+//                int tmp = st.pop();
+//            }
+//
+//            st.push(val);
+//        }
+
+        for(int i = 0; i < nums.length * 2; i++){
+            int val = nums[ i % nums.length ];
+            while(!st.isEmpty() && nums[st.peek()] < val){
+                //int tmp = st.pop();
+                res[i % nums.length] = val;
+            }
+
+            if(i < nums.length){
+                st.push(val);
+            }
+
+        }
+
+
+        return res;
+    }
+
 
 
 }
