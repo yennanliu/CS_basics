@@ -569,51 +569,82 @@ public class workspace11 {
     }
 
     // LC 226
-    // 10.50 - 11.00 am
+    // 10.04 - 10.14 am
     /**
      *
      * -> Given the root of a binary tree,
      *   invert the tree, and return its root.
      */
-    // IDEA: DFS
     public TreeNode invertTree(TreeNode root) {
         // edge
         if(root == null || (root.left == null && root.right == null)){
             return root;
         }
-        if(root.left == null || root.right == null){
-            TreeNode _left = root.left;
-            root.left = root.right;
-            root.right = _left;
-        }
+//        if(root.left == null || root.right == null){
+//            TreeNode _left = root.left;
+//            root.left = root.right;
+//            root.right = _left;
+//        }
 
-        // call helper func
-//        root.left = inverseHelper(root.right);
-//        root.right = inverseHelper(root.left);
-        TreeNode reversedNode = inverseHelper(root); // ???
-
-        return reversedNode;
+        // dfs call
+        return invertHelper2(root);
     }
 
-    // ???
-    public TreeNode inverseHelper(TreeNode root){
+    private TreeNode invertHelper2(TreeNode root){
         // edge
         if(root == null){
             return root;
         }
 
-//        TreeNode _left = root.left;
-//        TreeNode _right = root.right;
+        TreeNode _left = invertHelper2(root.left);
+        TreeNode _right = invertHelper2(root.right);
 
         // ???
-        TreeNode _right = inverseHelper(root.right);
-        TreeNode _left = inverseHelper(root.left);
-
-        root.left = _right; //???
-        root.right = _left; // ???
+        root.left = _right; //invertHelper2(root.right); //_right;
+        root.right = _left;
 
         return root;
     }
+
+//    // IDEA: DFS
+//    public TreeNode invertTree(TreeNode root) {
+//        // edge
+//        if(root == null || (root.left == null && root.right == null)){
+//            return root;
+//        }
+//        if(root.left == null || root.right == null){
+//            TreeNode _left = root.left;
+//            root.left = root.right;
+//            root.right = _left;
+//        }
+//
+//        // call helper func
+////        root.left = inverseHelper(root.right);
+////        root.right = inverseHelper(root.left);
+//        TreeNode reversedNode = inverseHelper(root); // ???
+//
+//        return reversedNode;
+//    }
+//
+//    // ???
+//    public TreeNode inverseHelper(TreeNode root){
+//        // edge
+//        if(root == null){
+//            return root;
+//        }
+//
+////        TreeNode _left = root.left;
+////        TreeNode _right = root.right;
+//
+//        // ???
+//        TreeNode _right = inverseHelper(root.right);
+//        TreeNode _left = inverseHelper(root.left);
+//
+//        root.left = _right; //???
+//        root.right = _left; // ???
+//
+//        return root;
+//    }
 
     ///////////////////
 
@@ -1340,6 +1371,115 @@ public class workspace11 {
         return null;
     }
 
+    // LC 496
+    // 10.21 - 10.31 am
+    /**
+     *  -> Return an array ans of length `nums1`.
+     *     length such that ans[i] is the next `greater` element as described above.
+     *
+     *
+     *  You are given two distinct 0-indexed integer arrays nums1 and nums2,
+     *  where `nums1` is a `subset` of `nums2`.
+     *
+     *  nums1[i] == nums2[j] and determine the next greater
+     *  element of nums2[j] in nums2. If there is no next greater element,
+     *  then the answer for this query is -1.
+     *
+     *
+     *
+     *  ->
+     *
+     *
+     *
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+        int[] res = new int[nums1.length];
+        Arrays.fill(res, -1);
+
+
+        // map : `collect next big element
+        // { val : next_big_element_idx }
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // mono stack (FILO)
+        // `increase mono stack`
+        Stack<Integer> st = new Stack<>();
+
+        for(int i = 0; i < nums2.length; i++){
+
+            int val = nums2[i];
+
+            if(st.isEmpty()){
+                st.add(val);
+            }else{
+                if(st.peek() > val){
+                   // st.add(val);
+                   map.put(val, i);
+                }else{
+                   st.pop();
+                   st.add(val);
+                }
+            }
+        }
+
+
+        for(int i = 0; i < nums1.length-1; i++){
+            int val_1 = nums1[i];
+            if(map.containsKey(val_1)){
+                res[i] = map.get(val_1);
+            }
+        }
+
+        return res;
+    }
+
+
+
+
+//    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+//
+//        int[] res = new int[nums1.length];
+//        Arrays.fill(res, -1);
+//
+//        // edge
+//        if (nums1 == null || nums1.length == 0){
+//            return new int[]{};
+//        }
+//        if(nums2 == null){
+//            return res;
+//        }
+//
+//        Stack<Integer> st = new Stack<>();
+//        for(int x: nums2){
+//            st.add(x);
+//        }
+//
+//        // mono stack (mono increasing stack, FILO)
+//        for(int i = 0; i < nums1.length; i++){
+//
+//            int val_1 = nums1[i];
+//
+//            // copy stack as current stack
+//            Stack<Integer> st_ = st; // ???
+//            boolean start = false;
+//
+//            // NOTE !!! find corresponding idx (with same val) in nums2
+//            while(!st_.isEmpty()){
+//                int val_2 = st.pop();
+//                if(val_2 == val_1){
+//                    start = true;
+//                }
+//                if(val_2 > val_1 && start){
+//                    res[i] = val_2;
+//                    break;
+//                }
+//            }
+//        }
+//
+//
+//        return res;
+//    }
 
 
 
