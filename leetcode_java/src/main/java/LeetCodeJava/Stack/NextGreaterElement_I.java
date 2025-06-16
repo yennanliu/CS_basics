@@ -122,7 +122,7 @@ public class NextGreaterElement_I {
         for (int x : nums2){
             /**
              *  NOTE !!!
-             *   1) use while loop
+             *   1) use `while` loop
              *   2) while stack is NOT null and stack "top"
              *      element is smaller than current element (x) is nums2
              *
