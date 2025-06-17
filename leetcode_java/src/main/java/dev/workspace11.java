@@ -1634,51 +1634,107 @@ public class workspace11 {
      *
      *
      */
+    // 11.54 - 12.04 pm
+    /**
+     *  IDEA 1) STACK + `idx % len`  op
+     *
+     */
     public int[] nextGreaterElements(int[] nums) {
+
+        // edge
+        if (nums == null || nums.length == 0) {
+            return new int[0]; // Return empty array instead of null
+        }
 
         int[] res = new int[nums.length];
         Arrays.fill(res, -1);
 
-        // edge
-        if(nums == null || nums.length == 0){
-            return null; // ??
-        }
-
-        // map : {val : idx}
+        // map: { idx : next_bigger_val_idx }
         Map<Integer, Integer> map = new HashMap<>();
 
-        // stack : mono increase stack (idx)
+        // mono stack
         Stack<Integer> st = new Stack<>();
+        // double size of nums
+
+        int _len = nums.length;
+
+        for(int i = 0; i < _len * 2; i++){
+
+            // adjust `idx`
+            int adjusted_idx = i % _len;
+            int val = nums[adjusted_idx];
+
+            while(!st.isEmpty() && nums[st.peek()] < val){
+                int prev_idx = st.pop();
+
+                map.put(prev_idx, adjusted_idx);
+            }
+
+            // NOTE !!! ONLY push the `first n` element
+            if(i < _len){
+                st.add(adjusted_idx);
+            }
+
+        }
 
         for(int i = 0; i < nums.length; i++){
-            map.put(nums[i], i);
+            if(map.containsKey(i)){
+                res[i] = nums[map.get(i)];
+            }
         }
 
+       return res;
+
+    }
+
+
+
+
+//    public int[] nextGreaterElements(int[] nums) {
+//
+//        int[] res = new int[nums.length];
+//        Arrays.fill(res, -1);
+//
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return null; // ??
+//        }
+//
+//        // map : {val : idx}
+//        Map<Integer, Integer> map = new HashMap<>();
+//
+//        // stack : mono increase stack (idx)
+//        Stack<Integer> st = new Stack<>();
+//
+//        for(int i = 0; i < nums.length; i++){
+//            map.put(nums[i], i);
+//        }
+//
+////        for(int i = 0; i < nums.length * 2; i++){
+////            int val = nums[i];
+////            while(!st.isEmpty() && st.peek() < val){
+////                int tmp = st.pop();
+////            }
+////
+////            st.push(val);
+////        }
+//
 //        for(int i = 0; i < nums.length * 2; i++){
-//            int val = nums[i];
-//            while(!st.isEmpty() && st.peek() < val){
-//                int tmp = st.pop();
+//            int val = nums[ i % nums.length ];
+//            while(!st.isEmpty() && nums[st.peek()] < val){
+//                //int tmp = st.pop();
+//                res[i % nums.length] = val;
 //            }
 //
-//            st.push(val);
+//            if(i < nums.length){
+//                st.push(val);
+//            }
+//
 //        }
-
-        for(int i = 0; i < nums.length * 2; i++){
-            int val = nums[ i % nums.length ];
-            while(!st.isEmpty() && nums[st.peek()] < val){
-                //int tmp = st.pop();
-                res[i % nums.length] = val;
-            }
-
-            if(i < nums.length){
-                st.push(val);
-            }
-
-        }
-
-
-        return res;
-    }
+//
+//
+//        return res;
+//    }
 
 
 
