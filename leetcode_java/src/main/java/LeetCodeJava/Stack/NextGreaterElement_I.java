@@ -51,6 +51,40 @@ import java.util.*;
 public class NextGreaterElement_I {
 
     // V0
+    // IDEA:  HASHMAP { val: next_bigger_val } + BRUTE FORCE
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+        int[] res = new int[nums1.length];
+        Arrays.fill(res, -1);
+
+        // use map to record `next bigger number` in nums2 ??
+        // map : {val : next_big_val}
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // update the map by setting val, and nex_big_val in nums2
+        for(int i = 0; i < nums2.length; i++){
+            for(int j = i+1; j < nums2.length; j++){
+                if(nums2[j] > nums2[i]){
+                    map.put(nums2[i], nums2[j]);
+                    break;
+                }
+            }
+        }
+
+        //System.out.println(">>> map = " + map);
+        // loop over nums1
+        for(int i = 0; i < nums1.length; i++){
+            int val = nums1[i];
+            if(map.containsKey(val)){
+                res[i] = map.get(val);
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-0-1
     // IDEA : STACK
     // https://www.youtube.com/watch?v=68a1Dc_qVq4
     /** NOTE !!!
@@ -103,7 +137,7 @@ public class NextGreaterElement_I {
      *  st = [], map = {6:7,5:7,4:7,3:7,2:7,1:7}
      *
      */
-    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+    public int[] nextGreaterElement_0_0_1(int[] nums1, int[] nums2) {
 
         if (nums1.length == 1 && nums2.length == 1){
             return new int[]{-1};
