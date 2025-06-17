@@ -83,8 +83,42 @@ public class NextGreaterElement_I {
         return res;
     }
 
+    // V-0-0-1
+    // IDEA : STACK
+    public int[] nextGreaterElement_0_0_1(int[] nums1, int[] nums2) {
+        int[] res = new int[nums1.length];
+        Arrays.fill(res, -1);
 
-    // V0-0-1
+        // use map to record `next bigger number` in nums2 ??
+        // map : {val : next_big_val}
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // stack: FILO
+        // mono increase stack (small -> big)
+        Stack<Integer> st = new Stack<>();
+        for(Integer x: nums2){
+
+            while(!st.isEmpty() && st.peek() < x){
+                int prev = st.pop();
+                map.put(prev, x);
+            }
+
+            st.add(x);
+        }
+
+        // update res
+        for(int i = 0; i < nums1.length; i++){
+            int val = nums1[i];
+            if(map.containsKey(val)){
+                res[i] = map.get(val);
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-0-2
     // IDEA : STACK
     // https://www.youtube.com/watch?v=68a1Dc_qVq4
     /** NOTE !!!
@@ -137,7 +171,7 @@ public class NextGreaterElement_I {
      *  st = [], map = {6:7,5:7,4:7,3:7,2:7,1:7}
      *
      */
-    public int[] nextGreaterElement_0_0_1(int[] nums1, int[] nums2) {
+    public int[] nextGreaterElement_0_0_2(int[] nums1, int[] nums2) {
 
         if (nums1.length == 1 && nums2.length == 1){
             return new int[]{-1};

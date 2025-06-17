@@ -1462,8 +1462,8 @@ public class workspace11 {
      *
      */
     // 11.24 - 11.34 am
+    // IDEA: STACK
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-
         int[] res = new int[nums1.length];
         Arrays.fill(res, -1);
 
@@ -1471,21 +1471,20 @@ public class workspace11 {
         // map : {val : next_big_val}
         Map<Integer, Integer> map = new HashMap<>();
 
-        // update the map by setting val, and nex_big_val in nums2
-        for(int i = 0; i < nums2.length; i++){
-            for(int j = i+1; j < nums2.length; j++){
-                if(nums2[j] > nums2[i]){
-                    map.put(nums2[i], nums2[j]);
-                    break;
-                }
+        // stack: FILO
+        // mono increase stack (small -> big)
+        Stack<Integer> st = new Stack<>();
+        for(Integer x: nums2){
+
+            while(!st.isEmpty() && st.peek() < x){
+                int prev = st.pop();
+                map.put(prev, x);
             }
+
+            st.add(x);
         }
 
-        System.out.println(">>> map = " + map);
-
-        // q : mono increase queue
-        Queue<Integer> q = new LinkedList<>();
-        // loop over nums1
+        // update res
         for(int i = 0; i < nums1.length; i++){
             int val = nums1[i];
             if(map.containsKey(val)){
@@ -1493,9 +1492,48 @@ public class workspace11 {
             }
         }
 
-
         return res;
     }
+
+
+
+
+
+    // IDEA: HASHMAP + BRUTE FORCE
+//    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+//
+//        int[] res = new int[nums1.length];
+//        Arrays.fill(res, -1);
+//
+//        // use map to record `next bigger number` in nums2 ??
+//        // map : {val : next_big_val}
+//        Map<Integer, Integer> map = new HashMap<>();
+//
+//        // update the map by setting val, and nex_big_val in nums2
+//        for(int i = 0; i < nums2.length; i++){
+//            for(int j = i+1; j < nums2.length; j++){
+//                if(nums2[j] > nums2[i]){
+//                    map.put(nums2[i], nums2[j]);
+//                    break;
+//                }
+//            }
+//        }
+//
+//        System.out.println(">>> map = " + map);
+//
+//        // q : mono increase queue
+//        Queue<Integer> q = new LinkedList<>();
+//        // loop over nums1
+//        for(int i = 0; i < nums1.length; i++){
+//            int val = nums1[i];
+//            if(map.containsKey(val)){
+//                res[i] = map.get(val);
+//            }
+//        }
+//
+//
+//        return res;
+//    }
 
 
 //    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
