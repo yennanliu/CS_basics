@@ -2,10 +2,7 @@ package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/next-greater-element-ii/description/
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * 503. Next Greater Element II
@@ -42,12 +39,98 @@ import java.util.Stack;
 public class NextGreaterElement_II {
 
     // V0
-//    public int[] nextGreaterElements(int[] nums) {
-//
-//    }
+    // IDEA: HASHMAP, STACK (mono increase stack) + LC 496
+    public int[] nextGreaterElements(int[] nums) {
+
+        // edge
+        if (nums == null || nums.length == 0) {
+            return new int[0]; // Return empty array instead of null
+        }
+
+        int[] res = new int[nums.length];
+        Arrays.fill(res, -1);
+
+        /**
+         *  NOTE !!!  map: { idx : next_bigger_val_idx }
+         *
+         *   in order to deal with `duplicated val`
+         *   -> in map, we save INDEX !!!
+         *
+         *   e.g.
+         *
+         *   map: { idx : next_bigger_val_idx }
+         *
+         */
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // mono stack
+        /**
+         *  NOTE !!!  stack : { next_bigger_val_idx }
+         *
+         *   in order to deal with `duplicated val`
+         *   -> in stack, we save INDEX !!!
+         *
+         *   e.g.
+         *
+         *    stack : { next_bigger_val_idx }
+         *
+         */
+        Stack<Integer> st = new Stack<>();
+
+        int _len = nums.length;
+
+        // double size of nums
+        for (int i = 0; i < _len * 2; i++) {
+
+            // adjust `idx`
+            int adjusted_idx = i % _len;
+            int val = nums[adjusted_idx];
+
+            while (!st.isEmpty() && nums[st.peek()] < val) {
+                int prev_idx = st.pop();
+
+                map.put(prev_idx, adjusted_idx);
+            }
+
+            // NOTE !!! ONLY push the `first n` element
+            if (i < _len) {
+                st.add(adjusted_idx);
+            }
+
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(i)) {
+                /**
+                 *  NOTE !!! we modify `res`, instead of nums
+                 */
+                res[i] = nums[map.get(i)];
+            }
+        }
+
+        return res;
+
+    }
 
     // V0-1
     // IDEA: STACK + `circular array` simulation + op ( x % y = z )
+    /**
+     *  NOTE !!!
+     *
+     *   for stack, we need to store `next bigger val INDEX` (instead of val)
+     *
+     *
+     *   ----
+     *
+     *
+     *   We store indices instead of values in the stack because:
+     *
+     *   -> It allows us to:
+     *
+     *      - Track where each number came from (i.e., its position)
+     *      - Update the result array (res[]) at the correct index
+     *      - Correctly handle `DUPLICATED` values
+     */
     public int[] nextGreaterElements_0_1(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
