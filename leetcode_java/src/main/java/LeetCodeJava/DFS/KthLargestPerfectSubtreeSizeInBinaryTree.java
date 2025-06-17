@@ -97,6 +97,10 @@ public class KthLargestPerfectSubtreeSizeInBinaryTree {
   //  Time Complexity: O(N log N)
   //  Space Complexity: O(N)
   /**
+   *  NOTE !!! the DFS is `post order traverse`
+   *           e.g. left -> right -> root
+   */
+  /**
    *  Objective recap:
    *
    *   We want to:
@@ -149,7 +153,115 @@ public class KthLargestPerfectSubtreeSizeInBinaryTree {
    * 	3.	Check if the subtree rooted at this node is perfect:
    *
    */
-  private SubtreeInfo dfs(TreeNode node) {
+    /**
+     *  NOTE !!! the DFS is `post order traverse`
+     *           e.g. left -> right -> root
+     * ---
+     *
+     * ## ✅ Is this DFS post-order?
+     *
+     * **Yes, 100% this is a post-order traversal.**
+     *
+     * ### In post-order DFS, the visiting order is:
+     *
+     * ```
+     * left → right → root
+     * ```
+     *
+     * In your `dfs()`:
+     *
+     * ```java
+     * SubtreeInfo left = dfs(node.left);   // Visit left subtree
+     * SubtreeInfo right = dfs(node.right); // Visit right subtree
+     * ```
+     *
+     * Then only **after both left and right are processed**, you evaluate the current root:
+     *
+     * ```java
+     * boolean isPerfect = left.isPerfect && right.isPerfect && (left.height == right.height);
+     * ```
+     *
+     * This ordering is **crucial** for subtree-based logic.
+     *
+     * ---
+     *
+     * ## 🧠 Why post-order is needed for this?
+     *
+     * Because:
+     *
+     * * You **cannot determine if the current subtree is perfect** without first knowing:
+     *
+     *   * If its **left and right subtrees** are perfect
+     *   * If they have the **same height**
+     *
+     * So post-order guarantees:
+     *
+     * * All recursive calls on children are **done** before we evaluate the current node.
+     *
+     * ---
+     *
+     * ## ✅ Example Tree
+     *
+     * ```
+     *         1
+     *        / \
+     *       2   3
+     *      / \
+     *     4   5
+     * ```
+     *
+     * Traversal sequence in post-order:
+     *
+     * ```
+     * dfs(4) → dfs(5) → dfs(2) → dfs(3) → dfs(1)
+     * ```
+     *
+     * You evaluate subtree rooted at 2 **only after** processing its children.
+     *
+     * ---
+     *
+     * ## ✅ Your code and comments are great
+     *
+     * Your code:
+     *
+     * ```java
+     * boolean isPerfect = left.isPerfect && right.isPerfect
+     *         && (left.height == right.height);
+     * ```
+     *
+     * Comment:
+     *
+     * ```java
+     * This ensures:
+     *  • Both left and right subtrees are perfect.
+     *  • Their heights are the same → leaves are at the same level.
+     * ```
+     *
+     * Perfect explanation. ✅
+     *
+     * Then:
+     *
+     * ```java
+     * if (isPerfect) {
+     *     perfectSizes.add(size);
+     * }
+     * ```
+     *
+     * You **collect the size of perfect subtrees** once you've confirmed the conditions.
+     *
+     * ---
+     *
+     * ## ✅ Final Notes
+     *
+     * | Concept           | Status                                          |
+     * | ----------------- | ----------------------------------------------- |
+     * | DFS Traversal     | ✅ Yes, it's **post-order**                      |
+     * | Order logic       | ✅ Needed to confirm perfect subtree before root |
+     * | Efficiency        | ✅ Optimal — O(n) for full tree                  |
+     * | Clean abstraction | ✅ `SubtreeInfo` is idiomatic and extensible     |
+     *
+     */
+    private SubtreeInfo dfs(TreeNode node) {
         if (node == null) {
             return new SubtreeInfo(0, 0, true);
         }
