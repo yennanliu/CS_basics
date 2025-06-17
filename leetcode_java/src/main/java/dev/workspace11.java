@@ -1383,62 +1383,162 @@ public class workspace11 {
    *   IDEA 1) DFS
    *
    */
-  List<List<Integer>> collected = new ArrayList<>();
-  public int kthLargestPerfectSubtree(TreeNode root, int k) {
 
+  // 12.38 - 12.48 pm
+  // IDEA: custom class
+  public class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+
+      TreeNode() {}
+
+      TreeNode(int val) {
+          this.val = val;
+      }
+
+      TreeNode(int val, TreeNode left, TreeNode right) {
+          this.val = val;
+          this.left = left;
+          this.right = right;
+      }
+  }
+
+  public class PerfectNode{
+      // attr
+      TreeNode node;
+      boolean isPerfect;
+      int level;
+
+      // constructor
+      public PerfectNode(TreeNode node, boolean isPerfect, int level){
+          this.node = node;
+          this.isPerfect = isPerfect;
+          this.level = level;
+      }
+  }
+
+  List<Integer> collected = new ArrayList<>();
+  public int kthLargestPerfectSubtree(TreeNode root, int k) {
       // edge
       if(root == null){
           return -1;
       }
       if(root.left == null && root.right == null){
-         //if(roo)
-          return root.val; // ???
+          return 1; // ???
+      }
+
+      // init
+      PerfectNode node = new PerfectNode(root, true, 0);
+
+      // call helper func
+      perfectHelper(node);
+
+      // sort on len (max -> small)
+      Collections.sort(collected, new Comparator<Integer>() {
+          @Override
+          public int compare(Integer o1, Integer o2) {
+              int diff = o2 - o1;
+              return diff;
+          }
+      });
+
+      return collected.get(k); // ??
+  }
+
+  // DFS, `post order`
+  // e.g. : left -> right -> root
+  // since we NEED to know if `left and right` are perfect first,
+  // then we know if `root` is perfect
+  public PerfectNode perfectHelper(PerfectNode node){
+      // edge
+      if(node == null){
+          return new PerfectNode(null, true, 0); // ???
+      }
+
+      boolean isPerfect = false;
+      int lavel = node.level;
+
+      if(node.node.left == null && node.node.right == null){
+          isPerfect = true;
+      }
+
+      // ??
+      //PerfectNode _left2 = new PerfectNode(node.node.left);
+
+      PerfectNode _left = new PerfectNode(node.node.left, isPerfect, lavel);
+      PerfectNode _right = new PerfectNode(node.node.right, isPerfect, lavel);
+
+      // ???
+      if(_left.isPerfect && _right.isPerfect && _left.level == _right.level){
+          collected.add(node.node.val);
       }
 
 
-      // dfs
-
-      // edge
-      if(collected == null || collected.isEmpty() || collected.size() < k){
-          return -1;
-      }
-
-     // for(int i = 0)
-     // sort on len (max -> small)
-     Collections.sort(collected, new Comparator<List<Integer>>() {
-         @Override
-         public int compare(List<Integer> o1, List<Integer> o2) {
-             int diff = o2.size() - o1.size();
-             return diff;
-         }
-     });
-
-      return collected.get(k).size(); // ??
-    }
-
-    public TreeNode perfectSubTreeHelper(TreeNode root){
-      // edge
-        if(root == null){
-           // return -1;
-            return null;
-        }
-        if(root.left == null && root.right == null){
-            //if(roo)
-           // return root.val; // ???
-           if(!collected.contains(root)){
-               List<Integer> cur = new ArrayList<>();
-               cur.add(root.val);
-              collected.add(cur); // ???
-           }
-        }
-
-        TreeNode _left = perfectSubTreeHelper(root.left);
-        TreeNode _right = perfectSubTreeHelper(root.right);
+      return node;
+  }
 
 
 
-        return null;
-    }
+
+
+
+//  List<List<Integer>> collected = new ArrayList<>();
+//  public int kthLargestPerfectSubtree(TreeNode root, int k) {
+//
+//      // edge
+//      if(root == null){
+//          return -1;
+//      }
+//      if(root.left == null && root.right == null){
+//         //if(roo)
+//          return root.val; // ???
+//      }
+//
+//
+//      // dfs
+//
+//      // edge
+//      if(collected == null || collected.isEmpty() || collected.size() < k){
+//          return -1;
+//      }
+//
+//     // for(int i = 0)
+//     // sort on len (max -> small)
+//     Collections.sort(collected, new Comparator<List<Integer>>() {
+//         @Override
+//         public int compare(List<Integer> o1, List<Integer> o2) {
+//             int diff = o2.size() - o1.size();
+//             return diff;
+//         }
+//     });
+//
+//      return collected.get(k).size(); // ??
+//    }
+//
+//    public TreeNode perfectSubTreeHelper(TreeNode root){
+//      // edge
+//        if(root == null){
+//           // return -1;
+//            return null;
+//        }
+//        if(root.left == null && root.right == null){
+//            //if(roo)
+//           // return root.val; // ???
+//           if(!collected.contains(root)){
+//               List<Integer> cur = new ArrayList<>();
+//               cur.add(root.val);
+//              collected.add(cur); // ???
+//           }
+//        }
+//
+//        TreeNode _left = perfectSubTreeHelper(root.left);
+//        TreeNode _right = perfectSubTreeHelper(root.right);
+//
+//
+//
+//        return null;
+//    }
 
     // LC 496
     // 10.21 - 10.31 am
