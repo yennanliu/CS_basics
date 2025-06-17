@@ -51,9 +51,150 @@ import java.util.*;
 public class SmallestCommonRegion {
 
     // V0
-//    public String findSmallestRegion_1(List<List<String>> regions, String region1, String region2) {
-//
-//    }
+    // IDEA: HASHMAP + SET (fixed by gpt)
+    // TODO: validate
+    /**
+
+     * -> if use `Set` of ancestors from `region1`,
+     *  how do we ensure that the result is the `smallest` region
+     *   that contains both `region1` and `region2`?
+     *
+     *
+     * ---
+     *
+     * ### ✅ **What “Smallest Region That Contains Both” Means**
+     *
+     * This is the **lowest common ancestor (LCA)** in a tree, where:
+     *
+     * * Each region has **exactly one parent** (tree, not DAG)
+     * * The smallest common region is the **lowest (i.e., deepest)** region in the hierarchy that contains both `region1` and `region2`
+     *
+     * ---
+     *
+     * ### ✅ **Why the Set + Upward Traversal Works**
+     *
+     * Let’s walk through what the code does:
+     *
+     * #### Step 1: Build a Set of all ancestors of `region1`
+     *
+     * ```java
+     * while (region1 != null) {
+     *     ancestors.add(region1);
+     *     region1 = map.get(region1);
+     * }
+     * ```
+     *
+     * This gives you a complete path from `region1` to root, e.g.:
+     *
+     * ```
+     * Quebec → Canada → North America → Earth
+     * ```
+     *
+     * #### Step 2: Walk from `region2` up toward the root
+     *
+     * ```java
+     * while (region2 != null) {
+     *     if (ancestors.contains(region2)) {
+     *         return region2;
+     *     }
+     *     region2 = map.get(region2);
+     * }
+     * ```
+     *
+     * So for example, if `region2 = Texas`, this goes:
+     *
+     * ```
+     * Texas → United States → North America → Earth
+     * ```
+     *
+     * At each step, you’re checking: **is this region an ancestor of `region1`?**
+     *
+     * * The **first match** will be the **lowest (i.e., closest to leaves)** common ancestor.
+     * * This is guaranteed because you're walking **bottom-up** from both `region1` and `region2`.
+     *
+     * ---
+     *
+     * ### 🔍 Example Walkthrough
+     *
+     * #### Tree:
+     *
+     * ```
+     * Earth
+     * ├── North America
+     * │   ├── United States
+     * │   │   ├── California
+     * │   │   └── Texas
+     * │   └── Canada
+     * │       ├── Ontario
+     * │       └── Quebec
+     * └── South America
+     * ```
+     *
+     * Input:
+     *
+     * * `region1 = Quebec`
+     * * `region2 = Texas`
+     *
+     * Ancestor set from `region1`:
+     *
+     * ```
+     * [Quebec, Canada, North America, Earth]
+     * ```
+     *
+     * Now walk from `region2 = Texas`:
+     *
+     * * Is `Texas` in that set? ❌
+     * * Is `United States` in that set? ❌
+     * * Is `North America` in that set? ✅ → **this is the lowest common ancestor**
+     *
+     * ✔️ **Correct Answer: "North America"**
+     *
+     * ---
+     *
+     * ### ✅ Summary
+     *
+     * > Using a `Set` of ancestors from one node and walking up from the other **guarantees** the smallest region that contains both — because the first match is the **lowest** shared ancestor in the tree.
+     *
+     */
+    public String findSmallestRegion(List<List<String>> regions, String region1, String region2) {
+
+        if (regions == null || regions.isEmpty()) {
+            return null;
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *  Map:  { child : parent }
+         *
+         */
+        Map<String, String> map = new HashMap<>();
+        for (List<String> r : regions) {
+            String parent = r.get(0);
+            for (int i = 1; i < r.size(); i++) {  // ✅ FIXED: loop over region list, not string length
+                String child = r.get(i);
+                map.put(child, parent);
+            }
+        }
+
+        // Use Set instead of Queue for O(1) ancestor lookups
+        Set<String> ancestors = new HashSet<>();
+        while (region1 != null) {
+            ancestors.add(region1);
+            region1 = map.get(region1);
+        }
+
+        // Walk up from region2 and find the first common ancestor
+        while (region2 != null) {
+            if (ancestors.contains(region2)) {
+                return region2;
+            }
+            region2 = map.get(region2);
+        }
+
+        return null; // No common ancestor found (unlikely if input is valid)
+    }
+
 
     // V0-1
     // IDEA: HASHMAP (fixed by gpt)

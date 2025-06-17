@@ -1258,7 +1258,17 @@ public class workspace11 {
      *
      */
 
-    // IDEA 1) HASHMAP
+    // 10.36 - 10.46 am
+    /**
+     *  IDEA 1) HASHMAP  : { region : parent }
+     *
+     *
+     *   { brazil: s-usa,  Quebec: canada, Ontario: canada,
+     *    Boston: US, NY: US, Canada: n-usa, us : n-usa,
+     *    s-us: earth, n-us : earth}
+     *
+     *
+     */
     public String findSmallestRegion_1(List<List<String>> regions, String region1, String region2) {
 
         // edge
@@ -1266,36 +1276,95 @@ public class workspace11 {
             return null;
         }
 
-        // build map
-        Map<String, List<String>> parentMap = new HashMap<>();
+        // hashmap : { region : parent }
+        Map<String, String> map = new HashMap<>();
         for(List<String> r: regions){
-            List<String> sub = r.subList(1, r.size() - 1);
-            parentMap.put(r.get(0), sub); // ???
-        }
-
-        // edge: region1 == region2
-        if(region1 == region2){
-            for(String k: parentMap.keySet()){
-                if(parentMap.get(k).contains(region1)){
-                    return k;
-                }
+            String parent = r.get(0);
+            for(int i = 1; i < parent.length(); i++){
+                String child = r.get(i);
+                map.put(child, parent); // ???
             }
         }
 
         String min_parent = null;
 
-        // if region1 != region2
-        //List<String> parent_list_1 = new ArrayList<>();
-        for(String k: parentMap.keySet()){
-            if(parentMap.get(k).contains(region1)){
-                if(parentMap.get(k).contains(region2)){
-                    return k;
-                }
+        // check the `min` ancestor
+        // use Queue (FIFO), so we can get `min` ancestor
+        Queue<String> region_1_parents = new LinkedList<>();
+
+        // for region 1
+
+        // Note !!! below trick
+        while(region1 != null){
+            region_1_parents.add(region1);
+            region1 = map.get(region1);
+        }
+
+//        for(String k: map.keySet()){
+//            if(k.equals(region1)){
+//                String _parent = map.get(region1);
+////                if(map.get(_parent).contains(region2)){
+////                    min_parent = _parent;
+////                }
+//                region_1_parents.add(_parent);
+//
+//                region1 = _parent;
+//            }
+//        }
+
+        // for region 2
+        while(!region_1_parents.isEmpty()){
+            String cur = region_1_parents.poll();
+            if(map.get(cur).equals(region2)){
+                return cur;
             }
         }
 
+
         return min_parent;
     }
+
+
+
+
+    // IDEA 1) HASHMAP
+//    public String findSmallestRegion_1(List<List<String>> regions, String region1, String region2) {
+//
+//        // edge
+//        if(regions == null || regions.isEmpty()){
+//            return null;
+//        }
+//
+//        // build map
+//        Map<String, List<String>> parentMap = new HashMap<>();
+//        for(List<String> r: regions){
+//            List<String> sub = r.subList(1, r.size() - 1);
+//            parentMap.put(r.get(0), sub); // ???
+//        }
+//
+//        // edge: region1 == region2
+//        if(region1 == region2){
+//            for(String k: parentMap.keySet()){
+//                if(parentMap.get(k).contains(region1)){
+//                    return k;
+//                }
+//            }
+//        }
+//
+//        String min_parent = null;
+//
+//        // if region1 != region2
+//        //List<String> parent_list_1 = new ArrayList<>();
+//        for(String k: parentMap.keySet()){
+//            if(parentMap.get(k).contains(region1)){
+//                if(parentMap.get(k).contains(region2)){
+//                    return k;
+//                }
+//            }
+//        }
+//
+//        return min_parent;
+//    }
 
   // LC 3319
   // 3.52 - 4.10 pm
