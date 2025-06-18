@@ -47,9 +47,44 @@ import java.util.*;
 public class FindModeInBinarySearchTree {
 
     // V0
-//    public int[] findMode(TreeNode root) {
-//
-//    }
+    // IDEA: DFS + BST
+    public int[] findMode(TreeNode root) {
+        if (root == null)
+            return new int[0];
+
+        Map<Integer, Integer> node_cnt = new HashMap<>();
+        nodeHelper(root, node_cnt);
+
+        int maxFreq = 0;
+        for (int freq : node_cnt.values()) {
+            maxFreq = Math.max(maxFreq, freq);
+        }
+
+        List<Integer> modes = new ArrayList<>();
+        /**
+         *  NOTE !!! we use `Entry`
+         *           to access both map's key and value
+         */
+        for (Map.Entry<Integer, Integer> entry : node_cnt.entrySet()) {
+            if (entry.getValue() == maxFreq) {
+                modes.add(entry.getKey());
+            }
+        }
+
+        int[] result = new int[modes.size()];
+        for (int i = 0; i < modes.size(); i++) {
+            result[i] = modes.get(i);
+        }
+        return result;
+    }
+
+    private void nodeHelper(TreeNode node, Map<Integer, Integer> freqMap) {
+        if (node == null)
+            return;
+        freqMap.put(node.val, freqMap.getOrDefault(node.val, 0) + 1);
+        nodeHelper(node.left, freqMap);
+        nodeHelper(node.right, freqMap);
+    }
 
     // V1-1
     // https://leetcode.com/problems/find-mode-in-binary-search-tree/editorial/

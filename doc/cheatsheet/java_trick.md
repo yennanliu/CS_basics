@@ -1129,6 +1129,25 @@ System.out.println("Sorted map: " + sortedMap);
 
 ```
 
+### 1-9-3) Access Map's `key, value` on the same time
+
+```java
+// java
+// LC 501
+
+List<Integer> modes = new ArrayList<>();
+/**
+ *  NOTE !!! we use `Entry`
+ *           to access both map's key and value
+ */
+for (Map.Entry<Integer, Integer> entry : node_cnt.entrySet()) {
+    if (entry.getValue() == maxFreq) {
+        modes.add(entry.getKey());
+    }
+}
+        
+```
+
 
 ### 1-10) Get max val from an Array
 ```java
