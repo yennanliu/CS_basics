@@ -1884,9 +1884,62 @@ public class workspace11 {
     }
 
     // LC 501
-    public int[] findMode(LeetCodeJava.DataStructure.TreeNode root) {
+    // 10.59 - 11.10 am
+    /**
+     *  ->  return all the mode(s)
+     *  (i.e., the most frequently occurred element) in it.
+     *
+     *
+     *   IDEA 1) DFS
+     *
+     */
+    Map<Integer, Integer> node_cnt = new HashMap<>();
+    public int[] findMode(TreeNode root) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            return new int[]{root.val};
+        }
 
-        return null;
+        // dfs call
+        nodeHelper(root);
+
+        int max_val = 0;
+        for(Integer k: node_cnt.keySet()){
+            if(node_cnt.get(k) > max_val){
+                max_val = node_cnt.get(k);
+            }
+        }
+
+        List<Integer> cache = new ArrayList<>();
+        for(Integer k: node_cnt.keySet()){
+            if(node_cnt.get(k) == max_val){
+                cache.add(k);
+            }
+        }
+
+        //return res;
+        int[] res2 = new int[cache.size()];
+        for(int i = 0; i < cache.size(); i++){
+            res2[i] = cache.get(i);
+        }
+
+        return res2;
+    }
+
+    public TreeNode nodeHelper(TreeNode root){
+        if(root == null){
+            return null;
+        }
+
+        node_cnt.put(root.val, node_cnt.getOrDefault(root.val, 0) + 1);
+
+        nodeHelper(root.left);
+        nodeHelper(root.right);
+
+        return root;
     }
 
 
