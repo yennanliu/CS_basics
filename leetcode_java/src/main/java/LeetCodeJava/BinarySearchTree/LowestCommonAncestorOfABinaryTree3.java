@@ -69,9 +69,30 @@ public class LowestCommonAncestorOfABinaryTree3 {
     };
 
     // V0
-//    public Node lowestCommonAncestor(Node p, Node q) {
-//
-//    }
+    // HASHSET + `2 POINTER`
+    // e.g.
+    //      setup a pointer traverse and collect all p's parent
+    //      the other pointer traverse and collect all q's parent
+    public Node lowestCommonAncestor(Node p, Node q) {
+        // Step 1: Traverse both paths
+        Set<Node> ancestors = new HashSet<>();
+
+        // Traverse from node p to the root, storing all ancestors
+        while (p != null) {
+            ancestors.add(p);
+            p = p.parent;
+        }
+
+        // Traverse from node q upwards, the first common ancestor is the LCA
+        while (q != null) {
+            if (ancestors.contains(q)) {
+                return q;  // First common ancestor found
+            }
+            q = q.parent;
+        }
+
+        return null;  // In case there's no common ancestor (shouldn't happen in this problem)
+    }
 
     // V0-1
     // IDEA: 2 POINTERS (gpt)
@@ -90,6 +111,29 @@ public class LowestCommonAncestorOfABinaryTree3 {
 
         // Either both are null or both are at LCA
         return a;
+    }
+
+    // V0-2
+    // IDEA: SET + 2 POINTERS (gpt)
+    public Node lowestCommonAncestor_0_2(Node p, Node q) {
+        // Step 1: Traverse both paths
+        Set<Node> ancestors = new HashSet<>();
+
+        // Traverse from node p to the root, storing all ancestors
+        while (p != null) {
+            ancestors.add(p);
+            p = p.parent;
+        }
+
+        // Traverse from node q upwards, the first common ancestor is the LCA
+        while (q != null) {
+            if (ancestors.contains(q)) {
+                return q;  // First common ancestor found
+            }
+            q = q.parent;
+        }
+
+        return null;  // In case there's no common ancestor (shouldn't happen in this problem)
     }
 
     // V1-1

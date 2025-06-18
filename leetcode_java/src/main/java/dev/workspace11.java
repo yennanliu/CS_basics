@@ -1174,8 +1174,13 @@ public class workspace11 {
 
 
     // LC 1650
-    // 10.27 - 10.37 am
-
+    // 11.43 - 11.53 am
+    /**
+     *
+     *
+     * Given two nodes of a binary tree p and q,
+     * return their lowest common ancestor (LCA).
+     */
     class Node_3 {
         public int val;
         public Node_3 left;
@@ -1183,61 +1188,136 @@ public class workspace11 {
         public Node_3 parent;
     };
 
+    // IDEA 1) HASHSET + `2 POINTER`
+    // e.g.
+    //      setup a pointer traverse and collect all p's parent
+    //      the other pointer traverse and collect all q's parent
+    public Node_3 lowestCommonAncestor(Node_3 p, Node_3 q) {
+
+        if(p == null && q == null){
+            return null;
+        }
+        if(p == null || q == null){
+            return null; // ???
+        }
+
+        HashSet<Node_3> parent_p = new HashSet<>();
+        while(p != null){
+            parent_p.add(p);
+            p = p.parent;
+        }
+
+        while(q != null){
+            if (parent_p.contains(q)){
+                return q;
+            }
+            q = q.parent;
+        }
+
+        return null;
+    }
+
+
+
+
+//    public Node_3 lowestCommonAncestor(Node_3 root, Node_3 p, Node_3 q) {
+//
+//        // edge
+//        if(p == null && q == null){
+//            return null;
+//        }
+//        if(p == null || q == null){
+//            return null; // ???
+//        }
+//        if(p.equals(q)){
+//            return p; // ???
+//        }
+//
+//        // dfs call
+//        return ancestorHelpr(root, p, q);
+//    }
+//
+//    public Node_3 ancestorHelpr(Node_3 root, Node_3 p, Node_3 q){
+//
+//        // edge
+//        if(p == null && q == null){
+//            return null;
+//        }
+//        if(p == null || q == null){
+//            if(q == null){
+//                return p.parent; // ???
+//            }
+//            return q.parent; // ???
+//        }
+//
+//        Node_3 _left = ancestorHelpr(root.left, p, q);
+//        Node_3 _right = ancestorHelpr(root.right, p, q);
+//
+//        if(_left == null && _right == null){
+//            return root;
+//        }
+//
+//        return _left != null ? _left.parent : _right.parent;
+//    }
+//
+//
+
+
     /**
      *  IDEA 1) HASH SET
      *
      */
-    Set<Node_3> set = new HashSet<>();
-    public Node_3 lowestCommonAncestor(Node_3 p, Node_3 q) {
-        // edge
-        if(p == null && q == null){
-            return null;
-        }
-        if(p == null || q == null){
-            return null; // ???
-        }
-        if(p.equals(q)){
-            return p; // ???
-        }
-
-
-        // dfs
-        Node_3 lca = lcaHelper3(p, q);
-
-        return lca; // ???
-    }
-
-    public Node_3 lcaHelper3(Node_3 p, Node_3 q){
-        // edge
-        if(p == null && q == null){
-            return null;
-        }
-        if(p == null || q == null){
-            return null; // ???
-        }
-        if(p.equals(q)){
-            return p; // ???
-        }
-
-
-        // ???
-        if(set.contains(p) && set.contains(q)){
-            return p.parent; // ??
-        }
-
-        // ???
-        set.add(p);
-        set.add(q);
-
-        // recursive call
-        lcaHelper3(p.left, q.left);
-        lcaHelper3(p.right, q.right);
-
-
-        //if(!set.contains(p))
-
-        return null;
-    }
+//    Set<Node_3> set = new HashSet<>();
+//    public Node_3 lowestCommonAncestor(Node_3 p, Node_3 q) {
+//        // edge
+//        if(p == null && q == null){
+//            return null;
+//        }
+//        if(p == null || q == null){
+//            return null; // ???
+//        }
+//        if(p.equals(q)){
+//            return p; // ???
+//        }
+//
+//
+//        // dfs
+//        Node_3 lca = lcaHelper3(p, q);
+//
+//        return lca; // ???
+//    }
+//
+//    public Node_3 lcaHelper3(Node_3 p, Node_3 q){
+//        // edge
+//        if(p == null && q == null){
+//            return null;
+//        }
+//        if(p == null || q == null){
+//            return null; // ???
+//        }
+//        if(p.equals(q)){
+//            return p; // ???
+//        }
+//
+//
+//        // ???
+//        if(set.contains(p) && set.contains(q)){
+//            return p.parent; // ??
+//        }
+//
+//        // ???
+//        set.add(p);
+//        set.add(q);
+//
+//        // recursive call
+//        lcaHelper3(p.left, q.left);
+//        lcaHelper3(p.right, q.right);
+//
+//
+//        //if(!set.contains(p))
+//
+//        return null;
+//    }
 
 
 
