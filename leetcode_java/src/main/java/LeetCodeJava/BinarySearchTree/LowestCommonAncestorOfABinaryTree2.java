@@ -5,6 +5,9 @@ package LeetCodeJava.BinarySearchTree;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 1644. Lowest Common Ancestor of a Binary Tree II
  * Given the root of a binary tree, return the lowest common ancestor (LCA) of two given nodes, p and q. If either node p or q does not exist in the tree, return null. All values of the nodes in the tree are unique.
@@ -66,6 +69,64 @@ public class LowestCommonAncestorOfABinaryTree2 {
 //    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 //    }
 
+    // V0-0-1
+    // IDEA: DFS + LC 236 (fixed by gpt)
+    // TODO: validate
+    /**
+     *
+     *  IDEA:
+     *
+     *  1. check if p or q is null via `collect all nodes` and check existence
+     *  2. LC 236 : find LCA on binary tree
+     */
+    Set<Integer> nodeSet = new HashSet<>();
+
+    public TreeNode lowestCommonAncestor_0_0_1(TreeNode root, TreeNode p, TreeNode q) {
+        // Collect all node values
+        collectNodes(root);
+
+        // Check existence
+        if (!nodeSet.contains(p.val) || !nodeSet.contains(q.val)) {
+            return null;
+        }
+
+        // Find LCA
+        return findLCA_0(root, p, q);
+    }
+
+    private void collectNodes(TreeNode root) {
+        if (root == null) return;
+        nodeSet.add(root.val);
+        collectNodes(root.left);
+        collectNodes(root.right);
+    }
+
+    private TreeNode findLCA_0(TreeNode root, TreeNode p, TreeNode q) {
+
+        /**
+         *  NOTE !!!
+         *
+         *  // -> so, we will return right away if `root equals p` or `root equals q`
+         */
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+
+        TreeNode left = findLCA_0(root.left, p, q);
+        TreeNode right = findLCA_0(root.right, p, q);
+
+        /**
+         *  NOTE !!!
+         *
+         *   if `both left is NOT null and right is NOT null`
+         */
+        if (left != null && right != null) {
+            return root;
+        }
+
+        return left != null ? left : right;
+    }
+
     // V0-1
     // IDEA: DFS (gpt)
     // TODO: validate
@@ -98,6 +159,43 @@ public class LowestCommonAncestorOfABinaryTree2 {
         }
 
         return left != null ? left : right;
+    }
+
+    // V0-2
+    // IDEA: DFS (gpt)
+    public TreeNode lowestCommonAncestor_0_2(TreeNode root, TreeNode p, TreeNode q) {
+        // Start the DFS recursion to find the LCA
+        TreeNode[] result = new TreeNode[1];  // We use an array to return the result by reference
+        if (dfs(root, p, q, result)) {
+            return result[0];
+        }
+        return null;  // If we can't find both p and q
+    }
+
+    private boolean dfs(TreeNode node, TreeNode p, TreeNode q, TreeNode[] result) {
+        if (node == null) return false;
+
+        // Check if current node is p or q
+        boolean foundInLeft = dfs(node.left, p, q, result);
+        boolean foundInRight = dfs(node.right, p, q, result);
+
+        // If this node is p or q, mark as found
+        boolean isCurrentNodePOrQ = (node == p || node == q);
+
+        // If this node is LCA
+        if (isCurrentNodePOrQ && (foundInLeft || foundInRight)) {
+            result[0] = node;  // This is the LCA
+            return true;
+        }
+
+        // If this is the first node where both left and right subtrees contain p and q
+        if (foundInLeft && foundInRight || (isCurrentNodePOrQ && (foundInLeft || foundInRight))) {
+            result[0] = node;
+            return true;
+        }
+
+        // Return true if node is p or q or found any node in left or right subtree
+        return isCurrentNodePOrQ || foundInLeft || foundInRight;
     }
 
 
