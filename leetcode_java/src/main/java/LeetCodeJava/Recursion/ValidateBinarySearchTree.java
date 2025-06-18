@@ -38,6 +38,7 @@ package LeetCodeJava.Recursion;
  *
  */
 import LeetCodeJava.DataStructure.TreeNode;
+import dev.workspace11;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -73,8 +74,10 @@ public class ValidateBinarySearchTree {
         /**
          *  NOTE !!!
          *
-         *  Use long to handle edge cases for Integer.MIN_VALUE and Integer.MAX_VALUE
-         *  -> use long to handle overflow issue (NOT use int type)
+         *
+         *
+         *  Use `long` to handle edge cases for Integer.MIN_VALUE and Integer.MAX_VALUE
+         *  -> use `long` to handle overflow issue (NOT use int type)
          */
         long smallest_val = Long.MIN_VALUE;
         long biggest_val = Long.MAX_VALUE;
@@ -105,8 +108,44 @@ public class ValidateBinarySearchTree {
     }
 
     // V0-1
-    // IDEA: RECURSION + BST property (GPT)
+    // IDEA: DFS + BST property
     public boolean isValidBST_0_1(TreeNode root) {
+        // edge
+        if(root == null){
+            return true;
+        }
+        if(root.left == null && root.right == null){
+            return true;
+        }
+
+        // dfs call
+        /**
+         *  NOTE !!!
+         *
+         *   use `long` type for setting min, max val
+         *
+         */
+        return validBSTHelper(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    public boolean validBSTHelper(TreeNode root, long smallestVal, long biggestVal){
+        // edge
+        if(root == null){
+            return true;
+        }
+
+        // validate
+        if(root.val >= biggestVal || root.val <= smallestVal){
+            return false;
+        }
+
+        return validBSTHelper(root.left, smallestVal, root.val) &&
+                validBSTHelper(root.right, root.val, biggestVal);
+    }
+
+    // V0-2
+    // IDEA: RECURSION + BST property (GPT)
+    public boolean isValidBST_0_2(TreeNode root) {
         return isValidateBST(root, null, null);
     }
 
@@ -125,9 +164,9 @@ public class ValidateBinarySearchTree {
         return isValidateBST(root.left, min, root.val) && isValidateBST(root.right, root.val, max);
     }
 
-    // V0-2
+    // V0-3
     // IDEA: DFS + maintain `max till now`, `min till now` val (gpt)
-    public boolean isValidBST_0_2(TreeNode root) {
+    public boolean isValidBST_0_3(TreeNode root) {
         return checkIsValidBst(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
