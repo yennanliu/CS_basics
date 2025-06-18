@@ -1883,5 +1883,11 @@ public class workspace11 {
                 validBSTHelper(root.right, root.val, biggestVal);
     }
 
+    // LC 501
+    public int[] findMode(LeetCodeJava.DataStructure.TreeNode root) {
+
+        return null;
+    }
+
 
 }
