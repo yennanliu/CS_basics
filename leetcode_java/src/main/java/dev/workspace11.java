@@ -3,6 +3,7 @@ package dev;
 import LeetCodeJava.BinarySearchTree.LowestCommonAncestorOfABinaryTree3;
 import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.Tree.DiameterOfNAryTree;
+import com.sun.org.apache.bcel.internal.generic.PUSH;
 
 import java.util.*;
 
@@ -1123,7 +1124,6 @@ public class workspace11 {
 
 
     // LC 1644
-    // 9.49 - 9.59 am
     /**
      *
      * -> Given the root of a binary tree, return the lowest common ancestor (LCA)
@@ -1138,39 +1138,102 @@ public class workspace11 {
      *  -> NOTE !!!  p or q could NOT exist, if this is the case, return `null` as LCA
      *
      */
+    /**
+     *  IDEA 1) DFS + LCA I
+     *
+     *
+     */
+
+    // 12.19 - 12.29 pm
+    List<Integer> node_list = new ArrayList<>();
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
-        // LC 235
-
-        /** handle cases if p or q DOES NOT exist */
-        if(p == null || q == null){
-            return null; // ???
-        }
-
-        // if root equals p or q, return root as LCA
-        if (root.equals(p) || root.equals(q)) {
+        // edge
+        if ((root == null) || (root.equals(p) || root.equals(q))){
             return root;
         }
 
-        /** NOTE !!! BST property : right > root > left */
-        // search on right sub tree
-        if (p.val > root.val && q.val > root.val){
-            return this.lowestCommonAncestor(root.right, p, q);
-        }
-        // search on left sub tree
-        if (p.val < root.val && q.val < root.val){
-            return this.lowestCommonAncestor(root.left, p, q);
+
+        nodeCollector(root);
+        // check if p, and q are BOTH exist in root
+        if(!collected.contains(p.val) || !collected.contains(q.val)){
+            return null;
         }
 
-        /**
-         * NOTE !!!
-         *
-         *  if can reach below
-         *  -> p, q are in different side (sub tree)
-         *  -> then return root as LCA directly
-         */
-        return root;
+        // LC 235
+        return LCA2Helper(root, p, q);
     }
+
+    public TreeNode LCA2Helper(TreeNode root, TreeNode p, TreeNode q){
+
+        // NOTE !!! below edge condition
+        // -> so, we will return right away if `root equals p` or `root equals q`
+        if ((root == null) || (root.equals(p) || root.equals(q))){
+            return root;
+        }
+
+        TreeNode _left = LCA2Helper(root.left, p, q);
+        TreeNode _right = LCA2Helper(root.right, p, q);
+
+        // NOTE !!! below
+        if(_left != null && _right != null){
+            return root; // ??
+        }
+
+        return _left == null ? _right : _left;
+    }
+
+
+    public void nodeCollector(TreeNode root){
+        if(root == null){
+            return;
+        }
+        node_list.add(root.val);
+
+        nodeCollector(root.left);
+        nodeCollector(root.right);
+    }
+
+
+
+
+
+
+
+
+//    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+//
+//        // LC 235
+//
+//        /** handle cases if p or q DOES NOT exist */
+//        if(p == null || q == null){
+//            return null; // ???
+//        }
+//
+//        // if root equals p or q, return root as LCA
+//        if (root.equals(p) || root.equals(q)) {
+//            return root;
+//        }
+//
+//        /** NOTE !!! BST property : right > root > left */
+//        // search on right sub tree
+//        if (p.val > root.val && q.val > root.val){
+//            return this.lowestCommonAncestor(root.right, p, q);
+//        }
+//        // search on left sub tree
+//        if (p.val < root.val && q.val < root.val){
+//            return this.lowestCommonAncestor(root.left, p, q);
+//        }
+//
+//        /**
+//         * NOTE !!!
+//         *
+//         *  if can reach below
+//         *  -> p, q are in different side (sub tree)
+//         *  -> then return root as LCA directly
+//         */
+//        return root;
+//    }
 
 
     // LC 1650
