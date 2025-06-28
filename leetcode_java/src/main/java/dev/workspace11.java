@@ -2151,4 +2151,102 @@ public class workspace11 {
         return res;
     }
 
+  // LC 11
+  // 6.23 - 6.33 pm
+  /**
+   * Find two lines that together with the
+   * x-axis form a container,
+   * such that the container contains the most water.
+   *
+   * Return the maximum amount of water a container can store.
+   *
+   *
+   *
+   *  IDEA 1) 2 POINTERS
+   */
+  public int maxArea(int[] height) {
+      // edge
+      if(height == null || height.length == 0){
+          return 0;
+      }
+      if(height.length == 2){
+          return Math.min(height[0], height[1]);
+      }
+
+      // 2 pointers
+      int max_area = 0;
+      int l = 0;
+      int r = height.length - 1;
+
+      while(r > l){
+          int cur_area = Math.min(height[l], height[r]) * (r - l);
+          max_area = Math.max(max_area, cur_area);
+
+          // if `left` height is smaller than `right` height
+          if(height[l] < height[r]){
+              l += 1;
+          }
+          // if `right` height is smaller than `left` height
+          else{
+              r -= 1;
+          }
+
+      }
+
+      return max_area;
+    }
+
+    // LC 003
+    // 6.37 - 6.47 pm
+    /**
+     *
+     * Given a string s,
+     * find the length of the longest substring without
+     * duplicate characters.
+     *
+     *  IDEA 1) SLIDING WINDOW + hashmap
+     */
+    public int lengthOfLongestSubstring(String s) {
+        // edge
+        if(s.isEmpty()){
+            return 0;
+        }
+        if(s.equals(" ") || s.length() == 1){
+            return 1;
+        }
+
+        int max_len = 0;
+
+
+        // Map -> to store the `latest` index of characters
+        //Map : {val : latest idx of val}
+        Map<String, Integer> map = new HashMap<>();
+        //Set<String> set = new HashSet<>();
+        int l = 0;
+        int r = 0;
+
+        String[] s_arr = s.split("");
+
+        while(l < s_arr.length && r < s_arr.length){
+            String val = s_arr[r];
+            System.out.println(">>>  l = " + l + ", r = " + r + ", map = " + map + ", max_len = " + max_len);
+
+            // if `not duplicated` element : move `right` pointer
+            if(!map.containsKey(val)){
+                r += 1;
+            }
+            // if `duplicated` element:  move `left` pointer to the `last` idx + 1 that same element occured
+            else{
+                l = Math.max(l, map.get(val) + 1);
+            }
+
+            map.put(val, r);
+            max_len = Math.max(max_len, r - l + 1);
+        }
+
+
+        return max_len;
+    }
+
+
 }

@@ -220,6 +220,33 @@ public class LongestSubstringWithoutRepeatingCharacters {
         return res;
     }
 
+    // V0-4
+    // IDEA: HASHMAP + SLIDING WINDOW
+    public int lengthOfLongestSubstring_0_4(String s) {
+        if (s == null || s.isEmpty())
+            return 0;
+        if (s.length() == 1)
+            return 1;
+
+        Map<Character, Integer> map = new HashMap<>();
+        int l = 0, r = 0, max_len = 0;
+
+        while (r < s.length()) {
+            char c = s.charAt(r);
+
+            if (map.containsKey(c)) {
+                // Move `l` to the right of the last occurrence of `c`
+                l = Math.max(l, map.get(c) + 1);
+            }
+
+            map.put(c, r); // Update last seen index of `c`
+            max_len = Math.max(max_len, r - l + 1);
+            r++;
+        }
+
+        return max_len;
+    }
+
     // V1
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/longest-substring-without-repeating-characters/editorial/
