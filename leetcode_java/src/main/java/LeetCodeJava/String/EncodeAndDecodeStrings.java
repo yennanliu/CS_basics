@@ -57,6 +57,49 @@ public class EncodeAndDecodeStrings {
     // V0
     // TODO : implement it
     // Encodes a list of strings to a single string.
+//    public String encode(List<String> strs) {
+//
+//    }
+//    public List<String> decode(String s) {
+//
+//    }
+
+    // V0-0-1
+    // IDEA: STRING OP
+    // TODO: validate below:
+    public String encode_0_0_1(List<String> strs) {
+        // edge
+        if(strs == null || strs.isEmpty()){
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(String x: strs){
+            sb.append(x);
+            sb.append("#");  // NOTE !!! handle cases if strs has special character
+        }
+
+        return sb.toString();
+    }
+
+    public List<String> decode_0_0_1(String s) {
+        // edge
+        if(s.isEmpty()){
+            return null;
+        }
+
+        List<String> res = new ArrayList<>();
+
+        //String[] str_arr = s.split("#");
+        String[] str_arr = s.split("#", -1); // NOTE: We remove the last element because it's an empty string resulting from the final delimiter
+        for(String x: str_arr){
+            if(!x.isEmpty()){
+                res.add(x);
+            }
+        }
+
+        return res;
+    }
 
     // V0'
     // IDEA : STRING, ARRAY OP
