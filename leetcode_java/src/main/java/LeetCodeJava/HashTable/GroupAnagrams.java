@@ -1,7 +1,49 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/group-anagrams/
-
+/**
+ * 49. Group Anagrams
+ * Solved
+ * Medium
+ * Topics
+ * premium lock icon
+ * Companies
+ * Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: strs = ["eat","tea","tan","ate","nat","bat"]
+ *
+ * Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+ *
+ * Explanation:
+ *
+ * There is no string in strs that can be rearranged to form "bat".
+ * The strings "nat" and "tan" are anagrams as they can be rearranged to form each other.
+ * The strings "ate", "eat", and "tea" are anagrams as they can be rearranged to form each other.
+ * Example 2:
+ *
+ * Input: strs = [""]
+ *
+ * Output: [[""]]
+ *
+ * Example 3:
+ *
+ * Input: strs = ["a"]
+ *
+ * Output: [["a"]]
+ *
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= strs.length <= 104
+ * 0 <= strs[i].length <= 100
+ * strs[i] consists of lowercase English letters.
+ *
+ */
 import java.util.*;
 
 public class GroupAnagrams {
@@ -50,7 +92,7 @@ public class GroupAnagrams {
         return String.valueOf(array);
     }
 
-    // V0'
+    // V0-1
     // IDEA : HASH TABLE
     public List<List<String>> groupAnagrams_0_1(String[] strs) {
 
@@ -98,6 +140,50 @@ public class GroupAnagrams {
 
         return res;
     }
+
+    // V0-2
+    // IDEA: HASHMAP + `string` sorting
+    public List<List<String>> groupAnagrams_0_2(String[] strs) {
+        // edge
+        if (strs == null || strs.length == 0) {
+            return null;
+        }
+
+        Map<String, List<String>> cache = new HashMap<>();
+        for (String x : strs) {
+            /**
+             *  NOTE !!!  below trick that how we `sort string`
+             *
+             *
+             * example:
+             *
+             *  input = ["eat","tea","tan","ate","nat","bat"]
+             *
+             *  output =
+             *   >>> cache = {[a, n, t]=[tan, nat], [a, b, t]=[bat], [a, e, t]=[eat, tea, ate]}
+             *
+             */
+            char[] x_ = x.toCharArray();
+            Arrays.sort(x_);
+            // NOTE !!! Arrays.toString(x_), but NOT x_.toString()
+            String x_sorted = Arrays.toString(x_);
+
+            List<String> cur = cache.getOrDefault(x_sorted, new ArrayList<>());
+            cur.add(x);
+            cache.put(x_sorted, cur);
+        }
+
+       // System.out.println(">>> cache = " + cache);
+
+        List<List<String>> res = new ArrayList<>();
+
+        for (String k : cache.keySet()) {
+            res.add(cache.get(k));
+        }
+
+        return res;
+    }
+
 
     // V1
     // IDEA : Categorize by Sorted String

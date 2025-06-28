@@ -2085,5 +2085,35 @@ public class workspace11 {
         return root;
     }
 
+    // LC 49
+    // 5.48 - 5. 59 pm
+    public List<List<String>> groupAnagrams(String[] strs) {
+        // edge
+        if(strs == null || strs.length == 0){
+            return null;
+        }
+
+        Map<String, List<String>> cache = new HashMap<>();
+        for(String x: strs){
+            char[] x_ = x.toCharArray();
+            Arrays.sort(x_);
+            String x_sorted = Arrays.toString(x_);
+            List<String> cur = cache.getOrDefault(x_sorted, new ArrayList<>());
+            cur.add(x);
+            cache.put(x_sorted, cur);
+        }
+
+        System.out.println(">>> cache = " + cache);
+
+        List<List<String>> res = new ArrayList<>();
+
+
+        for(String k: cache.keySet()){
+            res.add(cache.get(k));
+        }
+
+        return res;
+    }
+
 
 }
