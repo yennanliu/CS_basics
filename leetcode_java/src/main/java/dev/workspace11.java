@@ -2248,5 +2248,78 @@ public class workspace11 {
         return max_len;
     }
 
+    // LC 135
+    // 4.19 - 4.29 pm
+    /**
+     *  IDEA 1) BINARY SEARCH
+     *
+     *
+     *  exp 1)
+     *    [4,5,6,7,0,1,2]
+     *
+     *   -> case 1) if mid `belongs to left` group
+     *          -> `left - mid` is in `increasing order`
+     *          -> if mid > mid+1
+     *              -> search right
+     *          -> else
+     *              -> return left directly
+     *
+     * exp 2)
+     *     [7,0,1,2,4,5,6]
+     *
+     *   if mid `belongs to right` group
+     *
+     *     -> `mid - right` is in `increasing order`
+     *
+     *        -> search left ??
+     */
+    public int findMin(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1; // ???
+        }
+//        if(nums[nums.length-1] > nums[0]){
+//            return nums[0];
+//        }
+        int ans = nums[0];
+        if(nums.length <= 3){
+            for(int x: nums){
+                ans = Math.min(x, ans);
+            }
+            return ans;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (r > l){
+
+            if(nums[r] > nums[l]){
+               // return nums[l];
+                return Math.min(ans, nums[l]);
+            }
+
+            int mid = ( l + r ) / 2;
+            ans = Math.min(nums[mid], ans);
+            System.out.println(">>> l = " + l + ", r = " + r + ", mid = " + mid + ", ans =  " + ans);
+            // case 1) if mid `belongs to left` group
+            if(nums[mid] >= nums[l]){
+//               if(nums[mid] > nums[mid+1]){
+//                   l = mid + 1;
+//               }else{
+//                   return nums[l]; // ??
+//               }
+                l = mid + 1;
+            }
+            // case 2) if mid `belongs to right` group
+            else{
+                r = mid - 1;
+            }
+        }
+
+
+        return ans;
+    }
+
 
 }

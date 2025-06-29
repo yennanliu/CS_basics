@@ -69,6 +69,55 @@ public class FindMinimumInRotatedSortedArray {
         int res = nums[0];
 
         /** NOTE !!! closed boundary */
+        /**
+         *  NOTE !!!
+         *
+         *   `r >= l`
+         *
+         * ⸻
+         *
+         * 🔍 Problem Explanation:
+         *
+         * The goal is to narrow down the search space to a single element,
+         * which will be the minimum. Let’s understand the two conditions:
+         *
+         * 1. while (r > l)
+         * 	•	This exits when l == r, meaning it never checks the last single element.
+         * 	•	That means the final nums[l] may not get compared.
+         * 	•	In worst cases, this might skip the true minimum if it’s at position l == r.
+         *
+         * ➡️ Risk: You miss the case where the minimum is
+         *          the only element remaining and that one isn’t compared anymore.
+         *
+         * ⸻
+         *
+         * 2. while (r >= l)
+         * 	•	This ensures that all elements, including the very last one (l == r), are checked.
+         * 	•	It guarantees that even when one element is left, we still process it.
+         * 	•	Ensures correctness even on edge cases like a single element array or narrow binary search window.
+         *
+         * ⸻
+         *
+         * 🧠 Example to Visualize the Problem
+         *
+         * Let’s say nums = [4,5,6,1,2,3]
+         *
+         * We want to include the final comparison when only one element is left in the search window. Suppose we reduce down to:
+         *
+         * l = 3, r = 3 // nums[3] = 1 (the correct minimum)
+         *
+         * 	•	If you use while (r > l), this iteration is skipped.
+         * 	•	If you use while (r >= l), you get to evaluate nums[3] = 1, which is the correct answer.
+         *
+         * ⸻
+         *
+         * ✅ Summary Table
+         *
+         * Condition	Safe?	Reason
+         * while (r > l)	❌ No	Skips checking when l == r, might miss the minimum
+         * while (r >= l)	✅ Yes	Includes final element comparison, ensures correctness
+         *
+         */
         while (l <= r) {
 
             /** NOTE !!!
@@ -103,7 +152,7 @@ public class FindMinimumInRotatedSortedArray {
         return res;
     }
 
-    // V0_1
+    // V0-1
     // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
     public int findMin_0_1(int[] nums) {
 
@@ -149,7 +198,6 @@ public class FindMinimumInRotatedSortedArray {
 
     // V0-2
     // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
-
     /**
      * NOTE !!! the turing point (rotation point)
      * -> it's ALWAYS the place that min element located (may at at i, i+1, i-1 place)
@@ -244,6 +292,96 @@ public class FindMinimumInRotatedSortedArray {
         }
 
         return nums[l];
+    }
+
+    // V0-4
+    // IDEA: BINARY SEARCH + `rotate array` property
+    public int findMin_0_4(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int ans = nums[0];
+        if (nums.length <= 3) {
+            for (int x : nums) {
+                ans = Math.min(x, ans);
+            }
+            return ans;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+    /**
+     *  NOTE !!!
+     *
+     *   `r >= l`
+     *
+     * ⸻
+     *
+     * 🔍 Problem Explanation:
+     *
+     * The goal is to narrow down the search space to a single element,
+     * which will be the minimum. Let’s understand the two conditions:
+     *
+     * 1. while (r > l)
+     * 	•	This exits when l == r, meaning it never checks the last single element.
+     * 	•	That means the final nums[l] may not get compared.
+     * 	•	In worst cases, this might skip the true minimum if it’s at position l == r.
+     *
+     * ➡️ Risk: You miss the case where the minimum is
+     *          the only element remaining and that one isn’t compared anymore.
+     *
+     * ⸻
+     *
+     * 2. while (r >= l)
+     * 	•	This ensures that all elements, including the very last one (l == r), are checked.
+     * 	•	It guarantees that even when one element is left, we still process it.
+     * 	•	Ensures correctness even on edge cases like a single element array or narrow binary search window.
+     *
+     * ⸻
+     *
+     * 🧠 Example to Visualize the Problem
+     *
+     * Let’s say nums = [4,5,6,1,2,3]
+     *
+     * We want to include the final comparison when only one element is left in the search window. Suppose we reduce down to:
+     *
+     * l = 3, r = 3 // nums[3] = 1 (the correct minimum)
+     *
+     * 	•	If you use while (r > l), this iteration is skipped.
+     * 	•	If you use while (r >= l), you get to evaluate nums[3] = 1, which is the correct answer.
+     *
+     * ⸻
+     *
+     * ✅ Summary Table
+     *
+     * Condition	Safe?	Reason
+     * while (r > l)	❌ No	Skips checking when l == r, might miss the minimum
+     * while (r >= l)	✅ Yes	Includes final element comparison, ensures correctness
+     *
+     */
+    while (r >= l) {
+
+            // edge
+            if (nums[r] > nums[l]) {
+                return Math.min(ans, nums[l]);
+            }
+
+            int mid = (l + r) / 2;
+            ans = Math.min(nums[mid], ans);
+            //System.out.println(">>> l = " + l + ", r = " + r + ", mid = " + mid + ", ans =  " + ans);
+            // case 1) if mid `belongs to left` group
+            if (nums[mid] >= nums[l]) {
+                l = mid + 1;
+            }
+            // case 2) if mid `belongs to right` group
+            else {
+                r = mid - 1;
+            }
+        }
+
+        return ans;
     }
 
     // V1
