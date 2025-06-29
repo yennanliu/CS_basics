@@ -36,9 +36,54 @@ import java.util.*;
 public class DailyTemperatures {
 
     // V0
+    // IDEA: STACK + HASHMAP ( {idx : val} )
+    public int[] dailyTemperatures(int[] temperatures) {
+        // edge
+        if(temperatures == null || temperatures.length == 0){
+            return null;
+        }
+        if(temperatures.length == 1){
+            return new int[]{0};
+        }
+    // NOTE !!! map : {idx : val}
+    /**
+     *  use the { idx : val } structure.
+     *  with this setting, we can get the `val - idx` mapping
+     *  and avoid the `duplicated value` issue
+     */
+    Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < temperatures.length; i++){
+            map.put(i, temperatures[i]);
+        }
+
+        Stack<Integer> st = new Stack<>();
+
+        int[] ans = new int[temperatures.length];
+        // init val as 0
+        Arrays.fill(ans, 0);
+
+       // System.out.println(">> stack = " + st);
+        for(int i = 0; i < temperatures.length; i++){
+
+            //System.out.println(">> i = " + i + ", stack = " + st + ", ans = " + Arrays.toString(ans));
+            int cur = temperatures[i];
+
+            while(!st.isEmpty() && map.get(st.peek()) < cur){
+                int val = st.pop();
+                //System.out.println(" (while) i = " + i + ", val = " + val + ", map.get(val) = " + map.get(val));
+                ans[val] = (i - val);
+            }
+            
+            st.push(i);
+        }
+
+        return ans;
+    }
+
+    // V0-0-1
     // IDEA : STACK (MONOTONIC STACK)
     // LC 496
-    public int[] dailyTemperatures(int[] temperatures) {
+    public int[] dailyTemperatures_0_0_1(int[] temperatures) {
 
         if (temperatures.length == 1){
             return temperatures;
@@ -61,6 +106,12 @@ public class DailyTemperatures {
          *
          *    can't use map, since there will be "duplicated" temperature
          *   -> which will cause different val has same key (hashMap key)
+         *
+         *
+         *   (20250629 update)
+         *   -> if still want to use map, can use the { idx : val } structure.
+         *      with this setting, we can get the `val - idx` mapping
+         *      and avoid the `duplicated value` issue
          */
         //Map<Integer, Integer> map = new HashMap<>(); // {temperature : idx-of-next-warmer-temperature}
         /**

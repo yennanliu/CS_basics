@@ -2321,5 +2321,105 @@ public class workspace11 {
         return ans;
     }
 
+    // LC 150
+    public int evalRPN(String[] tokens) {
+        return 0;
+    }
+
+    // LC 22
+    public List<String> generateParenthesis(int n) {
+
+        return null;
+    }
+
+    // LC 739
+    // 5.10 - 5.20 pm
+    /**
+     *   such that answer[i] is the number of days
+     *   you have to wait after the ith day to get
+     *   a warmer temperature
+     *
+     *
+     *   IDEA 1) STACK + HASHMAP
+     *     -> FILO
+     *
+     *
+     *   exp 1)
+     *     [73,74,75,71,69,72,76,73]
+     *
+     *     -> map : {val: idx}
+     *
+     *     ans : [0,0,0,0..]
+     *
+     *
+     *   ->
+     *
+     *    [73,74,75,71,69,72,76,73]   st=[73],  ans : [0,0,0,0..]
+     *     x
+     *
+     *    [73,74,75,71,69,72,76,73]   st=[74],  ans : [1,0,0,0..]
+     *        x
+     *
+     *   [73,74,75,71,69,72,76,73]   st=[75],  ans : [1,1,0,0..]
+     *          x
+     *
+     *   [73,74,75,71,69,72,76,73]   st=[75,71],  ans : [1,1,0,0..]
+     *             x
+     *
+     *  [73,74,75,71,69,72,76,73]   st=[75,71,69],  ans : [1,1,0,0..]
+     *               x
+     *
+     *  [73,74,75,71,69,72,76,73]   st=[75,72],  ans : [1,1,0,2,1,0,0,0]
+     *                   x
+     *
+     *  [73,74,75,71,69,72,76,73]   st=[76],  ans : [1,1,4,2,1,1,0,0]
+     *                      x
+     *
+     *  [73,74,75,71,69,72,76,73]   st=[76,73],  ans : [1,1,4,2,1,1,0,0]
+     *                         x
+     */
+    public int[] dailyTemperatures(int[] temperatures) {
+        // edge
+        if(temperatures == null || temperatures.length == 0){
+            return null;
+        }
+        if(temperatures.length == 1){
+            return new int[]{0}; // ???
+        }
+        // map : {idx : val}
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < temperatures.length; i++){
+           // map.put(temperatures[i], i);
+            map.put(i, temperatures[i]);
+        }
+
+        Stack<Integer> st = new Stack<>();
+
+        int[] ans = new int[temperatures.length];
+        // init val as 0
+        Arrays.fill(ans, 0);
+
+        System.out.println(">> stack = " + st);
+
+        for(int i = 0; i < temperatures.length; i++){
+
+            System.out.println(">> i = " + i + ", stack = " + st + ", ans = " + Arrays.toString(ans));
+            int cur = temperatures[i];
+
+            while(!st.isEmpty() && map.get(st.peek()) < cur){
+                int val = st.pop();
+                System.out.println(" (while) i = " + i + ", val = " + val + ", map.get(val) = " + map.get(val));
+                //ans[map.get(val)] = (i - map.get(val));
+                ans[val] = (i - val);
+            }
+
+           // st.push(cur);
+            st.push(i);
+        }
+
+        return ans;
+    }
+
+
 
 }
