@@ -577,36 +577,36 @@ public class workspace11 {
      * -> Given the root of a binary tree,
      *   invert the tree, and return its root.
      */
-    public TreeNode invertTree(TreeNode root) {
-        // edge
-        if(root == null || (root.left == null && root.right == null)){
-            return root;
-        }
-//        if(root.left == null || root.right == null){
-//            TreeNode _left = root.left;
-//            root.left = root.right;
-//            root.right = _left;
+//    public TreeNode invertTree(TreeNode root) {
+//        // edge
+//        if(root == null || (root.left == null && root.right == null)){
+//            return root;
 //        }
-
-        // dfs call
-        return invertHelper2(root);
-    }
-
-    private TreeNode invertHelper2(TreeNode root){
-        // edge
-        if(root == null){
-            return root;
-        }
-
-        TreeNode _left = invertHelper2(root.left);
-        TreeNode _right = invertHelper2(root.right);
-
-        // ???
-        root.left = _right; //invertHelper2(root.right); //_right;
-        root.right = _left;
-
-        return root;
-    }
+////        if(root.left == null || root.right == null){
+////            TreeNode _left = root.left;
+////            root.left = root.right;
+////            root.right = _left;
+////        }
+//
+//        // dfs call
+//        return invertHelper2(root);
+//    }
+//
+//    private TreeNode invertHelper2(TreeNode root){
+//        // edge
+//        if(root == null){
+//            return root;
+//        }
+//
+//        TreeNode _left = invertHelper2(root.left);
+//        TreeNode _right = invertHelper2(root.right);
+//
+//        // ???
+//        root.left = _right; //invertHelper2(root.right); //_right;
+//        root.right = _left;
+//
+//        return root;
+//    }
 
 //    // IDEA: DFS
 //    public TreeNode invertTree(TreeNode root) {
@@ -2580,6 +2580,43 @@ public class workspace11 {
         return _prev;
     }
 
+
+    // LC 226
+    // 12.05 - 12.15 pm
+    // IDEA: DFS
+    public TreeNode invertTree(TreeNode root) {
+        // edge
+        if(root == null){
+            return root;
+        }
+//        if(root.left == null || root.right == null){
+//            if(root.left == null){
+//                root.left = root.right;
+//            }else{
+//                root.right = root.left;
+//            }
+//            return root;
+//        }
+
+        // dfs
+        treeReverseHelper(root);
+        return root;
+    }
+
+    public TreeNode treeReverseHelper(TreeNode root){
+        // edge
+        if(root == null){
+            return root;
+        }
+
+        TreeNode _left = treeReverseHelper(root.left);
+        TreeNode _right = treeReverseHelper(root.right);
+
+        root.left = _right;
+        root.right = _left;
+
+        return root;
+    }
 
 
 
