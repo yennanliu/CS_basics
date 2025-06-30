@@ -328,6 +328,42 @@ public class ReverseLinkedList2 {
       return dummy.next;
   }
 
+  // V0-5
+  // IDEA: LINKED LIST (GPT)
+  public ListNode reverseBetween_0_5(ListNode head, int left, int right) {
+      if (head == null || left >= right)
+          return head;
+
+      // Dummy node to handle edge cases like reversing from head
+      ListNode dummy = new ListNode(0);
+      dummy.next = head;
+
+      // 1. Move prev to the node before reversal starts
+      ListNode prev = dummy;
+      for (int i = 1; i < left; i++) {
+          prev = prev.next;
+      }
+
+      // 2. Reverse the sublist from left to right
+      ListNode curr = prev.next;
+      ListNode prevSub = null;
+      for (int i = 0; i <= right - left; i++) {
+          ListNode next = curr.next;
+          curr.next = prevSub;
+          prevSub = curr;
+          curr = next;
+      }
+
+      // 3. Reconnect
+      // prev.next is the node at position `left`, now tail of reversed sublist
+      // curr is the node at position `right + 1`
+      ListNode tail = prev.next;
+      tail.next = curr;
+      prev.next = prevSub;
+
+      return dummy.next;
+  }
+
   // V1
   // IDEA: LINKED LIST (GPT)
   /**

@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.BinarySearchTree.LowestCommonAncestorOfABinaryTree3;
+import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.Tree.DiameterOfNAryTree;
 import com.sun.org.apache.bcel.internal.generic.PUSH;
@@ -2419,6 +2420,166 @@ public class workspace11 {
 
         return ans;
     }
+
+
+    // LC 206
+    // 11.04 - 11.14 am
+    public ListNode reverseList(ListNode head) {
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+
+        ListNode _prev = null; //new ListNode(); // ??
+        //_prev.next = head;
+
+        while (head != null){
+            ListNode _next = head.next;
+            //_prev.next = head;
+            //head.next = _next;
+            head.next = _prev;
+            _prev = head;
+            head = _next;
+        }
+
+        return _prev;
+    }
+
+    // LC 92
+    // 11.23 - 11.33 am
+    /**
+     *   IDEA 1) LINKED LIST -> ARRAY -> REVERSE -> LINKED LIST
+     *
+     *   IDEA 2) REVERSE LINKED LIST BY start, end point
+     *
+     *
+     *  --------------
+     *
+     *  IDEA 2)
+     */
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (head == null || left >= right)
+            return head;
+
+        // Dummy node to handle edge cases like reversing from head
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode _prev = dummy;
+
+
+        // move till `left` idx
+        for(int i = 0; i < left; i++){
+            _prev.next = _prev;
+        }
+
+        // cache
+        ListNode _left = _prev;
+
+        ListNode _head = null;
+
+        // reverse
+        for(int i = 0; i < right - left; i++){
+            _head = _prev.next;
+            ListNode _next = _head.next; // ???
+            _head.next = _prev;
+            _prev = _head;
+            _head = _next;
+        }
+
+        ListNode reversedEnd = _head; // ???
+
+        ListNode reversedFirst = _prev; // ???
+
+
+        _left.next = reversedFirst;
+
+
+        return null;
+    }
+
+
+
+
+
+
+
+
+    public ListNode reverseBetween_(ListNode head, int left, int right) {
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+        if(left >= right){
+            return head;
+        }
+
+        ListNode res = head;
+
+        int idx = 0;
+
+        // move till `left` idx
+        while(idx < left && head != null){
+            head = head.next;
+            idx += 1;
+        }
+
+        // cache `left` node
+        ListNode _left = head;
+
+        // move till `right` idx
+        while(idx < right && head != null){
+            head = head.next;
+            idx += 1;
+        }
+
+        // cache `right` node
+        ListNode _right = head;
+
+
+        ListNode reversedNode = reverseHelper(head, right - left + 1);
+
+        /**
+         *   so,
+         *
+         *   before:
+         *
+         *     ---------------------> head
+         *
+         *
+         *   after (reversed):
+         *
+         *     ----> left   <--- reversed  ----> right
+         *
+         */
+
+        _left.next = reversedNode;
+        reversedNode.next = _right;
+
+        return res;
+    }
+
+    public ListNode reverseHelper(ListNode head, int len){
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+
+        ListNode _prev = null;
+
+        int cur_len = 0;
+
+        while(head != null && cur_len < len){
+            ListNode _next = head.next;
+            head.next = _prev;
+            _prev = head;
+            head = _next;
+            cur_len += 1;
+        }
+
+        return _prev;
+    }
+
 
 
 
