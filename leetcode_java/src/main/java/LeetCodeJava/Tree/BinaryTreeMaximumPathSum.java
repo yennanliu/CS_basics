@@ -97,6 +97,50 @@ public class BinaryTreeMaximumPathSum {
          *
          *   so we can update global `max path sum` below
          */
+        /** NOTE !!!
+         *
+         *
+         *   -> need to get max from left_path, 0
+         *
+         * int _left = Math.max(getMaxPathHelper(root.left), 0);
+         *
+         * This line ensures that we ignore any negative path sums
+         * when calculating the maximum path from the current node.
+         *
+         * ⸻
+         *
+         * 🔍 Why use Math.max(..., 0)?
+         *
+         * In a binary tree, a path can pass through the left and right subtrees. However:
+         * 	•	If the left (or right) subtree contributes a negative sum, including it would decrease the total path sum.
+         * 	•	Since we want the maximum path sum, it’s better to exclude any negative paths (i.e., treat them as 0).
+         *
+         * ⸻
+         *
+         * ✅ What it means:
+         *
+         * Math.max(getMaxPathHelper(root.left), 0);
+         *
+         * 	•	If the left subtree contributes positively → keep it.
+         * 	•	If the left subtree contributes negatively → treat it as 0 (ignore it).
+         *
+         * ⸻
+         *
+         * 🧠 Example:
+         *
+         *       -10
+         *       /  \
+         *     -20  10
+         *
+         * Without Math.max(..., 0):
+         * 	•	_left = getMaxPathHelper(root.left) = -20
+         * 	•	Resulting path sum: -10 + (-20) + 10 = -20
+         *
+         * With Math.max(..., 0):
+         * 	•	_left = 0 (ignore -20)
+         * 	•	Resulting path sum: -10 + 0 + 10 = 0 ← better!
+         *
+         */
         int leftMax = Math.max(dfs(node.left), 0);
         int rightMax = Math.max(dfs(node.right), 0);
 
@@ -159,6 +203,96 @@ public class BinaryTreeMaximumPathSum {
         maxSum_2 = Math.max(maxSum_2, maxAtNode);
 
         return maxOneSide;
+    }
+
+    // V0-3
+    // IDEA: DFS + `Post order traverse`
+    /** NOTE !!! we init res as Integer.MIN_VALUE */
+    int max_path_sum = Integer.MIN_VALUE; // Fix this initialization
+
+    public int maxPathSum_0_3(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null && root.right == null) {
+            return root.val;
+        }
+
+        //dfs
+        getMaxPathHelper(root);
+
+        return max_path_sum;
+    }
+
+    public int getMaxPathHelper(TreeNode root) {
+
+        if (root == null) {
+            return 0; // ??
+        }
+
+        /** NOTE !!!
+         *
+         *
+         *   -> need to get max from left_path, 0
+         *
+         * int _left = Math.max(getMaxPathHelper(root.left), 0);
+         *
+         * This line ensures that we ignore any negative path sums
+         * when calculating the maximum path from the current node.
+         *
+         * ⸻
+         *
+         * 🔍 Why use Math.max(..., 0)?
+         *
+         * In a binary tree, a path can pass through the left and right subtrees. However:
+         * 	•	If the left (or right) subtree contributes a negative sum, including it would decrease the total path sum.
+         * 	•	Since we want the maximum path sum, it’s better to exclude any negative paths (i.e., treat them as 0).
+         *
+         * ⸻
+         *
+         * ✅ What it means:
+         *
+         * Math.max(getMaxPathHelper(root.left), 0);
+         *
+         * 	•	If the left subtree contributes positively → keep it.
+         * 	•	If the left subtree contributes negatively → treat it as 0 (ignore it).
+         *
+         * ⸻
+         *
+         * 🧠 Example:
+         *
+         *       -10
+         *       /  \
+         *     -20  10
+         *
+         * Without Math.max(..., 0):
+         * 	•	_left = getMaxPathHelper(root.left) = -20
+         * 	•	Resulting path sum: -10 + (-20) + 10 = -20
+         *
+         * With Math.max(..., 0):
+         * 	•	_left = 0 (ignore -20)
+         * 	•	Resulting path sum: -10 + 0 + 10 = 0 ← better!
+         *
+         * ⸻
+         *
+         * Summary:
+         *
+         * Expression	Meaning
+         * getMaxPathHelper(root.left)	Get path sum from left child
+         * Math.max(..., 0)	Eliminate negative path contributions
+         * root.val + _left + _right	Best path through current node
+         * root.val + Math.max(_left, _right)	Best path from current node to parent
+         *
+         */
+        int _left = Math.max(getMaxPathHelper(root.left), 0);
+        int _right = Math.max(getMaxPathHelper(root.right), 0);
+
+        max_path_sum = Math.max(max_path_sum,
+                root.val + _left + _right);
+
+        /** NOTE !!! */
+        return root.val + Math.max(_left, _right);
     }
 
     // V1-1

@@ -1996,7 +1996,7 @@ public class workspace11 {
      *    // IDEA 1) DFS + BST
      *
      */
-    public boolean isValidBST(TreeNode root) {
+    public boolean isValidBST_(TreeNode root) {
         // edge
         if(root == null){
             return true;
@@ -2619,5 +2619,170 @@ public class workspace11 {
     }
 
 
+    // LC 102
+    // 2.24 - 2.34 pm
+    // idea: bfs
+    public List<List<Integer>> levelOrder(TreeNode root) {
+
+        List<List<Integer>> res = new ArrayList<>();
+
+        // edge
+        if(root == null){
+            return res;
+        }
+        if(root.left == null && root.right == null){
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(root.val);
+            res.add(tmp);
+            return res;
+        }
+
+        // bfs
+        Queue<LayerNode> q = new LinkedList<>();
+        q.add(new LayerNode(0, root));
+
+        while(!q.isEmpty()){
+
+            LayerNode ln = q.poll();
+            TreeNode node = ln.node;
+            int layer = ln.layer;
+
+            if(layer >= res.size()){
+                res.add(new ArrayList<>());
+            }
+
+            List<Integer> cur = res.get(layer);
+            cur.add(node.val);
+
+            if(node.left != null){
+                q.add(new LayerNode(layer+1, node.left));
+            }
+
+            if(node.right != null){
+                q.add(new LayerNode(layer+1, node.right));
+            }
+
+        }
+
+        return res;
+    }
+
+    public class LayerNode{
+        // attr
+        int layer;
+        TreeNode node;
+        public LayerNode(int layer, TreeNode node){
+            this.layer = layer;
+            this.node = node;
+        }
+    }
+
+
+    // LC 98
+    public boolean isValidBST(TreeNode root) {
+
+        // edge
+        if(root == null){
+            return true;
+        }
+        if(root.left == null && root.right == null){
+            return true;
+        }
+
+//        int minVal = Integer.MIN_VALUE; // ??
+//        int maxVal = Integer.MAX_VALUE; //Integer.MIN_VALUE; // ???
+
+        long minVal = Long.MIN_VALUE;
+        long maxVal = Long.MAX_VALUE;
+
+        return validHelper(root, minVal, maxVal); //&&
+//                validHelper(root.left, minVal, root.val) &&
+//                validHelper(root.right, root.val, maxVal);
+    }
+
+    public boolean validHelper(TreeNode root, long minVal, long maxVal){
+
+        // edge
+        if(root == null){
+            return true;
+        }
+
+        // ?? check if not valid
+        if(root.val >= maxVal || root.val <= minVal){
+            return false;
+        }
+
+        return validHelper(root.left, minVal, root.val) &&
+                validHelper(root.right, root.val, maxVal);
+    }
+
+
+    // LC 124
+    // 2.44 - 2.54 PM
+    /**
+     * Given the root of a binary tree,
+     * return the maximum path sum of any non-empty path.
+     *
+     *
+     *   A node can only appear in the sequence `at most once`.
+     *   Note that the path does not need to pass through the root.
+     *
+     *
+     *
+     *   IDEA 1) DFS
+     *      -> post order ???
+     *         -> left -> right -> root
+     *         -> so we can know the `path sum` before visit root
+     *
+     */
+    int max_path_sum = 0;
+    public int maxPathSum(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0; // ??
+        }
+        if(root.left == null && root.right == null){
+            return root.val;
+        }
+
+        //dfs
+        getMaxPathHelper(root);
+
+        return max_path_sum;
+    }
+
+    public int getMaxPathHelper(TreeNode root){
+
+        if(root == null){
+            return 0; // ??
+        }
+
+        // int curSum = root.val +
+
+        int _left = Math.max(getMaxPathHelper(root.left), 0);
+        int _right = Math.max(getMaxPathHelper(root.right), 0);
+
+        max_path_sum = Math.max(max_path_sum,
+                root.val + _left + _right);
+
+       // return max_path_sum; // ??
+        return root.val + Math.max(_left, _right);
+    }
+
+
+
+//    public TreeNode getMaxPathHelper(TreeNode root){
+//
+//        if(root == null){
+//            return null; // ??
+//        }
+//
+//       // int curSum = root.val +
+//
+//        TreeNode _left = getMaxPathHelper(root.left);
+//        TreeNode _right = getMaxPathHelper(root.right);
+//
+//        return root;
+//    }
 
 }
