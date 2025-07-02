@@ -1681,7 +1681,7 @@ private void dfs(int[][] heights, boolean[][] reachable, int y, int x) {
 
     reachable[y][x] = true;
 
-    int[][] directions = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    int[][] directions = new int[][]{ {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
     for (int[] dir : directions) {
         int newY = y + dir[0];
         int newX = x + dir[1];
@@ -1771,7 +1771,7 @@ private void reveal_1(char[][] board, int x, int y) {
  *         and avoid unnecessary recursion.
  *
  *   - 3) board[x][y] != 'E'
- *   •  Avoids re-processing non-‘E' cells
+ *   •  Avoids re-processing non-'E' cells
  *   •  The board can have:
  *      •   'M' → Mine (already handled separately)
  *      •   'X' → Clicked mine (game over case)
