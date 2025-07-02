@@ -2785,4 +2785,103 @@ public class workspace11 {
 //        return root;
 //    }
 
+    // LC 297
+    // 3.47 - 3.57 PM
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode(int x) { val = x; }
+     * }
+     */
+    // Your Codec object will be instantiated and called as such:
+    // Codec ser = new Codec();
+    // Codec deser = new Codec();
+    // TreeNode ans = deser.deserialize(ser.serialize(root));
+    public class Codec {
+
+        // attr
+        String serialized = null; // ???
+        TreeNode deserialiazed = null;
+        StringBuilder sb = new StringBuilder();
+
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            // edge
+            if(root == null){
+                return "#";
+            }
+
+            sb.append(root.val);
+            sb.append(","); // new node, but same layer
+
+            serialize(root.left);
+            sb.append(","); // new node, but same layer
+
+            serialize(root.right);
+            //sb.append("#"); // ?? new layer
+
+            return sb.toString();
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+
+            // edge
+            if(data.equals("#")){
+                return null;
+            }
+
+            String[] data_arr = data.split(",");
+            Queue<String> q = new LinkedList<>(Arrays.asList(data_arr));
+
+            return helper(q);
+//
+//            if(data_arr.length==1){
+//                return new TreeNode(Integer.parseInt(data_arr[0]));
+//            }
+//
+//            TreeNode res = new TreeNode(Integer.parseInt(data_arr[0]));
+//
+//
+//            // ????
+//            //TreeNode res = new TreeNode()
+//            for(int i = 0; i < data_arr.length; i++){
+//                if(i == 0){
+//                    continue;
+//                }
+//
+//                res.left = new TreeNode(Integer.parseInt(data_arr[i]));
+//            }
+//
+//            return res;
+        }
+
+        private TreeNode helper(Queue<String> q){
+
+            // edge
+            if(q.isEmpty()){
+                return null;
+            }
+
+            String str = q.poll();
+            if(str.isEmpty()){
+                return null;
+            }
+
+            TreeNode root = new TreeNode(Integer.valueOf(str));
+
+            root.left = helper(q);
+            root.right = helper(q);
+
+            return root;
+        }
+
+    }
+
+
+
+
 }
