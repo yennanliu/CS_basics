@@ -466,7 +466,7 @@ class Solution(object):
 *   -> so we have 3 layer loop as below:
 *    - i : Iterates over the rows of  A  (outer loop).
 *    - j : Iterates over the columns of  B  (second loop).
-*    - k : Iterates over the “shared dimension” (columns of  A  or rows of  B ) to compute the dot product (inner loop).
+*    - k : Iterates over the "shared dimension" (columns of  A  or rows of  B ) to compute the dot product (inner loop).
 *
 *
 *  ->
@@ -474,7 +474,7 @@ class Solution(object):
 *  The Role of the Loops
 *    1.  Outer loop ( i ): Iterates over the rows of mat1 to calculate each row of the result matrix.
 *    2.  Middle loop ( j ): Iterates over the columns of mat2 to compute each element in a row of the result matrix.
-*    3.  Inner loop ( k ): Iterates over the “shared dimension” to compute the dot product of the  i^{th}  row of mat1 and the  j^{th}  column of mat2.
+*    3.  Inner loop ( k ): Iterates over the "shared dimension" to compute the dot product of the  i^{th}  row of mat1 and the  j^{th}  column of mat2.
 *
 *
 * ->  Why the Inner Loop ( k ) Exists ?
@@ -488,7 +488,7 @@ class Solution(object):
 public static int[][] multiply(int[][] mat1, int[][] mat2) {
     // Edge case: Single element matrices
     if (mat1.length == 1 && mat1[0].length == 1 && mat2.length == 1 && mat2[0].length == 1) {
-        return new int[][]{{mat1[0][0] * mat2[0][0]}};
+        return new int[][]{ {mat1[0][0] * mat2[0][0]} };
     }
 
     int l_1 = mat1.length;    // Number of rows in mat1

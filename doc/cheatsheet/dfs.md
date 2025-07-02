@@ -284,7 +284,7 @@ _is_island(grid, x, y-1, seen);
 // V2
 // private boolean _is_island_2(char[][] grid, int x, int y, boolean[][] seen) {}
 
-int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+int[][] directions = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
 
 for (int[] dir : directions) {
     int newX = x + dir[0];
@@ -1771,7 +1771,7 @@ private void reveal_1(char[][] board, int x, int y) {
  *         and avoid unnecessary recursion.
  *
  *   - 3) board[x][y] != 'E'
- *   •  Avoids re-processing non-‘E’ cells
+ *   •  Avoids re-processing non-‘E' cells
  *   •  The board can have:
  *      •   'M' → Mine (already handled separately)
  *      •   'X' → Clicked mine (game over case)
@@ -1795,7 +1795,7 @@ private void reveal_1(char[][] board, int x, int y) {
  *          •   Counts 1 mine nearby → Updates board[0][0] = '1'
  *          •   Does NOT recurse further, avoiding unnecessary work.
  *
- *      What If We Didn’t Check board[x][y] != 'E'?
+ *      What If We Didn't Check board[x][y] != 'E'?
  *          •   It might try to expand into already processed cells, leading to redundant computations or infinite recursion.
  *
  */
