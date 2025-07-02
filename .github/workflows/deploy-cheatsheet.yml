@@ -1,37 +1,37 @@
-# .github/workflows/deploy-cheatsheet.yml
+# # .github/workflows/deploy-cheatsheet.yml
 
-name: Deploy Cheatsheet to GitHub Pages
+# name: Deploy Cheatsheet to GitHub Pages
 
-on:
-  push:
-    branches: [ main ]  # Or your default branch
-    paths:
-      - 'doc/cheatsheet/**'
+# on:
+#   push:
+#     branches: [ main ]  # Or your default branch
+#     paths:
+#       - 'doc/cheatsheet/**'
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+# permissions:
+#   contents: read
+#   pages: write
+#   id-token: write
 
-concurrency:
-  group: 'pages'
-  cancel-in-progress: true
+# concurrency:
+#   group: 'pages'
+#   cancel-in-progress: true
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v3
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
+#       - name: Setup Pages
+#         uses: actions/configure-pages@v3
 
-      - name: Upload Cheatsheet files
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: doc/cheatsheet
+#       - name: Upload Cheatsheet files
+#         uses: actions/upload-pages-artifact@v2
+#         with:
+#           path: doc/cheatsheet
 
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2
+#       - name: Deploy to GitHub Pages
+#         uses: actions/deploy-pages@v2
