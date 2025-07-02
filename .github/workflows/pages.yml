@@ -1,0 +1,51 @@
+name: Build and Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'doc/cheatsheet/**'  # Only trigger when files in doc/cheatsheet change
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+
+      - name: Create Jekyll site structure
+        run: |
+          mkdir -p _layouts _includes _sass assets
+          # Copy only cheatsheet files to a temporary directory
+          mkdir -p temp_site/doc/cheatsheet
+          cp -r doc/cheatsheet/* temp_site/doc/cheatsheet/
+          # Create a minimal config file
+          echo "source: temp_site" > _config.yml
+          echo "baseurl: /CS_basics" >> _config.yml
+          echo "title: CS Basics Cheatsheets" >> _config.yml
+          echo "markdown: kramdown" >> _config.yml
+
+      - name: Install Jekyll and Dependencies
+        run: |
+          gem install bundler
+          bundle init
+          bundle add jekyll -v "~> 3.9.0"
+          bundle add github-pages
+          bundle install
+
+      - name: Build Site
+        run: bundle exec jekyll build --source temp_site --destination _site
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site 

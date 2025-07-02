@@ -100,7 +100,7 @@ These are often **permutation problems**, where:
 - You **should revisit** earlier choices (sometimes)
 
 
--> Don’t use `start_idx` when:
+-> Don't use `start_idx` when:
 - You're generating **permutations**
 - You need **all orderings**
 - Choices are not sequential (e.g., trying all positions)
@@ -789,10 +789,10 @@ if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
 
 // dfsFind(board, word, x+1, y, visited, start_idx + 1)
 
-//  1) You’re passing a copy of start_idx + 1 to the recursive function. So, inside the recursive call, start_idx is a new variable, and changes to it won’t affect the start_idx in the calling function.
+//  1) You're passing a copy of start_idx + 1 to the recursive function. So, inside the recursive call, start_idx is a new variable, and changes to it won't affect the start_idx in the calling function.
 
 
-// 2) We don’t need start_idx -= 1; because start_idx is passed by value, not by reference. So modifying it in the recursive call doesn’t affect the caller’s start_idx. We’re already handling the correct index in each recursive call by passing start_idx + 1.
+// 2) We don't need start_idx -= 1; because start_idx is passed by value, not by reference. So modifying it in the recursive call doesn't affect the caller's start_idx. We're already handling the correct index in each recursive call by passing start_idx + 1.
 
 ```
 
@@ -1092,7 +1092,7 @@ private boolean dfs_(char[][] board, int y, int x, int idx, String word, boolean
     /** NOTE !!! we update visited on x, y here */
     visited[y][x] = true;
 
-    int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    int[][] dirs = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
     /**
      *  NOTE !!!
      *
@@ -1198,13 +1198,13 @@ class Solution(object):
 // V0'
 // IDEA : Backtracking
 // https://leetcode.com/problems/subsets/editorial/
-    List<List<Integer>> output = new ArrayList();
+    List<List<Integer>> output = new ArrayList<>();
     int n, k;
 
     public void backtrack(int first, ArrayList<Integer> curr, int[] nums) {
         // if the combination is done
         if (curr.size() == k) {
-            output.add(new ArrayList(curr));
+            output.add(new ArrayList<>(curr));
             return;
         }
         /** NOTE HERE !!!
@@ -1701,9 +1701,9 @@ private void backtrack(String s, int start, List<String> currentList) {
  *
  *  •   This is the base case of the recursion.
  *
- *  •   It means: “If we’ve reached the end of the string,
+ *  •   It means: "If we've reached the end of the string,
  *       then the current list of substrings (currentList)
- *       forms a valid full partition of s into palindromes.”
+ *       forms a valid full partition of s into palindromes."
  *
  *  •   -> So we add a copy of currentList into
  *         the final result list partitionRes.
@@ -1712,9 +1712,9 @@ private void backtrack(String s, int start, List<String> currentList) {
  *  - Why start == s.length()?
  *
  *  •   Because start is the index from which
- *      we’re currently trying to partition.
+ *      we're currently trying to partition.
  *
- *  •   If start == s.length(), it means we’ve
+ *  •   If start == s.length(), it means we've
  *       used up all characters in s, and currentList is now a full,
  *       valid partition.
  */
@@ -2040,4 +2040,3 @@ private boolean dfs(int crs, Map<Integer, List<Integer>> preMap, Set<Integer> vi
     preMap.get(crs).clear(); // Clear prerequisites as the course is confirmed to be processed
     return true;
 }
-```

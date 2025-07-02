@@ -325,7 +325,7 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 *
 *    •   res is a List<List<Integer>>, where each inner list represents a level of the tree.
 *    •   res.get(depth) retrieves the list at the given depth.
-*    •   .add(curRoot.val) adds the current node’s value to the corresponding depth level.
+*    •   .add(curRoot.val) adds the current node's value to the corresponding depth level.
 *
 */
 
@@ -1254,7 +1254,7 @@ return true;
 ```java
 // java
 // LC 417
-public int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+public int[][] DIRECTIONS = new int[][]{ {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
 ```
 
 ### 1-18) Arrays.fill (1 D)
@@ -1640,7 +1640,7 @@ orderMap[order.charAt(i) - 'a'] = i;
 
 ### 🔍 What's happening?
 
-Let’s say:
+Let's say:
 ```java
 order = "hlabcdefgijkmnopqrstuvwxyz";
 ```
