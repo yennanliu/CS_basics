@@ -61,6 +61,9 @@ public class SerializeAndDeserializeBinaryTree {
             /** NOTE !!!
              *
              *     if root == null, return "#"
+             *
+             *     -> so once we face "#", we know we can STOP
+             *        further traverse on current node
              */
             if (root == null){
                 return "#";
@@ -76,6 +79,8 @@ public class SerializeAndDeserializeBinaryTree {
              *
              *   1) init queue and append serialize output
              *   2) even use queue, but helper func still using DFS
+             *
+             *   3) we use `helper` (dfs func) to implement deserialize
              */
             Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
             return helper(queue);
