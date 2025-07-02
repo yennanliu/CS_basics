@@ -240,6 +240,82 @@ public class NumberOfIslands {
         return true;
     }
 
+    // V0-3
+    // IDEA: DFS + MODIFY grid value (fixed by gpt)
+    public int numIslands_0_3(char[][] grid) {
+
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        if (grid.length == 1 && grid[0].length == 1) {
+            return grid[0][0] == '1' ? 1 : 0;
+        }
+
+        int cnt = 0;
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+
+        /**  NOTE !!!
+         *
+         *  we ONLY need to pick one to avoid `revisit`
+         *   -> 1) modify grid val
+         *      or
+         *     2) use `visited` hashset
+         *
+         */
+        // set : { x-y }
+        // HashSet<String> visited = new HashSet<>();
+
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                if (grid[i][j] == '1') {
+                    isLandHelper(j, i, grid);
+                    cnt += 1;
+                }
+            }
+        }
+
+        return cnt;
+    }
+
+    public void isLandHelper(int x, int y, char[][] grid) {
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int[][] dirs = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        /** NOTE !!!
+         *
+         *   we validate `current x, y` first,
+         *   ONLY if it's a `validated` point,
+         *   then we proceed (e.g.  move up, down, left, right dirs)
+         */
+        if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != '1') {
+            return;
+        }
+
+        /** NOTE !!!
+         *
+         *  we `modify` to grid value (x,y)
+         *  to avoid revisit
+         */
+
+        grid[y][x] = '@'; // ???
+
+        for (int[] d : dirs) {
+
+            int x_ = x + d[0];
+            int y_ = y + d[1];
+
+            isLandHelper(x_, y_, grid);
+        }
+        
+    }
+
 
     // V1-1
     // https://neetcode.io/problems/count-number-of-islands
