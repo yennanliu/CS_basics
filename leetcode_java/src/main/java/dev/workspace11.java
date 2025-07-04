@@ -2937,4 +2937,11 @@ public class workspace11 {
         //return true;
     }
 
+
+    // LC 525
+    public int findMaxLength(int[] nums) {
+
+        return 0;
+    }
+
 }
