@@ -80,6 +80,7 @@ import java.util.*;
 public class CloneGraph {
 
     /*
+
     // Definition for a Node.
     class Node {
         public int val;
@@ -97,6 +98,7 @@ public class CloneGraph {
             neighbors = _neighbors;
         }
     }
+
     */
 
     // V0
@@ -105,7 +107,64 @@ public class CloneGraph {
 
         // init hashmap
         // NOTE : hashmap form : <Integer, Node>
+        /**
+         *  NOTE !!!
+         *
+         *   we ONLY share `_visited` (hashMap) globally,
+         *   (but NOT `copiedNode`, reason is explained below)
+         */
         HashMap<Integer, Node> _visited = new HashMap<>();
+
+        /**
+         *  NOTE !!!
+         *
+         *  No, you cannot share a single copiedNode globally to clone a graph.
+         *
+         * ⸻
+         *
+         * 🚫 Why Not Use a Single Global copiedNode?
+         *
+         * A graph has many nodes, not just one. If you use a single global node like this:
+         *
+         * public Node copiedNode;
+         *
+         * And try to reuse it across recursive calls, then:
+         * 	•	You’ll overwrite its value and neighbors repeatedly.
+         * 	•	You’ll end up with a single node that doesn’t represent the whole graph.
+         * 	•	You can’t build the correct structure for multiple distinct nodes and their edges.
+         *
+         * ⸻
+         *
+         * ✅ Correct Design: Use a Map<Node, Node>
+         *
+         * To correctly clone a graph, you must use a map like:
+         *
+         * Map<Node, Node> visited;
+         *
+         * This allows:
+         * 	•	One-to-one mapping between original nodes and their clones.
+         * 	•	Recursion or BFS to work even when there are cycles.
+         * 	•	Correct construction of neighbors for each node.
+         *
+         * ⸻
+         *
+         * 🔁 Analogy
+         *
+         * Think of cloning the graph as photocopying a network of friends:
+         * 	•	Each person (node) gets their own copy (clone).
+         * 	•	You don’t make one global clone and change its identity repeatedly — that would mix up everyone.
+         *
+         * ⸻
+         *
+         * 🛠️ Summary
+         *
+         * Approach	Can Work?	Why/Why Not?
+         * Single global Node	❌	Cannot track multiple nodes and cycles.
+         * Map<Node, Node>	✅	Correctly handles multiple nodes and cycles.
+         *
+         */
+
+        
         return _clone(_visited, node);
     }
 
