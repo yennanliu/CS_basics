@@ -1,5 +1,25 @@
 # Progress
 
+# 2025-07-04
+- neetcode 250
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
+		- 27/66
+		- review prev LC problems !!!
+	- again: 168,2402,   649,72,329,1049,309
+		- similar: 1522, 2246, 3340,  1644,1650, 501
+		- Kadane algo
+			- 134: Gas Station
+	- todo:
+		- re-do all previous `again` problems, similar problems, make notes
+		- refine java_trick cheatsheet
+- Sys design questions:
+	- https://neetcode.io/practice?tab=systemDesign
+- crack code book
+	- p.177 (recursion & dp)
+- sys design book
+	- Volume 2
+		- p.323
+
 # 2025-07-02
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
