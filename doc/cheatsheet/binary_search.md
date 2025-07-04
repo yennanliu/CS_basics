@@ -28,6 +28,7 @@
     - Basic binary search
 
     - Search in `rotate` array
+
         - Find `Minimum` in Rotated Sorted Array
             - LC 153
             ```java
@@ -46,6 +47,7 @@
             }
             // ...
             ```
+
         - Search in Rotated Sorted Array
             - LC 33, LC 81
             ```java
@@ -376,7 +378,7 @@ def binary_search_left_boundary(nums, target):
 // java
 
 /** 
- *  2 difference between regular binary search
+ *  Two difference between regular binary search
  * 
  *   1. else if (nums[mid] == target) {
  *          // 收缩左侧边界
@@ -391,7 +393,7 @@ def binary_search_left_boundary(nums, target):
  *   if (left - 1 < 0 || left - 1 >= nums.length) {
  *       return -1;
  *   }
- *  return nums[left - 1] == target ? (left - 1) : -1;
+ *   return nums[left - 1] == target ? (left - 1) : -1;
  *
  * 
  */
