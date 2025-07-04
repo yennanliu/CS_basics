@@ -1,10 +1,10 @@
 # Queue 
+
+
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/queue2.png"></p>
 - first in first out (FIFO)
 
-
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack_vs_queue.png"></p>
-
 
 
 ## 0) Concept
@@ -14,7 +14,7 @@
 - first in first out (FIFO)
 - [Java Queue](https://juejin.cn/post/7032838878696308766)
     - Low level : Linked list or Array
-- Used when transfer `recursive` code to `iterative`
+- Used when transfer `recursive` -> `iterative`
     - via FIFO properties, we're sure that the `earlier reached` code is executed first, then the `following code`,... and so on
 
 ### 0-1) Types
