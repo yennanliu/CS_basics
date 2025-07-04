@@ -2939,9 +2939,96 @@ public class workspace11 {
 
 
     // LC 525
+    // 10.58 - 11.08 am
+    /**
+     *
+     *
+     *   Given a binary array nums, return the maximum length of a
+     *   contiguous subarray with an ` equal number of 0 and 1.` !!!!
+     *
+     *  IDEA 1) GREEDY
+     *
+     *  IDEA 2) HASH MAP
+     *
+     *      -> 1. get all 0, 1 count
+     *      -> 2. loop over nums
+     *          -> check if `cur window` 0,1 is a valid contiguous subarray
+     *          -> check if `remove cur widnwo` can form a valid contiguous subarray
+     *          -> maintain the max sub array len
+     *
+     *       -> 3. return max sub array len
+     *
+     *
+     */
+
+    // hashMap
     public int findMaxLength(int[] nums) {
 
-        return 0;
+        // edge
+        if(nums == null || nums.length <= 1){
+            return 0;
+        }
+        if(nums.length == 2){
+            return nums[0] != nums[1] ? 2 : 0;
+        }
+
+        // brute force
+        int max_len = 0;
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for(int i = 0; i < nums.length; i++){
+            int o_cnt = 0;
+            int z_cnt = 0;
+            for(int j = i; j < nums.length; j++){
+                if(nums[j] == 0){
+                    z_cnt += 1;
+                }else{
+                    o_cnt += 1;
+                }
+
+                if(z_cnt == o_cnt){
+                    max_len = Math.max(max_len, j - i + 1);
+                }
+            }
+        }
+
+
+        return max_len;
+    }
+
+    // brute force
+    public int findMaxLength_(int[] nums) {
+
+        // edge
+        if(nums == null || nums.length <= 1){
+            return 0;
+        }
+        if(nums.length == 2){
+            return nums[0] != nums[1] ? 2 : 0;
+        }
+
+        // brute force
+        int max_len = 0;
+
+        for(int i = 0; i < nums.length; i++){
+            int o_cnt = 0;
+            int z_cnt = 0;
+            for(int j = i; j < nums.length; j++){
+                if(nums[j] == 0){
+                    z_cnt += 1;
+                }else{
+                    o_cnt += 1;
+                }
+
+                if(z_cnt == o_cnt){
+                    max_len = Math.max(max_len, j - i + 1);
+                }
+            }
+        }
+
+
+        return max_len;
     }
 
 }

@@ -46,6 +46,85 @@ public class ContiguousArray {
 //
 //    }
 
+    // V0-1
+    // IDEA: HASHMAP (fixed by gpt)
+    /**
+     * 	 IDEA)
+     *
+     * 	 1. Convert the problem into tracking equal number of
+     * 	    1s and 0s as a zero net count.
+     *
+     * 	 2. Maintain a count where:
+     * 	     - Add +1 for each 1
+     * 	     - Subtract -1 for each 0
+     *
+     * 	3.	If the same count value appears again,
+     * 	    the subarray between the first and current index is balanced.
+     *
+     */
+    public int findMaxLength_0_1(int[] nums) {
+
+        // Map: {count -> first index where this count occurred}
+        Map<Integer, Integer> map = new HashMap<>();
+
+        map.put(0, -1); // important: count 0 initially at index -1
+
+        int max_len = 0;
+        int count = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            // Treat 0 as -1 and 1 as +1
+            //count += nums[i] == 1 ? 1 : -1;
+            if(nums[i] == 1){
+                count += 1;
+            }else{
+                count -= 1;
+            }
+
+            if (map.containsKey(count)) {
+                max_len = Math.max(max_len, i - map.get(count));
+            } else {
+                map.put(count, i); // only put the first occurrence
+            }
+        }
+
+        return max_len;
+    }
+
+    // V0-2
+    // IDEA; BRUTE FORCE (TLE)
+    public int findMaxLength_0_2(int[] nums) {
+
+        // edge
+        if(nums == null || nums.length <= 1){
+            return 0;
+        }
+        if(nums.length == 2){
+            return nums[0] != nums[1] ? 2 : 0;
+        }
+
+        // brute force
+        int max_len = 0;
+
+        for(int i = 0; i < nums.length; i++){
+            int o_cnt = 0;
+            int z_cnt = 0;
+            for(int j = i; j < nums.length; j++){
+                if(nums[j] == 0){
+                    z_cnt += 1;
+                }else{
+                    o_cnt += 1;
+                }
+
+                if(z_cnt == o_cnt){
+                    max_len = Math.max(max_len, j - i + 1);
+                }
+            }
+        }
+
+        return max_len;
+    }
+
     // V1-1
     // https://leetcode.com/problems/contiguous-array/editorial/
     // IDEA: BRUTE FORCE
@@ -67,10 +146,10 @@ public class ContiguousArray {
         return maxlen;
     }
 
-    // V1-2
-    // https://leetcode.com/problems/contiguous-array/editorial/
-    // IDEA: HASHMAP
-    public int findMaxLength_1_2(int[] nums) {
+  // V1-2
+  // https://leetcode.com/problems/contiguous-array/editorial/
+  // IDEA: HASHMAP
+  public int findMaxLength_1_2(int[] nums) {
         Map<Integer, Integer> map = new HashMap<>();
         map.put(0, -1);
         int maxlen = 0, count = 0;
