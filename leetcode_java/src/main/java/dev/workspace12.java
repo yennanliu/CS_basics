@@ -1,9 +1,6 @@
 package dev;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class workspace12 {
 
@@ -26,9 +23,58 @@ public class workspace12 {
         }
     }
 
-    public Node copiedNode;
+    //public Node copiedNode;
 
+    // BFS
     public Node cloneGraph(Node node) {
+        // edge
+        if(node == null){
+            return null;
+        }
+        if(node.neighbors == null){
+            return node;
+        }
+
+        //Node copiedNode = null;
+
+        Queue<Node> q = new LinkedList<>();
+        q.add(node);
+
+        // visited
+        //  HashMap<Integer, Node> visited = new HashMap<>();
+        Map<Integer, Node> visited = new HashMap<>();
+
+        Node copiedNode = null;
+
+        while(!q.isEmpty()){
+            Node cur_node= q.poll();
+            if(visited.containsKey(cur_node)){
+                continue; // ??
+            }
+
+            //copiedNode.val = cur_node.val;
+            copiedNode = new Node(cur_node.val, new ArrayList<>()); // ???
+            visited.put(cur_node.val, cur_node);
+
+//            // ???
+//            if(copiedNode.neighbors == null){
+//                copiedNode.neighbors = new ArrayList<>();
+//            }
+
+            for(Node x: cur_node.neighbors){
+                //copiedNode.neighbors.add(x);
+                copiedNode.neighbors.add(x);
+            }
+
+        }
+
+
+        return copiedNode;
+    }
+
+
+    // DFS
+    public Node cloneGraph_2(Node node) {
         // edge
         if(node == null){
             return null;

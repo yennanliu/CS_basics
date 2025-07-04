@@ -164,7 +164,7 @@ public class CloneGraph {
          *
          */
 
-        
+
         return _clone(_visited, node);
     }
 
@@ -276,6 +276,56 @@ public class CloneGraph {
             // Add the cloned neighbor to the current cloned node's neighbor list
             cloned.neighbors.add(map.get(neighbor));
         }
+    }
+
+    // V0-3
+    // IDEA: BFS (fixed by gpt)
+    public Node cloneGraph_0_3(Node node) {
+        if (node == null)
+            return null;
+
+        /**
+         *  NOTE !!! below
+         *
+         */
+        Map<Node, Node> visited = new HashMap<>();
+        Queue<Node> queue = new LinkedList<>();
+
+        /**
+         *  NOTE !!! below
+         *
+         */
+        // Create the clone of the first node
+        Node clone = new Node(node.val);
+        visited.put(node, clone);
+        queue.add(node);
+
+        while (!queue.isEmpty()) {
+            Node curr = queue.poll();
+
+            for (Node neighbor : curr.neighbors) {
+                if (!visited.containsKey(neighbor)) {
+
+                    /**
+                     *  NOTE !!! below
+                     *
+                     */
+                    // Clone and store
+                    Node neighborClone = new Node(neighbor.val);
+                    visited.put(neighbor, neighborClone);
+                    queue.add(neighbor);
+                }
+
+                /**
+                 *  NOTE !!! below
+                 *
+                 */
+                // Link clone's neighbor
+                visited.get(curr).neighbors.add(visited.get(neighbor));
+            }
+        }
+
+        return clone;
     }
 
     // V1-1
