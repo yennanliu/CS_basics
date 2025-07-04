@@ -15,7 +15,7 @@
         - Priority queue is one of the implementations of heap
         - a priority queue is an `abstract data type` similar to a regular queue or stack data structure in which each element additionally has a `"priority"` associated with it. In a priority queue, an element with high priority is served before an element with low priority.
         - `Heap != Priority Queue`
-        - Priority Queue is a abstract data type
+        - Priority Queue is an abstract data type
         - Heap is a way to implemenrt Priority Queue
 
 - Heap
