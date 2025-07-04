@@ -64,8 +64,17 @@ public class ContiguousArray {
      */
     public int findMaxLength_0_1(int[] nums) {
 
-        // Map: {count -> first index where this count occurred}
-        Map<Integer, Integer> map = new HashMap<>();
+    // Map: {count -> first index where this count occurred}
+    /**
+     *
+     * 	•	We use a map to store the first index where a specific count value occurs.
+     * 	•	count = 0 is added with index = -1 to handle subarrays starting at index 0.
+     * 	•	Why? If from index 0 to i, the net count is 0, that means the subarray is balanced.
+     *
+     *
+     * 	-> map : { count : first_idx_when_cnt_existed }
+     */
+    Map<Integer, Integer> map = new HashMap<>();
 
         map.put(0, -1); // important: count 0 initially at index -1
 
@@ -73,15 +82,44 @@ public class ContiguousArray {
         int count = 0;
 
         for (int i = 0; i < nums.length; i++) {
-            // Treat 0 as -1 and 1 as +1
-            //count += nums[i] == 1 ? 1 : -1;
-            if(nums[i] == 1){
+
+      // Treat 0 as -1 and 1 as +1
+      // count += nums[i] == 1 ? 1 : -1;
+      /**
+       *  NOTE !!!
+       *
+       * 	•	count: keeps a running sum where:
+       * 	    •	+1 for each 1
+       * 	    •	-1 for each 0
+       */
+      if (nums[i] == 1) {
                 count += 1;
             }else{
                 count -= 1;
             }
 
-            if (map.containsKey(count)) {
+      /**
+       *  NOTE !!!
+       *
+       *    Check if the count has been seen before
+       *
+       *
+       *    - If this count has occurred before at some earlier index j, then:
+       * 	    - count(i) - count(j) == 0 ⇒ balanced from j+1 to i
+       * 	    - So the length is i - j
+       * 	    - We update max_len if this subarray is longer.
+       *
+       *
+       *  -> if map contains `count` (key)
+       *  -> means we see this `count` before
+       *  -> the `count` before is the sum between (0, a)
+       *  -> so the `sub array sub` between (a, b) can be calculated via
+       *       count(a) - count(b) == 0
+       *
+       *    -> so the `sub array is balanced
+       *    -> we should update the max_len accordingly
+       */
+      if (map.containsKey(count)) {
                 max_len = Math.max(max_len, i - map.get(count));
             } else {
                 map.put(count, i); // only put the first occurrence
