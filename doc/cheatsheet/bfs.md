@@ -120,9 +120,12 @@ def bfs(root):
 ```python
 # LC 257 Binary Tree Paths
 # LC 1022. Sum of Root To Leaf Binary Numbers
+
+
 cur = ""
 q = [[cur, root]]
 res = []
+
 while q:
     #for i in range(len(q)):
     cur, tmp = q.pop(0)

@@ -108,7 +108,7 @@ for (int i = 0; i < n; i++) {
 ```
 
 
-- monotonic stack (decreasing)
+- monotonic stack (`decreasing`)
 
 ```java
 
