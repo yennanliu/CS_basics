@@ -40,8 +40,63 @@ import java.util.Map;
 public class PermutationInString {
 
     // V0
-    // IDEA: HASHMAP + SLIDING WINDOW (fixed by gpt)
+    // IDEA: HASHMAP + SLIDING WINDOW (gpt)
     public boolean checkInclusion(String s1, String s2) {
+        // edge
+        if (s1 == null || s2 == null || s1.length() > s2.length()) {
+            return false;
+        }
+        if (s1.equals(s2)) {
+            return true;
+        }
+
+        // Build frequency map for s1
+        HashMap<Character, Integer> s1Map = new HashMap<>();
+        for (char c : s1.toCharArray()) {
+            s1Map.put(c, s1Map.getOrDefault(c, 0) + 1);
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *    we get window size via l1 len
+         *    -> the window size can be used to
+         *       check whether it's possible to
+         *       find the permutation per current window
+         */
+        int windowSize = s1.length();
+
+        /**
+         *  NOTE !!!
+         *
+         *    we use double loop but with
+         *
+         *    1. first loop : i pointer <= s2.length() - windowSize
+         *    2. 2nd loop: loop over `window size`
+         *
+         *
+         */
+        for (int i = 0; i <= s2.length() - windowSize; i++) {
+            String window = s2.substring(i, i + windowSize);
+            HashMap<Character, Integer> windowMap = new HashMap<>();
+
+            // NOTE !!! loop over `window size`
+            for (char c : window.toCharArray()) {
+                windowMap.put(c, windowMap.getOrDefault(c, 0) + 1);
+            }
+
+            // NOTE !!! if found a permutation sub str, return true directly
+            if (windowMap.equals(s1Map)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // V0_0_1
+    // IDEA: HASHMAP + SLIDING WINDOW (fixed by gpt)
+    public boolean checkInclusion_0_0_1(String s1, String s2) {
         if (!s1.isEmpty() && s2.isEmpty()) {
             return false;
         }
