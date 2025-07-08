@@ -144,6 +144,77 @@ public class workspace12 {
 //        return node;
 //    }
 
+    // LC 567
+    // 18.55 - 19.05 pm
+    /**
+     *
+     *  Given two strings s1 and s2, return true if s2 contains
+     *  a permutation of s1, or false otherwise.
+     *
+     *
+     *  -> A permutation is a rearrangement of all
+     *     the characters of a string.
+     *
+     *
+     *   IDEA 1) SLIDING WINDOW + HASHMAP
+     */
+    public boolean checkInclusion(String s1, String s2) {
+        // edge
+        if((s1 == null && s2 == null) || s1.equals(s2)){
+            return true;
+        }
+        if(s1 != null && s2 == null){
+            return false;
+        }
+        if(s1.length() > s2.length()){
+            return false;
+        }
+
+        // element cnt map in s1
+        HashMap<String, Integer> s1_map = new HashMap<>();
+        for(String x: s1.split("")){
+            s1_map.put(x, s1_map.getOrDefault(x, 0) + 1);
+        }
+
+        System.out.println(">>> s1_map = " + s1_map);
+
+        // sliding window
+        String[] s2_arr = s2.split("");
+        for(int i = 0; i < s2_arr.length; i++){
+
+            //HashMap<String, Integer> s2_map = new HashMap<>();
+            HashMap<String, Integer> s1_map_tmp = s1_map;
+            System.out.println(">>> s1_map_tmp = " + s1_map_tmp);
+
+            for(int j = i; j < s2_arr.length; j++){
+
+                if(s1_map_tmp.isEmpty()){
+                    return true;
+                }
+
+                String val = s2_arr[j];
+                if(!s1_map.containsKey(val)){
+                    break;
+                }
+
+                if(j - i + 1 == s1.length()){
+                    return true;
+                }
+
+                //s2_map.put(val, s2_map.getOrDefault(val, 0) + 1);
+                s1_map_tmp.put(val, s1_map_tmp.get(val) - 1);
+                if(s1_map_tmp.get(val) == 0){
+                    s1_map_tmp.remove(val);
+                }
+
+                j += 1;
+            }
+
+        }
+
+        return false;
+    }
+
 
 }
 
