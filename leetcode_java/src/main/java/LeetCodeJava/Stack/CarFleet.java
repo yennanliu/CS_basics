@@ -129,6 +129,11 @@ public class CarFleet {
          *  -> NOTE !!! we sort place (big -> small)
          *  -> so, we START deal with `farthest` car
          */
+        /**
+         *  NOTE !!!  -> start deal with `farthest` car
+         *
+         *   Sort cars by position descending (`farthest` from target first)
+         */
         Arrays.sort(cars, (a, b) -> b[0] - a[0]); // Sort by POSITION in DECREASING order (far -> closed)
 
         // Calculate arrival times

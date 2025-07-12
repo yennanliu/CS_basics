@@ -3029,9 +3029,84 @@ public class workspace11 {
 
     // LC 853
     // 5.17 - 5.27 pm
+    /**
+     *
+     *   -> return the number of fleet
+     *
+     *
+     * A car fleet is a car or cars driving next to each other.
+     * The speed of the car fleet is the minimum speed of any car in the fleet.
+     *
+     *
+     *  -> n cars are x away from target, drive to reach the `target`
+     *   position[i] for each car
+     *   speed[i] for each car
+     *
+     *  car can't pass another car, but they can `merge` into a fleet
+     *  -> move with `minimum` speed from the fleet
+     *
+     *
+     *
+     *  exp 1)
+     *
+     *  Input: target = 12,
+     *  position = [10,8,0,5,3],
+     *  speed = [2,4,1,1,3]
+     *
+     *  -> res = 3
+     *
+     *   -> diff = [ 2, 4, 12, 7, 9]
+     *   -> time = [ 1, 1, 12, 7, 3 ]
+     *
+     *   -> stack : [1,1,12,7,3], fleet_cnt  = 0
+     *
+     *   -> stack : [1,12,7,3], prev_time = 1, fleet_cnt  = 1
+     *   -> stack : [12,7,3], prev_time = 1, fleet_cnt  = 2
+     *   -> stack : [7,3], prev_time = 12, fleet_cnt  = 3
+     *   -> stack : [3], prev_time = 7, fleet_cnt  = 3
+     *   -> stack : [], prev_time = 3, fleet_cnt  = 3
+     *
+     *
+     *
+     */
     public int carFleet(int target, int[] position, int[] speed) {
 
-        return 0;
+        // edge
+        if(position == null || speed == null || position.length == 0 || speed.length == 0){
+            return 0;
+        }
+        if(position.length == 1 || speed.length == 1){
+            return 1;
+        }
+
+        //float[] time = new float[position.length];
+        List<Float> time_arr = new ArrayList<>();
+
+        for(int i = 0; i < position.length; i++){
+            float _time = (target - position[i]) / speed[i];
+            time_arr.add(_time);
+        }
+
+        // sort (small -> big)
+        time_arr.sort(new Comparator<Float>() {
+            @Override
+            public int compare(Float o1, Float o2) {
+                return o1.compareTo(o2);
+            }
+        });
+
+        int fleet_cnt = 0;
+
+        float _prev_time = 0;
+
+        for(float f: time_arr){
+            if(f > _prev_time){
+                _prev_time = f;
+                fleet_cnt += 1;
+            }
+        }
+
+        return fleet_cnt;
     }
 
 }
