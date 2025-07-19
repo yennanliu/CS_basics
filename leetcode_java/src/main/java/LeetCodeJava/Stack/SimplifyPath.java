@@ -109,12 +109,28 @@ public class SimplifyPath {
                 if (!st.isEmpty()) {
                     st.pop();
                 }
-            } else if (!dir.equals(".") && !dir.isEmpty()) {
+            }
+            /** NOTE !!!
+             *
+             *  -> we DON'T add `null element` to stack
+             *  -> !dir.isEmpty()
+             */
+            else if (!dir.equals(".") && !dir.isEmpty()) {
                 st.push(dir);
             }
         }
 
         StringBuilder sb = new StringBuilder();
+        /**
+         * NOTE !!!
+         *
+         *  we can loop over element in stack directly (old -> new element ordering)
+         *  via `for (String dir : st)`
+         *
+         *  -> so NO NEED to transform to
+         *     list / other intermedia data structure
+         *
+         */
         for (String dir : st) {
             sb.append("/").append(dir);
         }
