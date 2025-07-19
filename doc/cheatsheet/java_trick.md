@@ -1017,6 +1017,21 @@ init[1] = 0;
 stack.push(init);
 ```
 
+### 1-7-1) Loop over elements in stack
+```java
+// java
+// LC 71
+Stack<String> st = new Stack<>();
+st.push("a");
+st.push("b");
+st.push("c");
+
+// NOTE !!! loop over elements in stack
+for(String x: st){
+    System.out.println(x);
+}
+```
+
 ### 1-8) remove element in String (`StringBuilder`)
 ```java
 // LC 22
