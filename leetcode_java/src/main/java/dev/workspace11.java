@@ -3109,4 +3109,158 @@ public class workspace11 {
         return fleet_cnt;
     }
 
+  // LC 71
+  // 4.34 - 4.44 pm
+  /**
+   *  Stack: FILO
+   *
+   *
+   *  ex 1)
+   *
+   *  Input: path = "/home/"
+   *  Output: "/home"
+   *
+   *
+   *  "/home/"    st = ["/"]
+   *   x
+   *
+   *  ..
+   *
+   *  "/home/"    st = ["/", h, o, m, e, "/"]
+   *        x
+   *
+   *   -> remove `last` "/" since it's NOT root dir
+   *
+   *  ---------
+   *
+   *  ex 2)
+   *
+   *  Input: path = "/home//foo/"
+   *  Output: "/home/foo"
+   *
+   *
+   * "/home//foo/"   st = ["/"]
+   *  x
+   *
+   *  ...
+   *
+   *  "/home//foo/"   st = ["/"]
+   *
+   *
+   * ----
+   *
+   *
+   *  ex 3)
+   *
+   *  Input: path = "/home/user/Documents/../Pictures"
+   *  Output: "/home/user/Pictures"
+   *
+   *
+   *  "/home/user/Documents/../Pictures"   st = ["/"]
+   *   x
+   *
+   *   ...
+   *
+   *  "/home/user/Documents/../Pictures"   st = ["home", "user"]
+   *                        x
+   *
+   *  "/home/user/Documents/../Pictures"   st = ["home", "user", "Pictures"]
+   *                             x
+   *  ---
+   *
+   *
+   *  ex 4)
+   *
+   *  Input: path = "/../"
+   *  Output: "/"
+   *
+   *   "/../"     st = [".."] -> []
+   *     x
+   *
+   *  -------
+   *
+   *
+   *  ex 5)
+   *
+   *  Input: path = "/.../a/../b/c/../d/./"
+   *  Output: "/.../b/d"
+   *
+   *
+   *  "/.../a/../b/c/../d/./"   st = ["..."]
+   *    x
+   *
+   *   "/.../a/../b/c/../d/./"   st = ["...", "a"]
+   *         x
+   *
+   *  "/.../a/../b/c/../d/./"   st = ["..."]
+   *          x
+   *
+   *  ...
+   *
+   *  "/.../a/../b/c/../d/./"   st = ["...", "b']
+   *                 x
+   *
+   *  "/.../a/../b/c/../d/./"   st = ["...", "b", "d"]
+   *                    x
+   *
+   *   "/.../a/../b/c/../d/./"   st = ["...", "b", "d"]
+   *                       x
+   */
+  public String simplifyPath(String path) {
+        // edge
+        if(path.isEmpty() || path == null || path.equals("/")){
+            return path; // ???
+        }
+
+        Stack<String> st = new Stack<>();
+        //Queue<String> q = new Dob
+
+        // split  by "/"
+        for(String x: path.split("/")){
+            System.out.println(">>> x = " + x);
+            if (x.equals("..")){
+                if(!st.isEmpty()){
+                    st.pop(); // pop the `last added` element; otherwise, do nothing
+                }
+            }else if(!x.equals(".")){
+                // add to stack
+                st.add(x);
+            }
+            // do nothing for other cases (e.g. : ".")
+        }
+
+        List<String> list = new ArrayList<>();
+        while(!st.isEmpty()){
+             String tmp = st.pop();
+//             if (!tmp.isEmpty()){
+//                 list.add(st.pop());
+//             }
+            list.add(st.pop());
+          }
+
+        System.out.println(">>> list = " + list);
+
+
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = list.size()-1; i >= 0; i--){
+            sb.append("/");
+            sb.append(list.get(i));
+        }
+
+        System.out.println(">>> sb string = " +  sb.toString());
+
+        String str = sb.reverse().toString();
+        // edge
+        String ans;
+        if(str.length() > 1){
+            ans = str.substring(0, str.length() - 1);
+        }else{
+            ans = str;
+        }
+
+
+        return ans;
+    }
+
 }

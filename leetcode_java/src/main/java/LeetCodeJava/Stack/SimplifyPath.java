@@ -95,6 +95,33 @@ public class SimplifyPath {
 //
 //    }
 
+    // V0-1
+    // IDEA: STACK (fixed by gpt)
+    public String simplifyPath_0_1(String path) {
+        if (path == null || path.isEmpty()) {
+            return "/";
+        }
+
+        Stack<String> st = new Stack<>();
+
+        for (String dir : path.split("/")) {
+            if (dir.equals("..")) {
+                if (!st.isEmpty()) {
+                    st.pop();
+                }
+            } else if (!dir.equals(".") && !dir.isEmpty()) {
+                st.push(dir);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String dir : st) {
+            sb.append("/").append(dir);
+        }
+
+        return sb.length() == 0 ? "/" : sb.toString();
+    }
+
     // V1
     // (needcode)
     // https://www.youtube.com/watch?v=qYlHrAKJfyA
