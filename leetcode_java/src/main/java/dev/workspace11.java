@@ -3263,4 +3263,123 @@ public class workspace11 {
         return ans;
     }
 
+  // LC 394
+  // 6.00 - 6.10 pm
+  /**
+   *  IDEA 1) STACK
+   *
+   *  ex 1)
+   *
+   *  Input: s = "3[a]2[bc]"
+   *  Output: "aaabcbc"
+   *
+   *  "3[a]2[bc]"   st = [3]
+   *   x
+   *
+   *   "3[a]2[bc]"   st = [aaa]
+   *      x
+   *
+   *   "3[a]2[bc]"   st = [aaa, 2]
+   *        x
+   *
+   *   "3[a]2[bc]"   st = [aaa, 2, bc]
+   *          x
+   *
+   *  "3[a]2[bc]"   st = [aaa, 2, bc] -> aaabcbc
+   *
+   *
+   * --------------
+   *
+   *  ex 2)
+   *
+   *  Input: s = "3[a2[c]]"
+   *  Output: "accaccacc"
+   *
+   *  "3[a2[c]]"   st = [3]
+   *   x
+   *
+   *  "3[a2[c]]"   st = [3,  "["]
+   *    x
+   *
+   *   ...
+   *
+   *  "3[a2[c]]"   st = [3, "[", a, 2]
+   *      x
+   *
+   *  "3[a2[c]]"   st = [3, "[", a, 2, "["]
+   *       x
+   *
+   *   "3[a2[c]]"   st = [3, "[", a, 2, "[", c]
+   *         x
+   *
+   *   "3[a2[c]]"   st = [3, "[", a, cc]
+   *          x
+   *
+   *    "3[a2[c]]"   st = [accaccacc]
+   *            x
+   *
+   */
+  public String decodeString(String s) {
+      // edge
+      if(s == null || s.isEmpty() || s.length() == 1){
+          return s; // ??
+      }
+      if(!s.contains("[") && !s.contains("]")){
+          return s;
+      }
+
+      // stack
+      Stack<String> st = new Stack<>();
+
+      //StringBuilder sb = new StringBuilder();
+
+      String alpha = "abcdefghijklmopqrstuvwxyz";
+
+      for(String x: s.split("")){
+
+          // if NOT "]", push to stack
+          if(!x.equals("]")){
+              st.push(x);
+          }
+          // if meet "]", do special handling
+          else{
+
+              //StringBuilder tmp_sb = new StringBuilder();
+              Stack<String> st_tmp = new Stack<>();
+
+              while(!st.isEmpty() && !st.peek().equals("[")){
+
+                  String cur = st.pop();
+
+                  // case 1) cur is alphabet (abc...)
+                  if(alpha.contains(cur)){
+                      String cache_str = "";
+                      if(!st_tmp.isEmpty()){
+                          cache_str += st_tmp.pop();
+                      }
+                      cache_str += cur;
+                      st_tmp.push(cache_str);
+                  }
+                  // case 2) cur is `integer`
+                  else{
+                      int times = Integer.parseInt(cur);
+                      String cache_str2 = multiplyStr(st.pop(), times);
+                      st.push(cache_str2);
+                  }
+              }
+          }
+      }
+
+      return st.pop(); // ??
+    }
+
+    private String multiplyStr(String input, int times){
+      String res = "";
+      for(int i = 0; i < times; i++){
+          res += input;
+      }
+      return res;
+    }
+
+
 }
