@@ -49,10 +49,22 @@ public class DecodeString {
             String tmp = "";
             StringBuilder tmpSb = new StringBuilder();
             if (!x.equals("]")) {
+                /**
+                 *  NOTE !!!
+                 *
+                 *  if x is either `number` (e.g.: 1,2,3..) or `alphabet` (e.g.: a,b,c...)
+                 *
+                 */
                 if (!x.equals("[")) {
                     stack.add(x);
                 }
-            } else {
+            }
+            /**
+             *  NOTE !!!
+             *
+             *   if x equals "["
+             */
+            else {
                 // pop all elements from stack, multiply, and add to res
                 while (!stack.isEmpty()) {
                     String cur = stack.pop(); // ??
