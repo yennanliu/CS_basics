@@ -34,6 +34,7 @@ package LeetCodeJava.Stack;
  */
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Stack;
 
 public class LargestRectangleInHistogram {
 
@@ -44,6 +45,32 @@ public class LargestRectangleInHistogram {
 //
 //        return 0;
 //    }
+
+    // V0-0-1
+    // IDEA: BRUTE FORCE (TLE)
+    public int largestRectangleArea_0_0_1(int[] heights) {
+        // edge
+        if (heights == null || heights.length == 0) {
+            return 0;
+        }
+        if (heights.length == 1) {
+            return heights[0];
+        }
+        int max_area = 0;
+
+        for (int i = 0; i < heights.length; i++) {
+            int min_height = heights[i];
+            for (int j = i; j < heights.length; j++) {
+
+                min_height = Math.min(min_height, heights[j]);
+
+                max_area = Math.max(max_area, Math.max(
+                        heights[j], (j - i + 1) * min_height));
+            }
+        }
+
+        return max_area;
+    }
 
     // V0-1
     // IDEA : STACK (monotonic stack)
@@ -158,6 +185,30 @@ public class LargestRectangleInHistogram {
             maxArea = Math.max(maxArea, currentHeight * currentWidth);
         }
 
+
+        return maxArea;
+    }
+
+    // V0-2
+    // IDEA: MONO STACK (GPT)
+    public int largestRectangleArea_0_2(int[] heights) {
+        int n = heights.length;
+        Stack<Integer> stack = new Stack<>();
+        int maxArea = 0;
+
+        // Append a 0 to flush out remaining stack at end
+        for (int i = 0; i <= n; i++) {
+            int currHeight = (i == n) ? 0 : heights[i];
+
+            while (!stack.isEmpty() && currHeight < heights[stack.peek()]) {
+                int height = heights[stack.pop()];
+                int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+
+                maxArea = Math.max(maxArea, height * width);
+            }
+
+            stack.push(i);
+        }
 
         return maxArea;
     }

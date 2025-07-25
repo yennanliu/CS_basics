@@ -1,5 +1,6 @@
 package dev;
 
+import javax.print.DocFlavor;
 import java.util.*;
 
 public class workspace12 {
@@ -251,6 +252,86 @@ public class workspace12 {
 
         return res;
     }
+
+    // LC 84
+    // 18.14 - 18.28 pm
+    /**
+     *  IDEA 2) STACK (monotonic stack)
+     *
+     */
+    public int largestRectangleArea(int[] heights) {
+        // edge
+        if(heights == null || heights.length == 0){
+            return 0;
+        }
+        if(heights.length == 1){
+            return heights[0];
+        }
+        int max_area = 0;
+
+        // mono decrease stack ???
+        // so the new element can be added to stack
+        // ONLY if cur < last_stack_element
+        // if meet a `bigger val`
+        // need to pop ALL elements in stack
+        Stack<Integer> st = new Stack<>();
+
+        int min_height = 0;
+
+        for(int i = 0; i < heights.length; i++){
+
+            int cur = heights[i];
+
+            min_height = Math.min(min_height, cur);
+
+            if(st.isEmpty()){
+                max_area = Math.max(max_area, cur);
+                st.add(cur);
+            }else{
+               int cnt = 0;
+               int tmp_min_height = 0;
+               while(!st.isEmpty() && st.peek() < cur){
+                   tmp_min_height = Math.min(tmp_min_height, st.pop());
+                    cnt += 1;
+                }
+                max_area = Math.max(max_area, tmp_min_height * cnt);
+                st.add(cur);
+            }
+        }
+
+        return Math.max(max_area, min_height * heights.length);
+    }
+
+
+    /**
+     *  IDEA 1)  BRUTE FORCE -> DOUBLE LOOP
+     *
+     */
+    public int largestRectangleArea_1(int[] heights) {
+        // edge
+        if(heights == null || heights.length == 0){
+            return 0;
+        }
+        if(heights.length == 1){
+            return heights[0];
+        }
+        int max_area = 0;
+
+        for(int i = 0; i < heights.length; i++){
+            int min_height = heights[i];
+            for(int j = i; j < heights.length; j++){
+
+                min_height = Math.min(min_height, heights[j]);
+
+                max_area = Math.max(max_area, Math.max(
+                        heights[j],  (j - i + 1) * min_height
+                ));
+            }
+        }
+
+        return max_area;
+    }
+
 
 
 }
