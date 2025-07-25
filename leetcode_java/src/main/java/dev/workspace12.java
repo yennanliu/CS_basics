@@ -215,6 +215,43 @@ public class workspace12 {
         return false;
     }
 
+    // LC 271
+    // 17.57 - 18.07 pm
+    /**
+     *  IDEA 1) string op + queue
+     *
+     */
+    public String encode(List<String> strs) {
+        // edge
+        if( strs == null || strs.isEmpty() ){
+            return ",";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for(String x: strs){
+            sb.append(x);
+            sb.append(",");
+        }
+
+        return sb.toString();
+    }
+    public List<String> decode(String s) {
+        // edge
+        if(s.equals(",")){
+            return new ArrayList<>();
+        }
+
+        List<String> res = new ArrayList<>();
+        for(String x: s.split(",")){
+            if(!x.isEmpty()){
+                res.add(x);
+            }
+        }
+
+        return res;
+    }
+
 
 }
 
