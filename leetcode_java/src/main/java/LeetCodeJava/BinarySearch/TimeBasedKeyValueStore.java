@@ -372,6 +372,70 @@ public class TimeBasedKeyValueStore {
 //        }
 //    }
 
+    // V0-4
+    // IDEA: HASH MAP + PQ (big -> small)
+    // TODO: fix below
+//    class TimeMap_0_4 {
+//
+//        // attr
+//        Map<String, PriorityQueue<Integer>> keyTimeListMap;
+//
+//        Map<String, String> keyValueMap;
+//
+//        public TimeMap_0_4() {
+//
+//            keyTimeListMap = new HashMap<>();
+//            keyValueMap = new HashMap<>();
+//        }
+//
+//        public void set(String key, String value, int timestamp) {
+//
+//            // update hashmap 1
+//            // ?? fix to use `comparator`
+//            PriorityQueue<Integer> pq_new = new PriorityQueue(Comparator.reverseOrder());
+//            PriorityQueue<Integer> pq = keyTimeListMap.getOrDefault(key, pq_new);
+//            pq.add(timestamp);
+//            keyTimeListMap.put(key, pq);
+//
+//            // update hashmap 2
+//            //String new_key = key + timestamp;
+//            keyValueMap.put(key + timestamp, value);
+//        }
+//
+//        public String get(String key, int timestamp) {
+//            // edge
+//            if(keyValueMap.isEmpty() || !keyTimeListMap.containsKey(key)){
+//                return "";
+//            }
+//
+//            // get `latest timestamp`
+//            List<Integer> cache = new ArrayList<>();
+//            PriorityQueue<Integer> saved_pq = keyTimeListMap.get(key);
+//            int target_timestamp = 0;  // ??
+//            while(!saved_pq.isEmpty()){
+//                Integer pop_timestamp = saved_pq.poll();
+//                cache.add(pop_timestamp);
+//                if(pop_timestamp <= timestamp){
+//                    target_timestamp = pop_timestamp;
+//                    break;
+//                }
+//            }
+//
+//            // handle edge case
+//            if(target_timestamp == 0){
+//                return "";
+//            }
+//
+//            // put pop element back to PQ (reset the PQ `state`)
+//            for(Integer x: cache){
+//                saved_pq.add(x);
+//            }
+//            keyTimeListMap.put(key, saved_pq);
+//
+//            return keyValueMap.get(key + target_timestamp);
+//        }
+//    }
+
     // V1-1
     // https://neetcode.io/problems/time-based-key-value-store
     // IDEA: BRUTE FORCE
