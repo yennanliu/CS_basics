@@ -372,10 +372,48 @@ public class TimeBasedKeyValueStore {
 //        }
 //    }
 
-    // V0-4
+    // V-4
+    // IDEA: TREE MAP + FLOOR KEY (gpt)
+    class TimeMap_0_4 {
+
+        // Use TreeMap to store timestamp -> value for each key
+        /**
+         *  NOTE !!!
+         *
+         *   we use `TreeMap` data structure
+         *
+         */
+        private Map<String, TreeMap<Integer, String>> keyTimeMap;
+
+        public TimeMap_0_4() {
+            keyTimeMap = new HashMap<>();
+        }
+
+        public void set(String key, String value, int timestamp) {
+            keyTimeMap.putIfAbsent(key, new TreeMap<>());
+            keyTimeMap.get(key).put(timestamp, value);
+        }
+
+        public String get(String key, int timestamp) {
+            if (!keyTimeMap.containsKey(key)) return "";
+
+            TreeMap<Integer, String> timeMap = keyTimeMap.get(key);
+            /**
+             *  NOTE !!!
+             *
+             *   via `floorEntry`,
+             *   we can get the biggest val that <= timestamp  from TreeMap
+             *
+             */
+            Map.Entry<Integer, String> entry = timeMap.floorEntry(timestamp);
+            return entry == null ? "" : entry.getValue();
+        }
+    }
+
+    // V0-5
     // IDEA: HASH MAP + PQ (big -> small)
     // TODO: fix below
-//    class TimeMap_0_4 {
+//    class TimeMap_0_5 {
 //
 //        // attr
 //        Map<String, PriorityQueue<Integer>> keyTimeListMap;
