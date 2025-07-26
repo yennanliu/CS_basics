@@ -62,18 +62,60 @@ public class CapacityToShipPackagesWithinDDays {
             return -1;
         }
 
+        // binary search: left, right pointer
         int left = 0, right = 0;
+
         for (int w : weights) {
-            left = Math.max(left, w); // At least the max single weight
+      /**
+       *  NOTE !!!
+       *
+       *   we set `left pointer` as `max weight` in weights
+       *
+       */
+      /**
+       *   why CAN'T use `min weight` ?  e.g. Math.min(left, w)
+       *
+       *   ->  In this problem, left represents the
+       *       `smallest` possible capacity of the ship that we can try.
+       *
+       * We want to ensure that the ship can carry at least the "heaviest" single package, because:
+       * 	•	The ship must carry every package in order.
+       * 	•	It cannot split a package across days.
+       * 	•	So, the ship must be able to carry the largest package in one go.
+       *
+       */
+      left = Math.max(left, w); // At least the max single weight
+            /**
+             *  NOTE !!!
+             *
+             *   we set `right pointer` as `total weight`
+             */
             right += w; // At most the sum of all weights
         }
 
         int answer = right; // Worst case
+
+        /**
+         *  NOTE !!!
+         *
+         *   `binary search` pattern:
+         *
+         *     while(r >= l){
+         *         if (too_big){
+         *            r = mid - 1;
+         *         }else{
+         *             // too small
+         *             l = mid + 1;
+         *         }
+         *     }
+         *
+         */
         while (left <= right) {
             int mid = left + (right - left) / 2;
             int requiredDays = getDays(weights, mid);
 
             if (requiredDays <= days) {
+                // NOTE !!! we update the answer, since it fit the `valid capacity` condition
                 answer = mid; // Try a smaller capacity
                 right = mid - 1;
             } else {
