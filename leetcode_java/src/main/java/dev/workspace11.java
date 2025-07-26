@@ -3381,5 +3381,87 @@ public class workspace11 {
       return res;
     }
 
+    // LC 981
+    // 5.48 - 6:18 PM
+    /**
+     * Your TimeMap object will be instantiated and called as such:
+     * TimeMap obj = new TimeMap();
+     * obj.set(key,value,timestamp);
+     * String param_2 = obj.get(key,timestamp);
+     */
+    /**
+     *  IDEA 1)
+     *
+     *   stack:  FILO
+     *
+     *   big PQ: (big -> small)
+     *
+     *   hashMap 1: { key: PQ[time_1, time_2, ...] }
+     *
+     *   hashMap 2: {val_1_time_1: val_1, ... }
+     *
+     *
+     */
+    class TimeMap {
+
+        // attr
+        Map<String, PriorityQueue<Integer>> keyTimeListMap;
+
+        Map<String, String> keyValueMap;
+
+        public TimeMap() {
+
+            keyTimeListMap = new HashMap<>();
+            keyValueMap = new HashMap<>();
+        }
+
+        public void set(String key, String value, int timestamp) {
+
+            // update hashmap 1
+            // ?? fix to use `comparator`
+            PriorityQueue<Integer> pq_new = new PriorityQueue(Comparator.reverseOrder());
+            PriorityQueue<Integer> pq = keyTimeListMap.getOrDefault(key, pq_new);
+            pq.add(timestamp);
+            keyTimeListMap.put(key, pq);
+
+            // update hashmap 2
+            //String new_key = key + timestamp;
+            keyValueMap.put(key + timestamp, value);
+        }
+
+        public String get(String key, int timestamp) {
+            // edge
+            if(keyValueMap.isEmpty() || !keyTimeListMap.containsKey(key)){
+                return "";
+            }
+
+            // get `latest timestamp`
+            List<Integer> cache = new ArrayList<>();
+            PriorityQueue<Integer> saved_pq = keyTimeListMap.get(key);
+            int target_timestamp = 0;  // ??
+            while(!saved_pq.isEmpty()){
+                Integer pop_timestamp = saved_pq.poll();
+                cache.add(pop_timestamp);
+                if(pop_timestamp <= timestamp){
+                    target_timestamp = pop_timestamp;
+                    break;
+                }
+             }
+
+            // handle edge case
+            if(target_timestamp == 0){
+                return "";
+            }
+
+            // put pop element back to PQ (reset the PQ `state`)
+            for(Integer x: cache){
+                saved_pq.add(x);
+            }
+            keyTimeListMap.put(key, saved_pq);
+
+            return keyValueMap.get(key + target_timestamp);
+        }
+    }
+
 
 }
