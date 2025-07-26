@@ -3463,5 +3463,122 @@ public class workspace11 {
         }
     }
 
+  // LC 1011
+  // 6.33 - 6.43 pm
+  /**
+   * Return the `least` weight capacity of the ship
+   * that will result in all the packages
+   * on the conveyor belt being shipped within days.
+   *
+   * -> IDEA 1) BINARY SEARCH
+   *
+   *
+   *  ex 1)
+   *
+   *  Input: weights = [1,2,3,4,5,6,7,8,9,10], days = 5
+   *  -> Output: 15
+   * Explanation: A ship capacity of 15 is the minimum to ship all the packages in 5 days like this:
+   * 1st day: 1, 2, 3, 4, 5
+   * 2nd day: 6, 7
+   * 3rd day: 8
+   * 4th day: 9
+   * 5th day: 10
+   *
+   *  -> weights = [1,2,3,4,5,6,7,8,9,10], days = 5
+   *
+   *   try
+   *     -> l = 1, r = 55 (sum of weights)
+   *     -> l = 1, r = 28 (r = mid  / 2)
+   *     -> l = 1, r = 15 (r = mid  / 2)
+   *
+   *
+   *  ------
+   *
+   *
+   *  ex 2)
+   *
+   *  Input: weights = [3,2,2,4,1,4], days = 3
+   * Output: 6
+   * Explanation: A ship capacity of 6 is the minimum to ship all the packages in 3 days like this:
+   * 1st day: 3, 2
+   * 2nd day: 2, 4
+   * 3rd day: 1, 4
+   *
+   *
+   *  weights = [3,2,2,4,1,4], days = 3
+   *
+   *   try
+   *    -> l = 1, r = 15,
+   *    -> l = 1, r = 8 (r = mid  / 2 )
+   *    -> l = 1, r = 4
+   *
+   */
+  public int shipWithinDays(int[] weights, int days) {
+        // edge
+        if(weights == null || weights.length == 0 || days <= 0){
+            return -1; // ??
+        }
+
+        int least_capacity = -1; //Integer.MAX_VALUE; // ???
+        int l = Integer.MAX_VALUE;
+        int r = 0; // Integer.MIN_VALUE;
+
+        for(int x: weights){
+            l = Math.min(x, l);
+            //r = Math.max(x, r);
+            r += x;
+        }
+
+        // binary search
+       while(r >= l){
+
+           int mid = ( l + r ) / 2;
+           int tmp_days = getDays(weights, mid);
+
+//           if(tmp_days == days){
+//               return mid; // ???
+//           }
+//
+//           // too big
+//           if(tmp_days < days){
+//               r = mid - 1; // ??
+//           }
+
+           if(tmp_days <= days){
+               r = mid; // ????
+           }
+
+           // too small
+           else{
+               l = mid + 1;
+           }
+       }
+
+        //return least_capacity;
+        return l; // /??
+    }
+
+    private int getDays(int[] weights, int capacity){
+      int days = 0;
+      int tmp = 0;
+      for(int x: weights){
+          if(tmp + x >= capacity){
+              days += 1;
+              //tmp = x;
+              // reset tmp
+              tmp = 0;
+          }
+          tmp += x;
+      }
+
+      // handle the `remaining days`
+      if(tmp > 0){
+          days += 1;
+      }
+
+      return days;
+    }
+
+
 
 }

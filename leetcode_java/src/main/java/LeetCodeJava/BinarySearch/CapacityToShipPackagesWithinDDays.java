@@ -56,8 +56,50 @@ import java.util.List;
 public class CapacityToShipPackagesWithinDDays {
 
     // V0
-    // IDEA : BINARY SEARCH
+    // IDEA: BINARY SEARCH (fixed by gpt)
     public int shipWithinDays(int[] weights, int days) {
+        if (weights == null || weights.length == 0 || days <= 0) {
+            return -1;
+        }
+
+        int left = 0, right = 0;
+        for (int w : weights) {
+            left = Math.max(left, w); // At least the max single weight
+            right += w; // At most the sum of all weights
+        }
+
+        int answer = right; // Worst case
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int requiredDays = getDays(weights, mid);
+
+            if (requiredDays <= days) {
+                answer = mid; // Try a smaller capacity
+                right = mid - 1;
+            } else {
+                left = mid + 1; // Need more capacity
+            }
+        }
+
+        return answer;
+    }
+
+    private int getDays(int[] weights, int capacity) {
+        int days = 1;
+        int current = 0;
+        for (int w : weights) {
+            if (current + w > capacity) {
+                days++;
+                current = 0;
+            }
+            current += w;
+        }
+        return days;
+    }
+
+    // V0-0-0-1
+    // IDEA : BINARY SEARCH
+    public int shipWithinDays_0_0_1(int[] weights, int days) {
 
         if (weights.length==1){
             return weights[0] / days;
@@ -122,7 +164,7 @@ public class CapacityToShipPackagesWithinDDays {
         return days;
     }
 
-    // V0
+    // V0-1
     // IDEA : BINARY SEARCH (modified by GPT)
     public int shipWithinDays_0_1(int[] weights, int days) {
         int maxWeight = 0;
