@@ -3419,7 +3419,23 @@ public class workspace11 {
 
             // update hashmap 1
             // ?? fix to use `comparator`
+
             PriorityQueue<Integer> pq_new = new PriorityQueue(Comparator.reverseOrder());
+
+//            PriorityQueue<Integer> pq_new_3 = new PriorityQueue<Integer>(new Comparator<Integer>() {
+//                @Override
+//                public int compare(Integer o1, Integer o2) {
+//                    return 0;
+//                }
+//            });
+
+            PriorityQueue<Integer> pq_new_2 = new PriorityQueue<Integer>(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    return Integer.compare(o1, o2); // Or o1 - o2 for ascending order
+                }
+            });
+
             PriorityQueue<Integer> pq = keyTimeListMap.getOrDefault(key, pq_new);
             pq.add(timestamp);
             keyTimeListMap.put(key, pq);
@@ -3581,9 +3597,92 @@ public class workspace11 {
 
     // LC 4
     // 6.25 - 6.35 pm
+    /**
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) MERGE, and find the median
+     *
+     *  IDEA 3) calculate `mid idx`, then go through num1, num2
+     *          then find the median
+     *
+     *    case 1)  nums1  nums2 (NO Overlap)
+     *    case 2)  nums2  nums1 (NO Overlap)
+     *    case 3)  nums - nums1 -- 2 (has Overlap)
+     *
+     *      nums1 = [1,3], nums2 = [2]
+     *
+     *
+     *      nums1 = [1,3,6,7], nums2 = [2], mid = 2
+     *
+     *      -> [1,2,3,6,7], so median = 3
+     *
+     *
+     */
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // edge
+        if(nums1 == null && nums2 == null){
+            return 0.0; // ?
+        }
+        if(nums1 == null || nums2 == null){
+            if(nums1 == null){
+                return getMedian(nums2);
+            }
+            return getMedian(nums1);
+        }
 
-      return 0.0;
+        int len_1 = nums1.length;
+        int len_2 = nums2.length;
+
+        int mid = (len_1 + len_2) / 2;
+
+        // case 1)  nums1  nums2 (NO Overlap)
+        if(nums1[ len_1 - 1 ] < nums2[0]){
+            if(mid > len_1){
+                return nums2[mid - len_1];
+            }else{
+                return nums1[mid];
+            }
+        }
+
+        // case 2)  nums2  nums1 (NO Overlap)
+        if(nums2[ len_2 -1 ] < nums1[0]){
+            if(mid > len_2){
+                return nums1[mid - len_2];
+            }else{
+                return nums2[mid];
+            }
+        }
+
+        // odd
+        if( (len_1 + len_2) % 2 == 1 ){
+
+        }
+        // even
+        else{
+
+        }
+
+
+        return 0.0;
+    }
+
+    private double getMedian(int[] nums){
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0.0; // ???
+        }
+        int len = nums.length;
+        int mid = len / 2;
+        // odd
+        // 1,2,3
+        if(len % 2 == 1){
+            return nums[mid+1];
+        }
+        // even
+        // 1,2,3,4
+        else{
+            return (nums[mid-1] + nums[mid+1]) / 2.0;
+        }
     }
 
 
