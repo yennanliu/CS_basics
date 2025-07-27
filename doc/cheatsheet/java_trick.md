@@ -21,7 +21,13 @@ PriorityQueue<Integer> minHeap = new PriorityQueue<>();
 
 // V2
 // - This also creates a min-heap, but it uses a custom comparator.
-PriorityQueue<Integer> minHeap = new PriorityQueue<>(new Comparator<Integer>() {
+/** 
+ *  NOTE !!!
+ * 
+ *  need to use `new PriorityQueue<Integer>`, so the Comparator knows the type to compare
+ * 
+ */
+PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>(new Comparator<Integer>() {
     @Override
     public int compare(Integer o1, Integer o2) {
         int diff = o1 - o2;
