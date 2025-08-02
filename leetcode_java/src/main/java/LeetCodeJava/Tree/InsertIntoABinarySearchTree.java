@@ -3,7 +3,6 @@ package LeetCodeJava.Tree;
 // https://leetcode.com/problems/insert-into-a-binary-search-tree/description/
 
 import LeetCodeJava.DataStructure.TreeNode;
-
 /**
  * 701. Insert into a Binary Search Tree
  * Solved
@@ -55,7 +54,29 @@ public class InsertIntoABinarySearchTree {
         return root;
     }
 
+    // help func V1
     private void insertHelper(TreeNode root, int val) {
+        /**
+         *  NOTE !!!!
+         *
+         *   1.  2 cases
+         *       - val < root.val
+         *       - val > root.val
+         *
+         *   2. for `val < root.val`,  2 sub cases
+         *      - root.left == null
+         *           - so we can set root.left as new TreeNode(val)
+         *             -> since for BST, ALL left sub tree MUST <= current root.val
+         *             -> so we're sure the sub left tree is as TreeNode(val)
+         *      - root.left != null
+         *           - we are NOT sure yet which node to insert,
+         *             so need to recursively find the `suitable node` via
+         *             calling `insertHelper` func again
+         *
+         *    3. for `val > root.val`,  2 sub cases
+         *       - (logic similar as above)
+         *
+         */
         if (val < root.val) {
             if (root.left == null) {
                 root.left = new TreeNode(val);
@@ -67,6 +88,28 @@ public class InsertIntoABinarySearchTree {
                 root.right = new TreeNode(val);
             } else {
                 insertHelper(root.right, val);
+            }
+        }
+    }
+
+    // help func V2
+    private void insertHelper2(TreeNode root, int val){
+        // edge case
+        if(root == null){
+            return;
+        }
+        /** NOTE !!!! */
+        if(root.val < val){
+            if(root.right == null){
+                root.right = new TreeNode(val);
+            }else{
+                insertHelper2(root.right, val);
+            }
+        }else{
+            if(root.left == null){
+                root.left = new TreeNode(val);
+            }else{
+                insertHelper2(root.left, val);
             }
         }
     }
@@ -225,5 +268,5 @@ public class InsertIntoABinarySearchTree {
 
         return root;
     }
-    
+
 }
