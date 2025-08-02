@@ -3775,4 +3775,25 @@ public class workspace11 {
         }
     }
 
+    // LC 450
+    // 7.13 - 7.23 pm
+    /**
+     *  IDEA 1) DFS + BST
+     *
+     *   - case 1) root is key
+     *       - `swap` root with the `minimum node` on `right sub tree`
+     *
+     *   - case 2)  otherwise
+     *      - step 1) check if root is on `left` or `right` sub tree
+     *      - step 2) move per above
+     *      - step 3)
+     *           if `right sub tree` is NOT null
+     *                - keep moving 
+     *
+     */
+    public TreeNode deleteNode(TreeNode root, int key) {
+
+        return null;
+    }
+
 }
