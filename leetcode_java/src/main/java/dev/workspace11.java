@@ -3711,7 +3711,7 @@ public class workspace11 {
 //        }
 
         // DFS
-        insertHelper(root, val);
+        insertHelper2(root, val);
 
         System.out.println(">>> root = " + root);
         return root;
@@ -3722,13 +3722,26 @@ public class workspace11 {
         if(root == null){
             return;
         }
-        /**
-         *  KEY:
-         *   find the  `node` that
-         *      node.val <
-         *
-         */
+        /** NOTE !!!! */
+        if(root.val < val){
+            if(root.right == null){
+                root.right = new TreeNode(val);
+            }else{
+                // ???
+                insertHelper2(root.right, val);
+            }
+        }else{
+            if(root.left == null){
+                root.left = new TreeNode(val);
+            }else{
+                insertHelper2(root.left, val);
+            }
+        }
+
     }
+
+
+
 
     private void insertHelper(TreeNode root, int val){
         // edge case
