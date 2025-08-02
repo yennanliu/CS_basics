@@ -45,9 +45,31 @@ import LeetCodeJava.DataStructure.TreeNode;
 public class InsertIntoABinarySearchTree {
 
     // V0
-//    public TreeNode insertIntoBST(TreeNode root, int val) {
-//
-//    }
+    // IDEA: DFS + BST property (fixed by gpt)
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if (root == null) {
+            return new TreeNode(val);
+        }
+
+        insertHelper(root, val);
+        return root;
+    }
+
+    private void insertHelper(TreeNode root, int val) {
+        if (val < root.val) {
+            if (root.left == null) {
+                root.left = new TreeNode(val);
+            } else {
+                insertHelper(root.left, val);
+            }
+        } else { // val > root.val
+            if (root.right == null) {
+                root.right = new TreeNode(val);
+            } else {
+                insertHelper(root.right, val);
+            }
+        }
+    }
 
     // V0-1
     // IDEA: RECURSION (fixed by gpt)
@@ -203,6 +225,5 @@ public class InsertIntoABinarySearchTree {
 
         return root;
     }
-
-
+    
 }

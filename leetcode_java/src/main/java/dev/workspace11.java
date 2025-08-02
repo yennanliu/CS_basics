@@ -3686,5 +3686,80 @@ public class workspace11 {
     }
 
 
+    // LC 701
+    // 6.26 - 6.36 pm
+    /**
+     *  NOTE !!! the tree needs to remain `BST` after insertion
+     *
+     *  IDEA 1) DFS + BST property
+     *
+     *
+     *
+     */
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        // edge
+        if(root == null){
+            return new TreeNode(val);
+        }
+//        if(root.left == null && root.right == null){
+//            if(root.val < val){
+//                root.right = new TreeNode(val);
+//            }else{
+//                root.left = new TreeNode(val);
+//            }
+//            return root;
+//        }
+
+        // DFS
+        insertHelper(root, val);
+
+        System.out.println(">>> root = " + root);
+        return root;
+    }
+
+    private void insertHelper2(TreeNode root, int val){
+        // edge case
+        if(root == null){
+            return;
+        }
+        /**
+         *  KEY:
+         *   find the  `node` that
+         *      node.val <
+         *
+         */
+    }
+
+    private void insertHelper(TreeNode root, int val){
+        // edge case
+        if(root == null){
+            return;
+        }
+        if(root.left == null && root.right == null){
+            if(root.val < val){
+                root.right = new TreeNode(val);
+            }else{
+                root.left = new TreeNode(val);
+            }
+            return;
+        }
+        // if found a `place` to `insert`
+        if(root.val < val && root.left == null){
+            root.left = new TreeNode(val);
+            return;
+        }
+
+        if(root.val > val && root.right == null){
+            root.right = new TreeNode(val);
+            return;
+        }
+
+        if(root.val < val){
+            //root.right = new TreeNode(val);
+            insertHelper(root.right, val);
+        }else{
+            insertHelper(root.left, val);
+        }
+    }
 
 }
