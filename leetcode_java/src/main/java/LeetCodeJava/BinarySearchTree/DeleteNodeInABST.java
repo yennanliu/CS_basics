@@ -60,6 +60,9 @@ public class DeleteNodeInABST {
   // V0-1
   // IDEA: DFS + BST property
   /**
+   *
+   *  (for key val found)
+   *
    *  // Case 1: No children
    *
    *  // Case 2: One child
@@ -68,13 +71,17 @@ public class DeleteNodeInABST {
    *
    */
   public TreeNode deleteNode_0_1(TreeNode root, int key) {
+      // edge
       if (root == null)
           return root;
 
+      // NOTE !!!  root.val too big, find left
       if (key < root.val)
           root.left = deleteNode_0_1(root.left, key);
+      // NOTE !!!  root.val too small, find right
       else if (key > root.val)
           root.right = deleteNode_0_1(root.right, key);
+      // NOTE !!! if `found`
       else {
           // Case 1: No children
           if (root.left == null && root.right == null)

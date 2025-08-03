@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
+import LeetCodeJava.DynamicProgramming.TargetSum;
 
 import java.util.*;
 
@@ -3787,14 +3788,120 @@ public class workspace11 {
      *      - step 1) check if root is on `left` or `right` sub tree
      *      - step 2) move per above
      *      - step 3)
-     *           if `right sub tree` is NOT null
-     *                - keep moving 
+     *           - if `right sub tree` is NOT null
+     *                - move right first, then keep moving `sub left` to find the `min` in right sub tree, then swap with the node
+     *           - if `right sub tree` is null `
+     *                - swap the `sub left node` with current node
      *
      */
 
+    /**
+     *  // Case 1: No children
+     *
+     *  // Case 2: One child
+     *
+     *  // Case 3: Two children
+     *
+     */
     public TreeNode deleteNode(TreeNode root, int key) {
 
-        return null;
+        // edge case
+        if(root == null){
+            return null;
+        }
+
+        // 1) NOT found yet
+        // search right
+        if(root.val < key){
+            root.right = deleteNode(root.right, key);
+        }else if (root.val > key){
+            // search left
+            root.left =  deleteNode(root.left, key);
+        }
+        // FOUND !!!!
+        else{
+            // Case 1: No children
+            if(root.left == null && root.right == null){
+                return null;
+            }
+
+            // Case 2: One child
+            if(root.left == null || root.right == null){
+                if(root.left != null){
+                    return root.left;
+                }
+                return root.right;
+            }
+
+            // Case 3: Two children
+           // TreeNode _cache = root;
+//            TreeNode _right = root.right;
+//
+//            while(_right != null){
+//                _right = _right.left;
+//            }
+//            // swap
+//            root = _right;
+//            //_right = _cache;
+//            _right = null; // ???
+
+            TreeNode _left = root.left;
+            while(_left.right != null){
+                _left = _left.right;
+            }
+
+            root.val = _left.val;
+
+            _left.left = deleteNode(_left, _left.val);
+        }
+
+
+        return root;
+    }
+
+
+    public TreeNode deleteNode_(TreeNode root, int key) {
+        // edge
+        if(root == null){
+            return null;
+        }
+
+        deleteNodeHelper(root, key);
+
+        return root; // ????
+    }
+
+    private void deleteNodeHelper(TreeNode root, int key){
+        // edge
+        if(root == null){
+            return;
+        }
+        // if found
+        if(root.val == key){
+            if(root.left == null && root.right == null){
+                return;
+            }
+            if(root.right != null){
+                // swap ????
+                TreeNode cache = root;
+                root = root.left;
+                root.left = cache;
+            }else{
+                TreeNode _right = root.right;
+                // keep finding the `min` in sub right node
+                while(_right.left != null){
+                    _right = _right.left;
+                }
+                // swap
+                TreeNode cache = root;
+                _right = root;
+                root = _right;
+            }
+        }
+
+        // ??? run on sub left, right tree
+       deleteNodeHelper(root.left, key);
+       deleteNodeHelper(root.right, key);
     }
 
 }
