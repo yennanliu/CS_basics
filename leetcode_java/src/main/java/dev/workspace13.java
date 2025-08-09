@@ -120,15 +120,40 @@ public class workspace13 {
         countHelper(root.right, biggestTillNow);
     }
 
-    // LC 1666
-    class Node {
+  // LC 1666
+  // 3.41 - 3.51 pm
+  /**
+   *
+   *  Given the root of a binary tree and a leaf node,
+   *  reroot the tree so that the `leaf`is `the new root`.
+   *
+   *
+   *  You can reroot the tree with the
+   *  following steps for each node `cur` on the path starting from the
+   * ` leaf up ` to the root  `excluding` the root:
+   *
+   *  `reroot` steps
+   *
+   *
+   *  1) If cur has a left child,
+   *    then that child becomes cur's right child.
+   *    Note that it is guaranteed that cur will have at most one child.
+   *
+   *
+   *  2) cur's original parent becomes cur's left child.
+   *
+   *
+   *   IDEA 1) DFS
+   *
+   *
+   */
+  class Node {
         public int val;
         public Node left;
         public Node right;
         public Node parent;
     };
 
-    // LC 1666
     public Node flipBinaryTree(Node root, Node leaf) {
 
         return null;
