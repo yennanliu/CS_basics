@@ -52,4 +52,72 @@ public class workspace13 {
         return null;
     }
 
+
+    // LC 1448
+    // 3.06 - 3.16 pm
+    /**
+     *
+     *  Given a binary tree root,
+     *  a node X in the tree is named `good` if in the path from
+     *  root to X there are `no nodes with a value greater` than X.
+     *
+     * Return the number of good nodes in the binary tree.
+     *
+     *
+     *
+     *  IDEA 1) DFS
+     *
+     *   -> maintain the `biggest till now` val
+     *   -> and compare node val with above
+     *   -> if true:  cnt += 1
+     *   -> else: cnt unchanged, and update `biggest till now` val
+     *
+     *
+     */
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode() {}
+        TreeNode(int val) { this.val = val; }
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    int goodNodeCnt = 0; //1;
+    public int goodNodes(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+
+        //int cnt = 1;
+        countHelper(root, root.val);
+
+        return goodNodeCnt;
+    }
+
+    private void countHelper(TreeNode root, int biggestTillNow){
+        // edge
+        if(root == null){
+            return;
+        }
+
+        if(root.val >= biggestTillNow){
+            biggestTillNow = root.val;
+            goodNodeCnt += 1;
+        }
+
+        countHelper(root.left, biggestTillNow);
+        countHelper(root.right, biggestTillNow);
+    }
+
+
+
 }

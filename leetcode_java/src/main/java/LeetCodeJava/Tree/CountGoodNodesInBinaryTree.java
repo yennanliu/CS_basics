@@ -46,6 +46,7 @@ package LeetCodeJava.Tree;
  *
  */
 import LeetCodeJava.DataStructure.TreeNode;
+import dev.workspace13;
 
 import java.util.*;
 
@@ -131,6 +132,38 @@ public class CountGoodNodesInBinaryTree {
         }
     }
 
+    // V0-0-1
+    // IDEA: DFS
+    int goodNodeCnt = 0;
+    public int goodNodes_0_0_1(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+
+        countHelper(root, root.val);
+
+        return goodNodeCnt;
+    }
+
+    private void countHelper(TreeNode root, int biggestTillNow){
+        // edge
+        if(root == null){
+            return;
+        }
+
+        if(root.val >= biggestTillNow){
+            biggestTillNow = root.val;
+            goodNodeCnt += 1;
+        }
+
+        countHelper(root.left, biggestTillNow);
+        countHelper(root.right, biggestTillNow);
+    }
+
     // V0-1
     // IDEA: DFS + maintain max value (fixed by gpt)
 //    class TreeNode {
@@ -177,7 +210,7 @@ public class CountGoodNodesInBinaryTree {
      *
      *    > is  good if in the path from root to X there are no nodes with a value greater than X.
      */
-    int goodNodeCnt = 0;
+    int goodNodeCnt_2 = 0;
     public int goodNodes_0_2(TreeNode root) {
         // edge
         if (root == null) {
@@ -188,7 +221,7 @@ public class CountGoodNodesInBinaryTree {
         }
         // dfs
         this.checkGoodNode(root, root.val);
-        return goodNodeCnt;
+        return goodNodeCnt_2;
     }
 
     /** NOTE !!! below helper func NOT return anything */
@@ -197,7 +230,7 @@ public class CountGoodNodesInBinaryTree {
             return;
         }
         if (root.val >= maxSoFar) {
-            goodNodeCnt += 1;
+            goodNodeCnt_2 += 1;
         }
 
         if (root.left != null) {
