@@ -53,15 +53,91 @@ import LeetCodeJava.DataStructure.TreeNode;
 public class DeleteNodeInABST {
 
   // V0
-  //    public TreeNode deleteNode(TreeNode root, int key) {
-  //
-  //    }
+  // IDEA: DFS + BST property
+  /**
+   *
+   * (when found a node to delete)
+   *
+   *    // Case 1: No children
+   *
+   *    // Case 2: One child
+   *
+   *     // Case 3: Two children
+   *
+   */
+    /**
+     *
+     *  Summary of Deletion Strategy:
+     *
+     *
+     *  | Case         | Description        | What Happens                                  |
+     * |--------------|--------------------|-----------------------------------------------|
+     * | Leaf         | No children         | Return `null`                                 |
+     * | One Child    | One child           | Replace node with its child                   |
+     * | Two Children | Both children       | Replace with in-order successor, then delete the successor |
+     *
+     *
+     *  `in-order successor`:  Left → root → Right
+     */
+
+    public TreeNode deleteNode(TreeNode root, int key) {
+        return deleteNodeHelper_0(root, key);
+    }
+
+    private TreeNode deleteNodeHelper_0(TreeNode root, int key) {
+        if (root == null) {
+            return null;
+        }
+
+        if (key < root.val) {
+            // search in left subtree
+            root.left = deleteNodeHelper_0(root.left, key);
+        } else if (key > root.val) {
+            // search in right subtree
+            root.right = deleteNodeHelper_0(root.right, key);
+        } else {
+            // Found the node to delete
+
+            // Case 1: No left child
+            if (root.left == null) {
+                return root.right;
+            }
+
+            // Case 2: No right child
+            if (root.right == null) {
+                return root.left;
+            }
+
+            /**
+             *  NOTE !!!! below
+             *
+             *  step 1) find `min` val  (`sub right tree`)
+             *  step 2) set root val as min val
+             *  step 3)  delete the `min` val node from sub right tree
+             *             - `recursively` call `deleteNodeHelper`
+             *
+             */
+            // Case 3: Two children → find inorder successor
+            TreeNode minNode = findMin_0(root.right);
+            root.val = minNode.val; // copy value
+            root.right = deleteNodeHelper(root.right, minNode.val); // delete successor
+        }
+
+        return root;
+    }
+
+    private TreeNode findMin_0(TreeNode node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
 
   // V0-1
   // IDEA: DFS + BST property
   /**
    *
-   *  (for key val found)
+   * (when found a node to delete)
    *
    *  // Case 1: No children
    *
