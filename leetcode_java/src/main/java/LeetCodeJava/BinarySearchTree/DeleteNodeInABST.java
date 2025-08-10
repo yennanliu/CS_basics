@@ -122,6 +122,52 @@ public class DeleteNodeInABST {
       return root;
   }
 
+  // V0-2
+  // IDEA: DFS + BST property (gpt)
+  public TreeNode deleteNode_0_2(TreeNode root, int key) {
+      return deleteNodeHelper(root, key);
+  }
+
+    private TreeNode deleteNodeHelper(TreeNode root, int key) {
+        if (root == null) {
+            return null;
+        }
+
+        if (key < root.val) {
+            // search in left subtree
+            root.left = deleteNodeHelper(root.left, key);
+        } else if (key > root.val) {
+            // search in right subtree
+            root.right = deleteNodeHelper(root.right, key);
+        } else {
+            // Found the node to delete
+
+            // Case 1: No left child
+            if (root.left == null) {
+                return root.right;
+            }
+
+            // Case 2: No right child
+            if (root.right == null) {
+                return root.left;
+            }
+
+            // Case 3: Two children → find inorder successor
+            TreeNode minNode = findMin(root.right);
+            root.val = minNode.val; // copy value
+            root.right = deleteNodeHelper(root.right, minNode.val); // delete successor
+        }
+
+        return root;
+    }
+
+    private TreeNode findMin(TreeNode node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+
   // V1-1
   // https://youtu.be/LFzAoJJt92M?feature=shared
   // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0450-delete-node-in-a-bst.java
