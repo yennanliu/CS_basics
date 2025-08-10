@@ -4,7 +4,7 @@ import LeetCodeJava.Tree.ChangeTheRootOfABinaryTree;
 
 public class workspace13 {
 
-    // LC 427
+    // LC 42
     // 6.19 - 6.29 PM
 //    class Node {
 //        public boolean val;
@@ -209,6 +209,88 @@ public class workspace13 {
         return root;
     }
 
+
+    // LC 450
+    // 5.55 - 6.05 pm
+    /**
+     *   IDEA 1) DFS
+     *
+     *
+     *
+     *
+     */
+    public TreeNode deleteNode(TreeNode root, int key) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            if(root.val == key){
+                return null;
+            }
+            return root;
+        }
+
+        // helper func
+        //TreeNode res = deleteNodeHelper(root, key);
+        return deleteNodeHelper(root, key);
+    }
+
+    private TreeNode deleteNodeHelper(TreeNode root, int key){
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            if(root.val == key){
+                return null;
+            }
+            return root;
+        }
+        // case 1) NOT found
+        if(root.val != key){
+            // ???
+        }
+        // case 2) found
+        else{
+            // case 2-1) right sub tree is null
+            if(root.right == null){
+                // ???
+                root = root.left;
+            }else{
+                // case 2-2) right sub tree is NOT null
+                /**
+                 *  step 1) cache cur node
+                 *  step 2) move to `right sub tree`
+                 *  step 3) keep moving to `left sub tree` till meet the `end`
+                 *  step 4) `swap` cache node with cur node
+                 *  step 5)  set cur node as null ???
+                 *
+                 */
+                TreeNode _cache = root;
+                TreeNode _cache_right = root.right;
+                TreeNode _cache_left = root.left;
+                TreeNode _right = root.right;
+                while(_right != null){
+                    _right = _right.left;
+                }
+
+                // swap
+                _cache = _right;
+                _right = null;
+                // reconnect
+                _cache.left = _cache_left;
+                _cache.right = _cache_right;
+            }
+
+        }
+
+        // ???
+        root.left = deleteNodeHelper(root.left, key);
+        root.right = deleteNodeHelper(root.right, key);
+
+        return root;
+    }
 
 
 }
