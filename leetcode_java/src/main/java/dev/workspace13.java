@@ -160,10 +160,55 @@ public class workspace13 {
     }
 
     // LC 1325
-    // 5.17 - 5.27 pm
+    // 5.17 - 5.35 pm
+    /**
+     *   IDEA 1) DFS (post order traverse)
+     *   e.g. left -> right -> root
+     *
+     *    1
+     *
+     *
+     *
+     */
     public TreeNode removeLeafNodes(TreeNode root, int target) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            if (root.val == target){
+                return null;
+            }
+            return root;
+        }
 
-        return null;
+        // ????
+        TreeNode res = removeLeafHelper(root, target);
+
+        return res;
     }
+
+    private TreeNode removeLeafHelper(TreeNode root, int target){
+        // edge
+        if(root == null){
+            return null;
+        }
+
+        if(root.left == null && root.right == null){
+            // if val == target
+            if (root.val == target){
+                return null;
+            }
+            // else
+            return root;
+        }
+
+        root.left = removeLeafHelper(root.left, target);
+        root.right = removeLeafHelper(root.right, target);
+
+        return root;
+    }
+
+
 
 }

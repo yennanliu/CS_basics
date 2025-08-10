@@ -49,10 +49,22 @@ import java.util.Stack;
  */
 public class DeleteLeavesWithAGivenValue {
 
-    // V0
-    // IDEA: DFS (fixed by gpt)
-    // https://youtu.be/FqAoYAwbwV8?si=mOdW8Wgj3TJ4AyRL
-    public TreeNode removeLeafNodes(TreeNode root, int target) {
+  // V0
+  // IDEA: DFS (POST ORDER traverse) (fixed by gpt)
+  /**
+   *  IDEA:
+   *
+   * 	- Post-order traversal:
+   *        	`children` are processed before checking the current node.
+   *
+   * 	- No duplicate logic —
+   *        	all leaf removal happens in one place (helper).
+   *
+   * 	- removeLeafNodes just calls the helper so the public method stays clean.
+   *
+   */
+  // https://youtu.be/FqAoYAwbwV8?si=mOdW8Wgj3TJ4AyRL
+  public TreeNode removeLeafNodes(TreeNode root, int target) {
         // edge
         if (root == null) {
             return null;
@@ -77,6 +89,14 @@ public class DeleteLeavesWithAGivenValue {
             return null;
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *   Post-order traversal
+         *
+         *   -> so the `op order` is:
+         *      left -> right -> root
+         */
         /**
          *  NOTE !!!
          *
@@ -126,6 +146,7 @@ public class DeleteLeavesWithAGivenValue {
          *     it wouldn't be considered a leaf at that point.
          *     So it wouldn’t be deleted, even though it should’ve been.
          */
+        // if current is now a leaf and matches target → delete it
         root.left = deleteLeafHelper_0(root.left, target);
         root.right = deleteLeafHelper_0(root.right, target);
 
@@ -168,6 +189,26 @@ public class DeleteLeavesWithAGivenValue {
         }
 
         return root; // keep current node
+    }
+
+    // V0-2
+    // IDEA: DFS (gpt)
+    public TreeNode removeLeafNodes_0_2(TreeNode root, int target) {
+        // edge
+        if (root == null) {
+            return null;
+        }
+
+        // recursively fix children first
+        root.left = removeLeafNodes_0_2(root.left, target);
+        root.right = removeLeafNodes_0_2(root.right, target);
+
+        // after fixing children, check if current is now a leaf and matches target
+        if (root.left == null && root.right == null && root.val == target) {
+            return null;
+        }
+
+        return root;
     }
 
     // V1
