@@ -123,6 +123,108 @@ Balanced mix of **Google-tagged** + **Top 100 Liked** + **Pattern Coverage**.
 
 *(Continue until ~150 problems with harder Google-tagged variants)*
 
+
+======================================
+
+(Hard/advanced)
+
+### K. Advanced Trees & Graphs
+70. LC 236 - Lowest Common Ancestor of a Binary Tree ✅
+71. LC 863 - All Nodes Distance K in Binary Tree ✅
+72. LC 1245 - Tree Diameter
+73. LC 987 - Vertical Order Traversal of a Binary Tree ✅
+74. LC 1457 - Pseudo-Palindromic Paths in a Binary Tree
+75. LC 332 - Reconstruct Itinerary ✅
+76. LC 269 - Alien Dictionary (Topological Sort + DFS)
+77. LC 778 - Swim in Rising Water (Dijkstra / Heap)
+78. LC 317 - Shortest Distance from All Buildings
+79. LC 815 - Bus Routes
+80. LC 928 - Minimize Malware Spread II
+
+### L. Advanced Backtracking & Combinatorics
+81. LC 301 - Remove Invalid Parentheses
+82. LC 126 - Word Ladder II
+83. LC 679 - 24 Game
+84. LC 282 - Expression Add Operators
+85. LC 51 - N-Queens ✅ (Repeat for mastery)
+86. LC 52 - N-Queens II
+87. LC 212 - Word Search II (Trie + Backtracking)
+88. LC 980 - Unique Paths III
+89. LC 489 - Robot Room Cleaner (Google robot control simulation)
+90. LC 679 - 24 Game (Math recursion variant)
+
+### M. Advanced Dynamic Programming
+91. LC 312 - Burst Balloons
+92. LC 97 - Interleaving String
+93. LC 115 - Distinct Subsequences
+94. LC 44 - Wildcard Matching
+95. LC 72 - Edit Distance ✅ (Repeat with tabulation & memoization)
+96. LC 188 - Best Time to Buy and Sell Stock IV
+97. LC 354 - Russian Doll Envelopes
+98. LC 87 - Scramble String
+99. LC 940 - Distinct Subsequences II
+100. LC 132 - Palindrome Partitioning II
+
+### N. Advanced Graph + Shortest Path
+101. LC 1192 - Critical Connections in a Network (Tarjan's algorithm)
+102. LC 743 - Network Delay Time ✅ (Repeat for mastery)
+103. LC 332 - Reconstruct Itinerary ✅ (DFS + Stack)
+104. LC 787 - Cheapest Flights Within K Stops
+105. LC 1631 - Path With Minimum Effort
+106. LC 847 - Shortest Path Visiting All Nodes
+107. LC 1293 - Shortest Path in a Grid with Obstacles Elimination
+108. LC 1466 - Reorder Routes to Make All Paths Lead to the City Zero
+109. LC 778 - Swim in Rising Water ✅ (Repeat for heap mastery)
+110. LC 269 - Alien Dictionary ✅ (Repeat for graph parsing mastery)
+
+### O. Hard Greedy & Interval Problems
+111. LC 759 - Employee Free Time
+112. LC 1851 - Minimum Interval to Include Each Query
+113. LC 135 - Candy
+114. LC 630 - Course Schedule III
+115. LC 1642 - Furthest Building You Can Reach
+116. LC 871 - Minimum Number of Refueling Stops
+117. LC 502 - IPO
+118. LC 295 - Find Median from Data Stream ✅ (Repeat for heap mastery)
+119. LC 480 - Sliding Window Median
+120. LC 239 - Sliding Window Maximum ✅
+
+### P. Hard Heap / Priority Queue
+121. LC 218 - The Skyline Problem
+122. LC 871 - Minimum Number of Refueling Stops ✅ (Repeat for PQ mastery)
+123. LC 1942 - The Number of the Smallest Unoccupied Chair
+124. LC 1845 - Seat Reservation Manager
+125. LC 2335 - Minimum Amount of Time to Fill Cups
+126. LC 1383 - Maximum Performance of a Team
+127. LC 373 - Find K Pairs with Smallest Sums
+128. LC 502 - IPO ✅ (Repeat for heap mastery)
+129. LC 778 - Swim in Rising Water ✅ (Graph + PQ hybrid)
+
+### Q. Specialized / Google-Style Simulation Problems
+130. LC 642 - Design Search Autocomplete System
+131. LC 295 - Find Median from Data Stream ✅
+132. LC 211 - Design Add and Search Words ✅
+133. LC 208 - Implement Trie ✅
+134. LC 588 - Design In-Memory File System
+135. LC 380 - Insert Delete GetRandom O(1)
+136. LC 381 - Insert Delete GetRandom O(1) - Duplicates allowed
+137. LC 460 - LFU Cache
+138. LC 146 - LRU Cache ✅ (Repeat for implementation mastery)
+139. LC 341 - Flatten Nested List Iterator
+140. LC 173 - Binary Search Tree Iterator ✅
+
+### R. Final Boss Problems (Mix of Patterns)
+141. LC 295 - Find Median from Data Stream ✅
+142. LC 23 - Merge k Sorted Lists ✅
+143. LC 218 - The Skyline Problem ✅
+144. LC 269 - Alien Dictionary ✅
+145. LC 126 - Word Ladder II ✅
+146. LC 1192 - Critical Connections in a Network ✅
+147. LC 312 - Burst Balloons ✅
+148. LC 980 - Unique Paths III ✅
+149. LC 847 - Shortest Path Visiting All Nodes ✅
+150. LC 778 - Swim in Rising Water ✅
+
 ---
 
 ## 3. How to Use This List Without Overgrinding
