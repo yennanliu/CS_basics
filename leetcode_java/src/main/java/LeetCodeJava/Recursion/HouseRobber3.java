@@ -94,6 +94,72 @@ public class HouseRobber3 {
         return new int[] { notRobbed, robbed };
     }
 
+    // V0-2
+    // IDEA: DFS (TLE) (gpt)
+    public int rob_0_2(TreeNode root) {
+        return getMaxNodeSum(root, false);
+    }
+
+    private int getMaxNodeSum(TreeNode root, boolean robPreNode) {
+        if (root == null) {
+            return 0;
+        }
+
+        // If previous node was robbed, we can't rob this one
+        if (robPreNode) {
+            return getMaxNodeSum(root.left, false) +
+                    getMaxNodeSum(root.right, false);
+        } else {
+            // Option 1: Rob this node
+            int robThis = root.val +
+                    getMaxNodeSum(root.left, true) +
+                    getMaxNodeSum(root.right, true);
+
+            // Option 2: Skip this node
+            int skipThis = getMaxNodeSum(root.left, false) +
+                    getMaxNodeSum(root.right, false);
+
+            return Math.max(robThis, skipThis);
+        }
+    }
+
+    // V0-3
+    // IDEA: DFS + MEMORIZATION (DP) (GPT)
+    // Memoization map: (node, robPreNode) -> max sum
+    private Map<TreeNode, Integer[]> memo = new HashMap<>();
+
+    public int rob_0_3(TreeNode root) {
+        return getMaxNodeSum_0_3(root);
+    }
+
+    // Returns [skipNode, robNode] -> max sum if we skip or rob this node
+    private int getMaxNodeSum_0_3(TreeNode node) {
+        if (node == null)
+            return 0;
+
+        if (memo.containsKey(node)) {
+            Integer[] cached = memo.get(node);
+            return Math.max(cached[0], cached[1]);
+        }
+
+        // Case 1: Rob this node -> can't rob children
+        int robThis = node.val;
+        if (node.left != null) {
+            robThis += getMaxNodeSum_0_3(node.left.left) + getMaxNodeSum_0_3(node.left.right);
+        }
+        if (node.right != null) {
+            robThis += getMaxNodeSum_0_3(node.right.left) + getMaxNodeSum_0_3(node.right.right);
+        }
+
+        // Case 2: Skip this node -> can rob children
+        int skipThis = getMaxNodeSum_0_3(node.left) + getMaxNodeSum_0_3(node.right);
+
+        // Cache the results: [skipThis, robThis]
+        memo.put(node, new Integer[] { skipThis, robThis });
+
+        return Math.max(skipThis, robThis);
+    }
+
     // V1
     // https://youtu.be/nHR8ytpzz7c?si=7y46QM-wwMWAmn8b
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0337-house-robber-iii.java
