@@ -140,12 +140,24 @@ public class HouseRobber3 {
     // V0-3
     // IDEA: DFS + MEMORIZATION (DP) (GPT)
     // Memoization map: (node, robPreNode) -> max sum
+    /**
+     *  NOTE !!!
+     *
+     *   1. use hashmap as cache
+     *   2. key is `TreeNode` type
+     *   3. value is int array ( [skipThis, robThis])
+     */
     private Map<TreeNode, Integer[]> memo = new HashMap<>();
 
     public int rob_0_3(TreeNode root) {
         return getMaxNodeSum_0_3(root);
     }
 
+    /**
+     *  NOTE !!!
+     *
+     *  1. the return type of helper func in `integer`
+     */
     // Returns [skipNode, robNode] -> max sum if we skip or rob this node
     private int getMaxNodeSum_0_3(TreeNode node) {
         if (node == null)
@@ -158,6 +170,13 @@ public class HouseRobber3 {
 
         // Case 1: Rob this node -> can't rob children
         int robThis = node.val;
+        /**
+         *  NOTE !!!
+         *
+         *  how we handle
+         *   - if root.left is null
+         *   - if root.right is null
+         */
         if (node.left != null) {
             robThis += getMaxNodeSum_0_3(node.left.left) + getMaxNodeSum_0_3(node.left.right);
         }
@@ -173,6 +192,43 @@ public class HouseRobber3 {
 
         return Math.max(skipThis, robThis);
     }
+
+    // V0-4
+    // IDEA: BOTTOM DP (gpt)
+    /**
+     *  NOTE !!!
+     *
+     *  -> For House Robber III, the optimal solution is bottom-up DP,
+     *     where at each node you compute:
+     *
+     * 	•	robThis = node.val + left.skip + right.skip
+     * 	•	skipThis = max(left.rob, left.skip) + max(right.rob, right.skip)
+     *
+     * This way, the grandchildren are automatically considered when robbing the current node.
+     *
+     *
+     */
+    public int rob_0_4(TreeNode root) {
+        int[] res = robSub(root);
+        return Math.max(res[0], res[1]);
+    }
+
+    // returns [skip, rob] -> max sum if we skip or rob this node
+    private int[] robSub(TreeNode node) {
+        if (node == null) return new int[]{0,0};
+
+        int[] left = robSub(node.left);
+        int[] right = robSub(node.right);
+
+        // rob this node -> can't rob children
+        int rob = node.val + left[0] + right[0];
+
+        // skip this node -> children may be robbed or skipped
+        int skip = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+
+        return new int[]{skip, rob};
+    }
+
 
     // V1
     // https://youtu.be/nHR8ytpzz7c?si=7y46QM-wwMWAmn8b
