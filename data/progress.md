@@ -7,6 +7,10 @@
 		- review prev LC problems !!!
 	- again:
 	- todo:
+		- (337 similar)
+			- 1770
+			- 1931
+			- 2246
 - Sys design questions:
 	- https://neetcode.io/practice?tab=systemDesign
 - crack code book
