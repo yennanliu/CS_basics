@@ -105,11 +105,25 @@ public class HouseRobber3 {
             return 0;
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *  if prev node was rob,
+         *  we have NO choice, and can't rob current node
+         *
+         */
         // If previous node was robbed, we can't rob this one
         if (robPreNode) {
             return getMaxNodeSum(root.left, false) +
                     getMaxNodeSum(root.right, false);
-        } else {
+        }
+        /**
+         *  NOTE !!!
+         *
+         *  if prev node was NOT robt
+         *
+         */
+        else {
             // Option 1: Rob this node
             int robThis = root.val +
                     getMaxNodeSum(root.left, true) +
