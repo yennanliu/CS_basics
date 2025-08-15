@@ -333,6 +333,111 @@ public class workspace12 {
     }
 
 
+    // LC 337
+    // 16.15 - 16.25 pm
+    /**
+     *
+     * Given the root of the binary tree,
+     * return the `maximum` amount of money
+     * the thief can rob without alerting the police.
+     *
+     * ALWAYS need to start from `root`,
+     * but it's optional to `rub` `root`
+     *
+     * It will automatically contact the police if
+     * two directly-linked houses were broken into
+     * on the same night.
+     *
+     *
+     *  target:  get the `max` total amount
+     *           without collect to `directly-linked` nodes
+     *
+     *  IDEA 1) DFS + brute force ???
+     *
+     *   DFS -> get path to an array ??
+     *
+     *   preorder: 3 -> 2 -> 3 -> 3 -> 1
+     *
+     *
+     *  IDEA 2) DFS + `prev` check and collect current val and maintain max val
+     *        + backtrack ???
+     *
+     *  IDEA 3) DFS + dp ??
+     *
+     */
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {}
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    // IDEA 2) DFS + `prev` check and collect current val and maintain max val
+    int max_node_sum = 0;
+    public int rob(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return root.val;
+        }
+
+        // ???
+        //int max_sum = getMaxNodeSum(root, 0, false);
+       // return max_node_sum;
+        getMaxNodeSum(root, 0, false);
+        return max_node_sum;
+    }
+
+    private int getMaxNodeSum(TreeNode root, int curSum, boolean robPreNode){
+        // edge
+        if(root == null){
+            return curSum;
+        }
+        if(root.left == null && root.right == null){
+            return curSum;
+        }
+      //  int tmp_sum = 0; // ???
+        if(robPreNode){
+            max_node_sum = Math.max(max_node_sum, getMaxNodeSum(root.left, curSum, false) +
+                    getMaxNodeSum(root.right, curSum, false));
+
+        }else{
+            max_node_sum = Math.max(
+                    max_node_sum,
+                    root.val + getMaxNodeSum(root.left, curSum, true) +
+                            getMaxNodeSum(root.right, curSum, true)
+            );
+        }
+//
+//        max_node_sum = Math.max(max_node_sum, tmp_sum);
+//
+//        getMaxNodeSum(root.left, curSum, true);
+//        getMaxNodeSum(root.right, curSum, true);
+        // undo ???
+
+        int max_sum_1 =  root.val + getMaxNodeSum(root.left, curSum, true) +
+                getMaxNodeSum(root.right, curSum, true);
+
+        int max_sum_2 =  getMaxNodeSum(root.left, curSum, false) +
+                getMaxNodeSum(root.right, curSum, false);
+
+        return Math.max(max_sum_1, max_sum_2);
+    }
+
+
 
 }
 
