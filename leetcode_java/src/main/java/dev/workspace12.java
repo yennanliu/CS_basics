@@ -383,59 +383,137 @@ public class workspace12 {
         }
     }
 
-    // IDEA 2) DFS + `prev` check and collect current val and maintain max val
-    int max_node_sum = 0;
+    // IDEA 2-2) DFS + `prev` check + MEMORY DP)
+    // init hashmap as cache for `dp`
+    Map<TreeNode, Integer> cache = new HashMap<>();
+
     public int rob(TreeNode root) {
-        // edge
+        return robHelper(root, false);
+    }
+
+    private int robHelper(TreeNode root, boolean robPrev){
         if(root == null){
             return 0;
         }
-        if(root.left == null && root.right == null){
-            return root.val;
+
+        // if `key` exists, we return res directly
+        // ??? key type ???
+        if(cache.containsKey(root)){
+            return cache.get(root);
         }
 
-        // ???
-        //int max_sum = getMaxNodeSum(root, 0, false);
-       // return max_node_sum;
-        getMaxNodeSum(root, 0, false);
-        return max_node_sum;
+        // if prev node was rob,
+        // we have NO choice, and can't rob current node
+        if(robPrev){
+            // ??
+            int tmp_val = robHelper(root.left, false)
+                    +  robHelper(root.right, false);
+            // update cache
+            cache.put(root, tmp_val);
+            return tmp_val;
+        }
+        // if prev node was NOT robt
+        else{
+            // rob current node
+            int node_sum_1 = root.val + robHelper(root.left, true)
+                    +  robHelper(root.right, true);
+            // NOT rob current node
+            int node_sum_2 = robHelper(root.left, false)
+                    +  robHelper(root.right, false);
+
+            // update cache
+            cache.put(root, node_sum_1);
+
+            return Math.max(node_sum_1, node_sum_2);
+        }
+
     }
 
-    private int getMaxNodeSum(TreeNode root, int curSum, boolean robPreNode){
-        // edge
-        if(root == null){
-            return curSum;
-        }
-        if(root.left == null && root.right == null){
-            return curSum;
-        }
-      //  int tmp_sum = 0; // ???
-        if(robPreNode){
-            max_node_sum = Math.max(max_node_sum, getMaxNodeSum(root.left, curSum, false) +
-                    getMaxNodeSum(root.right, curSum, false));
-
-        }else{
-            max_node_sum = Math.max(
-                    max_node_sum,
-                    root.val + getMaxNodeSum(root.left, curSum, true) +
-                            getMaxNodeSum(root.right, curSum, true)
-            );
-        }
+    // IDEA 2-1) DFS + `prev` check (OK)
+//    public int rob(TreeNode root) {
+//        return robHelper(root, false);
+//    }
 //
-//        max_node_sum = Math.max(max_node_sum, tmp_sum);
+//    private int robHelper(TreeNode root, boolean robPrev){
+//        if(root == null){
+//            return 0;
+//        }
+//        // if prev node was rob,
+//        // we have NO choice, and can't rob current node
+//        if(robPrev){
+//            return robHelper(root.left, false)
+//                    +  robHelper(root.right, false);
+//        }
+//        // if prev node was NOT robt
+//        else{
+//            // rob current node
+//            int node_sum_1 = root.val + robHelper(root.left, true)
+//                    +  robHelper(root.right, true);
+//            // NOT rob current node
+//            int node_sum_2 = robHelper(root.left, false)
+//                    +  robHelper(root.right, false);
 //
-//        getMaxNodeSum(root.left, curSum, true);
-//        getMaxNodeSum(root.right, curSum, true);
-        // undo ???
+//            return Math.max(node_sum_1, node_sum_2);
+//        }
+//
+//    }
 
-        int max_sum_1 =  root.val + getMaxNodeSum(root.left, curSum, true) +
-                getMaxNodeSum(root.right, curSum, true);
 
-        int max_sum_2 =  getMaxNodeSum(root.left, curSum, false) +
-                getMaxNodeSum(root.right, curSum, false);
 
-        return Math.max(max_sum_1, max_sum_2);
-    }
+
+    // IDEA 2) DFS + `prev` check and collect current val and maintain max val
+//    int max_node_sum = 0;
+//    public int rob(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return 0;
+//        }
+//        if(root.left == null && root.right == null){
+//            return root.val;
+//        }
+//
+//        // ???
+//        //int max_sum = getMaxNodeSum(root, 0, false);
+//       // return max_node_sum;
+//        getMaxNodeSum(root, 0, false);
+//        return max_node_sum;
+//    }
+//
+//    private int getMaxNodeSum(TreeNode root, int curSum, boolean robPreNode){
+//        // edge
+//        if(root == null){
+//            return curSum;
+//        }
+//        if(root.left == null && root.right == null){
+//            return curSum;
+//        }
+//      //  int tmp_sum = 0; // ???
+//        if(robPreNode){
+//            max_node_sum = Math.max(max_node_sum, getMaxNodeSum(root.left, curSum, false) +
+//                    getMaxNodeSum(root.right, curSum, false));
+//
+//        }else{
+//            max_node_sum = Math.max(
+//                    max_node_sum,
+//                    root.val + getMaxNodeSum(root.left, curSum, true) +
+//                            getMaxNodeSum(root.right, curSum, true)
+//            );
+//        }
+////
+////        max_node_sum = Math.max(max_node_sum, tmp_sum);
+////
+////        getMaxNodeSum(root.left, curSum, true);
+////        getMaxNodeSum(root.right, curSum, true);
+//        // undo ???
+//
+//        int max_sum_1 =  root.val + getMaxNodeSum(root.left, curSum, true) +
+//                getMaxNodeSum(root.right, curSum, true);
+//
+//        int max_sum_2 =  getMaxNodeSum(root.left, curSum, false) +
+//                getMaxNodeSum(root.right, curSum, false);
+//
+//        return Math.max(max_sum_1, max_sum_2);
+//    }
 
 
 
