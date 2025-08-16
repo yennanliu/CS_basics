@@ -383,51 +383,93 @@ public class workspace12 {
         }
     }
 
-    // IDEA 2-2) DFS + `prev` check + MEMORY DP)
-    // init hashmap as cache for `dp`
-    Map<TreeNode, Integer> cache = new HashMap<>();
-
+    // IDEA 1) DFS + brute force
+    // 4.16 - 4.26 pm
     public int rob(TreeNode root) {
-        return robHelper(root, false);
-    }
-
-    private int robHelper(TreeNode root, boolean robPrev){
+        // edge
         if(root == null){
             return 0;
         }
-
-        // if `key` exists, we return res directly
-        // ??? key type ???
-        if(cache.containsKey(root)){
-            return cache.get(root);
+        if(root.left == null && root.right == null){
+            return root.val;
         }
 
-        // if prev node was rob,
-        // we have NO choice, and can't rob current node
-        if(robPrev){
-            // ??
-            int tmp_val = robHelper(root.left, false)
-                    +  robHelper(root.right, false);
-            // update cache
-            cache.put(root, tmp_val);
-            return tmp_val;
+        // ???
+        return robHelper(root, false);
+    }
+
+    private int robHelper(TreeNode root, boolean robPrevNode){
+        // edge
+        if(root == null){
+            return 0;
         }
-        // if prev node was NOT robt
+//        if(root.left == null && root.right == null){
+//            return root.val;
+//        }
+        // case 1) if `prev` node is rob
+        if(robPrevNode){
+            return robHelper(root.left, false)
+                    + robHelper(root.right, false);
+        }
+        // case 2) if `prev` node is NOT rob
         else{
-            // rob current node
-            int node_sum_1 = root.val + robHelper(root.left, true)
-                    +  robHelper(root.right, true);
-            // NOT rob current node
-            int node_sum_2 = robHelper(root.left, false)
-                    +  robHelper(root.right, false);
+            // rob
+            int val_1 = root.val +  robHelper(root.left, true)
+                    + robHelper(root.right, true);
+            // NOT rob
+            int val_2 = robHelper(root.left, false)
+                    + robHelper(root.right, false);
 
-            // update cache
-            cache.put(root, node_sum_1);
-
-            return Math.max(node_sum_1, node_sum_2);
+            return Math.max(val_1, val_2);
         }
 
     }
+
+    // IDEA 2-2) DFS + `prev` check + MEMORY DP)
+    // init hashmap as cache for `dp`
+//    Map<TreeNode, Integer> cache = new HashMap<>();
+//
+//    public int rob(TreeNode root) {
+//        return robHelper(root, false);
+//    }
+//
+//    private int robHelper(TreeNode root, boolean robPrev){
+//        if(root == null){
+//            return 0;
+//        }
+//
+//        // if `key` exists, we return res directly
+//        // ??? key type ???
+//        if(cache.containsKey(root)){
+//            return cache.get(root);
+//        }
+//
+//        // if prev node was rob,
+//        // we have NO choice, and can't rob current node
+//        if(robPrev){
+//            // ??
+//            int tmp_val = robHelper(root.left, false)
+//                    +  robHelper(root.right, false);
+//            // update cache
+//            cache.put(root, tmp_val);
+//            return tmp_val;
+//        }
+//        // if prev node was NOT robt
+//        else{
+//            // rob current node
+//            int node_sum_1 = root.val + robHelper(root.left, true)
+//                    +  robHelper(root.right, true);
+//            // NOT rob current node
+//            int node_sum_2 = robHelper(root.left, false)
+//                    +  robHelper(root.right, false);
+//
+//            // update cache
+//            cache.put(root, node_sum_1);
+//
+//            return Math.max(node_sum_1, node_sum_2);
+//        }
+//
+//    }
 
     // IDEA 2-1) DFS + `prev` check (OK)
 //    public int rob(TreeNode root) {
