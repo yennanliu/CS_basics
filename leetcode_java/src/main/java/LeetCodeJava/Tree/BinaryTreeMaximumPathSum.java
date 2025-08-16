@@ -58,12 +58,133 @@ public class BinaryTreeMaximumPathSum {
      *     }
      * }
      */
+
     // V0
-    // TODO : implement
-//    public int maxPathSum(TreeNode root) {
-//
-//        return 0;
-//    }
+    // IDEA: DFS + `path` definition (fixed by gpt)
+    /**
+     *  NOTE !!!
+     *
+     *   (from problem description)
+     *
+     *   -> A path in a binary tree is a sequence of
+     *     nodes where each pair of adjacent nodes in
+     *     the sequence has `AN edge connecting them.`
+     *
+     *
+     *   -> so the `path` is a `single path` that connect
+     *      from a node to the other.
+     *
+     *   -> e.g.:
+     *
+     *       (`single` path)
+     *      node_a ---node_1,-- node_2, ...-- node_b
+     *
+     */
+    /**
+     *  NOTE !!!
+     *
+     *   1. maxPathSum = Math.max(maxPathSum, root.val + left + right);
+     *
+     *   2. (DFS func return) root.val + Math.max(left, right);
+     *
+     */
+    int maxPathSum = Integer.MIN_VALUE; // global tracker
+
+    public int maxPathSum(TreeNode root) {
+        dfs_0(root);
+        return maxPathSum;
+    }
+
+    private int dfs_0(TreeNode root) {
+        if (root == null)
+            return 0;
+
+    // compute max sum of left/right branches (ignore negatives)
+    /**
+     *  NOTE !!!
+     *
+     *   we need to use `int left = Math.max(0, dfs_0(root.left));`
+     *   (instead of int left = dfs_0(root.left))
+     *
+     *  Reason:
+     *     We want to find the maximum path sum in the tree.
+     *     A “path” can start and `end at any node`,
+     *     but it must be continuous.
+     *
+     *    ⚠️ If a subtree contributes a negative sum,
+     *     including it will reduce the total path sum.
+     *
+     *    That’s why we take Math.max(0, dfs(...)).
+     *    It means: “If the best path from this child is negative,
+     *    just ignore it (treat as 0).”
+     *
+     *
+     *   Example:
+     *
+     *         10
+     *        /  \
+     *      -5    20
+     *
+     *
+     *      👉 Without Math.max(0, …):
+     * 	        •	dfs(root.left) = -5
+     * 	        •	dfs(root.right) = 20
+     * 	        •	Path through root = 10 + (-5) + 20 = 25
+     *
+     *
+     *    -> But actually, the better path
+     *      is just 10 + 20 = 30 (ignoring the left side).
+     *
+     *   👉 With Math.max(0, …):
+     * 	        •	left = Math.max(0, -5) = 0
+     * 	        •	right = Math.max(0, 20) = 20
+     * 	        •	Path through root = 10 + 0 + 20 = 30 ✅
+     *
+     */
+        int left = Math.max(0, dfs_0(root.left));
+        int right = Math.max(0, dfs_0(root.right));
+
+        // update global maximum with "path through root"
+        maxPathSum = Math.max(maxPathSum, root.val + left + right);
+
+    // return the best single-branch path sum upward
+    /**
+     *  NOTE !!!
+     *
+     *   return `root.val + Math.max(left, right)
+     *
+     *   1) This comes from the difference between
+     *     “path sum” vs “branch sum”
+     *     in the Maximum Path Sum in a Binary Tree problem.
+     *
+     *   2) But you cannot pass both branches upward,
+     *   because your parent can only connect to
+     *   this node through one edge (either left or right).
+     *
+     *
+     *  -> e.g.
+     *
+     *   we can ONLY propagate a `single path` (sub left or right tree) to
+     *   `upper` node, NOT both path
+     *
+     *   Example:
+     *
+     *         10
+     *       /  \
+     *      2    10
+     *     / \     \
+     *    20  1     -25
+     *               /  \
+     *              3    4
+     *
+     *
+     *   -> for `node 10`
+     *      we can ONLY poss path (-25, 3) or (-25, 4)
+     *      NOT pass 2 paths on the time
+     *
+     */
+    return root.val + Math.max(left, right);
+    }
 
     // V0-1
     // IDEA: DFS (GPT)
