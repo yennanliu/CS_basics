@@ -558,6 +558,88 @@ public class workspace12 {
 //    }
 
 
+    // LC 450
+    // 4.31 - 4.41 pm
+    /**
+     *  IDEA 1) DFS
+     *
+     *   NOTE !!!
+     *   -> BST property
+     *    ( left < root < right )
+     *
+     *   (if found a `to delete` node)
+     *
+     *   case 1) both sub left, and right node are null
+     *   case 2)  sub right node is null
+     *   case 3)  sub left node is null
+     *
+     */
+    public TreeNode deleteNode(TreeNode root, int key) {
+        // edge
+        if(root == null || root.val == key){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            return root;
+        }
+
+        // helper func ???
+        return deleteHelper(root, key);
+    }
+
+    public TreeNode deleteHelper(TreeNode root, int key) {
+        // edge
+        if(root == null){
+            return null;
+        }
+
+        // case 1) if NOT found
+        if(root.val < key){
+            //return deleteNode(root.right, key);
+            // NOTE !!!! below
+            root.right = deleteNode(root.right, key);
+        }else if(root.val > key){
+            //return deleteNode(root.left, key);
+            // NOTE !!!
+            root.left = deleteNode(root.left, key);
+        }
+        // case 2) if found `to delete` node
+        else{
+      /**
+       *      *   case 1) both sub left, and right node are null
+       *      *   case 2)  sub right node is null
+       *      *   case 3)  sub left node is null
+       */
+      if(root.left == null && root.right == null){
+          return null; // ???
+      }else if(root.right == null){
+          return root.left; // ??
+      }else if(root.left == null){
+          return root.right; // ??
+      }else{
+          /**
+           *  should we
+           *   1. find the `max` node from sub left tree ?
+           *   or
+           *   2. find the `min` node from sub right tree ?
+           *
+           */
+          // cache
+         // TreeNode _cache = root;
+          TreeNode _right = root.right;
+          while(_right != null){
+              _right = _right.left;
+          }
+          // swap
+          root.val = _right.val;
+          // remove `_right` from sub right tree
+          TreeNode updated_right_node = deleteHelper(root.right, _right.val);
+          root.right = updated_right_node;
+        }
+      }
+
+        return root; // ?????
+    }
 
 }
 
