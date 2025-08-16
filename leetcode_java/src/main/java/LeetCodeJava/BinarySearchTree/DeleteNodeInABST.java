@@ -89,15 +89,35 @@ public class DeleteNodeInABST {
             return null;
         }
 
+        /**
+         * CASE 1)  NOT found a node to delete
+         */
         if (key < root.val) {
             // search in left subtree
+            /**
+             *  NOTE !!!
+             *
+             *   we assign `left sub tree` as res from deleteNodeHelper_0(root.left, key)
+             *
+             *   -> NOT return `deleteNodeHelper_0(root.left, key)`
+             *      as res directly, since it deleteNodeHelper_0
+             *      could NOT be a null val, we need it to assign root.left,
+             *      so we can keep `whole BST info`
+             */
             root.left = deleteNodeHelper_0(root.left, key);
         } else if (key > root.val) {
             // search in right subtree
+            /**
+             *  NOTE !!!
+             *
+             *   we assign `right sub tree` as res from deleteNodeHelper_0(root.right, key)
+             */
             root.right = deleteNodeHelper_0(root.right, key);
-        } else {
-            // Found the node to delete
-
+        }
+        /**
+         * CASE 2)  Found a node to delete
+         */
+        else {
             // Case 1: No left child
             if (root.left == null) {
                 return root.right;
@@ -118,6 +138,20 @@ public class DeleteNodeInABST {
              *
              */
             // Case 3: Two children → find inorder successor
+            /**
+             *  NOTE !!!
+             *
+             *   we need to find a `min` tree from `sub right tree`
+             *   as a node to `swap` with current node.
+             *
+             *   Reason:
+             *      since it is a BST, so  `left < root < right`.
+             *      so after swapping `min` from sub right tree.
+             *      with current node
+             *          -> the tree `remains` BST.
+             *          we DON'T have to do any further modification.
+             *
+             */
             TreeNode minNode = findMin_0(root.right);
             root.val = minNode.val; // copy value
             root.right = deleteNodeHelper(root.right, minNode.val); // delete successor
