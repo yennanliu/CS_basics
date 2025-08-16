@@ -641,5 +641,66 @@ public class workspace12 {
         return root; // ?????
     }
 
+    // LC 124
+    // 5.15 - 5.25 pm
+    /**
+     *  1. A node can only appear in the sequence `at most once`
+     *  2. the path does NOT need to pass through the `root`.
+     *
+     *  -> return the `maximum` path sum of any non-empty path.
+     *
+     *
+     *  IDEA 1) DFS
+     *   -> post order traverse ???
+     *     -> `left -> right - > root`
+     *     -> so we know what's the `path sum` looks like
+     *        when visit `root`
+     *
+     *   -> and we'll maintain a local, global max val when traverse tree
+     *
+     */
+    int maxPathSum = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return 0;
+//        }
+//        if(root.left == null && root.right == null){
+//            return root.val;
+//        }
+
+        // ??? DFS
+        getPathSumHelper(root);
+        return maxPathSum;
+    }
+
+    private int getPathSumHelper(TreeNode root){
+        // edge
+        if(root == null){
+            return 0; // ???
+        }
+
+        // post order (left -> right -> root)
+//        int left_sum = getPathSumHelper(root.left, curSum);
+//        int right_sum = getPathSumHelper(root.right, curSum);
+        int left_sum = Math.max(0, getPathSumHelper(root.left));
+        int right_sum = Math.max(0, getPathSumHelper(root.right));
+
+//        curSum = Math.max(curSum,
+//                root.val + left_sum + right_sum
+//        );
+
+        maxPathSum = Math.max(maxPathSum,
+                root.val + left_sum + right_sum);
+
+        // ???
+        //return maxPathSum;
+       // return  root.val + left_sum + right_sum;
+        return root.val + Math.max(left_sum, right_sum);
+    }
+
+
+
+
 }
 
