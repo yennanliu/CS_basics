@@ -2,7 +2,7 @@ package LeetCodeJava.Recursion;
 
 // https://leetcode.com/problems/maximum-depth-of-binary-tree/
 /**
- *  104. Maximum Depth of Binary Tree
+ * 104. Maximum Depth of Binary Tree
  * Solved
  * Easy
  * Topics
@@ -37,8 +37,22 @@ import java.util.LinkedList;
 
 public class MaximumDepthOfBinaryTree {
 
+    /**
+     *  NOTE !!!
+     *
+     *   we have below code pattern for this problem
+     *
+     *   1. pure DFS  (NO global var)
+     *   2. DFS + global var
+     *   3. DFS + helper func + global var
+     *
+     *
+     *   global var is NOT necessary, we can still get the max depth
+     *   via `1 + Math.max(left_depth, right_depth)` in the end of dfs call
+     */
+
     // V0
-    // IDEA : RECURSIVE
+    // IDEA : DFS (RECURSIVE)
     public int maxDepth(TreeNode root) {
 
         if (root == null){
@@ -63,9 +77,70 @@ public class MaximumDepthOfBinaryTree {
     }
 
     // V0-0-1
+    // IDEA: DFS + global var + helper func (fixed by gpt)
+    /**
+     *  via the `depth` param in helper func,
+     *  we can reuse it when get max depth
+     *
+     */
+    int maxDepth = 0;
+
+    public int maxDepth_0_0_1(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
+
+        depthHelper(root, 0);
+        return maxDepth + 1;
+    }
+
+    /**
+     *  NOTE !!!
+     *
+     *   for the helper func, we set up `depth` param as well
+     *   , and we can use `depth` when get the `max depth` within
+     *   recursion call
+     */
+
+    /**
+     *  NOTE !!!
+     *
+     *  the return val of helper func is `void`
+     *  e.g. NOTHING to return
+     */
+    private void depthHelper(TreeNode root, int depth) {
+        // edge
+        if (root == null) {
+            return;
+        }
+
+        // maintain max depth
+        /**
+         *  NOTE !!!
+         *
+         *  we get `max depth` first, then do recursion call
+         */
+        maxDepth = Math.max(
+                maxDepth,
+                depth);
+
+        /**
+         *  NOTE !!!
+         *
+         *  we do recursion call simply as below
+         */
+        depthHelper(root.left, depth + 1);
+        depthHelper(root.right, depth + 1);
+    }
+
+    // V0-0-2
     // IDEA: DFS (fixed by gpt)
     // NOTE !!! NOT need to setup `max_depth` in below code
-    public int maxDepth_0_0_1(TreeNode root) {
+    public int maxDepth_0_0_2(TreeNode root) {
         // edge
         if (root == null) {
             return 0;
@@ -161,8 +236,27 @@ public class MaximumDepthOfBinaryTree {
     }
 
     // V0-3
+    // IDEA: DFS (GPT) + GLOBAL VAR (maxDepth)
+    int maxDepth_0_3 = 0;
+    public int maxDepth_0_3(TreeNode root) {
+        dfs(root, 1);
+        return maxDepth_0_3;
+    }
+
+    private void dfs(TreeNode root, int depth) {
+        if (root == null) {
+            return;
+        }
+
+        maxDepth_0_3 = Math.max(maxDepth_0_3, depth);
+
+        dfs(root.left, depth + 1);
+        dfs(root.right, depth + 1);
+    }
+
+    // V0-4
     // IDEA: RECURSIVE (GPT)
-    public int maxDept0_3(TreeNode root) {
+    public int maxDept0_4(TreeNode root) {
         // edge case: if the root is null, the depth is 0
         if (root == null) {
             return 0;
@@ -185,9 +279,9 @@ public class MaximumDepthOfBinaryTree {
         return Math.max(leftDepth, rightDepth);
     }
 
-    // V0-4
+    // V0-5
     // IDEA: RECURSIVE (fixed by gpt)
-    public int maxDepth_0_4(TreeNode root) {
+    public int maxDepth_0_5(TreeNode root) {
         // Edge case: if the tree is empty, return 0
         if (root == null) {
             return 0;

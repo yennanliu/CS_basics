@@ -813,6 +813,82 @@ public class workspace12 {
         return res;
     }
 
+    // LC 104
+    // 5.03 - 5.13 pm
+    /**
+     *  IDEA 1) DFS
+     *
+     *  IDEA 2) BFS
+     *
+     */
+    // IDEA : DFS
+    // (post-order traverse) (left -> right -> root)
+    // when at root, should know the `depth` of sub tree
+    int maxDepth = 0;
+    public int maxDepth(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+
+        depthHelper(root, 0);
+        return maxDepth + 1;
+    }
+
+    private void depthHelper(TreeNode root, int depth){
+        // edge
+        if(root == null){
+            return;
+        }
+
+        // maintain max depth
+        maxDepth = Math.max(
+                maxDepth,
+                depth
+        );
+
+        depthHelper(root.left, depth + 1);
+        depthHelper(root.right, depth + 1);
+    }
+
+
+//    int maxDepth = 0;
+//    public int maxDepth(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return 0;
+//        }
+//        if(root.left == null && root.right == null){
+//            return 1;
+//        }
+//
+//        depthHelper(root);
+//        return maxDepth + 1;
+//    }
+//
+//    private int depthHelper(TreeNode root){
+//        // edge
+//        if(root == null){
+//            return 0;
+//        }
+//
+//        int _left_depth = depthHelper(root.left);
+//        int _right_depth = depthHelper(root.right);
+//
+//        // maintain max depth
+//        maxDepth = Math.max(
+//                maxDepth,
+//                Math.max(_left_depth, _right_depth)
+//        );
+//
+//        // ???
+//        //return 1 + Math.max(_left_depth, _right_depth);
+//        return maxDepth;
+//    }
+
 
 }
 
