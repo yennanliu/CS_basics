@@ -700,6 +700,66 @@ public class workspace12 {
     }
 
 
+    // LC 222
+    // 4.34 - 4.44 pm
+    /**
+     *  IDEA 1) BFS
+     *
+     *  IDEA 2) DFS
+     *
+     *
+     */
+    // DFS
+    int nodeCnt = 0;
+    public int countNodes(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+//        if(root.left == null && root.right == null){
+//            return 1;
+//        }
+        nodeCnt += 1;
+        countNodes(root.left);
+        countNodes(root.right);
+
+        return nodeCnt;
+    }
+
+//    private int countHelper(TreeNode root){
+//
+//    }
+
+
+    // BFS
+//    public int countNodes(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return 0;
+//        }
+//        if(root.left == null && root.right == null){
+//            return 1;
+//        }
+//        //List<TreeNode> cache = new ArrayList<>();
+//        int cnt = 0;
+//
+//        Queue<TreeNode> q = new LinkedList<>();
+//        q.add(root);
+//
+//        while(!q.isEmpty()){
+//            TreeNode node = q.poll();
+//           // cache.add(node);
+//            cnt += 1;
+//            if(node.left != null){
+//                q.add(node.left);
+//            }
+//            if(node.right != null){
+//                q.add(node.right);
+//            }
+//        }
+//
+//        return cnt;
+//    }
 
 
 }
