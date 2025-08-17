@@ -1741,3 +1741,22 @@ for (char c = 'a'; c <= 'z'; c++) {
   /** a b c d e f g h i j k l m n o p q r s t u v w x y z */
 }
 ```
+
+
+### 4-1) pass param and use it recurion code
+
+```java
+// LC 104
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MaximumDepthOfBinaryTree.java
+
+int max_depth = 0;
+// ...
+private void depthHelper(TreeNode root, int depth) {
+
+ // ...
+ max_depth = Math.max(max_depth, depth);   
+  
+}
+
+// ...
+```
