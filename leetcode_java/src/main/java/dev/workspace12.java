@@ -761,6 +761,58 @@ public class workspace12 {
 //        return cnt;
 //    }
 
+    // LC 199
+    // 4.45 - 4.55 pm
+    /**
+     *  IDEA 1) BFS
+     *
+     *  IDEA 2) DFS
+     *
+     *
+     */
+    // BFS
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(root == null){
+            return res;
+        }
+        if(root.left == null && root.right == null){
+            res.add(root.val);
+            return res;
+        }
+
+        // bfs
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+
+        while(!q.isEmpty()){
+
+            // ???
+            // cache `current q size`
+            int size = q.size(); // ???
+            // placeholder
+            TreeNode cur = null;
+
+            for(int i = 0; i < size; i++){
+                cur = q.poll();
+                if(cur.left != null){
+                    q.add(cur.left);
+                }
+                if(cur.right != null){
+                    q.add(cur.right);
+                }
+            }
+
+            // add the `right most` val to res
+            // when the `layer traverse` is completed
+            res.add(cur.val);
+
+        }
+
+        return res;
+    }
+
 
 }
 

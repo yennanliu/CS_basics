@@ -73,7 +73,7 @@ public class BinaryTreeRightSideView {
      * }
      */
     // VO
-    // IDEA : BFS + custom class
+    // IDEA : BFS + custom class (`NodeLayer`)
     public class NodeLayer {
         TreeNode node;
         int layer;
@@ -126,6 +126,67 @@ public class BinaryTreeRightSideView {
         for (List<Integer> x : cache) {
             res.add(x.get(x.size() - 1));
         }
+
+        return res;
+    }
+
+    // V0-0-1
+    // IDEA: BFS + `pre-order traverse` (root -> left -> right) + `maintain rightmost element`
+    public List<Integer> rightSideView_0_0_1(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if (root == null) {
+            return res;
+        }
+        if (root.left == null && root.right == null) {
+            res.add(root.val);
+            return res;
+        }
+
+        // bfs
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+
+        while (!q.isEmpty()) {
+
+            /**
+             *  NOTE !!!
+             *
+             *   trick below:
+             *
+             *    1) we cache `current q size` (before `loop over element in current layer`)
+             *    2) since q size will change when we append left sub, right sub tree to it,
+             *       -> so that's why we need to cache current q size beforehand
+             */
+            int size = q.size(); // ???
+
+            /**
+             *  NOTE !!!
+             *
+             *  we set a placeholder for cur node,
+             *  so we can assign sub tree val to it,
+             *  and can collect the `right most` element when `layer visiting` completed
+             */
+            TreeNode cur = null; // placeholder
+
+            for (int i = 0; i < size; i++) {
+                cur = q.poll();
+                if (cur.left != null) {
+                    q.add(cur.left);
+                }
+                if (cur.right != null) {
+                    q.add(cur.right);
+                }
+            }
+
+      /**
+       *  NOTE !!!
+       *
+       *      // add the `right most` val to res
+       *      // when  `traverse` is completed in every single layer
+       */
+        res.add(cur.val);
+      }
 
         return res;
     }
