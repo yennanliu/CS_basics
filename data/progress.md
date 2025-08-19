@@ -1,5 +1,28 @@
 # Progress
 
+# 2025-08-20
+- neetcode 250
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
+		- 27/66
+			- 1060,256,321
+		- review prev LC problems !!!
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md
+	- 護城河
+		- p.7 (sliding window)
+	- again:
+	- todo:
+		- (337 similar)
+			- 1770
+			- 1931
+			- 2246
+- Sys design questions:
+	- https://neetcode.io/practice?tab=systemDesign
+- crack code book
+	- p.177 (recursion & dp)
+- sys design book
+	- Volume 2
+		- p.323
+
 # 2025-08-19
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
