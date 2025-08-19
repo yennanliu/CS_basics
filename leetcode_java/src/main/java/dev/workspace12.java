@@ -889,6 +889,116 @@ public class workspace12 {
 //        return maxDepth;
 //    }
 
+    // LC 297
+    // 17.20 - 17.30 pm
+    /**
+     * IDEA 1) DFS
+     *
+     *  Tree -> string : separator + string op
+     *
+     *  String -> Tree: array op + binary tree property
+     *
+     *
+     */
+    public class Codec {
+
+        // attr
+        //String seriData;
+        StringBuilder sb;
+        //List<String> deserData;
+        //TreeNode node;
+
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            // edge
+            if(root == null){
+                return "#"; // ??
+            }
+
+            this.sb = new StringBuilder();
+
+            if(root.left == null && root.right == null){
+                sb.append(root.val);
+                sb.append("#");
+                return sb.toString();
+            }
+
+            // BFS ???
+            // (pre-order traverse)
+            // root -> left sub tree -> right sub tree
+            Queue<TreeNode> q = new LinkedList<>();
+            q.add(root);
+
+            while(!q.isEmpty()){
+
+                int _size = q.size();
+
+                for(int i = 0; i < _size; i++){
+                    TreeNode cur = q.poll();
+                    sb.append(cur.val);
+                    sb.append(",");
+                    if(cur.left != null){
+                        q.add(cur.left);
+                    }
+                    if(cur.right != null){
+                        q.add(cur.right);
+                    }
+                }
+
+                sb.append("#"); // ??
+            }
+
+            return sb.toString();
+        }
+
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+            // edge
+            if(data.isEmpty() || data.equals("#")){
+                return null; // ???
+            }
+
+            String[] _list = data.split("#");
+
+            if(_list.length == 1){
+                return new TreeNode(Integer.parseInt(_list[0]));
+            }
+
+            // helper func
+           // Queue<TreeNode> q = new LinkedList<>();
+
+           // TreeNode res = helper(q); // ???
+
+            List<String> x = Arrays.asList(data.split("."));
+
+            Queue<String> q = new LinkedList<>(Arrays.asList(data.split(".")));
+
+            return helper(q); // ???;
+        }
+
+        private TreeNode helper(Queue<String> q){
+
+
+            //TreeNode node = q.poll();
+            String s = q.poll();
+
+            // edge
+            if(s.equals("#")){
+                return null;
+            }
+
+            TreeNode root = new TreeNode(Integer.parseInt(s));
+
+            root.left = helper(q);
+            root.right = helper(q);
+
+            return root;
+        }
+
+
+    }
+
 
 
 }
