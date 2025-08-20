@@ -1097,6 +1097,18 @@ public class workspace12 {
         return -1; // ??
     }
 
+    // LC 321
+    // 8.42 - 8.52 am
+    /**
+     *
+     *
+     *
+     */
+    public int[] maxNumber(int[] nums1, int[] nums2, int k) {
+
+        return null;
+    }
+
 
 }
 

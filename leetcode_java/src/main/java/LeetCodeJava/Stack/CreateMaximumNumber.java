@@ -186,4 +186,70 @@ public class CreateMaximumNumber {
         return ans;
     }
 
+    // V3
+    // https://zxi.mytechroad.com/blog/dynamic-programming/leetcode-321-create-maximum-number/
+    // IDRA: DP
+    public int[] maxNumber_3(int[] nums1, int[] nums2, int k) {
+        int n1 = nums1.length, n2 = nums2.length;
+        int[] best = new int[k];
+
+        for (int i = Math.max(0, k - n2); i <= Math.min(k, n1); i++) {
+            int[] candidate = merge(
+                    maxNumber(nums1, i),
+                    maxNumber(nums2, k - i)
+            );
+            if (greater_3(candidate, 0, best, 0)) {
+                best = candidate;
+            }
+        }
+        return best;
+    }
+
+    // pick k digits from nums, keeping order, maximize lexicographically
+    private int[] maxNumber(int[] nums, int k) {
+        int n = nums.length;
+        int[] stack = new int[k];
+        int top = -1;
+        int toDrop = n - k;
+        for (int num : nums) {
+            while (top >= 0 && stack[top] < num && toDrop > 0) {
+                top--;
+                toDrop--;
+            }
+            if (top + 1 < k) {
+                stack[++top] = num;
+            } else {
+                toDrop--; // drop if stack full
+            }
+        }
+        return stack;
+    }
+
+    // merge two arrays into max lexicographic sequence
+    private int[] merge(int[] nums1, int[] nums2) {
+        int n1 = nums1.length, n2 = nums2.length;
+        int[] merged = new int[n1 + n2];
+        int i = 0, j = 0, r = 0;
+        while (i < n1 || j < n2) {
+            if (greater_3(nums1, i, nums2, j)) {
+                merged[r++] = nums1[i++];
+            } else {
+                merged[r++] = nums2[j++];
+            }
+        }
+        return merged;
+    }
+
+    // compare nums1[i:] and nums2[j:] lexicographically
+    private boolean greater_3(int[] nums1, int i, int[] nums2, int j) {
+        int n1 = nums1.length, n2 = nums2.length;
+        while (i < n1 && j < n2 && nums1[i] == nums2[j]) {
+            i++;
+            j++;
+        }
+        if (j == n2) return true;
+        if (i == n1) return false;
+        return nums1[i] > nums2[j];
+    }
+
 }

@@ -83,7 +83,7 @@ public class MissingElementInSortedArray {
      *
      *
      * 	core:
-     * 	
+     *
      * 	     private int missing_0_3(int[] nums, int i) {
      *         return nums[i] - nums[0] - i;
      *     }
