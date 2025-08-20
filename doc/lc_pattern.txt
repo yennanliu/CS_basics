@@ -1,0 +1,61 @@
+* Sliding Window
+* Two Pointers
+* Fast & Slow Pointers
+* Binary Search
+* Prefix Sum
+* Difference Array
+* Monotonic Stack
+* Monotonic Queue
+* Backtracking
+* Union-Find (DSU)
+* Topological Sort
+* Flood Fill
+* Sweep Line
+* Bitmasking
+* Knapsack
+* Memoization (Top-Down DP)
+* Tabulation (Bottom-Up DP)
+* Kadane's Algorithm
+* Trie
+* Dijkstra's Algorithm
+* Bellman-Ford Algorithm
+* Floyd-Warshall Algorithm
+* Minimum Spanning Tree (MST)
+* Cycle Detection
+* Boyer-Moore Voting Algorithm
+* Greedy
+* Recursion
+* Divide and Conquer
+* Math
+* Sorting
+* Hash Map
+* Hash Set
+* Strongly Connected Components (SCC)
+* Bridges and Articulation Points
+* A\* Search
+* Minimum Cut
+* KMP Algorithm
+* Rabin-Karp Algorithm
+* Z-Algorithm
+* Rolling Hash
+* Sieve of Eratosthenes
+* Modular Arithmetic
+* Euclidean Algorithm
+* Catalan Numbers
+* Reservoir Sampling
+* Segment Tree
+* Fenwick Tree (Binary Indexed Tree)
+* Sparse Table
+* Meet-in-the-Middle
+* Digit DP
+* State Compression DP
+* Two Heaps
+* Bipartite Graph Check
+* Morris Traversal
+* Disjoint Set Union (DSU)
+* Two Pointers from Opposite Ends
+* Two Pointers from Same Direction
+* Sliding Window with a Hash Map
+* Binary Search on the Answer
+* Tree Traversal (In-order, Pre-order, Post-order)
+* Level Order Traversal (BFS)
