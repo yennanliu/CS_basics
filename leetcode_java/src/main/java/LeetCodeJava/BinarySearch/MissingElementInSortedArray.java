@@ -77,14 +77,41 @@ public class MissingElementInSortedArray {
 
     // V0-2
     // IDEA: BINARY SEARCH (gpt)
+    /**
+     * 	•	Array is strictly increasing.
+     * 	•	For each index i, we can compute how many numbers are missing up to nums[i].
+     *
+     *
+     * 	core:
+     * 	
+     * 	     private int missing_0_3(int[] nums, int i) {
+     *         return nums[i] - nums[0] - i;
+     *     }
+     */
     public int missingElement_0_2(int[] nums, int k) {
         int n = nums.length;
 
         // if kth missing number is beyond the last element
+        /**
+         * 	•	Compute how many numbers are missing up to the last element.
+         * 	•	If k is larger, it means the k-th missing number is to the right of the array.
+         * 	•	Example: nums = [4,7,9,10], k = 6 → missing(3)=3 (only 3 missing inside array).
+         * 	•	We need to go past 10 → answer = 10 + (6 - 3) = 13.
+         */
         if (k > missing_0_3(nums, n - 1)) {
             return nums[n - 1] + (k - missing_0_3(nums, n - 1));
         }
 
+        /**
+         * 	•	Perform binary search:
+         * 	•	Goal: find the smallest index left such that missing(left) >= k.
+         * 	•	If missing(mid) < k, the k-th missing is to the right.
+         * 	•	Otherwise, it’s to the left or at mid.
+         *
+         *
+         *   -> At the end, left points to the first index where missing count ≥
+         *
+         */
         int left = 0, right = n - 1;
         while (left < right) {
             int mid = left + (right - left) / 2;
@@ -96,10 +123,30 @@ public class MissingElementInSortedArray {
         }
 
         // kth missing is between nums[left-1] and nums[left]
+        /**
+         * 	•	Now we know the k-th missing number lies between nums[left-1] and nums[left].
+         * 	•	So we add the difference needed to reach it:
+         * 	•	Take the last “safe” value (nums[left-1]),
+         * 	•	Add the remaining (k - missing(left-1)).
+         */
         return nums[left - 1] + (k - missing_0_3(nums, left - 1));
     }
 
     // helper function
+    /**
+     *  NOTE !!!
+     *
+     *   this helper func:
+     *     -  how many numbers are missing between nums[0] and nums[i].
+     *
+     *
+     * 	  - nums[i] - nums[0] + 1 = total integers from nums[0] to nums[i].
+     * 	  - (i + 1) = actual count of elements in the array so far.
+     *
+     * 	   -> Difference = how many are missing.
+     * 	      (nums[i] - nums[0] - i)
+     *
+     */
     private int missing_0_3(int[] nums, int i) {
         return nums[i] - nums[0] - i;
     }
