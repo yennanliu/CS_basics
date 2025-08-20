@@ -51,26 +51,8 @@ public class MissingElementInSortedArray {
 //    }
 
     // V0-1
-    // IDEA: ARRAY OP (fixed by gpt)
-    // TODO: validate
-    public int missingElement_0_1(int[] nums, int k) {
-        for (int i = 1; i < nums.length; i++) {
-            int missingBetween = nums[i] - nums[i - 1] - 1;
-
-            if (missingBetween >= k) {
-                return nums[i - 1] + k;
-            }
-
-            k -= missingBetween;
-        }
-
-        // If k-th missing is beyond the last number
-        return nums[nums.length - 1] + k;
-    }
-
-    // V0-2
     // IDEA: BRUTE FORCE (gpt)
-    public int missingElement_0_2(int[] nums, int k) {
+    public int missingElement_0_1(int[] nums, int k) {
         if (nums == null || nums.length == 0) {
             return -1;  // no numbers given
         }
@@ -93,9 +75,9 @@ public class MissingElementInSortedArray {
         }
     }
 
-    // V0-3
+    // V0-2
     // IDEA: BINARY SEARCH (gpt)
-    public int missingElement_0_3(int[] nums, int k) {
+    public int missingElement_0_2(int[] nums, int k) {
         int n = nums.length;
 
         // if kth missing number is beyond the last element
@@ -122,36 +104,23 @@ public class MissingElementInSortedArray {
         return nums[i] - nums[0] - i;
     }
 
-    // V0-4
-    // IDEA: BINARY SEARCH (gpt)
+    // V0-3
+    // IDEA: ARRAY OP (fixed by gpt)
     // TODO: validate
-//    public int missingElement_0_4(int[] nums, int k) {
-//        int n = nums.length;
-//
-//        // If k-th missing number is beyond the last number
-//        if (missing(n - 1, nums) < k) {
-//            return nums[n - 1] + (k - missing(n - 1, nums));
-//        }
-//
-//        // Binary search
-//        int left = 0, right = n - 1;
-//        while (left < right) {
-//            int mid = left + (right - left) / 2;
-//            if (missing(mid, nums) < k) {
-//                left = mid + 1;
-//            } else {
-//                right = mid;
-//            }
-//        }
-//
-//        // The k-th missing number is between nums[left - 1] and nums[left]
-//        return nums[left - 1] + (k - missing(left - 1, nums));
-//    }
-//
-//    // Helper function: number of missing elements before index i
-//    public int missing(int index, int[] nums) {
-//        return nums[index] - nums[0] - index;
-//    }
+    public int missingElement_0_3(int[] nums, int k) {
+        for (int i = 1; i < nums.length; i++) {
+            int missingBetween = nums[i] - nums[i - 1] - 1;
+
+            if (missingBetween >= k) {
+                return nums[i - 1] + k;
+            }
+
+            k -= missingBetween;
+        }
+
+        // If k-th missing is beyond the last number
+        return nums[nums.length - 1] + k;
+    }
 
     // V1
     //https://leetcode.ca/2018-10-25-1060-Missing-Element-in-Sorted-Array/
