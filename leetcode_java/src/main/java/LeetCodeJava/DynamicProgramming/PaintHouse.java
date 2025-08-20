@@ -70,6 +70,45 @@ public class PaintHouse {
         return res;
     }
 
+    // V0-2
+    // IDEA: DP (gpt)
+    // IDEA 2) DP Solution (optimal)
+    // TODO: validate
+    public int minCost_0_2(int[][] costs) {
+        if (costs == null || costs.length == 0 || costs[0].length == 0) {
+            return 0;
+        }
+
+        int n = costs.length;
+        int k = costs[0].length;
+
+        // dp[i][j] = min cost to paint up to house i, with color j
+        int[][] dp = new int[n][k];
+
+        // base case: first house costs
+        for (int j = 0; j < k; j++) {
+            dp[0][j] = costs[0][j];
+        }
+
+        // transition
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < k; j++) {
+                dp[i][j] = Integer.MAX_VALUE;
+                for (int p = 0; p < k; p++) {
+                    if (p == j) continue; // skip same color as previous
+                    dp[i][j] = Math.min(dp[i][j], dp[i - 1][p] + costs[i][j]);
+                }
+            }
+        }
+
+        // answer = min cost of painting all houses with any last color
+        int res = Integer.MAX_VALUE;
+        for (int j = 0; j < k; j++) {
+            res = Math.min(res, dp[n - 1][j]);
+        }
+        return res;
+    }
+
     // V1
     // https://leetcode.ca/2016-08-12-256-Paint-House/
     public int minCost_1(int[][] costs) {

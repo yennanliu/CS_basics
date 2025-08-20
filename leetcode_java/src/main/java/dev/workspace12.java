@@ -1099,15 +1099,88 @@ public class workspace12 {
 
     // LC 321
     // 8.42 - 8.52 am
-    /**
-     *
-     *
-     *
-     */
     public int[] maxNumber(int[] nums1, int[] nums2, int k) {
 
         return null;
     }
+
+    // LC 256
+    // 16.56 - 17.06 pm
+    /**
+     *  You have to paint all the
+     *  houses such that NO two adjacent houses have the `same` color.
+     *
+     *  -> costs[0][0] is the cost of painting house 0 with color red;
+     *  costs[1][2] is the cost of painting house 1 with color green,
+     *
+     *  -> e.g.
+     *   -> 0 : red
+     *      1: blue
+     *      2: green
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) DP
+     *
+     */
+    // IDEA 2) DP
+    /**
+     *  DP eq:
+     *
+     *    dp[k, j] = Math.min( dp[k-1, a], dp[k, b] )
+     *
+     *
+     *
+     */
+    public int minCost(int[][] costs) {
+        if (costs == null || costs.length == 0 || costs[0].length == 0) {
+            return 0;
+        }
+
+        int n = costs.length;
+        int k = costs[0].length;
+
+        int res = 0;
+
+
+        return res;
+    }
+    //IDEA 1) BRUTE FORCE
+//    public int minCost(int[][] costs) {
+//        // edge
+//        if(costs == null || costs.length == 0 || costs[0].length == 0){
+//            return 0;
+//        }
+//
+//        int res = Integer.MAX_VALUE;
+//
+//        if(costs.length == 1 && costs[0].length == 1){
+//            for(int x: costs[0]){
+//                res = Math.min(res, x);
+//            }
+//            return res;
+//        }
+//
+//        // brute force
+//        // double loop
+//
+//        for(int i = 0; i < costs.length; i++){
+//            int val = Integer.MAX_VALUE;
+//            int color_idx = -1;
+//            int val_2 = Integer.MAX_VALUE;
+//            for(int j = 0; j < costs[i].length; j++){
+//                val_2 = costs[i][j];
+//                if(val_2 > val && j != color_idx){
+//                    color_idx = j;
+//                    val = val_2;
+//                }
+//            }
+//
+//            res += val_2;
+//        }
+//
+//        return res;
+//    }
 
 
 }
