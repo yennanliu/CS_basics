@@ -995,10 +995,107 @@ public class workspace12 {
 
             return root;
         }
-
-
     }
 
+
+
+    // LC 1060
+    // 7.27 - 7.37 am
+    /**
+     *
+     * Given a `sorted` array A of `unique` numbers,
+     * find the `K-th` missing number starting
+     * from the `leftmost` number of the array
+     *
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) BINARY SEARCH
+     *
+     *  ex 1)
+     *     A = [4,7,9,10], K = 1
+     *
+     *     -> diff: [ 2, 1, 0]
+     *                x
+     *
+     *  ex 2)
+     *
+     *      A = [4,7,9,10], K = 3
+     *
+     *     -> diff: [ 2, 1, 0]
+     *                   x
+     *
+     *
+     *  ex 3)
+     *
+     *    Input: A = [1,2,4], K = 3
+     *
+     *     -> diff: [0, 1]
+     *
+     *     ->
+     */
+
+    // IDEA 1) BRUTE FORCE
+    public int missingElement(int[] nums, int k) {
+        // edge
+        if(nums.length == 0){
+            return -1; // ???
+        }
+//        if(nums.length == 1){
+//            return nums[0] + k;
+//        }
+
+        List<Integer> num_list = new ArrayList<>();
+        for(int x: nums){
+            num_list.add(x);
+        }
+
+        int cnt = 0;
+        int val = num_list.get(0);
+        for(int i = num_list.get(0); i < num_list.get(num_list.size()-1); i++){
+
+            if(!num_list.contains(val)){
+                cnt += 1;
+                if(cnt == k){
+                    return val;
+                }
+            }
+
+            val += 1;
+        }
+
+        return -1; // ??
+    }
+
+    // IDEA 2) BINARY SEARCH ??
+    public int missingElement_2(int[] nums, int k) {
+        // edge
+        if(nums.length == 0){
+            return -1; // ???
+        }
+
+        List<Integer> diff_list = new ArrayList<>();
+        for(int i = 1; i < nums.length; i++){
+            // add `diff`
+            diff_list.add(nums[i] - nums[i-1] - 1);
+        }
+
+        // binary search find the `correct` index
+        // to get the missing num
+        int l = 0;
+        int r = diff_list.size() - 1;
+
+        while(r >= l){
+
+            int mid =  (l + r) / 2;
+
+            // if(mis )
+
+        }
+
+
+        return -1; // ??
+    }
 
 
 }
