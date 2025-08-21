@@ -3,6 +3,7 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/self-crossing/description/
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 335. Self Crossing
@@ -54,62 +55,83 @@ public class SelfCrossing {
 
     // V0-0-1
     // TODO: fix below
-//    public boolean isSelfCrossing_0_0_1(int[] distance) {
-//
+//    public boolean isSelfCrossing(int[] distance) {
 //        // edge
 //        if(distance == null || distance.length == 0){
 //            return false; // ??
 //        }
 //        if(distance.length < 4){
-//            return false; // ???
+//            return false;
 //        }
 //
-//        // set : [ 'x-y' ]
-//        HashSet<String> set = new HashSet<>();
-//
-//        // init val
+//        // set ( x-y )
+//        Set<String> set = new HashSet<>();
 //        int x = 0;
 //        int y = 0;
+//        for(int i = 0; i < distance.length; i++){
 //
-//        set.add(prepareVal(x,y));
+//            int val = distance[i];
 //
-//        // north move
-//        for(int i = 0; i < distance[0]; i++){
-//            y += 1;
-//            set.add(prepareVal(x,y));
-//        }
+//            int[] res = new int[]{x, y};
 //
-//        // west move
-//        for(int i = 0; i < distance[1]; i++){
-//            x -= 1;
-//            set.add(prepareVal(x,y));
-//        }
+//            // north
+//            if(i % 4 == 0){
+//                for(int j = 0; j < val; j++){
+//                    res[1] += val;
+//                    String str_val = res[0] + "-" + res[1];
+//                    if(set.contains(str_val)){
+//                        return true;
+//                    }
+//                    set.add(str_val);
+//                }
 //
-//        // south move
-//        for(int i = 0; i < distance[2]; i++){
-//            y -= 1;
-//            if(set.contains(prepareVal(x,y))){
-//                return false;
+//                y = res[1];
+//
 //            }
-//            set.add(prepareVal(x,y));
-//        }
+//            // west
+//            else if(i % 4 == 1){
+//                for(int j = 0; j < val; j++){
+//                    res[0] -= val;
+//                    String str_val = res[0] + "-" + res[1];
+//                    if(set.contains(str_val)){
+//                        return true;
+//                    }
+//                    set.add(str_val);
+//                }
 //
-//        // east move
-//        for(int i = 0; i < distance[3]; i++){
-//            x += 1;
-//            if(set.contains(prepareVal(x,y))){
-//                return false;
+//                x = res[0];
 //            }
-//            set.add(prepareVal(x,y));
+//
+//            // north
+//            else if(i % 4 == 2){
+//                for(int j = 0; j < val; j++){
+//                    res[1] -= val;
+//                    String str_val = res[0] + "-" + res[1];
+//                    if(set.contains(str_val)){
+//                        return true;
+//                    }
+//                    set.add(str_val);
+//                }
+//
+//                y = res[1];
+//            }
+//            // east
+//            else{
+//                for(int j = 0; j < val; j++){
+//                    res[0] += val;
+//                    String str_val = res[0] + "-" + res[1];
+//                    if(set.contains(str_val)){
+//                        return true;
+//                    }
+//                    set.add(str_val);
+//                }
+//
+//                x = res[0];
+//            }
+//
 //        }
-//
-//
 //
 //        return false;
-//    }
-//
-//    public String prepareVal(int x, int y){
-//        return x + "-" + y;
 //    }
 
     // V0-1
@@ -143,6 +165,55 @@ public class SelfCrossing {
                         distance[i - 1] <= distance[i - 3]) {
                     return true;
                 }
+            }
+        }
+
+        return false;
+    }
+
+    // V0-2
+    // IDEA: geometric crossing rules, math (gpt)
+    /**
+     *  NOTE !!!
+     *
+     *   At step i, the path crosses if:
+     *    1) 	Case 1: current line crosses the line 3 steps back
+     *
+     *            i >= 3 && distance[i] >= distance[i-2] && distance[i-1] <= distance[i-3]
+     *
+     *    2)	Case 2: current line overlaps the line 4 steps back
+     *
+     *          i >= 4 && distance[i-1] == distance[i-3] && distance[i] + distance[i-4] >= distance[i-2]
+     *
+     *    3) Case 3: current line crosses the line 6 steps back
+     *
+     *       i >= 5 && distance[i-2] >= distance[i-4] &&
+     *            distance[i] + distance[i-4] >= distance[i-2] &&
+     *            distance[i-1] <= distance[i-3] &&
+     *            distance[i-1] + distance[i-5] >= distance[i-3]
+     *
+     */
+    public boolean isSelfCrossing_0_2(int[] distance) {
+        if (distance == null || distance.length < 4) {
+            return false;
+        }
+
+        for (int i = 3; i < distance.length; i++) {
+            // Case 1: current line crosses the line 3 steps ahead
+            if (distance[i] >= distance[i - 2] && distance[i - 1] <= distance[i - 3]) {
+                return true;
+            }
+            // Case 2: current line overlaps the line 4 steps ahead
+            if (i >= 4 && distance[i - 1] == distance[i - 3] &&
+                    distance[i] + distance[i - 4] >= distance[i - 2]) {
+                return true;
+            }
+            // Case 3: current line crosses the line 6 steps ahead
+            if (i >= 5 && distance[i - 2] >= distance[i - 4] &&
+                    distance[i] + distance[i - 4] >= distance[i - 2] &&
+                    distance[i - 1] <= distance[i - 3] &&
+                    distance[i - 1] + distance[i - 5] >= distance[i - 3]) {
+                return true;
             }
         }
 

@@ -1182,6 +1182,148 @@ public class workspace12 {
 //        return res;
 //    }
 
+    // LC 335
+    // 08.49 am - 08.59 am
+    /**
+     *  - start from (0,0)
+     *  - move:  north -> west -> south -> east
+     *        (dis[0], dist[1], dist[2], dist[3])
+     *
+     *  - return `true` if cross itself; `false` otherwise
+     *
+     *
+     *  - IDEA 1) BRUTE FORCE
+     *      - set save visited points, and check if visit again
+     *
+     *
+     *
+     *   ex 1)
+     *
+     *   Input: distance = [2,1,1,2]
+     *   Output: true
+     *
+     *    (save `end point`)
+     *    set=( (0,0) )
+     *    2, set=( (0,0), (0,2) )
+     *    1, set=( (0,0), (0,2), (-1,2) )
+     *    1, set=( (0,0), (0,2), (-1,2), (-1,1) )
+     *    2, set=( (0,0), (0,2), (-1,2), (-1,1), (1,1) )
+     *
+     *    (save all visited points)
+     *       *    set=( (0,0) )
+     *      *    2, set=( (0,0), (0,1),  (0,2) )
+     *      *    1, set=( (0,0), (0,1),  (0,2), (-1,2) )
+     *      *    1, set=( (0,0), (0,1),  (0,2), (-1,2), (-1,1) )
+     *      *    2, set=( (0,0), (0,1),  (0,2), (-1,2), (-1,1), (0,1) (1,1) )
+     *
+     *
+     */
+    public boolean isSelfCrossing(int[] distance) {
+        // edge
+        if(distance == null || distance.length == 0){
+            return false; // ??
+        }
+        if(distance.length < 4){
+            return false;
+        }
+
+        // set ( x-y )
+        Set<String> set = new HashSet<>();
+        int x = 0;
+        int y = 0;
+        for(int i = 0; i < distance.length; i++){
+
+            int val = distance[i];
+
+            int[] res = new int[]{x, y};
+
+            // north
+            if(i % 4 == 0){
+                for(int j = 0; j < val; j++){
+                    res[1] += val;
+                    String str_val = res[0] + "-" + res[1];
+                    if(set.contains(str_val)){
+                        return true;
+                    }
+                    set.add(str_val);
+                }
+
+                y = res[1];
+
+            }
+            // west
+            else if(i % 4 == 1){
+                for(int j = 0; j < val; j++){
+                    res[0] -= val;
+                    String str_val = res[0] + "-" + res[1];
+                    if(set.contains(str_val)){
+                        return true;
+                    }
+                    set.add(str_val);
+                }
+
+                x = res[0];
+            }
+
+            // north
+            else if(i % 4 == 2){
+                for(int j = 0; j < val; j++){
+                    res[1] -= val;
+                    String str_val = res[0] + "-" + res[1];
+                    if(set.contains(str_val)){
+                        return true;
+                    }
+                    set.add(str_val);
+                }
+
+                y = res[1];
+            }
+            // east
+            else{
+                for(int j = 0; j < val; j++){
+                    res[0] += val;
+                    String str_val = res[0] + "-" + res[1];
+                    if(set.contains(str_val)){
+                        return true;
+                    }
+                    set.add(str_val);
+                }
+
+                x = res[0];
+            }
+
+        }
+
+        return false;
+    }
+
+
+
+
+//    private int[] moveDir(int i, int val, int x, int y){
+//        int[] res = new int[]{x, y};
+//        // north
+//        if(i % 4 == 0){
+//            res[1] += val;
+//        }
+//        // west
+//        else if(i % 4 == 1){
+//            res[0] -= val;
+//        }
+//        // north
+//        else if(i % 4 == 2){
+//            res[1] -= val;
+//        }
+//        // east
+//        else{
+//            res[0] += val;
+//        }
+//
+//        return res;
+//    }
+
+
+
 
 }
 
