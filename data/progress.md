@@ -1,5 +1,68 @@
 # Progress
 
+# 2025-08-22
+- neetcode 250
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
+		- 27/66
+			- 335,430,1157,395
+		- review prev LC problems !!!
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md
+	- 護城河
+		- p.7 (sliding window)
+		- binary search problems:
+			🔍 Classic Binary Search
+					•	LC 704 – Binary Search
+					•	LC 35 – Search Insert Position
+					•	LC 278 – First Bad Version
+					•	LC 374 – Guess Number Higher or Lower
+
+				📈 Binary Search on Sorted Arrays
+					•	LC 34 – Find First and Last Position of Element in Sorted Array
+					•	LC 852 – Peak Index in a Mountain Array
+					•	LC 162 – Find Peak Element
+					•	LC 33 – Search in Rotated Sorted Array
+					•	LC 81 – Search in Rotated Sorted Array II
+
+				⏳ Binary Search on Answer (Parametric Search)
+					•	LC 69 – Sqrt(x)
+					•	LC 367 – Valid Perfect Square
+					•	LC 875 – Koko Eating Bananas
+					•	LC 1011 – Capacity To Ship Packages Within D Days
+					•	LC 410 – Split Array Largest Sum
+					•	LC 1482 – Minimum Number of Days to Make m Bouquets
+					•	LC 2226 – Maximum Candies Allocated to K Children
+
+				📊 Binary Search on Ranges / Values
+					•	LC 4 – Median of Two Sorted Arrays
+					•	LC 719 – Find K-th Smallest Pair Distance
+					•	LC 378 – Kth Smallest Element in a Sorted Matrix
+					•	LC 668 – Kth Smallest Number in Multiplication Table
+					•	LC 1201 – Ugly Number III
+
+				🧭 Binary Search + Greedy Check
+					•	LC 287 – Find the Duplicate Number (Floyd’s Cycle detection is optimal, but BS works too)
+					•	LC 162 – Find Peak Element
+					•	LC 154 – Find Minimum in Rotated Sorted Array II
+					•	LC 540 – Single Element in a Sorted Array
+
+				🎯 Binary Search + Prefix/Suffix / Search Space
+					•	LC 300 – Longest Increasing Subsequence (with patience sorting → binary search)
+					•	LC 354 – Russian Doll Envelopes
+					•	LC 2560 – House Robber IV
+	- again:
+	- todo:
+		- (337 similar)
+			- 1770
+			- 1931
+			- 2246
+- Sys design questions:
+	- https://neetcode.io/practice?tab=systemDesign
+- crack code book
+	- p.177 (recursion & dp)
+- sys design book
+	- Volume 2
+		- p.323
+
 # 2025-08-20
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
