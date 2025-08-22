@@ -34,7 +34,7 @@ public class workspace14 {
     }
 
     // LC 430
-    // 7.32 - 7.42 am
+    // 13.44 - 13.54 pm
     /**
      *
      * IDEA 1) LINKED LIST OP + recursion
@@ -66,9 +66,10 @@ public class workspace14 {
             return head;
         }
 
-        // helper func
+        // helper func ???
+        return flattenHelper(head);
 
-        return  null;
+        //return  null;
     }
 
     private Node flattenHelper(Node head){
@@ -78,16 +79,26 @@ public class workspace14 {
         }
 
         // cache next
+        Node _next = head.next;
+        Node _head = head;
+
+        Node _child = head.child;
 
         // check `child`
-        if(head.child != null){
-            Node childEnd =  flattenHelper(head.child);
+        while(_child != null){
+            head.next = _child;
+            head = _child;
+            _child = _child.next;
+
+            // what if child as `child` ???
+            //_child =  flattenHelper(head.child);
         }
 
+        // point _child.child to null
+        _child.child = null;
 
-
-        // check `next`
-        // check `prev`
+        // point `child` end to next
+        _child.next = _next;
 
         return head;
     }
