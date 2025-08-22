@@ -1,36 +1,36 @@
-# https://github.com/keon/algorithms/blob/master/.travis.yml
-group: travis_latest
-language: python
-cache:
-  directories:
-    - $HOME/.cache/pip
-matrix:
-    include:
-        - python: 3.4
-          env: TOX_ENV=py34
-        - python: 3.5
-          env: TOX_ENV=py35,coverage
-        - python: 3.6
-          env: TOX_ENV=py36
-install:
-    - pip install --upgrade pip  && pip install -r requirements.txt && pip freeze list 
-before_script:
-    - echo "###LEETCODE SOLUTION LIST###"
-    - bash list_leetcode_solutions_by_type.sh
-    # stop the build if there are Python syntax errors or undefined names
-    #- flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics
-    # exit-zero treats all errors as warnings.  The GitHub editor is 127 chars wide
-    #- flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-script:
-    # Check python install package
-    pip3 install -e .
-    #- tox -e $TOX_ENV
-    #- tox -e $(echo py$TOX_ENV | tr -d .)
-    # Check python uninstall package
-    #- pip3 uninstall -y algorithms 
-notifications:
-    on_success: change
-    on_failure: change  # `always`  will be the setting once code changes slow down
+# # https://github.com/keon/algorithms/blob/master/.travis.yml
+# group: travis_latest
+# language: python
+# cache:
+#   directories:
+#     - $HOME/.cache/pip
+# matrix:
+#     include:
+#         - python: 3.4
+#           env: TOX_ENV=py34
+#         - python: 3.5
+#           env: TOX_ENV=py35,coverage
+#         - python: 3.6
+#           env: TOX_ENV=py36
+# install:
+#     - pip install --upgrade pip  && pip install -r requirements.txt && pip freeze list 
+# before_script:
+#     - echo "###LEETCODE SOLUTION LIST###"
+#     - bash list_leetcode_solutions_by_type.sh
+#     # stop the build if there are Python syntax errors or undefined names
+#     #- flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics
+#     # exit-zero treats all errors as warnings.  The GitHub editor is 127 chars wide
+#     #- flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+# script:
+#     # Check python install package
+#     pip3 install -e .
+#     #- tox -e $TOX_ENV
+#     #- tox -e $(echo py$TOX_ENV | tr -d .)
+#     # Check python uninstall package
+#     #- pip3 uninstall -y algorithms 
+# notifications:
+#     on_success: change
+#     on_failure: change  # `always`  will be the setting once code changes slow down
 
 
 
