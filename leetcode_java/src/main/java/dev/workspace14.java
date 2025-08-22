@@ -167,29 +167,84 @@ public class workspace14 {
      *
      *
      */
-    public int missingElement(int[] nums, int k) {
-        // edge
+    // V1
+//    public int missingElement(int[] nums, int k) {
+//        // edge
+//
+//        // total `missing` cnt
+//        int cnt = 0;
+//
+//        for(int i = 1; i < nums.length; i++){
+//            int diff = nums[i] - nums[i-1] - 1;
+//            cnt += diff;
+//            if(cnt >= k){
+//                return nums[i-1] + (cnt - diff);
+//            }
+//
+//        }
+//
+//        return -1;
+//    }
 
-        // total `missing` cnt
-        int cnt = 0;
-
-        for(int i = 1; i < nums.length; i++){
-            int diff = nums[i] - nums[i-1] - 1;
-            cnt += diff;
-            if(cnt >= k){
-                return nums[i-1] + (cnt - diff);
-            }
-
-        }
-
-        return -1;
-    }
+    // V2
+//    public int missingElement(int[] nums, int k) {
+//        // edge
+//        if (nums == null || nums.length == 0) {
+//            return -1;
+//        }
+//
+//        for(int i = 1; i < nums.length; i++){
+//
+//            int diff = nums[i] - nums[i-1] - 1;
+//
+//            if(diff >= k){
+//                return nums[i-1] + k; // ???
+//            }
+//
+//            k -= diff;
+//        }
+//
+//        // note !!! if the missing element is NOT within
+//        // the elements in array
+//        return nums[nums.length - 1] + k;
+//    }
 
 
     // IDEA 2) BINARY SEARCH
-    //    public int missingElement(int[] nums, int k) {
-//
-//    }
+    public int missingElement(int[] nums, int k) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+
+        List<Integer> diff_list = new ArrayList<>();
+        for(int i = 1; i < nums.length; i++){
+            int diff = nums[i] - nums[i-1] - 1;
+            if(i > 1){
+                diff_list.add(diff + diff_list.get(i-1));
+            }
+        }
+
+        int l = 0;
+        int r = diff_list.size() - 1;
+
+        while (r >= l){
+            int mid = (l + r) / 2;
+            int val = diff_list.get(mid);
+            if(mid == k){
+                return nums[mid-1] + val;
+            }
+            if(val < k){
+                l = mid + 1;
+            }else{
+                r = mid - 1;
+            }
+        }
+
+        // note !!! if the missing element is NOT within
+        // the elements in array
+        return nums[nums.length - 1] + k;
+    }
 
 
 }

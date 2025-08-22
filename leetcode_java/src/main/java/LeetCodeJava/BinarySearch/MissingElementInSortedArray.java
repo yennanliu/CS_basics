@@ -96,9 +96,10 @@ public class MissingElementInSortedArray {
         // if not found within array, answer is after the last element
         return nums[nums.length - 1] + k;
     }
-    
+
     // V0-2
     // IDEA: BINARY SEARCH (gpt)
+    // while ( r > l ) pattern
     /**
      * 	•	Array is strictly increasing.
      * 	•	For each index i, we can compute how many numbers are missing up to nums[i].
@@ -135,6 +136,12 @@ public class MissingElementInSortedArray {
          *
          */
         int left = 0, right = n - 1;
+        /**
+         *  NOTE !!!
+         *
+         *   while ( r > l ) pattern
+         *
+         */
         while (left < right) {
             int mid = left + (right - left) / 2;
             if (missing_0_3(nums, mid) < k) {
@@ -171,6 +178,43 @@ public class MissingElementInSortedArray {
      */
     private int missing_0_3(int[] nums, int i) {
         return nums[i] - nums[0] - i;
+    }
+
+    // V0-2-1
+    // IDEA: BINARY SEARCH (gpt)
+    // while ( r >= l ) pattern
+    public int missingElement_0_2_1(int[] nums, int k) {
+        int n = nums.length;
+
+        // edge: if kth missing number is beyond the last element
+        if (k > missing_0_3_1(nums, n - 1)) {
+            return nums[n - 1] + (k - missing_0_3(nums, n - 1));
+        }
+
+        int l = 0, r = n - 1;
+        /**
+         *  NOTE !!!
+         *
+         *   while ( r >= l ) pattern
+         *
+         */
+        while (r >= l) {
+            int mid = l + (r - l) / 2;
+            if (missing_0_3_1(nums, mid) < k) {
+                l = mid + 1;   // kth missing is to the right
+            } else {
+                r = mid - 1;   // kth missing is to the left
+            }
+        }
+
+        // at this point:
+        // l is the smallest index where missing(l) >= k
+        // so the answer lies between nums[l-1] and nums[l]
+        return nums[l - 1] + (k - missing_0_3_1(nums, l - 1));
+    }
+
+    private int missing_0_3_1(int[] nums, int idx) {
+        return nums[idx] - nums[0] - idx;
     }
 
     // V0-3
