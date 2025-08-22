@@ -1,5 +1,7 @@
 package dev;
 
+import java.util.Stack;
+
 public class workspace14 {
 
     public class TreeNode {
@@ -57,6 +59,7 @@ public class workspace14 {
         public Node child;
     };
 
+    // IDEA 2) `Stack`
     public Node flatten(Node head) {
         // edge
         if(head == null){
@@ -66,42 +69,78 @@ public class workspace14 {
             return head;
         }
 
-        // helper func ???
-        return flattenHelper(head);
+        Node res = null;
 
-        //return  null;
-    }
+        Stack<Node> st = new Stack<>();
 
-    private Node flattenHelper(Node head){
-        // edge
-        if(head == null){
-            return head;
+        st.add(head);
+
+        while(!st.isEmpty()){
+
+            Node _node = st.pop();
+
+            Node _child = null;
+            Node _next = null;
+//
+//            while(_node.child != null){
+//                st.add(_child);
+//            }
+//
+//            _node
+
         }
 
-        // cache next
-        Node _next = head.next;
-        Node _head = head;
 
-        Node _child = head.child;
-
-        // check `child`
-        while(_child != null){
-            head.next = _child;
-            head = _child;
-            _child = _child.next;
-
-            // what if child as `child` ???
-            //_child =  flattenHelper(head.child);
-        }
-
-        // point _child.child to null
-        _child.child = null;
-
-        // point `child` end to next
-        _child.next = _next;
-
-        return head;
+        return res.next;
     }
+
+
+    // IDEA 1) DFS
+//    public Node flatten(Node head) {
+//        // edge
+//        if(head == null){
+//            return head;
+//        }
+//        if(head.next == null && head.child == null && head.prev == null){
+//            return head;
+//        }
+//
+//        // helper func ???
+//        return flattenHelper(head);
+//
+//        //return  null;
+//    }
+//
+//    private Node flattenHelper(Node head){
+//        // edge
+//        if(head == null){
+//            return head;
+//        }
+//
+//        // cache next
+//        Node _next = head.next;
+//        Node _head = head;
+//
+//        Node _child = head.child;
+//
+//        // check `child`
+//        while(_child != null){
+//            head.next = _child;
+//            head = _child;
+//            _child = _child.next;
+//
+//            // what if child as `child` ???
+//            //_child =  flattenHelper(head.child);
+//        }
+//
+//        // point _child.child to null
+//        _child.child = null;
+//
+//        // point `child` end to next
+//        _child.next = _next;
+//
+//        return head;
+//    }
 
 
 }
