@@ -1,5 +1,7 @@
 package dev;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class workspace14 {
@@ -140,6 +142,53 @@ public class workspace14 {
 //        _child.next = _next;
 //
 //        return head;
+//    }
+
+    // LC 1060
+    // IDEA 1) BRUTE FORCE
+    /**
+     *  exp 1)
+     *
+     *  Input: A = [4,7,9,10], K = 1
+     *
+     *  -> diff = [3, 2, 1]
+     *
+     *  -> 3, cnt = 3, 3 >= k,  -> ans = (3 - 3) + k
+     *
+     *
+     *  exp 2)
+     *
+     *  Input: A = [4,7,9,10], K = 3
+     *
+     *  -> diff = [2,1,0]
+     *
+     *  -> 2, cnt = 2
+     *  -> 1, cnt = 3, 3 >= k, ans = 4 + diff + (3 - 3)
+     *
+     *
+     */
+    public int missingElement(int[] nums, int k) {
+        // edge
+
+        // total `missing` cnt
+        int cnt = 0;
+
+        for(int i = 1; i < nums.length; i++){
+            int diff = nums[i] - nums[i-1] - 1;
+            cnt += diff;
+            if(cnt >= k){
+                return nums[i-1] + (cnt - diff);
+            }
+
+        }
+
+        return -1;
+    }
+
+
+    // IDEA 2) BINARY SEARCH
+    //    public int missingElement(int[] nums, int k) {
+//
 //    }
 
 
