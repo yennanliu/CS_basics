@@ -97,10 +97,64 @@ public class FlattenMultilevelDoublyLinkedList {
         public Node child;
     };
 
-
     // V0
     // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
     public Node flatten(Node head) {
+        if (head == null)
+            return null;
+
+        Stack<Node> stack = new Stack<>();
+
+        /** NOTE !!! the node we plan to return as res */
+        Node dummy = new Node(); // helper node
+        Node prev = dummy;
+
+        stack.push(head);
+
+        while (!stack.isEmpty()) {
+
+            Node curr = stack.pop();
+
+            // connect prev <-> curr
+            prev.next = curr;
+            curr.prev = prev;
+
+            /**
+             *  NOTE !!!
+             *
+             *  `next` nodes op
+             */
+            // If `next` exists, push it first (so `child` is processed before `next`)
+            // NOTE !!!  child -> next (ordering)
+            // stack: FILO
+            if (curr.next != null) {
+                stack.push(curr.next);
+            }
+
+            /**
+             *  NOTE !!!
+             *
+             *  `child` nodes op
+             */
+            // If child exists, push it
+            if (curr.child != null) {
+                stack.push(curr.child);
+                curr.child = null; // clear child reference
+            }
+
+            prev = curr; // move prev forward
+        }
+
+        // detach dummy
+        dummy.next.prev = null;
+
+        /** NOTE !!! we return dummy.next  */
+        return dummy.next;
+    }
+
+    // V0-0-1
+    // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
+    public Node flatten_0_0_1(Node head) {
         // edge
         if (head == null) {
             return null;
@@ -204,9 +258,9 @@ public class FlattenMultilevelDoublyLinkedList {
         return head; // NOTE !!! return head (instead of head.next)
     }
 
-  // V0-0-1
+  // V0-0-2
   // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
-  public Node flatten_0_0_1(Node head) {
+  public Node flatten_0_0_2(Node head) {
       if (head == null){
           return null;
       }
