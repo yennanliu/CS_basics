@@ -75,6 +75,28 @@ public class MissingElementInSortedArray {
         }
     }
 
+    // V0-1-1
+    // IDEA: BRUTE FORCE (gpt)
+    public int missingElement_0_1_1(int[] nums, int k) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+
+        for (int i = 1; i < nums.length; i++) {
+            int diff = nums[i] - nums[i - 1] - 1; // missing between nums[i-1] and nums[i]
+
+            if (k <= diff) {
+                return nums[i - 1] + k;
+            }
+
+            k -= diff; // consume missing numbers in this gap
+        }
+
+        // if not found within array, answer is after the last element
+        return nums[nums.length - 1] + k;
+    }
+    
     // V0-2
     // IDEA: BINARY SEARCH (gpt)
     /**
@@ -168,6 +190,7 @@ public class MissingElementInSortedArray {
         // If k-th missing is beyond the last number
         return nums[nums.length - 1] + k;
     }
+
 
     // V1
     //https://leetcode.ca/2018-10-25-1060-Missing-Element-in-Sorted-Array/
