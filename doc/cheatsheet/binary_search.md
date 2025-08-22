@@ -19,6 +19,10 @@
     - bisect : check [python_trick.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md) : can get idx, and keep array sorted, when there is a element inserted
 
 
+<p align="center"><img src ="../pic/binary_search_pattern.png" ></p>
+
+
+
 ## 0) Concept  
 
 ### 0-1) Types
