@@ -364,4 +364,82 @@ public class workspace14 {
         return input.charAt(1) - input.charAt(0); // ??
     }
 
+  // LC 890
+  // 4.28 - 4.38 pm
+  /**
+   *  IDEA 1) HASHMAP
+   *
+   *   ex 1) slide window ??
+   *
+   *   Input:
+   *      words = ["abc","deq","mee","aqq","dkd","ccc"],
+   *      pattern = "abb"
+   *    Output: ["mee","aqq"]
+   *
+   *   -> pattern:  [1a2b]
+   *
+   */
+  public List<String> findAndReplacePattern(String[] words, String pattern) {
+      List<String> res = new ArrayList<>();
+      // edge
+      if(words == null || words.length == 0){
+          return res;
+      }
+      if(words.length == 1){
+          res.add(words[0]);
+          return res;
+      }
+
+      String _pattern = getPattern(pattern);
+
+      for(String w: words){
+          if(isSamePattern(getPattern(w), _pattern)){
+              res.add(w);
+          }
+      }
+
+      return res;
+    }
+
+    private boolean isSamePattern(String pattern1, String pattern2){
+      if(pattern1.length() != pattern2.length()){
+          return false;
+      }
+
+      //String alpha = "abcdefghijklmnopqrstuvwxyz";
+      String nums = "0123456789";
+      for(int i = 0; i < pattern1.length(); i++){
+          String p1 = String.valueOf(pattern1.charAt(i));
+          String p2 = String.valueOf(pattern2.charAt(i));
+          // only compare the `digit` part
+          if(nums.contains(p1)){
+              if(p1.equals(p2)){
+                  return false;
+              }
+          }
+      }
+      return true;
+    }
+
+    private String getPattern(String pattern){
+        StringBuilder sb = new StringBuilder();
+        // brute force, to optimize
+        int cnt = 0;
+        String prev = null;
+        for(int i = 0; i < pattern.length(); i++){
+            if(pattern.charAt(i) == pattern.charAt(i)){
+                cnt += 1;
+                prev = String.valueOf(pattern.charAt(i));
+            }else{
+                sb.append(cnt);
+                sb.append(pattern.charAt(i-1));
+                cnt = 0; // ??
+                prev = String.valueOf(pattern.charAt(i));
+                //break; // ???
+            }
+        }
+
+        return sb.toString();
+    }
+
 }
