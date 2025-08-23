@@ -1,6 +1,15 @@
 # Progress
 
 # 2025-08-23
+- needcode `grind 75` - similar LC by AI
+	- https://neetcode.io/practice?tab=blind75
+	- LC 49 Group Anagrams
+		- 242
+		- 438
+		- 249
+		- 890
+		- 336
+		- 30
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66

@@ -1,7 +1,30 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/group-shifted-strings/
-
+/**
+ * 249. Group Shifted Strings
+ * Given a string, we can "shift" each of its letter to its successive letter, for example: "abc" -> "bcd". We can keep "shifting" which forms the sequence:
+ *
+ * "abc" -> "bcd" -> ... -> "xyz"
+ * Given a list of strings which contains only lowercase alphabets, group all strings that belong to the same shifting sequence.
+ *
+ * Example:
+ *
+ * Input: ["abc", "bcd", "acef", "xyz", "az", "ba", "a", "z"],
+ * Output:
+ * [
+ *   ["abc","bcd","xyz"],
+ *   ["az","ba"],
+ *   ["acef"],
+ *   ["a","z"]
+ * ]
+ * Difficulty:
+ * Medium
+ * Lock:
+ * Prime
+ * Company:
+ * Facebook Google Uber
+ */
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,8 +35,28 @@ class GroupShiftedStrings {
     // V0
 
     // V1
+    // https://leetcode.ca/2016-08-05-249-Group-Shifted-Strings/
+    public List<List<String>> groupStrings_1(String[] strings) {
+        Map<String, List<String>> mp = new HashMap<>();
+        for (String s : strings) {
+            int diff = s.charAt(0) - 'a';
+            char[] t = s.toCharArray();
+            for (int i = 0; i < t.length; ++i) {
+                char d = (char) (t[i] - diff);
+                if (d < 'a') {
+                    d += 26;
+                }
+                t[i] = d;
+            }
+            String key = new String(t);
+            mp.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
+        }
+        return new ArrayList<>(mp.values());
+    }
+
+    // V2
     // https://leetcode.com/problems/group-shifted-strings/solutions/799563/java-10-hash-map-and-explainations/
-    public List<List<String>> groupStrings(String[] strings) {
+    public List<List<String>> groupStrings_2(String[] strings) {
         Map<String,List<String>> group_map = new HashMap<>();
         for(String s: strings){
             StringBuilder key  = new StringBuilder();
@@ -41,9 +84,9 @@ class GroupShiftedStrings {
         return output;
     }
 
-    // V2
+    // V3
     // https://leetcode.com/problems/group-shifted-strings/solutions/799563/java-10-hash-map-and-explainations/
-    public List<List<String>> groupStrings_2(String[] strs) {
+    public List<List<String>> groupStrings_3(String[] strs) {
         Map<String, List<String>> map = new HashMap<String, List<String>>();
         for(String str: strs) {
             String key = getKey(str);
@@ -73,4 +116,5 @@ class GroupShiftedStrings {
         }
         return sb.toString();
     }
+
 }
