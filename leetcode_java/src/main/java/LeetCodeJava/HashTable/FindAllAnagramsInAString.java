@@ -73,6 +73,9 @@ public class FindAllAnagramsInAString {
              *   need `while loop` below
              *   so we can `shrink` left pointer (window)
              *   to make the sub string size equals to `p`
+             *
+             *   (could be `if` logic as well here)
+             *   (e.g. if (r - l + 1 > p.length()) )
              */
             // shrink window if size > p.length()
             while (r - l + 1 > p.length()) {
