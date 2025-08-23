@@ -32,7 +32,73 @@ import java.util.Map;
 
 class GroupShiftedStrings {
 
-    // V0
+  // V0
+  // IDEA: HASH MAP + charAt + `alphabet diff` (fixed by gpt)
+  /**
+   *  NOTE !!!
+   *
+   *  	1.	Wrong HashMap key type
+   * 	   - You used Map<Integer, List<String>>,
+   * 	     but a shift sequence is not determined
+   * 	     by a single integer difference.
+   *
+   * 	   - Example: "abc" and "bcd" → differences = [1,1].
+   *
+   *  -> "az" and "ba" → difference = [1] (after wraparound).
+   * 	 - So the `WHOLE DIFFERENCE pattern matters`, NOT just one int.
+   */
+  public List<List<String>> groupStrings(String[] strings) {
+        List<List<String>> res = new ArrayList<>();
+        if (strings == null || strings.length == 0) {
+            return res;
+        }
+
+        /**  NOTE !!!
+         *
+         *   map: { `diffPattern` -> [words...] }
+         */
+        Map<String, List<String>> map = new HashMap<>();
+        for (String x : strings) {
+            // NOTE !!! we get pattern via helper func
+            String pattern = getDist(x);
+            map.putIfAbsent(pattern, new ArrayList<>());
+            map.get(pattern).add(x);
+        }
+
+        res.addAll(map.values());
+        return res;
+    }
+
+    /**
+     *  NOTE !!!
+     *
+     *   how we get `dist pattern` below
+     */
+    private String getDist(String input) {
+        if (input.isEmpty() || input.length() == 1) {
+            return "single"; // all single letters belong together
+        }
+
+        StringBuilder sb = new StringBuilder();
+        /**
+         *  NOTE !!!
+         *
+         *   whole `dist` pattern matters.
+         *   e.g. need to calculate all dist between neighbor alphabets,
+         *   and save as pattern
+         */
+        for (int i = 1; i < input.length(); i++) {
+            /**
+             *  NOTE !!!
+             *
+             *  we use `char` to calculate `single` `dist`
+             */
+            int diff = input.charAt(i) - input.charAt(i - 1);
+            if (diff < 0) diff += 26; // handle wraparound
+            sb.append(diff).append(",");
+        }
+        return sb.toString();
+    }
 
     // V1
     // https://leetcode.ca/2016-08-05-249-Group-Shifted-Strings/

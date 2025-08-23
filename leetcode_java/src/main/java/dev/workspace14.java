@@ -319,8 +319,49 @@ public class workspace14 {
     }
 
     // LC 249
+    // 4.03 - 4.13 pm
+    /**
+     *  -> Given a list of strings
+     *    which contains only lowercase alphabets,
+     *    group all strings that belong to
+     *    the same shifting sequence.
+     *
+     *
+     *   IDEA 1) HASH MAP + `calculate diff within alphabet`
+     *
+     */
     public List<List<String>> groupStrings_1(String[] strings) {
-        return null;
+        List<List<String>> res = new ArrayList<>();
+        // edge
+        if(strings == null || strings.length == 0){
+            return res;
+        }
+
+        // map:  { `diff dist`: [word_1, word_2,...] }
+        Map<Integer, List<String>> map = new HashMap<>();
+        for(String x: strings){
+            int dist = getDist(x);
+            List<String> list = new ArrayList<>();
+            if(map.containsKey(dist)){
+                list = map.get(dist);
+                list.add(x);
+            }
+            map.put(dist, list);
+        }
+
+        for(Integer i: map.keySet()){
+            res.add(map.get(i));
+        }
+
+        return res;
+    }
+
+    private int getDist(String input){
+        if(input.isEmpty() || input.length() == 1){
+            return 0;
+        }
+        //int diff = input.charAt(0) - 'a';
+        return input.charAt(1) - input.charAt(0); // ??
     }
 
 }
