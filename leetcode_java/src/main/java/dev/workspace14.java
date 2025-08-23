@@ -1,8 +1,6 @@
 package dev;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class workspace14 {
 
@@ -246,5 +244,78 @@ public class workspace14 {
         return nums[nums.length - 1] + k;
     }
 
+    // LC 438
+    // 3.13 - 3.23 pm
+    /**
+     *
+     *  return an array of `all` the `start` indices of
+     *  p's anagrams in s.
+     *
+     *
+     *  IDEA 1) 2 POINTER + HASH MAP
+     *
+     */
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(s == null || p == null || s.isEmpty() || p.isEmpty()){
+            return res;
+        }
+        // ??
+        if(s.equals(p)){
+            res.add(0);
+            return res;
+        }
+
+        // init p map
+        Map<String, Integer> p_map = new HashMap();
+        for(String x: p.split("")){
+            p_map.put(x, p_map.getOrDefault(x, 0) + 1);
+        }
+
+        System.out.println(">>> p_map = " + p_map);
+
+        String[] s_arr = s.split("");
+        // init s map
+        Map<String, Integer> s_map = new HashMap();
+
+        // 2 pointer
+        int l = 0;
+        for(int r = 0; r < s_arr.length; r++){
+            String key = s_arr[r];
+            System.out.println(">>> key = " + key + ", p_map = " + p_map
+            + ", s_map = " + s_map);
+            if(!p_map.containsKey(key)){
+                l = r + 1;
+                s_map = new HashMap();
+            }else{
+                if(!s_map.containsKey(key) || s_map.get(key) < p_map.get(key)){
+                    s_map.put(key, s_map.getOrDefault(key, 0) + 1);
+                    if(isEqaual(p_map, s_map)){
+                        res.add(l);
+                        s_map = new HashMap();
+                    }
+                }else{
+                    l = r + 1;
+                    s_map = new HashMap();
+                }
+            }
+        }
+
+        return res;
+    }
+
+    private boolean isEqaual(Map<String, Integer> p_map, Map<String, Integer> s_map){
+        if(p_map.keySet().size() != s_map.keySet().size()){
+            return false;
+        }
+        for(String k: p_map.keySet()){
+            if(p_map.get(k) != s_map.get(k)){
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 }
