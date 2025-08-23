@@ -318,4 +318,9 @@ public class workspace14 {
         return true;
     }
 
+    // LC 249
+    public List<List<String>> groupStrings_1(String[] strings) {
+        return null;
+    }
+
 }
