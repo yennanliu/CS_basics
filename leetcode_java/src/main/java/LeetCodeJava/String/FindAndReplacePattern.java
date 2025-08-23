@@ -49,8 +49,79 @@ public class FindAndReplacePattern {
 //    }
 
     // V0-1
-    // IDEA: HASH MAP (gpt)
+    // IDEA: HASHMAP
     public List<String> findAndReplacePattern_0_1(String[] words, String pattern) {
+        List<String> res = new ArrayList<>();
+        for (String word : words) {
+            if (check_0_1(word, pattern))
+                res.add(word);
+        }
+        return res;
+    }
+
+    boolean check_0_1(String a, String b) {
+        for (int i = 0; i < a.length(); i++) {
+      /**
+       *  NOTE !!!
+       *
+       *  	- a.indexOf(c) returns the first position where character c appears in string a.
+       * 	- b.indexOf(c) does the same for string b.
+       *
+       *   -> So at every position i, it checks:
+       *
+       *   ->
+       *    🔍 Why it works ?
+       *
+       * 	 - Characters that first appear at the same position in
+       *        and b must map to each other.
+       *
+       * 	 - If mapping is inconsistent
+       *        (like b first appeared at index 1 in a,
+       *         but q first appeared at index 0 in b), the check fails.
+       *
+       * 	 - This is essentially another way to ensure bijection mapping,
+       *        but without explicit HashMaps.
+       *
+       */
+      if (a.indexOf(a.charAt(i)) != b.indexOf(b.charAt(i))) return false;
+        }
+        return true;
+    }
+
+    // V0-2
+    // IDEA: HASHMAP (gemini)
+    public List<String> findAndReplacePattern_0_2(String[] words, String pattern) {
+        List<String> result = new ArrayList<>();
+        String canonicalPattern = getCanonical(pattern);
+
+        for (String word : words) {
+            if (getCanonical(word).equals(canonicalPattern)) {
+                result.add(word);
+            }
+        }
+
+        return result;
+    }
+
+    private String getCanonical(String s) {
+        Map<Character, Character> map = new HashMap<>();
+        StringBuilder sb = new StringBuilder();
+        char nextChar = 'a';
+
+        for (char c : s.toCharArray()) {
+            if (!map.containsKey(c)) {
+                map.put(c, nextChar);
+                nextChar++;
+            }
+            sb.append(map.get(c));
+        }
+
+        return sb.toString();
+    }
+
+    // V0-3
+    // IDEA: HASH MAP (gpt)
+    public List<String> findAndReplacePattern_0_3(String[] words, String pattern) {
         List<String> res = new ArrayList<>();
         for (String word : words) {
             if (matchesPattern(word, pattern)) {
@@ -60,15 +131,55 @@ public class FindAndReplacePattern {
         return res;
     }
 
-    // Check if word matches the pattern with bijection
-    private boolean matchesPattern(String word, String pattern) {
+  // Check if word matches the pattern with bijection
+  /**
+   * 	- Step 1: Check lengths.
+   *
+   * 	  - If word and pattern have different lengths,
+   * 	     they cannot match, so return false.
+   *
+   *    - Step 2: Create two HashMaps:
+   *
+   * 	    1.	wToP: Maps each character in the word
+   * 	        → its corresponding character in the pattern.
+   * 	        ->(e.g. : { character : pattern } )
+   *
+   * 	    2.	pToW: Maps each character in the pattern
+   * 	        → its corresponding character in the word.
+   * 	        -> (e.g. : { pattern : character } )
+   *
+   *   NOTE !!!
+   *
+   *    -> Using two maps ensures a bijection:
+   *
+   * 	 - Each word char maps to exactly one pattern char.
+   *
+   * 	 - Each pattern char maps to exactly one word char.
+   */
+  private boolean matchesPattern(String word, String pattern) {
         if (word.length() != pattern.length())
             return false;
 
         Map<Character, Character> wToP = new HashMap<>();
         Map<Character, Character> pToW = new HashMap<>();
 
-        for (int i = 0; i < word.length(); i++) {
+    /**
+     * 	 - For each character pair (wc, pc) from word and pattern:
+     * 	    - 1. Check forward map (wToP):
+     * 	        - If wc already maps to a different pc,
+     * 	           the mapping is inconsistent → return false.
+     * 	        - Otherwise, add the mapping wc → pc.
+     *
+     * 	    - 2.Check backward map (pToW):
+     * 	        - Similarly, if pc already maps to
+     * 	          a different wc, return false.
+     * 	        - Otherwise, add the mapping pc → wc.
+     *
+     *   -> This ensures one-to-one correspondence
+     *      between letters in word and pattern.
+     *
+     */
+    for (int i = 0; i < word.length(); i++) {
             char wc = word.charAt(i);
             char pc = pattern.charAt(i);
 
