@@ -38,8 +38,110 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ReorganizeString {
 
     // V0
-    // IDEA: PQ (PriorityQueue<Character>) + HASHMAP (fixed by gpt)
+    // IDEA: HASHMAP + PQ (fixed by gpt)
     public String reorganizeString(String s) {
+        if (s == null || s.isEmpty())
+            return "";
+        if (s.length() <= 2)
+            return s;
+
+        // Count frequency of each character
+        Map<Character, Integer> freqMap = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            freqMap.put(c, freqMap.getOrDefault(c, 0) + 1);
+        }
+
+        // Max-heap: sort characters by frequency descending
+        PriorityQueue<Character> pq = new PriorityQueue<>(
+                (a, b) -> freqMap.get(b) - freqMap.get(a));
+        pq.addAll(freqMap.keySet());
+
+        StringBuilder res = new StringBuilder();
+        Character prev = null;
+
+        /**
+         *  NOTE !!!
+         *
+         *   while `!pq.isEmpty()` (but NOT freqMap)
+         *
+         */
+        while (!pq.isEmpty()) {
+
+            /**
+             *  NOTE !!! we `poll` to-add element
+             */
+            char cur = pq.poll();
+
+            /**
+             *  NOTE !!!
+             *
+             *   below `if` handles the case:
+             *
+             *     ->
+             *      1) `cur res` is NOT null (prev != null)
+             *      AND
+             *      2) prev == cur (prev element equals to the to-add element)
+             *         e.g.  res ="v", pq = [v,a,b]
+             */
+            if (prev != null && prev == cur) {
+                // edge case
+                if (pq.isEmpty()){
+                    return ""; // cannot reorganize
+                }
+                /**
+                 *  NOTE !!!
+                 *
+                 *   so, if we face the ` res ="v", pq = [v,a,b]` case
+                 *   (e.g. cur poll val equals the prev element, but we
+                 *         STILL have other candidates (to poll)
+                 *
+                 *
+                 *   -> what we can do is: poll the next element from PQ
+                 *     and try to add it to res
+                 */
+                char next = pq.poll();
+                res.append(next);
+                freqMap.put(next, freqMap.get(next) - 1);
+                if (freqMap.get(next) > 0){
+                    pq.add(next);
+                }
+
+                /**  NOTE !!!
+                 *
+                 *  DON'T forget to add `cur` back to PQ
+                 *
+                 *  -> since we append the `next` element to res,
+                 *    instead of `cur`
+                 *
+                 */
+                pq.add(cur); // push current back
+                prev = next;
+            }
+            /**
+             *  NOTE !!!
+             *
+             *   below `if` handles the case:
+             *
+             *     ->
+             *      1) `cur res` is null
+             *      OR
+             *      2) `cur  (current poll element) NOT equals to the prev
+             */
+            else {
+                res.append(cur);
+                freqMap.put(cur, freqMap.get(cur) - 1);
+                if (freqMap.get(cur) > 0)
+                    pq.add(cur);
+                prev = cur;
+            }
+        }
+
+        return res.toString();
+    }
+
+    // V0-0-1
+    // IDEA: PQ (PriorityQueue<Character>) + HASHMAP (fixed by gpt)
+    public String reorganizeString_0_0_1(String s) {
         // Edge cases
         if (s == null || s.length() == 0) {
             return "";
