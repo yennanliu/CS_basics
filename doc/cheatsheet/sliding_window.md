@@ -288,6 +288,172 @@ class Solution(object):
 
 ### 2-2) Find All Anagrams in a String
 
+```java
+// LC 438
+    // V0
+    // IDEA: HASHMAP + 2 POINTERS (fixed by gpt)
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if (s == null || p == null || s.isEmpty() || p.isEmpty() || p.length() > s.length()) {
+            return res;
+        }
+        if (s.equals(p)) {
+            res.add(0);
+            return res;
+        }
+
+        // init p map
+        Map<String, Integer> p_map = new HashMap<>();
+        for (String x : p.split("")) {
+            p_map.put(x, p_map.getOrDefault(x, 0) + 1);
+        }
+
+        String[] s_arr = s.split("");
+        Map<String, Integer> s_map = new HashMap<>();
+
+        int l = 0;
+        for (int r = 0; r < s_arr.length; r++) {
+            String key = s_arr[r];
+            s_map.put(key, s_map.getOrDefault(key, 0) + 1);
+
+            /**
+             *  NOTE !!!
+             *
+             *   need `while loop` below
+             *   so we can `shrink` left pointer (window)
+             *   to make the sub string size equals to `p`
+             *
+             *   (could be `if` logic as well here)
+             *   (e.g. if (r - l + 1 > p.length()) )
+             */
+            // shrink window if size > p.length()
+            while (r - l + 1 > p.length()) {
+                String leftKey = s_arr[l];
+                /**
+                 *  NOTE !!!
+                 *
+                 *   need to update s_map
+                 */
+                s_map.put(leftKey, s_map.get(leftKey) - 1);
+                if (s_map.get(leftKey) == 0) {
+                    s_map.remove(leftKey);
+                }
+                l++;
+            }
+
+            /**
+             *  NOTE !!!
+             *
+             *  if same size, compare s_map, and p_map
+             */
+            // if same size, compare
+            if (r - l + 1 == p.length() && isEqaual(p_map, s_map)) {
+                res.add(l);
+            }
+        }
+
+        return res;
+    }
+
+    private boolean isEqaual(Map<String, Integer> p_map, Map<String, Integer> s_map) {
+        if (p_map.size() != s_map.size()) {
+            return false;
+        }
+        for (String k : p_map.keySet()) {
+            if (!s_map.containsKey(k) || !s_map.get(k).equals(p_map.get(k))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // V0-1
+    // IDEA: HASHMAP + SLIDE WINDOW (gpt)
+    /**
+     *  Why `slide window` is needed trick for this problem?
+     *
+     *
+     *  Yes 👍 the sliding window (or two-pointer) is the needed trick for that group of problems like “longest substring without repeating characters”.
+     *
+     * Here’s why:
+     *  •   A brute force way would check all substrings → O(n²) or worse.
+     *  •   But with a sliding window, you keep a “window” [left, right] over the string/array and expand right step by step.
+     *  •   If the constraint is violated (like duplicate chars appear, or the sum is too large), you shrink from the left until it’s valid again.
+     *  •   This way each index moves at most once → O(n) total.
+     *
+     * That’s the exact “trick” behind those problems. The hard part is usually:
+     *  1.  What condition makes the window valid/invalid? (duplicate chars, sum > k, etc.)
+     *  2.  When to update the answer? (on every valid window, or only when shrinking).
+     *
+     */
+    public List<Integer> findAnagrams_0_1(String s, String p) {
+        List<Integer> res = new ArrayList<>();
+        if (s == null || p == null || s.isEmpty() || p.isEmpty() || p.length() > s.length()) {
+            return res;
+        }
+
+        // Build p_map (pattern frequency)
+        Map<String, Integer> p_map = new HashMap<>();
+        for (String x : p.split("")) {
+            p_map.put(x, p_map.getOrDefault(x, 0) + 1);
+        }
+
+        Map<String, Integer> s_map = new HashMap<>();
+        String[] s_arr = s.split("");
+        int window = p.length();
+
+        for (int i = 0; i < s_arr.length; i++) {
+            String val = s_arr[i];
+
+            /**  NOTE !!!
+             *
+             *  we `add` element to s_amp anyway,
+             *  via `sliding window`  we DON'T need to handle cases
+             *  such as 1) if the element in p_map, 2) if the element cnt > the one in p_map ...
+             *
+             *  -> via `sliding window`, we can simply ONLY compare
+             *     if s_map and p_map qre equals when `sliding window` size equals to p size
+             */
+            // add current char to s_map
+            s_map.put(val, s_map.getOrDefault(val, 0) + 1);
+
+            /**  NOTE !!!
+             *
+             *  sliding window
+             */
+            // maintain sliding window size
+            if (i >= window) {
+                String leftChar = s_arr[i - window];
+                if (s_map.get(leftChar) == 1) {
+                    s_map.remove(leftChar);
+                } else {
+                    s_map.put(leftChar, s_map.get(leftChar) - 1);
+                }
+            }
+
+            // compare maps only when window size matches
+            if (i >= window - 1 && isEqual(p_map, s_map)) {
+                res.add(i - window + 1);
+            }
+        }
+
+        return res;
+    }
+
+    private boolean isEqual(Map<String, Integer> p_map, Map<String, Integer> s_map) {
+        if (p_map.size() != s_map.size()) {
+            return false;
+        }
+        for (String k : p_map.keySet()) {
+            if (!s_map.containsKey(k) || !p_map.get(k).equals(s_map.get(k))) {
+                return false;
+            }
+        }
+        return true;
+    }
+```
+
 ```python
 # LC 438 Find All Anagrams in a String
 # V0
