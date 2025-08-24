@@ -84,6 +84,9 @@
 - Check with `letest existed idx`
     - LC 763 Partition Labels 
 
+- Top `k` element (with PQ)
+    - LC 347, 215, 692
+
 - Any problems with below
     - need to cache
     - avoid double loop
