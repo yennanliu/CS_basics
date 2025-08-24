@@ -440,8 +440,8 @@ class Solution:
         for x, y in q:
             # get the distance from a gate
             distance = rooms[x][y]+1
-            directions = [(-1,0), (1,0), (0,-1), (0,1)]
-            for dx, dy in directions:
+            dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} }
+            for dx, dy in dirs:
                 # find the INF around the gate
                 new_x, new_y = x+dx, y+dy
                 if 0 <= new_x < row and 0 <= new_y < col and rooms[new_x][new_y] == 2147483647:
@@ -487,7 +487,7 @@ class Solution:
 
         int space_cnt = 0;
         int gete_cnt = 0;
-        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        int[][] dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
 
         int len = rooms.length;
         int width = rooms[0].length;
@@ -1036,7 +1036,7 @@ public int[][] updateMatrix_0_1(int[][] mat) {
              *
              * * You perform a **BFS for every 1** in the matrix.
              * * In worst case, you scan the whole matrix **once per 1**.
-             * * That’s **O(N × M × (N + M))** — very slow for large inputs.
+             * * That's **O(N × M × (N + M))** — very slow for large inputs.
              *
              * ---
              *
@@ -1046,7 +1046,7 @@ public int[][] updateMatrix_0_1(int[][] mat) {
              *
              * #### Why this works:
              *
-             * * You flip the problem: instead of asking *“how far is this 1 from a 0?”*, you ask *“how far can each 0 reach a 1?”*
+             * * You flip the problem: instead of asking *"how far is this 1 from a 0?"*, you ask *"how far can each 0 reach a 1?"*
              * * When you expand from all 0s **at the same time**, you ensure that **each 1 gets the shortest path to a 0**, because BFS guarantees minimum-distance traversal.
              * * Time complexity is **O(N × M)** — each cell is visited only once.
              *
@@ -1060,7 +1060,7 @@ public int[][] updateMatrix_0_1(int[][] mat) {
         }
     }
 
-    int[][] dirs = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+    int[][] dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
 
     // 2️⃣ BFS from all 0s
     while (!queue.isEmpty()) {
