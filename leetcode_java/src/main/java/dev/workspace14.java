@@ -255,52 +255,55 @@ public class workspace14 {
      *  IDEA 1) 2 POINTER + HASH MAP
      *
      */
+    // 3.09 - 3.19 pm
+    /**
+     *  IDEA 1) HASHMAP + LOOP
+     *
+     */
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> res = new ArrayList<>();
         // edge
-        if(s == null || p == null || s.isEmpty() || p.isEmpty()){
-            return res;
-        }
-        // ??
-        if(s.equals(p)){
-            res.add(0);
+        if (s == null || p == null || s.isEmpty() || p.isEmpty() || p.length() > s.length()) {
             return res;
         }
 
-        // init p map
-        Map<String, Integer> p_map = new HashMap();
+        Map<String, Integer> p_map = new HashMap<>();
         for(String x: p.split("")){
             p_map.put(x, p_map.getOrDefault(x, 0) + 1);
         }
 
-        System.out.println(">>> p_map = " + p_map);
+        Map<String, Integer> s_map = new HashMap<>();
 
         String[] s_arr = s.split("");
-        // init s map
-        Map<String, Integer> s_map = new HashMap();
-
-        // 2 pointer
-        int l = 0;
-        for(int r = 0; r < s_arr.length; r++){
-            String key = s_arr[r];
-            System.out.println(">>> key = " + key + ", p_map = " + p_map
-            + ", s_map = " + s_map);
-            if(!p_map.containsKey(key)){
-                l = r + 1;
-                s_map = new HashMap();
+        for(int i = 0; i < s_arr.length; i++){
+            String val = s_arr[i];
+            // case 1) val NOT exists in p_map
+            if(!p_map.containsKey(val)){
+                s_map = new HashMap<>();
             }else{
-                if(!s_map.containsKey(key) || s_map.get(key) < p_map.get(key)){
-                    s_map.put(key, s_map.getOrDefault(key, 0) + 1);
-                    if(isEqaual(p_map, s_map)){
-                        res.add(l);
-                        s_map = new HashMap();
-                    }
+                // case 2) val exists in p_map, but NOT in s_map yet
+                if(!s_map.containsKey(val)){
+                    s_map.put(val, s_map.getOrDefault(val, 0) + 1);
                 }else{
-                    l = r + 1;
-                    s_map = new HashMap();
+                    // case 3) val exists in p_map, but  s_map(cnt) < p_map(cnt)
+                    if(s_map.get(val) < p_map.get(val)){
+                        s_map.put(val, s_map.getOrDefault(val, 0) + 1);
+                    }
+                    // case 4) val exists in p_map, but  s_map(cnt) > p_map(cnt)
+                    else{
+                        //s_map.put(val, s_map.getOrDefault(val, 0) - 1);
+//                        s_map = new HashMap<>();
+//                        s_map.put(val, 1);
+                    }
                 }
             }
+
+            // check `if pattern equals`
+            if(isEqaual(p_map, s_map)){
+                res.add(i);
+            }
         }
+
 
         return res;
     }
@@ -317,6 +320,72 @@ public class workspace14 {
 
         return true;
     }
+
+
+
+
+//    public List<Integer> findAnagrams(String s, String p) {
+//        List<Integer> res = new ArrayList<>();
+//        // edge
+//        if(s == null || p == null || s.isEmpty() || p.isEmpty()){
+//            return res;
+//        }
+//        // ??
+//        if(s.equals(p)){
+//            res.add(0);
+//            return res;
+//        }
+//
+//        // init p map
+//        Map<String, Integer> p_map = new HashMap();
+//        for(String x: p.split("")){
+//            p_map.put(x, p_map.getOrDefault(x, 0) + 1);
+//        }
+//
+//        System.out.println(">>> p_map = " + p_map);
+//
+//        String[] s_arr = s.split("");
+//        // init s map
+//        Map<String, Integer> s_map = new HashMap();
+//
+//        // 2 pointer
+//        int l = 0;
+//        for(int r = 0; r < s_arr.length; r++){
+//            String key = s_arr[r];
+//            System.out.println(">>> key = " + key + ", p_map = " + p_map
+//            + ", s_map = " + s_map);
+//            if(!p_map.containsKey(key)){
+//                l = r + 1;
+//                s_map = new HashMap();
+//            }else{
+//                if(!s_map.containsKey(key) || s_map.get(key) < p_map.get(key)){
+//                    s_map.put(key, s_map.getOrDefault(key, 0) + 1);
+//                    if(isEqaual(p_map, s_map)){
+//                        res.add(l);
+//                        s_map = new HashMap();
+//                    }
+//                }else{
+//                    l = r + 1;
+//                    s_map = new HashMap();
+//                }
+//            }
+//        }
+//
+//        return res;
+//    }
+//
+//    private boolean isEqaual(Map<String, Integer> p_map, Map<String, Integer> s_map){
+//        if(p_map.keySet().size() != s_map.keySet().size()){
+//            return false;
+//        }
+//        for(String k: p_map.keySet()){
+//            if(p_map.get(k) != s_map.get(k)){
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
     // LC 249
     // 4.03 - 4.13 pm
