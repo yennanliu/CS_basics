@@ -77,8 +77,15 @@ public class TopKFrequentElements {
                 (x, y) -> map.get(x) - map.get(y)
         );
 
-        // NOTE !!! add map element to PQ
-        for (Integer key : map.keySet()){
+    // NOTE !!! add map `element` to PQ (not val)
+    /**
+     * // NOTE !!! below
+     * // we add map `element` to PQ (instead of val)
+     * // and if PQ size > k, pop it
+     * // since PQ is sorting on map val
+     * // so we automatically pop element with `least cnt`
+     */
+    for (Integer key : map.keySet()) {
             pq.add(key);
             // pop element is size > k
             if (pq.size() > k){

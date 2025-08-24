@@ -587,4 +587,66 @@ public class workspace14 {
         return -1;  // should NOT visit here
     }
 
+    // LC 692
+    // 1.34 - 1.44 pm
+    /**
+     *  IDEA 1) HASHMAP + PQ custom sorting
+     *
+     *
+     */
+    public List<String> topKFrequent(String[] words, int k) {
+        List<String> res = new ArrayList<>();
+        // edge
+        if(words == null || words.length == 0){
+            return res;
+        }
+        if(words.length == 1){
+            if(k > words.length){
+                //throw new Exception("k > word size");
+                return res; // ???
+            }
+            res.add(words[0]);
+            return res;
+        }
+
+        // {val : cnt}
+        Map<String, Integer> cnt_map = new HashMap<>();
+        for(String w: words){
+            cnt_map.put(w, cnt_map.getOrDefault(w, 0) + 1);
+        }
+
+        // custom sort: cnt_map val
+        PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = cnt_map.get(o1) - cnt_map.get(o2);
+                // Sort on `key ` with `lexicographically` order (increasing order)
+                //return y.length() - x.length(); // ?
+                if(diff == 0){
+                    return o1.compareTo(o2);
+                }
+                return diff;
+            }
+        });
+
+        // NOTE !!! below
+        // we add map `element` to PQ (instead of val)
+        // and if PQ size > k, pop it
+        // since PQ is sorting on map val
+        // so we automatically pop element with `least cnt`
+        for(String key: cnt_map.keySet()){
+            pq.add(key);
+            // NOTE !!!
+            while(pq.size() > k){
+                pq.poll();
+            }
+        }
+
+        while (!pq.isEmpty()){
+            res.add(pq.poll());
+        }
+
+        return res;
+    }
+
 }
