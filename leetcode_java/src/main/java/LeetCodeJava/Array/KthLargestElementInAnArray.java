@@ -1,15 +1,90 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/kth-largest-element-in-an-array/
-
+/**
+ * 215. Kth Largest Element in an Array
+ * Solved
+ * N/A
+ * Topics
+ * premium lock icon
+ * Companies
+ * Given an integer array nums and an integer k, return the kth largest element in the array.
+ *
+ * Note that it is the kth largest element in the sorted order, not the kth distinct element.
+ *
+ * Can you solve it without sorting?
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [3,2,1,5,6,4], k = 2
+ * Output: 5
+ * Example 2:
+ *
+ * Input: nums = [3,2,3,1,2,4,5,5,6], k = 4
+ * Output: 4
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= k <= nums.length <= 105
+ * -104 <= nums[i] <= 104
+ *
+ * Seen this question in a real interview before?
+ * 1/5
+ * Yes
+ * No
+ */
 import java.util.*;
 
 public class KthLargestElementInAnArray {
 
     // V0
+    // IDEA: small PQ
+    public int findKthLargest(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            throw new RuntimeException("null array");
+        }
+        if(k > nums.length){
+            throw new RuntimeException("k bigger than arr size");
+        }
+        if(nums.length == 1){
+            if(k == 1){
+                return nums[0];
+            }
+            throw new RuntimeException("not valid k");
+        }
+
+        // small PQ, so we can keep PQ size = k
+        // and pop the `k+1` largest element
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        for(int x: nums){
+            pq.add(x);
+            while (pq.size() > k){
+                pq.poll();
+            }
+        }
+
+        if(!pq.isEmpty()){
+            return pq.poll();
+        }
+
+        return -1;  // should NOT visit here
+    }
+
+    // V0-0-1
     // IDEA : PQ (priority queue)
     // time: O(N log N), space: O(N)
-    public int findKthLargest(int[] nums, int k) {
+    public int findKthLargest_0_0_1(int[] nums, int k) {
         if (nums.length == 1){
             if (k == 1){
                 return nums[0];
@@ -18,7 +93,7 @@ public class KthLargestElementInAnArray {
         }
 
         // init
-        // NOTE !!! init MAX PQ via Comparator.reverseOrder()
+        // NOTE !!! init small PQ via Comparator.reverseOrder()
         PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
         for (int x : nums){
             pq.add(x);
@@ -33,7 +108,7 @@ public class KthLargestElementInAnArray {
         return cur;
     }
 
-    // V0
+    // V0-1
     // IDEA : ARRAY + SORTING
     // time: O(N log N), space: O(N)
     public int findKthLargest_0_1(int[] nums, int k) {

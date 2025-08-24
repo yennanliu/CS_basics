@@ -541,4 +541,50 @@ public class workspace14 {
 //        return res;
 //    }
 
+    // LC 215
+    // 1.22 - 1.32 pm
+    /**
+     * IDEA 1) PQ
+     *
+     *
+     */
+    public int findKthLargest(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            throw new RuntimeException("null array");
+        }
+        if(k > nums.length){
+            throw new RuntimeException("k bigger than arr size");
+        }
+        if(nums.length == 1){
+            if(k == 1){
+                return nums[0];
+            }
+            throw new RuntimeException("not valid k");
+        }
+
+        // small PQ, so we can keep PQ size = k
+        // and pop the `k+1` largest element
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        for(int x: nums){
+            pq.add(x);
+            while (pq.size() > k){
+                pq.poll();
+            }
+        }
+
+        if(!pq.isEmpty()){
+            return pq.poll();
+        }
+
+        return -1;  // should NOT visit here
+    }
+
 }
