@@ -44,59 +44,7 @@ import java.util.stream.Collectors;
 public class TopKFrequentWords {
 
     // V0
-    // IDEA: sort map on value and key length (gpt)
-    // TODO: validate & fix
 //    public List<String> topKFrequent(String[] words, int k) {
-//
-//        // edge
-//        if (words.length == 0) {
-//            return new ArrayList<>();
-//        }
-//
-//        List<String> res = new ArrayList<>();
-//        Map<String, Integer> map = new HashMap<>();
-//        // biggest queue
-//        // Queue<Integer> cntQueue = new LinkedList<>();
-//
-//        for (String x : words) {
-//
-//            map.putIfAbsent(x, 1);
-//            Integer cur = map.get(x);
-//            map.put(x, cur + 1);
-//        }
-//
-//        System.out.println(">>> (before sort) map = " + map);
-//
-//        // sort map by value and key lenth
-//        // Convert the map to a list of entries
-//        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(map.entrySet());
-//
-//        // Sort the entry list
-//        Collections.sort(entryList, new Comparator<Map.Entry<String, Integer>>() {
-//            @Override
-//            public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
-//                // First, compare by value in decreasing order
-//                int valueCompare = entry2.getValue().compareTo(entry1.getValue());
-//
-//                // If values are equal, compare by key length in increasing order
-//                if (valueCompare == 0) {
-//                    return entry1.getKey().length() - entry2.getKey().length();
-//                }
-//
-//                return valueCompare;
-//            }
-//        });
-//
-//        System.out.println(">>> (after sort) map = " + map);
-//        for (Map.Entry<String, Integer> x : entryList) {
-//            if (k == 0){
-//                break;
-//            }
-//            res.add((String) x.getKey());
-//            k -= 1;
-//        }
-//
-//        return res;
 //    }
 
     // V0-1
@@ -125,6 +73,14 @@ public class TopKFrequentWords {
         Collections.sort(res, (x, y) -> {
             int valDiff = freq.get(y) - freq.get(x); // sort on `value` bigger number first (decreasing order)
             if (valDiff == 0){
+                /**
+                 *  NOTE !!!
+                 *
+                 *    sort `lexicographically`
+                 *
+                 *    -> a.compareTo(b);
+                 *
+                 */
                 // Sort on `key ` with `lexicographically` order (increasing order)
                 //return y.length() - x.length(); // ?
                 return x.compareTo(y);
@@ -134,6 +90,44 @@ public class TopKFrequentWords {
 
         // get top K result
         return res.subList(0, k);
+    }
+
+    // V0-2
+    // IDEA: MAP + MIN PQ (fixed by gpt)
+    public List<String> topKFrequent_0_2(String[] words, int k) {
+        List<String> res = new ArrayList<>();
+        if (words == null || words.length == 0 || k <= 0) {
+            return res;
+        }
+
+        // Count frequency
+        Map<String, Integer> freqMap = new HashMap<>();
+        for (String w : words) {
+            freqMap.put(w, freqMap.getOrDefault(w, 0) + 1);
+        }
+
+        // Min-heap: sort by frequency ascending, then lexicographically descending
+        PriorityQueue<String> pq = new PriorityQueue<>((w1, w2) -> {
+            int diff = freqMap.get(w1) - freqMap.get(w2);
+            if (diff == 0) {
+                return w2.compareTo(w1); // reverse lexicographical
+            }
+            return diff;
+        });
+
+        for (String word : freqMap.keySet()) {
+            pq.add(word);
+            if (pq.size() > k) {
+                pq.poll(); // remove least frequent / "least important" word
+            }
+        }
+
+        // Build result in descending order
+        while (!pq.isEmpty()) {
+            res.add(0, pq.poll());
+        }
+
+        return res;
     }
 
     // V1

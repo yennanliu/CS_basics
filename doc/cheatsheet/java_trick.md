@@ -967,6 +967,19 @@ Collections.sort(res, (x, y) -> {
 });
 ```
 
+### 1-4-6) sort string on `lexicographical` order
+
+```java
+// LC 692. Top K Frequent Words
+
+String a = "abcd";
+String b = "defg";
+
+// sort on lexicographical
+
+System.out.println(a.compareTo(b));
+```
+
 
 ### 1-5) `Arrays.copyOfRange` : Get sub array
 
