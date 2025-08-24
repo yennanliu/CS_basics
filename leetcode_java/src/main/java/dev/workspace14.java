@@ -442,4 +442,103 @@ public class workspace14 {
         return sb.toString();
     }
 
+    // LC 347
+    // 12.49 - 12.59 pm
+    /**
+     *  IDEA 1) HASHMAP + SORT (on map val)
+     *
+     *  IDEA 2) HASHMAP + PQ
+     *
+     */
+    public int[] topKFrequent(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return null;
+        }
+        if(nums.length == 1){
+            return new int[]{nums[0]}; // ??
+        }
+
+        // map : { val : cnt }
+        Map<Integer, Integer> cnt_map = new HashMap<>();
+
+        // small PQ (sort on map val
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = cnt_map.get(o1) - cnt_map.get(o2);
+                return diff;
+            }
+        });
+
+        for(int x: nums){
+            cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
+        }
+
+        int[] res = new int[k];
+        for(int key: cnt_map.keySet()){
+            pq.add(key);
+        }
+        while (pq.size() > k){
+            pq.poll();
+        }
+
+        int i = 0;
+        while(i < k){
+            res[i] = pq.poll();
+            i += 1;
+        }
+
+        return res;
+    }
+
+
+//    public int[] topKFrequent(int[] nums, int k) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return null;
+//        }
+//        if(nums.length == 1){
+//            return new int[]{nums[0]}; // ??
+//        }
+//
+//        // map : { val : cnt }
+//        Map<Integer, Integer> map = new HashMap<>();
+//
+//        // max PQ: save `top k` largest cnt
+//        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                int diff = o1-o2;
+//                return diff; // ???
+//            }
+//        });
+//
+//        for(int x: nums){
+//            map.put(x, map.getOrDefault(x, 0) + 1);
+//        }
+//
+//        Map<Integer, Integer> map2 = new HashMap<>();
+//        for(Integer key: map.keySet()){
+//            map2.put(map.get(key), key);
+//        }
+//
+//        for(int val: map.values()){
+//            pq.add(val);
+//        }
+//
+//        while(pq.size() > k){
+//            pq.poll();
+//        }
+//
+//        int[] res = new int[pq.size()];
+//        int i = 0;
+//        while(!pq.isEmpty()){
+//            res[i] = map2.get(pq.poll());
+//            i += 1;
+//        }
+//
+//        return res;
+//    }
+
 }
