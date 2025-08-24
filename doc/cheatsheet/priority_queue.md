@@ -11,6 +11,47 @@
 
 ### 0-2) Pattern
 
+- Top `k` element (with PQ)
+    - LC 347, 215, 692
+
+```java
+Map<Integer, Integer> map = new HashMap<>();
+
+for (Integer x : nums) {
+    map.put(x, map.getOrDefault(x, 0) + 1);
+}
+
+
+// PQ with custom logic (increasing order, e.g. order with smaller count val -> bigger count val
+// or, we can sort with decreasing order, then we don't need to remove element when pq size > k
+// (check below example)
+/**
+ *  NOTE !!!
+ *
+ *   PQ 's custom sorting with map val
+ *
+ */
+PriorityQueue<Integer> pq = new PriorityQueue<>(
+        (x, y) -> map.get(x) - map.get(y)
+);
+
+// NOTE !!! add map `element` to PQ (not val)
+/**
+ * // NOTE !!! below
+ * // we add map `element` to PQ (instead of val)
+ * // and if PQ size > k, pop it
+ * // since PQ is sorting on map val
+ * // so we automatically pop element with `least cnt`
+ */
+for (Integer key : map.keySet()) {
+        pq.add(key);
+        // pop element is size > k
+        if (pq.size() > k){
+            pq.poll();
+        }
+}
+```
+
 ### 0-3) Use case
 
 - PQ task management
