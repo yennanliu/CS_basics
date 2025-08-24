@@ -67,6 +67,12 @@ public class TopKFrequentElements {
         // PQ with custom logic (increasing order, e.g. order with smaller count val -> bigger count val
         // or, we can sort with decreasing order, then we don't need to remove element when pq size > k
         // (check below example)
+        /**
+         *  NOTE !!!
+         *
+         *   PQ 's custom sorting with map val
+         *
+         */
         PriorityQueue<Integer> pq = new PriorityQueue<>(
                 (x, y) -> map.get(x) - map.get(y)
         );
