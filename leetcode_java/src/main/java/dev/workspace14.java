@@ -649,4 +649,94 @@ public class workspace14 {
         return res;
     }
 
+  // LC 767
+  // 2.07 - 2.30 pm
+  /**
+   * Given a string s, `rearrange` the
+   * characters of s so that
+   * any two adjacent characters are `NOT the same`.
+   *
+   *
+   *  IDEA 1) HASHMAP + POINTER ???
+   *
+   *    step 1) freq map : {val : cnt}
+   *    step 2) loop over `most freq val` in map
+   *            and construct the str
+   *    step 3) go to `next freq val` in map,
+   *            continue construct the str
+   *    step 4) redo above ..
+   *
+   *    NOTE: if can't form the str by different adjacent element
+   *          within any iteration -> return "" directly
+   *
+   *   ex 1)
+   *
+   *   Input: s = "aab"
+   *   Output: "aba"
+   *
+   *   -> map = {a: 2, b: 1}
+   *
+   *   ->
+   *
+   */
+  public String reorganizeString(String s) {
+      //StringBuilder sb = new StringBuilder();
+      // edge
+      if(s.isEmpty()){
+          return "";
+      }
+      if(s.length() <= 2){
+          return s;
+      }
+
+      // { val : cnt }
+      Map<String, Integer> cnt_map = new HashMap<>();
+
+      for(String x: s.split("")){
+          cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
+      }
+
+      // custom PQ: sort on map val  (big -> small)
+      PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+          @Override
+          public int compare(String o1, String o2) {
+              int diff = cnt_map.get(o2) - cnt_map.get(o1);
+              return diff;
+          }
+      });
+
+      for(String key: cnt_map.keySet()){
+          pq.add(key);
+      }
+
+      String res = "";
+
+      while(!pq.isEmpty()){
+          // get val with `max` cnt
+          String cur_val = pq.poll();
+          // check if `adjacent` are NOT the same
+          if(!res.isEmpty()){
+              String prevVal = String.valueOf(res.charAt(res.length() - 1));
+              if(prevVal.equals(cur_val)){
+                  return "";
+              }
+          }
+
+          res += cur_val;
+
+          // update hashmap
+          cnt_map.put(cur_val, cnt_map.get(cur_val) - 1);
+          // if `cnt` == 0
+          // remove key from hashmap
+          if(cnt_map.get(cur_val) == 0){
+              cnt_map.remove(cur_val);
+          }else{
+              // update PQ: the key still exists, add it back to
+              pq.add(cur_val);
+          }
+      }
+
+      return res;
+    }
+
 }
