@@ -112,6 +112,61 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
         return end - start;
     }
 
+    // V0-3
+    // IDEA: SLIDE WINDOW (gpt)
+    public int longestSubstring_0_3(String s, int k) {
+        int n = s.length();
+        int res = 0;
+
+        // max unique chars possible
+        int maxUnique = getMaxUniqueLetters_0_3(s);
+
+        for (int currUnique = 1; currUnique <= maxUnique; currUnique++) {
+            int[] count = new int[26];
+            int l = 0, r = 0;
+            int unique = 0; // current unique chars in window
+            int countAtLeastK = 0; // how many chars meet freq >= k
+
+            while (r < n) {
+                if (unique <= currUnique) {
+                    int idx = s.charAt(r) - 'a';
+                    if (count[idx] == 0)
+                        unique++;
+                    count[idx]++;
+                    if (count[idx] == k)
+                        countAtLeastK++;
+                    r++;
+                } else {
+                    int idx = s.charAt(l) - 'a';
+                    if (count[idx] == k)
+                        countAtLeastK--;
+                    count[idx]--;
+                    if (count[idx] == 0)
+                        unique--;
+                    l++;
+                }
+
+                if (unique == currUnique && unique == countAtLeastK) {
+                    res = Math.max(res, r - l);
+                }
+            }
+        }
+
+        return res;
+    }
+
+    private int getMaxUniqueLetters_0_3(String s) {
+        boolean[] seen = new boolean[26];
+        int unique = 0;
+        for (char c : s.toCharArray()) {
+            if (!seen[c - 'a']) {
+                seen[c - 'a'] = true;
+                unique++;
+            }
+        }
+        return unique;
+    }
+
     // V1-1
     // https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/editorial/
     // IDEA: BRUTE FORCE
