@@ -39,15 +39,20 @@ public class StackTest1 {
 //        queue.remove();
 //        System.out.println("queue: " + queue); // queue: [20, 30, 40]
 
-        Stack<String> st = new Stack<>();
-        st.push("a");
-        st.push("b");
-        st.push("c");
+//        Stack<String> st = new Stack<>();
+//        st.push("a");
+//        st.push("b");
+//        st.push("c");
+//
+//    // NOTE !!! loop over elements in stack
+//            for(String x: st){
+//                System.out.println(">>> x = " + x);
+//            }
 
-    // NOTE !!! loop over elements in stack
-            for(String x: st){
-                System.out.println(">>> x = " + x);
-            }
+        String x = "abcd";
+        // s.substring(l, r + 1)
+        System.out.println(x.substring(1,2)); // b
+        System.out.println(x.substring(1,3)); // bc
 
     }
 
