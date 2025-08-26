@@ -64,7 +64,7 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
             for (int j = i; j < s.length(); j++) {
                 //Character c = m
                 map.put(s.charAt(j), map.getOrDefault(s.charAt(j), 0) + 1);
-                if (isVaid(map, k)) {
+                if (isValid(map, k)) {
                     res = Math.max(res, j - i + 1);
                 }
             }
@@ -73,7 +73,7 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
         return res;
     }
 
-    public boolean isVaid(Map<Character, Integer> map, int k) {
+    public boolean isValid(Map<Character, Integer> map, int k) {
         for (Character c : map.keySet()) {
             if (map.get(c) < k) {
                 return false;
