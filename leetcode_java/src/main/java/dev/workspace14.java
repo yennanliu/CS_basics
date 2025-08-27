@@ -883,8 +883,7 @@ public class workspace14 {
             int j = i;
             //boolean x = cnt_map.get(s.charAt(j)) > k;
             System.out.println("s.charAt(j) = " + s.charAt(j));
-            while (  j < s.length() &&  cnt_map.containsKey(String.valueOf(s.charAt(j))) &&
-                    cnt_map.get(String.valueOf(s.charAt(j))) > k ) {
+            while (  j < s.length() && cnt_map.get(String.valueOf(s.charAt(j))) >= k ) {
                 //Character c = m
                 map.put(s.charAt(j), map.getOrDefault(s.charAt(j), 0) + 1);
                 if (isValid(map, k)) {
