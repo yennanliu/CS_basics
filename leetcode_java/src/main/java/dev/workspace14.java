@@ -21,19 +21,19 @@ public class workspace14 {
      *
      *
      */
-    public class Codec {
-
-        // Encodes a tree to a single string.
-        public String serialize(TreeNode root) {
-            return null;
-        }
-
-        // Decodes your encoded data to tree.
-        public TreeNode deserialize(String data) {
-
-            return null;
-        }
-    }
+//    public class Codec {
+//
+//        // Encodes a tree to a single string.
+//        public String serialize(TreeNode root) {
+//            return null;
+//        }
+//
+//        // Decodes your encoded data to tree.
+//        public TreeNode deserialize(String data) {
+//
+//            return null;
+//        }
+//    }
 
     // LC 430
     // 13.44 - 13.54 pm
@@ -1067,5 +1067,21 @@ public class workspace14 {
         }
         return res;
     }
+
+    // LC 535
+    public class Codec {
+
+        // Encodes a URL to a shortened URL.
+        public String encode(String longUrl) {
+
+            return null;
+        }
+
+        // Decodes a shortened URL to its original URL.
+        public String decode(String shortUrl) {
+            return null;
+        }
+    }
+
 
 }
