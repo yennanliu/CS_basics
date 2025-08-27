@@ -859,7 +859,10 @@ public class workspace14 {
      *    ababbc"  "ababb"    ans=5
      *         x
      */
+
+    // brute force (double loop)
     public int longestSubstring(String s, int k) {
+
         // edge
         if(s == null || s.isEmpty()){
             return 0;
@@ -871,54 +874,39 @@ public class workspace14 {
             return 0;
         }
 
-        // cnt map
-        Map<String, Integer> cnt_map = new HashMap<>();
-        Map<String, Integer> cnt_map2 = new HashMap<>();
-        // last idx map
-        Map<String, Integer> last_idx_map = new HashMap<>();
-
-        String[] s_arr = s.split("");
-        for(int i = 0; i <  s_arr.length; i++){
-            String val = String.valueOf(s.charAt(i));
-            cnt_map.put(val, cnt_map.getOrDefault(val, 0) + 1);
-            last_idx_map.put(val, i);
-        }
-
-        // only keep `cnt > k` key
-        for(String key: cnt_map.keySet()){
-            if(cnt_map.get(key) >= k){
-                cnt_map2.put(key, cnt_map.get(key));
-            }
-        }
-
         int res = 0;
+        Map<String, Integer> cnt_map = new HashMap<>();
+        String[] s_arr = s.split("");
 
-        // sliding window
-        int l = 0;
-        int r = 0;
+//        for(int i = 0; i <  s_arr.length; i++){
+//            String val = String.valueOf(s.charAt(i));
+//            cnt_map.put(val, cnt_map.getOrDefault(val, 0) + 1);
+//        }
+//
+//        Set<String> candidates = new HashSet<>();
+//        for(String key: cnt_map.keySet()){
+//            System.out.println(" cnt_map.get(key) ?" + cnt_map.get(key) + ", k = " + k);
+//            if(cnt_map.get(key) >= k){
+//                candidates.add(key);
+//            }
+//        }
+//
+//        System.out.println(">>> cnt_map = " + cnt_map);
+//        System.out.println(">>> candidates = " + candidates);
 
-        Map<String, Integer> tmp_map = new HashMap<>();
 
-        while(r < s_arr.length){
-
-            String right_val = String.valueOf(s.charAt(r));
-
-            while(!cnt_map.containsKey(right_val) && l < r){
-                String left_val = String.valueOf(s.charAt(l));
-                tmp_map.put(left_val, tmp_map.get(left_val) - 1);
-                if(tmp_map.get(left_val) == 0){
-                    tmp_map.remove(left_val);
+        for(int i = 0; i < s_arr.length; i++){
+            Map<String, Integer> tmp_map = new HashMap<>();
+            for(int j = i; j < s_arr.length; j++){
+                String val = String.valueOf(s.charAt(j));
+//                if(!candidates.contains(val)){
+//                    break;
+//                }
+                tmp_map.put(val, tmp_map.getOrDefault(val, 0) + 1);
+                if(isValid(tmp_map, k)){
+                    res = Math.max(res, j - i + 1);
                 }
-                l += 1;
             }
-
-            tmp_map.put(right_val, tmp_map.get(right_val) + 1);
-
-            if(isValid(tmp_map, k)){
-                res = Math.max(res, r - l + 1);
-            }
-
-            r += 1;
         }
 
         return res;
@@ -934,8 +922,86 @@ public class workspace14 {
         return true;
     }
 
+
+
+
+//    public int longestSubstring(String s, int k) {
+//        // edge
+//        if(s == null || s.isEmpty()){
+//            return 0;
+//        }
+//        if(s.length() == 1){
+//            if(k <= 1){
+//                return 1;
+//            }
+//            return 0;
+//        }
+//
+//        // cnt map
+//        Map<String, Integer> cnt_map = new HashMap<>();
+//        Map<String, Integer> cnt_map2 = new HashMap<>();
+//        // last idx map
+//        Map<String, Integer> last_idx_map = new HashMap<>();
+//
+//        String[] s_arr = s.split("");
+//        for(int i = 0; i <  s_arr.length; i++){
+//            String val = String.valueOf(s.charAt(i));
+//            cnt_map.put(val, cnt_map.getOrDefault(val, 0) + 1);
+//            last_idx_map.put(val, i);
+//        }
+//
+//        // only keep `cnt > k` key
+//        for(String key: cnt_map.keySet()){
+//            if(cnt_map.get(key) >= k){
+//                cnt_map2.put(key, cnt_map.get(key));
+//            }
+//        }
+//
+//        int res = 0;
+//
+//        // sliding window
+//        int l = 0;
+//        int r = 0;
+//
+//        Map<String, Integer> tmp_map = new HashMap<>();
+//
+//        while(r < s_arr.length){
+//
+//            String right_val = String.valueOf(s.charAt(r));
+//
+//            while(!cnt_map.containsKey(right_val) && l < r){
+//                String left_val = String.valueOf(s.charAt(l));
+//                tmp_map.put(left_val, tmp_map.get(left_val) - 1);
+//                if(tmp_map.get(left_val) == 0){
+//                    tmp_map.remove(left_val);
+//                }
+//                l += 1;
+//            }
+//
+//            tmp_map.put(right_val, tmp_map.get(right_val) + 1);
+//
+//            if(isValid(tmp_map, k)){
+//                res = Math.max(res, r - l + 1);
+//            }
+//
+//            r += 1;
+//        }
+//
+//        return res;
+//    }
+//
+//    private boolean isValid(Map<String, Integer> tmp_map, int k){
+//        for(Integer val: tmp_map.values()){
+//            if(val < k){
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
+
     // LC 1157
-    // 9.14 am - 9.24 am
+    // 17.24 - 17.44 pm
     /**
      * Your MajorityChecker object will be instantiated and called as such:
      * MajorityChecker obj = new MajorityChecker(arr);
