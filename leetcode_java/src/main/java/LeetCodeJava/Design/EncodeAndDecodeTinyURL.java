@@ -63,11 +63,21 @@ public class EncodeAndDecodeTinyURL {
 
     // V0-1
     // IDEA: HASH MAP (gpt)
+    /**
+     *  NOTE !!!
+     *
+     *   we use 2 hashmap for easier converting between long - short URL
+     *
+     *   - longToShort
+     *   - shortToLong
+     */
     public class Codec_0_1 {
         private String baseLong = "https://leetcode.com/problems";
         private String baseShort = "http://tinyurl.com";
 
+        // { long_url : short_url }
         private Map<String, String> longToShort = new HashMap<>();
+        // { short_url: long_url  }
         private Map<String, String> shortToLong = new HashMap<>();
         private int counter = 1;
 
@@ -105,6 +115,14 @@ public class EncodeAndDecodeTinyURL {
 
             StringBuilder sb = new StringBuilder();
             for (char c : longUrl.toCharArray()) {
+                /**
+                 *  NOTE !!!
+                 *
+                 *   we use `(int) c` to get ASCII value
+                 *   from every single character in long url
+                 *
+                 */
+                // NOTE !!! we use `.append(",")` as `separator`
                 sb.append((int) c).append(","); // store ASCII value
             }
 
@@ -119,9 +137,16 @@ public class EncodeAndDecodeTinyURL {
             String input = shortUrl.substring(BASE_SHORT.length() + 1);
             StringBuilder sb = new StringBuilder();
 
+            // NOTE !!! we use split string by "," which is the `separator` we set in `encode`
             for (String part : input.split(",")) {
                 if (!part.isEmpty()) {
                     int ascii = Integer.parseInt(part);
+                    /**
+                     *  NOTE !!!
+                     *
+                     *   we use `(char) ascii` to transform
+                     *   from encoded int to the original char
+                     */
                     sb.append((char) ascii);
                 }
             }
