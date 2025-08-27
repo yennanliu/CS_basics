@@ -860,67 +860,113 @@ public class workspace14 {
      *         x
      */
 
-    // brute force (double loop)
+    // IDEA 2) HASHMAP + SLIDING WINDOW
     public int longestSubstring(String s, int k) {
 
         // edge
-        if(s == null || s.isEmpty()){
-            return 0;
-        }
-        if(s.length() == 1){
-            if(k <= 1){
-                return 1;
-            }
+        if (s == null || s.isEmpty() || k > s.length()) {
             return 0;
         }
 
-        int res = 0;
         Map<String, Integer> cnt_map = new HashMap<>();
-        String[] s_arr = s.split("");
+        for(int i = 0; i <  s.length(); i++){
+           String val = String.valueOf(s.charAt(i));
+           cnt_map.put(val, cnt_map.getOrDefault(val, 0) + 1);
+        }
 
-//        for(int i = 0; i <  s_arr.length; i++){
-//            String val = String.valueOf(s.charAt(i));
-//            cnt_map.put(val, cnt_map.getOrDefault(val, 0) + 1);
-//        }
-//
-//        Set<String> candidates = new HashSet<>();
-//        for(String key: cnt_map.keySet()){
-//            System.out.println(" cnt_map.get(key) ?" + cnt_map.get(key) + ", k = " + k);
-//            if(cnt_map.get(key) >= k){
-//                candidates.add(key);
-//            }
-//        }
-//
-//        System.out.println(">>> cnt_map = " + cnt_map);
-//        System.out.println(">>> candidates = " + candidates);
+        //Map<Character, Integer> map = new HashMap<>();
+        int res = 0;
 
-
-        for(int i = 0; i < s_arr.length; i++){
-            Map<String, Integer> tmp_map = new HashMap<>();
-            for(int j = i; j < s_arr.length; j++){
-                String val = String.valueOf(s.charAt(j));
-//                if(!candidates.contains(val)){
-//                    break;
-//                }
-                tmp_map.put(val, tmp_map.getOrDefault(val, 0) + 1);
-                if(isValid(tmp_map, k)){
+        for (int i = 0; i < s.length(); i++) {
+            // reset map
+            Map<Character, Integer> map = new HashMap<>();
+            int j = i;
+            //boolean x = cnt_map.get(s.charAt(j)) > k;
+            System.out.println("s.charAt(j) = " + s.charAt(j));
+            while (  j < s.length() &&  cnt_map.containsKey(String.valueOf(s.charAt(j))) &&
+                    cnt_map.get(String.valueOf(s.charAt(j))) > k ) {
+                //Character c = m
+                map.put(s.charAt(j), map.getOrDefault(s.charAt(j), 0) + 1);
+                if (isValid(map, k)) {
                     res = Math.max(res, j - i + 1);
                 }
+                j += 1;
             }
         }
 
         return res;
     }
 
-    private boolean isValid(Map<String, Integer> tmp_map, int k){
-        for(Integer val: tmp_map.values()){
-            if(val < k){
+    public boolean isValid(Map<Character, Integer> map, int k) {
+        for (Character c : map.keySet()) {
+            if (map.get(c) < k) {
                 return false;
             }
         }
-
         return true;
     }
+
+    // brute force (double loop)
+//    public int longestSubstring(String s, int k) {
+//
+//        // edge
+//        if(s == null || s.isEmpty()){
+//            return 0;
+//        }
+//        if(s.length() == 1){
+//            if(k <= 1){
+//                return 1;
+//            }
+//            return 0;
+//        }
+//
+//        int res = 0;
+//        Map<String, Integer> cnt_map = new HashMap<>();
+//        String[] s_arr = s.split("");
+//
+////        for(int i = 0; i <  s_arr.length; i++){
+////            String val = String.valueOf(s.charAt(i));
+////            cnt_map.put(val, cnt_map.getOrDefault(val, 0) + 1);
+////        }
+////
+////        Set<String> candidates = new HashSet<>();
+////        for(String key: cnt_map.keySet()){
+////            System.out.println(" cnt_map.get(key) ?" + cnt_map.get(key) + ", k = " + k);
+////            if(cnt_map.get(key) >= k){
+////                candidates.add(key);
+////            }
+////        }
+////
+////        System.out.println(">>> cnt_map = " + cnt_map);
+////        System.out.println(">>> candidates = " + candidates);
+//
+//
+//        for(int i = 0; i < s_arr.length; i++){
+//            Map<String, Integer> tmp_map = new HashMap<>();
+//            for(int j = i; j < s_arr.length; j++){
+//                String val = String.valueOf(s.charAt(j));
+////                if(!candidates.contains(val)){
+////                    break;
+////                }
+//                tmp_map.put(val, tmp_map.getOrDefault(val, 0) + 1);
+//                if(isValid(tmp_map, k)){
+//                    res = Math.max(res, j - i + 1);
+//                }
+//            }
+//        }
+//
+//        return res;
+//    }
+//
+//    private boolean isValid(Map<String, Integer> tmp_map, int k){
+//        for(Integer val: tmp_map.values()){
+//            if(val < k){
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
 
 
