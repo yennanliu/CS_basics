@@ -1069,17 +1069,68 @@ public class workspace14 {
     }
 
     // LC 535
+    // 16.39 - 16.49 pm
+    /**
+     *  IDEA 1) decode, encode  + hash
+     *
+     *
+     */
     public class Codec {
+
+        // attr
+        String baseLong = "https://leetcode.com/problems";
+        String baseShort = "http://tinyurl.com";
+
+        // { val : encode_val }
+        //Map<String, Integer> map = new HashMap<>(); // ???
 
         // Encodes a URL to a shortened URL.
         public String encode(String longUrl) {
 
-            return null;
+            // edge
+            if(longUrl == null){
+                return baseShort;
+            }
+            String input = longUrl.split(baseLong)[1];
+            StringBuilder output = new StringBuilder();
+
+            System.out.println(">>> (encode) input = " + input);
+
+            for(String x: input.split("")){
+                // ???
+                int diff =  x.charAt(0) - 'a'; // ???
+                output.append(String.valueOf(diff));
+               // map.put(x, diff);
+            }
+
+            System.out.println(">>> (encode) res = " + baseShort + "/" + output);
+            return baseShort + "/" + output;
         }
 
         // Decodes a shortened URL to its original URL.
         public String decode(String shortUrl) {
-            return null;
+            // edge
+            if(shortUrl.equals(baseShort)){
+                return null;
+            }
+
+            String input = shortUrl.split(baseShort)[1];
+            StringBuilder output = new StringBuilder();
+
+            System.out.println(">>> (decode) input = " + input);
+
+            // fix below
+            for(String x: input.split("")){
+
+                // ???
+                // x - a = diff
+                // -> x = diff + a
+                char val = (char)('a' + Integer.parseInt(x));  //
+                output.append(String.valueOf(val));
+            }
+
+            System.out.println(">>> (decode) res = " + baseShort + "/" + output);
+            return baseLong + "/" + output;
         }
     }
 

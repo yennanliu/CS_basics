@@ -61,6 +61,76 @@ public class EncodeAndDecodeTinyURL {
 //        }
 //    }
 
+    // V0-1
+    // IDEA: HASH MAP (gpt)
+    public class Codec_0_1 {
+        private String baseLong = "https://leetcode.com/problems";
+        private String baseShort = "http://tinyurl.com";
+
+        private Map<String, String> longToShort = new HashMap<>();
+        private Map<String, String> shortToLong = new HashMap<>();
+        private int counter = 1;
+
+        // Encodes a URL to a shortened URL.
+        public String encode(String longUrl) {
+            if (longUrl == null)
+                return baseShort;
+
+            if (longToShort.containsKey(longUrl)) {
+                return longToShort.get(longUrl);
+            }
+
+            String shortUrl = baseShort + "/" + counter++;
+            longToShort.put(longUrl, shortUrl);
+            shortToLong.put(shortUrl, longUrl);
+            return shortUrl;
+        }
+
+        // Decodes a shortened URL to its original URL.
+        public String decode(String shortUrl) {
+            return shortToLong.getOrDefault(shortUrl, null);
+        }
+    }
+
+    // V0-2
+    // IDEA: char diff + string op (gpt)
+    public class Codec_0_2 {
+
+        private static final String BASE_SHORT = "http://tinyurl.com";
+
+        // Encodes a URL to a shortened URL using ASCII diff style
+        public String encode(String longUrl) {
+            if (longUrl == null || longUrl.isEmpty())
+                return BASE_SHORT;
+
+            StringBuilder sb = new StringBuilder();
+            for (char c : longUrl.toCharArray()) {
+                sb.append((int) c).append(","); // store ASCII value
+            }
+
+            return BASE_SHORT + "/" + sb.toString();
+        }
+
+        // Decodes a shortened URL back to the original URL
+        public String decode(String shortUrl) {
+            if (shortUrl == null || shortUrl.equals(BASE_SHORT))
+                return null;
+
+            String input = shortUrl.substring(BASE_SHORT.length() + 1);
+            StringBuilder sb = new StringBuilder();
+
+            for (String part : input.split(",")) {
+                if (!part.isEmpty()) {
+                    int ascii = Integer.parseInt(part);
+                    sb.append((char) ascii);
+                }
+            }
+
+            return sb.toString();
+        }
+    }
+
+
     // V1-1
     // https://leetcode.ca/2017-05-18-535-Encode-and-Decode-TinyURL/
     class Codec_1_1{
