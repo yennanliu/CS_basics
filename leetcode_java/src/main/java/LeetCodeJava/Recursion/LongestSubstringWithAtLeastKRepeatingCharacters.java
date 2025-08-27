@@ -95,8 +95,53 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
     }
 
     // V0-2
-    // IDEA: DIVIDE AND CONQUER (gpt)
+    // IDEA: HASHMAP + SLIDE WINDOW (fixed by gpt)
     public int longestSubstring_0_2(String s, int k) {
+        if (s == null || s.isEmpty() || k > s.length())
+            return 0;
+
+        // Count frequency of each character in the whole string
+        Map<Character, Integer> cnt_map = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            cnt_map.put(c, cnt_map.getOrDefault(c, 0) + 1);
+        }
+
+        int res = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            Map<Character, Integer> map = new HashMap<>();
+            int j = i;
+
+            while (j < s.length()) {
+                char c = s.charAt(j);
+                // If char occurs less than k in the whole string, break (cannot be part of valid substring)
+                if (cnt_map.get(c) < k)
+                    break;
+
+                map.put(c, map.getOrDefault(c, 0) + 1);
+
+                if (isValid_0_2(map, k)) {
+                    res = Math.max(res, j - i + 1);
+                }
+
+                j++;
+            }
+        }
+
+        return res;
+    }
+
+    private boolean isValid_0_2(Map<Character, Integer> map, int k) {
+        for (int val : map.values()) {
+            if (val < k)
+                return false;
+        }
+        return true;
+    }
+
+    // V0-3
+    // IDEA: DIVIDE AND CONQUER (gpt)
+    public int longestSubstring_0_3(String s, int k) {
         return longestSubstringHelper(s, 0, s.length(), k);
     }
 
@@ -124,9 +169,9 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
         return end - start;
     }
 
-    // V0-3
+    // V0-4
     // IDEA: SLIDE WINDOW (gpt)
-    public int longestSubstring_0_3(String s, int k) {
+    public int longestSubstring_0_4(String s, int k) {
         int n = s.length();
         int res = 0;
 
