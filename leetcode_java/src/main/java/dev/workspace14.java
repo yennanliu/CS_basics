@@ -934,4 +934,24 @@ public class workspace14 {
         return true;
     }
 
+    // LC 1157
+    // 9.14 am - 9.24 am
+    /**
+     * Your MajorityChecker object will be instantiated and called as such:
+     * MajorityChecker obj = new MajorityChecker(arr);
+     * int param_1 = obj.query(left,right,threshold);
+     */
+    class MajorityChecker {
+
+        public MajorityChecker(int[] arr) {
+
+        }
+
+        public int query(int left, int right, int threshold) {
+            return 0;
+        }
+
+    }
+
+
 }
