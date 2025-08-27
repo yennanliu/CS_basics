@@ -35,61 +35,163 @@ public class DecodeString {
 
     // V0
     // IDEA : STACK
-    // TODO : optimize code
+    /**
+     *  Example:
+     *
+     *  # Execution Visualization for `decodeString("3[a2[c]]")`
+     *
+     * ---
+     *
+     * ### Initial state
+     * ```
+     * stack = []
+     * ```
+     *
+     * ---
+     *
+     * ### Step 1 → char = "3"
+     * - Not `]` → push `"3"`
+     * ```
+     * stack = ["3"]
+     * ```
+     *
+     * ---
+     *
+     * ### Step 2 → char = "["
+     * - Not `]` → push `"["`
+     * ```
+     * stack = ["3", "["]
+     * ```
+     *
+     * ---
+     *
+     * ### Step 3 → char = "a"
+     * - Not `]` → push `"a"`
+     * ```
+     * stack = ["3", "[", "a"]
+     * ```
+     *
+     * ---
+     *
+     * ### Step 4 → char = "2"
+     * - Not `]` → push `"2"`
+     * ```
+     * stack = ["3", "[", "a", "2"]
+     * ```
+     *
+     * ---
+     *
+     * ### Step 5 → char = "["
+     * - Not `]` → push `"["`
+     * ```
+     * stack = ["3", "[", "a", "2", "["]
+     * ```
+     *
+     * ---
+     *
+     * ### Step 6 → char = "c"
+     * - Not `]` → push `"c"`
+     * ```
+     * stack = ["3", "[", "a", "2", "[", "c"]
+     * ```
+     *
+     * ---
+     *
+     * ### Step 7 → char = "]"
+     * - Start popping until `"["`:
+     *   - Pop `"c"` → segment = `"c"`
+     *   - Pop `"["`
+     * - Now stack = `["3", "[", "a", "2"]`
+     * - Pop digits:
+     *   - Pop `"2"` → repeat = 2
+     * - Repeat `"c"` → `"cc"`
+     * - Push `"cc"`
+     * ```
+     * stack = ["3", "[", "a", "cc"]
+     * ```
+     *
+     * ---
+     *
+     * ### Step 8 → char = "]"
+     * - Start popping until `"["`:
+     *   - Pop `"cc"` → segment = `"cc"`
+     *   - Pop `"a"` → segment = `"a" + "cc"` = `"acc"`
+     *   - Pop `"["`
+     * - Now stack = ["3"]
+     * - Pop digits:
+     *   - Pop `"3"` → repeat = 3
+     * - Repeat `"acc"` → `"accaccacc"`
+     * - Push `"accaccacc"`
+     * ```
+     * stack = ["accaccacc"]
+     * ```
+     *
+     * ---
+     *
+     * ### End of input
+     * Join everything in stack:
+     * ```
+     * result = "accaccacc"
+     * ```
+     *
+     * ✅ Final Output: `"accaccacc"`
+     *
+     *
+     */
     public String decodeString(String s) {
-        if (s.isEmpty()) {
-            return null;
+        if (s == null || s.isEmpty()) {
+            return "";
         }
-        // init
-        Stack<String> stack = new Stack<>(); // ??
+
+        Stack<String> stack = new Stack<>();
         StringBuilder sb = new StringBuilder();
-        String A_TO_Z = "abcdefghijklmnopqrstuvwxyz";
+
         for (String x : s.split("")) {
-            //System.out.println(">>> x = " + x);
-            String tmp = "";
-            StringBuilder tmpSb = new StringBuilder();
             if (!x.equals("]")) {
+                // push everything except we ignore "]"
+                stack.push(x);
+            } else {
+                // pop until "["
                 /**
                  *  NOTE !!!
                  *
-                 *  if x is either `number` (e.g.: 1,2,3..) or `alphabet` (e.g.: a,b,c...)
-                 *
+                 *   we NEED to add "[" to stack
+                 *   since "[" can work as a `separator`
+                 *   so we know when to STOP when pop elment from stack
                  */
-                if (!x.equals("[")) {
-                    stack.add(x);
+                StringBuilder segment = new StringBuilder();
+                while (!stack.isEmpty() && !stack.peek().equals("[")) {
+                    segment.insert(0, stack.pop());
                 }
-            }
-            /**
-             *  NOTE !!!
-             *
-             *   if x equals "["
-             */
-            else {
-                // pop all elements from stack, multiply, and add to res
-                while (!stack.isEmpty()) {
-                    String cur = stack.pop(); // ??
-                    if (A_TO_Z.contains(cur)) {
-                        tmp = cur + tmp;
-                    } else {
-                        tmp = getMultiplyStr(tmp, Integer.parseInt(cur));
-                    }
+                stack.pop(); // remove "["
+
+                // now get the number (could be multi-digit, but we’ll read digits one by one)
+                StringBuilder numSb = new StringBuilder();
+                String nums = "0123456789";
+
+                // below 2 approaches are OK
+                //  while(!stack.isEmpty() && stack.peek().matches("\\d")){} ..
+                // 	.matches("\\d") → checks if that string is a single digit (0–9).
+                while (!stack.isEmpty() && nums.contains(stack.peek())) {
+                    numSb.insert(0, stack.pop()); // prepend digit
                 }
+                int repeat = Integer.parseInt(numSb.toString());
+
+                // build repeated substring
+                String repeated = getMultiplyStr(segment.toString(), repeat);
+                stack.push(repeated);
             }
-            sb.append(tmp);
         }
 
-        StringBuilder tmpSb = new StringBuilder();
-
-        // add remaining stack element to result
+        // build result from stack
         while (!stack.isEmpty()) {
-            tmpSb.append(stack.pop());
+            sb.insert(0, stack.pop());
         }
 
-        sb.append(tmpSb.reverse());
         return sb.toString();
     }
 
-    private String getMultiplyStr(String cur, Integer multiply) {
+    private String getMultiplyStr(String cur, int multiply) {
         StringBuilder sb = new StringBuilder();
         for (int x = 0; x < multiply; x++) {
             sb.append(cur);

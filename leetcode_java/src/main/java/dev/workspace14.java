@@ -954,4 +954,118 @@ public class workspace14 {
     }
 
 
+    // LC 394
+    // 9.42 - 9.52 am
+    /**  IDEA 1) STACK
+     *
+     *  STACK (FILO)
+     *
+     *  ex 1)
+     *
+     *  Input: s = "3[a]2[bc]"
+     *  Output: "aaabcbc"
+     *
+     *  -> "3[a]2[bc]"
+     *      x             st = [3]
+     *
+     *  -> "3[a]2[bc]"
+     *       x         st = [3]
+     *
+     *  -> "3[a]2[bc]"
+     *        x        st = [3], cache = a
+     *
+     *  -> "3[a]2[bc]"
+     *         x       st = [], cache = "", res = "aaa"
+     *
+     *
+     *  -> "3[a]2[bc]"
+     *          x    st = [2], cache = ""
+     *
+     *   -> "3[a]2[bc]"
+     *              x    st = [2], cache = "bc"
+     *
+     *   -> "3[a]2[bc]"
+     *               x     cache = "", res = aaabcbc
+     *
+     *
+     *  -------------------------------------
+     *
+     *    ex 2)
+     *
+     *    Input: s = "3[a2[c]]"
+     *    Output: "accaccacc"
+     *
+     *
+     *   ->
+     *
+     *    s = "3[a2[c]]"
+     *         x          st = [3]
+     *
+     *   s = "3[a2[c]]"   st = [3, a2]
+     *           x
+     *
+     *   s = "3[a2[c]]"   st = [3, a2, c], res = ""
+     *             x
+     *
+     *   s = "3[a2[c]]"   st = [3], res = "acc"
+     *              x
+     *
+     *   s = "3[a2[c]]"   st = [], res = "accaccacc"
+     *               x
+     *
+     */
+    public String decodeString(String s) {
+        // edge
+        if(s.isEmpty() || s.length() == 1){
+            return s;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        Stack<String> st = new Stack<>();
+        //Stack<String> st_num = new Stack<>();
+
+        Stack<String> st_ans = new Stack<>();
+
+        String[] s_arr = s.split("");
+        String nums = "0123456789";
+
+        //String cache = "";
+        Stack<String> cache = new Stack<>();
+
+        for(int i = 0; i < s_arr.length; i++) {
+            String val = s_arr[i];
+            if(val.equals("[")){
+                while(!cache.isEmpty()){
+                    st.add(cache.pop());
+                }
+                // cut off
+                st.add("|");
+                cache = new Stack<>();
+            }
+            else if (val.equals("]")) {
+                String prev = st.pop();
+                if(!nums.contains(prev)){
+                    st_ans.add(prev);
+                }else{
+                    String tmp = mulitiply(prev, Integer.parseInt(val));
+                }
+
+            }else{
+                cache.add(val);
+            }
+
+        }
+
+        return sb.toString();
+    }
+
+    private String mulitiply(String s, int mutiplier){
+        String res = "";
+        for(int i = 0; i < mutiplier; i++){
+            res += s;
+        }
+        return res;
+    }
+
 }
