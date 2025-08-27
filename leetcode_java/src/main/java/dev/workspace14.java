@@ -748,8 +748,10 @@ public class workspace14 {
    *   ->
    *
    */
+  // 18.45 - 18.55 pm
+  // IDEA: PQ + HASHMAP
   public String reorganizeString(String s) {
-      //StringBuilder sb = new StringBuilder();
+
       // edge
       if(s.isEmpty()){
           return "";
@@ -765,7 +767,7 @@ public class workspace14 {
           cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
       }
 
-      // custom PQ: sort on map val  (big -> small)
+      // custom PQ: sort with cnt_map val (val : big -> small)
       PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
           @Override
           public int compare(String o1, String o2) {
@@ -774,39 +776,175 @@ public class workspace14 {
           }
       });
 
-      for(String key: cnt_map.keySet()){
-          pq.add(key);
-      }
-
+      //StringBuilder sb = new StringBuilder();
       String res = "";
 
-      while(!pq.isEmpty()){
-          // get val with `max` cnt
-          String cur_val = pq.poll();
-          // check if `adjacent` are NOT the same
-          if(!res.isEmpty()){
-              String prevVal = String.valueOf(res.charAt(res.length() - 1));
-              if(prevVal.equals(cur_val)){
+      // NOTE !!! add `key` to PQ
+      pq.addAll(cnt_map.keySet());
+
+      // NOTE !!! we define prev
+      String prev = null;
+
+      while (!pq.isEmpty()){
+
+          String val = pq.poll();
+
+          // case 1) prev has val and prev == cur val
+          if(prev != null && val == prev){
+              // edge case ???
+              if(pq.isEmpty()){
                   return "";
               }
+
+              String next = pq.poll();
+              res += next;
+              cnt_map.put(next, cnt_map.get(next) - 1);
+              if(cnt_map.get(next) > 0){
+                  pq.add(next);
+              }
+              pq.add(val);
+              // NOTE !!! update `prev`
+              prev = next;
+          }
+          // case 1) prev is null or prev != cur val
+          else{
+              res += val;
+              cnt_map.put(val, cnt_map.get(val) - 1);
+              if(cnt_map.get(val) > 0){
+                  pq.add(val);
+              }
+              // NOTE !!! update `prev`
+              prev = val;
           }
 
-          res += cur_val;
-
-          // update hashmap
-          cnt_map.put(cur_val, cnt_map.get(cur_val) - 1);
-          // if `cnt` == 0
-          // remove key from hashmap
-          if(cnt_map.get(cur_val) == 0){
-              cnt_map.remove(cur_val);
-          }else{
-              // update PQ: the key still exists, add it back to
-              pq.add(cur_val);
-          }
       }
 
       return res;
-    }
+  }
+
+
+
+
+//  public String reorganizeString(String s) {
+//
+//      // edge
+//      if(s.isEmpty()){
+//          return "";
+//      }
+//      if(s.length() <= 2){
+//          return s;
+//      }
+//
+//      // { val : cnt }
+//      Map<String, Integer> cnt_map = new HashMap<>();
+//
+//      for(String x: s.split("")){
+//          cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
+//      }
+//
+//      // custom PQ: sort with cnt_map val (val : big -> small)
+//      PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+//          @Override
+//          public int compare(String o1, String o2) {
+//              int diff = cnt_map.get(o2) - cnt_map.get(o1);
+//              return diff;
+//          }
+//      });
+//
+//      //StringBuilder sb = new StringBuilder();
+//      String res = "";
+//
+//      // NOTE !!! add `key` to PQ
+//      pq.addAll(cnt_map.keySet());
+//
+//      while (!pq.isEmpty()){
+//          String val = pq.poll();
+//          String val2 = null;
+//          String toUpdate = null;
+//          // case 1) val is NOT same as its neighbor
+//          if(!res.isEmpty() && val.equals(res.charAt(res.length()-1))){
+//              // pop another `prev` element as well
+//              val2 = pq.poll();
+//          }
+//          if(val2 != null){
+//              toUpdate = val2;
+//              pq.add(val);
+//          }
+//          res += toUpdate;
+//          cnt_map.put(toUpdate, cnt_map.get(toUpdate) - 1);
+//          if(cnt_map.get(toUpdate) == 0){
+//              cnt_map.remove(toUpdate);
+//          }else{
+//              pq.add(toUpdate);
+//          }
+//
+//      }
+//
+//
+//      //return sb.toString();
+//      return res;
+//  }
+
+
+//  public String reorganizeString(String s) {
+//      //StringBuilder sb = new StringBuilder();
+//      // edge
+//      if(s.isEmpty()){
+//          return "";
+//      }
+//      if(s.length() <= 2){
+//          return s;
+//      }
+//
+//      // { val : cnt }
+//      Map<String, Integer> cnt_map = new HashMap<>();
+//
+//      for(String x: s.split("")){
+//          cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
+//      }
+//
+//      // custom PQ: sort on map val  (big -> small)
+//      PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+//          @Override
+//          public int compare(String o1, String o2) {
+//              int diff = cnt_map.get(o2) - cnt_map.get(o1);
+//              return diff;
+//          }
+//      });
+//
+//      for(String key: cnt_map.keySet()){
+//          pq.add(key);
+//      }
+//
+//      String res = "";
+//
+//      while(!pq.isEmpty()){
+//          // get val with `max` cnt
+//          String cur_val = pq.poll();
+//          // check if `adjacent` are NOT the same
+//          if(!res.isEmpty()){
+//              String prevVal = String.valueOf(res.charAt(res.length() - 1));
+//              if(prevVal.equals(cur_val)){
+//                  return "";
+//              }
+//          }
+//
+//          res += cur_val;
+//
+//          // update hashmap
+//          cnt_map.put(cur_val, cnt_map.get(cur_val) - 1);
+//          // if `cnt` == 0
+//          // remove key from hashmap
+//          if(cnt_map.get(cur_val) == 0){
+//              cnt_map.remove(cur_val);
+//          }else{
+//              // update PQ: the key still exists, add it back to
+//              pq.add(cur_val);
+//          }
+//      }
+//
+//      return res;
+//    }
 
 
     // LC 395

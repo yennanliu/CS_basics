@@ -140,8 +140,108 @@ public class ReorganizeString {
     }
 
     // V0-0-1
-    // IDEA: PQ (PriorityQueue<Character>) + HASHMAP (fixed by gpt)
+    // IDEA: HASHMAP + PQ
     public String reorganizeString_0_0_1(String s) {
+
+        // edge
+        if (s.isEmpty()) {
+            return "";
+        }
+        if (s.length() <= 2) {
+            return s;
+        }
+
+        // { val : cnt }
+        Map<String, Integer> cnt_map = new HashMap<>();
+
+        for (String x : s.split("")) {
+            cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
+        }
+
+        // custom PQ: sort with cnt_map val (val : big -> small)
+        PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = cnt_map.get(o2) - cnt_map.get(o1);
+                return diff;
+            }
+        });
+
+        // can use stringBuilder as well
+        String res = "";
+
+        // NOTE !!! add `key` to PQ
+        pq.addAll(cnt_map.keySet());
+
+        /**
+         * NOTE !!! we define prev
+         */
+        String prev = null;
+
+        while (!pq.isEmpty()) {
+
+            String val = pq.poll();
+
+            /**
+             * case 1) prev has val and prev == cur val
+             */
+            if (prev != null && val == prev) {
+                // edge case ???
+                if (pq.isEmpty()) {
+                    return "";
+                }
+
+                /**
+                 * NOTE !!! we pop another prev val, as next
+                 */
+                String next = pq.poll();
+                res += next;
+                /**
+                 * NOTE !!! we update cnt_map by prev key
+                 */
+                cnt_map.put(next, cnt_map.get(next) - 1);
+                /**
+                 * NOTE !!! ONLY add prev back to PQ if its remaining cnt still > 0
+                 */
+                if (cnt_map.get(next) > 0) {
+                    pq.add(next);
+                }
+                /**
+                 * NOTE !!! add val back to PQ, since it's NOT used
+                 */
+                pq.add(val);
+                /**
+                 * NOTE !!! update `prev`
+                 */
+                prev = next;
+            }
+            /**
+             * case 2) prev is null or prev != cur val
+             */
+            else {
+                res += val;
+                cnt_map.put(val, cnt_map.get(val) - 1);
+                /**
+                 * NOTE !!! ONLY add val back to PQ if its remaining cnt still > 0
+                 */
+                if (cnt_map.get(val) > 0) {
+                    pq.add(val);
+                }
+                /**
+                 * NOTE !!! update `prev`
+                 */
+                prev = val;
+            }
+
+        }
+
+        return res;
+    }
+
+
+    // V0-0-2
+    // IDEA: PQ (PriorityQueue<Character>) + HASHMAP (fixed by gpt)
+    public String reorganizeString_0_0_2(String s) {
         // Edge cases
         if (s == null || s.length() == 0) {
             return "";
