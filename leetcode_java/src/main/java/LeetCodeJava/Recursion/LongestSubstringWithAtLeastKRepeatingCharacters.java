@@ -61,6 +61,18 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
         for (int i = 0; i < s.length(); i++) {
             // reset map
             Map<Character, Integer> map = new HashMap<>();
+            /**
+             *  NOTE !!!
+             *
+             *   for brute force (double loop)
+             *
+             *   j needs to start i
+             *
+             *   (e.g. for (int j = i; j < s.length(); j++))
+             *
+             *   NOT (for (int j = 0; j < s.length(); j++))
+             *
+             */
             for (int j = i; j < s.length(); j++) {
                 //Character c = m
                 map.put(s.charAt(j), map.getOrDefault(s.charAt(j), 0) + 1);
