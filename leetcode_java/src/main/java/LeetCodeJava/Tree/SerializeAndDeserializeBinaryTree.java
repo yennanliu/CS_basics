@@ -54,7 +54,7 @@ public class SerializeAndDeserializeBinaryTree {
     // TreeNode ans = deser.deserialize(ser.serialize(root));
 
     // VO
-    // IDEA : DFS
+    // IDEA : DFS (NOTE: `BFS` approach is also OK)
     public class Codec{
         public String serialize(TreeNode root) {
 
@@ -390,6 +390,67 @@ public class SerializeAndDeserializeBinaryTree {
             root.left = helper(queue);
             root.right = helper(queue);
             /** NOTE !!! don't forget to return final deserialize result  */
+            return root;
+        }
+    }
+
+    // V0-0-1
+    // IDEA: BFS (GPT)
+    public class Codec_0_0_1 {
+
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            if (root == null)
+                return "#,"; // use "#" to mark nulls
+
+            StringBuilder sb = new StringBuilder();
+            Queue<TreeNode> q = new LinkedList<>();
+            q.add(root);
+
+            while (!q.isEmpty()) {
+                TreeNode node = q.poll();
+                if (node == null) {
+                    sb.append("#,");
+                    continue;
+                }
+
+                sb.append(node.val).append(",");
+                q.add(node.left);
+                q.add(node.right);
+            }
+
+            return sb.toString();
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+            if (data.equals("#,"))
+                return null;
+
+            String[] parts = data.split(",");
+            Queue<TreeNode> q = new LinkedList<>();
+            TreeNode root = new TreeNode(Integer.parseInt(parts[0]));
+            q.add(root);
+
+            int i = 1;
+            while (!q.isEmpty() && i < parts.length) {
+                TreeNode parent = q.poll();
+
+                // left child
+                if (!parts[i].equals("#")) {
+                    parent.left = new TreeNode(Integer.parseInt(parts[i]));
+                    q.add(parent.left);
+                }
+                i++;
+
+                // right child
+                if (i < parts.length && !parts[i].equals("#")) {
+                    parent.right = new TreeNode(Integer.parseInt(parts[i]));
+                    q.add(parent.right);
+                }
+                i++;
+            }
+
             return root;
         }
     }

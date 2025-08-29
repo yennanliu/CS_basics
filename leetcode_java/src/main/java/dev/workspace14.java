@@ -3,16 +3,16 @@ package dev;
 import java.util.*;
 
 public class workspace14 {
-
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode(int x) {
-            val = x;
-        }
-    }
+//
+//    public class TreeNode {
+//        int val;
+//        TreeNode left;
+//        TreeNode right;
+//
+//        TreeNode(int x) {
+//            val = x;
+//        }
+//    }
 
     // LC 297
     // 5.55 - 6.10 pm
@@ -1324,64 +1324,186 @@ public class workspace14 {
      *
      *
      */
-    public class Codec {
+//    public class Codec {
+//
+//        // attr
+//        String baseLong = "https://leetcode.com/problems";
+//        String baseShort = "http://tinyurl.com";
+//
+//        // { val : encode_val }
+//        //Map<String, Integer> map = new HashMap<>(); // ???
+//
+//        // Encodes a URL to a shortened URL.
+//        public String encode(String longUrl) {
+//
+//            // edge
+//            if(longUrl == null){
+//                return baseShort;
+//            }
+//            String input = longUrl.split(baseLong)[1];
+//            StringBuilder output = new StringBuilder();
+//
+//            System.out.println(">>> (encode) input = " + input);
+//
+//            for(String x: input.split("")){
+//                // ???
+//                int diff =  x.charAt(0) - 'a'; // ???
+//                output.append(String.valueOf(diff));
+//               // map.put(x, diff);
+//            }
+//
+//            System.out.println(">>> (encode) res = " + baseShort + "/" + output);
+//            return baseShort + "/" + output;
+//        }
+//
+//        // Decodes a shortened URL to its original URL.
+//        public String decode(String shortUrl) {
+//            // edge
+//            if(shortUrl.equals(baseShort)){
+//                return null;
+//            }
+//
+//            String input = shortUrl.split(baseShort)[1];
+//            StringBuilder output = new StringBuilder();
+//
+//            System.out.println(">>> (decode) input = " + input);
+//
+//            // fix below
+//            for(String x: input.split("")){
+//
+//                // ???
+//                // x - a = diff
+//                // -> x = diff + a
+//                char val = (char)('a' + Integer.parseInt(x));  //
+//                output.append(String.valueOf(val));
+//            }
+//
+//            System.out.println(">>> (decode) res = " + baseShort + "/" + output);
+//            return baseLong + "/" + output;
+//        }
+//    }
 
-        // attr
-        String baseLong = "https://leetcode.com/problems";
-        String baseShort = "http://tinyurl.com";
+    // LC 297
+    // Definition for a binary tree node.
+    // 7.32 - 7.42 am
+    /**
+     *  IDEA 1) DFS
+     *
+     *
+     *
+     *
+     *
+     */
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
 
-        // { val : encode_val }
-        //Map<String, Integer> map = new HashMap<>(); // ???
-
-        // Encodes a URL to a shortened URL.
-        public String encode(String longUrl) {
-
-            // edge
-            if(longUrl == null){
-                return baseShort;
-            }
-            String input = longUrl.split(baseLong)[1];
-            StringBuilder output = new StringBuilder();
-
-            System.out.println(">>> (encode) input = " + input);
-
-            for(String x: input.split("")){
-                // ???
-                int diff =  x.charAt(0) - 'a'; // ???
-                output.append(String.valueOf(diff));
-               // map.put(x, diff);
-            }
-
-            System.out.println(">>> (encode) res = " + baseShort + "/" + output);
-            return baseShort + "/" + output;
-        }
-
-        // Decodes a shortened URL to its original URL.
-        public String decode(String shortUrl) {
-            // edge
-            if(shortUrl.equals(baseShort)){
-                return null;
-            }
-
-            String input = shortUrl.split(baseShort)[1];
-            StringBuilder output = new StringBuilder();
-
-            System.out.println(">>> (decode) input = " + input);
-
-            // fix below
-            for(String x: input.split("")){
-
-                // ???
-                // x - a = diff
-                // -> x = diff + a
-                char val = (char)('a' + Integer.parseInt(x));  //
-                output.append(String.valueOf(val));
-            }
-
-            System.out.println(">>> (decode) res = " + baseShort + "/" + output);
-            return baseLong + "/" + output;
+        TreeNode(int x) {
+            val = x;
         }
     }
+    public class Codec {
+
+        StringBuilder sb;
+
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            // edge
+            if(root == null){
+                return ",";
+            }
+            if(root.left == null && root.right == null){
+                return String.valueOf(root.val);
+            }
+
+            sb = new StringBuilder();
+            // bfs
+            // save tree `layer by layer`
+            // node -> left-sub-node -> right->sub-node
+            Queue<TreeNode> q = new LinkedList<>();
+            q.add(root);
+
+            int q_size = 0;
+
+            while (!q.isEmpty()){
+                // cache cur queue size
+                q_size = q.size();
+
+                for(int i = 0; i < q_size; i++){
+                    // loop over all nodes in `current layer`
+                    TreeNode node = q.poll();
+                    sb.append(node.val);
+                    sb.append(",");  // split each node val
+
+                    if(node.left != null){
+                        q.add(node.left);
+                    }
+                    if(node.right != null){
+                        q.add(node.right);
+                    }
+
+                  //  sb.append("|"); // end of layer
+                }
+
+            }
+
+            return sb.toString();
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+            // edge
+            if(data.equals(",")){
+                return null;
+            }
+            if(data.length() == 1){
+                // ???
+                return new TreeNode(Integer.parseInt(data));
+            }
+
+
+            // ???
+            Queue<String> tmpQ = new LinkedList<>();
+            String str = sb.toString();
+            for(String x: str.split(",")){
+                tmpQ.add(x);
+            }
+
+            // TreeNode res = new TreeNode(0);
+            return deserialHelper(tmpQ); /// ????
+        }
+    }
+
+    public TreeNode deserialHelper(Queue<String> q){
+        // edge
+        if(q.isEmpty()){
+            return null;
+        }
+
+        // queue: [ "a,b,c", "d,e,f",  ...)
+        String val = q.poll();
+        //String[] val_arr = val.split(",");
+        // ???
+        //TreeNode node = new TreeNode(Integer.parseInt(val_arr[0]));
+        TreeNode node = new TreeNode(Integer.parseInt(val));
+//        node.left = new TreeNode(Integer.parseInt(val_arr[1]));
+//        node.right = new TreeNode(Integer.parseInt(val_arr[2]));
+        node.left = deserialHelper(q);
+        node.right =  deserialHelper(q);
+
+//        for(String x: val.split(",")){
+//            TreeNode node = new TreeNode(Integer.parseInt(x));
+//            node.left =
+//        }
+
+        return node;
+    }
+
+    // Your Codec object will be instantiated and called as such:
+    // Codec ser = new Codec();
+    // Codec deser = new Codec();
+    // TreeNode ans = deser.deserialize(ser.serialize(root));
 
 
 }
