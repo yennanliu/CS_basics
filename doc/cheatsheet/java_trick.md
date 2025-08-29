@@ -1,218 +1,227 @@
-# Java Tricks
+# Java Programming Tricks & Patterns
 
-# Ref
+## Overview
 
-- [Syntax sugar](https://javaguide.cn/java/basis/syntactic-sugar.html#%E5%86%85%E9%83%A8%E7%B1%BB)
+This document provides essential Java programming tricks, patterns, and best practices commonly used in competitive programming, interviews, and algorithm implementation.
 
-# 0) Basic data structures
+### References
+- [Java Syntax Sugar Guide](https://javaguide.cn/java/basis/syntactic-sugar.html#%E5%86%85%E9%83%A8%E7%B1%BB)
+- [Java Collections Best Practices](https://javaguide.cn/java/collection/java-collection-precautions-for-use.html)
 
-- Heap
-    - heap (PQ) is `min-heap` default in `java`
+## 1) Core Data Structures
 
-- Min-heap
-    - LC 703
+### 1.1) Priority Queue (Heap)
+
+**Key Concept**: Java's `PriorityQueue` is a **min-heap by default**.
+
+#### Min-Heap Implementation
 ```java
-// java
-
-// V1
-// - This creates a min-heap using the natural ordering of Integer objects (i.e., integers will be ordered in ascending order by default).
-// - No custom comparator is provided, so Java uses the default comparison of integers, which is already based on their numerical value.
+// Method 1: Default min-heap (natural ordering)
 PriorityQueue<Integer> minHeap = new PriorityQueue<>();
 
-// V2
-// - This also creates a min-heap, but it uses a custom comparator.
-/** 
- *  NOTE !!!
- * 
- *  need to use `new PriorityQueue<Integer>`, so the Comparator knows the type to compare
- * 
- */
-PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>(new Comparator<Integer>() {
+// Method 2: Min-heap with explicit comparator
+PriorityQueue<Integer> minHeap2 = new PriorityQueue<>((o1, o2) -> o1 - o2);
+
+// Method 3: Traditional comparator (verbose)
+PriorityQueue<Integer> minHeap3 = new PriorityQueue<>(new Comparator<Integer>() {
     @Override
     public int compare(Integer o1, Integer o2) {
-        int diff = o1 - o2;
-        return diff;
+        return o1 - o2;  // Ascending order
     }
 });
 ```
 
-- Max-heap
-    - LC 1046
+#### Max-Heap Implementation
+
 ```java
-// java
+// Method 1: Using Collections.reverseOrder() - RECOMMENDED
+PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
 
-// V1
-PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comperator.reverseOrder());
+// Method 2: Custom lambda comparator
+PriorityQueue<Integer> maxHeap2 = new PriorityQueue<>((o1, o2) -> o2 - o1);
 
-// V2
-PriorityQueue<Integer> maxHeap = new PriorityQueue<>(new Comparator<Integer>() {
+// Method 3: Traditional comparator
+PriorityQueue<Integer> maxHeap3 = new PriorityQueue<>(new Comparator<Integer>() {
     @Override
     public int compare(Integer o1, Integer o2) {
-        int diff = o2 - o1;
-        return diff;
+        return o2 - o1;  // Descending order
     }
 });
-```       
+```
 
-- Character
-    - https://www.runoob.com/java/java-character.html
-    - https://www.runoob.com/java/java-string-charat.html
-    - `charAt() ` offer a method a access String element with idx
-    ```java
-    // java
-    String s = "www.google.com";
-    char result = s.charAt(6);
-    System.out.println(result);
+**Common Use Cases**: Top-K problems, finding median, scheduling tasks
 
-    // LC 647
-    // ...
-    while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
-        l--;
-        r++;
-        ans++;
-    }
-    // ...
-    ```
+### 1.2) Character Operations
 
-# 1) Basic op
-
-
-### 0-0)
-- [Arrays.asList vs new ArrayList()](https://www.baeldung.com/java-arrays-aslist-vs-new-arraylist#:~:text=asList%20method%20returns%20a%20type,the%20add%20and%20remove%20methods.)
-
-- Conclusion:
-- `Arrays.asList` : only wrap existing array, `add`, `remove` methods (but has modify method) are NOT implemented
-- `new ArrayList` : implement "add", "remove" and "modify" methods, not affect original array -> `preferable`
-
-
-### 0-0-0-1) Init an array
+**Key Methods**: `charAt()`, character comparisons, ASCII operations
 
 ```java
-// java
+// Basic character access
+String s = "www.google.com";
+char result = s.charAt(6);  // Returns 'g'
 
-// LC 973
+// Character comparison in palindrome check (LC 647)
+while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
+    l--;
+    r++;
+    count++;
+}
 
-/** NOTE !!!
- *  
- *  below init an array with (k length, 2 width) (aka k x 2 dimension)
- * 
- */
-int[][] ans = new int[k][2];
+// Character to index mapping (lowercase a-z)
+char c = 'c';
+int index = c - 'a';  // Returns 2 (c is 3rd letter, 0-indexed)
+```
+
+**Performance Note**: `charAt(i)` is O(1) for strings, making it efficient for character-by-character processing.
+
+## 2) Array and Collection Operations
+
+### 2.1) Arrays vs Collections Key Differences
+**Critical Distinction**:
+
+| Method | Mutability | Affects Original Array | Best Use Case |
+|--------|------------|----------------------|---------------|
+| `Arrays.asList()` | **Fixed-size** (no add/remove) | ✅ **Yes** | Quick conversion for read-only operations |
+| `new ArrayList()` | **Fully mutable** | ❌ **No** | When you need to modify the collection |
+
+```java
+// Arrays.asList - Fixed size, backed by original array
+Integer[] arr = {1, 2, 3};
+List<Integer> list1 = Arrays.asList(arr);
+list1.set(0, 99);        // ✅ Works - modifies original array
+// list1.add(4);         // ❌ Throws UnsupportedOperationException
+
+// new ArrayList - Fully mutable, independent copy
+List<Integer> list2 = new ArrayList<>(Arrays.asList(arr));
+list2.add(4);            // ✅ Works - doesn't affect original array
+```
+
+**Recommendation**: Use `new ArrayList<>(Arrays.asList(arr))` when you need full mutability.
 
 
+### 2.2) Array Initialization Patterns
 
+```java
+// 1D Array Initialization
+int[] arr1 = new int[5];                    // [0, 0, 0, 0, 0]
+int[] arr2 = {1, 2, 3, 4, 5};              // Direct initialization
+int[] arr3 = new int[]{1, 2, 3, 4, 5};     // Explicit initialization
+
+// 2D Array Initialization  
+int[][] matrix = new int[3][4];             // 3 rows, 4 columns (all zeros)
+int[][] matrix2 = {{1, 2}, {3, 4}, {5, 6}}; // Direct 2D initialization
+
+// Dynamic 2D array (common in LeetCode)
 int k = 4;
-int[][] x = new int[k][2];
-System.out.println(">>> before " + Arrays.deepToString(x));
+int[][] result = new int[k][2];             // k rows, 2 columns each
+result[0] = new int[]{0, 1};                // Assign first row
+result[1] = new int[]{2, 3};                // Assign second row
 
-x[0] = new int[]{0,1};
-x[1] = new int[]{0,2};
-
-System.out.println(">>> after " + Arrays.deepToString(x));
-
-int[] x2 = new int[]{1, 2, 3};
-System.out.println(Arrays.toString(x2));  // Output: [1, 2, 3]
-
-
-// how to print context in 2D array ?
-
-System.out.println(">>> before " + Arrays.deepToString(x));
+// Printing arrays
+System.out.println(Arrays.toString(arr2));      // 1D: [1, 2, 3, 4, 5]
+System.out.println(Arrays.deepToString(result)); // 2D: [[0, 1], [2, 3], [0, 0], [0, 0]]
 ```
 
 
-### 0-0-1) Array <--> List
+### 2.3) Array ↔ List Conversions
 
 ```java
-// java
-// LC 57
+// Array → List Conversion
+Integer[] arr = {1, 2, 3, 4, 5};
 
-/** 
-*  
-* 1) Array -> List
-*  
-*/
+// Method 1: Fixed-size list (backed by array)
+List<Integer> list1 = Arrays.asList(arr);
 
-Integer [] arr1 = new Integer[]{1,2,3};
+// Method 2: Mutable list (recommended)
+List<Integer> list2 = new ArrayList<>(Arrays.asList(arr));
 
-/** Arrays.asList */
-List<Integer> list1 = Arrays.asList(arr1); // NOTE here !!!
+// Method 3: Using streams (Java 8+)
+List<Integer> list3 = Arrays.stream(arr).collect(Collectors.toList());
 
+// List → Array Conversion
+List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
 
-/** 
-*  
-* 2) List -> Array
-*  
-*/
+// Method 1: Traditional approach
+Integer[] arr1 = list.toArray(new Integer[list.size()]);
 
-List<Integer> list2 = new ArrayList<>();
-list2.add(1);
-list2.add(2);
-list2.add(3);
+// Method 2: Simplified (Java 8+)
+Integer[] arr2 = list.toArray(Integer[]::new);
 
-/** 
- *  NOTE !!! `toArray`
- *    
- *  list2.toArray with size
- * 
- */
-Integer [] arr2 = list2.toArray(new Integer[list2.size()]); // NOTE here !!!
+// Method 3: For primitive arrays
+int[] primitiveArr = list.stream().mapToInt(Integer::intValue).toArray();
 ```
 
-- https://javaguide.cn/java/collection/java-collection-precautions-for-use.html#%E6%95%B0%E7%BB%84%E8%BD%AC%E9%9B%86%E5%90%88
+**Performance Note**: `toArray(new T[size])` is generally faster than `toArray()` because it avoids internal resizing.
 
 
-### 0-0-2) HashMap append to value if key existed/Not existed
+### 2.4) HashMap Advanced Operations
 
+#### Nested HashMap Pattern
 ```java
-// java
-// LC 399
+// Nested HashMap for complex relationships (LC 399 - Graph representation)
+HashMap<String, HashMap<String, Double>> graph = new HashMap<>();
 
-HashMap<String, HashMap<String, Double>> gr = new HashMap<>();
-
+// Efficient way to initialize nested structure
 for (int i = 0; i < equations.size(); i++) {
-    String dividend = equations.get(i).get(0);
-    String divisor = equations.get(i).get(1);
+    String from = equations.get(i).get(0);
+    String to = equations.get(i).get(1);
     double value = values[i];
-
-    gr.putIfAbsent(dividend, new HashMap<>());
-    gr.putIfAbsent(divisor, new HashMap<>());
-
-    gr.get(dividend).put(divisor, value);
-    gr.get(divisor).put(dividend, 1.0 / value);
+    
+    // putIfAbsent prevents overwriting existing nested maps
+    graph.putIfAbsent(from, new HashMap<>());
+    graph.putIfAbsent(to, new HashMap<>());
+    
+    graph.get(from).put(to, value);
+    graph.get(to).put(from, 1.0 / value);  // Bidirectional relationship
 }
 ```
 
-- NOTE: can use nested map structure (e.g. `HashMap<String, HashMap<String, Double>>`) to store `keyA - valB - resC` info
-
-### 1-0) String to Char array
+#### Essential HashMap Methods
 ```java
-// java
-// LC 844
-// V1
-String s = "abc";
-for (char c: S.toCharArray()) {
-    // do sth
-    System.out.println("c = " + c);
-}
+Map<String, Integer> map = new HashMap<>();
 
-// V2
-// LC 49
-String strs = "scvsdacvdsa";
-char[] array = strs.toCharArray();
+// Safe operations
+map.putIfAbsent(key, defaultValue);           // Only put if key doesn't exist
+int count = map.getOrDefault(key, 0) + 1;     // Get with fallback
+map.put(key, count);                          // Update count
 
-// or, can use myStr1.split(""), can access element in string as well 
+// Atomic operations (Java 8+)
+map.merge(key, 1, Integer::sum);              // Increment counter atomically
+map.compute(key, (k, v) -> v == null ? 1 : v + 1); // Custom computation
 ```
 
+## 3) String Operations
+
+### 3.1) String to Character Array
 ```java
-// Java
-// Array VS List
+// Method 1: toCharArray() - Most efficient for character processing
+String s = "hello";
+char[] chars = s.toCharArray();
+for (char c : chars) {
+    System.out.println(c);  // h, e, l, l, o
+}
 
-// List
-List<String> _list = new ArrayList<>(); // this is List (with "List" keyword)
+// Method 2: charAt() - Good for selective access
+for (int i = 0; i < s.length(); i++) {
+    char c = s.charAt(i);
+    // Process character
+}
 
+// Method 3: split("") - Creates String array (less efficient)
+String[] chars2 = s.split("");  // ["h", "e", "l", "l", "o"]
+```
 
-// Array
-int[] _array = {0,1,2,3}; // this is Array (without "List" keyword)
+**Performance**: `toCharArray()` > `charAt()` > `split("")` for character iteration
+
+**Quick Reference: Array vs List**
+```java
+// Array - Fixed size, primitive/object types
+int[] intArray = {0, 1, 2, 3};           // Primitive array
+String[] stringArray = {"a", "b", "c"}; // Object array
+
+// List - Dynamic size, object types only
+List<Integer> intList = new ArrayList<>();   // Wrapper type required
+List<String> stringList = new ArrayList<>(); // Object type
 ```
 
 ### 1-0-1) Init a List
@@ -390,57 +399,54 @@ return builder.toString();
 } 
 ```
 
-### 1-0-4-0) get sub string
+### 3.2) Substring Operations
 
 ```java
-// java
-// LC 127
+String s = "hello world";
 
-String x = "abcd";
-/** 
- *  1st idx start from 0
- *  2nd ind start from 1
- *  
- *   -> e.g.  [1st_idx, 2nd_idx]
- * 
- */
+// substring(start, end) - [start, end) interval
+System.out.println(s.substring(0, 1));   // "h"
+System.out.println(s.substring(0, 5));   // "hello"
+System.out.println(s.substring(6));      // "world" (from index 6 to end)
+System.out.println(s.substring(2, 8));   // "llo wo"
 
-System.out.println(x.substring(0,1)); // a
-System.out.println(x.substring(0,2)); // ab
-System.out.println(x.substring(2,3)); // c
-System.out.println(x.substring(2,4)); // cd
-//System.out.println(x.substring(2,10)); // `StringIndexOutOfBoundsException`
+// Common patterns
+String firstChar = s.substring(0, 1);           // First character
+String lastChar = s.substring(s.length() - 1);  // Last character
+String withoutFirst = s.substring(1);           // Remove first character
+String withoutLast = s.substring(0, s.length() - 1); // Remove last character
 ```
 
+**Important**: `substring(start, end)` uses **[start, end)** interval - includes start, excludes end.
 
-### 1-0-4-1) replace `index = k` element at String
+
+### 3.3) String Character Replacement
 
 ```java
-// java
-// LC 127
+// Pattern: Replace character at specific index
+String original = "apple";
+char[] replacements = {'1', '2', '3', '4', '5'};
 
-String y = "apple";
-List<String> replaces = new ArrayList<>();
-replaces.add("1");
-replaces.add("2");
-replaces.add("3");
-replaces.add("4");
-replaces.add("5");
-
-for(int i = 0; i < y.length(); i++){
-    String y_ = y.substring(0,i) + replaces.get(i) + y.substring(i+1, y.length());
-    System.out.println("y_ = " + y_);
-    /**
-     *  result:
-     *
-     * y_ = 1pple
-     * y_ = a2ple
-     * y_ = ap3le
-     * y_ = app4e
-     * y_ = appl5
-     *
-     */
+// Method 1: Using substring (creates new strings)
+for (int i = 0; i < original.length(); i++) {
+    String modified = original.substring(0, i) + 
+                     replacements[i] + 
+                     original.substring(i + 1);
+    System.out.println(modified);
+    // Output: "1pple", "a2ple", "ap3le", "app4e", "appl5"
 }
+
+// Method 2: Using StringBuilder (more efficient)
+for (int i = 0; i < original.length(); i++) {
+    StringBuilder sb = new StringBuilder(original);
+    sb.setCharAt(i, replacements[i]);
+    System.out.println(sb.toString());
+}
+
+// Method 3: Using char array (most efficient for multiple changes)
+char[] chars = original.toCharArray();
+chars[2] = 'X';  // Replace specific character
+String result = new String(chars);  // "apXle"
 ```
 
 
@@ -729,176 +735,166 @@ ans.push("c");
 String.valueOf(ans);
 ```  
 
-### 1-4) Sort Array (`Arrays.sort`)
+## 4) Sorting Operations
 
+### 4.1) Array Sorting
+
+#### Basic Array Sorting
 ```java
-// 1) Sort integer Array
-// LC 252, LC 452
-/// https://leetcode.com/problems/meeting-rooms/editorial/
-int[][] intervals = new int[][]{ {15,20}, {0,30}, {5,10} };
+// Primitive arrays - natural order
+int[] numbers = {5, 2, 8, 1, 9};
+Arrays.sort(numbers);  // [1, 2, 5, 8, 9]
 
+// Object arrays with custom comparator
+String[] words = {"apple", "banana", "cherry"};
+Arrays.sort(words);                              // Natural order (lexicographic)
+Arrays.sort(words, Collections.reverseOrder());  // Reverse order
+```
+
+#### 2D Array Sorting
+```java
+// Sort by first element
+int[][] intervals = {{15,20}, {0,30}, {5,10}};
 Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+// Result: {{0,30}, {5,10}, {15,20}}
 
-
-// 2) Sort with 1 attr first, then sort on the other attr
-// LC 406
-// V1
+// Multi-criteria sorting (primary: descending, secondary: ascending)
 Arrays.sort(people, (a, b) -> {
-int x = Integer.compare(b[0], a[0]);
-if(x == 0) return Integer.compare(a[1], b[1]);
-else return x; });
+    if (a[0] != b[0]) {
+        return Integer.compare(b[0], a[0]);  // First element descending
+    }
+    return Integer.compare(a[1], b[1]);      // Second element ascending
+});
 
-// V2
+// Traditional Comparator (more verbose but clear)
 Arrays.sort(people, new Comparator<int[]>() {
-@Override
-public int compare(int[] o1, int[] o2) {
-    // if the heights are equal, compare k-values
-    return o1[0] == o2[0] ? o1[1] - o2[1] : o2[0] - o1[0];
-}
-}); 
+    @Override
+    public int compare(int[] o1, int[] o2) {
+        return o1[0] == o2[0] ? o1[1] - o2[1] : o2[0] - o1[0];
+    }
+});
 ```
 
 
-### 1-4-1) Sort 2D array
+
+
+### 4.2) In-Place vs Stream Sorting
+
+**Critical Difference**: Mutability and performance implications
+
+| Method | Modifies Original | Performance | Memory Usage | Return Type |
+|--------|-------------------|-------------|--------------|-------------|
+| `Arrays.sort(arr)` | ✅ **Yes** (in-place) | **Faster** | **Lower** | `void` |
+| `Arrays.stream(arr).sorted()` | ❌ **No** (creates copy) | **Slower** | **Higher** | `Stream<T>` |
+
+#### In-Place Sorting (Recommended)
 ```java
-// java
-// LC 452
-Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
+int[][] intervals = {{15,20}, {0,30}, {5,10}};
+
+// Sorts original array directly
+Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+// intervals is now: {{0,30}, {5,10}, {15,20}}
+```
+
+#### Stream Sorting (Functional Style)
+```java
+int[][] intervals = {{15,20}, {0,30}, {5,10}};
+
+// Original array unchanged, returns sorted stream
+int[][] sorted = Arrays.stream(intervals)
+    .sorted((a, b) -> Integer.compare(a[0], b[0]))
+    .toArray(int[][]::new);  // Must collect to get array
+
+// Original intervals still: {{15,20}, {0,30}, {5,10}}
+// sorted is: {{0,30}, {5,10}, {15,20}}
 ```
 
 
-### 1-4-2) Arrays.sort VS Arrays.stream(intervals).sorted()
-
-- The two methods Arrays.stream(intervals).sorted() and Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0])) perform different operations:
-
-1) `Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]))`:
-
-- modify the `original` array in place directly (no new array created)
-- This sorts the array intervals `in place`.
-- The sorting is based on the first element of each sub-array (a[0] and b[0]).
-- The Integer.compare(a[0], b[0]) comparator ensures that the array is sorted in ascending order based on the first elements of the sub-arrays.
-- After this operation, the `original` array intervals is modified and sorted accordingly.
-
-2) `Arrays.stream(intervals).sorted()`:
-
-- `NOT` modify the `original` array, but create the other `sorted` array
-- This creates a stream of the array intervals.
-- The .sorted() method sorts the stream in natural order.
-- However, this does `NOT` modify the `original` array intervals in place.
-- The result of this sorting is a sorted stream, but if you do not collect or process this sorted stream, the original array remains unchanged.
-
-
+**Demonstration:**
 ```java
-// java
-// example code :
+int[][] intervals = {{15,20}, {0,30}, {5,10}};
+System.out.println("Original: " + Arrays.deepToString(intervals));
 
-int[][] intervals = new int[][]{ {15,20}, {0,30}, {5,10} };
-    System.out.println("---> intervals before sorting");
-    for (int[] interval : intervals){
-        System.out.println("1st = " + interval[0] + ", 2nd = " + interval[1]);
-    }
+// Stream sorting - original unchanged
+Arrays.stream(intervals).sorted((a,b) -> Integer.compare(a[0], b[0]));
+System.out.println("After stream (no collect): " + Arrays.deepToString(intervals));
+// Still: [[15, 20], [0, 30], [5, 10]]
 
-    // Using Arrays.stream(intervals).sorted();
-    Arrays.stream(intervals).sorted();
-    System.out.println("---> intervals after Arrays.stream(intervals).sorted()");
-    for (int[] interval : intervals){
-        System.out.println("1st = " + interval[0] + ", 2nd = " + interval[1]);
-    }
-
-    // Using Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-    System.out.println("---> intervals after Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]))");
-    for (int[] interval : intervals){
-        System.out.println("1st = " + interval[0] + ", 2nd = " + interval[1]);
-    }
+// In-place sorting - original modified
+Arrays.sort(intervals, (a,b) -> Integer.compare(a[0], b[0]));
+System.out.println("After Arrays.sort: " + Arrays.deepToString(intervals));
+// Now: [[0, 30], [5, 10], [15, 20]]
 ```
 
 
-### 1-4-3) Sort List VS Array
+### 4.3) Collections Sorting
 
-#### Summary !!!!
+**Key Principle**: 
+- **`Arrays.sort()`** → For arrays (primitive & object types)
+- **`Collections.sort()`** → For collections (List, etc.)
 
-- `Arrays.sort`
-    - `array` sorting (Primitive Types 基本數據類型)
-
-- `Collections.sort`  (Reference Types 引用類型）
-    - `list, HashMap` .. sorting
+#### List Sorting Examples
 
 
+#### Array Sorting (Object Types)
 ```java
-// java
-// LC 214
-// https://stackoverflow.com/questions/1694751/java-array-sort-descending
+Integer[] numbers = {5, 5, 7, 8, 9, 0};
 
-/* -------------------------- */
-/** Sort Array */
-/* -------------------------- */
-Integer[] _array = {5, 5, 7, 8, 9, 0};
+// Ascending order (natural)
+Arrays.sort(numbers);
 
-// V1
-Arrays.sort(_array, Collections.reverseOrder());
+// Descending order - Method 1 (recommended)
+Arrays.sort(numbers, Collections.reverseOrder());
 
-// V2
-Arrays.sort(_array, (a,b) -> Integer.compare(-a, -b));
+// Descending order - Method 2 (custom comparator)
+Arrays.sort(numbers, (a, b) -> b - a);
+```
 
+#### List Sorting
+```java
+List<Integer> list = new ArrayList<>(Arrays.asList(3, 1, 4, 1, 5, 9));
 
+// Method 1: Collections.sort() - modifies original list
+Collections.sort(list);                              // Ascending
+Collections.sort(list, Collections.reverseOrder()); // Descending
 
-/* -------------------------- */
-/** Sort List */
-/* -------------------------- */
+// Method 2: List.sort() - Java 8+ (preferred)
+list.sort(Integer::compareTo);                       // Ascending
+list.sort((a, b) -> b - a);                         // Descending
 
-// V1
-List<Integer> _list = new ArrayList();
-Collections.sort(_list, Collections.reverseOrder());
-
-// V2
-Collections.sort(_list, (a,b) -> Integer.compare(-a, -b));
-
-// V3
-/** Using the Stream API: 
-You can use stream(), sorted(), and collect(Collectors.toList()) to sort the list.
-*/
-List<Integer> _list2 = new ArrayList<>(Arrays.asList(3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5));
-// System.out.println(_list2);
-_list2 = _list2.stream()
-            .sorted((a, b) -> b - a)  // Using Comparator to sort in reverse order
-            .collect(Collectors.toList());
-// System.out.println(_list2);
+// Method 3: Stream API - creates new list
+List<Integer> sortedList = list.stream()
+    .sorted(Collections.reverseOrder())
+    .collect(Collectors.toList());
+```
 
 
-// V3
-// LC 731
-List<Integer[]> statusList;
+#### Complex Object Sorting
+```java
+// Multi-criteria sorting example
+List<Integer[]> statusList = new ArrayList<>();
+statusList.add(new Integer[]{1, 2});
+statusList.add(new Integer[]{1, 1});
+statusList.add(new Integer[]{2, 3});
 
 statusList.sort((x, y) -> {
-  if (!x[0].equals(y[0])) {
-      return x[0] - y[0];
-  }
-  return x[1] - y[1]; // start (+1) comes before end (-1)
-});            
+    if (!x[0].equals(y[0])) {
+        return x[0] - y[0];  // Primary: first element ascending
+    }
+    return x[1] - y[1];      // Secondary: second element ascending
+});
+```
 
+**Performance Comparison:**
+```java
+// For large datasets
+List<Integer> largeList = /* millions of elements */;
 
+// Fastest - in-place sorting
+Collections.sort(largeList);  
 
-// example
-Integer[] _array = new Integer[4];
-_array[0] = 10;
-_array[1] = -2;
-_array[2] = 0;
-_array[3] = 99;
-Arrays.stream(_array).forEach(System.out::println);
-// Array sort
-Arrays.sort(_array, Collections.reverseOrder());
-System.out.println("---");
-Arrays.stream(_array).forEach(System.out::println);
-
-System.out.println("--->");
-
-List<Integer> _list = Arrays.asList(1,2,3,4);
-_list.forEach(System.out::println);
-// List sort
-Collections.sort(_list, Collections.reverseOrder());
-System.out.println("---");
-_list.forEach(System.out::println);
+// Slower - creates new collection
+List<Integer> sorted = largeList.stream().sorted().collect(Collectors.toList());
 ```
 
 ### 1-4-4) Custom sorting (List)
@@ -1304,39 +1300,24 @@ int[] dp = new int[10];
 Arrays.fill(dp,1);
 ```
 
-### 1-19) PQ (priority queue)
+## 5) Queue Operations
+
+### 5.1) Priority Queue Examples
+
 ```java
-
-// Small PQ (default min-heap)
-PriorityQueue<Integer> smallPQ = new PriorityQueue<>();
-
-// Big PQ (max-heap)
-PriorityQueue<Integer> bigPQ = new PriorityQueue<>(Comparator.reverseOrder());
-
-// Add elements to PQs
-smallPQ.add(5);
-smallPQ.add(10);
-smallPQ.add(1);
-
-bigPQ.add(5);
-bigPQ.add(10);
-bigPQ.add(1);
-
-// Print elements from PQs
-
-// small PQ
-System.out.println("Small PQ (min-heap):");
-
-while (!smallPQ.isEmpty()) {
-    System.out.println(smallPQ.poll());
+// Min-heap (default) - smallest element first
+PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+minHeap.addAll(Arrays.asList(5, 10, 1, 3));
+while (!minHeap.isEmpty()) {
+    System.out.print(minHeap.poll() + " ");  // Output: 1 3 5 10
 }
 
-// big PQ
-System.out.println("Big PQ (max-heap):");
-
-while (!bigPQ.isEmpty()) {
-    System.out.println(bigPQ.poll());
-} 
+// Max-heap - largest element first
+PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+maxHeap.addAll(Arrays.asList(5, 10, 1, 3));
+while (!maxHeap.isEmpty()) {
+    System.out.print(maxHeap.poll() + " ");  // Output: 10 5 3 1
+}
 ```
 
 ### 1-19-1) PQ (priority queue) with custom logic
@@ -1360,35 +1341,35 @@ PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>(
 // ...
 ```
 
-### 1-19-2) `add()` VS `offer()` in Queue
+### 5.2) Queue Methods: `add()` vs `offer()`
 
-- `add(E e)` Method
-    - Behavior:
-        - Adds the specified element to the queue.
-        - If the queue has a capacity restriction and it is `full`, add() throws an `exception` (IllegalStateException).
-    - If the queue allows `unlimited` elements (like LinkedList), add() behaves similarly to `offer()`` and does not throw an exception.
-    - Usage:
-        - Use add() when you want to enforce that the addition must succeed and you want an exception if it fails.
-    - Return Type:
-        - Returns true if the element was successfully added.
-    - Exception Handling:
-        - Throws an exception if the operation fails due to capacity limits.
+| Method | Failure Behavior | Return Type | Best Use Case |
+|--------|------------------|-------------|---------------|
+| `add(e)` | **Throws exception** | `boolean` | When failure should stop execution |
+| `offer(e)` | **Returns false** | `boolean` | When you want graceful failure handling |
+
+```java
+Queue<Integer> queue = new LinkedList<>();
+
+// add() - throws exception on failure
+try {
+    queue.add(42);      // Returns true if successful
+} catch (IllegalStateException e) {
+    // Handle capacity exceeded
+}
+
+// offer() - returns false on failure (preferred for bounded queues)
+if (queue.offer(42)) {
+    System.out.println("Element added successfully");
+} else {
+    System.out.println("Queue is full");
+}
+```
+
+**Recommendation**: Use `offer()` for bounded queues, `add()` for unlimited queues like `LinkedList`.
 
 
-- `offer(E e)` Method
-    - Behavior:
-        - Adds the specified element to the queue.
-        - If the queue has a capacity restriction and it is `full`, `offer() returns false instead of throwing an exception`.
-        - It is a more graceful way of adding elements to a queue when capacity may be a concern.
-    - Usage:
-        - Use offer() when you want to handle the addition failure more gracefully without relying on exceptions.
-    - Return Type:
-        - Returns true if the element was added successfully, and false otherwise.s
-    - Exception Handling:
-        - Does not throw an exception if the operation fails; returns false instead.
-
-
-### 1-19-2) Queue `remove` method
+### 5.3) Queue Removal Methods
 
 ```java
 // java
@@ -1744,32 +1725,173 @@ order.charAt(i) - 'a'
 ---
 
 
-### 3-3) Loop over `abc...z` char
+### 6.2) Character Range Iteration
 
 ```java
-// LC 127
+// Iterate through lowercase alphabet
 for (char c = 'a'; c <= 'z'; c++) {
-  System.out.println(c);
-  // output as below:
-  /** a b c d e f g h i j k l m n o p q r s t u v w x y z */
+    System.out.print(c + " ");  // Output: a b c d e f g h i j k l m n o p q r s t u v w x y z
+}
+
+// Iterate through uppercase alphabet  
+for (char c = 'A'; c <= 'Z'; c++) {
+    System.out.print(c + " ");  // Output: A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+}
+
+// Generate all single-character replacements (LC 127)
+String word = "hit";
+for (int i = 0; i < word.length(); i++) {
+    for (char c = 'a'; c <= 'z'; c++) {
+        if (c != word.charAt(i)) {
+            String newWord = word.substring(0, i) + c + word.substring(i + 1);
+            // Process newWord
+        }
+    }
 }
 ```
 
 
-### 4-1) pass param and use it recurion code
+## 7) Quick Reference & Summary
+
+### 7.1) Most Common Patterns
+
+#### Data Structure Initialization
+```java
+// Arrays
+int[] arr = new int[n];                    // Fixed size
+int[][] matrix = new int[rows][cols];      // 2D array
+
+// Collections
+List<Integer> list = new ArrayList<>();   // Dynamic list
+Map<String, Integer> map = new HashMap<>(); // Key-value store
+Set<Integer> set = new HashSet<>();        // Unique elements
+Queue<Integer> queue = new LinkedList<>(); // FIFO operations
+
+// Priority Queues
+PriorityQueue<Integer> minHeap = new PriorityQueue<>();              // Min-heap
+PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder()); // Max-heap
+```
+
+#### Essential Conversions
+```java
+// String ↔ Character Array
+String str = "hello";
+char[] chars = str.toCharArray();          // String to char array
+String newStr = new String(chars);         // Char array to String
+
+// Array ↔ List  
+Integer[] arr = {1, 2, 3};
+List<Integer> list = new ArrayList<>(Arrays.asList(arr));  // Array to List
+Integer[] newArr = list.toArray(new Integer[0]);           // List to Array
+
+// Character to Index (for a-z)
+int index = character - 'a';               // 'a'→0, 'b'→1, ..., 'z'→25
+```
+
+#### Common Operations
+```java
+// HashMap with default values
+map.getOrDefault(key, defaultValue);
+map.putIfAbsent(key, value);
+
+// Sorting  
+Arrays.sort(array);                        // In-place array sort
+Collections.sort(list);                    // In-place list sort
+list.sort(Collections.reverseOrder());     // Reverse order
+
+// String operations
+s.charAt(i);                               // Get character at index
+s.substring(start, end);                   // [start, end) substring
+StringBuilder sb = new StringBuilder();     // Mutable string
+```
+
+### 7.2) Performance Tips
+
+| Operation | Efficient Approach | Avoid |
+|-----------|-------------------|-------|
+| **String Building** | `StringBuilder` | String concatenation in loops |
+| **Character Access** | `toCharArray()` then iterate | `charAt()` in tight loops |
+| **Sorting** | `Arrays.sort()`, `Collections.sort()` | Stream sorting for large data |
+| **Array Printing** | `Arrays.toString()`, `Arrays.deepToString()` | Manual iteration |
+| **Character Mapping** | `char - 'a'` | `indexOf()` repeated calls |
+
+### 7.3) Common LeetCode Patterns
+
+#### Frequency Counting
+```java
+Map<Character, Integer> freq = new HashMap<>();
+for (char c : s.toCharArray()) {
+    freq.put(c, freq.getOrDefault(c, 0) + 1);
+}
+```
+
+#### Two Pointers with Character Comparison
+```java
+int left = 0, right = s.length() - 1;
+while (left < right) {
+    if (s.charAt(left) != s.charAt(right)) return false;
+    left++;
+    right--;
+}
+```
+
+#### Priority Queue for Top-K Problems
+```java
+PriorityQueue<Integer> heap = new PriorityQueue<>();
+for (int num : nums) {
+    heap.offer(num);
+    if (heap.size() > k) heap.poll();
+}
+```
+
+### 7.4) Memory Management
+
+- **Primitive arrays**: More memory efficient than object arrays
+- **ArrayList**: Automatically resizes, initial capacity matters for large datasets  
+- **StringBuilder**: Use for string concatenation in loops
+- **Character arrays**: More efficient than String manipulation for character processing
+
+## 8) Advanced Examples & Recursion Patterns
+
+### 8.1) Recursion Parameter Passing
 
 ```java
 // LC 104
 // https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MaximumDepthOfBinaryTree.java
 
-int max_depth = 0;
-// ...
-private void depthHelper(TreeNode root, int depth) {
+**Important Concept**: In Java, primitives are **passed by value** (creates copies).
 
- // ...
- max_depth = Math.max(max_depth, depth);   
-  
+```java
+// ❌ WRONG: Primitive parameter won't persist changes across recursive calls
+public int wrongDepth(TreeNode root, int depth) {
+    if (root == null) return depth;
+    depth++;  // This increment is lost after recursion returns
+    return Math.max(wrongDepth(root.left, depth), wrongDepth(root.right, depth));
 }
 
-// ...
+// ✅ CORRECT: Use instance variables for state that needs to persist
+class Solution {
+    private int maxDepth = 0;  // Instance variable persists across calls
+    
+    public int maxDepth(TreeNode root) {
+        depthHelper(root, 0);
+        return maxDepth;
+    }
+    
+    private void depthHelper(TreeNode root, int currentDepth) {
+        if (root == null) return;
+        
+        maxDepth = Math.max(maxDepth, currentDepth + 1);  // Update global state
+        depthHelper(root.left, currentDepth + 1);
+        depthHelper(root.right, currentDepth + 1);
+    }
+}
+
+// ✅ ALTERNATIVE: Return and combine values (functional approach)
+public int maxDepth(TreeNode root) {
+    if (root == null) return 0;
+    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+}
 ```
+
+**Key Takeaway**: When you need to track state across recursive calls, either use instance variables or design the recursion to return and combine values.
