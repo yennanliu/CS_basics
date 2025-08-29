@@ -1,223 +1,213 @@
 # Binary Search
 
-- Find a value (k) from a `sorted search space` with two pointers
-    - Not really NEED to "all sorted", `partial sorted`, `rotated sorted` is possible as well
-- Steps
-    - step 1) Define boundary variables (e.g. left, right) that can `include all possible cases`
-    - step 2) Define returned values
-    - step 3) Define exit condition
-- Scenario
-    - find a value from sorted array
-    -  if there is kind of monotonicity, for example, if condition(k) is True then condition(k + 1) is True, then we can consider binary search
+## Overview
 
-- Ref
-    - basic:
-        - https://labuladong.online/algo/essential-technique/binary-search-framework/
-    - problems:
-        - https://labuladong.online/algo/frequency-interview/binary-search-in-action/
-        - https://labuladong.online/algo/problem-set/binary-search/
-    - bisect : check [python_trick.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md) : can get idx, and keep array sorted, when there is a element inserted
+**Binary Search** is an efficient algorithm to find a target value in a **sorted search space** using two pointers.
+
+### Key Properties
+- **Time Complexity**: O(log n)
+- **Space Complexity**: O(1) iterative, O(log n) recursive
+- **Prerequisites**: Sorted array OR monotonic property
+- **Search Space**: Not limited to fully sorted arrays - works with:
+  - Fully sorted arrays
+  - Partially sorted arrays
+  - Rotated sorted arrays
+  - Any space with monotonic properties
+
+### Core Algorithm Steps
+1. **Define boundaries**: Initialize `left` and `right` pointers to include all possible cases
+2. **Define return values**: Determine what to return (index, value, -1, etc.)
+3. **Define exit condition**: Choose appropriate loop condition (`<=`, `<`, or `< -1`)
+4. **Update pointers**: Move boundaries based on comparison with target
+
+### When to Use Binary Search
+- **Sorted arrays**: Classic use case for finding exact values
+- **Monotonic functions**: If `condition(k)` implies `condition(k+1)`, binary search applies
+- **Search boundaries**: Finding first/last occurrence of a value
+- **Optimization problems**: Finding minimum/maximum values satisfying constraints
+
+### References
+- **Frameworks**:
+  - [labuladong Binary Search Framework](https://labuladong.online/algo/essential-technique/binary-search-framework/)
+  - [Binary Search 101 Handbook](https://leetcode.com/problems/binary-search/discuss/423162/Binary-Search-101-The-Ultimate-Binary-Search-Handbook)
+- **Problem Collections**:
+  - [Binary Search in Action](https://labuladong.online/algo/frequency-interview/binary-search-in-action/)
+  - [Binary Search Problem Set](https://labuladong.online/algo/problem-set/binary-search/)
+- **Python Tools**:
+  - [Python bisect module](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md) - maintains sorted order during insertions
 
 
 <p align="center"><img src ="../pic/binary_search_pattern.png" ></p>
 
 
 
-## 0) Concept  
+## 1) Binary Search Types & Patterns
 
-### 0-1) Types
+### 1.1) Basic Binary Search
+- **Purpose**: Find exact target value in sorted array
+- **Return**: Index of target, or -1 if not found
+- **Complexity**: O(log n)
 
-- Types
+### 1.2) Search in Rotated Array
+- **Key Concept**: Determine which half is sorted, then decide search direction
+- **Applications**: Find target, find minimum element
 
-    - Basic binary search
+#### Find Minimum in Rotated Sorted Array (LC 153)
+```java
+// Approach: Compare mid with boundaries to determine rotation point
+while (r >= l) {
+    int mid = (l + r) / 2;
+    // Case 1: left subarray + mid is ascending -> search right
+    if (nums[mid] >= nums[l]) {
+        l = mid + 1;
+    }
+    // Case 2: right subarray + mid is ascending -> search left  
+    else {
+        r = mid - 1;
+    }
+}
+```
 
-    - Search in `rotate` array
-
-        - Find `Minimum` in Rotated Sorted Array
-            - LC 153
-            ```java
-            // java
-
-            // ...
-            while(r >= l){
-            int mid = (l + r) / 2;
-            // case 1) if `left subarray + mid` is ascending
-            if(nums[mid] >= nums[l]){
-                l = mid + 1;
-            }
-            // case 2) if `right subarray + mid` is ascending
-            else{
-                r = mid - 1;
-            }
-            // ...
-            ```
-
-        - Search in Rotated Sorted Array
-            - LC 33, LC 81
-            ```java
-            // java
-            // ...
-            while (r >= l){
-                int mid = (l + r) / 2;
-                int cur = nums[mid];
-                if (cur == target){
-                    return mid;
-                }
-                // Case 1: `left + mid` is in ascending order
-                /** NOTE !!! we compare mid with left, instead of 0 idx element */
-                else if (nums[mid] >= nums[l]) {
-                    /** NOTE !!!
-                     *
-                     *   1) ">="
-                     *   2)  since `if nums[mid] == target`, we should already FOUND a solution
-                     *       within code above, so here, we use target < nums[mid],
-                     *       but for left boundary, we use ">=". e.g. target >= nums[l]
-                     */
-                    // case 1-1)  target < mid && target > l
-                    if (target >= nums[l] && target < nums[mid]) {
-                        r = mid - 1;
-                    }
-                    // case 2-2)
-                    else {
-                        l = mid + 1;
-                    }
-                }
-
-                // Case 2:  `right + mid` is in ascending order
-                else {
-                    /** NOTE !!!
-                     *
-                     *   1) "<="
-                     *   2)  since `if nums[mid] == target`, we should already FOUND a solution
-                     *       within code above, so here, we use target > nums[mid],
-                     *       but for right boundary, we use "<=". e.g. target <= nums[r]
-                     */
-                    // case 2-1)  target > min && target <= r
-                    if (target <= nums[r] && target > nums[mid]) {
-                        l = mid + 1;
-                    }
-                    // case 2-2)
-                    else {
-                        r = mid - 1;
-                    }
-                }
-
-             }
-
-        // ...
-        ```
-        - Difference:
-            - LC 153 is finding `min`, so ONLY `1` if-else is enough
-            - LC 33, 81 is finding `target`, so need `2` if-else logic
-
-    - `Recursive` binary search
-        - Garena/test1.py
-
-    - Search in 2D array
-        - LC 74
-        - `flatten` array with `x % y = z` handling, or visit row by row via binary search
-
-    - Find min in Rotation array
-        - LC 153
-            - check if `mid` point is at `left` or `right` sub array
-                - then search on left or right sub array 
-            - Compare mid with left, right
-
-    - Find start, end idx with target
-        - LC 34
-        ```java
-        // java
-        // ...
-        int mid = (l + r) / 2;
-        while (r >= l){
-            if (nums[mid] == target){
-                /** 
-                 *  NOTE !!! below
-                 * 
-                 *  instead of quit while loop directly,
-                 *  we 
-                 *    1) keep finding `left idx` if want to find first idx
-                 *    2) keep finding `right idx` if want to find last idx
-                 * 
-                 */
-                if(findFirst){
-                    r = mid - 1;
-                }else{
-                    l = mid + 1;
-                }
-            }else if (nums[mid] < target){
-                l = mid + 1;
-            }else{
-                r = mid - 1;
-            }
+```java
+// Two-step approach: determine sorted half, then check target location
+while (r >= l) {
+    int mid = (l + r) / 2;
+    
+    if (nums[mid] == target) {
+        return mid;
+    }
+    
+    // Case 1: Left half is sorted (compare mid with left boundary)
+    if (nums[mid] >= nums[l]) {
+        // Check if target is in the sorted left half
+        if (target >= nums[l] && target < nums[mid]) {
+            r = mid - 1;  // Search left half
+        } else {
+            l = mid + 1;  // Search right half
         }
-
-        // ...
-        ```
-
-    - Find `LEFT` boundary
-        - LC 367, 875
-        - the condition are nearly the same, ONLY difference :  `mid == target`, final check
-
-        ```python
-        # python
-        while r >= l:
-            mid = (l + r) // 2
-            if mid < target:
-                l = mid + 1
-            else if mid > target:
-                r = mid - 1
-            else if mid == target:
-                r = mid - 1 # reduce right boundary,
-        if l >= nums.length or nums[l] != target: # check if l is out of boundary
-            return -1
-        return l
-        ```
-
-        ```java
-        // java
-        // ...
-        while (r >= l){
-            mid = (l + r) / 2;
-            if (mid <= some_value){
-                r = mid - 1;
-            }else{
-                l = mid + 1;
-            }
+    }
+    // Case 2: Right half is sorted
+    else {
+        // Check if target is in the sorted right half  
+        if (target <= nums[r] && target > nums[mid]) {
+            l = mid + 1;  // Search right half
+        } else {
+            r = mid - 1;  // Search left half
         }
-        // ...
-        ```
+    }
+}
+```
 
-    - Find `RIGHT` boundary
-        - the condition are nearly the same, ONLY difference :  `mid == target`, final check
-        ```python
-        # python
-       while r >= l:
-            mid = (l + r) // 2
-            if mid < target:
-                l = mid + 1
-            else if mid > target:
-                r = mid - 1
-            else if mid == target:
-                l = mid + 1   # reduce left boundary
-        if r < 0 or nums[r] != target: # check if r is out of boundary
-            return -1
-        return r
-        ```
+**Key Differences**:
+- **LC 153** (Find Min): Only needs to determine which side to search
+- **LC 33/81** (Find Target): Must check target location within sorted half
 
-- Algorithm
-    - binary search
-    - sliding window
-    - recursive
+### 1.3) Recursive Binary Search
+- **Use Cases**: When recursive approach is more intuitive
+- **Space**: O(log n) due to call stack
 
-- Data structure
-    - Array
-    - Linked list
-    - dict
+### 1.4) Search in 2D Matrix (LC 74)
+- **Approach 1**: Flatten matrix using `row = idx / cols`, `col = idx % cols`
+- **Approach 2**: Row-by-row binary search
+- **Time**: O(log(m×n))
 
-### 0-2) Pattern
- - [Binary-Search-101-The-Ultimate-Binary-Search-Handbook](https://leetcode.com/problems/binary-search/discuss/423162/Binary-Search-101-The-Ultimate-Binary-Search-Handbook)
-- [py powerful-ultimate-binary-search-template-solved-many-problems](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems) : TODO : add above to cheatsheet
+### 1.5) Find Boundaries (LC 34)
+**Purpose**: Find first and last occurrence of target
+```java
+// Template for finding boundaries
+while (r >= l) {
+    int mid = (l + r) / 2;
+    
+    if (nums[mid] == target) {
+        // Key: Don't return immediately, continue searching
+        if (findFirst) {
+            r = mid - 1;  // Shrink right boundary to find leftmost
+        } else {
+            l = mid + 1;  // Shrink left boundary to find rightmost  
+        }
+    } else if (nums[mid] < target) {
+        l = mid + 1;
+    } else {
+        r = mid - 1;
+    }
+}
+// Post-processing needed to validate result
+```
+
+### 1.6) Left Boundary Search (LC 367, 875)
+**Purpose**: Find the leftmost occurrence of target
+
+```python
+def find_left_boundary(nums, target):
+    l, r = 0, len(nums) - 1
+    
+    while l <= r:
+        mid = l + (r - l) // 2
+        if nums[mid] < target:
+            l = mid + 1
+        elif nums[mid] > target:
+            r = mid - 1
+        else:  # nums[mid] == target
+            r = mid - 1  # Keep searching left
+    
+    # Validate result
+    if l >= len(nums) or nums[l] != target:
+        return -1
+    return l
+```
+
+```java
+// Generic left boundary template
+while (r >= l) {
+    int mid = (l + r) / 2;
+    if (condition(mid)) {
+        r = mid - 1;  // Found valid, search for better (smaller) solution
+    } else {
+        l = mid + 1;  // Not valid, search larger values
+    }
+}
+// Result is typically at index 'l'
+```
+
+### 1.7) Right Boundary Search
+**Purpose**: Find the rightmost occurrence of target
+
+```python
+def find_right_boundary(nums, target):
+    l, r = 0, len(nums) - 1
+    
+    while l <= r:
+        mid = l + (r - l) // 2
+        if nums[mid] < target:
+            l = mid + 1
+        elif nums[mid] > target:
+            r = mid - 1
+        else:  # nums[mid] == target
+            l = mid + 1  # Keep searching right
+    
+    # Validate result  
+    if r < 0 or nums[r] != target:
+        return -1
+    return r
+```
+
+### 1.8) Related Algorithms & Data Structures
+
+**Complementary Algorithms**:
+- **Two Pointers**: For sorted arrays without random access
+- **Sliding Window**: For subarray problems with certain properties
+- **Recursion**: Alternative implementation approach
+
+**Data Structures**:
+- **Arrays**: Primary use case for binary search
+- **Binary Search Trees**: Implicit binary search in tree traversal  
+- **Hash Tables**: O(1) lookup alternative when sorting not required
+
+## 2) Binary Search Templates & Patterns
+
+### Additional Resources
+- [Binary-Search-101-The-Ultimate-Binary-Search-Handbook](https://leetcode.com/problems/binary-search/discuss/423162/Binary-Search-101-The-Ultimate-Binary-Search-Handbook)
+- [Python Universal Binary Search Template](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems)
 
 #### 0-2-0) Loop Exit Conditions Comparison
 
@@ -273,245 +263,217 @@ while (l < r - 1) {
 - **`while (l < r)`**: Finding first/last occurrence, insertion position, peak finding
 - **`while (l < r - 1)`**: Complex conditions where mid might equal l or r
 
-#### 0-2-1) Binary search
+### 2.1) Standard Binary Search Template
 
-- Conclusion!!!
-    - `left = 0, right = nums.len - 1`
-    - `while left <= right`
-    - `left = mid + 1`
-    - `right = mid - 1`
+**Key Principles**:
+- **Initialization**: `left = 0, right = nums.length - 1` (closed interval)
+- **Loop Condition**: `while (left <= right)`  
+- **Pointer Updates**: `left = mid + 1`, `right = mid - 1`
+- **Clarity Tip**: Use `else if` for all conditions to make logic explicit
 
-- Key: 
-```
-分析二分查找的一個技巧是：不要出現 else，而是把所有情況用 else if 寫清楚，這樣可以清楚地展現所有細節。本文都會使用 else if，旨在講清楚，讀者理解後可自行簡化。
-```
-
-- https://labuladong.online/algo/essential-technique/binary-search-framework/#%E9%9B%B6%E3%80%81%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E6%A1%86%E6%9E%B6
+> **Programming Tip**: Avoid using `else` - write all conditions as `else if` to clearly show all cases and avoid bugs.
 
 ```java
-// java
-int binarySearch(int[] nums, int target) {
-    int left = 0; 
-    // 注意
-    int right = nums.length - 1;
-
-    // NOTE !!! <=, need to search when "left == right" idx as well
-    while(left <= right) {
-        int mid = left + (right - left) / 2;
-        if(nums[mid] == target)
-            return mid; 
-        else if (nums[mid] < target)
-            // 注意
-            left = mid + 1;
-        else if (nums[mid] > target)
-            // 注意
-            right = mid - 1;
-    }
-    return -1;
-}
-```
-
-```python
-# python
-# basic
-def binary_search(nums, target):
-    l = 0
-    r = len(nums) - 1
-    """
-    NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
-        -> e.g. while l <= r
-        -> [l, r] 
-    """ 
-    while l <= r:
-        mid = l + (r-l)//2
-        if nums[mid] == target:
-            return mid 
-        elif nums[mid] < target:
-            ### NOTE this
-            l = mid+1
-        else:
-            ### NOTE this
-            r = mid-1 
-    return -1
-```
-
-#### 0-2-1) Binary search on `LEFT` boundary
-
-- https://labuladong.online/algo/essential-technique/binary-search-framework/#%E8%83%BD%E5%90%A6%E7%BB%9F%E4%B8%80%E6%88%90%E4%B8%A4%E7%AB%AF%E9%83%BD%E9%97%AD%E7%9A%84%E6%90%9C%E7%B4%A2%E5%8C%BA%E9%97%B4
-
-```java
-
-/** 
- *  2 difference between regular binary search
- * 
- *   1. else if (nums[mid] == target) {
- *          // 收缩右侧边界
- *           right = mid - 1;
- *       }
- *
- *     
- *
- *   2. validate result step
- *    
- *        if (left < 0 || left >= nums.length) {
- *           return -1;
- *       }
- *       // 判断一下 nums[left] 是不是 target
- *       return nums[left] == target ? left : -1;
- *
- * 
- */
-
-// java
-int left_bound(int[] nums, int target){
+// Java Implementation
+public int binarySearch(int[] nums, int target) {
     int left = 0;
     int right = nums.length - 1;
-    // NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
-    //       -> e.g. while l <= r
-    //        -> [l, r]  
-    while (left <= right){
-        int mid = left + (right - mid) / 2;
-        if (num[mid] < target){
-            // 搜索区间变为 [mid+1, right]
-            left = mid + 1;
-        }else if (nums[mid] > target){
-            // 搜索区间变为 [left, mid-1]
-            right = mid - 1;
-        }else if (nums[mid] == target){
-            // DO NOT RETURN !!!, BUT REDUCE RIGHT BOUNDARY FOR FOCUSING ON LEFT BOUNDARY
-            // 收缩右侧边界
-            right = mid - 1;
+    
+    // Use <= to search when left == right
+    while (left <= right) {
+        int mid = left + (right - left) / 2;  // Avoid overflow
+        
+        if (nums[mid] == target) {
+            return mid;
+        } else if (nums[mid] < target) {
+            left = mid + 1;   // Target in right half
+        } else {  // nums[mid] > target
+            right = mid - 1;  // Target in left half
         }
     }
-    // // finally check if it will be OUT OF LEFT boundary
-    // if (left >= nums.length || nums[left] != target){
-    //     return -1;
-    // return left;
-
-
-    // 判断 target 是否存在于 nums 中
-    // 如果越界，target 肯定不存在，返回 -1
-    if (left < 0 || left >= nums.length) {
-        return -1;
-    }
-    // 判断一下 nums[left] 是不是 target
-    return nums[left] == target ? left : -1;
+    return -1;  // Not found
 }
 ```
 
 ```python
-# python
-def binary_search_left_boundary(nums, target):
-    l = 0
-    r = len(nums) - 1
-    """
-    NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
-        -> e.g. while l <= r
-        -> [l, r] 
-    """ 
-    while l <= r:
-        mid = l + (r-l)//2
-        # DO NOT RETURN !!!, BUT REDUCE RIGHT BOUNDARY FOR FOCUSING ON LEFT BOUNDARY
+# Python Implementation  
+def binary_search(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    # Closed boundary [left, right] - includes both endpoints
+    while left <= right:
+        mid = left + (right - left) // 2  # Avoid overflow
+        
         if nums[mid] == target:
-            r = mid - 1 
+            return mid
         elif nums[mid] < target:
-            ### NOTE this
-            l = mid + 1
+            left = mid + 1   # Search right half
         else:
-            ### NOTE this
-            r = mid - 1
-    # finally check if it will be OUT OF LEFT boundary
-    if l >= len(nums) or nums[l] != target:
-        return - 1
-    return l
+            right = mid - 1  # Search left half
+            
+    return -1  # Target not found
 ```
 
-#### 0-2-2) Binary search on `RIGHT` boundary
+### 2.2) Left Boundary Template
 
-
-- https://labuladong.online/algo/essential-technique/binary-search-framework/#%E5%A6%82%E6%9E%9C-target-%E4%B8%8D%E5%AD%98%E5%9C%A8%E6%97%B6%E8%BF%94%E5%9B%9E%E4%BB%80%E4%B9%88
-
+**Use Cases**: Find leftmost occurrence, insertion point, first valid solution
 
 ```java
-// java
-
-/** 
- *  Two difference between regular binary search
- * 
- *   1. else if (nums[mid] == target) {
- *          // 收缩左侧边界
- *           left = mid + 1;
- *       }
- *
- *     
- *
- *   2. validate result step
- *    
- *   // 最后改成返回 left - 1
- *   if (left - 1 < 0 || left - 1 >= nums.length) {
- *       return -1;
- *   }
- *   return nums[left - 1] == target ? (left - 1) : -1;
- *
- * 
+/**
+ * Key Differences from Standard Binary Search:
+ * 1. When nums[mid] == target: shrink RIGHT boundary (right = mid - 1)
+ * 2. Post-processing: validate the result before returning
  */
-
-int right_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
+public int findLeftBoundary(int[] nums, int target) {
+    int left = 0;
+    int right = nums.length - 1;
+    
     while (left <= right) {
         int mid = left + (right - left) / 2;
+        
         if (nums[mid] < target) {
             left = mid + 1;
         } else if (nums[mid] > target) {
             right = mid - 1;
-        } else if (nums[mid] == target) {
-            // 这里改成收缩左侧边界即可
-            left = mid + 1;
+        } else {  // nums[mid] == target
+            // DON'T return! Continue searching for leftmost occurrence
+            right = mid - 1;  // Shrink right boundary
         }
     }
-
-
-    // 最后改成返回 left - 1
-    if (left - 1 < 0 || left - 1 >= nums.length) {
+    
+    // Validate result - check bounds and target match
+    if (left >= nums.length || nums[left] != target) {
         return -1;
     }
-    return nums[left - 1] == target ? (left - 1) : -1;
+    return left;
+}
+```
+
+```python
+# Python Left Boundary Implementation
+def find_left_boundary(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        else:  # nums[mid] == target
+            # Continue searching left for first occurrence
+            right = mid - 1
+    
+    # Validate: check if left is within bounds and points to target
+    if left >= len(nums) or nums[left] != target:
+        return -1
+    return left
+```
+
+### 2.3) Right Boundary Template
+
+**Use Cases**: Find rightmost occurrence, last valid solution
+
+
+```java
+/**
+ * Key Differences from Standard Binary Search:
+ * 1. When nums[mid] == target: shrink LEFT boundary (left = mid + 1)
+ * 2. Return left - 1 after validation
+ */
+public int findRightBoundary(int[] nums, int target) {
+    int left = 0;
+    int right = nums.length - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid - 1;
+        } else {  // nums[mid] == target
+            // DON'T return! Continue searching for rightmost occurrence
+            left = mid + 1;  // Shrink left boundary
+        }
+    }
+    
+    // Validate result - return left - 1
+    if (right < 0 || nums[right] != target) {
+        return -1;
+    }
+    return right;
 }
 ```
 
 
 ```python
-# python
-def binary_search_right_boundary(nums, target):
-    l = 0
-    r = len(nums) - 1
-    """
-    NOTE : WE ALWALYS USE CLOSED boundary (for logic unifying)
-        -> e.g. while l <= r
-        -> [l, r] 
-    """ 
-    while l <= r:
-        mid = l + (r-l)//2
-        # DO NOT RETURN !!!, BUT REDUCE LEFT BOUNDARY FOR FOCUSING ON RIGHT BOUNDARY
-        if nums[mid] == target:
-            l = mid + 1 
-        elif nums[mid] < target:
-            ### NOTE this
-            l = mid + 1
-        else:
-            ### NOTE this
-            r = mid - 1
-    # finally check if it will be OUT OF RIGHT boundary
-    if r < 0 or nums[r] != target:
-        return - 1
-    return r
+# Python Right Boundary Implementation
+def find_right_boundary(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        else:  # nums[mid] == target
+            # Continue searching right for last occurrence
+            left = mid + 1
+    
+    # Validate: check if right is within bounds and points to target
+    if right < 0 or nums[right] != target:
+        return -1
+    return right
 ```
 
-## 1) General form
+## 3) Summary & Quick Reference
 
-## 2) LC Example
+### 3.1) When to Use Binary Search
+✅ **Use Binary Search When:**
+- Array is sorted (fully, partially, or rotationally)
+- Search space has monotonic property
+- Need O(log n) search performance
+- Looking for boundaries or insertion points
+- Optimization problems with binary nature
 
-### 2-0) Search in Rotated Sorted Array
+### 3.2) Template Selection Guide
+
+| Problem Type | Template | Key Characteristics |
+|-------------|----------|-------------------|
+| **Exact Search** | Standard (`while l <= r`) | Return index or -1 |
+| **Left Boundary** | Left Template | Find first occurrence |
+| **Right Boundary** | Right Template | Find last occurrence |
+| **Insert Position** | Left Template | Find insertion point |
+| **Peak/Valley** | Half-open (`while l < r`) | Converge to answer |
+| **Complex Conditions** | Gap-based (`while l < r-1`) | Avoid infinite loops |
+
+### 3.3) Common Pitfalls & Tips
+
+**🚫 Common Mistakes:**
+- Integer overflow in `mid = (left + right) / 2` → Use `mid = left + (right - left) / 2`
+- Wrong boundary updates (`mid` vs `mid ± 1`)
+- Forgetting post-processing validation
+- Infinite loops with `while l < r` and wrong updates
+
+**✅ Best Practices:**
+- Always use `else if` for clarity
+- Validate results after boundary searches  
+- Choose consistent boundary type (closed vs half-open)
+- Test with edge cases: empty array, single element, duplicates
+
+### 3.4) Time & Space Complexity
+- **Time**: O(log n) for search, O(n) for validation if needed
+- **Space**: O(1) iterative, O(log n) recursive
+
+## 4) LeetCode Examples & Applications
+
+This section demonstrates how to apply binary search patterns to solve specific problems.
+
+### 4.1) Search in Rotated Sorted Array (LC 33, LC 81)
 ```python
 # LC 033. Search in Rotated Sorted Array
 # LC 081. Search in Rotated Sorted Array II
@@ -601,8 +563,8 @@ public int search_4(int[] nums, int target) {
 }
 ```
 
-### 2-1) Two Sum II - Input array is sorted
-- (For loop binary search)
+### 4.2) Two Sum II - Input Array is Sorted (LC 167)
+**Approach**: Binary search for each element's complement
 ```python
 # 167 Two Sum II - Input array is sorted
 class Solution(object):
@@ -620,8 +582,8 @@ class Solution(object):
                     r = mid-1
 ```
 
-### 2-2) Find Peak Element
--  (recursive/iterative binary search)
+### 4.3) Find Peak Element (LC 162, LC 852)
+**Approach**: Compare mid with adjacent elements to determine search direction
 ```python
 # LC 162 Find Peak Element, LC 852 Peak Index in a Mountain Array
 # V0'
@@ -676,7 +638,8 @@ class Solution(object):
     }
 ```
 
-### 2-3) Valid Perfect Square
+### 4.4) Valid Perfect Square (LC 367) & Sqrt(x) (LC 69)
+**Approach**: Binary search on the range [1, num] to find square root
 ```python
 # 367 Valid Perfect Square, LC 69 Sqrt(x)
 # V0'
@@ -725,7 +688,8 @@ public boolean isPerfectSquare(int num) {
 }
 ```
 
-### 2-4) Minimum Size Subarray Sum
+### 4.5) Minimum Size Subarray Sum (LC 209)
+**Approach**: Binary search on possible subarray lengths + sliding window validation
 ```python
 # LC 209 Minimum Size Subarray Sum
 ### NOTE : there is also sliding window approach
@@ -757,7 +721,8 @@ class Solution:
         return False
 ```
 
-### 2-5) First Bad Version
+### 4.6) First Bad Version (LC 278)
+**Approach**: Binary search to find the first occurrence where isBadVersion() returns true
 ```python
 # LC 278
 # V0
@@ -777,7 +742,8 @@ class Solution(object):
         return right 
 ```
 
-### 2-6) Search Insert Position
+### 4.7) Search Insert Position (LC 35)
+**Approach**: Find leftmost position where target can be inserted
 ```python
 # LC 035 Search Insert Position
 # V1' 
@@ -797,7 +763,8 @@ class Solution(object):
         return left
 ```
 
-### 2-7) Capacity To Ship Packages Within D Days
+### 4.8) Capacity To Ship Packages Within D Days (LC 1011)
+**Approach**: Binary search on capacity + greedy validation
 ```python
 # LC 1011
 # V1
@@ -840,12 +807,14 @@ class Solution(object):
             return l
 ```
 
-### 2-8) Split Array Largest Sum (Hard)
+### 4.9) Split Array Largest Sum (LC 410) [Hard]
+**Approach**: Binary search on the maximum sum + greedy partitioning
 ```python
 # LC 410 Split Array Largest Sum [Hard]
 ```
 
-### 2-9) Koko Eating Bananas
+### 4.10) Koko Eating Bananas (LC 875)
+**Approach**: Binary search on eating speed + time calculation validation
 
 ```java
 // java
@@ -882,7 +851,8 @@ public int minEatingSpeed(int[] piles, int h) {
 }
 ```
 
-### 2-10) Find K Closest Elements
+### 4.11) Find K Closest Elements (LC 658)
+**Approach**: Two pointers approach to shrink array to k elements
 ```python
 # LC 658. Find K Closest Elements
 # V1'
@@ -903,7 +873,8 @@ class Solution(object):
         return arr
 ```
 
-### 2-11) Sqrt(x)
+### 4.12) Sqrt(x) (LC 69) - Alternative Implementation
+**Approach**: Binary search with careful boundary handling
 ```python
 # LC 069 Sqrt(x)
 # V0
@@ -949,7 +920,8 @@ class Solution(object):
         return l if l * l < num else l - 1
 ```
 
-### 2-12) Find First and Last Position of Element in Sorted Array
+### 4.13) Find First and Last Position of Element in Sorted Array (LC 34)
+**Approach**: Use left and right boundary search templates
 ```python
 # 34. Find First and Last Position of Element in Sorted Array
 # V0
@@ -1026,7 +998,9 @@ private int findBound(int[] nums, int target, boolean isFirst) {
 }
 ```
 
-### 2-13) Search a 2D Matrix
+
+### 4.14) Search a 2D Matrix (LC 74)
+**Approach**: Flatten 2D matrix to 1D using index conversion
 ```java
 // java
 // LC 74
@@ -1064,7 +1038,8 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
 }
 ```
 
-### 2-14) Find Minimum in Rotated Sorted Array
+### 4.15) Find Minimum in Rotated Sorted Array (LC 153)
+**Approach**: Compare mid with boundaries to find rotation point
 ```java
 // java
 // LC 153
@@ -1115,7 +1090,8 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
     }
 ```
 
-### 2-15) Find First and Last Position of Element in Sorted Array
+### 4.16) Find First and Last Position - Alternative Implementation
+**Approach**: Separate functions for finding first and last occurrences
 
 ```java
 // java
