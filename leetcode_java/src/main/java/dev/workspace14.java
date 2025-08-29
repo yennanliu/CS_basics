@@ -1506,4 +1506,61 @@ public class workspace14 {
     // TreeNode ans = deser.deserialize(ser.serialize(root));
 
 
+    // LC 772
+    // 9.01 - 9.11 am
+    /**
+     *  IDEA 1) STACK
+     *
+     *    1. () first
+     *    2. if "+", "-", pop prev, combine with it
+     *    3. if *, /, pop prev, combine with it
+     *    4.
+     *
+     *  exp 1)
+     *
+     *   6 - 4  / 2
+     *
+     *   6 - 4  / 2 ,  st = [6]
+     *   x
+     *
+     *   6 - 4  / 2 ,  st = [6, -]
+     *     x
+     *
+     *   6 - 4  / 2 ,  st = [6, -4]
+     *       x
+     *
+     *    ....
+     *
+     *    6 - 4  / 2 ,  st = [6, -4 , /]
+     *           x
+     *
+     *   6 - 4  / 2 ,  st = [6, -2]
+     *            x
+     *
+     *   -> ans = 6 + (-2) = 4
+     *
+     *
+     *  exp 2)  "2*(5+5*2)/3+(6/2+8)"
+     *
+     *    2*(5+5*2)/3+(6/2+8),  st = [2]
+     *    x
+     *
+     *    2*(5+5*2)/3+(6/2+8),  st = [2, *]
+     *     x
+     *
+     *   2*(5+5*2)/3+(6/2+8),  st = [2, *, ( ]
+     *     x
+     *
+     *    2*(5+5*2)/3+(6/2+8),  st = [2, *, ( , 5, ]
+     *       x
+     *
+     *      ...
+     *     2*(5+5*2)/3+(6/2+8),  st = [2, *, ( , 5, ]
+     *
+     */
+    public int calculate(String s) {
+
+        return 0;
+    }
+
 }
