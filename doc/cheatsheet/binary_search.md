@@ -218,8 +218,62 @@
 ### 0-2) Pattern
  - [Binary-Search-101-The-Ultimate-Binary-Search-Handbook](https://leetcode.com/problems/binary-search/discuss/423162/Binary-Search-101-The-Ultimate-Binary-Search-Handbook)
 - [py powerful-ultimate-binary-search-template-solved-many-problems](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems) : TODO : add above to cheatsheet
-   
-#### 0-2-0) Binary search
+
+#### 0-2-0) Loop Exit Conditions Comparison
+
+**Key Difference**: The exit condition determines when the loop terminates and affects boundary handling.
+
+| Condition | Boundary Type | When to Use | Key Characteristics |
+|-----------|---------------|-------------|-------------------|
+| `while (l <= r)` | **Closed [l, r]** | Standard binary search | • Most common approach<br>• Search space includes both l and r<br>• Need `l = mid + 1`, `r = mid - 1` |
+| `while (l < r)` | **Half-open [l, r)** | Finding boundaries/insertion points | • Search space excludes r<br>• Loop ends when `l == r`<br>• Use `l = mid + 1`, `r = mid` |
+| `while (l < r - 1)` | **Gap-based** | Avoiding infinite loops in special cases | • Ensures l and r are never adjacent<br>• Requires final check after loop<br>• Less common, used for complex conditions |
+
+**Detailed Analysis:**
+
+```java
+// 1) while (l <= r) - CLOSED BOUNDARY [l, r]
+while (l <= r) {
+    int mid = l + (r - l) / 2;
+    if (nums[mid] == target) return mid;
+    else if (nums[mid] < target) l = mid + 1;  // MUST +1
+    else r = mid - 1;                          // MUST -1
+}
+// Pros: Standard, easy to understand
+// Cons: Can return -1 if not found
+```
+
+```java
+// 2) while (l < r) - HALF-OPEN [l, r)
+while (l < r) {
+    int mid = l + (r - l) / 2;
+    if (nums[mid] < target) l = mid + 1;       // +1 to exclude mid
+    else r = mid;                              // NO -1, keep mid in range
+}
+// After loop: l == r, points to answer or insertion point
+// Pros: Great for finding boundaries, no -1 return
+// Cons: Requires different logic for different problems
+```
+
+```java
+// 3) while (l < r - 1) - GAP-BASED
+while (l < r - 1) {
+    int mid = l + (r - l) / 2;
+    if (condition(mid)) l = mid;
+    else r = mid;
+}
+// Final check needed: examine both l and r
+// Pros: Avoids infinite loops in complex conditions
+// Cons: More complex, requires post-processing
+```
+
+**When to Use Each:**
+
+- **`while (l <= r)`**: Classic binary search, finding exact values
+- **`while (l < r)`**: Finding first/last occurrence, insertion position, peak finding
+- **`while (l < r - 1)`**: Complex conditions where mid might equal l or r
+
+#### 0-2-1) Binary search
 
 - Conclusion!!!
     - `left = 0, right = nums.len - 1`
