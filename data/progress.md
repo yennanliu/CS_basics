@@ -11,6 +11,11 @@
 		- 1838
 	- LC 271 – Encode and Decode Strings
 		- 640
+	- LC 128 - Longest Consecutive Sequence
+	 	- 594
+	 	- 3
+	 	- 329
+	 	- 149
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
