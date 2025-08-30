@@ -46,9 +46,52 @@ import java.util.*;
 public class SortCharactersByFrequency {
 
     // V0
-//    public String frequencySort(String s) {
-//
-//    }
+    // IDEA: HASHMAP + PQ CUSTOM SORT (sort on map val)
+    public String frequencySort(String s) {
+        // edge
+        if (s.isEmpty()) {
+            return null;
+        }
+        if (s.length() == 1) {
+            return s;
+        }
+
+        // map : {val : cnt}
+        Map<String, Integer> cnt_map = new HashMap<>();
+        for (String x : s.split("")) {
+            cnt_map.put(x, cnt_map.getOrDefault(x, 0) + 1);
+        }
+
+        // pq [v1, v2..] : sort on map val, big -> small
+        PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = cnt_map.get(o2) - cnt_map.get(o1);
+                return diff;
+            }
+        });
+
+        for (String k : cnt_map.keySet()) {
+            pq.add(k);
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        while (!pq.isEmpty()) {
+            String key = pq.poll();
+            sb.append(mutiply(key, cnt_map.get(key)));
+        }
+
+        return sb.toString();
+    }
+
+    private String mutiply(String s, int times) {
+        String res = "";
+        for (int i = 0; i < times; i++) {
+            res += s;
+        }
+        return res;
+    }
 
     // V1
     // https://leetcode.ca/2017-02-23-451-Sort-Characters-By-Frequency/
