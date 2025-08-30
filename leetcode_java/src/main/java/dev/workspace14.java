@@ -1615,4 +1615,70 @@ public class workspace14 {
         return res;
     }
 
+    // LC 973
+    // 3.32 - 3.42 pm
+    /**
+     *
+     *  Given an array of points where points[i] = [xi, yi]
+     *  represents a point on the X-Y plane and an integer k,
+     *  -> `return the "k closest points" to the origin (0, 0).`
+     *
+     *  IDEA 1) PQ
+     *   -> step 1) calculate all point dis (point VS (0,0)),
+     *      save as ( dist : [[x1,y1], [x2,y2], ....] )  in hashmap
+     *
+     *      step 2) sort above (small -> big)
+     *
+     */
+    public int[][] kClosest(int[][] points, int k) {
+        // edge
+        if(points == null || points.length == 0){
+            return null;
+        }
+        if(points.length == 1){
+            return points; // ???
+        }
+
+        // map : {dist : [[x1,y1], [x2,y2], ....] }
+        //Map<String, Integer> dist_map = new HashMap<>();
+        Map<Integer, List<Integer[]>> dist_map = new HashMap<>();
+        for(int[] p: points){
+            int dist = p[0] * p[0] + p[1] * p[1];
+            List<Integer[]> tmp = new ArrayList<>();
+            if(dist_map.containsKey(dist)){
+                tmp = dist_map.get(dist);
+            }
+            tmp.add(dist, new Integer[]{p[0], p[1]});
+            dist_map.put(dist, tmp);
+        }
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        for(Integer key: dist_map.keySet()){
+            pq.add(key);
+        }
+
+        System.out.println(">>> pq = " + pq);
+
+        int[][] res = new int[k][2]; // ???
+        int i = 0;
+        while(i < k && !pq.isEmpty()){
+            Integer val = pq.poll();
+            List<Integer[]> list = dist_map.get(val);
+            for(int j = 0; i < list.size(); j++){
+                res[i][0] = list.get(j)[0];
+                res[i][1] = list.get(j)[1];
+                i += 1;
+            }
+        }
+
+        return res;
+    }
+
 }

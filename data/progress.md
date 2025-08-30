@@ -9,7 +9,6 @@
 	- LC 347 Top K Frequent Elements
 		- 621
 		- 1838
-		- 973
 	- LC 271 – Encode and Decode Strings
 		- 640
 - neetcode 250
