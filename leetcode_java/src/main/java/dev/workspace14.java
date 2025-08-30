@@ -1385,15 +1385,7 @@ public class workspace14 {
 
     // LC 297
     // Definition for a binary tree node.
-    // 7.32 - 7.42 am
-    /**
-     *  IDEA 1) DFS
-     *
-     *
-     *
-     *
-     *
-     */
+    // 4.21 - 4.32 pm
     public class TreeNode {
         int val;
         TreeNode left;
@@ -1403,102 +1395,204 @@ public class workspace14 {
             val = x;
         }
     }
-    public class Codec {
 
-        StringBuilder sb;
+    /**
+     *  IDEA 1) DFS
+     *
+     *  IDEA 2) DFS
+     *
+     *
+     */
+    // IDEA 2) BFS
+    public class Codec {
 
         // Encodes a tree to a single string.
         public String serialize(TreeNode root) {
             // edge
             if(root == null){
-                return ",";
+                return "|"; // ??
             }
-            if(root.left == null && root.right == null){
-                return String.valueOf(root.val);
-            }
-
-            sb = new StringBuilder();
-            // bfs
-            // save tree `layer by layer`
-            // node -> left-sub-node -> right->sub-node
-            Queue<TreeNode> q = new LinkedList<>();
-            q.add(root);
-
-            int q_size = 0;
-
-            while (!q.isEmpty()){
-                // cache cur queue size
-                q_size = q.size();
-
-                for(int i = 0; i < q_size; i++){
-                    // loop over all nodes in `current layer`
-                    TreeNode node = q.poll();
-                    sb.append(node.val);
-                    sb.append(",");  // split each node val
-
-                    if(node.left != null){
-                        q.add(node.left);
-                    }
-                    if(node.right != null){
-                        q.add(node.right);
-                    }
-
-                  //  sb.append("|"); // end of layer
-                }
-
-            }
-
-            return sb.toString();
+            return root + ","
+                    + serialize(root.left) + ","
+                    + serialize(root.right);
         }
 
         // Decodes your encoded data to tree.
         public TreeNode deserialize(String data) {
             // edge
-            if(data.equals(",")){
+            if(data.equals("|")){
                 return null;
             }
-            if(data.length() == 1){
-                // ???
-                return new TreeNode(Integer.parseInt(data));
+            Queue<String> q = new LinkedList<>();
+            for(String x: data.split(",")){
+                q.add(x);
             }
+            return deserializeHelper(q);
+        }
 
+        public TreeNode deserializeHelper(Queue<String> queue) {
+            // root -> left sub node -> right sub node
+            String val = queue.poll();
+//            if(queue.isEmpty()){
+//                return null; // ??
+//            }
+            if(val.equals("|")){
+                return null; // ???
+            }
+            TreeNode node = new TreeNode(Integer.parseInt(val));
+            node.left = deserializeHelper(queue);
+            node.right = deserializeHelper(queue);
 
             // ???
-            Queue<String> tmpQ = new LinkedList<>();
-            String str = sb.toString();
-            for(String x: str.split(",")){
-                tmpQ.add(x);
-            }
-
-            // TreeNode res = new TreeNode(0);
-            return deserialHelper(tmpQ); /// ????
+            return node;
         }
+
     }
 
-    public TreeNode deserialHelper(Queue<String> q){
-        // edge
-        if(q.isEmpty()){
-            return null;
-        }
-
-        // queue: [ "a,b,c", "d,e,f",  ...)
-        String val = q.poll();
-        //String[] val_arr = val.split(",");
-        // ???
-        //TreeNode node = new TreeNode(Integer.parseInt(val_arr[0]));
-        TreeNode node = new TreeNode(Integer.parseInt(val));
-//        node.left = new TreeNode(Integer.parseInt(val_arr[1]));
-//        node.right = new TreeNode(Integer.parseInt(val_arr[2]));
-        node.left = deserialHelper(q);
-        node.right =  deserialHelper(q);
-
-//        for(String x: val.split(",")){
-//            TreeNode node = new TreeNode(Integer.parseInt(x));
-//            node.left =
+    // IDEA 1) DFS
+//    public class Codec {
+//
+//        // Encodes a tree to a single string.
+//        public String serialize(TreeNode root) {
+//            // edge
+//            if(root == null){
+//                return "|"; // ??
+//            }
+//            return root + ","
+//                    + serialize(root.left) + ","
+//                    + serialize(root.right);
 //        }
+//
+//        // Decodes your encoded data to tree.
+//        public TreeNode deserialize(String data) {
+//            // edge
+//            if(data.equals("|")){
+//                return null;
+//            }
+//            Queue<String> q = new LinkedList<>();
+//            for(String x: data.split(",")){
+//                q.add(x);
+//            }
+//            return deserializeHelper(q);
+//        }
+//
+//        public TreeNode deserializeHelper(Queue<String> queue) {
+//            // root -> left sub node -> right sub node
+//            String val = queue.poll();
+////            if(queue.isEmpty()){
+////                return null; // ??
+////            }
+//            if(val.equals("|")){
+//                return null; // ???
+//            }
+//            TreeNode node = new TreeNode(Integer.parseInt(val));
+//            node.left = deserializeHelper(queue);
+//            node.right = deserializeHelper(queue);
+//
+//            // ???
+//            return node;
+//        }
+//
+//    }
 
-        return node;
-    }
+
+
+//    public class Codec {
+//
+//        StringBuilder sb;
+//
+//        // Encodes a tree to a single string.
+//        public String serialize(TreeNode root) {
+//            // edge
+//            if(root == null){
+//                return ",";
+//            }
+//            if(root.left == null && root.right == null){
+//                return String.valueOf(root.val);
+//            }
+//
+//            sb = new StringBuilder();
+//            // bfs
+//            // save tree `layer by layer`
+//            // node -> left-sub-node -> right->sub-node
+//            Queue<TreeNode> q = new LinkedList<>();
+//            q.add(root);
+//
+//            int q_size = 0;
+//
+//            while (!q.isEmpty()){
+//                // cache cur queue size
+//                q_size = q.size();
+//
+//                for(int i = 0; i < q_size; i++){
+//                    // loop over all nodes in `current layer`
+//                    TreeNode node = q.poll();
+//                    sb.append(node.val);
+//                    sb.append(",");  // split each node val
+//
+//                    if(node.left != null){
+//                        q.add(node.left);
+//                    }
+//                    if(node.right != null){
+//                        q.add(node.right);
+//                    }
+//
+//                  //  sb.append("|"); // end of layer
+//                }
+//
+//            }
+//
+//            return sb.toString();
+//        }
+//
+//        // Decodes your encoded data to tree.
+//        public TreeNode deserialize(String data) {
+//            // edge
+//            if(data.equals(",")){
+//                return null;
+//            }
+//            if(data.length() == 1){
+//                // ???
+//                return new TreeNode(Integer.parseInt(data));
+//            }
+//
+//
+//            // ???
+//            Queue<String> tmpQ = new LinkedList<>();
+//            String str = sb.toString();
+//            for(String x: str.split(",")){
+//                tmpQ.add(x);
+//            }
+//
+//            // TreeNode res = new TreeNode(0);
+//            return deserialHelper(tmpQ); /// ????
+//        }
+//    }
+//
+//    public TreeNode deserialHelper(Queue<String> q){
+//        // edge
+//        if(q.isEmpty()){
+//            return null;
+//        }
+//
+//        // queue: [ "a,b,c", "d,e,f",  ...)
+//        String val = q.poll();
+//        //String[] val_arr = val.split(",");
+//        // ???
+//        //TreeNode node = new TreeNode(Integer.parseInt(val_arr[0]));
+//        TreeNode node = new TreeNode(Integer.parseInt(val));
+////        node.left = new TreeNode(Integer.parseInt(val_arr[1]));
+////        node.right = new TreeNode(Integer.parseInt(val_arr[2]));
+//        node.left = deserialHelper(q);
+//        node.right =  deserialHelper(q);
+//
+////        for(String x: val.split(",")){
+////            TreeNode node = new TreeNode(Integer.parseInt(x));
+////            node.left =
+////        }
+//
+//        return node;
+//    }
 
     // Your Codec object will be instantiated and called as such:
     // Codec ser = new Codec();

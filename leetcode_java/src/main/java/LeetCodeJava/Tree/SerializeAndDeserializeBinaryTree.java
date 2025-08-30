@@ -69,7 +69,16 @@ public class SerializeAndDeserializeBinaryTree {
                 return "#";
             }
 
-            /** NOTE !!! return result via pre-order, split with "," */
+            /** NOTE !!!
+             *
+             *  1)
+             *   return result via pre-order, split with ","
+             *
+             *  2)
+             *    NO need to pass `root` to serialize func.
+             *    e.g. root.val
+             *
+             */
             return root.val + "," + serialize(root.left) + "," + serialize(root.right);
         }
 
@@ -364,6 +373,12 @@ public class SerializeAndDeserializeBinaryTree {
             // get val from queue first
             String s = queue.poll();
 
+            /**
+             *  NOTE !!!
+             *
+             *   the edge case:  `s.equals("#")`
+             *   since in serialize, we set val as "#" if node is null
+             */
             if (s.equals("#")){
                 return null;
             }
