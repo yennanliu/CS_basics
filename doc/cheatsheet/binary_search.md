@@ -263,6 +263,36 @@ while (l < r - 1) {
 - **`while (l < r)`**: Finding first/last occurrence, insertion position, peak finding
 - **`while (l < r - 1)`**: Complex conditions where mid might equal l or r
 
+#### Classic LeetCode Problems by Pattern
+
+**Pattern 1: `while (l <= r)` - Exact Search**
+- LC 704: Binary Search (basic implementation)
+- LC 33: Search in Rotated Sorted Array
+- LC 81: Search in Rotated Sorted Array II
+- LC 74: Search a 2D Matrix
+- LC 240: Search a 2D Matrix II
+- LC 69: Sqrt(x)
+- LC 367: Valid Perfect Square
+- LC 441: Arranging Coins
+
+**Pattern 2: `while (l < r)` - Boundary/Peak Finding**
+- LC 34: Find First and Last Position of Element
+- LC 35: Search Insert Position
+- LC 162: Find Peak Element
+- LC 852: Peak Index in a Mountain Array
+- LC 153: Find Minimum in Rotated Sorted Array
+- LC 154: Find Minimum in Rotated Sorted Array II
+- LC 278: First Bad Version
+- LC 658: Find K Closest Elements
+- LC 744: Find Smallest Letter Greater Than Target
+
+**Pattern 3: `while (l < r - 1)` - Complex Conditions**
+- LC 410: Split Array Largest Sum (with validation function)
+- LC 875: Koko Eating Bananas (with time calculation)
+- LC 1011: Capacity To Ship Packages Within D Days
+- LC 1060: Missing Element in Sorted Array
+- LC 1482: Minimum Number of Days to Make m Bouquets
+
 ### 2.1) Standard Binary Search Template
 
 **Key Principles**:
@@ -1147,4 +1177,161 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
         }
         return idx;
     }
+```
+
+### 4.17) Find Smallest Letter Greater Than Target (LC 744)
+**Pattern**: `while (l < r)` - Finding insertion position
+```python
+# LC 744 Find Smallest Letter Greater Than Target
+class Solution(object):
+    def nextGreatestLetter(self, letters, target):
+        l, r = 0, len(letters)
+        
+        # Use half-open boundary [l, r)
+        while l < r:
+            mid = l + (r - l) // 2
+            if letters[mid] <= target:  # Need strictly greater
+                l = mid + 1
+            else:
+                r = mid
+        
+        # Handle circular array - if no letter greater than target, return first
+        return letters[l % len(letters)]
+```
+
+### 4.18) Arranging Coins (LC 441)
+**Pattern**: `while (l <= r)` - Finding exact value with mathematical property
+```java
+// LC 441 Arranging Coins
+public int arrangeCoins(int n) {
+    long l = 0, r = n;
+    
+    while (l <= r) {
+        long mid = l + (r - l) / 2;
+        long coins = mid * (mid + 1) / 2;  // Sum of 1+2+...+mid
+        
+        if (coins == n) {
+            return (int) mid;
+        } else if (coins < n) {
+            l = mid + 1;
+        } else {
+            r = mid - 1;
+        }
+    }
+    
+    return (int) r;  // Return the complete rows we can form
+}
+```
+
+### 4.19) Minimum Number of Days to Make m Bouquets (LC 1482)
+**Pattern**: `while (l < r - 1)` - Complex validation with helper function
+```python
+# LC 1482 Minimum Number of Days to Make m Bouquets
+class Solution(object):
+    def minDays(self, bloomDay, m, k):
+        if m * k > len(bloomDay):
+            return -1
+        
+        def canMakeBouquets(days):
+            bouquets = consecutive = 0
+            for bloom in bloomDay:
+                if bloom <= days:
+                    consecutive += 1
+                    if consecutive == k:
+                        bouquets += 1
+                        consecutive = 0
+                else:
+                    consecutive = 0
+            return bouquets >= m
+        
+        l, r = min(bloomDay), max(bloomDay)
+        
+        while l < r:
+            mid = l + (r - l) // 2
+            if canMakeBouquets(mid):
+                r = mid
+            else:
+                l = mid + 1
+        
+        return l
+```
+
+### 4.20) Search a 2D Matrix II (LC 240)
+**Pattern**: `while (l <= r)` - Search with elimination technique
+```python
+# LC 240 Search a 2D Matrix II
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        if not matrix or not matrix[0]:
+            return False
+        
+        # Start from top-right corner
+        row, col = 0, len(matrix[0]) - 1
+        
+        while row < len(matrix) and col >= 0:
+            if matrix[row][col] == target:
+                return True
+            elif matrix[row][col] > target:
+                col -= 1  # Move left
+            else:
+                row += 1  # Move down
+        
+        return False
+```
+
+### 4.21) Find Minimum in Rotated Sorted Array II (LC 154)
+**Pattern**: `while (l < r)` - Handling duplicates in rotated array
+```java
+// LC 154 Find Minimum in Rotated Sorted Array II (with duplicates)
+public int findMin(int[] nums) {
+    int l = 0, r = nums.length - 1;
+    
+    while (l < r) {
+        int mid = l + (r - l) / 2;
+        
+        if (nums[mid] < nums[r]) {
+            // Right half is sorted, minimum is in left half (including mid)
+            r = mid;
+        } else if (nums[mid] > nums[r]) {
+            // Left half is sorted, minimum is in right half
+            l = mid + 1;
+        } else {
+            // nums[mid] == nums[r], can't determine which half to search
+            // Reduce search space by 1
+            r--;
+        }
+    }
+    
+    return nums[l];
+}
+```
+
+### 4.22) Missing Element in Sorted Array (LC 1060)
+**Pattern**: `while (l < r - 1)` - Finding missing elements with gap calculation
+```python
+# LC 1060 Missing Element in Sorted Array
+class Solution(object):
+    def missingElement(self, nums, k):
+        def missing_count(idx):
+            # How many numbers are missing up to nums[idx]
+            return nums[idx] - nums[0] - idx
+        
+        n = len(nums)
+        
+        # If k-th missing number is beyond the array
+        if k > missing_count(n - 1):
+            return nums[-1] + k - missing_count(n - 1)
+        
+        l, r = 0, n - 1
+        
+        # Find the largest index where missing_count < k
+        while l < r - 1:
+            mid = l + (r - l) // 2
+            if missing_count(mid) < k:
+                l = mid
+            else:
+                r = mid
+        
+        # The k-th missing number is between nums[l] and nums[r]
+        return nums[l] + k - missing_count(l)
 ```
