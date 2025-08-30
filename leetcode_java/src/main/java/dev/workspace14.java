@@ -1412,9 +1412,33 @@ public class workspace14 {
             if(root == null){
                 return "|"; // ??
             }
-            return root + ","
-                    + serialize(root.left) + ","
-                    + serialize(root.right);
+
+            StringBuilder sb = new StringBuilder();
+            Queue<TreeNode> q = new LinkedList<>();
+            q.add(root);
+
+            while(!q.isEmpty()){
+                // root -> left sub -> right sub
+                TreeNode node = q.poll();
+                // NOTE !!! below
+                if(node == null){
+                    sb.append("|");
+                    continue; // NOTE !!!
+                }
+                sb.append(node.val);
+                sb.append(","); // ??
+//                // ??
+//                if(node.left != null){
+//                    q.add(node.left);
+//                }
+//                if(node.right != null){
+//                    q.add(node.right);
+//                }
+                q.add(node.left);
+                q.add(node.right);
+            }
+
+            return sb.toString();
         }
 
         // Decodes your encoded data to tree.
@@ -1423,30 +1447,30 @@ public class workspace14 {
             if(data.equals("|")){
                 return null;
             }
+            String[] arr = data.split(",");
             Queue<String> q = new LinkedList<>();
-            for(String x: data.split(",")){
+            // ???
+            for(String x: arr){
                 q.add(x);
             }
-            return deserializeHelper(q);
-        }
-
-        public TreeNode deserializeHelper(Queue<String> queue) {
-            // root -> left sub node -> right sub node
-            String val = queue.poll();
-//            if(queue.isEmpty()){
-//                return null; // ??
-//            }
-            if(val.equals("|")){
-                return null; // ???
-            }
-            TreeNode node = new TreeNode(Integer.parseInt(val));
-            node.left = deserializeHelper(queue);
-            node.right = deserializeHelper(queue);
 
             // ???
-            return node;
-        }
+            TreeNode res = new TreeNode(Integer.parseInt(q.poll()));
+            while(!q.isEmpty()){
+                String parent = q.poll();
+//                if(parent.equals("|")){
+//                }
+//                res.left = new TreeNode(Integer.parseInt(val));
 
+                // left
+                if()
+
+                // right
+            }
+
+
+            return res;
+        }
     }
 
     // IDEA 1) DFS
