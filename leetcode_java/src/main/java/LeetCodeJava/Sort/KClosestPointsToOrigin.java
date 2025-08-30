@@ -52,6 +52,13 @@ public class KClosestPointsToOrigin {
         }
 
         // Min-heap based on distance
+        /**
+         *  NOTE !!!
+         *
+         *   can custom sorting PQ with `method` as well
+         *   -> the val comes from `getDist` method
+         *   -> and PQ sort on the calculated value
+         */
         PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() {
             @Override
             public int compare(int[] a, int[] b) {
@@ -101,9 +108,57 @@ public class KClosestPointsToOrigin {
     }
 
     private int getDistanceSquared(int[] point) {
+
         return point[0] * point[0] + point[1] * point[1];
     }
 
+
+    // V0-2
+    // IDEA: HASHMAP + PQ
+    public int[][] kClosest_0_2(int[][] points, int k) {
+        // edge
+        if (points == null || points.length == 0) {
+            return new int[0][0]; // fix
+        }
+        if (points.length == 1) {
+            return points;
+        }
+
+        // map : {dist : [[x1,y1], [x2,y2], ....] }
+        Map<Integer, List<Integer[]>> dist_map = new HashMap<>();
+        for (int[] p : points) {
+            int dist = p[0] * p[0] + p[1] * p[1];
+            List<Integer[]> tmp = dist_map.getOrDefault(dist, new ArrayList<>());
+            tmp.add(new Integer[] { p[0], p[1] }); // fix
+            dist_map.put(dist, tmp);
+        }
+
+        // pq sorts distances (smallest first)
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return Integer.compare(o1, o2); // fix
+            }
+        });
+
+        for (Integer key : dist_map.keySet()) {
+            pq.add(key);
+        }
+
+        int[][] res = new int[k][2];
+        int i = 0;
+        while (i < k && !pq.isEmpty()) {
+            int dist = pq.poll();
+            List<Integer[]> list = dist_map.get(dist);
+            for (int j = 0; j < list.size() && i < k; j++) { // fix
+                res[i][0] = list.get(j)[0];
+                res[i][1] = list.get(j)[1];
+                i++;
+            }
+        }
+
+        return res;
+    }
 
     // V1
     // IDEA : SORTING
