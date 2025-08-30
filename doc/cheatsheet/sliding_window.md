@@ -1,191 +1,360 @@
-# Sliding window 
-- [fucking-algorithm : sliding window](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%8A%80%E5%B7%A7.md)
-- 2 pointers + while loop + boundary condition
-- Find min/max values of sub-set with conditions with given input
+# Sliding Window 
+
+## Overview
+
+**Sliding Window** is a technique that uses two pointers to maintain a "window" over arrays or strings, expanding and contracting to find optimal solutions efficiently.
+
+### Key Properties
+- **Time Complexity**: O(n) - each element is visited at most twice
+- **Space Complexity**: O(1) for pointers, O(k) for window state
+- **Core Idea**: Maintain a window [left, right] that slides over the data structure
+- **Two-Phase Process**: 
+  - **Expand**: Move right pointer to grow window
+  - **Contract**: Move left pointer to shrink window when invalid
+
+### When to Use Sliding Window
+- **Subarray/Substring Problems**: Finding optimal subarrays with specific properties
+- **Window-based Constraints**: Problems involving fixed or variable window sizes  
+- **Optimization**: Min/max length, count, or sum within constraints
+- **Character/Element Tracking**: Problems requiring frequency counting
+
+### References
+- [labuladong Sliding Window Guide](https://labuladong.online/algo/essential-technique/sliding-window-framework/)
+- [Sliding Window Template Collection](https://leetcode.com/discuss/general-discussion/657507/sliding-window-for-beginners-problems-template-sample-solutions/)
 
 ## 0) Concept  
-1. two pointers
-2. while loop
-    - while - while
-    - for - while
-    - NOTE !!! : `1st while` find an acceptable solution, `2nd while` optimize solution, find the best one
-3. boundary conditions op
-    - `start` and `end` index
+### Core Components
+1. **Two Pointers**: `left` and `right` to define window boundaries
+2. **Loop Structure**:
+    - `while-while`: Outer loop expands, inner loop contracts
+    - `for-while`: For loop expands, while loop contracts
+    - **Key Insight**: 1st loop finds acceptable solution, 2nd loop optimizes to find the best
+3. **Window State**: Track elements, counts, or sums within current window
+4. **Validity Condition**: Define when window is valid/invalid
 
-### 0-1) Types
+### 0-1) Problem Categories
 
-- Types
-    - Permutation(排列)
-        - LC 567: check if a permutation existed in the other string
-        ```java
-        // java
-        int l = 0;
-        for (int r = 0; r < s2.length(); r++){
-            
-            /** NOTE !!! below */
-            if (map2.equals(map1)){
-                return true;
-            }
-            // ...
-            if (conditon){
-                // do sth
-            }
-        }
-        ```
-    - Anagrams
-        - LC 438: Find All Anagrams (字謎詞) in a String
-    - Substring
-        - LC 003 : Longest Substring Without Repeating Characters
-        - LC 424 : Longest Repeating Character Replacement
-        ```java
-        // java
-        int l = 0;
-        for (int r = 0; r < s.length(); r ++){
-            // ...
+#### **Fixed Size Window**
+- **Description**: Window size is predetermined and constant
+- **Examples**: LC 438 (Find All Anagrams), LC 567 (Permutation in String)
+- **Pattern**: Maintain exact window size, slide one position at a time
 
-            /** NOTE !!! below */
-            while (condition){
-                // some op
-                // do sth
-            }
-        }
-        ```
-    - SubArray
-        - LC 713 : Subarray Product Less Than K
-        - LC 209 : Minimum Size Subarray Sum
-    - SubString without repeating elements
-        - LC 003 : Longest Substring Without Repeating Characters
+#### **Variable Size Window - Maximum**
+- **Description**: Find maximum window size satisfying constraints
+- **Examples**: LC 3 (Longest Substring), LC 424 (Character Replacement)
+- **Pattern**: Expand until invalid, record max, then contract
 
-- Algorithm
-    - sliding window
-    - Counter
-    - defaultdict
-    - 2 pointers
+#### **Variable Size Window - Minimum**  
+- **Description**: Find minimum window size satisfying constraints
+- **Examples**: LC 209 (Minimum Subarray Sum), LC 76 (Minimum Window Substring)
+- **Pattern**: Contract until invalid, record min, then expand
 
-- Data structure
-    - dict
-    - set
-    - array
-    - string
+#### **Subarray Counting**
+- **Description**: Count subarrays/substrings meeting criteria
+- **Examples**: LC 713 (Subarray Product), LC 992 (Subarrays with K Different)
+- **Pattern**: For each right position, count valid left positions
 
-### 0-2) Pattern
+#### **String Matching (Hash-based)**
+- **Description**: Track character frequencies in window
+- **Examples**: LC 567 (Permutation), LC 438 (Anagrams), LC 76 (Window Substring)
+- **Pattern**: Use HashMap/Counter to track character counts
 
-#### 0-2-1) Basic
+### 0-2) Core Algorithms & Data Structures
+- **Techniques**: Two pointers, sliding window, frequency counting
+- **Data Structures**: HashMap, Counter, Set, Array
+- **Helper Tools**: Collections.Counter (Python), HashMap.getOrDefault (Java)
+
+## 1) Sliding Window Templates & Patterns
+
+### 1.1) Template Comparison
+
+| Template Type | Use Case | Loop Structure | When to Use |
+|---------------|----------|----------------|-------------|
+| **Fixed Size** | Exact window size | `for` with size management | Anagrams, permutations, k-size problems |
+| **Variable Max** | Maximum valid window | `for-while` (expand-contract) | Longest substring problems |
+| **Variable Min** | Minimum valid window | `while-while` (contract-expand) | Minimum window problems |
+| **Counting** | Count valid subarrays | `for` with counting logic | Subarray counting problems |
+
+### 1.2) Universal Sliding Window Template
 
 ```python
-# python
-#-------------------------
-# V1 : while - while
-#-------------------------
-
-# NOTE !!! : 
-# `1st while` find an acceptable solution, 
-# `2nd while` optimize solution, find the best one
-
-# init
-l = r = 0
-window = []
-
-while r < len(s):
-    window.append(s[r])
-    r += 1
-    # do wth
-    while valid:
-        window.remove(s[l])
-        l += 1
-        # do wth
-
-#-------------------------
-# V2 : for - while
-#-------------------------
-# init
-l = r = 0
-window = []
-
-for r in range(len(r)):
-    window.append(s[r])
-    r += 1
-    # do wth
-    while valid:
-        window.remove(s[l])
-        l += 1
-        # do wth
-```
-
-```java
-// java
-//-------------------------
-// V1 : while - while
-//-------------------------
-// sliding window pattern
-// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
-int left = 0, right = 0;
-
-while (right < nums.size()) {
-    // enlarge window
-    window.addLast(nums[right]);
-    right++;
+# Python Universal Template
+def sliding_window(s, condition):
+    # Initialize window state
+    left = 0
+    window_state = {}  # or Counter, set, etc.
+    result = initialize_result()
     
-    while (window needs shrink) {
-        // lower window
-        window.removeFirst(nums[left]);
-        left++;
-    }
-}
-
-//-------------------------
-// V2 : for - while
-//-------------------------
-int left = 0, right = 0;
-for (int right; right < s.length() ; right++) {
-    window.add(s[right]);
-    right++;
-    // NOTE : most of the sliding windonw trick 
-    // is dealing with "valid" conditions
-    // and how to cache some conditions for verfication
-    while (valid) {
-        window.remove(s[left]);
-        left++;
-    }
-}
+    # Expand window with right pointer
+    for right in range(len(s)):
+        # Add current element to window
+        update_window_state(s[right])
+        
+        # Contract window while invalid
+        while not is_valid(window_state):
+            # Remove leftmost element
+            remove_from_window(s[left])
+            left += 1
+        
+        # Update result with current valid window
+        result = update_result(result, left, right)
+    
+    return result
 ```
-
-#### 0-2-1) gat max different characters
 
 ```java
-// LC 424 : Longest Repeating Character Replacement
-
-int slow = 0;
-Map<String, List<Integer>> map = new HashMap();
-// ...
-for (int fast = 0; fast < s.length(); fast++){
-
-    // String cur = String.valueOf(s.charAt(fast));
-    // map.put(cur, map.getOrDefault(cur, 0)+1);
-
-    // NOTE !!! below
-    while ((fast - slow + 1) - getMaxVal(map) > k){
-        // ...
+// Java Universal Template  
+public ResultType slidingWindow(String s) {
+    // Initialize window state
+    int left = 0;
+    Map<Character, Integer> window = new HashMap<>();
+    ResultType result = initializeResult();
+    
+    // Expand window with right pointer
+    for (int right = 0; right < s.length(); right++) {
+        char rightChar = s.charAt(right);
+        window.put(rightChar, window.getOrDefault(rightChar, 0) + 1);
+        
+        // Contract window while invalid
+        while (!isValid(window)) {
+            char leftChar = s.charAt(left);
+            window.put(leftChar, window.get(leftChar) - 1);
+            if (window.get(leftChar) == 0) {
+                window.remove(leftChar);
+            }
+            left++;
+        }
+        
+        // Update result with current valid window
+        result = updateResult(result, left, right);
     }
-}
-
-// ...
-private int getMaxVal(Map<String, List<Integer>> map){
-    int res = 0;
-    for (int x : map.values()){
-        res = Math.max(res, x);
-    }
-    return res;
+    
+    return result;
 }
 ```
 
-## 1) General form
+### 1.3) Template 1: Fixed Size Window
 
-### 1-1) Basic OP
+**Use Cases**: Anagrams, permutations, k-length substrings
+**Pattern**: Maintain exact window size, slide one position at a time
 
-## 2) LC Example
+```python
+# Fixed Size Window Template
+def fixed_window(s, k):
+    window = {}
+    result = []
+    
+    for i in range(len(s)):
+        # Add current element to window
+        window[s[i]] = window.get(s[i], 0) + 1
+        
+        # Remove element that's outside window
+        if i >= k:
+            left_char = s[i - k]
+            window[left_char] -= 1
+            if window[left_char] == 0:
+                del window[left_char]
+        
+        # Process window when it reaches target size
+        if i >= k - 1:
+            # Check condition and update result
+            if meets_condition(window):
+                result.append(i - k + 1)
+    
+    return result
+```
 
-### 2-1) Permutation in String
+```java
+// Fixed Size Window Template - Java
+public List<Integer> fixedWindow(String s, int k) {
+    Map<Character, Integer> window = new HashMap<>();
+    List<Integer> result = new ArrayList<>();
+    
+    for (int i = 0; i < s.length(); i++) {
+        // Add current element
+        char cur = s.charAt(i);
+        window.put(cur, window.getOrDefault(cur, 0) + 1);
+        
+        // Remove element outside window
+        if (i >= k) {
+            char leftChar = s.charAt(i - k);
+            window.put(leftChar, window.get(leftChar) - 1);
+            if (window.get(leftChar) == 0) {
+                window.remove(leftChar);
+            }
+        }
+        
+        // Process when window is full
+        if (i >= k - 1 && meetsCondition(window)) {
+            result.add(i - k + 1);
+        }
+    }
+    return result;
+}
+```
+
+### 1.4) Template 2: Variable Size Window (Maximum Length)
+
+**Use Cases**: Longest substring problems, maximum valid window
+**Pattern**: Expand until invalid, record max, then contract
+
+```python
+# Variable Size Window (Maximum) Template
+def max_window(s):
+    left = 0
+    window = {}
+    max_len = 0
+    
+    for right in range(len(s)):
+        # Expand window
+        window[s[right]] = window.get(s[right], 0) + 1
+        
+        # Contract while invalid
+        while not is_valid(window):
+            window[s[left]] -= 1
+            if window[s[left]] == 0:
+                del window[s[left]]
+            left += 1
+        
+        # Update maximum length
+        max_len = max(max_len, right - left + 1)
+    
+    return max_len
+```
+
+### 1.5) Template 3: Variable Size Window (Minimum Length)
+
+**Use Cases**: Minimum window substring, smallest valid window
+**Pattern**: Expand until valid, record min, then try to contract
+
+```python
+# Variable Size Window (Minimum) Template  
+def min_window(s, target):
+    left = 0
+    window = {}
+    target_count = Counter(target)
+    min_len = float('inf')
+    result = ""
+    
+    for right in range(len(s)):
+        # Expand window
+        window[s[right]] = window.get(s[right], 0) + 1
+        
+        # Contract while valid
+        while is_valid(window, target_count):
+            # Update minimum
+            if right - left + 1 < min_len:
+                min_len = right - left + 1
+                result = s[left:right + 1]
+            
+            # Try to shrink
+            window[s[left]] -= 1
+            if window[s[left]] == 0:
+                del window[s[left]]
+            left += 1
+    
+    return result if min_len != float('inf') else ""
+```
+
+### 1.6) Template 4: Counting Subarrays
+
+**Use Cases**: Count subarrays meeting criteria
+**Pattern**: For each right position, count valid left positions
+
+```python
+# Subarray Counting Template
+def count_subarrays(nums, condition):
+    left = 0
+    count = 0
+    window_state = initialize_state()
+    
+    for right in range(len(nums)):
+        # Add current element
+        update_window_state(nums[right])
+        
+        # Shrink window while invalid
+        while not is_valid(window_state):
+            remove_from_window(nums[left])
+            left += 1
+        
+        # Count valid subarrays ending at 'right'
+        count += right - left + 1
+    
+    return count
+```
+## 2) Problems by Template Pattern
+
+### 2.1) Template Classification Guide
+
+#### **Fixed Size Window Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Find All Anagrams in a String | 438 | Character frequency matching | Medium |
+| Permutation in String | 567 | Character frequency matching | Medium |
+| Maximum Average Subarray I | 643 | Fixed window sum | Easy |
+| Contains Duplicate II | 219 | Fixed window with HashSet | Easy |
+| Maximum Number of Vowels | 1456 | Fixed window counting | Medium |
+
+#### **Variable Size - Maximum Length**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Longest Substring Without Repeating Characters | 3 | Character uniqueness tracking | Medium |
+| Longest Repeating Character Replacement | 424 | Frequency + max character count | Medium |
+| Max Consecutive Ones III | 1004 | K flips constraint | Medium |
+| Longest Substring with At Most K Distinct Characters | 340 | Distinct character counting | Medium |
+| Longest Substring with At Most Two Distinct Characters | 159 | Two distinct constraint | Medium |
+
+#### **Variable Size - Minimum Length** 
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Minimum Window Substring | 76 | Character coverage tracking | Hard |
+| Minimum Size Subarray Sum | 209 | Running sum comparison | Medium |
+| Smallest Subarray with Sum ≥ K | 862 | Prefix sum + deque | Hard |
+| Minimum Window with Characters | 1176 | Diet plan constraint | Hard |
+
+#### **Counting Subarrays**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Subarray Product Less Than K | 713 | Product constraint | Medium |
+| Subarrays with K Different Integers | 992 | Exactly K = At most K - At most (K-1) | Hard |
+| Number of Subarrays with Bounded Maximum | 795 | Bounded value constraint | Medium |
+| Count Number of Nice Subarrays | 1248 | Odd number counting | Medium |
+
+#### **Advanced Sliding Window**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Sliding Window Maximum | 239 | Monotonic deque | Hard |
+| Sliding Window Median | 480 | Two heaps | Hard |
+| Minimum Swaps to Group All 1's Together | 1151 | Optimization with fixed window | Medium |
+| Grumpy Bookstore Owner | 1052 | State change optimization | Medium |
+
+### 2.2) Template Selection Strategy
+
+```
+Problem Analysis Flowchart:
+
+1. Is window size fixed?
+   ├── YES → Use Fixed Size Template
+   └── NO → Continue to 2
+
+2. Are you finding maximum length?
+   ├── YES → Use Variable Max Template  
+   └── NO → Continue to 3
+
+3. Are you finding minimum length?
+   ├── YES → Use Variable Min Template
+   └── NO → Continue to 4
+
+4. Are you counting subarrays?
+   ├── YES → Use Counting Template
+   └── NO → Use custom approach
+```
+
+## 3) LeetCode Examples
+
+### 3.1) Fixed Size Window Examples
+
+#### LC 567: Permutation in String (Template: Fixed Size)
 
 
 ```java
@@ -286,7 +455,7 @@ class Solution(object):
         return False
 ```
 
-### 2-2) Find All Anagrams in a String
+#### LC 438: Find All Anagrams in a String (Template: Fixed Size)
 
 ```java
 // LC 438
@@ -481,7 +650,9 @@ class Solution(object):
         return ans
 ```
 
-### 2-3) Longest Substring Without Repeating Characters
+### 3.2) Variable Size Window Examples
+
+#### LC 3: Longest Substring Without Repeating Characters (Template: Variable Max)
 
 ```python
 # LC 003 Longest Substring Without Repeating Characters
@@ -586,7 +757,9 @@ public int lengthOfLongestSubstring(String s) {
 }
 ```
 
-### 2-4) Subarray Product Less Than K
+### 3.3) Counting Subarrays Examples
+
+#### LC 713: Subarray Product Less Than K (Template: Counting)
 ```python
 # LC 713 Subarray Product Less Than K
 # V0 
@@ -619,7 +792,9 @@ class Solution:
         return result
 ```
 
-### 2-5) Minimum Size Subarray Sum
+### 3.4) Minimum Window Examples
+
+#### LC 209: Minimum Size Subarray Sum (Template: Variable Min)
 ```python
 # LC 209 Minimum Size Subarray Sum
 # V0
@@ -654,7 +829,7 @@ class Solution:
         return minLength
 ```
 
-### 2-6) Longest Repeating Character Replacement
+#### LC 424: Longest Repeating Character Replacement (Template: Variable Max)
 ```python
 # lc 424. Longest Repeating Character Replacement
 # V0
@@ -745,7 +920,9 @@ private Boolean isWindowValid(int start, int end, int count, int k) {
 }
 ```
 
-### 2-6) Arithmetic Slices
+### 3.5) Advanced Examples
+
+#### LC 413: Arithmetic Slices (Template: Custom)
 ```python
 # LC 413 Arithmetic Slices
 # V0
@@ -775,7 +952,7 @@ class Solution(object):
         return res 
 ```
 
-### 2-7) Minimum Swaps to Group All 1's Together
+#### LC 1151: Minimum Swaps to Group All 1's Together (Template: Fixed Size)
 ```python
 # LC 1151 Minimum Swaps to Group All 1's Together
 # V0
@@ -801,7 +978,7 @@ class Solution:
         return ones - max_one
 ```
 
-### 2-8) Partition Labels
+#### LC 763: Partition Labels (Template: Custom Greedy + Sliding Window)
 
 ```java
 // java
@@ -840,3 +1017,88 @@ public List<Integer> partitionLabels_0_2(String s) {
     return res;
 }
 ```
+
+## 4) Summary & Quick Reference
+
+### 4.1) Template Quick Reference
+
+| Template | Time | Space | Key Pattern | When to Use |
+|----------|------|-------|-------------|-------------|
+| **Fixed Size** | O(n) | O(k) | `for i in range(n)` | Window size predetermined |
+| **Variable Max** | O(n) | O(k) | `for-while` expand-contract | Find maximum valid length |
+| **Variable Min** | O(n) | O(k) | `while-while` contract-expand | Find minimum valid length |
+| **Counting** | O(n) | O(k) | `for` with `count += right-left+1` | Count subarrays/substrings |
+
+### 4.2) Common Patterns & Tricks
+
+#### **Character Frequency Tracking**
+```python
+# Track character counts in window
+window = {}
+window[char] = window.get(char, 0) + 1
+
+# Remove character from window
+window[char] -= 1
+if window[char] == 0:
+    del window[char]
+```
+
+#### **Validity Conditions**
+```python
+# Common validity checks
+def is_valid_permutation(window, target):
+    return window == target
+
+def is_valid_distinct_k(window, k):
+    return len(window) <= k
+
+def is_valid_sum(current_sum, target):
+    return current_sum >= target
+```
+
+#### **Result Updates**
+```python
+# Maximum length problems
+max_len = max(max_len, right - left + 1)
+
+# Minimum length problems  
+if is_valid:
+    min_len = min(min_len, right - left + 1)
+
+# Counting problems
+count += right - left + 1  # All subarrays ending at 'right'
+```
+
+### 4.3) Problem-Solving Steps
+
+1. **Identify Pattern**: Fixed size, variable max/min, or counting?
+2. **Choose Template**: Select appropriate template based on pattern
+3. **Define Window State**: HashMap, set, sum, or counter?
+4. **Define Validity**: What makes the window valid/invalid?
+5. **Update Logic**: When and how to update the result?
+
+### 4.4) Common Mistakes & Tips
+
+**🚫 Common Mistakes:**
+- Wrong loop structure (using wrong template)
+- Forgetting to handle window state correctly
+- Incorrect validity condition logic
+- Missing edge cases (empty input, single element)
+
+**✅ Best Practices:**
+- Use `collections.Counter` for character frequency problems
+- Always handle the case when removing elements from HashMap
+- Test with edge cases: empty string, single character, all same characters
+- Consider if the problem needs "exactly k" vs "at most k"
+- For "exactly k" problems: use "at most k - at most (k-1)"
+
+### 4.5) Time & Space Complexity Analysis
+- **Time**: O(n) - each element visited at most twice
+- **Space**: O(k) where k is window size or number of unique elements
+- **Optimization**: Use arrays instead of HashMaps when character set is limited (e.g., only lowercase letters)
+
+### 4.6) Related Algorithms
+- **Two Pointers**: Foundation for sliding window
+- **Hash Table**: For frequency tracking
+- **Deque**: For sliding window maximum/minimum
+- **Prefix Sum**: For sum-based sliding window problems
