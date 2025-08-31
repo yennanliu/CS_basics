@@ -14,6 +14,14 @@
 	- LC 128 - Longest Consecutive Sequence
 	 	- 594
 	 	- 149
+	 - LC 125 - Valid Palindrome
+	 	- 680
+	 	- 005
+	 	- 167
+	 	- 11
+	 	- 336
+	 	- 214
+	 	- 42
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
