@@ -105,7 +105,28 @@ public class FlattenMultilevelDoublyLinkedList {
 
         Stack<Node> stack = new Stack<>();
 
-        /** NOTE !!! the node we plan to return as res */
+    /** NOTE !!! the node we plan to return as res */
+    /**
+     *
+     * ✅ Why dummy is essential
+     * 	•	Dummy ensures you never lose track of the start of the list.
+     * 	•	_prev = new Node() by itself doesn’t give you a stable pointer to return.
+     *
+     * ⸻
+     *
+     * 👉 So they look similar, but the intent differs:
+     * 	•	dummy = fixed anchor, always at start, safe to return dummy.next.
+     * 	•	_prev = new Node() = temporary pointer, moves forward, so you lose the head.
+     *
+     */
+    /**
+     *  NOTE !!!  below is wrong
+     *
+     *   Node prev = new Node();
+     *
+     *   -> we need an `anchor` to check the `init status`
+     *
+     */
         Node dummy = new Node(); // helper node
         Node prev = dummy;
 
@@ -522,6 +543,44 @@ public class FlattenMultilevelDoublyLinkedList {
         }
 
         return last; // return the tail
+    }
+
+    // V0-5
+    // IDEA: ITERATIVE + LINKED LIST OP (fixed by gpt)
+    public Node flatten_0_5(Node head) {
+        if (head == null) {
+            return null;
+        }
+
+        //Node dummy = new Node(0, null, head, null); // dummy prev to head
+        Node dummy = new Node(); // dummy prev to head
+        Node prev = dummy;
+
+        Stack<Node> st = new Stack<>();
+        st.push(head);
+
+        while (!st.isEmpty()) {
+            Node cur = st.pop();
+
+            // connect prev ↔ cur
+            prev.next = cur;
+            cur.prev = prev;
+
+            // push next first, then child (so child processed first)
+            if (cur.next != null) {
+                st.push(cur.next);
+            }
+            if (cur.child != null) {
+                st.push(cur.child);
+                cur.child = null; // clear child link
+            }
+
+            prev = cur; // move forward
+        }
+
+        // detach dummy
+        dummy.next.prev = null;
+        return dummy.next;
     }
 
     // V1
