@@ -34,14 +34,27 @@ package LeetCodeJava.String;
  */
 public class ValidPalindrome2 {
 
-    // V0
-//    public boolean validPalindrome(String s) {
-//
-//    }
+  // V0
+  //    public boolean validPalindrome(String s) {
+  //
+  //    }
 
-    // V0-1
-    // IDEA: SLIDE WINDOW (fixed by gpt)
-    public boolean validPalindrome_0_1(String s) {
+  // V0-1
+  // IDEA: SLIDE WINDOW (fixed by gpt)
+  /**
+   * 🔑 Explanation
+   * 	•	Use two pointers (l and r) to check palindrome normally.
+   * 	•	On the first mismatch, you’re allowed one deletion:
+   * 	•	Skip s[l] → check s[l+1...r]
+   * 	•	OR skip s[r] → check s[l...r-1]
+   * 	•	If either works → return true.
+   * 	•	If more mismatches appear → return false.
+   *
+   * ⏱ Time: O(n) (worst case checks 2 substrings)
+   * 📦 Space: O(1)
+   *
+   */
+  public boolean validPalindrome_0_1(String s) {
         if (s == null || s.length() <= 1) {
             return true;
         }
@@ -51,6 +64,15 @@ public class ValidPalindrome2 {
 
         while (l < r) {
             if (s.charAt(l) != s.charAt(r)) {
+                /**
+                 *  NOTE !!!
+                 *
+                 *   trick below:
+                 *
+                 *   -> if mismatch, we check if
+                 *    - 1. if skip `left val`  is palindrome
+                 *    - 2. if skip `right val` is palindrome
+                 */
                 // At mismatch -> try skipping either l or r
                 return checkIsPalindrome(s, l + 1, r) || checkIsPalindrome(s, l, r - 1);
             }
@@ -194,6 +216,37 @@ public class ValidPalindrome2 {
             } else
                 return false;
         }
+        return true;
+    }
+
+    // V4
+    // https://leetcode.com/problems/valid-palindrome-ii/solutions/1245374/c-java-easy-single-method-two-pointers-e-w2b1/
+    // IDEA: RECURSION
+    public boolean validPalindrome_4(String s) {
+        return isPalindrome(s, 0, s.length() - 1, false);
+    }
+
+    public boolean isPalindrome(final String s, int leftIndex, int rightIndex, final boolean isCharacterDeleted) {
+
+        while (leftIndex < rightIndex) {
+
+            if (s.charAt(leftIndex) != s.charAt(rightIndex)) {
+
+                if (isCharacterDeleted) {
+                    return false;
+                }
+
+                // isPalindrome(s, leftIndex + 1, rightIndex, true) for cases like "ececabbacec"
+                // isPalindrome(s, leftIndex, rightIndex - 1, true) for cases like "abccbab"
+                return isPalindrome(s, leftIndex + 1, rightIndex, true)
+                        || isPalindrome(s, leftIndex, rightIndex - 1, true);
+            }
+
+            ++leftIndex;
+            --rightIndex;
+
+        }
+
         return true;
     }
 
