@@ -1869,4 +1869,41 @@ public class workspace14 {
         return 0;
     }
 
+    // LC 125
+    // 3.30 - 3.40 pm
+    /**
+     *
+     *  IDEA 1) 2 POINTERS
+     */
+    public boolean isPalindrome(String s) {
+        // edge
+        if(s.isEmpty()){
+            return true;
+        }
+        // ???
+//        if(s.equals("")){
+//            return true;
+//        }
+        if(s.length() == 1){
+            return true;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        String alpha = "abcdefghijklmonpqrstuvwxyz"; // ??
+        String nums = "0123456789";
+        for(String x: s.split("")){
+            boolean shouldAdd = alpha.contains(x.toLowerCase()) || nums.contains(x);
+            if(shouldAdd){
+                if(alpha.contains(x.toLowerCase())){
+                    sb.append(x.toLowerCase());
+                }else{
+                    sb.append(x);
+                }
+            }
+        }
+
+        System.out.println(">>> str = " + sb.toString());
+        return sb.toString().contentEquals(sb.reverse());
+    }
+
 }
