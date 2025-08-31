@@ -1992,4 +1992,11 @@ public class workspace14 {
         return true;
     }
 
+    // LC 005
+    public String longestPalindrome(String s) {
+
+        return null;
+    }
+
+
 }
