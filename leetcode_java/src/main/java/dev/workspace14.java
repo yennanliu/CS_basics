@@ -1799,4 +1799,63 @@ public class workspace14 {
         return res;
     }
 
+    // LC 003
+    // 3.00 - 3.10 pm
+    /**
+     *
+     *  Given a string s,
+     *  find the `length` of the `longest` substring
+     *  without `duplicate` characters.
+     *
+     *  NOTE:
+     *   A substring is a contiguous non-empty sequence
+     *   of characters within a string.
+     *
+     *
+     *
+     *  IDEA 1) hashset + slide window
+     *
+     *
+     *
+     */
+    public int lengthOfLongestSubstring(String s) {
+        // edge
+        if(s.isEmpty()){
+            return 0;
+        }
+        if(s.length() == 1){
+            return 1;
+        }
+        if(s.length() == 2){
+            if(s.charAt(0) == s.charAt(1)){
+                return 1;
+            }
+            return 2;
+        }
+
+        int max_len = 0;
+        HashSet<String> set = new HashSet<>();
+        String[] s_arr = s.split("");
+
+        int l = 0;
+        int r = 0;
+        while(r < s_arr.length && r >= l){
+            String x = s_arr[r];
+            // NOTE!!!
+            while(!set.isEmpty() && set.contains(x)){
+                //String to_remove = s_arr[l];
+                set.remove(s_arr[l]); // ???
+                l += 1;
+            }
+
+            set.add(x);
+            max_len = Math.max(max_len, r - l + 1);
+            r += 1;
+        }
+
+        return max_len;
+    }
+
+
+
 }
