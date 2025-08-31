@@ -1906,4 +1906,90 @@ public class workspace14 {
         return sb.toString().contentEquals(sb.reverse());
     }
 
+    // LC 680
+    // 3.45 - 3.55 pm
+    /**
+     * Given a string s, return `true` if the s can be
+     * `palindrome` after deleting `at most` one character from it.
+     *
+     *
+     *  IDEA 1) 2 POINTER ??
+     *
+     *   ->
+     *   step 1) check if already `palindrome`
+     *   step 2) left, right pointer
+     *      keep moving, and check if can `remove` a single element make it as palindrome
+     *      else, return false directly ??
+     *
+     */
+    public boolean validPalindrome(String s) {
+        // edge
+        if(s.isEmpty()){
+            return true;
+        }
+        if(s.length() == 1){
+            return true;
+        }
+        // ??
+//        if(s.length() == 3){
+//            if(s.charAt(0) != s.charAt(2)){
+//                return false;
+//            }
+//        }
+        // check if already `palindrome`
+        if(checkIsPalindrome(s)){
+            return true;
+        }
+
+        int l = 0;
+        int r = s.length() - 1;
+        int cnt = 0;
+        while(r > l){
+            // ???
+            if(cnt > 1){
+                return false;
+            }
+            if(s.charAt(l) != s.charAt(r)){
+                /**  NOTE !!!
+                 *
+                 *  the ONLY case that we can remove `1` element
+                 *  make string to palindrome is as below:
+                 *
+                 *   input = "abca"
+                 *
+                 *   -> so ONLY l, r pointer diff is 1
+                 *     otherwise, we need to remove both
+                 *     l, and r pointer element than
+                 *     be able to make string to palindrome
+                 *
+                 */
+                if(r - l > 1){
+                    return false;
+                }
+                cnt += 1;
+            }
+            r -= 1;
+            l += 1;
+        }
+
+        return true;
+    }
+
+    private boolean checkIsPalindrome(String s){
+        // edge
+        if(s.isEmpty()){
+            return true;
+        }
+        int l = 0;
+        int r = s.length() - 1;
+        while(r > l){
+            if(s.charAt(l) != s.charAt(r)){
+                return false;
+            }
+            r -= 1;
+            l += 1;
+        }
+        return true;
+    }
+
 }

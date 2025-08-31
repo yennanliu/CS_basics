@@ -40,8 +40,41 @@ public class ValidPalindrome2 {
 //    }
 
     // V0-1
-    // IDEA: 2 POINTERS (TLE)
+    // IDEA: SLIDE WINDOW (fixed by gpt)
     public boolean validPalindrome_0_1(String s) {
+        if (s == null || s.length() <= 1) {
+            return true;
+        }
+
+        int l = 0;
+        int r = s.length() - 1;
+
+        while (l < r) {
+            if (s.charAt(l) != s.charAt(r)) {
+                // At mismatch -> try skipping either l or r
+                return checkIsPalindrome(s, l + 1, r) || checkIsPalindrome(s, l, r - 1);
+            }
+            l++;
+            r--;
+        }
+
+        return true;
+    }
+
+    private boolean checkIsPalindrome(String s, int l, int r) {
+        while (l < r) {
+            if (s.charAt(l) != s.charAt(r)) {
+                return false;
+            }
+            l++;
+            r--;
+        }
+        return true;
+    }
+
+    // V0-2
+    // IDEA: 2 POINTERS (TLE)
+    public boolean validPalindrome_0_2(String s) {
         // edge
         if (s == null || s.length() == 0) {
             return true;
