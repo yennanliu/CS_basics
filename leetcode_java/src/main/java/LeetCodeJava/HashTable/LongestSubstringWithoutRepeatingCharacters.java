@@ -95,6 +95,63 @@ public class LongestSubstringWithoutRepeatingCharacters {
         return res;
     }
 
+    // V0-0-1
+    // IDEA: HASHSET + SLIDE WINDOW
+    public int lengthOfLongestSubstring_0_0_1(String s) {
+        // edge
+        if (s.isEmpty()) {
+            return 0;
+        }
+        if (s.length() == 1) {
+            return 1;
+        }
+        if (s.length() == 2) {
+            if (s.charAt(0) == s.charAt(1)) {
+                return 1;
+            }
+            return 2;
+        }
+
+        int max_len = 0;
+        // HASHSET
+        HashSet<String> set = new HashSet<>();
+        String[] s_arr = s.split("");
+
+        int l = 0;
+        int r = 0;
+        // SLIDE WINDOW
+        while (r < s_arr.length && r >= l) {
+            /**
+             * NOTE !!!
+             *
+             *  the `right pointer` val
+             */
+            String x = s_arr[r];
+            /**  NOTE !!!
+             *
+             *   use `while loop`
+             *   to keep moving `left pointer (window)
+             *   till NO duplicated element in cur window
+             */
+            while (!set.isEmpty() && set.contains(x)) {
+                //String to_remove = s_arr[l];
+                /**
+                 * NOTE !!!
+                 *
+                 *  the `left pointer` val
+                 */
+                set.remove(s_arr[l]); // ???
+                l += 1;
+            }
+
+            set.add(x);
+            max_len = Math.max(max_len, r - l + 1);
+            r += 1;
+        }
+
+        return max_len;
+    }
+
     // V0-1
     // IDEA : HASHMAP + SLIDING WINDOW
     public int lengthOfLongestSubstring_0_1(String s) {
