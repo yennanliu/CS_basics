@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-08-31
+# 2025-09-02
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
@@ -15,10 +15,6 @@
 	 	- 594
 	 	- 149
 	 - LC 125 - Valid Palindrome
-	 	- 680
-	 	- 005
-	 	- 167
-	 	- 11
 	 	- 336
 	 	- 214
 	 	- 42
@@ -29,7 +25,10 @@
 		- review prev LC problems !!!
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md
 	- 護城河
-		- p.7 (sliding window)
+		- video
+			- session 3
+		- pdf
+			- p.7 (sliding window)
 		- binary search problems:
 			🔍 Classic Binary Search
 					•	LC 704 – Binary Search
@@ -70,6 +69,51 @@
 					•	LC 300 – Longest Increasing Subsequence (with patience sorting → binary search)
 					•	LC 354 – Russian Doll Envelopes
 					•	LC 2560 – House Robber IV
+	- again:
+	- todo:
+		- (337 similar)
+			- 1770
+			- 1931
+			- 2246
+- Sys design questions:
+	- https://neetcode.io/practice?tab=systemDesign
+- crack code book
+	- p.177 (recursion & dp)
+- sys design book
+	- Volume 2
+		- p.323
+
+# 2025-08-31
+- needcode `grind 75` - similar LC by AI
+	- https://neetcode.io/practice?tab=blind75
+	- LC 49 Group Anagrams
+		- 336
+		- 30
+	- LC 347 Top K Frequent Elements
+		- 621
+		- 1838
+	- LC 271 – Encode and Decode Strings
+		- 640
+	- LC 128 - Longest Consecutive Sequence
+	 	- 594
+	 	- 149
+	 - LC 125 - Valid Palindrome
+	 	- 680
+	 	- 005
+	 	- 167
+	 	- 11
+	 	- 336
+	 	- 214
+	 	- 42
+- neetcode 250
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
+		- 27/66
+			- 335,430,1157,395
+		- review prev LC problems !!!
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md
+	- 護城河
+		- session 3
+		- p.7 (sliding window)
 	- again:
 	- todo:
 		- (337 similar)
