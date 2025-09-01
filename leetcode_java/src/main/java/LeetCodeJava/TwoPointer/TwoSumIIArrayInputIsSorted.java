@@ -45,13 +45,15 @@ package LeetCodeJava.TwoPointer;
  */
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class TwoSumIIArrayInputIsSorted {
 
     class Solution {
 
         // V0
-        // IDEA : 2 POINTERS // NOTE !!! we use 2 pointers instead of binary search
+        // IDEA : 2 POINTERS
+        // NOTE !!! we use `2 pointers` but NOT binary search
         public int[] twoSum(int[] numbers, int target) {
 
             if (numbers.length == 0 || numbers.equals(null)) {
@@ -62,6 +64,15 @@ public class TwoSumIIArrayInputIsSorted {
             int right = numbers.length - 1;
             int[] ans = new int[2];
             //System.out.println("numbers = " + Arrays.toString(numbers));
+            /**
+             *  NOTE !!!
+             *
+             *   use `r >= l`
+             *   since there is a case that candidate could be between l and r
+             *   e.g. given `xxxxLxRxxxx` status, the answer could be as:
+             *      1. [l, l+1]
+             *      2. [r-1, r]
+             */
             while (right >= left) {
                 int cur = numbers[left] + numbers[right];
                 if (cur == target) {
@@ -100,6 +111,37 @@ public class TwoSumIIArrayInputIsSorted {
         }
 
         return new int[] { -1, -1 }; // if not found
+    }
+
+    // V0-2
+    // IDEA: HASHMAP
+    public int[] twoSum_0_2(int[] numbers, int target) {
+        // edge
+        if (numbers == null || numbers.length == 0) {
+            return null;
+        }
+        if (numbers.length == 1) {
+            return null;
+        }
+
+        int[] res = new int[2];
+
+        // {val : idx}
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < numbers.length; i++) {
+            // x + y = t
+            // y = t - x
+            int x = numbers[i];
+            int diff = target - x;
+            if (map.containsKey(diff)) {
+                res[0] = map.get(diff);
+                res[1] = i + 1;
+                return res;
+            }
+            map.put(x, i + 1);
+        }
+
+        return res;
     }
 
 
