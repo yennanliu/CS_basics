@@ -1,5 +1,6 @@
 package dev;
 
+import javax.print.attribute.EnumSyntax;
 import java.util.*;
 
 public class workspace14 {
@@ -1998,5 +1999,134 @@ public class workspace14 {
         return null;
     }
 
+    // LC 167
+    // 7.23 - 7.33 am
+    /**
+     *  IDEA 1) HASH MAP (same as 2 sum )
+     *
+     *  IDEA 2) BINARY SEARCH
+     *
+     *
+     */
+    // IDEA 3) 2 POINTERS
+    public int[] twoSum(int[] numbers, int target) {
+        // edge
+        if (numbers == null || numbers.length == 0) {
+            return null;
+        }
+        if (numbers.length == 1) {
+            return null;
+        }
+        // {val : idx}
+        //Map<Integer, Integer> map = new HashMap<>();
+
+        int[] res = new int[2];
+
+        int l = 0;
+        int r = numbers.length - 1;
+
+        // 2 pointer
+        // use the fact that `arr is in INCREASING ORDER`
+        while(r >= l){
+            int _sum = numbers[l] + numbers[r];
+            if(_sum == target){
+                // ????
+                res[0] = l + 1;
+                res[1] =  r + 1;
+                return res;
+            }else if(_sum < target){
+                l += 1;
+            }else{
+                r -= 1;
+            }
+        }
+
+        return res;
+    }
+
+    // IDEA 2) BINARY SEARCH
+//    public int[] twoSum(int[] numbers, int target) {
+//        if (numbers == null || numbers.length == 0) {
+//            return null;
+//        }
+//        if (numbers.length == 1) {
+//            return null;
+//        }
+//
+//        int[] res = new int[2];
+//
+//        // {val : idx}
+//        Map<Integer, Integer> map = new HashMap<>();
+////        for (int i = 0; i < numbers.length; i++) {
+////            int x = numbers[i];
+////            map.put(x, i + 1);
+////        }
+//
+//        // binary search
+//        int l = 0;
+//        int r = numbers.length - 1;
+//        while(r >= l){
+//            int mid = ( l + r ) / 2;
+//            int val = numbers[mid];
+//            // x + y = t
+//            // y = t - x
+//            int diff = target - val;
+//            if(map.containsKey(diff)){
+//                res[0] = map.get(diff);
+//                res[1] = mid + 1;
+//                return res;
+//            }
+//            // too big
+//            else if(diff < 0){
+//                r = mid - 1;
+//            }
+//            // too small
+//            else{
+//                l = mid + 1;
+//            }
+//
+//            // update visited element
+//            map.put(val, mid + 1);
+//        }
+//
+//        return res;
+//    }
+
+
+
+
+
+
+    // IDEA 1) HASH MAP (same as 2 sum )
+    public int[] twoSum_(int[] numbers, int target) {
+        // edge
+        if (numbers == null || numbers.length == 0) {
+            return null;
+        }
+        if (numbers.length == 1) {
+            return null;
+        }
+        // {val : idx}
+        //Map<Integer, Integer> map = new HashMap<>();
+
+        int[] res = new int[2];
+
+        // {val : idx}
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < numbers.length; i++) {
+            // x + y = t
+            // y = t - x
+            int x = numbers[i];
+            int diff = target - x;
+            if (map.containsKey(diff)) {
+                res[0] = map.get(diff);
+                res[1] = i + 1;
+                return res;
+            }
+            map.put(x, i + 1);
+        }
+
+        return res;
+    }
 
 }
