@@ -157,6 +157,60 @@ public class OnlineMajorityElementInSubarray {
         }
     }
 
+    // V0-2
+    // IDEA: SUB ARRAY + HASHMAP (TLE)
+    class MajorityChecker_0_2 {
+
+        // attr
+        int[] cur_arr;
+        // { val: cnt}
+        Map<Integer, Integer> cnt_map;
+
+        public MajorityChecker_0_2(int[] arr) {
+            this.cur_arr = arr;
+            this.cnt_map = new HashMap<>();
+        }
+
+        public int query(int left, int right, int threshold) {
+            //int ans = -1;
+            // copy sub array
+            int[] subArr = Arrays.copyOfRange(this.cur_arr, left, right + 1);
+            System.out.println(">>> (query) subArr = " + Arrays.toString(Arrays.stream(subArr).toArray())
+                    + ", left = " + left + ", right = " + right);
+            // update map
+            updateCnt(subArr);
+            // get `validated` elements
+            return getMajorElement(threshold);
+        }
+
+        private void updateCnt(int[] inputArr){
+            if(inputArr == null || inputArr.length == 0){
+                return;
+            }
+            // reset map // ???
+            this.cnt_map = new HashMap<>();
+            System.out.println(">>> (before updateCnt) this.cnt_map = " + this.cnt_map);
+
+            for(int x: inputArr){
+                this.cnt_map.put(x, this.cnt_map.getOrDefault(x, 0) + 1);
+            }
+            System.out.println(">>> (after updateCnt) this.cnt_map = " + this.cnt_map);
+        }
+
+        private int getMajorElement(int threshold){
+            int ans = -1;
+            System.out.println(">>> (getMajorElement) this.cnt_map = " + this.cnt_map);
+            for(int key: this.cnt_map.keySet()){
+                System.out.println(">>> key = " +  key);
+                if(this.cnt_map.get(key) >= threshold){
+                    return key;
+                }
+            }
+            return ans;
+        }
+
+    }
+
     // V1
     // https://leetcode.com/problems/online-majority-element-in-subarray/solutions/617295/java-ologn-for-each-query-with-bit-manip-bpuu/
     class MajorityChecker_1 {
