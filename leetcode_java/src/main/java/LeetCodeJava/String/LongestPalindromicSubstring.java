@@ -90,6 +90,42 @@ public class LongestPalindromicSubstring {
         return res;
     }
 
+    // V0-0-1
+    // IDEA: SLIDE WINDOW (fixed by gpt)
+    public String longestPalindrome_0_0_1(String s) {
+        if (s == null || s.length() == 0)
+            return "";
+        if (s.length() == 1)
+            return s;
+
+        String best = "";
+
+        for (int i = 0; i < s.length(); i++) {
+            // odd center at (i, i)
+            int[] odd = expand(s, i, i);
+            if (odd[1] - odd[0] + 1 > best.length()) {
+                best = s.substring(odd[0], odd[1] + 1);
+            }
+
+            // even center at (i, i+1)
+            int[] even = expand(s, i, i + 1);
+            if (even[1] - even[0] + 1 > best.length()) {
+                best = s.substring(even[0], even[1] + 1);
+            }
+        }
+
+        return best;
+    }
+
+    private int[] expand(String s, int l, int r) {
+        while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
+            l--;
+            r++;
+        }
+        // l and r have moved one step too far; bring them back
+        return new int[] { l + 1, r - 1 };
+    }
+
     // V0-1
     // IDEA: 2 POINTERS + Palindrome check (fixed by gpt)
     public String longestPalindrome_0_1(String s) {
