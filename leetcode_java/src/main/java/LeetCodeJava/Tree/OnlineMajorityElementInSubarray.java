@@ -61,13 +61,83 @@ public class OnlineMajorityElementInSubarray {
 //        }
 //    }
 
-    // V0-0-1
+    // V0-1
+    class MajorityChecker_0_1 {
+        private Map<Integer, List<Integer>> posMap; // value -> sorted indices
+        private int[] arr;
+        private Random rand;
+
+        public MajorityChecker_0_1(int[] arr) {
+            this.arr = arr;
+            this.posMap = new HashMap<>();
+            this.rand = new Random();
+
+            // Precompute positions of each value
+            for (int i = 0; i < arr.length; i++) {
+                posMap.computeIfAbsent(arr[i], k -> new ArrayList<>()).add(i);
+            }
+        }
+
+        public int query(int left, int right, int threshold) {
+            int len = right - left + 1;
+
+            // Try random candidates (probabilistic optimization)
+            for (int t = 0; t < 20; t++) { // ~20 trials give >99.9% confidence
+                int idx = left + rand.nextInt(len);
+                int cand = arr[idx];
+
+                List<Integer> positions = posMap.get(cand);
+                if (positions == null)
+                    continue;
+
+                // Count candidate frequency in [left, right] using binary search
+                int cnt = countInRange(positions, left, right);
+
+                if (cnt >= threshold) {
+                    return cand;
+                }
+            }
+            return -1;
+        }
+
+        private int countInRange(List<Integer> positions, int left, int right) {
+            int lo = lowerBound(positions, left);
+            int hi = upperBound(positions, right);
+            return hi - lo;
+        }
+
+        private int lowerBound(List<Integer> list, int target) {
+            int l = 0, r = list.size();
+            while (l < r) {
+                int m = (l + r) / 2;
+                if (list.get(m) >= target)
+                    r = m;
+                else
+                    l = m + 1;
+            }
+            return l;
+        }
+
+        private int upperBound(List<Integer> list, int target) {
+            int l = 0, r = list.size();
+            while (l < r) {
+                int m = (l + r) / 2;
+                if (list.get(m) > target)
+                    r = m;
+                else
+                    l = m + 1;
+            }
+            return l;
+        }
+    }
+
+    // V0-3
     // IDEA: HASHMAP + 2 POINTERS (fixed by gpt) (TLE)
-    class MajorityChecker_0_0_1 {
+    class MajorityChecker_0_3 {
 
         int[] arr;
 
-        public MajorityChecker_0_0_1(int[] arr) {
+        public MajorityChecker_0_3(int[] arr) {
             this.arr = arr;
         }
 
@@ -89,14 +159,14 @@ public class OnlineMajorityElementInSubarray {
         }
     }
 
-    // V0-1
+    // V0-4
     // IDEA: HASHMAP + LIST (fixed by gpt)
-    class MajorityChecker_0_1 {
+    class MajorityChecker_0_4 {
         private int[] arr;
         private Map<Integer, List<Integer>> idxMap;
         private Random rand;
 
-        public MajorityChecker_0_1(int[] arr) {
+        public MajorityChecker_0_4(int[] arr) {
             this.arr = arr;
             this.idxMap = new HashMap<>();
             this.rand = new Random();
@@ -157,16 +227,16 @@ public class OnlineMajorityElementInSubarray {
         }
     }
 
-    // V0-2
+    // V0-5
     // IDEA: SUB ARRAY + HASHMAP (TLE)
-    class MajorityChecker_0_2 {
+    class MajorityChecker_0_5 {
 
         // attr
         int[] cur_arr;
         // { val: cnt}
         Map<Integer, Integer> cnt_map;
 
-        public MajorityChecker_0_2(int[] arr) {
+        public MajorityChecker_0_5(int[] arr) {
             this.cur_arr = arr;
             this.cnt_map = new HashMap<>();
         }
@@ -452,6 +522,6 @@ public class OnlineMajorityElementInSubarray {
 
     }
 
-    
+
 
 }
