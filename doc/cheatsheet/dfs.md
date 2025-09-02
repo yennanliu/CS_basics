@@ -1,103 +1,299 @@
-# DFS 
+# DFS (Depth-First Search)
 
-- Deep-first search
-- search algorithm
-- Deep first, then breadth
-- Use data structure : `Stack`   (FILO)
-- To check if some value exists
-- Inorder, preorder, postorder (can recreate a tree)
-- not most efficient (VS bfs), but can handle some specific problems
+## Overview
+**Depth-First Search (DFS)** is a graph/tree traversal algorithm that explores as far as possible along each branch before backtracking. It uses recursion or a stack to maintain the traversal path.
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_2.png"></p>
+### Key Properties
+- **Time Complexity**: O(V + E) for graphs, O(n) for trees
+- **Space Complexity**: O(h) for recursion stack, where h = height
+- **Core Idea**: Go deep before going wide
+- **Data Structure**: Stack (implicit via recursion or explicit)
+- **When to Use**: Path finding, cycle detection, topological sort, tree traversal, backtracking problems
+
+### References
+- [DFS Visualization](https://www.cs.usfca.edu/~galles/visualization/DFS.html)
+- [DFS vs BFS Comparison](https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_vs_bfs.png)
+- [Tree Traversal Animations](https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_2.png)
 
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_vs_bfs.png"></p>
+## Problem Categories
 
+### **Pattern 1: Tree Traversal**
+- **Description**: Visit all nodes in specific order (preorder, inorder, postorder)
+- **Recognition**: "Traverse", "visit all", "print tree", "serialize"
+- **Examples**: LC 94, LC 144, LC 145, LC 297, LC 449
+- **Template**: Use Tree Traversal Template
 
-## 0) Concept
+### **Pattern 2: Path Problems**
+- **Description**: Find paths with specific properties in trees/graphs
+- **Recognition**: "Path sum", "root to leaf", "all paths", "longest path"
+- **Examples**: LC 112, LC 113, LC 257, LC 124, LC 543
+- **Template**: Use Path Template with backtracking
 
-### 0-1) Types
+### **Pattern 3: Graph Traversal**
+- **Description**: Explore graphs, find components, detect cycles
+- **Recognition**: "Connected components", "islands", "cycle detection"
+- **Examples**: LC 200, LC 695, LC 133, LC 207, LC 210
+- **Template**: Use Graph DFS Template
 
-- Types
-    - normal transversal (pre-order, in-order, post-order)
-    - normal transversal with special op:
-        - `root.right -> do sth -> root.left`
+### **Pattern 4: Backtracking**
+- **Description**: Try all possibilities, undo choices
+- **Recognition**: "All combinations", "permutations", "subsets"
+- **Examples**: LC 46, LC 78, LC 39, LC 17
+- **Template**: Use Backtracking Template
 
-- Algorithm
-    - dfs
-    - recursive
-    - graph
+### **Pattern 5: Tree Modification**
+- **Description**: Modify tree structure or values during traversal
+- **Recognition**: "Delete", "insert", "trim", "convert"
+- **Examples**: LC 450, LC 701, LC 669, LC 538
+- **Template**: Use Modification Template
 
-- Data structure
-    - TreeNode
-    - dict
-    - set
-    - array
+### **Pattern 6: Subtree Problems**
+- **Description**: Process subtrees and aggregate results
+- **Recognition**: "Subtree sum", "duplicate subtrees", "LCA"
+- **Examples**: LC 508, LC 652, LC 236, LC 663
+- **Template**: Use Bottom-up Template
 
-### 0-2) Pattern
+## Templates & Algorithms
 
-#### 0-2-1) General form
+### Template Comparison Table
+| Template Type | Use Case | Key Operation | Time | Space | When to Use |
+|---------------|----------|---------------|------|-------|-------------|
+| **Tree Traversal** | Visit all nodes | Recursive/Stack | O(n) | O(h) | Tree problems |
+| **Graph DFS** | Explore graph | Visited set | O(V+E) | O(V) | Graph exploration |
+| **Backtracking** | Try all paths | Undo choices | O(b^d) | O(d) | Combinatorial |
+| **Path Finding** | Find specific paths | Track path | O(n) | O(h) | Path problems |
+| **Modification** | Change structure | Update nodes | O(n) | O(h) | Tree editing |
+| **Bottom-up** | Aggregate info | Post-order | O(n) | O(h) | Subtree problems |
 
-```java
-// java
-// crack code p.136
-
-// 1) Preorder traversal
-public TreeNode PreOrderTraversal(TreeNode root){
-    if(root != null){
-        System.out.println(root);
-        PreOrderTraversal(root.left);
-        PreOrderTraversal(root.right);
-    }
-}
-
-// 2) Postorder traversal
-public TreeNode PostOrderTraversal(TreeNode root){
-    if(root != null){
-        PostOrderTraversal(root.left);
-        PostOrderTraversal(root.right);
-        System.out.println(root);
-    }
-}
-
-// 3) Inorder traversal
-public TreeNode InOrderTraversal(TreeNode root){
-    if(root != null){
-        InOrderTraversal(root.left);
-        System.out.println(root);
-        InOrderTraversal(root.right);
-    }
-}
+### Universal DFS Template
+```python
+def dfs(node, visited=None):
+    """
+    Universal DFS template for trees and graphs
+    Can be adapted for various problems
+    """
+    # Base case
+    if not node or (visited and node in visited):
+        return
+    
+    # Mark as visited (for graphs)
+    if visited is not None:
+        visited.add(node)
+    
+    # Process current node (pre-order position)
+    process(node)
+    
+    # Recursive calls
+    for neighbor in get_neighbors(node):
+        dfs(neighbor, visited)
+    
+    # Post-order processing if needed
+    # process_after(node)
 ```
 
+### Template 1: Tree Traversal
 ```python
-# form I
-def dfs(root):
+# Preorder: Root -> Left -> Right
+def preorder(root):
+    if not root:
+        return []
+    return [root.val] + preorder(root.left) + preorder(root.right)
 
-    # if root, do sth
-    if root:
-        # do sth, pre-order (root->left->right) in this code
+# Inorder: Left -> Root -> Right  
+def inorder(root):
+    if not root:
+        return []
+    return inorder(root.left) + [root.val] + inorder(root.right)
 
-    # if not root, do NOTHING
+# Postorder: Left -> Right -> Root
+def postorder(root):
+    if not root:
+        return []
+    return postorder(root.left) + postorder(root.right) + [root.val]
 
-    # if root.left exist
-    if root.left:
-        dfs(root.left)
-    # if root.right exist
-    if root.right:
-        dfs(root.right)
+# Iterative with Stack
+def dfs_iterative(root):
+    if not root:
+        return []
+    
+    stack = [root]
+    result = []
+    
+    while stack:
+        node = stack.pop()
+        result.append(node.val)
+        # Add right first so left is processed first (LIFO)
+        if node.right:
+            stack.append(node.right)
+        if node.left:
+            stack.append(node.left)
+    
+    return result
+```
 
-# form II
-def dfs(root):
+### Template 2: Graph DFS
+```python
+def dfs_graph(graph, start):
+    """
+    DFS for graph with cycle handling
+    """
+    visited = set()
+    result = []
+    
+    def dfs(node):
+        if node in visited:
+            return
+        
+        visited.add(node)
+        result.append(node)
+        
+        for neighbor in graph[node]:
+            dfs(neighbor)
+    
+    dfs(start)
+    return result
 
-    # if root, do sth
-    if root:
-        # do sth, pre-order (root->left->right) in this code
+# For detecting cycles
+def has_cycle(graph):
+    visited = set()
+    rec_stack = set()
+    
+    def dfs(node):
+        visited.add(node)
+        rec_stack.add(node)
+        
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                if dfs(neighbor):
+                    return True
+            elif neighbor in rec_stack:
+                return True
+        
+        rec_stack.remove(node)
+        return False
+    
+    for node in graph:
+        if node not in visited:
+            if dfs(node):
+                return True
+    return False
+```
 
-    # if not root, nothing to do
+### Template 3: Path Finding
+```python
+def find_paths(root, target):
+    """
+    Find all root-to-leaf paths with sum = target
+    """
+    def dfs(node, curr_sum, path, result):
+        if not node:
+            return
+        
+        # Update current state
+        curr_sum += node.val
+        path.append(node.val)
+        
+        # Check if leaf and target met
+        if not node.left and not node.right:
+            if curr_sum == target:
+                result.append(path[:])
+        
+        # Explore children
+        dfs(node.left, curr_sum, path, result)
+        dfs(node.right, curr_sum, path, result)
+        
+        # Backtrack
+        path.pop()
+    
+    result = []
+    dfs(root, 0, [], result)
+    return result
+```
 
-    dfs(root.left)
-    dfs(root.right)
+### Template 4: Backtracking
+```python
+def backtrack_template(candidates, target):
+    """
+    General backtracking template
+    """
+    def backtrack(start, path, remaining):
+        # Base case - found solution
+        if remaining == 0:
+            result.append(path[:])
+            return
+        
+        # Try all possibilities
+        for i in range(start, len(candidates)):
+            if candidates[i] > remaining:
+                continue
+            
+            # Make choice
+            path.append(candidates[i])
+            
+            # Recurse
+            backtrack(i, path, remaining - candidates[i])
+            
+            # Undo choice (backtrack)
+            path.pop()
+    
+    result = []
+    backtrack(0, [], target)
+    return result
+```
+
+### Template 5: Tree Modification
+```python
+def modify_tree(root, condition):
+    """
+    Modify tree structure based on condition
+    """
+    if not root:
+        return None
+    
+    # Recursively modify subtrees first
+    root.left = modify_tree(root.left, condition)
+    root.right = modify_tree(root.right, condition)
+    
+    # Modify current node based on condition
+    if not condition(root):
+        # Example: delete node, return child
+        if not root.left:
+            return root.right
+        if not root.right:
+            return root.left
+        # Handle two children case
+        # ... (find successor/predecessor)
+    
+    return root
+```
+
+### Template 6: Bottom-up DFS
+```python
+def bottom_up_dfs(root):
+    """
+    Process subtrees first, then current node
+    Useful for subtree problems
+    """
+    def dfs(node):
+        if not node:
+            return 0  # or base value
+        
+        # Process subtrees first
+        left_result = dfs(node.left)
+        right_result = dfs(node.right)
+        
+        # Process current node using subtree results
+        current_result = process(node, left_result, right_result)
+        
+        # Update global result if needed
+        self.global_result = max(self.global_result, current_result)
+        
+        return current_result
+    
+    self.global_result = 0
+    dfs(root)
+    return self.global_result
 ```
 
 #### 0-2-2) Basic Tricks
@@ -310,6 +506,123 @@ def test():
 test()
 print (z)
 ```
+
+## Problems by Pattern
+
+### Pattern-Based Problem Classification
+
+#### **Pattern 1: Tree Traversal Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Binary Tree Inorder Traversal | 94 | Easy | Stack/Recursion | Template 1 |
+| Binary Tree Preorder Traversal | 144 | Easy | Stack/Recursion | Template 1 |
+| Binary Tree Postorder Traversal | 145 | Easy | Stack/Recursion | Template 1 |
+| Serialize and Deserialize Binary Tree | 297 | Hard | DFS encoding | Template 1 |
+| Serialize and Deserialize BST | 449 | Medium | BST property | Template 1 |
+| Binary Tree Paths | 257 | Easy | Path tracking | Template 3 |
+| Same Tree | 100 | Easy | Simultaneous DFS | Template 1 |
+
+#### **Pattern 2: Path Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Path Sum | 112 | Easy | DFS traversal | Template 3 |
+| Path Sum II | 113 | Medium | Backtracking | Template 3 |
+| Binary Tree Maximum Path Sum | 124 | Hard | Global max | Template 6 |
+| Diameter of Binary Tree | 543 | Easy | Bottom-up | Template 6 |
+| Longest Univalue Path | 687 | Medium | Bottom-up | Template 6 |
+| Sum Root to Leaf Numbers | 129 | Medium | Path tracking | Template 3 |
+
+#### **Pattern 3: Graph Traversal Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Number of Islands | 200 | Medium | Grid DFS | Template 2 |
+| Max Area of Island | 695 | Medium | Grid DFS | Template 2 |
+| Clone Graph | 133 | Medium | HashMap | Template 2 |
+| Course Schedule | 207 | Medium | Cycle detection | Template 2 |
+| Course Schedule II | 210 | Medium | Topological sort | Template 2 |
+| Pacific Atlantic Water Flow | 417 | Medium | Multi-source | Template 2 |
+| Evaluate Division | 399 | Medium | Graph traversal | Template 2 |
+| Minesweeper | 529 | Medium | Grid exploration | Template 2 |
+
+#### **Pattern 4: Backtracking Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Permutations | 46 | Medium | Backtrack | Template 4 |
+| Subsets | 78 | Medium | Backtrack | Template 4 |
+| Combination Sum | 39 | Medium | Backtrack | Template 4 |
+| Letter Combinations | 17 | Medium | Backtrack | Template 4 |
+| Generate Parentheses | 22 | Medium | Backtrack | Template 4 |
+| Word Search | 79 | Medium | Grid backtrack | Template 4 |
+| N-Queens | 51 | Hard | Backtrack | Template 4 |
+
+#### **Pattern 5: Tree Modification Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Delete Node in BST | 450 | Medium | BST delete | Template 5 |
+| Insert into BST | 701 | Medium | BST insert | Template 5 |
+| Trim a Binary Search Tree | 669 | Medium | Conditional trim | Template 5 |
+| Convert BST to Greater Tree | 538 | Medium | Reverse inorder | Template 5 |
+| Invert Binary Tree | 226 | Easy | Tree swap | Template 5 |
+| Flatten Binary Tree | 114 | Medium | In-place modify | Template 5 |
+
+#### **Pattern 6: Subtree & Aggregation Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Most Frequent Subtree Sum | 508 | Medium | HashMap | Template 6 |
+| Find Duplicate Subtrees | 652 | Medium | Serialization | Template 6 |
+| Lowest Common Ancestor | 236 | Medium | Bottom-up | Template 6 |
+| Equal Tree Partition | 663 | Medium | Subtree sum | Template 6 |
+| Maximum Product of Splitted Tree | 1339 | Medium | All sums | Template 6 |
+| Validate Binary Search Tree | 98 | Medium | Min/Max bounds | Template 1 |
+| Split BST | 776 | Medium | Recursive split | Template 5 |
+
+### Complete Problem List by Difficulty
+
+#### Easy Problems (Foundation)
+- LC 94: Binary Tree Inorder Traversal - Basic DFS
+- LC 100: Same Tree - Parallel DFS
+- LC 101: Symmetric Tree - Mirror DFS
+- LC 104: Maximum Depth - Simple recursion
+- LC 112: Path Sum - Path tracking
+- LC 144: Binary Tree Preorder Traversal - Stack usage
+- LC 145: Binary Tree Postorder Traversal - Stack manipulation
+- LC 226: Invert Binary Tree - Tree modification
+- LC 257: Binary Tree Paths - Path collection
+- LC 543: Diameter of Binary Tree - Global max pattern
+- LC 572: Subtree of Another Tree - Tree matching
+
+#### Medium Problems (Core)
+- LC 98: Validate BST - Bounds checking
+- LC 113: Path Sum II - Backtracking paths
+- LC 133: Clone Graph - HashMap + DFS
+- LC 200: Number of Islands - Grid DFS
+- LC 207: Course Schedule - Cycle detection
+- LC 210: Course Schedule II - Topological sort
+- LC 236: Lowest Common Ancestor - Bottom-up DFS
+- LC 297: Serialize/Deserialize Tree - DFS encoding
+- LC 399: Evaluate Division - Graph DFS
+- LC 417: Pacific Atlantic Water Flow - Multi-source DFS
+- LC 450: Delete Node in BST - Tree restructuring
+- LC 449: Serialize/Deserialize BST - BST property
+- LC 472: Concatenated Words - Word break DFS
+- LC 508: Most Frequent Subtree Sum - Aggregation
+- LC 529: Minesweeper - Grid exploration
+- LC 538: Convert BST to Greater Tree - Reverse inorder
+- LC 652: Find Duplicate Subtrees - Serialization
+- LC 663: Equal Tree Partition - Subtree sums
+- LC 669: Trim BST - Conditional modification
+- LC 695: Max Area of Island - Connected component
+- LC 701: Insert into BST - BST insertion
+- LC 737: Sentence Similarity II - Graph connectivity
+- LC 776: Split BST - Advanced manipulation
+- LC 1339: Maximum Product of Splitted Tree - All subtree sums
+
+#### Hard Problems (Advanced)
+- LC 124: Binary Tree Maximum Path Sum - Global optimization
+- LC 297: Serialize and Deserialize Binary Tree - Complex encoding
+- LC 51: N-Queens - Complex backtracking
+- LC 329: Longest Increasing Path in Matrix - Memoized DFS
+- LC 3319: K-th Largest Perfect Subtree - Complex aggregation
 
 ### 1-1) Basic OP
 
@@ -1930,3 +2243,212 @@ boolean isPerfect = left.isPerfect && right.isPerfect
     return new SubtreeInfo(height, size, isPerfect);
 }
 ```
+
+## Pattern Selection Strategy
+
+```
+DFS Problem Analysis Flowchart:
+
+1. Is it a tree/graph traversal problem?
+   ├── YES → Check structure type
+   │   ├── Tree? → Use Tree Templates (1, 3, 5, 6)
+   │   │   ├── Need specific order? → Template 1 (Traversal)
+   │   │   ├── Need paths? → Template 3 (Path Finding)
+   │   │   ├── Need to modify? → Template 5 (Modification)
+   │   │   └── Need subtree info? → Template 6 (Bottom-up)
+   │   └── Graph? → Use Graph Template (2)
+   │       ├── Has cycles? → Add visited set
+   │       ├── Need all paths? → Track path
+   │       └── Multi-source? → Start from all sources
+   └── NO → Continue to 2
+
+2. Is it a combinatorial problem?
+   ├── YES → Use Backtracking Template (4)
+   │   ├── Permutations? → Swap elements
+   │   ├── Combinations? → Start index
+   │   ├── Subsets? → Include/exclude
+   │   └── Constraint satisfaction? → Check validity
+   └── NO → Continue to 3
+
+3. Does it require exploring all possibilities?
+   ├── YES → Use DFS with appropriate state tracking
+   │   ├── Grid problem? → 4-directional DFS
+   │   ├── String problem? → Index-based DFS
+   │   └── Decision tree? → Choice-based DFS
+   └── NO → Consider different algorithm
+
+4. Special considerations:
+   ├── Need shortest path? → Consider BFS instead
+   ├── Has optimal substructure? → Consider DP
+   └── Need all solutions? → DFS with backtracking
+```
+
+### Decision Framework
+1. **Identify problem type**: Tree, graph, grid, or combinatorial
+2. **Choose template**: Match problem requirements to template
+3. **Handle state**: Decide what to track (visited, path, sum)
+4. **Optimize**: Consider memoization, pruning, early termination
+
+## Summary & Quick Reference
+
+### Complexity Quick Reference
+| Pattern | Time Complexity | Space Complexity | Notes |
+|---------|-----------------|------------------|-------|
+| Tree Traversal | O(n) | O(h) | h = height |
+| Graph DFS | O(V + E) | O(V) | V = vertices, E = edges |
+| Grid DFS | O(m × n) | O(m × n) | m×n grid |
+| Backtracking | O(b^d) | O(d) | b = branching, d = depth |
+| Path Finding | O(n) | O(h) | May need O(n) for all paths |
+| Bottom-up | O(n) | O(h) | Single pass with aggregation |
+
+### Template Quick Reference
+| Template | Best For | Avoid When | Key Pattern |
+|----------|----------|------------|-------------|
+| Tree Traversal | Visiting all nodes | Need shortest path | Pre/in/post order |
+| Graph DFS | Connected components | Has negative cycles | Visited set |
+| Path Finding | Root-to-leaf paths | Any path works | Track & backtrack |
+| Backtracking | All combinations | Single solution needed | Make/unmake choice |
+| Modification | Tree editing | Read-only required | Bottom-up update |
+| Bottom-up | Subtree aggregation | Simple traversal | Post-order return |
+
+### Common Patterns & Tricks
+
+#### **Pattern: Global Variable for Optimization**
+```python
+class Solution:
+    def maxPathSum(self, root):
+        self.max_sum = float('-inf')
+        
+        def dfs(node):
+            if not node:
+                return 0
+            left = max(0, dfs(node.left))
+            right = max(0, dfs(node.right))
+            self.max_sum = max(self.max_sum, left + right + node.val)
+            return max(left, right) + node.val
+        
+        dfs(root)
+        return self.max_sum
+```
+
+#### **Pattern: Path Tracking with Backtracking**
+```python
+def all_paths(root):
+    result = []
+    
+    def dfs(node, path):
+        if not node:
+            return
+        
+        path.append(node.val)  # Make choice
+        
+        if not node.left and not node.right:
+            result.append(path[:])  # Found complete path
+        
+        dfs(node.left, path)
+        dfs(node.right, path)
+        
+        path.pop()  # Unmake choice (backtrack)
+    
+    dfs(root, [])
+    return result
+```
+
+#### **Pattern: Grid DFS with Directions**
+```python
+def grid_dfs(grid, x, y, visited):
+    if x < 0 or x >= len(grid) or y < 0 or y >= len(grid[0]):
+        return
+    if (x, y) in visited or grid[x][y] == 0:
+        return
+    
+    visited.add((x, y))
+    
+    # 4-directional movement
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    for dx, dy in directions:
+        grid_dfs(grid, x + dx, y + dy, visited)
+```
+
+### Problem-Solving Steps
+1. **Identify pattern**: Tree, graph, backtracking, or path
+2. **Choose template**: Select appropriate DFS template
+3. **Track state**: Visited set, path list, or global variable
+4. **Handle base cases**: Null nodes, boundaries, target found
+5. **Test edge cases**: Empty input, single node, cycles
+
+### Common Mistakes & Tips
+
+**🚫 Common Mistakes:**
+- **Forgetting visited set**: Infinite loops in graphs
+- **Not backtracking**: Incorrect paths in combinatorial problems
+- **Wrong traversal order**: Using preorder when postorder needed
+- **Modifying while traversing**: Can break iteration
+- **Not handling null**: NullPointerException
+
+**✅ Best Practices:**
+- **Use visited set for graphs**: Prevent cycles
+- **Clone paths**: `path[:]` when storing results
+- **Check boundaries first**: In grid problems
+- **Use meaningful names**: `visited` not `v`
+- **Consider iterative**: For deep recursion
+
+### Interview Tips
+1. **Clarify problem type**: Tree or graph? Cycles possible?
+2. **State approach**: "I'll use DFS because..."
+3. **Discuss complexity**: Time and space analysis
+4. **Handle edge cases**: Empty, single element, cycles
+5. **Optimize if needed**: Memoization, pruning
+
+### Related Topics
+- **BFS**: When shortest path needed
+- **Dynamic Programming**: Overlapping subproblems
+- **Backtracking**: Subset of DFS for combinations
+- **Union Find**: Alternative for connectivity
+- **Topological Sort**: DFS application for dependencies
+
+### Java Implementation Notes
+```java
+// Java DFS with Stack
+Stack<TreeNode> stack = new Stack<>();
+stack.push(root);
+while (!stack.isEmpty()) {
+    TreeNode node = stack.pop();
+    // Process node
+    if (node.right != null) stack.push(node.right);
+    if (node.left != null) stack.push(node.left);
+}
+
+// Graph DFS with adjacency list
+void dfs(int node, boolean[] visited, List<List<Integer>> adj) {
+    visited[node] = true;
+    for (int neighbor : adj.get(node)) {
+        if (!visited[neighbor]) {
+            dfs(neighbor, visited, adj);
+        }
+    }
+}
+```
+
+### Python Implementation Notes
+```python
+# Using collections.deque as stack
+from collections import deque
+stack = deque([root])
+while stack:
+    node = stack.pop()  # pop() for stack behavior
+    # Process node
+
+# Graph representation
+graph = defaultdict(list)  # Adjacency list
+visited = set()  # Track visited nodes
+
+# Recursion limit for deep trees
+import sys
+sys.setrecursionlimit(10000)
+```
+
+---
+**Must-Know Problems for Interviews**: LC 94, 104, 112, 113, 124, 200, 236, 297, 399
+**Advanced Problems**: LC 124, 297, 329, 472, 652
+**Keywords**: DFS, depth-first search, recursion, tree traversal, graph traversal, backtracking
