@@ -1,9 +1,27 @@
-# Sort
+# Sorting Algorithms & Techniques
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/sort_cheatsheet.png"></p>
 
+## Overview
+**Sorting** is the process of arranging elements in a specific order (ascending or descending). It's fundamental to many algorithms and data structures, enabling efficient searching, data analysis, and problem-solving.
 
+### Key Properties
+- **Stability**: Maintains relative order of equal elements
+- **In-place**: Uses O(1) extra space
+- **Adaptive**: Performs better on partially sorted data
+- **When to Use**: Data ordering, preprocessing for binary search, finding medians/percentiles
+
+### Algorithm Selection Guide
+- **Small datasets (n < 50)**: Insertion Sort
+- **General purpose**: Quick Sort, Merge Sort
+- **Guaranteed O(n log n)**: Heap Sort, Merge Sort
+- **Nearly sorted**: Insertion Sort, Bubble Sort
+- **Limited range**: Counting Sort, Radix Sort
+
+### References
 - [Neetcode Sort cheatsheet](https://neetcode.io/courses/lessons/sorting-algorithms)
+- [Sorting Visualizations](https://visualgo.net/en/sorting)
+- [Princeton Algorithms](https://algs4.cs.princeton.edu/20sorting/)
 
 
 | **Sorting Algorithm** | **Time Complexity (Best Case)** | **Time Complexity (Average Case)** | **Time Complexity (Worst Case)** | **Space Complexity** |
@@ -19,50 +37,744 @@
 | **Bucket Sort**        | O(n + k)                      | O(n + k)                          | O(n²)                           | O(n)                 |
 
 
-## 0) Concept  
+## Problem Categories
 
-### 0-1) Types
+### **Pattern 1: Custom Comparator Sorting**
+- **Description**: Sort with custom rules or multiple criteria
+- **Examples**: LC 179, 791, 937, 1029, 1366
+- **Pattern**: Define comparison function for complex ordering
 
-- Algorithm
-    - [Bubble sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/bubble_sort.py)
-    - [Quick sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/quick_sort.py)
-    - [Insertion sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/insertion_sort.py)
-    - [Heap sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/heap_sort.py)
-    - [Merge sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py)
-    - [Selection sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/selection_sort.py)
-    - [Topological sort](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py)
-- Data Structure
-    - Sort on string
-        - LC 791
-    - Sort on numbers
-        - LC 179
+### **Pattern 2: Topological Sorting**
+- **Description**: Order elements based on dependencies
+- **Examples**: LC 207, 210, 269, 310, 1136
+- **Pattern**: DFS/BFS with in-degree tracking
 
-### 0-2) Algorithm
+### **Pattern 3: Interval Sorting**
+- **Description**: Sort intervals for merging/processing
+- **Examples**: LC 56, 57, 252, 253, 435
+- **Pattern**: Sort by start, then process
 
-### 0-3) Trade-off and use-cases
+### **Pattern 4: K-th Element**
+- **Description**: Find k-th smallest/largest efficiently
+- **Examples**: LC 215, 347, 378, 658, 973
+- **Pattern**: Quick Select or Heap
 
-### 0-4) Pattern
+### **Pattern 5: Bucket/Counting Sort**
+- **Description**: Sort with limited value range
+- **Examples**: LC 164, 274, 451, 1122, 1636
+- **Pattern**: Use value as index
 
-## 1) General form
+### **Pattern 6: Merge Sort Applications**
+- **Description**: Divide-and-conquer with sorting
+- **Examples**: LC 23, 148, 315, 327, 493
+- **Pattern**: Merge sorted sequences
 
-### 1-1) Basic OP
+## Templates & Algorithms
 
-#### 1-1-1) Py sort syntax
+### Algorithm Comparison Table
+| Algorithm | Best | Average | Worst | Space | Stable | When to Use |
+|-----------|------|---------|-------|-------|--------|-------------|
+| **Quick Sort** | O(n log n) | O(n log n) | O(n²) | O(log n) | No | General purpose |
+| **Merge Sort** | O(n log n) | O(n log n) | O(n log n) | O(n) | Yes | Stable, guaranteed O(n log n) |
+| **Heap Sort** | O(n log n) | O(n log n) | O(n log n) | O(1) | No | In-place, guaranteed O(n log n) |
+| **Insertion Sort** | O(n) | O(n²) | O(n²) | O(1) | Yes | Small or nearly sorted |
+| **Counting Sort** | O(n+k) | O(n+k) | O(n+k) | O(k) | Yes | Limited range integers |
+| **Radix Sort** | O(nk) | O(nk) | O(nk) | O(n+k) | Yes | Fixed-width integers |
+
+### Template 1: Quick Sort
 ```python
-# LC 937
-# https://leetcode.com/problems/reorder-data-in-log-files/solution/
-def my_func(input):
-    # do sth
-    if condition:
-        return key1, key2, key3....
-    else:
-        return key4, key5, key6....
+# Python - Classic Quick Sort
+def quickSort(arr, low=0, high=None):
+    if high is None:
+        high = len(arr) - 1
+    
+    if low < high:
+        # Partition and get pivot index
+        pi = partition(arr, low, high)
+        
+        # Recursively sort left and right
+        quickSort(arr, low, pi - 1)
+        quickSort(arr, pi + 1, high)
+    
+    return arr
 
-my_array=["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
-my_array.sort(key=lambda x : my_func)
+def partition(arr, low, high):
+    # Choose rightmost as pivot
+    pivot = arr[high]
+    i = low - 1  # Smaller element index
+    
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+
+# 3-way Quick Sort for duplicates
+def quickSort3Way(arr, low=0, high=None):
+    if high is None:
+        high = len(arr) - 1
+    
+    if low < high:
+        lt, gt = partition3Way(arr, low, high)
+        quickSort3Way(arr, low, lt - 1)
+        quickSort3Way(arr, gt + 1, high)
+    
+    return arr
+
+def partition3Way(arr, low, high):
+    pivot = arr[low]
+    i = low
+    lt = low
+    gt = high
+    
+    while i <= gt:
+        if arr[i] < pivot:
+            arr[lt], arr[i] = arr[i], arr[lt]
+            lt += 1
+            i += 1
+        elif arr[i] > pivot:
+            arr[i], arr[gt] = arr[gt], arr[i]
+            gt -= 1
+        else:
+            i += 1
+    
+    return lt, gt
 ```
 
-## 2) LC Example
+```java
+// Java - Quick Sort
+public void quickSort(int[] arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+private int partition(int[] arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(arr, i, j);
+        }
+    }
+    
+    swap(arr, i + 1, high);
+    return i + 1;
+}
+
+private void swap(int[] arr, int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+```
+
+### Template 2: Merge Sort
+```python
+# Python - Merge Sort
+def mergeSort(arr):
+    if len(arr) <= 1:
+        return arr
+    
+    mid = len(arr) // 2
+    left = mergeSort(arr[:mid])
+    right = mergeSort(arr[mid:])
+    
+    return merge(left, right)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+    
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+
+# In-place merge sort
+def mergeSortInPlace(arr, left=0, right=None):
+    if right is None:
+        right = len(arr) - 1
+    
+    if left < right:
+        mid = (left + right) // 2
+        mergeSortInPlace(arr, left, mid)
+        mergeSortInPlace(arr, mid + 1, right)
+        mergeInPlace(arr, left, mid, right)
+    
+    return arr
+
+def mergeInPlace(arr, left, mid, right):
+    left_arr = arr[left:mid + 1]
+    right_arr = arr[mid + 1:right + 1]
+    
+    i = j = 0
+    k = left
+    
+    while i < len(left_arr) and j < len(right_arr):
+        if left_arr[i] <= right_arr[j]:
+            arr[k] = left_arr[i]
+            i += 1
+        else:
+            arr[k] = right_arr[j]
+            j += 1
+        k += 1
+    
+    while i < len(left_arr):
+        arr[k] = left_arr[i]
+        i += 1
+        k += 1
+    
+    while j < len(right_arr):
+        arr[k] = right_arr[j]
+        j += 1
+        k += 1
+```
+
+```java
+// Java - Merge Sort
+public void mergeSort(int[] arr, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        
+        merge(arr, left, mid, right);
+    }
+}
+
+private void merge(int[] arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    
+    int[] leftArr = new int[n1];
+    int[] rightArr = new int[n2];
+    
+    for (int i = 0; i < n1; i++) {
+        leftArr[i] = arr[left + i];
+    }
+    for (int j = 0; j < n2; j++) {
+        rightArr[j] = arr[mid + 1 + j];
+    }
+    
+    int i = 0, j = 0, k = left;
+    
+    while (i < n1 && j < n2) {
+        if (leftArr[i] <= rightArr[j]) {
+            arr[k++] = leftArr[i++];
+        } else {
+            arr[k++] = rightArr[j++];
+        }
+    }
+    
+    while (i < n1) {
+        arr[k++] = leftArr[i++];
+    }
+    
+    while (j < n2) {
+        arr[k++] = rightArr[j++];
+    }
+}
+```
+
+### Template 3: Custom Comparator Sorting
+```python
+# Python - Custom sorting
+class Solution:
+    def customSort(self, items):
+        # Single key
+        items.sort(key=lambda x: x[0])
+        
+        # Multiple keys
+        items.sort(key=lambda x: (x[0], -x[1], x[2]))
+        
+        # Complex comparison
+        def compare(item):
+            # Return tuple of sort keys
+            if condition:
+                return (0, item.value, item.name)
+            else:
+                return (1, -item.priority, item.id)
+        
+        items.sort(key=compare)
+        
+        # Using functools for traditional comparison
+        from functools import cmp_to_key
+        
+        def compare_func(a, b):
+            if a < b:
+                return -1
+            elif a > b:
+                return 1
+            else:
+                return 0
+        
+        items.sort(key=cmp_to_key(compare_func))
+        
+        return items
+
+# Custom class for sorting
+class CustomComparable:
+    def __init__(self, value, priority):
+        self.value = value
+        self.priority = priority
+    
+    def __lt__(self, other):
+        # Define less than for sorting
+        if self.priority != other.priority:
+            return self.priority > other.priority
+        return self.value < other.value
+```
+
+```java
+// Java - Custom comparator
+public void customSort(List<Item> items) {
+    // Lambda comparator
+    items.sort((a, b) -> a.value - b.value);
+    
+    // Multiple criteria
+    items.sort((a, b) -> {
+        if (a.priority != b.priority) {
+            return b.priority - a.priority;  // Descending
+        }
+        return a.name.compareTo(b.name);    // Ascending
+    });
+    
+    // Using Comparator methods
+    items.sort(Comparator
+        .comparingInt(Item::getPriority).reversed()
+        .thenComparing(Item::getName));
+    
+    // Custom Comparator class
+    items.sort(new Comparator<Item>() {
+        @Override
+        public int compare(Item a, Item b) {
+            // Custom logic
+            return customCompare(a, b);
+        }
+    });
+}
+
+// Comparable interface
+class Item implements Comparable<Item> {
+    int value;
+    String name;
+    
+    @Override
+    public int compareTo(Item other) {
+        if (this.value != other.value) {
+            return this.value - other.value;
+        }
+        return this.name.compareTo(other.name);
+    }
+}
+```
+
+### Template 4: Quick Select (K-th Element)
+```python
+# Python - Quick Select for k-th smallest
+def quickSelect(arr, k):
+    # Find k-th smallest (0-indexed)
+    return quickSelectHelper(arr, 0, len(arr) - 1, k - 1)
+
+def quickSelectHelper(arr, left, right, k):
+    if left == right:
+        return arr[left]
+    
+    # Random pivot for better average case
+    import random
+    pivot_idx = random.randint(left, right)
+    pivot_idx = partition(arr, left, right, pivot_idx)
+    
+    if k == pivot_idx:
+        return arr[k]
+    elif k < pivot_idx:
+        return quickSelectHelper(arr, left, pivot_idx - 1, k)
+    else:
+        return quickSelectHelper(arr, pivot_idx + 1, right, k)
+
+def partition(arr, left, right, pivot_idx):
+    pivot = arr[pivot_idx]
+    # Move pivot to end
+    arr[pivot_idx], arr[right] = arr[right], arr[pivot_idx]
+    
+    store_idx = left
+    for i in range(left, right):
+        if arr[i] < pivot:
+            arr[store_idx], arr[i] = arr[i], arr[store_idx]
+            store_idx += 1
+    
+    # Move pivot to final position
+    arr[store_idx], arr[right] = arr[right], arr[store_idx]
+    return store_idx
+```
+
+### Template 5: Counting Sort
+```python
+# Python - Counting Sort
+def countingSort(arr, max_val=None):
+    if not arr:
+        return arr
+    
+    if max_val is None:
+        max_val = max(arr)
+    min_val = min(arr)
+    
+    # Create counting array
+    range_size = max_val - min_val + 1
+    count = [0] * range_size
+    
+    # Count occurrences
+    for num in arr:
+        count[num - min_val] += 1
+    
+    # Reconstruct sorted array
+    idx = 0
+    for i in range(range_size):
+        while count[i] > 0:
+            arr[idx] = i + min_val
+            idx += 1
+            count[i] -= 1
+    
+    return arr
+
+# Stable counting sort
+def stableCountingSort(arr):
+    if not arr:
+        return arr
+    
+    max_val = max(arr)
+    min_val = min(arr)
+    range_size = max_val - min_val + 1
+    
+    count = [0] * range_size
+    output = [0] * len(arr)
+    
+    # Count occurrences
+    for num in arr:
+        count[num - min_val] += 1
+    
+    # Cumulative count
+    for i in range(1, range_size):
+        count[i] += count[i - 1]
+    
+    # Build output array (stable)
+    for i in range(len(arr) - 1, -1, -1):
+        output[count[arr[i] - min_val] - 1] = arr[i]
+        count[arr[i] - min_val] -= 1
+    
+    return output
+```
+
+### Template 6: Topological Sort
+```python
+# Python - Topological Sort (Kahn's Algorithm)
+def topologicalSort(numNodes, edges):
+    # Build graph and in-degree
+    graph = defaultdict(list)
+    in_degree = [0] * numNodes
+    
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    
+    # Queue for nodes with no dependencies
+    queue = deque([i for i in range(numNodes) if in_degree[i] == 0])
+    result = []
+    
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+        
+        for neighbor in graph[node]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+    
+    # Check for cycle
+    if len(result) != numNodes:
+        return []  # Cycle detected
+    
+    return result
+
+# DFS-based Topological Sort
+def topologicalSortDFS(numNodes, edges):
+    graph = defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+    
+    visited = set()
+    stack = []
+    
+    def dfs(node):
+        visited.add(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                dfs(neighbor)
+        stack.append(node)
+    
+    for i in range(numNodes):
+        if i not in visited:
+            dfs(i)
+    
+    return stack[::-1]
+```
+
+## Problems by Pattern
+
+### Pattern-Based Problem Tables
+
+#### **Custom Comparator Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Largest Number | 179 | String comparison | Medium |
+| Custom Sort String | 791 | Character order | Medium |
+| Reorder Data in Log Files | 937 | Multi-key sort | Easy |
+| Two City Scheduling | 1029 | Cost difference | Medium |
+| Rank Teams by Votes | 1366 | Vote counting | Medium |
+| Sort Array by Parity | 905 | Even/odd separation | Easy |
+| Relative Sort Array | 1122 | Custom order | Easy |
+
+#### **Topological Sort Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Course Schedule | 207 | Cycle detection | Medium |
+| Course Schedule II | 210 | Ordering with dependencies | Medium |
+| Alien Dictionary | 269 | Character ordering | Hard |
+| Minimum Height Trees | 310 | Tree centroid | Medium |
+| Parallel Courses | 1136 | Level-based processing | Medium |
+| Sequence Reconstruction | 444 | Unique ordering | Medium |
+
+#### **Interval Sorting Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Merge Intervals | 56 | Sort and merge | Medium |
+| Insert Interval | 57 | Binary search insertion | Medium |
+| Meeting Rooms | 252 | Overlap check | Easy |
+| Meeting Rooms II | 253 | Sweep line | Medium |
+| Non-overlapping Intervals | 435 | Greedy removal | Medium |
+| Minimum Number of Arrows | 452 | Interval intersection | Medium |
+
+#### **K-th Element Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Kth Largest Element | 215 | Quick select | Medium |
+| Top K Frequent Elements | 347 | Bucket sort | Medium |
+| Kth Smallest in Matrix | 378 | Binary search | Medium |
+| Find K Closest Elements | 658 | Two pointers | Medium |
+| K Closest Points to Origin | 973 | Quick select | Medium |
+| Kth Largest in Stream | 703 | Min heap | Easy |
+
+#### **Counting/Bucket Sort Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Maximum Gap | 164 | Bucket sort | Hard |
+| H-Index | 274 | Counting sort | Medium |
+| Sort Characters By Frequency | 451 | Frequency buckets | Medium |
+| Relative Sort Array | 1122 | Counting sort | Easy |
+| Sort Array by Frequency | 1636 | Custom comparator | Easy |
+
+#### **Merge Sort Application Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Merge k Sorted Lists | 23 | K-way merge | Hard |
+| Sort List | 148 | Linked list merge sort | Medium |
+| Count of Smaller Numbers | 315 | Merge sort with count | Hard |
+| Count of Range Sum | 327 | Merge sort | Hard |
+| Reverse Pairs | 493 | Modified merge sort | Hard |
+
+## Pattern Selection Strategy
+
+```
+Problem Analysis Flowchart:
+
+1. Need custom ordering rules?
+   ├── YES → Custom Comparator
+   │         ├── Multiple criteria → Tuple comparison
+   │         └── Complex logic → Comparison function
+   └── NO → Continue to 2
+
+2. Dealing with dependencies?
+   ├── YES → Topological Sort
+   │         ├── Detect cycle → Kahn's algorithm
+   │         └── Find ordering → DFS approach
+   └── NO → Continue to 3
+
+3. Working with intervals?
+   ├── YES → Sort by start/end
+   │         ├── Merge overlapping → Greedy merge
+   │         └── Find conflicts → Sweep line
+   └── NO → Continue to 4
+
+4. Finding k-th element?
+   ├── YES → Quick Select or Heap
+   │         ├── One-time query → Quick select O(n)
+   │         └── Multiple queries → Heap O(n log k)
+   └── NO → Continue to 5
+
+5. Limited value range?
+   ├── YES → Counting/Bucket Sort
+   │         ├── Integers → Counting sort
+   │         └── With precision → Bucket sort
+   └── NO → Use standard sorting
+```
+
+## Summary & Quick Reference
+
+### Complexity Quick Reference
+| Algorithm | Best Case | Average | Worst Case | Space | Stable |
+|-----------|-----------|---------|------------|-------|--------|
+| Quick Sort | O(n log n) | O(n log n) | O(n²) | O(log n) | No |
+| Merge Sort | O(n log n) | O(n log n) | O(n log n) | O(n) | Yes |
+| Heap Sort | O(n log n) | O(n log n) | O(n log n) | O(1) | No |
+| Tim Sort | O(n) | O(n log n) | O(n log n) | O(n) | Yes |
+| Counting Sort | O(n+k) | O(n+k) | O(n+k) | O(k) | Yes |
+| Radix Sort | O(nk) | O(nk) | O(nk) | O(n+k) | Yes |
+
+### Template Quick Reference
+| Template | Pattern | Key Code |
+|----------|---------|----------|
+| **Quick Sort** | Partition | `pivot; partition; recurse` |
+| **Merge Sort** | Divide & merge | `mid; merge(left, right)` |
+| **Custom Sort** | Comparator | `key=lambda x: criteria` |
+| **Quick Select** | K-th element | `partition until k` |
+| **Counting Sort** | Value as index | `count[val]++` |
+| **Topological** | Dependencies | `in_degree; queue` |
+
+### Common Patterns & Tricks
+
+#### **Python Sorting Tricks**
+```python
+# Sort with multiple keys
+items.sort(key=lambda x: (x[0], -x[1], x[2]))
+
+# Sort by custom class
+items.sort(key=lambda x: x.priority, reverse=True)
+
+# Stable sort in multiple passes
+items.sort(key=lambda x: x.secondary)  # First
+items.sort(key=lambda x: x.primary)    # Then primary
+
+# In-place vs new list
+arr.sort()           # In-place
+sorted_arr = sorted(arr)  # New list
+```
+
+#### **Java Sorting Tricks**
+```java
+// Lambda comparator
+Arrays.sort(arr, (a, b) -> a - b);
+
+// Method reference
+Arrays.sort(arr, Integer::compare);
+
+// Comparator chaining
+Arrays.sort(items, Comparator
+    .comparing(Item::getPriority)
+    .thenComparing(Item::getName));
+
+// Reverse order
+Arrays.sort(arr, Collections.reverseOrder());
+```
+
+### Problem-Solving Steps
+
+1. **Identify Sorting Need**
+   - Is sorting necessary?
+   - Can we use partial sorting?
+   - Do we need stability?
+
+2. **Choose Algorithm**
+   - Dataset size
+   - Value range
+   - Memory constraints
+   - Stability requirement
+
+3. **Define Comparison**
+   - Single or multiple keys?
+   - Ascending or descending?
+   - Special cases handling
+
+4. **Optimize if Needed**
+   - Quick select for k-th element
+   - Counting sort for limited range
+   - Bucket sort for uniform distribution
+
+### Common Mistakes & Tips
+
+**🚫 Common Mistakes:**
+- Modifying array during custom comparison
+- Integer overflow in comparator (a - b)
+- Not handling equal elements in comparator
+- Using unstable sort when stability needed
+- O(n²) algorithms for large datasets
+
+**✅ Best Practices:**
+- Use built-in sort for most cases
+- Prefer Integer.compare() over subtraction
+- Test with duplicates and edge cases
+- Consider partial sorting for k elements
+- Use stable sort for equal element ordering
+
+### Interview Tips
+
+1. **Algorithm Choice**
+   - Start with built-in sort
+   - Optimize only if needed
+   - Explain time/space trade-offs
+
+2. **Custom Comparator**
+   - Handle all comparison cases
+   - Avoid integer overflow
+   - Maintain transitivity
+
+3. **Common Questions**
+   - "Why Quick Sort over Merge Sort?"
+   - "How to make Quick Sort stable?"
+   - "When to use Counting Sort?"
+
+4. **Follow-up Optimizations**
+   - Sort only k elements
+   - External sorting for large data
+   - Parallel sorting
+
+### Advanced Techniques
+
+#### **Hybrid Sorting**
+- Tim Sort: Merge + Insertion
+- Intro Sort: Quick + Heap + Insertion
+- Used in Python and Java standard libraries
+
+#### **External Sorting**
+- K-way merge for disk-based data
+- Used in databases and big data
+
+#### **Parallel Sorting**
+- Divide data among processors
+- Parallel merge or sample sort
+
+### Related Topics
+- **Heap**: Priority queue, k-th element
+- **Binary Search**: On sorted arrays
+- **Divide & Conquer**: Merge sort pattern
+- **Greedy**: Interval scheduling
+- **Graph**: Topological ordering
+
+## LC Example
 
 ### 2-1) Pancake Sorting
 ```python
