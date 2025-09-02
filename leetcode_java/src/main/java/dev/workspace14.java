@@ -1185,23 +1185,83 @@ public class workspace14 {
 //    }
 
     // LC 1157
-    // 17.24 - 17.44 pm
+    // 17.32 - 17.42 pm
     /**
      * Your MajorityChecker object will be instantiated and called as such:
      * MajorityChecker obj = new MajorityChecker(arr);
      * int param_1 = obj.query(left,right,threshold);
      */
+    /**
+     *  Design a data structure that
+     *  `efficiently` finds the `majority` element of a given subarray.
+     *
+     *  -> The majority element of a subarray is an element
+     *    that occurs threshold times or more in the subarray.
+     *
+     *
+     *  -> so find # of element in subarray that count >= threshold
+     *
+     *
+     *  IDEA 1) HASHMAP + SLIDE WINDOW
+     *
+     *
+     *  IDEA 2) sub array + hashmap + cnt check
+     *
+     *
+     */
     class MajorityChecker {
 
-        public MajorityChecker(int[] arr) {
+        // attr
+        int[] cur_arr;
+        // { val: cnt}
+        Map<Integer, Integer> cnt_map;
 
+        public MajorityChecker(int[] arr) {
+            this.cur_arr = arr;
+            this.cnt_map = new HashMap<>();
         }
 
         public int query(int left, int right, int threshold) {
-            return 0;
+            //int ans = -1;
+            // copy sub array
+            int[] subArr = Arrays.copyOfRange(this.cur_arr, left, right + 1);
+            System.out.println(">>> (query) subArr = " + Arrays.toString(Arrays.stream(subArr).toArray())
+                    + ", left = " + left + ", right = " + right);
+            // update map
+            updateCnt(subArr);
+            // get `validated` elements
+            return getMajorElement(threshold);
+        }
+
+        private void updateCnt(int[] inputArr){
+            if(inputArr == null || inputArr.length == 0){
+                return;
+            }
+            // reset map // ???
+            this.cnt_map = new HashMap<>();
+            System.out.println(">>> (before updateCnt) this.cnt_map = " + this.cnt_map);
+
+            for(int x: inputArr){
+                this.cnt_map.put(x, this.cnt_map.getOrDefault(x, 0) + 1);
+            }
+            System.out.println(">>> (after updateCnt) this.cnt_map = " + this.cnt_map);
+        }
+
+        private int getMajorElement(int threshold){
+            int ans = -1;
+            System.out.println(">>> (getMajorElement) this.cnt_map = " + this.cnt_map);
+            for(int key: this.cnt_map.keySet()){
+                System.out.println(">>> key = " +  key);
+                if(this.cnt_map.get(key) >= threshold){
+                    return key;
+                }
+            }
+            return ans;
         }
 
     }
+
+
 
 
     // LC 394
