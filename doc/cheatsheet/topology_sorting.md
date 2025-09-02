@@ -1,60 +1,215 @@
-# Topology sorting
+# Topological Sorting - Complete Guide
 
-## 0) Concept
+## Overview
 
-- Topological Sort is an algorithm can find `ordering` based on `order dependency` graph
+Topological sorting is a linear ordering of vertices in a Directed Acyclic Graph (DAG) such that for every directed edge (u, v), vertex u comes before v in the ordering.
 
-- Concept
-	- [techbridge : topological-sort](https://blog.techbridge.cc/2020/05/10/leetcode-topological-sort/)
-	- [do topological-sort via DFS](https://alrightchiu.github.io/SecondRound/graph-li-yong-dfsxun-zhao-dagde-topological-sorttuo-pu-pai-xu.html)
-- Code
-	- [topological_sort.py](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py)
-    - [TopologicalSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSort.java)
+### Key Characteristics
+- **DAG Only**: Works only on Directed Acyclic Graphs
+- **Multiple Valid Orders**: Many valid topological orders may exist
+- **Dependency Resolution**: Solves problems with prerequisite/dependency relationships
+- **Applications**: Task scheduling, build systems, course planning, dependency resolution
 
-### 0-1) Types
+### Complexity Analysis
+| Approach | Time Complexity | Space Complexity | Use Case |
+|----------|----------------|------------------|----------|
+| DFS (Kahn's Algorithm) | O(V + E) | O(V) | General purpose, cycle detection |
+| BFS (In-degree) | O(V + E) | O(V) | Finding all orderings, level-by-level |
+| All Topological Sorts | O(V! × (V + E)) | O(V) | Small graphs, all permutations |
 
-- Courses
-    - LC 207, LC 210
-- Sequence
-    - LC 444
-- Alien Dictionary
-    - LC 269
-- Others
-    - LC 666, 802
+### References
+- [techbridge : topological-sort](https://blog.techbridge.cc/2020/05/10/leetcode-topological-sort/)
+- [DFS-based topological sort](https://alrightchiu.github.io/SecondRound/graph-li-yong-dfsxun-zhao-dagde-topological-sorttuo-pu-pai-xu.html)
+- [topological_sort.py](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py)
+- [TopologicalSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSort.java)
 
-### 0-2) Pattern
+## Problem Categories
 
+### 1. Course Scheduling
+Problems involving prerequisite relationships and course ordering.
+- **Pattern**: Build dependency graph, check for cycles, find valid ordering
+- **Key Problems**: LC 207, 210, 630, 1462
 
-- V1
-    - 1. `degrees` : `array` or `hashmap` : record `ordering` of element
-    - 2. `map` : maintain relation between node and `next nodes`
-    - 3. BFS : the way access candidates
+### 2. Task Scheduling
+Problems involving task dependencies and parallel execution.
+- **Pattern**: Find minimum time, parallel processing levels
+- **Key Problems**: LC 1136, 2050, 1857
 
-- V2
+### 3. Lexicographical Ordering
+Problems requiring smallest/largest lexicographical topological order.
+- **Pattern**: Priority queue for ordering, alien dictionary
+- **Key Problems**: LC 269, 953, 1203
 
+### 4. Build Order & Dependencies
+Problems involving build systems and package dependencies.
+- **Pattern**: Detect cycles, find build order, handle groups
+- **Key Problems**: LC 444, 802, 851
+
+### 5. Graph Layering
+Problems involving level-by-level processing in DAGs.
+- **Pattern**: BFS with levels, longest path in DAG
+- **Key Problems**: LC 2192, 2115, 1857
+
+### 6. Cycle Detection & Safe States
+Problems focused on detecting cycles and finding safe nodes.
+- **Pattern**: Three-color DFS, safe states identification
+- **Key Problems**: LC 802, 207, 1059
+
+## Core Templates
+
+### Template 1: BFS (Kahn's Algorithm)
+```python
+def topologicalSort_BFS(numNodes, edges):
+    """
+    BFS-based topological sort using in-degree tracking.
+    Time: O(V + E), Space: O(V)
+    """
+    from collections import defaultdict, deque
+    
+    # Build graph and calculate in-degrees
+    graph = defaultdict(list)
+    in_degree = [0] * numNodes
+    
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    
+    # Initialize queue with nodes having no dependencies
+    queue = deque([i for i in range(numNodes) if in_degree[i] == 0])
+    result = []
+    
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+        
+        # Process neighbors
+        for neighbor in graph[node]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+    
+    # Check for cycles
+    return result if len(result) == numNodes else []
+
+# Java version
+public List<Integer> topologicalSort_BFS(int numNodes, int[][] edges) {
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    int[] inDegree = new int[numNodes];
+    
+    // Build graph
+    for (int i = 0; i < numNodes; i++) {
+        graph.put(i, new ArrayList<>());
+    }
+    
+    for (int[] edge : edges) {
+        graph.get(edge[0]).add(edge[1]);
+        inDegree[edge[1]]++;
+    }
+    
+    // BFS
+    Queue<Integer> queue = new LinkedList<>();
+    for (int i = 0; i < numNodes; i++) {
+        if (inDegree[i] == 0) queue.offer(i);
+    }
+    
+    List<Integer> result = new ArrayList<>();
+    while (!queue.isEmpty()) {
+        int node = queue.poll();
+        result.add(node);
+        
+        for (int neighbor : graph.get(node)) {
+            if (--inDegree[neighbor] == 0) {
+                queue.offer(neighbor);
+            }
+        }
+    }
+    
+    return result.size() == numNodes ? result : new ArrayList<>();
+}
 ```
-# pseudo code
-# https://leetcode.com/problems/course-schedule/solution/
 
-L = Empty list that will contain the sorted elements
-S = Set of all nodes with no incoming edge
+### Template 2: DFS (Three-Color)
 
-while S is non-empty do
-    remove a node n from S
-    add n to tail of L
-    for each node m with an edge e from n to m do
-        remove edge e from the graph
-        if m has no other incoming edges then
-            insert m into S
+```python
+def topologicalSort_DFS(numNodes, edges):
+    """
+    DFS-based topological sort with three-color marking.
+    Time: O(V + E), Space: O(V)
+    """
+    from collections import defaultdict
+    
+    graph = defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+    
+    # 0: white (unvisited), 1: gray (visiting), 2: black (visited)
+    color = [0] * numNodes
+    result = []
+    has_cycle = False
+    
+    def dfs(node):
+        nonlocal has_cycle
+        if color[node] == 1:  # Gray = cycle detected
+            has_cycle = True
+            return
+        if color[node] == 2:  # Black = already processed
+            return
+        
+        color[node] = 1  # Mark as visiting
+        for neighbor in graph[node]:
+            dfs(neighbor)
+        color[node] = 2  # Mark as visited
+        result.append(node)  # Add to result in reverse order
+    
+    for i in range(numNodes):
+        if color[i] == 0:
+            dfs(i)
+    
+    return [] if has_cycle else result[::-1]
 
-if graph has edges then
-    return error (graph has at least one cycle)
-else 
-    return L (a topologically sorted order)
+# Java version
+public List<Integer> topologicalSort_DFS(int numNodes, int[][] edges) {
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    for (int i = 0; i < numNodes; i++) {
+        graph.put(i, new ArrayList<>());
+    }
+    for (int[] edge : edges) {
+        graph.get(edge[0]).add(edge[1]);
+    }
+    
+    int[] color = new int[numNodes]; // 0: white, 1: gray, 2: black
+    List<Integer> result = new ArrayList<>();
+    boolean[] hasCycle = {false};
+    
+    for (int i = 0; i < numNodes; i++) {
+        if (color[i] == 0) {
+            dfs(i, graph, color, result, hasCycle);
+        }
+    }
+    
+    if (hasCycle[0]) return new ArrayList<>();
+    Collections.reverse(result);
+    return result;
+}
+
+private void dfs(int node, Map<Integer, List<Integer>> graph, 
+                 int[] color, List<Integer> result, boolean[] hasCycle) {
+    if (color[node] == 1) {
+        hasCycle[0] = true;
+        return;
+    }
+    if (color[node] == 2) return;
+    
+    color[node] = 1;
+    for (int neighbor : graph.get(node)) {
+        dfs(neighbor, graph, color, result, hasCycle);
+    }
+    color[node] = 2;
+    result.add(node);
+}
 ```
 
-## 1) General form
-
+### Template 3: DFS (Stack-based)
 ```python
 # V0
 # IDEA : implement topologicalSortUtil, topologicalSort, and addEdge methods
@@ -112,7 +267,307 @@ r = g.topologicalSort()
 print (r)
 ```
 
-### 1-1) Basic OP
+### Template 4: Lexicographical Order
+```python
+def topologicalSort_Lexicographical(numNodes, edges):
+    """
+    Find smallest lexicographical topological order.
+    Time: O((V + E) log V), Space: O(V)
+    """
+    from collections import defaultdict
+    import heapq
+    
+    graph = defaultdict(list)
+    in_degree = [0] * numNodes
+    
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    
+    # Use min-heap for smallest lexicographical order
+    heap = [i for i in range(numNodes) if in_degree[i] == 0]
+    heapq.heapify(heap)
+    result = []
+    
+    while heap:
+        node = heapq.heappop(heap)
+        result.append(node)
+        
+        for neighbor in graph[node]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                heapq.heappush(heap, neighbor)
+    
+    return result if len(result) == numNodes else []
+
+# Java version
+public List<Integer> topologicalSort_Lexicographical(int numNodes, int[][] edges) {
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    int[] inDegree = new int[numNodes];
+    
+    for (int i = 0; i < numNodes; i++) {
+        graph.put(i, new ArrayList<>());
+    }
+    
+    for (int[] edge : edges) {
+        graph.get(edge[0]).add(edge[1]);
+        inDegree[edge[1]]++;
+    }
+    
+    // Min-heap for lexicographical order
+    PriorityQueue<Integer> pq = new PriorityQueue<>();
+    for (int i = 0; i < numNodes; i++) {
+        if (inDegree[i] == 0) pq.offer(i);
+    }
+    
+    List<Integer> result = new ArrayList<>();
+    while (!pq.isEmpty()) {
+        int node = pq.poll();
+        result.add(node);
+        
+        for (int neighbor : graph.get(node)) {
+            if (--inDegree[neighbor] == 0) {
+                pq.offer(neighbor);
+            }
+        }
+    }
+    
+    return result.size() == numNodes ? result : new ArrayList<>();
+}
+```
+
+### Template 5: All Topological Orders
+```python
+def allTopologicalSorts(graph, in_degree, path, result, visited):
+    """
+    Find all possible topological orderings.
+    Time: O(V! × (V + E)), Space: O(V)
+    """
+    if len(path) == len(graph):
+        result.append(path[:])
+        return
+    
+    for node in range(len(graph)):
+        if in_degree[node] == 0 and not visited[node]:
+            # Choose node
+            visited[node] = True
+            path.append(node)
+            
+            # Update in-degrees
+            for neighbor in graph[node]:
+                in_degree[neighbor] -= 1
+            
+            # Recurse
+            allTopologicalSorts(graph, in_degree, path, result, visited)
+            
+            # Backtrack
+            for neighbor in graph[node]:
+                in_degree[neighbor] += 1
+            path.pop()
+            visited[node] = False
+
+# Usage
+def findAllOrders(numNodes, edges):
+    from collections import defaultdict
+    
+    graph = defaultdict(list)
+    in_degree = [0] * numNodes
+    
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    
+    result = []
+    visited = [False] * numNodes
+    allTopologicalSorts(graph, in_degree, [], result, visited)
+    return result
+```
+
+### Template 6: Parallel Task Scheduling
+```python
+def parallelTaskScheduling(numTasks, edges, times):
+    """
+    Find minimum time to complete all tasks with parallel execution.
+    Time: O(V + E), Space: O(V)
+    """
+    from collections import defaultdict, deque
+    
+    graph = defaultdict(list)
+    in_degree = [0] * numTasks
+    
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    
+    # Track completion time for each task
+    completion_time = [0] * numTasks
+    queue = deque()
+    
+    # Initialize with tasks having no dependencies
+    for i in range(numTasks):
+        if in_degree[i] == 0:
+            queue.append(i)
+            completion_time[i] = times[i]
+    
+    while queue:
+        task = queue.popleft()
+        
+        for next_task in graph[task]:
+            # Update completion time
+            completion_time[next_task] = max(
+                completion_time[next_task],
+                completion_time[task] + times[next_task]
+            )
+            
+            in_degree[next_task] -= 1
+            if in_degree[next_task] == 0:
+                queue.append(next_task)
+    
+    return max(completion_time)
+
+# Java version
+public int parallelTaskScheduling(int numTasks, int[][] edges, int[] times) {
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    int[] inDegree = new int[numTasks];
+    int[] completionTime = new int[numTasks];
+    
+    for (int i = 0; i < numTasks; i++) {
+        graph.put(i, new ArrayList<>());
+    }
+    
+    for (int[] edge : edges) {
+        graph.get(edge[0]).add(edge[1]);
+        inDegree[edge[1]]++;
+    }
+    
+    Queue<Integer> queue = new LinkedList<>();
+    for (int i = 0; i < numTasks; i++) {
+        if (inDegree[i] == 0) {
+            queue.offer(i);
+            completionTime[i] = times[i];
+        }
+    }
+    
+    while (!queue.isEmpty()) {
+        int task = queue.poll();
+        
+        for (int nextTask : graph.get(task)) {
+            completionTime[nextTask] = Math.max(
+                completionTime[nextTask],
+                completionTime[task] + times[nextTask]
+            );
+            
+            if (--inDegree[nextTask] == 0) {
+                queue.offer(nextTask);
+            }
+        }
+    }
+    
+    int maxTime = 0;
+    for (int time : completionTime) {
+        maxTime = Math.max(maxTime, time);
+    }
+    return maxTime;
+}
+```
+
+## Problem Classification
+
+| Problem | Difficulty | Category | Key Technique |
+|---------|------------|----------|---------------|
+| [207. Course Schedule](https://leetcode.com/problems/course-schedule/) | Medium | Course Scheduling | Cycle Detection |
+| [210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/) | Medium | Course Scheduling | BFS/DFS |
+| [269. Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) | Hard | Lexicographical | Character Ordering |
+| [444. Sequence Reconstruction](https://leetcode.com/problems/sequence-reconstruction/) | Medium | Build Order | Unique Ordering |
+| [630. Course Schedule III](https://leetcode.com/problems/course-schedule-iii/) | Hard | Course Scheduling | Greedy + Heap |
+| [802. Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/) | Medium | Cycle Detection | Reverse Graph |
+| [851. Loud and Rich](https://leetcode.com/problems/loud-and-rich/) | Medium | Graph Layering | DFS + Memoization |
+| [953. Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/) | Easy | Lexicographical | Order Validation |
+| [1059. All Paths from Source Lead to Destination](https://leetcode.com/problems/all-paths-from-source-lead-to-destination/) | Medium | Cycle Detection | DFS |
+| [1136. Parallel Courses](https://leetcode.com/problems/parallel-courses/) | Medium | Task Scheduling | Level BFS |
+| [1203. Sort Items by Groups Respecting Dependencies](https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/) | Hard | Build Order | Double Topological |
+| [1462. Course Schedule IV](https://leetcode.com/problems/course-schedule-iv/) | Medium | Course Scheduling | Transitive Closure |
+| [1857. Largest Color Value in a Directed Graph](https://leetcode.com/problems/largest-color-value-in-a-directed-graph/) | Hard | Graph Layering | DP on DAG |
+| [2050. Parallel Courses III](https://leetcode.com/problems/parallel-courses-iii/) | Hard | Task Scheduling | Time Calculation |
+| [2115. Find All Possible Recipes from Given Supplies](https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/) | Medium | Build Order | Modified BFS |
+| [2192. All Ancestors of a Node in a Directed Acyclic Graph](https://leetcode.com/problems/all-ancestors-of-a-node-in-a-directed-acyclic-graph/) | Medium | Graph Layering | DFS/BFS |
+
+### Problem Patterns by Category
+
+#### Course Scheduling Problems
+| Pattern | Problems | Key Insight |
+|---------|----------|-------------|
+| Basic Cycle Detection | 207 | Check if DAG exists |
+| Find Valid Order | 210 | Return topological order |
+| With Time Constraints | 630 | Greedy + priority queue |
+| Query Prerequisites | 1462 | Floyd-Warshall/DFS |
+
+#### Task Scheduling Problems
+| Pattern | Problems | Key Insight |
+|---------|----------|-------------|
+| Minimum Time | 1136, 2050 | Level-wise BFS |
+| Parallel Execution | 1136 | Count levels |
+| With Durations | 2050 | DP on completion times |
+
+#### Lexicographical Ordering
+| Pattern | Problems | Key Insight |
+|---------|----------|-------------|
+| Character Order | 269 | Build graph from comparisons |
+| Verify Order | 953 | Check consistency |
+| Custom Comparator | 269 | Extract rules from examples |
+
+#### Build Order & Dependencies
+| Pattern | Problems | Key Insight |
+|---------|----------|-------------|
+| Unique Reconstruction | 444 | Queue size always 1 |
+| Recipe Dependencies | 2115 | Handle initial supplies |
+| Group Dependencies | 1203 | Two-level topological sort |
+
+#### Graph Layering
+| Pattern | Problems | Key Insight |
+|---------|----------|-------------|
+| Find Ancestors | 2192 | Reverse graph traversal |
+| Richest Reachable | 851 | DFS with memoization |
+| Max Path Value | 1857 | DP on DAG |
+
+#### Cycle Detection
+| Pattern | Problems | Key Insight |
+|---------|----------|-------------|
+| Safe States | 802 | Reverse graph + outdegree |
+| All Paths Safe | 1059 | DFS with path tracking |
+| Detect Any Cycle | 207 | Three-color DFS |
+
+## Decision Framework
+
+```
+START: Topological Sort Problem
+│
+├── Need all valid orderings?
+│   │
+│   ├── YES → Use Template 5 (Backtracking)
+│   │
+│   └── NO → Continue
+│
+├── Need lexicographical order?
+│   │
+│   ├── YES → Use Template 4 (Priority Queue)
+│   │
+│   └── NO → Continue
+│
+├── Need parallel execution time?
+│   │
+│   ├── YES → Use Template 6 (Level BFS)
+│   │
+│   └── NO → Continue
+│
+├── Need cycle detection only?
+│   │
+│   ├── YES → Use Template 2 (Three-Color DFS)
+│   │
+│   └── NO → Continue
+│
+└── DEFAULT → Use Template 1 (BFS Kahn's Algorithm)
+```
 
 ## 2) LC Example
 
@@ -573,7 +1028,7 @@ class Solution:
         return len(stack) == numCourses
 ```
 
-### 2-3) alien-dictionary
+### 2-3) Alien Dictionary
 
 ```java
 // java
@@ -782,7 +1237,7 @@ class Solution(object):
                 break　　
 ```
 
-### 2-3) Sequence Reconstruction
+### 2-4) Sequence Reconstruction
 
 ```java
 // java
@@ -850,3 +1305,132 @@ class Solution(object):
         }
     }
 ```
+
+### 2-6) Parallel Courses
+```python
+# LC 1136
+def minimumSemesters(n, relations):
+    """
+    Find minimum number of semesters to take all courses.
+    Time: O(V + E), Space: O(V)
+    """
+    from collections import defaultdict, deque
+    
+    graph = defaultdict(list)
+    in_degree = [0] * (n + 1)
+    
+    for pre, next_course in relations:
+        graph[pre].append(next_course)
+        in_degree[next_course] += 1
+    
+    queue = deque([i for i in range(1, n + 1) if in_degree[i] == 0])
+    semesters = 0
+    studied = 0
+    
+    while queue:
+        # Process all courses in current semester
+        semesters += 1
+        next_queue = []
+        
+        for _ in range(len(queue)):
+            course = queue.popleft()
+            studied += 1
+            
+            for next_course in graph[course]:
+                in_degree[next_course] -= 1
+                if in_degree[next_course] == 0:
+                    next_queue.append(next_course)
+        
+        queue.extend(next_queue)
+    
+    return semesters if studied == n else -1
+```
+
+### 2-5) Find Eventual Safe States
+```python
+# LC 802
+def eventualSafeNodes(graph):
+    """
+    Find all safe nodes (nodes from which all paths lead to terminal).
+    Time: O(V + E), Space: O(V)
+    """
+    n = len(graph)
+    # Reverse the graph
+    reverse_graph = [[] for _ in range(n)]
+    out_degree = [0] * n
+    
+    for i in range(n):
+        for j in graph[i]:
+            reverse_graph[j].append(i)
+        out_degree[i] = len(graph[i])
+    
+    # Start with terminal nodes (out-degree = 0)
+    from collections import deque
+    queue = deque([i for i in range(n) if out_degree[i] == 0])
+    safe = []
+    
+    while queue:
+        node = queue.popleft()
+        safe.append(node)
+        
+        for prev in reverse_graph[node]:
+            out_degree[prev] -= 1
+            if out_degree[prev] == 0:
+                queue.append(prev)
+    
+    return sorted(safe)
+```
+
+## Summary & Interview Tips
+
+### Common Pitfalls
+1. **Forgetting Cycle Detection**: Always check if result size equals number of nodes
+2. **Wrong Edge Direction**: Remember edges go from prerequisite to dependent
+3. **Not Handling Disconnected Components**: Process all unvisited nodes
+4. **Incorrect In-degree Initialization**: Ensure all nodes are included
+5. **Missing Edge Cases**: Empty graph, single node, self-loops
+
+### Key Insights
+1. **BFS vs DFS**: BFS is easier for finding one order, DFS for all orders
+2. **In-degree Tracking**: Nodes with 0 in-degree can be processed
+3. **Three-Color DFS**: White (unvisited), Gray (visiting), Black (visited)
+4. **Reverse Graph**: Useful for problems like safe states
+5. **Level Processing**: For parallel execution and minimum time
+
+### Interview Approach
+1. **Clarify Requirements**:
+   - Is the graph guaranteed to be a DAG?
+   - Do we need all orderings or just one?
+   - Are there any ordering preferences?
+
+2. **Choose Algorithm**:
+   - Default to BFS (Kahn's) for simplicity
+   - Use DFS for recursive problems
+   - Use priority queue for lexicographical order
+
+3. **Handle Edge Cases**:
+   - Empty graph
+   - Single node
+   - Disconnected components
+   - Cycles in graph
+
+4. **Optimize if Needed**:
+   - Early termination for cycle detection
+   - Space optimization with in-place modifications
+   - Time optimization with better data structures
+
+### Time/Space Complexity Summary
+| Operation | Time | Space | Notes |
+|-----------|------|-------|-------|
+| Build Graph | O(E) | O(V + E) | Adjacency list |
+| Calculate In-degrees | O(E) | O(V) | Array or map |
+| BFS/DFS Traversal | O(V + E) | O(V) | Visit each node/edge once |
+| Cycle Detection | O(V + E) | O(V) | Three-color marking |
+| All Orderings | O(V! × E) | O(V) | Exponential for all permutations |
+
+### Related Concepts
+- **Strongly Connected Components**: Tarjan's/Kosaraju's algorithm
+- **Shortest Path in DAG**: Topological sort + relaxation
+- **Critical Path Method**: Project scheduling
+- **Dependency Resolution**: Package managers, build systems
+- **Dataflow Analysis**: Compiler optimization

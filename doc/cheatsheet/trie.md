@@ -15,9 +15,373 @@
 
 ### 0-2) Pattern
 
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}  # HashMap for flexible alphabet
+        self.is_end = False
+        self.word = None    # Store complete word (optional)
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -> None:
+        """Insert word into trie. Time: O(m), Space: O(m)"""
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
+        node.word = word  # Store for easy retrieval
+    
+    def search(self, word: str) -> bool:
+        """Search for exact word. Time: O(m)"""
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return node.is_end
+    
+    def startsWith(self, prefix: str) -> bool:
+        """Check if any word starts with prefix. Time: O(p)"""
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return True
+
+# Java version
+class TrieNode {
+    Map<Character, TrieNode> children;
+    boolean isEnd;
+    String word;
+    
+    public TrieNode() {
+        children = new HashMap<>();
+        isEnd = false;
+        word = null;
+    }
+}
+
+class Trie {
+    private TrieNode root;
+    
+    public Trie() {
+        root = new TrieNode();
+    }
+    
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            node.children.putIfAbsent(c, new TrieNode());
+            node = node.children.get(c);
+        }
+        node.isEnd = true;
+        node.word = word;
+    }
+    
+    public boolean search(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            if (!node.children.containsKey(c)) {
+                return false;
+            }
+            node = node.children.get(c);
+        }
+        return node.isEnd;
+    }
+    
+    public boolean startsWith(String prefix) {
+        TrieNode node = root;
+        for (char c : prefix.toCharArray()) {
+            if (!node.children.containsKey(c)) {
+                return false;
+            }
+            node = node.children.get(c);
+        }
+        return true;
+    }
+}
+```
+
+### Template 2: Trie with Array (Fixed Alphabet)
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = [None] * 26  # For lowercase letters only
+        self.is_end = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -> None:
+        node = self.root
+        for char in word:
+            idx = ord(char) - ord('a')
+            if not node.children[idx]:
+                node.children[idx] = TrieNode()
+            node = node.children[idx]
+        node.is_end = True
+    
+    def search(self, word: str) -> bool:
+        node = self._search_prefix(word)
+        return node is not None and node.is_end
+    
+    def startsWith(self, prefix: str) -> bool:
+        return self._search_prefix(prefix) is not None
+    
+    def _search_prefix(self, prefix: str) -> TrieNode:
+        node = self.root
+        for char in prefix:
+            idx = ord(char) - ord('a')
+            if not node.children[idx]:
+                return None
+            node = node.children[idx]
+        return node
+
+# Java version
+class TrieNode {
+    TrieNode[] children;
+    boolean isEnd;
+    
+    public TrieNode() {
+        children = new TrieNode[26];
+        isEnd = false;
+    }
+}
+```
+
+### Template 3: Trie with Wildcard Support
+```python
+class WildcardTrie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -> None:
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
+    
+    def search(self, word: str) -> bool:
+        """Search with '.' as wildcard for any character"""
+        return self._dfs_search(word, 0, self.root)
+    
+    def _dfs_search(self, word: str, index: int, node: TrieNode) -> bool:
+        if index == len(word):
+            return node.is_end
+        
+        char = word[index]
+        if char == '.':
+            # Try all possible children
+            for child in node.children.values():
+                if self._dfs_search(word, index + 1, child):
+                    return True
+            return False
+        else:
+            if char not in node.children:
+                return False
+            return self._dfs_search(word, index + 1, node.children[char])
+
+# Java version
+public boolean search(String word) {
+    return dfsSearch(word, 0, root);
+}
+
+private boolean dfsSearch(String word, int index, TrieNode node) {
+    if (index == word.length()) {
+        return node.isEnd;
+    }
+    
+    char c = word.charAt(index);
+    if (c == '.') {
+        for (TrieNode child : node.children.values()) {
+            if (dfsSearch(word, index + 1, child)) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        if (!node.children.containsKey(c)) {
+            return false;
+        }
+        return dfsSearch(word, index + 1, node.children.get(c));
+    }
+}
+```
+
+### Template 4: Autocomplete Trie
+```python
+class AutocompleteTrie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -> None:
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
+        node.word = word
+    
+    def search_prefix(self, prefix: str, limit: int = 3) -> List[str]:
+        """Return up to 'limit' words with given prefix"""
+        node = self.root
+        
+        # Navigate to prefix end
+        for char in prefix:
+            if char not in node.children:
+                return []
+            node = node.children[char]
+        
+        # Collect all words with this prefix
+        results = []
+        self._dfs_collect(node, results, limit)
+        return results
+    
+    def _dfs_collect(self, node: TrieNode, results: List[str], limit: int):
+        if len(results) >= limit:
+            return
+        
+        if node.is_end:
+            results.append(node.word)
+        
+        # Traverse in lexicographical order
+        for char in sorted(node.children.keys()):
+            self._dfs_collect(node.children[char], results, limit)
+
+# Java version with priority queue for top suggestions
+class AutocompleteTrie {
+    class TrieNode {
+        Map<Character, TrieNode> children = new HashMap<>();
+        Map<String, Integer> counts = new HashMap<>();  // Word -> frequency
+    }
+    
+    public List<String> getTopSuggestions(String prefix, int k) {
+        TrieNode node = root;
+        for (char c : prefix.toCharArray()) {
+            if (!node.children.containsKey(c)) {
+                return new ArrayList<>();
+            }
+            node = node.children.get(c);
+        }
+        
+        // Use heap to get top k
+        PriorityQueue<Map.Entry<String, Integer>> pq = new PriorityQueue<>(
+            (a, b) -> b.getValue() - a.getValue()
+        );
+        pq.addAll(node.counts.entrySet());
+        
+        List<String> result = new ArrayList<>();
+        while (!pq.isEmpty() && result.size() < k) {
+            result.add(pq.poll().getKey());
+        }
+        return result;
+    }
+}
+```
+
+### Template 5: Binary Trie (XOR Problems)
+```python
+class BinaryTrie:
+    class Node:
+        def __init__(self):
+            self.children = [None, None]  # 0 and 1
+            self.count = 0
+    
+    def __init__(self):
+        self.root = self.Node()
+    
+    def insert(self, num: int) -> None:
+        """Insert number as 32-bit binary"""
+        node = self.root
+        for i in range(31, -1, -1):
+            bit = (num >> i) & 1
+            if not node.children[bit]:
+                node.children[bit] = self.Node()
+            node = node.children[bit]
+            node.count += 1
+    
+    def find_max_xor(self, num: int) -> int:
+        """Find maximum XOR with num"""
+        node = self.root
+        max_xor = 0
+        
+        for i in range(31, -1, -1):
+            bit = (num >> i) & 1
+            # Try to go opposite direction for max XOR
+            toggled = 1 - bit
+            
+            if node.children[toggled] and node.children[toggled].count > 0:
+                max_xor |= (1 << i)
+                node = node.children[toggled]
+            else:
+                node = node.children[bit]
+        
+        return max_xor
+    
+    def remove(self, num: int) -> None:
+        """Remove number from trie"""
+        node = self.root
+        for i in range(31, -1, -1):
+            bit = (num >> i) & 1
+            node = node.children[bit]
+            node.count -= 1
+
+# Java version
+class BinaryTrie {
+    class Node {
+        Node[] children = new Node[2];
+        int count = 0;
+    }
+    
+    private Node root = new Node();
+    
+    public void insert(int num) {
+        Node node = root;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            if (node.children[bit] == null) {
+                node.children[bit] = new Node();
+            }
+            node = node.children[bit];
+            node.count++;
+        }
+    }
+    
+    public int findMaxXor(int num) {
+        Node node = root;
+        int maxXor = 0;
+        
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            int toggled = 1 - bit;
+            
+            if (node.children[toggled] != null && node.children[toggled].count > 0) {
+                maxXor |= (1 << i);
+                node = node.children[toggled];
+            } else {
+                node = node.children[bit];
+            }
+        }
+        
+        return maxXor;
+    }
+}
+```
+
+### Template 6: Trie with Delete Operation
 ```java
 // java
-// LC 208
+// LC 208 (Modified)
     // V0
     // IDEA : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py#L49
     // modified by GPT
