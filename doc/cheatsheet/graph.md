@@ -1,63 +1,321 @@
-# Grpah 
+# Graph Algorithms
 
-## 0) Concept  
+## Overview
+**Graph algorithms** are techniques for solving problems on graph data structures consisting of vertices (nodes) and edges (connections between nodes).
+
+### Key Properties
+- **Time Complexity**: O(V + E) for traversal, varies for other algorithms
+- **Space Complexity**: O(V) for adjacency list, O(V²) for matrix
+- **Core Idea**: Model relationships and connections between entities
+- **When to Use**: Network problems, dependencies, paths, connectivity
+- **Key Algorithms**: BFS, DFS, Dijkstra, Union-Find, Topological Sort
+
+### Core Characteristics
+- **Directed vs Undirected**: One-way or two-way edges
+- **Weighted vs Unweighted**: Edges with or without costs
+- **Cyclic vs Acyclic**: Contains cycles or not
+- **Connected vs Disconnected**: All nodes reachable or not
+
+### Graph Representations
+- **Adjacency List**: Space O(V + E), efficient for sparse graphs
+- **Adjacency Matrix**: Space O(V²), efficient for dense graphs
+- **Edge List**: Space O(E), simple but less efficient
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_processing_problem.png"></p>
 
-### 0-1) Types
+## Problem Categories
 
-- Types
-    - Quick union
-    - [Quick Find](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/quick_find.md)
-    - [Union Find](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/union_find.md)
-        - Union-Find is more efficient than Quick Find for large datasets because of its nearly constant time complexity for both union and find operations.
-        - Quick Find has a simple implementation but can be very slow for union operations, making it less suitable for large datasets.
-    - [Topology sorting](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/topology_sorting.md)
-        - LC 207, LC 210
-    - Graph Bipartite
-    - [Dijkstra](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Dijkstra.md)
-    - DirectedEdge
-    - Directed acyclic graph (DAG)
-    - Route relaxation
-    - Route compression
+### **Category 1: Graph Traversal**
+- **Description**: Explore all nodes using BFS or DFS
+- **Examples**: LC 200 (Number of Islands), LC 133 (Clone Graph)
+- **Pattern**: Visit all connected components
 
-- Algorithm
-    - bfs
-    - dfs
-    - brute force
-    - graph Algorithm
-        - Dijkstra
-        - Topology sorting
-        - Union Find
+### **Category 2: Shortest Path**
+- **Description**: Find minimum distance between nodes
+- **Examples**: LC 743 (Network Delay), LC 787 (Cheapest Flights)
+- **Pattern**: Dijkstra, Bellman-Ford, Floyd-Warshall
 
-- Data structure
-    - defaultdict
-    - TreeNode
-    - array
-    - string
-    - dict
-    - set
+### **Category 3: Union-Find (DSU)**
+- **Description**: Detect cycles, find connected components
+- **Examples**: LC 684 (Redundant Connection), LC 721 (Accounts Merge)
+- **Pattern**: Union by rank, path compression
 
-- Represent form (as below)
-    - matrix 
-    - dict + list
+### **Category 4: Topological Sort**
+- **Description**: Order nodes with dependencies
+- **Examples**: LC 207 (Course Schedule), LC 210 (Course Schedule II)
+- **Pattern**: DFS or Kahn's algorithm (BFS)
+
+### **Category 5: Bipartite Graphs**
+- **Description**: Check if graph can be colored with 2 colors
+- **Examples**: LC 785 (Is Graph Bipartite), LC 886 (Possible Bipartition)
+- **Pattern**: BFS/DFS with coloring
+
+### **Category 6: Minimum Spanning Tree**
+- **Description**: Connect all nodes with minimum cost
+- **Examples**: LC 1135 (Connecting Cities), LC 1584 (Min Cost Connect Points)
+- **Pattern**: Kruskal's or Prim's algorithm
+
+## Templates & Algorithms
+
+### Template Comparison Table
+| Template Type | Use Case | Time Complexity | When to Use |
+|---------------|----------|-----------------|-------------|
+| **BFS** | Level-order, shortest path | O(V + E) | Unweighted shortest path |
+| **DFS** | All paths, cycle detection | O(V + E) | Explore all possibilities |
+| **Union-Find** | Connected components | O(α(n)) | Dynamic connectivity |
+| **Dijkstra** | Weighted shortest path | O((V+E)logV) | Non-negative weights |
+| **Topological** | Dependencies | O(V + E) | DAG ordering |
+
+### Universal Graph Template
+```python
+def graph_algorithm(n, edges):
+    # Build adjacency list
+    graph = collections.defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)  # For undirected
+    
+    # Track visited nodes
+    visited = set()
+    
+    # Process each component
+    result = 0
+    for node in range(n):
+        if node not in visited:
+            # Process component
+            process_component(node, graph, visited)
+            result += 1
+    
+    return result
+```
+
+### Template 1: BFS Traversal
+```python
+def bfs_template(graph, start):
+    """Breadth-first search template"""
+    from collections import deque
+    
+    visited = set([start])
+    queue = deque([start])
+    level = 0
+    
+    while queue:
+        # Process level by level
+        size = len(queue)
+        for _ in range(size):
+            node = queue.popleft()
+            
+            # Process node
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+        level += 1
+    
+    return level
+```
+
+### Template 2: DFS Traversal
+```python
+def dfs_template(graph, start):
+    """Depth-first search template"""
+    visited = set()
+    path = []
+    
+    def dfs(node):
+        visited.add(node)
+        path.append(node)
+        
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                dfs(neighbor)
+        
+        # Backtrack if needed
+        # path.pop()
+    
+    dfs(start)
+    return visited
+```
+
+### Template 3: Union-Find (DSU)
+```python
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+        self.count = n
+    
+    def find(self, x):
+        """Find with path compression"""
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+    
+    def union(self, x, y):
+        """Union by rank"""
+        px, py = self.find(x), self.find(y)
+        if px == py:
+            return False
+        
+        if self.rank[px] < self.rank[py]:
+            px, py = py, px
+        self.parent[py] = px
+        if self.rank[px] == self.rank[py]:
+            self.rank[px] += 1
+        
+        self.count -= 1
+        return True
+    
+    def connected(self, x, y):
+        return self.find(x) == self.find(y)
+```
+
+### Template 4: Topological Sort (DFS)
+```python
+def topological_sort_dfs(n, edges):
+    """Topological sort using DFS"""
+    graph = collections.defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+    
+    # 0: unvisited, 1: visiting, 2: visited
+    state = [0] * n
+    result = []
+    
+    def dfs(node):
+        if state[node] == 1:  # Cycle detected
+            return False
+        if state[node] == 2:  # Already processed
+            return True
+        
+        state[node] = 1  # Mark as visiting
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+        
+        state[node] = 2  # Mark as visited
+        result.append(node)
+        return True
+    
+    for i in range(n):
+        if state[i] == 0:
+            if not dfs(i):
+                return []  # Cycle exists
+    
+    return result[::-1]
+```
+
+### Template 5: Topological Sort (BFS/Kahn's)
+```python
+def topological_sort_bfs(n, edges):
+    """Kahn's algorithm for topological sort"""
+    from collections import deque
+    
+    graph = collections.defaultdict(list)
+    indegree = [0] * n
+    
+    for u, v in edges:
+        graph[u].append(v)
+        indegree[v] += 1
+    
+    queue = deque([i for i in range(n) if indegree[i] == 0])
+    result = []
+    
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+        
+        for neighbor in graph[node]:
+            indegree[neighbor] -= 1
+            if indegree[neighbor] == 0:
+                queue.append(neighbor)
+    
+    return result if len(result) == n else []
+```
+
+### Template 6: Bipartite Check
+```python
+def is_bipartite(graph):
+    """Check if graph is bipartite using BFS"""
+    n = len(graph)
+    colors = [-1] * n
+    
+    for start in range(n):
+        if colors[start] != -1:
+            continue
+        
+        queue = deque([start])
+        colors[start] = 0
+        
+        while queue:
+            node = queue.popleft()
+            for neighbor in graph[node]:
+                if colors[neighbor] == -1:
+                    colors[neighbor] = 1 - colors[node]
+                    queue.append(neighbor)
+                elif colors[neighbor] == colors[node]:
+                    return False
+    
+    return True
+```
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_rep1.png"></p>
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_rep2.png"></p>
 
-### 0-2) Pattern
 
-## 1) General form
+## Problems by Pattern
 
-### 1-1) Basic OP
-- Graph API (client)
-    - connect
-    - check_if_connected
-    - shortest_path
-    - longest_path
-    - is_cycle
+### **Graph Traversal Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Number of Islands | 200 | DFS/BFS on grid | Medium |
+| Max Area of Island | 695 | DFS with counting | Medium |
+| Clone Graph | 133 | BFS/DFS with map | Medium |
+| Pacific Atlantic Water | 417 | Multi-source DFS | Medium |
+| Word Ladder | 127 | BFS shortest path | Hard |
+| Surrounded Regions | 130 | DFS from boundary | Medium |
 
+### **Shortest Path Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Network Delay Time | 743 | Dijkstra | Medium |
+| Cheapest Flights K Stops | 787 | Modified Dijkstra | Medium |
+| Path with Min Effort | 1631 | Dijkstra on grid | Medium |
+| Bus Routes | 815 | BFS on routes | Hard |
+| Shortest Path Binary Matrix | 1091 | BFS | Medium |
+
+### **Union-Find Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Number of Connected Components | 323 | Basic Union-Find | Medium |
+| Redundant Connection | 684 | Detect cycle | Medium |
+| Accounts Merge | 721 | Union-Find with map | Medium |
+| Number of Provinces | 547 | Union-Find or DFS | Medium |
+| Satisfiability of Equality | 990 | Union-Find | Medium |
+
+### **Topological Sort Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Course Schedule | 207 | Cycle detection | Medium |
+| Course Schedule II | 210 | Topological order | Medium |
+| Alien Dictionary | 269 | Build graph + sort | Hard |
+| Minimum Height Trees | 310 | Leaf removal | Medium |
+| Parallel Courses | 1136 | Level-wise BFS | Medium |
+
+### **Bipartite Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Is Graph Bipartite | 785 | BFS coloring | Medium |
+| Possible Bipartition | 886 | DFS coloring | Medium |
+
+### **Advanced Graph Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Critical Connections | 1192 | Tarjan's algorithm | Hard |
+| Find Eventual Safe States | 802 | Cycle detection | Medium |
+| Reconstruct Itinerary | 332 | Hierholzer's algorithm | Hard |
+| Minimum Spanning Tree | 1135 | Kruskal/Prim | Medium |
 
 #### 1-1-1) Number of Islands
 
@@ -416,6 +674,194 @@ private boolean dfs(int crs, Map<Integer, List<Integer>> preMap, Set<Integer> vi
     return true;
 }
 ```
+
+## Decision Framework
+
+### Pattern Selection Strategy
+
+```
+Graph Algorithm Selection Flowchart:
+
+1. What is the problem asking for?
+   ├── Find shortest path → Continue to 2
+   ├── Check connectivity → Use Union-Find or DFS/BFS
+   ├── Order with dependencies → Use Topological Sort
+   ├── Detect cycles → Use DFS with states or Union-Find
+   └── Traverse all nodes → Use BFS or DFS
+
+2. For shortest path problems:
+   ├── Unweighted graph → Use BFS
+   ├── Non-negative weights → Use Dijkstra
+   ├── Negative weights → Use Bellman-Ford
+   └── All pairs → Use Floyd-Warshall
+
+3. For connectivity problems:
+   ├── Static graph → Use DFS/BFS once
+   ├── Dynamic connections → Use Union-Find
+   └── Count components → Use either approach
+
+4. For traversal problems:
+   ├── Level-by-level → Use BFS
+   ├── Path finding → Use DFS with backtracking
+   └── State space search → Use BFS for optimal
+
+5. Is the graph special?
+   ├── Tree → Simpler DFS/BFS
+   ├── DAG → Topological sort possible
+   ├── Bipartite → Two-coloring
+   └── Grid → Treat as implicit graph
+```
+
+### Algorithm Selection Guide
+
+| Problem Type | Best Algorithm | Time | When to Use |
+|-------------|---------------|------|-------------|
+| Single-source shortest (unweighted) | BFS | O(V+E) | Simple shortest path |
+| Single-source shortest (weighted) | Dijkstra | O((V+E)logV) | Non-negative weights |
+| All-pairs shortest | Floyd-Warshall | O(V³) | Dense graphs |
+| Cycle detection | DFS | O(V+E) | Directed graphs |
+| Connected components | Union-Find | O(α(n)) | Dynamic connectivity |
+| Topological order | Kahn's/DFS | O(V+E) | Task scheduling |
+| Minimum spanning tree | Kruskal/Prim | O(ElogE) | Network design |
+
+## Summary & Quick Reference
+
+### Complexity Quick Reference
+| Algorithm | Time Complexity | Space Complexity | Notes |
+|-----------|-----------------|------------------|-------|
+| BFS/DFS | O(V + E) | O(V) | Standard traversal |
+| Dijkstra | O((V+E)logV) | O(V) | With binary heap |
+| Bellman-Ford | O(VE) | O(V) | Handles negative weights |
+| Floyd-Warshall | O(V³) | O(V²) | All pairs |
+| Union-Find | O(α(n)) | O(V) | Near constant |
+| Topological Sort | O(V + E) | O(V) | Linear time |
+
+### Graph Building Patterns
+
+#### **Adjacency List**
+```python
+# For edges list
+graph = defaultdict(list)
+for u, v in edges:
+    graph[u].append(v)
+    graph[v].append(u)  # Undirected
+
+# For weighted edges
+graph = defaultdict(list)
+for u, v, w in edges:
+    graph[u].append((v, w))
+```
+
+#### **Adjacency Matrix**
+```python
+# For unweighted
+graph = [[0] * n for _ in range(n)]
+for u, v in edges:
+    graph[u][v] = 1
+    graph[v][u] = 1  # Undirected
+
+# For weighted
+graph = [[float('inf')] * n for _ in range(n)]
+for u, v, w in edges:
+    graph[u][v] = w
+```
+
+### Common Patterns & Tricks
+
+#### **Visited Tracking**
+```python
+# Set for simple visited
+visited = set()
+
+# Array for state tracking
+# 0: unvisited, 1: visiting, 2: visited
+state = [0] * n
+
+# Dictionary for path reconstruction
+parent = {}
+```
+
+#### **Grid as Graph**
+```python
+# 4-directional movement
+directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+# 8-directional movement
+directions = [(0, 1), (1, 0), (0, -1), (-1, 0),
+              (1, 1), (1, -1), (-1, 1), (-1, -1)]
+
+# Check bounds
+def is_valid(r, c, rows, cols):
+    return 0 <= r < rows and 0 <= c < cols
+```
+
+#### **Cycle Detection Patterns**
+```python
+# Directed graph - DFS with states
+def has_cycle_directed(graph):
+    # 0: unvisited, 1: visiting, 2: visited
+    state = [0] * n
+    
+    def dfs(node):
+        if state[node] == 1:  # Back edge
+            return True
+        if state[node] == 2:
+            return False
+        
+        state[node] = 1
+        for neighbor in graph[node]:
+            if dfs(neighbor):
+                return True
+        state[node] = 2
+        return False
+
+# Undirected graph - Union-Find
+def has_cycle_undirected(edges):
+    uf = UnionFind(n)
+    for u, v in edges:
+        if not uf.union(u, v):
+            return True  # Already connected
+    return False
+```
+
+### Problem-Solving Steps
+1. **Identify graph type**: Directed/undirected, weighted/unweighted
+2. **Choose representation**: Adjacency list vs matrix
+3. **Select algorithm**: Based on problem requirements
+4. **Handle edge cases**: Empty graph, disconnected components
+5. **Track state properly**: Visited nodes, paths, distances
+6. **Optimize if needed**: Space or time improvements
+
+### Common Mistakes & Tips
+
+**🚫 Common Mistakes:**
+- Not handling disconnected components
+- Incorrect visited state management
+- Missing cycle detection in recursive DFS
+- Wrong graph representation choice
+- Not considering edge cases (self-loops, multiple edges)
+
+**✅ Best Practices:**
+- Use adjacency list for sparse graphs
+- Clear visited tracking strategy
+- Handle both directed and undirected cases
+- Consider using Union-Find for dynamic connectivity
+- Test with disconnected components
+
+### Interview Tips
+1. **Clarify graph properties**: Directed? Weighted? Connected?
+2. **Draw small examples**: Visualize the problem
+3. **Choose right representation**: List vs matrix
+4. **State complexities**: Time and space upfront
+5. **Handle edge cases**: Empty, single node, cycles
+6. **Optimize incrementally**: Start simple, then improve
+
+### Related Topics
+- **Trees**: Special case of graphs (connected, acyclic)
+- **Dynamic Programming**: DP on graphs (paths, trees)
+- **Greedy Algorithms**: MST algorithms
+- **Heap/Priority Queue**: Used in Dijkstra, Prim's
+- **Recursion/Backtracking**: DFS implementation
 
 ### 2-6) Find Eventual Safe States
 ```java

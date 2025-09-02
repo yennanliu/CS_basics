@@ -1,26 +1,273 @@
-# DP (Dynamic programming)  
+# Dynamic Programming (DP)
 
-## 0) Concept
-- Dynamic programming, like the divide-and-conquer method, solves
-problems by combining the solutions to subproblems
-    - Dynamic: time-varying
-    - Programming: a tabular method
-- space -> time 用空間換取時間
-- trace progress 讓走過的留下痕跡
-- Ref
-    - https://predoc.dlc.ntu.edu.tw/viewer?embedded=true&url=https%3A%2F%2Fcool.ntu.edu.tw%2Fcourses%2F8583%2Ffiles%2F1165602%2Fdownload%3Fverifier%3DnlJ3s1a9TTmgYQzbJgj9vnrGlKKZB4w0wUZyEKgm 
+## Overview
+**Dynamic Programming** is an algorithmic paradigm that solves complex problems by breaking them down into simpler subproblems and storing their solutions to avoid redundant computations.
 
-### 0-1) Types
-- 2 DP state:   
- - LC 714
+### Key Properties
+- **Time Complexity**: Problem-specific, typically O(n²) or O(n³)
+- **Space Complexity**: O(n) to O(n²) for memoization table
+- **Core Idea**: Trade space for time by memoizing overlapping subproblems
+- **When to Use**: Problems with optimal substructure and overlapping subproblems
+- **Key Techniques**: Memoization (top-down) and Tabulation (bottom-up)
 
-### 0-2) Pattern
+### Core Characteristics
+- **Optimal Substructure**: Optimal solution contains optimal solutions to subproblems
+- **Overlapping Subproblems**: Same subproblems solved multiple times
+- **Memoization**: Store results to avoid recomputation
+- **State Transition**: Define relationship between states
 
-## 1) General form
+### References
+- [Dynamic Programming Patterns](https://leetcode.com/discuss/general-discussion/458695/dynamic-programming-patterns)
+- [DP Tutorial](https://www.geeksforgeeks.org/dynamic-programming/) 
 
-### 1-1) Basic OP
+## Problem Categories
 
-## 2) LC Example
+### **Category 1: Linear DP**
+- **Description**: Single sequence problems with linear dependencies
+- **Examples**: LC 70 (Climbing Stairs), LC 198 (House Robber), LC 300 (LIS)
+- **Pattern**: dp[i] depends on dp[i-1], dp[i-2], etc.
+
+### **Category 2: Grid/2D DP**
+- **Description**: Problems on 2D grids or matrices
+- **Examples**: LC 62 (Unique Paths), LC 64 (Minimum Path Sum), LC 221 (Maximal Square)
+- **Pattern**: dp[i][j] depends on neighbors
+
+### **Category 3: Interval DP**
+- **Description**: Problems on intervals or subarrays
+- **Examples**: LC 312 (Burst Balloons), LC 1000 (Minimum Cost to Merge Stones)
+- **Pattern**: dp[i][j] for interval [i, j]
+
+### **Category 4: Tree DP**
+- **Description**: DP on tree structures
+- **Examples**: LC 337 (House Robber III), LC 968 (Binary Tree Cameras)
+- **Pattern**: State at each node depends on children
+
+### **Category 5: State Machine DP**
+- **Description**: Problems with multiple states and transitions
+- **Examples**: LC 714 (Stock with Fee), LC 309 (Stock with Cooldown)
+- **Pattern**: Multiple DP arrays for different states
+
+### **Category 6: Knapsack DP**
+- **Description**: Selection problems with constraints
+- **Examples**: LC 416 (Partition Equal Subset), LC 494 (Target Sum)
+- **Pattern**: dp[i][j] for items and capacity/target
+
+## Templates & Algorithms
+
+### Template Comparison Table
+| Template Type | Use Case | State Definition | When to Use |
+|---------------|----------|------------------|-------------|
+| **1D Linear** | Single sequence | dp[i] = state at position i | Fibonacci-like problems |
+| **2D Grid** | Matrix paths | dp[i][j] = state at (i,j) | Path counting, min/max |
+| **Interval** | Subarray/substring | dp[i][j] = [i,j] interval | Palindrome, partition |
+| **Knapsack** | Selection with limit | dp[i][w] = items & weight | 0/1, unbounded selection |
+| **State Machine** | Multiple states | dp[i][state] = at i in state | Buy/sell stocks |
+
+### Universal DP Template
+```python
+def dp_solution(input_data):
+    # Step 1: Define state
+    # dp[i] represents...
+    
+    # Step 2: Initialize base cases
+    dp = initialize_dp_array()
+    dp[0] = base_value
+    
+    # Step 3: State transition
+    for i in range(1, n):
+        # Apply recurrence relation
+        dp[i] = f(dp[i-1], dp[i-2], ...)
+    
+    # Step 4: Return answer
+    return dp[n-1]
+```
+
+### Template 1: 1D Linear DP
+```python
+def linear_dp(nums):
+    """Classic 1D DP for sequence problems"""
+    n = len(nums)
+    if n == 0:
+        return 0
+    
+    # State: dp[i] = optimal value at position i
+    dp = [0] * n
+    dp[0] = nums[0]
+    
+    for i in range(1, n):
+        # Transition: current vs previous
+        dp[i] = max(dp[i-1], nums[i])
+        # Or with skip: dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+    
+    return dp[n-1]
+```
+
+### Template 2: 2D Grid DP
+```python
+def grid_dp(grid):
+    """2D DP for grid/matrix problems"""
+    if not grid or not grid[0]:
+        return 0
+    
+    m, n = len(grid), len(grid[0])
+    dp = [[0] * n for _ in range(m)]
+    
+    # Initialize first row and column
+    dp[0][0] = grid[0][0]
+    for i in range(1, m):
+        dp[i][0] = dp[i-1][0] + grid[i][0]
+    for j in range(1, n):
+        dp[0][j] = dp[0][j-1] + grid[0][j]
+    
+    # Fill DP table
+    for i in range(1, m):
+        for j in range(1, n):
+            dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+    
+    return dp[m-1][n-1]
+```
+
+### Template 3: Interval DP
+```python
+def interval_dp(arr):
+    """DP for interval/subarray problems"""
+    n = len(arr)
+    # dp[i][j] = optimal value for interval [i, j]
+    dp = [[0] * n for _ in range(n)]
+    
+    # Base case: single elements
+    for i in range(n):
+        dp[i][i] = arr[i]
+    
+    # Iterate by interval length
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            # Try all split points
+            for k in range(i, j):
+                dp[i][j] = max(dp[i][j], 
+                              dp[i][k] + dp[k+1][j] + cost(i, j))
+    
+    return dp[0][n-1]
+```
+
+### Template 4: 0/1 Knapsack
+```python
+def knapsack_01(weights, values, capacity):
+    """0/1 Knapsack problem"""
+    n = len(weights)
+    # dp[i][w] = max value with first i items, capacity w
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+    
+    for i in range(1, n + 1):
+        for w in range(capacity + 1):
+            # Don't take item i-1
+            dp[i][w] = dp[i-1][w]
+            # Take item i-1 if possible
+            if weights[i-1] <= w:
+                dp[i][w] = max(dp[i][w], 
+                              dp[i-1][w-weights[i-1]] + values[i-1])
+    
+    return dp[n][capacity]
+```
+
+### Template 5: State Machine DP
+```python
+def state_machine_dp(prices, fee=0):
+    """DP with multiple states (stock problems)"""
+    if not prices:
+        return 0
+    
+    n = len(prices)
+    # States: hold stock, not hold stock
+    hold = -prices[0]
+    cash = 0
+    
+    for i in range(1, n):
+        # Transition between states
+        prev_hold = hold
+        hold = max(hold, cash - prices[i])  # Buy
+        cash = max(cash, prev_hold + prices[i] - fee)  # Sell
+    
+    return cash
+```
+
+### Template 6: Top-Down Memoization
+```python
+def top_down_dp(nums):
+    """Top-down DP with memoization"""
+    memo = {}
+    
+    def dp(i):
+        # Base case
+        if i < 0:
+            return 0
+        if i == 0:
+            return nums[0]
+        
+        # Check memo
+        if i in memo:
+            return memo[i]
+        
+        # Recurrence relation
+        result = max(dp(i-1), dp(i-2) + nums[i])
+        memo[i] = result
+        return result
+    
+    return dp(len(nums) - 1)
+```
+
+## Problems by Pattern
+
+### **Linear DP Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Climbing Stairs | 70 | dp[i] = dp[i-1] + dp[i-2] | Easy |
+| House Robber | 198 | Max with skip | Medium |
+| Longest Increasing Subsequence | 300 | O(n²) or O(nlogn) | Medium |
+| Maximum Subarray | 53 | Kadane's algorithm | Easy |
+| Decode Ways | 91 | String DP | Medium |
+| Word Break | 139 | Dictionary DP | Medium |
+| Coin Change | 322 | Min coins | Medium |
+
+### **2D Grid Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Unique Paths | 62 | Path counting | Medium |
+| Minimum Path Sum | 64 | Min cost path | Medium |
+| Maximal Square | 221 | 2D expansion | Medium |
+| Dungeon Game | 174 | Backward DP | Hard |
+| Cherry Pickup | 741 | 3D DP | Hard |
+| Number of Paths with Max Score | 1301 | Multi-value DP | Hard |
+
+### **Interval DP Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Longest Palindromic Substring | 5 | Expand or DP | Medium |
+| Palindrome Partitioning II | 132 | Min cuts | Hard |
+| Burst Balloons | 312 | Interval multiplication | Hard |
+| Minimum Cost to Merge Stones | 1000 | K-way merge | Hard |
+| Strange Printer | 664 | Interval printing | Hard |
+
+### **Knapsack Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Partition Equal Subset Sum | 416 | 0/1 Knapsack | Medium |
+| Target Sum | 494 | Sum to target | Medium |
+| Last Stone Weight II | 1049 | Min difference | Medium |
+| Ones and Zeroes | 474 | 2D Knapsack | Medium |
+| Coin Change 2 | 518 | Unbounded knapsack | Medium |
+
+### **State Machine Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Best Time to Buy and Sell Stock II | 122 | Multiple transactions | Easy |
+| Stock with Cooldown | 309 | State transitions | Medium |
+| Stock with Transaction Fee | 714 | Fee consideration | Medium |
+| Stock III | 123 | At most 2 transactions | Hard |
+| Stock IV | 188 | At most k transactions | Hard |
+
+## LC Examples
 
 ### 2-1) Unique Paths
 
@@ -354,3 +601,161 @@ public int tribonacci(int n) {
     return dp[n];
 }
 ```
+
+## Decision Framework
+
+### Pattern Selection Strategy
+
+```
+DP Problem Identification Flowchart:
+
+1. Can the problem be broken into subproblems?
+   ├── NO → Not a DP problem
+   └── YES → Continue to 2
+
+2. Do subproblems overlap?
+   ├── NO → Use Divide & Conquer
+   └── YES → Continue to 3
+
+3. Does it have optimal substructure?
+   ├── NO → Not a DP problem
+   └── YES → Use DP, continue to 4
+
+4. What type of DP pattern?
+   ├── Single sequence → Linear DP (Template 1)
+   ├── 2D grid/matrix → Grid DP (Template 2)
+   ├── Interval/substring → Interval DP (Template 3)
+   ├── Selection with limit → Knapsack (Template 4)
+   └── Multiple states → State Machine (Template 5)
+
+5. Implementation approach?
+   ├── Recursive structure clear → Top-down memoization
+   └── Iterative structure clear → Bottom-up tabulation
+```
+
+### When to Use DP vs Other Approaches
+
+| Problem Type | Use DP | Use Alternative | Alternative |
+|-------------|--------|-----------------|-------------|
+| Optimization (min/max) | ✅ | Sometimes | Greedy if optimal |
+| Count ways/paths | ✅ | - | - |
+| Decision (yes/no) | ✅ | Sometimes | Greedy/DFS |
+| All solutions needed | ❌ | ✅ | Backtracking |
+| No overlapping subproblems | ❌ | ✅ | Divide & Conquer |
+| Greedy choice property | ❌ | ✅ | Greedy |
+
+## Summary & Quick Reference
+
+### Complexity Quick Reference
+| Pattern | Time Complexity | Space Complexity | Space Optimization |
+|---------|-----------------|------------------|-------------------|
+| 1D Linear | O(n) | O(n) | O(1) with variables |
+| 2D Grid | O(m×n) | O(m×n) | O(n) with rolling array |
+| Interval | O(n³) typical | O(n²) | Usually not possible |
+| 0/1 Knapsack | O(n×W) | O(n×W) | O(W) with 1D array |
+| State Machine | O(n×k) | O(k) | Already optimized |
+
+### State Definition Guidelines
+```python
+# 1D: Position/index based
+dp[i] = "optimal value considering first i elements"
+
+# 2D: Two dimensions
+dp[i][j] = "optimal value for subproblem (i, j)"
+
+# Interval: Range based  
+dp[i][j] = "optimal value for interval [i, j]"
+
+# Boolean: Decision problems
+dp[i] = "whether target i is achievable"
+```
+
+### Common Recurrence Relations
+
+#### **Sum/Count Patterns**
+```python
+# Fibonacci-like
+dp[i] = dp[i-1] + dp[i-2]
+
+# Include/exclude current
+dp[i] = dp[i-1] + (dp[i-2] + nums[i])
+```
+
+#### **Min/Max Patterns**
+```python
+# Take or skip
+dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+
+# Best from all previous
+dp[i] = max(dp[j] + score(j, i) for j < i)
+```
+
+#### **Grid Patterns**
+```python
+# Path counting
+dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+# Min path
+dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+```
+
+### Problem-Solving Steps
+1. **Identify if DP applicable**: Check for overlapping subproblems
+2. **Define state**: What does dp[i] represent?
+3. **Find recurrence**: How do states relate?
+4. **Identify base cases**: Initial values
+5. **Determine iteration order**: Bottom-up direction
+6. **Optimize space**: Can we use rolling array?
+
+### Common Mistakes & Tips
+
+**🚫 Common Mistakes:**
+- Wrong state definition
+- Missing base cases
+- Incorrect iteration order
+- Not handling edge cases
+- Integer overflow in large problems
+
+**✅ Best Practices:**
+- Start with recursive solution, then optimize
+- Draw small examples to find patterns
+- Check array bounds carefully
+- Consider space optimization after correctness
+- Use meaningful variable names for states
+
+### Space Optimization Techniques
+
+#### **Rolling Array**
+```python
+# From O(n²) to O(n)
+# Instead of dp[i][j], use dp[2][j]
+curr = [0] * n
+prev = [0] * n
+for i in range(m):
+    curr, prev = prev, curr
+    # Update curr based on prev
+```
+
+#### **State Compression**
+```python
+# From O(n) to O(1) for Fibonacci-like
+prev2, prev1 = 0, 1
+for i in range(2, n):
+    curr = prev1 + prev2
+    prev2, prev1 = prev1, curr
+```
+
+### Interview Tips
+1. **Start simple**: Write recursive solution first
+2. **Identify subproblems**: Draw recursion tree
+3. **Add memoization**: Convert to top-down DP
+4. **Consider bottom-up**: Often more efficient
+5. **Optimize space**: Impress with rolling array
+6. **Test with examples**: Trace through small inputs
+
+### Related Topics
+- **Greedy**: When local optimal leads to global
+- **Backtracking**: When need all solutions
+- **Divide & Conquer**: No overlapping subproblems
+- **Graph Algorithms**: DP on graphs (shortest path)
+- **Binary Search**: Optimization problems with monotonicity
