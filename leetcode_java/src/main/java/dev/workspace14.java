@@ -1994,10 +1994,92 @@ public class workspace14 {
     }
 
     // LC 005
+    // 7.46 - 7.56 AM
+    /**
+     *  Given a string s,
+     *  return the longest `palindromic` (回文) `substring` in s.
+     *
+     *  substr: A substring is a contiguous non-empty sequence of characters within a string.
+     *
+     *
+     *  IDEA 1)  1 pointer (as middle, expand left, right) + odd, even sub string check
+     *
+     *  IDEA 2)  2 pointer, l, r ???
+     *
+     *  IDEA 3) recursion ????
+     *
+     *
+     */
+    // IDEA 1)  1 pointer + odd, even sub string check
     public String longestPalindrome(String s) {
 
-        return null;
+        // edge
+        if(s.isEmpty()){
+            return null;
+        }
+        if(s.length() == 1){
+            return s;
+        }
+        String res = "";
+        int[] tmp1 = new int[2];
+        int[] tmp2 = new int[2];
+        for(int i = 0; i < s.length(); i++){
+            // single
+            String cur = String.valueOf(s.charAt(i));
+            System.out.println(">>> cur = " + cur);
+            if(cur.length() > res.length()){
+                res = cur;
+            }
+
+            // odd
+            /**
+             *    bab
+             *     x
+             */
+            tmp1 = longestPalindromeHelper(s, i-1, i+1);
+            String str1 = String.copyValueOf(s.toCharArray(), tmp1[0], tmp1[1]);
+            System.out.println(">>> tmp1 = " + tmp1 + ", str1 = " + str1);
+            if(str1.length() > res.length()){
+                res = str1;
+            }
+            // even
+            /**
+             *   bb
+             */
+            tmp2 = longestPalindromeHelper(s, i, i+1);
+            String str2 = String.copyValueOf(s.toCharArray(), tmp2[0], tmp2[1]);
+            System.out.println(">>> tmp2 = " + tmp2 + ", str2 = " + str2);
+            if(str2.length() > res.length()){
+                res = str2;
+            }
+        }
+
+        return res;
     }
+
+    private int[] longestPalindromeHelper(String x, int l, int r){
+        if(x.isEmpty()){
+            return null;
+        }
+        int[] res = new int[2];
+        while(r > l && l >= 0 && r < x.length()){
+            if(x.charAt(l) != x.charAt(r)){
+                return res;
+            }
+            res[0] = l;
+            res[1] = r;
+            l -= 1;
+            r += 1;
+        }
+
+        return res;
+    }
+
+
+
+
+
+
 
     // LC 167
     // 7.23 - 7.33 am
