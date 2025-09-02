@@ -1,21 +1,22 @@
 # BST (Binary Search Tree)
-- Ref
-    - [fucking-algorithm - BST pt.1](https://labuladong.github.io/algo/2/21/43/)
-    - [fucking-algorithm - BST pt.2](https://labuladong.github.io/algo/2/21/44/)
-    - [fucking-algorithm - BST pt.3](https://labuladong.github.io/algo/2/21/42/)
 
-## 0) Concept
+## Overview
+**Binary Search Tree (BST)** is a binary tree data structure where each node follows the ordering property: left child < parent < right child. This property enables efficient searching, insertion, and deletion operations.
 
-- For each node
-    - `left sub node < than current node`
-    - `right sub node > than current node`
+### Key Properties
+- **Time Complexity**: 
+  - Search/Insert/Delete: O(log n) average, O(n) worst case (unbalanced)
+  - Traversal: O(n) for all nodes
+- **Space Complexity**: O(n) for storing n nodes, O(h) for recursive operations
+- **Core Property**: `left < root < right` for all nodes
+- **Inorder Traversal**: Produces sorted sequence (ascending order)
+- **When to Use**: Sorted data operations, range queries, ordered statistics
 
-- BST's `in-order traversal` is `ASCENDING ORDERING`
-    - LC 230
-    - LC 538
-    - LC 1038
-- Track BST's `next` `right` node val
-    - LC 173
+### References
+- [BST Visualizer](https://www.cs.usfca.edu/~galles/visualization/BST.html)
+- [fucking-algorithm - BST pt.1](https://labuladong.github.io/algo/2/21/43/)
+- [fucking-algorithm - BST pt.2](https://labuladong.github.io/algo/2/21/44/)
+- [fucking-algorithm - BST pt.3](https://labuladong.github.io/algo/2/21/42/)
 
 ```java
 // below will print BST elements in ascending ordering
@@ -28,73 +29,300 @@ void traverse(TreeNode root) {
     traverse(root.right);
 ```
 
-### 0-1) Types
+## Problem Categories
 
-- Types
-    - the property of BST : inorder traversal of BST is an array sorted in the ascending order. (LC 230)
-    - Trim BST
-        - LC 669 (check [dfs.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/dfs.md))
-    - BST's 2 pointers op
-        - LC 501
-            - [video](https://www.bilibili.com/video/BV1fD4y117gp/?share_source=copy_web)
-        - LC 530
-            - [video](https://www.bilibili.com/video/BV1DD4y11779/?share_source=copy_web)
-        - LC 538
-            - [video](https://www.bilibili.com/video/BV1d44y1f7wP/?share_source=copy_web)
+### **Pattern 1: BST Search & Validation**
+- **Description**: Find elements or validate BST properties
+- **Recognition**: "Search", "find", "validate", "is valid BST"
+- **Examples**: LC 98, LC 700, LC 270, LC 285
+- **Template**: Use Search Template with BST property
 
-- Algorithm
-    - dfs
-    - recursive
+### **Pattern 2: BST Insertion & Deletion**
+- **Description**: Modify BST structure while maintaining properties
+- **Recognition**: "Insert", "delete", "remove", "add node"
+- **Examples**: LC 450, LC 701, LC 669
+- **Template**: Use Modification Template
 
-- Data structure
-    - TreeNode
-    - dict
-    - set
+### **Pattern 3: BST Traversal & Conversion**
+- **Description**: Use inorder property for sorting/conversion
+- **Recognition**: "Kth smallest", "convert", "flatten", "sorted order"
+- **Examples**: LC 230, LC 173, LC 426, LC 538
+- **Template**: Use Inorder Template
 
-### 0-2) Pattern
-```java
-// java
-public class TreeNode{
-    // attr
-    int val;  // value on node
-    TreeNode left;  // point to left clild
-    TreeNode right;  // point to right clild
+### **Pattern 4: BST Construction**
+- **Description**: Build BST from various inputs
+- **Recognition**: "Construct", "build", "generate", "serialize"
+- **Examples**: LC 108, LC 109, LC 95, LC 96, LC 449
+- **Template**: Use Construction Template
 
-    // constructor
-    TreeNode(int val){
-        this.val = val;
-        this.left = null;
-        this.right = null;
-    }
-}
+### **Pattern 5: BST Properties & Optimization**
+- **Description**: Find optimal values or properties in BST
+- **Recognition**: "Closest", "LCA", "range", "distance"
+- **Examples**: LC 235, LC 530, LC 783, LC 776
+- **Template**: Use Property Template
 
-// init a BST
-TreeNode node1 = new TreeNode(2);
-TreeNode node2 = new TreeNode(3);
-TreeNode node3 = new TreeNode(4);
+## Templates & Algorithms
 
-// modify node1's val
-node1.val = 10;
-
-// connect nodes
-node1.left = node2;
-node1.right = node3;
-```
-
+### Template Comparison Table
+| Template Type | Use Case | Key Operation | Time | Space | When to Use |
+|---------------|----------|---------------|------|-------|-------------|
+| **Search Template** | Finding values | Binary search | O(log n) | O(1)/O(h) | Value lookup |
+| **Insertion Template** | Adding nodes | Find position + insert | O(log n) | O(1)/O(h) | Adding new values |
+| **Deletion Template** | Removing nodes | Find + restructure | O(log n) | O(h) | Removing values |
+| **Inorder Template** | Sorted operations | Left-root-right | O(n) | O(h) | Kth element, range |
+| **Construction Template** | Building BST | Divide & conquer | O(n) | O(n) | Creating from array |
+### Universal BST Template
 ```python
-# python
-# Init a tree in py
-class TreeNode(object):
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-
-root = TreeNode(0)
-root.left = TreeNode(1)
-root.right =  TreeNode(2)
-print (root)
+def bst_operation(root, target):
+    """
+    Universal template for BST operations
+    Leverages left < root < right property
+    """
+    if not root:
+        return None  # or appropriate base value
+    
+    # BST property for efficient search
+    if target == root.val:
+        # Process current node
+        return root
+    elif target < root.val:
+        # Go left for smaller values
+        return bst_operation(root.left, target)
+    else:
+        # Go right for larger values
+        return bst_operation(root.right, target)
 ```
+
+### Template 1: BST Search
+```python
+def search_bst(root, val):
+    """
+    Search for a value in BST
+    Time: O(log n) average, O(n) worst
+    """
+    if not root or root.val == val:
+        return root
+    
+    if val < root.val:
+        return search_bst(root.left, val)
+    return search_bst(root.right, val)
+
+# Iterative version
+def search_bst_iterative(root, val):
+    while root and root.val != val:
+        root = root.left if val < root.val else root.right
+    return root
+```
+
+### Template 2: BST Insertion
+```python
+def insert_bst(root, val):
+    """
+    Insert value into BST
+    Always inserts as a leaf node
+    """
+    if not root:
+        return TreeNode(val)
+    
+    if val < root.val:
+        root.left = insert_bst(root.left, val)
+    elif val > root.val:
+        root.right = insert_bst(root.right, val)
+    # If val == root.val, typically don't insert duplicates
+    
+    return root
+```
+
+### Template 3: BST Deletion
+```python
+def delete_bst(root, key):
+    """
+    Delete a node from BST
+    Three cases: no child, one child, two children
+    """
+    if not root:
+        return None
+    
+    if key < root.val:
+        root.left = delete_bst(root.left, key)
+    elif key > root.val:
+        root.right = delete_bst(root.right, key)
+    else:
+        # Node found - handle 3 cases
+        if not root.left:  # No left child or leaf
+            return root.right
+        if not root.right:  # No right child
+            return root.left
+        
+        # Two children: find inorder successor
+        min_node = find_min(root.right)
+        root.val = min_node.val
+        root.right = delete_bst(root.right, min_node.val)
+    
+    return root
+
+def find_min(node):
+    """Find minimum value in BST (leftmost node)"""
+    while node.left:
+        node = node.left
+    return node
+```
+
+### Template 4: BST Validation
+```python
+def validate_bst(root):
+    """
+    Validate if tree is a valid BST
+    Uses min/max bounds approach
+    """
+    def validate(node, min_val, max_val):
+        if not node:
+            return True
+        
+        if node.val <= min_val or node.val >= max_val:
+            return False
+        
+        return (validate(node.left, min_val, node.val) and
+                validate(node.right, node.val, max_val))
+    
+    return validate(root, float('-inf'), float('inf'))
+```
+
+### Template 5: BST Inorder Operations
+```python
+def kth_smallest(root, k):
+    """
+    Find kth smallest element using inorder property
+    Inorder traversal of BST gives sorted order
+    """
+    def inorder(node):
+        if not node:
+            return []
+        return inorder(node.left) + [node.val] + inorder(node.right)
+    
+    return inorder(root)[k-1]
+
+# Optimized with early stopping
+def kth_smallest_optimized(root, k):
+    stack = []
+    while True:
+        while root:
+            stack.append(root)
+            root = root.left
+        root = stack.pop()
+        k -= 1
+        if k == 0:
+            return root.val
+        root = root.right
+```
+
+### Template 6: BST Construction
+```python
+def sorted_array_to_bst(nums):
+    """
+    Convert sorted array to balanced BST
+    Uses binary search approach
+    """
+    if not nums:
+        return None
+    
+    mid = len(nums) // 2
+    root = TreeNode(nums[mid])
+    root.left = sorted_array_to_bst(nums[:mid])
+    root.right = sorted_array_to_bst(nums[mid+1:])
+    
+    return root
+```
+
+## Problems by Pattern
+
+### Pattern-Based Problem Classification
+
+#### **Pattern 1: BST Search & Validation Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Validate Binary Search Tree | 98 | Medium | Min/Max bounds | Template 4 |
+| Search in a BST | 700 | Easy | Binary search | Template 1 |
+| Closest Binary Search Tree Value | 270 | Easy | Binary search | Template 1 |
+| Inorder Successor in BST | 285 | Medium | Inorder property | Template 1 |
+| Two Sum IV - Input is BST | 653 | Easy | Hash + Traversal | Template 5 |
+| Find Mode in BST | 501 | Easy | Inorder traversal | Template 5 |
+
+#### **Pattern 2: BST Insertion & Deletion Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Insert into a BST | 701 | Medium | Recursive insert | Template 2 |
+| Delete Node in a BST | 450 | Medium | Three cases | Template 3 |
+| Trim a Binary Search Tree | 669 | Medium | Recursive trim | Template 3 |
+
+#### **Pattern 3: BST Traversal & Conversion Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Kth Smallest Element in BST | 230 | Medium | Inorder traversal | Template 5 |
+| BST Iterator | 173 | Medium | Stack + Inorder | Template 5 |
+| Convert BST to Greater Tree | 538 | Medium | Reverse inorder | Template 5 |
+| Binary Search Tree to Greater Sum Tree | 1038 | Medium | Reverse inorder | Template 5 |
+| Convert Sorted List to BST | 109 | Medium | Two pointers | Template 6 |
+| Flatten BST to Sorted List | 426 | Medium | Inorder + linking | Template 5 |
+| Increasing Order Search Tree | 897 | Easy | Inorder rebuild | Template 5 |
+
+#### **Pattern 4: BST Construction Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Convert Sorted Array to BST | 108 | Easy | Binary search | Template 6 |
+| Unique Binary Search Trees | 96 | Medium | DP/Catalan | Special |
+| Unique Binary Search Trees II | 95 | Medium | Generate all | Template 6 |
+| Serialize and Deserialize BST | 449 | Medium | Preorder encoding | Special |
+| Construct BST from Preorder | 1008 | Medium | Stack/Recursion | Template 6 |
+
+#### **Pattern 5: BST Properties & Range Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Lowest Common Ancestor of BST | 235 | Easy | BST property | Special |
+| Minimum Distance Between BST Nodes | 783 | Easy | Inorder diff | Template 5 |
+| Minimum Absolute Difference in BST | 530 | Easy | Inorder diff | Template 5 |
+| Range Sum of BST | 938 | Easy | DFS with pruning | Template 1 |
+| Split BST | 776 | Medium | Recursive split | Special |
+| Largest BST Subtree | 333 | Medium | Bottom-up validation | Template 4 |
+| Balance a Binary Search Tree | 1382 | Medium | Inorder + rebuild | Template 6 |
+
+### Complete Problem List by Difficulty
+
+#### Easy Problems (Foundation)
+- LC 700: Search in a Binary Search Tree - Basic BST search
+- LC 270: Closest Binary Search Tree Value - Modified search
+- LC 108: Convert Sorted Array to BST - Basic construction
+- LC 235: Lowest Common Ancestor of a BST - Use BST property
+- LC 653: Two Sum IV - Input is a BST - Two pointers on tree
+- LC 530: Minimum Absolute Difference in BST - Inorder property
+- LC 783: Minimum Distance Between BST Nodes - Inorder traversal
+- LC 897: Increasing Order Search Tree - Inorder rebuilding
+- LC 938: Range Sum of BST - DFS with pruning
+- LC 501: Find Mode in Binary Search Tree - Inorder + counting
+
+#### Medium Problems (Core)
+- LC 98: Validate Binary Search Tree - Classic validation
+- LC 173: Binary Search Tree Iterator - Design pattern
+- LC 230: Kth Smallest Element in a BST - Inorder application
+- LC 450: Delete Node in a BST - Complex restructuring
+- LC 701: Insert into a BST - Basic modification
+- LC 285: Inorder Successor in BST - BST navigation
+- LC 96: Unique Binary Search Trees - Catalan numbers
+- LC 95: Unique Binary Search Trees II - Generate all trees
+- LC 109: Convert Sorted List to BST - List to tree
+- LC 449: Serialize and Deserialize BST - Encoding/decoding
+- LC 538: Convert BST to Greater Tree - Reverse inorder
+- LC 669: Trim a Binary Search Tree - Recursive trimming
+- LC 776: Split BST - Advanced manipulation
+- LC 333: Largest BST Subtree - Subtree validation
+- LC 1008: Construct BST from Preorder - Stack approach
+- LC 1038: Binary Search Tree to Greater Sum Tree - Accumulation
+- LC 1382: Balance a Binary Search Tree - Tree balancing
+- LC 426: Convert BST to Sorted Doubly Linked List - In-place conversion
+
+#### Hard Problems (Advanced)
+- LC 99: Recover Binary Search Tree - Fix swapped nodes
+- LC 1373: Maximum Sum BST in Binary Tree - Complex validation
 
 ## 1) General form
 
@@ -804,7 +1032,212 @@ class Solution(object):
 # LC 538
 ```
 
-### 2-11)
+### 2-11) Binary Search Tree to Greater Sum Tree
 ```python
 # LC 1038
+# Similar to LC 538 - Convert BST to Greater Tree
+# Uses reverse inorder traversal
 ```
+
+## Pattern Selection Strategy
+
+```
+BST Problem Analysis Flowchart:
+
+1. Does the problem require finding/searching a value?
+   ├── YES → Use Search Template (1)
+   │   ├── Exact match? → Basic binary search
+   │   ├── Closest value? → Track min difference
+   │   └── Range query? → Prune based on BST property
+   └── NO → Continue to 2
+
+2. Does the problem require modifying the BST structure?
+   ├── YES → Check modification type
+   │   ├── Insert new node? → Use Insertion Template (2)
+   │   ├── Delete existing node? → Use Deletion Template (3)
+   │   └── Trim/Split tree? → Use modified Deletion Template
+   └── NO → Continue to 3
+
+3. Does the problem use the sorted property of BST?
+   ├── YES → Use Inorder Template (5)
+   │   ├── Kth element? → Inorder with counter
+   │   ├── Convert to list? → Inorder traversal
+   │   └── Range sum? → Modified inorder
+   └── NO → Continue to 4
+
+4. Does the problem require validating BST properties?
+   ├── YES → Use Validation Template (4)
+   │   ├── Entire tree? → Min/max bounds approach
+   │   └── Find largest valid subtree? → Bottom-up validation
+   └── NO → Continue to 5
+
+5. Does the problem involve constructing a BST?
+   ├── YES → Use Construction Template (6)
+   │   ├── From sorted array? → Binary search approach
+   │   ├── From traversal? → Use BST properties
+   │   └── Generate all possible? → Recursive generation
+   └── NO → Use Universal Template or reconsider
+
+```
+
+### Decision Framework
+1. **Identify BST property usage**: Can you leverage left < root < right?
+2. **Choose operation type**: Search, Insert, Delete, Validate, or Construct
+3. **Select traversal method**: Inorder for sorted, others for structure
+4. **Optimize with BST property**: Prune unnecessary branches
+
+## Summary & Quick Reference
+
+### Complexity Quick Reference
+| Operation | Average Case | Worst Case | Best Case | Space |
+|-----------|--------------|------------|-----------|-------|
+| Search | O(log n) | O(n) | O(1) | O(h) |
+| Insert | O(log n) | O(n) | O(1) | O(h) |
+| Delete | O(log n) | O(n) | O(1) | O(h) |
+| Validate | O(n) | O(n) | O(n) | O(h) |
+| Inorder Traversal | O(n) | O(n) | O(n) | O(h) |
+| Construction | O(n) | O(n) | O(n) | O(n) |
+
+*Note: h = height of tree, n = number of nodes*
+
+### Template Quick Reference
+| Template | Best For | Avoid When | Key Pattern |
+|----------|----------|------------|-------------|
+| Search | Finding values | Need all nodes | `if val < root.val: go left` |
+| Insertion | Adding nodes | Balancing needed | Always insert as leaf |
+| Deletion | Removing nodes | Multiple deletions | Three cases handling |
+| Validation | Checking BST | Simple traversal | Min/max bounds |
+| Inorder | Sorted operations | Random access | Left-root-right |
+| Construction | Building BST | Incremental updates | Divide & conquer |
+
+### Common Patterns & Tricks
+
+#### **Pattern: Inorder Gives Sorted Sequence**
+```python
+def get_sorted_values(root):
+    """BST inorder traversal always gives sorted order"""
+    def inorder(node):
+        if not node:
+            return []
+        return inorder(node.left) + [node.val] + inorder(node.right)
+    return inorder(root)
+```
+
+#### **Pattern: Reverse Inorder for Descending**
+```python
+def convert_to_greater_tree(root):
+    """Process nodes from largest to smallest"""
+    self.sum = 0
+    def reverse_inorder(node):
+        if not node:
+            return
+        reverse_inorder(node.right)
+        self.sum += node.val
+        node.val = self.sum
+        reverse_inorder(node.left)
+    reverse_inorder(root)
+    return root
+```
+
+#### **Pattern: Using BST Property for Optimization**
+```python
+def range_sum_bst(root, low, high):
+    """Prune branches that can't contain values in range"""
+    if not root:
+        return 0
+    
+    # Prune left subtree if root is already too small
+    if root.val < low:
+        return range_sum_bst(root.right, low, high)
+    
+    # Prune right subtree if root is already too large
+    if root.val > high:
+        return range_sum_bst(root.left, low, high)
+    
+    # Root is in range, include it and check both subtrees
+    return (root.val + 
+            range_sum_bst(root.left, low, high) +
+            range_sum_bst(root.right, low, high))
+```
+
+### Problem-Solving Steps
+1. **Identify BST property usage**: Can you use left < root < right?
+2. **Choose appropriate template**: Based on operation type
+3. **Consider edge cases**: Empty tree, single node, duplicates
+4. **Optimize with pruning**: Skip unnecessary subtrees
+5. **Test with skewed trees**: Worst case scenarios
+
+### Common Mistakes & Tips
+
+**🚫 Common Mistakes:**
+- **Not using BST property**: Treating BST like regular binary tree
+- **Forgetting inorder = sorted**: Missing optimization opportunity
+- **Wrong deletion handling**: Not covering all three cases
+- **Incorrect validation**: Only checking parent-child, not entire subtree
+- **Modifying while traversing**: Can break BST property
+
+**✅ Best Practices:**
+- **Always leverage BST property**: Prune search space when possible
+- **Use inorder for sorted needs**: Don't sort separately
+- **Handle duplicates explicitly**: Decide if allowed in your BST
+- **Consider tree balance**: Mention O(n) worst case in interviews
+- **Test with edge cases**: Empty, single node, all left/right
+
+### Interview Tips
+1. **Clarify BST properties**: Can there be duplicates? Is it balanced?
+2. **State complexity**: Mention average O(log n) and worst O(n)
+3. **Consider self-balancing**: Mention AVL/Red-Black trees if relevant
+4. **Use BST property**: Show you understand the optimization
+5. **Handle all cases**: Especially for deletion (0, 1, 2 children)
+
+### Related Topics
+- **Self-Balancing BSTs**: AVL Tree, Red-Black Tree (guaranteed O(log n))
+- **B-Trees**: For database indexes (multiple keys per node)
+- **Binary Heap**: Different property (parent > children)
+- **Trie**: Prefix tree for strings
+- **Segment Tree**: Range queries and updates
+
+### Java Implementation Notes
+```java
+// Java BST Node
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) { val = x; }
+}
+
+// Iterative inorder with Stack
+Stack<TreeNode> stack = new Stack<>();
+TreeNode curr = root;
+while (curr != null || !stack.isEmpty()) {
+    while (curr != null) {
+        stack.push(curr);
+        curr = curr.left;
+    }
+    curr = stack.pop();
+    // Process curr
+    curr = curr.right;
+}
+```
+
+### Python Implementation Notes
+```python
+# TreeNode class
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+# Generator for memory-efficient inorder
+def inorder_generator(root):
+    if root:
+        yield from inorder_generator(root.left)
+        yield root.val
+        yield from inorder_generator(root.right)
+```
+
+---
+**Must-Know Problems for Interviews**: LC 98, 108, 173, 230, 235, 450, 700, 701
+**Advanced Problems**: LC 99, 333, 776, 1373, 1382
+**Keywords**: BST, binary search tree, inorder, sorted, validation, search tree
