@@ -32,6 +32,14 @@
 3. **Window State**: Track elements, counts, or sums within current window
 4. **Validity Condition**: Define when window is valid/invalid
 
+
+<p align="center"><img src ="../pic/slide_window.png" ></p>
+
+<p align="center"><img src ="../pic/slide_window_2.png" ></p>
+
+<p align="center"><img src ="../pic/slide_window_3.png" ></p>
+
+
 ### 0-1) Problem Categories
 
 #### **Fixed Size Window**
