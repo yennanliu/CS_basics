@@ -1,83 +1,315 @@
-# Dijkstra
+# Dijkstra's Algorithm
 
-> Algorithm get `minimum path` (for given point to any other points)
+## Overview
+**Dijkstra's algorithm** is a greedy algorithm that solves the single-source shortest path problem for a graph with non-negative edge weights. It finds the shortest path from a starting node (source) to all other nodes in the graph.
 
-> `Priority Queue` + `BFS`
+### Key Properties
+- **Time Complexity**: O((V + E) log V) with binary heap, O(V²) with array
+- **Space Complexity**: O(V) for distance array and visited set
+- **Core Idea**: Greedily select the unvisited node with minimum distance
+- **When to Use**: Single-source shortest path with non-negative weights
+- **Limitation**: Cannot handle negative edge weights
 
+### Core Characteristics
+- **Greedy Algorithm**: Always selects the minimum distance node
+- **Priority Queue**: Uses min-heap for efficient minimum extraction
+- **Relaxation**: Updates distances when shorter paths are found
+- **Finalization**: Once visited, a node's distance is optimal
 
-Dijkstra's algorithm is a famous algorithm used to solve the single-source shortest path problem for a graph with non-negative edge weights. It finds the shortest path from a starting node (source) to all other nodes in the graph. The algorithm ensures that once a node’s shortest distance is finalized, it will not change, which makes it very efficient for many graph-related problems.
-
-
-- "importance" can only >= 0
-
-
-- Key Concepts:
-    - Graph: A collection of vertices (nodes) connected by edges (links), where
-        each edge has a weight (cost, distance, etc.).
-
-    - Non-negative weights: Dijkstra’s algorithm only works with graphs where
-        the edge weights are `non-negative` (i.e., no negative weights).
-
-    - Single-Source Shortest Path: The goal is to find the shortest path from a
-         starting node to all other nodes in the graph.
-
-- How Dijkstra's Algorithm Works:
-
-1. Initialization:
-
-    - Mark the distance to the source node as 0 (since the distance from the source to itself is zero).
-    - Mark the distance to all other nodes as infinity (since they are initially unreachable).
-    - Keep track of the visited nodes and nodes that still need to be processed.
-
-2. Processing the Node with the Smallest Tentative Distance:
-
-    - Start at the source node, and for each node, calculate the tentative distance to its neighbors through the current node.
-    - If a shorter path to a neighboring node is found, update its tentative distance.
-    - Mark the current node as "visited" and never revisit it again.
-
-3. Repeat:
-
-    - Select the unvisited node with the smallest tentative distance and mark it as visited.
-    - Update the distances to its neighboring nodes.
-
-4. Termination:
-
-    - Repeat this process until all nodes have been visited, meaning the shortest distance to every node has been found.
+### References
+- [Dijkstra's Algorithm Visualization](https://www.cs.usfca.edu/~galles/visualization/Dijkstra.html)
+- [CP Algorithms - Dijkstra](https://cp-algorithms.com/graph/dijkstra.html)
 
 
+## Problem Categories
 
-- Algorithm Steps:
-    1. Start at the source node. Initialize the tentative distance of the source to 0 and all other nodes to infinity.
+### **Category 1: Classic Shortest Path**
+- **Description**: Standard single-source shortest path problems
+- **Examples**: LC 743 (Network Delay), LC 1514 (Path with Max Probability)
+- **Pattern**: Direct application of Dijkstra's algorithm
+
+### **Category 2: Shortest Path with Constraints**
+- **Description**: Shortest path with additional restrictions (stops, cost limits)
+- **Examples**: LC 787 (Cheapest Flights K Stops), LC 1928 (Minimum Cost K Waypoints)
+- **Pattern**: Modified Dijkstra with state tracking
+
+### **Category 3: Grid-based Shortest Path**
+- **Description**: Finding optimal paths in 2D grids
+- **Examples**: LC 1631 (Path Min Effort), LC 778 (Swim in Rising Water)
+- **Pattern**: Dijkstra on implicit graph (grid cells as nodes)
+
+### **Category 4: Multi-Source Shortest Path**
+- **Description**: Multiple starting points to find shortest paths
+- **Examples**: LC 2812 (Find Safest Path), LC 1162 (As Far from Land)
+- **Pattern**: Initialize multiple sources or use super source
+
+### **Category 5: Time-Dependent Shortest Path**
+- **Description**: Path costs change based on time or sequence
+- **Examples**: LC 2045 (Second Minimum Time), LC 882 (Reachable Nodes)
+- **Pattern**: Track time/state in priority queue
+
+
+
+## Templates & Algorithms
+
+### Template Comparison Table
+| Template Type | Use Case | State Tracked | When to Use |
+|---------------|----------|---------------|-------------|
+| **Basic Dijkstra** | Standard shortest path | (distance, node) | No constraints |
+| **Constrained Path** | Path with limits | (cost, node, constraint) | K stops, budget |
+| **Grid Dijkstra** | 2D grid navigation | (cost, x, y) | Matrix problems |
+| **Multi-Source** | Multiple starts | (dist, node, source) | Multiple origins |
+| **Time-Variant** | Time-dependent | (time, node, state) | Dynamic costs |
+
+### Universal Dijkstra Template
+```python
+import heapq
+import collections
+
+def dijkstra(n, edges, src, dst):
+    # Build adjacency list
+    graph = collections.defaultdict(list)
+    for u, v, w in edges:
+        graph[u].append((v, w))
     
-    2. Visit the node with the smallest tentative distance (starting with the source).
+    # Min heap: (distance, node)
+    pq = [(0, src)]
+    # Distance array
+    dist = [float('inf')] * n
+    dist[src] = 0
+    # Visited set (optional but recommended)
+    visited = set()
     
-    3. For each unvisited neighbor of this node:
-        - Calculate the tentative distance to that neighbor (current node’s distance + weight of the edge).
-        - If this tentative distance is smaller than the current stored distance, update the distance.
+    while pq:
+        d, u = heapq.heappop(pq)
+        
+        # Skip if already processed with better distance
+        if u in visited:
+            continue
+        visited.add(u)
+        
+        # Found destination
+        if u == dst:
+            return d
+        
+        # Relax edges
+        for v, w in graph[u]:
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+                heapq.heappush(pq, (dist[v], v))
     
-    4. Once all neighbors of the current node have been processed, mark the node as visited.
+    return dist[dst] if dist[dst] != float('inf') else -1
+```
+
+### Template 1: Basic Dijkstra
+```python
+def dijkstra_basic(n, edges, src):
+    """Find shortest paths from src to all nodes"""
+    graph = collections.defaultdict(list)
+    for u, v, w in edges:
+        graph[u].append((v, w))
     
-    5. Repeat the process with the node that has the smallest tentative distance among the unvisited nodes.
+    dist = [float('inf')] * n
+    dist[src] = 0
+    pq = [(0, src)]  # (distance, node)
     
-    6. When all nodes have been visited, the algorithm ends, and the shortest distances to all nodes from the source are finalized.
+    while pq:
+        d, u = heapq.heappop(pq)
+        if d > dist[u]:  # Already processed
+            continue
+        
+        for v, w in graph[u]:
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+                heapq.heappush(pq, (dist[v], v))
+    
+    return dist
+```
 
+### Template 2: Dijkstra with Constraints
+```python
+def dijkstra_constrained(n, edges, src, dst, k):
+    """Shortest path with at most k stops/constraints"""
+    graph = collections.defaultdict(list)
+    for u, v, w in edges:
+        graph[u].append((v, w))
+    
+    # (cost, node, stops_left)
+    pq = [(0, src, k + 1)]
+    # Track best stops count for each node
+    best = {}
+    
+    while pq:
+        cost, u, stops = heapq.heappop(pq)
+        
+        if u == dst:
+            return cost
+        
+        # Prune if we've seen this node with more stops
+        if u in best and best[u] >= stops:
+            continue
+        best[u] = stops
+        
+        if stops > 0:
+            for v, w in graph[u]:
+                heapq.heappush(pq, (cost + w, v, stops - 1))
+    
+    return -1
+```
 
+### Template 3: Grid-based Dijkstra
+```python
+def dijkstra_grid(grid):
+    """Find minimum cost path in 2D grid"""
+    rows, cols = len(grid), len(grid[0])
+    
+    # Min heap: (cost, row, col)
+    pq = [(0, 0, 0)]
+    # Distance matrix
+    dist = [[float('inf')] * cols for _ in range(rows)]
+    dist[0][0] = 0
+    
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    
+    while pq:
+        cost, r, c = heapq.heappop(pq)
+        
+        if r == rows - 1 and c == cols - 1:
+            return cost
+        
+        if cost > dist[r][c]:
+            continue
+        
+        for dr, dc in directions:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < rows and 0 <= nc < cols:
+                # Calculate new cost (problem-specific)
+                new_cost = max(cost, abs(grid[nr][nc] - grid[r][c]))
+                
+                if new_cost < dist[nr][nc]:
+                    dist[nr][nc] = new_cost
+                    heapq.heappush(pq, (new_cost, nr, nc))
+    
+    return -1
+```
 
-## 0) Concept  
+### Template 4: Multi-Source Dijkstra
+```python
+def dijkstra_multi_source(n, edges, sources):
+    """Shortest paths from multiple sources"""
+    graph = collections.defaultdict(list)
+    for u, v, w in edges:
+        graph[u].append((v, w))
+    
+    dist = [float('inf')] * n
+    pq = []
+    
+    # Initialize all sources
+    for src in sources:
+        dist[src] = 0
+        heapq.heappush(pq, (0, src))
+    
+    while pq:
+        d, u = heapq.heappop(pq)
+        if d > dist[u]:
+            continue
+        
+        for v, w in graph[u]:
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+                heapq.heappush(pq, (dist[v], v))
+    
+    return dist
+```
 
-### 0-1) Types
- - LC 743
- - LC 787
- - LC 778
- - LC 1631
+### Template 5: Bidirectional Dijkstra
+```python
+def dijkstra_bidirectional(n, edges, src, dst):
+    """Optimize by searching from both ends"""
+    graph = collections.defaultdict(list)
+    reverse = collections.defaultdict(list)
+    for u, v, w in edges:
+        graph[u].append((v, w))
+        reverse[v].append((u, w))
+    
+    def dijkstra_helper(start, adj, other_dist):
+        dist = [float('inf')] * n
+        dist[start] = 0
+        pq = [(0, start)]
+        visited = set()
+        min_path = float('inf')
+        
+        while pq:
+            d, u = heapq.heappop(pq)
+            if u in visited:
+                continue
+            visited.add(u)
+            
+            # Check if we can form a complete path
+            if other_dist[u] != float('inf'):
+                min_path = min(min_path, d + other_dist[u])
+            
+            for v, w in adj[u]:
+                if dist[u] + w < dist[v]:
+                    dist[v] = dist[u] + w
+                    heapq.heappush(pq, (dist[v], v))
+        
+        return dist, min_path
+    
+    # Run both directions
+    dist_fwd, path1 = dijkstra_helper(src, graph, [float('inf')] * n)
+    dist_bwd, path2 = dijkstra_helper(dst, reverse, dist_fwd)
+    
+    return min(path1, path2, dist_fwd[dst])
+```
 
-### 0-2) Pattern
+## LC Examples
 
-## 1) General form
+## Problems by Pattern
 
-### 1-1) Basic OP
+### **Classic Shortest Path Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Network Delay Time | 743 | Basic Dijkstra | Medium |
+| Path with Maximum Probability | 1514 | Max-heap variant | Medium |
+| Find the City With Smallest Number | 1334 | All-pairs shortest path | Medium |
+| Minimum Weighted Subgraph | 2203 | Three sources Dijkstra | Hard |
+| Number of Ways to Arrive | 1976 | Count shortest paths | Medium |
+| Shortest Path in Binary Matrix | 1091 | Grid Dijkstra | Medium |
 
-## 2) LC Example
+### **Constrained Path Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Cheapest Flights Within K Stops | 787 | State tracking | Medium |
+| Minimum Cost to Reach City | 1928 | K waypoints | Hard |
+| Shortest Path to Get All Keys | 864 | State bitmask | Hard |
+| Escape a Large Maze | 1036 | Limited BFS/Dijkstra | Hard |
+| Minimum Obstacle Removal | 2290 | 0-1 BFS variant | Hard |
+
+### **Grid-based Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Path With Minimum Effort | 1631 | Grid Dijkstra | Medium |
+| Swim in Rising Water | 778 | Min time path | Hard |
+| Minimum Cost to Make Valid Path | 1368 | Modified costs | Hard |
+| Shortest Path in a Grid | 1293 | K obstacles | Hard |
+| Trap Rain Water II | 407 | Priority queue | Hard |
+
+### **Multi-Source Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Find Safest Path in Grid | 2812 | Multi-source init | Medium |
+| As Far from Land as Possible | 1162 | Multi-source BFS | Medium |
+| Shortest Distance from All Buildings | 317 | Multiple Dijkstra | Hard |
+| Minimum Height Trees | 310 | Center finding | Medium |
+
+### **Time/State Dependent Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Second Minimum Time to Destination | 2045 | Track two values | Hard |
+| Reachable Nodes In Subdivided Graph | 882 | Edge subdivision | Hard |
+| Minimum Time to Visit All Points | 2065 | State tracking | Hard |
+| The Maze III | 499 | Lexicographic path | Hard |
 
 ### 2-1) Network Delay Time
 
@@ -240,3 +472,147 @@ public int minimumEffortPath_0_1(int[][] heights) {
     return -1; // Should never reach here if input is valid
 }
 ```
+
+## Decision Framework
+
+### Pattern Selection Strategy
+
+```
+Dijkstra Algorithm Selection Flowchart:
+
+1. Is it a shortest path problem?
+   ├── NO → Consider other algorithms (DFS, BFS, DP)
+   └── YES → Continue to 2
+
+2. Are all edge weights non-negative?
+   ├── NO → Use Bellman-Ford or SPFA
+   └── YES → Continue to 3
+
+3. Single source or multiple sources?
+   ├── Multiple → Use Multi-Source Dijkstra (Template 4)
+   └── Single → Continue to 4
+
+4. Is it on a graph or grid?
+   ├── Grid → Use Grid-based Dijkstra (Template 3)
+   └── Graph → Continue to 5
+
+5. Any constraints (K stops, budget, time)?
+   ├── YES → Use Constrained Dijkstra (Template 2)
+   └── NO → Use Basic Dijkstra (Template 1)
+
+6. Need optimization for large graphs?
+   ├── YES → Consider Bidirectional Dijkstra (Template 5)
+   └── NO → Use selected template from above
+```
+
+### When to Use Dijkstra vs Other Algorithms
+
+| Scenario | Use Dijkstra | Use Alternative | Alternative Algorithm |
+|----------|--------------|-----------------|---------------------|
+| Negative weights | ❌ | ✅ | Bellman-Ford |
+| Unweighted graph | ❌ | ✅ | BFS |
+| All-pairs shortest path | ❌ | ✅ | Floyd-Warshall |
+| Single source, non-negative | ✅ | ❌ | - |
+| Need path reconstruction | ✅ | - | Track parent nodes |
+| Dense graphs | ⚠️ | Consider | Bellman-Ford |
+| Sparse graphs | ✅ | ❌ | - |
+
+## Summary & Quick Reference
+
+### Complexity Quick Reference
+| Implementation | Time Complexity | Space Complexity | Notes |
+|----------------|-----------------|------------------|-------|
+| Array-based | O(V²) | O(V) | Good for dense graphs |
+| Binary Heap | O((V+E)logV) | O(V) | Most common |
+| Fibonacci Heap | O(E + VlogV) | O(V) | Theoretical best |
+| Grid-based | O(RC log(RC)) | O(RC) | R=rows, C=cols |
+
+### Template Quick Reference
+| Template | Best For | Key Code Pattern |
+|----------|----------|------------------|
+| Basic | Standard shortest path | `heapq.heappop(pq)` → relax edges |
+| Constrained | K-stops, budget limits | Track state: `(cost, node, constraint)` |
+| Grid | 2D matrix problems | 4-directional movement |
+| Multi-Source | Multiple starting points | Initialize all sources |
+| Bidirectional | Large graphs | Search from both ends |
+
+### Common Patterns & Tricks
+
+#### **Priority Queue State**
+```python
+# Basic state
+(distance, node)
+
+# With constraints
+(cost, node, stops_remaining)
+
+# Grid problems
+(cost, row, col)
+
+# With path tracking
+(distance, node, path)
+```
+
+#### **Visited Set Optimization**
+```python
+# Option 1: Check after pop (recommended)
+if node in visited:
+    continue
+visited.add(node)
+
+# Option 2: Check distance
+if d > dist[node]:
+    continue
+```
+
+#### **Path Reconstruction**
+```python
+parent = {}
+# During relaxation:
+parent[v] = u
+
+# Reconstruct path:
+path = []
+while node != source:
+    path.append(node)
+    node = parent[node]
+path.reverse()
+```
+
+### Problem-Solving Steps
+1. **Identify graph structure**: Explicit edges or implicit (grid)?
+2. **Check constraints**: Non-negative weights? Single source?
+3. **Choose template**: Basic, constrained, grid, or multi-source?
+4. **Define state**: What needs tracking in priority queue?
+5. **Implement relaxation**: How to update distances?
+6. **Handle termination**: When to stop? Return what value?
+
+### Common Mistakes & Tips
+
+**🚫 Common Mistakes:**
+- Forgetting to check if already visited
+- Using Dijkstra with negative weights
+- Not using priority queue (using regular queue)
+- Incorrect state comparison in constrained problems
+- Not handling disconnected components
+
+**✅ Best Practices:**
+- Always use min-heap for priority queue
+- Track visited nodes to avoid reprocessing
+- Initialize distances to infinity except source
+- Consider using distance array vs visited set
+- Handle edge cases (empty graph, no path)
+
+### Interview Tips
+1. **Clarify constraints**: Always ask about negative weights
+2. **State complexity**: Mention time/space complexity upfront
+3. **Explain relaxation**: Core concept of updating distances
+4. **Consider alternatives**: Mention when BFS or Bellman-Ford better
+5. **Optimize if needed**: Discuss bidirectional search for large graphs
+
+### Related Topics
+- **BFS**: Unweighted shortest path
+- **Bellman-Ford**: Handles negative weights
+- **Floyd-Warshall**: All-pairs shortest path
+- **A* Algorithm**: Heuristic-guided search
+- **SPFA**: Queue-optimized Bellman-Ford
