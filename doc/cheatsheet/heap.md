@@ -1,92 +1,252 @@
-# Heap
+# Heap Data Structure
+
+## Overview
+**Heap** is a complete binary tree that satisfies the heap property, making it ideal for efficient access to the largest or smallest element in a dataset. It's the foundation for priority queues and heap sort algorithms.
 
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap_space_time_complexity.png" ></p>
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap_op_101.png"></p>
+<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap_op_101.png" ></p>
 
+### Key Properties
+- **Time Complexity**: 
+  - Insert: `O(log N)`
+  - Delete: `O(log N)` 
+  - Access Min/Max: `O(1)`
+  - Build Heap: `O(N)`
+- **Space Complexity**: `O(N)`
+- **Core Idea**: Complete binary tree where parent-child relationship follows heap property
+- **When to Use**: Need frequent access to min/max element, priority scheduling, sorting
 
+### Heap Types
+- **Min Heap**: Parent ≤ Children (root contains minimum)
+- **Max Heap**: Parent ≥ Children (root contains maximum)
 
-- Intro
-    - https://leetcode.com/explore/learn/card/heap/
-    - In many CS applications, we only need to `access the largest or smallest element` in the dataset. We DO NOT care about `the order of other data in the data set`. How do we efficiently access the largest or smallest element in the current dataset? -> The answer would be `Heap`.
-    - `Heap` is a "complete binary tree"
+<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/type_of_heap.png" ></p>
 
-    - Priority Queue (PQ)
-        - Priority queue is one of the implementations of heap
-        - a priority queue is an `abstract data type` similar to a regular queue or stack data structure in which each element additionally has a `"priority"` associated with it. In a priority queue, an element with high priority is served before an element with low priority.
-        - `Heap != Priority Queue`
-        - Priority Queue is an abstract data type
-        - Heap is a way to implemenrt Priority Queue
+### Priority Queue Relationship
+- **Priority Queue**: Abstract data type with priority-based access
+- **Heap**: Common implementation of priority queue
+- **Key Difference**: Priority Queue is concept, Heap is implementation
 
-- Heap
-    - a special `completed binary tree` (heap is binary tree)
-    - The value of each node must be no greater than (or no less than) the value of its child nodes.
-    - Properties:
-        - Insertion of an element into the Heap has a time complexity of `O( log N)`
-        - Deletion of an element from the Heap has a time complexity of `O( log N)`
-        - The maximum/minimum value in the Heap can be obtained with `O(1)` time complexity.
-    <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/type_of_heap.png" ></p>
+### Problem Categories
 
-    - Definition : if P is parent node, C is child node -> P always `<=` or `>=` C.
-    - Types
-        - `min` heap
-            - if P parent node, C is child node -> P always <= C
-            - 父節點總是 <= 子節點的值 (不需 右子節點 <= 父節點 <= 左子節點)
-        - `max` heap
-            - if P parent node, C is child node -> P always >= C
-            - 父節點總是 >= 子節點的值 (不需 右子節點 <= 父節點 <= 左子節點)
-- was invented for `heap sort`
-- a heap is a specialized tree-based data structure which is essentially an almost completed tree that satisfies the heap property:
-    - In a max heap
-        - for any given node C, if P is a parent node of C, then the key (the value) of P is greater than or equal to the key of C
-    - In a min heap
-        - the key of P is less than or equal to the key of C.[2] The node at the "top" of the heap (with no parents) is called the root node.
-- Ref
-    - https://www.geeksforgeeks.org/heap-data-structure/
+#### **Pattern 1: Kth Element Problems**
+- **Description**: Find the kth largest/smallest element in a dataset
+- **Examples**: LC 215, 703, 1492 - Kth Largest Element, Kth Largest in Stream, Kth Factor
+- **Pattern**: Use min/max heap of size k, maintain heap property
 
-## 0) Concept  
+#### **Pattern 2: Top K Problems** 
+- **Description**: Find top k elements with highest/lowest frequency or value
+- **Examples**: LC 347, 692, 973 - Top K Frequent Elements, Top K Words, K Closest Points
+- **Pattern**: Count frequency, use heap to maintain top k results
 
-### 0-1) Types
-    - `priority queue`
-        - LC 295, 787, 1492
-    - K th biggest integer
-        - LC 215
+#### **Pattern 3: Merge Problems**
+- **Description**: Merge multiple sorted arrays/lists efficiently
+- **Examples**: LC 23, 373, 378 - Merge k Lists, K Smallest Pairs, Kth Smallest in Matrix
+- **Pattern**: Use min heap to track current minimum from each source
 
-### 0-2) Pattern
+#### **Pattern 4: Sliding Window Extrema**
+- **Description**: Find min/max in sliding windows efficiently
+- **Examples**: LC 239, 480, 1438 - Sliding Window Maximum, Sliding Median, Longest Subarray
+- **Pattern**: Use heap with lazy deletion or deque for extrema tracking
 
-## 1) General form
+#### **Pattern 5: Scheduling Problems**
+- **Description**: Schedule tasks or events based on priority/timing
+- **Examples**: LC 1353, 502, 630 - Max Events, IPO, Course Schedule III
+- **Pattern**: Use heap to maintain events by start/end time or priority
 
-### 1-0) Basic OP
+#### **Pattern 6: Data Stream Problems**
+- **Description**: Handle continuous data stream with min/max queries
+- **Examples**: LC 295, 480, 1825 - Find Median, Sliding Median, Finding MK Average
+- **Pattern**: Use two heaps (min + max) to maintain balanced structure
 
-- V1
-    - build heap
-    - upHeap
-    - downHeap
-    - insert
-    - update
-    - get
-    - delete
-    - extract_max
-    - delete_max
-    - replace
-    - find_max
-- V2
-    - Construct a Max Heap and a Min Heap.
-    - Insert elements into a Heap.
-    - Get the top element of a Heap.
-    - Delete the top element from a Heap.
-    - Get the length of a Heap.
-    - Perform time and space complexity analysis for common applications that use a Heap.
+### References
+- [LeetCode Heap Learn Card](https://leetcode.com/explore/learn/card/heap/)
+- [GeeksforGeeks Heap Guide](https://www.geeksforgeeks.org/heap-data-structure/)
 
-- V3
-    - up heap
-        - (new big element added to max heap, move it to root)
-    - down heap
-        - (new samll element added to max heap, move it to sub tree)
-    - build heap
-    - PQ
+## Templates & Algorithms
 
-### 1-1) heapq (`heap queue` AKA `priority queue`) (Py api)
+### Template Comparison Table
+| Template Type | Use Case | Time Complexity | When to Use |
+|---------------|----------|-----------------|-------------|
+| **Universal Heap** | General min/max operations | O(log N) insert/delete | Any heap-based problem |
+| **Kth Element** | Find kth largest/smallest | O(N log k) | Fixed size heap needed |
+| **Top K Frequency** | Find most/least frequent | O(N log k) | Frequency-based selection |
+| **Merge K Sources** | Merge sorted arrays/lists | O(N log k) | Multiple sorted inputs |
+| **Two Heap System** | Maintain median/balance | O(log N) | Data stream with median |
+| **Heap + HashSet** | Duplicate handling | O(log N) | Need uniqueness constraint |
+
+### Universal Heap Template
+```python
+def solve_with_heap(nums, k=None):
+    import heapq
+    
+    # Create heap (min heap by default in Python)
+    heap = []
+    
+    # Build heap approach 1: Insert elements one by one
+    for num in nums:
+        heapq.heappush(heap, num)
+    
+    # Build heap approach 2: Heapify existing array
+    # heapq.heapify(nums)  # O(N) time
+    
+    # Access min element (don't remove): heap[0]
+    # Remove min element: heapq.heappop(heap)
+    # Insert element: heapq.heappush(heap, value)
+    
+    # For max heap, use negative values
+    # max_heap = [-x for x in nums]
+    # heapq.heapify(max_heap)
+    # max_val = -max_heap[0]  # Get max without removing
+    # max_val = -heapq.heappop(max_heap)  # Remove and get max
+    
+    return heap
+```
+
+```java
+// Java Universal Template
+public class HeapSolution {
+    public void solveWithHeap(int[] nums, int k) {
+        // Min Heap
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        
+        // Max Heap
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
+        
+        // Add elements
+        for (int num : nums) {
+            minHeap.offer(num);
+        }
+        
+        // Access min: minHeap.peek()
+        // Remove min: minHeap.poll()
+        // Add element: minHeap.offer(value)
+    }
+}
+```
+
+### Specific Pattern Templates
+
+#### **1. Kth Element Template**
+```python
+def find_kth_largest(nums, k):
+    import heapq
+    
+    # Method 1: Min heap of size k
+    heap = []
+    for num in nums:
+        if len(heap) < k:
+            heapq.heappush(heap, num)
+        elif num > heap[0]:
+            heapq.heapreplace(heap, num)
+    
+    return heap[0]  # kth largest
+
+def find_kth_smallest(nums, k):
+    import heapq
+    
+    # Method 1: Max heap of size k (use negative values)
+    heap = []
+    for num in nums:
+        if len(heap) < k:
+            heapq.heappush(heap, -num)
+        elif num < -heap[0]:
+            heapq.heapreplace(heap, -num)
+    
+    return -heap[0]  # kth smallest
+```
+
+#### **2. Top K Frequency Template**
+```python
+def top_k_frequent(nums, k):
+    from collections import Counter
+    import heapq
+    
+    # Count frequencies
+    count = Counter(nums)
+    
+    # Method 1: Min heap approach
+    heap = []
+    for num, freq in count.items():
+        heapq.heappush(heap, (freq, num))
+        if len(heap) > k:
+            heapq.heappop(heap)
+    
+    return [item[1] for item in heap]
+    
+    # Method 2: Max heap approach
+    # heap = [(-freq, num) for num, freq in count.items()]
+    # heapq.heapify(heap)
+    # return [heapq.heappop(heap)[1] for _ in range(k)]
+```
+
+#### **3. Merge K Sources Template**
+```python
+def merge_k_sorted_arrays(arrays):
+    import heapq
+    
+    heap = []
+    result = []
+    
+    # Initialize heap with first element from each array
+    for i, arr in enumerate(arrays):
+        if arr:  # Check if array is not empty
+            heapq.heappush(heap, (arr[0], i, 0))
+    
+    while heap:
+        val, array_idx, element_idx = heapq.heappop(heap)
+        result.append(val)
+        
+        # Add next element from same array
+        if element_idx + 1 < len(arrays[array_idx]):
+            next_val = arrays[array_idx][element_idx + 1]
+            heapq.heappush(heap, (next_val, array_idx, element_idx + 1))
+    
+    return result
+```
+
+#### **4. Two Heap System Template (Median)**
+```python
+class MedianFinder:
+    def __init__(self):
+        import heapq
+        self.small = []  # max heap (use negative values)
+        self.large = []  # min heap
+    
+    def addNum(self, num):
+        import heapq
+        
+        # Add to appropriate heap
+        if len(self.small) == len(self.large):
+            heapq.heappush(self.large, -heapq.heappushpop(self.small, -num))
+        else:
+            heapq.heappush(self.small, -heapq.heappushpop(self.large, num))
+    
+    def findMedian(self):
+        if len(self.small) == len(self.large):
+            return (self.large[0] - self.small[0]) / 2.0
+        else:
+            return float(self.large[0])
+```
+
+#### **5. Heap with Deduplication Template**
+```python
+def solve_with_unique_heap(nums):
+    import heapq
+    
+    heap = []
+    seen = set()
+    
+    for num in nums:
+        if num not in seen:
+            heapq.heappush(heap, num)
+            seen.add(num)
+    
+    return heap
+```
+
+### Python heapq API Reference
 - Note :
     - in Py, heapq is `MIN heap`
         - if we need max heap, can use `-1 * val`
@@ -938,3 +1098,359 @@ public List<List<Integer>> kSmallestPairs_0_1(int[] nums1, int[] nums2, int k) {
     return res;
 }
 ```
+
+## Problems by Pattern
+
+### Pattern-Based Problem Classification
+
+#### **Pattern 1: Kth Element Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Kth Largest Element in Array | 215 | Min heap of size k | Medium | Kth Element |
+| Kth Largest Element in Stream | 703 | Maintain min heap size k | Easy | Kth Element |
+| Kth Smallest Element in BST | 230 | Inorder + heap or Morris | Medium | Kth Element |
+| Kth Smallest in Sorted Matrix | 378 | Min heap with coordinates | Medium | Merge K Sources |
+| Find Kth Largest in Each Subarray | 1738 | Sliding window + heap | Hard | Two Heap System |
+| Kth Factor of n | 1492 | Max heap with size limit | Medium | Kth Element |
+| Kth Smallest Prime Fraction | 786 | Min heap with fractions | Medium | Merge K Sources |
+
+#### **Pattern 2: Top K Frequency Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Top K Frequent Elements | 347 | Counter + min heap | Medium | Top K Frequency |
+| Top K Frequent Words | 692 | Counter + custom comparator | Medium | Top K Frequency |
+| K Closest Points to Origin | 973 | Distance + max heap | Medium | Top K Frequency |
+| Find K Closest Elements | 658 | Distance + heap/two pointers | Medium | Top K Frequency |
+| Least Number of Unique Integers after K Removals | 1481 | Counter + min heap | Medium | Top K Frequency |
+| Reorganize String | 767 | Frequency + max heap | Medium | Top K Frequency |
+| Task Scheduler | 621 | Frequency + max heap + queue | Medium | Top K Frequency |
+
+#### **Pattern 3: Merge Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Merge k Sorted Lists | 23 | Min heap with ListNode | Hard | Merge K Sources |
+| Find K Pairs with Smallest Sums | 373 | Min heap with pairs | Medium | Merge K Sources |
+| Smallest Range Covering Elements from K Lists | 632 | Min heap + sliding window | Hard | Merge K Sources |
+| Merge k Sorted Arrays | N/A | Min heap with indices | Medium | Merge K Sources |
+| Kth Smallest Element in Sorted Matrix | 378 | Min heap BFS-style | Medium | Merge K Sources |
+
+#### **Pattern 4: Sliding Window Extrema**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Sliding Window Maximum | 239 | Deque or lazy heap | Hard | Universal Heap |
+| Sliding Window Median | 480 | Two heaps system | Hard | Two Heap System |
+| Constrained Subsequence Sum | 1425 | DP + monotonic deque | Hard | Universal Heap |
+| Longest Continuous Subarray | 1438 | Two heaps + sliding window | Medium | Two Heap System |
+
+#### **Pattern 5: Scheduling Problems**  
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Maximum Number of Events Attended | 1353 | Min heap by end time | Medium | Universal Heap |
+| IPO | 502 | Two heaps (profit + capital) | Hard | Two Heap System |
+| Course Schedule III | 630 | Greedy + max heap | Hard | Universal Heap |
+| Meeting Rooms II | 253 | Min heap by end time | Medium | Universal Heap |
+| Car Pooling | 1094 | Heap by drop-off time | Medium | Universal Heap |
+| Minimum Cost to Hire K Workers | 857 | Heap + greedy | Hard | Top K Frequency |
+
+#### **Pattern 6: Data Stream Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Find Median from Data Stream | 295 | Two heaps (balanced) | Hard | Two Heap System |
+| Design Twitter | 355 | Heap merge for timeline | Medium | Merge K Sources |
+| Kth Largest Element in Stream | 703 | Min heap maintenance | Easy | Kth Element |
+| Finding MK Average | 1825 | Three data structures | Hard | Two Heap System |
+
+### Advanced Heap Problems
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Ugly Number II | 264 | Three pointers + heap | Medium | Heap + HashSet |
+| Super Ugly Number | 313 | Dynamic heap generation | Medium | Heap + HashSet |
+| Maximum Frequency Stack | 895 | Frequency map + heap | Hard | Top K Frequency |
+| Minimum Cost to Connect Sticks | 1167 | Greedy + min heap | Medium | Universal Heap |
+| Last Stone Weight | 1046 | Max heap simulation | Easy | Universal Heap |
+| Maximum Performance of Team | 1383 | Sort + heap greedy | Hard | Top K Frequency |
+
+### Heap + Other Data Structure Combos
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Design Twitter | 355 | Heap + HashMap + Set | Medium | Merge K Sources |
+| Trapping Rain Water II | 407 | Heap + BFS | Hard | Universal Heap |
+| Swim in Rising Water | 778 | Heap + Union Find | Hard | Universal Heap |
+| Cheapest Flights Within K Stops | 787 | Dijkstra + heap | Medium | Universal Heap |
+| Network Delay Time | 743 | Dijkstra + min heap | Medium | Universal Heap |
+
+## Pattern Selection Strategy
+
+### Decision Framework Flowchart
+
+```
+Problem Analysis for Heap Usage:
+
+1. Do you need the kth largest/smallest element?
+   ├── YES → Use Kth Element Template
+   │   ├── Static dataset → Build heap of size k
+   │   └── Stream data → Maintain heap of size k
+   └── NO → Continue to 2
+
+2. Do you need top k elements by frequency/value?
+   ├── YES → Use Top K Frequency Template
+   │   ├── Need frequency count → Counter + heap
+   │   └── Direct value comparison → Simple heap
+   └── NO → Continue to 3
+
+3. Are you merging multiple sorted sources?
+   ├── YES → Use Merge K Sources Template
+   │   ├── Arrays/Lists → Min heap with indices
+   │   └── Complex objects → Min heap with custom comparator
+   └── NO → Continue to 4
+
+4. Do you need to maintain min/max in sliding window?
+   ├── YES → Use Sliding Window Template
+   │   ├── Simple min/max → Deque (preferred)
+   │   └── Complex conditions → Heap with lazy deletion
+   └── NO → Continue to 5
+
+5. Are you scheduling events/tasks by time/priority?
+   ├── YES → Use Scheduling Template
+   │   ├── Event intervals → Heap by end/start time
+   │   └── Task priorities → Heap by priority value
+   └── NO → Continue to 6
+
+6. Do you need to maintain median or balanced structure?
+   ├── YES → Use Two Heap System Template
+   │   ├── Median tracking → Min heap + max heap
+   │   └── Balance requirement → Size-balanced heaps
+   └── NO → Use Universal Heap Template
+```
+
+### Template Selection Guide
+
+#### **When to Use Min Heap vs Max Heap**
+```python
+# Min Heap Usage (Python default)
+situations = [
+    "Finding kth largest → Use min heap of size k",
+    "Merge k sorted arrays → Track smallest current elements", 
+    "Dijkstra's algorithm → Process smallest distances first",
+    "Event scheduling → Process earliest end times"
+]
+
+# Max Heap Usage (negate values in Python)
+situations = [
+    "Finding kth smallest → Use max heap of size k (negated)",
+    "Task scheduling → Process highest priority first",
+    "Median tracking → Left half uses max heap",
+    "Frequency problems → Process most frequent first"
+]
+```
+
+#### **Heap Size Considerations**
+- **Fixed size k**: For kth element problems, maintain heap size ≤ k
+- **Unbounded**: For merge problems, heap size = number of sources
+- **Balanced**: For median problems, keep |size1 - size2| ≤ 1
+
+### Common Decision Points
+
+#### **Heap vs Other Data Structures**
+```python
+# Use Heap When:
+conditions = [
+    "Need frequent min/max access: O(1)",
+    "Dynamic insertion with ordering: O(log N)",
+    "Kth element queries: O(N log k)",
+    "Priority-based processing needed"
+]
+
+# Use Array/Sort When:
+conditions = [
+    "One-time kth element: O(N) with quickselect",
+    "All elements needed sorted: O(N log N)",
+    "Static dataset, no updates"
+]
+
+# Use Deque When:
+conditions = [
+    "Sliding window min/max: O(1) amortized",
+    "Simple monotonic requirements",
+    "No priority-based insertion needed"
+]
+```
+
+## Summary & Quick Reference
+
+### Complexity Quick Reference
+| Operation | Time | Space | Notes |
+|-----------|------|-------|--------|
+| **Build Heap** | O(N) | O(N) | Heapify existing array |
+| **Insert** | O(log N) | O(1) | Add single element |
+| **Delete Min/Max** | O(log N) | O(1) | Remove root element |
+| **Peek Min/Max** | O(1) | O(1) | Access root without removal |
+| **Search Element** | O(N) | O(1) | Heap doesn't support efficient search |
+| **Merge Two Heaps** | O(N + M) | O(N + M) | Create new heap |
+
+### Template Quick Reference
+| Template | Pattern | Key Code Snippet |
+|----------|---------|------------------|
+| **Universal Heap** | General operations | `heapq.heappush(heap, val)` |
+| **Kth Element** | Fixed size heap | `if len(heap) > k: heappop(heap)` |
+| **Top K Frequency** | Counter + heap | `Counter(nums) + heappush` |
+| **Merge K Sources** | Multi-source merge | `heappush(heap, (val, src_idx, elem_idx))` |
+| **Two Heap System** | Balanced structure | `small_heap (max) + large_heap (min)` |
+| **Heap + HashSet** | Deduplication | `seen = set(); heappush if not in seen` |
+
+### Common Patterns & Tricks
+
+#### **Max Heap in Python (Using Negation)**
+```python
+import heapq
+
+# Create max heap by negating values
+max_heap = [-x for x in nums]
+heapq.heapify(max_heap)
+
+# Insert into max heap
+heapq.heappush(max_heap, -val)
+
+# Get max value (remember to negate back)
+max_val = -max_heap[0]  # peek
+max_val = -heapq.heappop(max_heap)  # pop
+```
+
+#### **Heap with Custom Objects**
+```python
+# Method 1: Using tuples (automatic comparison)
+heap = []
+heapq.heappush(heap, (priority, data))
+
+# Method 2: Using custom class with __lt__
+class Task:
+    def __init__(self, priority, data):
+        self.priority = priority
+        self.data = data
+    
+    def __lt__(self, other):
+        return self.priority < other.priority
+
+heap = []
+heapq.heappush(heap, Task(1, "high priority"))
+```
+
+#### **Lazy Deletion Pattern**
+```python
+# For sliding window problems where direct deletion is needed
+class LazyHeap:
+    def __init__(self):
+        self.heap = []
+        self.deleted = set()
+    
+    def push(self, val):
+        heapq.heappush(self.heap, val)
+    
+    def top(self):
+        while self.heap and self.heap[0] in self.deleted:
+            heapq.heappop(self.heap)
+        return self.heap[0] if self.heap else None
+    
+    def delete(self, val):
+        self.deleted.add(val)
+```
+
+### Problem-Solving Steps
+
+1. **Identify the Pattern**
+   - Look for keywords: "kth", "top k", "minimum/maximum", "merge", "median"
+   - Determine if you need min heap, max heap, or both
+
+2. **Choose the Right Template**
+   - Use decision flowchart to select appropriate pattern
+   - Consider space/time complexity requirements
+
+3. **Handle Edge Cases**
+   - Empty input arrays
+   - k larger than array size
+   - Single element cases
+
+4. **Optimize Implementation**
+   - Use heapify() for initial heap construction
+   - Consider lazy deletion for sliding window problems
+   - Balance heap sizes for median tracking
+
+### Common Mistakes & Tips
+
+**🚫 Common Mistakes:**
+
+1. **Wrong heap type**: Using min heap when max heap needed (or vice versa)
+   - Fix: Remember min heap for "kth largest", max heap for "kth smallest"
+
+2. **Forgetting to negate for max heap**: Direct usage of min heap for max operations
+   - Fix: Always negate values when simulating max heap in Python
+
+3. **Not maintaining heap size**: Allowing unlimited growth in kth element problems
+   - Fix: Always check heap size and pop when exceeding k
+
+4. **Index errors in merge problems**: Incorrect boundary checking
+   - Fix: Always verify array bounds before accessing elements
+
+5. **Improper balancing**: Unbalanced heap sizes in two-heap system
+   - Fix: Maintain |size1 - size2| ≤ 1
+
+**✅ Best Practices:**
+
+1. **Choose appropriate heap size**: Only maintain necessary elements
+2. **Use heapify() for initialization**: O(N) is better than N × O(log N)
+3. **Handle duplicates properly**: Use sets when uniqueness is required
+4. **Consider alternative approaches**: Sometimes sorting is simpler for static data
+5. **Test with edge cases**: Empty arrays, single elements, k=1 or k=n
+
+### Interview Tips
+
+1. **Ask clarifying questions**:
+   - "Do we need to handle duplicates?"
+   - "Can k be larger than array size?"
+   - "Are we dealing with a stream or static data?"
+
+2. **Explain your approach clearly**:
+   - Start with the pattern recognition
+   - Explain why heap is the optimal choice
+   - Walk through the algorithm step-by-step
+
+3. **Discuss complexity trade-offs**:
+   - Compare heap solution with sorting approach
+   - Explain space complexity implications
+   - Consider online vs offline scenarios
+
+4. **Code systematically**:
+   - Start with the basic heap operations
+   - Add edge case handling
+   - Test with simple examples
+
+5. **Common follow-up questions**:
+   - "How would you handle updates to the data?"
+   - "What if we need the kth element multiple times?"
+   - "Can you optimize for space/time?"
+
+### Related Topics
+
+- **Priority Queues**: Heap is the primary implementation
+- **Graph Algorithms**: Dijkstra's algorithm uses min heap
+- **Greedy Algorithms**: Many greedy problems use heaps for optimization
+- **Sorting**: Heap sort is O(N log N) in-place sorting
+- **Binary Trees**: Heaps are complete binary trees
+- **Dynamic Programming**: Some DP problems benefit from heap optimization
+
+### Language-Specific Notes
+
+#### **Python heapq**
+- Only provides min heap
+- Use negation for max heap
+- Functions: heappush, heappop, heapify, nlargest, nsmallest
+
+#### **Java PriorityQueue**
+- Default is min heap
+- Use custom comparator for max heap: `new PriorityQueue<>((a, b) -> b - a)`
+- Methods: offer, poll, peek, size
+
+#### **C++ priority_queue**
+- Default is max heap
+- Use `priority_queue<int, vector<int>, greater<int>>` for min heap
+- Methods: push, pop, top, size

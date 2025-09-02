@@ -1,8 +1,259 @@
-# Hash Map
+# Hash Map Cheatsheet
+
+## Overview
+Hash Map (Hash Table/Dictionary) is a fundamental data structure that provides efficient key-value storage and retrieval operations.
+
+### Key Properties
+- **Average Time Complexity**: O(1) for insert, delete, and search
+- **Worst Time Complexity**: O(n) for insert, delete, and search (when all keys hash to same bucket)
+- **Space Complexity**: O(n)
+- **Implementation**: Array + Linked List/Red-Black Tree (Java HashMap)
+- **Hash Collisions**: Handled via chaining or open addressing
+
+### When Hash Collisions Occur
+- **Load Factor > 0.75**: Performance degrades
+- **Poor Hash Function**: Many keys map to same bucket
+- **Java HashMap**: Converts linked list to red-black tree when length > 8
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/hash_op_101.png"></p>
 
 - [NC - HashMap under the hood](https://www.linkedin.com/posts/neetcodeio_how-do-hashmaps-work-under-the-hood-activity-7298370869301526530-DsIi?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAA6fzw4BpOSBO1YeSrJwPZ-dNBhjC3jXTDE)
+
+## Problem Categories
+
+### 1. Counting and Frequency
+**Description**: Track frequency of elements, characters, or patterns.
+**Key Insight**: Use hash map as counter to avoid nested loops.
+**Examples**: 
+- Character frequency in strings
+- Element counting in arrays
+- Anagram detection
+- Most frequent elements
+
+### 2. Two Sum Variants and Complement Finding
+**Description**: Find pairs, triplets, or complements that satisfy specific conditions.
+**Key Insight**: Store elements and check for required complement.
+**Examples**:
+- Two Sum, Three Sum, Four Sum
+- Pair differences (k-diff pairs)
+- Subarray sum problems
+- Target sum combinations
+
+### 3. Prefix Sum and Subarray Problems
+**Description**: Use cumulative sums with hash map to find subarrays with target properties.
+**Key Insight**: `subarray[i,j] = prefixSum[j] - prefixSum[i-1]`
+**Examples**:
+- Subarray sum equals K
+- Continuous subarray sum
+- Maximum size subarray sum equals K
+- Binary array with equal 0s and 1s
+
+### 4. Sliding Window with Hash Map
+**Description**: Maintain a dynamic window while tracking element frequency or properties.
+**Key Insight**: Hash map maintains window state efficiently.
+**Examples**:
+- Longest substring without repeating characters
+- Minimum window substring
+- Find all anagrams in string
+- Permutation in string
+
+### 5. Design and Caching
+**Description**: Implement data structures or caching mechanisms using hash maps.
+**Key Insight**: Hash map provides O(1) access for cache operations.
+**Examples**:
+- LRU Cache
+- LFU Cache
+- Design HashMap
+- Design HashSet
+
+### 6. Graph and Tree Problems with Hash Map
+**Description**: Use hash map to store graph relationships, tree paths, or node mappings.
+**Key Insight**: Hash map simplifies complex relationship tracking.
+**Examples**:
+- Clone graph
+- Tree serialization/deserialization
+- Find duplicate subtrees
+- Lowest common ancestor with parent pointers
+
+## Templates and Patterns
+
+### Template 1: Counting/Frequency Pattern
+```python
+# Universal Counting Template
+def counting_pattern(arr):
+    count = {}  # or collections.defaultdict(int)
+    result = []
+    
+    # Count frequency
+    for item in arr:
+        count[item] = count.get(item, 0) + 1
+        # or count[item] += 1 with defaultdict
+    
+    # Process based on frequency
+    for key, freq in count.items():
+        if meets_condition(freq):
+            result.append(key)
+    
+    return result
+
+# Examples: LC 49, LC 242, LC 451, LC 347, LC 692
+```
+
+### Template 2: Two Sum/Complement Finding
+```python
+# Two Sum Pattern Template
+def two_sum_pattern(nums, target):
+    seen = {}  # {value: index}
+    
+    for i, num in enumerate(nums):
+        complement = target - num
+        
+        if complement in seen:
+            return [seen[complement], i]
+        
+        seen[num] = i
+    
+    return []
+
+# Variations:
+# - Multiple pairs: collect all instead of returning first
+# - K-diff pairs: check for num+k and num-k
+# - Examples: LC 1, LC 167, LC 15, LC 532, LC 1010
+```
+
+### Template 3: Prefix Sum with Hash Map
+```python
+# Prefix Sum Pattern Template
+def prefix_sum_pattern(nums, target):
+    prefix_sum = 0
+    sum_count = {0: 1}  # {sum: count/index}
+    result = 0
+    
+    for num in nums:
+        prefix_sum += num
+        
+        # Check if (prefix_sum - target) exists
+        if prefix_sum - target in sum_count:
+            result += sum_count[prefix_sum - target]
+        
+        # Update current prefix sum count
+        sum_count[prefix_sum] = sum_count.get(prefix_sum, 0) + 1
+    
+    return result
+
+# For max length problems, store index instead of count:
+# sum_index = {0: -1}, then calculate i - sum_index[prefix_sum - target]
+# Examples: LC 560, LC 325, LC 525, LC 523
+```
+
+### Template 4: Sliding Window with Hash Map
+```python
+# Sliding Window with HashMap Template
+def sliding_window_hashmap(s, pattern):
+    if len(pattern) > len(s):
+        return []
+    
+    pattern_count = {}
+    window_count = {}
+    
+    # Count pattern frequency
+    for char in pattern:
+        pattern_count[char] = pattern_count.get(char, 0) + 1
+    
+    left = 0
+    result = []
+    
+    for right in range(len(s)):
+        # Expand window
+        char = s[right]
+        window_count[char] = window_count.get(char, 0) + 1
+        
+        # Contract window if needed
+        while window_size_condition_met():
+            # Check if current window is valid
+            if window_count == pattern_count:
+                result.append(left)
+            
+            # Remove leftmost character
+            left_char = s[left]
+            window_count[left_char] -= 1
+            if window_count[left_char] == 0:
+                del window_count[left_char]
+            left += 1
+    
+    return result
+
+# Examples: LC 3, LC 76, LC 438, LC 567
+```
+
+### Template 5: Hash Map for Caching/Memoization
+```python
+# Caching/Memoization Template
+class CacheTemplate:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}  # key -> value
+        self.usage = {}  # key -> usage_info
+    
+    def get(self, key):
+        if key in self.cache:
+            self.update_usage(key)
+            return self.cache[key]
+        return -1
+    
+    def put(self, key, value):
+        if len(self.cache) >= self.capacity:
+            self.evict()
+        
+        self.cache[key] = value
+        self.update_usage(key)
+    
+    def update_usage(self, key):
+        # Update usage tracking
+        pass
+    
+    def evict(self):
+        # Remove least recently/frequently used
+        pass
+
+# Examples: LC 146 (LRU), LC 460 (LFU)
+```
+
+### Template 6: Graph Problems with Hash Map
+```python
+# Graph with HashMap Template
+def graph_hashmap_pattern(graph_input):
+    # Build adjacency list/map
+    graph = {}  # node -> [neighbors] or node -> {neighbor: weight}
+    
+    for edge in graph_input:
+        node1, node2 = edge[0], edge[1]
+        if node1 not in graph:
+            graph[node1] = []
+        if node2 not in graph:
+            graph[node2] = []
+        
+        graph[node1].append(node2)
+        graph[node2].append(node1)  # for undirected
+    
+    # Process using DFS/BFS with visited tracking
+    visited = set()
+    result = []
+    
+    def dfs(node):
+        if node in visited:
+            return
+        
+        visited.add(node)
+        result.append(node)
+        
+        for neighbor in graph.get(node, []):
+            dfs(neighbor)
+    
+    return result
+
+# Examples: LC 133, LC 200, LC 694, LC 1257
+```
 
 ## 0) Concept
 
@@ -1094,3 +1345,387 @@ public String findSmallestRegion_0_1(List<List<String>> regions, String region1,
     return region2;
 }
 ```
+
+## Problem Classification Table
+
+### Category 1: Counting and Frequency (25 problems)
+
+| Problem | LC# | Difficulty | Template | Key Insight |
+|---------|-----|------------|----------|-------------|
+| Valid Anagram | 242 | Easy | Counting | Compare character frequencies |
+| Group Anagrams | 49 | Medium | Counting | Sort string as key |
+| Sort Characters by Frequency | 451 | Medium | Counting | Sort by frequency |
+| Top K Frequent Elements | 347 | Medium | Counting + Heap | Count + priority queue |
+| Top K Frequent Words | 692 | Medium | Counting + Heap | Count + custom comparator |
+| Most Common Word | 819 | Easy | Counting | Clean input, count words |
+| Subdomain Visit Count | 811 | Easy | Counting | Split domains, count visits |
+| Find All Anagrams in String | 438 | Medium | Sliding Window | Window frequency matching |
+| Word Pattern | 290 | Easy | Counting | Bijection between pattern & words |
+| Isomorphic Strings | 205 | Easy | Counting | Character mapping |
+| First Unique Character | 387 | Easy | Counting | Find first with freq=1 |
+| Unique Number of Occurrences | 1207 | Easy | Counting | Frequency of frequencies |
+| Find Anagram Mappings | 760 | Easy | Counting | Index mapping |
+| Vowels of All Substrings | 2063 | Medium | Counting | Contribution of each vowel |
+| Maximum Number of Balloons | 1189 | Easy | Counting | Count limiting character |
+| Number of Good Pairs | 1512 | Easy | Counting | n*(n-1)/2 pairs |
+| Decode the Message | 2325 | Easy | Counting | Character substitution |
+| Sort Array by Frequency | 1636 | Easy | Counting | Sort by frequency then value |
+| Check if Two Strings are Equivalent | 1662 | Easy | Counting | Build strings and compare |
+| Baseball Game | 682 | Easy | Counting | Simulate game rules |
+| Number of Arithmetic Triplets | 2367 | Easy | Counting | Check differences |
+| Count Elements | 1426 | Easy | Counting | Count x where x+1 exists |
+| Distribute Candies | 575 | Easy | Counting | Min of types and n/2 |
+| Intersection of Two Arrays | 349 | Easy | Counting | Set intersection |
+| Intersection of Two Arrays II | 350 | Easy | Counting | Frequency intersection |
+
+### Category 2: Two Sum Variants (15 problems)
+
+| Problem | LC# | Difficulty | Template | Key Insight |
+|---------|-----|------------|----------|-------------|
+| Two Sum | 1 | Easy | Two Sum | Store complement indices |
+| Two Sum II | 167 | Easy | Two Pointers | Sorted array advantage |
+| 3Sum | 15 | Medium | Two Sum | Fix one, find pairs |
+| 3Sum Closest | 16 | Medium | Two Sum | Track closest sum |
+| 4Sum | 18 | Medium | Two Sum | Fix two, find pairs |
+| Two Sum IV - BST | 653 | Easy | Two Sum | In-order + hash set |
+| K-diff Pairs in Array | 532 | Medium | Two Sum | Handle k=0 case |
+| Pairs of Songs with Total Duration Divisible by 60 | 1010 | Medium | Two Sum | Modular arithmetic |
+| Count Number of Pairs with Absolute Difference K | 2006 | Easy | Two Sum | Check num+k, num-k |
+| Find All K-Distant Indices | 2200 | Easy | Two Sum | Distance constraint |
+| Max Number of K-Sum Pairs | 1679 | Medium | Two Sum | Remove pairs greedily |
+| Two Sum Less Than K | 1099 | Easy | Two Sum | Track maximum valid sum |
+| Two Sum - Data Structure | 170 | Easy | Design | Add/Find operations |
+| Count Good Meals | 1711 | Medium | Two Sum | Powers of 2 as targets |
+| Count Pairs With XOR in Range | 1803 | Hard | Trie + Two Sum | XOR properties |
+
+### Category 3: Prefix Sum and Subarray (15 problems)
+
+| Problem | LC# | Difficulty | Template | Key Insight |
+|---------|-----|------------|----------|-------------|
+| Subarray Sum Equals K | 560 | Medium | Prefix Sum | prefix_sum - k lookup |
+| Continuous Subarray Sum | 523 | Medium | Prefix Sum | Modular arithmetic |
+| Contiguous Array | 525 | Medium | Prefix Sum | Transform 0→-1, find balance |
+| Maximum Size Subarray Sum Equals k | 325 | Medium | Prefix Sum | Store first occurrence |
+| Minimum Size Subarray Sum | 209 | Medium | Sliding Window | Contract when sum ≥ target |
+| Subarray Sums Divisible by K | 974 | Medium | Prefix Sum | Handle negative remainders |
+| Binary Subarrays with Sum | 930 | Medium | Prefix Sum | Count target prefix sums |
+| Number of Subarrays with Bounded Maximum | 795 | Medium | Prefix Sum | Inclusion-exclusion |
+| Shortest Subarray with Sum at Least K | 862 | Hard | Deque | Monotonic deque optimization |
+| Count of Range Sum | 327 | Hard | Merge Sort | Count inversions variant |
+| Range Sum Query - Immutable | 303 | Easy | Prefix Sum | Precompute prefix sums |
+| Range Sum Query 2D | 304 | Medium | Prefix Sum | 2D prefix sum array |
+| Subarray Product Less Than K | 713 | Medium | Sliding Window | Contract when product ≥ k |
+| Maximum Average Subarray I | 643 | Easy | Sliding Window | Fixed window size |
+| Find Pivot Index | 724 | Easy | Prefix Sum | Left sum = right sum |
+
+### Category 4: Sliding Window with Hash Map (12 problems)
+
+| Problem | LC# | Difficulty | Template | Key Insight |
+|---------|-----|------------|----------|-------------|
+| Longest Substring Without Repeating Characters | 3 | Medium | Sliding Window | Track last occurrence |
+| Minimum Window Substring | 76 | Hard | Sliding Window | Contract when valid |
+| Permutation in String | 567 | Medium | Sliding Window | Fixed window size |
+| Find All Anagrams in String | 438 | Medium | Sliding Window | Match frequency maps |
+| Longest Substring with At Most Two Distinct Characters | 159 | Medium | Sliding Window | Track character count |
+| Longest Substring with At Most K Distinct Characters | 340 | Medium | Sliding Window | Generalize distinct limit |
+| Fruit Into Baskets | 904 | Medium | Sliding Window | At most 2 types |
+| Longest Repeating Character Replacement | 424 | Medium | Sliding Window | Track max frequency |
+| Get Equal Substrings Within Budget | 1208 | Medium | Sliding Window | Cost constraint |
+| Max Consecutive Ones III | 1004 | Medium | Sliding Window | Flip at most K zeros |
+| Substring with Concatenation of All Words | 30 | Hard | Sliding Window | Multiple word matching |
+| Replace the Substring for Balanced String | 1234 | Medium | Sliding Window | Make all frequencies ≤ n/4 |
+
+### Category 5: Design and Caching (10 problems)
+
+| Problem | LC# | Difficulty | Template | Key Insight |
+|---------|-----|------------|----------|-------------|
+| LRU Cache | 146 | Medium | OrderedDict | Combine hash + doubly linked list |
+| LFU Cache | 460 | Hard | Hash + Heap | Track frequency and recency |
+| Design HashMap | 706 | Easy | Array + Chaining | Handle collisions |
+| Design HashSet | 705 | Easy | Array + Chaining | Similar to HashMap |
+| All O(1) Data Structure | 432 | Hard | Hash + DLL | Complex multi-level structure |
+| Insert Delete GetRandom O(1) | 380 | Medium | Hash + Array | Maintain index mapping |
+| Insert Delete GetRandom O(1) - Duplicates | 381 | Hard | Hash + Array | Handle duplicates |
+| Design Twitter | 355 | Medium | Hash + Heap | User feeds and following |
+| Time Based Key-Value Store | 981 | Medium | Hash + Binary Search | Timestamp-based storage |
+| Design A Leaderboard | 1244 | Medium | Hash + Sort | Score tracking |
+
+### Category 6: Graph and Tree with Hash Map (8 problems)
+
+| Problem | LC# | Difficulty | Template | Key Insight |
+|---------|-----|------------|----------|-------------|
+| Clone Graph | 133 | Medium | Hash + DFS | Node mapping during traversal |
+| Copy List with Random Pointer | 138 | Medium | Hash + DFS | Node mapping for random pointers |
+| Find Duplicate Subtrees | 652 | Medium | Hash + DFS | Serialize subtrees as keys |
+| Sentence Similarity | 734 | Easy | Hash + Set | Bidirectional similarity mapping |
+| Accounts Merge | 721 | Medium | Hash + Union Find | Email to account mapping |
+| Evaluate Division | 399 | Medium | Hash + DFS | Build equation graph |
+| Most Stones Removed | 947 | Medium | Hash + Union Find | Connect same row/col stones |
+| Smallest Common Region | 1257 | Medium | Hash + Set | Parent mapping + LCA |
+
+## Decision Framework
+
+### Pattern Selection Flowchart
+
+```
+START: Analyzing Hash Map Problem
+                   |
+                   v
+           Are you counting elements/frequency?
+                   |
+                YES|    NO
+                   |     |
+                   v     v
+         [CATEGORY 1:     Looking for pairs/complements?
+          COUNTING]            |
+                            YES|    NO
+                               |     |
+                               v     v
+                     [CATEGORY 2:    Need to find subarray properties?
+                      TWO SUM]            |
+                                       YES|    NO
+                                          |     |
+                                          v     v
+                                 [CATEGORY 3:    Using sliding window technique?
+                                  PREFIX SUM]          |
+                                                    YES|    NO
+                                                       |     |
+                                                       v     v
+                                             [CATEGORY 4:    Designing a data structure?
+                                              SLIDING]            |
+                                                               YES|    NO
+                                                                  |     |
+                                                                  v     v
+                                                        [CATEGORY 5:    Working with graphs/trees?
+                                                         DESIGN]              |
+                                                                           YES|    NO
+                                                                              |     |
+                                                                              v     v
+                                                                    [CATEGORY 6:   [OTHER PATTERNS]
+                                                                     GRAPH]
+```
+
+### Decision Questions
+
+1. **Counting Problems**: 
+   - "Do I need to track frequency of elements?"
+   - "Am I looking for duplicates or unique elements?"
+   - "Do I need to sort by frequency?"
+
+2. **Two Sum Variants**:
+   - "Am I looking for pairs that sum to a target?"
+   - "Do I need indices or just existence?"
+   - "Are there multiple valid pairs?"
+
+3. **Prefix Sum Problems**:
+   - "Do I need subarray sum information?"
+   - "Can I transform this to prefix sum lookup?"
+   - "Am I looking for subarrays with specific properties?"
+
+4. **Sliding Window**:
+   - "Do I need a dynamic window of elements?"
+   - "Am I tracking state within a window?"
+   - "Does window size change based on conditions?"
+
+5. **Design Problems**:
+   - "Do I need to implement get/put operations?"
+   - "Are there capacity or eviction requirements?"
+   - "Do I need O(1) average operations?"
+
+6. **Graph/Tree Problems**:
+   - "Am I dealing with node relationships?"
+   - "Do I need to map nodes during traversal?"
+   - "Are there parent-child or neighbor relationships?"
+
+### Time Complexity Guide
+
+| Pattern | Average Case | Worst Case | Space | When to Use |
+|---------|-------------|------------|-------|-------------|
+| Counting | O(n) | O(n) | O(n) | Frequency analysis |
+| Two Sum | O(n) | O(n) | O(n) | Finding pairs/complements |
+| Prefix Sum | O(n) | O(n) | O(n) | Subarray problems |
+| Sliding Window | O(n) | O(n) | O(k) | Dynamic windows |
+| Design/Cache | O(1)* | O(n) | O(n) | Data structure design |
+| Graph/Tree | O(n) | O(n) | O(n) | Node relationship tracking |
+
+*Amortized for most cache operations
+
+## Interview Tips and Best Practices
+
+### 🎯 Quick Recognition Patterns
+
+| If you see... | Think... | Pattern |
+|---------------|----------|---------|
+| "count frequency" | Counting/Frequency | Template 1 |
+| "find pair", "target sum" | Two Sum | Template 2 |
+| "subarray sum equals" | Prefix Sum | Template 3 |
+| "substring without repeating" | Sliding Window | Template 4 |
+| "implement cache" | Design/Cache | Template 5 |
+| "clone graph", "tree paths" | Graph/Tree | Template 6 |
+
+### 💡 Key Insights to Remember
+
+1. **Space-Time Tradeoff**: Hash maps trade extra O(n) space for O(1) average lookup time
+2. **Prefix Sum Magic**: `subarray[i,j] = prefixSum[j] - prefixSum[i-1]`
+3. **Sliding Window State**: Use hash map to maintain window properties efficiently
+4. **Complement Thinking**: Instead of checking all pairs, store elements and check complements
+5. **Index vs Value**: Decide whether to store indices, values, or both as hash map values
+6. **Frequency Counting**: Most string/array problems can be solved with frequency analysis
+
+### 🔧 Implementation Best Practices
+
+#### Python Best Practices
+```python
+# 1. Use defaultdict for cleaner counting code
+from collections import defaultdict
+count = defaultdict(int)  # No need for get(key, 0)
+
+# 2. Use Counter for frequency problems
+from collections import Counter
+freq = Counter(arr)  # Automatically counts frequencies
+
+# 3. Handle edge cases with dict.get()
+value = my_dict.get(key, default_value)
+
+# 4. Clean up zero counts to save space
+if count[key] == 0:
+    del count[key]
+
+# 5. Use enumerate when you need both index and value
+for i, val in enumerate(arr):
+    # Use both i and val
+```
+
+#### Java Best Practices
+```java
+// 1. Use getOrDefault to avoid null checks
+map.put(key, map.getOrDefault(key, 0) + 1);
+
+// 2. Use containsKey for existence checks
+if (map.containsKey(key)) { /* ... */ }
+
+// 3. Initialize with appropriate capacity
+Map<String, Integer> map = new HashMap<>(expectedSize);
+
+// 4. Use putIfAbsent for first occurrence
+map.putIfAbsent(key, index);  // Only puts if key doesn't exist
+```
+
+### ⚠️ Common Mistakes to Avoid
+
+1. **Hash Collision Assumption**: Remember that worst-case time complexity is O(n), not O(1)
+
+2. **Index Out of Bounds**: 
+   ```python
+   # Wrong: Can cause index errors
+   if target - nums[i] in seen:
+       return [i, seen[target - nums[i]]]
+   seen[nums[i]] = i
+   
+   # Right: Check existence first
+   if target - nums[i] in seen:
+       return [seen[target - nums[i]], i]
+   seen[nums[i]] = i
+   ```
+
+3. **Modifying Dict During Iteration**:
+   ```python
+   # Wrong: Can cause runtime errors
+   for key in my_dict:
+       if condition:
+           del my_dict[key]
+   
+   # Right: Collect keys first
+   to_delete = [k for k, v in my_dict.items() if condition]
+   for k in to_delete:
+       del my_dict[k]
+   ```
+
+4. **Ignoring Edge Cases**:
+   - Empty input arrays
+   - Single element arrays
+   - All elements the same
+   - Target not achievable
+
+5. **Wrong Data Structure Choice**:
+   - Use `set()` for existence checks only
+   - Use `dict()` when you need key-value mapping
+   - Use `Counter()` for frequency counting
+
+### 🏆 Advanced Techniques
+
+#### 1. Multiple Hash Maps
+```python
+# Track multiple relationships simultaneously
+def complex_problem(arr):
+    index_map = {}      # value -> index
+    freq_map = {}       # value -> frequency
+    reverse_map = {}    # index -> value
+    
+    for i, val in enumerate(arr):
+        index_map[val] = i
+        freq_map[val] = freq_map.get(val, 0) + 1
+        reverse_map[i] = val
+```
+
+#### 2. Hash Map + Other Data Structures
+```python
+# Hash Map + Priority Queue (Heap)
+import heapq
+from collections import defaultdict
+
+def top_k_frequent(nums, k):
+    count = defaultdict(int)
+    for num in nums:
+        count[num] += 1
+    
+    # Use heap with frequency
+    heap = []
+    for num, freq in count.items():
+        heapq.heappush(heap, (-freq, num))  # Max heap using negative values
+    
+    result = []
+    for _ in range(k):
+        result.append(heapq.heappop(heap)[1])
+    return result
+```
+
+#### 3. Rolling Hash for String Problems
+```python
+# For substring pattern matching
+def rolling_hash_example(s, pattern):
+    base, mod = 256, 10**9 + 7
+    pattern_hash = sum(ord(c) * pow(base, i, mod) for i, c in enumerate(pattern)) % mod
+    
+    # Slide window and update hash incrementally
+    # ... implementation details
+```
+
+### 📈 Performance Optimization
+
+1. **Choose Right Hash Function**: Python's built-in hash is usually optimal
+2. **Avoid Unnecessary Rehashing**: Pre-size maps when possible
+3. **Memory Cleanup**: Remove zero-count entries in frequency maps
+4. **Use Appropriate Load Factor**: Default 0.75 is usually optimal
+
+### 🎯 Interview Preparation Checklist
+
+- [ ] Master all 6 templates and when to use each
+- [ ] Practice 3-5 problems from each category
+- [ ] Understand time/space complexity for each pattern
+- [ ] Know common edge cases and how to handle them
+- [ ] Practice explaining hash collision resolution
+- [ ] Be comfortable with both Python dict and Java HashMap APIs
+- [ ] Understand when NOT to use hash maps (sorted data, range queries, etc.)
+
+### 📚 Summary
+
+Hash maps are one of the most versatile data structures in competitive programming and technical interviews. The key to mastering hash map problems is:
+
+1. **Pattern Recognition**: Quickly identify which of the 6 categories a problem falls into
+2. **Template Application**: Use the appropriate template as a starting point
+3. **Edge Case Handling**: Always consider empty inputs, duplicates, and boundary conditions  
+4. **Complexity Analysis**: Understand both average and worst-case performance
+5. **Code Clarity**: Write clean, readable code with proper variable names
+
+Remember: Hash maps excel at problems requiring fast lookups, frequency counting, and avoiding nested loops. When you see O(n²) brute force solutions, ask yourself: "Can I use a hash map to store some information and reduce this to O(n)?"

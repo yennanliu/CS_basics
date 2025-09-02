@@ -1,374 +1,604 @@
 # Intervals
 
-- [fucking algorithm : interval merge](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md)
-- [fucking algorithm : interval overlap](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E4%BA%A4%E9%9B%86%E9%97%AE%E9%A2%98.md)
-- [Visualization explaination](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array_overlap_explaination.md
-)
-
-
-## 0) Concept  
-
-### 0-1) Types
-
-- Types
-
-    - Merge intervals
-        - LC 56
-        - sort on `1st element`
-
-    - Insert intervala
-        - LC 57
-        - sort on `1st element`
-
-    - Overlap intervals
-
-    - Non-overlap intervals
-        - LC 435
-        - sort on `2nd element`
-
-    - Max length of pair chain
-        - LC 646
-
-    - Courses problems
-        - LC 207, 210
-
-    - Meeting room problems
-        - LC 252, 253
-
-    - Check if overlap existed
-        - LC 729
-
-- Algorithm
-    - array op
-    - dict op
-
-- Data structure
-    - array
-    - dict
-
-
-### 0-2) Pattern
-
-- Step 1) sort on elements
-- Step 2) loop over sorted elements, check if `overlap`, updated val (1st, 2nd element)
-- Step 3  append updated window to array
-
-
-#### 0-2-1) Check if 2 intervals are overlap
-
-- LC 729
-- https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/MyCalendar1.java
-
-
-- *Conclusion*:
-
-if `start < date.get(1) and end > date.get(0)`
--> then intervals are OVERLAP
-
-
-##### `NON OVERLAP` case (sort on 1st element first)
-
--> or, we can also use `NO OVERLAP` perspectives
--> if we first sort array on `1st element`,
-   then the ONLY `overlap` case is as below
-   e.g. `old[1] < new[0]`, we can use this as condition
-   - LC 56, LC 57
-
-```
-|------| old
-             
-             |------| new
-```
-
-##### Overlap cases
-
-```
-# case 1
-
-New:       |-------|
-Existing:     |------|
-
-
-# case 2
-
-New:         |---|
-Existing:   |-------|
-
-# case 3
-
-New:     |-----------|
-Existing:   |-----|
-
-
-
--> All of cases above are with `start < date.get(1) and end > date.get(0)` condition
-```
-
-
-```java
-// java
-// LC 57
-
-// ...
-Arrays.sort(intervals, new Comparator<int[]>() {
-    @Override
-    public int compare(int[] o1, int[] o2) {
-        int diff = o1[0] - o2[0];
-        return diff;
-    }
-});
-
-// ...
-
-for(int[] x: intervals){
-    // case 1) stack is empty
-    if(st.isEmpty()){
-        st.add(x);
-    }else{
-        /**
-         *  LC 57
-         *
-         *  since we already sorted intervals on
-         *  1st element as increasing order (small -> big)
-         *  the ONLY non overlap case is as below:
-         *
-         *    |----|  old
-         *            |------| new
-         */
-        int[] prev = st.pop();
-        // case 2) if NOT overlap
-        if(prev[1] < x[0]){
-            st.add(prev);
-            st.add(x);
-        }
-        // case 3) OVERLAP
-        else{
-            st.add(new int[]{ Math.min(prev[0], x[0]), Math.max(prev[1], x[1]) });
-        }
-    }
-}
-
-```
-
-## 1) General form
-
-### 1-1) Basic OP
-
-#### 1-1-1) `List` -> `Array`
-
-```java
-// java
-
-// LC 56, 57
-
-List<int[]> myList = new ArrayList();
-int[][] myArr = myList.toArray(new int[myList.size()][]);
-
-
-// example
-LinkedList<int[]> res = new LinkedList<>();
-// ...
-int[][] ans = res.toArray(new int[res.size()][]);
-```
-
-
-#### 1-2-0) merge intervals
-
-```java
-// java
-// LC 56, LC 57
-
-// ...
-// sort
-intervalList.sort(Comparator.comparingInt(a -> a[0]));
-// ...
-
-List<int[]> merged = new ArrayList<>();
-
-// ...
-
-for (int[] x : intervalList) {
-       if (merged.isEmpty() || merged.get(merged.size() - 1)[1] < x[0]) {
-                merged.add(x);
-            }
-        else{
-            // NOTE : we set 0 idx as SMALLER val from merged last element (0 idx), input
-            merged.get(merged.size() - 1)[0] = Math.min(merged.get(merged.size() - 1)[0], x[0]);
-            // NOTE : we set 1 idx as BIGGER val from merged last element (1 idx), input
-            merged.get(merged.size() - 1)[1] = Math.max(merged.get(merged.size() - 1)[1], x[1]);
-        }
-}
-
-// ...
-```
-
-
-#### 1-3-0) Non overlapping intervals
-
-```java
-// java
-// LC 435
-
-// ...
- Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
-
-// ...
-```
-
-
-## 2) LC Example
-
-### 2-1) Merge Intervals
-
-- TODO : move it to "interval merge cheatsheet"
-- [fucking-algorithm - intervals](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md)
-
+## Overview
+
+**Intervals** are problems involving ranges of values, typically represented as `[start, end]` pairs, requiring operations like merging overlapping ranges, finding intersections, or scheduling non-overlapping events.
+
+### Key Properties
+- **Time Complexity**: O(n log n) for sorting + O(n) for processing = O(n log n) overall
+- **Space Complexity**: O(1) to O(n) depending on output requirements
+- **Core Idea**: Sort intervals by start time, then process linearly to handle overlaps
+- **When to Use**: Problems involving ranges, scheduling, calendar management, resource allocation
+
+### Core Algorithm Steps
+1. **Sort intervals** by start time (occasionally by end time for greedy problems)
+2. **Process sequentially** to identify overlaps or non-overlaps
+3. **Apply merge/remove strategy** based on problem requirements
+4. **Handle edge cases** like empty intervals or single intervals
+
+### When to Use Interval Algorithms
+- **Merge overlapping ranges**: Calendar conflicts, memory allocation
+- **Scheduling optimization**: Meeting rooms, task assignment
+- **Range queries**: Time series data, genomic sequences
+- **Resource management**: Bandwidth allocation, CPU scheduling
+
+### References
+- [labuladong: Interval Merge](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md)
+- [labuladong: Interval Overlap](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E4%BA%A4%E9%9B%86%E9%97%AE%E9%A2%98.md)
+- [Visualization Explanation](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array_overlap_explaination.md)
+
+## 1) Problem Categories
+
+### **Pattern 1: Interval Merging**
+- **Description**: Combine overlapping intervals into single merged intervals
+- **Examples**: LC 56 (Merge Intervals), LC 57 (Insert Interval)
+- **Recognition**: "Merge", "combine", "overlapping intervals"
+- **Sorting**: By start time (ascending)
+
+### **Pattern 2: Interval Scheduling (Greedy)**
+- **Description**: Find maximum non-overlapping intervals or minimum intervals to remove
+- **Examples**: LC 435 (Non-overlapping Intervals), LC 452 (Minimum Arrows)
+- **Recognition**: "Maximum", "minimum", "non-overlapping", "remove"
+- **Sorting**: By end time (ascending) for greedy approach
+
+### **Pattern 3: Interval Intersection**
+- **Description**: Find common time slots or overlapping regions between interval lists
+- **Examples**: LC 986 (Interval List Intersections), LC 1288 (Remove Covered Intervals)
+- **Recognition**: "Intersection", "overlap", "common", "covered"
+- **Sorting**: By start time, process two pointers
+
+### **Pattern 4: Interval Point Coverage**
+- **Description**: Determine points that can cover multiple intervals or find gaps
+- **Examples**: LC 452 (Minimum Arrows), LC 1024 (Video Stitching)
+- **Recognition**: "Cover", "points", "arrows", "minimum coverage"
+- **Sorting**: By start or end time depending on strategy
+
+### **Pattern 5: Meeting Room Scheduling**
+- **Description**: Determine meeting room requirements or check scheduling conflicts
+- **Examples**: LC 252 (Meeting Rooms), LC 253 (Meeting Rooms II)
+- **Recognition**: "Meeting", "conference", "rooms", "schedule conflicts"
+- **Sorting**: By start time, use priority queue for room management
+
+### **Pattern 6: Calendar and Booking**
+- **Description**: Handle calendar bookings with conflict detection and resolution
+- **Examples**: LC 729 (My Calendar I), LC 731 (My Calendar II), LC 732 (My Calendar III)
+- **Recognition**: "Calendar", "booking", "double booking", "k-booking"
+- **Sorting**: Maintain sorted intervals, binary search for insertion
+
+## 2) Templates & Algorithms
+
+### Template Comparison Table
+| Template Type | Use Case | Sorting Strategy | When to Use |
+|---------------|----------|------------------|-------------|
+| **Merge Template** | Combine overlapping intervals | Sort by start time | LC 56, 57, merging problems |
+| **Greedy Template** | Maximum non-overlapping | Sort by end time | LC 435, 452, scheduling optimization |
+| **Two Pointer Template** | Intersection/comparison | Sort both lists by start | LC 986, comparing interval lists |
+| **Priority Queue Template** | Resource management | Sort by start, heap by end | LC 253, meeting room problems |
+| **Binary Search Template** | Calendar/booking | Maintain sorted order | LC 729-732, dynamic interval insertion |
+
+### Universal Interval Template
 ```python
-# 056 Merge Intervals
-# V0
-# IDEA : interval op, LC 57
-class Solution(object):
-    def merge(self, intervals):
-        # edge case
-        if not intervals:
-            return
-        intervals.sort(key=lambda x : x[0])
-        res = []
-        for i in range(len(intervals)):
-            if not res or res[-1][1] < intervals[i][0]:
-                res.append(intervals[i])
-            else:
-                res[-1][1] = max(intervals[i][1], res[-1][1])
-        return res
+def solve_interval_problem(intervals):
+    """
+    Universal template for interval problems
+    """
+    # Step 1: Handle edge cases
+    if not intervals or len(intervals) <= 1:
+        return intervals
+    
+    # Step 2: Sort intervals (by start time or end time based on problem)
+    intervals.sort(key=lambda x: x[0])  # Sort by start time
+    # intervals.sort(key=lambda x: x[1])  # Sort by end time for greedy problems
+    
+    # Step 3: Initialize result
+    result = []
+    
+    # Step 4: Process intervals sequentially
+    for current in intervals:
+        # Step 5: Check overlap condition with last processed interval
+        if not result or no_overlap_condition(result[-1], current):
+            result.append(current)
+        else:
+            # Step 6: Handle overlap (merge, count, or remove)
+            handle_overlap(result, current)
+    
+    return result
 
-# V0'
-# IDEA : interval op
-# https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md
-class Solution:
-    def merge(self, intervals):
-        intervals = sorted(intervals, key=lambda x: x[0])
-        result = []
-        for interval in intervals:
-            if len(result) == 0 or result[-1][1] < interval[0]:
-                result.append(interval)
-            else:
-                result[-1][1] = max(result[-1][1], interval[1])
-        return result
+def no_overlap_condition(prev, curr):
+    """Check if two intervals don't overlap"""
+    return prev[1] < curr[0]  # prev ends before curr starts
+
+def handle_overlap(result, current):
+    """Handle overlapping intervals based on problem type"""
+    # For merging: extend the last interval
+    result[-1][1] = max(result[-1][1], current[1])
+    # For counting: increment counter
+    # For removal: choose which interval to keep
 ```
 
-### 2-2) Non-overlapping-intervals
+### Specific Templates
 
-```java
-// java
-// LC 435
+#### Template 1: Interval Merging (LC 56, 57)
+```python
+def merge_intervals(intervals):
+    """
+    Merge overlapping intervals
+    Time: O(n log n), Space: O(n)
+    """
+    if not intervals:
+        return []
+    
+    # Sort by start time
+    intervals.sort(key=lambda x: x[0])
+    merged = [intervals[0]]
+    
+    for current in intervals[1:]:
+        last = merged[-1]
+        
+        # No overlap: add current interval
+        if last[1] < current[0]:
+            merged.append(current)
+        # Overlap: merge intervals
+        else:
+            last[1] = max(last[1], current[1])
+    
+    return merged
 
-// V0-3
-// IDEA: GREEDY + SORTING (gpt)
-public int eraseOverlapIntervals_0_3(int[][] intervals) {
-    // Edge case: empty or single interval, nothing to remove
-    if (intervals == null || intervals.length <= 1) {
-        return 0;
+# Java version
+public int[][] merge(int[][] intervals) {
+    if (intervals.length <= 1) return intervals;
+    
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+    List<int[]> merged = new ArrayList<>();
+    
+    for (int[] current : intervals) {
+        if (merged.isEmpty() || merged.get(merged.size() - 1)[1] < current[0]) {
+            merged.add(current);
+        } else {
+            merged.get(merged.size() - 1)[1] = Math.max(
+                merged.get(merged.size() - 1)[1], current[1]
+            );
+        }
     }
+    
+    return merged.toArray(new int[merged.size()][]);
+}
+```
 
-    // Sort intervals by end time (ascending) — Greedy strategy
+#### Template 2: Greedy Scheduling (LC 435, 452)
+```python
+def min_intervals_to_remove(intervals):
+    """
+    Find minimum intervals to remove for non-overlapping set
+    Time: O(n log n), Space: O(1)
+    """
+    if not intervals:
+        return 0
+    
+    # Sort by end time (greedy strategy)
+    intervals.sort(key=lambda x: x[1])
+    
+    count = 0
+    prev_end = intervals[0][1]
+    
+    for i in range(1, len(intervals)):
+        # Overlap detected
+        if intervals[i][0] < prev_end:
+            count += 1  # Remove current interval
+        else:
+            prev_end = intervals[i][1]  # Update end time
+    
+    return count
+
+# Java version
+public int eraseOverlapIntervals(int[][] intervals) {
+    if (intervals.length <= 1) return 0;
+    
     Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
-
+    
     int count = 0;
     int prevEnd = intervals[0][1];
-
+    
     for (int i = 1; i < intervals.length; i++) {
         if (intervals[i][0] < prevEnd) {
-            // Overlapping: remove current interval
             count++;
         } else {
-            // Non-overlapping: update end marker
             prevEnd = intervals[i][1];
         }
     }
-
+    
     return count;
 }
 ```
 
-### 2-3) Insert Interval
-
+#### Template 3: Two Pointer Intersection (LC 986)
 ```python
-# LC 57 Insert Interval
-# V0
-# IDEA : compare merged[-1][1]. interval[0]
-# https://leetcode.com/problems/insert-interval/discuss/1236101/Python3-Easy-to-Understand-Solution
-### NOTE : there are only 2 cases
-# case 1) no overlap -> append interval directly
-# case 2) overlap -> MODIFY 2nd element in last merged interval with the bigger index
-class Solution:
-    def insert(self, intervals, newInterval):
-        ### NOTE THIS TRICK!!! : APPEND newInterval to intervals
-        intervals.append(newInterval)
-        # need to sort first (by 1st element)
-        intervals.sort(key=lambda x:x[0])
-        merged = []
-        for interval in intervals:
-            ### NOTE this condition
-            # if not merged : append directly
-            # if merged[-1][1] < interval[0] : means no overlap : append directly as well
-            if not merged or merged[-1][1] < interval[0]:
-                merged.append(interval)
+def interval_intersection(firstList, secondList):
+    """
+    Find intersection of two interval lists
+    Time: O(m + n), Space: O(min(m, n))
+    """
+    result = []
+    i = j = 0
+    
+    while i < len(firstList) and j < len(secondList):
+        # Find intersection
+        start = max(firstList[i][0], secondList[j][0])
+        end = min(firstList[i][1], secondList[j][1])
+        
+        # Valid intersection
+        if start <= end:
+            result.append([start, end])
+        
+        # Move pointer of interval that ends first
+        if firstList[i][1] < secondList[j][1]:
+            i += 1
+        else:
+            j += 1
+    
+    return result
+```
+
+#### Template 4: Meeting Rooms with Priority Queue (LC 253)
+```python
+import heapq
+
+def min_meeting_rooms(intervals):
+    """
+    Find minimum meeting rooms required
+    Time: O(n log n), Space: O(n)
+    """
+    if not intervals:
+        return 0
+    
+    # Sort by start time
+    intervals.sort(key=lambda x: x[0])
+    
+    # Min heap to track end times
+    heap = []
+    
+    for start, end in intervals:
+        # If earliest meeting ends before current starts
+        if heap and heap[0] <= start:
+            heapq.heappop(heap)
+        
+        # Add current meeting's end time
+        heapq.heappush(heap, end)
+    
+    return len(heap)
+
+# Java version
+public int minMeetingRooms(int[][] intervals) {
+    if (intervals.length == 0) return 0;
+    
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+    PriorityQueue<Integer> heap = new PriorityQueue<>();
+    
+    for (int[] interval : intervals) {
+        if (!heap.isEmpty() && heap.peek() <= interval[0]) {
+            heap.poll();
+        }
+        heap.offer(interval[1]);
+    }
+    
+    return heap.size();
+}
+```
+
+#### Template 5: Calendar Booking (LC 729)
+```python
+class MyCalendar:
+    """
+    Calendar with overlap detection using binary search
+    Time: O(log n) per booking, Space: O(n)
+    """
+    def __init__(self):
+        self.bookings = []
+    
+    def book(self, start, end):
+        # Binary search for insertion position
+        left, right = 0, len(self.bookings)
+        
+        while left < right:
+            mid = (left + right) // 2
+            if self.bookings[mid][1] <= start:
+                left = mid + 1
             else:
-                ### NOTE this op, if there is overlap, we ONLY modify the 2nd element in last interval with BIGGER digit
-                merged[-1][1]= max(merged[-1][1],interval[1])
-        return merged
+                right = mid
+        
+        # Check overlap with neighbors
+        if left > 0 and self.bookings[left - 1][1] > start:
+            return False
+        if left < len(self.bookings) and self.bookings[left][0] < end:
+            return False
+        
+        # No overlap, insert booking
+        self.bookings.insert(left, [start, end])
+        return True
 ```
 
-### 2-4) Maximum Length of Pair Chain
+## 3) Problems by Pattern
+
+### **Merging Pattern Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Merge Intervals | 56 | Sort by start, merge overlaps | Medium | Merge Template |
+| Insert Interval | 57 | Insert and merge | Medium | Merge Template |
+| Summary Ranges | 228 | Consecutive number ranges | Easy | Merge Template |
+| Data Stream as Disjoint Intervals | 352 | TreeMap/SortedDict | Hard | Merge Template |
+| Merge Similar Items | 2363 | Merge by weight | Easy | Merge Template |
+
+### **Greedy Scheduling Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Non-overlapping Intervals | 435 | Sort by end, greedy removal | Medium | Greedy Template |
+| Minimum Arrows to Burst Balloons | 452 | Sort by end, count arrows | Medium | Greedy Template |
+| Maximum Length of Pair Chain | 646 | Sort by second element | Medium | Greedy Template |
+| Activity Selection Problem | - | Classic greedy algorithm | Medium | Greedy Template |
+| Car Pooling | 1094 | Timeline + capacity | Medium | Greedy Template |
+
+### **Intersection & Coverage Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Interval List Intersections | 986 | Two pointers | Medium | Two Pointer Template |
+| Remove Covered Intervals | 1288 | Sort and filter | Medium | Merge Template |
+| Find Right Interval | 436 | Binary search | Medium | Binary Search |
+| Employee Free Time | 759 | Merge + find gaps | Hard | Merge Template |
+| Video Stitching | 1024 | Greedy coverage | Medium | Greedy Template |
+
+### **Meeting Room & Scheduling Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Meeting Rooms | 252 | Sort and check conflicts | Easy | Basic Template |
+| Meeting Rooms II | 253 | Priority queue | Medium | Priority Queue Template |
+| Meeting Scheduler | 1229 | Two pointers + duration | Medium | Two Pointer Template |
+| Minimum Time to Make Rope Colorful | 1578 | Consecutive intervals | Medium | Greedy Template |
+| Course Schedule III | 630 | Priority queue + greedy | Hard | Priority Queue Template |
+
+### **Calendar & Booking Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| My Calendar I | 729 | Sorted list + binary search | Medium | Calendar Template |
+| My Calendar II | 731 | Double booking detection | Medium | Calendar Template |
+| My Calendar III | 732 | K-booking with timeline | Hard | Calendar Template |
+| Exam Room | 855 | Max gap maintenance | Medium | Binary Search |
+| Range Module | 715 | Segment tree/intervals | Hard | Advanced Template |
+
+### **Advanced Interval Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Falling Squares | 699 | Coordinate compression | Hard | Advanced Template |
+| The Skyline Problem | 218 | Sweep line + priority queue | Hard | Advanced Template |
+| Rectangle Area II | 850 | Coordinate compression | Hard | Advanced Template |
+| Perfect Rectangle | 391 | Area calculation + validation | Hard | Advanced Template |
+| Count Integers in Intervals | 2276 | Dynamic intervals | Hard | Advanced Template |
+
+## 4) Pattern Selection Strategy
+
+### Decision Framework Flowchart
+
+```
+Problem Analysis for Interval Problems:
+
+1. Are you merging overlapping intervals?
+   ├── YES → Use Merge Template (LC 56, 57)
+   │   ├── Single interval insertion? → Insert Interval Template
+   │   └── Multiple overlaps? → Standard Merge Template
+   └── NO → Continue to 2
+
+2. Are you finding maximum non-overlapping intervals?
+   ├── YES → Use Greedy Template (LC 435, 452)
+   │   ├── Sort by end time
+   │   └── Greedy selection strategy
+   └── NO → Continue to 3
+
+3. Are you finding intersections between interval lists?
+   ├── YES → Use Two Pointer Template (LC 986)
+   │   ├── Two sorted lists? → Standard Two Pointer
+   │   └── Multiple lists? → Merge then process
+   └── NO → Continue to 4
+
+4. Are you managing meeting rooms or resources?
+   ├── YES → Use Priority Queue Template (LC 253)
+   │   ├── Count resources needed? → Min heap approach
+   │   └── Check availability? → Sort + scan
+   └── NO → Continue to 5
+
+5. Are you handling dynamic bookings/calendar?
+   ├── YES → Use Calendar Template (LC 729-732)
+   │   ├── Single booking? → Binary search insertion
+   │   ├── Double booking allowed? → Two lists approach
+   │   └── K-booking? → Timeline/sweep line
+   └── NO → Consider Advanced Templates
+
+6. Advanced cases (Skyline, Rectangles, etc.)
+   ├── Coordinate compression needed?
+   ├── Sweep line algorithm required?
+   └── Segment tree for range operations?
+```
+
+### Template Selection Guide
+
+**Quick Decision Tree:**
+1. **Overlap Detection**: `prev[1] >= curr[0]` (assuming sorted by start)
+2. **Merge Strategy**: Extend `prev[1] = max(prev[1], curr[1])`
+3. **Greedy Strategy**: Sort by end time, keep earliest ending
+4. **Resource Management**: Use min heap for end times
+5. **Dynamic Insertion**: Maintain sorted order with binary search
+
+## 5) Key Patterns & Overlap Detection
+
+### Overlap Detection Methods
+
+#### Method 1: After Sorting by Start Time
+```python
+def has_overlap(interval1, interval2):
+    """Check if two intervals overlap (sorted by start)"""
+    return interval1[1] > interval2[0]
+```
+
+#### Method 2: General Case (Any Order)
+```python
+def has_overlap(interval1, interval2):
+    """Check if two intervals overlap (any order)"""
+    start1, end1 = interval1
+    start2, end2 = interval2
+    return start1 < end2 and start2 < end1
+```
+
+### Overlap Visualization
+```
+Case 1 - No Overlap:
+|----| interval1
+        |----| interval2
+
+Case 2 - Overlap:
+|-------|
+    |-------|
+
+Case 3 - Complete Overlap:
+|-----------|
+   |-----|
+```
+
+### Common Interval Operations
 
 ```python
-# LC 646 Maximum Length of Pair Chain
-# V0 
-# IDEA : GREEDY + sorting
-# ->  we sort on pair's "2nd" element -> possible cases that we can get sub pairs with max length with the needed conditions
-# ->  we need to find the "max length" of "continous or non-continous" sub pairs (with condition)
-#      -> so start from the "sorted 1st pair" CAN ALWAYS MAKE US GET THE MAX LENGTH of sub pairs with the condition ( we define a pair (c, d) can follow another pair (a, b) if and only if b < c. Chain of pairs can be formed in this fashion.)
-class Solution(object):
-    def findLongestChain(self, pairs):
-        pairs = sorted(pairs, key=lambda x : x[1])
-        ### NOTICE HERE
-        currTime, ans = float('-inf'), 0
-        for x, y in pairs:
-            ### NOTICE HERE
-            if currTime < x:
-                currTime = y
-                ans += 1
-        return ans
+def merge_two_intervals(a, b):
+    """Merge two overlapping intervals"""
+    return [min(a[0], b[0]), max(a[1], b[1])]
 
-# V0'
-class Solution(object):
-    def findLongestChain(self, pairs):
-        pairs = sorted(pairs, key=lambda x : x[1])
-        ### NOTICE HERE
-        currTime, ans = float('-inf'), 0
-        for x, y in pairs:
-            ### NOTICE HERE
-            if currTime < x:
-                currTime = y
-                ans += 1
-        return ans
+def interval_length(interval):
+    """Calculate interval length"""
+    return interval[1] - interval[0]
+
+def intervals_intersection(a, b):
+    """Find intersection of two intervals"""
+    start = max(a[0], b[0])
+    end = min(a[1], b[1])
+    return [start, end] if start <= end else None
+
+def point_in_interval(point, interval):
+    """Check if point is in interval"""
+    return interval[0] <= point <= interval[1]
 ```
 
-### 2-5) Minimum Number of Arrows to Burst Balloons
+## 6) Summary & Quick Reference
 
+### Complexity Quick Reference
+| Operation | Time | Space | Notes |
+|-----------|------|-------|-------|
+| Sort intervals | O(n log n) | O(1) | Essential first step |
+| Merge overlapping | O(n) | O(n) | After sorting |
+| Find intersections | O(m + n) | O(min(m,n)) | Two pointer approach |
+| Meeting rooms | O(n log n) | O(n) | Priority queue for end times |
+| Calendar booking | O(log n) | O(n) | Binary search per insertion |
+| Greedy scheduling | O(n log n) | O(1) | Sort by end time |
+
+### Template Quick Reference
+| Template | Pattern | Key Code |
+|----------|---------|----------|
+| **Merge** | Overlapping intervals | `if last[1] < curr[0]: append else: merge` |
+| **Greedy** | Non-overlapping max | `sort(key=end); if curr[0] >= prev[1]: count++` |
+| **Two Pointer** | List intersection | `start=max(starts), end=min(ends)` |
+| **Priority Queue** | Resource management | `heappush(end_time); if heap[0] <= start: heappop` |
+| **Binary Search** | Dynamic insertion | `bisect.insort` or custom binary search |
+
+### Common Patterns & Tricks
+
+#### **Pattern 1: Merge Overlapping**
 ```python
-# 452 Minimum Number of Arrows to Burst Balloons
-# https://blog.csdn.net/MebiuW/article/details/53096708
-class Solution(object):
-    def findMinArrowShots(self, points):
-        if not points: return 0
-        points.sort(key = lambda x : x[1])
-        curr_pos = points[0][1]
-        ans = 1
-        for i in range(len(points)):
-            if curr_pos >= points[i][0]:
-                continue
-            curr_pos = points[i][1]
-            ans += 1
-        return ans
+# Standard merging after sorting
+intervals.sort()
+merged = [intervals[0]]
+for curr in intervals[1:]:
+    if merged[-1][1] < curr[0]:
+        merged.append(curr)
+    else:
+        merged[-1][1] = max(merged[-1][1], curr[1])
 ```
+
+#### **Pattern 2: Greedy Selection**
+```python
+# Sort by end time for optimal selection
+intervals.sort(key=lambda x: x[1])
+count = 1
+prev_end = intervals[0][1]
+for start, end in intervals[1:]:
+    if start >= prev_end:
+        count += 1
+        prev_end = end
+```
+
+#### **Pattern 3: Timeline Events**
+```python
+# Convert intervals to events for sweep line
+events = []
+for start, end in intervals:
+    events.append((start, 1))    # start event
+    events.append((end, -1))     # end event
+events.sort()
+```
+
+### Problem-Solving Steps
+1. **Identify Pattern**: Merging, scheduling, intersection, or resource management?
+2. **Choose Sorting Strategy**: By start time (merging) or end time (greedy)
+3. **Select Template**: Use appropriate template from above
+4. **Handle Edge Cases**: Empty arrays, single intervals, identical intervals
+5. **Optimize**: Consider space optimization for large datasets
+
+### Common Mistakes & Tips
+
+**🚫 Common Mistakes:**
+- **Wrong sorting order**: Sorting by start when should sort by end (greedy problems)
+- **Off-by-one errors**: Using `<=` vs `<` in overlap conditions
+- **Edge case handling**: Not checking empty arrays or single intervals  
+- **Merge logic errors**: Forgetting to update both start and end during merge
+- **Greedy strategy confusion**: Not understanding why sorting by end time works
+- **Space complexity**: Creating unnecessary intermediate data structures
+
+**✅ Best Practices:**
+- **Always sort first**: Most interval problems require sorted input
+- **Clear overlap definition**: Define overlap condition clearly before coding
+- **Use appropriate template**: Match template to problem pattern
+- **Test edge cases**: Empty input, single interval, identical intervals
+- **Visualize examples**: Draw intervals to understand overlap patterns
+- **Choose right sorting key**: Start time for merging, end time for greedy
+
+### Interview Tips
+1. **Start with examples**: Draw intervals on paper to visualize
+2. **Clarify edge cases**: What about empty intervals? Point intervals?
+3. **Explain sorting choice**: Why sorting by start/end time?
+4. **Walk through algorithm**: Show merge/greedy logic step by step
+5. **Optimize incrementally**: Start with working solution, then optimize
+6. **Practice common patterns**: Master the 5 main templates above
+7. **Time complexity analysis**: Always explain O(n log n) sorting + O(n) processing
+
+### Data Structure Conversion Tricks
+
+#### List to Array (Java)
+```java
+List<int[]> result = new ArrayList<>();
+// ... populate result
+return result.toArray(new int[result.size()][]);
+```
+
+#### Efficient Merging in Python
+```python
+# Using list comprehension for functional style
+def merge_intervals(intervals):
+    intervals.sort()
+    result = [intervals[0]]
+    [result.append(curr) if result[-1][1] < curr[0] 
+     else result[-1].__setitem__(1, max(result[-1][1], curr[1]))
+     for curr in intervals[1:]]
+    return result
+```
+
+### Related Topics
+- **Greedy Algorithms**: Interval scheduling optimization
+- **Binary Search**: Calendar booking and insertion problems  
+- **Priority Queue**: Meeting room and resource management
+- **Two Pointers**: Intersection and comparison problems
+- **Sweep Line**: Advanced problems like skyline and rectangles
+- **Segment Trees**: Range updates and queries on intervals
