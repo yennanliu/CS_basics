@@ -3,6 +3,64 @@ package LeetCodeJava.Stack;
 // https://www.tutorialspoint.com/java/util/stack_pop.htm
 // https://leetcode.com/problems/valid-parentheses/
 // https://www.softwaretestinghelp.com/java-queue-interface/
+/**
+ * 20. Valid Parentheses
+ * N/A
+ * Topics
+ * premium lock icon
+ * Companies
+ * Hint
+ * Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+ *
+ * An input string is valid if:
+ *
+ * Open brackets must be closed by the same type of brackets.
+ * Open brackets must be closed in the correct order.
+ * Every close bracket has a corresponding open bracket of the same type.
+ *
+ *
+ * Example 1:
+ *
+ * Input: s = "()"
+ *
+ * Output: true
+ *
+ * Example 2:
+ *
+ * Input: s = "()[]{}"
+ *
+ * Output: true
+ *
+ * Example 3:
+ *
+ * Input: s = "(]"
+ *
+ * Output: false
+ *
+ * Example 4:
+ *
+ * Input: s = "([])"
+ *
+ * Output: true
+ *
+ * Example 5:
+ *
+ * Input: s = "([)]"
+ *
+ * Output: false
+ *
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= s.length <= 104
+ * s consists of parentheses only '()[]{}'.
+ *
+ * Accepted
+ * 6,510,306/15.2M
+ * Acceptance Rate
+ *
+ */
 
 import java.util.HashMap;
 import java.util.Map;
@@ -166,6 +224,51 @@ public class ValidParentheses {
         }
         return count == 0;
     }
+
+    /**
+     *  Follow up:
+     *
+     *   Return `validated string`
+     *    - if input is a valid parentheses
+     *    - if input is NOT a valid parentheses
+     *
+     *    https://buildmoat.teachable.com/courses/7a7af3/lectures/62677055
+     */
+    public String ConvertToValidBracketString (String s) {
+        Stack<Character> stack = new Stack<>();
+        String ans = "";
+        String openBrackets = "({[", closeBrackets = ")}]";
+        for(char c : s.toCharArray()) {
+            if(openBrackets.contains(String.valueOf(c))) {
+                stack.push(c);
+                ans += c;
+            } else {
+                for( int i = 0 ; i < 3 ; i++) {
+                    if(c == closeBrackets.charAt(i)) {
+                        if(!stack.empty() && stack.peek() == openBrackets.charAt(i) ) {
+                            stack.pop();
+                            ans += c;
+                        } else {
+                            ans += openBrackets.charAt(i);
+                            ans += c;
+                        }
+                    }
+                }
+            }
+        }
+        while (!stack.empty()) {
+            for( int i=0 ; i<3;i++) {
+                if(openBrackets.charAt(i) == stack.peek()) {
+                    ans +=closeBrackets.charAt(i);
+                }
+            }
+            stack.pop();
+        }
+        //assertThat(validateBracketsString(ans)).EqualTrue();
+        return ans;
+    }
+
+
 
 }
 
