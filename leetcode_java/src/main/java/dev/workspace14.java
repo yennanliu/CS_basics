@@ -2346,7 +2346,7 @@ public class workspace14 {
         if(n <= 1){
             return n; // ??
         }
-        int l = 0;
+        int l = 1; // 0;
         int r = n;
 
         while (r > l){
@@ -2355,7 +2355,7 @@ public class workspace14 {
             // [0, mid] are `OK`
             if(!isBadVersion(mid)){
                 if(isBadVersion(mid + 1)){
-                    return mid;
+                    return mid + 1;
                 }
                 l = mid + 1;
             }
@@ -2365,7 +2365,7 @@ public class workspace14 {
             }
         }
 
-        return r; //???
+        return l; //???
     }
 
     private Boolean isBadVersion(int n) {
