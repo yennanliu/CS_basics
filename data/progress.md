@@ -30,11 +30,9 @@
 		- binary search problems:
 			🔍 Classic Binary Search
 					•	LC 704 – Binary Search
-					•	LC 278 – First Bad Version
 					•	LC 374 – Guess Number Higher or Lower
 
 				📈 Binary Search on Sorted Arrays
-					•	LC 34 – Find First and Last Position of Element in Sorted Array
 					•	LC 852 – Peak Index in a Mountain Array
 					•	LC 162 – Find Peak Element
 					•	LC 33 – Search in Rotated Sorted Array

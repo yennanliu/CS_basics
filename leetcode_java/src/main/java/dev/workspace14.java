@@ -2372,4 +2372,77 @@ public class workspace14 {
         return true;
     }
 
+
+    // LC 34
+    // 14,09 - 14.19 pm
+    /**
+     *  Given an array of integers nums `sorted` in `non-decreasing` order,
+     * find the starting and ending position of a given target value.
+     *
+     * If target is not found in the array, return [-1, -1].
+     *
+     * You must write an algorithm with O(log n) runtime complexity.
+     *
+     *
+     * 1. increasing arr
+     * 2. find the start, end idx with target val
+     * 3. return [-1, -1] if NOT found
+     *
+     *
+     *   IDEA 1) BINARY SEARCH
+     *
+     *   IDEA 2) BRUTE FORCE + HASHMAP
+     *
+     */
+    // IDEA 1) BINARY SEARCH
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[] {-1, -1};
+        // edge
+        if(nums == null){
+            return res;
+        }
+        if(nums.length == 1){
+            if(nums[0] == target){
+                res[0] = 0;
+                res[1] = 1;
+            }
+            return res;
+        }
+
+        // binary search
+        // r > l ???
+        int l = 0;
+        int r = nums.length - 1;
+        while(r > l){
+            int mid =  (l + r) / 2;
+            int val = nums[mid];
+            // case 1) target reached
+            if(val == target){
+                // ???
+                int idx1 = mid - 1;
+                int idx2 = mid + 1;
+                boolean shouldMoveLeft = idx1 >= 0 && nums[idx1] == target;
+                boolean shouldMoveRight = idx2 <= nums.length -1 && nums[idx2] == target;
+                while(shouldMoveLeft || shouldMoveRight){
+                    if(shouldMoveLeft){
+                        idx1 -= 1;
+                    }
+                    if (shouldMoveRight) {
+                        idx2 += 1;
+                    }
+                }
+                res[0] = idx1;
+                res[1] = idx2;
+                return res;
+            }else if (val < target){
+                l = mid + 1;
+            }else{
+                r = mid;
+            }
+        }
+
+        return res; // ???
+    }
+
+
 }

@@ -84,6 +84,43 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         return bound;
     }
 
+    // V0-1
+    // IDEA: BINARY SEARCH (fixed by gpt)
+    public int[] searchRange_0_1(int[] nums, int target) {
+        int[] res = new int[] { -1, -1 };
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+
+        // find left bound
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        if (nums[l] != target)
+            return res;
+        res[0] = l;
+
+        // find right bound
+        r = nums.length - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2 + 1; // bias to the right
+            if (nums[mid] > target) {
+                r = mid - 1;
+            } else {
+                l = mid;
+            }
+        }
+        res[1] = r;
+
+        return res;
+    }
+
     // V2
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/14734/easy-java-o-logn-solution/
@@ -251,5 +288,6 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
         return boundary;
     }
+    
 
 }
