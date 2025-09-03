@@ -104,8 +104,41 @@ public class FirstBadVersion {
             }
         }
 
-        // when loop ends, l == r and points to the first bad version
+        /**
+         *  NOTE !!!!
+         *
+         *  -> when loop ends, l == r and points to the first bad version
+         */
         return l;
+    }
+
+    // V0-2
+    // IDEA: BINARY SEARCH ( r > l) (fixed by gpt)
+    public int firstBadVersion_0_2(int n) {
+        // edge
+        if (n <= 1) {
+            return n;
+        }
+        int l = 1; // 0;
+        int r = n;
+
+        while (r > l) {
+            int mid = l + (r - l) / 2;
+            // System.out.println(">>> l = " + l + ", r = " + r + " mid = " + mid);
+            // [0, mid] are `OK`
+            if (!isBadVersion(mid)) {
+                if (isBadVersion(mid + 1)) {
+                    return mid + 1;
+                }
+                l = mid + 1;
+            }
+            // mid or some idx within mid - end are `bad`
+            else {
+                r = mid; // /??
+            }
+        }
+
+        return l; //???
     }
 
     // V1
