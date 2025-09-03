@@ -2331,4 +2331,45 @@ public class workspace14 {
         return -1; //
     }
 
+    // LC 278
+    /**
+     *  IDEA 1) BINARY SEATCH
+     *
+     *  -> r > l ??
+     *  -> find `first xxx`
+     *  -> so l, r is NOT going to overlap
+     *  -> so we can scan
+     *
+     */
+    public int firstBadVersion(int n) {
+        // edge
+        if(n <= 1){
+            return n; // ??
+        }
+        int l = 0;
+        int r = n;
+
+        while (r > l){
+            int mid = (l + r) / 2;
+            System.out.println(">>> l = " + l + ", r = " + r + " mid = " + mid);
+            // [0, mid] are `OK`
+            if(!isBadVersion(mid)){
+                if(isBadVersion(mid + 1)){
+                    return mid;
+                }
+                l = mid + 1;
+            }
+            // mid or some idx within mid - end are `bad`
+            else{
+                r = mid; // /??
+            }
+        }
+
+        return r; //???
+    }
+
+    private Boolean isBadVersion(int n) {
+        return true;
+    }
+
 }
