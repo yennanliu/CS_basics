@@ -30,7 +30,6 @@
 		- binary search problems:
 			🔍 Classic Binary Search
 					•	LC 704 – Binary Search
-					•	LC 35 – Search Insert Position
 					•	LC 278 – First Bad Version
 					•	LC 374 – Guess Number Higher or Lower
 
