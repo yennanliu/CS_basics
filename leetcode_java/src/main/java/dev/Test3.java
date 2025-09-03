@@ -1,13 +1,19 @@
 package dev;
 
-public class Test3 {public static void main(String[] args){
+public class Test3 {public static void main(String[] args) {
 
-    String a = "leetcode";
-    String b = "leet";
+//    String a = "leetcode";
+//    String b = "leet";
+//
+//    System.out.println(a.contains(b));
+//
+//    System.out.println(a.contains("leetc"));
+//    }
 
-    System.out.println(a.contains(b));
+    int l = 0;
+    int r = 1;
+    int mid = ( l + r ) / 2;
+    System.out.println(mid);
 
-    System.out.println(a.contains("leetc"));
     }
-
 }

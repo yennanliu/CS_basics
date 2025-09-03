@@ -39,9 +39,100 @@ package LeetCodeJava.BinarySearch;
 public class SearchInsertPosition {
 
     // V0
-//    public int searchInsert(int[] nums, int target) {
-//
-//    }
+    // IDEA: BINARY SEARCH ( r >= l)
+    public int searchInsert(int[] nums, int target) {
+        // edge
+        if (nums == null) {
+            return 0; // ??
+        }
+        if (nums.length == 1) {
+            if (target > nums[0]) {
+                return 1;
+            }
+            return 0;
+        }
+        if (target < nums[0]) {
+            return 0;
+        }
+        if (target > nums[nums.length - 1]) {
+            return nums.length;
+        }
+
+        // binary search
+        int l = 0;
+        int r = nums.length - 1;
+        // r >= l
+        while (r >= l) {
+            int mid = (r + l) / 2;
+            int val = nums[mid];
+           //System.out.println(">>> l = " + l + ", r = " + r + ", mid = " + mid);
+            /**
+             *  CASE 1)  val == target
+             */
+            if (val == target) {
+                return mid;
+            }
+            /**
+             *  CASE 2)  target NOT in nums AND is in `mid + 1 ` index
+             */
+            // if target NOT in nums
+            // and is in `mid + 1 ` index
+            else if (mid + 1 <= nums.length - 1 && target < nums[mid + 1] && target > nums[mid]) {
+                return mid + 1;
+            }
+            /**
+             *  CASE 3)  target NOT in nums AND is in `mid - 1 ` index
+             */
+            // if target NOT in nums
+            // and is in `mid - 1 ` index
+            else if (mid - 1 >= 0 && target < nums[mid] && target > nums[mid - 1]) {
+                return mid;
+            }
+            /**
+             *  CASE 3)  val is TOO small
+             */
+            else if (val < target) {
+                l = mid + 1;
+            }
+            /**
+             *  CASE 4)  val is TOO big
+             */
+            else {
+                r = mid - 1;
+            }
+        }
+
+        return -1; // should NOT visit here
+    }
+
+    // V0-1
+    // IDEA: BINARY SEARCH ( r >= l) (GPT)
+    public int searchInsert_0_1(int[] nums, int target) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2; // avoid overflow
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+
+        /**
+         *  NOTE !!!!
+         */
+        // if not found, l is the correct insert position
+        return l;
+    }
 
     // V1
 
