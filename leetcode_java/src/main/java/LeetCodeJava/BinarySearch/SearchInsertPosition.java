@@ -107,6 +107,34 @@ public class SearchInsertPosition {
 
     // V0-1
     // IDEA: BINARY SEARCH ( r >= l) (GPT)
+    /**
+     *  IDEA
+     *
+     *  🟡 How standard binary search behaves
+     *
+     * Let’s take an example:
+     *
+     * nums = [1, 3, 5, 6], target = 4.
+     * 	1.	Start
+     *    l=0, r=3
+     *    mid=1, nums[1]=3
+     *    target=4 > 3 → l = mid+1 = 2
+     *
+     * 	2.	Second step
+     *    l=2, r=3
+     *    mid=2, nums[2]=5
+     *    target=4 < 5 → r = mid-1 = 1
+     *
+     * 	3.	Loop ends
+     *    l=2, r=1.
+     *
+     *  -> Notice: l points exactly to where 4 should go (between 3 and 5).
+     *
+     *  -> So, we just return l = 2.
+     *
+     * ✅ Correct without needing special “between mid and mid+1” conditions.
+     *
+     */
     public int searchInsert_0_1(int[] nums, int target) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -131,6 +159,16 @@ public class SearchInsertPosition {
          *  NOTE !!!!
          */
         // if not found, l is the correct insert position
+        /**
+         * 🟣 Why is this guaranteed?
+         * 	  - Binary search shrinks the search range until l > r.
+         * 	  - By construction:
+         * 	      - nums[0..l-1] < target
+         * 	      - nums[l..end] >= target
+         * 	  - So when the loop ends, l is either:
+         * 	      - The index where the target was found, or
+         * 	      - The index where it should be inserted.
+         */
         return l;
     }
 
