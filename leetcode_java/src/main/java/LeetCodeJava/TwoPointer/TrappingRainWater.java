@@ -43,6 +43,35 @@ public class TrappingRainWater {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: STACK (fixed by gpt)
+    public int trap_0_0_1(int[] height) {
+        int n = height.length;
+        if (n <= 2)
+            return 0;
+
+        int ans = 0;
+        Stack<Integer> st = new Stack<>(); // store indices
+
+        for (int i = 0; i < n; i++) {
+            // Process while current height is greater than the stack top
+            while (!st.isEmpty() && height[i] > height[st.peek()]) {
+                int bottom = st.pop(); // the "valley"
+                if (st.isEmpty())
+                    break; // no left boundary
+
+                int left = st.peek(); // left boundary index
+                int width = i - left - 1; // distance between left and right walls
+                int h = Math.min(height[left], height[i]) - height[bottom]; // bounded height
+
+                ans += width * h;
+            }
+            st.push(i);
+        }
+
+        return ans;
+    }
+
     // V0-1
     // IDEA: 2 POINTER + left_till_array + max_till_array
     /**

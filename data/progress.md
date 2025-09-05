@@ -17,7 +17,6 @@
 	 - LC 125 - Valid Palindrome
 	 	- 42
 	 - LC 11 - Container With Most Water
-	 	- 344
 	 	- 42
 	 	- 84
 	 	- 85

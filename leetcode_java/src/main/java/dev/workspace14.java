@@ -2444,5 +2444,89 @@ public class workspace14 {
         return res; // ???
     }
 
+    // LC 42
+    // 9.06 - 9.20 am
+    /**
+     *  IDEA 1) 2 pointers + STACK
+     *
+     *   -> left, right pointer
+     *   -> get `area` when `right > left`
+     *   -> sum over all `area` as ans
+     *   -> slide window ???
+     *   -> maintain a window while
+     *     - left <= right
+     *     - otherwise, get `all areas` within window
+     *   - NOT get area at `0 idx`
+     *
+     *   exp 1)
+     *
+     *   Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
+     *   Output: 6
+     *
+     *
+     *   [0,1,0,2,1,0,1,3,2,1,2,1]  ans = 0
+     *    x
+     *
+     *   [0,1,0,2,1,0,1,3,2,1,2,1]  ans = 0, st = [1], max_l = 1
+     *      x
+     *
+     *   [0,1,0,2,1,0,1,3,2,1,2,1]  ans = 0, st = [1,0], max_l = 1
+     *        x
+     *
+     *  [0,1,0,2,1,0,1,3,2,1,2,1]  ans = 0,  2 > max_l, st = [], ans = (left_l - cur_hight * 1 ) = 1
+     *         x
+     *
+     */
+    public int trap(int[] height) {
+        // edge
+        if(height.length <= 2){
+            return 0;
+        }
+//        // ??
+//        if(height.length == 3){
+//            return 0;
+//        }
+
+        int ans = 0;
+        Stack<Integer> st = new Stack<>();
+        //int l = 0;
+        //int r = 0;
+
+        //int l_height = Integer.MAX_VALUE; // ???
+        Stack<Integer> st_left_height = new Stack<>();
+
+        // NOTE !!! idx starts from 1
+        for(int r = 1; r < height.length; r++){
+            int val = height[r];
+            // case 1) st is empty
+            if(st.isEmpty()){
+                //l_height = val;
+                st_left_height.add(val);
+                st.add(val);
+            }
+            // case 2) cur val < l_height
+            else if (val < st_left_height.peek()){
+                st_left_height.add(val);
+                st.add(val);
+            }
+            // case 3) cur val > l_height
+            else{
+                // get `area`
+                while(!st.isEmpty()){
+                    // pop `1st element` from st_left_height
+                    int l_height = st_left_height.pop();
+                    //int tmp = st.pop() * l_height;
+                    ans += (st.pop() * l_height);
+                }
+                // add cur val to st
+                st.add(val);
+               // l_height = val;
+                st_left_height.add(val);
+            }
+        }
+
+        return ans;
+    }
+
 
 }
