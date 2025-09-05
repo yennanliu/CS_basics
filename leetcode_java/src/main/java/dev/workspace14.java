@@ -2482,31 +2482,26 @@ public class workspace14 {
         if(height.length <= 2){
             return 0;
         }
-//        // ??
-//        if(height.length == 3){
-//            return 0;
-//        }
-
         int ans = 0;
         Stack<Integer> st = new Stack<>();
         //int l = 0;
         //int r = 0;
 
-        //int l_height = Integer.MAX_VALUE; // ???
-        Stack<Integer> st_left_height = new Stack<>();
+        int l_height = Integer.MAX_VALUE; // ???
+        //Stack<Integer> st_left_height = new Stack<>();
 
         // NOTE !!! idx starts from 1
         for(int r = 1; r < height.length; r++){
             int val = height[r];
             // case 1) st is empty
             if(st.isEmpty()){
-                //l_height = val;
-                st_left_height.add(val);
+                l_height = val;
+                //st_left_height.add(val);
                 st.add(val);
             }
             // case 2) cur val < l_height
-            else if (val < st_left_height.peek()){
-                st_left_height.add(val);
+            else if (val < l_height){
+                //st_left_height.add(val);
                 st.add(val);
             }
             // case 3) cur val > l_height
@@ -2514,14 +2509,14 @@ public class workspace14 {
                 // get `area`
                 while(!st.isEmpty()){
                     // pop `1st element` from st_left_height
-                    int l_height = st_left_height.pop();
+                    //int l_height = st_left_height.pop();
                     //int tmp = st.pop() * l_height;
                     ans += (st.pop() * l_height);
                 }
                 // add cur val to st
                 st.add(val);
-               // l_height = val;
-                st_left_height.add(val);
+                l_height = val;
+                //st_left_height.add(val);
             }
         }
 
