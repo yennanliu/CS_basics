@@ -45,24 +45,86 @@ public class TrappingRainWater {
 
     // V0-0-1
     // IDEA: STACK (fixed by gpt)
+    /**
+     *  Example:
+     *
+     *    height = [0,1,0,2]
+     *
+     *    Steps:
+     * 	1.	i=0 → push 0.
+     * 	2.	i=1 → height[1]=1 > height[0]=0 → pop valley 0.
+     * 	    •	Left boundary doesn’t exist (stack empty) → break.
+     * 	    •	Push 1.
+     * 	3.	i=2 → height[2]=0 not > height[1]=1 → push 2.
+     * 	4.	i=3 → height[3]=2 > height[2]=0.
+     * 	    •	Pop valley 2. Left boundary = 1.
+     * 	    •	Width = 3-1-1=1.
+     * 	    •	Height = min(2,1)-0=1.
+     * 	    •	Water = 1*1=1.
+     * 	    •	Continue: height[3]=2 > height[1]=1.
+     * 	    •	Pop valley 1. Stack empty → break.
+     * 	    •	Push 3.
+     *
+     *
+     *  -> Result = 1. ✅
+     *
+     */
     public int trap_0_0_1(int[] height) {
         int n = height.length;
         if (n <= 2)
             return 0;
 
+        /**
+         * 	- ans = result (total trapped water).
+         *
+         * 	- st = stack to store indices (not heights directly).
+         * 	    - Storing indices allows us to compute both height and width.
+         */
         int ans = 0;
         Stack<Integer> st = new Stack<>(); // store indices
 
         for (int i = 0; i < n; i++) {
             // Process while current height is greater than the stack top
+            /**
+             *  NOTE !!
+             *
+             *  - While stack is not empty and the current bar (height[i])
+             *    is taller than the bar at the top index (height[st.peek()]):
+             *
+             * 	- We found a right boundary for a trapped water “basin.” (盆地)
+             *
+             */
             while (!st.isEmpty() && height[i] > height[st.peek()]) {
+                /**
+                 *
+                 * 	- Pop the index at the top.
+                 *  - This represents the `valley` bottom between two walls.
+                 */
                 int bottom = st.pop(); // the "valley"
                 if (st.isEmpty())
                     break; // no left boundary
 
+                /**
+                 * 	- The new top of stack is the left boundary index.
+                 */
                 int left = st.peek(); // left boundary index
                 int width = i - left - 1; // distance between left and right walls
-                int h = Math.min(height[left], height[i]) - height[bottom]; // bounded height
+                /**
+                 *  NOTE !!!
+                 *
+                 * - Effective water height =
+                 *    shorter of the `two walls` (left and right) minus the valley’s height.
+                 *
+                 * - This ensures we don’t over-count if one wall is shorter.
+                 *
+                 *
+                 * -> `eff` height = min (left_wall_height, right_wall_height)
+                 *
+                 *    e.g. Math.min( height[left], height[i] ) - height[bottom]
+                 *
+                 *    (NOTE !!!  need to SUBTRACT the `bottom` height)
+                 */
+                int h = Math.min( height[left], height[i] ) - height[bottom]; // bounded height
 
                 ans += width * h;
             }
@@ -153,7 +215,7 @@ public class TrappingRainWater {
 
     // V1-1
     // https://neetcode.io/problems/trapping-rain-water
-    // IDEA: BRUTE FORCE
+    // IDEA: BRUTE FORCE - `leftMax, rightMax array`
     public int trap_1_1(int[] height) {
         if (height == null || height.length == 0) {
             return 0;
