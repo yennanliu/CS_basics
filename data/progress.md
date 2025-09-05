@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-09-04
+# 2025-09-05
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
@@ -16,6 +16,12 @@
 	 	- 149
 	 - LC 125 - Valid Palindrome
 	 	- 42
+	 - LC 11 - Container With Most Water
+	 	- 344
+	 	- 42
+	 	- 84
+	 	- 85
+	 	- 407
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
