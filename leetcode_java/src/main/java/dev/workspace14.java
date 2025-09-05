@@ -2523,5 +2523,56 @@ public class workspace14 {
         return ans;
     }
 
+    // LC 84
+    // 10.29 - 10.39 AM
+    /**
+     *  -> return the` area `of the `largest rectangle` in the `histogram`.
+     *
+     *  rectangle: `left height` == `right height`
+     *
+     *  -> max rec: find the case that left height and right height are the same and BOTH exist
+     *
+     *
+     *  IDEA 1) STACK: right, left st
+     *   ->
+     *
+     *  IDEA 2) BRUTE FORCE
+     */
+    // IDEA 1) MONO STACK ???
+    public int largestRectangleArea(int[] heights) {
+        return 0;
+    }
+
+
+
+    // IDEA 2) BRUTE FORCE
+    public int largestRectangleArea_1(int[] heights) {
+        // edge
+        if(heights.length == 0){
+            return 0;
+        }
+        if(heights.length == 1){
+            return heights[0];
+        }
+//        if(heights.length == 2){
+//            return Math.min(heights[0], heights[1]);
+//        }
+        int ans = 0;
+
+        // brute force
+        for(int i = 0; i < heights.length; i++){
+            int min_val = heights[i];
+            ans = Math.max(heights[i], ans);
+            for(int j = i+1; j < heights.length; j++){
+                min_val = Math.min(min_val, heights[j]);
+                int tmp = min_val * (j - i + 1);
+                System.out.println(">>> i = " + i + ", j = " + j + ", tmp = " + tmp + ", ans = " + ans + ", min_val = " + min_val);
+                ans = Math.max(tmp, ans);
+            }
+        }
+
+        return ans;
+    }
+
 
 }
