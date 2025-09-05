@@ -2538,9 +2538,42 @@ public class workspace14 {
      *
      *  IDEA 2) BRUTE FORCE
      */
-    // IDEA 1) MONO STACK ???
+    // IDEA 1) MONO INCREASING STACK ???
     public int largestRectangleArea(int[] heights) {
-        return 0;
+        // edge
+        if(heights.length == 0){
+            return 0;
+        }
+        if(heights.length == 1){
+            return heights[0];
+        }
+
+        int ans = 0;
+
+        // mono increasing stack
+        Stack<Integer> st = new Stack();
+
+        for(int i = 0; i < heights.length; i++){
+            int val = heights[i];
+            /**
+             *  if cur val > `stack top val`
+             *   -> pop val from stack
+             *   -> get `area`
+             *
+             */
+            ans = Math.max(ans, val);
+
+            while(!st.isEmpty() && st.peek() < val){
+                int last_idx = st.pop();
+                int tmp = Math.min(heights[last_idx], val) * (i -  last_idx + 1);
+                System.out.println(">>> i = " + i + ", last_idx = " + last_idx + ", st = " + st + ", tmp = " + tmp);
+                ans = Math.max(ans, tmp);
+            }
+
+            st.add(i); // add idx to stack
+        }
+
+        return ans;
     }
 
 

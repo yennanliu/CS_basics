@@ -47,8 +47,123 @@ public class LargestRectangleInHistogram {
 //    }
 
     // V0-0-1
-    // IDEA: BRUTE FORCE (TLE)
+    // IDEA: MONO STACK (GPT)
+    //       -> STACK (monotonic stack) + pop when (cur_height < last+height)
+    /**
+     *  IDEA:
+     *
+     *  🔑 Takeaways:
+     * 	•	Stack stores indices, not heights — needed to compute width.
+     * 	•	Height comes from the popped index.
+     * 	•	Width is computed from current index minus previous index.
+     * 	•	The dummy 0 is a useful trick to flush the stack at the end.
+     */
+    /**
+     *
+     🧠 Why This Works:
+     •	As long as the current bar is taller or equal, we push its index — since it may be part of a future larger rectangle.
+     •	When the current bar is shorter, we know:
+     •	All previous taller bars can’t extend past this point,
+     •	So we pop them, calculate area, and move on.
+     *
+     */
     public int largestRectangleArea_0_0_1(int[] heights) {
+        int n = heights.length;
+
+        /**
+         *  NOTE !!!!
+         *
+         *  - A monotonic increasing stack to store the `indices` of bars.
+         * 	- We’ll use this to track the left boundaries of rectangles.
+         *
+         *
+         * 	NOTE !!!
+         *
+         * 	 the stack stores the `index` of bars (small -> big)
+         *
+         * 	 -> The stack stores indices of elements in non-decreasing height order
+         * 	 (i.e., from shortest to tallest) as we move left to right.
+         */
+        Stack<Integer> stack = new Stack<>();
+        int maxArea = 0;
+
+        // Append a 0 to flush out remaining stack at end
+        /**
+         *
+         * 	- We’re looping from i = 0 to i = n inclusive.
+         *
+         * 	- At i = n, we use a dummy bar of height 0 to
+         * 	  flush the stack — this ensures we process
+         * 	  all remaining bars.
+         */
+        for (int i = 0; i <= n; i++) {
+
+            /**
+             * NOTE !!!!
+             *
+             * 	- If we’re at i == n, we use height 0 (virtual bar).
+             * 	   - Otherwise, we get the real bar height.
+             *
+             * 	- This trick helps to pop all remaining bars in the
+             *   	stack by triggering the while condition.
+             *
+             */
+            int currHeight = (i == n) ? 0 : heights[i];
+
+            /**
+             * 	- While the current height is `less` than the height at
+             * 	  the `top` of the stack:
+
+             * 	   - We’ve found the right boundary for a rectangle with
+             * 	     `height heights[stack.peek()]`.
+             *
+             * 	   - Now compute area using that height.
+             *
+             */
+            while (!stack.isEmpty() && currHeight < heights[stack.peek()]) {
+
+                /**
+                 *  NOTE !!!
+                 *
+                 * 	- Pop the top index from the stack, and get its height.
+                 * 	- This is the `height` of the rectangle we’re evaluating.
+                 */
+                int height = heights[stack.pop()]; // NOTE !!! we pop the element from stack
+
+                /**
+                 *  NOTE !!!
+                 *
+                 *  - Compute the width of the rectangle:
+                 *
+                 * 	   - If the stack is empty after popping,
+                 * 	       it means the popped bar is the smallest so far,
+                 * 	       so its width spans from index 0 to i - 1 → width = i.
+                 *
+                 * 	   - Otherwise, the left boundary is the new stack.peek(),
+                 * 	      so width is from stack.peek() + 1 to i - 1.
+                 *
+                 */
+                int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+
+                // Compute area and update maxArea if it’s larger.
+                maxArea = Math.max(maxArea, height * width);
+            }
+
+            /**
+             *
+             * 	- Push the current index onto the stack.
+             * 	- This keeps the indices of bars in `non-decreasing` height order.
+             */
+            stack.push(i);
+        }
+
+        return maxArea;
+    }
+
+
+    // V0-0-2
+    // IDEA: BRUTE FORCE (TLE)
+    public int largestRectangleArea_0_0_2(int[] heights) {
         // edge
         if (heights == null || heights.length == 0) {
             return 0;
@@ -73,7 +188,8 @@ public class LargestRectangleInHistogram {
     }
 
     // V0-1
-    // IDEA : STACK (monotonic stack)
+    // IDEA : STACK (monotonic stack) + pop when (cur_height < last+height)
+    // mono increasing stack, but the popping condition is current height < height at stack top.
     // https://leetcode.com/problems/largest-rectangle-in-histogram/editorial/
     /**
      *
@@ -185,119 +301,6 @@ public class LargestRectangleInHistogram {
             maxArea = Math.max(maxArea, currentHeight * currentWidth);
         }
 
-
-        return maxArea;
-    }
-
-    // V0-2
-    // IDEA: MONO STACK (GPT)
-    /**
-     *  IDEA:
-     *
-     *  🔑 Takeaways:
-     * 	•	Stack stores indices, not heights — needed to compute width.
-     * 	•	Height comes from the popped index.
-     * 	•	Width is computed from current index minus previous index.
-     * 	•	The dummy 0 is a useful trick to flush the stack at the end.
-     */
-    /**
-     *
-     🧠 Why This Works:
-     •	As long as the current bar is taller or equal, we push its index — since it may be part of a future larger rectangle.
-     •	When the current bar is shorter, we know:
-     •	All previous taller bars can’t extend past this point,
-     •	So we pop them, calculate area, and move on.
-     *
-     */
-    public int largestRectangleArea_0_2(int[] heights) {
-        int n = heights.length;
-
-        /**
-         *  NOTE !!!!
-         *
-         *  - A monotonic increasing stack to store the `indices` of bars.
-         * 	- We’ll use this to track the left boundaries of rectangles.
-         *
-         *
-         * 	NOTE !!!
-         *
-         * 	 the stack stores the `index` of bars (small -> big)
-         *
-         * 	 -> The stack stores indices of elements in non-decreasing height order
-         * 	 (i.e., from shortest to tallest) as we move left to right.
-         */
-        Stack<Integer> stack = new Stack<>();
-        int maxArea = 0;
-
-        // Append a 0 to flush out remaining stack at end
-        /**
-         *
-         * 	- We’re looping from i = 0 to i = n inclusive.
-         *
-         * 	- At i = n, we use a dummy bar of height 0 to
-         * 	  flush the stack — this ensures we process
-         * 	  all remaining bars.
-         */
-        for (int i = 0; i <= n; i++) {
-
-            /**
-             * NOTE !!!!
-             *
-             * 	- If we’re at i == n, we use height 0 (virtual bar).
-             * 	   - Otherwise, we get the real bar height.
-             *
-             * 	- This trick helps to pop all remaining bars in the
-             *   	stack by triggering the while condition.
-             *
-             */
-            int currHeight = (i == n) ? 0 : heights[i];
-
-            /**
-             * 	- While the current height is `less` than the height at
-             * 	  the `top` of the stack:
-
-             * 	   - We’ve found the right boundary for a rectangle with
-             * 	     `height heights[stack.peek()]`.
-             *
-             * 	   - Now compute area using that height.
-             *
-             */
-            while (!stack.isEmpty() && currHeight < heights[stack.peek()]) {
-
-                /**
-                 *  NOTE !!!
-                 *
-                 * 	- Pop the top index from the stack, and get its height.
-                 * 	- This is the `height` of the rectangle we’re evaluating.
-                 */
-                int height = heights[stack.pop()]; // NOTE !!! we pop the element from stack
-
-                /**
-                 *  NOTE !!!
-                 *
-                 *  - Compute the width of the rectangle:
-                 *
-                 * 	   - If the stack is empty after popping,
-                 * 	       it means the popped bar is the smallest so far,
-                 * 	       so its width spans from index 0 to i - 1 → width = i.
-                 *
-                 * 	   - Otherwise, the left boundary is the new stack.peek(),
-                 * 	      so width is from stack.peek() + 1 to i - 1.
-                 *
-                 */
-                int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-
-                // Compute area and update maxArea if it’s larger.
-                maxArea = Math.max(maxArea, height * width);
-            }
-
-            /**
-             *
-             * 	- Push the current index onto the stack.
-             * 	- This keeps the indices of bars in `non-decreasing` height order.
-             */
-            stack.push(i);
-        }
 
         return maxArea;
     }
