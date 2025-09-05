@@ -302,6 +302,57 @@ public class LargestRectangleInHistogram {
         return maxArea;
     }
 
+    // V0-3
+    // IDEA: BRUTE FORCE (TLE)
+    public int largestRectangleArea_0_3(int[] heights) {
+        // edge
+        if (heights.length == 0) {
+            return 0;
+        }
+        if (heights.length == 1) {
+            return heights[0];
+        }
+        //        if(heights.length == 2){
+        //            return Math.min(heights[0], heights[1]);
+        //        }
+        int ans = 0;
+
+        // brute force
+        for (int i = 0; i < heights.length; i++) {
+            int min_val = heights[i];
+            ans = Math.max(heights[i], ans);
+            for (int j = i + 1; j < heights.length; j++) {
+                min_val = Math.min(min_val, heights[j]);
+                int tmp = min_val * (j - i + 1);
+                System.out.println(
+                        ">>> i = " + i + ", j = " + j + ", tmp = " + tmp + ", ans = " + ans + ", min_val = " + min_val);
+                ans = Math.max(tmp, ans);
+            }
+        }
+
+        return ans;
+    }
+
+    // V0-4
+    // IDEA: monotonic increasing stack (GPT)
+    public int largestRectangleArea_0_4(int[] heights) {
+        int n = heights.length;
+        Stack<Integer> st = new Stack<>();
+        int ans = 0;
+
+        for (int i = 0; i <= n; i++) {
+            int h = (i == n) ? 0 : heights[i]; // sentinel at the end
+            while (!st.isEmpty() && h < heights[st.peek()]) {
+                int height = heights[st.pop()];
+                int width = st.isEmpty() ? i : i - st.peek() - 1;
+                ans = Math.max(ans, height * width);
+            }
+            st.push(i);
+        }
+
+        return ans;
+    }
+
     // V2
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/largest-rectangle-in-histogram/editorial/
