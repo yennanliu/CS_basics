@@ -13,7 +13,7 @@ Welcome to CS_BASICS! This comprehensive resource contains everything you need f
 
 ## 📚 Available Resources
 
-### [Cheatsheets](/cheatsheets/)
+### [Cheatsheets]({{ site.url }}{{ site.baseurl }}/cheatsheets/)
 Comprehensive cheatsheets covering all major computer science topics and algorithmic patterns:
 
 - **Data Structures**: Arrays, Linked Lists, Trees, Graphs, Hash Tables
