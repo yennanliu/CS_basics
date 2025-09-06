@@ -200,6 +200,84 @@ public class workspace15 {
         return ans;
     }
 
+  // LC 152
+  // 3.19 - 3.29 pm
+  /**
+   *
+   *  Given an integer array nums,
+   *  find a `subarray` that has the largest product,
+   *  and return the product.
+   *
+   *  -> A subarray is a contiguous non-empty
+   *  sequence of elements within an array.
+   *
+   *
+   *
+   *  IDEA 1) BRUTE FORCE
+   *
+   *  IDEA 2) KADANE ALGO
+   *   -> local, global max
+   *   -> local, global min
+   *
+   *
+   *
+   *  exp 1)
+   *
+   *  Input: nums = [2,3,-2,4]
+   *  Output: 6
+   *
+   *   [2,3,-2,4]  l_b = 2, g_b = 2, l_m = 2, l_m = 2,  ans = 2
+   *    x
+   *
+   *   [2,3,-2,4]  l_b = 6, g_b = 6, l_m = 2, l_m = 2, ans = 6
+   *      x
+   *
+   *   [2,3,-2,4]  l_b = -2, g_b = 6, g_m = -12, l_m = -12,, ans = 6
+   *        x
+   *
+   *   [2,3,-2,4]  l_b = 4, g_b = 6, g_m = -48, l_m = -4,, ans = 6
+   *           x
+   *
+   */
+  // IDEA 2) KADANE ALGO
+  public int maxProduct(int[] nums) {
+      // edge
+      if(nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
 
+      int local_min = nums[0];
+      int local_max = nums[0];
+     // int global_min = nums[0];
+      int global_max = nums[0];
+
+     // NOTE !!! start from idx = 1
+      for(int i = 1; i < nums.length; i++){
+
+          int x = nums[i];
+
+          int _local_max = local_max;
+
+          // V2
+          local_max = Math.max(
+                  x, Math.max(x * local_max, x * local_min)
+          );
+
+          local_min = Math.min(
+                  x, Math.min(x * _local_max, x * local_min)
+          );
+
+          // ???
+          global_max = Math.max(
+                  global_max, local_max
+          );
+
+      }
+
+      return global_max;
+    }
 
 }

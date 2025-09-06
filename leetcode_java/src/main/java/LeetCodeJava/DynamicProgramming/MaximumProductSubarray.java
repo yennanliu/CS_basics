@@ -43,6 +43,16 @@ public class MaximumProductSubarray {
     // V0
     // IDEA: Kadane’s Algorithm for Maximum Product Subarray (GPT)
     /**
+     *  NOTE !!!
+     *
+     *   1. define: local_min, local_max, global_max. 3 var
+     *   2. loop start from idx = 1
+     *   3. init local_min, local_max, global_max as nums[0]
+     *   4. cache local_max
+     *   5. update local_min, local_max logic:
+     *      -> max or min from (x, x * local_min, x * local_max)
+     */
+    /**
      *   NOTE !!!
      *
      *    we define 3 vars:
@@ -219,6 +229,13 @@ public class MaximumProductSubarray {
             // NOTE !!! we cache maxProd as `temp` before updating
             int temp = maxProd; // Store maxProd before updating
 
+            /** NOTE !!!
+             *
+             *  the local_min, local_max update logic are ~= THE SAME
+             *
+             *  -> get max or min from
+             *    (x, x * local_min, x * local_max). that's it.
+             */
             /**
              *  NOTE !!! below
              *
@@ -252,6 +269,64 @@ public class MaximumProductSubarray {
         }
 
         return result;
+    }
+
+    // V0-0-1
+    // IDEA: Kadane’s Algorithm (fixed by gpt)
+    /**
+     *  NOTE !!!
+     *
+     *   1. define: local_min, local_max, global_max. 3 var
+     *   2. loop start from idx = 1
+     *   3. init local_min, local_max, global_max as nums[0]
+     *   4. cache local_max
+     *   5. update local_min, local_max logic:
+     *      -> max or min from (x, x * local_min, x * local_max)
+     */
+    public int maxProduct_0_0_1(int[] nums) {
+        // edge
+        if (nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        int local_min = nums[0];
+        int local_max = nums[0];
+        int global_max = nums[0];
+
+        // NOTE !!! start from idx = 1
+        for (int i = 1; i < nums.length; i++) {
+
+            int x = nums[i];
+
+            /** NOTE !!!
+             *
+             * cache local_max
+             * -> so the `original` val can still be used in local_min calculation
+             */
+            int _local_max = local_max;
+
+            /** NOTE !!!
+             *
+             *  the local_min, local_max update logic are ~= THE SAME
+             *
+             *  -> get max or min from
+             *    (x, x * local_min, x * local_max). that's it.
+             */
+            local_max = Math.max(
+                    x, Math.max(x * local_max, x * local_min));
+
+            local_min = Math.min(
+                    x, Math.min(x * _local_max, x * local_min));
+
+            global_max = Math.max(
+                    global_max, local_max);
+
+        }
+
+        return global_max;
     }
 
     // V0-1

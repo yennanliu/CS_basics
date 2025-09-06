@@ -18,9 +18,7 @@
 	 - LC 11 - Container With Most Water
 	 	- 407
 	 - LC 121 Best Time to Buy and Sell Stock
-	 	- 53
 	 	- 122
-	 	- 152
 	 	- 714
 	 	- 309
 	 	- 123
