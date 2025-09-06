@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Add X to Sum"
+description: "String addition algorithms and digit-by-digit operations"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["string", "math", "addition", "carry"]
+patterns:
+  - Digit-by-digit addition
+  - Carry propagation
+  - String manipulation
+---
+
 # Add `xxx` to Sum
 
 - https://leetcode.com/problems/add-strings/solution/

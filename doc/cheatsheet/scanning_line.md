@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Scanning Line (Line Sweep)"
+description: "Algorithmic paradigm for processing geometric objects with sweep line technique"
+category: "Algorithm"
+difficulty: "Hard"
+tags: ["scanning-line", "line-sweep", "geometric", "intervals"]
+patterns:
+  - Event-based processing
+  - Geometric problem solving
+  - Interval processing
+---
+
 # Scanning Line (Line Sweep) Algorithm
 
 ## Overview

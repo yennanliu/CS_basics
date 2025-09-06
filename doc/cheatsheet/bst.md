@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "BST (Binary Search Tree)"
+description: "Binary tree with ordering property for efficient search operations"
+category: "Data Structure"
+difficulty: "Medium"
+tags: ["bst", "binary-search-tree", "tree", "search", "ordering"]
+patterns:
+  - In-order traversal
+  - Search/insert/delete operations
+  - Tree balancing
+---
+
 # BST (Binary Search Tree)
 
 ## Overview

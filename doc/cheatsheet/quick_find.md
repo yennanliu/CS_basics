@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Quick Find"
+description: "Union-find data structure with quick find operations"
+category: "Data Structure"
+difficulty: "Medium"
+tags: ["union-find", "quick-find", "disjoint-set", "connectivity"]
+patterns:
+  - Union-find operations
+  - Connectivity queries
+  - Disjoint set management
+---
+
 # Quick Find
 
 ## 0) Concept

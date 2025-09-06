@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Stack"
+description: "Linear data structure following LIFO (Last In First Out) principle"
+category: "Data Structure"
+difficulty: "Easy"
+tags: ["stack", "lifo", "linear", "push", "pop"]
+patterns:
+  - LIFO processing
+  - Function call management
+  - Expression evaluation
+---
+
 # Stack
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack.jpeg"></p>

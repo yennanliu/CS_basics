@@ -1,3 +1,20 @@
+---
+layout: cheatsheet
+title: "Binary Search"
+description: "Binary search algorithm for efficiently finding elements in sorted arrays and search spaces"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["binary-search", "divide-conquer", "sorted-array", "search", "two-pointers"]
+patterns:
+  - Basic binary search
+  - Search in rotated array
+  - Find boundaries
+  - Search in 2D matrix
+  - Optimization problems
+time_complexity: "O(log n)"
+space_complexity: "O(1) iterative, O(log n) recursive"
+---
+
 # Binary Search
 
 ## Overview

@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Math"
+description: "Mathematical concepts and algorithms for problem solving"
+category: "Technique"
+difficulty: "Medium"
+tags: ["math", "algorithms", "number-theory", "geometry"]
+patterns:
+  - Mathematical formulas
+  - Number theory
+  - Geometric algorithms
+---
+
 # Math 
 
 ## 0) Concept  

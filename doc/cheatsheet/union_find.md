@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Union Find"
+description: "Disjoint set data structure for connectivity and grouping problems"
+category: "Data Structure"
+difficulty: "Medium"
+tags: ["union-find", "disjoint-set", "connectivity", "graph"]
+patterns:
+  - Connectivity queries
+  - Dynamic connectivity
+  - Cycle detection
+---
+
 # Union Find
 > Check "connection status" for nodes in graphs
 

@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Collections"
+description: "Collection data structures and operations"
+category: "Data Structure"
+difficulty: "Easy"
+tags: ["collections", "data-structures", "operations"]
+patterns:
+  - Collection operations
+  - Data manipulation
+  - Container types
+---
+
 # Collection 
 
 ## 0) Concept  

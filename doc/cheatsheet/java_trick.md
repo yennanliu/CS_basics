@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Java Programming Tricks"
+description: "Essential Java programming tricks and patterns for competitive programming"
+category: "Language"
+difficulty: "Medium"
+tags: ["java", "tricks", "patterns", "competitive-programming"]
+patterns:
+  - Java syntax shortcuts
+  - Collections best practices
+  - Performance optimizations
+---
+
 # Java Programming Tricks & Patterns
 
 ## Overview

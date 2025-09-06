@@ -1,3 +1,20 @@
+---
+layout: cheatsheet
+title: "Binary Tree"
+description: "Binary tree data structure and algorithms for hierarchical data problems"
+category: "Data Structure"
+difficulty: "Medium"
+tags: ["binary-tree", "tree", "dfs", "bfs", "recursion", "traversal"]
+patterns:
+  - Tree traversal (DFS/BFS)
+  - Tree construction
+  - Path problems
+  - Tree properties
+  - Lowest Common Ancestor
+time_complexity: "O(n) for traversal, O(log n) balanced operations"
+space_complexity: "O(n) storage, O(h) recursion depth"
+---
+
 # Binary Tree
 
 ## Overview

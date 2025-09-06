@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Trie"
+description: "Prefix tree data structure for efficient string operations"
+category: "Data Structure"
+difficulty: "Hard"
+tags: ["trie", "prefix-tree", "string", "search"]
+patterns:
+  - Prefix matching
+  - String search
+  - Auto-completion
+---
+
 # Trie 
 > Whenever we come across questions with multiple strings, it is best to think if Trie can help us.
 - https://leetcode.com/problems/search-suggestions-system/solution/

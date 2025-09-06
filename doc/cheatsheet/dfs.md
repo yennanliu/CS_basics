@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "DFS (Depth-First Search)"
+description: "Graph traversal algorithm that explores depth before breadth"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["dfs", "graph", "tree", "traversal", "recursion"]
+patterns:
+  - Depth-first exploration
+  - Backtracking
+  - Path finding
+---
+
 # DFS (Depth-First Search)
 
 ## Overview

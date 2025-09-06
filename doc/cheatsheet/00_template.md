@@ -1,3 +1,15 @@
+---
+layout: cheatsheet
+title: "Cheatsheet Template"
+description: "Template for creating new cheatsheets with consistent structure"
+category: "Template"
+difficulty: "Easy"
+tags: ["template", "structure", "guide"]
+patterns:
+  - Template structure
+  - Consistent formatting
+---
+
 # cheatsheet template 
 
 ## 0) Concept

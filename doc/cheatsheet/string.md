@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "String Algorithms"
+description: "Techniques for processing, searching, and manipulating text data"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["string", "text-processing", "pattern-matching", "manipulation"]
+patterns:
+  - Pattern matching
+  - String transformation
+  - Text parsing
+---
+
 # String Algorithms & Manipulation
 
 ## Overview

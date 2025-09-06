@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Sorting Algorithms"
+description: "Collection of sorting algorithms and techniques for arranging data"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["sorting", "algorithms", "comparison", "stability"]
+patterns:
+  - Comparison-based sorting
+  - Non-comparison sorting
+  - Stable vs unstable sorting
+---
+
 # Sorting Algorithms & Techniques
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/sort_cheatsheet.png"></p>

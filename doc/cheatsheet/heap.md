@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Heap Data Structure"
+description: "Complete binary tree for efficient priority-based operations"
+category: "Data Structure"
+difficulty: "Medium"
+tags: ["heap", "priority-queue", "binary-tree", "sorting"]
+patterns:
+  - Priority queue operations
+  - Heap sort algorithm
+  - Top K elements
+---
+
 # Heap Data Structure
 
 ## Overview

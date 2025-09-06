@@ -1,4 +1,22 @@
-# Bracktrack 
+---
+layout: cheatsheet
+title: "Backtracking"
+description: "Backtracking algorithm for solving constraint satisfaction and combinatorial problems"
+category: "Algorithm"
+difficulty: "Hard"
+tags: ["backtracking", "recursion", "dfs", "permutations", "combinations", "constraint-satisfaction"]
+patterns:
+  - Subsets generation
+  - Permutations
+  - Combinations
+  - N-Queens problem
+  - Sudoku solver
+  - Word search
+time_complexity: "O(2^n) to O(n!) depending on problem"
+space_complexity: "O(n) for recursion depth"
+---
+
+# Backtracking 
 
 > Brute force via  `decision tree process`
 

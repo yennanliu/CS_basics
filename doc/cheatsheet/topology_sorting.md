@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Topological Sorting"
+description: "Linear ordering algorithm for directed acyclic graphs (DAGs)"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["topological-sort", "dag", "dependency", "ordering"]
+patterns:
+  - Dependency resolution
+  - DAG processing
+  - Linear ordering
+---
+
 # Topological Sorting - Complete Guide
 
 ## Overview

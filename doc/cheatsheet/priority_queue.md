@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Priority Queue"
+description: "Abstract data type for priority-based element processing"
+category: "Data Structure"
+difficulty: "Medium"
+tags: ["priority-queue", "heap", "priority-based", "queue"]
+patterns:
+  - Priority-based processing
+  - Heap implementation
+  - Task scheduling
+---
+
 # Priority Queue (PQ) Data Structure 
 
 ## Overview
