@@ -2,18 +2,19 @@
 title: CS_BASICS Cheatsheets
 description: Computer Science fundamentals and coding interview cheatsheets
 author: yennanliu
-email: your-email@example.com
 
-# Theme
-theme: minima
-markdown: kramdown
-highlighter: rouge
+# Theme and plugins
+remote_theme: pages-themes/minimal@v0.2.0
 plugins:
-  - jekyll-feed
-  - jekyll-sitemap
+  - jekyll-remote-theme
 
 # Build settings
-permalink: /:categories/:title/
+markdown: kramdown
+highlighter: rouge
+
+# Include and exclude settings
+include:
+  - doc/cheatsheet
 exclude:
   - .gitignore
   - README.md
@@ -29,36 +30,16 @@ exclude:
   - algorithm/target
   - "*.class"
   - "*.jar"
+  - leetcode_python
+  - leetcode_java
+  - leetcode_scala
+  - leetcode_SQL
+  - algorithm
+  - data_structure
+  - system_design
+  - ref_code
+  - script
 
-# Collections for organizing content
-collections:
-  cheatsheets:
-    output: true
-    permalink: /:collection/:name/
-
-# Defaults
-defaults:
-  - scope:
-      path: "doc/cheatsheet"
-      type: "pages"
-    values:
-      layout: "default"
-  - scope:
-      path: "_cheatsheets"
-      type: "cheatsheets"
-    values:
-      layout: "default"
-
-# Navigation
-navigation:
-  - title: Home
-    url: /
-  - title: Cheatsheets
-    url: /cheatsheets/
-  - title: GitHub
-    url: https://github.com/yennanliu/CS_basics
-
-# GitHub Pages specific
-repository: yennanliu/CS_basics
-github:
-  repository_url: https://github.com/yennanliu/CS_basics
+# GitHub Pages settings
+baseurl: ""
+url: "https://yennanliu.github.io"

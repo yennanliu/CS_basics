@@ -1,8 +1,8 @@
 source "https://rubygems.org"
 
 gem "github-pages", group: :jekyll_plugins
-gem "jekyll-feed"
-gem "jekyll-sitemap"
+gem "jekyll-remote-theme"
+gem "faraday-retry"
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
 # and associated library.
