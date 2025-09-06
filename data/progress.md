@@ -16,9 +16,17 @@
 	 	- 149
 	 - LC 125 - Valid Palindrome
 	 - LC 11 - Container With Most Water
-	 	- 84
-	 	- 85
 	 	- 407
+	 - LC 121 Best Time to Buy and Sell Stock
+	 	- 53
+	 	- 122
+	 	- 152
+	 	- 714
+	 	- 309
+	 	- 123
+	 	- 128
+	 	- 188
+	 	- 1235
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
