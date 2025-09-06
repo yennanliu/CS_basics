@@ -1,0 +1,64 @@
+# GitHub Pages configuration for CS_BASICS cheatsheets
+title: CS_BASICS Cheatsheets
+description: Computer Science fundamentals and coding interview cheatsheets
+author: yennanliu
+email: your-email@example.com
+
+# Theme
+theme: minima
+markdown: kramdown
+highlighter: rouge
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Build settings
+permalink: /:categories/:title/
+exclude:
+  - .gitignore
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .bundle
+  - .sass-cache
+  - _site
+  - archived
+  - workspace
+  - algorithm/target
+  - "*.class"
+  - "*.jar"
+
+# Collections for organizing content
+collections:
+  cheatsheets:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: "doc/cheatsheet"
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: "_cheatsheets"
+      type: "cheatsheets"
+    values:
+      layout: "default"
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: Cheatsheets
+    url: /cheatsheets/
+  - title: GitHub
+    url: https://github.com/yennanliu/CS_basics
+
+# GitHub Pages specific
+repository: yennanliu/CS_basics
+github:
+  repository_url: https://github.com/yennanliu/CS_basics
