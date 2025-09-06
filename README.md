@@ -71,6 +71,7 @@
 - [repl.it](https://repl.it/) - Coding online!
 
 * Visualization
+	- [Algorithms viz](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
 	- [visualgo - DFS / BFS](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
 	- [visualgo - linkedlist](https://visualgo.net/en/list) - Linkedlist visualization
 	- [visualgo - BST](https://visualgo.net/bn/bst) - binary search tree visualization
@@ -86,11 +87,11 @@
 - [freecodecamp - data-structures](https://www.freecodecamp.org/news/tag/data-structures/)
 - [LC interview-experience](https://leetcode.com/discuss/interview-experience?currentPage=1&orderBy=hot&query=)
 - [Cheatsheet](https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet)
+
 * Data structure
 	- [py core data structure interview](https://python.plainenglish.io/python-for-interviewing-an-overview-of-the-core-data-structures-666abdf8b698)
 
 * System design
-
 	- [system_design readme](https://github.com/yennanliu/CS_basics/tree/master/system_design)
 	- [sys_design_resource](https://github.com/yennanliu/CS_basics/blob/master/system_design/sys_design_resource.md)
 
