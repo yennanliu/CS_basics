@@ -57,7 +57,6 @@ public class MaximumSubarray {
         int localMax = nums[0];  // Start with first element
         int globalMax = nums[0];
 
-
         // NOTE !!! we start from `i = 1`
         for (int i = 1; i < nums.length; i++) {
 
@@ -380,6 +379,38 @@ public class MaximumSubarray {
         }
 
         return globalMax;
+    }
+
+    // V0-8
+    // IDEA: Kadane's Algorithm (localMax, globalMax) (fixed by gpt)
+    public int maxSubArray_0_8(int[] nums) {
+        // edge
+        if (nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        // init local, global max
+        int global_max = -1 * Integer.MAX_VALUE;
+        int local_max = -1 * Integer.MAX_VALUE;
+
+        for (int x : nums) {
+            if (local_max == -1 * Integer.MAX_VALUE) {
+                local_max = x;
+            } else if (local_max + x < 0 || local_max + x < x) {
+                local_max = x; // ???
+            } else {
+                local_max += x;
+            }
+
+            global_max = Math.max(global_max, Math.max(local_max, x));
+            // System.out.println(">>> x = " + x + ", local_max = "
+            //         + local_max + ", global_max = " + global_max);
+        }
+
+        return global_max;
     }
 
     // V1
