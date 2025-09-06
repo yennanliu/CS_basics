@@ -109,7 +109,7 @@ int[] arr3 = new int[]{1, 2, 3, 4, 5};     // Explicit initialization
 
 // 2D Array Initialization  
 int[][] matrix = new int[3][4];             // 3 rows, 4 columns (all zeros)
-int[][] matrix2 = {{1, 2}, {3, 4}, {5, 6}}; // Direct 2D initialization
+int[][] matrix2 = {% raw %}{{1, 2}, {3, 4}, {5, 6}}{% endraw %}; // Direct 2D initialization
 
 // Dynamic 2D array (common in LeetCode)
 int k = 4;
@@ -754,9 +754,9 @@ Arrays.sort(words, Collections.reverseOrder());  // Reverse order
 #### 2D Array Sorting
 ```java
 // Sort by first element
-int[][] intervals = {{15,20}, {0,30}, {5,10}};
+int[][] intervals = {% raw %}{{15,20}, {0,30}, {5,10}}{% endraw %};
 Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-// Result: {{0,30}, {5,10}, {15,20}}
+// Result: {% raw %}{{0,30}, {5,10}, {15,20}}{% endraw %}
 
 // Multi-criteria sorting (primary: descending, secondary: ascending)
 Arrays.sort(people, (a, b) -> {
@@ -789,30 +789,30 @@ Arrays.sort(people, new Comparator<int[]>() {
 
 #### In-Place Sorting (Recommended)
 ```java
-int[][] intervals = {{15,20}, {0,30}, {5,10}};
+int[][] intervals = {% raw %}{{15,20}, {0,30}, {5,10}}{% endraw %};
 
 // Sorts original array directly
 Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-// intervals is now: {{0,30}, {5,10}, {15,20}}
+// intervals is now: {% raw %}{{0,30}, {5,10}, {15,20}}{% endraw %}
 ```
 
 #### Stream Sorting (Functional Style)
 ```java
-int[][] intervals = {{15,20}, {0,30}, {5,10}};
+int[][] intervals = {% raw %}{{15,20}, {0,30}, {5,10}}{% endraw %};
 
 // Original array unchanged, returns sorted stream
 int[][] sorted = Arrays.stream(intervals)
     .sorted((a, b) -> Integer.compare(a[0], b[0]))
     .toArray(int[][]::new);  // Must collect to get array
 
-// Original intervals still: {{15,20}, {0,30}, {5,10}}
-// sorted is: {{0,30}, {5,10}, {15,20}}
+// Original intervals still: {% raw %}{{15,20}, {0,30}, {5,10}}{% endraw %}
+// sorted is: {% raw %}{{0,30}, {5,10}, {15,20}}{% endraw %}
 ```
 
 
 **Demonstration:**
 ```java
-int[][] intervals = {{15,20}, {0,30}, {5,10}};
+int[][] intervals = {% raw %}{{15,20}, {0,30}, {5,10}}{% endraw %};
 System.out.println("Original: " + Arrays.deepToString(intervals));
 
 // Stream sorting - original unchanged
@@ -1284,7 +1284,7 @@ return true;
 ```java
 // java
 // LC 417
-public int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+public int[][] DIRECTIONS = new int[][]{% raw %}{{0, 1}, {1, 0}, {-1, 0}, {0, -1}}{% endraw %};
 ```
 
 ### 1-18) Arrays.fill (1 D)

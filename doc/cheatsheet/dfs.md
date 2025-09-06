@@ -480,7 +480,7 @@ _is_island(grid, x, y-1, seen);
 // V2
 // private boolean _is_island_2(char[][] grid, int x, int y, boolean[][] seen) {}
 
-int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+int[][] directions = {% raw %}{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}{% endraw %};
 
 for (int[] dir : directions) {
     int newX = x + dir[0];
@@ -1994,7 +1994,7 @@ private void dfs(int[][] heights, boolean[][] reachable, int y, int x) {
 
     reachable[y][x] = true;
 
-    int[][] directions = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    int[][] directions = new int[][]{% raw %}{{0, 1}, {1, 0}, {-1, 0}, {0, -1}}{% endraw %};
     for (int[] dir : directions) {
         int newY = y + dir[0];
         int newX = x + dir[1];

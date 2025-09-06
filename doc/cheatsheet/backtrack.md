@@ -1092,7 +1092,7 @@ private boolean dfs_(char[][] board, int y, int x, int idx, String word, boolean
     /** NOTE !!! we update visited on x, y here */
     visited[y][x] = true;
 
-    int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    int[][] dirs = {% raw %}{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}{% endraw %};
     /**
      *  NOTE !!!
      *

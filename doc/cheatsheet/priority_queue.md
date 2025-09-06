@@ -159,7 +159,7 @@ public int[] mergeKSortedArrays(int[][] arrays) {
     // Initialize PQ with first element from each array
     for (int i = 0; i < arrays.length; i++) {
         if (arrays[i].length > 0) {
-            pq.offer(new int[]{arrays[i][0], i, 0});
+            pq.offer(new int[]{% raw %}{arrays[i][0], i, 0}{% endraw %});
             totalSize += arrays[i].length;
         }
     }
@@ -356,7 +356,7 @@ public int dijkstra(Map<Integer, List<int[]>> graph, int start, int end) {
     Map<Integer, Integer> distances = new HashMap<>();
     Set<Integer> visited = new HashSet<>();
     
-    pq.offer(new int[]{0, start});
+    pq.offer(new int[]{% raw %}{0, start}{% endraw %});
     distances.put(start, 0);
     
     while (!pq.isEmpty()) {
@@ -379,7 +379,7 @@ public int dijkstra(Map<Integer, List<int[]>> graph, int start, int end) {
                     if (!distances.containsKey(neighbor) || 
                         newDist < distances.get(neighbor)) {
                         distances.put(neighbor, newDist);
-                        pq.offer(new int[]{newDist, neighbor});
+                        pq.offer(new int[]{% raw %}{newDist, neighbor}{% endraw %});
                     }
                 }
             }
