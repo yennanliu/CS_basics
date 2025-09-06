@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Graph Algorithms"
+description: "Algorithms for solving problems on graph data structures"
+category: "Algorithm"
+difficulty: "Hard"
+tags: ["graph", "traversal", "shortest-path", "connectivity"]
+patterns:
+  - Graph traversal
+  - Shortest path algorithms
+  - Connectivity analysis
+---
+
 # Graph Algorithms
 
 ## Overview

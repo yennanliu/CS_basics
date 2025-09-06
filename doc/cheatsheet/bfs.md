@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "BFS (Breadth-First Search)"
+description: "Graph traversal algorithm that explores nodes level by level"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["bfs", "graph", "tree", "traversal", "queue"]
+patterns:
+  - Level-order traversal
+  - Shortest path in unweighted graphs
+  - Queue-based exploration
+---
+
 # BFS (Breadth-First Search)
 
 ## Overview

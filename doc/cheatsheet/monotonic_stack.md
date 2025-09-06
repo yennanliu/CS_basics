@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Monotonic Stack"
+description: "Specialized stack maintaining monotonic order for optimization problems"
+category: "Data Structure"
+difficulty: "Hard"
+tags: ["monotonic-stack", "stack", "optimization", "histogram"]
+patterns:
+  - Next greater/smaller element
+  - Histogram problems
+  - Sequence optimization
+---
+
 # Monotonic Stack Data Structure
 
 ## Overview

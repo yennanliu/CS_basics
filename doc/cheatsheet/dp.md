@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Dynamic Programming (DP)"
+description: "Algorithmic paradigm for solving optimization problems with overlapping subproblems"
+category: "Algorithm"
+difficulty: "Hard"
+tags: ["dp", "dynamic-programming", "memoization", "optimization"]
+patterns:
+  - Optimal substructure
+  - Overlapping subproblems
+  - Memoization
+---
+
 # Dynamic Programming (DP)
 
 ## Overview

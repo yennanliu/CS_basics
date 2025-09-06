@@ -1,0 +1,44 @@
+# GitHub Pages configuration for CS_BASICS cheatsheets
+title: CS_BASICS Cheatsheets
+description: Computer Science fundamentals and coding interview cheatsheets
+author: yennanliu
+
+# Theme and plugins
+plugins:
+  - jekyll-remote-theme
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Include and exclude settings
+include:
+  - doc/cheatsheet
+exclude:
+  - .gitignore
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .bundle
+  - .sass-cache
+  - _site
+  - archived
+  - workspace
+  - algorithm/target
+  - "*.class"
+  - "*.jar"
+  - leetcode_python
+  - leetcode_java
+  - leetcode_scala
+  - leetcode_SQL
+  - algorithm
+  - data_structure
+  - system_design
+  - ref_code
+  - script
+
+# GitHub Pages settings
+baseurl: "/CS_basics"
+url: "https://yennj12.js.org"

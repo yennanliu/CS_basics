@@ -1,3 +1,15 @@
+---
+layout: cheatsheet
+title: "Array Overlap Logic Explanation"
+description: "Understanding overlapping intervals and booking logic"
+category: "Technique"
+difficulty: "Medium"
+tags: ["intervals", "overlap", "booking", "calendar"]
+patterns:
+  - Interval overlap detection
+  - Booking systems
+  - Range checking
+---
 
 # Explanation of Overlapping Booking Logic in MyCalendar
 
