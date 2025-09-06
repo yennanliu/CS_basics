@@ -1,11 +1,15 @@
 ---
 layout: default
 title: CS_BASICS - Computer Science Fundamentals
+description: Comprehensive computer science fundamentals and coding interview preparation materials
 ---
 
-# CS_BASICS - Computer Science Fundamentals
+<div class="hero">
+    <h1 class="hero-title">CS_BASICS</h1>
+    <p class="hero-subtitle">Computer Science Fundamentals & Interview Preparation</p>
+</div>
 
-Welcome to the CS_BASICS documentation site! This repository contains comprehensive computer science fundamentals and coding interview preparation materials.
+Welcome to CS_BASICS! This comprehensive resource contains everything you need for computer science fundamentals and coding interview preparation.
 
 ## 📚 Available Resources
 
