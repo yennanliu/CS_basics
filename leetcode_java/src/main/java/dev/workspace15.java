@@ -110,5 +110,96 @@ public class workspace15 {
         return null;
     }
 
+  // LC 53
+  // 2.19 - 2.29 pm
+  /**
+   *
+   *  Given an integer array nums,
+   *  find the `subarray` with the `largest sum`, and return its sum.
+   *
+   *
+   *  -> A subarray is a contiguous non-empty
+   *  sequence of elements within an array.
+   *
+   *
+   *
+   *  IDEA 1) BRUTE FORCE
+   *  IDEA 2) KADANE ALGO
+   *  IDEA 3)  SLIDE WINDOW ???
+   *
+   *
+   *  exp 1)
+   *
+   *   Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+   *   Output: 6
+   *
+   *
+   *   [-2,1,-3,4,-1,2,1,-5,4]   l_b = -2, g_b = -2, ans = -2
+   *    x
+   *
+   *   [-2,1,-3,4,-1,2,1,-5,4]   l_b = -1, g_b = 1, ans = 1
+   *       x
+   *
+   *   [-2,1,-3,4,-1,2,1,-5,4]   l_b = 0, g_b = 1, ans = 1
+   *         x
+   */
+  // IDEA 2) KADANE ALGO
+  // -> maintain local, global max
+  public int maxSubArray(int[] nums) {
+        // edge
+        if(nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+        // brute force
+        //int ans = Integer.MIN_VALUE; // ???
+        int global_max = -1 * Integer.MAX_VALUE;
+        int local_max = -1 * Integer.MAX_VALUE;
+
+        for(int x: nums){
+            if(local_max == -1 * Integer.MAX_VALUE){
+                local_max = x;
+            }else if(local_max + x < 0 || local_max + x < x){
+                local_max = x; // ???
+            }else{
+                local_max += x;
+            }
+
+            global_max = Math.max(global_max, Math.max(local_max, x));
+
+            System.out.println(">>> x = " + x + ", local_max = "
+                    + local_max + ", global_max = " + global_max);
+        }
+
+        return global_max;
+    }
+
+
+
+    // IDEA 1) BRUTE FORCE -> double loop
+    public int maxSubArray_1(int[] nums) {
+        // edge
+        if(nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+        // brute force
+        int ans = Integer.MIN_VALUE; // ???
+        for(int i = 0; i < nums.length; i++){
+            int tmp = 0;
+            for(int j = i; j < nums.length; j++){
+                tmp += nums[j];
+                ans = Math.max(ans, tmp);
+            }
+        }
+
+        return ans;
+    }
+
+
 
 }
