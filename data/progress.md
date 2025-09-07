@@ -43,7 +43,6 @@
 				- `r > l` binary search
 					- LC 34: Find First and Last Position of Element
 					- LC 35: Search Insert Position
-					- LC 153: Find Minimum in Rotated Sorted Array
 					- LC 154: Find Minimum in Rotated Sorted Array II
 					- LC 278: First Bad Version
 					- LC 658: Find K Closest Elements
