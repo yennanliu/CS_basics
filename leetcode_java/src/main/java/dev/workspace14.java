@@ -2770,15 +2770,6 @@ public class workspace14 {
         if(nums.length == 1){
             return nums[0];
         }
-        // len = 2 ??
-        if(nums.length == 2){
-            return Math.min(nums[0], nums[1]);
-        }
-        if(nums.length == 3){
-            return Math.min(nums[0],
-                    Math.min(nums[1], nums[2])
-            );
-        }
         // already in increasing order
         if(nums[nums.length - 1] > nums[0]){
             return nums[0];
@@ -2791,19 +2782,32 @@ public class workspace14 {
             int mid = (l + r) / 2;
             System.out.println(">>> l = " + l + ", r = " + r +
                     ", mid = " + mid);
-            ans = Math.min(Math.min(ans, nums[mid]),
-                    Math.min(nums[l], nums[r])
-            );
-            // case 1) `left` is in increasing order
-            // -> search `right` arr
-            if(nums[mid] > nums[0]){
-                l = mid + 1;
-            }else{
+//            ans = Math.min(Math.min(ans, nums[mid]),
+//                    Math.min(nums[l], nums[r])
+//            );
+            /**
+             *  case 1)  [mid, r] is increasing order
+             *   -> search left
+             *
+             *   e.g.
+             *    init: [1,2,3,4]
+             *
+             *    -> [4,1,2,3]
+             */
+            if(nums[mid] < nums[r]){
                 r = mid;
+            }
+            /**
+             *  case 2)  [left, mid] is increasing order
+             *   -> search right
+             */
+            else{
+                l = mid + 1;
             }
         }
 
-        return ans;
+        //return ans;
+        return nums[l];
     }
 
 }
