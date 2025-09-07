@@ -41,7 +41,6 @@
 			- `Session 4 - Determine Valid Parentheses`
 		- binary search problems:
 				📈 Binary Search on Sorted Arrays
-					•	LC 852 – Peak Index in a Mountain Array
 					•	LC 162 – Find Peak Element
 					•	LC 33 – Search in Rotated Sorted Array
 					•	LC 81 – Search in Rotated Sorted Array II

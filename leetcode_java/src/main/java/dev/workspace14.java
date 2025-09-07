@@ -2669,5 +2669,64 @@ public class workspace14 {
         return ans;
     }
 
+    // LC 162
+    // 14.40 - 14.50 pm
+    /**
+     *
+     *  A peak element is an element that is `strictly greater`
+     *  than its neighbors.
+     *
+     *  -> Given a 0-indexed integer array nums,
+     *  find a peak element, and return its index.
+     *  If the array contains multiple peaks,
+     *  return the index to any of the peaks.
+     *
+     *
+     *  IDEA 1) BINARY SEARCH
+     *
+     *
+     *
+     *
+     */
+    public int findPeakElement(int[] nums) {
+        // edge
+//        if (nums == null) {
+//            return -1; // Return -1 if the array length is less than 3
+//        }
+//        if (nums.length == 1) {
+//            return 0;// Return -1 if the array length is less than 3
+//        }
+//        if(nums.length == 3){
+//            if(nums[1] > nums[0] && nums[1] > nums[2]){
+//                return 1;
+//            }
+//            return -1; // ???
+//        }
+
+        int ans = -1;
+        int l = 0;
+        int r = nums.length - 1;
+
+        // r > l
+        // so l, r NOT overlap
+        //
+        while(r > l){
+            int mid = (l + r) / 2;
+//            // case 1) peak is found
+//            if(nums[mid] > nums[mid+1] && nums[mid] > nums[mid-1]){
+//                return mid;
+//            }
+            // case 2) left is sorting ???
+            if (nums[mid] < nums[mid+1]) {
+                l = mid + 1;
+            }else{
+                r = mid; // ???
+            }
+        }
+
+      //  return ans;
+        return l; // /??
+    }
+
 
 }
