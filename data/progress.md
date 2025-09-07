@@ -40,8 +40,16 @@
 			- return `validated string` if input string is Valid Parentheses or NOT Valid Parentheses
 			- `Session 4 - Determine Valid Parentheses`
 		- binary search problems:
+				- `r > l` binary search
+					- LC 34: Find First and Last Position of Element
+					- LC 35: Search Insert Position
+					- LC 153: Find Minimum in Rotated Sorted Array
+					- LC 154: Find Minimum in Rotated Sorted Array II
+					- LC 278: First Bad Version
+					- LC 658: Find K Closest Elements
+					- LC 744: Find Smallest Letter Greater Than Target
+
 				📈 Binary Search on Sorted Arrays
-					•	LC 162 – Find Peak Element
 					•	LC 33 – Search in Rotated Sorted Array
 					•	LC 81 – Search in Rotated Sorted Array II
 
