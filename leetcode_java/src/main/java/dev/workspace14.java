@@ -2744,4 +2744,66 @@ public class workspace14 {
 //    }
 
 
+    // LC 153
+    // 15.22 - 15.32 pm
+    /**
+     *
+     *  Suppose an array of length n sorted in `ascending `
+     *  order is rotated between 1 and n times.
+     *
+     *  -> return the `minimum` element of this array.
+     *
+     *
+     *  IDEA 1) BINARY SEARCH
+     *
+     *   -> the `pivot point` exists somewhere in arr
+     *   ->  if [0, idx] is increasing ( nums[idx] > nums[0])
+     *      -> left is `increasing` arr
+     *      -> search `right` part
+     *  -> if [idx, nums.len - 1] is increasing
+     *     -> right is `increasing` arr
+     *     -> search `left part
+     *
+     */
+    public int findMin(int[] nums) {
+        // edge
+        if(nums.length == 1){
+            return nums[0];
+        }
+        // len = 2 ??
+        if(nums.length == 2){
+            return Math.min(nums[0], nums[1]);
+        }
+        if(nums.length == 3){
+            return Math.min(nums[0],
+                    Math.min(nums[1], nums[2])
+            );
+        }
+        // already in increasing order
+        if(nums[nums.length - 1] > nums[0]){
+            return nums[0];
+        }
+        int l = 0;
+        int r = nums.length - 1;
+        // ???
+        int ans = nums[0];
+        while( r > l ){
+            int mid = (l + r) / 2;
+            System.out.println(">>> l = " + l + ", r = " + r +
+                    ", mid = " + mid);
+            ans = Math.min(Math.min(ans, nums[mid]),
+                    Math.min(nums[l], nums[r])
+            );
+            // case 1) `left` is in increasing order
+            // -> search `right` arr
+            if(nums[mid] > nums[0]){
+                l = mid + 1;
+            }else{
+                r = mid;
+            }
+        }
+
+        return ans;
+    }
+
 }
