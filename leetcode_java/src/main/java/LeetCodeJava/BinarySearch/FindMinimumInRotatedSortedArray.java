@@ -154,6 +154,55 @@ public class FindMinimumInRotatedSortedArray {
 
     // V0-0-1
     // IDEA: BINARY SEARCH (r > l)
+    public int findMin_0_0_1(int[] nums) {
+        // edge
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        // already in increasing order
+        if (nums[nums.length - 1] > nums[0]) {
+            return nums[0];
+        }
+        int l = 0;
+        int r = nums.length - 1;
+        /**
+         *  NOTE !!!
+         *
+         *  (r > l)
+         */
+        while (r > l) {
+            int mid = (l + r) / 2;
+//            System.out.println(">>> l = " + l + ", r = " + r +
+//                    ", mid = " + mid);
+            /**
+             *  case 1)  [mid, r] is increasing order
+             *   -> search left
+             *
+             *   e.g.
+             *    init: [1,2,3,4]
+             *
+             *    -> [4,1,2,3]
+             */
+            if (nums[mid] < nums[r]) {
+                r = mid;
+            }
+            /**
+             *  case 2)  [left, mid] is increasing order
+             *   -> search right
+             */
+            else {
+                l = mid + 1;
+            }
+        }
+
+        /**
+         *  NOTE !!! we return left idx val
+         */
+        return nums[l];
+    }
+
+    // V0-0-2
+    // IDEA: BINARY SEARCH (r > l)
     /**
      *  NOTE !!!
      *
@@ -164,7 +213,7 @@ public class FindMinimumInRotatedSortedArray {
      *        Math.min(nums[l], nums[r])
      *        );
      */
-    public int findMin_0_0_1(int[] nums) {
+    public int findMin_0_0_2(int[] nums) {
         // edge
         if (nums.length == 1) {
             return nums[0];
