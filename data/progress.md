@@ -40,10 +40,6 @@
 			- return `validated string` if input string is Valid Parentheses or NOT Valid Parentheses
 			- `Session 4 - Determine Valid Parentheses`
 		- binary search problems:
-			🔍 Classic Binary Search
-					•	LC 704 – Binary Search
-					•	LC 374 – Guess Number Higher or Lower
-
 				📈 Binary Search on Sorted Arrays
 					•	LC 852 – Peak Index in a Mountain Array
 					•	LC 162 – Find Peak Element

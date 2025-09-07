@@ -2607,5 +2607,67 @@ public class workspace14 {
         return ans;
     }
 
+    // LC 852
+    // 14.04 - 14.14 pm
+    /**
+     *
+     *  You are given an integer mountain array arr
+     *
+     *  of length n where the values `increase to a peak element` and then `decrease.`
+     *
+     *  Return the `index of the peak element.`
+     *
+     * Your task is to solve it in O(log(n)) time complexity.
+     *
+     *
+     *  IDEA 1) BINARY SEARCH
+     *
+     *   -> if is a `peak`, then must satisfy
+     *      -   [0, idx - 1] : increase
+     *      -  [idx, right] : decrease
+     *
+     *  IDEA 2) brute force
+     *
+     *
+     *
+     *   ----
+     *
+     *
+     */
+    public int peakIndexInMountainArray(int[] arr) {
+        // edge
+        if (arr == null || arr.length < 3) {
+            return -1; // Return -1 if the array length is less than 3
+        }
+
+        int ans = -1;
+
+        int l = 0;
+        int r = arr.length - 1;
+
+        // binary search: r >= l ????
+        while(r >= l){
+            int mid = (l + r) / 2;
+            int val = arr[mid];
+            // case 1) peak is found
+            if(mid > 0 && mid < arr.length &&
+                    val > arr[mid-1] && val > arr[mid+1]){
+                return mid;
+            }
+            // case 2) left part is increasing
+            if(val < arr[mid + 1]){
+                l  = mid + 1;
+            }
+            // case 3) right part is increasing
+            else{
+               r = mid - 1;
+            }
+
+        }
+
+
+        return ans;
+    }
+
 
 }
