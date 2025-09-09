@@ -2395,7 +2395,7 @@ public class workspace14 {
      *
      */
     // IDEA 1) BINARY SEARCH
-    public int[] searchRange(int[] nums, int target) {
+    public int[] searchRange_10(int[] nums, int target) {
         int[] res = new int[] {-1, -1};
         // edge
         if(nums == null){
@@ -2809,5 +2809,62 @@ public class workspace14 {
         //return ans;
         return nums[l];
     }
+
+    // LC 34
+    // 9.33 - 9.43 am
+    // idea: binary search + odd. even arr size
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[]{-1, -1}; // Default result
+
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+        if(nums.length == 1){
+            if(nums[0] == target){
+                return new int[]{0,0};
+            }
+            return res;
+        }
+
+        int l = 0;
+        int r = nums.length -1;
+        // ???
+        while(r >= l){
+            int mid = (l + r) / 2;
+            if (nums[mid] == target){
+                // ???
+               return getRange(nums, mid, target);
+            }else if (nums[mid] < target){
+                l = mid + 1;
+            }else{
+                r = mid - 1;
+            }
+        }
+
+        return res;
+    }
+
+    private int[] getRange(int[] nums, int idx, int target){
+        //int[] res = new int[]{-1, -1}; // Default result
+        int l = idx;
+        int r = idx;
+        while(l > 0 && nums[l] == target){
+            l -= 1;
+        }
+        while(r < nums.length && nums[r] == target){
+            r += 1;
+        }
+        // ??
+        if(l > 0 && nums[l] != target){
+            l += 1;
+        }
+        if(r < nums.length && nums[r] != target){
+            r -= 1;
+        }
+
+        return new int[] {l,r};
+    }
+
+
 
 }

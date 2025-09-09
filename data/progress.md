@@ -41,8 +41,6 @@
 			- `Session 4 - Determine Valid Parentheses`
 		- binary search problems:
 				- `r > l` binary search
-					- LC 34: Find First and Last Position of Element
-					- LC 35: Search Insert Position
 					- LC 154: Find Minimum in Rotated Sorted Array II
 					- LC 278: First Bad Version
 					- LC 658: Find K Closest Elements
@@ -80,6 +78,9 @@
 					•	LC 2560 – House Robber IV
 	- again:
 	- todo:
+		- List when to use `greedy` VS `bfs/dfs` in graph
+			- e.g. size > 10^5, should use greedy?
+				- list the checkpoints and consideration
 		- (337 similar)
 			- 1770
 			- 1931
