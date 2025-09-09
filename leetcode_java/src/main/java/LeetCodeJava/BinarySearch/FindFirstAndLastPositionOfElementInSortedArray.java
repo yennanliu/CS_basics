@@ -84,6 +84,69 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         return bound;
     }
 
+    // V0-0-1
+    // IDEA: BINARY SEARCH (fixed by gpt)
+    public int[] searchRange_0_0_1(int[] nums, int target) {
+        int[] res = new int[] { -1, -1 };
+
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+        if (nums.length == 1) {
+            if (nums[0] == target) {
+                return new int[] { 0, 0 };
+            }
+            return res;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (r >= l) {
+            int mid = (l + r) / 2;
+            if (nums[mid] == target) {
+                /** NOTE !!! below */
+                return getRange(nums, mid, target);
+            } else if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+
+        return res;
+    }
+
+    private int[] getRange(int[] nums, int idx, int target) {
+        int l = idx;
+        int r = idx;
+
+        /**
+         *  NOTE !!!!
+         *
+         *   we compare `next` idx, so we're sure that when the `next` idx still fit target
+         *   when we move
+         *
+         *   -> check `l-1` idx
+         */
+        while (l - 1 >= 0 && nums[l - 1] == target) {
+            l--;
+        }
+        /**
+         *  NOTE !!!!
+         *
+         *   we compare `next` idx, so we're sure that when the `next` idx still fit target
+         *   when we move
+         *
+         *   -> check `r+1` idx
+         */
+        while (r + 1 < nums.length && nums[r + 1] == target) {
+            r++;
+        }
+
+        return new int[] { l, r };
+    }
+
     // V0-1
     // IDEA: BINARY SEARCH (fixed by gpt)
     public int[] searchRange_0_1(int[] nums, int target) {
