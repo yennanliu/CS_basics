@@ -2812,8 +2812,67 @@ public class workspace14 {
 
     // LC 34
     // 9.33 - 9.43 am
-    // idea: binary search + odd. even arr size
+    // idea: left, right bound
     public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[]{-1, -1}; // Default result
+        int l = 0;
+        int r = nums.length -1;
+        // ???
+        while(r >= l){
+            int mid = (l + r) / 2;
+            if (nums[mid] == target){
+                // ???
+                l = getLeftBound(nums, target, mid);
+                r = getRightBound(nums, target, mid);
+                return new int[]{l,r};
+            }else if (nums[mid] < target){
+                l = mid + 1;
+            }else{
+                r = mid - 1;
+            }
+        }
+
+        return res;
+    }
+
+    private int getLeftBound(int[] nums, int target, int idx){
+        int l = 0;
+        int r = idx;
+        // r > l
+        while(r > l){
+            int mid = (l + r) / 2;
+            if(nums[mid] == target && nums[mid] != target){
+                return mid; // ???
+            }else if(nums[mid] > target){
+                r = mid;
+            }else{
+                l = mid + 1; // ??
+            }
+        }
+        return l;
+    }
+
+    private int getRightBound(int[] nums, int target, int idx){
+        int l = idx;
+        int r = nums.length -1;
+        // r > l
+        while(r > l){
+            int mid = (l + r) / 2;
+            if(nums[mid] == target && nums[mid] != target){
+                return mid; // ???
+            }else if(nums[mid] > target){
+                r = mid;
+            }else{
+                l = mid + 1; // ??
+            }
+        }
+        return r;
+    }
+
+    /// ///////////
+
+    // idea: binary search +  `left, rigth` idx extension
+    public int[] searchRange_2(int[] nums, int target) {
         int[] res = new int[]{-1, -1}; // Default result
 
         if (nums == null || nums.length == 0) {

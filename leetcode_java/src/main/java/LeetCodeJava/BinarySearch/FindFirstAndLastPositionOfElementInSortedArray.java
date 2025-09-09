@@ -42,50 +42,54 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
     // V0
     // IDEA: BINARY SEARCH (fixed by gpt)
     public int[] searchRange(int[] nums, int target) {
-        int[] res = new int[]{-1, -1}; // Default result
-
-        if (nums == null || nums.length == 0) {
+        int[] res = new int[] { -1, -1 };
+        if (nums == null || nums.length == 0)
             return res;
-        }
 
-        // Find the first occurrence of target
-        int left = findBound(nums, target, true);
-        if (left == -1) {
-            return res; // Target not found
-        }
+        int left = getLeftBound(nums, target);
+        int right = getRightBound(nums, target);
 
-        // Find the last occurrence of target
-        int right = findBound(nums, target, false);
-
-        return new int[]{left, right};
+        return new int[] { left, right };
     }
 
-    private int findBound(int[] nums, int target, boolean isFirst) {
+    private int getLeftBound(int[] nums, int target) {
         int l = 0, r = nums.length - 1;
-        int bound = -1;
-
-        while (l <= r) {
-            int mid = l + (r - l) / 2;
-
-            if (nums[mid] == target) {
-                bound = mid;
-                if (isFirst) {
-                    r = mid - 1; // Keep searching left
-                } else {
-                    l = mid + 1; // Keep searching right
-                }
-            } else if (nums[mid] < target) {
-                l = mid + 1;
+        /**
+         *  NOTE !!!
+         *
+         *   `r > l` binary search pattern
+         */
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (nums[mid] < target) {
+                l = mid + 1; // move right
             } else {
-                r = mid - 1;
+                r = mid; // shrink left side
             }
         }
+        return nums[l] == target ? l : -1;
+    }
 
-        return bound;
+    private int getRightBound(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;
+        /**
+         *  NOTE !!!
+         *
+         *   `r > l` binary search pattern
+         */
+        while (l < r) {
+            int mid = (l + r + 1) / 2; // bias mid to the right
+            if (nums[mid] > target) {
+                r = mid - 1; // shrink right side
+            } else {
+                l = mid; // move right
+            }
+        }
+        return nums[r] == target ? r : -1;
     }
 
     // V0-0-1
-    // IDEA: BINARY SEARCH (fixed by gpt)
+    // IDEA: BINARY SEARCH + `left, right` idx extension (fixed by gpt)
     public int[] searchRange_0_0_1(int[] nums, int target) {
         int[] res = new int[] { -1, -1 };
 
@@ -183,6 +187,52 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
         return res;
     }
+
+    // V0-2
+    // IDEA: BINARY SEARCH (fixed by gpt)
+    public int[] searchRange_0_2(int[] nums, int target) {
+        int[] res = new int[]{-1, -1}; // Default result
+
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+
+        // Find the first occurrence of target
+        int left = findBound(nums, target, true);
+        if (left == -1) {
+            return res; // Target not found
+        }
+
+        // Find the last occurrence of target
+        int right = findBound(nums, target, false);
+
+        return new int[]{left, right};
+    }
+
+    private int findBound(int[] nums, int target, boolean isFirst) {
+        int l = 0, r = nums.length - 1;
+        int bound = -1;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (nums[mid] == target) {
+                bound = mid;
+                if (isFirst) {
+                    r = mid - 1; // Keep searching left
+                } else {
+                    l = mid + 1; // Keep searching right
+                }
+            } else if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+
+        return bound;
+    }
+
 
     // V2
     // IDEA : BINARY SEARCH
