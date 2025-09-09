@@ -2477,7 +2477,7 @@ public class workspace14 {
      *         x
      *
      */
-    public int trap(int[] height) {
+    public int trap_100(int[] height) {
         // edge
         if(height.length <= 2){
             return 0;
@@ -2539,7 +2539,49 @@ public class workspace14 {
      *  IDEA 2) BRUTE FORCE
      */
     // IDEA 1) MONO INCREASING STACK ???
-    public int largestRectangleArea(int[] heights) {
+    // 10.28 - 10.38 am
+    public int trap(int[] heights) {
+        // edge
+        int n = heights.length;
+        if (n <= 2){
+            return 0;
+        }
+
+        int ans = 0;
+        // mono increasing stack
+        // save the `idx` !!! (NOT val)
+        // -> [1,4,6,10]
+        // only save the `bigger val`
+        // otherwise, pop till 1) st is empty 2) last stack val <  new val
+        Stack<Integer> st = new Stack<>();
+
+        // i start from 1
+        // and end at `heights.length - 1` ??? -> both start, and end CAN'T
+        // trap water
+        //for(int i = 1; i < heights.length - 1; i++){
+        for(int i = 0; i < heights.length; i++){
+            int x = heights[i];
+            while(!st.isEmpty() && heights[st.peek()] > x){
+                int prev_idx = st.pop();
+                // NOTE !!!
+                if(st.isEmpty()){
+                    break;
+                }
+                int tmp_area = (i - prev_idx)
+                        * Math.min(heights[prev_idx], heights[i]);
+                ans += tmp_area;
+            }
+            st.add(i);
+        }
+
+        return ans;
+    }
+
+
+
+
+    // IDEA 1) MONO INCREASING STACK ???
+    public int largestRectangleArea_100(int[] heights) {
         // edge
         if(heights.length == 0){
             return 0;
