@@ -101,9 +101,24 @@ public class TrappingRainWater {
                  *  - This represents the `valley` bottom between two walls.
                  */
                 int bottom = st.pop(); // the "valley"
-                if (st.isEmpty())
+                // NOTE !!! edge case
+                if (st.isEmpty()){
                     break; // no left boundary
+                }
 
+
+                /**
+                 *  NOTE !!!
+                 *
+                 *  we consider 3 var
+                 *
+                 *  1. left_height
+                 *  2. right_height
+                 *  3. bottom
+                 *
+                 *  -> effect_height = min(left_height, right_height) - bottom
+                 *  -> area = (i - l + 1) * effect_height
+                 */
                 /**
                  * 	- The new top of stack is the left boundary index.
                  */
