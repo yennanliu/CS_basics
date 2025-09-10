@@ -18,13 +18,24 @@
 	 - LC 11 - Container With Most Water
 	 	- 407
 	 - LC 121 Best Time to Buy and Sell Stock
-	 	- 122
 	 	- 714
 	 	- 309
 	 	- 123
 	 	- 128
 	 	- 188
 	 	- 1235
+	 - LC 003 Longest Substring Without Repeating Characters 
+	 	- gpt
+		 	- 219
+		 	- 438
+		 	- 568
+		 	- 76
+		 	- 239
+		 	- 340
+		- gemini
+		 	- 209
+		 	- 567
+		 	- 424
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
