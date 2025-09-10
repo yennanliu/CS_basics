@@ -2966,6 +2966,65 @@ public class workspace14 {
         return new int[] {l,r};
     }
 
+    // LC 121
+    // 9.47 - 9.57 am
+    /**
+     * You want to `maximize` your profit by choosing a `single`
+     * day to buy one stock and choosing a `different` day
+     * in the future to `sell` that stock.
+     *
+     * -> Return the `maximum` profit you can achieve from this transaction.
+     * If you cannot achieve any profit, return 0.
+     *
+     *  IDEA 1) BRUTE FORCE
+     *     -> double loop
+     *
+     *  IDEA 2) 2 POINTERS ???
+     *   -
+     *
+     *
+     */
+    // IDEA 1) 2 POINTERS ???
+    public int maxProfit(int[] prices) {
+        // edge
+        if(prices.length <= 1){
+            return 0;
+        }
+        int ans = 0;
+        int minTillNow = Integer.MAX_VALUE;
+       // int maxTillNow = Integer.MIN_VALUE; // ??
+
+        for(int i = 0; i < prices.length; i++){
+            int x = prices[i];
+            minTillNow = Math.min(x, minTillNow);
+            //maxTillNow = Math.max(x, maxTillNow);
+            if(x > minTillNow){
+                ans = Math.max(ans, x - minTillNow);
+            }
+        }
+
+        return ans;
+    }
+
+
+
+
+    //IDEA 2) BRUTE FORCE
+    public int maxProfit_99(int[] prices) {
+        // edge
+        if(prices.length <= 1){
+            return 0;
+        }
+        int ans = 0;
+        for(int i = 0; i < prices.length; i++){
+            for(int j = i + 1; j < prices.length; j++){
+                ans = Math.max(ans, prices[j] - prices[i]);
+            }
+        }
+
+        return ans;
+    }
+
 
 
 }
