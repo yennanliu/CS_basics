@@ -38,8 +38,39 @@ import java.util.*;
 public class ContainsDuplicate2 {
 
     // V0
-    // IDEA: HASHMAP + BRUTR FORCE
+    // IDEA: HASHMAP + PROBLEM OBSERVATION (gpt)
+    /**
+     * 	•	The HashMap tracks where each number was last seen.
+     * 	•	When you see a number again, check the index difference:
+     * 	•	If it’s ≤ k, you found a nearby duplicate → return true.
+     * 	•	Otherwise, just update the index and keep going.
+     * 
+     */
     public boolean containsNearbyDuplicate(int[] nums, int k) {
+        /**
+         *
+         * 	hash map (lastIndex) where:
+         *    - key = number from the array (nums[i])
+         * 	  - value = the `last index` where that number was seen
+         */
+        // If we've seen this value before AND the distance between
+        // the last index and current index is <= k, then it's a "nearby duplicate"
+        Map<Integer, Integer> lastIndex = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int val = nums[i];
+            if (lastIndex.containsKey(val) && i - lastIndex.get(val) <= k) {
+                return true;
+            }
+            lastIndex.put(val, i);
+        }
+
+        return false;
+    }
+
+    // V0-0-1
+    // IDEA: HASHMAP + BRUTE FORCE
+    public boolean containsNearbyDuplicate_0_0_1(int[] nums, int k) {
         // edge
         if (nums == null || nums.length == 0) {
             return false; // ??

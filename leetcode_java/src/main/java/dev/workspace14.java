@@ -3085,5 +3085,55 @@ public class workspace14 {
     }
 
 
+    // LC 219
+    // 10.48 - 10.58 AM
+    /**
+     * IDEA 1) HASHMAP
+     *    { val: [idx1, idx2,...] }
+     *
+     *    { val: idx1 }
+     *
+     *
+     */
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        // edge
+        if(nums.length <= 1){
+            return false;
+        }
+
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for(int i = 0; i < nums.length; i++){
+            List<Integer> list = new ArrayList<>();
+            int val = nums[i];
+            if(map.containsKey(val)){
+                //List<Integer> list = new ArrayList<>();
+                list = map.get(val);
+            }
+            map.put(val, list);
+            // check
+//            if(duplicateHelper(map, i, val, k){
+//                return true;
+//            }
+
+        }
+
+        return false;
+    }
+
+    private boolean duplicateHelper(Map<Integer, List<Integer>> map, int idx, int key, int k){
+        List<Integer> _list = map.get(key);
+        // sort: default: small -> big ????
+        Collections.sort(_list);
+        //if(Math.abs(_list[0] - _list[_list.size() -1 ]) >= k)
+        for(int x: _list){
+            if(Math.abs(x - key) <= k){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 }
