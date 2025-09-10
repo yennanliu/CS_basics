@@ -2985,7 +2985,7 @@ public class workspace14 {
      *
      */
     // IDEA 1) 2 POINTERS ???
-    public int maxProfit(int[] prices) {
+    public int maxProfit_100(int[] prices) {
         // edge
         if(prices.length <= 1){
             return 0;
@@ -3020,6 +3020,65 @@ public class workspace14 {
             for(int j = i + 1; j < prices.length; j++){
                 ans = Math.max(ans, prices[j] - prices[i]);
             }
+        }
+
+        return ans;
+    }
+
+    // LC 122
+    // 10.08 - 10.18 am
+    /**
+     * IDEA 1) BRUTE FORCE
+     *
+     * IDEA 2) DP
+     *
+     * IDEA 3) GREEDY
+     *
+     */
+    // IDEA 3) GREEDY
+    public int maxProfit(int[] prices) {
+        // edge
+        if(prices.length <= 1){
+            return 0;
+        }
+        int ans = 0;
+
+        //int cur = prices[0];
+        int prev = prices[0];
+
+        for(int i = 1; i < prices.length; i++){
+            int cur = prices[i];
+            // case 1) cur > prev
+            if(cur > prev){
+                ans += (cur - prev);
+                prev = cur; // ???
+            }
+            // case 2) cur < prev
+            else{
+                prev = cur;
+            }
+        }
+
+        return ans;
+    }
+
+
+
+    public int maxProfit_100222(int[] prices) {
+        // edge
+        if(prices.length <= 1){
+            return 0;
+        }
+        int ans = 0;
+        for(int i = 0; i < prices.length; i++){
+            int tmp = 0;
+            for(int j = i + 1; j < prices.length; j++){
+               // ans = Math.max(ans, prices[j] - prices[i]);
+                if(prices[j] - prices[i] > 0){
+                    tmp += prices[j] - prices[i];
+                }
+            }
+            ans = Math.max(ans, tmp);
         }
 
         return ans;
