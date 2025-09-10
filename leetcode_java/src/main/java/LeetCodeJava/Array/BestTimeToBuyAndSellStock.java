@@ -36,6 +36,39 @@ package LeetCodeJava.Array;
 public class BestTimeToBuyAndSellStock {
 
     // V0
+    // IDEA: maintain `min till now` var + problem observation
+    public int maxProfit(int[] prices) {
+        // edge
+        if (prices.length <= 1) {
+            return 0;
+        }
+        int ans = 0;
+        int minTillNow = Integer.MAX_VALUE;
+
+        /**  NOTE !!!
+         *
+         *  since we can ONLY `buy first then sell`, so
+         *    ->
+         *      1. we CAN'T sell before buy
+         *      2. a min buy time potential means `biggest revenue`
+         *
+         *    -> so, we maintain the `min price we've seen till now`
+         *       and check the current revenue by (cur_val - small_till_now)
+         *       and maintain the `biggest revenue` within looping values.
+         *       by this way, we can get the `biggest revenue` in a single loop
+         */
+        for (int i = 0; i < prices.length; i++) {
+            int x = prices[i];
+            minTillNow = Math.min(x, minTillNow);
+            if (x > minTillNow) {
+                ans = Math.max(ans, x - minTillNow);
+            }
+        }
+
+        return ans;
+    }
+
+    // V0_0_1
     // IDEA: 2 POINTERS
     // time: O(N), space: O(1)
     /**
@@ -91,7 +124,7 @@ public class BestTimeToBuyAndSellStock {
      *
      *  -> res = 5
      */
-    public int maxProfit(int[] prices) {
+    public int maxProfit_0_0_1(int[] prices) {
 
         // edge
         if (prices == null || prices.length <= 1) {
@@ -203,6 +236,24 @@ public class BestTimeToBuyAndSellStock {
             }
         }
         return maxProfit > 0 ? maxProfit : 0;
+    }
+
+    // V0-4
+    // IDEA: BRUTE FORCE (TLE)
+    //IDEA 1) BRUTE FORCE
+    public int maxProfit_0_4(int[] prices) {
+        // edge
+        if(prices.length <= 1){
+            return 0;
+        }
+        int ans = 0;
+        for(int i = 0; i < prices.length; i++){
+            for(int j = i + 1; j < prices.length; j++){
+                ans = Math.max(ans, prices[j] - prices[i]);
+            }
+        }
+
+        return ans;
     }
 
     // V1
