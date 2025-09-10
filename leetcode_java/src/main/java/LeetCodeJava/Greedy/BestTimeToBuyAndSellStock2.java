@@ -52,7 +52,7 @@ public class BestTimeToBuyAndSellStock2 {
         int profit = 0;
 
         /** NOTE !!! we start from idx = 1 */
-        for(int i = 1; i<prices.length; i++){
+        for(int i = 1; i < prices.length; i++){
 
             /** NOTE !!!
              *
@@ -78,6 +78,46 @@ public class BestTimeToBuyAndSellStock2 {
         }
         return profit;
     }
+
+    // V0-0-1
+    // IDEA: GREEDY
+    public int maxProfit_0_0_1(int[] prices) {
+        // edge
+        if(prices.length <= 1){
+            return 0;
+        }
+        int ans = 0;
+
+        /** NOTE !!!
+         *
+         *   we maintain 2 var: prev, cur
+         *   so ONLY do `buy-sell` when `cur > prev`, then add result to final answer
+         *   otherwise, we update prev as cur and DO NOTHING ELSE
+         *
+         *
+         */
+        int prev = prices[0];
+
+        /** NOTE !!! idx start from 1 */
+        for(int i = 1; i < prices.length; i++){
+            int cur = prices[i];
+            /** NOTE !!! 2 cases */
+            // case 1) cur > prev
+            // do `buy-sell` when `cur > prev`, then add result to final answer
+            if(cur > prev){
+                ans += (cur - prev);
+                prev = cur; // ???
+            }
+            // case 2) cur < prev
+            // we update prev as cur and DO NOTHING ELSE
+            else{
+                prev = cur;
+            }
+        }
+
+        return ans;
+    }
+
 
     // V0-1
     // IDEA: GREEDY (fixed by gpt)
