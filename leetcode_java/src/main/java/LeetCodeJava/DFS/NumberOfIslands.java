@@ -479,4 +479,64 @@ public class NumberOfIslands {
         return num_islands;
     }
 
+    /**
+     *  Follow up:
+     *
+     *   - https://buildmoat.teachable.com/courses/7a7af3/lectures/62695429
+     *
+     *   If the grid was originally all water, and then there are multiple updates,
+     *   each update will replace a water grid with land. That is, a coordinate (x, y) will
+     *   be given to ensure that it was originally water and then converted to land.
+     *   After each update, please confirm the current number of islands.
+     *
+     */
+    // IDEA: UNION FIND
+    int[] parent;
+    static int[] dx = { 0, 0, 1, -1 };
+    static int[] dy = { 1, -1, 0, 0 };
+    static int directionCount = 4;
+
+    private int findParent(int id) {
+        if (parent[id] == id) {
+            return id;
+        }
+        return parent[id] = findParent(parent[id]);
+    }
+
+    private boolean union(int x, int y) {
+        int parentX = findParent(x);
+        int parentY = findParent(y);
+        if (parentX != parentY) {
+            parent[parentX] = parentY;
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<Integer> numberOfIslands(int m, int n, int [][] position) {
+        int [][] grid = new int[m][n];
+        parent = new int[position.length+1];
+        int islandsCount = 0;
+        ArrayList<Integer> ans = new ArrayList<Integer>();
+        for( int i = 0 ; i < position.length ; i++) {
+            int id = i + 1;
+            parent[id] = id;
+            grid[position[i][0]][position[i][1]] = id;
+            islandsCount++;
+            for(int direction = 0 ; direction < directionCount ; direction++) {
+                int targetX = position[i][0] + dx[direction];
+                int targetY = position[i][1] + dy[direction];
+                if (targetX >= 0 && targetX < m && targetY >=0 && targetY < n && grid[targetX][targetY] != 0) {
+                    if(union(id, grid[targetX][targetY])) {
+                        islandsCount--;
+                    }
+                }
+            }
+            ans.add(islandsCount);
+        }
+        return ans;
+    }
+
+
+
 }
