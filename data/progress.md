@@ -26,8 +26,6 @@
 	 	- 1235
 	 - LC 003 Longest Substring Without Repeating Characters 
 	 	- gpt
-		 	- 219
-		 	- 438
 		 	- 568
 		 	- 76
 		 	- 239
