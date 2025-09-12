@@ -249,19 +249,119 @@ public class workspace14 {
     // 3.13 - 3.23 pm
     /**
      *
+     *
+     *  An anagram is a word or phrase formed by rearranging the
+     *  letters of a different word or phrase, using all the original letters exactly once.
+     *  -> 任意排列 ??
+     *
+     *
      *  return an array of `all` the `start` indices of
      *  p's anagrams in s.
      *
      *
-     *  IDEA 1) 2 POINTER + HASH MAP
+     *  IDEA 1) slide window + hashmap ???
      *
      */
+    // 9.33 - 9.43 am
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(s.isEmpty()){
+            return res;
+        }
+        // {val: cnt}
+        Map<String, Integer> p_cnt = new HashMap<>();
+        for(String x: p.split("")){
+            p_cnt.put(x, p_cnt.getOrDefault(x, 0) + 1);
+        }
+
+       //int r = 0;
+        Map<String, Integer> s_cnt = new HashMap<>();
+        // queue FIFO
+        Queue<String> s_q = new LinkedList<>();
+        int l = 0; //??
+
+        for(int r = 0; r < s.length(); r++){
+            String val = String.valueOf(s.charAt(r));
+//            if(isEqualMap(p_cnt, s_cnt)){
+//                res.add(r);
+//            }
+            // add new element
+            s_q.add(val);
+            s_cnt.put(val, s_cnt.getOrDefault(val, 0) + 1);
+
+            while( r - l + 1 > p.length() ){
+
+                String val_left = String.valueOf(s.charAt(l));
+                s_cnt.put(val_left, s_cnt.get(val_left) - 1);
+                if(s_cnt.get(val_left) == 0){
+                    s_cnt.remove(val_left);
+                }
+
+                l += 1;
+            }
+
+            // NOTE !!! is same size
+            if(r - l + 1 == p.length()){
+                if(isEqualMap(s_cnt, p_cnt)){
+                    res.add(l);
+                }
+            }
+
+//            if(!p_cnt.containsKey(val)){
+//                s_q = new LinkedList<>();
+//                s_cnt = new HashMap<>();
+//                l = r + 1;
+//            }else{
+//                while(!s_q.isEmpty() && (s_q.size() > p.length() || s_cnt.get(val) > p_cnt.get(val)) ){
+//                    // queue
+//                    s_q.poll();
+//                    // map
+//                    s_cnt.put(val, s_cnt.get(val) - 1);
+//                    if(s_cnt.get(val) == 0){
+//                        s_cnt.remove(val);
+//                    }
+//                    l += 1;
+//                }
+//            }
+
+        }
+
+        return res;
+    }
+
+    private boolean isEqualMap(Map<String, Integer> mapA, Map<String, Integer> mapB){
+        if(mapA.isEmpty() && mapB.isEmpty()){
+            return true;
+        }
+        if(mapA.isEmpty() || mapB.isEmpty()){
+            return false;
+        }
+        if(mapA.keySet().size() != mapB.keySet().size()){
+            return false;
+        }
+        for(String x: mapA.keySet()){
+            if(!Objects.equals(mapA.get(x), mapB.get(x))){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
+
+
+
+
+
     // 3.09 - 3.19 pm
     /**
      *  IDEA 1) HASHMAP + LOOP
      *
      */
-    public List<Integer> findAnagrams(String s, String p) {
+    public List<Integer> findAnagrams_100(String s, String p) {
         List<Integer> res = new ArrayList<>();
         // edge
         if (s == null || p == null || s.isEmpty() || p.isEmpty() || p.length() > s.length()) {
@@ -3134,6 +3234,5 @@ public class workspace14 {
 
         return false;
     }
-
 
 }
