@@ -53,8 +53,59 @@ import java.util.Map;
 public class MinimumWindowSubstring {
 
     // V0
-    // IDEA: MAP + SLIDING WINDOW (fixed by gpt)
+    // IDEA: HASHMAP + SLIDE WINDOW PATTERN (fixed by gpt)
     public String minWindow(String s, String t) {
+        if (s == null || t == null || s.length() == 0 || t.length() == 0) {
+            return "";
+        }
+
+        int resLen = Integer.MAX_VALUE;
+        String res = "";
+
+        Map<String, Integer> s_map = new HashMap<>();
+        Map<String, Integer> t_map = new HashMap<>();
+
+        for (char c : t.toCharArray()) {
+            String key = String.valueOf(c);
+            t_map.put(key, t_map.getOrDefault(key, 0) + 1);
+        }
+
+        int l = 0;
+
+        for (int r = 0; r < s.length(); r++) {
+            String val_right = String.valueOf(s.charAt(r));
+            s_map.put(val_right, s_map.getOrDefault(val_right, 0) + 1);
+
+            while (isValidWindow(t_map, s_map)) {
+                if (r - l + 1 < resLen) {
+                    resLen = r - l + 1;
+                    res = s.substring(l, r + 1);
+                }
+
+                String val_left = String.valueOf(s.charAt(l));
+                s_map.put(val_left, s_map.get(val_left) - 1);
+                if (s_map.get(val_left) == 0) {
+                    s_map.remove(val_left);
+                }
+                l++;
+            }
+        }
+
+        return res;
+    }
+
+    private boolean isValidWindow(Map<String, Integer> t_map, Map<String, Integer> s_map) {
+        for (String k : t_map.keySet()) {
+            if (s_map.getOrDefault(k, 0) < t_map.get(k)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // V0-0-1
+    // IDEA: MAP + SLIDING WINDOW (fixed by gpt)
+    public String minWindow_0_0_1(String s, String t) {
         // Edge cases
         if (s == null || t == null || s.length() < t.length()) {
             return "";
@@ -280,5 +331,7 @@ public class MinimumWindowSubstring {
         return minLen == Integer.MAX_VALUE ? new String() :
                 new String(chS, startIndex, minLen);
     }
+
+
 
 }

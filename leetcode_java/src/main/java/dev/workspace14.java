@@ -3235,4 +3235,127 @@ public class workspace14 {
         return false;
     }
 
+    // LC 76
+    // 10.38 - 10.48 am
+    /**
+     * return the `minimum` window `substring`
+     * of s such that `every character` in t
+     * (including duplicates) is included in the window.
+     *
+     * - A substring is a contiguous non-empty sequence of characters within a string.
+     *
+     *
+     *  IDEA 1) SLIDE WINDOW + HASHMAP
+     *
+     *
+     */
+    public String minWindow(String s, String t) {
+        // edge
+        if(s.isEmpty()){
+            return null;
+        }
+        if(s.endsWith(t)){
+            return s; // ??
+        }
+
+        int resLen = Integer.MAX_VALUE;
+        String res = "";
+
+        Map<String, Integer> s_map = new HashMap<>();
+        Map<String, Integer> t_map = new HashMap<>();
+
+        for(String x: t.split("")){
+            t_map.put(x, t_map.getOrDefault(x, 0) + 1);
+        }
+
+        System.out.println(">>> t_map = " + t_map);
+
+        int l = 0;
+
+        // slide window
+        for(int r = 0; r < s.length(); r++){
+
+            String val_right = String.valueOf(s.charAt(r));
+
+            //String substr = String.copyValueOf(s.toCharArray(), l, r);
+            // update s_map
+            s_map.put(val_right, s_map.getOrDefault(val_right, 0) + 1);
+
+            System.out.println(">>>(before while) val_right = " + val_right + ", s_map = " + s_map + ", isEqualMap_2(t_map, s_map) = " + isEqualMap_2(t_map, s_map));
+
+            while(isEqualMap_2(t_map, s_map)){
+                //String substr = String.copyValueOf(s.toCharArray(), l, r);
+                if(r - l + 1 < resLen){
+                   res = String.copyValueOf(s.toCharArray(), l, r + 1); // NOTE !!! r + 1
+                   resLen = r - l + 1;
+
+                   System.out.println("res = " + res + " , resLen =  " + resLen);
+                }
+
+                String val_left = String.valueOf(s.charAt(l));
+                s_map.put(val_left, s_map.get(val_left) - 1);
+                if(s_map.get(val_left) == 0){
+                    s_map.remove(val_left);
+                }
+
+                System.out.println(">>>(in while) val_right = " + val_right + ", s_map = " + s_map + ", val_left = " + val_left);
+
+
+                l += 1;
+
+            }
+
+        }
+
+        return res;
+    }
+
+
+    private boolean isEqualMap_2(Map<String, Integer> t_map, Map<String, Integer> s_map) {
+//        if (t_map.size() != s_map.size()) {
+//            return false;
+//        }
+        if(s_map.isEmpty()){
+            return false;
+        }
+        for (String k : t_map.keySet()) {
+            if (!s_map.containsKey(k) || !s_map.get(k).equals(t_map.get(k))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    //---------------------------
+
+    private boolean isValidSubStr(String s_sub, String t){
+        if(s_sub.isEmpty() || s_sub.length() < t.length()){
+            return false;
+        }
+        if(s_sub.equals(t)){
+            return true;
+        }
+        Map<String, Integer> t_map = new HashMap<>();
+        Map<String, Integer> s_sub_map = new HashMap<>();
+
+        for(String x: t.split("")){
+            t_map.put(x, t_map.getOrDefault(x, 0) + 1);
+        }
+
+        for(String x: s_sub.split("")){
+            s_sub_map.put(x, s_sub_map.getOrDefault(x, 0) + 1);
+        }
+
+        for(String k: t_map.keySet()){
+            if(!Objects.equals(t_map.get(k), s_sub_map.get(k))){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
 }
