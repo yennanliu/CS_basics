@@ -27,7 +27,6 @@
 	 - LC 003 Longest Substring Without Repeating Characters 
 	 	- gpt
 		 	- 568
-		 	- 76
 		 	- 239
 		 	- 340
 		- gemini
