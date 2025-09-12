@@ -54,6 +54,20 @@ public class MinimumWindowSubstring {
 
     // V0
     // IDEA: HASHMAP + SLIDE WINDOW PATTERN (fixed by gpt)
+    /**
+     *  NOTE !!! slide window pattern:
+     *
+     *   int l = 0; // left idx
+     *
+     *   // right idx
+     *   for (int r = 0; r < s.size(); r++){
+     *       while(isValid()){
+     *           // do sth
+     *           l += 1;
+     *       }
+     *   }
+     *
+     */
     public String minWindow(String s, String t) {
         if (s == null || t == null || s.length() == 0 || t.length() == 0) {
             return "";

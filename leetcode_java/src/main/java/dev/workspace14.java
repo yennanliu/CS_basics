@@ -3254,7 +3254,7 @@ public class workspace14 {
         if(s.isEmpty()){
             return null;
         }
-        if(s.endsWith(t)){
+        if(s.equals(t)){
             return s; // ??
         }
 
@@ -3312,14 +3312,11 @@ public class workspace14 {
 
 
     private boolean isEqualMap_2(Map<String, Integer> t_map, Map<String, Integer> s_map) {
-//        if (t_map.size() != s_map.size()) {
-//            return false;
-//        }
         if(s_map.isEmpty()){
             return false;
         }
         for (String k : t_map.keySet()) {
-            if (!s_map.containsKey(k) || !s_map.get(k).equals(t_map.get(k))) {
+            if (!s_map.containsKey(k) || s_map.get(k) < t_map.get(k)) {
                 return false;
             }
         }
