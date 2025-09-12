@@ -41,7 +41,25 @@ import java.util.*;
 public class FindAllAnagramsInAString {
 
     // V0
-    // IDEA: HASHMAP + 2 POINTERS (fixed by gpt)
+    // IDEA: SLIDE WINDOW + HASHMAP (fixed by gpt)
+    // NOTE !!!  1) loop over idx 2) while loop 2 cases:  r - l + 1 < p.size() or NOT
+    /**  
+     *   NOTE !!!  slide window pattern
+     *  
+     *   int l = 0;
+     *   
+     *   for (int r = 0; r < s.size(); r++){
+     *       // isValid could be: r - l + 1 < p.size()
+     *       while (isValid()){
+     *           // do something
+     *           l += 1;
+     *       }
+     *       
+     *       // do something
+     *   }
+     * 
+     * 
+     */
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> res = new ArrayList<>();
         // edge
@@ -119,7 +137,25 @@ public class FindAllAnagramsInAString {
     }
 
     // V0-0-1
-    // IDEA: SLIDE WINDOW + QUEUE + HASHMAP (fixed by gpt)
+    // IDEA: SLIDE WINDOW pattern + HASHMAP (fixed by gpt)
+    // NOTE !!!  1) loop over idx 2) while loop 2 cases:  r - l + 1 < p.size() or NOT
+    /**
+     *   NOTE !!!  slide window pattern
+     *
+     *   int l = 0;
+     *
+     *   for (int r = 0; r < s.size(); r++){
+     *       // isValid could be: r - l + 1 < p.size()
+     *       while (isValid()){
+     *           // do something
+     *           l += 1;
+     *       }
+     *
+     *       // do something
+     *   }
+     *
+     *
+     */
     public List<Integer> findAnagrams_0_0_1(String s, String p) {
         List<Integer> res = new ArrayList<>();
         // edge
@@ -134,8 +170,6 @@ public class FindAllAnagramsInAString {
 
         //int r = 0;
         Map<String, Integer> s_cnt = new HashMap<>();
-        // queue FIFO
-        Queue<String> s_q = new LinkedList<>();
         int l = 0; //??
 
         for (int r = 0; r < s.length(); r++) {
@@ -148,8 +182,6 @@ public class FindAllAnagramsInAString {
             //            if(isEqualMap(p_cnt, s_cnt)){
             //                res.add(r);
             //            }
-            // add new element
-            s_q.add(val);
             s_cnt.put(val, s_cnt.getOrDefault(val, 0) + 1);
 
             while (r - l + 1 > p.length()) {
