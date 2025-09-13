@@ -3384,6 +3384,96 @@ public class workspace14 {
         return true;
     }
 
+    // LC 239
+    // 15.10 - 15.20 pm
+    /**
+     *  1. a sliding window of size k  moving from left of the array to right.
+     *  2. You can only see the k numbers in the window.
+     *  3. Each time the sliding window moves `right by one position.`
+     *
+     *
+     *  -> Return the `max sliding window.`
+     *
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) `DEQUEUE`, a queue can `pop` from both very left, and very right idx
+     *
+     *
+     */
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        // edge
+        if(nums.length == 0){
+            return null; // ??
+        }
+        // ???
+        if(nums.length <= k){
+            int res = nums[0];
+            for(int x: nums){
+                res= Math.max(x, res);
+            }
+            return new int[]{res};
+        }
+
+        List<Integer> tmp = new ArrayList<>();
+        //int[] res = new int[nums.length - k + 1];
+
+        // ???
+        Deque<Integer> deque = new ArrayDeque<>();
+        // init ???
+
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            System.out.println(">>> i = " + i + ", val = " + val);
+            deque.add(val);
+            // case 0) arr size < k, do nothing
+
+            // case 1) arr size == k, get max val
+            if(deque.size() == k){
+                tmp.add(getMaxFromWindow(deque));
+            }
+            // case 2) arr size > k, pop left most, and get max val
+            else if(deque.size() > k){
+                System.out.println(">>> i = " + i + ", deque = " + deque);
+                // pop left most
+                deque.pollFirst();
+                // add right most
+               // deque.add(val);
+
+                System.out.println(">>> i = " + i + ", getMaxFromWindow(deque) = " + getMaxFromWindow(deque));
+                // get max ???
+                //res[i] = getMaxFromWindow(deque);
+                tmp.add(getMaxFromWindow(deque));
+            }
+        }
+
+        int[] res = new int[tmp.size()];
+        for(int i = 0; i < tmp.size(); i++){
+            res[i] = tmp.get(i);
+        }
+
+        System.out.println(">>> tmp = " + tmp + ", res = " + res);
+
+        return res;
+    }
+
+    private int getMaxFromWindow(Deque<Integer> deque){
+        // ???
+        if(deque.isEmpty()){
+            return -1;
+        }
+        // PQ: big -> small
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        pq.addAll(deque);
+        return pq.peek();
+    }
 
 
 }
