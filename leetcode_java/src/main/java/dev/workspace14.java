@@ -3476,4 +3476,10 @@ public class workspace14 {
     }
 
 
+    // LC 340
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
+        return 0;
+    }
+
+
 }
