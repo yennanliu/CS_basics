@@ -3186,7 +3186,38 @@ public class workspace14 {
 
 
     // LC 219
-    // 10.48 - 10.58 AM
+    // 15.03 - 15.13 pm
+    /**
+     * IDEA 1) HASHMAP
+     *    { val: idx }
+     *
+     *  so, when visit the `same val` again,
+     *  we can compare the cur idx and the last idx,
+     *  to check if abs(j-i) <= k
+     *
+     */
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        // edge
+        if(nums.length <= 1){
+            return false;
+        }
+        // {val: idx}
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            if(map.containsKey(val)){
+                if(Math.abs(i - map.get(val)) <= k){
+                    return true;
+                }
+            }
+            map.put(val, i);
+        }
+
+        return false;
+    }
+
+
+
     /**
      * IDEA 1) HASHMAP
      *    { val: [idx1, idx2,...] }
@@ -3195,7 +3226,7 @@ public class workspace14 {
      *
      *
      */
-    public boolean containsNearbyDuplicate(int[] nums, int k) {
+    public boolean containsNearbyDuplicate_100(int[] nums, int k) {
         // edge
         if(nums.length <= 1){
             return false;

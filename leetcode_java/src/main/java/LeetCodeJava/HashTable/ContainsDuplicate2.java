@@ -69,8 +69,39 @@ public class ContainsDuplicate2 {
     }
 
     // V0-0-1
-    // IDEA: HASHMAP + BRUTE FORCE
+    // IDEA: HASHMAP
+    /**
+     * IDEA 1) HASHMAP
+     *    { val: idx }
+     *
+     *  so, when visit the `same val` again,
+     *  we can compare the cur idx and the last idx,
+     *  to check if abs(j-i) <= k
+     *
+     */
     public boolean containsNearbyDuplicate_0_0_1(int[] nums, int k) {
+        // edge
+        if (nums.length <= 1) {
+            return false;
+        }
+        // {val: idx}
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int val = nums[i];
+            if (map.containsKey(val)) {
+                if (Math.abs(i - map.get(val)) <= k) {
+                    return true;
+                }
+            }
+            map.put(val, i);
+        }
+
+        return false;
+    }
+
+    // V0-0-2
+    // IDEA: HASHMAP + BRUTE FORCE
+    public boolean containsNearbyDuplicate_0_0_2(int[] nums, int k) {
         // edge
         if (nums == null || nums.length == 0) {
             return false; // ??
