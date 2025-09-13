@@ -36,6 +36,54 @@ public class LongestSubstringWithAtMostKDistinctCharacters {
 //    public int lengthOfLongestSubstringKDistinct(String s, int k) {
 //    }
 
+    // V0-0-1
+    // IDEA: SLIDE WINDOW PATTERN + HASHMAP (fixed by gpt)
+    /**
+     *   slide window pattern
+     *
+     *   for(int r = 0; r < s.size(); r++){
+     *
+     *       while(isValid()){
+     *          // do sth
+     *           l += 1;
+     *       }
+     *        // do sth
+     *   }
+     *
+     */
+    public int lengthOfLongestSubstringKDistinct_0_0_1(String s, int k) {
+        // edge
+        if (s == null || s.isEmpty() || k == 0) {
+            return 0;
+        }
+
+        int ans = 0;
+        // {val: cnt}
+        Map<Character, Integer> cntMap = new HashMap<>();
+
+        int l = 0;
+        for (int r = 0; r < s.length(); r++) {
+            char val = s.charAt(r);
+            cntMap.put(val, cntMap.getOrDefault(val, 0) + 1);
+
+            // shrink window if too many distinct chars
+            // while still `valid`, move left pointer
+            while (cntMap.size() > k) {
+                char leftVal = s.charAt(l);
+                cntMap.put(leftVal, cntMap.get(leftVal) - 1);
+                if (cntMap.get(leftVal) == 0) {
+                    cntMap.remove(leftVal);
+                }
+                l++;
+            }
+
+            // get the max length
+            ans = Math.max(ans, r - l + 1);
+        }
+
+        return ans;
+    }
+
     // V1
     // https://leetcode.ca/2016-11-04-340-Longest-Substring-with-At-Most-K-Distinct-Characters/
     public int lengthOfLongestSubstringKDistinct_1(String s, int k) {
@@ -158,6 +206,6 @@ public class LongestSubstringWithAtMostKDistinctCharacters {
         return ans;
     }
 
-    
+
 
 }

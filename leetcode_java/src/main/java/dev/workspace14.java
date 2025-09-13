@@ -3477,9 +3477,65 @@ public class workspace14 {
 
 
     // LC 340
+    // 16.19 - 16.29 pm
+    /**
+     *
+     *  Given a string, find the length of the longest
+     *  substring T that contains at most k distinct characters.
+     *
+     *
+     *  IDEA 1) SLIDE WINDOW
+     *
+     *
+     */
     public int lengthOfLongestSubstringKDistinct(String s, int k) {
-        return 0;
+        // edge
+        if(s.isEmpty()){
+            return 0; // ???
+        }
+        int ans = 0;
+        // {val: cnt}
+        Map<String, Integer> cnt_map = new HashMap<>();
+
+        // slide window
+        /**
+         *   slide window pattern
+         *
+         *   for(int r = 0; r < s.size(); r++){
+         *
+         *       while(isValid()){
+         *          // do sth
+         *           l += 1;
+         *       }
+         *        // do sth
+         *   }
+         *
+         */
+        int l = 0;
+        for(int r = 0; r < s.length(); r++){
+            String val = String.valueOf(s.charAt(r));
+            cnt_map.put(val, cnt_map.getOrDefault(val, 0) + 1);
+//            while(!isValid(cnt_map, k)){
+//                String leftVal = String.valueOf(s.charAt(l));
+//                cnt_map.put(leftVal, cnt_map.getOrDefault(leftVal, 0) - 1);
+//                if(cnt_map.get(leftVal) == 0){
+//                    cnt_map.remove(leftVal);
+//                }
+//                l += 1;
+//            }
+            ans = Math.max(ans, r - l + 1);
+        }
+
+        return ans;
     }
+
+//    private boolean isValid(Map<String, Integer> cnt_map, int k){
+//        // edge
+//        if(cnt_map.isEmpty()){
+//            return false;
+//        }
+//        return cnt_map.size() <= k;
+//    }
 
 
 }
