@@ -684,7 +684,7 @@
 346| [Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)| [Python](./leetcode_python/Queue/moving-average-from-data-stream.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Queue/MovingAverageFromDataStream.java)   | _O(1)_ | _O(w)_  | Easy |🔒, queue, `google`, `fb`| OK** (6)
 933| [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)| [Python](./leetcode_python/Queue/number-of-recent-calls.py)  | _O(1)_ on average  | _O(w)_ | Easy|| AGAIN**
 622| [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/)|[Python](./leetcode_python/Queue/design_circular_queue.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Queue/DesignCircularQueue.java) | | | Medium |`good basic`, array, linked list, design, `circular queue`,`amazon`,`fb`, apple, airbnb, m$| AGAIN************ (3) (MUST)
-239| [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)|[Python](./leetcode_python/Queue/sliding-window-maximum.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Queue/SlidingWindowMaximum.java) | | | Hard |sliding window, heap, deque, queue,`amazon`, `google`| AGAIN********* (5)
+239| [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)|[Python](./leetcode_python/Queue/sliding-window-maximum.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Queue/SlidingWindowMaximum.java) | | | Hard |sliding window, heap, deque, queue,good trick,`amazon`, `google`| AGAIN************ (6)
 
 
 ## Math
