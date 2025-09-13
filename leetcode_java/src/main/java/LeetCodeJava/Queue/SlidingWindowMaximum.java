@@ -142,8 +142,105 @@ public class SlidingWindowMaximum {
     }
 
     // V0-1
-    // IDEA: DQUEUE + PQ (TLE)
+    // IDEA: HASHMAP + PQ (GPT)
     public int[] maxSlidingWindow_0_1(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return new int[] {};
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *
+         * - 1) PQ is a max heap to store elements in descending order (big PQ).
+         *
+         * - 2) freqMap helps track the frequency of elements so we can remove elements
+         *  logically  (because PriorityQueue does not support O(1) arbitrary deletions).
+         */
+        int n = nums.length;
+        int[] result = new int[n - k + 1];
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder()); // Max heap
+        Map<Integer, Integer> freqMap = new HashMap<>(); // To track removed elements
+
+        // Initialize first window
+        /**
+         * • Add the first k elements into the PriorityQueue.
+         * • Store their frequency in freqMap.
+         * • The first max value (pq.peek()) is stored in result[0].
+         */
+        for (int i = 0; i < k; i++) {
+            pq.add(nums[i]);
+            freqMap.put(nums[i], freqMap.getOrDefault(nums[i], 0) + 1);
+        }
+        result[0] = pq.peek();
+
+        /**
+         * • Remove the oldest element from freqMap (decrease its count).
+         * • Add the new element to both the PriorityQueue and freqMap.
+         */
+        for (int i = k; i < n; i++) {
+            // Remove the element going out of the window
+            /**
+             *  NOTE !!!
+             *
+             *   we DON'T have to remove oldVal from PQ as well.
+             *   explain below why the code still works per this
+             *
+             *    -> But the actual PriorityQueue still contains that oldVal inside.
+             * 	  -> So pq may have “stale” values that are no longer valid.
+             *
+             *
+             *  NOTE !!!
+             *
+             *  Why the code still works ??
+             *
+             *  -> 	After every new insertion, we check the top element of the heap:
+             *
+             *   while (!pq.isEmpty() && freqMap.get(pq.peek()) == 0) {
+             *     pq.poll();
+             * }
+             *
+             *  -> This ensures that if the heap’s maximum
+             *     (pq.peek()) has already been logically
+             *      removed (its frequency in freqMap is 0), we discard it.
+             *
+             *  ->  We don’t need to remove all old values
+             *     deep inside the heap, just the ones
+             *     that “bubble up” to the root.
+             *
+             *
+             *
+             *  -> So the trick here is lazy deletion ✅
+             * 	    •	Old values remain in the heap → but they’re marked as invalid in freqMap.
+             * 	    •	When they reach the top, the while loop removes them.
+             * 	    •	That’s why oldVal isn’t directly removed, but the algorithm still produces correct results.
+             */
+            int oldVal = nums[i - k];
+            freqMap.put(oldVal, freqMap.get(oldVal) - 1);
+
+            // Add the new element
+            pq.add(nums[i]);
+            freqMap.put(nums[i], freqMap.getOrDefault(nums[i], 0) + 1);
+
+            // Remove invalid elements from the top of the heap
+            /**
+             * • Why? The PriorityQueue does not automatically remove elements that are no
+             * longer in the window.
+             * • This loop removes stale elements (those whose freqMap count is 0).
+             */
+            while (!pq.isEmpty() && freqMap.get(pq.peek()) == 0) {
+                pq.poll();
+            }
+
+            result[i - k + 1] = pq.peek();
+        }
+
+        return result;
+    }
+
+    // V0-2
+    // IDEA: DEQUEUE + PQ (TLE)
+    public int[] maxSlidingWindow_0_2(int[] nums, int k) {
         // edge
         if (nums.length == 0) {
             return null; // ??
