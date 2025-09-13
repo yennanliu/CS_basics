@@ -76,6 +76,12 @@ public class MinimumWindowSubstring {
         int resLen = Integer.MAX_VALUE;
         String res = "";
 
+        /** NOTE !!!
+         *
+         *  setup s_map, t_map
+         *
+         *  {val: cnt}
+         */
         Map<String, Integer> s_map = new HashMap<>();
         Map<String, Integer> t_map = new HashMap<>();
 
@@ -84,12 +90,27 @@ public class MinimumWindowSubstring {
             t_map.put(key, t_map.getOrDefault(key, 0) + 1);
         }
 
+        // left pointer
         int l = 0;
 
         for (int r = 0; r < s.length(); r++) {
+
+            /** NOTE !!!
+             *
+             *
+             *  we add `right val` and update s_map first,
+             *  then do the isValidWindow, left pointer
+             */
             String val_right = String.valueOf(s.charAt(r));
             s_map.put(val_right, s_map.getOrDefault(val_right, 0) + 1);
 
+            /** NOTE !!!
+             *
+             *
+             *  while still `isValidWindow`,
+             *  we move left pointer, and check the substring length
+             *  if (r - l + 1 < resLen)
+             */
             while (isValidWindow(t_map, s_map)) {
                 if (r - l + 1 < resLen) {
                     resLen = r - l + 1;

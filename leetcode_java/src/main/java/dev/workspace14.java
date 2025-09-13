@@ -3267,7 +3267,89 @@ public class workspace14 {
     }
 
     // LC 76
-    // 10.38 - 10.48 am
+    // 16.55 - 17.05 PM
+    /**
+     *  SLIDE WINDOW:
+     *
+     *  for(int r = 0; r < s.length(); r++){
+     *      while(isValid()){
+     *          // do sth
+     *          l += 1;
+     *      }
+     *      // do sth
+     *  }
+     *
+     */
+    public String minWindow(String s, String t) {
+        // edge
+        if(s.isEmpty()){
+            return null;
+        }
+        if(s.equals(t)){
+            return s; // ??
+        }
+
+        int resLen = Integer.MAX_VALUE;
+        String res = "";
+
+        Map<String, Integer> s_map = new HashMap<>();
+        Map<String, Integer> t_map = new HashMap<>();
+
+        for(String x: t.split("")){
+            t_map.put(x, t_map.getOrDefault(x, 0) + 1);
+        }
+
+        //int tmpLen = 0;
+        int l = 0;
+
+        for(int r = 0; r < s.length(); r++){
+
+            String val_right = String.valueOf(s.charAt(r));
+            s_map.put(val_right, s_map.getOrDefault(val_right, 0) + 1);
+
+            while(isEqualMap_3(t_map, s_map)){
+
+                if(r - l + 1 < resLen){
+                    // ???
+                    //res = String.copyValueOf(s.toCharArray(), l, r+1);
+                    res = s.substring(l, r + 1);
+                    resLen = r -l + 1;
+                }
+
+                // move left idx
+                String leftVal = String.valueOf(s.charAt(l));
+                s_map.put(leftVal, s_map.get(leftVal) - 1);
+                if(s_map.get(leftVal) == 0){
+                    s_map.remove(leftVal);
+                }
+                l += 1;
+            }
+
+        }
+
+        return res;
+    }
+
+
+    private boolean isEqualMap_3(Map<String, Integer> t_map, Map<String, Integer> s_map) {
+        if(s_map.isEmpty()){
+            return false;
+        }
+        for (String k : t_map.keySet()) {
+            if (!s_map.containsKey(k) || s_map.get(k) < t_map.get(k)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+
+
+
+
+
     /**
      * return the `minimum` window `substring`
      * of s such that `every character` in t
@@ -3280,7 +3362,7 @@ public class workspace14 {
      *
      *
      */
-    public String minWindow(String s, String t) {
+    public String minWindow_100(String s, String t) {
         // edge
         if(s.isEmpty()){
             return null;
