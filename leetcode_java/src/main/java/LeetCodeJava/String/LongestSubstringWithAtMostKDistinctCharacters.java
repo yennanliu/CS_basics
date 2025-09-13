@@ -5,6 +5,7 @@ package LeetCodeJava.String;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 340. Longest Substring with At Most K Distinct Characters
@@ -58,5 +59,105 @@ public class LongestSubstringWithAtMostKDistinctCharacters {
     }
 
     // V2
+    // https://www.cnblogs.com/grandyang/p/5351347.html
+
+    // V3
+    // https://algo.monster/liteproblems/340
+    public int lengthOfLongestSubstringKDistinct_3(String s, int k) {
+        // Map to store character frequencies in the current window
+        Map<Character, Integer> charFrequency = new HashMap<>();
+
+        // Left pointer of the sliding window
+        int leftPointer = 0;
+
+        // Convert string to char array for easier access
+        char[] characters = s.toCharArray();
+
+        // Iterate through each character with right pointer (implicitly)
+        for (char currentChar : characters) {
+            // Add current character to the window and increment its frequency
+            charFrequency.merge(currentChar, 1, Integer::sum);
+
+            // If we have more than k distinct characters, shrink the window from left
+            if (charFrequency.size() > k) {
+                // Decrement the frequency of the character at left pointer
+                char leftChar = characters[leftPointer];
+                if (charFrequency.merge(leftChar, -1, Integer::sum) == 0) {
+                    // Remove the character from map if its frequency becomes 0
+                    charFrequency.remove(leftChar);
+                }
+                // Move left pointer to shrink the window
+                leftPointer++;
+            }
+        }
+
+        // The maximum window size is the total length minus the left pointer position
+        // This works because we only move left pointer when necessary to maintain at most k distinct chars
+        return characters.length - leftPointer;
+    }
+
+    // V4-1
+    // IDEA: Sliding Window
+    // https://walkccc.me/LeetCode/problems/340/#__tabbed_1_2
+    public int lengthOfLongestSubstringKDistinct_4_1(String s, int k) {
+        int ans = 0;
+        int distinct = 0;
+        int[] count = new int[128];
+
+        for (int l = 0, r = 0; r < s.length(); ++r) {
+            if (++count[s.charAt(r)] == 1)
+                ++distinct;
+            while (distinct == k + 1)
+                if (--count[s.charAt(l++)] == 0)
+                    --distinct;
+            ans = Math.max(ans, r - l + 1);
+        }
+
+        return ans;
+    }
+
+
+    // V4-2
+    // IDEA: ORDERED MAP
+    // https://walkccc.me/LeetCode/problems/340/#__tabbed_1_2
+    public int lengthOfLongestSubstringKDistinct_4_2(String s, int k) {
+        if (s == null || s.length() == 0 || k == 0) {
+            return 0;
+        }
+
+        int ans = 0;
+        TreeMap<Integer, Character> lastSeen = new TreeMap<>(); // {last index: letter}
+        Map<Character, Integer> window = new HashMap<>();       // {letter: index}
+
+        int l = 0;
+        for (int r = 0; r < s.length(); r++) {
+            char inChar = s.charAt(r);
+
+            if (window.containsKey(inChar)) {
+                // remove the old position of inChar from lastSeen
+                lastSeen.remove(window.get(inChar));
+            }
+
+            lastSeen.put(r, inChar);
+            window.put(inChar, r);
+
+            if (window.size() > k) {
+                Map.Entry<Integer, Character> entry = lastSeen.firstEntry();
+                int lastIndex = entry.getKey();
+                char outChar = entry.getValue();
+
+                lastSeen.remove(lastIndex);
+                window.remove(outChar);
+
+                l = lastIndex + 1;
+            }
+
+            ans = Math.max(ans, r - l + 1);
+        }
+
+        return ans;
+    }
+
+    
 
 }
