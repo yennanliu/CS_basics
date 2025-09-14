@@ -3678,5 +3678,76 @@ public class workspace14 {
     }
 
 
+    // LC 904
+    // 16.03 - 16.13 PM
+    /**
+     *
+     * -> Given the integer array fruits,
+     * return the` maximum number` of fruits you can pick.
+     *
+     *  1. You only have two baskets
+     *  2. each basket can only hold a `single type of fruit. `
+     *  3. `no limit` on the amount of fruit each basket can hold.
+     *  4. `Starting from any tree`,  must pick exactly one fruit from every tree
+     *    (including the start tree)
+     *    while moving to the right. The picked fruits must fit in one of your baskets.
+     *
+     *  5. Once you reach a tree with fruit that cannot fit in your baskets, you must stop.
+     *
+     *
+     *  IDEA 1) SLIDE WINDOW + hashmap
+     *
+     */
+    public int totalFruit(int[] fruits) {
+        // edge
+        if(fruits.length <= 2){
+            return fruits.length; // ??
+        }
+        HashSet<Integer> set = new HashSet<>();
+        for(int x: fruits){
+            set.add(x);
+        }
+        if(set.size() <= 2){
+            return fruits.length;
+        }
+
+        int ans = 0;
+        // slide window
+        /**
+         *  int l = 0;
+         *
+         *  for(int r = 0; r < nums.length(); r++){
+         *      if(isValod()){
+         *       // do sth
+         *       l += 1;
+         *  }
+         *    // do sth
+         */
+        int l = 0;
+        // {val: cnt}
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int r = 0; r < fruits.length; r++){
+
+            int rightVal = fruits[r];
+            map.put(rightVal, map.getOrDefault(rightVal, 0) + 1);
+
+            while(map.size() > 2){
+                int leftVal = fruits[l];
+                map.put(leftVal, map.getOrDefault(leftVal, 0) - 1);
+                if(map.get(leftVal) == 0){
+                    map.remove(leftVal);
+                }
+                l += 1;
+            }
+
+            ans = Math.max(ans, r - l + 1);
+
+        }
+
+        return ans;
+    }
+
+
+
 
 }
