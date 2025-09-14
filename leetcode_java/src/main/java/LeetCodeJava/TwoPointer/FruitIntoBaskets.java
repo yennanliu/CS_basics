@@ -3,6 +3,7 @@ package LeetCodeJava.TwoPointer;
 // https://leetcode.com/problems/fruit-into-baskets/description/
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -50,48 +51,66 @@ import java.util.Map;
 public class FruitIntoBaskets {
 
     // V0
-    // TODO: fix below
-//    public int totalFruit(int[] fruits) {
-//
-//        if(fruits.length==0){
-//            return 0;
-//        }
-//
-//        int res = 0;
-//        // 2 pointers
-//        /**
-//         *
-//         *      *   -> step 1) l = 0, r = 0
-//         *      *   -> step 2) move r, if set(l, r) <= 2, keep moving r (update res)
-//         *      *   -> step 3) if set(l, r) > 2, MOVE l to r-1 (update res)
-//         *      *   -> step 4) keep moving r, till meets the end
-//         *
-//         */
-//        int l = 0;
-//        int r = 0;
-//        //Set<Integer> set = new HashSet<>();
-//        Map<Integer, Integer> map = new HashMap<>();
-//        //int cur = 1;
-//        while (r < fruits.length){
-//
-//            map.put(fruits[r], map.getOrDefault(fruits[r],0)+1);
-//
-//            while (map.keySet().size() > 2) {
-//                // update map
-//                map.put(l, map.get(l)-1);
-//                if (map.get(l) == 0){
-//                    map.remove(l);
-//                }
-//                // move l
-//                l += 1;
-//            }
-//
-//            r += 1;
-//            res = Math.max(res, r-l+1);
-//        }
-//
-//        return res;
-//    }
+    // IDEA: slide window
+    /**
+     *  int l = 0;
+     *
+     *  for(int r = 0; r < nums.length(); r++){
+     *      if(isValid()){
+     *       // do sth
+     *       l += 1;
+     *  }
+     *    // do sth
+     */
+    public int totalFruit(int[] fruits) {
+        // edge
+        if (fruits.length <= 2) {
+            return fruits.length; // ??
+        }
+        HashSet<Integer> set = new HashSet<>();
+        for (int x : fruits) {
+            set.add(x);
+        }
+        if (set.size() <= 2) {
+            return fruits.length;
+        }
+
+        int ans = 0;
+        // slide window
+        /**
+         *  int l = 0;
+         *
+         *  for(int r = 0; r < nums.length(); r++){
+         *      if(isValid()){
+         *       // do sth
+         *       l += 1;
+         *  }
+         *    // do sth
+         */
+        int l = 0;
+        // {val: cnt}
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int r = 0; r < fruits.length; r++) {
+
+            int rightVal = fruits[r];
+            map.put(rightVal, map.getOrDefault(rightVal, 0) + 1);
+
+            while (map.size() > 2) {
+                int leftVal = fruits[l];
+                map.put(leftVal, map.getOrDefault(leftVal, 0) - 1);
+                if (map.get(leftVal) == 0) {
+                    map.remove(leftVal);
+                }
+                l += 1;
+            }
+
+            ans = Math.max(ans, r - l + 1);
+
+        }
+
+        return ans;
+    }
+
 
     // V0-1
     // IDEA: 2 POINTERS (gpt)
@@ -123,6 +142,41 @@ public class FruitIntoBaskets {
         }
 
         return res;
+    }
+
+    // V0-2
+    // IDEA: SLIDE WINDOW (gpt)
+    public int totalFruit_0_2(int[] fruits) {
+        // edge case
+        if (fruits == null || fruits.length == 0) {
+            return 0;
+        }
+        if (fruits.length <= 2) {
+            return fruits.length;
+        }
+
+        int ans = 0;
+        int l = 0;
+        Map<Integer, Integer> map = new HashMap<>(); // fruit -> count
+
+        for (int r = 0; r < fruits.length; r++) {
+            int rightVal = fruits[r];
+            map.put(rightVal, map.getOrDefault(rightVal, 0) + 1);
+
+            // shrink window if more than 2 fruit types
+            while (map.size() > 2) {
+                int leftVal = fruits[l];
+                map.put(leftVal, map.get(leftVal) - 1);
+                if (map.get(leftVal) == 0) {
+                    map.remove(leftVal);
+                }
+                l++;
+            }
+
+            ans = Math.max(ans, r - l + 1);
+        }
+
+        return ans;
     }
 
 
@@ -198,5 +252,6 @@ public class FruitIntoBaskets {
         // returning the maximum subarray length
         return ans;
     }
+
 
 }
