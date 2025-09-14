@@ -1,14 +1,87 @@
 package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/
-
+/**
+ * 1047. Remove All Adjacent Duplicates In String
+ * Solved
+ * Easy
+ * Topics
+ * premium lock icon
+ * Companies
+ * Hint
+ * You are given a string s consisting of lowercase English letters. A duplicate removal consists of choosing two adjacent and equal letters and removing them.
+ *
+ * We repeatedly make duplicate removals on s until we no longer can.
+ *
+ * Return the final string after all such duplicate removals have been made. It can be proven that the answer is unique.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: s = "abbaca"
+ * Output: "ca"
+ * Explanation:
+ * For example, in "abbaca" we could remove "bb" since the letters are adjacent and equal, and this is the only possible move.  The result of this move is that the string is "aaca", of which only "aa" is possible, so the final string is "ca".
+ * Example 2:
+ *
+ * Input: s = "azxxzy"
+ * Output: "ay"
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= s.length <= 105
+ * s consists of lowercase English letters.
+ *
+ */
 import java.util.Stack;
 
 public class RemoveAllAdjacentDuplicatesInString {
 
     // V0
-    // IDEA : STACK + STRING
+    // IDEA: STACK
     public String removeDuplicates(String s) {
+        // edge
+        if (s.isEmpty() || s.length() == 1) {
+            return s;
+        }
+
+        Stack<String> st = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+
+        // init
+        st.add(String.valueOf(s.charAt(0)));
+
+        // start from 1
+        for (int i = 1; i < s.length(); i++) {
+            boolean isDuplicates = false; // ???
+            String x = String.valueOf(s.charAt(i));
+            // System.out.println(">>> x = " + x + ", i = " + i + ", st = " + st);
+            while (!st.isEmpty() && st.peek().equals(x)) {
+                isDuplicates = true;
+                st.pop();
+            }
+            if (!isDuplicates) {
+                st.add(x);
+            }
+        }
+
+        //System.out.println(">>> st = " + st);
+        while (!st.isEmpty()) {
+            sb.append(st.pop());
+        }
+
+        // NOTE !!! reverse sb first (CAN'T use sb.reverse().toString())
+        // since `sb.reverse()` return null resp
+        sb.reverse();
+        //System.out.println(">>> sb.toString() = " + sb.toString());
+        return sb.toString();
+    }
+
+    // V0-1
+    // IDEA : STACK + STRING
+    public String removeDuplicates_0_1(String s) {
 
         if (s.equals(null)){
             return s;
@@ -38,6 +111,33 @@ public class RemoveAllAdjacentDuplicatesInString {
         }
 
         /** NOTE !!! since stack pop last element, we need to reverse result string */
+        return sb.reverse().toString();
+    }
+
+    // V0-2
+    // IDEA: STACK (gpt)
+    public String removeDuplicates_0_2(String s) {
+        // edge
+        if (s.isEmpty() || s.length() == 1) {
+            return s;
+        }
+
+        Stack<Character> st = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+
+        for (char c : s.toCharArray()) {
+            if (!st.isEmpty() && st.peek() == c) {
+                st.pop(); // remove duplicate
+            } else {
+                st.push(c);
+            }
+        }
+
+        // build result
+        while (!st.isEmpty()) {
+            sb.append(st.pop());
+        }
+
         return sb.reverse().toString();
     }
 
@@ -89,5 +189,6 @@ public class RemoveAllAdjacentDuplicatesInString {
         // reverse it as stack is first in last out
         return ans.reverse().toString() ;
     }
+
 
 }
