@@ -38,6 +38,20 @@
 			- 904
 			- 209
 			- 713
+	- LC 20 Valid Parentheses
+		- gpt
+			- 1047
+			- 155
+			- 394
+			- 224
+			- 301
+			- 32
+		- gemini
+			- 678
+			- 921
+			- 1249
+			- 856
+			- 71
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
