@@ -1,6 +1,7 @@
 package dev;
 
 import javax.print.attribute.EnumSyntax;
+import java.math.BigInteger;
 import java.util.*;
 
 public class workspace14 {
@@ -3804,6 +3805,72 @@ public class workspace14 {
         System.out.println(">>> sb.toString() = " + sb.toString());
         return sb.toString();
     }
+
+    // LC 155
+    // 17.09 - 17.19 PM
+    /**
+     *  -> You must implement a solution
+     *  with `O(1) time complexity` for each function.
+     *
+     *  IDEA 1) STACK + PQ ???
+     *
+     *
+     */
+    class MinStack {
+
+        // attr
+        // PQ: small -> big
+        PriorityQueue<BigInteger> pq;
+        Stack<BigInteger> st;
+        public MinStack() {
+            this.st = new Stack<>();
+        }
+
+        public void push(int val) {
+            this.st.add(BigInteger.valueOf(val));
+            //this.pq.add(val);
+        }
+
+        public void pop() {
+            //int val = this.st.pop();
+            //this.pq.
+            this.st.pop();
+        }
+
+        public int top() {
+            if(st.isEmpty()){
+                throw new RuntimeException("null stack");
+            }
+            // ???
+            return Integer.parseInt(String.valueOf(this.st.peek()));
+        }
+
+        public int getMin() {
+            if(st.isEmpty()){
+                throw new RuntimeException("null stack");
+            }
+            refreshPQ();
+            this.pq.addAll(this.st);
+            if(this.pq.isEmpty()){
+                throw new RuntimeException("null PQ");
+            }
+            System.out.println(">>> (getMin) this.st = " + this.st + ", this.pq = " + this.pq);
+            // Integer.parseInt(String.valueOf(this.st.peek()));
+            return Integer.parseInt(String.valueOf(this.st.peek()));
+        }
+
+        private void refreshPQ(){
+            this.pq = new PriorityQueue<BigInteger>(new Comparator<BigInteger>() {
+                @Override
+                public int compare(BigInteger o1, BigInteger o2) {
+                    int diff = o1.compareTo(o2); // ????
+                    return diff;
+                }
+            });
+        }
+
+    }
+
 
 
 

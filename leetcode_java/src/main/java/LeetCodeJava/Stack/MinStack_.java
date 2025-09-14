@@ -83,6 +83,12 @@ public class MinStack_ {
          *  -> so `pq.remove(element)` will iterate elements in pq,
          *     and remove the specific element (with its value)
          */
+        /**
+         *  NOTE !!!  PQ trick
+         *
+         *   this.pq.remove(this.st.pop());
+         *
+         */
         public void pop() {
             this.pq.remove(this.st.pop());
         }
