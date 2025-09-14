@@ -2299,10 +2299,7 @@ public class workspace14 {
 //
 //        // {val : idx}
 //        Map<Integer, Integer> map = new HashMap<>();
-////        for (int i = 0; i < numbers.length; i++) {
-////            int x = numbers[i];
-////            map.put(x, i + 1);
-////        }
+
 //
 //        // binary search
 //        int l = 0;
@@ -3745,6 +3742,67 @@ public class workspace14 {
         }
 
         return ans;
+    }
+
+    // LC 1047
+    // 16.41 - 16.51 pm
+    /**
+     * A duplicate removal consists
+     * of choosing two adjacent and equal letters and removing them.
+     *
+     *  We repeatedly make duplicate removals on s until we no longer can.
+     *
+     *
+     *  -> Return the `final string` after `all such duplicate removals have been made.`
+     *    It can be proven that the answer is unique.
+     *
+     *
+     *  IDEA 1) STACK ???
+     *
+     */
+    public String removeDuplicates(String s) {
+        // edge
+        if(s.isEmpty() || s.length() == 1){
+            return s;
+        }
+
+        Stack<String> st = new Stack<>();
+       // String res = "";
+        StringBuilder sb = new StringBuilder();
+
+        // init
+        st.add(String.valueOf(s.charAt(0)));
+
+        //boolean isDuplicates = false;
+
+        // start from 1
+        for(int i = 1; i < s.length(); i++){
+           boolean isDuplicates = false; // ???
+           String x = String.valueOf(s.charAt(i));
+           System.out.println(">>> x = " + x + ", i = " + i + ", st = " + st);
+           while(!st.isEmpty() && st.peek().equals(x)){
+               isDuplicates = true;
+               st.pop();
+           }
+           if(!isDuplicates){
+               st.add(x);
+           }
+        }
+
+        System.out.println(">>> st = " + st);
+
+        // ???
+        //String res = "";
+        while(!st.isEmpty()){
+           sb.append(st.pop());
+           //res += st.pop();
+        }
+
+        // NOTE !!! reverse sb first (CAN'T use sb.reverse().toString())
+        // since `sb.reverse()` return null resp
+        //sb.reverse();
+        System.out.println(">>> sb.toString() = " + sb.toString());
+        return sb.toString();
     }
 
 
