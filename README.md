@@ -335,6 +335,13 @@
 1316 | [Distinct Echo Substrings](https://leetcode.com/problems/distinct-echo-substrings) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Set/DistinctEchoSubstrings.java)| _O(n^2)_ | _O(1)_  | Hard | set| Again (not start)
 
 
+## Slide Window
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note           | Status| 
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
+1004 | [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/SlideWindow/MaxConsecutiveOnes3.java)| _O(n^2)_ | _O(1)_  | Medium  | slide window| Again (1)
+
+
 ## Hash Table
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
