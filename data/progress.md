@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-09-13
+# 2025-09-14
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
@@ -31,6 +31,13 @@
 		 	- 209
 		 	- 567
 		 	- 424
+	- LC 424. Longest Repeating Character Replacement
+		- gpt
+			- 1004
+		- gemini
+			- 904
+			- 209
+			- 713
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
@@ -84,6 +91,71 @@
 					•	LC 300 – Longest Increasing Subsequence (with patience sorting → binary search)
 					•	LC 354 – Russian Doll Envelopes
 					•	LC 2560 – House Robber IV
+	- again:
+	- todo:
+		- List when to use `greedy` VS `bfs/dfs` in graph
+			- e.g. size > 10^5, should use greedy?
+				- list the checkpoints and consideration
+		- (337 similar)
+			- 1770
+			- 1931
+			- 2246
+- Sys design questions:
+	- https://neetcode.io/practice?tab=systemDesign
+- crack code book
+	- p.177 (recursion & dp)
+- sys design book
+	- Volume 2
+		- p.323
+
+# 2025-09-13
+- needcode `grind 75` - similar LC by AI
+	- https://neetcode.io/practice?tab=blind75
+	- LC 49 Group Anagrams
+		- 336
+		- 30
+	- LC 347 Top K Frequent Elements
+		- 621
+		- 1838
+	- LC 271 – Encode and Decode Strings
+		- 640
+	- LC 128 - Longest Consecutive Sequence
+	 	- 594
+	 	- 149
+	 - LC 125 - Valid Palindrome
+	 - LC 11 - Container With Most Water
+	 	- 407
+	 - LC 121 Best Time to Buy and Sell Stock
+	 	- 714
+	 	- 309
+	 	- 123
+	 	- 128
+	 	- 188
+	 	- 1235
+	 - LC 003 Longest Substring Without Repeating Characters 
+	 	- gpt
+		 	- 568 (dp)
+		- gemini
+		 	- 209
+		 	- 567
+		 	- 424
+- neetcode 250
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
+		- 27/66
+			- 335,430,1157,395
+		- review prev LC problems !!!
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md
+	- 護城河
+		- video
+			- session 6
+		- pdf
+			- p.7 (sliding window)
+		- LC 20. Valid Parentheses `follow up`:
+			- return `validated string` if input string is Valid Parentheses or NOT Valid Parentheses
+			- `Session 4 - Determine Valid Parentheses`
+		 LC 200. Number of Islands `follow up`:
+		 	- 若grid上原先都是水，接著有多次的更新，每次更新為把一格水換成陸地，也就是會給一個座標(x,y)，保證他原先是水，並將他轉換成陸地，每次更新完後請確認目前有幾座島嶼
+		- binary search problems:
 	- again:
 	- todo:
 		- List when to use `greedy` VS `bfs/dfs` in graph
