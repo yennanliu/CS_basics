@@ -47,9 +47,80 @@ package LeetCodeJava.SlideWindow;
 public class MaxConsecutiveOnes3 {
 
     // V0
-//    public int longestOnes(int[] nums, int k) {
-//    }
+    // IDEA: SLIDE WINDOW
+    /**
+     *  for(int r = 0; r < nums.length; r++){
+     *      while (isValid()){
+     *      //  do sth
+     *          l += 1;
+     *      }
+     *      //  do sth
+     *  }
+     */
+    public int longestOnes(int[] nums, int k) {
+        // edge
+        if (nums.length == 0) {
+            return 0;
+        }
+        // ???
+        if (nums.length <= k) {
+            return nums.length;
+        }
+        int ans = 0;
+        int l = 0;
 
+        int z_cnt = 0;
+
+        for (int r = 0; r < nums.length; r++) {
+            int rightVal = nums[r];
+            // NOTE !!!  update z cnt first
+            if (rightVal == 0) {
+                z_cnt += 1;
+            }
+
+            while (z_cnt > k) {
+                int leftVal = nums[l];
+                if (leftVal == 0) {
+                    z_cnt -= 1;
+                }
+                l += 1;
+            }
+
+            ans = Math.max(ans, r - l + 1);
+        }
+
+        return ans;
+    }
+
+    // V0-1
+    // IDEA: SLIDE WINDOW (gpt)
+    public int longestOnes_0_1(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int ans = 0;
+        int l = 0;
+        int z_cnt = 0;
+
+        for (int r = 0; r < nums.length; r++) {
+            if (nums[r] == 0) {
+                z_cnt++;
+            }
+
+            // shrink window until valid
+            while (z_cnt > k) {
+                if (nums[l] == 0) {
+                    z_cnt--;
+                }
+                l++;
+            }
+
+            ans = Math.max(ans, r - l + 1);
+        }
+
+        return ans;
+    }
 
     // V1
     // https://leetcode.ca/2018-08-30-1004-Max-Consecutive-Ones-III/

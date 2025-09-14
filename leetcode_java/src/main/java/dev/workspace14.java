@@ -3620,8 +3620,63 @@ public class workspace14 {
 //    }
 
     // LC 1004
+    // 15.47 - 15.57 pm
+    /**
+     *
+     *   return the `maximum number of consecutive 1's `
+     *   in the array if you can flip `at most k 0's.`
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) SLIDE WINDOW
+     *
+     *
+     */
+    // IDEA 2) SLIDE WINDOW
+    /**
+     *  for(int r = 0; r < nums.length; r++){
+     *      while (isValid()){
+     *      //  do sth
+     *          l += 1;
+     *      }
+     *      //  do sth
+     *  }
+     */
     public int longestOnes(int[] nums, int k) {
-        return 0;
+        // edge
+        if(nums.length == 0){
+            return 0;
+        }
+        // ???
+        if(nums.length <= k){
+            return nums.length;
+        }
+        int ans = 0;
+        int l = 0;
+
+        int z_cnt = 0;
+
+        for(int r = 0; r < nums.length; r++){
+            int rightVal = nums[r];
+            // NOTE !!!  update z cnt first
+            if(rightVal == 0){
+                z_cnt += 1;
+            }
+
+            while(z_cnt > k){
+                int leftVal = nums[l];
+                if(leftVal == 0){
+                    z_cnt -= 1;
+                }
+                l += 1;
+            }
+
+            ans = Math.max(ans, r - l + 1);
+        }
+
+        return ans;
     }
+
+
 
 }
