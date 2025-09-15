@@ -16,6 +16,11 @@
 - **Memoization**: Store results to avoid recomputation
 - **State Transition**: Define relationship between states
 
+- Core var: `state`, `transition`
+- NOTE !!! can put `everything` into `state`
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dp_state_transition.png"></p>
+
 ### References
 - [Dynamic Programming Patterns](https://leetcode.com/discuss/general-discussion/458695/dynamic-programming-patterns)
 - [DP Tutorial](https://www.geeksforgeeks.org/dynamic-programming/) 
