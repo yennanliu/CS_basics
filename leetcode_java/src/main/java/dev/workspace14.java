@@ -3950,6 +3950,11 @@ public class workspace14 {
         return minLeftParen == 0;
     }
 
+    // LC 921
+    public int minAddToMakeValid(String s) {
+
+        return 0;
+    }
 
 
 }
