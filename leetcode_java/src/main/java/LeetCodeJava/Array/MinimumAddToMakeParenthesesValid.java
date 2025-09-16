@@ -44,9 +44,29 @@ public class MinimumAddToMakeParenthesesValid {
 //
 //    }
 
-    // V0-0-1
+    // V0-1
     // IDEA: GREEDY + BRACKET OP (fixed by gpt)
-    public int minAddToMakeValid_0_0_1(String s) {
+    public int minAddToMakeValid_0_1(String s) {
+        int leftCnt = 0; // "(" waiting to match
+        int rightCnt = 0; // ")" waiting to match
+
+        for (String x : s.split("")) {
+            if (x.equals("(")) {
+                leftCnt++;
+            } else { // ")"
+                if (leftCnt > 0) {
+                    leftCnt--; // match one "("
+                } else {
+                    rightCnt++; // need one "(" to fix
+                }
+            }
+        }
+        return leftCnt + rightCnt;
+    }
+
+    // V0-2
+    // IDEA: GREEDY + BRACKET OP (fixed by gpt)
+    public int minAddToMakeValid_0_2(String s) {
         // edge
         if (s == null || s.isEmpty()) {
             return 0;
