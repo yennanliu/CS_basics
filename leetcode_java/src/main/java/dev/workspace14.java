@@ -3872,6 +3872,83 @@ public class workspace14 {
     }
 
 
+    // LC 678
+    // 13.33 pm - 13.43 pm
+    /**
+     *  Given a string s containing only three types of
+     *  characters: '(', ')' and '*', return `true` if s is valid.
+     *
+     *  IDEA 1) STACK
+     *
+     *  1. `*` could be  '(', ')'  or ''
+     *
+     *   -> so we could have a min_st, max_st
+     *   that represents the `min possible number of (` and
+     *    `max possible number of (`
+     *
+     *   and valid within the looping
+     *
+     */
+    public boolean checkValidString(String s) {
+        // edge
+        if(s == null || s.isEmpty()){
+            return true;
+        }
+        if(s.length() == 1){
+//            if(s.equals("*")){
+//                return true;
+//            }
+//            return false;
+            return s.equals("*");
+        }
+
+        //Stack<String> st = new Stack<>();
+
+        int minLeftParen = 0;
+        int maxLeftParen = 0;
+
+        for(String x: s.split("")){
+            // ???
+            if(maxLeftParen < 0){
+                return false;
+            }
+            if(x.equals("(")){
+               // st.add(x);
+                maxLeftParen += 1;
+                minLeftParen += 1;
+            } else if (x.equals(")")) {
+
+//                if(st.isEmpty() && !st.peek().equals("(")){
+//                    return false;
+//                }
+
+             //   st.pop(); // ???
+                maxLeftParen -= 1;
+                minLeftParen -= 1;
+
+                // ???
+//                if(maxLeftParen < 0){
+//                    return false;
+//                }
+
+            }else{
+                maxLeftParen += 1;
+                minLeftParen -= 1;
+            }
+
+            // adjust minLeftParen
+            if(minLeftParen < 0){
+                minLeftParen = 0;
+            }
+
+            if(maxLeftParen < 0){
+                return false;
+            }
+
+        }
+
+        return minLeftParen == 0;
+    }
 
 
 
