@@ -44,6 +44,33 @@ public class MinimumAddToMakeParenthesesValid {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: GREEDY + BRACKET OP (fixed by gpt)
+    public int minAddToMakeValid_0_0_1(String s) {
+        // edge
+        if (s == null || s.isEmpty()) {
+            return 0;
+        }
+
+        int ans = 0; // number of insertions needed
+        int leftCnt = 0; // unmatched "("
+
+        for (String x : s.split("")) {
+            if (x.equals("(")) {
+                leftCnt++; // one more "(" waiting to match
+            } else { // ")"
+                if (leftCnt > 0) {
+                    leftCnt--; // match with a previous "("
+                } else {
+                    ans++; // no "(" to match, need to add one
+                }
+            }
+        }
+
+        // unmatched "(" left over
+        return ans + leftCnt;
+    }
+
     // V1
     // IDEA: Open Bracket Counter
     // https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/editorial/

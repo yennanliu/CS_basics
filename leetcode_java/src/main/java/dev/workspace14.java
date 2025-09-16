@@ -3951,10 +3951,111 @@ public class workspace14 {
     }
 
     // LC 921
+    // 13.55 - 14.16 pm
+    /**
+     * -> Return the `minimum` number of moves required to make s `valid.`
+     *
+     *
+     *  key : `left parentheses needs == right parentheses" if meet any "("
+     *  e.g. "))(("
+     *   -> once meet "(", NEED to make sure cur left_cnt == right_cnt
+     *     , then continue the loop
+     *
+     *
+     *  ex 1)
+     *
+     *  Input: s = "())"
+     *  Output: 1
+     *
+     *  -> ())   left_cnt = 1
+     *     x
+     *
+     *  -> ())   left_cnt = 1, right_cnt = 1
+     *      x
+     *
+     *  -> ())   left_cnt = 1, right_cnt = 2, so ans = 2 - 1 = 1
+     *       x
+     *
+     *
+     *  ex 2)
+     *
+     * Input: s = "((("
+     * Output: 3
+     *
+     *  (((   l_c = 1
+     *  x
+     *
+     *  ...
+     *
+     *  (((   l_c = 3, so ans = 3 - 0 = 3
+     *
+     *
+     *  ex 3)
+     *
+     *  input = "()(()"
+     *  ans = 1
+     *
+     *  ()(()  l_c = 1
+     *  x
+     *
+     *  ()(()  l_c = 1, r_c = 1
+     *   x
+     *
+     *  ()(()  l_c = 2, r_c = 1
+     *    x
+     *
+     *  ()(()  l_c = 3, r_c = 1
+     *     x
+     *
+     *  ()(()  l_c = 3, r_c = 2
+     *      x
+     *
+     *
+     *  ex 4)
+     *
+     *   s = "))(("
+     */
     public int minAddToMakeValid(String s) {
+        // edge
+        if(s == null || s.isEmpty() || s.length() == 1){
+            return 0;
+        }
+//        if(s.length() == 2){
+//            return s.equals("()"); // ???
+//        }
 
-        return 0;
+        int ans = s.length(); // ???
+
+        //Stack<String> st = new Stack<>();
+
+        int leftCnt = 0;
+        int rightCnt = 0;
+
+        for(String x: s.split("")){
+            // ")"
+            if(x.equals(")")){
+                rightCnt += 1;
+            }
+            // "("
+            else{
+                if(leftCnt != rightCnt){
+                    ans += (Math.abs(leftCnt - rightCnt));
+                }
+                // ???
+                //ans += rightCnt;
+                rightCnt = 0;
+                leftCnt += 1;
+            }
+        }
+
+        // final check left, right cnt
+        // ???
+        ans += (Math.abs(leftCnt - rightCnt));
+
+        return ans;
     }
+
+
 
 
 }
