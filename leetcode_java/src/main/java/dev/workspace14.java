@@ -4056,6 +4056,18 @@ public class workspace14 {
     }
 
 
+    // LC 856
+    // 14.48 - 14.58 pm
+    /**
+     *  IDEA 1) stack
+     *
+     *
+     */
+    public int scoreOfParentheses(String s) {
+
+        return 0;
+    }
+
 
 
 }
