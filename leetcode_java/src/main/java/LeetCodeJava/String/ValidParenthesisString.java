@@ -127,6 +127,14 @@ public class ValidParenthesisString {
             }
         }
 
+        /** NOTE !!!
+         *
+         *  final validation as below:
+         *
+         *   if s = "(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((("
+         *
+         *   -> need below logic, then can verify successfully
+         */
         return minParenCnt == 0; // ???
     }
 
@@ -460,5 +468,6 @@ public class ValidParenthesisString {
 
         return true; // If we passed both passes, the string is valid
     }
+    
 
 }
