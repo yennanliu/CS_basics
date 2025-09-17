@@ -4167,5 +4167,82 @@ public class workspace14 {
         return false;
     }
 
+    // LC 92
+    // 11.16 - 11.26 am
+    // IDEA: LISTNODE reverse + array
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+        if(right < left){
+            throw new RuntimeException("Not valid index");
+        }
+
+        //ListNode res = head;
+        boolean shouldReverse = false;
+        List<ListNode> cache = new ArrayList<>();
+
+        ListNode _start = null;
+        ListNode _end = null;
+
+        while(head != null){
+            if(head.next.val == left){
+                _start = head;
+            }
+            if(head.next.val == right){
+                _end = head;
+            }
+            if(head.val == left){
+                while(head.val != right){
+                    cache.add(head);
+                    head = head.next;
+                }
+            }
+
+            head = head.next;
+        }
+
+        // reverse list ???
+        Collections.reverse(cache);
+        /**
+         *   1 - 2 - 3 - 4 - 5
+         *       | ------|
+         *         to reverse
+         *
+         *   `1 node`: _start
+         *   `5 node`: _end
+         *
+         *   `2 node`: _reversedStart
+         *   `4 node`: _reversedEnd
+         *
+         *  1 -    4-3-2   - 5
+         *
+         *
+         *  -> so need to `repoint` below
+         *
+         *    `1 node` point to `4 node`
+         *    `2 node` point to 5 node`
+         */
+        ListNode _reversedStart =  null; //cache.get(0);
+        ListNode _reversedEnd =  null; //cache.get(cache.size() - 1);
+
+        for(int i = 0; i < cache.size(); i++){
+            if(i == 0){
+                _reversedStart =  cache.get(0);
+            }
+            if(i == cache.size() - 1){
+                _reversedEnd =  cache.get(cache.size() - 1);
+            }
+            _reversedStart = _reversedStart.next;
+            _reversedStart = _reversedStart;
+        }
+
+        _start.next =  _reversedStart; // ???
+        _reversedEnd.next = _end;
+
+        return head; // ???
+    }
+
 
 }

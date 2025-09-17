@@ -5,6 +5,7 @@ package LeetCodeJava.LinkedList;
 import LeetCodeJava.DataStructure.ListNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,63 +55,80 @@ public class ReverseLinkedList2 {
    */
 
   // V0
-  // IDEA: reverse ListNode within start, end idx
-  // TODO: fix below
-//  public ListNode reverseBetween(ListNode head, int left, int right) {
-//      // edge
-//      if(head == null || head.next == null){
-//          return head;
-//      }
-//      // ??
-//      if(right == left){
-//          return head;
-//      }
-//      if(right < left){
-//          throw new RuntimeException("invalid left, right val");
-//      }
-//
-//      /**
-//       *  ListNode : reverse nodes withon start, end idx
-//       */
-//      ListNode dummy = null;
-//      dummy.next = head;
-//      ListNode _prev = null;
-//
-//      boolean shouldReverse = false;
-//      int idx = 0;
-//
-//      while(head != null){
-//          if(idx < left || idx > right){
-//              shouldReverse = false;
-//          }
-//          else{
-//              shouldReverse = true;
-//          }
-//
-//          // get `prev` node before reverse
-//          if(idx == left - 1){
-//              _prev = head;
-//          }
-//          // start `reverse`
-//          if(shouldReverse){
-//              ListNode _next = head.next;
-//              head.next = _prev;
-//              _prev = head;
-//              head = _next;
-//              //continue; // /?
-//          }
-//
-//          _prev.next = head; // ???
-//          // end reverse
-//          if(!shouldReverse){
-//              head = head.next;
-//          }
-//          //head = _next;
-//          idx += 1;
-//      }
-//
-//      return dummy.next; // ???
-//  }
+  // IDEA: LINED LIST OP (gpt)
+  public ListNode reverseBetween(ListNode head, int left, int right) {
+      // edge
+      if (head == null || head.next == null || left == right) {
+          return head;
+      }
+
+      // Dummy node helps if reversing starts at head
+      ListNode dummy = new ListNode(0);
+      dummy.next = head;
+      ListNode prev = dummy;
+
+      // 1. Move `prev` to node before `left`
+      for (int i = 1; i < left; i++) {
+          prev = prev.next;
+      }
+
+      // 2. Start reversal
+      ListNode curr = prev.next; // first node in sublist
+      ListNode next = null;
+
+      // 3. Reverse exactly (right-left) links
+      for (int i = 0; i < right - left; i++) {
+          next = curr.next;
+          curr.next = next.next;
+          next.next = prev.next;
+          prev.next = next;
+      }
+
+      return dummy.next;
+  }
+
+  // V0-0-1
+  // IDEA: list reverse + LINED LIST OP (fixed by gpt)
+  public ListNode reverseBetween_0_0_1(ListNode head, int left, int right) {
+      if (head == null || head.next == null || left == right) {
+          return head;
+      }
+
+      // Dummy node in case we reverse starting at head
+      ListNode dummy = new ListNode(0);
+      dummy.next = head;
+
+      ListNode prev = dummy;
+      int pos = 1;
+
+      // Step 1: move prev to node before "left"
+      while (pos < left) {
+          prev = prev.next;
+          pos++;
+      }
+
+      // Step 2: collect nodes into cache
+      ListNode curr = prev.next;
+      List<ListNode> cache = new ArrayList<>();
+      while (pos <= right) {
+          cache.add(curr);
+          curr = curr.next;
+          pos++;
+      }
+
+      // Step 3: reverse the cache
+      Collections.reverse(cache);
+
+      // Step 4: relink
+      for (int i = 0; i < cache.size() - 1; i++) {
+          cache.get(i).next = cache.get(i + 1);
+      }
+      // connect start and end
+      prev.next = cache.get(0);
+      cache.get(cache.size() - 1).next = curr;
+
+      return dummy.next;
+  }
 
   // V0-1
   // IDEA: LINKED LIST OP (iteration 1)
