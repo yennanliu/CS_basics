@@ -52,7 +52,6 @@
 			- 71
 	- LC 206 Reverse Linked List
 		- gpt
-			- 141
 			- 21
 			- 92
 			- 86

@@ -4147,5 +4147,25 @@ public class workspace14 {
         return true;
     }
 
+    // LC 141
+    // 11.09 - 11.19 am
+    public boolean hasCycle(ListNode head) {
+        // edge
+        if(head == null || head.next == null){
+            return false;
+        }
+        HashSet<ListNode> set = new HashSet<>();
+        while(head != null){
+            //Integer val = head.val;
+            if(set.contains(head)){
+                return true;
+            }
+            set.add(head);
+            head = head.next;
+        }
+
+        return false;
+    }
+
 
 }

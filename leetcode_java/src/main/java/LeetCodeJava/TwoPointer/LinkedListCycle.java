@@ -71,6 +71,7 @@ public class LinkedListCycle {
          *  (but NOT HashSet<Integer>
          *
          */
+        // NOTE !!! HashSet<ListNode> set
         HashSet<ListNode> set = new HashSet<>();
         while(head != null){
             if(set.contains(head)){
