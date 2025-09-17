@@ -5,7 +5,7 @@ package DataStructure;
 
 public class ListNode {
     // 结点的值
-    int val;
+    public int val;
 
     // 下一个结点
     public ListNode next;
