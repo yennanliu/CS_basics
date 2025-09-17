@@ -4097,8 +4097,54 @@ public class workspace14 {
 
 
     // LC 237
+//    public void deleteNode_1(LeetCodeJava.LinkedList.ListNode node) {
+//        // Overwrite data of next node on current node.
+//        node.val = node.next.val;
+//        // Make current node point to next of next node.
+//        node.next = node.next.next;
+//    }
     public void deleteNode(ListNode node) {
+        // edge
+        if(node == null || node.next == null){
+            //return null;
+            return; // ??
+        }
+        // ???
+//        while(node != null){
+//            if(node.next.equals(node))
+//            node = node.next;
+//        }
 
+        node.val = node.next.val;
+        node = node.next.next;
+
+    }
+
+
+    // LC 234
+    // ListNode -> list
+    public boolean isPalindrome(ListNode head) {
+        if(head == null || head.next == null){
+            return true;
+        }
+        List<Integer> list = new ArrayList<>();
+        while(head != null){
+            list.add(head.val);
+            head = head.next;
+        }
+
+        System.out.println(">>> list = " + list);
+        int l = 0;
+        int r = list.size() - 1;
+        while(r > l){
+            if(list.get(l) != list.get(r)){
+                return false;
+            }
+            l += 1;
+            r -= 1;
+        }
+
+        return true;
     }
 
 
