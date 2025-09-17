@@ -96,6 +96,53 @@ public class ReverseLinkedList {
 
         }
 
+        // V-0-0-1
+        // IDEA: iteration
+        public ListNode reverseList_0_0_1(ListNode head) {
+            // edge
+            if(head == null || head.next == null) {
+                return head;
+            }
+
+            ListNode _prev = null;
+            /**
+             *  NOTE !!!
+             *
+             *   we CAN'T just assign `_prev` init val to `res`
+             *   and return `res` as result
+             *   e.g. this is WRONG: return res;
+             *
+             *  Reason:
+             *   - At this point, res is just a reference to null.
+             * 	 - As you update _prev during the loop,
+             * 	   res DOES NOT magically follow _prev.
+             * 	   It stays stuck at the value it was assigned
+             * 	   when you created it → null.
+             *
+             * 	 So by the end:
+             * 	  - _prev points to the new head of the reversed list ✅
+             * 	  - res is still null ❌
+             *
+             *
+             * 	-> Java references don’t “track” each other after assignment.
+             *    res = _prev copies the reference value `at that moment`
+             *    If _prev later changes, res won’t update.
+             *
+             */
+            ListNode res = _prev;
+            while(head != null){
+                ListNode _next = head.next;
+                head.next = _prev;
+                //_prev.next = head;
+                _prev = head;
+                head = _next;
+            }
+
+            //return res;
+            return _prev;
+        }
+
+
         // V0-1
         // IDEA : iteration
         public ListNode reverseList_0_1(ListNode head) {

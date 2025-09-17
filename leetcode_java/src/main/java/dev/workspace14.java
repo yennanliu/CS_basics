@@ -1,5 +1,7 @@
 package dev;
 
+import DataStructure.ListNode;
+
 import javax.print.attribute.EnumSyntax;
 import java.math.BigInteger;
 import java.util.*;
@@ -4067,6 +4069,32 @@ public class workspace14 {
 
         return 0;
     }
+
+    // LC 206
+    // 10.18 - 10.28 am
+    public ListNode reverseList(ListNode head) {
+        // edge
+        if(head == null || head.next == null) {
+            return head;
+        }
+
+        //ListNode res = null;
+//        ListNode _prev = new ListNode(); // ???
+//        ListNode res = _prev;
+        //res.next = _prev;
+        ListNode _prev = null;
+        ListNode res = _prev;
+        while(head != null){
+            ListNode _next = head.next;
+            head.next = _prev;
+            //_prev.next = head;
+            _prev = head;
+            head = _next;
+        }
+
+        return res;
+    }
+
 
 
 

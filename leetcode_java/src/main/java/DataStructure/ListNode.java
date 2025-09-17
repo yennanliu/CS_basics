@@ -8,7 +8,7 @@ public class ListNode {
     int val;
 
     // 下一个结点
-    ListNode next;
+    public ListNode next;
 
     // 节点的构造函数(无参)
     public ListNode() {
