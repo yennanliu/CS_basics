@@ -413,6 +413,39 @@ public class MaximumSubarray {
         return global_max;
     }
 
+    // V0-9
+    // IDEA: PREFIX SUM (gpt)
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/62695493
+    public int maxSubArray_0_9(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            // Problem constraints usually ensure non-empty, but safe guard
+            return 0;
+        }
+
+        int n = nums.length;
+
+        int prefixSum = 0; // prefix[i]
+        int minPrefixSum = 0; // minimum prefix sum up to previous index
+        int maxSub = Integer.MIN_VALUE;
+
+        for (int i = 0; i < n; i++) {
+            prefixSum += nums[i];
+
+            // possible max subarray ending at i
+            int current = prefixSum - minPrefixSum;
+            if (current > maxSub) {
+                maxSub = current;
+            }
+
+            // update minPrefixSum
+            if (prefixSum < minPrefixSum) {
+                minPrefixSum = prefixSum;
+            }
+        }
+
+        return maxSub;
+    }
+
     // V1
     // IDEA : OPTIMIZED BRUTE FORCE (TLE)
     // https://leetcode.com/problems/maximum-subarray/editorial/
