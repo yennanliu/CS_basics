@@ -4096,6 +4096,10 @@ public class workspace14 {
     }
 
 
+    // LC 237
+    public void deleteNode(ListNode node) {
+
+    }
 
 
 }
