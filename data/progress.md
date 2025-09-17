@@ -50,6 +50,19 @@
 			- 1249
 			- 856
 			- 71
+	- LC 206 Reverse Linked List
+		- gpt
+			- 141
+			- 21
+			- 92
+			- 86
+			- 24
+			- 25
+			- 61
+			- 143
+		- gemini
+			- 237
+			- 234
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
