@@ -252,6 +252,157 @@ public class ReverseLinkedList2 {
       return dummy.next;
   }
 
+  // V0-0-3
+  // IDEA: list reverse + LINED LIST OP (fixed by gpt)
+  public ListNode reverseBetween_0_0_3(ListNode head, int left, int right) {
+      // edge
+      if (head == null || head.next == null) {
+          return head;
+      }
+      if (right < left) {
+          throw new RuntimeException("Not valid index");
+      }
+
+      ListNode dummy = new ListNode(0);
+      dummy.next = head;
+
+      ListNode _prev = dummy;
+
+      // 1) move to `prev` left
+      for (int i = 0; i < left - 1; i++) {
+          _prev = _prev.next;
+      }
+
+      // 2) collect node to list
+      ListNode _cur = _prev.next;
+
+      List<ListNode> list = new ArrayList<>();
+      /**
+       *  NOTE !!!
+       *
+       *   we need loop from 0 to `right - left + 1`
+       *
+       *   e.g. need `Range Inclusiveness`
+       *
+       *   ->  need to include both left and right idx in the collection
+       *
+       *   e.g. for [2,3,4] ,
+       *    we need to collect element from idx = 0 till idx = 2 - 0
+       *
+       *    so either
+       *     for(int i = 0; i <= 2; i++)
+       *     or
+       *     for(int i = 0; i < 2 + 1; i++)
+       *
+       * ---------
+       *
+       *
+       *
+       * The problem: range inclusiveness
+       *
+       * When you say “reverse between left and right”, you mean:
+       * 	•	Start at left,
+       * 	•	End at right,
+       * 	•	Both indices inclusive.
+       *
+       * So if you want to reverse nodes 2 through 4, that’s nodes [2,3,4] (3 nodes total).
+       *
+       * ⸻
+       *
+       * What your loop does
+       *
+       * for (int i = 0; i < right - left; i++) {
+       *     list.add(_cur);
+       *     _cur = _cur.next;
+       * }
+       *
+       * 	•	right - left is 3 - 2 = 1 iteration if left=2, right=3.
+       * 	•	right - left is 2 iterations if left=2, right=4.
+       *
+       * But inclusive count should be:
+       * \text{right - left + 1}
+       *
+       * Because both left and right should be included.
+       *
+       * ⸻
+       *
+       * Example with left=2, right=4
+       *
+       * Original list:
+       *
+       * 1 → 2 → 3 → 4 → 5
+       *
+       * 	•	_prev stops at node 1
+       * 	•	_cur = 2
+       *
+       * Now run your loop:
+       *
+       * for (i = 0; i < 2; i++) {   // right - left = 2
+       *     list.add(_cur);
+       *     _cur = _cur.next;
+       * }
+       *
+       * 	•	Iteration 1 → add 2, move _cur = 3
+       * 	•	Iteration 2 → add 3, move _cur = 4
+       *
+       * ✅ Collected list = [2,3]
+       * ❌ Missed node 4
+       *
+       * So when you reverse, you only reverse 2 → 3, but 4 stays untouched — that breaks the intended output.
+       *
+       * ⸻
+       *
+       * Correct fix
+       *
+       * We need inclusive collection:
+       *
+       * for (int i = left; i <= right; i++) {
+       *     list.add(_cur);
+       *     _cur = _cur.next;
+       * }
+       *
+       * (or equivalently loop right - left + 1 times).
+       *
+       * That way you get [2,3,4].
+       *
+       * ⸻
+       *
+       * ✅ With the fix:
+       * 	•	Reverse [4,3,2]
+       * 	•	Reconnect → 1 → 4 → 3 → 2 → 5
+       * Correct result!
+       *
+       * ⸻
+       *
+       */
+      // `for (int i = 0; i <= right - left; i++)`  works as well
+      for (int i = 0; i < right - left + 1; i++) {
+          list.add(_cur);
+          _cur = _cur.next;
+      }
+
+      // 3) reverse
+      Collections.reverse(list);
+
+      // 4) reconnect (sub array)
+      for (int i = 0; i < list.size() - 1; i++) {
+          list.get(i).next = list.get(i + 1);
+      }
+
+      // 5) reconnect (left - sub array, sub array - right)
+      //        _left.next = list.get(0); // ???
+      //        list.get(list.size() - 1).next = _right;
+      /**
+       *  NOTE !!!
+       *
+       *   below reconnect logic
+       */
+      _prev.next = list.get(0);
+      list.get(list.size() - 1).next = _cur;
+
+      return dummy.next;
+  }
+
   // V0-1
   // IDEA: LINKED LIST OP (iteration 1)
   // https://neetcode.io/solutions/reverse-linked-list-ii
