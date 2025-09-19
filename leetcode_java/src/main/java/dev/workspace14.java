@@ -4179,6 +4179,56 @@ public class workspace14 {
             throw new RuntimeException("Not valid index");
         }
 
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode _prev = dummy;
+
+        // 1) move to `prev` left
+        for(int i = 0; i < left - 1; i++){
+            _prev = _prev.next;
+        }
+
+        // 2) collect node to list
+        ListNode _cur = _prev.next;
+
+        List<ListNode> list = new ArrayList<>();
+        for(int i = 0; i < right - left + 1; i++){
+            list.add(_cur);
+            _cur = _cur.next;
+        }
+
+        // 3) reverse
+        Collections.reverse(list);
+
+        // 4) reconnect (sub array)
+        for(int i = 0; i < list.size() - 1; i++){
+            list.get(i).next = list.get(i+1);
+        }
+
+        // 5) reconnect (left - sub array, sub array - right)
+//        _left.next = list.get(0); // ???
+//        list.get(list.size() - 1).next = _right;
+        _prev.next = list.get(0);
+        list.get(list.size() - 1).next = _cur;
+
+        return dummy.next;
+    }
+
+
+
+
+
+
+    public ListNode reverseBetween_99(ListNode head, int left, int right) {
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+        if(right < left){
+            throw new RuntimeException("Not valid index");
+        }
+
         ListNode res = new ListNode();
         res.next = head;
 
