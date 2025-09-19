@@ -56,6 +56,26 @@ public class ReverseLinkedList2 {
 
   // V0
   // IDEA: LINED LIST OP (gpt)
+  // NOTE: V0-0-1 is preferable, as it uses the classics linked list reverse pattern
+  /**
+   * 2. Head-insertion technique (the reference code you pasted)
+   *
+   * This one is more “surgical”: instead of walking and reversing in-place, you pluck nodes after curr and reinsert them at the start of the sublist.
+   *
+   * Steps:
+   * 	•	Keep curr fixed at the first node in the sublist.
+   * 	•	Each iteration:
+   * 	1.	Take curr.next (the node after it).
+   * 	2.	Remove it from its current position.
+   * 	3.	Insert it right after prev (start of the sublist).
+   *
+   * In effect, you keep pulling the next node forward until the sublist is reversed.
+   *
+   * 🖼 Example (1 → 2 → 3 → 4 → 5, left=2, right=4):
+   * 	•	prev = 1, curr = 2
+   * 	•	Iteration 1: pluck 3, insert after 1 → 1 → 3 → 2 → 4 → 5
+   * 	•	Iteration 2: pluck 4, insert after 1 → 1 → 4 → 3 → 2 → 5 ✅
+   */
   public ListNode reverseBetween(ListNode head, int left, int right) {
       // edge
       if (head == null || head.next == null || left == right) {
@@ -87,9 +107,111 @@ public class ReverseLinkedList2 {
       return dummy.next;
   }
 
-  // V0-0-1
-  // IDEA: list reverse + LINED LIST OP (fixed by gpt)
+  // V-0-0-1
+  // IDEA: `pre-left` pointer + LINKED LIST (fix by gpt)
+  /**
+   *
+   * 1. Classic 3-pointer reversal (what I gave you first)
+   *
+   * This is basically the same idea as reversing a whole linked list, but restricted to a window [left, right].
+   * 	•	Pointers used:
+   * 	•	prev → node before sublist
+   * 	•	curr → current node in sublist
+   * 	•	next → next node in sublist
+   * 	•	You iterate from left to right, reversing pointers one by one:
+   *
+   *
+   *
+   *  You iterate from left to right, reversing pointers one by one:
+   *
+   *    curr.next = prev
+   *    prev = curr
+   *    curr = next
+   */
   public ListNode reverseBetween_0_0_1(ListNode head, int left, int right) {
+      // edge
+      // edge cases: empty list, single node, or no reversal needed
+      if (head == null || head.next == null || left == right) {
+          return head;
+      }
+
+      /**
+       *  NOTE !!!
+       *
+       *   we init `dummy` node, point to head node
+       *   and return `dummy.next` as final answer
+       */
+      // dummy node before head to handle cases like left=1 cleanly
+      ListNode dummy = new ListNode(0);
+      dummy.next = head;
+
+      /**
+       *  NOTE !!!
+       *
+       *   step 1)
+       *
+       *   move `prev` to `left - 1` index
+       *   as the `prev node` of the to-reverse sub linked list
+       */
+      // Step 1: move `prev` so it points to the node before the sublist
+      // Example: for left=2, prev ends at node 1
+      /**
+       *  NOTE !!!
+       *
+       *  assign dummy node to `prev` node
+       */
+      ListNode _prev = dummy;
+      for (int i = 1; i < left; i++) {
+          _prev = _prev.next;
+      }
+
+      /**
+       *  NOTE !!!
+       *
+       *   step 2)
+       *
+       *   reverse the sublist from left to right
+       */
+      // Step 2: reverse the sublist from left to right
+      ListNode _cur = _prev.next;   // first node of sublist (position = left)
+      ListNode _head = null;     // will become the new head of the reversed sublist
+
+      for (int i = left; i <= right; i++) {
+          ListNode next = _cur.next;  // save next pointer
+          _cur.next = _head;        // reverse link
+          _head = _cur;             // move subHead forward
+          _cur = next;                // move curr forward
+      }
+
+      /**
+       *  NOTE !!!
+       *
+       *   step 3)
+       *
+       *   reconnect the reversed sublist back into the main list
+       */
+      // Step 3: reconnect the reversed sublist back into the main list
+      // prev.next still points to the old "left" node (now the sublist tail)
+      ListNode _tail = _prev.next;
+
+      // connect prev → new sublist head
+      _prev.next = _head;
+
+      // connect sublist tail → node after "right"
+      _tail.next = _cur;
+
+      /**
+       *  NOTE !!!
+       *
+       *   return `dummy.next` as final answer
+       */
+      // return dummy.next (the real head, since dummy=0 → head)
+      return dummy.next;
+  }
+
+  // V0-0-2
+  // IDEA: list reverse + LINED LIST OP (fixed by gpt)
+  public ListNode reverseBetween_0_0_2(ListNode head, int left, int right) {
       if (head == null || head.next == null || left == right) {
           return head;
       }
