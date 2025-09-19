@@ -4168,9 +4168,47 @@ public class workspace14 {
     }
 
     // LC 92
-    // 11.16 - 11.26 am
-    // IDEA: LISTNODE reverse + array
+    // 9.34 - 9.44 AM
+    // IDEA: LINKED LIST OP
     public ListNode reverseBetween(ListNode head, int left, int right) {
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+        if(right < left){
+            throw new RuntimeException("Not valid index");
+        }
+
+        ListNode res = new ListNode();
+        res.next = head;
+
+        //ListNode _prev = null;
+       // ListNode _cur = null;
+        ListNode _prev = res; // ????
+
+        for(int i = 0; i < left; i++){
+//            _prev = head;
+//            head = head.next;
+            _prev = _prev.next; // ???
+        }
+
+        ListNode _cur = _prev.next;
+        ListNode _next = null; //??
+
+        for(int i = 0; i < right - left; i++){
+            _next = _cur.next;
+            _cur.next = _prev;
+            _prev = _cur;
+            _cur = _next;
+        }
+
+        return res.next;
+    }
+
+
+
+    // IDEA: LISTNODE reverse + array
+    public ListNode reverseBetween_100(ListNode head, int left, int right) {
         // edge
         if(head == null || head.next == null){
             return head;
