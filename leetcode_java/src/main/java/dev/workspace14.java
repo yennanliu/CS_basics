@@ -4421,5 +4421,11 @@ public class workspace14 {
         return isSymmetric_100(root.left) && isSymmetric_100(root.right);
     }
 
+    // LC 114
+    //
+    public void flatten(TreeNode root) {
+
+    }
+
 
 }
