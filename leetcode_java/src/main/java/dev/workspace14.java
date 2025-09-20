@@ -4482,5 +4482,48 @@ public class workspace14 {
         return;
     }
 
+    // LC 20
+    public boolean isValid(String s) {
+        // edge
+        if(s.isEmpty() || s.length() == 0){
+            return false;
+        }
+        if(s.length() == 1){
+            return false;
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("(", ")");
+        map.put("{", "}");
+        map.put("[", "]");
+        
+        // stack: FILO
+        Stack<String> st = new Stack<>();
+        
+        for(String x: s.split("")){
+            System.out.println(">>> x = " + x);
+            if(st.isEmpty() && !map.containsKey(x)){
+                return false;
+            }
+            if(map.containsKey(x)){
+                st.add(x);
+            } else{
+                if(!map.get(st.peek()).equals(x)){
+                    return false;
+                }
+                st.pop();
+            }
+        }
+        
+        return st.isEmpty();
+    }
+
+
+
+    // LC 20 followup
+    public boolean isValidFollowUp(String s) {
+
+        return false;
+    }
+
 
 }
