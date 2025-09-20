@@ -2,6 +2,39 @@ package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/symmetric-tree/
 
+/**
+ * 101. Symmetric Tree
+ * Solved
+ * Easy
+ * Topics
+ * premium lock icon
+ * Companies
+ * Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: root = [1,2,2,3,4,4,3]
+ * Output: true
+ * Example 2:
+ *
+ *
+ * Input: root = [1,2,2,null,3,null,3]
+ * Output: false
+ *
+ *
+ * Constraints:
+ *
+ * The number of nodes in the tree is in the range [1, 1000].
+ * -100 <= Node.val <= 100
+ *
+ *
+ * Follow up: Could you solve it both recursively and iteratively?
+ *
+ *
+ */
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -23,9 +56,56 @@ import java.util.Queue;
 public class SymmetricTree {
 
     // V0
+    // IDEA: DFS (fixed by gpt)
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        // NOTE !!! helper func
+        /** NOTE !!!
+         *
+         *  the help func is for comparing
+         *    - left sub tree VS right sub tree
+         */
+        return symmetricHelper(root.left, root.right);
+    }
+
+    private boolean symmetricHelper(TreeNode t1, TreeNode t2) {
+        // Both null → symmetric
+        if (t1 == null && t2 == null) {
+            return true;
+        }
+        // One null but not both → not symmetric
+        if (t1 == null || t2 == null) {
+            return false;
+        }
+        // Values must match
+        /** NOTE !!!
+         *
+         *  the help func is for comparing
+         *    - left sub tree VS right sub tree
+         *
+         *    -> so if the sub tree val NOT equal with each other
+         *    -> return false
+         */
+        if (t1.val != t2.val) {
+            return false;
+        }
+
+        /** NOTE !!!
+         *
+         *
+         *  recursion check
+         */
+        // Check mirrored children
+        return symmetricHelper(t1.left, t2.right) &&
+                symmetricHelper(t1.right, t2.left);
+    }
+
+    // V0-0-1
     // https://www.bilibili.com/video/BV1ue4y1Y7Mf/?spm_id_from=333.999.0.0&vd_source=28459ac8543f6a81e3a8c993dc73b54e
     // IDEA : post traversal // TODO : check if post traversal is necessary
-    public boolean isSymmetric(TreeNode root) {
+    public boolean isSymmetric_0_0_1(TreeNode root) {
 
         return _compare(root, root);
     }
