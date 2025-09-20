@@ -33,6 +33,8 @@ package LeetCodeJava.Recursion;
  */
 
 import LeetCodeJava.DataStructure.TreeNode;
+import dev.workspace14;
+
 import java.util.LinkedList;
 
 public class MaximumDepthOfBinaryTree {
@@ -77,6 +79,21 @@ public class MaximumDepthOfBinaryTree {
     }
 
     // V0-0-1
+    // IDEA: DFS
+    public int maxDepth_0_0_1(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+
+        // dfs
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    }
+
+    // V0-0-2
     // IDEA: DFS + global var + helper func (fixed by gpt)
     /**
      *  via the `depth` param in helper func,
@@ -85,7 +102,7 @@ public class MaximumDepthOfBinaryTree {
      */
     int maxDepth = 0;
 
-    public int maxDepth_0_0_1(TreeNode root) {
+    public int maxDepth_0_0_2(TreeNode root) {
         // edge
         if (root == null) {
             return 0;
@@ -137,10 +154,10 @@ public class MaximumDepthOfBinaryTree {
         depthHelper(root.right, depth + 1);
     }
 
-    // V0-0-2
+    // V0-0-3
     // IDEA: DFS (fixed by gpt)
     // NOTE !!! NOT need to setup `max_depth` in below code
-    public int maxDepth_0_0_2(TreeNode root) {
+    public int maxDepth_0_0_3(TreeNode root) {
         // edge
         if (root == null) {
             return 0;

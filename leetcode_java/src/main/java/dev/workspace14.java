@@ -4332,5 +4332,24 @@ public class workspace14 {
         return head; // ???
     }
 
+    // LC 104
+    // 15.09 - 15.19 pm
+    /**
+     * IDEA 1) DFS
+     *
+     */
+    public int maxDepth(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+
+        // dfs
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    }
+
 
 }
