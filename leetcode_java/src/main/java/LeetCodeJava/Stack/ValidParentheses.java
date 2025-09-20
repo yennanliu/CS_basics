@@ -102,9 +102,9 @@ public class ValidParentheses {
         return stack.isEmpty();
     }
 
-    // V0'
+    // V0-1
     // IDEA : STACK + DICT
-    public boolean isValid_0(String s) {
+    public boolean isValid_0_1(String s) {
 
         if (s.length() % 2 != 0){
             return false;
@@ -136,10 +136,10 @@ public class ValidParentheses {
         return true ? st.empty() : false;
     }
 
-    // V0'
+    // V0-2
     // IDEA : STACK + add "inverse" Parentheses to stack directly
     // https://www.bilibili.com/video/BV1AF411w78g/?share_source=copy_web&vd_source=771d0eba9b524b4f63f92e37bde71301
-    public boolean isValid_(String s) {
+    public boolean isValid_0_2(String s) {
 
         if (s.length() % 2 != 0){
             return false;
@@ -177,6 +177,43 @@ public class ValidParentheses {
         }
         return true ? st.empty() : false;
     }
+
+    // V0-3
+    // IDEA: STACK
+    public boolean isValid_0_3(String s) {
+        // edge
+        if (s.isEmpty() || s.length() == 0) {
+            return false;
+        }
+        if (s.length() == 1) {
+            return false;
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("(", ")");
+        map.put("{", "}");
+        map.put("[", "]");
+
+        // stack: FILO
+        Stack<String> st = new Stack<>();
+
+        for (String x : s.split("")) {
+            //System.out.println(">>> x = " + x);
+            if (st.isEmpty() && !map.containsKey(x)) {
+                return false;
+            }
+            if (map.containsKey(x)) {
+                st.add(x);
+            } else {
+                if (!map.get(st.peek()).equals(x)) {
+                    return false;
+                }
+                st.pop();
+            }
+        }
+
+        return st.isEmpty();
+    }
+
 
     // V1
     // https://leetcode.com/problems/valid-parentheses/solutions/3398779/python-java-c-simple-solution-video-solution/
