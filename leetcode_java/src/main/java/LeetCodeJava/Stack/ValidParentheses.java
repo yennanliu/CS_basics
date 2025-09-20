@@ -271,6 +271,8 @@ public class ValidParentheses {
      *
      *    https://buildmoat.teachable.com/courses/7a7af3/lectures/62677055
      */
+    // FOLLOWUP V0
+    // IDEA: STACK (teachable course)
     public String ConvertToValidBracketString (String s) {
         Stack<Character> stack = new Stack<>();
         String ans = "";
@@ -305,6 +307,102 @@ public class ValidParentheses {
         return ans;
     }
 
+    // FOLLOWUP V1
+    // IDEA: STACK (GPT)
+    public String ConvertToValidBracketString_1(String s) {
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
+
+        // Map of matching pairs
+        Map<Character, Character> pairs = new HashMap<>();
+        pairs.put(')', '(');
+        pairs.put('}', '{');
+        pairs.put(']', '[');
+
+        Map<Character, Character> reverse = new HashMap<>();
+        reverse.put('(', ')');
+        reverse.put('{', '}');
+        reverse.put('[', ']');
+
+        // Stack for open brackets
+        Stack<Character> stack = new Stack<>();
+        StringBuilder result = new StringBuilder();
+
+        for (char c : s.toCharArray()) {
+            if (pairs.containsValue(c)) {
+                // Opening bracket
+                stack.push(c);
+                result.append(c);
+            } else if (pairs.containsKey(c)) {
+                // Closing bracket
+                if (!stack.isEmpty() && stack.peek() == pairs.get(c)) {
+                    // Matches the last open
+                    stack.pop();
+                    result.append(c);
+                } else {
+                    // Extra closing -> insert a matching opening before it
+                    result.insert(0, pairs.get(c));
+                    result.append(c);
+                }
+            }
+        }
+
+        // Add any missing closing brackets for leftovers in the stack
+        while (!stack.isEmpty()) {
+            result.append(reverse.get(stack.pop()));
+        }
+
+        return result.toString();
+    }
+
+    // FOLLOWUP V2
+    // IDEA: STACK (fixed by GPT)
+    public String convertToValidBracketString_2(String s) {
+        if (s == null || s.isEmpty()) {
+            return "()";
+        }
+
+        // Bracket pairs
+        Map<Character, Character> openToClose = new HashMap<>();
+        openToClose.put('(', ')');
+        openToClose.put('{', '}');
+        openToClose.put('[', ']');
+
+        Map<Character, Character> closeToOpen = new HashMap<>();
+        closeToOpen.put(')', '(');
+        closeToOpen.put('}', '{');
+        closeToOpen.put(']', '[');
+
+        Stack<Character> stack = new Stack<>();
+        StringBuilder result = new StringBuilder();
+
+        for (char c : s.toCharArray()) {
+            if (openToClose.containsKey(c)) {
+                // opening
+                stack.push(c);
+                result.append(c);
+            } else if (closeToOpen.containsKey(c)) {
+                // closing
+                if (!stack.isEmpty() && stack.peek() == closeToOpen.get(c)) {
+                    // matches
+                    stack.pop();
+                    result.append(c);
+                } else {
+                    // extra closing: insert missing opening
+                    result.insert(0, closeToOpen.get(c));
+                    result.append(c);
+                }
+            }
+        }
+
+        // close remaining openings
+        while (!stack.isEmpty()) {
+            result.append(openToClose.get(stack.pop()));
+        }
+
+        return result.toString();
+    }
 
 
 }

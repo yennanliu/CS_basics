@@ -4520,10 +4520,81 @@ public class workspace14 {
 
 
     // LC 20 followup
-    public boolean isValidFollowUp(String s) {
+    /**
+     *  Follow up:
+     *
+     *   Return `validated string`
+     *    - if input is a valid parentheses
+     *    - if input is NOT a valid parentheses
+     *
+     *   e.g. fix the input string, so it's ALWAYS in parentheses form
+     *   and return as result
+     *
+     *    https://buildmoat.teachable.com/courses/7a7af3/lectures/62677055
+     */
+    public String ConvertToValidBracketString(String s) {
+        Map<String, String> map = new HashMap<>();
+        map.put("(", ")");
+        map.put("{", "}");
+        map.put("[", "]");
 
-        return false;
+        Map<String, String> map2 = new HashMap<>();
+        map.put(")", "(");
+        map.put("}", "{");
+        map.put("]", "[");
+
+
+        // edge
+        if(s.isEmpty() || s.length() == 0){
+            return "()";
+        }
+        if(s.length() == 1){
+            if(map.containsKey(s)){
+                return s + map.get(s);
+            }
+            return  map.get(s) + s;
+        }
+
+        // stack: FILO
+        Stack<String> st = new Stack<>();
+
+        String tmp = "";
+
+        for(String x: s.split("")){
+            System.out.println(">>> x = " + x);
+
+           // tmp += x;
+
+            if(st.isEmpty() && !map.containsKey(x)){
+                //return map.get(s) + s;
+                // ???
+                tmp += (map.get(s) + s);
+            }
+            if(map.containsKey(x)){
+                st.add(x);
+            } else{
+                if(!map.get(st.peek()).equals(x)){
+                    //return false;
+                    tmp += map2.get(x);
+                    tmp += s;
+                }
+                st.pop();
+            }
+        }
+
+        //return st.isEmpty();
+
+        // pop ALL remaining element in stack and append to res
+        while(!st.isEmpty()){
+            String cur = st.pop();
+            tmp += cur;
+            tmp += map.get(cur);
+        }
+
+        return tmp;
     }
+
+
 
 
 }
