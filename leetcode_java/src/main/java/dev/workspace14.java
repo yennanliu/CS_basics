@@ -4351,5 +4351,75 @@ public class workspace14 {
         return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
     }
 
+    // LC 101
+    // 15.17 - 15.39 pm
+    /**
+     * IDEA 1) DFS
+     *
+     */
+    // ides 2) post traverse
+    public boolean isSymmetric(TreeNode root) {
+        if(root == null){
+            return true;
+        }
+        if(root.left == null || root.right == null){
+            return false;
+        }
+
+        // ???
+        return symmetricHelper(root.left, root.right);
+    }
+
+    private boolean symmetricHelper(TreeNode t1, TreeNode t2){
+        // ???
+        if(t1 == null && t2 == null){
+            return true;
+        }
+        if(t1 == null || t2 == null){
+            return false;
+        }
+        if(t1 != t2){
+            return false;
+        }
+        if(t1.left == null || t2.right == null){
+            return false;
+        }
+//        if(t1.right == null || t2.left == null){
+//            return false;
+//        }
+//        // ???
+//        if(t1.left != t2.right){
+//            return false;
+//        }
+//        if(t1.right != t2.right){
+//            return false;
+//        }
+
+        // ???
+        return symmetricHelper(t1.left, t2.right) && symmetricHelper(t1.right, t2.left);
+    }
+
+
+
+
+
+
+    // idea 1) dfs
+    public boolean isSymmetric_100(TreeNode root) {
+        if(root == null){
+            return true;
+        }
+        if(root.left == null || root.right == null){
+            return false;
+        }
+
+        // ???
+        if(root.left != root.right || root.right != root.left){
+            return false;
+        }
+
+        return isSymmetric_100(root.left) && isSymmetric_100(root.right);
+    }
+
 
 }
