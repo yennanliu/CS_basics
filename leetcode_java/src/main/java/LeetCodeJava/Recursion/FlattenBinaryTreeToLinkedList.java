@@ -70,6 +70,40 @@ public class FlattenBinaryTreeToLinkedList {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: DFS + LIST (fixed by gpt)
+    /**
+     *  NOTE !!!
+     *
+     *   helper val (list) to collect visited tree node
+     */
+    List<TreeNode> list = new ArrayList<>();
+    public void flatten_0_0_1(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        // Collect nodes in preorder
+        preOrderTraverse(root);
+
+        // Re-link nodes in list
+        for (int i = 0; i < list.size() - 1; i++) {
+            TreeNode curr = list.get(i);
+            TreeNode next = list.get(i + 1);
+            curr.left = null; // left must be null
+            curr.right = next; // flatten into "linked list"
+        }
+    }
+
+    private void preOrderTraverse(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        list.add(root); // add every node (not just leaves!)
+        preOrderTraverse(root.left);
+        preOrderTraverse(root.right);
+    }
+
     // V1
     // https://leetcode.ca/2016-03-23-114-Flatten-Binary-Tree-to-Linked-List/
     public void flatten_1(TreeNode root) {

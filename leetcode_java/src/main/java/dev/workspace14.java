@@ -4422,9 +4422,64 @@ public class workspace14 {
     }
 
     // LC 114
-    //
+    // 16.08 - 16.18 pm
+    /**
+     * with `pre-order traverse`, transform tree to linked list
+     *
+     *
+     * `pre-order traverse`: root -> left -> right
+     *
+     *  IDEA 1) DFS
+     *
+     *  IDEA 2) BFS
+     *
+     *
+     *  ex 1)
+     *
+     *   1 -> 2 -> 5 -> 3 -> 4 -> 6
+     */
+    //IDEA 1) DFS
+    // ???
+    List<TreeNode> list = new ArrayList<>();
     public void flatten(TreeNode root) {
+        // edge
+        if(root == null){
+            return;
+        }
+        if(root.left == null && root.right == null){
+            return;
+        }
 
+        List<TreeNode> list = new ArrayList<>();
+        preOrderTraverse(root);
+
+        TreeNode res = new TreeNode(root.val);
+        for(int i = 0; i < list.size() - 1; i++){
+//            res.right = n;
+//            root.left = null;
+//            res = n;
+            list.get(i).right = list.get(i+1);
+            list.get(i).left = null;
+            //list.get(i) = list.get(i+1);
+        }
+    }
+
+    private void preOrderTraverse(TreeNode root){
+        // edge
+        if(root == null){
+            return;
+        }
+        if(root.left == null && root.right == null){
+            list.add(root);
+            return; // /??
+        }
+        // pre-order
+        // ????
+        list.add(root);
+        preOrderTraverse(root.left);
+        preOrderTraverse(root.right);
+
+        return;
     }
 
 
