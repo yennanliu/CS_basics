@@ -193,6 +193,15 @@
 			- 61
 			- 143
 		- gemini
+	- LC 226 Invert Binary Tree
+		- gpt
+			- 104
+			- 101
+			- 114
+			- 617
+			- 124
+			- 968
+		- gemini
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
