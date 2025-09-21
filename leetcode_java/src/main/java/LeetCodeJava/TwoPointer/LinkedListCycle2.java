@@ -65,9 +65,29 @@ public class LinkedListCycle2 {
      *     }
      * }
      */
+
     // V0
-    // IDEA: LISTNODE + HASHSET
+    // IDEA: LIST NODE + HASHSET
     public ListNode detectCycle(ListNode head) {
+        // edge
+        if (head == null || head.next == null) {
+            return null;
+        }
+        HashSet<ListNode> set = new HashSet<>();
+        while (head != null) {
+            if (set.contains(head)) {
+                return head;
+            }
+            set.add(head);
+            head = head.next;
+        }
+
+        return null;
+    }
+
+    // V0-1
+    // IDEA: LIS TNODE + HASHSET
+    public ListNode detectCycle_0_1(ListNode head) {
         // edge
         if (head == null || head.next == null) {
             return null;
@@ -98,6 +118,47 @@ public class LinkedListCycle2 {
             return null;
         }
         return circuleNode;
+    }
+
+    // V0-2
+    // IDEA: SLOW - FAST POINTER
+    /**
+     *  KEY:
+     *
+     *  step 1) setup slow, fast pointer
+     *  step 2) move till fast == null or fast.next == null
+     *  step 3) check if NO cycle
+     *  step 4) move slow, fast on the same time, return the 1st node
+     *          when slow == fast (which is the `cycle start node`)
+     *
+     */
+    public ListNode detectCycle_0_2(ListNode head) {
+        if (head == null || head.next == null)
+            return null;
+
+        ListNode slow = head, fast = head;
+
+        // Step 1: detect if cycle exists
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) { // cycle detected
+                break;
+            }
+        }
+
+        // No cycle
+        if (fast == null || fast.next == null)
+            return null;
+
+        // Step 2: find cycle entry
+        slow = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        return slow; // start of cycle
     }
 
     // V1
