@@ -1208,6 +1208,8 @@
 1851 | [Minimum Interval to Include Each Query](https://leetcode.com/problems/minimum-interval-to-include-each-query/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MinimumIntervalToIncludeEachQuery.java) | | | Hard |sort, greedy, `google` | AGAIN (not start)
 1871 | [Jump Game VII](https://leetcode.com/problems/jump-game-vii/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/JumpGame7.java) | | | Medium |greedy, bfs | AGAIN (not start)
 1899 | [Merge Triplets to Form Target Triplet](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MergeTripletsToFormTargetTriplet.java) | | | Medium |sort, greedy, `amazon` | AGAIN(1) (not srart)
+3689 | [Maximum Total Subarray Value I](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MaximumTotalSubarrayValueI.java)  | | | Medium | math, brute force| OK
+
 
 
 ## Graph
