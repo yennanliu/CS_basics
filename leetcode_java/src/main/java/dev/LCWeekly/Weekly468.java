@@ -5,7 +5,7 @@ package dev.LCWeekly;
 import java.util.*;
 
 public class Weekly468 {
-    
+
     // LC Q1
     // https://leetcode.com/contest/weekly-contest-468/problems/bitwise-or-of-even-numbers-in-an-array/description/
     public int evenNumberBitwiseORs(int[] nums) {
