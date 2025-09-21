@@ -2,6 +2,8 @@ package dev;
 
 import LeetCodeJava.LinkedList.FlattenMultilevelDoublyLinkedList;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class workspace15 {
@@ -278,6 +280,101 @@ public class workspace15 {
       }
 
       return global_max;
+    }
+
+    // LC Q1
+    // https://leetcode.com/contest/weekly-contest-468/problems/bitwise-or-of-even-numbers-in-an-array/description/
+    public int evenNumberBitwiseORs(int[] nums) {
+      // edge
+      if(nums.length == 0){
+          return 0;
+      }
+      List<Integer> list = new ArrayList<>();
+      for(int x: nums){
+          if(x % 2 == 0){
+              list.add(x);
+          }
+      }
+      if(list.isEmpty()){
+          return 0;
+      }
+        if(list.size() == 1){
+            return list.get(0);
+        }
+      //int res = -1;
+
+      //int tmp = list.get(0) | list.get(1);
+      int tmp = 0;
+
+      for(int i = 0; i < list.size(); i++){
+         // tmp = tmp | (list.get(i) | list.get(i+1));
+          tmp = (tmp | list.get(i));
+      }
+
+      return tmp;
+    }
+
+  // LC Q2
+  // https://leetcode.com/contest/weekly-contest-468/problems/maximum-total-subarray-value-i/description/
+  /**
+   *  -> Return the `MAX` possible total value you can achieve.©leetcode
+   *
+   *
+   *  1. You need to choose exactly `k ` non-empty subarrays nums[l..r] of nums©leetcode
+   *  2. Subarrays may
+   *     1) overlap, and
+   *     2) the exact same subarray (same l and r) can be chosen` more than once.`
+   *  3. !!!!
+   *
+   *   The value of a subarray nums[l..r] is defined as:
+   *      max(nums[l..r]) - min(nums[l..r]).
+   *
+   *   -> val of sub arr is
+   *      max (sub) - min(sub)
+   *
+   *  NOTE: A subarray is a contiguous non-empty sequence of elements within an array
+   *
+   */
+  public long maxTotalValue(int[] nums, int k) {
+      // edge
+      if(nums.length <= 1){
+          return 0;
+      }
+      if(nums.length == 2){
+          return (long) Math.abs(nums[0] - nums[1]) * k;
+      }
+
+      // ???
+      int min_val = Integer.MAX_VALUE;
+      int max_val = -1 * Integer.MAX_VALUE;
+
+      for(int x: nums){
+          min_val = Math.min(min_val, x);
+          max_val = Math.max(max_val, x);
+      }
+
+      return (long) (max_val - min_val) * k;
+    }
+
+    // LC Q3
+    // https://leetcode.com/contest/weekly-contest-468/problems/split-and-merge-array-transformation/description/
+    /**
+     *
+     * -> Return the `minimum` number of split-and-merge operations
+     *   needed to transform `nums1 into nums2.`
+     *
+     *
+     *  1. given nums1, nums2, both with len = n
+     *  2. transform nums1 to nums2
+     *  3. the op as below:
+     *      1) choose sub arr [L, R]
+     *      2) remove sub arr, keep prefix and suffix ??
+     *      3) re-insert the removed part back to nums1, at ANY position
+     *
+     */
+    public int minSplitMerge(int[] nums1, int[] nums2) {
+
+      return 0;
     }
 
 }
