@@ -413,7 +413,79 @@ public class workspace15 {
      *
      *
      */
+    // BRUTE FORCE OPTIMIZED
+    //
     public long maxTotalValue(int[] nums, int k) {
+        // edge
+        if(nums.length <= 1){
+            return 0;
+        }
+//        if(nums.length == 2){
+//            return (long) Math.abs(nums[0] - nums[1]) * k;
+//        }
+
+        Long res = 0L;
+        // brute force
+        // ???
+        Long tmpSum = 0L;
+        //List<Integer> cache = new ArrayList<>();
+        PriorityQueue<Integer> max_pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1-o2;
+                return diff;
+            }
+        });
+
+
+        for(int i = 0; i < nums.length - 1; i++){
+            int local_min = nums[i];
+            int local_max = nums[i];
+            for(int j = i+1; j < nums.length; j++){
+
+                while(max_pq.size() > k){
+                    max_pq.poll();
+                }
+
+                local_min = Math.min(local_min, nums[j]);
+                local_max = Math.max(local_max, nums[j]);
+
+                int diff = local_max - local_min;
+
+                //cache.add(local_max - local_min);
+                max_pq.add(diff);
+                tmpSum += diff;
+            }
+        }
+
+        // ordering
+
+        //edge k > cache size
+        if(k >= max_pq.size()){
+            return tmpSum;
+        }
+
+        System.out.println(">>> max_pq = " + max_pq);
+        int cnt = 0;
+        List<Integer> tmp = new ArrayList<>();
+        while(!max_pq.isEmpty()){
+            tmp.add(max_pq.poll());
+        }
+        // reverse
+        Collections.reverse(tmp);
+        for(int j = 0; j < k; j++){
+            res += tmp.get(j);
+        }
+
+        return res;
+    }
+
+
+
+
+
+    // brute force: OUT OF MEMORY
+    public long maxTotalValue_100(int[] nums, int k) {
         // edge
         if(nums.length <= 1){
             return 0;
