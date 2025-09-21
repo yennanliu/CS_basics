@@ -1209,6 +1209,7 @@
 1871 | [Jump Game VII](https://leetcode.com/problems/jump-game-vii/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/JumpGame7.java) | | | Medium |greedy, bfs | AGAIN (not start)
 1899 | [Merge Triplets to Form Target Triplet](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MergeTripletsToFormTargetTriplet.java) | | | Medium |sort, greedy, `amazon` | AGAIN(1) (not srart)
 3689 | [Maximum Total Subarray Value I](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MaximumTotalSubarrayValueI.java)  | | | Medium | math, brute force| OK
+3690 | [Split and Merge Array Transformation](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/SplitAndMergeArrayTransformation.java)  | | | Medium | bfs dfs| AGAIN (not start)
 3691 | [Maximum Total Subarray Value II](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MaximumTotalSubarrayValueII.java)  | | | hard | brute force, tree| AGAIN
 
 
