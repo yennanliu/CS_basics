@@ -1,5 +1,152 @@
 # Progress
 
+# 2025-09-21
+- needcode `grind 75` - similar LC by AI
+	- https://neetcode.io/practice?tab=blind75
+	- LC 49 Group Anagrams
+		- 336
+		- 30
+	- LC 347 Top K Frequent Elements
+		- 621
+		- 1838
+	- LC 271 – Encode and Decode Strings
+		- 640
+	- LC 128 - Longest Consecutive Sequence
+	 	- 594
+	 	- 149
+	 - LC 125 - Valid Palindrome
+	 - LC 11 - Container With Most Water
+	 	- 407
+	 - LC 121 Best Time to Buy and Sell Stock
+	 	- 714
+	 	- 309
+	 	- 123
+	 	- 128
+	 	- 188
+	 	- 1235
+	 - LC 003 Longest Substring Without Repeating Characters 
+	 	- gpt
+		 	- 568 (dp)
+		- gemini
+		 	- 209
+		 	- 567
+		 	- 424
+	- LC 424. Longest Repeating Character Replacement
+		- gpt
+			- 1004
+		- gemini
+			- 904
+			- 209
+			- 713
+	- LC 20 Valid Parentheses
+		- gpt
+			- 1047
+			- 155
+			- 394
+			- 224
+			- 301
+			- 32
+		- gemini
+			- 1249
+			- 856
+			- 71
+	- LC 206 Reverse Linked List
+		- gpt
+			- 21
+			- 86
+			- 24
+			- 25
+			- 61
+			- 143
+		- gemini
+	- LC 143 Reorder List
+		- gpt
+			- 23
+		- gemini
+			- 234
+	- LC 19 Remove Nth Node From End of List
+		- gpt
+			- 876
+			- 82
+			- 61
+			- 143
+			- 23
+			- 25
+		- gemini
+		 	- 237
+		 	- 141
+		 	- 142
+		 	- 160
+- neetcode 250
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
+		- 27/66
+			- 335,430,1157,395
+		- review prev LC problems !!!
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md
+	- 護城河
+		- video
+			- session 6
+		- pdf
+			- p.7 (sliding window)
+		- LC 20. Valid Parentheses `follow up`:
+			- return `validated string` if input string is Valid Parentheses or NOT Valid Parentheses
+			- `Session 4 - Determine Valid Parentheses`
+		 LC 200. Number of Islands `follow up`:
+		 	- 若grid上原先都是水，接著有多次的更新，每次更新為把一格水換成陸地，也就是會給一個座標(x,y)，保證他原先是水，並將他轉換成陸地，每次更新完後請確認目前有幾座島嶼
+		- binary search problems:
+				- `r > l` binary search
+					- LC 154: Find Minimum in Rotated Sorted Array II
+					- LC 278: First Bad Version
+					- LC 658: Find K Closest Elements
+					- LC 744: Find Smallest Letter Greater Than Target
+
+				📈 Binary Search on Sorted Arrays
+					•	LC 33 – Search in Rotated Sorted Array
+					•	LC 81 – Search in Rotated Sorted Array II
+
+				⏳ Binary Search on Answer (Parametric Search)
+					•	LC 69 – Sqrt(x)
+					•	LC 367 – Valid Perfect Square
+					•	LC 875 – Koko Eating Bananas
+					•	LC 1011 – Capacity To Ship Packages Within D Days
+					•	LC 410 – Split Array Largest Sum
+					•	LC 1482 – Minimum Number of Days to Make m Bouquets
+					•	LC 2226 – Maximum Candies Allocated to K Children
+
+				📊 Binary Search on Ranges / Values
+					•	LC 4 – Median of Two Sorted Arrays
+					•	LC 719 – Find K-th Smallest Pair Distance
+					•	LC 378 – Kth Smallest Element in a Sorted Matrix
+					•	LC 668 – Kth Smallest Number in Multiplication Table
+					•	LC 1201 – Ugly Number III
+
+				🧭 Binary Search + Greedy Check
+					•	LC 287 – Find the Duplicate Number (Floyd’s Cycle detection is optimal, but BS works too)
+					•	LC 162 – Find Peak Element
+					•	LC 154 – Find Minimum in Rotated Sorted Array II
+					•	LC 540 – Single Element in a Sorted Array
+
+				🎯 Binary Search + Prefix/Suffix / Search Space
+					•	LC 300 – Longest Increasing Subsequence (with patience sorting → binary search)
+					•	LC 354 – Russian Doll Envelopes
+					•	LC 2560 – House Robber IV
+	- again:
+	- todo:
+		- List when to use `greedy` VS `bfs/dfs` in graph
+			- e.g. size > 10^5, should use greedy?
+				- list the checkpoints and consideration
+		- (337 similar)
+			- 1770
+			- 1931
+			- 2246
+- Sys design questions:
+	- https://neetcode.io/practice?tab=systemDesign
+- crack code book
+	- p.177 (recursion & dp)
+- sys design book
+	- Volume 2
+		- p.323
+
 # 2025-09-20
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
