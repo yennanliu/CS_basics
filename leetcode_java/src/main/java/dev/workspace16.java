@@ -135,4 +135,10 @@ public class workspace16 {
     }
 
 
+    // LC 61
+    public ListNode rotateRight(ListNode head, int k) {
+
+        return null;
+    }
+
 }

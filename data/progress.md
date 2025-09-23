@@ -66,7 +66,6 @@
 			- 234
 	- LC 19 Remove Nth Node From End of List
 		- gpt
-			- 61
 			- 143
 			- 23
 			- 25
