@@ -136,9 +136,84 @@ public class workspace16 {
 
 
     // LC 61
+    // 14.32 - 14.43 pm
+    /**
+     *
+     * -> Given the head of a linked list,
+     *   `rotate` the list to the` right by k places.`
+     *
+     *
+     *  IDEA 1) LINKED LIST OP
+     *
+     *
+     *
+     */
     public ListNode rotateRight(ListNode head, int k) {
+        // edge
+        if(k == 0 || head == null || head.next == null){
+            return head;
+        }
 
-        return null;
+        //List<Integer> list = new ArrayList<>();
+        Deque<Integer> dequeue = new ArrayDeque<>(); // ???
+
+        ListNode head2 = head;
+
+        // get len
+        //int len = 0;
+        while(head != null){
+           // len += 1;
+            //list.add(head.val);
+            dequeue.add(head.val);
+            head = head.next;
+
+        }
+
+        int len = dequeue.size();
+
+        System.out.println(">>> (before normalized) k = " + k);
+        System.out.println(">>> len = " + len);
+
+
+        // edge
+        if(k >= len){
+            if(len % k == 0){
+                return head2;
+            }
+            // ??
+            k = (k %len);
+        }
+
+        System.out.println(">>> (after normalized) k = " + k);
+
+        // `rotate`
+        int i = 0;
+        while(!dequeue.isEmpty() && i < k){
+            // pop `last`
+            int val = dequeue.pollLast(); // ??
+            // append pop val to first idx
+            dequeue.addFirst(val);
+            i += 1;
+        }
+
+        ListNode dummy = new ListNode();
+        ListNode res = dummy;
+
+        System.out.println(">>> dequeue = " + dequeue);
+
+//        for(Integer x: dequeue){
+//            ListNode cur = new ListNode(x);
+//            dummy.next = cur;
+//            dummy = cur;
+//        }
+
+        while(!dequeue.isEmpty()){
+            ListNode cur = new ListNode(dequeue.pollFirst());
+            dummy.next = cur;
+            dummy = cur;
+        }
+
+        return res.next; // ???
     }
 
 }
