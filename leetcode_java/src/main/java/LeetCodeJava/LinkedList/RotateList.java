@@ -32,12 +32,71 @@ package LeetCodeJava.LinkedList;
 
 import LeetCodeJava.DataStructure.ListNode;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class RotateList {
 
     // V0
 //    public ListNode rotateRight(ListNode head, int k) {
 //
 //    }
+
+    // V0-1
+    // IDEA: LIST NODE -> DEQUEUE -> ROTATE OP
+    public ListNode rotateRight_0_1(ListNode head, int k) {
+        // edge
+        if (k == 0 || head == null || head.next == null) {
+            return head;
+        }
+
+        Deque<Integer> dequeue = new ArrayDeque<>(); // ???
+        ListNode head2 = head;
+
+        // add to dqeueue
+        while (head != null) {
+            dequeue.add(head.val);
+            head = head.next;
+
+        }
+
+        int len = dequeue.size();
+//        System.out.println(">>> (before normalized) k = " + k);
+//        System.out.println(">>> len = " + len);
+
+        // edge
+        if (k >= len) {
+            if (len % k == 0) {
+                return head2;
+            }
+            // `normalize` k
+            k = (k % len);
+        }
+
+        //System.out.println(">>> (after normalized) k = " + k);
+
+        // `rotate`
+        int i = 0;
+        while (!dequeue.isEmpty() && i < k) {
+            // pop `last`
+            int val = dequeue.pollLast(); // ??
+            // append pop val to first idx
+            dequeue.addFirst(val);
+            i += 1;
+        }
+
+        ListNode dummy = new ListNode();
+        ListNode res = dummy;
+        System.out.println(">>> dequeue = " + dequeue);
+
+        while (!dequeue.isEmpty()) {
+            ListNode cur = new ListNode(dequeue.pollFirst());
+            dummy.next = cur;
+            dummy = cur;
+        }
+
+        return res.next;
+    }
 
     //  V1
     // https://leetcode.ca/2016-01-30-61-Rotate-List/
