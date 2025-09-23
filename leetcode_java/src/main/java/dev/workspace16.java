@@ -57,4 +57,18 @@ public class workspace16 {
         return null;
     }
 
+    // LC 82
+    // 9.33 - 9.43 am
+    /**
+     *  IDEA 1) LINKED LIST OP
+     *
+     *
+     *
+     *
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+
+        return null;
+    }
+
 }
