@@ -32,12 +32,208 @@ package LeetCodeJava.LinkedList;
 
 import LeetCodeJava.DataStructure.ListNode;
 
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
 public class RemoveDuplicatesFromSortedList2 {
 
     // V0
 //    public ListNode deleteDuplicates(ListNode head) {
 //
 //    }
+
+    // V0-1
+    // IDEA: LINKED LIST -> HASHMAP, SET -> LINKED LIST
+    public ListNode deleteDuplicates_0_1(ListNode head) {
+        // edge
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *  1. HashSet DOES NOT keep the `insert order` in java
+         *  2. LinkedHashSet DOES keep the `insert order` in java
+         *     -> so we use `LinkedHashSet` for tracking the `order` in linkedlist
+         */
+        //Set<Integer> set = new HashSet<>(); // order
+        Set<Integer> set = new LinkedHashSet<>();
+        Map<Integer, Integer> map = new HashMap<>(); // {val : cnt}
+
+        while (head != null) {
+            Integer val = head.val;
+            map.put(val, map.getOrDefault(val, 0) + 1);
+            set.add(val);
+            head = head.next;
+        }
+        ListNode dummy = new ListNode();
+        ListNode res = dummy; // ???
+
+        for (Integer x : set) {
+            if (map.get(x) == 1) {
+                ListNode node = new ListNode(x);
+                dummy.next = node;
+                dummy = node;
+            }
+        }
+
+        //System.out.println(">>> dummy = " + dummy);
+        return res.next;
+    }
+
+    // V0-2
+    // IDEA: LINKED LIST + 2 POINTERS
+    /**
+     *  DEMO
+     *
+     * 1 -> 2 -> 2 -> 3 -> 3 -> 4
+     *
+     * We want to remove all duplicates entirely, so the expected output is:
+     *
+     * 1 -> 4
+     *
+     *
+     * ⸻
+     *
+     * Step 0: Initialization
+     *
+     * dummy -> 1 -> 2 -> 2 -> 3 -> 3 -> 4
+     * pre = dummy
+     * cur = head (1)
+     *
+     *
+     * ⸻
+     *
+     * Step 1: Process value 1
+     * 	•	Inner loop: cur.next.val == cur.val? → 2 != 1 → skip inner loop
+     * 	•	Check pre.next == cur → dummy.next == 1 → true → no duplicates
+     *
+     * pre = cur (1)
+     * cur = cur.next (2)
+     *
+     * List remains unchanged:
+     *
+     * dummy -> 1 -> 2 -> 2 -> 3 -> 3 -> 4
+     * pre -> 1
+     * cur -> 2
+     *
+     *
+     * ⸻
+     *
+     * Step 2: Process value 2
+     * 	•	Inner loop: cur.next.val == cur.val → 2 == 2 → move cur to next 2
+     *
+     * cur -> second 2
+     *
+     * 	•	Inner loop again: cur.next.val == cur.val → 3 != 2 → exit inner loop
+     * 	•	Check pre.next == cur → 1.next == 2 → false → duplicates exist
+     * 	•	Remove duplicates:
+     *
+     * pre.next = cur.next (3)
+     * cur = cur.next (3)
+     *
+     * Updated list:
+     *
+     * dummy -> 1 -> 3 -> 3 -> 4
+     * pre -> 1
+     * cur -> 3
+     *
+     *
+     * ⸻
+     *
+     * Step 3: Process value 3
+     * 	•	Inner loop: cur.next.val == cur.val → 3 == 3 → move cur to second 3
+     * 	•	Inner loop again: cur.next.val == cur.val → 4 != 3 → exit inner loop
+     * 	•	Check pre.next == cur → 1.next == 3 → false → duplicates exist
+     * 	•	Remove duplicates:
+     *
+     * pre.next = cur.next (4)
+     * cur = cur.next (4)
+     *
+     * Updated list:
+     *
+     * dummy -> 1 -> 4
+     * pre -> 1
+     * cur -> 4
+     *
+     *
+     * ⸻
+     *
+     * Step 4: Process value 4
+     * 	•	Inner loop: cur.next is null → exit
+     * 	•	Check pre.next == cur → 1.next == 4 → true → no duplicates
+     * 	•	Move pre:
+     *
+     * pre = cur (4)
+     * cur = cur.next (null)
+     *
+     *
+     * ⸻
+     *
+     * Step 5: Finish
+     *
+     * cur is null → exit while loop
+     *
+     * Return:
+     *
+     * dummy.next -> 1 -> 4
+     *
+     * ✅ Final list after removing all duplicates:
+     *
+     * 1 -> 4
+     *
+     *
+     */
+    public ListNode deleteDuplicates_0_2(ListNode head) {
+
+        /**
+         * 	•	dummy is a dummy head to simplify edge cases
+         * 	    (like when the first few nodes are duplicates).
+         *
+         * 	•	pre points to the last node before the current sequence of duplicates.
+         *
+         */
+        ListNode dummy = new ListNode(0, head);
+        ListNode pre = dummy;
+        // 	cur iterates through the list.
+        ListNode cur = head;
+
+        while (cur != null) {
+            /**
+             * 	Skip duplicates:
+             *
+             *    - This inner loop moves cur to the last node of a `duplicate` sequence.
+             *
+             * 	  - Example:
+             * 	     if list is 1 -> 2 -> 2 -> 2 -> 3,
+             * 	       and cur is the first 2,
+             * 	       after this loop cur points to the last 2.
+             */
+            while (cur.next != null && cur.next.val == cur.val) {
+                cur = cur.next;  // skip all nodes with the same value
+            }
+            /**
+             * Check if duplicates existed:
+             *
+             * 	•	pre.next == cur → no duplicates for this value, so move pre forward.
+             *
+             * 	•	Otherwise → duplicates exist,
+             * 	    so skip the entire sequence by linking pre.next to cur.next.
+             */
+            if (pre.next == cur) {
+                pre = cur;       // no duplicates detected, move pre forward
+            } else {
+                pre.next = cur.next; // duplicates detected, remove them
+            }
+            cur = cur.next;       // move to the next new value
+        }
+
+        // 	dummy.next points to the head of the cleaned list (without duplicates).
+        return dummy.next;
+    }
 
     // V1
     // https://leetcode.ca/2016-02-20-82-Remove-Duplicates-from-Sorted-List-II/
