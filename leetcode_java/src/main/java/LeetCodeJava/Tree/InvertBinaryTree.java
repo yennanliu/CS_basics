@@ -69,6 +69,45 @@ public class InvertBinaryTree {
         return root;
     }
 
+    // V0-0-1
+    // IDEA: DFS + CACHE
+    public TreeNode invertTree_0_0_1(TreeNode root) {
+        // edge
+        if (root == null) {
+            return root;
+        }
+        /**
+         *  NOTE !!!
+         *
+         *  below logic is NOT NEEDED
+         */
+        // ???
+        // if (root.left == null && root.right == null) {
+        //     return root;
+        // }
+        // if (root.left == null || root.right == null) {
+        //     if (root.left == null) {
+        //         root.left = root.right;
+        //     } else {
+        //         root.right = root.left;
+        //     }
+        //     return root;
+        // }
+
+        // cache
+        //        TreeNode _right = root.right;
+        //        TreeNode _left = root.left;
+        // ???
+        TreeNode _right = invertTree(root.left);
+        TreeNode _left = invertTree(root.right);
+
+        root.left = _left;
+        root.right = _right;
+
+        return root;
+    }
+
+
     // VO-1
     // IDEA : DFS + cache
     public TreeNode invertTree_0_1(TreeNode root) {

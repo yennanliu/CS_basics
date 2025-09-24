@@ -250,6 +250,70 @@ public class workspace16 {
     }
 
 
+    // LC 100
+    // 9.47 - 9.57 am
+    /**
+     *  IDEA 1) DFS
+     *
+     */
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        // edge
+        if(p == null && q == null){
+            return true;
+        }
+        if(p == null || q == null){
+            return false;
+        }
+        if(p.val != q.val){
+            return false;
+        }
+
+        return isSameTree(p.left, q.left) &&
+                isSameTree(p.right, q.right);
+    }
+
+
+    // LC 226
+    // 10.00 - 10.10 am
+    /**
+     * IDEA 1) DFS
+     *
+     * IDEA 2) BFS
+     *
+     *
+     */
+    public TreeNode invertTree(TreeNode root) {
+        // edge
+        if(root == null){
+            return root;
+        }
+        // ???
+        if(root.left == null && root.right == null){
+            return root;
+        }
+        if(root.left == null || root.right == null){
+            if(root.left == null){
+                root.left = root.right;
+            }else{
+                root.right = root.left;
+            }
+            return root;
+        }
+
+        // cache
+//        TreeNode _right = root.right;
+//        TreeNode _left = root.left;
+        // ???
+        TreeNode _right = invertTree(root.left); // ????
+        TreeNode _left = invertTree(root.right);
+
+        root.left = _left;
+        root.right = _right;
+
+        return root;
+    }
+
+    //private boolean
 
 
 }
