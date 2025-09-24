@@ -426,5 +426,11 @@ public class workspace16 {
         return res.next;
     }
 
+    // LC 2290
+    public int minimumObstacles(int[][] grid) {
+
+        return 0;
+    }
+
 
 }
