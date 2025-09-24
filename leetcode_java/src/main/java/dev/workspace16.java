@@ -427,9 +427,108 @@ public class workspace16 {
     }
 
     // LC 2290
+    // 18.06 - 18.16 PM
+    /**
+     *
+     *
+     *  -> return the `minimum` number of `obstacles` to `remove` so
+     *  you can move from the upper left corner (0, 0) to
+     *   the lower right corner (m - 1, n - 1).
+     *
+     *
+     *   1. ALWAYS move from (0,0) to (m-1, n-1)
+     *   2. can move up, down, left, or right from and to an empty cell.
+     *   3.  0 : empty cell
+     *       1: obstacle cell
+     *
+     *
+     *
+     *
+     *  IDEA 1) Dijkstra ALGO
+     *
+     * IDEA 2) bfs
+     */
+    // IDEA 1) Dijkstra ALGO
     public int minimumObstacles(int[][] grid) {
+        // edge
+        if(grid == null){
+            return 0;
+        }
+        if(grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
 
-        return 0;
+        int m = grid.length; // y
+        int n = grid[0].length; // x
+        // ???
+        boolean[][] visited = new boolean[m][n];
+        System.out.println(">>> visited = " + visited);
+
+        int opCnt = 0;
+
+        // Dijkstra
+        // PQ:  pq([x1, y1], [x2, y2], ....)
+        //    it's a `small PQ`, so ordering based on `matrix value`
+        //    small -> big
+        PriorityQueue<List<Integer>> pq = new PriorityQueue<>(new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> o1, List<Integer> o2) {
+                int x1 = o1.get(1);
+                int y1 = o1.get(0);
+                int x2 = o2.get(0);
+                int y2 = o2.get(1);
+                // ???
+                int diff = grid[y1][x1] - grid[y2][x2];
+                return diff;
+            }
+        });
+
+        Integer[][] moves = new Integer[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        // ??? a better way??
+        List<Integer> tmp = new ArrayList<>();
+        tmp.add(0);
+        tmp.add(0);
+        pq.add(tmp);
+
+        while(!pq.isEmpty()){
+            List<Integer> cur = pq.poll();
+            int x = cur.get(0);
+            int y = cur.get(1);
+
+            System.out.println(">>> x = " + x + ", y = " + y + ", cur = " + cur);
+
+            // if `reach destination` quit earlier
+            if(x == n-1 && y == m-1){
+                System.out.println(">>> if `reach destination` quit earlier");
+                return opCnt;
+            }
+
+            // check if `need move obstacle`
+            if(grid[y][x] == 1){
+                opCnt += 1;
+            }
+
+            // update visited
+            visited[y][x] = true;
+
+            // NOTE !!! validate first
+            for(Integer[] move: moves){
+                int _x = x + move[0];
+                int _y = y + move[1];
+
+                System.out.println(">>> _x = " + _x + ", _y = " + _y + ", move = " + move);
+
+                if( _x >= 0 && _x < n && _y >= 0 && _y < m && !visited[_y][_x]){
+                    List<Integer> tmp2 = new ArrayList<>();
+                    tmp2.add(_x);
+                    tmp2.add(_y);
+                    pq.add(tmp2);
+                }
+            }
+        }
+
+        return opCnt;
     }
 
 

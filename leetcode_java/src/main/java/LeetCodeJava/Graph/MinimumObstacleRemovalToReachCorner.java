@@ -2,10 +2,7 @@ package LeetCodeJava.Graph;
 
 // https://leetcode.com/problems/minimum-obstacle-removal-to-reach-corner/description/
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * 2290. Minimum Obstacle Removal to Reach Corner
@@ -61,6 +58,59 @@ public class MinimumObstacleRemovalToReachCorner {
 //    public int minimumObstacles(int[][] grid) {
 //
 //    }
+
+    // V0-1
+    // IDEA: Dijkstra's Algorithm (fixed by gpt)
+    public int minimumObstacles(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int m = grid.length; // rows
+        int n = grid[0].length; // cols
+
+        // distance[y][x] = min obstacles to reach (y,x)
+        int[][] dist = new int[m][n];
+        for (int[] row : dist) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+        dist[0][0] = 0;
+
+        // PQ stores [cost, x, y]
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        pq.offer(new int[] { 0, 0, 0 }); // start at (0,0) with cost=0
+
+        int[][] moves = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int cost = cur[0], x = cur[1], y = cur[2];
+
+            // Reached destination
+            if (x == n - 1 && y == m - 1) {
+                return cost;
+            }
+
+            // Skip if we already found better
+            if (cost > dist[y][x])
+                continue;
+
+            for (int[] mv : moves) {
+                int nx = x + mv[0];
+                int ny = y + mv[1];
+
+                if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
+                    int newCost = cost + grid[ny][nx];
+                    if (newCost < dist[ny][nx]) {
+                        dist[ny][nx] = newCost;
+                        pq.offer(new int[] { newCost, nx, ny });
+                    }
+                }
+            }
+        }
+
+        return -1; // should never happen
+    }
 
     // V1-1
     // IDEA: Dijkstra's Algorithm
