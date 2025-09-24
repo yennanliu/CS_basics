@@ -61,6 +61,14 @@ public class MinimumObstacleRemovalToReachCorner {
 
     // V0-1
     // IDEA: Dijkstra's Algorithm (fixed by gpt)
+    /**
+     *  NOTE !!!
+     *
+     * ✅ Summary:
+     * 	•	Single cost var won’t work → need dist[][] to track per-cell minimum cost.
+     * 	•	No explicit visited needed → the dist[][] + early skip (if (cost > dist[y][x]) continue) handles that.
+     *
+     */
     public int minimumObstacles(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -69,6 +77,29 @@ public class MinimumObstacleRemovalToReachCorner {
         int m = grid.length; // rows
         int n = grid[0].length; // cols
 
+        /**
+         *   NOTE !!!
+         *
+         *    we need a 2D array to save the cost when BFS loop over the grid
+         *    (CAN'T just use a single var (cost))
+         *
+         * ---
+         *
+         * 1. Why keep a dist[][] array instead of a single cost variable?
+         *
+         *
+         * 	•	The minimum cost to reach a cell (x,y) is not unique across the grid.
+         * 	•	For example, you might reach (2,2) with cost 3 via one path, but later find a better path with cost 2.
+         * 	•	If you only had a single global cost variable, you couldn’t distinguish the costs of different cells — you’d lose information.
+         *
+         * That’s why:
+         * 	•	dist[y][x] keeps track of the best cost found so far for each specific cell.
+         * 	•	Dijkstra works by always expanding the lowest-cost node next, and updating neighbors only if we find a cheaper path.
+         *
+         * Without dist[][], you’d either:
+         * 	•	Revisit nodes unnecessarily (potential infinite loops), or
+         * 	•	Miss better paths (return wrong result).
+         */
         // distance[y][x] = min obstacles to reach (y,x)
         int[][] dist = new int[m][n];
         for (int[] row : dist) {
@@ -92,6 +123,34 @@ public class MinimumObstacleRemovalToReachCorner {
             }
 
             // Skip if we already found better
+            /**
+             *  NOTE !!!
+             *
+             *   why DON'T need to maintain a `visited` var
+             *   to prevent repeating visit ?
+             *
+             *  -----
+             *
+             *   2. Why no explicit visited array?
+             *
+             * This is subtle. In Dijkstra:
+             * 	•	A node is considered “visited” (finalized) once it’s dequeued from the priority queue with its minimum cost.
+             * 	•	Because of the if (cost > dist[y][x]) continue; check, we automatically ignore revisits that don’t improve cost.
+             *
+             *
+             *  So, the role of visited is effectively played by:
+             *
+             *      ```
+             *      if (cost > dist[y][x]) continue;
+             *      ```
+             *
+             *   This guarantees:
+             * 	•	The first time you pop a cell with its minimum cost, you expand it.
+             * 	•	If another path later tries to reach the same cell with a higher cost, it gets ignored.
+             *
+             * 👉 That’s why visited isn’t needed in Dijkstra — the dist[][] array + priority queue ensure correctness.
+             *
+             */
             if (cost > dist[y][x])
                 continue;
 
@@ -115,7 +174,6 @@ public class MinimumObstacleRemovalToReachCorner {
     // V1-1
     // IDEA: Dijkstra's Algorithm
     // https://leetcode.com/problems/minimum-obstacle-removal-to-reach-corner/editorial/
-
     // Directions for movement: right, left, down, up
     private final int[][] directions = {
             { 0, 1 },
