@@ -315,5 +315,43 @@ public class workspace16 {
 
     //private boolean
 
+    // LC 617
+    // 10.19 - 10.29 am
+    /**
+     *  IDEA 1) DFS
+     *
+     */
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        // edge
+        if(root1 == null && root2 == null){
+            return root1;
+        }
+//        if(root1 == null || root2 == null){
+//            if(root2 == null){
+//                return root1;
+//            }
+//            return root2;
+//        }
+
+        int val1 = root1 != null ? root1.val: 0;
+        int val2 = root2 != null ? root2.val: 0;
+
+        // dfs
+        // pre-order traverse (root -> left -> right)
+        //int newVal = root1.val + root2.val;
+        root1.val = val1 + val2;
+
+        // ????
+        TreeNode _left = mergeTrees(root1.left, root2.left);
+        TreeNode _right = mergeTrees(root1.right, root2.right);
+
+        root1.left = _left;
+        root1.right = _right;
+
+        return root1;
+    }
+
+
+
 
 }
