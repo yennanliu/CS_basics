@@ -1952,3 +1952,65 @@ public int maxDepth(TreeNode root) {
 
 ```
 
+### 9.2) Java `re-construct` nodes
+
+- LC 116
+- https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/PopulatingNextRightPointersInEachNode.java
+
+```java
+public Node connect_0_1(Node root) {
+    if (root == null)
+        return null;
+
+    Queue<Node> q = new LinkedList<>();
+    q.add(root);
+
+    while (!q.isEmpty()) {
+        int size = q.size();
+        /**
+         *  NOTE !!!!
+         *
+         *   via `prev` node,
+         *   we can easily re-connect left - right node in each layer
+         *
+         *   pattern as below:
+         *
+         *     Node prev = null;
+         *     for(int i = 0; i < size; i++){
+         *         TreeNode cur = q.poll();
+         *         // NOTE !!!! this
+         *         if(prev == null){
+         *             prev.next = cur;
+         *         }
+         *         // NOTE !!!! this
+         *         prev = cur;
+         *
+         *         // ....
+         *     }
+         *
+         */
+        Node prev = null; // prev tracks previous node in this level
+
+        for (int i = 0; i < size; i++) {
+            Node cur = q.poll();
+
+            if (prev != null) {
+                prev.next = cur; // link previous node to current
+            }
+            prev = cur;
+
+            if (cur.left != null)
+                q.add(cur.left);
+            if (cur.right != null)
+                q.add(cur.right);
+        }
+
+        // last node in level should point to null
+        if (prev != null)
+            prev.next = null;
+    }
+
+    return root;
+}
+```
+
