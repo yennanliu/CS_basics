@@ -1,6 +1,10 @@
 package LeetCodeJava.Recursion;
 
 // https://leetcode.com/problems/populating-next-right-pointers-in-each-node/description/
+
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * 116. Populating Next Right Pointers in Each Node
  * Solved
@@ -65,6 +69,42 @@ public class PopulatingNextRightPointersInEachNode {
 //    public Node connect(Node root) {
 //
 //    }
+
+    // V0-1
+    // IDEA: BFS (fixed by gpt)
+    public Node connect_0_1(Node root) {
+        if (root == null)
+            return null;
+
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            Node prev = null; // prev tracks previous node in this level
+
+            for (int i = 0; i < size; i++) {
+                Node cur = q.poll();
+
+                if (prev != null) {
+                    prev.next = cur; // link previous node to current
+                }
+                prev = cur;
+
+                if (cur.left != null)
+                    q.add(cur.left);
+                if (cur.right != null)
+                    q.add(cur.right);
+            }
+
+            // last node in level should point to null
+            if (prev != null)
+                prev.next = null;
+        }
+
+        return root;
+    }
+
 
     // V1
     // IDEA: RECURSION (gpt)
@@ -157,4 +197,57 @@ public class PopulatingNextRightPointersInEachNode {
 
 
     // V2
+    // IDEA: DFS
+    // https://leetcode.com/problems/populating-next-right-pointers-in-each-node/solutions/7189314/recursive-dfs-solution-java-on-time-oh-s-wzqb/
+    public Node connect_2(Node root) {
+        if (root == null)
+            return root;
+        root.next = null;
+        helper(root);
+        return root;
+    }
+
+    public void helper(Node root) {
+        if (root.left == null)
+            return;
+        else
+            root.left.next = root.right;
+        if (root.next == null)
+            root.right.next = null;
+        else
+            root.right.next = root.next.left;
+        helper(root.left);
+        helper(root.right);
+        return;
+    }
+
+    // V3
+    // IDEA: BFS
+    // https://leetcode.com/problems/populating-next-right-pointers-in-each-node/solutions/7093295/o1-space-complexity-easiest-solution-jav-adb7/
+    public Node connect_3(Node root) {
+        if (root == null)
+            return root;
+
+        Node leftMost = root;
+
+        // Traverse level by level
+        while (leftMost.left != null) {
+            Node curr = leftMost;
+            while (curr != null) {
+                // Connect left -> right
+                curr.left.next = curr.right;
+
+                // Connect right -> next's left (if available)
+                if (curr.next != null) {
+                    curr.right.next = curr.next.left;
+                }
+
+                curr = curr.next; // Move to next node in the level
+            }
+            leftMost = leftMost.left; // Go to next level
+        }
+        return root;
+    }
+
+
 }
