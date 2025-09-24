@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
+import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
 
@@ -215,5 +216,40 @@ public class workspace16 {
 
         return res.next; // ???
     }
+
+    // LC 101
+    // 9.36 - 9.46 am
+    /**
+     *  IDEA 1): DFS
+     *
+     */
+    public boolean isSymmetric(TreeNode root) {
+        // edge
+        if (root == null) {
+            return true;
+        }
+
+        return isSymmetricHelper(root.left, root.right);
+    }
+
+    // t1: sub left tree, t2: sub right tree
+    private boolean isSymmetricHelper(TreeNode t1, TreeNode t2){
+        if(t1 == null && t2 == null){
+            return true;
+        }
+        if(t1 == null || t2 == null){
+            return false;
+        }
+        if(t1.val != t2.val){
+            return false;
+        }
+
+        // ONLY need to compare `one`  ???
+        return isSymmetricHelper(t1.left, t2.right)  &&
+                isSymmetricHelper(t1.right, t2.left);
+    }
+
+
+
 
 }

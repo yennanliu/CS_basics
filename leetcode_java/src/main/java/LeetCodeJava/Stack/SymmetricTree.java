@@ -66,10 +66,18 @@ public class SymmetricTree {
          *
          *  the help func is for comparing
          *    - left sub tree VS right sub tree
+         *
+         *   -> since from `root` node,
+         *     it ONLY has a single `sub left tree` and a single `sub right tree`
+         *     -> so we ONLY need to take them as param and put into our helper func
          */
         return symmetricHelper(root.left, root.right);
     }
 
+    /**
+     *     //  t1: left sub tree
+     *     //  t2: right sub tree
+     */
     private boolean symmetricHelper(TreeNode t1, TreeNode t2) {
         // Both null → symmetric
         if (t1 == null && t2 == null) {
