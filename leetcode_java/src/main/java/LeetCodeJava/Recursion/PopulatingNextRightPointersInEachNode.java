@@ -81,16 +81,57 @@ public class PopulatingNextRightPointersInEachNode {
 
         while (!q.isEmpty()) {
             int size = q.size();
+            /**
+             *  NOTE !!!!
+             *
+             *   via `prev` node,
+             *   we can easily re-connect left - right node in each layer
+             *
+             *   pattern as below:
+             *
+             *     Node prev = null;
+             *     for(int i = 0; i < size; i++){
+             *         TreeNode cur = q.poll();
+             *         // NOTE !!!! this
+             *         if(prev == null){
+             *             prev.next = cur;
+             *         }
+             *         // NOTE !!!! this
+             *         prev = cur;
+             *
+             *         // ....
+             *     }
+             *
+             */
             Node prev = null; // prev tracks previous node in this level
 
             for (int i = 0; i < size; i++) {
+
                 Node cur = q.poll();
 
                 if (prev != null) {
+                    /**
+                     *  NOTE !!!
+                     *
+                     *   link `prev` to cur node
+                     *
+                     */
                     prev.next = cur; // link previous node to current
                 }
+                /**
+                 *  NOTE !!!
+                 *
+                 *   move `prev` to cur node
+                 *
+                 */
                 prev = cur;
 
+                /**
+                 *  NOTE !!!
+                 *
+                 *   null node handling
+                 *   (as regular tree / BFS coding pattern)
+                 */
                 if (cur.left != null)
                     q.add(cur.left);
                 if (cur.right != null)
