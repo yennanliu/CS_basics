@@ -73,6 +73,52 @@ public class MergeTwoBinaryTrees {
         return t1;
     }
 
+    // V0-0-1
+    // IDEA: DFS
+    public TreeNode mergeTrees_0_0_1(TreeNode root1, TreeNode root2) {
+        // edge
+        if (root1 == null && root2 == null) {
+            return root1;
+        }
+        if (root1 == null || root2 == null) {
+            if (root2 == null) {
+                return root1;
+            }
+            return root2;
+        }
+        /** below handling is more elegant */
+//        if (root1 == null) return root2;
+//        if (root2 == null) return root1;
+
+        root1.val = root1.val + root2.val;
+
+        // ????
+        TreeNode _left = mergeTrees_0_0_1(root1.left, root2.left);
+        TreeNode _right = mergeTrees_0_0_1(root1.right, root2.right);
+
+        root1.left = _left;
+        root1.right = _right;
+
+        return root1;
+    }
+
+    // V0-1
+    // IDEA: DFS (GPT)
+    public TreeNode mergeTrees_0_1(TreeNode root1, TreeNode root2) {
+        // base cases
+        if (root1 == null) return root2;
+        if (root2 == null) return root1;
+
+        // merge values
+        root1.val += root2.val;
+
+        // recursively merge children
+        root1.left = mergeTrees_0_1(root1.left, root2.left);
+        root1.right = mergeTrees_0_1(root1.right, root2.right);
+
+        return root1;
+    }
+
     // V1
     // IDEA : RECURSIVE
     // https://leetcode.com/problems/merge-two-binary-trees/editorial/
