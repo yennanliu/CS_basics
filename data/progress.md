@@ -73,8 +73,6 @@
 		 	- 160
 	- LC 226 Invert Binary Tree
 		- gpt
-			- 104
-			- 101
 			- 617
 			- 116
 			- 117
