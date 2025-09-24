@@ -2,6 +2,7 @@ package dev;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
+import LeetCodeJava.Recursion.PopulatingNextRightPointersInEachNode;
 
 import java.util.*;
 
@@ -352,6 +353,78 @@ public class workspace16 {
     }
 
 
+    // LC 116
+    // 10.38 - 10.55 AM
+    /**  IDEA
+     *
+     *
+     *
+     */
+    class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node next;
+
+        public Node() {}
+
+        public Node(int _val) {
+            val = _val;
+        }
+
+        public Node(int _val, Node _left, Node _right, Node _next) {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
+    }
+
+    /**
+     *  IDEA 1) BFS (visit layer by layer)
+     *
+     *  IDEA 2) DFS
+     *
+     */
+    // IDEA 1) BFS (visit layer by layer)
+    public Node connect(Node root) {
+        // edge
+        if(root == null){
+            return root;
+        }
+        if(root.left == null && root.right == null){
+            root.next = null;
+            return root;
+        }
+
+        // bfs
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        //int layer = 0;
+
+        Node dummy = new Node(); // ???
+        Node res = dummy;
+
+        while(!q.isEmpty()){
+            int _size = q.size();
+            System.out.println(">>> _size = " + _size + ", q = " + q);
+            //dummy = q.poll();
+            Node cur = null;
+            for(int i = 0; i < _size; i++){
+                cur = q.poll();
+                System.out.println(">>> cur = " + cur);
+                dummy.next = cur;
+                dummy = cur;
+            }
+
+            // ???
+            dummy.next = null; // ??
+        }
+
+        System.out.println(">>> dummy = " + dummy + ", res = " + res);
+
+        return res.next;
+    }
 
 
 }
