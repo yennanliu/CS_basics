@@ -531,5 +531,42 @@ public class workspace16 {
         return opCnt;
     }
 
+    // LC 111
+    // 9.36 - 9.46 am
+    /**
+     *
+     *  -> Given a `binary tree`, find its `minimum depth.`
+     *
+     *  - depth:
+     *
+     *     - The `minimum depth` is
+     *       the number of nodes along the
+     *       shortest path from the root node
+     *       down to the nearest leaf node.
+     *
+     *     - min path from root to nearest sub node
+     *
+     *
+     *  IDEA 1) DFS
+     *
+     *  IDES 2) BFS
+     *
+     *
+     */
+    public int minDepth(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+
+        // post order traverse
+        // left -> right -> root
+
+        int leftDepth = minDepth(root.left);
+        int rightDepth = minDepth(root.right);
+
+        return 1 + Math.max(leftDepth, rightDepth);
+    }
+
 
 }
