@@ -43,12 +43,76 @@ import java.util.Stack;
 public class DiameterOfBinaryTree {
 
     // V0
-    // IDEA : DFS
+    // IDEA : DFS + post order traverse + helper func (fixed by gpt)
     // TODO: implement
     // https://youtu.be/K81C31ytOZE?si=J87ADf5azss_tAjN
-//    public int diameterOfBinaryTree(TreeNode root) {
-//
-//    }
+    /** NOTE !!
+     *
+     *   we declare maxLen as global var
+     *
+     *  - A global variable that tracks the maximum diameter found so far.
+     * 	- maxLen is updated inside the helper whenever we find a longer path.
+     */
+    int maxLen = 0;
+    public int diameterOfBinaryTree(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+
+        // helper func
+        // getLenHelper(root) → Runs a DFS recursion to compute depths of subtrees and update maxLen as a side effect.
+        getDepthHelper(root);
+        return maxLen;
+    }
+
+    /** NOTE !!
+     *
+     *   the `getLenHelper` is a helper func does below 2 things
+     *
+     *    1. that return the `max single length` of a node
+     *       - max_single_length = max(len_with_sub_left_tree, len_with_sub_right_tree)
+     *    2. update the global var `maxLen`
+     */
+    private int getDepthHelper(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+
+        /**
+         * 	•	Recursively compute depths of the left and right subtrees.
+         * 	•	Each call returns the longest path from that node down to a leaf.
+         */
+        int maxLeftLen = getDepthHelper(root.left);
+        int maxRightLen = getDepthHelper(root.right);
+
+        // update the global max len
+        /**
+         * 	•	At every node, check if the longest path that passes through this node is bigger than what we’ve seen.
+         * 	•	That path = maxLeftLen + maxRightLen (go left down, then right down).
+         * 	•	Update maxLen if it’s larger.
+         */
+        maxLen = Math.max(maxLen, maxLeftLen + maxRightLen);
+
+        /**
+         *  NOTE !!! below
+         *
+         *   1.  Important: This return value is depth (height) of the current node’s subtree, not diameter.
+         *
+         *    	- Formula: 1 + max(leftDepth, rightDepth)
+         * 	       - 1 = the current node.
+         * 	       - Choose the larger side, because from a parent’s perspective, we can only go one way down.
+         *
+         *
+         *  2. Two key roles of getDepthHelper func
+         * 	   - Return value → depth of a node (used by parent recursion).
+         * 	   - Side effect → updates global maxLen with diameter passing through current node.
+         */
+        //return maxLeftLen + maxRightLen + 1;
+        return 1 + Math.max(maxLeftLen, maxRightLen);
+    }
+
 
     // V0-1
     // IDEA: DFS (gpt) (bottom up)
@@ -426,5 +490,6 @@ public class DiameterOfBinaryTree {
         // Return the height of the current node (1 + max of left and right)
         return 1 + Math.max(leftHeight, rightHeight);
     }
+    
 
 }

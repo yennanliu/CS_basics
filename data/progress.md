@@ -80,9 +80,6 @@
 			- 124
 	- LC 104 Maximum Depth of Binary Tree
 		- gpt
-			- 111
-			- 226
-			- 543
 			- 129
 			- 124
 			- 297
