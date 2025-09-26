@@ -55,9 +55,75 @@ import java.util.*;
 public class MinimumObstacleRemovalToReachCorner {
 
     // V0
-//    public int minimumObstacles(int[][] grid) {
-//
-//    }
+    // IDEA: Dijkstra's Algorithm (fixed by gpt)
+    /**
+     *  NOTE !!!
+     *
+     * ✅ Summary:
+     * 	•	Single cost var won’t work → need dist[][] to track per-cell minimum cost.
+     * 	•	No explicit visited needed → the dist[][] + early skip (if (cost > dist[y][x]) continue) handles that.
+     *
+     */
+    public int minimumObstacles(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // Costs to reach each cell
+        int[][] costs = new int[l][w];
+        for (int i = 0; i < l; i++) {
+            Arrays.fill(costs[i], Integer.MAX_VALUE);
+        }
+
+        // Directions: right, left, down, up
+        Integer[][] moves = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        // PriorityQueue: min-heap on cost
+        PriorityQueue<List<Integer>> pq = new PriorityQueue<>((a, b) -> a.get(0) - b.get(0));
+
+        // Start at (0,0) with 0 cost
+        List<Integer> start = new ArrayList<>();
+        start.add(0); // cost
+        start.add(0); // x
+        start.add(0); // y
+        pq.add(start);
+        costs[0][0] = 0;
+
+        while (!pq.isEmpty()) {
+            List<Integer> cur = pq.poll();
+            int cost = cur.get(0);
+            int x = cur.get(1);
+            int y = cur.get(2);
+
+            // Early exit
+            if (x == w - 1 && y == l - 1) {
+                return cost;
+            }
+
+            for (Integer[] mv : moves) {
+                int nx = x + mv[0];
+                int ny = y + mv[1];
+
+                if (nx >= 0 && nx < w && ny >= 0 && ny < l) {
+                    int newCost = cost + grid[ny][nx]; // add obstacle cost
+                    if (newCost < costs[ny][nx]) {
+                        costs[ny][nx] = newCost;
+
+                        List<Integer> next = new ArrayList<>();
+                        next.add(newCost);
+                        next.add(nx);
+                        next.add(ny);
+                        pq.add(next);
+                    }
+                }
+            }
+        }
+
+        return -1; // unreachable
+    }
 
     // V0-1
     // IDEA: Dijkstra's Algorithm (fixed by gpt)
@@ -69,7 +135,7 @@ public class MinimumObstacleRemovalToReachCorner {
      * 	•	No explicit visited needed → the dist[][] + early skip (if (cost > dist[y][x]) continue) handles that.
      *
      */
-    public int minimumObstacles(int[][] grid) {
+    public int minimumObstacles_0_1(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
         }
