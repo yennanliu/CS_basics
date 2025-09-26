@@ -74,6 +74,9 @@ Trees can be efficiently represented using arrays, especially for complete binar
   - Use **Pre-order traversal** (parent → children)
   - Pass down accumulated depth
 - **Example**: LC 104 (Max Depth), LC 111 (Min Depth)
+    - `maxDepth` can safely use Math.max() with null children.
+    - `minDepth` needs this guard, because null doesn’t count as a valid path
+        - [MinimumDepthOfBinaryTree.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MinimumDepthOfBinaryTree.java)
 
 <img src="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/tree_depth_vs_height.jpeg" width="500">
 

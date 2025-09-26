@@ -48,19 +48,126 @@ import java.util.*;
 public class MinimumDepthOfBinaryTree {
 
     // V0
-    // NOTE !!! below is wrong
 //    public int minDepth(TreeNode root) {
 //
-//        if (root == null){
+//    }
+
+    /** NOTE !!! below is WRONG
+     *
+     *  (reason described in V0-0-1)
+     */
+//    public int minDepth(TreeNode root) {
+//        // edge
+//        if(root == null){
 //            return 0;
 //        }
 //
-//        int leftD = minDepth(root.left) + 1;
-//        int rightD = minDepth(root.right) + 1;
+//        // post order traverse
+//        // left -> right -> root
 //
-//        return Math.min(leftD, rightD);
+//        int leftDepth = minDepth(root.left);
+//        int rightDepth = minDepth(root.right);
 //
+//        return 1 + Math.max(leftDepth, rightDepth);
 //    }
+
+    // V0-0-1
+    // IDEA: DFS (fixed by gpt)
+    /**
+     *  Max depth VS min depth
+     *
+     *  - maxDepth can safely use Math.max() with null children.
+     * 	- minDepth needs this guard, because null doesn’t count as a valid path.
+     *
+     */
+    public int minDepth_0_0_1(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+
+        // if one of the child is null, we must go through the other child
+        /**
+         *  NOTE !!! below
+         *
+         *   the ticky part of this problem
+         *
+         *
+         *   1) Why special-case when one child is null?
+         *
+         *    The minDepth of a tree is the shortest path from root to a leaf.
+         *    -> A leaf means a node with no children (left == null && right == null).
+         *
+         *    -> If we simply take Math.min(leftDepth, rightDepth) without checks,
+         *       then a missing child contributes 0, and you’ll incorrectly
+         *       think that the null path is valid.
+         *
+         *     -> e.g. if we go WITHOUT below special checks,
+         *             we'll take `null` node as shortest depth (depth=0) by MISTAKE
+         *
+         *
+         *   2) Example where it breaks if you don’t handle null child
+         *
+         *      input:
+         *
+         *              1
+         *               \
+         *                2
+         *
+         *    ->  - Node 1 has:
+         * 	         - left = null
+         * 	         - right = 2
+         *
+         * 	  -> if we did:
+         *
+         * 	  ```
+         * 	  int leftDepth = minDepth(root.left);  // 0
+         *    int rightDepth = minDepth(root.right); // 1
+         *    return 1 + Math.min(leftDepth, rightDepth); // 1 + 0 = 1 ❌ WRONG
+         * `  ```
+         *
+         *    -> But the true minimum depth is 2 (1 → 2).
+         *    -> Why wrong? Because 0 (null child) was treated as a valid path.
+         *       But you can’t stop at null, you need a real leaf.
+         *
+         *   3) Correct handling
+         *
+         *      ```
+         *      if (root.left == null) {
+         *     return 1 + minDepth(root.right);
+         *     }
+         *     if (root.right == null) {
+         *     return 1 + minDepth(root.left);
+         *     }
+         *     ```
+         *
+         *     -> This ensures:
+         * 	    - If left == null, the path must go through right child.
+         * 	    - If right == null, the path must go through left child.
+         *
+         *      -> So you never mistakenly take a 0 from a missing child.
+         *
+         *
+         */
+        /**
+         *  NOTE !!! below logic ensures
+         *
+         *  - If left == null, the path MUST go through right child.
+         *  - If right == null, the path MUST go through left child.
+         */
+        if (root.left == null) {
+            return 1 + minDepth_0_0_1(root.right);
+        }
+        if (root.right == null) {
+            return 1 + minDepth_0_0_1(root.left);
+        }
+
+        // both children exist -> take the smaller depth
+        int leftDepth = minDepth_0_0_1(root.left);
+        int rightDepth = minDepth_0_0_1(root.right);
+
+        return 1 + Math.min(leftDepth, rightDepth);
+    }
 
     // V0-1
     // IDEA: DFS (fixed by gpt)
@@ -190,5 +297,7 @@ public class MinimumDepthOfBinaryTree {
         }
         return -1;
     }
+
+
 
 }
