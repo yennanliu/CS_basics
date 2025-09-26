@@ -473,7 +473,10 @@ public class workspace16 {
         int[][] costs = new int[l][w];
         // init all costs as `0` ????
         // ????
-        Arrays.fill(costs, Integer.MAX_VALUE); // ???? MAX_VALUE or 0 ????
+        //Arrays.fill(costs, Integer.MAX_VALUE); // ???? MAX_VALUE or 0 ????
+        for (int i = 0; i < l; i++) {
+            Arrays.fill(costs[i], Integer.MAX_VALUE);
+        }
 
         int minCost = 0;
 

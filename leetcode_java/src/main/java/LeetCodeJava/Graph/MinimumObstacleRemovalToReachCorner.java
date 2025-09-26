@@ -65,32 +65,54 @@ public class MinimumObstacleRemovalToReachCorner {
      *
      */
     public int minimumObstacles(int[][] grid) {
+        // edge
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
         }
 
+        // length
         int l = grid.length;
+        // width
         int w = grid[0].length;
 
         // Costs to reach each cell
         int[][] costs = new int[l][w];
+        /**
+         *  NOTE !!!
+         *   fill costs grid via below trick
+         */
         for (int i = 0; i < l; i++) {
             Arrays.fill(costs[i], Integer.MAX_VALUE);
         }
+
+        /** NOTE !!!
+         *
+         *  init costs[0][0] as 0 (starting point)
+         */
+        costs[0][0] = 0;
 
         // Directions: right, left, down, up
         Integer[][] moves = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
 
         // PriorityQueue: min-heap on cost
-        PriorityQueue<List<Integer>> pq = new PriorityQueue<>((a, b) -> a.get(0) - b.get(0));
+        // V1: lambda style
+        //PriorityQueue<List<Integer>> pq = new PriorityQueue<>((a, b) -> a.get(0) - b.get(0));
+        // V2: formal Comparator syntax
+        PriorityQueue<List<Integer>> pq = new PriorityQueue<>(new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> o1, List<Integer> o2) {
+                int diff = o1.get(0) - o2.get(0);
+                return diff;
+            }
+        });
 
         // Start at (0,0) with 0 cost
         List<Integer> start = new ArrayList<>();
         start.add(0); // cost
         start.add(0); // x
         start.add(0); // y
+
         pq.add(start);
-        costs[0][0] = 0;
 
         while (!pq.isEmpty()) {
             List<Integer> cur = pq.poll();
@@ -100,6 +122,11 @@ public class MinimumObstacleRemovalToReachCorner {
 
             // Early exit
             if (x == w - 1 && y == l - 1) {
+                /** NOTE !!!
+                 *
+                 *  for Early exit,
+                 *  return the `cost` pop from latest element from PQ directly
+                 */
                 return cost;
             }
 
@@ -107,15 +134,40 @@ public class MinimumObstacleRemovalToReachCorner {
                 int nx = x + mv[0];
                 int ny = y + mv[1];
 
+                /** NOTE !!!
+                 *
+                 *  the `validation` ONLY checks if the x, y is OUT of boundary
+                 *  for cost, we'll handle inside the `if` code block
+                 */
                 if (nx >= 0 && nx < w && ny >= 0 && ny < l) {
+
+                    /** NOTE !!!
+                     *
+                     *  get `newCost` from `prev cost` and `current` cost (grid[ny][nx]),
+                     *  but NOTE that this is just a `tmp` newCost.
+                     *  e.g. we'll ONLY proceed with this newCost if `it costs LESS`
+                     *     e.g. if(newCost < costs[ny][nx])
+                     */
                     int newCost = cost + grid[ny][nx]; // add obstacle cost
+                    /** NOTE !!!
+                     *
+                     *  ONLY proceed with newCost if `it costs LESS`
+                     */
                     if (newCost < costs[ny][nx]) {
+                        /** NOTE !!!
+                         *
+                         *  update cost grid
+                         */
                         costs[ny][nx] = newCost;
 
                         List<Integer> next = new ArrayList<>();
                         next.add(newCost);
                         next.add(nx);
                         next.add(ny);
+                        /** NOTE !!!
+                         *
+                         *  add new element to PQ
+                         */
                         pq.add(next);
                     }
                 }
