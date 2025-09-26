@@ -448,8 +448,102 @@ public class workspace16 {
      *
      * IDEA 2) bfs
      */
-    // IDEA 1) Dijkstra ALGO
+    // 11.02 - 11.12 am
+    // IDEA 2) Dijkstra ALGO v2
+    /**
+     *  Dijkstra ALGO v2
+     *
+     *  1. use `grid` to record the `cost` of op
+     *  2. NOT need to maintain a `visit` var / grid,
+     *     the nature of Dijkstra algo will take care of it
+     *
+     */
     public int minimumObstacles(int[][] grid) {
+        // edge
+        if(grid == null){
+            return 0;
+        }
+        if(grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+
+        int l = grid.length; // y
+        int w = grid[0].length; // x
+
+        int[][] costs = new int[l][w];
+        // init all costs as `0` ????
+        // ????
+        Arrays.fill(costs, Integer.MAX_VALUE); // ???? MAX_VALUE or 0 ????
+
+        int minCost = 0;
+
+        Integer[][] moves = new Integer[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        // PQ: [cost, x, y]
+        // sort on `cost`
+        // small -> big
+        PriorityQueue<List<Integer>> pq = new PriorityQueue<>(new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> o1, List<Integer> o2) {
+                int diff = o1.get(0) - o2.get(0);
+                return diff; // ??
+            }
+        });
+
+        // ??
+        List<Integer> tmp = new ArrayList<>();
+        tmp.add(0);
+        tmp.add(0);
+        tmp.add(0);
+        pq.add(tmp);
+
+        while(!pq.isEmpty()){
+
+            List<Integer> cur = pq.poll();
+            int _cost = cur.get(0);
+            int x = cur.get(1);
+            int y = cur.get(2);
+
+            // early quit
+            if(x == w - 1 && y == l - 1){
+                return minCost; // ???
+                //return Math.min(costs[l-2][w-1], costs[l-1][w-2]); // ????
+            }
+
+            // loop over all possible dirs
+            for(Integer[] mv: moves){
+                int _x = x + mv[0];
+                int _y = y + mv[1];
+                if(_x >= 0 && _x < w && _y >= 0 && _y < l && costs[_y][_x] < _cost){
+                    // ???
+                    int newCost = 0;
+                    if(costs[_y][_x] == 1){
+                        newCost = 1;
+                    }
+                    // update costs grid
+                    costs[_y][_x] = costs[_y][_x] + newCost;
+                    // update minCost ???
+                    minCost = Math.min(minCost, costs[_y][_x]);
+                    // ???
+                    List<Integer> tmp2 = new ArrayList<>();
+                    tmp2.add(costs[_y][_x]);
+                    tmp2.add(_x);
+                    tmp2.add(_y);
+                    pq.add(tmp2);
+                }
+            }
+
+        }
+
+        // SHOULD NOT meet this logic
+        return -1;
+    }
+
+
+
+
+    // IDEA 1) Dijkstra ALGO
+    public int minimumObstacles_100(int[][] grid) {
         // edge
         if(grid == null){
             return 0;

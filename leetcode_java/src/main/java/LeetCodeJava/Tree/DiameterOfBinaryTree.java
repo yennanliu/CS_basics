@@ -490,6 +490,6 @@ public class DiameterOfBinaryTree {
         // Return the height of the current node (1 + max of left and right)
         return 1 + Math.max(leftHeight, rightHeight);
     }
-    
+
 
 }
