@@ -568,5 +568,70 @@ public class workspace16 {
         return 1 + Math.max(leftDepth, rightDepth);
     }
 
+    // LC 543
+    // 10.13 am - 10.23 am
+    /**
+     *
+     * -> Given the root of a binary tree,
+     *    return the length of the `diameter` of the tree.
+     *
+     *    1. The `diameter` of a binary tree is the `length` of the
+     *      `longest` path between any `two nodes` in a tree.
+     *      This path `may or may not pass` through the root.
+     *
+     *    2. length = `number of edges between 2 nodes)
+     *
+     *   IDEA 1) DFS
+     *
+     *     -> post order traverse
+     *     -> `left -> right -> root`
+     *        -> so when visit a `node`
+     *           we CAN already the `possible max length` that pass this node via
+     *           int maxLen = maxLeftLen + maxRightLen
+     *       -> do above recursively
+     *       -> we can get the `global max len` when compute on `root node` as final step
+     *
+     *   IDEA 2) BFS
+     *
+     */
+    // IDEA 1) DFS
+    int maxLen = 0;
+    public int diameterOfBinaryTree(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+//        if(root.left == null && root.right == null){
+//            return 1;
+//        }
+//
+//        int maxLeftLen = diameterOfBinaryTree(root.left);
+//        int maxRightLen = diameterOfBinaryTree(root.right);
+
+        // ???
+        //maxLen = Math.max(maxLeftLen, maxRightLen);
+        getLenHelper(root);
+
+        return maxLen;
+    }
+
+    private int getLenHelper(TreeNode root){
+        // edge
+        if(root == null){
+            return 0;
+        }
+
+        int maxLeftLen = getLenHelper(root.left);
+        int maxRightLen = getLenHelper(root.right);
+
+        // ??? update the global max len
+        maxLen = Math.max(maxLen, maxLeftLen + maxRightLen);
+
+        //return maxLeftLen + maxRightLen + 1;
+        return 1 + Math.max(maxLeftLen, maxRightLen); // ????
+    }
+
+
+
 
 }
