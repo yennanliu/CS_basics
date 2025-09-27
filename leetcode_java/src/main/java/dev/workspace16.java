@@ -878,6 +878,75 @@ public class workspace16 {
         getPathHelper(root.right, newSum);
     }
 
+    // LC 113
+    // 15.45 - 15.55 pm
+    /**
+     *
+     * -> return `all root-to-leaf paths`
+     *  where the` sum` of the node values in the path equals `targetSum`
+     *
+     *  -  Each path should be returned as a list of the node values,
+     *
+     *  IDEA 1) DFS
+     *
+     *
+     */
+    // ???
+    Map<List<Integer>, Integer> pathSumMap2 = new HashMap<>();
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> res = new ArrayList<>();
+        // edge
+        if(root == null){
+            return res;
+        }
+        if(root.left == null && root.right == null){
+            if(root.val == targetSum){
+                List<Integer> tmp = new ArrayList<>();
+                tmp.add(root.val);
+                res.add(tmp);
+            }
+            return res;
+        }
+
+        // dfs
+        getPathHelper2(root, 0, new ArrayList<>());
+        System.out.println(">>> pathSumMap2 = " + pathSumMap2);
+
+        for(List<Integer> key: pathSumMap2.keySet()){
+            // ????
+            // or a simpler way to compare `int` type directly ??
+            System.out.println(">>> key = " + key +
+                    ", pathSumMap2.get(key) = " + pathSumMap2.get(key)
+                    + " new Integer(targetSum) =  " + new Integer(targetSum) );
+
+            if(pathSumMap2.get(key).equals(new Integer(targetSum))){
+                res.add(key);
+            }
+        }
+
+        return res;
+    }
+
+    private void getPathHelper2(TreeNode root, Integer curSum, List<Integer> nodes){
+        //return 0;
+        if(root == null){
+            return;
+        }
+
+        int newSum = curSum + root.val;
+        nodes.add(root.val);
+
+        // ONLY add to map if `has NO children`
+        if(root.left == null && root.right == null){
+            pathSumMap2.put(nodes, newSum); // ???
+        }
+
+        getPathHelper2(root.left, newSum, nodes);
+        getPathHelper2(root.right, newSum, nodes);
+        // backtrack ??? // undo ????
+        nodes.remove(nodes.size() - 1); //????
+    }
+
 
 
 }

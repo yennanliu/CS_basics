@@ -78,6 +78,7 @@ public class PathSum {
             return targetSum == 0;
         }
 
+        /** NOTE !!! below trick */
         return checkSum(root.left ,targetSum) || checkSum(root.right ,targetSum);
     }
 
