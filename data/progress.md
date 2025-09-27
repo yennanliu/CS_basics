@@ -1,5 +1,126 @@
 # Progress
 
+# 2025-09-27
+- needcode `grind 75` - similar LC by AI
+	- https://neetcode.io/practice?tab=blind75
+	- LC 49 Group Anagrams
+		- 336
+		- 30
+	- LC 347 Top K Frequent Elements
+		- 621
+		- 1838
+	- LC 271 – Encode and Decode Strings
+		- 640
+	- LC 128 - Longest Consecutive Sequence
+	 	- 594
+	 	- 149
+	 - LC 125 - Valid Palindrome
+	 - LC 11 - Container With Most Water
+	 	- 407
+	 - LC 121 Best Time to Buy and Sell Stock
+	 	- 714
+	 	- 309
+	 	- 123
+	 	- 128
+	 	- 188
+	 	- 1235
+	 - LC 003 Longest Substring Without Repeating Characters 
+	 	- gpt
+		 	- 568 (dp)
+		- gemini
+		 	- 209
+		 	- 567
+		 	- 424
+	- LC 424. Longest Repeating Character Replacement
+		- gpt
+			- 1004
+		- gemini
+			- 904
+			- 209
+			- 713
+	- LC 20 Valid Parentheses
+		- gpt
+			- 1047
+			- 155
+			- 394
+			- 224
+			- 301
+			- 32
+		- gemini
+			- 1249
+			- 856
+			- 71
+	- LC 206 Reverse Linked List
+		- gpt
+			- 21
+			- 86
+			- 24
+			- 25
+			- 61
+			- 143
+		- gemini
+	- LC 143 Reorder List
+		- gpt
+			- 23
+		- gemini
+			- 234
+	- LC 19 Remove Nth Node From End of List
+		- gpt
+			- 143
+			- 23
+			- 25
+		- gemini
+		 	- 160
+	- LC 226 Invert Binary Tree
+		- gpt
+			- 117
+			- 297
+			- 652
+		- gemini
+			- 124
+	- LC 104 Maximum Depth of Binary Tree
+		- gpt
+			- 129
+			- 124
+			- 297
+		- gemini
+			- 110
+			- 112
+			- 113
+			- 437
+			- 124
+			- 298
+- neetcode 250
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
+		- 27/66
+			- 335,430,1157,395
+		- review prev LC problems !!!
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md
+	- 護城河
+		- video
+			- session 6
+		- pdf
+			- p.7 (sliding window)
+		 LC 200. Number of Islands `follow up`:
+		 	- 若grid上原先都是水，接著有多次的更新，每次更新為把一格水換成陸地，也就是會給一個座標(x,y)，保證他原先是水，並將他轉換成陸地，每次更新完後請確認目前有幾座島嶼
+		- binary search problems:
+	- again:
+	- todo:
+		- List when to use `greedy` VS `bfs/dfs` in graph
+			- e.g. size > 10^5, should use greedy?
+				- list the checkpoints and consideration
+		- (337 similar)
+			- 1770
+			- 1931
+			- 2246
+- Sys design questions:
+	- https://neetcode.io/practice?tab=systemDesign
+- crack code book
+	- p.177 (recursion & dp)
+- sys design book
+	- Volume 2
+		- p.323
+
 # 2025-09-26
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
