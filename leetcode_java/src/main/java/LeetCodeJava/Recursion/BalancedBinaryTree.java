@@ -45,7 +45,7 @@ public class BalancedBinaryTree {
     // tree depth : https://github.com/yennanliu/CS_basics/blob/master/doc/pic/tree_depth_vs_height.jpeg
 
     // V0
-    // IDEA : DFS
+    // IDEA : DFS, LC 104
     // https://www.bilibili.com/video/BV1Ug411S7my/?share_source=copy_web
     public boolean isBalanced(TreeNode root) {
         // edge
@@ -74,7 +74,11 @@ public class BalancedBinaryTree {
         if (root == null) {
             return 0;
         }
-
+      /**
+       *  NOTE !!!!
+       *
+       *   below logic for getting a `depth` of a node (LC 104)
+       */
       return Math.max(getDepthDFS(root.left), getDepthDFS(root.right)) + 1;
     }
 

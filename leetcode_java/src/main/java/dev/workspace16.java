@@ -728,6 +728,85 @@ public class workspace16 {
         return 1 + Math.max(maxLeftLen, maxRightLen); // ????
     }
 
+    // LC 110
+    // 14.10 - 14.20 pm
+    /**
+     * -> Given a binary tree, determine if it is ` height-balanced.`
+     *
+     *  - A `height-balanced` binary tree is a binary tree in which the depth of
+     *    the` two subtrees` of every node `never` differs by `more than one.`
+     *
+     *  - e.g. if `height-balanced`, for every node in two subtrees,
+     *         the diff <= 1
+     *
+     *
+     *  IDEA 1) DFS
+     *
+     *  IDEA 2) BFS
+     *
+     */
+    // IDEA 1) DFS
+    public boolean isBalanced(TreeNode root) {
+        // edge
+        if(root == null){
+            return true;
+        }
+        if(root.left == null && root.right == null){
+            return true;
+        }
+
+        // DFS: post order traverse: left -> right -> root
+        // check if `right - left` bigger than 1
+
+        int leftDepth = getNodeDepth2(root.left);
+        int rightDepth = getNodeDepth2(root.left);
+
+        System.out.println(">>> (isBalanced) leftDepth = " + leftDepth);
+        System.out.println(">>> (isBalanced) rightDepth = " + rightDepth);
+
+        if(Math.abs(leftDepth - rightDepth) > 1){
+            return false;
+        }
+
+        // ????
+        return isBalanced(root.left)
+                && isBalanced(root.right);
+    }
+
+    private int getNodeDepth2(TreeNode root){
+        System.out.println(">>> (getNodeDepth) root = " + root.val);
+        // edge
+        if(root == null){
+            return 0;
+        }
+//        int depth = 0;
+//        depth = Math.max(
+//                getNodeDepth2(root.left),
+//                getNodeDepth2(root.right)
+//        ) + 1; // ????
+
+        return Math.max(
+                getNodeDepth2(root.left),
+                getNodeDepth2(root.right)
+        ) + 1;
+
+    }
+
+
+    // get the `depth` of a specific node
+//    private int getNodeDepth(TreeNode root){
+//        System.out.println(">>> (getNodeDepth) root = " + root.val);
+//        // edge
+//        if(root == null){
+//            return 0;
+//        }
+//        int depth = 0;
+//        // ???
+//        if(root != null){
+//            depth += getNodeDepth(root.)
+//        }
+//        return getNodeDepth(root) + 1;
+//    }
 
 
 
