@@ -1,11 +1,52 @@
 package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/path-sum-ii/
-
+/**
+ *
+ * Test Result
+ * 113. Path Sum II
+ * Solved
+ * Medium
+ * Topics
+ * premium lock icon
+ * Companies
+ * Given the root of a binary tree and an integer targetSum, return all root-to-leaf paths where the sum of the node values in the path equals targetSum. Each path should be returned as a list of the node values, not node references.
+ *
+ * A root-to-leaf path is a path starting from the root and ending at any leaf node. A leaf is a node with no children.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
+ * Output: [[5,4,11,2],[5,8,4,5]]
+ * Explanation: There are two paths whose sum equals targetSum:
+ * 5 + 4 + 11 + 2 = 22
+ * 5 + 8 + 4 + 5 = 22
+ * Example 2:
+ *
+ *
+ * Input: root = [1,2,3], targetSum = 5
+ * Output: []
+ * Example 3:
+ *
+ * Input: root = [1,2], targetSum = 0
+ * Output: []
+ *
+ *
+ * Constraints:
+ *
+ * The number of nodes in the tree is in the range [0, 5000].
+ * -1000 <= Node.val <= 1000
+ * -1000 <= targetSum <= 1000
+ */
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PathSum_ii {
 
@@ -49,11 +90,56 @@ public class PathSum_ii {
          cur.remove(cur.size() - 1);
     }
 
-    // V0'
+    // V0-1
+    // IDEA: DFS + MAP record path + backtrack (fixed by gpt)
+    // Reverse map: sum -> list of paths
+    Map<Integer, List<List<Integer>>> sumToPathsMap = new HashMap<>();
+
+    public List<List<Integer>> pathSum_0_1(TreeNode root, int targetSum) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null)
+            return res;
+
+        // DFS
+        getPathHelper(root, 0, new ArrayList<>());
+
+        System.out.println(">>> sumToPathsMap = " + sumToPathsMap);
+
+        // retrieve paths for targetSum
+        if (sumToPathsMap.containsKey(targetSum)) {
+            res.addAll(sumToPathsMap.get(targetSum));
+        }
+
+        return res;
+    }
+
+    private void getPathHelper(TreeNode root, int curSum, List<Integer> nodes) {
+        if (root == null)
+            return;
+
+        nodes.add(root.val);
+        int newSum = curSum + root.val;
+
+        // ONLY add to map if leaf
+        if (root.left == null && root.right == null) {
+            // initialize list if needed
+            sumToPathsMap.computeIfAbsent(newSum, k -> new ArrayList<>())
+                    .add(new ArrayList<>(nodes)); // copy list
+        }
+
+        getPathHelper(root.left, newSum, nodes);
+        getPathHelper(root.right, newSum, nodes);
+
+        // backtrack
+        nodes.remove(nodes.size() - 1);
+    }
+
+
+    // V0-2
     // IDEA : DFS + backtracking V2
     private List<List<Integer>> res2 = new ArrayList<>();
 
-    public List<List<Integer>> pathSum_2(TreeNode root, int targetSum) {
+    public List<List<Integer>> pathSum_0_2(TreeNode root, int targetSum) {
 
         if (root == null){
             return this.res2;
@@ -130,5 +216,6 @@ public class PathSum_ii {
         this.recurseTree(root, sum, pathNodes, pathsList);
         return pathsList;
     }
+    
 
 }
