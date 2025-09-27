@@ -809,5 +809,75 @@ public class workspace16 {
 //    }
 
 
+    // LC 112
+    // 15.05 - 15.15 pm
+    /**
+     * Given the root of a binary tree and an integer targetSum,
+     * return `true` if the tree has a root-to-leaf path such
+     * that adding up all the values along the path equals targetSum.
+     *
+     * -> return true if `there exists a path that its path sum equals to target`
+     *
+     * - A leaf is a node with no children.
+     *
+     *  IDEA 1) DFS
+     *
+     *  IDEA 2) BFS
+     *
+     *
+     *   ex 1)
+     *
+     *   [1,2,null,3,null,4,null,5]
+     *
+     *          1
+     *        2
+     *      3
+     *    4
+     * 5
+     *
+     */
+    // ???
+    Map<Integer, Integer> pathSumMap = new HashMap<>();
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        // edge
+        if (root == null) {
+            return false;
+        }
+        if(root.left == null && root.right == null){
+            return root.val == targetSum;
+        }
+
+        System.out.println(">>> (before op) pathSumMap = " + pathSumMap);
+
+        // post order traverse: left -> right -> root
+        getPathHelper(root, 0);
+
+        //pathSumMap.remove(root.val); //????
+        System.out.println(">>> (after op) pathSumMap = " + pathSumMap);
+
+        if(pathSumMap.containsValue(targetSum)){
+            return true;
+        }
+
+        return false;
+    }
+
+    private void getPathHelper(TreeNode root, Integer curSum){
+        //return 0;
+        if(root == null){
+            return;
+        }
+
+        int newSum = curSum + root.val;
+        // ONLY add to map if `has NO children`
+        if(root.left == null && root.right == null){
+            pathSumMap.put(newSum, newSum); // ???
+        }
+
+        getPathHelper(root.left, newSum);
+        getPathHelper(root.right, newSum);
+    }
+
+
 
 }
