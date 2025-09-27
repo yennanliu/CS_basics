@@ -947,6 +947,56 @@ public class workspace16 {
         nodes.remove(nodes.size() - 1); //????
     }
 
+    /// ////////////////////////////
+
+    // LC 92
+    // 16.35 - 45 pm
+    /**
+     *  IDEA 1) LINKED LIST OP (iterative)
+     *   - prev, dummy
+     *
+     *  IDEA 2) array -> reverse -> LINKED LIST
+     *
+     */
+    // IDEA 1) LINKED LIST OP (iterative)
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        // edge
+        if (head == null || head.next == null || left == right) {
+            return head;
+        }
+
+        // ??
+        ListNode dummy = new ListNode();
+        ListNode res = dummy;
+        dummy.next = head; // ???
+
+        ListNode _prev = null;
+
+
+        // get `prev`
+        while(head != null && head.next != null){
+            if(head.next.val == left){
+                _prev = head; // ???
+                break;
+            }
+            head = head.next;
+        }
+
+        // ???
+        while(head != null && head.next != null){
+            if(head.next.val == right){
+                _prev = head; // ???
+                break;
+            }
+            head = head.next;
+        }
+
+
+
+
+        return res.next;
+    }
+
 
 
 }
