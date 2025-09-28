@@ -455,14 +455,33 @@ public class TreeNode {
 | Symmetric Tree | 101 | DFS Comparison | Mirror Validation | Easy |
 | Same Tree | 100 | DFS Comparison | Tree Comparison | Easy |
 
-#### **Path-Based Problems**  
+#### **Path-Based Problems**
 | Problem | LC # | Pattern | Template | Difficulty |
 |---------|------|---------|----------|------------|
 | Binary Tree Maximum Path Sum | 124 | DFS Path Tracking | Global Max Update | Hard |
 | Path Sum | 112 | DFS Path Validation | Path Accumulation | Easy |
 | Path Sum II | 113 | DFS Path Collection | Path + Backtrack | Medium |
+| Path Sum III | 437 | DFS Prefix Sum | Path Count Tracking | Medium |
 | Sum Root to Leaf Numbers | 129 | DFS Path Calculation | Path Value Building | Medium |
 | Count Good Nodes in Binary Tree | 1448 | DFS Path Max | Path State Tracking | Medium |
+| Diameter of Binary Tree | 543 | DFS Path Length | Longest Path | Easy |
+| Longest Univalue Path | 687 | DFS Path Pattern | Same Value Path | Medium |
+
+#### **Distance and LCA Problems**
+| Problem | LC # | Pattern | Template | Difficulty |
+|---------|------|---------|----------|------------|
+| Lowest Common Ancestor | 236 | DFS Post-order | LCA Standard | Medium |
+| LCA of BST | 235 | BST Property | Value Comparison | Easy |
+| Distance in Binary Tree | 1740 | LCA + Distance | Path Distance | Medium |
+| All Nodes Distance K | 863 | Graph + BFS | Tree to Graph | Medium |
+
+#### **Height and Depth Problems**
+| Problem | LC # | Pattern | Template | Difficulty |
+|---------|------|---------|----------|------------|
+| Maximum Depth | 104 | DFS Bottom-up | Height Calculation | Easy |
+| Minimum Depth | 111 | BFS/DFS | Depth to Leaf | Easy |
+| Balanced Binary Tree | 110 | DFS Height Validation | Balance Check | Easy |
+| Find Bottom Left Tree Value | 513 | BFS Level-order | Leftmost at Depth | Medium |
 
 #### **Tree Construction Problems**
 | Problem | LC # | Pattern | Template | Difficulty |
@@ -1284,6 +1303,292 @@ class Solution(object):
         if left.val != right.val:
             return False
         return self.mirror(left.left, right.right) and self.mirror(left.right, right.left)
+```
+
+### 1-1-18) Distance Between Nodes
+```python
+# LC 1740 Find Distance in a Binary Tree
+def findDistance(self, root, p, q):
+    def dfs(node, target, path):
+        if not node:
+            return False
+        path.append(node)
+        if node.val == target:
+            return True
+        if dfs(node.left, target, path) or dfs(node.right, target, path):
+            return True
+        path.pop()
+        return False
+
+    path_p, path_q = [], []
+    dfs(root, p, path_p)
+    dfs(root, q, path_q)
+
+    # Find LCA index
+    i = 0
+    while i < min(len(path_p), len(path_q)) and path_p[i].val == path_q[i].val:
+        i += 1
+
+    # Distance = (len(path_p) - i) + (len(path_q) - i)
+    return (len(path_p) - i) + (len(path_q) - i)
+```
+
+```java
+// java
+// LC 1740 Find Distance in a Binary Tree
+public int findDistance(TreeNode root, int p, int q) {
+    TreeNode lca = findLCA(root, p, q);
+    return getDistance(lca, p) + getDistance(lca, q);
+}
+
+private TreeNode findLCA(TreeNode node, int p, int q) {
+    if (node == null || node.val == p || node.val == q) {
+        return node;
+    }
+    TreeNode left = findLCA(node.left, p, q);
+    TreeNode right = findLCA(node.right, p, q);
+
+    if (left != null && right != null) return node;
+    return left != null ? left : right;
+}
+
+private int getDistance(TreeNode node, int target) {
+    if (node == null) return -1;
+    if (node.val == target) return 0;
+
+    int leftDist = getDistance(node.left, target);
+    int rightDist = getDistance(node.right, target);
+
+    if (leftDist != -1) return leftDist + 1;
+    if (rightDist != -1) return rightDist + 1;
+    return -1;
+}
+```
+
+### 1-1-19) Find Paths with Specific Properties
+
+#### Path Sum Problems
+```python
+# LC 112 Path Sum - Has Path with Target Sum
+def hasPathSum(self, root, targetSum):
+    if not root:
+        return False
+    if not root.left and not root.right:
+        return root.val == targetSum
+    return (self.hasPathSum(root.left, targetSum - root.val) or
+            self.hasPathSum(root.right, targetSum - root.val))
+
+# LC 113 Path Sum II - All Paths with Target Sum
+def pathSum(self, root, targetSum):
+    result = []
+
+    def dfs(node, remaining, path):
+        if not node:
+            return
+
+        path.append(node.val)
+
+        if not node.left and not node.right and remaining == node.val:
+            result.append(path[:])
+
+        dfs(node.left, remaining - node.val, path)
+        dfs(node.right, remaining - node.val, path)
+
+        path.pop()  # backtrack
+
+    dfs(root, targetSum, [])
+    return result
+
+# LC 437 Path Sum III - Number of Paths with Target Sum (any start/end)
+def pathSum(self, root, targetSum):
+    def dfs(node, current_sum):
+        if not node:
+            return 0
+
+        current_sum += node.val
+        result = prefix_sum.get(current_sum - targetSum, 0)
+
+        prefix_sum[current_sum] = prefix_sum.get(current_sum, 0) + 1
+
+        result += dfs(node.left, current_sum)
+        result += dfs(node.right, current_sum)
+
+        prefix_sum[current_sum] -= 1
+        return result
+
+    prefix_sum = {0: 1}
+    return dfs(root, 0)
+```
+
+#### Path Length Problems
+```python
+# LC 543 Diameter of Binary Tree - Longest Path Between Any Two Nodes
+def diameterOfBinaryTree(self, root):
+    self.diameter = 0
+
+    def dfs(node):
+        if not node:
+            return 0
+
+        left_depth = dfs(node.left)
+        right_depth = dfs(node.right)
+
+        # Update diameter through current node
+        self.diameter = max(self.diameter, left_depth + right_depth)
+
+        return 1 + max(left_depth, right_depth)
+
+    dfs(root)
+    return self.diameter
+
+# LC 687 Longest Univalue Path - Longest Path with Same Values
+def longestUnivaluePath(self, root):
+    self.longest = 0
+
+    def dfs(node):
+        if not node:
+            return 0
+
+        left_length = dfs(node.left)
+        right_length = dfs(node.right)
+
+        left_path = left_length + 1 if node.left and node.left.val == node.val else 0
+        right_path = right_length + 1 if node.right and node.right.val == node.val else 0
+
+        self.longest = max(self.longest, left_path + right_path)
+
+        return max(left_path, right_path)
+
+    dfs(root)
+    return self.longest
+```
+
+```java
+// java
+// LC 112 Path Sum
+public boolean hasPathSum(TreeNode root, int targetSum) {
+    if (root == null) {
+        return false;
+    }
+
+    if (root.left == null && root.right == null) {
+        return root.val == targetSum;
+    }
+
+    return hasPathSum(root.left, targetSum - root.val) ||
+           hasPathSum(root.right, targetSum - root.val);
+}
+
+// LC 113 Path Sum II
+public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+    List<List<Integer>> result = new ArrayList<>();
+    List<Integer> path = new ArrayList<>();
+    dfs(root, targetSum, path, result);
+    return result;
+}
+
+private void dfs(TreeNode node, int remaining, List<Integer> path,
+                List<List<Integer>> result) {
+    if (node == null) return;
+
+    path.add(node.val);
+
+    if (node.left == null && node.right == null && remaining == node.val) {
+        result.add(new ArrayList<>(path));
+    }
+
+    dfs(node.left, remaining - node.val, path, result);
+    dfs(node.right, remaining - node.val, path, result);
+
+    path.remove(path.size() - 1); // backtrack
+}
+```
+
+### 1-1-20) Tree Height and Depth Operations
+
+#### Height vs Depth Comparison
+```python
+# Height: Distance from node to deepest leaf (bottom-up)
+def height(node):
+    if not node:
+        return 0
+    return 1 + max(height(node.left), height(node.right))
+
+# Depth: Distance from root to node (top-down)
+def assign_depths(node, depth=0):
+    if not node:
+        return
+    node.depth = depth
+    assign_depths(node.left, depth + 1)
+    assign_depths(node.right, depth + 1)
+
+# Get depth of specific node
+def get_node_depth(root, target, depth=0):
+    if not root:
+        return -1
+    if root.val == target:
+        return depth
+
+    left_depth = get_node_depth(root.left, target, depth + 1)
+    if left_depth != -1:
+        return left_depth
+
+    return get_node_depth(root.right, target, depth + 1)
+```
+
+```java
+// java
+// Get tree height
+public int getHeight(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    return 1 + Math.max(getHeight(root.left), getHeight(root.right));
+}
+
+// Get node depth
+public int getDepth(TreeNode root, int target) {
+    return getDepthHelper(root, target, 0);
+}
+
+private int getDepthHelper(TreeNode node, int target, int depth) {
+    if (node == null) {
+        return -1;
+    }
+    if (node.val == target) {
+        return depth;
+    }
+
+    int leftDepth = getDepthHelper(node.left, target, depth + 1);
+    if (leftDepth != -1) {
+        return leftDepth;
+    }
+
+    return getDepthHelper(node.right, target, depth + 1);
+}
+
+// Check if tree is balanced (height difference ≤ 1)
+public boolean isBalanced(TreeNode root) {
+    return checkBalance(root) != -1;
+}
+
+private int checkBalance(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+
+    int leftHeight = checkBalance(node.left);
+    if (leftHeight == -1) return -1;
+
+    int rightHeight = checkBalance(node.right);
+    if (rightHeight == -1) return -1;
+
+    if (Math.abs(leftHeight - rightHeight) > 1) {
+        return -1;
+    }
+
+    return 1 + Math.max(leftHeight, rightHeight);
+}
 ```
 
 ## 2) LC Example
