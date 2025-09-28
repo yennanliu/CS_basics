@@ -79,6 +79,116 @@ public class InorderSuccessorInBST2 {
 //
 //    }
 
+    // V0-1
+    // IDEA: BST in-order traversal, node op (gpt)
+    /**
+     *  NOTE !!!
+     *
+     *   BST property:   left_child.val < root.val < right_child.val
+     *
+     *   ```
+     *   Binary Search Tree (BST) is a binary tree data structure where each
+     *   node follows the ordering property:
+     *   left child < parent < right child.
+     *   This property enables efficient searching,
+     *   insertion, and deletion operations.
+     *   ```
+     */
+    /**
+     *  NOTE !!!
+     *
+     *  key:
+     *
+     *  - Each node has a parent pointer.
+     * 	- We do not have access to the root.
+     * 	- The goal is to find the in-order successor,
+     * 	   i.e., the node with the smallest value greater than p.val.
+     *
+     *  -> We can solve this without comparing values by using `BST in-order traversal` logic.
+     *
+     */
+    // TODO: validate
+    public Node inorderSuccessor_0_1(Node node) {
+        if (node == null) return null;
+
+        // Case 1: Node has right child
+        // The successor is the **leftmost node in right subtree**
+        if (node.right != null) {
+            Node curr = node.right;
+            while (curr.left != null) {
+                curr = curr.left;
+            }
+            return curr;
+        }
+
+        // Case 2: Node has no right child
+        // Move up until we find a node that is a **left child of its parent**
+        Node curr = node;
+        while (curr.parent != null && curr.parent.right == curr) {
+            curr = curr.parent;
+        }
+        return curr.parent; // could be null if no successor
+    }
+
+    // V0-2
+    // IDEA: BST in-order traversal, node op (gpt)
+    // Could you solve it without looking up any of the node's values?
+    public Node inorderSuccessor_0_2(Node node) {
+        if (node == null) return null;
+
+        // Case 1: Node has right subtree
+        if (node.right != null) {
+            Node curr = node.right;
+            while (curr.left != null) {
+                curr = curr.left;
+            }
+            return curr;
+        }
+
+        // Case 2: Node has no right subtree
+        Node curr = node;
+        while (curr.parent != null && curr.parent.right == curr) {
+            curr = curr.parent;
+        }
+        return curr.parent;  // Could be null if no successor exists
+    }
+
+    // V0-3
+    // IDEA: node op (gemini)
+    // TODO: validate
+    public Node inorderSuccessor_0_3(Node p) {
+        if (p == null) {
+            return null;
+        }
+
+        // Case 1: The node has a right child.
+        // The successor is the LEFT-MOST node in the right subtree.
+        if (p.right != null) {
+            Node current = p.right;
+            while (current.left != null) {
+                current = current.left;
+            }
+            return current;
+        }
+
+        // Case 2: The node does NOT have a right child.
+        // The successor is the first ancestor for which the current node is in its LEFT subtree.
+        Node current = p;
+        Node parent = p.parent;
+
+        while (parent != null && current == parent.right) {
+            // Keep moving up the tree as long as 'current' is a RIGHT child of its parent.
+            // This means 'current' and its ancestors are smaller than the successor.
+            current = parent;
+            parent = parent.parent;
+        }
+
+        // If the loop terminated because parent became null, 'p' is the rightmost node
+        // in the tree (the largest value), and has no successor.
+        // Otherwise, 'parent' is the successor (the first ancestor that we came up from the left).
+        return parent;
+    }
+
     // V1
     // https://leetcode.ca/2017-04-23-510-Inorder-Successor-in-BST-II/
     public Node inorderSuccessor_1(Node node) {
