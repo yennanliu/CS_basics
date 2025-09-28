@@ -1061,6 +1061,10 @@ public class workspace16 {
                 && isSameTree2(t1.right, t2.right);
     }
 
+    // LC 652
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        return null;
+    }
 
 
 
