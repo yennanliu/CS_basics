@@ -54,6 +54,52 @@ public class FindDuplicateSubtrees {
 //        return null;
 //    }
 
+    // V0-1
+    // IDEA: HASHMAP + DFS + NODE PATH
+    Map<TreeNode, List<String>> pathMap = new HashMap<>();
+    public List<TreeNode> findDuplicateSubtrees_0_1(TreeNode root) {
+        List<TreeNode> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        System.out.println(">>> (before dfs) pathMap = " + pathMap);
+        // dfs
+        duplicateSubtreesHelper(root, new HashMap<>());
+        System.out.println(">>> (after dfs) pathMap = " + pathMap);
+
+        // check duplicates
+        for (TreeNode node : pathMap.keySet()) {
+            if (pathMap.get(node).size() > 1) {
+                res.add(node);
+            }
+        }
+
+        return res;
+    }
+
+    private String duplicateSubtreesHelper(TreeNode root, Map<String, TreeNode> seen) {
+        if (root == null) {
+            return "#"; // marker for null
+        }
+
+        // build serialization
+        String path = root.val + "," +
+                duplicateSubtreesHelper(root.left, seen) + "," +
+                duplicateSubtreesHelper(root.right, seen);
+
+        // if this path already exists, add it under the original root node
+        if (seen.containsKey(path)) {
+            TreeNode firstRoot = seen.get(path);
+            pathMap.computeIfAbsent(firstRoot, k -> new ArrayList<>()).add(path);
+        } else {
+            seen.put(path, root);
+            pathMap.computeIfAbsent(root, k -> new ArrayList<>()).add(path);
+        }
+
+        return path;
+    }
+
     // V1
     // https://leetcode.ca/2017-09-12-652-Find-Duplicate-Subtrees/
     private Map<String, Integer> counter;

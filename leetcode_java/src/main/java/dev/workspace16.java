@@ -1062,8 +1062,81 @@ public class workspace16 {
     }
 
     // LC 652
+    // 16.02 - 12 pm
+    /**
+     *
+     * -> Given the root of a binary tree,
+     *   return `all duplicate subtrees.`
+     *
+     *    - ONLY need to return the `root node` of any one of them.
+     *
+     *    - Two trees are duplicate if
+     *       they have the `same structure` with the `same node values.`
+     *
+     *
+     *  IDEA 1) DFS + HASHMAP
+     *
+     */
+    // ???
+    Map<TreeNode, List<String>> pathMap = new HashMap<>();
     public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-        return null;
+        List<TreeNode> res = new ArrayList<>();
+        // edge
+        if(root == null){
+            return res;
+        }
+        if(root.left == null && root.right == null){
+            return res;
+        }
+
+        System.out.println(">>> (before dfs) pathMap = " + pathMap);
+        // dfs
+        duplicateSubtreesHelper(root);
+        System.out.println(">>> (after dfs) pathMap = " + pathMap);
+
+        // ???
+        for(TreeNode k: pathMap.keySet()){
+            // ???
+            if(pathMap.get(k).size() > 1){
+                res.add(k);
+            }
+        }
+
+        return res;
+    }
+
+    private void duplicateSubtreesHelper(TreeNode root){
+        if(root == null){
+            return;
+        }
+
+        System.out.println(">>> (duplicateSubtreesHelper) root = " + root);
+
+        String path = getNodePath(root);
+        List<String> paths = new ArrayList<>();
+        if(pathMap.containsKey(root)){
+            paths = pathMap.get(root);
+        }
+        paths.add(path);
+
+        pathMap.put(root, paths);
+
+        // dfs traverse ???
+        // pre order ?? (root -> left -> right)
+        duplicateSubtreesHelper(root.left);
+        duplicateSubtreesHelper(root.right);
+    }
+
+    // dfs
+    private String getNodePath(TreeNode root){
+        System.out.println(">>> (getNodePath) root = " + root);
+
+        if(root == null){
+            return ""; // ??
+        }
+        return root + ","
+                + getNodePath(root.left) + ","
+                + getNodePath(root.right);
     }
 
 
