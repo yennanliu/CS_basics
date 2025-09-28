@@ -56,8 +56,57 @@ public class FindDuplicateSubtrees {
 
     // V0-1
     // IDEA: HASHMAP + DFS + NODE PATH
-    Map<TreeNode, List<String>> pathMap = new HashMap<>();
+    private Map<String, Integer> counter_0_1;
+    private List<TreeNode> ans_0_1;
+
     public List<TreeNode> findDuplicateSubtrees_0_1(TreeNode root) {
+        counter_0_1 = new HashMap<>();
+        ans_0_1 = new ArrayList<>();
+
+        // dfs call
+        dfs_0_1(root);
+        
+        return ans_0_1;
+    }
+
+    private String dfs_0_1(TreeNode root) {
+        if (root == null) {
+            return "#";
+        }
+
+        /** NOTE !!! node path */
+        String v = root.val + "," + dfs_0_1(root.left) + "," + dfs_0_1(root.right);
+        counter_0_1.put(v, counter_0_1.getOrDefault(v, 0) + 1);
+
+        /** NOTE !!! if cnt > 1, add it to ans directly */
+        if (counter_0_1.get(v) == 2) {
+            ans_0_1.add(root);
+        }
+        return v;
+    }
+
+    // V0-2
+    // IDEA: HASHMAP + DFS + NODE PATH
+    /**
+     *  The main idea is to serialize each subtree as a string, store it in a map,
+     *  and detect duplicates. The code essentially:
+     *
+     *      1.	Serializes each subtree in a post-order DFS manner (left, right, root).
+     *      2.	Tracks which serialized subtrees have been seen before.
+     *      3.	If a subtree appears more than once, record it in pathMap.
+     *      4.	Return all roots corresponding to duplicate subtrees.
+     */
+    /**
+     *  NOTE !!!
+     *
+     *   - pathMap stores `original root nodes as keys.`
+     * 	 - The List<String> is the list of serialized paths for that root.
+     * 	 - Later, if the list size > 1, it means this subtree is duplicated.
+     *
+     * 	 pathMap: { node: list_of_paths }
+     */
+    Map<TreeNode, List<String>> pathMap = new HashMap<>();
+    public List<TreeNode> findDuplicateSubtrees_0_2(TreeNode root) {
         List<TreeNode> res = new ArrayList<>();
         if (root == null) {
             return res;
@@ -78,23 +127,81 @@ public class FindDuplicateSubtrees {
         return res;
     }
 
+    /**
+     *   NOTE !!!
+     *
+     *    helper func: duplicateSubtreesHelper
+     *
+     *  1.	Edge case check: if root == null, return empty.
+     * 	2.	duplicateSubtreesHelper() does the DFS and fills pathMap.
+     * 	3.	After DFS, pathMap contains all subtrees grouped by original root nodes.
+     * 	4.	If any root has more than one path, it’s a duplicate → add to res.
+     *
+     */
     private String duplicateSubtreesHelper(TreeNode root, Map<String, TreeNode> seen) {
         if (root == null) {
             return "#"; // marker for null
         }
 
+        /** NOTE !!!
+         *
+         *  we get `node path` first
+         */
         // build serialization
         String path = root.val + "," +
                 duplicateSubtreesHelper(root.left, seen) + "," +
                 duplicateSubtreesHelper(root.right, seen);
 
-        // if this path already exists, add it under the original root node
+        /**
+         *  NOTE !!!
+         *
+         *   if this path already exists, add it under the original root node
+         */
+        /**
+         *
+         * 	3.	Check if we have seen this serialization:
+         * 	  - seen maps serialization string → first TreeNode with that structure.
+         * 	  - If it exists, we know this subtree is a duplicate.
+         *
+         * 	4.	Add to pathMap:
+         * 	  - Key: original root node (first one seen with this structure).
+         * 	  - Value: list of serialized paths.
+         * 	  - This is needed because the problem wants root nodes of duplicates,
+         * 	    not the string serialization.
+         *
+         * 	5.	Return serialization so parent nodes can use it.
+         *
+         *
+         */
+        /**
+         *
+         * 4️4. How duplicates are detected
+         * 	•	seen ensures we know the first occurrence of a subtree.
+         * 	•	pathMap tracks all occurrences for later filtering.
+         * 	•	After DFS, only nodes with pathMap.get(node).size() > 1 are returned.
+         */
+        /** V1 */
+        //        List<String> paths = new ArrayList<>();
+        //        if (seen.containsKey(path)) {
+        //            TreeNode firstRoot = seen.get(path);
+        //            pathMap.computeIfAbsent(firstRoot, k -> new ArrayList<>()).add(path);
+        //        } else {
+        //            seen.put(path, root);
+        //            pathMap.computeIfAbsent(root, k -> new ArrayList<>()).add(path);
+        //        }
+        /** V2 */
         if (seen.containsKey(path)) {
             TreeNode firstRoot = seen.get(path);
-            pathMap.computeIfAbsent(firstRoot, k -> new ArrayList<>()).add(path);
+            if (!pathMap.containsKey(firstRoot)) {
+                pathMap.put(firstRoot, new ArrayList<>());
+            }
+            pathMap.get(firstRoot).add(path);
         } else {
             seen.put(path, root);
-            pathMap.computeIfAbsent(root, k -> new ArrayList<>()).add(path);
+            if (!pathMap.containsKey(root)) {
+                pathMap.put(root, new ArrayList<>());
+            }
+            pathMap.get(root).add(path);
         }
 
         return path;
