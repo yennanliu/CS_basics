@@ -1077,67 +1077,129 @@ public class workspace16 {
      *  IDEA 1) DFS + HASHMAP
      *
      */
-    // ???
+
     Map<TreeNode, List<String>> pathMap = new HashMap<>();
-    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+    public List<TreeNode> findDuplicateSubtrees_0_1(TreeNode root) {
         List<TreeNode> res = new ArrayList<>();
-        // edge
-        if(root == null){
-            return res;
-        }
-        if(root.left == null && root.right == null){
+        if (root == null) {
             return res;
         }
 
         System.out.println(">>> (before dfs) pathMap = " + pathMap);
         // dfs
-        duplicateSubtreesHelper(root);
+        duplicateSubtreesHelper(root, new HashMap<>());
         System.out.println(">>> (after dfs) pathMap = " + pathMap);
 
-        // ???
-        for(TreeNode k: pathMap.keySet()){
-            // ???
-            if(pathMap.get(k).size() > 1){
-                res.add(k);
+        // check duplicates
+        for (TreeNode node : pathMap.keySet()) {
+            if (pathMap.get(node).size() > 1) {
+                res.add(node);
             }
         }
 
         return res;
     }
 
-    private void duplicateSubtreesHelper(TreeNode root){
-        if(root == null){
-            return;
+    private String duplicateSubtreesHelper(TreeNode root, Map<String, TreeNode> seen) {
+        if (root == null) {
+            return "#"; // marker for null
         }
 
-        System.out.println(">>> (duplicateSubtreesHelper) root = " + root);
+        // build serialization
+        String path = root.val + "," +
+                duplicateSubtreesHelper(root.left, seen) + "," +
+                duplicateSubtreesHelper(root.right, seen);
 
-        String path = getNodePath(root);
-        List<String> paths = new ArrayList<>();
-        if(pathMap.containsKey(root)){
-            paths = pathMap.get(root);
+        // if this path already exists, add it under the original root node
+//        List<String> paths = new ArrayList<>();
+//        if (seen.containsKey(path)) {
+//            TreeNode firstRoot = seen.get(path);
+//            pathMap.computeIfAbsent(firstRoot, k -> new ArrayList<>()).add(path);
+//        } else {
+//            seen.put(path, root);
+//            pathMap.computeIfAbsent(root, k -> new ArrayList<>()).add(path);
+//        }
+        if (seen.containsKey(path)) {
+            TreeNode firstRoot = seen.get(path);
+            if (!pathMap.containsKey(firstRoot)) {
+                pathMap.put(firstRoot, new ArrayList<>());
+            }
+            pathMap.get(firstRoot).add(path);
+        } else {
+            seen.put(path, root);
+            if (!pathMap.containsKey(root)) {
+                pathMap.put(root, new ArrayList<>());
+            }
+            pathMap.get(root).add(path);
         }
-        paths.add(path);
 
-        pathMap.put(root, paths);
-
-        // dfs traverse ???
-        // pre order ?? (root -> left -> right)
-        duplicateSubtreesHelper(root.left);
-        duplicateSubtreesHelper(root.right);
+        return path;
     }
 
-    // dfs
-    private String getNodePath(TreeNode root){
-        System.out.println(">>> (getNodePath) root = " + root);
 
-        if(root == null){
-            return ""; // ??
-        }
-        return root + ","
-                + getNodePath(root.left) + ","
-                + getNodePath(root.right);
-    }
+    /// /////
+
+    // ???
+//    Map<TreeNode, List<String>> pathMap = new HashMap<>();
+//    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+//        List<TreeNode> res = new ArrayList<>();
+//        // edge
+//        if(root == null){
+//            return res;
+//        }
+//        if(root.left == null && root.right == null){
+//            return res;
+//        }
+//
+//        System.out.println(">>> (before dfs) pathMap = " + pathMap);
+//        // dfs
+//        duplicateSubtreesHelper(root);
+//        System.out.println(">>> (after dfs) pathMap = " + pathMap);
+//
+//        // ???
+//        for(TreeNode k: pathMap.keySet()){
+//            // ???
+//            if(pathMap.get(k).size() > 1){
+//                res.add(k);
+//            }
+//        }
+//
+//        return res;
+//    }
+//
+//    private void duplicateSubtreesHelper(TreeNode root){
+//        if(root == null){
+//            return;
+//        }
+//
+//        System.out.println(">>> (duplicateSubtreesHelper) root = " + root);
+//
+//        String path = getNodePath(root);
+//        List<String> paths = new ArrayList<>();
+//        if(pathMap.containsKey(root)){
+//            paths = pathMap.get(root);
+//        }
+//        paths.add(path);
+//
+//        pathMap.put(root, paths);
+//
+//        // dfs traverse ???
+//        // pre order ?? (root -> left -> right)
+//        duplicateSubtreesHelper(root.left);
+//        duplicateSubtreesHelper(root.right);
+//    }
+//
+//    // dfs
+//    private String getNodePath(TreeNode root){
+//        System.out.println(">>> (getNodePath) root = " + root);
+//
+//        if(root == null){
+//            return ""; // ??
+//        }
+//        return root + ","
+//                + getNodePath(root.left) + ","
+//                + getNodePath(root.right);
+//    }
 
 
 
