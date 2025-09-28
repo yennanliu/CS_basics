@@ -949,16 +949,91 @@ public class workspace16 {
     /// ////////////////////////////
 
     // LC 92
-    // 16.35 - 45 pm
+    // 17.17 - 17.33 pm
     /**
+     *
      *  IDEA 1) LINKED LIST OP (iterative)
      *   - prev, dummy
+     *
+     *
+     *  ex 1)
+     *
+     *  Input: head = [1,2,3,4,5], left = 2, right = 4
+     *  -> Output: [1,4,3,2,5]
+     *
+     *    [1,2,3,4,5]    _next = 2 == left, _left_prev = 1, quit first while loop ???
+     *     x
+     *
+     *    [1,2,3,4,5]
+     *       x
+     *
+     *    [1,2,3,4,5]
+     *         x
+     *
+     *   [1,2,3,4,5]
+     *          x
+     *
+     *  [1,2,3,4,5]  _right_next = 5
+     *           x
+     *
+     *
+     *    reverse node [2,3,4], -> [4,3,2]
+     *    _left = 4, _right = 2
+     *
+     *   so, what we need to do is:
+     *    reconnect node
+     *     _left_prev.next = _right
+     *     _right.next = _right_next
+     *
+     *
+     *
      *
      *  IDEA 2) array -> reverse -> LINKED LIST
      *
      */
-    // IDEA 1) LINKED LIST OP (iterative)
     public ListNode reverseBetween(ListNode head, int left, int right) {
+        // edge cases: empty list, single node, or no reversal needed
+        if (head == null || head.next == null || left == right) {
+            return head;
+        }
+
+        ListNode dummy = new ListNode(0); // ??
+        ListNode res = dummy;
+        dummy.next = head;
+
+        ListNode _prev = null; // ???dummy; // ???? null;
+
+        for(int i = 0 ; i < left; i++){
+            head = head.next;
+        }
+
+        _prev = head; //????
+
+        ListNode _cur = _prev.next;
+        ListNode _head = null; // ??
+
+        // reverse
+        for(int i = 0; i < right - left; i++){
+            ListNode _next = _cur.next; // ???
+            // ??????
+            _prev.next = _head; //_cur.next;
+            // ??? _prev = _cur.next;
+            _head = _cur;
+            _cur = _next;
+        }
+
+        ListNode _tail = _prev.next;
+
+        _tail.next = _cur;
+
+        return res.next;
+    }
+
+
+
+
+    // IDEA 1) LINKED LIST OP (iterative)
+    public ListNode reverseBetween_100(ListNode head, int left, int right) {
         // edge
         if (head == null || head.next == null || left == right) {
             return head;
@@ -969,30 +1044,72 @@ public class workspace16 {
         ListNode res = dummy;
         dummy.next = head; // ???
 
-        ListNode _prev = null;
+        // node before `left node`
+        ListNode _left_prev = null;
+        // node after `right node`
+        ListNode _right_next = null;
+
+        for(int i = 0; i < left; i++){
+            head = head.next;
+        }
+
+        // left border node of the `to-reverse node`
+        ListNode _left = head;
+        // right border node of the `to-reverse node`
+        //ListNode _right = null;
+
+        for(int i = 0; i < right - left; i++){
+            head = head.next;
+        }
+
+        ListNode _right = head;
 
 
-        // get `prev`
+
+
+
+        // loop over node, and get _prev_left, _next_right
         while(head != null && head.next != null){
             if(head.next.val == left){
-                _prev = head; // ???
-                break;
+                _left_prev = head;
             }
+            if(head.val == right){
+                _right_next = head.next;
+            }
+
+            if(head.val == left){
+                _left = head;
+            }
+
+            if(head.val == right){
+                _right = head;
+            }
+
             head = head.next;
         }
 
+        // reverse
+        ListNode _prev = null;
         // ???
-        while(head != null && head.next != null){
-            if(head.next.val == right){
-                _prev = head; // ???
-                break;
-            }
-            head = head.next;
+        while(_left.val != right){
+            ListNode _next = _left.next;
+            _prev.next = _left;
+            _prev = _left;
+            _left = _next;
         }
+
+        // reconnect
+        _left_prev.next = _right;
+        _right.next = _right_next;
 
 
         return res.next;
     }
+
+
+
+
+    //---------------------------
 
     // LC 572
     // 15.29 - 39 pm
