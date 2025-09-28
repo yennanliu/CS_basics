@@ -141,6 +141,54 @@ public class SubtreeOfAnotherTree {
                 && isSameTree2(t1.right, t2.right);
     }
 
+    // V0-0-2
+    public boolean isSubtree_0_0_2(TreeNode root, TreeNode subRoot) {
+        // edge
+        if (root == null && subRoot == null) {
+            return true;
+        }
+        if (subRoot == null) {
+            return true; // ???
+        }
+        if (root == null) {
+            return false;
+        }
+
+        /** NOTE !!! check if `current` tree is as same as the sub root */
+        if (isSameTree3(root, subRoot)) {
+            return true;
+        }
+
+        //return isSubTreeHelper(root, subRoot);
+        /** NOTE !!!
+         *
+         *  the `or` condition
+         *
+         *  -> so either
+         *    sub left tree is same as subRoot
+         *     or
+         *     sub right tree is same as subRoot
+         *
+         *    can be recognized as a `true` case
+         */
+        return isSameTree3(root.left, subRoot) ||
+                isSameTree3(root.right, subRoot);
+    }
+
+    private boolean isSameTree3(TreeNode t1, TreeNode t2) {
+        if (t1 == null && t2 == null) {
+            return true;
+        }
+        if (t1 == null || t2 == null) {
+            return false;
+        }
+        if (t1.val != t2.val) {
+            return false;
+        }
+        return isSameTree3(t1.left, t2.left)
+                && isSameTree3(t1.right, t2.right);
+    }
+
 
     // V0-1
     // IDEA : DFS + DFS (modified by GPT)
@@ -408,5 +456,6 @@ public class SubtreeOfAnotherTree {
 
         return false;
     }
+    
 
 }
