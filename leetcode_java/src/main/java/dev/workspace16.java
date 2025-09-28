@@ -1017,27 +1017,35 @@ public class workspace16 {
         }
 
         // ???
-        return isSubTreeHelper(root, subRoot);
+        if(isSameTree2(root, subRoot)){
+            return true;
+        }
+
+        // ???
+        //return isSubTreeHelper(root, subRoot);
+        /** NOTE !!! `or` condition */
+        return isSubtree(root.left, subRoot) ||
+                isSubtree(root.right, subRoot);
     }
 
-    private boolean isSubTreeHelper(TreeNode root, TreeNode subRoot){
-        // bfs ???
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        while(!q.isEmpty()){
-            TreeNode cur = q.poll();
-            if(isSameTree2(cur, subRoot)){
-                return true;
-            }
-            if(cur.left != null){
-                q.add(cur.left);
-            }
-            if(cur.right != null){
-                q.add(cur.right);
-            }
-        }
-        return false;
-    }
+//    private boolean isSubTreeHelper(TreeNode root, TreeNode subRoot){
+//        // bfs ???
+//        Queue<TreeNode> q = new LinkedList<>();
+//        q.add(root);
+//        while(!q.isEmpty()){
+//            TreeNode cur = q.poll();
+//            if(isSameTree2(cur, subRoot)){
+//                return true;
+//            }
+//            if(cur.left != null){
+//                q.add(cur.left);
+//            }
+//            if(cur.right != null){
+//                q.add(cur.right);
+//            }
+//        }
+//        return false;
+//    }
 
     private boolean isSameTree2(TreeNode t1, TreeNode t2){
         if(t1 == null && t2 == null){
