@@ -992,10 +992,67 @@ public class workspace16 {
         }
 
 
-
-
         return res.next;
     }
+
+    // LC 572
+    // 15.29 - 39 pm
+    /**
+     *  IDEA 1) DFS
+     *
+     *  IDEA 2) BFS
+     *
+     */
+    // IDEA 1) DFS
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        // edge
+        if(root == null && subRoot == null){
+            return true;
+        }
+        if(subRoot == null){
+            return true; // ???
+        }
+        if(root == null){
+            return false;
+        }
+
+        // ???
+        return isSubTreeHelper(root, subRoot);
+    }
+
+    private boolean isSubTreeHelper(TreeNode root, TreeNode subRoot){
+        // bfs ???
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            TreeNode cur = q.poll();
+            if(isSameTree2(cur, subRoot)){
+                return true;
+            }
+            if(cur.left != null){
+                q.add(cur.left);
+            }
+            if(cur.right != null){
+                q.add(cur.right);
+            }
+        }
+        return false;
+    }
+
+    private boolean isSameTree2(TreeNode t1, TreeNode t2){
+        if(t1 == null && t2 == null){
+            return true;
+        }
+        if(t1 == null || t2 == null){
+            return false;
+        }
+        if(t1.val != t2.val){
+            return false;
+        }
+        return isSameTree2(t1.left, t2.left)
+                && isSameTree2(t1.right, t2.right);
+    }
+
 
 
 
