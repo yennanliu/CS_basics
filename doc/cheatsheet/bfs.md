@@ -166,17 +166,85 @@ def bfs_with_path(start, target):
 
 ## Time & Space Complexity
 
-### Tree BFS
+### BFS Time Complexity Analysis
+
+BFS time complexity depends on the graph representation:
+
+#### 🔹 Graph Representations
+
+**Adjacency List (most common in practice):**
+- Each vertex is enqueued/dequeued once → O(V)
+- Each edge is explored at most once → O(E)
+- ✅ **Total = O(V + E)**
+
+**Adjacency Matrix:**
+- Checking all neighbors of a vertex costs O(V)
+- Doing this for all vertices costs O(V²)
+- ✅ **Total = O(V²)**
+
+#### Detailed Breakdown by Data Structure
+
+**Tree BFS**
 - **Time**: O(n) - visit each node once
 - **Space**: O(w) - maximum width of tree
+- **Explanation**: Each node visited exactly once, queue stores at most one level
 
-### Graph BFS  
+**Graph BFS (Adjacency List)**
 - **Time**: O(V + E) - visit each vertex and edge once
 - **Space**: O(V) - queue and visited set
+- **Explanation**:
+  - Vertex processing: Each vertex enqueued/dequeued once = O(V)
+  - Edge processing: Each edge examined once = O(E)
+  - Queue space: At most O(V) vertices
+  - Visited set: O(V) vertices
 
-### Grid BFS
+**Graph BFS (Adjacency Matrix)**
+- **Time**: O(V²) - check all possible edges
+- **Space**: O(V) - queue and visited set
+- **Explanation**:
+  - For each vertex, check all V possible neighbors
+  - Total vertices × neighbors per vertex = V × V = O(V²)
+
+**Grid BFS**
 - **Time**: O(m × n) - visit each cell once
 - **Space**: O(m × n) - worst case queue size
+- **Explanation**:
+  - Each cell visited at most once
+  - Queue can contain at most all cells in worst case
+  - Grid is essentially a graph with m×n vertices and 4-directional edges
+
+#### Performance Comparison Table
+
+| Graph Type | Representation | Time Complexity | Space Complexity | Best For |
+|------------|----------------|-----------------|------------------|----------|
+| **Sparse Graph** | Adjacency List | O(V + E) | O(V) | E << V² |
+| **Dense Graph** | Adjacency Matrix | O(V²) | O(V²) | E ≈ V² |
+| **Tree** | Parent-Child Links | O(n) | O(w) | Hierarchical data |
+| **Grid** | 2D Array | O(m × n) | O(m × n) | Spatial problems |
+
+#### Why O(V + E) for Adjacency List?
+
+```python
+# Detailed analysis of BFS with adjacency list
+def bfs_analysis(graph, start):
+    queue = deque([start])        # O(1)
+    visited = {start}             # O(1)
+
+    while queue:                  # Executes at most V times
+        vertex = queue.popleft()  # O(1) - each vertex dequeued once
+
+        # This inner loop runs exactly deg(vertex) times
+        for neighbor in graph[vertex]:  # Total across all vertices = E
+            if neighbor not in visited:  # O(1) with set
+                visited.add(neighbor)    # O(1) - each vertex added once
+                queue.append(neighbor)   # O(1) - each vertex enqueued once
+
+    # Analysis:
+    # - Outer while loop: O(V) iterations
+    # - Inner for loop: Sum of deg(v) for all v = 2E (undirected) or E (directed)
+    # - Each operation inside: O(1)
+    # Total: O(V + E)
+```
 
 ## Common Mistakes & Tips
 
