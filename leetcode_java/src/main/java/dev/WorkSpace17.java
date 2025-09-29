@@ -1,5 +1,7 @@
 package dev;
 
+import LeetCodeJava.DataStructure.TreeNode;
+
 public class WorkSpace17 {
 
     // LC 510
@@ -29,6 +31,62 @@ public class WorkSpace17 {
 
         return null;
     }
+
+    // LC 700
+    // 15.00 - 10 pm
+    /**
+     *  IDEA 1) DFS
+     *
+     */
+    // IDEA 1) iterative
+    public TreeNode searchBST(TreeNode root, int val) {
+        // edge
+        if(root == null){
+            return null;
+        }
+
+        while(root != null){
+            if(root.val == val){
+                return root;
+            }else if(root.val < val){
+                root = root.right;
+            }else{
+                root = root.left;
+            }
+        }
+
+        // ????
+        return null;
+    }
+
+    //---------------------------
+
+    // IDEA 2) dfs
+    public TreeNode searchBST_100(TreeNode root, int val) {
+        // edge
+        if(root == null){
+            return null;
+        }
+//        if(root.left == null && root.right == null){
+//            if(root.val == val){
+//                return root;
+//            }
+//            return null;
+//        }
+
+        if(root.val == val){
+            return root;
+        }
+
+        if(root.val < val){
+            return searchBST_100(root.right, val);
+        }
+
+        // ???
+        return searchBST_100(root.left, val);
+    }
+
+
 
 
 }
