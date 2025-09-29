@@ -57,6 +57,16 @@
 - **Examples**: LC 416 (Partition Equal Subset), LC 494 (Target Sum)
 - **Pattern**: dp[i][j] for items and capacity/target
 
+### **Category 7: String DP**
+- **Description**: String matching, transformation, and subsequence problems
+- **Examples**: LC 72 (Edit Distance), LC 1143 (LCS), LC 5 (Longest Palindromic Substring)
+- **Pattern**: dp[i][j] for positions in two strings
+
+### **Category 8: State Compression DP**
+- **Description**: Use bitmask to represent states, optimize space complexity
+- **Examples**: LC 691 (Stickers to Spell Word), LC 847 (Shortest Path Visiting All Nodes)
+- **Pattern**: dp[mask] where mask represents visited/selected items
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -202,24 +212,313 @@ def state_machine_dp(prices, fee=0):
 def top_down_dp(nums):
     """Top-down DP with memoization"""
     memo = {}
-    
+
     def dp(i):
         # Base case
         if i < 0:
             return 0
         if i == 0:
             return nums[0]
-        
+
         # Check memo
         if i in memo:
             return memo[i]
-        
+
         # Recurrence relation
         result = max(dp(i-1), dp(i-2) + nums[i])
         memo[i] = result
         return result
-    
+
     return dp(len(nums) - 1)
+```
+
+### Template 7: String DP (Edit Distance)
+```python
+def string_dp(s1, s2):
+    """String DP for edit distance problems"""
+    m, n = len(s1), len(s2)
+    # dp[i][j] = min operations to convert s1[:i] to s2[:j]
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    # Initialize base cases
+    for i in range(m + 1):
+        dp[i][0] = i
+    for j in range(n + 1):
+        dp[0][j] = j
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if s1[i-1] == s2[j-1]:
+                dp[i][j] = dp[i-1][j-1]  # No operation needed
+            else:
+                dp[i][j] = 1 + min(
+                    dp[i-1][j],    # Delete
+                    dp[i][j-1],    # Insert
+                    dp[i-1][j-1]   # Replace
+                )
+
+    return dp[m][n]
+```
+
+### Template 8: Longest Common Subsequence (LCS)
+```python
+def lcs_dp(text1, text2):
+    """LCS pattern for string matching"""
+    m, n = len(text1), len(text2)
+    # dp[i][j] = LCS length of text1[:i] and text2[:j]
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if text1[i-1] == text2[j-1]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+    return dp[m][n]
+```
+
+### Template 9: State Compression (Bitmask DP)
+```python
+def state_compression_dp(graph):
+    """Traveling Salesman Problem using bitmask DP"""
+    n = len(graph)
+    # dp[mask][i] = min cost to visit all cities in mask, ending at city i
+    dp = [[float('inf')] * n for _ in range(1 << n)]
+    dp[1][0] = 0  # Start at city 0
+
+    for mask in range(1 << n):
+        for u in range(n):
+            if not (mask & (1 << u)):
+                continue
+
+            for v in range(n):
+                if mask & (1 << v):
+                    continue
+
+                new_mask = mask | (1 << v)
+                dp[new_mask][v] = min(dp[new_mask][v],
+                                    dp[mask][u] + graph[u][v])
+
+    # Return to starting city
+    return min(dp[(1 << n) - 1][i] + graph[i][0] for i in range(1, n))
+```
+
+### Template 10: Palindrome DP
+```python
+def palindrome_dp(s):
+    """Check palindromic substrings"""
+    n = len(s)
+    # dp[i][j] = True if s[i:j+1] is palindrome
+    dp = [[False] * n for _ in range(n)]
+
+    # Single characters are palindromes
+    for i in range(n):
+        dp[i][i] = True
+
+    # Check 2-character palindromes
+    for i in range(n - 1):
+        if s[i] == s[i + 1]:
+            dp[i][i + 1] = True
+
+    # Check longer palindromes
+    for length in range(3, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if s[i] == s[j] and dp[i + 1][j - 1]:
+                dp[i][j] = True
+
+    return dp
+```
+
+### Template 11: Fibonacci-like Patterns
+```python
+def fibonacci_variants():
+    """Common Fibonacci-like patterns"""
+
+    # 1. Classic Fibonacci
+    def fibonacci(n):
+        if n <= 1:
+            return n
+        prev2, prev1 = 0, 1
+        for _ in range(2, n + 1):
+            current = prev1 + prev2
+            prev2, prev1 = prev1, current
+        return prev1
+
+    # 2. Climbing Stairs
+    def climbStairs(n):
+        if n <= 2:
+            return n
+        prev2, prev1 = 1, 2
+        for _ in range(3, n + 1):
+            current = prev1 + prev2
+            prev2, prev1 = prev1, current
+        return prev1
+
+    # 3. House Robber
+    def rob(nums):
+        if not nums:
+            return 0
+        if len(nums) <= 2:
+            return max(nums)
+
+        prev2, prev1 = nums[0], max(nums[0], nums[1])
+        for i in range(2, len(nums)):
+            current = max(prev1, prev2 + nums[i])
+            prev2, prev1 = prev1, current
+        return prev1
+```
+
+## Comprehensive Pattern Analysis
+
+### **1D DP Patterns**
+
+| Problem Type | Recurrence | Example | Time | Space |
+|--------------|------------|---------|------|-------|
+| **Fibonacci** | dp[i] = dp[i-1] + dp[i-2] | LC 70 Climbing Stairs | O(n) | O(1) |
+| **House Robber** | dp[i] = max(dp[i-1], dp[i-2] + nums[i]) | LC 198 House Robber | O(n) | O(1) |
+| **Decode Ways** | dp[i] = dp[i-1] + dp[i-2] (if valid) | LC 91 Decode Ways | O(n) | O(1) |
+| **Word Break** | dp[i] = OR(dp[j] AND s[j:i] in dict) | LC 139 Word Break | O(n²) | O(n) |
+
+**Template for 1D Linear DP**:
+```python
+def linear_dp_optimized(nums):
+    """Space-optimized 1D DP"""
+    n = len(nums)
+    if n == 0:
+        return 0
+    if n == 1:
+        return nums[0]
+
+    # Only need previous two states
+    prev2 = nums[0]
+    prev1 = max(nums[0], nums[1])
+
+    for i in range(2, n):
+        current = max(prev1, prev2 + nums[i])
+        prev2, prev1 = prev1, current
+
+    return prev1
+```
+
+### **2D DP Patterns**
+
+| Problem Type | Recurrence | Example | Time | Space |
+|--------------|------------|---------|------|-------|
+| **Unique Paths** | dp[i][j] = dp[i-1][j] + dp[i][j-1] | LC 62 Unique Paths | O(m×n) | O(n) |
+| **Min Path Sum** | dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j] | LC 64 Min Path Sum | O(m×n) | O(n) |
+| **LCS** | dp[i][j] = dp[i-1][j-1] + 1 if match else max(...) | LC 1143 LCS | O(m×n) | O(n) |
+| **Edit Distance** | dp[i][j] = min(insert, delete, replace) | LC 72 Edit Distance | O(m×n) | O(n) |
+
+**Template for 2D DP with Space Optimization**:
+```python
+def grid_dp_optimized(grid):
+    """Space-optimized 2D DP"""
+    if not grid or not grid[0]:
+        return 0
+
+    m, n = len(grid), len(grid[0])
+    # Only need previous row
+    prev = [0] * n
+    prev[0] = grid[0][0]
+
+    # Initialize first row
+    for j in range(1, n):
+        prev[j] = prev[j-1] + grid[0][j]
+
+    # Process remaining rows
+    for i in range(1, m):
+        curr = [0] * n
+        curr[0] = prev[0] + grid[i][0]
+
+        for j in range(1, n):
+            curr[j] = min(prev[j], curr[j-1]) + grid[i][j]
+
+        prev = curr
+
+    return prev[n-1]
+```
+
+### **Knapsack Patterns**
+
+| Variant | State Definition | Transition | Example |
+|---------|------------------|------------|---------|
+| **0/1 Knapsack** | dp[i][w] = max value with i items, weight w | dp[i][w] = max(dp[i-1][w], dp[i-1][w-weight[i]] + value[i]) | LC 416 Partition |
+| **Unbounded** | dp[w] = max value with weight w | dp[w] = max(dp[w], dp[w-weight[i]] + value[i]) | LC 322 Coin Change |
+| **Multiple** | dp[i][w] with count constraint | Similar to 0/1 but with quantity limits | LC 1449 Form Largest Number |
+
+**Space-Optimized Knapsack**:
+```python
+def knapsack_optimized(weights, values, capacity):
+    """1D array knapsack"""
+    dp = [0] * (capacity + 1)
+
+    for i in range(len(weights)):
+        # Iterate backwards to avoid using updated values
+        for w in range(capacity, weights[i] - 1, -1):
+            dp[w] = max(dp[w], dp[w - weights[i]] + values[i])
+
+    return dp[capacity]
+```
+
+### **String DP Patterns**
+
+| Problem Type | Pattern | Complexity | Notes |
+|--------------|---------|------------|-------|
+| **Edit Distance** | dp[i][j] = operations to transform s1[:i] to s2[:j] | O(m×n) | Insert/Delete/Replace |
+| **LCS/LIS** | dp[i][j] = length of common subsequence | O(m×n) | Can optimize LIS to O(n log n) |
+| **Palindrome** | dp[i][j] = is s[i:j+1] palindrome | O(n²) | Expand around centers |
+| **Word Break** | dp[i] = can break s[:i] | O(n³) | Check all possible breaks |
+
+### **State Compression Patterns**
+
+**When to Use Bitmask DP**:
+- Small state space (≤ 20 items)
+- Need to track which items are selected/visited
+- Permutation/combination problems
+- Traveling salesman variants
+
+**Common Bitmask Operations**:
+```python
+# Check if i-th bit is set
+if mask & (1 << i):
+    pass
+
+# Set i-th bit
+new_mask = mask | (1 << i)
+
+# Unset i-th bit
+new_mask = mask & ~(1 << i)
+
+# Iterate through all submasks
+submask = mask
+while submask:
+    # Process submask
+    submask = (submask - 1) & mask
+```
+
+### **Advanced DP Patterns**
+
+#### **Interval DP Template**:
+```python
+def interval_dp(arr):
+    """Matrix chain multiplication style"""
+    n = len(arr)
+    dp = [[0] * n for _ in range(n)]
+
+    # Length of interval
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            dp[i][j] = float('inf')
+
+            # Try all possible split points
+            for k in range(i, j):
+                cost = dp[i][k] + dp[k+1][j] + arr[i] * arr[k+1] * arr[j+1]
+                dp[i][j] = min(dp[i][j], cost)
+
+    return dp[0][n-2] if n > 1 else 0
 ```
 
 ## Problems by Pattern

@@ -650,6 +650,360 @@ for (int i = start; i < candidates.length; i++) {
 
 ### 0-2) Pattern
 
+#### **Pruning Techniques**
+
+**Definition**: Optimization methods to reduce the search space by eliminating branches that cannot lead to valid solutions.
+
+**Types of Pruning**:
+
+**1. Constraint-based Pruning**
+- Early termination when constraints are violated
+- Check validity before recursive calls
+
+**2. Bound-based Pruning**
+- Use upper/lower bounds to eliminate suboptimal paths
+- Branch and bound technique
+
+**3. Symmetry Pruning**
+- Skip equivalent states to avoid duplicates
+- Sort inputs to handle permutations
+
+**4. Memoization Pruning**
+- Cache results of subproblems
+- Avoid recomputing same states
+
+**Common Pruning Patterns**:
+
+```python
+def backtrack_with_pruning(path, choices, target):
+    # Early termination (constraint pruning)
+    if current_sum > target:
+        return  # No need to continue
+
+    # Bound pruning
+    if current_sum + min_remaining > target:
+        return  # Cannot reach target
+
+    # Base case
+    if len(path) == target_length:
+        if is_valid(path):
+            result.append(path[:])
+        return
+
+    # Symmetry pruning
+    for i in range(start_idx, len(choices)):
+        # Skip duplicates (symmetry pruning)
+        if i > start_idx and choices[i] == choices[i-1]:
+            continue
+
+        # Make choice
+        path.append(choices[i])
+
+        # Recursive call with pruning
+        backtrack_with_pruning(path, choices, target)
+
+        # Undo choice
+        path.pop()
+```
+
+**Pruning Examples**:
+
+**1. Sum-based Pruning (LC 39 Combination Sum)**:
+```python
+def combinationSum(candidates, target):
+    def backtrack(start, path, current_sum):
+        # Pruning: if current sum exceeds target
+        if current_sum > target:
+            return
+
+        if current_sum == target:
+            result.append(path[:])
+            return
+
+        for i in range(start, len(candidates)):
+            # Pruning: if adding current number exceeds target
+            if current_sum + candidates[i] > target:
+                break  # Since array is sorted
+
+            path.append(candidates[i])
+            backtrack(i, path, current_sum + candidates[i])
+            path.pop()
+
+    candidates.sort()  # Enable break pruning
+    result = []
+    backtrack(0, [], 0)
+    return result
+```
+
+**2. Duplicate Pruning (LC 40 Combination Sum II)**:
+```python
+def combinationSum2(candidates, target):
+    def backtrack(start, path, current_sum):
+        if current_sum == target:
+            result.append(path[:])
+            return
+
+        for i in range(start, len(candidates)):
+            # Pruning: skip duplicates at same level
+            if i > start and candidates[i] == candidates[i-1]:
+                continue
+
+            # Pruning: early termination
+            if current_sum + candidates[i] > target:
+                break
+
+            path.append(candidates[i])
+            backtrack(i + 1, path, current_sum + candidates[i])
+            path.pop()
+
+    candidates.sort()
+    result = []
+    backtrack(0, [], 0)
+    return result
+```
+
+**3. Bound Pruning (LC 698 Partition to K Equal Sum Subsets)**:
+```python
+def canPartitionKSubsets(nums, k):
+    total = sum(nums)
+    if total % k != 0:
+        return False
+
+    target = total // k
+    nums.sort(reverse=True)  # Pruning: try larger numbers first
+
+    def backtrack(index, buckets):
+        if index == len(nums):
+            return all(bucket == target for bucket in buckets)
+
+        for i in range(k):
+            # Pruning: skip if adding exceeds target
+            if buckets[i] + nums[index] > target:
+                continue
+
+            # Pruning: avoid duplicate empty buckets
+            if i > 0 and buckets[i] == buckets[i-1]:
+                continue
+
+            buckets[i] += nums[index]
+            if backtrack(index + 1, buckets):
+                return True
+            buckets[i] -= nums[index]
+
+        return False
+
+    return backtrack(0, [0] * k)
+```
+
+#### **Partitioning Patterns**
+
+**Definition**: Divide input into groups or segments based on certain criteria.
+
+**Common Partitioning Types**:
+
+**1. Equal Sum Partitioning**
+- Divide array into groups with equal sums
+- Examples: LC 416 (Partition Equal Subset Sum), LC 698 (K Equal Sum Subsets)
+
+**2. Palindromic Partitioning**
+- Split string into palindromic substrings
+- Examples: LC 131 (Palindrome Partitioning), LC 132 (Palindrome Partitioning II)
+
+**3. Subset Partitioning**
+- Group elements based on constraints
+- Examples: LC 90 (Subsets II), LC 47 (Permutations II)
+
+**Partitioning Templates**:
+
+**1. String Partitioning Template**:
+```python
+def partition_string(s, is_valid_partition):
+    def backtrack(start, current_partition):
+        if start == len(s):
+            result.append(current_partition[:])
+            return
+
+        for end in range(start + 1, len(s) + 1):
+            substring = s[start:end]
+            if is_valid_partition(substring):
+                current_partition.append(substring)
+                backtrack(end, current_partition)
+                current_partition.pop()
+
+    result = []
+    backtrack(0, [])
+    return result
+```
+
+**2. Array Partitioning Template**:
+```python
+def partition_array(nums, k, target_sum):
+    def backtrack(index, groups):
+        if index == len(nums):
+            return all(sum(group) == target_sum for group in groups)
+
+        for i in range(k):
+            if sum(groups[i]) + nums[index] <= target_sum:
+                groups[i].append(nums[index])
+                if backtrack(index + 1, groups):
+                    return True
+                groups[i].pop()
+
+                # Pruning: if current group is empty, no need to try other empty groups
+                if not groups[i]:
+                    break
+
+        return False
+
+    return backtrack(0, [[] for _ in range(k)])
+```
+
+**Partitioning Examples**:
+
+**1. Palindrome Partitioning (LC 131)**:
+```python
+def partition(s):
+    def is_palindrome(string):
+        return string == string[::-1]
+
+    def backtrack(start, path):
+        if start == len(s):
+            result.append(path[:])
+            return
+
+        for end in range(start + 1, len(s) + 1):
+            substring = s[start:end]
+            if is_palindrome(substring):
+                path.append(substring)
+                backtrack(end, path)
+                path.pop()
+
+    result = []
+    backtrack(0, [])
+    return result
+```
+
+**2. Partition Equal Subset Sum (LC 416)**:
+```python
+def canPartition(nums):
+    total = sum(nums)
+    if total % 2 != 0:
+        return False
+
+    target = total // 2
+
+    def backtrack(index, current_sum):
+        if current_sum == target:
+            return True
+        if index >= len(nums) or current_sum > target:
+            return False
+
+        # Include current number
+        if backtrack(index + 1, current_sum + nums[index]):
+            return True
+
+        # Exclude current number
+        return backtrack(index + 1, current_sum)
+
+    return backtrack(0, 0)
+```
+
+**3. Partition to K Equal Sum Subsets (LC 698)**:
+```python
+def canPartitionKSubsets(nums, k):
+    total = sum(nums)
+    if total % k != 0:
+        return False
+
+    target = total // k
+    nums.sort(reverse=True)  # Start with larger numbers
+
+    def backtrack(index, buckets):
+        if index == len(nums):
+            return True
+
+        for i in range(k):
+            # Pruning techniques
+            if buckets[i] + nums[index] > target:
+                continue
+            if i > 0 and buckets[i] == buckets[i-1]:
+                continue
+
+            buckets[i] += nums[index]
+            if backtrack(index + 1, buckets):
+                return True
+            buckets[i] -= nums[index]
+
+        return False
+
+    return backtrack(0, [0] * k)
+```
+
+**Advanced Partitioning Techniques**:
+
+**1. Memoized Partitioning**:
+```python
+def partition_with_memo(nums):
+    memo = {}
+
+    def backtrack(index, state_tuple):
+        if index == len(nums):
+            return check_valid_partition(state_tuple)
+
+        if state_tuple in memo:
+            return memo[state_tuple]
+
+        result = False
+        for choice in get_choices(index, state_tuple):
+            new_state = update_state(state_tuple, choice)
+            if backtrack(index + 1, new_state):
+                result = True
+                break
+
+        memo[state_tuple] = result
+        return result
+
+    return backtrack(0, initial_state)
+```
+
+**2. Optimized Partitioning with Early Termination**:
+```python
+def optimized_partition(nums, k):
+    def backtrack(index, groups, remaining_sum):
+        if index == len(nums):
+            return remaining_sum == 0
+
+        # Pruning: if remaining sum is too small
+        if remaining_sum < 0:
+            return False
+
+        for i in range(len(groups)):
+            groups[i].append(nums[index])
+            if backtrack(index + 1, groups, remaining_sum - nums[index]):
+                return True
+            groups[i].pop()
+
+            # Important pruning: don't try other empty groups
+            if len(groups[i]) == 0:
+                break
+
+        return False
+
+    return backtrack(0, [[] for _ in range(k)], sum(nums))
+```
+
+**Pruning and Partitioning Comparison**:
+
+| Technique | Purpose | When to Use | Complexity Impact |
+|-----------|---------|-------------|-------------------|
+| **Constraint Pruning** | Early termination | Invalid states | Reduces branches significantly |
+| **Bound Pruning** | Eliminate suboptimal paths | Optimization problems | O(2^n) → O(n!) potential |
+| **Symmetry Pruning** | Avoid duplicates | Permutation problems | Eliminates factorial duplicates |
+| **Equal Sum Partition** | Divide into equal groups | Subset sum problems | Exponential to polynomial |
+| **String Partition** | Split by criteria | String segmentation | O(2^n) worst case |
+
+### 0-3) Advanced Backtracking Patterns
+
 ```python
 # python pseudo code 1
 # https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2793/
