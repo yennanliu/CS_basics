@@ -141,6 +141,67 @@ public class WorkSpace17 {
         getNodesDFS(root.right);
     }
 
+    // LC 235
+    // 16.39 - 49 pm
+    /**
+     * -> Given a `binary search tree (BST),`
+     *    find the `lowest common ancestor (LCA)`
+     *    node of two given nodes in the BST.
+     *
+     * NOTE !!!
+     *  - BST
+     *  - find `LCA`
+     *  - All Node.val are unique.
+     *  - P != Q
+     *  - p and q will exist in the BST.
+     *
+     *
+     *
+     *
+     *  IDEA 1) DFS
+     *
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // edge
+        if(root == null){
+            return root;
+        }
+        // ????
+//        if(root.val == p.val || root.val == q.val){
+//            return root;
+//        }
+
+        // BST property:
+        // left < root < right
+
+        // case 1) p, q is on the DIFFERENT size of current node
+//        if( (p.val < root.val && root.val < q.val) ||
+//                (q.val < root.val && root.val < p.val) ){
+//            return root;
+//        }
+        if( isBigger(root.val, p.val) * isBigger(root.val, q.val) < 1 ){
+            return root;
+        }
+
+        // case 2) p, q are the LEFT side of current node
+        if(root.val > p.val && root.val > q.val){
+            return lowestCommonAncestor(root.left, p, q);
+        }
+        // case 3) p, q are the RIGHT side of current node
+        else{
+            return lowestCommonAncestor(root.right, p, q);
+        }
+
+       // return root; // ????
+    }
+
+    private int isBigger(int a, int b){
+        if(a > b){
+            return 1;
+        }
+        return -1;
+    }
+
 
 
 }

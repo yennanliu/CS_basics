@@ -99,6 +99,37 @@ public class LowestCommonAncestorOfABinarySearchTree {
             return root;
         }
 
+        // V0-0-1
+        // IDEA: DFS + EARLY QUIT (fixed by gpt)
+        public TreeNode lowestCommonAncestor_0_0_1(TreeNode root, TreeNode p, TreeNode q) {
+            if (root == null)
+                return null;
+
+            // Early exit: if root matches p or q
+            if (root.val == p.val || root.val == q.val)
+                return root;
+
+            /** NOTE !!! EARLY QUIT condition */
+            // Check if p and q are on different sides of root
+            if (isBigger(root.val, p.val) * isBigger(root.val, q.val) < 0) {
+                return root;
+            }
+
+            // If both are smaller, go left
+            if (root.val > p.val && root.val > q.val) {
+                return lowestCommonAncestor_0_0_1(root.left, p, q);
+            }
+
+            // If both are bigger, go right
+            return lowestCommonAncestor_0_0_1(root.right, p, q);
+        }
+
+        /** NOTE !!! helper func check if p, q are on the DIFFERENT side of node */
+        // Helper function: 1 if a > b, -1 if a <= b
+        private int isBigger(int a, int b) {
+            return a > b ? 1 : -1;
+        }
+
         // V0-1
         // IDEA : RECURSIVE + BST PROPERTY
         public TreeNode lowestCommonAncestor_0_1(TreeNode root, TreeNode p, TreeNode q) {
