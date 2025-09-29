@@ -86,6 +86,12 @@ public class WorkSpace17 {
         return searchBST_100(root.left, val);
     }
 
+    // LC 530
+    public int getMinimumDifference(TreeNode root) {
+
+        return 0;
+    }
+
 
 
 
