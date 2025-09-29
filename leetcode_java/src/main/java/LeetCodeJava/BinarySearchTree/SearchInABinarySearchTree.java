@@ -125,6 +125,6 @@ public class SearchInABinarySearchTree {
             root = val < root.val ? root.left : root.right;
         return root;
     }
-    
+
 
 }
