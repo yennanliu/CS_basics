@@ -99,6 +99,7 @@ public class KokoEatingBananas {
      * >>> l = 30, r = 30
      * >>> FINAL l = 30, r = 29
      */
+    // time: O(N * log(max(piles))), space: O(1)
     public int minEatingSpeed(int[] piles, int h) {
 
         if (piles.length == 0 || piles.equals(null)){

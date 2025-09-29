@@ -133,6 +133,7 @@ public class RottingOranges {
     // TODO : fix below
     // V0-1
     // IDEA : BFS (fixed by gpt)
+    // time: O(M * N), space: O(M * N)
     public int orangesRotting_0_1(int[][] grid) {
         if (grid == null || grid.length == 0) {
             return 0;
