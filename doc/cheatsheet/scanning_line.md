@@ -3,6 +3,12 @@
 ## Overview
 **Scanning Line** (also known as Line Sweep or Sweep Line) is an algorithmic paradigm that processes geometric objects by imagining a vertical line sweeping across the plane from left to right, processing events as they occur.
 
+Key: transform `change` to `event`, so we can handle the `changed state` via program, instead of dealing with `continouous info`.
+
+
+<p align="center"><img src ="../pic/scanning_line.png" ></p>
+
+ 
 ### Key Properties
 - **Time Complexity**: O(n log n) for sorting + O(n) for processing
 - **Space Complexity**: O(n) for storing events
