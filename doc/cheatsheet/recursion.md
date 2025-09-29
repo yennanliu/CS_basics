@@ -207,14 +207,192 @@ for x in _list:
 ```
 
 ### 1-2) Top down Recursion
+
+**Definition**: Start from the root and make decisions at each node based on information passed down from parent nodes. Also known as "preorder" approach.
+
+**Time Complexity**:
+- Usually O(n) where n is the number of nodes
+- Can be O(n²) if same subproblems are solved repeatedly without memoization
+
+**Space Complexity**:
+- O(h) where h is the height of recursion tree (call stack)
+- O(n) additional space if memoization is used
+
+**Use Cases**:
+- When you need to pass information from parent to child
+- Tree traversal with accumulated state
+- Path-based problems
+- Validation problems
+
+**Pros**:
+- Intuitive and easy to understand
+- Natural for problems requiring parent-to-child information flow
+- Good for early termination conditions
+
+**Cons**:
+- May do redundant calculations without memoization
+- Can have higher space complexity due to call stack
+
+**Pattern**:
+```python
+def topDown(node, parentInfo):
+    # Base case
+    if not node:
+        return baseResult
+
+    # Use parentInfo to make decision
+    currentResult = processWithParentInfo(node, parentInfo)
+
+    # Pass updated info to children
+    newParentInfo = updateParentInfo(parentInfo, node)
+    leftResult = topDown(node.left, newParentInfo)
+    rightResult = topDown(node.right, newParentInfo)
+
+    # Combine results
+    return combineResults(currentResult, leftResult, rightResult)
 ```
-# LC 110
+
+**Related LeetCode Problems**:
+- LC 104: Maximum Depth of Binary Tree
+- LC 110: Balanced Binary Tree
+- LC 112: Path Sum
+- LC 113: Path Sum II
+- LC 124: Binary Tree Maximum Path Sum
+- LC 236: Lowest Common Ancestor
+- LC 257: Binary Tree Paths
+- LC 404: Sum of Left Leaves
+- LC 437: Path Sum III
+
+**Example - Path Sum (LC 112)**:
+```python
+def hasPathSum(self, root, targetSum):
+    def topDown(node, currentSum):
+        if not node:
+            return False
+
+        currentSum += node.val
+
+        # Leaf node check
+        if not node.left and not node.right:
+            return currentSum == targetSum
+
+        # Continue to children with updated sum
+        return (topDown(node.left, currentSum) or
+                topDown(node.right, currentSum))
+
+    return topDown(root, 0)
 ```
 
 ### 1-3) Bottom up Recursion
+
+**Definition**: Start from leaf nodes and build up the solution by combining results from child nodes. Also known as "postorder" approach.
+
+**Time Complexity**:
+- Usually O(n) where n is the number of nodes
+- Generally more efficient as each node is visited exactly once
+
+**Space Complexity**:
+- O(h) where h is the height of recursion tree (call stack)
+- Usually no additional space needed for memoization
+
+**Use Cases**:
+- When solution depends on results from subtrees
+- Tree property calculations (height, diameter, etc.)
+- Aggregation problems
+- Dynamic programming on trees
+
+**Pros**:
+- More efficient - each subproblem solved exactly once
+- Natural for problems requiring child-to-parent information flow
+- Often leads to cleaner code
+- Better performance in most cases
+
+**Cons**:
+- Can be less intuitive for some problems
+- May need to return multiple values from recursive calls
+
+**Pattern**:
+```python
+def bottomUp(node):
+    # Base case
+    if not node:
+        return baseResult
+
+    # Get results from children first
+    leftResult = bottomUp(node.left)
+    rightResult = bottomUp(node.right)
+
+    # Process current node using children results
+    currentResult = processNode(node, leftResult, rightResult)
+
+    return currentResult
 ```
-# LC 110
+
+**Related LeetCode Problems**:
+- LC 104: Maximum Depth of Binary Tree
+- LC 110: Balanced Binary Tree
+- LC 543: Diameter of Binary Tree
+- LC 124: Binary Tree Maximum Path Sum
+- LC 968: Binary Tree Cameras
+- LC 979: Distribute Coins in Binary Tree
+- LC 1120: Maximum Average Subtree
+- LC 1130: Minimum Cost Tree From Leaf Values
+- LC 1372: Longest ZigZag Path in a Binary Tree
+
+**Example - Maximum Depth (LC 104)**:
+```python
+def maxDepth(self, root):
+    def bottomUp(node):
+        if not node:
+            return 0
+
+        # Get depths from children
+        leftDepth = bottomUp(node.left)
+        rightDepth = bottomUp(node.right)
+
+        # Current depth is max of children + 1
+        return max(leftDepth, rightDepth) + 1
+
+    return bottomUp(root)
 ```
+
+**Example - Balanced Binary Tree (LC 110)**:
+```python
+def isBalanced(self, root):
+    def bottomUp(node):
+        if not node:
+            return True, 0  # (isBalanced, height)
+
+        # Check left subtree
+        leftBalanced, leftHeight = bottomUp(node.left)
+        if not leftBalanced:
+            return False, 0
+
+        # Check right subtree
+        rightBalanced, rightHeight = bottomUp(node.right)
+        if not rightBalanced:
+            return False, 0
+
+        # Check current node balance
+        isCurrentBalanced = abs(leftHeight - rightHeight) <= 1
+        currentHeight = max(leftHeight, rightHeight) + 1
+
+        return isCurrentBalanced, currentHeight
+
+    balanced, _ = bottomUp(root)
+    return balanced
+```
+
+**Comparison Table**:
+
+| Aspect | Top Down | Bottom Up |
+|--------|----------|-----------|
+| **Direction** | Root → Leaves | Leaves → Root |
+| **Information Flow** | Parent → Child | Child → Parent |
+| **When to Use** | Need parent context | Need subtree results |
+| **Efficiency** | May have redundancy | Usually more efficient |
+| **Intuition** | More intuitive for path problems | More intuitive for aggregation |
+| **Memoization Need** | Often needed | Rarely needed |
 
 ### 1-4) Pass previous status to next recursion
 ```java
