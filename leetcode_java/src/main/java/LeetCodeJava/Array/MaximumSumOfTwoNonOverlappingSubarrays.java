@@ -49,6 +49,7 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
 
   // V0-1
   // IDEA: PREFIX SUM
+  // time: O(N), space: O(N)
   /**
    *  Does This Cover All Configurations?
    *
@@ -139,6 +140,7 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
     // V1
     // https://leetcode.ca/2018-09-26-1031-Maximum-Sum-of-Two-Non-Overlapping-Subarrays/
     // IDEA: PREFIX SUM
+    // time: O(N), space: O(N)
     public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
         int n = nums.length;
         int[] s = new int[n + 1];
@@ -162,6 +164,7 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
     // V1-2
     // IDEA: PREFIX SUM
     // https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/solutions/1489581/java-easy-to-understand-prefix-sum-by-rm-5d2z/
+    // time: O(N), space: O(N)
     public int maxSumTwoNoOverlap_1_2(int[] A, int L, int M) {
         int sums[] = new int[A.length + 1];
 
@@ -185,6 +188,7 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
     // V2
     // IDEA: PREFIX SUM
     // https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/solutions/5171249/java-clean-solution-using-prefix-sum-det-lxok/
+    // time: O(N), space: O(N)
     // Drive Function
     public int maxSumTwoNoOverlap_2(int[] nums, int firstLen, int secondLen) {
         int[] prefix = new int[nums.length + 1];
@@ -209,6 +213,7 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
 
     // V3
     // https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/solutions/913234/on-thought-process-java-by-133c7-wn3a/
+    // time: O(N), space: O(N)
     public int maxSumTwoNoOverlap_3(int[] A, int L, int M) {
         int n = A.length;
         if (n == 0) {

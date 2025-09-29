@@ -83,6 +83,7 @@ public class CorporateFlightBookings {
   // V0
   // IDEA: PREFIX SUM
   // https://labuladong.online/algo/data-structure/diff-array/#%E7%AE%97%E6%B3%95%E5%AE%9E%E8%B7%B5
+  // time: O(bookings * n), space: O(n)
     /**
      *
      *  -> [i, j, k] :  k seats, from i -> j
@@ -136,6 +137,7 @@ public class CorporateFlightBookings {
   // V1
   // IDEA : DIFFERENCE ARRAY (gpt)
   // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/difference_array.md
+  // time: O(bookings + n), space: O(n)
   /**
    *  IDEA : DIFFERENCE ARRAY  + presum
    *
@@ -195,6 +197,7 @@ public class CorporateFlightBookings {
 
   // V2
   // https://leetcode.com/problems/corporate-flight-bookings/submissions/1483568206/
+  // time: O(bookings + n), space: O(n)
   public int[] corpFlightBookings_2(int[][] bookings, int n) {
       int[] ans = new int[n];
       for (int[] booking : bookings) {
@@ -217,6 +220,7 @@ public class CorporateFlightBookings {
   // V3-1
   // https://leetcode.com/problems/corporate-flight-bookings/solutions/1338804/java-2-approaches-brute-force-optimal-ap-e12t/
   // IDEA : BRUTE FORCE
+  // time: O(bookings * n), space: O(n)
   public int[] corpFlightBookings_3_1(int[][] bookings, int n) {
 
       int[] res = new int[n];
@@ -235,6 +239,7 @@ public class CorporateFlightBookings {
   // V3-2
   // https://leetcode.com/problems/corporate-flight-bookings/solutions/1338804/java-2-approaches-brute-force-optimal-ap-e12t/
   // Optimized  BRUTE FORCE
+  // time: O(bookings + n), space: O(n)
   public int[] corpFlightBookings_3_2(int[][] bookings, int n) {
 
       int[] res = new int[n];

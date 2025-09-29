@@ -37,6 +37,7 @@ public class BestTimeToBuyAndSellStock {
 
     // V0
     // IDEA: maintain `min till now` var + problem observation
+    // time: O(N), space: O(1)
     public int maxProfit(int[] prices) {
         // edge
         if (prices.length <= 1) {
@@ -241,6 +242,7 @@ public class BestTimeToBuyAndSellStock {
     // V0-4
     // IDEA: BRUTE FORCE (TLE)
     //IDEA 1) BRUTE FORCE
+    // time: O(N^2), space: O(1)
     public int maxProfit_0_4(int[] prices) {
         // edge
         if(prices.length <= 1){
