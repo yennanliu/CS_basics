@@ -46,6 +46,7 @@ At most 2 * 105 calls will be made to get and put.
 
 # V0
 # IDEA : ARRAY + LRU (implement LRU via array)
+# time: O(N) for get/put, space: O(capacity)
 class LRUCache(object):
 
     def __init__(self, capacity):

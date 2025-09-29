@@ -49,6 +49,7 @@ public class ShortestPathInBinaryMatrix {
 
     // V0
     // IDEA: BFS (fixed by gpt)
+    // time: O(N^2), space: O(N^2)
     public int shortestPathBinaryMatrix(int[][] grid) {
         int n = grid.length;
 
