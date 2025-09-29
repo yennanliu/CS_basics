@@ -51,6 +51,7 @@ public class PartitionToKEqualSumSubsets {
      */
     int target_;
 
+    // time: O(K * 2^N), space: O(N)
     public boolean canPartitionKSubsets(int[] nums, int k) {
         int sum = 0;
         for (int n : nums) {
