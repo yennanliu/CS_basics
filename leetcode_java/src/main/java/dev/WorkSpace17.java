@@ -2,6 +2,11 @@ package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 public class WorkSpace17 {
 
     // LC 510
@@ -87,11 +92,54 @@ public class WorkSpace17 {
     }
 
     // LC 530
+    // 16.28 - 38 pm
+    /**
+     *
+     * Given the root of a Binary Search Tree (BST),
+     * return the `minimum absolute difference` between
+     * the values of `any two different nodes `in the tree.
+     *
+     *
+     * IDEA 1) get all nodes as list, sort, maintain the `minimum absolute difference`
+     *         between any 2 nodes
+     *
+     *
+     * IDEA 2) BST property
+     */
+    List<Integer> nodes = new ArrayList<>();
     public int getMinimumDifference(TreeNode root) {
+        // edge
+        if(root == null){
+            return -1; // ????
+        }
+        if(root.left == null && root.right == null){
+            return -1; // ???
+        }
 
-        return 0;
+        getNodesDFS(root);
+
+        // sort (small -> big)
+        Collections.sort(nodes);
+        System.out.println(">>> nodes = " + nodes);
+
+        int minDiff = Integer.MAX_VALUE;
+
+        for(int i = 0; i < nodes.size() - 1; i++){
+            int diff = Math.abs(nodes.get(i+1) - nodes.get(i));
+            minDiff = Math.min(minDiff, diff);
+        }
+
+        return minDiff;
     }
 
+    private void getNodesDFS(TreeNode root){
+        if(root == null){
+            return;
+        }
+        nodes.add(root.val);
+        getNodesDFS(root.left);
+        getNodesDFS(root.right);
+    }
 
 
 

@@ -5,6 +5,7 @@ package LeetCodeJava.BinarySearchTree;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,9 +43,41 @@ import java.util.List;
 public class MinimumAbsoluteDifferenceInBST {
 
     // V0
-//    public int getMinimumDifference(TreeNode root) {
-//
-//    }
+    List<Integer> nodes = new ArrayList<>();
+
+    public int getMinimumDifference(TreeNode root) {
+        // edge
+        if (root == null) {
+            return -1;
+        }
+        if (root.left == null && root.right == null) {
+            return -1;
+        }
+
+        getNodesDFS(root);
+
+        // sort (small -> big)
+        Collections.sort(nodes);
+        //System.out.println(">>> nodes = " + nodes);
+
+        int minDiff = Integer.MAX_VALUE;
+
+        for (int i = 0; i < nodes.size() - 1; i++) {
+            int diff = Math.abs(nodes.get(i + 1) - nodes.get(i));
+            minDiff = Math.min(minDiff, diff);
+        }
+
+        return minDiff;
+    }
+
+    private void getNodesDFS(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        nodes.add(root.val);
+        getNodesDFS(root.left);
+        getNodesDFS(root.right);
+    }
 
     // V1
     // https://leetcode.ca/2017-05-13-530-Minimum-Absolute-Difference-in-BST/
