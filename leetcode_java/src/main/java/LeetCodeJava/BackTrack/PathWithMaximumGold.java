@@ -283,6 +283,7 @@ public class PathWithMaximumGold {
         return localMaxGold;
     }
 
+    // time: O(M * N * 4^K), space: O(K)
     public int getMaximumGold_2(int[][] grid) {
         int n = grid.length, m = grid[0].length;
 
@@ -304,6 +305,7 @@ public class PathWithMaximumGold {
     int c = 0;
     int max = 0;
 
+    // time: O(M * N * 4^K), space: O(K)
     public int getMaximumGold_3(int[][] grid) {
         r = grid.length;
         c = grid[0].length;

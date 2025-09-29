@@ -222,6 +222,7 @@ public class CombinationSum {
      * i = 2 cur = [5]
      *
      */
+    // time: O(N^(T/M)), space: O(T/M)
     public List<List<Integer>> combinationSum_0_2(int[] candidates, int target) {
 
         // sort
@@ -434,6 +435,7 @@ public class CombinationSum {
         }
     }
 
+    // time: O(N^(T/M)), space: O(T/M)
     public List<List<Integer>> combinationSum_3(int[] candidates, int target) {
         List<List<Integer>> results = new ArrayList<List<Integer>>();
         LinkedList<Integer> comb = new LinkedList<Integer>();
