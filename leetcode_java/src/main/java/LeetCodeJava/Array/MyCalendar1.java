@@ -241,6 +241,7 @@ public class MyCalendar1 {
     // V2-1
     // IDEA : LINKEDLIST
     // https://leetcode.com/problems/my-calendar-i/solutions/1262570/js-python-java-c-easy-sorted-tree-linked-list-solutions-w-explanation/
+    // time: O(N) per book, space: O(N)
     class ListNode {
         public int start, end;
         public ListNode next;
@@ -275,6 +276,7 @@ public class MyCalendar1 {
 
     // V3
     // IDEA : LINKEDLIST
+    // time: O(N) per book, space: O(N)
     // https://leetcode.com/problems/my-calendar-i/solutions/2372060/java-easy-solution-100-faster-code/
     class Node {
         int start, end;

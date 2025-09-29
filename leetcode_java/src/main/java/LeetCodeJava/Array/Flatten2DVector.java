@@ -109,6 +109,7 @@ public class Flatten2DVector {
     // V0-2
     // IDEA: (fixed by gpt)
     // TODO: fix & validate below
+    // time: O(N*M) for constructor, O(1) for next/hasNext, space: O(N*M)
     class Vector2D_0_2 {
         private List<Integer> collected;
         private int pointer;
@@ -139,6 +140,7 @@ public class Flatten2DVector {
     // V0-3
     // IDEA: (fixed by gpt)
     // TODO: fix & validate below
+    // time: O(1) for constructor/next/hasNext, space: O(1)
     class Vector2D_0_3 {
         private int[][] vec;
         private int row;
@@ -177,6 +179,7 @@ public class Flatten2DVector {
 
     // V1
     // https://leetcode.ca/2016-08-07-251-Flatten-2D-Vector/
+    // time: O(1) for constructor/next/hasNext, space: O(1)
     class Vector2D_1 {
         private int i;
         private int j;
