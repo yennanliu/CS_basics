@@ -109,8 +109,12 @@
 			- session 6
 		- pdf
 			- p.7 (sliding window)
-		 LC 200. Number of Islands `follow up`:
+		- LC 200. Number of Islands `follow up`:
 		 	- 若grid上原先都是水，接著有多次的更新，每次更新為把一格水換成陸地，也就是會給一個座標(x,y)，保證他原先是水，並將他轉換成陸地，每次更新完後請確認目前有幾座島嶼
+		- LC 252 Meeting Rooms `follow up`:
+			- 1. the meeting will be added one by one (dynamically), the func needs to return if it's there is a conflicts, if conflict, NOT add the new meeting
+			- 2.  min meeting needed to remove so there is NO conflicts 
+		 	- https://buildmoat.teachable.com/courses/7a7af3/lectures/62695983
 		- binary search problems:
 	- again:
 	- todo:

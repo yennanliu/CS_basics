@@ -195,4 +195,19 @@ public class MeetingRooms {
         return true;
     }
 
+    /**
+     *  FollowUp:
+     *
+     *  - LC 252 Meeting Rooms `follow up`:
+     *
+     * 	- 1. the meeting will be added one by one (dynamically),
+     * 	    the func needs to return if it's there is a conflicts,
+     * 	    if conflicted, NOT add the new meeting
+     *
+     * 	- 2.  min meeting needed to remove so there is NO conflicts
+     *
+     * 	- https://buildmoat.teachable.com/courses/7a7af3/lectures/62695983
+     *
+     */
+
 }
