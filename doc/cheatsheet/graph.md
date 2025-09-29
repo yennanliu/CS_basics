@@ -233,31 +233,349 @@ def topological_sort_bfs(n, edges):
     return result if len(result) == n else []
 ```
 
-### Template 6: Bipartite Check
+### Template 6: Bipartite Graph Checking
+
+**Definition**: A graph is bipartite if its vertices can be colored using only two colors such that no two adjacent vertices have the same color. Equivalent to checking if the graph has no odd-length cycles.
+
+**Time Complexity**: O(V + E) - visit each vertex and edge once
+**Space Complexity**: O(V) - for color array and queue/recursion stack
+
+**Use Cases**:
+- Graph coloring problems
+- Matching problems (assignment, scheduling)
+- Conflict detection
+- Resource allocation
+- Network flow problems
+
+**Key Properties**:
+- All trees are bipartite
+- Graphs with odd cycles are NOT bipartite
+- Complete bipartite graphs K(m,n) are bipartite
+- Can be solved using BFS or DFS with 2-coloring
+
+#### **Approach 1: BFS with Coloring**
 ```python
-def is_bipartite(graph):
+def is_bipartite_bfs(graph):
     """Check if graph is bipartite using BFS"""
+    from collections import deque
+
     n = len(graph)
-    colors = [-1] * n
-    
+    colors = [-1] * n  # -1: uncolored, 0: color A, 1: color B
+
+    # Handle disconnected components
     for start in range(n):
         if colors[start] != -1:
             continue
-        
+
+        # BFS coloring
         queue = deque([start])
         colors[start] = 0
-        
+
         while queue:
             node = queue.popleft()
+
             for neighbor in graph[node]:
                 if colors[neighbor] == -1:
+                    # Color with opposite color
                     colors[neighbor] = 1 - colors[node]
                     queue.append(neighbor)
                 elif colors[neighbor] == colors[node]:
+                    # Same color conflict - not bipartite
                     return False
-    
+
     return True
 ```
+
+#### **Approach 2: DFS with Coloring**
+```python
+def is_bipartite_dfs(graph):
+    """Check if graph is bipartite using DFS"""
+    n = len(graph)
+    colors = [-1] * n
+
+    def dfs(node, color):
+        colors[node] = color
+
+        for neighbor in graph[node]:
+            if colors[neighbor] == -1:
+                # Recursively color with opposite color
+                if not dfs(neighbor, 1 - color):
+                    return False
+            elif colors[neighbor] == colors[node]:
+                # Same color conflict
+                return False
+
+        return True
+
+    # Check each component
+    for i in range(n):
+        if colors[i] == -1:
+            if not dfs(i, 0):
+                return False
+
+    return True
+```
+
+#### **Approach 3: Union-Find (Advanced)**
+```python
+def is_bipartite_union_find(n, edges):
+    """Check bipartite using Union-Find for conflict detection"""
+
+    class UnionFind:
+        def __init__(self, n):
+            self.parent = list(range(2 * n))  # 2n for opposite groups
+
+        def find(self, x):
+            if self.parent[x] != x:
+                self.parent[x] = self.find(self.parent[x])
+            return self.parent[x]
+
+        def union(self, x, y):
+            px, py = self.find(x), self.find(y)
+            if px != py:
+                self.parent[px] = py
+
+        def connected(self, x, y):
+            return self.find(x) == self.find(y)
+
+    uf = UnionFind(n)
+
+    # For each edge (u,v), union u with opposite of v, and v with opposite of u
+    for u, v in edges:
+        if uf.connected(u, v):  # Same group conflict
+            return False
+
+        # u should be in opposite group of v
+        uf.union(u, v + n)  # u with opposite of v
+        uf.union(v, u + n)  # v with opposite of u
+
+    return True
+```
+
+#### **Grid-based Bipartite Check**
+```python
+def is_bipartite_grid(grid):
+    """Check if grid graph is bipartite (checkerboard pattern)"""
+    rows, cols = len(grid), len(grid[0])
+    colors = [[-1] * cols for _ in range(rows)]
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+    def bfs(start_r, start_c):
+        from collections import deque
+        queue = deque([(start_r, start_c)])
+        colors[start_r][start_c] = 0
+
+        while queue:
+            r, c = queue.popleft()
+
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+
+                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == 1:
+                    if colors[nr][nc] == -1:
+                        colors[nr][nc] = 1 - colors[r][c]
+                        queue.append((nr, nc))
+                    elif colors[nr][nc] == colors[r][c]:
+                        return False
+        return True
+
+    # Check each component
+    for i in range(rows):
+        for j in range(cols):
+            if grid[i][j] == 1 and colors[i][j] == -1:
+                if not bfs(i, j):
+                    return False
+
+    return True
+```
+
+#### **Enhanced Template with Partition Information**
+```python
+def bipartite_partition(graph):
+    """
+    Returns bipartite partition if exists, None otherwise
+    Returns: (setA, setB) or None
+    """
+    n = len(graph)
+    colors = [-1] * n
+
+    def dfs(node, color):
+        colors[node] = color
+
+        for neighbor in graph[node]:
+            if colors[neighbor] == -1:
+                if not dfs(neighbor, 1 - color):
+                    return False
+            elif colors[neighbor] == colors[node]:
+                return False
+        return True
+
+    # Check bipartite property
+    for i in range(n):
+        if colors[i] == -1:
+            if not dfs(i, 0):
+                return None
+
+    # Create partition sets
+    setA = [i for i in range(n) if colors[i] == 0]
+    setB = [i for i in range(n) if colors[i] == 1]
+
+    return setA, setB
+```
+
+#### **Related Problems & Examples**
+
+**LC 785: Is Graph Bipartite**
+```python
+def isBipartite(self, graph):
+    """LC 785 - Standard bipartite check"""
+    n = len(graph)
+    colors = {}
+
+    def dfs(node, color):
+        colors[node] = color
+        for neighbor in graph[node]:
+            if neighbor in colors:
+                if colors[neighbor] == colors[node]:
+                    return False
+            else:
+                if not dfs(neighbor, 1 - color):
+                    return False
+        return True
+
+    for i in range(n):
+        if i not in colors:
+            if not dfs(i, 0):
+                return False
+    return True
+```
+
+**LC 886: Possible Bipartition**
+```python
+def possibleBipartition(self, n, dislikes):
+    """LC 886 - Build graph from dislike relationships"""
+    from collections import defaultdict
+
+    # Build adjacency list from dislikes
+    graph = defaultdict(list)
+    for u, v in dislikes:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    colors = {}
+
+    def dfs(node, color):
+        colors[node] = color
+        for neighbor in graph[node]:
+            if neighbor in colors:
+                if colors[neighbor] == colors[node]:
+                    return False
+            else:
+                if not dfs(neighbor, 1 - color):
+                    return False
+        return True
+
+    for i in range(1, n + 1):
+        if i not in colors:
+            if not dfs(i, 0):
+                return False
+    return True
+```
+
+#### **Applications & Variations**
+
+**1. Maximum Bipartite Matching**
+```python
+def max_bipartite_matching(graph, n, m):
+    """Find maximum matching in bipartite graph"""
+    match = [-1] * m
+
+    def dfs(u, visited):
+        for v in graph[u]:
+            if not visited[v]:
+                visited[v] = True
+                if match[v] == -1 or dfs(match[v], visited):
+                    match[v] = u
+                    return True
+        return False
+
+    result = 0
+    for u in range(n):
+        visited = [False] * m
+        if dfs(u, visited):
+            result += 1
+
+    return result
+```
+
+**2. Bipartite Graph Validation with Custom Logic**
+```python
+def validate_bipartite_assignment(assignments, conflicts):
+    """
+    Validate if assignment is bipartite given conflict pairs
+    assignments: list of items to assign
+    conflicts: list of (item1, item2) that cannot be in same group
+    """
+    from collections import defaultdict
+
+    graph = defaultdict(list)
+    for u, v in conflicts:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    colors = {}
+
+    def can_color(item, color):
+        if item in colors:
+            return colors[item] == color
+
+        colors[item] = color
+        for conflict_item in graph[item]:
+            if not can_color(conflict_item, 1 - color):
+                return False
+        return True
+
+    for item in assignments:
+        if item not in colors:
+            if not can_color(item, 0):
+                return False, {}
+
+    # Return partition
+    group_a = [item for item, color in colors.items() if color == 0]
+    group_b = [item for item, color in colors.items() if color == 1]
+
+    return True, {"Group A": group_a, "Group B": group_b}
+```
+
+#### **Performance Comparison**
+
+| Approach | Time | Space | Best Use Case |
+|----------|------|-------|---------------|
+| BFS | O(V+E) | O(V) | Level-by-level processing |
+| DFS | O(V+E) | O(V) | Simple recursive solution |
+| Union-Find | O(E⋅α(V)) | O(V) | Dynamic conflict detection |
+| Grid-specific | O(R⋅C) | O(R⋅C) | 2D grid problems |
+
+#### **Common Patterns & Tips**
+
+**Pattern Recognition:**
+- Graph coloring → Bipartite check
+- Conflict/compatibility → Build conflict graph
+- Two groups assignment → Bipartite partition
+- Matching problems → Bipartite matching
+
+**Implementation Tips:**
+- Always handle disconnected components
+- Use 0/1 or -1/1 for colors consistently
+- Check conflicts immediately when coloring
+- Consider Union-Find for dynamic scenarios
+
+**Edge Cases:**
+- Empty graph (bipartite by definition)
+- Single node (bipartite)
+- No edges (bipartite)
+- Self-loops (not bipartite if exists)
+- Disconnected components (check all)
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_rep1.png"></p>
 
