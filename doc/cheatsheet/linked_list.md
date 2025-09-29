@@ -126,6 +126,194 @@ public class Node {
 
 ### 0-2) Pattern
 
+#### **Dummy Head Technique**
+
+**Definition**: Create a dummy/pseudo head node that points to the actual head, making it easier to handle edge cases and node removal operations.
+
+**When to Use**:
+- Removing nodes from the beginning of the list
+- When the head node might be modified
+- Simplifying edge case handling
+- Operations that need to track the previous node
+
+**Time Complexity**: O(n) - same as without dummy head
+**Space Complexity**: O(1) - only one extra node
+
+**Template Pattern**:
+```python
+def linked_list_operation(head):
+    # Create dummy head
+    dummy = ListNode(0)
+    dummy.next = head
+
+    # Use prev to track previous node
+    prev = dummy
+    curr = head
+
+    while curr:
+        # Perform operations
+        if condition:
+            # Remove current node
+            prev.next = curr.next
+        else:
+            prev = curr
+        curr = curr.next
+
+    # Return new head (dummy.next)
+    return dummy.next
+```
+
+**Advantages**:
+- Eliminates need for special handling of head node
+- Simplifies code logic
+- Reduces edge case bugs
+- Consistent prev pointer throughout traversal
+
+**Common Use Cases**:
+
+**1. Remove Nth Node From End (LC 19)**:
+```python
+def removeNthFromEnd(self, head, n):
+    dummy = ListNode(0)
+    dummy.next = head
+    fast = slow = dummy
+
+    # Move fast n+1 steps ahead
+    for _ in range(n + 1):
+        fast = fast.next
+
+    # Move both until fast reaches end
+    while fast:
+        fast = fast.next
+        slow = slow.next
+
+    # Remove nth node
+    slow.next = slow.next.next
+    return dummy.next
+```
+
+**2. Remove Duplicates (LC 83)**:
+```python
+def deleteDuplicates(self, head):
+    dummy = ListNode(0)
+    dummy.next = head
+    prev = dummy
+
+    while head and head.next:
+        if head.val == head.next.val:
+            # Skip all duplicates
+            val = head.val
+            while head and head.val == val:
+                head = head.next
+            prev.next = head
+        else:
+            prev = head
+            head = head.next
+
+    return dummy.next
+```
+
+**3. Merge Two Sorted Lists (LC 21)**:
+```python
+def mergeTwoLists(self, l1, l2):
+    dummy = ListNode(0)
+    current = dummy
+
+    while l1 and l2:
+        if l1.val <= l2.val:
+            current.next = l1
+            l1 = l1.next
+        else:
+            current.next = l2
+            l2 = l2.next
+        current = current.next
+
+    # Attach remaining nodes
+    current.next = l1 or l2
+    return dummy.next
+```
+
+**4. Partition List (LC 86)**:
+```python
+def partition(self, head, x):
+    before_dummy = ListNode(0)
+    after_dummy = ListNode(0)
+    before = before_dummy
+    after = after_dummy
+
+    while head:
+        if head.val < x:
+            before.next = head
+            before = before.next
+        else:
+            after.next = head
+            after = after.next
+        head = head.next
+
+    # Connect the two parts
+    after.next = None
+    before.next = after_dummy.next
+    return before_dummy.next
+```
+
+**5. Add Two Numbers (LC 2)**:
+```python
+def addTwoNumbers(self, l1, l2):
+    dummy = ListNode(0)
+    current = dummy
+    carry = 0
+
+    while l1 or l2 or carry:
+        val1 = l1.val if l1 else 0
+        val2 = l2.val if l2 else 0
+
+        total = val1 + val2 + carry
+        carry = total // 10
+        current.next = ListNode(total % 10)
+
+        current = current.next
+        l1 = l1.next if l1 else None
+        l2 = l2.next if l2 else None
+
+    return dummy.next
+```
+
+**Java Implementation**:
+```java
+public ListNode removeElements(ListNode head, int val) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode current = dummy;
+
+    while (current.next != null) {
+        if (current.next.val == val) {
+            current.next = current.next.next;
+        } else {
+            current = current.next;
+        }
+    }
+
+    return dummy.next;
+}
+```
+
+**Key Benefits of Dummy Head**:
+
+| Aspect | Without Dummy | With Dummy |
+|--------|---------------|------------|
+| **Edge Cases** | Complex head handling | Unified approach |
+| **Code Length** | More conditional logic | Cleaner, shorter |
+| **Bug Probability** | Higher (edge cases) | Lower (consistent) |
+| **Readability** | Harder to follow | More intuitive |
+
+**Related Problems**:
+- LC 19: Remove Nth Node From End of List
+- LC 21: Merge Two Sorted Lists
+- LC 83: Remove Duplicates from Sorted List
+- LC 86: Partition List
+- LC 203: Remove Linked List Elements
+- LC 328: Odd Even Linked List
+
 ## 1) General form
 ```java
 // java
