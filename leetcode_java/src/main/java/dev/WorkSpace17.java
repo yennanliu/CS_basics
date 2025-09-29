@@ -161,7 +161,7 @@ public class WorkSpace17 {
      *  IDEA 1) DFS
      *
      */
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    public TreeNode lowestCommonAncestor_100(TreeNode root, TreeNode p, TreeNode q) {
         // edge
         if(root == null){
             return root;
@@ -185,11 +185,11 @@ public class WorkSpace17 {
 
         // case 2) p, q are the LEFT side of current node
         if(root.val > p.val && root.val > q.val){
-            return lowestCommonAncestor(root.left, p, q);
+            return lowestCommonAncestor_100(root.left, p, q);
         }
         // case 3) p, q are the RIGHT side of current node
         else{
-            return lowestCommonAncestor(root.right, p, q);
+            return lowestCommonAncestor_100(root.right, p, q);
         }
 
        // return root; // ????
@@ -201,6 +201,41 @@ public class WorkSpace17 {
         }
         return -1;
     }
+
+    // LC 236
+    // 17.18 - 28 pm
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null){
+            return null;
+        }
+
+        // Early exit: if root matches p or q
+        if (root.val == p.val || root.val == q.val){
+            return root;
+        }
+
+//        if (isBigger(root.val, p.val) * isBigger(root.val, q.val) < 0) {
+//            return root;
+//        }
+
+        ///  ???
+        TreeNode _right = lowestCommonAncestor(root.left, p, q);
+        TreeNode _left = lowestCommonAncestor(root.right, p, q);
+
+        if(_right != null && _left != null){
+            return root; // ???
+        }
+        if(_left != null){
+            return _left;
+        }
+        return _right;
+
+        //return root; // ???
+    }
+
+//    private int isBigger(int a, int b) {
+//        return a > b ? 1 : -1;
+//    }
 
 
 
