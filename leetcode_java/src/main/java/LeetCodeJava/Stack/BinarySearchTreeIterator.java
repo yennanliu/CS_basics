@@ -128,6 +128,38 @@ public class BinarySearchTreeIterator {
         }
     }
 
+    // V0-1
+    // IDEA: DFS + BST property (fixed by gpt)
+    class BSTIterator_0_1 {
+        // attributes
+        private List<Integer> list = new ArrayList<>();
+        private int idx = 0;
+
+        public BSTIterator_0_1(TreeNode root) {
+            getAllNodes(root); // fill list in inorder order
+            System.out.println(">>> list (inorder) = " + list);
+        }
+
+        public int next() {
+            return list.get(idx++);
+        }
+
+        public boolean hasNext() {
+            System.out.println(">>> (hasNext) idx = " + idx + ", size = " + list.size());
+            return idx < list.size();
+        }
+
+        // inorder traversal (left → root → right)
+        private void getAllNodes(TreeNode root) {
+            if (root == null) {
+                return;
+            }
+            getAllNodes(root.left);
+            list.add(root.val);
+            getAllNodes(root.right);
+        }
+    }
+
     // V1
     // IDEA: STACK
     // https://leetcode.com/problems/binary-search-tree-iterator/solutions/52647/nice-comparison-and-short-solution-by-st-jcmg/
@@ -255,5 +287,6 @@ public class BinarySearchTreeIterator {
             }
         }
     }
+
 
 }
