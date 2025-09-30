@@ -130,6 +130,16 @@ public class BinarySearchTreeIterator {
 
     // V0-1
     // IDEA: DFS + BST property (fixed by gpt)
+    /**
+     *  NOTE !!!
+     *
+     *   for BST, in-order traverse is
+     *   small -> big array of all its node value
+     *
+     *   since for BST,
+     *   left < root < right
+     *
+     */
     class BSTIterator_0_1 {
         // attributes
         private List<Integer> list = new ArrayList<>();
@@ -154,6 +164,14 @@ public class BinarySearchTreeIterator {
             if (root == null) {
                 return;
             }
+            /**
+             *  NOTE !!!
+             *
+             *   we use `below INORDER traverse`
+             *   to collect the node val from small -> big
+             *
+             *   so we DON'T need to sort collected val again
+             */
             getAllNodes(root.left);
             list.add(root.val);
             getAllNodes(root.right);
