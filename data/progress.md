@@ -94,7 +94,6 @@
 		- gpt
 			- 124
 		- gemini
-			- 98
 			- 501
 			- 108
 - neetcode 250
