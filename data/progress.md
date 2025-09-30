@@ -92,7 +92,6 @@
 		- gemini
 	- LC 235 Lowest Common Ancestor of a Binary Search Tree
 		- gpt
-			- 173
 			- 124
 		- gemini
 			- 98

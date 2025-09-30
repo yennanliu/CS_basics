@@ -2,10 +2,7 @@ package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class WorkSpace17 {
 
@@ -236,6 +233,95 @@ public class WorkSpace17 {
 //    private int isBigger(int a, int b) {
 //        return a > b ? 1 : -1;
 //    }
+
+    // LC 173
+    /**
+     * Your BSTIterator object will be instantiated and called as such:
+     * BSTIterator obj = new BSTIterator(root);
+     * int param_1 = obj.next();
+     * boolean param_2 = obj.hasNext();
+     */
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    // 9.48 - 58 am
+    /**
+     * Implement the `BSTIterator` class that represents an iterator
+     * over the `in-order` traversal of a binary search tree (BST):
+     *
+     * -> `in-order`  traverse of BST
+     *
+     *  - hasNext() Returns `true `if there is a number in the traversal
+     *    to the `right` of the pointer
+     *
+     *  - Moves the pointer to the `right`, then `returns the number at the pointer.`
+     *
+     *   - when init pointer to a non-existent smallest number,
+     *     the first call to next() will return the smallest element in the BST.
+     *
+     *
+     *   IDEA 1) DFS + build BST + BST inorder traverse
+     *
+     *   // NOTE !!! BST inorder traverse if actually the
+     *      `small -> big` ordering array
+     *
+     *   // NOTE !!! for BST,
+     *      left < root < right
+     *
+     */
+    class BSTIterator {
+
+
+        // attr
+        List<Integer> list = new ArrayList<>();
+        int idx = 0;
+
+        public BSTIterator(TreeNode root) {
+            getAllNodes(root);
+            // sort (small -> big)
+            System.out.println(">>> (before sort) list = " + list);
+            //Collections.sort(list); // default: small -> big ???
+            System.out.println(">>> (after sort) list = " + list);
+        }
+
+        public int next() {
+            if(list.isEmpty() || idx > list.size() - 1){
+                return 0; // ???
+            }
+            int preIdx = idx;
+            idx += 1;
+            return list.get(preIdx);
+        }
+
+        public boolean hasNext() {
+            // ???
+            System.out.println(">>> (hasNext) idx = " + idx + ", ");
+            return idx < list.size() - 1;
+        }
+
+        private void getAllNodes(TreeNode root){
+            if(root == null){
+                return;
+            }
+
+            getAllNodes(root.left);
+            list.add(root.val);
+            getAllNodes(root.right);
+            //return root.val + "," + getAllNodes(root.left) + "," + getAllNodes(root.right);
+        }
+    }
 
 
 
