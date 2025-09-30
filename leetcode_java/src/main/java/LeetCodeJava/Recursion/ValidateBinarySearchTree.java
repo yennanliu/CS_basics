@@ -82,6 +82,97 @@ public class ValidateBinarySearchTree {
         long smallest_val = Long.MIN_VALUE;
         long biggest_val = Long.MAX_VALUE;
 
+        /** NOTE !!!!
+         *
+         *   below is WRONG
+         *
+         *   -> Instead of below logic,
+         *     we SHOULD keep tracking `smallest`, `biggest` val over all nodes
+         *     (as logic above)
+         *     and keep validating each node with `smallest`, `biggest`.
+         *     that's the ONLY way to validate BST
+         *
+         *  ----
+         *
+         *   Reason:
+         *
+         *   Perfect — this is one of the most common pitfalls
+         *   with the BST validation problem.
+         *   Let’s visualize why just checking the
+         *   immediate children (root.left and root.right) is insufficient.
+         *
+         * ⸻
+         *
+         * ❌ Example 1: Fails on deeper left child in the right subtree
+         *
+         *        5
+         *       / \
+         *      3   8
+         *         /
+         *        4   <-- Problem here
+         *
+         * 	•	Immediate checks:
+         * 	•	8 > 5 ✅
+         * 	•	3 < 5 ✅
+         * 	•	4 < 8 ✅
+         * 	•	Code thinks it’s fine.
+         * 	•	But in a valid BST, all nodes in the right subtree must be > 5.
+         * Here, 4 < 5 violates the BST rule, but we never checked against the ancestor’s value.
+         *
+         * ⸻
+         *
+         * ❌ Example 2: Fails on deeper right child in the left subtree
+         *
+         *        10
+         *       /  \
+         *      5    15
+         *       \
+         *        12   <-- Problem here
+         *
+         * 	•	Immediate checks:
+         * 	•	5 < 10 ✅
+         * 	•	15 > 10 ✅
+         * 	•	12 > 5 ✅
+         * 	•	Code thinks it’s fine.
+         * 	•	But in a valid BST, all nodes in the left subtree must be < 10.
+         * Here, 12 > 10 violates the BST rule, but we only compared 12 > 5.
+         *
+         * ⸻
+         *
+         * ❌ Example 3: Edge case with equal values
+         *
+         *        2
+         *       / \
+         *      2   3
+         *
+         * 	•	Immediate checks:
+         * 	•	Left child: 2 <= 2 ❌
+         * 	•	Your code catches this one.
+         * But if you had a duplicate deeper in the subtree, it would escape detection.
+         *
+         * ⸻
+         *
+         * ✅ Why range checking works
+         *
+         * Instead of only comparing a node to its parent,
+         * we enforce the global valid range carried down from ancestors:
+         * 	•	Left subtree of root → must be (minVal, root.val)
+         * 	•	Right subtree of root → must be (root.val, maxVal)
+         *
+         * -> That’s why the minVal / maxVal approach
+         *  (or inorder traversal) is the only correct way.
+         *
+         *
+         */
+        // check `current` node
+        //        if(root.right != null && root.val >= root.right.val){
+        //            return false;
+        //        }
+        //        if(root.left != null && root.val <= root.left.val){
+        //            return false;
+        //        }
+
+
         return check_(root, smallest_val, biggest_val);
     }
 
@@ -266,5 +357,7 @@ public class ValidateBinarySearchTree {
         prev = root.val;
         return inorder(root.right);
     }
+
+
 
 }

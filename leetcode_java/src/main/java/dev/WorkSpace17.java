@@ -323,6 +323,60 @@ public class WorkSpace17 {
         }
     }
 
+    // LC 98
+    // 10.27 - 37 am
+    /**
+     *   IDEA 1) DFS + BST PROPERTY
+     *
+     *      *   // NOTE !!! for BST,
+     *      *      left < root < right
+     */
+    public boolean isValidBST(TreeNode root) {
+        // edge
+        if(root == null){
+            return true;
+        }
+        if(root.left == null && root.right == null){
+            return true;
+        }
+
+        long smallest_val = Long.MIN_VALUE;
+        long biggest_val = Long.MAX_VALUE;
+
+        // ???
+        return isValidBSTHelper(root, smallest_val, biggest_val);
+    }
+
+    private boolean isValidBSTHelper(TreeNode root, long smallestVal, long biggestVal){
+
+        if(root == null){
+            return true; // ???
+        }
+
+        // check `current` node
+//        if(root.right != null && root.val >= root.right.val){
+//            return false;
+//        }
+//        if(root.left != null && root.val <= root.left.val){
+//            return false;
+//        }
+
+        if(root.val <= smallestVal){
+            return false;
+        }
+        if(root.val >= biggestVal){
+            return false;
+        }
+
+
+        // recursively check sub left, right tree
+        return isValidBSTHelper(root.left, smallestVal, root.val) &&
+                isValidBSTHelper(root.right, root.val, biggestVal);
+    }
+
+
+
+
 
 
 }
