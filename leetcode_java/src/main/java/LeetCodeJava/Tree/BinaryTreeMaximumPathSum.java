@@ -186,6 +186,33 @@ public class BinaryTreeMaximumPathSum {
     return root.val + Math.max(left, right);
     }
 
+    // V0-0-1
+    // IDEA: DFS + HASHMAP (fixed by gpt)
+    int maxPath = Integer.MIN_VALUE;
+    public int maxPathSum_0_0_1(TreeNode root) {
+        if (root == null)
+            return 0;
+
+        getPathHelper(root);
+        return maxPath;
+    }
+
+    // Helper: returns max path sum starting from current node going down one branch
+    private int getPathHelper(TreeNode root) {
+        if (root == null)
+            return 0;
+
+        // max sum from left or right subtree, ignore negative paths
+        int left = Math.max(0, getPathHelper(root.left));
+        int right = Math.max(0, getPathHelper(root.right));
+
+        // update global max: could be path through current node including both sides
+        maxPath = Math.max(maxPath, left + right + root.val);
+
+        // return max single-side path for parent to use
+        return Math.max(left, right) + root.val;
+    }
+
     // V0-1
     // IDEA: DFS (GPT)
     private int maxSum = Integer.MIN_VALUE;
@@ -511,5 +538,6 @@ public class BinaryTreeMaximumPathSum {
         maxLen.val = Math.max(maxLen.val, root.val + left + right);
         return root.val + Math.max(left, right);
     }
+    
 
 }
