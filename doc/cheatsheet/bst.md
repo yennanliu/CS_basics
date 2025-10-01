@@ -217,21 +217,284 @@ def kth_smallest_optimized(root, k):
 ```
 
 ### Template 6: BST Construction
+
+#### **Pattern Overview**
+- **Description**: Build BST from various inputs (arrays, lists, traversals)
+- **Recognition**: "Construct", "build", "generate", "serialize", "from preorder/inorder"
+- **Key Concept**: Use recursive divide-and-conquer with BST property
+- **Time Complexity**: O(n) for most constructions, O(n log n) for some
+- **Space Complexity**: O(n) for tree storage + O(h) for recursion stack
+
+#### **Core Construction Patterns**
+
+##### **Pattern 6.1: From Sorted Array** (LC 108)
 ```python
 def sorted_array_to_bst(nums):
     """
     Convert sorted array to balanced BST
-    Uses binary search approach
+    Uses binary search approach - pick middle as root
+    Time: O(n), Space: O(n)
     """
     if not nums:
         return None
-    
+
     mid = len(nums) // 2
     root = TreeNode(nums[mid])
     root.left = sorted_array_to_bst(nums[:mid])
     root.right = sorted_array_to_bst(nums[mid+1:])
-    
+
     return root
+
+# Optimized version with index (no array slicing)
+def sorted_array_to_bst_optimized(nums):
+    def build(left, right):
+        if left > right:
+            return None
+
+        mid = (left + right) // 2
+        root = TreeNode(nums[mid])
+        root.left = build(left, mid - 1)
+        root.right = build(mid + 1, right)
+        return root
+
+    return build(0, len(nums) - 1)
+```
+
+##### **Pattern 6.2: From Sorted Linked List** (LC 109)
+```python
+def sorted_list_to_bst(head):
+    """
+    Convert sorted linked list to balanced BST
+    Two approaches: 1) Two pointers to find middle
+                   2) Inorder simulation
+    Time: O(n log n) or O(n), Space: O(log n)
+    """
+    # Approach 1: Find middle with slow-fast pointers
+    def find_middle(left, right):
+        slow = fast = left
+        while fast != right and fast.next != right:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+
+    def convert(left, right):
+        if left == right:
+            return None
+
+        mid = find_middle(left, right)
+        root = TreeNode(mid.val)
+        root.left = convert(left, mid)
+        root.right = convert(mid.next, right)
+        return root
+
+    return convert(head, None)
+```
+
+##### **Pattern 6.3: From Preorder Traversal** (LC 1008)
+```python
+def bst_from_preorder(preorder):
+    """
+    Construct BST from preorder traversal
+    Use BST property: left < root < right
+    Time: O(n), Space: O(h)
+    """
+    def build(min_val, max_val):
+        nonlocal idx
+        if idx >= len(preorder):
+            return None
+
+        val = preorder[idx]
+        if val < min_val or val > max_val:
+            return None
+
+        idx += 1
+        root = TreeNode(val)
+        root.left = build(min_val, val)
+        root.right = build(val, max_val)
+        return root
+
+    idx = 0
+    return build(float('-inf'), float('inf'))
+```
+
+##### **Pattern 6.4: Generate All Unique BSTs** (LC 95)
+```python
+def generate_trees(n):
+    """
+    Generate all structurally unique BSTs with n nodes
+    Catalan number of trees: C(n) = (2n)! / ((n+1)! * n!)
+    Time: O(4^n / n^(3/2)), Space: O(4^n / n^(3/2))
+    """
+    if n == 0:
+        return []
+
+    def generate(start, end):
+        if start > end:
+            return [None]
+
+        all_trees = []
+        for root_val in range(start, end + 1):
+            left_trees = generate(start, root_val - 1)
+            right_trees = generate(root_val + 1, end)
+
+            for left in left_trees:
+                for right in right_trees:
+                    root = TreeNode(root_val)
+                    root.left = left
+                    root.right = right
+                    all_trees.append(root)
+
+        return all_trees
+
+    return generate(1, n)
+```
+
+##### **Pattern 6.5: Count Unique BSTs** (LC 96)
+```python
+def num_trees(n):
+    """
+    Count number of structurally unique BSTs with n nodes
+    Uses Catalan Number: C(n) = C(0)*C(n-1) + C(1)*C(n-2) + ... + C(n-1)*C(0)
+    Time: O(n^2), Space: O(n)
+    """
+    dp = [0] * (n + 1)
+    dp[0] = dp[1] = 1
+
+    for nodes in range(2, n + 1):
+        for root in range(1, nodes + 1):
+            left = root - 1
+            right = nodes - root
+            dp[nodes] += dp[left] * dp[right]
+
+    return dp[n]
+```
+
+#### **Java Implementations**
+```java
+// Pattern 6.1: From Sorted Array (LC 108)
+public TreeNode sortedArrayToBST(int[] nums) {
+    return buildBST(nums, 0, nums.length - 1);
+}
+
+private TreeNode buildBST(int[] nums, int left, int right) {
+    if (left > right) return null;
+
+    int mid = left + (right - left) / 2;
+    TreeNode root = new TreeNode(nums[mid]);
+    root.left = buildBST(nums, left, mid - 1);
+    root.right = buildBST(nums, mid + 1, right);
+    return root;
+}
+
+// Pattern 6.3: From Preorder (LC 1008)
+private int idx = 0;
+
+public TreeNode bstFromPreorder(int[] preorder) {
+    return build(preorder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+}
+
+private TreeNode build(int[] preorder, int min, int max) {
+    if (idx >= preorder.length) return null;
+
+    int val = preorder[idx];
+    if (val < min || val > max) return null;
+
+    idx++;
+    TreeNode root = new TreeNode(val);
+    root.left = build(preorder, min, val);
+    root.right = build(preorder, val, max);
+    return root;
+}
+```
+
+#### **Construction Pattern Summary Table**
+| Input Type | Approach | Key Technique | Time | Space | LC # |
+|------------|----------|---------------|------|-------|------|
+| **Sorted Array** | Binary search | Pick mid as root | O(n) | O(n) | 108 |
+| **Sorted List** | Two pointers | Find mid node | O(n log n) | O(log n) | 109 |
+| **Preorder** | Bounds checking | Use min/max | O(n) | O(h) | 1008 |
+| **Generate All** | Combinatorial | Try each as root | O(4^n/n^1.5) | O(4^n/n^1.5) | 95 |
+| **Count Unique** | Dynamic programming | Catalan numbers | O(n²) | O(n) | 96 |
+| **Serialize** | Preorder encoding | BST property | O(n) | O(n) | 449 |
+
+#### **Key Concepts & Principles**
+
+1. **Balanced Construction**
+   - Always pick middle element as root to ensure balance
+   - Balanced BST has height O(log n)
+   - Unbalanced can degenerate to O(n)
+
+2. **Catalan Numbers**
+   - Number of unique BSTs with n nodes = nth Catalan number
+   - Formula: C(n) = (2n)! / ((n+1)! × n!)
+   - Recurrence: C(n) = Σ C(i) × C(n-1-i) for i from 0 to n-1
+
+3. **Traversal Properties**
+   - **Preorder**: Can reconstruct BST uniquely (root first)
+   - **Inorder**: Gives sorted sequence (need preorder/postorder too)
+   - **Postorder**: Can reconstruct BST uniquely (root last)
+
+4. **Optimization Techniques**
+   - Use indices instead of array slicing (saves O(n) space per call)
+   - Cache results for generate all problems
+   - Use iterative approaches where possible
+
+#### **Common Mistakes & Pitfalls**
+
+**🚫 Mistake 1: Array Slicing Overhead**
+```python
+# BAD: Creates new arrays O(n) space each recursion
+def build(nums):
+    mid = len(nums) // 2
+    root.left = build(nums[:mid])  # O(n) space
+
+# GOOD: Use indices
+def build(left, right):
+    mid = (left + right) // 2
+    root.left = build(left, mid - 1)
+```
+
+**🚫 Mistake 2: Off-by-One Errors**
+```python
+# BAD: Wrong boundary
+mid = len(nums) // 2
+root.left = build(nums[:mid-1])  # Skips element!
+
+# GOOD: Correct boundaries
+root.left = build(nums[:mid])  # Includes all left elements
+```
+
+**🚫 Mistake 3: Not Checking Bounds in Preorder**
+```python
+# BAD: No bounds checking
+def build():
+    val = preorder[idx]
+    root = TreeNode(val)  # May violate BST property!
+
+# GOOD: Check min/max bounds
+def build(min_val, max_val):
+    if val < min_val or val > max_val:
+        return None
+```
+
+**🚫 Mistake 4: Wrong Catalan Recurrence**
+```python
+# BAD: Wrong combination
+for i in range(1, n+1):
+    dp[n] += dp[i] + dp[n-i]  # Should multiply!
+
+# GOOD: Multiply left and right counts
+for i in range(1, n+1):
+    dp[n] += dp[i-1] * dp[n-i]
+```
+
+**🚫 Mistake 5: Wrong Middle Calculation**
+```python
+# BAD: Can overflow in Java/C++
+mid = (left + right) / 2
+
+# GOOD: Prevent overflow
+mid = left + (right - left) // 2
 ```
 
 ## Problems by Pattern

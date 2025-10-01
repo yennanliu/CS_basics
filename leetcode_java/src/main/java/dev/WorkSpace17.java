@@ -476,5 +476,54 @@ public class WorkSpace17 {
         return node; // ????
     }
 
+    // LC 124
+    // 10.53 - 11.03 am
+    /**
+     *
+     * -> Given the root of a `binary tree`,
+     *  return the `maximum path sum `of any non-empty path.
+     *
+     *
+     *  - A path in a binary tree is a sequence of nodes where each pair of
+     *    adjacent nodes in the sequence has an edge connecting them
+     *
+     *  -  A node can only appear in the sequence at most once.
+     *
+     *  - Note that the path does not need to pass through the root.
+     *
+     *
+     *  IDEA 1) DFS + HASHMAP
+     *     - `post order traverse`
+     *       -> so we know the `path from is sub root` when visit a node
+     *     - get max from _left_sub_path, _right_sub_path
+     *
+     *
+     *
+     */
+    // {node_val: path_sum}
+    Map<Integer, Integer> paths = new HashMap<>();
+    public int maxPathSum(TreeNode root) {
+        //edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return root.val;
+        }
+
+        return 0;
+    }
+
+    private void gerPathHelper(TreeNode root){
+        //edge
+        if(root == null){
+            //return 0;
+            return;
+        }
+        // post order: left -> right -> root
+        gerPathHelper(root.left);
+        gerPathHelper(root.right);
+    }
+
 
 }
