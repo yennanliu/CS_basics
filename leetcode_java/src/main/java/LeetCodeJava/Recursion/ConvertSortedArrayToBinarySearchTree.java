@@ -4,6 +4,9 @@ package LeetCodeJava.Recursion;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * 108. Convert Sorted Array to Binary Search Tree
  * Easy
@@ -46,6 +49,162 @@ public class ConvertSortedArrayToBinarySearchTree {
 
     // V0-1
     // IDEA: DFS build tree + BST property (fixed by gpt)
+    /**
+     *  NOTE !!!
+     *
+     *  key:
+     *
+     *   1.	Root selection: use the middle element nums[mid], not nums[start].
+     *       → ensures the BST is height-balanced.
+     * 	 2.	Base case: return null when start > end.
+     * 	 3.	Left subtree: use [start, mid-1].
+     * 	 4.	Right subtree: use [mid+1, end].
+     *
+     *
+     * 	NOTE !!!
+     *
+     * 	 for BST, the in-order traverse is an ascending array (small -> big)
+     * 	 e.g.
+     * 	   input  = [0,1,2]
+     * 	   node:
+     * 	         0
+     * 	       1   2
+     *
+     * 	   so, we can get the `width` of BST via (right_idx - left_idx) / 2
+     * 	   e.g.
+     * 	    width = (right_idx - left_idx) / 2
+     *
+     * 	    or, we can go further, get the idx of root (mid) via below
+     *
+     * 	    int mid = left + (right - left) / 2;
+     *
+     */
+    /**
+     *  Example:
+     *
+     *  Perfect 👍 Let’s walk step-by-step through the recursion of the fixed code on
+     *
+     * nums = [-10, -3, 0, 5, 9].
+     *
+     * ⸻
+     *
+     * Step 1: Initial call
+     *
+     * bstBuilder(nums, 0, 4)
+     *
+     * 	•	start=0, end=4
+     * 	•	mid = 0 + (4-0)/2 = 2
+     * 	•	root = nums[2] = 0
+     *
+     * So root node is:
+     *
+     *    0
+     *   / \
+     *  ?   ?
+     *
+     *
+     * ⸻
+     *
+     * Step 2: Build left subtree
+     *
+     * bstBuilder(nums, 0, 1)
+     *
+     * 	•	start=0, end=1
+     * 	•	mid = 0 + (1-0)/2 = 0
+     * 	•	node = nums[0] = -10
+     *
+     * So left child is -10:
+     *
+     *     0
+     *    / \
+     *  -10  ?
+     *
+     * Build left subtree of -10:
+     *
+     * bstBuilder(nums, 0, -1)  // start > end → null
+     *
+     * => left = null
+     *
+     * Build right subtree of -10:
+     *
+     * bstBuilder(nums, 1, 1)
+     *
+     * 	•	start=1, end=1
+     * 	•	mid=1
+     * 	•	node = nums[1] = -3
+     *
+     * So:
+     *
+     *     0
+     *    / \
+     *  -10  ?
+     *     \
+     *     -3
+     *
+     *
+     * ⸻
+     *
+     * Step 3: Build right subtree
+     *
+     * bstBuilder(nums, 3, 4)
+     *
+     * 	•	start=3, end=4
+     * 	•	mid = 3 + (4-3)/2 = 3
+     * 	•	node = nums[3] = 5
+     *
+     * So right child is 5:
+     *
+     *         0
+     *        / \
+     *     -10   5
+     *       \
+     *       -3
+     *
+     * Build left subtree of 5:
+     *
+     * bstBuilder(nums, 3, 2)  // start > end → null
+     *
+     * => left = null
+     *
+     * Build right subtree of 5:
+     *
+     * bstBuilder(nums, 4, 4)
+     *
+     * 	•	start=4, end=4
+     * 	•	mid=4
+     * 	•	node = nums[4] = 9
+     *
+     * So:
+     *
+     *         0
+     *        / \
+     *     -10   5
+     *       \     \
+     *       -3     9
+     *
+     *
+     * ⸻
+     *
+     * ✅ Final Balanced BST
+     *
+     *         0
+     *        / \
+     *     -10   5
+     *       \     \
+     *       -3     9
+     *
+     *
+     * ⸻
+     *
+     * 👉 Notice:
+     * 	•	0 is root (middle of array).
+     * 	•	Left subtree [-10, -3] is balanced under -10.
+     * 	•	Right subtree [5, 9] is balanced under 5.
+     * 	•	Depth difference between left/right is ≤ 1 everywhere → height-balanced BST.
+     *
+     * ⸻
+     *
+     */
     public TreeNode sortedArrayToBST_0_1(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -54,6 +213,13 @@ public class ConvertSortedArrayToBinarySearchTree {
         return bstBuilder(nums, 0, nums.length - 1);
     }
 
+    /** NOTE !!!
+     *
+     *  help func:
+     *
+     *   start: start_idx  in nums
+     *   end: end_idx in nums
+     */
     private TreeNode bstBuilder(int[] nums, int start, int end) {
         if (start > end) {
             return null;
@@ -69,6 +235,51 @@ public class ConvertSortedArrayToBinarySearchTree {
 
         return node;
     }
+
+    // V0-2
+    // IDEA: ITERATIVE version (BFS like) (gpt)
+    public TreeNode sortedArrayToBST_0_2(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return null;
+
+        int n = nums.length;
+        int mid = (0 + n - 1) / 2;
+
+        TreeNode root = new TreeNode(nums[mid]);
+
+        // queue stores: node + start + end
+        Queue<int[]> rangeQ = new LinkedList<>();
+        Queue<TreeNode> nodeQ = new LinkedList<>();
+
+        nodeQ.offer(root);
+        rangeQ.offer(new int[] { 0, n - 1 });
+
+        while (!nodeQ.isEmpty()) {
+            TreeNode curNode = nodeQ.poll();
+            int[] range = rangeQ.poll();
+            int start = range[0], end = range[1];
+            int midIdx = (start + end) / 2;
+
+            // left subtree
+            if (start <= midIdx - 1) {
+                int leftMid = (start + (midIdx - 1)) / 2;
+                curNode.left = new TreeNode(nums[leftMid]);
+                nodeQ.offer(curNode.left);
+                rangeQ.offer(new int[] { start, midIdx - 1 });
+            }
+
+            // right subtree
+            if (midIdx + 1 <= end) {
+                int rightMid = ((midIdx + 1) + end) / 2;
+                curNode.right = new TreeNode(nums[rightMid]);
+                nodeQ.offer(curNode.right);
+                rangeQ.offer(new int[] { midIdx + 1, end });
+            }
+        }
+
+        return root;
+    }
+
     // V1
     // https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/solutions/6892739/video-find-middle-of-tree-or-subtree-by-94thd/
     public TreeNode sortedArrayToBST_1(int[] nums) {
@@ -80,6 +291,13 @@ public class ConvertSortedArrayToBinarySearchTree {
             return null;
         }
 
+        /** NOTE !!!
+         *
+         *
+         *  get `mid` (e.g. the idx of `root`) via
+         *
+         *   int mid = left + (right - left) / 2;
+         */
         int mid = left + (right - left) / 2;
 
         TreeNode node = new TreeNode(nums[mid]);
