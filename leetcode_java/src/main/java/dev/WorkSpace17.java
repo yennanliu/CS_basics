@@ -428,11 +428,51 @@ public class WorkSpace17 {
 
 
     // LC 108
+    // 10.11 am - 21 am
+    /**
+     * Given an  `integer array nums` where the elements are
+     * `sorted` in ascending order,
+     * convert it to a `height-balanced binary search tree.`
+     *
+     *  - given sorted (small -> big) arr, covert it a height balanced
+     *    BST
+     *
+     *
+     *  IDEA 1) DFS (in-order traverse) + BST
+     *
+     *   - NOTE !!! for BST (left < root < right)
+     *      the in-order traverse is an ascending arr (small -> big)
+     *
+     */
+    //TreeNode node = new TreeNode();
     public TreeNode sortedArrayToBST(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return null;
+        }
+        if(nums.length == 1){
+            return new TreeNode(nums[0]);
+        }
 
-        return null;
+        //TreeNode node = new TreeNode(nums[0]);
+        return bstBuilder(nums, 0, nums.length - 1); // ???
     }
 
+    private TreeNode bstBuilder(int[] nums, int start, int end){
+        if(nums == null){
+            return null; // ???
+        }
+
+        TreeNode node = new TreeNode(nums[start]);
+        //node.val = nums[start]; // ???
+        // ???
+        int width = end - start; // ???
+
+        node.left = bstBuilder(nums, start+1, start+width); // ???
+        node.right = bstBuilder(nums, start+width, nums.length-1); // ???
+
+        return node; // ????
+    }
 
 
 }

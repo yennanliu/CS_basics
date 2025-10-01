@@ -44,6 +44,31 @@ public class ConvertSortedArrayToBinarySearchTree {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS build tree + BST property (fixed by gpt)
+    public TreeNode sortedArrayToBST_0_1(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return null;
+        }
+        return bstBuilder(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode bstBuilder(int[] nums, int start, int end) {
+        if (start > end) {
+            return null;
+        }
+
+        // pick mid as root to ensure balance
+        int mid = start + (end - start) / 2;
+        TreeNode node = new TreeNode(nums[mid]);
+
+        // build left and right subtrees recursively
+        node.left = bstBuilder(nums, start, mid - 1);
+        node.right = bstBuilder(nums, mid + 1, end);
+
+        return node;
+    }
     // V1
     // https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/solutions/6892739/video-find-middle-of-tree-or-subtree-by-94thd/
     public TreeNode sortedArrayToBST_1(int[] nums) {
