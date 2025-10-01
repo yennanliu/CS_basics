@@ -86,6 +86,54 @@ public class FindModeInBinarySearchTree {
         nodeHelper(node.right, freqMap);
     }
 
+    // V0-1
+    // IDEA: HASHMAP + DFS BST
+    Map<Integer, Integer> map = new HashMap<>();
+    int topCnt = 0;
+
+    public int[] findMode_0_1(TreeNode root) {
+        // edge
+        if (root == null) {
+            return new int[]{};
+        }
+
+        // Step 1: DFS to count frequencies
+        getNodes(root);
+
+        // Step 2: Collect all keys with frequency == topCnt
+        List<Integer> list = new ArrayList<>();
+        for (Integer x : map.keySet()) {
+            if (map.get(x) == topCnt) {
+                list.add(x);
+            }
+        }
+
+        // Step 3: Convert List -> int[]
+        int[] res = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            res[i] = list.get(i);
+        }
+        return res;
+    }
+
+    private void getNodes(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        // update frequency map
+        int count = map.getOrDefault(root.val, 0) + 1;
+        map.put(root.val, count);
+
+        // update max frequency
+        topCnt = Math.max(topCnt, count);
+
+        // dfs
+        getNodes(root.left);
+        getNodes(root.right);
+    }
+
+
     // V1-1
     // https://leetcode.com/problems/find-mode-in-binary-search-tree/editorial/
     // IDEA: Count Frequency With Hash Map (DFS)
@@ -360,5 +408,6 @@ public class FindModeInBinarySearchTree {
     // V2
 
     // V3
+
 
 }
