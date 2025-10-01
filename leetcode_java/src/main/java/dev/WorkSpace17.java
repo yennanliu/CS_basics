@@ -375,6 +375,55 @@ public class WorkSpace17 {
     }
 
 
+    // LC 501
+    // 9.45 - 55 am
+    /**
+     * Given the `root` of a binary search tree (BST) with duplicates,
+     * return all the mode(s) (i.e., the most frequently occurred element) in it.
+     *
+     */
+    //List<Integer> cache = new ArrayList<>();
+    // {val: cnt}
+    Map<Integer, Integer> map = new HashMap<>();
+    //Integer topCnt = 0;
+    public int[] findMode(TreeNode root) {
+        // edge
+        if(root == null){
+            return new int[]{}; // ??
+        }
+
+        getNodes(root);
+        List<Integer> list = new ArrayList<>();
+
+        int topCnt = 0;
+        for(Integer x: map.values()){
+            topCnt = Math.max(topCnt, x);
+        }
+
+        System.out.println(">>> map = " + map);
+        System.out.println(">>> topCnt = " + topCnt);
+        for(Integer x: map.keySet()){
+            if(map.get(x).equals(topCnt)){
+                list.add(x);
+            }
+        }
+        int[] res = new int[list.size()];
+        for(int i = 0; i < list.size(); i++){
+            res[i] = list.get(i);
+        }
+
+        return res;
+    }
+
+    private void getNodes(TreeNode root){
+        if(root == null){
+            return;
+        }
+        map.put(root.val, map.getOrDefault(root.val, 0) + 1);
+        //topCnt = Math.max(topCnt, map.getOrDefault(root.val, 0) + 1);
+        getNodes(root.left);
+        getNodes(root.right);
+    }
 
 
 
