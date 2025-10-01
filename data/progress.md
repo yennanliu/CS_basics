@@ -94,7 +94,6 @@
 		- gpt
 			- 124
 		- gemini
-			- 108
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
