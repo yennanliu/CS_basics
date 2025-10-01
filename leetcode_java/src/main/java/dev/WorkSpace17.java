@@ -459,17 +459,19 @@ public class WorkSpace17 {
     }
 
     private TreeNode bstBuilder(int[] nums, int start, int end){
+        // edge
+        if(start > end){
+            return null;
+        }
         if(nums == null){
             return null; // ???
         }
 
-        TreeNode node = new TreeNode(nums[start]);
-        //node.val = nums[start]; // ???
-        // ???
-        int width = end - start; // ???
+        int width = (end - start) / 2; // ???
+        TreeNode node = new TreeNode(nums[start + width]);
 
-        node.left = bstBuilder(nums, start+1, start+width); // ???
-        node.right = bstBuilder(nums, start+width, nums.length-1); // ???
+        node.left = bstBuilder(nums, start, start + width - 1); // ???
+        node.right = bstBuilder(nums, start + 1 + width, end); // ???
 
         return node; // ????
     }
