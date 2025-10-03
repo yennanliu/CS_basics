@@ -585,6 +585,9 @@ public class WorkSpace17 {
             //return null;
             return;
         }
+
+        cur.add(String.valueOf(root.val));
+
         if(root.left == null && root.right == null){
             //return root.val;
             cache.add(listToStr(cur)); // ???
@@ -594,7 +597,7 @@ public class WorkSpace17 {
 //        if(root != null){
 //            cur.add(String.valueOf(root.val));
 //        }
-        cur.add(String.valueOf(root.val));
+        //cur.add(String.valueOf(root.val));
         sumHelper(root.left, cur);
         sumHelper(root.right, cur);
 
