@@ -60,6 +60,57 @@ public class SumRootToLeafNumbers {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (pre-order traverse) + PATH SUM (fixed by gpt)
+    List<String> cache = new ArrayList<>();
+
+    public int sumNumbers_0_1(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        cache.clear();
+        sumHelper(root, new ArrayList<>());
+
+       // System.out.println(">>> cache = " + cache);
+
+        int res = 0;
+        for (String x : cache) {
+            res += Integer.parseInt(x);
+        }
+
+        return res;
+    }
+
+    private void sumHelper(TreeNode root, List<String> cur) {
+        if (root == null) {
+            return;
+        }
+
+        // Add current node to path first
+        cur.add(String.valueOf(root.val));
+
+        // If it's a leaf, record the path
+        if (root.left == null && root.right == null) {
+            cache.add(listToStr(cur));
+        } else {
+            // Otherwise keep traversing
+            sumHelper(root.left, cur);
+            sumHelper(root.right, cur);
+        }
+
+        // Backtrack
+        cur.remove(cur.size() - 1);
+    }
+
+    private String listToStr(List<String> input) {
+        StringBuilder sb = new StringBuilder();
+        for (String x : input) {
+            sb.append(x);
+        }
+        return sb.toString();
+    }
+
     // V1
     // IDEA: DFS
     // https://leetcode.ca/2016-04-07-129-Sum-Root-to-Leaf-Numbers/

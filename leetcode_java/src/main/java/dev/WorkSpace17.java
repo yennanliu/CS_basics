@@ -549,10 +549,69 @@ public class WorkSpace17 {
     }
 
     // LC 129
+    //  9.52 - 10.02 am
+    /**
+     *  IDEA 1) DFS (pre order traverse) + `path sum`
+     *
+     *
+     */
+    List<String> cache = new ArrayList<>();
     public int sumNumbers(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return root.val;
+        }
 
-        return 0;
+        int res = 0;
+        sumHelper(root, new ArrayList<>());
+
+        System.out.println(">>> cache = " + cache);
+
+        for(String x: cache){
+            res += Integer.parseInt(x);
+        }
+
+        return res;
     }
+
+    private void sumHelper(TreeNode root, List<String> cur){
+        // edge
+        if(root == null){
+            // ???
+            //return cur.toString(); // ??
+            //return null;
+            return;
+        }
+        if(root.left == null && root.right == null){
+            //return root.val;
+            cache.add(listToStr(cur)); // ???
+        }
+
+        // ??
+//        if(root != null){
+//            cur.add(String.valueOf(root.val));
+//        }
+        cur.add(String.valueOf(root.val));
+        sumHelper(root.left, cur);
+        sumHelper(root.right, cur);
+
+        // undo ??
+        cur.remove(cur.size() - 1);
+        //return cur.toString(); // ????
+    }
+
+    private String listToStr(List<String> input){
+        String res = "";
+        for(String x: input){
+            res += x;
+        }
+        return res;
+    }
+
+
 
 
 }
