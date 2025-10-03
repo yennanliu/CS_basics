@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-10-02
+# 2025-10-03
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
@@ -111,6 +111,11 @@
 			- 1. the meeting will be added one by one (dynamically), the func needs to return if it's there is a conflicts, if conflict, NOT add the new meeting
 			- 2.  min meeting needed to remove so there is NO conflicts 
 		 	- https://buildmoat.teachable.com/courses/7a7af3/lectures/62695983
+		- LC 1268 Search Suggestions System
+		- LC 1268 Search Suggestions System `followup`
+			- what if `query`, `insert` happens `interlacely`?
+				- e.g. init, query, insert, insert, query...
+			- https://buildmoat.teachable.com/courses/7a7af3/lectures/62696645
 		- binary search problems:
 	- again:
 	- todo:
