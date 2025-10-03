@@ -91,14 +91,42 @@ public class SumRootToLeafNumbers {
         cur.add(String.valueOf(root.val));
 
         // If it's a leaf, record the path
+        /**
+         *  V1: explicit if-else logic for handling `end of node` case
+         *      e.g. node WITHOUT left and right sub node
+         */
+//        if (root.left == null && root.right == null) {
+//            cache.add(listToStr(cur));
+//        } else {
+//            // Otherwise keep traversing
+//            sumHelper(root.left, cur);
+//            sumHelper(root.right, cur);
+//        }
+        /**
+         *  V2: implicit logic for handling `end of node` case
+         *
+         *      -> if given node has NO sub left, and sub right node,
+         *         its root.left, node.right will be NULL
+         *         so if we recursively pass that val to our help func sumHelper,
+         *         if will jump out at the first if logic.
+         *         e.g.
+         *
+         *            if (root == null) {
+         *             return;
+         *             }
+         */
         if (root.left == null && root.right == null) {
             cache.add(listToStr(cur));
-        } else {
-            // Otherwise keep traversing
-            sumHelper(root.left, cur);
-            sumHelper(root.right, cur);
         }
+        // Otherwise keep traversing
+        sumHelper(root.left, cur);
+        sumHelper(root.right, cur);
 
+        /** NOTE !!!
+         *
+         *  we need undo the last `add` op to our cur cache, e.g. backtrack
+         *  -> so we DON'T over-calculate the node val
+         */
         // Backtrack
         cur.remove(cur.size() - 1);
     }
