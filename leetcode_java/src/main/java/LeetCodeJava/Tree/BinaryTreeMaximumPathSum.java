@@ -538,6 +538,6 @@ public class BinaryTreeMaximumPathSum {
         maxLen.val = Math.max(maxLen.val, root.val + left + right);
         return root.val + Math.max(left, right);
     }
-    
+
 
 }

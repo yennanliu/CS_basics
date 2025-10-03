@@ -501,7 +501,7 @@ public class WorkSpace17 {
      *
      */
     // {node_val: path_sum}
-    Map<Integer, Integer> paths = new HashMap<>();
+    //Map<Integer, Integer> paths = new HashMap<>();
     int maxPath = Integer.MIN_VALUE;
     public int maxPathSum(TreeNode root) {
         //edge
@@ -514,7 +514,7 @@ public class WorkSpace17 {
         //if()
 
         gerPathHelper(root);
-        System.out.println(">>> paths = " + paths + ", maxPath = " + maxPath);
+        System.out.println(", maxPath = " + maxPath);
 
         // edge case: `root` itself could form a `path` as well
         // below check if it could be a `biggest path`
@@ -543,7 +543,7 @@ public class WorkSpace17 {
         int pathSum = _leftPathSum + _rightPathSum + root.val;
         maxPath = Math.max(maxPath, pathSum);
         // update map
-        paths.put(root.val, pathSum);
+        //paths.put(root.val, pathSum);
 
         return Math.max(_leftPathSum, _rightPathSum) + root.val;
     }
