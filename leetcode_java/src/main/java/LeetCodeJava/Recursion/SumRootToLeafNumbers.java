@@ -87,6 +87,15 @@ public class SumRootToLeafNumbers {
             return;
         }
 
+        /** NOTE !!!
+         *
+         *  we need to add `node val` to cur cache first,
+         *  before the `check if sub left, right node exist logic`
+         *  e.g.:
+         *     if (root.left == null && root.right == null) {
+         *             cache.add(listToStr(cur));
+         *         }
+         */
         // Add current node to path first
         cur.add(String.valueOf(root.val));
 
