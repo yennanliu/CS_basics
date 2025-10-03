@@ -61,6 +61,12 @@ void traverse(TreeNode root) {
 - **Examples**: LC 235, LC 530, LC 783, LC 776
 - **Template**: Use Property Template
 
+### **Pattern 6: Path Problems**
+- **Description**: Problems involving root-to-leaf or node-to-node paths
+- **Recognition**: "Path sum", "root to leaf", "maximum path", "consecutive sequence"
+- **Examples**: LC 112, LC 113, LC 257, LC 124, LC 129, LC 298, LC 437
+- **Template**: Use DFS with path tracking, backtracking, or global state
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -71,6 +77,7 @@ void traverse(TreeNode root) {
 | **Deletion Template** | Removing nodes | Find + restructure | O(log n) | O(h) | Removing values |
 | **Inorder Template** | Sorted operations | Left-root-right | O(n) | O(h) | Kth element, range |
 | **Construction Template** | Building BST | Divide & conquer | O(n) | O(n) | Creating from array |
+| **Path Template** | Root-to-leaf paths | DFS + tracking | O(n) | O(h) | Path sum, sequences |
 ### Universal BST Template
 ```python
 def bst_operation(root, target):
@@ -417,6 +424,413 @@ private TreeNode build(int[] preorder, int min, int max) {
 | **Count Unique** | Dynamic programming | Catalan numbers | O(n²) | O(n) | 96 |
 | **Serialize** | Preorder encoding | BST property | O(n) | O(n) | 449 |
 
+### Template 7: Path Problems
+
+#### **Pattern Overview**
+- **Description**: Find or validate paths in binary trees (root-to-leaf, node-to-node)
+- **Recognition**: "Path sum", "root to leaf", "maximum path", "consecutive"
+- **Key Concept**: Use DFS with path tracking, accumulation, or global state
+- **Time Complexity**: O(n) for visiting all nodes
+- **Space Complexity**: O(h) for recursion stack + path storage
+
+#### **Core Path Patterns**
+
+##### **Pattern 7.1: Simple Path Sum** (LC 112)
+```python
+def has_path_sum(root, target_sum):
+    """
+    Check if root-to-leaf path exists with given sum
+    Time: O(n), Space: O(h)
+    """
+    if not root:
+        return False
+
+    # Leaf node check
+    if not root.left and not root.right:
+        return root.val == target_sum
+
+    # Recurse with reduced sum
+    remaining = target_sum - root.val
+    return (has_path_sum(root.left, remaining) or
+            has_path_sum(root.right, remaining))
+```
+
+##### **Pattern 7.2: Path Sum II - All Paths** (LC 113)
+```python
+def path_sum(root, target_sum):
+    """
+    Find all root-to-leaf paths with given sum
+    Uses backtracking to track current path
+    Time: O(n), Space: O(h)
+    """
+    result = []
+
+    def dfs(node, remaining, path):
+        if not node:
+            return
+
+        # Add current node to path
+        path.append(node.val)
+
+        # Check if leaf with target sum
+        if not node.left and not node.right and remaining == node.val:
+            result.append(path[:])  # Deep copy
+
+        # Recurse on children
+        new_remaining = remaining - node.val
+        dfs(node.left, new_remaining, path)
+        dfs(node.right, new_remaining, path)
+
+        # Backtrack
+        path.pop()
+
+    dfs(root, target_sum, [])
+    return result
+```
+
+##### **Pattern 7.3: Binary Tree Paths** (LC 257)
+```python
+def binary_tree_paths(root):
+    """
+    Find all root-to-leaf paths as strings
+    Time: O(n), Space: O(h)
+    """
+    if not root:
+        return []
+
+    result = []
+
+    def dfs(node, path):
+        if not node:
+            return
+
+        # Add current node to path string
+        path += str(node.val)
+
+        # Leaf node - add complete path
+        if not node.left and not node.right:
+            result.append(path)
+            return
+
+        # Continue path with arrow
+        path += "->"
+        dfs(node.left, path)
+        dfs(node.right, path)
+
+    dfs(root, "")
+    return result
+```
+
+##### **Pattern 7.4: Sum Root to Leaf Numbers** (LC 129)
+```python
+def sum_numbers(root):
+    """
+    Sum all numbers formed by root-to-leaf paths
+    Example: 1->2->3 represents 123
+    Time: O(n), Space: O(h)
+    """
+    def dfs(node, current_sum):
+        if not node:
+            return 0
+
+        # Build number: current_sum * 10 + node.val
+        current_sum = current_sum * 10 + node.val
+
+        # Leaf node - return the number
+        if not node.left and not node.right:
+            return current_sum
+
+        # Sum from both subtrees
+        return dfs(node.left, current_sum) + dfs(node.right, current_sum)
+
+    return dfs(root, 0)
+```
+
+##### **Pattern 7.5: Binary Tree Maximum Path Sum** (LC 124)
+```python
+def max_path_sum(root):
+    """
+    Find maximum path sum (any node to any node)
+    Uses global variable to track maximum
+    Time: O(n), Space: O(h)
+    """
+    max_sum = float('-inf')
+
+    def dfs(node):
+        nonlocal max_sum
+
+        if not node:
+            return 0
+
+        # Get max contribution from left and right
+        # Use max(0, ...) to ignore negative paths
+        left_max = max(0, dfs(node.left))
+        right_max = max(0, dfs(node.right))
+
+        # Update global max with path through current node
+        path_sum = node.val + left_max + right_max
+        max_sum = max(max_sum, path_sum)
+
+        # Return max path going through this node (one side only)
+        return node.val + max(left_max, right_max)
+
+    dfs(root)
+    return max_sum
+```
+
+##### **Pattern 7.6: Binary Tree Longest Consecutive Sequence** (LC 298)
+```python
+def longest_consecutive(root):
+    """
+    Find length of longest consecutive path
+    Values must increase by 1 each step
+    Time: O(n), Space: O(h)
+    """
+    max_length = 0
+
+    def dfs(node, parent_val, length):
+        nonlocal max_length
+
+        if not node:
+            return
+
+        # Check if consecutive with parent
+        if node.val == parent_val + 1:
+            length += 1
+        else:
+            length = 1  # Reset sequence
+
+        # Update global max
+        max_length = max(max_length, length)
+
+        # Recurse on children
+        dfs(node.left, node.val, length)
+        dfs(node.right, node.val, length)
+
+    dfs(root, float('-inf'), 0)
+    return max_length
+```
+
+##### **Pattern 7.7: Path Sum III** (LC 437)
+```python
+def path_sum_3(root, target_sum):
+    """
+    Count paths with given sum (not necessarily root-to-leaf)
+    Uses prefix sum technique with hash map
+    Time: O(n), Space: O(n)
+    """
+    from collections import defaultdict
+
+    def dfs(node, current_sum, prefix_sums):
+        if not node:
+            return 0
+
+        # Update current sum
+        current_sum += node.val
+
+        # Count paths ending at current node
+        # If (current_sum - target_sum) exists, we found path(s)
+        count = prefix_sums[current_sum - target_sum]
+
+        # Add current sum to prefix map
+        prefix_sums[current_sum] += 1
+
+        # Recurse on children
+        count += dfs(node.left, current_sum, prefix_sums)
+        count += dfs(node.right, current_sum, prefix_sums)
+
+        # Backtrack: remove current sum from map
+        prefix_sums[current_sum] -= 1
+
+        return count
+
+    # Initialize with 0 sum (for paths starting from root)
+    prefix_sums = defaultdict(int)
+    prefix_sums[0] = 1
+
+    return dfs(root, 0, prefix_sums)
+```
+
+#### **Java Implementations**
+```java
+// Pattern 7.1: Simple Path Sum (LC 112)
+public boolean hasPathSum(TreeNode root, int targetSum) {
+    if (root == null) return false;
+
+    // Leaf node check
+    if (root.left == null && root.right == null) {
+        return root.val == targetSum;
+    }
+
+    int remaining = targetSum - root.val;
+    return hasPathSum(root.left, remaining) ||
+           hasPathSum(root.right, remaining);
+}
+
+// Pattern 7.2: Path Sum II (LC 113)
+public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+    List<List<Integer>> result = new ArrayList<>();
+    dfs(root, targetSum, new ArrayList<>(), result);
+    return result;
+}
+
+private void dfs(TreeNode node, int remaining,
+                 List<Integer> path, List<List<Integer>> result) {
+    if (node == null) return;
+
+    path.add(node.val);
+
+    if (node.left == null && node.right == null && remaining == node.val) {
+        result.add(new ArrayList<>(path));
+    }
+
+    int newRemaining = remaining - node.val;
+    dfs(node.left, newRemaining, path, result);
+    dfs(node.right, newRemaining, path, result);
+
+    path.remove(path.size() - 1);  // Backtrack
+}
+
+// Pattern 7.5: Maximum Path Sum (LC 124)
+private int maxSum = Integer.MIN_VALUE;
+
+public int maxPathSum(TreeNode root) {
+    dfs(root);
+    return maxSum;
+}
+
+private int dfs(TreeNode node) {
+    if (node == null) return 0;
+
+    int leftMax = Math.max(0, dfs(node.left));
+    int rightMax = Math.max(0, dfs(node.right));
+
+    maxSum = Math.max(maxSum, node.val + leftMax + rightMax);
+
+    return node.val + Math.max(leftMax, rightMax);
+}
+
+// Pattern 7.7: Path Sum III (LC 437)
+public int pathSum(TreeNode root, int targetSum) {
+    Map<Long, Integer> prefixSums = new HashMap<>();
+    prefixSums.put(0L, 1);
+    return dfs(root, 0L, targetSum, prefixSums);
+}
+
+private int dfs(TreeNode node, long currentSum, int target,
+                Map<Long, Integer> prefixSums) {
+    if (node == null) return 0;
+
+    currentSum += node.val;
+    int count = prefixSums.getOrDefault(currentSum - target, 0);
+
+    prefixSums.put(currentSum, prefixSums.getOrDefault(currentSum, 0) + 1);
+
+    count += dfs(node.left, currentSum, target, prefixSums);
+    count += dfs(node.right, currentSum, target, prefixSums);
+
+    prefixSums.put(currentSum, prefixSums.get(currentSum) - 1);
+
+    return count;
+}
+```
+
+#### **Path Pattern Summary Table**
+| Problem Type | Approach | Key Technique | Time | Space | LC # |
+|--------------|----------|---------------|------|-------|------|
+| **Simple Path Sum** | DFS recursion | Reduce sum | O(n) | O(h) | 112 |
+| **All Paths** | DFS + backtrack | Track path | O(n) | O(h) | 113 |
+| **Path Strings** | DFS + string | Concatenate | O(n) | O(h) | 257 |
+| **Sum Numbers** | DFS + accumulate | Build number | O(n) | O(h) | 129 |
+| **Max Path Sum** | DFS + global | Track max | O(n) | O(h) | 124 |
+| **Consecutive** | DFS + counter | Track length | O(n) | O(h) | 298 |
+| **Prefix Sum** | DFS + hashmap | Prefix technique | O(n) | O(n) | 437 |
+
+#### **Key Concepts & Principles**
+
+1. **Root-to-Leaf Paths**
+   - Always check for leaf nodes: `not node.left and not node.right`
+   - Reduce target sum at each level
+   - Return result at leaf nodes
+
+2. **Backtracking Pattern**
+   - Add current node to path
+   - Recurse on children
+   - Remove current node from path (restore state)
+   - Essential for finding all paths
+
+3. **Global State**
+   - Use nonlocal/class variable for maximum values
+   - Update during traversal
+   - Return contribution, not final answer
+
+4. **Path Through Node**
+   - For max path: left_max + node.val + right_max
+   - For return: node.val + max(left_max, right_max)
+   - Use max(0, ...) to ignore negative contributions
+
+5. **Prefix Sum Technique**
+   - Track cumulative sum from root
+   - Use hashmap: prefixSum[currentSum - target] = count
+   - Backtrack by decrementing counts
+
+#### **Common Mistakes & Pitfalls**
+
+**🚫 Mistake 1: Not Checking Leaf Nodes**
+```python
+# BAD: Doesn't verify it's a leaf
+if root.val == target:
+    return True
+
+# GOOD: Check both children are None
+if not root.left and not root.right and root.val == target:
+    return True
+```
+
+**🚫 Mistake 2: Forgetting to Backtrack**
+```python
+# BAD: Path grows indefinitely
+def dfs(node, path):
+    path.append(node.val)
+    dfs(node.left, path)
+
+# GOOD: Remove after recursion
+def dfs(node, path):
+    path.append(node.val)
+    dfs(node.left, path)
+    path.pop()
+```
+
+**🚫 Mistake 3: Shallow Copy in Results**
+```python
+# BAD: All results reference same list
+result.append(path)
+
+# GOOD: Create deep copy
+result.append(path[:])  # or list(path)
+```
+
+**🚫 Mistake 4: Wrong Max Path Logic**
+```python
+# BAD: Includes both subtrees in return
+def dfs(node):
+    left = dfs(node.left)
+    right = dfs(node.right)
+    return node.val + left + right  # Wrong!
+
+# GOOD: Return one path only
+return node.val + max(left, right)
+```
+
+**🚫 Mistake 5: Not Handling Negative Values**
+```python
+# BAD: Negative paths reduce maximum
+left_max = dfs(node.left)
+
+# GOOD: Ignore negative contributions
+left_max = max(0, dfs(node.left))
+```
+
 #### **Key Concepts & Principles**
 
 1. **Balanced Construction**
@@ -549,6 +963,17 @@ mid = left + (right - left) // 2
 | Largest BST Subtree | 333 | Medium | Bottom-up validation | Template 4 |
 | Balance a Binary Search Tree | 1382 | Medium | Inorder + rebuild | Template 6 |
 
+#### **Pattern 6: Path Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Path Sum | 112 | Easy | DFS recursion | Template 7 |
+| Path Sum II | 113 | Medium | DFS + Backtrack | Template 7 |
+| Binary Tree Paths | 257 | Easy | DFS + Path Track | Template 7 |
+| Sum Root to Leaf Numbers | 129 | Medium | DFS + Accumulate | Template 7 |
+| Binary Tree Maximum Path Sum | 124 | Hard | DFS + Global Max | Template 7 |
+| Binary Tree Longest Consecutive Sequence | 298 | Medium | DFS + Counter | Template 7 |
+| Path Sum III | 437 | Medium | Prefix Sum + DFS | Template 7 |
+
 ### Complete Problem List by Difficulty
 
 #### Easy Problems (Foundation)
@@ -562,6 +987,8 @@ mid = left + (right - left) // 2
 - LC 897: Increasing Order Search Tree - Inorder rebuilding
 - LC 938: Range Sum of BST - DFS with pruning
 - LC 501: Find Mode in Binary Search Tree - Inorder + counting
+- LC 112: Path Sum - Basic DFS path sum
+- LC 257: Binary Tree Paths - DFS path tracking
 
 #### Medium Problems (Core)
 - LC 98: Validate Binary Search Tree - Classic validation
@@ -582,10 +1009,15 @@ mid = left + (right - left) // 2
 - LC 1038: Binary Search Tree to Greater Sum Tree - Accumulation
 - LC 1382: Balance a Binary Search Tree - Tree balancing
 - LC 426: Convert BST to Sorted Doubly Linked List - In-place conversion
+- LC 113: Path Sum II - All root-to-leaf paths with target sum
+- LC 129: Sum Root to Leaf Numbers - DFS accumulation
+- LC 298: Binary Tree Longest Consecutive Sequence - Track sequence length
+- LC 437: Path Sum III - Any path with target sum (prefix sum)
 
 #### Hard Problems (Advanced)
 - LC 99: Recover Binary Search Tree - Fix swapped nodes
 - LC 1373: Maximum Sum BST in Binary Tree - Complex validation
+- LC 124: Binary Tree Maximum Path Sum - Node-to-node max path
 
 ## 1) General form
 
@@ -1339,6 +1771,14 @@ BST Problem Analysis Flowchart:
    │   ├── From sorted array? → Binary search approach
    │   ├── From traversal? → Use BST properties
    │   └── Generate all possible? → Recursive generation
+   └── NO → Continue to 6
+
+6. Does the problem involve paths in the tree?
+   ├── YES → Use Path Template (7)
+   │   ├── Root-to-leaf sum? → DFS with target reduction
+   │   ├── All paths? → DFS with backtracking
+   │   ├── Max path sum? → DFS with global variable
+   │   └── Any path with sum? → Prefix sum technique
    └── NO → Use Universal Template or reconsider
 
 ```
@@ -1501,6 +1941,6 @@ def inorder_generator(root):
 ```
 
 ---
-**Must-Know Problems for Interviews**: LC 98, 108, 173, 230, 235, 450, 700, 701
-**Advanced Problems**: LC 99, 333, 776, 1373, 1382
-**Keywords**: BST, binary search tree, inorder, sorted, validation, search tree
+**Must-Know Problems for Interviews**: LC 98, 108, 112, 113, 124, 173, 230, 235, 450, 700, 701
+**Advanced Problems**: LC 99, 124, 298, 333, 437, 776, 1373, 1382
+**Keywords**: BST, binary search tree, inorder, sorted, validation, search tree, path sum, DFS, backtracking
