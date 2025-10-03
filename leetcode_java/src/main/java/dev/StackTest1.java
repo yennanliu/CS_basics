@@ -1,8 +1,6 @@
 package dev;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class StackTest1 {
     public static void main(String[] args) {
@@ -49,10 +47,18 @@ public class StackTest1 {
 //                System.out.println(">>> x = " + x);
 //            }
 
-        String x = "abcd";
-        // s.substring(l, r + 1)
-        System.out.println(x.substring(1,2)); // b
-        System.out.println(x.substring(1,3)); // bc
+//        String x = "abcd";
+//        // s.substring(l, r + 1)
+//        System.out.println(x.substring(1,2)); // b
+//        System.out.println(x.substring(1,3)); // bc
+
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+
+        System.out.println(list);
+        System.out.println(list); // ???
 
     }
 
